@@ -193,8 +193,41 @@ public:
     CFDictionaryAddValue(d, name, number.get());
 }
 
+static bool is_apple_system_font(const SkTypeface* tf) {
+    if (!tf) return true;
+    SkString name;
+    tf->getFamilyName(&name);
+    if (name.startsWith(".") || name.startsWith("System Font") ||
+        name.startsWith("SF Pro") || name.startsWith("-apple-system") ||
+        name.equals("system-ui")) {
+        return true;
+    }
+    tf->getPostScriptName(&name);
+    if (name.startsWith(".AppleSystemUIFont") || name.startsWith(".SFNS") || name.startsWith(".SFUI")) {
+        return true;
+    }
+    return false;
+}
+
 static SkUniqueCFRef<CTFontRef> create_ctfont_from_font(const SkFont& font) {
     auto typeface = font.getTypeface();
+    if (is_apple_system_font(typeface)) {
+        CTFontRef sysFont = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, font.getSize(), nullptr);
+        if (typeface) {
+            auto ctfont = SkTypeface_GetCTFontRef(typeface);
+            if (ctfont) {
+                CTFontSymbolicTraits traits = CTFontGetSymbolicTraits(ctfont);
+                if (traits & (kCTFontTraitBold | kCTFontTraitItalic)) {
+                    CTFontRef styledFont = CTFontCreateCopyWithSymbolicTraits(sysFont, font.getSize(), nullptr, traits, traits);
+                    if (styledFont) {
+                        CFRelease(sysFont);
+                        return SkUniqueCFRef<CTFontRef>(styledFont);
+                    }
+                }
+            }
+        }
+        return SkUniqueCFRef<CTFontRef>(sysFont);
+    }
     auto ctfont = SkTypeface_GetCTFontRef(typeface);
     if (!ctfont) {
         return SkUniqueCFRef<CTFontRef>(
@@ -351,6 +384,63 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
         }
     }
 
+    if (font.getTypeface() && !SkTypeface_GetCTFontRef(font.getTypeface())) {
+        // Direct shape for virtual typefaces (such as SkTypeface_SFSymbols)
+        handler->beginLine();
+        size_t count = SkUTF::CountUTF8(utf8.data(), utf8.size());
+        if (count == 0) {
+            handler->commitRunInfo();
+            handler->commitLine();
+            return;
+        }
+        AutoSTArray<64, SkGlyphID> glyphs(count);
+        AutoSTArray<64, SkScalar> widths(count);
+        AutoSTArray<64, size_t> clusters(count);
+
+        const char* ptr = utf8.data();
+        const char* end = ptr + utf8.size();
+        size_t i = 0;
+        SkScalar totalAdvance = 0;
+        while (ptr < end && i < count) {
+            clusters[i] = ptr - utf8.data();
+            SkUnichar u = SkUTF::NextUTF8WithReplacement(&ptr, end);
+            glyphs[i] = font.unicharToGlyph(u);
+            font.getWidths(SkSpan(&glyphs[i], 1), SkSpan(&widths[i], 1));
+            totalAdvance += widths[i];
+            ++i;
+        }
+        count = i;
+
+        SkShaper::RunHandler::RunInfo info = {
+            font,
+            0,
+            0,
+            "",
+            {totalAdvance, 0},
+            count,
+            {0, utf8.size()}
+        };
+        handler->runInfo(info);
+        handler->commitRunInfo();
+
+        auto buffer = handler->runBuffer(info);
+        SkScalar curX = 0;
+        for (size_t k = 0; k < count; ++k) {
+            buffer.glyphs[k] = glyphs[k];
+            buffer.positions[k] = {buffer.point.fX + curX, buffer.point.fY};
+            if (buffer.offsets) {
+                buffer.offsets[k] = {0, 0};
+            }
+            if (buffer.clusters) {
+                buffer.clusters[k] = clusters[k];
+            }
+            curX += widths[k];
+        }
+        handler->commitRunBuffer(info);
+        handler->commitLine();
+        return;
+    }
+
     SkUniqueCFRef<CFStringRef> textString(
             CFStringCreateWithBytes(kCFAllocatorDefault, (const uint8_t*)utf8.data(), utf8.size(),
                                     kCFStringEncodingUTF8, false));
@@ -451,9 +541,17 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
 
             CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(run_array, j);
             CFIndex runGlyphs = info.glyphCount;
-            SkASSERT(CTRunGetGlyphCount(run) == (CFIndex)info.glyphCount);
-
-            CTRunGetGlyphs(run, {0, runGlyphs}, buffer.glyphs);
+            SkString runPSName;
+            if (info.fFont.getTypeface()) {
+                info.fFont.getTypeface()->getPostScriptName(&runPSName);
+            }
+            if (runPSName.contains("LastResort")) {
+                for (CFIndex k = 0; k < runGlyphs; ++k) {
+                    buffer.glyphs[k] = 0;
+                }
+            } else {
+                CTRunGetGlyphs(run, {0, runGlyphs}, buffer.glyphs);
+            }
 
             AutoSTArray<4096, CGPoint> positions(runGlyphs);
             CTRunGetPositions(run, {0, runGlyphs}, positions.data());

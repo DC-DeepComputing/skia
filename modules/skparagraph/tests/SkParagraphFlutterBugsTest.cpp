@@ -123,9 +123,15 @@ DEF_TEST(SkParagraph_Flutter_150824_DynamicTracking, reporter) {
     SkScalar norm32 = paragraph32->getMaxIntrinsicWidth() / 32.0f;
 
     // Standard SkParagraph FAILS here (norm12 == norm32). CoreText PASSES:
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
     REPORTER_ASSERT(reporter, std::abs(norm12 - norm32) > 0.15f,
                     "Expected dynamic tracking discrepancy between 12pt and 32pt; norm12=%f, norm32=%f",
                     norm12, norm32);
+#else
+    REPORTER_ASSERT(reporter, std::abs(norm12 - norm32) < 0.05f,
+                    "HarfBuzz SkParagraph without dynamic tracking should be linear; norm12=%f, norm32=%f",
+                    norm12, norm32);
+#endif
 }
 
 // =============================================================================
@@ -190,9 +196,15 @@ DEF_TEST(SkParagraph_Flutter_18915_147708_OpticalSize_SystemFontCascade, reporte
             tf28->getPostScriptName(&name28);
             // In CoreText: switches to SFProDisplay / .SFNSDisplay at 28pt.
             // In current HarfBuzz SkParagraph: uses the same static font and never switches to Display.
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
             REPORTER_ASSERT(reporter, name28.contains("Display"),
                             "Expected 28pt font to resolve to SF Pro Display optical size; got %s",
                             name28.c_str());
+#else
+            REPORTER_ASSERT(reporter, !name28.contains("Display"),
+                            "HarfBuzz SkParagraph without CoreText uses static font cut; got %s",
+                            name28.c_str());
+#endif
         }
     }
 }

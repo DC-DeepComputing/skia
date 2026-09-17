@@ -7,6 +7,9 @@
 #endif
 #if defined(SK_SHAPER_CORETEXT_AVAILABLE)
 #include "modules/skshaper/include/SkShaper_coretext.h"
+#if !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+#include "src/ports/SkTypeface_mac_symbols.h"
+#endif
 #endif
 #include "src/core/SkUTF.h"
 
@@ -429,6 +432,14 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
 void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
                                        const TypefaceVisitor& visitor) {
     std::vector<sk_sp<SkTypeface>> typefaces = fParagraph->fFontCollection->findTypefaces(textStyle.getFontFamilies(), textStyle.getFontStyle(), textStyle.getFontArguments());
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+    for (const auto& family : textStyle.getFontFamilies()) {
+        if (family.equals("SF Symbols") || family.equals(".SFUI-Symbols") || family.equals("SFSymbols")) {
+            typefaces.push_back(SkMakeTypeface_SFSymbols(textStyle.getFontStyle()));
+            break;
+        }
+    }
+#endif
 
     for (const auto& typeface : typefaces) {
         if (visitor(typeface) == Resolved::Everything) {
@@ -490,12 +501,19 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
                         typeface = *found;
                     }
                     if (typeface == nullptr) {
-                        typeface = fParagraph->fFontCollection->defaultFallback(
-                                                    codepoint,
-                                                    textStyle.getFontFamilies(),
-                                                    textStyle.getFontStyle(),
-                                                    textStyle.getLocale(),
-                                                    textStyle.getFontArguments());
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+                        if (SkIsSFSymbolsCodepoint(codepoint)) {
+                            typeface = SkMakeTypeface_SFSymbols(textStyle.getFontStyle());
+                        }
+#endif
+                        if (typeface == nullptr) {
+                            typeface = fParagraph->fFontCollection->defaultFallback(
+                                                        codepoint,
+                                                        textStyle.getFontFamilies(),
+                                                        textStyle.getFontStyle(),
+                                                        textStyle.getLocale(),
+                                                        textStyle.getFontArguments());
+                        }
                         if (typeface != nullptr) {
                             fFallbackFonts.set(fontKey, typeface);
                         }
@@ -630,6 +648,95 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
     return true;
 }
 
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+namespace {
+
+// Apple HIG dynamic tracking specifications for San Francisco (SF Pro Text & SF Pro Display).
+// Values are specified in 1/1000 of an em.
+struct AppleHIGTrackingPoint {
+    float fontSize;
+    float tracking; // in 1/1000 of an em
+};
+
+static constexpr AppleHIGTrackingPoint kAppleHIGTrackingTable[] = {
+    {  6.0f,  41.0f },
+    {  7.0f,  34.0f },
+    {  8.0f,  26.0f },
+    {  9.0f,  19.0f },
+    { 10.0f,  12.0f },
+    { 11.0f,   6.0f },
+    { 12.0f,   0.0f },
+    { 13.0f,  -6.0f },
+    { 14.0f, -11.0f },
+    { 15.0f, -16.0f },
+    { 16.0f, -20.0f },
+    { 17.0f, -26.0f },
+    { 18.0f, -25.0f },
+    { 19.0f, -24.0f },
+    { 20.0f,  19.0f }, // SF Pro Display optical size breakpoint
+    { 24.0f,  10.0f },
+    { 28.0f,   3.0f },
+    { 32.0f,  -2.0f },
+    { 36.0f,  -6.0f },
+    { 40.0f, -10.0f },
+    { 48.0f, -16.0f },
+    { 64.0f, -22.0f },
+    { 80.0f, -24.0f },
+};
+
+static float get_apple_hig_tracking(float fontSize) {
+    if (fontSize <= kAppleHIGTrackingTable[0].fontSize) {
+        return kAppleHIGTrackingTable[0].tracking / 1000.0f;
+    }
+    constexpr size_t kTableSize = sizeof(kAppleHIGTrackingTable) / sizeof(kAppleHIGTrackingTable[0]);
+    if (fontSize >= kAppleHIGTrackingTable[kTableSize - 1].fontSize) {
+        return kAppleHIGTrackingTable[kTableSize - 1].tracking / 1000.0f;
+    }
+    for (size_t i = 0; i < kTableSize - 1; ++i) {
+        if (fontSize >= kAppleHIGTrackingTable[i].fontSize && fontSize <= kAppleHIGTrackingTable[i + 1].fontSize) {
+            float t = (fontSize - kAppleHIGTrackingTable[i].fontSize) /
+                      (kAppleHIGTrackingTable[i + 1].fontSize - kAppleHIGTrackingTable[i].fontSize);
+            float track = kAppleHIGTrackingTable[i].tracking +
+                          t * (kAppleHIGTrackingTable[i + 1].tracking - kAppleHIGTrackingTable[i].tracking);
+            return track / 1000.0f; // return in em units
+        }
+    }
+    return 0.0f;
+}
+
+static bool is_apple_system_font(const TextStyle& style, const SkTypeface* typeface) {
+    if (style.getFontFamilies().empty()) {
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+        return true;
+#else
+        return false;
+#endif
+    }
+    for (const auto& family : style.getFontFamilies()) {
+        if (family.startsWith(".") ||
+            family.equals("system-ui") ||
+            family.startsWith("-apple-system") ||
+            family.startsWith("SF Pro") ||
+            family.startsWith("San Francisco")) {
+            return true;
+        }
+    }
+    if (typeface) {
+        SkString tfName;
+        typeface->getFamilyName(&tfName);
+        if (tfName.startsWith(".") ||
+            tfName.startsWith("SF Pro") ||
+            tfName.startsWith(".SFNS") ||
+            tfName.startsWith("System Font")) {
+            return true;
+        }
+    }
+    return false;
+}
+
+} // namespace
+#endif
+
 bool OneLineShaper::shape() {
 
     // The text can be broken into many shaping sequences
@@ -727,10 +834,26 @@ bool OneLineShaper::shape() {
                         }
                     }
 
+                    SkShaper::Options options{ .width = limitlessWidth };
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+                    // CoreText is the active shaper: CTFont with .AppleSystemUIFont / .SFNS natively
+                    // tracks in CoreText typesetter. Only set explicit tracking for custom/bundled SF fonts.
+                    bool isNativeOSSystemFont = false;
+                    if (font.getTypeface()) {
+                        SkString psName;
+                        font.getTypeface()->getPostScriptName(&psName);
+                        if (psName.startsWith(".AppleSystemUIFont") || psName.startsWith(".SFNS")) {
+                            isNativeOSSystemFont = true;
+                        }
+                    }
+                    if (!isNativeOSSystemFont && is_apple_system_font(block.fStyle, font.getTypeface())) {
+                        options.tracking = get_apple_hig_tracking(font.getSize());
+                    }
+#endif
                     shaper->shape(unresolvedText,
                                   fontIter, bidiIter,*scriptIter, langIter,
                                   adjustedFeatures,
-                                  { .width = limitlessWidth }, this);
+                                  options, this);
 
                     // Take off the queue the block we tried to resolved -
                     // whatever happened, we have now smaller pieces of it to deal with

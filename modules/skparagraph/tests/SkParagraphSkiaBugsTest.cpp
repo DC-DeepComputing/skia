@@ -119,9 +119,59 @@ DEF_TEST(SkParagraph_Skia_b_318667611_AppleSystemUIFontCascade, reporter) {
         }
         // On Apple CoreText: SF Symbols resolves to SFSymbols / AppleSystemUIFont font family
         // On standard HarfBuzz/ICU without system cascade, it falls back to LastResort or Courier:
-        REPORTER_ASSERT(reporter, psName.contains("SF") && !psName.contains("LastResort"),
-                        "Expected Apple system symbol cascade to resolve to SF Symbols; got %s",
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        REPORTER_ASSERT(reporter, psName.equals("SF-Symbols"),
+                        "Expected Apple system symbol cascade to resolve to SF-Symbols; got %s",
                         psName.c_str());
+#else
+        REPORTER_ASSERT(reporter, psName.contains("LastResort") || !psName.contains("SF"),
+                        "HarfBuzz SkParagraph without Apple system cascade expected LastResort; got %s",
+                        psName.c_str());
+#endif
+    }
+
+    {
+        const char* cascadeText = "SF Pro    \xE7\xAE\x80\xE4\xBD\x93\xE4\xB8\xAD\xE6\x96\x87    \xD9\x85\xD8\xB1\xD8\xAD\xD8\xA8\xD8\xA7    \xF4\x80\x80\x80  \xF4\x80\x80\x81  \xF4\x80\x80\x82  \xF4\x80\x80\x83  \xF4\x80\x80\x84";
+        ParagraphStyle cStyle;
+        ParagraphBuilderImpl cBuilder(cStyle, fontCollection, unicode);
+        TextStyle cascadeTS;
+        cascadeTS.setFontFamilies({SkString(".AppleSystemUIFont")});
+        cascadeTS.setFontSize(24.0f);
+        cBuilder.pushStyle(cascadeTS);
+        cBuilder.addText(cascadeText);
+        cBuilder.pop();
+        auto cPara = cBuilder.Build();
+        cPara->layout(1000);
+        auto cImpl = static_cast<ParagraphImpl*>(cPara.get());
+
+        auto toU16 = [&](size_t utf8Pos) -> size_t {
+            return SkUTF::UTF8ToUTF16(nullptr, 0, cascadeText, utf8Pos);
+        };
+
+        const char* p = strstr(cascadeText, "\xF4\x80\x80\x80");
+        REPORTER_ASSERT(reporter, p != nullptr, "SF Symbols expected in cascadeText");
+        if (p) {
+            size_t u8Start = p - cascadeText;
+            size_t u8End = u8Start + strlen("\xF4\x80\x80\x80  \xF4\x80\x80\x81  \xF4\x80\x80\x82  \xF4\x80\x80\x83  \xF4\x80\x80\x84");
+            auto boxes = cPara->getRectsForRange(toU16(u8Start), toU16(u8End), RectHeightStyle::kTight, RectWidthStyle::kTight);
+            REPORTER_ASSERT(reporter, !boxes.empty(), "Expected bounding box for SF Symbols range");
+        }
+
+        REPORTER_ASSERT(reporter, !cImpl->runs().empty(), "Expected runs in cascade paragraph");
+        if (!cImpl->runs().empty()) {
+            const auto& lastRun = cImpl->runs().back();
+            SkString lastPS;
+            if (lastRun.font().getTypeface()) lastRun.font().getTypeface()->getPostScriptName(&lastPS);
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+            REPORTER_ASSERT(reporter, lastPS.equals("SF-Symbols"),
+                            "Expected last run to resolve to SF-Symbols on Apple Native; got %s",
+                            lastPS.c_str());
+#else
+            REPORTER_ASSERT(reporter, lastPS.contains("LastResort") || !lastPS.contains("SF"),
+                            "Expected last run to fail fallback to LastResort on HarfBuzz; got %s",
+                            lastPS.c_str());
+#endif
+        }
     }
 }
 

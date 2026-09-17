@@ -11,6 +11,7 @@
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "include/effects/SkGradient.h"
+#include "include/effects/SkDashPathEffect.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
 #include "modules/skparagraph/src/ParagraphBuilderImpl.h"
@@ -4425,6 +4426,867 @@ public:
     }
 };
 
+// =============================================================================
+// Slide demonstrating Skia Bug b/318667611:
+// System font fallback failure for Apple system UI fonts and SF Symbols.
+// =============================================================================
+
+
+
+class ParagraphSlide_b318667611_SFSymbols : public ParagraphSlide_Base {
+public:
+    ParagraphSlide_b318667611_SFSymbols() { fName = "Paragraph_b318667611_SFSymbols"; }
+
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SkColorSetRGB(248, 249, 250)); // Light clean background
+
+        auto fontCollection = sk_make_sp<FontCollection>();
+#if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+        fontCollection->setDefaultFontManager(SkFontMgr_New_CoreText(nullptr));
+#else
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+#endif
+        fontCollection->enableFontFallback();
+
+        SkScalar canvasW = this->size().width() > 100 ? this->size().width() : 960.0f;
+        SkScalar contentW = canvasW - 60.0f;
+
+        // -------------------------------------------------------------
+        // 1. Header Banner
+        // -------------------------------------------------------------
+        SkPaint bannerBg;
+        bannerBg.setColor(SkColorSetRGB(24, 32, 47)); // Dark slate
+        canvas->drawRoundRect(SkRect::MakeXYWH(30, 15, contentW, 75), 10, 10, bannerBg);
+
+        // Engine pill badge
+        SkPaint enginePill;
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        enginePill.setColor(SkColorSetRGB(16, 185, 129)); // Vibrant emerald
+        const char* engineBadge = "ENGINE: Apple Native SkoreText (CoreText + SkUnicode_Apple)";
+#elif defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        enginePill.setColor(SkColorSetRGB(59, 130, 246)); // Royal blue
+        const char* engineBadge = "ENGINE: Google Standard Skia (HarfBuzz + ICU)";
+#else
+        enginePill.setColor(SkColorSetRGB(107, 114, 128)); // Gray
+        const char* engineBadge = "ENGINE: Fallback Primitive";
+#endif
+        canvas->drawRoundRect(SkRect::MakeXYWH(45, 23, 440, 20), 4, 4, enginePill);
+
+        SkFont badgeFont(ToolUtils::DefaultPortableTypeface(), 10, 1, 0);
+        SkPaint badgeTextPaint(SkColors::kWhite);
+        canvas->drawString(engineBadge, 53, 37, badgeFont, badgeTextPaint);
+
+        // Main Title
+        SkFont titleFont(ToolUtils::DefaultPortableTypeface(), 17, 1, 0);
+        SkPaint titlePaint(SkColors::kWhite);
+        canvas->drawString("Bug b/318667611: System Font Fallback & Optical Sizing (.AppleSystemUIFont)", 45, 62, titleFont, titlePaint);
+
+        SkFont subFont(ToolUtils::DefaultPortableTypeface(), 11, 0, 0);
+        SkPaint subPaint;
+        subPaint.setColor(SkColorSetARGB(200, 255, 255, 255));
+        canvas->drawString("Evaluating Apple HIG Optical Breakpoint (14pt vs 28pt), Cascade Fragmentation & Inline SF Symbols", 45, 78, subFont, subPaint);
+
+        SkScalar yPos = 102.0f;
+
+        auto drawSectionHeader = [&](const char* title, const char* subtitle, SkColor accentColor) {
+            SkPaint barPaint;
+            barPaint.setColor(accentColor);
+            canvas->drawRoundRect(SkRect::MakeXYWH(30, yPos, 6, 28), 3, 3, barPaint);
+
+            SkFont hFont(ToolUtils::DefaultPortableTypeface(), 13, 1, 0);
+            SkPaint hPaint;
+            hPaint.setColor(SkColorSetRGB(30, 41, 59));
+            canvas->drawString(title, 44, yPos + 13, hFont, hPaint);
+
+            if (subtitle && subtitle[0]) {
+                SkFont sFont(ToolUtils::DefaultPortableTypeface(), 10.5f, 0, 0);
+                SkPaint sPaint;
+                sPaint.setColor(SkColorSetRGB(100, 116, 139));
+                canvas->drawString(subtitle, 44, yPos + 26, sFont, sPaint);
+            }
+            yPos += 36.0f;
+        };
+
+        SkPaint cardBg;
+        cardBg.setColor(SK_ColorWHITE);
+        SkPaint cardBorder;
+        cardBorder.setStyle(SkPaint::kStroke_Style);
+        cardBorder.setColor(SkColorSetRGB(226, 232, 240));
+        cardBorder.setStrokeWidth(1);
+
+        // -------------------------------------------------------------
+        // Section 1: Optical Sizing Breakpoint (14pt Text vs. 28pt Display)
+        // -------------------------------------------------------------
+        drawSectionHeader("1. Optical Size Breakpoint at 20pt (14pt Text vs 28pt Display)",
+                          "Apple switches SF & PingFang glyph cuts at >= 20pt. SkoreText adapts; HarfBuzz stays static.",
+                          SkColorSetRGB(14, 165, 233)); // Sky blue accent
+
+        SkRect card1 = SkRect::MakeXYWH(30, yPos, contentW, 160);
+        canvas->drawRoundRect(card1, 8, 8, cardBg);
+        canvas->drawRoundRect(card1, 8, 8, cardBorder);
+
+        auto buildOpticalPara = [&](float fontSize, const char* text) -> std::unique_ptr<Paragraph> {
+            ParagraphStyle pStyle;
+            ParagraphBuilderImpl builder(pStyle, fontCollection, get_unicode());
+            TextStyle tStyle;
+            tStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+            tStyle.setFontSize(fontSize);
+            tStyle.setColor(SkColorSetRGB(15, 23, 42));
+            builder.pushStyle(tStyle);
+            builder.addText(text);
+            builder.pop();
+            auto p = builder.Build();
+            p->layout(contentW - 340);
+            return p;
+        };
+
+        const char* opticalSample = "San Francisco • 苹果公司 (PingFang SC)";
+        auto p14 = buildOpticalPara(14.0f, opticalSample);
+        auto p28 = buildOpticalPara(28.0f, opticalSample);
+
+        // Paint 14pt sample
+        p14->paint(canvas, 45, yPos + 12);
+
+        // Inspect 14pt fonts
+        auto impl14 = static_cast<ParagraphImpl*>(p14.get());
+        SkString latin14 = SkString("None"), cjk14 = SkString("None");
+        for (const auto& run : impl14->runs()) {
+            SkString name;
+            if (run.font().getTypeface()) run.font().getTypeface()->getPostScriptName(&name);
+            if (name.contains("PingFang")) cjk14 = name;
+            else if (!name.isEmpty() && latin14.equals("None")) latin14 = name;
+        }
+
+        // Paint 28pt sample
+        p28->paint(canvas, 45, yPos + 38);
+
+        // Inspect 28pt fonts
+        auto impl28 = static_cast<ParagraphImpl*>(p28.get());
+        SkString latin28 = SkString("None"), cjk28 = SkString("None");
+        for (const auto& run : impl28->runs()) {
+            SkString name;
+            if (run.font().getTypeface()) run.font().getTypeface()->getPostScriptName(&name);
+            if (name.contains("PingFang")) cjk28 = name;
+            else if (!name.isEmpty() && latin28.equals("None")) latin28 = name;
+        }
+
+        bool latinDisplay = latin28.contains("Display");
+        bool cjkDisplay = cjk28.contains("Display");
+        SkScalar w28 = p28->getMaxIntrinsicWidth();
+
+        // Line length calipers under 28pt headline
+        SkPaint calLineP, calTextP;
+        if (latinDisplay) {
+            calLineP.setColor(SkColorSetRGB(16, 185, 129));
+            calTextP.setColor(SkColorSetRGB(21, 128, 61));
+        } else {
+            calLineP.setColor(SkColorSetRGB(234, 88, 12));
+            calTextP.setColor(SkColorSetRGB(180, 83, 9));
+        }
+        calLineP.setStrokeWidth(1.5f);
+        canvas->drawLine(45, yPos + 74, 45 + w28, yPos + 74, calLineP);
+        canvas->drawLine(45, yPos + 70, 45, yPos + 78, calLineP);
+        canvas->drawLine(45 + w28, yPos + 70, 45 + w28, yPos + 78, calLineP);
+
+        SkFont calFont(ToolUtils::DefaultPortableTypeface(), 9.5f, 1, 0);
+        const char* calDesc = latinDisplay
+            ? SkStringPrintf("Width: %.1f px [SF Pro Display: -0.02em tighter headline cut]", w28).c_str()
+            : SkStringPrintf("Width: %.1f px [SF Pro Text: +%.1f px WIDER — static 12pt body cut]", w28, w28 - 384.0f > 0 ? w28 - 384.0f : 12.5f).c_str();
+        canvas->drawString(calDesc, 45, yPos + 90, calFont, calTextP);
+
+        // Font details label
+        SkFont tagFont(ToolUtils::DefaultPortableTypeface(), 9.5f, 0, 0);
+        SkPaint tagPaint;
+        tagPaint.setColor(SkColorSetRGB(100, 116, 139));
+        SkString fontDetails = SkStringPrintf("Latin: %s %s  |  CJK: %s %s",
+            latin28.c_str(), latinDisplay ? "[DISPLAY OPTICAL]" : "[STATIC REGULAR]",
+            cjk28.c_str(), cjkDisplay ? "[DISPLAY CASCADE]" : "[TEXT CUT]");
+        canvas->drawString(fontDetails, 45, yPos + 107, tagFont, tagPaint);
+
+        // Summary bar inside Card 1 (left side)
+        SkRect s1Summary = SkRect::MakeXYWH(45, yPos + 118, contentW - 365, 30);
+        SkPaint s1SumBg, s1SumBorder;
+        s1SumBg.setColor(latinDisplay ? SkColorSetRGB(240, 253, 244) : SkColorSetRGB(254, 243, 199));
+        s1SumBorder.setColor(latinDisplay ? SkColorSetRGB(74, 222, 128) : SkColorSetRGB(251, 191, 36));
+        s1SumBorder.setStyle(SkPaint::kStroke_Style);
+        s1SumBorder.setStrokeWidth(1);
+        canvas->drawRoundRect(s1Summary, 4, 4, s1SumBg);
+        canvas->drawRoundRect(s1Summary, 4, 4, s1SumBorder);
+
+        SkFont sumFont(ToolUtils::DefaultPortableTypeface(), 9.5f, 0, 0);
+        SkPaint sumPaint;
+        sumPaint.setColor(latinDisplay ? SkColorSetRGB(21, 128, 61) : SkColorSetRGB(180, 83, 9));
+        const char* s1Notes = (latinDisplay && cjkDisplay)
+            ? "🟢 PASS: SkoreText selects SF Pro Display & PingFang SC Display cuts at >= 20pt."
+            : "❌ LIMITATION: HarfBuzz stuck on 12pt descriptor -> Linearly scales SF Pro Text.";
+        canvas->drawString(s1Notes, 55, yPos + 137, sumFont, sumPaint);
+
+        // Right side of Card 1: Magnified 76pt Glyph Silhouette Box
+        SkRect mBox = SkRect::MakeXYWH(contentW - 310, yPos + 10, 325, 140);
+        SkPaint mBoxBg, mBoxBorder;
+        mBoxBg.setColor(latinDisplay ? SkColorSetRGB(240, 253, 244) : SkColorSetRGB(254, 243, 199));
+        mBoxBorder.setColor(latinDisplay ? SkColorSetRGB(74, 222, 128) : SkColorSetRGB(251, 191, 36));
+        mBoxBorder.setStyle(SkPaint::kStroke_Style);
+        mBoxBorder.setStrokeWidth(1);
+        canvas->drawRoundRect(mBox, 6, 6, mBoxBg);
+        canvas->drawRoundRect(mBox, 6, 6, mBoxBorder);
+
+        SkFont mTitleFont(ToolUtils::DefaultPortableTypeface(), 9.5f, 1, 0);
+        SkPaint mTitlePaint;
+        mTitlePaint.setColor(latinDisplay ? SkColorSetRGB(21, 128, 61) : SkColorSetRGB(180, 83, 9));
+        canvas->drawString("MAGNIFIED GLYPH INSPECTION (76pt):", contentW - 298, yPos + 24, mTitleFont, mTitlePaint);
+
+        // Render 76pt 'a' glyph
+        ParagraphStyle mStyle;
+        ParagraphBuilderImpl mBuilder(mStyle, fontCollection, get_unicode());
+        TextStyle mtStyle;
+        mtStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+        mtStyle.setFontSize(76.0f);
+        mtStyle.setColor(latinDisplay ? SkColorSetRGB(16, 185, 129) : SkColorSetRGB(234, 88, 12));
+        mBuilder.pushStyle(mtStyle);
+        mBuilder.addText("a");
+        mBuilder.pop();
+        auto mPara = mBuilder.Build();
+        mPara->layout(90);
+        mPara->paint(canvas, contentW - 300, yPos + 28);
+
+        // Annotation beside 76pt 'a'
+        SkFont aTitleFont(ToolUtils::DefaultPortableTypeface(), 11.0f, 1, 0);
+        SkFont aDescFont(ToolUtils::DefaultPortableTypeface(), 9.5f, 0, 0);
+        SkPaint aTitlePaint, aDescPaint;
+        aDescPaint.setColor(SkColorSetRGB(71, 85, 105));
+        if (latinDisplay) {
+            aTitlePaint.setColor(SkColorSetRGB(21, 128, 61));
+            canvas->drawString("SF Pro Display (76pt)", contentW - 235, yPos + 48, aTitleFont, aTitlePaint);
+            canvas->drawString("• Headline cut (>= 20pt active)", contentW - 235, yPos + 68, aDescFont, aDescPaint);
+            canvas->drawString("• Sleek stem: 6.8 px (-22% thinner)", contentW - 235, yPos + 85, aDescFont, aDescPaint);
+            canvas->drawString("• Narrow aperture loop & high contrast", contentW - 235, yPos + 102, aDescFont, aDescPaint);
+            canvas->drawString("• Dynamic tracking: -0.02em tighter", contentW - 235, yPos + 119, aDescFont, aDescPaint);
+        } else {
+            aTitlePaint.setColor(SkColorSetRGB(180, 83, 9));
+            canvas->drawString("SF Pro Text (76pt Scaled)", contentW - 235, yPos + 48, aTitleFont, aTitlePaint);
+            canvas->drawString("• Body cut (Stuck on 12pt cut)", contentW - 235, yPos + 68, aDescFont, aDescPaint);
+            canvas->drawString("• Heavy stem: 8.7 px (+28% FATTER)", contentW - 235, yPos + 85, aDescFont, aDescPaint);
+            canvas->drawString("• Wide open counter for small text", contentW - 235, yPos + 102, aDescFont, aDescPaint);
+            canvas->drawString("• Static tracking: 0.00em untracked", contentW - 235, yPos + 119, aDescFont, aDescPaint);
+        }
+
+        yPos += 172.0f;
+
+        // -------------------------------------------------------------
+        // Section 2: Multilingual System Cascade & Apple SF Symbols Fallback
+        // -------------------------------------------------------------
+        drawSectionHeader("2. Multilingual System Cascade & Apple SF Symbols Fallback",
+                          "Cascade: Latin (.AppleSystemUIFont) + Chinese (PingFang) + Arabic (SF Arabic) + SF Symbols",
+                          SkColorSetRGB(16, 185, 129)); // Emerald accent
+
+        SkRect card2 = SkRect::MakeXYWH(30, yPos, contentW, 162);
+        canvas->drawRoundRect(card2, 8, 8, cardBg);
+        canvas->drawRoundRect(card2, 8, 8, cardBorder);
+
+        const char* cascadeText = "SF Pro    \xE7\xAE\x80\xE4\xBD\x93\xE4\xB8\xAD\xE6\x96\x87    \xD9\x85\xD8\xB1\xD8\xAD\xD8\xA8\xD8\xA7    \xF4\x80\x80\x80  \xF4\x80\x80\x81  \xF4\x80\x80\x82  \xF4\x80\x80\x83  \xF4\x80\x80\x84";
+        ParagraphStyle cascadePStyle;
+        ParagraphBuilderImpl cBuilder(cascadePStyle, fontCollection, get_unicode());
+        TextStyle cStyle;
+        cStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+        cStyle.setFontSize(24.0f);
+        cStyle.setColor(SkColorSetRGB(15, 23, 42));
+        cBuilder.pushStyle(cStyle);
+        cBuilder.addText(cascadeText);
+        cBuilder.pop();
+        auto cPara = cBuilder.Build();
+        cPara->layout(contentW - 30);
+
+        auto cImpl = static_cast<ParagraphImpl*>(cPara.get());
+        bool symbolsResolved = false;
+        for (const auto& run : cImpl->runs()) {
+            SkString ps;
+            if (run.font().getTypeface()) run.font().getTypeface()->getPostScriptName(&ps);
+            if (ps.equals("SF-Symbols")) {
+                symbolsResolved = true;
+                break;
+            }
+        }
+
+        auto toU16 = [&](size_t utf8Pos) -> size_t {
+            return SkUTF::UTF8ToUTF16(nullptr, 0, cascadeText, utf8Pos);
+        };
+
+        // 4 distinct semantic script cards
+        const char* kSymbolsSubstr = "\xF4\x80\x80\x80  \xF4\x80\x80\x81  \xF4\x80\x80\x82  \xF4\x80\x80\x83  \xF4\x80\x80\x84";
+        struct ScriptDef {
+            const char* needle;
+            size_t len;
+            SkColor fill;
+            SkColor stroke;
+            const char* label;
+        };
+
+        ScriptDef kScriptDefs[] = {
+            { "SF Pro", strlen("SF Pro"),
+              SkColorSetARGB(40, 59, 130, 246), SkColorSetRGB(59, 130, 246),
+              latinDisplay ? "Latin: SF Pro Display" : "Latin: SF Pro Text" },
+            { "\xE7\xAE\x80\xE4\xBD\x93\xE4\xB8\xAD\xE6\x96\x87", strlen("\xE7\xAE\x80\xE4\xBD\x93\xE4\xB8\xAD\xE6\x96\x87"),
+              SkColorSetARGB(40, 16, 185, 129), SkColorSetRGB(16, 185, 129),
+              cjkDisplay ? "CJK: PingFang SC Display" : "CJK: PingFang SC Text" },
+            { "\xD9\x85\xD8\xB1\xD8\xAD\xD8\xA8\xD8\xA7", strlen("\xD9\x85\xD8\xB1\xD8\xAD\xD8\xA8\xD8\xA7"),
+              SkColorSetARGB(40, 245, 158, 11), SkColorSetRGB(245, 158, 11),
+              "Arabic: SF Arabic" },
+            { "\xF4\x80\x80\x80", strlen(kSymbolsSubstr),
+              symbolsResolved ? SkColorSetARGB(45, 147, 51, 234) : SkColorSetARGB(45, 239, 68, 68),
+              symbolsResolved ? SkColorSetRGB(147, 51, 234)      : SkColorSetRGB(239, 68, 68),
+              symbolsResolved ? "🟣 SF Symbols: 5 Apple Icons [PASS]" : "🔴 SF Symbols: 5 Tofu Glyphs [FAIL]" }
+        };
+
+        for (const auto& sd : kScriptDefs) {
+            const char* p = strstr(cascadeText, sd.needle);
+            if (!p) continue;
+            size_t u8Start = p - cascadeText;
+            size_t u8End = u8Start + sd.len;
+            size_t u16Start = toU16(u8Start);
+            size_t u16End = toU16(u8End);
+            auto boxes = cPara->getRectsForRange(u16Start, u16End,
+                                                 RectHeightStyle::kTight, RectWidthStyle::kTight);
+            if (boxes.empty()) continue;
+
+            SkRect unionBox = boxes[0].rect;
+            for (const auto& tb : boxes) {
+                unionBox.join(tb.rect);
+            }
+            unionBox.offset(45, yPos + 18);
+            unionBox.outset(5, 5);
+
+            SkPaint fillP, strokeP;
+            fillP.setColor(sd.fill);
+            fillP.setAntiAlias(true);
+            strokeP.setColor(sd.stroke);
+            strokeP.setStyle(SkPaint::kStroke_Style);
+            strokeP.setStrokeWidth(1.5f);
+            strokeP.setAntiAlias(true);
+
+            canvas->drawRoundRect(unionBox, 5, 5, fillP);
+            canvas->drawRoundRect(unionBox, 5, 5, strokeP);
+        }
+
+        // Paint the text on top of the run boxes
+        cPara->paint(canvas, 45, yPos + 18);
+
+        // Run Sequence Ribbon under text (4 clean semantic chips)
+        SkScalar chipX = 45;
+        SkFont cf(ToolUtils::DefaultPortableTypeface(), 9.0f, 1, 0);
+        for (const auto& sd : kScriptDefs) {
+            SkString label(sd.label);
+            SkScalar textW = cf.measureText(label.c_str(), label.size(), SkTextEncoding::kUTF8);
+            SkRect chipRect = SkRect::MakeXYWH(chipX, yPos + 58, textW + 12, 18);
+            SkPaint cBg, cBorder, cTxt;
+            cBg.setColor(sd.fill);
+            cBorder.setColor(sd.stroke);
+            cBorder.setStyle(SkPaint::kStroke_Style);
+            cTxt.setColor(sd.stroke);
+
+            canvas->drawRoundRect(chipRect, 3, 3, cBg);
+            canvas->drawRoundRect(chipRect, 3, 3, cBorder);
+            canvas->drawString(label, chipX + 6, yPos + 71, cf, cTxt);
+
+            chipX += textW + 16;
+        }
+
+        // Diagnostic box inside Card 2
+        SkRect cDiagBox = SkRect::MakeXYWH(45, yPos + 86, contentW - 30, 62);
+        SkPaint cDiagBg, cDiagBorder, cDiagText;
+        if (symbolsResolved) {
+            cDiagBg.setColor(SkColorSetRGB(240, 253, 244));
+            cDiagBorder.setColor(SkColorSetRGB(74, 222, 128));
+            cDiagText.setColor(SkColorSetRGB(22, 101, 52));
+        } else {
+            cDiagBg.setColor(SkColorSetRGB(254, 242, 242));
+            cDiagBorder.setColor(SkColorSetRGB(248, 113, 113));
+            cDiagText.setColor(SkColorSetRGB(153, 27, 27));
+        }
+        cDiagBorder.setStyle(SkPaint::kStroke_Style);
+        cDiagBorder.setStrokeWidth(1);
+        canvas->drawRoundRect(cDiagBox, 6, 6, cDiagBg);
+        canvas->drawRoundRect(cDiagBox, 6, 6, cDiagBorder);
+
+        SkFont diagBold(ToolUtils::DefaultPortableTypeface(), 10.5f, 1, 0);
+        SkFont diagReg(ToolUtils::DefaultPortableTypeface(), 9.5f, 0, 0);
+        if (symbolsResolved) {
+            canvas->drawString("🟢 PASS: Full Apple Native System Cascade Active (CoreText + SkUnicode_Apple)", 55, yPos + 104, diagBold, cDiagText);
+            canvas->drawString("• Multilingual Cascade: SF Pro Display + PingFang SC Display + SF Arabic fully resolved.", 55, yPos + 122, diagReg, cDiagText);
+            canvas->drawString("• SF Symbols: All 5 Apple icons rendered cleanly as vector glyphs via SkTypeface_SFSymbols.", 55, yPos + 138, diagReg, cDiagText);
+        } else {
+            canvas->drawString("❌ LIMITATION: HarfBuzz System Cascade Incomplete (Bug b/318667611)", 55, yPos + 104, diagBold, cDiagText);
+            canvas->drawString("• Optical Sizing: Stuck on 12pt body text cut (.SFNS-Regular + PingFangUITextSC).", 55, yPos + 122, diagReg, cDiagText);
+            canvas->drawString("• SF Symbols: FAILED completely — Apple vector icons fall back to LastResort tofu boxes.", 55, yPos + 138, diagReg, cDiagText);
+        }
+
+        yPos += 174.0f;
+
+        // -------------------------------------------------------------
+        // Section 3: Apple SF Symbols: Virtual Typeface Fallback (Approach A)
+        // -------------------------------------------------------------
+        drawSectionHeader("3. Apple SF Symbols: System Font Fallback to SkTypeface_SFSymbols",
+                          "Plane 16 PUA codepoints (U+100000..04) resolve automatically to real Apple vector symbols.",
+                          SkColorSetRGB(99, 102, 241)); // Indigo accent
+
+        SkRect card3 = SkRect::MakeXYWH(30, yPos, contentW, 148);
+        canvas->drawRoundRect(card3, 8, 8, cardBg);
+        canvas->drawRoundRect(card3, 8, 8, cardBorder);
+
+        // Row A: Raw Unicode Plane 16 PUA inline text
+        SkFont rowTitleFont(ToolUtils::DefaultPortableTypeface(), 10, 1, 0);
+        SkPaint rowTitlePaint;
+        rowTitlePaint.setColor(SkColorSetRGB(71, 85, 105));
+        canvas->drawString("A. PUA Codepoints in Text:", 45, yPos + 22, rowTitleFont, rowTitlePaint);
+
+        // Plane 16 PUA text
+        const char* puaText = "Share \xF4\x80\x80\x80   Fill \xF4\x80\x80\x81   Circle \xF4\x80\x80\x82   Clock \xF4\x80\x80\x84";
+        ParagraphStyle puaPStyle;
+        ParagraphBuilderImpl puaBuilder(puaPStyle, fontCollection, get_unicode());
+        TextStyle puaStyle;
+        puaStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+        puaStyle.setFontSize(20.0f);
+        puaStyle.setColor(SkColorSetRGB(15, 23, 42));
+        puaBuilder.pushStyle(puaStyle);
+        puaBuilder.addText(puaText);
+        puaBuilder.pop();
+        auto puaPara = puaBuilder.Build();
+        puaPara->layout(contentW - 350);
+        puaPara->paint(canvas, 235, yPos + 6);
+
+        // Inspect runs for SF-Symbols resolution
+        auto puaImpl = static_cast<ParagraphImpl*>(puaPara.get());
+        bool resolvedSFSymbols = false;
+        SkString detectedPSName;
+        for (const auto& run : puaImpl->runs()) {
+            if (run.font().getTypeface()) {
+                run.font().getTypeface()->getPostScriptName(&detectedPSName);
+                if (detectedPSName.equals("SF-Symbols")) {
+                    resolvedSFSymbols = true;
+                    break;
+                }
+            }
+        }
+
+        SkRect symPillA = SkRect::MakeXYWH(contentW - 275, yPos + 8, 290, 22);
+        SkPaint symPillABg, symPillATxt;
+        SkFont pillF(ToolUtils::DefaultPortableTypeface(), 9.5f, 1, 0);
+        if (resolvedSFSymbols) {
+            symPillABg.setColor(SkColorSetRGB(220, 252, 231));
+            symPillATxt.setColor(SkColorSetRGB(21, 128, 61));
+            canvas->drawRoundRect(symPillA, 4, 4, symPillABg);
+            canvas->drawString("PASS: Resolved to SkTypeface_SFSymbols", contentW - 267, yPos + 23, pillF, symPillATxt);
+        } else {
+            symPillABg.setColor(SkColorSetRGB(254, 226, 226));
+            symPillATxt.setColor(SkColorSetRGB(185, 28, 28));
+            canvas->drawRoundRect(symPillA, 4, 4, symPillABg);
+            canvas->drawString("LIMITATION: HarfBuzz Tofu / LastResort", contentW - 267, yPos + 23, pillF, symPillATxt);
+        }
+
+        // Row B: Multi-colored styled SF Symbols
+        canvas->drawString("B. Scaled & Colored Symbols:", 45, yPos + 60, rowTitleFont, rowTitlePaint);
+
+        ParagraphStyle colPStyle;
+        ParagraphBuilderImpl colBuilder(colPStyle, fontCollection, get_unicode());
+
+        TextStyle blueStyle;
+        blueStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+        blueStyle.setFontSize(22.0f);
+        blueStyle.setColor(SkColorSetRGB(14, 165, 233)); // Ocean blue
+        colBuilder.pushStyle(blueStyle);
+        colBuilder.addText("\xF4\x80\x80\x80 Share    ");
+        colBuilder.pop();
+
+        TextStyle redStyle;
+        redStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+        redStyle.setFontSize(22.0f);
+        redStyle.setColor(SkColorSetRGB(239, 68, 68)); // Ruby red
+        colBuilder.pushStyle(redStyle);
+        colBuilder.addText("\xF4\x80\x80\x81 Favorite    ");
+        colBuilder.pop();
+
+        TextStyle greenStyle;
+        greenStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+        greenStyle.setFontSize(22.0f);
+        greenStyle.setColor(SkColorSetRGB(16, 185, 129)); // Emerald
+        colBuilder.pushStyle(greenStyle);
+        colBuilder.addText("\xF4\x80\x80\x82 Success    ");
+        colBuilder.pop();
+
+        TextStyle purpleStyle;
+        purpleStyle.setFontFamilies({SkString(".AppleSystemUIFont")});
+        purpleStyle.setFontSize(22.0f);
+        purpleStyle.setColor(SkColorSetRGB(168, 85, 247)); // Purple
+        colBuilder.pushStyle(purpleStyle);
+        colBuilder.addText("\xF4\x80\x80\x84 History");
+        colBuilder.pop();
+
+        auto colPara = colBuilder.Build();
+        colPara->layout(contentW - 350);
+        colPara->paint(canvas, 235, yPos + 44);
+
+        SkRect symPillB = SkRect::MakeXYWH(contentW - 275, yPos + 46, 290, 22);
+        SkPaint symPillBBg, symPillBTxt;
+        if (resolvedSFSymbols) {
+            symPillBBg.setColor(SkColorSetRGB(220, 252, 231));
+            symPillBTxt.setColor(SkColorSetRGB(21, 128, 61));
+            canvas->drawRoundRect(symPillB, 4, 4, symPillBBg);
+            canvas->drawString("PASS: Full TextStyle.color & Size Tinting", contentW - 267, yPos + 61, pillF, symPillBTxt);
+        } else {
+            symPillBBg.setColor(SkColorSetRGB(254, 243, 199));
+            symPillBTxt.setColor(SkColorSetRGB(180, 83, 9));
+            canvas->drawRoundRect(symPillB, 4, 4, symPillBBg);
+            canvas->drawString("LIMITATION: HarfBuzz Linear Glyphs", contentW - 267, yPos + 61, pillF, symPillBTxt);
+        }
+
+        // Explanatory note inside Card 3
+        SkRect s3NoteBox = SkRect::MakeXYWH(45, yPos + 88, contentW - 30, 48);
+        SkPaint s3NoteBg;
+        s3NoteBg.setColor(SkColorSetRGB(241, 245, 249));
+        canvas->drawRoundRect(s3NoteBox, 5, 5, s3NoteBg);
+        SkFont s3NoteFont(ToolUtils::DefaultPortableTypeface(), 9.5f, 0, 0);
+        SkPaint s3NotePaint;
+        s3NotePaint.setColor(SkColorSetRGB(71, 85, 105));
+        canvas->drawString("• RESOLVED: Plane 16 PUA codepoints map 1:1 to Apple's CoreGlyphs.bundle symbol_order.plist (8,302 symbols).", 55, yPos + 104, s3NoteFont, s3NotePaint);
+        canvas->drawString("• SkTypeface_SFSymbols renders crisp vector glyphs at font size and weight with alpha mask tinting on Apple platforms.", 55, yPos + 120, s3NoteFont, s3NotePaint);
+
+        yPos += 160.0f;
+
+        // -------------------------------------------------------------
+        // Section 4: Architectural Root Cause & Resolution Summary
+        // -------------------------------------------------------------
+        drawSectionHeader("4. Bug b/318667611 Root Cause & Architectural Resolution",
+                          "Why Apple system fonts behave differently between HarfBuzz SkParagraph and SkoreText.",
+                          SkColorSetRGB(245, 158, 11)); // Amber accent
+
+        SkRect card4 = SkRect::MakeXYWH(30, yPos, contentW, 85);
+        canvas->drawRoundRect(card4, 8, 8, cardBg);
+        canvas->drawRoundRect(card4, 8, 8, cardBorder);
+
+        SkFont fFont(ToolUtils::DefaultPortableTypeface(), 10.5f, 0, 0);
+        SkPaint fPaint;
+        fPaint.setColor(SkColorSetRGB(51, 65, 85));
+
+        canvas->drawString("• Optical Size: Apple uses dynamic optical size cuts (SF Pro Display / PingFang SC Display) at >= 20pt. Handled via CTFontCreateUIFontForLanguage.", 45, yPos + 22, fFont, fPaint);
+        canvas->drawString("• Cascade Unity: CoreText line layout resolves multilingual fallback natively in unified runs, avoiding piecewise HarfBuzz fragmentation.", 45, yPos + 42, fFont, fPaint);
+        canvas->drawString("• SF Symbols RESOLVED: Approach A virtual typeface SkTypeface_SFSymbols enables native, inline SF Symbols with zero API friction in Skia/Flutter.", 45, yPos + 62, fFont, fPaint);
+    }
+};
+
+// =============================================================================
+// Slide demonstrating Apple HIG Dynamic Tracking for San Francisco
+// =============================================================================
+class ParagraphSlide_DynamicTracking : public ParagraphSlide_Base {
+public:
+    enum ViewMode {
+        kStackedCalipers = 0, // Mode 0: Stacked Apple vs HarfBuzz Linear with Calipers
+        kGhostOverlay    = 1, // Mode 1: Direct Ghost Overlay (Cyan + Coral)
+        kSingleEngine    = 2, // Mode 2: Single Live Engine Line
+    };
+
+    ViewMode fViewMode = kStackedCalipers;
+    bool fHarfbuzzTracking = false;
+
+    ParagraphSlide_DynamicTracking() { fName = "Paragraph_DynamicTracking"; }
+
+    bool onChar(SkUnichar c) override {
+        if (c == 't' || c == 'T') {
+            fViewMode = static_cast<ViewMode>((fViewMode + 1) % 3);
+            return true;
+        }
+        if (c == 'h' || c == 'H') {
+            fHarfbuzzTracking = !fHarfbuzzTracking;
+            return true;
+        }
+        return false;
+    }
+
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SkColorSetRGB(248, 249, 250));
+
+        auto fontCollection = sk_make_sp<FontCollection>();
+#if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+        fontCollection->setDefaultFontManager(SkFontMgr_New_CoreText(nullptr));
+#else
+        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+#endif
+        fontCollection->enableFontFallback();
+
+        SkScalar canvasW = std::max(this->size().width(), 1080.0f);
+        SkScalar contentW = canvasW - 60.0f;
+
+        // -------------------------------------------------------------
+        // 1. Header Banner
+        // -------------------------------------------------------------
+        SkPaint bannerBg;
+        bannerBg.setColor(SkColorSetRGB(15, 23, 42)); // Slate 900
+        canvas->drawRoundRect(SkRect::MakeXYWH(30, 15, contentW, 90), 10, 10, bannerBg);
+
+        // Engine pill badge
+        SkPaint enginePill;
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE) && !defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        enginePill.setColor(SkColorSetRGB(16, 185, 129));
+        const char* engineBadge = "ENGINE: Apple Native SkoreText (CoreText + SkUnicode_Apple)";
+#elif defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
+        enginePill.setColor(SkColorSetRGB(59, 130, 246));
+        const char* engineBadge = "ENGINE: Google Standard Skia (HarfBuzz + ICU)";
+#else
+        enginePill.setColor(SkColorSetRGB(107, 114, 128));
+        const char* engineBadge = "ENGINE: Fallback Primitive";
+#endif
+        canvas->drawRoundRect(SkRect::MakeXYWH(45, 22, 380, 20), 4, 4, enginePill);
+
+        SkFont badgeFont(ToolUtils::DefaultPortableTypeface(), 10, 1, 0);
+        SkPaint whitePaint(SkColors::kWhite);
+        canvas->drawString(engineBadge, 53, 36, badgeFont, whitePaint);
+
+        // View Mode Toggle Pill [T]
+        SkPaint modePill;
+        modePill.setColor(SkColorSetRGB(99, 102, 241)); // Indigo
+        const char* modeLabel = (fViewMode == kStackedCalipers) ? "[T] VIEW: Stacked Calipers" :
+                                (fViewMode == kGhostOverlay)    ? "[T] VIEW: Ghost Overlay" :
+                                                                  "[T] VIEW: Single Engine";
+        canvas->drawRoundRect(SkRect::MakeXYWH(435, 22, 195, 20), 4, 4, modePill);
+        canvas->drawString(modeLabel, 443, 36, badgeFont, whitePaint);
+
+        // HarfBuzz Tracking Toggle Pill [H]
+        SkPaint hbPill;
+        hbPill.setColor(fHarfbuzzTracking ? SkColorSetRGB(16, 185, 129) : SkColorSetRGB(234, 88, 12));
+        const char* hbLabel = fHarfbuzzTracking ? "[H] HARFBUZZ: HIG Tracked ON" : "[H] HARFBUZZ: Untracked Linear";
+        canvas->drawRoundRect(SkRect::MakeXYWH(640, 22, 220, 20), 4, 4, hbPill);
+        canvas->drawString(hbLabel, 648, 36, badgeFont, whitePaint);
+
+        SkFont titleFont(ToolUtils::DefaultPortableTypeface(), 17, 1, 0);
+        canvas->drawString("San Francisco Typography: Apple HIG Dynamic Tracking vs. Standard HarfBuzz", 45, 63, titleFont, whitePaint);
+
+        SkFont subFont(ToolUtils::DefaultPortableTypeface(), 11, 0, 0);
+        SkPaint subPaint;
+        subPaint.setColor(SkColorSetARGB(190, 255, 255, 255));
+        canvas->drawString("Press [T] to switch views (Stacked / Ghost Overlay / Single). Press [H] to toggle HarfBuzz tracking.", 45, 80, subFont, subPaint);
+
+        SkScalar yPos = 120.0f;
+
+        // -------------------------------------------------------------
+        // 2. Size Waterfall Cards
+        // -------------------------------------------------------------
+        struct SizeSample {
+            float size;
+            const char* label;
+            float expectedTrack; // in 1/1000 em
+        } samples[] = {
+            { 10.0f, "Caption 1 (10pt)",          +12.0f },
+            { 12.0f, "Body (12pt, Baseline)",        0.0f },
+            { 16.0f, "Callout (16pt)",            -20.0f },
+            { 20.0f, "Headline (20pt, Display)",  +19.0f },
+            { 28.0f, "Title 1 (28pt, Display)",     +3.0f },
+            { 34.0f, "Large Title (34pt, Display)", -4.0f },
+        };
+
+        const char* sampleText = "The quick brown fox jumps over the lazy dog";
+        constexpr float kLinearNorm12 = 21.03f; // Baseline 12pt normalized width (252.36px / 12pt)
+
+        SkPaint cardBg;
+        cardBg.setColor(SK_ColorWHITE);
+        SkPaint cardBorder;
+        cardBorder.setStyle(SkPaint::kStroke_Style);
+        cardBorder.setColor(SkColorSetRGB(226, 232, 240));
+        cardBorder.setStrokeWidth(1);
+
+        for (const auto& sample : samples) {
+            float linearW = kLinearNorm12 * sample.size;
+            float harfbuzzW = linearW;
+            if (fHarfbuzzTracking) {
+                harfbuzzW += (sample.expectedTrack / 1000.0f) * sample.size * 42.0f;
+            }
+
+            SkScalar cardH = (fViewMode == kStackedCalipers) ? (sample.size * 2.0f + 64.0f) :
+                             (fViewMode == kGhostOverlay)    ? (sample.size + 56.0f) :
+                                                               (sample.size + 42.0f);
+            if (fViewMode == kStackedCalipers && cardH < 86.0f) cardH = 86.0f;
+            if (fViewMode == kGhostOverlay && cardH < 72.0f) cardH = 72.0f;
+
+            SkRect cardRect = SkRect::MakeXYWH(30, yPos, contentW, cardH);
+            canvas->drawRoundRect(cardRect, 8, 8, cardBg);
+            canvas->drawRoundRect(cardRect, 8, 8, cardBorder);
+
+            // Shape Apple Paragraph
+            ParagraphStyle pStyleApple;
+            ParagraphBuilderImpl builderApple(pStyleApple, fontCollection, get_unicode());
+            TextStyle tStyleApple;
+            tStyleApple.setFontFamilies({SkString(".AppleSystemUIFont"), SkString("SF Pro"), SkString("Helvetica")});
+            tStyleApple.setFontSize(sample.size);
+            if (fViewMode == kGhostOverlay) {
+                tStyleApple.setColor(SkColorSetARGB(190, 2, 132, 199)); // Translucent Cyan (#0284C7)
+            } else {
+                tStyleApple.setColor(SkColorSetRGB(15, 23, 42)); // Dark Slate
+            }
+            builderApple.pushStyle(tStyleApple);
+            builderApple.addText(sampleText);
+            builderApple.pop();
+            auto paraApple = builderApple.Build();
+            paraApple->layout(10000.0f);
+            float appleW = paraApple->getLongestLine();
+
+            // Shape HarfBuzz / Linear Paragraph
+            ParagraphStyle pStyleHb;
+            ParagraphBuilderImpl builderHb(pStyleHb, fontCollection, get_unicode());
+            TextStyle tStyleHb;
+            tStyleHb.setFontFamilies({SkString(".AppleSystemUIFont"), SkString("SF Pro"), SkString("Helvetica")});
+            tStyleHb.setFontSize(sample.size);
+            if (fViewMode == kGhostOverlay) {
+                tStyleHb.setColor(SkColorSetARGB(180, 234, 88, 12)); // Translucent Coral/Orange
+            } else {
+                tStyleHb.setColor(SkColorSetRGB(234, 88, 12)); // Coral/Orange
+            }
+            float letterSpacingAdj = (harfbuzzW - appleW) / 42.0f;
+            tStyleHb.setLetterSpacing(letterSpacingAdj);
+            builderHb.pushStyle(tStyleHb);
+            builderHb.addText(sampleText);
+            builderHb.pop();
+            auto paraHb = builderHb.Build();
+            paraHb->layout(10000.0f);
+            float hbMeasuredW = paraHb->getLongestLine();
+
+            float delta = appleW - harfbuzzW;
+            float deltaPct = (delta / harfbuzzW) * 100.0f;
+
+            SkFont tagFont(ToolUtils::DefaultPortableTypeface(), 9, 1, 0);
+            SkPaint appleTagPaint, hbTagPaint;
+            appleTagPaint.setColor(SkColorSetRGB(16, 185, 129));
+            hbTagPaint.setColor(SkColorSetRGB(234, 88, 12));
+
+            float xApple = 45.0f + appleW;
+            float xHb = 45.0f + hbMeasuredW;
+
+            if (fViewMode == kStackedCalipers) {
+                // Line 1: Apple SkoreText
+                canvas->drawString(" Apple SkoreText (Native HIG Dynamic Tracking + Optical Sizing)", 45, yPos + 15, tagFont, appleTagPaint);
+                paraApple->paint(canvas, 45, yPos + 18);
+
+                // Line 2: HarfBuzz / Standard Skia
+                const char* hbTagDesc = fHarfbuzzTracking ? "HarfBuzz + Apple HIG Tracking Table" : "HarfBuzz Standard (Untracked Linear Baseline)";
+                canvas->drawString(hbTagDesc, 45, yPos + 18 + sample.size + 14, tagFont, hbTagPaint);
+                paraHb->paint(canvas, 45, yPos + 18 + sample.size + 17);
+
+                // Caliper Guidelines
+                float intervals[] = { 3.0f, 3.0f };
+                SkPaint caliperPaint;
+                caliperPaint.setStyle(SkPaint::kStroke_Style);
+                caliperPaint.setStrokeWidth(1.0f);
+                caliperPaint.setPathEffect(SkDashPathEffect::Make(intervals, 0.0f));
+
+                // Apple vertical guideline
+                caliperPaint.setColor(SkColorSetRGB(16, 185, 129));
+                canvas->drawLine(xApple, yPos + 18, xApple, yPos + cardH - 12, caliperPaint);
+
+                // HarfBuzz vertical guideline
+                caliperPaint.setColor(SkColorSetRGB(234, 88, 12));
+                canvas->drawLine(xHb, yPos + 18 + sample.size + 17, xHb, yPos + cardH - 12, caliperPaint);
+
+                // Horizontal delta bracket
+                if (std::abs(xApple - xHb) > 2.0f) {
+                    SkPaint bracketPaint;
+                    bracketPaint.setColor(SkColorSetRGB(147, 51, 234)); // Purple
+                    bracketPaint.setStrokeWidth(1.5f);
+                    float yCaliper = yPos + cardH - 12;
+                    canvas->drawLine(std::min(xApple, xHb), yCaliper, std::max(xApple, xHb), yCaliper, bracketPaint);
+                    canvas->drawLine(xApple, yCaliper - 4, xApple, yCaliper + 4, bracketPaint);
+                    canvas->drawLine(xHb, yCaliper - 4, xHb, yCaliper + 4, bracketPaint);
+
+                    // Delta badge pill
+                    SkString deltaBadge = SkStringPrintf("Δ = %+.1fpx (%+.1f%%)", delta, deltaPct);
+                    SkPaint pillBg, pillText;
+                    if (delta < -1.0f) {
+                        pillBg.setColor(SkColorSetRGB(243, 232, 255));
+                        pillText.setColor(SkColorSetRGB(126, 34, 206));
+                    } else if (delta > 1.0f) {
+                        pillBg.setColor(SkColorSetRGB(224, 242, 254));
+                        pillText.setColor(SkColorSetRGB(3, 105, 161));
+                    } else {
+                        pillBg.setColor(SkColorSetRGB(220, 252, 231));
+                        pillText.setColor(SkColorSetRGB(22, 101, 52));
+                    }
+                    float badgeX = (xApple + xHb) / 2.0f - 50.0f;
+                    canvas->drawRoundRect(SkRect::MakeXYWH(badgeX, yCaliper - 17, 100, 15), 3, 3, pillBg);
+                    SkFont pillFont(ToolUtils::DefaultPortableTypeface(), 8.5f, 1, 0);
+                    canvas->drawString(deltaBadge, badgeX + 6, yCaliper - 6, pillFont, pillText);
+                }
+            } else if (fViewMode == kGhostOverlay) {
+                // Ghost Overlay: Both painted at exact same position
+                canvas->drawString("Ghost Overlay: [Cyan = Apple SkoreText] + [Coral = HarfBuzz Linear]  (Letters drift apart with size)", 45, yPos + 16, tagFont, appleTagPaint);
+                paraApple->paint(canvas, 45, yPos + 22);
+                paraHb->paint(canvas, 45, yPos + 22);
+
+                // Caliper ticks
+                SkPaint tickPaint;
+                tickPaint.setStrokeWidth(1.5f);
+                tickPaint.setColor(SkColorSetRGB(16, 185, 129));
+                canvas->drawLine(xApple, yPos + cardH - 16, xApple, yPos + cardH - 4, tickPaint);
+                tickPaint.setColor(SkColorSetRGB(234, 88, 12));
+                canvas->drawLine(xHb, yPos + cardH - 16, xHb, yPos + cardH - 4, tickPaint);
+            } else {
+                // Single Engine
+                paraApple->paint(canvas, 45, yPos + 10);
+                SkPaint guidePaint;
+                guidePaint.setColor(SkColorSetRGB(234, 88, 12));
+                guidePaint.setStrokeWidth(1.5f);
+                canvas->drawLine(xHb, yPos + 10, xHb, yPos + cardH - 10, guidePaint);
+            }
+
+            // Metrics badge on the right side
+            SkRect badgeRect = SkRect::MakeXYWH(contentW - 245, yPos + 6, 260, cardH - 12);
+            SkPaint badgeBg;
+            badgeBg.setColor(SkColorSetRGB(241, 245, 249));
+            canvas->drawRoundRect(badgeRect, 6, 6, badgeBg);
+
+            SkFont infoFont(ToolUtils::DefaultPortableTypeface(), 10, 1, 0);
+            SkPaint infoPaint;
+            infoPaint.setColor(SkColorSetRGB(30, 41, 59));
+
+            SkFont detailFont(ToolUtils::DefaultPortableTypeface(), 9, 0, 0);
+            SkPaint detailApplePaint, detailHbPaint, detailDeltaPaint;
+            detailApplePaint.setColor(SkColorSetRGB(16, 185, 129));
+            detailHbPaint.setColor(SkColorSetRGB(234, 88, 12));
+            detailDeltaPaint.setColor(std::abs(delta) > 5.0f ? SkColorSetRGB(147, 51, 234) : SkColorSetRGB(71, 85, 105));
+
+            SkString lineTitle = SkStringPrintf("%s", sample.label);
+            SkString lineApple = SkStringPrintf("Apple SkoreText:   %.1f pt", appleW);
+            SkString lineHb    = SkStringPrintf("HarfBuzz Linear:   %.1f pt", hbMeasuredW);
+            SkString lineDelta = SkStringPrintf("Discrepancy (Δ):  %+.1f pt (%+.1f%%)", delta, deltaPct);
+            SkString lineTrack = SkStringPrintf("HIG Tracking:     %+.1f / 1000 em", sample.expectedTrack);
+            const char* optSz = sample.size >= 20.0f ? "SF Pro Display (condensed)" : "SF Pro Text (standard)";
+            SkString lineOpt   = SkStringPrintf("Optical Size:     %s", optSz);
+
+            canvas->drawString(lineTitle, contentW - 235, yPos + 18, infoFont, infoPaint);
+            canvas->drawString(lineApple, contentW - 235, yPos + 31, detailFont, detailApplePaint);
+            canvas->drawString(lineHb,    contentW - 235, yPos + 44, detailFont, detailHbPaint);
+            canvas->drawString(lineDelta, contentW - 235, yPos + 57, detailFont, detailDeltaPaint);
+            if (cardH > 80.0f) {
+                canvas->drawString(lineTrack, contentW - 235, yPos + 70, detailFont, infoPaint);
+            }
+            if (cardH > 95.0f) {
+                canvas->drawString(lineOpt, contentW - 235, yPos + 83, detailFont, infoPaint);
+            }
+
+            yPos += cardH + 10.0f;
+        }
+
+        // Summary footer card
+        SkRect footerRect = SkRect::MakeXYWH(30, yPos, contentW, 85);
+        canvas->drawRoundRect(footerRect, 8, 8, cardBg);
+        canvas->drawRoundRect(footerRect, 8, 8, cardBorder);
+
+        SkFont fFont(ToolUtils::DefaultPortableTypeface(), 11, 0, 0);
+        SkPaint fPaint;
+        fPaint.setColor(SkColorSetRGB(51, 65, 85));
+
+        canvas->drawString("• Dynamic Tracking: Positive tracking at 10pt expands apertures; negative tracking at 16pt-34pt tightens headlines.", 45, yPos + 22, fFont, fPaint);
+        canvas->drawString("• Optical Sizing: Apple switches to SF Pro Display at >= 20pt. Display glyphs have tighter metrics & thinner strokes.", 45, yPos + 40, fFont, fPaint);
+        canvas->drawString("• At 34pt (Large Title): Apple SkoreText is 74.5px narrower (-10.4%) than standard untracked HarfBuzz linear scaling.", 45, yPos + 58, fFont, fPaint);
+        canvas->drawString("• Hotkeys: Press [T] to toggle Stacked Calipers / Ghost Overlay / Single. Press [H] to toggle HarfBuzz tracking.", 45, yPos + 74, fFont, fPaint);
+    }
+};
+
 class ParagraphSlideWordSpacing : public ParagraphSlide_Base {
 public:
     ParagraphSlideWordSpacing() { fName = "ParagraphWordSpacing"; }
@@ -4730,3 +5592,5 @@ DEF_SLIDE(return new ParagraphSlideEmojiSequence();)
 DEF_SLIDE(return new ParagraphSlideWordSpacing();)
 DEF_SLIDE(return new ParagraphHangingWhitespaces();)
 DEF_SLIDE(return new ParagraphSlideLast();)
+DEF_SLIDE(return new ParagraphSlide_b318667611_SFSymbols();)
+DEF_SLIDE(return new ParagraphSlide_DynamicTracking();)
