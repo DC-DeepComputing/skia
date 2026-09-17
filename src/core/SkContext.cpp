@@ -11,6 +11,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedContext.h"
 #include "src/core/SkStrikeCache.h"
@@ -21,6 +22,10 @@ SkContext::SkContext(sk_sp<SkSharedContext> sharedContext)
         : fSharedContext(std::move(sharedContext)) {}
 
 SkContext::~SkContext() = default;
+
+inline SkContextPriv SkContext::priv() { return SkContextPriv(this); }
+
+inline SkContextPrivConst SkContext::privConst() const { return SkContextPrivConst(this); }
 
 SkResourceCache* SkContext::resourceCache() const {
     return fSharedContext->synchronizedResourceCache();
