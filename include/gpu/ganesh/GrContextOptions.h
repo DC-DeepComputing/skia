@@ -307,6 +307,11 @@ struct SK_API GrContextOptions {
     // Suppress prints for the GrContext.
     bool fSuppressPrints = false;
 
+    /**
+     * If true, SmallPathRenderer only uses distance fields for paths larger than kMaxMIP or with perspective.
+     */
+    bool fSmallPathDisableDistanceFields = false;
+
 #if defined(GPU_TEST_UTILS)
     /**
      * Private options that are only meant for testing within Skia's tools.
