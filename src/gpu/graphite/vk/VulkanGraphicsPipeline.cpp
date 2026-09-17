@@ -519,12 +519,12 @@ static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
     skia_private::STArray<
             VulkanGraphicsPipeline::kMaxNumUniformBuffers, DescriptorData> uniformDescriptors;
 
-    DescriptorType uniformBufferType =
+    DescriptorType uniformResourceUsage =
             sharedContext->caps()->storageBufferSupport() ? DescriptorType::kStorageBuffer
                                                           : DescriptorType::kUniformBuffer;
     if (hasCombinedUniforms) {
         uniformDescriptors.push_back({
-                uniformBufferType, /*count=*/1,
+                uniformResourceUsage, /*count=*/1,
                 VulkanGraphicsPipeline::kCombinedUniformIndex,
                 PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
     }
