@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b512015e_74adb1f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-09-17T15:02:26Z",
+      "side": 1,
+      "message": "Thanks! I don\u0027t currently have cycles to grok this, so deferring to Łukasz. Happy to proxy an LGTM vote if needed.",
+      "revId": "2466a45c5fc736728c56c57a4c90de45843b072e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
