@@ -16,6 +16,57 @@
       "message": "PTAL",
       "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03d86a03_c7a9937d",
+        "filename": "src/gpu/graphite/geom/EndCaps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T15:31:31Z",
+      "side": 1,
+      "message": "Move this up a line to match member variable order ?",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddd5952d_d39c2c3c",
+        "filename": "src/gpu/graphite/geom/EndCaps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T15:31:31Z",
+      "side": 1,
+      "message": "// -1 means there are no null caps ?",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "360ee1d1_6a4820af",
+        "filename": "src/gpu/graphite/render/EndCapRenderStep.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T15:31:31Z",
+      "side": 1,
+      "message": "Couldn\u0027t the second one be null?",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
