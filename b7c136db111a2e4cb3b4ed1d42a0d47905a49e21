@@ -22,6 +22,30 @@
       },
       "revId": "b7c136db111a2e4cb3b4ed1d42a0d47905a49e21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f0c1221_86bee3f8",
+        "filename": "docs/examples/convex_overstroke_linear_approx_curve.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-17T01:48:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "553ee578_0dc9ce40",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "b7c136db111a2e4cb3b4ed1d42a0d47905a49e21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
