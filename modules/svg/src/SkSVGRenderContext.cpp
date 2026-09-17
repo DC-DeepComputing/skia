@@ -16,6 +16,7 @@
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
+#include "include/core/SkStrokeRec.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkTArray.h"
@@ -257,8 +258,9 @@ void SkSVGRenderContext::applyPresentationAttributes(const SkSVGPresentationAttr
     // Uninherited attributes.  Only apply to the current context.
 
     const bool hasFilter = attrs.fFilter.isValue();
+    SkScalar opacity = 1.0f;
     if (attrs.fOpacity.isValue()) {
-        this->applyOpacity(*attrs.fOpacity, flags, hasFilter);
+        opacity = SkTPin(*attrs.fOpacity, 0.0f, 1.0f);
     }
 
     if (attrs.fClipPath.isValue()) {
@@ -269,9 +271,12 @@ void SkSVGRenderContext::applyPresentationAttributes(const SkSVGPresentationAttr
         this->applyMask(*attrs.fMask);
     }
 
-    // TODO: when both a filter and opacity are present, we can apply both with a single layer
+    bool filterApplied = false;
     if (hasFilter) {
-        this->applyFilter(*attrs.fFilter);
+        filterApplied = this->applyFilter(*attrs.fFilter, opacity);
+    }
+    if (!filterApplied && opacity < 1.0f) {
+        this->applyOpacity(opacity, flags, false);
     }
 
     // Remaining uninherited presentation attributes are accessed as SkSVGNode fields, not via
@@ -305,29 +310,70 @@ void SkSVGRenderContext::applyOpacity(SkScalar opacity, uint32_t flags, bool has
         // Expensive, layer-based fall back.
         SkPaint opacityPaint;
         opacityPaint.setAlphaf(SkTPin(opacity, 0.0f, 1.0f));
+        SkRect bounds;
+        const SkRect* boundsPtr = nullptr;
+        if (fOBBScope.fNode) {
+            bounds = fOBBScope.fNode->objectBoundingBox(*fOBBScope.fCtx);
+            if (bounds.isFinite() && !bounds.isEmpty()) {
+                if (props.fStroke.isValue() && hasStroke) {
+                    const SkScalar strokeWidth = fLengthContext->resolve(
+                            *props.fStrokeWidth, SkSVGLengthContext::LengthType::kOther);
+                    const SkScalar outset = SkStrokeRec::GetInflationRadius(
+                            toSkJoin(*props.fStrokeLineJoin),
+                            *props.fStrokeMiterLimit,
+                            toSkCap(*props.fStrokeLineCap),
+                            strokeWidth);
+                    bounds.outset(outset, outset);
+                }
+                boundsPtr = &bounds;
+            }
+        }
         // Balanced in the destructor, via restoreToCount().
-        fCanvas->saveLayer(nullptr, &opacityPaint);
+        fCanvas->saveLayer(boundsPtr, &opacityPaint);
     }
 }
 
-void SkSVGRenderContext::applyFilter(const SkSVGFuncIRI& filter) {
+bool SkSVGRenderContext::applyFilter(const SkSVGFuncIRI& filter, SkScalar opacity) {
     if (filter.type() != SkSVGFuncIRI::Type::kIRI) {
-        return;
+        return false;
     }
 
     const auto node = this->findNodeById(filter.iri());
     if (!node || node->tag() != SkSVGTag::kFilter) {
-        return;
+        return false;
     }
 
-    const SkSVGFilter* filterNode = reinterpret_cast<const SkSVGFilter*>(node.get());
+    const SkSVGFilter* filterNode = static_cast<const SkSVGFilter*>(node.get());
     sk_sp<SkImageFilter> imageFilter = filterNode->buildFilterDAG(*this);
     if (imageFilter) {
         SkPaint filterPaint;
         filterPaint.setImageFilter(imageFilter);
+        filterPaint.setAlphaf(opacity);
+        SkRect bounds;
+        const SkRect* boundsPtr = nullptr;
+        if (fOBBScope.fNode) {
+            bounds = fOBBScope.fNode->objectBoundingBox(*fOBBScope.fCtx);
+            if (bounds.isFinite() && !bounds.isEmpty()) {
+                const auto& props = fPresentationContext->fInherited;
+                if (props.fStroke.isValue() &&
+                    props.fStroke->type() != SkSVGPaint::Type::kNone) {
+                    const SkScalar strokeWidth = fLengthContext->resolve(
+                            *props.fStrokeWidth, SkSVGLengthContext::LengthType::kOther);
+                    const SkScalar outset = SkStrokeRec::GetInflationRadius(
+                            toSkJoin(*props.fStrokeLineJoin),
+                            *props.fStrokeMiterLimit,
+                            toSkCap(*props.fStrokeLineCap),
+                            strokeWidth);
+                    bounds.outset(outset, outset);
+                }
+                boundsPtr = &bounds;
+            }
+        }
         // Balanced in the destructor, via restoreToCount().
-        fCanvas->saveLayer(nullptr, &filterPaint);
+        fCanvas->saveLayer(boundsPtr, &filterPaint);
+        return true;
     }
+    return false;
 }
 
 void SkSVGRenderContext::saveOnce() {

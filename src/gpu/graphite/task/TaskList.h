@@ -36,6 +36,18 @@ public:
     int size() const { return fTasks.size(); }
     bool hasTasks() const { return !fTasks.empty(); }
 
+#if defined(GPU_TEST_UTILS)
+    int numRenderPasses() const {
+        int count = 0;
+        for (const auto& task : fTasks) {
+            if (task) {
+                count += task->numRenderPasses();
+            }
+        }
+        return count;
+    }
+#endif
+
     // Returns kSuccess if no child task failed and at least one child didn't return kDiscard.
     // Returns kDiscard if all children were discarded.
     // Returns kFail if any child failed.

@@ -57,6 +57,10 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+#if defined(GPU_TEST_UTILS)
+    int numRenderPasses() const override { return 1; }
+#endif
+
     bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override;
 
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor,

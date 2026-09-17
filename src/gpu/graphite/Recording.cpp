@@ -265,6 +265,10 @@ int RecordingPriv::numNonVolatilePromiseImages() const {
 bool RecordingPriv::hasTasks() const {
     return fRecording->fRootTaskList->hasTasks();
 }
+
+int RecordingPriv::numRenderPasses() const {
+    return fRecording->fRootTaskList ? fRecording->fRootTaskList->numRenderPasses() : 0;
+}
 #endif
 
 } // namespace skgpu::graphite

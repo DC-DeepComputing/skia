@@ -84,6 +84,7 @@ public:
     int numVolatilePromiseImages() const;
     int numNonVolatilePromiseImages() const;
     bool hasTasks() const;
+    int numRenderPasses() const;
 #endif
 
 private:

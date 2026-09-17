@@ -232,6 +232,9 @@ public:
     // If true, uses experimental drawListLayer ordering.
     bool useDrawListLayer() const { return fDrawListLayer; }
 
+    // If true, batches small scratch devices into a shared texture atlas.
+    bool useScratchDeviceAtlas() const { return fUseScratchDeviceAtlas; }
+
     int maxTextureSize() const { return fMaxTextureSize; }
 
     virtual void buildKeyForTexture(SkISize dimensions,
@@ -483,6 +486,7 @@ protected:
     bool fMSAARenderToSingleSampledSupport = false;
     bool fAvoidMSAA = false;
     bool fDrawListLayer = false;
+    bool fUseScratchDeviceAtlas = false;
     bool fAvoidDepthMode = false;
 
     bool fComputeSupport = false;
