@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8de9cd9f_50ee688e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-17T17:07:08Z",
+      "side": 1,
+      "message": "The regressions from the original TextureFormatXferFn changes have all recovered, so going forward to landing it now.",
+      "revId": "71e02ba3d85d457d63933e939524425ef58afa67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98ad5c8c_7f90f2a4",
