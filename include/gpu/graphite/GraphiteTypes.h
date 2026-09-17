@@ -16,6 +16,10 @@
 #include <memory>
 #include <string>
 
+#if !defined(SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT)
+#define SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT 1
+#endif
+
 class SkSurface;
 
 namespace skgpu {
