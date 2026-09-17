@@ -61,14 +61,23 @@ public:
         kYUVA,     ///< Plane 0: YUVA
         kUYVA,     ///< Plane 0: UYVA
 
-        kLast = kUYVA
+        /**
+         * Plane 0: YUYV. Packed 4:2:2 where each pair of pixels is stored in two adjacent
+         * 2-channel texels: (Y0, U) and (Y1, V). Only valid with Subsampling::k422. The
+         * plane has the same texel dimensions as the image; the texture must be viewed as
+         * a 2-channel 16-bit format. The image width must be even.
+         */
+        kYUYV,
+
+        kLast = kYUYV
     };
 
     /**
      * UV subsampling is also specified in the enum value names using J:a:b notation (e.g. 4:2:0 is
      * 1/2 horizontal and 1/2 vertical resolution for U and V). If alpha is present it is not sub-
      * sampled. Note that Subsampling values other than k444 are only valid with PlaneConfig values
-     * that have U and V in different planes than Y (and A, if present).
+     * that have U and V in different planes than Y (and A, if present), with the exception of
+     * PlaneConfig::kYUYV which represents packed 4:2:2 and is only valid with Subsampling::k422.
      */
     enum class Subsampling {
         kUnknown,
@@ -268,6 +277,7 @@ constexpr int SkYUVAInfo::NumPlanes(PlaneConfig planeConfig) {
         case PlaneConfig::kY_VU_A:  return 3;
         case PlaneConfig::kYUVA:    return 1;
         case PlaneConfig::kUYVA:    return 1;
+        case PlaneConfig::kYUYV:    return 1;
     }
     SkUNREACHABLE;
 }
@@ -304,6 +314,10 @@ constexpr int SkYUVAInfo::NumChannelsInPlane(PlaneConfig config, int i) {
         case SkYUVAInfo::PlaneConfig::kYUVA:
         case SkYUVAInfo::PlaneConfig::kUYVA:
             return i == 0 ? 4 : 0;
+        case SkYUVAInfo::PlaneConfig::kYUYV:
+            // Two YUVA channels (Y and U/V) are read from each 2-channel texel;
+            // U and V come from channel 1 of adjacent texels (see kYUYV docs).
+            return i == 0 ? 2 : 0;
     }
     return 0;
 }
