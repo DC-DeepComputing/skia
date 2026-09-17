@@ -70,6 +70,30 @@
       },
       "revId": "1202cc43fa3a345c84e7b9c0e3469fa8e89defcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "271502a1_b2412dab",
+        "filename": "tools/gpu/vk/VkYcbcrSamplerHelper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5160072
+      },
+      "writtenOn": "2026-09-17T22:19:32Z",
+      "side": 1,
+      "message": "Got it. Thanks Greg!",
+      "parentUuid": "d540de0d_dc4adc05",
+      "range": {
+        "startLine": 123,
+        "startChar": 44,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "1202cc43fa3a345c84e7b9c0e3469fa8e89defcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
