@@ -211,15 +211,18 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     // The number of int32s needed for a key can depend on whether we use immutable samplers or not.
-    // So, accumulte key data while passing through to check for that quantity and simply copy
+    // So, accumulate key data while passing through to check for that quantity and simply copy
     // into builder afterwards.
-    skia_private::TArray<uint32_t> keyData (requestedDescriptors.size() + 1);
+    skia_private::TArray<uint32_t> keyData ((requestedDescriptors.size() * 2) + 1);
 
     keyData.push_back(requestedDescriptors.size());
     for (const DescriptorData& desc : requestedDescriptors) {
         keyData.push_back(static_cast<uint8_t>(desc.fType) << 24 |
                           desc.fBindingIndex << 16 |
                           static_cast<uint16_t>(desc.fCount));
+        // Include stage flags to distinguish compute descriptor sets (static buffers) from
+        // graphics descriptor sets (dynamic buffers).
+        keyData.push_back(desc.fPipelineStageFlags.value());
         if (desc.fImmutableSampler) {
             const VulkanSampler* sampler =
                     static_cast<const VulkanSampler*>(desc.fImmutableSampler);
