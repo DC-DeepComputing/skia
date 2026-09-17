@@ -14,7 +14,7 @@ namespace skgpu::graphite {
 
 sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
                               size_t size,
-                              BufferType type,
+                              ResourceUsage type,
                               AccessPattern accessPattern,
                               std::string_view label) {
     if (size <= 0) {

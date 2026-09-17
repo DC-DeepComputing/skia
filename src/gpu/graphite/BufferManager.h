@@ -367,7 +367,7 @@ private:
     friend class BufferSubAllocator;
 
     struct BufferState {
-        const BufferType    fType;
+        const ResourceUsage    fType;
         const AccessPattern fAccessPattern;
         const bool          fUseTransferBuffer;
         const char*         fLabel;
@@ -386,7 +386,7 @@ private:
         // number of buffer allocations for large Recordings.
         uint32_t fLastBufferSize = 0;
 
-        BufferState(BufferType, const char* label, bool isGpuOnly,
+        BufferState(ResourceUsage, const char* label, bool isGpuOnly,
                     const Options&, const Caps* caps);
 
         sk_sp<Buffer> findOrCreateBuffer(ResourceProvider*, Shareable, uint32_t byteCount);
@@ -543,7 +543,7 @@ private:
 #endif
     };
     struct BufferState {
-        BufferState(BufferType type, const Caps* caps);
+        BufferState(ResourceUsage type, const Caps* caps);
 
         bool createAndUpdateBindings(ResourceProvider*, Context*, QueueManager*, GlobalCache*,
                                      std::string_view label) const;
@@ -552,7 +552,7 @@ private:
             fTotalRequiredBytes = 0;
         }
 
-        const BufferType fBufferType;
+        const ResourceUsage fResourceUsage;
         // This is the lcm of the alignment requirement of the buffer type and the transfer buffer
         // alignment requirement.
         const uint32_t fMinimumAlignment;
