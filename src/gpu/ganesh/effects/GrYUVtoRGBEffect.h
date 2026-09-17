@@ -42,6 +42,8 @@ private:
                      int numPlanes,
                      const SkYUVAInfo::YUVALocations&,
                      const bool snap[2],
+                     bool packedYUYV,
+                     float packedLastTexelCenter,
                      SkYUVColorSpace yuvColorSpace);
 
     GrYUVtoRGBEffect(const GrYUVtoRGBEffect& src);
@@ -61,5 +63,11 @@ private:
     SkYUVAInfo::YUVALocations   fLocations;
     SkYUVColorSpace             fYUVColorSpace;
     bool                        fSnap[2];
+    bool                        fPackedYUYV = false;
+    // Center x of the last texel of the sampled region of the packed plane,
+    // in plane texel coordinates; the second texel sample is clamped to it so
+    // odd-width subsets duplicate the final chroma instead of sampling
+    // outside the subset. Only meaningful when fPackedYUYV is set.
+    float                       fPackedLastTexelCenter = 0.f;
 };
 #endif
