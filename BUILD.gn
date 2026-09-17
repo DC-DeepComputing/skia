@@ -103,6 +103,7 @@ config("skia_private") {
     defines += [
       "SK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1",
       "GPU_TEST_UTILS=1",
+      "SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT",
     ]
   }
   libs = []
