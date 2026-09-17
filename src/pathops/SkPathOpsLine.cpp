@@ -34,8 +34,16 @@ double SkDLine::exactPoint(const SkDPoint& xy) const {
 }
 
 double SkDLine::nearPoint(const SkDPoint& xy, bool* unequal) const {
-    if (!AlmostBetweenUlps(fPts[0].fX, xy.fX, fPts[1].fX)
-            || !AlmostBetweenUlps(fPts[0].fY, xy.fY, fPts[1].fY)) {
+    // For axis-aligned lines, the perpendicular distance is purely along the constant
+    // coordinate (which has no slope interpolation error). Check that the point is within
+    // 2 ULPs (AlmostBequalUlps) of that constant coordinate, matching NearPointV/NearPointH.
+    // Otherwise, the distance check below scales tolerance by `largest` (the maximum magnitude
+    // across both X and Y), which would allow too much perpendicular drift when the constant
+    // coordinate is smaller in magnitude than the varying coordinate.
+    if (fPts[0].fX == fPts[1].fX && !AlmostBequalUlps(xy.fX, fPts[0].fX)) {
+        return -1;
+    }
+    if (fPts[0].fY == fPts[1].fY && !AlmostBequalUlps(xy.fY, fPts[0].fY)) {
         return -1;
     }
     // project a perpendicular ray from the point to the line; find the T on the line
@@ -46,16 +54,15 @@ double SkDLine::nearPoint(const SkDPoint& xy, bool* unequal) const {
     if (!between(0, numer, denom)) {
         return -1;
     }
-    if (!denom) {
-        return 0;
-    }
-    double t = numer / denom;
+    double t = denom ? numer / denom : 0;
     SkDPoint realPt = ptAtT(t);
     double dist = realPt.distance(xy);   // OPTIMIZATION: can we compare against distSq instead ?
-    // find the ordinal in the original line with the largest unsigned exponent
-    double tiniest = std::min(std::min(std::min(fPts[0].fX, fPts[0].fY), fPts[1].fX), fPts[1].fY);
-    double largest = std::max(std::max(std::max(fPts[0].fX, fPts[0].fY), fPts[1].fX), fPts[1].fY);
-    largest = std::max(largest, -tiniest);
+    // Scale tolerance by the interpolated coordinate magnitude along the segment at t,
+    // rather than the global maximum across the entire segment, so a huge coordinate at one
+    // endpoint does not inflate tolerance near the other endpoint.
+    double largest0 = std::max(std::abs(fPts[0].fX), std::abs(fPts[0].fY));
+    double largest1 = std::max(std::abs(fPts[1].fX), std::abs(fPts[1].fY));
+    double largest = (1 - t) * largest0 + t * largest1;
     if (!AlmostEqualUlps_Pin(largest, largest + dist)) { // is the dist within ULPS tolerance?
         return -1;
     }
