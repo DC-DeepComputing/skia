@@ -11,7 +11,9 @@
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSerialProcs.h"
+#include "include/private/SkPixelStorage.h"
 #include "include/private/SkTArray.h"
+#include "src/capture/SkCaptureAsset.h"
 
 #include <optional>
 
@@ -38,15 +40,21 @@ class SkCaptureCanvas;
  * +=============================================================================+
  * |                       ASSETS SECTION (N = numAssets)                        |
  * +-----------------------------------------------------------------------------+
- * | Picture 0 Data Size                        | 4 Bytes (uint32_t)             |
+ * | Asset i PixelStorage ID                    | 4 Bytes (uint32_t)             |
  * +-----------------------------------------------------------------------------+
- * | Picture 0 Bytes                            | [Picture 0 Size] bytes         |
+ * | Asset i Content ID                         | 4 Bytes (uint32_t)             |
  * +-----------------------------------------------------------------------------+
- * | ...                                        |                                |
+ * | Asset i Type (0=kPicture, 1=kDerivedStorage)| 4 Bytes (uint32_t)            |
+ * + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
+ * | If Type == 0 (kPicture):                                                    |
+ * |   Picture i Data Size                      | 4 Bytes (uint32_t)             |
+ * |   Picture i Bytes                          | [Picture i Size] bytes         |
+ * |                                                                             |
+ * | If Type == 1 (kDerivedStorage):                                             |
+ * |   Parent PixelStorage ID                   | 4 Bytes (uint32_t)             |
+ * |   Parent Content ID                        | 4 Bytes (uint32_t)             |
  * +-----------------------------------------------------------------------------+
- * | Picture N Data Size                        | 4 Bytes (uint32_t)             |
- * +-----------------------------------------------------------------------------+
- * | Picture N Bytes                            | [Picture N Size] bytes         |
+ * | ... (Repeated for N assets)                                                 |
  * +=============================================================================+
  * |                     TIMELINE SECTION (K = numRecCaptures)                   |
  * +-----------------------------------------------------------------------------+
@@ -54,11 +62,7 @@ class SkCaptureCanvas;
  * + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
  * | Recording 0 Tasks (fAssetIndex)            | taskCount * sizeof(DrawTask)   |
  * +-----------------------------------------------------------------------------+
- * | ...                                        |                                |
- * +-----------------------------------------------------------------------------+
- * | Recording K Task Count (taskCount)         | 4 Bytes (uint32_t)             |
- * + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
- * | Recording K Tasks (fAssetIndex)            | taskCount * sizeof(DrawTask)   |
+ * | ... (Repeated for K recordings)                                             |
  * +-----------------------------------------------------------------------------+
  */
 
@@ -81,22 +85,29 @@ public:
     static sk_sp<SkCapture> MakeFromData(sk_sp<const SkData>);
     static sk_sp<SkCapture> MakeEmpty();
 
-    void addAsset(sk_sp<SkPicture>);
+    void addAsset(sk_sp<SkCaptureAsset> asset);
+    void addAsset(sk_sp<SkPicture> picture, uint32_t pixelStorageID = 0, uint32_t contentID = 0);
     void addRecordingCapture(RecordingCapture);
 
     sk_sp<SkData> serializeCapture();
 
     sk_sp<SkPicture> getAsset(int i) const;
+    const SkCaptureAsset* getAssetRecord(int i) const;
     const RecordingCapture* getRecordingCapture(int i) const;
     Metadata getMetadata() const;
 
 private:
+    struct ImageRefHeader {
+        uint32_t fPixelStorageID;
+        uint32_t fContentID;
+    };
+
     static SkSerialReturnType serializeImageProc(SkImage* img, void* ctx);
     static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>,
                                                std::optional<SkAlphaType>, void* ctx);
 
     Metadata fMetadata;
-    skia_private::TArray<sk_sp<SkPicture>> fAssets;
+    skia_private::TArray<sk_sp<SkCaptureAsset>> fAssets;
     skia_private::TArray<RecordingCapture> fTimeline;
 
     static const uint32_t kVersion = 0;
