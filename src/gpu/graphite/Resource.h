@@ -199,6 +199,8 @@ class Resource {
         kReturnQueue, // At most 1 ref, held while in the cache's return queue.
     };
 
+    // TODO: put resourceusage enum here rather than resourcetypes?
+
 public:
     Resource(const Resource&) = delete;
     Resource(Resource&&) = delete;
@@ -264,7 +266,8 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
-    const std::string& getLabel() const { return fLabel; }
+    // A Resource's label consists of its string label and its usage flag
+    const std::string& getLabel() const;
 
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
@@ -294,6 +297,9 @@ protected:
     Resource(const SharedContext*,
              Ownership,
              size_t gpuMemorySize,
+             // TODO(b/431796811): Remove default assignment once texture flags are added to
+             // encourage Resources to leverage predefined usage flags wherever possible
+             ResourceUsage = ResourceUsage::kNotPredefined,
              std::string_view label = {},
              bool reusableRequiresPurgeable = false,
              bool requiresPrepareForReturnToCache = false);
@@ -445,6 +451,15 @@ private:
                 (origRefs & PurgeableMask()) == 0,
                 next};
     }
+
+    // void updateUsageFlagsAndLabel(SkEnumBitMask<ResourceUsage> usage, std::string_view label) {
+    //     if (label.empty() && usage == ResourceUsage::kNotPredefined)
+    //     if (fUsageFlags != usage) {
+
+    //     }
+
+    //     fLabel = label;
+    // }
 
     // We allow the label on a Resource to change when used for a different function (e.g. when
     // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
@@ -747,6 +762,8 @@ private:
     // the same (i.e. returned at time points less than the system's granularity).
     uint32_t fLastUseToken = 0;
     skgpu::StdSteadyClock::time_point fLastAccess;
+
+    SkEnumBitMask<ResourceUsage> fUsageFlags;
 
     // String used to describe the current use of this Resource.
     std::string fLabel;

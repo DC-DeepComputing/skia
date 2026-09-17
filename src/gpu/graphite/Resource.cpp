@@ -26,6 +26,7 @@ uint32_t create_unique_id() {
 Resource::Resource(const SharedContext* sharedContext,
                    Ownership ownership,
                    size_t gpuMemorySize,
+                   ResourceUsage type,
                    std::string_view label,
                    bool reusableRequiresPurgeable,
                    bool requiresPrepareForReturnToCache)
@@ -140,6 +141,50 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
     // TODO: implement this to report real gpu id backing the resource. Will be virtual implemented
     // by backend specific resource subclasses.
     //this->setMemoryBacking(traceMemoryDump, resourceName);
+}
+
+namespace {
+const char* usage_flag_to_str(ResourceUsage usage) {
+    switch (usage) {
+        case ResourceUsage::kNotPredefined:       return "";
+        case ResourceUsage::kVertexBuffer:        return "VertexBuffer";
+        case ResourceUsage::kIndexBuffer:         return "IndexBuffer";
+        case ResourceUsage::kXferCpuToGpuBuffer:  return "XferCpuToGpuBuffer";
+        case ResourceUsage::kXferGpuToCpuBuffer:  return "XferGpuToCpuBuffer";
+        case ResourceUsage::kUniformBuffer:       return "UniformBuffer";
+        case ResourceUsage::kStorageBuffer:       return "StorageBuffer";
+        case ResourceUsage::kQueryBuffer:         return "QueryBuffer";
+        case ResourceUsage::kIndirectBuffer:      return "IndirectBuffer";
+        case ResourceUsage::kVertexStorageBuffer: return "VertexStorageBuffer";
+        case ResourceUsage::kIndexStorageBuffer:  return "IndexStorageBuffer";
+        default: SkUNREACHABLE;                   return "";
+    }
+}
+
+std::string usage_mask_as_str(SkEnumBitMask<ResourceUsage> usages) {
+    std::string str;
+    for (int bitIdx = 0; (1 << bitIdx) <= (uint32_t)ResourceUsage::kLastResourceUsage; bitIdx++) {
+        auto flag = ResourceUsage(1 << bitIdx);
+        if (SkToBool(usages & flag)) {
+            if (str.empty()) {
+                str += "_";
+            }
+            str += usage_flag_to_str(flag);
+        }
+    }
+    return str;
+}
+} // anonymous namespace
+const std::string& Resource::getLabel() const {
+        return fLabel;
+        // if (fLabel.empty() && fUsageFlags == ResourceUsage::kNotPredefined) {
+        //     return {};
+        // }
+        // std::string usageMaskAsString =
+        // if (usageMask != ResourceUsage::kNotPredefined) {
+
+        // }
+        // return fLabel.empty() ? usage_mask_to_str() : fLabel;
 }
 
 } // namespace skgpu::graphite
