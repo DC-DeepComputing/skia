@@ -42,6 +42,7 @@ private:
                      int numPlanes,
                      const SkYUVAInfo::YUVALocations&,
                      const bool snap[2],
+                     bool packedYUYV,
                      SkYUVColorSpace yuvColorSpace);
 
     GrYUVtoRGBEffect(const GrYUVtoRGBEffect& src);
@@ -61,5 +62,6 @@ private:
     SkYUVAInfo::YUVALocations   fLocations;
     SkYUVColorSpace             fYUVColorSpace;
     bool                        fSnap[2];
+    bool                        fPackedYUYV = false;
 };
 #endif
