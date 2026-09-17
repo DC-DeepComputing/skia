@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f14858a_874687e2",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-17T19:55:26Z",
+      "side": 1,
+      "message": "Awesome! And thanks for the advice, I noticed a few times `git cl format` did something weird. Thanks!",
+      "parentUuid": "ef15f13a_a9a25f58",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 50
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2e6887_e2028322",
@@ -126,6 +150,30 @@
       "side": 1,
       "message": "The spaces before c_scale and c_offset portion still stands.",
       "parentUuid": "59e8d806_91d64ce1",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 82
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ef0ebcc_c4105f28",
+        "filename": "modules/skottie/src/effects/DisplacementMapEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-17T19:55:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abb55740_7dd18a78",
       "range": {
         "startLine": 160,
         "startChar": 0,
@@ -478,6 +526,30 @@
       "side": 1,
       "message": "Prior formatting portion still stands",
       "parentUuid": "c9e8180d_bb2c0eb8",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 88
+      },
+      "revId": "a9e0f2569c27f36c8517049358f1868770dfb474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cccb162e_6cf65ae9",
+        "filename": "modules/skottie/src/text/RangeSelector.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-17T19:55:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1097e88_82fe174a",
       "range": {
         "startLine": 218,
         "startChar": 0,
