@@ -134,6 +134,30 @@
       },
       "revId": "2466a45c5fc736728c56c57a4c90de45843b072e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "955b5500_e41f8fb9",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-17T20:58:32Z",
+      "side": 1,
+      "message": "SG, I’ll send a separate change for this, thanks! \n\nI’ll compare both `std::optional` and `std::variant` to see which one ends up being more elegant.",
+      "parentUuid": "d4a8c833_799523a4",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 78,
+        "endChar": 37
+      },
+      "revId": "2466a45c5fc736728c56c57a4c90de45843b072e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
