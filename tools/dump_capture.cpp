@@ -167,6 +167,18 @@ void dump_assets(SkCapture::Metadata meta, sk_sp<SkCapture> capture, FILE* outpu
             "--------------------------------------------------------------------------------\n");
 
     for (uint32_t i = 0; i < meta.numAssets; ++i) {
+        const auto* assetRecord = capture->getAssetRecord(i);
+        if (assetRecord && assetRecord->fType == SkCaptureAsset::AssetType::kDerivedStorage) {
+            fprintf(output,
+                    "  Asset [%u]: Derived Storage [StorageID: %u, ContentID: %u] -> Copy of Storage {ID: %u, ContentID: %u}\n",
+                    i,
+                    assetRecord->fPixelStorageID,
+                    assetRecord->fContentID,
+                    assetRecord->fOrigin.fParentPixelStorageID,
+                    assetRecord->fOrigin.fParentContentID);
+            continue;
+        }
+
         sk_sp<SkPicture> picture = capture->getAsset(i);
         if (!picture) {
             fprintf(output, "  Picture [%u]: <null>\n", i);
