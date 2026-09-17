@@ -136,6 +136,23 @@
       "message": "// Always either 0 or 1 ?",
       "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1410ee38_e0b1b6e1",
+        "filename": "tests/graphite/sparse_strips/AtlasTests.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-17T17:05:50Z",
+      "side": 1,
+      "message": "\\n ?",
+      "revId": "6142e1c5e35b2be117c1cb43fec8534f4acda0a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
