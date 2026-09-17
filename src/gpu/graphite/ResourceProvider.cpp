@@ -102,8 +102,8 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     GraphiteResourceKey key;
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
-    if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, budgeted, shareable, ResourceUsage::kNotPredefined, label, unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
@@ -155,7 +155,7 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateNonShareableBuffer(size_t size,
-                                                               BufferType type,
+                                                               ResourceUsage type,
                                                                AccessPattern accessPattern,
                                                                std::string_view label) {
     return this->findOrCreateBuffer(size, type, accessPattern, label, Shareable::kNo);
@@ -163,7 +163,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateNonShareableBuffer(size_t size,
 
 sk_sp<Buffer> ResourceProvider::findOrCreateScratchBuffer(
         size_t size,
-        BufferType type,
+        ResourceUsage type,
         AccessPattern access,
         std::string_view label,
         const ResourceCache::ScratchResourceSet& unvailable) {
@@ -175,7 +175,7 @@ sk_sp<Buffer> ResourceProvider::findOrCreateScratchBuffer(
 
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         size_t size,
-        BufferType type,
+        ResourceUsage type,
         AccessPattern accessPattern,
         std::string_view label,
         Shareable shareable,
@@ -209,8 +209,8 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         }
     }
 
-    if (Resource* resource =
-            fResourceCache->findAndRefResource(key, kBudgeted, shareable, label, unavailable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, kBudgeted, shareable, ResourceUsage::kNotPredefined, label, unavailable)) {
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
 

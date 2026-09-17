@@ -90,25 +90,31 @@ enum class StoreOp : uint8_t {
 inline static constexpr int kStoreOpCount = (int)(StoreOp::kLast) + 1;
 
 /**
- * What a GPU buffer will be used for
+ * Define static flags to represent anticipated types of and uses for Resources. This allows for
+ * more efficient storage and comparison than string labels. The flags can be mapped to strings once
+ * a Resource's usage(s) are solidified.
  */
-enum class BufferType : int {
-    kVertex,
-    kIndex,
-    kXferCpuToGpu,
-    kXferGpuToCpu,
-    kUniform,
-    kStorage,
-    kQuery,
-
+enum class ResourceUsage : uint32_t {
+    kNotPredefined                   = 0, //  no predefined flags can encapsulate a Resource's usage
+    // First bits reserved for GPU buffer types
+    kVertexBuffer                    = 1 <<  0,
+    kIndexBuffer                     = 1 <<  1,
+    kXferCpuToGpuBuffer              = 1 <<  2,
+    kXferGpuToCpuBuffer              = 1 <<  3,
+    kUniformBuffer                   = 1 <<  4,
+    kStorageBuffer                   = 1 <<  5,
+    kQueryBuffer                     = 1 <<  6,
     // GPU-only buffer types
-    kIndirect,
-    kVertexStorage,
-    kIndexStorage,
+    kIndirectBuffer                  = 1 <<  7,
+    kVertexStorageBuffer             = 1 <<  8,
+    kIndexStorageBuffer              = 1 <<  9,
 
-    kLast = kIndexStorage,
+    kLastBufferTypeResourceUsage     = kIndexStorageBuffer,
+    // TODO(b/431796811): Define and utilize flags for anticipated texture usages.
+    kLastResourceUsage               = kLastBufferTypeResourceUsage,
 };
-static const int kBufferTypeCount = static_cast<int>(BufferType::kLast) + 1;
+SK_MAKE_BITMASK_OPS(ResourceUsage)
+
 
 /**
  * Data layout requirements on host-shareable buffer contents.

@@ -1363,13 +1363,13 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     const auto& combinedUboInfo = fUniformBuffersToBind[Pipeline::kCombinedUniformIndex];
     auto vulkanBuffer = static_cast<const VulkanBuffer*>(combinedUboInfo.fBuffer);
 
-    DescriptorType uniformBufferType =
+    DescriptorType uniformResourceUsage =
             fSharedContext->caps()->storageBufferSupport() ? DescriptorType::kStorageBuffer
                                                            : DescriptorType::kUniformBuffer;
 
     // If we determine that we should use storage buffers, we expect that the actual VkBuffer
     // supports that usage.
-    SkASSERT(uniformBufferType != DescriptorType::kStorageBuffer ||
+    SkASSERT(uniformResourceUsage != DescriptorType::kStorageBuffer ||
              vulkanBuffer->bufferUsageFlags() | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT);
 
     // We expect to have up to 2 descriptors within this set. Fill out DescriptorData (for
@@ -1379,7 +1379,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     skia_private::STArray<2, uint32_t> dynamicOffsets;
 
     uniformDescriptorData.push_back({
-            uniformBufferType,
+            uniformResourceUsage,
             /*count=*/1,
             Pipeline::kCombinedUniformIndex,
             PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader });

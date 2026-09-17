@@ -271,7 +271,7 @@ BindBufferInfo DawnResourceProvider::IntrinsicConstantsManager::add(
         DawnResourceProvider* resourceProvider = fResourceProvider;
         auto dawnBuffer =
                 resourceProvider->findOrCreateDawnBuffer(stride * IntrinsicBuffer::kNumSlots,
-                                                         BufferType::kUniform,
+                                                         ResourceUsage::kUniformBuffer,
                                                          AccessPattern::kGpuOnly,
                                                          "IntrinsicConstantBuffer");
         if (!dawnBuffer) {
@@ -552,7 +552,7 @@ sk_sp<Texture> DawnResourceProvider::createTexture(
 }
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
-                                                 BufferType type,
+                                                 ResourceUsage type,
                                                  AccessPattern accessPattern,
                                                  std::string_view label) {
     return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern, label);
@@ -596,7 +596,7 @@ DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
 }
 
 sk_sp<DawnBuffer> DawnResourceProvider::findOrCreateDawnBuffer(size_t size,
-                                                               BufferType type,
+                                                               ResourceUsage type,
                                                                AccessPattern accessPattern,
                                                                std::string_view label) {
     sk_sp<Buffer> buffer = this->findOrCreateNonShareableBuffer(size, type, accessPattern, label);

@@ -24,7 +24,7 @@ class DawnBuffer final : public Buffer {
 public:
     static sk_sp<DawnBuffer> Make(const DawnSharedContext*,
                                   size_t,
-                                  BufferType,
+                                  ResourceUsage,
                                   AccessPattern,
                                   std::string_view label);
 
@@ -40,6 +40,7 @@ private:
                size_t,
                wgpu::Buffer,
                void* mapAtCreationPtr,
+               ResourceUsage type,
                std::string_view label);
 
     bool prepareForReturnToCache(Resource::TakeRefFunc takeRef, void* takeRefCtx) override;
