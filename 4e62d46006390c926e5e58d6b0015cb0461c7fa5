@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a49f9355_d661a74d",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:31:03Z",
+      "side": 1,
+      "message": "`kNumDescriptors` is 1024 (initiailized in the header). Resource provider limits `numsets` to `kMaxNumSets \u003d 512` . So this cannot overflow u32.\n\nAfter moving the descriptorCount checking into a separate loop (in response to your other comment), we no longer check against `maxTotalDescriptors`, but the maximum guarantees still apply.",
+      "parentUuid": "f3893c5e_990f44ed",
+      "range": {
+        "startLine": 33,
+        "startChar": 42,
+        "endLine": 33,
+        "endChar": 69
+      },
+      "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3406ab5e_bc4ae571",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "388f6280_dc78fc42",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:31:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3406ab5e_bc4ae571",
+      "range": {
+        "startLine": 40,
+        "startChar": 13,
+        "endLine": 40,
+        "endChar": 17
+      },
+      "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46816960_649d6e50",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-09-18T14:57:49Z",
       "side": 1,
       "message": "What if instead of doing this check each time we add inside the loop, we just accumulate counts. Then we just can do the multiply by numSets once at the end of the loop and check everything fits at that point",
+      "range": {
+        "startLine": 53,
+        "startChar": 29,
+        "endLine": 53,
+        "endChar": 48
+      },
+      "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb434137_206e66eb",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:31:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46816960_649d6e50",
       "range": {
         "startLine": 53,
         "startChar": 29,
