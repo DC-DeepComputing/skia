@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d9345c1_0597584e",
+        "filename": "include/core/SkYUVAInfo.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-18T03:00:10Z",
+      "side": 1,
+      "message": "vasilyt@ It seems as long as I introduce any new config here, Chromium will fail to build at https://source.chromium.org/chromium/chromium/src/+/main:skia/ext/rgba_to_yuva.cc;l\u003d205;drc\u003db74803f8e45dea619958412b00ca9e5b03ef0420\n\nThis will effectively prevent Chromium from rolling skia. How is this typically handled?",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 14
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
