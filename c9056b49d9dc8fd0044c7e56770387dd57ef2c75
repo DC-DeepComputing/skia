@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd496540_eef425f8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "Can this be inside Device\u0027s constructor?",
+      "range": {
+        "startLine": 498,
+        "startChar": 0,
+        "endLine": 505,
+        "endChar": 5
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a60491_26db0e06",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1713,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "While in local testing adding the outsetBoundsForAA test helped the overlap issues you were seeing, I think we need to generalize this code to account for the fact that the end caps are being aligned out to the tile size. \n\nCurrently the !renderer check for path atlases works because it just so happens that the final CoverageMask shapes that are rendered are tight to the AA-outset pixel bounds. Unless the end caps clip their rendering to be tight to exclude all the rows/cols that are fully transparent, we actually want this to be rounded out to the tile granularity.",
+      "range": {
+        "startLine": 1711,
+        "startChar": 0,
+        "endLine": 1713,
+        "endChar": 5
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2164ed5e_394ef26a",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 27
@@ -31,6 +77,29 @@
       "writtenOn": "2026-09-17T18:22:53Z",
       "side": 1,
       "message": "Can we do this with renderer-\u003erenderStepID() \u003d\u003d RenderStepID::kEndCap ?",
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d49750b_25b92d83",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1782,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "I think we should remove this code and not handle strokes at all until it can be done as part of strip generation. That will also keep drawGeometry() \"simpler\".",
+      "range": {
+        "startLine": 1757,
+        "startChar": 8,
+        "endLine": 1782,
+        "endChar": 9
+      },
       "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -71,6 +140,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a66c6ba_1f0d20a2",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 2206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "Currently I don\u0027t think we\u0027d ever take these cases because we aren\u0027t calling drawGeometry() with tile Geometries directly. They are only produced as a result of the strip generator that\u0027s run after chooseRenderer() is called, right?",
+      "range": {
+        "startLine": 2202,
+        "startChar": 0,
+        "endLine": 2206,
+        "endChar": 58
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "182378e4_c7b2b21f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 2295,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "I think that a cleaner approach that will have other benefits for Graphite is to generalize the concept of the PathAtlas option to something like a GeometrySpawner(??) that takes in the original geometry and does additional upfront work to produce N actually recorded draws, with the option to change the Renderer in use and adjust the final bounds, and have the ability to flush when out of internal resources.\n\nPath atlases would convert to a CoverageMask and its associated renderer. We could hopefully fold text subruns into this system, and the strip generator otherwise is like a more advanced path atlas. It opens up the potential for other optimizations, such as applying a dash on a line and emitting a number of instances w/o having to repeat the overhead of the paint prep and clip walking, or allowing a drawn SkRegion to be split into a bunch of recorded rectangles. When drawListLayers is the universal way of doing things, I think it would also be interesting to see if we can eliminiate the extra layer/bounds checking for these multi-recordDraw() cases by finding the insertion layer based on the original full bounds and then inserting into that layer the multiple spawned subgeometries.  It could also generalize the inner-fill and the wide-cap tiles that don\u0027t have coverage to automatically adjust to the opaque paint ID and insert at the stop layer.",
+      "range": {
+        "startLine": 2295,
+        "startChar": 0,
+        "endLine": 2295,
+        "endChar": 62
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54f2fc58_2ae6d8b0",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "Seems like we can check this first before doing any work with the tiler right?",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cb27de5_01796d90",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "This terminology makes me think that the caps themselves are null, but it\u0027s more that they are the overflowed caps and just didn\u0027t fit directly into a texture.",
+      "range": {
+        "startLine": 86,
+        "startChar": 25,
+        "endLine": 86,
+        "endChar": 40
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ea0cf23_392ebce5",
         "filename": "src/gpu/graphite/sparse_strips/StripGenerator.h",
         "patchSetId": 27
@@ -87,6 +248,29 @@
         "startChar": 0,
         "endLine": 11,
         "endChar": 32
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed91efb4_0908947b",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:49:26Z",
+      "side": 1,
+      "message": "span or std::array?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 53
       },
       "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
