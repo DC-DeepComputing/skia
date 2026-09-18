@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb7d58e6_4250407b",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T17:47:50Z",
+      "side": 1,
+      "message": "Why not just initialize this to 1 to remove the need to apply max(1, fTotalIterations) later on?",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 37
+      },
+      "revId": "ad10fe4e44e6a2c9ba5287794a8fa5af314f18be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a652df0_789a8036",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T17:47:50Z",
+      "side": 1,
+      "message": "If we\u0027ve passed in the `statement` that also defined `loopCount`, then bodyIterations also includes `loopCount` from its first visited statement so this is squaring the root loop count (along with any nested loops).",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 66
+      },
+      "revId": "ad10fe4e44e6a2c9ba5287794a8fa5af314f18be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc972e84_3175d4ec",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T17:47:50Z",
+      "side": 1,
+      "message": "The nested loop visitor in `loop_exceeds_nested_iteration_limit` is already processing the loop count in `statement`, as well as then visiting any additional nested loops, right?\n\nThat means we shouldn\u0027t need to gate this on having unrollInfo to pass in unrollInfo-\u003efCount, we can just pass in `statement`.",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 92
+      },
+      "revId": "ad10fe4e44e6a2c9ba5287794a8fa5af314f18be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
