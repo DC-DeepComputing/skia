@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb6458e5_53f0e605",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-18T17:00:46Z",
+      "side": 1,
+      "message": "Nice catch.  Interesting that calls to `getFrameCount` would have made the bug go away.  And fixing this with lazy init seems like the best way forward - I wondered for a moment whether this could be done when constructing the codec, but it didn\u0027t quite fit the existing code.",
+      "revId": "af39cb6dbf334dce055d135035f743292839b042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
