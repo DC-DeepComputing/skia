@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d82d707_304e1171",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-18T15:40:11Z",
+      "side": 1,
+      "message": "Oh right, SGTM.",
+      "parentUuid": "2eedc3ec_545127c3",
+      "range": {
+        "startLine": 40,
+        "startChar": 13,
+        "endLine": 40,
+        "endChar": 17
+      },
+      "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46816960_649d6e50",
