@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f462535a_cce2ab41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T17:38:30Z",
+      "side": 1,
+      "message": "Can you create a tracking bug for this project? It would also be good for recording when we remove the staging flag in chrome, and other follow up work, namely:\n - what would it take to get rid of the old circle and rect pipelines\n - use these in the drawFastShadow functions when possible",
+      "revId": "e3328138d4da67548c61f80d19b9f37326fd519c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e8de79a_0a2f4732",

@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4501809_2f15a6b9",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T17:38:30Z",
+      "side": 1,
+      "message": "Agreed, for the ignoreXform case, clamping first is correct.",
+      "parentUuid": "3016e690_56a95e8c",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 60
+      },
+      "revId": "7b235264bfa5785cd16f5c355c8ca6f889f10982",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e801fb0f_a3639a10",
