@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b86abce0_0cf10651",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-18T18:08:05Z",
+      "side": 1,
+      "message": "Sorry to make you flip back and forth on this, but the more I think about the more I think summing sequential for loops isn\u0027t really what we want here. It is not like we\u0027re summing all the individual not for loop statements inside a for loop. So given that I think the original approach of just checking the largest nest for loop was the right idea.",
+      "parentUuid": "00b08ccb_bb4d5550",
+      "range": {
+        "startLine": 124,
+        "startChar": 20,
+        "endLine": 124,
+        "endChar": 38
+      },
+      "revId": "ad9f9b88c6b7561be62129c2e79605edb27457e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "008516e8_64c8c1fc",
         "filename": "src/sksl/ir/SkSLForStatement.cpp",
         "patchSetId": 4
