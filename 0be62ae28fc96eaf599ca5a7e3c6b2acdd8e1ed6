@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a69a1bf0_ef219295",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T19:03:28Z",
+      "side": 1,
+      "message": "Woops, I checked the wrong autosubmit box and that it will AUTOMATICALLY MERGE after any reviewer gives a +1 . . .",
+      "revId": "0be62ae28fc96eaf599ca5a7e3c6b2acdd8e1ed6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
