@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eedc3ec_545127c3",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:37:43Z",
+      "side": 1,
+      "message": "Edit: actually this can\u0027t be const because entry is a non-const VkDescriptorPoolSize* (entry \u003d \u0026existing discards qualifiers, and entry-\u003edescriptorCount +\u003d desc.fCount mutates it.",
+      "parentUuid": "388f6280_dc78fc42",
+      "range": {
+        "startLine": 40,
+        "startChar": 13,
+        "endLine": 40,
+        "endChar": 17
+      },
+      "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46816960_649d6e50",
