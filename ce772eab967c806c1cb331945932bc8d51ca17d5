@@ -22,6 +22,30 @@
       },
       "revId": "ce772eab967c806c1cb331945932bc8d51ca17d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c882bad9_d7b156d8",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-18T20:13:39Z",
+      "side": 1,
+      "message": "I was trying something new with the Factory passkey pattern (from this doc https://chromium.googlesource.com/chromium/src/+/HEAD/docs/patterns/passkey.md) \n\nI agree with you. I don\u0027t think it works well here. \n\nI updated it to fit the standard CtorAccessor pattern.",
+      "parentUuid": "3ad8e2e9_aa78dc44",
+      "range": {
+        "startLine": 37,
+        "startChar": 10,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "ce772eab967c806c1cb331945932bc8d51ca17d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
