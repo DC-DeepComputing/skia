@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0cdf6c3_74b78890",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 3
+      },
+      "lineNbr": 947,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-18T18:18:31Z",
+      "side": 1,
+      "message": "I\u0027m guessing the `spanify` rewriter didn\u0027t flag those other arrays because it didn\u0027t find them being used unsafely. For example, `grid_byte_width` is always accessed with index 0.\n\nAlso, some arrays are excluded from these CLs because the spanify tool grouped that change with other `SkSpan` changes. And, for the moment we are only applying `std::array` rewrites. This seems to not be the case, but it also happens some times.",
+      "parentUuid": "c86c39f7_0af1e06d",
+      "range": {
+        "startLine": 947,
+        "startChar": 28,
+        "endLine": 947,
+        "endChar": 39
+      },
+      "revId": "c3bde60578dd9aa839c0f76517a8e52e5751d551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "640d4070_cfdd6a7a",
         "filename": "modules/skottie/gm/ExternalProperties.cpp",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-18T17:21:59Z",
       "side": 1,
       "message": "For this case and all the other cases in the change, there is nothing special about the g that needs to be in the struct name. Skia just uses gFoo to mark that the object is a global/static scope. So I would go through all the cases that were updated in the CL and remove the `G` prefix from the struct name.",
+      "range": {
+        "startLine": 99,
+        "startChar": 15,
+        "endLine": 99,
+        "endChar": 16
+      },
+      "revId": "c3bde60578dd9aa839c0f76517a8e52e5751d551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96a1c294_211eb9d0",
+        "filename": "modules/skottie/gm/ExternalProperties.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-18T18:18:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "640d4070_cfdd6a7a",
       "range": {
         "startLine": 99,
         "startChar": 15,
@@ -60,6 +108,30 @@
       "writtenOn": "2026-09-18T17:21:59Z",
       "side": 1,
       "message": "nit: move this onto its own line",
+      "range": {
+        "startLine": 104,
+        "startChar": 10,
+        "endLine": 104,
+        "endChar": 11
+      },
+      "revId": "c3bde60578dd9aa839c0f76517a8e52e5751d551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18e32206_137944b1",
+        "filename": "modules/skottie/gm/ExternalProperties.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-18T18:18:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04fc947c_8e32b064",
       "range": {
         "startLine": 104,
         "startChar": 10,
