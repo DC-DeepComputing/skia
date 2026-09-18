@@ -100,8 +100,8 @@ public:
 
     BackendApi backend() const;
 
-    Type type() const override { return SkRecorder::Type::kGraphite; }
-    skcpu::Recorder* cpuRecorder() override;
+    Type type() const { return SkRecorder::Type::kGraphite; }
+    skcpu::Recorder* cpuRecorder();
 
     std::unique_ptr<Recording> snap();
 
@@ -282,8 +282,8 @@ private:
     void registerDevice(sk_sp<Device>);
     void deregisterDevice(const Device*);
 
-    SkCanvas* makeCaptureCanvas(SkCanvas*) override;
-    void createCaptureBreakpoint(SkSurface*) override;
+    SkCanvas* makeCaptureCanvas(SkCanvas*);
+    void createCaptureBreakpoint(SkSurface*);
 
     sk_sp<SharedContext> fSharedContext;
     ResourceProvider* fResourceProvider; // May point to the Context's resource provider

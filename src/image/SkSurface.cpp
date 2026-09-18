@@ -249,3 +249,14 @@ bool SkSurface::characterize(GrSurfaceCharacterization* characterization) const 
 bool SkSurface::isCompatible(const GrSurfaceCharacterization& characterization) const {
     return asConstSB(this)->onIsCompatible(characterization);
 }
+
+namespace SkSurfaces {
+sk_sp<SkSurface> Make(SkRecorder* recorder,
+                      const SkImageInfo& info,
+                      size_t rowBytes,
+                      const SkSurfaceProps*) {
+    if (!recorder) return nullptr;
+
+    return recorder->priv().makeSurface(info, rowBytes, props);
+}
+}  // namespace SkSurfaces

@@ -13,12 +13,9 @@
 
 class SkCanvas;
 class SkSurface;
+class SkRecorderPriv;
 
-namespace skcpu {
-class Recorder;
-}
-
-class SK_API SkRecorder {
+class SK_API SkRecorder : public SkRefCnt {
 public:
     SkRecorder() = default;
     virtual ~SkRecorder() = default;
@@ -32,25 +29,21 @@ public:
         kGraphite,
     };
 
-    virtual Type type() const = 0;
+    Type type() const { return fType; }
 
-    virtual skcpu::Recorder* cpuRecorder() = 0;
+    SkRecorderPriv priv();
 
 protected:
     skia_private::TArray<sk_sp<SkPicture>> fCapturedPictures;
 
 private:
+    sk_sp<SkSurface> makeSurface(SkImageInfo info,
+                                 size_t rowBytes,
+                                 const SkSurfaceProps* props = nullptr);
 
-    /**
-    * Attempts to create and return an SkCaptureCanvas that wraps the provided base canvas.
-    * Returns nullptr if capture is not enabled.
-    *
-    * TODO: When implementing in all Recorder subclasses, see if the implementations can be shared
-    * and moved here.
-    */
-    virtual SkCanvas* makeCaptureCanvas(SkCanvas*) = 0;
-    virtual void createCaptureBreakpoint(SkSurface*) = 0;
+    Type fType;
 
+    friend class SkRecorderPriv;
     friend class SkSurface_Base; // for capture functionality
 };
 

@@ -16,23 +16,23 @@
 
 class GrDirectContext;
 
-class SkGaneshRecorder final : public SkRecorder {
+class SkGaneshRecorder final {
 public:
     SkGaneshRecorder(GrRecordingContext* ctx) : fGaneshCtx(ctx) {}
 
-    Type type() const override { return SkRecorder::Type::kGanesh; }
+    Type type() const { return SkRecorder::Type::kGanesh; }
 
     GrRecordingContext* recordingContext() const { return fGaneshCtx; }
 
     GrDirectContext* directContext() const { return GrAsDirectContext(fGaneshCtx); }
 
-    skcpu::Recorder* cpuRecorder() override { return skcpu::Recorder::TODO(); }
+    skcpu::Recorder* cpuRecorder() { return skcpu::Recorder::TODO(); }
 
 private:
     GrRecordingContext* fGaneshCtx;
 
-    SkCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
-    void createCaptureBreakpoint(SkSurface*) override { }
+    SkCanvas* makeCaptureCanvas(SkCanvas*) { return nullptr; }
+    void createCaptureBreakpoint(SkSurface*) {}
 };
 
 inline SkGaneshRecorder* AsGaneshRecorder(SkRecorder* recorder) {

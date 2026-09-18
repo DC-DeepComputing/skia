@@ -22,7 +22,7 @@ struct SkImageInfo;
 
 namespace skcpu {
 
-class SK_API Recorder : public SkRecorder {
+class SK_API Recorder {
 public:
     Recorder() = default;
 
@@ -31,8 +31,8 @@ public:
      */
     static Recorder* TODO();
 
-    SkRecorder::Type type() const final { return SkRecorder::Type::kCPU; }
-    skcpu::Recorder* cpuRecorder() final { return this; }
+    SkRecorder::Type type() const { return SkRecorder::Type::kCPU; }
+    skcpu::Recorder* cpuRecorder() { return this; }
 
     /** Allocates a bitmap-backed SkSurface. SkCanvas returned by SkSurface draws directly into
      *  those allocated pixels, which are zeroed before use. Pixel memory size is imageInfo.height()
@@ -59,19 +59,16 @@ public:
 
 private:
     // TODO (b/412351769): Implement this so we can capture from a CPU Recorder.
-    SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
-    void createCaptureBreakpoint(SkSurface*) final;
+    /**
+     * Attempts to create and return an SkCaptureCanvas that wraps the provided base canvas.
+     * Returns nullptr if capture is not enabled.
+     *
+     * TODO: When implementing in all Recorder subclasses, see if the implementations can be shared
+     * and moved here.
+     */
+    SkCanvas* makeCaptureCanvas(SkCanvas*) { return nullptr; }
+    void createCaptureBreakpoint(SkSurface*);
 };
-
-inline Recorder* AsRecorder(SkRecorder* recorder) {
-    if (!recorder) {
-        return nullptr;
-    }
-    if (recorder->type() != SkRecorder::Type::kCPU) {
-        return nullptr;
-    }
-    return static_cast<Recorder*>(recorder);
-}
 
 }  // namespace skcpu
 
