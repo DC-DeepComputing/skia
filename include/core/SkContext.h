@@ -40,7 +40,11 @@ public:
     SkContextPrivConst privConst() const;
 
 private:
-    SkContext(sk_sp<SkSharedContext>);
+    SkContext(const SkContextOptions&);
+
+    friend class SkContextPrivConst;
+    friend class SkContextPriv;
+    friend class SkContextCtorAccessor;
 
     friend class SkContextPrivConst;
     friend class SkContextPriv;
