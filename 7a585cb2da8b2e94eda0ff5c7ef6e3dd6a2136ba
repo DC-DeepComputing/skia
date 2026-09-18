@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe3a73f3_66a173fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T18:38:51Z",
+      "side": 1,
+      "message": "PTAL; note this patch will depend on a separate CL in chromium",
+      "revId": "7a585cb2da8b2e94eda0ff5c7ef6e3dd6a2136ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
