@@ -404,6 +404,7 @@ public:
     bool supportsAHardwareBufferImages() const { return fSupportsAHardwareBufferImages; }
 
     bool wireframeMode() const { return fWireframeMode; }
+    bool smallPathDisableDistanceFields() const { return fSmallPathDisableDistanceFields; }
 
     /** Supports using GrSemaphores. */
     bool semaphoreSupport() const { return fSemaphoreSupport; }
@@ -714,6 +715,7 @@ private:
 
     bool fSuppressPrints : 1;
     bool fWireframeMode  : 1;
+    bool fSmallPathDisableDistanceFields : 1;
 
     using INHERITED = SkRefCnt;
 };
