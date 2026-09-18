@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d1e47fe_7d303fcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:09:56Z",
+      "side": 1,
+      "message": "Thank you for sharing, I am fairly at capacity so haven\u0027t had the chance to fully internalize all of the magic that happens during the upsampling but I hope to have the bandwidth to do so soon.\n\nA couple of very high-level thoughts on this:\n1. If at all possible, it would be nice to integrate this more directly into the existing SkBlurImageFilter or otherwise extend/reuse SkBlurEngine and skif::FilterResult::rescale().  There are a lot of subtleties when rescaling in order to get the boundary pixels to remain accurate for a given tile mode that is handled by rescale().  This may involve changes to rescale() or to the SkBlurEngine to accomodate the flexibility needed by this kind of effect. (Semi-related, I\u0027ve been interested in implementing a uniform dual Kawase blur algorithim for SkBlurEngine but it would benefit from working with rescale()`.\n\n2. In terms of controlling the blur, I think it would make sense for the image filter to take in a min and max blur sigma and then either an SkShader or an SkImageFilter that produce the alpha values used to interpolate the blur sigmas.  An SkShader would work well for handling the different gradient cases without needing to rewrite details of those effects inside the blur shaders. An image filter would be the most general and dynamic way, but would introduce an additional temporary image that has to be sampled.",
+      "revId": "160a8b28c569d431be0b66e9538a1d7322c1dfc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
