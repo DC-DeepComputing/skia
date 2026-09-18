@@ -14,9 +14,9 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "include/private/base/SkDebug.h"
+#include "include/private/SkDebug.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrPixmap.h"
@@ -115,6 +115,8 @@ DEF_TEST(PremulAlphaRoundTrip, reporter) {
 
     test_premul_alpha_roundtrip(reporter, surf.get());
 }
+
+#if defined(SK_GANESH)
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PremulAlphaRoundTrip_Gpu,
                                        reporter,
                                        ctxInfo,
@@ -183,6 +185,7 @@ DEF_TEST(PremulAlphaRoundTripGrConvertPixels, reporter) {
         }
     }
 }
+#endif
 
 DEF_TEST(PremulAlphaRoundTripSkConvertPixels, reporter) {
     // ... and now using SkConvertPixels, just for completeness
@@ -240,3 +243,4 @@ DEF_TEST(PremulAlphaRoundTripSkConvertPixels, reporter) {
         }
     }
 }
+

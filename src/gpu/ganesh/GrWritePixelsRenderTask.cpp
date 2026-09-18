@@ -10,6 +10,14 @@
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+
+#include <algorithm>
+#include <utility>
+
+class GrDrawingManager;
+class GrRecordingContext;
+class GrSurface;
 
 sk_sp<GrRenderTask> GrWritePixelsTask::Make(GrDrawingManager* dm,
                                             sk_sp<GrSurfaceProxy> dst,
@@ -44,7 +52,8 @@ GrWritePixelsTask::GrWritePixelsTask(GrDrawingManager* dm,
 
 void GrWritePixelsTask::gatherProxyIntervals(GrResourceAllocator* alloc) const {
     alloc->addInterval(this->target(0), alloc->curOp(), alloc->curOp(),
-                       GrResourceAllocator::ActualUse::kYes);
+                       GrResourceAllocator::ActualUse::kYes,
+                       GrResourceAllocator::AllowRecycling::kYes);
     alloc->incOps();
 }
 
@@ -54,16 +63,17 @@ GrRenderTask::ExpectedOutcome GrWritePixelsTask::onMakeClosed(GrRecordingContext
     return ExpectedOutcome::kTargetDirty;
 }
 
-bool GrWritePixelsTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrWritePixelsTask::onExecute(GrOpFlushState* flushState) {
     GrSurfaceProxy* dstProxy = this->target(0);
     if (!dstProxy->isInstantiated()) {
-        return false;
+        return ExecutionResult::RanButFailed();
     }
     GrSurface* dstSurface = dstProxy->peekSurface();
-    return flushState->gpu()->writePixels(dstSurface,
-                                          fRect,
-                                          fDstColorType,
-                                          fSrcColorType,
-                                          fLevels.get(),
-                                          fLevels.count());
+    bool success = flushState->gpu()->writePixels(dstSurface,
+                                                  fRect,
+                                                  fDstColorType,
+                                                  fSrcColorType,
+                                                  fLevels.get(),
+                                                  fLevels.count());
+    return ExecutionResult::Ran(success);
 }

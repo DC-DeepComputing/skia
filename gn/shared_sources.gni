@@ -8,18 +8,25 @@ import("codec.gni")
 import("core.gni")
 import("effects.gni")
 import("effects_imagefilters.gni")
+import("fuzz.gni")
 import("gpu.gni")
 import("graphite.gni")
 import("opts.gni")
+import("pathops.gni")
 import("pdf.gni")
+import("ports.gni")
+import("rust.gni")
 import("sksl.gni")
+import("svg.gni")
 import("utils.gni")
 import("xml.gni")
 import("xps.gni")
 skia_opts = {
-  none_sources = []
-  ssse3_sources = ssse3
-  avx_sources = avx
-  hsw_sources = hsw
-  skx_sources = skx
+  ml3_sources = ml3
+  ml4_sources = ml4
+  lasx_sources = lasx
+
+  # TODO(kjlubick) clean up hsw and skx after migrating clients
+  hsw_sources = ml3
+  skx_sources = ml4
 }

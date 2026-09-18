@@ -30,7 +30,6 @@ import (
 	"go.skia.org/infra/golden/go/types"
 )
 
-// This allows us to use upload_dm_results.py out of the box
 const JSON_FILENAME = "dm.json"
 
 var (
@@ -39,7 +38,7 @@ var (
 
 	browser          = flag.String("browser", "Chrome", "Browser Key")
 	buildBucketID    = flag.String("buildbucket_build_id", "", "Buildbucket build id key")
-	builder          = flag.String("builder", "", "Builder, like 'Test-Debian9-EMCC-GCE-CPU-AVX2-wasm-Debug-All-PathKit'")
+	builder          = flag.String("builder", "", "Swarming task name")
 	compiledLanguage = flag.String("compiled_language", "wasm", "wasm or asm.js")
 	config           = flag.String("config", "Release", "Configuration (e.g. Debug/Release) key")
 	gitHash          = flag.String("git_hash", "-", "The git commit hash of the version being tested")

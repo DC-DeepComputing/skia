@@ -9,11 +9,11 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrExternalTextureGenerator.h"
-#include "include/private/base/SkAssert.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTextureGenerator.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -29,6 +29,10 @@
 
 enum class GrImageTexGenPolicy : int;
 
+namespace skgpu {
+enum class Mipmapped : bool;
+}
+
 static void dispose_external_texture(void *context) {
     // Reify the unique_ptr so that we delete the `GrExternalTexture` at the end of scope.
     auto texture = std::unique_ptr<GrExternalTexture>(reinterpret_cast<GrExternalTexture *>(context));
@@ -40,7 +44,7 @@ GrTextureGenerator::GrTextureGenerator(const SkImageInfo& info, uint32_t uniqueI
 
 GrSurfaceProxyView GrTextureGenerator::generateTexture(GrRecordingContext* ctx,
                                                        const SkImageInfo& info,
-                                                       GrMipmapped mipmapped,
+                                                       skgpu::Mipmapped mipmapped,
                                                        GrImageTexGenPolicy texGenPolicy) {
     SkASSERT_RELEASE(fInfo.dimensions() == info.dimensions());
 
@@ -54,9 +58,9 @@ GrSurfaceProxyView GrTextureGenerator::generateTexture(GrRecordingContext* ctx,
 GrExternalTextureGenerator::GrExternalTextureGenerator(const SkImageInfo& info) : GrTextureGenerator(info) {}
 
 GrSurfaceProxyView GrExternalTextureGenerator::onGenerateTexture(GrRecordingContext* ctx,
-                                                                const SkImageInfo& info,
-                                                                GrMipmapped mipmapped,
-                                                                GrImageTexGenPolicy texGenPolicy) {
+                                                                 const SkImageInfo& info,
+                                                                 skgpu::Mipmapped mipmapped,
+                                                                 GrImageTexGenPolicy texGenPolicy) {
     std::unique_ptr<GrExternalTexture> externalTexture = generateExternalTexture(ctx, mipmapped);
     GrBackendTexture backendTexture = externalTexture->getBackendTexture();
     const GrBackendFormat& format = backendTexture.getBackendFormat();

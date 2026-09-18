@@ -6,38 +6,51 @@
  */
 
 #include "bench/BigPath.h"
+#include "include/codec/SkCodec.h"
+#include "include/codec/SkJpegDecoder.h"
 #include "include/core/SkCanvas.h"
-#include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
+#include "include/docs/SkMultiPictureDocument.h"
 #include "include/effects/SkPerlinNoiseShader.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/SkGr.h"
-#include "src/utils/SkMultiPictureDocument.h"
+#include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/utils/SkOSPath.h"
-#include "tools/DDLPromiseImageHelper.h"
-#include "tools/DDLTileHelper.h"
+#include "tools/EncodeUtils.h"
+#include "tools/ProcsUtils.h"
 #include "tools/SkSharingProc.h"
-#include "tools/ToolUtils.h"
 #include "tools/flags/CommandLineFlags.h"
 #include "tools/flags/CommonFlags.h"
 #include "tools/flags/CommonFlagsConfig.h"
+#include "tools/flags/CommonFlagsGanesh.h"
+#include "tools/fonts/FontToolUtils.h"
+#include "tools/ganesh/DDLPromiseImageHelper.h"
+#include "tools/ganesh/DDLTileHelper.h"
+#include "tools/ganesh/GpuTimer.h"
+#include "tools/ganesh/GrContextFactory.h"
 #include "tools/gpu/FlushFinishTracker.h"
-#include "tools/gpu/GpuTimer.h"
-#include "tools/gpu/GrContextFactory.h"
 
 #if defined(SK_ENABLE_SVG)
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/svg/include/SkSVGDOM.h"
 #include "src/xml/SkDOM.h"
+#endif
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
 #endif
 
 #include <stdlib.h>
@@ -175,17 +188,17 @@ public:
         // Attempt to deserialize with an image sharing serial proc.
         auto deserialContext = std::make_unique<SkSharingDeserialContext>();
         SkDeserialProcs procs;
-        procs.fImageProc = SkSharingDeserialContext::deserializeImage;
+        procs.fImageDataProc = SkSharingContext::deserializeImage;
         procs.fImageCtx = deserialContext.get();
 
         // The outer format of multi-frame skps is the multi-picture document, which is a
         // skp file containing subpictures separated by annotations.
-        int page_count = SkMultiPictureDocumentReadPageCount(stream.get());
+        int page_count = SkMultiPictureDocument::ReadPageCount(stream.get());
         if (!page_count) {
             return nullptr;
         }
         std::vector<SkDocumentPage> frames(page_count); // can't call reserve, why?
-        if (!SkMultiPictureDocumentRead(stream.get(), frames.data(), page_count, &procs)) {
+        if (!SkMultiPictureDocument::Read(stream.get(), frames.data(), page_count, &procs)) {
             return nullptr;
         }
 
@@ -260,12 +273,12 @@ static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
     const Sample::duration sampleDuration = std::chrono::milliseconds(FLAGS_sampleMs);
     const clock::duration benchDuration = std::chrono::milliseconds(FLAGS_duration);
 
-    SkSurfaceCharacterization dstCharacterization;
+    GrSurfaceCharacterization dstCharacterization;
     SkAssertResult(dstSurface->characterize(&dstCharacterization));
 
     SkIRect viewport = dstSurface->imageInfo().bounds();
 
-    SkYUVAPixmapInfo::SupportedDataTypes supportedYUVADataTypes(*dContext);
+    auto supportedYUVADataTypes = skgpu::ganesh::SupportedTextureFormats(*dContext);
     DDLPromiseImageHelper promiseImageHelper(supportedYUVADataTypes);
     sk_sp<SkPicture> newSKP = promiseImageHelper.recreateSKP(dContext, inputPicture);
     if (!newSKP) {
@@ -327,8 +340,8 @@ static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
 
     if (!FLAGS_png.isEmpty()) {
         // The user wants to see the final result
-        dstSurface->draw(tiles.composeDDL());
-        dContext->flushAndSubmit(dstSurface);
+        skgpu::ganesh::DrawDDL(dstSurface, tiles.composeDDL());
+        dContext->flushAndSubmit(dstSurface.get(), GrSyncCpu::kNo);
     }
 
     tiles.resetAllTiles();
@@ -336,7 +349,7 @@ static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
     // Make sure the gpu has finished all its work before we exit this function and delete the
     // fence.
     dContext->flush();
-    dContext->submit(true);
+    dContext->submit(GrSyncCpu::kYes);
 
     promiseImageHelper.deleteAllFromGPU(nullptr, dContext);
 
@@ -374,8 +387,8 @@ static void run_benchmark(GrDirectContext* context,
 
     // Make sure the gpu has finished all its work before we exit this function and delete the
     // fence.
-    context->flush(surface);
-    context->submit(true);
+    context->flush(surface.get());
+    context->submit(GrSyncCpu::kYes);
 }
 
 static void run_gpu_time_benchmark(sk_gpu_test::GpuTimer* gpuTimer,
@@ -444,8 +457,8 @@ static void run_gpu_time_benchmark(sk_gpu_test::GpuTimer* gpuTimer,
 
     // Make sure the gpu has finished all its work before we exit this function and delete the
     // fence.
-    context->flush(surface);
-    context->submit(true);
+    context->flush(surface.get());
+    context->submit(GrSyncCpu::kYes);
 }
 
 void print_result(const std::vector<Sample>& samples, const char* config, const char* bench)  {
@@ -518,6 +531,12 @@ int main(int argc, char** argv) {
     }
 
     SkGraphics::Init();
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+    SkCodecs::Register(SkPngRustDecoder::Decoder());
+#else
+    SkCodecs::Register(SkPngDecoder::Decoder());
+#endif
+    SkCodecs::Register(SkJpegDecoder::Decoder());
 
     sk_sp<SkPicture> skp;
     std::unique_ptr<MultiFrameSkp> mskp; // populated if the file is multi frame.
@@ -538,7 +557,8 @@ int main(int argc, char** argv) {
             // populate skp with it's first frame, for width height determination.
             skp = mskp->frame(0);
         } else {
-            skp = SkPicture::MakeFromStream(srcstream.get());
+            SkDeserialProcs procs = ToolUtils::default_deserial_procs();
+            skp = SkPicture::MakeFromStream(srcstream.get(), &procs);
         }
         if (!skp) {
             exitf(ExitErr::kData, "failed to parse file %s", srcfile.c_str());
@@ -699,7 +719,7 @@ static sk_sp<SkPicture> create_warmup_skp() {
 
     // Use a perlin shader to warmup the GPU.
     SkPaint perlin;
-    perlin.setShader(SkPerlinNoiseShader::MakeTurbulence(0.1f, 0.1f, 1, 0, nullptr));
+    perlin.setShader(SkShaders::MakeTurbulence(0.1f, 0.1f, 1, 0, nullptr));
     recording->drawRect(bounds, perlin);
 
     return recorder.finishRecordingAsPicture();
@@ -707,7 +727,10 @@ static sk_sp<SkPicture> create_warmup_skp() {
 
 static sk_sp<SkPicture> create_skp_from_svg(SkStream* stream, const char* filename) {
 #if defined(SK_ENABLE_SVG)
-    sk_sp<SkSVGDOM> svg = SkSVGDOM::MakeFromStream(*stream);
+    sk_sp<SkSVGDOM> svg = SkSVGDOM::Builder()
+                                  .setFontManager(ToolUtils::TestFontMgr())
+                                  .setTextShapingFactory(SkShapers::BestAvailable())
+                                  .make(*stream);
     if (!svg) {
         exitf(ExitErr::kData, "failed to build svg dom from file %s", filename);
     }

@@ -15,10 +15,12 @@ bench_sources = [
   "$_bench/BenchLogger.h",
   "$_bench/Benchmark.cpp",
   "$_bench/Benchmark.h",
+  "$_bench/BenchmarkDataset.cpp",
   "$_bench/BezierBench.cpp",
   "$_bench/BigPath.cpp",
   "$_bench/BigPath.h",
   "$_bench/BigPathBench.cpp",
+  "$_bench/BilerpBench.cpp",
   "$_bench/BitmapRegionDecoderBench.cpp",
   "$_bench/BitmapRegionDecoderBench.h",
   "$_bench/BlendmodeBench.cpp",
@@ -38,6 +40,7 @@ bench_sources = [
   "$_bench/CodecBenchPriv.h",
   "$_bench/ColorFilterBench.cpp",
   "$_bench/ColorPrivBench.cpp",
+  "$_bench/ColorSpaceBench.cpp",
   "$_bench/CompositingImagesBench.cpp",
   "$_bench/ControlBench.cpp",
   "$_bench/CoverageBench.cpp",
@@ -58,6 +61,7 @@ bench_sources = [
   "$_bench/GameBench.cpp",
   "$_bench/GeometryBench.cpp",
   "$_bench/GlyphQuadFillBench.cpp",
+  "$_bench/GlyphRunRSXformBench.cpp",
   "$_bench/GrMemoryPoolBench.cpp",
   "$_bench/GrMipmapBench.cpp",
   "$_bench/GrQuadBench.cpp",
@@ -118,13 +122,13 @@ bench_sources = [
   "$_bench/SKPAnimationBench.h",
   "$_bench/SKPBench.cpp",
   "$_bench/SKPBench.h",
-  "$_bench/ScalarBench.cpp",
   "$_bench/ShaderMaskFilterBench.cpp",
   "$_bench/ShadowBench.cpp",
   "$_bench/ShapesBench.cpp",
   "$_bench/Sk4fBench.cpp",
   "$_bench/SkGlyphCacheBench.cpp",
   "$_bench/SkGlyphCacheBench.h",
+  "$_bench/SkRPBench.cpp",
   "$_bench/SkSLBench.cpp",
   "$_bench/SkSLBench.h",
   "$_bench/SortBench.cpp",
@@ -140,6 +144,7 @@ bench_sources = [
   "$_bench/TriangulatorBench.cpp",
   "$_bench/TypefaceBench.cpp",
   "$_bench/VertBench.cpp",
+  "$_bench/WebpBlendBench.cpp",
   "$_bench/WritePixelsBench.cpp",
   "$_bench/WriterBench.cpp",
   "$_bench/gUniqueGlyphIDs.h",
@@ -148,6 +153,12 @@ bench_sources = [
 graphite_bench_sources = [
   "$_bench/graphite/BoundsManagerBench.cpp",
   "$_bench/graphite/IntersectionTreeBench.cpp",
+]
+
+sparse_strips_bench_sources = [
+  "$_bench/graphite/sparse_strips/CoverageBench.cpp",
+  "$_bench/graphite/sparse_strips/FlattenBench.cpp",
+  "$_bench/graphite/sparse_strips/TilerBench.cpp",
 ]
 
 ganesh_bench_sources = [

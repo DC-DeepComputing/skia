@@ -10,15 +10,17 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkRect.h"
-#include "include/private/base/SkAssert.h"
-#include "src/base/SkAutoMalloc.h"
+#include "include/private/SkAssert.h"
+#include "src/core/SkAutoMalloc.h"
 #include "src/core/SkBlitter.h"
 #include <cstdint>
+#include "include/private/SkDebug.h"
 
 class SkPath;
 class SkRegion;
 enum class SkClipOp;
 struct SkMask;
+struct SkMaskBuilder;
 
 class SkAAClip {
 public:
@@ -50,7 +52,7 @@ public:
      *  Allocates a mask the size of the aaclip, and expands its data into
      *  the mask, using kA8_Format. Used for tests and visualization purposes.
      */
-    void copyToMask(SkMask*) const;
+    void copyToMask(SkMaskBuilder*) const;
 
     bool quickContains(const SkIRect& r) const {
         return this->quickContains(r.fLeft, r.fTop, r.fRight, r.fBottom);

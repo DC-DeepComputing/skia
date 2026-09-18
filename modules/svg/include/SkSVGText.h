@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,11 +8,17 @@
 #ifndef SkSVGText_DEFINED
 #define SkSVGText_DEFINED
 
-#include <vector>
-
+#include "include/core/SkPath.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
+#include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTransformableNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
 
+#include <vector>
+
+class SkSVGRenderContext;
 class SK_API SkSVGTextContext;
 
 // Base class for text-rendering nodes.
@@ -69,7 +75,7 @@ private:
 
     void onRender(const SkSVGRenderContext&) const override;
 
-    SkRect onObjectBoundingBox(const SkSVGRenderContext&) const override;
+    SkRect onTransformableObjectBoundingBox(const SkSVGRenderContext&) const override;
     SkPath onAsPath(const SkSVGRenderContext&) const override;
 
     using INHERITED = SkSVGTextContainer;

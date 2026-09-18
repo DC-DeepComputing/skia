@@ -7,6 +7,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
 // Reproduces https://code.google.com/p/chromium/issues/detail?id=279014
@@ -24,13 +25,13 @@ public:
     void resize(SkScalar w, SkScalar h) override { fSize = {w, h}; }
 
     void draw(SkCanvas* canvas) override {
-        SkScalar angle = fAngle*SK_ScalarPI + SkScalarHalf(SK_ScalarPI);
+        SkScalar angle = fAngle*SK_ScalarPI + (SK_ScalarPI / 2.f);
 
         SkPoint center = SkPoint::Make(fSize.width()/2, fSize.height()/2);
         SkScalar length = 5;
         SkScalar step = angle;
 
-        SkPath path;
+        SkPathBuilder path;
         path.moveTo(center);
 
         while (length < (std::min(fSize.width(), fSize.height())/2 - 10.f))
@@ -38,7 +39,7 @@ public:
             SkPoint rp = SkPoint::Make(length*SkScalarCos(step) + center.fX,
                                        length*SkScalarSin(step) + center.fY);
             path.lineTo(rp);
-            length += angle / SkScalarHalf(SK_ScalarPI);
+            length += angle / (SK_ScalarPI / 2.f);
             step += angle;
         }
         path.close();
@@ -48,7 +49,7 @@ public:
         paint.setStyle(SkPaint::kStroke_Style);
         paint.setColor(0xFF007700);
 
-        canvas->drawPath(path, paint);
+        canvas->drawPath(path.detach(), paint);
     }
 
 protected:

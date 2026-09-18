@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,11 +7,15 @@
 #include "bench/Benchmark.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
-#include "src/base/SkMathPriv.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkMathPriv.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 #include "tools/ToolUtils.h"
 #include "tools/flags/CommandLineFlags.h"
+
+#if defined(SK_ENABLE_SVG)
+#include "tools/SvgPathExtractor.h"
+#endif
 
 using namespace skia_private;
 
@@ -25,7 +29,7 @@ protected:
     const char* onGetName() final { return fName.c_str(); }
 
     bool isSuitableFor(Backend backend) override {
-        return backend == kNonRendering_Backend;
+        return backend == Backend::kNonRendering;
     }
 
     void onDelayedSetup() final {
@@ -126,9 +130,9 @@ private:
         if (FLAGS_intersectionTreeFile.isEmpty()) {
             return;
         }
-        ToolUtils::sniff_paths(FLAGS_intersectionTreeFile[0], [&](const SkMatrix& matrix,
-                                                                  const SkPath& path,
-                                                                  const SkPaint& paint) {
+        auto callback = [&](const SkMatrix& matrix,
+                            const SkPath& path,
+                            const SkPaint& paint) {
             if (paint.getStyle() == SkPaint::kStroke_Style) {
                 return;  // Goes to stroker.
             }
@@ -145,7 +149,17 @@ private:
                 return;  // Goes to inner triangulator.
             }
             rects->push_back(drawBounds);
-        });
+        };
+        const char* path = FLAGS_intersectionTreeFile[0];
+        if (const char* ext = strrchr(path, '.'); ext && !strcmp(ext, ".svg")) {
+#if defined(SK_ENABLE_SVG)
+            ToolUtils::ExtractPathsFromSVG(path, callback);
+#else
+            SK_ABORT("must compile with svg backend to process svgs");
+#endif
+        } else {
+            ToolUtils::ExtractPathsFromSKP(path, callback);
+        }
         SkDebugf(">> Found %i stencil/cover paths in %s <<\n",
                  rects->size(), FLAGS_intersectionTreeFile[0]);
     }

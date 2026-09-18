@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,8 +8,16 @@
 #ifndef GrBaseContextPriv_DEFINED
 #define GrBaseContextPriv_DEFINED
 
-#include "include/gpu/GrContextOptions.h"
+#include "include/core/SkRefCnt.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/private/gpu/ganesh/GrContext_Base.h"
+
+#include <cstdint>
+
+class GrCaps;
+class GrDirectContext;
+class GrImageContext;
+class GrRecordingContext;
 
 /** Class that exposes methods on GrContext_Base that are only intended for use internal to Skia.
     This class is purely a privileged window into GrContext_Base. It should never have

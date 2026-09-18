@@ -21,14 +21,16 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
+#include "tools/EncodeUtils.h"
+#include "tools/ToolUtils.h"
 
 #include <vector>
 
@@ -51,12 +53,12 @@ static void test_unscaled(skiatest::Reporter* reporter) {
     canvasPaint.clear(0x00000000);
 
     SkPoint center = SkPoint::Make(SkIntToScalar(5), SkIntToScalar(5));
-    SkColor colors[] = {SK_ColorBLUE, SK_ColorRED, SK_ColorGREEN};
+    SkColor4f colors[] = {SkColors::kBlue, SkColors::kRed, SkColors::kGreen};
     SkScalar pos[] = {0, SK_ScalarHalf, SK_Scalar1};
     SkScalar radius = SkIntToScalar(5);
 
-    sk_sp<SkShader> gradient = SkGradientShader::MakeRadial(
-            center, radius, colors, pos, std::size(colors), SkTileMode::kClamp);
+    sk_sp<SkShader> gradient = SkShaders::RadialGradient(
+            center, radius, {{colors, pos, SkTileMode::kClamp}, {}});
 
     // Test using the image filter
     {
@@ -99,12 +101,12 @@ static void test_scaled(skiatest::Reporter* reporter) {
     canvasPaint.clear(0x00000000);
 
     SkPoint center = SkPoint::Make(SkIntToScalar(5), SkIntToScalar(5));
-    SkColor colors[] = {SK_ColorBLUE, SK_ColorRED, SK_ColorGREEN};
+    SkColor4f colors[] = {SkColors::kBlue, SkColors::kRed, SkColors::kGreen};
     SkScalar pos[] = {0, SK_ScalarHalf, SK_Scalar1};
     SkScalar radius = SkIntToScalar(5);
 
-    sk_sp<SkShader> gradient = SkGradientShader::MakeRadial(
-        center, radius, colors, pos, std::size(colors), SkTileMode::kClamp);
+    sk_sp<SkShader> gradient = SkShaders::RadialGradient(
+        center, radius, {{colors, pos, SkTileMode::kClamp}, {}});
 
     // Test using the image filter
     {
@@ -123,12 +125,24 @@ static void test_scaled(skiatest::Reporter* reporter) {
     }
 
     // Assert that both paths yielded the same result
-    for (int y = 0; y < kHeight; ++y) {
-        const SkPMColor* filterPtr = filterResult.getAddr32(0, y);
-        const SkPMColor* paintPtr = paintResult.getAddr32(0, y);
-        for (int x = 0; x < kWidth; ++x, ++filterPtr, ++paintPtr) {
-            REPORTER_ASSERT(reporter, *filterPtr == *paintPtr);
+    if (!ToolUtils::equal_pixels(filterResult, paintResult)) {
+        SkString encoded;
+        SkString errString("Image filter doesn't match paint reference");
+        errString.append("\nExpected: ");
+        if (ToolUtils::BitmapToBase64DataURI(paintResult, &encoded)) {
+            errString.append(encoded);
+        } else {
+            errString.append("failed to encode");
         }
+
+        errString.append("\nActual: ");
+        if (ToolUtils::BitmapToBase64DataURI(filterResult, &encoded)) {
+            errString.append(encoded);
+        } else {
+            errString.append("failed to encode");
+        }
+
+        ERRORF(reporter, "%s\n", errString.c_str());
     }
 }
 
@@ -202,6 +216,7 @@ DEF_TEST(SkRuntimeShaderImageFilter_CPU, r) {
     test_runtime_shader(r, surface.get());
 }
 
+#if defined(SK_GANESH)
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRuntimeShaderImageFilter_GPU,
                                        r,
                                        ctxInfo,
@@ -211,3 +226,4 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRuntimeShaderImageFilter_GPU,
             SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kNo, info));
     test_runtime_shader(r, surface.get());
 }
+#endif

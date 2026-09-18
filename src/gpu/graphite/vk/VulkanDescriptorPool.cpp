@@ -7,15 +7,16 @@
 
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 
-#include "include/private/base/SkTArray.h"
-#include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
+#include "include/private/SkTArray.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
 namespace skgpu::graphite {
 
-sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(
-        const VulkanSharedContext* context,
-        SkSpan<DescTypeAndCount> requestedDescCounts) {
+sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext* context,
+                                                       SkSpan<DescriptorData> requestedDescCounts,
+                                                       VkDescriptorSetLayout layout,
+                                                       uint32_t numSets) {
 
     if (requestedDescCounts.empty()) {
         return nullptr;
@@ -31,52 +32,60 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(
     // highly unexpected for us to exceed this limit in practice.
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorPoolSize> poolSizes;
     for (size_t i = 0; i < requestedDescCounts.size(); i++) {
-        SkASSERT(requestedDescCounts[i].count > 0);
-        if (requestedDescCounts[i].count > kMaxNumDescriptors) {
-            SkDebugf("The number of descriptors requested, %d, exceeds the maximum allowed (%d).\n",
-                     requestedDescCounts[i].count,
+        SkASSERT(requestedDescCounts[i].fCount > 0);
+        if (requestedDescCounts[i].fCount > kMaxNumDescriptors) {
+            SkDebugf("The number of descriptors requested, %u, exceeds the maximum allowed (%d).\n",
+                     requestedDescCounts[i].fCount,
                      kMaxNumDescriptors);
             return nullptr;
         }
-        VkDescriptorPoolSize* poolSize = &poolSizes.at(i);
-        memset(poolSize, 0, sizeof(VkDescriptorPoolSize));
+        VkDescriptorPoolSize& poolSize = poolSizes.push_back();
+        poolSize = {};
         // Map each DescriptorSetType to the appropriate backend VkDescriptorType
-        poolSize->type = VulkanDescriptorSet::DsTypeEnumToVkDs(requestedDescCounts[i].type);
+        poolSize.type = DsTypeEnumToVkDs(requestedDescCounts[i].fType);
         // Create a pool large enough to accommodate the maximum possible number of descriptor sets
-        poolSize->descriptorCount = requestedDescCounts[i].count * kMaxNumSets;
+        poolSize.descriptorCount = requestedDescCounts[i].fCount * numSets;
     }
 
-    VkDescriptorPoolCreateInfo createInfo;
-    memset(&createInfo, 0, sizeof(VkDescriptorPoolCreateInfo));
+    VkDescriptorPoolCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    createInfo.pNext = nullptr;
-    createInfo.flags = 0;
-    createInfo.maxSets = kMaxNumSets;
+    createInfo.maxSets = numSets;
     createInfo.poolSizeCount = requestedDescCounts.size();
     createInfo.pPoolSizes = &poolSizes.front();
 
     VkDescriptorPool pool;
     VkResult result;
-    VULKAN_CALL_RESULT(context->interface(), result, CreateDescriptorPool(context->device(),
-                                                                          &createInfo,
-                                                                          nullptr,
-                                                                          &pool));
+    VULKAN_CALL_RESULT(context,
+                       result,
+                       CreateDescriptorPool(context->device(),
+                                            &createInfo,
+                                            /*const VkAllocationCallbacks*=*/nullptr,
+                                            &pool));
     if (result != VK_SUCCESS) {
+        VULKAN_CALL(context->interface(),
+                    DestroyDescriptorSetLayout(context->device(), layout, nullptr));
         return nullptr;
     }
-    return sk_sp<VulkanDescriptorPool>(new VulkanDescriptorPool(context, pool));
+    return sk_sp<VulkanDescriptorPool>(new VulkanDescriptorPool(context, pool, layout));
 }
 
 VulkanDescriptorPool::VulkanDescriptorPool(const VulkanSharedContext* context,
-                                           VkDescriptorPool pool)
+                                           VkDescriptorPool pool,
+                                           VkDescriptorSetLayout layout)
         : fSharedContext(context)
-        , fDescPool(pool) {}
+        , fDescPool(pool)
+        , fDescSetLayout(layout) {}
 
 VulkanDescriptorPool::~VulkanDescriptorPool() {
     // Destroying the VkDescriptorPool will automatically free and delete any VkDescriptorSets
     // allocated from the pool.
     VULKAN_CALL(fSharedContext->interface(),
                 DestroyDescriptorPool(fSharedContext->device(), fDescPool, nullptr));
+    if (fDescSetLayout != VK_NULL_HANDLE) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    DestroyDescriptorSetLayout(fSharedContext->device(), fDescSetLayout, nullptr));
+        fDescSetLayout = VK_NULL_HANDLE;
+    }
 }
 
 } // namespace skgpu::graphite

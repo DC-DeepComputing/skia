@@ -7,13 +7,14 @@
 
 #include "include/core/SkString.h"
 
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTPin.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkSafeMath.h"
-#include "src/base/SkUTF.h"
-#include "src/base/SkUtils.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkSafeMath.h"
+#include "src/core/SkUTF.h"
+#include "src/core/SkUtils.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -73,7 +74,7 @@ bool SkStrEndsWith(const char string[], const char suffixStr[]) {
             !strncmp(string + strLen - suffixLen, suffixStr, suffixLen);
 }
 
-bool SkStrEndsWith(const char string[], const char suffixChar) {
+bool SkStrEndsWith(const char string[], char suffixChar) {
     SkASSERT(string);
     size_t  strLen = strlen(string);
     if (0 == strLen) {
@@ -163,11 +164,11 @@ char* SkStrAppendS64(char string[], int64_t dec, int minDigits) {
 char* SkStrAppendScalar(char string[], SkScalar value) {
     // Handle infinity and NaN ourselves to ensure consistent cross-platform results.
     // (e.g.: `inf` versus `1.#INF00`, `nan` versus `-nan` for high-bit-set NaNs)
-    if (SkScalarIsNaN(value)) {
+    if (SkIsNaN(value)) {
         strcpy(string, "nan");
         return string + 3;
     }
-    if (!SkScalarIsFinite(value)) {
+    if (!SkIsFinite(value)) {
         if (value > 0) {
             strcpy(string, "inf");
             return string + 3;

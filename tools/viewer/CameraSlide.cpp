@@ -5,14 +5,15 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 #include "include/utils/SkCamera.h"
 #include "src/effects/SkEmbossMaskFilter.h"
-#include "tools/DecodeFile.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
 #include "tools/viewer/Slide.h"
@@ -39,11 +40,11 @@ public:
             "images/gamut.png",
         }) {
             SkBitmap bm;
-            if (GetResourceAsBitmap(resource, &bm)) {
+            if (ToolUtils::GetResourceAsBitmap(resource, &bm)) {
                 SkRect src = { 0, 0, SkIntToScalar(bm.width()), SkIntToScalar(bm.height()) };
                 SkRect dst = { -150, -150, 150, 150 };
                 fShaders.push_back(bm.makeShader(SkSamplingOptions(SkFilterMode::kLinear),
-                                                 SkMatrix::RectToRect(src, dst)));
+                                                 SkMatrix::RectToRectOrIdentity(src, dst)));
             }
         }
     }

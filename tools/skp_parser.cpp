@@ -6,9 +6,11 @@
  */
 
 #include "include/core/SkPicture.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
 #include "include/utils/SkNullCanvas.h"
 #include "src/utils/SkJSONWriter.h"
+#include "tools/ProcsUtils.h"
 #include "tools/UrlDataManager.h"
 #include "tools/debugger/DebugCanvas.h"
 
@@ -47,7 +49,8 @@ int main(int argc, char** argv) {
         SkDebugf("Bad file: '%s'\n", argv[1]);
         return 2;
     }
-    sk_sp<SkPicture> pic = SkPicture::MakeFromStream(&input);
+    SkDeserialProcs procs = ToolUtils::default_deserial_procs();
+    sk_sp<SkPicture> pic = SkPicture::MakeFromStream(&input, &procs);
     if (!pic) {
         SkDebugf("Bad skp: '%s'\n", argv[1]);
         return 3;
@@ -58,7 +61,7 @@ int main(int argc, char** argv) {
     std::unique_ptr<SkCanvas> nullCanvas = SkMakeNullCanvas();
     UrlDataManager dataManager(SkString("data"));
     SkDynamicMemoryWStream stream;
-    SkJSONWriter writer(&stream, SkJSONWriter::Mode::kPretty);
+    SkJSONWriter writer(&stream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kPretty);
     writer.beginObject(); // root
     debugCanvas.toJSON(writer, dataManager, nullCanvas.get());
     writer.endObject(); // root
@@ -66,7 +69,7 @@ int main(int argc, char** argv) {
     if (argc > 2) {
         if (UrlDataManager::UrlData* data =
             dataManager.getDataFromUrl(SkString(argv[2]))) {
-            SkData* skdata = data->fData.get();
+            const SkData* skdata = data->fData.get();
             SkASSERT(skdata);
             #ifdef SK_BUILD_FOR_WIN
             fflush(stdout);

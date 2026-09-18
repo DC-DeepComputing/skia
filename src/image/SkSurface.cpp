@@ -11,7 +11,6 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkCapabilities.h" // IWYU pragma: keep
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
@@ -20,7 +19,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurfaceProps.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkSurfacePriv.h"
 #include "src/image/SkSurface_Base.h"
@@ -32,17 +31,26 @@
 class GrBackendSemaphore;
 class GrRecordingContext;  // IWYU pragma: keep
 class SkPaint;
-class SkSurfaceCharacterization;
+class GrSurfaceCharacterization;
 namespace skgpu { namespace graphite { class Recorder; } }
 
-SkSurfaceProps::SkSurfaceProps() : fFlags(0), fPixelGeometry(kUnknown_SkPixelGeometry) {}
+SkSurfaceProps::SkSurfaceProps()
+    : fFlags(0)
+    , fPixelGeometry(kUnknown_SkPixelGeometry)
+    , fTextContrast(SK_GAMMA_CONTRAST)
+    , fTextGamma(SK_GAMMA_EXPONENT) {}
 
 SkSurfaceProps::SkSurfaceProps(uint32_t flags, SkPixelGeometry pg)
-    : fFlags(flags), fPixelGeometry(pg)
-{}
+    : fFlags(flags)
+    , fPixelGeometry(pg)
+    , fTextContrast(SK_GAMMA_CONTRAST)
+    , fTextGamma(SK_GAMMA_EXPONENT) {}
 
-SkSurfaceProps::SkSurfaceProps(const SkSurfaceProps&) = default;
-SkSurfaceProps& SkSurfaceProps::operator=(const SkSurfaceProps&) = default;
+SkSurfaceProps::SkSurfaceProps(uint32_t flags,
+                               SkPixelGeometry pg,
+                               SkScalar textContrast,
+                               SkScalar textGamma)
+    : fFlags(flags), fPixelGeometry(pg), fTextContrast(textContrast), fTextGamma(textGamma) {}
 
 SkSurface::SkSurface(int width, int height, const SkSurfaceProps* props)
     : fProps(SkSurfacePropsCopyOrDefault(props)), fWidth(width), fHeight(height)
@@ -95,6 +103,10 @@ sk_sp<SkImage> SkSurface::makeImageSnapshot(const SkIRect& srcBounds) {
     } else {
         return asSB(this)->onNewImageSnapshot(&bounds);
     }
+}
+
+sk_sp<SkImage> SkSurface::makeTemporaryImage() {
+    return asSB(this)->onMakeTemporaryImage();
 }
 
 sk_sp<SkSurface> SkSurface::makeSurface(const SkImageInfo& info) {
@@ -157,6 +169,31 @@ void SkSurface::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
         return;
     }
     asSB(this)->onAsyncRescaleAndReadPixelsYUV420(yuvColorSpace,
+                                                  /*readAlpha=*/false,
+                                                  std::move(dstColorSpace),
+                                                  srcRect,
+                                                  dstSize,
+                                                  rescaleGamma,
+                                                  rescaleMode,
+                                                  callback,
+                                                  context);
+}
+
+void SkSurface::asyncRescaleAndReadPixelsYUVA420(SkYUVColorSpace yuvColorSpace,
+                                                 sk_sp<SkColorSpace> dstColorSpace,
+                                                 const SkIRect& srcRect,
+                                                 const SkISize& dstSize,
+                                                 RescaleGamma rescaleGamma,
+                                                 RescaleMode rescaleMode,
+                                                 ReadPixelsCallback callback,
+                                                 ReadPixelsContext context) {
+    if (!SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) || dstSize.isZero() ||
+        (dstSize.width() & 0b1) || (dstSize.height() & 0b1)) {
+        callback(context, nullptr);
+        return;
+    }
+    asSB(this)->onAsyncRescaleAndReadPixelsYUV420(yuvColorSpace,
+                                                  /*readAlpha=*/true,
                                                   std::move(dstColorSpace),
                                                   srcRect,
                                                   dstSize,
@@ -198,69 +235,17 @@ GrRecordingContext* SkSurface::recordingContext() const {
 
 skgpu::graphite::Recorder* SkSurface::recorder() const { return asConstSB(this)->onGetRecorder(); }
 
+SkRecorder* SkSurface::baseRecorder() const { return asConstSB(this)->onGetBaseRecorder(); }
+
 bool SkSurface::wait(int numSemaphores, const GrBackendSemaphore* waitSemaphores,
                      bool deleteSemaphoresAfterWait) {
     return asSB(this)->onWait(numSemaphores, waitSemaphores, deleteSemaphoresAfterWait);
 }
 
-bool SkSurface::characterize(SkSurfaceCharacterization* characterization) const {
+bool SkSurface::characterize(GrSurfaceCharacterization* characterization) const {
     return asConstSB(this)->onCharacterize(characterization);
 }
 
-bool SkSurface::isCompatible(const SkSurfaceCharacterization& characterization) const {
+bool SkSurface::isCompatible(const GrSurfaceCharacterization& characterization) const {
     return asConstSB(this)->onIsCompatible(characterization);
 }
-
-bool SkSurface::draw(sk_sp<const SkDeferredDisplayList> ddl, int xOffset, int yOffset) {
-    if (xOffset != 0 || yOffset != 0) {
-        return false; // the offsets currently aren't supported
-    }
-
-    return asSB(this)->onDraw(std::move(ddl), { xOffset, yOffset });
-}
-
-#if !defined(SK_DISABLE_LEGACY_SKSURFACE_FLUSH) && !defined(SK_GANESH)
-void SkSurface::flush() {}
-void SkSurface::flushAndSubmit(bool syncCpu) {}
-#endif
-
-#if !defined(SK_DISABLE_LEGACY_SKSURFACE_FLUSH) && defined(SK_GANESH)
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "include/gpu/GrTypes.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-
-GrSemaphoresSubmitted SkSurface::flush(BackendSurfaceAccess access, const GrFlushInfo& info) {
-    auto dContext = GrAsDirectContext(this->recordingContext());
-    if (!dContext) {
-        return GrSemaphoresSubmitted::kNo;
-    }
-    return dContext->flush(this, access, info);
-}
-
-GrSemaphoresSubmitted SkSurface::flush(const GrFlushInfo& info,
-                                       const skgpu::MutableTextureState* newState) {
-    auto dContext = GrAsDirectContext(this->recordingContext());
-    if (!dContext) {
-        return GrSemaphoresSubmitted::kNo;
-    }
-    return dContext->flush(this, info, newState);
-}
-
-void SkSurface::flush() {
-    this->flush(GrFlushInfo());
-}
-
-void SkSurface::flushAndSubmit(bool syncCpu) {
-    this->flush(BackendSurfaceAccess::kNoAccess, GrFlushInfo());
-
-    auto direct = GrAsDirectContext(this->recordingContext());
-    if (direct) {
-        direct->submit(syncCpu);
-    }
-}
-
-void SkSurface::resolveMSAA() {
-    SkSurfaces::ResolveMSAA(this);
-}
-#endif

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2019 Google Inc.
+# Copyright 2019 Google LLC
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -21,7 +21,7 @@ import utils
 
 
 # Remember to also update the go asset when this is updated.
-GO_URL = "https://go.dev/dl/go1.18.windows-amd64.zip"
+GO_URL = "https://go.dev/dl/go1.24.0.windows-amd64.zip"
 
 
 def create_asset(target_dir):

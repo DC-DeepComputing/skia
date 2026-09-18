@@ -7,11 +7,17 @@
 
 #include "src/gpu/ganesh/geometry/GrPathUtils.h"
 
-#include "include/gpu/GrTypes.h"
-#include "src/base/SkMathPriv.h"
-#include "src/base/SkUtils.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkFloatingPoint.h"
+#include "src/core/SkGeometry.h"
+#include "src/core/SkPathEnums.h"
 #include "src/core/SkPointPriv.h"
 #include "src/gpu/tessellate/WangsFormula.h"
+
+#include <algorithm>
 
 using namespace skia_private;
 
@@ -84,10 +90,10 @@ uint32_t GrPathUtils::generateQuadraticPoints(const SkPoint& p0,
     }
 
     SkPoint q[] = {
-        { SkScalarAve(p0.fX, p1.fX), SkScalarAve(p0.fY, p1.fY) },
-        { SkScalarAve(p1.fX, p2.fX), SkScalarAve(p1.fY, p2.fY) },
+        { sk_float_midpoint(p0.fX, p1.fX), sk_float_midpoint(p0.fY, p1.fY) },
+        { sk_float_midpoint(p1.fX, p2.fX), sk_float_midpoint(p1.fY, p2.fY) },
     };
-    SkPoint r = { SkScalarAve(q[0].fX, q[1].fX), SkScalarAve(q[0].fY, q[1].fY) };
+    SkPoint r = { sk_float_midpoint(q[0].fX, q[1].fX), sk_float_midpoint(q[0].fY, q[1].fY) };
 
     pointsLeft >>= 1;
     uint32_t a = generateQuadraticPoints(p0, q[0], r, tolSqd, points, pointsLeft);
@@ -115,15 +121,15 @@ uint32_t GrPathUtils::generateCubicPoints(const SkPoint& p0,
         return 1;
     }
     SkPoint q[] = {
-        { SkScalarAve(p0.fX, p1.fX), SkScalarAve(p0.fY, p1.fY) },
-        { SkScalarAve(p1.fX, p2.fX), SkScalarAve(p1.fY, p2.fY) },
-        { SkScalarAve(p2.fX, p3.fX), SkScalarAve(p2.fY, p3.fY) }
+        { sk_float_midpoint(p0.fX, p1.fX), sk_float_midpoint(p0.fY, p1.fY) },
+        { sk_float_midpoint(p1.fX, p2.fX), sk_float_midpoint(p1.fY, p2.fY) },
+        { sk_float_midpoint(p2.fX, p3.fX), sk_float_midpoint(p2.fY, p3.fY) }
     };
     SkPoint r[] = {
-        { SkScalarAve(q[0].fX, q[1].fX), SkScalarAve(q[0].fY, q[1].fY) },
-        { SkScalarAve(q[1].fX, q[2].fX), SkScalarAve(q[1].fY, q[2].fY) }
+        { sk_float_midpoint(q[0].fX, q[1].fX), sk_float_midpoint(q[0].fY, q[1].fY) },
+        { sk_float_midpoint(q[1].fX, q[2].fX), sk_float_midpoint(q[1].fY, q[2].fY) }
     };
-    SkPoint s = { SkScalarAve(r[0].fX, r[1].fX), SkScalarAve(r[0].fY, r[1].fY) };
+    SkPoint s = { sk_float_midpoint(r[0].fX, r[1].fX), sk_float_midpoint(r[0].fY, r[1].fY) };
     pointsLeft >>= 1;
     uint32_t a = generateCubicPoints(p0, q[0], r[0], s, tolSqd, points, pointsLeft);
     uint32_t b = generateCubicPoints(s, r[1], q[2], p3, tolSqd, points, pointsLeft);
@@ -155,7 +161,7 @@ void GrPathUtils::QuadUVMatrix::set(const SkPoint qPts[3]) {
     double a8 = x0*y1-x1*y0;
     double det = a2 + a5 + a8;
 
-    if (!sk_float_isfinite(det)
+    if (!SkIsFinite(det)
         || SkScalarNearlyZero((float)det, SK_ScalarNearlyZero * SK_ScalarNearlyZero)) {
         // The quad is degenerate. Hopefully this is rare. Find the pts that are
         // farthest apart to compute a line (unless it is really a pt).
@@ -455,7 +461,7 @@ void convert_noninflect_cubic_to_quads_with_constraint(const SkPoint p[4],
             cAvg.fX = ab.fY * z1 - z0 * dc.fY;
             cAvg.fY = z0 * dc.fX - ab.fX * z1;
             SkScalar z = ab.fX * dc.fY - ab.fY * dc.fX;
-            z = SkScalarInvert(z);
+            z = sk_ieee_float_divide(1.0f, z);
             cAvg.fX *= z;
             cAvg.fY *= z;
             if (sublevel <= kMaxSubdivs) {
@@ -492,7 +498,7 @@ void GrPathUtils::convertCubicToQuads(const SkPoint p[4],
     if (!p[0].isFinite() || !p[1].isFinite() || !p[2].isFinite() || !p[3].isFinite()) {
         return;
     }
-    if (!SkScalarIsFinite(tolScale)) {
+    if (!SkIsFinite(tolScale)) {
         return;
     }
     SkPoint chopped[10];
@@ -513,7 +519,7 @@ void GrPathUtils::convertCubicToQuadsConstrainToTangents(const SkPoint p[4],
     if (!p[0].isFinite() || !p[1].isFinite() || !p[2].isFinite() || !p[3].isFinite()) {
         return;
     }
-    if (!SkScalarIsFinite(tolScale)) {
+    if (!SkIsFinite(tolScale)) {
         return;
     }
     SkPoint chopped[10];

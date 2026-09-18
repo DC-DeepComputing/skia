@@ -53,9 +53,9 @@ struct Sniffer {
         skpName = name;
     }
 
-    void sniff(const void* ptr, size_t len) {
+    void sniff(sk_sp<const SkData> data) {
         SkMD5 md5;
-        md5.write(ptr, len);
+        md5.write(data->data(), data->size());
         SkMD5::Digest digest = md5.finish();
 
         if (gSeen.contains(digest)) {
@@ -63,7 +63,6 @@ struct Sniffer {
         }
         gSeen.add(digest);
 
-        sk_sp<SkData> data(SkData::MakeWithoutCopy(ptr, len));
         std::unique_ptr<SkCodec> codec = SkCodec::MakeFromData(data);
         if (!codec) {
             // FIXME: This code is currently unreachable because we create an empty generator when
@@ -93,7 +92,7 @@ struct Sniffer {
             path.appendf("%s/%s%d.%s", gOutputDir, name, num, ext.c_str());
 
             SkFILEWStream file(path.c_str());
-            file.write(ptr, len);
+            file.write(data->data(), data->size());
 
             SkDebugf("%s\n", path.c_str());
         };
@@ -132,8 +131,9 @@ static bool get_images_from_file(const SkString& file) {
     auto stream = SkStream::MakeFromFile(file.c_str());
 
     SkDeserialProcs procs;
-    procs.fImageProc = [](const void* data, size_t size, void* ctx) -> sk_sp<SkImage> {
-        ((Sniffer*)ctx)->sniff(data, size);
+    procs.fImageDataProc =
+            [](sk_sp<SkData> data, std::optional<SkAlphaType>, void* ctx) -> sk_sp<SkImage> {
+        ((Sniffer*)ctx)->sniff(std::move(data));
         return nullptr;
     };
     procs.fImageCtx = &sniff;
@@ -188,13 +188,13 @@ int main(int argc, char** argv) {
     unsigned int totalFailures = 0,
               totalUnsupported = 0;
     SkDynamicMemoryWStream memStream;
-    SkJSONWriter writer(&memStream, SkJSONWriter::Mode::kPretty);
+    SkJSONWriter writer(&memStream, SkSerialProcs{}, SkJSONWriter::Mode::kPretty);
     writer.beginObject();
     {
         writer.beginObject("failures");
         {
-            for(const auto& failure : gSkpToUnknownCount) {
-                SkDebugf("%s %d\n", failure.first.c_str(), failure.second);
+            for (const auto& failure : gSkpToUnknownCount) {
+                SkDebugf("%s %u\n", failure.first.c_str(), failure.second);
                 totalFailures += failure.second;
                 writer.appendU32(failure.first.c_str(), failure.second);
             }
@@ -206,18 +206,17 @@ int main(int argc, char** argv) {
         writer.beginObject("unsupported");
         {
             for (const auto& unsupported : gSkpToUnsupportedCount) {
-                SkDebugf("%s %d\n", unsupported.first.c_str(), unsupported.second);
+                SkDebugf("%s %u\n", unsupported.first.c_str(), unsupported.second);
                 totalUnsupported += unsupported.second;
                 writer.appendHexU32(unsupported.first.c_str(), unsupported.second);
             }
-
         }
         writer.endObject();
         writer.appendU32("totalUnsupported", totalUnsupported);
 #endif
 
         writer.appendS32("totalSuccesses", gKnown);
-        SkDebugf("%d known, %d failures, %d unsupported\n",
+        SkDebugf("%d known, %u failures, %u unsupported\n",
                  gKnown, totalFailures, totalUnsupported);
     }
     writer.endObject();

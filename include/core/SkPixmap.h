@@ -15,9 +15,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
-#include "include/private/base/SkAPI.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkAttributes.h"
+#include "include/private/SkAPI.h"
+#include "include/private/SkAssert.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -115,7 +114,7 @@ public:
 
     /** Deprecated.
     */
-    bool SK_WARN_UNUSED_RESULT reset(const SkMask& mask);
+    [[nodiscard]] bool reset(const SkMask& mask);
 
     /** Sets subset width, height, pixel address to intersection of SkPixmap with area,
         if intersection is not empty; and return true. Otherwise, leave subset unchanged
@@ -127,7 +126,7 @@ public:
         @param area    bounds to intersect with SkPixmap
         @return        true if intersection of SkPixmap and area is not empty
     */
-    bool SK_WARN_UNUSED_RESULT extractSubset(SkPixmap* subset, const SkIRect& area) const;
+    [[nodiscard]] bool extractSubset(SkPixmap* subset, const SkIRect& area) const;
 
     /** Returns width, height, SkAlphaType, SkColorType, and SkColorSpace.
 
@@ -165,6 +164,11 @@ public:
         @return  pixel height in SkImageInfo
     */
     int height() const { return fInfo.height(); }
+
+    /**
+     *  Returns if the pixmap is empty (from its ImageInfo).
+     */
+    bool isEmpty() const { return fInfo.isEmpty(); }
 
     /**
      *  Return the dimensions of the pixmap (from its ImageInfo)
@@ -397,8 +401,8 @@ public:
         @return   readable unsigned 8-bit pointer to pixel at (x, y)
     */
     const uint8_t* addr8(int x, int y) const {
-        SkASSERT((unsigned)x < (unsigned)fInfo.width());
-        SkASSERT((unsigned)y < (unsigned)fInfo.height());
+        SkASSERTF(x >= 0 && x < this->width(), "x=%d; width=%d\n", x, fInfo.width());
+        SkASSERTF(y >= 0 && y < this->height(), "y=%d; height=%d\n", y, fInfo.height());
         return (const uint8_t*)((const char*)this->addr8() + (size_t)y * fRowBytes + (x << 0));
     }
 
@@ -415,8 +419,8 @@ public:
         @return   readable unsigned 16-bit pointer to pixel at (x, y)
     */
     const uint16_t* addr16(int x, int y) const {
-        SkASSERT((unsigned)x < (unsigned)fInfo.width());
-        SkASSERT((unsigned)y < (unsigned)fInfo.height());
+        SkASSERTF(x >= 0 && x < this->width(), "x=%d; width=%d\n", x, fInfo.width());
+        SkASSERTF(y >= 0 && y < this->height(), "y=%d; height=%d\n", y, fInfo.height());
         return (const uint16_t*)((const char*)this->addr16() + (size_t)y * fRowBytes + (x << 1));
     }
 
@@ -433,8 +437,8 @@ public:
         @return   readable unsigned 32-bit pointer to pixel at (x, y)
     */
     const uint32_t* addr32(int x, int y) const {
-        SkASSERT((unsigned)x < (unsigned)fInfo.width());
-        SkASSERT((unsigned)y < (unsigned)fInfo.height());
+        SkASSERTF(x >= 0 && x < this->width(), "x=%d; width=%d\n", x, fInfo.width());
+        SkASSERTF(y >= 0 && y < this->height(), "y=%d; height=%d\n", y, fInfo.height());
         return (const uint32_t*)((const char*)this->addr32() + (size_t)y * fRowBytes + (x << 2));
     }
 
@@ -451,8 +455,8 @@ public:
         @return   readable unsigned 64-bit pointer to pixel at (x, y)
     */
     const uint64_t* addr64(int x, int y) const {
-        SkASSERT((unsigned)x < (unsigned)fInfo.width());
-        SkASSERT((unsigned)y < (unsigned)fInfo.height());
+        SkASSERTF(x >= 0 && x < this->width(), "x=%d; width=%d\n", x, fInfo.width());
+        SkASSERTF(y >= 0 && y < this->height(), "y=%d; height=%d\n", y, fInfo.height());
         return (const uint64_t*)((const char*)this->addr64() + (size_t)y * fRowBytes + (x << 3));
     }
 

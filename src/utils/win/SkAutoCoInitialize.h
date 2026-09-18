@@ -12,14 +12,14 @@
 
 #ifdef SK_BUILD_FOR_WIN
 
-#include "include/private/base/SkNoncopyable.h"
-#include "src/base/SkLeanWindows.h"
+#include "include/private/SkNoncopyable.h"
+#include "src/core/SkLeanWindows.h"
 
 /**
  * An instance of this class initializes COM on creation
  * and closes the COM library on destruction.
  */
-class SkAutoCoInitialize : SkNoncopyable {
+class [[nodiscard]] SkAutoCoInitialize : SkNoncopyable {
 private:
     HRESULT fHR;
 public:

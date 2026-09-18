@@ -24,6 +24,7 @@
 #include "include/core/SkTypes.h"
 #include "include/utils/SkTextUtils.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 enum SrcType {
     //! A WxH image with a rectangle in the lower right.
@@ -121,7 +122,7 @@ static void make_bitmaps(int w, int h, SkBitmap* src, SkBitmap* dst,
     transparent->eraseColor(SK_ColorTRANSPARENT);
 }
 
-static uint16_t gData[] = { 0xFFFF, 0xCCCF, 0xCCCF, 0xFFFF };
+static uint32_t gData[] = { 0xFFFFFFFF, 0xFFCCCCCC, 0xFFCCCCCC, 0xFFFFFFFF };
 
 class XfermodesGM : public skiagm::GM {
     SkBitmap    fBG;
@@ -209,9 +210,8 @@ class XfermodesGM : public skiagm::GM {
     }
 
     void onOnceBeforeDraw() override {
-        fBG.installPixels(SkImageInfo::Make(2, 2, kARGB_4444_SkColorType,
-                                            kOpaque_SkAlphaType),
-                          gData, 4);
+        fBG.installPixels(SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kOpaque_SkAlphaType),
+                          gData, 8);
 
         make_bitmaps(W, H, &fSrcB, &fDstB, &fTransparent);
     }
@@ -222,13 +222,9 @@ public:
     XfermodesGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("xfermodes");
-    }
+    SkString getName() const override { return SkString("xfermodes"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(1990, 570);
-    }
+    SkISize getISize() override { return SkISize::Make(1990, 570); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->translate(SkIntToScalar(10), SkIntToScalar(20));
@@ -243,7 +239,7 @@ protected:
         SkPaint labelP;
         labelP.setAntiAlias(true);
 
-        SkFont font(ToolUtils::create_portable_typeface());
+        SkFont font = ToolUtils::DefaultPortableFont();
 
         const int kWrap = 5;
 

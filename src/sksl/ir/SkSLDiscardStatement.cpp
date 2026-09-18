@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -24,10 +24,6 @@ std::unique_ptr<Statement> DiscardStatement::Convert(const Context& context, Pos
 std::unique_ptr<Statement> DiscardStatement::Make(const Context& context, Position pos) {
     SkASSERT(ProgramConfig::IsFragment(context.fConfig->fKind));
     return std::make_unique<DiscardStatement>(pos);
-}
-
-std::unique_ptr<Statement> DiscardStatement::clone() const {
-    return std::make_unique<DiscardStatement>(fPosition);
 }
 
 }  // namespace SkSL

@@ -8,7 +8,7 @@
 #include "src/gpu/ganesh/effects/GrBezierEffect.h"
 
 #include "include/core/SkColor.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
@@ -190,7 +190,7 @@ GrConicEffect::GrConicEffect(const SkPMColor4f& color, const SkMatrix& viewMatri
 
 GR_DEFINE_GEOMETRY_PROCESSOR_TEST(GrConicEffect)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrGeometryProcessor* GrConicEffect::TestCreate(GrProcessorTestData* d) {
     GrColor color = GrTest::RandomColor(d->fRandom);
     SkMatrix viewMatrix = GrTest::TestMatrix(d->fRandom);
@@ -343,7 +343,7 @@ GrQuadEffect::GrQuadEffect(const SkPMColor4f& color, const SkMatrix& viewMatrix,
 
 GR_DEFINE_GEOMETRY_PROCESSOR_TEST(GrQuadEffect)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrGeometryProcessor* GrQuadEffect::TestCreate(GrProcessorTestData* d) {
     GrColor color = GrTest::RandomColor(d->fRandom);
     SkMatrix viewMatrix = GrTest::TestMatrix(d->fRandom);

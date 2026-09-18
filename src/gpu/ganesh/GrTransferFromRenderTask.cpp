@@ -10,25 +10,29 @@
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
-#include "src/gpu/ganesh/GrResourceProvider.h"
 
 void GrTransferFromRenderTask::gatherProxyIntervals(GrResourceAllocator* alloc) const {
     // This renderTask doesn't have "normal" ops. In this case we still need to add an interval (so
     // fEndOfOpsTaskOpIndices will remain in sync), so we create a fake op# to capture the fact that
     // we read fSrcProxy.
     alloc->addInterval(fSrcProxy.get(), alloc->curOp(), alloc->curOp(),
-                       GrResourceAllocator::ActualUse::kYes);
+                       GrResourceAllocator::ActualUse::kYes,
+                       GrResourceAllocator::AllowRecycling::kYes);
     alloc->incOps();
 }
 
-bool GrTransferFromRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrTransferFromRenderTask::onExecute(GrOpFlushState* flushState) {
+    SkASSERT(!fWasExecuted); // These are one-time tasks
+    SkDEBUGCODE(fWasExecuted = true;)
+
     if (!fSrcProxy->isInstantiated()) {
-        return false;
+        return ExecutionResult::RanButFailed();
     }
-    return flushState->gpu()->transferPixelsFrom(fSrcProxy->peekSurface(),
-                                                 fSrcRect,
-                                                 fSurfaceColorType,
-                                                 fDstColorType,
-                                                 fDstBuffer,
-                                                 fDstOffset);
+    fExecutionSuccess = flushState->gpu()->transferPixelsFrom(fSrcProxy->peekSurface(),
+                                                              fSrcRect,
+                                                              fSurfaceColorType,
+                                                              fDstColorType,
+                                                              fDstBuffer,
+                                                              fDstOffset);
+    return ExecutionResult::Ran(fExecutionSuccess);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,7 +8,7 @@
 #ifndef GrSemaphore_DEFINED
 #define GrSemaphore_DEFINED
 
-#include "include/gpu/GrBackendSemaphore.h"
+#include "include/gpu/ganesh/GrBackendSemaphore.h"
 
 /**
  * Represents a semaphore-like GPU synchronization object.

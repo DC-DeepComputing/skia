@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,23 +8,43 @@
 #ifndef SkPicturePriv_DEFINED
 #define SkPicturePriv_DEFINED
 
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkPicture.h"
+#include "include/core/SkRefCnt.h"
+
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTemplates.h"
+
+#include <atomic>
+#include <cstdint>
 
 class SkReadBuffer;
-class SkWriteBuffer;
 class SkStream;
+class SkWriteBuffer;
 struct SkPictInfo;
+class SkRecord;
+class SkBBoxHierarchy;
 
 class SkPicturePriv {
 public:
+    static sk_sp<SkPicture> MakePicture(const SkRect& cull,
+                                        sk_sp<const SkRecord> record,
+                                        std::unique_ptr<const SkSnapshotArray> drawablePicts,
+                                        sk_sp<const SkBBoxHierarchy> bbh,
+                                        size_t approxBytesUsedBySubPictures);
+
+    static sk_sp<SkPicture> MakeEmptyPicture();
+
     /**
-     *  Recreate a picture that was serialized into a buffer. If the creation requires bitmap
-     *  decoding, the decoder must be set on the SkReadBuffer parameter by calling
-     *  SkReadBuffer::setBitmapDecoder() before calling SkPicture::MakeFromBuffer().
+     *  Recreate a picture that was serialized into a buffer. If the creation
+     * requires bitmap decoding, the decoder must be set on the SkReadBuffer
+     * parameter by calling SkReadBuffer::setBitmapDecoder() before calling
+     * SkPicture::MakeFromBuffer().
      *  @param buffer Serialized picture data.
-     *  @return A new SkPicture representing the serialized data, or NULL if the buffer is
-     *          invalid.
+     *  @return A new SkPicture representing the serialized data, or NULL if
+     * the buffer is invalid.
      */
+    static constexpr int kDefaultRecursionLimit = 100;
     static sk_sp<SkPicture> MakeFromBuffer(SkReadBuffer& buffer);
 
     /**
@@ -32,10 +52,11 @@ public:
      */
     static void Flatten(const sk_sp<const SkPicture> , SkWriteBuffer& buffer);
 
-    // Returns NULL if this is not an SkBigPicture.
-    static const SkBigPicture* AsSkBigPicture(const sk_sp<const SkPicture> picture) {
-        return picture->asSkBigPicture();
+    static const SkRecord* GetRecord(const SkPicture* pic) {
+        return pic ? pic->fRecord.get() : nullptr;
     }
+
+    static int ApproximateOpCount(const SkPicture* pic, int depth = 0, bool nested = false);
 
     static uint64_t MakeSharedID(uint32_t pictureID) {
         uint64_t sharedID = SkSetFourByteTag('p', 'i', 'c', 't');
@@ -43,7 +64,9 @@ public:
     }
 
     static void AddedToCache(const SkPicture* pic) {
-        pic->fAddedToCache.store(true);
+        if (pic) {
+            pic->fAddedToCache.store(true);
+        }
     }
 
     // V35: Store SkRect (rather then width & height) in header
@@ -109,6 +132,18 @@ public:
     // V96: SkImageFilters::Magnifier updated with more complete parameters
     // V97: SkImageFilters::RuntimeShader takes a sample radius
     // V98: Merged SkImageFilters::Blend and ::Arithmetic implementations
+    // V99: Remove legacy Magnifier filter
+    // V100: SkImageFilters::DropShadow does not have a dedicated implementation
+    // V101: Crop image filter supports all SkTileModes instead of just kDecal
+    // V102: Convolution image filter uses ::Crop to apply tile mode
+    // V103: Remove deprecated per-image filter crop rect
+    // v104: SaveLayer supports multiple image filters
+    // v105: Unclamped matrix color filter
+    // v106: SaveLayer supports custom backdrop tile modes
+    // v107: Combine SkColorShader and SkColorShader4
+    // v108: Serialize stable keys of runtime effects
+    // v109: Extend SkWorkingColorSpaceShader to have alpha type + output control
+    // v110: Add restrictOutputToInputBounds to SkImageFilters::RuntimeShader
 
     enum Version {
         kPictureShaderFilterParam_Version   = 82,
@@ -128,6 +163,18 @@ public:
         kRevampMagnifierFilter              = 96,
         kRuntimeImageFilterSampleRadius     = 97,
         kCombineBlendArithmeticFilters      = 98,
+        kRemoveLegacyMagnifierFilter        = 99,
+        kDropShadowImageFilterComposition   = 100,
+        kCropImageFilterSupportsTiling      = 101,
+        kConvolutionImageFilterTilingUpdate = 102,
+        kRemoveDeprecatedCropRect           = 103,
+        kMultipleFiltersOnSaveLayer         = 104,
+        kUnclampedMatrixColorFilter         = 105,
+        kSaveLayerBackdropTileMode          = 106,
+        kCombineColorShaders                = 107,
+        kSerializeStableKeys                = 108,
+        kWorkingColorSpaceOutput            = 109,
+        kRuntimeImageFilterRestrictedOutput = 110,
 
         // Only SKPs within the min/current picture version range (inclusive) can be read.
         //
@@ -152,10 +199,32 @@ public:
         //
         // Contact the Infra Gardener if the above steps do not work for you.
         kMin_Version     = kPictureShaderFilterParam_Version,
-        kCurrent_Version = kCombineBlendArithmeticFilters
+        kCurrent_Version = kRuntimeImageFilterRestrictedOutput
     };
 };
 
 bool SkPicture_StreamIsSKP(SkStream*, SkPictInfo*);
 
+class SkSnapshotArray : ::SkNoncopyable {
+public:
+    SkSnapshotArray(const SkPicture* pics[], int count) : fPics(pics), fCount(count) {
+        for (int i = 0; i < fCount; i++) SkASSERT(pics[i]);
+    }
+    ~SkSnapshotArray() {
+        for (int i = 0; i < fCount; i++) {
+            fPics[i]->unref();
+        }
+    }
+
+    const SkPicture* const* begin() const { return fPics; }
+    const SkPicture* at(int i) const {
+        SkASSERT(0 <= i && i < fCount);
+        return fPics[i];
+    }
+    int count() const { return fCount; }
+
+private:
+    skia_private::AutoTMalloc<const SkPicture*> fPics;
+    int fCount;
+};
 #endif

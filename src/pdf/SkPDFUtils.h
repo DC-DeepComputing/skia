@@ -7,20 +7,33 @@
 #ifndef SkPDFUtils_DEFINED
 #define SkPDFUtils_DEFINED
 
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPath.h"
-#include "include/core/SkShader.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
-#include "src/base/SkUTF.h"
-#include "src/base/SkUtils.h"
-#include "src/pdf/SkPDFTypes.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "src/core/SkUTF.h"
+#include "src/core/SkUtils.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/utils/SkFloatToDecimal.h"
 
+#include <cstdint>
+#include <cstring>
+#include <memory>
+
 class SkBitmap;
-class SkMatrix;
+class SkImage;
 class SkPDFArray;
+class SkPDFDict;
+class SkPath;
+class SkShader;
+enum class SkBlendMode;
 struct SkRect;
+
+namespace SkPDF { struct DateTime; }
 
 template <typename T>
 bool SkPackedArrayEqual(T* u, T* v, size_t n) {
@@ -35,11 +48,11 @@ bool SkPackedArrayEqual(T* u, T* v, size_t n) {
 #define PRINT_NOT_IMPL(str)
 #endif
 
-#define NOT_IMPLEMENTED(condition, assert)                         \
+#define NOT_IMPLEMENTED(condition, assertion)                      \
     do {                                                           \
         if ((bool)(condition)) {                                   \
             PRINT_NOT_IMPL("NOT_IMPLEMENTED: " #condition "\n");   \
-            SkDEBUGCODE(SkASSERT(!assert);)                        \
+            SkDEBUGCODE(SkASSERT(!assertion);)                     \
         }                                                          \
     } while (0)
 
@@ -53,12 +66,11 @@ std::unique_ptr<SkPDFArray> MatrixToArray(const SkMatrix& matrix);
 void MoveTo(SkScalar x, SkScalar y, SkWStream* content);
 void AppendLine(SkScalar x, SkScalar y, SkWStream* content);
 void AppendRectangle(const SkRect& rect, SkWStream* content);
-void EmitPath(const SkPath& path, SkPaint::Style paintStyle,
-              bool doConsumeDegerates, SkWStream* content, SkScalar tolerance = 0.25f);
-inline void EmitPath(const SkPath& path, SkPaint::Style paintStyle,
-                     SkWStream* content, SkScalar tolerance = 0.25f) {
-    SkPDFUtils::EmitPath(path, paintStyle, true, content, tolerance);
-}
+enum class EmptyPath : bool { Discard, Preserve };
+enum class EmptyVerb : bool { Discard, Preserve };
+enum class EmptyArea : bool { Discard, Preserve };
+[[nodiscard]] bool EmitPath(const SkPath&, EmptyPath, EmptyVerb, EmptyArea,
+                            SkWStream* content, SkScalar tolerance = 0.25f);
 void ClosePath(SkWStream* content);
 void PaintPath(SkPaint::Style style, SkPathFillType fill, SkWStream* content);
 void StrokePath(SkWStream* content);
@@ -70,7 +82,7 @@ void ApplyPattern(int objectIndex, SkWStream* content);
 size_t ColorToDecimal(uint8_t value, char result[5]);
 
 static constexpr unsigned kFloatColorDecimalCount = 4;
-size_t ColorToDecimalF(float value, char result[kFloatColorDecimalCount + 2]);
+size_t ColorToDecimalF(float value, char (&result)[kFloatColorDecimalCount + 2]);
 inline void AppendColorComponent(uint8_t value, SkWStream* wStream) {
     char buffer[5];
     size_t len = SkPDFUtils::ColorToDecimal(value, buffer);
@@ -84,7 +96,7 @@ inline void AppendColorComponentF(float value, SkWStream* wStream) {
 
 inline void AppendScalar(SkScalar value, SkWStream* stream) {
     char result[kMaximumSkFloatToDecimalLength];
-    size_t len = SkFloatToDecimal(SkScalarToFloat(value), result);
+    size_t len = SkFloatToDecimal(value, result);
     SkASSERT(len < kMaximumSkFloatToDecimalLength);
     stream->write(result, len);
 }
@@ -123,16 +135,17 @@ inline SkMatrix GetShaderLocalMatrix(const SkShader* shader) {
 bool InverseTransformBBox(const SkMatrix& matrix, SkRect* bbox);
 void PopulateTilingPatternDict(SkPDFDict* pattern,
                                SkRect& bbox,
+                               bool tileX, bool tileY,
                                std::unique_ptr<SkPDFDict> resources,
                                const SkMatrix& matrix);
 
 bool ToBitmap(const SkImage* img, SkBitmap* dst);
 
-#ifdef SK_PDF_BASE85_BINARY
-void Base85Encode(std::unique_ptr<SkStreamAsset> src, SkDynamicMemoryWStream* dst);
-#endif //  SK_PDF_BASE85_BINARY
-
 void AppendTransform(const SkMatrix&, SkWStream*);
+
+// Takes SkTime::GetNSecs() [now] and puts it into the provided struct.
+void GetDateTime(SkPDF::DateTime*);
+
 }  // namespace SkPDFUtils
 
 #endif

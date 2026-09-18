@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,16 +8,23 @@
 #ifndef SkSGRenderNode_DEFINED
 #define SkSGRenderNode_DEFINED
 
-#include "modules/sksg/include/SkSGNode.h"
-
 #include "include/core/SkBlender.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
+#include "modules/sksg/include/SkSGNode.h"
+
+#include <cstddef>
+#include <cstdint>
+#include <utility>
+#include <vector>
 
 class SkCanvas;
 class SkImageFilter;
 class SkPaint;
+struct SkPoint;
+struct SkRect;
 
 namespace sksg {
 

@@ -10,12 +10,12 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkAutoMalloc.h"
-#include "src/base/SkBuffer.h"
-#include "src/base/SkRandom.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkAutoMalloc.h"
+#include "src/core/SkBuffer.h"
 #include "src/core/SkOSFile.h"
+#include "src/core/SkRandom.h"
 #include "src/core/SkStreamPriv.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
@@ -40,8 +40,6 @@ using namespace skia_private;
 #ifndef SK_BUILD_FOR_WIN
 #include <fcntl.h>
 #endif
-
-#define MAX_SIZE    (256 * 1024)
 
 static void test_loop_stream(skiatest::Reporter* reporter, SkStream* stream,
                              const void* src, size_t len, int repeat) {
@@ -188,25 +186,28 @@ static void TestPackedUInt(skiatest::Reporter* reporter) {
 
 // Test that setting an SkMemoryStream to a nullptr data does not result in a crash when calling
 // methods that access fData.
-static void TestDereferencingData(SkMemoryStream* memStream) {
-    memStream->read(nullptr, 0);
+static void TestDereferencingData(skiatest::Reporter* reporter, SkMemoryStream* memStream) {
+    REPORTER_ASSERT(reporter, memStream->read(nullptr, 0) == 0);
+    // Reading non-zero bytes from an empty stream should cleanly read zero bytes.
+    char buf[1];
+    REPORTER_ASSERT(reporter, memStream->read(buf, sizeof(buf)) == 0);
     memStream->getMemoryBase();
-    (void)memStream->asData();
+    (void)memStream->getData();
 }
 
-static void TestNullData() {
+static void TestNullData(skiatest::Reporter* reporter) {
     SkMemoryStream memStream(nullptr);
-    TestDereferencingData(&memStream);
+    TestDereferencingData(reporter, &memStream);
 
     memStream.setData(nullptr);
-    TestDereferencingData(&memStream);
+    TestDereferencingData(reporter, &memStream);
 
 }
 
 DEF_TEST(Stream, reporter) {
     TestWStream(reporter);
     TestPackedUInt(reporter);
-    TestNullData();
+    TestNullData(reporter);
 }
 
 #ifndef SK_BUILD_FOR_IOS
@@ -416,25 +417,25 @@ DEF_TEST(StreamPeek_BlockMemoryStream, rep) {
     stream_peek_test(rep, asset.get(), expected.get());
 }
 
-DEF_TEST(StreamRemainingLengthIsBelow_MemoryStream, rep) {
+DEF_TEST(RemainingLengthIsBelow_MemoryStream, rep) {
     SkMemoryStream stream(100);
-    REPORTER_ASSERT(rep, !StreamRemainingLengthIsBelow(&stream, 0));
-    REPORTER_ASSERT(rep, !StreamRemainingLengthIsBelow(&stream, 90));
-    REPORTER_ASSERT(rep, !StreamRemainingLengthIsBelow(&stream, 100));
+    REPORTER_ASSERT(rep, !SkStreamPriv::RemainingLengthIsBelow(&stream, 0));
+    REPORTER_ASSERT(rep, !SkStreamPriv::RemainingLengthIsBelow(&stream, 90));
+    REPORTER_ASSERT(rep, !SkStreamPriv::RemainingLengthIsBelow(&stream, 100));
 
-    REPORTER_ASSERT(rep, StreamRemainingLengthIsBelow(&stream, 101));
-    REPORTER_ASSERT(rep, StreamRemainingLengthIsBelow(&stream, ULONG_MAX));
+    REPORTER_ASSERT(rep, SkStreamPriv::RemainingLengthIsBelow(&stream, 101));
+    REPORTER_ASSERT(rep, SkStreamPriv::RemainingLengthIsBelow(&stream, ULONG_MAX));
 
     uint8_t buff[75];
     REPORTER_ASSERT(rep, stream.read(buff, 75) == 75);
 
-    REPORTER_ASSERT(rep, !StreamRemainingLengthIsBelow(&stream, 0));
-    REPORTER_ASSERT(rep, !StreamRemainingLengthIsBelow(&stream, 24));
-    REPORTER_ASSERT(rep, !StreamRemainingLengthIsBelow(&stream, 25));
+    REPORTER_ASSERT(rep, !SkStreamPriv::RemainingLengthIsBelow(&stream, 0));
+    REPORTER_ASSERT(rep, !SkStreamPriv::RemainingLengthIsBelow(&stream, 24));
+    REPORTER_ASSERT(rep, !SkStreamPriv::RemainingLengthIsBelow(&stream, 25));
 
-    REPORTER_ASSERT(rep, StreamRemainingLengthIsBelow(&stream, 26));
-    REPORTER_ASSERT(rep, StreamRemainingLengthIsBelow(&stream, 100));
-    REPORTER_ASSERT(rep, StreamRemainingLengthIsBelow(&stream, ULONG_MAX));
+    REPORTER_ASSERT(rep, SkStreamPriv::RemainingLengthIsBelow(&stream, 26));
+    REPORTER_ASSERT(rep, SkStreamPriv::RemainingLengthIsBelow(&stream, 100));
+    REPORTER_ASSERT(rep, SkStreamPriv::RemainingLengthIsBelow(&stream, ULONG_MAX));
 }
 
 namespace {
@@ -464,17 +465,17 @@ static void stream_copy_test(skiatest::Reporter* reporter,
                              size_t N,
                              SkStream* stream) {
     SkDynamicMemoryWStream tgt;
-    if (!SkStreamCopy(&tgt, stream)) {
-        ERRORF(reporter, "SkStreamCopy failed");
+    if (!SkStreamPriv::Copy(&tgt, stream)) {
+        ERRORF(reporter, "SkStreamPriv::Copy failed");
         return;
     }
     sk_sp<SkData> data(tgt.detachAsData());
     if (data->size() != N) {
-        ERRORF(reporter, "SkStreamCopy incorrect size");
+        ERRORF(reporter, "SkStreamPriv::Copy incorrect size");
         return;
     }
     if (0 != memcmp(data->data(), srcData, N)) {
-        ERRORF(reporter, "SkStreamCopy bad copy");
+        ERRORF(reporter, "SkStreamPriv::Copy bad copy");
     }
 }
 
@@ -498,6 +499,24 @@ DEF_TEST(DynamicMemoryWStream_detachAsData, r) {
     }
 }
 
+DEF_TEST(DynamicMemoryWStream_detachAsVector, r) {
+    const char az[] = "abcdefghijklmnopqrstuvwxyz";
+    const unsigned N = 40000;
+    SkDynamicMemoryWStream dmws;
+    for (unsigned i = 0; i < N; ++i) {
+        dmws.writeText(az);
+    }
+    REPORTER_ASSERT(r, dmws.bytesWritten() == N * strlen(az));
+    auto data = dmws.detachAsVector();
+    REPORTER_ASSERT(r, data.size() == N * strlen(az));
+    for (unsigned i = 0; i < N; ++i) {
+        if (0 != memcmp(&data[i * strlen(az)], az, strlen(az))) {
+            ERRORF(r, "detachAsVector() memcmp failed");
+            return;
+        }
+    }
+}
+
 DEF_TEST(StreamCopy, reporter) {
     SkRandom random(123456);
     static const int N = 10000;
@@ -505,7 +524,7 @@ DEF_TEST(StreamCopy, reporter) {
     for (int j = 0; j < N; ++j) {
         src[j] = random.nextU() & 0xff;
     }
-    // SkStreamCopy had two code paths; this test both.
+    // SkStreamPriv::Copy had two code paths; this test both.
     DumbStream dumbStream(src.get(), (size_t)N);
     stream_copy_test(reporter, src, N, &dumbStream);
     SkMemoryStream smartStream(src.get(), (size_t)N);

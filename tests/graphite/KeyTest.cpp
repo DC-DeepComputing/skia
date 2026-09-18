@@ -7,11 +7,18 @@
 
 #include "tests/Test.h"
 
-
-#include "src/base/SkArenaAlloc.h"
+#include "include/core/SkBlendMode.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/graphite/ShaderInfo.h"
+#include "src/gpu/graphite/TextureFormat.h"
 
 using namespace skgpu::graphite;
 
@@ -49,9 +56,11 @@ bool coeff_equal(SkBlendModeCoeff skCoeff, skgpu::BlendCoeff gpuCoeff) {
 } // anonymous namespace
 
 // These are intended to be unit tests of the PaintParamsKeyBuilder and PaintParamsKey.
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, context,
+                                   CtsEnforcement::kApiLevel_202404) {
     SkArenaAlloc arena{256};
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    const Caps* caps = context->priv().caps();
 
     // A builder without any data is invalid. The Builder and the PaintParamKeys can include
     // invalid IDs without themselves becoming invalid. Normally adding an invalid ID triggers an
@@ -70,23 +79,23 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, co
     // NOTE: This is intentionally abusing memory to create a corrupt scenario and is dependent on
     // the structure of PaintParamsKey (just SkSpan<const int32_t>).
     int32_t invalidKeyData[3] = {(int32_t) BuiltInCodeSnippetID::kSolidColorShader,
-                                 kBuiltInCodeSnippetIDCount + 12345,
-                                 (int32_t) BuiltInCodeSnippetID::kFixedFunctionSrcBlendMode};
+                                 SkKnownRuntimeEffects::kSkiaBuiltInReservedCnt - 1,
+                                 (int32_t) BuiltInCodeSnippetID::kFixedBlend_Src};
     SkSpan<const int32_t> invalidKeySpan{invalidKeyData, std::size(invalidKeyData)*sizeof(int32_t)};
     const PaintParamsKey* fakeKey = reinterpret_cast<const PaintParamsKey*>(&invalidKeySpan);
-    REPORTER_ASSERT(reporter, fakeKey->getRootNodes(dict, &arena).empty());
+    const RuntimeEffectDictionary rteDict;
+    REPORTER_ASSERT(reporter, fakeKey->getRootNodes(caps, dict, &rteDict, &arena, 0,
+                                                    /*canLiftCoords=*/true).fRoots.empty());
 }
 
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context,
+                                   CtsEnforcement::kApiLevel_202404) {
     SkArenaAlloc arena{256};
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    int userSnippetID1 = dict->addUserDefinedSnippet("key1");
-    int userSnippetID2 = dict->addUserDefinedSnippet("key2");
-
-    PaintParamsKey keyA = create_key(dict, userSnippetID1, &arena);
-    PaintParamsKey keyB = create_key(dict, userSnippetID1, &arena);
-    PaintParamsKey keyC = create_key(dict, userSnippetID2, &arena);
+    PaintParamsKey keyA = create_key(dict, (int) BuiltInCodeSnippetID::kSolidColorShader, &arena);
+    PaintParamsKey keyB = create_key(dict, (int) BuiltInCodeSnippetID::kSolidColorShader, &arena);
+    PaintParamsKey keyC = create_key(dict, (int) BuiltInCodeSnippetID::kRGBPaintColor, &arena);
 
     // Verify that keyA matches keyB, and that it does not match keyC.
     REPORTER_ASSERT(reporter, keyA == keyB);
@@ -95,28 +104,70 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context
     REPORTER_ASSERT(reporter, !(keyA != keyB));
 }
 
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter, context,
+                                   CtsEnforcement::kApiLevel_202404) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    const Caps* caps = context->priv().caps();
 
-    for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
+    // Iterate over all coeff modes, plus one extra iteration to handle the manually clamped kPlus
+    for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode + 1; ++bm) {
+        SkBlendMode mode = bm > (int) SkBlendMode::kLastCoeffMode ? SkBlendMode::kPlus
+                                                                  : static_cast<SkBlendMode>(bm);
+        TextureFormat format = bm > (int) SkBlendMode::kLastCoeffMode ? TextureFormat::kRGBA16F
+                                                                      : TextureFormat::kRGBA8;
+
         PaintParamsKeyBuilder builder(dict);
-        add_block(&builder, bm + kFixedFunctionBlendModeIDOffset);
+        // Use a solid color as the 1st root node; the 2nd root node represents the final blend.
+        builder.addRootBlockHeader(RootBlockType::kSrcColor);
+        add_block(&builder, (int) BuiltInCodeSnippetID::kSolidColorShader);
+        builder.addRootBlockHeader(RootBlockType::kFinalBlend);
+        add_block(&builder, (int) mode + kFixedBlendIDOffset);
         UniquePaintParamsID paintID = dict->findOrCreate(&builder);
 
-        ShaderInfo shaderInfo{paintID, dict, /*rteDict=*/nullptr, /*ssboIndex=*/""};
+        const RenderStep* renderStep = &context->priv().rendererProvider()->nonAABounds()->step(0);
+        bool dstReadRequired = !CanUseHardwareBlending(caps, format, mode, renderStep->coverage());
 
+        RenderPassDesc rpDesc;
+        rpDesc.fColorAttachment.fFormat = format;
+        rpDesc.fWriteSwizzle = skgpu::Swizzle::RGBA();
+        rpDesc.fSampleCount = SampleCount::k1;
+        rpDesc.fDstReadStrategy = dstReadRequired ? caps->getDstReadStrategy()
+                                                  : DstReadStrategy::kNoneRequired;
+
+        // ShaderInfo expects to receive a concrete determination of dstReadStrategy based upon
+        // whether a dst read is needed. Therefore, we need to decide whether to pass in the
+        // dstReadStrategy reported by caps OR DstReadStrategy::kNoneRequired.
+        std::unique_ptr<ShaderInfo> shaderInfo =
+                ShaderInfo::Make(caps,
+                                 dict,
+                                 /*rteDict=*/nullptr,
+                                 rpDesc,
+                                 renderStep,
+                                 paintID);
+
+        SkBlendMode expectedBM = mode;
+        if (expectedBM == SkBlendMode::kPlus &&
+            (!TextureFormatAutoClamps(format) ||
+             caps->getDstReadStrategy() != DstReadStrategy::kTextureCopy)) {
+            // The kPlus "coefficient" blend mode in non-clamping render targets triggers shader
+            // blending to add a clamping. HW kPlus blending is an approximation when there's
+            // coverage, so shader blending is used when no dst copy is required.
+            // Shader-based blending always uses kSrc HW blending.
+            expectedBM = SkBlendMode::kSrc;
+        }
         SkBlendModeCoeff expectedSrc, expectedDst;
-        REPORTER_ASSERT(reporter, SkBlendMode_AsCoeff(static_cast<SkBlendMode>(bm),
-                                                      &expectedSrc, &expectedDst));
-        REPORTER_ASSERT(reporter, coeff_equal(expectedSrc, shaderInfo.blendInfo().fSrcBlend));
-        REPORTER_ASSERT(reporter, coeff_equal(expectedDst, shaderInfo.blendInfo().fDstBlend));
-        REPORTER_ASSERT(reporter, shaderInfo.blendInfo().fEquation == skgpu::BlendEquation::kAdd);
-        REPORTER_ASSERT(reporter, shaderInfo.blendInfo().fBlendConstant == SK_PMColor4fTRANSPARENT);
+        REPORTER_ASSERT(reporter, SkBlendMode_AsCoeff(expectedBM, &expectedSrc, &expectedDst));
+        REPORTER_ASSERT(reporter, coeff_equal(expectedSrc, shaderInfo->blendInfo().fSrcBlend));
+        REPORTER_ASSERT(reporter, coeff_equal(expectedDst, shaderInfo->blendInfo().fDstBlend));
+
+        REPORTER_ASSERT(reporter, shaderInfo->blendInfo().fEquation == skgpu::BlendEquation::kAdd);
+        REPORTER_ASSERT(reporter,
+                        shaderInfo->blendInfo().fBlendConstant == SK_PMColor4fTRANSPARENT);
 
         bool expectedWriteColor = BlendModifiesDst(skgpu::BlendEquation::kAdd,
-                                                   shaderInfo.blendInfo().fSrcBlend,
-                                                   shaderInfo.blendInfo().fDstBlend);
-        REPORTER_ASSERT(reporter, shaderInfo.blendInfo().fWritesColor == expectedWriteColor);
+                                                   shaderInfo->blendInfo().fSrcBlend,
+                                                   shaderInfo->blendInfo().fDstBlend);
+        REPORTER_ASSERT(reporter, shaderInfo->blendInfo().fWritesColor == expectedWriteColor);
     }
 }
 

@@ -11,6 +11,9 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkImageInfo.h"
+
+#include <cstdint>
 
 namespace skgpu {
 
@@ -44,10 +47,13 @@ float DitherRangeForConfig(SkColorType dstColorType) {
         case kRGB_101010x_SkColorType:
         case kBGR_101010x_SkColorType:
         case kBGR_101010x_XR_SkColorType:
+        case kBGRA_10101010_XR_SkColorType:
+        case kRGBA_10x6_SkColorType:
             return 1 / 1023.f;
 
         // 16 bit
         case kA16_unorm_SkColorType:
+        case kR16_unorm_SkColorType:
         case kR16G16_unorm_SkColorType:
         case kR16G16B16A16_unorm_SkColorType:
             return 1 / 32767.f;
@@ -56,8 +62,10 @@ float DitherRangeForConfig(SkColorType dstColorType) {
         case kUnknown_SkColorType:
         // Half
         case kA16_float_SkColorType:
+        case kR16_float_SkColorType:
         case kR16G16_float_SkColorType:
         case kRGBA_F16_SkColorType:
+        case kRGB_F16F16F16x_SkColorType:
         case kRGBA_F16Norm_SkColorType:
         // Float
         case kRGBA_F32_SkColorType:
@@ -77,9 +85,9 @@ SkBitmap MakeDitherLUT() {
                     unsigned int m = (y & 1) << 5 | (x & 1) << 4 |
                                      (y & 2) << 2 | (x & 2) << 1 |
                                      (y & 4) >> 1 | (x & 4) >> 2;
-                    float value = float(m) * 1.0 / 64.0 - 63.0 / 128.0;
+                    float value = static_cast<float>(m) * (1.0f / 64.0f) - (63.0f / 128.0f);
                     // Bias by 0.5 to be in 0..1, mul by 255 and round to nearest int to make byte.
-                    data[y * 8 + x] = (uint8_t)((value + 0.5) * 255.f + 0.5f);
+                    data[y * 8 + x] = (uint8_t)((value + 0.5f) * 255.f + 0.5f);
                 }
             }
         }
@@ -87,8 +95,7 @@ SkBitmap MakeDitherLUT() {
     } gTable;
 
     SkBitmap bmp;
-    bmp.setInfo(SkImageInfo::MakeA8(8, 8));
-    bmp.setPixels(const_cast<uint8_t*>(gTable.data));
+    bmp.installPixels(SkImageInfo::MakeA8(8, 8), const_cast<uint8_t*>(gTable.data), 8);
     bmp.setImmutable();
     return bmp;
 }

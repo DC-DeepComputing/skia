@@ -10,6 +10,9 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
+
+#include <cstdint>
 
 class SkReadBuffer;
 class SkWriteBuffer;
@@ -19,7 +22,7 @@ class SkWriteBuffer;
  * of `SkColorFilters::Table`, and provides a way to share the table data between client code and
  * the returned SkColorFilter. Once created, an SkColorTable is immutable.
 */
-class SkColorTable : public SkRefCnt {
+class SK_API SkColorTable : public SkRefCnt {
 public:
     // Creates a new SkColorTable with 'table' used for all four channels. The table is copied into
     // the SkColorTable.
@@ -47,7 +50,7 @@ public:
 private:
     friend class SkTableColorFilter; // for bitmap()
 
-    SkColorTable(const SkBitmap& table) : fTable(table) {}
+    explicit SkColorTable(const SkBitmap& table) : fTable(table) {}
 
     // The returned SkBitmap is immutable; attempting to modify its pixel data will trigger asserts
     // in debug builds and cause undefined behavior in release builds.

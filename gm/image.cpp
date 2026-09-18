@@ -10,7 +10,6 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
-#include "include/core/SkColorPriv.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
@@ -23,32 +22,51 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkGradient.h"
 #include "include/encode/SkJpegEncoder.h"
-#include "include/encode/SkPngEncoder.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/ganesh/SkImageGanesh.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "include/private/base/SkMalloc.h"
+#include "include/private/SkMalloc.h"
 #include "src/core/SkAutoPixmapStorage.h"
+#include "src/core/SkColorPriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/image/SkImage_Base.h"
+#include "tools/DecodeUtils.h"
+#include "tools/GpuToolUtils.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#endif
 
 #if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#endif
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
+#endif
+
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
+#else
+#include "include/encode/SkPngEncoder.h"
 #endif
 
 #include <functional>
 #include <utility>
-
-#if defined(SK_GRAPHITE)
-#include "include/gpu/graphite/Image.h"
-#endif
 
 const SkSamplingOptions gSamplings[] = {
     SkSamplingOptions(SkFilterMode::kNearest),
@@ -145,18 +163,14 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("image-surface");
-    }
+    SkString getName() const override { return SkString("image-surface"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(960, 1200);
-    }
+    SkISize getISize() override { return SkISize::Make(960, 1200); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->scale(2, 2);
 
-        SkFont font(ToolUtils::create_portable_typeface(), 8);
+        SkFont font(ToolUtils::DefaultPortableTypeface(), 8);
 
         canvas->drawString("Original Img",  10,  60, font, SkPaint());
         canvas->drawString("Modified Img",  10, 140, font, SkPaint());
@@ -178,8 +192,10 @@ protected:
         SkImageInfo info = SkImageInfo::MakeN32Premul(W, H);
         sk_sp<SkSurface> surf0(SkSurfaces::WrapPixels(info, fBuffer, RB));
         sk_sp<SkSurface> surf1(SkSurfaces::Raster(info));
-        sk_sp<SkSurface> surf2(
-                SkSurfaces::RenderTarget(canvas->recordingContext(), skgpu::Budgeted::kNo, info));
+        sk_sp<SkSurface> surf2;
+#if defined(SK_GANESH)
+        surf2 = SkSurfaces::RenderTarget(canvas->recordingContext(), skgpu::Budgeted::kNo, info);
+#endif
 
         test_surface(canvas, surf0.get(), true);
         canvas->translate(80, 0);
@@ -203,7 +219,7 @@ static void draw_pixmap(SkCanvas* canvas, const SkPixmap& pmap) {
     canvas->drawImage(bitmap.asImage(), 0, 0);
 }
 
-static void show_scaled_pixels(SkCanvas* canvas, SkImage* image) {
+static void show_scaled_pixels(SkCanvas* canvas, SkImage* image, bool useImageScaling) {
     SkAutoCanvasRestore acr(canvas, true);
 
     canvas->drawImage(image, 0, 0);
@@ -220,8 +236,14 @@ static void show_scaled_pixels(SkCanvas* canvas, SkImage* image) {
     for (auto ch : chints) {
         canvas->save();
         for (auto s : gSamplings) {
-            if (image->scalePixels(storage, s, ch)) {
-                draw_pixmap(canvas, storage);
+            if (useImageScaling) {
+                if (auto scaled = image->makeScaled(canvas->baseRecorder(), info, s)) {
+                    canvas->drawImage(scaled, 0, 0);
+                }
+            } else {
+                if (image->scalePixels(storage, s, ch)) {
+                    draw_pixmap(canvas, storage);
+                }
             }
             canvas->translate(70, 0);
         }
@@ -239,6 +261,7 @@ static void draw_contents(SkCanvas* canvas) {
 
 static sk_sp<SkImage> make_raster(const SkImageInfo& info,
                                   GrRecordingContext*,
+                                  skgpu::graphite::Recorder*,
                                   void (*draw)(SkCanvas*)) {
     auto surface(SkSurfaces::Raster(info));
     draw(surface->getCanvas());
@@ -247,6 +270,7 @@ static sk_sp<SkImage> make_raster(const SkImageInfo& info,
 
 static sk_sp<SkImage> make_picture(const SkImageInfo& info,
                                    GrRecordingContext*,
+                                   skgpu::graphite::Recorder*,
                                    void (*draw)(SkCanvas*)) {
     SkPictureRecorder recorder;
     draw(recorder.beginRecording(SkRect::MakeIWH(info.width(), info.height())));
@@ -260,19 +284,40 @@ static sk_sp<SkImage> make_picture(const SkImageInfo& info,
 
 static sk_sp<SkImage> make_codec(const SkImageInfo& info,
                                  GrRecordingContext*,
+                                 skgpu::graphite::Recorder*,
                                  void (*draw)(SkCanvas*)) {
-    sk_sp<SkImage> image(make_raster(info, nullptr, draw));
-    return SkImages::DeferredFromEncodedData(SkPngEncoder::Encode(nullptr, image.get(), {}));
+    sk_sp<SkImage> image(make_raster(info, nullptr, nullptr, draw));
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+    sk_sp<SkData> data = SkPngRustEncoder::Encode(nullptr, image.get(), {});
+#else
+    sk_sp<SkData> data = SkPngEncoder::Encode(nullptr, image.get(), {});
+#endif
+    SkASSERT_RELEASE(data);
+    std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+    auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+    auto codec = SkPngDecoder::Decode(std::move(data), nullptr, nullptr);
+#endif
+    SkASSERT_RELEASE(codec);
+    return SkCodecs::DeferredImage(std::move(codec), {});
 }
 
 static sk_sp<SkImage> make_gpu(const SkImageInfo& info,
                                GrRecordingContext* ctx,
+                               skgpu::graphite::Recorder* recorder,
                                void (*draw)(SkCanvas*)) {
-    if (!ctx) {
-        return nullptr;
+    sk_sp<SkSurface> surface;
+#if defined(SK_GANESH)
+    if (ctx) {
+        surface = SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info);
     }
-
-    auto surface(SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info));
+#endif
+#if defined(SK_GRAPHITE)
+    if (recorder) {
+        surface = SkSurfaces::RenderTarget(recorder, info);
+    }
+#endif
     if (!surface) {
         return nullptr;
     }
@@ -283,20 +328,23 @@ static sk_sp<SkImage> make_gpu(const SkImageInfo& info,
 
 typedef sk_sp<SkImage> (*ImageMakerProc)(const SkImageInfo&,
                                          GrRecordingContext*,
+                                         skgpu::graphite::Recorder*,
                                          void (*)(SkCanvas*));
 
 class ScalePixelsGM : public skiagm::GM {
 public:
-    ScalePixelsGM() {}
+    ScalePixelsGM(bool useImageScaling) : fUseImageScaling(useImageScaling) {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("scale-pixels");
+    SkString getName() const override {
+        auto str = SkString("scale-pixels");
+        if (fUseImageScaling) {
+            str += "-via-image";
+        }
+        return str;
     }
 
-    SkISize onISize() override {
-        return SkISize::Make(960, 1200);
-    }
+    SkISize getISize() override { return SkISize::Make(960, 1200); }
 
     void onDraw(SkCanvas* canvas) override {
         const SkImageInfo info = SkImageInfo::MakeN32Premul(100, 100);
@@ -305,9 +353,10 @@ protected:
             make_codec, make_raster, make_picture, make_codec, make_gpu,
         };
         for (auto& proc : procs) {
-            sk_sp<SkImage> image(proc(info, canvas->recordingContext(), draw_contents));
+            sk_sp<SkImage> image(
+                    proc(info, canvas->recordingContext(), canvas->recorder(), draw_contents));
             if (image) {
-                show_scaled_pixels(canvas, image.get());
+                show_scaled_pixels(canvas, image.get(), fUseImageScaling);
             }
             canvas->translate(0, 120);
         }
@@ -315,15 +364,20 @@ protected:
 
 private:
     using INHERITED = skiagm::GM;
+    bool fUseImageScaling;
 };
-DEF_GM( return new ScalePixelsGM; )
+DEF_GM( return new ScalePixelsGM(false); )
+DEF_GM( return new ScalePixelsGM(true); )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
+    bool isGPU = false;
 
+#if defined(SK_GANESH)
     GrDirectContext* dContext = GrAsDirectContext(canvas->recordingContext());
-    bool isGPU = SkToBool(dContext);
+    isGPU = isGPU || SkToBool(dContext);
+#endif
 
 #if defined(SK_GRAPHITE)
     skgpu::graphite::Recorder* recorder = canvas->recorder();
@@ -362,15 +416,26 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
             [&] { return bmp.asImage(); },
             // Create encoded image.
             [&] {
-                SkDynamicMemoryWStream stream;
-                SkASSERT_RELEASE(SkPngEncoder::Encode(&stream, bmp.pixmap(), {}));
-                return SkImages::DeferredFromEncodedData(stream.detachAsData());
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+                sk_sp<SkData> data = SkPngRustEncoder::Encode(bmp.pixmap(), {});
+#else
+                sk_sp<SkData> data = SkPngEncoder::Encode(bmp.pixmap(), {});
+#endif
+                SkASSERT_RELEASE(data);
+                std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+                auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+                auto codec = SkPngDecoder::Decode(std::move(stream), nullptr, nullptr);
+#endif
+                SkASSERT_RELEASE(codec);
+                return SkCodecs::DeferredImage(std::move(codec), {});
             },
             // Create YUV encoded image.
             [&] {
-                SkDynamicMemoryWStream stream;
-                SkASSERT_RELEASE(SkJpegEncoder::Encode(&stream, bmp.pixmap(), {}));
-                return SkImages::DeferredFromEncodedData(stream.detachAsData());
+                sk_sp<SkData> data = SkJpegEncoder::Encode(bmp.pixmap(), {});
+                SkASSERT_RELEASE(data);
+                return SkImages::DeferredFromEncodedData(data);
             },
             // Create a picture image.
             [&] {
@@ -389,13 +454,16 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
             // Create a texture image
             [&]() -> sk_sp<SkImage> {
                 sk_sp<SkSurface> surface;
+#if defined(SK_GANESH)
                 if (dContext) {
                     surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, ii);
-                } else {
-#if defined(SK_GRAPHITE)
-                    surface = SkSurfaces::RenderTarget(recorder, ii);
-#endif
                 }
+#endif
+#if defined(SK_GRAPHITE)
+                if (recorder) {
+                    surface = SkSurfaces::RenderTarget(recorder, ii);
+                }
+#endif
 
                 if (!surface) {
                     return nullptr;
@@ -411,16 +479,19 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
         if (image) {
             for (auto mm : { false, true }) {
                 sk_sp<SkImage> texImage;
+#if defined(SK_GANESH)
                 if (dContext) {
                     texImage = SkImages::TextureFromImage(dContext,
                                                           image,
                                                           mm ? skgpu::Mipmapped::kYes
                                                              : skgpu::Mipmapped::kNo);
-                } else {
-#if defined(SK_GRAPHITE)
-                    texImage = SkImages::TextureFromImage(recorder, image, {mm});
-#endif
                 }
+#endif
+#if defined(SK_GRAPHITE)
+                if (recorder) {
+                    texImage = SkImages::TextureFromImage(recorder, image, {mm});
+                }
+#endif
                 if (texImage) {
                     canvas->drawImage(texImage, 0, mm ? kSize + kPad : 0);
                 }
@@ -450,7 +521,7 @@ DEF_SIMPLE_GM(scalepixels_unpremul, canvas, 1080, 280) {
     pm.alloc(info);
     for (int y = 0; y < 16; ++y) {
         for (int x = 0; x < 16; ++x) {
-            *pm.writable_addr32(x, y) = SkPackARGB32NoCheck(0, (y << 4) | y, (x << 4) | x, 0xFF);
+            *pm.writable_addr32(x, y) = SkPackARGB32(0, (y << 4) | y, (x << 4) | x, 0xFF);
         }
     }
     SkAutoPixmapStorage pm2;
@@ -487,14 +558,39 @@ static sk_sp<SkImage> serial_deserial(SkImage* img) {
     if (!img) {
         return nullptr;
     }
-    SkBinaryWriteBuffer writer;
+
+    SkSerialProcs sProcs;
+    sProcs.fImageProc = [](SkImage* img, void*) -> sk_sp<const SkData> {
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+        return SkPngRustEncoder::Encode(as_IB(img)->directContext(), img, {});
+#else
+        return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
+#endif
+    };
+    SkBinaryWriteBuffer writer(sProcs);
+
     writer.writeImage(img);
     size_t length = writer.bytesWritten();
     auto data = SkData::MakeUninitialized(length);
     writer.writeToMemory(data->writable_data());
 
     SkReadBuffer reader(data->data(), length);
-    return reader.readImage();
+
+    SkDeserialProcs dProcs;
+    dProcs.fImageDataProc =
+            [](sk_sp<SkData> data, std::optional<SkAlphaType> alphaType, void*) -> sk_sp<SkImage> {
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+        std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
+        auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+        auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
+#endif
+        return SkCodecs::DeferredImage(std::move(codec), alphaType);
+    };
+    reader.setDeserialProcs(dProcs);
+    auto image = reader.readImage();
+    SkASSERT(image);
+    return image;
 }
 
 DEF_SIMPLE_GM_CAN_FAIL(image_subset, canvas, errorMsg, 440, 220) {
@@ -504,26 +600,45 @@ DEF_SIMPLE_GM_CAN_FAIL(image_subset, canvas, errorMsg, 440, 220) {
         return skiagm::DrawResult::kFail;
     }
 
-    GrDirectContext* dContext = GrAsDirectContext(canvas->recordingContext());
-#if defined(SK_GRAPHITE)
-    auto recorder = canvas->recorder();
-#endif
+    auto recorder = canvas->baseRecorder();
 
     canvas->drawImage(img, 10, 10);
 
-    sk_sp<SkImage> subset;
-
-#if defined(SK_GRAPHITE)
-    if (recorder) {
-        subset = img->makeSubset(recorder, {100, 100, 200, 200}, {});
-    } else
-#endif
-    {
-        subset = img->makeSubset(dContext, {100, 100, 200, 200});
-    }
+    sk_sp<SkImage> subset = img->makeSubset(recorder, {100, 100, 200, 200}, {});
 
     canvas->drawImage(subset, 220, 10);
     subset = serial_deserial(subset.get());
     canvas->drawImage(subset, 220+110, 10);
     return skiagm::DrawResult::kOk;
+}
+
+DEF_SIMPLE_GM(crbug_404394639, canvas, 500, 500) {
+    // Define SkImage with height > 32768.
+    const int SOURCE_WIDTH = 500;
+    const int SOURCE_HEIGHT = 40000;
+    SkImageInfo source_info = SkImageInfo::MakeN32Premul(SOURCE_WIDTH, SOURCE_HEIGHT);
+
+    auto surf =  SkSurfaces::Raster(source_info);
+    SkCanvas* canv = surf->getCanvas();
+
+    SkPoint pts[] = {SkPoint::Make(0, 0), SkPoint::Make(0, SOURCE_HEIGHT)};
+    SkColor4f colors[] = {SkColors::kCyan, SkColors::kMagenta};
+    sk_sp<SkShader> gradient_shader = SkShaders::LinearGradient(
+        pts, {{colors, {}, SkTileMode::kClamp}, {}});
+
+    SkPaint paint;
+    paint.setShader(gradient_shader);
+
+    canv->drawRect(SkRect::MakeXYWH(0, 0, SOURCE_WIDTH, SOURCE_HEIGHT), paint);
+
+    // Create an immutable source image.
+    sk_sp<SkImage> large_source_image = surf->makeImageSnapshot();
+
+    SkSamplingOptions sampling(SkFilterMode::kLinear);
+    sk_sp<SkImage> scaled_image = large_source_image->makeScaled(
+        large_source_image->imageInfo().makeWH(500, 500),
+        sampling
+    );
+    // Image shouldn't be different based on compiler.
+    canvas->drawImage(scaled_image, 0, 0);
 }

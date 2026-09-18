@@ -1,20 +1,37 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
 #include "include/core/SkCanvas.h"
-#include "include/private/base/SkTPin.h"
+#include "include/core/SkM44.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/private/SkTPin.h"
+#include "modules/jsonreader/SkJSONReader.h"
 #include "modules/skottie/src/Adapter.h"
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
 #include "modules/skottie/src/layers/shapelayer/ShapeLayer.h"
+#include "modules/sksg/include/SkSGNode.h"
 #include "modules/sksg/include/SkSGRenderNode.h"
 
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <utility>
 #include <vector>
+
+struct SkPoint;
+
+namespace sksg {
+class InvalidationController;
+}
 
 namespace skottie {
 namespace internal {

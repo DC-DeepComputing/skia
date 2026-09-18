@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -18,7 +18,8 @@
 namespace skgpu::graphite {
 
 // Tests that vertex transparency will affect draw order.
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestVertexTransparency, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestVertexTransparency, reporter, context,
+                                   CtsEnforcement::kApiLevel_202404) {
     // Set up transparent vertices, in a 5px wide by 10px tall rectangle.
     static constexpr int kVertexCount = 5;
     SkPoint positions[kVertexCount];

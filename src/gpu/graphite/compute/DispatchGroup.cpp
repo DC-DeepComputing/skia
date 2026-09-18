@@ -7,28 +7,41 @@
 
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 
+#include "include/core/SkColorType.h"
+#include "include/core/SkSpan.h"
+#include "include/core/SkTypes.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkLog.h"
+#include "include/private/SkTo.h"
+#include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ComputePipeline.h"
-#include "src/gpu/graphite/Log.h"
-#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
-#include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
+#include "src/gpu/graphite/Sampler.h"
+#include "src/gpu/graphite/Texture.h"  // IWYU pragma: keep
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/gpu/graphite/task/ClearBuffersTask.h"
+
+#include <utility>
 
 namespace skgpu::graphite {
 
 DispatchGroup::~DispatchGroup() = default;
 
 bool DispatchGroup::prepareResources(ResourceProvider* resourceProvider) {
-    fPipelines.reserve_back(fPipelineDescs.size());
+    fPipelines.reserve(fPipelines.size() + fPipelineDescs.size());
     for (const ComputePipelineDesc& desc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateComputePipeline(desc);
         if (!pipeline) {
-            SKGPU_LOG_W("Failed to create ComputePipeline for dispatch group. Dropping group!");
+            SKIA_LOG_W("Failed to create ComputePipeline for dispatch group. Dropping group!");
             return false;
         }
         fPipelines.push_back(std::move(pipeline));
@@ -36,18 +49,28 @@ bool DispatchGroup::prepareResources(ResourceProvider* resourceProvider) {
 
     for (int i = 0; i < fTextures.size(); ++i) {
         if (!fTextures[i]->textureInfo().isValid()) {
-            SKGPU_LOG_W("Failed to validate bound texture. Dropping dispatch group!");
+            SKIA_LOG_W("Failed to validate bound texture. Dropping dispatch group!");
             return false;
         }
         if (!TextureProxy::InstantiateIfNotLazy(resourceProvider, fTextures[i].get())) {
-            SKGPU_LOG_W("Failed to instantiate bound texture. Dropping dispatch group!");
+            SKIA_LOG_W("Failed to instantiate bound texture. Dropping dispatch group!");
             return false;
         }
     }
 
-    // The DispatchGroup may be long lived on a Recording and we no longer need ComputePipelineDescs
+    for (const SamplerDesc& desc : fSamplerDescs) {
+        sk_sp<Sampler> sampler = resourceProvider->findOrCreateCompatibleSampler(desc);
+        if (!sampler) {
+            SKIA_LOG_W("Failed to create sampler. Dropping dispatch group!");
+            return false;
+        }
+        fSamplers.push_back(std::move(sampler));
+    }
+
+    // The DispatchGroup may be long lived on a Recording and we no longer need the descriptors
     // once we've created pipelines.
     fPipelineDescs.clear();
+    fSamplerDescs.clear();
 
     return true;
 }
@@ -61,11 +84,24 @@ void DispatchGroup::addResourceRefs(CommandBuffer* commandBuffer) const {
     }
 }
 
-const Texture* DispatchGroup::getTexture(TextureIndex index) const {
+sk_sp<Task> DispatchGroup::snapChildTask() {
+    if (fClearList.empty()) {
+        return nullptr;
+    }
+    return ClearBuffersTask::Make(std::move(fClearList));
+}
+
+const Texture* DispatchGroup::getTexture(size_t index) const {
     SkASSERT(index < SkToSizeT(fTextures.size()));
     SkASSERT(fTextures[index]);
     SkASSERT(fTextures[index]->texture());
     return fTextures[index]->texture();
+}
+
+const Sampler* DispatchGroup::getSampler(size_t index) const {
+    SkASSERT(index < SkToSizeT(fSamplers.size()));
+    SkASSERT(fSamplers[index]);
+    return fSamplers[index].get();
 }
 
 using Builder = DispatchGroup::Builder;
@@ -74,10 +110,18 @@ Builder::Builder(Recorder* recorder) : fObj(new DispatchGroup()), fRecorder(reco
     SkASSERT(fRecorder);
 }
 
-bool Builder::appendStep(const ComputeStep* step,
-                         const DrawParams& params,
-                         int ssboIndex,
-                         std::optional<WorkgroupSize> globalSize) {
+bool Builder::appendStep(const ComputeStep* step, std::optional<WorkgroupSize> globalSize) {
+    return this->appendStepInternal(step,
+                                    globalSize ? *globalSize : step->calculateGlobalDispatchSize());
+}
+
+bool Builder::appendStepIndirect(const ComputeStep* step, BindBufferInfo indirectBuffer) {
+    return this->appendStepInternal(step, indirectBuffer);
+}
+
+bool Builder::appendStepInternal(
+        const ComputeStep* step,
+        const std::variant<WorkgroupSize, BindBufferInfo>& globalSizeOrIndirect) {
     SkASSERT(fObj);
     SkASSERT(step);
 
@@ -90,55 +134,89 @@ bool Builder::appendStep(const ComputeStep* step,
     // `nextIndex` matches the declaration order of resources as specified by the ComputeStep.
     int nextIndex = 0;
 
-    // We assign buffer and texture indices from separate ranges. This is compatible with how
-    // Graphite assigns indices in all of its backends: on Metal these map directly to
-    // the `buffer()` and `texture()` index ranges; on Dawn/Vulkan these are allocated from separate
-    // bind groups/descriptor sets.
-    //
-    // TODO(armansito): This also happens to be compatible with the binding index reassignment
-    // scheme that the vello_shaders crate implements for WGSL->MSL translation (see
-    // https://github.com/linebender/vello/blob/main/crates/shaders/src/compile/msl.rs#L10). However
-    // Vello WGSL bindings are currently all assigned from the same bind group without separate
-    // assignments for textures and buffers. We'll need to figure out how to re-map these on
-    // Graphite's Dawn backend which should use the WGSL text directly.
-    int bufferIndex = 0;
+    // We assign buffer, texture, and sampler indices from separate ranges. This is compatible with
+    // how Graphite assigns indices on Metal, as these map directly to the buffer/texture/sampler
+    // index ranges. On Dawn/Vulkan buffers and textures/samplers are allocated from separate bind
+    // groups/descriptor sets but texture and sampler indices need to not overlap.
+    const auto& bindingReqs = fRecorder->priv().caps()->resourceBindingRequirements();
+    const bool separateSampler = bindingReqs.fSeparateTextureAndSamplerBinding;
+    const bool texturesUseDistinctIdxRanges = bindingReqs.fComputeUsesDistinctIdxRangesForTextures;
+    // Some binding index determination logic relies upon the fact that we do not expect to
+    // encounter a backend that both uses separate sampler bindings AND requires separate index
+    // ranges for textures.
+    SkASSERT(!(separateSampler && texturesUseDistinctIdxRanges));
+
+    int bufferOrGlobalIndex = 0;
     int texIndex = 0;
+    // NOTE: SkSL Metal codegen always assigns the same binding index to a texture and its sampler.
+    // TODO: This could cause sampler indices to not be tightly packed if the sampler2D declaration
+    // comes after 1 or more storage texture declarations (which don't have samplers).
     for (const ComputeStep::ResourceDesc& r : resources) {
         SkASSERT(r.fSlot == -1 || (r.fSlot >= 0 && r.fSlot < kMaxComputeDataFlowSlots));
-        int index = nextIndex++;
+        const int index = nextIndex++;
 
         DispatchResourceOptional maybeResource;
 
         using DataFlow = ComputeStep::DataFlow;
+        using Type = ComputeStep::ResourceType;
         switch (r.fFlow) {
-            case DataFlow::kVertexOutput:
-            case DataFlow::kIndexOutput:
-            case DataFlow::kInstanceOutput:
-            case DataFlow::kIndirectDrawOutput: {
-                auto bufferInfo = this->allocateDrawBuffer(step, r, index, params);
-                if (bufferInfo) {
-                    maybeResource = bufferInfo;
-                }
-                break;
-            }
             case DataFlow::kPrivate:
-                maybeResource = this->allocateResource(step, r, ssboIndex, index, params);
+                // A sampled or fetched-type readonly texture must either get assigned via
+                // `assignSharedTexture()` or internally allocated as a storage texture of a
+                // preceding step. Such a texture always has a data slot.
+                SkASSERT(r.fType != Type::kReadOnlyTexture);
+                SkASSERT(r.fType != Type::kSampledTexture);
+                maybeResource = this->allocateResource(step, r, index);
                 break;
             case DataFlow::kShared: {
-                // TODO: Support allocating a scratch texture
                 SkASSERT(r.fSlot >= 0);
-                // Allocate a new buffer only if the shared slot is empty.
+                // Allocate a new resource only if the shared slot is empty (except for a
+                // SampledTexture which needs its sampler to be allocated internally).
                 DispatchResourceOptional* slot = &fOutputTable.fSharedSlots[r.fSlot];
                 if (std::holds_alternative<std::monostate>(*slot)) {
-                    maybeResource = this->allocateResource(step, r, ssboIndex, index, params);
+                    SkASSERT(r.fType != Type::kReadOnlyTexture);
+                    SkASSERT(r.fType != Type::kSampledTexture);
+                    maybeResource = this->allocateResource(step, r, index);
                     *slot = maybeResource;
                 } else {
-                    SkDEBUGCODE(using Type = ComputeStep::ResourceType;)
-                    SkASSERT((r.fType == Type::kStorageBuffer &&
+                    SkASSERT(((r.fType == Type::kUniformBuffer ||
+                               r.fType == Type::kStorageBuffer ||
+                               r.fType == Type::kReadOnlyStorageBuffer ||
+                               r.fType == Type::kIndirectBuffer) &&
                               std::holds_alternative<BindBufferInfo>(*slot)) ||
-                             ((r.fType == Type::kTexture || r.fType == Type::kStorageTexture) &&
+                             ((r.fType == Type::kReadOnlyTexture ||
+                               r.fType == Type::kSampledTexture ||
+                               r.fType == Type::kWriteOnlyStorageTexture) &&
                               std::holds_alternative<TextureIndex>(*slot)));
+#ifdef SK_DEBUG
+                    // Ensure that the texture has the right format if it was assigned via
+                    // `assignSharedTexture()`.
+                    const TextureIndex* texIdx = std::get_if<TextureIndex>(slot);
+                    if (texIdx && r.fType == Type::kWriteOnlyStorageTexture) {
+                        const TextureProxy* t = fObj->fTextures[texIdx->fValue].get();
+                        SkASSERT(t);
+                        auto [_, colorType] = step->calculateTextureParameters(index, r);
+                        SkASSERT(t->textureInfo().canBeFulfilledBy(
+                                fRecorder->priv().caps()->getDefaultStorageTextureInfo(colorType)));
+                    }
+#endif  // SK_DEBUG
+
                     maybeResource = *slot;
+
+                    if (r.fType == Type::kSampledTexture) {
+                        // The shared slot holds the texture part of the sampled texture but we
+                        // still need to allocate the sampler.
+                        SkASSERT(std::holds_alternative<TextureIndex>(*slot));
+                        auto samplerResource = this->allocateResource(step, r, index);
+                        const SamplerIndex* samplerIdx =
+                                std::get_if<SamplerIndex>(&samplerResource);
+                        SkASSERT(samplerIdx);
+                        int bindingIndex = texturesUseDistinctIdxRanges ? texIndex :
+                                                        separateSampler ? bufferOrGlobalIndex++
+                                                                        : bufferOrGlobalIndex;
+                        dispatch.fBindings.push_back(
+                                {static_cast<BindingIndex>(bindingIndex), *samplerIdx});
+                    }
                 }
                 break;
             }
@@ -148,12 +226,12 @@ bool Builder::appendStep(const ComputeStep* step,
         DispatchResource dispatchResource;
         if (const BindBufferInfo* buffer = std::get_if<BindBufferInfo>(&maybeResource)) {
             dispatchResource = *buffer;
-            bindingIndex = bufferIndex++;
+            bindingIndex = bufferOrGlobalIndex++;
         } else if (const TextureIndex* texIdx = std::get_if<TextureIndex>(&maybeResource)) {
             dispatchResource = *texIdx;
-            bindingIndex = texIndex++;
+            bindingIndex = texturesUseDistinctIdxRanges ? texIndex++ : bufferOrGlobalIndex++;
         } else {
-            SKGPU_LOG_W("Failed to allocate resource for compute dispatch");
+            SKIA_LOG_W("Failed to allocate resource for compute dispatch");
             return false;
         }
         dispatch.fBindings.push_back({static_cast<BindingIndex>(bindingIndex), dispatchResource});
@@ -171,20 +249,23 @@ bool Builder::appendStep(const ComputeStep* step,
     }
 
     dispatch.fPipelineIndex = fObj->fPipelineDescs.size() - 1;
-    dispatch.fParams.fGlobalDispatchSize =
-            globalSize ? *globalSize : step->calculateGlobalDispatchSize(params);
-    dispatch.fParams.fLocalDispatchSize = step->localDispatchSize();
+    dispatch.fLocalSize = step->localDispatchSize();
+    dispatch.fGlobalSizeOrIndirect = globalSizeOrIndirect;
 
     fObj->fDispatchList.push_back(std::move(dispatch));
 
     return true;
 }
 
-void Builder::assignSharedBuffer(BindBufferInfo buffer, unsigned int slot) {
+void Builder::assignSharedBuffer(BindBufferInfo buffer, unsigned int slot, ClearBuffer cleared) {
     SkASSERT(fObj);
     SkASSERT(buffer);
+    SkASSERT(buffer.fSize);
 
     fOutputTable.fSharedSlots[slot] = buffer;
+    if (cleared == ClearBuffer::kYes) {
+        fObj->fClearList.push_back(buffer);
+    }
 }
 
 void Builder::assignSharedTexture(sk_sp<TextureProxy> texture, unsigned int slot) {
@@ -192,7 +273,7 @@ void Builder::assignSharedTexture(sk_sp<TextureProxy> texture, unsigned int slot
     SkASSERT(texture);
 
     fObj->fTextures.push_back(std::move(texture));
-    fOutputTable.fSharedSlots[slot] = TextureIndex(fObj->fTextures.size() - 1);
+    fOutputTable.fSharedSlots[slot] = TextureIndex{fObj->fTextures.size() - 1u};
 }
 
 std::unique_ptr<DispatchGroup> Builder::finalize() {
@@ -200,6 +281,13 @@ std::unique_ptr<DispatchGroup> Builder::finalize() {
     fOutputTable.reset();
     return obj;
 }
+
+#if defined(GPU_TEST_UTILS)
+void Builder::reset() {
+    fOutputTable.reset();
+    fObj.reset(new DispatchGroup);
+}
+#endif
 
 BindBufferInfo Builder::getSharedBufferResource(unsigned int slot) const {
     SkASSERT(fObj);
@@ -220,75 +308,30 @@ sk_sp<TextureProxy> Builder::getSharedTextureResource(unsigned int slot) const {
         return nullptr;
     }
 
-    SkASSERT(*idx < SkToSizeT(fObj->fTextures.size()));
-    return fObj->fTextures[*idx];
-}
-
-BindBufferInfo Builder::allocateDrawBuffer(const ComputeStep* step,
-                                           const ComputeStep::ResourceDesc& resource,
-                                           int resourceIdx,
-                                           const DrawParams& params) {
-    SkASSERT(step);
-    SkASSERT(resource.fType == ComputeStep::ResourceType::kStorageBuffer);
-
-    size_t bufferSize = step->calculateBufferSize(params, resourceIdx, resource);
-    SkASSERT(bufferSize);
-
-    DrawBufferManager* bufferMgr = fRecorder->priv().drawBufferManager();
-    BindBufferInfo* slot = nullptr;
-    BindBufferInfo info;
-    using DataFlow = ComputeStep::DataFlow;
-    switch (resource.fFlow) {
-        case DataFlow::kVertexOutput:
-            slot = &fOutputTable.fVertexBuffer;
-            info = bufferMgr->getVertexStorage(bufferSize);
-            break;
-        case DataFlow::kIndexOutput:
-            slot = &fOutputTable.fIndexBuffer;
-            info = bufferMgr->getIndexStorage(bufferSize);
-            break;
-        case DataFlow::kInstanceOutput:
-            slot = &fOutputTable.fInstanceBuffer;
-            info = bufferMgr->getVertexStorage(bufferSize);
-            break;
-        case DataFlow::kIndirectDrawOutput:
-            slot = &fOutputTable.fIndirectDrawBuffer;
-            info = bufferMgr->getIndirectStorage(bufferSize);
-            break;
-        default:
-            SkASSERT(false);
-            break;
-    }
-
-    // Multiple ComputeSteps in a sequence are currently not allowed to output the same type of
-    // geometry (this is enforced during ComputeStep construction).
-    SkASSERT(*slot);
-    if (info) {
-        *slot = info;
-    }
-    return info;
+    SkASSERT(idx->fValue < SkToSizeT(fObj->fTextures.size()));
+    return fObj->fTextures[idx->fValue];
 }
 
 DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
                                                    const ComputeStep::ResourceDesc& resource,
-                                                   int ssboIdx,
-                                                   int resourceIdx,
-                                                   const DrawParams& params) {
+                                                   int resourceIdx) {
     SkASSERT(step);
+    SkASSERT(fObj);
     using Type = ComputeStep::ResourceType;
     using ResourcePolicy = ComputeStep::ResourcePolicy;
 
     DrawBufferManager* bufferMgr = fRecorder->priv().drawBufferManager();
     DispatchResourceOptional result;
     switch (resource.fType) {
+        case Type::kReadOnlyStorageBuffer:
         case Type::kStorageBuffer: {
-            size_t bufferSize = step->calculateBufferSize(params, resourceIdx, resource);
+            size_t bufferSize = step->calculateBufferSize(resourceIdx, resource);
             SkASSERT(bufferSize);
             if (resource.fPolicy == ResourcePolicy::kMapped) {
-                auto [ptr, bufInfo] = bufferMgr->getStoragePointer(bufferSize);
-                if (ptr) {
-                    step->prepareStorageBuffer(
-                            params, ssboIdx, resourceIdx, resource, ptr, bufferSize);
+                auto [writer, bufInfo, _] =
+                    bufferMgr->getMappedStorageBuffer(bufferSize, /*stride=*/1);
+                if (writer) {
+                    step->prepareStorageBuffer(resourceIdx, resource, std::move(writer));
                     result = bufInfo;
                 }
             } else {
@@ -302,46 +345,70 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
             }
             break;
         }
+        case Type::kIndirectBuffer: {
+            SkASSERT(resource.fPolicy != ResourcePolicy::kMapped);
+
+            size_t bufferSize = step->calculateBufferSize(resourceIdx, resource);
+            SkASSERT(bufferSize);
+            auto bufInfo = bufferMgr->getIndirectStorage(bufferSize,
+                                                         resource.fPolicy == ResourcePolicy::kClear
+                                                                 ? ClearBuffer::kYes
+                                                                 : ClearBuffer::kNo);
+            if (bufInfo) {
+                result = bufInfo;
+            }
+            break;
+        }
         case Type::kUniformBuffer: {
             SkASSERT(resource.fPolicy == ResourcePolicy::kMapped);
 
             const auto& resourceReqs = fRecorder->priv().caps()->resourceBindingRequirements();
             UniformManager uboMgr(resourceReqs.fUniformBufferLayout);
-            step->prepareUniformBuffer(params, resourceIdx, resource, &uboMgr);
+            step->prepareUniformBuffer(resourceIdx, resource, &uboMgr);
 
-            auto dataBlock = uboMgr.finishUniformDataBlock();
-            SkASSERT(dataBlock.size());
+            auto dataBlock = uboMgr.finish();
+            SkASSERT(!dataBlock.empty());
 
-            auto [writer, bufInfo] = bufferMgr->getUniformWriter(dataBlock.size());
+            auto [writer, bufInfo, _] =
+                    bufferMgr->getMappedUniformBuffer(dataBlock.size(), /*headroom=*/0);
             if (bufInfo) {
                 writer.write(dataBlock.data(), dataBlock.size());
                 result = bufInfo;
             }
             break;
         }
-        case Type::kStorageTexture: {
-            auto [size, colorType] =
-                    step->calculateTextureParameters(params, resourceIdx, resource);
+        case Type::kWriteOnlyStorageTexture: {
+            auto [size, colorType] = step->calculateTextureParameters(resourceIdx, resource);
             SkASSERT(!size.isEmpty());
             SkASSERT(colorType != kUnknown_SkColorType);
 
-            sk_sp<TextureProxy> texture = TextureProxy::MakeStorage(
-                    fRecorder->priv().caps(), size, colorType, skgpu::Budgeted::kYes);
+            auto textureInfo = fRecorder->priv().caps()->getDefaultStorageTextureInfo(colorType);
+            sk_sp<TextureProxy> texture = TextureProxy::Make(
+                    fRecorder->priv().caps(), fRecorder->priv().resourceProvider(),
+                    size, textureInfo, "DispatchWriteOnlyStorageTexture", skgpu::Budgeted::kYes);
             if (texture) {
                 fObj->fTextures.push_back(std::move(texture));
-                result = TextureIndex(fObj->fTextures.size() - 1);
+                result = TextureIndex{fObj->fTextures.size() - 1u};
             }
             break;
         }
-        case Type::kTexture:
+        case Type::kReadOnlyTexture:
             // This resource type is meant to be populated externally (e.g. by an upload or a render
-            // pass) and only sampled by a ComputeStep. It's not meaningful to allocate an internal
-            // texture for a DispatchGroup if none of the ComputeSteps will write to it.
+            // pass) and only read/sampled by a ComputeStep. It's not meaningful to allocate an
+            // internal texture for a DispatchGroup if none of the ComputeSteps will write to it.
             //
             // Instead of using internal allocation, this texture must be assigned explicitly to a
             // slot by calling the Builder::assignSharedTexture() method.
-            SK_ABORT("a sampled texture must be externally assigned to a ComputeStep");
+            //
+            // Note: A ComputeStep is allowed to read/sample from a storage texture that a previous
+            // ComputeStep has written to.
+            SK_ABORT("a readonly texture must be externally assigned to a ComputeStep");
             break;
+        case Type::kSampledTexture: {
+            fObj->fSamplerDescs.push_back(step->calculateSamplerParameters(resourceIdx, resource));
+            result = SamplerIndex{fObj->fSamplerDescs.size() - 1u};
+            break;
+        }
     }
     return result;
 }

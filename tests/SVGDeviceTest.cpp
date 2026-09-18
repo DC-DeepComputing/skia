@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #ifdef SK_XML
 
@@ -13,12 +16,14 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTextBlob.h"
+#include "include/core/SkTileMode.h"
 #include "include/effects/SkDashPathEffect.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkTo.h"
 #include "include/svg/SkSVGCanvas.h"
 #include "include/utils/SkParse.h"
 #include "src/shaders/SkImageShader.h"
@@ -27,6 +32,13 @@
 #include "src/xml/SkXMLWriter.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
+#else
+#include "include/encode/SkPngEncoder.h"
+#endif  // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
 
 #include <string>
 
@@ -42,9 +54,18 @@ using namespace skia_private;
 
 
 static std::unique_ptr<SkCanvas> MakeDOMCanvas(SkDOM* dom, uint32_t flags = 0) {
+    SkSVGCanvas::Options opts;
+    opts.flags = static_cast<SkSVGCanvas::Flags>(flags);
+    opts.pngEncoder = [](SkWStream* dst, const SkPixmap& src) {
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+        return SkPngRustEncoder::Encode(dst, src, {});
+#else
+        return SkPngEncoder::Encode(dst, src, {});
+#endif // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+    };
     auto svgDevice = SkSVGDevice::Make(SkISize::Make(100, 100),
                                        std::make_unique<SkXMLParserWriter>(dom->beginParsing()),
-                                       flags);
+                                       opts);
     return svgDevice ? std::make_unique<SkCanvas>(svgDevice)
                      : nullptr;
 }
@@ -126,7 +147,7 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
 
     SkDOM dom;
     SkPaint paint;
-    SkFont font(ToolUtils::create_portable_typeface());
+    SkFont font = ToolUtils::DefaultPortableFont();
     SkPoint offset = SkPoint::Make(10, 20);
 
     {
@@ -136,23 +157,23 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
     check_text_node(reporter, dom, dom.finishParsing(), offset, 0, txt, expected);
 
     {
-        AutoTMalloc<SkScalar> xpos(len);
+        AutoTArray<SkScalar> xpos(len);
         for (int i = 0; i < SkToInt(len); ++i) {
             xpos[i] = SkIntToScalar(txt[i]);
         }
 
-        auto blob = SkTextBlob::MakeFromPosTextH(txt, len, &xpos[0], offset.y(), font);
+        auto blob = SkTextBlob::MakeFromPosTextH(txt, len, xpos, offset.y(), font);
         MakeDOMCanvas(&dom)->drawTextBlob(blob, 0, 0, paint);
     }
     check_text_node(reporter, dom, dom.finishParsing(), offset, 1, txt, expected);
 
     {
-        AutoTMalloc<SkPoint> pos(len);
+        AutoTArray<SkPoint> pos(len);
         for (int i = 0; i < SkToInt(len); ++i) {
             pos[i] = SkPoint::Make(SkIntToScalar(txt[i]), 150 - SkIntToScalar(txt[i]));
         }
 
-        auto blob = SkTextBlob::MakeFromPosText(txt, len, &pos[0], font);
+        auto blob = SkTextBlob::MakeFromPosText(txt, len, pos, font);
         MakeDOMCanvas(&dom)->drawTextBlob(blob, 0, 0, paint);
     }
     check_text_node(reporter, dom, dom.finishParsing(), offset, 2, txt, expected);
@@ -355,40 +376,89 @@ DEF_TEST(SVGDevice_image_shader_tileboth, reporter) {
 }
 
 DEF_TEST(SVGDevice_ColorFilters, reporter) {
-    SkDOM dom;
-    SkPaint paint;
-    paint.setColorFilter(SkColorFilters::Blend(SK_ColorRED, SkBlendMode::kSrcIn));
-    {
-        auto svgCanvas = MakeDOMCanvas(&dom);
-        SkRect bounds{0, 0, SkIntToScalar(100), SkIntToScalar(100)};
-        svgCanvas->drawRect(bounds, paint);
-    }
-    const SkDOM::Node* rootElement = dom.finishParsing();
-    ABORT_TEST(reporter, !rootElement, "root element not found");
+    enum CompositeType { kNone, kComposite, kBlend };
+    const auto check_blendmode = [&](SkBlendMode bm,
+                                     CompositeType ct,
+                                     const char* expected_operator,
+                                     const char* expected_in,
+                                     const char* expected_in2) {
+        // Using a non-opaque color to avoid Blend() no-op collapse/optimizations.
+        static constexpr float kAlpha = .5f;
+        const SkColor4f kColor = SkColors::kRed.withAlpha(kAlpha);
 
-    const SkDOM::Node* filterElement = dom.getFirstChild(rootElement, "filter");
-    ABORT_TEST(reporter, !filterElement, "filter element not found");
+        SkPaint paint;
+        paint.setColorFilter(SkColorFilters::Blend(kColor.toSkColor(), bm));
 
-    const SkDOM::Node* floodElement = dom.getFirstChild(filterElement, "feFlood");
-    ABORT_TEST(reporter, !floodElement, "feFlood element not found");
+        SkDOM dom;
+        {
+            auto svgCanvas = MakeDOMCanvas(&dom);
+            SkRect bounds{0, 0, SkIntToScalar(100), SkIntToScalar(100)};
+            svgCanvas->drawRect(bounds, paint);
+        }
+        const SkDOM::Node* rootElement = dom.finishParsing();
+        ABORT_TEST(reporter, !rootElement, "root element not found");
 
-    const SkDOM::Node* compositeElement = dom.getFirstChild(filterElement, "feComposite");
-    ABORT_TEST(reporter, !compositeElement, "feComposite element not found");
+        const SkDOM::Node* filterElement = dom.getFirstChild(rootElement, "filter");
+        ABORT_TEST(reporter, !filterElement, "filter element not found");
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "width"), "100%") == 0);
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "height"), "100%") == 0);
 
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "width"), "100%") == 0);
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(filterElement, "height"), "100%") == 0);
+        const SkDOM::Node* floodElement = dom.getFirstChild(filterElement, "feFlood");
+        ABORT_TEST(reporter, !floodElement, "feFlood element not found");
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(floodElement, "flood-color"), "red") == 0);
+        REPORTER_ASSERT(reporter,
+              SkScalarNearlyEqual(atof(dom.findAttr(floodElement, "flood-opacity")), kAlpha, .01f));
 
-    REPORTER_ASSERT(reporter,
-                    strcmp(dom.findAttr(floodElement, "flood-color"), "red") == 0);
-    REPORTER_ASSERT(reporter, atoi(dom.findAttr(floodElement, "flood-opacity")) == 1);
+        if (ct == kNone) {
+            return;
+        }
 
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(compositeElement, "in"), "flood") == 0);
-    REPORTER_ASSERT(reporter, strcmp(dom.findAttr(compositeElement, "operator"), "in") == 0);
+        const char* expectedFEElement    = ct == kComposite ? "feComposite" : "feBlend";
+        const char* expectedOperatorAttr = ct == kComposite ? "operator"    : "mode";
+
+        const SkDOM::Node* feElement = dom.getFirstChild(filterElement, expectedFEElement);
+        ABORT_TEST(reporter, !feElement, "%s element not found", expectedFEElement);
+
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(feElement, "in"), expected_in) == 0);
+        REPORTER_ASSERT(reporter, strcmp(dom.findAttr(feElement, "in2"), expected_in2) == 0);
+        REPORTER_ASSERT(reporter,
+                strcmp(dom.findAttr(feElement, expectedOperatorAttr), expected_operator) == 0);
+    };
+
+    check_blendmode(SkBlendMode::kSrc, kNone, nullptr, nullptr, nullptr);
+
+    check_blendmode(SkBlendMode::kSrcOver , kComposite, "over"      , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSrcIn   , kComposite, "in"        , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSrcOut  , kComposite, "out"       , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSrcATop , kComposite, "atop"      , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kDstOver , kComposite, "over"      , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kDstIn   , kComposite, "in"        , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kDstOut  , kComposite, "out"       , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kDstATop , kComposite, "atop"      , "SourceGraphic", "flood");
+    check_blendmode(SkBlendMode::kXor     , kComposite, "xor"       , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kPlus    , kComposite, "arithmetic", "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kModulate, kComposite, "arithmetic", "flood", "SourceGraphic");
+
+    check_blendmode(SkBlendMode::kMultiply  , kBlend, "multiply"   , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kScreen    , kBlend, "screen"     , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kDarken    , kBlend, "darken"     , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kLighten   , kBlend, "lighten"    , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kOverlay   , kBlend, "overlay"    , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kColorDodge, kBlend, "color-dodge", "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kColorBurn , kBlend, "color-burn" , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kHardLight , kBlend, "hard-light" , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSoftLight , kBlend, "soft-light" , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kDifference, kBlend, "difference" , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kExclusion , kBlend, "exclusion"  , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kHue       , kBlend, "hue"        , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kSaturation, kBlend, "saturation" , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kColor     , kBlend, "color"      , "flood", "SourceGraphic");
+    check_blendmode(SkBlendMode::kLuminosity, kBlend, "luminosity" , "flood", "SourceGraphic");
 }
 
 DEF_TEST(SVGDevice_textpath, reporter) {
     SkDOM dom;
-    SkFont font(ToolUtils::create_portable_typeface());
+    SkFont font = ToolUtils::DefaultPortableFont();
     SkPaint paint;
 
     auto check_text = [&](uint32_t flags, bool expect_path) {
@@ -413,7 +483,7 @@ DEF_TEST(SVGDevice_textpath, reporter) {
 
     // We also use paths in the presence of path effects.
     SkScalar intervals[] = {10, 5};
-    paint.setPathEffect(SkDashPathEffect::Make(intervals, std::size(intervals), 0));
+    paint.setPathEffect(SkDashPathEffect::Make(intervals, 0));
     check_text(0, /*expect_path=*/true);
 }
 
@@ -453,6 +523,42 @@ DEF_TEST(SVGDevice_fill_stroke, reporter) {
         REPORTER_ASSERT(reporter, !!stroke == !!tst.expected_stroke);
         if (stroke) {
             REPORTER_ASSERT(reporter, strcmp(stroke, tst.expected_stroke) == 0);
+        }
+    }
+}
+
+DEF_TEST(SVGDevice_fill_opacity_black_fill, reporter) {
+    struct {
+        SkColor     color;
+        const char* expected_fill_opacity;
+    } gTests[] = {
+        // Semi-transparent black
+        {  SkColorSetARGB(0x33, 0x00, 0x00, 0x00), "0.2" },
+        // Opaque black
+        {  SkColorSetARGB(0xFF, 0x00, 0x00, 0x00), nullptr },
+    };
+
+    for (const auto& tst : gTests) {
+        SkPaint p;
+        p.setColor(tst.color);
+        p.setStyle(SkPaint::kFill_Style);
+
+        SkDOM dom;
+        {
+            auto svgCanvas = MakeDOMCanvas(&dom);
+            SkRect bounds{0, 0, SkIntToScalar(100), SkIntToScalar(100)};
+            svgCanvas->drawRect(bounds, p);
+        }
+
+        const SkDOM::Node* rootElement = dom.finishParsing();
+        ABORT_TEST(reporter, !rootElement, "root element not found");
+
+        const SkDOM::Node* rectElement = dom.getFirstChild(rootElement, "rect");
+        ABORT_TEST(reporter, !rectElement, "rect element not found");
+        const auto* fill_opacity = dom.findAttr(rectElement, "fill-opacity");
+        REPORTER_ASSERT(reporter, !!fill_opacity == !!tst.expected_fill_opacity);
+        if (fill_opacity) {
+            REPORTER_ASSERT(reporter, strcmp(fill_opacity, tst.expected_fill_opacity) == 0);
         }
     }
 }
@@ -533,6 +639,67 @@ DEF_TEST(SVGDevice_fill_stroke_rect_hex, reporter) {
     REPORTER_ASSERT(reporter, strcmp(dom.findAttr(rectNode, "stroke-width"), "1") == 0);
 }
 
+DEF_TEST(SVGDevice_rect_with_path_effect, reporter) {
+    SkDOM dom;
+
+    SkScalar intervals[] = {0, 20};
+    sk_sp<SkPathEffect> pathEffect = SkDashPathEffect::Make(intervals, 0);
+
+    SkPaint paint;
+    paint.setPathEffect(pathEffect);
+
+    {
+        auto svgCanvas = MakeDOMCanvas(&dom);
+        svgCanvas->drawRect(SkRect::MakeXYWH(0, 0, 100, 100), paint);
+    }
+
+    const auto* rootElement = dom.finishParsing();
+    REPORTER_ASSERT(reporter, rootElement, "root element not found");
+    const auto* pathElement = dom.getFirstChild(rootElement, "path");
+    REPORTER_ASSERT(reporter, pathElement, "path element not found");
+}
+
+DEF_TEST(SVGDevice_rrect_with_path_effect, reporter) {
+    SkDOM dom;
+
+    SkScalar intervals[] = {0, 20};
+    sk_sp<SkPathEffect> pathEffect = SkDashPathEffect::Make(intervals, 0);
+
+    SkPaint paint;
+    paint.setPathEffect(pathEffect);
+
+    {
+        auto svgCanvas = MakeDOMCanvas(&dom);
+        svgCanvas->drawRRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(0, 0, 100, 100), 10, 10), paint);
+    }
+
+    const auto* rootElement = dom.finishParsing();
+    REPORTER_ASSERT(reporter, rootElement, "root element not found");
+    const auto* pathElement = dom.getFirstChild(rootElement, "path");
+    REPORTER_ASSERT(reporter, pathElement, "path element not found");
+}
+
+DEF_TEST(SVGDevice_oval_with_path_effect, reporter) {
+    SkDOM dom;
+
+    SkScalar intervals[] = {0, 20};
+    sk_sp<SkPathEffect> pathEffect = SkDashPathEffect::Make(intervals, 0);
+
+    SkPaint paint;
+    paint.setPathEffect(pathEffect);
+
+    {
+        auto svgCanvas = MakeDOMCanvas(&dom);
+        svgCanvas->drawOval(SkRect::MakeXYWH(0, 0, 100, 100), paint);
+    }
+
+    const auto* rootElement = dom.finishParsing();
+    REPORTER_ASSERT(reporter, rootElement, "root element not found");
+    const auto* pathElement = dom.getFirstChild(rootElement, "path");
+    REPORTER_ASSERT(reporter, pathElement, "path element not found");
+}
+
+
 DEF_TEST(SVGDevice_path_effect, reporter) {
     SkDOM dom;
 
@@ -544,12 +711,12 @@ DEF_TEST(SVGDevice_path_effect, reporter) {
 
     // Produces a line of three red dots.
     SkScalar intervals[] = {0, 20};
-    sk_sp<SkPathEffect> pathEffect = SkDashPathEffect::Make(intervals, 2, 0);
+    sk_sp<SkPathEffect> pathEffect = SkDashPathEffect::Make(intervals, 0);
     paint.setPathEffect(pathEffect);
-    SkPoint points[] = {{50, 15}, {100, 15}, {150, 15} };
+    const SkPoint points[] = {{50, 15}, {100, 15}, {150, 15} };
     {
         auto svgCanvas = MakeDOMCanvas(&dom);
-        svgCanvas->drawPoints(SkCanvas::kLines_PointMode, 3, points, paint);
+        svgCanvas->drawPoints(SkCanvas::kLines_PointMode, points, paint);
     }
     const auto* rootElement = dom.finishParsing();
     REPORTER_ASSERT(reporter, rootElement, "root element not found");
@@ -575,11 +742,12 @@ DEF_TEST(SVGDevice_relative_path_encoding, reporter) {
     SkDOM dom;
     {
         auto svgCanvas = MakeDOMCanvas(&dom, SkSVGCanvas::kRelativePathEncoding_Flag);
-        SkPath path;
-        path.moveTo(100, 50);
-        path.lineTo(200, 50);
-        path.lineTo(200, 150);
-        path.close();
+        SkPath path = SkPathBuilder()
+                      .moveTo(100, 50)
+                      .lineTo(200, 50)
+                      .lineTo(200, 150)
+                      .close()
+                      .detach();
 
         svgCanvas->drawPath(path, SkPaint());
     }

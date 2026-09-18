@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,7 +8,20 @@
 #ifndef GrMockRenderTask_DEFINED
 #define GrMockRenderTask_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTArray.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+
+#include <utility>
+
+class GrOpFlushState;
+class GrRecordingContext;
+class GrResourceAllocator;
+struct SkIRect;
 
 class GrMockRenderTask final : public GrRenderTask {
 public:
@@ -35,9 +48,11 @@ public:
         }
         return false;
     }
-    bool onExecute(GrOpFlushState*) override { return true; }
+    ExecutionResult onExecute(GrOpFlushState*) override {
+        return ExecutionResult::RanAndSucceeded();
+    }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     const char* name() const final { return "Mock"; }
 #endif
 

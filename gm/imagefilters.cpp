@@ -23,14 +23,19 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkColorMatrix.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkHighContrastFilter.h"
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkShaderMaskFilter.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/ganesh/SkImageGanesh.h"
+#include "src/core/SkCanvasPriv.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
+#endif
 
 #include <utility>
 
@@ -39,7 +44,7 @@
  *  that we apply the xfermode *after* the image has been created and filtered, and not during
  *  the creation step (i.e. before it is filtered).
  *
- *  see https://bug.skia.org/3741
+ *  see skbug.com/40034872
  */
 static void do_draw(SkCanvas* canvas, SkBlendMode mode, sk_sp<SkImageFilter> imf) {
         SkAutoCanvasRestore acr(canvas, true);
@@ -152,8 +157,8 @@ static void draw_set(SkCanvas* canvas, sk_sp<SkImageFilter> filters[], int count
 class SaveLayerWithBackdropGM : public skiagm::GM {
 protected:
     bool runAsBench() const override { return true; }
-    SkString onShortName() override { return SkString("savelayer_with_backdrop"); }
-    SkISize onISize() override { return SkISize::Make(830, 550); }
+    SkString getName() const override { return SkString("savelayer_with_backdrop"); }
+    SkISize getISize() override { return SkISize::Make(830, 550); }
 
     void onDraw(SkCanvas* canvas) override {
         SkColorMatrix cm;
@@ -179,7 +184,7 @@ protected:
 
         SkSamplingOptions sampling(SkFilterMode::kLinear,
                                    SkMipmapMode::kLinear);
-        sk_sp<SkImage> image(GetResourceAsImage("images/mandrill_512.png"));
+        sk_sp<SkImage> image(ToolUtils::GetResourceAsImage("images/mandrill_512.png"));
 
         canvas->translate(20, 20);
         for (const auto& xform : xforms) {
@@ -200,13 +205,14 @@ DEF_GM(return new SaveLayerWithBackdropGM();)
 // Test that color filters and mask filters are applied before the image filter, even if it would
 // normally be a sprite draw that could avoid an auto-saveLayer.
 DEF_SIMPLE_GM(imagefilters_effect_order, canvas, 512, 512) {
-    sk_sp<SkImage> image(GetResourceAsImage("images/mandrill_256.png"));
-    auto direct = GrAsDirectContext(canvas->recordingContext());
-    if (direct) {
+    sk_sp<SkImage> image(ToolUtils::GetResourceAsImage("images/mandrill_256.png"));
+#if defined(SK_GANESH)
+    if (auto direct = GrAsDirectContext(canvas->recordingContext())) {
         if (sk_sp<SkImage> gpuImage = SkImages::TextureFromImage(direct, image)) {
             image = std::move(gpuImage);
         }
     }
+#endif
 
     SkISize kernelSize = SkISize::Make(3, 3);
     SkIPoint kernelOffset = SkIPoint::Make(1, 1);
@@ -248,10 +254,10 @@ DEF_SIMPLE_GM(imagefilters_effect_order, canvas, 512, 512) {
     // effect as multiplying by an alpha mask.
 
     // This mask filter pokes a hole in the center of the image
-    static constexpr SkColor kAlphas[] = { SK_ColorBLACK, SK_ColorTRANSPARENT };
+    static constexpr SkColor4f kAlphas[] = { SkColors::kBlack, SkColors::kTransparent };
     static constexpr SkScalar kPos[] = { 0.4f, 0.9f };
-    sk_sp<SkShader> alphaMaskShader = SkGradientShader::MakeRadial(
-            {128.f, 128.f}, 128.f, kAlphas, kPos, 2, SkTileMode::kClamp);
+    sk_sp<SkShader> alphaMaskShader = SkShaders::RadialGradient(
+            {128.f, 128.f}, 128.f, {{kAlphas, kPos, SkTileMode::kClamp}, {}});
     sk_sp<SkMaskFilter> maskFilter = SkShaderMaskFilter::Make(alphaMaskShader);
 
     // If edge detector sees the mask filter, it'll have alpha and then blend with the original
@@ -280,4 +286,48 @@ DEF_SIMPLE_GM(imagefilters_effect_order, canvas, 512, 512) {
     canvas->clipRect(crop);
     canvas->drawImage(image, 0, 0, SkSamplingOptions(), &testMaskPaint);
     canvas->restore();
+}
+
+DEF_SIMPLE_GM(multiple_filters, canvas, 415, 210) {
+    ToolUtils::draw_checkerboard(canvas);
+    canvas->translate(5, 5);
+
+    auto drawFilteredLayer = [=](SkCanvas::FilterSpan filters) {
+        SkPaint restorePaint;
+        restorePaint.setAlphaf(0.5f);
+        SkCanvas::SaveLayerRec rec = SkCanvasPriv::ScaledBackdropLayer(
+                /*bounds=*/nullptr,
+                &restorePaint,
+                /*backdrop=*/nullptr,
+                /*backdropScale=*/1,
+                /*saveLayerFlags=*/0,
+                filters);
+        canvas->save();
+        canvas->clipRect({0, 0, 200, 200});
+        canvas->saveLayer(rec);
+
+        SkPaint paint;
+        paint.setStyle(SkPaint::kStroke_Style);
+        paint.setStrokeWidth(20);
+        paint.setColor(SK_ColorGREEN);
+        canvas->drawCircle(100, 100, 70, paint);
+
+        canvas->restore();
+        canvas->restore();
+        canvas->translate(205, 0);
+    };
+
+    {
+        // Test with two non-null filters that each change bounds in a different way:
+        sk_sp<SkImageFilter> filters[2] = {SkImageFilters::Dilate(5, 5, nullptr),
+                                           SkImageFilters::Erode(5, 5, nullptr)};
+        drawFilteredLayer(filters);
+    }
+
+    {
+        // Test with one null filter, to more closely mimic the canvas2D layers use-case:
+        sk_sp<SkImageFilter> filters[2] = {
+                SkImageFilters::DropShadowOnly(7, 7, 5, 5, SK_ColorBLUE, nullptr), nullptr};
+        drawFilteredLayer(filters);
+    }
 }

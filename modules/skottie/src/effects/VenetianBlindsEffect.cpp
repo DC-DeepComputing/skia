@@ -1,19 +1,34 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/skottie/src/effects/Effects.h"
-
-#include "include/effects/SkGradientShader.h"
-#include "include/effects/SkShaderMaskFilter.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkTileMode.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkFloatingPoint.h"
+#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
-#include "modules/sksg/include/SkSGRenderEffect.h"
-#include "src/utils/SkJSON.h"
+#include "modules/skottie/src/effects/Effects.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
 
+#include <algorithm>
+#include <array>
 #include <cmath>
+#include <cstddef>
+#include <utility>
+
+namespace skjson {
+class ArrayValue;
+}
 
 namespace skottie {
 namespace internal {
@@ -117,9 +132,9 @@ private:
                    g23 = std::min(1.0f, 0.5f * (1 + sk_ieee_float_divide(1 - t, df)));
         SkASSERT(0 <= g01 && g01 <= g23 && g23 <= 1);
 
-        const SkColor c01 = SkColorSetA(SK_ColorWHITE, SkScalarRoundToInt(g01 * 0xff)),
-                      c23 = SkColorSetA(SK_ColorWHITE, SkScalarRoundToInt(g23 * 0xff)),
-                 colors[] = { c01, c23, c23, c01 };
+        const SkColor4f c01 = {1, 1, 1, g01},
+                        c23 = {1, 1, 1, g23},
+                 colors[]   = { c01, c23, c23, c01 };
 
         const SkScalar pos[] = {
          // 0,              // fp0
@@ -141,8 +156,7 @@ private:
         };
 
         return {
-            SkGradientShader::MakeLinear(pts, colors, pos, std::size(colors),
-                                         SkTileMode::kRepeat),
+            SkShaders::LinearGradient(pts, {{colors, pos, SkTileMode::kRepeat}, {}}),
             true
         };
     }

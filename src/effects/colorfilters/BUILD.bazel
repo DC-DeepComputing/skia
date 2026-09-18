@@ -1,8 +1,10 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup", "split_srcs_and_hdrs")
+load("//bazel:skia_rules.bzl", "split_srcs_and_hdrs")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
 
 licenses(["notice"])
-
-exports_files_legacy()
 
 COLORFILTER_FILES = [
     "SkBlendModeColorFilter.cpp",
@@ -17,6 +19,7 @@ COLORFILTER_FILES = [
     "SkGaussianColorFilter.h",
     "SkMatrixColorFilter.cpp",
     "SkMatrixColorFilter.h",
+    "SkRuntimeColorFilter.cpp",
     "SkRuntimeColorFilter.h",
     "SkTableColorFilter.cpp",
     "SkTableColorFilter.h",
@@ -27,29 +30,5 @@ COLORFILTER_FILES = [
 split_srcs_and_hdrs(
     name = "colorfilter",
     files = COLORFILTER_FILES,
-)
-
-skia_filegroup(
-    name = "sksl_srcs",
-    srcs = ["SkRuntimeColorFilter.cpp"],
-)
-
-skia_filegroup(
-    name = "no_sksl_srcs",
-    srcs = ["SkRuntimeColorFilter_none.cpp"],
-)
-
-skia_filegroup(
-    name = "srcs",
-    srcs = [":colorfilter_srcs"] + select({
-        "//src/sksl:needs_sksl": [":sksl_srcs"],
-        "//conditions:default": [":no_sksl_srcs"],
-    }),
-    visibility = ["//src/effects:__pkg__"],
-)
-
-skia_filegroup(
-    name = "private_hdrs",
-    srcs = [":colorfilter_hdrs"],
     visibility = ["//src/effects:__pkg__"],
 )

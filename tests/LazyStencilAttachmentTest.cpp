@@ -13,13 +13,15 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "tests/CtsEnforcement.h"
@@ -50,13 +52,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(crbug_1271431,
     // GrGLRenderTarget creation.
     for (int i = 0; i < 2; ++i) {
         surfs[i]->getCanvas()->clear(SK_ColorWHITE);
-        dc->flushAndSubmit(surfs[i]);
+        dc->flushAndSubmit(surfs[i].get(), GrSyncCpu::kNo);
     }
 
     auto drawWithStencilClip = [&](SkSurface& surf, SkColor color) {
-        SkPath clip;
-        clip.addCircle(50, 50, 50);
-        clip.addCircle(50, 50, 10, SkPathDirection::kCCW);
+        SkPath clip = SkPathBuilder()
+                      .addCircle(50, 50, 50)
+                      .addCircle(50, 50, 10, SkPathDirection::kCCW)
+                      .detach();
         SkPaint paint;
         paint.setColor(color);
         surf.getCanvas()->clipPath(clip, false);
@@ -65,11 +68,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(crbug_1271431,
 
     // Use surfs[0] create to create a cached stencil buffer that is also sized for surfs[1].
     drawWithStencilClip(*surfs[0], SK_ColorRED);
-    dc->flushAndSubmit(surfs[0]);
+    dc->flushAndSubmit(surfs[0].get(), GrSyncCpu::kNo);
 
     // Make sure surf[1]'s FBO is bound but without using draws that would attach stencil.
     surfs[1]->getCanvas()->clear(SK_ColorGREEN);
-    dc->flushAndSubmit(surfs[1]);
+    dc->flushAndSubmit(surfs[1].get(), GrSyncCpu::kNo);
 
     // Now use stencil for clipping. We should now have the following properties:
     // 1) surf[1]'s FBO is already bound

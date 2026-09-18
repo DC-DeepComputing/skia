@@ -8,6 +8,7 @@
 #include "src/core/SkBitmapCache.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixelRef.h"
@@ -15,8 +16,8 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkMutex.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkMutex.h"
 #include "include/private/chromium/SkDiscardableMemory.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkNextID.h"
@@ -158,7 +159,7 @@ public:
     }
 
     static bool Finder(const SkResourceCache::Rec& baseRec, void* contextBitmap) {
-        Rec* rec = (Rec*)&baseRec;
+        Rec* rec = const_cast<Rec*>(static_cast<const Rec*>(&baseRec));
         SkBitmap* result = (SkBitmap*)contextBitmap;
         return rec->install(result);
     }

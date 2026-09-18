@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -19,16 +19,16 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 // NOTE: The positions define hardstops for the red and green borders. For the repeating degenerate
 // gradients, that means the red and green are never visible, so the average color used should only
 // be based off of the white, blue, black blend.
-static const SkColor COLORS[] = { SK_ColorRED, SK_ColorWHITE, SK_ColorBLUE,
-                                  SK_ColorBLACK, SK_ColorGREEN };
+static const SkColor4f COLORS[] = { SkColors::kRed, SkColors::kWhite, SkColors::kBlue,
+                                    SkColors::kBlack, SkColors::kGreen };
 static const SkScalar POS[] = { 0.0, 0.0, 0.5, 1.0, 1.0 };
-static const int COLOR_CT = std::size(COLORS);
 
 static const SkTileMode TILE_MODES[] = { SkTileMode::kDecal,
                                          SkTileMode::kRepeat,
@@ -44,10 +44,14 @@ static const SkPoint CENTER = SkPoint::Make(TILE_SIZE / 2, TILE_SIZE / 2);
 
 typedef sk_sp<SkShader> (*GradientFactory)(SkTileMode tm);
 
+static SkGradient grad(SkTileMode tm) {
+    return {{COLORS, POS, tm}, {}};
+}
+
 static void draw_tile_header(SkCanvas* canvas) {
     canvas->save();
 
-    SkFont font(ToolUtils::create_portable_typeface(), 12);
+    SkFont font(ToolUtils::DefaultPortableTypeface(), 12);
     for (int i = 0; i < TILE_MODE_CT; ++i) {
         canvas->drawString(TILE_NAMES[i], 0, 0, font, SkPaint());
         canvas->translate(TILE_SIZE + TILE_GAP, 0);
@@ -65,7 +69,7 @@ static void draw_row(SkCanvas* canvas, const char* desc, GradientFactory factory
     SkPaint text;
     text.setAntiAlias(true);
 
-    SkFont font(ToolUtils::create_portable_typeface(), 12);
+    SkFont font(ToolUtils::DefaultPortableTypeface(), 12);
 
     canvas->translate(0, TILE_GAP);
     canvas->drawString(desc, 0, 0, font, text);
@@ -91,37 +95,34 @@ static void draw_row(SkCanvas* canvas, const char* desc, GradientFactory factory
 static sk_sp<SkShader> make_linear(SkTileMode mode) {
     // Same position
     SkPoint pts[2] = {CENTER, CENTER};
-    return SkGradientShader::MakeLinear(pts, COLORS, POS, COLOR_CT, mode);
+    return SkShaders::LinearGradient(pts, grad(mode));
 }
 
 static sk_sp<SkShader> make_radial(SkTileMode mode) {
     // Radius = 0
-    return SkGradientShader::MakeRadial(CENTER, 0.0, COLORS, POS, COLOR_CT, mode);
+    return SkShaders::RadialGradient(CENTER, 0.0, grad(mode));
 }
 
 static sk_sp<SkShader> make_sweep(SkTileMode mode) {
     // Start and end angles at 45
     static constexpr SkScalar SWEEP_ANG = 45.0;
-    return SkGradientShader::MakeSweep(CENTER.fX, CENTER.fY, COLORS, POS, COLOR_CT, mode,
-                                       SWEEP_ANG, SWEEP_ANG, 0, nullptr);
+    return SkShaders::SweepGradient(CENTER, SWEEP_ANG, SWEEP_ANG, grad(mode));
 }
 
 static sk_sp<SkShader> make_sweep_zero_ang(SkTileMode mode) {
     // Start and end angles at 0
-    return SkGradientShader::MakeSweep(CENTER.fX, CENTER.fY, COLORS, POS, COLOR_CT, mode,
-                                       0.0, 0.0, 0, nullptr);
+    return SkShaders::SweepGradient(CENTER, 0, 0, grad(mode));
 }
 
 static sk_sp<SkShader> make_2pt_conic(SkTileMode mode) {
     // Start and end radius = TILE_SIZE, same position
-    return SkGradientShader::MakeTwoPointConical(CENTER, TILE_SIZE / 2, CENTER, TILE_SIZE / 2,
-                                                 COLORS, POS, COLOR_CT, mode);
+    return SkShaders::TwoPointConicalGradient(CENTER, TILE_SIZE / 2, CENTER, TILE_SIZE / 2,
+                                              grad(mode));
 }
 
 static sk_sp<SkShader> make_2pt_conic_zero_rad(SkTileMode mode) {
     // Start and end radius = 0, same position
-    return SkGradientShader::MakeTwoPointConical(CENTER, 0.0, CENTER, 0.0, COLORS, POS,
-                                                 COLOR_CT, mode);
+    return SkShaders::TwoPointConicalGradient(CENTER, 0.0, CENTER, 0.0, grad(mode));
 }
 
 class DegenerateGradientGM : public skiagm::GM {
@@ -131,13 +132,9 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("degenerate_gradients");
-    }
+    SkString getName() const override { return SkString("degenerate_gradients"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(800, 800);
-    }
+    SkISize getISize() override { return SkISize::Make(800, 800); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->translate(3 * TILE_GAP, 3 * TILE_GAP);

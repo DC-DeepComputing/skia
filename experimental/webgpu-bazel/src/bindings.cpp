@@ -13,10 +13,10 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 
 #include <emscripten/bind.h>
@@ -36,10 +36,10 @@
 // This defines the C++ equivalents to the JS WebGPU API.
 #include <webgpu/webgpu_cpp.h>
 
-static wgpu::SwapChain getSwapChainForCanvas(wgpu::Device device,
-                                             std::string canvasSelector,
-                                             int width,
-                                             int height) {
+static wgpu::Surface getSurfaceForCanvas(wgpu::Device device,
+                                         std::string canvasSelector,
+                                         int width,
+                                         int height) {
     wgpu::SurfaceDescriptorFromCanvasHTMLSelector surfaceSelector;
     surfaceSelector.selector = canvasSelector.c_str();
 
@@ -48,13 +48,16 @@ static wgpu::SwapChain getSwapChainForCanvas(wgpu::Device device,
     wgpu::Instance instance;
     wgpu::Surface surface = instance.CreateSurface(&surface_desc);
 
-    wgpu::SwapChainDescriptor swap_chain_desc;
-    swap_chain_desc.format = wgpu::TextureFormat::BGRA8Unorm;
-    swap_chain_desc.usage = wgpu::TextureUsage::RenderAttachment;
-    swap_chain_desc.presentMode = wgpu::PresentMode::Fifo;
-    swap_chain_desc.width = width;
-    swap_chain_desc.height = height;
-    return device.CreateSwapChain(surface, &swap_chain_desc);
+    wgpu::SurfaceConfiguration config;
+    config.device = device;
+    config.format = wgpu::TextureFormat::BGRA8Unorm;
+    config.usage = wgpu::TextureUsage::RenderAttachment;
+    config.presentMode = wgpu::PresentMode::Fifo;
+    config.width = width;
+    config.height = height;
+    surface.Configure(&config);
+
+    return surface;
 }
 
 enum class DemoKind {
@@ -111,7 +114,7 @@ public:
 
         fWidth = width;
         fHeight = height;
-        fCanvasSwapChain = getSwapChainForCanvas(device, canvasSelector, width, height);
+        fCanvasSurface = getSurfaceForCanvas(device, canvasSelector, width, height);
         fContext = context;
         fEffect = effect;
 
@@ -121,8 +124,11 @@ public:
     void setKind(DemoKind kind) { fDemoKind = kind; }
 
     void draw(int timestamp) {
+        wgpu::SurfaceTexture surfaceTexture;
+        fCanvasSurface.GetCurrentTexture(&surfaceTexture);
+
         GrDawnRenderTargetInfo rtInfo;
-        rtInfo.fTextureView = fCanvasSwapChain.GetCurrentTextureView();
+        rtInfo.fTextureView = surfaceTexture.texture.CreateView();
         rtInfo.fFormat = wgpu::TextureFormat::BGRA8Unorm;
         rtInfo.fLevelCount = 1;
         GrBackendRenderTarget backendRenderTarget(fWidth, fHeight, 1, 8, rtInfo);
@@ -157,17 +163,14 @@ public:
 
     void drawGradient(SkPaint* paint) {
         bool flipColor = fFrameCount % 2 == 0;
-        SkColor colors1[2] = {SK_ColorMAGENTA, SK_ColorCYAN};
-        SkColor colors2[2] = {SK_ColorCYAN, SK_ColorMAGENTA};
+        SkColor4f colors1[2] = {SkColors::kMagenta, SkColors::kCyan};
+        SkColor4f colors2[2] = {SkColors::kCyan, SkColors::kMagenta};
 
         float x = (float)fWidth / 2.f;
         float y = (float)fHeight / 2.f;
-        paint->setShader(SkGradientShader::MakeRadial(SkPoint::Make(x, y),
-                                                      std::min(x, y),
-                                                      flipColor ? colors1 : colors2,
-                                                      nullptr,
-                                                      2,
-                                                      SkTileMode::kClamp));
+        paint->setShader(SkShaders::RadialGradient({x, y}, std::min(x, y),
+                                                   {{{flipColor ? colors1 : colors2, 2},
+                                                    {}, SkTileMode::kClamp}, {}}));
     }
 
     void drawRuntimeEffect(SkPaint* paint, int timestamp) {
@@ -185,7 +188,7 @@ private:
     int fFrameCount = 0;
     int fWidth;
     int fHeight;
-    wgpu::SwapChain fCanvasSwapChain;
+    wgpu::Surface fCanvasSurface;
     sk_sp<GrDirectContext> fContext;
     sk_sp<SkRuntimeEffect> fEffect;
     DemoKind fDemoKind = DemoKind::SOLID_COLOR;

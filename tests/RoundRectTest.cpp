@@ -11,11 +11,13 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkFloatBits.h"
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkRRectPriv.h"
+#include "src/core/SkRandom.h"
 #include "tests/Test.h"
 
 #include <algorithm>
@@ -54,11 +56,10 @@ static void test_empty_crbug_458524(skiatest::Reporter* reporter) {
     const SkScalar rad = 40;
     rr.setRectXY(bounds, rad, rad);
 
-    SkRRect other;
     SkMatrix matrix;
     matrix.setScale(0, 1);
-    rr.transform(matrix, &other);
-    REPORTER_ASSERT(reporter, SkRRect::kEmpty_Type == other.getType());
+    auto other = rr.transform(matrix);
+    REPORTER_ASSERT(reporter, !other.has_value());
 }
 
 // Test that all the SkRRect entry points correctly handle un-sorted and
@@ -169,8 +170,7 @@ static void test_9patch_rrect(skiatest::Reporter* reporter,
     if (checkRadii) {
         // This test doesn't hold if the radii will be rescaled by SkRRect
         SkRect ninePatchRadii = { l, t, r, b };
-        SkPoint rquad[4];
-        ninePatchRadii.toQuad(rquad);
+        const std::array<SkPoint, 4> rquad = ninePatchRadii.toQuad();
         for (int i = 0; i < 4; ++i) {
             REPORTER_ASSERT(reporter, rquad[i] == rr.radii((SkRRect::Corner) i));
         }
@@ -217,7 +217,7 @@ static void test_round_rect_basic(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, rr1_3 == rr1 && rr1_3.getType() == rr1.getType());
 
     //----
-    SkPoint halfPoint = { SkScalarHalf(kWidth), SkScalarHalf(kHeight) };
+    SkPoint halfPoint = { kWidth / 2.f, kHeight / 2.f };
     SkRRect rr2;
     rr2.setOval(rect);
 
@@ -261,7 +261,7 @@ static void test_round_rect_basic(skiatest::Reporter* reporter) {
     test_9patch_rrect(reporter, rect, 10, 9, 8, 7, true);
 
     {
-        // Test out the rrect from skia:3466
+        // Test out the rrect from skbug.com/40034587
         SkRect rect2 = SkRect::MakeLTRB(0.358211994f, 0.755430222f, 0.872866154f, 0.806214333f);
 
         test_9patch_rrect(reporter,
@@ -334,7 +334,7 @@ static void test_round_rect_ovals(skiatest::Reporter* reporter) {
     SkRect oval;
     SkRect rect = SkRect::MakeLTRB(0, 0, kWidth, kHeight);
     SkRRect rr1;
-    rr1.setRectXY(rect, SkScalarHalf(kWidth), SkScalarHalf(kHeight));
+    rr1.setRectXY(rect, kWidth / 2.f, kHeight / 2.f);
 
     REPORTER_ASSERT(reporter, SkRRect::kOval_Type == rr1.type());
     oval = rr1.rect();
@@ -402,6 +402,20 @@ static void test_direction(skiatest::Reporter* reporter, const SkRRect &rr,
         test.sort();
 
         REPORTER_ASSERT(reporter, contains[i] == rr.contains(test));
+
+        x += stepX;
+        y += stepY;
+    }
+}
+
+// Move a point from the start position by (stepX, stepY) 'numSteps' times
+// testing for containment in 'rr' at each step.
+static void test_point_direction(skiatest::Reporter* reporter, const SkRRect &rr,
+                                 SkScalar initX, int stepX, SkScalar initY, int stepY,
+                                 SkSpan<const bool> contains) {
+    SkScalar x = initX, y = initY;
+    for (bool expected : contains) {
+        REPORTER_ASSERT(reporter, expected == rr.contains(SkPoint::Make(x, y)));
 
         x += stepX;
         y += stepY;
@@ -523,24 +537,121 @@ static void test_round_rect_contains_rect(skiatest::Reporter* reporter) {
     }
 }
 
+static void test_round_rect_contains_point(skiatest::Reporter* reporter) {
+    static const int kNumRRects = 4;
+    static const SkVector gRadii[kNumRRects][4] = {
+        { {  0,  0 }, {  0,  0 }, {  0,  0 }, {  0,  0 } },  // rect
+        { { 20, 20 }, { 20, 20 }, { 20, 20 }, { 20, 20 } },  // circle
+        { { 10, 10 }, { 10, 10 }, { 10, 10 }, { 10, 10 } },  // simple
+        { {  0,  0 }, { 20, 20 }, { 10, 10 }, { 30, 30 } }   // complex
+    };
+
+    SkRRect rrects[kNumRRects];
+    for (int i = 0; i < kNumRRects; ++i) {
+        rrects[i].setRectRadii(SkRect::MakeWH(40, 40), gRadii[i]);
+    }
+
+    static const SkPoint easyOuts[] = {
+        { -5, -5 }, // TL
+        { 20, -5 }, // T
+        { 45, -5 }, // TR
+        { 45, 20 }, // R
+        { 45, 45 }, // BR
+        { 20, 45 }, // B
+        { -5, 45 }, // BL
+        { -5, 20 }  // L
+    };
+
+    for (int i = 0; i < kNumRRects; ++i) {
+        for (size_t j = 0; j < std::size(easyOuts); ++j) {
+            REPORTER_ASSERT(reporter, !rrects[i].contains(easyOuts[j]));
+        }
+    }
+
+    // Walk just far enough in from each edge or corner to test bounds
+    // exclusion, curved-corner rejection, and curved-corner acceptance.
+    static const int kNumSteps = 3;
+    bool answers[kNumRRects][8][kNumSteps] = {
+        // for the rect we expect points on the left/top edges to be in, but
+        // points on the right/bottom edges to be out
+        {
+            // rect
+            { true, true, true },
+            { true, true, true },
+            { false, true, true },
+            { false, true, true },
+            { false, true, true },
+            { false, true, true },
+            { false, true, true },
+            { true, true, true },
+        },
+        // for the circle we expect the first two points to be out on the
+        // corners (then in) and only the first point out on the right/bottom axes
+        {
+            // circle
+            { false, false, true },
+            { true, true, true },
+            { false, false, true },
+            { false, true, true },
+            { false, false, true },
+            { false, true, true },
+            { false, false, true },
+            { true, true, true },
+        },
+        // for the simple round rect we expect only the first point to be out on
+        // corners and on the right/bottom axes
+        {
+            // simple RR
+            { false, true, true },
+            { true, true, true },
+            { false, true, true },
+            { false, true, true },
+            { false, true, true },
+            { false, true, true },
+            { false, true, true },
+            { true, true, true },
+        },
+        // for the complex case the answer is different for each direction
+        {
+            // complex RR
+            // all in for TL (rect) corner and T (top center band)
+            { true, true, true },
+            { true, true, true },
+            // first out for TR and BL is the excluded bound; second is outside the larger corner
+            { false, false, true },
+            // first out for R, BR, and B is the excluded bound; L is due to the larger corner
+            { false, true, true },
+            { false, true, true },
+            { false, true, true },
+            { false, false, true },
+            { false, true, true },
+         }
+    };
+
+    for (int i = 0; i < kNumRRects; ++i) {
+        test_point_direction(reporter, rrects[i],  0,  5,  0,  5, answers[i][0]); // TL
+        test_point_direction(reporter, rrects[i], 20,  0,  0,  5, answers[i][1]); // T
+        test_point_direction(reporter, rrects[i], 40, -5,  0,  5, answers[i][2]); // TR
+        test_point_direction(reporter, rrects[i], 40, -5, 20,  0, answers[i][3]); // R
+        test_point_direction(reporter, rrects[i], 40, -5, 40, -5, answers[i][4]); // BR
+        test_point_direction(reporter, rrects[i], 20,  0, 40, -5, answers[i][5]); // B
+        test_point_direction(reporter, rrects[i],  0,  5, 40, -5, answers[i][6]); // BL
+        test_point_direction(reporter, rrects[i],  0,  5, 20,  0, answers[i][7]); // L
+    }
+}
+
 // Called for a matrix that should cause SkRRect::transform to fail.
 static void assert_transform_failure(skiatest::Reporter* reporter, const SkRRect& orig,
                                      const SkMatrix& matrix) {
     // The test depends on the fact that the original is not empty.
     SkASSERT(!orig.isEmpty());
-    SkRRect dst;
-    dst.setEmpty();
 
-    const SkRRect copyOfDst = dst;
     const SkRRect copyOfOrig = orig;
-    bool success = orig.transform(matrix, &dst);
+    auto dst = orig.transform(matrix);
     // This transform should fail.
-    REPORTER_ASSERT(reporter, !success);
-    // Since the transform failed, dst should be unchanged.
-    REPORTER_ASSERT(reporter, copyOfDst == dst);
+    REPORTER_ASSERT(reporter, !dst.has_value());
     // original should not be modified.
     REPORTER_ASSERT(reporter, copyOfOrig == orig);
-    REPORTER_ASSERT(reporter, orig != dst);
 }
 
 #define GET_RADII                                                       \
@@ -548,20 +659,17 @@ static void assert_transform_failure(skiatest::Reporter* reporter, const SkRRect
     const SkVector& origUR = orig.radii(SkRRect::kUpperRight_Corner);   \
     const SkVector& origLR = orig.radii(SkRRect::kLowerRight_Corner);   \
     const SkVector& origLL = orig.radii(SkRRect::kLowerLeft_Corner);    \
-    const SkVector& dstUL = dst.radii(SkRRect::kUpperLeft_Corner);      \
-    const SkVector& dstUR = dst.radii(SkRRect::kUpperRight_Corner);     \
-    const SkVector& dstLR = dst.radii(SkRRect::kLowerRight_Corner);     \
-    const SkVector& dstLL = dst.radii(SkRRect::kLowerLeft_Corner)
+    const SkVector& dstUL = dst->radii(SkRRect::kUpperLeft_Corner);     \
+    const SkVector& dstUR = dst->radii(SkRRect::kUpperRight_Corner);    \
+    const SkVector& dstLR = dst->radii(SkRRect::kLowerRight_Corner);    \
+    const SkVector& dstLL = dst->radii(SkRRect::kLowerLeft_Corner)
 
 // Called to test various transforms on a single SkRRect.
 static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& orig) {
-    SkRRect dst;
-    dst.setEmpty();
-
     // The identity matrix will duplicate the rrect.
-    bool success = orig.transform(SkMatrix::I(), &dst);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, orig == dst);
+    auto dst = orig.transform(SkMatrix::I());
+    REPORTER_ASSERT(reporter, dst.has_value());
+    REPORTER_ASSERT(reporter, orig == dst.value());
 
     // Skew and Perspective make transform fail.
     SkMatrix matrix;
@@ -592,17 +700,16 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
     SkScalar translateY = SkIntToScalar(15);
     matrix.setTranslateX(translateX);
     matrix.setTranslateY(translateY);
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     for (int i = 0; i < 4; ++i) {
         REPORTER_ASSERT(reporter,
-                orig.radii((SkRRect::Corner) i) == dst.radii((SkRRect::Corner) i));
+                orig.radii((SkRRect::Corner) i) == dst->radii((SkRRect::Corner) i));
     }
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().width());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().height());
-    REPORTER_ASSERT(reporter, dst.rect().left() == orig.rect().left() + translateX);
-    REPORTER_ASSERT(reporter, dst.rect().top() == orig.rect().top() + translateY);
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().width());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().height());
+    REPORTER_ASSERT(reporter, dst->rect().left() == orig.rect().left() + translateX);
+    REPORTER_ASSERT(reporter, dst->rect().top() == orig.rect().top() + translateY);
 
     // Keeping the translation, but adding skew will make transform fail.
     matrix.setSkewY(SkIntToScalar(7));
@@ -611,9 +718,8 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
     // Scaling in -x will flip the round rect horizontally.
     matrix.reset();
     matrix.setScaleX(SkIntToScalar(-1));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     {
         GET_RADII;
         // Radii have swapped in x.
@@ -623,23 +729,27 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
         REPORTER_ASSERT(reporter, origLL == dstLR);
     }
     // Width and height remain the same.
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().width());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().height());
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().width());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().height());
     // Right and left have swapped (sort of)
-    REPORTER_ASSERT(reporter, orig.rect().right() == -dst.rect().left());
+    REPORTER_ASSERT(reporter, orig.rect().right() == -dst->rect().left());
     // Top has stayed the same.
-    REPORTER_ASSERT(reporter, orig.rect().top() == dst.rect().top());
+    REPORTER_ASSERT(reporter, orig.rect().top() == dst->rect().top());
 
     // Keeping the scale, but adding a persp will make transform fail.
     matrix.setPerspX(7);
     assert_transform_failure(reporter, orig, matrix);
 
+    // Test out possible floating point issues w/ the radii transform
+    matrix = SkMatrix::Scale(0.999999f, 0.999999f);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+
     // Scaling in -y will flip the round rect vertically.
     matrix.reset();
     matrix.setScaleY(SkIntToScalar(-1));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     {
         GET_RADII;
         // Radii have swapped in y.
@@ -649,20 +759,19 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
         REPORTER_ASSERT(reporter, origLL == dstUL);
     }
     // Width and height remain the same.
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().width());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().height());
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().width());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().height());
     // Top and bottom have swapped (sort of)
-    REPORTER_ASSERT(reporter, orig.rect().top() == -dst.rect().bottom());
+    REPORTER_ASSERT(reporter, orig.rect().top() == -dst->rect().bottom());
     // Left has stayed the same.
-    REPORTER_ASSERT(reporter, orig.rect().left() == dst.rect().left());
+    REPORTER_ASSERT(reporter, orig.rect().left() == dst->rect().left());
 
     // Scaling in -x and -y will swap in both directions.
     matrix.reset();
     matrix.setScaleY(SkIntToScalar(-1));
     matrix.setScaleX(SkIntToScalar(-1));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     {
         GET_RADII;
         REPORTER_ASSERT(reporter, origUL == dstLR);
@@ -671,10 +780,10 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
         REPORTER_ASSERT(reporter, origLL == dstUR);
     }
     // Width and height remain the same.
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().width());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().height());
-    REPORTER_ASSERT(reporter, orig.rect().top() == -dst.rect().bottom());
-    REPORTER_ASSERT(reporter, orig.rect().right() == -dst.rect().left());
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().width());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().height());
+    REPORTER_ASSERT(reporter, orig.rect().top() == -dst->rect().bottom());
+    REPORTER_ASSERT(reporter, orig.rect().right() == -dst->rect().left());
 
     // Scale in both directions.
     SkScalar xScale = SkIntToScalar(3);
@@ -682,23 +791,22 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
     matrix.reset();
     matrix.setScaleX(xScale);
     matrix.setScaleY(yScale);
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     // Radii are scaled.
     for (int i = 0; i < 4; ++i) {
-        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst.radii((SkRRect::Corner) i).fX,
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst->radii((SkRRect::Corner) i).fX,
                                     orig.radii((SkRRect::Corner) i).fX * xScale));
-        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst.radii((SkRRect::Corner) i).fY,
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst->radii((SkRRect::Corner) i).fY,
                                     orig.radii((SkRRect::Corner) i).fY * yScale));
     }
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst.rect().width(),
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst->rect().width(),
                                                   orig.rect().width() * xScale));
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst.rect().height(),
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst->rect().height(),
                                                   orig.rect().height() * yScale));
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst.rect().left(),
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst->rect().left(),
                                                   orig.rect().left() * xScale));
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst.rect().top(),
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(dst->rect().top(),
                                                   orig.rect().top() * yScale));
 
 
@@ -708,9 +816,8 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
     //  d-----c            c-----b
     matrix.reset();
     matrix.setRotate(SkIntToScalar(90));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     {
         GET_RADII;
         // Radii have cycled clockwise and swapped their x and y axis.
@@ -724,83 +831,18 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
         REPORTER_ASSERT(reporter, dstLL.y() == origLR.x());
     }
     // Width and height would get swapped.
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().height());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().width());
-
-    //  a-----b        b-----a           c-----b
-    //  |     |   ->   |     |    ->     |     |
-    //  |     | Flip X |     | Rotate 90 |     |
-    //  d-----c        c-----d           d-----a
-    matrix.reset();
-    matrix.setRotate(SkIntToScalar(90));
-    matrix.postScale(SkIntToScalar(-1), SkIntToScalar(1));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
-    {
-        GET_RADII;
-        REPORTER_ASSERT(reporter, dstUL.x() == origLR.y());
-        REPORTER_ASSERT(reporter, dstUL.y() == origLR.x());
-        REPORTER_ASSERT(reporter, dstUR.x() == origUR.y());
-        REPORTER_ASSERT(reporter, dstUR.y() == origUR.x());
-        REPORTER_ASSERT(reporter, dstLR.x() == origUL.y());
-        REPORTER_ASSERT(reporter, dstLR.y() == origUL.x());
-        REPORTER_ASSERT(reporter, dstLL.x() == origLL.y());
-        REPORTER_ASSERT(reporter, dstLL.y() == origLL.x());
-    }
-    // Width and height would get swapped.
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().height());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().width());
-
-    //  a-----b           d-----a        c-----b
-    //  |     |    ->     |     |   ->   |     |
-    //  |     | Rotate 90 |     | Flip Y |     |
-    //  d-----c           c-----b        d-----a
-    //
-    // This is the same as Flip X and Rotate 90.
-    matrix.reset();
-    matrix.setScale(SkIntToScalar(1), SkIntToScalar(-1));
-    matrix.postRotate(SkIntToScalar(90));
-    SkRRect dst2;
-    dst2.setEmpty();
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, dst == dst2);
-
-    //  a-----b            b-----c        c-----b
-    //  |     |     ->     |     |   ->   |     |
-    //  |     | Rotate 270 |     | Flip X |     |
-    //  d-----c            a-----d        d-----a
-    matrix.reset();
-    matrix.setScale(SkIntToScalar(-1), SkIntToScalar(1));
-    matrix.postRotate(SkIntToScalar(270));
-    dst2.setEmpty();
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, dst == dst2);
-
-    //  a-----b        d-----c            c-----b
-    //  |     |   ->   |     |     ->     |     |
-    //  |     | Flip Y |     | Rotate 270 |     |
-    //  d-----c        a-----b            d-----a
-    matrix.reset();
-    matrix.setRotate(SkIntToScalar(270));
-    matrix.postScale(SkIntToScalar(1), SkIntToScalar(-1));
-    dst2.setEmpty();
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, dst == dst2);
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().width());
 
     //  a-----b           d-----a        a-----d
-    //  |     |    ->     |     |   ->   |     |
+    //  |     |    ->     |     |    ->  |     |
     //  |     | Rotate 90 |     | Flip X |     |
     //  d-----c           c-----b        b-----c
     matrix.reset();
-    matrix.setScale(SkIntToScalar(-1), SkIntToScalar(1));
-    matrix.postRotate(SkIntToScalar(90));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    matrix.setRotate(SkIntToScalar(90));
+    matrix.postScale(SkIntToScalar(-1), SkIntToScalar(1));
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     {
         GET_RADII;
         REPORTER_ASSERT(reporter, dstUL.x() == origUL.y());
@@ -813,59 +855,112 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
         REPORTER_ASSERT(reporter, dstLL.y() == origUR.x());
     }
     // Width and height would get swapped.
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().height());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().width());
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().width());
 
     //  a-----b        d-----c           a-----d
-    //  |     |   ->   |     |    ->     |     |
+    //  |     |   ->   |     |     ->    |     |
     //  |     | Flip Y |     | Rotate 90 |     |
     //  d-----c        a-----b           b-----c
-    // This is the same as rotate 90 and flip x.
+    //
+    // This is the same as Rotate 90 and Flip X.
     matrix.reset();
-    matrix.setRotate(SkIntToScalar(90));
-    matrix.postScale(SkIntToScalar(1), SkIntToScalar(-1));
-    dst2.setEmpty();
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, dst == dst2);
+    matrix.setScale(SkIntToScalar(1), SkIntToScalar(-1));
+    matrix.postRotate(SkIntToScalar(90));
+    auto dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
 
     //  a-----b        b-----a            a-----d
-    //  |     |   ->   |     |     ->     |     |
+    //  |     |   ->   |     |    ->      |     |
     //  |     | Flip X |     | Rotate 270 |     |
     //  d-----c        c-----d            b-----c
     matrix.reset();
-    matrix.setRotate(SkIntToScalar(270));
-    matrix.postScale(SkIntToScalar(-1), SkIntToScalar(1));
-    dst2.setEmpty();
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, dst == dst2);
+    matrix.setScale(SkIntToScalar(-1), SkIntToScalar(1));
+    matrix.postRotate(SkIntToScalar(270));
+    dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
 
     //  a-----b            b-----c        a-----d
     //  |     |     ->     |     |   ->   |     |
     //  |     | Rotate 270 |     | Flip Y |     |
     //  d-----c            a-----d        b-----c
     matrix.reset();
+    matrix.setRotate(SkIntToScalar(270));
+    matrix.postScale(SkIntToScalar(1), SkIntToScalar(-1));
+    dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
+
+    //  a-----b        b-----a           c-----b
+    //  |     |   ->   |     |    ->     |     |
+    //  |     | Flip X |     | Rotate 90 |     |
+    //  d-----c        c-----d           d-----a
+    matrix.reset();
+    matrix.setScale(SkIntToScalar(-1), SkIntToScalar(1));
+    matrix.postRotate(SkIntToScalar(90));
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    {
+        GET_RADII;
+        REPORTER_ASSERT(reporter, dstUL.x() == origLR.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == origLR.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == origUR.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == origUR.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == origUL.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == origUL.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == origLL.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == origLL.x());
+    }
+    // Width and height would get swapped.
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().width());
+
+    //  a-----b           d-----a        c-----b
+    //  |     |    ->     |     |   ->   |     |
+    //  |     | Rotate 90 |     | Flip Y |     |
+    //  d-----c           c-----b        d-----a
+    // This is the same as flip X and rotate 90
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(90));
+    matrix.postScale(SkIntToScalar(1), SkIntToScalar(-1));
+    dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
+
+    //  a-----b            b-----c        c-----b
+    //  |     |     ->     |     |   ->   |     |
+    //  |     | Rotate 270 |     | Flip X |     |
+    //  d-----c            a-----d        d-----a
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(270));
+    matrix.postScale(SkIntToScalar(-1), SkIntToScalar(1));
+    dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
+
+    //  a-----b        d-----c            c-----b
+    //  |     |   ->   |     |    ->      |     |
+    //  |     | Flip Y |     | Rotate 270 |     |
+    //  d-----c        a-----b            d-----a
+    matrix.reset();
     matrix.setScale(SkIntToScalar(1), SkIntToScalar(-1));
     matrix.postRotate(SkIntToScalar(270));
-    dst2.setEmpty();
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, dst == dst2);
+    dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
 
-
-    //  a-----b        b-----a        c-----d            b-----c
-    //  |     |   ->   |     |   ->   |     |    ->      |     |
-    //  |     | Flip X |     | Flip Y |     | Rotate 90  |     |
-    //  d-----c        c-----d        b-----a            a-----d
-    //
+    //  a-----b           d-----a          b-----c
+    //  |     |    ->     |     |   ->     |     |
+    //  |     | Rotate 90 |     | Flip X+Y |     |
+    //  d-----c           c-----b          a-----d
     // This is the same as rotation by 270.
     matrix.reset();
     matrix.setRotate(SkIntToScalar(90));
     matrix.postScale(SkIntToScalar(-1), SkIntToScalar(-1));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
     {
         GET_RADII;
         // Radii have cycled clockwise and swapped their x and y axis.
@@ -879,40 +974,291 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
         REPORTER_ASSERT(reporter, dstLL.y() == origUL.x());
     }
     // Width and height would get swapped.
-    REPORTER_ASSERT(reporter, orig.rect().width() == dst.rect().height());
-    REPORTER_ASSERT(reporter, orig.rect().height() == dst.rect().width());
+    REPORTER_ASSERT(reporter, orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, orig.rect().height() == dst->rect().width());
 
     //  a-----b             b-----c
     //  |     |     ->      |     |
     //  |     | Rotate 270  |     |
     //  d-----c             a-----d
     //
-    dst2.setEmpty();
     matrix.reset();
     matrix.setRotate(SkIntToScalar(270));
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, success);
-    REPORTER_ASSERT(reporter, dst == dst2);
+    dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
 
-    //  a-----b        b-----a        c-----d             d-----a
-    //  |     |   ->   |     |   ->   |     |     ->      |     |
-    //  |     | Flip X |     | Flip Y |     | Rotate 270  |     |
-    //  d-----c        c-----d        b-----a             c-----b
-    //
+    //  a-----b            b-----c          d-----a
+    //  |     |    ->      |     |   ->     |     |
+    //  |     | Rotate 270 |     | Flip X+Y |     |
+    //  d-----c            a-----d          c-----b
     // This is the same as rotation by 90 degrees.
     matrix.reset();
     matrix.setRotate(SkIntToScalar(270));
     matrix.postScale(SkIntToScalar(-1), SkIntToScalar(-1));
-    dst.setEmpty();
-    success = orig.transform(matrix, &dst);
-    REPORTER_ASSERT(reporter, success);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
 
     matrix.reset();
     matrix.setRotate(SkIntToScalar(90));
-    dst2.setEmpty();
-    success = orig.transform(matrix, &dst2);
-    REPORTER_ASSERT(reporter, dst == dst2);
+    dst2 = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst2.has_value());
+    REPORTER_ASSERT(reporter, *dst == *dst2);
 
+    // Non-uniorm scale factor and +/-90 degree rotation must scale the dst X or Y radii
+    // by the correct swapped axis.
+    // 90 CW:
+    // -------------
+
+    // a----b               a------b             d--a
+    // |    |     ->        |      |      ->     |  |
+    // |    |   Scale Y,    d------c  Rotate 90  |  |
+    // d----c   Scale X                          |  |
+    //                                           c--b
+    yScale = 0.5f;
+    xScale = 1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(90));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        // Radii have counter clock-wise and swapped their x and y axis. The dst x radii should be
+        // scaled 1/2x compared to the y radii, dst y scaled 1.5 compared to src x.
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origLL.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origUL.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origUR.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origLR.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
+
+    // a----b               b------a             c--b
+    // |    |     ->        |      |      ->     |  |
+    // |    |   Scale Y,    c------d  Rotate 90  |  |
+    // d----c Flip+Scale X                       |  |
+    //                                           d--a
+    yScale = 0.5f;
+    xScale = -1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(90));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origLR.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origUR.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origUL.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origLL.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
+
+    // a----b               d------c             a--d
+    // |    |     ->        |      |      ->     |  |
+    // |    | Flip+Scale Y, a------b  Rotate 90  |  |
+    // d----c    Scale X                         |  |
+    //                                           b--c
+    yScale = -0.5f;
+    xScale = 1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(90));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origUL.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origLL.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origLR.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origUR.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
+
+    // a----b               c------d             b--c
+    // |    |     ->        |      |      ->     |  |
+    // |    | Flip+Scale Y, b------a  Rotate 90  |  |
+    // d----c Flip+Scale X                       |  |
+    //                                           a--d
+    yScale = -0.5f;
+    xScale = -1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(90));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        // With double-flip the corners rotate 90 degrees counter clockwise although the scale
+        // factors are swapped.
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origUR.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origLR.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origLL.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origUL.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
+
+    // 90 CCW (270):
+    // -------------
+    // a----b               a------b              b--c
+    // |    |     ->        |      |      ->      |  |
+    // |    |   Scale Y,    d------c  Rotate 270  |  |
+    // d----c   Scale X                           |  |
+    //                                            a--d
+    yScale = 0.5f;
+    xScale = 1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(270));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        // Radii have cycled counter clock-wise and swapped their x and y axis. The dst x radii
+        // should be scaled 1/2x compared to the y radii, dst y scaled 1.5 compared to src x.
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origUR.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origLR.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origLL.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origUL.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
+
+    // a----b               b------a              a--d
+    // |    |     ->        |      |      ->      |  |
+    // |    |   Scale Y,    c------d  Rotate 270  |  |
+    // d----c Flip+Scale X                        |  |
+    //                                            b--c
+    yScale = 0.5f;
+    xScale = -1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(270));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origUL.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origLL.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origLR.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origUR.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
+
+    // a----b               d------c              c--b
+    // |    |     ->        |      |      ->      |  |
+    // |    | Flip+Scale Y, a------b  Rotate 270  |  |
+    // d----c    Scale X                          |  |
+    //                                            d--a
+    yScale = -0.5f;
+    xScale = 1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(270));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origLR.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origUR.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origUL.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origLL.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
+
+    // a----b               c------d              d--a
+    // |    |     ->        |      |      ->      |  |
+    // |    | Flip+Scale Y, b------a  Rotate 270  |  |
+    // d----c Flip+Scale X                        |  |
+    //                                            c--b
+    yScale = -0.5f;
+    xScale = -1.5f;
+    matrix.reset();
+    matrix.setRotate(SkIntToScalar(270));
+    matrix.preScale(xScale, yScale);
+    dst = orig.transform(matrix);
+    REPORTER_ASSERT(reporter, dst.has_value());
+    // Make scale factors positive for length comparisons
+    yScale = std::abs(yScale);
+    xScale = std::abs(xScale);
+    {
+        GET_RADII;
+        // With double-flip the corners rotate 90 degrees clockwise although the scale factors
+        // are swapped.
+        REPORTER_ASSERT(reporter, dstUL.x() == yScale*origLL.y());
+        REPORTER_ASSERT(reporter, dstUL.y() == xScale*origLL.x());
+        REPORTER_ASSERT(reporter, dstUR.x() == yScale*origUL.y());
+        REPORTER_ASSERT(reporter, dstUR.y() == xScale*origUL.x());
+        REPORTER_ASSERT(reporter, dstLR.x() == yScale*origUR.y());
+        REPORTER_ASSERT(reporter, dstLR.y() == xScale*origUR.x());
+        REPORTER_ASSERT(reporter, dstLL.x() == yScale*origLR.y());
+        REPORTER_ASSERT(reporter, dstLL.y() == xScale*origLR.x());
+    }
+    // Width and height would get swapped, with the dst width half of the original height.
+    REPORTER_ASSERT(reporter, xScale*orig.rect().width() == dst->rect().height());
+    REPORTER_ASSERT(reporter, yScale*orig.rect().height() == dst->rect().width());
 }
 
 static void test_round_rect_transform(skiatest::Reporter* reporter) {
@@ -932,12 +1278,21 @@ static void test_round_rect_transform(skiatest::Reporter* reporter) {
         rrect.setRectRadii(r, radii);
         test_transform_helper(reporter, rrect);
     }
+    {
+        SkRect r = { 760.0f, 228.0f, 1160.0f, 1028.0f };
+        SkVector radii[4] = { { 400.0f, 400.0f },
+                              { 0, 0 },
+                              { 0, 0 },
+                              { 400.0f, 400.0f } };
+        rrect.setRectRadii(r, radii);
+        test_transform_helper(reporter, rrect);
+    }
 }
 
 // Test out the case where an oval already off in space is translated/scaled
 // further off into space - yielding numerical issues when the rect & radii
 // are transformed separatly
-// BUG=skia:2696
+// BUG=skbug.com/40033801
 static void test_issue_2696(skiatest::Reporter* reporter) {
     SkRRect rrect;
     SkRect r = { 28443.8594f, 53.1428604f, 28446.7148f, 56.0000038f };
@@ -947,19 +1302,18 @@ static void test_issue_2696(skiatest::Reporter* reporter) {
     xform.setAll(2.44f,  0.0f, 485411.7f,
                  0.0f,  2.44f,   -438.7f,
                  0.0f,   0.0f,      1.0f);
-    SkRRect dst;
 
-    bool success = rrect.transform(xform, &dst);
-    REPORTER_ASSERT(reporter, success);
+    auto dst = rrect.transform(xform);
+    REPORTER_ASSERT(reporter, dst.has_value());
 
-    SkScalar halfWidth = SkScalarHalf(dst.width());
-    SkScalar halfHeight = SkScalarHalf(dst.height());
+    SkScalar halfWidth = dst->width() / 2.f;
+    SkScalar halfHeight = dst->height() / 2.f;
 
     for (int i = 0; i < 4; ++i) {
         REPORTER_ASSERT(reporter,
-                        SkScalarNearlyEqual(dst.radii((SkRRect::Corner)i).fX, halfWidth));
+                        SkScalarNearlyEqual(dst->radii((SkRRect::Corner)i).fX, halfWidth));
         REPORTER_ASSERT(reporter,
-                        SkScalarNearlyEqual(dst.radii((SkRRect::Corner)i).fY, halfHeight));
+                        SkScalarNearlyEqual(dst->radii((SkRRect::Corner)i).fY, halfHeight));
     }
 }
 
@@ -1151,20 +1505,20 @@ namespace {
         REPORTER_ASSERT(reporter, actual.rect() == expectedBounds);
 
         // Use PathOps to confirm that the explicit round rect is correct.
-        SkPath aPath, bPath, expectedPath;
-        aPath.addRRect(a);
-        bPath.addRRect(b);
-        SkAssertResult(Op(aPath, bPath, kIntersect_SkPathOp, &expectedPath));
+        SkPath aPath = SkPath::RRect(a),
+               bPath = SkPath::RRect(b);
+        auto result = Op(aPath, bPath, kIntersect_SkPathOp);
+        SkAssertResult(result.has_value());
+        SkPath expectedPath = result.value_or(SkPath());
 
         // The isRRect() heuristics in SkPath are based on having called addRRect(), so a path from
         // path ops that is a rounded rectangle will return false. However, if test XOR expected is
         // empty, then we know that the shapes were the same.
-        SkPath testPath;
-        testPath.addRRect(actual);
+        SkPath testPath = SkPath::RRect(actual);
 
-        SkPath empty;
-        SkAssertResult(Op(testPath, expectedPath, kXOR_SkPathOp, &empty));
-        REPORTER_ASSERT(reporter, empty.isEmpty());
+        result = Op(testPath, expectedPath, kXOR_SkPathOp);
+        SkAssertResult(result.has_value());
+        REPORTER_ASSERT(reporter, result->isEmpty());
     }
 
     static void verify_failure(skiatest::Reporter* reporter, const SkRRect& a, const SkRRect& b) {
@@ -1284,6 +1638,7 @@ DEF_TEST(RoundRect, reporter) {
     test_round_rect_iffy_parameters(reporter);
     test_inset(reporter);
     test_round_rect_contains_rect(reporter);
+    test_round_rect_contains_point(reporter);
     test_round_rect_transform(reporter);
     test_issue_2696(reporter);
     test_tricky_radii(reporter);
@@ -1323,5 +1678,107 @@ DEF_TEST(RRect_fuzzer_regressions, r) {
             0x04, 0xdd, 0x3d, 0x1c, 0xfe, 0x89, 0x04, 0x0a, 0x0e, 0x05, 0x7e, 0x0a
         };
         REPORTER_ASSERT(r, sizeof(buf) == SkRRect{}.readFromMemory(buf, sizeof(buf)));
+    }
+}
+
+DEF_TEST(RRect_b511391129, r) {
+    const float kValA = SkBits2Float(0x4b4b4b4a); // 13323074.0f
+    const float kValB = SkBits2Float(0x4b4b4b4b); // 13323083.0f
+
+    {
+        SkRect rect = SkRect::MakeLTRB(0.0f, 0.0f, kValB, kValB);
+        SkRRect rrect;
+        rrect.setRectXY(rect, kValA, kValA);
+        REPORTER_ASSERT(r, rrect.isValid());
+    }
+
+    {
+        SkRect rect = SkRect::MakeLTRB(0.0f, 0.0f, kValB, kValB);
+        SkRRect rrect;
+        rrect.setNinePatch(rect, kValA, kValA, kValA, kValA);
+        REPORTER_ASSERT(r, rrect.isValid());
+    }
+
+    {
+        SkRect rect = SkRect::MakeLTRB(0.0f, 0.0f, kValB, kValB);
+        SkVector radii[4] = {{kValA, kValA},
+                             {kValA, kValA},
+                             {kValA, kValA},
+                             {kValA, kValA}};
+        SkRRect rrect;
+        rrect.setRectRadii(rect, radii);
+        REPORTER_ASSERT(r, rrect.isValid());
+    }
+}
+
+DEF_TEST(RRect_b527765132, r) {
+    // These values were found via fuzzing to trigger a validation due to ULPs only not being a
+    // good way to compare floats
+    const float width = 37.408840f;
+    const float height = 73.093933f;
+    const float dx = -5430.867188f;
+    const float dy = -26967.046875f;
+
+    SkRect rect = SkRect::MakeWH(width, height);
+    SkRRect rrect = SkRRect::MakeOval(rect);
+
+    SkRRect offsetRRect = rrect.makeOffset(dx, dy);
+
+    REPORTER_ASSERT(r, offsetRRect.isValid());
+    REPORTER_ASSERT(r, offsetRRect.isOval());
+}
+
+DEF_TEST(RRect_b547198215, r) {
+    // Overlapping corner radii on any side must be rejected by AreRectAndRadiiValid.
+    const SkRect rect = SkRect::MakeWH(100.0f, 100.0f);
+
+    // Overlapping right side (UR.y + LR.y > height)
+    {
+        const SkVector radii[4] = {{0.0f, 0.0f}, {0.0f, 60.0f}, {0.0f, 60.0f}, {0.0f, 0.0f}};
+        REPORTER_ASSERT(r, !SkRRectPriv::AreRectAndRadiiValid(rect, radii));
+
+        // Constructing via setRectRadii scales radii to fit, making it valid.
+        SkRRect rrect;
+        rrect.setRectRadii(rect, radii);
+        REPORTER_ASSERT(r, rrect.isValid());
+    }
+
+    // Overlapping top side (UL.x + UR.x > width)
+    {
+        const SkVector radii[4] = {{70.0f, 0.0f}, {70.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
+        REPORTER_ASSERT(r, !SkRRectPriv::AreRectAndRadiiValid(rect, radii));
+    }
+
+    // Overlapping bottom side (LL.x + LR.x > width)
+    {
+        const SkVector radii[4] = {{0.0f, 0.0f}, {0.0f, 0.0f}, {60.0f, 0.0f}, {60.0f, 0.0f}};
+        REPORTER_ASSERT(r, !SkRRectPriv::AreRectAndRadiiValid(rect, radii));
+    }
+
+    // Overlapping left side (UL.y + LL.y > height)
+    {
+        const SkVector radii[4] = {{0.0f, 55.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 55.0f}};
+        REPORTER_ASSERT(r, !SkRRectPriv::AreRectAndRadiiValid(rect, radii));
+    }
+
+    // Negative radii must be rejected by AreRectAndRadiiValid.
+    {
+        const SkVector radii[4] = {{-5.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
+        REPORTER_ASSERT(r, !SkRRectPriv::AreRectAndRadiiValid(rect, radii));
+    }
+    {
+        const SkVector radii[4] = {{0.0f, -5.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
+        REPORTER_ASSERT(r, !SkRRectPriv::AreRectAndRadiiValid(rect, radii));
+    }
+
+    // Test the specific testcase geometry from b/547198215
+    {
+        const SkRect fuzzedRect =
+                SkRect::MakeLTRB(1.35631564e-19f, 1.35631564e-19f, 163968.5f, 800.501953f);
+        const SkVector fuzzedRadii[4] = {{1.35631564e-19f, 1.35631564e-19f},
+                                         {1.35631564e-19f, 640.501953f},
+                                         {1.35631564e-19f, 640.501953f},
+                                         {1.35631564e-19f, 1.35631564e-19f}};
+        REPORTER_ASSERT(r, !SkRRectPriv::AreRectAndRadiiValid(fuzzedRect, fuzzedRadii));
     }
 }

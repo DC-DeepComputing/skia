@@ -1,5 +1,5 @@
 /*
-* Copyright 2019 Google Inc.
+* Copyright 2019 Google LLC
 *
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
@@ -83,7 +83,7 @@ int main(int argc, char * argv[]) {
     while (![appDelegate done]) {
         NSEvent* event;
         do {
-            event = [NSApp nextEventMatchingMask:NSAnyEventMask
+            event = [NSApp nextEventMatchingMask:NSEventMaskAny
                                        untilDate:[NSDate distantPast]
                                           inMode:NSDefaultRunLoopMode
                                          dequeue:YES];

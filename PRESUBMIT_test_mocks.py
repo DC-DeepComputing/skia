@@ -1,4 +1,4 @@
-# Copyright 2023 Google Inc.
+# Copyright 2023 Google LLC
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -225,7 +225,7 @@ class MockFile(object):
     def ChangedContents(self):
         return self._changed_contents
 
-    def NewContents(self):
+    def NewContents(self, flush_cache=False):
         return self._new_contents
 
     def LocalPath(self):

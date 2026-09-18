@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC.
+// Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 #include "tools/skottie_ios_app/SkiaContext.h"
@@ -6,8 +6,8 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSize.h"
-#include "include/core/SkTime.h"
 #include "include/utils/mac/SkCGUtils.h"
+#include "src/core/SkTime.h"
 
 #import <UIKit/UIKit.h>
 

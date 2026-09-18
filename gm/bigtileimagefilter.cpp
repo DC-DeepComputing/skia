@@ -32,7 +32,7 @@ static sk_sp<SkImage> create_circle_texture(int size, SkColor color) {
     paint.setStrokeWidth(3);
     paint.setStyle(SkPaint::kStroke_Style);
 
-    canvas->drawCircle(SkScalarHalf(size), SkScalarHalf(size), SkScalarHalf(size), paint);
+    canvas->drawCircle(size / 2.f, size / 2.f, size / 2.f, paint);
 
     return surface->makeImageSnapshot();
 }
@@ -46,14 +46,9 @@ public:
     }
 
 protected:
+    SkString getName() const override { return SkString("bigtileimagefilter"); }
 
-    SkString onShortName() override {
-        return SkString("bigtileimagefilter");
-    }
-
-    SkISize onISize() override {
-        return SkISize::Make(kWidth, kHeight);
-    }
+    SkISize getISize() override { return SkISize::Make(kWidth, kHeight); }
 
     void onOnceBeforeDraw() override {
         fRedImage = create_circle_texture(kBitmapSize, SK_ColorRED);

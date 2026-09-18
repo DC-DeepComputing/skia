@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/mtl/GrMtlVaryingHandler.h"
 
-#include "include/private/gpu/ganesh/GrMtlTypesPriv.h"
+#include "src/gpu/ganesh/mtl/GrMtlTypesPriv.h"
 
 #if !__has_feature(objc_arc)
 #error This file must be compiled with Arc. Use -fobjc-arc flag

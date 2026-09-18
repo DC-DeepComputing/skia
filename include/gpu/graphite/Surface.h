@@ -12,6 +12,8 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GpuTypes.h"
 
+#include <string_view>
+
 class SkImage;
 struct SkImageInfo;
 
@@ -21,8 +23,11 @@ class Recorder;
 }  // namespace skgpu::graphite
 
 namespace SkSurfaces {
+using ReleaseContext = void*;
+using TextureReleaseProc = void (*)(ReleaseContext);
+
 /**
- * The 'asImage' and 'makeImageCopy' API/entry points are currently only available for
+ * The 'AsImage' and 'AsImageCopy' API/entry points are currently only available for
  * Graphite.
  *
  * In this API, SkSurface no longer supports copy-on-write behavior. Instead, when creating
@@ -56,7 +61,8 @@ SK_API sk_sp<SkImage> AsImageCopy(sk_sp<const SkSurface>,
 SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
                                      const SkImageInfo& imageInfo,
                                      skgpu::Mipmapped = skgpu::Mipmapped::kNo,
-                                     const SkSurfaceProps* surfaceProps = nullptr);
+                                     const SkSurfaceProps* surfaceProps = nullptr,
+                                     std::string_view label = {});
 
 /**
  * Wraps a GPU-backed texture in an SkSurface. Depending on the backend gpu API, the caller may
@@ -70,12 +76,46 @@ SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
  * configuration, then the recorder must support sRGB, and colorSpace must be present. Further,
  * backendTexture's width and height must not exceed the recorder's capabilities, and the
  * recorder must be able to support the back-end texture.
+ *
+ * DEPRECATED: Use WrapBackendTexture that does not take a `colorType`.
  */
 SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
                                            const skgpu::graphite::BackendTexture&,
                                            SkColorType colorType,
                                            sk_sp<SkColorSpace> colorSpace,
-                                           const SkSurfaceProps* props);
+                                           const SkSurfaceProps* props,
+                                           TextureReleaseProc = nullptr,
+                                           ReleaseContext = nullptr,
+                                           std::string_view label = {});
+/**
+ * Wraps a GPU-backed texture in an SkSurface. Depending on the backend gpu API, the caller may
+ * be required to ensure the texture is valid for the lifetime of the returned SkSurface. The
+ * required lifetimes for the specific apis are:
+ *     Metal: Skia will call retain on the underlying MTLTexture so the caller can drop it once
+ *            this call returns.
+ *
+ * SkSurface is returned if all the parameters are valid. The backendTexture is valid if its
+ * format and dimensions are supported by the context that created the recorder. The color type
+ * reported by the SkSurface's image info is inferred from backend texture's format, matching as
+ * closely as possible when a texture format is not representable exactly as an SkColorType. This
+ * is fine as the SkColorType represents the data layout were the texture to be read to CPU memory.
+ *
+ * For single-channel texture formats, the alpha-only SkColorType is selected as that is more
+ * consistently defined for data types. The implication of this is that the alpha channel output
+ * from fragment shading will be what's stored in the texture, regardless of whether its format was
+ * A or R.
+ *
+ * For other formats and color types, the ambiguities between BGR and RGB channel order are
+ * irrelevant for rendering and sampling on the GPU. Those swizzles can reliably be handled by the
+ * hardware and there's no semantic change for the related SkColorTypes.
+ */
+SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
+                                           const skgpu::graphite::BackendTexture&,
+                                           sk_sp<SkColorSpace> colorSpace,
+                                           const SkSurfaceProps* props,
+                                           TextureReleaseProc = nullptr,
+                                           ReleaseContext = nullptr,
+                                           std::string_view label = {});
 }  // namespace SkSurfaces
 
 #endif  // skgpu_graphite_Surface_DEFINED

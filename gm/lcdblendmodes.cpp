@@ -23,8 +23,9 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 namespace skiagm {
 
@@ -38,11 +39,10 @@ static sk_sp<SkShader> make_shader(const SkRect& bounds) {
         { bounds.left(), bounds.top() },
         { bounds.right(), bounds.bottom() },
     };
-    const SkColor colors[] = {
-        SK_ColorRED, SK_ColorGREEN,
+    const SkColor4f colors[] = {
+        SkColors::kRed, SkColors::kGreen,
     };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                        SkTileMode::kRepeat);
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kRepeat}, {}});
 }
 
 class LcdBlendGM : public skiagm::GM {
@@ -53,15 +53,13 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("lcdblendmodes");
-    }
+    SkString getName() const override { return SkString("lcdblendmodes"); }
 
     void onOnceBeforeDraw() override {
         fCheckerboard = ToolUtils::create_checkerboard_shader(SK_ColorBLACK, SK_ColorWHITE, 4);
     }
 
-    SkISize onISize() override { return SkISize::Make(kWidth, kHeight); }
+    SkISize getISize() override { return SkISize::Make(kWidth, kHeight); }
 
     void onDraw(SkCanvas* canvas) override {
         SkPaint p;
@@ -130,7 +128,7 @@ protected:
             SkPaint paint;
             paint.setColor(textColor);
             paint.setBlendMode(gModes[m]);
-            SkFont font(ToolUtils::create_portable_typeface(), fTextHeight);
+            SkFont font(ToolUtils::DefaultPortableTypeface(), fTextHeight);
             font.setSubpixel(true);
             font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
             if (useGrad) {

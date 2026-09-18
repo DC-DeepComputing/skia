@@ -14,9 +14,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurfaceProps.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkTInternalLList.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkMaskFilterBase.h"
+#include "src/core/SkTInternalLList.h"
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 
@@ -25,7 +25,6 @@
 #include <tuple>
 
 class SkCanvas;
-class SkMatrixProvider;
 struct SkPoint;
 struct SkStrikeDeviceInfo;
 
@@ -33,13 +32,6 @@ namespace sktext {
 class GlyphRunList;
 class StrikeForGPUCacheInterface;
 }
-
-#if defined(SK_GANESH)
-class GrClip;
-namespace skgpu::ganesh {
-class SurfaceDrawContext;
-}
-#endif
 
 namespace sktext::gpu {
 class Slug;
@@ -120,23 +112,13 @@ public:
     const Key& key() const;
     size_t size() const { return SkTo<size_t>(fSize); }
 
-#if defined(SK_GANESH)
-    void draw(SkCanvas*,
-              const GrClip* clip,
-              const SkMatrixProvider& viewMatrix,
-              SkPoint drawOrigin,
-              const SkPaint& paint,
-              skgpu::ganesh::SurfaceDrawContext* sdc);
-#endif
-#if defined(SK_GRAPHITE)
     void draw(SkCanvas*,
               SkPoint drawOrigin,
               const SkPaint& paint,
-              skgpu::graphite::Device* device);
-#endif
-    const AtlasSubRun* testingOnlyFirstSubRun() const;
+              const AtlasDrawDelegate&);
 
 private:
+    friend class TextBlobTools;
     // The allocator must come first because it needs to be destroyed last. Other fields of this
     // structure may have pointers into it.
     SubRunAllocator fAlloc;
@@ -151,10 +133,9 @@ private:
     Key fKey;
 };
 
-sk_sp<sktext::gpu::Slug> MakeSlug(const SkMatrixProvider& drawMatrix,
+sk_sp<sktext::gpu::Slug> MakeSlug(const SkMatrix& drawMatrix,
                                   const sktext::GlyphRunList& glyphRunList,
-                                  const SkPaint& initialPaint,
-                                  const SkPaint& drawingPaint,
+                                  const SkPaint& paint,
                                   SkStrikeDeviceInfo strikeDeviceInfo,
                                   sktext::StrikeForGPUCacheInterface* strikeCache);
 }  // namespace sktext::gpu

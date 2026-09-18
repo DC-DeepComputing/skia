@@ -7,7 +7,7 @@
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkTo.h"
 #include "include/utils/SkParse.h"
 
 #include <cstdint>
@@ -171,45 +171,6 @@ const char* SkParse::FindS32(const char str[], int32_t* value)
     if (value) {
         *value = SkToS32(sign*n);
     }
-    return str;
-}
-
-const char* SkParse::FindMSec(const char str[], SkMSec* value)
-{
-    SkASSERT(str);
-    str = skip_ws(str);
-
-    int sign = 0;
-    if (*str == '-')
-    {
-        sign = -1;
-        str += 1;
-    }
-
-    if (!is_digit(*str))
-        return nullptr;
-
-    int n = 0;
-    while (is_digit(*str))
-    {
-        n = 10*n + *str - '0';
-        str += 1;
-    }
-    int remaining10s = 3;
-    if (*str == '.') {
-        str++;
-        while (is_digit(*str))
-        {
-            n = 10*n + *str - '0';
-            str += 1;
-            if (--remaining10s == 0)
-                break;
-        }
-    }
-    while (--remaining10s >= 0)
-        n *= 10;
-    if (value)
-        *value = (n ^ sign) - sign;
     return str;
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC.
+// Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(draw_vertices, 256, 256, false, 6) {
@@ -11,7 +11,7 @@ void draw(SkCanvas* canvas) {
     SkColor colors[3] = {SK_ColorRED, SK_ColorBLUE, SK_ColorGREEN};
     canvas->drawVertices(
             SkVertices::MakeCopy(SkVertices::kTriangles_VertexMode, 3, pts, nullptr, colors),
-            SkBlendMode::kSrcOver, p);
+            SkBlendMode::kDst, p);
 
     canvas->translate(120, 0);
 
@@ -19,6 +19,6 @@ void draw(SkCanvas* canvas) {
     SkPoint texs[3] = {{0, 0}, {0, 128}, {64, 256}};
     canvas->drawVertices(
             SkVertices::MakeCopy(SkVertices::kTriangles_VertexMode, 3, pts, texs, nullptr),
-            SkBlendMode::kSrcOver, p);
+            SkBlendMode::kDst, p);
 }
 }  // END FIDDLE

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC.
+// Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(no_gpu_blur, 256, 256, false, 0) {
@@ -13,7 +13,6 @@ void draw(SkCanvas* canvas) {
     paint.setStyle(SkPaint::kStroke_Style);
     paint.setStrokeWidth(20);
     offscreen.drawCircle(50, 50, 39, paint);
-    offscreen.flush();
     paint.setMaskFilter(SkMaskFilter::MakeBlur(kOuter_SkBlurStyle, 3));
     SkIPoint offset;
     bitmap.extractAlpha(&alpha, &paint, nullptr, &offset);

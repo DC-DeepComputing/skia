@@ -19,7 +19,7 @@ public:
      *  If 'fc' is nullptr, each method call will use the current config.
      *  Takes ownership of 'fc' and will call FcConfigDestroy on it.
      */
-    SkFontConfigInterfaceDirect(FcConfig* fc);
+    explicit SkFontConfigInterfaceDirect(FcConfig* fc);
     ~SkFontConfigInterfaceDirect() override;
 
     bool matchFamilyName(const char familyName[],
@@ -36,7 +36,21 @@ protected:
 private:
     FcConfig * const fFC;
     bool isValidPattern(FcPattern* pattern);
-    FcPattern* MatchFont(FcFontSet* font_set, const char* post_config_family,
+
+    /**
+     * Determines whether the match returned by FcFontMatch is acceptable, meaning
+     * * It checks whether isValidPattern(match) is true
+     * * Whether the match is an acceptable substitute if IsFallbackFontAllowed(family) is false
+     *
+     * @param match the FcPattern* returned by FcFontMatch
+     * @param post_config_family the post config family to match
+     * @param family the font family to match
+     */
+    bool isAcceptableMatch(FcPattern* match,
+                           const char* post_config_family,
+                           const SkString& family);
+    FcPattern* MatchFont(FcFontSet* font_set,
+                         const char* post_config_family,
                          const SkString& family);
     using INHERITED = SkFontConfigInterface;
 };

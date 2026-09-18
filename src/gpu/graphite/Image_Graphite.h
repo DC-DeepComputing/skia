@@ -10,8 +10,9 @@
 
 #include "src/gpu/graphite/Image_Base_Graphite.h"
 
-#include "include/gpu/graphite/Image.h"
 #include "src/gpu/graphite/TextureProxyView.h"
+
+#include <optional>
 
 namespace skgpu {
     class RefCntedCallback;
@@ -20,41 +21,70 @@ namespace skgpu {
 namespace skgpu::graphite {
 
 class Context;
+class Device;
+class DrawContext;
 class Recorder;
 
 class Image final : public Image_Base {
 public:
-    Image(uint32_t uniqueID, TextureProxyView, const SkColorInfo&);
+    Image(TextureProxyView, const SkColorInfo&);
     ~Image() override;
 
-    bool onHasMipmaps() const override {
-        return fTextureProxyView.proxy()->mipmapped() == skgpu::Mipmapped::kYes;
-    }
+    // Create an Image that wraps the Device and automatically flushes or references the Device's
+    // pending tasks when the Image is used in a draw to another canvas.
+    static sk_sp<Image> WrapDevice(sk_sp<Device> device,
+                                   std::optional<SkColorInfo> overrideInfo = std::nullopt);
+
+    // Create an Image by copying the provided texture proxy view into a new texturable proxy.
+    // The source texture does not have to be texturable if it is blittable.
+    //
+    // If provided with a drawContext (e.g. not nullptr), the tasks from this function call will be
+    // added to the drawContext's task list. Otherwise, they will be added to the root task list.
+    static sk_sp<Image> Copy(Recorder*,
+                             DrawContext* drawContext,
+                             const TextureProxyView& srcView,
+                             const SkColorInfo&,
+                             const SkIRect& subset,
+                             Budgeted,
+                             Mipmapped,
+                             SkBackingFit,
+                             std::string_view label);
+
+    const TextureProxyView& textureProxyView() const { return fTextureProxyView; }
 
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kGraphite; }
 
+    SkSpan<TextureProxyView> textureProxyViews() override {
+        return SkSpan(&fTextureProxyView, 1);
+    }
+    SkSpan<const TextureProxyView> textureProxyViews() const override {
+        return SkSpan(&fTextureProxyView, 1);
+    }
+
+    bool onHasMipmaps() const override {
+        return fTextureProxyView.proxy()->mipmapped() == Mipmapped::kYes;
+    }
+
+    bool onIsProtected() const override {
+        return fTextureProxyView.proxy()->isProtected() == Protected::kYes;
+    }
+
+    size_t textureSize() const override;
+
+    sk_sp<Image> copyImage(Recorder*,
+                           const SkIRect& subset,
+                           Budgeted,
+                           Mipmapped,
+                           SkBackingFit,
+                           std::string_view label) const override;
+
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const override;
 
-    TextureProxyView textureProxyView() const { return fTextureProxyView; }
-
-    static sk_sp<TextureProxy> MakePromiseImageLazyProxy(
-            SkISize dimensions,
-            TextureInfo,
-            Volatile,
-            SkImages::GraphitePromiseImageFulfillProc,
-            sk_sp<RefCntedCallback>,
-            SkImages::GraphitePromiseTextureReleaseProc);
-    sk_sp<SkImage> makeTextureImage(Recorder*, RequiredProperties) const override;
+#if defined(GPU_TEST_UTILS)
+    bool readPixelsGraphite(SkRecorder*, const SkPixmap& dst, int srcX, int srcY) const override;
+#endif
 
 private:
-    sk_sp<SkImage> copyImage(const SkIRect& subset, Recorder*, RequiredProperties) const;
-    using Image_Base::onMakeSubset;
-    sk_sp<SkImage> onMakeSubset(Recorder*, const SkIRect&, RequiredProperties) const override;
-    using Image_Base::onMakeColorTypeAndColorSpace;
-    sk_sp<SkImage> makeColorTypeAndColorSpace(Recorder*,
-                                              SkColorType targetCT,
-                                              sk_sp<SkColorSpace> targetCS,
-                                              RequiredProperties) const override;
 
     TextureProxyView fTextureProxyView;
 };

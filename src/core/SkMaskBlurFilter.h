@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -27,7 +27,7 @@ public:
     bool hasNoBlur() const;
 
     // Given a src SkMask, generate dst SkMask returning the border width and height.
-    SkIPoint blur(const SkMask& src, SkMask* dst) const;
+    SkIPoint blur(const SkMask& src, SkMaskBuilder* dst) const;
 
 private:
     const double fSigmaW;

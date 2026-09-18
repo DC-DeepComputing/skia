@@ -24,14 +24,14 @@
 class GrBackendSemaphore;
 class GrBackendTexture;
 class GrRecordingContext;
+class GrSurfaceCharacterization;
 class SkBitmap;
 class SkCanvas;
 class SkCapabilities;
 class SkColorSpace;
-class SkDeferredDisplayList;
 class SkPaint;
+class SkRecorder;
 class SkSurface;
-class SkSurfaceCharacterization;
 enum GrSurfaceOrigin : int;
 struct SkIRect;
 struct SkISize;
@@ -39,12 +39,6 @@ struct SkISize;
 namespace skgpu::graphite {
 class Recorder;
 }
-
-#if !defined(SK_DISABLE_LEGACY_SKSURFACE_FLUSH)
-enum class GrSemaphoresSubmitted : bool;
-struct GrFlushInfo;
-namespace skgpu { class MutableTextureState; }
-#endif
 
 namespace SkSurfaces {
 
@@ -170,13 +164,13 @@ public:
     /** Is this surface compatible with the provided characterization?
 
         This method can be used to determine if an existing SkSurface is a viable destination
-        for an SkDeferredDisplayList.
+        for an GrDeferredDisplayList.
 
         @param characterization  The characterization for which a compatibility check is desired
         @return                  true if this surface is compatible with the characterization;
                                  false otherwise
     */
-    bool isCompatible(const SkSurfaceCharacterization& characterization) const;
+    bool isCompatible(const GrSurfaceCharacterization& characterization) const;
 
     /** Returns pixel count in each row; may be zero or greater.
 
@@ -232,6 +226,12 @@ public:
         @return the recorder, if available; nullptr otherwise
      */
     skgpu::graphite::Recorder* recorder() const;
+
+    /** Returns the base SkRecorder being used by the SkSurface.
+
+        @return the recorder; should be non-null for drawable surfaces
+    */
+    SkRecorder* baseRecorder() const;
 
     enum class BackendHandleAccess {
         kFlushRead,     //!< back-end object is readable
@@ -337,6 +337,20 @@ public:
      */
     sk_sp<SkImage> makeImageSnapshot(const SkIRect& bounds);
 
+    /** Returns an SkImage capturing the current SkSurface contents. However, the contents of the
+        SkImage are only valid as long as no other writes to the SkSurface occur. If writes to the
+        original SkSurface happen then contents of the SkImage are undefined. However, continued use
+        of the SkImage should not cause crashes or similar fatal behavior.
+
+        This API is useful for cases where the client either immediately destroys the SkSurface
+        after the SkImage is created or knows they will destroy the SkImage before writing to the
+        SkSurface again.
+
+        This API can be more performant than makeImageSnapshot as it never does an internal copy
+        of the data assuming the user frees either the SkImage or SkSurface as described above.
+     */
+    sk_sp<SkImage> makeTemporaryImage();
+
     /** Draws SkSurface contents to canvas, with its top-left corner at (x, y).
 
         If SkPaint paint is not nullptr, apply SkColorFilter, alpha, SkImageFilter, and SkBlendMode.
@@ -377,7 +391,9 @@ public:
         Copies each readable pixel intersecting both rectangles, without scaling,
         converting to dst.colorType() and dst.alphaType() if required.
 
-        Pixels are readable when SkSurface is raster, or backed by a GPU.
+        Pixels are readable when SkSurface is raster, or backed by a Ganesh GPU backend. Graphite
+        has deprecated this API in favor of the equivalent asynchronous API on
+        skgpu::graphite::Context (with an optional explicit synchonization).
 
         The destination pixel storage must be allocated by the caller.
 
@@ -408,7 +424,9 @@ public:
         Copies each readable pixel intersecting both rectangles, without scaling,
         converting to dstInfo.colorType() and dstInfo.alphaType() if required.
 
-        Pixels are readable when SkSurface is raster, or backed by a GPU.
+        Pixels are readable when SkSurface is raster, or backed by a Ganesh GPU backend. Graphite
+        has deprecated this API in favor of the equivalent asynchronous API on
+        skgpu::graphite::Context (with an optional explicit synchonization).
 
         The destination pixel storage must be allocated by the caller.
 
@@ -440,7 +458,9 @@ public:
         Copies each readable pixel intersecting both rectangles, without scaling,
         converting to bitmap.colorType() and bitmap.alphaType() if required.
 
-        Pixels are readable when SkSurface is raster, or backed by a GPU.
+        Pixels are readable when SkSurface is raster, or backed by a Ganesh GPU backend. Graphite
+        has deprecated this API in favor of the equivalent asynchronous API on
+        skgpu::graphite::Context (with an optional explicit synchonization).
 
         The destination pixel storage must be allocated by the caller.
 
@@ -484,9 +504,12 @@ public:
     /** Makes surface pixel data available to caller, possibly asynchronously. It can also rescale
         the surface pixels.
 
-        Currently asynchronous reads are only supported on the GPU backend and only when the
+        Currently asynchronous reads are only supported in the Ganesh GPU backend and only when the
         underlying 3D API supports transfer buffers and CPU/GPU synchronization primitives. In all
         other cases this operates synchronously.
+
+        For the Graphite backend this API has been deprecated in favor of the equivalent API
+        on skgpu::graphite::Context.
 
         Data is read from the source sub-rectangle, is optionally converted to a linear gamma, is
         rescaled to the size indicated by 'info', is then converted to the color space, color type,
@@ -556,6 +579,20 @@ public:
                                          ReadPixelsCallback callback,
                                          ReadPixelsContext context);
 
+    /**
+     * Identical to asyncRescaleAndReadPixelsYUV420 but a fourth plane is returned in the
+     * AsyncReadResult passed to 'callback'. The fourth plane contains the alpha chanel at the
+     * same full resolution as the Y plane.
+     */
+    void asyncRescaleAndReadPixelsYUVA420(SkYUVColorSpace yuvColorSpace,
+                                          sk_sp<SkColorSpace> dstColorSpace,
+                                          const SkIRect& srcRect,
+                                          const SkISize& dstSize,
+                                          RescaleGamma rescaleGamma,
+                                          RescaleMode rescaleMode,
+                                          ReadPixelsCallback callback,
+                                          ReadPixelsContext context);
+
     /** Copies SkRect of pixels from the src SkPixmap to the SkSurface.
 
         Source SkRect corners are (0, 0) and (src.width(), src.height()).
@@ -597,9 +634,12 @@ public:
     const SkSurfaceProps& props() const { return fProps; }
 
     /** Inserts a list of GPU semaphores that the current GPU-backed API must wait on before
-        executing any more commands on the GPU for this surface. If this call returns false, then
-        the GPU back-end will not wait on any passed in semaphores, and the client will still own
-        the semaphores, regardless of the value of deleteSemaphoresAfterWait.
+        executing any more commands on the GPU for this surface. We only guarantee blocking
+        transfer and fragment shader work, but may block earlier stages as well depending on the
+        backend.
+        If this call returns false, then the GPU back-end will not wait on any passed in
+        semaphores, and the client will still own the semaphores, regardless of the value of
+        deleteSemaphoresAfterWait.
 
         If deleteSemaphoresAfterWait is false then Skia will not delete the semaphores. In this case
         it is the client's responsibility to not destroy or attempt to reuse the semaphores until it
@@ -614,9 +654,9 @@ public:
     bool wait(int numSemaphores, const GrBackendSemaphore* waitSemaphores,
               bool deleteSemaphoresAfterWait = true);
 
-    /** Initializes SkSurfaceCharacterization that can be used to perform GPU back-end
+    /** Initializes GrSurfaceCharacterization that can be used to perform GPU back-end
         processing in a separate thread. Typically this is used to divide drawing
-        into multiple tiles. SkDeferredDisplayListRecorder records the drawing commands
+        into multiple tiles. GrDeferredDisplayListRecorder records the drawing commands
         for each tile.
 
         Return true if SkSurface supports characterization. raster surface returns false.
@@ -626,27 +666,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Surface_characterize
     */
-    bool characterize(SkSurfaceCharacterization* characterization) const;
-
-    /** Draws the deferred display list created via a SkDeferredDisplayListRecorder.
-        If the deferred display list is not compatible with this SkSurface, the draw is skipped
-        and false is return.
-
-        The xOffset and yOffset parameters are experimental and, if not both zero, will cause
-        the draw to be ignored.
-        When implemented, if xOffset or yOffset are non-zero, the DDL will be drawn offset by that
-        amount into the surface.
-
-        @param deferredDisplayList  drawing commands
-        @param xOffset              x-offset at which to draw the DDL
-        @param yOffset              y-offset at which to draw the DDL
-        @return                     false if deferredDisplayList is not compatible
-
-        example: https://fiddle.skia.org/c/@Surface_draw_2
-    */
-    bool draw(sk_sp<const SkDeferredDisplayList> deferredDisplayList,
-              int xOffset = 0,
-              int yOffset = 0);
+    bool characterize(GrSurfaceCharacterization* characterization) const;
 
 protected:
     SkSurface(int width, int height, const SkSurfaceProps* surfaceProps);
@@ -664,25 +684,6 @@ private:
     uint32_t             fGenerationID;
 
     using INHERITED = SkRefCnt;
-
-public:
-#if !defined(SK_DISABLE_LEGACY_SKSURFACE_FLUSH) && defined(SK_GANESH)
-    using BackendSurfaceAccess = SkSurfaces::BackendSurfaceAccess;
-    GrSemaphoresSubmitted flush(BackendSurfaceAccess access, const GrFlushInfo& info);
-    GrSemaphoresSubmitted flush(const GrFlushInfo& info,
-                                const skgpu::MutableTextureState* newState = nullptr);
-    void resolveMSAA();
-#endif
-
-#if !defined(SK_DISABLE_LEGACY_SKSURFACE_FLUSH)
-    void flushAndSubmit(bool syncCpu = false);
-    void flush();
-#endif
-
-#if !defined(SK_DISABLE_LEGACY_SKSURFACE_AS_IMAGE) && defined(SK_GRAPHITE)
-    sk_sp<SkImage> asImage();
-#endif
-
 };
 
 #endif

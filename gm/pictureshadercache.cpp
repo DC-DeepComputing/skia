@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -57,13 +57,9 @@ public:
         fPicture = recorder.finishRecordingAsPicture();
     }
 
-    SkString onShortName() override {
-        return SkString("pictureshadercache");
-    }
+    SkString getName() const override { return SkString("pictureshadercache"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(100, 100);
-    }
+    SkISize getISize() override { return SkISize::Make(100, 100); }
 
     void onDraw(SkCanvas* canvas) override {
         SkPaint paint;

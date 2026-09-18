@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -25,7 +25,7 @@ public:
     class Click {
     public:
         Click() {}
-        Click(std::function<bool(Click*)> f) : fFunc(f), fHasFunc(true) {}
+        Click(std::function<bool(Click*)> f) : fFunc(std::move(f)), fHasFunc(true) {}
         virtual ~Click() = default;
 
         SkPoint fOrig = {0, 0};

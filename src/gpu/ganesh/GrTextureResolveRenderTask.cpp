@@ -4,15 +4,26 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/GrTextureResolveRenderTask.h"
 
+#include "include/gpu/GpuTypes.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkMacros.h"
+#include "src/gpu/ganesh/GrDrawingManager.h"
 #include "src/gpu/ganesh/GrGpu.h"
-#include "src/gpu/ganesh/GrMemoryPool.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
-#include "src/gpu/ganesh/GrRenderTarget.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/GrTexture.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
+#include "src/gpu/ganesh/GrTextureResolveManager.h"
+
+#include <algorithm>
+#include <cstddef>
+#include <utility>
+
+class GrRenderTarget;
 
 void GrTextureResolveRenderTask::addProxy(GrDrawingManager* drawingMgr,
                                           sk_sp<GrSurfaceProxy> proxyRef,
@@ -50,7 +61,7 @@ void GrTextureResolveRenderTask::addProxy(GrDrawingManager* drawingMgr,
 
     if (GrSurfaceProxy::ResolveFlags::kMipMaps & newFlags) {
         GrTextureProxy* textureProxy = proxy->asTextureProxy();
-        SkASSERT(GrMipmapped::kYes == textureProxy->mipmapped());
+        SkASSERT(skgpu::Mipmapped::kYes == textureProxy->mipmapped());
         SkASSERT(textureProxy->mipmapsAreDirty());
         textureProxy->markMipmapsClean();
     }
@@ -60,11 +71,8 @@ void GrTextureResolveRenderTask::addProxy(GrDrawingManager* drawingMgr,
     if (newProxy) {
         // Add the proxy as a dependency: We will read the existing contents of this texture while
         // generating mipmap levels and/or resolving MSAA.
-        this->addDependency(drawingMgr,
-                            proxy,
-                            GrMipmapped::kNo,
-                            GrTextureResolveManager(nullptr),
-                            caps);
+        this->addDependency(
+                drawingMgr, proxy, skgpu::Mipmapped::kNo, GrTextureResolveManager(nullptr), caps);
         this->addTarget(drawingMgr, GrSurfaceProxyView(std::move(proxyRef)));
     }
 }
@@ -76,45 +84,72 @@ void GrTextureResolveRenderTask::gatherProxyIntervals(GrResourceAllocator* alloc
     auto fakeOp = alloc->curOp();
     SkASSERT(fResolves.size() == this->numTargets());
     for (const sk_sp<GrSurfaceProxy>& target : fTargets) {
-        alloc->addInterval(target.get(), fakeOp, fakeOp, GrResourceAllocator::ActualUse::kYes);
+        alloc->addInterval(target.get(), fakeOp, fakeOp, GrResourceAllocator::ActualUse::kYes,
+                           GrResourceAllocator::AllowRecycling::kYes);
     }
     alloc->incOps();
 }
 
-bool GrTextureResolveRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrTextureResolveRenderTask::onExecute(GrOpFlushState* flushState) {
     // Resolve all msaa back-to-back, before regenerating mipmaps.
     SkASSERT(fResolves.size() == this->numTargets());
     for (int i = 0; i < fResolves.size(); ++i) {
-        const Resolve& resolve = fResolves[i];
+        Resolve& resolve = fResolves[i];
         if (GrSurfaceProxy::ResolveFlags::kMSAA & resolve.fFlags) {
             GrSurfaceProxy* proxy = this->target(i);
             // peekRenderTarget might be null if there was an instantiation error.
             if (GrRenderTarget* renderTarget = proxy->peekRenderTarget()) {
                 flushState->gpu()->resolveRenderTarget(renderTarget, resolve.fMSAAResolveRect);
+                resolve.fFlags &= ~GrSurfaceProxy::ResolveFlags::kMSAA;
             }
         }
     }
     // Regenerate all mipmaps back-to-back.
     for (int i = 0; i < fResolves.size(); ++i) {
-        const Resolve& resolve = fResolves[i];
+        Resolve& resolve = fResolves[i];
         if (GrSurfaceProxy::ResolveFlags::kMipMaps & resolve.fFlags) {
             // peekTexture might be null if there was an instantiation error.
             GrTexture* texture = this->target(i)->peekTexture();
-            if (texture && texture->mipmapsAreDirty()) {
-                flushState->gpu()->regenerateMipMapLevels(texture);
-                SkASSERT(!texture->mipmapsAreDirty());
+            if (texture && (!texture->mipmapsAreDirty() ||
+                            flushState->gpu()->regenerateMipMapLevels(texture))) {
+                // If mipmap regeneration fails we do not count it as an error but
+                // will downgrade the sampling later on.
+                resolve.fFlags &= ~GrSurfaceProxy::ResolveFlags::kMipMaps;
             }
         }
     }
 
-    return true;
+    return ExecutionResult::RanAndSucceeded();
+}
+
+void GrTextureResolveRenderTask::endFlush(GrDrawingManager* drawingMgr) {
+    // Any flags still set here correspond to resolves that were recorded by addProxy() but never
+    // executed (the flush was dropped before render-task execution, this task was skipped because
+    // its targets failed to instantiate, or a per-target operation failed). Re-mark those proxies
+    // dirty so a subsequent flush will re-record the resolve.
+    SkASSERT(fResolves.size() == this->numTargets());
+    for (int i = 0; i < fResolves.size(); ++i) {
+        const Resolve& resolve = fResolves[i];
+        GrSurfaceProxy* proxy = this->target(i);
+        if (GrSurfaceProxy::ResolveFlags::kMSAA & resolve.fFlags) {
+            if (GrRenderTargetProxy* rtProxy = proxy->asRenderTargetProxy()) {
+                rtProxy->markMSAADirty(resolve.fMSAAResolveRect);
+            }
+        }
+        if (GrSurfaceProxy::ResolveFlags::kMipMaps & resolve.fFlags) {
+            if (GrTextureProxy* texProxy = proxy->asTextureProxy()) {
+                texProxy->markMipmapsDirty();
+            }
+        }
+    }
+    this->GrRenderTask::endFlush(drawingMgr);
 }
 
 #ifdef SK_DEBUG
 void GrTextureResolveRenderTask::visitProxies_debugOnly(const GrVisitProxyFunc&) const {}
 #endif
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrSurfaceProxy::ResolveFlags
 GrTextureResolveRenderTask::flagsForProxy(sk_sp<GrSurfaceProxy> proxy) const {
     if (auto found = std::find(fTargets.begin(), fTargets.end(), proxy);

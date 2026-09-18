@@ -9,7 +9,10 @@
 #define skgpu_graphite_MtlTexture_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/gpu/graphite/mtl/MtlGraphiteTypes.h"
+#include "include/ports/SkCFObject.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 
 #import <Metal/Metal.h>
 
@@ -25,15 +28,19 @@ public:
     static sk_sp<Texture> Make(const MtlSharedContext*,
                                SkISize dimensions,
                                const TextureInfo&,
-                               skgpu::Budgeted);
+                               std::string_view label);
 
     static sk_sp<Texture> MakeWrapped(const MtlSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
-                                      sk_cfp<id<MTLTexture>>);
+                                      sk_cfp<id<MTLTexture>>,
+                                      std::string_view label);
 
     ~MtlTexture() override {}
 
+    const MtlTextureInfo& mtlTextureInfo() const {
+        return TextureInfoPriv::Get<MtlTextureInfo>(this->textureInfo());
+    }
     id<MTLTexture> mtlTexture() const { return fTexture.get(); }
 
 private:
@@ -42,9 +49,11 @@ private:
                const TextureInfo& info,
                sk_cfp<id<MTLTexture>>,
                Ownership,
-               skgpu::Budgeted);
+               std::string_view label);
 
     void freeGpuData() override;
+
+    void setBackendLabel(char const* label) override;
 
     sk_cfp<id<MTLTexture>> fTexture;
 };

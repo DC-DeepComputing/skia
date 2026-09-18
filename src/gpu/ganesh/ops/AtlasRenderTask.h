@@ -1,21 +1,42 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #ifndef AtlasRenderTask_DEFINED
 #define AtlasRenderTask_DEFINED
 
 #include "include/core/SkPath.h"
-#include "src/base/SkTBlockList.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkNoncopyable.h"
+#include "src/core/SkBlockAllocator.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkTBlockList.h"
+#include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDynamicAtlas.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/GrTexture.h"
+#include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/OpsTask.h"
 #include "src/gpu/ganesh/tessellate/PathTessellator.h"
 
+#include <limits>
+#include <memory>
+#include <utility>
+
+class GrArenas;
+class GrOnFlushResourceProvider;
+class GrOpFlushState;
+class GrRecordingContext;
+class GrTextureProxy;
+class SkMatrix;
+struct GrUserStencilSettings;
 struct SkIPoint16;
+struct SkIPoint;
+struct SkIRect;
+struct SkRect;
 
 namespace skgpu::ganesh {
 
@@ -42,8 +63,8 @@ public:
 
     // Must be called at flush time. The texture proxy is instantiated with 'backingTexture', if
     // provided. See GrDynamicAtlas.
-    bool SK_WARN_UNUSED_RESULT instantiate(GrOnFlushResourceProvider* onFlushRP,
-                     sk_sp<GrTexture> backingTexture = nullptr) {
+    [[nodiscard]] bool instantiate(GrOnFlushResourceProvider* onFlushRP,
+                                   sk_sp<GrTexture> backingTexture = nullptr) {
         SkASSERT(this->isClosed());
         return fDynamicAtlas->instantiate(onFlushRP, std::move(backingTexture));
     }
@@ -57,7 +78,7 @@ private:
     void addAtlasDrawOp(GrOp::Owner, const GrCaps&);
 
     // Executes the OpsTask and resolves msaa if needed.
-    bool onExecute(GrOpFlushState* flushState) override;
+    ExecutionResult onExecute(GrOpFlushState* flushState) override;
 
     const std::unique_ptr<GrDynamicAtlas> fDynamicAtlas;
 
@@ -69,6 +90,7 @@ private:
     class AtlasPathList : SkNoncopyable {
     public:
         void add(PathDrawAllocator* alloc, const SkMatrix& pathMatrix, const SkPath& path) {
+            SkASSERT(this->canAdd(path));
             fPathDrawList = &alloc->emplace_back(pathMatrix, path, SK_PMColor4fTRANSPARENT,
                                                  fPathDrawList);
             if (path.isInverseFillType()) {
@@ -78,6 +100,15 @@ private:
             fTotalCombinedPathVerbCnt += path.countVerbs();
             ++fPathCount;
         }
+
+        bool canAdd(const SkPath& path) const {
+            // Return true so long as we won't overflow the total verb count, with a bit of head
+            // room so that later-on allocations are unlikely to overflow (they still need to guard
+            // themselves, but we'd rather just make new Ops).
+            static constexpr int kMaxVerbLimit = std::numeric_limits<int>::max() >> 4;
+            return kMaxVerbLimit - fTotalCombinedPathVerbCnt >= path.countVerbs();
+        }
+
         const PathDrawList* pathDrawList() const { return fPathDrawList; }
         int totalCombinedPathVerbCnt() const { return fTotalCombinedPathVerbCnt; }
         int pathCount() const { return fPathCount; }

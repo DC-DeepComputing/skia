@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -42,17 +42,17 @@ DEF_TEST(AndroidCodec_computeSampleSize, r) {
     if (GetResourcePath().isEmpty()) {
         return;
     }
-    for (const char* file : { "images/color_wheel.webp",
-                              "images/ship.png",
-                              "images/dog.jpg",
-                              "images/color_wheel.gif",
-                              "images/rle.bmp",
-                              "images/google_chrome.ico",
-                              "images/mandrill.wbmp",
-#ifdef SK_CODEC_DECODES_RAW
-                              "images/sample_1mp.dng",
+    for (const char* file : {
+             "images/color_wheel.webp", "images/ship.png", "images/dog.jpg",
+                     "images/color_wheel.gif", "images/rle.bmp",
+#if defined(SK_CODEC_DECODES_ICO)
+                     "images/google_chrome.ico",
 #endif
-                              }) {
+                     "images/mandrill.wbmp",
+#if defined(SK_CODEC_DECODES_RAW)
+                     "images/sample_1mp.dng",
+#endif
+         }) {
         auto data = GetResourceAsData(file);
         if (!data) {
             ERRORF(r, "Could not get %s", file);
@@ -228,7 +228,7 @@ DEF_TEST(AndroidCodec_HLG, r) {
 
     skcms_TransferFunction tf;
     cs->transferFn(&tf);
-    REPORTER_ASSERT(r, skcms_TransferFunction_isHLGish(&tf));
+    REPORTER_ASSERT(r, skcms_TransferFunction_isHLGish(&tf) || skcms_TransferFunction_isHLG(&tf));
 
     skcms_Matrix3x3 matrix;
     cs->toXYZD50(&matrix);
@@ -264,7 +264,7 @@ DEF_TEST(AndroidCodec_PQ, r) {
 
     skcms_TransferFunction tf;
     cs->transferFn(&tf);
-    REPORTER_ASSERT(r, skcms_TransferFunction_isPQish(&tf));
+    REPORTER_ASSERT(r, skcms_TransferFunction_isPQish(&tf) || skcms_TransferFunction_isPQ(&tf));
 
     skcms_Matrix3x3 matrix;
     cs->toXYZD50(&matrix);

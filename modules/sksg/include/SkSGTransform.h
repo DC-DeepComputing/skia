@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,12 +8,22 @@
 #ifndef SkSGTransform_DEFINED
 #define SkSGTransform_DEFINED
 
+#include "include/core/SkM44.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "modules/sksg/include/SkSGEffectNode.h"
+#include "modules/sksg/include/SkSGNode.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
 
-class SkM44;
-class SkMatrix;
+#include <type_traits>
+#include <utility>
+
+class SkCanvas;
+struct SkPoint;
 
 namespace sksg {
+class InvalidationController;
 
 /**
  * Transformations base class.

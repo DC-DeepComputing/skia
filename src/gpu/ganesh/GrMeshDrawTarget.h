@@ -8,18 +8,39 @@
 #ifndef GrMeshDrawTarget_DEFINED
 #define GrMeshDrawTarget_DEFINED
 
-#include "src/base/SkArenaAlloc.h"
+#include "include/core/SkRefCnt.h"  // IWYU pragma: keep
+#include "include/private/SkTArray.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrDrawIndirectCommand.h"
 #include "src/gpu/ganesh/GrSimpleMesh.h"
 
+#include <cstddef>
+#include <cstdint>
+
 class GrAtlasManager;
+class GrBuffer;
+class GrCaps;
+class GrDeferredUploadTarget;
+class GrDstProxyView;
+class GrGeometryProcessor;
+class GrRenderTargetProxy;
+class GrResourceProvider;
+class GrSurfaceProxy;
+class GrSurfaceProxyView;
 class GrThreadSafeCache;
+enum class GrLoadOp;
+enum class GrPrimitiveType : uint8_t;
+enum class GrXferBarrierFlags;
+
+namespace skgpu::ganesh {
+class SmallPathAtlasMgr;
+}
 
 namespace skgpu {
-namespace ganesh { class SmallPathAtlasMgr; }
 struct IndexWriter;
 struct VertexWriter;
-} // namespace skgpu
+}  // namespace skgpu
 
 namespace sktext::gpu {
 class StrikeCache;
@@ -105,13 +126,9 @@ public:
     /** Helpers for ops that only need to use the VertexWriter to fill the data directly. */
     skgpu::VertexWriter makeVertexWriter(size_t vertexSize, int vertexCount,
                                          sk_sp<const GrBuffer>*, int* startVertex);
-    skgpu::IndexWriter makeIndexWriter(int indexCount, sk_sp<const GrBuffer>*, int* startIndex);
     skgpu::VertexWriter makeVertexWriterAtLeast(size_t vertexSize, int minVertexCount,
                                                 int fallbackVertexCount, sk_sp<const GrBuffer>*,
                                                 int* startVertex, int* actualVertexCount);
-    skgpu::IndexWriter makeIndexWriterAtLeast(int minIndexCount, int fallbackIndexCount,
-                                              sk_sp<const GrBuffer>*, int* startIndex,
-                                              int* actualIndexCount);
 
     /** Helpers for ops which over-allocate and then return excess data to the pool. */
     virtual void putBackIndices(int indices) = 0;

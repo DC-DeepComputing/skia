@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,8 +8,12 @@
 #ifndef GrGLSLVertexGeoBuilder_DEFINED
 #define GrGLSLVertexGeoBuilder_DEFINED
 
+#include "include/core/SkString.h"
+#include "src/core/SkSLTypeShared.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/glsl/GrGLSLShaderBuilder.h"
+
+class GrGLSLProgramBuilder;
 
 /**
  * Base class for vertex shader builder. This is the stage that computes input geometry for the

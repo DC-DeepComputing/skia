@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,9 +8,14 @@
 #ifndef GrEagerVertexAllocator_DEFINED
 #define GrEagerVertexAllocator_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrThreadSafeCache.h"
 
+#include <cstddef>
+
+class GrBuffer;
 class GrMeshDrawTarget;
 
 // This interface is used to allocate and map GPU vertex data before the exact number of required
@@ -32,6 +37,7 @@ public:
 
     skgpu::VertexWriter lockWriter(size_t stride, int eagerCount) {
         void* p = this->lock(stride, eagerCount);
+        // If we have `p`, stride*eagerCount won't overflow
         return p ? skgpu::VertexWriter{p, stride * eagerCount} : skgpu::VertexWriter{};
     }
 };

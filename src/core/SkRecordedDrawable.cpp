@@ -5,18 +5,20 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkMatrix.h"
-#include "include/core/SkPictureRecorder.h"
-#include "src/core/SkBigPicture.h"
-#include "src/core/SkPictureData.h"
-#include "src/core/SkPicturePlayback.h"
-#include "src/core/SkPictureRecord.h"
-#include "src/core/SkRecordDraw.h"
 #include "src/core/SkRecordedDrawable.h"
 
-#if defined(SK_GANESH)
-#include "include/private/chromium/Slug.h"
-#endif
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
+#include "include/core/SkSize.h"
+#include "src/core/SkPictureData.h"
+#include "src/core/SkPicturePlayback.h"
+#include "src/core/SkPicturePriv.h"
+#include "src/core/SkPictureRecord.h"
+#include "src/core/SkReadBuffer.h"
+#include "src/core/SkRecordDraw.h"
+#include "src/core/SkWriteBuffer.h"
+
+class SkCanvas;
 
 size_t SkRecordedDrawable::onApproximateBytesUsed() {
     size_t drawablesSize = 0;
@@ -44,15 +46,15 @@ void SkRecordedDrawable::onDraw(SkCanvas* canvas) {
 sk_sp<SkPicture> SkRecordedDrawable::onMakePictureSnapshot() {
     // TODO: should we plumb-down the BBHFactory and recordFlags from our host
     //       PictureRecorder?
-    std::unique_ptr<SkBigPicture::SnapshotArray> pictList{
-        fDrawableList ? fDrawableList->newDrawableSnapshot() : nullptr
-    };
+    std::unique_ptr<SkSnapshotArray> pictList{fDrawableList ? fDrawableList->newDrawableSnapshot()
+                                                            : nullptr};
 
     size_t subPictureBytes = 0;
     for (int i = 0; pictList && i < pictList->count(); i++) {
         subPictureBytes += pictList->begin()[i]->approximateBytesUsed();
     }
-    return sk_make_sp<SkBigPicture>(fBounds, fRecord, std::move(pictList), fBBH, subPictureBytes);
+
+    return SkPicturePriv::MakePicture(fBounds, fRecord, std::move(pictList), fBBH, subPictureBytes);
 }
 
 void SkRecordedDrawable::flatten(SkWriteBuffer& buffer) const {
@@ -84,6 +86,9 @@ void SkRecordedDrawable::flatten(SkWriteBuffer& buffer) const {
 }
 
 sk_sp<SkFlattenable> SkRecordedDrawable::CreateProc(SkReadBuffer& buffer) {
+    if (!buffer.isValid()) {
+        return nullptr;
+    }
     // Read the bounds.
     SkRect bounds;
     buffer.readRect(&bounds);

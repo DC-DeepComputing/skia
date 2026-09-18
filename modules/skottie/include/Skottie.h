@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,23 +8,27 @@
 #ifndef Skottie_DEFINED
 #define Skottie_DEFINED
 
-#include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "modules/skottie/include/ExternalLayer.h"
-#include "modules/skottie/include/SkottieProperty.h"
 #include "modules/skresources/include/SkResources.h"
 
-#include <memory>
+// TODO(kjlubick) update clients and then remove the following:
+#include "include/core/SkFontMgr.h"  // IWYU pragma: keep
+#include "modules/skottie/include/ExternalLayer.h"  // IWYU pragma: keep
+#include "modules/skottie/include/SkottieProperty.h"  // IWYU pragma: keep
+#include "modules/skottie/include/SlotManager.h"  // IWYU pragma: keep
+
+#include <cstddef>
+#include <cstdint>
 #include <vector>
 
 class SkCanvas;
-struct SkRect;
 class SkStream;
-
-namespace skjson { class ObjectValue; }
+struct SkRect;
 
 namespace sksg {
 
@@ -33,12 +37,21 @@ class RenderNode;
 
 } // namespace sksg
 
+namespace SkShapers { class Factory; }
+
 namespace skottie {
 
 namespace internal { class Animator; }
 
 using ImageAsset = skresources::ImageAsset;
 using ResourceProvider = skresources::ResourceProvider;
+
+struct LayerInfo {
+    SkString    fName;
+    SkSize      fSize;
+    const float fInPoint,
+                fOutPoint;
+};
 
 /**
  * A Logger subclass can be used to receive Animation::Builder parsing errors and warnings.
@@ -50,7 +63,7 @@ public:
         kError,
     };
 
-    virtual void log(Level, const char message[], const char* json = nullptr);
+    virtual void log(Level, const char message[], const char* json = nullptr) = 0;
 };
 
 // Evaluates AE expressions.
@@ -98,6 +111,8 @@ public:
         };
 
         explicit Builder(uint32_t flags = 0);
+        Builder(const Builder&);
+        Builder(Builder&&);
         ~Builder();
 
         struct Stats {
@@ -156,11 +171,25 @@ public:
         Builder& setExpressionManager(sk_sp<ExpressionManager>);
 
         /**
+         * Registers a factory to be used when shaping text.
+         * If unspecified, text will be shaped with primitive shaping.
+         * See //modules/skshaper/utils/FactoryHelpers.h
+         */
+        Builder& setTextShapingFactory(sk_sp<SkShapers::Factory>);
+
+        /**
          * Animation factories.
          */
         sk_sp<Animation> make(SkStream*);
         sk_sp<Animation> make(const char* data, size_t length);
         sk_sp<Animation> makeFromFile(const char path[]);
+
+        /**
+         * Get handle for SlotManager after animation is built.
+         */
+        const sk_sp<SlotManager>& getSlotManager() const {return fSlotManager;}
+
+        SkSpan<const LayerInfo> getLayerInfo() const {return SkSpan(fLayerInfo);}
 
     private:
         const uint32_t          fFlags;
@@ -172,7 +201,10 @@ public:
         sk_sp<MarkerObserver  >   fMarkerObserver;
         sk_sp<PrecompInterceptor> fPrecompInterceptor;
         sk_sp<ExpressionManager>  fExpressionManager;
+        sk_sp<SkShapers::Factory> fShapingFactory;
+        sk_sp<SlotManager>        fSlotManager;
         Stats                     fStats;
+        std::vector<LayerInfo>    fLayerInfo;
     };
 
     /**

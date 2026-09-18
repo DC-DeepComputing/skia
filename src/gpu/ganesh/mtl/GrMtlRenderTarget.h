@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -10,7 +10,7 @@
 
 #include "src/gpu/ganesh/GrRenderTarget.h"
 
-#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/mtl/GrMtlAttachment.h"
 #include "src/gpu/ganesh/mtl/GrMtlFramebuffer.h"

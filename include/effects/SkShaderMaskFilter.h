@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -14,6 +14,8 @@
 class SkMaskFilter;
 class SkShader;
 
+// (DEPRECATED) This factory function is deprecated. ShaderMaskFilters will be deleted entirely
+// in an upcoming Skia release.
 class SK_API SkShaderMaskFilter {
 public:
     static sk_sp<SkMaskFilter> Make(sk_sp<SkShader> shader);

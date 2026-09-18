@@ -8,17 +8,27 @@
 #ifndef skgpu_graphite_ContextPriv_DEFINED
 #define skgpu_graphite_ContextPriv_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/Context.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/SharedContext.h"
+
+#include <memory>
+
+class SkPixmap;
+struct SkImageInfo;
 
 namespace skgpu::graphite {
 
 class Caps;
 class GlobalCache;
+class Recorder;
 class RendererProvider;
 class ResourceProvider;
 class ShaderCodeDictionary;
+class TextureProxyView;
+enum class PathRendererStrategy;
+struct ContextOptions;
 
 /** Class that adds methods to Context that are only intended for use internal to Skia.
     This class is purely a privileged window into Context. It should never have additional
@@ -33,23 +43,25 @@ public:
     ShaderCodeDictionary* shaderCodeDictionary() {
         return fContext->fSharedContext->shaderCodeDictionary();
     }
+#if defined(GPU_TEST_UTILS)
     const GlobalCache* globalCache() const {
         return fContext->fSharedContext->globalCache();
     }
     GlobalCache* globalCache() {
         return fContext->fSharedContext->globalCache();
     }
+#endif
     const RendererProvider* rendererProvider() const {
         return fContext->fSharedContext->rendererProvider();
     }
     ResourceProvider* resourceProvider() const {
         return fContext->fResourceProvider.get();
     }
-    PlotUploadTracker* plotUploadTracker() const {
-        return fContext->fPlotUploadTracker.get();
+    SharedContext* sharedContext() {
+        return fContext->fSharedContext.get();
     }
 
-#if GRAPHITE_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     void startCapture() {
         fContext->fQueueManager->startCapture();
     }
@@ -57,10 +69,12 @@ public:
         fContext->fQueueManager->stopCapture();
     }
 
-    void deregisterRecorder(const Recorder*);
+    void deregisterRecorder(const Recorder* recorder) {
+        fContext->deregisterRecorder(recorder);
+    }
 
     bool readPixels(const SkPixmap&,
-                    const TextureProxy*,
+                    const TextureProxyView&,
                     const SkImageInfo& srcImageInfo,
                     int srcX, int srcY);
 #endif

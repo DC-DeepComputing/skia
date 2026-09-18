@@ -9,6 +9,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
 
 class SkData;
 class SkStream;
@@ -35,12 +36,12 @@ inline bool IsRaw(const void*, size_t) {
 SK_API std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream>,
                                        SkCodec::Result*,
                                        SkCodecs::DecodeContext = nullptr);
-SK_API std::unique_ptr<SkCodec> Decode(sk_sp<SkData>,
+SK_API std::unique_ptr<SkCodec> Decode(sk_sp<const SkData>,
                                        SkCodec::Result*,
                                        SkCodecs::DecodeContext = nullptr);
 
 // This decoder will always be checked last, no matter when it is registered.
-inline SkCodecs::Decoder Decoder() {
+inline constexpr SkCodecs::Decoder Decoder() {
     return { "raw", IsRaw, Decode };
 }
 

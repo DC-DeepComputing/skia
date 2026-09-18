@@ -1,13 +1,20 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
+#include "src/gpu/ganesh/GrGpuBuffer.h"
+
+#include "include/private/SkAlign.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTo.h"
+#include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGpu.h"
-#include "src/gpu/ganesh/GrGpuBuffer.h"
+
+#include <cstdint>
 
 GrGpuBuffer::GrGpuBuffer(GrGpu* gpu, size_t sizeInBytes, GrGpuBufferType type,
                          GrAccessPattern pattern,
@@ -89,7 +96,7 @@ void GrGpuBuffer::ComputeScratchKeyForDynamicBuffer(size_t size,
 }
 
 void GrGpuBuffer::computeScratchKey(skgpu::ScratchKey* key) const {
-    if (SkIsPow2(fSizeInBytes) && kDynamic_GrAccessPattern == fAccessPattern) {
+    if (kDynamic_GrAccessPattern == fAccessPattern) {
         ComputeScratchKeyForDynamicBuffer(fSizeInBytes, fIntendedType, key);
     }
 }

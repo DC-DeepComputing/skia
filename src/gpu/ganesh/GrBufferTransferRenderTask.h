@@ -8,9 +8,19 @@
 #ifndef GrBufferTransferRenderTask_DEFINED
 #define GrBufferTransferRenderTask_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkDebug.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
 
+#include <cstddef>
+
 class GrGpuBuffer;
+class GrOpFlushState;
+class GrRecordingContext;
+class GrResourceAllocator;
+class GrSurfaceProxy;
+struct SkIRect;
 
 class GrBufferTransferRenderTask final : public GrRenderTask {
 public:
@@ -34,9 +44,9 @@ private:
     ExpectedOutcome onMakeClosed(GrRecordingContext*, SkIRect* targetUpdateBounds) override {
         return ExpectedOutcome::kTargetUnchanged;  // no target
     }
-    bool onExecute(GrOpFlushState*) override;
+    ExecutionResult onExecute(GrOpFlushState*) override;
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     const char* name() const final { return "BufferTransfer"; }
 #endif
 #ifdef SK_DEBUG

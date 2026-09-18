@@ -49,30 +49,28 @@ Your fuzzer entry point should implement this API:
 
     extern "C" int LLVMFuzzerTestOneInput(const uint8_t*, size_t);
 
-First install Clang and libfuzzer, e.g.
+First install Clang (which should include libfuzzer):
 
-    sudo apt install clang-10 libc++-10-dev libfuzzer-10-dev
-
-You should now be able to use `-fsanitize=fuzzer` with Clang.
+    sudo apt install clang-19
 
 Set up GN args to use libfuzzer:
 
-    cc = "clang-10"
-    cxx = "clang++-10"
-    sanitize = "fuzzer"
-    extra_cflags = [ "-DSK_BUILD_FOR_LIBFUZZER", # enables fuzzer-constraints (see below)
-                     "-O1"  # Or whatever you want.
-                   ]
-    ...
+    cc="clang-19"
+    cxx="clang++-19"
+    skia_build_fuzzers=true
 
-Build Skia and your fuzzer entry point:
+Add an entry to BUILD.gn using `libfuzzer_app`
 
-    ninja -C out/libfuzzer skia
-    clang++-10 -I. -O1 -fsanitize=fuzzer fuzz/oss_fuzz/whatever.cpp out/libfuzzer/libskia.a
+Build all the fuzz targets:
 
-Run your new fuzzer binary
+    ninja -C out/fuzz my_new_fuzzer
 
-    ./a.out
+Run your new fuzzer binary to test it out
+
+    out/fuzz/my_new_fuzzer
+
+After adding a new fuzzer, one should connect it with //fuzz/FuzzMain.cpp and then update
+**OSS-Fuzz** (see below) to get the fuzzer running automatically.
 
 ## Fuzzing Defines
 
@@ -88,3 +86,17 @@ avoid OOMs, avoid unnecessarily slow code).
     // This define adds in guards to abort when we think some code path will take a long time or
     // use a lot of RAM. It is set by default when either of the above defines are set.
     SK_BUILD_FOR_FUZZER
+
+## OSS-Fuzz
+The infrastructure that our fuzzers run on is called [OSS-Fuzz](https://google.github.io/oss-fuzz/)
+([GitHub](https://github.com/google/oss-fuzz/tree/master)). There is an automated system that
+rebuilds Skia and certain fuzzers and then runs said fuzzers, [filing bugs](https://issues.oss-fuzz.com/issues?q=status:open%20componentid:1638179%20project:skia).
+
+The Skia-specific code to build the fuzzers is found in [oss-fuzz/projects/skia](https://github.com/google/oss-fuzz/tree/master/projects/skia)
+and the build status can be found [here](https://oss-fuzz-build-logs.storage.googleapis.com/index.html#skia).
+When everything is working smoothly, the version of Skia that is fuzzed should be updated about
+2/day.
+
+See <https://skia.googlesource.com/skia/+/refs/heads/main/fuzz/README.md> for more details.
+
+If there are issues with oss-fuzz, file them against [component 491058](http://b/issues?q=componentid:491058) [googler only].

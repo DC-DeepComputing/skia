@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -51,7 +51,7 @@ GrMtlBuffer::GrMtlBuffer(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedTyp
         : INHERITED(gpu, size, intendedType, accessPattern, label)
         , fIsDynamic(accessPattern != kStatic_GrAccessPattern) {
     NSUInteger options = 0;
-    if (@available(macOS 10.11, iOS 9.0, *)) {
+    if (@available(macOS 10.11, iOS 9.0, tvOS 9.0, *)) {
         if (fIsDynamic) {
 #ifdef SK_BUILD_FOR_MAC
             if (gpu->mtlCaps().isMac()) {

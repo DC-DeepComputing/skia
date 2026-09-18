@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,12 +8,40 @@
 #ifndef GrMockOpTarget_DEFINED
 #define GrMockOpTarget_DEFINED
 
-#include "include/gpu/GrDirectContext.h"
+#include "include/core/SkRefCnt.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTArray.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
+#include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrDrawIndirectCommand.h"
 #include "src/gpu/ganesh/GrDstProxyView.h"
 #include "src/gpu/ganesh/GrGpu.h"
+#include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrMeshDrawTarget.h"
+#include "src/gpu/ganesh/GrSimpleMesh.h"
+#include "src/gpu/ganesh/GrXferProcessor.h"
+
+#include <cstddef>
+#include <cstdint>
+#include <utility>
+
+class GrAtlasManager;
+class GrCaps;
+class GrDeferredUploadTarget;
+class GrGeometryProcessor;
+class GrRenderTargetProxy;
+class GrResourceProvider;
+class GrSurfaceProxy;
+class GrSurfaceProxyView;
+class GrThreadSafeCache;
+
+namespace skgpu { namespace ganesh { class SmallPathAtlasMgr; } }
+namespace sktext { namespace gpu { class StrikeCache; } }
+
 
 // This is a mock GrMeshDrawTarget implementation that just gives back pointers into
 // pre-allocated CPU buffers, rather than allocating and mapping GPU buffers.
@@ -48,7 +76,7 @@ public:
     void* makeVertexSpace(size_t vertexSize, int vertexCount, sk_sp<const GrBuffer>* buffer,
                           int* startVertex) override {
         if (vertexSize * vertexCount > sizeof(fStaticVertexData)) {
-            SK_ABORT("FATAL: wanted %zu bytes of static vertex data; only have %zu.\n",
+            SK_ABORT("FATAL: wanted %zu bytes of static vertex data; only have %zu.",
                      vertexSize * vertexCount, sizeof(fStaticVertexData));
         }
         *buffer = fStaticVertexBuffer;
@@ -60,7 +88,7 @@ public:
                                  sk_sp<const GrBuffer>* buffer, int* startVertex,
                                  int* actualVertexCount) override {
         if (vertexSize * minVertexCount > sizeof(fStaticVertexData)) {
-            SK_ABORT("FATAL: wanted %zu bytes of static vertex data; only have %zu.\n",
+            SK_ABORT("FATAL: wanted %zu bytes of static vertex data; only have %zu.",
                      vertexSize * minVertexCount, sizeof(fStaticVertexData));
         }
         *buffer = fStaticVertexBuffer;
@@ -72,7 +100,7 @@ public:
     GrDrawIndirectWriter makeDrawIndirectSpace(int drawCount, sk_sp<const GrBuffer>* buffer,
                                                size_t* offsetInBytes) override {
         if (sizeof(GrDrawIndirectCommand) * drawCount > sizeof(fStaticIndirectData)) {
-            SK_ABORT("FATAL: wanted %zu bytes of static indirect data; only have %zu.\n",
+            SK_ABORT("FATAL: wanted %zu bytes of static indirect data; only have %zu.",
                      sizeof(GrDrawIndirectCommand) * drawCount, sizeof(fStaticIndirectData));
         }
         *buffer = fStaticIndirectBuffer;
@@ -86,7 +114,7 @@ public:
                                                              sk_sp<const GrBuffer>* buffer,
                                                              size_t* offsetInBytes) override {
         if (sizeof(GrDrawIndexedIndirectCommand) * drawCount > sizeof(fStaticIndirectData)) {
-            SK_ABORT("FATAL: wanted %zu bytes of static indirect data; only have %zu.\n",
+            SK_ABORT("FATAL: wanted %zu bytes of static indirect data; only have %zu.",
                      sizeof(GrDrawIndexedIndirectCommand) * drawCount, sizeof(fStaticIndirectData));
         }
         *buffer = fStaticIndirectBuffer;

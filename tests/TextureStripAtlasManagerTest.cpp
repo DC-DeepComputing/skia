@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -18,13 +18,13 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
-#include "tools/Resources.h"
+#include "tools/DecodeUtils.h"
 
 #include <cstdint>
 #include <utility>
@@ -40,20 +40,15 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureStripAtlasManagerGradientTest,
                                        CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
 
-    static const SkColor gColors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE,
-                                       SK_ColorCYAN, SK_ColorMAGENTA, SK_ColorYELLOW,
-                                       SK_ColorBLACK };
-    static const SkScalar gPos[] = { 0, 0.17f, 0.32f, 0.49f, 0.66f, 0.83f, 1.0f };
+    static const SkColor4f gColors[] = {SkColors::kRed, SkColors::kGreen, SkColors::kBlue,
+                                        SkColors::kCyan, SkColors::kMagenta, SkColors::kYellow,
+                                        SkColors::kBlack};
+    static const float gPos[] = { 0, 0.17f, 0.32f, 0.49f, 0.66f, 0.83f, 1.0f };
 
     SkPaint p;
-    p.setShader(SkGradientShader::MakeTwoPointConical(SkPoint::Make(0, 0),
-                                                      1.0f,
-                                                      SkPoint::Make(10.0f, 20.0f),
-                                                      2.0f,
-                                                      gColors,
-                                                      gPos,
-                                                      7,
-                                                      SkTileMode::kClamp));
+    p.setShader(SkShaders::TwoPointConicalGradient(SkPoint::Make(0, 0), 1.0f,
+                                                   SkPoint::Make(10.0f, 20.0f), 2.0f,
+                                                   {{gColors, gPos, SkTileMode::kClamp}, {}}));
 
     SkImageInfo info = SkImageInfo::MakeN32Premul(128, 128);
     auto surface(SkSurfaces::RenderTarget(context, skgpu::Budgeted::kNo, info));
@@ -73,8 +68,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureStripAtlasManagerColorFilterTest,
                                        CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
 
-    sk_sp<SkImage> img = GetResourceAsImage("images/mandrill_128.png");
-
+    sk_sp<SkImage> img = ToolUtils::GetResourceAsImage("images/mandrill_128.png");
 
     uint8_t identity[256];
     for (int i = 0; i < 256; i++) {

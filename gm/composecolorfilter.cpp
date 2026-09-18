@@ -21,7 +21,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkImageFilters.h"
 #include "include/effects/SkLumaColorFilter.h"
 #include "include/effects/SkPerlinNoiseShader.h"
@@ -82,9 +82,10 @@ DEF_SIMPLE_GM(composeCF, canvas, 200, 200) {
     // This GM draws a simple color-filter network, using the existing "makeComposed" API, and also
     // using a runtime color filter that does the same thing.
     SkPaint paint;
-    const SkColor gradient_colors[] = {SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorRED};
-    paint.setShader(SkGradientShader::MakeSweep(
-            50, 50, gradient_colors, nullptr, std::size(gradient_colors)));
+    const SkColor4f gradient_colors[] = {
+            SkColors::kRed, SkColors::kGreen, SkColors::kBlue, SkColors::kRed};
+    paint.setShader(SkShaders::SweepGradient({50, 50},
+                                             {{gradient_colors, {}, SkTileMode::kClamp}, {}}));
 
     canvas->save();
     for (bool useSkSL : {false, true}) {
@@ -108,7 +109,7 @@ DEF_SIMPLE_GM(composeCFIF, canvas, 604, 200) {
     // ways (direct and via ::Compose). This ensures the use (or non-use in this case) of the source
     // image is the same across both means of composition.
     auto cf = MakeTintColorFilter(0xff300000, 0xffa00000, /*useSkSL=*/false);
-    auto shader = SkPerlinNoiseShader::MakeTurbulence(0.01f, 0.01f, 2, 0.f);
+    auto shader = SkShaders::MakeTurbulence(0.01f, 0.01f, 2, 0.f);
 
     auto shaderIF = SkImageFilters::Shader(shader, SkImageFilters::Dither::kNo);
     auto directCompose = SkImageFilters::ColorFilter(cf, shaderIF);

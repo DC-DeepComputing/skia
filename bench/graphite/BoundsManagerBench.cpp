@@ -7,11 +7,15 @@
 #include "bench/Benchmark.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
-#include "src/base/SkArenaAlloc.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
 #include "tools/ToolUtils.h"
 #include "tools/flags/CommandLineFlags.h"
+
+#if defined(SK_ENABLE_SVG)
+#include "tools/SvgPathExtractor.h"
+#endif
 
 using namespace skia_private;
 
@@ -30,7 +34,7 @@ protected:
     virtual void gatherRects(TArray<SkRect>* rects) = 0;
 
     bool isSuitableFor(Backend backend) override {
-        return backend == kNonRendering_Backend;
+        return backend == Backend::kNonRendering;
     }
 
     const char* onGetName() final { return fName.c_str(); }
@@ -136,9 +140,9 @@ private:
             return;
         }
         SkRect fileBounds = SkRect::MakeEmpty();
-        ToolUtils::sniff_paths(FLAGS_boundsManagerFile[0], [&](const SkMatrix& matrix,
-                                                               const SkPath& path,
-                                                               const SkPaint& paint) {
+        auto callback = [&](const SkMatrix& matrix,
+                            const SkPath& path,
+                            const SkPaint& paint) {
             if (!paint.canComputeFastBounds() || path.isInverseFillType()) {
                 // These would pessimistically cover the entire canvas, but we don't have enough
                 // info in the benchmark to handle that, so just skip these draws.
@@ -150,7 +154,18 @@ private:
             rects->push_back(drawBounds);
 
             fileBounds.join(drawBounds);
-        });
+        };
+
+        const char* path = FLAGS_boundsManagerFile[0];
+        if (const char* ext = strrchr(path, '.'); ext && !strcmp(ext, ".svg")) {
+#if defined(SK_ENABLE_SVG)
+            ToolUtils::ExtractPathsFromSVG(path, callback);
+#else
+            SK_ABORT("must compile with svg backend to process svgs");
+#endif
+        } else {
+            ToolUtils::ExtractPathsFromSKP(path, callback);
+        }
 
 #if PRINT_DRAWSET_COUNT
         SkDebugf("%s bounds are [%f %f %f %f]\n",

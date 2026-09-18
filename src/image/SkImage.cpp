@@ -8,9 +8,14 @@
 #include "include/core/SkImage.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkSurface.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkColorSpacePriv.h"
@@ -42,6 +47,42 @@ bool SkImage::peekPixels(SkPixmap* pm) const {
 bool SkImage::readPixels(GrDirectContext* dContext, const SkImageInfo& dstInfo, void* dstPixels,
                          size_t dstRowBytes, int srcX, int srcY, CachingHint chint) const {
     return as_IB(this)->onReadPixels(dContext, dstInfo, dstPixels, dstRowBytes, srcX, srcY, chint);
+}
+
+sk_sp<SkImage> SkImage::makeScaled(const SkImageInfo& newInfo,
+                                   const SkSamplingOptions& sampling) const {
+    return makeScaled(nullptr, newInfo, sampling, SkSurfaceProps{});
+}
+
+sk_sp<SkImage> SkImage::makeScaled(SkRecorder* recorder,
+                                   const SkImageInfo& newInfo,
+                                   const SkSamplingOptions& sampling) const {
+    return makeScaled(recorder, newInfo, sampling, SkSurfaceProps{});
+}
+
+sk_sp<SkImage> SkImage::makeScaled(SkRecorder* recorder,
+                                   const SkImageInfo& newInfo,
+                                   const SkSamplingOptions& sampling,
+                                   const SkSurfaceProps& props) const {
+    if (!SkImageInfoIsValid(newInfo)) {
+        return nullptr;
+    }
+    if (newInfo == this->imageInfo()) {
+        return sk_ref_sp(this);
+    }
+
+    auto surf = as_IB(this)->onMakeSurface(recorder, newInfo);
+    if (!surf) {
+        return nullptr;
+    }
+
+    SkPaint paint;
+    paint.setBlendMode(SkBlendMode::kSrc);
+    surf->getCanvas()->drawImageRect(this,
+                                     SkRect::MakeIWH(newInfo.width(), newInfo.height()),
+                                     sampling,
+                                     &paint);
+    return surf->makeImageSnapshot();
 }
 
 #ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
@@ -81,6 +122,31 @@ void SkImage::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
         return;
     }
     as_IB(this)->onAsyncRescaleAndReadPixelsYUV420(yuvColorSpace,
+                                                   /*readAlpha=*/false,
+                                                   std::move(dstColorSpace),
+                                                   srcRect,
+                                                   dstSize,
+                                                   rescaleGamma,
+                                                   rescaleMode,
+                                                   callback,
+                                                   context);
+}
+
+void SkImage::asyncRescaleAndReadPixelsYUVA420(SkYUVColorSpace yuvColorSpace,
+                                               sk_sp<SkColorSpace> dstColorSpace,
+                                               const SkIRect& srcRect,
+                                               const SkISize& dstSize,
+                                               RescaleGamma rescaleGamma,
+                                               RescaleMode rescaleMode,
+                                               ReadPixelsCallback callback,
+                                               ReadPixelsContext context) const {
+    if (!SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) || dstSize.isZero() ||
+        (dstSize.width() & 0b1) || (dstSize.height() & 0b1)) {
+        callback(context, nullptr);
+        return;
+    }
+    as_IB(this)->onAsyncRescaleAndReadPixelsYUV420(yuvColorSpace,
+                                                   /*readAlpha=*/true,
                                                    std::move(dstColorSpace),
                                                    srcRect,
                                                    dstSize,
@@ -177,9 +243,7 @@ sk_sp<SkShader> SkImage::makeRawShader(SkTileMode tmx, SkTileMode tmy,
                                   sampling, localMatrix);
 }
 
-sk_sp<SkData> SkImage::refEncodedData() const {
-    return sk_sp<SkData>(as_IB(this)->onRefEncoded());
-}
+sk_sp<const SkData> SkImage::refEncodedData() const { return as_IB(this)->onRefEncoded(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -257,6 +321,8 @@ sk_sp<SkImage> SkImage::makeRasterImage(GrDirectContext* dContext, CachingHint c
 
 bool SkImage::hasMipmaps() const { return as_IB(this)->onHasMipmaps(); }
 
+bool SkImage::isProtected() const { return as_IB(this)->onIsProtected(); }
+
 sk_sp<SkImage> SkImage::withMipmaps(sk_sp<SkMipmap> mips) const {
     if (mips == nullptr || mips->validForRootLevel(this->imageInfo())) {
         if (auto result = as_IB(this)->onMakeWithMipmaps(std::move(mips))) {
@@ -269,17 +335,3 @@ sk_sp<SkImage> SkImage::withMipmaps(sk_sp<SkMipmap> mips) const {
 sk_sp<SkImage> SkImage::withDefaultMipmaps() const {
     return this->withMipmaps(nullptr);
 }
-
-#if !defined(SK_DISABLE_LEGACY_IMAGE_COLORSPACE_METHODS)
-sk_sp<SkImage> SkImage::makeColorSpace(sk_sp<SkColorSpace> target, GrDirectContext* direct) const {
-    return makeColorSpace(direct, target);
-}
-#endif
-
-#if !defined(SK_DISABLE_LEGACY_IMAGE_COLORSPACE_METHODS)
-sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
-                                                   sk_sp<SkColorSpace> targetColorSpace,
-                                                   GrDirectContext* direct) const {
-    return makeColorTypeAndColorSpace(direct, targetColorType, targetColorSpace);
-}
-#endif

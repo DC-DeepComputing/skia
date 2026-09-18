@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,9 +8,20 @@
 #ifndef SkSGMaskEffect_DEFINED
 #define SkSGMaskEffect_DEFINED
 
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "modules/sksg/include/SkSGEffectNode.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
+
+#include <cstdint>
+#include <utility>
+
+class SkCanvas;
+class SkMatrix;
+struct SkPoint;
 
 namespace sksg {
+class InvalidationController;
 
 /**
  * Concrete Effect node, applying a mask to its descendants.

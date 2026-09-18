@@ -8,20 +8,23 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
-#include "include/core/SkTime.h"
+#include "include/encode/SkPngEncoder.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkRecord.h"
+#include "src/core/SkRecordCanvas.h"
 #include "src/core/SkRecordDraw.h"
 #include "src/core/SkRecordOpts.h"
-#include "src/core/SkRecorder.h"
+#include "src/core/SkTime.h"
+#include "src/image/SkImage_Base.h"
 #include "tools/flags/CommandLineFlags.h"
-#include <stdio.h>
+
+#include <cstdio>
 
 static DEFINE_string2(skps, r, "", ".SKPs to dump.");
 static DEFINE_string(match, "", "The usual filters on file names to dump.");
 static DEFINE_bool2(optimize, O, false, "Run SkRecordOptimize before dumping.");
-static DEFINE_bool(optimize2, false, "Run SkRecordOptimize2 before dumping.");
 static DEFINE_int(tile, 1000000000, "Simulated tile size.");
 static DEFINE_bool(timeWithCommand, false,
                    "If true, print time next to command, else in first column.");
@@ -75,12 +78,11 @@ public:
     void print(const SkRecords::DrawPicture& command, double ns) {
         this->printNameAndTime(command, ns);
 
-        if (auto bp = SkPicturePriv::AsSkBigPicture(command.picture)) {
+        if (auto record = SkPicturePriv::GetRecord(command.picture.get())) {
             ++fIndent;
 
-            const SkRecord& record = *bp->record();
-            for (int i = 0; i < record.count(); i++) {
-                record.visit(i, *this);
+            for (int i = 0; i < record->count(); i++) {
+                record->visit(i, *this);
             }
 
             --fIndent;
@@ -162,14 +164,11 @@ int main(int argc, char** argv) {
         const int h = SkScalarCeilToInt(src->cullRect().height());
 
         SkRecord record;
-        SkRecorder rec(&record, w, h);
+        SkRecordCanvas rec(&record, w, h);
         src->playback(&rec);
 
         if (FLAGS_optimize) {
             SkRecordOptimize(&record);
-        }
-        if (FLAGS_optimize2) {
-            SkRecordOptimize2(&record);
         }
 
         SkBitmap bitmap;
@@ -196,7 +195,11 @@ int main(int argc, char** argv) {
                          nullptr);
             sk_sp<SkPicture> dst(r.finishRecordingAsPicture());
             SkFILEWStream ostream(FLAGS_write[0]);
-            dst->serialize(&ostream);
+            SkSerialProcs sProcs;
+            sProcs.fImageProc = [](SkImage* img, void*) -> SkSerialReturnType {
+                return SkPngEncoder::Encode(nullptr, img, SkPngEncoder::Options{});
+            };
+            dst->serialize(&ostream, &sProcs);
         }
     }
 

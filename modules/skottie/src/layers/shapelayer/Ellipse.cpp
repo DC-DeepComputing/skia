@@ -1,17 +1,25 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkRRect.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "modules/jsonreader/SkJSONReader.h"
 #include "modules/skottie/src/Adapter.h"
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
 #include "modules/skottie/src/layers/shapelayer/ShapeLayer.h"
 #include "modules/sksg/include/SkSGRect.h"
+
+namespace sksg {
+class GeometryNode;
+}
 
 namespace skottie {
 namespace internal {

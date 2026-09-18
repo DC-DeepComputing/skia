@@ -12,7 +12,6 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkColorData.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
@@ -24,19 +23,6 @@
 #include "src/core/SkValidationUtils.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
-
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/KeyContext.h"
-#include "src/gpu/graphite/KeyHelpers.h"
-#include "src/gpu/graphite/PaintParamsKey.h"
-#endif
-
-template <SkAlphaType kDstAT = kPremul_SkAlphaType>
-static SkRGBA4f<kDstAT> map_color(const SkColor4f& c, SkColorSpace* src, SkColorSpace* dst) {
-    SkRGBA4f<kDstAT> color = {c.fR, c.fG, c.fB, c.fA};
-    SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, kDstAT).apply(color.vec());
-    return color;
-}
 
 SkBlendModeColorFilter::SkBlendModeColorFilter(const SkColor4f& color, SkBlendMode mode)
         : fColor(color), fMode(mode) {}
@@ -84,37 +70,13 @@ sk_sp<SkFlattenable> SkBlendModeColorFilter::CreateProc(SkReadBuffer& buffer) {
 
 bool SkBlendModeColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
     rec.fPipeline->append(SkRasterPipelineOp::move_src_dst);
-    SkPMColor4f color = map_color(fColor, sk_srgb_singleton(), rec.fDstCS);
-    rec.fPipeline->append_constant_color(rec.fAlloc, color.vec());
+    SkColor4f color = fColor;
+    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                           rec.fDstCS,          kPremul_SkAlphaType).apply(color.vec());
+    rec.fPipeline->appendConstantColor(rec.fAlloc, color.vec());
     SkBlendMode_AppendStages(fMode, rec.fPipeline);
     return true;
 }
-
-#if defined(SK_ENABLE_SKVM)
-skvm::Color SkBlendModeColorFilter::onProgram(skvm::Builder* p,
-                                              skvm::Color c,
-                                              const SkColorInfo& dstInfo,
-                                              skvm::Uniforms* uniforms,
-                                              SkArenaAlloc*) const {
-    SkPMColor4f color = map_color(fColor, sk_srgb_singleton(), dstInfo.colorSpace());
-    // The blend program operates on this as if it were premul but the API takes an SkColor4f
-    skvm::Color dst = c, src = p->uniformColor({color.fR, color.fG, color.fB, color.fA}, uniforms);
-    return p->blend(fMode, src, dst);
-}
-#endif
-
-#if defined(SK_GRAPHITE)
-void SkBlendModeColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext,
-                                      skgpu::graphite::PaintParamsKeyBuilder* builder,
-                                      skgpu::graphite::PipelineDataGatherer* gatherer) const {
-    using namespace skgpu::graphite;
-
-    SkPMColor4f color =
-            map_color(fColor, sk_srgb_singleton(), keyContext.dstColorInfo().colorSpace());
-    AddColorBlendBlock(keyContext, builder, gatherer, fMode, color);
-}
-
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -126,8 +88,10 @@ sk_sp<SkColorFilter> SkColorFilters::Blend(const SkColor4f& color,
     }
 
     // First map to sRGB to simplify storage in the actual SkColorFilter instance, staying unpremul
-    // until the final dst color space is known when actually filtering.
-    SkColor4f srgb = map_color<kUnpremul_SkAlphaType>(color, colorSpace.get(), sk_srgb_singleton());
+    // until the final dst color space is known when actually filtering. Also pin the alpha to [0,1]
+    SkColor4f srgb = color.pinAlpha();
+    SkColorSpaceXformSteps(colorSpace.get(),    kUnpremul_SkAlphaType,
+                           sk_srgb_singleton(), kUnpremul_SkAlphaType).apply(srgb.vec());
 
     // Next collapse some modes if possible
     float alpha = srgb.fA;

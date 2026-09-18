@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -17,14 +17,9 @@ public:
     VideoDecoderGM() {}
 
 protected:
+    SkString getName() const override { return SkString("videodecoder"); }
 
-    SkString onShortName() override {
-        return SkString("videodecoder");
-    }
-
-    SkISize onISize() override {
-        return SkISize::Make(1024, 768);
-    }
+    SkISize getISize() override { return SkISize::Make(1024, 768); }
 
     void onOnceBeforeDraw() override {
         if (!fDecoder.loadStream(SkStream::MakeFromFile("/skia/ice.mp4"))) {

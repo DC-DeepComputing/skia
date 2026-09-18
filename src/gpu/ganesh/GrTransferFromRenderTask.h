@@ -8,7 +8,22 @@
 #ifndef GrTransferFromRenderTask_DEFINED
 #define GrTransferFromRenderTask_DEFINED
 
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+
+#include <cstddef>
+#include <utility>
+
+class GrOpFlushState;
+class GrRecordingContext;
+class GrResourceAllocator;
 
 class GrTransferFromRenderTask final : public GrRenderTask {
 public:
@@ -26,6 +41,8 @@ public:
             , fDstBuffer(std::move(dstBuffer))
             , fDstOffset(dstOffset) {}
 
+    bool executionSuccessful() const { return fExecutionSuccess; }
+
 private:
     bool onIsUsed(GrSurfaceProxy* proxy) const override {
         SkASSERT(0 == this->numTargets());
@@ -37,14 +54,14 @@ private:
         return ExpectedOutcome::kTargetUnchanged;
     }
 
-    bool onExecute(GrOpFlushState*) override;
+    ExecutionResult onExecute(GrOpFlushState*) override;
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     const char* name() const final { return "TransferFrom"; }
 #endif
 #ifdef SK_DEBUG
     void visitProxies_debugOnly(const GrVisitProxyFunc& func) const override {
-        func(fSrcProxy.get(), GrMipmapped::kNo);
+        func(fSrcProxy.get(), skgpu::Mipmapped::kNo);
     }
 #endif
 
@@ -55,7 +72,8 @@ private:
     sk_sp<GrGpuBuffer> fDstBuffer;
     size_t fDstOffset;
 
+    bool fExecutionSuccess = false;
+    SkDEBUGCODE(bool fWasExecuted = false;)
 };
 
 #endif
-

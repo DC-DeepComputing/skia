@@ -1,22 +1,23 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
 
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrContextOptions.h"
-#include "include/gpu/GrContextThreadSafeProxy.h"
-#include "include/gpu/GrTypes.h"
-#include "include/private/base/SkDebug.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
+#include "include/gpu/ganesh/GrContextThreadSafeProxy.h"
+#include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkMacros.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/base/SkArenaAlloc.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
@@ -24,6 +25,7 @@
 #include "src/gpu/ganesh/GrProgramDesc.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/PathRendererChain.h"
+#include "src/gpu/ganesh/SkGaneshRecorder.h"
 #include "src/gpu/ganesh/ops/AtlasTextOp.h"
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
@@ -52,6 +54,7 @@ GrRecordingContext::GrRecordingContext(sk_sp<GrContextThreadSafeProxy> proxy, bo
         , fAuditTrail(new GrAuditTrail())
         , fArenas(ddlRecording) {
     fProxyProvider = std::make_unique<GrProxyProvider>(this);
+    fRecorder = std::make_unique<SkGaneshRecorder>(this);
 }
 
 GrRecordingContext::~GrRecordingContext() {
@@ -65,7 +68,7 @@ bool GrRecordingContext::init() {
 
     skgpu::ganesh::PathRendererChain::Options prcOptions;
     prcOptions.fAllowPathMaskCaching = this->options().fAllowPathMaskCaching;
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     prcOptions.fGpuPathRenderers = this->options().fGpuPathRenderers;
 #endif
     // FIXME: Once this is removed from Chrome and Android, rename to fEnable"".
@@ -175,6 +178,18 @@ bool GrRecordingContext::colorTypeSupportedAsImage(SkColorType colorType) const 
     return format.isValid();
 }
 
+bool GrRecordingContext::supportsProtectedContent() const {
+    return this->caps()->supportsProtectedContent();
+}
+
+std::unique_ptr<skcpu::Recorder> GrRecordingContext::makeCPURecorder() {
+    return std::make_unique<skcpu::Recorder>();
+}
+
+SkRecorder* GrRecordingContext::asRecorder() {
+    return fRecorder.get();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef SK_ENABLE_DUMP_GPU
@@ -194,7 +209,7 @@ void GrRecordingContext::dumpJSON(SkJSONWriter* writer) const {
 void GrRecordingContext::dumpJSON(SkJSONWriter*) const { }
 #endif
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 
 #if GR_GPU_STATS
 
@@ -246,4 +261,4 @@ void GrRecordingContext::DMSAAStats::merge(const DMSAAStats& stats) {
 }
 
 #endif // GR_GPU_STATS
-#endif // GR_TEST_UTILS
+#endif // defined(GPU_TEST_UTILS)

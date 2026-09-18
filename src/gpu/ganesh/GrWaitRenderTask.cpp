@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/GrWaitRenderTask.h"
 
+#include "include/private/SkAssert.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
@@ -18,11 +19,12 @@ void GrWaitRenderTask::gatherProxyIntervals(GrResourceAllocator* alloc) const {
     SkASSERT(0 == this->numTargets());
     auto fakeOp = alloc->curOp();
     alloc->addInterval(fWaitedOn.proxy(), fakeOp, fakeOp,
-                       GrResourceAllocator::ActualUse::kYes);
+                       GrResourceAllocator::ActualUse::kYes,
+                       GrResourceAllocator::AllowRecycling::kYes);
     alloc->incOps();
 }
 
-bool GrWaitRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrWaitRenderTask::onExecute(GrOpFlushState* flushState) {
     for (int i = 0; i < fNumSemaphores; ++i) {
         // If we don't have a semaphore here it means we failed to wrap it. That happens if the
         // client didn't give us a valid semaphore to begin with. Therefore, it is fine to not wait
@@ -31,5 +33,5 @@ bool GrWaitRenderTask::onExecute(GrOpFlushState* flushState) {
             flushState->gpu()->waitSemaphore(fSemaphores[i].get());
         }
     }
-    return true;
+    return ExecutionResult::RanAndSucceeded();
 }

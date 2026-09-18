@@ -7,12 +7,22 @@
 
 #include "src/gpu/ganesh/vk/GrVkPipelineStateDataManager.h"
 
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTArray.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkAutoMalloc.h"
+#include "src/core/SkSLTypeShared.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
+#include "src/gpu/ganesh/GrShaderVar.h"
+#include "src/gpu/ganesh/vk/GrVkCaps.h"
 #include "src/gpu/ganesh/vk/GrVkCommandBuffer.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
+
+#include <cstring>
 
 GrVkPipelineStateDataManager::GrVkPipelineStateDataManager(const UniformInfoArray& uniforms,
                                                            uint32_t uniformSize,
@@ -33,7 +43,7 @@ GrVkPipelineStateDataManager::GrVkPipelineStateDataManager(const UniformInfoArra
         )
 
         uniform.fOffset = uniformInfo.fOffsets[memLayout];
-        uniform.fType = uniformInfo.fVariable.getType();
+        uniform.setType(uniformInfo.fVariable.getType());
         ++i;
     }
 }
@@ -69,7 +79,7 @@ void GrVkPipelineStateDataManager::set1iv(UniformHandle u,
                                           const int32_t v[]) const {
     if (fUsePushConstants) {
         const Uniform& uni = fUniforms[u.toIndex()];
-        SkASSERT(uni.fType == SkSLType::kInt || uni.fType == SkSLType::kShort);
+        SkASSERT(uni.type() == SkSLType::kInt || uni.type() == SkSLType::kShort);
         SkASSERT(arrayCount > 0);
         SkASSERT(arrayCount <= uni.fArrayCount ||
                  (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
@@ -87,7 +97,7 @@ void GrVkPipelineStateDataManager::set1fv(UniformHandle u,
                                           const float v[]) const {
     if (fUsePushConstants) {
         const Uniform& uni = fUniforms[u.toIndex()];
-        SkASSERT(uni.fType == SkSLType::kFloat || uni.fType == SkSLType::kHalf);
+        SkASSERT(uni.type() == SkSLType::kFloat || uni.type() == SkSLType::kHalf);
         SkASSERT(arrayCount > 0);
         SkASSERT(arrayCount <= uni.fArrayCount ||
                  (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
@@ -105,7 +115,7 @@ void GrVkPipelineStateDataManager::set2iv(UniformHandle u,
                                           const int32_t v[]) const {
     if (fUsePushConstants) {
         const Uniform& uni = fUniforms[u.toIndex()];
-        SkASSERT(uni.fType == SkSLType::kInt2 || uni.fType == SkSLType::kShort2);
+        SkASSERT(uni.type() == SkSLType::kInt2 || uni.type() == SkSLType::kShort2);
         SkASSERT(arrayCount > 0);
         SkASSERT(arrayCount <= uni.fArrayCount ||
                  (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
@@ -123,7 +133,7 @@ void GrVkPipelineStateDataManager::set2fv(UniformHandle u,
                                           const float v[]) const {
     if (fUsePushConstants) {
         const Uniform& uni = fUniforms[u.toIndex()];
-        SkASSERT(uni.fType == SkSLType::kFloat2 || uni.fType == SkSLType::kHalf2);
+        SkASSERT(uni.type() == SkSLType::kFloat2 || uni.type() == SkSLType::kHalf2);
         SkASSERT(arrayCount > 0);
         SkASSERT(arrayCount <= uni.fArrayCount ||
                  (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));
@@ -142,7 +152,7 @@ void GrVkPipelineStateDataManager::setMatrix2fv(UniformHandle u,
     if (fUsePushConstants) {
         // upload as std430
         const Uniform& uni = fUniforms[u.toIndex()];
-        SkASSERT(uni.fType == SkSLType::kFloat2x2 || uni.fType == SkSLType::kHalf2x2);
+        SkASSERT(uni.type() == SkSLType::kFloat2x2 || uni.type() == SkSLType::kHalf2x2);
         SkASSERT(arrayCount > 0);
         SkASSERT(arrayCount <= uni.fArrayCount ||
                  (1 == arrayCount && GrShaderVar::kNonArray == uni.fArrayCount));

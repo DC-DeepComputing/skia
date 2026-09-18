@@ -1,16 +1,17 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
 #include "include/core/SkStream.h"
-#include "include/private/base/SkThreadID.h"
+#include "include/private/SkThreadID.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/utils/SkJSONWriter.h"
 #include "src/utils/SkOSPath.h"
+#include "tools/ProcsUtils.h"
 #include "tools/trace/ChromeTracingTracer.h"
 
 #include <chrono>
@@ -56,8 +57,6 @@ ChromeTracingTracer::ChromeTracingTracer(const char* filename) : fFilename(filen
     this->createBlock();
 }
 
-ChromeTracingTracer::~ChromeTracingTracer() { this->flush(); }
-
 void ChromeTracingTracer::createBlock() {
     fCurBlock.fBlock         = BlockPtr(new uint8_t[kBlockSize]);
     fCurBlock.fEventsInBlock = 0;
@@ -95,9 +94,7 @@ SkEventTracer::Handle ChromeTracingTracer::addTraceEvent(char            phase,
     int size = static_cast<int>(sizeof(TraceEvent) + numArgs * sizeof(TraceEventArg));
     for (int i = 0; i < numArgs; ++i) {
         if (TRACE_VALUE_TYPE_COPY_STRING == argTypes[i]) {
-            skia_private::TraceValueUnion value;
-            value.as_uint = argValues[i];
-            size += strlen(value.as_string) + 1;
+            size += strlen(skia_private::TraceValueAsString(argValues[i])) + 1;
         }
     }
 
@@ -127,10 +124,9 @@ SkEventTracer::Handle ChromeTracingTracer::addTraceEvent(char            phase,
             traceEventArgs[i].fArgValue = stringTable - stringTableBase;
 
             // Copy string into our buffer (and advance)
-            skia_private::TraceValueUnion value;
-            value.as_uint = argValues[i];
-            while (*value.as_string) {
-                *stringTable++ = *value.as_string++;
+            const char* valueStr = skia_private::TraceValueAsString(argValues[i]);
+            while (*valueStr) {
+                *stringTable++ = *valueStr++;
             }
             *stringTable++ = 0;
         } else {
@@ -154,18 +150,20 @@ static void trace_value_to_json(SkJSONWriter* writer,
                                 uint64_t      argValue,
                                 uint8_t       argType,
                                 const char*   stringTableBase) {
-    skia_private::TraceValueUnion value;
-    value.as_uint = argValue;
-
     switch (argType) {
-        case TRACE_VALUE_TYPE_BOOL: writer->appendBool(value.as_bool); break;
-        case TRACE_VALUE_TYPE_UINT: writer->appendU64(value.as_uint); break;
-        case TRACE_VALUE_TYPE_INT: writer->appendS64(value.as_int); break;
-        case TRACE_VALUE_TYPE_DOUBLE: writer->appendDouble(value.as_double); break;
-        case TRACE_VALUE_TYPE_POINTER: writer->appendPointer(value.as_pointer); break;
-        case TRACE_VALUE_TYPE_STRING: writer->appendCString(value.as_string); break;
+        case TRACE_VALUE_TYPE_BOOL:   writer->appendBool(argValue); break;
+        case TRACE_VALUE_TYPE_UINT:   writer->appendU64(argValue); break;
+        case TRACE_VALUE_TYPE_INT:    writer->appendS64(static_cast<int64_t>(argValue)); break;
+        case TRACE_VALUE_TYPE_DOUBLE: writer->appendDouble(sk_bit_cast<double>(argValue)); break;
+        case TRACE_VALUE_TYPE_POINTER:
+            writer->appendPointer(skia_private::TraceValueAsPointer(argValue));
+            break;
+        case TRACE_VALUE_TYPE_STRING:
+            writer->appendCString(skia_private::TraceValueAsString(argValue));
+            break;
         case TRACE_VALUE_TYPE_COPY_STRING:
-            writer->appendCString(stringTableBase + value.as_uint);
+            // See addTraceEvent(), the value in _COPY_STRING events is replaced with an offset
+            writer->appendCString(stringTableBase + argValue);
             break;
         default: writer->appendNString("<unknown type>"); break;
     }
@@ -270,7 +268,7 @@ static void trace_event_to_json(SkJSONWriter*                 writer,
     writer->endObject();
 }
 
-void ChromeTracingTracer::flush() {
+void ChromeTracingTracer::onExit() {
     SkAutoSpinlock lock(fMutex);
 
     SkString dirname = SkOSPath::Dirname(fFilename.c_str());
@@ -281,7 +279,7 @@ void ChromeTracingTracer::flush() {
     }
 
     SkFILEWStream fileStream(fFilename.c_str());
-    SkJSONWriter  writer(&fileStream, SkJSONWriter::Mode::kFast);
+    SkJSONWriter  writer(&fileStream, ToolUtils::default_serial_procs(), SkJSONWriter::Mode::kFast);
     writer.beginArray();
 
     uint64_t clockOffset = 0;

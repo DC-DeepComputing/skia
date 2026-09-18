@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google LLC.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,10 +8,26 @@
 #ifndef AtlasInstancedHelper_DEFINED
 #define AtlasInstancedHelper_DEFINED
 
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkMacros.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkIPoint16.h"
+#include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
+
+class GrGLSLProgramDataManager;
+class GrShaderVar;
+
+namespace skgpu {
+class KeyBuilder;
+struct VertexWriter;
+}  // namespace skgpu
 
 namespace skgpu::ganesh {
 
@@ -25,7 +41,7 @@ public:
         kCheckBounds = 1 << 1
     };
 
-    GR_DECL_BITFIELD_CLASS_OPS_FRIENDS(ShaderFlags);
+    SK_DECL_BITFIELD_CLASS_OPS_FRIENDS(ShaderFlags);
 
     constexpr static int kNumShaderFlags = 2;
 
@@ -94,7 +110,7 @@ private:
     const ShaderFlags fShaderFlags;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(AtlasInstancedHelper::ShaderFlags)
+SK_MAKE_BITFIELD_CLASS_OPS(AtlasInstancedHelper::ShaderFlags)
 
 }  // namespace skgpu::ganesh
 

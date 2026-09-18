@@ -1,19 +1,15 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
+#include "modules/skparagraph/src/OneLineShaper.h"
 
 #include "modules/skparagraph/src/Iterators.h"
-#include "modules/skparagraph/src/OneLineShaper.h"
-#include "src/base/SkUTF.h"
+#include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#include "src/core/SkUTF.h"
 
 #include <algorithm>
 #include <cstdint>
 #include <unordered_set>
 
 using namespace skia_private;
-
-static inline SkUnichar nextUtf8Unit(const char** ptr, const char* end) {
-    SkUnichar val = SkUTF::NextUTF8(ptr, end);
-    return val < 0 ? 0xFFFD : val;
-}
 
 namespace skia {
 namespace textlayout {
@@ -205,6 +201,8 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
         const SkShaper::RunHandler::RunInfo info = {
                 run->fFont,
                 run->fBidiLevel,
+                run->fScript,
+                run->fLanguage.c_str(),
                 runAdvance,
                 glyphs.width(),
                 SkShaper::RunHandler::Range(text.start - run->fClusterStart, text.width())
@@ -227,9 +225,15 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
 
             auto index = i - glyphs.start;
             if (i < glyphs.end) {
+                // There are only n glyphs in a run, not n+1.
                 piece->fGlyphs[index] = run->fGlyphs[i];
+
+                // fClusterIndexes n+1 is already set to the end of the run.
+                // Do not attempt to overwrite this value with the cluster index
+                // that starts the next Run.
+                // It is assumed later that all clusters in a Run are contained by the Run.
+                piece->fClusterIndexes[index] = run->fClusterIndexes[i];
             }
-            piece->fClusterIndexes[index] = run->fClusterIndexes[i];
             piece->fPositions[index] = run->fPositions[i] - zero;
             piece->fOffsets[index] = run->fOffsets[i];
             piece->addX(index, advanceX);
@@ -276,7 +280,7 @@ void OneLineShaper::addUnresolvedWithRun(GlyphRange glyphRange) {
     RunBlock unresolved(fCurrentRun, extendedText, glyphRange, 0);
     if (unresolved.fGlyphs.width() == fCurrentRun->size()) {
         SkASSERT(unresolved.fText.width() == fCurrentRun->fTextRange.width());
-    } else if (fUnresolvedBlocks.size() > 0) {
+    } else if (!fUnresolvedBlocks.empty()) {
         auto& lastUnresolved = fUnresolvedBlocks.back();
         if (lastUnresolved.fRun != nullptr &&
             lastUnresolved.fRun->fIndex == fCurrentRun->fIndex) {
@@ -435,46 +439,73 @@ void OneLineShaper::matchResolvedFonts(const TextStyle& textStyle,
         while (!fUnresolvedBlocks.empty()) {
             auto unresolvedRange = fUnresolvedBlocks.front().fText;
             auto unresolvedText = fParagraph->text(unresolvedRange);
-            const char* ch = unresolvedText.begin();
+            const char* ch = unresolvedText.data();
+            const char* chEnd = unresolvedText.data() + unresolvedText.size();
             // We have the global cache for all already found typefaces for SkUnichar
             // but we still need to keep track of all SkUnichars used in this unresolved block
             THashSet<SkUnichar> alreadyTriedCodepoints;
             THashSet<SkTypefaceID> alreadyTriedTypefaces;
             while (true) {
-
-                if (ch == unresolvedText.end()) {
+                if (ch == chEnd) {
                     // Not a single codepoint could be resolved but we finished the block
                     hopelessBlocks.push_back(fUnresolvedBlocks.front());
                     fUnresolvedBlocks.pop_front();
                     break;
                 }
 
-                // See if we can switch to the next DIFFERENT codepoint
-                SkUnichar unicode = -1;
-                while (ch != unresolvedText.end()) {
-                    unicode = nextUtf8Unit(&ch, unresolvedText.end());
-                    if (!alreadyTriedCodepoints.contains(unicode)) {
-                        alreadyTriedCodepoints.add(unicode);
+                // See if we can switch to the next DIFFERENT codepoint/emoji
+                SkUnichar codepoint = -1;
+                SkUnichar emojiStart = -1;
+                // We may loop until we find a new codepoint/emoji run
+                while (ch != chEnd) {
+                  emojiStart = OneLineShaper::getEmojiSequenceStart(
+                                                fParagraph->fUnicode.get(),
+                                                &ch,
+                                                chEnd);
+                    if (emojiStart != -1) {
+                        // We do not keep a cache of emoji runs, but we need to move the cursor
                         break;
+                    } else {
+                        codepoint = SkUTF::NextUTF8WithReplacement(&ch, chEnd);
+                        if (!alreadyTriedCodepoints.contains(codepoint)) {
+                            alreadyTriedCodepoints.add(codepoint);
+                            break;
+                        }
                     }
                 }
-                SkASSERT(unicode != -1);
 
-                // First try to find in in a cache
-                sk_sp<SkTypeface> typeface;
-                FontKey fontKey(unicode, textStyle.getFontStyle(), textStyle.getLocale());
-                auto found = fFallbackFonts.find(fontKey);
-                if (found != nullptr) {
-                    typeface = *found;
-                } else {
-                    typeface = fParagraph->fFontCollection->defaultFallback(
-                            unicode, textStyle.getFontStyle(), textStyle.getLocale());
+                SkASSERT(codepoint != -1 || emojiStart != -1);
 
-                    if (typeface == nullptr) {
-                        // There is no fallback font for this character, so move on to the next character.
-                        continue;
+                sk_sp<SkTypeface> typeface = nullptr;
+                if (emojiStart == -1) {
+                    // First try to find in in a cache
+                    FontKey fontKey(codepoint, textStyle.getFontStyle(), textStyle.getLocale(), textStyle.getFontArguments());
+                    auto found = fFallbackFonts.find(fontKey);
+                    if (found != nullptr) {
+                        typeface = *found;
                     }
-                    fFallbackFonts.set(fontKey, typeface);
+                    if (typeface == nullptr) {
+                        typeface = fParagraph->fFontCollection->defaultFallback(
+                                                    codepoint,
+                                                    textStyle.getFontFamilies(),
+                                                    textStyle.getFontStyle(),
+                                                    textStyle.getLocale(),
+                                                    textStyle.getFontArguments());
+                        if (typeface != nullptr) {
+                            fFallbackFonts.set(fontKey, typeface);
+                        }
+                    }
+                } else {
+                    typeface = fParagraph->fFontCollection->defaultEmojiFallback(
+                                                emojiStart,
+                                                textStyle.getFontStyle(),
+                                                textStyle.getLocale());
+                }
+
+                if (typeface == nullptr) {
+                    // There is no fallback font for this character,
+                    // so move on to the next character.
+                    continue;
                 }
 
                 // Check if we already tried this font on this text range
@@ -556,8 +587,12 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
             placeholder.fTextStyle.getFontFamilies(),
             placeholder.fTextStyle.getFontStyle(),
             placeholder.fTextStyle.getFontArguments());
-        sk_sp<SkTypeface> typeface = typefaces.size() ? typefaces.front() : nullptr;
+        sk_sp<SkTypeface> typeface = typefaces.empty() ? nullptr : typefaces.front();
         SkFont font(typeface, placeholder.fTextStyle.getFontSize());
+
+        font.setEdging(placeholder.fTextStyle.getFontEdging());
+        font.setHinting(placeholder.fTextStyle.getFontHinting());
+        font.setSubpixel(placeholder.fTextStyle.getSubpixel());
 
         // "Shape" the placeholder
         uint8_t bidiLevel = (bidiIndex < fParagraph->fBidiRegions.size())
@@ -566,6 +601,8 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
         const SkShaper::RunHandler::RunInfo runInfo = {
             font,
             bidiLevel,
+            0,
+            "",
             SkPoint::Make(placeholder.fStyle.fWidth, placeholder.fStyle.fHeight),
             1,
             SkShaper::RunHandler::Range(0, placeholder.fRange.width())
@@ -599,7 +636,8 @@ bool OneLineShaper::shape() {
             (TextRange textRange, SkSpan<Block> styleSpan, SkScalar& advanceX, TextIndex textStart, uint8_t defaultBidiLevel) {
 
         // Set up the shaper and shape the next
-        auto shaper = SkShaper::MakeShapeDontWrapOrReorder(fParagraph->fUnicode->copy());
+        auto shaper = SkShapers::HB::ShapeDontWrapOrReorder(fParagraph->fUnicode,
+                                                            SkFontMgr::RefEmpty());  // no fallback
         if (shaper == nullptr) {
             // For instance, loadICU does not work. We have to stop the process
             return false;
@@ -622,21 +660,23 @@ bool OneLineShaper::shape() {
 
                 // Create one more font to try
                 SkFont font(std::move(typeface), block.fStyle.getFontSize());
-                font.setEdging(SkFont::Edging::kAntiAlias);
-                font.setHinting(SkFontHinting::kSlight);
-                font.setSubpixel(true);
+                font.setEdging(block.fStyle.getFontEdging());
+                font.setHinting(block.fStyle.getFontHinting());
+                font.setSubpixel(block.fStyle.getSubpixel());
 
-                // Apply fake bold and/or italic settings to the font if the
-                // typeface's attributes do not match the intended font style.
-                int wantedWeight = block.fStyle.getFontStyle().weight();
-                bool fakeBold =
-                    wantedWeight >= SkFontStyle::kSemiBold_Weight &&
-                    wantedWeight - font.getTypeface()->fontStyle().weight() >= 200;
-                bool fakeItalic =
-                    block.fStyle.getFontStyle().slant() == SkFontStyle::kItalic_Slant &&
-                    font.getTypeface()->fontStyle().slant() != SkFontStyle::kItalic_Slant;
-                font.setEmbolden(fakeBold);
-                font.setSkewX(fakeItalic ? -SK_Scalar1 / 4 : 0);
+                if (fParagraph->paragraphStyle().fakeMissingFontStyles()) {
+                  // Apply fake bold and/or italic settings to the font if the
+                  // typeface's attributes do not match the intended font style.
+                  int wantedWeight = block.fStyle.getFontStyle().weight();
+                  bool fakeBold =
+                      wantedWeight >= SkFontStyle::kSemiBold_Weight &&
+                      wantedWeight - font.getTypeface()->fontStyle().weight() >= 200;
+                  bool fakeItalic =
+                      block.fStyle.getFontStyle().slant() == SkFontStyle::kItalic_Slant &&
+                      font.getTypeface()->fontStyle().slant() != SkFontStyle::kItalic_Slant;
+                  font.setEmbolden(fakeBold);
+                  font.setSkewX(fakeItalic ? -SK_Scalar1 / 4 : 0);
+                }
 
                 // Walk through all the currently unresolved blocks
                 // (ignoring those that appear later)
@@ -655,8 +695,8 @@ bool OneLineShaper::shape() {
                     LangIterator langIter(unresolvedText, blockSpan,
                                       fParagraph->paragraphStyle().getTextStyle());
                     SkShaper::TrivialBiDiRunIterator bidiIter(defaultBidiLevel, unresolvedText.size());
-                    auto scriptIter = SkShaper::MakeSkUnicodeHbScriptRunIterator(
-                            unresolvedText.begin(), unresolvedText.size());
+                    auto scriptIter = SkShapers::HB::ScriptRunIterator(unresolvedText.data(),
+                                                                       unresolvedText.size());
                     fCurrentText = unresolvedRange;
 
                     // Map the block's features to subranges within the unresolved range.
@@ -670,10 +710,10 @@ bool OneLineShaper::shape() {
                         }
                     }
 
-                    shaper->shape(unresolvedText.begin(), unresolvedText.size(),
-                            fontIter, bidiIter,*scriptIter, langIter,
-                            adjustedFeatures.data(), adjustedFeatures.size(),
-                            limitlessWidth, this);
+                    shaper->shape(unresolvedText,
+                                  fontIter, bidiIter,*scriptIter, langIter,
+                                  adjustedFeatures,
+                                  { .width = limitlessWidth }, this);
 
                     // Take off the queue the block we tried to resolved -
                     // whatever happened, we have now smaller pieces of it to deal with
@@ -756,13 +796,67 @@ TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
 }
 
 bool OneLineShaper::FontKey::operator==(const OneLineShaper::FontKey& other) const {
-    return fUnicode == other.fUnicode && fFontStyle == other.fFontStyle && fLocale == other.fLocale;
+    return fUnicode == other.fUnicode && fFontStyle == other.fFontStyle && fLocale == other.fLocale && fFontArgs == other.fFontArgs;
 }
 
 uint32_t OneLineShaper::FontKey::Hasher::operator()(const OneLineShaper::FontKey& key) const {
     return SkGoodHash()(key.fUnicode) ^
            SkGoodHash()(key.fFontStyle) ^
-           SkGoodHash()(key.fLocale);
+           SkGoodHash()(key.fLocale) ^
+           std::hash<std::optional<FontArguments>>()(key.fFontArgs);
+}
+
+
+// By definition any emoji_sequence starts from a codepoint that has
+// UCHAR_EMOJI property.
+// If the first codepoint does not have UCHAR_EMOJI_COMPONENT property,
+// we have an emoji sequence right away.
+// In two (and only two) cases an emoji sequence starts with a codepoint
+// that also has UCHAR_EMOJI_COMPONENT property.
+// emoji_flag_sequence   := regional_indicator regional_indicator
+// emoji_keycap_sequence := [0-9#*] \x{FE0F 20E3}
+// These two cases require additional checks of the next codepoint(s).
+SkUnichar OneLineShaper::getEmojiSequenceStart(SkUnicode* unicode, const char** begin, const char* end) {
+    const char* next = *begin;
+    auto codepoint1 = SkUTF::NextUTF8WithReplacement(&next, end);
+
+    if (!unicode->isEmoji(codepoint1)) {
+        // This is not a basic emoji nor it an emoji sequence
+        return -1;
+    }
+
+    if (!unicode->isEmojiComponent(codepoint1)) {
+        // This is an emoji sequence start
+        *begin = next;
+        return codepoint1;
+    }
+
+    // Now we need to look at the next codepoint to see what is going on
+    const char* last = next;
+    auto codepoint2 = SkUTF::NextUTF8WithReplacement(&last, end);
+
+    // emoji_flag_sequence
+    if (unicode->isRegionalIndicator(codepoint2)) {
+        // We expect a second regional indicator here
+        if (unicode->isRegionalIndicator(codepoint2)) {
+            *begin = next;
+            return codepoint1;
+        } else {
+            // That really should not happen assuming correct UTF8 text
+            return -1;
+        }
+    }
+
+    // emoji_keycap_sequence
+    if (codepoint2 == 0xFE0F) {
+        auto codepoint3 = SkUTF::NextUTF8WithReplacement(&last, end);
+        if (codepoint3 == 0x20E3) {
+            *begin = next;
+            return codepoint1;
+        }
+    }
+
+    return -1;
 }
 
 }  // namespace textlayout

@@ -8,7 +8,18 @@
 #ifndef GrWritePixelsTask_DEFINED
 #define GrWritePixelsTask_DEFINED
 
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
+
+class GrDrawingManager;
+class GrOpFlushState;
+class GrRecordingContext;
+class GrResourceAllocator;
+class GrSurfaceProxy;
 
 class GrWritePixelsTask final : public GrRenderTask {
 public:
@@ -32,9 +43,9 @@ private:
     bool onIsUsed(GrSurfaceProxy* proxy) const override { return false; }
     void gatherProxyIntervals(GrResourceAllocator*) const override;
     ExpectedOutcome onMakeClosed(GrRecordingContext*, SkIRect* targetUpdateBounds) override;
-    bool onExecute(GrOpFlushState*) override;
+    ExecutionResult onExecute(GrOpFlushState*) override;
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     const char* name() const final { return "WritePixels"; }
 #endif
 #ifdef SK_DEBUG

@@ -1,22 +1,22 @@
-struct FSIn {
-  @builtin(front_facing) sk_Clockwise: bool,
-};
+diagnostic(off, derivative_uniformity);
+diagnostic(off, chromium.unreachable_code);
+enable f16;
 struct FSOut {
-  @location(0) sk_FragColor: vec4<f32>,
+  @location(0) sk_FragColor: vec4<f16>,
 };
 struct _GlobalUniforms {
-  colorGreen: vec4<f32>,
-  colorRed: vec4<f32>,
-  _array: array<vec4<f32>, 5>,
+  colorGreen: vec4<f16>,
+  colorRed: vec4<f16>,
+  R_array: array<vec4<f32>, 5>,
 };
-@binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
-fn main() -> vec4<f32> {
+@group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
+fn _skslMain() -> vec4<f16> {
   {
-    return vec4<f32>(_globalUniforms.colorGreen.x, _globalUniforms.colorRed.x, 0.0, 1.0);
+    return vec4<f16>(_globalUniforms.colorGreen.x, _globalUniforms.colorRed.x, 0.0h, 1.0h);
   }
 }
-@fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
+@fragment fn main() -> FSOut {
   var _stageOut: FSOut;
-  _stageOut.sk_FragColor = main();
+  _stageOut.sk_FragColor = _skslMain();
   return _stageOut;
 }

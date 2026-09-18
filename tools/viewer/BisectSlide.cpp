@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,7 +9,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkStream.h"
-#include "include/private/base/SkDebug.h"
+#include "include/private/SkDebug.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/ToolUtils.h"
 
@@ -25,9 +25,9 @@ sk_sp<BisectSlide> BisectSlide::Create(const char filepath[]) {
     }
 
     sk_sp<BisectSlide> bisect(new BisectSlide(filepath));
-    ToolUtils::sniff_paths(filepath, [&](const SkMatrix& matrix,
-                                         const SkPath& path,
-                                         const SkPaint& paint) {
+    ToolUtils::ExtractPathsFromSKP(filepath, [&](const SkMatrix& matrix,
+                                                 const SkPath& path,
+                                                 const SkPaint& paint) {
         SkRect bounds;
         SkIRect ibounds;
         matrix.mapRect(&bounds, path.getBounds());
@@ -60,9 +60,9 @@ bool BisectSlide::onChar(SkUnichar c) {
 
         case 'x':
             if (fFoundPaths.size() > 1) {
-                int midpt = (fFoundPaths.size() + 1) / 2;
+                size_t midpt = (fFoundPaths.size() + 1) / 2;
                 fPathHistory.emplace(fFoundPaths, fTossedPaths);
-                fTossedPaths.reset(fFoundPaths.begin() + midpt, fFoundPaths.size() - midpt);
+                fTossedPaths.reset({fFoundPaths.data() + midpt, fFoundPaths.size() - midpt});
                 fFoundPaths.resize_back(midpt);
                 fTrail.push_back('x');
             }

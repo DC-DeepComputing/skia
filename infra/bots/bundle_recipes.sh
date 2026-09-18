@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Google Inc.
+# Copyright 2018 Google LLC
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -7,8 +7,8 @@
 set -x -e
 
 which vpython3
-vpython3 --version
 cd skia
+vpython3 --version
 git init
 git add .
 git commit -m "Commit Recipes"

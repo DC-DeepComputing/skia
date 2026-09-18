@@ -8,9 +8,10 @@
 #ifndef SkPictureRecorder_DEFINED
 #define SkPictureRecorder_DEFINED
 
-#include "include/core/SkBBHFactory.h"
-#include "include/core/SkPicture.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/private/SkAPI.h"
 
 #include <memory>
 
@@ -20,19 +21,18 @@ namespace android {
 };
 #endif
 
+class SkBBHFactory;
+class SkBBoxHierarchy;
 class SkCanvas;
 class SkDrawable;
-class SkPictureRecord;
+class SkPicture;
 class SkRecord;
-class SkRecorder;
+class SkRecordCanvas;
 
 class SK_API SkPictureRecorder {
 public:
     SkPictureRecorder();
     ~SkPictureRecorder();
-
-    enum FinishFlags {
-    };
 
     /** Returns the canvas that records the drawing commands.
         @param bounds the cull rect used when recording this picture. Any drawing the falls outside
@@ -102,11 +102,11 @@ private:
     friend class SkPictureRecorderReplayTester; // for unit testing
     void partialReplay(SkCanvas* canvas) const;
 
-    bool                        fActivelyRecording;
-    SkRect                      fCullRect;
-    sk_sp<SkBBoxHierarchy>      fBBH;
-    std::unique_ptr<SkRecorder> fRecorder;
-    sk_sp<SkRecord>             fRecord;
+    sk_sp<SkBBoxHierarchy> fBBH;
+    std::unique_ptr<SkRecordCanvas> fRecorder;
+    sk_sp<SkRecord> fRecord;
+    SkRect fCullRect;
+    bool fActivelyRecording;
 
     SkPictureRecorder(SkPictureRecorder&&) = delete;
     SkPictureRecorder& operator=(SkPictureRecorder&&) = delete;

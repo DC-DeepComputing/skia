@@ -9,10 +9,13 @@
 #ifndef SkPDFFormXObject_DEFINED
 #define SkPDFFormXObject_DEFINED
 
-#include "src/pdf/SkPDFDevice.h"
 #include "src/pdf/SkPDFTypes.h"
 
+#include <memory>
+
+class SkMatrix;
 class SkPDFDocument;
+class SkStreamAsset;
 
 /** A form XObject is a self contained description of a graphics
     object.  A form XObject is a page object with slightly different
@@ -21,6 +24,7 @@ class SkPDFDocument;
 */
 SkPDFIndirectReference SkPDFMakeFormXObject(SkPDFDocument* doc,
                                             std::unique_ptr<SkStreamAsset> content,
+                                            SkPDFParentTreeKey structParentsKey,
                                             std::unique_ptr<SkPDFArray> mediaBox,
                                             std::unique_ptr<SkPDFDict> resourceDict,
                                             const SkMatrix& inverseTransform,

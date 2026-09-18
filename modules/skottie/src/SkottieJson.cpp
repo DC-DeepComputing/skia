@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,15 +7,16 @@
 
 #include "modules/skottie/src/SkottieJson.h"
 
-#include "include/core/SkData.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkM44.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
-#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/private/SkTo.h"
+#include "modules/jsonreader/SkJSONReader.h"
 #include "modules/skottie/src/SkottieValue.h"
+
+#include <cstddef>
 #include <limits>
-#include <vector>
 
 namespace skottie {
 
@@ -126,6 +127,15 @@ bool Parse<VectorValue>(const Value& v, VectorValue* vec) {
     }
 
     return true;
+}
+
+const skjson::StringValue* ParseSlotID(const skjson::ObjectValue* jobj) {
+    if (jobj) {
+        if (const skjson::StringValue* sid = (*jobj)["sid"]) {
+            return sid;
+        }
+    }
+    return nullptr;
 }
 
 } // namespace skottie

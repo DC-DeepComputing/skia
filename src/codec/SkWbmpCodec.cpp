@@ -9,15 +9,16 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
+#include "include/codec/SkWbmpDecoder.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
+#include "include/private/SkAlign.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkTo.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 
@@ -96,6 +97,9 @@ static bool read_header(SkStream* stream, SkISize* size) {
 }
 
 bool SkWbmpCodec::onRewind() {
+    if (!this->rewindStream()) {
+        return false;
+    }
     return read_header(this->stream(), nullptr);
 }
 
@@ -117,7 +121,7 @@ SkEncodedImageFormat SkWbmpCodec::onGetEncodedFormat() const {
 
 bool SkWbmpCodec::conversionSupported(const SkImageInfo& dst, bool srcIsOpaque,
                                       bool /*needsColorXform*/) {
-    return valid_color_type(dst) && valid_alpha(dst.alphaType(), srcIsOpaque);
+    return valid_color_type(dst) && SkCodecPriv::ValidAlpha(dst.alphaType(), srcIsOpaque);
 }
 
 SkCodec::Result SkWbmpCodec::onGetPixels(const SkImageInfo& info,
@@ -222,7 +226,7 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
     return SkWbmpCodec::MakeFromStream(std::move(stream), outResult);
 }
 
-std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
+std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
                                 SkCodec::Result* outResult,
                                 SkCodecs::DecodeContext) {
     if (!data) {

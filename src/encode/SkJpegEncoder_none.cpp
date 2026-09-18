@@ -8,7 +8,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/encode/SkJpegEncoder.h"
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 
 class GrDirectContext;
 class SkImage;
@@ -20,6 +20,11 @@ namespace SkJpegEncoder {
 bool Encode(SkWStream*, const SkPixmap&, const Options&) {
     SkDEBUGFAIL("Using encoder stub");
     return false;
+}
+
+sk_sp<SkData> Encode(const SkPixmap&, const Options&) {
+    SkDEBUGFAIL("Using encoder stub");
+    return nullptr;
 }
 
 sk_sp<SkData> Encode(GrDirectContext*, const SkImage*, const Options&) {

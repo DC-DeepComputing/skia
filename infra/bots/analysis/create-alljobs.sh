@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2021 Google Inc.
+# Copyright 2021 Google LLC
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -20,9 +20,6 @@ mlr --csv -I put '$vulkan=$extra =~ "Vulkan"' /tmp/alljobs.csv
 
 # Add the metal column.
 mlr --csv -I put '$metal=$extra =~ "Metal"' /tmp/alljobs.csv
-
-# Add the skpbench column.
-mlr --csv -I put '$skpbench=$extra =~ "Skpbench"' /tmp/alljobs.csv
 
 # Validate the output file is a valid CSV file.
 mlr --icsv check /tmp/alljobs.csv

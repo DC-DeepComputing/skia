@@ -1,21 +1,21 @@
-struct FSIn {
-  @builtin(front_facing) sk_Clockwise: bool,
-};
+diagnostic(off, derivative_uniformity);
+diagnostic(off, chromium.unreachable_code);
+enable f16;
 struct FSOut {
-  @location(0) sk_FragColor: vec4<f32>,
+  @location(0) sk_FragColor: vec4<f16>,
 };
 struct _GlobalUniforms {
-  colorGreen: vec4<f32>,
-  colorRed: vec4<f32>,
+  colorGreen: vec4<f16>,
+  colorRed: vec4<f16>,
 };
-@binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
+@group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn unbraced_v(_stageOut: ptr<function, FSOut>) {
   {
-    if (_globalUniforms.colorGreen.y == 1.0) {
+    if _globalUniforms.colorGreen.y == 1.0h {
       (*_stageOut).sk_FragColor = _globalUniforms.colorGreen;
     } else {
-      if (_globalUniforms.colorRed.x == 1.0) {
-        if (_globalUniforms.colorRed.y == 0.0) {
+      if _globalUniforms.colorRed.x == 1.0h {
+        if _globalUniforms.colorRed.y == 0.0h {
           (*_stageOut).sk_FragColor = _globalUniforms.colorGreen;
         } else {
           (*_stageOut).sk_FragColor = _globalUniforms.colorRed;
@@ -28,14 +28,14 @@ fn unbraced_v(_stageOut: ptr<function, FSOut>) {
 }
 fn braced_v(_stageOut: ptr<function, FSOut>) {
   {
-    if (_globalUniforms.colorGreen.y == 1.0) {
+    if _globalUniforms.colorGreen.y == 1.0h {
       {
         (*_stageOut).sk_FragColor = _globalUniforms.colorGreen;
       }
     } else {
-      if (_globalUniforms.colorRed.x == 1.0) {
+      if _globalUniforms.colorRed.x == 1.0h {
         {
-          if (_globalUniforms.colorRed.y == 0.0) {
+          if _globalUniforms.colorRed.y == 0.0h {
             {
               (*_stageOut).sk_FragColor = _globalUniforms.colorGreen;
             }
@@ -53,14 +53,14 @@ fn braced_v(_stageOut: ptr<function, FSOut>) {
     }
   }
 }
-fn main(_stageOut: ptr<function, FSOut>) {
+fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
     unbraced_v(_stageOut);
     braced_v(_stageOut);
   }
 }
-@fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
+@fragment fn main() -> FSOut {
   var _stageOut: FSOut;
-  main(&_stageOut);
+  _skslMain(&_stageOut);
   return _stageOut;
 }

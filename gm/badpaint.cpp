@@ -15,7 +15,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 
 using namespace skia_private;
 
@@ -25,9 +25,9 @@ class BadPaintGM : public skiagm::GM {
     BadPaintGM() {}
 
 protected:
-    SkString onShortName() override { return SkString("badpaint"); }
+    SkString getName() const override { return SkString("badpaint"); }
 
-    SkISize onISize() override { return SkISize::Make(100, 100); }
+    SkISize getISize() override { return SkISize::Make(100, 100); }
 
     void onOnceBeforeDraw() override {
         SkBitmap emptyBmp;

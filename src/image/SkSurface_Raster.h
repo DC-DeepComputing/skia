@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSurface.h"
 #include "src/image/SkSurface_Base.h"
 
 #include <cstring>
@@ -23,9 +24,13 @@ class SkImage;
 class SkPaint;
 class SkPixelRef;
 class SkPixmap;
-class SkSurface;
+class SkRecorder;
 class SkSurfaceProps;
 struct SkIRect;
+
+namespace skcpu {
+class Recorder;
+}
 
 class SkSurface_Raster : public SkSurface_Base {
 public:
@@ -33,6 +38,18 @@ public:
                      void (*releaseProc)(void* pixels, void* context), void* context,
                      const SkSurfaceProps*);
     SkSurface_Raster(const SkImageInfo& info, sk_sp<SkPixelRef>, const SkSurfaceProps*);
+
+    SkSurface_Raster(skcpu::Recorder* recorder,
+                     const SkImageInfo&,
+                     void* pixels,
+                     size_t rowBytes,
+                     SkSurfaces::PixelsReleaseProc releaseProc,
+                     void* context,
+                     const SkSurfaceProps*);
+    SkSurface_Raster(skcpu::Recorder* recorder,
+                     const SkImageInfo&,
+                     sk_sp<SkPixelRef>,
+                     const SkSurfaceProps*);
 
     // From SkSurface.h
     SkImageInfo imageInfo() const override { return fBitmap.info(); }
@@ -48,12 +65,12 @@ public:
     bool onCopyOnWrite(ContentChangeMode) override;
     void onRestoreBackingMutability() override;
     sk_sp<const SkCapabilities> onCapabilities() override;
+    SkRecorder* onGetBaseRecorder() const override;
 
 private:
-    SkBitmap    fBitmap;
-    bool        fWeOwnThePixels;
-
-    using INHERITED = SkSurface_Base;
+    SkBitmap fBitmap;
+    skcpu::Recorder* fRecorder;
+    bool fWeOwnThePixels;
 };
 
 #endif

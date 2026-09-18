@@ -4,21 +4,31 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/GrSWMaskHelper.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
-#include "include/gpu/GrRecordingContext.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkStrokeRec.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkBlitter_A8.h"
-#include "src/core/SkMatrixProvider.h"
-#include "src/gpu/ganesh/GrCaps.h"
-#include "src/gpu/ganesh/GrProxyProvider.h"
-#include "src/gpu/ganesh/GrRecordingContextPriv.h"
-#include "src/gpu/ganesh/GrTextureProxy.h"
+#include "src/gpu/ganesh/GrStyle.h"
 #include "src/gpu/ganesh/SkGr.h"
-#include "src/gpu/ganesh/SurfaceContext.h"
+#include "src/gpu/ganesh/geometry/GrShape.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
+#include "src/gpu/ganesh/image/GrMippedBitmap.h"
+
+#include <cstddef>
+#include <tuple>
 
 static SkPaint get_paint(GrAA aa, uint8_t alpha) {
     SkPaint paint;
@@ -35,8 +45,7 @@ static SkPaint get_paint(GrAA aa, uint8_t alpha) {
 void GrSWMaskHelper::drawRect(const SkRect& rect, const SkMatrix& matrix, GrAA aa, uint8_t alpha) {
     SkMatrix translatedMatrix = matrix;
     translatedMatrix.postTranslate(fTranslate.fX, fTranslate.fY);
-    SkMatrixProvider matrixProvider(translatedMatrix);
-    fDraw.fMatrixProvider = &matrixProvider;
+    fDraw.fCTM = &translatedMatrix;
 
     fDraw.drawRect(rect, get_paint(aa, alpha));
 }
@@ -45,8 +54,7 @@ void GrSWMaskHelper::drawRRect(const SkRRect& rrect, const SkMatrix& matrix,
                                GrAA aa, uint8_t alpha) {
     SkMatrix translatedMatrix = matrix;
     translatedMatrix.postTranslate(fTranslate.fX, fTranslate.fY);
-    SkMatrixProvider matrixProvider(translatedMatrix);
-    fDraw.fMatrixProvider = &matrixProvider;
+    fDraw.fCTM = &translatedMatrix;
 
     fDraw.drawRRect(rrect, get_paint(aa, alpha));
 }
@@ -62,16 +70,14 @@ void GrSWMaskHelper::drawShape(const GrStyledShape& shape, const SkMatrix& matri
 
     SkMatrix translatedMatrix = matrix;
     translatedMatrix.postTranslate(fTranslate.fX, fTranslate.fY);
-    SkMatrixProvider matrixProvider(translatedMatrix);
-    fDraw.fMatrixProvider = &matrixProvider;
+    fDraw.fCTM = &translatedMatrix;
 
-    SkPath path;
-    shape.asPath(&path);
+    SkPath path = shape.asPath();
     if (0xFF == alpha) {
         SkASSERT(0xFF == paint.getAlpha());
         fDraw.drawPathCoverage(path, paint);
     } else {
-        fDraw.drawPath(path, paint);
+        fDraw.drawPath(path, paint, nullptr);
     }
 }
 
@@ -81,8 +87,7 @@ void GrSWMaskHelper::drawShape(const GrShape& shape, const SkMatrix& matrix,
 
     SkMatrix translatedMatrix = matrix;
     translatedMatrix.postTranslate(fTranslate.fX, fTranslate.fY);
-    SkMatrixProvider matrixProvider(translatedMatrix);
-    fDraw.fMatrixProvider = &matrixProvider;
+    fDraw.fCTM = &translatedMatrix;
 
     if (shape.inverted()) {
         if (shape.isEmpty() || shape.isLine() || shape.isPoint()) {
@@ -103,13 +108,12 @@ void GrSWMaskHelper::drawShape(const GrShape& shape, const SkMatrix& matrix,
     }
 
     // A complex, or inverse-filled shape, so go through drawPath.
-    SkPath path;
-    shape.asPath(&path);
+    SkPath path = shape.asPath();
     if (0xFF == alpha) {
         SkASSERT(0xFF == paint.getAlpha());
         fDraw.drawPathCoverage(path, paint);
     } else {
-        fDraw.drawPath(path, paint);
+        fDraw.drawPath(path, paint, nullptr);
     }
 }
 
@@ -135,11 +139,15 @@ GrSurfaceProxyView GrSWMaskHelper::toTextureView(GrRecordingContext* rContext, S
     SkImageInfo ii = SkImageInfo::MakeA8(fPixels->width(), fPixels->height());
     size_t rowBytes = fPixels->rowBytes();
 
-    SkBitmap bitmap;
-    SkAssertResult(bitmap.installPixels(ii, fPixels->detachPixels(), rowBytes,
-                                        [](void* addr, void* context) { sk_free(addr); },
-                                        nullptr));
-    bitmap.setImmutable();
-
-    return std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bitmap, GrMipmapped::kNo, fit));
+    std::optional<GrMippedBitmap> bitmap = GrMippedBitmap::Make(
+            ii,
+            fPixels->detachPixels(),
+            rowBytes,
+            [](void* addr, void* context) { sk_free(addr); },
+            nullptr);
+    if (!bitmap) {
+        return {};
+    }
+    return std::get<0>(
+            GrMakeUncachedBitmapProxyView(rContext, bitmap.value(), skgpu::Mipmapped::kNo, fit));
 }

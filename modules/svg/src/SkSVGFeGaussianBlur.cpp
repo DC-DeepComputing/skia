@@ -1,16 +1,19 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
+#include "modules/svg/include/SkSVGFeGaussianBlur.h"
+
+#include "include/core/SkM44.h"
 #include "include/effects/SkImageFilters.h"
 #include "modules/svg/include/SkSVGAttributeParser.h"
-#include "modules/svg/include/SkSVGFeGaussianBlur.h"
 #include "modules/svg/include/SkSVGFilterContext.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
-#include "modules/svg/include/SkSVGValue.h"
+
+class SkImageFilter;
 
 bool SkSVGFeGaussianBlur::parseAndSetAttribute(const char* name, const char* value) {
     return INHERITED::parseAndSetAttribute(name, value) ||

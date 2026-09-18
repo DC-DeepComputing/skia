@@ -8,56 +8,45 @@
 #ifndef skgpu_graphite_VulkanCaps_DEFINED
 #define skgpu_graphite_VulkanCaps_DEFINED
 
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTArray.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/vk/VulkanInterface.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
 namespace skgpu::graphite {
 struct ContextOptions;
+class VulkanTextureInfo;
 
 class VulkanCaps final : public Caps {
 public:
-    VulkanCaps(const skgpu::VulkanInterface*,
-               VkPhysicalDevice device,
+    VulkanCaps(const ContextOptions&,
+               const skgpu::VulkanInterface*,
+               VkPhysicalDevice,
                uint32_t physicalDeviceVersion,
+               const VkPhysicalDeviceFeatures2*,
                const skgpu::VulkanExtensions*,
-               const ContextOptions&);
+               Protected);
     ~VulkanCaps() override;
 
-    TextureInfo getDefaultSampledTextureInfo(SkColorType,
-                                             Mipmapped mipmapped,
-                                             Protected,
-                                             Renderable) const override;
+    // Override Caps's implementation in order to consult Vulkan-specific texture properties.
+    DstReadStrategy getDstReadStrategy() const override;
 
-    TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
-                                          Discardable discardable) const override;
-
-    TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
-                                                  uint32_t sampleCount,
-                                                  Protected) const override;
-
-    TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
+    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
+    std::string toString(const ImmutableSamplerInfo&) const override;
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
+    bool extractGraphicsDescs(const UniqueKey&,
+                              GraphicsPipelineDesc*,
+                              RenderPassDesc*,
+                              const RendererProvider*) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
-
-    uint32_t channelMask(const TextureInfo&) const override;
-
-    bool isRenderable(const TextureInfo&) const override { return false; }
-    bool isStorage(const TextureInfo&) const override {
-        // TODO: support storage textures
-        return false;
-    }
 
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,
                             ResourceType,
-                            Shareable,
                             GraphiteResourceKey*) const override;
-
-    size_t bytesPerPixel(const TextureInfo&) const override;
 
     bool shouldAlwaysUseDedicatedImageMemory() const {
         return fShouldAlwaysUseDedicatedImageMemory;
@@ -76,137 +65,164 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
-private:
-    enum VkVendor {
-        kAMD_VkVendor             = 4098,
-        kARM_VkVendor             = 5045,
-        kImagination_VkVendor     = 4112,
-        kIntel_VkVendor           = 32902,
-        kNvidia_VkVendor          = 4318,
-        kQualcomm_VkVendor        = 20803,
-    };
+    bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
+    bool supportsDeviceFaultInfo() const { return fSupportsDeviceFaultInfo; }
 
-    void init(const skgpu::VulkanInterface*,
+    // Whether a barrier is required before reading from input attachments (barrier is needed if
+    // !coherent).
+    bool isInputAttachmentReadCoherent() const { return fIsInputAttachmentReadCoherent; }
+    // isInputAttachmentReadCoherent() is based on whether
+    // VK_EXT_rasterization_order_attachment_access is supported, but is also enabled on a few
+    // architectures where it's known a priori that input attachment reads are coherent. The
+    // following determines whether that extension is enabled (in which case a pipeline creation
+    // flag is necessary) or not. When disabled, a subpass self-dependency is needed instead.
+    bool supportsRasterizationOrderColorAttachmentAccess() const {
+        return fSupportsRasterizationOrderColorAttachmentAccess;
+    }
+
+    uint32_t maxVertexAttributes()   const { return fMaxVertexAttributes;   }
+    uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
+    uint64_t maxStorageBufferRange() const { return fMaxStorageBufferRange; }
+
+    const VkPhysicalDeviceMemoryProperties2& physicalDeviceMemoryProperties2() const {
+        return fPhysicalDeviceMemoryProperties2;
+    }
+
+    bool mustLoadFullImageForMSAA() const { return fMustLoadFullImageForMSAA; }
+
+    bool supportsFrameBoundary() const { return fSupportsFrameBoundary; }
+
+    bool supportsPipelineCreationCacheControl() const {
+        return fSupportsPipelineCreationCacheControl;
+    }
+
+    bool supportsOcclusionQueryPrecise() const { return fOcclusionQueryPrecise; }
+
+    uint32_t timestampValidBits(uint32_t queueIndex) const {
+        return fQueueFamilyTimestampValidBits[queueIndex];
+    }
+
+    float timestampPeriod() const { return fTimestampPeriod; }
+
+private:
+    void init(const ContextOptions&,
+              const skgpu::VulkanInterface*,
               VkPhysicalDevice,
               uint32_t physicalDeviceVersion,
+              const VkPhysicalDeviceFeatures2*,
               const skgpu::VulkanExtensions*,
-              const ContextOptions&);
+              Protected);
 
-    void applyDriverCorrectnessWorkarounds(const VkPhysicalDeviceProperties&);
+    struct EnabledFeatures {
+        // VkPhysicalDeviceFeatures
+        bool fDualSrcBlend = false;
+        // Vulkan 1.0 core:
+        bool fOcclusionQueryPrecise = false;
+        // Vulkan 1.1 core:
+        bool fProtectedMemory = false;
+        // From VkPhysicalDeviceSamplerYcbcrConversionFeatures or VkPhysicalDeviceVulkan11Features:
+        bool fSamplerYcbcrConversion = false;
+        // From VkPhysicalDeviceFaultFeaturesEXT:
+        bool fDeviceFault = false;
+        // From VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT:
+        bool fAdvancedBlendModes = false;
+        bool fCoherentAdvancedBlendModes = false;
+        // From VK_EXT_rasterization_order_attachment_access:
+        bool fRasterizationOrderColorAttachmentAccess = false;
+        // From VkPhysicalDeviceExtendedDynamicStateFeaturesEXT or Vulkan 1.3 (no features):
+        bool fExtendedDynamicState = false;
+        // From VkPhysicalDeviceExtendedDynamicState2FeaturesEXT or Vulkan 1.3 (no features):
+        bool fExtendedDynamicState2 = false;
+        // From VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT:
+        bool fVertexInputDynamicState = false;
+        // From VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT:
+        bool fGraphicsPipelineLibrary = false;
+        // From VkPhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT:
+        bool fMultisampledRenderToSingleSampled = false;
+        // From VkPhysicalDeviceHostImageCopyFeatures:
+        bool fHostImageCopy = false;
+        // From VkPhysicalDeviceFrameBoundaryFeaturesEXT:
+        bool fFrameBoundary = false;
+        // From VkPhysicalDevicePipelineCreationCacheControlFeatures or
+        // VkPhysicalDeviceVulkan13Features
+        bool fPipelineCreationCacheControl = false;
+        // From VkPhysicalDeviceRGBA10X6FormatsFeaturesEXT
+        bool fFormatRGBA10x6WithoutYCbCrSampler = false;
+    };
+    EnabledFeatures getEnabledFeatures(const VkPhysicalDeviceFeatures2*,
+                                       uint32_t physicalDeviceVersion);
+
+    struct PhysicalDeviceProperties {
+        VkPhysicalDeviceProperties2 fBase;
+        VkPhysicalDeviceDriverProperties fDriver;
+        VkPhysicalDeviceGraphicsPipelineLibraryPropertiesEXT fGpl;
+        VkPhysicalDeviceHostImageCopyPropertiesEXT fHic;
+        bool fHicHasShaderReadOnlyDstLayout = false;
+    };
+    void getProperties(const skgpu::VulkanInterface*,
+                       VkPhysicalDevice,
+                       uint32_t physicalDeviceVersion,
+                       const skgpu::VulkanExtensions*,
+                       const EnabledFeatures&,
+                       PhysicalDeviceProperties*);
+
+    void applyDriverCorrectnessWorkarounds(const PhysicalDeviceProperties&);
+
+    void initShaderCaps(const EnabledFeatures, const uint32_t vendorID);
 
     void initFormatTable(const skgpu::VulkanInterface*,
                          VkPhysicalDevice,
-                         const VkPhysicalDeviceProperties&);
+                         const VkPhysicalDeviceProperties&,
+                         const EnabledFeatures&);
 
-    void initDepthStencilFormatTable(const skgpu::VulkanInterface*,
-                                     VkPhysicalDevice,
-                                     const VkPhysicalDeviceProperties&);
+    TextureInfo onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
+                                        TextureFormat,
+                                        SampleCount,
+                                        Mipmapped,
+                                        Protected,
+                                        Discardable) const override;
+    std::pair<SkEnumBitMask<TextureUsage>, Tiling> getTextureUsage(
+            const TextureInfo&) const override;
 
-    const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
+    // Helper functions to compute supported texture usage and sample counts, only called during
+    // initialization of VulkanCaps and then cached in `fFormatSupport`.
+    SkEnumBitMask<SampleCount> getSupportedSampleCounts(const skgpu::VulkanInterface* interface,
+                                                        VkPhysicalDevice physDev,
+                                                        VkFormat format,
+                                                        VkImageUsageFlags usage) const;
+    bool isEfficientWithHostCopy(const skgpu::VulkanInterface* interface,
+                                 VkPhysicalDevice physDev,
+                                 VkFormat format) const;
+    std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> getTextureSupport(
+            const skgpu::VulkanInterface* interface,
+            VkPhysicalDevice physDev,
+            TextureFormat format,
+            Tiling tiling,
+            const VkFormatProperties& props) const;
 
-    bool onIsTexturable(const TextureInfo&) const override;
-
-    bool supportsWritePixels(const TextureInfo&) const override;
-    bool supportsReadPixels(const TextureInfo&) const override;
-
-    SkColorType supportedWritePixelsColorType(SkColorType dstColorType,
-                                              const TextureInfo& dstTextureInfo,
-                                              SkColorType srcColorType) const override;
-    SkColorType supportedReadPixelsColorType(SkColorType srcColorType,
-                                             const TextureInfo& srcTextureInfo,
-                                             SkColorType dstColorType) const override;
-
-    // Struct that determines and stores which sample count quantities a VkFormat supports.
-    struct SupportedSampleCounts {
-        void initSampleCounts(const skgpu::VulkanInterface*,
-                              VkPhysicalDevice,
-                              const VkPhysicalDeviceProperties&,
-                              VkFormat,
-                              VkImageUsageFlags);
-
-        bool isSampleCountSupported(int requestedCount) const;
-
-        SkTDArray<int> fSampleCounts;
-    };
-
-    // Struct that determines and stores useful information about VkFormats.
-    struct FormatInfo {
-        uint32_t colorTypeFlags(SkColorType colorType) const {
-            for (int i = 0; i < fColorTypeInfoCount; ++i) {
-                if (fColorTypeInfos[i].fColorType == colorType) {
-                    return fColorTypeInfos[i].fFlags;
-                }
-            }
-            return 0;
-        }
-
-        void init(const skgpu::VulkanInterface*,
-                  VkPhysicalDevice,
-                  const VkPhysicalDeviceProperties&,
-                  VkFormat);
-
-
-        bool isTexturable(VkImageTiling) const;
-        bool isRenderable(VkImageTiling, uint32_t sampleCount) const;
-        bool isStorage(VkImageTiling) const;
-
-        std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
-        int fColorTypeInfoCount = 0;
-
-        VkFormatProperties fFormatProperties;
-        SupportedSampleCounts fSupportedSampleCounts;
-
-        // Indicates that a format is only supported if we are wrapping a texture with it.
-        SkDEBUGCODE(bool fIsWrappedOnly;)
-
-    private:
-        bool isTexturable(VkFormatFeatureFlags) const;
-        bool isRenderable(VkFormatFeatureFlags) const;
-        bool isStorage(VkFormatFeatureFlags) const;
-    };
-
-    // Map SkColorType to VkFormat.
-    VkFormat fColorTypeToFormatTable[kSkColorTypeCnt];
-    void setColorType(SkColorType, std::initializer_list<VkFormat> formats);
-    VkFormat getFormatFromColorType(SkColorType) const;
-
-    // Map VkFormat to FormatInfo.
-    static const size_t kNumVkFormats = 22;
-    FormatInfo fFormatTable[kNumVkFormats];
-
-    FormatInfo& getFormatInfo(VkFormat);
-    const FormatInfo& getFormatInfo(VkFormat) const;
-
-    // A more lightweight equivalent to FormatInfo for depth/stencil VkFormats.
-    struct DepthStencilFormatInfo {
-        void init(const skgpu::VulkanInterface*,
-                  VkPhysicalDevice,
-                  const VkPhysicalDeviceProperties&,
-                  VkFormat);
-        bool isDepthStencilSupported(VkFormatFeatureFlags) const;
-
-        VkFormatProperties fFormatProperties;
-        SupportedSampleCounts fSupportedSampleCounts;
-    };
-
-    // Map DepthStencilFlags to VkFormat.
-    static const size_t kNumDepthStencilFlags = 4;
-    VkFormat fDepthStencilFlagsToFormatTable[kNumDepthStencilFlags];
-    VkFormat getFormatFromDepthStencilFlags(const SkEnumBitMask<DepthStencilFlags>& flags) const;
-
-    // Map depth/stencil VkFormats to DepthStencilFormatInfo.
-    static const size_t kNumDepthStencilVkFormats = 3;
-    DepthStencilFormatInfo fDepthStencilFormatTable[kNumDepthStencilVkFormats];
-
-    DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat);
-    const DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat) const;
+    uint32_t fMaxVertexAttributes;
+    uint64_t fMaxUniformBufferRange;
+    uint64_t fMaxStorageBufferRange;
+    VkPhysicalDeviceMemoryProperties2 fPhysicalDeviceMemoryProperties2;
 
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;
-    bool fSupportsYcbcrConversion = false; // TODO: Determine & assign real value.
+    bool fSupportsYcbcrConversion = false;
     bool fShouldAlwaysUseDedicatedImageMemory = false;
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
+    bool fSupportsDeviceFaultInfo = false;
+    bool fSupportsRasterizationOrderColorAttachmentAccess = false;
+    bool fIsInputAttachmentReadCoherent = false;
+    bool fSupportsFrameBoundary = false;
+    bool fSupportsPipelineCreationCacheControl = false;
+    bool fOcclusionQueryPrecise = false;
+
+    // Flags to enable workarounds for driver bugs
+    bool fMustLoadFullImageForMSAA = false;
+
+    skia_private::TArray<uint32_t> fQueueFamilyTimestampValidBits;
+    float fTimestampPeriod = 1.0f;
 };
 
 } // namespace skgpu::graphite

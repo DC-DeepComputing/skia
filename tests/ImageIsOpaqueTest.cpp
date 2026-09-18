@@ -11,21 +11,22 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkPicture.h"  // IWYU pragma: keep
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 
 #include <cstdint>
 #include <initializer_list>
 
-class SkPicture;
 struct GrContextOptions;
 
 static void check_isopaque(skiatest::Reporter* reporter, const sk_sp<SkSurface>& surface,
@@ -44,6 +45,7 @@ DEF_TEST(ImageIsOpaqueTest, reporter) {
     check_isopaque(reporter, surfaceOpaque, true);
 }
 
+#if defined(SK_GANESH)
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageIsOpaqueTest_Gpu,
                                        reporter,
                                        ctxInfo,
@@ -59,6 +61,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageIsOpaqueTest_Gpu,
 
     check_isopaque(reporter, surfaceOpaque, true);
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #include "include/core/SkPictureRecorder.h"
@@ -79,8 +82,8 @@ DEF_TEST(Image_isAlphaOnly, reporter) {
     };
     for (auto& image : {
                  SkImages::RasterFromPixmapCopy(pmap),
-                 GetResourceAsImage("images/mandrill_128.png"),
-                 GetResourceAsImage("images/color_wheel.jpg"),
+                 ToolUtils::GetResourceAsImage("images/mandrill_128.png"),
+                 ToolUtils::GetResourceAsImage("images/color_wheel.jpg"),
                  SkImages::DeferredFromPicture(make_picture(),
                                                {10, 10},
                                                nullptr,

@@ -14,18 +14,23 @@
 namespace SkSL {
 
 class Compiler;
-class ModifiersPool;
 struct Module;
 class Type;
 
 using BuiltinTypePtr = const std::unique_ptr<Type> BuiltinTypes::*;
 
+/**
+ * Documentation for modules in SkSL: http://go/modules-in-sksl
+ * https://docs.google.com/document/d/1P8LkkimNr-nPlxMimUsz3K_7qMM7-tZOxDCWZejPcWg/edit?usp=sharing
+ */
 class ModuleLoader {
 private:
     struct Impl;
+    std::unique_ptr<Impl> fLocalImpl;
     Impl& fModuleLoader;
 
 public:
+    ModuleLoader();
     ModuleLoader(ModuleLoader::Impl&);
     ~ModuleLoader();
 
@@ -33,13 +38,8 @@ public:
     // allowed to fall out of scope, the mutex will be released.
     static ModuleLoader Get();
 
-    // The built-in types and root module are universal, immutable, and shared by every Compiler.
-    // They are created when the ModuleLoader is instantiated and never change.
-    const BuiltinTypes& builtinTypes();
+    // The root module is universal, immutable, and shared by every Compiler.
     const Module* rootModule();
-
-    // This ModifiersPool is shared by every built-in module.
-    ModifiersPool& coreModifiers();
 
     // These modules are loaded on demand; once loaded, they are kept for the lifetime of the
     // process.
@@ -57,9 +57,6 @@ public:
     // This updates an existing Module's symbol table to match Runtime Effect rules. GLSL types like
     // `vec4` are added; SkSL private types like `sampler2D` are replaced with an invalid type.
     void addPublicTypeAliases(const SkSL::Module* module);
-
-    // This unloads every module. It's useful primarily for benchmarking purposes.
-    void unloadModules();
 };
 
 }  // namespace SkSL

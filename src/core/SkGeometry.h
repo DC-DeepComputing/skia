@@ -8,10 +8,13 @@
 #ifndef SkGeometry_DEFINED
 #define SkGeometry_DEFINED
 
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "src/base/SkVx.h"
+#include "include/private/SkFloatingPoint.h"
+#include "src/core/SkVx.h"
 
 #include <cstring>
 
@@ -317,11 +320,6 @@ SkCubicType SkClassifyCubic(const SkPoint p[4], double t[2] = nullptr, double s[
 
 ///////////////////////////////////////////////////////////////////////////////
 
-enum SkRotationDirection {
-    kCW_SkRotationDirection,
-    kCCW_SkRotationDirection
-};
-
 struct SkConic {
     SkConic() {}
     SkConic(const SkPoint& p0, const SkPoint& p1, const SkPoint& p2, SkScalar w) {
@@ -348,12 +346,12 @@ struct SkConic {
     }
 
     void setW(SkScalar w) {
-        if (SkScalarIsFinite(w)) {
+        if (SkIsFinite(w)) {
             SkASSERT(w > 0);
         }
 
         // Guard against bad weights by forcing them to 1.
-        fW = w > 0 && SkScalarIsFinite(w) ? w : 1;
+        fW = w > 0 && SkIsFinite(w) ? w : 1;
     }
 
     /**
@@ -364,7 +362,7 @@ struct SkConic {
      *  be used.
      */
     void evalAt(SkScalar t, SkPoint* pos, SkVector* tangent = nullptr) const;
-    bool SK_WARN_UNUSED_RESULT chopAt(SkScalar t, SkConic dst[2]) const;
+    [[nodiscard]] bool chopAt(SkScalar t, SkConic dst[2]) const;
     void chopAt(SkScalar t1, SkScalar t2, SkConic* dst) const;
     void chop(SkConic dst[2]) const;
 
@@ -384,7 +382,7 @@ struct SkConic {
      *  Chop this conic into N quads, stored continguously in pts[], where
      *  N = 1 << pow2. The amount of storage needed is (1 + 2 * N)
      */
-    int SK_SPI SK_WARN_UNUSED_RESULT chopIntoQuadsPOW2(SkPoint pts[], int pow2) const;
+    [[nodiscard]] int SK_SPI chopIntoQuadsPOW2(SkPoint pts[], int pow2) const;
 
     float findMidTangent() const;
     bool findXExtrema(SkScalar* t) const;
@@ -409,7 +407,7 @@ struct SkConic {
     enum {
         kMaxConicsForArc = 5
     };
-    static int BuildUnitArc(const SkVector& start, const SkVector& stop, SkRotationDirection,
+    static int BuildUnitArc(const SkVector& start, const SkVector& stop, SkPathDirection,
                             const SkMatrix*, SkConic conics[kMaxConicsForArc]);
 };
 
@@ -437,7 +435,7 @@ struct SkQuadCoeff {
         fA = P2 - times_2(P1) + fC;
     }
 
-    skvx::float2 eval(const skvx::float2& tt) {
+    skvx::float2 eval(const skvx::float2& tt) const {
         return (fA * tt + fB) * tt + fC;
     }
 
@@ -463,7 +461,7 @@ struct SkConicCoeff {
         fDenom.fA = 0 - fDenom.fB;
     }
 
-    skvx::float2 eval(SkScalar t) {
+    skvx::float2 eval(SkScalar t) const {
         skvx::float2 tt(t);
         skvx::float2 numer = fNumer.eval(tt);
         skvx::float2 denom = fDenom.eval(tt);
@@ -487,7 +485,7 @@ struct SkCubicCoeff {
         fD = P0;
     }
 
-    skvx::float2 eval(const skvx::float2& t) {
+    skvx::float2 eval(const skvx::float2& t) const {
         return ((fA * t + fB) * t + fC) * t + fD;
     }
 
@@ -499,12 +497,12 @@ struct SkCubicCoeff {
 
 }  // namespace
 
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 
 /**
  *  Help class to allocate storage for approximating a conic with N quads.
  */
-class SkAutoConicToQuads {
+class [[nodiscard]] SkAutoConicToQuads {
 public:
     SkAutoConicToQuads() : fQuadCount(0) {}
 
@@ -528,11 +526,25 @@ public:
         return pts;
     }
 
-    const SkPoint* computeQuads(const SkPoint pts[3], SkScalar weight,
-                                SkScalar tol) {
+    const SkPoint* computeQuads(SkSpan<const SkPoint> pts, SkScalar weight, SkScalar tol) {
+        if (weight <= 0) {
+            // The underlying conic.chopIntoQuads... is based on an algorithm that
+            // requires a positive, non-zero weight. So for w = 0 (or any invalid w < 0),
+            // we just make this a quad that is a line between the two points.
+            fQuadCount = 1;
+            SkPoint* outPts = fStorage.reset(3);
+            outPts[0] = pts[0];
+            outPts[1] = {(pts[0].fX + pts[2].fX) * 0.5f, (pts[0].fY + pts[2].fY) * 0.5f};
+            outPts[2] = pts[2];
+            return outPts;
+        }
         SkConic conic;
-        conic.set(pts, weight);
+        conic.set(pts.data(), weight);
         return computeQuads(conic, tol);
+    }
+
+    const SkPoint* computeQuads(const SkPoint pts[3], SkScalar weight, SkScalar tol) {
+        return this->computeQuads({pts, 3}, weight, tol);
     }
 
     int countQuads() const { return fQuadCount; }

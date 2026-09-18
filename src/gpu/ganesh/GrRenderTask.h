@@ -9,21 +9,32 @@
 #define GrRenderTask_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkTArray.h"
-#include "src/base/SkTInternalLList.h"
+#include "include/core/SkSpan.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTo.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkTInternalLList.h"
+#include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
-#include "src/gpu/ganesh/GrTextureProxy.h"
-#include "src/gpu/ganesh/GrTextureResolveManager.h"
 
-class GrMockRenderTask;
+#include <cstdint>
+
+class GrDrawingManager;
 class GrOpFlushState;
+class GrRecordingContext;
 class GrResourceAllocator;
+class GrSurfaceProxy;
+class GrTextureProxy;
+class GrTextureResolveManager;
 class GrTextureResolveRenderTask;
-namespace skgpu {
-namespace ganesh {
+class SkString;
+struct SkIRect;
+namespace skgpu::ganesh {
 class OpsTask;
 }
-}  // namespace skgpu
 
 // This class abstracts a task that targets a single GrSurfaceProxy, participates in the
 // GrDrawingManager's DAG, and implements the onExecute method to modify its target proxy's
@@ -31,7 +42,7 @@ class OpsTask;
 class GrRenderTask : public SkRefCnt {
 public:
     GrRenderTask();
-    SkDEBUGCODE(~GrRenderTask() override);
+    SkDEBUGCODE(~GrRenderTask() override;)
 
     void makeClosed(GrRecordingContext*);
 
@@ -39,7 +50,27 @@ public:
 
     // These two methods are only invoked at flush time
     void prepare(GrOpFlushState* flushState);
-    bool execute(GrOpFlushState* flushState) { return this->onExecute(flushState); }
+
+    // ExecutionResult is used to return and aggregate the results of GrRenderTask
+    // execution. In general, if execution gets into a leaf onExecute call, 'fAnyTaskExecuted'
+    // will be true while 'fAllTasksSuccessful' will depend on the success of the call.
+    // The aggregating call sites (i.e., GrDDLTask::onExecute, GrDrawingManager::executeRenderTasks)
+    // will then combine the results with 'accum'.
+    struct ExecutionResult {
+        static ExecutionResult RanButFailed() { return { true, false }; }
+        static ExecutionResult RanAndSucceeded() { return { true, true }; }
+        static ExecutionResult Ran(bool success) { return { true, success }; }
+
+        bool fAnyTaskExecuted = false;
+        bool fAllTasksSuccessful = true;
+
+        void accum(ExecutionResult newResult) {
+            fAnyTaskExecuted |= newResult.fAnyTaskExecuted;
+            fAllTasksSuccessful &= newResult.fAllTasksSuccessful;
+        }
+    };
+
+    ExecutionResult execute(GrOpFlushState* flushState) { return this->onExecute(flushState); }
 
     virtual bool requiresExplicitCleanup() const { return false; }
 
@@ -75,8 +106,11 @@ public:
     /*
      * Notify this GrRenderTask that it relies on the contents of 'dependedOn'
      */
-    void addDependency(GrDrawingManager*, GrSurfaceProxy* dependedOn, GrMipmapped,
-                       GrTextureResolveManager, const GrCaps& caps);
+    void addDependency(GrDrawingManager*,
+                       GrSurfaceProxy* dependedOn,
+                       skgpu::Mipmapped,
+                       GrTextureResolveManager,
+                       const GrCaps& caps);
 
     /*
      * Notify this GrRenderTask that it relies on the contents of all GrRenderTasks which otherTask
@@ -105,7 +139,7 @@ public:
      */
     virtual skgpu::ganesh::OpsTask* asOpsTask() { return nullptr; }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     /*
      * Dump out the GrRenderTask dependency DAG
      */
@@ -124,7 +158,7 @@ public:
     void visitTargetAndSrcProxies_debugOnly(const GrVisitProxyFunc& func) const {
         this->visitProxies_debugOnly(func);
         for (const sk_sp<GrSurfaceProxy>& target : fTargets) {
-            func(target.get(), GrMipmapped::kNo);
+            func(target.get(), skgpu::Mipmapped::kNo);
         }
     }
 #endif
@@ -149,7 +183,7 @@ public:
     // Used by GrRenderTaskCluster.
     SK_DECLARE_INTERNAL_LLIST_INTERFACE(GrRenderTask);
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     const GrTextureResolveRenderTask* resolveTask() const { return fTextureResolveTask; }
 #endif
 protected:
@@ -264,7 +298,8 @@ private:
     virtual void onMakeSkippable() {}
     virtual void onPrePrepare(GrRecordingContext*) {} // Only OpsTask currently overrides this
     virtual void onPrepare(GrOpFlushState*) {} // OpsTask and GrDDLTask override this
-    virtual bool onExecute(GrOpFlushState* flushState) = 0;
+
+    virtual ExecutionResult onExecute(GrOpFlushState* flushState) = 0;
 
     const uint32_t         fUniqueID;
     uint32_t               fFlags;
@@ -275,7 +310,7 @@ private:
     skia_private::STArray<1, GrRenderTask*, true> fDependents;
 
     // For performance reasons, we should perform texture resolves back-to-back as much as possible.
-    // (http://skbug.com/9406). To accomplish this, we make and reuse one single resolve task for
+    // (skbug.com/40040728). To accomplish this, we make and reuse one single resolve task for
     // each render task, then add it as a dependency during makeClosed().
     GrTextureResolveRenderTask* fTextureResolveTask = nullptr;
 

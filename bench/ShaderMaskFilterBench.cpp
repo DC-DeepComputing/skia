@@ -1,16 +1,18 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
 #include "bench/Benchmark.h"
+#include "include/core/SkBBHFactory.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTileMode.h"
 #include "include/effects/SkShaderMaskFilter.h"
 #include "src/shaders/SkPictureShader.h"
 
@@ -43,9 +45,8 @@ class ShaderMFBench final : public Benchmark {
 public:
     using ShaderMaker = sk_sp<SkShader>(*)();
 
-    ShaderMFBench(const char* nm, bool opaque, const ShaderMaker maker)
-            : fMaker{maker}
-            , fColor{opaque ? 0xff00ff00 : 0x8000ff00} {
+    ShaderMFBench(const char* nm, bool opaque, ShaderMaker maker)
+            : fMaker{maker}, fColor{opaque ? 0xff00ff00 : 0x8000ff00} {
         fName = SkStringPrintf("shadermaskfilter_%s_%x", nm, SkColorGetA(fColor));
     }
 

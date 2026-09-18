@@ -28,14 +28,14 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         SkString str;
         str.printf("complexclip4_%s",
                    fDoAAClip ? "aa" : "bw");
         return str;
     }
 
-    SkISize onISize() override { return SkISize::Make(970, 780); }
+    SkISize getISize() override { return SkISize::Make(970, 780); }
 
     // Android Framework will still support the legacy kReplace SkClipOp on older devices, so
     // this represents how to do so while also respecting the device restriction using the newer
@@ -86,12 +86,12 @@ protected:
                 emulateDeviceRestriction(canvas, SkIRect::MakeLTRB(500, 100, 800, 300));
                 canvas->drawColor(SK_ColorGREEN);
 
-                SkPath pathClip = SkPath::Polygon({
+                SkPath pathClip = SkPath::Polygon({{
                     {650, 200},
                     {900, 300},
                     {650, 400},
                     {650, 300},
-                }, true);
+                }}, true);
                 emulateClipPathReplace(canvas, pathClip, fDoAAClip);
                 canvas->drawRect(SkRect::MakeLTRB(500, 200, 900, 500), p);
             canvas->restore();

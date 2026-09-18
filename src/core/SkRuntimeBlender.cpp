@@ -11,64 +11,84 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/private/SkDebug.h"
 #include "include/private/SkSLSampleUsage.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkEffectPriv.h"
+#include "src/core/SkKnownRuntimeEffects.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/KeyContext.h"
-#include "src/gpu/graphite/KeyHelpers.h"
-#include "src/gpu/graphite/PaintParamsKey.h"
-#endif
-
+#include <cstdint>
 #include <string>
 
 using namespace skia_private;
 
 #if defined(SK_BUILD_FOR_DEBUGGER)
-    #define SK_LENIENT_SKSL_DESERIALIZATION 1
+    constexpr bool kLenientSkSLDeserialization = true;
 #else
-    #define SK_LENIENT_SKSL_DESERIALIZATION 0
+    constexpr bool kLenientSkSLDeserialization = false;
 #endif
+
+void SkRuntimeBlender::flatten(SkWriteBuffer& buffer) const {
+    if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(fEffect->fStableKey)) {
+        // We only serialize Skia-internal stableKeys. First party stable keys are not serialized.
+        buffer.write32(fEffect->fStableKey);
+    } else {
+        buffer.write32(0);
+        buffer.writeString(fEffect->source().c_str());
+    }
+    buffer.writeDataAsByteArray(fUniforms.get());
+    SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
+}
 
 sk_sp<SkFlattenable> SkRuntimeBlender::CreateProc(SkReadBuffer& buffer) {
     if (!buffer.validate(buffer.allowSkSL())) {
         return nullptr;
     }
 
-    SkString sksl;
-    buffer.readString(&sksl);
-    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
-
-    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForBlender, std::move(sksl));
-#if !SK_LENIENT_SKSL_DESERIALIZATION
-    if (!buffer.validate(effect != nullptr)) {
-        return nullptr;
+    sk_sp<SkRuntimeEffect> effect;
+    if (!buffer.isVersionLT(SkPicturePriv::kSerializeStableKeys)) {
+        uint32_t candidateStableKey = buffer.readUInt();
+        effect = SkKnownRuntimeEffects::MaybeGetKnownRuntimeEffect(candidateStableKey);
+        if (!effect && !buffer.validate(candidateStableKey == 0)) {
+            return nullptr;
+        }
     }
-#endif
+
+    if (!effect) {
+        SkString sksl;
+        buffer.readString(&sksl);
+        effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForBlender, std::move(sksl));
+    }
+    if constexpr (!kLenientSkSLDeserialization) {
+        if (!buffer.validate(effect != nullptr)) {
+            return nullptr;
+        }
+    }
+
+    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
 
     STArray<4, SkRuntimeEffect::ChildPtr> children;
     if (!SkRuntimeEffectPriv::ReadChildEffects(buffer, effect.get(), &children)) {
         return nullptr;
     }
 
-#if SK_LENIENT_SKSL_DESERIALIZATION
-    if (!effect) {
-        SkDebugf("Serialized SkSL failed to compile. Ignoring/dropping SkSL blender.\n");
-        return nullptr;
+    if constexpr (kLenientSkSLDeserialization) {
+        if (!effect) {
+            SkDebugf("Serialized SkSL failed to compile. Ignoring/dropping SkSL blender.\n");
+            return nullptr;
+        }
     }
-#endif
 
     return effect->makeBlender(std::move(uniforms), SkSpan(children));
 }
 
 bool SkRuntimeBlender::onAppendStages(const SkStageRec& rec) const {
-#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
     if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
         // SkRP has support for many parts of #version 300 already, but for now, we restrict its
         // usage in runtime effects to just #version 100.
@@ -81,69 +101,11 @@ bool SkRuntimeBlender::onAppendStages(const SkStageRec& rec) const {
                 /*alwaysCopyIntoAlloc=*/false,
                 rec.fDstCS,
                 rec.fAlloc);
-        SkShaderBase::MatrixRec matrix(SkMatrix::I());
+        SkShaders::MatrixRec matrix(SkMatrix::I());
         matrix.markCTMApplied();
         RuntimeEffectRPCallbacks callbacks(rec, matrix, fChildren, fEffect->fSampleUsages);
         bool success = program->appendStages(rec.fPipeline, rec.fAlloc, &callbacks, uniforms);
         return success;
     }
-#endif
     return false;
 }
-
-void SkRuntimeBlender::flatten(SkWriteBuffer& buffer) const {
-    buffer.writeString(fEffect->source().c_str());
-    buffer.writeDataAsByteArray(fUniforms.get());
-    SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
-}
-
-#ifdef SK_ENABLE_SKVM
-skvm::Color SkRuntimeBlender::onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
-                                        const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
-                                        SkArenaAlloc* alloc) const {
-    if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
-        return {};
-    }
-
-    sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
-                                                                        fUniforms,
-                                                                        colorInfo.colorSpace());
-    SkASSERT(inputs);
-
-    SkShaderBase::MatrixRec mRec(SkMatrix::I());
-    mRec.markTotalMatrixInvalid();
-    RuntimeEffectVMCallbacks callbacks(p, uniforms, alloc, fChildren, mRec, src, colorInfo);
-    std::vector<skvm::Val> uniform = SkRuntimeEffectPriv::MakeSkVMUniforms(p,
-                                                                           uniforms,
-                                                                           fEffect->uniformSize(),
-                                                                           *inputs);
-
-    // Emit the blend function as an SkVM program.
-    skvm::Coord zeroCoord = {p->splat(0.0f), p->splat(0.0f)};
-    return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
-                               SkSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
-                               src, dst, &callbacks);
-}
-#endif
-
-#if defined(SK_GRAPHITE)
-void SkRuntimeBlender::addToKey(const skgpu::graphite::KeyContext& keyContext,
-                                skgpu::graphite::PaintParamsKeyBuilder* builder,
-                                skgpu::graphite::PipelineDataGatherer* gatherer) const {
-    using namespace skgpu::graphite;
-
-    sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
-            fEffect->uniforms(),
-            fUniforms,
-            keyContext.dstColorInfo().colorSpace());
-    SkASSERT(uniforms);
-
-    RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
-                                   { fEffect, std::move(uniforms) });
-
-    SkRuntimeEffectPriv::AddChildrenToKey(fChildren, fEffect->children(), keyContext, builder,
-                                          gatherer);
-
-    builder->endBlock();
-}
-#endif

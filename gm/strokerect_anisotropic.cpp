@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -35,14 +35,9 @@ public:
     StrokeRectAnisotropicGM() {}
 
 protected:
+    SkString getName() const override { return SkString("strokerect_anisotropic"); }
 
-    SkString onShortName() override {
-        return SkString("strokerect_anisotropic");
-    }
-
-    SkISize onISize() override {
-        return SkISize::Make(160, 160);
-    }
+    SkISize getISize() override { return SkISize::Make(160, 160); }
 
     void onDraw(SkCanvas* canvas) override {
 

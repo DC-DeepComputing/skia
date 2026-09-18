@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -15,14 +15,16 @@
 #include "modules/skottie/src/SkottieValue.h"
 #include "modules/sksg/include/SkSGTransform.h"
 
-namespace skjson {
+#include <utility>
 
+namespace skjson {
 class ObjectValue;
 
-} // namespace skjson
+}  // namespace skjson
 
 namespace skottie {
 namespace internal {
+class AnimationBuilder;
 
 class TransformAdapter2D final : public DiscardableAdapterBase<TransformAdapter2D,
                                                                sksg::Matrix<SkMatrix>> {

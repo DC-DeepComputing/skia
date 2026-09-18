@@ -18,8 +18,8 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkCPUTypes.h"
-#include "include/private/base/SkDebug.h"
+#include "include/private/SkCPUTypes.h"
+#include "include/private/SkDebug.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -27,13 +27,11 @@
 class SkColorSpace;
 class SkImage;
 class SkMatrix;
-class SkMipmap;
 class SkPaint;
 class SkPixelRef;
 class SkShader;
 enum SkColorType : int;
 enum class SkTileMode;
-struct SkMask;
 
 /** \class SkBitmap
     SkBitmap describes a two-dimensional raster pixel array. SkBitmap is built on
@@ -207,7 +205,7 @@ public:
 
         @return  true if dimensions do not enclose area
     */
-    bool empty() const { return fPixmap.info().isEmpty(); }
+    bool empty() const { return fPixmap.isEmpty(); }
 
     /** Returns true if SkPixelRef is nullptr.
 
@@ -265,6 +263,16 @@ public:
         example: https://fiddle.skia.org/c/@Bitmap_setAlphaType
     */
     bool setAlphaType(SkAlphaType alphaType);
+
+    /** Sets the SkColorSpace associated with this SkBitmap.
+
+        The raw pixel data is not altered by this call; no conversion is
+        performed.
+
+        This changes SkColorSpace in SkPixelRef; all bitmaps sharing SkPixelRef
+        are affected.
+    */
+    void setColorSpace(sk_sp<SkColorSpace> colorSpace);
 
     /** Returns pixel address, the base address corresponding to the pixel origin.
 
@@ -440,7 +448,7 @@ public:
         @param flags  kZeroPixels_AllocFlag, or zero
         @return       true if pixels allocation is successful
     */
-    bool SK_WARN_UNUSED_RESULT tryAllocPixelsFlags(const SkImageInfo& info, uint32_t flags);
+    [[nodiscard]] bool tryAllocPixelsFlags(const SkImageInfo& info, uint32_t flags);
 
     /** Sets SkImageInfo to info following the rules in setInfo() and allocates pixel
         memory. Memory is zeroed.
@@ -478,7 +486,7 @@ public:
         @param rowBytes  size of pixel row or larger; may be zero
         @return          true if pixel storage is allocated
     */
-    bool SK_WARN_UNUSED_RESULT tryAllocPixels(const SkImageInfo& info, size_t rowBytes);
+    [[nodiscard]] bool tryAllocPixels(const SkImageInfo& info, size_t rowBytes);
 
     /** Sets SkImageInfo to info following the rules in setInfo() and allocates pixel
         memory. rowBytes must equal or exceed info.width() times info.bytesPerPixel(),
@@ -514,7 +522,7 @@ public:
         @param info  contains width, height, SkAlphaType, SkColorType, SkColorSpace
         @return      true if pixel storage is allocated
     */
-    bool SK_WARN_UNUSED_RESULT tryAllocPixels(const SkImageInfo& info) {
+    [[nodiscard]] bool tryAllocPixels(const SkImageInfo& info) {
         return this->tryAllocPixels(info, info.minRowBytes());
     }
 
@@ -553,7 +561,7 @@ public:
         @param isOpaque  true if pixels do not have transparency
         @return          true if pixel storage is allocated
     */
-    bool SK_WARN_UNUSED_RESULT tryAllocN32Pixels(int width, int height, bool isOpaque = false);
+    [[nodiscard]] bool tryAllocN32Pixels(int width, int height, bool isOpaque = false);
 
     /** Sets SkImageInfo to width, height, and the native color type; and allocates
         pixel memory. If isOpaque is true, sets SkImageInfo to kOpaque_SkAlphaType;
@@ -635,10 +643,6 @@ public:
     */
     bool installPixels(const SkPixmap& pixmap);
 
-    /** Deprecated.
-    */
-    bool installMaskPixels(const SkMask& mask);
-
     /** Replaces SkPixelRef with pixels, preserving SkImageInfo and rowBytes().
         Sets SkPixelRef origin to (0, 0).
 
@@ -661,7 +665,7 @@ public:
 
         @return  true if the allocation succeeds
     */
-    bool SK_WARN_UNUSED_RESULT tryAllocPixels() {
+    [[nodiscard]] bool tryAllocPixels() {
         return this->tryAllocPixels((Allocator*)nullptr);
     }
 
@@ -685,7 +689,7 @@ public:
         @param allocator  instance of SkBitmap::Allocator instantiation
         @return           true if custom allocator reports success
     */
-    bool SK_WARN_UNUSED_RESULT tryAllocPixels(Allocator* allocator);
+    [[nodiscard]] bool tryAllocPixels(Allocator* allocator);
 
     /** Allocates pixel memory with allocator, and replaces existing SkPixelRef.
         The allocation size is determined by SkImageInfo width, height, and SkColorType.
@@ -1220,7 +1224,7 @@ public:
         memory from the heap. This is the default SkBitmap::Allocator invoked by
         allocPixels().
     */
-    class HeapAllocator : public Allocator {
+    class SK_API HeapAllocator : public Allocator {
     public:
 
         /** Allocates the pixel memory for the bitmap, given its dimensions and
@@ -1236,13 +1240,8 @@ public:
     };
 
 private:
-    sk_sp<SkPixelRef>   fPixelRef;
-    SkPixmap            fPixmap;
-    sk_sp<SkMipmap>     fMips;
-
-    friend class SkImage_Raster;
-    friend class SkReadBuffer;        // unflatten
-    friend class GrProxyProvider;     // fMips
+    sk_sp<SkPixelRef> fPixelRef;
+    SkPixmap fPixmap;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

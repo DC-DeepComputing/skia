@@ -7,17 +7,27 @@
 
 #include "src/core/SkResourceCache.h"
 
+#include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
-#include "include/private/base/SkMutex.h"
-#include "include/private/base/SkTo.h"
-#include "include/private/chromium/SkDiscardableMemory.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkMath.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkCachedData.h"
 #include "src/core/SkChecksum.h"
-#include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkMessageBus.h"
-#include "src/core/SkMipmap.h"
+#include "src/core/SkSynchronizedResourceCache.h"
+#include "src/core/SkTHash.h"
 
-#include <stddef.h>
-#include <stdlib.h>
+#if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
+#include "include/private/chromium/SkDiscardableMemory.h"
+#endif
+
+#include <algorithm>
+#include <array>
 
 using namespace skia_private;
 
@@ -62,8 +72,6 @@ void SkResourceCache::Key::init(void* nameSpace, uint64_t sharedID, size_t dataS
     fHash = SkChecksum::Hash32(this->as32() + kUnhashedLocal32s,
                                (fCount32 - kUnhashedLocal32s) << 2);
 }
-
-#include "src/core/SkTHash.h"
 
 namespace {
     struct HashTraits {
@@ -134,7 +142,7 @@ bool SkResourceCache::find(const Key& key, FindVisitor visitor, void* context) {
 }
 
 static void make_size_str(size_t size, SkString* str) {
-    const char suffix[] = { 'b', 'k', 'm', 'g', 't', 0 };
+    static constexpr auto suffix = std::to_array<char>({ 'b', 'k', 'm', 'g', 't', 0 });
     int i = 0;
     while (suffix[i] && (size > 1024)) {
         i += 1;
@@ -454,93 +462,70 @@ void SkResourceCache::checkMessages() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static SkResourceCache* gResourceCache = nullptr;
-static SkMutex& resource_cache_mutex() {
-    static SkMutex& mutex = *(new SkMutex);
-    return mutex;
-}
-
-/** Must hold resource_cache_mutex() when calling. */
-static SkResourceCache* get_cache() {
-    // resource_cache_mutex() is always held when this is called, so we don't need to be fancy in here.
-    resource_cache_mutex().assertHeld();
-    if (nullptr == gResourceCache) {
-#ifdef SK_USE_DISCARDABLE_SCALEDIMAGECACHE
-        gResourceCache = new SkResourceCache(SkDiscardableMemory::Create);
+static SkSynchronizedResourceCache* get_cache() {
+#if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
+    static SkSynchronizedResourceCache* gResourceCache =
+            new SkSynchronizedResourceCache(SkDiscardableMemory::Create);
 #else
-        gResourceCache = new SkResourceCache(SK_DEFAULT_IMAGE_CACHE_LIMIT);
+    static SkSynchronizedResourceCache* gResourceCache =
+            new SkSynchronizedResourceCache(SK_DEFAULT_IMAGE_CACHE_LIMIT);
 #endif
-    }
     return gResourceCache;
 }
 
 size_t SkResourceCache::GetTotalBytesUsed() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->getTotalBytesUsed();
 }
 
 size_t SkResourceCache::GetTotalByteLimit() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->getTotalByteLimit();
 }
 
 size_t SkResourceCache::SetTotalByteLimit(size_t newLimit) {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->setTotalByteLimit(newLimit);
 }
 
 SkResourceCache::DiscardableFactory SkResourceCache::GetDiscardableFactory() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->discardableFactory();
 }
 
 SkCachedData* SkResourceCache::NewCachedData(size_t bytes) {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->newCachedData(bytes);
 }
 
 void SkResourceCache::Dump() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     get_cache()->dump();
 }
 
 size_t SkResourceCache::SetSingleAllocationByteLimit(size_t size) {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->setSingleAllocationByteLimit(size);
 }
 
 size_t SkResourceCache::GetSingleAllocationByteLimit() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->getSingleAllocationByteLimit();
 }
 
 size_t SkResourceCache::GetEffectiveSingleAllocationByteLimit() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->getEffectiveSingleAllocationByteLimit();
 }
 
 void SkResourceCache::PurgeAll() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->purgeAll();
 }
 
 void SkResourceCache::CheckMessages() {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->checkMessages();
 }
 
 bool SkResourceCache::Find(const Key& key, FindVisitor visitor, void* context) {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     return get_cache()->find(key, visitor, context);
 }
 
 void SkResourceCache::Add(Rec* rec, void* payload) {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     get_cache()->add(rec, payload);
 }
 
 void SkResourceCache::VisitAll(Visitor visitor, void* context) {
-    SkAutoMutexExclusive am(resource_cache_mutex());
     get_cache()->visitAll(visitor, context);
 }
 
@@ -551,36 +536,6 @@ void SkResourceCache::PostPurgeSharedID(uint64_t sharedID) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-#include "include/core/SkGraphics.h"
-#include "include/core/SkImageFilter.h"
-
-size_t SkGraphics::GetResourceCacheTotalBytesUsed() {
-    return SkResourceCache::GetTotalBytesUsed();
-}
-
-size_t SkGraphics::GetResourceCacheTotalByteLimit() {
-    return SkResourceCache::GetTotalByteLimit();
-}
-
-size_t SkGraphics::SetResourceCacheTotalByteLimit(size_t newLimit) {
-    return SkResourceCache::SetTotalByteLimit(newLimit);
-}
-
-size_t SkGraphics::GetResourceCacheSingleAllocationByteLimit() {
-    return SkResourceCache::GetSingleAllocationByteLimit();
-}
-
-size_t SkGraphics::SetResourceCacheSingleAllocationByteLimit(size_t newLimit) {
-    return SkResourceCache::SetSingleAllocationByteLimit(newLimit);
-}
-
-void SkGraphics::PurgeResourceCache() {
-    SkImageFilter_Base::PurgeCache();
-    return SkResourceCache::PurgeAll();
-}
-
-/////////////
 
 static void dump_visitor(const SkResourceCache::Rec& rec, void*) {
     SkDebugf("RC: %12s bytes %9zu  discardable %p\n",

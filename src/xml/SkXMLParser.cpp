@@ -4,26 +4,30 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include <array>
+#include "src/xml/SkXMLParser.h"
 
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
-#include "src/xml/SkXMLParser.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkRandom.h"
+#include "src/core/SkTime.h"
+#include "src/core/SkUtils.h"
 
 #include <expat.h>
 
 #include <vector>
 
-static char const* const gErrorStrings[] = {
+static const auto gErrorStrings = std::to_array<const char *>({
     "empty or missing file ",
     "unknown element ",
     "unknown attribute name ",
     "error in attribute value ",
     "duplicate ID ",
     "unknown error "
-};
+,});
 
 SkXMLParserError::SkXMLParserError() : fCode(kNoError), fLineNumber(-1),
     fNativeCode(-1)
@@ -58,6 +62,25 @@ void SkXMLParserError::reset() {
 ////////////////
 
 namespace {
+
+// Return a random number based on the clock to be consistent
+// across platforms yet hard to guess and not leaking information.
+static uint32_t get_hash_salt() {
+    static const uint32_t s_salt = []() {
+        double nsecs = SkTime::GetNSecs();
+        uint64_t timeVal = sk_bit_cast<uint64_t>(nsecs);
+        uint32_t seed = static_cast<uint32_t>(timeVal ^ timeVal >> 32);
+
+        SkRandom rand(seed);
+        uint32_t salt = rand.nextU();
+        while (salt == 0) [[unlikely]] {
+            // Expat hash seed must be non-zero or the default cPRNG will be used.
+            salt = rand.nextU();
+        }
+        return salt;
+    }();
+    return s_salt;
+}
 
 const XML_Memory_Handling_Suite sk_XML_alloc = {
     sk_malloc_throw,
@@ -147,6 +170,14 @@ bool SkXMLParser::parse(SkStream& docStream)
         return false;
     }
 
+    // Expat calls to rand_s if no salt is set, which is not allowed on Windows.
+    // https://crbug.com/40088338
+    // Setting the salt helps prevent DOS with a known hash sequence. Generating a
+    // random salt once per process oursevles ensures the salt is non-deterministic
+    // and unguessable, while preventing calls to rand_s inside sandboxed processes
+    // on Windows.
+    XML_SetHashSalt(ctx.fXMLParser, get_hash_salt());
+
     XML_SetUserData(ctx.fXMLParser, &ctx);
     XML_SetElementHandler(ctx.fXMLParser, start_element_handler, end_element_handler);
     XML_SetCharacterDataHandler(ctx.fXMLParser, text_handler);
@@ -154,29 +185,41 @@ bool SkXMLParser::parse(SkStream& docStream)
     // Disable entity processing, to inhibit internal entity expansion. See expat CVE-2013-0340.
     XML_SetEntityDeclHandler(ctx.fXMLParser, entity_decl_handler);
 
-    static constexpr int kBufferSize = 4096;
-    bool done = false;
-    do {
-        void* buffer = XML_GetBuffer(ctx.fXMLParser, kBufferSize);
-        if (!buffer) {
-            SkDEBUGF("could not buffer enough to continue\n");
-            return false;
-        }
+    XML_Status status = XML_STATUS_OK;
+    if (docStream.getMemoryBase() && docStream.hasLength()) {
+        const char* base = reinterpret_cast<const char*>(docStream.getMemoryBase());
+        status = XML_Parse(ctx.fXMLParser,
+                           base + docStream.getPosition(),
+                           docStream.getLength() - docStream.getPosition(),
+                           true);
+    } else {
+        static constexpr int kBufferSize = 4096;
+        bool done = false;
+        do {
+            void* buffer = XML_GetBuffer(ctx.fXMLParser, kBufferSize);
+            if (!buffer) {
+                SkDEBUGF("could not buffer enough to continue\n");
+                return false;
+            }
 
-        size_t len = docStream.read(buffer, kBufferSize);
-        done = docStream.isAtEnd();
-        XML_Status status = XML_ParseBuffer(ctx.fXMLParser, SkToS32(len), done);
-        if (XML_STATUS_ERROR == status) {
-        #if defined(SK_DEBUG)
-            XML_Error error = XML_GetErrorCode(ctx.fXMLParser);
-            int line = XML_GetCurrentLineNumber(ctx.fXMLParser);
-            int column = XML_GetCurrentColumnNumber(ctx.fXMLParser);
-            const XML_LChar* errorString = XML_ErrorString(error);
-            SkDEBUGF("parse error @%d:%d: %d (%s).\n", line, column, error, errorString);
-        #endif
-            return false;
-        }
-    } while (!done);
+            size_t len = docStream.read(buffer, kBufferSize);
+            done = docStream.isAtEnd();
+            status = XML_ParseBuffer(ctx.fXMLParser, SkToS32(len), done);
+            if (XML_STATUS_ERROR == status) {
+                break;
+            }
+        } while (!done);
+    }
+    if (XML_STATUS_ERROR == status) {
+#if defined(SK_DEBUG)
+        XML_Error error = XML_GetErrorCode(ctx.fXMLParser);
+        int line = XML_GetCurrentLineNumber(ctx.fXMLParser);
+        int column = XML_GetCurrentColumnNumber(ctx.fXMLParser);
+        const XML_LChar* errorString = XML_ErrorString(error);
+        SkDEBUGF("parse error @%d:%d: %d (%s).\n", line, column, error, errorString);
+#endif
+        return false;
+    }
 
     return true;
 }

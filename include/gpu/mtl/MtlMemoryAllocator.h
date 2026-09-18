@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,6 +7,8 @@
 
 #ifndef skgpu_MtlMemoryAllocator_DEFINED
 #define skgpu_MtlMemoryAllocator_DEFINED
+
+#include "include/core/SkRefCnt.h"
 
 #ifdef __APPLE__
 

@@ -1,30 +1,48 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/ops/OpsTask.h"
 
-#include "include/gpu/GrRecordingContext.h"
-#include "src/base/SkScopeExit.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkString.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/core/SkRectPriv.h"
+#include "src/core/SkScopeExit.h"
+#include "src/core/SkStringUtils.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrAttachment.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGpu.h"
-#include "src/gpu/ganesh/GrMemoryPool.h"
 #include "src/gpu/ganesh/GrNativeRect.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
 #include "src/gpu/ganesh/GrOpsRenderPass.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
-#include "src/gpu/ganesh/GrTexture.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
+#include "src/gpu/ganesh/GrTextureResolveManager.h"
 #include "src/gpu/ganesh/geometry/GrRect.h"
+
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <memory>
+#include <utility>
+
+class GrDrawingManager;
+enum GrSurfaceOrigin : int;
 
 using namespace skia_private;
 
@@ -176,7 +194,7 @@ void OpsTask::OpChain::visitProxies(const GrVisitProxyFunc& func) const {
         op.visitProxies(func);
     }
     if (fDstProxyView.proxy()) {
-        func(fDstProxyView.proxy(), GrMipmapped::kNo);
+        func(fDstProxyView.proxy(), skgpu::Mipmapped::kNo);
     }
     if (fAppliedClip) {
         fAppliedClip->visitProxies(func);
@@ -416,7 +434,7 @@ OpsTask::~OpsTask() {
 
 void OpsTask::addOp(GrDrawingManager* drawingMgr, GrOp::Owner op,
                     GrTextureResolveManager textureResolveManager, const GrCaps& caps) {
-    auto addDependency = [&](GrSurfaceProxy* p, GrMipmapped mipmapped) {
+    auto addDependency = [&](GrSurfaceProxy* p, skgpu::Mipmapped mipmapped) {
         this->addDependency(drawingMgr, p, mipmapped, textureResolveManager, caps);
     };
 
@@ -430,7 +448,7 @@ void OpsTask::addDrawOp(GrDrawingManager* drawingMgr, GrOp::Owner op, bool usesM
                         const GrProcessorSet::Analysis& processorAnalysis, GrAppliedClip&& clip,
                         const GrDstProxyView& dstProxyView,
                         GrTextureResolveManager textureResolveManager, const GrCaps& caps) {
-    auto addDependency = [&](GrSurfaceProxy* p, GrMipmapped mipmapped) {
+    auto addDependency = [&](GrSurfaceProxy* p, skgpu::Mipmapped mipmapped) {
         this->addSampledTexture(p);
         this->addDependency(drawingMgr, p, mipmapped, textureResolveManager, caps);
     };
@@ -444,7 +462,7 @@ void OpsTask::addDrawOp(GrDrawingManager* drawingMgr, GrOp::Owner op, bool usesM
         if (dstProxyView.dstSampleFlags() & GrDstSampleFlags::kRequiresTextureBarrier) {
             fRenderPassXferBarriers |= GrXferBarrierFlags::kTexture;
         }
-        addDependency(dstProxyView.proxy(), GrMipmapped::kNo);
+        addDependency(dstProxyView.proxy(), skgpu::Mipmapped::kNo);
         SkASSERT(!(dstProxyView.dstSampleFlags() & GrDstSampleFlags::kAsInputAttachment) ||
                  dstProxyView.offset().isZero());
     }
@@ -537,14 +555,14 @@ void OpsTask::onPrepare(GrOpFlushState* flushState) {
 // TODO: this is where GrOp::renderTarget is used (which is fine since it
 // is at flush time). However, we need to store the RenderTargetProxy in the
 // Ops and instantiate them here.
-bool OpsTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult OpsTask::onExecute(GrOpFlushState* flushState) {
     SkASSERT(this->numTargets() == 1);
     GrRenderTargetProxy* proxy = this->target(0)->asRenderTargetProxy();
     SkASSERT(proxy);
     SK_AT_SCOPE_EXIT(proxy->clearArenas());
 
     if (this->isColorNoOp() || fClippedContentBounds.isEmpty()) {
-        return false;
+        return ExecutionResult::RanAndSucceeded();
     }
     TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
 
@@ -562,40 +580,102 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
         if (!flushState->resourceProvider()->attachStencilAttachment(renderTarget,
                                                                      fUsesMSAASurface)) {
             SkDebugf("WARNING: failed to attach a stencil buffer. Rendering will be skipped.\n");
-            return false;
+            return ExecutionResult::RanButFailed();
         }
         stencil = renderTarget->getStencilAttachment(fUsesMSAASurface);
     }
 
     GrLoadOp stencilLoadOp;
+    // Determine whether the stencil attachment's cleared area should be updated.
+    bool updateClearedStencilArea = false;
+    SkIRect boundsRequiredByStencil = fClippedContentBounds;
+    // fClearedArea on the shared stencil GrAttachment must be tracked in native space, not
+    // surface-origin space. The stencil attachment is shared across render targets by a UniqueKey
+    // that does not include GrSurfaceOrigin, so a kTopLeft RT and a kBottomLeft RT with equal
+    // logical bounds map to disjoint native regions after the possible Y-flip in backends.
+    // Without this conversion, hasAreaBeenCleared() can return true for a native region that was
+    // never LOAD_OP_CLEAR'd, exposing uninitialised gpu memory to the stencil-then-cover pass.
+    // GrNativeRect::MakeIRectRelativeTo is self-inverse for a fixed (origin,height) pair, so it
+    // also serves as native->surface below.
+    const int rtHeight = renderTarget->dimensions().height();
+    auto toNative = [&](SkIRect r) {
+        return GrNativeRect::MakeIRectRelativeTo(fTargetOrigin, rtHeight, r);
+    };
+    SkIRect nativeBoundsRequiredByStencil = toNative(boundsRequiredByStencil);
     switch (fInitialStencilContent) {
         case StencilContent::kDontCare:
-            stencilLoadOp = GrLoadOp::kDiscard;
-            break;
+            if (!stencil || caps.performStencilClearsAsDraws()) {
+                // This should only intentionally happen for the AtlasRenderTask which
+                // immediately inserts a clear.
+                stencilLoadOp = GrLoadOp::kDiscard;
+                break;
+            }
+            // This OpTask has a stencil, doesn't care about its contents, isn't clearing it with
+            // draws, and is going to store the result. In that case, we fallthrough to clear it so
+            // that uninitialized data won't creep into the stencil buffer.
+            [[fallthrough]];
         case StencilContent::kUserBitsCleared:
             SkASSERT(!caps.performStencilClearsAsDraws());
             SkASSERT(stencil);
+            // Based upon Caps, determine which stencil load operation to use and perform any
+            // necessary updates to the renderpass's bounds and the stencil's cleared area.
+
+            // If the user bits are meant to be cleared we either do that via an initial clear the
+            // first time the area of the stencil is used, or we assume previous draws left the
+            // stencil cleared so we just load the current values. However, on some devices it is
+            // faster to just clear the stencil each time instead of doing a load.
+            //
+            // Since we'll never end up loading the stencil in this case there is no reason for us
+            // to do the clear rect tracking below, so we just break.
+            if (caps.clearsAreFasterThanLoads()) {
+                stencilLoadOp = GrLoadOp::kClear;
+                break;
+            }
+            // If stencil values are discarded after every renderpass, then we do not need to track
+            // which portion of the stencil attachment has already been cleared.
             if (caps.discardStencilValuesAfterRenderPass()) {
-                // Always clear the stencil if it is being discarded after render passes. This is
-                // also an optimization because we are on a tiler and it avoids loading the values
-                // from memory.
                 stencilLoadOp = GrLoadOp::kClear;
                 break;
             }
-            if (!stencil->hasPerformedInitialClear()) {
-                stencilLoadOp = GrLoadOp::kClear;
-                stencil->markHasPerformedInitialClear();
-                break;
-            }
-            // SurfaceDrawContexts are required to leave the user stencil bits in a cleared state
-            // once finished, meaning the stencil values will always remain cleared after the
-            // initial clear. Just fall through to reloading the existing (cleared) stencil values
-            // from memory.
             [[fallthrough]];
         case StencilContent::kPreserved:
             SkASSERT(stencil);
+            // If the area of the stencil attachment corresponding to this renderpass's
+            // boundsRequiredByStencil has not already been cleared, calculate new, expanded
+            // renderpass bounds by joining boundsRequiredByStencil with the cleared stencil area.
+            // Using this joint area simplifies tracking of cleared areas on the stencil attachment.
+            //
+            // This also applies to kPreserved: this task's content bounds may extend beyond the
+            // region cleared by the predecessor task on this surface, so we must clear rather than
+            // load in that case. Re-clearing the previously-cleared portion is a no-op because
+            // SurfaceDrawContexts leave the user stencil bits in a cleared state between ops. When
+            // performStencilClearsAsDraws() is true, an explicit full-surface clear draw was
+            // recorded into the predecessor task instead, so kLoad is correct.
+            if (!caps.performStencilClearsAsDraws() &&
+                !stencil->hasAreaBeenCleared(nativeBoundsRequiredByStencil)) {
+                stencilLoadOp = GrLoadOp::kClear;
+                if (!stencil->clearedArea().isEmpty()) {
+                    // Join in native space (fClearedArea is native-space).
+                    nativeBoundsRequiredByStencil.join(stencil->clearedArea());
+                    // We need to also intersect the bounds with the color attachment's bounds since
+                    // the stencil may be bigger. This could mean that we end up "forgetting" we
+                    // cleared the user bits in the portion of the stencil that doesn't overlap with
+                    // the color attachment - but that shouldn't have a large performance impact if
+                    // we later on need to reclear that area.
+                    nativeBoundsRequiredByStencil.intersect(
+                        SkIRect::MakeSize(renderTarget->dimensions()));
+                    // Convert back to surface-origin space for create_render_pass()
+                    // (self-inverse transform).
+                    boundsRequiredByStencil = toNative(nativeBoundsRequiredByStencil);
+                }
+                // We should update the stencil's cleared area if renderpass creation succeeds.
+                updateClearedStencilArea = true;
+                break;
+            }
             stencilLoadOp = GrLoadOp::kLoad;
             break;
+        default:
+            SkUNREACHABLE;
     }
 
     // NOTE: If fMustPreserveStencil is set, then we are executing a surfaceDrawContext that split
@@ -605,6 +685,7 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
     // their store op might be "discard", and we currently make the assumption that a discard will
     // not invalidate what's already in main memory. This is probably ok for now, but certainly
     // something we want to address soon.
+    // b/160958008 forces discardStencilValuesAfterRenderPass to always return false.
     GrStoreOp stencilStoreOp = (caps.discardStencilValuesAfterRenderPass() && !fMustPreserveStencil)
             ? GrStoreOp::kDiscard
             : GrStoreOp::kStore;
@@ -614,7 +695,7 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
                                                      fUsesMSAASurface,
                                                      stencil,
                                                      fTargetOrigin,
-                                                     fClippedContentBounds,
+                                                     boundsRequiredByStencil,
                                                      fColorLoadOp,
                                                      fLoadClearColor,
                                                      stencilLoadOp,
@@ -623,8 +704,29 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
                                                      fRenderPassXferBarriers);
 
     if (!renderPass) {
-        return false;
+        return ExecutionResult::RanButFailed();
     }
+    if (updateClearedStencilArea) {
+        stencil->markAreaCleared(nativeBoundsRequiredByStencil);
+    }
+
+#if defined(SK_DEBUG)
+    if (stencilLoadOp == GrLoadOp::kDiscard) {
+        // The only time we should have a stencil discard load-op is when either:
+        //    there is no stencil buffer
+        //    or stencil clears are being performed by draws
+        SkASSERT(!stencil || caps.performStencilClearsAsDraws());
+    }
+    if (stencilLoadOp == GrLoadOp::kLoad) {
+        // We should only load stencil values from a region that has already been cleared. When
+        // performStencilClearsAsDraws() is true, an explicit full-surface clear op was recorded
+        // into the predecessor task instead, and cleared-area tracking is not maintained.
+        SkASSERT(stencil);
+        SkASSERT(caps.performStencilClearsAsDraws() ||
+                 stencil->hasAreaBeenCleared(nativeBoundsRequiredByStencil));
+    }
+#endif
+
     flushState->setOpsRenderPass(renderPass);
     renderPass->begin();
 
@@ -653,7 +755,7 @@ bool OpsTask::onExecute(GrOpFlushState* flushState) {
     flushState->gpu()->submit(renderPass);
     flushState->setOpsRenderPass(nullptr);
 
-    return true;
+    return ExecutionResult::RanAndSucceeded();
 }
 
 void OpsTask::setColorLoadOp(GrLoadOp op, std::array<float, 4> color) {
@@ -714,10 +816,10 @@ int OpsTask::mergeFrom(SkSpan<const sk_sp<GrRenderTask>> tasks) {
         fTotalBounds.join(toMerge->fTotalBounds);
         fRenderPassXferBarriers |= toMerge->fRenderPassXferBarriers;
         if (fInitialStencilContent == StencilContent::kDontCare) {
-            // Propogate the first stencil content that isn't kDontCare.
+            // Propagate the first stencil content that isn't kDontCare.
             //
             // Once the stencil has any kind of initial content that isn't kDontCare, then the
-            // inital contents of subsequent opsTasks that get merged in don't matter.
+            // initial contents of subsequent opsTasks that get merged in don't matter.
             //
             // (This works because the opsTask all target the same render target and are in
             // painter's order. kPreserved obviously happens automatically with a merge, and kClear
@@ -730,9 +832,9 @@ int OpsTask::mergeFrom(SkSpan<const sk_sp<GrRenderTask>> tasks) {
     }
 
     fLastClipStackGenID = SK_InvalidUniqueID;
-    fDeferredProxies.reserve_back(addlDeferredProxyCount);
-    fSampledProxies.reserve_back(addlProxyCount);
-    fOpChains.reserve_back(addlOpChainCount);
+    fDeferredProxies.reserve_exact(fDeferredProxies.size() + addlDeferredProxyCount);
+    fSampledProxies.reserve_exact(fSampledProxies.size() + addlProxyCount);
+    fOpChains.reserve_exact(fOpChains.size() + addlOpChainCount);
     for (const auto& toMerge : mergingNodes) {
         for (GrRenderTask* renderTask : toMerge->dependents()) {
             renderTask->replaceDependency(toMerge.get(), this);
@@ -782,7 +884,7 @@ void OpsTask::discard() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 void OpsTask::dump(const SkString& label,
                    SkString indent,
                    bool printDependencies,
@@ -850,7 +952,7 @@ void OpsTask::dump(const SkString& label,
 
 #ifdef SK_DEBUG
 void OpsTask::visitProxies_debugOnly(const GrVisitProxyFunc& func) const {
-    auto textureFunc = [ func ] (GrSurfaceProxy* tex, GrMipmapped mipmapped) {
+    auto textureFunc = [func](GrSurfaceProxy* tex, skgpu::Mipmapped mipmapped) {
         func(tex, mipmapped);
     };
 
@@ -880,7 +982,7 @@ bool OpsTask::onIsUsed(GrSurfaceProxy* proxyToCheck) const {
     }
 #ifdef SK_DEBUG
     bool usedSlow = false;
-    auto visit = [ proxyToCheck, &usedSlow ] (GrSurfaceProxy* p, GrMipmapped) {
+    auto visit = [proxyToCheck, &usedSlow](GrSurfaceProxy* p, skgpu::Mipmapped) {
         if (p == proxyToCheck) {
             usedSlow = true;
         }
@@ -905,31 +1007,41 @@ void OpsTask::gatherProxyIntervals(GrResourceAllocator* alloc) const {
         // they can be recycled. This is a bit unfortunate because a flush can proceed in waves
         // with sub-flushes. The deferred proxies only need to be pinned from the start of
         // the sub-flush in which they appear.
-        alloc->addInterval(fDeferredProxies[i], 0, 0, GrResourceAllocator::ActualUse::kNo);
+        alloc->addInterval(fDeferredProxies[i], 0, 0, GrResourceAllocator::ActualUse::kNo,
+                           GrResourceAllocator::AllowRecycling::kYes);
     }
 
-    GrSurfaceProxy* targetProxy = this->target(0);
+    GrSurfaceProxy* targetSurface = this->target(0);
+    SkASSERT(targetSurface);
+    GrRenderTargetProxy* targetProxy = targetSurface->asRenderTargetProxy();
 
     // Add the interval for all the writes to this OpsTasks's target
-    if (fOpChains.size()) {
+    if (!fOpChains.empty()) {
         unsigned int cur = alloc->curOp();
 
         alloc->addInterval(targetProxy, cur, cur + fOpChains.size() - 1,
-                           GrResourceAllocator::ActualUse::kYes);
+                           GrResourceAllocator::ActualUse::kYes,
+                           GrResourceAllocator::AllowRecycling::kYes);
     } else {
         // This can happen if there is a loadOp (e.g., a clear) but no other draws. In this case we
         // still need to add an interval for the destination so we create a fake op# for
         // the missing clear op.
         alloc->addInterval(targetProxy, alloc->curOp(), alloc->curOp(),
-                           GrResourceAllocator::ActualUse::kYes);
+                           GrResourceAllocator::ActualUse::kYes,
+                           GrResourceAllocator::AllowRecycling::kYes);
         alloc->incOps();
     }
 
-    auto gather = [ alloc SkDEBUGCODE(, this) ] (GrSurfaceProxy* p, GrMipmapped) {
+    GrResourceAllocator::AllowRecycling allowRecycling =
+            targetProxy->wrapsVkSecondaryCB() ? GrResourceAllocator::AllowRecycling::kNo
+                                              : GrResourceAllocator::AllowRecycling::kYes;
+
+    auto gather = [alloc, allowRecycling SkDEBUGCODE(, this)](GrSurfaceProxy* p, skgpu::Mipmapped) {
         alloc->addInterval(p,
                            alloc->curOp(),
                            alloc->curOp(),
-                           GrResourceAllocator::ActualUse::kYes
+                           GrResourceAllocator::ActualUse::kYes,
+                           allowRecycling
                            SkDEBUGCODE(, this->target(0) == p));
     };
     // TODO: visitProxies is expensive. Can we do this with fSampledProxies instead?

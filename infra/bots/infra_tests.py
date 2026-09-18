@@ -20,8 +20,10 @@ SKIA_DIR = os.path.abspath(os.path.join(INFRA_BOTS_DIR, os.pardir, os.pardir))
 
 def test(cmd, cwd):
   try:
-    subprocess.check_output(cmd, cwd=cwd, stderr=subprocess.STDOUT, encoding='utf-8')
+    subprocess.check_output(cmd, cwd=cwd, encoding='utf-8',
+                            stderr=subprocess.STDOUT)
   except subprocess.CalledProcessError as e:
+    print(e.output)
     return e.output
 
 
@@ -35,8 +37,11 @@ def python_unit_tests(train):
 
 
 def recipe_test(train):
+  recipes_cfg_path = os.path.join(SKIA_DIR, 'infra', 'config', 'recipes.cfg')
   cmd = [
-      sys.executable, '-u', os.path.join(INFRA_BOTS_DIR, 'recipes.py'), 'test']
+      sys.executable, '-u', os.path.join(INFRA_BOTS_DIR, 'recipes.py'),
+      '--package', recipes_cfg_path, 'test',
+  ]
   if train:
     cmd.append('train')
   else:

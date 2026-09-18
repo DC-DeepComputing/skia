@@ -11,9 +11,10 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
-#include "include/core/SkImage.h" // IWYU pragma: keep
+#include "include/core/SkImage.h"  // IWYU pragma: keep
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -26,14 +27,15 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "src/base/SkRandom.h"
-#include "src/core/SkBigPicture.h"
 #include "src/core/SkPicturePriv.h"
+#include "src/core/SkRandom.h"
 #include "src/core/SkRectPriv.h"
 #include "tests/Test.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <cstddef>
 #include <memory>
@@ -69,7 +71,7 @@ static void test_serializing_empty_picture() {
     recorder.beginRecording(0, 0);
     sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
     SkDynamicMemoryWStream stream;
-    picture->serialize(&stream);
+    picture->serialize(&stream, nullptr);  // default SkSerialProcs
 }
 #endif
 
@@ -377,13 +379,9 @@ static void test_clip_bound_opt(skiatest::Reporter* reporter) {
     SkRect rect3 = SkRect::MakeXYWH(SkIntToScalar(6), SkIntToScalar(6),
                                     SkIntToScalar(1), SkIntToScalar(1));
 
-    SkPath invPath;
-    invPath.addOval(rect1);
-    invPath.setFillType(SkPathFillType::kInverseEvenOdd);
-    SkPath path;
-    path.addOval(rect2);
-    SkPath path2;
-    path2.addOval(rect3);
+    SkPath invPath = SkPath::Oval(rect1).makeFillType(SkPathFillType::kInverseEvenOdd);
+    SkPath path = SkPath::Oval(rect2);
+    SkPath path2 = SkPath::Oval(rect3);
     SkIRect clipBounds;
     SkPictureRecorder recorder;
 
@@ -438,10 +436,9 @@ static void test_cull_rect_reset(skiatest::Reporter* reporter) {
     canvas->drawRect(bounds, paint);
     canvas->drawRect(bounds, paint);
     sk_sp<SkPicture> p(recorder.finishRecordingAsPictureWithCull(bounds));
-    const SkBigPicture* picture = SkPicturePriv::AsSkBigPicture(p);
-    REPORTER_ASSERT(reporter, picture);
+    REPORTER_ASSERT(reporter, p);
 
-    SkRect finalCullRect = picture->cullRect();
+    SkRect finalCullRect = p->cullRect();
     REPORTER_ASSERT(reporter, 0 == finalCullRect.fLeft);
     REPORTER_ASSERT(reporter, 0 == finalCullRect.fTop);
     REPORTER_ASSERT(reporter, 100 == finalCullRect.fBottom);
@@ -509,11 +506,11 @@ static void test_gen_id(skiatest::Reporter* reporter) {
 static void test_typeface(skiatest::Reporter* reporter) {
     SkPictureRecorder recorder;
     SkCanvas* canvas = recorder.beginRecording(10, 10);
-    SkFont font(SkTypeface::MakeFromName("Arial", SkFontStyle::Italic()));
+    SkFont font(ToolUtils::CreateTestTypeface("Arial", SkFontStyle::Italic()));
     canvas->drawString("Q", 0, 10, font, SkPaint());
     sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
     SkDynamicMemoryWStream stream;
-    picture->serialize(&stream);
+    picture->serialize(&stream, nullptr);  // default SkSerialProcs
 }
 
 DEF_TEST(Picture, reporter) {
@@ -530,7 +527,7 @@ DEF_TEST(Picture, reporter) {
     test_cull_rect_reset(reporter);
 }
 
-static void draw_bitmaps(const SkBitmap bitmap, SkCanvas* canvas) {
+static void draw_bitmaps(const SkBitmap& bitmap, SkCanvas* canvas) {
     const SkRect rect = { 5.0f, 5.0f, 8.0f, 8.0f };
     auto img = bitmap.asImage();
 
@@ -624,7 +621,7 @@ struct CountingBBH : public SkBBoxHierarchy {
 
 class SpoonFedBBHFactory : public SkBBHFactory {
 public:
-    explicit SpoonFedBBHFactory(sk_sp<SkBBoxHierarchy> bbh) : fBBH(bbh) {}
+    explicit SpoonFedBBHFactory(sk_sp<SkBBoxHierarchy> bbh) : fBBH(std::move(bbh)) {}
     sk_sp<SkBBoxHierarchy> operator()() const override {
         return fBBH;
     }
@@ -708,10 +705,12 @@ DEF_TEST(Picture_preserveCullRect, r) {
 
     sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
     SkDynamicMemoryWStream wstream;
-    picture->serialize(&wstream);
+    // default SkSerialProcs here and SkDeserialProcs below are fine because we don't
+    // have any image or typeface data to serialize.
+    picture->serialize(&wstream, nullptr);
 
     std::unique_ptr<SkStream> rstream(wstream.detachAsStream());
-    sk_sp<SkPicture> deserializedPicture(SkPicture::MakeFromStream(rstream.get()));
+    auto deserializedPicture = SkPicture::MakeFromStream(rstream.get(), nullptr);
 
     REPORTER_ASSERT(r, deserializedPicture != nullptr);
     REPORTER_ASSERT(r, deserializedPicture->cullRect().left() == 1);
@@ -755,28 +754,6 @@ DEF_TEST(Picture_UpdatedCull_2, r) {
     REPORTER_ASSERT(r, pic->cullRect() == SkRectPriv::MakeLargest());
 }
 
-DEF_TEST(Picture_RecordsFlush, r) {
-    SkPictureRecorder recorder;
-
-    auto canvas = recorder.beginRecording(SkRect::MakeWH(100,100));
-    for (int i = 0; i < 10; i++) {
-        canvas->clear(0);
-        for (int j = 0; j < 10; j++) {
-            canvas->drawRect(SkRect::MakeXYWH(i*10,j*10,10,10), SkPaint());
-        }
-        canvas->flush();
-    }
-
-    // Did we record the flushes?
-    auto pic = recorder.finishRecordingAsPicture();
-    REPORTER_ASSERT(r, pic->approximateOpCount() == 120);  // 10 clears, 100 draws, 10 flushes
-
-    // Do we serialize and deserialize flushes?
-    auto skp = pic->serialize();
-    auto back = SkPicture::MakeFromData(skp->data(), skp->size());
-    REPORTER_ASSERT(r, back->approximateOpCount() == pic->approximateOpCount());
-}
-
 DEF_TEST(Placeholder, r) {
     SkRect cull = { 0,0, 10,20 };
 
@@ -807,10 +784,11 @@ DEF_TEST(Picture_empty_serial, reporter) {
     auto pic = rec.finishRecordingAsPicture();
     REPORTER_ASSERT(reporter, pic);
 
-    auto data = pic->serialize();
+    // explicitly testing the default SkSerialProcs here and SkDeserialProcs below.
+    auto data = pic->serialize((SkSerialProcs*)nullptr);
     REPORTER_ASSERT(reporter, data);
 
-    auto pic2 = SkPicture::MakeFromData(data->data(), data->size());
+    auto pic2 = SkPicture::MakeFromData(data->data(), data->size(), nullptr);
     REPORTER_ASSERT(reporter, pic2);
 }
 
@@ -853,8 +831,8 @@ DEF_TEST(Picture_emptyNestedPictureBug, r) {
 
     // These three pictures should all draw the same but due to bugs they don't:
     //
-    //   1) inner has enough content that it is recoreded as an SkBigPicture,
-    //      and all its content falls outside the positive/positive quadrant,
+    //   1) inner has enough content that all of its content
+    //      falls outside the positive/positive quadrant,
     //      and it is recorded with an R-tree so we contract the cullRect to those bounds;
     //
     //   2) middle wraps inner,
@@ -914,20 +892,20 @@ DEF_TEST(Picture_fillsBBH, r) {
 }
 
 DEF_TEST(Picture_nested_op_count, r) {
-    auto make_pic = [](int n, sk_sp<SkPicture> pic) {
+    auto make_pic = [](int n, const sk_sp<SkPicture>& pic) {
         SkPictureRecorder rec;
-        SkCanvas* c = rec.beginRecording({0,0, 100,100});
+        SkCanvas* c = rec.beginRecording({0, 0, 100, 100});
         for (int i = 0; i < n; i++) {
             if (pic) {
                 c->drawPicture(pic);
             } else {
-                c->drawRect({0,0, 100,100}, SkPaint{});
+                c->drawRect({0, 0, 100, 100}, SkPaint{});
             }
         }
         return rec.finishRecordingAsPicture();
     };
 
-    auto check = [r](sk_sp<SkPicture> pic, int shallow, int nested) {
+    auto check = [r](const sk_sp<SkPicture>& pic, int shallow, int nested) {
         int s = pic->approximateOpCount(false);
         int n = pic->approximateOpCount(true);
         REPORTER_ASSERT(r, s == shallow);
@@ -935,13 +913,240 @@ DEF_TEST(Picture_nested_op_count, r) {
     };
 
     sk_sp<SkPicture> leaf1 = make_pic(1, nullptr);
+    // Base picture with 1 drawRect op: 1 shallow, 1 nested.
     check(leaf1, 1, 1);
 
     sk_sp<SkPicture> leaf10 = make_pic(10, nullptr);
+    // Base picture with 10 drawRect ops: 10 shallow, 10 nested.
     check(leaf10, 10, 10);
 
-    check(make_pic( 1, leaf1),   1,   1);
-    check(make_pic( 1, leaf10),  1,  10);
+    // leaf1 has <= kMaxPictureOpsToUnrollInsteadOfRef (1) ops, so drawPicture unrolls/inlines
+    // the drawRect directly instead of referencing leaf1: 1 shallow, 1 nested.
+    check(make_pic(1,  leaf1),   1,   1);
+    // leaf10 exceeds the unroll limit (10 > 1), so 1 DrawPicture op is recorded:
+    // 1 shallow; 1 (DrawPicture) + 10 (leaf10 ops) = 11 nested.
+    check(make_pic(1, leaf10),   1,  11);
+    // Each of the 10 drawPicture(leaf1) calls unrolls into 1 drawRect: 10 shallow, 10 nested.
     check(make_pic(10, leaf1),  10,  10);
-    check(make_pic(10, leaf10), 10, 100);
+    // 10 DrawPicture ops recorded, each holding 10 ops: 10 shallow; 10 * (1 + 10) = 110 nested.
+    check(make_pic(10, leaf10), 10, 110);
+}
+
+DEF_TEST(Picture_nested_draw_drawable, r) {
+    class MultiOpDrawable : public SkDrawable {
+    public:
+        MultiOpDrawable(int numOps,
+                        sk_sp<SkDrawable> childDrawable = nullptr,
+                        int numChildDraws = 0,
+                        sk_sp<SkPicture> childPicture = nullptr)
+                : fNumOps(numOps)
+                , fChildDrawable(std::move(childDrawable))
+                , fNumChildDraws(numChildDraws)
+                , fChildPicture(std::move(childPicture)) {}
+
+    protected:
+        void onDraw(SkCanvas* canvas) override {
+            SkPaint paint;
+            for (int i = 0; i < fNumOps; i++) {
+                canvas->drawRect(SkRect::MakeXYWH(10, 10, 80, 80), paint);
+            }
+
+            if (fChildDrawable) {
+                for (int i = 0; i < fNumChildDraws; i++) {
+                    canvas->drawDrawable(fChildDrawable.get(), nullptr);
+                }
+            }
+
+            if (fChildPicture) {
+                canvas->drawPicture(fChildPicture);
+            }
+        }
+
+        SkRect onGetBounds() override { return SkRect::MakeXYWH(0, 0, 100, 100); }
+
+    private:
+        int fNumOps;
+        sk_sp<SkDrawable> fChildDrawable;
+        int fNumChildDraws;
+        sk_sp<SkPicture> fChildPicture;
+    };
+
+    auto make_picture = [](int n, const sk_sp<SkDrawable>& drawable) {
+        SkPictureRecorder rec;
+        SkCanvas* c = rec.beginRecording({0, 0, 100, 100});
+        for (int i = 0; i < n; i++) {
+            c->drawDrawable(drawable.get(), nullptr);
+        }
+        return rec.finishRecordingAsPicture();
+    };
+
+    auto make_rect_picture = [](int n) {
+        SkPictureRecorder rec;
+        SkCanvas* c = rec.beginRecording({0, 0, 100, 100});
+        SkPaint paint;
+        for (int i = 0; i < n; i++) {
+            c->drawRect(SkRect::MakeXYWH(10, 10, 80, 80), paint);
+        }
+        return rec.finishRecordingAsPicture();
+    };
+
+    auto checkShallowAndNested =
+            [r](const sk_sp<SkPicture>& pic, int expectedShallow, int expectedNested) {
+                int s = pic->approximateOpCount(false);
+                int n = pic->approximateOpCount(true);
+                REPORTER_ASSERT(r, s == expectedShallow);
+                REPORTER_ASSERT(r, n == expectedNested);
+            };
+
+    sk_sp<SkDrawable> drawable1 = sk_make_sp<MultiOpDrawable>(1);
+    sk_sp<SkDrawable> drawable10 = sk_make_sp<MultiOpDrawable>(10);
+    sk_sp<SkPicture> pic10 = make_rect_picture(10);
+
+    sk_sp<SkDrawable> drawable1_withpic = sk_make_sp<MultiOpDrawable>(1, nullptr, 0, pic10);
+    sk_sp<SkDrawable> drawable10_withpic = sk_make_sp<MultiOpDrawable>(10, nullptr, 0, pic10);
+
+    sk_sp<SkDrawable> drawable1_child1 = sk_make_sp<MultiOpDrawable>(0, drawable1, 1);
+    sk_sp<SkDrawable> drawable1_child10 = sk_make_sp<MultiOpDrawable>(0, drawable10, 1);
+    sk_sp<SkDrawable> drawable10_child1 = sk_make_sp<MultiOpDrawable>(0, drawable1, 10);
+    sk_sp<SkDrawable> drawable10_child10 = sk_make_sp<MultiOpDrawable>(0, drawable10, 10);
+
+    sk_sp<SkDrawable> mixed_parent = sk_make_sp<MultiOpDrawable>(5, drawable10_child10, 2, pic10);
+
+    // 1. Leaf drawables (direct drawRect ops only)
+    {
+        // draw `drawable1` once: 1 shallow draw and 1 (drawDrawable) + 1 (child op) = 2 nested
+        // draws
+        checkShallowAndNested(make_picture(1, drawable1), 1, 2);
+        // draw `drawable10` once: 1 shallow draw and 1 (drawDrawable) + 10 (child ops) = 11
+        // nested draws
+        checkShallowAndNested(make_picture(1, drawable10), 1, 11);
+
+        // draw `drawable1` ten times: 10 shallow draws and 10 * 2 = 20 nested draws
+        checkShallowAndNested(make_picture(10, drawable1), 10, 20);
+        // draw `drawable10` ten times: 10 shallow draws and 10 * 11 = 110 nested draws
+        checkShallowAndNested(make_picture(10, drawable10), 10, 110);
+    }
+
+    // 2. Drawables with an internal picture layer
+    // pic10 has 10 rect ops.
+    // Inside drawable1_withpic: 1 rect + 1 (drawPicture) + 10 (from pic10) = 12 internal ops.
+    // Inside drawable10_withpic: 10 rects + 1 (drawPicture) + 10 (from pic10) = 21 internal ops.
+    {
+        // 1 (drawDrawable) + 12 (internal ops) = 13 nested draws
+        checkShallowAndNested(make_picture(1, drawable1_withpic), 1, 13);
+        // 1 (drawDrawable) + 21 (internal ops) = 22 nested draws
+        checkShallowAndNested(make_picture(1, drawable10_withpic), 1, 22);
+
+        // 10 * 13 = 130 nested draws
+        checkShallowAndNested(make_picture(10, drawable1_withpic), 10, 130);
+        // 10 * 22 = 220 nested draws
+        checkShallowAndNested(make_picture(10, drawable10_withpic), 10, 220);
+    }
+
+    // 3. Drawables with an internal drawable layer, calling the internal drawable multiple times
+    // drawable1 has 1 rect: 1 child drawDrawable adds 1 + 1 = 2 ops.
+    // drawable10 has 10 rects: 1 child drawDrawable adds 1 + 10 = 11 ops.
+    // Internal ops:
+    //   drawable1_child1:    1 * (1 + 1) = 2 ops
+    //   drawable1_child10:   1 * (1 + 10) = 11 ops
+    //   drawable10_child1:   10 * (1 + 1) = 20 ops
+    //   drawable10_child10:  10 * (1 + 10) = 110 ops
+    {
+        // 1 (drawDrawable) + 2 (internal ops) = 3 nested draws
+        checkShallowAndNested(make_picture(1, drawable1_child1), 1, 3);
+        // 1 (drawDrawable) + 11 (internal ops) = 12 nested draws
+        checkShallowAndNested(make_picture(1, drawable1_child10), 1, 12);
+        // 1 (drawDrawable) + 20 (internal ops) = 21 nested draws
+        checkShallowAndNested(make_picture(1, drawable10_child1), 1, 21);
+        // 1 (drawDrawable) + 110 (internal ops) = 111 nested draws
+        checkShallowAndNested(make_picture(1, drawable10_child10), 1, 111);
+
+        // 10 * 3 = 30 nested draws
+        checkShallowAndNested(make_picture(10, drawable1_child1), 10, 30);
+        // 10 * 12 = 120 nested draws
+        checkShallowAndNested(make_picture(10, drawable1_child10), 10, 120);
+        // 10 * 21 = 210 nested draws
+        checkShallowAndNested(make_picture(10, drawable10_child1), 10, 210);
+        // 10 * 111 = 1110 nested draws
+        checkShallowAndNested(make_picture(10, drawable10_child10), 10, 1110);
+    }
+
+    // 4. Multi-level nested drawables mixing direct ops, child drawables, and child pictures
+    // 5 direct rects + 2 * (1 + 110) from child drawable + (1 + 10) from pic10 = 238 internal ops
+    // Top-level picture has 1 DrawDrawable -> 1 + 238 = 239 ops
+    {
+        checkShallowAndNested(make_picture(1, mixed_parent), 1, 239);
+        checkShallowAndNested(make_picture(10, mixed_parent), 10, 2390);
+    }
+}
+
+DEF_TEST(Picture_recursion_limit, r) {
+    // 1. Test deeply nested SkPicture hierarchy exceeding kDefaultRecursionLimit
+    {
+        // Leaf picture with 2 rects (> kMaxPictureOpsToUnrollInsteadOfRef so it is not unrolled).
+        SkPictureRecorder leafRec;
+        SkCanvas* leafCanvas = leafRec.beginRecording({0, 0, 100, 100});
+        leafCanvas->drawRect(SkRect::MakeXYWH(0, 0, 50, 50), SkPaint{});
+        leafCanvas->drawRect(SkRect::MakeXYWH(50, 50, 50, 50), SkPaint{});
+        sk_sp<SkPicture> curPic = leafRec.finishRecordingAsPicture();
+
+        // Build a chain deeper than kDefaultRecursionLimit (each level has 1 rect + 1 child
+        // drawPicture)
+        constexpr int kChainDepth = SkPicturePriv::kDefaultRecursionLimit + 10;
+        for (int i = 0; i < kChainDepth; ++i) {
+            SkPictureRecorder rec;
+            SkCanvas* c = rec.beginRecording({0, 0, 100, 100});
+            c->drawRect(SkRect::MakeXYWH(0, 0, 10, 10), SkPaint{});
+            c->drawPicture(curPic);
+            curPic = rec.finishRecordingAsPicture();
+        }
+
+        // At each level up to limit (100 levels from 0 to 99), we have:
+        // 1 rect (+1) + 1 drawPicture (+1) = 2.
+        // At depth 100 (kDefaultRecursionLimit), recursion stops: 1 rect (+1) + 1 drawPicture (+1)
+        // = 2. Total ops = (kDefaultRecursionLimit * 2) + 2 = 202. Without recursion limit, it
+        // would have traversed all 110 levels = (110 * 2) + 2 = 222 ops.
+        int expectedOps = (SkPicturePriv::kDefaultRecursionLimit * 2) + 2;
+        REPORTER_ASSERT(r, curPic->approximateOpCount(true) == expectedOps);
+    }
+
+    // 2. Test deeply nested SkDrawable hierarchy exceeding kDefaultRecursionLimit
+    {
+        class ChainDrawable : public SkDrawable {
+        public:
+            ChainDrawable(sk_sp<SkDrawable> child) : fChild(std::move(child)) {}
+
+        protected:
+            void onDraw(SkCanvas* canvas) override {
+                if (fChild) {
+                    canvas->drawDrawable(fChild.get(), nullptr);
+                } else {
+                    canvas->drawRect(SkRect::MakeXYWH(0, 0, 10, 10), SkPaint{});
+                }
+            }
+            SkRect onGetBounds() override { return SkRect::MakeXYWH(0, 0, 100, 100); }
+
+        private:
+            sk_sp<SkDrawable> fChild;
+        };
+
+        // Leaf drawable with 1 rect (no child)
+        sk_sp<SkDrawable> curDrawable = sk_make_sp<ChainDrawable>(nullptr);
+        constexpr int kChainDepth = SkPicturePriv::kDefaultRecursionLimit + 10;
+        for (int i = 0; i < kChainDepth; ++i) {
+            curDrawable = sk_make_sp<ChainDrawable>(curDrawable);
+        }
+
+        SkPictureRecorder rec;
+        SkCanvas* c = rec.beginRecording({0, 0, 100, 100});
+        c->drawDrawable(curDrawable.get(), nullptr);
+        sk_sp<SkPicture> pic = rec.finishRecordingAsPicture();
+
+        // 100 levels traversed (depth 0 to 99) each add 1 for DrawDrawable (+1).
+        // At depth 100, recursion stops and returns 1 for DrawDrawable.
+        // Total ops = kDefaultRecursionLimit + 1 = 101.
+        // Without limit, it would be (kChainDepth + 1) + 1 = 112 ops.
+        int expectedOps = SkPicturePriv::kDefaultRecursionLimit + 1;
+        REPORTER_ASSERT(r, pic->approximateOpCount(true) == expectedOps);
+    }
 }

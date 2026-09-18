@@ -8,28 +8,39 @@
 #ifndef SkRecords_DEFINED
 #define SkRecords_DEFINED
 
+#include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkData.h"
-#include "include/core/SkDrawable.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkMesh.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkRRect.h"
-#include "include/core/SkRSXform.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkRegion.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/chromium/Slug.h"
 #include "src/core/SkDrawShadowInfo.h"
 
-#if defined(SK_GANESH)
-#include "include/private/chromium/Slug.h"
-#endif
+#include <cstdint>
+
+enum class SkBlendMode;
+enum class SkClipOp;
+enum class SkTileMode;
+struct SkPoint;
+struct SkRSXform;
 
 namespace SkRecords {
 
@@ -45,7 +56,6 @@ namespace SkRecords {
 // you keep them semantically grouped, especially the Draws.  It's also nice to leave NoOp at 0.
 #define SK_RECORD_TYPES(M)                                          \
     M(NoOp)                                                         \
-    M(Flush)                                                        \
     M(Restore)                                                      \
     M(Save)                                                         \
     M(SaveLayer)                                                    \
@@ -96,7 +106,8 @@ enum Type { SK_RECORD_TYPES(ENUM) };
 
 #define ACT_AS_PTR(ptr)                 \
     operator T*() const { return ptr; } \
-    T* operator->() const { return ptr; }
+    T* operator->() const { return ptr; } \
+    T* data() const { return ptr; }
 
 // An Optional doesn't own the pointer's memory, but may need to destroy non-POD data.
 template <typename T>
@@ -131,14 +142,6 @@ private:
 
 #undef ACT_AS_PTR
 
-// SkPath::getBounds() isn't thread safe unless we precache the bounds in a singlethreaded context.
-// SkPath::cheapComputeDirection() is similar.
-// Recording is a convenient time to cache these, or we can delay it to between record and playback.
-struct PreCachedPath : public SkPath {
-    PreCachedPath() {}
-    PreCachedPath(const SkPath& path);
-};
-
 // Like SkPath::getBounds(), SkMatrix::getType() isn't thread safe unless we precache it.
 // This may not cover all SkMatrices used by the picture (e.g. some could be hiding in a shader).
 struct TypedMatrix : public SkMatrix {
@@ -151,30 +154,39 @@ enum Tags {
     kHasImage_Tag  = 2,   // Contains an SkImage or SkBitmap.
     kHasText_Tag   = 4,   // Contains text.
     kHasPaint_Tag  = 8,   // May have an SkPaint field, at least optionally.
+    kMultiDraw_Tag = 16,  // Drawing operations that render multiple independent primitives.
+                          //   These draws are capable of blending with themselves.
 
     kDrawWithPaint_Tag = kDraw_Tag | kHasPaint_Tag,
 };
 
 // A macro to make it a little easier to define a struct that can be stored in SkRecord.
-#define RECORD(T, tags, ...)            \
-struct T {                              \
-    static const Type kType = T##_Type; \
-    static const int kTags = tags;      \
-    __VA_ARGS__;                        \
-};
+#define RECORD(T, tags, ...)                \
+    struct T {                              \
+        static const Type kType = T##_Type; \
+        static const int kTags = tags;      \
+        __VA_ARGS__;                        \
+    };
 
-RECORD(NoOp, 0)
-RECORD(Flush, 0)
+#define RECORD_TRIVIAL(T, tags)             \
+    struct T {                              \
+        static const Type kType = T##_Type; \
+        static const int kTags = tags;      \
+    };
+
+RECORD_TRIVIAL(NoOp, 0)
 RECORD(Restore, 0,
         TypedMatrix matrix)
-RECORD(Save, 0)
+RECORD_TRIVIAL(Save, 0)
 
 RECORD(SaveLayer, kHasPaint_Tag,
        Optional<SkRect> bounds;
        Optional<SkPaint> paint;
        sk_sp<const SkImageFilter> backdrop;
        SkCanvas::SaveLayerFlags saveLayerFlags;
-       SkScalar backdropScale)
+       SkScalar backdropScale;
+       SkTileMode backdropTileMode;
+       skia_private::AutoTArray<sk_sp<SkImageFilter>> filters)
 
 RECORD(SaveBehind, 0,
        Optional<SkRect> subset)
@@ -210,7 +222,7 @@ private:
 static_assert(sizeof(ClipOpAndAA) == 4, "ClipOpAndAASize");
 
 RECORD(ClipPath, 0,
-        PreCachedPath path;
+        SkPath path;
         ClipOpAndAA opAA)
 RECORD(ClipRRect, 0,
         SkRRect rrect;
@@ -224,7 +236,7 @@ RECORD(ClipRegion, 0,
 RECORD(ClipShader, 0,
         sk_sp<SkShader> shader;
         SkClipOp op)
-RECORD(ResetClip, 0)
+RECORD_TRIVIAL(ResetClip, 0)
 
 // While not strictly required, if you have an SkPaint, it's fastest to put it first.
 RECORD(DrawArc, kDraw_Tag|kHasPaint_Tag,
@@ -276,12 +288,12 @@ RECORD(DrawBehind, kDraw_Tag|kHasPaint_Tag,
        SkPaint paint)
 RECORD(DrawPath, kDraw_Tag|kHasPaint_Tag,
         SkPaint paint;
-        PreCachedPath path)
+        SkPath path)
 RECORD(DrawPicture, kDraw_Tag|kHasPaint_Tag,
         Optional<SkPaint> paint;
         sk_sp<const SkPicture> picture;
         TypedMatrix matrix)
-RECORD(DrawPoints, kDraw_Tag|kHasPaint_Tag,
+RECORD(DrawPoints, kDraw_Tag|kHasPaint_Tag|kMultiDraw_Tag,
         SkPaint paint;
         SkCanvas::PointMode mode;
         unsigned count;
@@ -300,44 +312,37 @@ RECORD(DrawTextBlob, kDraw_Tag|kHasText_Tag|kHasPaint_Tag,
         sk_sp<const SkTextBlob> blob;
         SkScalar x;
         SkScalar y)
-#if defined(SK_GANESH)
-RECORD(DrawSlug, kDraw_Tag|kHasText_Tag,
+RECORD(DrawSlug, kDraw_Tag|kHasText_Tag|kHasPaint_Tag,
+       SkPaint paint;
        sk_sp<const sktext::gpu::Slug> slug)
-#else
-RECORD(DrawSlug, 0)
-#endif
 RECORD(DrawPatch, kDraw_Tag|kHasPaint_Tag,
         SkPaint paint;
         PODArray<SkPoint> cubics;
         PODArray<SkColor> colors;
         PODArray<SkPoint> texCoords;
         SkBlendMode bmode)
-RECORD(DrawAtlas, kDraw_Tag|kHasImage_Tag|kHasPaint_Tag,
+RECORD(DrawAtlas, kDraw_Tag|kHasImage_Tag|kHasPaint_Tag|kMultiDraw_Tag,
         Optional<SkPaint> paint;
         sk_sp<const SkImage> atlas;
         PODArray<SkRSXform> xforms;
         PODArray<SkRect> texs;
         PODArray<SkColor> colors;
-        int count;
+        unsigned count;
         SkBlendMode mode;
         SkSamplingOptions sampling;
         Optional<SkRect> cull)
-RECORD(DrawVertices, kDraw_Tag|kHasPaint_Tag,
+RECORD(DrawVertices, kDraw_Tag|kHasPaint_Tag|kMultiDraw_Tag,
         SkPaint paint;
         sk_sp<SkVertices> vertices;
         SkBlendMode bmode)
-#ifdef SK_ENABLE_SKSL
-RECORD(DrawMesh, kDraw_Tag|kHasPaint_Tag,
+RECORD(DrawMesh, kDraw_Tag|kHasPaint_Tag|kMultiDraw_Tag,
        SkPaint paint;
        SkMesh mesh;
        sk_sp<SkBlender> blender)
-#else
-RECORD(DrawMesh, 0)
-#endif
 RECORD(DrawShadowRec, kDraw_Tag,
-       PreCachedPath path;
+       SkPath path;
        SkDrawShadowRec rec)
-RECORD(DrawAnnotation, 0,  // TODO: kDraw_Tag, skia:5548
+RECORD(DrawAnnotation, 0,  // TODO: kDraw_Tag, skbug.com/40036727
        SkRect rect;
        SkString key;
        sk_sp<SkData> value)
@@ -347,7 +352,7 @@ RECORD(DrawEdgeAAQuad, kDraw_Tag,
        SkCanvas::QuadAAFlags aa;
        SkColor4f color;
        SkBlendMode mode)
-RECORD(DrawEdgeAAImageSet, kDraw_Tag|kHasImage_Tag|kHasPaint_Tag,
+RECORD(DrawEdgeAAImageSet, kDraw_Tag|kHasImage_Tag|kHasPaint_Tag|kMultiDraw_Tag,
        Optional<SkPaint> paint;
        skia_private::AutoTArray<SkCanvas::ImageSetEntry> set;
        int count;

@@ -15,6 +15,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
@@ -49,14 +50,14 @@ class FilterIndiaBoxGM : public skiagm::GM {
 
     void onOnceBeforeDraw() override {
         constexpr char kResource[] = "images/box.gif";
-        if (!GetResourceAsBitmap(kResource, &fBM)) {
+        if (!ToolUtils::GetResourceAsBitmap(kResource, &fBM)) {
             fBM.allocN32Pixels(1, 1);
             fBM.eraseARGB(255, 255, 0 , 0); // red == bad
         }
         fBM.setImmutable();
 
-        SkScalar cx = SkScalarHalf(fBM.width());
-        SkScalar cy = SkScalarHalf(fBM.height());
+        SkScalar cx = fBM.width() / 2.f;
+        SkScalar cy = fBM.height() / 2.f;
 
         float vertScale = 30.0f/55.0f;
         float horizScale = 150.0f/200.0f;
@@ -65,9 +66,9 @@ class FilterIndiaBoxGM : public skiagm::GM {
         fMatrix[1].setRotate(30, cx, cy); fMatrix[1].postScale(horizScale, vertScale);
     }
 
-    SkString onShortName() override { return SkString("filterindiabox"); }
+    SkString getName() const override { return SkString("filterindiabox"); }
 
-    SkISize onISize() override { return {680, 130}; }
+    SkISize getISize() override { return {680, 130}; }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->translate(10, 10);

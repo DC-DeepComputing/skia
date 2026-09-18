@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkSpan.h"
-#include "include/private/base/SkFloatingPoint.h"
+#include "include/private/SkFloatingPoint.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "tests/PathOpsTestCommon.h"
@@ -37,7 +37,7 @@ static bool nearly_equal(double expected, double actual) {
     return sk_doubles_nearly_equal_ulps(expected, actual, 64);
 }
 
-static void testConvertToPolynomial(skiatest::Reporter* reporter, std::string name,
+static void testConvertToPolynomial(skiatest::Reporter* reporter, const std::string& name,
                                     SkSpan<const SkDPoint> curveInputs, bool yValues,
                                     double expectedA, double expectedB,
                                     double expectedC, double expectedD) {
@@ -60,11 +60,11 @@ static void testConvertToPolynomial(skiatest::Reporter* reporter, std::string na
 
 DEF_TEST(SkDCubicPolynomialCoefficients, reporter) {
     testConvertToPolynomial(reporter, "Arbitrary control points X direction",
-        {{1, 2}, {-3, 4}, {5, -6}, {7, 8}}, false, /*=yValues*/
+        {{{1, 2}, {-3, 4}, {5, -6}, {7, 8}}}, false, /*=yValues*/
         -18, 36, -12, 1
     );
     testConvertToPolynomial(reporter, "Arbitrary control points Y direction",
-        {{1, 2}, {-3, 4}, {5, -6}, {7, 8}}, true, /*=yValues*/
+        {{{1, 2}, {-3, 4}, {5, -6}, {7, 8}}}, true, /*=yValues*/
         36, -36, 6, 2
     );
 }

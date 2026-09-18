@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google LLC.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,11 +9,17 @@
 #define GrVertexChunkArray_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkNoncopyable.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTypeTraits.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTypeTraits.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrBuffer.h"
+
+#include <cstddef>
+#include <type_traits>
+#include <utility>
 
 class GrMeshDrawTarget;
 

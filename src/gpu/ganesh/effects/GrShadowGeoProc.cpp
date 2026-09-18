@@ -8,7 +8,7 @@
 #include "src/gpu/ganesh/effects/GrShadowGeoProc.h"
 
 #include "include/core/SkSamplingOptions.h"
-#include "include/private/base/SkAssert.h"
+#include "include/private/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
@@ -81,7 +81,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> GrRRectShadowGeoProc::makeProg
 
 GR_DEFINE_GEOMETRY_PROCESSOR_TEST(GrRRectShadowGeoProc)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrGeometryProcessor* GrRRectShadowGeoProc::TestCreate(GrProcessorTestData* d) {
     auto [view, ct, at] = d->randomAlphaOnlyView();
 

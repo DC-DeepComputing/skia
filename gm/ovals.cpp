@@ -18,9 +18,9 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
-#include "include/private/base/SkTArray.h"
-#include "src/base/SkRandom.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkTArray.h"
+#include "src/core/SkRandom.h"
 #include "tools/ToolUtils.h"
 
 using namespace skia_private;
@@ -36,14 +36,9 @@ public:
     }
 
 protected:
+    SkString getName() const override { return SkString("ovals"); }
 
-    SkString onShortName() override {
-        return SkString("ovals");
-    }
-
-    SkISize onISize() override {
-        return SkISize::Make(1200, 900);
-    }
+    SkISize getISize() override { return SkISize::Make(1200, 900); }
 
     void makePaints() {
         {
@@ -254,10 +249,10 @@ protected:
 
         // radial gradient
         SkPoint center = SkPoint::Make(SkIntToScalar(0), SkIntToScalar(0));
-        SkColor colors[] = { SK_ColorBLUE, SK_ColorRED, SK_ColorGREEN };
+        SkColor4f colors[] = { SkColors::kBlue, SkColors::kRed, SkColors::kGreen };
         SkScalar pos[] = { 0, SK_ScalarHalf, SK_Scalar1 };
-        auto shader = SkGradientShader::MakeRadial(center, 20, colors, pos, std::size(colors),
-                                                   SkTileMode::kClamp);
+        auto shader = SkShaders::RadialGradient(center, 20,
+                                                {{colors, pos, SkTileMode::kClamp}, {}});
 
         for (int i = 0; i < fPaints.size(); ++i) {
             canvas->save();

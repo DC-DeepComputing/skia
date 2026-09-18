@@ -7,119 +7,66 @@
 
 #include "include/gpu/graphite/TextureInfo.h"
 
+#include "include/core/SkFourByteTag.h"
+#include "include/core/SkStream.h"
+#include "src/gpu/GpuTypesPriv.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
+
 namespace skgpu::graphite {
 
+TextureInfo::TextureInfo(const TextureInfo& that)
+        : fBackend(that.fBackend)
+        , fViewFormat(that.fViewFormat)
+        , fProtected(that.fProtected) {
+    if (!that.fData.has_value()) {
+        SkASSERT(!fData.has_value());
+        return;
+    }
+
+    that.fData->copyTo(fData);
+}
+
 TextureInfo& TextureInfo::operator=(const TextureInfo& that) {
-    if (!that.isValid()) {
-        fValid = false;
-        return *this;
+    if (this != &that) {
+        this->~TextureInfo();
+        new (this) TextureInfo(that);
     }
-    fBackend = that.fBackend;
-    fSampleCount = that.fSampleCount;
-    fMipmapped = that.fMipmapped;
-    fProtected = that.fProtected;
-
-    switch (that.backend()) {
-#ifdef SK_DAWN
-        case BackendApi::kDawn:
-            fDawnSpec = that.fDawnSpec;
-            break;
-#endif
-#ifdef SK_METAL
-        case BackendApi::kMetal:
-            fMtlSpec = that.fMtlSpec;
-            break;
-#endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            fVkSpec = that.fVkSpec;
-            break;
-#endif
-        default:
-            SK_ABORT("Unsupport Backend");
-    }
-
-    fValid = true;
     return *this;
 }
 
-bool TextureInfo::operator==(const TextureInfo& that) const {
-    if (!this->isValid() && !that.isValid()) {
-        return true;
-    }
-    if (!this->isValid() || !that.isValid()) {
-        return false;
-    }
-
+bool TextureInfo::isCompatible(const TextureInfo& that, bool requireExact) const {
     if (fBackend != that.fBackend) {
         return false;
-    }
-
-    if (fSampleCount != that.fSampleCount ||
-        fMipmapped != that.fMipmapped ||
-        fProtected != that.fProtected) {
-        return false;
-    }
-
-    switch (fBackend) {
-#ifdef SK_DAWN
-        case BackendApi::kDawn:
-            return fDawnSpec == that.fDawnSpec;
-#endif
-#ifdef SK_METAL
-        case BackendApi::kMetal:
-            return fMtlSpec == that.fMtlSpec;
-#endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            return fVkSpec == that.fVkSpec;
-#endif
-        default:
-            return false;
+    } else if (fBackend == skgpu::BackendApi::kUnsupported) {
+        SkASSERT(!fData.has_value() && !that.fData.has_value());
+        return true;
+    } else {
+        SkASSERT(fData.has_value() && that.fData.has_value());
+        return fData->fSampleCount == that.fData->fSampleCount &&
+               fData->fMipmapped == that.fData->fMipmapped &&
+               fData->isCompatible(that, requireExact);
     }
 }
-
-#ifdef SK_DAWN
-bool TextureInfo::getDawnTextureInfo(DawnTextureInfo* info) const {
-    if (!this->isValid() || fBackend != BackendApi::kDawn) {
-        return false;
-    }
-    *info = DawnTextureSpecToTextureInfo(fDawnSpec, fSampleCount, fMipmapped);
-    return true;
-}
-#endif
 
 SkString TextureInfo::toString() const {
-    SkString ret;
-    switch (fBackend) {
-#ifdef SK_DAWN
-        case BackendApi::kDawn:
-            ret.appendf("Dawn(%s,", fDawnSpec.toString().c_str());
-            break;
-#endif
-#ifdef SK_METAL
-        case BackendApi::kMetal:
-            ret.appendf("Metal(%s,", fMtlSpec.toString().c_str());
-            break;
-#endif
-#ifdef SK_VULKAN
-        case BackendApi::kVulkan:
-            ret.appendf("Vulkan(%s,", fVkSpec.toString().c_str());
-            break;
-#endif
-        case BackendApi::kMock:
-            ret += "Mock(";
-            break;
-        default:
-            ret += "Invalid(";
-            break;
+    if (!this->isValid()) {
+        return SkString("{}");
     }
-    ret.appendf("sampleCount=%u,mipmapped=%d,protected=%d)",
-                fSampleCount,
-                static_cast<int>(fMipmapped),
-                static_cast<int>(fProtected));
-    return ret;
+
+    // Strip the leading "k" from the enum name when creating the TextureInfo string.
+    SkASSERT(BackendApiToStr(fBackend)[0] == 'k');
+    const char* backendName = BackendApiToStr(fBackend) + 1;
+
+    return SkStringPrintf("%s(viewFormat=%s,%s,bpp=%d,sampleCount=%u,mipmapped=%d,protected=%d)",
+                          backendName,
+                          TextureFormatName(fViewFormat),
+                          fData->toBackendString().c_str(),
+                          TextureFormatBytesPerBlock(fViewFormat),
+                          (unsigned) fData->fSampleCount,
+                          static_cast<int>(fData->fMipmapped),
+                          static_cast<int>(fProtected));
 }
 
 } // namespace skgpu::graphite
-

@@ -11,6 +11,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <utility>
 #include <vector>
 
 DEF_TEST(SkSpanBasicTemplateGuide, reporter) {
@@ -70,7 +71,7 @@ DEF_TEST(SkSpanBasicTemplateGuide, reporter) {
     auto routine = [&](SkSpan<const int> a) {
         REPORTER_ASSERT(reporter, a.size() == 4);
     };
-    routine({1,2,3,4});
+    routine({{1,2,3,4}});
 }
 
 static bool test_span_parameter(SkSpan<const int> s) {
@@ -81,7 +82,16 @@ DEF_TEST(SkSpanDeduceParam, reporter) {
     {
         std::vector<int> v = {{1, 2, 3}};
         REPORTER_ASSERT(reporter, test_span_parameter(v));
+        REPORTER_ASSERT(reporter, test_span_parameter(std::move(v)));
     }
+
+    {
+        const std::vector<int> v = {{1, 2, 3}};
+        REPORTER_ASSERT(reporter, test_span_parameter(v));
+        REPORTER_ASSERT(reporter, test_span_parameter(std::move(v)));
+    }
+
+    REPORTER_ASSERT(reporter, test_span_parameter(std::vector<int>{1,2,3}));
 
     {
         int v[]{1, 2, 3};
@@ -89,8 +99,8 @@ DEF_TEST(SkSpanDeduceParam, reporter) {
     }
 
     {
-        test_span_parameter({1, 2, 3});
-        REPORTER_ASSERT(reporter, test_span_parameter({1, 2, 3}));
+        test_span_parameter({{1, 2, 3}});
+        REPORTER_ASSERT(reporter, test_span_parameter({{1, 2, 3}}));
     }
 
     {
@@ -103,7 +113,7 @@ DEF_TEST(SkSpanDeduceParam, reporter) {
 DEF_TEST(SkSpanDeduceSize, reporter) {
     int d[] = {1, 2, 3, 4, 5};
     {
-        int s = std::size(d);
+        size_t s = std::size(d);
         SkSpan span = SkSpan{d, s};
         REPORTER_ASSERT(reporter, span.size() == std::size(d));
     }
@@ -116,15 +126,5 @@ DEF_TEST(SkSpanDeduceSize, reporter) {
         size_t s = std::size(d);
         SkSpan span = SkSpan{d, s};
         REPORTER_ASSERT(reporter, span.size() == std::size(d));
-    }
-    {
-        struct C {
-            int* data() { return nullptr; }
-            int size() const { return 0; }
-        };
-
-        C c;
-        SkSpan span = SkSpan(c);
-        REPORTER_ASSERT(reporter, span.size() == 0);
     }
 }

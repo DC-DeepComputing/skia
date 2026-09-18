@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -11,19 +11,20 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 
 #include <memory>
 
 class GrBackendSemaphore;
+class GrDeferredDisplayList;
 class GrRecordingContext;
+class GrSurfaceCharacterization;
 struct GrVkDrawableInfo;
 namespace skgpu::ganesh {
 class Device;
 }
 class SkCanvas;
-class SkDeferredDisplayList;
 struct SkImageInfo;
-class SkSurfaceCharacterization;
 class SkSurfaceProps;
 
 /**
@@ -72,15 +73,16 @@ public:
 
     // Records all the draws to the imported secondary command buffer and sets any dependent
     // offscreen draws to the GPU.
-    void flush();
+    GrDirectContext::FlushResult flush();
 
     /** Inserts a list of GPU semaphores that Skia will have the driver wait on before executing
         commands for this secondary CB. The wait semaphores will get added to the VkCommandBuffer
         owned by this GrContext when flush() is called, and not the command buffer which the
         Secondary CB is from. This will guarantee that the driver waits on the semaphores before
-        the secondary command buffer gets executed. If this call returns false, then the GPU
-        back end will not wait on any passed in semaphores, and the client will still own the
-        semaphores, regardless of the value of deleteSemaphoresAfterWait.
+        the secondary command buffer gets executed. We will submit the semphore to wait at
+        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT and VK_PIPELINE_STAGE_TRANSFER_BIT. If this
+        call returns false, then the GPU back end will not wait on any passed in semaphores, and the
+        client will still own the semaphores, regardless of the value of deleteSemaphoresAfterWait.
 
         If deleteSemaphoresAfterWait is false then Skia will not delete the semaphores. In this case
         it is the client's responsibility to not destroy or attempt to reuse the semaphores until it
@@ -107,15 +109,15 @@ public:
     const SkSurfaceProps& props() const { return fProps; }
 
     // TODO: Fill out these calls to support DDL
-    bool characterize(SkSurfaceCharacterization* characterization) const;
+    bool characterize(GrSurfaceCharacterization* characterization) const;
 
 #ifndef SK_DDL_IS_UNIQUE_POINTER
-    bool draw(sk_sp<const SkDeferredDisplayList> deferredDisplayList);
+    bool draw(sk_sp<const GrDeferredDisplayList> deferredDisplayList);
 #else
-    bool draw(const SkDeferredDisplayList* deferredDisplayList);
+    bool draw(const GrDeferredDisplayList* deferredDisplayList);
 #endif
 
-    bool isCompatible(const SkSurfaceCharacterization& characterization) const;
+    bool isCompatible(const GrSurfaceCharacterization& characterization) const;
 
 private:
     explicit GrVkSecondaryCBDrawContext(sk_sp<skgpu::ganesh::Device>, const SkSurfaceProps*);

@@ -13,17 +13,16 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSerialProcs.h"
-#include "include/private/base/SkFloatingPoint.h"
-#include "include/private/base/SkTFitsIn.h"
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkArenaAlloc.h"
+#include "include/core/SkSpan.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkTFitsIn.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkBezierCurves.h"
+#include "src/core/SkPictureData.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/pathops/SkPathOpsCubic.h"
-#include "src/pathops/SkPathOpsPoint.h"
-#include "src/pathops/SkPathOpsQuad.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cstring>
@@ -31,7 +30,6 @@
 #include <tuple>
 #include <utility>
 
-using namespace skia_private;
 using namespace skglyph;
 using namespace sktext;
 
@@ -43,14 +41,21 @@ SkPictureBackedGlyphDrawable::MakeFromBuffer(SkReadBuffer& buffer) {
     sk_sp<SkData> pictureData = buffer.readByteArrayAsData();
 
     // Return nullptr if invalid or there an empty drawable, which is represented by nullptr.
-    if (!buffer.isValid() || pictureData->size() == 0) {
+    if (!buffer.isValid() || pictureData->empty()) {
         return nullptr;
     }
 
-    // Propagate the outer buffer's allow-SkSL setting to the picture decoder, using the flag on
-    // the deserial procs.
+    // Glyphs have a limited set of what they can be. We explicitly disable sksl for security
+    // purposes (see b/40064011, b/40064341)
     SkDeserialProcs procs;
-    procs.fAllowSkSL = buffer.allowSkSL();
+    procs.fAllowSkSL = false;
+    procs.fAllowTagsProc = [](SkFourByteTag tag, void*) -> bool {
+        return tag == SK_PICT_BUFFER_SIZE_TAG ||
+               tag == SK_PICT_FACTORY_TAG ||
+               tag == SK_PICT_PAINT_BUFFER_TAG ||
+               tag == SK_PICT_PATH_BUFFER_TAG ||
+               tag == SK_PICT_READER_TAG;
+    };
     sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
     if (!buffer.validate(picture != nullptr)) {
         return nullptr;
@@ -66,10 +71,12 @@ void SkPictureBackedGlyphDrawable::FlattenDrawable(SkWriteBuffer& buffer, SkDraw
     }
 
     sk_sp<SkPicture> picture = drawable->makePictureSnapshot();
+    // These drawables should not have SkImages, SkTypefaces or SkPictures inside of them, so
+    // the default SkSerialProcs are sufficient.
     sk_sp<SkData> data = picture->serialize();
 
     // If the picture is too big, or there is no picture, then drop by sending an empty byte array.
-    if (!SkTFitsIn<uint32_t>(data->size()) || data->size() == 0) {
+    if (!SkTFitsIn<uint32_t>(data->size()) || data->empty()) {
         buffer.writeByteArray(nullptr, 0);
         return;
     }
@@ -114,29 +121,19 @@ std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
     glyph.fTop = leftTop & 0xffffu;
     glyph.fMaskFormat = format;
     SkDEBUGCODE(glyph.fAdvancesBoundsFormatAndInitialPathDone = true;)
-    return std::move(glyph);
+    return glyph;
 }
 
-SkGlyph::SkGlyph(const SkGlyph&) = default;
-SkGlyph& SkGlyph::operator=(const SkGlyph&) = default;
-SkGlyph::SkGlyph(SkGlyph&&) = default;
-SkGlyph& SkGlyph::operator=(SkGlyph&&) = default;
-SkGlyph::~SkGlyph() = default;
-
 SkMask SkGlyph::mask() const {
-    SkMask mask;
-    mask.fImage = (uint8_t*)fImage;
-    mask.fBounds.setXYWH(fLeft, fTop, fWidth, fHeight);
-    mask.fRowBytes = this->rowBytes();
-    mask.fFormat = fMaskFormat;
-    return mask;
+    SkIRect bounds = SkIRect::MakeXYWH(fLeft, fTop, fWidth, fHeight);
+    return SkMask(static_cast<const uint8_t*>(fImage), bounds, this->rowBytes(), fMaskFormat);
 }
 
 SkMask SkGlyph::mask(SkPoint position) const {
     SkASSERT(SkScalarIsInt(position.x()) && SkScalarIsInt(position.y()));
-    SkMask answer = this->mask();
-    answer.fBounds.offset(SkScalarFloorToInt(position.x()), SkScalarFloorToInt(position.y()));
-    return answer;
+    SkIRect bounds = SkIRect::MakeXYWH(fLeft, fTop, fWidth, fHeight);
+    bounds.offset(SkScalarFloorToInt(position.x()), SkScalarFloorToInt(position.y()));
+    return SkMask(static_cast<const uint8_t*>(fImage), bounds, this->rowBytes(), fMaskFormat);
 }
 
 void SkGlyph::zeroMetrics() {
@@ -154,20 +151,17 @@ static size_t bits_to_bytes(size_t bits) {
 
 static size_t format_alignment(SkMask::Format format) {
     switch (format) {
-        case SkMask::kBW_Format:
-        case SkMask::kA8_Format:
-        case SkMask::k3D_Format:
+        case SkMask::kBW_Format:   [[fallthrough]];
+        case SkMask::kA8_Format:   [[fallthrough]];
+        case SkMask::k3D_Format:   [[fallthrough]];
         case SkMask::kSDF_Format:
             return alignof(uint8_t);
         case SkMask::kARGB32_Format:
             return alignof(uint32_t);
         case SkMask::kLCD16_Format:
             return alignof(uint16_t);
-        default:
-            SK_ABORT("Unknown mask format.");
-            break;
     }
-    return 0;
+    SkUNREACHABLE;
 }
 
 static size_t format_rowbytes(int width, SkMask::Format format) {
@@ -255,16 +249,15 @@ size_t SkGlyph::imageSize() const {
     return size;
 }
 
-void SkGlyph::installPath(SkArenaAlloc* alloc, const SkPath* path, bool hairline) {
+void SkGlyph::installPath(SkArenaAlloc* alloc, const SkPath* path, bool hairline, bool modified) {
     SkASSERT(fPathData == nullptr);
     SkASSERT(!this->setPathHasBeenCalled());
     fPathData = alloc->make<SkGlyph::PathData>();
     if (path != nullptr) {
         fPathData->fPath = *path;
-        fPathData->fPath.updateBoundsCache();
-        fPathData->fPath.getGenerationID();
         fPathData->fHasPath = true;
         fPathData->fHairline = hairline;
+        fPathData->fModified = modified;
     }
 }
 
@@ -278,9 +271,9 @@ bool SkGlyph::setPath(SkArenaAlloc* alloc, SkScalerContext* scalerContext) {
     return false;
 }
 
-bool SkGlyph::setPath(SkArenaAlloc* alloc, const SkPath* path, bool hairline) {
+bool SkGlyph::setPath(SkArenaAlloc* alloc, const SkPath* path, bool hairline, bool modified) {
     if (!this->setPathHasBeenCalled()) {
-        this->installPath(alloc, path, hairline);
+        this->installPath(alloc, path, hairline, modified);
         return this->path() != nullptr;
     }
     return false;
@@ -299,6 +292,12 @@ bool SkGlyph::pathIsHairline() const {
     // setPath must have been called previously.
     SkASSERT(this->setPathHasBeenCalled());
     return fPathData->fHairline;
+}
+
+bool SkGlyph::pathIsModified() const {
+    // setPath must have been called previously.
+    SkASSERT(this->setPathHasBeenCalled());
+    return fPathData->fModified;
 }
 
 void SkGlyph::installDrawable(SkArenaAlloc* alloc, sk_sp<SkDrawable> drawable) {
@@ -387,6 +386,7 @@ void SkGlyph::flattenPath(SkWriteBuffer& buffer) const {
     buffer.writeBool(hasPath);
     if (hasPath) {
         buffer.writeBool(this->pathIsHairline());
+        buffer.writeBool(this->pathIsModified());
         buffer.writePath(*this->path());
     }
 }
@@ -402,15 +402,20 @@ size_t SkGlyph::addPathFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc) {
     }
     if (hasPath) {
         const bool pathIsHairline = buffer.readBool();
-        SkPath path;
-        buffer.readPath(&path);
-        if (buffer.isValid()) {
-            if (this->setPath(alloc, &path, pathIsHairline)) {
-                memoryIncrease += path.approximateBytesUsed();
+        const bool pathIsModified = buffer.readBool();
+        if (auto path = buffer.readPath()) {
+            if (fMaskFormat != SkMask::kBW_Format &&
+                fMaskFormat != SkMask::kA8_Format &&
+                fMaskFormat != SkMask::kLCD16_Format) {
+                buffer.validate(false);
+                return 0;
+            }
+            if (this->setPath(alloc, &path.value(), pathIsHairline, pathIsModified)) {
+                memoryIncrease += path->approximateBytesUsed();
             }
         }
     } else {
-        this->setPath(alloc, nullptr, false);
+        this->setPath(alloc, nullptr, false, false);
     }
 
     return memoryIncrease;
@@ -455,93 +460,88 @@ static std::tuple<SkScalar, SkScalar> calculate_path_gap(
     };
 
     // Handle all the different verbs for the path.
-    SkPoint pts[4];
-    auto addLine = [&expandGap, &pts](SkScalar offset) {
+    auto addLine = [&](SkSpan<const SkPoint> pts, SkScalar offset) {
         SkScalar t = sk_ieee_float_divide(offset - pts[0].fY, pts[1].fY - pts[0].fY);
         if (0 <= t && t < 1) {   // this handles divide by zero above
             expandGap(pts[0].fX + t * (pts[1].fX - pts[0].fX));
         }
     };
 
-    auto addQuad = [&expandGap, &pts](SkScalar offset) {
-        SkDQuad quad;
-        quad.set(pts);
-        double roots[2];
-        int count = quad.horizontalIntersect(offset, roots);
-        while (--count >= 0) {
-            expandGap(quad.ptAtT(roots[count]).asSkPoint().fX);
+    auto addQuad = [&](SkSpan<const SkPoint> pts, SkScalar offset) {
+        float intersectionStorage[2];
+        auto intersections = SkBezierQuad::IntersectWithHorizontalLine(
+                pts, offset, intersectionStorage);
+
+        for(float intersection : intersections) {
+            expandGap(intersection);
         }
     };
 
-    auto addCubic = [&expandGap, &pts](SkScalar offset) {
-        SkDCubic cubic;
-        cubic.set(pts);
-        double roots[3];
-        int count = cubic.horizontalIntersect(offset, roots);
-        while (--count >= 0) {
-            expandGap(cubic.ptAtT(roots[count]).asSkPoint().fX);
+    auto addCubic = [&](SkSpan<const SkPoint> pts, SkScalar offset) {
+        float intersectionStorage[3];
+        auto intersections = SkBezierCubic::IntersectWithHorizontalLine(
+                pts, offset, intersectionStorage);
+
+        for(float intersection : intersections) {
+            expandGap(intersection);
         }
     };
 
     // Handle when a verb's points are in the gap between top and bottom.
-    auto addPts = [&expandGap, &pts, topOffset, bottomOffset](int ptCount) {
-        for (int i = 0; i < ptCount; ++i) {
-            if (topOffset < pts[i].fY && pts[i].fY < bottomOffset) {
-                expandGap(pts[i].fX);
+    auto addPts = [&expandGap, topOffset, bottomOffset](SkSpan<const SkPoint> pts) {
+        for (const SkPoint p : pts) {
+            if (topOffset < p.fY && p.fY < bottomOffset) {
+                expandGap(p.fX);
             }
         }
     };
 
     SkPath::Iter iter(path, false);
-    SkPath::Verb verb;
-    while (SkPath::kDone_Verb != (verb = iter.next(pts))) {
-        switch (verb) {
-            case SkPath::kMove_Verb: {
+    while (auto rec = iter.next()) {
+        const SkSpan<const SkPoint> pts = rec->fPoints;
+        switch (rec->fVerb) {
+            case SkPathVerb::kMove: {
                 break;
             }
-            case SkPath::kLine_Verb: {
+            case SkPathVerb::kLine: {
                 auto [lineTop, lineBottom] = std::minmax({pts[0].fY, pts[1].fY});
 
                 // The y-coordinates of the points intersect the top and bottom offsets.
                 if (topOffset <= lineBottom && lineTop <= bottomOffset) {
-                    addLine(topOffset);
-                    addLine(bottomOffset);
-                    addPts(2);
+                    addLine(pts, topOffset);
+                    addLine(pts, bottomOffset);
+                    addPts(pts);
                 }
                 break;
             }
-            case SkPath::kQuad_Verb: {
+            case SkPathVerb::kQuad: {
                 auto [quadTop, quadBottom] = std::minmax({pts[0].fY, pts[1].fY, pts[2].fY});
 
                 // The y-coordinates of the points intersect the top and bottom offsets.
                 if (topOffset <= quadBottom && quadTop <= bottomOffset) {
-                    addQuad(topOffset);
-                    addQuad(bottomOffset);
-                    addPts(3);
+                    addQuad(pts, topOffset);
+                    addQuad(pts, bottomOffset);
+                    addPts(pts);
                 }
                 break;
             }
-            case SkPath::kConic_Verb: {
+            case SkPathVerb::kConic: {
                 SkDEBUGFAIL("There should be no conic primitives in glyph outlines.");
                 break;
             }
-            case SkPath::kCubic_Verb: {
+            case SkPathVerb::kCubic: {
                 auto [cubicTop, cubicBottom] =
                         std::minmax({pts[0].fY, pts[1].fY, pts[2].fY, pts[3].fY});
 
                 // The y-coordinates of the points intersect the top and bottom offsets.
                 if (topOffset <= cubicBottom && cubicTop <= bottomOffset) {
-                    addCubic(topOffset);
-                    addCubic(bottomOffset);
-                    addPts(4);
+                    addCubic(pts, topOffset);
+                    addCubic(pts, bottomOffset);
+                    addPts(pts);
                 }
                 break;
             }
-            case SkPath::kClose_Verb: {
-                break;
-            }
-            default: {
-                SkDEBUGFAIL("Unknown path verb generating glyph underline.");
+            case SkPathVerb::kClose: {
                 break;
             }
         }
@@ -652,6 +652,7 @@ void SkGlyphDigest::setActionFor(skglyph::ActionType actionType,
             }
             case kDirectMaskCPU: {
                 if (strike->prepareForImage(glyph)) {
+                    SkASSERT(!glyph->isEmpty());
                     action = GlyphAction::kAccept;
                 }
                 break;

@@ -10,23 +10,18 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAssert.h"
-#include "src/base/SkNoDestructor.h"
+#include "include/private/SkAssert.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkEffectPriv.h"
+#include "src/core/SkNoDestructor.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/KeyHelpers.h"
-#include "src/gpu/graphite/PaintParamsKey.h"
-#endif
-
-sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
+const SkBlender* GetBlendModeSingleton(SkBlendMode mode) {
 #define RETURN_SINGLETON_BLENDER(m)                            \
     case m: {                                                  \
         static SkNoDestructor<SkBlendModeBlender> sBlender(m); \
-        return sk_ref_sp(sBlender.get());                      \
+        return sBlender.get();                                 \
     }
 
     switch (mode) {
@@ -67,24 +62,9 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #undef RETURN_SINGLETON_BLENDER
 }
 
-#if defined(SK_GRAPHITE)
-#include "src/gpu/Blend.h"
-
-void SkBlendModeBlender::addToKey(const skgpu::graphite::KeyContext& keyContext,
-                                  skgpu::graphite::PaintParamsKeyBuilder* builder,
-                                  skgpu::graphite::PipelineDataGatherer* gatherer) const {
-    using namespace skgpu::graphite;
-
-    SkSpan<const float> coeffs = skgpu::GetPorterDuffBlendConstants(fMode);
-    if (!coeffs.empty()) {
-        CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, coeffs);
-        builder->endBlock();
-    } else {
-        BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, fMode);
-        builder->endBlock();
-    }
+sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
+    return sk_ref_sp(GetBlendModeSingleton(mode));
 }
-#endif
 
 sk_sp<SkFlattenable> SkBlendModeBlender::CreateProc(SkReadBuffer& buffer) {
     SkBlendMode mode = buffer.read32LE(SkBlendMode::kLastMode);
@@ -100,10 +80,22 @@ bool SkBlendModeBlender::onAppendStages(const SkStageRec& rec) const {
     return true;
 }
 
-#if defined(SK_ENABLE_SKVM)
-skvm::Color SkBlendModeBlender::onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
-                                          const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
-                                          SkArenaAlloc* alloc) const {
-    return p->blend(fMode, src, dst);
+bool SkBlenderBase::affectsTransparentBlack() const {
+    if (auto blendMode = this->asBlendMode()) {
+        SkBlendModeCoeff src, dst;
+        if (SkBlendMode_AsCoeff(*blendMode, &src, &dst)) {
+            // If the source is (0,0,0,0), then dst is preserved as long as its coefficient
+            // evaluates to 1.0. This is true for kOne, kISA, and kISC. Anything else means the
+            // blend mode affects transparent black.
+            return dst != SkBlendModeCoeff::kOne &&
+                   dst != SkBlendModeCoeff::kISA &&
+                   dst != SkBlendModeCoeff::kISC;
+        } else {
+            // An advanced blend mode, which do not affect transparent black
+            return false;
+        }
+    } else {
+        // Blenders that aren't blend modes are assumed to modify transparent black.
+       return true;
+    }
 }
-#endif

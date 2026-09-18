@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkIPoint16.h"
 #include "src/gpu/RectanizerSkyline.h"
+
+#include "include/private/SkAssert.h"
+#include "src/core/SkIPoint16.h"
 
 #include <algorithm>
 

@@ -24,13 +24,9 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("scaledrects");
-    }
+    SkString getName() const override { return SkString("scaledrects"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(128, 64);
-    }
+    SkISize getISize() override { return SkISize::Make(128, 64); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->clipRect(SkRect::MakeXYWH(10, 50, 100, 10));
@@ -63,5 +59,20 @@ protected:
 //////////////////////////////////////////////////////////////////////////////
 
 DEF_GM(return new ScaledRectsGM;)
+
+DEF_SIMPLE_GM(cliplargerect, canvas, 256, 256) {
+    canvas->save();
+    canvas->clipIRect({0, 0, 120, 256});
+    canvas->save();
+    canvas->translate(1e24f, 0.f);
+    canvas->clear(SK_ColorGREEN);
+    canvas->restore();
+    canvas->restore();
+
+    SkPaint line;
+    line.setStyle(SkPaint::kStroke_Style);
+    line.setColor(SK_ColorBLACK);
+    canvas->drawLine(120.f, 0.f, 120.f, 256.f, line);
+}
 
 }  // namespace skiagm

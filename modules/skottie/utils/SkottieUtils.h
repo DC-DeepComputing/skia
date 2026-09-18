@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,14 +8,26 @@
 #ifndef SkottieUtils_DEFINED
 #define SkottieUtils_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
 #include "modules/skottie/include/ExternalLayer.h"
-#include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/include/SkottieProperty.h"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+struct SkSize;
+
+namespace skottie {
+class MarkerObserver;
+}
+
+namespace skresources {
+class ResourceProvider;
+}
 
 namespace skottie_utils {
 
@@ -47,18 +59,23 @@ public:
 
     std::vector<PropKey> getColorProps() const;
     skottie::ColorPropertyValue getColor(const PropKey&) const;
+    std::unique_ptr<skottie::ColorPropertyHandle> getColorHandle(const PropKey&, size_t) const;
     bool setColor(const PropKey&, const skottie::ColorPropertyValue&);
 
     std::vector<PropKey> getOpacityProps() const;
     skottie::OpacityPropertyValue getOpacity(const PropKey&) const;
+    std::unique_ptr<skottie::OpacityPropertyHandle> getOpacityHandle(const PropKey&, size_t) const;
     bool setOpacity(const PropKey&, const skottie::OpacityPropertyValue&);
 
     std::vector<PropKey> getTransformProps() const;
     skottie::TransformPropertyValue getTransform(const PropKey&) const;
+    std::unique_ptr<skottie::TransformPropertyHandle> getTransformHandle(const PropKey&,
+                                                                         size_t) const;
     bool setTransform(const PropKey&, const skottie::TransformPropertyValue&);
 
     std::vector<PropKey> getTextProps() const;
     skottie::TextPropertyValue getText(const PropKey&) const;
+    std::unique_ptr<skottie::TextPropertyHandle> getTextHandle(const PropKey&, size_t index) const;
     bool setText(const PropKey&, const skottie::TextPropertyValue&);
 
     struct MarkerInfo {
@@ -90,6 +107,9 @@ private:
 
     template <typename V, typename T>
     V get(const PropKey&, const PropMap<T>& container) const;
+
+    template <typename T>
+    std::unique_ptr<T> getHandle(const PropKey&, size_t, const PropMap<T>& container) const;
 
     template <typename V, typename T>
     bool set(const PropKey&, const V&, const PropMap<T>& container);
@@ -124,52 +144,6 @@ private:
 
     const sk_sp<skresources::ResourceProvider> fResourceProvider;
     const SkString                             fPrefix;
-};
-
-enum SlotType {
-    // properties
-    kColor   = 1,
-    kOpacity = 4,
-    // assets
-    kImage   = 50,
-    // text
-    kText    = 99,
-};
-
-/**
- * Helper class to wrap a Skottie focused implementation of ResourceProvider and PropertyObserver
- * to help manage 'slots' (properties and assets intended by the author to be swapped).
- */
-class SlotManager final : public SkRefCnt {
-
-public:
-    SlotManager(const SkString, sk_sp<skresources::ResourceProvider> = nullptr,
-                sk_sp<skottie::PropertyObserver> = nullptr);
-
-    void setColorSlot(std::string, SkColor);
-    void setOpacitySlot(std::string, SkScalar);
-    void setTextStringSlot(std::string, SkString);
-    void setImageSlot(std::string, sk_sp<skresources::ImageAsset>);
-    void setImageSlot(std::string, const char[], const char[], const char[]);
-
-    struct SlotInfo {
-        std::string slotID;
-        int type;
-    };
-
-    const std::vector<SlotInfo>&         getSlotInfo() const { return fSlotInfos; }
-    sk_sp<skresources::ResourceProvider> getResourceProvider() const;
-    sk_sp<skottie::PropertyObserver>     getPropertyObserver() const;
-
-private:
-    class SlottableResourceProvider;
-    class SlottablePropertyObserver;
-
-    std::vector<SlotInfo>            fSlotInfos;
-    sk_sp<SlottableResourceProvider> fResourceProvider;
-    sk_sp<SlottablePropertyObserver> fPropertyObserver;
-
-    void parseSlotIDsFromFileName(SkString path);
 };
 
 } // namespace skottie_utils

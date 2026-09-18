@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,14 +7,21 @@
 
 #include "modules/skottie/src/effects/Effects.h"
 
+#include "modules/skottie/include/Skottie.h"
+#include "modules/skottie/include/SkottieProperty.h"
 #include "modules/skottie/src/Composition.h"
 #include "modules/skottie/src/Layer.h"
 #include "modules/skottie/src/SkottieJson.h"
+#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
-#include "src/utils/SkJSON.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
 
 #include <algorithm>
+#include <cstdint>
+#include <cstring>
 #include <iterator>
+#include <limits>
+#include <utility>
 
 namespace skottie {
 namespace internal {
@@ -144,11 +151,14 @@ sk_sp<sksg::RenderNode> EffectBuilder::attachStyles(const skjson::ArrayValue& js
         sk_sp<sksg::RenderNode> (EffectBuilder::*)(const skjson::ObjectValue&,
                                                    sk_sp<sksg::RenderNode>) const;
     static constexpr StyleBuilder gStyleBuilders[] = {
-        nullptr,                                 // 'ty': 0 -> stroke
-        &EffectBuilder::attachDropShadowStyle,   // 'ty': 1 -> drop shadow
-        &EffectBuilder::attachInnerShadowStyle,  // 'ty': 2 -> inner shadow
-        &EffectBuilder::attachOuterGlowStyle,    // 'ty': 3 -> outer glow
-        &EffectBuilder::attachInnerGlowStyle,    // 'ty': 4 -> inner glow
+        nullptr,                                  // 'ty': 0 -> stroke
+        &EffectBuilder::attachDropShadowStyle,    // 'ty': 1 -> drop shadow
+        &EffectBuilder::attachInnerShadowStyle,   // 'ty': 2 -> inner shadow
+        &EffectBuilder::attachOuterGlowStyle,     // 'ty': 3 -> outer glow
+        &EffectBuilder::attachInnerGlowStyle,     // 'ty': 4 -> inner glow
+        nullptr,                                  // 'ty': 5 -> bevel/emboss
+        nullptr,                                  // 'ty': 6 -> satin
+        &EffectBuilder::attachColorOverlayStyle,  // 'ty': 7 -> color overlay
     };
 
     for (const skjson::ObjectValue* jstyle : jstyles) {
@@ -184,6 +194,14 @@ const skjson::Value& EffectBuilder::GetPropValue(const skjson::ArrayValue& jprop
     const skjson::ObjectValue* jprop = jprops[prop_index];
 
     return jprop ? (*jprop)["v"] : kNull;
+}
+
+EffectBuilder::LayerContent EffectBuilder::getLayerContent(int layer_index) const {
+    if (LayerBuilder* lbuilder = fCompBuilder->layerBuilder(layer_index)) {
+        return { lbuilder->getContentTree(*fBuilder, fCompBuilder), lbuilder->size() };
+    }
+
+    return { nullptr, {0, 0} };
 }
 
 MaskShaderEffectBase::MaskShaderEffectBase(sk_sp<sksg::RenderNode> child, const SkSize& ls)

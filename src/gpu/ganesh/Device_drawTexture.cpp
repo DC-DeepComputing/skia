@@ -5,23 +5,55 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/ganesh/Device_v1.h"
-
-#include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "include/private/base/SkTPin.h"
-#include "src/core/SkDraw.h"
-#include "src/core/SkMaskFilterBase.h"
-#include "src/core/SkSamplingPriv.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkMaskFilter.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRRect.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkTileMode.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/gpu/ganesh/GrImageContext.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkRRectPriv.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/core/SkTLazy.h"
+#include "src/gpu/BlurUtils.h"
+#include "src/gpu/Swizzle.h"
 #include "src/gpu/TiledTextureUtils.h"
+#include "src/gpu/ganesh/Device.h"
 #include "src/gpu/ganesh/GrBlurUtils.h"
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFPArgs.h"
+#include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrFragmentProcessors.h"
 #include "src/gpu/ganesh/GrOpsTypes.h"
-#include "src/gpu/ganesh/GrStyle.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/GrSamplerState.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+#include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
@@ -30,7 +62,15 @@
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/gpu/ganesh/image/SkSpecialImage_Ganesh.h"
 #include "src/image/SkImage_Base.h"
+#include "src/shaders/SkShaderBase.h"
+
+#include <memory>
+#include <tuple>
+#include <utility>
+
+class GrClip;
 
 using namespace skia_private;
 
@@ -104,73 +144,6 @@ bool can_ignore_linear_filtering_subset(const SkRect& srcSubset,
 //////////////////////////////////////////////////////////////////////////////
 //  Helper functions for drawing an image with ganesh::SurfaceDrawContext
 
-enum class ImageDrawMode {
-    // Src and dst have been restricted to the image content. May need to clamp, no need to decal.
-    kOptimized,
-    // Src and dst are their original sizes, requires use of a decal instead of plain clamping.
-    // This is used when a dst clip is provided and extends outside of the optimized dst rect.
-    kDecal,
-    // Src or dst are empty, or do not intersect the image content so don't draw anything.
-    kSkip
-};
-
-/**
- * Optimize the src rect sampling area within an image (sized 'width' x 'height') such that
- * 'outSrcRect' will be completely contained in the image's bounds. The corresponding rect
- * to draw will be output to 'outDstRect'. The mapping between src and dst will be cached in
- * 'srcToDst'. Outputs are not always updated when kSkip is returned.
- *
- * If 'origSrcRect' is null, implicitly use the image bounds. If 'origDstRect' is null, use the
- * original src rect. 'dstClip' should be null when there is no additional clipping.
- */
-ImageDrawMode optimize_sample_area(const SkISize& image, const SkRect* origSrcRect,
-                                   const SkRect* origDstRect, const SkPoint dstClip[4],
-                                   SkRect* outSrcRect, SkRect* outDstRect,
-                                   SkMatrix* srcToDst) {
-    SkRect srcBounds = SkRect::MakeIWH(image.fWidth, image.fHeight);
-
-    SkRect src = origSrcRect ? *origSrcRect : srcBounds;
-    SkRect dst = origDstRect ? *origDstRect : src;
-
-    if (src.isEmpty() || dst.isEmpty()) {
-        return ImageDrawMode::kSkip;
-    }
-
-    if (outDstRect) {
-        *srcToDst = SkMatrix::RectToRect(src, dst);
-    } else {
-        srcToDst->setIdentity();
-    }
-
-    if (origSrcRect && !srcBounds.contains(src)) {
-        if (!src.intersect(srcBounds)) {
-            return ImageDrawMode::kSkip;
-        }
-        srcToDst->mapRect(&dst, src);
-
-        // Both src and dst have gotten smaller. If dstClip is provided, confirm it is still
-        // contained in dst, otherwise cannot optimize the sample area and must use a decal instead
-        if (dstClip) {
-            for (int i = 0; i < 4; ++i) {
-                if (!dst.contains(dstClip[i].fX, dstClip[i].fY)) {
-                    // Must resort to using a decal mode restricted to the clipped 'src', and
-                    // use the original dst rect (filling in src bounds as needed)
-                    *outSrcRect = src;
-                    *outDstRect = (origDstRect ? *origDstRect
-                                               : (origSrcRect ? *origSrcRect : srcBounds));
-                    return ImageDrawMode::kDecal;
-                }
-            }
-        }
-    }
-
-    // The original src and dst were fully contained in the image, or there was no dst clip to
-    // worry about, or the clip was still contained in the restricted dst rect.
-    *outSrcRect = src;
-    *outDstRect = dst;
-    return ImageDrawMode::kOptimized;
-}
-
 /**
  * Checks whether the paint is compatible with using SurfaceDrawContext::drawTexture. It is more
  * efficient than the SkImage general case.
@@ -217,7 +190,7 @@ void draw_texture(skgpu::ganesh::SurfaceDrawContext* sdc,
         // Conservative estimate of how much a coord could be outset from src rect:
         // 1/2 pixel for AA and 1/2 pixel for linear filtering
         float buffer = 0.5f * (aaFlags != GrQuadAAFlags::kNone) +
-                       0.5f * (filter == GrSamplerState::Filter::kLinear);
+                       GrTextureEffect::kLinearInset * (filter == GrSamplerState::Filter::kLinear);
         SkRect safeBounds = proxy->getBoundsRect();
         safeBounds.inset(buffer, buffer);
         if (!safeBounds.contains(srcRect)) {
@@ -262,28 +235,46 @@ void draw_texture(skgpu::ganesh::SurfaceDrawContext* sdc,
     }
 }
 
-// Assumes srcRect and dstRect have already been optimized to fit the proxy.
-void draw_image(GrRecordingContext* rContext,
-                skgpu::ganesh::SurfaceDrawContext* sdc,
-                const GrClip* clip,
-                const SkMatrixProvider& matrixProvider,
-                const SkPaint& paint,
-                const SkImage* image,
-                const SkRect& src,
-                const SkRect& dst,
-                const SkPoint dstClip[4],
-                const SkMatrix& srcToDst,
-                SkCanvas::QuadAAFlags canvasAAFlags,
-                SkCanvas::SrcRectConstraint constraint,
-                SkSamplingOptions sampling,
-                SkTileMode tm = SkTileMode::kClamp) {
+SkFilterMode downgrade_to_filter(const SkSamplingOptions& sampling) {
+    SkFilterMode filter = sampling.filter;
+    if (sampling.isAniso() || sampling.useCubic || sampling.mipmap != SkMipmapMode::kNone) {
+        // if we were "fancier" than just bilerp, only do bilerp
+        filter = SkFilterMode::kLinear;
+    }
+    return filter;
+}
+
+} // anonymous namespace
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+namespace skgpu::ganesh {
+
+void Device::drawEdgeAAImage(const SkImage* image,
+                             const SkRect& src,
+                             const SkRect& dst,
+                             const SkPoint dstClip[4],
+                             SkCanvas::QuadAAFlags canvasAAFlags,
+                             const SkMatrix& localToDevice,
+                             const SkSamplingOptions& sampling,
+                             const SkPaint& paint,
+                             SkCanvas::SrcRectConstraint constraint,
+                             const SkMatrix& srcToDst,
+                             SkTileMode tm) {
+    GrRecordingContext* rContext = fContext.get();
+    SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
+    const GrClip* clip = this->clip();
+
     GrQuadAAFlags aaFlags = SkToGrQuadAAFlags(canvasAAFlags);
-    const SkMatrix& ctm(matrixProvider.localToDevice());
     auto ib = as_IB(image);
     if (tm == SkTileMode::kClamp && !ib->isYUVA() && can_use_draw_texture(paint, sampling)) {
         // We've done enough checks above to allow us to pass ClampNearest() and not check for
         // scaling adjustments.
-        auto [view, ct] = skgpu::ganesh::AsView(rContext, image, GrMipmapped::kNo);
+        auto [view, ct] = skgpu::ganesh::AsView(rContext,
+                                                image,
+                                                skgpu::Mipmapped::kNo,
+                                                this->targetProxy());
         if (!view) {
             return;
         }
@@ -291,7 +282,7 @@ void draw_image(GrRecordingContext* rContext,
         info = info.makeColorType(ct);
         draw_texture(sdc,
                      clip,
-                     ctm,
+                     localToDevice,
                      paint,
                      sampling.filter,
                      src,
@@ -332,7 +323,7 @@ void draw_image(GrRecordingContext* rContext,
         restrictToSubset && sampling.mipmap == SkMipmapMode::kNone && coordsAllInsideSrcRect &&
         !ib->isYUVA()) {
         SkMatrix combinedMatrix;
-        combinedMatrix.setConcat(ctm, srcToDst);
+        combinedMatrix.setConcat(localToDevice, srcToDst);
         if (can_ignore_linear_filtering_subset(src, combinedMatrix, sdc->numSamples())) {
             restrictToSubset = false;
         }
@@ -342,7 +333,9 @@ void draw_image(GrRecordingContext* rContext,
     if (canUseTextureCoordsAsLocalCoords) {
         textureMatrix = SkMatrix::I();
     } else {
-        if (!srcToDst.invert(&textureMatrix)) {
+        if (auto inv = srcToDst.invert()) {
+            textureMatrix = *inv;
+        } else {
             return;
         }
     }
@@ -350,14 +343,17 @@ void draw_image(GrRecordingContext* rContext,
     const SkRect* domain = coordsAllInsideSrcRect ? &src : nullptr;
     SkTileMode tileModes[] = {tm, tm};
     std::unique_ptr<GrFragmentProcessor> fp = skgpu::ganesh::AsFragmentProcessor(
-            rContext, image, sampling, tileModes, textureMatrix, subset, domain);
+            sdc, image, sampling, tileModes, textureMatrix, subset, domain);
     fp = GrColorSpaceXformEffect::Make(
             std::move(fp), image->imageInfo().colorInfo(), sdc->colorInfo());
     if (image->isAlphaOnly()) {
         if (const auto* shader = as_SB(paint.getShader())) {
-            auto shaderFP = shader->asRootFragmentProcessor(
-                    GrFPArgs(rContext, &sdc->colorInfo(), sdc->surfaceProps()),
-                    matrixProvider.localToDevice());
+            auto shaderFP = GrFragmentProcessors::Make(shader,
+                                                       GrFPArgs(sdc,
+                                                                &sdc->colorInfo(),
+                                                                sdc->surfaceProps(),
+                                                                GrFPArgs::Scope::kDefault),
+                                                       localToDevice);
             if (!shaderFP) {
                 return;
             }
@@ -370,13 +366,7 @@ void draw_image(GrRecordingContext* rContext,
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaintReplaceShader(rContext,
-                                       sdc->colorInfo(),
-                                       paint,
-                                       ctm,
-                                       std::move(fp),
-                                       sdc->surfaceProps(),
-                                       &grPaint)) {
+    if (!SkPaintToGrPaintReplaceShader(sdc, paint, localToDevice, std::move(fp), &grPaint)) {
         return;
     }
 
@@ -390,10 +380,11 @@ void draw_image(GrRecordingContext* rContext,
                 GrMapRectPoints(dst, src, dstClip, srcClipPoints, 4);
                 srcClip = srcClipPoints;
             }
-            sdc->fillQuadWithEdgeAA(clip, std::move(grPaint), aaFlags, ctm, dstClip, srcClip);
+            sdc->fillQuadWithEdgeAA(clip, std::move(grPaint), aaFlags, localToDevice,
+                                    dstClip, srcClip);
         } else {
             // Provide explicit texture coords when possible, otherwise rely on texture matrix
-            sdc->fillRectWithEdgeAA(clip, std::move(grPaint), aaFlags, ctm, dst,
+            sdc->fillRectWithEdgeAA(clip, std::move(grPaint), aaFlags, localToDevice, dst,
                                     canUseTextureCoordsAsLocalCoords ? &src : nullptr);
         }
     } else {
@@ -403,102 +394,149 @@ void draw_image(GrRecordingContext* rContext,
         GrStyledShape shape;
         if (dstClip) {
             // Represent it as an SkPath formed from the dstClip
-            SkPath path;
-            path.addPoly(dstClip, 4, true);
-            shape = GrStyledShape(path);
+            shape = GrStyledShape(SkPath::Polygon({dstClip, 4}, true));
         } else {
             shape = GrStyledShape(dst);
         }
 
-        GrBlurUtils::drawShapeWithMaskFilter(
-                rContext, sdc, clip, shape, std::move(grPaint), ctm, mf);
+        GrBlurUtils::DrawShapeWithMaskFilter(
+                rContext, sdc, clip, shape, std::move(grPaint), localToDevice, mf);
     }
 }
-
-SkFilterMode downgrade_to_filter(const SkSamplingOptions& sampling) {
-    SkFilterMode filter = sampling.filter;
-    if (sampling.isAniso() || sampling.useCubic || sampling.mipmap != SkMipmapMode::kNone) {
-        // if we were "fancier" than just bilerp, only do bilerp
-        filter = SkFilterMode::kLinear;
-    }
-    return filter;
-}
-
-bool can_disable_mipmap(const SkMatrix& viewM, const SkMatrix& localM) {
-    SkMatrix matrix;
-    matrix.setConcat(viewM, localM);
-    // We bias mipmap lookups by -0.5. That means our final LOD is >= 0 until
-    // the computed LOD is >= 0.5. At what scale factor does a texture get an LOD of
-    // 0.5?
-    //
-    // Want:  0       = log2(1/s) - 0.5
-    //        0.5     = log2(1/s)
-    //        2^0.5   = 1/s
-    //        1/2^0.5 = s
-    //        2^0.5/2 = s
-    return matrix.getMinScale() >= SK_ScalarRoot2Over2;
-}
-
-} // anonymous namespace
-
-//////////////////////////////////////////////////////////////////////////////
-
-namespace skgpu::ganesh {
 
 void Device::drawSpecial(SkSpecialImage* special,
                          const SkMatrix& localToDevice,
                          const SkSamplingOptions& origSampling,
-                         const SkPaint& paint) {
+                         const SkPaint& paint,
+                         SkCanvas::SrcRectConstraint constraint) {
     SkASSERT(!paint.getMaskFilter() && !paint.getImageFilter());
-    SkASSERT(special->isTextureBacked());
+    SkASSERT(special->isGaneshBacked());
 
     SkRect src = SkRect::Make(special->subset());
     SkRect dst = SkRect::MakeWH(special->width(), special->height());
-    SkMatrix srcToDst = SkMatrix::RectToRect(src, dst);
+    SkMatrix srcToDst = SkMatrix::RectToRectOrIdentity(src, dst);
 
     SkSamplingOptions sampling = SkSamplingOptions(downgrade_to_filter(origSampling));
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
     SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
                                                        : SkCanvas::kNone_QuadAAFlags;
 
-    GrSurfaceProxyView view = special->view(this->recordingContext());
+    GrSurfaceProxyView view = SkSpecialImages::AsView(this->recordingContext(), special);
+    if (!view) {
+        // This shouldn't happen since we shouldn't be mixing SkSpecialImage subclasses but
+        // returning early should avoid problems in release builds.
+        SkASSERT(false);
+        return;
+    }
+
+    if (constraint == SkCanvas::kFast_SrcRectConstraint) {
+        // If 'fast' was requested, we assume the caller has done sufficient analysis to know the
+        // logical dimensions are safe (which is true for FilterResult, the only current caller that
+        // passes in 'fast'). Without exactify'ing the proxy, GrTextureEffect would re-introduce
+        // subset clamping.
+        view.proxy()->priv().exactify();
+    }
+
     SkImage_Ganesh image(sk_ref_sp(special->getContext()),
                          special->uniqueID(),
                          std::move(view),
                          special->colorInfo());
     // In most cases this ought to hit draw_texture since there won't be a color filter,
     // alpha-only texture+shader, or a high filter quality.
-    SkMatrixProvider matrixProvider(localToDevice);
-    draw_image(fContext.get(),
-               fSurfaceDrawContext.get(),
-               this->clip(),
-               matrixProvider,
-               paint,
-               &image,
-               src,
-               dst,
-               nullptr,
-               srcToDst,
-               aaFlags,
-               SkCanvas::kStrict_SrcRectConstraint,
-               sampling);
+    this->drawEdgeAAImage(&image,
+                          src,
+                          dst,
+                          /* dstClip= */nullptr,
+                          aaFlags,
+                          localToDevice,
+                          sampling,
+                          paint,
+                          constraint,
+                          srcToDst,
+                          SkTileMode::kClamp);
 }
 
-void Device::drawImageQuad(const SkImage* image,
-                           const SkRect* srcRect,
-                           const SkRect* dstRect,
-                           const SkPoint dstClip[4],
-                           SkCanvas::QuadAAFlags aaFlags,
-                           const SkMatrix* preViewMatrix,
-                           const SkSamplingOptions& origSampling,
-                           const SkPaint& paint,
-                           SkCanvas::SrcRectConstraint constraint) {
+void Device::drawCoverageMask(const SkSpecialImage* mask,
+                              const SkMatrix& maskToDevice,
+                              const SkSamplingOptions& sampling,
+                              const SkPaint& paint) {
+    // Use the active local-to-device transform for this since it determines the
+    // local coords for evaluating the skpaint, whereas the provided 'maskToDevice'
+    // just places the coverage mask.
+    SkMatrix localToDevice = this->localToDevice();
+    auto deviceToLocal = localToDevice.invert();
+    if (!deviceToLocal) {
+        return;
+    }
+
+    GrSurfaceProxyView view = SkSpecialImages::AsView(this->recordingContext(), mask);
+    if (!view) {
+        // This shouldn't happen since we shouldn't be mixing SkSpecialImage subclasses but
+        // returning early should avoid problems in release builds.
+        SkASSERT(false);
+        return;
+    }
+
+    SkTileMode tileModes[] = {SkTileMode::kDecal, SkTileMode::kDecal};
+
+    auto deviceToMask = maskToDevice.invert();
+    if (!deviceToMask) {
+        return;
+    }
+    // 'textureMaskSpace' needs to map from local coords -> mask coords -> texture coords.
+    SkMatrix textureMaskSpace = localToDevice;
+    textureMaskSpace.postConcat(*deviceToMask);
+    textureMaskSpace.postTranslate(mask->subset().fLeft, mask->subset().fTop);
+
+    SkRect maskSubset = SkRect::Make(mask->subset());
+    std::unique_ptr<GrFragmentProcessor> coverageFP = skgpu::ganesh::MakeFragmentProcessorFromView(
+        this->recordingContext(), std::move(view), mask->alphaType(), sampling, tileModes,
+        textureMaskSpace, &maskSubset, &maskSubset);
+    coverageFP = GrFragmentProcessor::SwizzleOutput(std::move(coverageFP), skgpu::Swizzle("aaaa"));
+
+
+    SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
+    GrPaint grPaint;
+    // Any shading is done in local space which we want to draw to the device.
+    SkPaintToGrPaint(sdc, paint, localToDevice, &grPaint);
+    grPaint.setCoverageFragmentProcessor(std::move(coverageFP));
+
+    GrAA aa = fSurfaceDrawContext->chooseAA(paint);
+    SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
+                                                       : SkCanvas::kNone_QuadAAFlags;
+
+    SkMatrix maskToLocal = SkMatrix::Concat(*deviceToLocal, maskToDevice);
+    SkRect maskRect = SkRect::MakeWH(mask->width(), mask->height());
+    // 'local' are mask points transformed to get local space. 'localToDevice' may
+    // have a perspective transform that 'maskToDevice' doesn't so this is necessary.
+    SkPoint local[4];
+    maskToLocal.mapRectToQuad(local, maskRect);
+
+    sdc->fillQuadWithEdgeAA(this->clip(),
+                            std::move(grPaint),
+                            SkToGrQuadAAFlags(aaFlags),
+                            localToDevice,
+                            local,
+                            nullptr);
+}
+
+void Device::drawImageQuadDirect(const SkImage* image,
+                                 const SkRect& srcRect,
+                                 const SkRect& dstRect,
+                                 const SkPoint dstClip[4],
+                                 SkCanvas::QuadAAFlags aaFlags,
+                                 const SkMatrix* preViewMatrix,
+                                 const SkSamplingOptions& origSampling,
+                                 const SkPaint& paint,
+                                 SkCanvas::SrcRectConstraint constraint) {
     SkRect src;
     SkRect dst;
     SkMatrix srcToDst;
-    ImageDrawMode mode = optimize_sample_area(SkISize::Make(image->width(), image->height()),
-                                              srcRect, dstRect, dstClip, &src, &dst, &srcToDst);
-    if (mode == ImageDrawMode::kSkip) {
+    auto mode = TiledTextureUtils::OptimizeSampleArea(SkISize::Make(image->width(),
+                                                                    image->height()),
+                                                      srcRect, dstRect, dstClip,
+                                                      &src, &dst, &srcToDst);
+    if (mode == TiledTextureUtils::ImageDrawMode::kSkip) {
         return;
     }
 
@@ -506,88 +544,33 @@ void Device::drawImageQuad(const SkImage* image,
         constraint = SkCanvas::kFast_SrcRectConstraint;
     }
     // Depending on the nature of image, it can flow through more or less optimal pipelines
-    SkTileMode tileMode = mode == ImageDrawMode::kDecal ? SkTileMode::kDecal : SkTileMode::kClamp;
+    SkTileMode tileMode = mode == TiledTextureUtils::ImageDrawMode::kDecal ? SkTileMode::kDecal
+                                                                           : SkTileMode::kClamp;
 
     // Get final CTM matrix
-    SkPreConcatMatrixProvider matrixProvider(this->asMatrixProvider(),
-                                             preViewMatrix ? *preViewMatrix : SkMatrix::I());
-    const SkMatrix& ctm(matrixProvider.localToDevice());
+    SkMatrix ctm = this->localToDevice();
+    if (preViewMatrix) {
+        ctm.preConcat(*preViewMatrix);
+    }
 
     SkSamplingOptions sampling = origSampling;
-    if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst)) {
+    bool sharpenMM = fContext->priv().options().fSharpenMipmappedTextures;
+    if (sampling.mipmap != SkMipmapMode::kNone &&
+        TiledTextureUtils::CanDisableMipmap(ctm, srcToDst, sharpenMM)) {
         sampling = SkSamplingOptions(sampling.filter);
     }
-    const GrClip* clip = this->clip();
 
-    if (!image->isTextureBacked()) {
-        int tileFilterPad;
-        if (sampling.useCubic) {
-            tileFilterPad = kBicubicFilterTexelPad;
-        } else if (sampling.filter == SkFilterMode::kLinear || sampling.isAniso()) {
-            // Aniso will fallback to linear filtering in the tiling case.
-            tileFilterPad = 1;
-        } else {
-            tileFilterPad = 0;
-        }
-        int maxTileSize = fContext->maxTextureSize() - 2*tileFilterPad;
-        size_t cacheSize = 0;
-        if (auto dContext = fContext->asDirectContext(); dContext) {
-            // NOTE: if the context is not a direct context, it doesn't have access to the resource
-            // cache, and theoretically, the resource cache's limits could be being changed on
-            // another thread, so even having access to just the limit wouldn't be a reliable
-            // test during recording here.
-            cacheSize = dContext->getResourceCacheLimit();
-        }
-        int tileSize;
-        SkIRect clippedSubset;
-        if (skgpu::ShouldTileImage(clip ? clip->getConservativeBounds()
-                                        : SkIRect::MakeSize(fSurfaceDrawContext->dimensions()),
-                                   image->dimensions(),
-                                   ctm,
-                                   srcToDst,
-                                   &src,
-                                   maxTileSize,
-                                   cacheSize,
-                                   &tileSize,
-                                   &clippedSubset)) {
-            // Extract pixels on the CPU, since we have to split into separate textures before
-            // sending to the GPU if tiling.
-            if (SkBitmap bm; as_IB(image)->getROPixels(nullptr, &bm)) {
-                // This is the funnel for all paths that draw tiled bitmaps/images.
-                skgpu::DrawTiledBitmap(fContext.get(),
-                                       fSurfaceDrawContext.get(),
-                                       clip,
-                                       bm,
-                                       tileSize,
-                                       matrixProvider,
-                                       srcToDst,
-                                       src,
-                                       clippedSubset,
-                                       paint,
-                                       aaFlags,
-                                       constraint,
-                                       sampling,
-                                       tileMode,
-                                       draw_image);
-                return;
-            }
-        }
-    }
-
-    draw_image(fContext.get(),
-               fSurfaceDrawContext.get(),
-               clip,
-               matrixProvider,
-               paint,
-               image,
-               src,
-               dst,
-               dstClip,
-               srcToDst,
-               aaFlags,
-               constraint,
-               sampling);
-    return;
+    this->drawEdgeAAImage(image,
+                          src,
+                          dst,
+                          dstClip,
+                          aaFlags,
+                          ctm,
+                          sampling,
+                          paint,
+                          constraint,
+                          srcToDst,
+                          tileMode);
 }
 
 void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
@@ -608,8 +591,8 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
                 auto paintAlpha = paint.getAlphaf();
                 entryPaint.writable()->setAlphaf(paintAlpha * set[i].fAlpha);
             }
-            this->drawImageQuad(
-                    set[i].fImage.get(), &set[i].fSrcRect, &set[i].fDstRect,
+            this->drawImageQuadDirect(
+                    set[i].fImage.get(), set[i].fSrcRect, set[i].fDstRect,
                     set[i].fHasClip ? dstClips + dstClipIndex : nullptr,
                     static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
                     set[i].fMatrixIndex < 0 ? nullptr : preViewMatrices + set[i].fMatrixIndex,
@@ -625,11 +608,11 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
     SkBlendMode mode = paint.getBlendMode_or(SkBlendMode::kSrcOver);
 
     AutoTArray<GrTextureSetEntry> textures(count);
-    // We accumulate compatible proxies until we find an an incompatible one or reach the end and
+    // We accumulate compatible proxies until we find an incompatible one or reach the end and
     // issue the accumulated 'n' draws starting at 'base'. 'p' represents the number of proxy
     // switches that occur within the 'n' entries.
     int base = 0, n = 0, p = 0;
-    auto draw = [&](int nextBase) {
+    auto draw = [&](int nextBase, bool setMayHavePersp) {
         if (n > 0) {
             auto textureXform = GrColorSpaceXform::Make(set[base].fImage->imageInfo().colorInfo(),
                                                         fSurfaceDrawContext->colorInfo());
@@ -642,12 +625,16 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
                                                 mode,
                                                 constraint,
                                                 this->localToDevice(),
-                                                std::move(textureXform));
+                                                std::move(textureXform),
+                                                setMayHavePersp);
         }
         base = nextBase;
         n = 0;
         p = 0;
     };
+    // This is a conservatively computed property of the image set that disables a fast path
+    // in TextureOp::AddTextureSetOps.
+    bool setMayHavePersp = this->localToDevice().hasPerspective();
     int dstClipIndex = 0;
     for (int i = 0; i < count; ++i) {
         SkASSERT(!set[i].fHasClip || dstClips);
@@ -658,10 +645,10 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
         const SkPoint* clip = set[i].fHasClip ? dstClips + dstClipIndex : nullptr;
         dstClipIndex += 4 * set[i].fHasClip;
 
-        // The default SkBaseDevice implementation is based on drawImageRect which does not allow
+        // The default SkDevice implementation is based on drawImageRect which does not allow
         // non-sorted src rects. TODO: Decide this is OK or make sure we handle it.
         if (!set[i].fSrcRect.isSorted()) {
-            draw(i + 1);
+            draw(i + 1, setMayHavePersp);
             continue;
         }
 
@@ -671,7 +658,10 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
         // drawImageQuad and the proper effect to dynamically sample their planes.
         if (!image->isYUVA()) {
             std::tie(view, std::ignore) =
-                    skgpu::ganesh::AsView(this->recordingContext(), image, GrMipmapped::kNo);
+                    skgpu::ganesh::AsView(this->recordingContext(),
+                                          image,
+                                          skgpu::Mipmapped::kNo,
+                                          this->targetProxy());
             if (image->isAlphaOnly()) {
                 skgpu::Swizzle swizzle = skgpu::Swizzle::Concat(view.swizzle(),
                                                                 skgpu::Swizzle("aaaa"));
@@ -682,14 +672,14 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
         if (!view) {
             // This image can't go through the texture op, send through general image pipeline
             // after flushing current batch.
-            draw(i + 1);
+            draw(i + 1, setMayHavePersp);
             SkTCopyOnFirstWrite<SkPaint> entryPaint(paint);
             if (set[i].fAlpha != 1.f) {
                 auto paintAlpha = paint.getAlphaf();
                 entryPaint.writable()->setAlphaf(paintAlpha * set[i].fAlpha);
             }
-            this->drawImageQuad(
-                    image, &set[i].fSrcRect, &set[i].fDstRect, clip,
+            this->drawImageQuadDirect(
+                    image, set[i].fSrcRect, set[i].fDstRect, clip,
                     static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
                     set[i].fMatrixIndex < 0 ? nullptr : preViewMatrices + set[i].fMatrixIndex,
                     sampling, *entryPaint, constraint);
@@ -703,6 +693,10 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
         textures[i].fDstClipQuad = clip;
         textures[i].fPreViewMatrix =
                 set[i].fMatrixIndex < 0 ? nullptr : preViewMatrices + set[i].fMatrixIndex;
+        if (textures[i].fPreViewMatrix && textures[i].fPreViewMatrix->hasPerspective()) {
+            // Once set, this flag stays on for the rest of the image set
+            setMayHavePersp = true;
+        }
         textures[i].fColor = texture_color(paint.getColor4f(), set[i].fAlpha,
                                            SkColorTypeToGrColorType(image->colorType()),
                                            fSurfaceDrawContext->colorInfo());
@@ -715,7 +709,7 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
              textures[i].fProxyView.swizzle() != textures[base].fProxyView.swizzle() ||
              set[i].fImage->alphaType() != set[base].fImage->alphaType() ||
              !SkColorSpace::Equals(set[i].fImage->colorSpace(), set[base].fImage->colorSpace()))) {
-            draw(i);
+            draw(i, setMayHavePersp);
         }
         // Whether or not we submitted a draw in the above if(), this ith entry is in the current
         // set being accumulated so increment n, and increment p if proxies are different.
@@ -726,7 +720,107 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
             ++p;
         }
     }
-    draw(count);
+    draw(count, setMayHavePersp);
+}
+
+bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float deviceSigma) {
+    SkMatrix localToDevice = this->localToDevice();
+
+    SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
+    const GrClip* clip = this->clip();
+    GrRecordingContext* context = this->recordingContext();
+
+    SkPaint skPaint = paint;
+    skPaint.setMaskFilter(nullptr);
+    GrPaint grPaint;
+    SkPaintToGrPaint(sdc, skPaint, localToDevice, &grPaint);
+
+    if (skgpu::BlurIsEffectivelyIdentity(deviceSigma)) {
+        sdc->drawShape(clip, std::move(grPaint), GrAA::kYes, localToDevice, GrStyledShape(rrect));
+        return true;
+    }
+
+    std::unique_ptr<GrFragmentProcessor> fp;
+
+    auto devRRect = rrect.transform(localToDevice);
+
+    bool devRRectIsRect = devRRect.has_value() && (*devRRect).isRect();
+    bool devRRectIsCircle = devRRect.has_value() && SkRRectPriv::IsCircle(*devRRect);
+
+    bool canBeRect = (rrect.isRect() && localToDevice.preservesRightAngles()) || devRRectIsRect;
+    bool canBeCircle = (SkRRectPriv::IsCircle(rrect) && localToDevice.isSimilarity()) ||
+                       devRRectIsCircle;
+
+    if (canBeRect || canBeCircle) {
+        if (canBeRect) {
+            fp = GrBlurUtils::MakeRectBlur(
+                    context,
+                    *context->priv().caps()->shaderCaps(),
+                    rrect.rect(),
+                    devRRectIsRect ? std::optional((*devRRect).rect()) : std::nullopt,
+                    localToDevice,
+                    deviceSigma);
+        } else {
+            SkRect devBounds;
+            if (devRRectIsCircle) {
+                devBounds = devRRect->getBounds();
+            } else {
+                SkPoint center = localToDevice.mapPoint(rrect.getBounds().center());
+                SkScalar radius = localToDevice.mapVector(0, rrect.width()/2.f).length();
+                devBounds = {center.x() - radius,
+                              center.y() - radius,
+                              center.x() + radius,
+                              center.y() + radius};
+            }
+            fp = GrBlurUtils::MakeCircleBlur(context, devBounds, deviceSigma);
+        }
+
+        if (!fp) {
+            return false;
+        }
+
+        SkRect srcProxyRect = rrect.rect();
+        // Determine how much to outset the src rect to ensure we hit pixels within three sigma.
+        SkScalar outsetX = 3.0f*deviceSigma;
+        SkScalar outsetY = 3.0f*deviceSigma;
+        if (localToDevice.isScaleTranslate()) {
+            outsetX /= SkScalarAbs(localToDevice.getScaleX());
+            outsetY /= SkScalarAbs(localToDevice.getScaleY());
+        } else {
+            SkSize scale;
+            if (!localToDevice.decomposeScale(&scale, nullptr)) {
+                return false;
+            }
+            outsetX /= scale.width();
+            outsetY /= scale.height();
+        }
+        srcProxyRect.outset(outsetX, outsetY);
+        grPaint.setCoverageFragmentProcessor(std::move(fp));
+        sdc->drawRect(clip, std::move(grPaint), GrAA::kNo, localToDevice, srcProxyRect);
+        return true;
+    }
+    if (!localToDevice.rectStaysRect()) {
+        return false;
+    }
+    if (!devRRect.has_value() || !SkRRectPriv::AllCornersCircular(*devRRect)) {
+        return false;
+    }
+
+    auto deviceToLocal = localToDevice.invert();
+    if (!deviceToLocal) {
+        return false;
+    }
+    float localSigma = deviceToLocal->mapRadius(deviceSigma);
+
+    fp = GrBlurUtils::MakeRRectBlur(context, localSigma, deviceSigma, rrect, *devRRect);
+    if (!fp) {
+        return false;
+    }
+    SkRect srcProxyRect = rrect.rect();
+    srcProxyRect.outset(3.0f*localSigma, 3.0f*localSigma);
+    grPaint.setCoverageFragmentProcessor(std::move(fp));
+    sdc->drawRect(clip, std::move(grPaint), GrAA::kNo, localToDevice, srcProxyRect);
+    return true;
 }
 
 }  // namespace skgpu::ganesh

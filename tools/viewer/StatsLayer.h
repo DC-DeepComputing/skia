@@ -1,5 +1,5 @@
 /*
-* Copyright 2017 Google Inc.
+* Copyright 2017 Google LLC
 *
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
@@ -10,7 +10,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkString.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 #include "tools/sk_app/Window.h"
 
 class SkSurface;
@@ -25,6 +25,11 @@ public:
     Timer addTimer(const char* label, SkColor color, SkColor labelColor = 0);
     void beginTiming(Timer);
     void endTiming(Timer);
+
+    void enableGpuTimer(SkColor color);
+    void disableGpuTimer();
+    bool isGpuTimerEnabled() const { return fGpuTimerEnabled; }
+    std::function<void(uint64_t ns)> issueGpuTimer();
 
     void onPrePaint() override;
     void onPaint(SkSurface*) override;
@@ -41,6 +46,10 @@ private:
     };
     skia_private::TArray<TimerData> fTimers;
     double fTotalTimes[kMeasurementCount];
+
+    TimerData fGpuTimer;
+    bool fGpuTimerEnabled = false;
+
     int fCurrentMeasurement;
     double fLastTotalBegin;
     double fCumulativeMeasurementTime;

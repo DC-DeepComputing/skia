@@ -1,17 +1,17 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/sksg/include/SkSGTransform.h"
-
 #include "include/core/SkCanvas.h"
+#include "include/core/SkPoint.h"
+#include "include/private/SkAssert.h"
+#include "modules/sksg/include/SkSGTransform.h"
 #include "modules/sksg/src/SkSGTransformPriv.h"
 
 namespace sksg {
-
 namespace {
 
 template <typename T>

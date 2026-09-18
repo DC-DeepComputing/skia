@@ -8,59 +8,42 @@
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
 namespace skgpu::graphite {
 
 sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* ctxt,
-                                                     sk_sp<VulkanDescriptorPool> pool,
-                                                     const VkDescriptorSetLayout* layout) {
+                                                     const sk_sp<VulkanDescriptorPool>& pool) {
     VkDescriptorSet descSet;
-
-    VkDescriptorSetAllocateInfo dsAllocateInfo;
-    memset(&dsAllocateInfo, 0, sizeof(VkDescriptorSetAllocateInfo));
+    VkDescriptorSetAllocateInfo dsAllocateInfo = {};
     dsAllocateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-    dsAllocateInfo.pNext = nullptr;
-    dsAllocateInfo.descriptorPool = *(pool->descPool());
-    dsAllocateInfo.descriptorSetCount = VulkanDescriptorPool::kMaxNumSets;
-    dsAllocateInfo.pSetLayouts = layout;
+    dsAllocateInfo.descriptorPool = pool->descPool();
+    dsAllocateInfo.descriptorSetCount = 1;
+    dsAllocateInfo.pSetLayouts = pool->descSetLayout();
 
     VkResult result;
-    VULKAN_CALL_RESULT(ctxt->interface(),
-                       result,
-                       AllocateDescriptorSets(ctxt->device(),
-                                              &dsAllocateInfo,
-                                              &descSet));
+    VULKAN_CALL_RESULT(
+            ctxt, result, AllocateDescriptorSets(ctxt->device(), &dsAllocateInfo, &descSet));
     if (result != VK_SUCCESS) {
         return nullptr;
     }
     return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, descSet, pool));
 }
 
-VkDescriptorType VulkanDescriptorSet::DsTypeEnumToVkDs(DescriptorType type) {
-    switch (type) {
-        case DescriptorType::kUniformBuffer:
-            return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        case DescriptorType::kTextureSampler:
-            return VK_DESCRIPTOR_TYPE_SAMPLER;
-        case DescriptorType::kTexture:
-            return VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-        case DescriptorType::kCombinedTextureSampler:
-            return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        case DescriptorType::kStorageBuffer:
-            return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-        case DescriptorType::kInputAttachment:
-            return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
-    }
-    SkUNREACHABLE;
-}
-
 VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
                                          VkDescriptorSet set,
                                          sk_sp<VulkanDescriptorPool> pool)
-        : Resource(ctxt, Ownership::kOwned, skgpu::Budgeted::kNo, /*gpuMemorySize=*/0)
-        , fDescSet (set)
-        , fPool (pool) {
+        : Resource(ctxt,
+                   Ownership::kOwned,
+                   /*gpuMemorySize=*/0,
+                   /*label=*/{},
+                   // Explicitly set reusableRequiresPurgeable because this object may be modified
+                   // by VulkanCommandBuffer immediately during Skia API calls, outside of the flow
+                   // of command buffer command execution.
+                   /*reusableRequiresPurgeable=*/true)
+        , fDescSet(set)
+        , fPool(pool) {
     fPool->ref();
 }
 

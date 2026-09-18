@@ -11,9 +11,9 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkDebug.h"
+#include "include/private/SkDebug.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/base/SkArenaAlloc.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/text/gpu/SubRunAllocator.h"
@@ -133,8 +133,7 @@ public:
 
 protected:
     friend class GrProxyProvider;  // for ctors
-    friend class GrRenderTargetProxyPriv;
-
+    friend class GrVkSecondaryCBDrawContext;  // for ctors
     // Deferred version
     GrRenderTargetProxy(const GrCaps&,
                         const GrBackendFormat&,

@@ -1,5 +1,5 @@
 /*
-* Copyright 2017 Google Inc.
+* Copyright 2017 Google LLC
 *
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
@@ -17,7 +17,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 
-// This GM reproduces skia:6783, which demonstrated a bug in repeat and mirror
+// This GM reproduces skbug.com/40037998, which demonstrated a bug in repeat and mirror
 // image sampling tiling modes as implemented in software.  We want to tile to
 // [0,limit), and the old incorrect logic was:
 //

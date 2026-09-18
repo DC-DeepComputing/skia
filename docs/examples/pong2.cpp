@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC.
+// Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 REG_FIDDLE_ANIMATED(pong2, 512, 256, false, 0, 10) {
@@ -25,7 +25,7 @@ void draw(SkCanvas* canvas) {
 
   const float intervals[] = { 12, 6 };
   p.setStrokeWidth(5);
-  p.setPathEffect(SkDashPathEffect::Make(intervals, std::size(intervals), 0));
+  p.setPathEffect(SkDashPathEffect::Make(intervals, 0));
   canvas->drawLine({256,0}, {256, 256}, p);
 }
 }  // END FIDDLE

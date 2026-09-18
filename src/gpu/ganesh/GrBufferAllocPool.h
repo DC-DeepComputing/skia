@@ -8,15 +8,21 @@
 #ifndef GrBufferAllocPool_DEFINED
 #define GrBufferAllocPool_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkNoncopyable.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTDArray.h"
-#include "include/private/base/SkTypeTraits.h"
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTypeTraits.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCpuBuffer.h"
 #include "src/gpu/ganesh/GrDrawIndirectCommand.h"
 #include "src/gpu/ganesh/GrNonAtomicRef.h"
+
+#include <cstddef>
+#include <memory>
+#include <type_traits>
+#include <utility>
 
 class GrGpu;
 
@@ -62,7 +68,7 @@ public:
      * Ensures all buffers are unmapped and have all data written to them.
      * Call before drawing using buffers from the pool.
      */
-    void unmap();
+    [[nodiscard]] bool unmap();
 
     /**
      *  Invalidates all the data in the pool, unrefs non-preallocated buffers.
@@ -156,7 +162,7 @@ private:
     bool createBlock(size_t requestSize);
     void destroyBlock();
     void deleteBlocks();
-    void flushCpuData(const BufferBlock& block, size_t flushSize);
+    [[nodiscard]] bool flushCpuData(const BufferBlock& block, size_t flushSize);
     void resetCpuData(size_t newSize);
 #ifdef SK_DEBUG
     void validate(bool unusedBlockAllowed = false) const;

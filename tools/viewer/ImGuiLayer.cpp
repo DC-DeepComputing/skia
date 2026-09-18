@@ -1,5 +1,5 @@
 /*
-* Copyright 2017 Google Inc.
+* Copyright 2017 Google LLC
 *
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
@@ -19,10 +19,9 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSwizzle.h"
-#include "include/core/SkTime.h"
 #include "include/core/SkVertices.h"
-#include "include/private/base/SkTDArray.h"
-#include "tools/sk_app/DisplayParams.h"
+#include "include/private/SkTDArray.h"
+#include "src/core/SkTime.h"
 #include "tools/skui/InputState.h"
 #include "tools/skui/Key.h"
 
@@ -78,6 +77,7 @@ ImGuiLayer::~ImGuiLayer() {
 }
 
 void ImGuiLayer::setScaleFactor(float scaleFactor) {
+    ImGui::GetStyle() = ImGuiStyle{};
     ImGui::GetStyle().ScaleAllSizes(scaleFactor);
 
     ImFontAtlas& atlas = *ImGui::GetIO().Fonts;
@@ -123,10 +123,10 @@ bool ImGuiLayer::onMouse(int x, int y, skui::InputState state, skui::ModifierKey
     return io.WantCaptureMouse;
 }
 
-bool ImGuiLayer::onMouseWheel(float delta, skui::ModifierKey modifiers) {
+bool ImGuiLayer::onMouseWheel(float delta, int, int, skui::ModifierKey modifiers) {
     ImGuiIO& io = ImGui::GetIO();
     io.MouseWheel += delta;
-    return true;
+    return io.WantCaptureMouse;
 }
 
 void ImGuiLayer::skiaWidget(const ImVec2& size, SkiaWidgetFunc func) {
@@ -195,7 +195,7 @@ void ImGuiLayer::onPaint(SkSurface* surface) {
                 drawCmd->UserCallback(drawList, drawCmd);
             } else {
                 intptr_t idIndex = (intptr_t)drawCmd->TextureId;
-                if (idIndex < fSkiaWidgetFuncs.size()) {
+                if (0 <= idIndex && idIndex < fSkiaWidgetFuncs.size()) {
                     // Small image IDs are actually indices into a list of callbacks. We directly
                     // examing the vertex data to deduce the image rectangle, then reconfigure the
                     // canvas to be clipped and translated so that the callback code gets to use

@@ -8,22 +8,32 @@
 #ifndef skgpu_graphite_render_AnalyticRRectRenderStep_DEFINED
 #define skgpu_graphite_render_AnalyticRRectRenderStep_DEFINED
 
+#include "src/core/SkVx.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/ResourceTypes.h"
+
+#include <string>
 
 namespace skgpu::graphite {
 
+class DrawParams;
+class DrawWriter;
+class PipelineDataGatherer;
 class StaticBufferManager;
 
 class AnalyticRRectRenderStep final : public RenderStep {
 public:
-    AnalyticRRectRenderStep(StaticBufferManager* bufferManager);
+    AnalyticRRectRenderStep(Layout, StaticBufferManager*);
 
     ~AnalyticRRectRenderStep() override;
 
-    std::string vertexSkSL() const override;
+    std::string vertexSkSL(const RootNodesInfo&) const override;
     const char* fragmentCoverageSkSL() const override;
 
-    void writeVertices(DrawWriter*, const DrawParams&, int ssboIndex) const override;
+    void writeVertices(DrawWriter*,
+                       StorageContext*,
+                       const DrawParams&,
+                       uint32_t ssboIndex) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
 
 private:

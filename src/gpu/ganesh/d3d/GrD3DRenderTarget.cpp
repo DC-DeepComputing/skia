@@ -7,10 +7,11 @@
 
 #include "src/gpu/ganesh/d3d/GrD3DRenderTarget.h"
 
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/d3d/GrD3DTypes.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/d3d/GrD3DTypes.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
+#include "src/gpu/ganesh/d3d/GrD3DBackendSurfacePriv.h"
 #include "src/gpu/ganesh/d3d/GrD3DGpu.h"
 #include "src/gpu/ganesh/d3d/GrD3DResourceProvider.h"
 #include "src/gpu/ganesh/d3d/GrD3DTextureResource.h"
@@ -181,7 +182,8 @@ void GrD3DRenderTarget::onAbandon() {
 }
 
 GrBackendRenderTarget GrD3DRenderTarget::getBackendRenderTarget() const {
-    return GrBackendRenderTarget(this->width(), this->height(), fInfo, this->grD3DResourceState());
+    return GrBackendRenderTargets::MakeD3D(
+            this->width(), this->height(), fInfo, this->grD3DResourceState());
 }
 
 GrD3DGpu* GrD3DRenderTarget::getD3DGpu() const {

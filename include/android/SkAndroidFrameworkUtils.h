@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -12,8 +12,6 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTileMode.h"
-
-#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
 
 class SkCanvas;
 struct SkIRect;
@@ -40,8 +38,6 @@ public:
 #endif //defined(SK_GANESH)
 
     static void SafetyNetLog(const char*);
-
-    static sk_sp<SkSurface> getSurfaceFromCanvas(SkCanvas* canvas);
 
     static int SaveBehind(SkCanvas* canvas, const SkRect* subset);
 
@@ -74,7 +70,7 @@ public:
                                                //   of fColors/fColorOffsets on input, and
                                                //   actual number of colors/offsets on
                                                //   output.
-        SkColor*    fColors        = nullptr;  //!< The colors in the gradient.
+        SkColor4f*  fColors        = nullptr;  //!< The colors in the gradient.
         SkScalar*   fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
         SkPoint     fPoints[2];                //!< Type specific, see above.
         SkTileMode  fTileMode;
@@ -83,7 +79,5 @@ public:
 
     static bool ShaderAsALinearGradient(SkShader* shader, LinearGradientInfo*);
 };
-
-#endif // SK_BUILD_FOR_ANDROID_ANDROID
 
 #endif // SkAndroidFrameworkUtils_DEFINED

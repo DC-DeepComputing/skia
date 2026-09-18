@@ -11,7 +11,6 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColor.h"
-#include "include/core/SkColorPriv.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImage.h"
@@ -25,13 +24,14 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkColorData.h"
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkCPUTypes.h"
-#include "include/private/base/SkSafe32.h"
-#include "src/base/SkHalf.h"
-#include "src/base/SkMathPriv.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkCPUTypes.h"
+#include "include/private/SkSafe32.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkColorPriv.h"
+#include "src/core/SkHalf.h"
 #include "src/core/SkImageInfoPriv.h"
+#include "src/core/SkMathPriv.h"
 #include "tests/Test.h"
 
 #include <cstdint>
@@ -102,7 +102,7 @@ static SkPMColor convert_to_pmcolor(SkColorType ct, SkAlphaType at, const uint32
             r = static_cast<U8CPU>(c[0]);
             g = static_cast<U8CPU>(c[1]);
             b = static_cast<U8CPU>(c[2]);
-            // We set this even when for kRGB_888x because our caller will validate that it is 0xff.
+            // We set this even for kRGB_888x because our caller will validate that it is 0xff.
             a = static_cast<U8CPU>(c[3]);
             break;
         default:
@@ -187,7 +187,7 @@ static bool check_read_pixel(SkPMColor a, SkPMColor b, bool didPremulConversion)
 // overwritten in the area outside the readPixels.
 static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap, int x, int y,
                        bool checkSurfacePixels, bool checkBitmapPixels,
-                       SkImageInfo surfaceInfo) {
+                       const SkImageInfo& surfaceInfo) {
     SkAlphaType bmpAT = bitmap.alphaType();
     SkColorType bmpCT = bitmap.colorType();
     SkASSERT(!bitmap.isNull());

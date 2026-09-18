@@ -15,8 +15,8 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTArray.h"
-#include "src/base/SkRandom.h"
+#include "include/private/SkTArray.h"
+#include "src/core/SkRandom.h"
 
 using namespace skia_private;
 
@@ -30,12 +30,9 @@ public:
     PolygonsGM() {}
 
 protected:
+    SkString getName() const override { return SkString("polygons"); }
 
-    SkString onShortName() override {
-        return SkString("polygons");
-    }
-
-    SkISize onISize() override {
+    SkISize getISize() override {
         int width = kNumPolygons * kCellSize + 40;
         int height = (kNumJoins * kNumStrokeWidths + kNumExtraStyles) * kCellSize + 40;
         return SkISize::Make(width, height);

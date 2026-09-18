@@ -39,6 +39,8 @@ if command -v lsb_release > /dev/null ; then
 		libjpeg-dev
 		libpng-dev
 		libwebp-dev
+        libx11-xcb-dev
+        libxcb-xkb-dev
 		EOF
             )
            if [ $(lsb_release -r -s) = '14.04' ] ; then

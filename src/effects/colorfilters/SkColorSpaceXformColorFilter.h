@@ -21,21 +21,7 @@ class SkColorSpaceXformColorFilter final : public SkColorFilterBase {
 public:
     SkColorSpaceXformColorFilter(sk_sp<SkColorSpace> src, sk_sp<SkColorSpace> dst);
 
-#if defined(SK_GRAPHITE)
-    void addToKey(const skgpu::graphite::KeyContext& keyContext,
-                  skgpu::graphite::PaintParamsKeyBuilder* builder,
-                  skgpu::graphite::PipelineDataGatherer* gatherer) const override;
-#endif
-
     bool appendStages(const SkStageRec& rec, bool shaderIsOpaque) const override;
-
-#if defined(SK_ENABLE_SKVM)
-    skvm::Color onProgram(skvm::Builder* p,
-                          skvm::Color c,
-                          const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms,
-                          SkArenaAlloc* alloc) const override;
-#endif
 
     SkColorFilterBase::Type type() const override {
         return SkColorFilterBase::Type::kColorSpaceXform;
@@ -46,6 +32,8 @@ public:
 
 protected:
     void flatten(SkWriteBuffer& buffer) const override;
+
+    bool onIsAlphaUnchanged() const override { return true; }
 
 private:
     friend void ::SkRegisterSkColorSpaceXformColorFilterFlattenable();

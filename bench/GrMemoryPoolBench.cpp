@@ -6,7 +6,7 @@
  */
 
 #include "bench/Benchmark.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/ganesh/GrMemoryPool.h"
 
 #include <type_traits>
@@ -160,7 +160,7 @@ public:
     }
 
     bool isSuitableFor(Backend backend) override {
-        return backend == kNonRendering_Backend;
+        return backend == Backend::kNonRendering;
     }
 
 protected:

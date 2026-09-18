@@ -25,11 +25,12 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/GrTypes.h"
+#include "include/effects/SkGradient.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
@@ -53,11 +54,9 @@ private:
         k2x2
     };
 
-    SkString onShortName() override {
-        return SkString("rectangle_texture");
-    }
+    SkString getName() const override { return SkString("rectangle_texture"); }
 
-    SkISize onISize() override { return SkISize::Make(1180, 710); }
+    SkISize getISize() override { return SkISize::Make(1180, 710); }
 
     SkBitmap makeImagePixels(int size, ImageType type) {
         auto ii = SkImageInfo::Make(size, size, kRGBA_8888_SkColorType, kOpaque_SkAlphaType);
@@ -68,14 +67,16 @@ private:
                 SkPaint paint;
                 SkCanvas canvas(bmp);
                 SkPoint pts[] = {{0, 0}, {0, SkIntToScalar(size)}};
-                SkColor colors0[] = {0xFF1060B0, 0xFF102030};
+                const SkColor4f colors0[] = {
+                        SkColor4f::FromColor(0xFF1060B0), SkColor4f::FromColor(0xFF102030)};
                 paint.setShader(
-                        SkGradientShader::MakeLinear(pts, colors0, nullptr, 2, SkTileMode::kClamp));
+                        SkShaders::LinearGradient(pts, {{colors0, {}, SkTileMode::kClamp}, {}}));
                 canvas.drawPaint(paint);
-                SkColor colors1[] = {0xFFA07010, 0xFFA02080};
+                const SkColor4f colors1[] = {
+                        SkColor4f::FromColor(0xFFA07010), SkColor4f::FromColor(0xFFA02080)};
                 paint.setAntiAlias(true);
                 paint.setShader(
-                        SkGradientShader::MakeLinear(pts, colors1, nullptr, 2, SkTileMode::kClamp));
+                        SkShaders::LinearGradient(pts, {{colors1, {}, SkTileMode::kClamp}, {}}));
                 canvas.drawCircle(size/2.f, size/2.f, 2.f*size/5, paint);
                 return bmp;
             }
@@ -95,11 +96,11 @@ private:
     sk_sp<SkImage> createRectangleTextureImg(GrDirectContext* dContext, GrSurfaceOrigin origin,
                                              const SkBitmap content) {
         SkASSERT(content.colorType() == kRGBA_8888_SkColorType);
-        auto format = GrBackendFormat::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
+        auto format = GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
         auto bet = dContext->createBackendTexture(content.width(),
                                                   content.height(),
                                                   format,
-                                                  GrMipmapped::kNo,
+                                                  skgpu::Mipmapped::kNo,
                                                   GrRenderable::kNo,
                                                   GrProtected::kNo,
                                                   /*label=*/"CreateRectangleTextureImage");
@@ -112,7 +113,7 @@ private:
         return SkImages::AdoptTextureFrom(dContext, bet, origin, kRGBA_8888_SkColorType);
     }
 
-    DrawResult onGpuSetup(SkCanvas* canvas, SkString* errorMsg) override {
+    DrawResult onGpuSetup(SkCanvas* canvas, SkString* errorMsg, GraphiteTestContext*) override {
         auto context = GrAsDirectContext(canvas->recordingContext());
         if (!context || context->abandoned()) {
             return DrawResult::kSkip;

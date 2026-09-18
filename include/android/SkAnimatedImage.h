@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -110,6 +110,19 @@ public:
      */
     int getFrameCount() const { return fFrameCount; }
 
+    /**
+     *  Change the filter mode.
+     *
+     *  By default, the image will apply bilinear filtering when drawing in the
+     *  OnDraw method.
+     */
+    void setFilterMode(SkFilterMode filterMode);
+
+    /**
+     *  Return the filter mode used for sampling when drawing.
+     */
+    SkFilterMode getFilterMode() const { return fFilterMode; }
+
 protected:
     SkRect onGetBounds() override;
     void onDraw(SkCanvas*) override;
@@ -152,6 +165,7 @@ private:
     Frame                           fRestoreFrame;
     int                             fRepetitionCount;
     int                             fRepetitionsCompleted;
+    SkFilterMode                    fFilterMode = SkFilterMode::kLinear;
 
     SkAnimatedImage(std::unique_ptr<SkAndroidCodec>, const SkImageInfo& requestedInfo,
             SkIRect cropRect, sk_sp<SkPicture> postProcess);

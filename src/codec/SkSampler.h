@@ -9,7 +9,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkNoncopyable.h"
+#include "include/private/SkNoncopyable.h"
 #include "src/codec/SkCodecPriv.h"
 
 #include <cstddef>
@@ -46,7 +46,7 @@ public:
      *  @param row Row of the image, starting with the first row in the subset.
      */
     bool rowNeeded(int row) const {
-        return (row - get_start_coord(fSampleY)) % fSampleY == 0;
+        return (row - SkCodecPriv::GetStartCoord(fSampleY)) % fSampleY == 0;
     }
 
     /**

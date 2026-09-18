@@ -1,21 +1,32 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/skottie/src/effects/Effects.h"
-
-#include "include/effects/SkGradientShader.h"
-#include "include/effects/SkShaderMaskFilter.h"
-#include "include/private/base/SkTPin.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkTileMode.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkTPin.h"
+#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
-#include "modules/sksg/include/SkSGRenderEffect.h"
-#include "src/utils/SkJSON.h"
+#include "modules/skottie/src/effects/Effects.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
 
+#include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <utility>
+
+namespace skjson {
+class ArrayValue;
+}
 
 namespace skottie {
 namespace internal {
@@ -91,8 +102,7 @@ private:
             center_v + adjusted_grad_v * 0.5f,
         };
 
-        static constexpr SkColor colors[] = { 0x00000000,
-                                              0xffffffff };
+        static constexpr SkColor4f colors[] = { SkColors::kTransparent, SkColors::kWhite };
 
         // To emulate the feather effect, we distance the color stops to generate
         // a linear transition/ramp.  For t == 0 the ramp should be completely outside/before
@@ -104,8 +114,7 @@ private:
         const auto adjusted_t = t * (len + feather) / grad_len;
         const SkScalar  pos[] = { adjusted_t,
                                   adjusted_t + feather / grad_len };
-
-        return { SkGradientShader::MakeLinear(pts, colors, pos, 2, SkTileMode::kClamp), true };
+        return { SkShaders::LinearGradient(pts, {{colors, pos, SkTileMode::kClamp}, {}}), true };
     }
 
     ScalarValue fCompletion = 0,

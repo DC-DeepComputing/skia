@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -14,7 +14,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "tools/ToolUtils.h"
 
 namespace skiagm {
@@ -40,13 +40,9 @@ protected:
     static const int kWidth = 800;
     static const int kHeight = 600;
 
-    SkString onShortName() override {
-        return SkString("manycircles");
-    }
+    SkString getName() const override { return SkString("manycircles"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(kWidth, kHeight);
-    }
+    SkISize getISize() override { return SkISize::Make(kWidth, kHeight); }
 
     void onDraw(SkCanvas* canvas) override {
         SkRandom rand(1);
@@ -78,14 +74,9 @@ public:
     }
 
 protected:
+    SkString getName() const override { return SkString("manyrrects"); }
 
-    SkString onShortName() override {
-        return SkString("manyrrects");
-    }
-
-    SkISize onISize() override {
-        return SkISize::Make(800, 300);
-    }
+    SkISize getISize() override { return SkISize::Make(800, 300); }
 
     void onDraw(SkCanvas* canvas) override {
         SkRandom rand(1);

@@ -1,39 +1,46 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #ifndef OpsTask_DEFINED
 #define OpsTask_DEFINED
 
-#include "include/core/SkMatrix.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
-#include "include/core/SkStrokeRec.h"
 #include "include/core/SkTypes.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTDArray.h"
-#include "include/private/base/SkTypeTraits.h"
-#include "src/base/SkArenaAlloc.h"
-#include "src/base/SkTLazy.h"
-#include "src/core/SkClipStack.h"
-#include "src/core/SkStringUtils.h"
-#include "src/gpu/ganesh/GrAppliedClip.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTo.h"
+#include "include/private/SkTypeTraits.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrDstProxyView.h"
-#include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrProcessorSet.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+#include "src/gpu/ganesh/GrXferProcessor.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 
+#include <array>
+#include <cstdint>
+
+class GrAppliedClip;
+class GrArenas;
 class GrAuditTrail;
 class GrCaps;
-class GrClearOp;
-class GrGpuBuffer;
-class GrRenderTargetProxy;
+class GrDrawingManager;
+class GrOpFlushState;
+class GrRecordingContext;
+class GrResourceAllocator;
+class GrSurfaceProxyView;
+class GrTextureResolveManager;
 class OpsTaskTestingAccess;
+class SkArenaAlloc;
+class SkString;
+enum GrSurfaceOrigin : int;
 
 namespace skgpu::ganesh {
 
@@ -58,11 +65,10 @@ public:
 
     void onPrePrepare(GrRecordingContext*) override;
     /**
-     * Together these two functions flush all queued up draws to GrCommandBuffer. The return value
-     * of onExecute() indicates whether any commands were actually issued to the GPU.
+     * Together these two functions flush all queued up draws to GrCommandBuffer.
      */
     void onPrepare(GrOpFlushState* flushState) override;
-    bool onExecute(GrOpFlushState* flushState) override;
+    ExecutionResult onExecute(GrOpFlushState* flushState) override;
 
     void addSampledTexture(GrSurfaceProxy* proxy) {
         // This function takes a GrSurfaceProxy because all subsequent uses of the proxy do not
@@ -106,7 +112,7 @@ public:
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override;
 #endif
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     void dump(const SkString& label,
               SkString indent,
               bool printDependencies,
@@ -145,7 +151,7 @@ protected:
 private:
     bool isColorNoOp() const {
         // TODO: GrLoadOp::kDiscard (i.e., storing a discard) should also be grounds for skipping
-        // execution. We currently don't because of Vulkan. See http://skbug.com/9373.
+        // execution. We currently don't because of Vulkan. See skbug.com/40040696.
         return fOpChains.empty() && GrLoadOp::kLoad == fColorLoadOp;
     }
 

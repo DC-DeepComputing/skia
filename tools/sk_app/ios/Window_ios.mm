@@ -1,12 +1,14 @@
 /*
-* Copyright 2017 Google Inc.
+* Copyright 2017 Google LLC
 *
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
 
-#include "tools/sk_app/ios/WindowContextFactory_ios.h"
 #include "tools/sk_app/ios/Window_ios.h"
+
+#include "tools/window/DisplayParams.h"
+#include "tools/window/ios/WindowContextFactory_ios.h"
 
 #if __has_feature(objc_arc)
 #error "File should not be compiled with ARC."
@@ -21,12 +23,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using sk_app::Window;
+using skwindow::DisplayParams;
 
 namespace sk_app {
 
 Window_ios* Window_ios::gWindow = nullptr;
 
-Window* Window::CreateNativeWindow(void*) {
+Window* Windows::CreateNativeWindow(void*) {
     // already have a window
     if (Window_ios::MainWindow()) {
         return nullptr;
@@ -80,21 +83,26 @@ void Window_ios::closeWindow() {
 bool Window_ios::attach(BackendType attachType) {
     this->initWindow();
 
-    window_context_factory::IOSWindowInfo info;
+    skwindow::IOSWindowInfo info;
     info.fWindow = this;
     info.fViewController = fWindow.rootViewController;
     switch (attachType) {
-#ifdef SK_METAL
-        case kMetal_BackendType:
-            fWindowContext = MakeMetalForIOS(info, fRequestedDisplayParams);
+#if defined(SK_METAL)
+        case BackendType::kMetal:
+            fWindowContext = skwindow::MakeMetalForIOS(info, fRequestedDisplayParams->clone());
+            break;
+#if defined(SK_GRAPHITE)
+        case BackendType::kGraphiteMetal:
+            fWindowContext = MakeGraphiteMetalForIOS(info, fRequestedDisplayParams->clone());
             break;
 #endif
-#ifdef SK_GL
-        case kNativeGL_BackendType:
-            fWindowContext = MakeGLForIOS(info, fRequestedDisplayParams);
+#endif
+#if defined(SK_GL)
+        case BackendType::kNativeGL:
+            fWindowContext = skwindow::MakeGLForIOS(info, fRequestedDisplayParams->clone());
             break;
-        case kRaster_BackendType:
-            fWindowContext = MakeRasterForIOS(info, fRequestedDisplayParams);
+        case BackendType::kRaster:
+            fWindowContext = skwindow::MakeRasterForIOS(info, fRequestedDisplayParams->clone());
             break;
 #endif
         default:

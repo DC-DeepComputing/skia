@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,18 +8,22 @@
 #ifndef SkottieEffects_DEFINED
 #define SkottieEffects_DEFINED
 
-#include "modules/skottie/src/Composition.h"
-#include "modules/skottie/src/SkottiePriv.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkSize.h"
+#include "include/private/SkNoncopyable.h"
+#include "modules/jsonreader/SkJSONReader.h"  // IWYU pragma: keep
 #include "modules/skottie/src/animator/Animator.h"
+#include "modules/sksg/include/SkSGRenderEffect.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
 
-class SkMaskFilter;
-
-namespace sksg {
-class MaskShaderEffect;
-} // namespace sksg
+#include <cstddef>
 
 namespace skottie {
 namespace internal {
+
+class AnimationBuilder;
+class CompositionBuilder;
 
 class EffectBuilder final : public SkNoncopyable {
 public:
@@ -33,9 +37,11 @@ public:
 
     static const skjson::Value& GetPropValue(const skjson::ArrayValue& jprops, size_t prop_index);
 
-    LayerBuilder* getLayerBuilder(int layer_index) const {
-        return fCompBuilder->layerBuilder(layer_index);
-    }
+    struct LayerContent {
+        sk_sp<sksg::RenderNode> fContent;
+        SkSize                  fSize;
+    };
+    LayerContent getLayerContent(int layer_index) const;
 
 private:
     using EffectBuilderT = sk_sp<sksg::RenderNode>(EffectBuilder::*)(const skjson::ArrayValue&,
@@ -100,6 +106,8 @@ private:
     sk_sp<sksg::RenderNode> attachVenetianBlindsEffect    (const skjson::ArrayValue&,
                                                            sk_sp<sksg::RenderNode>) const;
 
+    sk_sp<sksg::RenderNode> attachColorOverlayStyle(const skjson::ObjectValue&,
+                                                    sk_sp<sksg::RenderNode>) const;
     sk_sp<sksg::RenderNode> attachDropShadowStyle(const skjson::ObjectValue&,
                                                   sk_sp<sksg::RenderNode>) const;
     sk_sp<sksg::RenderNode> attachInnerShadowStyle(const skjson::ObjectValue&,
@@ -151,7 +159,7 @@ protected:
 
     const SkSize& layerSize() const { return  fLayerSize; }
 
-    struct MaskInfo {
+struct MaskInfo {
         sk_sp<SkShader> fMaskShader;
         bool            fVisible;
     };

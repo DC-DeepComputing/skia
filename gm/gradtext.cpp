@@ -20,38 +20,37 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 namespace {
 
 // test shader w/ transparency
 static sk_sp<SkShader> make_grad(SkScalar width) {
-    SkColor colors[] = { SK_ColorRED, 0x0000FF00, SK_ColorBLUE };
+    SkColor4f colors[] = { SkColors::kRed, {0,1,0,0}, SkColors::kBlue };
     SkPoint pts[] = { { 0, 0 }, { width, 0 } };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                        SkTileMode::kMirror);
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kMirror}, {}});
 }
 
 // test opaque shader
 static sk_sp<SkShader> make_grad2(SkScalar width) {
-    SkColor colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE };
+    SkColor4f colors[] = { SkColors::kRed, SkColors::kGreen, SkColors::kBlue };
     SkPoint pts[] = { { 0, 0 }, { width, 0 } };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                        SkTileMode::kMirror);
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kMirror}, {}});
 }
 
 static sk_sp<SkShader> make_chrome_solid() {
-    SkColor colors[] = { SK_ColorGREEN, SK_ColorGREEN };
+    SkColor4f colors[] = { SkColors::kGreen, SkColors::kGreen };
     SkPoint pts[] = { { 0, 0 }, { 1, 0 } };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp);
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}});
 }
 
 // Replicate chrome layout test - clipped pathed gradient-shaded text
 class ChromeGradTextGM1 : public skiagm::GM {
-    SkString onShortName() override { return SkString("chrome_gradtext1"); }
+    SkString getName() const override { return SkString("chrome_gradtext1"); }
 
-    SkISize onISize() override { return {500, 480}; }
+    SkISize getISize() override { return {500, 480}; }
 
     void onDraw(SkCanvas* canvas) override {
         SkPaint paint;
@@ -59,13 +58,13 @@ class ChromeGradTextGM1 : public skiagm::GM {
 
         canvas->clipRect(r);
 
-        paint.setColor(SK_ColorRED);
+        paint.setColor(SkColors::kRed);
         canvas->drawRect(r, paint);
 
         // Minimal repro doesn't require AA, LCD, or a nondefault typeface
         paint.setShader(make_chrome_solid());
 
-        SkFont font(ToolUtils::create_portable_typeface(), 500);
+        SkFont font(ToolUtils::DefaultPortableTypeface(), 500);
         font.setEdging(SkFont::Edging::kAlias);
 
         canvas->drawString("I", 0, 100, font, paint);
@@ -74,13 +73,13 @@ class ChromeGradTextGM1 : public skiagm::GM {
 
 // Replicate chrome layout test - switching between solid & gradient text
 class ChromeGradTextGM2 : public skiagm::GM {
-    SkString onShortName() override { return SkString("chrome_gradtext2"); }
+    SkString getName() const override { return SkString("chrome_gradtext2"); }
 
-    SkISize onISize() override { return {500, 480}; }
+    SkISize getISize() override { return {500, 480}; }
 
     void onDraw(SkCanvas* canvas) override {
         SkPaint paint;
-        SkFont  font(ToolUtils::create_portable_typeface());
+        SkFont  font = ToolUtils::DefaultPortableFont();
         font.setEdging(SkFont::Edging::kAlias);
 
         paint.setStyle(SkPaint::kFill_Style);
@@ -104,7 +103,7 @@ DEF_GM( return new ChromeGradTextGM2; )
 
 DEF_SIMPLE_GM(gradtext, canvas, 500, 480) {
     static constexpr float kTextSize = 26.0f;
-    SkFont                 font(ToolUtils::create_portable_typeface(), kTextSize);
+    SkFont                 font(ToolUtils::DefaultPortableTypeface(), kTextSize);
 
     canvas->drawRect({0, 0, 500, 240}, SkPaint());
     canvas->translate(20.0f, kTextSize);

@@ -4,33 +4,63 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/SurfaceContext.h"
 
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "src/core/SkAutoPixmapStorage.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSurface.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SingleOwner.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkMipmap.h"
+#include "src/core/SkSafeMath.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/core/SkYUVMath.h"
+#include "src/gpu/AsyncReadTypes.h"
+#include "src/gpu/SkBackingFit.h"
+#include "src/gpu/ganesh/GrAuditTrail.h"
+#include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrClientMappedBufferManager.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrDrawingManager.h"
+#include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
+#include "src/gpu/ganesh/GrRenderTask.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
+#include "src/gpu/ganesh/GrSurface.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/GrTracing.h"
-#include "src/gpu/ganesh/SkGr.h"
+#include "src/gpu/ganesh/GrTransferFromRenderTask.h"
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/geometry/GrRect.h"
 
+#include <algorithm>
+#include <cstdint>
 #include <memory>
+#include <tuple>
 
 using namespace skia_private;
 
@@ -108,7 +138,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     GrSurface* srcSurface = srcProxy->peekSurface();
 
     SkColorSpaceXformSteps::Flags flags =
-            SkColorSpaceXformSteps{this->colorInfo(), dst.info()}.flags;
+            SkColorSpaceXformSteps{this->colorInfo(), dst.info()}.fFlags;
     bool unpremul            = flags.unpremul,
          needColorConversion = flags.linearize || flags.gamut_transform || flags.encode,
          premul              = flags.premul;
@@ -145,9 +175,17 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     if (readFlag == GrCaps::SurfaceReadPixelsSupport::kCopyToTexture2D || canvas2DFastPath) {
         std::unique_ptr<SurfaceContext> tempCtx;
         if (this->asTextureProxy()) {
-            GrColorType colorType = (canvas2DFastPath || srcIsCompressed)
-                                            ? GrColorType::kRGBA_8888
-                                            : this->colorInfo().colorType();
+            GrColorType colorType = this->colorInfo().colorType();
+            if (canvas2DFastPath || srcIsCompressed) {
+                colorType = GrColorType::kRGBA_8888;
+            } else {
+                GrBackendFormat backendFormat =
+                        caps->getDefaultBackendFormat(colorType, GrRenderable::kYes);
+                if (!backendFormat.isValid()) {
+                    colorType = GrColorType::kRGBA_8888;
+                }
+            }
+
             SkAlphaType alphaType = canvas2DFastPath ? dst.alphaType()
                                                      : this->colorInfo().alphaType();
             GrImageInfo tempInfo(colorType,
@@ -187,7 +225,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
             sk_sp<GrSurfaceProxy> copy;
             static constexpr auto kFit = SkBackingFit::kExact;
             static constexpr auto kBudgeted = skgpu::Budgeted::kYes;
-            static constexpr auto kMipMapped = GrMipmapped::kNo;
+            static constexpr auto kMipMapped = skgpu::Mipmapped::kNo;
             if (restrictions.fMustCopyWholeSrc) {
                 copy = GrSurfaceProxy::Copy(fContext,
                                             std::move(srcProxy),
@@ -240,7 +278,11 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
                             this->colorInfo().refColorSpace(),
                             dst.dimensions());
         size_t tmpRB = tmpInfo.minRowBytes();
-        size_t size = tmpRB * tmpInfo.height();
+        SkSafeMath safe;
+        size_t size = safe.mul(tmpRB, tmpInfo.height());
+        if (!safe.ok()) {
+            return false;
+        }
         // Chrome MSAN bots require the data to be initialized (hence the ()).
         tmpPixels = std::make_unique<char[]>(size);
         tmp = {tmpInfo, tmpPixels.get(), tmpRB};
@@ -250,7 +292,10 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
         pt.fY = flip ? srcSurface->height() - pt.fY - dst.height() : pt.fY;
     }
 
-    dContext->priv().flushSurface(srcProxy.get());
+    GrDirectContext::FlushResult result = dContext->priv().flushSurface(srcProxy.get());
+    if (!result.fSuccess) {
+        return false;
+    }
     dContext->submit();
     if (!dContext->priv().getGpu()->readPixels(srcSurface,
                                                SkIRect::MakePtSize(pt, dst.dimensions()),
@@ -301,7 +346,8 @@ bool SurfaceContext::writePixels(GrDirectContext* dContext,
         }
         return this->writePixels(dContext, src[0], {0, 0});
     }
-    if (!this->asTextureProxy() || this->asTextureProxy()->proxyMipmapped() == GrMipmapped::kNo) {
+    if (!this->asTextureProxy() ||
+        this->asTextureProxy()->proxyMipmapped() == skgpu::Mipmapped::kNo) {
         return false;
     }
 
@@ -335,8 +381,8 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
 
     // We can either write to a subset or write MIP levels, but not both.
     SkASSERT((src[0].dimensions() == this->dimensions() && pt.isZero()) || numLevels == 1);
-    SkASSERT(numLevels == 1 ||
-             (this->asTextureProxy() && this->asTextureProxy()->mipmapped() == GrMipmapped::kYes));
+    SkASSERT(numLevels == 1 || (this->asTextureProxy() &&
+                                this->asTextureProxy()->mipmapped() == skgpu::Mipmapped::kYes));
     // Our public caller should have clipped to the bounds of the surface already.
     SkASSERT(SkIRect::MakeSize(this->dimensions()).contains(
             SkIRect::MakePtSize(pt, src[0].dimensions())));
@@ -370,7 +416,7 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     GrSurface* dstSurface = dstProxy->peekSurface();
 
     SkColorSpaceXformSteps::Flags flags =
-            SkColorSpaceXformSteps{src[0].colorInfo(), this->colorInfo()}.flags;
+            SkColorSpaceXformSteps{src[0].colorInfo(), this->colorInfo()}.fFlags;
     bool unpremul            = flags.unpremul,
          needColorConversion = flags.linearize || flags.gamut_transform || flags.encode,
          premul              = flags.premul;
@@ -429,7 +475,7 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
                 src[0].dimensions(),
                 GrRenderable::kNo,
                 1,
-                GrMipmapped::kNo,
+                skgpu::Mipmapped::kNo,
                 SkBackingFit::kApprox,
                 skgpu::Budgeted::kYes,
                 GrProtected::kNo,
@@ -499,16 +545,24 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     bool mustBeTight = !caps->writePixelsRowBytesSupport();
     size_t tmpSize = 0;
     if (mustBeTight || convertAll) {
+        SkSafeMath safe;
         for (int i = 0; i < numLevels; ++i) {
             if (convertAll || (mustBeTight && src[i].rowBytes() != src[i].info().minRowBytes())) {
-                tmpSize += src[i].info().makeColorType(allowedColorType).minRowBytes()*
-                           src[i].height();
+                size_t minRowBytes = src[i].info().makeColorType(allowedColorType).minRowBytes();
+                size_t levelSize = safe.mul(minRowBytes, src[i].height());
+                tmpSize = safe.add(tmpSize, levelSize);
             }
+        }
+        if (!safe.ok()) {
+            return false;
         }
     }
 
     auto tmpData = tmpSize ? SkData::MakeUninitialized(tmpSize) : nullptr;
-    void*    tmp = tmpSize ? tmpData->writable_data()           : nullptr;
+    if (tmpSize && !tmpData) {
+        return false;
+    }
+    void* tmp = tmpSize ? tmpData->writable_data() : nullptr;
     AutoSTArray<15, GrMipLevel> srcLevels(numLevels);
     bool ownAllStorage = true;
     for (int i = 0; i < numLevels; ++i) {
@@ -529,6 +583,19 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     }
     pt.fY = flip ? dstSurface->height() - pt.fY - src[0].height() : pt.fY;
 
+    auto flushSurfaceAndCheckSuccess = [dContext](GrSurfaceProxy* dstProxy) {
+        GrDirectContext::FlushResult result = dContext->priv().flushSurface(dstProxy);
+        return result.fSuccess;
+    };
+
+    // On platforms that prefer flushes over VRAM use (i.e., ANGLE) we're better off forcing a
+    // complete flush here.
+    if (!caps->preferVRAMUseOverFlushes()) {
+        if (!flushSurfaceAndCheckSuccess(dstProxy)) {
+            return false;
+        }
+    }
+
     if (!dContext->priv().drawingManager()->newWritePixelsTask(
                 sk_ref_sp(dstProxy),
                 SkIRect::MakePtSize(pt, src[0].dimensions()),
@@ -544,7 +611,9 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     if (!ownAllStorage) {
         // If any pixmap doesn't own its pixels then we must flush so that the pixels are pushed to
         // the GPU before we return.
-        dContext->priv().flushSurface(dstProxy);
+        if (!flushSurfaceAndCheckSuccess(dstProxy)) {
+            return false;
+        }
     }
     return true;
 }
@@ -578,15 +647,9 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
                         this->origin() == kBottomLeft_GrSurfaceOrigin     ||
                         this->colorInfo().alphaType() != info.alphaType() ||
                         !SkColorSpace::Equals(this->colorInfo().colorSpace(), info.colorSpace());
-    auto colorTypeOfFinalContext = this->colorInfo().colorType();
-    auto backendFormatOfFinalContext = this->asSurfaceProxy()->backendFormat();
-    if (needsRescale) {
-        colorTypeOfFinalContext = dstCT;
-        backendFormatOfFinalContext =
-                this->caps()->getDefaultBackendFormat(dstCT, GrRenderable::kYes);
-    }
-    auto readInfo = this->caps()->supportedReadPixelsColorType(colorTypeOfFinalContext,
-                                                               backendFormatOfFinalContext,
+    auto surfaceBackendFormat = this->asSurfaceProxy()->backendFormat();
+    auto readInfo = this->caps()->supportedReadPixelsColorType(this->colorInfo().colorType(),
+                                                               surfaceBackendFormat,
                                                                dstCT);
     // Fail if we can't read from the source surface's color type.
     if (readInfo.fColorType == GrColorType::kUnknown) {
@@ -607,7 +670,9 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
     int x = srcRect.fLeft;
     int y = srcRect.fTop;
     if (needsRescale) {
-        tempFC = this->rescale(info, kTopLeft_GrSurfaceOrigin, srcRect, rescaleGamma, rescaleMode);
+        auto tempInfo = GrImageInfo(info).makeColorType(this->colorInfo().colorType());
+        tempFC = this->rescale(tempInfo, kTopLeft_GrSurfaceOrigin, srcRect,
+                               rescaleGamma, rescaleMode);
         if (!tempFC) {
             callback(callbackContext, nullptr);
             return;
@@ -617,12 +682,134 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
         x = y = 0;
     }
     auto srcCtx = tempFC ? tempFC.get() : this;
-    return srcCtx->asyncReadPixels(dContext,
-                                   SkIRect::MakePtSize({x, y}, info.dimensions()),
-                                   info.colorType(),
-                                   callback,
-                                   callbackContext);
+    srcCtx->asyncReadPixels(dContext,
+                            SkIRect::MakePtSize({x, y}, info.dimensions()),
+                            info.colorType(),
+                            callback,
+                            callbackContext);
 }
+
+// Shared between RGBA and YUVA readbacks.
+//
+// It is used as a finish proc and a submitted proc to confirm that the commands to write to the
+// buffer were submitted to the GPU. The finish proc then completes the process by notifying the
+// async result callback. This class manages logic to trigger the client callback regardless of the
+// order Ganesh runs the finish or submit procs and handles failure modes.
+struct SurfaceContext::AsyncReadPixelContext {
+    ReadPixelsCallback* fClientCallback;
+    ReadPixelsContext fClientContext;
+    SkISize fSize;
+    GrClientMappedBufferManager* fMappedBufferManager;
+
+    PixelTransferResult fPrimaryTransfer; // RGBA or Y
+    PixelTransferResult fUTransfer = {};
+    PixelTransferResult fVTransfer = {};
+    PixelTransferResult fATransfer = {};
+
+    AsyncReadPixelContext(ReadPixelsCallback* clientCallback,
+                          ReadPixelsContext clientContext,
+                          SkISize size,
+                          GrClientMappedBufferManager* manager,
+                          PixelTransferResult&& rgbaTransfer)
+            : fClientCallback(clientCallback)
+            , fClientContext(clientContext)
+            , fSize(size)
+            , fMappedBufferManager(manager)
+            , fPrimaryTransfer(std::move(rgbaTransfer))
+            , fUTransfer{}
+            , fVTransfer{}
+            , fATransfer{} {}
+
+    AsyncReadPixelContext(ReadPixelsCallback* clientCallback,
+                          ReadPixelsContext clientContext,
+                          SkISize size,
+                          GrClientMappedBufferManager* manager,
+                          PixelTransferResult&& yTransfer,
+                          PixelTransferResult&& uTransfer,
+                          PixelTransferResult&& vTransfer,
+                          PixelTransferResult&& aTransfer)
+            : fClientCallback(clientCallback)
+            , fClientContext(clientContext)
+            , fSize(size)
+            , fMappedBufferManager(manager)
+            , fPrimaryTransfer(std::move(yTransfer))
+            , fUTransfer(std::move(uTransfer))
+            , fVTransfer(std::move(vTransfer))
+            , fATransfer(std::move(aTransfer)) {}
+
+    void setSubmitted(bool success) {
+        SkASSERT(fSubmitted == kUnsubmitted);
+        // `success` initially represents whether or not the command buffer was submitted, but the
+        // actual transfer tasks need to have been executed in order for that submission to
+        // have valid results for the async read. Ganesh will submit if any task is executed.
+        if (success) {
+            for (auto transfer : {&fPrimaryTransfer, &fUTransfer, &fVTransfer, &fATransfer}) {
+                if (!transfer->fTransferBuffer) {
+                    break; // Reached end of the planes being copied
+                }
+                if (!transfer->fTransferTask || !transfer->fTransferTask->executionSuccessful()) {
+                    success = false;
+                    break;
+                }
+            }
+        }
+        fSubmitted = success ? kSuccess : kFailure;
+        this->runClientCallbackMaybe();
+    }
+
+    void setFinished() {
+        fFinished = true;
+        this->runClientCallbackMaybe();
+    }
+
+    // This will destroy itself once it runs
+    void runClientCallbackMaybe() {
+        using AsyncReadResult = skgpu::TAsyncReadResult<GrGpuBuffer,
+                                                        GrDirectContext::DirectContextID,
+                                                        PixelTransferResult>;
+
+        if (!fFinished || fSubmitted == kUnsubmitted) {
+            return; // wait for both finish and submit procs to trigger
+        }
+
+        // Once both procs have fired, then proceed with the client callback.
+        std::unique_ptr<AsyncReadResult> result;
+        if (fSubmitted == kSuccess) {
+            result = std::make_unique<AsyncReadResult>(fMappedBufferManager->ownerID());
+        } // else the submit failed so we need to invoke the client callback with null
+
+
+        using Plane = std::pair<const PixelTransferResult*, SkISize>;
+        SkISize uvSize = {fSize.width() / 2, fSize.height() / 2};
+        for (auto [transfer, size] : {Plane{&fPrimaryTransfer, fSize},
+                                      Plane{&fUTransfer, uvSize},
+                                      Plane{&fVTransfer, uvSize},
+                                      Plane{&fATransfer, fSize}}) {
+            if (!transfer->fTransferBuffer) {
+                // We reach this for RGBA transfers (just the first plane), or for YUV w/o an alpha.
+                break;
+            }
+            if (result && !result->addTransferResult(*transfer,
+                                                     size,
+                                                     transfer->fRowBytes,
+                                                     fMappedBufferManager)) {
+                result.reset();
+            }
+            if (!result && transfer->fTransferBuffer->isMapped()) {
+                transfer->fTransferBuffer->unmap();
+            }
+        }
+        (*fClientCallback)(fClientContext, std::move(result));
+
+        delete this;
+    }
+
+private:
+    enum AsyncSubmitStatus { kUnsubmitted, kSuccess, kFailure };
+
+    AsyncSubmitStatus fSubmitted = kUnsubmitted;
+    bool fFinished = false;
+};
 
 void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
                                      const SkIRect& rect,
@@ -661,49 +848,33 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
         return;
     }
 
-    struct FinishContext {
-        ReadPixelsCallback* fClientCallback;
-        ReadPixelsContext fClientContext;
-        SkISize fSize;
-        SkColorType fColorType;
-        size_t fBufferAlignment;
-        GrClientMappedBufferManager* fMappedBufferManager;
-        PixelTransferResult fTransferResult;
-    };
     // Assumption is that the caller would like to flush. We could take a parameter or require an
     // explicit flush from the caller. We'd have to have a way to defer attaching the finish
     // callback to GrGpu until after the next flush that flushes our op list, though.
-    auto* finishContext = new FinishContext{callback,
-                                            callbackContext,
-                                            rect.size(),
-                                            colorType,
-                                            this->caps()->transferBufferRowBytesAlignment(),
-                                            mappedBufferManager,
-                                            std::move(transferResult)};
-    auto finishCallback = [](GrGpuFinishedContext c) {
-        const auto* context = reinterpret_cast<const FinishContext*>(c);
-        auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        size_t rowBytes =
-                SkAlignTo(context->fSize.width() * SkColorTypeBytesPerPixel(context->fColorType),
-                          context->fBufferAlignment);
-        if (!result->addTransferResult(context->fTransferResult, context->fSize, rowBytes,
-                                       manager)) {
-            result.reset();
-        }
-        (*context->fClientCallback)(context->fClientContext, std::move(result));
-        delete context;
-    };
-    GrFlushInfo flushInfo;
-    flushInfo.fFinishedContext = finishContext;
-    flushInfo.fFinishedProc = finishCallback;
+    auto* asyncContext = new AsyncReadPixelContext{callback,
+                                                   callbackContext,
+                                                   rect.size(),
+                                                   mappedBufferManager,
+                                                   std::move(transferResult)};
 
-    dContext->priv().flushSurface(
+    GrFlushInfo flushInfo;
+    flushInfo.fSubmittedContext = flushInfo.fFinishedContext = asyncContext;
+    flushInfo.fSubmittedProc = [](GrGpuSubmittedContext c, bool success) {
+        reinterpret_cast<AsyncReadPixelContext*>(c)->setSubmitted(success);
+    };
+    flushInfo.fFinishedProc = [](GrGpuSubmittedContext c) {
+        reinterpret_cast<AsyncReadPixelContext*>(c)->setFinished();
+    };
+
+    // Here we ignore flushSurface's return and count on the callbacks to inform the
+    // user re failures.
+    (void) dContext->priv().flushSurface(
             this->asSurfaceProxy(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
 }
 
 void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
                                                      SkYUVColorSpace yuvColorSpace,
+                                                     bool readAlpha,
                                                      sk_sp<SkColorSpace> dstColorSpace,
                                                      const SkIRect& srcRect,
                                                      SkISize dstSize,
@@ -764,7 +935,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         srcView = GrSurfaceProxyView::Copy(
                 fContext,
                 std::move(srcView),
-                GrMipmapped::kNo,
+                skgpu::Mipmapped::kNo,
                 srcRect,
                 SkBackingFit::kApprox,
                 skgpu::Budgeted::kYes,
@@ -778,14 +949,26 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         x = y = 0;
     }
 
-    auto yInfo = SkImageInfo::MakeA8(dstSize);
-    auto yFC = dContext->priv().makeSFCWithFallback(yInfo, SkBackingFit::kApprox);
+    auto yaInfo = SkImageInfo::MakeA8(dstSize);
+    auto yFC = dContext->priv().makeSFCWithFallback(yaInfo, SkBackingFit::kApprox,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
+    std::unique_ptr<SurfaceFillContext> aFC;
+    if (readAlpha) {
+        aFC = dContext->priv().makeSFCWithFallback(yaInfo, SkBackingFit::kApprox,
+                                                   /* sampleCount= */ 1,
+                                                   skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
+    }
 
-    auto uvInfo = yInfo.makeWH(yInfo.width()/2, yInfo.height()/2);
-    auto uFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
-    auto vFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
+    auto uvInfo = yaInfo.makeWH(yaInfo.width()/2, yaInfo.height()/2);
+    auto uFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
+    auto vFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo, skgpu::Protected::kNo);
 
-    if (!yFC || !uFC || !vFC) {
+    if (!yFC || !uFC || !vFC || (readAlpha && !aFC)) {
         callback(callbackContext, nullptr);
         return;
     }
@@ -807,7 +990,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     }
     bool doSynchronousRead = !this->caps()->transferFromSurfaceToBufferSupport() ||
                              !offsetAlignment;
-    PixelTransferResult yTransfer, uTransfer, vTransfer;
+    PixelTransferResult yTransfer, aTransfer, uTransfer, vTransfer;
 
     // This matrix generates (r,g,b,a) = (0, 0, 0, y)
     float yM[20];
@@ -827,6 +1010,24 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         if (!yTransfer.fTransferBuffer) {
             callback(callbackContext, nullptr);
             return;
+        }
+    }
+
+    if (readAlpha) {
+        auto aFP = GrTextureEffect::Make(srcView, this->colorInfo().alphaType(), texMatrix);
+        SkASSERT(baseM[15] == 0 &&
+                 baseM[16] == 0 &&
+                 baseM[17] == 0 &&
+                 baseM[18] == 1 &&
+                 baseM[19] == 0);
+        aFC->fillWithFP(std::move(aFP));
+        if (!doSynchronousRead) {
+            aTransfer = aFC->transferPixels(GrColorType::kAlpha_8,
+                                            SkIRect::MakeSize(aFC->dimensions()));
+            if (!aTransfer.fTransferBuffer) {
+                callback(callbackContext, nullptr);
+                return;
+            }
         }
     }
 
@@ -880,12 +1081,17 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     }
 
     if (doSynchronousRead) {
-        GrPixmap yPmp = GrPixmap::Allocate(yInfo);
+        GrPixmap yPmp = GrPixmap::Allocate(yaInfo);
         GrPixmap uPmp = GrPixmap::Allocate(uvInfo);
         GrPixmap vPmp = GrPixmap::Allocate(uvInfo);
+        GrPixmap aPmp;
+        if (readAlpha) {
+            aPmp = GrPixmap::Allocate(yaInfo);
+        }
         if (!yFC->readPixels(dContext, yPmp, {0, 0}) ||
             !uFC->readPixels(dContext, uPmp, {0, 0}) ||
-            !vFC->readPixels(dContext, vPmp, {0, 0})) {
+            !vFC->readPixels(dContext, vPmp, {0, 0}) ||
+            (readAlpha && !aFC->readPixels(dContext, aPmp, {0, 0}))) {
             callback(callbackContext, nullptr);
             return;
         }
@@ -893,62 +1099,37 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         result->addCpuPlane(yPmp.pixelStorage(), yPmp.rowBytes());
         result->addCpuPlane(uPmp.pixelStorage(), uPmp.rowBytes());
         result->addCpuPlane(vPmp.pixelStorage(), vPmp.rowBytes());
+        if (readAlpha) {
+            result->addCpuPlane(aPmp.pixelStorage(), aPmp.rowBytes());
+        }
         callback(callbackContext, std::move(result));
         return;
     }
 
-    struct FinishContext {
-        ReadPixelsCallback* fClientCallback;
-        ReadPixelsContext fClientContext;
-        GrClientMappedBufferManager* fMappedBufferManager;
-        SkISize fSize;
-        size_t fBufferAlignment;
-        PixelTransferResult fYTransfer;
-        PixelTransferResult fUTransfer;
-        PixelTransferResult fVTransfer;
-    };
     // Assumption is that the caller would like to flush. We could take a parameter or require an
     // explicit flush from the caller. We'd have to have a way to defer attaching the finish
     // callback to GrGpu until after the next flush that flushes our op list, though.
-    auto* finishContext = new FinishContext{callback,
-                                            callbackContext,
-                                            dContext->priv().clientMappedBufferManager(),
-                                            dstSize,
-                                            this->caps()->transferBufferRowBytesAlignment(),
-                                            std::move(yTransfer),
-                                            std::move(uTransfer),
-                                            std::move(vTransfer)};
-    auto finishCallback = [](GrGpuFinishedContext c) {
-        const auto* context = reinterpret_cast<const FinishContext*>(c);
-        auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        size_t rowBytes = SkToSizeT(context->fSize.width());
-        rowBytes = SkAlignTo(rowBytes, context->fBufferAlignment);
-        if (!result->addTransferResult(context->fYTransfer, context->fSize, rowBytes, manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        rowBytes = SkToSizeT(context->fSize.width()) / 2;
-        rowBytes = SkAlignTo(rowBytes, context->fBufferAlignment);
-        SkISize uvSize = {context->fSize.width() / 2, context->fSize.height() / 2};
-        if (!result->addTransferResult(context->fUTransfer, uvSize, rowBytes, manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        if (!result->addTransferResult(context->fVTransfer, uvSize, rowBytes, manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        (*context->fClientCallback)(context->fClientContext, std::move(result));
-        delete context;
-    };
+    auto* asyncContext = new AsyncReadPixelContext{callback,
+                                                   callbackContext,
+                                                   dstSize,
+                                                   dContext->priv().clientMappedBufferManager(),
+                                                   std::move(yTransfer),
+                                                   std::move(uTransfer),
+                                                   std::move(vTransfer),
+                                                   std::move(aTransfer)};
+
     GrFlushInfo flushInfo;
-    flushInfo.fFinishedContext = finishContext;
-    flushInfo.fFinishedProc = finishCallback;
-    dContext->priv().flushSurface(
+    flushInfo.fSubmittedContext = flushInfo.fFinishedContext = asyncContext;
+    flushInfo.fSubmittedProc = [](GrGpuSubmittedContext c, bool success) {
+        reinterpret_cast<AsyncReadPixelContext*>(c)->setSubmitted(success);
+    };
+    flushInfo.fFinishedProc = [](GrGpuSubmittedContext c) {
+        reinterpret_cast<AsyncReadPixelContext*>(c)->setFinished();
+    };
+
+    // Here we ignore flushSurface's return and count on the callbacks to inform the
+    // user re failures.
+    (void) dContext->priv().flushSurface(
             this->asSurfaceProxy(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
 }
 
@@ -990,14 +1171,31 @@ sk_sp<GrRenderTask> SurfaceContext::copyScaled(sk_sp<GrSurfaceProxy> src,
         // axis where we are copying up to the logical dimension, but that dimension is less than
         // the actual backing store dimension, the linear filter will access one texel beyond the
         // logical size, potentially incorporating undefined values.
+        // NOTE: Identity scales that sample along the logical boundary of an approxi-fit texture
+        // can still technically access a row or column of undefined data (albeit with a weight that
+        // *should* be zero). We also disallow copying with linear filtering in that scenario,
+        // just in case.
+#if defined(SK_USE_SAFE_INSET_FOR_TEXTURE_SAMPLING)
+        const bool upscalingXAtApproxEdge =
+            dstRect.width() >= srcRect.width() &&
+            srcRect.fRight == src->width() &&
+            srcRect.fRight < src->backingStoreDimensions().width();
+        const bool upscalingYAtApproxEdge =
+            dstRect.height() >= srcRect.height() &&
+            srcRect.fBottom == src->height() &&
+            srcRect.fBottom < src->backingStoreDimensions().height();
+#else
+        // In this mode we allow non-scaling copies through even if the linear filtering would
+        // access the adjacent undefined row or column.
         const bool upscalingXAtApproxEdge =
             dstRect.width() > srcRect.width() &&
             srcRect.fRight == src->width() &&
-            src->width() < src->backingStoreDimensions().width();
+            srcRect.fRight < src->backingStoreDimensions().width();
         const bool upscalingYAtApproxEdge =
             dstRect.height() > srcRect.height() &&
-            srcRect.height() == src->height() &&
-            srcRect.height() < src->backingStoreDimensions().height();
+            srcRect.fBottom == src->height() &&
+            srcRect.fBottom < src->backingStoreDimensions().height();
+#endif
         if (upscalingXAtApproxEdge || upscalingYAtApproxEdge) {
             return nullptr;
         }
@@ -1023,8 +1221,8 @@ std::unique_ptr<SurfaceFillContext> SurfaceContext::rescale(const GrImageInfo& i
                                                             RescaleMode rescaleMode) {
     auto sfc = fContext->priv().makeSFCWithFallback(info,
                                                     SkBackingFit::kExact,
-                                                    1,
-                                                    GrMipmapped::kNo,
+                                                    /* sampleCount= */ 1,
+                                                    skgpu::Mipmapped::kNo,
                                                     this->asSurfaceProxy()->isProtected(),
                                                     origin);
     if (!sfc || !this->rescaleInto(sfc.get(),
@@ -1065,7 +1263,7 @@ bool SurfaceContext::rescaleInto(SurfaceFillContext* dst,
             // when there are no other conversions.
             texView = GrSurfaceProxyView::Copy(fContext,
                                                std::move(texView),
-                                               GrMipmapped::kNo,
+                                               skgpu::Mipmapped::kNo,
                                                srcRect,
                                                SkBackingFit::kApprox,
                                                skgpu::Budgeted::kNo,
@@ -1106,9 +1304,9 @@ bool SurfaceContext::rescaleInto(SurfaceFillContext* dst,
                        srcRect.size());
         auto linearRTC = fContext->priv().makeSFCWithFallback(std::move(ii),
                                                               SkBackingFit::kApprox,
-                                                              1,
-                                                              GrMipmapped::kNo,
-                                                              GrProtected::kNo,
+                                                              /* sampleCount= */ 1,
+                                                              skgpu::Mipmapped::kNo,
+                                                              texView.proxy()->isProtected(),
                                                               dst->origin());
         if (!linearRTC) {
             return false;
@@ -1152,7 +1350,11 @@ bool SurfaceContext::rescaleInto(SurfaceFillContext* dst,
             xform = GrColorSpaceXform::Make(input->colorInfo(), dst->colorInfo());
         } else {
             GrImageInfo nextInfo(input->colorInfo(), nextDims);
-            tempB = fContext->priv().makeSFCWithFallback(nextInfo, SkBackingFit::kApprox);
+
+            tempB = fContext->priv().makeSFCWithFallback(nextInfo, SkBackingFit::kApprox,
+                                                         /* sampleCount= */ 1,
+                                                         skgpu::Mipmapped::kNo,
+                                                         texView.proxy()->isProtected());
             if (!tempB) {
                 return false;
             }
@@ -1251,12 +1453,20 @@ SurfaceContext::PixelTransferResult SurfaceContext::transferPixels(GrColorType d
         return {};
     }
 
-    size_t rowBytes = GrColorTypeBytesPerPixel(supportedRead.fColorType) * rect.width();
-    rowBytes = SkAlignTo(rowBytes, this->caps()->transferBufferRowBytesAlignment());
-    size_t size = rowBytes * rect.height();
+    SkSafeMath safe;
+    size_t bytesPerPixel = GrColorTypeBytesPerPixel(supportedRead.fColorType);
+    SkASSERT(bytesPerPixel > 0);
+    size_t rowBytes = safe.mul(bytesPerPixel, rect.width());
+    size_t maxTransAlignment = this->caps()->transferBufferRowBytesAlignment();
+    size_t alignment = safe.lcm(bytesPerPixel, maxTransAlignment);
+    rowBytes = safe.alignUpNonPow2(rowBytes, alignment);
+    size_t size = safe.mul(rowBytes, rect.height());
+    if (!safe.ok()) {
+        return {};
+    }
     // By using kStream_GrAccessPattern here, we are not able to cache and reuse the buffer for
     // multiple reads. Switching to kDynamic_GrAccessPattern would allow for this, however doing
-    // so causes a crash in a chromium test. See skbug.com/11297
+    // so causes a crash in a chromium test. See skbug.com/40042671
     auto buffer = direct->priv().resourceProvider()->createBuffer(
             size,
             GrGpuBufferType::kXferGpuToCpu,
@@ -1271,20 +1481,29 @@ SurfaceContext::PixelTransferResult SurfaceContext::transferPixels(GrColorType d
         srcRect = SkIRect::MakeLTRB(rect.fLeft, this->height() - rect.fBottom, rect.fRight,
                                     this->height() - rect.fTop);
     }
-    this->drawingManager()->newTransferFromRenderTask(this->asSurfaceProxyRef(), srcRect,
-                                                      this->colorInfo().colorType(),
-                                                      supportedRead.fColorType, buffer, 0);
+
     PixelTransferResult result;
+    result.fTransferTask = this->drawingManager()->newTransferFromRenderTask(
+            this->asSurfaceProxyRef(),
+            srcRect,
+            this->colorInfo().colorType(),
+            supportedRead.fColorType,
+            buffer,
+            0);
     result.fTransferBuffer = std::move(buffer);
     auto at = this->colorInfo().alphaType();
     if (supportedRead.fColorType != dstCT || flip) {
-        result.fPixelConverter = [w = rect.width(), h = rect.height(), dstCT, supportedRead, at](
+        int w = rect.width(), h = rect.height();
+        GrImageInfo srcInfo(supportedRead.fColorType, at, nullptr, w, h);
+        GrImageInfo dstInfo(dstCT, at, nullptr, w, h);
+        result.fRowBytes = dstInfo.minRowBytes();
+        result.fPixelConverter = [dstInfo, srcInfo, rowBytes](
                 void* dst, const void* src) {
-            GrImageInfo srcInfo(supportedRead.fColorType, at, nullptr, w, h);
-            GrImageInfo dstInfo(dstCT,                    at, nullptr, w, h);
             GrConvertPixels( GrPixmap(dstInfo, dst, dstInfo.minRowBytes()),
-                            GrCPixmap(srcInfo, src, srcInfo.minRowBytes()));
+                            GrCPixmap(srcInfo, src, rowBytes));
         };
+    } else {
+        result.fRowBytes = rowBytes;
     }
     return result;
 }

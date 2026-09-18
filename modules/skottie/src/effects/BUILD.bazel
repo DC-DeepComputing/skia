@@ -1,8 +1,10 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup")
+load("//bazel:skia_rules.bzl", "skia_filegroup")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
 
 licenses(["notice"])
-
-exports_files_legacy()
 
 skia_filegroup(
     name = "srcs",
@@ -11,6 +13,7 @@ skia_filegroup(
         "BrightnessContrastEffect.cpp",
         "BulgeEffect.cpp",
         "CCTonerEffect.cpp",
+        "ColorOverlayStyles.cpp",
         "CornerPinEffect.cpp",
         "DirectionalBlur.cpp",
         "DisplacementMapEffect.cpp",
@@ -26,8 +29,6 @@ skia_filegroup(
         "InvertEffect.cpp",
         "LevelsEffect.cpp",
         "LinearWipeEffect.cpp",
-        "MotionBlurEffect.cpp",
-        "MotionBlurEffect.h",
         "MotionTileEffect.cpp",
         "RadialWipeEffect.cpp",
         "ShadowStyles.cpp",

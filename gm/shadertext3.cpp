@@ -21,8 +21,10 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
+#include "src/core/SkColorPriv.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <string.h>
 
@@ -37,17 +39,15 @@ static void makebm(SkBitmap* bm, int w, int h) {
     const SkPoint     kPts0[] = { { 0, 0 }, { s, s } };
     const SkPoint     kPts1[] = { { s/2, 0 }, { s/2, s } };
     const SkScalar    kPos[] = { 0, SK_Scalar1/2, SK_Scalar1 };
-    const SkColor kColors0[] = {0x80F00080, 0xF0F08000, 0x800080F0 };
-    const SkColor kColors1[] = {0xF08000F0, 0x8080F000, 0xF000F080 };
-
 
     SkPaint     paint;
-
-    paint.setShader(SkGradientShader::MakeLinear(kPts0, kColors0, kPos,
-                    std::size(kColors0), SkTileMode::kClamp));
+    SkColorConverter conv0({0x80F00080, 0xF0F08000, 0x800080F0});
+    paint.setShader(SkShaders::LinearGradient(kPts0,
+                                              {{conv0.colors4f(), kPos, SkTileMode::kClamp}, {}}));
     canvas.drawPaint(paint);
-    paint.setShader(SkGradientShader::MakeLinear(kPts1, kColors1, kPos,
-                    std::size(kColors1), SkTileMode::kClamp));
+    SkColorConverter conv1({0xF08000F0, 0x8080F000, 0xF000F080});
+    paint.setShader(SkShaders::LinearGradient(kPts1,
+                                              {{conv1.colors4f(), kPos, SkTileMode::kClamp}, {}}));
     canvas.drawPaint(paint);
 }
 
@@ -67,12 +67,9 @@ public:
     }
 
 protected:
+    SkString getName() const override { return SkString("shadertext3"); }
 
-    SkString onShortName() override {
-        return SkString("shadertext3");
-    }
-
-    SkISize onISize() override { return SkISize::Make(820, 930); }
+    SkISize getISize() override { return SkISize::Make(820, 930); }
 
     void onOnceBeforeDraw() override {
         makebm(&fBmp, kPointSize / 4, kPointSize / 4);
@@ -87,7 +84,7 @@ protected:
 
         canvas->drawImage(fBmp.asImage(), 5.f, 5.f, sampling, &bmpPaint);
 
-        SkFont  font(ToolUtils::create_portable_typeface(), SkIntToScalar(kPointSize));
+        SkFont  font(ToolUtils::DefaultPortableTypeface(), SkIntToScalar(kPointSize));
         SkPaint outlinePaint;
         outlinePaint.setStyle(SkPaint::kStroke_Style);
         outlinePaint.setStrokeWidth(0.f);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google LLC.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,20 +7,53 @@
 
 #include "src/gpu/ganesh/ops/PathStencilCoverOp.h"
 
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkPoint.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/SkAlignedStorage.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkLog.h"
+#include "include/private/SkOnce.h"
+#include "src/core/SkMatrixPriv.h"
+#include "src/core/SkSLTypeShared.h"
+#include "src/gpu/BufferWriter.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrEagerVertexAllocator.h"
-#include "src/gpu/ganesh/GrGpu.h"
+#include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
+#include "src/gpu/ganesh/GrPipeline.h"
+#include "src/gpu/ganesh/GrProcessorAnalysis.h"
+#include "src/gpu/ganesh/GrProgramInfo.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
+#include "src/gpu/ganesh/GrShaderCaps.h"
+#include "src/gpu/ganesh/GrShaderVar.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
+#include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
+#include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
+#include "src/gpu/ganesh/ops/FillPathFlags.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
 #include "src/gpu/ganesh/tessellate/GrPathTessellationShader.h"
 #include "src/gpu/tessellate/AffineMatrix.h"
-#include "src/gpu/tessellate/FixedCountBufferUtils.h"
 #include "src/gpu/tessellate/MiddleOutPolygonTriangulator.h"
-#include "src/gpu/tessellate/Tessellation.h"
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <memory>
+
+class GrDstProxyView;
+enum class GrXferBarrierFlags;
+namespace skgpu {
+class KeyBuilder;
+}
+struct GrUserStencilSettings;
 
 namespace {
 
@@ -242,10 +275,17 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
         // the number of combined verbs from the paths in the list.
         // A single n-sided polygon is fanned by n-2 triangles. Multiple polygons with a combined
         // edge count of n are fanned by strictly fewer triangles.
-        int maxTrianglesInFans = std::max(fTotalCombinedPathVerbCnt - 2, 0);
+        const int maxTrianglesInFans = std::max(fTotalCombinedPathVerbCnt - 2, 0);
+        // Semi-conservative guard against 3*maxTrianglesInFans > int max. Just use >> 2 instead of
+        // divide-by-3. Anything that large is a pathologic input that will likely OOM anyways, so
+        // dropping at 1/4 of int max vs. 1/3 of int max doesn't matter.
+        if ((std::numeric_limits<int>::max() >> 2) < maxTrianglesInFans) SK_UNLIKELY {
+            SKIA_LOG_W("Excessive triangle count, dropping draw: %d", maxTrianglesInFans);
+            return;
+        }
         int fanTriangleCount = 0;
         if (VertexWriter triangleVertexWriter =
-                    vertexAlloc.lockWriter(sizeof(SkPoint), maxTrianglesInFans * 3)) {
+                    vertexAlloc.lockWriter(sizeof(SkPoint), 3 * maxTrianglesInFans)) {
             for (auto [pathMatrix, path, color] : *fPathDrawList) {
                 tess::AffineMatrix m(pathMatrix);
                 for (tess::PathMiddleOutFanIter it(path); !it.done();) {
@@ -275,6 +315,10 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
                                                                  fPathCount,
                                                                  &fBBoxBuffer,
                                                                  &fBBoxBaseInstance);
+        if (!vertexWriter) SK_UNLIKELY {
+            SKIA_LOG_W("Could not allocate vertices");
+            return;
+        }
         SkDEBUGCODE(int pathCount = 0;)
         for (auto [pathMatrix, path, color] : *fPathDrawList) {
             SkDEBUGCODE(auto end = vertexWriter.mark(instanceStride));

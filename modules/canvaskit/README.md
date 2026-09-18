@@ -6,10 +6,10 @@ CanvasKit has no other external source dependencies.
 
 ## Compiling with GN
 To build with GN, you need to have followed the instructions to download Skia and its deps
-<https://skia.org/user/download>.
+<https://skia.org/docs/user/download>.
 
 To compile CanvasKit, you will first need to [download and activate `emscripten`][1] using the
-script in `//bin/activate-emsdk` (or `//bin/git-sync-deps` which also calls activate-emsdk).
+script in `//bin/activate-emsdk` (or `//tools/git-sync-deps` which also calls activate-emsdk).
 This places the associated files in `//third_party/externals/emsdk` and the GN[2] build scripts
 will use those by default.
 The compile.sh script automates the default GN settings; users are free to set their own. If users
@@ -49,6 +49,13 @@ any of the "extras", one might run:
     ./compile.sh no_skottie no_font
 
 Such a stripped-down version is about half the size of the default release build.
+
+If CanvasKit fails to build and you are getting compile errors that don't look like Skia code,
+you may need to do a fresh install of the npm modules. You can do this by finding the .dts file
+mentioned in the error message, deleting it, and rerunning `npm ci`.
+
+If you're using the correct modules plus the latest supported typescript and it still fails,
+the module versions listed in package.json may need to be updated as well.
 
 # Unit tests, performance tests, and coverage.
 
@@ -114,7 +121,7 @@ operations.
 
 # Infrastructure Playbook
 
-When dealing with CanvasKit (or PathKit) on our bots, we use Docker. Check out
+When dealing with CanvasKit in our CI, we use Docker. Check out
 $SKIA_ROOT/infra/wasm-common/docker/README.md for more on building/editing the
 images used for building and testing.
 
@@ -124,9 +131,7 @@ This presumes you have updated emscripten locally to a newer version of the
 sdk and verified/fixed any build issues that have arisen.
 
   1. Edit `//bin/activate-emsdk` to install and activate the desired version of Emscripten.
-  2. Upload a CL with all the changes. Run all Test.+CanvasKit, Perf.+Puppeteer,
-      Test.+PathKit, Perf.+PathKit jobs to make sure the new builds pass all
-      tests and don't crash the perf harnesses.
+  2. Upload a CL with all the changes. Run all .+CanvasKit jobs to make sure the new builds pass.
   3. Send out CL for review. Feel free to point the reviewer at these steps.
 
 ## Running Skia's GMs and Unit Tests against wasm+WebGL ##

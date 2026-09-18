@@ -11,28 +11,42 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkSamplingOptions.h"
-#include "include/core/SkSurface.h"
+#include "include/core/SkSize.h"
+#include "include/private/SkDebug.h"
+#include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
-#include "src/gpu/ganesh/GrDataUtils.h"
+#include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/GrPixmap.h"
-#include "src/gpu/ganesh/GrRenderTargetProxy.h"
-#include "src/gpu/ganesh/GrRenderTask.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"  // IWYU pragma: keep
+#include "src/gpu/ganesh/GrRenderTask.h"         // IWYU pragma: keep
+#include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"  // IWYU pragma: keep
 
+#include <cstddef>
+#include <functional>
+#include <memory>
+#include <utility>
+
+class GrCaps;
+class GrDirectContext;
 class GrDrawingManager;
 class GrRecordingContext;
-class GrRenderTargetProxy;
-class GrSurface;
-class GrSurfaceProxy;
-class GrTextureProxy;
+class GrRecordingContextPriv;
+class GrTransferFromRenderTask;
+class SkColorSpace;
+enum GrSurfaceOrigin : int;
+enum SkColorType : int;
+enum SkYUVColorSpace : int;
+enum class GrColorType;
 struct SkIPoint;
-struct SkIRect;
+struct SkImageInfo;
 
 namespace skgpu {
 class SingleOwner;
+enum class Mipmapped : bool;
 }
 
 namespace skgpu::ganesh {
@@ -62,7 +76,7 @@ public:
     int width() const { return fReadView.proxy()->width(); }
     int height() const { return fReadView.proxy()->height(); }
 
-    GrMipmapped mipmapped() const { return fReadView.mipmapped(); }
+    skgpu::Mipmapped mipmapped() const { return fReadView.mipmapped(); }
 
     const GrCaps* caps() const;
 
@@ -92,6 +106,7 @@ public:
     // GPU implementation for SkImage:: and SkSurface::asyncRescaleAndReadPixelsYUV420.
     void asyncRescaleAndReadPixelsYUV420(GrDirectContext*,
                                          SkYUVColorSpace yuvColorSpace,
+                                         bool readAlpha,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,
                                          SkISize dstSize,
@@ -162,7 +177,7 @@ public:
                      SkImage::RescaleGamma,
                      SkImage::RescaleMode);
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     bool testCopy(sk_sp<GrSurfaceProxy> src, const SkIRect& srcRect, const SkIPoint& dstPoint) {
         return this->copy(std::move(src), srcRect, dstPoint) != nullptr;
     }
@@ -192,11 +207,17 @@ protected:
         // If null then the transfer could not be performed. Otherwise this buffer will contain
         // the pixel data when the transfer is complete.
         sk_sp<GrGpuBuffer> fTransferBuffer;
+        // RowBytes for transfer buffer data
+        size_t fRowBytes;
+        // The task that is executed to perform the texture->buffer copy
+        sk_sp<GrTransferFromRenderTask> fTransferTask;
         // If this is null then the transfer buffer will contain the data in the requested
         // color type. Otherwise, when the transfer is done this must be called to convert
         // from the transfer buffer's color type to the requested color type.
         std::function<ConversionFn> fPixelConverter;
     };
+    struct AsyncReadPixelContext;
+
     PixelTransferResult transferPixels(GrColorType colorType, const SkIRect& rect);
 
     // The async read step of asyncRescaleAndReadPixels()

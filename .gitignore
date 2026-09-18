@@ -3,18 +3,23 @@
 *.iml
 *.perfetto-trace
 .DS_Store
+.agents
 .android_config
 .gclient*
 .gradle
 .idea
 .cproject
 .clwb/
+.jetskicli
 .project
 .recipe_deps/
 .settings/
 .vscode/
+.vs/
 .win_toolchain/
 TAGS
+agents/internal/
+agents/shared/
 bower_components
 imgui.ini
 infra/bots/gen_tasks_aux.go
@@ -39,7 +44,6 @@ platform_tools/android/apps/*/.externalNativeBuild
 tools/skp/page_sets/data/*.json
 tools/skp/page_sets/data/*.wpr
 
-common
 buildtools
 third_party/externals
 
@@ -50,8 +54,9 @@ bin/clang-format.exe
 bin/sk
 bin/sk.exe
 bin/sk.version
+third_party/gn
 third_party/ninja
-third_party/rust-toolchain
+bin/ninja
 bin/ninja.exe
 bin/ninja.version
 
@@ -61,5 +66,11 @@ tools/lottiecap/filmstrip.png
 
 bazel-*
 
+Cargo.lock
+target/
+
 # A user is free to specify custom builds or options here without them being checked in.
 bazel/user/buildrc
+
+# Coding Agents put workspace state here - we don't want to check that in.
+.gemini

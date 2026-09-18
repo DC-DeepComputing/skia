@@ -1,16 +1,19 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
+#include "include/core/SkRefCnt.h"
+#include "modules/jsonreader/SkJSONReader.h"
+#include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/src/SkottiePriv.h"
-
-#include "modules/skottie/src/SkottieJson.h"
-#include "modules/skottie/src/SkottieValue.h"
 #include "modules/skottie/src/animator/Animator.h"
+#include "modules/skresources/include/SkResources.h"
 #include "modules/sksg/include/SkSGRenderNode.h"
+
+#include <utility>
 
 namespace skottie::internal {
 

@@ -8,12 +8,10 @@
 #include "src/core/SkStrikeSpec.h"
 
 #include "include/core/SkFont.h"
-#include "include/core/SkFontTypes.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkSurfaceProps.h"
-#include "src/base/SkTLazy.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkStrike.h"
@@ -76,10 +74,11 @@ std::tuple<SkStrikeSpec, SkScalar> SkStrikeSpec::MakeCanonicalized(
     }
 
     const SkFont* canonicalizedFont = &font;
-    SkTLazy<SkFont> pathFont;
+    std::optional<SkFont> pathFont;
     SkScalar strikeToSourceScale = 1;
     if (ShouldDrawAsPath(canonicalizedPaint, font, SkMatrix::I())) {
-        canonicalizedFont = pathFont.set(font);
+        pathFont = font;
+        canonicalizedFont = &pathFont.value();
         strikeToSourceScale = pathFont->setupForAsPaths(nullptr);
         canonicalizedPaint.reset();
     }
@@ -89,14 +88,14 @@ std::tuple<SkStrikeSpec, SkScalar> SkStrikeSpec::MakeCanonicalized(
             strikeToSourceScale};
 }
 
-SkStrikeSpec SkStrikeSpec::MakeWithNoDevice(const SkFont& font, const SkPaint* paint) {
+SkStrikeSpec SkStrikeSpec::MakeWithNoDevice(const SkFont& font, const SkPaint* paint,
+                                            SkScalerContextFlags flags) {
     SkPaint setupPaint;
     if (paint != nullptr) {
         setupPaint = *paint;
     }
 
-    return SkStrikeSpec(font, setupPaint, SkSurfaceProps(),
-                        SkScalerContextFlags::kFakeGammaAndBoostContrast, SkMatrix::I());
+    return SkStrikeSpec(font, setupPaint, SkSurfaceProps(), flags, SkMatrix::I());
 }
 
 bool SkStrikeSpec::ShouldDrawAsPath(
@@ -131,27 +130,6 @@ SkString SkStrikeSpec::dump() const {
     return fAutoDescriptor.getDesc()->dumpRec();
 }
 
-SkStrikeSpec SkStrikeSpec::MakePDFVector(const SkTypeface& typeface, int* size) {
-    SkFont font;
-    font.setHinting(SkFontHinting::kNone);
-    font.setEdging(SkFont::Edging::kAlias);
-    font.setTypeface(sk_ref_sp(&typeface));
-    int unitsPerEm = typeface.getUnitsPerEm();
-    if (unitsPerEm <= 0) {
-        unitsPerEm = 1024;
-    }
-    if (size) {
-        *size = unitsPerEm;
-    }
-    font.setSize((SkScalar)unitsPerEm);
-
-    return SkStrikeSpec(font,
-                        SkPaint(),
-                        SkSurfaceProps(0, kUnknown_SkPixelGeometry),
-                        SkScalerContextFlags::kFakeGammaAndBoostContrast,
-                        SkMatrix::I());
-}
-
 SkStrikeSpec::SkStrikeSpec(const SkFont& font, const SkPaint& paint,
                            const SkSurfaceProps& surfaceProps,
                            SkScalerContextFlags scalerContextFlags,
@@ -164,7 +142,7 @@ SkStrikeSpec::SkStrikeSpec(const SkFont& font, const SkPaint& paint,
 
     fMaskFilter = sk_ref_sp(effects.fMaskFilter);
     fPathEffect = sk_ref_sp(effects.fPathEffect);
-    fTypeface = font.refTypefaceOrDefault();
+    fTypeface = font.refTypeface();
 }
 
 sk_sp<sktext::StrikeForGPU> SkStrikeSpec::findOrCreateScopedStrike(
@@ -173,12 +151,10 @@ sk_sp<sktext::StrikeForGPU> SkStrikeSpec::findOrCreateScopedStrike(
 }
 
 sk_sp<SkStrike> SkStrikeSpec::findOrCreateStrike() const {
-    SkScalerContextEffects effects{fPathEffect.get(), fMaskFilter.get()};
     return SkStrikeCache::GlobalStrikeCache()->findOrCreateStrike(*this);
 }
 
 sk_sp<SkStrike> SkStrikeSpec::findOrCreateStrike(SkStrikeCache* cache) const {
-    SkScalerContextEffects effects{fPathEffect.get(), fMaskFilter.get()};
     return cache->findOrCreateStrike(*this);
 }
 

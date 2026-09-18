@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,27 +8,36 @@
 #ifndef GrFPArgs_DEFINED
 #define GrFPArgs_DEFINED
 
-#include "include/core/SkMatrix.h"
-#include "src/shaders/SkShaderBase.h"
+#include "include/private/SkAssert.h"
 
 class GrColorInfo;
-class GrRecordingContext;
-class SkMatrixProvider;
 class SkSurfaceProps;
+namespace skgpu::ganesh { class SurfaceDrawContext; }
 
 struct GrFPArgs {
-    GrFPArgs(GrRecordingContext* context,
+    enum class Scope {
+        kDefault,
+        kRuntimeEffect,
+    };
+
+    GrFPArgs(skgpu::ganesh::SurfaceDrawContext* sdc,
              const GrColorInfo* dstColorInfo,
-             const SkSurfaceProps& surfaceProps)
-            : fContext(context), fDstColorInfo(dstColorInfo), fSurfaceProps(surfaceProps) {
-        SkASSERT(fContext);
+             const SkSurfaceProps& surfaceProps,
+             Scope scope)
+            : fSurfaceDrawContext(sdc)
+            , fDstColorInfo(dstColorInfo)
+            , fSurfaceProps(surfaceProps)
+            , fScope(scope) {
+        SkASSERT(fSurfaceDrawContext);
     }
 
-    GrRecordingContext* fContext;
+    skgpu::ganesh::SurfaceDrawContext* fSurfaceDrawContext;
 
     const GrColorInfo* fDstColorInfo;
 
     const SkSurfaceProps& fSurfaceProps;
+
+    Scope fScope;
 };
 
 #endif

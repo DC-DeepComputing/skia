@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -16,7 +16,9 @@
 
 #include <vector>
 
-class SkottieTextEditor;
+namespace skottie_utils {
+class TextEditor;
+}
 
 namespace sksg    { class Scene;     }
 
@@ -43,7 +45,7 @@ private:
     void renderUI();
 
     class TransformTracker;
-    class SlotManagerWrapper;
+    class SlotManagerInterface;
 
     const SkString                     fPath;
 
@@ -51,8 +53,8 @@ private:
     skottie::Animation::Builder::Stats fAnimationStats;
     sksg::InvalidationController       fInvalController;
     sk_sp<TransformTracker>            fTransformTracker;
-    std::unique_ptr<SlotManagerWrapper>fSlotManagerWrapper;
-    sk_sp<SkottieTextEditor>           fTextEditor;
+    std::unique_ptr<SlotManagerInterface>fSlotManagerInterface;
+    sk_sp<skottie_utils::TextEditor>   fTextEditor;
     std::vector<float>                 fFrameTimes;
     SkSize                             fWinSize              = SkSize::MakeEmpty();
     double                             fTimeBase             = 0,
@@ -65,7 +67,8 @@ private:
                                        fShowTrackerUI        = false,
                                        fShowSlotManager      = false,
                                        fDraggingProgress     = false,
-                                       fPreferGlyphPaths     = false;
+                                       fPreferGlyphPaths     = false,
+                                       fPreferCoretext       = false;
 };
 
 #endif // SK_ENABLE_SKOTTIE

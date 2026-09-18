@@ -18,7 +18,9 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
+#include "src/core/SkColorPriv.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 
 #include <vector>
@@ -29,12 +31,11 @@ static sk_sp<SkShader> make_shader(const SkRect& bounds) {
         { bounds.left(), bounds.top() },
         { bounds.right(), bounds.bottom() },
     };
-    const SkColor colors[] = {
-        SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorBLACK,
-        SK_ColorCYAN, SK_ColorMAGENTA, SK_ColorYELLOW,
+    const SkColor4f colors[] = {
+        SkColors::kRed, SkColors::kGreen, SkColors::kBlue, SkColors::kBlack,
+        SkColors::kCyan, SkColors::kMagenta, SkColors::kYellow,
     };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                        SkTileMode::kClamp);
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}});
 }
 
 typedef void (*InstallPaint)(SkPaint*, uint32_t, uint32_t);
@@ -48,9 +49,9 @@ static void install_lighting(SkPaint* paint, uint32_t mul, uint32_t add) {
 }
 
 class ColorFiltersGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("lightingcolorfilter"); }
+    SkString getName() const override { return SkString("lightingcolorfilter"); }
 
-    SkISize onISize() override { return {620, 430}; }
+    SkISize getISize() override { return {620, 430}; }
 
     void onDraw(SkCanvas* canvas) override {
         SkRect r = {0, 0, 600, 50};
@@ -84,14 +85,15 @@ DEF_GM(return new ColorFiltersGM;)
 
 class HSLColorFilterGM : public skiagm::GM {
 protected:
-    SkString onShortName() override { return SkString("hslcolorfilter"); }
+    SkString getName() const override { return SkString("hslcolorfilter"); }
 
-    SkISize onISize() override { return { 840, 1100 }; }
+    SkISize getISize() override { return {840, 1100}; }
 
     void onOnceBeforeDraw() override {
-        sk_sp<SkImage> mandrill = GetResourceAsImage("images/mandrill_256.png");
-        const auto lm = SkMatrix::RectToRect(SkRect::MakeWH(mandrill->width(), mandrill->height()),
-                                             SkRect::MakeWH(kWheelSize, kWheelSize));
+        sk_sp<SkImage> mandrill = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
+        const auto lm = SkMatrix::RectToRectOrIdentity(SkRect::MakeWH(mandrill->width(),
+                                                                      mandrill->height()),
+                                                       SkRect::MakeWH(kWheelSize, kWheelSize));
         fShaders.push_back(mandrill->makeShader(SkSamplingOptions(), &lm));
 
         static constexpr SkColor gGrads[][4] = {
@@ -100,10 +102,9 @@ protected:
         };
 
         for (const auto& cols : gGrads) {
-            fShaders.push_back(SkGradientShader::MakeSweep(kWheelSize / 2, kWheelSize / 2,
-                                                           cols, nullptr, std::size(cols),
-                                                           SkTileMode::kRepeat, -90, 270, 0,
-                                                           nullptr));
+            SkColorConverter conv({cols, 4});
+            fShaders.push_back(SkShaders::SweepGradient({kWheelSize / 2, kWheelSize / 2}, -90, 270,
+                                                {{conv.colors4f(), {}, SkTileMode::kRepeat}, {}}));
         }
     }
 

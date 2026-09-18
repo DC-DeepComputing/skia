@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,9 +9,14 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkScalar.h"
+#include "include/private/SkAssert.h"
+
+class SkMatrix;
+struct SkPoint;
 
 namespace sksg {
-
 Plane::Plane() = default;
 
 void Plane::onClip(SkCanvas*, bool) const {}
@@ -35,4 +40,4 @@ SkPath Plane::onAsPath() const {
     return path;
 }
 
-} // namespace sksg
+}  // namespace sksg

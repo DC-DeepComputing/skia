@@ -8,17 +8,18 @@
 To archive webpages and store SKP files (archives should be rarely updated):
 
 cd skia
-python tools/skp/webpages_playback.py --data_store=gs://rmistry --record \
---page_sets=all --skia_tools=/home/default/trunk/out/Debug/ \
+python tools/skp/webpages_playback.py --data_store=gs://your-bucket-name \
+--record --page_sets=all --skia_tools=/home/default/trunk/out/Debug/ \
 --browser_executable=/tmp/chromium/out/Release/chrome
 
-The above command uses Google Storage bucket 'rmistry' to download needed files.
+The above command uses Google Storage bucket 'your-bucket-name' to download
+needed files.
 
 To replay archived webpages and re-generate SKP files (should be run whenever
 SkPicture.PICTURE_VERSION changes):
 
 cd skia
-python tools/skp/webpages_playback.py --data_store=gs://rmistry \
+python tools/skp/webpages_playback.py --data_store=gs://your-bucket-name \
 --page_sets=all --skia_tools=/home/default/trunk/out/Debug/ \
 --browser_executable=/tmp/chromium/out/Release/chrome
 
@@ -116,9 +117,9 @@ CHROMIUM_PAGE_SETS_TO_PREFIX = {
 }
 
 PAGE_SETS_TO_EXCLUSIONS = {
-    # See skbug.com/7348
+    # See skbug.com/40038594
     'key_mobile_sites_smooth.py': '"(digg|worldjournal|twitter|espn)"',
-    # See skbug.com/7421
+    # See skbug.com/40038670
     'top_25_smooth.py': '"(mail\.google\.com)"',
 }
 
@@ -141,7 +142,7 @@ class SkPicturePlayback(object):
     """Constructs a SkPicturePlayback BuildStep instance."""
     assert parse_options.browser_executable, 'Must specify --browser_executable'
     self._browser_executable = parse_options.browser_executable
-    self._browser_args = '--disable-setuid-sandbox'
+    self._browser_args = '--disable-setuid-sandbox --disable-field-trial-config'
     if parse_options.browser_extra_args:
       self._browser_args = '%s %s' % (
           self._browser_args, parse_options.browser_extra_args)
@@ -507,7 +508,7 @@ class GoogleStorageDataStore(DataStore):
   def does_storage_object_exist(self, name):
     try:
       output = subprocess.check_output([
-          'gsutil', 'ls', '/'.join((self._url, name))])
+          'gcloud', 'storage', 'ls', '/'.join((self._url, name))])
     except subprocess.CalledProcessError:
       return False
     if len(output.splitlines()) != 1:
@@ -515,15 +516,15 @@ class GoogleStorageDataStore(DataStore):
     return True
 
   def delete_path(self, path):
-    subprocess.check_call(['gsutil', 'rm', '-r', '/'.join((self._url, path))])
+    subprocess.check_call(['gcloud', 'storage', 'rm', '--recursive', '/'.join((self._url, path))])
 
   def download_file(self, name, local_path):
     subprocess.check_call([
-        'gsutil', 'cp', '/'.join((self._url, name)), local_path])
+        'gcloud', 'storage', 'cp', '/'.join((self._url, name)), local_path])
 
   def upload_dir_contents(self, source_dir, dest_dir):
     subprocess.check_call([
-        'gsutil', 'cp', '-r', source_dir, '/'.join((self._url, dest_dir))])
+        'gcloud', 'storage', 'cp', '--recursive', source_dir, '/'.join((self._url, dest_dir))])
 
 
 class LocalFileSystemDataStore(DataStore):

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,14 +9,20 @@
 #define SkottieRangeSelector_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/text/TextAnimator.h"
 
+#include <cstddef>
+#include <cstdint>
+#include <optional>
 #include <tuple>
-#include <vector>
+namespace skjson {
+class ObjectValue;
+}
 
 namespace skottie {
 namespace internal {
+class AnimatablePropertyContainer;
+class AnimationBuilder;
 
 class RangeSelector final : public SkNVRefCnt<RangeSelector> {
 public:
@@ -54,10 +60,11 @@ public:
         kSmooth,
     };
 
-    void modulateCoverage(const TextAnimator::DomainMaps&, TextAnimator::ModulatorBuffer&) const;
+    void updateDomainMap(const TextAnimator::DomainMaps&, size_t fragment_count);
+    void modulateCoverage(TextAnimator::ModulatorBuffer&) const;
 
 private:
-    RangeSelector(Units, Domain, Mode, Shape);
+    RangeSelector(Units, Domain, Mode, Shape, bool);
 
     // Resolves this selector to a range in the coverage buffer index domain.
     std::tuple<float, float> resolve(size_t domain_size) const;
@@ -66,6 +73,12 @@ private:
     const Domain fDomain;
     const Mode   fMode;
     const Shape  fShape;
+    const bool   fRandomizeOrder;
+
+    // Domain map adjusted for the current selector (for e.g. randomization)
+    std::optional<TextAnimator::DomainMap> fLocalMap;
+    // Adapter (layer) scoped domain map
+    const TextAnimator::DomainMap*         fMap = nullptr;
 
     float        fStart,
                  fEnd,

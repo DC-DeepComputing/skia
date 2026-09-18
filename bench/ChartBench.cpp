@@ -9,8 +9,9 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
-#include "include/private/base/SkTDArray.h"
-#include "src/base/SkRandom.h"
+#include "include/core/SkPathBuilder.h"
+#include "include/private/SkTDArray.h"
+#include "src/core/SkRandom.h"
 
 /**
  * This is a conversion of samplecode/SampleChart.cpp into a bench. It sure would be nice to be able
@@ -22,8 +23,8 @@ static void gen_data(SkScalar yAvg, SkScalar ySpread, int count,
                      SkRandom* random, SkTDArray<SkScalar>* dataPts) {
     dataPts->resize(count);
     for (int i = 0; i < count; ++i) {
-        (*dataPts)[i] = random->nextRangeScalar(yAvg - SkScalarHalf(ySpread),
-                                                yAvg + SkScalarHalf(ySpread));
+        (*dataPts)[i] = random->nextRangeScalar(yAvg - (ySpread / 2.f),
+                                                yAvg + (ySpread / 2.f));
     }
 }
 
@@ -36,14 +37,13 @@ static void gen_paths(const SkTDArray<SkScalar>& topData,
                       SkScalar yBase,
                       SkScalar xLeft, SkScalar xDelta,
                       int leftShift,
-                      SkPath* plot, SkPath* fill) {
-    plot->rewind();
-    fill->rewind();
-    plot->incReserve(topData.size());
+                      SkPath* plotOut, SkPath* fillOut) {
+    SkPathBuilder plot, fill;
+    plot.incReserve(topData.size());
     if (nullptr == bottomData) {
-        fill->incReserve(topData.size() + 2);
+        fill.incReserve(topData.size() + 2);
     } else {
-        fill->incReserve(2 * topData.size());
+        fill.incReserve(2 * topData.size());
     }
 
     leftShift %= topData.size();
@@ -51,18 +51,18 @@ static void gen_paths(const SkTDArray<SkScalar>& topData,
 
     // Account for the leftShift using two loops
     int shiftToEndCount = topData.size() - leftShift;
-    plot->moveTo(x, topData[leftShift]);
-    fill->moveTo(x, topData[leftShift]);
+    plot.moveTo(x, topData[leftShift]);
+    fill.moveTo(x, topData[leftShift]);
 
     for (int i = 1; i < shiftToEndCount; ++i) {
-        plot->lineTo(x, topData[i + leftShift]);
-        fill->lineTo(x, topData[i + leftShift]);
+        plot.lineTo(x, topData[i + leftShift]);
+        fill.lineTo(x, topData[i + leftShift]);
         x += xDelta;
     }
 
     for (int i = 0; i < leftShift; ++i) {
-        plot->lineTo(x, topData[i]);
-        fill->lineTo(x, topData[i]);
+        plot.lineTo(x, topData[i]);
+        fill.lineTo(x, topData[i]);
         x += xDelta;
     }
 
@@ -72,16 +72,19 @@ static void gen_paths(const SkTDArray<SkScalar>& topData,
         // area (and account for leftShift).
         for (int i = 0; i < leftShift; ++i) {
             x -= xDelta;
-            fill->lineTo(x, (*bottomData)[leftShift - 1 - i]);
+            fill.lineTo(x, (*bottomData)[leftShift - 1 - i]);
         }
         for (int i = 0; i < shiftToEndCount; ++i) {
             x -= xDelta;
-            fill->lineTo(x, (*bottomData)[bottomData->size() - 1 - i]);
+            fill.lineTo(x, (*bottomData)[bottomData->size() - 1 - i]);
         }
     } else {
-        fill->lineTo(x - xDelta, yBase);
-        fill->lineTo(xLeft, yBase);
+        fill.lineTo(x - xDelta, yBase);
+        fill.lineTo(xLeft, yBase);
     }
+
+    *plotOut = plot.detach();
+    *fillOut = fill.detach();
 }
 
 // A set of scrolling line plots with the area between each plot filled. Stresses out GPU path

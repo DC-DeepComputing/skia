@@ -9,16 +9,17 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSize.h"
-#include "include/private/SkColorData.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkTemplates.h"
-#include "src/base/SkHalf.h"
-#include "src/base/SkRectMemcpy.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTemplates.h"
+#include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkHalf.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
+#include "src/core/SkRectMemcpy.h"
+#include "src/core/SkSwizzlePriv.h"
 
 #include <cstdint>
 #include <cstring>
@@ -32,12 +33,14 @@ static bool rect_memcpy(const SkImageInfo& dstInfo,       void* dstPixels, size_
         return false;
     }
     if (dstInfo.colorType() != kAlpha_8_SkColorType
-            && steps.flags.mask() != 0b00000) {
+            && steps.fFlags.mask() != 0b00000) {
         return false;
     }
 
-    SkRectMemcpy(dstPixels, dstRB,
-                 srcPixels, srcRB, dstInfo.minRowBytes(), dstInfo.height());
+    if (srcPixels != dstPixels) {
+        SkRectMemcpy(dstPixels, dstRB,
+                     srcPixels, srcRB, dstInfo.minRowBytes(), dstInfo.height());
+    }
     return true;
 }
 
@@ -49,10 +52,12 @@ static bool swizzle_or_premul(const SkImageInfo& dstInfo,       void* dstPixels,
     };
     if (!is_8888(dstInfo.colorType()) ||
         !is_8888(srcInfo.colorType()) ||
-        steps.flags.linearize         ||
-        steps.flags.gamut_transform   ||
-        steps.flags.unpremul          ||
-        steps.flags.encode) {
+        steps.fFlags.linearize         ||
+        steps.fFlags.gamut_transform   ||
+#if !defined(SK_ARM_HAS_NEON)
+        steps.fFlags.unpremul          ||
+#endif
+        steps.fFlags.encode) {
         return false;
     }
 
@@ -60,9 +65,12 @@ static bool swizzle_or_premul(const SkImageInfo& dstInfo,       void* dstPixels,
 
     void (*fn)(uint32_t*, const uint32_t*, int) = nullptr;
 
-    if (steps.flags.premul) {
+    if (steps.fFlags.premul) {
         fn = swapRB ? SkOpts::RGBA_to_bgrA
                     : SkOpts::RGBA_to_rgbA;
+    } else if (steps.fFlags.unpremul) {
+        fn = swapRB ? SkOpts::rgbA_to_BGRA
+                    : SkOpts::rgbA_to_RGBA;
     } else {
         // If we're not swizzling, we ought to have used rect_memcpy().
         SkASSERT(swapRB);
@@ -109,12 +117,15 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
         case kGray_8_SkColorType:
         case kRGB_565_SkColorType:
         case kR8G8_unorm_SkColorType:
+        case kR16_unorm_SkColorType:
+        case kR16_float_SkColorType:
         case kR16G16_unorm_SkColorType:
         case kR16G16_float_SkColorType:
         case kRGB_888x_SkColorType:
         case kRGB_101010x_SkColorType:
         case kBGR_101010x_SkColorType:
         case kBGR_101010x_XR_SkColorType:
+        case kRGB_F16F16F16x_SkColorType:
         case kR8_unorm_SkColorType: {
             for (int y = 0; y < srcInfo.height(); ++y) {
                memset(dst, 0xFF, srcInfo.width());
@@ -199,6 +210,28 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
+        case kBGRA_10101010_XR_SkColorType: {
+            auto src64 = (const uint64_t*) src;
+            for (int y = 0; y < srcInfo.height(); y++) {
+                for (int x = 0; x < srcInfo.width(); x++) {
+                    static constexpr int64_t kZero = 384;
+                    static constexpr int64_t kRange = 510;
+                    static constexpr int64_t kMaxU8 = 0xff;
+                    static constexpr int64_t kMinU8 = 0x00;
+                    static constexpr int64_t kDivisor = kRange / kMaxU8;
+                    int64_t raw_alpha = src64[x] >> 54;
+                    // f(384) = 0
+                    // f(894) = 255
+                    int64_t alpha =
+                            SkTPin((raw_alpha - kZero) / kDivisor, kMinU8, kMaxU8);
+                    dst[x] = static_cast<uint8_t>(alpha);
+                }
+                dst = SkTAddOffset<uint8_t>(dst, dstRB);
+                src64 = SkTAddOffset<const uint64_t>(src64, srcRB);
+            }
+            return true;
+        }
+        case kRGBA_10x6_SkColorType:
         case kR16G16B16A16_unorm_SkColorType: {
             auto src64 = (const uint64_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
@@ -218,13 +251,13 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
 static void convert_with_pipeline(const SkImageInfo& dstInfo, void* dstRow, int dstStride,
                                   const SkImageInfo& srcInfo, const void* srcRow, int srcStride,
                                   const SkColorSpaceXformSteps& steps) {
-    SkRasterPipeline_MemoryCtx src = { (void*)srcRow, srcStride },
-                               dst = { (void*)dstRow, dstStride };
+    SkRasterPipelineContexts::MemoryCtx src = {const_cast<void*>(srcRow), srcStride},
+                                        dst = {dstRow, dstStride};
 
     SkRasterPipeline_<256> pipeline;
-    pipeline.append_load(srcInfo.colorType(), &src);
+    pipeline.appendLoad(srcInfo.colorType(), &src);
     steps.apply(&pipeline);
-    pipeline.append_store(dstInfo.colorType(), &dst);
+    pipeline.appendStore(dstInfo.colorType(), &dst);
     pipeline.run(0,0, srcInfo.width(), srcInfo.height());
 }
 
@@ -237,6 +270,12 @@ bool SkConvertPixels(const SkImageInfo& dstInfo,       void* dstPixels, size_t d
     int dstStride = (int)(dstRB / dstInfo.bytesPerPixel());
     if ((size_t)srcStride * srcInfo.bytesPerPixel() != srcRB ||
         (size_t)dstStride * dstInfo.bytesPerPixel() != dstRB) {
+        return false;
+    }
+
+    if (srcPixels == dstPixels &&
+        srcInfo.bytesPerPixel() != dstInfo.bytesPerPixel()) {
+        // In-place conversions are not supported for different pixel widths.
         return false;
     }
 

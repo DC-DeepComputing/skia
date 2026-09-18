@@ -8,7 +8,7 @@
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "src/core/SkBlendModePriv.h"
 
 #include <ctype.h>
@@ -88,8 +88,8 @@ protected:
         paint.setBlendMode(fMode);
         SkColor color = start_color(fColorType);
 
-        int w = this->getSize().x();
-        int h = this->getSize().y();
+        int w = this->getSize().width();
+        int h = this->getSize().height();
 
         static const SkScalar kRectW = 25.1f;
         static const SkScalar kRectH = 25.9f;
@@ -97,9 +97,8 @@ protected:
         if (fColorType == kShaderOpaque_ColorType) {
             // The only requirement for the shader is that it requires local coordinates
             SkPoint pts[2] = { {0.0f, 0.0f}, {kRectW, kRectH} };
-            SkColor colors[] = { color, SK_ColorBLUE };
-            paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, 2,
-                                                         SkTileMode::kClamp));
+            SkColor4f colors[] = { SkColor4f::FromColor(color), SkColors::kBlue };
+            paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
         }
 
         SkMatrix rotate;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,16 +8,23 @@
 #ifndef GrResourceAllocator_DEFINED
 #define GrResourceAllocator_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/core/SkTHash.h"
-
+#include "src/core/SkTMultiMap.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrHashMapWithCache.h"
 #include "src/gpu/ganesh/GrSurface.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 
-#include "src/base/SkArenaAlloc.h"
-#include "src/core/SkTMultiMap.h"
+#include <cstdint>
 
 class GrDirectContext;
+class GrResourceProvider;
 
 // Print out explicit allocation information
 #define GR_ALLOCATION_SPEW 0
@@ -77,8 +84,7 @@ class GrDirectContext;
  */
 class GrResourceAllocator {
 public:
-    GrResourceAllocator(GrDirectContext* dContext)
-            : fDContext(dContext) {}
+    explicit GrResourceAllocator(GrDirectContext* dContext) : fDContext(dContext) {}
 
     ~GrResourceAllocator();
 
@@ -95,10 +101,21 @@ public:
         kYes = true
     };
 
+    /** Indicates whether we allow a gpu texture assigned to a register to be recycled or not. This
+     *  comes up when dealing with with Vulkan Secondary CommandBuffers since offscreens sampled
+     *  into the scb will all be drawn before being sampled in the scb. This is because the scb
+     *  will get submitted in a later command buffer. Thus offscreens cannot share an allocation or
+     *  later reuses will overwrite earlier ones.
+     */
+    enum class AllowRecycling : bool {
+        kNo  = false,
+        kYes = true
+    };
+
     // Add a usage interval from 'start' to 'end' inclusive. This is usually used for renderTargets.
     // If an existing interval already exists it will be expanded to include the new range.
-    void addInterval(GrSurfaceProxy*, unsigned int start, unsigned int end, ActualUse actualUse
-                     SkDEBUGCODE(, bool isDirectDstRead = false));
+    void addInterval(GrSurfaceProxy*, unsigned int start, unsigned int end, ActualUse actualUse,
+                     AllowRecycling SkDEBUGCODE(, bool isDirectDstRead = false));
 
     bool failedInstantiation() const { return fFailedInstantiation; }
 
@@ -169,7 +186,8 @@ private:
         GrSurface* existingSurface() const { return fExistingSurface.get(); }
 
         // Can this register be used by other proxies after this one?
-        bool isRecyclable(const GrCaps&, GrSurfaceProxy* proxy, int knownUseCount) const;
+        bool isRecyclable(const GrCaps&, GrSurfaceProxy* proxy, int knownUseCount,
+                          AllowRecycling) const;
 
         // Resolve the register allocation to an actual GrSurface. 'fOriginatingProxy'
         // is used to cache the allocation when a given register is used by multiple
@@ -230,6 +248,11 @@ private:
             }
         }
 
+        void disallowRecycling() {
+            fAllowRecycling = AllowRecycling::kNo;
+        }
+        AllowRecycling allowRecycling() const { return fAllowRecycling; }
+
         SkDEBUGCODE(uint32_t uniqueID() const { return fUniqueID; })
 
     private:
@@ -239,6 +262,7 @@ private:
         Interval*        fNext = nullptr;
         unsigned int     fUses = 0;
         Register*        fRegister = nullptr;
+        AllowRecycling   fAllowRecycling = AllowRecycling::kYes;
 
 #ifdef SK_DEBUG
         uint32_t        fUniqueID;
@@ -272,23 +296,23 @@ private:
     // Compositing use cases can create > 80 intervals.
     static const int kInitialArenaSize = 128 * sizeof(Interval);
 
-    GrDirectContext*             fDContext;
-    FreePoolMultiMap             fFreePool;          // Recently created/used GrSurfaces
-    IntvlHash                    fIntvlHash;         // All the intervals, hashed by proxyID
+    GrDirectContext* fDContext;
+    SkSTArenaAllocWithReset<kInitialArenaSize> fInternalAllocator;  // Intervals & registers.
+    FreePoolMultiMap fFreePool;  // Recently created/used GrSurfaces.
+    IntvlHash fIntvlHash;        // All intervals, hashed by proxyID.
 
-    IntervalList                 fIntvlList;         // All the intervals sorted by increasing start
-    IntervalList                 fActiveIntvls;      // List of live intervals during assignment
-                                                     // (sorted by increasing end)
-    IntervalList                 fFinishedIntvls;    // All the completed intervals
-                                                     // (sorted by increasing start)
-    UniqueKeyRegisterHash        fUniqueKeyRegisters;
-    unsigned int                 fNumOps = 0;
+    IntervalList fIntvlList;       // All intervals sorted by increasing start.
+    IntervalList fActiveIntvls;    // Live intervals during assignment (sorted by increasing end).
+    IntervalList fFinishedIntvls;  // Completed intervals (sorted by increasing start).
+    UniqueKeyRegisterHash fUniqueKeyRegisters;
+    unsigned int fNumOps = 0;
 
-    SkDEBUGCODE(bool             fPlanned = false;)
-    SkDEBUGCODE(bool             fAssigned = false;)
+    bool fFailedInstantiation = false;
 
-    SkSTArenaAllocWithReset<kInitialArenaSize>   fInternalAllocator; // intervals & registers
-    bool                                         fFailedInstantiation = false;
+#if defined(SK_DEBUG)
+    bool fPlanned = false;
+    bool fAssigned = false;
+#endif
 };
 
 #endif // GrResourceAllocator_DEFINED

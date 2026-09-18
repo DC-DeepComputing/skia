@@ -8,11 +8,17 @@
 #include "bench/GpuTools.h"
 #include "bench/SKPBench.h"
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "tools/flags/CommandLineFlags.h"
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#endif
 
 using namespace skia_private;
 
@@ -33,11 +39,7 @@ SKPBench::SKPBench(const char* name, const SkPicture* pic, const SkIRect& clip, 
     fUniqueName.printf("%s_%.2g", name, scale);  // Scale makes this unqiue for perf.skia.org traces.
 }
 
-SKPBench::~SKPBench() {
-    for (int i = 0; i < fSurfaces.size(); ++i) {
-        fSurfaces[i]->unref();
-    }
-}
+SKPBench::~SKPBench() {}
 
 const char* SKPBench::onGetName() {
     return fName.c_str();
@@ -67,25 +69,23 @@ void SKPBench::onPerCanvasPreDraw(SkCanvas* canvas) {
     int xTiles = SkScalarCeilToInt(bounds.width()  / SkIntToScalar(tileW));
     int yTiles = SkScalarCeilToInt(bounds.height() / SkIntToScalar(tileH));
 
-    fSurfaces.reserve_back(xTiles * yTiles);
-    fTileRects.reserve(xTiles * yTiles);
+    fTiles.reserve(xTiles * yTiles);
 
     SkImageInfo ii = canvas->imageInfo().makeWH(tileW, tileH);
 
     for (int y = bounds.fTop; y < bounds.fBottom; y += tileH) {
         for (int x = bounds.fLeft; x < bounds.fRight; x += tileW) {
             const SkIRect tileRect = SkIRect::MakeXYWH(x, y, tileW, tileH);
-            *fTileRects.append() = tileRect;
-            fSurfaces.emplace_back(canvas->makeSurface(ii));
 
             // Never want the contents of a tile to include stuff the parent
             // canvas clips out
             SkRect clip = SkRect::Make(bounds);
             clip.offset(-SkIntToScalar(tileRect.fLeft), -SkIntToScalar(tileRect.fTop));
-            fSurfaces.back()->getCanvas()->clipRect(clip);
 
-            fSurfaces.back()->getCanvas()->setMatrix(canvas->getLocalToDevice());
-            fSurfaces.back()->getCanvas()->scale(fScale, fScale);
+            SkM44 mat = canvas->getLocalToDevice();
+            mat.preScale(fScale, fScale);
+
+            fTiles.emplace_back(canvas->makeSurface(ii), tileRect, clip, mat);
         }
     }
 }
@@ -93,54 +93,53 @@ void SKPBench::onPerCanvasPreDraw(SkCanvas* canvas) {
 void SKPBench::onPerCanvasPostDraw(SkCanvas* canvas) {
     // Draw the last set of tiles into the main canvas in case we're
     // saving the images
-    for (int i = 0; i < fTileRects.size(); ++i) {
-        sk_sp<SkImage> image(fSurfaces[i]->makeImageSnapshot());
+    for (const TileInfo& tile : fTiles) {
+        sk_sp<SkImage> image(tile.surface()->makeImageSnapshot());
         canvas->drawImage(image,
-                          SkIntToScalar(fTileRects[i].fLeft), SkIntToScalar(fTileRects[i].fTop));
+                          SkIntToScalar(tile.tileRect().fLeft),
+                          SkIntToScalar(tile.tileRect().fTop));
     }
 
-    fSurfaces.clear();
-    fTileRects.clear();
+    fTiles.clear();
 }
 
 bool SKPBench::isSuitableFor(Backend backend) {
-    return backend != kNonRendering_Backend;
+    return backend != Backend::kNonRendering;
 }
 
-SkIPoint SKPBench::onGetSize() {
-    return SkIPoint::Make(fClip.width(), fClip.height());
+SkISize SKPBench::onGetSize() {
+    return SkISize::Make(fClip.width(), fClip.height());
 }
 
-void SKPBench::onDraw(int loops, SkCanvas* canvas) {
+void SKPBench::onDrawFrame(int loops, SkCanvas* /* canvas */, std::function<void()> submitFrame) {
     SkASSERT(fDoLooping || 1 == loops);
-    while (1) {
+    for (int i = 0; i < loops; ++i) {
         this->drawPicture();
-        if (0 == --loops) {
-            break;
-        }
-
-        auto direct = canvas->recordingContext() ? canvas->recordingContext()->asDirectContext()
-                                                 : nullptr;
-        // Ensure the GrContext doesn't combine ops across draw loops.
-        if (direct) {
-            direct->flushAndSubmit();
+        if (submitFrame) {
+            submitFrame();
         }
     }
-}
-
-void SKPBench::drawMPDPicture() {
-    // TODO: remove me
 }
 
 void SKPBench::drawPicture() {
-    for (int j = 0; j < fTileRects.size(); ++j) {
-        const SkMatrix trans = SkMatrix::Translate(-fTileRects[j].fLeft / fScale,
-                                                   -fTileRects[j].fTop / fScale);
-        fSurfaces[j]->getCanvas()->drawPicture(fPic.get(), &trans, nullptr);
+    for (const TileInfo& tile : fTiles) {
+        const SkMatrix trans = SkMatrix::Translate(-tile.tileRect().fLeft / fScale,
+                                                   -tile.tileRect().fTop / fScale);
+
+        SkCanvas* canvas = tile.surface()->getCanvas();
+
+        SkAutoCanvasRestore acr(canvas, /* doSave= */ false);
+        canvas->clear(SK_ColorWHITE);
+
+        canvas->save();
+        canvas->clipRect(tile.clipRect());
+        canvas->setMatrix(tile.mat());
+
+        canvas->drawPicture(fPic.get(), &trans, nullptr);
     }
 
-    for (int j = 0; j < fTileRects.size(); ++j) {
-        skgpu::Flush(fSurfaces[j].get());
+    for (const TileInfo& tile : fTiles) {
+        skgpu::Flush(tile.surface());
     }
 }
 

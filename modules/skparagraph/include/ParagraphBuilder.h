@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
 #ifndef ParagraphBuilder_DEFINED
 #define ParagraphBuilder_DEFINED
 
@@ -6,6 +6,7 @@
 #include <stack>
 #include <string>
 #include <tuple>
+#include <vector>
 #include "modules/skparagraph/include/FontCollection.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
@@ -16,9 +17,10 @@ namespace skia {
 namespace textlayout {
 
 class ParagraphBuilder {
-public:
-    ParagraphBuilder(const ParagraphStyle&, sk_sp<FontCollection>) { }
+protected:
+    ParagraphBuilder() {}
 
+public:
     virtual ~ParagraphBuilder() = default;
 
     // Push a style to the stack. The corresponding text added with AddText will
@@ -59,6 +61,7 @@ public:
     virtual SkSpan<char> getText() = 0;
     virtual const ParagraphStyle& getParagraphStyle() const = 0;
 
+#if !defined(SK_DISABLE_LEGACY_CLIENT_UNICODE) && defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
     // Mainly, support for "Client" unicode
     virtual void setWordsUtf8(std::vector<SkUnicode::Position> wordsUtf8) = 0;
     virtual void setWordsUtf16(std::vector<SkUnicode::Position> wordsUtf16) = 0;
@@ -69,15 +72,21 @@ public:
     virtual void setLineBreaksUtf8(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf8) = 0;
     virtual void setLineBreaksUtf16(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf16) = 0;
 
-    virtual void SetUnicode(std::unique_ptr<SkUnicode> unicode) = 0;
+    virtual std::tuple<std::vector<SkUnicode::Position>,
+               std::vector<SkUnicode::Position>,
+               std::vector<SkUnicode::LineBreakBefore>>
+        getClientICUData() const = 0;
+
+    virtual void SetUnicode(sk_sp<SkUnicode> unicode) = 0;
+#endif
 
     // Resets this builder to its initial state, discarding any text, styles, placeholders that have
     // been added, but keeping the initial ParagraphStyle.
     virtual void Reset() = 0;
 
-    // Just until we fix all the google3 code
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
-                                                  sk_sp<FontCollection> fontCollection);
+                                                  sk_sp<FontCollection> fontCollection,
+                                                  sk_sp<SkUnicode> unicode);
 };
 }  // namespace textlayout
 }  // namespace skia

@@ -7,8 +7,6 @@
 
 #include "include/effects/SkImageFilters.h"
 
-#ifdef SK_ENABLE_SKSL
-
 #include "include/core/SkData.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkImageFilter.h"
@@ -20,18 +18,19 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkTArray.h"
-#include "src/base/SkSpinlock.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
+#include "src/core/SkSpinlock.h"
 #include "src/core/SkWriteBuffer.h"
 
 #include <cstddef>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -45,12 +44,14 @@ public:
                          float maxSampleRadius,
                          std::string_view childShaderNames[],
                          const sk_sp<SkImageFilter> inputs[],
-                         int inputCount)
-            : SkImageFilter_Base(inputs, inputCount, /*cropRect=*/nullptr)
+                         int inputCount,
+                         bool restrictOutputToInputBounds)
+            : SkImageFilter_Base(inputs, inputCount)
             , fRuntimeEffectBuilder(builder)
-            , fMaxSampleRadius(maxSampleRadius) {
+            , fMaxSampleRadius(maxSampleRadius)
+            , fRestrictOutputToInputBounds(restrictOutputToInputBounds) {
         SkASSERT(maxSampleRadius >= 0.f);
-        fChildShaderNames.reserve_back(inputCount);
+        fChildShaderNames.reserve_exact(inputCount);
         for (int i = 0; i < inputCount; i++) {
             fChildShaderNames.push_back(SkString(childShaderNames[i]));
         }
@@ -65,22 +66,22 @@ private:
     friend void ::SkRegisterRuntimeImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkRuntimeImageFilter)
 
-    bool onAffectsTransparentBlack() const override { return true; }
+    bool onAffectsTransparentBlack() const override { return !fRestrictOutputToInputBounds; }
     // Currently there is no way for a client to specify the semantics of geometric uniforms that
     // should respond to the canvas matrix. Forcing translate-only is a hammer that lets the output
-    // be correct at the expense of resolution when there's a lot of scaling. See skbug.com/13416.
+    // be correct at the expense of resolution when there's a lot of scaling. See skbug.com/40044507.
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kTranslate; }
 
     skif::FilterResult onFilterImage(const skif::Context&) const override;
 
     skif::LayerSpace<SkIRect> onGetInputLayerBounds(
-            const skif::Mapping&,
+            const skif::Mapping& mapping,
             const skif::LayerSpace<SkIRect>& desiredOutput,
-            const skif::LayerSpace<SkIRect>& contentBounds) const override;
+            std::optional<skif::LayerSpace<SkIRect>> contentBounds) const override;
 
-    skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
-            const skif::Mapping&,
-            const skif::LayerSpace<SkIRect>& contentBounds) const override;
+    std::optional<skif::LayerSpace<SkIRect>> onGetOutputLayerBounds(
+            const skif::Mapping& mapping,
+            std::optional<skif::LayerSpace<SkIRect>> contentBounds) const override;
 
     skif::LayerSpace<SkIRect> applyMaxSampleRadius(
             const skif::Mapping& mapping,
@@ -95,12 +96,14 @@ private:
     mutable SkRuntimeShaderBuilder fRuntimeEffectBuilder;
     STArray<1, SkString> fChildShaderNames;
     float fMaxSampleRadius;
+    bool fRestrictOutputToInputBounds;
 };
 
 sk_sp<SkImageFilter> SkImageFilters::RuntimeShader(const SkRuntimeShaderBuilder& builder,
                                                    SkScalar sampleRadius,
                                                    std::string_view childShaderName,
-                                                   sk_sp<SkImageFilter> input) {
+                                                   sk_sp<SkImageFilter> input,
+                                                   bool restrictOutputToInputBounds) {
     // If no childShaderName is provided, check to see if we can implicitly assign it to the only
     // child in the effect.
     if (childShaderName.empty()) {
@@ -111,14 +114,16 @@ sk_sp<SkImageFilter> SkImageFilters::RuntimeShader(const SkRuntimeShaderBuilder&
         childShaderName = children.front().name;
     }
 
-    return SkImageFilters::RuntimeShader(builder, sampleRadius, &childShaderName, &input, 1);
+    return SkImageFilters::RuntimeShader(builder, sampleRadius, &childShaderName, &input, 1,
+                                         restrictOutputToInputBounds);
 }
 
 sk_sp<SkImageFilter> SkImageFilters::RuntimeShader(const SkRuntimeShaderBuilder& builder,
                                                    SkScalar maxSampleRadius,
                                                    std::string_view childShaderNames[],
                                                    const sk_sp<SkImageFilter> inputs[],
-                                                   int inputCount) {
+                                                   int inputCount,
+                                                   bool restrictOutputToInputBounds) {
     if (maxSampleRadius < 0.f) {
         return nullptr; // invalid sample radius
     }
@@ -143,7 +148,8 @@ sk_sp<SkImageFilter> SkImageFilters::RuntimeShader(const SkRuntimeShaderBuilder&
     }
 
     return sk_sp<SkImageFilter>(new SkRuntimeImageFilter(builder, maxSampleRadius, childShaderNames,
-                                                         inputs, inputCount));
+                                                         inputs, inputCount,
+                                                         restrictOutputToInputBounds));
 }
 
 void SkRegisterRuntimeImageFilterFlattenable() {
@@ -157,7 +163,11 @@ sk_sp<SkFlattenable> SkRuntimeImageFilter::CreateProc(SkReadBuffer& buffer) {
         return nullptr;
     }
 
-    // Read the SkSL string and convert it into a runtime effect
+    // Read the SkSL string and convert it into a runtime effect (if allowed)
+    if (!buffer.validate(buffer.allowSkSL())) {
+        return nullptr;
+    }
+
     SkString sksl;
     buffer.readString(&sksl);
     auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
@@ -207,12 +217,18 @@ sk_sp<SkFlattenable> SkRuntimeImageFilter::CreateProc(SkReadBuffer& buffer) {
         maxSampleRadius = buffer.readScalar();
     }
 
+    bool restrictOutputToInputBounds = false; // default before it was exposed in the factory
+    if (!buffer.isVersionLT(SkPicturePriv::kRuntimeImageFilterRestrictedOutput)) {
+        restrictOutputToInputBounds = buffer.readBool();
+    }
+
     if (!buffer.isValid()) {
         return nullptr;
     }
 
     return SkImageFilters::RuntimeShader(builder, maxSampleRadius, childShaderNames.data(),
-                                         common.inputs(), common.inputCount());
+                                         common.inputs(), common.inputCount(),
+                                         restrictOutputToInputBounds);
 }
 
 void SkRuntimeImageFilter::flatten(SkWriteBuffer& buffer) const {
@@ -229,6 +245,7 @@ void SkRuntimeImageFilter::flatten(SkWriteBuffer& buffer) const {
     fRuntimeEffectLock.release();
 
     buffer.writeScalar(fMaxSampleRadius);
+    buffer.writeBool(fRestrictOutputToInputBounds);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,12 +259,23 @@ skif::FilterResult SkRuntimeImageFilter::onFilterImage(const skif::Context& ctx)
     skif::Context inputCtx = ctx.withNewDesiredOutput(
             this->applyMaxSampleRadius(ctx.mapping(), ctx.desiredOutput()));
     skif::FilterResult::Builder builder{ctx};
+    skif::LayerSpace<SkIRect> actualInputBounds = skif::LayerSpace<SkIRect>::Empty();
     for (int i = 0; i < inputCount; ++i) {
         // Record the input context's desired output as the sample bounds for the child shaders
         // since the runtime shader can go up to max sample radius away from its desired output
         // (which is the default sample bounds if we didn't override it here).
-        builder.add(this->getChildOutput(i, inputCtx), inputCtx.desiredOutput());
+        skif::FilterResult childOutput = this->getChildOutput(i, inputCtx);
+        actualInputBounds.join(childOutput.layerBounds());
+        builder.add(std::move(childOutput),
+                    inputCtx.desiredOutput(),
+                    ShaderFlags::kNonTrivialSampling);
     }
+
+    std::optional<skif::LayerSpace<SkIRect>> explicitOutput;
+    if (fRestrictOutputToInputBounds) {
+        explicitOutput = this->applyMaxSampleRadius(ctx.mapping(), actualInputBounds);
+    }
+
     return builder.eval([&](SkSpan<sk_sp<SkShader>> inputs) {
         // lock the mutation of the builder and creation of the shader so that the builder's state
         // is const and is safe for multi-threaded access.
@@ -265,13 +293,13 @@ skif::FilterResult SkRuntimeImageFilter::onFilterImage(const skif::Context& ctx)
         fRuntimeEffectLock.release();
 
         return shader;
-    }, ShaderFlags::kSampleInParameterSpace | ShaderFlags::kNonLinearSampling);
+    }, explicitOutput, /*evaluateInParameterSpace=*/true);
 }
 
 skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetInputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& desiredOutput,
-        const skif::LayerSpace<SkIRect>& contentBounds) const {
+        std::optional<skif::LayerSpace<SkIRect>> contentBounds) const {
     const int inputCount = this->countInputs();
     if (inputCount <= 0) {
         return skif::LayerSpace<SkIRect>::Empty();
@@ -281,25 +309,46 @@ skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetInputLayerBounds(
                 this->applyMaxSampleRadius(mapping, desiredOutput);
 
         // Union of all child input bounds so that one source image can provide for all of them.
-        skif::LayerSpace<SkIRect> merged =
-                this->getChildInputLayerBounds(0, mapping, requiredInput, contentBounds);
-        for (int i = 1; i < inputCount; ++i) {
-            merged.join(this->getChildInputLayerBounds(i, mapping, requiredInput, contentBounds));
-        }
-        return merged;
+        return skif::LayerSpace<SkIRect>::Union(
+                inputCount,
+                [&](int i) {
+                    return this->getChildInputLayerBounds(i, mapping, requiredInput, contentBounds);
+                });
     }
 }
 
-skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetOutputLayerBounds(
-        const skif::Mapping& /*mapping*/,
-        const skif::LayerSpace<SkIRect>& /*contentBounds*/) const {
+std::optional<skif::LayerSpace<SkIRect>> SkRuntimeImageFilter::onGetOutputLayerBounds(
+        const skif::Mapping& mapping,
+        std::optional<skif::LayerSpace<SkIRect>> contentBounds) const {
+    if (fRestrictOutputToInputBounds) {
+        const int inputCount = this->countInputs();
+        bool childIsUnbounded = false;
+        auto childOutput = skif::LayerSpace<SkIRect>::Union(
+                inputCount,
+                [&](int i) {
+                    auto o = this->getChildOutputLayerBounds(i, mapping, contentBounds);
+                    if (o) {
+                        return *o;
+                    } else {
+                        childIsUnbounded = true;
+                        // This value doesn't matter once childIsUnbounded is true
+                        return skif::LayerSpace<SkIRect>::Empty();
+                    }
+                });
+        if (!childIsUnbounded) {
+            return this->applyMaxSampleRadius(mapping, childOutput);
+        }
+    }
     // Pessimistically assume it can cover anything
-    return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
+    return skif::LayerSpace<SkIRect>::Unbounded();
 }
 
 SkRect SkRuntimeImageFilter::computeFastBounds(const SkRect& src) const {
+    if (fRestrictOutputToInputBounds) {
+        SkRect bounds = this->SkImageFilter::computeFastBounds(src);
+        bounds.outset(fMaxSampleRadius, fMaxSampleRadius);
+        return bounds;
+    }
     // Can't predict what the RT Shader will generate (see onGetOutputLayerBounds)
     return SkRectPriv::MakeLargeS32();
 }
-
-#endif  // SK_ENABLE_SKSL

@@ -1,18 +1,22 @@
-OpCapability Shader
-%1 = OpExtInstImport "GLSL.std.450"
-OpMemoryModel Logical GLSL450
-OpEntryPoint Fragment %main "main" %sk_Clockwise
-OpExecutionMode %main OriginUpperLeft
-OpName %sk_Clockwise "sk_Clockwise"
-OpName %main "main"
-OpDecorate %sk_Clockwise BuiltIn FrontFacing
-%bool = OpTypeBool
-%_ptr_Input_bool = OpTypePointer Input %bool
-%sk_Clockwise = OpVariable %_ptr_Input_bool Input
-%void = OpTypeVoid
-%7 = OpTypeFunction %void
-%false = OpConstantFalse %bool
-%main = OpFunction %void None %7
-%8 = OpLabel
-OpReturn
-OpFunctionEnd
+               OpCapability Shader
+          %5 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint Fragment %main "main"
+               OpExecutionMode %main OriginUpperLeft
+
+               ; Debug Information
+               OpName %main "main"                  ; id %6
+
+               ; Types, variables and constants
+        %int = OpTypeInt 32 1
+%_ptr_Input_int = OpTypePointer Input %int
+       %void = OpTypeVoid
+          %8 = OpTypeFunction %void
+
+
+               ; Function main
+       %main = OpFunction %void None %8
+
+          %9 = OpLabel
+                 OpReturn
+               OpFunctionEnd

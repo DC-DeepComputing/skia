@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,6 +8,7 @@
 #include "src/codec/SkJpegxlCodec.h"
 
 #include "include/codec/SkCodec.h"
+#include "include/codec/SkJpegxlDecoder.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
@@ -15,18 +16,19 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/base/SkTFitsIn.h"
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkTFitsIn.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
 #include "modules/skcms/skcms.h"
+#include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkFrameHolder.h"
-#include "src/core/SkOpts.h"
 #include "src/core/SkStreamPriv.h"
+#include "src/core/SkSwizzlePriv.h"
 
-#include "jxl/codestream_header.h"
-#include "jxl/decode.h"
-#include "jxl/decode_cxx.h"
-#include "jxl/types.h"
+#include "jxl/codestream_header.h"  // NO_G3_REWRITE
+#include "jxl/decode.h"  // NO_G3_REWRITE
+#include "jxl/decode_cxx.h"  // NO_G3_REWRITE
+#include "jxl/types.h"  // NO_G3_REWRITE
 
 #include <cstdint>
 #include <cstring>
@@ -62,9 +64,9 @@ public:
     bool fSeenAllFrames = false;
     std::vector<Frame> fFrames;
     int fLastProcessedFrame = SkCodec::kNoFrame;
-    void* fDst;
-    size_t fPixelShift;
-    size_t fRowBytes;
+    void* fDst = nullptr;
+    size_t fPixelShift = 0;
+    size_t fRowBytes = 0;
     SkColorType fDstColorType;
 
 protected:
@@ -77,7 +79,7 @@ protected:
 SkJpegxlCodec::SkJpegxlCodec(std::unique_ptr<SkJpegxlCodecPriv> codec,
                              SkEncodedInfo&& info,
                              std::unique_ptr<SkStream> stream,
-                             sk_sp<SkData> data)
+                             sk_sp<const SkData> data)
         : INHERITED(std::move(info), skcms_PixelFormat_RGBA_16161616LE, std::move(stream))
         , fCodec(std::move(codec))
         , fData(std::move(data)) {}
@@ -91,11 +93,11 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
     }
     *result = kInternalError;
     // Either wrap or copy stream data.
-    sk_sp<SkData> data = nullptr;
+    sk_sp<const SkData> data = nullptr;
     if (stream->getMemoryBase()) {
         data = SkData::MakeWithoutCopy(stream->getMemoryBase(), stream->getLength());
     } else {
-        data = SkCopyStreamToData(stream.get());
+        data = SkStreamPriv::CopyStreamToData(stream.get());
         // Data is copied; stream can be released now.
         stream.reset(nullptr);
     }
@@ -162,18 +164,15 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
 
     size_t iccSize = 0;
     // TODO(eustas): format field is currently ignored by decoder.
-    status = JxlDecoderGetICCProfileSize(
-        dec, /* format = */ nullptr, JXL_COLOR_PROFILE_TARGET_DATA, &iccSize);
+    status = JxlDecoderGetICCProfileSize(dec, JXL_COLOR_PROFILE_TARGET_DATA, &iccSize);
     if (status != JXL_DEC_SUCCESS) {
         // Likely incompatible colorspace.
         iccSize = 0;
     }
-    std::unique_ptr<SkEncodedInfo::ICCProfile> profile = nullptr;
+    std::unique_ptr<SkCodecs::ColorProfile> profile;
     if (iccSize) {
         auto icc = SkData::MakeUninitialized(iccSize);
-        // TODO(eustas): format field is currently ignored by decoder.
         status = JxlDecoderGetColorAsICCProfile(dec,
-                                                /* format = */ nullptr,
                                                 JXL_COLOR_PROFILE_TARGET_DATA,
                                                 reinterpret_cast<uint8_t*>(icc->writable_data()),
                                                 iccSize);
@@ -182,7 +181,7 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
             SkDEBUGFAIL("libjxl returned unexpected status");
             return nullptr;
         }
-        profile = SkEncodedInfo::ICCProfile::Make(std::move(icc));
+        profile = SkCodecs::ColorProfile::MakeICCProfile(std::move(icc));
     }
 
     int bitsPerChannel = 16;
@@ -207,7 +206,7 @@ SkCodec::Result SkJpegxlCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst
     auto* dec = codec.fDecoder.get();
     JxlDecoderStatus status;
 
-    if ((codec.fLastProcessedFrame >= index) || (codec.fLastProcessedFrame = SkCodec::kNoFrame)) {
+    if ((codec.fLastProcessedFrame >= index) || (codec.fLastProcessedFrame == SkCodec::kNoFrame)) {
         codec.fLastProcessedFrame = SkCodec::kNoFrame;
         JxlDecoderRewind(dec);
         status = JxlDecoderSubscribeEvents(dec, JXL_DEC_FRAME | JXL_DEC_FULL_IMAGE);
@@ -243,6 +242,7 @@ SkCodec::Result SkJpegxlCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst
 
     codec.fDst = dst;
     codec.fRowBytes = rowBytes;
+    codec.fPixelShift = dstInfo.shiftPerPixel();
 
     // TODO(eustas): consider grayscale.
     uint32_t numColorChannels = 3;
@@ -288,6 +288,9 @@ SkCodec::Result SkJpegxlCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst
 }
 
 bool SkJpegxlCodec::onRewind() {
+    if (!this->rewindStream()) {
+        return false;
+    }
     JxlDecoderRewind(fCodec->fDecoder.get());
     return true;
 }
@@ -440,6 +443,11 @@ int SkJpegxlCodec::onGetRepetitionCount() {
     return std::numeric_limits<int>::max();
 }
 
+SkCodec::IsAnimated SkJpegxlCodec::onIsAnimated() {
+    JxlBasicInfo& info = fCodec->fInfo;
+    return info.have_animation ? IsAnimated::kYes : IsAnimated::kNo;
+}
+
 const SkFrameHolder* SkJpegxlCodec::getFrameHolder() const {
     return fCodec.get();
 }
@@ -465,7 +473,7 @@ const SkFrameHolder* SkJpegxlCodec::getFrameHolder() const {
 // TODO(eustas): implement
 // SkSampler* SkJpegxlCodec::getSampler(bool /*createIfNecessary*/) { return nullptr; }
 
-namespace SkJpegDecoder {
+namespace SkJpegxlDecoder {
 bool IsJpegxl(const void* data, size_t len) {
     return SkJpegxlCodec::IsJpegxl(data, len);
 }
@@ -480,7 +488,7 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
     return SkJpegxlCodec::MakeFromStream(std::move(stream), outResult);
 }
 
-std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
+std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
                                 SkCodec::Result* outResult,
                                 SkCodecs::DecodeContext) {
     if (!data) {

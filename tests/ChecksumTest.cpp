@@ -7,13 +7,14 @@
 
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkAlign.h"
-#include "src/base/SkRandom.h"
+#include "include/private/SkAlign.h"
 #include "src/core/SkChecksum.h"
+#include "src/core/SkRandom.h"
 #include "tests/Test.h"
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <string>
 #include <string_view>
 

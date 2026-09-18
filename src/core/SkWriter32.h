@@ -9,20 +9,27 @@
 #define SkWriter32_DEFINED
 
 #include "include/core/SkData.h"
-#include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkNoncopyable.h"
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
+#include <cstdint>
+#include <cstring>
+
+class SkMatrix;
 struct SkSamplingOptions;
 
 class SkWriter32 : SkNoncopyable {
@@ -268,7 +275,7 @@ public:
 
 private:
     union {
-        void*   fPtrAlignment;
+        RAW_PTR_EXCLUSION void* fPtrAlignment;  // RAW_PTR_EXCLUSION: union.
         double  fDoubleAlignment;
         char    fStorage[SIZE];
     } fData;

@@ -8,22 +8,25 @@
 #ifndef skgpu_graphite_Renderer_DEFINED
 #define skgpu_graphite_Renderer_DEFINED
 
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "src/core/SkEnumBitMask.h"
+#include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/private/SkEnumBitMask.h"
+#include "src/core/SkVx.h"
 #include "src/gpu/graphite/Attribute.h"
+#include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Uniform.h"
 
 #include <array>
 #include <initializer_list>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
-
-enum class SkPathFillType;
 
 namespace skgpu { enum class MaskFormat; }
 
@@ -32,16 +35,53 @@ namespace skgpu::graphite {
 class DrawWriter;
 class DrawParams;
 class PipelineDataGatherer;
+class Rect;
 class ResourceProvider;
+class StorageContext;
 class TextureDataBlock;
+class Transform;
+class UniformOffsetCalculator;
 
 struct ResourceBindingRequirements;
+struct RootNodesInfo;
 
-struct Varying {
-    const char* fName;
-    SkSLType fType;
-    // TODO: add modifier (e.g., flat and noperspective) support
-};
+enum class Coverage { kNone, kSingleChannel, kLCD };
+
+// If this list is modified in any way, please increment the
+// RenderStep::kRenderStepIDVersion value. The enum values generated from this
+// list are serialized and the kRenderStepIDVersion value is the signal to
+// abandon older serialized data.
+#define SKGPU_RENDERSTEP_TYPES(M1, M2)          \
+        M1(Invalid)                             \
+        M1(CircularArc)                         \
+        M1(AnalyticRRect)                       \
+        M1(AnalyticBlur)                        \
+        M1(PerEdgeAAQuad)                       \
+        M2(CoverBounds,      NonAAFill)         \
+        M2(CoverBounds,      RegularCover)      \
+        M2(CoverBounds,      InverseCover)      \
+        M1(CoverageMask)                        \
+        M2(BitmapText,       Mask)              \
+        M2(BitmapText,       LCD)               \
+        M2(BitmapText,       Color)             \
+        M2(MiddleOutFan,     EvenOdd)           \
+        M2(MiddleOutFan,     Winding)           \
+        M1(SDFTextLCD)                          \
+        M1(SDFText)                             \
+        M2(TessellateCurves, EvenOdd)           \
+        M2(TessellateCurves, Winding)           \
+        M2(TessellateStrokes,Fill)              \
+        M2(TessellateStrokes,InverseFill)       \
+        M2(TessellateWedges, Convex)            \
+        M2(TessellateWedges, EvenOdd)           \
+        M2(TessellateWedges, Winding)           \
+        M2(Vertices,         Pos)               \
+        M2(Vertices,         PosColor)          \
+        M2(Vertices,         PosTexCoords)      \
+        M2(Vertices,         PosColorTexCoords) \
+        M1(Mesh)                                \
+        M1(EndCap)                              \
+        M1(WideTile)
 
 /**
  * The actual technique for rasterizing a high-level draw recorded in a DrawList is handled by a
@@ -60,14 +100,36 @@ struct Varying {
  *
  * All Renderers are accessed through the SharedContext's RendererProvider.
  */
+/**
+ * Each RenderStep may have "Static" data and/or "Append" data. Each type of data has associated
+ * attributes, strides, and layouts (see fStaticAttrs, fAppendAttrs, etc.), and resides on a
+ * specific binding on the GPU. This minimizes the number of bindings during a draw pass.
+ * - Static data is information that is fixed in count, does not change between calls of the same
+ *   RenderStep, and known after recieving device capabilities. Consequently, it is uploaded ONCE by
+ *   the StaticBufferManager prior to any drawPasses, and is initialized during the constructor of a
+ *   RenderStep. Currently, static data can be either Indices or Vertices.
+ * - Append data might not be fixed in count and its' usage is not known prior to the draw pass.
+ *   Instead, it is uploaded as needed during drawPass through the overload of the writeVertices()
+ *   function. Currently, either Vertices or Instances can be appended, and this can be queried by
+ *   getRenderStateFlags().
+ */
 class RenderStep {
 public:
     virtual ~RenderStep() = default;
 
+    // Returns an empty result if no state change is necessary, otherwise returns the scissor rect
+    // that should be active for all draws recorded by a subsequent call to writeVertices().
+    std::optional<SkIRect> getScissor(const DrawParams&,
+                                      SkIRect currentScissor,
+                                      SkIRect deviceBounds) const;
+
     // The DrawWriter is configured with the vertex and instance strides of the RenderStep, and its
     // primitive type. The recorded draws will be executed with a graphics pipeline compatible with
     // this RenderStep.
-    virtual void writeVertices(DrawWriter*, const DrawParams&, int ssboIndex) const = 0;
+    virtual void writeVertices(DrawWriter*,
+                               StorageContext*,
+                               const DrawParams&,
+                               uint32_t ssboIndex) const = 0;
 
     // Write out the uniform values (aligned for the layout), textures, and samplers. The uniform
     // values will be de-duplicated across all draws using the RenderStep before uploading to the
@@ -85,53 +147,90 @@ public:
     // NOTE: The above contract is mainly so that the entire SkSL program can be created by just str
     // concatenating struct definitions generated from the RenderStep and paint Combination
     // and then including the function bodies returned here.
-    virtual std::string vertexSkSL() const = 0;
+    virtual std::string vertexSkSL(const RootNodesInfo&) const = 0;
 
     // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
     virtual std::string texturesAndSamplersSkSL(const ResourceBindingRequirements&,
                                                 int* nextBindingIndex) const {
-        return R"()";
+        return "";
     }
 
     // Emits code to set up coverage value. Should only be defined if overridesCoverage is true.
     // When implemented the returned SkSL fragment should write its coverage into a
     // 'half4 outputCoverage' variable (defined in the calling code) with the actual
     // coverage splatted out into all four channels.
-    virtual const char* fragmentCoverageSkSL() const { return R"()"; }
+    virtual const char* fragmentCoverageSkSL() const { return ""; }
 
     // Emits code to set up a primitive color value. Should only be defined if emitsPrimitiveColor
     // is true. When implemented, the returned SkSL fragment should write its color into a
     // 'half4 primitiveColor' variable (defined in the calling code).
-    virtual const char* fragmentColorSkSL() const { return R"()"; }
+    virtual std::string fragmentColorSkSL(const RootNodesInfo&) const { return ""; }
 
-    uint32_t uniqueID() const { return fUniqueID; }
+    // Returns a pointer to the name of the local coordinates variable to use for
+    // shader sampling if non-null.
+    virtual const char* fragmentColorSkSLLocalCoordsVariable() const { return nullptr; }
+
+    // Indicates whether this RenderStep's uniforms are referenced in its fragment shader code.
+    // If not, its uniforms can be omitted from the fragment shader entirely.
+    // By default, we assume that RenderSteps use their uniforms for emitting coverage or primitive
+    // colors.
+    virtual bool usesUniformsInFragmentSkSL() const {
+        return this->coverage() != Coverage::kNone || this->emitsPrimitiveColor();
+    }
 
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
     // and variant is a unique term describing instance's specific configuration.
-    const char* name() const { return fName.c_str(); }
+    const char* name() const { return RenderStepName(fRenderStepID); }
 
-    bool requiresMSAA()        const { return fFlags & Flags::kRequiresMSAA;        }
-    bool performsShading()     const { return fFlags & Flags::kPerformsShading;     }
-    bool hasTextures()         const { return fFlags & Flags::kHasTextures;         }
-    bool emitsCoverage()       const { return fFlags & Flags::kEmitsCoverage;       }
-    bool emitsPrimitiveColor() const { return fFlags & Flags::kEmitsPrimitiveColor; }
+    bool requiresMSAA()        const { return SkToBool(fFlags & Flags::kRequiresMSAA);        }
+    bool performsShading()     const { return SkToBool(fFlags & Flags::kPerformsShading);     }
+    bool hasTextures()         const { return SkToBool(fFlags & Flags::kHasTextures);         }
+    bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
+    bool outsetBoundsForAA()   const { return SkToBool(fFlags & Flags::kOutsetBoundsForAA);   }
+    bool useNonAAInnerFill()   const { return SkToBool(fFlags & Flags::kUseNonAAInnerFill);   }
+    bool appendsVertices()     const { return SkToBool(fFlags & Flags::kAppendVertices);      }
+    bool vsUsesStorage()       const { return SkToBool(fFlags & Flags::kVsUsesStorage);       }
+    bool fsUsesStorage()       const { return SkToBool(fFlags & Flags::kFsUsesStorage);       }
+    SkEnumBitMask<PipelineStageFlags> storageBufferStages() const { return fStorageBufferStages; }
+    SkEnumBitMask<RenderStateFlags>   getRenderStateFlags() const {
+        SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
+        if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed;           }
+        if (fFlags & Flags::kAppendVertices)    { rs |= RenderStateFlags::kAppendVertices;  }
+        if (fFlags & Flags::kAppendInstances)   { rs |= RenderStateFlags::kAppendInstances; }
+        if (fFlags & Flags::kAppendDynamicInstances) {
+             rs |= RenderStateFlags::kAppendDynamicInstances;
+        }
+        return rs;
+    }
 
-    PrimitiveType primitiveType()  const { return fPrimitiveType;  }
-    size_t        vertexStride()   const { return fVertexStride;   }
-    size_t        instanceStride() const { return fInstanceStride; }
+    Coverage coverage() const { return RenderStep::GetCoverage(fFlags); }
 
-    size_t numUniforms()           const { return fUniforms.size();      }
-    size_t numVertexAttributes()   const { return fVertexAttrs.size();   }
-    size_t numInstanceAttributes() const { return fInstanceAttrs.size(); }
+    PrimitiveType  primitiveType()    const { return fPrimitiveType;    }
+    size_t         staticDataStride() const { return fStaticDataStride; }
+    virtual size_t appendDataStride(const DrawParams& params) const { return fAppendDataStride; }
 
-    static const char* ssboIndex() { return "ssboIndex"; }
+    size_t storageUniformStride() const { return fStorageUniformStride;    }
+    size_t storageUniformAlignment() const { return fStorageUniformAlignment; }
+
+    size_t numUniforms()          const { return fUniforms.size();        }
+    int    uniformAlignment()     const { return fUniformAlignment;       }
+    size_t numStaticAttributes()  const { return fStaticAttrs.size();     }
+    size_t numAppendAttributes()  const { return fAppendAttrs.size();     }
+    size_t numStorageUniforms()   const { return fStorageUniforms.size(); }
+
+    // Name of an attribute containing both the render step and shading SSBO index, if used.
+    static const char* ssboIndexAttribute() { return "ssboIndex"; }
+
+    // Name of a varying to pass the SSBO index to fragment shader
+    static const char* ssboIndexVarying() { return "ssboIndexVar"; }
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.
-    SkSpan<const Uniform> uniforms()             const { return SkSpan(fUniforms);      }
-    SkSpan<const Attribute> vertexAttributes()   const { return SkSpan(fVertexAttrs);   }
-    SkSpan<const Attribute> instanceAttributes() const { return SkSpan(fInstanceAttrs); }
-    SkSpan<const Varying>   varyings()           const { return SkSpan(fVaryings);      }
+    SkSpan<const Uniform>   uniforms()          const { return SkSpan(fUniforms);        }
+    SkSpan<const Attribute> staticAttributes()  const { return SkSpan(fStaticAttrs);     }
+    SkSpan<const Attribute> appendAttributes()  const { return SkSpan(fAppendAttrs);     }
+    SkSpan<const Uniform>   storageUniforms()   const { return SkSpan(fStorageUniforms); }
+    SkSpan<const Varying>   varyings()          const { return SkSpan(fVaryings);        }
 
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 
@@ -142,6 +241,24 @@ public:
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
+    static const int kRenderStepIDVersion = 2;
+
+#define ENUM1(BaseName) k##BaseName,
+#define ENUM2(BaseName, VariantName) k##BaseName##_##VariantName,
+    enum class RenderStepID : uint32_t {
+        SKGPU_RENDERSTEP_TYPES(ENUM1, ENUM2)
+
+        kLast = kWideTile,
+    };
+#undef ENUM1
+#undef ENUM2
+    static const int kNumRenderSteps = static_cast<int>(RenderStepID::kLast) + 1;
+
+    RenderStepID renderStepID() const { return fRenderStepID; }
+
+    static const char* RenderStepName(RenderStepID);
+    static bool IsValidRenderStepID(uint32_t);
+
     // TODO: Actual API to do things
     // 6. Some Renderers benefit from being able to share vertices between RenderSteps. Must find a
     //    way to support that. It may mean that RenderSteps get state per draw.
@@ -150,27 +267,39 @@ public:
     //      stateless Renderstep can refer to for {draw,step} pairs?
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
 protected:
-    enum class Flags : unsigned {
-        kNone                  = 0b00000,
-        kRequiresMSAA          = 0b00001,
-        kPerformsShading       = 0b00010,
-        kHasTextures           = 0b00100,
-        kEmitsCoverage         = 0b01000,
-        kEmitsPrimitiveColor   = 0b10000,
-    };
-    SK_DECL_BITMASK_OPS_FRIENDS(Flags);
+enum class Flags : unsigned {
+    kNone                   = 0x0000,
+    kFixed                  = 0x0001, // Uses explicit DrawWriter::draw functions
+    kAppendVertices         = 0x0002, // Appends vertices
+    kAppendInstances        = 0x0004, // Appends instances with static vertex count
+    kAppendDynamicInstances = 0x0008, // Appends instances with a flexible vertex count
+    kRequiresMSAA           = 0x0010, // MSAA is required for anti-aliasing
+    kPerformsShading        = 0x0020, // This step is responsible for shading/color output
+    kHasTextures            = 0x0040, // Adds textures via overridden texturesAndSamplersSkSL()
+    kEmitsCoverage          = 0x0080, // Adds analytic coverage via fragmentCoverageSkSL()
+    kLCDCoverage            = 0x0100, // The added analytic coverage is LCD, not single channel
+    kEmitsPrimitiveColor    = 0x0200, // Injects primitive color via fragmentColorSkSL()
+    kOutsetBoundsForAA      = 0x0400, // Drawn geometry will be outset beyond shape's bounds for AA
+    kUseNonAAInnerFill      = 0x0800, // Opt into Device recording extra inner fill draws
+    kIgnoreInverseFill      = 0x1000, // Rasterization treats all shapes as non-inverted for scissor
+    kInverseFillsScissor    = 0x2000, // Rasterization of inverse fills scissor geometrically
+    kVsUsesStorage          = 0x4000, // Does the vertex shader require storage buffer access?
+    kFsUsesStorage          = 0x8000, // Does the fragment shader require storage buffer access?
+};
+SK_DECL_BITMASK_OPS_FRIENDS(Flags)
 
     // While RenderStep does not define the full program that's run for a draw, it defines the
     // entire vertex layout of the pipeline. This is not allowed to change, so can be provided to
     // the RenderStep constructor by subclasses.
-    RenderStep(std::string_view className,
-               std::string_view variantName,
+    RenderStep(Layout layout,
+               RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
                std::initializer_list<Uniform> uniforms,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
-               SkSpan<const Attribute> vertexAttrs,
-               SkSpan<const Attribute> instanceAttrs,
+               SkSpan<const Attribute> staticAttrs,
+               SkSpan<const Attribute> appendAttrs,
+               SkSpan<const Uniform> storageUniforms = {},
                SkSpan<const Varying> varyings = {});
 
 private:
@@ -180,11 +309,13 @@ private:
     RenderStep(const RenderStep&) = delete;
     RenderStep(RenderStep&&)      = delete;
 
-    uint32_t fUniqueID;
-    SkEnumBitMask<Flags> fFlags;
-    PrimitiveType        fPrimitiveType;
+    static Coverage GetCoverage(SkEnumBitMask<Flags>);
 
-    DepthStencilSettings fDepthStencilSettings;
+    RenderStepID                      fRenderStepID;
+    SkEnumBitMask<Flags>              fFlags;
+    SkEnumBitMask<PipelineStageFlags> fStorageBufferStages;
+    PrimitiveType                     fPrimitiveType;
+    DepthStencilSettings              fDepthStencilSettings;
 
     // TODO: When we always use C++17 for builds, we should be able to just let subclasses declare
     // constexpr arrays and point to those, but we need explicit storage for C++14.
@@ -193,16 +324,18 @@ private:
     // On the other hand, the attributes are only needed when creating a new pipeline so it's not
     // that performance sensitive.
     std::vector<Uniform>   fUniforms;
-    std::vector<Attribute> fVertexAttrs;
-    std::vector<Attribute> fInstanceAttrs;
+    std::vector<Attribute> fStaticAttrs;
+    std::vector<Attribute> fAppendAttrs;
+    std::vector<Uniform>   fStorageUniforms;
     std::vector<Varying>   fVaryings;
 
-    size_t fVertexStride;   // derived from vertex attribute set
-    size_t fInstanceStride; // derived from instance attribute set
-
-    std::string fName;
+    int    fUniformAlignment;        // derived from the renderstep uniforms
+    size_t fStaticDataStride;        // derived from vertex attribute set
+    size_t fAppendDataStride;        // derived from instance attribute set
+    size_t fStorageUniformStride;    // derived from storage uniform set
+    size_t fStorageUniformAlignment; // derived from storage uniform set
 };
-SK_MAKE_BITMASK_OPS(RenderStep::Flags);
+SK_MAKE_BITMASK_OPS(RenderStep::Flags)
 
 class Renderer {
     using StepFlags = RenderStep::Flags;
@@ -223,11 +356,22 @@ public:
     DrawTypeFlags drawTypes()      const { return fDrawTypes; }
     int           numRenderSteps() const { return fStepCount;    }
 
-    bool requiresMSAA()        const { return fStepFlags & StepFlags::kRequiresMSAA;        }
-    bool emitsCoverage()       const { return fStepFlags & StepFlags::kEmitsCoverage;       }
-    bool emitsPrimitiveColor() const { return fStepFlags & StepFlags::kEmitsPrimitiveColor; }
+    bool requiresMSAA() const {
+        return SkToBool(fStepFlags & StepFlags::kRequiresMSAA);
+    }
+    bool emitsPrimitiveColor() const {
+        return SkToBool(fStepFlags & StepFlags::kEmitsPrimitiveColor);
+    }
+    bool outsetBoundsForAA() const {
+        return SkToBool(fStepFlags & StepFlags::kOutsetBoundsForAA);
+    }
+    bool useNonAAInnerFill() const {
+        return SkToBool(fStepFlags & StepFlags::kUseNonAAInnerFill);
+    }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
+
+    Coverage coverage() const { return RenderStep::GetCoverage(fStepFlags); }
 
 private:
     friend class RendererProvider; // for ctors
@@ -261,6 +405,11 @@ private:
         }
         // At least one step needs to actually shade.
         SkASSERT(fStepFlags & RenderStep::Flags::kPerformsShading);
+        // A render step using non-AA inner fills with a second draw should not also be part of a
+        // multi-step renderer (to keep reasoning simple) and must use the LESS depth test.
+        SkASSERT(!this->useNonAAInnerFill() ||
+                 (fStepCount == 1 && fSteps[0]->depthStencilSettings().fDepthTestEnabled &&
+                  fSteps[0]->depthStencilSettings().fDepthCompareOp == CompareOp::kLess));
     }
 
     // For RendererProvider to manage initialization; it will never expose a Renderer that is only
@@ -270,7 +419,7 @@ private:
 
     std::array<const RenderStep*, kMaxRenderSteps> fSteps;
     std::string fName;
-    DrawTypeFlags fDrawTypes = DrawTypeFlags::kAll;
+    DrawTypeFlags fDrawTypes = DrawTypeFlags::kNone;
     int fStepCount;
 
     SkEnumBitMask<StepFlags> fStepFlags = StepFlags::kNone;

@@ -26,7 +26,7 @@ public:
 
 protected:
     bool isSuitableFor(Backend backend) override {
-        return kGPU_Backend == backend;
+        return Backend::kGanesh == backend;
     }
 
     const char* onGetName() override { return fName.c_str(); }
@@ -45,10 +45,10 @@ protected:
             fSurface = SkSurfaces::RenderTarget(context,
                                                 skgpu::Budgeted::kNo,
                                                 info,
-                                                0,
+                                                /* sampleCount= */ 0,
                                                 kBottomLeft_GrSurfaceOrigin,
-                                                nullptr,
-                                                true);
+                                                /* surfaceProps= */ nullptr,
+                                                /* shouldCreateWithMips= */ true);
         }
 
         // Clear surface once:

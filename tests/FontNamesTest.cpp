@@ -11,12 +11,13 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkTemplates.h"
-#include "src/base/SkEndian.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTemplates.h"
+#include "src/core/SkEndian.h"
 #include "src/sfnt/SkOTTable_name.h"
 #include "tests/Test.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -157,9 +158,13 @@ static void test_synthetic(skiatest::Reporter* reporter, bool verbose) {
 static void test_systemfonts(skiatest::Reporter* reporter, bool verbose) {
     static const SkFontTableTag nameTag = SkSetFourByteTag('n','a','m','e');
 
-    sk_sp<SkFontMgr> fm(SkFontMgr::RefDefault());
+    sk_sp<SkFontMgr> fm(ToolUtils::TestFontMgr());
+    SkASSERT_RELEASE(fm);
     int count = std::min(fm->countFamilies(), MAX_FAMILIES);
     for (int i = 0; i < count; ++i) {
+        SkString fname;
+        fm->getFamilyName(i, &fname);
+
         sk_sp<SkFontStyleSet> set(fm->createStyleSet(i));
         for (int j = 0; j < set->count(); ++j) {
             SkString sname;
@@ -167,6 +172,11 @@ static void test_systemfonts(skiatest::Reporter* reporter, bool verbose) {
             set->getStyle(j, &fs, &sname);
 
             sk_sp<SkTypeface> typeface(set->createTypeface(j));
+            if (!typeface) {
+                REPORTER_ASSERT(reporter, typeface.get(),
+                                "Could not create %s %s.", fname.c_str(), sname.c_str());
+                continue;
+            }
 
             SkString familyName;
             typeface->getFamilyName(&familyName);

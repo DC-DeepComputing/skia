@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,10 +9,8 @@
 #define SkCharToGlyphCache_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTDArray.h"
-#include "include/private/base/SkTo.h"
-
-#include <cstdint>
+#include "include/private/SkTDArray.h"
+#include "include/private/SkTo.h"
 
 class SkCharToGlyphCache {
 public:
@@ -21,7 +19,7 @@ public:
 
     // return number of unichars cached
     int count() const {
-        return fK32.size();
+        return fKUnichar.size();
     }
 
     void reset();       // forget all cache entries (to save memory)
@@ -57,8 +55,8 @@ public:
     }
 
 private:
-    SkTDArray<int32_t>   fK32;
-    SkTDArray<uint16_t>  fV16;
+    SkTDArray<SkUnichar> fKUnichar;
+    SkTDArray<SkGlyphID> fVGlyph;
     double               fDenom;
 };
 

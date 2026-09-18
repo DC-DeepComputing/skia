@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,7 +8,7 @@
 #ifndef GrMtlCaps_DEFINED
 #define GrMtlCaps_DEFINED
 
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTDArray.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/mtl/GrMtlAttachment.h"
 
@@ -84,10 +84,12 @@ public:
     GrProgramDesc makeDesc(GrRenderTarget*,
                            const GrProgramInfo&,
                            ProgramDescOverrideFlags) const override;
-    MTLPixelFormat getStencilPixelFormat(const GrProgramDesc& desc);
+    MTLPixelFormat getStencilPixelFormat(const GrProgramDesc& desc) const;
 
-    bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
-    bool isApple() const { return fGPUFamily == GPUFamily::kApple; }
+    bool isMac() const   { return fGPUFamily == GPUFamily::kMac ||
+                                  fGPUFamily == GPUFamily::kMacIntel; }
+    bool isApple() const { return fGPUFamily == GPUFamily::kApple;    }
+    bool isIntel() const { return fGPUFamily == GPUFamily::kMacIntel; }
 
     size_t getMinBufferAlignment() const { return this->isMac() ? 4 : 1; }
 
@@ -96,7 +98,7 @@ public:
 
     bool renderTargetSupportsDiscardableMSAA(const GrMtlRenderTarget*) const;
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     std::vector<GrTest::TestFormatColorTypeCombination> getTestingCombinations() const override;
 #endif
     void onDumpJSON(SkJSONWriter*) const override;
@@ -180,8 +182,9 @@ private:
     void setColorType(GrColorType, std::initializer_list<MTLPixelFormat> formats);
 
     enum class GPUFamily {
-        kMac,
         kApple,
+        kMac,
+        kMacIntel,
     };
     bool getGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* group);
     bool getGPUFamilyFromFeatureSet(id<MTLDevice> device, GrMtlCaps::GPUFamily* gpuFamily,

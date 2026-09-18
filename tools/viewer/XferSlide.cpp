@@ -13,12 +13,16 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/utils/SkTextUtils.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
+#include "tools/DecodeUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
-const SkBlendMode gModes[] = {
+#include <array>
+
+static constexpr auto gModes = std::to_array<SkBlendMode>({
     SkBlendMode::kSrcOver,
     SkBlendMode::kSrc,
     SkBlendMode::kSrcIn,
@@ -28,7 +32,7 @@ const SkBlendMode gModes[] = {
     SkBlendMode::kDstIn,
     SkBlendMode::kDstOut,
     SkBlendMode::kDstATop,
-};
+});
 const int N_Modes = std::size(gModes);
 
 static SkRandom gRand;
@@ -52,7 +56,7 @@ public:
         canvas->drawRoundRect(fRect, 8, 8, paint);
 
         paint.setColor(0xFFFFFFFF);
-        SkFont font;
+        SkFont font = ToolUtils::DefaultFont();
         font.setSize(16);
         font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
         SkTextUtils::DrawString(canvas, fLabel.c_str(), fRect.centerX(), fRect.fTop + 0.68f * fRect.height(),
@@ -82,11 +86,10 @@ class CircDrawable : public ModeDrawable {
     SkRect  fBounds;
 
 public:
-    CircDrawable(SkScalar size, SkColor c) {
-        const SkColor colors[] = { 0, c };
-        fPaint.setShader(SkGradientShader::MakeRadial(SkPoint::Make(size/2, size/2), size/2,
-                                                                     colors, nullptr, 2,
-                                                                     SkTileMode::kClamp));
+    CircDrawable(SkScalar size, SkColor4f c) {
+        const SkColor4f colors[] = { {0,0,0,0}, c };
+        fPaint.setShader(SkShaders::RadialGradient(SkPoint::Make(size/2, size/2), size/2,
+                                                   {{colors, {}, SkTileMode::kClamp}, {}}));
         fBounds = SkRect::MakeWH(size, size);
     }
 
@@ -107,7 +110,8 @@ protected:
 class XferSlide : public ClickHandlerSlide {
 public:
     XferSlide() {
-        const SkColor colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorBLACK };
+        const auto colors = std::to_array<SkColor4f>({
+                SkColors::kRed, SkColors::kGreen, SkColors::kBlue, SkColors::kBlack});
         for (int i = 0; i < N; ++i) {
             fDrs[i].reset(new CircDrawable(200, colors[i]));
             fDrs[i]->fLoc.set(100.f + i * 100, 100.f + i * 100);
@@ -179,9 +183,9 @@ private:
         N = 4
     };
 
-    SkRect        fModeRect[N_Modes];
-    ModeButton    fModeButtons[N_Modes];
-    sk_sp<CircDrawable> fDrs[N];
+    std::array<SkRect, N_Modes> fModeRect;
+    std::array<ModeButton, N_Modes> fModeButtons;
+    std::array<sk_sp<CircDrawable>, N> fDrs;
     CircDrawable* fSelected;
 
     void addButtons() {
@@ -204,20 +208,20 @@ DEF_SLIDE( return new XferSlide; )
 class CubicResamplerSlide : public ClickHandlerSlide {
 public:
     CubicResamplerSlide() {
-        const char* names[] = {
-            "images/mandrill_128.png",
-            "images/rle.bmp",
-            "images/example_4.png",
-        };
+        fName = "CubicResampler";
+    }
+
+protected:
+    void load(SkScalar, SkScalar) override {
         SkRect r = {10, 10, 200, 200};
-        for (auto name : names) {
-            fRecs.push_back({GetResourceAsImage(name), r});
+        for (const char* name : {"images/mandrill_128.png",
+                                 "images/rle.bmp",
+                                 "images/example_4.png"}) {
+            fRecs.push_back({ToolUtils::GetResourceAsImage(name), r});
             r.offset(0, r.height() + 10);
         }
-
-        fDomain.setXYWH(r.fLeft + 3*r.width() + 40, 50, 200, 200);
+        fDomain.setXYWH(r.fLeft + 3 * r.width() + 40, 50, 200, 200);
         fCubic = {.3f, .5f};
-        fName = "CubicResampler";
     }
 
     void draw(SkCanvas* canvas) override {
@@ -232,12 +236,12 @@ public:
 
         paint.setColor(SK_ColorRED);
         paint.setStroke(false);
-        SkPoint loc = SkMatrix::RectToRect({0,0,1,1}, fDomain).mapXY(fCubic.B, fCubic.C);
+        SkPoint loc = SkMatrix::Rect2Rect({0,0,1,1}, fDomain)->mapPoint({fCubic.B, fCubic.C});
         canvas->drawCircle(loc.fX, loc.fY, 8, paint);
 
         SkString str;
         str.printf("B=%4.2f  C=%4.2f", fCubic.B, fCubic.C);
-        SkFont font;
+        SkFont font = ToolUtils::DefaultFont();
         font.setSize(25);
         font.setEdging(SkFont::Edging::kAntiAlias);
         paint.setColor(SK_ColorBLACK);

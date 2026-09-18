@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "src/base/SkStringView.h"
-#include "src/sksl/SkSLCompiler.h"
+#include "src/core/SkStringView.h"
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLModule.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/ir/SkSLProgram.h"

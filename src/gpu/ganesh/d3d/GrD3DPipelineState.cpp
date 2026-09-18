@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/d3d/GrD3DPipelineState.h"
 
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
@@ -19,6 +19,7 @@
 #include "src/gpu/ganesh/d3d/GrD3DRootSignature.h"
 #include "src/gpu/ganesh/d3d/GrD3DTexture.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
+#include "src/sksl/SkSLCompiler.h"
 
 GrD3DPipelineState::GrD3DPipelineState(
         sk_sp<GrD3DPipeline> pipeline,

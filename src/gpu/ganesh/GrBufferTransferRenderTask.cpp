@@ -4,12 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/GrBufferTransferRenderTask.h"
 
 #include "src/gpu/ganesh/GrGpu.h"
+#include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
-#include "src/gpu/ganesh/GrResourceAllocator.h"
+
+#include <utility>
 
 sk_sp<GrRenderTask> GrBufferTransferRenderTask::Make(sk_sp<GrGpuBuffer> src,
                                                      size_t srcOffset,
@@ -38,10 +39,11 @@ GrBufferTransferRenderTask::GrBufferTransferRenderTask(sk_sp<GrGpuBuffer> src,
 
 GrBufferTransferRenderTask::~GrBufferTransferRenderTask() = default;
 
-bool GrBufferTransferRenderTask::onExecute(GrOpFlushState* flushState) {
-    return flushState->gpu()->transferFromBufferToBuffer(fSrc,
-                                                         fSrcOffset,
-                                                         fDst,
-                                                         fDstOffset,
-                                                         fSize);
+GrRenderTask::ExecutionResult GrBufferTransferRenderTask::onExecute(GrOpFlushState* flushState) {
+    bool success = flushState->gpu()->transferFromBufferToBuffer(fSrc,
+                                                                 fSrcOffset,
+                                                                 fDst,
+                                                                 fDstOffset,
+                                                                 fSize);
+    return ExecutionResult::Ran(success);
 }

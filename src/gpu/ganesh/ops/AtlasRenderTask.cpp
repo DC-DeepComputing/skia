@@ -1,22 +1,39 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/ops/AtlasRenderTask.h"
 
-#include "src/core/SkBlendModePriv.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkSize.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/SkDebug.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkIPoint16.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrNativeRect.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
-#include "src/gpu/ganesh/GrOpsTypes.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
+#include "src/gpu/ganesh/GrRenderTask.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
+#include "src/gpu/ganesh/GrUserStencilSettings.h"
+#include "src/gpu/ganesh/GrXferProcessor.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
+#include "src/gpu/ganesh/ops/FillPathFlags.h"
 #include "src/gpu/ganesh/ops/FillRectOp.h"
+#include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/PathStencilCoverOp.h"
+
+#include <initializer_list>
 
 namespace skgpu::ganesh {
 
@@ -36,6 +53,17 @@ bool AtlasRenderTask::addPath(const SkMatrix& viewMatrix, const SkPath& path,
     SkASSERT(!this->isClosed());
     SkASSERT(this->isEmpty());
     SkASSERT(!fDynamicAtlas->isInstantiated());  // Paths can't be added after instantiate().
+
+    // Check for room in the list first and return false if prior draws need to be flushed first.
+    if (GrFillRuleForSkPath(path) == GrFillRule::kNonzero) {
+        if (!fWindingPathList.canAdd(path)) {
+            return false;
+        }
+    } else {
+        if (!fEvenOddPathList.canAdd(path)) {
+            return false;
+        }
+    }
 
     if (!fDynamicAtlas->addRect(widthInAtlas, heightInAtlas, locationInAtlas)) {
         return false;
@@ -154,7 +182,7 @@ void AtlasRenderTask::stencilAtlasRect(GrRecordingContext* rContext, const SkRec
                                        const GrUserStencilSettings* stencil) {
     GrPaint paint;
     paint.setColor4f(color);
-    paint.setXPFactory(SkBlendMode_AsXPFactory(SkBlendMode::kSrc));
+    paint.setXPFactory(GrXPFactory::FromBlendMode(SkBlendMode::kSrc));
     GrQuad quad(rect);
     DrawQuad drawQuad{quad, quad, GrQuadAAFlags::kAll};
     auto op = FillRectOp::Make(rContext, std::move(paint), GrAAType::kMSAA, &drawQuad, stencil);
@@ -176,9 +204,10 @@ void AtlasRenderTask::addAtlasDrawOp(GrOp::Owner op, const GrCaps& caps) {
     this->recordOp(std::move(op), true/*usesMSAA*/, processorAnalysis, nullptr, nullptr, caps);
 }
 
-bool AtlasRenderTask::onExecute(GrOpFlushState* flushState) {
-    if (!this->OpsTask::onExecute(flushState)) {
-        return false;
+GrRenderTask::ExecutionResult AtlasRenderTask::onExecute(GrOpFlushState* flushState) {
+    ExecutionResult result = this->OpsTask::onExecute(flushState);
+    if (!result.fAllTasksSuccessful) {
+        return result;
     }
     if (this->target(0)->requiresManualMSAAResolve()) {
         // Since atlases don't get closed until they are done being built, the drawingManager
@@ -188,8 +217,9 @@ bool AtlasRenderTask::onExecute(GrOpFlushState* flushState) {
                 this->target(0)->backingStoreDimensions().height(),
                 SkIRect::MakeSize(fDynamicAtlas->drawBounds()));
         flushState->gpu()->resolveRenderTarget(this->target(0)->peekRenderTarget(), nativeRect);
+        result.accum(ExecutionResult::RanAndSucceeded());
     }
-    return true;
+    return result;
 }
 
 }  // namespace skgpu::ganesh

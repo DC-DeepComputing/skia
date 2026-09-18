@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -10,8 +10,10 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkSurface.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/viewer/Slide.h"
 
 using namespace skia_private;
@@ -104,7 +106,7 @@ public:
     }
 
     void draw(SkCanvas* canvas, SkPaint* paint, SkScalar tx, SkScalar ty, SkScalar angle) override {
-        SkPath path;
+        SkPathBuilder path;
         path.moveTo(kTileWidth / 2.f, 2.f);
 
         if (fDepth > 0.f) {
@@ -138,7 +140,7 @@ public:
         paint->setStyle(SkPaint::kStroke_Style);
 
         this->applyLocalTransform(canvas, tx, ty, angle);
-        canvas->drawPath(path, *paint);
+        canvas->drawPath(path.detach(), *paint);
     }
 
 private:
@@ -281,7 +283,7 @@ public:
         canvas->clear(0xFFFFFFFF);
         // Move away from screen edge and add instructions
         SkPaint text;
-        SkFont font(nullptr, 12);
+        SkFont font(ToolUtils::DefaultTypeface(), 12);
         canvas->translate(60.f, 20.f);
         canvas->drawString("Each row features a rendering command under different AA strategies. "
                            "Native refers to the current backend of the viewer, e.g. OpenGL.",
@@ -472,7 +474,7 @@ private:
         // Labeling per shape and detailed labeling that isn't per-stroke
         canvas->save();
         SkPaint text;
-        SkFont font(nullptr, 12);
+        SkFont font(ToolUtils::DefaultTypeface(), 12);
 
         if (gridX == 0) {
             SkScalar centering = shape->name().size() * 4.f; // ad-hoc

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,6 +7,7 @@
 
 #include "src/codec/SkAvifCodec.h"
 
+#include "include/codec/SkAvifDecoder.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
 #include "include/core/SkColorType.h"
@@ -15,6 +16,8 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "modules/skcms/skcms.h"
+#include "src/codec/SkCodecPriv.h"
+#include "src/core/SkRectMemcpy.h"
 #include "src/core/SkStreamPriv.h"
 
 #include <cstdint>
@@ -22,7 +25,6 @@
 #include <utility>
 
 #include "avif/avif.h"
-#include "avif/internal.h"
 
 void AvifDecoderDeleter::operator()(avifDecoder* decoder) const {
     if (decoder != nullptr) {
@@ -68,7 +70,7 @@ std::unique_ptr<SkCodec> SkAvifCodec::MakeFromStream(std::unique_ptr<SkStream> s
         // It is safe to make without copy because we'll hold onto the stream.
         data = SkData::MakeWithoutCopy(stream->getMemoryBase(), stream->getLength());
     } else {
-        data = SkCopyStreamToData(stream.get());
+        data = SkStreamPriv::CopyStreamToData(stream.get());
         // If we are forced to copy the stream to a data, we can go ahead and
         // delete the stream.
         stream.reset(nullptr);
@@ -86,7 +88,7 @@ std::unique_ptr<SkCodec> SkAvifCodec::MakeFromStream(std::unique_ptr<SkStream> s
         return nullptr;
     }
 
-    std::unique_ptr<SkEncodedInfo::ICCProfile> profile = nullptr;
+    std::unique_ptr<SkCodecs::ColorProfile> profile;
     // TODO(vigneshv): Get ICC Profile from the avif decoder.
 
     const int bitsPerComponent = avifDecoder->image->depth > 8 ? 16 : 8;
@@ -95,6 +97,9 @@ std::unique_ptr<SkCodec> SkAvifCodec::MakeFromStream(std::unique_ptr<SkStream> s
     if (avifDecoder->alphaPresent) {
         color = SkEncodedInfo::kRGBA_Color;
         alpha = SkEncodedInfo::kUnpremul_Alpha;
+    } else if (avifDecoder->image->yuvFormat == AVIF_PIXEL_FORMAT_YUV400) {
+        color = SkEncodedInfo::kGray_Color;
+        alpha = SkEncodedInfo::kOpaque_Alpha;
     } else {
         color = SkEncodedInfo::kRGB_Color;
         alpha = SkEncodedInfo::kOpaque_Alpha;
@@ -118,7 +123,7 @@ std::unique_ptr<SkCodec> SkAvifCodec::MakeFromStream(std::unique_ptr<SkStream> s
 
 SkAvifCodec::SkAvifCodec(SkEncodedInfo&& info,
                          std::unique_ptr<SkStream> stream,
-                         sk_sp<SkData> data,
+                         sk_sp<const SkData> data,
                          AvifDecoder avifDecoder,
                          SkEncodedOrigin origin,
                          bool useAnimation)
@@ -188,6 +193,13 @@ bool SkAvifCodec::onGetFrameInfo(int i, FrameInfo* frameInfo) const {
 
 int SkAvifCodec::onGetRepetitionCount() { return kRepetitionCountInfinite; }
 
+SkCodec::IsAnimated SkAvifCodec::onIsAnimated() {
+    if (!fUseAnimation || fAvifDecoder->imageCount <= 1) {
+        return IsAnimated::kNo;
+    }
+    return IsAnimated::kYes;
+}
+
 SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
                                          void* dst,
                                          size_t dstRowBytes,
@@ -198,9 +210,17 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
     }
 
     const SkColorType dstColorType = dstInfo.colorType();
-    if (dstColorType != kRGBA_8888_SkColorType && dstColorType != kRGBA_F16_SkColorType) {
+    if (dstColorType == kGray_8_SkColorType &&
+        this->getEncodedInfo().color() != SkEncodedInfo::kGray_Color) {
+        return kInvalidConversion;
+    }
+
+    if (dstColorType != kRGBA_8888_SkColorType
+        && dstColorType != kBGRA_8888_SkColorType
+        && dstColorType != kRGBA_F16_SkColorType
+        && dstColorType != kGray_8_SkColorType) {
         // TODO(vigneshv): Check if more color types need to be supported.
-        // Currently android supports at least RGB565 and BGRA8888 which is not
+        // Currently android supports at least RGB565 which is not
         // supported here.
         return kUnimplemented;
     }
@@ -211,13 +231,25 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
     }
 
     if (this->dimensions() != dstInfo.dimensions()) {
-        if (!avifImageScale(fAvifDecoder->image,
-                            dstInfo.width(),
-                            dstInfo.height(),
-                            fAvifDecoder->imageSizeLimit,
-                            &fAvifDecoder->diag)) {
+        result = avifImageScale(
+                fAvifDecoder->image, dstInfo.width(), dstInfo.height(), &fAvifDecoder->diag);
+        if (result != AVIF_RESULT_OK) {
             return kInvalidInput;
         }
+    }
+
+    if (dstColorType == kGray_8_SkColorType) {
+        if (fAvifDecoder->image->depth != 8) {
+            return kInvalidConversion;
+        }
+        const uint8_t* srcRow = fAvifDecoder->image->yuvPlanes[AVIF_CHAN_Y];
+        size_t srcRowBytes = fAvifDecoder->image->yuvRowBytes[AVIF_CHAN_Y];
+
+        SkRectMemcpy(dst, dstRowBytes, srcRow, srcRowBytes, dstInfo.width(), dstInfo.height());
+        if (rowsDecoded) {
+            *rowsDecoded = dstInfo.height();
+        }
+        return kSuccess;
     }
 
     avifRGBImage rgbImage;
@@ -225,6 +257,9 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
 
     if (dstColorType == kRGBA_8888_SkColorType) {
         rgbImage.depth = 8;
+    } else if (dstColorType == kBGRA_8888_SkColorType){
+        rgbImage.depth = 8;
+        rgbImage.format = AVIF_RGB_FORMAT_BGRA;
     } else if (dstColorType == kRGBA_F16_SkColorType) {
         rgbImage.depth = 16;
         rgbImage.isFloat = AVIF_TRUE;
@@ -244,6 +279,8 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
 }
 
 namespace SkAvifDecoder {
+namespace LibAvif {
+
 bool IsAvif(const void* data, size_t len) {
     return SkAvifCodec::IsAvif(data, len);
 }
@@ -258,7 +295,7 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
     return SkAvifCodec::MakeFromStream(std::move(stream), outResult);
 }
 
-std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
+std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
                                 SkCodec::Result* outResult,
                                 SkCodecs::DecodeContext) {
     if (!data) {
@@ -269,4 +306,6 @@ std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
     }
     return Decode(SkMemoryStream::Make(std::move(data)), outResult, nullptr);
 }
+
+}  // namespace LibAvif
 }  // namespace SkAvifDecoder

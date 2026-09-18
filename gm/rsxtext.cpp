@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -13,40 +13,36 @@
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTileMode.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 // Exercises RSX text blobs + shader with various local matrix combinations.
 // Yellow grid should stay aligned for text vs. background.
 class RSXShaderGM : public skiagm::GM {
 public:
 private:
-    SkString onShortName() override {
-        return SkString("rsx_blob_shader");
-    }
+    SkString getName() const override { return SkString("rsx_blob_shader"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(kSZ*kScale*2.1f, kSZ*kScale*2.1f);
-    }
+    SkISize getISize() override { return SkISize::Make(kSZ * kScale * 2.1f, kSZ * kScale * 2.1f); }
 
     void onOnceBeforeDraw() override {
         const SkFontStyle style(SkFontStyle::kExtraBlack_Weight,
                                 SkFontStyle::kNormal_Width,
                                 SkFontStyle::kUpright_Slant);
-        SkFont font(ToolUtils::create_portable_typeface(nullptr, style), kFontSZ);
+        SkFont font(ToolUtils::CreatePortableTypeface("Sans", style), kFontSZ);
         font.setEdging(SkFont::Edging::kAntiAlias);
 
         static constexpr char txt[] = "TEST";
         SkGlyphID glyphs[16];
         float     widths[16];
-        const auto glyph_count = font.textToGlyphs(txt, strlen(txt), SkTextEncoding::kUTF8,
-                                                   glyphs, std::size(glyphs));
-        font.getWidths(glyphs, glyph_count, widths);
+        const auto glyph_count = font.textToGlyphs(txt, strlen(txt), SkTextEncoding::kUTF8, glyphs);
+        font.getWidths({glyphs, glyph_count}, {widths, glyph_count});
 
         SkTextBlobBuilder builder;
         const auto& buf = builder.allocRunRSXform(font, glyph_count);
         std::copy(glyphs, glyphs + glyph_count, buf.glyphs);
 
         float x = 0;
-        for (int i = 0; i < glyph_count; ++i) {
+        for (size_t i = 0; i < glyph_count; ++i) {
             buf.xforms()[i] = {
                 1, 0,
                 x, 0,

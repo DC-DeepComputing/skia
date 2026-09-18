@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,6 +8,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
@@ -138,7 +139,7 @@ DEF_TEST(Descriptor_entry_over_end, r) {
 
 DEF_TEST(Descriptor_flatten_unflatten, r) {
     {
-        SkBinaryWriteBuffer writer;
+        SkBinaryWriteBuffer writer({});
         auto desc = SkDescriptor::Alloc(sizeof(SkDescriptor));
         desc->computeChecksum();
         desc->flatten(writer);
@@ -150,7 +151,7 @@ DEF_TEST(Descriptor_flatten_unflatten, r) {
     }
 
     {  // broken header
-        SkBinaryWriteBuffer writer;
+        SkBinaryWriteBuffer writer({});
         writer.writeInt(0);  // fChecksum
         auto data = writer.snapshotAsData();
         SkReadBuffer reader{data->data(), data->size()};
@@ -159,7 +160,7 @@ DEF_TEST(Descriptor_flatten_unflatten, r) {
     }
 
     {  // length too big
-        SkBinaryWriteBuffer writer;
+        SkBinaryWriteBuffer writer({});
         // Simulate a broken header
         writer.writeInt(0);    // fChecksum
         writer.writeInt(4000); // fLength
@@ -171,7 +172,7 @@ DEF_TEST(Descriptor_flatten_unflatten, r) {
     }
 
     {  // length too small
-        SkBinaryWriteBuffer writer;
+        SkBinaryWriteBuffer writer({});
         // Simulate a broken header
         writer.writeInt(0);    // fChecksum
         writer.writeInt(3);    // fLength
@@ -183,7 +184,7 @@ DEF_TEST(Descriptor_flatten_unflatten, r) {
     }
 
     {  // garbage in count
-        SkBinaryWriteBuffer writer;
+        SkBinaryWriteBuffer writer({});
         // Simulate a broken header
         writer.writeInt(0);    // fChecksum
         writer.writeInt(20);   // fLength
@@ -195,4 +196,26 @@ DEF_TEST(Descriptor_flatten_unflatten, r) {
         auto ad = SkAutoDescriptor::MakeFromBuffer(reader);
         REPORTER_ASSERT(r, !ad.has_value());
     }
+
+    {  // unaligned length
+        // SkDescriptor + entry tag + entry len + entry data(3 bytes only)
+        static constexpr uint32_t datalen = sizeof(SkDescriptor) + 11;
+        uint32_t data32[] = {
+            // SkDescriptor
+            0,       // checksum
+            datalen, // desc.fLength
+            1,       // desc.fCount
+
+            // payload
+            1,       // entry tag
+            3,       // entry len
+            0,       // entry data
+        };
+        data32[0] = SkChecksum::Hash32(data32 + 1, datalen - 4);
+
+        SkReadBuffer reader{data32, sizeof(data32)};
+        auto ad = SkAutoDescriptor::MakeFromBuffer(reader);
+        REPORTER_ASSERT(r, !ad.has_value());
+    }
+
 }

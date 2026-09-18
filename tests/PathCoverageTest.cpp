@@ -8,8 +8,8 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkSafe32.h"
-#include "src/base/SkMathPriv.h"
+#include "include/private/SkSafe32.h"
+#include "src/core/SkMathPriv.h"
 #include "src/core/SkPointPriv.h"
 #include "tests/Test.h"
 
@@ -142,7 +142,7 @@ static bool one_d_pe(const int* array, const unsigned int count,
 
         if (!isAccurate) {
             ERRORF(reporter, "Curve from %.2f %.2f through %.2f %.2f to "
-                   "%.2f %.2f computes %d, estimates %d\n",
+                   "%.2f %.2f computes %u, estimates %u\n",
                    path[0].fX, path[0].fY, path[1].fX, path[1].fY,
                    path[2].fX, path[2].fY, computedCount, estimatedCount);
             numErrors++;

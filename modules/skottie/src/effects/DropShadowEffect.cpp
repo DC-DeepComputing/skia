@@ -1,16 +1,29 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/skottie/src/effects/Effects.h"
-
-#include "include/private/base/SkTPin.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTo.h"
+#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
+#include "modules/skottie/src/animator/Animator.h"
+#include "modules/skottie/src/effects/Effects.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
-#include "src/utils/SkJSON.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
+
+#include <cstddef>
+#include <utility>
+
+namespace skjson {
+class ArrayValue;
+}
 
 namespace skottie {
 namespace internal {
@@ -72,7 +85,7 @@ private:
     const sk_sp<sksg::DropShadowImageFilter> fDropShadow;
     const sk_sp<sksg::RenderNode>            fImageFilterEffect;
 
-    VectorValue fColor     = { 0, 0, 0, 1 };
+    ColorValue  fColor     = { 0, 0, 0, 1 };
     ScalarValue fOpacity   = 255,
                 fDirection = 0,
                 fDistance  = 0,

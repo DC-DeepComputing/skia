@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,13 +9,17 @@
 #define SkSVGFeLightSource_DEFINED
 
 #include "include/core/SkPoint3.h"
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
+#include "include/private/SkDebug.h"
 #include "modules/svg/include/SkSVGHiddenContainer.h"
+#include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
 
 class SK_API SkSVGFeLightSource : public SkSVGHiddenContainer {
 public:
     void appendChild(sk_sp<SkSVGNode>) final {
-        SkDebugf("cannot append child nodes to an SVG light source.\n");
+        SkDEBUGF("cannot append child nodes to an SVG light source.\n");
     }
 
 protected:

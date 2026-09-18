@@ -11,6 +11,7 @@
 #include "include/core/SkTypes.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLIRNode.h"
+#include "src/sksl/ir/SkSLModifierFlags.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLStatement.h"
 #include "src/sksl/ir/SkSLVariable.h"
@@ -23,10 +24,10 @@
 namespace SkSL {
 
 class Context;
+struct Layout;
+struct Modifiers;
 class Position;
 class Type;
-
-struct Modifiers;
 
 /**
  * A single variable declaration statement. Multiple variables declared together are expanded to
@@ -40,18 +41,16 @@ public:
     VarDeclaration(Variable* var,
                    const Type* baseType,
                    int arraySize,
-                   std::unique_ptr<Expression> value,
-                   bool isClone = false)
+                   std::unique_ptr<Expression> value)
             : INHERITED(var->fPosition, kIRNodeKind)
             , fVar(var)
             , fBaseType(*baseType)
             , fArraySize(arraySize)
-            , fValue(std::move(value))
-            , fIsClone(isClone) {}
+            , fValue(std::move(value)) {}
 
     ~VarDeclaration() override {
         // Unhook this VarDeclaration from its associated Variable, since we're being deleted.
-        if (fVar && !fIsClone) {
+        if (fVar) {
             fVar->detachDeadVarDeclaration();
         }
     }
@@ -60,14 +59,14 @@ public:
     // errors if needed. This method is implicitly called during Convert(), but is also explicitly
     // called while processing interface block fields.
     static void ErrorCheck(const Context& context, Position pos, Position modifiersPosition,
-                           const Modifiers& modifiers, const Type* type, Variable::Storage storage);
+                           const Layout& layout, ModifierFlags modifierFlags, const Type* type,
+                           const Type* baseType, Variable::Storage storage);
 
     // For use when no Variable yet exists. The newly-created variable will be added to the active
     // symbol table. Performs proper error checking and type coercion; reports errors via
     // ErrorReporter.
     static std::unique_ptr<VarDeclaration> Convert(const Context& context,
                                                    Position overallPos,
-                                                   Position modifiersPos,
                                                    const Modifiers& modifiers,
                                                    const Type& type,
                                                    Position namePos,
@@ -112,21 +111,18 @@ public:
         return fValue;
     }
 
-    std::unique_ptr<Statement> clone() const override;
-
     std::string description() const override;
 
 private:
     static bool ErrorCheckAndCoerce(const Context& context,
                                     const Variable& var,
+                                    const Type* baseType,
                                     std::unique_ptr<Expression>& value);
 
     Variable* fVar;
     const Type& fBaseType;
     int fArraySize;  // zero means "not an array"
     std::unique_ptr<Expression> fValue;
-    // if this VarDeclaration is a clone, it doesn't actually own the associated variable
-    bool fIsClone;
 
     using INHERITED = Statement;
 };
@@ -160,10 +156,6 @@ public:
 
     const VarDeclaration& varDeclaration() const {
         return fDeclaration->as<VarDeclaration>();
-    }
-
-    std::unique_ptr<ProgramElement> clone() const override {
-        return std::make_unique<GlobalVarDeclaration>(this->declaration()->clone());
     }
 
     std::string description() const override {

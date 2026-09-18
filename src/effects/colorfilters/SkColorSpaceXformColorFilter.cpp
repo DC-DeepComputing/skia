@@ -11,10 +11,10 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
-#include "src/base/SkNoDestructor.h"
 #include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkEffectPriv.h"
+#include "src/core/SkNoDestructor.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkReadBuffer.h"
@@ -23,12 +23,6 @@
 
 #include <cstdint>
 #include <utility>
-
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/KeyContext.h"
-#include "src/gpu/graphite/KeyHelpers.h"
-#include "src/gpu/graphite/PaintParamsKey.h"
-#endif
 
 SkColorSpaceXformColorFilter::SkColorSpaceXformColorFilter(sk_sp<SkColorSpace> src,
                                                            sk_sp<SkColorSpace> dst)
@@ -39,20 +33,6 @@ SkColorSpaceXformColorFilter::SkColorSpaceXformColorFilter(sk_sp<SkColorSpace> s
                   kUnpremul_SkAlphaType,
                   fDst.get(),
                   kUnpremul_SkAlphaType) {}
-
-#if defined(SK_GRAPHITE)
-void SkColorSpaceXformColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext,
-                                            skgpu::graphite::PaintParamsKeyBuilder* builder,
-                                            skgpu::graphite::PipelineDataGatherer* gatherer) const {
-    using namespace skgpu::graphite;
-
-    constexpr SkAlphaType alphaType = kPremul_SkAlphaType;
-    ColorSpaceTransformBlock::ColorSpaceTransformData data(
-            fSrc.get(), alphaType, fDst.get(), alphaType);
-    ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data);
-    builder->endBlock();
-}
-#endif
 
 bool SkColorSpaceXformColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
     if (!shaderIsOpaque) {
@@ -66,16 +46,6 @@ bool SkColorSpaceXformColorFilter::appendStages(const SkStageRec& rec, bool shad
     }
     return true;
 }
-
-#if defined(SK_ENABLE_SKVM)
-skvm::Color SkColorSpaceXformColorFilter::onProgram(skvm::Builder* p,
-                                                    skvm::Color c,
-                                                    const SkColorInfo& dst,
-                                                    skvm::Uniforms* uniforms,
-                                                    SkArenaAlloc* alloc) const {
-    return premul(fSteps.program(p, uniforms, unpremul(c)));
-}
-#endif
 
 void SkColorSpaceXformColorFilter::flatten(SkWriteBuffer& buffer) const {
     buffer.writeDataAsByteArray(fSrc->serialize().get());

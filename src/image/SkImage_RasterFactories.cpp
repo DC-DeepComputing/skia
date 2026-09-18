@@ -13,9 +13,10 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkMath.h"
+#include "include/private/SkMath.h"
 #include "src/core/SkCompressedDataUtils.h"
-#include "src/core/SkImagePriv.h"
+#include "src/core/SkImageFilterTypes.h"
+#include "src/core/SkImageFilter_Base.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
 
@@ -23,6 +24,9 @@
 #include <cstdint>
 #include <utility>
 
+class SkImageFilter;
+struct SkIPoint;
+struct SkIRect;
 enum class SkTextureCompressionType;
 
 static bool valid_args(const SkImageInfo& info, size_t rowBytes, size_t* minSize) {
@@ -71,11 +75,19 @@ sk_sp<SkImage> RasterFromBitmap(const SkBitmap& bm) {
         return nullptr;
     }
 
-    return SkMakeImageFromRasterBitmap(bm, kIfMutable_SkCopyPixelsMode);
+    return SkImage_Raster::MakeFromBitmap(bm, SkCopyPixelsMode::kIfMutable);
 }
 
 sk_sp<SkImage> RasterFromPixmapCopy(const SkPixmap& pmap) {
-    return MakeRasterCopyPriv(pmap, kNeedNewImageUniqueID);
+    size_t size;
+    if (!valid_args(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
+        return nullptr;
+    }
+
+    // Here we actually make a copy of the caller's pixel data
+    sk_sp<SkData> data(SkData::MakeWithCopy(pmap.addr(), size));
+    return sk_make_sp<SkImage_Raster>(
+            pmap.info(), std::move(data), pmap.rowBytes(), /*mips=*/nullptr, kNeedNewImageUniqueID);
 }
 
 sk_sp<SkImage> RasterFromData(const SkImageInfo& info, sk_sp<SkData> data, size_t rowBytes) {
@@ -89,7 +101,27 @@ sk_sp<SkImage> RasterFromData(const SkImageInfo& info, sk_sp<SkData> data, size_
         return nullptr;
     }
 
-    return sk_make_sp<SkImage_Raster>(info, std::move(data), rowBytes);
+    return sk_make_sp<SkImage_Raster>(
+            info, std::move(data), rowBytes, /*mips=*/nullptr, kNeedNewImageUniqueID);
+}
+
+sk_sp<SkImage> MakeWithFilter(sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset) {
+    if (!src || !filter) {
+        return nullptr;
+    }
+
+    sk_sp<skif::Backend> backend = skif::MakeRasterBackend({}, src->colorType());
+    return as_IFB(filter)->makeImageWithFilter(std::move(backend),
+                                               std::move(src),
+                                               subset,
+                                               clipBounds,
+                                               outSubset,
+                                               offset);
 }
 
 // TODO: this could be improved to decode and make use of the mipmap
@@ -133,18 +165,8 @@ sk_sp<SkImage> RasterFromPixmap(const SkPixmap& pmap, RasterReleaseProc proc, Re
     }
 
     sk_sp<SkData> data(SkData::MakeWithProc(pmap.addr(), size, proc, ctx));
-    return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes());
+    return sk_make_sp<SkImage_Raster>(
+            pmap.info(), std::move(data), pmap.rowBytes(), /*mips=*/nullptr, kNeedNewImageUniqueID);
 }
 
 }  // namespace SkImages
-
-sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id) {
-    size_t size;
-    if (!valid_args(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
-        return nullptr;
-    }
-
-    // Here we actually make a copy of the caller's pixel data
-    sk_sp<SkData> data(SkData::MakeWithCopy(pmap.addr(), size));
-    return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes(), id);
-}

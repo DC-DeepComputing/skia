@@ -8,8 +8,12 @@
 #ifndef skgpu_RectanizerSkyline_DEFINED
 #define skgpu_RectanizerSkyline_DEFINED
 
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTDArray.h"
 #include "src/gpu/Rectanizer.h"
+
+#include <cstdint>
+
+struct SkIPoint16;
 
 namespace skgpu {
 

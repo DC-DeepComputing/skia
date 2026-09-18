@@ -14,24 +14,21 @@ def _run_cxxbridge_cmd_impl(ctx):
     tool_as_list = [ctx.attr._cxxbridge]
     args = [
         # https://bazel.build/rules/lib/builtins/ctx#expand_location
-        ctx.expand_location(a, tool_as_list) for a in ctx.attr.args
+        ctx.expand_location(a, tool_as_list)
+        for a in ctx.attr.args
     ]
     for f in ctx.attr.crate_features:
         args.append("--cfg")
         args.append("feature=\"%s\"" % f)
 
-    # https://bazel.build/rules/lib/builtins/ctx#resolve_tools
-    tool_inputs, tool_input_manifests = ctx.resolve_tools(tools = tool_as_list)
-
     # https://bazel.build/rules/lib/builtins/actions.html#run
     ctx.actions.run(
         outputs = ctx.outputs.outs,
         inputs = ctx.files.srcs,
-        tools = tool_inputs,
+        tools = [ctx.executable._cxxbridge],
         executable = ctx.executable._cxxbridge,
         arguments = args,
         mnemonic = "RunCxxbridgeCmd",
-        input_manifests = tool_input_manifests,
     )
 
     return DefaultInfo(
@@ -56,10 +53,10 @@ run_cxxbridge_cmd = rule(
             mandatory = True,
         ),
         "crate_features": attr.string_list(
-            doc = "Optional list of cargo features that CXX bridge definitions may depend on."
+            doc = "Optional list of cargo features that CXX bridge definitions may depend on.",
         ),
         "_cxxbridge": attr.label(
-            default = Label("@cxxbridge_cmd//:cxxbridge"),
+            default = Label("@cargo_bindeps//:cxxbridge-cmd__cxxbridge"),
             allow_single_file = True,
             executable = True,
             cfg = "exec",

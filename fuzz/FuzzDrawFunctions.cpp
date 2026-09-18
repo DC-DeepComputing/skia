@@ -11,10 +11,14 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "src/core/SkPaintPriv.h"
+#include "tools/fonts/FontToolUtils.h"
+
+#include <array>
 
 static const int kBmpSize = 24;
 static const int kMaxX = 250;
@@ -108,7 +112,7 @@ static void init_surface(Fuzz* fuzz, sk_sp<SkSurface>* s) {
 
 
 static void fuzz_drawText(Fuzz* fuzz, sk_sp<SkTypeface> typeface) {
-    SkFont font(typeface);
+    SkFont font(std::move(typeface));
     SkPaint p;
     init_paint(fuzz, &p);
     sk_sp<SkSurface> surface;
@@ -120,7 +124,7 @@ static void fuzz_drawText(Fuzz* fuzz, sk_sp<SkTypeface> typeface) {
     SkScalar x, y;
     fuzz->next(&x, &y);
     // populate pts array
-    SkPoint pts[kPtsLen];
+    std::array<SkPoint, kPtsLen> pts;
     for (uint8_t i = 0; i < kPtsLen; ++i) {
         pts[i].set(x, y);
         x += font.getSize();
@@ -205,38 +209,41 @@ static void fuzz_drawPath(Fuzz* fuzz) {
     // other common things (e.g. rects, lines)
     uint8_t i, j;
     fuzz->nextRange(&i, 0, 10); // set i to number of operations to perform
-    SkPath path;
+    SkPathBuilder builder;
     SkScalar a, b, c, d, e, f;
     for (int k = 0; k < i; ++k) {
         fuzz->nextRange(&j, 0, 5); // set j to choose operation to perform
         switch (j) {
             case 0:
                 fuzz->next(&a, &b);
-                path.moveTo(a, b);
+                builder.moveTo(a, b);
                 break;
             case 1:
                 fuzz->next(&a, &b);
-                path.lineTo(a, b);
+                builder.lineTo(a, b);
                 break;
             case 2:
                 fuzz->next(&a, &b, &c, &d);
-                path.quadTo(a, b, c, d);
+                builder.quadTo(a, b, c, d);
                 break;
             case 3:
                 fuzz->next(&a, &b, &c, &d, &e);
-                path.conicTo(a, b, c, d, e);
+                if (!(e > 0)) {
+                    e = 1.0f;
+                }
+                builder.conicTo(a, b, c, d, e);
                 break;
             case 4:
                 fuzz->next(&a, &b, &c, &d, &e, &f);
-                path.cubicTo(a, b, c, d, e, f);
+                builder.cubicTo(a, b, c, d, e, f);
                 break;
             case 5:
                 fuzz->next(&a, &b, &c, &d, &e);
-                path.arcTo(a, b, c, d, e);
+                builder.arcTo({a, b}, {c, d}, e);
                 break;
         }
     }
-    path.close();
+    SkPath path = builder.close().detach();
 
     SkCanvas* cnv = surface->getCanvas();
     cnv->drawPath(path, p);
@@ -289,7 +296,7 @@ DEF_FUZZ(DrawFunctions, fuzz) {
 
     switch(i) {
         case 0: {
-            sk_sp<SkTypeface> f = SkTypeface::MakeDefault();
+            sk_sp<SkTypeface> f = ToolUtils::DefaultPortableTypeface();
             if (f == nullptr) {
               SkDebugf("Could not initialize font.\n");
               fuzz->signalBug();

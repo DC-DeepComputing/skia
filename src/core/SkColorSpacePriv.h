@@ -8,15 +8,8 @@
 #define SkColorSpacePriv_DEFINED
 
 #include "include/core/SkColorSpace.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
-
-namespace skvm {
-class Builder;
-struct Color;
-struct F32;
-struct Uniforms;
-}
 
 // A gamut narrower than sRGB, useful for testing.
 static constexpr skcms_Matrix3x3 gNarrow_toXYZD50 = {{
@@ -71,12 +64,13 @@ static inline bool is_almost_linear(const skcms_TransferFunction& coeffs) {
     return linearExp || linearFn;
 }
 
-skvm::F32 sk_program_transfer_fn(
-    skvm::F32 v, skcms_TFType,
-    skvm::F32 G, skvm::F32 A, skvm::F32 B, skvm::F32 C, skvm::F32 D, skvm::F32 E, skvm::F32 F);
+namespace SkNamedPrimaries {
+bool GetCicp(CicpId primaries, skcms_Matrix3x3& toXYZD50);
+}  // namespace SkNamedPrimaries
 
-skvm::Color sk_program_transfer_fn(skvm::Builder*, skvm::Uniforms*,
-                                   const skcms_TransferFunction&, skvm::Color);
+namespace SkNamedTransferFn {
+bool GetCicp(SkNamedTransferFn::CicpId transfer_characteristics, skcms_TransferFunction& trfn);
+}  // namespace SkNamedTransferFn
 
 // Return raw pointers to commonly used SkColorSpaces.
 // No need to ref/unref these, but if you do, do it in pairs.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,9 +8,20 @@
 #ifndef GrAATriangulator_DEFINED
 #define GrAATriangulator_DEFINED
 
+#include "include/core/SkTypes.h"
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
+#include "include/core/SkPoint.h"
+#include "include/core/SkScalar.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/gpu/ganesh/geometry/GrTriangulator.h"
+
+#include <cstdint>
+#include <tuple>
+
+class GrEagerVertexAllocator;
+class SkPath;
+struct SkRect;
 
 // Triangulates the given path in device space with a mesh of alpha ramps for antialiasing.
 class GrAATriangulator : private GrTriangulator {

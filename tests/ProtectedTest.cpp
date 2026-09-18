@@ -10,157 +10,39 @@
 #if defined(SK_GANESH)
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSurface.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tests/CtsEnforcement.h"
-#include "tools/gpu/BackendSurfaceFactory.h"
-#include "tools/gpu/BackendTextureImageFactory.h"
+#include "tools/gpu/ProtectedUtils.h"
 
-#ifdef SK_GL
-#include "src/gpu/ganesh/gl/GrGLCaps.h"
-#endif
-#ifdef SK_VULKAN
-#include "src/gpu/ganesh/vk/GrVkCaps.h"
-#endif
-
-namespace {
-
-bool context_supports_protected(GrDirectContext* dContext) {
-    [[maybe_unused]] const GrCaps* caps = dContext->priv().caps();
-
-#ifdef SK_GL
-    if (dContext->backend() == GrBackendApi::kOpenGL) {
-        const GrGLCaps* glCaps = static_cast<const GrGLCaps*>(caps);
-        return glCaps->supportsProtected();
-    }
-#endif
-#ifdef SK_VULKAN
-    if (dContext->backend() == GrBackendApi::kVulkan) {
-        const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(caps);
-        return vkCaps->supportsProtectedMemory();
-    }
-#endif
-    if (dContext->backend() == GrBackendApi::kMock) {
-        return true;
-    }
-
-    // Metal, Dawn and D3D don't support protected textures
-    return false;
-}
-
-sk_sp<SkSurface> create_protected_sksurface(GrDirectContext* dContext,
-                                            skiatest::Reporter* reporter,
-                                            bool textureable,
-                                            bool isProtected) {
-    const int kW = 8;
-    const int kH = 8;
-    SkSurfaceProps surfaceProps = SkSurfaceProps(0, kRGB_H_SkPixelGeometry);
-    sk_sp<SkSurface> surface;
-    if (textureable) {
-        surface = sk_gpu_test::MakeBackendTextureSurface(dContext,
-                                                         {kW, kH},
-                                                         kTopLeft_GrSurfaceOrigin,
-                                                         1,
-                                                         kRGBA_8888_SkColorType,
-                                                         /* colorSpace= */ nullptr,
-                                                         GrMipmapped::kNo,
-                                                         skgpu::Protected(isProtected),
-                                                         &surfaceProps);
-    } else {
-        surface = sk_gpu_test::MakeBackendRenderTargetSurface(dContext,
-                                                              {kW, kH},
-                                                              kTopLeft_GrSurfaceOrigin,
-                                                              1,
-                                                              kRGBA_8888_SkColorType,
-                                                              /* colorSpace= */ nullptr,
-                                                              skgpu::Protected(isProtected),
-                                                              &surfaceProps);
-    }
-    if (!surface) {
-        ERRORF(reporter, "Could not create %s surface.", isProtected ? "protected" : "unprotected");
-        return nullptr;
-    }
-
-    SkCanvas* canvas = surface->getCanvas();
-
-    canvas->clear(SkColors::kBlue);
-
-    if (textureable) {
-        GrBackendTexture backendTex = SkSurfaces::GetBackendTexture(
-                surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
-        REPORTER_ASSERT(reporter, backendTex.isValid());
-        REPORTER_ASSERT(reporter, backendTex.isProtected() == isProtected);
-    } else {
-        GrBackendRenderTarget backendRT = SkSurfaces::GetBackendRenderTarget(
-                surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
-        REPORTER_ASSERT(reporter, backendRT.isValid());
-        REPORTER_ASSERT(reporter, backendRT.isProtected() == isProtected);
-    }
-
-    return surface;
-}
-
-void check_image_be_protection(SkImage* image,
-                               skiatest::Reporter* reporter,
-                               bool expectingProtected) {
-    GrBackendTexture beTex;
-    GrSurfaceOrigin origin;
-    bool result = SkImages::GetBackendTextureFromImage(image,
-                                                       &beTex,
-                                                       true,
-                                                       &origin);
-    if (!result) {
-        ERRORF(reporter, "GetBackendTextureFromImage failed");
-        return;
-    }
-
-    REPORTER_ASSERT(reporter, beTex.isValid());
-    REPORTER_ASSERT(reporter, beTex.isProtected() == expectingProtected);
-}
-
-sk_sp<SkImage> create_protected_skimage(GrDirectContext* dContext,
-                                        skiatest::Reporter* reporter,
-                                        SkColor4f color,
-                                        bool isProtected) {
-    const int kW = 8;
-    const int kH = 8;
-
-    SkImageInfo ii = SkImageInfo::Make(kW, kH, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-
-    sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage(dContext,
-                                                                ii,
-                                                                color,
-                                                                GrMipmapped::kNo,
-                                                                GrRenderable::kNo,
-                                                                kTopLeft_GrSurfaceOrigin,
-                                                                skgpu::Protected(isProtected));
-    if (!image) {
-        ERRORF(reporter, "Could not create %s image.", isProtected ? "protected" : "unprotected");
-        return nullptr;
-    }
-
-    check_image_be_protection(image.get(), reporter, isProtected);
-
-    return image;
-}
-
-
-} // anonymous namespace
+static const int kSize = 8;
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!context_supports_protected(dContext)) {
+    if (!dContext->supportsProtectedContent()) {
         // Protected content not supported
         return;
     }
 
     for (bool textureable : { true, false }) {
         for (bool isProtected : { true, false }) {
-            sk_sp<SkSurface> surface = create_protected_sksurface(dContext, reporter, textureable,
-                                                                  isProtected);
+            if (!isProtected && GrBackendApi::kVulkan == dContext->backend()) {
+                continue;
+            }
+
+            sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
+                                                                                { kSize, kSize },
+                                                                                textureable,
+                                                                                isProtected);
             if (!surface) {
                 continue;
             }
@@ -172,14 +54,30 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
                 continue;
             }
 
-            dContext->submit(/* syncCpu= */ true);
+            dContext->submit(GrSyncCpu::kYes);
 
-            check_image_be_protection(image.get(), reporter, isProtected);
+            REPORTER_ASSERT(reporter, image->isProtected() == isProtected);
+            ProtectedUtils::CheckImageBEProtection(image.get(), isProtected);
         }
     }
 
     for (bool isProtected : { true, false }) {
-        create_protected_skimage(dContext, reporter, SkColors::kBlue, isProtected);
+        if (!isProtected && GrBackendApi::kVulkan == dContext->backend()) {
+            continue;
+        }
+
+        sk_sp<SkImage> image = ProtectedUtils::CreateProtectedSkImage(dContext,
+                                                                      { kSize, kSize },
+                                                                      SkColors::kBlue,
+                                                                      isProtected);
+        if (!image) {
+            continue;
+        }
+
+        dContext->submit(GrSyncCpu::kYes);
+
+        REPORTER_ASSERT(reporter, image->isProtected() == isProtected);
+        ProtectedUtils::CheckImageBEProtection(image.get(), isProtected);
     }
 
     for (bool renderable : { true, false }) {
@@ -188,14 +86,25 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
                                                                     16,
                                                                     kRGBA_8888_SkColorType,
                                                                     SkColors::kTransparent,
-                                                                    GrMipmapped::kNo,
+                                                                    skgpu::Mipmapped::kNo,
                                                                     GrRenderable(renderable),
                                                                     GrProtected(isProtected));
 
             REPORTER_ASSERT(reporter, beTex.isValid());
             REPORTER_ASSERT(reporter, beTex.isProtected() == isProtected);
 
-            dContext->flushAndSubmit(/* syncCpu= */ true);
+            dContext->flushAndSubmit(GrSyncCpu::kYes);
+
+            {
+                sk_sp<SkImage> img = SkImages::BorrowTextureFrom(dContext, beTex,
+                                                                 kTopLeft_GrSurfaceOrigin,
+                                                                 kRGBA_8888_SkColorType,
+                                                                 kPremul_SkAlphaType,
+                                                                 /* colorSpace= */ nullptr);
+
+                REPORTER_ASSERT(reporter, img->isProtected() == isProtected);
+            }
+
             if (beTex.isValid()) {
                 dContext->deleteBackendTexture(beTex);
             }
@@ -208,24 +117,73 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_readPixelsFromSurfaces, reporter, ctx
                                  CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!context_supports_protected(dContext)) {
+    if (!dContext->supportsProtectedContent()) {
         // Protected content not supported
         return;
     }
 
-    for (bool isProtected : { true, false }) {
-        sk_sp<SkSurface> surface = create_protected_sksurface(dContext, reporter,
-                                                              /* textureable= */ true,
-                                                              isProtected);
-        if (!surface) {
-            continue;
-        }
-
-        SkBitmap readback;
-        readback.allocPixels(surface->imageInfo());
-        REPORTER_ASSERT(reporter, isProtected != surface->readPixels(readback, 0, 0));
+    sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
+                                                                        { kSize, kSize },
+                                                                        /* textureable= */ true,
+                                                                        /* isProtected= */ true);
+    if (!surface) {
+        return;
     }
+
+    SkBitmap readback;
+    readback.allocPixels(surface->imageInfo());
+    REPORTER_ASSERT(reporter, !surface->readPixels(readback, 0, 0));
 }
+
+// Graphite does not perform Copy-on-Write which is why there is no DEF_GRAPHITE_TEST correlate
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_CopyOnWrite, reporter, ctxInfo, CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+
+    if (!dContext->supportsProtectedContent()) {
+        // Protected content not supported
+        return;
+    }
+
+    SkImageInfo ii = SkImageInfo::Make({ kSize, kSize },
+                                       kRGBA_8888_SkColorType,
+                                       kPremul_SkAlphaType);
+
+    // We can't use ProtectedUtils::CreateProtectedSkSurface here bc that will wrap a backend
+    // texture which blocks the copy-on-write-behavior
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext,
+                                                        skgpu::Budgeted::kNo,
+                                                        ii,
+                                                        /* sampleCount= */ 1,
+                                                        kBottomLeft_GrSurfaceOrigin,
+                                                        /* surfaceProps= */ nullptr,
+                                                        /* shouldCreateWithMips= */ false,
+                                                        /* isProtected= */ true);
+    if (!surface) {
+        return;
+    }
+
+    SkCanvas* canvas = surface->getCanvas();
+    REPORTER_ASSERT(reporter, canvas);
+
+    sk_sp<SkImage> imageBefore = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, imageBefore);
+    REPORTER_ASSERT(reporter, imageBefore->isProtected());
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    canvas->drawRect(SkRect::MakeWH(4, 4), paint);
+
+    sk_sp<SkImage> imageAfter = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, imageAfter);
+    REPORTER_ASSERT(reporter, imageAfter->isProtected());
+
+    REPORTER_ASSERT(reporter, imageBefore != imageAfter);
+
+    SkBitmap readback;
+    readback.allocPixels(imageAfter->imageInfo());
+    REPORTER_ASSERT(reporter, !imageAfter->readPixels(dContext, readback.pixmap(), 0, 0));
+}
+
 
 namespace {
 
@@ -247,32 +205,87 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_asyncRescaleAndReadPixelsFromSurfaces
                                  CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    if (!context_supports_protected(dContext)) {
+    if (!dContext->supportsProtectedContent()) {
         // Protected content not supported
         return;
     }
 
-    for (bool isProtected : { true, false }) {
-        sk_sp<SkSurface> surface = create_protected_sksurface(dContext, reporter,
-                                                              /* textureable= */ true,
-                                                              isProtected);
-        if (!surface) {
-            continue;
-        }
-
-        AsyncContext cbContext;
-
-        surface->asyncRescaleAndReadPixels(surface->imageInfo(),
-                                           SkIRect::MakeWH(surface->width(), surface->height()),
-                                           SkSurface::RescaleGamma::kSrc,
-                                           SkSurface::RescaleMode::kNearest,
-                                           async_callback, &cbContext);
-        dContext->submit();
-        while (!cbContext.fCalled) {
-            dContext->checkAsyncWorkCompletion();
-        }
-        REPORTER_ASSERT(reporter, isProtected != SkToBool(cbContext.fResult));
+    sk_sp<SkSurface> surface = ProtectedUtils::CreateProtectedSkSurface(dContext,
+                                                                        { kSize, kSize },
+                                                                        /* textureable= */ true,
+                                                                        /* isProtected= */ true);
+    if (!surface) {
+        return;
     }
+
+    AsyncContext cbContext;
+
+    surface->asyncRescaleAndReadPixels(surface->imageInfo(),
+                                       SkIRect::MakeWH(surface->width(), surface->height()),
+                                       SkSurface::RescaleGamma::kSrc,
+                                       SkSurface::RescaleMode::kNearest,
+                                       async_callback, &cbContext);
+    dContext->submit();
+    while (!cbContext.fCalled) {
+        dContext->checkAsyncWorkCompletion();
+    }
+    REPORTER_ASSERT(reporter, !cbContext.fResult);
+}
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_pictureShader, reporter,
+                                 ctxInfo, CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+
+    if (!dContext->supportsProtectedContent()) {
+        // Protected content not supported
+        return;
+    }
+
+    sk_sp<SkImage> protectedImage = ProtectedUtils::CreateProtectedSkImage(dContext,
+                                                                           { kSize, kSize },
+                                                                           SkColors::kBlue,
+                                                                           /* isProtected= */ true);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
+
+    REPORTER_ASSERT(reporter, protectedImage);
+    REPORTER_ASSERT(reporter, protectedImage->isProtected());
+
+    sk_sp<SkPicture> protectedPicture;
+    {
+        SkPictureRecorder recorder;
+        recorder.beginRecording(100, 100)->drawImage(protectedImage.get(), 0, 0);
+        protectedPicture = recorder.finishRecordingAsPicture();
+        REPORTER_ASSERT(reporter, protectedPicture);
+    }
+
+    SkPaint protectedPaint;
+    protectedPaint.setShader(protectedPicture->makeShader(SkTileMode::kRepeat,
+                                                          SkTileMode::kRepeat,
+                                                          SkFilterMode::kNearest));
+
+    SkImageInfo ii = SkImageInfo::Make({ kSize, kSize },
+                                       kRGBA_8888_SkColorType,
+                                       kPremul_SkAlphaType);
+
+    for (bool isProtected : { true, false }) {
+        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext,
+                                                            skgpu::Budgeted::kNo,
+                                                            ii,
+                                                            /* sampleCount= */ 1,
+                                                            kBottomLeft_GrSurfaceOrigin,
+                                                            /* surfaceProps= */ nullptr,
+                                                            /* shouldCreateWithMips= */ false,
+                                                            isProtected);
+
+        REPORTER_ASSERT(reporter, surface);
+
+        // For the un-protected surface, drawing the SkPicture containing the protected
+        // image should cause the final draw of the generated image to the surface to fail
+        // while the generation of the internal (protected) image should succeed.
+        surface->getCanvas()->drawPaint(protectedPaint);
+    }
+
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
 }
 
 #endif  // defined(SK_GANESH)

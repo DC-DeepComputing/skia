@@ -5,69 +5,36 @@
  * found in the LICENSE file.
  */
 
-#include "include/gpu/GrBackendSemaphore.h"
+#include "include/gpu/ganesh/GrBackendSemaphore.h"
 
-#ifdef SK_DIRECT3D
-#include "include/gpu/d3d/GrD3DTypes.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "src/gpu/ganesh/GrBackendSemaphorePriv.h"
 
-GrBackendSemaphore::~GrBackendSemaphore() {
-    if (fIsInitialized && GrBackendApi::kDirect3D == fBackend) {
-        delete fD3DFenceInfo;
-        fD3DFenceInfo = nullptr;
-        fIsInitialized = false;
-    }
-}
+GrBackendSemaphore::GrBackendSemaphore() = default;
 
-void GrBackendSemaphore::assignD3DFenceInfo(const GrD3DFenceInfo& info) {
-    SkASSERT(GrBackendApi::kDirect3D == fBackend);
-    if (fIsInitialized) {
-        *fD3DFenceInfo = info;
-    } else {
-        fD3DFenceInfo = new GrD3DFenceInfo(info);
-    }
-}
+GrBackendSemaphoreData::~GrBackendSemaphoreData() = default;
 
-bool GrBackendSemaphore::getD3DFenceInfo(GrD3DFenceInfo* outInfo) const {
-    if (fIsInitialized && GrBackendApi::kDirect3D == fBackend) {
-        *outInfo = *fD3DFenceInfo;
-        return true;
-    }
-    return false;
-}
+GrBackendSemaphore::~GrBackendSemaphore() = default;
 
-GrBackendSemaphore::GrBackendSemaphore(const GrBackendSemaphore& that) {
-    fIsInitialized = false;
-    *this = that;
-}
+GrBackendSemaphore::GrBackendSemaphore(const GrBackendSemaphore& that) { *this = that; }
 
 GrBackendSemaphore& GrBackendSemaphore::operator=(const GrBackendSemaphore& that) {
-    SkASSERT(!fIsInitialized || fBackend == that.fBackend);
+    SkASSERT(fBackend == GrBackendApi::kUnsupported || fBackend == that.fBackend);
     fBackend = that.fBackend;
+    fSemaphoreData.reset();
     switch (that.fBackend) {
-#ifdef SK_GL
-    case GrBackendApi::kOpenGL:
-        fGLSync = that.fGLSync;
-        break;
-#endif
-#ifdef SK_VULKAN
-    case GrBackendApi::kVulkan:
-        fVkSemaphore = that.fVkSemaphore;
-        break;
-#endif
-#ifdef SK_METAL
-    case GrBackendApi::kMetal:
-        fMtlEvent = that.fMtlEvent;
-        fMtlValue = that.fMtlValue;
-        break;
-#endif
-    case GrBackendApi::kDirect3D:
-        this->assignD3DFenceInfo(*that.fD3DFenceInfo);
-        break;
-    default:
-        SK_ABORT("Unknown GrBackend");
+        case GrBackendApi::kOpenGL:
+            SK_ABORT("Unsupported");
+            break;
+        case GrBackendApi::kVulkan:
+        case GrBackendApi::kMetal:
+        case GrBackendApi::kDirect3D:
+            that.fSemaphoreData->copyTo(fSemaphoreData);
+            break;
+        default:
+            SK_ABORT("Unknown GrBackend");
     }
-    fIsInitialized = true;
     return *this;
 }
 
-#endif // SK_DIRECT3D

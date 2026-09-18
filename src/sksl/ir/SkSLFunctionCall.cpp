@@ -9,10 +9,11 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkFloatingPoint.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkHalf.h"
+#include "include/private/SkEnumBitMask.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkHalf.h"
 #include "src/core/SkMatrixInvert.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
@@ -26,11 +27,14 @@
 #include "src/sksl/ir/SkSLChildCall.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
+#include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionReference.h"
+#include "src/sksl/ir/SkSLIndexExpression.h"
+#include "src/sksl/ir/SkSLLayout.h"
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLMethodReference.h"
-#include "src/sksl/ir/SkSLModifiers.h"
+#include "src/sksl/ir/SkSLModifierFlags.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLTypeReference.h"
 #include "src/sksl/ir/SkSLVariable.h"
@@ -1002,7 +1006,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
 
 std::unique_ptr<Expression> FunctionCall::clone(Position pos) const {
     return std::make_unique<FunctionCall>(pos, &this->type(), &this->function(),
-                                          this->arguments().clone());
+                                          this->arguments().clone(), this->stablePointer());
 }
 
 std::string FunctionCall::description(OperatorPrecedence) const {
@@ -1016,26 +1020,64 @@ std::string FunctionCall::description(OperatorPrecedence) const {
     return result;
 }
 
+static bool argument_and_parameter_flags_match(const Expression& argument,
+                                               const Variable& parameter) {
+    // If the function parameter is a storage texture or readonly texture, the pixel format of the
+    // argument must match the parameter's pixel format (including when neither has a format).
+    if (parameter.type().isStorageTexture() || parameter.type().isReadOnlyTexture()) {
+        // Currently, we do not support texture arrays, so GetRootVariable isn't completely
+        // necessary (we only need to trace back the variable reference), but this may be added in
+        // the future.
+        const Variable* var = Analysis::GetRootVariable(argument);
+        if (!var) {
+            return false;
+        }
+
+        LayoutFlags argPixelFormat = var->layout().fFlags & LayoutFlag::kAllPixelFormats;
+        LayoutFlags paramPixelFormat = parameter.layout().fFlags & LayoutFlag::kAllPixelFormats;
+        if (argPixelFormat != paramPixelFormat) {
+            return false;
+        }
+    }
+
+    // The only other supported parameter flags are `const` and `in/out`, which do not allow
+    // multiple overloads.
+    return true;
+}
+
 /**
- * Determines the cost of coercing the arguments of a function to the required types. Cost has no
- * particular meaning other than "lower costs are preferred". Returns CoercionCost::Impossible() if
- * the call is not valid.
+ * Used to determine the best overload for a function call by calculating the cost of coercing the
+ * arguments of the function to the required types. Cost has no particular meaning other than "lower
+ * costs are preferred". Returns CoercionCost::Impossible() if the call is not valid. This is never
+ * called for functions with only one definition.
  */
 static CoercionCost call_cost(const Context& context,
                               const FunctionDeclaration& function,
                               const ExpressionArray& arguments) {
-    if (context.fConfig->strictES2Mode() &&
-        (function.modifiers().fFlags & Modifiers::kES3_Flag)) {
+    // Strict-ES2 programs can never call an `$es3` function.
+    if (context.fConfig->strictES2Mode() && function.modifierFlags().isES3()) {
         return CoercionCost::Impossible();
     }
+    // Functions with the wrong number of parameters are never a match.
     if (function.parameters().size() != SkToSizeT(arguments.size())) {
         return CoercionCost::Impossible();
     }
+    // If the arguments cannot be coerced to the parameter types, the function is never a match.
     FunctionDeclaration::ParamTypes types;
     const Type* ignored;
     if (!function.determineFinalTypes(arguments, &types, &ignored)) {
         return CoercionCost::Impossible();
     }
+    // If the arguments do not match the parameter types due to mismatched modifiers, the function
+    // is never a match.
+    for (int i = 0; i < arguments.size(); i++) {
+        const Expression& arg = *arguments[i];
+        const Variable& param = *function.parameters()[i];
+        if (!argument_and_parameter_flags_match(arg, param)) {
+            return CoercionCost::Impossible();
+        }
+    }
+    // Return the sum of coercion costs of each argument.
     CoercionCost total = CoercionCost::Free();
     for (int i = 0; i < arguments.size(); i++) {
         total = total + arguments[i]->coercionCost(*types[i]);
@@ -1124,7 +1166,7 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
                                                   const FunctionDeclaration& function,
                                                   ExpressionArray arguments) {
     // Reject ES3 function calls in strict ES2 mode.
-    if (context.fConfig->strictES2Mode() && (function.modifiers().fFlags & Modifiers::kES3_Flag)) {
+    if (context.fConfig->strictES2Mode() && function.modifierFlags().isES3()) {
         context.fErrors->error(pos, "call to '" + function.description() + "' is not supported");
         return nullptr;
     }
@@ -1139,6 +1181,20 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
         msg += ", but found " + std::to_string(arguments.size());
         context.fErrors->error(pos, msg);
         return nullptr;
+    }
+
+    // If the arguments do not match the parameter types due to mismatched modifiers, reject the
+    // function call.
+    for (int i = 0; i < arguments.size(); i++) {
+        const Expression& arg = *arguments[i];
+        const Variable& param = *function.parameters()[i];
+        if (!argument_and_parameter_flags_match(arg, param)) {
+            context.fErrors->error(arg.position(), "expected argument of type '" +
+                                                   param.layout().paddedDescription() +
+                                                   param.modifierFlags().paddedDescription() +
+                                                   param.type().description() + "'");
+            return nullptr;
+        }
     }
 
     // Resolve generic types.
@@ -1158,22 +1214,51 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             return nullptr;
         }
         // Update the refKind on out-parameters, and ensure that they are actually assignable.
-        const Modifiers& paramModifiers = function.parameters()[i]->modifiers();
-        if (paramModifiers.fFlags & Modifiers::kOut_Flag) {
-            const VariableRefKind refKind = paramModifiers.fFlags & Modifiers::kIn_Flag
+        ModifierFlags paramFlags = function.parameters()[i]->modifierFlags();
+        if (paramFlags & ModifierFlag::kOut) {
+            const VariableRefKind refKind = (paramFlags & ModifierFlag::kIn)
                                                     ? VariableReference::RefKind::kReadWrite
                                                     : VariableReference::RefKind::kPointer;
             if (!Analysis::UpdateVariableRefKind(arguments[i].get(), refKind, context.fErrors)) {
                 return nullptr;
             }
         }
-        // TODO(skia:13609): Make sure that we don't pass writeonly objects to readonly parameters,
-        // or vice-versa.
     }
 
     if (function.isMain()) {
         context.fErrors->error(pos, "call to 'main' is not allowed");
         return nullptr;
+    }
+
+    if (function.intrinsicKind() == k_workgroupUniformLoad_IntrinsicKind) {
+        SkASSERT(arguments.size() == 1);
+        const Expression* expr = arguments[0].get();
+        const Variable* rootVar = nullptr;
+        while (expr) {
+            if (expr->is<VariableReference>()) {
+                rootVar = expr->as<VariableReference>().variable();
+                break;
+            }
+            if (expr->is<FieldAccess>()) {
+                expr = expr->as<FieldAccess>().base().get();
+                continue;
+            }
+            if (expr->is<IndexExpression>()) {
+                const IndexExpression& indexExpr = expr->as<IndexExpression>();
+                if (indexExpr.base()->type().isVector()) {
+                    break;
+                }
+                expr = indexExpr.base().get();
+                continue;
+            }
+            break;
+        }
+        if (!rootVar || !rootVar->modifierFlags().isWorkgroup()) {
+            context.fErrors->error(pos,
+                                   "workgroupUniformLoad must be called with a variable expression "
+                                   "in workgroup address space");
+            return nullptr;
+        }
     }
 
     if (function.intrinsicKind() == k_eval_IntrinsicKind) {
@@ -1207,7 +1292,8 @@ std::unique_ptr<Expression> FunctionCall::Make(const Context& context,
         }
     }
 
-    return std::make_unique<FunctionCall>(pos, returnType, &function, std::move(arguments));
+    return std::make_unique<FunctionCall>(pos, returnType, &function, std::move(arguments),
+                                          /*stablePointer=*/nullptr);
 }
 
 }  // namespace SkSL

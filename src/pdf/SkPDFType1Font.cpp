@@ -1,14 +1,34 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 #include "src/pdf/SkPDFType1Font.h"
 
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
-#include "src/core/SkStrike.h"
+#include "include/core/SkData.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
+#include "include/core/SkStream.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTypeface.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkMacros.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkAdvancedTypefaceMetrics.h"
+#include "src/core/SkBitmaskEnum.h"
+#include "src/core/SkGlyph.h"
 #include "src/core/SkStrikeSpec.h"
+#include "src/core/SkTHash.h"
+#include "src/pdf/SkPDFDocumentPriv.h"
+#include "src/pdf/SkPDFFont.h"
+#include "src/pdf/SkPDFTypes.h"
 
 #include <ctype.h>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <utility>
+#include <vector>
 
 using namespace skia_private;
 
@@ -138,7 +158,6 @@ static sk_sp<SkData> convert_type1_font_stream(std::unique_ptr<SkStreamAsset> sr
                                                size_t* dataLen,
                                                size_t* trailerLen) {
     size_t srcLen = srcStream ? srcStream->getLength() : 0;
-    SkASSERT(srcLen);
     if (!srcLen) {
         return nullptr;
     }
@@ -152,38 +171,42 @@ static sk_sp<SkData> convert_type1_font_stream(std::unique_ptr<SkStreamAsset> sr
     if (parsePFB(src, srcLen, headerLen, dataLen, trailerLen)) {
         static const int kPFBSectionHeaderLength = 6;
         const size_t length = *headerLen + *dataLen + *trailerLen;
-        SkASSERT(length > 0);
-        SkASSERT(length + (2 * kPFBSectionHeaderLength) <= srcLen);
-
+        if (length == 0) {
+            return nullptr;
+        }
+        if (srcLen < length + (2 * kPFBSectionHeaderLength)) {
+            return nullptr;
+        }
         sk_sp<SkData> data(SkData::MakeUninitialized(length));
 
-        const uint8_t* const srcHeader = src + kPFBSectionHeaderLength;
         // There is a six-byte section header before header and data
         // (but not trailer) that we're not going to copy.
+        const uint8_t* const srcHeader = src + kPFBSectionHeaderLength;
         const uint8_t* const srcData = srcHeader + *headerLen + kPFBSectionHeaderLength;
-        const uint8_t* const srcTrailer = srcData + *headerLen;
+        const uint8_t* const srcTrailer = srcData + *dataLen;
+        SkASSERT(srcTrailer + *trailerLen == src + length + (2 * kPFBSectionHeaderLength));
 
-        uint8_t* const resultHeader = (uint8_t*)data->writable_data();
-        uint8_t* const resultData = resultHeader + *headerLen;
-        uint8_t* const resultTrailer = resultData + *dataLen;
+        uint8_t* const dstHeader = (uint8_t*)data->writable_data();
+        uint8_t* const dstData = dstHeader + *headerLen;
+        uint8_t* const dstTrailer = dstData + *dataLen;
+        SkASSERT(dstTrailer + *trailerLen == dstHeader + length);
 
-        SkASSERT(resultTrailer + *trailerLen == resultHeader + length);
-
-        memcpy(resultHeader,  srcHeader,  *headerLen);
-        memcpy(resultData,    srcData,    *dataLen);
-        memcpy(resultTrailer, srcTrailer, *trailerLen);
+        memcpy(dstHeader,  srcHeader,  *headerLen);
+        memcpy(dstData,    srcData,    *dataLen);
+        memcpy(dstTrailer, srcTrailer, *trailerLen);
 
         return data;
     }
 
     // A PFA has to be converted for PDF.
     size_t hexDataLen;
-    if (!parsePFA((const char*)src, srcLen, headerLen, &hexDataLen, dataLen,
-                 trailerLen)) {
+    if (!parsePFA((const char*)src, srcLen, headerLen, &hexDataLen, dataLen, trailerLen)) {
         return nullptr;
     }
     const size_t length = *headerLen + *dataLen + *trailerLen;
-    SkASSERT(length > 0);
+    if (length == 0) {
+        return nullptr;
+    }
     auto data = SkData::MakeUninitialized(length);
     uint8_t* buffer = (uint8_t*)data->writable_data();
 
@@ -214,7 +237,7 @@ static sk_sp<SkData> convert_type1_font_stream(std::unique_ptr<SkStreamAsset> sr
     }
     SkASSERT(outputOffset == *dataLen);
 
-    uint8_t* const resultTrailer = &(buffer[SkToInt(*headerLen + outputOffset)]);
+    uint8_t* const resultTrailer = &(buffer[*headerLen + outputOffset]);
     memcpy(resultTrailer, src + *headerLen + hexDataLen, *trailerLen);
     return data;
 }
@@ -228,18 +251,19 @@ inline static SkScalar from_font_units(SkScalar scaled, uint16_t emSize) {
 }
 
 static SkPDFIndirectReference make_type1_font_descriptor(SkPDFDocument* doc,
-                                                         const SkTypeface* typeface,
+                                                         const SkPDFStrikeSpec& pdfStrikeSpec,
                                                          const SkAdvancedTypefaceMetrics* info) {
     SkPDFDict descriptor("FontDescriptor");
-    uint16_t emSize = SkToU16(typeface->getUnitsPerEm());
+    uint16_t emSize = SkToU16(SkScalarRoundToInt(pdfStrikeSpec.fUnitsPerEM));
     if (info) {
         SkPDFFont::PopulateCommonFontDescriptor(&descriptor, *info, emSize, 0);
         if (can_embed(*info)) {
             int ttcIndex;
-            size_t header SK_INIT_TO_AVOID_WARNING;
-            size_t data SK_INIT_TO_AVOID_WARNING;
-            size_t trailer SK_INIT_TO_AVOID_WARNING;
-            std::unique_ptr<SkStreamAsset> rawFontData = typeface->openStream(&ttcIndex);
+            size_t header = 0;
+            size_t data = 0;
+            size_t trailer = 0;
+            const SkTypeface& typeface = pdfStrikeSpec.fStrikeSpec.typeface();
+            std::unique_ptr<SkStreamAsset> rawFontData = typeface.openStream(&ttcIndex);
             sk_sp<SkData> fontData = convert_type1_font_stream(std::move(rawFontData),
                                                                &header, &data, &trailer);
             if (fontData) {
@@ -259,12 +283,12 @@ static SkPDFIndirectReference make_type1_font_descriptor(SkPDFDocument* doc,
 
 
 static const std::vector<SkString>& type_1_glyphnames(SkPDFDocument* canon,
-                                                      const SkTypeface* typeface) {
-    SkTypefaceID typefaceID = typeface->uniqueID();
+                                                      const SkTypeface& typeface) {
+    SkTypefaceID typefaceID = typeface.uniqueID();
     const std::vector<SkString>* glyphNames = canon->fType1GlyphNames.find(typefaceID);
     if (!glyphNames) {
-        std::vector<SkString> names(typeface->countGlyphs());
-        SkPDFFont::GetType1GlyphNames(*typeface, names.data());
+        std::vector<SkString> names(typeface.countGlyphs());
+        SkPDFFont::GetType1GlyphNames(typeface, names.data());
         glyphNames = canon->fType1GlyphNames.set(typefaceID, std::move(names));
     }
     SkASSERT(glyphNames);
@@ -272,26 +296,27 @@ static const std::vector<SkString>& type_1_glyphnames(SkPDFDocument* canon,
 }
 
 static SkPDFIndirectReference type1_font_descriptor(SkPDFDocument* doc,
-                                                    const SkTypeface* typeface) {
-    SkTypefaceID typefaceID = typeface->uniqueID();
+                                                    const SkPDFStrikeSpec& pdfStrikeSpec) {
+    const SkTypeface& typeface = pdfStrikeSpec.fStrikeSpec.typeface();
+    SkTypefaceID typefaceID = typeface.uniqueID();
     if (SkPDFIndirectReference* ptr = doc->fFontDescriptors.find(typefaceID)) {
         return *ptr;
     }
     const SkAdvancedTypefaceMetrics* info = SkPDFFont::GetMetrics(typeface, doc);
-    auto fontDescriptor = make_type1_font_descriptor(doc, typeface, info);
+    auto fontDescriptor = make_type1_font_descriptor(doc, pdfStrikeSpec, info);
     doc->fFontDescriptors.set(typefaceID, fontDescriptor);
     return fontDescriptor;
 }
 
 
 void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
-    SkTypeface* typeface = pdfFont.typeface();
+    const SkTypeface& typeface = pdfFont.strike().fPath.fStrikeSpec.typeface();
     const std::vector<SkString>& glyphNames = type_1_glyphnames(doc, typeface);
     SkGlyphID firstGlyphID = pdfFont.firstGlyphID();
     SkGlyphID lastGlyphID = pdfFont.lastGlyphID();
 
     SkPDFDict font("Font");
-    font.insertRef("FontDescriptor", type1_font_descriptor(doc, typeface));
+    font.insertRef("FontDescriptor", type1_font_descriptor(doc, pdfFont.strike().fPath));
     font.insertName("Subtype", "Type1");
     if (const SkAdvancedTypefaceMetrics* info = SkPDFFont::GetMetrics(typeface, doc)) {
         font.insertName("BaseFont", info->fPostScriptName);
@@ -303,7 +328,7 @@ void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
     font.insertInt("FirstChar", (size_t)0);
     font.insertInt("LastChar", (size_t)glyphCount);
     {
-        int emSize;
+        int emSize = pdfFont.strike().fPath.fUnitsPerEM;
         auto widths = SkPDFMakeArray();
 
         int glyphRangeSize = lastGlyphID - firstGlyphID + 2;
@@ -312,8 +337,7 @@ void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
         for (unsigned gId = firstGlyphID; gId <= lastGlyphID; gId++) {
             glyphIDs[gId - firstGlyphID + 1] = gId;
         }
-        SkStrikeSpec strikeSpec = SkStrikeSpec::MakePDFVector(*typeface, &emSize);
-        SkBulkGlyphMetrics metrics{strikeSpec};
+        SkBulkGlyphMetrics metrics{pdfFont.strike().fPath.fStrikeSpec};
         auto glyphs = metrics.glyphs(SkSpan(glyphIDs.get(), glyphRangeSize));
         for (int i = 0; i < glyphRangeSize; ++i) {
             widths->appendScalar(from_font_units(glyphs[i]->advanceX(), SkToU16(emSize)));

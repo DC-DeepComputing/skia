@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -11,8 +11,9 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
-#include "include/effects/SkGradientShader.h"
-#include "src/base/SkUtils.h"
+#include "include/effects/SkGradient.h"
+#include "src/core/SkUtils.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/viewer/ClickHandlerSlide.h"
 
@@ -36,7 +37,7 @@ public:
 
     void draw(SkCanvas* canvas) override {
         if (!fImg) {
-            fImg = GetResourceAsImage("images/mandrill_256.png");
+            fImg = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
             fCF0 = SkColorFilters::Matrix(gMat);
             fCF1 = SkColorFilters::Blend(0xFF44CC88, SkBlendMode::kScreen);
         }

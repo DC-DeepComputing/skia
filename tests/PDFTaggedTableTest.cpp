@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -17,9 +17,11 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
-#include "include/core/SkTime.h"
 #include "include/core/SkTypeface.h"
 #include "include/docs/SkPDFDocument.h"
+#include "include/docs/SkPDFJpegHelpers.h"
+#include "src/pdf/SkPDFUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <memory>
 #include <utility>
@@ -43,15 +45,17 @@ DEF_TEST(SkPDF_tagged_table, r) {
     SkPDF::Metadata metadata;
     metadata.fTitle = "Example Tagged Table PDF";
     metadata.fCreator = "Skia";
-    SkTime::DateTime now;
-    SkTime::GetDateTime(&now);
+    SkPDF::DateTime now;
+    SkPDFUtils::GetDateTime(&now);
     metadata.fCreation = now;
     metadata.fModified = now;
+    metadata.jpegDecoder = SkPDF::JPEG::Decode;
+    metadata.jpegEncoder = SkPDF::JPEG::Encode;
 
     constexpr int kRowCount = 5;
     constexpr int kColCount = 4;
     const char* cellData[kRowCount * kColCount] = {
-        "Car",                  "Engine",   "City MPG", "Highway MPG",
+        "Car Make and Model",   "Engine",   "City MPG", "Highway MPG",
         "Mitsubishi Mirage ES", "Gas",      "28",       "47",
         "Toyota Prius Three",   "Hybrid",   "43",       "59",
         "Nissan Leaf SL",       "Electric", "N/A",      nullptr,
@@ -77,6 +81,7 @@ DEF_TEST(SkPDF_tagged_table, r) {
     table->fTypeString = "Table";
     auto& rows = table->fChildVector;
     table->fAttributes.appendFloatArray("Layout", "BBox", {72, 72, 360, 360});
+    table->fAttributes.appendTextString("Table", "Summary", "Fuel efficiency");
 
     for (int rowIndex = 0; rowIndex < kRowCount; rowIndex++) {
         auto row = std::make_unique<PDFTag>();
@@ -91,6 +96,7 @@ DEF_TEST(SkPDF_tagged_table, r) {
                 cell->fTypeString = "NonStruct";
             } else if (rowIndex == 0 || colIndex == 0) {
                 cell->fTypeString = "TH";
+                cell->fAttributes.appendTextString("Table", "Short", SkString("Car"));
             } else {
                 cell->fTypeString = "TD";
                 std::vector<int> headerIds;
@@ -125,7 +131,7 @@ DEF_TEST(SkPDF_tagged_table, r) {
             document->beginPage(pageSize.width(),
                                 pageSize.height());
     SkPDF::SetNodeId(canvas, 2);
-    SkFont font(nullptr, 36);
+    SkFont font(ToolUtils::DefaultTypeface(), 36);
     canvas->drawString("Tagged PDF Table", 72, 72, font, paint);
 
     font.setSize(14);

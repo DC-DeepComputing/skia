@@ -10,6 +10,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkFont.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkPaint.h"
@@ -23,10 +24,12 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkImageFilters.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/timer/TimeUtils.h"
 
 #include <utility>
@@ -46,12 +49,10 @@ static sk_sp<SkImage> make_gradient_circle(int width, int height) {
     SkCanvas* canvas = surface->getCanvas();
 
     canvas->clear(0x00000000);
-    SkColor colors[2];
-    colors[0] = SK_ColorWHITE;
-    colors[1] = SK_ColorBLACK;
+    const SkColor4f colors[] = {SkColors::kWhite, SkColors::kBlack};
     SkPaint paint;
-    paint.setShader(SkGradientShader::MakeRadial(SkPoint::Make(x, y), radius, colors, nullptr, 2,
-                                                 SkTileMode::kClamp));
+    paint.setShader(SkShaders::RadialGradient({x, y}, radius,
+                                              {{colors, {}, SkTileMode::kClamp}, {}}));
     canvas->drawCircle(x, y, radius, paint);
 
     return surface->makeImageSnapshot();
@@ -64,10 +65,9 @@ public:
     }
 
 protected:
+    SkString getName() const override { return SkString("imagefilterstransformed"); }
 
-    SkString onShortName() override { return SkString("imagefilterstransformed"); }
-
-    SkISize onISize() override { return SkISize::Make(420, 240); }
+    SkISize getISize() override { return SkISize::Make(420, 240); }
 
     void onOnceBeforeDraw() override {
         fCheckerboard =
@@ -174,13 +174,9 @@ public:
     ImageFilterMatrixWLocalMatrix() : fDegrees(132.f) {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("imagefilter_matrix_localmatrix");
-    }
+    SkString getName() const override { return SkString("imagefilter_matrix_localmatrix"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(512, 512);
-    }
+    SkISize getISize() override { return SkISize::Make(512, 512); }
 
     bool onAnimate(double nanos) override {
         // Animate the rotation angle to ensure the local matrix bounds modifications work
@@ -190,7 +186,7 @@ protected:
     }
 
     void onOnceBeforeDraw() override {
-        fImage = GetResourceAsImage("images/mandrill_256.png");
+        fImage = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
     }
 
     void onDraw(SkCanvas* canvas) override {
@@ -223,17 +219,13 @@ DEF_GM(return new ImageFilterMatrixWLocalMatrix();)
 class ImageFilterComposedTransform : public skiagm::GM {
 public:
 
-    // Start at 70 degrees since that highlighted the issue in skbug.com/10888
+    // Start at 70 degrees since that highlighted the issue in skbug.com/40042261
     ImageFilterComposedTransform() : fDegrees(70.f) {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("imagefilter_composed_transform");
-    }
+    SkString getName() const override { return SkString("imagefilter_composed_transform"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(512, 512);
-    }
+    SkISize getISize() override { return SkISize::Make(512, 512); }
 
     bool onAnimate(double nanos) override {
         // Animate the rotation angle to test a variety of transformations
@@ -242,7 +234,7 @@ protected:
     }
 
     void onOnceBeforeDraw() override {
-        fImage = GetResourceAsImage("images/mandrill_256.png");
+        fImage = ToolUtils::GetResourceAsImage("images/mandrill_256.png");
     }
 
     void onDraw(SkCanvas* canvas) override {
@@ -267,7 +259,7 @@ private:
         canvas->clipRect(SkRect::MakeWH(256, 256));
         canvas->scale(0.5f, 0.5f);
         canvas->translate(128, 128);
-        canvas->drawImage(fImage, 0, 0, SkSamplingOptions(), &p);
+        canvas->drawImage(fImage, 0, 0, SkSamplingOptions(SkFilterMode::kLinear), &p);
         canvas->restore();
     }
 
@@ -320,7 +312,7 @@ DEF_GM(return new ImageFilterComposedTransform();)
 
 // Tests SkImageFilters::Image under tricky matrices (mirrors and perspective)
 DEF_SIMPLE_GM(imagefilter_transformed_image, canvas, 256, 256) {
-    sk_sp<SkImage> image = GetResourceAsImage("images/color_wheel.png");
+    sk_sp<SkImage> image = ToolUtils::GetResourceAsImage("images/color_wheel.png");
     sk_sp<SkImageFilter> imageFilter = SkImageFilters::Image(image, SkFilterMode::kLinear);
 
     const SkRect imageRect = SkRect::MakeIWH(image->width(), image->height());
@@ -334,7 +326,7 @@ DEF_SIMPLE_GM(imagefilter_transformed_image, canvas, 256, 256) {
                SkM44::Rotate({0.f, 1.f, 0.f}, SK_ScalarPI / 6.f) *
                SkM44::RectToRect(imageRect, {-1.f, -1.f, 1.f, 1.f});
 
-    SkFont font(ToolUtils::create_portable_typeface());
+    SkFont font = ToolUtils::DefaultPortableFont();
     canvas->drawString("Columns should match", 5.f, 15.f, font, SkPaint());
     canvas->translate(0.f, 10.f);
 

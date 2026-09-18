@@ -21,10 +21,11 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 
 #include <cstring>
@@ -121,6 +122,7 @@ DEF_TEST(ImageNewShader, reporter) {
     run_shader_test(reporter, sourceSurface.get(), destinationSurface.get(), info);
 }
 
+#if defined(SK_GANESH)
 static void gpu_to_gpu(skiatest::Reporter* reporter, GrRecordingContext* rContext) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(5, 5);
 
@@ -153,9 +155,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageNewShader_GPU,
     //  RASTER -> GPU
     raster_to_gpu(reporter, dContext);
 }
+#endif
 
 DEF_TEST(ImageRawShader, reporter) {
-    auto image = GetResourceAsImage("images/mandrill_32.png");
+    auto image = ToolUtils::GetResourceAsImage("images/mandrill_32.png");
     REPORTER_ASSERT(reporter, image);
 
     // We should be able to turn this into a "raw" image shader:

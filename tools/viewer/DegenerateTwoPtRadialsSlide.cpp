@@ -8,11 +8,12 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkString.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/viewer/Slide.h"
 
 static void draw_gradient2(SkCanvas* canvas, const SkRect& rect, SkScalar delta) {
-    SkColor colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorMAGENTA };
+    SkColor4f colors[] = { SkColors::kRed, SkColors::kGreen, SkColors::kBlue, SkColors::kMagenta };
     SkScalar pos[] = { 0, 0.25f, 0.75f, SK_Scalar1 };
 
     SkScalar l = rect.fLeft;
@@ -27,9 +28,8 @@ static void draw_gradient2(SkCanvas* canvas, const SkRect& rect, SkScalar delta)
     SkScalar r0 = w / 5;
     SkScalar r1 = 2 * w / 5;
     SkPaint paint;
-    paint.setShader(SkGradientShader::MakeTwoPointConical(c0, r0, c1, r1, colors,
-                                                          pos, std::size(pos),
-                                                          SkTileMode::kClamp));
+    paint.setShader(SkShaders::TwoPointConicalGradient(c0, r0, c1, r1,
+                                                       {{colors, pos, SkTileMode::kClamp}, {}}));
     canvas->drawRect(rect, paint);
 }
 
@@ -56,9 +56,12 @@ public:
         SkScalar t = SK_Scalar1 * 100;
         draw_gradient2(canvas, SkRect::MakeXYWH(l, t, w, h), delta);
         SkString txt;
-        txt.appendf("gap at \"tangent\" pt = %f", SkScalarToFloat(delta));
-        canvas->drawString(txt, l + w / 2 + w * DELTA_SCALE * delta, t + h + SK_Scalar1 * 10,
-                           SkFont(), SkPaint());
+        txt.appendf("gap at \"tangent\" pt = %f", delta);
+        canvas->drawString(txt,
+                           l + w / 2 + w * DELTA_SCALE * delta,
+                           t + h + SK_Scalar1 * 10,
+                           ToolUtils::DefaultFont(),
+                           SkPaint());
     }
 
     bool animate(double nanos) override {

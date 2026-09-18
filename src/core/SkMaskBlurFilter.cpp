@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,25 +7,26 @@
 
 #include "src/core/SkMaskBlurFilter.h"
 
-#include "include/core/SkColorPriv.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTPin.h"
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkArenaAlloc.h"
-#include "src/base/SkVx.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkColorPriv.h"
 #include "src/core/SkGaussFilter.h"
+#include "src/core/SkVx.h"
 
-#include <cmath>
+#include <array>
 #include <climits>
+#include <cmath>
 
 namespace {
-static const double kPi = 3.14159265358979323846264338327950288;
 
 class PlanGauss final {
 public:
     explicit PlanGauss(double sigma) {
-        auto possibleWindow = static_cast<int>(floor(sigma * 3 * sqrt(2 * kPi) / 4 + 0.5));
+        auto possibleWindow = static_cast<int>(floor(sigma * 3 * sqrt(2 * SK_DoublePI) / 4 + 0.5));
         auto window = std::max(1, possibleWindow);
 
         fPass0Size = window - 1;
@@ -235,7 +236,7 @@ public:
     int      fPass2Size;
 };
 
-} // namespace
+}  // namespace
 
 // NB 135 is the largest sigma that will not cause a buffer full of 255 mask values to overflow
 // using the Gauss filter. It also limits the size of buffers used hold intermediate values. The
@@ -260,7 +261,17 @@ SkMaskBlurFilter::SkMaskBlurFilter(double sigmaW, double sigmaH)
 }
 
 bool SkMaskBlurFilter::hasNoBlur() const {
-    return (3 * fSigmaW <= 1) && (3 * fSigmaH <= 1);
+    // If the sigma value is less than a certain amount, the window will be 0 which means
+    // there is effectively no blur. Using Wolfram alpha to solve the equation used for
+    // possibleWindow above shows that the threshold is (2 * sqrt(2/pi))/3
+#if defined(SK_USE_LARGER_NO_BLUR_THRESHOLD)
+    constexpr double kNoWindowSigma = 0.531923;
+#else
+    // However, historically we used 1/3 as the cutoff. Clients who might have pixel tests
+    // that depend on this can be updated one at a time.
+    constexpr double kNoWindowSigma = 1./3.;
+#endif
+    return fSigmaW < kNoWindowSigma && fSigmaH <= kNoWindowSigma;
 }
 
 // We favor A8 masks, and if we need to work with another format, we'll convert to A8 first.
@@ -321,8 +332,8 @@ static void store(uint8_t* to, const fp88& v, int width) {
     if (width == 8) {
         b.store(to);
     } else {
-        uint8_t buffer[8];
-        b.store(buffer);
+        std::array<uint8_t, 8> buffer;
+        b.store(buffer.data());
         for (int i = 0; i < width; i++) {
             to[i] = buffer[i];
         }
@@ -867,7 +878,7 @@ static void direct_blur_y(ToA8 toA8, const int strideOf8,
     }
 }
 
-static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMask* dst) {
+static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMaskBuilder* dst) {
     SkASSERT(sigmaX == sigmaY); // TODO
     SkASSERT(0.01 <= sigmaX && sigmaX < 2);
     SkASSERT(0.01 <= sigmaY && sigmaY < 2);
@@ -893,12 +904,12 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
     prepareGauss(filterX, gaussFactorsX);
     prepareGauss(filterY, gaussFactorsY);
 
-    *dst = SkMask::PrepareDestination(radiusX, radiusY, src);
+    *dst = SkMaskBuilder::PrepareDestination(radiusX, radiusY, src);
     if (src.fImage == nullptr) {
         return {SkTo<int32_t>(radiusX), SkTo<int32_t>(radiusY)};
     }
     if (dst->fImage == nullptr) {
-        dst->fBounds.setEmpty();
+        dst->bounds().setEmpty();
         return {0, 0};
     }
 
@@ -919,24 +930,24 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
             direct_blur_y(bw_to_a8, 1,
                           radiusY, gaussFactorsY,
                           src.fImage, srcRB, srcW, srcH,
-                          dst->fImage + radiusX, dstRB);
+                          dst->image() + radiusX, dstRB);
             break;
         case SkMask::kA8_Format:
             direct_blur_y(nullptr, 8,
                           radiusY, gaussFactorsY,
                           src.fImage, srcRB, srcW, srcH,
-                          dst->fImage + radiusX, dstRB);
+                          dst->image() + radiusX, dstRB);
             break;
         case SkMask::kARGB32_Format:
             direct_blur_y(argb32_to_a8, 32,
                           radiusY, gaussFactorsY,
                           src.fImage, srcRB, srcW, srcH,
-                          dst->fImage + radiusX, dstRB);
+                          dst->image() + radiusX, dstRB);
             break;
         case SkMask::kLCD16_Format:
             direct_blur_y(lcd_to_a8, 16, radiusY, gaussFactorsY,
                           src.fImage, srcRB, srcW, srcH,
-                          dst->fImage + radiusX, dstRB);
+                          dst->image() + radiusX, dstRB);
             break;
         default:
             SK_ABORT("Unhandled format.");
@@ -945,14 +956,14 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
     // Blur horizontally in place.
     direct_blur_x(radiusX, gaussFactorsX,
                   dst->fImage + radiusX,  dstRB, srcW,
-                  dst->fImage,            dstRB, dstW, dstH);
+                  dst->image(),           dstRB, dstW, dstH);
 
     return {radiusX, radiusY};
 }
 
 // TODO: assuming sigmaW = sigmaH. Allow different sigmas. Right now the
 // API forces the sigmas to be the same.
-SkIPoint SkMaskBlurFilter::blur(const SkMask& src, SkMask* dst) const {
+SkIPoint SkMaskBlurFilter::blur(const SkMask& src, SkMaskBuilder* dst) const {
 
     if (fSigmaW < 2.0 && fSigmaH < 2.0) {
         return small_blur(fSigmaW, fSigmaH, src, dst);
@@ -968,12 +979,12 @@ SkIPoint SkMaskBlurFilter::blur(const SkMask& src, SkMask* dst) const {
         borderH = planH.border();
     SkASSERT(borderH >= 0 && borderW >= 0);
 
-    *dst = SkMask::PrepareDestination(borderW, borderH, src);
+    *dst = SkMaskBuilder::PrepareDestination(borderW, borderH, src);
     if (src.fImage == nullptr) {
         return {SkTo<int32_t>(borderW), SkTo<int32_t>(borderH)};
     }
     if (dst->fImage == nullptr) {
-        dst->fBounds.setEmpty();
+        dst->bounds().setEmpty();
         return {0, 0};
     }
 
@@ -1044,7 +1055,7 @@ SkIPoint SkMaskBlurFilter::blur(const SkMask& src, SkMask* dst) const {
     const PlanGauss::Scan& scanH = planH.makeBlurScan(tmpW, buffer);
     for (int y = 0; y < tmpH; y++) {
         auto tmpStart = &tmp[y * tmpW];
-        auto dstStart = &dst->fImage[y];
+        auto dstStart = &dst->image()[y];
 
         scanH.blur(tmpStart, tmpStart + tmpW,
                    dstStart, dst->fRowBytes, dstStart + dst->fRowBytes * dstH);

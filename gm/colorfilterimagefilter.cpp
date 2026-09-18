@@ -20,10 +20,11 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkColorMatrix.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTDArray.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 
 #include <string.h>
@@ -35,13 +36,14 @@ using namespace skia_private;
 #define FILTER_HEIGHT   SkIntToScalar(30)
 #define MARGIN          SkIntToScalar(10)
 
-static sk_sp<SkColorFilter> cf_make_brightness(float brightness) {
+static sk_sp<SkColorFilter> cf_make_brightness(
+        float brightness, SkColorFilters::Clamp clamp = SkColorFilters::Clamp::kYes) {
     float matrix[20] = {
         1, 0, 0, 0, brightness,
         0, 1, 0, 0, brightness,
         0, 0, 1, 0, brightness,
         0, 0, 0, 1, 0 };
-    return SkColorFilters::Matrix(matrix);
+    return SkColorFilters::Matrix(matrix, clamp);
 }
 
 static sk_sp<SkColorFilter> cf_make_grayscale() {
@@ -68,18 +70,18 @@ static void sk_gm_get_colorfilters(TArray<sk_sp<SkColorFilter>>* array) {
 
 static sk_sp<SkShader> sh_make_lineargradient0() {
     const SkPoint pts[] = { { 0, 0 }, { 100, 100 } };
-    const SkColor colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr, 3, SkTileMode::kRepeat);
+    const SkColor4f colors[] = { SkColors::kRed, SkColors::kGreen, SkColors::kBlue };
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kRepeat}, {}});
 }
 
 static sk_sp<SkShader> sh_make_lineargradient1() {
     const SkPoint pts[] = { { 0, 0 }, { 100, 100 } };
-    const SkColor colors[] = { SK_ColorRED, 0x0000FF00, SK_ColorBLUE };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr, 3, SkTileMode::kRepeat);
+    const SkColor4f colors[] = { SkColors::kRed, {0, 1, 0, 0}, SkColors::kBlue };
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kRepeat}, {}});
 }
 
 static sk_sp<SkShader> sh_make_image() {
-    sk_sp<SkImage> image(GetResourceAsImage("images/mandrill_128.png"));
+    sk_sp<SkImage> image(ToolUtils::GetResourceAsImage("images/mandrill_128.png"));
     if (!image) {
         return nullptr;
     }
@@ -104,8 +106,11 @@ static sk_sp<SkImageFilter> make_blur(float amount, sk_sp<SkImageFilter> input) 
     return SkImageFilters::Blur(amount, amount, std::move(input));
 }
 
-static sk_sp<SkImageFilter> make_brightness(float amount, sk_sp<SkImageFilter> input) {
-    return SkImageFilters::ColorFilter(cf_make_brightness(amount), std::move(input));
+static sk_sp<SkImageFilter> make_brightness(
+        float amount,
+        sk_sp<SkImageFilter> input,
+        SkColorFilters::Clamp clamp = SkColorFilters::Clamp::kYes) {
+    return SkImageFilters::ColorFilter(cf_make_brightness(amount, clamp), std::move(input));
 }
 
 static sk_sp<SkImageFilter> make_grayscale(sk_sp<SkImageFilter> input) {
@@ -128,7 +133,7 @@ static void draw_clipped_rect(SkCanvas* canvas,
     canvas->restore();
 }
 
-DEF_SIMPLE_GM(colorfilterimagefilter, canvas, 400, 100){
+DEF_SIMPLE_GM(colorfilterimagefilter, canvas, 435, 120){
         SkRect r = SkRect::MakeWH(FILTER_WIDTH, FILTER_HEIGHT);
         SkPaint paint;
         paint.setColor(SK_ColorRED);
@@ -136,6 +141,18 @@ DEF_SIMPLE_GM(colorfilterimagefilter, canvas, 400, 100){
         for (float brightness = -1.0f; brightness <= 1.0f; brightness += 0.2f) {
             sk_sp<SkImageFilter> dim(make_brightness(-brightness, nullptr));
             sk_sp<SkImageFilter> bright(make_brightness(brightness, std::move(dim)));
+            paint.setImageFilter(std::move(bright));
+            draw_clipped_rect(canvas, r, paint);
+            canvas->translate(FILTER_WIDTH + MARGIN, 0);
+        }
+        canvas->restore();
+        canvas->translate(0, FILTER_HEIGHT + MARGIN);
+        canvas->save();
+        for (float brightness = -1.0f; brightness <= 1.0f; brightness += 0.2f) {
+            sk_sp<SkImageFilter> dim(
+                    make_brightness(-brightness, nullptr, SkColorFilters::Clamp::kNo));
+            sk_sp<SkImageFilter> bright(
+                    make_brightness(brightness, std::move(dim), SkColorFilters::Clamp::kNo));
             paint.setImageFilter(std::move(bright));
             draw_clipped_rect(canvas, r, paint);
             canvas->translate(FILTER_WIDTH + MARGIN, 0);
@@ -204,9 +221,10 @@ DEF_SIMPLE_GM(colorfiltershader, canvas, 610, 610) {
     TArray<sk_sp<SkShader>> shaders;
     sk_gm_get_shaders(&shaders);
 
-    const SkColor colors[] = { SK_ColorRED, SK_ColorBLUE };
-    shaders.push_back(SkGradientShader::MakeTwoPointConical(
-                              {0, 0}, 50, {0, 0}, 150, colors, nullptr, 2, SkTileMode::kClamp));
+    const SkColor4f colors[] = { SkColors::kRed, SkColors::kBlue };
+    shaders.push_back(SkShaders::TwoPointConicalGradient(
+                              {0, 0}, 50, {0, 0}, 150,
+                              {{colors, {}, SkTileMode::kClamp}, {}}));
 
     SkPaint paint;
     SkRect r = SkRect::MakeWH(120, 120);

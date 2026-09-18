@@ -12,6 +12,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPicture.h"
@@ -75,11 +76,9 @@ public:
     {}
     ~AnimatedImageGM() override = default;
 
-    SkString onShortName() override {
-        return SkStringPrintf("%s_animated_image", fName);
-    }
+    SkString getName() const override { return SkStringPrintf("%s_animated_image", fName); }
 
-    SkISize onISize() override {
+    SkISize getISize() override {
         this->init();
         return fSize;
     }
@@ -113,8 +112,8 @@ public:
 
                         auto cropRect = SkIRect::MakeSize(scaledSize);
                         if (doCrop) {
-                            auto matrix = SkMatrix::RectToRect(SkRect::Make(unscaledSize),
-                                                               SkRect::Make(scaledSize));
+                            auto matrix = SkMatrix::RectToRectOrIdentity(SkRect::Make(unscaledSize),
+                                                                         SkRect::Make(scaledSize));
                             matrix.preConcat(SkEncodedOriginToMatrix(origin,
                                     unscaledSize.width(), unscaledSize.height()));
                             SkRect cropRectFloat = SkRect::Make(fCropRect);

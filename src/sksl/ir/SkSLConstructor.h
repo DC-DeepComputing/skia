@@ -9,7 +9,7 @@
 #define SKSL_CONSTRUCTOR
 
 #include "include/core/SkSpan.h"
-#include "include/private/SkSLDefines.h"
+#include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLType.h"
@@ -102,11 +102,11 @@ public:
     }
 
     SkSpan<std::unique_ptr<Expression>> argumentSpan() final {
-        return {&fArguments.front(), fArguments.size()};
+        return {&fArguments.front(), (size_t)fArguments.size()};
     }
 
     SkSpan<const std::unique_ptr<Expression>> argumentSpan() const final {
-        return {&fArguments.front(), fArguments.size()};
+        return {&fArguments.front(), (size_t)fArguments.size()};
     }
 
 private:

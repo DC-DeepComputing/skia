@@ -4,21 +4,42 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
-
 #include "src/gpu/ganesh/ops/TriangulatingPathRenderer.h"
 
+#include "include/core/SkData.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
+#include "include/core/SkSurfaceProps.h"
+#include "include/core/SkTypes.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SkIDChangeListener.h"
-#include "src/core/SkGeometry.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkMessageBus.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
+#include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDefaultGeoProcFactory.h"
 #include "src/gpu/ganesh/GrDrawOpTest.h"
 #include "src/gpu/ganesh/GrEagerVertexAllocator.h"
+#include "src/gpu/ganesh/GrGeometryProcessor.h"
+#include "src/gpu/ganesh/GrGpuBuffer.h"
+#include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/GrProcessorAnalysis.h"
+#include "src/gpu/ganesh/GrProcessorSet.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
-#include "src/gpu/ganesh/GrResourceCache.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrSimpleMesh.h"
 #include "src/gpu/ganesh/GrStyle.h"
@@ -29,9 +50,24 @@
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/geometry/GrTriangulator.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
+#include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
 
-#include <cstdio>
+#if defined(GPU_TEST_UTILS)
+#include "src/core/SkRandom.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
+#endif
+
+#include <array>
+#include <cstdint>
+#include <cstring>
+#include <utility>
+
+class GrDstProxyView;
+class GrSurfaceProxyView;
+class SkArenaAlloc;
+enum class GrXferBarrierFlags;
+struct GrUserStencilSettings;
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
@@ -114,7 +150,9 @@ public:
         SkASSERT(!fLockStride && !fVertices && !fVertexBuffer && !fVertexData);
         SkASSERT(stride && eagerCount);
 
-        size_t size = eagerCount * stride;
+        // Matches sk_malloc_throw(stride, count) but lets use the size earlier.
+        size_t size = SkSafeMath::Mul(eagerCount, stride);
+
         fVertexBuffer = fResourceProvider->createBuffer(size,
                                                         GrGpuBufferType::kVertex,
                                                         kStatic_GrAccessPattern,
@@ -126,7 +164,7 @@ public:
             fVertices = fVertexBuffer->map();
         }
         if (!fVertices) {
-            fVertices = sk_malloc_throw(eagerCount * stride);
+            fVertices = sk_malloc_throw(size);
             fCanMapVB = false;
         }
         fLockStride = stride;
@@ -139,11 +177,25 @@ public:
         if (fCanMapVB) {
             fVertexBuffer->unmap();
         } else {
-            fVertexBuffer->updateData(fVertices,
-                                      /*offset=*/0,
-                                      /*size=*/actualCount*fLockStride,
-                                      /*preserve=*/false);
-            sk_free(fVertices);
+            if (fVertexBuffer->updateData(fVertices,
+                                          /*offset=*/0,
+                                          /*size=*/actualCount*fLockStride,
+                                          /*preserve=*/false)) {
+                sk_free(fVertices);
+            } else {
+                // If we fail the upload, the most likely issue is GPU memory pressure. Instead of
+                // discarding the triangulation work, shrink the fVertices allocation and use it to
+                // create CPU-backed VertexData. This stores the CPU vertices in the thread-safe
+                // cache so that subsequent draws can attempt to instantiate the GPU buffer in
+                // createNonAAMesh().
+                fVertexBuffer.reset();
+                fVertices = sk_realloc_throw(fVertices, actualCount * fLockStride);
+                fVertexData =
+                        GrThreadSafeCache::MakeVertexData(fVertices, actualCount, fLockStride);
+                fVertices = nullptr;
+                fLockStride = 0;
+                return;
+            }
         }
 
         fVertexData = GrThreadSafeCache::MakeVertexData(std::move(fVertexBuffer),
@@ -235,9 +287,7 @@ public:
 private:
     SkPath getPath() const {
         SkASSERT(!fShape.style().applies());
-        SkPath path;
-        fShape.asPath(&path);
-        return path;
+        return fShape.asPath();
     }
 
     static void CreateKey(skgpu::UniqueKey* key,
@@ -248,8 +298,7 @@ private:
         bool inverseFill = shape.inverseFilled();
 
         static constexpr int kClipBoundsCnt = sizeof(devClipBounds) / sizeof(uint32_t);
-        int shapeKeyDataCnt = shape.unstyledKeySize();
-        SkASSERT(shapeKeyDataCnt >= 0);
+        uint16_t shapeKeyDataCnt = shape.unstyledKeySize();
         skgpu::UniqueKey::Builder builder(key, kDomain, shapeKeyDataCnt + kClipBoundsCnt, "Path");
         shape.writeUnstyledKey(&builder[0]);
         // For inverse fills, the tessellation is dependent on clip bounds.
@@ -279,8 +328,7 @@ private:
         vmi.mapRect(&clipBounds);
 
         SkASSERT(!shape.style().applies());
-        SkPath path;
-        shape.asPath(&path);
+        SkPath path = shape.asPath();
 
         return GrTriangulator::PathToTriangles(path, tol, clipBounds, allocator, isLinear);
     }
@@ -349,18 +397,20 @@ private:
                 sk_make_sp<UniqueKeyInvalidator>(key, target->contextUniqueID()));
         }
 
-        fMesh = CreateMesh(target, fVertexData->refGpuBuffer(), 0, fVertexData->numVertices());
+        // If buffer upload failed in unlock(), fMesh remains null and the draw is skipped.
+        if (fVertexData->gpuBuffer()) {
+            fMesh = CreateMesh(target, fVertexData->refGpuBuffer(), 0, fVertexData->numVertices());
+        }
     }
 
     void createAAMesh(GrMeshDrawTarget* target) {
         SkASSERT(!fVertexData);
         SkASSERT(fAntiAlias);
-        SkPath path = this->getPath();
+        SkPath path = this->getPath().makeTransform(fViewMatrix);
         if (path.isEmpty()) {
             return;
         }
         SkRect clipBounds = SkRect::Make(fDevClipBounds);
-        path.transform(fViewMatrix);
         SkScalar tol = GrPathUtils::kDefaultTolerance;
         sk_sp<const GrBuffer> vertexBuffer;
         int firstVertex;
@@ -525,7 +575,7 @@ private:
         flushState->drawMesh(*fMesh);
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         return SkStringPrintf("Color 0x%08x, aa: %d\n%s",
                               fColor.toBytes_RGBA(), fAntiAlias, fHelper.dumpInfo().c_str());
@@ -551,7 +601,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 
 GR_DRAW_OP_TEST_DEFINE(TriangulatingPathOp) {
     SkMatrix viewMatrix = GrTest::TestMatrixInvertible(random);
@@ -584,8 +634,7 @@ TriangulatingPathRenderer::TriangulatingPathRenderer()
 }
 
 PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
-        const CanDrawPathArgs& args) const {
-
+            const CanDrawPathArgs& args) const {
     // Don't use this path renderer with dynamic MSAA. DMSAA tries to not rely on caching.
     if (args.fSurfaceProps->flags() & SkSurfaceProps::kDynamicMSAA_Flag) {
         return CanDrawPath::kNo;
@@ -597,6 +646,14 @@ PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
     if (!args.fShape->style().isSimpleFill() || args.fShape->knownToBeConvex()) {
         return CanDrawPath::kNo;
     }
+
+    SkPath path = args.fShape->asPath();
+    int verbCount = path.countVerbs();
+    // Don't use this path renderer if we exceed the max verb count.
+    if (verbCount > kMaxGPUPathRendererVerbs) {
+        return CanDrawPath::kNo;
+    }
+
     switch (args.fAAType) {
         case GrAAType::kNone:
         case GrAAType::kMSAA:
@@ -610,9 +667,7 @@ PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
         case GrAAType::kCoverage:
             // Use analytic AA if we don't have MSAA. In this case, we do not cache, so we accept
             // paths without keys.
-            SkPath path;
-            args.fShape->asPath(&path);
-            if (path.countVerbs() > fMaxVerbCount) {
+            if (verbCount > fMaxVerbCount) {
                 return CanDrawPath::kNo;
             }
             break;

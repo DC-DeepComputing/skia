@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -15,9 +15,9 @@
 
 GR_NORETAIN_BEGIN
 
-sk_sp<GrGpu> GrMtlTrampoline::MakeGpu(const GrMtlBackendContext& backendContext,
-                                      const GrContextOptions& options,
-                                      GrDirectContext* direct) {
+std::unique_ptr<GrGpu> GrMtlTrampoline::MakeGpu(const GrMtlBackendContext& backendContext,
+                                                const GrContextOptions& options,
+                                                GrDirectContext* direct) {
     return GrMtlGpu::Make(backendContext, options, direct);
 }
 

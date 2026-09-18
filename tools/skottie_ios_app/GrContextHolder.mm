@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 #include "tools/skottie_ios_app/GrContextHolder.h"
@@ -7,13 +7,14 @@
 
 #if defined(SK_GANESH)
 
-#include "include/gpu/GrContextOptions.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/gl/GrGLInterface.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/gl/GrGLDirectContext.h"
+#include "include/gpu/ganesh/gl/GrGLInterface.h"
 
 #ifdef SK_GL
 GrContextHolder SkMakeGLContext() {
-    return GrContextHolder(GrDirectContext::MakeGL(nullptr, GrContextOptions()).release());
+    return GrContextHolder(GrDirectContexts::MakeGL(nullptr, GrContextOptions()).release());
 }
 #endif
 

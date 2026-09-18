@@ -14,7 +14,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
 #include "include/core/SkVertices.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 
 // This bench simulates the calls Skia sees from various HTML5 canvas
 // game bench marks
@@ -382,8 +382,8 @@ private:
     using INHERITED = Benchmark;
 };
 
-DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::kTranslate_Type));
-DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::kScale_Type));
-DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::k2x3_Type));
-DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::k3x3_Type));
-DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::k4x4_Type));
+DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::kTranslate_Type))
+DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::kScale_Type))
+DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::k2x3_Type))
+DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::k3x3_Type))
+DEF_BENCH(return new CanvasMatrixBench(CanvasMatrixBench::k4x4_Type))

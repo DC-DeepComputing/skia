@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -13,42 +13,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/utils/SkShaderUtils.h"
 
-#ifdef SK_BUILD_FOR_IOS
-#import <UIKit/UIApplication.h>
-#endif
-
 namespace skgpu {
-
-bool MtlFormatIsDepthOrStencil(MTLPixelFormat format) {
-    switch (format) {
-        case MTLPixelFormatStencil8: // fallthrough
-        case MTLPixelFormatDepth32Float:
-        case MTLPixelFormatDepth32Float_Stencil8:
-            return true;
-        default:
-            return false;
-    }
-}
-
-bool MtlFormatIsDepth(MTLPixelFormat format) {
-    switch (format) {
-        case MTLPixelFormatDepth32Float:
-        case MTLPixelFormatDepth32Float_Stencil8:
-            return true;
-        default:
-            return false;
-    }
-}
-
-bool MtlFormatIsStencil(MTLPixelFormat format) {
-    switch (format) {
-        case MTLPixelFormatStencil8: // fallthrough
-        case MTLPixelFormatDepth32Float_Stencil8:
-            return true;
-        default:
-            return false;
-    }
-}
 
 bool MtlFormatIsCompressed(MTLPixelFormat mtlFormat) {
     switch (mtlFormat) {
@@ -61,6 +26,8 @@ bool MtlFormatIsCompressed(MTLPixelFormat mtlFormat) {
         default:
             return false;
     }
+
+    SkUNREACHABLE;
 }
 
 const char* MtlFormatToString(MTLPixelFormat mtlFormat) {
@@ -90,6 +57,8 @@ const char* MtlFormatToString(MTLPixelFormat mtlFormat) {
 
         default:                            return "Unknown";
     }
+
+    SkUNREACHABLE;
 }
 
 uint32_t MtlFormatChannels(MTLPixelFormat mtlFormat) {
@@ -118,6 +87,8 @@ uint32_t MtlFormatChannels(MTLPixelFormat mtlFormat) {
 
         default:                            return 0;
     }
+
+    SkUNREACHABLE;
 }
 
 size_t MtlFormatBytesPerBlock(MTLPixelFormat mtlFormat) {
@@ -147,61 +118,20 @@ size_t MtlFormatBytesPerBlock(MTLPixelFormat mtlFormat) {
 
         default:                            return 0;
     }
+
+    SkUNREACHABLE;
 }
 
-// Print the source code for all shaders generated.
-#ifdef SK_PRINT_SKSL_SHADERS
-static const bool gPrintSKSL = true;
-#else
-static const bool gPrintSKSL = false;
+SkTextureCompressionType MtlFormatToCompressionType(MTLPixelFormat mtlFormat) {
+    switch (mtlFormat) {
+        case MTLPixelFormatETC2_RGB8: return SkTextureCompressionType::kETC2_RGB8_UNORM;
+#ifdef SK_BUILD_FOR_MAC
+        case MTLPixelFormatBC1_RGBA:  return SkTextureCompressionType::kBC1_RGBA8_UNORM;
 #endif
-
-#ifdef SK_PRINT_NATIVE_SHADERS
-static const bool gPrintMSL = true;
-#else
-static const bool gPrintMSL = false;
-#endif
-
-bool SkSLToMSL(SkSL::Compiler* compiler,
-               const std::string& sksl,
-               SkSL::ProgramKind programKind,
-               const SkSL::ProgramSettings& settings,
-               std::string* msl,
-               SkSL::Program::Interface* outInterface,
-               ShaderErrorHandler* errorHandler) {
-#ifdef SK_DEBUG
-    std::string src = SkShaderUtils::PrettyPrint(sksl);
-#else
-    const std::string& src = sksl;
-#endif
-    std::unique_ptr<SkSL::Program> program = compiler->convertProgram(programKind,
-                                                                      src,
-                                                                      settings);
-    if (!program || !compiler->toMetal(*program, msl)) {
-        errorHandler->compileError(src.c_str(), compiler->errorText().c_str());
-        return false;
+        default:                      return SkTextureCompressionType::kNone;
     }
 
-    if (gPrintSKSL || gPrintMSL) {
-        SkShaderUtils::PrintShaderBanner(programKind);
-        if (gPrintSKSL) {
-            SkDebugf("SKSL:\n");
-            SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(sksl));
-        }
-        if (gPrintMSL) {
-            SkDebugf("MSL:\n");
-            SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(*msl));
-        }
-    }
-
-    *outInterface = program->fInterface;
-    return true;
+    SkUNREACHABLE;
 }
 
-#ifdef SK_BUILD_FOR_IOS
-bool MtlIsAppInBackground() {
-    return [NSThread isMainThread] &&
-           ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground);
-}
-#endif
 } // namespace skgpu

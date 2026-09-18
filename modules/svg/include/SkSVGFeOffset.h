@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,8 +8,17 @@
 #ifndef SkSVGFeOffset_DEFINED
 #define SkSVGFeOffset_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
 #include "modules/svg/include/SkSVGFe.h"
+#include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
+
+#include <vector>
+
+class SkImageFilter;
+class SkSVGFilterContext;
+class SkSVGRenderContext;
 
 class SK_API SkSVGFeOffset : public SkSVGFe {
 public:

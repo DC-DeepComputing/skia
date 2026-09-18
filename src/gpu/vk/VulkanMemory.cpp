@@ -5,9 +5,14 @@
 * found in the LICENSE file.
 */
 
+#include "include/core/SkTypes.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/vk/VulkanMemory.h"
 
-#include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include <cstdint>
+#include <cstring>
 
 namespace skgpu {
 
@@ -15,6 +20,7 @@ using BufferUsage = VulkanMemoryAllocator::BufferUsage;
 
 bool VulkanMemory::AllocBufferMemory(VulkanMemoryAllocator* allocator,
                                      VkBuffer buffer,
+                                     skgpu::Protected isProtected,
                                      BufferUsage usage,
                                      bool shouldPersistentlyMapCpuToGpu,
                                      const std::function<CheckResult>& checkResult,
@@ -28,6 +34,10 @@ bool VulkanMemory::AllocBufferMemory(VulkanMemoryAllocator* allocator,
         propFlags = VulkanMemoryAllocator::kPersistentlyMapped_AllocationPropertyFlag;
     } else {
         propFlags = VulkanMemoryAllocator::kNone_AllocationPropertyFlag;
+    }
+
+    if (isProtected == Protected::kYes) {
+        propFlags |= VulkanMemoryAllocator::kProtected_AllocationPropertyFlag;
     }
 
     VkResult result = allocator->allocateBufferMemory(buffer, usage, propFlags, &memory);
@@ -64,11 +74,16 @@ bool VulkanMemory::AllocImageMemory(VulkanMemoryAllocator* allocator,
     }
 
     if (isProtected == Protected::kYes) {
-        propFlags = propFlags | VulkanMemoryAllocator::kProtected_AllocationPropertyFlag;
+        propFlags |= VulkanMemoryAllocator::kProtected_AllocationPropertyFlag;
     }
 
     if (useLazyAllocation) {
-        propFlags = propFlags | VulkanMemoryAllocator::kLazyAllocation_AllocationPropertyFlag;
+        propFlags |= VulkanMemoryAllocator::kLazyAllocation_AllocationPropertyFlag;
+        // If we are doing a lazy allocation, we also want it to be a dedicated allocation so that
+        // individual lazy allocations don't end up getting committed to real memory because they
+        // are part of a larger memory block that is in real memory. So this flag will always
+        // be set when the lazy allocation flag is set.
+        propFlags |= VulkanMemoryAllocator::kDedicatedAllocation_AllocationPropertyFlag;
     }
 
     VkResult result = allocator->allocateImageMemory(image, propFlags, &memory);
@@ -123,7 +138,7 @@ void VulkanMemory::GetNonCoherentMappedMemoryRange(const VulkanAlloc& alloc,
     SkASSERT(0 == (size & (alignment-1)));
 #endif
 
-    memset(range, 0, sizeof(VkMappedMemoryRange));
+    std::memset(range, 0, sizeof(VkMappedMemoryRange));
     range->sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
     range->memory = alloc.fMemory;
     range->offset = offset;
@@ -159,4 +174,3 @@ void VulkanMemory::InvalidateMappedAlloc(VulkanMemoryAllocator* allocator,
 }
 
 }  // namespace skgpu
-

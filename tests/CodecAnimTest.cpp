@@ -21,7 +21,6 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/utils/SkAnimCodecPlayer.h"
 #include "tests/CodecPriv.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -54,6 +53,7 @@ DEF_TEST(Codec_565, r) {
         return;
     }
     std::unique_ptr<SkCodec> codec(SkCodec::MakeFromData(std::move(data)));
+    REPORTER_ASSERT(r, codec);
     auto info = codec->getInfo().makeColorType(kRGB_565_SkColorType);
     SkBitmap bm;
     bm.allocPixels(info);
@@ -208,7 +208,9 @@ DEF_TEST(Codec_frames, r) {
         },
 
         { "images/arrow.png",  1, {}, {}, {}, 0, {}, {}, {}, {} },
+#if defined(SK_CODEC_DECODES_ICO)
         { "images/google_chrome.ico", 1, {}, {}, {}, 0, {}, {}, {}, {} },
+#endif
         { "images/brickwork-texture.jpg", 1, {}, {}, {}, 0, {}, {}, {}, {} },
 #if defined(SK_CODEC_DECODES_RAW) && (!defined(_WIN32))
         { "images/dng_with_preview.dng", 1, {}, {}, {}, 0, {}, {}, {}, {} },
@@ -248,6 +250,7 @@ DEF_TEST(Codec_frames, r) {
     };
 
     for (const auto& rec : gRecs) {
+        skiatest::ReporterContext context(r, rec.fName);
         sk_sp<SkData> data(GetResourceAsData(rec.fName));
         if (!data) {
             // Useful error statement, but sometimes people run tests without
@@ -340,6 +343,16 @@ DEF_TEST(Codec_frames, r) {
             if (repetitionCount != rec.fRepetitionCount) {
                 ERRORF(r, "%s repetition count does not match! expected: %i\tactual: %i",
                           rec.fName, rec.fRepetitionCount, repetitionCount);
+            }
+
+            // When decoding the full, non-partial input, `isAnimated()` will
+            // just be a proxy for "is there just a single frame?".
+            const SkCodec::IsAnimated expectedIsAnimated =
+                    rec.fFrameCount == 1 ? SkCodec::IsAnimated::kNo : SkCodec::IsAnimated::kYes;
+            const SkCodec::IsAnimated actualIsAnimated = codec->isAnimated();
+            if (expectedIsAnimated != actualIsAnimated) {
+                ERRORF(r, "%s isAnimated does not match! expected: %i\tactual: %i", rec.fName,
+                       static_cast<int>(expectedIsAnimated), static_cast<int>(actualIsAnimated));
             }
 
             // From here on, we are only concerned with animated images.
@@ -579,10 +592,16 @@ DEF_TEST(EncodedOriginToMatrixTest, r) {
                          kRightBottom_SkEncodedOrigin ,
                          kLeftBottom_SkEncodedOrigin  }) {
         // Arbitrary output dimensions.
-        auto matrix = SkEncodedOriginToMatrix(origin, 100, 80);
-        REPORTER_ASSERT(r, matrix.invert(nullptr));
+        SkMatrix matrix = SkEncodedOriginToMatrix(origin, 100, 80);
+        std::optional<SkMatrix> inverse = matrix.invert();
+        REPORTER_ASSERT(r, inverse.has_value());
+        REPORTER_ASSERT(r, SkEncodedOriginToMatrixInverse(origin, 100, 80) == *inverse);
     }
 }
+
+#if defined(SK_ENABLE_SKOTTIE)
+
+#include "modules/skresources/src/SkAnimCodecPlayer.h"
 
 DEF_TEST(AnimCodecPlayer, r) {
     static constexpr struct {
@@ -626,3 +645,5 @@ DEF_TEST(AnimCodecPlayer, r) {
                         "Mismatched size for frame at 500 ms of %s", test.fFile);
     }
 }
+
+#endif

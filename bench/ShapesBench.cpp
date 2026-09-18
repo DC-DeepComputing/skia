@@ -10,7 +10,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkString.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "tools/flags/CommandLineFlags.h"
 
 #include <stdio.h>
@@ -132,7 +132,7 @@ private:
 
         return fName.c_str();
     }
-    SkIPoint onGetSize() override { return SkIPoint::Make(kBenchWidth, kBenchHeight); }
+    SkISize onGetSize() override { return SkISize::Make(kBenchWidth, kBenchHeight); }
 
     void onDelayedSetup() override {
         SkScalar w = SkIntToScalar(fShapesSize.width());
@@ -222,10 +222,8 @@ private:
         }
     }
 
-    enum {
-        kBenchWidth = 1000,
-        kBenchHeight = 1000
-    };
+    static constexpr int kBenchWidth = 1000;
+    static constexpr int kBenchHeight = 1000;
 
     struct ShapeInfo {
         SkMatrix   fMatrix;

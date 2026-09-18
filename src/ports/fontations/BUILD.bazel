@@ -1,16 +1,29 @@
+load("@rules_rust//rust:defs.bzl", "rust_static_library", "rust_test")
+load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
 load(
     "//bazel:skia_rules.bzl",
-    "exports_files_legacy",
-    "skia_cc_deps",
     "skia_cc_library",
     "skia_filegroup",
 )
-load("@rules_rust//rust:defs.bzl", "rust_static_library")
-load("//bazel:rust_cxx_bridge.bzl", "rust_cxx_bridge")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
 
 licenses(["notice"])
 
-exports_files_legacy()
+skia_filegroup(
+    name = "bridge_rust_side_srcs",
+    srcs = [
+        "src/base.rs",
+        "src/bitmap.rs",
+        "src/colr.rs",
+        "src/ffi.rs",
+        "src/hinting.rs",
+        "src/names.rs",
+        "src/verbs_points_pen.rs",
+    ],
+)
 
 rust_cxx_bridge(
     name = "fontations_ffi",
@@ -20,12 +33,15 @@ rust_cxx_bridge(
 
 rust_static_library(
     name = "bridge_rust_side",
-    srcs = ["src/ffi.rs"],
+    srcs = [
+        ":bridge_rust_side_srcs",
+    ],
+    crate_root = "src/ffi.rs",
     deps = [
-        "@cxx",
-        "@fontations//:font-types",
-        "@fontations//:read-fonts",
-        "@fontations//:skrifa",
+        "@crates//:cxx",
+        "@crates//:font-types",
+        "@crates//:read-fonts",
+        "@crates//:skrifa",
     ],
 )
 
@@ -36,28 +52,19 @@ skia_cc_library(
     ],
 )
 
-skia_filegroup(
-    name = "fontations_c_side",
-    srcs = [
-        "src/skpath_bridge.cpp",
-    ],
-)
-
-skia_filegroup(
-    name = "srcs",
-    srcs = [
-        ":fontations_c_side",
-        ":fontations_ffi/filegroup",
-    ],
-    visibility = ["//src/ports:__pkg__"],
-)
-
-skia_cc_deps(
+skia_cc_library(
     name = "deps",
     visibility = ["//src/ports:__pkg__"],
     deps = [
         ":bridge_rust_side",
-        ":fontations_ffi/include",
+        ":fontations_ffi",
         ":path_bridge_include",
     ],
+)
+
+rust_test(
+    name = "test_ffi",
+    timeout = "short",
+    crate = ":bridge_rust_side",
+    data = ["//resources"],
 )

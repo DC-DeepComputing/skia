@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -31,6 +31,25 @@ if os.path.exists(args_gn_path):
     m = re.match('target_cpu *= *"(.*)"', line.strip())
     if m:
       target_cpu = m.group(1)
+
+# Copy the resources in the assets directory
+clean_dir_cmd = ['rm', '-rf', 'apps/' + args.app_name + '/src/main/assets/resources/']
+cp_cmd = ['cp', '-r', '../../resources/', 'apps/' + args.app_name + '/src/main/assets/']
+try:
+  subprocess.check_call(clean_dir_cmd, cwd=os.path.join(os.path.dirname(__file__), ".."))
+  subprocess.check_call(cp_cmd, cwd=os.path.join(os.path.dirname(__file__), ".."))
+except subprocess.CalledProcessError as error:
+  print("Copying resources to the assets directory failed, skipping the copy:")
+  print(error)
+
+clean_dir_cmd = ['rm', '-rf', 'apps/' + args.app_name + '/src/main/assets/skps/']
+cp_cmd = ['cp', '-r', '../../skps/', 'apps/' + args.app_name + '/src/main/assets/']
+try:
+  subprocess.check_call(clean_dir_cmd, cwd=os.path.join(os.path.dirname(__file__), ".."))
+  subprocess.check_call(cp_cmd, cwd=os.path.join(os.path.dirname(__file__), ".."))
+except subprocess.CalledProcessError as error:
+  print("Copying skps to the assets directory failed, skipping the copy:")
+  print(error)
 
 # build the apk using gradle
 cmd = ['./apps/gradlew',

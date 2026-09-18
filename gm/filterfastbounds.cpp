@@ -26,7 +26,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 
 #include <utility>
 
@@ -66,19 +66,19 @@ static void draw_drrect(SkCanvas* canvas, const SkRect& r, const SkPaint& p) {
 }
 
 static void draw_path(SkCanvas* canvas, const SkRect& r, const SkPaint& p) {
-    canvas->drawPath(SkPath::Polygon({
+    canvas->drawPath(SkPath::Polygon({{
         {r.fLeft, r.fTop},
         {r.fLeft, r.fBottom},
         {r.fRight, r.fBottom},
-    }, true), p);
+    }}, true), p);
 }
 
 static void draw_points(SkCanvas* canvas, const SkRect& r, const SkPaint& p) {
     SkPoint pts0[2] = { { r.fLeft, r.fTop }, { r.fRight, r.fBottom } };
     SkPoint pts1[2] = { { r.fLeft, r.fBottom }, { r.fRight, r.fTop } };
 
-    canvas->drawPoints(SkCanvas::kLines_PointMode, 2, pts0, p);
-    canvas->drawPoints(SkCanvas::kLines_PointMode, 2, pts1, p);
+    canvas->drawPoints(SkCanvas::kLines_PointMode, pts0, p);
+    canvas->drawPoints(SkCanvas::kLines_PointMode, pts1, p);
 }
 
 static void draw_bitmap(SkCanvas* canvas, const SkRect& r, const SkPaint& p) {
@@ -164,9 +164,9 @@ protected:
     inline static constexpr int kNumVertTiles = 7;
     inline static constexpr int kNumXtraCols = 2;
 
-    SkString onShortName() override { return SkString("filterfastbounds"); }
+    SkString getName() const override { return SkString("filterfastbounds"); }
 
-    SkISize onISize() override {
+    SkISize getISize() override {
         return SkISize::Make((std::size(gDrawMthds) + kNumXtraCols) * kTileWidth,
                              kNumVertTiles * kTileHeight);
     }

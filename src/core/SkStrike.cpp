@@ -14,8 +14,8 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkTFitsIn.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkTFitsIn.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkReadBuffer.h"
@@ -184,12 +184,12 @@ SkGlyph* SkStrike::mergeGlyphAndImage(SkPackedGlyphID toID, const SkGlyph& fromG
     }
 }
 
-const SkPath* SkStrike::mergePath(SkGlyph* glyph, const SkPath* path, bool hairline) {
+const SkPath* SkStrike::mergePath(SkGlyph* glyph, const SkPath* path, bool hairline, bool modified) {
     Monitor m{this};
     if (glyph->setPathHasBeenCalled()) {
         SkDEBUGFAIL("Re-adding path to existing glyph. This should not happen.");
     }
-    if (glyph->setPath(&fAlloc, path, hairline)) {
+    if (glyph->setPath(&fAlloc, path, hairline, modified)) {
         fMemoryIncrease += glyph->path()->approximateBytesUsed();
     }
 
@@ -219,6 +219,24 @@ SkSpan<const SkGlyph*> SkStrike::metrics(
         SkSpan<const SkGlyphID> glyphIDs, const SkGlyph* results[]) {
     Monitor m{this};
     return this->internalPrepare(glyphIDs, kMetricsOnly, results);
+}
+
+void SkStrike::getWidthsStrided(unsigned count,
+                                const uint32_t* first_glyph,
+                                unsigned glyph_stride_32,
+                                SkScalar* first_advance,
+                                unsigned advance_stride_32,
+                                SkScalar scale) {
+    Monitor m{this};
+    const uint32_t* g_ptr = first_glyph;
+    SkScalar* a_ptr = first_advance;
+    for (unsigned i = 0; i < count; ++i) {
+      // TODO(https://crbug.com/skia/521216502): Handle large glyph ids.
+        SkGlyph* glyph = this->glyph(SkPackedGlyphID{static_cast<SkGlyphID>(*g_ptr)});
+        *a_ptr = glyph->advanceX() * scale;
+        g_ptr += glyph_stride_32;
+        a_ptr += advance_stride_32;
+    }
 }
 
 SkSpan<const SkGlyph*> SkStrike::preparePaths(
@@ -278,9 +296,6 @@ void SkStrike::dump() const {
     SkAutoMutexExclusive lock{fStrikeLock};
     const SkTypeface* face = fScalerContext->getTypeface();
     const SkScalerContextRec& rec = fScalerContext->getRec();
-    SkMatrix matrix;
-    rec.getSingleMatrix(&matrix);
-    matrix.preScale(SkScalarInvert(rec.fTextSize), SkScalarInvert(rec.fTextSize));
     SkString name;
     face->getFamilyName(&name);
 
@@ -306,7 +321,7 @@ void SkStrike::dumpMemoryStatistics(SkTraceMemoryDump* dump) const {
         }
     }
 
-    SkString dumpName = SkStringPrintf("%s/%s_%d/%p",
+    SkString dumpName = SkStringPrintf("%s/%s_%u/%p",
                                        SkStrikeCache::kGlyphCacheDumpName,
                                        fontName.c_str(),
                                        rec.fTypefaceID,

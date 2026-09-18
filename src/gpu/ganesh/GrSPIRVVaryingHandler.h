@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -10,10 +10,11 @@
 
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 
- /*
-  * This class can be used for basic SPIR-V varying handling. Each added varying just takes the
-  * next available location slot.
-  */
+class GrGLSLProgramBuilder;
+/*
+ * This class can be used for basic SPIR-V varying handling. Each added varying just takes the
+ * next available location slot.
+ */
 class GrSPIRVVaryingHandler : public GrGLSLVaryingHandler {
 public:
     GrSPIRVVaryingHandler(GrGLSLProgramBuilder* program) : INHERITED(program) {}

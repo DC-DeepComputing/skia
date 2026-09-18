@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -16,7 +16,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkScalerContext.h"
 
@@ -76,10 +76,9 @@ public:
             const SkFont& font, const SkPaint* paint = nullptr);
 
     // Create a strike spec without a device, and does not switch over to path for large sizes.
-    static SkStrikeSpec MakeWithNoDevice(const SkFont& font, const SkPaint* paint = nullptr);
-
-    // Make a strike spec for PDF Vector strikes
-    static SkStrikeSpec MakePDFVector(const SkTypeface& typeface, int* size);
+    static SkStrikeSpec MakeWithNoDevice(
+        const SkFont& font, const SkPaint* paint = nullptr,
+        SkScalerContextFlags flags = SkScalerContextFlags::kFakeGammaAndBoostContrast);
 
     sk_sp<sktext::StrikeForGPU> findOrCreateScopedStrike(
             sktext::StrikeForGPUCacheInterface* cache) const;

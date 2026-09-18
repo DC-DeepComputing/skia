@@ -13,17 +13,12 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkYUVAPixmaps.h"
-#include "include/private/base/SkAPI.h"
-
-#if defined(SK_GRAPHITE)
-#include "include/core/SkImage.h"
-#include "include/gpu/graphite/Recorder.h"
-#endif
+#include "include/private/SkAPI.h"
 
 #include <cstddef>
 #include <cstdint>
 
-class GrRecordingContext;
+class SkRecorder;
 
 class SK_API SkImageGenerator {
 public:
@@ -42,9 +37,7 @@ public:
      *  If non-NULL is returned, the caller is responsible for calling
      *  unref() on the data when it is finished.
      */
-    sk_sp<SkData> refEncodedData() {
-        return this->onRefEncodedData();
-    }
+    sk_sp<const SkData> refEncodedData() { return this->onRefEncodedData(); }
 
     /**
      *  Return the ImageInfo associated with this generator.
@@ -55,8 +48,13 @@ public:
      *  Can this generator be used to produce images that will be drawable to the specified context
      *  (or to CPU, if context is nullptr)?
      */
-    bool isValid(GrRecordingContext* context) const {
-        return this->onIsValid(context);
+    bool isValid(SkRecorder* recorder) const { return this->onIsValid(recorder); }
+
+    /**
+     *  Will this generator produce protected content
+     */
+    bool isProtected() const {
+        return this->onIsProtected();
     }
 
     /**
@@ -113,30 +111,21 @@ public:
 
     virtual bool isTextureGenerator() const { return false; }
 
-#if defined(SK_GRAPHITE)
-    sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
-                                    const SkImageInfo&,
-                                    skgpu::Mipmapped);
-#endif
-
 protected:
     static constexpr int kNeedNewImageUniqueID = 0;
 
     SkImageGenerator(const SkImageInfo& info, uint32_t uniqueId = kNeedNewImageUniqueID);
 
-    virtual sk_sp<SkData> onRefEncodedData() { return nullptr; }
+    virtual sk_sp<const SkData> onRefEncodedData() { return nullptr; }
+
     struct Options {};
     virtual bool onGetPixels(const SkImageInfo&, void*, size_t, const Options&) { return false; }
-    virtual bool onIsValid(GrRecordingContext*) const { return true; }
+    virtual bool onIsValid(SkRecorder*) const { return true; }
+    virtual bool onIsProtected() const { return false; }
     virtual bool onQueryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes&,
                                  SkYUVAPixmapInfo*) const { return false; }
     virtual bool onGetYUVAPlanes(const SkYUVAPixmaps&) { return false; }
 
-#if defined(SK_GRAPHITE)
-    virtual sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
-                                              const SkImageInfo&,
-                                              skgpu::Mipmapped);
-#endif
     const SkImageInfo fInfo;
 
 private:

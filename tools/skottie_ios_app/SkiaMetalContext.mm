@@ -1,10 +1,12 @@
-// Copyright 2020 Google LLC.
+// Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 #include "tools/skottie_ios_app/SkiaContext.h"
 
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/mtl/GrMtlBackendContext.h"
+#include "include/gpu/ganesh/mtl/GrMtlDirectContext.h"
 #include "tools/skottie_ios_app/SkMetalViewBridge.h"
 
 #import <Metal/Metal.h>
@@ -55,7 +57,7 @@
         return;
     }
     [viewController draw:rect toCanvas:surface->getCanvas() atSize:size];
-    fDContext->flushAndSubmit(surface);
+    fDContext->flushAndSubmit(surface.get());
     surface = nullptr;
 
     id<MTLCommandBuffer> commandBuffer = [fQueue commandBuffer];
@@ -88,12 +90,13 @@
         return nil;
     }
     [self setMetalQueue:[[self metalDevice] newCommandQueue]];
-    fDContext = GrDirectContext::MakeMetal((__bridge void*)[self metalDevice],
-                                           (__bridge void*)[self metalQueue],
-                                           GrContextOptions());
+    GrMtlBackendContext backendContext = {};
+    backendContext.fDevice.reset((__bridge void*)[self metalDevice]);
+    backendContext.fQueue.reset((__bridge void*)[self metalQueue]);
+    fDContext = GrDirectContexts::MakeMetal(backendContext, GrContextOptions());
 
     if (!fDContext) {
-        NSLog(@"GrDirectContext::MakeMetal failed");
+        NSLog(@"GrDirectContexts::MakeMetal failed");
         return nil;
     }
     return self;

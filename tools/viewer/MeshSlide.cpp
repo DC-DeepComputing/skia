@@ -1,10 +1,11 @@
 /*
- * Copyright 2023 Google Inc.
+ * Copyright 2023 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkCubicMap.h"
@@ -15,8 +16,9 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkVertices.h"
-#include "include/effects/SkGradientShader.h"
-#include "include/private/base/SkFloatingPoint.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkFloatingPoint.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
 #include "tools/viewer/Slide.h"
@@ -36,7 +38,7 @@ float lerp(float a, float b, float t) {
 }
 
 sk_sp<SkShader> make_image_shader(const char* resource) {
-    sk_sp<SkImage> img = GetResourceAsImage(resource);
+    sk_sp<SkImage> img = ToolUtils::GetResourceAsImage(resource);
 
     // Normalize to 1x1 for UV sampling.
     const auto lm = SkMatrix::Scale(1.0f/img->width(), 1.0f/img->height());
@@ -66,12 +68,16 @@ static constexpr struct ShaderFactory {
     {
         "Radial Gradient",
         []() ->sk_sp<SkShader> {
-            static constexpr SkColor gColors[] = {
-                SK_ColorGREEN, SK_ColorRED, SK_ColorBLUE, SK_ColorGREEN
+            static constexpr SkColor4f gColors[] = {
+                SkColors::kGreen, SkColors::kRed, SkColors::kBlue, SkColors::kGreen
             };
-            return SkGradientShader::MakeRadial({0.5f, 0.5f}, 0.5f, gColors, nullptr,
-                                                std::size(gColors), SkTileMode::kRepeat);
+            return SkShaders::RadialGradient({0.5f, 0.5f}, 0.5f,
+                                             {{gColors, {}, SkTileMode::kRepeat}, {}});
         }
+    },
+    {
+        "Colors",
+        []() ->sk_sp<SkShader> { return nullptr; }
     },
 };
 
@@ -124,6 +130,21 @@ static constexpr struct VertexAnimator {
         },
     },
     {
+        "Twirlinator",
+        // Rotate vertices proportional to their distance to center.
+        [](const std::vector<SkPoint>& uvs, float t, std::vector<SkPoint>& out) {
+            static constexpr float kMaxRotate = SK_FloatPI*4;
+
+            for (size_t i = 0; i < uvs.size(); ++i) {
+                // remap to [-.5,.5]
+                const auto uv = (uvs[i] - SkPoint{0.5,0.5});
+                const auto angle = kMaxRotate * t * uv.length();
+
+                out[i] = SkMatrix::RotateRad(angle).mapPoint(uv) + SkPoint{0.5, 0.5};
+            }
+        },
+    },
+    {
         "Wigglynator",
         [](const std::vector<SkPoint>& uvs, float t, std::vector<SkPoint>& out) {
             const float radius = t*0.2f/(std::sqrt(uvs.size()) - 1);
@@ -161,6 +182,7 @@ public:
 
         SkPaint p;
         p.setAntiAlias(true);
+        p.setColor(SK_ColorWHITE);
 
         static constexpr float kMeshFraction = 0.85f;
         const float mesh_size = std::min(fSize.fWidth, fSize.fHeight)*kMeshFraction;
@@ -172,12 +194,12 @@ public:
         auto verts = SkVertices::MakeCopy(SkVertices::kTriangles_VertexMode,
                                           fVertices.size(),
                                           fVertices.data(),
-                                          fUVs.data(),
-                                          nullptr,
+                                          fShader ? fUVs.data() : nullptr,
+                                          fShader ? nullptr : fColors.data(),
                                           fIndices.size(),
                                           fIndices.data());
         p.setShader(fShader);
-        canvas->drawVertices(verts, SkBlendMode::kSrcOver, p);
+        canvas->drawVertices(verts, SkBlendMode::kModulate, p);
 
         if (fShowMesh) {
             p.setShader(nullptr);
@@ -197,7 +219,7 @@ public:
 
             p.setStrokeCap(SkPaint::kRound_Cap);
             p.setStrokeWidth(5/mesh_size);
-            canvas->drawPoints(SkCanvas::kPoints_PointMode, fVertices.size(), fVertices.data(), p);
+            canvas->drawPoints(SkCanvas::kPoints_PointMode, fVertices, p);
         }
 
         this->drawControls();
@@ -228,11 +250,15 @@ private:
 
         fVertices.resize(vertex_count);
         fUVs.resize(vertex_count);
+        fColors.resize(vertex_count);
         for (size_t i = 0; i < vertex_count; ++i) {
             fVertices[i] = fUVs[i] = {
                 static_cast<float>(i % n) / (n - 1),
                 static_cast<float>(i / n) / (n - 1),
             };
+            fColors[i] = SkColorSetRGB(!!(i%2)*255,
+                                       !!(i%3)*255,
+                                       !!((i+1)%3)*255);
         }
 
         // Trivial triangle tessellation pattern:
@@ -279,7 +305,7 @@ private:
     void drawControls() {
         ImGui::Begin("Mesh Options");
 
-        if (ImGui::BeginCombo("Shader", fCurrentShaderFactory->fName)) {
+        if (ImGui::BeginCombo("Texture", fCurrentShaderFactory->fName)) {
             for (const auto& fact : gShaderFactories) {
                 const auto is_selected = (fCurrentShaderFactory->fName == fact.fName);
                 if (ImGui::Selectable(fact.fName) && !is_selected) {
@@ -310,10 +336,12 @@ private:
             const char* fLabel;
             size_t      fCount;
         } gSizeInfo[] = {
-            {   "4x4",   16 },
-            {   "8x8",   64 },
-            { "16x16",  256 },
-            { "32x32", 1024 },
+            {     "4x4",    16 },
+            {     "8x8",    64 },
+            {   "16x16",   256 },
+            {   "32x32",  1024 },
+            {   "64x64",  4096 },
+            { "128x128", 16384 },
         };
         ImGui::SliderInt("Mesh Size",
                          &fMeshSizeSelector,
@@ -334,6 +362,7 @@ private:
     sk_sp<SkShader>         fShader;
     std::vector<SkPoint>    fVertices,
                             fUVs;
+    std::vector<SkColor>    fColors;
     std::vector<uint16_t>   fIndices;
 
     double                  fTimeBase = 0;

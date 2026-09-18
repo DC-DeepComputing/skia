@@ -8,29 +8,37 @@
 #ifndef skgpu_graphite_render_TessellateWedgesRenderStep_DEFINED
 #define skgpu_graphite_render_TessellateWedgesRenderStep_DEFINED
 
+#include "src/core/SkVx.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceTypes.h"
-#include "src/gpu/tessellate/Tessellation.h"
+
+#include <string>
+#include <utility>
 
 namespace skgpu::graphite {
 
+class DrawParams;
+class DrawWriter;
+class PipelineDataGatherer;
 class StaticBufferManager;
+struct DepthStencilSettings;
 
 class TessellateWedgesRenderStep final : public RenderStep {
 public:
     // 'vertexBuffer' and 'indexBuffer' must have been returned by CreateVertexTemplate(), but they
     // can be shared by all instances of TessellateWedgesRenderStep.
-    TessellateWedgesRenderStep(std::string_view variantName,
-                               bool infinitySupport,
-                               DepthStencilSettings depthStencilSettings,
-                               StaticBufferManager* bufferManager);
+    TessellateWedgesRenderStep(Layout, RenderStepID, bool infinitySupport, DepthStencilSettings,
+                               StaticBufferManager*);
 
     ~TessellateWedgesRenderStep() override;
 
     static std::pair<BindBufferInfo, BindBufferInfo> CreateVertexTemplate(StaticBufferManager*);
 
-    std::string vertexSkSL() const override;
-    void writeVertices(DrawWriter*, const DrawParams&, int ssboIndex) const override;
+    std::string vertexSkSL(const RootNodesInfo&) const override;
+    void writeVertices(DrawWriter*,
+                       StorageContext*,
+                       const DrawParams&,
+                       uint32_t ssboIndex) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
 
 private:

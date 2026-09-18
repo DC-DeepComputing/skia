@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,13 +9,15 @@
 #define SkVertices_DEFINED
 
 #include "include/core/SkColor.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkAPI.h"
 
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 
-class SkData;
-struct SkPoint;
 class SkVerticesPriv;
 
 /**
@@ -61,7 +63,7 @@ public:
         kHasTexCoords_BuilderFlag   = 1 << 0,
         kHasColors_BuilderFlag      = 1 << 1,
     };
-    class Builder {
+    class SK_API Builder {
     public:
         Builder(VertexMode mode, int vertexCount, int indexCount, uint32_t flags);
 

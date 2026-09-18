@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,8 +8,13 @@
 #include "modules/sksg/include/SkSGPath.h"
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkPaint.h"
+#include "include/core/SkClipOp.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkPoint.h"
+#include "include/private/SkAssert.h"
 #include "src/core/SkRectPriv.h"
+
+class SkMatrix;
 
 namespace sksg {
 

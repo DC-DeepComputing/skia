@@ -12,10 +12,13 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkMacros.h"
+#include "include/private/SkMacros.h"
 #include "tools/Registry.h"
 
+#include <functional>
+#include <map>
 #include <memory>
 
 class GrRecordingContext;
@@ -23,7 +26,17 @@ class SkCanvas;
 class SkMetaData;
 struct GrContextOptions;
 
-namespace skiagm { namespace verifiers { class VerifierList; } }
+namespace skiagm::verifiers {
+class VerifierList;
+}
+
+namespace skgpu::graphite {
+struct ContextOptions;
+}
+
+namespace skiatest::graphite {
+class GraphiteTestContext;
+}
 
 #define DEF_GM(CODE)                                         \
     static skiagm::GMRegistry SK_MACRO_APPEND_COUNTER(REG_)( \
@@ -56,7 +69,8 @@ namespace skiagm { namespace verifiers { class VerifierList; } }
     DEF_GM(return new skiagm::SimpleGM(BGCOLOR, NAME_STR, {W,H}, SK_MACRO_CONCAT(NAME,_GM));) \
     skiagm::DrawResult SK_MACRO_CONCAT(NAME,_GM)(SkCanvas* CANVAS, SkString* ERR_MSG)
 
-
+// TODO: Rename these macros from GPU to GANESH
+#if defined(SK_GANESH)
 // A Simple GpuGM makes direct GPU calls. Its onDraw hook that includes GPU objects as params, and
 // is only invoked on GPU configs. Non-GPU configs automatically draw a GPU-only message and abort.
 #define DEF_SIMPLE_GPU_GM(NAME, GR_CONTEXT, CANVAS, W, H)                                         \
@@ -80,6 +94,7 @@ namespace skiagm { namespace verifiers { class VerifierList; } }
                                           SK_MACRO_CONCAT(NAME,_GM));)                            \
     skiagm::DrawResult SK_MACRO_CONCAT(NAME,_GM)(                                                 \
             GrRecordingContext* GR_CONTEXT, SkCanvas* CANVAS, SkString* ERR_MSG)
+#endif
 
 namespace skiagm {
 
@@ -92,8 +107,9 @@ namespace skiagm {
     class GM {
     public:
         using DrawResult = skiagm::DrawResult;
+        using GraphiteTestContext = skiatest::graphite::GraphiteTestContext;
 
-        GM(SkColor backgroundColor = SK_ColorWHITE);
+        explicit GM(SkColor backgroundColor = SK_ColorWHITE);
         virtual ~GM();
 
         enum Mode {
@@ -108,11 +124,7 @@ namespace skiagm {
         inline static constexpr char kErrorMsg_DrawSkippedGpuOnly[] =
                 "This test is for GPU configs only.";
 
-        DrawResult gpuSetup(SkCanvas* canvas) {
-            SkString errorMsg;
-            return this->gpuSetup(canvas, &errorMsg);
-        }
-        DrawResult gpuSetup(SkCanvas*, SkString* errorMsg);
+        DrawResult gpuSetup(SkCanvas*, SkString* errorMsg, GraphiteTestContext* = nullptr);
         void gpuTeardown();
 
         void onceBeforeDraw() {
@@ -135,8 +147,9 @@ namespace skiagm {
         }
         DrawResult drawContent(SkCanvas*, SkString* errorMsg);
 
-        SkISize getISize() { return this->onISize(); }
-        const char* getName();
+        virtual SkISize getISize() = 0;
+
+        virtual SkString getName() const = 0;
 
         virtual bool runAsBench() const;
 
@@ -159,48 +172,61 @@ namespace skiagm {
         bool getControls(SkMetaData* controls) { return this->onGetControls(controls); }
         void setControls(const SkMetaData& controls) { this->onSetControls(controls); }
 
-        virtual void modifyGrContextOptions(GrContextOptions*);
+        // Override to modify the default surface properties of the canvas to be used.
+        // The value may be further modified or ignored if the canvas used cannot support it.
+        virtual void modifySurfaceProps(SkSurfaceProps*) const {}
 
-        virtual std::unique_ptr<verifiers::VerifierList> getVerifiers() const;
+        virtual void modifyGrContextOptions(GrContextOptions*) {}
+        virtual void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions*) const {}
+
+        // Ignored by DM. Returns the set of Gold key/value pairs specific to this GM, such as the
+        // GM name and corpus. GMs may define additional keys. For example, codec GMs define keys
+        // for the parameters utilized to initialize the codec.
+        virtual std::map<std::string, std::string> getGoldKeys() const {
+            return std::map<std::string, std::string>{
+                    {"name", getName().c_str()},
+                    {"source_type", "gm"},
+            };
+        }
 
     protected:
         // onGpuSetup is called once before any other processing with a direct context.
-        virtual DrawResult onGpuSetup(SkCanvas*, SkString*) { return DrawResult::kOk; }
+        virtual DrawResult onGpuSetup(SkCanvas*, SkString*, GraphiteTestContext*) {
+            return DrawResult::kOk;
+        }
         virtual void onGpuTeardown() {}
         virtual void onOnceBeforeDraw();
         virtual DrawResult onDraw(SkCanvas*, SkString* errorMsg);
         virtual void onDraw(SkCanvas*);
 
-        virtual SkISize onISize() = 0;
-        virtual SkString onShortName() = 0;
-
         virtual bool onAnimate(double /*nanos*/);
         virtual bool onGetControls(SkMetaData*);
         virtual void onSetControls(const SkMetaData&);
 
+        GraphiteTestContext* graphiteTestContext() const { return fGraphiteTestContext; }
+
     private:
-        Mode       fMode;
-        SkString   fShortName;
+        Mode fMode;
         SkColor    fBGColor;
         bool       fHaveCalledOnceBeforeDraw = false;
         bool       fGpuSetup = false;
         DrawResult fGpuSetupResult = DrawResult::kOk;
+        GraphiteTestContext* fGraphiteTestContext;
     };
 
-    using GMFactory = std::unique_ptr<skiagm::GM> (*)();
+    using GMFactory = std::function<std::unique_ptr<skiagm::GM>()>;
     using GMRegistry = sk_tools::Registry<GMFactory>;
 
+    // Adds a GM to the GMRegistry.
+    void Register(skiagm::GM* gm);
+
+#if defined(SK_GANESH)
     // A GpuGM replaces the onDraw method with one that also accepts GPU objects alongside the
     // SkCanvas. Its onDraw is only invoked on GPU configs; on non-GPU configs it will automatically
     // draw a GPU-only message and abort.
     class GpuGM : public GM {
     public:
         GpuGM(SkColor backgroundColor = SK_ColorWHITE) : GM(backgroundColor) {}
-
-        // TODO(tdenniston): Currently GpuGMs don't have verifiers (because they do not render on
-        //   CPU), but we may want to be able to verify the output images standalone, without
-        //   requiring a gold image for comparison.
-        std::unique_ptr<verifiers::VerifierList> getVerifiers() const override;
 
     private:
         using GM::onDraw;
@@ -209,6 +235,7 @@ namespace skiagm {
         virtual DrawResult onDraw(GrRecordingContext*, SkCanvas*, SkString* errorMsg);
         virtual void onDraw(GrRecordingContext*, SkCanvas*);
     };
+#endif
 
     // SimpleGM is intended for basic GMs that can define their entire implementation inside a
     // single "draw" function pointer.
@@ -219,9 +246,10 @@ namespace skiagm {
         SimpleGM(SkColor bgColor, const SkString& name, const SkISize& size, DrawProc drawProc)
                 : GM(bgColor), fName(name), fSize(size), fDrawProc(drawProc) {}
 
+        SkString getName() const override;
+        SkISize getISize() override;
+
     private:
-        SkISize onISize() override;
-        SkString onShortName() override;
         DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override;
 
         const SkString fName;
@@ -229,6 +257,7 @@ namespace skiagm {
         const DrawProc fDrawProc;
     };
 
+#if defined(SK_GANESH)
     class SimpleGpuGM : public GpuGM {
     public:
         using DrawProc = DrawResult (*)(GrRecordingContext*, SkCanvas*, SkString* errorMsg);
@@ -236,15 +265,17 @@ namespace skiagm {
         SimpleGpuGM(SkColor bgColor, const SkString& name, const SkISize& size, DrawProc drawProc)
                 : GpuGM(bgColor), fName(name), fSize(size), fDrawProc(drawProc) {}
 
+        SkString getName() const override;
+        SkISize getISize() override;
+
     private:
-        SkISize onISize() override;
-        SkString onShortName() override;
         DrawResult onDraw(GrRecordingContext*, SkCanvas*, SkString* errorMsg) override;
 
         const SkString fName;
         const SkISize fSize;
         const DrawProc fDrawProc;
     };
+#endif
 }  // namespace skiagm
 
 void MarkGMGood(SkCanvas*, SkScalar x, SkScalar y);

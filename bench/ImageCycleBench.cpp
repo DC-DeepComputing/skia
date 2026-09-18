@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -13,7 +13,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 
 
 /**
@@ -32,7 +32,7 @@ public:
         fName.appendf("image_cycle_image_cnt_%d_repeat_cnt_%d", fImageCnt, fRepeatCnt);
     }
 
-    bool isSuitableFor(Backend backend) override { return kGPU_Backend == backend; }
+    bool isSuitableFor(Backend backend) override { return Backend::kGanesh == backend; }
 
 protected:
     const char* onGetName() override { return fName.c_str(); }
@@ -82,7 +82,7 @@ protected:
     }
 
 private:
-    SkIPoint onGetSize() override { return {kDeviceSize.fWidth, kDeviceSize.fHeight}; }
+    SkISize onGetSize() override { return {kDeviceSize.fWidth, kDeviceSize.fHeight}; }
 
     inline static constexpr SkISize kImageSize{4, 4};
     inline static constexpr SkISize kDeviceSize{64, 64};
@@ -95,4 +95,4 @@ private:
     using INHERITED = Benchmark;
 };
 
-DEF_BENCH(return new ImageCycle(5, 10));
+DEF_BENCH(return new ImageCycle(5, 10))

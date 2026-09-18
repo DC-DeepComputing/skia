@@ -4,20 +4,35 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/GrTestUtils.h"
 
+#if defined(GPU_TEST_UTILS)
+
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
+#include "include/core/SkRect.h"
+#include "include/private/SkMacros.h"
+#include "include/private/SkOnce.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkRandom.h"
 #include "src/core/SkRectPriv.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
+#include "src/gpu/ganesh/GrColorSpaceXform.h"
+#include "src/gpu/ganesh/GrFPArgs.h"
 #include "src/gpu/ganesh/GrProcessorUnitTest.h"
 #include "src/gpu/ganesh/GrStyle.h"
 #include "src/utils/SkDashPathPriv.h"
 
-#if GR_TEST_UTILS
+#include <array>
+#include <cstring>
+#include <optional>
+#include <utility>
 
 static const SkMatrix& test_matrix(SkRandom* random,
                                    bool includeNonPerspective,
@@ -217,25 +232,25 @@ const SkPath& TestPathConvex(SkRandom* random) {
     if (!gOnce) {
         gOnce = true;
         // narrow rect
-        gPath[0] = SkPath::Polygon({{-1.5f, -50.0f},
+        gPath[0] = SkPath::Polygon({{{-1.5f, -50.0f},
                                     {-1.5f, -50.0f},
                                     { 1.5f, -50.0f},
                                     { 1.5f,  50.0f},
-                                    {-1.5f,  50.0f}}, false);
+                                    {-1.5f,  50.0f}}}, false);
         // degenerate
-        gPath[1] = SkPath::Polygon({{-0.025f, -0.025f},
+        gPath[1] = SkPath::Polygon({{{-0.025f, -0.025f},
                                     {-0.025f, -0.025f},
                                     { 0.025f, -0.025f},
                                     { 0.025f,  0.025f},
-                                    {-0.025f,  0.025f}}, false);
+                                    {-0.025f,  0.025f}}}, false);
         // clipped triangle
-        gPath[2] = SkPath::Polygon({{-10.0f, -50.0f},
+        gPath[2] = SkPath::Polygon({{{-10.0f, -50.0f},
                                     {-10.0f, -50.0f},
                                     { 10.0f, -50.0f},
                                     { 50.0f,  31.0f},
                                     { 40.0f,  50.0f},
                                     {-40.0f,  50.0f},
-                                    {-50.0f,  31.0f}}, false);
+                                    {-50.0f,  31.0f}}}, false);
 
         for (size_t i = 0; i < std::size(gPath); i++) {
             SkASSERT(gPath[i].isConvex());
@@ -271,83 +286,76 @@ void TestStyle(SkRandom* random, GrStyle* style) {
     randomize_stroke_rec(&stroke, random);
     sk_sp<SkPathEffect> pe;
     if (random->nextBool()) {
-        int cnt = random->nextRangeU(1, 50) * 2;
+        size_t cnt = random->nextRangeU(1, 50) * 2;
         std::unique_ptr<SkScalar[]> intervals(new SkScalar[cnt]);
         SkScalar sum = 0;
-        for (int i = 0; i < cnt; i++) {
+        for (size_t i = 0; i < cnt; i++) {
             intervals[i] = random->nextRangeScalar(SkDoubleToScalar(0.01),
                                                    SkDoubleToScalar(10.0));
             sum += intervals[i];
         }
         SkScalar phase = random->nextRangeScalar(0, sum);
-        pe = TestDashPathEffect::Make(intervals.get(), cnt, phase);
+        pe = TestDashPathEffect::Make({intervals.get(), cnt}, phase);
     }
     *style = GrStyle(stroke, std::move(pe));
 }
 
-TestDashPathEffect::TestDashPathEffect(const SkScalar* intervals, int count, SkScalar phase) {
-    fCount = count;
-    fIntervals.reset(count);
-    memcpy(fIntervals.get(), intervals, count * sizeof(SkScalar));
-    SkDashPath::CalcDashParameters(phase, intervals, count, &fInitialDashLength,
+TestDashPathEffect::TestDashPathEffect(SkSpan<const SkScalar> intervals, SkScalar phase) {
+    fIntervals.reset(intervals.size());
+    memcpy(fIntervals.get(), intervals.data(), intervals.size_bytes());
+    SkDashPath::CalcDashParameters(phase, fIntervals, &fInitialDashLength,
                                    &fInitialDashIndex, &fIntervalLength, &fPhase);
 }
 
-bool TestDashPathEffect::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec,
+bool TestDashPathEffect::onFilterPath(SkPathBuilder* dst, const SkPath& src, SkStrokeRec* rec,
                                       const SkRect* cullRect, const SkMatrix&) const {
-    return SkDashPath::InternalFilter(dst, src, rec, cullRect, fIntervals.get(), fCount,
+    return SkDashPath::InternalFilter(dst, src, rec, cullRect, fIntervals,
                                       fInitialDashLength, fInitialDashIndex, fIntervalLength,
                                       fPhase);
 }
 
-SkPathEffect::DashType TestDashPathEffect::onAsADash(DashInfo* info) const {
-    if (info) {
-        if (info->fCount >= fCount && info->fIntervals) {
-            memcpy(info->fIntervals, fIntervals.get(), fCount * sizeof(SkScalar));
-        }
-        info->fCount = fCount;
-        info->fPhase = fPhase;
-    }
-    return kDash_DashType;
+std::optional<SkPathEffectBase::DashInfo> TestDashPathEffect::asADash() const {
+    return {{fIntervals, fPhase}};
 }
 
 sk_sp<SkColorSpace> TestColorSpace(SkRandom* random) {
-    static sk_sp<SkColorSpace> gColorSpaces[3];
-    static bool gOnce;
-    if (!gOnce) {
-        gOnce = true;
+    static SkColorSpace* gColorSpaces[3];
+    static SkOnce once;
+    once([] {
         // No color space (legacy mode)
         gColorSpaces[0] = nullptr;
         // sRGB or color-spin sRGB
-        gColorSpaces[1] = SkColorSpace::MakeSRGB();
-        gColorSpaces[2] = SkColorSpace::MakeSRGB()->makeColorSpin();
-    }
-    return gColorSpaces[random->nextULessThan(static_cast<uint32_t>(std::size(gColorSpaces)))];
+        gColorSpaces[1] = SkColorSpace::MakeSRGB().release();
+        gColorSpaces[2] = SkColorSpace::MakeSRGB()->makeColorSpin().release();
+    });
+    return sk_ref_sp(
+            gColorSpaces[random->nextULessThan(static_cast<uint32_t>(std::size(gColorSpaces)))]);
 }
 
 sk_sp<GrColorSpaceXform> TestColorXform(SkRandom* random) {
     // TODO: Add many more kinds of xforms here
-    static sk_sp<GrColorSpaceXform> gXforms[3];
-    static bool gOnce;
-    if (!gOnce) {
-        gOnce = true;
+    static GrColorSpaceXform* gXforms[3];
+    static SkOnce once;
+    once([] {
         sk_sp<SkColorSpace> srgb = SkColorSpace::MakeSRGB();
         sk_sp<SkColorSpace> spin = SkColorSpace::MakeSRGB()->makeColorSpin();
         // No gamut change
         gXforms[0] = nullptr;
-        gXforms[1] = GrColorSpaceXform::Make(srgb.get(), kPremul_SkAlphaType,
-                                             spin.get(), kPremul_SkAlphaType);
-        gXforms[2] = GrColorSpaceXform::Make(spin.get(), kPremul_SkAlphaType,
-                                             srgb.get(), kPremul_SkAlphaType);
-    }
-    return gXforms[random->nextULessThan(static_cast<uint32_t>(std::size(gXforms)))];
+        gXforms[1] = GrColorSpaceXform::Make(
+                             srgb.get(), kPremul_SkAlphaType, spin.get(), kPremul_SkAlphaType)
+                             .release();
+        gXforms[2] = GrColorSpaceXform::Make(
+                             spin.get(), kPremul_SkAlphaType, srgb.get(), kPremul_SkAlphaType)
+                             .release();
+    });
+    return sk_ref_sp(gXforms[random->nextULessThan(static_cast<uint32_t>(std::size(gXforms)))]);
 }
 
 TestAsFPArgs::TestAsFPArgs(GrProcessorTestData* d)
-        : fColorInfoStorage(std::make_unique<GrColorInfo>(GrColorType::kRGBA_8888,
-                                                          kPremul_SkAlphaType,
-                                                          TestColorSpace(d->fRandom)))
-        , fArgs(d->context(), fColorInfoStorage.get(), fSurfaceProps) {}
+        : fColorInfoStorage(std::make_unique<GrColorInfo>(
+                  GrColorType::kRGBA_8888, kPremul_SkAlphaType, TestColorSpace(d->fRandom)))
+        , fArgs(d->surfaceDrawContext(), fColorInfoStorage.get(), fSurfaceProps,
+                GrFPArgs::Scope::kDefault) {}
 
 TestAsFPArgs::~TestAsFPArgs() {}
 

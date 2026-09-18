@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -16,14 +16,22 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrBackendSemaphore.h"
-#include "include/gpu/GrDirectContext.h"
 #include "include/gpu/MutableTextureState.h"
+#include "include/gpu/ganesh/GrBackendSemaphore.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "include/gpu/vk/GrVkBackendContext.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
+#include "include/gpu/ganesh/vk/GrVkBackendSemaphore.h"
+#include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
+#include "include/gpu/ganesh/vk/GrVkDirectContext.h"
+#include "include/gpu/ganesh/vk/GrVkTypes.h"
+#include "include/gpu/vk/VulkanBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
-#include "src/base/SkAutoMalloc.h"
+#include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include "include/gpu/vk/VulkanMutableTextureState.h"
+#include "src/core/SkAutoMalloc.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
@@ -31,7 +39,7 @@
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tests/Test.h"
-#include "tools/gpu/GrContextFactory.h"
+#include "tools/ganesh/GrContextFactory.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
 #include <android/hardware_buffer.h>
@@ -149,7 +157,7 @@ private:
 };
 
 bool EGLTestHelper::init(skiatest::Reporter* reporter) {
-    fGLESContextInfo = fFactory.getContextInfo(sk_gpu_test::GrContextFactory::kGLES_ContextType);
+    fGLESContextInfo = fFactory.getContextInfo(skgpu::ContextType::kGLES);
     fDirectContext = fGLESContextInfo.directContext();
     fGLCtx = fGLESContextInfo.glContext();
     if (!fDirectContext || !fGLCtx) {
@@ -271,7 +279,7 @@ sk_sp<SkImage> EGLTestHelper::importHardwareBufferForRead(skiatest::Reporter* re
     textureInfo.fID = fTexID;
     textureInfo.fFormat = GR_GL_RGBA8;
 
-    GrBackendTexture backendTex(DEV_W, DEV_H, GrMipmapped::kNo, textureInfo);
+    auto backendTex = GrBackendTextures::MakeGL(DEV_W, DEV_H, skgpu::Mipmapped::kNo, textureInfo);
     REPORTER_ASSERT(reporter, backendTex.isValid());
 
     sk_sp<SkImage> image = SkImages::BorrowTextureFrom(fDirectContext,
@@ -299,7 +307,7 @@ sk_sp<SkSurface> EGLTestHelper::importHardwareBufferForWrite(skiatest::Reporter*
     textureInfo.fID = fTexID;
     textureInfo.fFormat = GR_GL_RGBA8;
 
-    GrBackendTexture backendTex(DEV_W, DEV_H, GrMipmapped::kNo, textureInfo);
+    auto backendTex = GrBackendTextures::MakeGL(DEV_W, DEV_H, skgpu::Mipmapped::kNo, textureInfo);
     REPORTER_ASSERT(reporter, backendTex.isValid());
 
     sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(fDirectContext,
@@ -369,7 +377,7 @@ bool EGLTestHelper::importAndWaitOnSemaphore(skiatest::Reporter* reporter, int f
 
 void EGLTestHelper::doClientSync() {
     this->directContext()->flush();
-    this->directContext()->submit(true);
+    this->directContext()->submit(GrSyncCpu::kYes);
 }
 #endif  // SK_GL
 
@@ -416,7 +424,8 @@ public:
     }
 
     void releaseSurfaceToExternal(SkSurface* surface) override {
-        skgpu::MutableTextureState newState(VK_IMAGE_LAYOUT_UNDEFINED, VK_QUEUE_FAMILY_EXTERNAL);
+        skgpu::MutableTextureState newState = skgpu::MutableTextureStates::MakeVulkan(
+                VK_IMAGE_LAYOUT_UNDEFINED, VK_QUEUE_FAMILY_EXTERNAL);
         fDirectContext->flush(surface, {}, &newState);
     }
 
@@ -434,8 +443,8 @@ public:
             fDevice = VK_NULL_HANDLE;
         }
 #ifdef SK_ENABLE_VK_LAYERS
-        if (fDebugCallback != VK_NULL_HANDLE) {
-            fDestroyDebugCallback(fBackendContext.fInstance, fDebugCallback, nullptr);
+        if (fDebugMessenger != VK_NULL_HANDLE) {
+            fDestroyDebugCallback(fBackendContext.fInstance, fDebugMessenger, nullptr);
         }
 #endif
         if (fBackendContext.fInstance != VK_NULL_HANDLE) {
@@ -444,8 +453,6 @@ public:
         }
 
         delete fExtensions;
-
-        sk_gpu_test::FreeVulkanFeaturesStructs(fFeatures);
         delete fFeatures;
     }
 
@@ -456,7 +463,7 @@ public:
             return;
         }
 
-        fDirectContext->submit(true);
+        fDirectContext->submit(GrSyncCpu::kYes);
     }
 
     bool flushSurfaceAndSignalSemaphore(skiatest::Reporter* reporter, sk_sp<SkSurface>) override;
@@ -508,17 +515,17 @@ private:
     VkImage fImage = VK_NULL_HANDLE;
     VkDeviceMemory fMemory = VK_NULL_HANDLE;
 
-    skgpu::VulkanExtensions*            fExtensions = nullptr;
-    VkPhysicalDeviceFeatures2*          fFeatures = nullptr;
-    VkDebugReportCallbackEXT            fDebugCallback = VK_NULL_HANDLE;
-    PFN_vkDestroyDebugReportCallbackEXT fDestroyDebugCallback = nullptr;
+    skgpu::VulkanExtensions* fExtensions = nullptr;
+    sk_gpu_test::TestVkFeatures* fFeatures = nullptr;
+    VkDebugUtilsMessengerEXT fDebugMessenger = VK_NULL_HANDLE;
+    PFN_vkDestroyDebugUtilsMessengerEXT fDestroyDebugCallback = nullptr;
 
     // We hold on to the semaphore so we can delete once the GPU is done.
     VkSemaphore fSignalSemaphore = VK_NULL_HANDLE;
 
     VkDevice fDevice = VK_NULL_HANDLE;
 
-    GrVkBackendContext fBackendContext;
+    skgpu::VulkanBackendContext fBackendContext;
     sk_sp<GrDirectContext> fDirectContext;
 };
 
@@ -529,42 +536,39 @@ bool VulkanTestHelper::init(skiatest::Reporter* reporter) {
     }
 
     fExtensions = new skgpu::VulkanExtensions();
-    fFeatures = new VkPhysicalDeviceFeatures2;
-    memset(fFeatures, 0, sizeof(VkPhysicalDeviceFeatures2));
-    fFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-    fFeatures->pNext = nullptr;
+    fFeatures = new sk_gpu_test::TestVkFeatures;
 
     fBackendContext.fInstance = VK_NULL_HANDLE;
     fBackendContext.fDevice = VK_NULL_HANDLE;
 
-    if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext, fExtensions,
-                                             fFeatures, &fDebugCallback)) {
+    if (!sk_gpu_test::CreateVkBackendContext(
+                instProc, &fBackendContext, fExtensions, fFeatures, &fDebugMessenger)) {
         return false;
     }
     fDevice = fBackendContext.fDevice;
     auto getProc = fBackendContext.fGetProc;
 
-    if (fDebugCallback != VK_NULL_HANDLE) {
-        fDestroyDebugCallback = (PFN_vkDestroyDebugReportCallbackEXT) instProc(
-                fBackendContext.fInstance, "vkDestroyDebugReportCallbackEXT");
+    if (fDebugMessenger != VK_NULL_HANDLE) {
+        fDestroyDebugCallback = (PFN_vkDestroyDebugUtilsMessengerEXT)instProc(
+                fBackendContext.fInstance, "vkDestroyDebugUtilsMessengerEXT");
     }
 
     ACQUIRE_INST_VK_PROC(DestroyInstance);
     ACQUIRE_INST_VK_PROC(DeviceWaitIdle);
     ACQUIRE_INST_VK_PROC(DestroyDevice);
 
-    if (!fExtensions->hasExtension(VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME,
-                                  2)) {
+    if (!fExtensions->hasExtension(
+                VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2)) {
         return false;
     }
     if (!fExtensions->hasExtension(VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME, 1)) {
         return false;
     }
+    if (!fExtensions->hasExtension(VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, 1)) {
+       return false;
+    }
     if (!fExtensions->hasExtension(VK_KHR_EXTERNAL_SEMAPHORE_FD_EXTENSION_NAME, 1)) {
         return false;
-    }
-    if (!fExtensions->hasExtension(VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, 1)) {
-    //    return false;
     }
 
     ACQUIRE_INST_VK_PROC(GetPhysicalDeviceMemoryProperties2);
@@ -586,7 +590,7 @@ bool VulkanTestHelper::init(skiatest::Reporter* reporter) {
     ACQUIRE_DEVICE_VK_PROC(ImportSemaphoreFdKHR);
     ACQUIRE_DEVICE_VK_PROC(DestroySemaphore);
 
-    fDirectContext = GrDirectContext::MakeVulkan(fBackendContext);
+    fDirectContext = GrDirectContexts::MakeVulkan(fBackendContext);
     REPORTER_ASSERT(reporter, fDirectContext.get());
     if (!fDirectContext) {
         return false;
@@ -752,6 +756,13 @@ bool VulkanTestHelper::importHardwareBuffer(skiatest::Reporter* reporter,
             }
         }
     }
+
+    // Fallback to align with GrAHardwareBufferUtils
+    if (!foundHeap && hwbProps.memoryTypeBits) {
+        typeIndex = ffs(hwbProps.memoryTypeBits) - 1;
+        foundHeap = true;
+    }
+
     if (!foundHeap) {
         ERRORF(reporter, "Failed to find valid heap for imported memory");
         return false;
@@ -818,7 +829,7 @@ sk_sp<SkImage> VulkanTestHelper::importHardwareBufferForRead(skiatest::Reporter*
         return nullptr;
     }
 
-    GrBackendTexture backendTex(DEV_W, DEV_H, imageInfo);
+    auto backendTex = GrBackendTextures::MakeVk(DEV_W, DEV_H, imageInfo);
 
     sk_sp<SkImage> wrappedImage = SkImages::BorrowTextureFrom(fDirectContext.get(),
                                                               backendTex,
@@ -908,13 +919,13 @@ bool VulkanTestHelper::setupSemaphoreForSignaling(skiatest::Reporter* reporter,
         ERRORF(reporter, "Failed to create signal semaphore, err: %d", err);
         return false;
     }
-    beSemaphore->initVulkan(semaphore);
+    *beSemaphore = GrBackendSemaphores::MakeVk(semaphore);
     return true;
 }
 
 bool VulkanTestHelper::exportSemaphore(skiatest::Reporter* reporter,
                                        const GrBackendSemaphore& beSemaphore) {
-    VkSemaphore semaphore = beSemaphore.vkSemaphore();
+    VkSemaphore semaphore = GrBackendSemaphores::GetVkSemaphore(beSemaphore);
     if (VK_NULL_HANDLE == semaphore) {
         ERRORF(reporter, "Invalid vulkan handle in export call");
         return false;
@@ -963,8 +974,7 @@ bool VulkanTestHelper::importAndWaitOnSemaphore(skiatest::Reporter* reporter, in
         return false;
     }
 
-    GrBackendSemaphore beSemaphore;
-    beSemaphore.initVulkan(semaphore);
+    GrBackendSemaphore beSemaphore = GrBackendSemaphores::MakeVk(semaphore);
     if (!surface->wait(1, &beSemaphore)) {
         ERRORF(reporter, "Failed to add wait semaphore to surface");
         fVkDestroySemaphore(fDevice, semaphore, nullptr);
@@ -980,7 +990,7 @@ sk_sp<SkSurface> VulkanTestHelper::importHardwareBufferForWrite(skiatest::Report
         return nullptr;
     }
 
-    GrBackendTexture backendTex(DEV_W, DEV_H, imageInfo);
+    auto backendTex = GrBackendTextures::MakeVk(DEV_W, DEV_H, imageInfo);
 
     sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(fDirectContext.get(),
                                                               backendTex,

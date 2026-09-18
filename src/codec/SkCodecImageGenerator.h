@@ -28,9 +28,10 @@ public:
      * return an SkCodecImageGenerator.  Otherwise return nullptr.
      */
     static std::unique_ptr<SkImageGenerator> MakeFromEncodedCodec(
-            sk_sp<SkData>, std::optional<SkAlphaType> = std::nullopt);
+            sk_sp<const SkData>, std::optional<SkAlphaType> = std::nullopt);
 
-    static std::unique_ptr<SkImageGenerator> MakeFromCodec(std::unique_ptr<SkCodec>);
+    static std::unique_ptr<SkImageGenerator> MakeFromCodec(
+            std::unique_ptr<SkCodec>, std::optional<SkAlphaType> = std::nullopt);
 
     /**
      * Return a size that approximately supports the desired scale factor. The codec may not be able
@@ -102,7 +103,7 @@ public:
     int getRepetitionCount() { return fCodec->getRepetitionCount(); }
 
 protected:
-    sk_sp<SkData> onRefEncodedData() override;
+    sk_sp<const SkData> onRefEncodedData() override;
 
     bool onGetPixels(const SkImageInfo& info,
                      void* pixels,
@@ -118,11 +119,9 @@ private:
     /*
      * Takes ownership of codec
      */
-    SkCodecImageGenerator(std::unique_ptr<SkCodec>, sk_sp<SkData>, std::optional<SkAlphaType>);
+    SkCodecImageGenerator(std::unique_ptr<SkCodec>, std::optional<SkAlphaType>);
 
     std::unique_ptr<SkCodec> fCodec;
-    sk_sp<SkData> fData;
-
-    using INHERITED = SkImageGenerator;
+    sk_sp<const SkData> fCachedData = nullptr;
 };
 #endif  // SkCodecImageGenerator_DEFINED

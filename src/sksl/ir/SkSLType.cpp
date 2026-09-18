@@ -7,8 +7,11 @@
 
 #include "src/sksl/ir/SkSLType.h"
 
-#include "src/base/SkMathPriv.h"
-#include "src/base/SkSafeMath.h"
+#include "include/private/SkEnumBitMask.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkHalf.h"
+#include "src/core/SkMathPriv.h"
+#include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
@@ -21,6 +24,7 @@
 #include "src/sksl/ir/SkSLConstructorScalarCast.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLLayout.h"
+#include "src/sksl/ir/SkSLModifierFlags.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
 #include <algorithm>
@@ -39,8 +43,8 @@ static constexpr int kMaxStructDepth = 8;
 class AliasType final : public Type {
 public:
     AliasType(std::string_view name, const Type& targetType)
-        : INHERITED(name, targetType.abbreviatedName(), targetType.typeKind())
-        , fTargetType(targetType) {}
+            : INHERITED(name, targetType.abbreviatedName(), targetType.typeKind())
+            , fTargetType(targetType) {}
 
     const Type& resolve() const override {
         return fTargetType;
@@ -74,8 +78,20 @@ public:
         return fTargetType.isAllowedInES2();
     }
 
+    bool isOrContainsBool() const override {
+        return fTargetType.isOrContainsBool();
+    }
+
+    bool isOrContainsAtomic() const override {
+        return fTargetType.isOrContainsAtomic();
+    }
+
     size_t slotCount() const override {
         return fTargetType.slotCount();
+    }
+
+    const Type& slotType(size_t n) const override {
+        return fTargetType.slotType(n);
     }
 
     SpvDim_ dimensions() const override {
@@ -144,21 +160,49 @@ class ArrayType final : public Type {
 public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kArray;
 
-    ArrayType(std::string_view name, const char* abbrev, const Type& componentType, int count)
-        : INHERITED(name, abbrev, kTypeKind)
-        , fComponentType(componentType)
-        , fCount(count) {
+    ArrayType(std::string_view name, const char* abbrev, const Type& componentType, int count,
+              bool isBuiltin)
+            : INHERITED(name, abbrev, kTypeKind)
+            , fComponentType(componentType)
+            , fCount(count)
+            , fIsBuiltin(isBuiltin) {
         SkASSERT(count > 0 || count == kUnsizedArray);
-        // Disallow multi-dimensional arrays.
+        // Multi-dimensional arrays are disallowed.
         SkASSERT(!componentType.is<ArrayType>());
+    }
+
+    bool matches(const Type& otherType) const override {
+        const Type& that = otherType.resolve();
+        return that.isArray() && this->columns() == that.columns() &&
+               this->componentType().matches(that.componentType());
     }
 
     bool isArray() const override {
         return true;
     }
 
+    bool isBuiltin() const override {
+        return fIsBuiltin;
+    }
+
+    bool isOrContainsArray() const override {
+        return true;
+    }
+
+    bool isOrContainsAtomic() const override {
+        return fComponentType.isOrContainsAtomic();
+    }
+
+    bool isOrContainsBool() const override {
+        return fComponentType.isOrContainsBool();
+    }
+
     bool isUnsizedArray() const override {
         return fCount == kUnsizedArray;
+    }
+
+    bool isOrContainsUnsizedArray() const override {
+        return this->isUnsizedArray() || fComponentType.isOrContainsUnsizedArray();
     }
 
     const Type& componentType() const override {
@@ -170,11 +214,15 @@ public:
     }
 
     int bitWidth() const override {
-        return this->componentType().bitWidth();
+        return fComponentType.bitWidth();
     }
 
     bool isAllowedInES2() const override {
         return fComponentType.isAllowedInES2();
+    }
+
+    bool isAllowedInUniform(Position* errorPosition) const override {
+        return fComponentType.isAllowedInUniform(errorPosition);
     }
 
     size_t slotCount() const override {
@@ -183,19 +231,26 @@ public:
         return fCount * fComponentType.slotCount();
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(fCount == kUnsizedArray || n < this->slotCount());
+        return fComponentType.slotType(n % fComponentType.slotCount());
+    }
+
 private:
     using INHERITED = Type;
 
     const Type& fComponentType;
     int fCount;
+    bool fIsBuiltin;
 };
 
 class GenericType final : public Type {
 public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kGeneric;
 
-    GenericType(const char* name, SkSpan<const Type* const> coercibleTypes)
-        : INHERITED(name, "G", kTypeKind) {
+    GenericType(const char* name, SkSpan<const Type* const> coercibleTypes, const Type* slotType)
+            : INHERITED(name, "G", kTypeKind)
+            , fSlotType(slotType) {
         fNumTypes = coercibleTypes.size();
         SkASSERT(fNumTypes <= std::size(fCoercibleTypes));
         std::copy(coercibleTypes.begin(), coercibleTypes.end(), fCoercibleTypes);
@@ -205,10 +260,15 @@ public:
         return SkSpan(fCoercibleTypes, fNumTypes);
     }
 
+    const Type& slotType(size_t) const override {
+        return *fSlotType;
+    }
+
 private:
     using INHERITED = Type;
 
     const Type* fCoercibleTypes[9];
+    const Type* fSlotType;
     size_t fNumTypes;
 };
 
@@ -217,9 +277,9 @@ public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kLiteral;
 
     LiteralType(const char* name, const Type& scalarType, int8_t priority)
-        : INHERITED(name, "L", kTypeKind)
-        , fScalarType(scalarType)
-        , fPriority(priority) {}
+            : INHERITED(name, "L", kTypeKind)
+            , fScalarType(scalarType)
+            , fPriority(priority) {}
 
     const Type& scalarTypeForLiteral() const override {
         return fScalarType;
@@ -261,8 +321,17 @@ public:
         return true;
     }
 
+    bool isOrContainsBool() const override {
+        return fScalarType.isBoolean();
+    }
+
     size_t slotCount() const override {
         return 1;
+    }
+
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return fScalarType;
     }
 
 private:
@@ -279,10 +348,10 @@ public:
 
     ScalarType(std::string_view name, const char* abbrev, NumberKind numberKind, int8_t priority,
                int8_t bitWidth)
-        : INHERITED(name, abbrev, kTypeKind)
-        , fNumberKind(numberKind)
-        , fPriority(priority)
-        , fBitWidth(bitWidth) {}
+            : INHERITED(name, abbrev, kTypeKind)
+            , fNumberKind(numberKind)
+            , fPriority(priority)
+            , fBitWidth(bitWidth) {}
 
     NumberKind numberKind() const override {
         return fNumberKind;
@@ -312,8 +381,21 @@ public:
         return fNumberKind != NumberKind::kUnsigned;
     }
 
+    bool isAllowedInUniform(Position*) const override {
+        return fNumberKind != NumberKind::kBoolean;
+    }
+
+    bool isOrContainsBool() const override {
+        return fNumberKind == NumberKind::kBoolean;
+    }
+
     size_t slotCount() const override {
         return 1;
+    }
+
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
     }
 
     using int_limits = std::numeric_limits<int32_t>;
@@ -334,7 +416,8 @@ public:
 
             case NumberKind::kFloat:
             default:
-                return float_limits::lowest();
+                return this->highPrecision() ? float_limits::lowest()
+                                             : -SkHalfToFloat(SK_HalfMax);
         }
     }
 
@@ -351,7 +434,8 @@ public:
 
             case NumberKind::kFloat:
             default:
-                return float_limits::max();
+                return this->highPrecision() ? float_limits::max()
+                                             : SkHalfToFloat(SK_HalfMax);
         }
     }
 
@@ -371,6 +455,15 @@ public:
 
     bool isAllowedInES2() const override { return false; }
 
+    bool isAllowedInUniform(Position*) const override { return false; }
+
+    bool isOrContainsAtomic() const override { return true; }
+
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
+    }
+
 private:
     using INHERITED = Type;
 };
@@ -381,10 +474,10 @@ public:
 
     MatrixType(std::string_view name, const char* abbrev, const Type& componentType,
                int8_t columns, int8_t rows)
-        : INHERITED(name, abbrev, kTypeKind)
-        , fComponentType(componentType.as<ScalarType>())
-        , fColumns(columns)
-        , fRows(rows) {
+            : INHERITED(name, abbrev, kTypeKind)
+            , fComponentType(componentType.as<ScalarType>())
+            , fColumns(columns)
+            , fRows(rows) {
         SkASSERT(columns >= 2 && columns <= 4);
         SkASSERT(rows >= 2 && rows <= 4);
     }
@@ -417,6 +510,11 @@ public:
         return fColumns * fRows;
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n < this->slotCount());
+        return fComponentType;
+    }
+
 private:
     using INHERITED = Type;
 
@@ -431,12 +529,12 @@ public:
 
     TextureType(const char* name, SpvDim_ dimensions, bool isDepth, bool isArrayed,
                 bool isMultisampled, TextureAccess textureAccess)
-        : INHERITED(name, "T", kTypeKind)
-        , fDimensions(dimensions)
-        , fIsDepth(isDepth)
-        , fIsArrayed(isArrayed)
-        , fIsMultisampled(isMultisampled)
-        , fTextureAccess(textureAccess) {}
+            : INHERITED(name, "T", kTypeKind)
+            , fDimensions(dimensions)
+            , fIsDepth(isDepth)
+            , fIsArrayed(isArrayed)
+            , fIsMultisampled(isMultisampled)
+            , fTextureAccess(textureAccess) {}
 
     SpvDim_ dimensions() const override {
         return fDimensions;
@@ -458,6 +556,11 @@ public:
         return fTextureAccess;
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
+    }
+
 private:
     using INHERITED = Type;
 
@@ -473,8 +576,13 @@ public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kSampler;
 
     SamplerType(const char* name, const Type& textureType)
-        : INHERITED(name, "Z", kTypeKind)
-        , fTextureType(textureType.as<TextureType>()) {}
+            : INHERITED(name, "Z", kTypeKind)
+            , fTextureType(textureType.as<TextureType>()) {
+        // Samplers require sampled texture access.
+        SkASSERT(this->textureAccess() == TextureAccess::kSample);
+        // Subpass inputs cannot be sampled.
+        SkASSERT(this->dimensions() != SpvDimSubpassData);
+    }
 
     const TextureType& textureType() const override {
         return fTextureType;
@@ -500,6 +608,11 @@ public:
         return fTextureType.textureAccess();
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
+    }
+
 private:
     using INHERITED = Type;
 
@@ -510,10 +623,33 @@ class StructType final : public Type {
 public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kStruct;
 
-    StructType(Position pos, std::string_view name, TArray<Field> fields, bool interfaceBlock)
+    StructType(Position pos, std::string_view name, TArray<Field> fields, int nestingDepth,
+               bool interfaceBlock, bool isBuiltin)
             : INHERITED(std::move(name), "S", kTypeKind, pos)
             , fFields(std::move(fields))
-            , fInterfaceBlock(interfaceBlock) {}
+            , fNestingDepth(nestingDepth)
+            , fInterfaceBlock(interfaceBlock)
+            , fIsBuiltin(isBuiltin) {
+        for (const Field& f : fFields) {
+            fContainsArray        = fContainsArray        || f.fType->isOrContainsArray();
+            fContainsUnsizedArray = fContainsUnsizedArray || f.fType->isOrContainsUnsizedArray();
+            fContainsAtomic       = fContainsAtomic       || f.fType->isOrContainsAtomic();
+            fContainsBool         = fContainsBool         || f.fType->isOrContainsBool();
+            fIsAllowedInES2       = fIsAllowedInES2       && f.fType->isAllowedInES2();
+        }
+        for (const Field& f : fFields) {
+            Position errorPosition = f.fPosition;
+            if (!f.fType->isAllowedInUniform(&errorPosition)) {
+                fUniformErrorPosition = errorPosition;
+                break;
+            }
+        }
+        if (!fContainsUnsizedArray) {
+            for (const Field& f : fFields) {
+                fSlotCount += f.fType->slotCount();
+            }
+        }
+    }
 
     SkSpan<const Field> fields() const override {
         return fFields;
@@ -527,25 +663,73 @@ public:
         return fInterfaceBlock;
     }
 
+    bool isBuiltin() const override {
+        return fIsBuiltin;
+    }
+
     bool isAllowedInES2() const override {
-        return std::all_of(fFields.begin(), fFields.end(), [](const Field& f) {
-            return f.fType->isAllowedInES2();
-        });
+        return fIsAllowedInES2;
+    }
+
+    bool isAllowedInUniform(Position* errorPosition) const override {
+        if (errorPosition != nullptr) {
+            *errorPosition = fUniformErrorPosition;
+        }
+        return !fUniformErrorPosition.valid();
+    }
+
+    bool isOrContainsArray() const override {
+        return fContainsArray;
+    }
+
+    bool isOrContainsUnsizedArray() const override {
+        return fContainsUnsizedArray;
+    }
+
+    bool isOrContainsAtomic() const override {
+        return fContainsAtomic;
+    }
+
+    bool isOrContainsBool() const override {
+        return fContainsBool;
     }
 
     size_t slotCount() const override {
-        size_t slots = 0;
+        SkASSERT(!fContainsUnsizedArray);
+        return fSlotCount;
+    }
+
+    int structNestingDepth() const override {
+        return fNestingDepth;
+    }
+
+    const Type& slotType(size_t n) const override {
         for (const Field& field : fFields) {
-            slots += field.fType->slotCount();
+            size_t fieldSlots = field.fType->slotCount();
+            if (n < fieldSlots) {
+                return field.fType->slotType(n);
+            } else {
+                n -= fieldSlots;
+            }
         }
-        return slots;
+        SkDEBUGFAIL("slot index out of range");
+        return *this;
     }
 
 private:
     using INHERITED = Type;
 
     TArray<Field> fFields;
-    bool fInterfaceBlock;
+    size_t fSlotCount = 0;
+    int fNestingDepth = 0;
+    Position fUniformErrorPosition = {};
+    bool fInterfaceBlock = false;
+    bool fContainsArray = false;
+    bool fContainsUnsizedArray = false;
+    bool fContainsAtomic = false;
+    bool fContainsBool = false;
+    bool fIsBuiltin = false;
+    bool fIsAllowedInES2 = true;
 };
 
 class VectorType final : public Type {
@@ -554,9 +738,9 @@ public:
 
     VectorType(std::string_view name, const char* abbrev, const Type& componentType,
                int8_t columns)
-        : INHERITED(name, abbrev, kTypeKind)
-        , fComponentType(componentType.as<ScalarType>())
-        , fColumns(columns) {
+            : INHERITED(name, abbrev, kTypeKind)
+            , fComponentType(componentType.as<ScalarType>())
+            , fColumns(columns) {
         SkASSERT(columns >= 2 && columns <= 4);
     }
 
@@ -584,8 +768,21 @@ public:
         return fComponentType.isAllowedInES2();
     }
 
+    bool isAllowedInUniform(Position* errorPosition) const override {
+        return fComponentType.isAllowedInUniform(errorPosition);
+    }
+
+    bool isOrContainsBool() const override {
+        return fComponentType.isOrContainsBool();
+    }
+
     size_t slotCount() const override {
         return fColumns;
+    }
+
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n < SkToSizeT(fColumns));
+        return fComponentType;
     }
 
 private:
@@ -607,14 +804,18 @@ std::unique_ptr<Type> Type::MakeAliasType(std::string_view name, const Type& tar
     return std::make_unique<AliasType>(std::move(name), targetType);
 }
 
-std::unique_ptr<Type> Type::MakeArrayType(std::string_view name, const Type& componentType,
+std::unique_ptr<Type> Type::MakeArrayType(const Context& context,
+                                          std::string_view name,
+                                          const Type& componentType,
                                           int columns) {
     return std::make_unique<ArrayType>(std::move(name), componentType.abbreviatedName(),
-                                       componentType, columns);
+                                       componentType, columns, context.fConfig->isBuiltinCode());
 }
 
-std::unique_ptr<Type> Type::MakeGenericType(const char* name, SkSpan<const Type* const> types) {
-    return std::make_unique<GenericType>(name, types);
+std::unique_ptr<Type> Type::MakeGenericType(const char* name,
+                                            SkSpan<const Type* const> types,
+                                            const Type* slotType) {
+    return std::make_unique<GenericType>(name, types, slotType);
 }
 
 std::unique_ptr<Type> Type::MakeLiteralType(const char* name, const Type& scalarType,
@@ -646,22 +847,6 @@ std::unique_ptr<Type> Type::MakeAtomicType(std::string_view name, const char* ab
     return std::make_unique<AtomicType>(name, abbrev);
 }
 
-static bool is_too_deeply_nested(const Type* t, int limit) {
-    if (limit <= 0) {
-        return true;
-    }
-
-    if (t->isStruct()) {
-        for (const Field& f : t->fields()) {
-            if (is_too_deeply_nested(f.fType, limit - 1)) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
 std::unique_ptr<Type> Type::MakeStructType(const Context& context,
                                            Position pos,
                                            std::string_view name,
@@ -687,17 +872,16 @@ std::unique_ptr<Type> Type::MakeStructType(const Context& context,
                                                     std::string(structOrIB) + " ('" +
                                                     std::string(name) + "')");
         }
-        if (field.fModifiers.fFlags != Modifiers::kNo_Flag) {
-            std::string desc = field.fModifiers.description();
-            desc.pop_back();  // remove trailing space
+        if (field.fModifierFlags != ModifierFlag::kNone) {
+            std::string desc = field.fModifierFlags.description();
             context.fErrors->error(field.fPosition, "modifier '" + desc + "' is not permitted on " +
                                                     std::string(aStructOrIB) + " field");
         }
-        if (field.fModifiers.fLayout.fFlags & Layout::kBinding_Flag) {
+        if (field.fLayout.fFlags & LayoutFlag::kBinding) {
             context.fErrors->error(field.fPosition, "layout qualifier 'binding' is not permitted "
                                                     "on " + std::string(aStructOrIB) + " field");
         }
-        if (field.fModifiers.fLayout.fFlags & Layout::kSet_Flag) {
+        if (field.fLayout.fFlags & LayoutFlag::kSet) {
             context.fErrors->error(field.fPosition, "layout qualifier 'set' is not permitted on " +
                                                     std::string(aStructOrIB) + " field");
         }
@@ -710,6 +894,11 @@ std::unique_ptr<Type> Type::MakeStructType(const Context& context,
             context.fErrors->error(field.fPosition, "opaque type '" + field.fType->displayName() +
                                                     "' is not permitted in " +
                                                     std::string(aStructOrIB));
+        }
+        if (interfaceBlock && field.fType->isOrContainsBool()) {
+            // Reject booleans anywhere in an interface block.
+            context.fErrors->error(field.fPosition, "type 'bool' is not permitted in an "
+                                                    "interface block");
         }
         if (field.fType->isOrContainsUnsizedArray()) {
             if (!interfaceBlock) {
@@ -727,14 +916,16 @@ std::unique_ptr<Type> Type::MakeStructType(const Context& context,
             }
         }
     }
+    int nestingDepth = 0;
     for (const Field& field : fields) {
-        if (is_too_deeply_nested(field.fType, kMaxStructDepth)) {
-            context.fErrors->error(pos, std::string(structOrIB) + " '" + std::string(name) +
-                                        "' is too deeply nested");
-            break;
-        }
+        nestingDepth = std::max(nestingDepth, field.fType->structNestingDepth());
     }
-    return std::make_unique<StructType>(pos, name, std::move(fields), interfaceBlock);
+    if (nestingDepth >= kMaxStructDepth) {
+        context.fErrors->error(pos, std::string(structOrIB) + " '" + std::string(name) +
+                                    "' is too deeply nested");
+    }
+    return std::make_unique<StructType>(pos, name, std::move(fields), nestingDepth + 1,
+                                        interfaceBlock, context.fConfig->isBuiltinCode());
 }
 
 std::unique_ptr<Type> Type::MakeTextureType(const char* name, SpvDim_ dimensions, bool isDepth,
@@ -764,8 +955,16 @@ CoercionCost Type::coercionCost(const Type& other) const {
         }
         return this->componentType().coercionCost(other.componentType());
     }
+
     if (this->isNumber() && other.isNumber()) {
-        if (this->isLiteral() && this->isInteger()) {
+        if (this->isLiteral() && (this->isInteger() ||
+                                  this->numberKind() == other.numberKind())) {
+            // NOTE: We allow ${intLiteral} and ${floatLiteral} to coerce freely to `float` and
+            // `half`. Without this check, ${floatLiteral}'s priority would treat conversion to
+            // `half` as a cheaper "normal" conversion compared to conversion to `float`. Treating
+            // the cost as free means function overload selection is based off the types of the
+            // non-literal arguments; in the case where only literals are passed in, SkSL will
+            // require a cast to disambiguate between half or float function calls.
             return CoercionCost::Free();
         } else if (this->numberKind() != other.numberKind()) {
             return CoercionCost::Impossible();
@@ -787,21 +986,21 @@ CoercionCost Type::coercionCost(const Type& other) const {
 }
 
 const Type* Type::applyQualifiers(const Context& context,
-                                  Modifiers* modifiers,
+                                  ModifierFlags* modifierFlags,
                                   Position pos) const {
     const Type* type;
-    type = this->applyPrecisionQualifiers(context, modifiers, pos);
-    type = type->applyAccessQualifiers(context, modifiers, pos);
+    type = this->applyPrecisionQualifiers(context, modifierFlags, pos);
+    type = type->applyAccessQualifiers(context, modifierFlags, pos);
     return type;
 }
 
 const Type* Type::applyPrecisionQualifiers(const Context& context,
-                                           Modifiers* modifiers,
+                                           ModifierFlags* modifierFlags,
                                            Position pos) const {
-    int precisionQualifiers = modifiers->fFlags & (Modifiers::kHighp_Flag |
-                                                   Modifiers::kMediump_Flag |
-                                                   Modifiers::kLowp_Flag);
-    if (!precisionQualifiers) {
+    ModifierFlags precisionQualifiers = *modifierFlags & (ModifierFlag::kHighp |
+                                                          ModifierFlag::kMediump |
+                                                          ModifierFlag::kLowp);
+    if (precisionQualifiers == ModifierFlag::kNone) {
         // No precision qualifiers here. Return the type as-is.
         return this;
     }
@@ -813,19 +1012,19 @@ const Type* Type::applyPrecisionQualifiers(const Context& context,
         return context.fTypes.fPoison.get();
     }
 
-    if (SkPopCount(precisionQualifiers) > 1) {
+    if (SkPopCount(precisionQualifiers.value()) > 1) {
         context.fErrors->error(pos, "only one precision qualifier can be used");
         return context.fTypes.fPoison.get();
     }
 
     // We're going to return a whole new type, so the modifier bits can be cleared out.
-    modifiers->fFlags &= ~(Modifiers::kHighp_Flag |
-                           Modifiers::kMediump_Flag |
-                           Modifiers::kLowp_Flag);
+    *modifierFlags &= ~(ModifierFlag::kHighp |
+                        ModifierFlag::kMediump |
+                        ModifierFlag::kLowp);
 
     const Type& component = this->componentType();
     if (component.highPrecision()) {
-        if (precisionQualifiers & Modifiers::kHighp_Flag) {
+        if (precisionQualifiers & ModifierFlag::kHighp) {
             // Type is already high precision, and we are requesting high precision. Return as-is.
             return this;
         }
@@ -854,8 +1053,8 @@ const Type* Type::applyPrecisionQualifiers(const Context& context,
         if (mediumpType) {
             // Convert the mediump component type into the final vector/matrix/array type as needed.
             return this->isArray()
-                           ? context.fSymbolTable->addArrayDimension(mediumpType, this->columns())
-                           : &mediumpType->toCompound(context, this->columns(), this->rows());
+                    ? context.fSymbolTable->addArrayDimension(context, mediumpType, this->columns())
+                    : &mediumpType->toCompound(context, this->columns(), this->rows());
         }
     }
 
@@ -865,36 +1064,37 @@ const Type* Type::applyPrecisionQualifiers(const Context& context,
 }
 
 const Type* Type::applyAccessQualifiers(const Context& context,
-                                        Modifiers* modifiers,
+                                        ModifierFlags* modifierFlags,
                                         Position pos) const {
-    int accessQualifiers = modifiers->fFlags & (Modifiers::kReadOnly_Flag |
-                                                Modifiers::kWriteOnly_Flag);
-    if (!accessQualifiers) {
-        // No access qualifiers here. Return the type as-is.
+    ModifierFlags accessQualifiers = *modifierFlags & (ModifierFlag::kReadOnly |
+                                                       ModifierFlag::kWriteOnly);
+
+    // We're going to return a whole new type, so the modifier bits must be cleared out.
+    *modifierFlags &= ~(ModifierFlag::kReadOnly |
+                        ModifierFlag::kWriteOnly);
+
+    if (this->matches(*context.fTypes.fTexture2D)) {
+        // We require all texture2Ds to be qualified with `readonly` or `writeonly`.
+        // (Read-write textures are not yet supported in WGSL.)
+        if (accessQualifiers == ModifierFlag::kReadOnly) {
+            return context.fTypes.fReadOnlyTexture2D.get();
+        }
+        if (accessQualifiers == ModifierFlag::kWriteOnly) {
+            return context.fTypes.fWriteOnlyTexture2D.get();
+        }
+        context.fErrors->error(
+                pos,
+                accessQualifiers
+                        ? "'readonly' and 'writeonly' qualifiers cannot be combined"
+                        : "'texture2D' requires a 'readonly' or 'writeonly' access qualifier");
         return this;
     }
 
-    // We're going to return a whole new type, so the modifier bits can be cleared out.
-    modifiers->fFlags &= ~(Modifiers::kReadOnly_Flag |
-                           Modifiers::kWriteOnly_Flag);
-
-    if (this->matches(*context.fTypes.fReadWriteTexture2D)) {
-        switch (accessQualifiers) {
-            case Modifiers::kReadOnly_Flag:
-                return context.fTypes.fReadOnlyTexture2D.get();
-
-            case Modifiers::kWriteOnly_Flag:
-                return context.fTypes.fWriteOnlyTexture2D.get();
-
-            default:
-                context.fErrors->error(pos, "'readonly' and 'writeonly' qualifiers "
-                                            "cannot be combined");
-                return this;
-        }
+    if (accessQualifiers) {
+        context.fErrors->error(pos, "type '" + this->displayName() + "' does not support "
+                                    "qualifier '" + accessQualifiers.description() + "'");
     }
 
-    context.fErrors->error(pos, "type '" + this->displayName() + "' does not support qualifier '" +
-                                Modifiers::DescribeFlags(accessQualifiers) + "'");
     return this;
 }
 
@@ -1034,22 +1234,28 @@ const Type& Type::toCompound(const Context& context, int columns, int rows) cons
     return *context.fTypes.fVoid;
 }
 
-const Type* Type::clone(SymbolTable* symbolTable) const {
+const Type* Type::clone(const Context& context, SymbolTable* symbolTable) const {
     // Many types are built-ins, and exist in every SymbolTable by default.
-    if (this->isInBuiltinTypes()) {
+    if (this->isInRootSymbolTable()) {
         return this;
     }
-    // Even if the type isn't a built-in, it might already exist in the SymbolTable.
-    const Symbol* clonedSymbol = symbolTable->find(this->name());
-    if (clonedSymbol != nullptr) {
-        const Type& clonedType = clonedSymbol->as<Type>();
-        SkASSERT(clonedType.typeKind() == this->typeKind());
-        return &clonedType;
+    // If we are compiling a program, and the type comes from the program's module, it is safe to
+    // assume that the type is in-scope anywhere in the program without actually recursing through
+    // the SymbolTable hierarchy to prove it.
+    if (!context.fConfig->isBuiltinCode() && this->isBuiltin()) {
+        return this;
+    }
+    // Even if the type isn't a built-in, it might already exist in the SymbolTable. Search by name.
+    const Symbol* existingSymbol = symbolTable->find(this->name());
+    if (existingSymbol != nullptr) {
+        const Type* existingType = &existingSymbol->as<Type>();
+        SkASSERT(existingType->typeKind() == this->typeKind());
+        return existingType;
     }
     // This type actually needs to be cloned into the destination SymbolTable.
     switch (this->typeKind()) {
         case TypeKind::kArray: {
-            return symbolTable->addArrayDimension(&this->componentType(), this->columns());
+            return symbolTable->addArrayDimension(context, &this->componentType(), this->columns());
         }
         case TypeKind::kStruct: {
             // We are cloning an existing struct, so there's no need to call MakeStructType and
@@ -1057,10 +1263,13 @@ const Type* Type::clone(SymbolTable* symbolTable) const {
             const std::string* name = symbolTable->takeOwnershipOfString(std::string(this->name()));
             SkSpan<const Field> fieldSpan = this->fields();
             return symbolTable->add(
+                    context,
                     std::make_unique<StructType>(this->fPosition,
                                                  *name,
                                                  TArray<Field>(fieldSpan.data(), fieldSpan.size()),
-                                                 this->isInterfaceBlock()));
+                                                 this->structNestingDepth(),
+                                                 /*interfaceBlock=*/this->isInterfaceBlock(),
+                                                 /*isBuiltin=*/context.fConfig->isBuiltinCode()));
         }
         default:
             SkDEBUGFAILF("don't know how to clone type '%s'", this->description().c_str());
@@ -1098,53 +1307,6 @@ std::unique_ptr<Expression> Type::coerceExpression(std::unique_ptr<Expression> e
     return nullptr;
 }
 
-static bool is_or_contains_array(const Type* type, bool onlyMatchUnsizedArrays) {
-    if (type->isStruct()) {
-        for (const Field& f : type->fields()) {
-            if (is_or_contains_array(f.fType, onlyMatchUnsizedArrays)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    if (type->isArray()) {
-        return onlyMatchUnsizedArrays
-                    ? (type->isUnsizedArray() || is_or_contains_array(&type->componentType(), true))
-                    : true;
-    }
-
-    return false;
-}
-
-bool Type::isOrContainsArray() const {
-    return is_or_contains_array(this, /*onlyMatchUnsizedArrays=*/false);
-}
-
-bool Type::isOrContainsUnsizedArray() const {
-    return is_or_contains_array(this, /*onlyMatchUnsizedArrays=*/true);
-}
-
-bool Type::isOrContainsAtomic() const {
-    if (this->isAtomic()) {
-        return true;
-    }
-
-    if (this->isArray() && this->componentType().isOrContainsAtomic()) {
-        return true;
-    }
-
-    if (this->isStruct()) {
-        for (const Field& f : this->fields()) {
-            if (f.fType->isOrContainsAtomic()) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
 bool Type::isAllowedInES2(const Context& context) const {
     return !context.fConfig->strictES2Mode() || this->isAllowedInES2();
 }
@@ -1155,7 +1317,8 @@ bool Type::checkForOutOfRangeLiteral(const Context& context, const Expression& e
     if (baseType.isNumber()) {
         // Replace constant expressions with their corresponding values.
         const Expression* valueExpr = ConstantFolder::GetConstantValueForVariable(expr);
-        if (valueExpr->supportsConstantValues()) {
+        // Unsized arrays can't have constants and fails to get a slotCount.
+        if (valueExpr->supportsConstantValues() && !valueExpr->type().isUnsizedArray()) {
             // Iterate over every constant subexpression in the value.
             int numSlots = valueExpr->type().slotCount();
             for (int slot = 0; slot < numSlots; ++slot) {
@@ -1245,7 +1408,8 @@ SKSL_INT Type::convertArraySize(const Context& context,
 }
 
 std::string Field::description() const {
-    return fModifiers.description() + fType->displayName() + " " + std::string(fName) + ";";
+    return fLayout.paddedDescription() + fModifierFlags.paddedDescription() + fType->displayName() +
+           ' ' + std::string(fName) + ';';
 }
 
 }  // namespace SkSL

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,13 +8,21 @@
 #ifndef SkSGImage_DEFINED
 #define SkSGImage_DEFINED
 
+#include "include/core/SkImage.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSamplingOptions.h"
+#include "modules/sksg/include/SkSGNode.h"
 #include "modules/sksg/include/SkSGRenderNode.h"
 
-#include "include/core/SkSamplingOptions.h"
+#include <utility>
 
-class SkImage;
+class SkCanvas;
+class SkMatrix;
+struct SkPoint;
 
 namespace sksg {
+class InvalidationController;
 
 /**
  * Concrete rendering node, wrapping an SkImage.

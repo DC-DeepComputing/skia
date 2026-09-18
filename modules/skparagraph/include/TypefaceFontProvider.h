@@ -1,15 +1,16 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
 #ifndef TypefaceFontProvider_DEFINED
 #define TypefaceFontProvider_DEFINED
 
-#include "include/private/base/SkTArray.h"
-#include "src/core/SkTHash.h"
+#include "include/core/SkFontMgr.h"
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkStream.h"
+#include "include/core/SkString.h"
+#include "include/private/SkTArray.h"
+
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "include/core/SkFontMgr.h"
-#include "include/core/SkStream.h"
-#include "include/core/SkString.h"
 
 namespace skia {
 namespace textlayout {
@@ -44,10 +45,8 @@ public:
 
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override;
 
-    sk_sp<SkFontStyleSet> onCreateStyleSet(int) const override { return nullptr; }
-    sk_sp<SkTypeface> onMatchFamilyStyle(const char[], const SkFontStyle&) const override {
-        return nullptr;
-    }
+    sk_sp<SkFontStyleSet> onCreateStyleSet(int) const override;
+    sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[], const SkFontStyle& pattern) const override;
     sk_sp<SkTypeface> onMatchFamilyStyleCharacter(const char[], const SkFontStyle&,
                                                   const char*[], int,
                                                   SkUnichar) const override {
@@ -66,13 +65,11 @@ public:
         return nullptr;
     }
 
-    sk_sp<SkTypeface> onLegacyMakeTypeface(const char[], SkFontStyle) const override {
-        return nullptr;
-    }
+    sk_sp<SkTypeface> onLegacyMakeTypeface(const char[], SkFontStyle) const override;
 
 private:
-    skia_private::THashMap<SkString, sk_sp<TypefaceFontStyleSet>> fRegisteredFamilies;
-    skia_private::TArray<SkString> fFamilyNames;
+    std::unordered_map<std::string, sk_sp<TypefaceFontStyleSet>> fRegisteredFamilies;
+    skia_private::TArray<std::string> fFamilyNames;
 };
 
 }  // namespace textlayout

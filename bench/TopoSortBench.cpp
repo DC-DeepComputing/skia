@@ -7,7 +7,7 @@
 
 #include "bench/Benchmark.h"
 #include "include/core/SkString.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/ganesh/GrTTopoSort.h"
 
 #include "tools/ToolUtils.h"
@@ -22,7 +22,7 @@ public:
     }
 
     bool isSuitableFor(Backend backend) override {
-        return kNonRendering_Backend == backend;
+        return Backend::kNonRendering == backend;
     }
 
 protected:

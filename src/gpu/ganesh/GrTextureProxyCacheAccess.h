@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -10,14 +10,19 @@
 
 #include "src/gpu/ganesh/GrTextureProxy.h"
 
+class GrProxyProvider;
+
+namespace skgpu {
+class UniqueKey;
+}
+
 /**
  * This class allows GrResourceCache increased privileged access to GrTextureProxy objects.
  */
 class GrTextureProxy::CacheAccess {
 private:
-    void setUniqueKey(GrProxyProvider* proxyProvider, const skgpu::UniqueKey& key) {
-        fTextureProxy->setUniqueKey(proxyProvider, key);
-    }
+    void setUniqueKey(sk_sp<GrUniquelyKeyedProxyRegistry> uniquelyKeyedProxyRegistry,
+                      const skgpu::UniqueKey& key);
 
     void clearUniqueKey() {
         fTextureProxy->clearUniqueKey();

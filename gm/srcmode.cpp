@@ -24,8 +24,9 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #define W   SkIntToScalar(80)
 #define H   SkIntToScalar(60)
@@ -37,10 +38,9 @@ static void identity_paintproc(SkPaint* paint) {
 }
 
 static void gradient_paintproc(SkPaint* paint) {
-    const SkColor colors[] = { SK_ColorGREEN, SK_ColorBLUE };
+    const SkColor4f colors[] = { SkColors::kGreen, SkColors::kBlue };
     const SkPoint pts[] = { { 0, 0 }, { W, H } };
-    paint->setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                                  SkTileMode::kClamp));
+    paint->setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
 }
 
 typedef void (*Proc)(SkCanvas*, const SkPaint&, const SkFont&);
@@ -74,15 +74,15 @@ class SrcModeGM : public skiagm::GM {
 
     void onOnceBeforeDraw() override { this->setBGColor(SK_ColorBLACK); }
 
-    SkString onShortName() override { return SkString("srcmode"); }
+    SkString getName() const override { return SkString("srcmode"); }
 
-    SkISize onISize() override { return {640, 760}; }
+    SkISize getISize() override { return {640, 760}; }
 
     void drawContent(SkCanvas* canvas) {
         canvas->translate(SkIntToScalar(20), SkIntToScalar(20));
 
         SkPaint paint;
-        SkFont  font(ToolUtils::create_portable_typeface(), H / 4);
+        SkFont  font(ToolUtils::DefaultPortableTypeface(), H / 4);
         paint.setColor(0x80F60000);
 
         const Proc procs[] = {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,9 +7,25 @@
 
 #include "modules/skottie/src/text/TextValue.h"
 
+#include "include/core/SkColor.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTypeface.h"
+#include "include/utils/SkTextUtils.h"
+#include "modules/jsonreader/SkJSONReader.h"
+#include "modules/skottie/include/Skottie.h"
+#include "modules/skottie/include/TextShaper.h"
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <limits>
 
 namespace skottie::internal {
 
@@ -37,8 +53,12 @@ bool Parse(const skjson::Value& jv, const internal::AnimationBuilder& abuilder, 
     v->fTextSize   = **text_size;
     v->fLineHeight = **line_height;
     v->fTypeface   = font->fTypeface;
+    v->fFontFamily = font->fFamily;
     v->fAscent     = font->fAscentPct * -0.01f * v->fTextSize; // negative ascent per SkFontMetrics
     v->fLineShift  = ParseDefault((*jtxt)["ls"], 0.0f);
+#if !defined(SK_DISABLE_SKOTTIE_TRACKING)
+    v->fTextTracking = ParseDefault((*jtxt)["tr"], 0.0f);
+#endif
 
     static constexpr SkTextUtils::Align gAlignMap[] = {
         SkTextUtils::kLeft_Align,  // 'j': 0
@@ -161,8 +181,8 @@ bool Parse(const skjson::Value& jv, const internal::AnimationBuilder& abuilder, 
             return false;
         }
 
-        VectorValue color_vec;
-        if (!skottie::Parse(*jcolor, &color_vec)) {
+        ColorValue color_vec;
+        if (!skottie::Parse(*jcolor, static_cast<VectorValue*>(&color_vec))) {
             return false;
         }
 

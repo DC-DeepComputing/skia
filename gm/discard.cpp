@@ -16,11 +16,14 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "tools/ToolUtils.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Surface.h"
@@ -38,13 +41,9 @@ public:
     DiscardGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("discard");
-    }
+    SkString getName() const override { return SkString("discard"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(100, 100);
-    }
+    SkISize getISize() override { return SkISize::Make(100, 100); }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
 
@@ -54,14 +53,15 @@ protected:
         SkImageInfo info = SkImageInfo::MakeN32Premul(size);
         sk_sp<SkSurface> surface;
 
-        auto dContext = GrAsDirectContext(canvas->recordingContext());
-        if (dContext && !dContext->abandoned()) {
+#if defined(SK_GANESH)
+        if (auto dContext = GrAsDirectContext(canvas->recordingContext());
+            dContext && !dContext->abandoned()) {
             surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
         }
+#endif
 
 #if defined(SK_GRAPHITE)
-        auto recorder = canvas->recorder();
-        if (recorder) {
+        if (auto recorder = canvas->recorder()) {
             surface = SkSurfaces::RenderTarget(recorder, info);
         }
 #endif

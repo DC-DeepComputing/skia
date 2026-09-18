@@ -5,21 +5,23 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/codec/SkBmpRLECodec.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
-#include "include/core/SkColorPriv.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkColorData.h"
+#include "include/private/SkAlign.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTemplates.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkColorPriv.h"
+#include "src/core/SkSafeMath.h"
 
 #include <algorithm>
 #include <cstring>
@@ -98,12 +100,12 @@ SkCodec::Result SkBmpRLECodec::onGetPixels(const SkImageInfo& dstInfo,
         }
 
         // Fill in the color table
-        PackColorProc packARGB = choose_pack_color_proc(false, dstColorType);
+        SkCodecPriv::PackColorProc packARGB = SkCodecPriv::ChoosePackColorProc(false, dstColorType);
         uint32_t i = 0;
         for (; i < numColorsToRead; i++) {
-            uint8_t blue = get_byte(cBuffer.get(), i*fBytesPerColor);
-            uint8_t green = get_byte(cBuffer.get(), i*fBytesPerColor + 1);
-            uint8_t red = get_byte(cBuffer.get(), i*fBytesPerColor + 2);
+            uint8_t blue = SkCodecPriv::UnsafeGetByte(cBuffer.get(), i * fBytesPerColor);
+            uint8_t green = SkCodecPriv::UnsafeGetByte(cBuffer.get(), i * fBytesPerColor + 1);
+            uint8_t red = SkCodecPriv::UnsafeGetByte(cBuffer.get(), i * fBytesPerColor + 2);
             colorTable[i] = packARGB(0xFF, red, green, blue);
         }
 
@@ -111,7 +113,7 @@ SkCodec::Result SkBmpRLECodec::onGetPixels(const SkImageInfo& dstInfo,
         // color table with black.  This is the same the behavior as the
         // chromium decoder.
         for (; i < maxColors; i++) {
-            colorTable[i] = SkPackARGB32NoCheck(0xFF, 0, 0, 0);
+            colorTable[i] = SkPackARGB32(0xFF, 0, 0, 0);
         }
 
         // Set the color table
@@ -184,12 +186,12 @@ size_t SkBmpRLECodec::checkForMoreData() {
 void SkBmpRLECodec::setPixel(void* dst, size_t dstRowBytes,
                              const SkImageInfo& dstInfo, uint32_t x, uint32_t y,
                              uint8_t index) {
-    if (dst && is_coord_necessary(x, fSampleX, dstInfo.width())) {
+    if (dst && SkCodecPriv::IsCoordNecessary(x, fSampleX, dstInfo.width())) {
         // Set the row
         uint32_t row = this->getDstRow(y, dstInfo.height());
 
         // Set the pixel based on destination color type
-        const int dstX = get_dst_coord(x, fSampleX);
+        const int dstX = SkCodecPriv::GetDstCoord(x, fSampleX);
         switch (dstInfo.colorType()) {
             case kRGBA_8888_SkColorType:
             case kBGRA_8888_SkColorType: {
@@ -218,12 +220,12 @@ void SkBmpRLECodec::setRGBPixel(void* dst, size_t dstRowBytes,
                                 const SkImageInfo& dstInfo, uint32_t x,
                                 uint32_t y, uint8_t red, uint8_t green,
                                 uint8_t blue) {
-    if (dst && is_coord_necessary(x, fSampleX, dstInfo.width())) {
+    if (dst && SkCodecPriv::IsCoordNecessary(x, fSampleX, dstInfo.width())) {
         // Set the row
         uint32_t row = this->getDstRow(y, dstInfo.height());
 
         // Set the pixel based on destination color type
-        const int dstX = get_dst_coord(x, fSampleX);
+        const int dstX = SkCodecPriv::GetDstCoord(x, fSampleX);
         switch (dstInfo.colorType()) {
             case kRGBA_8888_SkColorType: {
                 SkPMColor* dstRow = SkTAddOffset<SkPMColor>(dst, row * (int) dstRowBytes);
@@ -324,11 +326,17 @@ int SkBmpRLECodec::decodeRows(const SkImageInfo& info, void* dst, size_t dstRowB
         if (this->colorXform()) {
             decodeInfo = decodeInfo.makeColorType(kXformSrcColorType);
             if (kRGBA_F16_SkColorType == dstInfo.colorType()) {
-                int count = height * dstInfo.width();
+                SkSafeMath safe;
+                int count = safe.mulInt(height, dstInfo.width());
+                size_t xformBufferSize = safe.mul(count, sizeof(uint32_t));
+                size_t rowBytes = safe.mul(dstInfo.width(), sizeof(uint32_t));
+                if (!safe || count <= 0) {
+                    return 0;
+                }
                 this->resetXformBuffer(count);
-                sk_bzero(this->xformBuffer(), count * sizeof(uint32_t));
+                sk_bzero(this->xformBuffer(), xformBufferSize);
                 decodeDst = this->xformBuffer();
-                decodeRowBytes = dstInfo.width() * sizeof(uint32_t);
+                decodeRowBytes = rowBytes;
             }
         }
     }
@@ -422,8 +430,8 @@ int SkBmpRLECodec::decodeRLE(const SkImageInfo& dstInfo, void* dst, size_t dstRo
                     // Furthermore, the value of task is equal to the number
                     // of pixels to interpret.
                     uint8_t numPixels = task;
-                    const size_t rowBytes = compute_row_bytes(numPixels,
-                            this->bitsPerPixel());
+                    const size_t rowBytes =
+                            SkCodecPriv::ComputeRowBytes(numPixels, this->bitsPerPixel());
                     if (x + numPixels > width) {
                         SkCodecPrintf("Warning: invalid RLE input.\n");
                     }
@@ -517,7 +525,7 @@ int SkBmpRLECodec::decodeRLE(const SkImageInfo& dstInfo, void* dst, size_t dstRo
                 // RLE8 has one color index that gets repeated
                 // RLE4 has two color indexes in the upper and lower 4 bits of
                 // the bytes, which are alternated
-                uint8_t indices[2] = { task, task };
+                std::array<uint8_t, 2> indices = { task, task };
                 if (4 == this->bitsPerPixel()) {
                     indices[0] >>= 4;
                     indices[1] &= 0xf;
@@ -577,5 +585,5 @@ int SkBmpRLECodec::setSampleX(int sampleX) {
 }
 
 int SkBmpRLECodec::fillWidth() const {
-    return get_scaled_dimension(this->dimensions().width(), fSampleX);
+    return SkCodecPriv::GetSampledDimension(this->dimensions().width(), fSampleX);
 }

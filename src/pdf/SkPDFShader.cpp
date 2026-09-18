@@ -7,21 +7,31 @@
 
 #include "src/pdf/SkPDFShader.h"
 
-#include "include/core/SkData.h"
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
-#include "include/docs/SkPDFDocument.h"
-#include "include/private/base/SkMath.h"
-#include "include/private/base/SkTPin.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/core/SkTileMode.h"
+#include "include/private/SkTPin.h"
+#include "src/core/SkDevice.h"
+#include "src/core/SkTHash.h"
+#include "src/pdf/SkKeyedImage.h"
 #include "src/pdf/SkPDFDevice.h"
 #include "src/pdf/SkPDFDocumentPriv.h"
-#include "src/pdf/SkPDFFormXObject.h"
 #include "src/pdf/SkPDFGradientShader.h"
-#include "src/pdf/SkPDFGraphicState.h"
-#include "src/pdf/SkPDFResourceDict.h"
 #include "src/pdf/SkPDFUtils.h"
+#include "src/shaders/SkShaderBase.h"
+
+#include <memory>
+#include <utility>
 
 static void draw(SkCanvas* canvas, const SkImage* image, SkColor4f paintColor) {
     SkPaint paint(paintColor);
@@ -251,7 +261,8 @@ static SkPDFIndirectReference make_image_shader(SkPDFDocument* doc,
     auto imageShader = patternDevice->content();
     std::unique_ptr<SkPDFDict> resourceDict = patternDevice->makeResourceDict();
     std::unique_ptr<SkPDFDict> dict = SkPDFMakeDict();
-    SkPDFUtils::PopulateTilingPatternDict(dict.get(), patternBBox,
+    SkPDFUtils::PopulateTilingPatternDict(dict.get(),
+                                          patternBBox, is_tiled(tileModesX), is_tiled(tileModesY),
                                           std::move(resourceDict), finalMatrix);
     return SkPDFStreamOut(std::move(dict), std::move(imageShader), doc);
 }
@@ -329,7 +340,10 @@ SkPDFIndirectReference SkPDFMakeShader(SkPDFDocument* doc,
     SkASSERT(shader);
     SkASSERT(doc);
     if (as_SB(shader)->asGradient() != SkShaderBase::GradientType::kNone) {
-        return SkPDFGradientShader::Make(doc, shader, canvasTransform, surfaceBBox);
+        if (SkPDFIndirectReference gradientShader =
+                    SkPDFGradientShader::Make(doc, shader, canvasTransform, surfaceBBox)) {
+            return gradientShader;
+        }
     }
     if (surfaceBBox.isEmpty()) {
         return SkPDFIndirectReference();

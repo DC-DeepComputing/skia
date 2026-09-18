@@ -7,8 +7,9 @@
 
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 
-#include "include/private/base/SkTPin.h"
-#include "src/base/SkVx.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkTPin.h"
+#include "src/core/SkVx.h"
 
 #include <algorithm>
 #include <limits>

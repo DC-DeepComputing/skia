@@ -9,8 +9,8 @@
 
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAssert.h"
-#include "src/base/SkRandom.h"
+#include "include/private/SkAssert.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -365,7 +365,7 @@ GrXPFactory::AnalysisProperties CustomXPFactory::analysisProperties(
 }
 
 GR_DEFINE_XP_FACTORY_TEST(CustomXPFactory)
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 const GrXPFactory* CustomXPFactory::TestGet(GrProcessorTestData* d) {
     int mode = d->fRandom->nextRangeU((int)SkBlendMode::kLastCoeffMode + 1,
                                       (int)SkBlendMode::kLastSeparableMode);

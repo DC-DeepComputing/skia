@@ -1,15 +1,21 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "include/core/SkColorSpace.h"
-#include "include/effects/SkGradientShader.h"
 #include "modules/svg/include/SkSVGRadialGradient.h"
+
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkShader.h"
+#include "include/effects/SkGradient.h"
+#include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGRenderContext.h"
-#include "modules/svg/include/SkSVGValue.h"
+
+class SkMatrix;
+enum class SkTileMode;
 
 SkSVGRadialGradient::SkSVGRadialGradient() : INHERITED(SkSVGTag::kRadialGradient) {}
 
@@ -36,18 +42,22 @@ sk_sp<SkShader> SkSVGRadialGradient::onMakeShader(const SkSVGRenderContext& ctx,
             lctx.resolve(fCx, SkSVGLengthContext::LengthType::kHorizontal),
             lctx.resolve(fCy, SkSVGLengthContext::LengthType::kVertical));
     const auto  focal = SkPoint::Make(
-        fFx.isValid() ? lctx.resolve(*fFx, SkSVGLengthContext::LengthType::kHorizontal)
-                      : center.x(),
-        fFy.isValid() ? lctx.resolve(*fFy, SkSVGLengthContext::LengthType::kVertical)
-                      : center.y());
+        fFx.has_value() ? lctx.resolve(*fFx, SkSVGLengthContext::LengthType::kHorizontal)
+                        : center.x(),
+        fFy.has_value() ? lctx.resolve(*fFy, SkSVGLengthContext::LengthType::kVertical)
+                        : center.y());
 
     if (r == 0) {
         const auto last_color = count > 0 ? colors[count - 1] : SkColors::kBlack;
         return SkShaders::Color(last_color, nullptr);
     }
 
+    SkSpan<const float> positions;
+    if (pos) {
+        positions = {pos, (size_t)count};
+    }
+    SkGradient grad = {{{colors, (size_t)count}, positions, tm, nullptr}, {}};
     return center == focal
-        ? SkGradientShader::MakeRadial(center, r, colors, nullptr, pos, count, tm, 0, &m)
-        : SkGradientShader::MakeTwoPointConical(focal, 0, center, r, colors, nullptr, pos,
-                                                count, tm, 0, &m);
+        ? SkShaders::RadialGradient(center, r, grad, &m)
+        : SkShaders::TwoPointConicalGradient(focal, 0, center, r, grad, &m);
 }

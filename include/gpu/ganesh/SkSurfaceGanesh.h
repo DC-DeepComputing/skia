@@ -11,14 +11,15 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrTypes.h"
-#include "include/private/base/SkAPI.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SkAPI.h"
 
 class GrBackendRenderTarget;
 class GrBackendTexture;
 class GrRecordingContext;
 class SkColorSpace;
-class SkSurfaceCharacterization;
+class GrSurfaceCharacterization;
 class SkSurfaceProps;
 enum SkColorType : int;
 namespace skgpu {
@@ -67,7 +68,8 @@ SK_API sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
                                      int sampleCount,
                                      GrSurfaceOrigin surfaceOrigin,
                                      const SkSurfaceProps* surfaceProps,
-                                     bool shouldCreateWithMips = false);
+                                     bool shouldCreateWithMips = false,
+                                     bool isProtected = false);
 inline sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
                                      skgpu::Budgeted budgeted,
                                      const SkImageInfo& imageInfo,
@@ -93,7 +95,7 @@ inline sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
     @return                  SkSurface if all parameters are valid; otherwise, nullptr
 */
 SK_API sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
-                                     const SkSurfaceCharacterization& characterization,
+                                     const GrSurfaceCharacterization& characterization,
                                      skgpu::Budgeted budgeted);
 
 /** Wraps a GPU-backed texture into SkSurface. Caller must ensure the texture is
@@ -198,7 +200,7 @@ SK_API GrBackendRenderTarget GetBackendRenderTarget(SkSurface*, BackendHandleAcc
     GrDirectContext::flush.
  */
 SK_API void ResolveMSAA(SkSurface* surface);
-inline void ResolveMSAA(sk_sp<SkSurface> surface) {
+inline void ResolveMSAA(const sk_sp<SkSurface>& surface) {
     return ResolveMSAA(surface.get());
 }
 
@@ -208,10 +210,12 @@ namespace skgpu::ganesh {
 // Clients should strive to call GrDirectContext::flush directly. However, there exist some
 // places where the GrDirectContext is hard to find, these helpers allow for the flushing of the
 // provided surface. This is a no-op if the surface is nullptr or not GPU backed.
-SK_API GrSemaphoresSubmitted Flush(sk_sp<SkSurface>);
-SK_API GrSemaphoresSubmitted Flush(SkSurface*);
-SK_API void FlushAndSubmit(sk_sp<SkSurface>);
-SK_API void FlushAndSubmit(SkSurface*);
+SK_API GrDirectContext::FlushResult Flush(sk_sp<SkSurface>);
+SK_API GrDirectContext::FlushResult Flush(SkSurface*);
+
+SK_API GrDirectContext::FlushResult FlushAndSubmit(sk_sp<SkSurface>);
+SK_API GrDirectContext::FlushResult FlushAndSubmit(SkSurface*);
+
 }  // namespace skgpu::ganesh
 
 #endif

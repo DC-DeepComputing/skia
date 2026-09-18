@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,10 +8,13 @@
 #include "modules/sksg/include/SkSGText.h"
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/base/SkTArray.h"
+
+#include <utility>
+
+class SkMatrix;
 
 namespace sksg {
 

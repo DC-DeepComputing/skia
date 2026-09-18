@@ -10,6 +10,12 @@
 
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkRect.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <vector>
 
 /**
  * An R-Tree implementation. In short, it is a balanced n-ary tree containing a hierarchy of
@@ -51,7 +57,7 @@ private:
 
     struct Branch {
         union {
-            Node* fSubtree;
+            RAW_PTR_EXCLUSION Node* fSubtree;  // RAW_PTR_EXCLUSION: union.
             int fOpIndex;
         };
         SkRect fBounds;
@@ -60,7 +66,7 @@ private:
     struct Node {
         uint16_t fNumChildren;
         uint16_t fLevel;
-        Branch fChildren[kMaxChildren];
+        std::array<Branch, kMaxChildren> fChildren;
     };
 
     void search(Node* root, const SkRect& query, std::vector<int>* results) const;

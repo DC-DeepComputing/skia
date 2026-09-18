@@ -4,37 +4,81 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/ops/GrOvalOpFactory.h"
 
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPathEffect.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRRect.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
 #include "include/core/SkStrokeRec.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/SkAlignedStorage.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkOnce.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTo.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkColorData.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRRectPriv.h"
+#include "src/core/SkSLTypeShared.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/KeyBuilder.h"
+#include "src/gpu/ResourceKey.h"
+#include "src/gpu/ganesh/GrAppliedClip.h"
+#include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCaps.h"
-#include "src/gpu/ganesh/GrDrawOpTest.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
+#include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
-#include "src/gpu/ganesh/GrProcessor.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/GrProcessorAnalysis.h"
+#include "src/gpu/ganesh/GrProcessorSet.h"
 #include "src/gpu/ganesh/GrProcessorUnitTest.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
+#include "src/gpu/ganesh/GrShaderVar.h"
+#include "src/gpu/ganesh/GrSimpleMesh.h"
 #include "src/gpu/ganesh/GrStyle.h"
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
-#include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
-#include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
 
+#if defined(GPU_TEST_UTILS)
+#include "src/core/SkRandom.h"
+#include "src/gpu/ganesh/GrDrawOpTest.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
+#endif
+
+#include <algorithm>
+#include <array>
+#include <climits>
+#include <cstdint>
+#include <memory>
 #include <utility>
+
+class GrDstProxyView;
+class GrGLSLProgramDataManager;
+class GrGLSLUniformHandler;
+class GrSurfaceProxyView;
+enum class GrXferBarrierFlags;
+namespace skgpu::ganesh {
+class SurfaceDrawContext;
+}
 
 using namespace skia_private;
 
-#ifndef SK_ENABLE_OPTIMIZE_SIZE
+#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 using skgpu::VertexWriter;
 using skgpu::VertexColor;
@@ -119,7 +163,6 @@ private:
             fInUnionPlane = {"inUnionPlane", kFloat3_GrVertexAttribType, SkSLType::kHalf3};
         }
         if (roundCaps) {
-            SkASSERT(stroke);
             SkASSERT(clipPlane);
             fInRoundCapCenters =
                     {"inRoundCapCenters", kFloat4_GrVertexAttribType, SkSLType::kFloat4};
@@ -259,7 +302,7 @@ private:
 
 GR_DEFINE_GEOMETRY_PROCESSOR_TEST(CircleGeometryProcessor)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrGeometryProcessor* CircleGeometryProcessor::TestCreate(GrProcessorTestData* d) {
     bool stroke = d->fRandom->nextBool();
     bool roundCaps = stroke ? d->fRandom->nextBool() : false;
@@ -457,10 +500,11 @@ private:
                     "half2 prevDash = half2(half(-dashParams.y) - half(dashParams.w),"
                                            "half(-dashParams.y) + half(dashParams.x) -"
                                                                  "half(dashParams.w));"
+                    "const half kDashBoundsEpsilon = 0.01;"
                     "half dashAlpha = 0;"
                 );
             fragBuilder->codeAppendf(
-                    "if (angleFromStart - x + dashParams.y >= 6.28318530718) {"
+                    "if (angleFromStart - x + dashParams.y >= 6.28318530718 + kDashBoundsEpsilon) {"
                          "dashAlpha += half(%s(x - wrapDashes.z, d) * %s(wrapDashes.w - x, d));"
                          "currDash.y = min(currDash.y, lastIntervalLength);"
                          "if (nextDash.x >= lastIntervalLength) {"
@@ -473,7 +517,7 @@ private:
                     "}"
             , fnName.c_str(), fnName.c_str());
             fragBuilder->codeAppendf(
-                    "if (angleFromStart - x - dashParams.y < -0.01) {"
+                    "if (angleFromStart - x - dashParams.y < -kDashBoundsEpsilon) {"
                          "dashAlpha += half(%s(x - wrapDashes.x, d) * %s(wrapDashes.y - x, d));"
                          "currDash.x = max(currDash.x, 0);"
                          "if (prevDash.y <= 0) {"
@@ -511,7 +555,7 @@ private:
     using INHERITED = GrGeometryProcessor;
 };
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrGeometryProcessor* ButtCapDashedCircleGeometryProcessor::TestCreate(GrProcessorTestData* d) {
     bool wideColor = d->fRandom->nextBool();
     const SkMatrix& matrix = GrTest::TestMatrix(d->fRandom);
@@ -703,7 +747,7 @@ private:
 
 GR_DEFINE_GEOMETRY_PROCESSOR_TEST(EllipseGeometryProcessor)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrGeometryProcessor* EllipseGeometryProcessor::TestCreate(GrProcessorTestData* d) {
     bool stroke = d->fRandom->nextBool();
     bool wideColor = d->fRandom->nextBool();
@@ -893,7 +937,7 @@ private:
 
 GR_DEFINE_GEOMETRY_PROCESSOR_TEST(DIEllipseGeometryProcessor)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 GrGeometryProcessor* DIEllipseGeometryProcessor::TestCreate(GrProcessorTestData* d) {
     bool wideColor = d->fRandom->nextBool();
     bool useScale = d->fRandom->nextBool();
@@ -1046,7 +1090,7 @@ public:
 
         fRoundCaps = false;
 
-        viewMatrix.mapPoints(&center, 1);
+        center = viewMatrix.mapPoint(center);
         radius = viewMatrix.mapRadius(radius);
         SkScalar strokeWidth = viewMatrix.mapRadius(stroke.getWidth());
 
@@ -1054,14 +1098,14 @@ public:
                 SkStrokeRec::kStroke_Style == recStyle || SkStrokeRec::kHairline_Style == recStyle;
         bool hasStroke = isStrokeOnly || SkStrokeRec::kStrokeAndFill_Style == recStyle;
 
-        SkScalar innerRadius = -SK_ScalarHalf;
-        SkScalar outerRadius = radius;
-        SkScalar halfWidth = 0;
+        float innerRadius = -SK_ScalarHalf;
+        float outerRadius = radius;
+        float halfWidth = 0;
         if (hasStroke) {
             if (SkScalarNearlyZero(strokeWidth)) {
                 halfWidth = SK_ScalarHalf;
             } else {
-                halfWidth = SkScalarHalf(strokeWidth);
+                halfWidth = strokeWidth / 2.f;
             }
 
             outerRadius += halfWidth;
@@ -1097,8 +1141,8 @@ public:
             stopPoint.fX = SkScalarCos(endAngle);
 
             // Adjust the start and end points based on the view matrix (to handle rotated arcs)
-            startPoint = viewMatrix.mapVector(startPoint.fX, startPoint.fY);
-            stopPoint = viewMatrix.mapVector(stopPoint.fX, stopPoint.fY);
+            startPoint = viewMatrix.mapVector(startPoint);
+            stopPoint = viewMatrix.mapVector(stopPoint);
             startPoint.normalize();
             stopPoint.normalize();
 
@@ -1111,7 +1155,8 @@ public:
                 std::swap(startPoint, stopPoint);
             }
 
-            fRoundCaps = style.strokeRec().getWidth() > 0 &&
+            fRoundCaps = hasStroke &&
+                         style.strokeRec().getWidth() > 0 &&
                          style.strokeRec().getCap() == SkPaint::kRound_Cap;
             SkPoint roundCaps[2];
             if (fRoundCaps) {
@@ -1288,7 +1333,7 @@ private:
         int firstVertex;
         VertexWriter vertices = target->makeVertexWriter(fProgramInfo->geomProc().vertexStride(),
                                                          fVertCount, &vertexBuffer, &firstVertex);
-        if (!vertices) {
+        if (!vertices) SK_UNLIKELY {
             SkDebugf("Could not allocate vertices\n");
             return;
         }
@@ -1296,7 +1341,7 @@ private:
         sk_sp<const GrBuffer> indexBuffer = nullptr;
         int firstIndex = 0;
         uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
-        if (!indices) {
+        if (!indices) SK_UNLIKELY {
             SkDebugf("Could not allocate indices\n");
             return;
         }
@@ -1448,7 +1493,7 @@ private:
         return CombineResult::kMerged;
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         SkString string;
         for (int i = 0; i < fCircles.size(); ++i) {
@@ -1526,7 +1571,7 @@ public:
             : GrMeshDrawOp(ClassID())
             , fHelper(processorSet, GrAAType::kCoverage) {
         SkASSERT(circle_stays_circle(viewMatrix));
-        viewMatrix.mapPoints(&center, 1);
+        center = viewMatrix.mapPoint(center);
         radius = viewMatrix.mapRadius(radius);
         strokeWidth = viewMatrix.mapRadius(strokeWidth);
 
@@ -1540,7 +1585,7 @@ public:
             start.fY = SkScalarSin(startAngle);
             start.fX = SkScalarCos(startAngle);
         }
-        viewMatrix.mapVectors(&start, 1);
+        start = viewMatrix.mapVector(start);
         startAngle = SkScalarATan2(start.fY, start.fX);
         reflection = (viewMatrix.getScaleX() * viewMatrix.getScaleY() -
                       viewMatrix.getSkewX() * viewMatrix.getSkewY()) < 0;
@@ -1548,15 +1593,15 @@ public:
         auto totalAngle = onAngle + offAngle;
         phaseAngle = SkScalarMod(phaseAngle + totalAngle / 2, totalAngle) - totalAngle / 2;
 
-        SkScalar halfWidth = 0;
+        float halfWidth = 0;
         if (SkScalarNearlyZero(strokeWidth)) {
             halfWidth = SK_ScalarHalf;
         } else {
-            halfWidth = SkScalarHalf(strokeWidth);
+            halfWidth = strokeWidth / 2.f;
         }
 
-        SkScalar outerRadius = radius + halfWidth;
-        SkScalar innerRadius = radius - halfWidth;
+        float outerRadius = radius + halfWidth;
+        float innerRadius = radius - halfWidth;
 
         // The radii are outset for two reasons. First, it allows the shader to simply perform
         // simpler computation because the computed alpha is zero, rather than 50%, at the radius.
@@ -1660,7 +1705,7 @@ private:
         int firstVertex;
         VertexWriter vertices = target->makeVertexWriter(fProgramInfo->geomProc().vertexStride(),
                                                          fVertCount, &vertexBuffer, &firstVertex);
-        if (!vertices) {
+        if (!vertices) SK_UNLIKELY {
             SkDebugf("Could not allocate vertices\n");
             return;
         }
@@ -1668,7 +1713,7 @@ private:
         sk_sp<const GrBuffer> indexBuffer;
         int firstIndex = 0;
         uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
-        if (!indices) {
+        if (!indices) SK_UNLIKELY {
             SkDebugf("Could not allocate indices\n");
             return;
         }
@@ -1771,7 +1816,7 @@ private:
         return CombineResult::kMerged;
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         SkString string;
         for (int i = 0; i < fCircles.size(); ++i) {
@@ -1838,10 +1883,9 @@ public:
                             const SkStrokeRec& stroke) {
         DeviceSpaceParams params;
         // do any matrix crunching before we reset the draw state for device coords
-        params.fCenter = SkPoint::Make(ellipse.centerX(), ellipse.centerY());
-        viewMatrix.mapPoints(&params.fCenter, 1);
-        SkScalar ellipseXRadius = SkScalarHalf(ellipse.width());
-        SkScalar ellipseYRadius = SkScalarHalf(ellipse.height());
+        params.fCenter = viewMatrix.mapPoint(ellipse.center());
+        float ellipseXRadius = ellipse.width() / 2.f;
+        float ellipseYRadius = ellipse.height() / 2.f;
         params.fXRadius = SkScalarAbs(viewMatrix[SkMatrix::kMScaleX] * ellipseXRadius +
                                       viewMatrix[SkMatrix::kMSkewX] * ellipseYRadius);
         params.fYRadius = SkScalarAbs(viewMatrix[SkMatrix::kMSkewY] * ellipseXRadius +
@@ -1877,7 +1921,7 @@ public:
             }
 
             // we don't handle it if curvature of the stroke is less than curvature of the ellipse
-            if (scaledStroke.fX * (params.fXRadius * params.fYRadius) <
+            if (scaledStroke.fX * (params.fYRadius * params.fYRadius) <
                         (scaledStroke.fY * scaledStroke.fY) * params.fXRadius ||
                 scaledStroke.fY * (params.fXRadius * params.fXRadius) <
                         (scaledStroke.fX * scaledStroke.fX) * params.fYRadius) {
@@ -2012,8 +2056,8 @@ private:
             struct { float xOuter, yOuter, xInner, yInner; } invRadii = {
                 SkScalarInvert(xRadius),
                 SkScalarInvert(yRadius),
-                SkScalarInvert(ellipse.fInnerXRadius),
-                SkScalarInvert(ellipse.fInnerYRadius)
+                sk_ieee_float_divide(1.0f, ellipse.fInnerXRadius),
+                sk_ieee_float_divide(1.0f, ellipse.fInnerYRadius)
             };
             SkScalar xMaxOffset = xRadius + aaBloat;
             SkScalar yMaxOffset = yRadius + aaBloat;
@@ -2068,7 +2112,7 @@ private:
         return CombineResult::kMerged;
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         SkString string = SkStringPrintf("Stroked: %d\n", fStroked);
         for (const auto& geo : fEllipses) {
@@ -2131,8 +2175,8 @@ public:
                             const SkStrokeRec& stroke) {
         DeviceSpaceParams params;
         params.fCenter = SkPoint::Make(ellipse.centerX(), ellipse.centerY());
-        params.fXRadius = SkScalarHalf(ellipse.width());
-        params.fYRadius = SkScalarHalf(ellipse.height());
+        params.fXRadius = ellipse.width() / 2.f;
+        params.fYRadius = ellipse.height() / 2.f;
 
         SkStrokeRec::Style style = stroke.getStyle();
         params.fStyle = (SkStrokeRec::kStroke_Style == style)
@@ -2340,7 +2384,7 @@ private:
         return CombineResult::kMerged;
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         SkString string;
         for (const auto& geo : fEllipses) {
@@ -2535,15 +2579,15 @@ public:
             , fHelper(processorSet, GrAAType::kCoverage) {
         SkRect bounds = devRect;
         SkASSERT(!(devStrokeWidth <= 0 && strokeOnly));
-        SkScalar innerRadius = 0.0f;
-        SkScalar outerRadius = devRadius;
-        SkScalar halfWidth = 0;
+        float innerRadius = 0.0f;
+        float outerRadius = devRadius;
+        float halfWidth = 0;
         RRectType type = kFill_RRectType;
         if (devStrokeWidth > 0) {
             if (SkScalarNearlyZero(devStrokeWidth)) {
                 halfWidth = SK_ScalarHalf;
             } else {
-                halfWidth = SkScalarHalf(devStrokeWidth);
+                halfWidth = devStrokeWidth / 2.f;
             }
 
             if (strokeOnly) {
@@ -2691,7 +2735,7 @@ private:
 
         VertexWriter verts = target->makeVertexWriter(fProgramInfo->geomProc().vertexStride(),
                                                       fVertCount, &vertexBuffer, &firstVertex);
-        if (!verts) {
+        if (!verts) SK_UNLIKELY {
             SkDebugf("Could not allocate vertices\n");
             return;
         }
@@ -2699,7 +2743,7 @@ private:
         sk_sp<const GrBuffer> indexBuffer;
         int firstIndex = 0;
         uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
-        if (!indices) {
+        if (!indices) SK_UNLIKELY {
             SkDebugf("Could not allocate indices\n");
             return;
         }
@@ -2787,8 +2831,11 @@ private:
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
         CircularRRectOp* that = t->cast<CircularRRectOp>();
 
-        // can only represent 65535 unique vertices with 16-bit indices
-        if (fVertCount + that->fVertCount > 65536) {
+        // Cannot combine if the net number of indices would overflow int32, or if the net number
+        // of vertices would overflow uint16 (since the index values are 16-bit that point into
+        // the vertex buffer).
+        if ((fIndexCount > INT32_MAX - that->fIndexCount) ||
+            (fVertCount > SkToInt(UINT16_MAX) - that->fVertCount)) {
             return CombineResult::kCannotCombine;
         }
 
@@ -2810,7 +2857,7 @@ private:
         return CombineResult::kMerged;
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         SkString string;
         for (int i = 0; i < fRRects.size(); ++i) {
@@ -3032,8 +3079,9 @@ private:
             float reciprocalRadii[4] = {
                 SkScalarInvert(rrect.fXRadius),
                 SkScalarInvert(rrect.fYRadius),
-                SkScalarInvert(rrect.fInnerXRadius),
-                SkScalarInvert(rrect.fInnerYRadius)
+                // Pinned below, so divide by zero is acceptable
+                sk_ieee_float_divide(1.0f, rrect.fInnerXRadius),
+                sk_ieee_float_divide(1.0f, rrect.fInnerYRadius)
             };
 
             // If the stroke width is exactly double the radius, the inner radii will be zero.
@@ -3129,7 +3177,7 @@ private:
         return CombineResult::kMerged;
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         SkString string = SkStringPrintf("Stroked: %d\n", fStroked);
         for (const auto& geo : fRRects) {
@@ -3408,7 +3456,7 @@ GrOp::Owner GrOvalOpFactory::MakeArcOp(GrRecordingContext* context,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 
 GR_DRAW_OP_TEST_DEFINE(CircleOp) {
     if (numSamples > 1) {

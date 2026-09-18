@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google LLC.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,13 +8,32 @@
 #ifndef StrokeTessellateOp_DEFINED
 #define StrokeTessellateOp_DEFINED
 
+#include "include/core/SkMatrix.h"
 #include "include/core/SkStrokeRec.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkMacros.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkColorData.h"
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrProcessorSet.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
+#include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/tessellate/GrTessellationShader.h"
 #include "src/gpu/ganesh/tessellate/StrokeTessellator.h"
+#include "src/gpu/tessellate/Tessellation.h"
 
+class GrAppliedClip;
+class GrDstProxyView;
+class GrOpFlushState;
+class GrPaint;
+class GrProgramInfo;
 class GrRecordingContext;
 class GrStrokeTessellationShader;
+class GrSurfaceProxyView;
+class SkArenaAlloc;
+class SkPath;
+enum class GrXferBarrierFlags;
+struct SkRect;
 
 namespace skgpu::ganesh {
 

@@ -21,16 +21,23 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_android.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkFixed.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkFixed.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTDArray.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTHash.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/flags/CommandLineFlags.h"
+
+#ifdef SK_TYPEFACE_FACTORY_FONTATIONS
+#include "include/ports/SkFontScanner_Fontations.h"
+#endif
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
+#include "include/ports/SkFontScanner_FreeType.h"
+#endif
 
 #include <algorithm>
 #include <climits>
@@ -39,13 +46,14 @@
 #include <cstdio>
 #include <memory>
 #include <string>
+#include <vector>
 
 DECLARE_bool(verboseFontMgr)
 
-int CountFallbacks(SkTDArray<FontFamily*> fontFamilies) {
+int CountFallbacks(SkSpan<std::unique_ptr<FontFamily>> fontFamilies) {
     int countOfFallbackFonts = 0;
-    for (int i = 0; i < fontFamilies.size(); i++) {
-        if (fontFamilies[i]->fIsFallbackFont) {
+    for (auto&& family : fontFamilies) {
+        if (family->fIsFallbackFont) {
             countOfFallbackFonts++;
         }
     }
@@ -62,7 +70,8 @@ static bool isDIGIT(int c) {
     return ('0' <= c && c <= '9');
 }
 
-static void ValidateLoadedFonts(SkTDArray<FontFamily*> fontFamilies, const char* firstExpectedFile,
+static void ValidateLoadedFonts(SkSpan<std::unique_ptr<FontFamily>> fontFamilies,
+                                const char* firstExpectedFile,
                                 skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, fontFamilies[0]->fNames.size() == 5);
     REPORTER_ASSERT(reporter, !strcmp(fontFamilies[0]->fNames[0].c_str(), "sans-serif"));
@@ -71,8 +80,8 @@ static void ValidateLoadedFonts(SkTDArray<FontFamily*> fontFamilies, const char*
     REPORTER_ASSERT(reporter, !fontFamilies[0]->fIsFallbackFont);
 
     // Check that the languages are all sane.
-    for (const auto& fontFamily : fontFamilies) {
-        for (const auto& lang : fontFamily->fLanguages) {
+    for (auto&& fontFamily : fontFamilies) {
+        for (auto&& lang : fontFamily->fLanguages) {
             const SkString& langString = lang.getTag();
             for (size_t i = 0; i < langString.size(); ++i) {
                 int c = langString[i];
@@ -84,10 +93,8 @@ static void ValidateLoadedFonts(SkTDArray<FontFamily*> fontFamilies, const char*
     // All file names in the test configuration files start with a capital letter.
     // This is not a general requirement, but it is true of all the test configuration data.
     // Verifying ensures the filenames have been read sanely and have not been 'sliced'.
-    for (int i = 0; i < fontFamilies.size(); ++i) {
-        FontFamily& family = *fontFamilies[i];
-        for (int j = 0; j < family.fFonts.size(); ++j) {
-            FontFileInfo& file = family.fFonts[j];
+    for (auto&& family : fontFamilies) {
+        for (auto&& file : family->fFonts) {
             REPORTER_ASSERT(reporter, !file.fFileName.isEmpty() &&
                                       file.fFileName[0] >= 'A' &&
                                       file.fFileName[0] <= 'Z');
@@ -96,50 +103,51 @@ static void ValidateLoadedFonts(SkTDArray<FontFamily*> fontFamilies, const char*
 }
 
 static void DumpFiles(const FontFamily& fontFamily) {
-    for (int j = 0; j < fontFamily.fFonts.size(); ++j) {
-        const FontFileInfo& ffi = fontFamily.fFonts[j];
+    for (auto&& ffi : fontFamily.fFonts) {
         SkDebugf("  file (%d) %s#%d", ffi.fWeight, ffi.fFileName.c_str(), ffi.fIndex);
         for (const auto& coordinate : ffi.fVariationDesignPosition) {
             SkDebugf(" @'%c%c%c%c'=%f",
-                        (coordinate.axis >> 24) & 0xFF,
-                        (coordinate.axis >> 16) & 0xFF,
-                        (coordinate.axis >>  8) & 0xFF,
-                        (coordinate.axis      ) & 0xFF,
-                        coordinate.value);
+                     (char)((coordinate.axis >> 24) & 0xFF),
+                     (char)((coordinate.axis >> 16) & 0xFF),
+                     (char)((coordinate.axis >> 8) & 0xFF),
+                     (char)((coordinate.axis) & 0xFF),
+                     coordinate.value);
         }
         SkDebugf("\n");
     }
 }
 
-static void DumpLoadedFonts(SkTDArray<FontFamily*> fontFamilies, const char* label) {
+static void DumpLoadedFonts(SkSpan<std::unique_ptr<FontFamily>> fontFamilies, const char* label) {
     if (!FLAGS_verboseFontMgr) {
         return;
     }
 
     SkDebugf("\n--- Dumping %s\n", label);
-    for (int i = 0; i < fontFamilies.size(); ++i) {
-        SkDebugf("Family %d:\n", i);
-        switch(fontFamilies[i]->fVariant) {
+    size_t i = 0;
+    for (auto&& family : fontFamilies) {
+        SkDebugf("Family %zu:\n", i);
+        switch(family->fVariant) {
             case kElegant_FontVariant: SkDebugf("  elegant\n"); break;
             case kCompact_FontVariant: SkDebugf("  compact\n"); break;
             default: break;
         }
-        SkDebugf("  basePath %s\n", fontFamilies[i]->fBasePath.c_str());
-        if (!fontFamilies[i]->fLanguages.empty()) {
+        SkDebugf("  basePath %s\n", family->fBasePath.c_str());
+        if (!family->fLanguages.empty()) {
             SkDebugf("  language");
-            for (const auto& lang : fontFamilies[i]->fLanguages) {
+            for (const auto& lang : family->fLanguages) {
                 SkDebugf(" %s", lang.getTag().c_str());
             }
             SkDebugf("\n");
         }
-        for (int j = 0; j < fontFamilies[i]->fNames.size(); ++j) {
-            SkDebugf("  name %s\n", fontFamilies[i]->fNames[j].c_str());
+        for (int j = 0; j < family->fNames.size(); ++j) {
+            SkDebugf("  name %s\n", family->fNames[j].c_str());
         }
-        DumpFiles(*fontFamilies[i]);
-        for (const auto& [unused, fallbackFamily] : fontFamilies[i]->fallbackFamilies) {
+        DumpFiles(*family);
+        for (const auto& [unused, fallbackFamily] : family->fallbackFamilies) {
             SkDebugf("  Fallback for: %s\n", fallbackFamily->fFallbackFor.c_str());
             DumpFiles(*fallbackFamily);
         }
+        ++i;
     }
     SkDebugf("\n\n");
 }
@@ -155,7 +163,7 @@ template <int N, typename T> static double test_parse_fixed_r(skiatest::Reporter
         SkString s;
         // 'sprintf' formatting as expected depends on the current locale being "C".
         // We currently expect tests and tools to run in the "C" locale.
-        sprintf(buffer, "%.20f", f);
+        snprintf(buffer, std::size(buffer), "%.20f", f);
         T fix;
         bool b = parse_fixed<N>(buffer, &fix);
         if (b) {
@@ -191,12 +199,25 @@ static void test_parse_fixed(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, !parse_fixed<16>(".123a", &fix));
 }
 
-DEF_TEST(FontMgrAndroidParser, reporter) {
+#ifdef SK_TYPEFACE_FACTORY_FONTATIONS
+#define DEF_TEST_FONTATIONS(name, reporter) \
+    DEF_TEST(name##Fontations, reporter) { name(reporter, SkFontScanner_Make_Fontations()); }
+#else
+#define DEF_TEST_FONTATIONS(name, reporter)
+#endif
+
+#define DEF_TEST_SCANNERS(name, reporter) \
+    static void name(skiatest::Reporter*, std::unique_ptr<SkFontScanner>);                     \
+    DEF_TEST(name, reporter) { name(reporter, SkFontScanner_Make_FreeType()); }                \
+    DEF_TEST_FONTATIONS(name, reporter)                                                        \
+    void name(skiatest::Reporter* reporter, std::unique_ptr<SkFontScanner> fs)
+
+DEF_TEST_SCANNERS(FontMgrAndroidParser, reporter) {
     test_parse_fixed(reporter);
 
     bool resourcesMissing = false;
 
-    SkTDArray<FontFamily*> preV17FontFamilies;
+    std::vector<std::unique_ptr<FontFamily>> preV17FontFamilies;
     SkFontMgr_Android_Parser::GetCustomFontFamilies(preV17FontFamilies,
         SkString("/custom/font/path/"),
         GetResourcePath("android_fonts/pre_v17/system_fonts.xml").c_str(),
@@ -211,13 +232,9 @@ DEF_TEST(FontMgrAndroidParser, reporter) {
     } else {
         resourcesMissing = true;
     }
-    for (FontFamily* p : preV17FontFamilies) {
-        delete p;
-    }
-    preV17FontFamilies.reset();
 
 
-    SkTDArray<FontFamily*> v17FontFamilies;
+    std::vector<std::unique_ptr<FontFamily>> v17FontFamilies;
     SkFontMgr_Android_Parser::GetCustomFontFamilies(v17FontFamilies,
         SkString("/custom/font/path/"),
         GetResourcePath("android_fonts/v17/system_fonts.xml").c_str(),
@@ -233,13 +250,8 @@ DEF_TEST(FontMgrAndroidParser, reporter) {
     } else {
         resourcesMissing = true;
     }
-    for (FontFamily* p : v17FontFamilies) {
-        delete p;
-    }
-    v17FontFamilies.reset();
 
-
-    SkTDArray<FontFamily*> v22FontFamilies;
+    std::vector<std::unique_ptr<FontFamily>> v22FontFamilies;
     SkFontMgr_Android_Parser::GetCustomFontFamilies(v22FontFamilies,
         SkString("/custom/font/path/"),
         GetResourcePath("android_fonts/v22/fonts.xml").c_str(),
@@ -254,17 +266,91 @@ DEF_TEST(FontMgrAndroidParser, reporter) {
     } else {
         resourcesMissing = true;
     }
-    for (FontFamily* p : v22FontFamilies) {
-        delete p;
-    }
-    v22FontFamilies.reset();
 
     if (resourcesMissing) {
         SkDebugf("---- Resource files missing for FontConfigParser test\n");
     }
 }
 
-DEF_TEST(FontMgrAndroidLegacyMakeTypeface, reporter) {
+DEF_TEST_SCANNERS(FontMgrAndroidParserFamilyList, reporter) {
+    bool resourcesMissing = false;
+    std::vector<std::unique_ptr<FontFamily>> families;
+    SkFontMgr_Android_Parser::GetCustomFontFamilies(
+            families,
+            SkString("/custom/font/path/"),
+            GetResourcePath("android_fonts/family_list/fonts_family_list.xml").c_str(),
+            nullptr);
+
+    if (families.size() > 0) {
+        REPORTER_ASSERT(reporter, families.size() == 2);
+
+        REPORTER_ASSERT(reporter, families[0]->fNames.size() == 1);
+        REPORTER_ASSERT(reporter, families[0]->fNames[0].equals("list-family"));
+        REPORTER_ASSERT(reporter, families[0]->fFonts.size() == 1);
+        REPORTER_ASSERT(reporter, families[0]->fFonts[0].fFileName.equals("ListFont.ttf"));
+        REPORTER_ASSERT(reporter, !families[0]->fIsFallbackFont);
+
+        REPORTER_ASSERT(reporter, families[1]->fNames.size() == 1);
+        REPORTER_ASSERT(reporter, families[1]->fNames[0].equals("list-family"));
+        REPORTER_ASSERT(reporter, families[1]->fFonts.size() == 1);
+        REPORTER_ASSERT(reporter, families[1]->fFonts[0].fFileName.equals("ListFontFallback.ttf"));
+        REPORTER_ASSERT(reporter, !families[1]->fIsFallbackFont);
+    } else {
+        resourcesMissing = true;
+    }
+
+    if (resourcesMissing) {
+        SkDebugf("---- Resource files missing for FontConfigParser family-list test\n");
+    }
+}
+
+DEF_TEST_SCANNERS(FontMgrAndroidParserFontsModification, reporter) {
+    bool resourcesMissing = false;
+    std::vector<std::unique_ptr<FontFamily>> families;
+    SkFontMgr_Android_Parser::GetCustomFontFamilies(
+            families,
+            SkString("/custom/font/path/"),
+            GetResourcePath("android_fonts/mod/fonts_modification.xml").c_str(),
+            nullptr);
+
+    if (families.size() > 0) {
+        REPORTER_ASSERT(reporter, families.size() == 1);
+        REPORTER_ASSERT(reporter, families[0]->fNames.size() == 1);
+        REPORTER_ASSERT(reporter, families[0]->fNames[0].equals("mod-family"));
+        REPORTER_ASSERT(reporter, families[0]->fFonts[0].fFileName.equals("ModFont.ttf"));
+    } else {
+        resourcesMissing = true;
+    }
+
+    if (resourcesMissing) {
+        SkDebugf("---- Resource files missing for FontConfigParser fonts-modification test\n");
+    }
+}
+
+DEF_TEST_SCANNERS(FontMgrAndroidParserAliasBugfix, reporter) {
+    bool resourcesMissing = false;
+    std::vector<std::unique_ptr<FontFamily>> families;
+    SkFontMgr_Android_Parser::GetCustomFontFamilies(
+            families,
+            SkString("/custom/font/path/"),
+            GetResourcePath("android_fonts/alias/fonts_alias_caps.xml").c_str(),
+            nullptr);
+
+    if (families.size() > 0) {
+        REPORTER_ASSERT(reporter, families.size() == 1);
+        REPORTER_ASSERT(reporter, families[0]->fNames.size() == 2);
+        REPORTER_ASSERT(reporter, families[0]->fNames[0].equals("sans-serif-black"));
+        REPORTER_ASSERT(reporter, families[0]->fNames[1].equals("test-alias"));
+    } else {
+        resourcesMissing = true;
+    }
+
+    if (resourcesMissing) {
+        SkDebugf("---- Resource files missing for FontConfigParser alias bugfix test\n");
+    }
+}
+
+DEF_TEST_SCANNERS(FontMgrAndroidLegacyMakeTypeface, reporter) {
     constexpr char fontsXmlFilename[] = "fonts/fonts.xml";
     SkString basePath = GetResourcePath("fonts/");
     SkString fontsXml = GetResourcePath(fontsXmlFilename);
@@ -281,25 +367,26 @@ DEF_TEST(FontMgrAndroidLegacyMakeTypeface, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fm(SkFontMgr_New_Android(&custom));
+    sk_sp<SkFontMgr> fm(SkFontMgr_New_Android(&custom, std::move(fs)));
     sk_sp<SkTypeface> t(fm->legacyMakeTypeface("non-existent-font", SkFontStyle()));
     REPORTER_ASSERT(reporter, nullptr == t);
 }
 
-static bool bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
+static int bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
+    int count = 0;
     for (int y = 0; y < test.height(); ++y) {
         for (int x = 0; x < test.width(); ++x) {
             SkColor testColor = test.getColor(x, y);
             SkColor refColor = ref.getColor(x, y);
             if (refColor != testColor) {
-                return false;
+                ++count;
             }
         }
     }
-    return true;
+    return count;
 }
 
-DEF_TEST(FontMgrAndroidSystemVariableTypeface, reporter) {
+DEF_TEST_SCANNERS(FontMgrAndroidSystemVariableTypeface, reporter) {
     constexpr char fontsXmlFilename[] = "fonts/fonts.xml";
     SkString basePath = GetResourcePath("fonts/");
     SkString fontsXml = GetResourcePath(fontsXmlFilename);
@@ -316,7 +403,7 @@ DEF_TEST(FontMgrAndroidSystemVariableTypeface, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom));
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
     // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf"
     sk_sp<SkTypeface> typeface(fontMgr->legacyMakeTypeface("sans-serif", SkFontStyle()));
 
@@ -371,12 +458,12 @@ DEF_TEST(FontMgrAndroidSystemVariableTypeface, reporter) {
         canvasClone.drawColor(SK_ColorWHITE);
         canvasClone.drawString(text, point.fX, point.fY, fontClone, paint);
 
-        bool success = bitmap_compare(bitmapStream, bitmapClone);
-        REPORTER_ASSERT(reporter, success);
+        auto count = bitmap_compare(bitmapStream, bitmapClone);
+        REPORTER_ASSERT(reporter, count == 0);
     }
 }
 
-DEF_TEST(FontMgrAndroidSystemFallbackFor, reporter) {
+DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
     constexpr char fontsXmlFilename[] = "fonts/fonts.xml";
     SkString basePath = GetResourcePath("fonts/");
     SkString fontsXml = GetResourcePath(fontsXmlFilename);
@@ -393,7 +480,7 @@ DEF_TEST(FontMgrAndroidSystemFallbackFor, reporter) {
     custom.fFallbackFontsXml = nullptr;
     custom.fIsolated = false;
 
-    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom));
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
     // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf", which doesn't have a '!'
     // but "TestTTC" has a bold font which does have '!' and is marked as fallback for "sans-serif"
     // and should take precedence over the same font marked as normal weight next to it.

@@ -7,9 +7,17 @@
 
 #include "src/shaders/SkBitmapProcShader.h"
 
-#include "src/base/SkArenaAlloc.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPixmap.h"
+#include "include/private/SkAssert.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBitmapProcState.h"
-#include "src/core/SkPaintPriv.h"
+
+#include <algorithm>
+#include <cstdint>
+
+enum class SkTileMode;
 
 class BitmapProcShaderContext : public SkShaderBase::Context {
 public:
@@ -69,14 +77,13 @@ SkShaderBase::Context* SkBitmapProcLegacyShader::MakeContext(
     const SkShaderBase& shader, SkTileMode tmx, SkTileMode tmy, const SkSamplingOptions& sampling,
     const SkImage_Base* image, const ContextRec& rec, SkArenaAlloc* alloc)
 {
-    SkMatrix totalInverse;
-    // Do this first, so we know the matrix can be inverted.
-    if (!shader.computeTotalInverse(*rec.fMatrix, rec.fLocalMatrix, &totalInverse)) {
+    auto totalInverse = rec.fMatrixRec.totalInverse();
+    if (!totalInverse) {
         return nullptr;
     }
 
     SkBitmapProcState* state = alloc->make<SkBitmapProcState>(image, tmx, tmy);
-    if (!state->setup(totalInverse, rec.fPaintAlpha, sampling)) {
+    if (!state->setup(*totalInverse, rec.fPaintAlpha, sampling)) {
         return nullptr;
     }
     return alloc->make<BitmapProcShaderContext>(shader, rec, state);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,16 +8,20 @@
 #ifndef SkottieFont_DEFINED
 #define SkottieFont_DEFINED
 
-#include "include/core/SkTypeface.h"
-#include "include/private/base/SkNoncopyable.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkNoncopyable.h"
 #include "include/utils/SkCustomTypeface.h"
 #include "modules/sksg/include/SkSGRenderNode.h"
 #include "src/core/SkTHash.h"
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 class SkPath;
+class SkTypeface;
+struct SkSize;
 
 namespace skjson { class ObjectValue; }
 

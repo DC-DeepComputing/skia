@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -21,22 +21,34 @@ class CtsEnforcement {
 public:
     enum ApiLevel : int32_t {
         /* When used as fStrictVersion, always skip this test. It is not relevant to CTS.
-         * When used as fWorkaroundsVersion, there are no api levels that should run the
+         * When used as fWorkaroundsVersion, there are no API levels that should run the
          * test with workarounds.
          */
         kNever = INT32_MAX,
-        /* The kApiLevel_* values are directly correlated with Android API levels.  Every new
-         * CTS/SkQP release has a corresponding Android API level that will be captured by these
-         * enum values.
+        /* kToBeDetermined is a placeholder value that any unstable or work-in-progress tests should
+         * use. It implies the authors aren't ready for the test to be enforced in kNextRelease, and
+         * the team needs to make a go / no-go decision for it before bumping kNextRelease.
+         */
+        kToBeDetermined = kNever - 1,
+        /* The kApiLevel_* values are directly correlated with Android **vendor** API levels, which
+         * are distinct from Android SDK API levels. Every new CTS/SkQP release has a corresponding
+         * Android API level that will be captured by these enum values.
          */
         kApiLevel_T = 33,
         kApiLevel_U = 34,
-        /* kNextRelease is a placeholder value that all new unit tests should use.  It implies that
-         * this test will be enforced in the next Android release.  At the time of the release a
-         * new kApiLevel_* value will be added and all current kNextRelease values will be replaced
-         * with that new value.
+        /* Beginning with Android 14-QPR3, vendor API levels (e.g. the ro.vendor.api_level system
+         * property checked by SkQP) now follow a YYYYMM format.
+         * See https://source.android.com/docs/core/architecture/api-flags for more information.
          */
-        kNextRelease = kApiLevel_U + 1
+        kApiLevel_202404 = 202404,
+        kApiLevel_202504 = 202504,
+        kApiLevel_202604 = 202604,
+        /* kNextRelease is a placeholder value that all new unit tests should use, as long as
+         * they are considered stable and ready to be enforced.  It implies that this test will be
+         * enforced in the next Android release.  At the time of the release a new kApiLevel_* value
+         * will be added and all current kNextRelease values will be replaced with that new value.
+         */
+        kNextRelease = 202704
     };
 
     /**

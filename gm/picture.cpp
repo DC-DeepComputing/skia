@@ -6,6 +6,7 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkBBHFactory.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMatrix.h"
@@ -29,10 +30,10 @@ static sk_sp<SkPicture> make_picture() {
     canvas->drawRect(SkRect::MakeWH(100, 100), paint);
 
     paint.setColor(0x80FF0000);
-    canvas->drawPath(SkPath::Polygon({{0, 0}, {100, 0}, {100, 100}}, false), paint);
+    canvas->drawPath(SkPath::Polygon({{{0, 0}, {100, 0}, {100, 100}}}, false), paint);
 
     paint.setColor(0x8000FF00);
-    canvas->drawPath(SkPath::Polygon({{0, 0}, {100, 0}, {0, 100}}, false), paint);
+    canvas->drawPath(SkPath::Polygon({{{0, 0}, {100, 0}, {0, 100}}}, false), paint);
 
     paint.setColor(0x80FFFFFF);
     paint.setBlendMode(SkBlendMode::kPlus);
@@ -54,13 +55,9 @@ protected:
          fPicture = make_picture();
     }
 
-    SkString onShortName() override {
-        return SkString("pictures");
-    }
+    SkString getName() const override { return SkString("pictures"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(450, 120);
-    }
+    SkISize getISize() override { return SkISize::Make(450, 120); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->translate(10, 10);
@@ -89,7 +86,7 @@ private:
 
 // Exercise drawing a picture with a cull rect of non-zero top-left corner.
 //
-// See skbug.com/9334, which would fail
+// See skbug.com/40040654, which would fail
 // ```
 //   dm -m picture_cull_rect --config serialize-8888
 // ```
@@ -122,13 +119,9 @@ protected:
         SkASSERT(fPicture->cullRect().top() == 80);
     }
 
-    SkString onShortName() override {
-        return SkString("picture_cull_rect");
-    }
+    SkString getName() const override { return SkString("picture_cull_rect"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(120, 120);
-    }
+    SkISize getISize() override { return SkISize::Make(120, 120); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->clipRect(SkRect::MakeLTRB(0, 60, 120, 120));

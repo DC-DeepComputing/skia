@@ -9,9 +9,9 @@
 #define SKSL_FLOATLITERAL
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkSLDefines.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLIRNode.h"
@@ -40,8 +40,7 @@ public:
         , fValue(value) {}
 
     // Makes a literal of $floatLiteral type.
-    static std::unique_ptr<Literal> MakeFloat(const Context& context, Position pos,
-            float value) {
+    static std::unique_ptr<Literal> MakeFloat(const Context& context, Position pos, float value) {
         return std::make_unique<Literal>(pos, value, context.fTypes.fFloatLiteral.get());
     }
 

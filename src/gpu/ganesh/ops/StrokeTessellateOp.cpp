@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google LLC.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,13 +7,26 @@
 
 #include "src/gpu/ganesh/ops/StrokeTessellateOp.h"
 
-#include "src/base/SkMathPriv.h"
-#include "src/core/SkPathPriv.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkRect.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkSafeMath.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/GrProcessorAnalysis.h"
+#include "src/gpu/ganesh/GrProgramInfo.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
+#include "src/gpu/ganesh/GrShaderCaps.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/gpu/ganesh/GrUserStencilSettings.h"
 #include "src/gpu/ganesh/tessellate/GrStrokeTessellationShader.h"
+
+#include <utility>
 
 namespace skgpu::ganesh {
 
@@ -81,7 +94,10 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     SkASSERT(fProcessors.isFinalized());
     SkASSERT(op->fProcessors.isFinalized());
 
-    if (fNeedsStencil ||
+    SkSafeMath safe;
+    int combinedVerbCnt = safe.addInt(fTotalCombinedVerbCnt, op->fTotalCombinedVerbCnt);
+    if (!safe.ok() ||
+        fNeedsStencil ||
         op->fNeedsStencil ||
         fViewMatrix != op->fViewMatrix ||
         fAAType != op->fAAType ||
@@ -107,7 +123,7 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     }
 
     // Don't actually enable new dynamic state on ops that already have lots of verbs.
-    constexpr static GrTFlagsMask<PatchAttribs> kDynamicStatesMask(PatchAttribs::kStrokeParams |
+    constexpr static SkTFlagsMask<PatchAttribs> kDynamicStatesMask(PatchAttribs::kStrokeParams |
                                                                    PatchAttribs::kColor);
     PatchAttribs neededDynamicStates = combinedAttribs & kDynamicStatesMask;
     if (neededDynamicStates != PatchAttribs::kNone) {
@@ -126,7 +142,7 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     fPathStrokeTail = (op->fPathStrokeTail == &op->fPathStrokeList.fNext) ? &headCopy->fNext
                                                                           : op->fPathStrokeTail;
 
-    fTotalCombinedVerbCnt += op->fTotalCombinedVerbCnt;
+    fTotalCombinedVerbCnt = combinedVerbCnt;
     return CombineResult::kMerged;
 }
 

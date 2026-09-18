@@ -1,5 +1,5 @@
 /*
-* Copyright 2020 Google Inc.
+* Copyright 2020 Google LLC
 *
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
@@ -70,7 +70,9 @@ private:
 std::unique_ptr<SkAudioPlayer> SkAudioPlayer::Make(sk_sp<SkData> src) {
     // The NSData does not own the actual buffer (src), but our subclass will
 
-    NSData* data = [[NSData alloc] initWithBytesNoCopy:(void*)src->data() length:src->size()];
+    NSData* data = [[NSData alloc] initWithBytesNoCopy:const_cast<void*>(src->data())
+                                                length:src->size()
+                                          freeWhenDone:NO];
     AVAudioPlayer* player = [[AVAudioPlayer alloc] initWithData:data error:nil];
     [data release];
 

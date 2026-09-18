@@ -20,7 +20,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
-#include "src/base/SkAutoMalloc.h"
+#include "src/core/SkAutoMalloc.h"
 #include "src/image/SkImageGeneratorPriv.h"
 #include "tests/Test.h"
 
@@ -34,7 +34,8 @@
 
 static bool gMyFactoryWasCalled;
 
-static std::unique_ptr<SkImageGenerator> my_factory(sk_sp<SkData>) {
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
+static std::unique_ptr<SkImageGenerator> my_factory(sk_sp<const SkData>) {
     gMyFactoryWasCalled = true;
     return nullptr;
 }

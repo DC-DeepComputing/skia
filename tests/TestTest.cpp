@@ -26,6 +26,8 @@ DEF_CONDITIONAL_TEST(TestFalseCondition, reporter, 1 == 0) {
     ERRORF(reporter, "DEF_CONDITIONAL_TEST executed a test with a false condition");
 }
 
+#if defined(SK_GANESH)
+
 // This is an example of a GPU test that runs if any Ganesh backend is compiled in. The test itself
 // is responsible for making the relevant GrDirectContext (e.g. using
 // sk_gpu_test::GrContextFactory).
@@ -90,6 +92,7 @@ DEF_CONDITIONAL_GANESH_TEST_FOR_RENDERING_CONTEXTS(TestGpuRenderingContextsWithF
            "DEF_CONDITIONAL_GANESH_TEST_FOR_RENDERING_CONTEXTS ran "
            "with a false condition");
 }
+#endif
 
 DEF_TEST(TestCtsEnforcement, reporter) {
     auto verifyRunMode = [&](CtsEnforcement e, int apiLevel, CtsEnforcement::RunMode runMode) {
@@ -99,21 +102,21 @@ DEF_TEST(TestCtsEnforcement, reporter) {
     CtsEnforcement e1 = CtsEnforcement::kNever;
     verifyRunMode(e1, 0, CtsEnforcement::RunMode::kSkip);
     verifyRunMode(e1, CtsEnforcement::kApiLevel_T, CtsEnforcement::RunMode::kSkip);
-    verifyRunMode(e1, CtsEnforcement::kNextRelease, CtsEnforcement::RunMode::kSkip);
+    verifyRunMode(e1, CtsEnforcement::kApiLevel_202604, CtsEnforcement::RunMode::kSkip);
 
     CtsEnforcement e2 = CtsEnforcement::kApiLevel_T;
     verifyRunMode(e2, 0, CtsEnforcement::RunMode::kSkip);
     verifyRunMode(e2, CtsEnforcement::kApiLevel_T, CtsEnforcement::RunMode::kRunStrict);
-    verifyRunMode(e2, CtsEnforcement::kNextRelease, CtsEnforcement::RunMode::kRunStrict);
+    verifyRunMode(e2, CtsEnforcement::kApiLevel_202604, CtsEnforcement::RunMode::kRunStrict);
 
-    CtsEnforcement e3 = CtsEnforcement::kNextRelease;
+    CtsEnforcement e3 = CtsEnforcement::kApiLevel_202604;
     verifyRunMode(e3, 0, CtsEnforcement::RunMode::kSkip);
     verifyRunMode(e3, CtsEnforcement::kApiLevel_T, CtsEnforcement::RunMode::kSkip);
-    verifyRunMode(e3, CtsEnforcement::kNextRelease, CtsEnforcement::RunMode::kRunStrict);
+    verifyRunMode(e3, CtsEnforcement::kApiLevel_202604, CtsEnforcement::RunMode::kRunStrict);
 
-    CtsEnforcement e4 = CtsEnforcement(CtsEnforcement::kNextRelease)
+    CtsEnforcement e4 = CtsEnforcement(CtsEnforcement::kApiLevel_202604)
                                 .withWorkarounds(CtsEnforcement::kApiLevel_T);
     verifyRunMode(e4, 0, CtsEnforcement::RunMode::kSkip);
     verifyRunMode(e4, CtsEnforcement::kApiLevel_T, CtsEnforcement::RunMode::kRunWithWorkarounds);
-    verifyRunMode(e4, CtsEnforcement::kNextRelease, CtsEnforcement::RunMode::kRunStrict);
+    verifyRunMode(e4, CtsEnforcement::kApiLevel_202604, CtsEnforcement::RunMode::kRunStrict);
 }

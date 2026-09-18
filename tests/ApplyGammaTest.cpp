@@ -10,7 +10,6 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
-#include "include/core/SkColorPriv.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
@@ -20,10 +19,12 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "include/private/base/SkTemplates.h"
-#include "src/core/SkOpts.h"
+#include "include/private/SkTemplates.h"
+#include "src/core/SkColorPriv.h"
+#include "src/core/SkMemset.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
@@ -137,7 +138,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ApplyGamma, reporter, ctxInfo, CtsEnforce
         SkCanvas* dstCanvas = dst->getCanvas();
 
         dstCanvas->clear(SK_ColorRED);
-        context->flushAndSubmit(dst);
+        context->flushAndSubmit(dst.get(), GrSyncCpu::kNo);
 
         SkPaint gammaPaint;
         gammaPaint.setBlendMode(SkBlendMode::kSrc);
@@ -145,7 +146,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ApplyGamma, reporter, ctxInfo, CtsEnforce
                                          : SkColorFilters::SRGBToLinearGamma());
 
         dstCanvas->drawImage(img, 0, 0, SkSamplingOptions(), &gammaPaint);
-        context->flushAndSubmit(dst);
+        context->flushAndSubmit(dst.get(), GrSyncCpu::kNo);
 
         SkOpts::memset32(read.get(), 0, kBaseSize.fWidth * kBaseSize.fHeight);
         if (!dst->readPixels(ii, read.get(), kRowBytes, 0, 0)) {

@@ -17,8 +17,8 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTArray.h"
-#include "src/base/SkRandom.h"
+#include "include/private/SkTArray.h"
+#include "src/core/SkRandom.h"
 
 using namespace skia_private;
 
@@ -47,10 +47,9 @@ class ConvexPathsGM : public skiagm::GM {
 
     void onOnceBeforeDraw() override { this->setBGColor(0xFF000000); }
 
-    SkString onShortName() override { return SkString("convexpaths"); }
+    SkString getName() const override { return SkString("convexpaths"); }
 
-
-    SkISize onISize() override { return {1200, 1100}; }
+    SkISize getISize() override { return {1200, 1100}; }
 
     void makePaths() {
         if (fOnce.alreadyDone()) {
@@ -79,10 +78,9 @@ class ConvexPathsGM : public skiagm::GM {
                                        SkPathDirection::kCW));
 
         // large number of points
-        enum {
-            kLength = 100,
-            kPtsPerSide = (1 << 12),
-        };
+        static constexpr int kLength = 100;
+        static constexpr int kPtsPerSide = (1 << 12);
+
         b.moveTo(0, 0);
         for (int i = 1; i < kPtsPerSide; ++i) { // skip the first point due to moveTo.
             b.lineTo(kLength * SkIntToScalar(i) / kPtsPerSide, 0);
@@ -99,7 +97,7 @@ class ConvexPathsGM : public skiagm::GM {
         fPaths.push_back(b.detach());
 
         // shallow diagonals
-        fPaths.push_back(SkPath::Polygon({{0,0}, {100,1}, {98,100}, {3,96}}, false));
+        fPaths.push_back(SkPath::Polygon({{{0,0}, {100,1}, {98,100}, {3,96}}}, false));
 
         fPaths.push_back(b.arcTo(SkRect::MakeXYWH(0, 0, 50, 100), 25, 130, false)
                           .detach());
@@ -216,16 +214,16 @@ class ConvexPathsGM : public skiagm::GM {
         fPaths.push_back(b.quadTo(50, 50, 100, 100).detach());
         fPaths.push_back(b.cubicTo(0, 0, 0, 0, 100, 100).detach());
 
-        // skbug.com/8928
+        // skbug.com/40040207
+        SkMatrix m;
+        m.setAll(0.1f, 0, -1, 0, 0.115207f, -2.64977f, 0, 0, 1);
         fPaths.push_back(b.moveTo(16.875f, 192.594f)
                           .cubicTo(45.625f, 192.594f, 74.375f, 192.594f, 103.125f, 192.594f)
                           .cubicTo(88.75f, 167.708f, 74.375f, 142.823f, 60, 117.938f)
                           .cubicTo(45.625f, 142.823f, 31.25f, 167.708f, 16.875f, 192.594f)
                           .close()
+                          .transform(m)
                           .detach());
-        SkMatrix m;
-        m.setAll(0.1f, 0, -1, 0, 0.115207f, -2.64977f, 0, 0, 1);
-        fPaths.back().transform(m);
 
         // small circle. This is listed last so that it has device coords far
         // from the origin (small area relative to x,y values).

@@ -6,35 +6,38 @@
  */
 
 #include "tools/window/GLWindowContext.h"
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "src/base/SkMathPriv.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
+#include "include/gpu/ganesh/gl/GrGLDirectContext.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "src/image/SkImage_Base.h"
+#include "tools/window/DisplayParams.h"
 
 namespace skwindow::internal {
 
-GLWindowContext::GLWindowContext(const DisplayParams& params)
-        : WindowContext(params)
+GLWindowContext::GLWindowContext(std::unique_ptr<const DisplayParams> params)
+        : WindowContext(DisplayParamsBuilder(params.get()).roundUpMSAA().detach())
         , fBackendContext(nullptr)
-        , fSurface(nullptr) {
-    fDisplayParams.fMSAASampleCount = GrNextPow2(fDisplayParams.fMSAASampleCount);
-}
+        , fSurface(nullptr) {}
 
 void GLWindowContext::initializeContext() {
     SkASSERT(!fContext);
 
     fBackendContext = this->onInitializeContext();
 
-    fContext = GrDirectContext::MakeGL(fBackendContext, fDisplayParams.fGrContextOptions);
-    if (!fContext && fDisplayParams.fMSAASampleCount > 1) {
-        fDisplayParams.fMSAASampleCount /= 2;
+    fContext = GrDirectContexts::MakeGL(fBackendContext, fDisplayParams->grContextOptions());
+    if (!fContext && fDisplayParams->msaaSampleCount() > 1) {
+        int newMSAA = fDisplayParams->msaaSampleCount() / 2;
+        fDisplayParams =
+                DisplayParamsBuilder(fDisplayParams.get()).msaaSampleCount(newMSAA).detach();
         this->initializeContext();
         return;
     }
@@ -63,20 +66,20 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
             GrGLFramebufferInfo fbInfo;
             fbInfo.fFBOID = buffer;
             fbInfo.fFormat = GR_GL_RGBA8;
-            fbInfo.fProtected = skgpu::Protected::kNo;
+            fbInfo.fProtected = skgpu::Protected(fDisplayParams->createProtectedNativeBackend());
 
-            GrBackendRenderTarget backendRT(fWidth,
-                                            fHeight,
-                                            fSampleCount,
-                                            fStencilBits,
-                                            fbInfo);
+            auto backendRT = GrBackendRenderTargets::MakeGL(fWidth,
+                                                            fHeight,
+                                                            fSampleCount,
+                                                            fStencilBits,
+                                                            fbInfo);
 
             fSurface = SkSurfaces::WrapBackendRenderTarget(fContext.get(),
                                                            backendRT,
                                                            kBottomLeft_GrSurfaceOrigin,
                                                            kRGBA_8888_SkColorType,
-                                                           fDisplayParams.fColorSpace,
-                                                           &fDisplayParams.fSurfaceProps);
+                                                           fDisplayParams->colorSpace(),
+                                                           &fDisplayParams->surfaceProps());
         }
     }
 
@@ -88,8 +91,8 @@ void GLWindowContext::resize(int w, int h) {
     this->initializeContext();
 }
 
-void GLWindowContext::setDisplayParams(const DisplayParams& params) {
-    fDisplayParams = params;
+void GLWindowContext::setDisplayParams(std::unique_ptr<const DisplayParams> params) {
+    fDisplayParams = std::move(params);
     this->destroyContext();
     this->initializeContext();
 }

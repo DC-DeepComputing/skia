@@ -8,7 +8,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkRRect.h"
-#include "include/private/base/SkTPin.h"
+#include "include/private/SkTPin.h"
 #include "modules/sksg/include/SkSGDraw.h"
 #include "modules/sksg/include/SkSGGroup.h"
 #include "modules/sksg/include/SkSGInvalidationController.h"
@@ -17,7 +17,7 @@
 #include "modules/sksg/include/SkSGRect.h"
 #include "modules/sksg/include/SkSGScene.h"
 #include "modules/sksg/include/SkSGTransform.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "tools/timer/TimeUtils.h"
 #include "tools/viewer/Slide.h"
 
@@ -142,8 +142,7 @@ public:
 
         // Handle everything in a normalized 1x1 space.
         fContentMatrix = sksg::Matrix<SkMatrix>::Make(
-            SkMatrix::RectToRect(SkRect::MakeWH(1, 1),
-                                 SkRect::MakeWH(w, h)));
+            SkMatrix::RectToRectOrIdentity(SkRect::MakeWH(1, 1), SkRect::MakeWH(w, h)));
         auto root = sksg::TransformEffect::Make(std::move(group), fContentMatrix);
         fScene = sksg::Scene::Make(std::move(root));
 
@@ -170,13 +169,14 @@ public:
 
     void resize(SkScalar w, SkScalar h) override {
         if (fContentMatrix) {
-            fContentMatrix->setMatrix(SkMatrix::RectToRect(SkRect::MakeWH(1, 1),
-                                                           SkRect::MakeWH(w, h)));
+            fContentMatrix->setMatrix(SkMatrix::Rect2Rect(SkRect::MakeWH(1, 1),
+                                                          SkRect::MakeWH(w, h)).value());
         }
     }
 
     void draw(SkCanvas* canvas) override {
         sksg::InvalidationController ic;
+        fScene->revalidate(&ic);
         fScene->render(canvas);
 
         if (fShowInval) {
@@ -290,7 +290,7 @@ private:
     Object                        fPaddle0, fPaddle1, fBall;
     SkRandom                      fRand;
 
-    SkMSec                        fLastTick  = 0;
+    TimeUtils::MSec             fLastTick  = 0;
     SkScalar                      fTimeScale = 1.0f;
     bool                          fShowInval = false;
 };

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
 #ifndef LineBreaker_DEFINED
 #define LineBreaker_DEFINED
 
@@ -27,6 +27,14 @@ public:
     bool shape();
 
     size_t unresolvedGlyphs() { return fUnresolvedGlyphs; }
+
+    /**
+     * This method is based on definition of https://unicode.org/reports/tr51/#def_emoji_sequence
+     * It determines if the string begins with an emoji sequence and,
+     * if so, return the first codepoint, moving 'begin' pointer to the next once.
+     * Otherwise it does not move the pointer and returns -1.
+     */
+    static SkUnichar getEmojiSequenceStart(SkUnicode* unicode, const char** begin, const char* end);
 
 private:
 
@@ -123,11 +131,12 @@ private:
 
         FontKey() {}
 
-        FontKey(SkUnichar unicode, SkFontStyle fontStyle, SkString locale)
-            : fUnicode(unicode), fFontStyle(fontStyle), fLocale(locale) { }
+        FontKey(SkUnichar unicode, SkFontStyle fontStyle, SkString locale, const std::optional<FontArguments>& fontArgs)
+                : fUnicode(unicode), fFontStyle(fontStyle), fLocale(std::move(locale)), fFontArgs(fontArgs) { }
         SkUnichar fUnicode;
         SkFontStyle fFontStyle;
         SkString fLocale;
+        std::optional<FontArguments> fFontArgs;
 
         bool operator==(const FontKey& other) const;
 
@@ -135,6 +144,7 @@ private:
             uint32_t operator()(const FontKey& key) const;
         };
     };
+
     skia_private::THashMap<FontKey, sk_sp<SkTypeface>, FontKey::Hasher> fFallbackFonts;
 };
 

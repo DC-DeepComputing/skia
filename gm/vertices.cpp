@@ -21,13 +21,14 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/base/SkTDArray.h"
-#include "src/base/SkRandom.h"
+#include "include/private/SkTDArray.h"
+#include "src/core/SkRandom.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/shaders/SkLocalMatrixShader.h"
 #include "src/utils/SkPatchUtils.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
@@ -36,23 +37,19 @@
 
 static constexpr SkScalar kShaderSize = 40;
 static sk_sp<SkShader> make_shader1(SkScalar shaderScale) {
-    const SkColor colors[] = {
-        SK_ColorRED, SK_ColorCYAN, SK_ColorGREEN, SK_ColorWHITE,
-        SK_ColorMAGENTA, SK_ColorBLUE, SK_ColorYELLOW,
+    const SkColor4f colors[] = {
+        SkColors::kRed, SkColors::kCyan, SkColors::kGreen, SkColors::kWhite,
+        SkColors::kMagenta, SkColors::kBlue, SkColors::kYellow,
     };
     const SkPoint pts[] = {{kShaderSize / 4, 0}, {3 * kShaderSize / 4, kShaderSize}};
     const SkMatrix localMatrix = SkMatrix::Scale(shaderScale, shaderScale);
 
-    sk_sp<SkShader> grad = SkGradientShader::MakeLinear(pts, colors, nullptr,
-                                                        std::size(colors),
-                                                        SkTileMode::kMirror, 0,
-                                                        &localMatrix);
+    sk_sp<SkShader> grad = SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kMirror}, {}},
+                                                     &localMatrix);
     // Throw in a couple of local matrix wrappers for good measure.
-    return shaderScale == 1
-        ? grad
-        : sk_make_sp<SkLocalMatrixShader>(
-              sk_make_sp<SkLocalMatrixShader>(std::move(grad), SkMatrix::Translate(-10, 0)),
-              SkMatrix::Translate(10, 0));
+    return shaderScale == 1 ? grad
+                            : grad->makeWithLocalMatrix(SkMatrix::Translate(-10, 0))
+                                       ->makeWithLocalMatrix(SkMatrix::Translate(10, 0));
 }
 
 static sk_sp<SkShader> make_shader2() {
@@ -124,7 +121,7 @@ protected:
         fColorFilter = make_color_filter();
     }
 
-    SkString onShortName() override {
+    SkString getName() const override {
         SkString name("vertices");
         if (fShaderScale != 1) {
             name.append("_scaled_shader");
@@ -132,9 +129,7 @@ protected:
         return name;
     }
 
-    SkISize onISize() override {
-        return SkISize::Make(975, 1175);
-    }
+    SkISize getISize() override { return SkISize::Make(975, 1175); }
 
     void onDraw(SkCanvas* canvas) override {
         const SkBlendMode modes[] = {
@@ -264,6 +259,30 @@ static void draw_batching(SkCanvas* canvas) {
     canvas->restore();
 }
 
+// Test to ensure SkVertices::kTriangleStrip_VertexMode works properly.
+DEF_SIMPLE_GM(vertices_strip, canvas, 600, 200) {
+    // Create a quad respecting triangle strip ordering.
+    SkRect r = SkRect::MakeWH(128, 128);
+    std::array<SkPoint, 4> pos;
+    pos[0] = r.TL();
+    pos[1] = r.BL();
+    pos[2] = r.TR();
+    pos[3] = r.BR();
+
+    sk_sp<SkShader> shader = make_shader1(1);
+    sk_sp<SkVertices> verts = SkVertices::MakeCopy(SkVertices::kTriangleStrip_VertexMode, 4,
+                                                   pos.data(), nullptr, nullptr);
+
+    SkPaint paint;
+    for (int i = 0; i < 4; ++i) {
+        SkColor color = (i % 2 == 0) ? SK_ColorRED : SK_ColorBLUE;
+        paint.setColor(color);
+        paint.setShader(i >= 2 ? shader : nullptr);
+        canvas->drawVertices(verts, SkBlendMode::kSrcOver, paint);
+        canvas->translate(150, 0);
+    }
+}
+
 // This test exists to exercise batching in the gpu backend.
 DEF_SIMPLE_GM(vertices_batching, canvas, 100, 500) {
     draw_batching(canvas);
@@ -271,7 +290,7 @@ DEF_SIMPLE_GM(vertices_batching, canvas, 100, 500) {
     draw_batching(canvas);
 }
 
-// Test case for skbug.com/10069. We need to draw the vertices twice (with different matrices) to
+// Test case for skbug.com/40041407. We need to draw the vertices twice (with different matrices) to
 // trigger the bug.
 DEF_SIMPLE_GM(vertices_perspective, canvas, 256, 256) {
     SkPaint paint;
@@ -279,9 +298,9 @@ DEF_SIMPLE_GM(vertices_perspective, canvas, 256, 256) {
 
     SkRect r = SkRect::MakeWH(128, 128);
 
-    SkPoint pos[4];
-    r.toQuad(pos);
-    auto verts = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, 4, pos, pos, nullptr);
+    const std::array<SkPoint, 4> pos = r.toQuad();
+    auto verts = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode, 4,
+                                      pos.data(), pos.data(), nullptr);
 
     SkMatrix persp;
     persp.setPerspY(SK_Scalar1 / 100);
@@ -311,7 +330,7 @@ DEF_SIMPLE_GM(vertices_perspective, canvas, 256, 256) {
 }
 
 DEF_SIMPLE_GM(skbug_13047, canvas, 200, 200) {
-    auto image = GetResourceAsImage("images/mandrill_128.png");
+    auto image = ToolUtils::GetResourceAsImage("images/mandrill_128.png");
 
     const float w = image->width();
     const float h = image->height();
@@ -330,4 +349,23 @@ DEF_SIMPLE_GM(skbug_13047, canvas, 200, 200) {
     p.setShader(s);
 
     canvas->drawVertices(v, SkBlendMode::kModulate, p);
+}
+
+// Makes sure that drawVertices allows for triangles with "collapsed" UVs, where all three vertices
+// have the same texture coordinate. b/40044794
+DEF_SIMPLE_GM_BG(vertices_collapsed, canvas, 50, 50, SK_ColorWHITE) {
+    SkPoint verts[] = {{5, 5}, {45, 5}, {45, 45}, {5, 45}};
+    SkPoint texs[] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
+    uint16_t indices[] = {0, 1, 2, 2, 3, 0};
+
+    sk_sp<SkVertices> v = SkVertices::MakeCopy(
+            SkVertices::kTriangles_VertexMode, 4, verts, texs, nullptr, 6, indices);
+
+    sk_sp<SkSurface> surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(1, 1));
+    surf->getCanvas()->clear(SK_ColorGREEN);
+    sk_sp<SkShader> shader = surf->makeImageSnapshot()->makeShader(SkSamplingOptions{});
+    SkPaint paint;
+    paint.setShader(shader);
+
+    canvas->drawVertices(v, SkBlendMode::kDst, paint);
 }

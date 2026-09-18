@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -11,19 +11,24 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
-#include "include/core/SkTime.h"
-#include "include/private/base/SkNoncopyable.h"
-#include "include/private/base/SkTPin.h"
+#include "include/core/SkFontMgr.h"
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTPin.h"
 #include "modules/audioplayer/SkAudioPlayer.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/include/SkottieProperty.h"
+#include "modules/skottie/include/SlotManager.h"
+#include "modules/skottie/include/TextShaper.h"
 #include "modules/skottie/utils/SkottieUtils.h"
+#include "modules/skottie/utils/TextEditor.h"
 #include "modules/skresources/include/SkResources.h"
+#include "modules/skshaper/utils/FactoryHelpers.h"
 #include "src/core/SkOSFile.h"
+#include "src/core/SkTime.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/timer/TimeUtils.h"
-#include "tools/viewer/SkottieTextEditor.h"
 
 #include <cmath>
 #include <vector>
@@ -125,6 +130,7 @@ public:
                                                   const char resource_name[],
                                                   const char /*resource_id*/[]) const override {
         auto data = this->load(resource_path, resource_name);
+        // Viewer should have already registered the codecs necessary for MultiFrameImageAsset
         return skresources::MultiFrameImageAsset::Make(data);
     }
 
@@ -164,6 +170,21 @@ private:
     const sk_sp<PropertyObserver>                             fDelegate;
     std::vector<std::unique_ptr<skottie::TextPropertyHandle>> fTextProps;
 };
+
+sk_sp<SkShapers::Factory> make_shapers_factory(bool prefer_coretext) {
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+    if (prefer_coretext) {
+        return sk_make_sp<SkShapers::CoreTextFactory>(SkShapers::CT::LineBreakMode::kStrict);
+    }
+#endif
+#if defined(SK_SHAPER_UNICODE_AVAILABLE)
+    return sk_make_sp<SkShapers::HarfbuzzFactory>(
+        skottie::MakeStrictLinebreakUnicode(
+            SkShapers::BestAvailableUnicode()));
+#else
+    return nullptr;
+#endif
+}
 
 } // namespace
 
@@ -218,9 +239,9 @@ public:
                      * SkMatrix::Scale    (tprop.fScale.fX*0.01f, tprop.fScale.fY*0.01f)
                      * SkMatrix::Translate(tprop.fAnchorPoint.fX, tprop.fAnchorPoint.fY);
 
-        const auto viewer_matrix = SkMatrix::RectToRect(SkRect::MakeSize(anim_size),
-                                                        SkRect::MakeSize(win_size),
-                                                        SkMatrix::kCenter_ScaleToFit);
+        const auto viewer_matrix = SkMatrix::RectToRectOrIdentity(SkRect::MakeSize(anim_size),
+                                                                  SkRect::MakeSize(win_size),
+                                                                  SkMatrix::kCenter_ScaleToFit);
 
         SkAutoCanvasRestore acr(canvas, true);
         canvas->concat(viewer_matrix);
@@ -245,11 +266,11 @@ private:
 };
 
 // Holds a pointer to a slot manager and the list of slots for the UI widget to track
-class SkottieSlide::SlotManagerWrapper {
+class SkottieSlide::SlotManagerInterface {
 public:
-    SlotManagerWrapper(SkString path, sk_sp<skresources::ResourceProvider> rp,
-                       sk_sp<skottie::PropertyObserver> po)
-        : fSlotManager(sk_make_sp<skottie_utils::SlotManager>(path, std::move(rp), std::move(po)))
+    SlotManagerInterface(sk_sp<skottie::SlotManager> slotManager, sk_sp<skresources::ResourceProvider> rp)
+        : fSlotManager(std::move(slotManager))
+        , fResourceProvider(std::move(rp))
     {}
 
 
@@ -260,15 +281,29 @@ public:
                 auto& cSlot = fColorSlots.at(i);
                 ImGui::PushID(i);
                 ImGui::Text("%s", cSlot.first.c_str());
-                ImGui::ColorEdit4("Color", cSlot.second.data());
+                if (ImGui::ColorEdit4("Color", cSlot.second.data())) {
+                    this->pushSlots();
+                }
                 ImGui::PopID();
             }
-            ImGui::Text("Opacity Slots");
-            for (size_t i = 0; i < fOpacitySlots.size(); i++) {
-                auto& oSlot = fOpacitySlots.at(i);
+            ImGui::Text("Scalar Slots");
+            for (size_t i = 0; i < fScalarSlots.size(); i++) {
+                auto& oSlot = fScalarSlots.at(i);
                 ImGui::PushID(i);
                 ImGui::Text("%s", oSlot.first.c_str());
-                ImGui::InputFloat("Opacity", &(oSlot.second));
+                if (ImGui::InputFloat("Scalar", &(oSlot.second))) {
+                    this->pushSlots();
+                }
+                ImGui::PopID();
+            }
+            ImGui::Text("Vec2 Slots");
+            for (size_t i = 0; i < fVec2Slots.size(); i++) {
+                auto& vSlot = fVec2Slots.at(i);
+                ImGui::PushID(i);
+                ImGui::Text("%s", vSlot.first.c_str());
+                if (ImGui::InputFloat2("x, y", &(vSlot.second.x))) {
+                    this->pushSlots();
+                }
                 ImGui::PopID();
             }
             ImGui::Text("Text Slots");
@@ -276,7 +311,19 @@ public:
                 auto& tSlot = fTextStringSlots.at(i);
                 ImGui::PushID(i);
                 ImGui::Text("%s", tSlot.first.c_str());
-                ImGui::InputText("Text", tSlot.second.data(), tSlot.second.size());
+                if (ImGui::InputText("Text", tSlot.second.source.data(),
+                                             tSlot.second.source.size())) {
+                    this->pushSlots();
+                }
+                if (ImGui::BeginCombo("Font", tSlot.second.font.data())) {
+                    for (const auto& typeface : fTypefaceList) {
+                        if (ImGui::Selectable(typeface, false)) {
+                            tSlot.second.font = typeface;
+                            this->pushSlots();
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
                 ImGui::PopID();
             }
 
@@ -289,34 +336,101 @@ public:
                     for (const auto& res : fResList) {
                         if (ImGui::Selectable(res.c_str(), false)) {
                             iSlot.second = res.c_str();
+                            this->pushSlots();
                         }
                     }
                     ImGui::EndCombo();
                 }
                 ImGui::PopID();
             }
-            if (ImGui::Button("Apply Slots")) {
-                this->pushSlots();
-            }
-
         }
         ImGui::End();
     }
 
     void pushSlots() {
         for(const auto& s : fColorSlots) {
-            fSlotManager->setColorSlot(s.first.data(), SkColor4f{s.second[0], s.second[1],
-                                                       s.second[2], s.second[3]}.toSkColor());
+            fSlotManager->setColorSlot(s.first, SkColor4f{s.second[0], s.second[1],
+                                                          s.second[2], s.second[3]}.toSkColor());
         }
-        for(const auto& s : fOpacitySlots) {
-            fSlotManager->setOpacitySlot(s.first.data(), s.second);
+        for(const auto& s : fScalarSlots) {
+            fSlotManager->setScalarSlot(s.first, s.second);
+        }
+        for(const auto& s : fVec2Slots) {
+            fSlotManager->setVec2Slot(s.first, {s.second.x, s.second.y});
         }
         for(const auto& s : fTextStringSlots) {
-            fSlotManager->setTextStringSlot(s.first.data(), SkString(s.second.data()));
+            auto t = fSlotManager->getTextSlot(s.first);
+            t->fText = SkString(s.second.source.data());
+            t->fTypeface = ToolUtils::TestFontMgr()->matchFamilyStyle(s.second.font.c_str(),
+                                                                      SkFontStyle());
+            fSlotManager->setTextSlot(s.first, *t);
         }
         for(const auto& s : fImageSlots) {
-            fSlotManager->setImageSlot(s.first.data(), "images/", s.second.c_str(), nullptr);
+            auto image = fResourceProvider->loadImageAsset("images/", s.second.c_str(), nullptr);
+            fSlotManager->setImageSlot(s.first, image);
         }
+    }
+
+    void initializeSlotManagerUI() {
+        prepareImageAssetList(GetResourcePath("skottie/images").c_str());
+        // only initialize if slots are unpopulated
+        if (fColorSlots.empty() && fScalarSlots.empty() && fTextStringSlots.empty()) {
+            auto slotInfos = fSlotManager->getSlotInfo();
+            for (const auto &sid : slotInfos.fColorSlotIDs) {
+                addColorSlot(sid);
+            }
+            for (const auto &sid : slotInfos.fScalarSlotIDs) {
+                addScalarSlot(sid);
+            }
+            for (const auto &sid : slotInfos.fVec2SlotIDs) {
+                addVec2Slot(sid);
+            }
+            for (const auto &sid : slotInfos.fImageSlotIDs) {
+                addImageSlot(sid);
+            }
+            for (const auto &sid : slotInfos.fTextSlotIDs) {
+                addTextSlot(sid);
+            }
+        }
+    }
+
+private:
+    static constexpr int kBufferLen = 256;
+
+    sk_sp<skottie::SlotManager> fSlotManager;
+    const sk_sp<skresources::ResourceProvider> fResourceProvider;
+    std::vector<SkString> fResList;
+    static constexpr std::array<const char*, 4> fTypefaceList = {"Arial",
+                                                                 "Courier New",
+                                                                 "Roboto-Regular",
+                                                                 "Georgia"};
+
+    using GuiTextBuffer = std::array<char, kBufferLen>;
+
+    void addColorSlot(SkString slotID) {
+        auto c = fSlotManager->getColorSlot(slotID);
+        SkColor4f color4f = SkColor4f::FromColor(*c);
+        fColorSlots.push_back(std::make_pair(slotID, color4f.array()));
+    }
+
+    void addScalarSlot(SkString slotID) {
+        fScalarSlots.push_back(std::make_pair(slotID, *fSlotManager->getScalarSlot(slotID)));
+    }
+
+    void addVec2Slot(SkString slotID) {
+        fVec2Slots.push_back(std::make_pair(slotID, *fSlotManager->getVec2Slot(slotID)));
+    }
+
+    void addTextSlot(SkString slotID) {
+        std::array<char, kBufferLen> textSource = {'\0'};
+        SkString s = fSlotManager->getTextSlot(slotID)->fText;
+        std::copy(s.data(), s.data() + s.size(), textSource.data());
+        TextSlotData data = {textSource, fTypefaceList[0]};
+        fTextStringSlots.push_back(std::make_pair(slotID, data));
+    }
+
+    void addImageSlot(SkString slotID) {
+        fImageSlots.push_back(std::make_pair(slotID, fResList[0].data()));
     }
 
     void prepareImageAssetList(const char* dirname) {
@@ -327,69 +441,16 @@ public:
         }
     }
 
-    void initializeSlotManagerUI() {
-        // only initialize if slots are unpopulated
-        if (fColorSlots.empty() && fOpacitySlots.empty() && fTextStringSlots.empty()) {
-            auto slotInfos = fSlotManager->getSlotInfo();
-            for (const skottie_utils::SlotManager::SlotInfo &slotInfo : slotInfos) {
-                switch (slotInfo.type) {
-                case skottie_utils::SlotType::kColor: // color
-                    addColorSlot(slotInfo.slotID);
-                    break;
-                case skottie_utils::SlotType::kOpacity: // opacity
-                    addOpacitySlot(slotInfo.slotID);
-                    break;
-                case skottie_utils::SlotType::kText: // images
-                    addTextSlot(slotInfo.slotID);
-                    break;
-                case skottie_utils::SlotType::kImage: // text
-                    addImageSlot(slotInfo.slotID);
-                    break;
-                default:
-                    SkDebugf("Unknown slot type: %s: %d\n", slotInfo.slotID.c_str(), slotInfo.type);
-                    break;
-                }
-            }
-        }
-    }
+    struct TextSlotData {
+        GuiTextBuffer source;
+        std::string   font;
+    };
 
-    sk_sp<skresources::ResourceProvider> getResourceProvider() {
-        return fSlotManager->getResourceProvider();
-    }
-
-    sk_sp<skottie::PropertyObserver> getPropertyObserver() {
-        return fSlotManager->getPropertyObserver();
-    }
-private:
-    static constexpr int kBufferLen = 256;
-
-    const sk_sp<skottie_utils::SlotManager> fSlotManager;
-    const sk_sp<skresources::ResourceProvider> fResourceProvider;
-    std::vector<SkString> fResList;
-
-    using GuiTextBuffer = std::array<char, kBufferLen>;
-
-    void addColorSlot(std::string slotID) {
-        fColorSlots.push_back(std::make_pair(slotID, std::array{1.0f, 1.0f, 1.0f, 1.0f}));
-    }
-
-    void addOpacitySlot(std::string slotID) {
-        fOpacitySlots.push_back(std::make_pair(slotID, 100.0f));
-    }
-
-    void addTextSlot(std::string slotID) {
-        std::array<char, kBufferLen> textSource = {'\0'};
-        fTextStringSlots.push_back(std::make_pair(slotID, textSource));
-    }
-
-    void addImageSlot(std::string slotID) {
-        fImageSlots.push_back(std::make_pair(slotID, std::string()));
-    }
-
-    std::vector<std::pair<std::string, std::array<float, 4>>> fColorSlots;
-    std::vector<std::pair<std::string, float>>                fOpacitySlots;
-    std::vector<std::pair<std::string, GuiTextBuffer>>        fTextStringSlots;
-    std::vector<std::pair<std::string, std::string>>          fImageSlots;
+    std::vector<std::pair<SkString, std::array<float, 4>>> fColorSlots;
+    std::vector<std::pair<SkString, float>>                fScalarSlots;
+    std::vector<std::pair<SkString, SkV2>>                 fVec2Slots;
+    std::vector<std::pair<SkString, TextSlotData>>         fTextStringSlots;
+    std::vector<std::pair<SkString, std::string>>          fImageSlots;
 
 };
 
@@ -401,7 +462,7 @@ static void draw_stats_box(SkCanvas* canvas, const skottie::Animation::Builder::
     paint.setAntiAlias(true);
     paint.setColor(0xffeeeeee);
 
-    SkFont font(nullptr, kTextSize);
+    SkFont font(ToolUtils::DefaultTypeface(), kTextSize);
 
     canvas->drawRect(kR, paint);
 
@@ -474,12 +535,14 @@ void SkottieSlide::init() {
     }
     skottie::Animation::Builder builder(flags);
 
+    // Viewer should have already registered the codecs necessary for DataURIResourceProviderProxy
+    auto predecode = skresources::ImageDecodeStrategy::kPreDecode;
     auto resource_provider =
-        sk_make_sp<AudioProviderProxy>(
-            skresources::DataURIResourceProviderProxy::Make(
-                skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()),
-                                                        /*predecode=*/true),
-                /*predecode=*/true));
+            sk_make_sp<AudioProviderProxy>(skresources::DataURIResourceProviderProxy::Make(
+                    skresources::FileResourceProvider::Make(SkOSPath::Dirname(fPath.c_str()),
+                                                            predecode),
+                    predecode,
+                    ToolUtils::TestFontMgr()));
 
     static constexpr char kInterceptPrefix[] = "__";
     auto precomp_interceptor =
@@ -489,23 +552,38 @@ void SkottieSlide::init() {
     fTransformTracker = sk_make_sp<TransformTracker>();
     auto text_tracker = sk_make_sp<TextTracker>(fTransformTracker);
 
-    if (!fSlotManagerWrapper) {
-        fSlotManagerWrapper = std::make_unique<SlotManagerWrapper>(fPath, resource_provider, text_tracker);
-    }
-
     builder.setLogger(logger)
+           .setFontManager(ToolUtils::TestFontMgr())
            .setPrecompInterceptor(std::move(precomp_interceptor))
-           .setResourceProvider(fSlotManagerWrapper->getResourceProvider())
-           .setPropertyObserver(fSlotManagerWrapper->getPropertyObserver());
+           .setResourceProvider(resource_provider)
+           .setPropertyObserver(text_tracker)
+           .setTextShapingFactory(make_shapers_factory(fPreferCoretext));
 
     fAnimation = builder.makeFromFile(fPath.c_str());
     fAnimationStats = builder.getStats();
     fTimeBase       = 0; // force a time reset
 
-    fSlotManagerWrapper->prepareImageAssetList(GetResourcePath("skottie/images").c_str());
-    fSlotManagerWrapper->initializeSlotManagerUI();
-
     if (fAnimation) {
+        if (!fSlotManagerInterface) {
+            fSlotManagerInterface =
+                std::make_unique<SlotManagerInterface>(builder.getSlotManager(), resource_provider);
+        }
+
+        auto li = builder.getLayerInfo();
+
+        for (const auto& layer : li) {
+            SkDebugf(
+                "Layer: Name: \"%s\" | Size: %.2fx%.2f | In/Out: [%.2f, %.2f]\n",
+                layer.fName.c_str(),
+                layer.fSize.width(),
+                layer.fSize.height(),
+                layer.fInPoint,
+                layer.fOutPoint
+            );
+    }
+
+        fSlotManagerInterface->initializeSlotManagerUI();
+
         fAnimation->seek(0);
         fFrameTimes.resize(SkScalarCeilToInt(fAnimation->duration() * fAnimation->fps()));
         SkDebugf("Loaded Bodymovin animation v: %s, size: [%f %f]\n",
@@ -518,8 +596,9 @@ void SkottieSlide::init() {
             // Attach the editor to the first text layer, and track the rest as dependents.
             auto editor_target = std::move(text_props[0]);
             text_props.erase(text_props.cbegin());
-            fTextEditor = sk_make_sp<SkottieTextEditor>(std::move(editor_target),
-                                                        std::move(text_props));
+            fTextEditor = sk_make_sp<skottie_utils::TextEditor>(std::move(editor_target),
+                                                                std::move(text_props));
+            fTextEditor->setCursorWeight(1.2f);
         }
     } else {
         SkDebugf("failed to load Bodymovin animation: %s\n", fPath.c_str());
@@ -563,8 +642,8 @@ void SkottieSlide::draw(SkCanvas* canvas) {
             draw_stats_box(canvas, fAnimationStats);
         }
         if (fShowAnimationInval) {
-            const auto t = SkMatrix::RectToRect(SkRect::MakeSize(fAnimation->size()), dstR,
-                                                SkMatrix::kCenter_ScaleToFit);
+            const auto t = SkMatrix::RectToRectOrIdentity(SkRect::MakeSize(fAnimation->size()), dstR,
+                                                          SkMatrix::kCenter_ScaleToFit);
             SkPaint fill, stroke;
             fill.setAntiAlias(true);
             fill.setColor(0x40ff0000);
@@ -585,7 +664,7 @@ void SkottieSlide::draw(SkCanvas* canvas) {
         if (fShowSlotManager) {
             // not able to track layers with a PropertyObserver while using SM's PropertyObserver
             fShowTrackerUI = false;
-            fSlotManagerWrapper->renderUI();
+            fSlotManagerInterface->renderUI();
         }
         if (fShowTrackerUI) {
             fTransformTracker->renderUI();
@@ -632,6 +711,10 @@ bool SkottieSlide::onChar(SkUnichar c) {
     }
 
     switch (c) {
+    case 'C':
+        fPreferCoretext = !fPreferCoretext;
+        this->load(fWinSize.width(), fWinSize.height());
+        return true;
     case 'I':
         fShowAnimationStats = !fShowAnimationStats;
         return true;

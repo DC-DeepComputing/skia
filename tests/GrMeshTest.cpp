@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -14,14 +14,15 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/private/SkColorData.h"
-#include "include/private/base/SkAlignedStorage.h"
-#include "include/private/base/SkOnce.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTo.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/private/SkAlignedStorage.h"
+#include "include/private/SkMacros.h"
+#include "include/private/SkOnce.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/base/SkArenaAlloc.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkColorData.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ResourceKey.h"
@@ -76,7 +77,7 @@ using namespace skia_private;
 
 #if 0
 #include "tools/ToolUtils.h"
-#define WRITE_PNG_CONTEXT_TYPE kANGLE_D3D11_ES3_ContextType
+#define WRITE_PNG_CONTEXT_TYPE kANGLE_D3D11_ES3
 #endif
 
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gIndexBufferKey);
@@ -149,8 +150,8 @@ static void run_test(GrDirectContext*,
                      std::function<void(DrawMeshHelper*)> executeFn);
 
 #ifdef WRITE_PNG_CONTEXT_TYPE
-static bool IsContextTypeForOutputPNGs(skiatest::GrContextFactoryContextType type) {
-    return type == skiatest::GrContextFactoryContextType::WRITE_PNG_CONTEXT_TYPE;
+static bool IsContextTypeForOutputPNGs(skgpu::ContextType type) {
+    return type == skgpu::ContextType::WRITE_PNG_CONTEXT_TYPE;
 }
 DEF_GANESH_TEST_FOR_CONTEXTS(GrMeshTest, IsContextTypeForOutputPNGs, reporter, ctxInfo, nullptr) {
 #else
@@ -660,10 +661,8 @@ static void run_test(GrDirectContext* dContext,
     sdc->readPixels(dContext, resultPM, {0, 0});
 
 #ifdef WRITE_PNG_CONTEXT_TYPE
-#define STRINGIFY(X) #X
-#define TOSTRING(X) STRINGIFY(X)
     SkString filename;
-    filename.printf("GrMeshTest_%s_%s.png", TOSTRING(WRITE_PNG_CONTEXT_TYPE), testName);
+    filename.printf("GrMeshTest_%s_%s.png", SK_MACRO_STRINGIFY(WRITE_PNG_CONTEXT_TYPE), testName);
     SkDebugf("writing %s...\n", filename.c_str());
     ToolUtils::EncodeImageToPngFile(filename.c_str(), resultPM);
 #endif

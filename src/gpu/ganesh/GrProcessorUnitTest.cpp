@@ -7,32 +7,38 @@
 
 #include "src/gpu/ganesh/GrProcessorUnitTest.h"
 
-#include <memory>
+#if defined(GPU_TEST_UTILS)
 
-#include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/SkDebug.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
-#include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/gpu/ganesh/SurfaceDrawContext.h"
+
+#include <cstdint>
+#include <memory>
+#include <utility>
 
 using namespace skia_private;
 
-#if GR_TEST_UTILS
-
-class GrGeometryProcessor;
-
-GrProcessorTestData::GrProcessorTestData(SkRandom* random, GrRecordingContext* context,
-                                         int maxTreeDepth, int numViews, const ViewInfo views[])
-        : GrProcessorTestData(random, context, maxTreeDepth, numViews, views,
+GrProcessorTestData::GrProcessorTestData(SkRandom* random, skgpu::ganesh::SurfaceDrawContext* sdc,
+                                         int maxTreeDepth, SkSpan<const ViewInfo> views)
+        : GrProcessorTestData(random, sdc, maxTreeDepth, views,
                               /*inputFP=*/nullptr) {}
 
-GrProcessorTestData::GrProcessorTestData(SkRandom* random, GrRecordingContext* context,
-                                         int maxTreeDepth, int numViews, const ViewInfo views[],
+GrProcessorTestData::GrProcessorTestData(SkRandom* random, skgpu::ganesh::SurfaceDrawContext* sdc,
+                                         int maxTreeDepth, SkSpan<const ViewInfo> views,
                                          std::unique_ptr<GrFragmentProcessor> inputFP)
         : fRandom(random)
         , fMaxTreeDepth(maxTreeDepth)
-        , fContext(context)
+        , fContext(sdc->recordingContext())
+        , fDrawContext(sdc)
         , fInputFP(std::move(inputFP)) {
-    fViews.reset(views, numViews);
+    fViews.reset(views);
     fArena = std::make_unique<SkArenaAlloc>(1000);
 }
 
@@ -114,7 +120,7 @@ GrXPFactoryTestFactory::GrXPFactoryTestFactory(GetFn* getProc) : fGetProc(getPro
 
 const GrXPFactory* GrXPFactoryTestFactory::Get(GrProcessorTestData* data) {
     VerifyFactoryCount();
-    if (GetFactories()->size() == 0) {
+    if (GetFactories()->empty()) {
         return nullptr;
     }
     uint32_t idx = data->fRandom->nextRangeU(0, GetFactories()->size() - 1);
@@ -149,7 +155,7 @@ TArray<GrXPFactoryTestFactory*, true>* GrXPFactoryTestFactory::GetFactories() {
  * we verify the count is as expected.  If a new factory is added, then these numbers must be
  * manually adjusted.
  */
-static constexpr int kFPFactoryCount = 16;
+static constexpr int kFPFactoryCount = 10;
 static constexpr int kGPFactoryCount = 14;
 static constexpr int kXPFactoryCount = 4;
 

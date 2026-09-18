@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,7 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPathBuilder.h"
 
-// Repro case for http://skbug.com/9453
+// Repro case for skbug.com/40040760
 DEF_SIMPLE_GM(inverseclip, canvas, 400, 400) {
     SkPathBuilder clip;
     clip.setFillType(SkPathFillType::kInverseWinding);

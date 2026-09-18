@@ -8,9 +8,9 @@
 #ifndef SkBitSet_DEFINED
 #define SkBitSet_DEFINED
 
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTemplates.h"
-#include "src/base/SkMathPriv.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTemplates.h"
+#include "src/core/SkMathPriv.h"
 
 #include <climits>
 #include <cstring>
@@ -36,6 +36,19 @@ public:
         return *this;
     }
     ~SkBitSet() = default;
+
+    /** Basic equality checks. */
+    bool operator==(const SkBitSet& that) const {
+        if (fSize != that.fSize) {
+            return false;
+        }
+        const size_t numChunks = NumChunksFor(fSize);
+        return 0 == memcmp(fChunks.get(), that.fChunks.get(), sizeof(Chunk) * numChunks);
+    }
+
+    bool operator!=(const SkBitSet& that) const {
+        return !this->operator==(that);
+    }
 
     /** Set the value of the index-th bit to true. */
     void set(size_t index) {

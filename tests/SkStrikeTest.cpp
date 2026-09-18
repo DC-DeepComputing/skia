@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -21,11 +21,10 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkMutex.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkArenaAlloc.h"
-#include "src/base/SkZip.h"
+#include "include/private/SkMutex.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkReadBuffer.h"
@@ -35,9 +34,11 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/core/SkZip.h"
 #include "src/text/StrikeForGPU.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <atomic>
 #include <cstddef>
@@ -80,7 +81,7 @@ prepare_for_mask_drawing(
         rejectedSize = 0;
     StrikeMutationMonitor m{strike};
     for (auto [glyphID, pos] : source) {
-        if (!SkScalarsAreFinite(pos.x(), pos.y())) {
+        if (!SkIsFinite(pos.x(), pos.y())) {
             continue;
         }
         const SkPackedGlyphID packedID{glyphID};
@@ -107,7 +108,7 @@ prepare_for_mask_drawing(
 
 DEF_TEST(SkStrikeMultiThread, Reporter) {
     sk_sp<SkTypeface> typeface =
-            ToolUtils::create_portable_typeface("serif", SkFontStyle::Italic());
+            ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Italic());
     static constexpr int kThreadCount = 4;
 
     Barrier barrier{kThreadCount};
@@ -225,9 +226,8 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     const SkPackedGlyphID pathPackedGlyphID((SkGlyphID)11);
     SkGlyph pathGlyph{pathPackedGlyphID};
     SkGlyphTestPeer::SetGlyph(&pathGlyph);
-    SkPath path;
-    path.addRect(pathGlyph.rect());
-    pathGlyph.setPath(&alloc, &path, false);
+    SkPath path = SkPath::Rect(pathGlyph.rect());
+    pathGlyph.setPath(&alloc, &path, false, false);
     pathsToSend.emplace_back(pathGlyph);
 
     // Make a drawable glyph and put it in the glyphs to send.
@@ -258,13 +258,13 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     drawablesToSend.emplace_back(drawableGlyph);
 
     // Test the FlattenGlyphsByType method.
-    SkBinaryWriteBuffer writeBuffer;
+    SkBinaryWriteBuffer writeBuffer({});
     SkStrike::FlattenGlyphsByType(writeBuffer, imagesToSend, pathsToSend, drawablesToSend);
     auto data = writeBuffer.snapshotAsData();
 
     // Make a strike to merge into.
     SkStrikeCache strikeCache;
-    auto dstTypeface = SkTypeface::MakeFromName("monospace", SkFontStyle());
+    auto dstTypeface = ToolUtils::CreateTestTypeface("monospace", SkFontStyle());
     SkFont font{dstTypeface};
     SkStrikeSpec spec = SkStrikeSpec::MakeWithNoDevice(font);
     sk_sp<SkStrike> strike = spec.findOrCreateStrike(&strikeCache);

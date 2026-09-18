@@ -9,11 +9,11 @@
 
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
-#include "include/private/SkColorData.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkFloatingPoint.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkFloatingPoint.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkRandom.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/BlendFormula.h"
@@ -27,6 +27,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 
+#include <cstring>
 #include <memory>
 #include <string>
 
@@ -96,7 +97,6 @@ static void append_color_output(const PorterDuffXferProcessor& xp,
             break;
         default:
             SK_ABORT("Unsupported output type.");
-            break;
     }
 }
 
@@ -466,7 +466,7 @@ GrXPFactory::AnalysisProperties GrPorterDuffXPFactory::analysisProperties(
 
 GR_DEFINE_XP_FACTORY_TEST(GrPorterDuffXPFactory)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 const GrXPFactory* GrPorterDuffXPFactory::TestGet(GrProcessorTestData* d) {
     SkBlendMode mode = SkBlendMode(d->fRandom->nextULessThan((int)SkBlendMode::kLastCoeffMode));
     return GrPorterDuffXPFactory::Get(mode);

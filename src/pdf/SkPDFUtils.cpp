@@ -5,21 +5,36 @@
  * found in the LICENSE file.
  */
 
-#include "src/pdf/SkPDFUtils.h"
-
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
-#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
-#include "include/private/base/SkFixed.h"
+#include "include/docs/SkPDFDocument.h"
+#include "include/private/SkFixed.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/image/SkImage_Base.h"
 #include "src/pdf/SkPDFResourceDict.h"
 #include "src/pdf/SkPDFTypes.h"
+#include "src/pdf/SkPDFUtils.h"
 
-#include <cmath>
+#include <algorithm>
+#include <array>
+#include <ctime>
+#include <optional>
+#include <utility>
+
+#if defined(SK_BUILD_FOR_WIN)
+#include "src/core/SkLeanWindows.h"
+#endif
 
 const char* SkPDFUtils::BlendModeName(SkBlendMode mode) {
     // PDF32000.book section 11.3.5 "Blend Mode"
@@ -95,9 +110,9 @@ static void append_cubic(SkScalar ctl1X, SkScalar ctl1Y,
     content->writeText(cmd.c_str());
 }
 
-static void append_quad(const SkPoint quad[], SkWStream* content) {
+static void append_quad(SkSpan<const SkPoint> quad, SkWStream* content) {
     SkPoint cubic[4];
-    SkConvertQuadToCubic(quad, cubic);
+    SkConvertQuadToCubic(quad.data(), cubic);
     append_cubic(cubic[1].fX, cubic[1].fY, cubic[2].fX, cubic[2].fY,
                  cubic[3].fX, cubic[3].fY, content);
 }
@@ -116,17 +131,149 @@ void SkPDFUtils::AppendRectangle(const SkRect& rect, SkWStream* content) {
     content->writeText(" re\n");
 }
 
-void SkPDFUtils::EmitPath(const SkPath& path, SkPaint::Style paintStyle,
-                          bool doConsumeDegerates, SkWStream* content,
-                          SkScalar tolerance) {
-    if (path.isEmpty() && SkPaint::kFill_Style == paintStyle) {
-        SkPDFUtils::AppendRectangle({0, 0, 0, 0}, content);
-        return;
+namespace {
+
+// A helper which wraps a content output stream and filters out zero-area contours when needed.
+// Contours are considered to have an empty area when all their points are collinear.
+//
+// Note: the current approach is limited to contour granularity, and it's still possible to have
+// zero-area extrusions within a non-zero-area contour (with e.g. partial segment backtracking).
+// Solving the general problem leads to reinventing pathops' Simplify, which is unfortunately
+// too slow to use in this context (https://skia-review.googlesource.com/c/skia/+/767256).
+class ContourBuffer {
+public:
+    ContourBuffer(SkWStream* contentStream, SkPDFUtils::EmptyArea emptyArea)
+        : fContentStream(contentStream)
+        , fEmptyArea(emptyArea)
+    {}
+
+    void appendMove(SkSpan<const SkPoint> pts) {
+        SkASSERT(pts.size() == 1);
+
+        this->flushContour();
+
+        SkPDFUtils::MoveTo(pts[0].fX, pts[0].fY, &fBuffer);
     }
-    // Filling a path with no area results in a drawing in PDF renderers but
-    // Chrome expects to be able to draw some such entities with no visible
-    // result, so we detect those cases and discard the drawing for them.
-    // Specifically: moveTo(X), lineTo(Y) and moveTo(X), lineTo(X), lineTo(Y).
+
+    void appendLine(SkSpan<const SkPoint> pts) {
+        SkASSERT(pts.size() == 2);
+
+        this->updateState(pts);
+
+        SkPDFUtils::AppendLine(pts[1].fX, pts[1].fY, &fBuffer);
+    }
+
+    void appendQuad(SkSpan<const SkPoint> pts) {
+        SkASSERT(pts.size() == 3);
+
+        this->updateState(pts);
+
+        append_quad(pts, &fBuffer);
+    }
+
+    void appendCubic(SkSpan<const SkPoint> pts) {
+        SkASSERT(pts.size() == 4);
+
+        this->updateState(pts);
+
+        append_cubic(pts[1].fX, pts[1].fY,
+                     pts[2].fX, pts[2].fY,
+                     pts[3].fX, pts[3].fY,
+                     &fBuffer);
+    }
+
+    void appendClose() {
+        SkPDFUtils::ClosePath(&fBuffer);
+
+        this->flushContour();
+    }
+
+    void flushContour() {
+        const bool discard = fEmptyArea == SkPDFUtils::EmptyArea::Discard && fAllCollinear;
+        if (!discard) {
+            fBuffer.writeToStream(fContentStream);
+            fWroteContent |= fBuffer.bytesWritten() > 0;
+        }
+
+        fBuffer.reset();
+        fCurrentLine.reset();
+        fAllCollinear = true;
+    }
+
+    bool wroteContent() const { return fWroteContent; }
+
+private:
+    struct Line {
+        SkPoint  fOrig;
+        SkVector fVec;
+    };
+
+    // Pick a line determined by two distinct points in the list or return nullopt if
+    // all points are the same.  Because we only care about collinearity, it's not
+    // important which particular points we select as long as they are distinct.
+    static std::optional<Line> SelectLine(SkSpan<const SkPoint> pts) {
+        const SkPoint p0 = pts.front();
+        pts = pts.subspan(1);
+
+        for (auto it = pts.rbegin(); it != pts.rend(); ++it) {
+            if (*it != p0) {
+                return {{p0, *it - p0}};
+            }
+        }
+
+        return std::nullopt;
+    }
+
+    void updateState(SkSpan<const SkPoint> pts) {
+        SkASSERT(pts.size() >= 2);
+
+        if (fEmptyArea == SkPDFUtils::EmptyArea::Preserve || !fAllCollinear) {
+            return;
+        }
+
+        if (!fCurrentLine) {
+            fCurrentLine = SelectLine(pts);
+            if (!fCurrentLine) {
+                // All points are coincident.
+                return;
+            }
+        }
+
+        // We receive a starting point for all verbs, which coincides with the last point
+        // of the previous verb.  It can be ignored for collinearity tests.
+        for (const auto& pt : pts.subspan(1)) {
+            // SkScalarNearlyZero's default epsilon is too coarse for some of the GMs
+            // stress-testing large scales.
+            static constexpr float eps = 1.0f / (1 << 24);
+
+            if (!SkScalarNearlyZero(
+                    SkPoint::CrossProduct(fCurrentLine->fVec, pt - fCurrentLine->fOrig), eps)) {
+                fAllCollinear = false;
+                break;
+            }
+        }
+    }
+
+    SkWStream*                  fContentStream;
+    const SkPDFUtils::EmptyArea fEmptyArea;
+
+    SkDynamicMemoryWStream      fBuffer;
+    std::optional<Line>         fCurrentLine;
+    bool                        fAllCollinear = true;
+    bool                        fWroteContent = false;
+};
+
+}  // namespace
+
+bool SkPDFUtils::EmitPath(const SkPath& path, EmptyPath emptyPath, EmptyVerb emptyVerb,
+                          EmptyArea emptyArea, SkWStream* content, SkScalar tolerance) {
+    if (path.isEmpty()) {
+        if (emptyPath == EmptyPath::Preserve) {
+            SkPDFUtils::AppendRectangle({0, 0, 0, 0}, content);
+            return true;
+        }
+        return false;
+    }
 
     SkRect rect;
     bool isClosed; // Both closure and direction need to be checked.
@@ -137,78 +284,56 @@ void SkPDFUtils::EmitPath(const SkPath& path, SkPaint::Style paintStyle,
          SkPathFillType::kEvenOdd == path.getFillType()))
     {
         SkPDFUtils::AppendRectangle(rect, content);
-        return;
+        return true;
     }
 
-    enum SkipFillState {
-        kEmpty_SkipFillState,
-        kSingleLine_SkipFillState,
-        kNonSingleLine_SkipFillState,
-    };
-    SkipFillState fillState = kEmpty_SkipFillState;
-    //if (paintStyle != SkPaint::kFill_Style) {
-    //    fillState = kNonSingleLine_SkipFillState;
-    //}
-    SkPoint lastMovePt = SkPoint::Make(0,0);
-    SkDynamicMemoryWStream currentSegment;
-    SkPoint args[4];
+    // Filling a path with no area results in a drawing in PDF renderers but
+    // Chrome expects to be able to draw some such entities with no visible
+    // result, so we detect those cases and discard the drawing for them.
+    ContourBuffer cbuffer(content, emptyArea);
+    const bool preserveEmptyVerbs = emptyVerb == EmptyVerb::Preserve;
+
     SkPath::Iter iter(path, false);
-    for (SkPath::Verb verb = iter.next(args);
-         verb != SkPath::kDone_Verb;
-         verb = iter.next(args)) {
+    while (auto rec = iter.next()) {
         // args gets all the points, even the implicit first point.
-        switch (verb) {
-            case SkPath::kMove_Verb:
-                MoveTo(args[0].fX, args[0].fY, &currentSegment);
-                lastMovePt = args[0];
-                fillState = kEmpty_SkipFillState;
+        SkSpan<const SkPoint> args = rec->fPoints;
+        switch (rec->fVerb) {
+            case SkPathVerb::kMove:
+                cbuffer.appendMove(args);
                 break;
-            case SkPath::kLine_Verb:
-                if (!doConsumeDegerates || !SkPathPriv::AllPointsEq(args, 2)) {
-                    AppendLine(args[1].fX, args[1].fY, &currentSegment);
-                    if ((fillState == kEmpty_SkipFillState) && (args[0] != lastMovePt)) {
-                        fillState = kSingleLine_SkipFillState;
-                        break;
-                    }
-                    fillState = kNonSingleLine_SkipFillState;
+            case SkPathVerb::kLine:
+                if (preserveEmptyVerbs || !SkPathPriv::AllPointsEq(args)) {
+                    cbuffer.appendLine(args);
                 }
                 break;
-            case SkPath::kQuad_Verb:
-                if (!doConsumeDegerates || !SkPathPriv::AllPointsEq(args, 3)) {
-                    append_quad(args, &currentSegment);
-                    fillState = kNonSingleLine_SkipFillState;
+            case SkPathVerb::kQuad:
+                if (preserveEmptyVerbs || !SkPathPriv::AllPointsEq(args)) {
+                    cbuffer.appendQuad(args);
                 }
                 break;
-            case SkPath::kConic_Verb:
-                if (!doConsumeDegerates || !SkPathPriv::AllPointsEq(args, 3)) {
+            case SkPathVerb::kConic:
+                if (preserveEmptyVerbs || !SkPathPriv::AllPointsEq(args)) {
                     SkAutoConicToQuads converter;
-                    const SkPoint* quads = converter.computeQuads(args, iter.conicWeight(), tolerance);
+                    const SkPoint* quads = converter.computeQuads(args, rec->conicWeight(), tolerance);
                     for (int i = 0; i < converter.countQuads(); ++i) {
-                        append_quad(&quads[i * 2], &currentSegment);
+                        cbuffer.appendQuad({&quads[i * 2], 3});
                     }
-                    fillState = kNonSingleLine_SkipFillState;
                 }
                 break;
-            case SkPath::kCubic_Verb:
-                if (!doConsumeDegerates || !SkPathPriv::AllPointsEq(args, 4)) {
-                    append_cubic(args[1].fX, args[1].fY, args[2].fX, args[2].fY,
-                                 args[3].fX, args[3].fY, &currentSegment);
-                    fillState = kNonSingleLine_SkipFillState;
+            case SkPathVerb::kCubic:
+                if (preserveEmptyVerbs || !SkPathPriv::AllPointsEq(args)) {
+                    cbuffer.appendCubic(args);
                 }
                 break;
-            case SkPath::kClose_Verb:
-                ClosePath(&currentSegment);
-                currentSegment.writeToStream(content);
-                currentSegment.reset();
-                break;
-            default:
-                SkASSERT(false);
+            case SkPathVerb::kClose:
+                cbuffer.appendClose();
                 break;
         }
     }
-    if (currentSegment.bytesWritten() > 0) {
-        currentSegment.writeToStream(content);
-    }
+
+    cbuffer.flushContour();
+
+    return cbuffer.wroteContent();
 }
 
 void SkPDFUtils::ClosePath(SkWStream* content) {
@@ -280,7 +405,7 @@ static constexpr int int_pow(int base, unsigned exp, int acc = 1) {
 }
 
 
-size_t SkPDFUtils::ColorToDecimalF(float value, char result[kFloatColorDecimalCount + 2]) {
+size_t SkPDFUtils::ColorToDecimalF(float value, char (&result)[kFloatColorDecimalCount + 2]) {
     static constexpr int kFactor = int_pow(10, kFloatColorDecimalCount);
     int x = sk_float_round2int(value * kFactor);
     if (x >= kFactor || x <= 0) {  // clamp to 0-1
@@ -303,16 +428,16 @@ size_t SkPDFUtils::ColorToDecimal(uint8_t value, char result[5]) {
 }
 
 bool SkPDFUtils::InverseTransformBBox(const SkMatrix& matrix, SkRect* bbox) {
-    SkMatrix inverse;
-    if (!matrix.invert(&inverse)) {
-        return false;
+    if (auto inverse = matrix.invert()) {
+        inverse->mapRect(bbox);
+        return true;
     }
-    inverse.mapRect(bbox);
-    return true;
+    return false;
 }
 
 void SkPDFUtils::PopulateTilingPatternDict(SkPDFDict* pattern,
                                            SkRect& bbox,
+                                           bool tileX, bool tileY,
                                            std::unique_ptr<SkPDFDict> resources,
                                            const SkMatrix& matrix) {
     const int kTiling_PatternType = 1;
@@ -324,8 +449,10 @@ void SkPDFUtils::PopulateTilingPatternDict(SkPDFDict* pattern,
     pattern->insertInt("PaintType", kColoredTilingPattern_PaintType);
     pattern->insertInt("TilingType", kConstantSpacing_TilingType);
     pattern->insertObject("BBox", SkPDFUtils::RectToArray(bbox));
-    pattern->insertScalar("XStep", bbox.width());
-    pattern->insertScalar("YStep", bbox.height());
+    // PDF tiling is a raster operation which may involve pixel snapping XStep and YStep values.
+    // Add space between "tiles" if not tiling in the given direction. https://crbug.com/41496385
+    pattern->insertScalar("XStep", bbox.width() + (tileX ? 0 : 2));
+    pattern->insertScalar("YStep", bbox.height() + (tileY ? 0 : 2));
     pattern->insertObject("Resources", std::move(resources));
     if (!matrix.isIdentity()) {
         pattern->insertObject("Matrix", SkPDFUtils::MatrixToArray(matrix));
@@ -346,43 +473,6 @@ bool SkPDFUtils::ToBitmap(const SkImage* img, SkBitmap* dst) {
     return false;
 }
 
-#ifdef SK_PDF_BASE85_BINARY
-void SkPDFUtils::Base85Encode(std::unique_ptr<SkStreamAsset> stream, SkDynamicMemoryWStream* dst) {
-    SkASSERT(dst);
-    SkASSERT(stream);
-    dst->writeText("\n");
-    int column = 0;
-    while (true) {
-        uint8_t src[4] = {0, 0, 0, 0};
-        size_t count = stream->read(src, 4);
-        SkASSERT(count < 5);
-        if (0 == count) {
-            dst->writeText("~>\n");
-            return;
-        }
-        uint32_t v = ((uint32_t)src[0] << 24) | ((uint32_t)src[1] << 16) |
-                     ((uint32_t)src[2] <<  8) | src[3];
-        if (v == 0 && count == 4) {
-            dst->writeText("z");
-            column += 1;
-        } else {
-            char buffer[5];
-            for (int n = 4; n > 0; --n) {
-                buffer[n] = (v % 85) + '!';
-                v /= 85;
-            }
-            buffer[0] = v + '!';
-            dst->write(buffer, count + 1);
-            column += count + 1;
-        }
-        if (column > 74) {
-            dst->writeText("\n");
-            column = 0;
-        }
-    }
-}
-#endif //  SK_PDF_BASE85_BINARY
-
 void SkPDFUtils::AppendTransform(const SkMatrix& matrix, SkWStream* content) {
     SkScalar values[6];
     if (!matrix.asAffine(values)) {
@@ -394,3 +484,41 @@ void SkPDFUtils::AppendTransform(const SkMatrix& matrix, SkWStream* content) {
     }
     content->writeText("cm\n");
 }
+
+
+#if defined(SK_BUILD_FOR_WIN)
+
+void SkPDFUtils::GetDateTime(SkPDF::DateTime* dt) {
+    if (dt) {
+        SYSTEMTIME st;
+        GetSystemTime(&st);
+        dt->fTimeZoneMinutes = 0;
+        dt->fYear       = st.wYear;
+        dt->fMonth      = SkToU8(st.wMonth);
+        dt->fDayOfWeek  = SkToU8(st.wDayOfWeek);
+        dt->fDay        = SkToU8(st.wDay);
+        dt->fHour       = SkToU8(st.wHour);
+        dt->fMinute     = SkToU8(st.wMinute);
+        dt->fSecond     = SkToU8(st.wSecond);
+    }
+}
+
+#else // SK_BUILD_FOR_WIN
+
+void SkPDFUtils::GetDateTime(SkPDF::DateTime* dt) {
+    if (dt) {
+        time_t m_time;
+        time(&m_time);
+        struct tm tstruct;
+        gmtime_r(&m_time, &tstruct);
+        dt->fTimeZoneMinutes = 0;
+        dt->fYear       = tstruct.tm_year + 1900;
+        dt->fMonth      = SkToU8(tstruct.tm_mon + 1);
+        dt->fDayOfWeek  = SkToU8(tstruct.tm_wday);
+        dt->fDay        = SkToU8(tstruct.tm_mday);
+        dt->fHour       = SkToU8(tstruct.tm_hour);
+        dt->fMinute     = SkToU8(tstruct.tm_min);
+        dt->fSecond     = SkToU8(tstruct.tm_sec);
+    }
+}
+#endif // SK_BUILD_FOR_WIN

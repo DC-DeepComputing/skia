@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,15 +8,26 @@
 #ifndef GrProcessorSet_DEFINED
 #define GrProcessorSet_DEFINED
 
-#include "include/private/base/SkTemplates.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkTo.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkColorData.h"
+#include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
-#include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrProcessorAnalysis.h"
 #include "src/gpu/ganesh/GrXferProcessor.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
-struct GrUserStencilSettings;
+#include <cstdint>
+#include <memory>
+#include <utility>
+
 class GrAppliedClip;
-class GrXPFactory;
+class GrPaint;
+enum class SkBlendMode;
+struct GrUserStencilSettings;
 
 class GrProcessorSet {
 private:
@@ -150,7 +161,7 @@ public:
     static GrProcessorSet MakeEmptySet();
     static constexpr Analysis EmptySetAnalysis() { return Analysis(Empty::kEmpty); }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString dumpProcessors() const;
 #endif
 
@@ -172,8 +183,8 @@ private:
             SkASSERT(fProcessor == that.fProcessor);
             that.fProcessor = nullptr;
         }
-        const GrXPFactory* fFactory;
-        const GrXferProcessor* fProcessor;
+        RAW_PTR_EXCLUSION const GrXPFactory* fFactory;        // RAW_PTR_EXCLUSION: union.
+        RAW_PTR_EXCLUSION const GrXferProcessor* fProcessor;  // RAW_PTR_EXCLUSION: union.
     };
 
     const GrXPFactory* xpFactory() const {

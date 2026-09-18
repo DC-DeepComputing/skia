@@ -6,9 +6,9 @@
  */
 
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkAlign.h"
-#include "src/base/SkBlockAllocator.h"
-#include "src/base/SkTBlockList.h"
+#include "include/private/SkAlign.h"
+#include "src/core/SkBlockAllocator.h"
+#include "src/core/SkTBlockList.h"
 #include "tests/Test.h"
 
 #include <cstddef>
@@ -322,7 +322,8 @@ void run_large_increment_test(skiatest::Reporter* reporter) {
     largeIncrement.reserve(10);
     size_t scratchSize = TBlockListTestAccess::ScratchBlockSize(largeIncrement);
     // SkBlockAllocator aligns large blocks to 4k
-    size_t expected = SkAlignTo(kIncrementMax * TBlockListTestAccess::kAddressAlign, (1 << 12));
+    size_t expected = SkAlignTo(kIncrementMax * TBlockListTestAccess::kAddressAlign,
+                                (size_t) (1 << 12));
     REPORTER_ASSERT(reporter, scratchSize == expected);
 }
 

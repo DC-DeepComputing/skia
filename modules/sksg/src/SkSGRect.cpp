@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,8 +8,12 @@
 #include "modules/sksg/include/SkSGRect.h"
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkPaint.h"
+#include "include/core/SkClipOp.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPoint.h"
+#include "include/private/SkAssert.h"
+
+class SkMatrix;
 
 namespace sksg {
 
@@ -48,19 +52,7 @@ void RRect::onDraw(SkCanvas* canvas, const SkPaint& paint) const {
 }
 
 bool RRect::onContains(const SkPoint& p) const {
-    if (!fRRect.rect().contains(p.x(), p.y())) {
-        return false;
-    }
-
-    if (fRRect.isRect()) {
-        return true;
-    }
-
-    // TODO: no SkRRect::contains(x, y)
-    return fRRect.contains(SkRect::MakeLTRB(p.x() - SK_ScalarNearlyZero,
-                                            p.y() - SK_ScalarNearlyZero,
-                                            p.x() + SK_ScalarNearlyZero,
-                                            p.y() + SK_ScalarNearlyZero));
+    return fRRect.contains(p);
 }
 
 SkRect RRect::onRevalidate(InvalidationController*, const SkMatrix&) {

@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkFloatingPoint.h"
-#include "src/base/SkUtils.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkFloatingPoint.h"
+#include "src/core/SkUtils.h"
 #include "tests/Test.h"
 
 #include <array>
@@ -126,7 +126,7 @@ DEF_TEST(BitCastDoubleRoundTrip, reporter) {
     {
         uint64_t bits = sk_bit_cast<uint64_t>((double) INFINITY);
         double output = sk_bit_cast<double>(bits);
-        REPORTER_ASSERT(reporter, !std::isfinite(output), "%.16f is not infinity", output);
+        REPORTER_ASSERT(reporter, !SkIsFinite(output), "%.16f is not infinity", output);
     }
 }
 
@@ -147,4 +147,15 @@ DEF_TEST(FMA, reporter) {
 
     REPORTER_ASSERT(reporter, x == 0);
     REPORTER_ASSERT(reporter, y == -exp2(-62));
+}
+
+DEF_TEST(Midpoint, reporter) {
+    const float smallest = std::numeric_limits<float>::denorm_min();
+    REPORTER_ASSERT(reporter, sk_float_midpoint(smallest, smallest) == smallest);
+    REPORTER_ASSERT(reporter, sk_float_midpoint(smallest, -smallest) == 0);
+
+    const float biggest = std::numeric_limits<float>::max();
+    REPORTER_ASSERT(reporter, sk_float_midpoint(biggest, biggest) == biggest);
+    REPORTER_ASSERT(reporter, sk_float_midpoint(biggest, -biggest) == 0);
+
 }

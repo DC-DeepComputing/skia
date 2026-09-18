@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,8 +8,9 @@
 #ifndef SkFontParameters_DEFINED
 #define SkFontParameters_DEFINED
 
-#include "include/core/SkScalar.h"
-#include "include/core/SkTypes.h"
+#include "include/core/SkFourByteTag.h"
+
+#include <cstdint>
 
 struct SkFontParameters {
     struct Variation {

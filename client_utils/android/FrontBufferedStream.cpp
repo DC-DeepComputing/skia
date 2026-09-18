@@ -10,6 +10,7 @@
 #include "FrontBufferedStream.h"
 
 #include <algorithm>
+#include <cstdlib>
 #include <memory>
 
 namespace {
@@ -83,8 +84,7 @@ std::unique_ptr<SkStreamRewindable> FrontBufferedStream::Make(std::unique_ptr<Sk
         return nullptr;
     }
 
-    // Work around a warning regarding a copy on older compilers.
-    return std::move(frontBufferedStream);
+    return frontBufferedStream;
 }
 } // namespace skia
 } // namespace android

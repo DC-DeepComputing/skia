@@ -14,7 +14,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "src/base/SkVx.h"
+#include "src/core/SkVx.h"
 
 #include <cstdint>
 #include <cstring>
@@ -35,7 +35,6 @@ public:
         return matrix->readFromMemory(buffer, length);
     }
 
-    typedef SkMatrix::MapXYProc MapXYProc;
     typedef SkMatrix::MapPtsProc MapPtsProc;
 
 
@@ -43,16 +42,11 @@ public:
         return SkMatrix::GetMapPtsProc(matrix.getType());
     }
 
-    static MapXYProc GetMapXYProc(const SkMatrix& matrix) {
-        return SkMatrix::GetMapXYProc(matrix.getType());
-    }
-
     /**
      *  Attempt to map the rect through the inverse of the matrix. If it is not invertible,
      *  then this returns false and dst is unchanged.
      */
-    static bool SK_WARN_UNUSED_RESULT InverseMapRect(const SkMatrix& mx,
-                                                     SkRect* dst, const SkRect& src) {
+    [[nodiscard]] static bool InverseMapRect(const SkMatrix& mx, SkRect* dst, const SkRect& src) {
         if (mx.isScaleTranslate()) {
             // A scale-translate matrix with a 0 scale factor is not invertible.
             if (mx.getScaleX() == 0.f || mx.getScaleY() == 0.f) {
@@ -84,9 +78,8 @@ public:
         }
 
         // general case
-        SkMatrix inverse;
-        if (mx.invert(&inverse)) {
-            inverse.mapRect(dst, src);
+        if (auto inverse = mx.invert()) {
+            inverse->mapRect(dst, src);
             return true;
         }
         return false;
@@ -132,10 +125,16 @@ public:
         // Insert other special-cases here (e.g. scale+translate)
 
         // general case
-        SkMatrix::MapXYProc proc = mx.getMapXYProc();
-        for (int i = 0; i < count; ++i) {
-            proc(mx, pts->fX, pts->fY, pts);
-            pts = (SkPoint*)((intptr_t)pts + stride);
+        if (mx.hasPerspective()) {
+            for (int i = 0; i < count; ++i) {
+                *pts = mx.mapPointPerspective(*pts);
+                pts = (SkPoint*)((intptr_t)pts + stride);
+            }
+        } else {
+            for (int i = 0; i < count; ++i) {
+                *pts = mx.mapPointAffine(*pts);
+                pts = (SkPoint*)((intptr_t)pts + stride);
+            }
         }
     }
 
@@ -166,7 +165,7 @@ public:
         SkASSERT(0 == srcStride % sizeof(SkScalar));
         SkASSERT(0 == dstStride % sizeof(SkScalar));
         for (int i = 0; i < count; ++i) {
-            mx.mapPoints(dst, src, 1);
+            *dst = mx.mapPoint(*src);
             src = (SkPoint*)((intptr_t)src + srcStride);
             dst = (SkPoint*)((intptr_t)dst + dstStride);
         }

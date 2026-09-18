@@ -1,28 +1,67 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/ganesh/ops/StrokeRectOp.h"
 
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
 #include "include/core/SkStrokeRec.h"
-#include "src/base/SkRandom.h"
+#include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/SkAlignedStorage.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkOnce.h"
+#include "include/private/SkTArray.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkColorData.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkRandom.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/ganesh/GrAppliedClip.h"
+#include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrCaps.h"
-#include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrDefaultGeoProcFactory.h"
 #include "src/gpu/ganesh/GrDrawOpTest.h"
+#include "src/gpu/ganesh/GrGeometryProcessor.h"
+#include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
+#include "src/gpu/ganesh/GrPaint.h"
+#include "src/gpu/ganesh/GrProcessorAnalysis.h"
+#include "src/gpu/ganesh/GrProcessorSet.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
+#include "src/gpu/ganesh/GrSimpleMesh.h"
+#include "src/gpu/ganesh/GrTestUtils.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 #include "src/gpu/ganesh/ops/FillRectOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <utility>
+
+class GrDstProxyView;
+class GrGpuBuffer;
+class GrSurfaceProxyView;
+class SkArenaAlloc;
+enum class GrXferBarrierFlags;
+
+namespace skgpu::ganesh {
+class SurfaceDrawContext;
+}
 
 using namespace skia_private;
 
@@ -68,7 +107,7 @@ inline bool allowed_stroke(const GrCaps* caps, const SkStrokeRec& stroke, GrAA a
     would be faster.
     */
 void init_nonaa_stroke_rect_strip(SkPoint verts[10], const SkRect& rect, SkScalar width) {
-    const SkScalar rad = SkScalarHalf(width);
+    const float rad = width / 2.f;
 
     verts[0].set(rect.fLeft + rad, rect.fTop + rad);
     verts[1].set(rect.fLeft - rad, rect.fTop - rad);
@@ -142,7 +181,7 @@ public:
         fRect.sort();
         fStrokeWidth = stroke.getWidth();
 
-        SkScalar rad = SkScalarHalf(fStrokeWidth);
+        float rad = fStrokeWidth / 2.f;
         SkRect bounds = rect;
         bounds.outset(rad, rad);
 
@@ -254,7 +293,7 @@ private:
         flushState->drawMesh(*fMesh);
     }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         return SkStringPrintf("Color: 0x%08x, Rect [L: %.2f, T: %.2f, R: %.2f, B: %.2f], "
                               "StrokeWidth: %.2f\n%s",
@@ -311,8 +350,7 @@ bool compute_aa_rects(const GrCaps& caps,
                       SkVector* devHalfStrokeSize) {
     SkVector devStrokeSize;
     if (strokeWidth > 0) {
-        devStrokeSize.set(strokeWidth, strokeWidth);
-        viewMatrix.mapVectors(&devStrokeSize, 1);
+        devStrokeSize = viewMatrix.mapVector({strokeWidth, strokeWidth});
         devStrokeSize.setAbs(devStrokeSize);
     } else {
         devStrokeSize.set(SK_Scalar1, SK_Scalar1);
@@ -320,8 +358,8 @@ bool compute_aa_rects(const GrCaps& caps,
 
     const SkScalar dx = devStrokeSize.fX;
     const SkScalar dy = devStrokeSize.fY;
-    const SkScalar rx = SkScalarHalf(dx);
-    const SkScalar ry = SkScalarHalf(dy);
+    const float rx = dx / 2.f;
+    const float ry = dy / 2.f;
 
     devHalfStrokeSize->fX = rx;
     devHalfStrokeSize->fY = ry;
@@ -533,7 +571,7 @@ private:
     void onPrepareDraws(GrMeshDrawTarget*) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
         SkString string;
         for (const auto& info : fRects) {
@@ -991,9 +1029,7 @@ GrOp::Owner MakeNested(GrRecordingContext* context,
 
 } // namespace skgpu::ganesh::StrokeRectOp
 
-#if GR_TEST_UTILS
-
-#include "src/gpu/ganesh/GrDrawOpTest.h"
+#if defined(GPU_TEST_UTILS)
 
 GR_DRAW_OP_TEST_DEFINE(NonAAStrokeRectOp) {
     SkMatrix viewMatrix = GrTest::TestMatrix(random);

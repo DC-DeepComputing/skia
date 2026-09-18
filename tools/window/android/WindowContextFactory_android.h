@@ -12,14 +12,28 @@
 
 #include <memory>
 
+#include "tools/sk_app/Window.h"
+
 namespace skwindow {
 
 class WindowContext;
-struct DisplayParams;
+class DisplayParams;
 
-std::unique_ptr<WindowContext> MakeVulkanForAndroid(ANativeWindow*, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeVulkanForAndroid(ANativeWindow*,
+                                                    std::unique_ptr<const DisplayParams>);
 
-std::unique_ptr<WindowContext> MakeGLForAndroid(ANativeWindow*, const DisplayParams&);
+std::unique_ptr<WindowContext> MakeGraphiteVulkanForAndroid(ANativeWindow*,
+                                                            std::unique_ptr<const DisplayParams>);
+
+std::unique_ptr<WindowContext> MakeGraphiteDawnForAndroid(ANativeWindow*,
+                                                          std::unique_ptr<const DisplayParams>,
+                                                          sk_app::Window::BackendType backendType);
+
+std::unique_ptr<WindowContext> MakeGLForAndroid(ANativeWindow*,
+                                                std::unique_ptr<const DisplayParams>);
+
+std::unique_ptr<WindowContext> MakeRasterForAndroid(ANativeWindow*,
+                                                    std::unique_ptr<const DisplayParams>);
 
 }  // namespace skwindow
 

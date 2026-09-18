@@ -12,10 +12,10 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkCPUTypes.h"
-#include "include/private/base/SkFloatingPoint.h"
-#include "include/private/base/SkTo.h"
-#include "include/private/base/SkTypeTraits.h"
+#include "include/private/SkCPUTypes.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkTo.h"
+#include "include/private/SkTypeTraits.h"
 
 #include <cstdint>
 #include <optional>
@@ -177,7 +177,7 @@ public:
     }
 
     /** Requests, but does not require, to distribute color error.
-        @param dither  setting for ditering
+        @param dither  setting for dithering
     */
     void setDither(bool dither) { fBitfields.fDither = static_cast<unsigned>(dither); }
 
@@ -317,15 +317,18 @@ public:
     */
     SkScalar getStrokeMiter() const { return fMiterLimit; }
 
-    /** Sets the limit at which a sharp corner is drawn beveled.
-        Valid values are zero and greater.
-        Has no effect if miter is less than zero.
+    /** When stroking a small joinAngle with miter, the miterLength may be very long.
+        When miterLength > maxMiterLength (or joinAngle < minJoinAngle) the join will become bevel.
+        miterLimit = maxMiterLength / strokeWidth or miterLimit = 1 / sin(minJoinAngle / 2).
 
-        @param miter  zero and greater miter limit
+        This call has no effect if the miterLimit passed is less than zero.
+        Values less than one will be treated as bevel.
+
+        @param miterLimit  zero and greater miter limit
 
         example: https://fiddle.skia.org/c/@Paint_setStrokeMiter
     */
-    void setStrokeMiter(SkScalar miter);
+    void setStrokeMiter(SkScalar miterLimit);
 
     /** \enum SkPaint::Cap
         Cap draws at the beginning and end of an open path contour.
@@ -598,7 +601,7 @@ public:
 
     /**     (to be made private)
         Returns true if SkPaint does not include elements requiring extensive computation
-        to compute SkBaseDevice bounds of drawn geometry. For instance, SkPaint with SkPathEffect
+        to compute device bounds of drawn geometry. For instance, SkPaint with SkPathEffect
         always returns false.
 
         @return  true if SkPaint allows for fast computation of bounds

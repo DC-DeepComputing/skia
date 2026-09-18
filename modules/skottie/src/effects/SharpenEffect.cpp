@@ -1,17 +1,30 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/skottie/src/effects/Effects.h"
-
+#include "include/core/SkImageFilter.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkTileMode.h"
+#include "include/effects/SkImageFilters.h"
 #include "modules/skottie/src/Adapter.h"
+#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
-#include "modules/sksg/include/SkSGPaint.h"
+#include "modules/skottie/src/effects/Effects.h"
 #include "modules/sksg/include/SkSGRenderEffect.h"
-#include "src/utils/SkJSON.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
+
+#include <cstddef>
+#include <utility>
+
+namespace skjson {
+class ArrayValue;
+}
 
 namespace skottie::internal {
 
@@ -32,8 +45,8 @@ class SharpenAdapter final : public DiscardableAdapterBase<SharpenAdapter,
         }
     private:
         void onSync() override {
-            SkScalar intensity = 1 + (fAmount * 0.01);
-            SkScalar discount = (1 - intensity) / 8.0;
+            SkScalar intensity = 1 + (fAmount * 0.01f);
+            SkScalar discount = (1 - intensity) / 8.0f;
             SkScalar kernel[9] = {
                 discount, discount, discount,
                 discount, intensity, discount,

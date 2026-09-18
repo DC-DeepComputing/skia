@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -22,7 +22,7 @@ DEF_TEST(F16Stages, r) {
     };
     uint64_t halfs[4] = {0,0,0,0};
 
-    SkRasterPipeline_MemoryCtx f32 = { floats, 0 },
+    SkRasterPipelineContexts::MemoryCtx f32 = { floats, 0 },
                                f16 = { halfs,  0 };
 
     {

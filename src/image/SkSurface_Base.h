@@ -9,14 +9,16 @@
 #define SkSurface_Base_DEFINED
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkDeferredDisplayList.h" // IWYU pragma: keep
 #include "include/core/SkImage.h"
-#include "include/core/SkPoint.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkPixelStorage.h"
+#include "src/capture/SkCaptureManager.h"
+#include "src/image/SkImage_Base.h"
 
 #include <cstdint>
 #include <memory>
@@ -28,7 +30,7 @@ class SkCapabilities;
 class SkColorSpace;
 class SkPaint;
 class SkPixmap;
-class SkSurfaceCharacterization;
+class GrSurfaceCharacterization;
 class SkSurfaceProps;
 enum GrSurfaceOrigin : int;
 enum SkYUVColorSpace : int;
@@ -39,8 +41,8 @@ struct SkImageInfo;
 
 class SkSurface_Base : public SkSurface {
 public:
-    SkSurface_Base(int width, int height, const SkSurfaceProps*);
-    SkSurface_Base(const SkImageInfo&, const SkSurfaceProps*);
+    SkSurface_Base(int width, int height, const SkSurfaceProps*, sk_sp<SkPixelStorage>);
+    SkSurface_Base(const SkImageInfo&, const SkSurfaceProps*, sk_sp<SkPixelStorage>);
     ~SkSurface_Base() override;
 
     // From SkSurface.h
@@ -59,10 +61,7 @@ public:
         kRaster,
     };
 
-    // TODO(kjlubick) Android directly subclasses SkSurface_Base for tests, so we
-    // cannot make this a pure virtual. They seem to want a surface that is spy-able
-    // or mockable, so maybe we should provide something like that.
-    virtual Type type() const { return Type::kNull; }
+    virtual Type type() const = 0;
 
     // True for surfaces instantiated by pixels in CPU memory
     bool isRasterBacked() const { return this->type() == Type::kRaster; }
@@ -73,6 +72,7 @@ public:
 
     virtual GrRecordingContext* onGetRecordingContext() const;
     virtual skgpu::graphite::Recorder* onGetRecorder() const;
+    virtual SkRecorder* onGetBaseRecorder() const;
 
     /**
      *  Allocate a canvas that will draw into this surface. We will cache this
@@ -95,6 +95,8 @@ public:
      */
     virtual sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset = nullptr) { return nullptr; }
 
+    virtual sk_sp<SkImage> onMakeTemporaryImage() { return this->makeImageSnapshot(); }
+
     virtual void onWritePixels(const SkPixmap&, int x, int y) = 0;
 
     /**
@@ -110,6 +112,7 @@ public:
      * Default implementation does a rescale/read/yuv conversion and then calls the callback.
      */
     virtual void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
+                                                   bool readAlpha,
                                                    sk_sp<SkColorSpace> dstColorSpace,
                                                    SkIRect srcRect,
                                                    SkISize dstSize,
@@ -142,7 +145,7 @@ public:
      *
      *  Returns false if the backing cannot be un-shared.
      */
-    virtual bool SK_WARN_UNUSED_RESULT onCopyOnWrite(ContentChangeMode) = 0;
+    [[nodiscard]] virtual bool onCopyOnWrite(ContentChangeMode) = 0;
 
     /**
      *  Signal the surface to remind its backing store that it's mutable again.
@@ -160,15 +163,18 @@ public:
         return false;
     }
 
-    virtual bool onCharacterize(SkSurfaceCharacterization*) const { return false; }
-    virtual bool onIsCompatible(const SkSurfaceCharacterization&) const { return false; }
-    virtual bool onDraw(sk_sp<const SkDeferredDisplayList>, SkIPoint offset) {
-        return false;
-    }
+    virtual bool onCharacterize(GrSurfaceCharacterization*) const { return false; }
+    virtual bool onIsCompatible(const GrSurfaceCharacterization&) const { return false; }
 
-    // TODO: Remove this (make it pure virtual) after updating Android (which has a class derived
-    // from SkSurface_Base).
-    virtual sk_sp<const SkCapabilities> onCapabilities();
+    virtual sk_sp<const SkCapabilities> onCapabilities() = 0;
+
+    sk_sp<SkPixelStorage> getPixelStorage() const { return fPixelStorage; }
+
+    /**
+     * If capturing, signals to the capture manager and capture canvas to break off the recording
+     * SkPicture into a new SkPicture.
+     */
+    void createCaptureBreakpoint();
 
     inline SkCanvas* getCachedCanvas();
     inline sk_sp<SkImage> refCachedImage();
@@ -179,11 +185,17 @@ public:
     uint32_t newGenerationID();
 
 private:
-    std::unique_ptr<SkCanvas>   fCachedCanvas;
-    sk_sp<SkImage>              fCachedImage;
+    // fCachedCanvas is the raw pointer to the canvas that is returned to the client.
+    // It can point to either the base canvas or a capture canvas wrapper.
+    SkCanvas* fCachedCanvas = nullptr;
+    // SkSurface_Base must always own the base canvas. During capture, SkCaptureManager owns any
+    // wrapping capture canvas that fCachedCanvas may point to.
+    std::unique_ptr<SkCanvas> fOwnedBaseCanvas = nullptr;
+    sk_sp<SkImage>            fCachedImage  = nullptr;
+
 
     // Returns false if drawing should not take place (allocation failure).
-    bool SK_WARN_UNUSED_RESULT aboutToDraw(ContentChangeMode mode);
+    [[nodiscard]] bool aboutToDraw(ContentChangeMode mode);
 
     // Returns true if there is an outstanding image-snapshot, indicating that a call to aboutToDraw
     // would trigger a copy-on-write.
@@ -191,26 +203,37 @@ private:
 
     friend class SkCanvas;
     friend class SkSurface;
+
+protected:
+    sk_sp<SkPixelStorage>     fPixelStorage = nullptr;
 };
 
 SkCanvas* SkSurface_Base::getCachedCanvas() {
     if (nullptr == fCachedCanvas) {
-        fCachedCanvas = std::unique_ptr<SkCanvas>(this->onNewCanvas());
-        if (fCachedCanvas) {
-            fCachedCanvas->setSurfaceBase(this);
+        fOwnedBaseCanvas = std::unique_ptr<SkCanvas>(this->onNewCanvas());
+        if (fOwnedBaseCanvas) {
+            fOwnedBaseCanvas->setSurfaceBase(this);
+        }
+        // Try to wrap base canvas in capture wrapper
+        if (this->baseRecorder()) {
+            fCachedCanvas = this->baseRecorder()->makeCaptureCanvas(fOwnedBaseCanvas.get());
+        }
+        if (!fCachedCanvas) {
+            fCachedCanvas = fOwnedBaseCanvas.get();
         }
     }
-    return fCachedCanvas.get();
+    return fCachedCanvas;
 }
 
 sk_sp<SkImage> SkSurface_Base::refCachedImage() {
     if (fCachedImage) {
         return fCachedImage;
     }
+    this->createCaptureBreakpoint();
 
     fCachedImage = this->onNewImageSnapshot();
 
-    SkASSERT(!fCachedCanvas || fCachedCanvas->getSurfaceBase() == this);
+    SkASSERT(!fOwnedBaseCanvas || fOwnedBaseCanvas->getSurface() == this);
     return fCachedImage;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -10,10 +10,11 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkTextBlob.h"
+#include "tools/fonts/FontToolUtils.h"
 
 DEF_SIMPLE_GM(skbug_8955, canvas, 100, 100) {
     SkPaint p;
-    SkFont font;
+    SkFont font = ToolUtils::DefaultPortableFont();
     font.setSize(50);
     auto blob = SkTextBlob::MakeFromText("+", 1, font);
 

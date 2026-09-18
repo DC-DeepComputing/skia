@@ -4,40 +4,34 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #ifndef skgpu_graphite_DrawPass_DEFINED
 #define skgpu_graphite_DrawPass_DEFINED
 
-#include "include/core/SkColor.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkTArray.h"
-#include "src/core/SkEnumBitMask.h"
-#include "src/gpu/graphite/AttachmentTypes.h"
+#include "include/core/SkSpan.h"
+#include "include/private/SkTArray.h"
 #include "src/gpu/graphite/DrawCommands.h"
-#include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
-
-#include <memory>
 
 struct SkImageInfo;
 
 namespace skgpu::graphite {
 
-class BoundsManager;
 class CommandBuffer;
 class DrawList;
 class GraphicsPipeline;
-class Recorder;
 struct RenderPassDesc;
 class ResourceProvider;
 class RuntimeEffectDictionary;
-class Sampler;
-class TextureDataBlock;
 class TextureProxy;
-class Texture;
-enum class UniformSlot;
+
+enum class DstReadStrategy : uint8_t;
+enum class LoadOp : uint8_t;
+enum class StoreOp : uint8_t;
 
 /**
  * DrawPass is analogous to a subpass, storing the drawing operations in the order they are stored
@@ -55,24 +49,13 @@ class DrawPass {
 public:
     ~DrawPass();
 
-    static std::unique_ptr<DrawPass> Make(Recorder*,
-                                          std::unique_ptr<DrawList>,
-                                          sk_sp<TextureProxy> target,
-                                          const SkImageInfo& targetInfo,
-                                          std::pair<LoadOp, StoreOp>,
-                                          std::array<float, 4> clearColor);
-
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
     // contained within its dimensions.
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
+    const BindBufferInfo& storageBufferInfo() const { return fStorageBufferInfo; }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
-
-    bool requiresDstTexture() const { return false;            }
-    bool requiresMSAA()       const { return fRequiresMSAA;    }
-
-    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
 
     size_t vertexBufferSize()  const { return 0; }
     size_t uniformBufferSize() const { return 0; }
@@ -80,24 +63,37 @@ public:
     // Instantiate and prepare any resources used by the DrawPass that require the Recorder's
     // ResourceProvider. This includes things likes GraphicsPipelines, sampled Textures, Samplers,
     // etc.
+    // Note that, due to possible threaded compilation, the Pipelines are not guaranteed to be
+    // complete until Context::insertRecording time.
     bool prepareResources(ResourceProvider*,
-                          const RuntimeEffectDictionary*,
+                          sk_sp<const RuntimeEffectDictionary>,
                           const RenderPassDesc&);
 
     DrawPassCommands::List::Iter commands() const {
         return fCommandList.commands();
     }
 
+    // The handles aren't guaranteed to have been resolved to GraphicsPipelines until
+    // after addResourceRefs() is called
     const GraphicsPipeline* getPipeline(size_t index) const {
-        return fFullPipelines[index].get();
+        SkASSERT(fPipelinesHaveBeenResolved);
+        return fPipelineHandles[index].pipelineOrNull().get();
     }
-    const Texture* getTexture(size_t index) const;
-    const Sampler* getSampler(size_t index) const;
 
-    void addResourceRefs(CommandBuffer*) const;
+    // Proxies are always valid but may not be instantiated until after prepareResources() is called
+    SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
+
+    // The handles aren't guaranteed to have been resolved to GraphicsPipelines until
+    // after addResourceRefs() is called
+    SkSpan<const GraphicsPipelineHandle> pipelineHandles() const {
+        return fPipelineHandles;
+    }
+
+    [[nodiscard]] bool addResourceRefs(ResourceProvider*, CommandBuffer*);
 
 private:
-    class SortKey;
+    friend class DrawList;      // For the constructor
+    friend class DrawListLayer; // ''
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
@@ -111,18 +107,18 @@ private:
     std::pair<LoadOp, StoreOp> fOps;
     std::array<float, 4> fClearColor;
 
-    SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
-    bool fRequiresMSAA = false;
-
-    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
-    // an array of actual GraphicsPipelines.
+    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into
+    // fPipelineHandles.
     skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
-    skia_private::TArray<SamplerDesc> fSamplerDescs;
+    skia_private::TArray<float> fPipelineDrawAreas;
 
     // These resources all get instantiated during prepareResources.
-    skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
+    skia_private::TArray<GraphicsPipelineHandle> fPipelineHandles;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
-    skia_private::TArray<sk_sp<Sampler>> fSamplers;
+
+    SkDEBUGCODE(bool fPipelinesHaveBeenResolved = false;)    // set in addResourceRefs
+
+    BindBufferInfo fStorageBufferInfo;
 };
 
 } // namespace skgpu::graphite

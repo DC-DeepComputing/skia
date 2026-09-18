@@ -23,10 +23,13 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/utils/SkTextUtils.h"
+#include "tools/DecodeUtils.h"
+#include "tools/GpuToolUtils.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <functional>
 
@@ -36,13 +39,12 @@ static void makebm(SkBitmap* bm, SkColorType ct, int w, int h) {
 
     SkCanvas    canvas(*bm);
     SkPoint     pts[] = { { 0, 0 }, { SkIntToScalar(w), SkIntToScalar(h)} };
-    SkColor     colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE };
+    SkColor4f   colors[] = { SkColors::kRed, SkColors::kGreen, SkColors::kBlue };
     SkScalar    pos[] = { 0, SK_Scalar1/2, SK_Scalar1 };
     SkPaint     paint;
 
     paint.setDither(true);
-    paint.setShader(SkGradientShader::MakeLinear(pts, colors, pos, std::size(colors),
-                                                 SkTileMode::kClamp));
+    paint.setShader(SkShaders::LinearGradient(pts, {{colors, pos, SkTileMode::kClamp}, {}}));
     canvas.drawPaint(paint);
 }
 
@@ -76,7 +78,7 @@ protected:
         kNPOTSize = 21,
     };
 
-    SkString onShortName() override {
+    SkString getName() const override {
         SkString name("tilemodes");
         if (!fPowerOfTwoSize) {
             name.append("_npot");
@@ -84,7 +86,7 @@ protected:
         return name;
     }
 
-    SkISize onISize() override { return SkISize::Make(880, 560); }
+    SkISize getISize() override { return SkISize::Make(880, 560); }
 
     void onOnceBeforeDraw() override {
         int size = fPowerOfTwoSize ? kPOTSize : kNPOTSize;
@@ -95,7 +97,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
         SkPaint textPaint;
-        SkFont  font(ToolUtils::create_portable_typeface());
+        SkFont  font = ToolUtils::DefaultPortableFont();
 
         int size = fPowerOfTwoSize ? kPOTSize : kNPOTSize;
 
@@ -180,17 +182,17 @@ static sk_sp<SkShader> make_grad(SkTileMode tx, SkTileMode ty) {
     SkPoint pts[] = { { 0, 0 }, { SkIntToScalar(gWidth), SkIntToScalar(gHeight)} };
     SkPoint center = { SkIntToScalar(gWidth)/2, SkIntToScalar(gHeight)/2 };
     SkScalar rad = SkIntToScalar(gWidth)/2;
-    SkColor  colors[] = {0xFFFF0000, ToolUtils::color_to_565(0xFF0044FF)};
+    SkColor4f colors[] = {{1,0,0,1}, SkColor4f::FromColor(ToolUtils::color_to_565(0xFF0044FF))};
+    const SkGradient grad = {{colors, {}, tx}, {}};
 
     int index = (int)ty;
     switch (index % 3) {
         case 0:
-            return SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors), tx);
+            return SkShaders::LinearGradient(pts, grad);
         case 1:
-            return SkGradientShader::MakeRadial(center, rad, colors, nullptr, std::size(colors), tx);
+            return SkShaders::RadialGradient(center, rad, grad);
         case 2:
-            return SkGradientShader::MakeSweep(center.fX, center.fY, colors, nullptr,
-                                               std::size(colors), tx, 135, 225, 0, nullptr);
+            return SkShaders::SweepGradient(center, 135, 225, grad);
     }
     return nullptr;
 }
@@ -205,9 +207,9 @@ public:
     Tiling2GM(ShaderProc proc, const char name[]) : fProc(proc), fName(name) {}
 
 private:
-    SkString onShortName() override { return SkString(fName); }
+    SkString getName() const override { return SkString(fName); }
 
-    SkISize onISize() override { return SkISize::Make(650, 610); }
+    SkISize getISize() override { return SkISize::Make(650, 610); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->scale(SkIntToScalar(3)/2, SkIntToScalar(3)/2);
@@ -226,7 +228,7 @@ private:
         SkScalar y = SkIntToScalar(24);
         SkScalar x = SkIntToScalar(66);
 
-        SkFont font(ToolUtils::create_portable_typeface());
+        SkFont font = ToolUtils::DefaultPortableFont();
 
         for (size_t kx = 0; kx < std::size(gModes); kx++) {
             SkString str(gModeNames[kx]);
@@ -267,7 +269,7 @@ DEF_GM( return new Tiling2GM(make_grad, "tilemode_gradient"); )
 ////////////////////
 
 DEF_SIMPLE_GM(tilemode_decal, canvas, 720, 1100) {
-    auto img = GetResourceAsImage("images/mandrill_128.png");
+    auto img = ToolUtils::GetResourceAsImage("images/mandrill_128.png");
     SkPaint bgpaint;
     bgpaint.setColor(SK_ColorYELLOW);
 
@@ -288,18 +290,14 @@ DEF_SIMPLE_GM(tilemode_decal, canvas, 720, 1100) {
             paint->setShader(img->makeShader(tx, ty, SkSamplingOptions(SkCubicResampler::Mitchell())));
         },
         [img](SkPaint* paint, SkTileMode tx, SkTileMode ty) {
-            SkColor colors[] = { SK_ColorRED, SK_ColorBLUE };
+            SkColor4f colors[] = { SkColors::kRed, SkColors::kBlue };
             const SkPoint pts[] = {{ 0, 0 }, {img->width()*1.0f, img->height()*1.0f }};
-            const SkScalar* pos = nullptr;
-            const int count = std::size(colors);
-            paint->setShader(SkGradientShader::MakeLinear(pts, colors, pos, count, tx));
+            paint->setShader(SkShaders::LinearGradient(pts, {{colors, {}, tx}, {}}));
         },
         [img](SkPaint* paint, SkTileMode tx, SkTileMode ty) {
-            SkColor colors[] = { SK_ColorRED, SK_ColorBLUE };
-            const SkScalar* pos = nullptr;
-            const int count = std::size(colors);
-            paint->setShader(SkGradientShader::MakeRadial({ img->width()*0.5f, img->width()*0.5f },
-                                                      img->width()*0.5f, colors, pos, count, tx));
+            SkColor4f colors[] = { SkColors::kRed, SkColors::kBlue };
+            paint->setShader(SkShaders::RadialGradient({ img->width()*0.5f, img->width()*0.5f },
+                                                      img->width()*0.5f, {{colors, {}, tx}, {}}));
         },
     };
 

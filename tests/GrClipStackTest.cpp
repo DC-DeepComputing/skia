@@ -6,10 +6,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBitmap.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
@@ -21,12 +23,12 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
-#include "include/gpu/GrContextOptions.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/mock/GrMockTypes.h"
-#include "include/private/base/SkTo.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "include/gpu/ganesh/mock/GrMockTypes.h"
+#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
@@ -109,7 +111,7 @@ private:
              ClipStack::ClipState expectedState,
              std::vector<ClipStack::Element> actual,
              std::vector<ClipStack::Element> expected)
-        : fName(name)
+        : fName(std::move(name))
         , fElements(std::move(actual))
         , fDeviceBounds(deviceBounds)
         , fExpectedElements(std::move(expected))
@@ -342,8 +344,7 @@ void TestCase::run(const std::vector<int>& order,
                    skiatest::Reporter* reporter) const {
     SkASSERT(fElements.size() == order.size());
 
-    SkMatrixProvider matrixProvider(SkMatrix::I());
-    ClipStack cs(fDeviceBounds, &matrixProvider, false);
+    ClipStack cs(fDeviceBounds, &SkMatrix::I(), false);
 
     if (policy == SavePolicy::kAtStart) {
         cs.save();
@@ -489,7 +490,7 @@ static void run_test_case(skiatest::Reporter* r, const TestCase& test) {
 }
 
 static SkPath make_octagon(const SkRect& r, SkScalar lr, SkScalar tb) {
-    SkPath p;
+    SkPathBuilder p;
     p.moveTo(r.fLeft + lr, r.fTop);
     p.lineTo(r.fRight - lr, r.fTop);
     p.lineTo(r.fRight, r.fTop + tb);
@@ -499,7 +500,7 @@ static SkPath make_octagon(const SkRect& r, SkScalar lr, SkScalar tb) {
     p.lineTo(r.fLeft, r.fBottom - tb);
     p.lineTo(r.fLeft, r.fTop + tb);
     p.close();
-    return p;
+    return p.detach();
 }
 
 static SkPath make_octagon(const SkRect& r) {
@@ -816,46 +817,42 @@ DEF_TEST(ClipStack_PathSimplify, r) {
                               .actual().path(empty).finishElements()
                               .state(ClipState::kEmpty)
                               .finishTest());
-    SkPath point;
-    point.moveTo({0.f, 0.f});
+    SkPathBuilder builder;
+    builder.moveTo({0.f, 0.f});
     run_test_case(r, TestCase::Build("point", kDeviceBounds)
-                              .actual().path(point).finishElements()
+                              .actual().path(builder.detach()).finishElements()
                               .state(ClipState::kEmpty)
                               .finishTest());
 
-    SkPath line;
-    line.moveTo({0.f, 0.f});
-    line.lineTo({10.f, 5.f});
+    builder.moveTo({0.f, 0.f});
+    builder.lineTo({10.f, 5.f});
     run_test_case(r, TestCase::Build("line", kDeviceBounds)
-                              .actual().path(line).finishElements()
+                              .actual().path(builder.detach()).finishElements()
                               .state(ClipState::kEmpty)
                               .finishTest());
 
     // Rect path -> rect element
     SkRect rect = {0.f, 2.f, 10.f, 15.4f};
-    SkPath rectPath;
-    rectPath.addRect(rect);
+    builder.addRect(rect);
     run_test_case(r, TestCase::Build("rect", kDeviceBounds)
-                              .actual().path(rectPath).finishElements()
+                              .actual().path(builder.detach()).finishElements()
                               .expect().rect(rect).finishElements()
                               .state(ClipState::kDeviceRect)
                               .finishTest());
 
     // Oval path -> rrect element
-    SkPath ovalPath;
-    ovalPath.addOval(rect);
+    builder.addOval(rect);
     run_test_case(r, TestCase::Build("oval", kDeviceBounds)
-                              .actual().path(ovalPath).finishElements()
+                              .actual().path(builder.detach()).finishElements()
                               .expect().rrect(SkRRect::MakeOval(rect)).finishElements()
                               .state(ClipState::kDeviceRRect)
                               .finishTest());
 
     // RRect path -> rrect element
     SkRRect rrect = SkRRect::MakeRectXY(rect, 2.f, 2.f);
-    SkPath rrectPath;
-    rrectPath.addRRect(rrect);
+    builder.addRRect(rrect);
     run_test_case(r, TestCase::Build("rrect", kDeviceBounds)
-                              .actual().path(rrectPath).finishElements()
+                              .actual().path(builder.detach()).finishElements()
                               .expect().rrect(rrect).finishElements()
                               .state(ClipState::kDeviceRRect)
                               .finishTest());
@@ -912,12 +909,13 @@ DEF_TEST(ClipStack_RepeatElement, r) {
                               .finishTest());
 
     // Same complicated path by gen-id but not ==
-    SkPath path; // an hour glass
-    path.moveTo({0.f, 0.f});
-    path.lineTo({20.f, 20.f});
-    path.lineTo({0.f, 20.f});
-    path.lineTo({20.f, 0.f});
-    path.close();
+    SkPathBuilder builder; // an hour glass
+    builder.moveTo({0.f, 0.f});
+    builder.lineTo({20.f, 20.f});
+    builder.lineTo({0.f, 20.f});
+    builder.lineTo({20.f, 0.f});
+    builder.close();
+    SkPath path = builder.detach();
 
     run_test_case(r, TestCase::Build("same-path", kDeviceBounds)
                               .actual().path(path).path(path).path(path).finishElements()
@@ -938,15 +936,12 @@ DEF_TEST(ClipStack_InverseFilledPath, r) {
     using ClipState = skgpu::ganesh::ClipStack::ClipState;
 
     SkRect rect = {0.f, 0.f, 16.f, 17.f};
-    SkPath rectPath;
-    rectPath.addRect(rect);
+    SkPath rectPath = SkPath::Rect(rect);
 
-    SkPath inverseRectPath = rectPath;
-    inverseRectPath.toggleInverseFillType();
+    SkPath inverseRectPath = rectPath.makeToggleInverseFillType();
 
     SkPath complexPath = make_octagon(rect);
-    SkPath inverseComplexPath = complexPath;
-    inverseComplexPath.toggleInverseFillType();
+    SkPath inverseComplexPath = complexPath.makeToggleInverseFillType();
 
     // Inverse filled rect + intersect -> diff rect
     run_test_case(r, TestCase::Build("inverse-rect-intersect", kDeviceBounds)
@@ -1224,12 +1219,12 @@ DEF_TEST(ClipStack_ScaleTranslate, r) {
 
     // RRect -> matrix is applied up front
     SkRRect localRRect = SkRRect::MakeRectXY(rect, 2.f, 2.f);
-    SkRRect deviceRRect;
-    SkAssertResult(localRRect.transform(lm, &deviceRRect));
+    auto deviceRRect = localRRect.transform(lm);
+    SkAssertResult(deviceRRect.has_value());
     run_test_case(r, TestCase::Build("st+rrect", kDeviceBounds)
                               .actual().rrect(localRRect, lm, GrAA::kYes, SkClipOp::kIntersect)
                                        .finishElements()
-                              .expect().rrect(deviceRRect, GrAA::kYes, SkClipOp::kIntersect)
+                              .expect().rrect(*deviceRRect, GrAA::kYes, SkClipOp::kIntersect)
                                        .finishElements()
                               .state(ClipState::kDeviceRRect)
                               .finishTest());
@@ -1263,12 +1258,12 @@ DEF_TEST(ClipStack_PreserveAxisAlignment, r) {
 
     // RRect -> matrix is applied up front
     SkRRect localRRect = SkRRect::MakeRectXY(rect, 2.f, 2.f);
-    SkRRect deviceRRect;
-    SkAssertResult(localRRect.transform(lm, &deviceRRect));
+    auto deviceRRect = localRRect.transform(lm);
+    SkAssertResult(deviceRRect.has_value());
     run_test_case(r, TestCase::Build("r90+rrect", kDeviceBounds)
                               .actual().rrect(localRRect, lm, GrAA::kYes, SkClipOp::kIntersect)
                                        .finishElements()
-                              .expect().rrect(deviceRRect, GrAA::kYes, SkClipOp::kIntersect)
+                              .expect().rrect(*deviceRRect, GrAA::kYes, SkClipOp::kIntersect)
                                        .finishElements()
                               .state(ClipState::kDeviceRRect)
                               .finishTest());
@@ -1749,7 +1744,7 @@ DEF_TEST(ClipStack_ReplaceClip, r) {
                     "RRect element state not restored properly after replace clip undone");
 }
 
-// Try to overflow the number of allowed window rects (see skbug.com/10989)
+// Try to overflow the number of allowed window rects (see skbug.com/40042371)
 DEF_TEST(ClipStack_DiffRects, r) {
     using ClipStack = skgpu::ganesh::ClipStack;
     using SurfaceDrawContext = skgpu::ganesh::SurfaceDrawContext;
@@ -1757,14 +1752,13 @@ DEF_TEST(ClipStack_DiffRects, r) {
     GrMockOptions options;
     options.fMaxWindowRectangles = 8;
 
-    SkMatrixProvider matrixProvider = SkMatrix::I();
     sk_sp<GrDirectContext> context = GrDirectContext::MakeMock(&options);
     std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(
             context.get(), GrColorType::kRGBA_8888, SkColorSpace::MakeSRGB(),
             SkBackingFit::kExact, kDeviceBounds.size(), SkSurfaceProps(),
             /*label=*/{});
 
-    ClipStack cs(kDeviceBounds, &matrixProvider, false);
+    ClipStack cs(kDeviceBounds, &SkMatrix::I(), false);
 
     cs.save();
     for (int y = 0; y < 10; ++y) {
@@ -1912,14 +1906,13 @@ DEF_TEST(ClipStack_Shader, r) {
 
     sk_sp<SkShader> shader = SkShaders::Color({0.f, 0.f, 0.f, 0.5f}, nullptr);
 
-    SkMatrixProvider matrixProvider = SkMatrix::I();
     sk_sp<GrDirectContext> context = GrDirectContext::MakeMock(nullptr);
     std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(
             context.get(), GrColorType::kRGBA_8888, SkColorSpace::MakeSRGB(),
             SkBackingFit::kExact, kDeviceBounds.size(), SkSurfaceProps(),
             /*label=*/{});
 
-    ClipStack cs(kDeviceBounds, &matrixProvider, false);
+    ClipStack cs(kDeviceBounds, &SkMatrix::I(), false);
     cs.save();
     cs.clipShader(shader);
 
@@ -1966,14 +1959,13 @@ DEF_TEST(ClipStack_SimpleApply, r) {
     using ClipStack = skgpu::ganesh::ClipStack;
     using SurfaceDrawContext = skgpu::ganesh::SurfaceDrawContext;
 
-    SkMatrixProvider matrixProvider = SkMatrix::I();
     sk_sp<GrDirectContext> context = GrDirectContext::MakeMock(nullptr);
     std::unique_ptr<SurfaceDrawContext> sdc = SurfaceDrawContext::Make(
             context.get(), GrColorType::kRGBA_8888, SkColorSpace::MakeSRGB(),
             SkBackingFit::kExact, kDeviceBounds.size(), SkSurfaceProps(),
             /*label=*/{});
 
-    ClipStack cs(kDeviceBounds, &matrixProvider, false);
+    ClipStack cs(kDeviceBounds, &SkMatrix::I(), false);
 
     // Offscreen draw is kClippedOut
     {
@@ -2096,7 +2088,7 @@ static void disable_tessellation_atlas(GrContextOptions* options) {
 }
 
 DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
-                             sk_gpu_test::GrContextFactory::IsRenderingContext,
+                             skgpu::IsRenderingContext,
                              r,
                              ctxInfo,
                              disable_tessellation_atlas,
@@ -2109,14 +2101,13 @@ DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
             context, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact, kDeviceBounds.size(),
             SkSurfaceProps(), /*label=*/{});
 
-    SkMatrixProvider matrixProvider = SkMatrix::I();
-    std::unique_ptr<ClipStack> cs(new ClipStack(kDeviceBounds, &matrixProvider, false));
+    auto cs = std::make_unique<ClipStack>(kDeviceBounds, &SkMatrix::I(), false);
 
     auto addMaskRequiringClip = [&](SkScalar x, SkScalar y, SkScalar radius) {
-        SkPath path;
-        path.addCircle(x, y, radius);
-        path.addCircle(x + radius / 2.f, y + radius / 2.f, radius);
-        path.setFillType(SkPathFillType::kEvenOdd);
+        SkPath path = SkPathBuilder(SkPathFillType::kEvenOdd)
+                      .addCircle(x, y, radius)
+                      .addCircle(x + radius / 2.f, y + radius / 2.f, radius)
+                      .detach();
 
         // Use AA so that clip application does not route through the stencil buffer
         cs->clipPath(SkMatrix::I(), path, GrAA::kYes, SkClipOp::kIntersect);
@@ -2198,4 +2189,63 @@ DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
     // Release on destruction
     cs = nullptr;
     verifyKeys({}, {keyADepth1, keyBDepth1});
+}
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ClipStack_MixedAA, r, ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    if (ctxInfo.directContext()->priv().caps()->supportsProtectedContent()) {
+        return; // test requires readback
+    }
+
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(ctxInfo.directContext(),
+                                                        skgpu::Budgeted::kYes,
+                                                        SkImageInfo::Make({128, 128},
+                                                                          kRGBA_8888_SkColorType,
+                                                                          kPremul_SkAlphaType));
+
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorWHITE);
+    canvas->clipIRect({16, 0, 128, 128}); // Will clip the rrect's left edge at x=16
+
+    // Render a clipped round rect with a slightly non-identity scale factor
+    {
+        SkRRect rrect = SkRRect::MakeRectXY({0.f, 0.f, 96.f, 96.f}, 20.f, 20.f);
+
+        SkMatrix scale = SkMatrix::Scale(1.006f, 1.006f);
+        scale.preTranslate(-rrect.width() / 2.f, -rrect.height() / 2.f);
+        scale.postTranslate(rrect.width() / 2.f, rrect.height() / 2.f);
+
+        // This full CTM pushes the left edge of the drawn round rect to ~15.72
+        canvas->translate(16.f, 16.f);
+        canvas->concat(scale);
+
+        // Add a non-AA clip to the bounds of the rrect, which will replace the previous clipIRect,
+        // as its non-AA'ness snaps the left edge to 16 still. However, now the effective clip's
+        // original geometry is tight to the floating point bounds of the rrect.
+        canvas->clipRect(rrect.getBounds(), /*doAntiAlias=*/false);
+
+        // Draw with anti-aliasing, which draws the left edge at x=15.72 plus 1/2px outsetting
+        // assuming there was no hard clip for x=16 (which both the clipRect(no-aa) and clipIRect
+        // should be doing).
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        canvas->drawRRect(rrect, paint);
+    }
+
+    // Read back and confirm that there is leakage outside of the clip.
+    SkBitmap dstColumn;
+    dstColumn.allocPixels(surface->imageInfo().makeWH(1, surface->height()));
+    REPORTER_ASSERT(r, surface->readPixels(dstColumn, 15, 0), "Failed to read pixels");
+    bool leak = false;
+    for (int y = 0; y < dstColumn.height(); ++y) {
+        if (dstColumn.getColor(0, y) != SK_ColorWHITE) {
+            leak = true;
+            break;
+        }
+    }
+#if defined(SK_GANESH_LEGACY_MIXED_AA_CLIP_HANDLING)
+    REPORTER_ASSERT(r, leak, "Expected buggy behavior, but no leak detected");
+#else
+    REPORTER_ASSERT(r, !leak, "AA draw leaked beyond non-AA clip");
+#endif
 }

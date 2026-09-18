@@ -7,10 +7,17 @@
 
 #include "src/gpu/ganesh/GrCopyRenderTask.h"
 
+#include "include/private/SkAssert.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrNativeRect.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
+#include "src/gpu/ganesh/GrSurface.h"
+
+#include <utility>
+
+class GrDrawingManager;
+class GrRecordingContext;
 
 sk_sp<GrRenderTask> GrCopyRenderTask::Make(GrDrawingManager* drawingMgr,
                                            sk_sp<GrSurfaceProxy> dst,
@@ -59,9 +66,11 @@ void GrCopyRenderTask::gatherProxyIntervals(GrResourceAllocator* alloc) const {
     // fEndOfOpsTaskOpIndices will remain in sync), so we create a fake op# to capture the fact that
     // we read fSrcView and copy to target view.
     alloc->addInterval(fSrc.get(), alloc->curOp(), alloc->curOp(),
-                       GrResourceAllocator::ActualUse::kYes);
+                       GrResourceAllocator::ActualUse::kYes,
+                       GrResourceAllocator::AllowRecycling::kYes);
     alloc->addInterval(this->target(0), alloc->curOp(), alloc->curOp(),
-                       GrResourceAllocator::ActualUse::kYes);
+                       GrResourceAllocator::ActualUse::kYes,
+                       GrResourceAllocator::AllowRecycling::kYes);
     alloc->incOps();
 }
 
@@ -76,18 +85,20 @@ GrRenderTask::ExpectedOutcome GrCopyRenderTask::onMakeClosed(GrRecordingContext*
     return ExpectedOutcome::kTargetDirty;
 }
 
-bool GrCopyRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrCopyRenderTask::onExecute(GrOpFlushState* flushState) {
     if (!fSrc) {
         // Did nothing, just like we're supposed to.
-        return true;
+        return ExecutionResult::RanAndSucceeded();
     }
     GrSurfaceProxy* dstProxy = this->target(0);
     if (!fSrc->isInstantiated() || !dstProxy->isInstantiated()) {
-        return false;
+        return ExecutionResult::RanButFailed();
     }
     GrSurface* srcSurface = fSrc->peekSurface();
     GrSurface* dstSurface = dstProxy->peekSurface();
     SkIRect srcRect = GrNativeRect::MakeIRectRelativeTo(fOrigin, srcSurface->height(), fSrcRect);
     SkIRect dstRect = GrNativeRect::MakeIRectRelativeTo(fOrigin, dstSurface->height(), fDstRect);
-    return flushState->gpu()->copySurface(dstSurface, dstRect, srcSurface, srcRect, fFilter);
+    bool success = flushState->gpu()->copySurface(dstSurface, dstRect, srcSurface, srcRect,
+                                                  fFilter);
+    return ExecutionResult::Ran(success);
 }

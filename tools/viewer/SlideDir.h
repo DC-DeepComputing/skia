@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -13,9 +13,10 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 #include "modules/sksg/include/SkSGGroup.h"
 #include "modules/sksg/include/SkSGScene.h"
+#include "tools/timer/TimeUtils.h"
 #include "tools/viewer/Slide.h"
 
 #include <memory>
@@ -67,7 +68,7 @@ private:
 
     SkSize                             fWinSize  = SkSize::MakeEmpty();
     SkSize                             fCellSize = SkSize::MakeEmpty();
-    SkMSec                             fTimeBase = 0;
+    TimeUtils::MSec                  fTimeBase = 0;
 
     const Rec*                         fTrackingCell = nullptr;
     SkPoint                            fTrackingPos  = SkPoint::Make(0, 0);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,8 +9,8 @@
 #define GrContext_Base_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/gpu/GrTypes.h"
-#include "include/private/base/SkAPI.h"
+#include "include/gpu/ganesh/GrTypes.h"
+#include "include/private/SkAPI.h"
 
 #include <cstdint>
 
@@ -42,7 +42,7 @@ public:
     /*
      * Retrieve the default GrBackendFormat for a given SkColorType and renderability.
      * It is guaranteed that this backend format will be the one used by the GrContext
-     * SkColorType and SkSurfaceCharacterization-based createBackendTexture methods.
+     * SkColorType and GrSurfaceCharacterization-based createBackendTexture methods.
      *
      * The caller should check that the returned format is valid.
      */
@@ -67,7 +67,7 @@ public:
 protected:
     friend class GrBaseContextPriv; // for hidden functions
 
-    GrContext_Base(sk_sp<GrContextThreadSafeProxy>);
+    explicit GrContext_Base(sk_sp<GrContextThreadSafeProxy>);
 
     virtual bool init();
 

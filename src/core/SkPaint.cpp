@@ -18,8 +18,8 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStrokeRec.h"
-#include "include/private/base/SkTPin.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
@@ -123,7 +123,7 @@ void SkPaint::setColor(SkColor color) {
 void SkPaint::setColor(const SkColor4f& color, SkColorSpace* colorSpace) {
     SkColorSpaceXformSteps steps{colorSpace,          kUnpremul_SkAlphaType,
                                  sk_srgb_singleton(), kUnpremul_SkAlphaType};
-    fColor4f = {color.fR, color.fG, color.fB, SkTPin(color.fA, 0.0f, 1.0f)};
+    fColor4f = color.pinAlpha();
     steps.apply(fColor4f.vec());
 }
 

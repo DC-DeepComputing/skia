@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -10,8 +10,9 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
-#include "src/base/SkArenaAlloc.h"
-#include "src/utils/SkJSON.h"
+#include "modules/jsonreader/SkJSONReader.h"
+#include "src/core/SkArenaAlloc.h"
+#include "src/core/SkAutoLocaleSetter.h"
 #include "tests/Test.h"
 
 #include <cstring>
@@ -434,7 +435,7 @@ DEF_TEST(JSON_DOM_build, reporter) {
                                             "}");
 }
 
-DEF_TEST(JSON_ParseNumber, reporter) {
+DEF_SERIAL_TEST(JSON_ParseNumber, reporter) {
     static constexpr struct {
         const char* string;
         SkScalar    value,
@@ -459,7 +460,29 @@ DEF_TEST(JSON_ParseNumber, reporter) {
 
         { "20.001111814444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444473",
           20.001f, 0.001f },
+
+        {"1e0",     1.0f,      0},
+        {"1e1",     10.0f,     0},
+        {"1e+1",    10.0f,     0},
+        {"1e-1",    0.1f,      0},
+        {"-1e1",    -10.0f,    0},
+        {"-1e-1",   -0.1f,     0},
+        {"3.14e2",  314.0f,    0},
+        {"3.14e-2", 0.0314f,   0},
+        {"1.23E4",  12300.0f,  0},
+        {"1.23E-4", 0.000123f, 0},
+        {"0e0",     0.0f,      0},
+        {"5E+0",    5.0f,      0},
+        {"1.0e+2",  100.0f,    0},
+        {"2.5e-3",  0.0025f,   0},
+        {"9.99e10", 9.99e10f,  0},
+        {"-7.5E-5", -7.5e-5f,  0},
     };
+
+    // Validation that skjson::DOM correctly parses floating-point numbers
+    // in scientific notation (e.g. "1.5e-3"). It shouldn't fail when system locale
+    // is using a comma as the decimal separator.
+    SkAutoLocaleSetter commaLocale("de_DE.UTF-8");
 
     for (const auto& test : gTests) {
         const auto json = SkStringPrintf("{ \"key\": %s }", test.string);
@@ -472,4 +495,66 @@ DEF_TEST(JSON_ParseNumber, reporter) {
         REPORTER_ASSERT(reporter, jnumber);
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(**jnumber, test.value, test.tolerance));
     }
+}
+
+DEF_TEST(JSON_Lookup, r) {
+    const char* json = R"({"foo": { "bar": { "baz": 100 }}})";
+    const DOM dom(json, strlen(json));
+    const Value& root = dom.root();
+
+    REPORTER_ASSERT(r, root.is<ObjectValue>());
+    REPORTER_ASSERT(r, root["foo"].is<ObjectValue>());
+    REPORTER_ASSERT(r, root["foo"]["bar"].is<ObjectValue>());
+    REPORTER_ASSERT(r, root["foo"]["bar"]["baz"].is<NumberValue>());
+
+    REPORTER_ASSERT(r, root["foozz"].is<NullValue>());
+    REPORTER_ASSERT(r, root["foozz"]["barzz"].is<NullValue>());
+    REPORTER_ASSERT(r, root["foozz"]["barzz"]["bazzz"].is<NullValue>());
+}
+
+DEF_TEST(JSON_Writable, r) {
+    const char* json = R"({"null": null, "num": 100})";
+    const DOM dom(json, strlen(json));
+    REPORTER_ASSERT(r, dom.root().is<ObjectValue>());
+    const ObjectValue& root = dom.root().as<ObjectValue>();
+
+    SkArenaAlloc alloc(4096);
+
+    REPORTER_ASSERT(r, root["null"].is<NullValue>());
+    Value& w1 = root.writable("null", alloc);
+    REPORTER_ASSERT(r, w1.is<NullValue>());
+    w1 = NumberValue(42);
+    REPORTER_ASSERT(r, root["null"].is<NumberValue>());
+    REPORTER_ASSERT(r, *root["null"].as<NumberValue>() == 42);
+
+    REPORTER_ASSERT(r, root["num"].is<NumberValue>());
+    Value& w2 = root.writable("num", alloc);
+    REPORTER_ASSERT(r, w2.is<NumberValue>());
+    w2 = StringValue("foo", 3, alloc);
+    REPORTER_ASSERT(r, root["num"].is<StringValue>());
+    REPORTER_ASSERT(r, root["num"].as<StringValue>().str() == "foo");
+
+    // new/insert semantics
+    REPORTER_ASSERT(r, root["new"].is<NullValue>());
+    REPORTER_ASSERT(r, root.size() == 2u);
+    Value& w3 = root.writable("new", alloc);
+    REPORTER_ASSERT(r, w3.is<NullValue>());
+    w3 = BoolValue(true);
+    REPORTER_ASSERT(r, root.size() == 3u);
+    REPORTER_ASSERT(r, root["new"].is<BoolValue>());
+    REPORTER_ASSERT(r, *root["new"].as<BoolValue>());
+
+    root.writable("newobj", alloc) = ObjectValue(nullptr, 0, alloc);
+    REPORTER_ASSERT(r, root.size() == 4u);
+    REPORTER_ASSERT(r, root["newobj"].is<ObjectValue>());
+    const ObjectValue& newobj = root["newobj"].as<ObjectValue>();
+    REPORTER_ASSERT(r, newobj.size() == 0u);
+
+    newobj.writable("newprop", alloc) = NumberValue(-1);
+    REPORTER_ASSERT(r, newobj.size() == 1u);
+    REPORTER_ASSERT(r, root["newobj"]["newprop"].is<NumberValue>());
+    REPORTER_ASSERT(r, *root["newobj"]["newprop"].as<NumberValue>() == -1);
+
+    REPORTER_ASSERT(r, root.toString() ==
+        SkString(R"({"null":42,"num":"foo","new":true,"newobj":{"newprop":-1}})"));
 }

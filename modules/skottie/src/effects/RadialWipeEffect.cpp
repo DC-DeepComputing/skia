@@ -1,20 +1,41 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/skottie/src/effects/Effects.h"
-
 #include "include/core/SkCanvas.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkTileMode.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkAssert.h"
 #include "modules/skottie/src/Adapter.h"
+#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
+#include "modules/skottie/src/effects/Effects.h"
+#include "modules/sksg/include/SkSGNode.h"
 #include "modules/sksg/include/SkSGRenderNode.h"
-#include "src/utils/SkJSON.h"
 
+#include <algorithm>
 #include <cmath>
+#include <cstddef>
+#include <utility>
+#include <vector>
+
+class SkMatrix;
+
+namespace skjson {
+class ArrayValue;
+}
+namespace sksg {
+class InvalidationController;
+}
 
 namespace skottie {
 namespace internal {
@@ -53,8 +74,8 @@ protected:
 
             // Note: this could be simplified as a one-hard-stop gradient + local matrix
             // (to apply rotation).  Alas, local matrices are no longer supported in SkSG.
-            SkColor c0 = 0x00000000,
-                    c1 = 0xffffffff;
+            SkColor4f c0 = {0, 0, 0, 0},
+                      c1 = {1, 1, 1, 1};
             auto sanitize_angle = [](float a) {
                 a = std::fmod(a, 360);
                 if (a < 0) {
@@ -70,14 +91,11 @@ protected:
                 std::swap(c0, c1);
             }
 
-            const SkColor grad_colors[] = { c1, c0, c0, c1 };
+            const SkColor4f grad_colors[] = { c1, c0, c0, c1 };
             const SkScalar   grad_pos[] = {  0,  0,  1,  1 };
+            SkGradient grad = {{grad_colors, grad_pos, SkTileMode::kClamp}, {}};
 
-            fMaskShader = SkGradientShader::MakeSweep(fWipeCenter.x(), fWipeCenter.y(),
-                                                      grad_colors, grad_pos,
-                                                      std::size(grad_colors),
-                                                      SkTileMode::kClamp,
-                                                      a0, a1, 0, nullptr);
+            fMaskShader = SkShaders::SweepGradient(fWipeCenter, a0, a1, grad);
 
             // Edge feather requires a real blur.
             if (fMaskSigma > 0) {

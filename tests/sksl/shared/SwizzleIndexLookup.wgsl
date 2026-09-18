@@ -1,52 +1,37 @@
-struct FSIn {
-  @builtin(front_facing) sk_Clockwise: bool,
-  @builtin(position) sk_FragCoord: vec4<f32>,
-};
+diagnostic(off, derivative_uniformity);
+diagnostic(off, chromium.unreachable_code);
+enable f16;
 struct FSOut {
-  @location(0) sk_FragColor: vec4<f32>,
+  @location(0) sk_FragColor: vec4<f16>,
 };
 struct _GlobalUniforms {
-  colorGreen: vec4<f32>,
-  colorRed: vec4<f32>,
+  colorGreen: vec4<f16>,
+  colorRed: vec4<f16>,
   testMatrix3x3: mat3x3<f32>,
   testMatrix4x4: mat4x4<f32>,
 };
-@binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
+@group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn test3x3_b() -> bool {
   {
     var expected: vec3<f32> = vec3<f32>(3.0, 2.0, 1.0);
     {
       var c: i32 = 0;
-      loop {
-        if c < 3 {
+      for (; c < 3; c = c + i32(1)) {
+        {
+          let vec: vec3<f32> = _globalUniforms.testMatrix3x3[c];
           {
-            var vec: vec3<f32> = _globalUniforms.testMatrix3x3[c];
-            {
-              var r: i32 = 0;
-              loop {
-                if r < 3 {
+            var r: i32 = 0;
+            for (; r < 3; r = r + i32(1)) {
+              {
+                if vec.zyx[r] != expected[r] {
                   {
-                    if (vec.zyx[r] != expected[r]) {
-                      {
-                        return false;
-                      }
-                    }
+                    return false;
                   }
-                } else {
-                  break;
-                }
-                continuing {
-                  r = r + i32(1);
                 }
               }
             }
-            expected = expected + 3.0;
           }
-        } else {
-          break;
-        }
-        continuing {
-          c = c + i32(1);
+          expected = expected + 3.0;
         }
       }
     }
@@ -58,50 +43,34 @@ fn test4x4_b() -> bool {
     var expected: vec4<f32> = vec4<f32>(4.0, 3.0, 2.0, 1.0);
     {
       var c: i32 = 0;
-      loop {
-        if c < 4 {
+      for (; c < 4; c = c + i32(1)) {
+        {
+          let vec: vec4<f32> = _globalUniforms.testMatrix4x4[c];
           {
-            var vec: vec4<f32> = _globalUniforms.testMatrix4x4[c];
-            {
-              var r: i32 = 0;
-              loop {
-                if r < 4 {
+            var r: i32 = 0;
+            for (; r < 4; r = r + i32(1)) {
+              {
+                if vec.wzyx[r] != expected[r] {
                   {
-                    if (vec.wzyx[r] != expected[r]) {
-                      {
-                        return false;
-                      }
-                    }
+                    return false;
                   }
-                } else {
-                  break;
-                }
-                continuing {
-                  r = r + i32(1);
                 }
               }
             }
-            expected = expected + 4.0;
           }
-        } else {
-          break;
-        }
-        continuing {
-          c = c + i32(1);
+          expected = expected + 4.0;
         }
       }
     }
     return true;
   }
 }
-fn main(coords: vec2<f32>) -> vec4<f32> {
+fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var _skTemp0: vec4<f32>;
+    var _skTemp0: vec4<f16>;
     var _skTemp1: bool;
-    let _skTemp2 = test3x3_b();
-    if _skTemp2 {
-      let _skTemp3 = test4x4_b();
-      _skTemp1 = _skTemp3;
+    if test3x3_b() {
+      _skTemp1 = test4x4_b();
     } else {
       _skTemp1 = false;
     }
@@ -113,8 +82,8 @@ fn main(coords: vec2<f32>) -> vec4<f32> {
     return _skTemp0;
   }
 }
-@fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
+@fragment fn main() -> FSOut {
   var _stageOut: FSOut;
-  _stageOut.sk_FragColor = main(_stageIn.sk_FragCoord.xy);
+  _stageOut.sk_FragColor = _skslMain(/*fragcoord*/ vec2<f32>());
   return _stageOut;
 }

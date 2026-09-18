@@ -6,10 +6,11 @@
  */
 #include "src/pathops/SkPathOpsCubic.h"
 
-#include "include/private/base/SkTPin.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkTSort.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkGeometry.h"
+#include "src/core/SkTSort.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkLineParameters.h"
 #include "src/pathops/SkPathOpsConic.h"
@@ -18,6 +19,7 @@
 #include "src/pathops/SkPathOpsTypes.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 
 struct SkDLine;
@@ -129,7 +131,7 @@ SkDCubicPair SkDCubic::chopAt(double t) const {
     return dst;
 }
 
-// TODO(skbug.com/14063) deduplicate this with SkBezierCubic::ConvertToPolynomial
+// TODO(skbug.com/40045140) deduplicate this with SkBezierCubic::ConvertToPolynomial
 void SkDCubic::Coefficients(const double* src, double* A, double* B, double* C, double* D) {
     *A = src[6];  // d
     *B = src[4] * 3;  // 3*c
@@ -156,8 +158,8 @@ bool SkDCubic::endsAreExtremaInXOrY() const {
 */
 bool SkDCubic::hullIntersects(const SkDPoint* pts, int ptCount, bool* isLinear) const {
     bool linear = true;
-    char hullOrder[4];
-    int hullCount = convexHull(hullOrder);
+    std::array<char, 4> hullOrder;
+    int hullCount = convexHull(hullOrder.data());
     int end1 = hullOrder[0];
     int hullIndex = 0;
     const SkDPoint* endPt[2];
@@ -374,10 +376,8 @@ int SkDCubic::searchRoots(double extremeTs[6], int extrema, double axisIntercept
 
 // cubic roots
 
-static const double PI = 3.141592653589793;
-
 // from SkGeometry.cpp (and Numeric Solutions, 5.6)
-// // TODO(skbug.com/14063) Deduplicate with SkCubics::RootsValidT
+// // TODO(skbug.com/40045140) Deduplicate with SkCubics::RootsValidT
 int SkDCubic::RootsValidT(double A, double B, double C, double D, double t[3]) {
     double s[3];
     int realRoots = RootsReal(A, B, C, D, s);
@@ -407,7 +407,7 @@ nextRoot:
     return foundRoots;
 }
 
-// TODO(skbug.com/14063) Deduplicate with SkCubics::RootsReal
+// TODO(skbug.com/40045140) Deduplicate with SkCubics::RootsReal
 int SkDCubic::RootsReal(double A, double B, double C, double D, double s[3]) {
 #ifdef SK_DEBUG
     #if ONE_OFF_DEBUG && ONE_OFF_DEBUG_MATHEMATICA
@@ -474,11 +474,11 @@ int SkDCubic::RootsReal(double A, double B, double C, double D, double s[3]) {
         r = neg2RootQ * cos(theta / 3) - adiv3;
         *roots++ = r;
 
-        r = neg2RootQ * cos((theta + 2 * PI) / 3) - adiv3;
+        r = neg2RootQ * cos((theta + 2 * SK_DoublePI) / 3) - adiv3;
         if (!AlmostDequalUlps(s[0], r)) {
             *roots++ = r;
         }
-        r = neg2RootQ * cos((theta - 2 * PI) / 3) - adiv3;
+        r = neg2RootQ * cos((theta - 2 * SK_DoublePI) / 3) - adiv3;
         if (!AlmostDequalUlps(s[0], r) && (roots - s == 1 || !AlmostDequalUlps(s[1], r))) {
             *roots++ = r;
         }
@@ -728,7 +728,7 @@ bool SkDCubic::toFloatPoints(SkPoint* pts) const {
             cubic[index] = 0;
         }
     }
-    return SkScalarsAreFinite(&pts->fX, kPointCount * 2);
+    return SkIsFinite(&pts->fX, kPointCount * 2);
 }
 
 double SkDCubic::top(const SkDCubic& dCurve, double startT, double endT, SkDPoint*topPt) const {

@@ -8,7 +8,7 @@
 #define SubsetPath_DEFINED
 
 #include "include/core/SkPath.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTDArray.h"
 
 /* Given a path, generate a the desired minimal subset of the original.
 
@@ -35,7 +35,7 @@
 
 class SubsetPath {
 public:
-    SubsetPath(const SkPath& path);
+    explicit SubsetPath(const SkPath& path);
     virtual ~SubsetPath() {}
     bool subset(bool testFailed, SkPath* sub);
 protected:
@@ -51,14 +51,16 @@ protected:
 
 class SubsetContours : public SubsetPath {
 public:
-    SubsetContours(const SkPath& path);
+    explicit SubsetContours(const SkPath& path);
+
 protected:
     SkPath getSubsetPath() const override;
 };
 
 class SubsetVerbs : public SubsetPath {
 public:
-    SubsetVerbs(const SkPath& path);
+    explicit SubsetVerbs(const SkPath& path);
+
 protected:
     SkPath getSubsetPath() const override;
 };

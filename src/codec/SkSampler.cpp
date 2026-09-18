@@ -10,9 +10,9 @@
 #include "include/codec/SkCodec.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 #include "src/codec/SkCodecPriv.h"
-#include "src/core/SkOpts.h"
+#include "src/core/SkMemset.h"
 
 #include <cstdint>
 #include <cstring>

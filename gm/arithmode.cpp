@@ -24,9 +24,11 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/effects/SkImageFilters.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <utility>
 
@@ -36,12 +38,11 @@ static sk_sp<SkImage> make_src(int w, int h) {
 
     SkPaint paint;
     SkPoint pts[] = { {0, 0}, {SkIntToScalar(w), SkIntToScalar(h)} };
-    SkColor colors[] = {
-        SK_ColorTRANSPARENT, SK_ColorGREEN, SK_ColorCYAN,
-        SK_ColorRED, SK_ColorMAGENTA, SK_ColorWHITE,
+    SkColor4f colors[] = {
+        SkColors::kTransparent, SkColors::kGreen, SkColors::kCyan,
+        SkColors::kRed, SkColors::kMagenta, SkColors::kWhite
     };
-    paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                                 SkTileMode::kClamp));
+    paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
     canvas->drawPaint(paint);
     return surface->makeImageSnapshot();
 }
@@ -51,19 +52,19 @@ static sk_sp<SkImage> make_dst(int w, int h) {
     SkCanvas* canvas = surface->getCanvas();
 
     SkPaint paint;
-    SkPoint pts[] = { {0, SkIntToScalar(h)}, {SkIntToScalar(w), 0} };
-    SkColor colors[] = {
-        SK_ColorBLUE, SK_ColorYELLOW, SK_ColorBLACK, SK_ColorGREEN,
-        SK_ColorGRAY,
+    constexpr float compat_gray = 0x88/255.f;   // matches SK_ColorGRAY
+    const SkPoint pts[] = { {0, SkIntToScalar(h)}, {SkIntToScalar(w), 0} };
+    const SkColor4f colors[] = {
+        SkColors::kBlue, SkColors::kYellow, SkColors::kBlack, SkColors::kGreen,
+        {compat_gray, compat_gray, compat_gray, 1},
     };
-    paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, std::size(colors),
-                                                 SkTileMode::kClamp));
+    paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
     canvas->drawPaint(paint);
     return surface->makeImageSnapshot();
 }
 
 static void show_k_text(SkCanvas* canvas, SkScalar x, SkScalar y, const SkScalar k[]) {
-    SkFont font(ToolUtils::create_portable_typeface(), 24);
+    SkFont font(ToolUtils::DefaultPortableTypeface(), 24);
     font.setEdging(SkFont::Edging::kAntiAlias);
     SkPaint paint;
     paint.setAntiAlias(true);
@@ -77,9 +78,9 @@ static void show_k_text(SkCanvas* canvas, SkScalar x, SkScalar y, const SkScalar
 }
 
 class ArithmodeGM : public skiagm::GM {
-    SkString onShortName() override { return SkString("arithmode"); }
+    SkString getName() const override { return SkString("arithmode"); }
 
-    SkISize onISize() override { return {640, 572}; }
+    SkISize getISize() override { return {640, 572}; }
 
     void onDraw(SkCanvas* canvas) override {
         constexpr int WW = 100,
@@ -158,7 +159,7 @@ class ArithmodeGM : public skiagm::GM {
                 canvas->translate(gap, 0);
 
                 // Label
-                SkFont   font(ToolUtils::create_portable_typeface(), 24);
+                SkFont   font(ToolUtils::DefaultPortableTypeface(), 24);
                 SkString str(enforcePMColor ? "enforcePM" : "no enforcePM");
                 canvas->drawString(str, 0, font.getSize(), font, SkPaint());
             }
@@ -181,12 +182,12 @@ class ArithmodeBlenderGM : public skiagm::GM {
     sk_sp<SkShader>        fSrcShader, fDstShader;
     sk_sp<SkRuntimeEffect> fRuntimeEffect;
 
-    SkString onShortName() override { return SkString("arithmode_blender"); }
+    SkString getName() const override { return SkString("arithmode_blender"); }
 
     static constexpr int W = 200;
     static constexpr int H = 200;
 
-    SkISize onISize() override { return {(W + 30) * 2, (H + 30) * 4}; }
+    SkISize getISize() override { return {(W + 30) * 2, (H + 30) * 4}; }
 
     void onOnceBeforeDraw() override {
         // Prepare a runtime effect for this blend.

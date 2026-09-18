@@ -12,6 +12,10 @@
 
 #include <memory>
 
+namespace skgpu {
+class RefCntedCallback;
+}
+
 namespace skgpu::graphite {
 class CommandBuffer;
 class SharedContext;
@@ -21,8 +25,10 @@ class GpuWorkSubmission {
 public:
     virtual ~GpuWorkSubmission();
 
-    virtual bool isFinished() = 0;
-    virtual void waitUntilFinished() = 0;
+    bool isFinished(const SharedContext* sharedContext);
+    void waitUntilFinished(const SharedContext* sharedContext);
+
+    void addFinishedProc(sk_sp<RefCntedCallback> finishedProc);
 
 protected:
     CommandBuffer* commandBuffer() { return fCommandBuffer.get(); }
@@ -30,7 +36,11 @@ protected:
     GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer, QueueManager* queueManager);
 
 private:
+    virtual bool onIsFinished(const SharedContext* sharedContext) = 0;
+    virtual void onWaitUntilFinished(const SharedContext* sharedContext) = 0;
+
     std::unique_ptr<CommandBuffer> fCommandBuffer;
+    sk_sp<SkRefCnt> fOutstandingAsyncMapCounter;
     QueueManager* fQueueManager;
 };
 

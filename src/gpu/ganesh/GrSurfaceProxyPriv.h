@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,11 +8,19 @@
 #ifndef GrSurfaceProxyPriv_DEFINED
 #define GrSurfaceProxyPriv_DEFINED
 
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSize.h"
+#include "src/gpu/SkBackingFit.h"
+#include "src/gpu/ganesh/GrSurface.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 
-#include "src/gpu/SkBackingFit.h"
+#include <utility>
 
+class GrCaps;
 class GrResourceProvider;
+namespace skgpu {
+class ScratchKey;
+}
 
 /** Class that adds methods to GrSurfaceProxy that are only intended for use internal to Skia.
     This class is purely a privileged window into GrSurfaceProxy. It should never have additional
@@ -36,7 +44,7 @@ public:
     bool isExact() const { return SkBackingFit::kExact == fProxy->fFit; }
 
     // Don't. Just don't.
-    void exactify(bool allocatedCaseOnly);
+    void exactify();
 
     void setLazyDimensions(SkISize dimensions) { fProxy->setLazyDimensions(dimensions); }
 

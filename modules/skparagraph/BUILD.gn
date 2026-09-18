@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC.
+# Copyright 2019 Google LLC
 
 import("../../gn/skia.gni")
 import("../skshaper/skshaper.gni")
@@ -25,13 +25,13 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
   skia_component("skparagraph") {
     import("skparagraph.gni")
     public_configs = [ ":public_config" ]
-    public = skparagraph_public
-    sources = skparagraph_sources
-    deps = [
+    public = skparagraph_core_public
+    sources = skparagraph_core_sources
+    public_deps = [
       "../..:skia",
-      "../skshaper",
       "../skunicode",
     ]
+    deps = [ "../skshaper" ]
   }
 
   config("utils_config") {
@@ -51,28 +51,13 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     }
 
     skia_source_set("gm") {
-      if (paragraph_gms_enabled && skia_use_icu) {
+      if (paragraph_gms_enabled &&
+          (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
         testonly = true
         sources = [ "gm/simple_gm.cpp" ]
         deps = [
           ":skparagraph",
-          "../..:gpu_tool_utils",
           "../..:skia",
-          "../skshaper",
-        ]
-      } else {
-        sources = []
-      }
-    }
-
-    skia_source_set("tests") {
-      if (paragraph_tests_enabled && skia_use_icu) {
-        testonly = true
-        sources = skparagraph_tests
-        deps = [
-          ":skparagraph",
-          "../..:skia",
-          "../..:test",
           "../skshaper",
           "../skunicode",
         ]
@@ -81,14 +66,36 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
       }
     }
 
+    if (skia_enable_tools) {
+      skia_source_set("tests") {
+        if (paragraph_tests_enabled &&
+            (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
+          testonly = true
+          sources = skparagraph_tests
+          deps = [
+            ":skparagraph",
+            ":utils",
+            "../..:skia",
+            "../..:test",
+            "../skshaper",
+            "../skunicode",
+          ]
+        } else {
+          sources = []
+        }
+      }
+    }
+
     skia_source_set("bench") {
-      if (paragraph_bench_enabled && skia_use_icu) {
+      if (paragraph_bench_enabled &&
+          (skia_use_icu || skia_use_libgrapheme || skia_use_icu4x)) {
         testonly = true
         sources = [ "bench/ParagraphBench.cpp" ]
         deps = [
           ":skparagraph",
           "../..:skia",
           "../skshaper",
+          "../skunicode",
         ]
       } else {
         sources = []
@@ -96,7 +103,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     }
 
     skia_source_set("slides") {
-      if (skia_use_icu) {
+      if (skia_use_icu || skia_use_libgrapheme) {
         testonly = true
         sources = [ "slides/ParagraphSlide.cpp" ]
         deps = [
@@ -104,6 +111,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
           ":utils",
           "../..:skia",
           "../skshaper",
+          "../skunicode",
         ]
       }
     }

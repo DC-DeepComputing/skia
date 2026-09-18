@@ -1,16 +1,28 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
 #include "include/core/SkContourMeasure.h"
+
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
-#include "src/base/SkTSearch.h"
+#include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathTypes.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathMeasurePriv.h"
 #include "src/core/SkPathPriv.h"
+
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <optional>
+#include <utility>
 
 #define kMaxTValue  0x3FFFFFFF
 
@@ -29,7 +41,7 @@ SkScalar SkContourMeasure::Segment::getScalarT() const {
 }
 
 void SkContourMeasure_segTo(const SkPoint pts[], unsigned segType,
-                            SkScalar startT, SkScalar stopT, SkPath* dst) {
+                            SkScalar startT, SkScalar stopT, SkPathBuilder* dst) {
     SkASSERT(startT >= 0 && startT <= SK_Scalar1);
     SkASSERT(stopT >= 0 && stopT <= SK_Scalar1);
     SkASSERT(startT <= stopT);
@@ -38,9 +50,9 @@ void SkContourMeasure_segTo(const SkPoint pts[], unsigned segType,
         if (!dst->isEmpty()) {
             /* if the dash as a zero-length on segment, add a corresponding zero-length line.
                The stroke code will add end caps to zero length lines as appropriate */
-            SkPoint lastPt;
-            SkAssertResult(dst->getLastPt(&lastPt));
-            dst->lineTo(lastPt);
+            auto lastPtOptional = dst->getLastPt();
+            SkAssertResult(lastPtOptional.has_value());
+            dst->lineTo(lastPtOptional.value());
         }
         return;
     }
@@ -137,12 +149,12 @@ static inline int tspan_big_enough(int tspan) {
 static bool quad_too_curvy(const SkPoint pts[3], SkScalar tolerance) {
     // diff = (a/4 + b/2 + c/4) - (a/2 + c/2)
     // diff = -a/4 + b/2 - c/4
-    SkScalar dx = SkScalarHalf(pts[1].fX) -
-                        SkScalarHalf(SkScalarHalf(pts[0].fX + pts[2].fX));
-    SkScalar dy = SkScalarHalf(pts[1].fY) -
-                        SkScalarHalf(SkScalarHalf(pts[0].fY + pts[2].fY));
+    float dx = (pts[1].fX / 2.f) -
+               (((pts[0].fX + pts[2].fX) / 2.f) / 2.f);
+    float dy = (pts[1].fY / 2.f) -
+               (((pts[0].fY + pts[2].fY) / 2.f) / 2.f);
 
-    SkScalar dist = std::max(SkScalarAbs(dx), SkScalarAbs(dy));
+    float dist = std::max(std::abs(dx), std::abs(dy));
     return dist > tolerance;
 }
 
@@ -172,12 +184,16 @@ static bool cubic_too_curvy(const SkPoint pts[4], SkScalar tolerance) {
                          SkScalarInterp(pts[0].fY, pts[3].fY, SK_Scalar1*2/3), tolerance);
 }
 
+// puts a cap on the total size of our output, since the client can pass in
+// arbitrarily large values for resScale.
+constexpr int kMaxRecursionDepth = 8;
+
 class SkContourMeasureIter::Impl {
 public:
     Impl(const SkPath& path, bool forceClosed, SkScalar resScale)
         : fPath(path)
         , fIter(SkPathPriv::Iterate(fPath).begin())
-        , fTolerance(CHEAP_DIST_LIMIT * SkScalarInvert(resScale))
+        , fTolerance(CHEAP_DIST_LIMIT * sk_ieee_float_divide(1.0f, resScale))
         , fForceClosed(forceClosed) {}
 
     bool hasNextSegments() const { return fIter != SkPathPriv::Iterate(fPath).end(); }
@@ -196,24 +212,27 @@ private:
     SkDEBUGCODE(void validate() const;)
     SkScalar compute_line_seg(SkPoint p0, SkPoint p1, SkScalar distance, unsigned ptIndex);
     SkScalar compute_quad_segs(const SkPoint pts[3], SkScalar distance,
-                               int mint, int maxt, unsigned ptIndex);
+                               int mint, int maxt, unsigned ptIndex, int recursionDepth = 0);
     SkScalar compute_conic_segs(const SkConic& conic, SkScalar distance,
                                                          int mint, const SkPoint& minPt,
                                                          int maxt, const SkPoint& maxPt,
-                                unsigned ptIndex);
+                                unsigned ptIndex, int recursionDepth = 0);
     SkScalar compute_cubic_segs(const SkPoint pts[4], SkScalar distance,
-                                int mint, int maxt, unsigned ptIndex);
+                                int mint, int maxt, unsigned ptIndex, int recursionDepth = 0);
 };
 
 SkScalar SkContourMeasureIter::Impl::compute_quad_segs(const SkPoint pts[3], SkScalar distance,
-                                                       int mint, int maxt, unsigned ptIndex) {
-    if (tspan_big_enough(maxt - mint) && quad_too_curvy(pts, fTolerance)) {
+                                                       int mint, int maxt, unsigned ptIndex,
+                                                       int recursionDepth) {
+    if (recursionDepth < kMaxRecursionDepth &&
+        tspan_big_enough(maxt - mint) && quad_too_curvy(pts, fTolerance)) {
         SkPoint tmp[5];
         int     halft = (mint + maxt) >> 1;
 
         SkChopQuadAtHalf(pts, tmp);
-        distance = this->compute_quad_segs(tmp, distance, mint, halft, ptIndex);
-        distance = this->compute_quad_segs(&tmp[2], distance, halft, maxt, ptIndex);
+        recursionDepth += 1;
+        distance = this->compute_quad_segs(tmp, distance, mint, halft, ptIndex, recursionDepth);
+        distance = this->compute_quad_segs(&tmp[2], distance, halft, maxt, ptIndex, recursionDepth);
     } else {
         SkScalar d = SkPoint::Distance(pts[0], pts[2]);
         SkScalar prevD = distance;
@@ -233,15 +252,20 @@ SkScalar SkContourMeasureIter::Impl::compute_quad_segs(const SkPoint pts[3], SkS
 SkScalar SkContourMeasureIter::Impl::compute_conic_segs(const SkConic& conic, SkScalar distance,
                                                         int mint, const SkPoint& minPt,
                                                         int maxt, const SkPoint& maxPt,
-                                                        unsigned ptIndex) {
+                                                        unsigned ptIndex, int recursionDepth) {
     int halft = (mint + maxt) >> 1;
     SkPoint halfPt = conic.evalAt(tValue2Scalar(halft));
     if (!halfPt.isFinite()) {
         return distance;
     }
-    if (tspan_big_enough(maxt - mint) && conic_too_curvy(minPt, halfPt, maxPt, fTolerance)) {
-        distance = this->compute_conic_segs(conic, distance, mint, minPt, halft, halfPt, ptIndex);
-        distance = this->compute_conic_segs(conic, distance, halft, halfPt, maxt, maxPt, ptIndex);
+    if (recursionDepth < kMaxRecursionDepth &&
+        tspan_big_enough(maxt - mint) && conic_too_curvy(minPt, halfPt, maxPt, fTolerance))
+    {
+        recursionDepth += 1;
+        distance = this->compute_conic_segs(conic, distance, mint, minPt, halft, halfPt,
+                                            ptIndex, recursionDepth);
+        distance = this->compute_conic_segs(conic, distance, halft, halfPt, maxt, maxPt,
+                                            ptIndex, recursionDepth);
     } else {
         SkScalar d = SkPoint::Distance(minPt, maxPt);
         SkScalar prevD = distance;
@@ -259,14 +283,20 @@ SkScalar SkContourMeasureIter::Impl::compute_conic_segs(const SkConic& conic, Sk
 }
 
 SkScalar SkContourMeasureIter::Impl::compute_cubic_segs(const SkPoint pts[4], SkScalar distance,
-                                                        int mint, int maxt, unsigned ptIndex) {
-    if (tspan_big_enough(maxt - mint) && cubic_too_curvy(pts, fTolerance)) {
+                                                        int mint, int maxt, unsigned ptIndex,
+                                                        int recursionDepth) {
+    if (recursionDepth < kMaxRecursionDepth &&
+        tspan_big_enough(maxt - mint) && cubic_too_curvy(pts, fTolerance))
+    {
         SkPoint tmp[7];
         int     halft = (mint + maxt) >> 1;
 
         SkChopCubicAtHalf(pts, tmp);
-        distance = this->compute_cubic_segs(tmp, distance, mint, halft, ptIndex);
-        distance = this->compute_cubic_segs(&tmp[3], distance, halft, maxt, ptIndex);
+        recursionDepth += 1;
+        distance = this->compute_cubic_segs(tmp, distance, mint, halft,
+                                            ptIndex, recursionDepth);
+        distance = this->compute_cubic_segs(&tmp[3], distance, halft, maxt,
+                                            ptIndex, recursionDepth);
     } else {
         SkScalar d = SkPoint::Distance(pts[0], pts[3]);
         SkScalar prevD = distance;
@@ -411,7 +441,7 @@ SkContourMeasure* SkContourMeasureIter::Impl::buildSegments() {
 
     }
 
-    if (!SkScalarIsFinite(distance)) {
+    if (!SkIsFinite(distance)) {
         return nullptr;
     }
     if (fSegments.empty()) {
@@ -480,6 +510,9 @@ SkContourMeasureIter::SkContourMeasureIter(const SkPath& path, bool forceClosed,
 }
 
 SkContourMeasureIter::~SkContourMeasureIter() {}
+
+SkContourMeasureIter::SkContourMeasureIter(SkContourMeasureIter&&) = default;
+SkContourMeasureIter& SkContourMeasureIter::operator=(SkContourMeasureIter&&) = default;
 
 /** Assign a new path, or null to have none.
 */
@@ -576,7 +609,7 @@ const SkContourMeasure::Segment* SkContourMeasure::distanceToSegment( SkScalar d
 }
 
 bool SkContourMeasure::getPosTan(SkScalar distance, SkPoint* pos, SkVector* tangent) const {
-    if (SkScalarIsNaN(distance)) {
+    if (SkIsNaN(distance)) {
         return false;
     }
 
@@ -592,7 +625,7 @@ bool SkContourMeasure::getPosTan(SkScalar distance, SkPoint* pos, SkVector* tang
 
     SkScalar        t;
     const Segment*  seg = this->distanceToSegment(distance, &t);
-    if (SkScalarIsNaN(t)) {
+    if (SkIsNaN(t)) {
         return false;
     }
 
@@ -621,7 +654,7 @@ bool SkContourMeasure::getMatrix(SkScalar distance, SkMatrix* matrix, MatrixFlag
     return false;
 }
 
-bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst,
                                   bool startWithMoveTo) const {
     SkASSERT(dst);
 
@@ -643,11 +676,11 @@ bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
     SkPoint  p;
     SkScalar startT, stopT;
     const Segment* seg = this->distanceToSegment(startD, &startT);
-    if (!SkScalarIsFinite(startT)) {
+    if (!SkIsFinite(startT)) {
         return false;
     }
     const Segment* stopSeg = this->distanceToSegment(stopD, &stopT);
-    if (!SkScalarIsFinite(stopT)) {
+    if (!SkIsFinite(stopT)) {
         return false;
     }
     SkASSERT(seg <= stopSeg);
@@ -668,4 +701,33 @@ bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
     }
 
     return true;
+}
+
+SkContourMeasure::VerbMeasure SkContourMeasure::ForwardVerbIterator::operator*() const {
+    static constexpr auto seg_pt_count = std::to_array<size_t>({
+        2, // kLine  (current_pt, 1 line pt)
+        3, // kQuad  (current_pt, 2 quad pts)
+        4, // kCubic (current_pt, 3 cubic pts)
+        4, // kConic (current_pt, {weight, 0}, 2 conic pts)
+    });
+    static constexpr auto seg_verb = std::to_array<SkPathVerb>({
+        SkPathVerb::kLine,
+        SkPathVerb::kQuad,
+        SkPathVerb::kCubic,
+        SkPathVerb::kConic,
+    });
+    static_assert(std::size(seg_pt_count) == std::size(seg_verb));
+    static_assert(static_cast<size_t>(kLine_SegType)  < std::size(seg_pt_count));
+    static_assert(static_cast<size_t>(kQuad_SegType)  < std::size(seg_pt_count));
+    static_assert(static_cast<size_t>(kCubic_SegType) < std::size(seg_pt_count));
+    static_assert(static_cast<size_t>(kConic_SegType) < std::size(seg_pt_count));
+
+    SkASSERT(SkToSizeT(fSegments.front().fType) < std::size(seg_pt_count));
+    SkASSERT(fSegments.front().fPtIndex + seg_pt_count[fSegments.front().fType] <= fPts.size());
+
+    return {
+        fSegments.front().fDistance,
+        seg_verb[fSegments.front().fType],
+        SkSpan(fPts.data() + fSegments.front().fPtIndex, seg_pt_count[fSegments.front().fType]),
+    };
 }

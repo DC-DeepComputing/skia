@@ -1,42 +1,39 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
+#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "modules/skparagraph/include/FontCollection.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphBuilder.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
-#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
-
-#include <algorithm>
-#include <utility>
+#include "modules/skunicode/include/SkUnicode.h"
 #include "src/core/SkStringUtils.h"
+
+#include <memory>
+#include <utility>
 
 namespace skia {
 namespace textlayout {
 
-std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(
-        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection) {
-    return ParagraphBuilderImpl::make(style, fontCollection);
+std::unique_ptr<ParagraphBuilder> ParagraphBuilder::make(const ParagraphStyle& style,
+                                                         sk_sp<FontCollection> fontCollection,
+                                                         sk_sp<SkUnicode> unicode) {
+    return ParagraphBuilderImpl::make(style, std::move(fontCollection), std::move(unicode));
 }
 
-std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(
-        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection) {
-    return std::make_unique<ParagraphBuilderImpl>(style, fontCollection);
-}
-
-std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(
-        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection, std::unique_ptr<SkUnicode> unicode) {
-    if (nullptr == unicode) {
-        return nullptr;
-    }
-    return std::make_unique<ParagraphBuilderImpl>(style, fontCollection, std::move(unicode));
+std::unique_ptr<ParagraphBuilder> ParagraphBuilderImpl::make(const ParagraphStyle& style,
+                                                             sk_sp<FontCollection> fontCollection,
+                                                             sk_sp<SkUnicode> unicode) {
+    return std::make_unique<ParagraphBuilderImpl>(style, std::move(fontCollection),
+                                                  std::move(unicode));
 }
 
 ParagraphBuilderImpl::ParagraphBuilderImpl(
-        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection, std::unique_ptr<SkUnicode> unicode)
-        : ParagraphBuilder(style, fontCollection)
+        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection, sk_sp<SkUnicode> unicode)
+        : ParagraphBuilder()
         , fUtf8()
         , fFontCollection(std::move(fontCollection))
         , fParagraphStyle(style)
@@ -46,13 +43,9 @@ ParagraphBuilderImpl::ParagraphBuilderImpl(
         , fUsingClientInfo(false)
 #endif
 {
+    SkASSERT(fFontCollection);
     startStyledBlock();
 }
-
-ParagraphBuilderImpl::ParagraphBuilderImpl(
-        const ParagraphStyle& style, sk_sp<FontCollection> fontCollection)
-        : ParagraphBuilderImpl(style, fontCollection, SkUnicode::Make())
-{ }
 
 ParagraphBuilderImpl::~ParagraphBuilderImpl() = default;
 
@@ -123,7 +116,7 @@ void ParagraphBuilderImpl::addPlaceholder(const PlaceholderStyle& placeholderSty
 #if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
     // The very last placeholder is added automatically
     // and only AFTER finalize() is called
-    SkASSERT(!fTextIsFinalized && !lastOne);
+    SkASSERT(!fTextIsFinalized || lastOne);
 #endif
     if (!fUtf8.isEmpty() && !lastOne) {
         // We keep the very last text style
@@ -183,18 +176,10 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
     // Add one fake placeholder with the rest of the text
     this->addPlaceholder(PlaceholderStyle(), true);
 
-#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
-    SkASSERT(fUsingClientInfo);
     fUTF8IndexForUTF16Index.clear();
     fUTF16IndexForUTF8Index.clear();
-    // This is the place where SkUnicode is paired with SkParagraph
-    fUnicode = SkUnicode::MakeClientBasedUnicode(this->getText(),
-                                                 std::move(fWordsUtf16),
-                                                 std::move(fGraphemeBreaksUtf8),
-                                                 std::move(fLineBreaksUtf8));
-#endif
 
-    SkASSERT(fUnicode);
+    SkASSERT_RELEASE(fUnicode);
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
 }
@@ -217,7 +202,7 @@ void ParagraphBuilderImpl::ensureUTF16Mapping() {
     });
 }
 
-#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+#if !defined(SK_DISABLE_LEGACY_CLIENT_UNICODE) && defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
 void ParagraphBuilderImpl::setWordsUtf8(std::vector<SkUnicode::Position> wordsUtf8) {
     ensureUTF16Mapping();
     std::vector<SkUnicode::Position> wordsUtf16;
@@ -260,30 +245,6 @@ void ParagraphBuilderImpl::setLineBreaksUtf16(std::vector<SkUnicode::LineBreakBe
     }
     setLineBreaksUtf8(lineBreaksUtf8);
 }
-#else
-void ParagraphBuilderImpl::setWordsUtf8(std::vector<SkUnicode::Position> wordsUtf8) {
-    SkASSERT(false);
-}
-
-void ParagraphBuilderImpl::setWordsUtf16(std::vector<SkUnicode::Position> wordsUtf16) {
-    SkASSERT(false);
-}
-
-void ParagraphBuilderImpl::setGraphemeBreaksUtf8(std::vector<SkUnicode::Position> graphemesUtf8) {
-    SkASSERT(false);
-}
-
-void ParagraphBuilderImpl::setGraphemeBreaksUtf16(std::vector<SkUnicode::Position> graphemesUtf16) {
-    SkASSERT(false);
-}
-
-void ParagraphBuilderImpl::setLineBreaksUtf8(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf8) {
-    SkASSERT(false);
-}
-
-void ParagraphBuilderImpl::setLineBreaksUtf16(std::vector<SkUnicode::LineBreakBefore> lineBreaksUtf16) {
-    SkASSERT(false);
-}
 #endif
 
 void ParagraphBuilderImpl::Reset() {
@@ -292,9 +253,9 @@ void ParagraphBuilderImpl::Reset() {
     fUtf8.reset();
     fStyledBlocks.clear();
     fPlaceholders.clear();
-#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
     fUTF8IndexForUTF16Index.clear();
     fUTF16IndexForUTF8Index.clear();
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
     fWordsUtf16.clear();
     fGraphemeBreaksUtf8.clear();
     fLineBreaksUtf8.clear();

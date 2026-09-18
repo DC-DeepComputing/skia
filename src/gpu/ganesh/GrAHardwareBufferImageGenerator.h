@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -12,6 +12,7 @@
 
 class GrGpuResource;
 class GrSurfaceProxyView;
+class SkRecorder;
 
 extern "C" {
     typedef struct AHardwareBuffer AHardwareBuffer;
@@ -30,7 +31,7 @@ extern "C" {
  */
 class GrAHardwareBufferImageGenerator : public GrTextureGenerator {
 public:
-    static std::unique_ptr<SkImageGenerator> Make(AHardwareBuffer*, SkAlphaType,
+    static std::unique_ptr<GrAHardwareBufferImageGenerator> Make(AHardwareBuffer*, SkAlphaType,
                                                   sk_sp<SkColorSpace>, GrSurfaceOrigin);
 
     ~GrAHardwareBufferImageGenerator() override;
@@ -42,10 +43,12 @@ private:
                                     bool isProtectedContent, uint32_t bufferFormat,
                                     GrSurfaceOrigin surfaceOrigin);
 
-    bool onIsValid(GrRecordingContext*) const override;
+    bool onIsValid(SkRecorder*) const override;
 
-    GrSurfaceProxyView onGenerateTexture(GrRecordingContext*, const SkImageInfo&,
-                                         GrMipmapped, GrImageTexGenPolicy) override;
+    GrSurfaceProxyView onGenerateTexture(GrRecordingContext*,
+                                         const SkImageInfo&,
+                                         skgpu::Mipmapped,
+                                         GrImageTexGenPolicy) override;
 
     GrSurfaceOrigin origin() const override { return fSurfaceOrigin; }
 

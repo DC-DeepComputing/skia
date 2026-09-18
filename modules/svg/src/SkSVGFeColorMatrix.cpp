@@ -1,18 +1,24 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "include/core/SkColorFilter.h"
-#include "include/effects/SkImageFilters.h"
-#include "include/private/SkColorData.h"
-#include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGFeColorMatrix.h"
+
+#include "include/core/SkColorFilter.h"
+#include "include/core/SkScalar.h"
+#include "include/effects/SkImageFilters.h"
+#include "include/private/SkAssert.h"
+#include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGFilterContext.h"
-#include "modules/svg/include/SkSVGRenderContext.h"
-#include "modules/svg/include/SkSVGValue.h"
+#include "src/core/SkColorData.h"
+
+#include <tuple>
+
+class SkImageFilter;
+class SkSVGRenderContext;
 
 bool SkSVGFeColorMatrix::parseAndSetAttribute(const char* name, const char* value) {
     return INHERITED::parseAndSetAttribute(name, value) ||

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -17,14 +17,13 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
-#include "tools/gpu/FenceSync.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
 #include <chrono>
@@ -69,7 +68,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     auto image = surface->makeImageSnapshot();
 
     dContext->flush();
-    dContext->submit(true);
+    dContext->submit(GrSyncCpu::kYes);
 
     int count = 0;
 
@@ -77,7 +76,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     flushInfoFinishedProc.fFinishedProc = testing_finished_proc;
     flushInfoFinishedProc.fFinishedContext = (void*)&count;
     // There is no work on the surface so flushing may immediately call the finished proc.
-    dContext->flush(surface, flushInfoFinishedProc);
+    dContext->flush(surface.get(), flushInfoFinishedProc);
     dContext->submit();
     REPORTER_ASSERT(reporter, count == 0 || count == 1);
     // Busy waiting should detect that the work is done.
@@ -85,16 +84,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
 
     canvas->clear(SK_ColorRED);
 
-    dContext->flush(surface, flushInfoFinishedProc);
-    dContext->submit();
+    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->submit(GrSyncCpu::kNo);
 
-    bool fenceSupport = dContext->priv().caps()->fenceSyncSupport();
-    bool expectAsyncCallback =
-            dContext->backend() == GrBackendApi::kVulkan ||
-            ((dContext->backend() == GrBackendApi::kOpenGL) && fenceSupport) ||
-            ((dContext->backend() == GrBackendApi::kMetal) && fenceSupport) ||
-            dContext->backend() == GrBackendApi::kDawn ||
-            dContext->backend() == GrBackendApi::kDirect3D;
+    bool expectAsyncCallback = dContext->priv().caps()->finishedProcAsyncCallbackSupport();
     if (expectAsyncCallback) {
         // On Vulkan the command buffer we just submitted may or may not have finished immediately
         // so the finish proc may not have been called.
@@ -103,13 +96,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
         REPORTER_ASSERT(reporter, count == 2);
     }
     dContext->flush();
-    dContext->submit(true);
+    dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, count == 2);
 
     // Test flushing via the SkImage
     canvas->drawImage(image, 0, 0);
     dContext->flush(image, flushInfoFinishedProc);
-    dContext->submit();
+    dContext->submit(GrSyncCpu::kNo);
     if (expectAsyncCallback) {
         // On Vulkan the command buffer we just submitted may or may not have finished immediately
         // so the finish proc may not have been called.
@@ -118,13 +111,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
         REPORTER_ASSERT(reporter, count == 3);
     }
     dContext->flush();
-    dContext->submit(true);
+    dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, count == 3);
 
     // Test flushing via the GrDirectContext
     canvas->clear(SK_ColorBLUE);
     dContext->flush(flushInfoFinishedProc);
-    dContext->submit();
+    dContext->submit(GrSyncCpu::kNo);
     if (expectAsyncCallback) {
         // On Vulkan the command buffer we just submitted may or may not have finished immediately
         // so the finish proc may not have been called.
@@ -133,29 +126,29 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
         REPORTER_ASSERT(reporter, count == 4);
     }
     dContext->flush();
-    dContext->submit(true);
+    dContext->submit(GrSyncCpu::kYes);
     REPORTER_ASSERT(reporter, count == 4);
 
     // There is no work on the surface so flushing may immediately call the finished proc.
     dContext->flush(flushInfoFinishedProc);
-    dContext->submit();
+    dContext->submit(GrSyncCpu::kNo);
     REPORTER_ASSERT(reporter, count == 4 || count == 5);
     busy_wait_for_callback(&count, 5, dContext, reporter);
 
     count = 0;
     int count2 = 0;
     canvas->clear(SK_ColorGREEN);
-    dContext->flush(surface, flushInfoFinishedProc);
-    dContext->submit();
+    dContext->flush(surface.get(), flushInfoFinishedProc);
+    dContext->submit(GrSyncCpu::kNo);
     // There is no work to be flushed here so this will return immediately, but make sure the
     // finished call from this proc isn't called till the previous surface flush also is finished.
     flushInfoFinishedProc.fFinishedContext = (void*)&count2;
     dContext->flush(flushInfoFinishedProc);
-    dContext->submit();
+    dContext->submit(GrSyncCpu::kNo);
     REPORTER_ASSERT(reporter, count <= 1 && count2 <= count);
 
     dContext->flush();
-    dContext->submit(true);
+    dContext->submit(GrSyncCpu::kYes);
 
     REPORTER_ASSERT(reporter, count == 1);
     REPORTER_ASSERT(reporter, count == count2);
@@ -178,16 +171,14 @@ static void async_callback(void* c, std::unique_ptr<const SkImage::AsyncReadResu
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
                                        reporter,
                                        ctxInfo,
-                                       CtsEnforcement::kApiLevel_T) {
+                                       CtsEnforcement::kApiLevel_U) {
     auto dContext = ctxInfo.directContext();
 
     SkImageInfo info =
             SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    auto mbet = sk_gpu_test::ManagedBackendTexture::MakeFromInfo(dContext,
-                                                                 info,
-                                                                 GrMipmapped::kNo,
-                                                                 GrRenderable::kYes);
+    auto mbet = sk_gpu_test::ManagedBackendTexture::MakeFromInfo(
+            dContext, info, skgpu::Mipmapped::kNo, GrRenderable::kYes);
     if (!mbet) {
         return;
     }
@@ -226,5 +217,5 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
 
     surface.reset();
 
-    dContext->flushAndSubmit(/*syncCpu=*/true);
+    dContext->flushAndSubmit(GrSyncCpu::kYes);
 }

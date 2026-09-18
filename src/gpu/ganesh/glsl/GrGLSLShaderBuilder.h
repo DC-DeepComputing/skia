@@ -9,16 +9,24 @@
 #define GrGLSLShaderBuilder_DEFINED
 
 #include "include/core/SkSpan.h"
-#include "include/private/base/SkTDArray.h"
-#include "src/base/SkTBlockList.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkTArray.h"
+#include "src/core/SkTBlockList.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
-#include "src/sksl/SkSLString.h"
-#include "src/sksl/ir/SkSLStatement.h"
+#include "src/sksl/SkSLDefines.h"
+#include "src/sksl/ir/SkSLStatement.h"  // IWYU pragma: keep
 
-#include <stdarg.h>
+#include <cstdarg>
+#include <cstddef>
+#include <cstdint>
+#include <string>
 
 class GrGLSLColorSpaceXformHelper;
+class GrGLSLProgramBuilder;
+enum class SkBlendMode;
+enum class SkSLType : char;
 
 /**
   base class for all shaders builders
@@ -157,7 +165,7 @@ public:
     GrGLSLProgramBuilder* getProgramBuilder() { return fProgramBuilder; }
 
     /**
-     * Helper for begining and ending a block in the shader code.
+     * Helper for beginning and ending a block in the shader code.
      */
     class ShaderBlock {
     public:

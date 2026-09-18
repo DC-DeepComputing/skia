@@ -10,7 +10,6 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
-#include "include/core/SkColorPriv.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkImageInfo.h"
@@ -27,8 +26,10 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
+#include "src/core/SkColorPriv.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 #include <string.h>
 
@@ -43,18 +44,14 @@ public:
     Xfermodes3GM() { this->setBGColor(ToolUtils::color_to_565(0xFF70D0E0)); }
 
 protected:
-    SkString onShortName() override {
-        return SkString("xfermodes3");
-    }
+    SkString getName() const override { return SkString("xfermodes3"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(630, 1215);
-    }
+    SkISize getISize() override { return SkISize::Make(630, 1215); }
 
     void onDraw(SkCanvas* canvas) override {
         canvas->translate(SkIntToScalar(10), SkIntToScalar(20));
 
-        SkFont  font(ToolUtils::create_portable_typeface());
+        SkFont  font = ToolUtils::DefaultPortableFont();
         SkPaint labelP;
 
         constexpr SkColor kSolidColors[] = {
@@ -191,12 +188,12 @@ private:
 
         SkPaint bmpPaint;
         const SkPoint kCenter = { SkIntToScalar(kSize) / 2, SkIntToScalar(kSize) / 2 };
-        const SkColor kColors[] = {
-            SK_ColorTRANSPARENT, 0x80800000, 0xF020F060, SK_ColorWHITE
+        const SkColor4f kColors[] = {
+            SkColors::kTransparent, SkColor4f::FromColor(0x80800000),
+            SkColor4f::FromColor(0xF020F060), SkColors::kWhite
         };
-        bmpPaint.setShader(SkGradientShader::MakeRadial(kCenter, 3 * SkIntToScalar(kSize) / 4,
-                                                        kColors, nullptr, std::size(kColors),
-                                                        SkTileMode::kRepeat));
+        bmpPaint.setShader(SkShaders::RadialGradient(kCenter, 3 * SkIntToScalar(kSize) / 4,
+                                                     {{kColors, {}, SkTileMode::kRepeat}, {}}));
 
         SkBitmap bmp;
         bmp.allocN32Pixels(kSize, kSize);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -12,7 +12,7 @@ namespace skgpu::graphite {
 
 #define CHECK(A) REPORTER_ASSERT(reporter, A)
 
-DEF_GRAPHITE_TEST(skgpu_Rect, reporter) {
+DEF_GRAPHITE_TEST(skgpu_Rect, reporter, CtsEnforcement::kApiLevel_202404) {
     using float2 = skvx::float2;
     using float4 = skvx::float4;
 
@@ -118,4 +118,4 @@ DEF_GRAPHITE_TEST(skgpu_Rect, reporter) {
     }}}}
 }
 
-}  // namespace skgpu
+}  // namespace skgpu::graphite

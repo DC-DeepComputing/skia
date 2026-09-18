@@ -1,20 +1,30 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/skottie/src/effects/Effects.h"
-
-#include "include/private/SkColorData.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "modules/skottie/src/Adapter.h"
+#include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
+#include "modules/skottie/src/effects/Effects.h"
 #include "modules/sksg/include/SkSGColorFilter.h"
 #include "modules/sksg/include/SkSGPaint.h"
-#include "src/base/SkVx.h"
+#include "modules/sksg/include/SkSGRenderNode.h"
 #include "src/core/SkSwizzlePriv.h"
-#include "src/utils/SkJSON.h"
+#include "src/core/SkVx.h"
+
+#include <cstddef>
+#include <utility>
+#include <vector>
+
+namespace skjson {
+class ArrayValue;
+}
 
 namespace skottie::internal {
 
@@ -98,7 +108,7 @@ class CCTonerAdapter final : public DiscardableAdapterBase<CCTonerAdapter,
         const std::vector<sk_sp<sksg::Color>> fColorNodes;
 
         ScalarValue fTone = 0;
-        VectorValue fHighlights,
+        ColorValue  fHighlights,
                     fBrights,
                     fMidtones,
                     fDarktones,

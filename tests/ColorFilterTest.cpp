@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -15,22 +16,26 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkColorMatrix.h" // IWYU pragma: keep
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "src/base/SkAutoMalloc.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkAutoMalloc.h"
 #include "src/core/SkColorFilterPriv.h"
+#include "src/core/SkRandom.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#endif
 
 #include <cstddef>
 #include <utility>
@@ -39,13 +44,8 @@ class SkFlattenable;
 struct GrContextOptions;
 struct SkStageRec;
 
-#if defined(SK_ENABLE_SKVM)
-#include "src/core/SkVM.h"
-class SkArenaAlloc;
-#endif
-
 static sk_sp<SkColorFilter> reincarnate_colorfilter(SkFlattenable* obj) {
-    SkBinaryWriteBuffer wb;
+    SkBinaryWriteBuffer wb({});
     wb.writeFlattenable(obj);
 
     size_t size = wb.bytesWritten();
@@ -153,16 +153,6 @@ DEF_TEST(WorkingFormatFilterFlags, r) {
 }
 
 struct FailureColorFilter final : public SkColorFilterBase {
-#if defined(SK_ENABLE_SKVM)
-    skvm::Color onProgram(skvm::Builder*,
-                          skvm::Color c,
-                          const SkColorInfo&,
-                          skvm::Uniforms*,
-                          SkArenaAlloc*) const override {
-        return {};
-    }
-#endif
-
     SkColorFilterBase::Type type() const override { return SkColorFilterBase::Type::kNoop; }
 
     bool appendStages(const SkStageRec&, bool) const override { return false; }
@@ -172,18 +162,19 @@ struct FailureColorFilter final : public SkColorFilterBase {
     const char* getTypeName() const override { return "FailureColorFilter"; }
 };
 
+#if defined(SK_GANESH)
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ComposeFailureWithInputElision,
                                  r,
                                  ctxInfo,
-                                 CtsEnforcement::kApiLevel_T) {
+                                 CtsEnforcement::kApiLevel_U) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(8, 8);
     auto surface = SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kNo, info);
     SkPaint paint;
 
     // Install a non-trivial shader, so the color filter isn't just applied to the paint color:
     const SkPoint pts[] = {{0, 0}, {100, 100}};
-    const SkColor colors[] = {SK_ColorWHITE, SK_ColorBLACK};
-    paint.setShader(SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp));
+    const SkColor4f colors[] = {SkColors::kWhite, SkColors::kBlack};
+    paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
 
     // Our inner (first) color filter does a "blend" (kSrc) against green, *discarding* the input:
     auto inner = SkColorFilters::Blend(SK_ColorGREEN, SkBlendMode::kSrc);
@@ -196,4 +187,21 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ComposeFailureWithInputElision,
 
     // At one time, this would trigger a use-after-free / crash, when converting the paint to FPs:
     surface->getCanvas()->drawPaint(paint);
+}
+#endif
+
+DEF_TEST(ColorFilter_OpaqueShaderPaintAlpha, r) {
+    // skbug.com/40045529: Prior to the fix, CPU backend would produce gray, not white. (It told the
+    // color filter that the shader output was opaque, ignoring the effect of paint alpha).
+    SkPaint paint;
+    paint.setShader(SkShaders::Color(SK_ColorWHITE));
+    paint.setAlphaf(0.5f);
+    paint.setColorFilter(SkColorFilters::SRGBToLinearGamma());
+
+    SkBitmap bmp;
+    bmp.allocN32Pixels(1, 1);
+    SkCanvas canvas(bmp);
+    canvas.drawColor(SK_ColorWHITE);
+    canvas.drawPaint(paint);
+    REPORTER_ASSERT(r, bmp.getColor(0, 0) == SK_ColorWHITE);
 }

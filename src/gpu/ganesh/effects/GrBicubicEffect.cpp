@@ -13,7 +13,7 @@
 #include "include/core/SkString.h"
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/base/SkRandom.h"
+#include "src/core/SkRandom.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
@@ -248,7 +248,7 @@ SkPMColor4f GrBicubicEffect::constantOutputForConstantInput(const SkPMColor4f& i
 
 GR_DEFINE_FRAGMENT_PROCESSOR_TEST(GrBicubicEffect)
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::TestCreate(GrProcessorTestData* d) {
     Direction direction = Direction::kX;
     switch (d->fRandom->nextULessThan(3)) {

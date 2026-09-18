@@ -18,7 +18,10 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GpuTypes.h"
+
+#if defined(SK_GANESH)
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#endif
 
 namespace skiagm {
 
@@ -43,7 +46,7 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
+    SkString getName() const override {
         SkString name("anisotropic_image_scale_");
         switch (fMode) {
             case Mode::kLinear:
@@ -59,7 +62,7 @@ protected:
         return name;
     }
 
-    SkISize onISize() override {
+    SkISize getISize() override {
         return SkISize::Make(2*kImageSize + 3*kSpacer,
                              kNumVertImages*kImageSize + (kNumVertImages+1)*kSpacer);
     }
@@ -160,9 +163,9 @@ public:
     AnisoMipsGM() = default;
 
 protected:
-    SkString onShortName() override { return SkString("anisomips"); }
+    SkString getName() const override { return SkString("anisomips"); }
 
-    SkISize onISize() override { return SkISize::Make(520, 260); }
+    SkISize getISize() override { return SkISize::Make(520, 260); }
 
     sk_sp<SkImage> updateImage(SkSurface* surf, SkColor color) {
         surf->getCanvas()->clear(color);
@@ -190,11 +193,12 @@ protected:
         // created with MIPs then asking for a mipmapped image will cause a copy to a mipped
         // texture.
         sk_sp<SkSurface> surface;
+#if defined(SK_GANESH)
         if (auto rc = canvas->recordingContext()) {
             surface = SkSurfaces::RenderTarget(rc,
                                                skgpu::Budgeted::kYes,
                                                ii,
-                                               1,
+                                               /* sampleCount= */ 1,
                                                kTopLeft_GrSurfaceOrigin,
                                                /*surfaceProps=*/nullptr,
                                                /*shouldCreateWithMips=*/true);
@@ -202,7 +206,9 @@ protected:
                 // We could be in an abandoned context situation.
                 return;
             }
-        } else {
+        } else
+#endif
+        {
             surface = canvas->makeSurface(ii);
             if (!surface) {  // could be a recording canvas.
                 surface = SkSurfaces::Raster(ii);

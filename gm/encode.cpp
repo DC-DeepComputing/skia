@@ -19,7 +19,9 @@
 #include "include/core/SkString.h"
 #include "include/encode/SkJpegEncoder.h"
 #include "include/encode/SkPngEncoder.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 
 namespace skiagm {
 
@@ -28,31 +30,25 @@ public:
     EncodeGM() {}
 
 protected:
-    SkString onShortName() override {
-        return SkString("encode");
-    }
+    SkString getName() const override { return SkString("encode"); }
 
-    SkISize onISize() override {
-        return SkISize::Make(1024, 600);
-    }
+    SkISize getISize() override { return SkISize::Make(1024, 600); }
 
     void onDraw(SkCanvas* canvas) override {
         SkBitmap orig;
-        GetResourceAsBitmap("images/mandrill_512_q075.jpg", &orig);
-        SkDynamicMemoryWStream stream;
-        SkASSERT_RELEASE(SkPngEncoder::Encode(&stream, orig.pixmap(), {}));
-        sk_sp<SkData> pngData = stream.detachAsData();
-        stream.reset();
+        ToolUtils::GetResourceAsBitmap("images/mandrill_512_q075.jpg", &orig);
+        sk_sp<SkData> pngData = SkPngEncoder::Encode(orig.pixmap(), {});
+        SkASSERT_RELEASE(pngData);
 
-        SkASSERT_RELEASE(SkJpegEncoder::Encode(&stream, orig.pixmap(), {}));
-        sk_sp<SkData> jpgData = stream.detachAsData();
+        sk_sp<SkData> jpgData = SkJpegEncoder::Encode(orig.pixmap(), {});
+        SkASSERT_RELEASE(jpgData);
 
         sk_sp<SkImage> pngImage = SkImages::DeferredFromEncodedData(pngData);
         sk_sp<SkImage> jpgImage = SkImages::DeferredFromEncodedData(jpgData);
         canvas->drawImage(pngImage.get(), 0.0f, 0.0f);
         canvas->drawImage(jpgImage.get(), 512.0f, 0.0f);
 
-        SkFont font;
+        SkFont font = ToolUtils::DefaultPortableFont();
         font.setEdging(SkFont::Edging::kAlias);
         canvas->drawString("Images should look identical.", 450.0f, 550.0f, font, SkPaint());
     }

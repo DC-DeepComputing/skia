@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,14 +7,21 @@
 #ifndef SkPDFGradientShader_DEFINED
 #define SkPDFGradientShader_DEFINED
 
-#include "include/core/SkShader.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkScalar.h"
+#include "include/private/SkAssert.h"
 #include "src/pdf/SkPDFTypes.h"
 #include "src/pdf/SkPDFUtils.h"
 #include "src/shaders/SkShaderBase.h"
 
-class SkMatrix;
+#include <cstdint>
+#include <memory>
+
 class SkPDFDocument;
-struct SkIRect;
+class SkShader;
 
 namespace SkPDFGradientShader {
 
@@ -26,7 +33,7 @@ SkPDFIndirectReference Make(SkPDFDocument* doc,
 struct Key {
     SkShaderBase::GradientType fType;
     SkShaderBase::GradientInfo fInfo;
-    std::unique_ptr<SkColor[]> fColors;
+    std::unique_ptr<SkColor4f[]> fColors;
     std::unique_ptr<SkScalar[]> fStops;
     SkMatrix fCanvasTransform;
     SkMatrix fShaderTransform;
@@ -45,7 +52,7 @@ inline bool operator==(const SkShaderBase::GradientInfo& u, const SkShaderBase::
         && u.fRadius[0]     == v.fRadius[0]
         && u.fRadius[1]     == v.fRadius[1]
         && u.fTileMode      == v.fTileMode
-        && u.fGradientFlags == v.fGradientFlags
+        && u.fPremulInterp  == v.fPremulInterp
         && SkPackedArrayEqual(u.fColors, v.fColors, u.fColorCount)
         && SkPackedArrayEqual(u.fColorOffsets, v.fColorOffsets, u.fColorCount);
 }

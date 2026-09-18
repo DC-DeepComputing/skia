@@ -1,12 +1,12 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTDArray.h"
 #include "src/utils/SkPolyUtils.h"
 #include "tests/Test.h"
 
@@ -40,7 +40,7 @@ DEF_TEST(OffsetSimplePoly, reporter) {
     *rrectPoly.append() = SkPoint::Make(-100 - 3.535534f, 50 + 3.535534f);
     *rrectPoly.append() = SkPoint::Make(-100 - 2.5f, 50 + 4.330127f);
     SkRect bounds;
-    bounds.setBoundsCheck(rrectPoly.begin(), rrectPoly.size());
+    bounds.setBoundsCheck(rrectPoly);
 
     REPORTER_ASSERT(reporter, SkIsConvexPolygon(rrectPoly.begin(), rrectPoly.size()));
 
@@ -107,7 +107,7 @@ DEF_TEST(OffsetSimplePoly, reporter) {
     *clippedRRectPoly.append() = SkPoint::Make(381.195313f, 432.207275f);
     *clippedRRectPoly.append() = SkPoint::Make(377.312134f, 432.947998f);
     *clippedRRectPoly.append() = SkPoint::Make(342.289948f, 432.947998f);
-    bounds.setBoundsCheck(clippedRRectPoly.begin(), clippedRRectPoly.size());
+    bounds.setBoundsCheck(clippedRRectPoly);
 
     REPORTER_ASSERT(reporter, SkIsConvexPolygon(clippedRRectPoly.begin(),
                                                 clippedRRectPoly.size()));
@@ -133,7 +133,7 @@ DEF_TEST(OffsetSimplePoly, reporter) {
     *starPoly.append() = SkPoint::Make(-28.86f, 0.0f);
     *starPoly.append() = SkPoint::Make(-43.30f, -25.0f);
     *starPoly.append() = SkPoint::Make(-14.43f, -25.0f);
-    bounds.setBoundsCheck(starPoly.begin(), starPoly.size());
+    bounds.setBoundsCheck(starPoly);
 
     REPORTER_ASSERT(reporter, SkIsSimplePolygon(starPoly.begin(), starPoly.size()));
 

@@ -3,8 +3,10 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
+import("../../gn/skia.gni")
+
 declare_args() {
-  skia_use_system_libwebp = is_official_build && !is_wasm
+  skia_use_system_libwebp = is_official_build && !is_canvaskit
 }
 
 import("../third_party.gni")
@@ -171,6 +173,7 @@ if (skia_use_system_libwebp) {
       "../externals/libwebp/src/utils/filters_utils.c",
       "../externals/libwebp/src/utils/huffman_encode_utils.c",
       "../externals/libwebp/src/utils/huffman_utils.c",
+      "../externals/libwebp/src/utils/palette.c",
       "../externals/libwebp/src/utils/quant_levels_dec_utils.c",
       "../externals/libwebp/src/utils/quant_levels_utils.c",
       "../externals/libwebp/src/utils/random_utils.c",

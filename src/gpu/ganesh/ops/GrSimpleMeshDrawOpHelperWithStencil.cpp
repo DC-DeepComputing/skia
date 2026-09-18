@@ -1,11 +1,14 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+
+#include "src/gpu/ganesh/GrProcessorAnalysis.h"
+#include "src/gpu/ganesh/GrUserStencilSettings.h"
 
 GrSimpleMeshDrawOpHelperWithStencil::GrSimpleMeshDrawOpHelperWithStencil(
                                                     GrProcessorSet* processorSet,
@@ -68,7 +71,7 @@ GrProgramInfo* GrSimpleMeshDrawOpHelperWithStencil::createProgramInfoWithStencil
                              this->stencilSettings());
 }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 SkString GrSimpleMeshDrawOpHelperWithStencil::dumpInfo() const {
     SkString result = INHERITED::dumpInfo();
     result.appendf("Stencil settings: %s\n", (fStencilSettings ? "yes" : "no"));

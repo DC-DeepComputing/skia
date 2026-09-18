@@ -4,15 +4,20 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkVertices.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkFloatingPoint.h"
 #include "src/core/SkBlurMask.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
-#include "tools/ToolUtils.h"
+#include "tools/EncodeUtils.h"
 #include "tools/viewer/ClickHandlerSlide.h"
+
+#include <array>
 
 #define BG_COLOR    0xFFDDDDDD
 
@@ -55,28 +60,23 @@ static void stroke_pe(SkPaint* paint) {
 static void dash_pe(SkPaint* paint) {
     SkScalar inter[] = { 20, 10, 10, 10 };
     paint->setStrokeWidth(12);
-    paint->setPathEffect(SkDashPathEffect::Make(inter, std::size(inter), 0));
+    paint->setPathEffect(SkDashPathEffect::Make(inter, 0));
     compose_pe(paint);
 }
 
-static const int gXY[] = {
-4, 0, 0, -4, 8, -4, 12, 0, 8, 4, 0, 4
-};
-
-static void scale(SkPath* path, SkScalar scale) {
-    SkMatrix m;
-    m.setScale(scale, scale);
-    path->transform(m);
-}
+static constexpr auto gXY = std::to_array<int>({
+    4, 0, 0, -4, 8, -4, 12, 0, 8, 4, 0, 4
+});
 
 static void one_d_pe(SkPaint* paint) {
-    SkPath  path;
-    path.moveTo(SkIntToScalar(gXY[0]), SkIntToScalar(gXY[1]));
+    SkPathBuilder builder;
+    builder.moveTo(SkIntToScalar(gXY[0]), SkIntToScalar(gXY[1]));
     for (unsigned i = 2; i < std::size(gXY); i += 2)
-        path.lineTo(SkIntToScalar(gXY[i]), SkIntToScalar(gXY[i+1]));
-    path.close();
-    path.offset(SkIntToScalar(-6), 0);
-    scale(&path, 1.5f);
+        builder.lineTo(SkIntToScalar(gXY[i]), SkIntToScalar(gXY[i+1]));
+    builder.close();
+    builder.offset(SkIntToScalar(-6), 0);
+    builder.transform(SkMatrix::Scale(1.5f, 1.5f));
+    SkPath path = builder.detach();
 
     paint->setPathEffect(SkPath1DPathEffect::Make(path, SkIntToScalar(21), 0,
                                                   SkPath1DPathEffect::kRotate_Style));
@@ -84,7 +84,9 @@ static void one_d_pe(SkPaint* paint) {
 }
 
 typedef void (*PE_Proc)(SkPaint*);
-static const PE_Proc gPE[] = { hair_pe, hair2_pe, stroke_pe, dash_pe, one_d_pe };
+static constexpr auto gPE = std::to_array<PE_Proc>({
+    hair_pe, hair2_pe, stroke_pe, dash_pe, one_d_pe
+});
 
 static void fill_pe(SkPaint* paint) {
     paint->setStyle(SkPaint::kFill_Style);
@@ -99,8 +101,7 @@ static sk_sp<SkPathEffect> MakeTileEffect() {
     SkMatrix m;
     m.setScale(SkIntToScalar(12), SkIntToScalar(12));
 
-    SkPath path;
-    path.addCircle(0, 0, SkIntToScalar(5));
+    SkPath path = SkPath::Circle(0, 0, 5);
 
     return SkPath2DPathEffect::Make(m, path);
 }
@@ -109,19 +110,20 @@ static void tile_pe(SkPaint* paint) {
     paint->setPathEffect(MakeTileEffect());
 }
 
-static const PE_Proc gPE2[] = { fill_pe, discrete_pe, tile_pe };
+static constexpr auto gPE2 = std::to_array<PE_Proc>({ fill_pe, discrete_pe, tile_pe });
 
 static void patheffect_slide(SkCanvas* canvas) {
     SkPaint paint;
     paint.setAntiAlias(true);
     paint.setStyle(SkPaint::kStroke_Style);
 
-    SkPath path;
-    path.moveTo(20, 20);
-    path.lineTo(70, 120);
-    path.lineTo(120, 30);
-    path.lineTo(170, 80);
-    path.lineTo(240, 50);
+    SkPath path = SkPathBuilder()
+                  .moveTo(20, 20)
+                  .lineTo(70, 120)
+                  .lineTo(120, 30)
+                  .lineTo(170, 80)
+                  .lineTo(240, 50)
+                  .detach();
 
     size_t i;
     canvas->save();
@@ -132,11 +134,11 @@ static void patheffect_slide(SkCanvas* canvas) {
     }
     canvas->restore();
 
-    path.reset();
     SkRect r = { 0, 0, 250, 120 };
-    path.addOval(r, SkPathDirection::kCW);
-    r.inset(50, 50);
-    path.addRect(r, SkPathDirection::kCCW);
+    path = SkPathBuilder()
+           .addOval(r, SkPathDirection::kCW)
+           .addRect(r.makeInset(50, 50), SkPathDirection::kCCW)
+           .detach();
 
     canvas->translate(320, 20);
     for (i = 0; i < std::size(gPE2); i++) {
@@ -148,65 +150,72 @@ static void patheffect_slide(SkCanvas* canvas) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 
 struct GradData {
-    int             fCount;
-    const SkColor*  fColors;
-    const SkScalar* fPos;
+    size_t           fCount;
+    const SkColor4f* fColors;
+    const float*     fPos;
+
+    SkGradient grad(SkTileMode tm) const {
+        SkSpan<const float> pos;
+        if (fPos) {
+            pos = {fPos, fCount};
+        }
+        return {{{fColors, fCount}, pos, tm}, {}};
+    }
 };
 
-static const SkColor gColors[] = {
-SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorWHITE, SK_ColorBLACK
+static const SkColor4f gColors[] = {
+    SkColors::kRed, SkColors::kGreen, SkColors::kBlue, SkColors::kWhite, SkColors::kBlack
 };
 static const SkScalar gPos0[] = { 0, SK_Scalar1 };
 static const SkScalar gPos1[] = { SK_Scalar1/4, SK_Scalar1*3/4 };
 static const SkScalar gPos2[] = {
-0, SK_Scalar1/8, SK_Scalar1/2, SK_Scalar1*7/8, SK_Scalar1
+    0, SK_Scalar1/8, SK_Scalar1/2, SK_Scalar1*7/8, SK_Scalar1
 };
 
-static const GradData gGradData[] = {
-{ 2, gColors, nullptr },
-{ 2, gColors, gPos0 },
-{ 2, gColors, gPos1 },
-{ 5, gColors, nullptr },
-{ 5, gColors, gPos2 }
-};
+static const auto gGradData = std::to_array<GradData>({
+    GradData{ 2, gColors, nullptr },
+    GradData{ 2, gColors, gPos0 },
+    GradData{ 2, gColors, gPos1 },
+    GradData{ 5, gColors, nullptr },
+    GradData{ 5, gColors, gPos2 }
+});
 
 static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const GradData& data, SkTileMode tm) {
-    return SkGradientShader::MakeLinear(pts, data.fColors, data.fPos, data.fCount, tm);
+    return SkShaders::LinearGradient(pts, data.grad(tm));
 }
 
 static sk_sp<SkShader> MakeRadial(const SkPoint pts[2], const GradData& data, SkTileMode tm) {
     SkPoint center;
-    center.set(SkScalarAve(pts[0].fX, pts[1].fX),
-               SkScalarAve(pts[0].fY, pts[1].fY));
-    return SkGradientShader::MakeRadial(center, center.fX, data.fColors,
-                                          data.fPos, data.fCount, tm);
+    center.set(sk_float_midpoint(pts[0].fX, pts[1].fX),
+               sk_float_midpoint(pts[0].fY, pts[1].fY));
+    return SkShaders::RadialGradient(center, center.fX, data.grad(tm));
 }
 
 static sk_sp<SkShader> MakeSweep(const SkPoint pts[2], const GradData& data, SkTileMode tm) {
     SkPoint center;
-    center.set(SkScalarAve(pts[0].fX, pts[1].fX),
-               SkScalarAve(pts[0].fY, pts[1].fY));
-    return SkGradientShader::MakeSweep(center.fX, center.fY, data.fColors, data.fPos, data.fCount);
+    center.set(sk_float_midpoint(pts[0].fX, pts[1].fX),
+               sk_float_midpoint(pts[0].fY, pts[1].fY));
+    return SkShaders::SweepGradient(center, data.grad(tm));
 }
 
 static sk_sp<SkShader> Make2Conical(const SkPoint pts[2], const GradData& data, SkTileMode tm) {
     SkPoint center0, center1;
-    center0.set(SkScalarAve(pts[0].fX, pts[1].fX),
-                SkScalarAve(pts[0].fY, pts[1].fY));
+    center0.set(sk_float_midpoint(pts[0].fX, pts[1].fX),
+                sk_float_midpoint(pts[0].fY, pts[1].fY));
     center1.set(SkScalarInterp(pts[0].fX, pts[1].fX, SkIntToScalar(3)/5),
                 SkScalarInterp(pts[0].fY, pts[1].fY, SkIntToScalar(1)/4));
-    return SkGradientShader::MakeTwoPointConical(center1, (pts[1].fX - pts[0].fX) / 7,
-                                                  center0, (pts[1].fX - pts[0].fX) / 2,
-                                                  data.fColors, data.fPos, data.fCount, tm);
+    return SkShaders::TwoPointConicalGradient(center1, (pts[1].fX - pts[0].fX) / 7,
+                                              center0, (pts[1].fX - pts[0].fX) / 2,
+                                              data.grad(tm));
 }
 
 typedef sk_sp<SkShader> (*GradMaker)(const SkPoint pts[2], const GradData&, SkTileMode);
-static const GradMaker gGradMakers[] = {
+static constexpr auto gGradMakers = std::to_array<GradMaker>({
     MakeLinear, MakeRadial, MakeSweep, Make2Conical
-};
+});
 
 static void gradient_slide(SkCanvas* canvas) {
     SkPoint pts[2] = {
@@ -235,14 +244,13 @@ static void gradient_slide(SkCanvas* canvas) {
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "include/core/SkStream.h"
-#include "src/base/SkRandom.h"
 #include "src/core/SkOSFile.h"
-#include "tools/DecodeFile.h"
+#include "src/core/SkRandom.h"
+#include "tools/DecodeUtils.h"
 
 static sk_sp<SkShader> make_shader0(SkIPoint* size) {
-    SkBitmap    bm;
-
-    decode_file("/skimages/logo.gif", &bm);
+    SkBitmap bm;
+    ToolUtils::GetResourceAsBitmap("images/baby_tux.png", &bm);
     size->set(bm.width(), bm.height());
     return bm.makeShader(SkSamplingOptions(SkFilterMode::kLinear));
 }
@@ -250,9 +258,8 @@ static sk_sp<SkShader> make_shader0(SkIPoint* size) {
 static sk_sp<SkShader> make_shader1(const SkIPoint& size) {
     SkPoint pts[] = { { 0, 0 },
                       { SkIntToScalar(size.fX), SkIntToScalar(size.fY) } };
-    SkColor colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorRED };
-    return SkGradientShader::MakeLinear(pts, colors, nullptr,
-                                          std::size(colors), SkTileMode::kMirror);
+    SkColor4f colors[] = { SkColors::kRed, SkColors::kGreen, SkColors::kBlue, SkColors::kRed };
+    return SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kMirror}, {}});
 }
 
 class Rec {
@@ -310,7 +317,7 @@ static void make_fan(Rec* rec, int texWidth, int texHeight) {
     SkMatrix m;
     m.setScale(SkIntToScalar(100), SkIntToScalar(100));
     m.postTranslate(SkIntToScalar(110), SkIntToScalar(110));
-    m.mapPoints(v, rec->fCount);
+    m.mapPoints({v, (size_t)rec->fCount});
 }
 
 static void make_strip(Rec* rec, int texWidth, int texHeight) {
@@ -345,11 +352,11 @@ static void make_strip(Rec* rec, int texWidth, int texHeight) {
     SkMatrix m;
     m.setScale(SkIntToScalar(100), SkIntToScalar(100));
     m.postTranslate(SkIntToScalar(110), SkIntToScalar(110));
-    m.mapPoints(v, rec->fCount);
+    m.mapPoints({v, (size_t)rec->fCount});
 }
 
 static void mesh_slide(SkCanvas* canvas) {
-    Rec fRecs[3];
+    std::array<Rec, 3> fRecs;
     SkIPoint    size;
 
     auto fShader0 = make_shader0(&size);
@@ -392,11 +399,11 @@ static void mesh_slide(SkCanvas* canvas) {
 ///////////////////////////////////////////////////////////////////////////////
 
 
-static const SlideProc gProc[] = {
+static constexpr auto gProc = std::to_array<SlideProc>({
     patheffect_slide,
     gradient_slide,
     mesh_slide,
-};
+});
 
 class SlidesSlide : public ClickHandlerSlide {
     int fIndex;

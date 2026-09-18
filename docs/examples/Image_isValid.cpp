@@ -1,7 +1,6 @@
-// Copyright 2019 Google LLC.
+// Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
-// HASH=afc62f38aebc56af8e425297ec67dd37
 REG_FIDDLE(Image_isValid, 256, 256, false, 5) {
 void draw(SkCanvas* canvas) {
     auto dContext = GrAsDirectContext(canvas->recordingContext());
@@ -13,18 +12,18 @@ void draw(SkCanvas* canvas) {
         if (nullptr == image) {
             return;
         }
-        SkFont font;
+        SkFont font = SkFont(fontMgr->matchFamilyStyle(nullptr, {}));
         SkPaint paint;
         paint.setAntiAlias(true);
         canvas->drawImage(image, 0, 0);
         canvas->drawString(label, image->width() / 2, image->height() / 4, font, paint);
         if (dContext) {
-            const char* msg = image->isValid(dContext) ? "is valid on GPU"
-                                                       : "not valid on GPU";
+            const char* msg =
+                    image->isValid(dContext->asRecorder()) ? "is valid on GPU" : "not valid on GPU";
             canvas->drawString(msg, 20, image->height() * 5 / 8, font, paint);
         }
 
-        const char* msg = image->isValid(nullptr) ? "is valid on CPU" : "not valid on CPU";
+        const char* msg = image->isTextureBacked() ? "is not valid on CPU" : "valid on CPU";
 
         canvas->drawString(msg, 20, image->height() * 7 / 8, font, paint);
     };

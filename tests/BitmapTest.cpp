@@ -17,11 +17,11 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkFloatingPoint.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTo.h"
-#include "src/base/SkRandom.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkFloatingPoint.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTo.h"
+#include "src/core/SkRandom.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
@@ -115,8 +115,10 @@ static void test_allocpixels(skiatest::Reporter* reporter) {
         kRGBA_F32_SkColorType,
         kR8G8_unorm_SkColorType,
         kA16_unorm_SkColorType,
+        kR16_unorm_SkColorType,
         kR16G16_unorm_SkColorType,
         kA16_float_SkColorType,
+        kR16_float_SkColorType,
         kR16G16_float_SkColorType,
         kR16G16B16A16_unorm_SkColorType,
     }) {
@@ -172,6 +174,51 @@ DEF_TEST(Bitmap, reporter) {
     test_allocpixels(reporter);
     test_bigalloc(reporter);
     test_peekpixels(reporter);
+}
+
+DEF_TEST(Bitmap_setColorSpace, r) {
+    // Make a 1x1 bitmap holding 50% gray in default colorspace.
+    SkBitmap source;
+    source.allocN32Pixels(1,1);
+    source.eraseColor(SkColorSetARGB(0xFF, 0x80, 0x80, 0x80));
+
+    // Readback should use the normal sRGB colorspace.
+    const SkImageInfo kReadbackInfo = SkImageInfo::Make(/*width=*/1,
+                                                        /*height=*/1,
+                                                        kN32_SkColorType,
+                                                        kOpaque_SkAlphaType,
+                                                        SkColorSpace::MakeSRGB());
+    // Do readback and verify that the color is gray.
+    uint8_t pixelData[4];
+    REPORTER_ASSERT(r, source.readPixels(kReadbackInfo,
+                                         pixelData,
+                                         /*dstRowBytes=*/4,
+                                         /*srcX=*/0,
+                                         /*srcY=*/0));
+    REPORTER_ASSERT(r, pixelData[0] == 0x80);
+    REPORTER_ASSERT(r, pixelData[1] == 0x80);
+    REPORTER_ASSERT(r, pixelData[2] == 0x80);
+
+    // Also check the color with getColor4f, which does not honor colorspaces.
+    uint32_t colorRGBA = source.getColor4f(0, 0).toBytes_RGBA();
+    REPORTER_ASSERT(r, colorRGBA == 0xFF808080, "RGBA=%08X", colorRGBA);
+
+    // Convert the SkBitmap's colorspace to linear.
+    source.setColorSpace(SkColorSpace::MakeSRGBLinear());
+
+    // Readback again and verify that the color is interpreted differently.
+    REPORTER_ASSERT(r, source.readPixels(kReadbackInfo,
+                                         pixelData,
+                                         /*dstRowBytes=*/4,
+                                         /*srcX=*/0,
+                                         /*srcY=*/0));
+    REPORTER_ASSERT(r, pixelData[0] == 0xBC, "R:%02X", pixelData[0]);
+    REPORTER_ASSERT(r, pixelData[1] == 0xBC, "G:%02X", pixelData[1]);
+    REPORTER_ASSERT(r, pixelData[2] == 0xBC, "B:%02X", pixelData[2]);
+
+    // Since getColor4f does not honor colorspaces, this should still contain 50% gray.
+    colorRGBA = source.getColor4f(0, 0).toBytes_RGBA();
+    REPORTER_ASSERT(r, colorRGBA == 0xFF808080, "RGBA=%08X", colorRGBA);
 }
 
 /**
@@ -345,7 +392,7 @@ static float unit_discretize(float value, float scale) {
     if (value == 1) {
         return 1;
     } else {
-        return sk_float_floor(value * scale + 0.5f) / scale;
+        return std::floor(value * scale + 0.5f) / scale;
     }
 }
 
@@ -387,10 +434,13 @@ DEF_TEST(getalphaf, reporter) {
         { kRGB_565_SkColorType,            opaque },
         { kGray_8_SkColorType,             opaque },
         { kR8G8_unorm_SkColorType,         opaque },
+        { kR16_unorm_SkColorType,          opaque },
+        { kR16_float_SkColorType,          opaque },
         { kR16G16_unorm_SkColorType,       opaque },
         { kR16G16_float_SkColorType,       opaque },
         { kRGB_888x_SkColorType,           opaque },
         { kRGB_101010x_SkColorType,        opaque },
+        { kRGB_F16F16F16x_SkColorType,     opaque },
 
         { kAlpha_8_SkColorType,            nearly },
         { kA16_unorm_SkColorType,          nearly },

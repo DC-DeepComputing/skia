@@ -5,34 +5,20 @@
         "label",
         "config",
         "host"
-      ],
-      "optional_keys": [
-        "cross"
       ]
     },
     "BazelTest": {
       "keys": [
         "task_driver",
         "label",
-        "config",
+        "build_config",
         "host"
       ],
       "optional_keys": [
-        "cross"
+        "test_config"
       ]
     },
     "Build": {
-      "keys": [
-        "os",
-        "compiler",
-        "target_arch",
-        "configuration"
-      ],
-      "optional_keys": [
-        "extra_config"
-      ]
-    },
-    "BuildStats": {
       "keys": [
         "os",
         "compiler",
@@ -106,25 +92,9 @@
         "extra_config"
       ]
     },
-    "FM": {
-      "keys": [
-        "os",
-        "compiler",
-        "model",
-        "cpu_or_gpu",
-        "cpu_or_gpu_value",
-        "arch",
-        "configuration",
-        "test_filter"
-      ],
-      "optional_keys": [
-        "extra_config"
-      ]
-    },
     "Upload": {
       "recurse_roles": [
         "Build",
-        "BuildStats",
         "Perf",
         "Test"
       ]

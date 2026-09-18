@@ -10,6 +10,8 @@
 
 #include "include/core/SkVertices.h"
 
+#include <cstdint>
+
 /** \struct VertState
     This is a helper for drawVertices(). It is used to iterate over the triangles
     that are to be rendered based on an SkCanvas::VertexMode and (optionally) an
@@ -41,6 +43,8 @@ struct VertState {
      *  @param mode    Specifies the SkCanvas::VertexMode.
      */
     Proc chooseProc(SkVertices::VertexMode mode);
+
+    int currIndex() const { return fCurrIndex; }
 
 private:
     int             fCount;

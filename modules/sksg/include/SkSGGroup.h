@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,11 +8,20 @@
 #ifndef SkSGGroup_DEFINED
 #define SkSGGroup_DEFINED
 
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "modules/sksg/include/SkSGRenderNode.h"
 
+#include <cstddef>
+#include <utility>
 #include <vector>
 
+class SkCanvas;
+class SkMatrix;
+struct SkPoint;
+
 namespace sksg {
+class InvalidationController;
 
 /**
  * Concrete node, grouping together multiple descendants.

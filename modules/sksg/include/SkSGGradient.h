@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,14 +8,17 @@
 #ifndef SkSGGradient_DEFINED
 #define SkSGGradient_DEFINED
 
-#include "modules/sksg/include/SkSGRenderEffect.h"
-
 #include "include/core/SkColor.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
-#include "include/core/SkShader.h"
+#include "include/core/SkTileMode.h"
+#include "modules/sksg/include/SkSGNode.h"
+#include "modules/sksg/include/SkSGRenderEffect.h"
 
 #include <vector>
+
+class SkShader;
 
 namespace sksg {
 

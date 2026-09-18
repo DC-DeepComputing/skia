@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -11,6 +11,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
@@ -21,15 +22,16 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "include/gpu/mock/GrMockTypes.h"
+#include "include/gpu/ganesh/mock/GrMockTypes.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h" // IWYU pragma: keep
 #include "src/gpu/ganesh/SkGr.h"
+#include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
-#include "tools/gpu/FenceSync.h"
+#include "tools/gpu/ContextType.h"
 
 #include <string>
 
@@ -120,8 +122,8 @@ static void cleanup_test(skiatest::Reporter* reporter) {
     GrMockOptions options;
     sk_sp<GrDirectContext> mockContext = GrDirectContext::MakeMock(&options);
 
-    for (int i = 0; i < GrContextFactory::kContextTypeCnt; ++i) {
-        GrContextFactory::ContextType ctxType = (GrContextFactory::ContextType) i;
+    for (int i = 0; i < skgpu::kContextTypeCount; ++i) {
+        auto ctxType = static_cast<skgpu::ContextType>(i);
 
         {
             sk_sp<SkImage> img;
@@ -180,14 +182,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PinnedImageTest_AsGaneshView,
     {
         skiatest::ReporterContext subtest(reporter, "cached path");
         auto [view, colortype] = skgpu::ganesh::AsView(rContext, img, skgpu::Mipmapped::kNo,
-                   GrImageTexGenPolicy::kDraw);
+                   /*targetSurface=*/nullptr, GrImageTexGenPolicy::kDraw);
         REPORTER_ASSERT(reporter, view, "AsView returned falsey view");
     }
 
     {
         skiatest::ReporterContext subtest(reporter, "unncached path");
         auto [view, colortype] = skgpu::ganesh::AsView(rContext, img, skgpu::Mipmapped::kNo,
-                   GrImageTexGenPolicy::kNew_Uncached_Unbudgeted);
+                    /*targetSurface=*/nullptr, GrImageTexGenPolicy::kNew_Uncached_Unbudgeted);
         REPORTER_ASSERT(reporter, view, "AsView returned falsey view");
     }
 }
@@ -196,7 +198,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PinnedImageTest_AsFragmentProcessor,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
-    GrRecordingContext* rContext = ctxInfo.directContext();
+    GrDirectContext* dContext = ctxInfo.directContext();
     const SkImageInfo ii = SkImageInfo::Make(64, 64, kN32_SkColorType, kPremul_SkAlphaType);
 
     SkBitmap bm;
@@ -210,8 +212,24 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PinnedImageTest_AsFragmentProcessor,
 
     SkTileMode tm[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
 
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(dContext,
+                                                       GrColorType::kRGBA_8888,
+                                                       nullptr,
+                                                       SkBackingFit::kApprox,
+                                                       {800, 800},
+                                                       SkSurfaceProps(),
+                                                       /*label=*/{},
+                                                       /* sampleCnt= */ 1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       GrProtected::kNo,
+                                                       kTopLeft_GrSurfaceOrigin);
+    REPORTER_ASSERT(reporter, sdc);
+    if (!sdc) {
+        return;
+    }
+
     auto fp = skgpu::ganesh::AsFragmentProcessor(
-            rContext, img.get(), SkSamplingOptions({1/3, 1/3}), tm,
+            sdc.get(), img.get(), SkSamplingOptions({1/3, 1/3}), tm,
             SkMatrix::I(), nullptr, nullptr);
     REPORTER_ASSERT(reporter, fp, "AsFragmentProcessor returned falsey processor");
 }

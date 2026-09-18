@@ -9,7 +9,6 @@
 #define SkImage_RasterPinnable_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/gpu/GrTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/image/SkImage_Base.h"
@@ -23,6 +22,10 @@ class GrRecordingContext;
 class SkBitmap;
 enum class GrImageTexGenPolicy : int;
 
+namespace skgpu {
+enum class Mipmapped : bool;
+}
+
 struct PinnedData {
     GrSurfaceProxyView fPinnedView;
     int32_t fPinnedCount = 0;
@@ -34,10 +37,10 @@ struct PinnedData {
 class SkImage_RasterPinnable final : public SkImage_Raster {
 public:
     SkImage_RasterPinnable(const SkBitmap& bm)
-            : SkImage_Raster(bm, /*bitmapMayBeMutable = */ true) {}
+            : SkImage_Raster(bm, /*mipmaps=*/nullptr, /*bitmapMayBeMutable = */ true) {}
 
     std::tuple<GrSurfaceProxyView, GrColorType> asView(GrRecordingContext*,
-                                                       GrMipmapped,
+                                                       skgpu::Mipmapped,
                                                        GrImageTexGenPolicy) const;
 
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kRasterPinnable; }

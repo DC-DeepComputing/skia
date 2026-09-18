@@ -10,11 +10,10 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRRect.h"
-#include "include/pathops/SkPathOps.h"
 #include "include/utils/SkCamera.h"
 #include "include/utils/SkShadowUtils.h"
-#include "src/base/SkUTF.h"
 #include "src/core/SkBlurMask.h"
+#include "src/core/SkUTF.h"
 #include "tools/ToolUtils.h"
 #include "tools/timer/TimeUtils.h"
 #include "tools/viewer/Slide.h"
@@ -33,10 +32,10 @@ public:
     MaterialShadowsSlide() { fName = "MaterialShadows"; }
 
     void load(SkScalar w, SkScalar h) override {
-        fCirclePath.addCircle(0, 0, 56/2);
-        fCapsulePath.addRRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(-64, -24, 128, 48), 24, 24));
-        fLargeRRPath.addRRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(-64, -64, 128, 128), 4, 4));
-        fSmallRRPath.addRRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(-40, -40, 80, 80), 4, 4));
+        fCirclePath = SkPath::Circle(0, 0, 56/2);
+        fCapsulePath = SkPath::RRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(-64, -24, 128, 48), 24, 24));
+        fLargeRRPath = SkPath::RRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(-64, -64, 128, 128), 4, 4));
+        fSmallRRPath = SkPath::RRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(-40, -40, 80, 80), 4, 4));
 
         fLightPos = SkPoint3::Make(0, -700, 700);
     }

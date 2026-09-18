@@ -9,33 +9,25 @@
 #define sktext_gpu_TextBlobRedrawCoordinator_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkThreadAnnotations.h"
-#include "src/base/SkSpinlock.h"
-#include "src/base/SkTInternalLList.h"
-#include "src/core/SkMatrixProvider.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkThreadAnnotations.h"
 #include "src/core/SkMessageBus.h"
+#include "src/core/SkSpinlock.h"
 #include "src/core/SkTHash.h"
+#include "src/core/SkTInternalLList.h"
+#include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlob.h"
 
 #include <cstddef>
 #include <cstdint>
 
-class GrClip;
 class GrTextBlobTestingPeer;
 class SkCanvas;
+class SkMatrix;
 class SkPaint;
 struct SkStrikeDeviceInfo;
 
 namespace sktext { class GlyphRunList; }
-
-#if defined(SK_GANESH)
-namespace skgpu::ganesh { class SurfaceDrawContext; }
-#endif
-
-#if defined(SK_GRAPHITE)
-namespace skgpu::graphite { class Device; }
-#endif
 
 namespace sktext::gpu {
 
@@ -49,23 +41,13 @@ namespace sktext::gpu {
 class TextBlobRedrawCoordinator {
 public:
     TextBlobRedrawCoordinator(uint32_t messageBusID);
-#if defined(SK_GANESH)
-    void drawGlyphRunList(SkCanvas* canvas,
-                          const GrClip* clip,
-                          const SkMatrixProvider& viewMatrix,
-                          const GlyphRunList& glyphRunList,
-                          const SkPaint& paint,
-                          SkStrikeDeviceInfo strikeDeviceInfo,
-                          skgpu::ganesh::SurfaceDrawContext* sdc);
-#endif
-#if defined(SK_GRAPHITE)
+
     void drawGlyphRunList(SkCanvas* canvas,
                           const SkMatrix& viewMatrix,
                           const GlyphRunList& glyphRunList,
                           const SkPaint& paint,
                           SkStrikeDeviceInfo strikeDeviceInfo,
-                          skgpu::graphite::Device* device);
-#endif
+                          const AtlasDrawDelegate&);
 
     void freeAll() SK_EXCLUDES(fSpinLock);
 
@@ -76,8 +58,6 @@ public:
         uint32_t fBlobID;
         uint32_t fContextID;
     };
-
-    static void PostPurgeBlobMessage(uint32_t blobID, uint32_t cacheID);
 
     void purgeStaleBlobs() SK_EXCLUDES(fSpinLock);
 
@@ -109,7 +89,7 @@ private:
         skia_private::STArray<1, sk_sp<TextBlob>> fBlobs;
     };
 
-    sk_sp<TextBlob> findOrCreateBlob(const SkMatrixProvider& viewMatrix,
+    sk_sp<TextBlob> findOrCreateBlob(const SkMatrix& positionMatrix,
                                      const GlyphRunList& glyphRunList,
                                      const SkPaint& paint,
                                      SkStrikeDeviceInfo strikeDeviceInfo);

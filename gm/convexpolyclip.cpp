@@ -24,8 +24,10 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
+#include "src/core/SkColorPriv.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
 
 static sk_sp<SkImage> make_img(int w, int h) {
     auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32(w, h, kOpaque_SkAlphaType));
@@ -45,6 +47,7 @@ static sk_sp<SkImage> make_img(int w, int h) {
                         ToolUtils::color_to_565(0xFF000022),
                         SK_ColorWHITE,
                         ToolUtils::color_to_565(0xFFAABBCC)};
+    SkColorConverter conv(colors);
 
     SkScalar    pos[] = {0,
                          SK_Scalar1 / 6,
@@ -58,19 +61,17 @@ static sk_sp<SkImage> make_img(int w, int h) {
     SkRect rect = SkRect::MakeWH(wScalar, hScalar);
     SkMatrix mat = SkMatrix::I();
     for (int i = 0; i < 4; ++i) {
-        paint.setShader(SkGradientShader::MakeRadial(
+        paint.setShader(SkShaders::RadialGradient(
                         pt, radius,
-                        colors, pos,
-                        std::size(colors),
-                        SkTileMode::kRepeat,
-                        0, &mat));
+                        {{conv.colors4f(), pos, SkTileMode::kRepeat}, {}},
+                        &mat));
         canvas->drawRect(rect, paint);
         rect.inset(wScalar / 8, hScalar / 8);
         mat.preTranslate(6 * wScalar, 6 * hScalar);
         mat.postScale(SK_Scalar1 / 3, SK_Scalar1 / 3);
     }
 
-    SkFont font(ToolUtils::create_portable_typeface(), wScalar / 2.2f);
+    SkFont font(ToolUtils::DefaultPortableTypeface(), wScalar / 2.2f);
 
     paint.setShader(nullptr);
     paint.setColor(SK_ColorLTGRAY);
@@ -97,11 +98,9 @@ public:
     }
 
 protected:
-    SkString onShortName() override {
-        return SkString("convex_poly_clip");
-    }
+    SkString getName() const override { return SkString("convex_poly_clip"); }
 
-    SkISize onISize() override {
+    SkISize getISize() override {
         // When benchmarking the saveLayer set of draws is skipped.
         int w = 435;
         if (kBench_Mode != this->getMode()) {
@@ -117,11 +116,11 @@ protected:
             return clips.back();
         };
 
-        emplace_back(fClips).setPath(SkPath::Polygon({
+        emplace_back(fClips).setPath(SkPath::Polygon({{
             {  5.f,   5.f},
             {100.f,  20.f},
             { 15.f, 100.f},
-        }, false));
+        }}, false));
 
         SkPathBuilder hexagon;
         constexpr SkScalar kRadius = 45.f;
@@ -164,7 +163,7 @@ protected:
                               SkSamplingOptions(), &bgPaint);
 
         constexpr char kTxt[] = "Clip Me!";
-        SkFont         font(ToolUtils::create_portable_typeface(), 23);
+        SkFont         font(ToolUtils::DefaultPortableTypeface(), 23);
         SkScalar textW = font.measureText(kTxt, std::size(kTxt)-1, SkTextEncoding::kUTF8);
         SkPaint txtPaint;
         txtPaint.setColor(SK_ColorDKGRAY);
@@ -298,7 +297,7 @@ private:
     };
 
     std::vector<Clip> fClips;
-    sk_sp<SkImage>    fImg;;
+    sk_sp<SkImage>    fImg;
 
     using INHERITED = GM;
 };

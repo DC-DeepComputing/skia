@@ -8,12 +8,14 @@
 #ifndef GrQuadUtils_DEFINED
 #define GrQuadUtils_DEFINED
 
-#include "src/base/SkVx.h"
+#include "src/core/SkVx.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 
-enum class GrQuadAAFlags;
+#include <cstdint>
+
 enum class GrAA : bool;
-enum class GrAAType : unsigned;
+enum class GrAAType : unsigned int;
+enum class GrQuadAAFlags;
 struct SkRect;
 
 namespace GrQuadUtils {

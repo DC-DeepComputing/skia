@@ -9,13 +9,13 @@
 
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
-#include "include/private/base/SkFixed.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTDArray.h"
-#include "include/private/base/SkTLogic.h"
-#include "include/private/base/SkTemplates.h"
-#include "src/base/SkTSearch.h"
+#include "include/private/SkFixed.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTDArray.h"
+#include "include/private/SkTLogic.h"
+#include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
+#include "src/core/SkTSearch.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 
 #include <expat.h>
@@ -24,6 +24,7 @@
 #include <string.h>
 
 #include <memory>
+#include <vector>
 
 using namespace skia_private;
 
@@ -31,15 +32,12 @@ using namespace skia_private;
 #define OLD_SYSTEM_FONTS_FILE "/system/etc/system_fonts.xml"
 #define FALLBACK_FONTS_FILE "/system/etc/fallback_fonts.xml"
 #define VENDOR_FONTS_FILE "/vendor/etc/fallback_fonts.xml"
+#define PRODUCT_CUSTOMIZATION_FILE "/product/etc/fonts_customization.xml"
 
 #define LOCALE_FALLBACK_FONTS_SYSTEM_DIR "/system/etc"
 #define LOCALE_FALLBACK_FONTS_VENDOR_DIR "/vendor/etc"
 #define LOCALE_FALLBACK_FONTS_PREFIX "fallback_fonts-"
 #define LOCALE_FALLBACK_FONTS_SUFFIX ".xml"
-
-#ifndef SK_FONT_FILE_PREFIX
-#    define SK_FONT_FILE_PREFIX "/fonts/"
-#endif
 
 /**
  * This file contains TWO 'familyset' handlers:
@@ -53,6 +51,13 @@ using namespace skia_private;
  *   /system/etc/fonts.xml
  *
  * If the 'familyset' 'version' attribute is 21 or higher the LMP parser is used, otherwise the JB.
+ *
+ * API 15 4.0.4_r2.1 system_fonts.xml, vendor_fonts.xml, fallback_fonts.xml (system+vendor) no lang.
+ * API 16 4.1.1_r1 fallback_fonts-xx-XX.xml are added. Use the xx list in order.
+ * API 17 4.2.2_r1.1 fallback_fonts-xx.xml are removed and 'lang' is added.
+ * API 21 5.0.0_r1.0.1 fonts.xml replaces the other files.
+ * API 29 10.0.0_r1 /product/etc/fonts_customization.xml with base /product/fonts is added.
+ * The NDK interface is added and reading the files directly is discouraged.
  */
 
 struct FamilyData;
@@ -89,7 +94,7 @@ struct TagHandler {
 
 /** Represents the current parsing state. */
 struct FamilyData {
-    FamilyData(XML_Parser parser, SkTDArray<FontFamily*>& families,
+    FamilyData(XML_Parser parser, std::vector<std::unique_ptr<FontFamily>>& families,
                const SkString& basePath, bool isFallback, const char* filename,
                const TagHandler* topLevelHandler)
         : fParser(parser)
@@ -106,13 +111,15 @@ struct FamilyData {
     { }
 
     XML_Parser fParser;                         // The expat parser doing the work, owned by caller
-    SkTDArray<FontFamily*>& fFamilies;          // The array to append families, owned by caller
+    std::vector<std::unique_ptr<FontFamily>>& fFamilies; // Collection of families, owned by caller
     std::unique_ptr<FontFamily> fCurrentFamily; // The family being created, owned by this
     FontFileInfo* fCurrentFontInfo;             // The info being created, owned by fCurrentFamily
     int fVersion;                               // The version of the file parsed.
     const SkString& fBasePath;                  // The current base path.
     const bool fIsFallback;                     // The file being parsed is a fallback file
     const char* fFilename;                      // The name of the file currently being parsed.
+
+    SkString fCurrentFamilyList;                // Name from family-list tag
 
     int fDepth;                                 // The current element depth of the parse.
     int fSkip;                                  // The depth to stop skipping, 0 if not skipping.
@@ -191,10 +198,10 @@ static const TagHandler axisHandler = {
                         if (file.fVariationDesignPosition[j].axis == axisTag) {
                             axisTagIsValid = false;
                             SK_FONTCONFIGPARSER_WARNING("'%c%c%c%c' axis specified more than once",
-                                                        (axisTag >> 24) & 0xFF,
-                                                        (axisTag >> 16) & 0xFF,
-                                                        (axisTag >>  8) & 0xFF,
-                                                        (axisTag      ) & 0xFF);
+                                                        (char)((axisTag >> 24) & 0xFF),
+                                                        (char)((axisTag >> 16) & 0xFF),
+                                                        (char)((axisTag >>  8) & 0xFF),
+                                                        (char)((axisTag      ) & 0xFF));
                         }
                     }
                 } else {
@@ -256,8 +263,8 @@ static const TagHandler fontHandler = {
             std::unique_ptr<FontFamily>* fallbackFamily =
                     self->fCurrentFamily->fallbackFamilies.find(fallbackFor);
             if (!fallbackFamily) {
-                std::unique_ptr<FontFamily> newFallbackFamily(
-                        new FontFamily(self->fCurrentFamily->fBasePath, true));
+                auto newFallbackFamily =
+                        std::make_unique<FontFamily>(self->fCurrentFamily->fBasePath, true);
                 fallbackFamily = self->fCurrentFamily->fallbackFamilies.set(
                         fallbackFor, std::move(newFallbackFamily));
                 (*fallbackFamily)->fLanguages = self->fCurrentFamily->fLanguages;
@@ -293,6 +300,12 @@ static const TagHandler familyHandler = {
         // If there is no name, this is a fallback only font.
         FontFamily* family = new FontFamily(self->fBasePath, true);
         self->fCurrentFamily.reset(family);
+
+        if (!self->fCurrentFamilyList.isEmpty()) {
+            family->fNames.push_back().set(self->fCurrentFamilyList);
+            family->fIsFallbackFont = false;
+        }
+
         for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
             const char* name = attributes[i];
             const char* value = attributes[i+1];
@@ -314,7 +327,7 @@ static const TagHandler familyHandler = {
         }
     },
     /*end*/[](FamilyData* self, const char* tag) {
-        *self->fFamilies.append() = self->fCurrentFamily.release();
+        self->fFamilies.push_back(std::move(self->fCurrentFamily));
     },
     /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
         size_t len = strlen(tag);
@@ -326,12 +339,35 @@ static const TagHandler familyHandler = {
     /*chars*/nullptr,
 };
 
+static const TagHandler familyListHandler = {
+        /*start*/ [](FamilyData* self, const char* tag, const char** attributes) {
+            for (size_t i = 0; ATTS_NON_NULL(attributes, i); i += 2) {
+                const char* name = attributes[i];
+                const char* value = attributes[i + 1];
+                size_t nameLen = strlen(name);
+                if (MEMEQ("name", name, nameLen)) {
+                    SkAutoAsciiToLC tolc(value);
+                    self->fCurrentFamilyList.set(tolc.lc());
+                }
+            }
+        },
+        /*end*/ [](FamilyData* self, const char* tag) { self->fCurrentFamilyList.reset(); },
+        /*tag*/
+        [](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
+            size_t len = strlen(tag);
+            if (MEMEQ("family", tag, len)) {
+                return &familyHandler;
+            }
+            return nullptr;
+        },
+        /*chars*/ nullptr,
+};
+
 static FontFamily* find_family(FamilyData* self, const SkString& familyName) {
-    for (int i = 0; i < self->fFamilies.size(); i++) {
-        FontFamily* candidate = self->fFamilies[i];
-        for (int j = 0; j < candidate->fNames.size(); j++) {
-            if (candidate->fNames[j] == familyName) {
-                return candidate;
+    for (std::unique_ptr<FontFamily>& candidate : self->fFamilies) {
+        for (const SkString& candidateName : candidate->fNames) {
+            if (candidateName == familyName) {
+                return &*candidate;
             }
         }
     }
@@ -358,7 +394,8 @@ static const TagHandler aliasHandler = {
                 SkAutoAsciiToLC tolc(value);
                 aliasName.set(tolc.lc());
             } else if (MEMEQ("to", name, nameLen)) {
-                to.set(value);
+                SkAutoAsciiToLC tolc(value);
+                to.set(tolc.lc());
             } else if (MEMEQ("weight", name, nameLen)) {
                 if (!parse_non_negative_integer(value, &weight)) {
                     SK_FONTCONFIGPARSER_WARNING("'%s' is an invalid weight", value);
@@ -374,7 +411,8 @@ static const TagHandler aliasHandler = {
         }
 
         if (weight) {
-            FontFamily* family = new FontFamily(targetFamily->fBasePath, self->fIsFallback);
+            auto family =
+                    std::make_unique<FontFamily>(targetFamily->fBasePath, self->fIsFallback);
             family->fNames.push_back().set(aliasName);
 
             for (int i = 0; i < targetFamily->fFonts.size(); i++) {
@@ -382,7 +420,7 @@ static const TagHandler aliasHandler = {
                     family->fFonts.push_back(targetFamily->fFonts[i]);
                 }
             }
-            *self->fFamilies.append() = family;
+            self->fFamilies.push_back(std::move(family));
         } else {
             targetFamily->fNames.push_back().set(aliasName);
         }
@@ -399,6 +437,8 @@ static const TagHandler familySetHandler = {
         size_t len = strlen(tag);
         if (MEMEQ("family", tag, len)) {
             return &familyHandler;
+        } else if (MEMEQ("family-list", tag, len)) {
+            return &familyListHandler;
         } else if (MEMEQ("alias", tag, len)) {
             return &aliasHandler;
         }
@@ -438,7 +478,7 @@ static const TagHandler fileHandler = {
                             value);
                     }
 
-                } else if (MEMEQ("lang", name, nameLen)) {
+                } else if (MEMEQ("lang", name, nameLen)) { // JB MR1 (API level 17)
                     SkLanguage currentLanguage = SkLanguage(value, valueLen);
                     bool showWarning = false;
                     if (currentFamily.fLanguages.empty()) {
@@ -521,7 +561,7 @@ static const TagHandler familyHandler = {
         }
     },
     /*end*/[](FamilyData* self, const char* tag) {
-        *self->fFamilies.append() = self->fCurrentFamily.release();
+        self->fFamilies.push_back(std::move(self->fCurrentFamily));
     },
     /*tag*/[](FamilyData* self, const char* tag, const char** attributes) -> const TagHandler* {
         size_t len = strlen(tag);
@@ -570,6 +610,34 @@ static const TagHandler topLevelHandler = {
                 }
             }
             return &jbParser::familySetHandler;
+        } else if (MEMEQ("fonts-modification", tag, len)) {
+            // Modern OEM customization files (e.g. /product/etc/fonts_customization.xml)
+            // use the <fonts-modification> root tag instead of <familyset>.
+            //
+            // Skia natively supports parsing the standard children of this file:
+            // - `<family name="...">`: Instantiated perfectly as new global named families.
+            // - `<font>` and `<axis>`: Parsed and bound correctly to the new named families.
+            // - `<alias>`: Mapped properly to existing named families.
+            //
+            // What is NOT supported:
+            // 1. `customizationType="append-to-existing"`
+            //    If an OEM writes `<family customizationType="append-to-existing" name="sans-serif">`
+            //    Minikin would find the existing `sans-serif` family from `fonts.xml` and merge
+            //    these new fonts directly into it. Skia's parser ignores `customizationType`
+            //    entirely. By purely looking at `name="sans-serif"`, Skia will simply instantiate
+            //    a second, completely independent `FontFamily` named "sans-serif". This can lead
+            //    to shadowing instead of merging. (OEMs primarily use `new-named-family` which
+            //    Skia maps perfectly).
+            //
+            // 2. `supportedAxes="wght,ital"`
+            //    If an OEM writes `<font supportedAxes="wght">`, Minikin restricts the exposed
+            //    variable font axes of the TTF to only weight. Skia completely ignores the
+            //    `supportedAxes` attribute, meaning all valid axes contained within the font file
+            //    remain fully exposed and animatable.
+
+            // Force the modern parser.
+            self->fVersion = 21;
+            return &lmpParser::familySetHandler;
         }
         return nullptr;
     },
@@ -644,7 +712,8 @@ static const XML_Memory_Handling_Suite sk_XML_alloc = {
  * This function parses the given filename and stores the results in the given
  * families array. Returns the version of the file, negative if the file does not exist.
  */
-static int parse_config_file(const char* filename, SkTDArray<FontFamily*>& families,
+static int parse_config_file(const char* filename,
+                             std::vector<std::unique_ptr<FontFamily>>& families,
                              const SkString& basePath, bool isFallback)
 {
     SkFILEStream file(filename);
@@ -701,10 +770,10 @@ static int parse_config_file(const char* filename, SkTDArray<FontFamily*>& famil
 }
 
 /** Returns the version of the system font file actually found, negative if none. */
-static int append_system_font_families(SkTDArray<FontFamily*>& fontFamilies,
+static int append_system_font_families(std::vector<std::unique_ptr<FontFamily>>& fontFamilies,
                                        const SkString& basePath)
 {
-    int initialCount = fontFamilies.size();
+    size_t initialCount = fontFamilies.size();
     int version = parse_config_file(LMP_SYSTEM_FONTS_FILE, fontFamilies, basePath, false);
     if (version < 0 || fontFamilies.size() == initialCount) {
         version = parse_config_file(OLD_SYSTEM_FONTS_FILE, fontFamilies, basePath, false);
@@ -719,9 +788,10 @@ static int append_system_font_families(SkTDArray<FontFamily*>& fontFamilies,
  * directory for those files,add all of their entries to the fallback chain, and
  * include the locale as part of each entry.
  */
-static void append_fallback_font_families_for_locale(SkTDArray<FontFamily*>& fallbackFonts,
-                                                     const char* dir,
-                                                     const SkString& basePath)
+static void append_fallback_font_families_for_locale(
+        std::vector<std::unique_ptr<FontFamily>>& fallbackFonts,
+        const char* dir,
+        const SkString& basePath)
 {
     SkOSFile::Iter iter(dir, nullptr);
     SkString fileName;
@@ -746,19 +816,19 @@ static void append_fallback_font_families_for_locale(SkTDArray<FontFamily*>& fal
         SkString absoluteFilename;
         absoluteFilename.printf("%s/%s", dir, fileName.c_str());
 
-        SkTDArray<FontFamily*> langSpecificFonts;
+        std::vector<std::unique_ptr<FontFamily>> langSpecificFonts;
         parse_config_file(absoluteFilename.c_str(), langSpecificFonts, basePath, true);
 
-        for (int i = 0; i < langSpecificFonts.size(); ++i) {
-            FontFamily* family = langSpecificFonts[i];
+        for (std::unique_ptr<FontFamily>& family : langSpecificFonts) {
             family->fLanguages.emplace_back(locale);
-            *fallbackFonts.append() = family;
+            fallbackFonts.push_back(std::move(family));
         }
     }
 }
 
-static void append_system_fallback_font_families(SkTDArray<FontFamily*>& fallbackFonts,
-                                                 const SkString& basePath)
+static void append_system_fallback_font_families(
+    std::vector<std::unique_ptr<FontFamily>>& fallbackFonts,
+    const SkString& basePath)
 {
     parse_config_file(FALLBACK_FONTS_FILE, fallbackFonts, basePath, true);
     append_fallback_font_families_for_locale(fallbackFonts,
@@ -766,10 +836,11 @@ static void append_system_fallback_font_families(SkTDArray<FontFamily*>& fallbac
                                              basePath);
 }
 
-static void mixin_vendor_fallback_font_families(SkTDArray<FontFamily*>& fallbackFonts,
-                                                const SkString& basePath)
+static void mixin_vendor_fallback_font_families(
+        std::vector<std::unique_ptr<FontFamily>>& fallbackFonts,
+        const SkString& basePath)
 {
-    SkTDArray<FontFamily*> vendorFonts;
+    std::vector<std::unique_ptr<FontFamily>> vendorFonts;
     parse_config_file(VENDOR_FONTS_FILE, vendorFonts, basePath, true);
     append_fallback_font_families_for_locale(vendorFonts,
                                              LOCALE_FALLBACK_FONTS_VENDOR_DIR,
@@ -778,48 +849,59 @@ static void mixin_vendor_fallback_font_families(SkTDArray<FontFamily*>& fallback
     // This loop inserts the vendor fallback fonts in the correct order in the
     // overall fallbacks list.
     int currentOrder = -1;
-    for (int i = 0; i < vendorFonts.size(); ++i) {
-        FontFamily* family = vendorFonts[i];
+    for (std::unique_ptr<FontFamily>& family : vendorFonts) {
         int order = family->fOrder;
         if (order < 0) {
             if (currentOrder < 0) {
                 // Default case - just add it to the end of the fallback list
-                *fallbackFonts.append() = family;
+                fallbackFonts.push_back(std::move(family));
             } else {
                 // no order specified on this font, but we're incrementing the order
                 // based on an earlier order insertion request
-                *fallbackFonts.insert(currentOrder++) = family;
+                fallbackFonts.insert(fallbackFonts.begin() + currentOrder, std::move(family));
+                ++currentOrder;
             }
         } else {
             // Add the font into the fallback list in the specified order. Set
             // currentOrder for correct placement of other fonts in the vendor list.
-            *fallbackFonts.insert(order) = family;
+            fallbackFonts.insert(fallbackFonts.begin() + order, std::move(family));
             currentOrder = order + 1;
         }
     }
 }
 
-void SkFontMgr_Android_Parser::GetSystemFontFamilies(SkTDArray<FontFamily*>& fontFamilies) {
+void SkFontMgr_Android_Parser::GetSystemFontFamilies(
+        std::vector<std::unique_ptr<FontFamily>>& fontFamilies) {
+    static constexpr char kFontFilePrefix[] = "/fonts/";
+
     // Version 21 of the system font configuration does not need any fallback configuration files.
     SkString basePath(getenv("ANDROID_ROOT"));
-    basePath.append(SK_FONT_FILE_PREFIX, sizeof(SK_FONT_FILE_PREFIX) - 1);
+    basePath.append(kFontFilePrefix);
 
     if (append_system_font_families(fontFamilies, basePath) >= 21) {
+        // Product fonts (fonts_customization.xml) leverage <fonts-modification version="21">
+        // Therefore, we only attempt to parse them on modern devices (Android Lollipop+).
+        // Pre-21 systems fall through to the legacy fallback fonts handling below.
+        SkFontMgr_Android_Parser::GetCustomFontFamilies(
+                fontFamilies, basePath, PRODUCT_CUSTOMIZATION_FILE, nullptr, nullptr);
         return;
     }
 
     // Append all the fallback fonts to system fonts
-    SkTDArray<FontFamily*> fallbackFonts;
+    std::vector<std::unique_ptr<FontFamily>> fallbackFonts;
     append_system_fallback_font_families(fallbackFonts, basePath);
     mixin_vendor_fallback_font_families(fallbackFonts, basePath);
-    fontFamilies.append(fallbackFonts.size(), fallbackFonts.begin());
+    fontFamilies.insert(fontFamilies.end(),
+                        std::make_move_iterator(fallbackFonts.begin()),
+                        std::make_move_iterator(fallbackFonts.end()));
 }
 
-void SkFontMgr_Android_Parser::GetCustomFontFamilies(SkTDArray<FontFamily*>& fontFamilies,
-                                                     const SkString& basePath,
-                                                     const char* fontsXml,
-                                                     const char* fallbackFontsXml,
-                                                     const char* langFallbackFontsDir)
+void SkFontMgr_Android_Parser::GetCustomFontFamilies(
+        std::vector<std::unique_ptr<FontFamily>>& fontFamilies,
+        const SkString& basePath,
+        const char* fontsXml,
+        const char* fallbackFontsXml,
+        const char* langFallbackFontsDir)
 {
     if (fontsXml) {
         parse_config_file(fontsXml, fontFamilies, basePath, false);

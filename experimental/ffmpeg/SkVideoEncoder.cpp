@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2019 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,7 +8,7 @@
 #include "experimental/ffmpeg/SkVideoEncoder.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTDArray.h"
 
 extern "C" {
 #include "libswscale/swscale.h"
@@ -82,7 +82,7 @@ static bool check_err(int err, const int silentList[] = nullptr) {
     return true;
 }
 
-static int sk_write_packet(void* ctx, uint8_t* buffer, int size) {
+static int sk_write_packet(void* ctx, const uint8_t* buffer, int size) {
     SkRandomAccessWStream* stream = (SkRandomAccessWStream*)ctx;
     stream->write(buffer, size);
     return size;

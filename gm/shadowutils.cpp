@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -17,9 +17,8 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkShadowFlags.h"
-#include "include/private/base/SkTArray.h"
-#include "include/private/base/SkTDArray.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTDArray.h"
 #include "include/utils/SkShadowUtils.h"
 
 #include <initializer_list>
@@ -60,31 +59,35 @@ void draw_paths(SkCanvas* canvas, ShadowMode mode) {
 
     // star
     TArray<SkPath> concavePaths;
-    concavePaths.push_back().moveTo(0.0f, -33.3333f);
-    concavePaths.back().lineTo(9.62f, -16.6667f);
-    concavePaths.back().lineTo(28.867f, -16.6667f);
-    concavePaths.back().lineTo(19.24f, 0.0f);
-    concavePaths.back().lineTo(28.867f, 16.6667f);
-    concavePaths.back().lineTo(9.62f, 16.6667f);
-    concavePaths.back().lineTo(0.0f, 33.3333f);
-    concavePaths.back().lineTo(-9.62f, 16.6667f);
-    concavePaths.back().lineTo(-28.867f, 16.6667f);
-    concavePaths.back().lineTo(-19.24f, 0.0f);
-    concavePaths.back().lineTo(-28.867f, -16.6667f);
-    concavePaths.back().lineTo(-9.62f, -16.6667f);
-    concavePaths.back().close();
+    concavePaths.push_back(SkPathBuilder()
+                           .moveTo(0.0f, -33.3333f)
+                           .lineTo(9.62f, -16.6667f)
+                           .lineTo(28.867f, -16.6667f)
+                           .lineTo(19.24f, 0.0f)
+                           .lineTo(28.867f, 16.6667f)
+                           .lineTo(9.62f, 16.6667f)
+                           .lineTo(0.0f, 33.3333f)
+                           .lineTo(-9.62f, 16.6667f)
+                           .lineTo(-28.867f, 16.6667f)
+                           .lineTo(-19.24f, 0.0f)
+                           .lineTo(-28.867f, -16.6667f)
+                           .lineTo(-9.62f, -16.6667f)
+                           .close()
+                           .detach());
 
     // dumbbell
-    concavePaths.push_back().moveTo(50, 0);
-    concavePaths.back().cubicTo(100, 25, 60, 50, 50, 0);
-    concavePaths.back().cubicTo(0, -25, 40, -50, 50, 0);
+    concavePaths.push_back(SkPathBuilder()
+                           .moveTo(50, 0)
+                           .cubicTo(100, 25, 60, 50, 50, 0)
+                           .cubicTo(0, -25, 40, -50, 50, 0)
+                           .detach());
 
     static constexpr SkScalar kPad = 15.f;
     static constexpr SkScalar kLightR = 100.f;
     static constexpr SkScalar kHeight = 50.f;
 
     // transform light position relative to canvas to handle tiling
-    SkPoint lightXY = canvas->getTotalMatrix().mapXY(250, 400);
+    SkPoint lightXY = canvas->getTotalMatrix().mapPoint({250, 400});
     SkPoint3 lightPos = { lightXY.fX, lightXY.fY, 500 };
 
     canvas->translate(3 * kPad, 3 * kPad);
@@ -236,16 +239,15 @@ DEF_SIMPLE_GM(shadow_utils_gray, canvas, kW, kH) {
     draw_paths(canvas, kGrayscale);
 }
 
-#include "include/effects/SkGradientShader.h"
+#include "include/effects/SkGradient.h"
 #include "src/core/SkColorFilterPriv.h"
 
 DEF_SIMPLE_GM(shadow_utils_gaussian_colorfilter, canvas, 512, 256) {
     const SkRect r = SkRect::MakeWH(256, 256);
 
-    const SkColor colors[] = { 0, 0xFF000000 };
-    auto sh = SkGradientShader::MakeRadial({r.centerX(), r.centerY()}, r.width(),
-                                           colors, nullptr, std::size(colors),
-                                           SkTileMode::kClamp);
+    const SkColor4f colors[] = { {0,0,0,0}, {0,0,0,1} };
+    auto sh = SkShaders::RadialGradient(r.center(), r.width(),
+                                        {{colors, {}, SkTileMode::kClamp}, {}});
 
     SkPaint redPaint;
     redPaint.setColor(SK_ColorRED);
@@ -304,7 +306,7 @@ DEF_SIMPLE_GM(shadow_utils_directional, canvas, 256, 384) {
     // scale
     for (int i = 0; i < 3; ++i) {
         canvas->save();
-        SkScalar scaleFactor = sk_float_pow(2.0, -i);
+        SkScalar scaleFactor = std::pow(2.0, -i);
         canvas->translate(35 + 80*i, 185);
         canvas->scale(scaleFactor, scaleFactor);
         SkShadowUtils::DrawShadow(canvas, rrect, SkPoint3{ 0, 0, kHeight }, lightPos,

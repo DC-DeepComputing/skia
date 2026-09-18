@@ -1,15 +1,23 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "modules/skottie/src/SkottieJson.h"
-
 #include "modules/skottie/utils/SkottieUtils.h"
 
-#include "include/core/SkImage.h"
+#include "include/core/SkData.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkSize.h"
+#include "include/private/SkAssert.h"
+#include "modules/skottie/include/Skottie.h"
+#include "modules/skresources/include/SkResources.h"
+
+#include <cstring>
+#include <utility>
+
+class SkCanvas;
 
 namespace skottie_utils {
 
@@ -134,6 +142,19 @@ V CustomPropertyManager::get(const PropKey& key, const PropMap<T>& container) co
             : prop_group->second.front()->get();
 }
 
+template <typename T>
+std::unique_ptr<T> CustomPropertyManager::getHandle(const PropKey& key,
+                                                    size_t index,
+                                                    const PropMap<T>& container) const {
+    auto prop_group = container.find(key);
+
+    if (prop_group == container.end() || index >= prop_group->second.size()) {
+        return nullptr;
+    }
+
+    return std::make_unique<T>(*prop_group->second[index]);
+}
+
 template <typename V, typename T>
 bool CustomPropertyManager::set(const PropKey& key, const V& val, const PropMap<T>& container) {
     auto prop_group = container.find(key);
@@ -158,6 +179,11 @@ skottie::ColorPropertyValue CustomPropertyManager::getColor(const PropKey& key) 
     return this->get<skottie::ColorPropertyValue>(key, fColorMap);
 }
 
+std::unique_ptr<skottie::ColorPropertyHandle>
+CustomPropertyManager::getColorHandle(const PropKey& key, size_t index) const {
+    return this->getHandle(key, index, fColorMap);
+}
+
 bool CustomPropertyManager::setColor(const PropKey& key, const skottie::ColorPropertyValue& c) {
     return this->set(key, c, fColorMap);
 }
@@ -169,6 +195,11 @@ CustomPropertyManager::getOpacityProps() const {
 
 skottie::OpacityPropertyValue CustomPropertyManager::getOpacity(const PropKey& key) const {
     return this->get<skottie::OpacityPropertyValue>(key, fOpacityMap);
+}
+
+std::unique_ptr<skottie::OpacityPropertyHandle>
+CustomPropertyManager::getOpacityHandle(const PropKey& key, size_t index) const {
+    return this->getHandle(key, index, fOpacityMap);
 }
 
 bool CustomPropertyManager::setOpacity(const PropKey& key, const skottie::OpacityPropertyValue& o) {
@@ -184,6 +215,11 @@ skottie::TransformPropertyValue CustomPropertyManager::getTransform(const PropKe
     return this->get<skottie::TransformPropertyValue>(key, fTransformMap);
 }
 
+std::unique_ptr<skottie::TransformPropertyHandle>
+CustomPropertyManager::getTransformHandle(const PropKey& key, size_t index) const {
+    return this->getHandle(key, index, fTransformMap);
+}
+
 bool CustomPropertyManager::setTransform(const PropKey& key,
                                          const skottie::TransformPropertyValue& t) {
     return this->set(key, t, fTransformMap);
@@ -196,6 +232,11 @@ CustomPropertyManager::getTextProps() const {
 
 skottie::TextPropertyValue CustomPropertyManager::getText(const PropKey& key) const {
     return this->get<skottie::TextPropertyValue>(key, fTextMap);
+}
+
+std::unique_ptr<skottie::TextPropertyHandle>
+CustomPropertyManager::getTextHandle(const PropKey& key, size_t index) const {
+    return this->getHandle(key, index, fTextMap);
 }
 
 bool CustomPropertyManager::setText(const PropKey& key, const skottie::TextPropertyValue& o) {
@@ -253,244 +294,6 @@ sk_sp<skottie::ExternalLayer> ExternalAnimationPrecompInterceptor::onLoadPrecomp
 
     return anim ? sk_make_sp<ExternalAnimationLayer>(std::move(anim), size)
                 : nullptr;
-}
-
-class ImageAssetProxy final : public skresources::ImageAsset {
-public:
-    ImageAssetProxy() {}
-
-    // always returns true in case Image asset is swapped during playback
-    bool isMultiFrame() override { return true; }
-
-    FrameData getFrameData(float t) override {
-        if (fImageAsset) {
-            return fImageAsset->getFrameData(t);
-        }
-        return {nullptr , SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNearest),
-            SkMatrix::I(), SizeFit::kCenter};
-    }
-
-    void setImageAsset (sk_sp<skresources::ImageAsset> asset) {
-        fImageAsset = std::move(asset);
-    }
-private:
-    sk_sp<skresources::ImageAsset> fImageAsset;
-};
-
-/**
- * An implementation of ResourceProvider designed for Lottie template asset substitution (images,
- * audio, etc)
- */
-class SlotManager::SlottableResourceProvider final : public skresources::ResourceProviderProxyBase {
-public:
-    SlottableResourceProvider(std::vector<SlotInfo> slotInfos,
-                              sk_sp<skresources::ResourceProvider> proxy)
-        : skresources::ResourceProviderProxyBase(std::move(proxy)) {
-        for (const auto &s : slotInfos) {
-            if (s.type == SlotType::kImage) {
-                fImageAssetMap[s.slotID] = sk_make_sp<ImageAssetProxy>();
-            }
-        }
-    }
-
-    // This implementation depends on slot ID being passed through id instead of asset ID when slots
-    // are present
-    sk_sp<skresources::ImageAsset> loadImageAsset(const char resource_path[],
-                                                  const char name[],
-                                                  const char slot_name[]) const override {
-        const auto it = fImageAssetMap.find(slot_name);
-        auto imageAssetProxy = it == fImageAssetMap.end() ? nullptr : it->second;
-        if (fProxy) {
-            imageAssetProxy->setImageAsset(fProxy->loadImageAsset(resource_path, name, slot_name));
-        }
-        return std::move(imageAssetProxy);
-    }
-
-private:
-    std::unordered_map<std::string, sk_sp<ImageAssetProxy>> fImageAssetMap;
-    friend class SlotManager;
-};
-
-/**
- * An implementation of PropertyObserver designed for Lottie template property substitution (color,
- * text, etc)
- *
- * PropertyObserver looks for slottable nodes then manipulates their PropertyValue on the fly
- *
- */
-class SlotManager::SlottablePropertyObserver final : public skottie::PropertyObserver {
-public:
-    SlottablePropertyObserver(std::vector<SlotInfo> slotInfos,
-                              sk_sp<skottie::PropertyObserver> proxy)
-        : fProxy(proxy) {
-        for (const auto &s : slotInfos) {
-            switch (s.type) {
-            case SlotType::kColor:
-                fColorMap[s.slotID] = std::vector<std::unique_ptr<skottie::ColorPropertyHandle>>();
-                break;
-            case SlotType::kOpacity:
-                fOpacityMap[s.slotID] =
-                    std::vector<std::unique_ptr<skottie::OpacityPropertyHandle>>();
-                break;
-            case SlotType::kText:
-                fTextMap[s.slotID] = std::vector<std::unique_ptr<skottie::TextPropertyHandle>>();
-                break;
-            default:
-                SkDebugf("Unsupported slot type: %s: %d\n", s.slotID.c_str(), s.type);
-                break;
-            }
-        }
-    }
-
-    void onColorProperty(const char node_name[],
-                         const LazyHandle<skottie::ColorPropertyHandle>& c) override {
-        if (node_name) {
-            const auto it = fColorMap.find(node_name);
-            if (it != fColorMap.end()) {
-                fColorMap[node_name].push_back(c());
-            }
-        }
-        if (fProxy) {
-            fProxy->onColorProperty(node_name, c);
-        }
-    }
-
-    void onOpacityProperty(const char node_name[],
-                           const LazyHandle<skottie::OpacityPropertyHandle>& o) override {
-        if (node_name) {
-            const auto it = fOpacityMap.find(node_name);
-            if (it != fOpacityMap.end()) {
-                fOpacityMap[node_name].push_back(o());
-            }
-        }
-        if (fProxy) {
-            fProxy->onOpacityProperty(node_name, o);
-        }
-    }
-
-    void onTextProperty(const char node_name[],
-                        const LazyHandle<skottie::TextPropertyHandle>& t) override {
-        const auto it = fTextMap.find(node_name);
-        if (it != fTextMap.end()) {
-            fTextMap[node_name].push_back(t());
-        }
-        if (fProxy) {
-            fProxy->onTextProperty(node_name, t);
-        }
-    }
-
-    void onTransformProperty(const char node_name[],
-                             const LazyHandle<skottie::TransformPropertyHandle>& t) override {
-        if (fProxy) {
-            fProxy->onTransformProperty(node_name, t);
-        }
-    }
-
-    void onEnterNode(const char node_name[], NodeType node_type) override {
-        if (fProxy) {
-            fProxy->onEnterNode(node_name, node_type);
-        }
-    }
-
-    void onLeavingNode(const char node_name[], NodeType node_type) override {
-        if (fProxy) {
-            fProxy->onLeavingNode(node_name, node_type);
-        }
-    }
-private:
-    using SlotID = std::string;
-
-    std::unordered_map<SlotID, std::vector<std::unique_ptr<skottie::ColorPropertyHandle>>>
-        fColorMap;
-    std::unordered_map<SlotID, std::vector<std::unique_ptr<skottie::OpacityPropertyHandle>>>
-        fOpacityMap;
-    std::unordered_map<SlotID, std::vector<std::unique_ptr<skottie::TextPropertyHandle>>>
-        fTextMap;
-
-    sk_sp<skottie::PropertyObserver> fProxy;
-
-    friend class SlotManager;
-};
-
-SlotManager::SlotManager(const SkString path, sk_sp<skresources::ResourceProvider> rpProxy,
-                         sk_sp<skottie::PropertyObserver> poProxy) {
-    parseSlotIDsFromFileName(path);
-    fResourceProvider = sk_make_sp<SlottableResourceProvider>(fSlotInfos, rpProxy);
-    fPropertyObserver = sk_make_sp<SlottablePropertyObserver>(fSlotInfos, poProxy);
-}
-
-// TODO: replace with parse from SkData (grab SkData from filename instead)
-void SlotManager::parseSlotIDsFromFileName(SkString path) {
-    if (const auto data = SkData::MakeFromFileName(path.c_str())) {
-        const skjson::DOM dom(static_cast<const char*>(data->data()), data->size());
-        if (dom.root().is<skjson::ObjectValue>()) {
-            const auto& json = dom.root().as<skjson::ObjectValue>();
-            if (const skjson::ObjectValue* jslots = json["slots"]) {
-                for (const auto& member : *jslots) {
-                    auto slotID = member.fKey.begin();
-                    const skjson::ObjectValue* jslot = member.fValue;
-                    int type = skottie::ParseDefault<int>((*jslot)["t"], -1);
-                    fSlotInfos.push_back({slotID, type});
-                }
-            }
-        }
-    }
-}
-
-void SlotManager::setColorSlot(std::string slotID, SkColor color) {
-    const auto it = fPropertyObserver->fColorMap.find(slotID);
-    if (it != fPropertyObserver->fColorMap.end()) {
-        for (auto& handle : fPropertyObserver->fColorMap[slotID]) {
-            handle->set(color);
-        }
-    }
-}
-
-void SlotManager::setOpacitySlot(std::string slotID, SkScalar opacity) {
-    const auto it = fPropertyObserver->fOpacityMap.find(slotID);
-    if (it != fPropertyObserver->fOpacityMap.end()) {
-        for (auto& handle : fPropertyObserver->fOpacityMap[slotID]) {
-            handle->set(opacity);
-        }
-    }
-}
-
-void SlotManager::setTextStringSlot(std::string slotID, SkString text) {
-    const auto it = fPropertyObserver->fTextMap.find(slotID);
-    if (it != fPropertyObserver->fTextMap.end()) {
-        for (auto& handle : fPropertyObserver->fTextMap[slotID]) {
-            auto tVal = handle->get();
-            tVal.fText = text;
-            handle->set(tVal);
-        }
-    }
-}
-
-void SlotManager::setImageSlot(std::string slotID, sk_sp<skresources::ImageAsset> img) {
-    const auto it = fResourceProvider->fImageAssetMap.find(slotID);
-    if (it != fResourceProvider->fImageAssetMap.end()) {
-        fResourceProvider->fImageAssetMap[slotID]->setImageAsset(std::move(img));
-    }
-}
-
-// forwards onLoad to proxy resource provider
-void SlotManager::setImageSlot(std::string slotID, const char path[], const char name[],
-                               const char id[]) {
-    const auto it = fResourceProvider->fImageAssetMap.find(slotID);
-    if (it != fResourceProvider->fImageAssetMap.end()) {
-        fResourceProvider->fImageAssetMap[slotID]->setImageAsset(
-            fResourceProvider->fProxy
-            ? fResourceProvider->fProxy->loadImageAsset(path, name, id)
-            : nullptr);
-    }
-}
-
-sk_sp<skresources::ResourceProvider> SlotManager::getResourceProvider() const {
-    return fResourceProvider;
-}
-
-sk_sp<skottie::PropertyObserver> SlotManager::getPropertyObserver() const {
-    return fPropertyObserver;
 }
 
 } // namespace skottie_utils

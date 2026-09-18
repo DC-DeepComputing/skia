@@ -7,7 +7,7 @@
 
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkDebug.h"
+#include "include/private/SkDebug.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 
@@ -23,8 +23,8 @@
  *  @param filename String representing the basename of a file. Must NOT
  *      contain SkOSPath::SEPARATOR.
  */
-static void test_dir_with_file(skiatest::Reporter* reporter, SkString dir,
-                               SkString filename) {
+static void test_dir_with_file(skiatest::Reporter* reporter, const SkString& dir,
+                               const SkString& filename) {
     // If filename contains SkOSPath::SEPARATOR, the tests will fail.
     SkASSERT(!filename.contains(SkOSPath::SEPARATOR));
 

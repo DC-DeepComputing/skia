@@ -12,6 +12,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkDataTable.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMetrics.h"
@@ -43,11 +44,13 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/private/base/SkAlign.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTemplates.h"
-#include "src/base/SkAutoMalloc.h"
+#include "include/private/SkAlign.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkOnce.h"
+#include "include/private/SkTemplates.h"
 #include "src/core/SkAnnotationKeys.h"
+#include "src/core/SkAutoMalloc.h"
+#include "src/core/SkFontDescriptor.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
@@ -56,11 +59,25 @@
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+#include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+#include "include/codec/SkPngRustDecoder.h"
+#else
+#include "include/codec/SkPngDecoder.h"
+#endif
+
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#include "include/encode/SkPngRustEncoder.h"
+#else
+#include "include/encode/SkPngEncoder.h"
+#endif
 
 #include <algorithm>
 #include <array>
 #include <cstdint>
 #include <cstring>
+#include <functional>
 #include <memory>
 #include <utility>
 
@@ -102,15 +119,6 @@ template<> struct SerializationUtils<SkMatrix> {
     }
 };
 
-template<> struct SerializationUtils<SkPath> {
-    static void Write(SkWriteBuffer& writer, const SkPath* path) {
-        writer.writePath(*path);
-    }
-    static void Read(SkReadBuffer& reader, SkPath* path) {
-        reader.readPath(path);
-    }
-};
-
 template<> struct SerializationUtils<SkRegion> {
     static void Write(SkWriteBuffer& writer, const SkRegion* region) {
         writer.writeRegion(*region);
@@ -140,37 +148,37 @@ template<> struct SerializationUtils<unsigned char> {
 
 template<> struct SerializationUtils<SkColor> {
     static void Write(SkWriteBuffer& writer, SkColor* data, uint32_t arraySize) {
-        writer.writeColorArray(data, arraySize);
+        writer.writeColorArray({data, arraySize});
     }
     static bool Read(SkReadBuffer& reader, SkColor* data, uint32_t arraySize) {
-        return reader.readColorArray(data, arraySize);
+        return reader.readColorArray({data, arraySize});
     }
 };
 
 template<> struct SerializationUtils<SkColor4f> {
     static void Write(SkWriteBuffer& writer, SkColor4f* data, uint32_t arraySize) {
-        writer.writeColor4fArray(data, arraySize);
+        writer.writeColor4fArray({data, arraySize});
     }
     static bool Read(SkReadBuffer& reader, SkColor4f* data, uint32_t arraySize) {
-        return reader.readColor4fArray(data, arraySize);
+        return reader.readColor4fArray({data, arraySize});
     }
 };
 
 template<> struct SerializationUtils<int32_t> {
     static void Write(SkWriteBuffer& writer, int32_t* data, uint32_t arraySize) {
-        writer.writeIntArray(data, arraySize);
+        writer.writeIntArray({data, arraySize});
     }
     static bool Read(SkReadBuffer& reader, int32_t* data, uint32_t arraySize) {
-        return reader.readIntArray(data, arraySize);
+        return reader.readIntArray({data, arraySize});
     }
 };
 
 template<> struct SerializationUtils<SkPoint> {
     static void Write(SkWriteBuffer& writer, SkPoint* data, uint32_t arraySize) {
-        writer.writePointArray(data, arraySize);
+        writer.writePointArray({data, arraySize});
     }
     static bool Read(SkReadBuffer& reader, SkPoint* data, uint32_t arraySize) {
-        return reader.readPointArray(data, arraySize);
+        return reader.readPointArray({data, arraySize});
     }
 };
 
@@ -185,10 +193,10 @@ template<> struct SerializationUtils<SkPoint3> {
 
 template<> struct SerializationUtils<SkScalar> {
     static void Write(SkWriteBuffer& writer, SkScalar* data, uint32_t arraySize) {
-        writer.writeScalarArray(data, arraySize);
+        writer.writeScalarArray({data, arraySize});
     }
     static bool Read(SkReadBuffer& reader, SkScalar* data, uint32_t arraySize) {
-        return reader.readScalarArray(data, arraySize);
+        return reader.readScalarArray({data, arraySize});
     }
 };
 
@@ -204,7 +212,7 @@ template<> struct SerializationTestUtils<SkString, true> {
 
 template<typename T, bool testInvalid>
 static void TestObjectSerializationNoAlign(T* testObj, skiatest::Reporter* reporter) {
-    SkBinaryWriteBuffer writer;
+    SkBinaryWriteBuffer writer({});
     SerializationUtils<T>::Write(writer, testObj);
     size_t bytesWritten = writer.bytesWritten();
     REPORTER_ASSERT(reporter, SkAlign4(bytesWritten) == bytesWritten);
@@ -242,7 +250,7 @@ static void TestObjectSerialization(T* testObj, skiatest::Reporter* reporter) {
 template<typename T>
 static T* TestFlattenableSerialization(T* testObj, bool shouldSucceed,
                                        skiatest::Reporter* reporter) {
-    SkBinaryWriteBuffer writer;
+    SkBinaryWriteBuffer writer({});
     SerializationUtils<T>::Write(writer, testObj);
     size_t bytesWritten = writer.bytesWritten();
     REPORTER_ASSERT(reporter, SkAlign4(bytesWritten) == bytesWritten);
@@ -280,7 +288,7 @@ static T* TestFlattenableSerialization(T* testObj, bool shouldSucceed,
 
 template<typename T>
 static void TestArraySerialization(T* data, skiatest::Reporter* reporter) {
-    SkBinaryWriteBuffer writer;
+    SkBinaryWriteBuffer writer({});
     SerializationUtils<T>::Write(writer, data, kArraySize);
     size_t bytesWritten = writer.bytesWritten();
     // This should write the length (in 4 bytes) and the array
@@ -375,29 +383,33 @@ static void compare_bitmaps(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, 0 == pixelErrors);
 }
 
-static sk_sp<SkData> serialize_typeface_proc(SkTypeface* typeface, void* ctx) {
+static constexpr bool debug_synthetics = false;
+
+static sk_sp<const SkData> serialize_typeface_proc(SkTypeface* typeface, void* ctx) {
+    if constexpr (debug_synthetics) {
+        SkDEBUGF("Synthetic bold:%d oblique:%d\n",
+                 typeface->isSyntheticBold(), typeface->isSyntheticOblique());
+    }
     // Write out typeface ID followed by entire typeface.
     SkDynamicMemoryWStream stream;
     sk_sp<SkData> data(typeface->serialize(SkTypeface::SerializeBehavior::kDoIncludeData));
-    uint32_t typeface_id = typeface->uniqueID();
+    SkTypefaceID typeface_id = typeface->uniqueID();
     stream.write(&typeface_id, sizeof(typeface_id));
     stream.write(data->data(), data->size());
     return stream.detachAsData();
 }
 
-static sk_sp<SkTypeface> deserialize_typeface_proc(const void* data, size_t length, void* ctx) {
-    SkStream* stream;
-    if (length < sizeof(stream)) {
-        return nullptr;
-    }
-    memcpy(&stream, data, sizeof(stream));
-
+static sk_sp<SkTypeface> deserialize_typeface_proc(SkStream& stream, void* ctx) {
     SkTypefaceID id;
-    if (!stream->read(&id, sizeof(id))) {
+    if (!stream.read(&id, sizeof(id))) {
         return nullptr;
     }
 
-    sk_sp<SkTypeface> typeface = SkTypeface::MakeDeserialize(stream);
+    sk_sp<SkTypeface> typeface = SkTypeface::MakeDeserialize(&stream, ToolUtils::TestFontMgr());
+    if constexpr (debug_synthetics) {
+        SkDEBUGF("Synthetic bold:%d oblique:%d\n",
+                 typeface->isSyntheticBold(), typeface->isSyntheticOblique());
+    }
     return typeface;
 }
 
@@ -445,16 +457,60 @@ static sk_sp<SkTypeface> makeDistortableWithNonDefaultAxes(skiatest::Reporter* r
     SkFontArguments params;
     params.setVariationDesignPosition({position, std::size(position)});
 
-    sk_sp<SkFontMgr> fm = SkFontMgr::RefDefault();
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
 
     sk_sp<SkTypeface> typeface = fm->makeFromStream(std::move(distortable), params);
     if (!typeface) {
         return nullptr;  // Not all SkFontMgr can makeFromStream().
     }
 
-    int count = typeface->getVariationDesignPosition(nullptr, 0);
+    int count = typeface->getVariationDesignPosition({});
     if (count == -1) {
         return nullptr;  // The number of axes is unknown.
+    }
+
+    return typeface;
+}
+
+static sk_sp<SkTypeface> makeColrWithNonDefaultPalette(skiatest::Reporter* reporter) {
+    std::unique_ptr<SkStreamAsset> colr(GetResourceAsStream("fonts/colr.ttf"));
+    if (!colr) {
+        REPORT_FAILURE(reporter, "colr", SkString());
+        return nullptr;
+    }
+
+    const SkFontArguments::Palette::Override paletteOverride[] = {
+        { 1, SK_ColorGRAY },
+    };
+    SkFontArguments params;
+    params.setPalette({0, paletteOverride, std::size(paletteOverride)});
+
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
+
+    sk_sp<SkTypeface> typeface = fm->makeFromStream(std::move(colr), params);
+    if (!typeface) {
+        return nullptr;  // Not all SkFontMgr can makeFromStream().
+    }
+
+    return typeface;
+}
+
+static sk_sp<SkTypeface> makeSynthetic(skiatest::Reporter* reporter, const char* resource) {
+    std::unique_ptr<SkStreamAsset> syn(GetResourceAsStream(resource));
+    if (!syn) {
+        REPORT_FAILURE(reporter, "syn", SkString(resource));
+        return nullptr;
+    }
+
+    SkFontArguments params;
+    params.setSyntheticBold(true);
+    params.setSyntheticOblique(true);
+
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
+
+    sk_sp<SkTypeface> typeface = fm->makeFromStream(std::move(syn), params);
+    if (!typeface) {
+        return nullptr;  // Not all SkFontMgr can makeFromStream().
     }
 
     return typeface;
@@ -465,9 +521,31 @@ static void TestPictureTypefaceSerialization(const SkSerialProcs* serial_procs,
                                              skiatest::Reporter* reporter) {
     {
         // Load typeface from file to test CreateFromFile with index.
-        auto typeface = MakeResourceAsTypeface("fonts/test.ttc", 1);
+        auto typeface = ToolUtils::CreateTypefaceFromResource("fonts/test.ttc", 1);
         if (!typeface) {
-            INFOF(reporter, "Could not run fontstream test because test.ttc not found.");
+            INFOF(reporter, "Could not run test because test.ttc not found.");
+        } else {
+            serialize_and_compare_typeface(std::move(typeface), "A!", serial_procs, deserial_procs,
+                                           reporter);
+        }
+    }
+
+    {
+        // Load typeface as stream with all synthetics.
+        auto typeface = makeSynthetic(reporter, "fonts/Em.ttf");
+        if (!typeface) {
+            INFOF(reporter, "Could not run test because Em.ttf not found.");
+        } else {
+            serialize_and_compare_typeface(std::move(typeface), "☓⬛", serial_procs, deserial_procs,
+                                           reporter);
+        }
+    }
+
+    {
+        // Load typeface as stream with request for non-bold with synthetics but a bold available.
+        auto typeface = makeSynthetic(reporter, "fonts/test.ttc");
+        if (!typeface) {
+            INFOF(reporter, "Could not run test because test.ttc not found.");
         } else {
             serialize_and_compare_typeface(std::move(typeface), "A!", serial_procs, deserial_procs,
                                            reporter);
@@ -478,12 +556,32 @@ static void TestPictureTypefaceSerialization(const SkSerialProcs* serial_procs,
         // Load typeface as stream to create with axis settings.
         auto typeface = makeDistortableWithNonDefaultAxes(reporter);
         if (!typeface) {
-            INFOF(reporter, "Could not run fontstream test because Distortable.ttf not created.");
+            INFOF(reporter, "Could not run test because Distortable.ttf not created.");
         } else {
             serialize_and_compare_typeface(std::move(typeface), "ab", serial_procs,
                                             deserial_procs, reporter);
         }
     }
+
+    {
+        // Load typeface as stream to create with palette settings.
+        auto typeface = makeColrWithNonDefaultPalette(reporter);
+        if (!typeface) {
+            INFOF(reporter, "Could not run test because colr.ttf not created.");
+        } else {
+            serialize_and_compare_typeface(std::move(typeface), "😀♢", serial_procs,
+                                            deserial_procs, reporter);
+        }
+    }
+}
+DEF_TEST(Serialization_PictureTypeface, reporter) {
+    TestPictureTypefaceSerialization(nullptr, nullptr, reporter);
+
+    SkSerialProcs serial_procs;
+    serial_procs.fTypefaceProc = serialize_typeface_proc;
+    SkDeserialProcs deserial_procs;
+    deserial_procs.fTypefaceStreamProc = deserialize_typeface_proc;
+    TestPictureTypefaceSerialization(&serial_procs, &deserial_procs, reporter);
 }
 
 SkString DumpTypeface(const SkTypeface& typeface) {
@@ -539,13 +637,21 @@ SkString DumpFontMetrics(const SkFontMetrics& metrics) {
     m.appendf("StrikeoutPosition: %f\n", metrics.fStrikeoutPosition);
     return m;
 }
-static void TestTypefaceSerialization(skiatest::Reporter* reporter, sk_sp<SkTypeface> typeface) {
+static void TestTypefaceSerialization(skiatest::Reporter* reporter,
+                                      const sk_sp<SkTypeface>& typeface) {
     SkDynamicMemoryWStream typefaceWStream;
-    typeface->serialize(&typefaceWStream);
+    if (!typeface->serialize(&typefaceWStream)) {
+        REPORT_FAILURE(reporter, "serialize typeface", SkString());
+        return;
+    }
 
     std::unique_ptr<SkStream> typefaceStream = typefaceWStream.detachAsStream();
-    sk_sp<SkTypeface> cloneTypeface = SkTypeface::MakeDeserialize(typefaceStream.get());
-    SkASSERT(cloneTypeface);
+    sk_sp<SkTypeface> cloneTypeface =
+            SkTypeface::MakeDeserialize(typefaceStream.get(), ToolUtils::TestFontMgr());
+    if (!cloneTypeface) {
+        REPORTER_ASSERT(reporter, cloneTypeface);
+        return;
+    }
 
     SkString name, cloneName;
     typeface->getFamilyName(&name);
@@ -572,9 +678,108 @@ static void TestTypefaceSerialization(skiatest::Reporter* reporter, sk_sp<SkType
         DumpTypeface(*cloneTypeface).c_str());
 }
 DEF_TEST(Serialization_Typeface, reporter) {
-    SkFont font;
-    TestTypefaceSerialization(reporter, font.refTypefaceOrDefault());
-    TestTypefaceSerialization(reporter, ToolUtils::sample_user_typeface());
+    TestTypefaceSerialization(reporter, ToolUtils::DefaultTypeface());
+    TestTypefaceSerialization(reporter, ToolUtils::SampleUserTypeface());
+}
+
+DEF_TEST(Serialization_Typeface_Sanitizer, reporter) {
+    sk_sp<SkTypeface> typeface = ToolUtils::DefaultTypeface();
+    if (!typeface) {
+        return;
+    }
+    sk_sp<SkData> serializedData =
+            typeface->serialize(SkTypeface::SerializeBehavior::kDoIncludeData);
+    if (!serializedData) {
+        REPORT_FAILURE(reporter, "serialize typeface", SkString());
+        return;
+    }
+
+    {  // Default (no sanitizer) behavior
+        SkMemoryStream stream(serializedData);
+        sk_sp<SkTypeface> clone = SkTypeface::MakeDeserialize(&stream, ToolUtils::TestFontMgr());
+        REPORTER_ASSERT(reporter, clone != nullptr);
+    }
+
+    {  // Sanitizer succeeds (no data change necessary)
+        SkMemoryStream stream(serializedData);
+        auto pass_through = [](sk_sp<const SkData> data) -> sk_sp<SkData> {
+            return SkData::MakeWithCopy(data->data(), data->size());
+        };
+        sk_sp<SkTypeface> clone =
+                SkTypeface::MakeDeserialize(&stream, ToolUtils::TestFontMgr(), pass_through);
+        REPORTER_ASSERT(reporter, clone != nullptr);
+    }
+
+    {  // Pretend sanitizer rejects data
+        SkMemoryStream stream(serializedData);
+        auto reject = [](sk_sp<const SkData> data) -> sk_sp<SkData> { return nullptr; };
+        sk_sp<SkTypeface> clone =
+                SkTypeface::MakeDeserialize(&stream, ToolUtils::TestFontMgr(), reject);
+        REPORTER_ASSERT(reporter, clone == nullptr);
+    }
+}
+
+class SpyDecoder {
+public:
+    SpyDecoder() {
+        sInstance = this;
+        static SkOnce once;
+        once([] {
+            SkTypeface::Register(kSpyFactoryId,
+                                 [](std::unique_ptr<SkStreamAsset> stream,
+                                    const SkFontArguments& args) -> sk_sp<SkTypeface> {
+                                     if (sInstance) {
+                                         size_t len = stream->getLength();
+                                         auto data = SkData::MakeUninitialized(len);
+                                         stream->read(data->writable_data(), len);
+                                         sInstance->fData = std::move(data);
+                                     }
+                                     // Return a valid typeface to avoid decoding failure
+                                     return ToolUtils::DefaultTypeface();
+                                 });
+        });
+    }
+
+    sk_sp<const SkData> fData = nullptr;
+    static constexpr SkTypeface::FactoryId kSpyFactoryId = SkSetFourByteTag('s', 'p', 'y', 'f');
+
+private:
+    inline static SpyDecoder* sInstance = nullptr;
+};
+
+DEF_TEST(Serialization_Typeface_Sanitizer_Spy, reporter) {
+    SpyDecoder spy;
+
+    static constexpr const char kSanitizedBytes[] = "sanitized_bytes";
+
+    // Construct the serialized stream manually with our spy factory id and custom font bytes
+    SkFontDescriptor desc;
+    desc.setFactoryId(SpyDecoder::kSpyFactoryId);
+    desc.setFamilyName("SpyFont");
+
+    auto originalData = SkData::MakeWithCString("original_bytes");
+    desc.setStream(SkMemoryStream::Make(originalData));
+
+    SkDynamicMemoryWStream wstream;
+    REPORTER_ASSERT(reporter, desc.serialize(&wstream));
+
+    sk_sp<SkData> serializedData = wstream.detachAsData();
+
+    // Deserialize using a mutating sanitizer callback
+    SkMemoryStream stream(serializedData);
+    auto mutating_sanitizer = [](sk_sp<const SkData> data) -> sk_sp<SkData> {
+        return SkData::MakeWithCString(kSanitizedBytes);
+    };
+
+    sk_sp<SkTypeface> clone =
+            SkTypeface::MakeDeserialize(&stream, ToolUtils::TestFontMgr(), mutating_sanitizer);
+    REPORTER_ASSERT(reporter, clone != nullptr);
+
+    // Verify end-to-end that the decoder factory received the sanitized bytes, not the
+    // original bytes
+    REPORTER_ASSERT(reporter, spy.fData != nullptr);
+    REPORTER_ASSERT(reporter, spy.fData->size() == sizeof(kSanitizedBytes));
+    REPORTER_ASSERT(reporter, strcmp((const char*)spy.fData->data(), kSanitizedBytes) == 0);
 }
 
 static void setup_bitmap_for_canvas(SkBitmap* bitmap) {
@@ -619,7 +824,7 @@ static void draw_something(SkCanvas* canvas) {
     canvas->drawCircle(SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/3), paint);
     paint.setColor(SK_ColorBLACK);
 
-    SkFont font;
+    SkFont font = ToolUtils::DefaultFont();
     font.setSize(kBitmapSize/3);
     canvas->drawString("Picture", SkIntToScalar(kBitmapSize/2), SkIntToScalar(kBitmapSize/4), font, paint);
 }
@@ -646,12 +851,6 @@ DEF_TEST(Serialization, reporter) {
     {
         SkPoint3 point;
         TestObjectSerializationNoAlign<SkPoint3, false>(&point, reporter);
-    }
-
-    // Test path serialization
-    {
-        SkPath path;
-        TestObjectSerialization(&path, reporter);
     }
 
     // Test region serialization
@@ -730,22 +929,22 @@ DEF_TEST(Serialization, reporter) {
         // Valid case with non-empty array:
         {
             unsigned char data[kArraySize] = { 1, 2, 3 };
-            SkBinaryWriteBuffer writer;
-            writer.writeByteArray(data, kArraySize);
-            SkAutoMalloc buf(writer.bytesWritten());
-            writer.writeToMemory(buf.get());
+	    SkBinaryWriteBuffer writer({});
+	    writer.writeByteArray(data, kArraySize);
+	    SkAutoMalloc buf(writer.bytesWritten());
+	    writer.writeToMemory(buf.get());
 
-            SkReadBuffer reader(buf.get(), writer.bytesWritten());
-            size_t len = ~0;
-            const void* arr = reader.skipByteArray(&len);
-            REPORTER_ASSERT(reporter, arr);
-            REPORTER_ASSERT(reporter, len == kArraySize);
-            REPORTER_ASSERT(reporter, memcmp(arr, data, len) == 0);
+	    SkReadBuffer reader(buf.get(), writer.bytesWritten());
+	    size_t len = ~0;
+	    const void* arr = reader.skipByteArray(&len);
+	    REPORTER_ASSERT(reporter, arr);
+	    REPORTER_ASSERT(reporter, len == kArraySize);
+	    REPORTER_ASSERT(reporter, memcmp(arr, data, len) == 0);
         }
 
         // Writing a zero length array (can be detected as valid by non-nullptr return):
         {
-            SkBinaryWriteBuffer writer;
+            SkBinaryWriteBuffer writer({});
             writer.writeByteArray(nullptr, 0);
             SkAutoMalloc buf(writer.bytesWritten());
             writer.writeToMemory(buf.get());
@@ -759,7 +958,7 @@ DEF_TEST(Serialization, reporter) {
 
         // If the array can't be safely read, should return nullptr:
         {
-            SkBinaryWriteBuffer writer;
+            SkBinaryWriteBuffer writer({});
             writer.writeUInt(kArraySize);
             SkAutoMalloc buf(writer.bytesWritten());
             writer.writeToMemory(buf.get());
@@ -790,44 +989,76 @@ DEF_TEST(Serialization, reporter) {
 
     // Test simple SkPicture serialization
     {
+        skiatest::ReporterContext subtest(reporter, "simple SkPicture");
         SkPictureRecorder recorder;
         draw_something(recorder.beginRecording(SkIntToScalar(kBitmapSize),
                                                SkIntToScalar(kBitmapSize)));
         sk_sp<SkPicture> pict(recorder.finishRecordingAsPicture());
 
-        // Serialize picture
-        SkBinaryWriteBuffer writer;
-        SkPicturePriv::Flatten(pict, writer);
-        size_t size = writer.bytesWritten();
-        AutoTMalloc<unsigned char> data(size);
-        writer.writeToMemory(static_cast<void*>(data.get()));
+        // Serialize picture. The default typeface proc should result in a non-empty
+        // typeface when deserializing.
+        SkSerialProcs sProcs;
+        sProcs.fImageProc = [](SkImage* img, void*) -> sk_sp<const SkData> {
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+            return SkPngRustEncoder::Encode(nullptr, img, SkPngRustEncoder::Options{});
+#else
+            return SkPngEncoder::Encode(nullptr, img, SkPngEncoder::Options{});
+#endif
+        };
+        sk_sp<SkData> data = pict->serialize(&sProcs);
+        REPORTER_ASSERT(reporter, data);
 
-        // Deserialize picture
-        SkReadBuffer reader(static_cast<void*>(data.get()), size);
-        sk_sp<SkPicture> readPict(SkPicturePriv::MakeFromBuffer(reader));
-        REPORTER_ASSERT(reporter, reader.isValid());
-        REPORTER_ASSERT(reporter, readPict.get());
+        SkDeserialProcs dProcs;
+        dProcs.fImageDataProc = [](sk_sp<SkData> data,
+                                   std::optional<SkAlphaType> alphaType,
+                                   void*) -> sk_sp<SkImage> {
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+            std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
+            auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
+#else
+            auto codec = SkPngDecoder::Decode(data, nullptr, nullptr);
+#endif
+            if (!codec) {
+                return nullptr;
+            }
+            return std::get<0>(codec->getImage());
+        };
+        sk_sp<SkPicture> readPict = SkPicture::MakeFromData(data.get(), &dProcs);
+        REPORTER_ASSERT(reporter, readPict);
         sk_sp<SkImage> img0 = render(*pict);
         sk_sp<SkImage> img1 = render(*readPict);
         if (img0 && img1) {
-            REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(img0.get(), img1.get()));
+            bool ok = ToolUtils::equal_pixels(img0.get(), img1.get());
+            REPORTER_ASSERT(reporter, ok, "before and after image did not match");
+            if (!ok) {
+                auto left = SkFILEWStream("before_serialize.png");
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+                sk_sp<SkData> d =
+                        SkPngRustEncoder::Encode(nullptr, img0.get(), SkPngRustEncoder::Options{});
+#else
+                sk_sp<SkData> d =
+                        SkPngEncoder::Encode(nullptr, img0.get(), SkPngEncoder::Options{});
+#endif
+                left.write(d->data(), d->size());
+                left.fsync();
+                auto right = SkFILEWStream("after_serialize.png");
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+                d = SkPngRustEncoder::Encode(nullptr, img1.get(), SkPngRustEncoder::Options{});
+#else
+                d = SkPngEncoder::Encode(nullptr, img1.get(), SkPngEncoder::Options{});
+#endif
+                right.write(d->data(), d->size());
+                right.fsync();
+            }
         }
     }
-
-    TestPictureTypefaceSerialization(nullptr, nullptr, reporter);
-
-    SkSerialProcs serial_procs;
-    serial_procs.fTypefaceProc = serialize_typeface_proc;
-    SkDeserialProcs deserial_procs;
-    deserial_procs.fTypefaceProc = deserialize_typeface_proc;
-    TestPictureTypefaceSerialization(&serial_procs, &deserial_procs, reporter);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 static sk_sp<SkPicture> copy_picture_via_serialization(SkPicture* src) {
     SkDynamicMemoryWStream wstream;
-    src->serialize(&wstream);
+    src->serialize(&wstream, nullptr);  // default is fine, no SkImages to encode
     std::unique_ptr<SkStreamAsset> rstream(wstream.detachAsStream());
     return SkPicture::MakeFromStream(rstream.get());
 }
@@ -911,7 +1142,7 @@ DEF_TEST(WriteBuffer_storage, reporter) {
     char src[kSize];
     sk_bzero(src, kSize);
 
-    SkBinaryWriteBuffer writer(storage, kSize);
+    SkBinaryWriteBuffer writer(storage, kSize, {});
     REPORTER_ASSERT(reporter, writer.usingInitialStorage());
     REPORTER_ASSERT(reporter, writer.bytesWritten() == 0);
     writer.write(src, kSize - 4);
@@ -933,8 +1164,7 @@ DEF_TEST(WriteBuffer_storage, reporter) {
 }
 
 DEF_TEST(WriteBuffer_external_memory_textblob, reporter) {
-    SkFont font;
-    font.setTypeface(SkTypeface::MakeDefault());
+    SkFont font = ToolUtils::DefaultFont();
 
     SkTextBlobBuilder builder;
     int glyph_count = 5;
@@ -959,7 +1189,7 @@ DEF_TEST(WriteBuffer_external_memory_textblob, reporter) {
 
 DEF_TEST(WriteBuffer_external_memory_flattenable, reporter) {
     SkScalar intervals[] = {1.f, 1.f};
-    auto path_effect = SkDashPathEffect::Make(intervals, 2, 0);
+    auto path_effect = SkDashPathEffect::Make(intervals, 0);
     size_t path_size = SkAlign4(path_effect->serialize()->size());
     REPORTER_ASSERT(reporter, path_size > 4u);
     AutoTMalloc<uint8_t> storage;
@@ -974,7 +1204,7 @@ DEF_TEST(WriteBuffer_external_memory_flattenable, reporter) {
 }
 
 DEF_TEST(ReadBuffer_empty, reporter) {
-    SkBinaryWriteBuffer writer;
+    SkBinaryWriteBuffer writer({});
     writer.writeInt(123);
     writer.writeDataAsByteArray(SkData::MakeEmpty().get());
     writer.writeInt(321);

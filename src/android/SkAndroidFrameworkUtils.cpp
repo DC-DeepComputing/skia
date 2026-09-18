@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,28 +7,28 @@
 
 #include "include/android/SkAndroidFrameworkUtils.h"
 #include "include/core/SkCanvas.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkTemplates.h"
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/core/SkDevice.h"
+#include "src/core/SkTLazy.h"
 #include "src/image/SkSurface_Base.h"
 #include "src/shaders/SkShaderBase.h"
 
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
-
 #include <log/log.h>
+#endif
 
 #if defined(SK_GANESH)
 bool SkAndroidFrameworkUtils::clipWithStencil(SkCanvas* canvas) {
-    return canvas->baseDevice()->android_utils_clipWithStencil();
+    return canvas->rootDevice()->android_utils_clipWithStencil();
 }
 #endif
 
 void SkAndroidFrameworkUtils::SafetyNetLog(const char* bugNumber) {
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
     android_errorWriteLog(0x534e4554, bugNumber);
-}
-
-sk_sp<SkSurface> SkAndroidFrameworkUtils::getSurfaceFromCanvas(SkCanvas* canvas) {
-    sk_sp<SkSurface> surface(SkSafeRef(canvas->getSurfaceBase()));
-    return surface;
+#endif
 }
 
 int SkAndroidFrameworkUtils::SaveBehind(SkCanvas* canvas, const SkRect* subset) {
@@ -49,17 +49,22 @@ SkCanvas* SkAndroidFrameworkUtils::getBaseWrappedCanvas(SkCanvas* canvas) {
     return result;
 }
 
+// Skia's GradientInfo now stores bool for premulInterp. This is the legacy
+// flag it used to use to mean the same thing.
+constexpr uint8_t gSkGradientShader_Legacy_PremulFlag = 1;
+
 bool SkAndroidFrameworkUtils::ShaderAsALinearGradient(SkShader* shader,
                                                       LinearGradientInfo* info) {
     SkASSERT(shader);
-    SkTLazy<SkShaderBase::GradientInfo> baseInfo;
+    std::optional<SkShaderBase::GradientInfo> baseInfo;
     if (info) {
-        baseInfo.init();
-        baseInfo->fColorCount   = info->fColorCount;
-        baseInfo->fColors       = info->fColors;
+        baseInfo.emplace();
+        baseInfo->fColorCount = info->fColorCount;
+        baseInfo->fColors = info->fColors;
         baseInfo->fColorOffsets = info->fColorOffsets;
     }
-    if (as_SB(shader)->asGradient(baseInfo.getMaybeNull()) != SkShaderBase::GradientType::kLinear) {
+    if (as_SB(shader)->asGradient(SkOptAddressOrNull(baseInfo)) !=
+        SkShaderBase::GradientType::kLinear) {
         return false;
     }
     if (info) {
@@ -67,9 +72,7 @@ bool SkAndroidFrameworkUtils::ShaderAsALinearGradient(SkShader* shader,
         info->fPoints[0]     = baseInfo->fPoint[0];
         info->fPoints[1]     = baseInfo->fPoint[1];
         info->fTileMode      = baseInfo->fTileMode;
-        info->fGradientFlags = baseInfo->fGradientFlags;
+        info->fGradientFlags = baseInfo->fPremulInterp ? gSkGradientShader_Legacy_PremulFlag : 0;
     }
     return true;
 }
-
-#endif // SK_BUILD_FOR_ANDROID_FRAMEWORK

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -20,19 +20,24 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrBackendSurface.h"
-#include "include/gpu/GrDirectContext.h"
-#include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrBackendSurface.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "include/private/SkColorData.h"
+#include "include/gpu/ganesh/mock/GrMockTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkColorData.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrDrawingManager.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrOnFlushResourceProvider.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
@@ -42,10 +47,9 @@
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/ops/OpsTask.h"
+#include "tests/ComparePixels.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
-#include "tests/TestUtils.h"
-#include "tools/gpu/FenceSync.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
 #include <functional>
@@ -104,10 +108,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
 
     SkImageInfo info = SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    auto managedTex = ManagedBackendTexture::MakeFromInfo(dContext,
-                                                          info,
-                                                          GrMipmapped::kNo,
-                                                          GrRenderable::kYes);
+    auto managedTex = ManagedBackendTexture::MakeFromInfo(
+            dContext, info, skgpu::Mipmapped::kNo, GrRenderable::kYes);
     if (!managedTex) {
         return;
     }
@@ -136,7 +138,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     // First do a simple test where we clear the surface than flush with SkSurface::flush. This
     // should trigger the resolve and the texture should have the correct data.
     surface->getCanvas()->clear(SK_ColorRED);
-    dContext->flush(surface);
+    dContext->flush(surface.get());
     dContext->submit();
     REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorRED));
 
@@ -153,7 +155,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
 
     // Now doing a surface flush (even without any queued up normal work) should still resolve the
     // surface.
-    dContext->flush(surface);
+    dContext->flush(surface.get());
     dContext->submit();
     REPORTER_ASSERT(reporter, check_pixels(reporter, dContext, tex, info, SK_ColorBLUE));
 
@@ -187,7 +189,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     // Test that a resolve between draws to a different surface doesn't cause the OpsTasks for that
     // surface to be split. Fails if we hit validation asserts in GrDrawingManager.
     // First clear out dirty msaa from previous test
-    dContext->flush(surface);
+    dContext->flush(surface.get());
 
     auto otherSurface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, info);
     REPORTER_ASSERT(reporter, otherSurface);
@@ -245,7 +247,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
                                                                {64, 64},
                                                                renderable,
                                                                sampleCount,
-                                                               GrMipmapped::kYes,
+                                                               skgpu::Mipmapped::kYes,
                                                                SkBackingFit::kExact,
                                                                skgpu::Budgeted::kYes,
                                                                GrProtected::kNo,
@@ -271,7 +273,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
                                                                {64, 64},
                                                                GrRenderable::kNo,
                                                                1,
-                                                               GrMipmapped::kNo,
+                                                               skgpu::Mipmapped::kNo,
                                                                SkBackingFit::kExact,
                                                                skgpu::Budgeted::kYes,
                                                                GrProtected::kNo,
@@ -358,4 +360,277 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
             return;
         }
     }
+}
+
+namespace {
+// A preFlush callback that fails the first N flushes, simulating an allocation failure in an
+// onFlush callback (e.g. atlas instantiation under memory pressure).
+class FailingPreFlushCallback : public GrOnFlushCallbackObject {
+public:
+    explicit FailingPreFlushCallback(int failCount) : fRemainingFailures(failCount) {}
+    bool preFlush(GrOnFlushResourceProvider*) override {
+        if (fRemainingFailures > 0) {
+            --fRemainingFailures;
+            return false;
+        }
+        return true;
+    }
+    bool retainOnFreeGpuResources() override { return true; }
+
+private:
+    int fRemainingFailures;
+};
+}  // namespace
+
+// GrTextureResolveRenderTask::addProxy() optimistically marks a proxy's mipmaps clean / MSAA
+// resolved at recording time. If the owning flush is dropped without executing render tasks
+// (e.g., a preFlush callback or the resource allocator fails) the proxy must be re-dirtied so a
+// later flush will record a new resolve.
+DEF_GANESH_TEST(SurfaceResolveProxyStateAfterFailedFlush,
+                reporter,
+                /* options */,
+                CtsEnforcement::kNever) {
+    using ResolveFlags = GrSurfaceProxy::ResolveFlags;
+    using Enable = GrContextOptions::Enable;
+    using MipmapMode = GrSamplerState::MipmapMode;
+
+    for (auto reduceOpsTaskSplitting : {Enable::kYes, Enable::kNo}) {
+        for (int sampleCount : {1, 4}) {
+            GrMockOptions mockOptions;
+            mockOptions.fMipmapSupport = true;
+            mockOptions.fConfigOptions[(int)GrColorType::kRGBA_8888].fRenderability =
+                    GrMockOptions::ConfigOptions::Renderability::kMSAA;
+            GrContextOptions ctxOptions;
+            ctxOptions.fReduceOpsTaskSplitting = reduceOpsTaskSplitting;
+            sk_sp<GrDirectContext> dContext = GrDirectContext::MakeMock(&mockOptions, ctxOptions);
+            if (!dContext) {
+                ERRORF(reporter, "could not create mock context");
+                continue;
+            }
+            GrDrawingManager* drawingManager = dContext->priv().drawingManager();
+            auto bef = dContext->priv().caps()->getDefaultBackendFormat(GrColorType::kRGBA_8888,
+                                                                        GrRenderable::kYes);
+
+            sk_sp<GrSurfaceProxy> proxy =
+                    dContext->priv().proxyProvider()->createProxy(bef,
+                                                                  {64, 64},
+                                                                  GrRenderable::kYes,
+                                                                  sampleCount,
+                                                                  skgpu::Mipmapped::kYes,
+                                                                  SkBackingFit::kExact,
+                                                                  skgpu::Budgeted::kYes,
+                                                                  GrProtected::kNo,
+                                                                  "ResolveProxyStateTest");
+            if (!proxy) {
+                ERRORF(reporter, "could not create proxy");
+                continue;
+            }
+            GrTextureProxy* texProxy = proxy->asTextureProxy();
+            GrRenderTargetProxy* rtProxy = proxy->asRenderTargetProxy();
+            GrSurfaceProxyView proxyView{proxy,
+                                         kTopLeft_GrSurfaceOrigin,
+                                         skgpu::Swizzle::RGBA()};
+
+            const bool testMSAA = sampleCount > 1;
+            REPORTER_ASSERT(reporter, !testMSAA || proxy->requiresManualMSAAResolve());
+
+            auto recordDirtyingDrawAndMipmappedDependency = [&]() {
+                auto srcSDC =
+                        skgpu::ganesh::SurfaceDrawContext::Make(dContext.get(),
+                                                                GrColorType::kRGBA_8888,
+                                                                proxy,
+                                                                nullptr,
+                                                                kTopLeft_GrSurfaceOrigin,
+                                                                SkSurfaceProps{});
+                srcSDC->fillWithFP(GrFragmentProcessor::MakeColor(SK_PMColor4fWHITE));
+
+                auto dstSDC =
+                        skgpu::ganesh::SurfaceDrawContext::Make(dContext.get(),
+                                                                GrColorType::kRGBA_8888,
+                                                                nullptr,
+                                                                SkBackingFit::kExact,
+                                                                {8, 8},
+                                                                SkSurfaceProps{},
+                                                                "ResolveProxyStateTestDst");
+                auto te = GrTextureEffect::Make(
+                        proxyView,
+                        kPremul_SkAlphaType,
+                        SkMatrix::I(),
+                        GrSamplerState{SkFilterMode::kLinear, MipmapMode::kLinear},
+                        *dContext->priv().caps());
+                GrPaint paint;
+                paint.setColorFragmentProcessor(std::move(te));
+                dstSDC->drawRect(nullptr,
+                                 std::move(paint),
+                                 GrAA::kNo,
+                                 SkMatrix::Scale(1/8.f, 1/8.f),
+                                 SkRect::Make(proxy->dimensions()));
+                return dstSDC;
+            };
+
+            // Record a flush whose preFlush callback fails. The resolve task records the proxy
+            // as resolved/clean and is then discarded without executing.
+            {
+                FailingPreFlushCallback failCB(1);
+                dContext->priv().addOnFlushCallbackObject(&failCB);
+
+                auto dstSDC = recordDirtyingDrawAndMipmappedDependency();
+
+                ResolveFlags expectedFlags = ResolveFlags::kMipMaps;
+                if (testMSAA) {
+                    expectedFlags |= ResolveFlags::kMSAA;
+                }
+                const GrTextureResolveRenderTask* resolveTask =
+                        dstSDC->getOpsTask()->resolveTask();
+                REPORTER_ASSERT(reporter,
+                                resolveTask &&
+                                        resolveTask->flagsForProxy(proxy) == expectedFlags);
+                REPORTER_ASSERT(reporter, !texProxy->mipmapsAreDirty());
+                REPORTER_ASSERT(reporter, !testMSAA || !rtProxy->isMSAADirty());
+
+                dContext->flush();
+                drawingManager->testingOnly_removeOnFlushCallbackObject(&failCB);
+            }
+
+            // The resolve never executed so the proxy must once again report dirty mips/MSAA.
+            REPORTER_ASSERT(reporter, texProxy->mipmapsAreDirty());
+            if (testMSAA) {
+                REPORTER_ASSERT(reporter, rtProxy->isMSAADirty());
+                REPORTER_ASSERT(reporter,
+                                rtProxy->msaaDirtyRect() == SkIRect::MakeSize(proxy->dimensions()));
+            }
+
+            // A subsequent dependency must therefore record a new resolve task and the proxy
+            // should be clean once that flush succeeds.
+            {
+                auto dstSDC = recordDirtyingDrawAndMipmappedDependency();
+                REPORTER_ASSERT(reporter, dstSDC->getOpsTask()->resolveTask());
+                dContext->flush();
+            }
+            REPORTER_ASSERT(reporter, !texProxy->mipmapsAreDirty());
+            REPORTER_ASSERT(reporter, !testMSAA || !rtProxy->isMSAADirty());
+        }
+    }
+}
+
+// Directly read back 'tex' and return the first pixel color.
+static bool read_backing_pixel(GrDirectContext* dContext,
+                               const GrBackendTexture& tex,
+                               const SkImageInfo& info,
+                               SkColor* outPixel) {
+    sk_sp<SkSurface> reader = SkSurfaces::WrapBackendTexture(dContext,
+                                                             tex,
+                                                             kTopLeft_GrSurfaceOrigin,
+                                                             /*sampleCnt=*/1,
+                                                             kRGBA_8888_SkColorType,
+                                                             nullptr,
+                                                             nullptr);
+    if (!reader) {
+        return false;
+    }
+    SkBitmap bm;
+    bm.allocPixels(info);
+    if (!reader->readPixels(bm, 0, 0)) {
+        return false;
+    }
+    *outPixel = bm.getColor(0, 0);
+    return true;
+}
+
+// This test wraps a backend texture as an MSAA render target twice. The first wrap establishes a
+// known baseline color in the single-sample texture via a *successful* flush. The second wrap
+// creates a *fresh, never-written* MSAA color attachment (on GL a new renderbuffer, on Vulkan a
+// scratch/new GrVkImage), records a draw, forces the flush to fail via a failing preFlush
+// callback, and then reads back the single-sample texture. The read-back must not show the
+// uninitialized MSAA attachment contents; if it does, resolve_and_mipmap() ran despite the failed
+// flush and copied uninitialized GPU memory into the client-visible texture.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveAfterFailedFlush,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+    const GrCaps* caps = dContext->priv().caps();
+
+    // Only meaningful on backends that require an explicit resolve of a persistent MSAA attachment.
+    if (caps->msaaResolvesAutomatically() || caps->preferDiscardableMSAAAttachment()) {
+        return;
+    }
+
+    SkImageInfo info = SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+
+    auto managedTex = ManagedBackendTexture::MakeFromInfo(
+            dContext, info, skgpu::Mipmapped::kNo, GrRenderable::kYes);
+    if (!managedTex) {
+        return;
+    }
+    const GrBackendTexture& tex = managedTex->texture();
+
+    constexpr SkColor kBaseline = SK_ColorBLUE;   // known content of the single-sample texture
+    constexpr SkColor kIntended = SK_ColorGREEN;  // what the failed flush *would* have drawn
+
+    // 1. Wrap once and successfully draw kBaseline so the single-sample texture holds known bytes.
+    {
+        sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(dContext,
+                                                                  tex,
+                                                                  kTopLeft_GrSurfaceOrigin,
+                                                                  /*sampleCnt=*/4,
+                                                                  kRGBA_8888_SkColorType,
+                                                                  nullptr,
+                                                                  nullptr);
+        if (!surface) {
+            return;  // MSAA=4 unsupported on this config.
+        }
+        surface->getCanvas()->clear(kBaseline);
+        dContext->flush(surface.get());
+        dContext->submit(GrSyncCpu::kYes);
+    }
+    // Ensure the second wrap below allocates a *fresh* MSAA attachment rather than recycling the
+    // one from the wrap above (whose contents would coincidentally match kBaseline).
+    dContext->purgeUnlockedResources(GrPurgeResourceOptions::kAllResources);
+
+    SkColor pixel = 0;
+    REPORTER_ASSERT(reporter, read_backing_pixel(dContext, tex, info, &pixel));
+    REPORTER_ASSERT(reporter, pixel == kBaseline,
+                    "baseline flush failed to resolve, got 0x%x", pixel);
+
+    // 2. Re-wrap: this creates a *new* persistent MSAA color attachment that has never been
+    //    written by any render pass in this test.
+    sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(dContext,
+                                                              tex,
+                                                              kTopLeft_GrSurfaceOrigin,
+                                                              /*sampleCnt=*/4,
+                                                              kRGBA_8888_SkColorType,
+                                                              nullptr,
+                                                              nullptr);
+    if (!surface) {
+        return;
+    }
+
+    // 3. Record a full-surface draw so OpsTask::onMakeClosed() returns kTargetDirty and
+    //    markMSAADirty() is called during closeAllTasks(). Force the flush to fail.
+    FailingPreFlushCallback failCB(1);
+    dContext->priv().addOnFlushCallbackObject(&failCB);
+
+    surface->getCanvas()->clear(kIntended);
+    GrSemaphoresSubmitted result = dContext->flush(surface.get(), GrFlushInfo{});
+    dContext->submit(GrSyncCpu::kYes);
+
+    GrDrawingManager* drawingManager = dContext->priv().drawingManager();
+    drawingManager->testingOnly_removeOnFlushCallbackObject(&failCB);
+
+    REPORTER_ASSERT(reporter, result == GrSemaphoresSubmitted::kNo,
+                    "expected flush to report semaphores not submitted");
+
+    // 4. Read back the single-sample backing texture.
+    REPORTER_ASSERT(reporter, read_backing_pixel(dContext, tex, info, &pixel));
+
+    // The recorded draw never executed, so kIntended should not appear.
+    REPORTER_ASSERT(reporter, pixel != kIntended,
+                    "flush failed but draw, somehow, occurred (got 0x%x)", pixel);
+
+    // Since the flush failed the MSAA resolve step should not have occurred and the contents
+    // of the backend texture should have remained at 'kBaseline'.
+    REPORTER_ASSERT(reporter, pixel == kBaseline,
+                    "Invalid resolve after a failed flush: expected 0x%x, actual 0x%x",
+                    kBaseline, pixel);
 }

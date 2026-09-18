@@ -1,17 +1,30 @@
 /*
- * Copyright 2020 Google Inc.
+ * Copyright 2020 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
+#include "include/core/SkColor.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/private/SkAssert.h"
+#include "modules/jsonreader/SkJSONReader.h"
 #include "modules/skottie/src/Adapter.h"
 #include "modules/skottie/src/SkottieJson.h"
 #include "modules/skottie/src/SkottiePriv.h"
 #include "modules/skottie/src/SkottieValue.h"
+#include "modules/skottie/src/animator/Animator.h"
 #include "modules/skottie/src/layers/shapelayer/ShapeLayer.h"
 #include "modules/sksg/include/SkSGGeometryEffect.h"
+#include "modules/sksg/include/SkSGGeometryNode.h"
 #include "modules/sksg/include/SkSGPaint.h"
+
+#include <algorithm>
+#include <cstddef>
+#include <utility>
+#include <vector>
 
 namespace skottie {
 namespace internal {
@@ -81,7 +94,7 @@ private:
 
     const ShaderType fShaderType;
 
-    VectorValue      fColor;
+    ColorValue       fColor;
     ScalarValue      fOpacity     = 100,
                      fStrokeWidth = 1;
 
@@ -153,8 +166,7 @@ sk_sp<sksg::PaintNode> ShapeBuilder::AttachColorFill(const skjson::ObjectValue& 
                                                      const AnimationBuilder* abuilder) {
     auto color_node  = sksg::Color::Make(SK_ColorBLACK);
     auto color_paint = AttachFill(jpaint, abuilder, color_node);
-    abuilder->dispatchColorProperty(color_node, jpaint["c"]);
-
+    abuilder->dispatchColorProperty(color_node);
     return color_paint;
 }
 
@@ -162,8 +174,7 @@ sk_sp<sksg::PaintNode> ShapeBuilder::AttachColorStroke(const skjson::ObjectValue
                                                        const AnimationBuilder* abuilder) {
     auto color_node  = sksg::Color::Make(SK_ColorBLACK);
     auto color_paint = AttachStroke(jpaint, abuilder, color_node);
-    abuilder->dispatchColorProperty(color_node, jpaint["c"]);
-
+    abuilder->dispatchColorProperty(color_node);
     return color_paint;
 }
 

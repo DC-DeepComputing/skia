@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,10 +7,14 @@
 
 #include "src/gpu/ganesh/vk/GrVkCommandPool.h"
 
+#include "include/private/SkAssert.h"
 #include "src/core/SkTraceEvent.h"
-#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/vk/GrVkCaps.h"
 #include "src/gpu/ganesh/vk/GrVkCommandBuffer.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
+#include "src/gpu/ganesh/vk/GrVkUtil.h"
+
+#include <utility>
 
 GrVkCommandPool* GrVkCommandPool::Create(GrVkGpu* gpu) {
     VkCommandPoolCreateFlags cmdPoolCreateFlags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
@@ -52,7 +56,7 @@ GrVkCommandPool::GrVkCommandPool(GrVkGpu* gpu, VkCommandPool commandPool,
 std::unique_ptr<GrVkSecondaryCommandBuffer> GrVkCommandPool::findOrCreateSecondaryCommandBuffer(
         GrVkGpu* gpu) {
     std::unique_ptr<GrVkSecondaryCommandBuffer> result;
-    if (fAvailableSecondaryBuffers.size()) {
+    if (!fAvailableSecondaryBuffers.empty()) {
         result = std::move(fAvailableSecondaryBuffers.back());
         fAvailableSecondaryBuffers.pop_back();
     } else{

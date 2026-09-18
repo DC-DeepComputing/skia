@@ -7,18 +7,19 @@
 
 #include "src/codec/SkIcoCodec.h"
 
+#include "include/codec/SkIcoDecoder.h"
+#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/base/SkMalloc.h"
-#include "include/private/base/SkTemplates.h"
-#include "src/base/SkTSort.h"
+#include "include/private/SkMalloc.h"
+#include "include/private/SkTemplates.h"
 #include "src/codec/SkBmpCodec.h"
 #include "src/codec/SkCodecPriv.h"
-#include "src/codec/SkPngCodec.h"
 #include "src/core/SkStreamPriv.h"
+#include "src/core/SkTSort.h"
 
 #include "modules/skcms/skcms.h"
 #include <cstdint>
@@ -53,12 +54,12 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
     // safer than the old method, which required allocating a block of memory whose
     // byte size is stored in the stream as a uint32_t, and may result in a large or
     // failed allocation.
-    sk_sp<SkData> data = nullptr;
+    sk_sp<const SkData> data = nullptr;
     if (stream->getMemoryBase()) {
         // It is safe to make without copy because we'll hold onto the stream.
         data = SkData::MakeWithoutCopy(stream->getMemoryBase(), stream->getLength());
     } else {
-        data = SkCopyStreamToData(stream.get());
+        data = SkStreamPriv::CopyStreamToData(stream.get());
 
         // If we are forced to copy the stream to a data, we can go ahead and delete the stream.
         stream.reset(nullptr);
@@ -76,7 +77,7 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
     }
 
     // Process the directory header
-    const uint16_t numImages = get_short(data->bytes(), 4);
+    const uint16_t numImages = SkCodecPriv::UnsafeGetShort(data->bytes(), 4);
     if (0 == numImages) {
         SkCodecPrintf("Error: No images embedded in ico.\n");
         *result = kInvalidInput;
@@ -115,12 +116,12 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
         // defer to the value in the embedded header anyway.
 
         // Specifies the size of the embedded image, including the header
-        uint32_t size = get_int(entryBuffer, 8);
+        uint32_t size = SkCodecPriv::UnsafeGetInt(entryBuffer, 8);
 
         // Specifies the offset of the embedded image from the start of file.
         // It does not indicate the start of the pixel data, but rather the
         // start of the embedded image header.
-        uint32_t offset = get_int(entryBuffer, 12);
+        uint32_t offset = SkCodecPriv::UnsafeGetInt(entryBuffer, 12);
 
         // Save the vital fields
         directoryEntries[i].offset = offset;
@@ -169,15 +170,21 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
             break;
         }
 
-        sk_sp<SkData> embeddedData(SkData::MakeSubset(data.get(), offset, size));
+        sk_sp<const SkData> embeddedData(SkData::MakeSubset(data.get(), offset, size));
         auto embeddedStream = SkMemoryStream::Make(embeddedData);
         bytesRead += size;
 
         // Check if the embedded codec is bmp or png and create the codec
         std::unique_ptr<SkCodec> codec;
         Result ignoredResult;
-        if (SkPngCodec::IsPng(embeddedData->bytes(), embeddedData->size())) {
-            codec = SkPngCodec::MakeFromStream(std::move(embeddedStream), &ignoredResult);
+        if (SkPngDecoder::IsPng(embeddedData->bytes(), embeddedData->size())) {
+            codec = SkCodec::MakeFromStream(std::move(embeddedStream), &ignoredResult);
+            if (!codec) {
+                // Fallback to the hardcoded C++ PNG decoder in case the caller
+                // did not register any PNG decoder in the global registry.
+                auto fallbackStream = SkMemoryStream::Make(embeddedData);
+                codec = SkPngDecoder::Decode(std::move(fallbackStream), &ignoredResult);
+            }
         } else {
             codec = SkBmpCodec::MakeFromIco(std::move(embeddedStream), &ignoredResult);
         }
@@ -187,7 +194,7 @@ std::unique_ptr<SkCodec> SkIcoCodec::MakeFromStream(std::unique_ptr<SkStream> st
         }
     }
 
-    if (0 == codecs->size()) {
+    if (codecs->empty()) {
         SkCodecPrintf("Error: could not find any valid embedded ico codecs.\n");
         return nullptr;
     }
@@ -341,8 +348,25 @@ bool SkIcoCodec::onSkipScanlines(int count) {
     return fCurrCodec->skipScanlines(count);
 }
 
+bool SkIcoCodec::onSupportsIncrementalDecode(const SkImageInfo& dstInfo) {
+    for (int i = 0; ;++i) {
+        i = this->chooseCodec(dstInfo.dimensions(), i);
+        if (i < 0) {
+            break;
+        }
+        SkASSERT(i < fEmbeddedCodecs->size());
+        if ((*fEmbeddedCodecs)[i]->onSupportsIncrementalDecode(dstInfo)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 SkCodec::Result SkIcoCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
-        void* pixels, size_t rowBytes, const SkCodec::Options& options) {
+                                                     void* pixels,
+                                                     size_t rowBytes,
+                                                     const SkCodec::Options& options) {
     int index = 0;
     while (true) {
         index = this->chooseCodec(dstInfo.dimensions(), index);
@@ -351,31 +375,10 @@ SkCodec::Result SkIcoCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
         }
 
         SkCodec* embeddedCodec = fEmbeddedCodecs->at(index).get();
-        switch (embeddedCodec->startIncrementalDecode(dstInfo,
-                pixels, rowBytes, &options)) {
-            case kSuccess:
-                fCurrCodec = embeddedCodec;
-                return kSuccess;
-            case kUnimplemented:
-                // FIXME: embeddedCodec is a BMP. If scanline decoding would work,
-                // return kUnimplemented so that SkSampledCodec will fall through
-                // to use the scanline decoder.
-                // Note that calling startScanlineDecode will require an extra
-                // rewind. The embedded codec has an SkMemoryStream, which is
-                // cheap to rewind, though it will do extra work re-reading the
-                // header.
-                // Also note that we pass nullptr for Options. This is because
-                // Options that are valid for incremental decoding may not be
-                // valid for scanline decoding.
-                // Once BMP supports incremental decoding this workaround can go
-                // away.
-                if (embeddedCodec->startScanlineDecode(dstInfo) == kSuccess) {
-                    return kUnimplemented;
-                }
-                // Move on to the next embedded codec.
-                break;
-            default:
-                break;
+        if (embeddedCodec->
+                startIncrementalDecode(dstInfo, pixels, rowBytes, &options) == kSuccess) {
+            fCurrCodec = embeddedCodec;
+            return kSuccess;
         }
 
         index++;
@@ -423,7 +426,7 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
     return SkIcoCodec::MakeFromStream(std::move(stream), outResult);
 }
 
-std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
+std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
                                 SkCodec::Result* outResult,
                                 SkCodecs::DecodeContext) {
     if (!data) {

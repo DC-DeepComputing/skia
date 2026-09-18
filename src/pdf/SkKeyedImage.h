@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -7,9 +7,12 @@
 #ifndef SkKeyedImage_DEFINED
 #define SkKeyedImage_DEFINED
 
-#include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkRefCnt.h"
 #include "src/pdf/SkBitmapKey.h"
+
+class SkBitmap;
+struct SkIRect;
 
 /**
    This class has all the advantages of SkBitmaps and SkImages.
@@ -19,8 +22,8 @@
 class SkKeyedImage {
 public:
     SkKeyedImage() {}
-    SkKeyedImage(sk_sp<SkImage>);
-    SkKeyedImage(const SkBitmap&);
+    explicit SkKeyedImage(sk_sp<SkImage>);
+    explicit SkKeyedImage(const SkBitmap&);
     SkKeyedImage(SkKeyedImage&&) = default;
     SkKeyedImage(const SkKeyedImage&) = default;
 

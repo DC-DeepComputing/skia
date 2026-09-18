@@ -15,9 +15,14 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
+#include "include/gpu/vk/VulkanMutableTextureState.h"
+#include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 
 using namespace skgpu;
 using namespace skgpu::graphite;
@@ -26,19 +31,16 @@ namespace {
     const SkISize kSize = {16, 16};
 }
 
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context) {
-    // TODO: Remove this check once Vulkan supports creating default TexutreInfo from caps and we
-    // implement createBackendTexture.
-    if (context->backend() == BackendApi::kVulkan) {
-        return;
-    }
-
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context,
+                                   CtsEnforcement::kApiLevel_202504) {
     auto caps = context->priv().caps();
     auto recorder = context->makeRecorder();
 
+    Protected isProtected = Protected(context->supportsProtectedContent());
+
     TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
                                                           /*mipmapped=*/Mipmapped::kNo,
-                                                          Protected::kNo,
+                                                          isProtected,
                                                           Renderable::kNo);
     REPORTER_ASSERT(reporter, info.isValid());
 
@@ -84,16 +86,13 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context) {
 }
 
 // Tests the wrapping of a BackendTexture in an SkSurface
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kApiLevel_202604) {
     // TODO: Right now this just tests very basic combinations of surfaces. This should be expanded
     // to cover a much broader set of things once we add more support in Graphite for different
     // formats, color types, etc.
-
-    // TODO: Remove this check once Vulkan supports creating default TexutreInfo from caps and we
-    // implement createBackendTexture.
-    if (context->backend() == BackendApi::kVulkan) {
-        return;
-    }
 
     auto caps = context->priv().caps();
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
@@ -108,21 +107,11 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest, reporter, context)
 
     sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(recorder.get(),
                                                               texture,
-                                                              kRGBA_8888_SkColorType,
                                                               /*colorSpace=*/nullptr,
                                                               /*props=*/nullptr);
     REPORTER_ASSERT(reporter, surface);
 
     surface.reset();
-
-    // We should fail when trying to wrap the same texture in a surface with a non-compatible
-    // color type.
-    surface = SkSurfaces::WrapBackendTexture(recorder.get(),
-                                             texture,
-                                             kAlpha_8_SkColorType,
-                                             /*colorSpace=*/nullptr,
-                                             /*props=*/nullptr);
-    REPORTER_ASSERT(reporter, !surface);
 
     recorder->deleteBackendTexture(texture);
 
@@ -136,7 +125,6 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest, reporter, context)
 
     surface = SkSurfaces::WrapBackendTexture(recorder.get(),
                                              texture,
-                                             kRGBA_8888_SkColorType,
                                              /*colorSpace=*/nullptr,
                                              /*props=*/nullptr);
 
@@ -145,16 +133,13 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest, reporter, context)
 }
 
 // Tests the wrapping of a BackendTexture in an SkImage
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context) {
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kApiLevel_202604) {
     // TODO: Right now this just tests very basic combinations of images. This should be expanded
     // to cover a much broader set of things once we add more support in Graphite for different
     // formats, color types, etc.
-
-    // TODO: Remove this check once Vulkan supports creating default TexutreInfo from caps and we
-    // implement createBackendTexture.
-    if (context->backend() == BackendApi::kVulkan) {
-        return;
-    }
 
     const Caps* caps = context->priv().caps();
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
@@ -170,58 +155,199 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context) {
             BackendTexture texture = recorder->createBackendTexture(kSize, info);
             REPORTER_ASSERT(reporter, texture.isValid());
 
-            sk_sp<SkImage> image = SkImages::AdoptTextureFrom(recorder.get(),
-                                                              texture,
-                                                              kRGBA_8888_SkColorType,
-                                                              kPremul_SkAlphaType,
-                                                              /*colorSpace=*/nullptr);
+            sk_sp<SkImage> image = SkImages::WrapTexture(recorder.get(),
+                                                         texture,
+                                                         kPremul_SkAlphaType,
+                                                         /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kRGBA_8888_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kPremul_SkAlphaType);
 
             image.reset();
 
-            // We should fail when trying to wrap the same texture in an image with a non-compatible
-            // color type.
-            image = SkImages::AdoptTextureFrom(recorder.get(),
-                                               texture,
-                                               kAlpha_8_SkColorType,
-                                               kPremul_SkAlphaType,
-                                               /* colorSpace= */ nullptr);
-            REPORTER_ASSERT(reporter, !image);
+            // We should switch to k888x when possible for forceOpaque
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kUnknown_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kRGB_888x_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
 
+            image.reset();
+            recorder->deleteBackendTexture(texture);
+
+            // We should still be flagged as opaque and have a A=1 swizzle for color types that
+            // don't have an A->X variant
+            info = caps->getDefaultSampledTextureInfo(kARGB_4444_SkColorType,
+                                                      mipmapped,
+                                                      Protected::kNo,
+                                                      renderable);
+
+            texture = recorder->createBackendTexture(kSize, info);
+            // 4444 is not universally supported however
+            if (texture.isValid()) {
+                image = SkImages::WrapTexture(recorder.get(),
+                                              texture,
+                                              kUnknown_SkAlphaType,
+                                              /*colorSpace=*/nullptr);
+                REPORTER_ASSERT(reporter, image);
+                REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+                REPORTER_ASSERT(reporter, image->colorType() == kARGB_4444_SkColorType);
+                REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+
+                Swizzle readSwizzle =
+                        static_cast<Image*>(image.get())->textureProxyView().swizzle();
+                REPORTER_ASSERT(reporter, readSwizzle[3] == '1');
+
+                image.reset();
+                recorder->deleteBackendTexture(texture);
+            }
+
+            // Now test handling of red format ambiguity
+            info = caps->getDefaultSampledTextureInfo(kR8_unorm_SkColorType,
+                                                      mipmapped,
+                                                      Protected::kNo,
+                                                      renderable);
+            texture = recorder->createBackendTexture(kSize, info);
+
+            // Opaque/unknown becomes red + opaque
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kOpaque_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kR8_unorm_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kUnknown_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kR8_unorm_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+
+            // Premul/unpremul becomes alpha-only
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kPremul_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kPremul_SkAlphaType);
+
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kUnpremul_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kUnpremul_SkAlphaType);
+
+            image.reset();
+            recorder->deleteBackendTexture(texture);
+
+            // Test how an A8 texture format behaves, which does not have the red/alpha ambiguity
+            // and stays as an alpha-only colortype regardless of SkAlphaType. A8 is not always
+            // available, so skip it if the TextureInfo selects an R8 texture again.
+            info = caps->getDefaultSampledTextureInfo(kAlpha_8_SkColorType,
+                                                      mipmapped,
+                                                      Protected::kNo,
+                                                      renderable);
+            if (TextureInfoPriv::ViewFormat(info) != TextureFormat::kA8) {
+                // A8 isn't always available and if we picked R8, we'd really just be re-testing
+                // the above scenarios.
+                continue;
+            }
+            texture = recorder->createBackendTexture(kSize, info);
+
+            // Opaque/unknown becomes opaque alpha (not super useful)
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kOpaque_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kUnknown_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+             Swizzle readSwizzle =
+                        static_cast<Image*>(image.get())->textureProxyView().swizzle();
+                REPORTER_ASSERT(reporter, readSwizzle[3] == '1');
+
+            // Premul/unpremul stay alpha-only
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kPremul_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kPremul_SkAlphaType);
+
+            image = SkImages::WrapTexture(recorder.get(),
+                                          texture,
+                                          kUnpremul_SkAlphaType,
+                                          /*colorSpace=*/nullptr);
+            REPORTER_ASSERT(reporter, image);
+            REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
+            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
+            REPORTER_ASSERT(reporter, image->alphaType() == kUnpremul_SkAlphaType);
+
+            image.reset();
             recorder->deleteBackendTexture(texture);
         }
     }
 }
 
 #ifdef SK_VULKAN
-DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureMutableStateTest, reporter, context) {
-    VulkanTextureInfo info(/*sampleCount=*/1,
+DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureMutableStateTest, reporter, context,
+                                     CtsEnforcement::kApiLevel_202404) {
+    VulkanTextureInfo info(VK_SAMPLE_COUNT_1_BIT,
                            /*mipmapped=*/Mipmapped::kNo,
                            /*flags=*/0,
                            VK_FORMAT_R8G8B8A8_UNORM,
                            VK_IMAGE_TILING_OPTIMAL,
                            VK_IMAGE_USAGE_SAMPLED_BIT,
                            VK_SHARING_MODE_EXCLUSIVE,
-                           VK_IMAGE_ASPECT_COLOR_BIT);
+                           VK_IMAGE_ASPECT_COLOR_BIT,
+                           /*ycbcrConversionInfo*/{});
 
-    BackendTexture texture({16, 16},
-                           info,
-                           VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-                           /*queueFamilyIndex=*/1,
-                           VK_NULL_HANDLE);
+    BackendTexture texture = BackendTextures::MakeVulkan({16, 16},
+                                                         info,
+                                                         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                                                         /*queueFamilyIndex=*/1,
+                                                         VK_NULL_HANDLE,
+                                                         skgpu::VulkanAlloc());
 
     REPORTER_ASSERT(reporter, texture.isValid());
-    REPORTER_ASSERT(reporter,
-                    texture.getVkImageLayout() == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-    REPORTER_ASSERT(reporter, texture.getVkQueueFamilyIndex() == 1);
+    REPORTER_ASSERT(
+            reporter,
+            BackendTextures::GetVkImageLayout(texture) == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    REPORTER_ASSERT(reporter, BackendTextures::GetVkQueueFamilyIndex(texture) == 1);
 
-    skgpu::MutableTextureState newState(VK_IMAGE_LAYOUT_GENERAL, 0);
-    texture.setMutableState(newState);
+    skgpu::MutableTextureState newState =
+            skgpu::MutableTextureStates::MakeVulkan(VK_IMAGE_LAYOUT_GENERAL, 0);
+    BackendTextures::SetMutableState(&texture, newState);
 
     REPORTER_ASSERT(reporter,
-                    texture.getVkImageLayout() == VK_IMAGE_LAYOUT_GENERAL);
-    REPORTER_ASSERT(reporter, texture.getVkQueueFamilyIndex() == 0);
+                    BackendTextures::GetVkImageLayout(texture) == VK_IMAGE_LAYOUT_GENERAL);
+    REPORTER_ASSERT(reporter, BackendTextures::GetVkQueueFamilyIndex(texture) == 0);
 
     // TODO: Add to this test to check that the setMutableState calls also update values we see in
     // wrapped VulkanTextures once we have them. Also check that updates in VulkanTexture are also

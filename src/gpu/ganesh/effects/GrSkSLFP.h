@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,12 +9,13 @@
 #define GrSkSLFP_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/gpu/GrTypes.h"
-#include "include/private/SkColorData.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkSpan_impl.h"
-#include "src/base/SkVx.h" // IWYU pragma: keep
+#include "include/private/SkAssert.h"
+#include "include/private/SkDebug.h"
+#include "include/private/SkMacros.h"
+#include "src/core/SkColorData.h"
+#include "src/core/SkVx.h" // IWYU pragma: keep
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrProcessorUnitTest.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
@@ -32,6 +33,7 @@ class SkData;
 class SkM44;
 namespace skgpu { class KeyBuilder; }
 struct GrShaderCaps;
+struct SkISize;
 struct SkRect;
 struct SkV2;
 struct SkV4;
@@ -60,6 +62,7 @@ UNIFORM_TYPE(kFloat4,   SkV4);
 UNIFORM_TYPE(kFloat4,   skvx::Vec<4, float>);
 UNIFORM_TYPE(kFloat4x4, SkM44);
 UNIFORM_TYPE(kInt,      int);
+UNIFORM_TYPE(kInt2,     SkISize);
 
 #undef UNIFORM_TYPE
 #endif
@@ -121,7 +124,7 @@ public:
             sk_sp<SkColorSpace> dstColorSpace,
             std::unique_ptr<GrFragmentProcessor> inputFP,
             std::unique_ptr<GrFragmentProcessor> destColorFP,
-            sk_sp<const SkData> uniforms,
+            const sk_sp<const SkData>& uniforms,
             SkSpan<std::unique_ptr<GrFragmentProcessor>> childFPs);
 
     /*
@@ -173,7 +176,7 @@ public:
         size_t uniformPayloadSize = UniformPayloadSize(effect);
         std::unique_ptr<GrSkSLFP> fp(new (uniformPayloadSize) GrSkSLFP(sk_ref_sp(effect),
                                                                        name, optFlags));
-        fp->appendArgs(fp->uniformData(), fp->specialized(), std::forward<Args>(args)...);
+        fp->appendArgs(fp->uniformData(), fp->specialized(), std::forward<Args>(args)...); // NOLINT
         if (inputFP) {
             fp->setInput(std::move(inputFP));
         }
@@ -194,7 +197,7 @@ private:
     void addChild(std::unique_ptr<GrFragmentProcessor> child, bool mergeOptFlags);
     void setInput(std::unique_ptr<GrFragmentProcessor> input);
     void setDestColorFP(std::unique_ptr<GrFragmentProcessor> destColorFP);
-    void addColorTransformChildren(sk_sp<SkColorSpace> dstColorSpace);
+    void addColorTransformChildren(SkColorSpace* dstColorSpace);
 
     std::unique_ptr<ProgramImpl> onMakeProgramImpl() const override;
 
@@ -442,6 +445,6 @@ private:
     friend class GrSkSLFPFactory;
 };
 
-GR_MAKE_BITFIELD_CLASS_OPS(GrSkSLFP::OptFlags)
+SK_MAKE_BITFIELD_CLASS_OPS(GrSkSLFP::OptFlags)
 
 #endif

@@ -11,15 +11,13 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkScalar.h"
-#include "include/core/SkTextBlob.h"
-#include "include/private/base/SkTLogic.h"
+#include "include/private/SkTLogic.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTextBlobPriv.h"
 
 #include <cstring>
-#include <initializer_list>
 
 class SkPaint;
 
@@ -79,9 +77,11 @@ bool GlyphRunList::anyRunsLCD() const {
     return false;
 }
 
-void GlyphRunList::temporaryShuntBlobNotifyAddedToCache(uint32_t cacheID) const {
+void GlyphRunList::temporaryShuntBlobNotifyAddedToCache(uint32_t cacheID,
+                                                        SkTextBlob::PurgeDelegate pd) const {
     SkASSERT(fOriginalTextBlob != nullptr);
-    fOriginalTextBlob->notifyAddedToCache(cacheID);
+    SkASSERT(pd != nullptr);
+    fOriginalTextBlob->notifyAddedToCache(cacheID, pd);
 }
 
 sk_sp<SkTextBlob> GlyphRunList::makeBlob() const {
@@ -120,7 +120,7 @@ static SkRect glyphrun_source_bounds(
         const SkPaint& paint,
         SkZip<const SkGlyphID, const SkPoint> source,
         SkSpan<const SkVector> scaledRotations) {
-    SkASSERT(source.size() > 0);
+    SkASSERT(!source.empty());
     const SkRect fontBounds = SkFontPriv::GetFontBounds(font);
 
     SkSpan<const SkGlyphID> glyphIDs = source.get<0>();
@@ -166,8 +166,7 @@ static SkRect glyphrun_source_bounds(
 
     // Use conservative bounds. All glyph have a box of fontBounds size.
     if (scaledRotations.empty()) {
-        SkRect bounds;
-        bounds.setBounds(positions.data(), SkCount(positions));
+        SkRect bounds = SkRect::BoundsOrEmpty(positions);
         bounds.fLeft   += fontBounds.left();
         bounds.fTop    += fontBounds.top();
         bounds.fRight  += fontBounds.right();
@@ -338,7 +337,7 @@ SkSpan<const SkGlyphID> GlyphRunBuilder::textToGlyphIDs(
         int count = font.countText(bytes, byteLength, encoding);
         if (count > 0) {
             fScratchGlyphIDs.resize(count);
-            font.textToGlyphs(bytes, byteLength, encoding, fScratchGlyphIDs.data(), count);
+            font.textToGlyphs(bytes, byteLength, encoding, fScratchGlyphIDs);
             return SkSpan(fScratchGlyphIDs);
         } else {
             return SkSpan<const SkGlyphID>();

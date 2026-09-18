@@ -28,26 +28,27 @@ class GraphicsPipelineDesc;
 class MtlResourceProvider;
 class MtlSharedContext;
 struct RenderPassDesc;
+class RuntimeEffectDictionary;
 
 class MtlGraphicsPipeline final : public GraphicsPipeline {
 public:
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
-    inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
-    inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
-    inline static constexpr unsigned int kVertexBufferIndex = 3;
-    inline static constexpr unsigned int kInstanceBufferIndex = 4;
+    inline static constexpr unsigned int kCombinedUniformIndex = 1; // Paint AND rendersteps!
+    inline static constexpr unsigned int kStaticDataBufferIndex = 2;
+    inline static constexpr unsigned int kAppendDataBufferIndex = 3;
+    inline static constexpr unsigned int kStorageBufferIndex = 4;
+    inline static constexpr unsigned int kMaxNumUniformBuffers = 5;
 
-    using MSLFunction = std::pair<id<MTLLibrary>, std::string>;
     static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
-                                           std::string label,
-                                           MSLFunction vertexMain,
-                                           SkSpan<const Attribute> vertexAttrs,
-                                           SkSpan<const Attribute> instanceAttrs,
-                                           MSLFunction fragmentMain,
-                                           sk_cfp<id<MTLDepthStencilState>>,
-                                           uint32_t stencilRefValue,
-                                           const BlendInfo& blendInfo,
-                                           const RenderPassDesc&);
+                                           const RuntimeEffectDictionary*,
+                                           const UniqueKey&,
+                                           const GraphicsPipelineDesc&,
+                                           const RenderPassDesc&,
+                                           SkEnumBitMask<PipelineCreationFlags>,
+                                           uint32_t compilationID);
+
+    static sk_sp<MtlGraphicsPipeline> MakeLoadMSAAPipeline(const MtlSharedContext*,
+                                                           const RenderPassDesc&);
 
     ~MtlGraphicsPipeline() override {}
 
@@ -57,13 +58,25 @@ public:
 
 private:
     MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                        const PipelineInfo& pipelineInfo,
+                        std::string_view pipelineLabel,
                         sk_cfp<id<MTLRenderPipelineState>> pso,
                         sk_cfp<id<MTLDepthStencilState>> dss,
-                        uint32_t refValue)
-        : GraphicsPipeline(sharedContext)
-        , fPipelineState(std::move(pso))
-        , fDepthStencilState(dss)
-        , fStencilReferenceValue(refValue) {}
+                        uint32_t refValue);
+
+    using MSLFunction = std::pair<id<MTLLibrary>, std::string>;
+    static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
+                                           const std::string& label,
+                                           const PipelineInfo&,
+                                           MSLFunction vertexMain,
+                                           MTLVertexStepFunction appendStepFunc,
+                                           SkSpan<const Attribute> staticAttrs,
+                                           SkSpan<const Attribute> appendAttrs,
+                                           MSLFunction fragmentMain,
+                                           sk_cfp<id<MTLDepthStencilState>>,
+                                           uint32_t stencilRefValue,
+                                           const BlendInfo& blendInfo,
+                                           const RenderPassDesc&);
 
     void freeGpuData() override;
 

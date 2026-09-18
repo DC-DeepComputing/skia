@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2018 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -12,9 +12,9 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkYUVAInfo.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkSLSampleUsage.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkTo.h"
+#include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkYUVAInfoLocation.h"
@@ -75,9 +75,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
     for (int i = 0; i < numPlanes; ++i) {
         bool useSubset = SkToBool(subset);
         GrSurfaceProxyView view = yuvaProxies.makeView(i);
-        SkMatrix planeMatrix = yuvaProxies.yuvaInfo().originMatrix();
-        // The returned matrix is a view matrix but we need a local matrix.
-        SkAssertResult(planeMatrix.invert(&planeMatrix));
+        SkMatrix planeMatrix = yuvaProxies.yuvaInfo().inverseOriginMatrix();
         SkRect planeSubset;
         SkRect planeDomain;
         bool makeLinearWithSnap = false;
@@ -247,7 +245,7 @@ GrYUVtoRGBEffect::GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs
     }
 }
 
-#if GR_TEST_UTILS
+#if defined(GPU_TEST_UTILS)
 SkString GrYUVtoRGBEffect::onDumpInfo() const {
     SkString str("(");
     for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {

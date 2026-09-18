@@ -9,104 +9,106 @@
 #define skgpu_graphite_DawnCaps_DEFINED
 
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/TextureFormat.h"
+
+#include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 #include <array>
-
-#include "webgpu/webgpu_cpp.h"
 
 namespace skgpu::graphite {
 struct ContextOptions;
 
+struct DawnBackendContext;
+
 class DawnCaps final : public Caps {
 public:
-    DawnCaps(const wgpu::Device&, const ContextOptions&);
+    DawnCaps(const DawnBackendContext&, const ContextOptions&);
     ~DawnCaps() override;
 
-    TextureInfo getDefaultSampledTextureInfo(SkColorType,
-                                             Mipmapped mipmapped,
-                                             Protected,
-                                             Renderable) const override;
-    TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
-                                          Discardable discardable) const override;
-    TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
-                                                  uint32_t sampleCount,
-                                                  Protected) const override;
-    TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
+    bool supportsHalfPrecision() const { return fSupportsHalfPrecision; }
+    bool useAsyncPipelineCreation() const { return fUseAsyncPipelineCreation; }
+    bool allowScopedErrorChecks() const { return fAllowScopedErrorChecks; }
+
+    // If this has no value then loading the resolve texture via a LoadOp is not supported.
+    std::optional<wgpu::LoadOp> resolveTextureLoadOp() const {
+        return fSupportedResolveTextureLoadOp;
+    }
+    bool supportsPartialLoadResolve() const { return fSupportsPartialLoadResolve; }
+    bool supportsRenderPassRenderArea() const { return fSupportsRenderPassRenderArea; }
+
+    // The equivalent Dawn LoadOp to Discard.
+    wgpu::LoadOp discardLoadOp() const { return fDiscardLoadOp; }
+    // The equivalent Dawn StoreOp to Discard.
+    wgpu::StoreOp discardStoreOp() const { return fDiscardStoreOp; }
+
+    SkISize getDepthAttachmentDimensions(const TextureInfo&,
+                                         const SkISize colorAttachmentDimensions) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
+    bool extractGraphicsDescs(const UniqueKey&,
+                              GraphicsPipelineDesc*,
+                              RenderPassDesc*,
+                              const RendererProvider*) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
-    uint32_t channelMask(const TextureInfo&) const override;
-    bool isRenderable(const TextureInfo&) const override;
-    bool isStorage(const TextureInfo&) const override;
+    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
+    std::string toString(const ImmutableSamplerInfo&) const override;
+
+    bool loadOpAffectsMSAAPipelines() const override {
+        return fSupportedResolveTextureLoadOp.has_value();
+    }
+
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,
                             ResourceType,
-                            Shareable,
                             GraphiteResourceKey*) const override;
-    size_t bytesPerPixel(const TextureInfo&) const override;
-    uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
+    // Compute render pass desc's key as 32 bits key. The key has room for additional flag which can
+    // optionally be provided.
+    uint32_t getRenderPassDescKeyForPipeline(const RenderPassDesc&,
+                                             bool additionalFlag = false) const;
+
+    bool supportsCommandBufferTimestamps() const { return fSupportsCommandBufferTimestamps; }
+
+    // Whether we should emulate load/resolve with separate render passes.
+    // TODO(b/399640773): This is currently used until Dawn supports true partial resolve feature
+    // that can resolve a MSAA texture to a resolve texture with different size.
+    bool emulateLoadStoreResolve() const { return fEmulateLoadStoreResolve; }
 
 private:
-    const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
-    bool onIsTexturable(const TextureInfo&) const override;
-    bool supportsWritePixels(const TextureInfo& textureInfo) const override;
-    bool supportsReadPixels(const TextureInfo& textureInfo) const override;
-    SkColorType supportedWritePixelsColorType(SkColorType dstColorType,
-                                              const TextureInfo& dstTextureInfo,
-                                              SkColorType srcColorType) const override;
-    SkColorType supportedReadPixelsColorType(SkColorType srcColorType,
-                                             const TextureInfo& srcTextureInfo,
-                                             SkColorType dstColorType) const override;
+    TextureInfo onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
+                                        TextureFormat,
+                                        SampleCount,
+                                        Mipmapped,
+                                        Protected,
+                                        Discardable) const override;
+    std::pair<SkEnumBitMask<TextureUsage>, Tiling> getTextureUsage(
+            const TextureInfo&) const override;
 
-    void initCaps(const wgpu::Device& device);
-    void initShaderCaps();
-    void initFormatTable(const wgpu::Device& device);
+    void initCaps(const DawnBackendContext&, const ContextOptions&);
+    void initShaderCaps(const wgpu::Device&);
+    void initFormatTable(const wgpu::Device&);
 
-    wgpu::TextureFormat getFormatFromColorType(SkColorType colorType) const {
-        int idx = static_cast<int>(colorType);
-        return fColorTypeToFormatTable[idx];
-    }
+    // When supported, this value will hold the TransientAttachment usage symbol that is only
+    // defined in Dawn native builds and not EMSCRIPTEN but this avoids having to #define guard it.
+    wgpu::TextureUsage fSupportedTransientAttachmentUsage = wgpu::TextureUsage::None;
+    // When supported this holds the ExpandResolveTexture load op, otherwise holds no value.
+    std::optional<wgpu::LoadOp> fSupportedResolveTextureLoadOp;
+    // When 'fSupportedResolveTextureLoadOp' is supported, it by default performs full size expand
+    // and resolve. With this feature, we can do that partially according to the actual damage
+    // region.
+    bool fSupportsPartialLoadResolve = false;
+    bool fSupportsRenderPassRenderArea = false;
 
-    uint32_t maxRenderTargetSampleCount(wgpu::TextureFormat format) const;
-    bool isTexturable(wgpu::TextureFormat format) const;
-    bool isRenderable(wgpu::TextureFormat format, uint32_t numSamples) const;
+    wgpu::LoadOp fDiscardLoadOp = wgpu::LoadOp::Clear;
+    wgpu::StoreOp fDiscardStoreOp = wgpu::StoreOp::Discard;
 
-    struct FormatInfo {
-        uint32_t colorTypeFlags(SkColorType colorType) const {
-            for (int i = 0; i < fColorTypeInfoCount; ++i) {
-                if (fColorTypeInfos[i].fColorType == colorType) {
-                    return fColorTypeInfos[i].fFlags;
-                }
-            }
-            return 0;
-        }
+    bool fEmulateLoadStoreResolve = false;
 
-        enum {
-            kTexturable_Flag  = 0x01,
-            kRenderable_Flag  = 0x02, // Color attachment and blendable
-            kMSAA_Flag        = 0x04,
-            kResolve_Flag     = 0x08,
-            kStorage_Flag     = 0x10,
-        };
-        static const uint16_t kAllFlags =
-                kTexturable_Flag | kRenderable_Flag | kMSAA_Flag | kResolve_Flag | kStorage_Flag;
+    bool fUseAsyncPipelineCreation = true;
+    bool fAllowScopedErrorChecks = true;
 
-        uint16_t fFlags = 0;
-
-        std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
-        int fColorTypeInfoCount = 0;
-    };
-    // Size here must match size of kFormats in DawnCaps.cpp
-    std::array<FormatInfo, 12> fFormatTable;
-
-    static size_t GetFormatIndex(wgpu::TextureFormat format);
-    const FormatInfo& getFormatInfo(wgpu::TextureFormat format) const {
-        size_t index = GetFormatIndex(format);
-        return fFormatTable[index];
-    }
-
-    wgpu::TextureFormat fColorTypeToFormatTable[kSkColorTypeCnt];
-    void setColorType(SkColorType, std::initializer_list<wgpu::TextureFormat> formats);
+    bool fSupportsCommandBufferTimestamps = false;
+    bool fSupportsHalfPrecision = false;
 };
 
 } // namespace skgpu::graphite

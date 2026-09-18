@@ -1,31 +1,18 @@
-/*
-
-:22:3 warning: code is unreachable
-  return bool();
-  ^^^^^^
-
-:107:3 warning: code is unreachable
-  return bool();
-  ^^^^^^
-
-*/
-
-struct FSIn {
-  @builtin(front_facing) sk_Clockwise: bool,
-  @builtin(position) sk_FragCoord: vec4<f32>,
-};
+diagnostic(off, derivative_uniformity);
+diagnostic(off, chromium.unreachable_code);
+enable f16;
 struct FSOut {
-  @location(0) sk_FragColor: vec4<f32>,
+  @location(0) sk_FragColor: vec4<f16>,
 };
 struct _GlobalUniforms {
-  colorGreen: vec4<f32>,
-  colorRed: vec4<f32>,
-  unknownInput: f32,
+  colorGreen: vec4<f16>,
+  colorRed: vec4<f16>,
+  unknownInput: f16,
 };
-@binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
+@group(0) @binding(0) var<uniform> _globalUniforms : _GlobalUniforms;
 fn return_on_both_sides_b() -> bool {
   {
-    if (_globalUniforms.unknownInput == 1.0) {
+    if _globalUniforms.unknownInput == 1.0h {
       return true;
     } else {
       return true;
@@ -37,16 +24,9 @@ fn for_inside_body_b() -> bool {
   {
     {
       var x: i32 = 0;
-      loop {
-        if x <= 10 {
-          {
-            return true;
-          }
-        } else {
-          break;
-        }
-        continuing {
-          x = x + i32(1);
+      for (; x <= 10; x = x + i32(1)) {
+        {
+          return true;
         }
       }
     }
@@ -57,15 +37,8 @@ fn after_for_body_b() -> bool {
   {
     {
       var x: i32 = 0;
-      loop {
-        if x <= 10 {
-          {
-          }
-        } else {
-          break;
-        }
-        continuing {
-          x = x + i32(1);
+      for (; x <= 10; x = x + i32(1)) {
+        {
         }
       }
     }
@@ -76,20 +49,13 @@ fn for_with_double_sided_conditional_return_b() -> bool {
   {
     {
       var x: i32 = 0;
-      loop {
-        if x <= 10 {
-          {
-            if (_globalUniforms.unknownInput == 1.0) {
-              return true;
-            } else {
-              return true;
-            }
+      for (; x <= 10; x = x + i32(1)) {
+        {
+          if _globalUniforms.unknownInput == 1.0h {
+            return true;
+          } else {
+            return true;
           }
-        } else {
-          break;
-        }
-        continuing {
-          x = x + i32(1);
         }
       }
     }
@@ -98,16 +64,16 @@ fn for_with_double_sided_conditional_return_b() -> bool {
 }
 fn if_else_chain_b() -> bool {
   {
-    if (_globalUniforms.unknownInput == 1.0) {
+    if _globalUniforms.unknownInput == 1.0h {
       return true;
     } else {
-      if (_globalUniforms.unknownInput == 2.0) {
+      if _globalUniforms.unknownInput == 2.0h {
         return false;
       } else {
-        if (_globalUniforms.unknownInput == 3.0) {
+        if _globalUniforms.unknownInput == 3.0h {
           return true;
         } else {
-          if (_globalUniforms.unknownInput == 4.0) {
+          if _globalUniforms.unknownInput == 4.0h {
             return false;
           } else {
             return true;
@@ -118,41 +84,36 @@ fn if_else_chain_b() -> bool {
   }
   return bool();
 }
-fn main(coords: vec2<f32>) -> vec4<f32> {
+fn _skslMain(coords: vec2<f32>) -> vec4<f16> {
   {
-    var _skTemp0: vec4<f32>;
+    var _skTemp0: vec4<f16>;
     var _skTemp1: bool;
     var _skTemp2: bool;
     var _skTemp3: bool;
     var _skTemp4: bool;
     var _skTemp5: bool;
     if true {
-      let _skTemp6 = return_on_both_sides_b();
-      _skTemp5 = _skTemp6;
+      _skTemp5 = return_on_both_sides_b();
     } else {
       _skTemp5 = false;
     }
     if _skTemp5 {
-      let _skTemp7 = for_inside_body_b();
-      _skTemp4 = _skTemp7;
+      _skTemp4 = for_inside_body_b();
     } else {
       _skTemp4 = false;
     }
     if _skTemp4 {
-      let _skTemp8 = after_for_body_b();
-      _skTemp3 = _skTemp8;
+      _skTemp3 = after_for_body_b();
     } else {
       _skTemp3 = false;
     }
     if _skTemp3 {
-      let _skTemp9 = for_with_double_sided_conditional_return_b();
-      _skTemp2 = _skTemp9;
+      _skTemp2 = for_with_double_sided_conditional_return_b();
     } else {
       _skTemp2 = false;
     }
     if _skTemp2 {
-      let _skTemp10 = if_else_chain_b();
-      _skTemp1 = _skTemp10;
+      _skTemp1 = if_else_chain_b();
     } else {
       _skTemp1 = false;
     }
@@ -164,8 +125,8 @@ fn main(coords: vec2<f32>) -> vec4<f32> {
     return _skTemp0;
   }
 }
-@fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
+@fragment fn main() -> FSOut {
   var _stageOut: FSOut;
-  _stageOut.sk_FragColor = main(_stageIn.sk_FragCoord.xy);
+  _stageOut.sk_FragColor = _skslMain(/*fragcoord*/ vec2<f32>());
   return _stageOut;
 }

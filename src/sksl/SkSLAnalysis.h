@@ -9,7 +9,7 @@
 #define SkSLAnalysis_DEFINED
 
 #include "include/private/SkSLSampleUsage.h"
-#include "include/private/base/SkTArray.h"
+#include "include/private/SkTArray.h"
 
 #include <cstdint>
 #include <memory>
@@ -41,11 +41,10 @@ struct Program;
 namespace Analysis {
 
 /**
- * Determines how `program` samples `child`. By default, assumes that the sample coords
- * (SK_MAIN_COORDS_BUILTIN) might be modified, so `child.eval(sampleCoords)` is treated as
- * Explicit. If writesToSampleCoords is false, treats that as PassThrough, instead.
- * If elidedSampleCoordCount is provided, the pointed to value will be incremented by the
- * number of sample calls where the above rewrite was performed.
+ * Determines how `program` samples `child`. By default, assumes that the sample coords might be
+ * modified, so `child.eval(sampleCoords)` is treated as Explicit. If writesToSampleCoords is false,
+ * treats that as PassThrough, instead. If elidedSampleCoordCount is provided, the pointed to value
+ * will be incremented by the number of sample calls where the above rewrite was performed.
  */
 SampleUsage GetSampleUsage(const Program& program,
                            const Variable& child,
@@ -76,18 +75,20 @@ bool ReturnsInputAlpha(const FunctionDefinition& function, const ProgramUsage& u
 
 /**
  * Checks for recursion or overly-deep function-call chains, and rejects programs which have them.
- * Also, computes the size of the program in a completely flattened state--loops fully unrolled,
- * function calls inlined--and rejects programs that exceed an arbitrary upper bound. This is
- * intended to prevent absurdly large programs from overwhemling SkVM. Only strict-ES2 mode is
- * supported; complex control flow is not SkVM-compatible (and this becomes the halting problem)
  */
-bool CheckProgramStructure(const Program& program, bool enforceSizeLimit);
+bool CheckProgramStructure(const Program& program);
 
 /** Determines if `expr` contains a reference to the variable sk_RTAdjust. */
 bool ContainsRTAdjust(const Expression& expr);
 
 /** Determines if `expr` contains a reference to variable `var`. */
 bool ContainsVariable(const Expression& expr, const Variable& var);
+
+/**
+ * Unwraps index expressions, field accesses, and swizzles to locate the root Variable being
+ * referenced by `expr`, or returns null if `expr` does not reference a variable.
+ */
+const Variable* GetRootVariable(const Expression& expr);
 
 /** Determines if `expr` has any side effects. (Is the expression state-altering or pure?) */
 bool HasSideEffects(const Expression& expr);
@@ -113,13 +114,13 @@ int NodeCountUpToLimit(const FunctionDefinition& function, int limit);
  * Finds unconditional exits from a switch-case. Returns true if this statement unconditionally
  * causes an exit from this switch (via continue, break or return).
  */
-bool SwitchCaseContainsUnconditionalExit(Statement& stmt);
+bool SwitchCaseContainsUnconditionalExit(const Statement& stmt);
 
 /**
  * Finds conditional exits from a switch-case. Returns true if this statement contains a
  * conditional that wraps a potential exit from the switch (via continue, break or return).
  */
-bool SwitchCaseContainsConditionalExit(Statement& stmt);
+bool SwitchCaseContainsConditionalExit(const Statement& stmt);
 
 std::unique_ptr<ProgramUsage> GetUsage(const Program& program);
 std::unique_ptr<ProgramUsage> GetUsage(const Module& module);
@@ -167,6 +168,10 @@ bool UpdateVariableRefKind(Expression* expr, VariableRefKind kind, ErrorReporter
  * - myArray[123]
  * - myStruct.myField
  * - half4(0)
+ * - !myBoolean
+ * - +myValue
+ * - -myValue
+ * - ~myInteger
  *
  * Trivial-ness is stackable. Somewhat large expressions can occasionally make the cut:
  * - half4(myColor.a)
@@ -203,6 +208,12 @@ bool IsConstantExpression(const Expression& expr);
  * - Expressions composed of both of the above
  */
 void ValidateIndexingForES2(const ProgramElement& pe, ErrorReporter& errors);
+
+/**
+ * Emits an internal error if a VarDeclaration exists without a matching entry in the nearest
+ * SymbolTable.
+ */
+void CheckSymbolTableCorrectness(const Program& program);
 
 /**
  * Ensures that a for-loop meets the strict requirements of The OpenGL ES Shading Language 1.00,
@@ -245,8 +256,8 @@ void DoFinalizationChecks(const Program& program);
 /**
  * Error checks compute shader in/outs and returns a vector containing them ordered by location.
  */
-skia_private::TArray<const SkSL::Variable*> GetComputeShaderMainParams(
-        const Context& context, const Program& program);
+skia_private::TArray<const SkSL::Variable*> GetComputeShaderMainParams(const Context& context,
+                                                                       const Program& program);
 
 /**
  * Tracks the symbol table stack, in conjunction with a ProgramVisitor. Inside `visitStatement`,
@@ -256,14 +267,18 @@ skia_private::TArray<const SkSL::Variable*> GetComputeShaderMainParams(
 class SymbolTableStackBuilder {
 public:
     // If the passed-in statement holds a symbol table, adds it to the stack.
-    SymbolTableStackBuilder(const Statement* stmt,
-                            std::vector<std::shared_ptr<SymbolTable>>* stack);
+    SymbolTableStackBuilder(const Statement* stmt, std::vector<SymbolTable*>* stack);
 
     // If a symbol table was added to the stack earlier, removes it from the stack.
     ~SymbolTableStackBuilder();
 
+    // Returns true if an entry was added to the symbol-table stack.
+    bool foundSymbolTable() {
+        return fStackToPop != nullptr;
+    }
+
 private:
-    std::vector<std::shared_ptr<SymbolTable>>* fStackToPop = nullptr;
+    std::vector<SymbolTable*>* fStackToPop = nullptr;
 };
 
 }  // namespace Analysis

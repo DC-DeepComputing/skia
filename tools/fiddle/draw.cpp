@@ -9,15 +9,31 @@
 // assembled by the fiddler program to compile into a fiddle: an
 // implementation of the GetDrawOptions() and draw() functions.
 
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "skia.h"
+
+// fiddle_main.h (purposefully) pollutes the global namespace with very generic identifiers like
+// "image", "duration", "frame", and "fontMgr". As such it is something of an
+// "implementation header" and should be included last to avoid name shadowing warnings.
 #include "tools/fiddle/fiddle_main.h"
-#include "tools/gpu/ManagedBackendTexture.h"
 
 DrawOptions GetDrawOptions() {
     // path *should* be absolute.
     static const char path[] = "resources/images/color_wheel.png";
-    return DrawOptions(256, 256, true, true, true, true, true, false, false, path,
-                       GrMipmapped::kYes, 64, 64, 0, GrMipmapped::kYes);
+    return DrawOptions(256,
+                       256,
+                       true,
+                       true,
+                       true,
+                       true,
+                       true,
+                       false,
+                       false,
+                       path,
+                       skgpu::Mipmapped::kYes,
+                       64,
+                       64,
+                       0,
+                       skgpu::Mipmapped::kYes);
 }
 void draw(SkCanvas* canvas) {
     canvas->clear(SK_ColorWHITE);

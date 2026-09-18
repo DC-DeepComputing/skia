@@ -18,14 +18,18 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTileMode.h"
-#include "include/effects/SkGradientShader.h"
-#include "include/private/base/SkAssert.h"
-#include "include/private/base/SkSpan_impl.h"
+#include "include/effects/SkGradient.h"
+#include "include/private/SkAssert.h"
 #include "include/sksl/SkSLDebugTrace.h"
+#include "src/sksl/tracing/SkSLDebugTracePriv.h"
+#include "tools/DecodeUtils.h"
 #include "tools/Resources.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/sk_app/Application.h"
+#include "tools/sksltrace/SkSLTraceUtils.h"
 #include "tools/viewer/Viewer.h"
 
 #include <algorithm>
@@ -68,24 +72,25 @@ SkSLSlide::SkSLSlide() {
 }
 
 void SkSLSlide::load(SkScalar winWidth, SkScalar winHeight) {
-    SkPoint points[] = { { 0, 0 }, { 256, 0 } };
-    SkColor colors[] = { SK_ColorRED, SK_ColorGREEN };
+    const SkPoint points[] = { { 0, 0 }, { 256, 0 } };
+    const SkColor4f colors[] = { SkColors::kRed, SkColors::kGreen };
+    const SkGradient grad = {{colors, {}, SkTileMode::kClamp}, {}};
 
     sk_sp<SkShader> shader;
 
     fShaders.push_back(std::make_pair("Null", nullptr));
 
-    shader = SkGradientShader::MakeLinear(points, colors, nullptr, 2, SkTileMode::kClamp);
+    shader = SkShaders::LinearGradient(points, grad);
     fShaders.push_back(std::make_pair("Linear Gradient", shader));
 
-    shader = SkGradientShader::MakeRadial({ 256, 256 }, 256, colors, nullptr, 2,
-                                          SkTileMode::kClamp);
+    shader = SkShaders::RadialGradient({ 256, 256 }, 256, grad);
     fShaders.push_back(std::make_pair("Radial Gradient", shader));
 
-    shader = SkGradientShader::MakeSweep(256, 256, colors, nullptr, 2);
+    shader = SkShaders::SweepGradient({256, 256}, grad);
     fShaders.push_back(std::make_pair("Sweep Gradient", shader));
 
-    shader = GetResourceAsImage("images/mandrill_256.png")->makeShader(SkSamplingOptions());
+    shader = ToolUtils::GetResourceAsImage("images/mandrill_256.png")
+                     ->makeShader(SkSamplingOptions());
     fShaders.push_back(std::make_pair("Mandrill", shader));
 
     fResolution = { winWidth, winHeight, 1.0f };
@@ -101,7 +106,7 @@ void SkSLSlide::unload() {
 bool SkSLSlide::rebuild() {
     // Some of the standard shadertoy inputs:
     SkString sksl;
-    // TODO(skia:11209): This interferes with user-authored #version directives
+    // TODO(skbug.com/40042585): This interferes with user-authored #version directives
     if (fShadertoyUniforms) {
         sksl = "uniform float3 iResolution;\n"
                "uniform float  iTime;\n"
@@ -124,7 +129,9 @@ bool SkSLSlide::rebuild() {
     }
 
     if (!effect) {
+#if defined(SK_GANESH)
         Viewer::ShaderErrorHandler()->compileError(sksl.c_str(), errorText.c_str());
+#endif
         return false;
     }
 
@@ -324,7 +331,7 @@ void SkSLSlide::draw(SkCanvas* canvas) {
             canvas->drawRoundRect({ 0, 224, 512, 288 }, 32, 32, p);
             break;
         case kText: {
-            SkFont font;
+            SkFont font = ToolUtils::DefaultFont();
             font.setSize(SkIntToScalar(96));
             canvas->drawSimpleText("Hello World", strlen("Hello World"), SkTextEncoding::kUTF8, 0,
                                    256, font, p);
@@ -336,7 +343,7 @@ void SkSLSlide::draw(SkCanvas* canvas) {
 
     if (debugTrace && writeTrace) {
         SkFILEWStream traceFile("SkSLDebugTrace.json");
-        debugTrace->writeTrace(&traceFile);
+        SkSLTraceUtils::WriteTrace(static_cast<const SkSL::DebugTracePriv&>(*debugTrace), &traceFile);
     }
     if (debugTrace && writeDump) {
         SkFILEWStream dumpFile("SkSLDebugTrace.dump.txt");

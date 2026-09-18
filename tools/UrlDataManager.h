@@ -17,33 +17,27 @@
 #include <unordered_map>
 #include <vector>
 
-/*
- * A simple class which allows clients to add opaque data types, and returns a url where this data
- * will be hosted.  Its up to the owner of this class to actually serve the data.
- */
-bool operator==(const SkData& a, const SkData& b);
-
 class UrlDataManager {
 public:
-    UrlDataManager(SkString rootUrl);
+    explicit UrlDataManager(SkString rootUrl);
     ~UrlDataManager() { this->reset(); }
 
     /*
      * Adds a data blob to the cache with a particular content type.  UrlDataManager will hash
      * the blob data to ensure uniqueness
      */
-    SkString addData(SkData*, const char* contentType);
+    SkString addData(sk_sp<const SkData>, const char* contentType);
 
     struct UrlData : public SkRefCnt {
         SkString fUrl;
         SkString fContentType;
-        sk_sp<SkData> fData;
+        sk_sp<const SkData> fData;
     };
 
     /*
      * returns the UrlData object which should be hosted at 'url'
      */
-    UrlData* getDataFromUrl(SkString url) {
+    UrlData* getDataFromUrl(const SkString& url) {
         return fUrlLookup.find(url);
     }
     void reset();

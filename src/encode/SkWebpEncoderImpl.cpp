@@ -17,7 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkEncoder.h"
-#include "include/private/base/SkTemplates.h"
+#include "include/private/SkTemplates.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/encode/SkImageEncoderFns.h"
 #include "src/encode/SkImageEncoderPriv.h"
@@ -39,9 +39,9 @@ class SkImage;
 extern "C" {
 // If moving libwebp out of skia source tree, path for webp headers must be
 // updated accordingly. Here, we enforce using local copy in webp sub-directory.
-#include "webp/encode.h"
-#include "webp/mux.h"
-#include "webp/mux_types.h"
+#include "webp/encode.h"  // NO_G3_REWRITE
+#include "webp/mux.h"  // NO_G3_REWRITE
+#include "webp/mux_types.h"  // NO_G3_REWRITE
 }
 
 static int stream_writer(const uint8_t* data, size_t data_size, const WebPPicture* const picture) {
@@ -138,7 +138,9 @@ bool Encode(SkWStream* stream, const SkPixmap& pixmap, const Options& opts) {
     }
 
     WebPPicture pic;
-    WebPPictureInit(&pic);
+    if (!WebPPictureInit(&pic)) {
+        return false;
+    }
     SkAutoTCallVProc<WebPPicture, WebPPictureFree> autoPic(&pic);
 
     if (!preprocess_webp_picture(&pic, &webp_config, pixmap, opts)) {
@@ -148,8 +150,7 @@ bool Encode(SkWStream* stream, const SkPixmap& pixmap, const Options& opts) {
     // If there is no need to embed an ICC profile, we write directly to the input stream.
     // Otherwise, we will first encode to |tmp| and use a mux to add the ICC chunk.  libwebp
     // forces us to have an encoded image before we can add a profile.
-    sk_sp<SkData> icc =
-            icc_from_color_space(pixmap.info(), opts.fICCProfile, opts.fICCProfileDescription);
+    sk_sp<SkData> icc = SkWriteICCProfile(pixmap.colorSpace());
     SkDynamicMemoryWStream tmp;
     pic.custom_ptr = icc ? (void*)&tmp : (void*)stream;
     pic.writer = stream_writer;
@@ -173,19 +174,26 @@ bool Encode(SkWStream* stream, const SkPixmap& pixmap, const Options& opts) {
         }
 
         WebPData assembled;
+        SkAutoTCallVProc<WebPData, WebPDataClear> autoWebPData(&assembled);
         if (WEBP_MUX_OK != WebPMuxAssemble(mux, &assembled)) {
             return false;
         }
 
-        stream->write(assembled.bytes, assembled.size);
-        WebPDataClear(&assembled);
+        if (!stream->write(assembled.bytes, assembled.size)) {
+            return false;
+        }
     }
 
     return true;
 }
 
+sk_sp<SkData> Encode(const SkPixmap& pixmap, const Options& opts) {
+    SkDynamicMemoryWStream stream;
+    return Encode(&stream, pixmap, opts) ? stream.detachAsData() : nullptr;
+}
+
 bool EncodeAnimated(SkWStream* stream, SkSpan<const SkEncoder::Frame> frames, const Options& opts) {
-    if (!stream || !frames.size()) {
+    if (!stream || frames.empty()) {
         return false;
     }
 
@@ -212,7 +220,9 @@ bool EncodeAnimated(SkWStream* stream, SkSpan<const SkEncoder::Frame> frames, co
         }
 
         WebPPicture pic;
-        WebPPictureInit(&pic);
+        if (!WebPPictureInit(&pic)) {
+            return false;
+        }
         SkAutoTCallVProc<WebPPicture, WebPPictureFree> autoPic(&pic);
 
         if (!preprocess_webp_picture(&pic, &webp_config, pixmap, opts)) {
@@ -254,11 +264,7 @@ sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Options& op
     if (!as_IB(img)->getROPixels(ctx, &bm)) {
         return nullptr;
     }
-    SkDynamicMemoryWStream stream;
-    if (Encode(&stream, bm.pixmap(), options)) {
-        return stream.detachAsData();
-    }
-    return nullptr;
+    return Encode(bm.pixmap(), options);
 }
 
 }  // namespace SkWebpEncoder

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2017 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -8,9 +8,18 @@
 #ifndef SkSGEffectNode_DEFINED
 #define SkSGEffectNode_DEFINED
 
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "modules/sksg/include/SkSGRenderNode.h"
 
+#include <cstdint>
+
+class SkCanvas;
+class SkMatrix;
+struct SkPoint;
+
 namespace sksg {
+class InvalidationController;
 
 /**
  * Base class for nodes which apply some transformation when rendering

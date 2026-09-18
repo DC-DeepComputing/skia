@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -228,7 +228,7 @@ void WriteTransitionTable(std::ofstream& out, const DFA& dfa, size_t states) {
         }
     }
     out << "};\n"
-        << "State get_transition(int transition, int state) {\n"
+        << "static State get_transition(uint8_t transition, State state) {\n"
         << "    IndexEntry index = kIndices[state];\n"
         << "    if (index < 0) { return kFull[~index].data[transition]; }\n"
         << "    const CompactEntry& entry = kCompact[index];\n"
