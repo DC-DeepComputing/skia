@@ -43,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3406ab5e_bc4ae571",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-18T15:05:56Z",
+      "side": 1,
+      "message": "nit: const auto",
+      "range": {
+        "startLine": 40,
+        "startChar": 13,
+        "endLine": 40,
+        "endChar": 17
+      },
+      "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46816960_649d6e50",
         "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
         "patchSetId": 4
