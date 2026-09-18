@@ -22,6 +22,8 @@ public:
 
     const char* name() const override { return "Small"; }
 
+    void setDeferRotatedPaths(bool defer) { fDeferRotatedPaths = defer; }
+
 private:
     StencilSupport onGetStencilSupport(const GrStyledShape&) const override {
         return PathRenderer::kNoSupport_StencilSupport;
@@ -30,6 +32,8 @@ private:
     CanDrawPath onCanDrawPath(const CanDrawPathArgs&) const override;
 
     bool onDrawPath(const DrawPathArgs&) override;
+
+    bool fDeferRotatedPaths = false;
 };
 
 }  // namespace skgpu::ganesh

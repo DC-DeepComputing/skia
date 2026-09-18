@@ -307,6 +307,23 @@ struct SK_API GrContextOptions {
     // Suppress prints for the GrContext.
     bool fSuppressPrints = false;
 
+    /**
+     * If true, caches blurred DRRect masks in GrThreadSafeCache by their normalized (outer, inner)
+     * geometry rather than creating an uncacheable volatile SkPath.
+     */
+    bool fCacheDRRectBlurMasks = true;
+
+    /**
+     * If true, SmallPathRenderer only uses distance fields for paths larger than kMaxMIP or with perspective.
+     */
+    bool fSmallPathDisableDistanceFields = true;
+
+    /**
+     * If true, raises TriangulatingPathRenderer AA verb limit, caches AA triangulated meshes,
+     * and optimizes path clip containment and SW clip mask caching.
+     */
+    bool fOptimizeRadialChartPathsAndClips = true;
+
 #if defined(GPU_TEST_UTILS)
     /**
      * Private options that are only meant for testing within Skia's tools.
