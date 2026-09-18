@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277519ab_8a9d1c80",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:03:33Z",
+      "side": 0,
+      "message": "NOTE: these two checks are equivalent to the `rad \u003e\u003d 0` cases in `are_radius_check_predicates_valid`.",
+      "range": {
+        "startLine": 761,
+        "startChar": 31,
+        "endLine": 761,
+        "endChar": 69
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13902cf8_7ea63c2d",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:03:33Z",
+      "side": 0,
+      "message": "NOTE: this is equivalent to the `min \u003c\u003d max` case in `are_radius_check_predicates_valid`.",
+      "range": {
+        "startLine": 761,
+        "startChar": 8,
+        "endLine": 761,
+        "endChar": 27
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7df2acfa_adcad36a",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:03:33Z",
+      "side": 0,
+      "message": "I would have thought this was the same or more conservative to the `(rad \u003c\u003d max - min)` case in `are_radius_check_predicates_valid`.",
+      "range": {
+        "startLine": 769,
+        "startChar": 8,
+        "endLine": 769,
+        "endChar": 19
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70d1dcf1_5cb2780a",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:03:33Z",
+      "side": 0,
+      "message": "I would have thought that this would cover both `(min + rad \u003c\u003d max) \u0026\u0026 (max - rad \u003e\u003d min)`. `min + rad` is the same as `minCoord + radiusFromMin` or `ptFromMin`. Since we know the two radii are \u003e\u003d 0, then `maxCoord - radiusFromMax` should be \u003c\u003d `maxCoord`.",
+      "range": {
+        "startLine": 769,
+        "startChar": 24,
+        "endLine": 769,
+        "endChar": 76
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

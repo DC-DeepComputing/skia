@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ef0009_4f708180",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:03:33Z",
+      "side": 1,
+      "message": "This could be removed and inside `are_radii_predicates_valid` we can call `are_radius_check_predicates_valid(radiusFromMin, minCoord, maxCoord)` and `are_radius_check_predicates_valid(radiusFromMax, minCoord, maxCoord)`.",
+      "range": {
+        "startLine": 878,
+        "startChar": 0,
+        "endLine": 885,
+        "endChar": 5
+      },
+      "revId": "54792636c72c4ed21fac8bf3bb12e2973c9c744d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a6e967c_cfdf6b6d",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1788,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:03:33Z",
+      "side": 1,
+      "message": "I guess I\u0027m wondering here why it\u0027s a problem that this must remain a valid RRect?  Is the underlying issue that the path builder transformed an rrect that became invalid but didn\u0027t adjust the tracked SkPathIsAType on the SkPathData so we failed later on during deduction of the SkRRect?",
+      "range": {
+        "startLine": 1788,
+        "startChar": 12,
+        "endLine": 1788,
+        "endChar": 93
+      },
+      "revId": "54792636c72c4ed21fac8bf3bb12e2973c9c744d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af679c89_08653ae6",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T18:03:33Z",
+      "side": 1,
+      "message": "It can be helpful in these fuzzer bugs to include `// \u003capprox float value\u003e` comments for readability",
+      "range": {
+        "startLine": 1790,
+        "startChar": 0,
+        "endLine": 1794,
+        "endChar": 29
+      },
+      "revId": "54792636c72c4ed21fac8bf3bb12e2973c9c744d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
