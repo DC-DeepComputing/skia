@@ -63,6 +63,30 @@
       },
       "revId": "e1558870249647f44ef970e423548c0d56db42de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b7baf6_d5fb4918",
+        "filename": "src/gpu/ganesh/gl/AHardwareBufferGL.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T14:12:07Z",
+      "side": 1,
+      "message": "It\u0027s a bit of a conflation, but `requiresKnownFormat` and `isRenderable` are essentially the same thing.",
+      "parentUuid": "e65ff0bb_0466be84",
+      "range": {
+        "startLine": 296,
+        "startChar": 38,
+        "endLine": 296,
+        "endChar": 52
+      },
+      "revId": "e1558870249647f44ef970e423548c0d56db42de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
