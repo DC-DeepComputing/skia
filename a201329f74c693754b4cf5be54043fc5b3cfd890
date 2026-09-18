@@ -90,6 +90,103 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b8e10d44_adc107c1",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:01:17Z",
+      "side": 1,
+      "message": "Need to account for when width is swapped with height:\n```\nint memoryWidth \u003d SkEncodedOriginSwapsWidthHeight(origin) ? fDimensions.height()\n                                                          : fDimensions.width();\n. . .\nif (planeConfig \u003d\u003d PlaneConfig::kYUYV \u0026\u0026 (memoryWidth % 2 !\u003d 0) ||\n```",
+      "range": {
+        "startLine": 341,
+        "startChar": 4,
+        "endLine": 349,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ec2d609d_0604a298",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkYUVAInfo.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    int memoryWidth \u003d SkEncodedOriginSwapsWidthHeight(origin) ? fDimensions.height()\n                                                              : fDimensions.width();\n"
+            },
+            {
+              "path": "src/core/SkYUVAInfo.cpp",
+              "range": {
+                "startLine": 343,
+                "startChar": 0,
+                "endLine": 344,
+                "endChar": 0
+              },
+              "replacement": "        (planeConfig \u003d\u003d PlaneConfig::kYUYV \u0026\u0026 memoryWidth % 2 !\u003d 0)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f26e4ea_c3dbefdb",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:01:17Z",
+      "side": 1,
+      "message": "See comment below.\n```\n    if (packedYUYV) {\n        . . .\n\n        // Map the display-space subset to plane texel space.\n        if (subset) {\n            packedPlaneSubset \u003d packedPlaneMatrix.mapRect(*subset);\n        } else {\n            packedPlaneSubset \u003d SkRect::Make(yuvaProxies.makeView(0).dimensions());\n        }\n\n        packedFirstTexelCenter \u003d packedPlaneSubset.fLeft + 0.5f;\n        packedLastTexelCenter  \u003d packedPlaneSubset.fRight - 0.5f;\n    }\n\n```",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 5
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "115418f0_4cfee464",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:01:17Z",
+      "side": 1,
+      "message": "packedYUYV switches the planeMatrix to identity and samples in plane space, but subset is still display space I think?\n\n```\nif (subset) {\n   planeSubset \u003d packedYUYV ? packedPlaneSubset : *subset;\n}\n```",
+      "range": {
+        "startLine": 193,
+        "startChar": 12,
+        "endLine": 195,
+        "endChar": 13
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1bae0f82_fe3142f6",
         "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
         "patchSetId": 11
