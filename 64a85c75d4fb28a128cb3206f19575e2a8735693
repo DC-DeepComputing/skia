@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90d467f4_8b529091",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T19:31:43Z",
+      "side": 1,
+      "message": "PTAL; I thought the d3d11 was flaking due to the previous infra failure, but nope, it couldn\u0027t map a buffer.",
+      "revId": "64a85c75d4fb28a128cb3206f19575e2a8735693",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
