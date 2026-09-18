@@ -683,6 +683,17 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
         }
     }
 
+    if (fContext->priv().options().fCacheDRRectBlurMasks &&
+        paint.getMaskFilter() &&
+        paint.getStyle() == SkPaint::kFill_Style &&
+        !paint.getPathEffect() &&
+        this->localToDevice().isScaleTranslate()) {
+        GrBlurUtils::DrawDRRectWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
+                                              this->clip(), paint, this->localToDevice(),
+                                              outer, inner);
+        return;
+    }
+
     auto path = SkPathBuilder(SkPathFillType::kEvenOdd)
                 .addRRect(outer)
                 .addRRect(inner)
