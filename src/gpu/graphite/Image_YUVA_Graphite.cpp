@@ -92,6 +92,12 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
     if (!yuvaInfo.isValid()) {
         return nullptr;
     }
+    // Packed 4:2:2 (kYUYV) sampling is only implemented by the Ganesh
+    // GrYUVtoRGBEffect; Graphite would silently sample the plane as an
+    // unsubsampled 2-channel texture, so reject the config here.
+    if (yuvaInfo.planeConfig() == SkYUVAInfo::PlaneConfig::kYUYV) {
+        return nullptr;
+    }
     SkImageInfo info = SkImageInfo::Make(
             yuvaInfo.dimensions(), kAssumedColorType, yuva_alpha_type(yuvaInfo), imageColorSpace);
     if (!SkImageInfoIsValid(info)) {

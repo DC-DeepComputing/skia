@@ -19,6 +19,10 @@ static bool is_plane_config_compatible_with_subsampling(SkYUVAInfo::PlaneConfig 
         subsampling == SkYUVAInfo::Subsampling::kUnknown) {
         return false;
     }
+    if (config == SkYUVAInfo::PlaneConfig::kYUYV) {
+        // Packed 4:2:2 is only representable with horizontal 2:1 subsampling.
+        return subsampling == SkYUVAInfo::Subsampling::k422;
+    }
     return subsampling == SkYUVAInfo::Subsampling::k444 ||
            (config != SkYUVAInfo::PlaneConfig::kYUV  &&
             config != SkYUVAInfo::PlaneConfig::kYUVA &&
@@ -69,6 +73,10 @@ std::tuple<int, int> SkYUVAInfo::PlaneSubsamplingFactors(PlaneConfig planeConfig
         case PlaneConfig::kUYV:
         case PlaneConfig::kYUVA:
         case PlaneConfig::kUYVA:
+        case PlaneConfig::kYUYV:
+            // The packed plane is stored at full texel resolution even though
+            // its chroma is subsampled horizontally (each texel holds one
+            // pixel's luma and one shared chroma sample).
             break;
     }
     return isSubsampledPlane ? SubsamplingFactors(subsampling) : std::make_tuple(1, 1);
@@ -136,6 +144,13 @@ int SkYUVAInfo::PlaneDimensions(SkISize imageDimensions,
         case PlaneConfig::kUYVA:
             planeDimensions[0] = {w, h};
             SkASSERT(planeDimensions[0] == uvSize);
+            return 1;
+
+        case PlaneConfig::kYUYV:
+            // Packed 4:2:2: the single plane is stored at full image texel
+            // dimensions (one texel per pixel; see kYUYV docs).
+            planeDimensions[0] = {w, h};
+            SkASSERT(w % 2 == 0);
             return 1;
     }
     SkUNREACHABLE;
@@ -259,6 +274,15 @@ SkYUVAInfo::YUVALocations SkYUVAInfo::GetYUVALocations(PlaneConfig config,
             planesAndIndices = kPlanesAndIndices;
             break;
         }
+        case PlaneConfig::kYUYV: {
+            // Y comes from channel 0 of the pixel's own texel; U and V both come
+            // from channel 1 of the pair's two texels (see kYUYV docs). The
+            // Ganesh YUV effect special-cases this config for pixel-parity
+            // aware sampling.
+            static constexpr PlaneAndIndex kPlanesAndIndices[] = {{0, 0}, {0, 1}, {0, 1}, {-1, -1}};
+            planesAndIndices = kPlanesAndIndices;
+            break;
+        }
     }
     SkASSERT(planesAndIndices);
     YUVALocations yuvaLocations;
@@ -295,6 +319,7 @@ bool SkYUVAInfo::HasAlpha(PlaneConfig planeConfig) {
         case PlaneConfig::kY_VU_A:  return true;
         case PlaneConfig::kYUVA:    return true;
         case PlaneConfig::kUYVA:    return true;
+        case PlaneConfig::kYUYV:    return false;
     }
     SkUNREACHABLE;
 }
@@ -314,7 +339,10 @@ SkYUVAInfo::SkYUVAInfo(SkISize dimensions,
         , fSitingX(sitingX)
         , fSitingY(sitingY) {
     if (fDimensions.isEmpty() ||
-        !is_plane_config_compatible_with_subsampling(planeConfig, subsampling)) {
+        !is_plane_config_compatible_with_subsampling(planeConfig, subsampling) ||
+        (planeConfig == PlaneConfig::kYUYV && fDimensions.width() % 2 != 0)) {
+        // Packed 4:2:2 stores two pixels per texel pair, so the image width
+        // must be even.
         *this = {};
         SkASSERT(!this->isValid());
         return;

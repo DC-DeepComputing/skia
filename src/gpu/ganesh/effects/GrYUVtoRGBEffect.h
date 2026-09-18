@@ -42,6 +42,10 @@ private:
                      int numPlanes,
                      const SkYUVAInfo::YUVALocations&,
                      const bool snap[2],
+                     bool packedYUYV,
+                     const SkMatrix& packedPlaneMatrix,
+                     float packedFirstTexelCenter,
+                     float packedLastTexelCenter,
                      SkYUVColorSpace yuvColorSpace);
 
     GrYUVtoRGBEffect(const GrYUVtoRGBEffect& src);
@@ -61,5 +65,19 @@ private:
     SkYUVAInfo::YUVALocations   fLocations;
     SkYUVColorSpace             fYUVColorSpace;
     bool                        fSnap[2];
+    bool                        fPackedYUYV = false;
+    // The packed plane's texel space equals the image space transformed by
+    // the encoded origin. The effect applies this inverse-origin matrix to
+    // the sample coordinates before computing the texel-parity sampling, and
+    // the plane child is created with an identity matrix. Only meaningful
+    // when fPackedYUYV is set.
+    SkMatrix                    fPackedPlaneMatrix = SkMatrix::I();
+    // Center x of the first/last texel of the sampled region of the packed
+    // plane, in plane texel coordinates. The second texel sample (the pixel
+    // pair's partner texel) is clamped to this range so pixels at the edges
+    // of the region duplicate the edge chroma instead of sampling outside
+    // the subset. Only meaningful when fPackedYUYV is set.
+    float                       fPackedFirstTexelCenter = 0.f;
+    float                       fPackedLastTexelCenter = 0.f;
 };
 #endif
