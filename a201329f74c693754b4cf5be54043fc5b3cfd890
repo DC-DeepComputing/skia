@@ -113,6 +113,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed15dadb_690fea36",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T14:36:17Z",
+      "side": 1,
+      "message": "Shouldn\u0027t the texel center be:\n```\nfragBuilder-\u003ecodeAppendf(\"float pixelIdx \u003d floor(planeCoord.x);\");\nfragBuilder-\u003ecodeAppendf(\"float2 texelCenter \u003d float2(pixelIdx + 0.5, floor(planeCoord.y) + 0.5);\");\n```",
+      "range": {
+        "startLine": 370,
+        "startChar": 16,
+        "endLine": 373,
+        "endChar": 86
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afa337ef_3283de3a",
         "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
         "patchSetId": 11
