@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae631ad9_33128abf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-18T18:07:48Z",
+      "side": 1,
+      "message": "Sure, added a description to the one you made and added it to this CL.",
+      "parentUuid": "f462535a_cce2ab41",
+      "revId": "e3328138d4da67548c61f80d19b9f37326fd519c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e8de79a_0a2f4732",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-09-18T17:35:17Z",
       "side": 1,
       "message": "This should be an appendAttr too, since it gets embedded into sk_Position.",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 51
+      },
+      "revId": "e3328138d4da67548c61f80d19b9f37326fd519c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "358f58a2_51a6a9aa",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-18T18:07:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e8de79a_0a2f4732",
       "range": {
         "startLine": 213,
         "startChar": 0,
