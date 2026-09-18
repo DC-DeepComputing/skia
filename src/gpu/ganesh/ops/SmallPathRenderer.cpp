@@ -118,13 +118,15 @@ public:
                             const SkMatrix& viewMatrix,
                             bool gammaCorrect,
                             const GrUserStencilSettings* stencilSettings) {
-        return Helper::FactoryHelper<SmallPathOp>(context, std::move(paint), shape, viewMatrix,
-                                                  gammaCorrect, stencilSettings);
+        return Helper::FactoryHelper<SmallPathOp>(
+                context, std::move(paint), shape, viewMatrix, gammaCorrect, stencilSettings,
+                context->priv().caps()->smallPathDisableDistanceFields());
     }
 
     SmallPathOp(GrProcessorSet* processorSet, const SkPMColor4f& color, const GrStyledShape& shape,
                 const SkMatrix& viewMatrix, bool gammaCorrect,
-                const GrUserStencilSettings* stencilSettings)
+                const GrUserStencilSettings* stencilSettings,
+                bool disableDistanceFields = false)
             : INHERITED(ClassID())
             , fHelper(processorSet, GrAAType::kCoverage, stencilSettings) {
         SkASSERT(shape.hasUnstyledKey());
@@ -133,7 +135,12 @@ public:
 
 #if (defined(SK_BUILD_FOR_ANDROID) && !defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)) || \
         defined(SK_GANESH_SMALL_PATH_DISTANCE_FIELD_ALWAYS)
-        fUsesDistanceField = true;
+        if (disableDistanceFields) {
+            fUsesDistanceField =
+                    this->bounds().width() > kMaxMIP || this->bounds().height() > kMaxMIP;
+        } else {
+            fUsesDistanceField = true;
+        }
 #else
         // only use distance fields on desktop and Android framework to save space in the atlas
         fUsesDistanceField = this->bounds().width() > kMaxMIP || this->bounds().height() > kMaxMIP;
