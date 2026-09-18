@@ -36,23 +36,6 @@ public:
 
     ~SkContext();
 
-    SkContextPriv priv();
-    SkContextPrivConst priv() const;
-
-private:
-    SkContext(const SkContextOptions&);
-
-    friend class SkContextPrivConst;
-    friend class SkContextPriv;
-    friend class SkContextCtorAccessor;
-
-    friend class SkContextPrivConst;
-    friend class SkContextPriv;
-
-    SkResourceCache* resourceCache() const;
-    SkStrikeCache* fontCache() const;
-    SkTypefaceCache* typefaceCache() const;
-
     size_t fontCacheLimit() const;
     size_t setFontCacheLimit(size_t bytes);
     size_t fontCacheUsed() const;
@@ -65,6 +48,20 @@ private:
     void purgePinnedFontCache();
 
     void dumpMemoryStatistics(SkTraceMemoryDump* dump);
+
+    SkContextPriv priv();
+    SkContextPrivConst priv() const;
+
+private:
+    SkContext(const SkContextOptions&);
+
+    friend class SkContextPrivConst;
+    friend class SkContextPriv;
+    friend class SkContextCtorAccessor;
+
+    SkResourceCache* resourceCache() const;
+    SkStrikeCache* fontCache() const;
+    SkTypefaceCache* typefaceCache() const;
 
     sk_sp<SkSharedContext> fSharedContext;
 };
