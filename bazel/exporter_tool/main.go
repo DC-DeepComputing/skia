@@ -643,11 +643,14 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/sksl/codegen:glsl",
 				"//src/sksl/codegen:metal",
 				"//src/sksl/codegen:spirv",
-				"//src/sksl/codegen:wgsl",
 			}},
 		{Var: "skia_sksl_hlsl_sources",
 			Rules: []string{
 				"//src/sksl/codegen:hlsl",
+			}},
+		{Var: "skia_sksl_wgsl_sources",
+			Rules: []string{
+				"//src/sksl/codegen:wgsl",
 			}},
 		{Var: "skia_sksl_validate_spirv_sources",
 			Rules: []string{

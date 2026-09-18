@@ -751,6 +751,7 @@ if (skia_compile_sksl_tests) {
     sources += skia_sksl_tracing_sources
     sources += skia_sksl_validate_spirv_sources
     sources += skia_sksl_validate_wgsl_sources
+    sources += skia_sksl_wgsl_sources
     include_dirs = [ "." ]
     deps = [
       ":run_sksllex",
@@ -913,8 +914,12 @@ optional("gpu_shared") {
   sources += skia_sksl_codegen_sources
 
   if (skia_use_dawn) {
-    public_defines += [ "SK_DAWN" ]
+    public_defines += [
+      "SK_DAWN",
+      "SK_ENABLE_WGSL",
+    ]
     public_deps += [ "//third_party/dawn" ]
+    sources += skia_sksl_wgsl_sources
   }
 
   if (skia_use_direct3d) {
@@ -4085,6 +4090,7 @@ if (skia_build_fuzzers) {
 
   libfuzzer_app("sksl2wgsl") {
     sources = [ "fuzz/oss_fuzz/FuzzSKSL2WGSL.cpp" ]
+    sources += skia_sksl_wgsl_sources
     deps = []
   }
 

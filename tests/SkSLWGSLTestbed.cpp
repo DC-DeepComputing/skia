@@ -6,6 +6,9 @@
  */
 
 #include "include/core/SkTypes.h"
+
+#if defined(SK_ENABLE_WGSL) || defined(SK_DAWN)
+
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
@@ -45,3 +48,5 @@ DEF_TEST(SkSLWGSLTestbed, r) {
              }
          )__SkSL__");
 }
+
+#endif  // defined(SK_ENABLE_WGSL) || defined(SK_DAWN)

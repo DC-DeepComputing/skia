@@ -187,6 +187,7 @@ skia_cc_library(
         "SkSLWGSLCodeGenerator.h",
         ":codegen_shared_exported",
     ],
+    defines = ["SK_ENABLE_WGSL"],
     features = ["layering_check"],
     visibility = [
         "//dm:__pkg__",
