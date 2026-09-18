@@ -48,10 +48,17 @@ PathRendererChain::PathRendererChain(GrRecordingContext* context, const Options&
         }
     }
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
+    if (context->priv().options().fOptimizeRadialChartPathsAndClips &&
+        (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating)) {
+        auto pr = sk_make_sp<TriangulatingPathRenderer>();
+        pr->setMaxVerbCount(1024);
+        fChain.push_back(std::move(pr));
+    }
     if (options.fGpuPathRenderers & GpuPathRenderers::kSmall) {
         fChain.push_back(sk_make_sp<SmallPathRenderer>());
     }
-    if (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating) {
+    if (!context->priv().options().fOptimizeRadialChartPathsAndClips &&
+        (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating)) {
         fChain.push_back(sk_make_sp<TriangulatingPathRenderer>());
     }
 #endif

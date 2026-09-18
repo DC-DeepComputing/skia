@@ -33,6 +33,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkBlendModeBlender.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
@@ -735,11 +736,19 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
     }
 
     static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+    uint32_t pictureKey = shader->picture()->uniqueID();
+    if (ctx->priv().options().fPictureShaderContentKey &&
+        shader->picture()->approximateOpCount() <= 16 &&
+        shader->picture()->approximateBytesUsed() <= 4096) {
+        if (sk_sp<SkData> data = shader->picture()->serialize()) {
+            pictureKey = SkChecksum::Hash32(data->data(), data->size()) | 0x80000000u;
+        }
+    }
     skgpu::UniqueKey key;
     std::tuple keyData = {dstCS->toXYZD50Hash(),
                           dstCS->transferFnHash(),
                           static_cast<uint32_t>(dstColorType),
-                          shader->picture()->uniqueID(),
+                          pictureKey,
                           shader->tile(),
                           info.tileScale,
                           info.props};

@@ -84,6 +84,7 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fInternalMultisampleCount = 0;
 
     fSuppressPrints = options.fSuppressPrints;
+    fSmallPathDisableDistanceFields = options.fSmallPathDisableDistanceFields;
 #if defined(GPU_TEST_UTILS)
     fWireframeMode = options.fWireframeMode;
 #else
