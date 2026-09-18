@@ -25,6 +25,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkRectPriv.h"
@@ -1466,7 +1467,9 @@ GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
                         // The second test allows clipped draws that are scissored by multiple
                         // elements to remain scissor-only.
                         fullyApplied = e.innerBounds() == e.outerBounds() ||
-                                       e.innerBounds().contains(scissorBounds);
+                                       e.innerBounds().contains(scissorBounds) ||
+                                       (rContext->priv().options().fOptimizeRadialChartPathsAndClips &&
+                                        e.outerBounds().contains(draw.outerBounds()));
                     } else {
                         if (!e.innerBounds().isEmpty() &&
                             windowRects.count() < maxWindowRectangles) {
@@ -1652,19 +1655,54 @@ GrFPResult ClipStack::GetSWMaskFP(GrRecordingContext* context, Mask::Stack* mask
                                   std::unique_ptr<GrFragmentProcessor> clipFP) {
     GrProxyProvider* proxyProvider = context->priv().proxyProvider();
     GrSurfaceProxyView maskProxy;
-
     SkIRect maskBounds; // may not be 'bounds' if we reuse a large clip mask
-    // Check the existing masks from this save record for compatibility
-    for (const Mask& m : masks->ritems()) {
-        if (m.genID() != current.genID()) {
-            break;
+
+    skgpu::UniqueKey contentKey;
+    const bool useContentCache =
+            context->priv().options().fOptimizeRadialChartPathsAndClips &&
+            count == 1 && elements[0]->fShape.isPath();
+    if (useContentCache) {
+        static const skgpu::UniqueKey::Domain kContentMaskDomain =
+                skgpu::UniqueKey::GenerateDomain();
+        const Element& e = *elements[0];
+        const SkPath& path = e.fShape.path();
+        auto verbs = path.verbs();
+        auto pts = path.points();
+        uint32_t hash = SkChecksum::Hash32(verbs.data(), verbs.size_bytes());
+        hash = SkChecksum::Hash32(pts.data(), pts.size_bytes(), hash);
+        hash = SkChecksum::Hash32(&e.fLocalToDevice, sizeof(SkMatrix), hash);
+        uint32_t flags = (static_cast<uint32_t>(e.fOp) & 0xFF) |
+                         ((static_cast<uint32_t>(e.fAA) & 0xFF) << 8) |
+                         ((static_cast<uint32_t>(path.getFillType()) & 0xFF) << 16);
+        skgpu::UniqueKey::Builder builder(&contentKey, kContentMaskDomain, 6, "content_clip_mask");
+        builder[0] = hash;
+        builder[1] = flags;
+        builder[2] = bounds.fLeft;
+        builder[3] = bounds.fRight;
+        builder[4] = bounds.fTop;
+        builder[5] = bounds.fBottom;
+        builder.finish();
+
+        maskProxy = proxyProvider->findCachedProxyWithColorTypeFallback(
+                contentKey, kMaskOrigin, GrColorType::kAlpha_8, 1);
+        if (maskProxy) {
+            maskBounds = bounds;
         }
-        if (m.appliesToDraw(current, bounds)) {
-            maskProxy = proxyProvider->findCachedProxyWithColorTypeFallback(
-                    m.key(), kMaskOrigin, GrColorType::kAlpha_8, 1);
-            if (maskProxy) {
-                maskBounds = m.bounds();
+    }
+
+    // Check the existing masks from this save record for compatibility
+    if (!maskProxy) {
+        for (const Mask& m : masks->ritems()) {
+            if (m.genID() != current.genID()) {
                 break;
+            }
+            if (m.appliesToDraw(current, bounds)) {
+                maskProxy = proxyProvider->findCachedProxyWithColorTypeFallback(
+                        m.key(), kMaskOrigin, GrColorType::kAlpha_8, 1);
+                if (maskProxy) {
+                    maskBounds = m.bounds();
+                    break;
+                }
             }
         }
     }
@@ -1677,9 +1715,13 @@ GrFPResult ClipStack::GetSWMaskFP(GrRecordingContext* context, Mask::Stack* mask
             return GrFPFailure(std::move(clipFP));
         }
 
-        // Register the mask for later invalidation
-        Mask& mask = masks->emplace_back(current, bounds);
-        proxyProvider->assignUniqueKeyToProxy(mask.key(), maskProxy.asTextureProxy());
+        if (useContentCache) {
+            proxyProvider->assignUniqueKeyToProxy(contentKey, maskProxy.asTextureProxy());
+        } else {
+            // Register the mask for later invalidation
+            Mask& mask = masks->emplace_back(current, bounds);
+            proxyProvider->assignUniqueKeyToProxy(mask.key(), maskProxy.asTextureProxy());
+        }
         maskBounds = bounds;
     }
 
