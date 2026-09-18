@@ -16,6 +16,29 @@
       "message": "PTAL; note this patch will depend on a separate CL in chromium",
       "revId": "7a585cb2da8b2e94eda0ff5c7ef6e3dd6a2136ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b20e19e6_e8640c70",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-09-18T18:55:11Z",
+      "side": 1,
+      "message": "nit: This existing comment is wrong it\u0027s the high two bits that get cleared. Might as well correct it here.",
+      "range": {
+        "startLine": 122,
+        "startChar": 35,
+        "endLine": 122,
+        "endChar": 41
+      },
+      "revId": "7a585cb2da8b2e94eda0ff5c7ef6e3dd6a2136ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
