@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95c6362b_e80637b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T14:10:16Z",
+      "side": 1,
+      "message": "I have not fully reviewed the sksl logic of the shader, but here\u0027s some initial comments.",
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d9345c1_0597584e",
@@ -19,6 +36,99 @@
         "startChar": 0,
         "endLine": 73,
         "endChar": 14
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fda38d8_22bdce1c",
+        "filename": "include/core/SkYUVAInfo.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T14:10:16Z",
+      "side": 1,
+      "message": "We typically add a define to Chromium\u0027s skia/config/SkUserConfig.h file to preserve the old behavior, then land a Skia change that relies on the define, then update Chromium to opt into the new behavior.\n\nThis can either be add a SK_USE_LEGACY_FOO flag to chrome\u0027s SkUserConfig.h file, wrap all the new code in skia in a `#if !defined(SK_USE_LEGACY_FOO)`, roll Skia into chrome, then remove the SK_USE_LEGACY_FOO change from chrome with additional changes as required to use new behavior, then clean up #defines back in Skia when no one uses SK_USE_LEGACY_FOO.\n\nOR \n\nWrap all the new code in skia in a `#if defined(SK_ENABLE_NEW_FOO)`, roll skia into chrome, update chrome\u0027s SKUserConfig.h to define SK_ENABLE_NEW_FOO plus required code changes, then clean up #defines in Skia when everyone uses SK_ENABLE_NEW_FOO, then remove now unused SK_ENABLE_NEW_FOO from chrome\u0027s SkUserConfig.h",
+      "parentUuid": "3d9345c1_0597584e",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 14
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66e4bc0b_5183add8",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T14:10:16Z",
+      "side": 1,
+      "message": "Remove this detail; it\u0027s a necessary implementation for any shader and we\u0027ll need Graphite to support it as well.",
+      "range": {
+        "startLine": 279,
+        "startChar": 73,
+        "endLine": 281,
+        "endChar": 30
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bae0f82_fe3142f6",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T14:10:16Z",
+      "side": 1,
+      "message": "To make sure I\u0027m understanding why this is done first, it is because if we kept the plane matrix in the child but did the parity aware sampling in this parent effect, it would get it wrong when the origin implied a 90 degree rotation since we\u0027d now be sampling relative to the wrong axes. Is that correct?",
+      "range": {
+        "startLine": 363,
+        "startChar": 4,
+        "endLine": 366,
+        "endChar": 41
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afa337ef_3283de3a",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-18T14:10:16Z",
+      "side": 1,
+      "message": "I would prefer that we also support this in Graphite as part of this single CL, or we split this into 3 parts: a precursor CL that defines everyting for SkYUVInfo but both Ganesh and Graphite reject k422, and thne one CL for Ganesh and one CL for Graphite to add support.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 5
       },
       "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
