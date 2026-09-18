@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc46623e_d80b1c4e",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-18T14:21:09Z",
+      "side": 1,
+      "message": "I think I would just name this priv() so callers don\u0027t have to think about it (especially since most uses of priv() are inlined without saving the SkContextPriv object.). The compiler would pick the right one. If you really wanted to store the priv object in a variable, you\u0027ll either get a compiler warning if you pick the wrong data type or just use auto.",
+      "range": {
+        "startLine": 27,
+        "startChar": 30,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "c1ea37d9af27830f880fae8a4ecdb87e2d84036d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
