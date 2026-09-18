@@ -16,6 +16,115 @@
       "message": "Ok, this is ready for review!",
       "revId": "9fef15c54b7df58edcdfd605ff0e07c03ab1c100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "996f3340_6e4971cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:59:06Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "9fef15c54b7df58edcdfd605ff0e07c03ab1c100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f83fa4e_1dd8908b",
+        "filename": "src/pathops/SkPathOpsLine.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:59:06Z",
+      "side": 1,
+      "message": "This new interpolation technique causes the tolerance to drop precipitously around the origin;\nwe should add some sort of floor, roughly based on the size of the segment, to prevent it from getting too low:\n```\ndouble segExtent \u003d std::max(std::abs(fPts[1].fX - fPts[0].fX),\n                            std::abs(fPts[1].fY - fPts[0].fY));\ndouble minFloor \u003d segExtent * 0.001; \n\ndouble largest \u003d std::max((1 - t) * largest0 + t * largest1, minFloor);\n```",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 55
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "af69dc84_690c6be3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pathops/SkPathOpsLine.cpp",
+              "range": {
+                "startLine": 65,
+                "startChar": 0,
+                "endLine": 66,
+                "endChar": 0
+              },
+              "replacement": "    double segExtent \u003d std::max(std::abs(fPts[1].fX - fPts[0].fX),\n                                std::abs(fPts[1].fY - fPts[0].fY));\n    double minFloor \u003d segExtent * 0.001;\n    double largest \u003d std::max((1 - t) * largest0 + t * largest1, minFloor);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9fef15c54b7df58edcdfd605ff0e07c03ab1c100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4daa59bb_d0b9fccc",
+        "filename": "src/pathops/SkPathOpsLine.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-18T15:59:06Z",
+      "side": 1,
+      "message": "Can we update NearPointH and NearPointV to match the logic in NearPoint?",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 0
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f1ab9712_9aea0f8a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pathops/SkPathOpsLine.cpp",
+              "range": {
+                "startLine": 119,
+                "startChar": 0,
+                "endLine": 123,
+                "endChar": 0
+              },
+              "replacement": "    double largest0 \u003d std::max(std::abs(left), std::abs(y));\n    double largest1 \u003d std::max(std::abs(right), std::abs(y));\n    double largest \u003d (1 - t) * largest0 + t * largest1;\n    if (!AlmostEqualUlps_Pin(largest, largest + dist)) { // is the dist within ULPS tolerance?\n"
+            },
+            {
+              "path": "src/pathops/SkPathOpsLine.cpp",
+              "range": {
+                "startLine": 154,
+                "startChar": 0,
+                "endLine": 158,
+                "endChar": 0
+              },
+              "replacement": "    double largest0 \u003d std::max(std::abs(x), std::abs(top));\n    double largest1 \u003d std::max(std::abs(x), std::abs(bottom));\n    double largest \u003d (1 - t) * largest0 + t * largest1;\n    if (!AlmostEqualUlps_Pin(largest, largest + dist)) { // is the dist within ULPS tolerance?\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9fef15c54b7df58edcdfd605ff0e07c03ab1c100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
