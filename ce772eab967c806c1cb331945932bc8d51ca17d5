@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad8e2e9_aa78dc44",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-18T16:21:35Z",
+      "side": 1,
+      "message": "Why do we need this? Can\u0027t we just make the SkContext ctor private and then since we friend it SkContextCtorAccessor can access it?",
+      "range": {
+        "startLine": 37,
+        "startChar": 10,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "ce772eab967c806c1cb331945932bc8d51ca17d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
