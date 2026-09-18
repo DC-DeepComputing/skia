@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2401908_01c86f18",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-18T14:23:29Z",
+      "side": 1,
+      "message": "I would move this out of the title and on to its own line right about the Change-ID. And if you write it as:\n`Bug: 561665060` then it will auto link to the bug and even comment on the bug when this CL lands",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "a265ec1fe2abdeb8a711d7ad20bf604b5758d67b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
