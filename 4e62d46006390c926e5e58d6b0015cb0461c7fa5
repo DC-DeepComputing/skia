@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3893c5e_990f44ed",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-18T14:48:34Z",
+      "side": 1,
+      "message": "should we have any sort of overflow check here or in the count*numSets below? Or do we know that match sould be safe coming from our internal usages?",
+      "range": {
+        "startLine": 33,
+        "startChar": 42,
+        "endLine": 33,
+        "endChar": 69
+      },
+      "revId": "4e62d46006390c926e5e58d6b0015cb0461c7fa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
