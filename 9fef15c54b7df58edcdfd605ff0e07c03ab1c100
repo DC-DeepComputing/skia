@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64a19827_71cc7681",
+        "filename": "src/pathops/SkPathOpsLine.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 7516
+      },
+      "writtenOn": "2026-09-18T18:00:27Z",
+      "side": 1,
+      "message": "Done. I also split out the constant into a named constant (`kSegmentExtentFloorScale`).",
+      "parentUuid": "4f83fa4e_1dd8908b",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 55
+      },
+      "revId": "9fef15c54b7df58edcdfd605ff0e07c03ab1c100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4daa59bb_d0b9fccc",
@@ -123,6 +147,30 @@
           ]
         }
       ],
+      "revId": "9fef15c54b7df58edcdfd605ff0e07c03ab1c100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bc2cb95_e43ff205",
+        "filename": "src/pathops/SkPathOpsLine.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 7516
+      },
+      "writtenOn": "2026-09-18T18:00:27Z",
+      "side": 1,
+      "message": "Done. We should also include the minFloor logic here too, so I\u0027ve split this logic into a helper that can be used by all 3 functions (`NearPointH`, `NearPointV`, `nearPoint`).",
+      "parentUuid": "4daa59bb_d0b9fccc",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 0
+      },
       "revId": "9fef15c54b7df58edcdfd605ff0e07c03ab1c100",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
