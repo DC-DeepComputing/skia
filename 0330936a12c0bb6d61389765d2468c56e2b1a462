@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1de098bf_55bbc651",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4677374
+      },
+      "writtenOn": "2026-09-19T13:45:47Z",
+      "side": 1,
+      "message": "Hi! Could you please review this SkParagraph fix for Flutter issue #54400 https://github.com/flutter/flutter/issues/54400\n\nThe change lays out placeholders in Unicode bidi visual order while preserving logical insertion order in getRectsForPlaceholders(), so clients can still map boxes to their inline objects. It also fixes the corresponding hit-testing offset.\n\nRegression tests cover RTL/mixed-direction text, wrapping, maxLines, placeholder geometry and caret boundaries, including Russian and Arabic.\n\nThanks!",
+      "revId": "0330936a12c0bb6d61389765d2468c56e2b1a462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
