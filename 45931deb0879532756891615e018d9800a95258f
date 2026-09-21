@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46166fc_ac26d61e",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T20:17:54Z",
+      "side": 1,
+      "message": "This is a slippery slope of starting to add \"or\" combinations in the switch statement especially if we ever expand the combinations of accesses. Is there a better way to implement this functions without a switch? If you think this is the cleanest way and you don\u0027t foresee expansion, then I\u0027m okay with it for now. But maybe add a comment here that we don\u0027t want to continue expanding this switch statement in this way.",
+      "range": {
+        "startLine": 356,
+        "startChar": 14,
+        "endLine": 356,
+        "endChar": 68
+      },
+      "revId": "45931deb0879532756891615e018d9800a95258f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
