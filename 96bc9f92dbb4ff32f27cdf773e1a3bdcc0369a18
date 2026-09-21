@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1df0458_26e86d44",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T14:08:24Z",
+      "side": 1,
+      "message": "this and above friends got duplicated.",
+      "range": {
+        "startLine": 46,
+        "startChar": 17,
+        "endLine": 46,
+        "endChar": 30
+      },
+      "revId": "96bc9f92dbb4ff32f27cdf773e1a3bdcc0369a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
