@@ -22,6 +22,30 @@
       },
       "revId": "45931deb0879532756891615e018d9800a95258f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bddba21_438e14a4",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-21T20:32:00Z",
+      "side": 1,
+      "message": "Hmm, the other way to do it would be treat the access flags like the bitfield they already are (and update `access_to_pipeline_srcStageFlags` to match):\n```\nbool access_is_read_only(VkAccessFlags access) {\n    constexpr VkAccessFlags kWriteAccessFlags \u003d\n            VK_ACCESS_TRANSFER_WRITE_BIT |\n            VK_ACCESS_SHADER_WRITE_BIT |\n            VK_ACCESS_HOST_WRITE_BIT;\n\n    return (access \u0026 kWriteAccessFlags) \u003d\u003d 0;\n}\n```\n\nI don\u0027t anticipate adding any more \"or\" combinations, but happy to change this",
+      "parentUuid": "f46166fc_ac26d61e",
+      "range": {
+        "startLine": 356,
+        "startChar": 14,
+        "endLine": 356,
+        "endChar": 68
+      },
+      "revId": "45931deb0879532756891615e018d9800a95258f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
