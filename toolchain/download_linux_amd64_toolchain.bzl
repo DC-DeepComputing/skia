@@ -14,6 +14,11 @@ which will act as our sysroot.
 """
 
 load(":clang_layering_check.bzl", "generate_system_module_map")
+load(
+    ":unsafe_buffers.bzl",
+    "probe_warning_suppression_mappings",
+    "unsafe_buffers_build_file_content",
+)
 load(":utils.bzl", "gcs_mirror_only", "gcs_mirror_url")
 
 # The clang from CIPD has no prefix, and we download it directly from our GCS bucket
@@ -302,7 +307,9 @@ filegroup(
 ],
     visibility = ["//visibility:public"],
 )
-""",
+""" + unsafe_buffers_build_file_content(
+            probe_warning_suppression_mappings(ctx, ctx.path("bin/clang")),
+        ),
         executable = False,
     )
 

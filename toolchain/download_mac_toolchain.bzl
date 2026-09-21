@@ -13,6 +13,11 @@ The destination folder for these files and symlinks are:
 """
 
 load(":clang_layering_check.bzl", "generate_system_module_map")
+load(
+    ":unsafe_buffers.bzl",
+    "probe_warning_suppression_mappings",
+    "unsafe_buffers_build_file_content",
+)
 
 # https://chrome-infra-packages.appspot.com/p/skia/bots/clang_mac_intel/+/NL1eTB6Iud2w7mk4TkMXSFpVZmzjF3Ms4BwDE130ZkQC
 clang_intel_url = "https://chrome-infra-packages.appspot.com/dl/skia/bots/clang_mac_intel/+/version:0"
@@ -209,7 +214,9 @@ filegroup(
     ),
     visibility = ["//visibility:public"],
 )
-""",
+""" + unsafe_buffers_build_file_content(
+            probe_warning_suppression_mappings(ctx, ctx.path("bin/clang")),
+        ),
         executable = False,
     )
 

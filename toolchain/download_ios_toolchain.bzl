@@ -13,6 +13,11 @@ The destination folder for these files and symlinks are:
 """
 
 load(":clang_layering_check.bzl", "generate_system_module_map")
+load(
+    ":unsafe_buffers.bzl",
+    "probe_warning_suppression_mappings",
+    "unsafe_buffers_build_file_content",
+)
 load(":utils.bzl", "gcs_mirror_url")
 
 # From https://github.com/llvm/llvm-project/releases/tag/llvmorg-15.0.1
@@ -180,7 +185,9 @@ filegroup(
     ),
     visibility = ["//visibility:public"],
 )
-""",
+""" + unsafe_buffers_build_file_content(
+            probe_warning_suppression_mappings(ctx, ctx.path("bin/clang")),
+        ),
         executable = False,
     )
 
