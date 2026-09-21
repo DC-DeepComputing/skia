@@ -1644,3 +1644,135 @@ DEF_TEST(RustPngCodec_apng_offset_frame_full_canvas_placement, r) {
         REPORTER_ASSERT(r, bm.getColor(63, 63) == SK_ColorMAGENTA);
     }
 }
+
+// Regression test for b/562939096:
+// Decoding a top subset (or subsampled image whose last sampled row precedes the end of the image)
+// must stop after the last required row rather than decompressing and CRC-checking the entire
+// remainder of the PNG stream through IEND via `finish_decoding()`.
+DEF_TEST(RustPngCodec_subset_does_not_read_to_iend, r) {
+    sk_sp<SkData> data = GetResourceAsData("images/mandrill_128.png");
+    REPORTER_ASSERT(r, data);
+    if (!data) {
+        return;
+    }
+
+    // 1. Decode a top 128x16 subset from an unowned SkMemoryStream and verify that the stream
+    //    is NOT consumed all the way to the end of the file (IEND).
+    {
+        SkMemoryStream memStream(data);
+        SkCodec::Result result;
+        std::unique_ptr<SkCodec> codec =
+                SkPngRustDecoder::Decode(std::make_unique<UnowningStream>(&memStream), &result);
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+        REPORTER_ASSERT(r, codec);
+
+        std::unique_ptr<SkAndroidCodec> androidCodec =
+                SkAndroidCodec::MakeFromCodec(std::move(codec));
+        REPORTER_ASSERT(r, androidCodec);
+
+        SkIRect topSubset = SkIRect::MakeXYWH(0, 0, 128, 16);
+        SkAndroidCodec::AndroidOptions options;
+        options.fSubset = &topSubset;
+
+        SkBitmap bm;
+        SkImageInfo subsetInfo =
+                androidCodec->getInfo().makeDimensions(topSubset.size()).makeColorType(
+                        kN32_SkColorType);
+        REPORTER_ASSERT(r, bm.tryAllocPixels(subsetInfo));
+
+        result = androidCodec->getAndroidPixels(bm.info(), bm.getPixels(), bm.rowBytes(), &options);
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+#if defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+        // When `LimitBufReader` is enabled (`for_android`), the stream position must remain
+        // well before the trailing IEND chunk (the last 12 bytes) because `finish_decoding()`
+        // is not called on subset decodes.
+        REPORTER_ASSERT(r,
+                        memStream.getPosition() < data->size() - 12,
+                        "Expected subset decode to stop before IEND, but pos=%zu (size=%zu)",
+                        memStream.getPosition(),
+                        data->size());
+#endif
+    }
+
+    // 2. Even if the second half of the file (including the bottom rows of IDAT and IEND) is
+    //    truncated, decoding the top 128x16 subset must still succeed with kSuccess.
+    {
+        sk_sp<SkData> truncatedHalf = SkData::MakeSubset(data.get(), 0, data->size() / 2);
+        std::unique_ptr<SkAndroidCodec> androidCodec =
+                SkAndroidCodec::MakeFromData(std::move(truncatedHalf));
+        REPORTER_ASSERT(r, androidCodec);
+
+        SkIRect topSubset = SkIRect::MakeXYWH(0, 0, 128, 16);
+        SkAndroidCodec::AndroidOptions options;
+        options.fSubset = &topSubset;
+
+        SkBitmap bm;
+        SkImageInfo subsetInfo =
+                androidCodec->getInfo().makeDimensions(topSubset.size()).makeColorType(
+                        kN32_SkColorType);
+        REPORTER_ASSERT(r, bm.tryAllocPixels(subsetInfo));
+
+        SkCodec::Result result =
+                androidCodec->getAndroidPixels(bm.info(), bm.getPixels(), bm.rowBytes(), &options);
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    }
+}
+
+// Regression test for b/562802947:
+// When all scanlines and the IDAT chunk have been decoded, a corrupt or truncated trailing `IEND`
+// CRC in `finish_decoding()` must not cause the decode to fail or zero-fill the output bitmap
+// (matching `SkPngCodec` / libpng `png_read_end` behavior and Chrome's `SkPngRustCodec`).
+DEF_TEST(RustPngCodec_missing_or_corrupt_iend_succeeds, r) {
+    for (const char* path : {"images/mandrill_128.png", "images/plane_interlaced.png"}) {
+        sk_sp<SkData> fullData = GetResourceAsData(path);
+        REPORTER_ASSERT(r, fullData);
+        if (!fullData || fullData->size() <= 12) {
+            continue;
+        }
+
+        // Decode reference bitmap from the intact file.
+        for (SkAlphaType alphaType : {kUnpremul_SkAlphaType, kPremul_SkAlphaType}) {
+            SkCodec::Result result;
+            std::unique_ptr<SkCodec> refCodec =
+                    SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(fullData), &result);
+            REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+            SkImageInfo info =
+                    refCodec->getInfo().makeColorType(kN32_SkColorType).makeAlphaType(alphaType);
+            SkBitmap refBm;
+            REPORTER_ASSERT(r, refBm.tryAllocPixels(info));
+            REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, refCodec->getPixels(refBm.pixmap()));
+
+            // Construct tail variants after all IDAT scanlines:
+            // (a) Corrupt 4-byte IEND CRC
+            sk_sp<SkData> corruptIendCrc = SkData::MakeWithCopy(fullData->data(), fullData->size());
+            static_cast<uint8_t*>(corruptIendCrc->writable_data())[corruptIendCrc->size() - 1] ^=
+                    0xFF;
+            // (b) Truncated 4-byte IEND CRC (8-byte IEND header present, CRC missing)
+            sk_sp<SkData> missingIendCrc =
+                    SkData::MakeSubset(fullData.get(), 0, fullData->size() - 4);
+
+            for (const sk_sp<SkData>& variant : {corruptIendCrc, missingIendCrc}) {
+                std::unique_ptr<SkCodec> codec = SkPngRustDecoder::Decode(
+                        std::make_unique<SkMemoryStream>(variant), &result);
+                REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+                REPORTER_ASSERT(r, codec);
+
+                SkBitmap bm;
+                REPORTER_ASSERT(r, bm.tryAllocPixels(info));
+                bm.eraseColor(SK_ColorMAGENTA);
+
+                SkCodec::Options opts;
+                opts.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
+                result = codec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes(), &opts);
+                REPORTER_ASSERT(r,
+                                result == SkCodec::kSuccess,
+                                "path=%s alphaType=%d sizeDiff=%zu got %s",
+                                path,
+                                static_cast<int>(alphaType),
+                                fullData->size() - variant->size(),
+                                SkCodec::ResultToString(result));
+                CompareBitmaps(r, refBm, bm);
+            }
+        }
+    }
+}
