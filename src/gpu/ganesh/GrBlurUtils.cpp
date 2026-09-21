@@ -32,6 +32,7 @@
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/GpuTypes.h"
@@ -1324,6 +1325,16 @@ static GrSurfaceProxyView hw_create_filtered_mask(GrDirectContext* dContext,
     sk_sp<GrThreadSafeCache::Trampoline> trampoline;
 
     if (key->isValid()) {
+        auto [existingView, existingData] = threadSafeCache->findWithData(*key);
+        if (existingView) {
+            SkASSERT(existingData);
+            SkASSERT(existingView.asTextureProxy());
+            SkASSERT(existingView.origin() == kMaskOrigin);
+
+            *maskRect = extract_draw_rect_from_data(existingData.get(), unclippedDevShapeBounds);
+            return existingView;
+        }
+
         // In this case, we want GPU-filtered masks to have priority over SW-generated ones so
         // we pre-emptively add a lazy-view to the cache and fill it in later.
         std::tie(lazyView, trampoline) = GrThreadSafeCache::CreateLazyView(
@@ -1604,6 +1615,168 @@ void DrawShapeWithMaskFilter(GrRecordingContext* rContext,
         draw_shape_with_mask_filter(rContext, sdc, clip, std::move(grPaint), ctm, mf, shape);
     } else {
         sdc->drawShape(clip, std::move(grPaint), sdc->chooseAA(paint), ctm, GrStyledShape(shape));
+    }
+}
+
+void DrawDRRectWithMaskFilter(GrRecordingContext* rContext,
+                              skgpu::ganesh::SurfaceDrawContext* sdc,
+                              const GrClip* clip,
+                              const SkPaint& paint,
+                              const SkMatrix& ctm,
+                              const SkRRect& outer,
+                              const SkRRect& inner) {
+    if (rContext->abandoned()) {
+        return;
+    }
+
+    SkMaskFilterBase* mf = as_MFB(paint.getMaskFilter());
+    SkMaskFilterBase::BlurRec rec;
+    if (!mf || GrFragmentProcessors::IsSupported(mf) ||
+        mf->type() != SkMaskFilterBase::Type::kBlur || !mf->asABlur(&rec)) {
+        auto path = SkPathBuilder(SkPathFillType::kEvenOdd)
+                    .addRRect(outer)
+                    .addRRect(inner)
+                    .detach();
+        path.setIsVolatile(true);
+        GrStyledShape shape(path, paint);
+        DrawShapeWithMaskFilter(rContext, sdc, clip, paint, ctm, shape);
+        return;
+    }
+
+    SkScalar dx = outer.getBounds().left();
+    SkScalar dy = outer.getBounds().top();
+    SkRRect normOuter = outer.makeOffset(-dx, -dy);
+    SkRRect normInner = inner.makeOffset(-dx, -dy);
+    SkMatrix normCTM = ctm;
+    normCTM.preTranslate(dx, dy);
+
+    SkRect shapeDevBounds;
+    normCTM.mapRect(&shapeDevBounds, normOuter.getBounds());
+    static constexpr int32_t kMaxInt = 2147483520;
+    if (!shapeDevBounds.intersect(SkRect::MakeLTRB(INT32_MIN, INT32_MIN, kMaxInt, kMaxInt)) ||
+        SkScalarRoundToInt(shapeDevBounds.width()) > kMaxInt ||
+        SkScalarRoundToInt(shapeDevBounds.height()) > kMaxInt) {
+        return;
+    }
+    SkIRect unclippedDevShapeBounds = shapeDevBounds.roundOut();
+    SkIRect devClipBounds = clip ? clip->getConservativeBounds()
+                                 : SkIRect::MakeWH(sdc->width(), sdc->height());
+
+    auto bmf = static_cast<const SkBlurMaskFilterImpl*>(mf);
+    SkScalar xformedSigma = bmf->computeXformedSigma(normCTM);
+    if (skgpu::BlurIsEffectivelyIdentity(xformedSigma)) {
+        auto path = SkPathBuilder(SkPathFillType::kEvenOdd)
+                    .addRRect(outer)
+                    .addRRect(inner)
+                    .detach();
+        path.setIsVolatile(true);
+        GrStyledShape shape(path, paint);
+        DrawShapeWithMaskFilter(rContext, sdc, clip, paint, ctm, shape);
+        return;
+    }
+
+    float sigma3 = 3.0f * xformedSigma;
+    SkIRect clippedMaskRect = unclippedDevShapeBounds.makeOutset(sigma3, sigma3);
+    if (!clippedMaskRect.intersect(devClipBounds.makeOutset(sigma3, sigma3)) ||
+        clip_bounds_quick_reject(devClipBounds, clippedMaskRect)) {
+        return;
+    }
+
+    SkRect innerDevRect;
+    normCTM.mapRect(&innerDevRect, normInner.getBounds());
+    SkIRect innerDevBounds = innerDevRect.roundOut();
+    bool clippedToInner = innerDevBounds.contains(devClipBounds);
+
+    SkIRect boundsForClip = clippedToInner ? innerDevBounds : unclippedDevShapeBounds;
+    SkIRect targetMaskRect = unclippedDevShapeBounds.makeOutset(sigma3, sigma3);
+    if (!targetMaskRect.intersect(boundsForClip.makeOutset(sigma3, sigma3))) {
+        return;
+    }
+
+    int maxTextureSize = sdc->caps()->maxTextureSize();
+    bool useCache = targetMaskRect.width() <= maxTextureSize &&
+                    targetMaskRect.height() <= maxTextureSize &&
+                    (clippedToInner ||
+                     sk_64_mul(targetMaskRect.width(), targetMaskRect.height()) <=
+                             2 * sk_64_mul(clippedMaskRect.width(), clippedMaskRect.height()));
+
+    GrPaint grPaint;
+    if (!SkPaintToGrPaint(sdc, paint, normCTM, &grPaint)) {
+        return;
+    }
+
+    skgpu::UniqueKey maskKey;
+    if (useCache) {
+        static const skgpu::UniqueKey::Domain kDRRectDomain = skgpu::UniqueKey::GenerateDomain();
+        static constexpr int kRRectWords = SkRRect::kSizeInMemory / sizeof(uint32_t);
+        skgpu::UniqueKey::Builder builder(&maskKey, kDRRectDomain, 8 + 2 * kRRectWords,
+                                          "DRRect Mask Filtered Masks");
+        SkScalar sx = normCTM.get(SkMatrix::kMScaleX);
+        SkScalar sy = normCTM.get(SkMatrix::kMScaleY);
+        SkScalar kx = normCTM.get(SkMatrix::kMSkewX);
+        SkScalar ky = normCTM.get(SkMatrix::kMSkewY);
+        SkScalar tx = normCTM.get(SkMatrix::kMTransX);
+        SkScalar ty = normCTM.get(SkMatrix::kMTransY);
+        SkFixed fracX = SkScalarToFixed(SkScalarFraction(tx)) & 0x0000FF00;
+        SkFixed fracY = SkScalarToFixed(SkScalarFraction(ty)) & 0x0000FF00;
+
+        builder[0] = SkFloat2Bits(sx);
+        builder[1] = SkFloat2Bits(sy);
+        builder[2] = SkFloat2Bits(kx);
+        builder[3] = SkFloat2Bits(ky);
+        builder[4] = fracX | (fracY >> 8);
+        builder[5] = rec.fStyle;
+        builder[6] = SkFloat2Bits(rec.fSigma);
+        builder[7] = clippedToInner ? 1u : 0u;
+        normOuter.writeToMemory(&builder[8]);
+        normInner.writeToMemory(&builder[8 + kRRectWords]);
+        builder.finish();
+
+        if (auto dContext = rContext->asDirectContext()) {
+            auto [cachedView, data] = dContext->priv().threadSafeCache()->findWithData(maskKey);
+            if (cachedView) {
+                SkIRect maskRect = extract_draw_rect_from_data(data.get(), unclippedDevShapeBounds);
+                if (draw_mask(sdc, clip, normCTM, maskRect, std::move(grPaint),
+                              std::move(cachedView))) {
+                    return;
+                }
+                assert_alive(grPaint);
+            }
+        }
+    } else {
+        boundsForClip = devClipBounds;
+    }
+
+    auto path = SkPathBuilder(SkPathFillType::kEvenOdd)
+                .addRRect(normOuter)
+                .addRRect(normInner)
+                .detach();
+    path.setIsVolatile(true);
+    GrStyledShape shape(path, paint);
+
+    GrSurfaceProxyView filteredMaskView;
+    SkIRect maskRect;
+    if (auto dContext = rContext->asDirectContext()) {
+        filteredMaskView = hw_create_filtered_mask(dContext, sdc,
+                                                   normCTM, shape, mf,
+                                                   unclippedDevShapeBounds, boundsForClip,
+                                                   &maskRect, &maskKey);
+        if (filteredMaskView) {
+            if (draw_mask(sdc, clip, normCTM, maskRect, std::move(grPaint),
+                          std::move(filteredMaskView))) {
+                return;
+            }
+            assert_alive(grPaint);
+        }
+    }
+
+    filteredMaskView = sw_create_filtered_mask(rContext,
+                                               normCTM, shape, mf,
+                                               unclippedDevShapeBounds, boundsForClip,
+                                               &maskRect, &maskKey);
+    if (filteredMaskView) {
+        draw_mask(sdc, clip, normCTM, maskRect, std::move(grPaint),
+                  std::move(filteredMaskView));
     }
 }
 
