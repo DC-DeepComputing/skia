@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fccfeb8_a8bd6526",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-21T15:32:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd4ab34d_b5cd95d3",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "b54bb6fa22d7f8bbda47db643a9627dfa2ba03cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e950f8b3_4c487b9d",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-21T15:14:07Z",
       "side": 1,
       "message": "remove this comment",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 26,
+        "endChar": 76
+      },
+      "revId": "b54bb6fa22d7f8bbda47db643a9627dfa2ba03cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db51ebf9_2fd6fa9d",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-21T15:32:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e950f8b3_4c487b9d",
       "range": {
         "startLine": 25,
         "startChar": 3,
