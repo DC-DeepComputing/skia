@@ -266,6 +266,23 @@ static void CompareBitmaps(skiatest::Reporter* r, const SkBitmap& bm1, const SkB
     }
 }
 
+// The smallest possible `IEND` chunk: 4-byte length, 4-byte type, 4-byte CRC.
+static constexpr size_t kIendChunkSize = 12;
+
+// Returns a copy of `data` with the last byte of the trailing `IEND` CRC flipped.
+static sk_sp<SkData> WithCorruptIendCrc(const SkData* data) {
+    SkASSERT(data->size() > kIendChunkSize);
+    sk_sp<SkData> copy = SkData::MakeWithCopy(data->data(), data->size());
+    static_cast<uint8_t*>(copy->writable_data())[copy->size() - 1] ^= 0xFF;
+    return copy;
+}
+
+// Returns `data` without the trailing 4-byte `IEND` CRC (the 8-byte chunk header is kept).
+static sk_sp<SkData> WithoutIendCrc(const SkData* data) {
+    SkASSERT(data->size() > kIendChunkSize);
+    return SkData::MakeSubset(data, 0, data->size() - 4);
+}
+
 static std::optional<SkBitmap> DecodeAndroidPixels(
         skiatest::Reporter* r,
         std::unique_ptr<SkCodec> codec,
@@ -304,6 +321,41 @@ static std::optional<SkBitmap> DecodeAndroidPixels(
     bm.allocPixels(info);
     auto result = androidCodec->getAndroidPixels(info, bm.getPixels(), bm.rowBytes(), &opts);
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
+    if (result != SkCodec::kSuccess) {
+        return std::nullopt;
+    }
+    return bm;
+}
+
+// Decodes `data` with `SkCodec::getPixels`. The plain-`SkCodec` counterpart of
+// `DecodeAndroidPixels`.
+static std::optional<SkBitmap> DecodePixels(skiatest::Reporter* r,
+                                            sk_sp<SkData> data,
+                                            SkColorType colorType,
+                                            SkAlphaType alphaType) {
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec =
+            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(std::move(data)), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    if (!codec) {
+        return std::nullopt;
+    }
+
+    SkBitmap bm;
+    REPORTER_ASSERT(
+            r,
+            bm.tryAllocPixels(codec->getInfo().makeColorType(colorType).makeAlphaType(alphaType)));
+    bm.eraseColor(SK_ColorMAGENTA);
+
+    SkCodec::Options opts;
+    opts.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
+    result = codec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes(), &opts);
+    REPORTER_ASSERT(r,
+                    result == SkCodec::kSuccess,
+                    "colorType=%d alphaType=%d: %s",
+                    static_cast<int>(colorType),
+                    static_cast<int>(alphaType),
+                    SkCodec::ResultToString(result));
     if (result != SkCodec::kSuccess) {
         return std::nullopt;
     }
@@ -416,6 +468,74 @@ static void AssertAndroidDecodeRefused(skiatest::Reporter* r,
                     sampleSize,
                     (int)useSubset,
                     rowBytes);
+}
+
+// Asserts that `decode` produces the same pixels for `path` as for copies of it with a corrupt
+// and with a truncated trailing `IEND` CRC. Both variants leave all of `IDAT` intact.
+static void AssertBrokenIendTailMatchesIntact(
+        skiatest::Reporter* r,
+        const char* path,
+        std::function<std::optional<SkBitmap>(sk_sp<SkData>)> decode) {
+    sk_sp<SkData> fullData = GetResourceAsData(path);
+    if (!fullData) {
+        ERRORF(r, "Missing resource: %s", path);
+        return;
+    }
+
+    std::optional<SkBitmap> refBm = decode(fullData);
+    REPORTER_ASSERT(r, refBm.has_value());
+    if (!refBm) {
+        return;
+    }
+
+    const sk_sp<SkData> variants[] = {WithCorruptIendCrc(fullData.get()),
+                                      WithoutIendCrc(fullData.get())};
+    for (const sk_sp<SkData>& variant : variants) {
+        std::optional<SkBitmap> bm = decode(variant);
+        REPORTER_ASSERT(r,
+                        bm.has_value(),
+                        "%s: decode failed with %zu bytes missing from the IEND tail",
+                        path,
+                        fullData->size() - variant->size());
+        if (bm) {
+            CompareBitmaps(r, *refBm, *bm);
+        }
+    }
+}
+
+// Full decodes, in the color configurations that cover both decode paths.
+static void AssertDecodesWithBrokenIendTail(skiatest::Reporter* r, const char* path) {
+    // kRGBA_8888 + kUnpremul on an RGBA8 source with an `iCCP` chunk is the only combination that
+    // satisfies `canReadRow()`, i.e. the only one decoded by `incrementalDecode` (`read_row`).
+    // The others go through `incrementalDecodeXForm`.
+    static constexpr struct {
+        SkColorType fColorType;
+        SkAlphaType fAlphaType;
+    } kConfigs[] = {
+            {kN32_SkColorType, kUnpremul_SkAlphaType},
+            {kN32_SkColorType, kPremul_SkAlphaType},
+            {kRGBA_8888_SkColorType, kUnpremul_SkAlphaType},
+    };
+
+    for (const auto& config : kConfigs) {
+        AssertBrokenIendTailMatchesIntact(r, path, [&](sk_sp<SkData> data) {
+            return DecodePixels(r, std::move(data), config.fColorType, config.fAlphaType);
+        });
+    }
+}
+
+// Same, for a sampled decode. It goes through `SkAndroidCodec`, always decodes to `kN32`, and
+// skips `finish_decoding()` altogether rather than ignoring its result.
+static void AssertSampledDecodeWithBrokenIendTail(skiatest::Reporter* r,
+                                                  const char* path,
+                                                  int sampleSize) {
+    AssertBrokenIendTailMatchesIntact(r, path, [&](sk_sp<SkData> data) {
+        return DecodeAndroidPixels(
+                r,
+                SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(std::move(data)),
+                                         nullptr),
+                sampleSize);
+    });
 }
 
 sk_sp<SkImage> DecodeLastFrame(skiatest::Reporter* r, SkCodec* codec) {
@@ -1412,6 +1532,16 @@ DEF_TEST(RustPngCodec_exactRead, r) {
                 ERRORF(r, "Failed to getPixels from %s, iteration %i error %i", path, i, result);
                 continue;
             }
+
+            // A full decode must drain the stream through `IEND`, leaving it exactly at the start
+            // of the next image.
+            REPORTER_ASSERT(r,
+                            stream.getPosition() == size * (i + 1),
+                            "%s: decode %i left the stream at %zu, expected %zu",
+                            path,
+                            i,
+                            stream.getPosition(),
+                            size * (i + 1));
         }
     }
 }
@@ -1643,4 +1773,94 @@ DEF_TEST(RustPngCodec_apng_offset_frame_full_canvas_placement, r) {
         REPORTER_ASSERT(r, bm.getColor(0, 32) == SK_ColorMAGENTA);
         REPORTER_ASSERT(r, bm.getColor(63, 63) == SK_ColorMAGENTA);
     }
+}
+
+#ifdef SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID
+// Decodes a top subset of `path` and asserts that the decode stopped short of the end of the
+// stream, i.e. that `finish_decoding()` was not called. libpng stops early the same way: its row
+// callbacks longjmp out once the requested rows have been written, and only a whole-image decode
+// reads through `IEND` (`SkPngCodec.cpp`).
+// A non-interlaced decode stops inside `IDAT`. An interlaced one has to read every Adam7 pass, and
+// the `png` crate consumes `IEND`'s 8-byte length+type header while detecting the end of the
+// frame, so it stops with only the 4-byte CRC left.
+// Only `for_android` builds limit reads to chunk boundaries; elsewhere the `BufReader` inside the
+// `png` crate may have buffered the rest of the file, so the position says nothing.
+static void AssertPartialDecodeStopsBeforeIend(skiatest::Reporter* r,
+                                               const char* path,
+                                               bool interlaced) {
+    sk_sp<SkData> data = GetResourceAsData(path);
+    if (!data) {
+        ERRORF(r, "Missing resource: %s", path);
+        return;
+    }
+
+    SkMemoryStream memStream(data);
+    std::optional<SkBitmap> bm = DecodeAndroidPixels(
+            r,
+            SkPngRustDecoder::Decode(std::make_unique<UnowningStream>(&memStream), nullptr),
+            /*sampleSize=*/1,
+            [](const SkImageInfo& info) { return SkIRect::MakeWH(info.width(), 16); });
+    REPORTER_ASSERT(r, bm.has_value());
+
+    const size_t limit = interlaced ? data->size() : data->size() - kIendChunkSize;
+    REPORTER_ASSERT(r,
+                    memStream.getPosition() < limit,
+                    "%s: decode read too far, pos=%zu (expected < %zu, file is %zu, IEND at %zu)",
+                    path,
+                    memStream.getPosition(),
+                    limit,
+                    data->size(),
+                    data->size() - kIendChunkSize);
+}
+
+// Regression tests for b/562939096:
+// A subset or subsampled decode must stop after the last row it needs, rather than reading and
+// CRC-checking the rest of the PNG stream through `IEND` via `finish_decoding()`.
+DEF_TEST(RustPngCodec_subsetDoesNotReadToIend, r) {
+    AssertPartialDecodeStopsBeforeIend(r, "images/mandrill_128.png", /*interlaced=*/false);
+}
+
+DEF_TEST(RustPngCodec_subsetDoesNotReadToIend_interlaced, r) {
+    AssertPartialDecodeStopsBeforeIend(r, "images/plane_interlaced.png", /*interlaced=*/true);
+}
+#endif
+
+// A top subset must decode even if everything after the rows it needs is missing.
+DEF_TEST(RustPngCodec_subsetOfTruncatedFile, r) {
+    static constexpr char kPath[] = "images/mandrill_128.png";
+    sk_sp<SkData> data = GetResourceAsData(kPath);
+    if (!data) {
+        ERRORF(r, "Missing resource: %s", kPath);
+        return;
+    }
+
+    sk_sp<SkData> truncatedHalf = SkData::MakeSubset(data.get(), 0, data->size() / 2);
+    std::optional<SkBitmap> bm = DecodeAndroidPixels(
+            r,
+            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(truncatedHalf), nullptr),
+            /*sampleSize=*/1,
+            [](const SkImageInfo& info) { return SkIRect::MakeWH(info.width(), 16); });
+    REPORTER_ASSERT(r, bm.has_value());
+}
+
+// Regression tests for b/562802947:
+// When all scanlines and the IDAT chunk have been decoded, a corrupt or truncated trailing `IEND`
+// CRC in `finish_decoding()` must not cause the decode to fail or zero-fill the output bitmap
+// (matching `SkPngCodec` / libpng `png_read_end` behavior and Chrome's `SkPngRustCodec`).
+DEF_TEST(RustPngCodec_missingOrCorruptIendSucceeds, r) {
+    AssertDecodesWithBrokenIendTail(r, "images/mandrill_128.png");
+}
+
+DEF_TEST(RustPngCodec_missingOrCorruptIendSucceeds_interlaced, r) {
+    AssertDecodesWithBrokenIendTail(r, "images/plane_interlaced.png");
+}
+
+// `images/color_wheel_with_profile.png` is RGBA8 with an `iCCP` chunk, so this covers the
+// `read_row` decode path (see `AssertDecodesWithBrokenIendTail`).
+DEF_TEST(RustPngCodec_missingOrCorruptIendSucceeds_readRow, r) {
+    AssertDecodesWithBrokenIendTail(r, "images/color_wheel_with_profile.png");
+}
+
+DEF_TEST(RustPngCodec_missingOrCorruptIendSucceeds_sampled, r) {
+    AssertSampledDecodeWithBrokenIendTail(r, "images/mandrill_128.png", /*sampleSize=*/2);
 }
