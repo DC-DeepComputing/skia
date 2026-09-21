@@ -46,6 +46,30 @@
       },
       "revId": "ce772eab967c806c1cb331945932bc8d51ca17d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "988e793c_a297e500",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T14:04:13Z",
+      "side": 1,
+      "message": "Yeah I can see situations where that can be nice to expose a subset of private functions to specific callers. In general we\u0027re less worried about not trusting ourselves to not call/access private things when we friend stuff internally. And in this case we\u0027re just giving full access to the accessor helper so it would be pretty obvious in a code review if someone was trying to make the accessor do more then just call the ctor.",
+      "parentUuid": "c882bad9_d7b156d8",
+      "range": {
+        "startLine": 37,
+        "startChar": 10,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "ce772eab967c806c1cb331945932bc8d51ca17d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
