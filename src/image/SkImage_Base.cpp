@@ -26,6 +26,7 @@
 SkImage_Base::SkImage_Base(const SkImageInfo& info, uint32_t uniqueID,
                            sk_sp<SkPixelStorage> storage)
         : SkImage(info, uniqueID)
+        , fContentID(storage ? storage->getContentId() : 0)
         , fAddedToRasterCache(false) {
     if (storage) {
         fPixelStorages.push_back(std::move(storage));

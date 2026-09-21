@@ -222,11 +222,11 @@ std::unique_ptr<Recording> Recorder::snap() {
                 activeStorageIDs.push_back(device->target().proxy()->getPixelStorageId());
             }
         }
-        skia_private::TArray<sk_sp<SkPicture>> allCaptured = std::move(fCapturedPictures);
+        skia_private::TArray<sk_sp<SkCaptureAsset>> allCaptured = std::move(fCapturedPictures);
         auto remaining = fSharedContext->captureManager()->snapDrawTasksForStorageIDs(
                 activeStorageIDs);
-        for (auto& pic : remaining) {
-            allCaptured.push_back(std::move(pic));
+        for (auto& asset : remaining) {
+            allCaptured.push_back(std::move(asset));
         }
         recording->priv().setCapturedPictures(std::move(allCaptured));
     }
@@ -322,9 +322,9 @@ SkCanvas* Recorder::makeCaptureCanvas(SkCanvas* canvas) {
 
 void Recorder::createCaptureBreakpoint(SkSurface* surface) {
     if (fSharedContext->captureManager()) {
-        auto picture = fSharedContext->captureManager()->snapPicture(surface);
-        if (picture) {
-            fCapturedPictures.push_back(std::move(picture));
+        auto asset = fSharedContext->captureManager()->snapPicture(surface);
+        if (asset && asset->fPicture) {
+            fCapturedPictures.push_back(std::move(asset));
         }
     }
 }
