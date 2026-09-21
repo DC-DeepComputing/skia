@@ -164,12 +164,16 @@ void StorageContext::finalizePrecachedStorageData() {
     SkDEBUGCODE(fFinalized = true;)
 }
 
-StorageContextResult StorageContext::finalize(Recorder* recorder,
-                                              DrawTask* drawTask) {
+std::optional<StorageContextResult> StorageContext::finalize(Recorder* recorder,
+                                                             DrawTask* drawTask) {
     SkASSERT(recorder);
     SkASSERT(drawTask);
     SkASSERT(fFinalized);
     SkDEBUGCODE(fFinalized = false;)
+
+    if (this->isEmpty()) {
+        return std::nullopt;
+    }
 
     if (fStorageBufferSupport) {
         return this->finalizeStorageBuffer(recorder);
@@ -178,22 +182,10 @@ StorageContextResult StorageContext::finalize(Recorder* recorder,
     }
 }
 
-// Temporary, remove in next CL in chain
-BindBufferInfo StorageContext::finalize(Recorder* recorder) {
-    SkASSERT(recorder);
-    SkASSERT(fFinalized);
-    SkDEBUGCODE(fFinalized = false;)
-    return this->finalizeStorageBuffer(recorder);
-}
-
 BindBufferInfo StorageContext::finalizeStorageBuffer(Recorder* recorder) {
     SkASSERT(recorder);
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     SkASSERT(bufferMgr);
-
-    if (this->isEmpty()) {
-        return BindBufferInfo{};
-    }
 
     size_t totalBytes = fGradientCache.fGradientDataSize + fVertexData.size_bytes();
 
@@ -223,10 +215,6 @@ BindBufferInfo StorageContext::finalizeStorageBuffer(Recorder* recorder) {
 // TODO (thomsmit): Currently UploadSource holds its own copy of the data. Create an alternative
 // path for uploading which allows writing to the mapped gpu buffer directly.
 sk_sp<TextureProxy> StorageContext::finalizeTexture(Recorder* recorder, DrawTask* drawTask) {
-    if (this->isEmpty()) {
-        return nullptr;
-    }
-
     size_t gradSize = fGradientCache.fGradientDataSize;
     size_t vertSize = fVertexData.size_bytes();
     size_t totalBytes = gradSize + vertSize;
