@@ -101,6 +101,7 @@ int main(int argc, char *argv[]) {
     auto contentImg = surface->makeImageSnapshot();
 
     // Do some more draws
+    canvas->clear(SK_ColorGREEN);
     canvas->drawCircle(50, 50, 30, paint);
     paint.setColor(SK_ColorBLUE);
     canvas->drawCircle(30, 30, 10, paint);
@@ -108,12 +109,21 @@ int main(int argc, char *argv[]) {
     // Trigger another breakpoint
     auto circlesImg = surface->makeImageSnapshot();
 
-    // Canvas B
-    canvasB->clear(SK_ColorMAGENTA);
+    // Canvas B (compositing)
+    canvasB->clear(SK_ColorYELLOW);
     paint.setColor(SK_ColorBLACK);
-    canvasB->drawImage(contentImg, 0, 0);
-    canvasB->drawImage(circlesImg, 20, 20);
-    canvasB->drawCircle(10, 10, 5, paint);
+
+    SkRect contentSrc = SkRect::MakeWH(contentImg->width(), contentImg->height());
+    SkRect contentDst = SkRect::MakeXYWH(0, 0, 100, 200);
+    canvasB->drawImageRect(contentImg, contentSrc, contentDst, SkSamplingOptions(), nullptr,
+                           SkCanvas::kStrict_SrcRectConstraint);
+
+    SkRect circlesSrc = SkRect::MakeWH(circlesImg->width(), circlesImg->height());
+    SkRect circlesDst = SkRect::MakeXYWH(100, 100, 100, 200);
+    canvasB->drawImageRect(circlesImg, circlesSrc, circlesDst, SkSamplingOptions(), nullptr,
+                           SkCanvas::kStrict_SrcRectConstraint);
+
+    canvasB->drawCircle(100, 300, 20, paint);
 
     printf("ready to snap the GPU calls\n");
     // Now to send the draws to the GPU

@@ -48,7 +48,7 @@ CaptureSlide::CaptureSlide(const SkString& name, const SkString& path) {
     fCapture = SkCapture::MakeFromData(data);
     if (fCapture) {
         fMetadata = fCapture->getMetadata();
-        this->updateActiveAssetIndex();
+        this->updateActiveAsset();
     } else {
         SKIA_LOG_E("Couldn't load capture %s", path.c_str());
     }
@@ -100,7 +100,8 @@ void drawCommandHistory(const DebugCanvas* debugCanvas) {
 }
 
 void drawRecordingTimelineTab(SkCapture* capture,
-                              int& currentAssetIndex,
+                              uint32_t& currentStorageID,
+                              uint32_t& currentContentID,
                               int& currentRecordingCaptureIndex,
                               int& currentDrawTaskIndex,
                               bool& invalidate) {
@@ -136,14 +137,16 @@ void drawRecordingTimelineTab(SkCapture* capture,
         ImGui::BeginChild("DrawTaskList", ImVec2(0, 300), true);
         for (int j = 0; j < (int)activeRec->fDrawTasks.size(); ++j) {
             const auto& task = activeRec->fDrawTasks[j];
-            uint32_t assetIdx = task.fAssetIndex;
-            auto pic = capture->getAsset(assetIdx);
+            const auto* asset = capture->getAsset(task.fPixelStorageID, task.fContentID);
+            sk_sp<SkPicture> pic = asset ? asset->fPicture : nullptr;
             SkString label;
             if (pic) {
-                label = SkStringPrintf("Task #%d: Asset %u (%dx%d)",
-                                       j, assetIdx, (int)pic->cullRect().width(), (int)pic->cullRect().height());
+                label = SkStringPrintf("Task #%d: [StorageID: %u, ContentID: %u] (%dx%d)",
+                                       j, task.fPixelStorageID, task.fContentID,
+                                       (int)pic->cullRect().width(), (int)pic->cullRect().height());
             } else {
-                label = SkStringPrintf("Task #%d: Asset %u (Null)", j, assetIdx);
+                label = SkStringPrintf("Task #%d: [StorageID: %u, ContentID: %u] (Null)",
+                                       j, task.fPixelStorageID, task.fContentID);
             }
             const bool isSelected = (currentDrawTaskIndex == j);
             if (ImGui::Selectable(label.c_str(), isSelected)) {
@@ -155,11 +158,12 @@ void drawRecordingTimelineTab(SkCapture* capture,
         }
         ImGui::EndChild();
 
-        // Update currentAssetIndex to point to the selected sub-picture's asset index
         if (currentDrawTaskIndex >= 0 && currentDrawTaskIndex < (int)activeRec->fDrawTasks.size()) {
-            currentAssetIndex = activeRec->fDrawTasks[currentDrawTaskIndex].fAssetIndex;
+            currentStorageID = activeRec->fDrawTasks[currentDrawTaskIndex].fPixelStorageID;
+            currentContentID = activeRec->fDrawTasks[currentDrawTaskIndex].fContentID;
         } else {
-            currentAssetIndex = -1;
+            currentStorageID = 0;
+            currentContentID = 0;
         }
     } else {
         ImGui::Text("No active recording selected.");
@@ -169,24 +173,31 @@ void drawRecordingTimelineTab(SkCapture* capture,
 }
 
 void drawFlatAssetCatalogTab(SkCapture* capture,
-                             int& currentAssetIndex,
+                             uint32_t& currentStorageID,
+                             uint32_t& currentContentID,
                              bool& invalidate) {
-    ImGui::Text("Total Picture Assets: %u", capture->getMetadata().numAssets);
+    ImGui::Text("Total Picture Assets: %zu", capture->getAssetsMap().size());
     ImGui::Separator();
     ImGui::BeginChild("FlatCatalogList", ImVec2(0, 0), true);
-    for (int i = 0; i < (int)capture->getMetadata().numAssets; ++i) {
-        auto pic = capture->getAsset(i);
+    int index = 0;
+    for (const auto& [key, assetRecord] : capture->getAssetsMap()) {
+        if (!assetRecord) continue;
+        sk_sp<SkPicture> pic = assetRecord->fPicture;
         SkString label;
         if (pic) {
-            label = SkStringPrintf("Asset Index %d (%dx%d)",
-                                   i, (int)pic->cullRect().width(), (int)pic->cullRect().height());
+            label = SkStringPrintf("Asset #%d [StorageID: %u, ContentID: %u] (%dx%d)",
+                                   index++, assetRecord->fPixelStorageID, assetRecord->fContentID,
+                                   (int)pic->cullRect().width(), (int)pic->cullRect().height());
         } else {
-            label = SkStringPrintf("Asset Index %d (Null)", i);
+            label = SkStringPrintf("Asset #%d [StorageID: %u, ContentID: %u] (Derived/Null)",
+                                   index++, assetRecord->fPixelStorageID, assetRecord->fContentID);
         }
-        const bool isSelected = (currentAssetIndex == i);
+        const bool isSelected = (currentStorageID == assetRecord->fPixelStorageID &&
+                                 currentContentID == assetRecord->fContentID);
         if (ImGui::Selectable(label.c_str(), isSelected)) {
-            if (currentAssetIndex != i) {
-                currentAssetIndex = i;
+            if (!isSelected) {
+                currentStorageID = assetRecord->fPixelStorageID;
+                currentContentID = assetRecord->fContentID;
                 invalidate = true;
             }
         }
@@ -195,7 +206,8 @@ void drawFlatAssetCatalogTab(SkCapture* capture,
 }
 
 void drawCaptureExplorer(SkCapture* capture,
-                         int& currentAssetIndex,
+                         uint32_t& currentStorageID,
+                         uint32_t& currentContentID,
                          int& currentRecordingCaptureIndex,
                          int& currentDrawTaskIndex,
                          bool& invalidate) {
@@ -212,7 +224,8 @@ void drawCaptureExplorer(SkCapture* capture,
     if (ImGui::BeginTabBar("ExplorerTabBar")) {
         if (ImGui::BeginTabItem("Recording Timeline")) {
             drawRecordingTimelineTab(capture,
-                                     currentAssetIndex,
+                                     currentStorageID,
+                                     currentContentID,
                                      currentRecordingCaptureIndex,
                                      currentDrawTaskIndex,
                                      invalidate);
@@ -220,7 +233,7 @@ void drawCaptureExplorer(SkCapture* capture,
         }
 
         if (ImGui::BeginTabItem("Flat Asset Catalog")) {
-            drawFlatAssetCatalogTab(capture, currentAssetIndex, invalidate);
+            drawFlatAssetCatalogTab(capture, currentStorageID, currentContentID, invalidate);
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
@@ -233,21 +246,21 @@ void CaptureSlide::draw(SkCanvas* canvas) {
         return;
     }
 
-    // drawCaptureExplorer may update fCurrentAssetIndex if the user clicks on a different asset.
-    // If so, fDebugCanvas must be reset with the newly focused draw commands.
-    int prevAssetIndex = fCurrentAssetIndex;
+    uint32_t prevStorageID = fCurrentStorageID;
+    uint32_t prevContentID = fCurrentContentID;
     drawCaptureExplorer(fCapture.get(),
-                        fCurrentAssetIndex,
+                        fCurrentStorageID,
+                        fCurrentContentID,
                         fCurrentRecordingCaptureIndex,
                         fCurrentDrawTaskIndex,
                         fInvalidate);
-    if (prevAssetIndex != fCurrentAssetIndex) {
+    if (prevStorageID != fCurrentStorageID || prevContentID != fCurrentContentID) {
         fDebugCanvas.reset();
     }
 
-    auto focusPicture = fCapture->getAsset(fCurrentAssetIndex);
+    const auto* focusAsset = fCapture->getAsset(fCurrentStorageID, fCurrentContentID);
+    sk_sp<SkPicture> focusPicture = focusAsset ? focusAsset->fPicture : nullptr;
     if (!focusPicture) {
-        // TODO handle this case with an elegant UI popup.
         return;
     }
 
@@ -287,7 +300,7 @@ bool CaptureSlide::onChar(SkUnichar c) {
             if (numSubs > 0) {
                 fCurrentRecordingCaptureIndex = (fCurrentRecordingCaptureIndex + 1) % numSubs;
                 fCurrentDrawTaskIndex = 0;
-                this->updateActiveAssetIndex();
+                this->updateActiveAsset();
                 fInvalidate = true;
                 fDebugCanvas.reset();
             }
@@ -299,7 +312,7 @@ bool CaptureSlide::onChar(SkUnichar c) {
                 fCurrentRecordingCaptureIndex = (fCurrentRecordingCaptureIndex + numSubs - 1)
                     % numSubs;
                 fCurrentDrawTaskIndex = 0;
-                this->updateActiveAssetIndex();
+                this->updateActiveAsset();
                 fInvalidate = true;
                 fDebugCanvas.reset();
             }
@@ -310,7 +323,7 @@ bool CaptureSlide::onChar(SkUnichar c) {
             if (activeRec && activeRec->fDrawTasks.size() > 0) {
                 int numPics = activeRec->fDrawTasks.size();
                 fCurrentDrawTaskIndex = (fCurrentDrawTaskIndex + 1) % numPics;
-                this->updateActiveAssetIndex();
+                this->updateActiveAsset();
                 fInvalidate = true;
                 fDebugCanvas.reset();
             }
@@ -321,7 +334,7 @@ bool CaptureSlide::onChar(SkUnichar c) {
             if (activeRec && activeRec->fDrawTasks.size() > 0) {
                 int numPics = activeRec->fDrawTasks.size();
                 fCurrentDrawTaskIndex = (fCurrentDrawTaskIndex + numPics - 1) % numPics;
-                this->updateActiveAssetIndex();
+                this->updateActiveAsset();
                 fInvalidate = true;
                 fDebugCanvas.reset();
             }
@@ -338,15 +351,17 @@ bool CaptureSlide::onChar(SkUnichar c) {
     return Slide::onChar(c);
 }
 
-void CaptureSlide::updateActiveAssetIndex() {
+void CaptureSlide::updateActiveAsset() {
     if (!fCapture) {
         return;
     }
     const auto* activeRec = fCapture->getRecordingCapture(fCurrentRecordingCaptureIndex);
     if (activeRec && !activeRec->fDrawTasks.empty()) {
         fCurrentDrawTaskIndex = SkTPin(fCurrentDrawTaskIndex, 0, activeRec->fDrawTasks.size() - 1);
-        fCurrentAssetIndex = activeRec->fDrawTasks[fCurrentDrawTaskIndex].fAssetIndex;
+        fCurrentStorageID = activeRec->fDrawTasks[fCurrentDrawTaskIndex].fPixelStorageID;
+        fCurrentContentID = activeRec->fDrawTasks[fCurrentDrawTaskIndex].fContentID;
     } else {
-        fCurrentAssetIndex = -1;
+        fCurrentStorageID = 0;
+        fCurrentContentID = 0;
     }
 }
