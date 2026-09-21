@@ -149,6 +149,9 @@ void AssertSingleGreenFrame(skiatest::Reporter* r,
     REPORTER_ASSERT(r, codec->getRepetitionCount() == 0);
 
     SkCodec::FrameInfo info;
+#if defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    expectFrameInfo = false;
+#endif
     if (expectFrameInfo) {
         REPORTER_ASSERT(r, codec->getFrameInfo(0, &info));
         REPORTER_ASSERT(r, info.fBlend == SkCodecAnimation::Blend::kSrc);
@@ -428,11 +431,13 @@ sk_sp<SkImage> DecodeLastFrame(skiatest::Reporter* r, SkCodec* codec) {
     sk_sp<SkImage> image;
     SkCodec::Result result = SkCodec::kSuccess;
     for (int i = 0; i < frameCount; i++) {
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
         SkCodec::FrameInfo info;
         REPORTER_ASSERT(r, codec->getFrameInfo(i, &info));
 
         // This test method only supports `kKeep` disposal method.
         SkASSERT(info.fDisposalMethod == SkCodecAnimation::DisposalMethod::kKeep);
+#endif
 
         if (!image) {
             std::tie(image, result) = codec->getImage();
@@ -511,6 +516,7 @@ DEF_TEST(RustPngCodec_apng_basic_using_default_image, r) {
 // should ignore IDAT frame and start with fdAT frame).  This test will fail
 // with non-APNG-aware decoders (e.g. with `SkPngCodec`), because the `IDAT`
 // chunk represents a red image (the `fdAT` chunk represents a green image).
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
 DEF_TEST(RustPngCodec_apng_basic_ignoring_default_image, r) {
     AssertSingleGreenFrame(r, 128, 64, "images/apng-test-suite--basic--ignoring-default-image.png");
 }
@@ -933,6 +939,7 @@ DEF_TEST(RustPngCodec_apng_invalid_num_frames_outside_valid_range, r) {
     // than returning the raw `acTL.num_frames`.
     REPORTER_ASSERT(r, codec->getFrameCount() == 1);
 }
+#endif
 
 DEF_TEST(RustPngCodec_png_swizzling_target_unimplemented, r) {
     std::unique_ptr<SkCodec> codec =
@@ -1232,6 +1239,7 @@ DEF_TEST(RustPngCodec_interlaced_partial_decode_covers_all_pixels, r) {
     REPORTER_ASSERT(r, bitmaps_equal(bitmap, referenceBitmap));
 }
 
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
 DEF_TEST(RustPngCodec_interlaced_animated_blending, r) {
     std::unique_ptr<SkCodec> codec =
         SkPngRustDecoderDecode(r, "images/interlaced-multiframe-with-blending.png");
@@ -1252,6 +1260,7 @@ DEF_TEST(RustPngCodec_interlaced_animated_blending, r) {
         std::ignore = codec->incrementalDecode();
     }
 }
+#endif
 
 DEF_TEST(RustPngCodec_sbit565_ihdr16bits, r) {
     std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, "images/basn2c16-sbit565.png");
@@ -1552,6 +1561,7 @@ DEF_TEST(RustPngCodec_subsampling_subset_interlaced, r) {
 // pixel coordinates.  That origin is only valid in a full-canvas destination,
 // so the codec must refuse a sampled or subset decode of such a frame instead
 // of writing outside the caller's buffer.
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
 DEF_TEST(RustPngCodec_apng_offset_frame_does_not_overflow_dst, r) {
     // 64x64 canvas.  The single frame covers the bottom half: y-origin of 32.
     const char* path = "images/apng-single-frame-with-offset.png";
@@ -1653,3 +1663,109 @@ DEF_TEST(RustPngCodec_apng_offset_frame_full_canvas_placement, r) {
         REPORTER_ASSERT(r, bm.getColor(63, 63) == SK_ColorMAGENTA);
     }
 }
+#endif
+
+#if defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+// Regression test for b/562873519 (and Android libpng parity on APNGs):
+// When compiled for Android (`skia_use_rust_png_for_android = true`), `SkPngRustCodec` must
+// treat APNG images identically to `SkPngCodec` (libpng): as single-frame static PNGs that
+// decode the `IDAT` default image (`isAnimated() == IsAnimated::kNo`, `getFrameCount() == 1`,
+// `getRepetitionCount() == 0`) and support subsampling (`fSampleSize >= 2`) and subsetting
+// (`fSubset`) via `SkAndroidCodec`.
+DEF_TEST(RustPngCodec_android_apng_treated_as_static_png, r) {
+    // 1. APNG where `IDAT` is a red default image and `fcTL`/`fdAT` after `IDAT` is green:
+    //    On Android (matching libpng), decoding must return the red `IDAT` default image.
+    {
+        const char* kIgnoringDefault = "images/apng-test-suite--basic--ignoring-default-image.png";
+        std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kIgnoringDefault);
+        REPORTER_ASSERT(r, codec);
+        if (codec) {
+            REPORTER_ASSERT(r, codec->isAnimated() == SkCodec::IsAnimated::kNo);
+            REPORTER_ASSERT(r, codec->getFrameCount() == 1);
+            REPORTER_ASSERT(r, codec->getRepetitionCount() == 0);
+
+            auto [image, result] = codec->getImage();
+            REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+            if (image) {
+                SkPixmap pixmap;
+                REPORTER_ASSERT(r, image->peekPixels(&pixmap));
+                AssertRedPixel(r, pixmap, 0, 0);
+            }
+        }
+    }
+
+    // 2. Multi-frame APNGs and APNGs with post-IDAT frames must report 1 frame (`IsAnimated::kNo`)
+    //    and succeed when downsampled (`fSampleSize = 2`) or subsetted via `SkAndroidCodec`.
+    static constexpr const char* kApngResources[] = {
+            "images/apng-test-suite--dispose-ops--none-basic.png",
+            "images/apng-test-suite--basic--using-default-image.png",
+            "images/apng-test-suite--basic--ignoring-default-image.png",
+            "images/apng-single-frame-with-offset.png",
+    };
+
+    for (const char* path : kApngResources) {
+        sk_sp<SkData> data = GetResourceAsData(path);
+        REPORTER_ASSERT(r, data);
+        if (!data) {
+            continue;
+        }
+
+        SkCodec::Result result;
+        std::unique_ptr<SkCodec> codec =
+                SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), &result);
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+        REPORTER_ASSERT(r, codec);
+        REPORTER_ASSERT(r, codec->isAnimated() == SkCodec::IsAnimated::kNo, "path=%s", path);
+        REPORTER_ASSERT(r, codec->getFrameCount() == 1, "path=%s", path);
+        REPORTER_ASSERT(r, codec->getRepetitionCount() == 0, "path=%s", path);
+
+        std::unique_ptr<SkAndroidCodec> androidCodec =
+                SkAndroidCodec::MakeFromCodec(std::move(codec));
+        REPORTER_ASSERT(r, androidCodec);
+
+        // Test downsampling (fSampleSize = 2)
+        {
+            SkISize sampledDims = androidCodec->getSampledDimensions(2);
+            SkImageInfo sampledInfo = androidCodec->getInfo()
+                                              .makeDimensions(sampledDims)
+                                              .makeColorType(kN32_SkColorType);
+            SkBitmap bm;
+            REPORTER_ASSERT(r, bm.tryAllocPixels(sampledInfo));
+            SkAndroidCodec::AndroidOptions opts;
+            opts.fSampleSize = 2;
+            result = androidCodec->getAndroidPixels(
+                    bm.info(), bm.getPixels(), bm.rowBytes(), &opts);
+            REPORTER_ASSERT(r,
+                            result == SkCodec::kSuccess,
+                            "Sampled decode failed for %s: %s",
+                            path,
+                            SkCodec::ResultToString(result));
+        }
+
+        // Test subsetting + downsampling
+        {
+            const SkISize fullDims = androidCodec->getInfo().dimensions();
+            SkIRect subset = SkIRect::MakeXYWH(0, 0, fullDims.width() / 2, fullDims.height() / 2);
+            SkISize sampledSubsetDims =
+                    SkISize::Make(SkCodecPriv::GetSampledDimension(subset.width(), 2),
+                                  SkCodecPriv::GetSampledDimension(subset.height(), 2));
+            SkImageInfo subsetInfo = androidCodec->getInfo()
+                                             .makeDimensions(sampledSubsetDims)
+                                             .makeColorType(kN32_SkColorType);
+            SkBitmap bm;
+            REPORTER_ASSERT(r, bm.tryAllocPixels(subsetInfo));
+            SkAndroidCodec::AndroidOptions opts;
+            opts.fSubset = &subset;
+            opts.fSampleSize = 2;
+            result = androidCodec->getAndroidPixels(
+                    bm.info(), bm.getPixels(), bm.rowBytes(), &opts);
+            REPORTER_ASSERT(r,
+                            result == SkCodec::kSuccess,
+                            "Subset+sampled decode failed for %s: %s",
+                            path,
+                            SkCodec::ResultToString(result));
+        }
+    }
+}
+#endif
+
