@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14ddf33d_c067c686",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-21T16:46:15Z",
+      "side": 1,
+      "message": "IIUC Chromium calls `getFrameInfo` in `skia_image_decoder_base.cc` from [`SkiaImageDecoderBase::FrameIsReceivedAtIndex`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.cc;l\u003d184-186;drc\u003d531e7e7f7635598ff4f361abe06921ad0bb84402), [`SkiaImageDecoderBase::InitializeNewFrame`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.cc;l\u003d246-247;drc\u003d531e7e7f7635598ff4f361abe06921ad0bb84402), and [`SkiaImageDecoderBase::Decode`](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.cc;l\u003d364-366;drc\u003d531e7e7f7635598ff4f361abe06921ad0bb84402) ([twice](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.cc;l\u003d429-431;drc\u003d531e7e7f7635598ff4f361abe06921ad0bb84402)).  Based on this, it seems to me that this CL may break Chromium?  Let me kick-off a Chromium roll Canary tryjob which will help to confirm or deny this.",
+      "range": {
+        "startLine": 1231,
+        "startChar": 4,
+        "endLine": 1231,
+        "endChar": 5
+      },
+      "revId": "0d8ea6263e677fc98d70e4d37809e352c5d0f428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
