@@ -22,6 +22,30 @@
       },
       "revId": "0d8ea6263e677fc98d70e4d37809e352c5d0f428",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b04ee031_458ed5eb",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-21T20:37:52Z",
+      "side": 1,
+      "message": "Ah good catch, do you know if this behavior in Chromium was intended? Sounds like the desired `SkCodec` API contract is to return `false` in this case (enforced by `Codec_frame`), but perhaps this was intentional?\n\nWe may have to gate this change `for_android` only for now then, WDYT?",
+      "parentUuid": "14ddf33d_c067c686",
+      "range": {
+        "startLine": 1231,
+        "startChar": 4,
+        "endLine": 1231,
+        "endChar": 5
+      },
+      "revId": "0d8ea6263e677fc98d70e4d37809e352c5d0f428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
