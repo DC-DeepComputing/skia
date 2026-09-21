@@ -46,6 +46,30 @@
       },
       "revId": "45931deb0879532756891615e018d9800a95258f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1124d3f9_83037f9b",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T20:43:22Z",
+      "side": 1,
+      "message": "yeah I think the bitfield approach is more direct and clear what we\u0027re doing here",
+      "parentUuid": "1bddba21_438e14a4",
+      "range": {
+        "startLine": 356,
+        "startChar": 14,
+        "endLine": 356,
+        "endChar": 68
+      },
+      "revId": "45931deb0879532756891615e018d9800a95258f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
