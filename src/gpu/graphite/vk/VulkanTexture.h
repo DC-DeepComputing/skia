@@ -90,7 +90,8 @@ public:
 
     // Helpers to use for setting the layout of the VkImage
     static VkPipelineStageFlags LayoutToPipelineSrcStageFlags(const VkImageLayout layout);
-    static VkAccessFlags LayoutToSrcAccessMask(const VkImageLayout layout);
+    static VkAccessFlags LayoutToSrcAccessMask(const VkImageLayout layout,
+                                               VkImageUsageFlags usageFlags = 0);
 
     bool supportsInputAttachmentUsage() const;
 
