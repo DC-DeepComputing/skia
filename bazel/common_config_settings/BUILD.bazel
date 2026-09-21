@@ -123,3 +123,13 @@ selects.config_setting_group(
     ],
     visibility = ["//:__subpackages__"],
 )
+
+# Matches when the build was invoked with --features=unsafe_buffer_usage, the single knob which
+# turns on Clang's -Wunsafe-buffer-usage warning. The other half of that knob is the toolchain
+# feature of the same name, which passes the suppression mappings file that lists the directories
+# which have been spanified so far. See //toolchain/unsafe_buffers.bzl for the full story.
+config_setting(
+    name = "enforce_unsafe_buffer_usage",
+    values = {"features": "unsafe_buffer_usage"},
+    visibility = ["//visibility:public"],
+)

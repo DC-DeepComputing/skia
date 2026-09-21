@@ -26,9 +26,19 @@ load(
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 load(":clang_layering_check.bzl", "make_layering_check_features")
+load(
+    ":unsafe_buffers.bzl",
+    "COMPILE_ACTIONS",
+    "OBJC_COMPILE_ACTIONS",
+    "UNSAFE_BUFFERS_MAPPINGS_LABEL",
+    "make_unsafe_buffers_features",
+)
 
 # Must stay in sync with download_mac_toolchain.bzl.
 CLANG_VER = "22"
+
+# --warning-suppression-mappings was added in Clang 20.
+_SUPPORTS_WARNING_SUPPRESSION_MAPPINGS = int(CLANG_VER) >= 20
 
 _platform_constraints_to_import = {
     "@platforms//cpu:arm64": "_arm64_cpu",
@@ -47,6 +57,11 @@ def _mac_toolchain_info(ctx):
     features += make_layering_check_features()
     features += _make_diagnostic_flags()
     features += _make_target_specific_flags(ctx)
+    features += make_unsafe_buffers_features(
+        ctx.file.unsafe_buffers_mappings.path,
+        supported = _SUPPORTS_WARNING_SUPPRESSION_MAPPINGS,
+        actions = COMPILE_ACTIONS + OBJC_COMPILE_ACTIONS,
+    )
 
     # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
@@ -95,6 +110,10 @@ def _import_platform_constraints():
     )
     rule_attributes["clang_mac"] = attr.label(
         default = "@clang_mac//:compile_files",
+    )
+    rule_attributes["unsafe_buffers_mappings"] = attr.label(
+        default = UNSAFE_BUFFERS_MAPPINGS_LABEL,
+        allow_single_file = True,
     )
     return rule_attributes
 
