@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d5b6b35_626c0dce",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-21T13:34:50Z",
+      "side": 1,
+      "message": "Should we just crash here if the id brushes up against its max value?",
+      "revId": "8c40f72dc246d17ef1b3e60910e128a9b8a24999",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
