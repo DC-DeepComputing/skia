@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd4ab34d_b5cd95d3",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T15:14:07Z",
+      "side": 1,
+      "message": "Go through and add more descriptive comments as to what each of these options do.",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 31
+      },
+      "revId": "b54bb6fa22d7f8bbda47db643a9627dfa2ba03cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e950f8b3_4c487b9d",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T15:14:07Z",
+      "side": 1,
+      "message": "remove this comment",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 26,
+        "endChar": 76
+      },
+      "revId": "b54bb6fa22d7f8bbda47db643a9627dfa2ba03cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

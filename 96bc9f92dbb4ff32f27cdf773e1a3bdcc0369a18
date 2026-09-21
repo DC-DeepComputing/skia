@@ -93,6 +93,30 @@
       },
       "revId": "96bc9f92dbb4ff32f27cdf773e1a3bdcc0369a18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab6d0355_d58a5d89",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T15:14:07Z",
+      "side": 1,
+      "message": "setting to the default values we had in the defines is good",
+      "parentUuid": "63e6f745_6af57482",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 26,
+        "endChar": 6
+      },
+      "revId": "96bc9f92dbb4ff32f27cdf773e1a3bdcc0369a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
