@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5418f22a_bc5cb45f",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T15:11:56Z",
+      "side": 1,
+      "message": "I think we want to land this logic as is for now, but this does kind of just build on the possible storing of dangling pictures on the Context CaptureManager. However, if/when we move to Recorder specific managers I do think we\u0027ll be wanting to do this on those (maybe??)",
+      "range": {
+        "startLine": 40,
+        "startChar": 33,
+        "endLine": 40,
+        "endChar": 49
+      },
+      "revId": "5907a591ebbb4a874b1681a1c1af545c2999ec5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
