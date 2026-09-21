@@ -1226,6 +1226,9 @@ int SkPngRustCodec::onGetFrameCount() {
 }
 
 bool SkPngRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
+    if (!fReader->has_actl_chunk()) {
+        return false;
+    }
     return fFrameHolder.getFrameInfo(index, info);
 }
 

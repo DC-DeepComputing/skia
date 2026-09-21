@@ -138,7 +138,8 @@ void AssertBluePixel(skiatest::Reporter* r,
 void AssertSingleGreenFrame(skiatest::Reporter* r,
                             int expectedWidth,
                             int expectedHeight,
-                            const char* resourcePath) {
+                            const char* resourcePath,
+                            bool expectFrameInfo = true) {
     std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, resourcePath);
     if (!codec) {
         return;
@@ -148,11 +149,15 @@ void AssertSingleGreenFrame(skiatest::Reporter* r,
     REPORTER_ASSERT(r, codec->getRepetitionCount() == 0);
 
     SkCodec::FrameInfo info;
-    REPORTER_ASSERT(r, codec->getFrameInfo(0, &info));
-    REPORTER_ASSERT(r, info.fBlend == SkCodecAnimation::Blend::kSrc);
-    REPORTER_ASSERT(r, info.fDisposalMethod == SkCodecAnimation::DisposalMethod::kKeep);
-    REPORTER_ASSERT(r, info.fFrameRect == SkIRect::MakeWH(expectedWidth, expectedHeight));
-    REPORTER_ASSERT(r, info.fRequiredFrame == SkCodec::kNoFrame);
+    if (expectFrameInfo) {
+        REPORTER_ASSERT(r, codec->getFrameInfo(0, &info));
+        REPORTER_ASSERT(r, info.fBlend == SkCodecAnimation::Blend::kSrc);
+        REPORTER_ASSERT(r, info.fDisposalMethod == SkCodecAnimation::DisposalMethod::kKeep);
+        REPORTER_ASSERT(r, info.fFrameRect == SkIRect::MakeWH(expectedWidth, expectedHeight));
+        REPORTER_ASSERT(r, info.fRequiredFrame == SkCodec::kNoFrame);
+    } else {
+        REPORTER_ASSERT(r, !codec->getFrameInfo(0, &info));
+    }
 
     auto [image, result] = codec->getImage();
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
@@ -484,7 +489,11 @@ void AssertAnimationRepetitionCount(skiatest::Reporter* r,
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#trivial-static-image
 DEF_TEST(RustPngCodec_apng_basic_trivial_static_image, r) {
-    AssertSingleGreenFrame(r, 128, 64, "images/apng-test-suite--basic--trivial-static-image.png");
+    AssertSingleGreenFrame(r,
+                           128,
+                           64,
+                           "images/apng-test-suite--basic--trivial-static-image.png",
+                           /*expectFrameInfo=*/false);
 }
 
 // Test based on
