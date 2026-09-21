@@ -205,7 +205,9 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
                                                 VkImageLayout newLayout,
                                                 VkAccessFlags dstAccessMask,
                                                 VkPipelineStageFlags dstStageMask,
-                                                uint32_t newQueueFamilyIndex) const {
+                                                uint32_t newQueueFamilyIndex,
+                                                VkAccessFlags srcAccessMask,
+                                                VkPipelineStageFlags srcStageMask) const {
 
     SkASSERT(newLayout == this->currentLayout() ||
              (VK_IMAGE_LAYOUT_UNDEFINED != newLayout &&
@@ -268,11 +270,19 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
         (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL == currentLayout ||
          VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == currentLayout ||
          VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == currentLayout)) {
+        fCurrentAccess = dstAccessMask;
+        fCurrentStage = dstStageMask;
         return;
     }
 
-    VkAccessFlags srcAccessMask = VulkanTexture::LayoutToSrcAccessMask(currentLayout);
-    VkPipelineStageFlags srcStageMask = VulkanTexture::LayoutToPipelineSrcStageFlags(currentLayout);
+    if (!srcAccessMask) {
+        srcAccessMask = fCurrentAccess ? fCurrentAccess
+                                       : VulkanTexture::LayoutToSrcAccessMask(currentLayout);
+    }
+    if (!srcStageMask) {
+        srcStageMask = fCurrentStage ? fCurrentStage
+                                     : VulkanTexture::LayoutToPipelineSrcStageFlags(currentLayout);
+    }
 
     VkImageAspectFlags aspectFlags =
             GetVkImageAspectFlags(TextureInfoPriv::ViewFormat(this->textureInfo()));
@@ -299,6 +309,9 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
 
     skgpu::MutableTextureStates::SetVkImageLayout(this->mutableState(), newLayout);
     skgpu::MutableTextureStates::SetVkQueueFamilyIndex(this->mutableState(), newQueueFamilyIndex);
+
+    fCurrentAccess = dstAccessMask;
+    fCurrentStage = dstStageMask;
 }
 
 namespace {
@@ -355,6 +368,8 @@ void VulkanTexture::freeGpuData() {
 
 void VulkanTexture::updateImageLayout(VkImageLayout newLayout) {
     skgpu::MutableTextureStates::SetVkImageLayout(this->mutableState(), newLayout);
+    fCurrentAccess = 0;
+    fCurrentStage = 0;
 }
 
 VkImageLayout VulkanTexture::currentLayout() const {
@@ -377,7 +392,7 @@ VkPipelineStageFlags VulkanTexture::LayoutToPipelineSrcStageFlags(const VkImageL
                VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL == layout) {
         return VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
     } else if (VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == layout) {
-        return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+        return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
     } else if (VK_IMAGE_LAYOUT_PREINITIALIZED == layout) {
         return VK_PIPELINE_STAGE_HOST_BIT;
     } else if (VK_IMAGE_LAYOUT_PRESENT_SRC_KHR == layout) {
@@ -389,9 +404,9 @@ VkPipelineStageFlags VulkanTexture::LayoutToPipelineSrcStageFlags(const VkImageL
 }
 
 VkAccessFlags VulkanTexture::LayoutToSrcAccessMask(const VkImageLayout layout) {
-    // Currently we assume we will never being doing any explict shader writes (this doesn't include
-    // color attachment or depth/stencil writes). So we will ignore the
-    // VK_MEMORY_OUTPUT_SHADER_WRITE_BIT.
+    // Explicit shader writes (e.g. storage textures) are tracked via fCurrentAccess or passed
+    // explicitly to setImageLayout(). We ignore VK_ACCESS_SHADER_WRITE_BIT here to avoid
+    // over-synchronizing non-storage layouts such as VK_IMAGE_LAYOUT_GENERAL in framebuffer fetch.
 
     // We can only directly access the host memory if we are in preinitialized or general layout,
     // and the image is linear. However, device access to images written by the host happens after

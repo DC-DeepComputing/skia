@@ -68,16 +68,20 @@ public:
     void setImageLayout(VulkanCommandBuffer* buffer,
                         VkImageLayout newLayout,
                         VkAccessFlags dstAccessMask,
-                        VkPipelineStageFlags dstStageMask) const {
+                        VkPipelineStageFlags dstStageMask,
+                        VkAccessFlags srcAccessMask = 0,
+                        VkPipelineStageFlags srcStageMask = 0) const {
         this->setImageLayoutAndQueueIndex(buffer, newLayout, dstAccessMask, dstStageMask,
-                                          VK_QUEUE_FAMILY_IGNORED);
+                                          VK_QUEUE_FAMILY_IGNORED, srcAccessMask, srcStageMask);
     }
 
     void setImageLayoutAndQueueIndex(VulkanCommandBuffer*,
                                      VkImageLayout newLayout,
                                      VkAccessFlags dstAccessMask,
                                      VkPipelineStageFlags dstStageMask,
-                                     uint32_t newQueueFamilyIndex) const;
+                                     uint32_t newQueueFamilyIndex,
+                                     VkAccessFlags srcAccessMask = 0,
+                                     VkPipelineStageFlags srcStageMask = 0) const;
 
     // This simply updates our internal tracking of the image layout and does not actually perform
     // any gpu work.
@@ -133,6 +137,9 @@ private:
     mutable skia_private::STArray<3, CachedTextureDescSet> fCachedSingleTextureDescSets;
 
     skia_private::STArray<3, sk_sp<VulkanFramebuffer>> fCachedFramebuffers;
+
+    mutable VkAccessFlags fCurrentAccess = 0;
+    mutable VkPipelineStageFlags fCurrentStage = 0;
 };
 
 } // namespace skgpu::graphite
