@@ -31,6 +31,10 @@
 #include "src/gpu/graphite/render/VerticesRenderStep.h"
 #include "src/sksl/SkSLUtil.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/VelloRenderer.h"
 #endif

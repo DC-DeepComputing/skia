@@ -18,6 +18,10 @@
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 // This is the main control to version the serialized Pipelines (c.f. stream_is_blob)

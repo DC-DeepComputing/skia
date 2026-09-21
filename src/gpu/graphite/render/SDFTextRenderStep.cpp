@@ -36,6 +36,10 @@
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/VertexFiller.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #if defined(SK_GAMMA_APPLY_TO_A8)
 #include "include/private/SkCPUTypes.h"
 #include "src/core/SkMaskGamma.h"

@@ -30,6 +30,10 @@
 #include <algorithm>
 #include <memory>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 class UniformDataBlock;
