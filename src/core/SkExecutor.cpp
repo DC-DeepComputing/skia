@@ -37,11 +37,14 @@ SkExecutor::~SkExecutor() {}
 // The default default SkExecutor is an SkTrivialExecutor, which just runs the work right away.
 class SkTrivialExecutor final : public SkExecutor {
 public:
+    void add(ExecuteFunction execute, ExecutionContext context, int /* workList */) override {
+        execute(context);
+    }
     void add(std::function<void(void)> work, int /* workList */) override {
         work();
     }
     void add(std::function<void(void)> work) override {
-        this->add(std::move(work), /* workList= */ 0);
+        work();
     }
     int discardAllPendingWork() override { return 0;}
 };
@@ -120,6 +123,19 @@ public:
         this->add(std::move(work), /* workList= */ 0);
     }
 
+    void add(ExecuteFunction execute, ExecutionContext context, int workList) override {
+        workList = SkTPin(workList, 0, fNumWorkLists-1);
+
+        // Add some work to our pile of work to do.
+        {
+            SkAutoMutexExclusive lock(fWorkLock);
+
+            fWorkLists[workList].emplace_back({execute, context});
+        }
+        // Tell the Loop() threads to pick it up.
+        fWorkAvailable.signal(1);
+    }
+
     int discardAllPendingWork() override {
         SkAutoMutexExclusive lock(fWorkLock);
 
@@ -189,13 +205,23 @@ private:
 };
 
 std::unique_ptr<SkExecutor> SkExecutor::MakeFIFOThreadPool(int threads, bool allowBorrowing) {
-    using WorkList = std::deque<std::function<void(void)>>;
+//    using WorkList = std::deque<std::function<void(void)>>;
+    struct Block {
+        ExecuteFunction fFunc = nullptr;
+        ExecutionContext fContext = nullptr;
+    };
+    using WorkList = std::deque<Block>;
     return std::make_unique<SkThreadPool<WorkList>>(/* numWorkLists= */ 1,
                                                     threads > 0 ? threads : num_cores(),
                                                     allowBorrowing);
 }
 std::unique_ptr<SkExecutor> SkExecutor::MakeLIFOThreadPool(int threads, bool allowBorrowing) {
-    using WorkList = TArray<std::function<void(void)>>;
+//    using WorkList = TArray<std::function<void(void)>>;
+    struct Block {
+        SkExecutor::ExecuteFunction fFunc = nullptr;
+        SkExecutor::ExecutionContext fContext = nullptr;
+    };
+    using WorkList = TArray<Block>;
     return std::make_unique<SkThreadPool<WorkList>>(/* numWorkLists= */ 1,
                                                     threads > 0 ? threads : num_cores(),
                                                     allowBorrowing);
@@ -204,7 +230,12 @@ std::unique_ptr<SkExecutor> SkExecutor::MakeLIFOThreadPool(int threads, bool all
 std::unique_ptr<SkExecutor> SkExecutor::MakeMultiListFIFOThreadPool(int numWorkLists,
                                                                     int threads,
                                                                     bool allowBorrowing) {
-    using WorkList = std::deque<std::function<void(void)>>;
+//    using WorkList = std::deque<std::function<void(void)>>;
+    struct Block {
+        SkExecutor::ExecuteFunction fFunc = nullptr;
+        SkExecutor::ExecutionContext fContext = nullptr;
+    };
+    using WorkList = std::deque<Block>;
     return std::make_unique<SkThreadPool<WorkList>>(numWorkLists,
                                                     threads > 0 ? threads : num_cores(),
                                                     allowBorrowing);
@@ -212,7 +243,12 @@ std::unique_ptr<SkExecutor> SkExecutor::MakeMultiListFIFOThreadPool(int numWorkL
 std::unique_ptr<SkExecutor> SkExecutor::MakeMultiListLIFOThreadPool(int numWorkLists,
                                                                     int threads,
                                                                     bool allowBorrowing) {
-    using WorkList = TArray<std::function<void(void)>>;
+//    using WorkList = TArray<std::function<void(void)>>;
+    struct Block {
+        SkExecutor::ExecuteFunction fFunc = nullptr;
+        SkExecutor::ExecutionContext fContext = nullptr;
+    };
+    using WorkList = TArray<Block>;
     return std::make_unique<SkThreadPool<WorkList>>(numWorkLists,
                                                     threads > 0 ? threads : num_cores(),
                                                     allowBorrowing);

@@ -38,10 +38,14 @@ public:
     static SkExecutor& GetDefault();
     static void SetDefault(SkExecutor*);  // Does not take ownership.  Not thread safe.
 
+    using ExecutionContext = void*;
+    using ExecuteFunction = void(ExecutionContext);
+
     // Add work to execute.
-    virtual void add(std::function<void(void)> fn, int /* workList */) { this->add(std::move(fn)); }
+    virtual void add(ExecuteFunction execute, ExecutionContext context, int /* workList */) = 0;
 
     // deprecated
+    virtual void add(std::function<void(void)> fn, int /* workList */) { this->add(std::move(fn)); }
     virtual void add(std::function<void(void)>) = 0;
 
     // Returns the number of discarded work units
