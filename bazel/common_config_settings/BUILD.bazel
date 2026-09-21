@@ -123,3 +123,13 @@ selects.config_setting_group(
     ],
     visibility = ["//:__subpackages__"],
 )
+
+# Matches when we are building for a platform that uses one of Skia's hermetic Clang toolchains
+# (see //bazel/platform). Those toolchains manage some flags themselves, based on the version of
+# Clang they download, so copts must not also specify them. Currently used for
+# -Wunsafe-buffer-usage; see //toolchain/unsafe_buffers.bzl.
+config_setting(
+    name = "uses_hermetic_toolchain",
+    constraint_values = ["//bazel/platform:use_hermetic_toolchain"],
+    visibility = ["//visibility:public"],
+)

@@ -26,6 +26,13 @@ load(
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 load(":clang_layering_check.bzl", "make_layering_check_features")
+load(
+    ":unsafe_buffers.bzl",
+    "COMPILE_ACTIONS",
+    "OBJC_COMPILE_ACTIONS",
+    "UNSAFE_BUFFERS_MAPPINGS_LABEL",
+    "make_unsafe_buffers_features",
+)
 
 # The location of the created clang toolchain.
 EXTERNAL_TOOLCHAIN = "external/+_repo_rules+clang_ios"
@@ -44,6 +51,11 @@ def _ios_toolchain_info(ctx):
     features += make_layering_check_features()
     features += _make_diagnostic_flags()
     features += _make_target_specific_flags(ctx)
+    features += make_unsafe_buffers_features(
+        ctx.file.unsafe_buffers_mappings.path,
+        supported = ctx.attr.supports_warning_suppression_mappings,
+        actions = COMPILE_ACTIONS + OBJC_COMPILE_ACTIONS,
+    )
 
     # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
@@ -89,6 +101,16 @@ def _import_platform_constraints():
     rule_attributes["cpu"] = attr.string(
         mandatory = False,
         values = ["arm64"],
+    )
+    rule_attributes["supports_warning_suppression_mappings"] = attr.bool(
+        mandatory = True,
+        doc = "Whether the Clang this toolchain downloads accepts " +
+              "--warning-suppression-mappings, as probed when its repository was fetched. " +
+              "See //toolchain/unsafe_buffers.bzl.",
+    )
+    rule_attributes["unsafe_buffers_mappings"] = attr.label(
+        default = UNSAFE_BUFFERS_MAPPINGS_LABEL,
+        allow_single_file = True,
     )
     return rule_attributes
 

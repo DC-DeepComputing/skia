@@ -12,6 +12,11 @@ The destination folder for these files and symlinks are:
 """
 
 load("//bazel:cipd_install.bzl", "cipd_download_urls")
+load(
+    ":unsafe_buffers.bzl",
+    "probe_warning_suppression_mappings",
+    "unsafe_buffers_build_file_content",
+)
 
 # This is currently clang 23 (see //infra/bots/assets/clang_win/create.py)
 win_clang_pkg = "skia/bots/clang_win"
@@ -105,7 +110,9 @@ filegroup(
     ),
     visibility = ["//visibility:public"],
 )
-""",
+""" + unsafe_buffers_build_file_content(
+            probe_warning_suppression_mappings(ctx, ctx.path("bin/clang.exe")),
+        ),
         executable = False,
     )
 

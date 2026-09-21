@@ -180,6 +180,9 @@ filegroup(
 filegroup(
     name = "compile_linux_amd64_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "@clang_linux_amd64//:compile_files",
     ],
 )
@@ -210,6 +213,9 @@ filegroup(
 filegroup(
     name = "compile_mac_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "@clang_mac//:compile_files",
     ],
 )
@@ -240,6 +246,9 @@ filegroup(
 filegroup(
     name = "compile_windows_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "@clang_windows_amd64//:compile_files",
     ],
 )
@@ -271,6 +280,9 @@ filegroup(
 filegroup(
     name = "compile_ios_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "ios_trampolines/clang_trampoline_ios.sh",
         "@clang_ios//:compile_files",
     ],
@@ -292,31 +304,56 @@ filegroup(
     ],
 )
 
+# Whether each toolchain can enforce -Wunsafe-buffer-usage is decided by running the compiler it
+# downloaded, at the time that download happens. The answer is published by the toolchain
+# repository as a config_setting, so it has to be read with a select(); see
+# //toolchain/unsafe_buffers.bzl for why a load() would not work. All three mac configs share the
+# one compiler in @clang_mac.
+_MAC_SUPPORTS_SUPPRESSION_MAPPINGS = select({
+    "@clang_mac//:supports_warning_suppression_mappings": True,
+    "//conditions:default": False,
+})
+
 provide_linux_amd64_toolchain_config(
     name = "linux_amd64_toolchain_config",
+    supports_warning_suppression_mappings = select({
+        "@clang_linux_amd64//:supports_warning_suppression_mappings": True,
+        "//conditions:default": False,
+    }),
 )
 
 provide_mac_toolchain_config(
     name = "mac_host_toolchain_config",
+    supports_warning_suppression_mappings = _MAC_SUPPORTS_SUPPRESSION_MAPPINGS,
 )
 
 provide_mac_toolchain_config(
     name = "mac_arm64_toolchain_config",
     cpu = "arm64",
+    supports_warning_suppression_mappings = _MAC_SUPPORTS_SUPPRESSION_MAPPINGS,
 )
 
 provide_mac_toolchain_config(
     name = "mac_x64_toolchain_config",
     cpu = "x64",
+    supports_warning_suppression_mappings = _MAC_SUPPORTS_SUPPRESSION_MAPPINGS,
 )
 
 provide_windows_amd64_toolchain_config(
     name = "windows_amd64_toolchain_config",
+    supports_warning_suppression_mappings = select({
+        "@clang_windows_amd64//:supports_warning_suppression_mappings": True,
+        "//conditions:default": False,
+    }),
 )
 
 provide_ios_toolchain_config(
     name = "ios_arm64_toolchain_config",
     cpu = "arm64",
+    supports_warning_suppression_mappings = select({
+        "@clang_ios//:supports_warning_suppression_mappings": True,
+        "//conditions:default": False,
+    }),
 )
 
 # https://bazel.build/reference/be/c-cpp#cc_toolchain
