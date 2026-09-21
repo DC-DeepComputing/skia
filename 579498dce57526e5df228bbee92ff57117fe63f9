@@ -16,6 +16,24 @@
       "message": "/cc @fmalita (codecs owner in Skia)\n\nLGTM.\n\nOne minor idea I has was whether `for_android` should/could potentially be split into 2 separate knobs (say: `conservative_reader` and `disable_apng_support`).  But it seems unimportant in the grand scheme of things.  And with some work (spanning multiple projects/repo potentially) we can split it later if needed.  So I think it\u0027s fine to just land as-is for now.  WDYT?",
       "revId": "579498dce57526e5df228bbee92ff57117fe63f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cdf61db_4b214333",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-21T20:41:29Z",
+      "side": 1,
+      "message": "SG, happy to follow up with that, as you suggested this may require a bit more work here\n\nThere is also another Android-specific behavior: the `finish_decoding` call, so it might be be good to have a 3rd flag for that one",
+      "parentUuid": "6023eb0d_a38a2b6d",
+      "revId": "579498dce57526e5df228bbee92ff57117fe63f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
