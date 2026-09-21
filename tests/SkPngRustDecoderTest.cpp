@@ -349,6 +349,41 @@ static void AssertAndroidDecodeSampling(
 #endif
 }
 
+#if defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+static void AssertAndroidStaticApng(skiatest::Reporter* r,
+                                    const char* path,
+                                    std::optional<SkColor> expectedTopLeftColor = std::nullopt) {
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, path);
+    if (!codec) {
+        return;
+    }
+
+    REPORTER_ASSERT(r, codec->isAnimated() == SkCodec::IsAnimated::kNo);
+    REPORTER_ASSERT(r, codec->getFrameCount() == 1);
+    REPORTER_ASSERT(r, codec->getRepetitionCount() == 0);
+
+    SkCodec::FrameInfo info;
+    REPORTER_ASSERT(r, !codec->getFrameInfo(0, &info));
+
+    if (expectedTopLeftColor.has_value()) {
+        auto [image, result] = codec->getImage();
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+        if (image) {
+            SkPixmap pixmap;
+            REPORTER_ASSERT(r, image->peekPixels(&pixmap));
+            AssertPixelColor(r, pixmap, 0, 0, *expectedTopLeftColor, "IDAT top-left pixel");
+        }
+    }
+
+    // Verify full, downsampled, and subset+downsampled decodes succeed and match `libpng`.
+    AssertAndroidDecodeSampling(r, path, /*sampleSize=*/1);
+    AssertAndroidDecodeSampling(r, path, /*sampleSize=*/2);
+    AssertAndroidDecodeSampling(r, path, /*sampleSize=*/2, [](const SkImageInfo& imgInfo) {
+        return SkIRect::MakeXYWH(0, 0, imgInfo.width() / 2, imgInfo.height() / 2);
+    });
+}
+#endif
+
 // Decodes into a buffer surrounded by guard bytes to detect out-of-bounds writes
 // even in builds without ASAN, and asserts that the decode is refused with
 // `SkCodec::kUnimplemented`.
@@ -499,7 +534,12 @@ DEF_TEST(RustPngCodec_apng_basic_trivial_static_image, r) {
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#trivial-animated-image-one-frame-using-default-image
 DEF_TEST(RustPngCodec_apng_basic_using_default_image, r) {
-    AssertSingleGreenFrame(r, 128, 64, "images/apng-test-suite--basic--using-default-image.png");
+    const char* kResource = "images/apng-test-suite--basic--using-default-image.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    AssertSingleGreenFrame(r, 128, 64, kResource);
+#else
+    AssertAndroidStaticApng(r, kResource, SK_ColorGREEN);
+#endif
 }
 
 // Test based on
@@ -512,7 +552,12 @@ DEF_TEST(RustPngCodec_apng_basic_using_default_image, r) {
 // with non-APNG-aware decoders (e.g. with `SkPngCodec`), because the `IDAT`
 // chunk represents a red image (the `fdAT` chunk represents a green image).
 DEF_TEST(RustPngCodec_apng_basic_ignoring_default_image, r) {
-    AssertSingleGreenFrame(r, 128, 64, "images/apng-test-suite--basic--ignoring-default-image.png");
+    const char* kResource = "images/apng-test-suite--basic--ignoring-default-image.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    AssertSingleGreenFrame(r, 128, 64, kResource);
+#else
+    AssertAndroidStaticApng(r, kResource, SK_ColorRED);
+#endif
 }
 
 // Regression test for b/562862995: When an APNG has no `fcTL` chunk before
@@ -523,7 +568,7 @@ DEF_TEST(RustPngCodec_apng_basic_ignoring_default_image, r) {
 // frame rather than failing with `kInvalidParameters`.
 DEF_TEST(RustPngCodec_apng_ignoring_default_image_without_getFrameCount, r) {
     const char* kResource = "images/apng-test-suite--basic--ignoring-default-image.png";
-
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
     // 1. Direct `getImage()` / `getPixels()` without `getFrameCount()`.
     {
         std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kResource);
@@ -573,6 +618,9 @@ DEF_TEST(RustPngCodec_apng_ignoring_default_image_without_getFrameCount, r) {
             AssertGreenPixel(r, bitmap.pixmap(), 0, 0);
         }
     }
+#else
+    AssertAndroidStaticApng(r, kResource, SK_ColorRED);
+#endif
 }
 
 // Test based on
@@ -591,8 +639,9 @@ DEF_TEST(RustPngCodec_apng_ignoring_default_image_without_getFrameCount, r) {
 //   `SkPngRustCodec` needs to handle `SkCodecAnimation::Blend` - without this
 //   the final frame in this test will contain red pixels.
 DEF_TEST(RustPngCodec_apng_dispose_op_none_basic, r) {
-    std::unique_ptr<SkCodec> codec =
-            SkPngRustDecoderDecode(r, "images/apng-test-suite--dispose-ops--none-basic.png");
+    const char* kResource = "images/apng-test-suite--dispose-ops--none-basic.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kResource);
     if (!codec) {
         return;
     }
@@ -647,6 +696,9 @@ DEF_TEST(RustPngCodec_apng_dispose_op_none_basic, r) {
     options.fPriorFrame = 1;  // `pixmap` contains the second frame before `getPixels` call.
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, codec->getPixels(pixmap, &options));
     AssertGreenPixel(r, pixmap, 0, 0, "Frame #2 should be green");
+#else
+    AssertAndroidStaticApng(r, kResource, SK_ColorRED);
+#endif
 }
 
 // This test covers an incomplete input scenario:
@@ -798,8 +850,9 @@ DEF_TEST(RustPngCodec_apng_dispose_op_none_basic_incomplete_input2, r) {
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#apng-blend-op-source-on-solid-colour
 DEF_TEST(RustPngCodec_apng_blend_ops_source_on_solid, r) {
-    std::unique_ptr<SkCodec> codec =
-            SkPngRustDecoderDecode(r, "images/apng-test-suite--blend-ops--source-on-solid.png");
+    const char* kResource = "images/apng-test-suite--blend-ops--source-on-solid.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kResource);
     if (!codec) {
         return;
     }
@@ -816,13 +869,17 @@ DEF_TEST(RustPngCodec_apng_blend_ops_source_on_solid, r) {
     REPORTER_ASSERT(r, codec->getFrameInfo(1, &info));
     REPORTER_ASSERT(r, info.fBlend == SkCodecAnimation::Blend::kSrc);
     REPORTER_ASSERT(r, info.fRequiredFrame == SkCodec::kNoFrame);
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#apng-blend-op-source-on-nearly-transparent-colour
 DEF_TEST(RustPngCodec_apng_blend_ops_source_on_nearly_transparent, r) {
-    sk_sp<SkImage> image = DecodeLastFrame(
-            r, "images/apng-test-suite--blend-ops--source-on-nearly-transparent.png");
+    const char* kResource = "images/apng-test-suite--blend-ops--source-on-nearly-transparent.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    sk_sp<SkImage> image = DecodeLastFrame(r, kResource);
     if (!image) {
         return;
     }
@@ -835,13 +892,17 @@ DEF_TEST(RustPngCodec_apng_blend_ops_source_on_nearly_transparent, r) {
                      0,
                      SkColorSetARGB(0x02, 0x00, 0xFF, 0x00),
                      "Expecting a nearly transparent pixel");
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#apng-blend-op-over-on-solid-and-transparent-colours
 DEF_TEST(RustPngCodec_apng_blend_ops_over_on_solid_and_transparent, r) {
-    sk_sp<SkImage> image = DecodeLastFrame(
-            r, "images/apng-test-suite--blend-ops--over-on-solid-and-transparent.png");
+    const char* kResource = "images/apng-test-suite--blend-ops--over-on-solid-and-transparent.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    sk_sp<SkImage> image = DecodeLastFrame(r, kResource);
     if (!image) {
         return;
     }
@@ -849,13 +910,17 @@ DEF_TEST(RustPngCodec_apng_blend_ops_over_on_solid_and_transparent, r) {
     SkPixmap pixmap;
     REPORTER_ASSERT(r, image->peekPixels(&pixmap));
     AssertGreenPixel(r, pixmap, 0, 0);
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#apng-blend-op-over-repeatedly-with-nearly-transparent-colours
 DEF_TEST(RustPngCodec_apng_blend_ops_over_repeatedly, r) {
-    sk_sp<SkImage> image =
-            DecodeLastFrame(r, "images/apng-test-suite--blend-ops--over-repeatedly.png");
+    const char* kResource = "images/apng-test-suite--blend-ops--over-repeatedly.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    sk_sp<SkImage> image = DecodeLastFrame(r, kResource);
     if (!image) {
         return;
     }
@@ -863,13 +928,17 @@ DEF_TEST(RustPngCodec_apng_blend_ops_over_repeatedly, r) {
     SkPixmap pixmap;
     REPORTER_ASSERT(r, image->peekPixels(&pixmap));
     AssertGreenPixel(r, pixmap, 0, 0);
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#apng-dispose-op-none-in-region
 DEF_TEST(RustPngCodec_apng_regions_dispose_op_none, r) {
-    sk_sp<SkImage> image =
-            DecodeLastFrame(r, "images/apng-test-suite--regions--dispose-op-none.png");
+    const char* kResource = "images/apng-test-suite--regions--dispose-op-none.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    sk_sp<SkImage> image = DecodeLastFrame(r, kResource);
     if (!image) {
         return;
     }
@@ -886,25 +955,42 @@ DEF_TEST(RustPngCodec_apng_regions_dispose_op_none, r) {
             AssertGreenPixel(r, pixmap, x, y);
         }
     }
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#num-plays-0
 DEF_TEST(RustPngCodec_apng_num_plays_0, r) {
-    AssertAnimationRepetitionCount(
-            r, SkCodec::kRepetitionCountInfinite, "images/apng-test-suite--num-plays--0.png");
+    const char* kResource = "images/apng-test-suite--num-plays--0.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    AssertAnimationRepetitionCount(r, SkCodec::kRepetitionCountInfinite, kResource);
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#num-plays-1
 DEF_TEST(RustPngCodec_apng_num_plays_1, r) {
-    AssertAnimationRepetitionCount(r, 0, "images/apng-test-suite--num-plays--1.png");
+    const char* kResource = "images/apng-test-suite--num-plays--1.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    AssertAnimationRepetitionCount(r, 0, kResource);
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
 // https://philip.html5.org/tests/apng/tests.html#num-plays-2
 DEF_TEST(RustPngCodec_apng_num_plays_2, r) {
-    AssertAnimationRepetitionCount(r, 1, "images/apng-test-suite--num-plays--2.png");
+    const char* kResource = "images/apng-test-suite--num-plays--2.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    AssertAnimationRepetitionCount(r, 1, kResource);
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 // Test based on
@@ -1037,7 +1123,9 @@ DEF_TEST(RustPngCodec_f16_trc_tables, r) {
 }
 
 DEF_TEST(RustPngCodec_crbug445556737, r) {
-    sk_sp<SkImage> image = DecodeLastFrame(r, "images/crbug445556737.png");
+    const char* kResource = "images/crbug445556737.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    sk_sp<SkImage> image = DecodeLastFrame(r, kResource);
     if (!image) {
         return;
     }
@@ -1046,6 +1134,9 @@ DEF_TEST(RustPngCodec_crbug445556737, r) {
     // other crashes.  Cursory verification below is supplementary/secondary.
     REPORTER_ASSERT(r, image->height() == 5);
     REPORTER_ASSERT(r, image->width() == 5);
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 DEF_TEST(RustPngCodec_invalid_profile, r) {
@@ -1233,8 +1324,9 @@ DEF_TEST(RustPngCodec_interlaced_partial_decode_covers_all_pixels, r) {
 }
 
 DEF_TEST(RustPngCodec_interlaced_animated_blending, r) {
-    std::unique_ptr<SkCodec> codec =
-        SkPngRustDecoderDecode(r, "images/interlaced-multiframe-with-blending.png");
+    const char* kResource = "images/interlaced-multiframe-with-blending.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
+    std::unique_ptr<SkCodec> codec = SkPngRustDecoderDecode(r, kResource);
     REPORTER_ASSERT(r, codec);
 
     // Use incrementalDecode for each frame of this image. This should not crash.
@@ -1251,6 +1343,9 @@ DEF_TEST(RustPngCodec_interlaced_animated_blending, r) {
         REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
         std::ignore = codec->incrementalDecode();
     }
+#else
+    AssertAndroidStaticApng(r, kResource);
+#endif
 }
 
 DEF_TEST(RustPngCodec_sbit565_ihdr16bits, r) {
@@ -1555,6 +1650,7 @@ DEF_TEST(RustPngCodec_subsampling_subset_interlaced, r) {
 DEF_TEST(RustPngCodec_apng_offset_frame_does_not_overflow_dst, r) {
     // 64x64 canvas.  The single frame covers the bottom half: y-origin of 32.
     const char* path = "images/apng-single-frame-with-offset.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
     sk_sp<SkData> data = GetResourceAsData(path);
     if (!data) {
         ERRORF(r, "Missing resource: %s", path);
@@ -1587,6 +1683,11 @@ DEF_TEST(RustPngCodec_apng_offset_frame_does_not_overflow_dst, r) {
         AssertAndroidDecodeRefused(
                 r, data, testCase.fSampleSize, testCase.fUseSubset, testCase.fRowBytes);
     }
+#else
+    // On Android (matching libpng), the full-canvas 64x64 `IDAT` default image is decoded,
+    // so sampled and subset decodes succeed.
+    AssertAndroidStaticApng(r, path);
+#endif
 }
 
 // A caller that drives `SkCodec` directly (rather than through
@@ -1625,6 +1726,7 @@ DEF_TEST(RustPngCodec_apng_offset_frame_small_row_bytes, r) {
 // to its origin.  This is the only path that non-Android clients use.
 DEF_TEST(RustPngCodec_apng_offset_frame_full_canvas_placement, r) {
     const char* path = "images/apng-single-frame-with-offset.png";
+#if !defined(SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID)
     sk_sp<SkData> data = GetResourceAsData(path);
     if (!data) {
         ERRORF(r, "Missing resource: %s", path);
@@ -1652,4 +1754,9 @@ DEF_TEST(RustPngCodec_apng_offset_frame_full_canvas_placement, r) {
         REPORTER_ASSERT(r, bm.getColor(0, 32) == SK_ColorMAGENTA);
         REPORTER_ASSERT(r, bm.getColor(63, 63) == SK_ColorMAGENTA);
     }
+#else
+    AssertAndroidStaticApng(r, path);
+#endif
 }
+
+
