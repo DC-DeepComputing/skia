@@ -17,6 +17,10 @@
 
 #include <cstring>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace {
 // Keys for paths may be extracted from the path data for small paths, to maximize matches
 // even when the genIDs may differ. The value is based on emperical experience, to trade off

@@ -15,6 +15,10 @@
 #include "src/gpu/MaskFormat.h"
 #include "src/gpu/graphite/Renderer.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 class Caps;

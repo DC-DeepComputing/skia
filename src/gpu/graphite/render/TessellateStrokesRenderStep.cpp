@@ -37,6 +37,10 @@
 #include "src/gpu/tessellate/WangsFormula.h"
 #include "src/sksl/SkSLString.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 namespace {
