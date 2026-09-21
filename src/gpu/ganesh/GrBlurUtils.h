@@ -72,6 +72,14 @@ void DrawShapeWithMaskFilter(GrRecordingContext*,
                              const SkMatrix&,
                              const GrStyledShape&);
 
+void DrawDRRectWithMaskFilter(GrRecordingContext*,
+                              skgpu::ganesh::SurfaceDrawContext*,
+                              const GrClip*,
+                              const SkPaint&,
+                              const SkMatrix&,
+                              const SkRRect& outer,
+                              const SkRRect& inner);
+
 /**
  * Draw a shape handling the mask filter. The mask filter is not optional.
  * The GrPaint will be modified after return.
