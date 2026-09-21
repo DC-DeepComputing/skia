@@ -113,6 +113,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d49e054c_819c24b7",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T17:34:26Z",
+      "side": 1,
+      "message": "A format not being renderable is a significant detail, but if a format is not renderable, then it cannot apply any of these conversions (alpha, colorspace, or flip) on the GPU. You\u0027re right that then we would need to have the CPU-side flip be possible as a fallback, so we should keep this code.\n\nHowever, I think we can still attempt to do the flip on the GPU just like we would with any other conversion.\n\n(not exactly related to this theory, but I think R16G16Float should be considered a renderable format looking at the flags that are reported for it in DawnGraphiteUtils capability table. Are you seeing it differently in practice?)",
+      "parentUuid": "b15ea723_24b62890",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6563d5db_2a5a3fee",
         "filename": "src/gpu/graphite/Surface_Graphite.h",
         "patchSetId": 6
