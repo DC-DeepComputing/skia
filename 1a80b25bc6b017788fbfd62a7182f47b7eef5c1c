@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "429ebb10_0e3afb56",
+        "filename": "src/core/SkStroke.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-21T19:33:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "372b1140_7a58cc9b",
+      "range": {
+        "startLine": 40,
+        "startChar": 3,
+        "endLine": 41,
+        "endChar": 64
+      },
+      "revId": "1a80b25bc6b017788fbfd62a7182f47b7eef5c1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02f959fd_52d27f07",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-21T18:41:09Z",
       "side": 1,
       "message": "I suspect that `bug40810065` has a peak higher than 11 given it has gold diffs. What was its subdivision level? I don\u0027t mind the gold diffs, so I\u0027m not necessarily opposed to changing to 16 but it\u0027d be nice to know how much we\u0027re cutting off.",
+      "range": {
+        "startLine": 44,
+        "startChar": 87,
+        "endLine": 44,
+        "endChar": 97
+      },
+      "revId": "1a80b25bc6b017788fbfd62a7182f47b7eef5c1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b4fc6b_8f4b6227",
+        "filename": "src/core/SkStroke.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-21T19:33:38Z",
+      "side": 1,
+      "message": "So on closer inspection, `bug40810065` is actually a cubic only path. The difference in the GM is actually due to the `fRecursionDepth` leak fix (confirmed by printing out the recursion depth, resulting in a depth of 26 without the fix).",
+      "parentUuid": "02f959fd_52d27f07",
       "range": {
         "startLine": 44,
         "startChar": 87,
