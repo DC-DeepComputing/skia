@@ -41,7 +41,9 @@ enum {
 // For cubics, we never get close to 75 when running through dm. The limit of 24
 // was chosen because it's close to the peak in a count of cubic recursion depths visited
 // (define DEBUG_CUBIC_RECURSION_DEPTHS) and no diffs were produced on gold when using it.
-static constexpr auto kRecursiveLimits = std::to_array<int>({ 5*3, 24, 11*3, 11*3 });
+// Similarly, the limit for quads and conics is set to 16 (providing headroom over the peak of 11
+// seen in dm) to prevent exponential subdivisions and fuzzer timeouts in degenerate cases.
+static constexpr auto kRecursiveLimits = std::to_array<int>({ 5*3, 24, 16, 16 });
 
 static_assert(0 == kTangent_RecursiveLimit, "cubic_stroke_relies_on_tangent_equalling_zero");
 static_assert(1 == kCubic_RecursiveLimit, "cubic_stroke_relies_on_cubic_equalling_one");
@@ -544,6 +546,7 @@ void SkPathStroker::init(StrokeType strokeType, SkQuadConstruct* quadPts, SkScal
         SkScalar tEnd) {
     fStrokeType = strokeType;
     fFoundTangents = false;
+    fRecursionDepth = 0;
     quadPts->init(tStart, tEnd);
 }
 
@@ -1218,6 +1221,7 @@ bool SkPathStroker::cubicStroke(const SkPoint cubic[4], SkQuadConstruct* quadPts
         DEBUG_CUBIC_RECURSION_TRACK_DEPTH(fRecursionDepth);
         // If we stop making progress, just emit a line and move on
         addDegenerateLine(quadPts);
+        --fRecursionDepth;
         return true;
     }
     SkQuadConstruct half;
@@ -1255,6 +1259,9 @@ bool SkPathStroker::conicStroke(const SkConic& conic, SkQuadConstruct* quadPts) 
         addDegenerateLine(quadPts);
         return true;
     }
+    if (!quadPts->fQuad[2].isFinite()) {
+        return false;  // just abort if projected quad isn't representable
+    }
 #if QUAD_STROKE_APPROX_EXTENDED_DEBUGGING
     SkDEBUGCODE(gMaxRecursion[kConic_RecursiveLimit] = std::max(gMaxRecursion[kConic_RecursiveLimit],
             fRecursionDepth + 1));
@@ -1262,14 +1269,23 @@ bool SkPathStroker::conicStroke(const SkConic& conic, SkQuadConstruct* quadPts) 
     if (++fRecursionDepth > kRecursiveLimits[kConic_RecursiveLimit]) {
         // If we stop making progress, just emit a line and move on
         addDegenerateLine(quadPts);
+        --fRecursionDepth;
         return true;
     }
     SkQuadConstruct half;
-    (void) half.initWithStart(quadPts);
+    if (!half.initWithStart(quadPts)) {
+        addDegenerateLine(quadPts);
+        --fRecursionDepth;
+        return true;
+    }
     if (!this->conicStroke(conic, &half)) {
         return false;
     }
-    (void) half.initWithEnd(quadPts);
+    if (!half.initWithEnd(quadPts)) {
+        addDegenerateLine(quadPts);
+        --fRecursionDepth;
+        return true;
+    }
     if (!this->conicStroke(conic, &half)) {
         return false;
     }
@@ -1289,6 +1305,9 @@ bool SkPathStroker::quadStroke(const SkPoint quad[3], SkQuadConstruct* quadPts) 
         addDegenerateLine(quadPts);
         return true;
     }
+    if (!quadPts->fQuad[2].isFinite()) {
+        return false;  // just abort if projected quad isn't representable
+    }
 #if QUAD_STROKE_APPROX_EXTENDED_DEBUGGING
     SkDEBUGCODE(gMaxRecursion[kQuad_RecursiveLimit] = std::max(gMaxRecursion[kQuad_RecursiveLimit],
             fRecursionDepth + 1));
@@ -1296,14 +1315,23 @@ bool SkPathStroker::quadStroke(const SkPoint quad[3], SkQuadConstruct* quadPts) 
     if (++fRecursionDepth > kRecursiveLimits[kQuad_RecursiveLimit]) {
         // If we stop making progress, just emit a line and move on
         addDegenerateLine(quadPts);
+        --fRecursionDepth;
         return true;
     }
     SkQuadConstruct half;
-    (void) half.initWithStart(quadPts);
+    if (!half.initWithStart(quadPts)) {
+        addDegenerateLine(quadPts);
+        --fRecursionDepth;
+        return true;
+    }
     if (!this->quadStroke(quad, &half)) {
         return false;
     }
-    (void) half.initWithEnd(quadPts);
+    if (!half.initWithEnd(quadPts)) {
+        addDegenerateLine(quadPts);
+        --fRecursionDepth;
+        return true;
+    }
     if (!this->quadStroke(quad, &half)) {
         return false;
     }
