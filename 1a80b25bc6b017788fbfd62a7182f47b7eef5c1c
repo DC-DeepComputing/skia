@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a09d342_5718448b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-21T18:27:36Z",
+      "side": 1,
+      "message": "PTAL; this one is a little awkward. We need to lower the recursion depth limit to prevent the timeout, but we want to choose a large enough depth to correctly draw non-adversarial paths.\n\nBased on past CL\u0027s, the heuristic to choose that depth was 3 times that max depth across the GMs, 11, 3 * 11 \u003d 33. This patch lowers that depth to 16, not sure if that is sufficient. \n\nThis patch also fixes some bugs that were introduced in previous patches.",
+      "revId": "1a80b25bc6b017788fbfd62a7182f47b7eef5c1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
