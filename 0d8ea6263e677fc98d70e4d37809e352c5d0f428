@@ -46,6 +46,30 @@
       },
       "revId": "0d8ea6263e677fc98d70e4d37809e352c5d0f428",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4b6ae62_9859d8df",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-21T21:13:43Z",
+      "side": 1,
+      "message": "Actually now looking at the [SkCodec getFrameInfo documentation](https://source.corp.google.com/piper///depot/google3/third_party/skia/HEAD/include/codec/SkCodec.h;l\u003d753?q\u003dSkCodec) more closely:\n\n\u003e To elaborate, some codecs support animation (e.g. GIF). Others do not (e.g. BMP). Animated codecs can still represent single frame images. Calling getFrameInfo(0, etc) will return true for a single frame GIF even if the overall image is not animated.\n\nSo I think this behavior was intended, and it makes sense as the frame also has meaningful metadata that may be worth looking at even for a static image.\n\nIt doesn’t seem like this behavior matters for AOSP, I sent this CL because I noticed the `Codec_frames` test failing when working on the CL to disable APNG in AOSP and realized the failure was at head.\n\nSo I think the issue is actually with the `Codec_frames` test here, seems like the test should be updated. I’ll update the CL to do that instead.",
+      "parentUuid": "b04ee031_458ed5eb",
+      "range": {
+        "startLine": 1231,
+        "startChar": 4,
+        "endLine": 1231,
+        "endChar": 5
+      },
+      "revId": "0d8ea6263e677fc98d70e4d37809e352c5d0f428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
