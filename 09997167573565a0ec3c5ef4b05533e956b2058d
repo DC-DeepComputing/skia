@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9585b38b_7cb443c4",
+        "filename": "gm/trickycubicstrokes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-21T15:07:05Z",
+      "side": 1,
+      "message": "please format",
+      "range": {
+        "startLine": 44,
+        "startChar": 31,
+        "endLine": 61,
+        "endChar": 33
+      },
+      "revId": "09997167573565a0ec3c5ef4b05533e956b2058d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
