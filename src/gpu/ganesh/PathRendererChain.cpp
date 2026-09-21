@@ -49,10 +49,18 @@ PathRendererChain::PathRendererChain(GrRecordingContext* context, const Options&
     }
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     if (options.fGpuPathRenderers & GpuPathRenderers::kSmall) {
-        fChain.push_back(sk_make_sp<SmallPathRenderer>());
+        auto spr = sk_make_sp<SmallPathRenderer>();
+        if (context->priv().options().fSmallPathDisableDistanceFields) {
+            spr->setDeferRotatedPaths(true);
+        }
+        fChain.push_back(std::move(spr));
     }
     if (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating) {
-        fChain.push_back(sk_make_sp<TriangulatingPathRenderer>());
+        auto pr = sk_make_sp<TriangulatingPathRenderer>();
+        if (context->priv().options().fSmallPathDisableDistanceFields) {
+            pr->setMaxVerbCount(1024);
+        }
+        fChain.push_back(std::move(pr));
     }
 #endif
     if (options.fGpuPathRenderers & GpuPathRenderers::kTessellation) {
