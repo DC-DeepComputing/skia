@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b908f1db_99f57507",
+        "filename": "modules/skottie/src/text/RangeSelector.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-21T12:12:10Z",
+      "side": 1,
+      "message": "If we remove the \"Shape::\" prefixes and only have one space before the \"//\" will these fit on a line?",
+      "revId": "c324e783c3d40ac097e87d307ae76e5fd64b56ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
