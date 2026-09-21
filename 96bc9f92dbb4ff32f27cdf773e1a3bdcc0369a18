@@ -22,6 +22,29 @@
       },
       "revId": "96bc9f92dbb4ff32f27cdf773e1a3bdcc0369a18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f061044_e3901859",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-21T14:15:58Z",
+      "side": 1,
+      "message": "Thinking about this more, I don\u0027t think we want to use these defines in the new system. We want clients passing them in via options or set calls on SkContext, not by setting compile defined values.",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 26,
+        "endChar": 6
+      },
+      "revId": "96bc9f92dbb4ff32f27cdf773e1a3bdcc0369a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
