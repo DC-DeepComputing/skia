@@ -88,6 +88,7 @@ public:
 
     std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                            StorageContext* storageContext,
+                                           DrawTask* drawTask,
                                            sk_sp<TextureProxy> target,
                                            const SkImageInfo& targetInfo,
                                            DstReadStrategy dstReadStrategy) override;
