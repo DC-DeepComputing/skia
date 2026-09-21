@@ -89,6 +89,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b15ea723_24b62890",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-21T17:09:25Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t think we really need to worry about the case where Graphite is asked to readback from a texture that isn\u0027t sampleable AND bottom-left (since Graphite already requires that all renderable surfaces are top-left).\n\nNot sure I understood 100% but there are some formats that are not renderable but sampleable (i.e. R16G16Float). Sometime the image is imported from WebGL and it\u0027s bottom left. But it\u0027s not renderable in Graphite so we cannot convert/flip the pixels using a temporary R16G16Float texture IIUC. Hence I included both a GPU flip and a CPU flip as a fallback (if a GPU draw is not possible). I think it would be weird to allow some formats to flip and others just ignore the origin.",
+      "parentUuid": "6e437c79_68e46cc4",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6563d5db_2a5a3fee",
         "filename": "src/gpu/graphite/Surface_Graphite.h",
         "patchSetId": 6
