@@ -932,17 +932,20 @@ SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingSt
     while (true) {
         rust::Slice<const uint8_t> decodedRow;
         fStreamIsPositionedAtStartOfFrameData = false;
-        Result result = ToSkCodecResult(fReader->next_interlaced_row(decodedRow));
-        if (result != kSuccess) {
-            if (result == kIncompleteInput && rowsDecodedPtr) {
-                *rowsDecodedPtr = decodingState.fRowsWrittenToOutput;
+        if (interlaced || (!subset && !isSampling) ||
+            decodingState.fRowsWrittenToOutput < dstHeight) {
+            Result result = ToSkCodecResult(fReader->next_interlaced_row(decodedRow));
+            if (result != kSuccess) {
+                if (result == kIncompleteInput && rowsDecodedPtr) {
+                    *rowsDecodedPtr = decodingState.fRowsWrittenToOutput;
+                }
+                return result;
             }
-            return result;
         }
 
         // This is how FFI layer says "no more rows", or if we have decoded all the rows
         // we need for our subset or sampling.
-        if (decodedRow.empty() || decodingState.fRowsWrittenToOutput >= dstHeight) {
+        if (decodedRow.empty()) {
             if (interlaced && !decodingState.fPreblendBuffer.empty()) {
                 if (subset || isSampling) {
                     this->getSubsetOrSampleFromFullImage(
@@ -967,10 +970,17 @@ SkCodec::Result SkPngRustCodec::incrementalDecodeXForm(DecodingState& decodingSt
                 SkASSERT_RELEASE(decodingDst.fDst.empty());
             }
 
-            // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
-            fFrameHolder.markFrameAsFullyReceived(static_cast<size_t>(this->options().fFrameIndex));
-            if (this->isLastFrame()) {
-                return ToSkCodecResult(fReader->finish_decoding());
+            if (interlaced || (!subset && !isSampling)) {
+                // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
+                fFrameHolder.markFrameAsFullyReceived(
+                        static_cast<size_t>(this->options().fFrameIndex));
+            }
+            if (this->isLastFrame() && !subset && !isSampling) {
+                // Best-effort read of trailing chunks (e.g. for `SkPngChunkReader` on Android)
+                // up to `IEND`. Do not read to `IEND` on subset/sampled decodes, and ignore
+                // errors after `IDAT` since all scanlines and the `IDAT` checksum have already
+                // been verified.
+                std::ignore = fReader->finish_decoding();
             }
             return kSuccess;
         }
@@ -1091,7 +1101,10 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
             // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
             fFrameHolder.markFrameAsFullyReceived(static_cast<size_t>(this->options().fFrameIndex));
             if (this->isLastFrame()) {
-                return ToSkCodecResult(fReader->finish_decoding());
+                // Best-effort read of trailing chunks (e.g. for `SkPngChunkReader` on Android)
+                // up to `IEND`. Any missing or corrupt data after `IDAT` is ignored since all
+                // scanlines and the `IDAT` checksum have already been verified.
+                std::ignore = fReader->finish_decoding();
             }
             return kSuccess;
         }
