@@ -87,7 +87,6 @@ WARNINGS = [
     "-Wno-undefined-func-template",
     "-Wno-unused-parameter",  # It is common to have unused parameters in src/
     "-Wno-zero-as-null-pointer-constant",  # VK_NULL_HANDLE is defined as 0
-    "-Wno-unsafe-buffer-usage",
     #### Warnings we would like to fix ####
     "-Wno-abstract-vbase-init",
     "-Wno-cast-align",
@@ -173,6 +172,21 @@ WARNINGS = [
         "-D_CRT_USE_BUILTIN_OFFSETOF",
     ],
     "//conditions:default": [],
+}) + select({
+    # -Wunsafe-buffer-usage flags pointer arithmetic that cannot be bounds checked. It is part of
+    # -Weverything, so it has to be explicitly turned off until the codebase has been spanified
+    # (b/532990050). Building with --features=unsafe_buffer_usage turns it on, and makes our
+    # hermetic toolchains pass the suppression mappings file which lists the directories that
+    # have been spanified so far. See //toolchain/unsafe_buffers.bzl.
+    #
+    # This must stay at the end of this list: these flags are applied in order, and -Weverything
+    # above would otherwise re-enable the warning.
+    "//bazel/common_config_settings:enforce_unsafe_buffer_usage": [
+        "-Wunsafe-buffer-usage",
+    ],
+    "//conditions:default": [
+        "-Wno-unsafe-buffer-usage",
+    ],
 })
 
 DEFAULT_COPTS = CORE_COPTS + OPT_LEVEL + WARNINGS

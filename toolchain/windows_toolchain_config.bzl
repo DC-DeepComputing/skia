@@ -25,6 +25,11 @@ load(
     "with_feature_set",
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
+load(
+    ":unsafe_buffers.bzl",
+    "UNSAFE_BUFFERS_MAPPINGS_LABEL",
+    "make_unsafe_buffers_features",
+)
 
 # These variables were copied from the generated @clang_windows_amd64//:vars.bzl file.
 # They are available to be directly used here, but in order to do so, Bazel needs access
@@ -38,6 +43,13 @@ MSVC_LIB = "VC/Tools/MSVC/" + MSVC_VERSION + "/lib"
 WIN_SDK_VERSION = "10.0.26100.0"
 WIN_SDK_INCLUDE = "win_sdk/Include/" + WIN_SDK_VERSION
 WIN_SDK_LIB = "win_sdk/Lib/" + WIN_SDK_VERSION
+
+# The Clang we download is new enough (23) to know about --warning-suppression-mappings, but we
+# invoke it as clang-cl (see download_windows_amd64_toolchain.bzl), which only accepts a subset of
+# the GNU style driver flags and errors out on the rest.
+# TODO(b/532990050): Verify whether clang-cl accepts this flag (possibly via /clang:) and flip
+# this to True if it does.
+_SUPPORTS_WARNING_SUPPRESSION_MAPPINGS = False
 
 def _windows_amd64_toolchain_info(ctx):
     # https://bazel.build/rules/lib/builtins/Label#repo_name
@@ -72,6 +84,10 @@ def _windows_amd64_toolchain_info(ctx):
     ]
     features += _make_default_flags(clang_toolchain_path)
     features += _make_diagnostic_flags()
+    features += make_unsafe_buffers_features(
+        ctx.file.unsafe_buffers_mappings.path,
+        supported = _SUPPORTS_WARNING_SUPPRESSION_MAPPINGS,
+    )
 
     # Tells Bazel that our compiler will add .exe etc to the outputs
     # https://stackoverflow.com/a/63889676
@@ -112,6 +128,10 @@ def _windows_amd64_toolchain_info(ctx):
 provide_windows_amd64_toolchain_config = rule(
     attrs = {
         "clang_windows_amd64": attr.label(default = "@clang_windows_amd64//:compile_files"),
+        "unsafe_buffers_mappings": attr.label(
+            default = UNSAFE_BUFFERS_MAPPINGS_LABEL,
+            allow_single_file = True,
+        ),
     },
     provides = [CcToolchainConfigInfo],
     implementation = _windows_amd64_toolchain_info,

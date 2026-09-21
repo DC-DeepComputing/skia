@@ -1,0 +1,12 @@
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+# Consumed by the "unsafe_buffer_usage" toolchain feature, which passes this file to Clang via
+# --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+exports_files(
+    ["unsafe_buffers_mappings.txt"],
+    visibility = ["//visibility:public"],
+)
