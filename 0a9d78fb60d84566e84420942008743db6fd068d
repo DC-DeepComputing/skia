@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a2e847d_34b89725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T14:45:42Z",
+      "side": 1,
+      "message": "Thanks Quyen!",
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8964b32c_e20385d4",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T14:45:42Z",
+      "side": 1,
+      "message": "The preferred way for Skia to do these stagings with Chrome would be for either:\n\na) Land a change to skia/config/SkUserConfig.h in chromium that defines `SK_LEGACY_GRAPHITE_READ_PIXELS_BOTTOM_LEFT_BEHAVIOR`, then guard the new code in Skia with a `!defined(SK_LEGACY_GRAPHITE_READ_PIXELS_BOTTOM_LEFT_BEHAVIOR)`. After rolling into chrome, you can then update SkUserConfig and cleanup the rest of chrome\u0027s bottom-left handling. Finally, then clean up the legacy code paths in Skia.\n\nb) Guard the new code in Skia with a `defined(SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT)` check. After rolling into chrome, you update skia/config/SkUserConfig.h to define `SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT` and fix its bottom-left handling. Lastly, you remove the legacy code path from Skia and then remove the now-unnecessary define from Chrome\u0027s SkUserConfig.h",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 6
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c47e9d5a_db8b7913",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T14:45:42Z",
+      "side": 1,
+      "message": "WDYT about refacting the `asyncReadTexture()` function to take in the TextureFormatXferFn? Then we could use its `isIdentity()` function (or expose the additional nuanced `usesRP()` function) to decide whether or not to add an extra GPU conversion?  We\u0027d construct the XferFn in `asyncReadPixels` and then pass it down.",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 803,
+        "endChar": 78
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e437c79_68e46cc4",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T14:45:42Z",
+      "side": 1,
+      "message": "Ganesh\u0027s asyncReadback logic for bottom-left textures is to convert it to a temporary top-left texture by drawing it. I think we should do that here as well so that the only real logic for bottom-left in Graphite is applying the y flip matrix to its transform when we encounter it in a draw. Then it being bottom-left would just be part of the needsConversion check.\n\nI don\u0027t think we really need to worry about the case where Graphite is asked to readback from a texture that isn\u0027t sampleable AND bottom-left (since Graphite already requires that all renderable surfaces are top-left).\n\nBy including the y flip as a GPU conversion, we\u0027re more likely to hit the `xferFn-\u003eisIdentity()` path that allows us to provide the mapped GPU buffer directly to chrome.",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6563d5db_2a5a3fee",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T14:45:42Z",
+      "side": 1,
+      "message": "Can we add a comment here like:\n\n`allowUnpremul\u003dtrue` should only be used if the surface is only going to be rendered into with src-blending with calls to drawPaint or pixel-aligned drawRect calls to avoid anti-aliasing?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 52
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae2c3754_520e574a",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T14:45:42Z",
+      "side": 1,
+      "message": "nit: no default argument here, I think it\u0027s clearer for the public non-scratch Make() to be padding in `/*allowUnpremul\u003d*/false` explicitly.",
+      "range": {
+        "startLine": 118,
+        "startChar": 49,
+        "endLine": 118,
+        "endChar": 56
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21a5ab08_c562a50c",
+        "filename": "tests/graphite/ReadWritePixelsGraphiteTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-21T14:45:42Z",
+      "side": 1,
+      "message": "Can we comment here that since we\u0027re treating the backend texture as a bottom-left origin, but didn\u0027t flip the data when we uploaded it to the texture, the GPU readback\u0027s flip from bottom-left to top-left results in flipping the actual data so `ref` has to be updated to match. If instead we pre-flipped the upload data, then the actual and ref pixmaps would match regardless of the origin.",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 347,
+        "endChar": 77
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
