@@ -180,6 +180,9 @@ filegroup(
 filegroup(
     name = "compile_linux_amd64_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "@clang_linux_amd64//:compile_files",
     ],
 )
@@ -210,6 +213,9 @@ filegroup(
 filegroup(
     name = "compile_mac_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "@clang_mac//:compile_files",
     ],
 )
@@ -240,6 +246,9 @@ filegroup(
 filegroup(
     name = "compile_windows_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "@clang_windows_amd64//:compile_files",
     ],
 )
@@ -271,6 +280,9 @@ filegroup(
 filegroup(
     name = "compile_ios_files",
     srcs = [
+        # Needed by the "unsafe_buffer_usage" feature, which passes this file to Clang via
+        # --warning-suppression-mappings. See //toolchain/unsafe_buffers.bzl.
+        "//tools/unsafe_buffers:unsafe_buffers_mappings.txt",
         "ios_trampolines/clang_trampoline_ios.sh",
         "@clang_ios//:compile_files",
     ],
