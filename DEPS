@@ -117,7 +117,7 @@ deps = {
     'condition': 'False',
   },
 
-  'agents/shared': 'https://chromium.googlesource.com/chromium/agents/@e75efa515896f6bf1dea92eaffbcf8ee711a65d8',
+  'agents/shared': 'https://chromium.googlesource.com/chromium/agents/@09da8780044de1a8977e1d9c6adba1298b92f99e',
 
   'agents/internal': {
     'url': 'https://chrome-internal.googlesource.com/chrome/agents-internal/@11c700b10e171091b4f0f3cf3bf95f13dee85c93',
