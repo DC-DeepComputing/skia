@@ -20,6 +20,7 @@
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkTraceEvent.h"
@@ -47,6 +48,7 @@
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/geometry/GrAATriangulator.h"
 #include "src/gpu/ganesh/geometry/GrPathUtils.h"
+#include "src/gpu/ganesh/geometry/GrShape.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/geometry/GrTriangulator.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
@@ -142,7 +144,7 @@ public:
 
 #ifdef SK_DEBUG
     ~StaticVertexAllocator() override {
-        SkASSERT(!fLockStride && !fVertices && !fVertexBuffer && !fVertexData);
+        SkASSERT(!fLockStride && !fVertices && !fVertexBuffer);
     }
 #endif
 
@@ -234,9 +236,10 @@ public:
                             SkIRect devClipBounds,
                             GrAAType aaType,
                             const GrUserStencilSettings* stencilSettings) {
+        bool cacheAAMesh = context->priv().options().fSmallPathDisableDistanceFields;
         return Helper::FactoryHelper<TriangulatingPathOp>(context, std::move(paint), shape,
                                                           viewMatrix, devClipBounds, aaType,
-                                                          stencilSettings);
+                                                          stencilSettings, cacheAAMesh);
     }
 
     const char* name() const override { return "TriangulatingPathOp"; }
@@ -255,14 +258,16 @@ public:
                         const SkMatrix& viewMatrix,
                         const SkIRect& devClipBounds,
                         GrAAType aaType,
-                        const GrUserStencilSettings* stencilSettings)
+                        const GrUserStencilSettings* stencilSettings,
+                        bool cacheAAMesh = false)
             : INHERITED(ClassID())
             , fHelper(processorSet, aaType, stencilSettings)
             , fColor(color)
             , fShape(shape)
             , fViewMatrix(viewMatrix)
             , fDevClipBounds(devClipBounds)
-            , fAntiAlias(GrAAType::kCoverage == aaType) {
+            , fAntiAlias(GrAAType::kCoverage == aaType)
+            , fCacheAAMesh(cacheAAMesh) {
         SkRect devBounds;
         viewMatrix.mapRect(&devBounds, shape.bounds());
         if (shape.inverseFilled()) {
@@ -403,15 +408,96 @@ private:
         }
     }
 
+    static void CreateAAKey(skgpu::UniqueKey* key,
+                            const SkPath& devPath,
+                            const SkIRect& devClipBounds,
+                            bool inverseFill) {
+        static const skgpu::UniqueKey::Domain kAADomain = skgpu::UniqueKey::GenerateDomain();
+        auto verbs = devPath.verbs();
+        auto pts = devPath.points();
+        auto weights = devPath.conicWeights();
+        uint32_t hash = SkChecksum::Hash32(verbs.data(), verbs.size_bytes());
+        hash = SkChecksum::Hash32(pts.data(), pts.size_bytes(), hash);
+        if (!weights.empty()) {
+            hash = SkChecksum::Hash32(weights.data(), weights.size_bytes(), hash);
+        }
+        uint32_t ft = static_cast<uint32_t>(devPath.getFillType());
+        hash = SkChecksum::Hash32(&ft, sizeof(ft), hash);
+        if (inverseFill) {
+            hash = SkChecksum::Hash32(&devClipBounds, sizeof(devClipBounds), hash);
+        }
+        const SkRect& b = devPath.getBounds();
+        skgpu::UniqueKey::Builder builder(key, kAADomain, 6, "AAPath");
+        builder[0] = hash;
+        builder[1] = static_cast<uint32_t>((verbs.size() & 0xFFFF) | ((pts.size() & 0xFFFF) << 16));
+        memcpy(&builder[2], &b, sizeof(SkRect));
+        builder.finish();
+    }
+
+    bool useLocalSimilarityCache() const {
+        return fCacheAAMesh && fAntiAlias && !fShape.inverseFilled() &&
+               fViewMatrix.isSimilarity() && fViewMatrix.getMaxScale() > SK_ScalarNearlyZero &&
+               (!fViewMatrix.isScaleTranslate() || fShape.asPath().countVerbs() > 100);
+    }
+
     void createAAMesh(GrMeshDrawTarget* target) {
-        SkASSERT(!fVertexData);
         SkASSERT(fAntiAlias);
-        SkPath path = this->getPath().makeTransform(fViewMatrix);
+        bool localCache = this->useLocalSimilarityCache();
+        SkScalar scale = localCache ? fViewMatrix.getMaxScale() : 1.0f;
+        SkPath path = localCache
+                              ? this->getPath().makeTransform(SkMatrix::Scale(scale, scale))
+                              : this->getPath().makeTransform(fViewMatrix);
         if (path.isEmpty()) {
             return;
         }
-        SkRect clipBounds = SkRect::Make(fDevClipBounds);
+        SkRect clipBounds = localCache ? path.getBounds().makeOutset(10.0f, 10.0f)
+                                       : SkRect::Make(fDevClipBounds);
         SkScalar tol = GrPathUtils::kDefaultTolerance;
+
+        if (localCache) {
+            GrResourceProvider* rp = target->resourceProvider();
+            auto threadSafeCache = target->threadSafeCache();
+            skgpu::UniqueKey key;
+            CreateAAKey(&key, path, fDevClipBounds, fShape.inverseFilled());
+            if (!fVertexData) {
+                auto [cachedVerts, data] = threadSafeCache->findVertsWithData(key);
+                if (cachedVerts) {
+                    fVertexData = std::move(cachedVerts);
+                }
+            }
+            if (fVertexData) {
+                if (!fVertexData->gpuBuffer()) {
+                    sk_sp<GrGpuBuffer> buffer = rp->createBuffer(fVertexData->vertices(),
+                                                                 fVertexData->size(),
+                                                                 GrGpuBufferType::kVertex,
+                                                                 kStatic_GrAccessPattern);
+                    if (!buffer) {
+                        return;
+                    }
+                    fVertexData->setGpuBuffer(std::move(buffer));
+                }
+                fMesh = CreateMesh(target, fVertexData->refGpuBuffer(), 0,
+                                   fVertexData->numVertices());
+                return;
+            }
+
+            bool canMapVB = GrCaps::kNone_MapFlags != target->caps().mapBufferFlags();
+            StaticVertexAllocator allocator(rp, canMapVB);
+            int vertexCount = GrAATriangulator::PathToAATriangles(path, tol, clipBounds,
+                                                                  &allocator);
+            if (vertexCount == 0) {
+                return;
+            }
+            fVertexData = allocator.detachVertexData();
+            key.setCustomData(create_data(vertexCount, true, tol));
+            threadSafeCache->addVertsWithData(key, fVertexData, is_newer_better);
+            if (fVertexData->gpuBuffer()) {
+                fMesh = CreateMesh(target, fVertexData->refGpuBuffer(), 0,
+                                   fVertexData->numVertices());
+            }
+            return;
+        }
+
         sk_sp<const GrBuffer> vertexBuffer;
         int firstVertex;
         GrEagerDynamicVertexAllocator allocator(target, &vertexBuffer, &firstVertex);
@@ -450,7 +536,18 @@ private:
             } else {
                 coverageType = Coverage::kSolid_Type;
             }
-            if (fAntiAlias) {
+            if (this->useLocalSimilarityCache()) {
+                SkScalar scale = fViewMatrix.getMaxScale();
+                SkMatrix invScale = SkMatrix::Scale(1.0f / scale, 1.0f / scale);
+                SkMatrix viewMatrix = SkMatrix::Concat(fViewMatrix, invScale);
+                LocalCoords localCoords =
+                        fHelper.usesLocalCoords()
+                                ? LocalCoords(LocalCoords::kUsePosition_Type,
+                                              arena->make<SkMatrix>(invScale))
+                                : LocalCoords(LocalCoords::kUnused_Type);
+                gp = GrDefaultGeoProcFactory::Make(arena, color, coverageType, localCoords,
+                                                   viewMatrix);
+            } else if (fAntiAlias) {
                 gp = GrDefaultGeoProcFactory::MakeForDeviceSpace(arena, color, coverageType,
                                                                  localCoordsType, fViewMatrix);
             } else {
@@ -588,6 +685,7 @@ private:
     SkMatrix       fViewMatrix;
     SkIRect        fDevClipBounds;
     bool           fAntiAlias;
+    bool           fCacheAAMesh = false;
 
     GrSimpleMesh*  fMesh = nullptr;
     GrProgramInfo* fProgramInfo = nullptr;
@@ -650,7 +748,7 @@ PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
     SkPath path = args.fShape->asPath();
     int verbCount = path.countVerbs();
     // Don't use this path renderer if we exceed the max verb count.
-    if (verbCount > kMaxGPUPathRendererVerbs) {
+    if (verbCount > std::max(kMaxGPUPathRendererVerbs, fMaxVerbCount)) {
         return CanDrawPath::kNo;
     }
 
