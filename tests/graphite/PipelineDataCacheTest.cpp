@@ -42,12 +42,14 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PipelineDataCacheTest, reporter, context,
                                                     SkISize::Make(32, 32),
                                                     info,
                                                     skgpu::Budgeted::kYes,
+                                                    ResourceUsage::kNotPredefined,
                                                     "TestDataProxyA");
     sk_sp<TextureProxy> proxyB = TextureProxy::Make(caps,
                                                     resourceProvider,
                                                     SkISize::Make(32, 32),
                                                     info,
                                                     skgpu::Budgeted::kYes,
+                                                    ResourceUsage::kNotPredefined,
                                                     "TestDataProxyB");
     REPORTER_ASSERT(reporter, proxyA && proxyB);
 

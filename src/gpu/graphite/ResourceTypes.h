@@ -96,6 +96,7 @@ inline static constexpr int kStoreOpCount = (int)(StoreOp::kLast) + 1;
  */
 enum class ResourceUsage : uint32_t {
     kNotPredefined                   = 0, //  no predefined flags can encapsulate a Resource's usage
+
     // First bits reserved for GPU buffer types
     kVertexBuffer                    = 1 <<  0,
     kIndexBuffer                     = 1 <<  1,
@@ -110,8 +111,31 @@ enum class ResourceUsage : uint32_t {
     kIndexStorageBuffer              = 1 <<  9,
 
     kLastBufferTypeResourceUsage     = kIndexStorageBuffer,
-    // TODO(b/431796811): Define and utilize flags for anticipated texture usages.
-    kLastResourceUsage               = kLastBufferTypeResourceUsage,
+
+    // Texture usages
+    kAtlasProvider                   = 1 << 10,
+    kAsyncReadPixelsFallback         = 1 << 11,
+    kChildDevice                     = 1 << 12,
+    kCopyDevice                      = 1 << 13,
+    kDiscardableLoadMSAA             = 1 << 14,
+    kDispatchWriteOnlyStorage        = 1 << 15,
+    kDstCopy                         = 1 << 16,
+    kEvalBlur                        = 1 << 17,
+    kGenerateMipmapsScratch          = 1 << 18,
+    kImageFilterCachedBitmap         = 1 << 19,
+    kImageFilterResult               = 1 << 20,
+    kImageMakeCTandCS                = 1 << 21,
+    kImageSubset                     = 1 << 22,
+    kLazySkImageBitmap               = 1 << 23,
+    kPrecompileTarget                = 1 << 24,
+    kRasterBitmap                    = 1 << 25,
+    kRescaleDst                      = 1 << 26,
+    kRescaleImageTemp                = 1 << 27,
+    kRescaleLinearGamma              = 1 << 28,
+    kStorageFallback                 = 1 << 29,
+    kYUVRasterBitmapPlane            = 1 << 30,
+
+    kLastResourceUsage               = kYUVRasterBitmapPlane,
 };
 SK_MAKE_BITMASK_OPS(ResourceUsage)
 
