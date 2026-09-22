@@ -16,6 +16,24 @@
       "message": "Should we just crash here if the id brushes up against its max value?",
       "revId": "8c40f72dc246d17ef1b3e60910e128a9b8a24999",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05ce771f_156722da",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-22T14:59:33Z",
+      "side": 1,
+      "message": "I think that\u0027s the right call since we\u0027re moving to a world where this just shouldn\u0027t occur and we have no recovery option.\n\nI don\u0027t love that there is that ax hanging over the process\u0027s head but the only way around that is to switch to a strong/weak reference system for everything that we\u0027d want to cache internally.",
+      "parentUuid": "6d5b6b35_626c0dce",
+      "revId": "8c40f72dc246d17ef1b3e60910e128a9b8a24999",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
