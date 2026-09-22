@@ -63,6 +63,20 @@ private:
 
     void dumpMemoryStatistics(SkTraceMemoryDump* dump);
 
+    SkContextPriv priv();
+    SkContextPrivConst priv() const;
+
+private:
+    SkContext(const SkContextOptions&);
+
+    friend class SkContextPrivConst;
+    friend class SkContextPriv;
+    friend class SkContextCtorAccessor;
+
+    SkResourceCache* resourceCache() const;
+    SkStrikeCache* fontCache() const;
+    SkTypefaceCache* typefaceCache() const;
+
     sk_sp<SkSharedContext> fSharedContext;
 };
 
