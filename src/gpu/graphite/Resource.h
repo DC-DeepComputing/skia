@@ -266,6 +266,8 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
+    SkEnumBitMask<ResourceUsage> usageFlags() const { return fUsageFlags; }
+
     // A Resource's label consists of its string label and its usage flag
     std::string getLabel() const;
 

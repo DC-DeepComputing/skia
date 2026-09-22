@@ -298,6 +298,7 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
                                                    bitmap.dimensions(),
                                                    textureInfo,
                                                    budgeted,
+                                                   ResourceUsage::kNotPredefined,
                                                    label);
     if (!proxy) {
         return {};

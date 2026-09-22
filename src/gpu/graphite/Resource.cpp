@@ -147,18 +147,40 @@ namespace {
     // TODO(nicolettep): Assert we only see one usage bit on all resources that aren't scratch. ?
 const char* usage_flag_to_str(ResourceUsage usage) {
     switch (usage) {
-        case ResourceUsage::kNotPredefined:       return "";
-        case ResourceUsage::kVertexBuffer:        return "VertexBuffer";
-        case ResourceUsage::kIndexBuffer:         return "IndexBuffer";
-        case ResourceUsage::kXferCpuToGpuBuffer:  return "XferCpuToGpuBuffer";
-        case ResourceUsage::kXferGpuToCpuBuffer:  return "XferGpuToCpuBuffer";
-        case ResourceUsage::kUniformBuffer:       return "UniformBuffer";
-        case ResourceUsage::kStorageBuffer:       return "StorageBuffer";
-        case ResourceUsage::kQueryBuffer:         return "QueryBuffer";
-        case ResourceUsage::kIndirectBuffer:      return "IndirectBuffer";
-        case ResourceUsage::kVertexStorageBuffer: return "VertexStorageBuffer";
-        case ResourceUsage::kIndexStorageBuffer:  return "IndexStorageBuffer";
-        default: SkUNREACHABLE;                   return "";
+        case ResourceUsage::kNotPredefined:            return "";
+        // Buffer usages
+        case ResourceUsage::kVertexBuffer:             return "VertexBuffer";
+        case ResourceUsage::kIndexBuffer:              return "IndexBuffer";
+        case ResourceUsage::kXferCpuToGpuBuffer:       return "XferCpuToGpuBuffer";
+        case ResourceUsage::kXferGpuToCpuBuffer:       return "XferGpuToCpuBuffer";
+        case ResourceUsage::kUniformBuffer:            return "UniformBuffer";
+        case ResourceUsage::kStorageBuffer:            return "StorageBuffer";
+        case ResourceUsage::kQueryBuffer:              return "QueryBuffer";
+        case ResourceUsage::kIndirectBuffer:           return "IndirectBuffer";
+        case ResourceUsage::kVertexStorageBuffer:      return "VertexStorageBuffer";
+        case ResourceUsage::kIndexStorageBuffer:       return "IndexStorageBuffer";
+        // Texture usages
+        case ResourceUsage::kAsyncReadPixelsFallback:  return "AsyncReadPixelsFallback";
+        case ResourceUsage::kChildDevice:              return "ChildDevice";
+        case ResourceUsage::kCopyDevice:               return "DeviceCopy";
+        case ResourceUsage::kDiscardableLoadMSAA:      return "DiscardableLoadMSAA";
+        case ResourceUsage::kDispatchWriteOnlyStorage: return "DispatchWriteOnlyStorage";
+        case ResourceUsage::kDstCopy:                  return "DstCopy";
+        case ResourceUsage::kEvalBlur:                 return "EvalBlur";
+        case ResourceUsage::kGenerateMipmapsScratch:   return "GenerateMipmaps";
+        case ResourceUsage::kImageFilterCachedBitmap:  return "ImageFilterCachedBitmap";
+        case ResourceUsage::kImageFilterResult:        return "ImageFilterResult";
+        case ResourceUsage::kImageMakeCTandCS:         return "CTandCSConversion";
+        case ResourceUsage::kImageSubset:              return "Subset";
+        case ResourceUsage::kLazySkImageBitmap:        return "LazySkImageBitmap";
+        case ResourceUsage::kPrecompileTarget:         return "PrecompileTarget";
+        case ResourceUsage::kRasterBitmap:             return "RasterBitmap";
+        case ResourceUsage::kRescaleDst:               return "RescaleDst";
+        case ResourceUsage::kRescaleImageTemp:         return "RescaleImageTemp";
+        case ResourceUsage::kRescaleLinearGamma:       return "RescaleLinearGamma";
+        case ResourceUsage::kStorageFallback:          return "StorageFallback";
+        case ResourceUsage::kYUVRasterBitmapPlane:     return "YUVRasterBitmapPlane";
+        default: SkUNREACHABLE;                        return "";
     }
 }
 
@@ -185,7 +207,7 @@ std::string Resource::getLabel() const {
 
 
     fullLabel += usage_mask_as_str(fUsageFlags);
-    // TODO: Perhaps cache the full label ? Also this returns ref to local var, so fix that.
+    // TODO(nicolettep): Cache the full label perhaps?
     return fullLabel;
 }
 
