@@ -32,6 +32,10 @@
 #include <memory>
 #include <tuple>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 enum SkColorType : int;
 
 using namespace skia_private;

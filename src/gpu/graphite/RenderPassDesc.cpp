@@ -11,6 +11,10 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 namespace {

@@ -23,6 +23,10 @@
 #include "src/gpu/graphite/SerializationUtils.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 
 namespace skgpu::graphite {
 

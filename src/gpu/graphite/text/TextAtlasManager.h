@@ -17,6 +17,10 @@
 #include <cstdint>
 #include <memory>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkGlyph;
 
 namespace skgpu::graphite {

@@ -18,6 +18,10 @@
 #include <limits>
 #include <cstring> // for memcmp
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 class SkArenaAlloc;
 class SkMeshSpecification;
 struct SkSamplingOptions;

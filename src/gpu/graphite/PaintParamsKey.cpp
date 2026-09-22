@@ -16,6 +16,10 @@
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using namespace skia_private;
 
 namespace skgpu::graphite {
