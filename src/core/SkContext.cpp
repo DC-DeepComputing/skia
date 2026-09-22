@@ -85,7 +85,7 @@ void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
 }
 }  // namespace
 
-void SkContext::dumpMemoryStatistics(SkTraceMemoryDump* dump) {
+void SkContext::dumpMemoryStatistics(SkTraceMemoryDump* dump) const {
     this->resourceCache()->visitAll(sk_trace_dump_visitor, dump);
     SkStrikeCache::DumpMemoryStatistics(dump);
 }
