@@ -591,12 +591,21 @@ bool SkFontConfigInterfaceDirect::isAcceptableMatch(FcPattern* match,
 FcPattern* SkFontConfigInterfaceDirect::MatchFont(FcFontSet* font_set,
                                                   const char* post_config_family,
                                                   const SkString& family) {
+    // Stage 1: Find ONLY the first technically valid (scalable/accessible) font in font_set
+    FcPattern* match = nullptr;
+
     for (int i = 0; i < font_set->nfont; ++i) {
         FcPattern* current = font_set->fonts[i];
-
-        if (this->isAcceptableMatch(current, post_config_family, family)) {
-            return current;
+        if (this->isValidPattern(current)) {
+            match = current;
+            break;  // <-- Stops immediately at the first valid font
         }
+    }
+
+    // Stage 2: Check ONLY that single candidate (`match`) for family-name acceptability
+    if (match && !IsFallbackFontAllowed(family) &&
+        this->isAcceptableMatch(match, post_config_family, family)) {
+        return match;
     }
 
     return nullptr;
