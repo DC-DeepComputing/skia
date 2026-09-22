@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e273d56_d69148d0",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T22:10:22Z",
+      "side": 1,
+      "message": "That\u0027s fair. \n\nI was thinking whether we should keep this for loop here as a fast path. My reasoning was (this might be naive) that since we already have to do the work for `are_radius_check_predicates_valid`, then we could eat that cost at the beginning since it\u0027s a much faster check, before moving on to `are_radii_predicates_valid`.\n\nLet me know what you think",
+      "parentUuid": "69ef0009_4f708180",
+      "range": {
+        "startLine": 878,
+        "startChar": 0,
+        "endLine": 885,
+        "endChar": 5
+      },
+      "revId": "54792636c72c4ed21fac8bf3bb12e2973c9c744d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6a6e967c_cfdf6b6d",
         "filename": "tests/RoundRectTest.cpp",
         "patchSetId": 4
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "001f45a8_f752eb2e",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1788,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T22:10:22Z",
+      "side": 1,
+      "message": "I don\u0027t believe that\u0027s it. This test was meant to test two behaviors\n* a Fuzzed testcase where fBottom \u003e\u003e\u003e fTop and so fBottom - fTop \u003d fBottom because of FPL\n* an axis-aligned transform that collapses an SkRRect to empty bounds due to FPL (floating point loss)\n\nThese bugs are related but don\u0027t require each other to work, so I isolated these into two testcases.\n\nI also edited the numbers in the test to be as simple as possible for reproduction.\n\nI had gemini create a visualization of the first test case (doc is here https://docs.google.com/document/d/1QrgVflGa3W6Rv-wQqcK_UwrvfGUNbgPgo9IAfKaCe-w/edit?resourcekey\u003d0-JWycYE2ZedQv0-dAihQFmg\u0026tab\u003dt.0#heading\u003dh.7l1c9523ib96)",
+      "parentUuid": "6a6e967c_cfdf6b6d",
+      "range": {
+        "startLine": 1788,
+        "startChar": 12,
+        "endLine": 1788,
+        "endChar": 93
+      },
+      "revId": "54792636c72c4ed21fac8bf3bb12e2973c9c744d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af679c89_08653ae6",
         "filename": "tests/RoundRectTest.cpp",
         "patchSetId": 4
@@ -60,6 +108,30 @@
       "writtenOn": "2026-09-18T18:03:33Z",
       "side": 1,
       "message": "It can be helpful in these fuzzer bugs to include `// \u003capprox float value\u003e` comments for readability",
+      "range": {
+        "startLine": 1790,
+        "startChar": 0,
+        "endLine": 1794,
+        "endChar": 29
+      },
+      "revId": "54792636c72c4ed21fac8bf3bb12e2973c9c744d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ea1e923_3dcca573",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T22:10:22Z",
+      "side": 1,
+      "message": "I edited the numbers so they would be more legible and reduced to the simplest case. Let me know what you think.",
+      "parentUuid": "af679c89_08653ae6",
       "range": {
         "startLine": 1790,
         "startChar": 0,

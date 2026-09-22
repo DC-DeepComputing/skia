@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a722ed83_600ea379",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T22:10:22Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "13902cf8_7ea63c2d",
+      "range": {
+        "startLine": 761,
+        "startChar": 8,
+        "endLine": 761,
+        "endChar": 27
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31c7da39_2289978b",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T22:10:22Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "277519ab_8a9d1c80",
+      "range": {
+        "startLine": 761,
+        "startChar": 31,
+        "endLine": 761,
+        "endChar": 69
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7df2acfa_adcad36a",
@@ -83,6 +131,54 @@
       "writtenOn": "2026-09-18T18:03:33Z",
       "side": 0,
       "message": "I would have thought that this would cover both `(min + rad \u003c\u003d max) \u0026\u0026 (max - rad \u003e\u003d min)`. `min + rad` is the same as `minCoord + radiusFromMin` or `ptFromMin`. Since we know the two radii are \u003e\u003d 0, then `maxCoord - radiusFromMax` should be \u003c\u003d `maxCoord`.",
+      "range": {
+        "startLine": 769,
+        "startChar": 24,
+        "endLine": 769,
+        "endChar": 76
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3504d60d_b255250d",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T22:10:22Z",
+      "side": 0,
+      "message": "The thing about checking the addition is that this fails when min \u003c\u003c\u003c\u003c\u003c max and/or radiusFromMin \u003c\u003c\u003c\u003c\u003c radiusFromMax (or vice versa). \n\nThe reasoning here is that the addition will \"eat\" the smaller values due to float precision. Such as `min + max` evaluating to `max`.\n\nTesting every radius and coord individually makes sure that the arithmetic works across all the operations tested in `are_radius_check_predicates_valid`\n\nAt least this is my understanding. Please let me know what you think\n\nIf we wanted to be extra conservative we could include both this check and the ones in `are_radius_check_predicates_valid`, but I wasn\u0027t sure if that was too much redundancy.\n\n\nI thought to remove it because,\n* if `are_radius_check_predicates_valid` assures that all the radii exist within the bounds individually\n* then `are_radii_predicates_valid` can assure that the sum of those radii also exists within the bounds",
+      "parentUuid": "7df2acfa_adcad36a",
+      "range": {
+        "startLine": 769,
+        "startChar": 8,
+        "endLine": 769,
+        "endChar": 19
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a4237a8_ab7abb2d",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T22:10:22Z",
+      "side": 0,
+      "message": "responded in another comment",
+      "parentUuid": "70d1dcf1_5cb2780a",
       "range": {
         "startLine": 769,
         "startChar": 24,
