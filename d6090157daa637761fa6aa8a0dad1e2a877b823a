@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f32a5b1d_ca12719d",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-22T17:22:15Z",
+      "side": 1,
+      "message": "Quick check: Is this forward declaration of a okay? I think the forward declaration into a skia_private::TArray introduces an ABI stability issue. If it\u0027s not okay, I\u0027ll attach a CL chain that implements a opaque pointer pattern (or some other approach).",
+      "revId": "d6090157daa637761fa6aa8a0dad1e2a877b823a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
