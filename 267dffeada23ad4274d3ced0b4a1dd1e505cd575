@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3b09adcf_2c9c3ca9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-22T22:54:25Z",
+      "side": 1,
+      "message": "Sure, makes sense!\nI will update the Design doc, with this new approach.",
+      "parentUuid": "dd74bba6_ea513f5a",
+      "revId": "267dffeada23ad4274d3ced0b4a1dd1e505cd575",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b27db3d1_bacd61fa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6
