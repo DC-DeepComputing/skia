@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9565f0d_b3b80628",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-22T16:56:05Z",
+      "side": 1,
+      "message": "What could be a benefit of passing `TextureFormatXferFn` to `asyncReadTexture`?\nActually, I\u0027m curious can we make `transferPixels` decides to use CopyAsDraw or TextureFormatXferFn on its own?\n\nSome callers don\u0027t call `asyncReadTexture` and instead of call `transferPixels` directly. If we had to pass `TextureFormatXferFn` to `asyncReadTexture`, I feel we would have to repeat the TextureFormatXferFn construction in multiple call sites. Not to mention inside `asyncReadTexture` we would have to check again whether we want to do a GPU copy even though callers already checked that.",
+      "parentUuid": "c47e9d5a_db8b7913",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 803,
+        "endChar": 78
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e437c79_68e46cc4",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 6
@@ -125,6 +149,30 @@
       "side": 1,
       "message": "A format not being renderable is a significant detail, but if a format is not renderable, then it cannot apply any of these conversions (alpha, colorspace, or flip) on the GPU. You\u0027re right that then we would need to have the CPU-side flip be possible as a fallback, so we should keep this code.\n\nHowever, I think we can still attempt to do the flip on the GPU just like we would with any other conversion.\n\n(not exactly related to this theory, but I think R16G16Float should be considered a renderable format looking at the flags that are reported for it in DawnGraphiteUtils capability table. Are you seeing it differently in practice?)",
       "parentUuid": "b15ea723_24b62890",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f86887dc_b6713a9d",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-22T16:56:05Z",
+      "side": 1,
+      "message": "I remembered wrong. Actually, there is a test case in `tests/graphite/ReadWritePixelsGraphiteTest.cpp` that reads R16G16F and converts to `RGB8X`. `RGB8X` is not renderable (or maybe not supported). Maybe we can just make it renderable for CopyAsDraw by drawing to a RGBA8 texture.",
+      "parentUuid": "d49e054c_819c24b7",
       "range": {
         "startLine": 867,
         "startChar": 0,
