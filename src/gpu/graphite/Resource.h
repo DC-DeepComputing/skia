@@ -293,6 +293,8 @@ public:
 
 #if defined(GPU_TEST_UTILS)
     bool testingShouldDeleteASAP() const { return fDeleteASAP == DeleteASAP::kYes; }
+    static std::string UsageToStr(ResourceUsage);
+    static void AppendUsagesToLabel(std::string& baseLabel, SkEnumBitMask<ResourceUsage>);
 #endif
 
 protected:

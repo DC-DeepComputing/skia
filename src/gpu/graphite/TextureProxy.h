@@ -105,7 +105,7 @@ public:
                                     const TextureInfo&,
                                     skgpu::Budgeted,
                                     ResourceUsage,
-                                    std::string_view label = "");
+                                    std::string_view label = {});
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 

@@ -263,6 +263,10 @@ InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
         );
     }
 
+    // Now is a safe time to perform any scratch texture label updates (while a Recording's scratch
+    // texture usages and labels are known and finalized, and before playback).
+    info.fRecording->priv().updateScratchLabels(fResourceProvider.get());
+
     return fQueueManager->addRecording(info, this);
 }
 
