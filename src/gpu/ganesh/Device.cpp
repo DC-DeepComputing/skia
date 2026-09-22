@@ -1200,6 +1200,12 @@ void Device::discard() {
     fSurfaceDrawContext->discard();
 }
 
+void Device::discardDevice() {
+    if (fSurfaceDrawContext) {
+        fSurfaceDrawContext->makeOpsTaskSkippable();
+    }
+}
+
 void Device::resolveMSAA() {
     fSurfaceDrawContext->resolveMSAA();
 }

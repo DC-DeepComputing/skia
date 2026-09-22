@@ -44,7 +44,7 @@ static SkBlendMode GetBlendMode(SkSVGFeBlend::Mode mode) {
 
 sk_sp<SkImageFilter> SkSVGFeBlend::onMakeImageFilter(const SkSVGRenderContext& ctx,
                                                      const SkSVGFilterContext& fctx) const {
-    const SkRect cropRect = this->resolveFilterSubregion(ctx, fctx);
+    const auto cropRect = this->resolveFilterSubregion(ctx, fctx);
     const SkBlendMode blendMode = GetBlendMode(this->getMode());
     const SkSVGColorspace colorspace = this->resolveColorspace(ctx, fctx);
     const sk_sp<SkImageFilter> background = fctx.resolveInput(ctx, fIn2, colorspace);

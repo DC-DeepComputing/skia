@@ -59,6 +59,7 @@ public:
      * to become undefined.
      */
     void discard();
+    void makeOpsTaskSkippable();
 
     void resolveMSAA();
 

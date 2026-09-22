@@ -7,6 +7,7 @@
 
 #include "modules/svg/include/SkSVGFe.h"
 
+#include "include/core/SkCanvas.h"
 #include "modules/svg/include/SkSVGAttribute.h"
 #include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGFilterContext.h"
@@ -55,8 +56,12 @@ static bool AnyIsStandardInput(const SkSVGFilterContext& fctx,
     return false;
 }
 
-SkRect SkSVGFe::resolveFilterSubregion(const SkSVGRenderContext& ctx,
-                                       const SkSVGFilterContext& fctx) const {
+SkImageFilters::CropRect SkSVGFe::resolveFilterSubregion(const SkSVGRenderContext& ctx,
+                                                        const SkSVGFilterContext& fctx) const {
+    if (ctx.canvas() && ctx.canvas()->isLayerAtlasEnabled() &&
+        !fX.has_value() && !fY.has_value() && !fWidth.has_value() && !fHeight.has_value()) {
+        return {};
+    }
     // From https://www.w3.org/TR/SVG11/filters.html#FilterPrimitiveSubRegion,
     // the default filter effect subregion is equal to the union of the subregions defined
     // for all "referenced nodes" (filter effect inputs). If there are no inputs, the

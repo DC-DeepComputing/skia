@@ -32,7 +32,7 @@ bool SkSVGFeDisplacementMap::parseAndSetAttribute(const char* name, const char* 
 
 sk_sp<SkImageFilter> SkSVGFeDisplacementMap::onMakeImageFilter(
         const SkSVGRenderContext& ctx, const SkSVGFilterContext& fctx) const {
-    const SkRect cropRect = this->resolveFilterSubregion(ctx, fctx);
+    const auto cropRect = this->resolveFilterSubregion(ctx, fctx);
     const SkSVGColorspace colorspace = this->resolveColorspace(ctx, fctx);
 
     // According to spec https://www.w3.org/TR/SVG11/filters.html#feDisplacementMapElement,

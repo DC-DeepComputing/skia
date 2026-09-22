@@ -697,6 +697,18 @@ void GrDrawingManager::closeActiveOpsTask() {
     }
 }
 
+void GrDrawingManager::makeTaskSkippable(skgpu::ganesh::OpsTask* task) {
+    if (!task) {
+        return;
+    }
+    if (fActiveOpsTask == task) {
+        this->closeActiveOpsTask();
+    } else if (!task->isClosed()) {
+        task->makeClosed(fContext);
+    }
+    task->makeSkippable();
+}
+
 sk_sp<skgpu::ganesh::OpsTask> GrDrawingManager::newOpsTask(GrSurfaceProxyView surfaceView,
                                                            sk_sp<GrArenas> arenas) {
     SkDEBUGCODE(this->validate());

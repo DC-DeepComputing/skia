@@ -130,6 +130,7 @@ bench_sources = [
   "$_bench/SortBench.cpp",
   "$_bench/StreamBench.cpp",
   "$_bench/StrokeBench.cpp",
+  "$_bench/SvgBench.cpp",
   "$_bench/SwizzleBench.cpp",
   "$_bench/TableBench.cpp",
   "$_bench/TessellateBench.cpp",

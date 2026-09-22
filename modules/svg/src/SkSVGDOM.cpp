@@ -7,6 +7,7 @@
 
 #include "modules/svg/include/SkSVGDOM.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkString.h"
@@ -481,6 +482,9 @@ void SkSVGDOM::render(SkCanvas* canvas) const {
                                          {nullptr, nullptr},
                                          fTextShapingFactory));
     }
+    if (canvas) {
+        canvas->flushLayerAtlas();
+    }
 }
 
 void SkSVGDOM::renderNode(SkCanvas* canvas, SkSVGPresentationContext& pctx, const char* id) const {
@@ -497,6 +501,9 @@ void SkSVGDOM::renderNode(SkCanvas* canvas, SkSVGPresentationContext& pctx, cons
                                              {nullptr, nullptr},
                                              fTextShapingFactory),
                           SkSVGIRI(SkSVGIRI::Type::kLocal, SkSVGStringType(id)));
+    }
+    if (canvas) {
+        canvas->flushLayerAtlas();
     }
 }
 

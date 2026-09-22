@@ -257,8 +257,9 @@ void SkSVGRenderContext::applyPresentationAttributes(const SkSVGPresentationAttr
     // Uninherited attributes.  Only apply to the current context.
 
     const bool hasFilter = attrs.fFilter.isValue();
+    SkScalar opacity = 1.0f;
     if (attrs.fOpacity.isValue()) {
-        this->applyOpacity(*attrs.fOpacity, flags, hasFilter);
+        opacity = SkTPin(*attrs.fOpacity, 0.0f, 1.0f);
     }
 
     if (attrs.fClipPath.isValue()) {
@@ -269,9 +270,19 @@ void SkSVGRenderContext::applyPresentationAttributes(const SkSVGPresentationAttr
         this->applyMask(*attrs.fMask);
     }
 
-    // TODO: when both a filter and opacity are present, we can apply both with a single layer
-    if (hasFilter) {
-        this->applyFilter(*attrs.fFilter);
+    if (fCanvas && fCanvas->isLayerAtlasEnabled()) {
+        if (hasFilter) {
+            this->applyFilter(*attrs.fFilter, opacity);
+        } else if (opacity < 1.0f) {
+            this->applyOpacity(opacity, flags, false);
+        }
+    } else {
+        if (attrs.fOpacity.isValue()) {
+            this->applyOpacity(*attrs.fOpacity, flags, hasFilter);
+        }
+        if (hasFilter) {
+            this->applyFilter(*attrs.fFilter, 1.0f);
+        }
     }
 
     // Remaining uninherited presentation attributes are accessed as SkSVGNode fields, not via
@@ -310,7 +321,7 @@ void SkSVGRenderContext::applyOpacity(SkScalar opacity, uint32_t flags, bool has
     }
 }
 
-void SkSVGRenderContext::applyFilter(const SkSVGFuncIRI& filter) {
+void SkSVGRenderContext::applyFilter(const SkSVGFuncIRI& filter, SkScalar opacity) {
     if (filter.type() != SkSVGFuncIRI::Type::kIRI) {
         return;
     }
@@ -325,8 +336,24 @@ void SkSVGRenderContext::applyFilter(const SkSVGFuncIRI& filter) {
     if (imageFilter) {
         SkPaint filterPaint;
         filterPaint.setImageFilter(imageFilter);
+        filterPaint.setAlphaf(opacity);
+        SkRect bounds;
+        const SkRect* boundsPtr = nullptr;
+        if (fOBBScope.fNode) {
+            if (fCanvas && fCanvas->isLayerAtlasEnabled()) {
+                bounds = fOBBScope.fNode->objectBoundingBox(*fOBBScope.fCtx);
+            } else {
+                bounds = this->resolveOBBRect(
+                        filterNode->getX(), filterNode->getY(),
+                        filterNode->getWidth(), filterNode->getHeight(),
+                        filterNode->getFilterUnits());
+            }
+            if (bounds.isFinite() && !bounds.isEmpty()) {
+                boundsPtr = &bounds;
+            }
+        }
         // Balanced in the destructor, via restoreToCount().
-        fCanvas->saveLayer(nullptr, &filterPaint);
+        fCanvas->saveLayer(boundsPtr, &filterPaint);
     }
 }
 

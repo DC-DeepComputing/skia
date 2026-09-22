@@ -2628,6 +2628,9 @@ if (skia_enable_tools) {
       "modules/skresources",
       "modules/skshaper",
     ]
+    if (skia_enable_svg) {
+      deps += [ "modules/svg" ]
+    }
     if (is_skia_dev_build) {
       sources += [ "gm/fiddle.cpp" ]
       deps += [ ":skia.h" ]
@@ -2759,6 +2762,7 @@ if (skia_enable_tools) {
         ":tool_utils",
         "modules/skparagraph:bench",
         "modules/skshaper",
+        "modules/svg",
       ]
     }
   }

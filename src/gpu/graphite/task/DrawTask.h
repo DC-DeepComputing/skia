@@ -42,6 +42,8 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    int numRenderPasses() const override { return fChildTasks.numRenderPasses(); }
+
     bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override {
         return fChildTasks.visitPipelines(visitor);
     }

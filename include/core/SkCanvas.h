@@ -72,6 +72,7 @@ class SkRegion;
 class SkRecorder;
 class SkShader;
 class SkSpecialImage;
+class SkLayerAtlasManager;
 class SkSurface;
 class SkSurface_Base;
 class SkTextBlob;
@@ -896,6 +897,15 @@ public:
         example: https://fiddle.skia.org/c/@Canvas_restoreToCount
     */
     void restoreToCount(int saveCount);
+
+    /** Enable or disable the LayerAtlas optimization for this canvas. */
+    void setLayerAtlasEnabled(bool enabled) { fLayerAtlasEnabled = enabled; }
+    bool isLayerAtlasEnabled() const { return fLayerAtlasEnabled; }
+    void SetLayerAtlasEnabled(bool enabled) { setLayerAtlasEnabled(enabled); }
+    bool IsLayerAtlasEnabled() const { return isLayerAtlasEnabled(); }
+
+    /** Flush any pending LayerAtlas layers to this canvas. */
+    void flushLayerAtlas();
 
     /** Translates SkMatrix by dx along the x-axis and dy along the y-axis.
 
@@ -2461,11 +2471,15 @@ private:
         // to allow for faster linear filtering under complex transforms.
         bool                                           fIncludesPadding;
 
+        // If true, the layer is managed by SkLayerAtlasManager.
+        bool                                           fIsAtlasLayer;
+
         Layer(sk_sp<SkDevice> device,
               FilterSpan imageFilters,
               const SkPaint& paint,
               bool isCoverage,
-              bool includesPadding);
+              bool includesPadding,
+              bool isAtlasLayer = false);
     };
 
     // Encapsulate state needed to restore from saveBehind()
@@ -2504,7 +2518,8 @@ private:
                       FilterSpan filters,
                       const SkPaint& restorePaint,
                       bool layerIsCoverage,
-                      bool includesPadding);
+                      bool includesPadding,
+                      bool isAtlasLayer = false);
 
         void reset(SkDevice* device);
     };
@@ -2537,6 +2552,12 @@ private:
     }
     friend class SkSurface_Base;
     friend class SkSurface_Ganesh;
+    friend class SkLayerAtlasManager;
+    struct SK_API AtlasDeleter {
+        void operator()(SkLayerAtlasManager*) const;
+    };
+    std::unique_ptr<SkLayerAtlasManager, AtlasDeleter> fLayerAtlas;
+    bool fLayerAtlasEnabled = false;
 
     SkIRect fClipRestrictionRect = SkIRect::MakeEmpty();
     int fClipRestrictionSaveCount = -1;

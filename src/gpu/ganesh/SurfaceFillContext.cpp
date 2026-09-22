@@ -33,6 +33,7 @@
 #include "src/gpu/ganesh/ops/ClearOp.h"
 #include "src/gpu/ganesh/ops/FillRectOp.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
+#include "src/gpu/ganesh/ops/OpsTask.h"
 
 #include <cstdint>
 
@@ -77,6 +78,14 @@ void SurfaceFillContext::discard() {
     GR_CREATE_TRACE_MARKER_CONTEXT("SurfaceFillContext", "discard", fContext);
 
     this->getOpsTask()->discard();
+}
+
+void SurfaceFillContext::makeOpsTaskSkippable() {
+    ASSERT_SINGLE_OWNER
+    RETURN_IF_ABANDONED
+    if (fOpsTask && fOpsTask->isEmpty()) {
+        this->drawingManager()->makeTaskSkippable(fOpsTask.get());
+    }
 }
 
 void SurfaceFillContext::resolveMSAA() {

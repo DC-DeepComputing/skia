@@ -63,6 +63,9 @@ public:
     // Returns true on success; false on failure.
     virtual Status addCommands(Context*, CommandBuffer*, ReplayTargetData) = 0;
 
+    // Returns the total number of render passes executed by this task (and any child tasks).
+    virtual int numRenderPasses() const { return 0; }
+
     // Visit all pipelines or proxies until `visitor` returns false to end early. By default assume
     // the task uses none. Because these are functions are virtual, they cannot be templated.
     //

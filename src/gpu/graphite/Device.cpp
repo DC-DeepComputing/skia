@@ -562,6 +562,13 @@ void Device::setImmutable() {
     }
 }
 
+void Device::discardDevice() {
+    if (fRecorder) {
+        fRecorder->deregisterDevice(this);
+        this->abandonRecorder();
+    }
+}
+
 bool Device::notifyInUse(Recorder* recorder, DrawContext* drawContext) {
     if (this->isScratchDevice()) {
         if (fLastTask) {

@@ -56,7 +56,7 @@ sk_sp<SkImageFilter> SkSVGFeComponentTransfer::onMakeImageFilter(
     SkASSERT(g_tbl.empty() || g_tbl.size() == 256);
     SkASSERT(r_tbl.empty() || r_tbl.size() == 256);
 
-    const SkRect cropRect = this->resolveFilterSubregion(ctx, fctx);
+    const auto cropRect = this->resolveFilterSubregion(ctx, fctx);
     const sk_sp<SkImageFilter> input = fctx.resolveInput(ctx,
                                                          this->getIn(),
                                                          this->resolveColorspace(ctx, fctx));

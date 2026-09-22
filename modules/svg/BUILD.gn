@@ -53,6 +53,7 @@ if (skia_enable_svg && skia_use_expat) {
         configs = [ "../..:skia_private" ]
         sources = [
           "tests/Filters.cpp",
+          "tests/SvgRenderPassCountTest.cpp",
           "tests/Text.cpp",
         ]
 

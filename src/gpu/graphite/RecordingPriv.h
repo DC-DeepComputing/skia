@@ -63,6 +63,7 @@ public:
     void addResourceRef(sk_sp<Resource> resource);
 
     TaskList* taskList() { return fRecording->fRootTaskList.get(); }
+    int numRenderPasses() const;
 
     uint32_t recorderID() const { return fRecording->fRecorderID; }
     uint32_t uniqueID() const { return fRecording->fUniqueID; }

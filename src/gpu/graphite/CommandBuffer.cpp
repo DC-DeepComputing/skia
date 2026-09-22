@@ -49,6 +49,7 @@ void CommandBuffer::resetCommandBuffer() {
     // before we release their refs. Assuming we don't go idle and free lots of resources, we'll
     // get the same cached sampler the next time we need a dst copy.
     fDstCopy = {nullptr, nullptr};
+    fRenderPassCount = 0;
     this->releaseResources();
     this->onResetCommandBuffer();
     fBuffersToAsyncMap.clear();
@@ -167,6 +168,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     // theory we could have a discard load that doesn't submit any draws, clears, etc. But hopefully
     // something so trivial would be caught before getting here.
     SkDEBUGCODE(fHasWork = true;)
+    fRenderPassCount++;
 
     return true;
 }

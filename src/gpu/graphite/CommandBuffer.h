@@ -105,6 +105,7 @@ public:
                        SkIPoint resolveOffset,
                        SkISize viewportDims,
                        const DrawPassList& drawPasses);
+    int renderPassCount() const { return fRenderPassCount; }
 
     bool addComputePass(DispatchGroupSpan dispatchGroups);
 
@@ -209,6 +210,7 @@ private:
 #ifdef SK_DEBUG
     bool fHasWork = false;
 #endif
+    int fRenderPassCount = 0;
     inline static constexpr int kInitialTrackedResourcesCount = 32;
     template <typename T>
     using TrackedResourceArray = skia_private::STArray<kInitialTrackedResourcesCount, T>;

@@ -27,7 +27,7 @@ bool SkSVGFeImage::parseAndSetAttribute(const char* n, const char* v) {
 sk_sp<SkImageFilter> SkSVGFeImage::onMakeImageFilter(const SkSVGRenderContext& ctx,
                                                      const SkSVGFilterContext& fctx) const {
     // Load image and map viewbox (image bounds) to viewport (filter effects subregion).
-    const SkRect viewport = this->resolveFilterSubregion(ctx, fctx);
+    const SkRect viewport = this->resolveFilterSubregion(ctx, fctx).value_or(fctx.filterEffectsRegion());
     const auto imgInfo =
             SkSVGImage::LoadImage(ctx.resourceProvider(), fHref, viewport, fPreserveAspectRatio);
     if (!imgInfo.fImage) {

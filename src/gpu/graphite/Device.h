@@ -114,6 +114,8 @@ public:
     Recorder* recorder() const override { return fRecorder; }
     SkRecorder* baseRecorder() const override { return fRecorder; }
 
+    void discardDevice() override;
+
     // This call is triggered from the Recorder on its registered Devices. It is typically called
     // when the Recorder is abandoned or deleted.
     void abandonRecorder() { fRecorder = nullptr; }

@@ -110,6 +110,7 @@ public:
               bool deleteSemaphoresAfterWait);
 
     void discard();
+    void discardDevice() override;
     void resolveMSAA();
 
     bool replaceBackingProxy(SkSurface::ContentChangeMode,

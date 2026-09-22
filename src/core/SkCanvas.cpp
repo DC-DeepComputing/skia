@@ -8,6 +8,7 @@
 #include "include/core/SkCanvas.h"
 
 #include "include/core/SkAlphaType.h"
+#include <atomic>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
@@ -51,6 +52,7 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkLatticeIter.h"
+#include "src/core/SkLayerAtlas.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPaintPriv.h"
@@ -141,6 +143,18 @@ bool SkCanvas::wouldOverwriteEntireSurface(const SkRect* rect, const SkPaint* pa
     return SkPaintPriv::Overwrites(paint, overrideOpacity);
 }
 
+
+
+void SkCanvas::AtlasDeleter::operator()(SkLayerAtlasManager* ptr) const {
+    delete ptr;
+}
+
+void SkCanvas::flushLayerAtlas() {
+    if (fLayerAtlas && fLayerAtlas->hasPendingLayers()) {
+        fLayerAtlas->flush(this);
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool SkCanvas::predrawNotify(bool willOverwritesEntireSurface) {
@@ -150,6 +164,9 @@ bool SkCanvas::predrawNotify(bool willOverwritesEntireSurface) {
                                        : SkSurface::kRetain_ContentChangeMode)) {
             return false;
         }
+    }
+    if (fLayerAtlas && fLayerAtlas->hasPendingLayers() && !fLayerAtlas->hasActiveLayer()) {
+        fLayerAtlas->flush(this);
     }
     return true;
 }
@@ -171,6 +188,12 @@ bool SkCanvas::predrawNotify(const SkRect* rect, const SkPaint* paint,
             return false;
         }
     }
+    if (fLayerAtlas && fLayerAtlas->hasPendingLayers() && !fLayerAtlas->hasActiveLayer()) {
+        bool intersects = rect ? fLayerAtlas->intersectsPending(this->getTotalMatrix().mapRect(*rect)) : false;
+        if (!rect || intersects) {
+            fLayerAtlas->flush(this);
+        }
+    }
     return true;
 }
 
@@ -180,13 +203,15 @@ SkCanvas::Layer::Layer(sk_sp<SkDevice> device,
                        FilterSpan imageFilters,
                        const SkPaint& paint,
                        bool isCoverage,
-                       bool includesPadding)
+                       bool includesPadding,
+                       bool isAtlasLayer)
         : fDevice(std::move(device))
         , fImageFilters(imageFilters.data(), imageFilters.size())
         , fPaint(paint)
         , fIsCoverage(isCoverage)
         , fDiscard(false)
-        , fIncludesPadding(includesPadding) {
+        , fIncludesPadding(includesPadding)
+        , fIsAtlasLayer(isAtlasLayer) {
     SkASSERT(fDevice);
     // Any image filter should have been pulled out and stored in 'imageFilter' so that 'paint'
     // can be used as-is to draw the result of the filter to the dst device.
@@ -214,13 +239,15 @@ void SkCanvas::MCRec::newLayer(sk_sp<SkDevice> layerDevice,
                                FilterSpan filters,
                                const SkPaint& restorePaint,
                                bool layerIsCoverage,
-                               bool includesPadding) {
+                               bool includesPadding,
+                               bool isAtlasLayer) {
     SkASSERT(!fBackImage);
     fLayer = std::make_unique<Layer>(std::move(layerDevice),
                                      filters,
                                      restorePaint,
                                      layerIsCoverage,
-                                     includesPadding);
+                                     includesPadding,
+                                     isAtlasLayer);
     fDevice = fLayer->fDevice.get();
 }
 
@@ -286,6 +313,7 @@ std::optional<AutoLayerForImageFilter> SkCanvas::aboutToDraw(
 ////////////////////////////////////////////////////////////////////////////
 
 void SkCanvas::resetForNextPicture(const SkIRect& bounds) {
+    this->flushLayerAtlas();
     this->restoreToCount(1);
 
     // We're peering through a lot of structs here.  Only at this scope do we know that the device
@@ -346,6 +374,8 @@ SkCanvas::SkCanvas(sk_sp<SkDevice> device)
 }
 
 SkCanvas::~SkCanvas() {
+    this->flushLayerAtlas();
+
     // Mark all pending layers to be discarded during restore (rather than drawn)
     SkDeque::Iter iter(fMCStack, SkDeque::Iter::kFront_IterStart);
     for (;;) {
@@ -501,6 +531,9 @@ int SkCanvas::saveLayer(const SkRect* bounds, const SkPaint* paint) {
 int SkCanvas::saveLayer(const SaveLayerRec& rec) {
     TRACE_EVENT0("skia", TRACE_FUNC);
     if (rec.fPaint && this->nothingToDraw(*rec.fPaint)) {
+        if (fLayerAtlas && fLayerAtlas->hasPendingLayers() && !fLayerAtlas->hasActiveLayer()) {
+            fLayerAtlas->flush(this);
+        }
         // no need for the layer (or any of the draws until the matching restore()
         this->save();
         this->clipRect({0,0,0,0});
@@ -935,6 +968,72 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
 
     // Size the new layer relative to the prior device, which may already be aligned for filters.
     SkDevice* priorDevice = this->topDevice();
+
+    if (fLayerAtlasEnabled && strategy == kFullLayer_SaveLayerStrategy && !coverageOnly &&
+        (priorDevice->recordingContext() || priorDevice->recorder())) {
+        if (!fLayerAtlas) {
+            fLayerAtlas.reset(new SkLayerAtlasManager());
+        }
+
+        // Check if an outer saveLayerAlpha(alpha) or pure opacity layer immediately wraps this layer
+        MCRec* parentRec = nullptr;
+        if (fMCStack.count() > 1) {
+            SkDeque::Iter iter(fMCStack, SkDeque::Iter::kBack_IterStart);
+            iter.prev(); // current rec
+            parentRec = (MCRec*)iter.prev();
+        }
+        bool canFoldParentAlpha = false;
+        float parentAlpha = 1.0f;
+        if (parentRec && parentRec->fLayer &&
+            !parentRec->fLayer->fDiscard &&
+            !parentRec->fLayer->fIsAtlasLayer &&
+            !parentRec->fLayer->fIsCoverage &&
+            parentRec->fLayer->fImageFilters.empty() &&
+            !parentRec->fLayer->fPaint.getColorFilter() &&
+            !parentRec->fLayer->fPaint.getImageFilter() &&
+            (!parentRec->fLayer->fPaint.getBlender() ||
+             parentRec->fLayer->fPaint.asBlendMode() == SkBlendMode::kSrcOver)) {
+            canFoldParentAlpha = true;
+            parentAlpha = parentRec->fLayer->fPaint.getAlphaf();
+        }
+
+        bool isPureOpacity = (!rec.fBackdrop &&
+                              !(rec.fSaveLayerFlags & SkCanvas::kInitWithPrevious_SaveLayerFlag) &&
+                              rec.fFilters.empty() &&
+                              (!rec.fPaint || (!rec.fPaint->getImageFilter() &&
+                                               !rec.fPaint->getColorFilter() &&
+                                               (!rec.fPaint->getBlender() ||
+                                                rec.fPaint->asBlendMode() == SkBlendMode::kSrcOver))));
+
+        if (fLayerAtlas->hasPendingLayers()) {
+            if (fLayerAtlas->isEligible(rec, priorDevice, this->getTotalMatrix())) {
+                if (!fLayerAtlas->canAddLayer(rec, priorDevice, this->getTotalMatrix())) {
+                    fLayerAtlas->flush(this);
+                }
+            } else if (!isPureOpacity) {
+                fLayerAtlas->flush(this);
+            }
+        }
+
+        if (fLayerAtlas->isEligible(rec, priorDevice, this->getTotalMatrix())) {
+            sk_sp<SkDevice> atlasDevice = fLayerAtlas->startOrContinueLayer(
+                this, rec, priorDevice, this->getTotalMatrix());
+            if (atlasDevice) {
+                if (canFoldParentAlpha) {
+                    restorePaint.setAlphaf(restorePaint.getAlphaf() * parentAlpha);
+                    parentRec->fLayer->fDiscard = true;
+                    if (parentRec->fLayer->fDevice) {
+                        parentRec->fLayer->fDevice->discardDevice();
+                    }
+                }
+                fMCRec->newLayer(std::move(atlasDevice), filters, restorePaint,
+                                 coverageOnly, /*includesPadding=*/false, /*isAtlasLayer=*/true);
+                fQuickRejectBounds = this->computeDeviceClipBounds();
+                return;
+            }
+        }
+    }
+
     skif::Mapping newLayerMapping;
     skif::LayerSpace<SkIRect> layerBounds;
     skif::DeviceSpace<SkIRect> outputBounds{priorDevice->devClipBounds()};
@@ -1142,6 +1241,13 @@ void SkCanvas::internalSaveBehind(const SkRect* localBounds) {
 void SkCanvas::internalRestore() {
     SkASSERT(!fMCStack.empty());
 
+    auto* currentLayer = fMCRec->fLayer.get();
+    if (currentLayer && !currentLayer->fIsAtlasLayer && !currentLayer->fDiscard) {
+        if (fLayerAtlas && fLayerAtlas->hasPendingLayers() && !fLayerAtlas->hasActiveLayer()) {
+            fLayerAtlas->flush(this);
+        }
+    }
+
     // now detach these from fMCRec so we can pop(). Gets freed after its drawn
     std::unique_ptr<Layer> layer = std::move(fMCRec->fLayer);
     std::unique_ptr<BackImage> backImage = std::move(fMCRec->fBackImage);
@@ -1159,6 +1265,17 @@ void SkCanvas::internalRestore() {
     this->topDevice()->popClipStack();
     this->topDevice()->setGlobalCTM(fMCRec->fMatrix);
 
+    // Reset the clip restriction if the restore went past the save point that had added it.
+    if (this->getSaveCount() < fClipRestrictionSaveCount) {
+        fClipRestrictionRect.setEmpty();
+        fClipRestrictionSaveCount = -1;
+    }
+    // Update the quick-reject bounds immediately after popping the clip stack, so that any
+    // subsequent draws during restore (e.g. layer drawing or atlas flush in predrawNotify)
+    // see up-to-date and validated quick reject bounds.
+    fQuickRejectBounds = this->computeDeviceClipBounds();
+    this->validateClip();
+
     if (backImage) {
         SkPaint paint;
         paint.setBlendMode(SkBlendMode::kDstOver);
@@ -1170,7 +1287,11 @@ void SkCanvas::internalRestore() {
 
     // Draw the layer's device contents into the now-current older device. We can't call public
     // draw functions since we don't want to record them.
-    if (layer && !layer->fDevice->isNoPixelsDevice() && !layer->fDiscard) {
+    if (layer && layer->fIsAtlasLayer) {
+        if (fLayerAtlas) {
+            fLayerAtlas->deferRestore(layer->fPaint);
+        }
+    } else if (layer && !layer->fDevice->isNoPixelsDevice() && !layer->fDiscard) {
         layer->fDevice->setImmutable();
 
         // Don't go through AutoLayerForImageFilter since device draws are so closely tied to
@@ -1200,15 +1321,6 @@ void SkCanvas::internalRestore() {
         }
     }
 
-    // Reset the clip restriction if the restore went past the save point that had added it.
-    if (this->getSaveCount() < fClipRestrictionSaveCount) {
-        fClipRestrictionRect.setEmpty();
-        fClipRestrictionSaveCount = -1;
-    }
-    // Update the quick-reject bounds in case the restore changed the top device or the
-    // removed save record had included modifications to the clip stack.
-    fQuickRejectBounds = this->computeDeviceClipBounds();
-    this->validateClip();
 }
 
 sk_sp<SkSurface> SkCanvas::makeSurface(const SkImageInfo& info, const SkSurfaceProps* props) {
@@ -1387,6 +1499,9 @@ void SkCanvas::clipRect(const SkRect& rect, SkClipOp op, bool doAA) {
 }
 
 void SkCanvas::onClipRect(const SkRect& rect, SkClipOp op, ClipEdgeStyle edgeStyle) {
+    if (fLayerAtlas && fLayerAtlas->hasPendingLayers() && !fLayerAtlas->hasActiveLayer()) {
+        fLayerAtlas->flush(this);
+    }
     SkASSERT(rect.isSorted());
     const bool isAA = kSoft_ClipEdgeStyle == edgeStyle;
 
@@ -1466,6 +1581,9 @@ void SkCanvas::clipRRect(const SkRRect& rrect, SkClipOp op, bool doAA) {
 }
 
 void SkCanvas::onClipRRect(const SkRRect& rrect, SkClipOp op, ClipEdgeStyle edgeStyle) {
+    if (fLayerAtlas && fLayerAtlas->hasPendingLayers() && !fLayerAtlas->hasActiveLayer()) {
+        fLayerAtlas->flush(this);
+    }
     bool isAA = kSoft_ClipEdgeStyle == edgeStyle;
 
     AutoUpdateQRBounds aqr(this);
@@ -1473,6 +1591,9 @@ void SkCanvas::onClipRRect(const SkRRect& rrect, SkClipOp op, ClipEdgeStyle edge
 }
 
 void SkCanvas::clipPath(const SkPath& path, SkClipOp op, bool doAA) {
+    if (fLayerAtlas && fLayerAtlas->hasPendingLayers() && !fLayerAtlas->hasActiveLayer()) {
+        fLayerAtlas->flush(this);
+    }
     this->checkForDeferredSave();
     ClipEdgeStyle edgeStyle = doAA ? kSoft_ClipEdgeStyle : kHard_ClipEdgeStyle;
 

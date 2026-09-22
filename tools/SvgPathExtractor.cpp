@@ -23,7 +23,7 @@ class SkPath;
 
 namespace ToolUtils {
 
-void ExtractPaths(const char filepath[], std::function<PathSniffCallback> callback) {
+void ExtractPathsFromSVG(const char filepath[], std::function<PathSniffCallback> callback) {
     SkFILEStream stream(filepath);
     if (!stream.isValid()) {
         SkDebugf("ExtractPaths: invalid input file at \"%s\"\n", filepath);

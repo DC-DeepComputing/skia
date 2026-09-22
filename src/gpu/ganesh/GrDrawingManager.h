@@ -195,6 +195,8 @@ public:
     void createDDLTask(sk_sp<const GrDeferredDisplayList>,
                        sk_sp<GrRenderTargetProxy> newDest);
 
+    void makeTaskSkippable(skgpu::ganesh::OpsTask* task);
+
     // This is public so it can be called by an SkImage factory (in SkImages namespace).
     // It is not meant to be directly called in other situations.
     bool flush(SkSpan<GrSurfaceProxy*> proxies,

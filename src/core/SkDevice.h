@@ -214,6 +214,7 @@ public:
         fLocalToDeviceDirty = true;
     }
     void setGlobalCTM(const SkM44& ctm);
+    virtual void discardDevice() {}
 
     // -- Device's clip bounds and stack manipulation
 
@@ -512,6 +513,7 @@ protected:
 
 private:
     friend class SkCanvas; // for setOrigin/setDeviceCoordinateSystem
+    friend class SkLayerAtlasManager;
     friend class DeviceTestingAccess;
 
     // Defaults to a CPU image filtering backend.

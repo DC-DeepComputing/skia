@@ -10,6 +10,7 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/effects/SkImageFilters.h"
 #include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGHiddenContainer.h"
 #include "modules/svg/include/SkSVGNode.h"
@@ -49,7 +50,7 @@ public:
                                          const SkSVGFilterContext& fctx) const;
 
     // https://www.w3.org/TR/SVG11/filters.html#FilterPrimitiveSubRegion
-    SkRect resolveFilterSubregion(const SkSVGRenderContext&, const SkSVGFilterContext&) const;
+    SkImageFilters::CropRect resolveFilterSubregion(const SkSVGRenderContext&, const SkSVGFilterContext&) const;
 
     /**
      * Resolves the colorspace within which this filter effect should be applied.

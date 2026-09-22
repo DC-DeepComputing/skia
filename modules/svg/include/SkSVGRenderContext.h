@@ -199,7 +199,7 @@ private:
     SkSVGRenderContext& operator=(const SkSVGRenderContext&) = delete;
 
     void applyOpacity(SkScalar opacity, uint32_t flags, bool hasFilter);
-    void applyFilter(const SkSVGFuncIRI&);
+    void applyFilter(const SkSVGFuncIRI&, SkScalar opacity = 1.0f);
     void applyClip(const SkSVGFuncIRI&);
     void applyMask(const SkSVGFuncIRI&);
 
