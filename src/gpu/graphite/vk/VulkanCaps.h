@@ -104,6 +104,10 @@ public:
 
     float timestampPeriod() const { return fTimestampPeriod; }
 
+    VkPipelineStageFlags shaderReadOnlySrcStageMask() const {
+        return fShaderReadOnlySrcStageMask;
+    }
+
 private:
     void init(const ContextOptions&,
               const skgpu::VulkanInterface*,
@@ -223,6 +227,8 @@ private:
 
     skia_private::TArray<uint32_t> fQueueFamilyTimestampValidBits;
     float fTimestampPeriod = 1.0f;
+
+    VkPipelineStageFlags fShaderReadOnlySrcStageMask;
 };
 
 } // namespace skgpu::graphite
