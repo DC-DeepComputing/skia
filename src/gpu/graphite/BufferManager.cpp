@@ -296,7 +296,11 @@ sk_sp<Buffer> DrawBufferManager::BufferState::findOrCreateBuffer(ResourceProvide
                                                                  uint32_t byteCount) {
     if (shareable == Shareable::kScratch) {
         sk_sp<Buffer> scratchBuffer = provider->findOrCreateScratchBuffer(
-                byteCount, fType, fAccessPattern, fLabel, fUnavailableScratchBuffers);
+                byteCount,
+                fType,
+                fAccessPattern,
+                fUnavailableScratchBuffers,
+                fLabel);
         if (scratchBuffer) {
             fUnavailableScratchBuffers.add(scratchBuffer.get());
         }

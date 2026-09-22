@@ -266,6 +266,8 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
+    SkEnumBitMask<ResourceUsage> usageFlags() const { return fUsageFlags; }
+
     // A Resource's label consists of its string label and its usage flag
     std::string getLabel() const;
 
@@ -299,7 +301,7 @@ protected:
              size_t gpuMemorySize,
              // TODO(b/431796811): Remove default assignment once texture flags are added to
              // encourage Resources to leverage predefined usage flags wherever possible
-             ResourceUsage = ResourceUsage::kNotPredefined,
+             SkEnumBitMask<ResourceUsage> = ResourceUsage::kNotPredefined,
              std::string_view label = {},
              bool reusableRequiresPurgeable = false,
              bool requiresPrepareForReturnToCache = false);

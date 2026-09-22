@@ -107,6 +107,7 @@ VulkanSharedContext* VulkanResourceProvider::nonConstVulkanSharedContext() {
 }
 
 sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTexture& texture,
+                                                              SkEnumBitMask<ResourceUsage> usages,
                                                               std::string_view label) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(texture.info());
@@ -124,6 +125,7 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
                                       BackendTextures::GetVkImage(texture),
                                       /*alloc=*/{} /*Skia does not own wrapped texture memory*/,
                                       std::move(ycbcrConversion),
+                                      usages,
                                       label);
 }
 
@@ -136,8 +138,8 @@ const VulkanTexture* VulkanResourceProvider::getOrCreateNullTexture() {
         TextureInfo info = this->vulkanSharedContext()->caps()->getDefaultReadableTextureInfo(
                 TextureFormat::kRGBA32F,
                 Protected::kNo);
-        fNullTexture = this->createTexture(
-                SkISize::Make(1, 1), info, "UnusedTextureSlot");
+        fNullTexture = this->createTexture( // TODO add usage flag def to enum?
+                SkISize::Make(1, 1), info, ResourceUsage::kNotPredefined, "UnusedTextureSlot");
         SkASSERT(fNullTexture);
     }
     return static_cast<const VulkanTexture*>(fNullTexture.get());
@@ -145,6 +147,7 @@ const VulkanTexture* VulkanResourceProvider::getOrCreateNullTexture() {
 
 sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
                                                      const TextureInfo& info,
+                                                     SkEnumBitMask<ResourceUsage> usageFlags,
                                                      std::string_view label) {
     sk_sp<VulkanYcbcrConversion> ycbcrConversion;
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(info);
@@ -159,6 +162,7 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
                                size,
                                info,
                                std::move(ycbcrConversion),
+                               usageFlags,
                                label);
 }
 
@@ -277,8 +281,8 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
 
     // Search for available descriptor sets by assembling a key based upon the set's structure.
     GraphiteResourceKey key = build_desc_set_key(requestedDescriptors);
-    if (auto descSet =
-            fResourceCache->findAndRefResource(key, skgpu::Budgeted::kYes, Shareable::kNo)) {
+    if (auto descSet = fResourceCache->findAndRefResource(
+                key, skgpu::Budgeted::kYes, Shareable::kNo, ResourceUsage::kNotPredefined)) {
         return sk_sp<VulkanDescriptorSet>(static_cast<VulkanDescriptorSet*>(descSet));
     }
 
@@ -358,7 +362,8 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         builder[0] = VulkanRenderPass::GetRenderPassKey(renderPassDesc,
                                                         /*compatibleForPipelineKey=*/false);
     }
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, kBudgeted, kShareable, ResourceUsage::kNotPredefined)) {
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
     }
 
@@ -488,7 +493,8 @@ sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcr
         builder[2] = (uint32_t) (packedInfo.fFormat >> 32);
     }
 
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, kBudgeted, kShareable, ResourceUsage::kNotPredefined)) {
         return sk_sp(static_cast<VulkanYcbcrConversion*>(resource));
     }
 

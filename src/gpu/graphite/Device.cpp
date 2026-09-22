@@ -429,8 +429,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                           Renderable::kYes);
 
     return Make(recorder,
-                TextureProxy::Make(caps, recorder->priv().resourceProvider(),
-                                   backingDimensions, textureInfo, budgeted, label),
+                TextureProxy::Make(caps, recorder->priv().resourceProvider(), backingDimensions,
+                                   textureInfo, budgeted, ResourceUsage::kNotPredefined, label),
                 ii.dimensions(),
                 ii.colorInfo(),
                 props,

@@ -56,28 +56,33 @@ public:
 
     sk_sp<Texture> findOrCreateShareableTexture(SkISize,
                                                 const TextureInfo&,
-                                                std::string_view label);
+                                                SkEnumBitMask<ResourceUsage>,
+                                                std::string_view label = {});
 
     sk_sp<Texture> findOrCreateNonShareableTexture(SkISize,
                                                    const TextureInfo&,
-                                                   std::string_view label,
-                                                   Budgeted);
+                                                   Budgeted,
+                                                   SkEnumBitMask<ResourceUsage>,
+                                                   std::string_view label = {});
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
-                                              std::string_view label,
-                                              const ResourceCache::ScratchResourceSet& unavailable);
+                                              const ResourceCache::ScratchResourceSet& unavailable,
+                                              SkEnumBitMask<ResourceUsage>,
+                                              std::string_view label = {});
 
-    sk_sp<Texture> createWrappedTexture(const BackendTexture&, std::string_view label);
+    sk_sp<Texture> createWrappedTexture(const BackendTexture&,
+                                        SkEnumBitMask<ResourceUsage>,
+                                        std::string_view label = {});
 
     sk_sp<Buffer> findOrCreateNonShareableBuffer(size_t,
-                                                 ResourceUsage,
+                                                 ResourceUsage, // TODO - move to be next 2 label?
                                                  AccessPattern,
-                                                 std::string_view label);
+                                                 std::string_view label = {});
     sk_sp<Buffer> findOrCreateScratchBuffer(size_t,
                                             ResourceUsage,
                                             AccessPattern,
-                                            std::string_view label,
-                                            const ResourceCache::ScratchResourceSet& unavailable);
+                                            const ResourceCache::ScratchResourceSet& unavailable,
+                                            std::string_view label = {});
 
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SamplerDesc&);
@@ -136,7 +141,10 @@ protected:
 
 private:
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
-    virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&, std::string_view label) = 0;
+    virtual sk_sp<Texture> createTexture(SkISize,
+                                         const TextureInfo&,
+                                         SkEnumBitMask<ResourceUsage> usageFlags,
+                                         std::string_view label) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t,
                                        ResourceUsage,
                                        AccessPattern,
@@ -145,19 +153,21 @@ private:
 
     sk_sp<Texture> findOrCreateTexture(SkISize dimensions,
                                        const TextureInfo& info,
-                                       std::string_view label,
                                        Budgeted,
                                        Shareable,
+                                       SkEnumBitMask<ResourceUsage> usages,
+                                       std::string_view label = "",
                                        const ResourceCache::ScratchResourceSet* = nullptr);
 
     sk_sp<Buffer> findOrCreateBuffer(size_t,
                                      ResourceUsage,
                                      AccessPattern,
-                                     std::string_view label,
                                      Shareable,
+                                     std::string_view label = "",
                                      const ResourceCache::ScratchResourceSet* = nullptr);
 
     virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&,
+                                                  SkEnumBitMask<ResourceUsage>,
                                                   std::string_view label) = 0;
 
     virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) = 0;
