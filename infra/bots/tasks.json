@@ -40257,8 +40257,8 @@
           "version": "git_revision:2e92f2eff2dd9ceb946313cbd39abef074881762"
         },
         {
-          "name": "skia/bots/ios-dev-image-13.3",
-          "path": "ios-dev-image-13.3",
+          "name": "skia/bots/ios-dev-image-15.8",
+          "path": "ios-dev-image-15.8",
           "version": "version:0"
         }
       ],
@@ -40280,7 +40280,7 @@
       ],
       "dimensions": [
         "device:iPhone9,1",
-        "os:iOS-13.3.1",
+        "os:iOS-15.8",
         "pool:SkiaIOS"
       ],
       "environment": {
@@ -40347,8 +40347,8 @@
           "version": "git_revision:2e92f2eff2dd9ceb946313cbd39abef074881762"
         },
         {
-          "name": "skia/bots/ios-dev-image-13.3",
-          "path": "ios-dev-image-13.3",
+          "name": "skia/bots/ios-dev-image-15.8",
+          "path": "ios-dev-image-15.8",
           "version": "version:0"
         }
       ],
@@ -40370,7 +40370,7 @@
       ],
       "dimensions": [
         "device:iPhone9,1",
-        "os:iOS-13.3.1",
+        "os:iOS-15.8",
         "pool:SkiaIOS"
       ],
       "environment": {
@@ -71046,8 +71046,8 @@
           "version": "git_revision:2e92f2eff2dd9ceb946313cbd39abef074881762"
         },
         {
-          "name": "skia/bots/ios-dev-image-13.3",
-          "path": "ios-dev-image-13.3",
+          "name": "skia/bots/ios-dev-image-15.8",
+          "path": "ios-dev-image-15.8",
           "version": "version:0"
         }
       ],
@@ -71069,7 +71069,7 @@
       ],
       "dimensions": [
         "device:iPhone9,1",
-        "os:iOS-13.3.1",
+        "os:iOS-15.8",
         "pool:SkiaIOS"
       ],
       "environment": {
@@ -71136,8 +71136,8 @@
           "version": "git_revision:2e92f2eff2dd9ceb946313cbd39abef074881762"
         },
         {
-          "name": "skia/bots/ios-dev-image-13.3",
-          "path": "ios-dev-image-13.3",
+          "name": "skia/bots/ios-dev-image-15.8",
+          "path": "ios-dev-image-15.8",
           "version": "version:0"
         }
       ],
@@ -71159,7 +71159,7 @@
       ],
       "dimensions": [
         "device:iPhone9,1",
-        "os:iOS-13.3.1",
+        "os:iOS-15.8",
         "pool:SkiaIOS"
       ],
       "environment": {
@@ -71226,8 +71226,8 @@
           "version": "git_revision:2e92f2eff2dd9ceb946313cbd39abef074881762"
         },
         {
-          "name": "skia/bots/ios-dev-image-13.3",
-          "path": "ios-dev-image-13.3",
+          "name": "skia/bots/ios-dev-image-15.8",
+          "path": "ios-dev-image-15.8",
           "version": "version:0"
         }
       ],
@@ -71249,7 +71249,7 @@
       ],
       "dimensions": [
         "device:iPhone9,1",
-        "os:iOS-13.3.1",
+        "os:iOS-15.8",
         "pool:SkiaIOS"
       ],
       "environment": {
@@ -71316,8 +71316,8 @@
           "version": "git_revision:2e92f2eff2dd9ceb946313cbd39abef074881762"
         },
         {
-          "name": "skia/bots/ios-dev-image-13.3",
-          "path": "ios-dev-image-13.3",
+          "name": "skia/bots/ios-dev-image-15.8",
+          "path": "ios-dev-image-15.8",
           "version": "version:0"
         }
       ],
@@ -71339,7 +71339,7 @@
       ],
       "dimensions": [
         "device:iPhone9,1",
-        "os:iOS-13.3.1",
+        "os:iOS-15.8",
         "pool:SkiaIOS"
       ],
       "environment": {
