@@ -661,6 +661,22 @@ void add_yuv_image_uniform_data(const KeyContext& keyContext,
     keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBTranslate);
 }
 
+void add_packed_yuv_image_uniform_data(const KeyContext& keyContext,
+                                       const YUVImageShaderBlock::ImageData& imgData) {
+    BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kPackedYUVImageShader)
+
+    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+                                                          1.f/imgData.fImgSize.height()));
+    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
+    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.first));
+    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.second));
+    for (int i = 0; i < 3; ++i) {
+        keyContext.pipelineDataGatherer()->writeHalf(imgData.fChannelSelect[i]);
+    }
+    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBMatrix);
+    keyContext.pipelineDataGatherer()->writeHalf(imgData.fYUVtoRGBTranslate);
+}
+
 void add_cubic_yuv_image_uniform_data(const KeyContext& keyContext,
                                       const YUVImageShaderBlock::ImageData& imgData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kCubicYUVImageShader)
@@ -819,7 +835,11 @@ void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext, const ImageData
     keyContext.pipelineDataGatherer()->add(imgData.fTextureProxies[3],
                                            {imgData.fSampling, yAlphaTileModes});
 
-    if (doTilingInHw && noYUVSwizzle) {
+    if (imgData.fPacked) {
+        add_packed_yuv_image_uniform_data(keyContext, imgData);
+        keyContext.paintParamsKeyBuilder()->addBlock(
+                BuiltInCodeSnippetID::kPackedYUVImageShader);
+    } else if (doTilingInHw && noYUVSwizzle) {
         add_hw_yuv_no_swizzle_image_uniform_data(keyContext, imgData);
         keyContext.paintParamsKeyBuilder()->addBlock(
                 BuiltInCodeSnippetID::kHWYUVNoSwizzleImageShader);
@@ -1969,6 +1989,15 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                                            tileModeY,
                                            imageToDraw->dimensions(),
                                            subset);
+#if defined(SK_ENABLE_YUVA_PACKED_422)
+    imgData.fPacked = yuvaInfo.planeConfig() == SkYUVAInfo::PlaneConfig::kYUYV;
+#endif
+    if (imgData.fPacked) {
+        imgData.fSampling = SkSamplingOptions(SkFilterMode::kNearest, imgData.fSampling.mipmap);
+        imgData.fSamplingUV = imgData.fSampling;
+        imgData.fImgSize = yuvaImage->proxyView(SkYUVAInfo::kY).dimensions();
+        imgData.fSubset = yuvaInfo.inverseOriginMatrix().mapRect(imgData.fSubset);
+    }
     for (int locIndex = 0; locIndex < SkYUVAInfo::kYUVAChannelCount; ++locIndex) {
         const TextureProxyView& view = yuvaImage->proxyView(locIndex);
         if (view) {
