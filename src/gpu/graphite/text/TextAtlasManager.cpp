@@ -38,6 +38,10 @@
 #include <new>
 #include <tuple>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using Glyph = skgpu::graphite::Glyph;
 
 namespace skgpu::graphite {

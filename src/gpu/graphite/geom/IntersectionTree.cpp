@@ -14,6 +14,10 @@
 #include <algorithm>
 #include <limits>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 // BSP node. Space is partitioned by an either vertical or horizontal line. Note that if a rect

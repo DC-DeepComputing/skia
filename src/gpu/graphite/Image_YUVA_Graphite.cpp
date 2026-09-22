@@ -29,6 +29,10 @@
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/shaders/SkImageShader.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 
 namespace skgpu::graphite {
 

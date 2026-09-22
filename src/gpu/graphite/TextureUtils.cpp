@@ -57,6 +57,10 @@
 
 #include <array>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 
 using SkImages::GraphitePromiseTextureFulfillProc;
 using SkImages::GraphitePromiseTextureFulfillContext;

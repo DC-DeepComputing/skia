@@ -22,6 +22,10 @@
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 using namespace skia_private;
 
 namespace skgpu::graphite {

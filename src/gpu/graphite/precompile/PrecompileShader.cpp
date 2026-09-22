@@ -34,6 +34,10 @@
 #include "src/gpu/graphite/precompile/PrecompileShadersPriv.h"
 #include "src/shaders/gradients/SkLinearGradient.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #if defined(SK_DEBUG)
 #include "src/core/SkMathPriv.h"
 #endif
