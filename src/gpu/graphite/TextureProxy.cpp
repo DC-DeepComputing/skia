@@ -194,6 +194,7 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
     return proxy;
 }
 
+
 sk_sp<TextureProxy> TextureProxy::MakeLazy(const Caps* caps,
                                            SkISize dimensions,
                                            const TextureInfo& textureInfo,

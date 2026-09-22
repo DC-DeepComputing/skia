@@ -9,6 +9,7 @@
 
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
@@ -27,9 +28,11 @@ bool ProxyReadCountMap::hasPendingReads() const {
 ScratchResourceManager::ScratchResourceManager(ResourceProvider* resourceProvider,
                                                std::unique_ptr<ProxyReadCountMap> proxyCounts)
         : fResourceProvider(resourceProvider)
-        , fProxyReadCounts(std::move(proxyCounts)) {
+        , fProxyReadCounts(std::move(proxyCounts))
+        , fResourceLabelAndUsageMap(std::make_unique<ResourceLabelAndUsageMap>()) {
     SkASSERT(resourceProvider);
     SkASSERT(fProxyReadCounts);
+    SkASSERT(fResourceLabelAndUsageMap);
 }
 
 ScratchResourceManager::~ScratchResourceManager() {
@@ -48,7 +51,49 @@ sk_sp<Texture> ScratchResourceManager::getScratchTexture(SkISize dimensions,
     // remain visible to other Recorders.
     SkASSERT(!fUnavailable.contains(scratchTexture.get()));
     fUnavailable.add(scratchTexture.get());
+
+    // Check to see if the scratchTexture is already listed in the map of textures.
+    for (auto& resourceLabelAndUsage : *fResourceLabelAndUsageMap) {
+        Texture* tex = static_cast<Texture*>(resourceLabelAndUsage.first);
+        if (scratchTexture.get() != tex) {
+            continue;
+        }
+
+        // Update the texture's mapped string label and texture usage flags (adding, not replacing)
+        ScratchResourceManager::LabelAndUsage labelAndUsage = resourceLabelAndUsage.second;
+        if (!label.empty()) {
+            labelAndUsage.first.append("_");
+            labelAndUsage.first.append(label);
+        }
+        labelAndUsage.second |= usages;
+        return scratchTexture;
+    }
+
+    static const char* kScratchTexLabelPrefix = "ScratchTexture";
+    std::string prefixAndLabel {kScratchTexLabelPrefix};
+    if (!label.empty()) {
+        prefixAndLabel += "_";
+        prefixAndLabel += label;
+    }
+    fResourceLabelAndUsageMap->push_back(
+            std::pair<Texture*, LabelAndUsage>(scratchTexture.get(),
+                                               LabelAndUsage(prefixAndLabel, usages)));
+
     return scratchTexture;
+}
+
+void ScratchResourceManager::snapResourceLabelAndUsageMap(
+        std::unique_ptr<const ResourceLabelAndUsageMap>& resourceLabelAndUsageMap) {
+    SkASSERT(fResourceLabelAndUsageMap);
+
+    resourceLabelAndUsageMap =
+            std::make_unique<const ResourceLabelAndUsageMap>(*fResourceLabelAndUsageMap);
+
+    // Upon snapping the label/usage information for scratch textures, clear out the label and usage
+    // maps. This includes the scratch texture pointers as well since they are trivial enough
+    // to re-populate and help avoid referencing or updating resources that aren't actually used by
+    // a Recording.
+    fResourceLabelAndUsageMap->clear();
 }
 
 void ScratchResourceManager::returnTexture(sk_sp<Texture> texture) {

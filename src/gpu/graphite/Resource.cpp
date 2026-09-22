@@ -214,4 +214,13 @@ std::string Resource::getLabel() const {
     return fullLabel;
 }
 
+#if defined(GPU_TEST_UTILS)
+std::string Resource::UsageToStr(ResourceUsage usage) {
+    return usage_flag_to_str(usage);
+}
+void Resource::AppendUsagesToLabel(std::string& baseLabel, SkEnumBitMask<ResourceUsage> usages) {
+    baseLabel += usage_mask_as_str(usages);
+}
+#endif
+
 } // namespace skgpu::graphite
