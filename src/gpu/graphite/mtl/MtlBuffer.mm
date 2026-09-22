@@ -14,7 +14,7 @@ namespace skgpu::graphite {
 
 sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
                               size_t size,
-                              BufferType type,
+                              ResourceUsage type,
                               AccessPattern accessPattern,
                               std::string_view label) {
     if (size <= 0) {
@@ -47,10 +47,12 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
 MtlBuffer::MtlBuffer(const MtlSharedContext* sharedContext,
                      size_t size,
                      sk_cfp<id<MTLBuffer>> buffer,
+                     ResourceUsage type,
                      std::string_view label)
         : Buffer(sharedContext,
                  size,
                  Protected::kNo,  // Metal doesn't support protected memory
+                 type,
                  label,
                  /*reusableRequiresPurgeable=*/(*buffer).storageMode != MTLStorageModePrivate)
         , fBuffer(std::move(buffer)) {

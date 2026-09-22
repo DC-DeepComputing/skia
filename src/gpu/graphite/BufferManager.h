@@ -367,7 +367,7 @@ private:
     friend class BufferSubAllocator;
 
     struct BufferState {
-        const BufferType    fType;
+        const ResourceUsage fType;
         const AccessPattern fAccessPattern;
         const bool          fUseTransferBuffer;
         const char*         fLabel;
@@ -386,8 +386,11 @@ private:
         // number of buffer allocations for large Recordings.
         uint32_t fLastBufferSize = 0;
 
-        BufferState(BufferType, const char* label, bool isGpuOnly,
-                    const Options&, const Caps* caps);
+        BufferState(ResourceUsage,
+                    bool isGpuOnly,
+                    const Options&,
+                    const Caps*,
+                    const char* label = nullptr);
 
         sk_sp<Buffer> findOrCreateBuffer(ResourceProvider*, Shareable, uint32_t byteCount);
     };
@@ -535,15 +538,15 @@ public:
 
 private:
     struct CopyRange {
-        BindBufferInfo  fSource;            // The CPU-to-GPU buffer and offset for the source of the copy
-        BindBufferInfo* fTarget;            // The late-assigned destination of the copy
+        BindBufferInfo  fSource;            // The CPU-to-GPU buffer and offset for copy source
+        BindBufferInfo* fTarget;            // The late-assigned copy destination
         uint32_t        fRequiredAlignment; // The requested stride of the data.
 #if defined(GPU_TEST_UTILS)
         uint32_t        fUnalignedSize;     // The requested size without count-4 alignment
 #endif
     };
     struct BufferState {
-        BufferState(BufferType type, const Caps* caps);
+        BufferState(ResourceUsage type, const Caps* caps);
 
         bool createAndUpdateBindings(ResourceProvider*, Context*, QueueManager*, GlobalCache*,
                                      std::string_view label) const;
@@ -552,7 +555,7 @@ private:
             fTotalRequiredBytes = 0;
         }
 
-        const BufferType fBufferType;
+        const ResourceUsage fResourceUsage;
         // This is the lcm of the alignment requirement of the buffer type and the transfer buffer
         // alignment requirement.
         const uint32_t fMinimumAlignment;
