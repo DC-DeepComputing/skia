@@ -19,10 +19,16 @@
 #include "include/private/SkLog.h"
 #include "include/private/SkTArray.h"
 #include "src/capture/SkCaptureManager.h"
+#include "src/image/SkImage_Base.h"
+
+#include <unordered_set>
 
 constexpr SkFourByteTag kMagic1  = SkSetFourByteTag('s','k','i','a');
 constexpr SkFourByteTag kMagic2  = SkSetFourByteTag('c','a','p','t');
 
+// TODO (b/412351769): Add comprehensive input validation for deserializing .capt files
+// (e.g., validate pictureDataSize, assetCount, and taskCount against remaining stream bytes,
+// and handle unrecognized asset types).
 sk_sp<SkCapture> SkCapture::MakeFromData(sk_sp<const SkData> data) {
     if (!data) {
         return nullptr;
@@ -58,30 +64,64 @@ sk_sp<SkCapture> SkCapture::MakeFromData(sk_sp<const SkData> data) {
     auto capture = sk_make_sp<SkCapture>();
     capture->fMetadata = {version, assetCount, recordingCaptureCount};
 
-    // 5. Loop and Deserialize Each Asset (SkPicture)
+    // 5. Loop and Deserialize Each Asset
     for (uint32_t i = 0; i < assetCount; ++i) {
-        uint32_t pictureDataSize;
-        if (!stream.readU32(&pictureDataSize)) {
-            SKIA_LOG_E("Failed to read picture data size for asset %u.", i);
+        uint32_t pixelStorageID;
+        uint32_t contentID;
+        uint32_t typeVal;
+        if (!stream.readU32(&pixelStorageID) || !stream.readU32(&contentID) || !stream.readU32(&typeVal)) {
+            SKIA_LOG_E("Failed to read asset header for asset %u.", i);
             return nullptr;
         }
 
-        sk_sp<SkData> pictureData = SkData::MakeUninitialized(pictureDataSize);
-        if (!pictureData || stream.read(pictureData->writable_data(),
-                                        pictureDataSize) != pictureDataSize) {
-            SKIA_LOG_E("Failed to read picture data for asset %u or allocation failed.", i);
+        SkCaptureAsset::AssetType assetType = static_cast<SkCaptureAsset::AssetType>(typeVal);
+        auto asset = sk_make_sp<SkCaptureAsset>();
+        asset->fPixelStorageID = pixelStorageID;
+        asset->fContentID = contentID;
+        asset->fType = assetType;
+        uint64_t key = MakeAssetKey(pixelStorageID, contentID);
+        if (capture->fAssets.find(key) == capture->fAssets.end()) {
+            capture->fAssetKeys.push_back(key);
+        }
+        capture->fAssets[key] = asset;
+
+        if (assetType == SkCaptureAsset::AssetType::kPicture) {
+            uint32_t pictureDataSize;
+            if (!stream.readU32(&pictureDataSize)) {
+                SKIA_LOG_E("Failed to read picture data size for asset %u.", i);
+                return nullptr;
+            }
+
+            sk_sp<SkData> pictureData = SkData::MakeUninitialized(pictureDataSize);
+            if (!pictureData || stream.read(pictureData->writable_data(),
+                                            pictureDataSize) != pictureDataSize) {
+                SKIA_LOG_E("Failed to read picture data for asset %u or allocation failed.", i);
+                return nullptr;
+            }
+
+            SkDeserialProcs procs;
+            procs.fImageDataProc = SkCapture::deserializeImageProc;
+            procs.fImageCtx = capture.get();
+            sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
+            if (!picture) {
+                SKIA_LOG_E("Failed to deserialize SkPicture for asset %u.", i);
+                return nullptr;
+            }
+
+            asset->fPicture = std::move(picture);
+        } else if (assetType == SkCaptureAsset::AssetType::kDerivedStorage) {
+            uint32_t parentPixelStorageID;
+            uint32_t parentContentID;
+            if (!stream.readU32(&parentPixelStorageID) || !stream.readU32(&parentContentID)) {
+                SKIA_LOG_E("Failed to read origin parent IDs for asset %u.", i);
+                return nullptr;
+            }
+            asset->fOrigin = SkPixelStorage::PixelStorageOrigin::Copy(parentPixelStorageID,
+                                                                       parentContentID);
+        } else {
+            SKIA_LOG_W("Unsupported asset type %d for asset %u.", (int)assetType, i);
             return nullptr;
         }
-
-        SkDeserialProcs procs;
-        procs.fImageDataProc = SkCapture::deserializeImageProc;
-        sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
-        if (!picture) {
-            SKIA_LOG_E("Failed to deserialize SkPicture for asset %u.", i);
-            return nullptr;
-        }
-
-        capture->fAssets.emplace_back(std::move(picture));
     }
 
     // 6. Loop and Deserialize Each RecordingCapture
@@ -93,17 +133,13 @@ sk_sp<SkCapture> SkCapture::MakeFromData(sk_sp<const SkData> data) {
             return nullptr;
         }
         for (uint32_t j = 0; j < taskCount; ++j) {
-            uint32_t assetIdx;
-            if (!stream.readU32(&assetIdx)) {
+            uint32_t pixelStorageID;
+            uint32_t contentID;
+            if (!stream.readU32(&pixelStorageID) || !stream.readU32(&contentID)) {
                 SKIA_LOG_E("Failed to read task %u for recording capture %u.", j, i);
                 return nullptr;
             }
-            if (assetIdx >= static_cast<uint32_t>(capture->fAssets.size())) {
-                SKIA_LOG_E("Out-of-bounds asset index %u parsed for task %u inside recording %u.",
-                           assetIdx, j, i);
-                return nullptr;
-            }
-            rec.fDrawTasks.push_back({assetIdx});
+            rec.fDrawTasks.push_back({pixelStorageID, contentID});
         }
         capture->fTimeline.push_back(std::move(rec));
     }
@@ -119,9 +155,24 @@ sk_sp<SkCapture> SkCapture::MakeEmpty() {
     return capture;
 }
 
-void SkCapture::addAsset(sk_sp<SkPicture> picture) {
-    if (picture) {
-        fAssets.push_back(std::move(picture));
+void SkCapture::addAsset(sk_sp<SkCaptureAsset> asset) {
+    if (!asset) return;
+
+    // Assets where fPixelStorageID == 0 do not have a tracked GPU SkPixelStorage. This should not
+    // happen. But if it does, to preserve the capture, we assign a unique synthetic content ID so
+    // that the asset gets a unique key in fAssets (0, syntheticContentID) so we don't collide with
+    // existing {0, 0} keys.
+    if (asset->fPixelStorageID == 0 && asset->fContentID == 0) {
+        SKIA_LOG_W("Asset has uninitialized SkPixelStorage.");
+        asset->fContentID = fNextSyntheticContentID++;
+    }
+
+    if (asset->fPicture || asset->fType == SkCaptureAsset::AssetType::kDerivedStorage) {
+        uint64_t key = MakeAssetKey(asset->fPixelStorageID, asset->fContentID);
+        if (fAssets.find(key) == fAssets.end()) {
+            fAssetKeys.push_back(key);
+        }
+        fAssets[key] = std::move(asset);
         fMetadata.numAssets = fAssets.size();
     }
 }
@@ -131,9 +182,11 @@ void SkCapture::addRecordingCapture(RecordingCapture rec) {
     fMetadata.numRecordingCaptures = fTimeline.size();
 }
 
-sk_sp<SkPicture> SkCapture::getAsset(int i) const {
-    if (i >= 0 && i < fAssets.size()) {
-        return fAssets[i];
+const SkCaptureAsset* SkCapture::getAsset(uint32_t storageID, uint32_t contentID) const {
+    uint64_t key = MakeAssetKey(storageID, contentID);
+    auto it = fAssets.find(key);
+    if (it != fAssets.end()) {
+        return it->second.get();
     }
     return nullptr;
 }
@@ -160,17 +213,31 @@ sk_sp<SkData> SkCapture::serializeCapture() {
     stream.write32(fAssets.size());
     stream.write32(fTimeline.size());
 
-    // 1. Assets Section: Serialized Pictures
-    for (const auto& picture : fAssets) {
-        SkDynamicMemoryWStream pictureStream;
-        SkSerialProcs procs;
-        procs.fImageProc = SkCapture::serializeImageProc;
-        picture->serialize(&pictureStream, &procs);
-        sk_sp<SkData> pictureData = pictureStream.detachAsData();
+    // 1. Assets Section: SkCaptureAssets serialized in insertion order
+    for (uint64_t key : fAssetKeys) {
+        auto it = fAssets.find(key);
+        if (it == fAssets.end() || !it->second) continue;
+        const auto& asset = it->second;
+        stream.write32(asset->fPixelStorageID);
+        stream.write32(asset->fContentID);
+        stream.write32(static_cast<uint32_t>(asset->fType));
 
-        // Write size and then data
-        stream.write32(pictureData->size());
-        stream.write(pictureData->data(), pictureData->size());
+        if (asset->fType == SkCaptureAsset::AssetType::kPicture) {
+            SkDynamicMemoryWStream pictureStream;
+            SkSerialProcs procs;
+            procs.fImageProc = SkCapture::serializeImageProc;
+            asset->fPicture->serialize(&pictureStream, &procs);
+            sk_sp<SkData> pictureData = pictureStream.detachAsData();
+
+            stream.write32(pictureData->size());
+            stream.write(pictureData->data(), pictureData->size());
+        } else if (asset->fType == SkCaptureAsset::AssetType::kDerivedStorage) {
+            stream.write32(asset->fOrigin.fParentPixelStorageID);
+            stream.write32(asset->fOrigin.fParentContentID);
+        } else {
+            SKIA_LOG_W("Unsupported asset type %d for asset key %llu.", (int)asset->fType,
+                       (unsigned long long)key);
+        }
     }
 
     // 2. Timeline Section: RecordingCaptures
@@ -178,7 +245,8 @@ sk_sp<SkData> SkCapture::serializeCapture() {
         // Write DrawTasks count
         stream.write32(rec.fDrawTasks.size());
         for (const auto& task : rec.fDrawTasks) {
-            stream.write32(task.fAssetIndex);
+            stream.write32(task.fPixelStorageID);
+            stream.write32(task.fContentID);
         }
     }
 
@@ -188,18 +256,97 @@ sk_sp<SkData> SkCapture::serializeCapture() {
     return data;
 }
 
-// TODO(b/412351769): When serializing our SkPictures, the images that are drawn through drawImage
-// and similar functions will also need to be serialized. Instead of naively encoding all images as
-// PNGs, we want the images that refer to content created from an SkSurface to point to its
-// corresponding SkPicture. This means that we need to create a context for the proc to track these
-// contentIDs.
 SkSerialReturnType SkCapture::serializeImageProc(SkImage* img, void* ctx) {
-    const int contentID = -1; // TODO: replace with real content ID.
-    return SkData::MakeWithCopy(&contentID, sizeof(int));
+    if (!img) {
+        return nullptr;
+    }
+    uint32_t storageID = 0;
+    uint32_t contentID = 0;
+    auto storages = as_IB(img)->getPixelStorages();
+
+    // Note: Multi-planar (YUV) images contain multiple pixel storages.
+    // We track the image asset based on the primary pixel storage (storages[0]).
+    if (!storages.empty() && storages[0]) {
+        const auto& s = storages[0];
+        if (s->origin().hasParent()) {
+            storageID = s->origin().fParentPixelStorageID;
+            contentID = s->origin().fParentContentID;
+        } else {
+            storageID = s->getPixelStorageId();
+            contentID = s->getContentId();
+        }
+    }
+
+    ImageAssetRef assetRef{storageID, contentID};
+    return SkData::MakeWithCopy(&assetRef, sizeof(ImageAssetRef));
 }
 
-sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData>, std::optional<SkAlphaType>, void*) {
-    // TODO: set up the SkCapture context and inspect it to grab SkPictures and pass them as images.
+const SkCaptureAsset* SkCapture::resolveRootAsset(uint32_t storageID, uint32_t contentID) const {
+    uint64_t currKey = MakeAssetKey(storageID, contentID);
+    std::unordered_set<uint64_t> visited;
+
+    while (currKey != 0) {
+        if (visited.count(currKey)) {
+            SKIA_LOG_E("Cycle detected in SkCaptureAsset derived storage chain for key %llu",
+                       (unsigned long long)currKey);
+            return nullptr;
+        }
+        visited.insert(currKey);
+
+        auto it = fAssets.find(currKey);
+        if (it == fAssets.end() || !it->second) {
+            return nullptr;
+        }
+
+        const SkCaptureAsset* asset = it->second.get();
+        if (asset->fType == SkCaptureAsset::AssetType::kDerivedStorage
+            && asset->fOrigin.hasParent()) {
+            currKey = MakeAssetKey(asset->fOrigin.fParentPixelStorageID,
+                                   asset->fOrigin.fParentContentID);
+            continue;
+        }
+
+        return asset;
+    }
+    return nullptr;
+}
+
+sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData> data,
+                                               std::optional<SkAlphaType>,
+                                               void* ctx) {
+    if (!data || data->size() < sizeof(ImageAssetRef)) {
+        SKIA_LOG_E("deserializeImageProc: invalid data size.");
+        return nullptr;
+    }
+
+    ImageAssetRef assetRef;
+    memcpy(&assetRef, data->data(), sizeof(ImageAssetRef));
+
+    auto* capture = static_cast<SkCapture*>(ctx);
+    if (capture) {
+        const SkCaptureAsset* targetAsset = capture->resolveRootAsset(assetRef.fPixelStorageID,
+            assetRef.fContentID);
+        if (targetAsset && targetAsset->fPicture) {
+            SkISize dims = targetAsset->fPicture->cullRect().roundOut().size();
+            if (dims.isEmpty()) {
+                dims = {1, 1};
+            }
+            SKIA_LOG_I("deserializeImageProc: FOUND matching asset for storageID=%u, contentID=%u",
+                       assetRef.fPixelStorageID, assetRef.fContentID);
+            return SkImages::DeferredFromPicture(targetAsset->fPicture,
+                                                 dims,
+                                                 nullptr,
+                                                 nullptr,
+                                                 // TODO: we need to try and preserve the
+                                                 // original alpha type and color space.
+                                                 SkImages::BitDepth::kU8,
+                                                 SkColorSpace::MakeSRGB());
+        }
+    }
+
+    SKIA_LOG_W("deserializeImageProc: matching asset not found for storageID=%u, contentID=%u",
+               assetRef.fPixelStorageID, assetRef.fContentID);
+
     SkBitmap b;
     b.allocN32Pixels(5, 5);
     SkCanvas canvas(b);
