@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f8ab83c_aec32a08",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T19:05:10Z",
+      "side": 1,
+      "message": "Sounds good, renamed!",
+      "parentUuid": "1bd260c1_75b91a15",
+      "range": {
+        "startLine": 111,
+        "startChar": 16,
+        "endLine": 111,
+        "endChar": 34
+      },
+      "revId": "4408e9cc496a509a40954483e27270d5609b11c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2ec617b_270798b6",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-22T14:56:21Z",
       "side": 1,
       "message": "These should still have {} even when they are a single line if statement (and below)",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 80
+      },
+      "revId": "4408e9cc496a509a40954483e27270d5609b11c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "017599df_046c760d",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-22T19:05:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2ec617b_270798b6",
       "range": {
         "startLine": 116,
         "startChar": 0,
