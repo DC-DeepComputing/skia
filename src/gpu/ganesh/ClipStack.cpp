@@ -352,7 +352,7 @@ GrSurfaceProxyView render_sw_mask(GrRecordingContext* context,
                                   int count) {
     SkASSERT(count > 0);
 
-    SkTaskGroup* taskGroup = nullptr;
+    SkStdFunctionTaskGroup* taskGroup = nullptr;
     if (auto direct = context->asDirectContext()) {
         taskGroup = direct->priv().getTaskGroup();
     }

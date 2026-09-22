@@ -139,7 +139,7 @@ public:
     explicit SkDngHost(dng_memory_allocator* allocater) : dng_host(allocater) {}
 
     void PerformAreaTask(dng_area_task& task, const dng_rect& area OPT_PROGRESS_ARG) override {
-        SkTaskGroup taskGroup;
+        SkTaskGroup<StdFunctionExecutor> taskGroup;
 
         // tileSize is typically 256x256
         const dng_point tileSize(task.FindTileSize(area));

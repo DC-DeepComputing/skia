@@ -57,7 +57,7 @@ private:
     MtlSharedContext(sk_cfp<id<MTLDevice>>,
                      sk_sp<skgpu::MtlMemoryAllocator>,
                      std::unique_ptr<const MtlCaps>,
-                     SkExecutor*,
+                     CallbackExecutor*,
                      SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     void createCompatibleDepthStencilState(const DepthStencilSettings&, const char* label);

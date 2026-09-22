@@ -73,7 +73,7 @@ private:
                         sk_sp<const skgpu::VulkanInterface>,
                         sk_sp<skgpu::VulkanMemoryAllocator>,
                         std::unique_ptr<const VulkanCaps>,
-                        SkExecutor*,
+                        CallbackExecutor*,
                         PersistentPipelineStorage*,
                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 

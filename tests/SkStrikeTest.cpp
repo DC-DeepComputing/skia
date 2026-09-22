@@ -135,40 +135,43 @@ DEF_TEST(SkStrikeMultiThread, Reporter) {
     SkStrikeCache strikeCache;
 
     // Make our own executor so the --threads parameter doesn't mess things up.
-    auto executor = SkExecutor::MakeFIFOThreadPool(kThreadCount);
+    auto executor = StdFunctionExecutor::MakeFIFOThreadPool(kThreadCount);
     for (int tries = 0; tries < 100; tries++) {
         SkStrike strike{&strikeCache, strikeSpec, strikeSpec.createScalerContext(), nullptr,
                         nullptr};
 
-        auto perThread = [&](int threadIndex) {
-            barrier.waitForAll();
+        SkStdFunctionTaskGroup taskGroup(*executor);
+        for (int threadIndex = 0; threadIndex < kThreadCount; threadIndex++) {
+            auto perThread = [&]() {
+                barrier.waitForAll();
 
-            auto local = data.subspan(threadIndex * 2, data.size() - kThreadCount * 2);
-            for (int i = 0; i < 100; i++) {
-                // Accepted buffers.
-                STArray<64, SkPackedGlyphID> acceptedPackedGlyphIDs;
-                STArray<64, SkPoint> acceptedPositions;
-                STArray<64, SkMask::Format> acceptedFormats;
-                acceptedPackedGlyphIDs.resize(glyphCount);
-                acceptedPositions.resize(glyphCount);
-                const auto acceptedBuffer = SkMakeZip(acceptedPackedGlyphIDs, acceptedPositions);
+                auto local = data.subspan(threadIndex * 2, data.size() - kThreadCount * 2);
+                for (int i = 0; i < 100; i++) {
+                    // Accepted buffers.
+                    STArray<64, SkPackedGlyphID> acceptedPackedGlyphIDs;
+                    STArray<64, SkPoint> acceptedPositions;
+                    STArray<64, SkMask::Format> acceptedFormats;
+                    acceptedPackedGlyphIDs.resize(glyphCount);
+                    acceptedPositions.resize(glyphCount);
+                    const auto acceptedBuffer = SkMakeZip(acceptedPackedGlyphIDs, acceptedPositions);
 
-                // Rejected buffers.
-                STArray<64, SkGlyphID> rejectedGlyphIDs;
-                STArray<64, SkPoint> rejectedPositions;
-                rejectedGlyphIDs.resize(glyphCount);
-                rejectedPositions.resize(glyphCount);
-                const auto rejectedBuffer = SkMakeZip(rejectedGlyphIDs, rejectedPositions);
+                    // Rejected buffers.
+                    STArray<64, SkGlyphID> rejectedGlyphIDs;
+                    STArray<64, SkPoint> rejectedPositions;
+                    rejectedGlyphIDs.resize(glyphCount);
+                    rejectedPositions.resize(glyphCount);
+                    const auto rejectedBuffer = SkMakeZip(rejectedGlyphIDs, rejectedPositions);
 
-                SkZip<const SkGlyphID, const SkPoint> source = local;
+                    SkZip<const SkGlyphID, const SkPoint> source = local;
 
-                auto [accepted, rejected, bounds] =
-                prepare_for_mask_drawing(&strike, source, acceptedBuffer, rejectedBuffer);
-                source = rejected;
-            }
-        };
+                    auto [accepted, rejected, bounds] =
+                    prepare_for_mask_drawing(&strike, source, acceptedBuffer, rejectedBuffer);
+                    source = rejected;
+                }
+            };
 
-        SkTaskGroup(*executor).batch(kThreadCount, perThread);
+            taskGroup.add(perThread);
+        }
     }
 }
 

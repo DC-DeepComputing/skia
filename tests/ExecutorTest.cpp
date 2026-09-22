@@ -76,8 +76,8 @@ private:
 };
 
 // Make sure all high priority work is started before the low priority work is begun
-void priority_test(skiatest::Reporter* reporter, std::unique_ptr<SkExecutor> executor) {
-    SkTaskGroup taskGroup(*executor);
+void priority_test(skiatest::Reporter* reporter, std::unique_ptr<StdFunctionExecutor> executor) {
+    SkStdFunctionTaskGroup taskGroup(*executor);
     Collector collector;
 
     for (int i = 0; i < 100; ++i) {
@@ -100,8 +100,8 @@ void priority_test(skiatest::Reporter* reporter, std::unique_ptr<SkExecutor> exe
 }
 
 // Test out discarding
-void discard_test(skiatest::Reporter* reporter, std::unique_ptr<SkExecutor> executor) {
-    SkTaskGroup taskGroup(*executor);
+void discard_test(skiatest::Reporter* reporter, std::unique_ptr<StdFunctionExecutor> executor) {
+    SkStdFunctionTaskGroup taskGroup(*executor);
     Collector collector;
 
     for (int i = 0; i < 100; ++i) {
@@ -127,18 +127,18 @@ void discard_test(skiatest::Reporter* reporter, std::unique_ptr<SkExecutor> exec
     REPORTER_ASSERT(reporter, collector.dataIsInOrder());
 }
 
-std::unique_ptr<SkExecutor> make_2x_FIFO() {
-    return SkExecutor::MakeMultiListFIFOThreadPool(
+std::unique_ptr<StdFunctionExecutor> make_2x_FIFO() {
+    return StdFunctionExecutor::MakeMultiListFIFOThreadPool(
         kNumWorkLists, kNumThreads, /* allowBorrowing= */ false);
 }
 
-std::unique_ptr<SkExecutor> make_2x_LIFO() {
-    return SkExecutor::MakeMultiListLIFOThreadPool(
+std::unique_ptr<StdFunctionExecutor> make_2x_LIFO() {
+    return StdFunctionExecutor::MakeMultiListLIFOThreadPool(
         kNumWorkLists, kNumThreads, /* allowBorrowing= */ false);
 }
 
-std::unique_ptr<SkExecutor> make_1x_FIFO() {
-    return SkExecutor::MakeFIFOThreadPool(kNumThreads, /* allowBorrowing= */ false);
+std::unique_ptr<StdFunctionExecutor> make_1x_FIFO() {
+    return StdFunctionExecutor::MakeFIFOThreadPool(kNumThreads, /* allowBorrowing= */ false);
 }
 
 } // anonymous namespace
