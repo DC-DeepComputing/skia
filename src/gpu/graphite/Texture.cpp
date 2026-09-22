@@ -61,5 +61,4 @@ void Texture::onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
     traceMemoryDump->dumpStringValue(dumpName, "dimensions", dimensionsStr.c_str());
     traceMemoryDump->dumpStringValue(dumpName, "textureInfo", fInfo.toString().c_str());
 }
-
 } // namespace skgpu::graphite

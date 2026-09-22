@@ -12,6 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/gpu/graphite/Recording.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 #include <cstdint>
 #include <memory>
@@ -25,7 +26,6 @@ class Context;
 class Resource;
 class ResourceProvider;
 class RuntimeEffectDictionary;
-class ScratchResourceManager;
 class Surface;
 class TaskList;
 class Texture;
@@ -75,6 +75,8 @@ public:
         fRecording->fCapturedPictures = std::move(pictures);
     }
 
+    void updateScratchLabels(ResourceProvider*);
+
 #if defined(GPU_TEST_UTILS)
     bool isTargetProxyInstantiated() const;
     int numVolatilePromiseImages() const;
@@ -93,6 +95,12 @@ private:
     Recording* fRecording;
 
     friend class Recording;  // to construct/copy this type.
+
+    // A pointer to each scratch texture used by this Recording will be mapped to an (optional)
+    // dynamic string label and a bitmask of statically-defined usages. These are used to issue
+    // scratch texture label updates upon Recording insertion.
+    std::unique_ptr<const ScratchResourceManager::ResourceLabelAndUsageMap>
+            fScratchResourceLabelAndUsageMap;
 };
 
 inline RecordingPriv Recording::priv() {

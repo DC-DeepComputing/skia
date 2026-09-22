@@ -214,37 +214,41 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
         SkASSERT(resource->budgeted() == Budgeted::kYes);
         SkASSERT(resource->key() == key);
 
-        if (shareable == Shareable::kNo) {
-            // If the returned resource is no longer shareable then we remove it from the map so
-            // that it isn't found again.
-            SkASSERT(resource->shareable() == Shareable::kNo);
-            this->removeFromResourceMap(resource);
-            if (budgeted == Budgeted::kNo) {
-                resource->setBudgeted(Budgeted::kNo);
-                fBudgetedBytes -= resource->gpuMemorySize();
-                GlobalResourceStats::RecordResourceBudgetChange(
-                        resource->isProtected(), resource->gpuMemorySize(), Budgeted::kNo);
-            }
-            // It is safe to update non-shareable resources when returning them from the cache.
-            resource->updateUsageFlagsAndLabel(usages, label);
-            resource->synchronizeBackendLabel();
-        } else {
-            // Shareable and scratch resources should never be requested as non-budgeted
-            SkASSERT(budgeted == Budgeted::kYes);
+        switch (shareable) {
+            case Shareable::kNo: {
+                // If the returned resource is no longer shareable then we remove it from the map so
+                // that it isn't found again.
+                SkASSERT(resource->shareable() == Shareable::kNo);
+                this->removeFromResourceMap(resource);
+                if (budgeted == Budgeted::kNo) {
+                    resource->setBudgeted(Budgeted::kNo);
+                    fBudgetedBytes -= resource->gpuMemorySize();
+                    GlobalResourceStats::RecordResourceBudgetChange(
+                            resource->isProtected(), resource->gpuMemorySize(), Budgeted::kNo);
+                }
 
-            // TODO(b/387505250): Eventually, scratch resource label updates will be uniquely
-            // handled per the threadsafe label update model outlined in Resource.h. For now,
-            // maintain original functionality by allowing label reassignment here.
-            if (shareable == Shareable::kScratch) {
+                // It is safe to update non-shareable resources when returning them from the cache.
                 resource->updateUsageFlagsAndLabel(usages, label);
                 resource->synchronizeBackendLabel();
-            } else {
-                // Shareable resource labels should never change after initial creation.
-                SkASSERT(shareable == Shareable::kYes && resource->getLabel() == label);
+                break;
             }
-
-            resource->setShareable(shareable);
+            case Shareable::kYes: {
+                // Shareable resource usage + labels should never change after initial creation.
+                SkASSERT(shareable == Shareable::kYes &&
+                         resource->getLabel() == label &&
+                         resource->usageFlags() == usages);
+                break;
+            }
+            case Shareable::kScratch: {
+                SkASSERT(budgeted == Budgeted::kYes);
+                // Scratch resource label management is handled by the ScratchResourceManager.
+                break;
+            }
+            default: SkUNREACHABLE; break;
         }
+
+        resource->setShareable(shareable);
+
         this->refAndMakeResourceMRU(resource);
         this->validate();
     }
@@ -282,6 +286,25 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
 void ResourceCache::forceProcessReturnedResources() {
     ASSERT_SINGLE_OWNER
     this->processReturnedResources();
+}
+
+void ResourceCache::updateScratchTextureLabels(
+        const ScratchResourceManager::ResourceLabelAndUsageMap* scratchResourceLabelAndUsageMap) {
+    ASSERT_SINGLE_OWNER
+    if (!scratchResourceLabelAndUsageMap) {
+        return;
+    }
+
+    // Compare the scratch usages of each scratch texture stored within the usage map to the usages
+    // actually recorded on the texture. If they are not identical, issue an update to the scratch
+    // texture's recorded usages and update its label.
+    for (auto& resourceLabelAndUsage : *scratchResourceLabelAndUsageMap) {
+        Resource* scratchResource = resourceLabelAndUsage.first;
+        const ScratchResourceManager::LabelAndUsage& labelAndUsage = resourceLabelAndUsage.second;
+        scratchResource->updateUsageFlagsAndLabel(labelAndUsage.second, labelAndUsage.first);
+        // TODO(nicolettep): Make label second to usage flags perhaps.
+        scratchResource->synchronizeBackendLabel();
+    }
 }
 
 bool ResourceCache::returnResource(Resource* resource) {

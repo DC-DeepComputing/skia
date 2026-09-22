@@ -14,6 +14,7 @@
 #include "include/private/SkTArray.h"
 #include "src/core/SkTHash.h"
 
+#include <memory>
 #include <string_view>
 
 namespace skgpu::graphite {
@@ -176,6 +177,10 @@ public:
         return fProxyReadCounts->decrement(proxy);
     }
 
+    using LabelAndUsage = std::pair<std::string, SkEnumBitMask<ResourceUsage>>;
+    using ResourceLabelAndUsageMap = skia_private::TArray<std::pair<Resource*, LabelAndUsage>>;
+    void snapResourceLabelAndUsageMap(std::unique_ptr<const ResourceLabelAndUsageMap>&);
+
 private:
     ResourceProvider* fResourceProvider;
 
@@ -193,6 +198,14 @@ private:
     skia_private::TArray<PendingUseListener*> fListenerStack;
 
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+
+    // TODO(nicolettep): Update comment
+    // A scratch resource can have multiple different usages across frames. For every scratch texture
+    // instantiated by one or multiple texture proxies which store a static scratch usage rather
+    // than a custom label, keep track of a bitmask containing each proxy's scratch usage. This
+    // way, upon Recording insertion, we can compare a scratch texture's usages against the mask of
+    // usages stored here to determine whether the texture's label requires an update.
+    std::unique_ptr<ResourceLabelAndUsageMap> fResourceLabelAndUsageMap;
 };
 
 } // namespace skgpu::graphite

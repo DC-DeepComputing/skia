@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
 
 struct AHardwareBuffer;
 struct SkSamplingOptions;
@@ -110,6 +111,12 @@ public:
             StdSteadyClock::time_point purgeTime,
             std::optional<std::chrono::microseconds> microsMaxPurgingDur);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
+
+    // This should only be called on the Context thread when inserting a Recording (the point at
+    // which it is safe to update scratch resource labels).
+    void updateScratchTextureLabels(const ScratchResourceManager::ResourceLabelAndUsageMap* map) {
+        fResourceCache->updateScratchTextureLabels(map);
+    }
 
 #if defined(GPU_TEST_UTILS) || defined(SK_DEBUG)
     ResourceCache* resourceCache() { return fResourceCache.get(); }

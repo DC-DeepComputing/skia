@@ -67,12 +67,12 @@ protected:
                                 const char* dumpName) const override;
 
 private:
+
     SkISize fDimensions;
     TextureInfo fInfo;
     sk_sp<MutableTextureState> fMutableState;
     sk_sp<RefCntedCallback> fReleaseCallback;
 };
-
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Texture_DEFINED
