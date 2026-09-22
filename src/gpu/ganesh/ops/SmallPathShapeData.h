@@ -40,6 +40,11 @@ private:
 
 class SmallPathShapeDataKey {
 public:
+    enum class Type : uint32_t {
+        kSDF = 0,
+        kBitmap = 1,
+    };
+
     // TODO: add a move variant
     SmallPathShapeDataKey(const SmallPathShapeDataKey& that) {
         fKey.reset(that.fKey.count());
@@ -63,9 +68,9 @@ public:
     const uint32_t* data() const { return fKey.get(); }
 
 private:
-    // The key is composed of the GrStyledShape's key, and either the dimensions of the DF
-    // generated for the path (32x32 max, 64x64 max, 128x128 max) if an SDF image or
-    // the matrix for the path with only fractional translation.
+    // The key begins with a domain tag (kSDF or kBitmap), followed by either the dimensions of
+    // the DF generated for the path or the matrix with fractional translation, and then the
+    // GrStyledShape's unstyled key.
     skia_private::AutoSTArray<24, uint32_t> fKey;
 };
 
