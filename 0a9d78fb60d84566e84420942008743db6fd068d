@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24d7fcc1_0081b43e",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-22T18:12:51Z",
+      "side": 1,
+      "message": "TextureFormatXferFn is meant to be the logic that determines everything that has to happen in a data transfer (CPU-\u003eGPU or vice versa), in particular matching the differing semantics between SkColorType for CPU data and the texture format data on the GPU. If we can rely on it to decide whether or not to call into CopyAsDraw, we won\u0027t be surprised by missing a case of expensive CPU work.\n\nThe other calls to `transferPixels` are part of the YUV readback and they should always be the identity xfer function, so it could actually help things to explicitly pass that in there.\n\nThe other calls to `asyncReadTexture()` (outside of `asyncReadPixels()` that would decide to do the `CopyAsDraw()`) are limited to async-readback on an SkSurface that cannot be sampled. In that case, we can\u0027t use `CopyAsDraw()` so creating the default TextureFormatXferFn would be some duplicate code but it wouldn\u0027t be duplicate work.\n\nLastly, the codeflow inside `asyncReadPixels()` that calls back into itself after it\u0027s called `CopyAsDraw()` can likely be updated to just adjust the `view` and reset the xfer function (maybe assert that it should be the identity now?) and then proceed into `asyncReadTexture`.",
+      "parentUuid": "f9565f0d_b3b80628",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 803,
+        "endChar": 78
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e437c79_68e46cc4",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 6
@@ -197,6 +221,30 @@
       "side": 1,
       "message": "I remembered wrong. Actually, there is a test case in `tests/graphite/ReadWritePixelsGraphiteTest.cpp` that reads R16G16F and converts to `RGB8X`. `RGB8X` is not renderable (or maybe not supported). Maybe we can just make it renderable for CopyAsDraw by drawing to a RGBA8 texture.",
       "parentUuid": "d49e054c_819c24b7",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48631b34_8e8abdbd",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-22T18:12:51Z",
+      "side": 1,
+      "message": "TextureUtils already has a `renderable_colortype` function that should be doing that. I\u0027ll be curious to know where that is breaking down in the `CopyAsDraw` code path.",
+      "parentUuid": "f86887dc_b6713a9d",
       "range": {
         "startLine": 867,
         "startChar": 0,
