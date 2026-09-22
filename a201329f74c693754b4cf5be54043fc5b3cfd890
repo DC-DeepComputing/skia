@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fd8e1d1_341a4d1a",
+        "filename": "include/core/SkYUVAInfo.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "Thanks for the suggestions! Added the macro for it.",
+      "parentUuid": "4fda38d8_22bdce1c",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 14
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66e4bc0b_5183add8",
@@ -78,6 +102,30 @@
       "writtenOn": "2026-09-18T14:10:16Z",
       "side": 1,
       "message": "Remove this detail; it\u0027s a necessary implementation for any shader and we\u0027ll need Graphite to support it as well.",
+      "range": {
+        "startLine": 279,
+        "startChar": 73,
+        "endLine": 281,
+        "endChar": 30
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6808a737_41f0f6af",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66e4bc0b_5183add8",
       "range": {
         "startLine": 279,
         "startChar": 73,
@@ -139,6 +187,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e97c3a30_87b603d5",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8e10d44_adc107c1",
+      "range": {
+        "startLine": 341,
+        "startChar": 4,
+        "endLine": 349,
+        "endChar": 5
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f26e4ea_c3dbefdb",
@@ -152,6 +224,30 @@
       "writtenOn": "2026-09-18T15:01:17Z",
       "side": 1,
       "message": "See comment below.\n```\n    if (packedYUYV) {\n        . . .\n\n        // Map the display-space subset to plane texel space.\n        if (subset) {\n            packedPlaneSubset \u003d packedPlaneMatrix.mapRect(*subset);\n        } else {\n            packedPlaneSubset \u003d SkRect::Make(yuvaProxies.makeView(0).dimensions());\n        }\n\n        packedFirstTexelCenter \u003d packedPlaneSubset.fLeft + 0.5f;\n        packedLastTexelCenter  \u003d packedPlaneSubset.fRight - 0.5f;\n    }\n\n```",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 5
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47cabf0a_21335e4b",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "Done — the subset is now mapped into plane texel space with packedPlaneMatrix.mapRect() (or the plane\u0027s dimensions when there\u0027s no subset), and the texel-center clamp is derived from the mapped subset. Implemented in the Ganesh follow-up CL 1368876.",
+      "parentUuid": "4f26e4ea_c3dbefdb",
       "range": {
         "startLine": 66,
         "startChar": 4,
@@ -185,6 +281,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eaf95ba_fcb4ee7a",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "Acked. fixed: the packed child is sampled in plane space (identity matrix), so its subset is now the plane-space mapped subset (packedPlaneSubset) rather than the display-space subset. Implemented in CL 1368876.",
+      "parentUuid": "115418f0_4cfee464",
+      "range": {
+        "startLine": 193,
+        "startChar": 12,
+        "endLine": 195,
+        "endChar": 13
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bae0f82_fe3142f6",
@@ -198,6 +318,30 @@
       "writtenOn": "2026-09-18T14:10:16Z",
       "side": 1,
       "message": "To make sure I\u0027m understanding why this is done first, it is because if we kept the plane matrix in the child but did the parity aware sampling in this parent effect, it would get it wrong when the origin implied a 90 degree rotation since we\u0027d now be sampling relative to the wrong axes. Is that correct?",
+      "range": {
+        "startLine": 363,
+        "startChar": 4,
+        "endLine": 366,
+        "endChar": 41
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "381de662_068fa2a6",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "Yes, exactly. The packed plane\u0027s texel parity runs along the plane\u0027s memory x-axis, which is the image space transformed by the encoded origin. With a 90°-rotated origin, image x maps to plane y, so computing the parity (and the ±1 adjacent-texel step) in image space would run along the wrong axis. Applying the inverse-origin matrix first and giving the child an identity matrix keeps the parity math in plane texel space.",
+      "parentUuid": "1bae0f82_fe3142f6",
       "range": {
         "startLine": 363,
         "startChar": 4,
@@ -231,6 +375,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "228c9fc6_ebe77977",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "They\u0027re equivalent at pixel centers (floor(x) \u003d\u003d floor(x - 0.5) when x \u003d k + 0.5), but I switched to your formulation anyway — it reads more directly as \"the texel whose center the coord lands on\", and snapping y too makes the nearest-filter behavior explicit. Implemented in CL 1368876.",
+      "parentUuid": "ed15dadb_690fea36",
+      "range": {
+        "startLine": 370,
+        "startChar": 16,
+        "endLine": 373,
+        "endChar": 86
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afa337ef_3283de3a",
@@ -244,6 +412,30 @@
       "writtenOn": "2026-09-18T14:10:16Z",
       "side": 1,
       "message": "I would prefer that we also support this in Graphite as part of this single CL, or we split this into 3 parts: a precursor CL that defines everyting for SkYUVInfo but both Ganesh and Graphite reject k422, and thne one CL for Ganesh and one CL for Graphite to add support.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 5
+      },
+      "revId": "a201329f74c693754b4cf5be54043fc5b3cfd890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e453500a_249cc871",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-22T13:32:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afa337ef_3283de3a",
       "range": {
         "startLine": 95,
         "startChar": 0,
