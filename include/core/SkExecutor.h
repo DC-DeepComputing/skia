@@ -11,7 +11,9 @@
 #include <functional>
 #include <memory>
 #include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
+template <typename Work, typename Traits = Work>
 class SK_API SkExecutor {
 public:
     virtual ~SkExecutor();
@@ -38,11 +40,18 @@ public:
     static SkExecutor& GetDefault();
     static void SetDefault(SkExecutor*);  // Does not take ownership.  Not thread safe.
 
+#if 0
     // Add work to execute.
-    virtual void add(std::function<void(void)> fn, int /* workList */) { this->add(std::move(fn)); }
+    virtual void add(ExecuteFunction execute, ExecutionContext context, int /* workList */) = 0;
 
     // deprecated
+    virtual void add(std::function<void(void)> fn, int /* workList */) { this->add(std::move(fn)); }
     virtual void add(std::function<void(void)>) = 0;
+#else
+    // Add work to execute.
+    virtual void add(Work, int workList) = 0;
+    virtual void add(Work work) { this->add(std::move(work), 0); }
+#endif
 
     // Returns the number of discarded work units
     virtual int discardAllPendingWork() { return 0; }
@@ -54,6 +63,43 @@ protected:
     SkExecutor() = default;
     SkExecutor(const SkExecutor&) = delete;
     SkExecutor& operator=(const SkExecutor&) = delete;
+
+private:
+    static SkExecutor<Work>* gDefaultExecutor;
 };
+
+
+typedef std::function<void(void)> StdFunction;
+
+struct StdFunctionTraits {
+    //    Block2(std::function<void(void)> fn) : fFunc(std::move(fn)) {}
+
+    static void Execute(std::function<void(void)> fn) { fn(); }
+    static bool IsValid(std::function<void(void)> fn) { return SkToBool(fn); }
+
+    //    std::function<void(void)> fFunc = nullptr;
+};
+
+typedef SkExecutor<StdFunction, StdFunctionTraits> StdFunctionExecutor;
+
+using ExecutionContext = void*;
+using ExecuteFunction = void(*)(ExecutionContext);
+
+typedef std::pair<ExecuteFunction, ExecutionContext> ExecuteCallbackPair;
+
+struct ExecuteCallbackTraits {
+//    Block1(ExecuteFunction execute, ExecutionContext context)
+//        : fFunc(execute)
+//        , fContext(context) {}
+//    Block1() = default;
+
+    static void Execute(ExecuteCallbackPair p) { p.first(p.second); }
+    static bool IsValid(ExecuteCallbackPair p) { return SkToBool(p.first); }
+
+//    ExecuteFunction fFunc = nullptr;
+//    ExecutionContext fContext = nullptr;
+};
+
+typedef SkExecutor<ExecuteCallbackPair, ExecuteCallbackTraits> CallbackExecutor;
 
 #endif//SkExecutor_DEFINED

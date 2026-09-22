@@ -29,11 +29,11 @@ DEFINE_int(minMSAAPathSize, -1,
 DEFINE_bool(useDrawListLayer, false, "Enable experimental layer-based draw ordering.");
 
 void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
-    static std::unique_ptr<SkExecutor> gGpuExecutor;
+    static std::unique_ptr<CallbackExecutor> gGpuExecutor;
     if (0 != FLAGS_gpuThreads) {
-        gGpuExecutor = SkExecutor::MakeMultiListFIFOThreadPool(/* numWorkLists= */ 2,
-                                                               FLAGS_gpuThreads,
-                                                               /* allowBorrowing= */ false);
+        gGpuExecutor = CallbackExecutor::MakeMultiListFIFOThreadPool(/* numWorkLists= */ 2,
+                                                                     FLAGS_gpuThreads,
+                                                                     /* allowBorrowing= */ false);
     }
 
     testOptions->fContextOptions.fExecutor = gGpuExecutor.get();

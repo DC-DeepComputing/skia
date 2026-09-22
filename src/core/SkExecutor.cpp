@@ -32,53 +32,75 @@ using namespace skia_private;
     }
 #endif
 
-SkExecutor::~SkExecutor() {}
+template <typename Work>
+SkExecutor<Work>::~SkExecutor() {}
 
 // The default default SkExecutor is an SkTrivialExecutor, which just runs the work right away.
-class SkTrivialExecutor final : public SkExecutor {
+template <typename Work>
+class SkTrivialExecutor final : public SkExecutor<Work> {
 public:
+#if 0
+    void add(ExecuteFunction execute, ExecutionContext context, int /* workList */) override {
+        execute(context);
+    }
     void add(std::function<void(void)> work, int /* workList */) override {
         work();
     }
     void add(std::function<void(void)> work) override {
-        this->add(std::move(work), /* workList= */ 0);
+        work();
     }
+#else
+    void add(Work work, int /* workList */) override {
+        work();
+    }
+    void add(Work work) override {
+        work();
+    }
+#endif
     int discardAllPendingWork() override { return 0;}
 };
 
-static SkExecutor& trivial_executor() {
-    static SkNoDestructor<SkTrivialExecutor> executor;
+template <typename Work>
+static SkExecutor<Work>& trivial_executor() {
+    static SkNoDestructor<SkTrivialExecutor<Work>> executor;
     return *executor;
 }
 
-static SkExecutor* gDefaultExecutor = nullptr;
+template <typename Work>
+SkExecutor<Work>* SkExecutor<Work>::gDefaultExecutor = nullptr;
 
-SkExecutor& SkExecutor::GetDefault() {
+template <typename Work>
+SkExecutor<Work>& SkExecutor<Work>::GetDefault() {
     if (gDefaultExecutor) {
         return *gDefaultExecutor;
     }
-    return trivial_executor();
+    return trivial_executor<Work>();
 }
 
-void SkExecutor::SetDefault(SkExecutor* executor) {
+template <typename Work>
+void SkExecutor<Work>::SetDefault(SkExecutor<Work>* executor) {
     gDefaultExecutor = executor;
 }
 
 // We'll always push_back() new work, but pop from the front of deques or the back of SkTArray.
-static inline std::function<void(void)> pop(std::deque<std::function<void(void)>>* list) {
-    std::function<void(void)> fn = std::move(list->front());
+template <typename Work>
+static inline Work pop(std::deque<Work>* list) {
+    Work work = std::move(list->front());
     list->pop_front();
-    return fn;
+    return work;
 }
-static inline std::function<void(void)> pop(TArray<std::function<void(void)>>* list) {
-    std::function<void(void)> fn = std::move(list->back());
+template <typename Work>
+static inline Work pop(TArray<Work>* list) {
+    Work work = std::move(list->back());
     list->pop_back();
-    return fn;
+    return work;
 }
 
+
+
 // An SkThreadPool is an executor that runs work on a fixed pool of OS threads.
-template <typename WorkList>
-class SkThreadPool final : public SkExecutor {
+template <typename WorkList, typename Work>
+class SkThreadPool final : public SkExecutor<Work> {
 public:
     explicit SkThreadPool(int numWorkLists, int threads, bool allowBorrowing)
             : fNumWorkLists(numWorkLists < 1 ? 1 : numWorkLists)
@@ -103,6 +125,7 @@ public:
         }
     }
 
+#if 0
     void add(std::function<void(void)> work, int workList) override {
         workList = SkTPin(workList, 0, fNumWorkLists-1);
 
@@ -118,6 +141,20 @@ public:
 
     void add(std::function<void(void)> work) override {
         this->add(std::move(work), /* workList= */ 0);
+    }
+#endif
+
+    void add(Work work, int workList) override {
+        workList = SkTPin(workList, 0, fNumWorkLists-1);
+
+        // Add some work to our pile of work to do.
+        {
+            SkAutoMutexExclusive lock(fWorkLock);
+
+            fWorkLists[workList].emplace_back(work);
+        }
+        // Tell the Loop() threads to pick it up.
+        fWorkAvailable.signal(1);
     }
 
     int discardAllPendingWork() override {
@@ -142,7 +179,8 @@ public:
 private:
     // This method should usually be called only when fWorkAvailable indicates there's work to do.
     bool do_work() {
-        std::function<void(void)> work;
+//        std::function<void(void)> work;
+        Work work;
         bool workAvailable = false;
         {
             SkAutoMutexExclusive lock(fWorkLock);
@@ -162,7 +200,7 @@ private:
             return true;
         }
 
-        if (!work) {
+        if (!work.isValid()) {
             return false;  // This is Loop()'s signal to shut down.
         }
 
@@ -188,32 +226,38 @@ private:
     const bool                  fAllowBorrowing;
 };
 
-std::unique_ptr<SkExecutor> SkExecutor::MakeFIFOThreadPool(int threads, bool allowBorrowing) {
-    using WorkList = std::deque<std::function<void(void)>>;
-    return std::make_unique<SkThreadPool<WorkList>>(/* numWorkLists= */ 1,
-                                                    threads > 0 ? threads : num_cores(),
-                                                    allowBorrowing);
+template <typename Work>
+std::unique_ptr<SkExecutor<Work>> SkExecutor<Work>::MakeFIFOThreadPool(
+        int threads,
+        bool allowBorrowing) {
+    return SkExecutor::MakeMultiListFIFOThreadPool(/* numWorkLists= */ 1, threads, allowBorrowing);
 }
-std::unique_ptr<SkExecutor> SkExecutor::MakeLIFOThreadPool(int threads, bool allowBorrowing) {
-    using WorkList = TArray<std::function<void(void)>>;
-    return std::make_unique<SkThreadPool<WorkList>>(/* numWorkLists= */ 1,
-                                                    threads > 0 ? threads : num_cores(),
-                                                    allowBorrowing);
+template <typename Work>
+std::unique_ptr<SkExecutor<Work>> SkExecutor<Work>::MakeLIFOThreadPool(
+        int threads,
+        bool allowBorrowing) {
+    return SkExecutor::MakeMultiListLIFOThreadPool(/* numWorkLists= */ 1, threads, allowBorrowing);
 }
 
-std::unique_ptr<SkExecutor> SkExecutor::MakeMultiListFIFOThreadPool(int numWorkLists,
-                                                                    int threads,
-                                                                    bool allowBorrowing) {
-    using WorkList = std::deque<std::function<void(void)>>;
-    return std::make_unique<SkThreadPool<WorkList>>(numWorkLists,
-                                                    threads > 0 ? threads : num_cores(),
-                                                    allowBorrowing);
+template <typename Work>
+std::unique_ptr<SkExecutor<Work>> SkExecutor<Work>::MakeMultiListFIFOThreadPool(
+        int numWorkLists,
+        int threads,
+        bool allowBorrowing) {
+//    using WorkList = std::deque<std::function<void(void)>>;
+    using WorkList = std::deque<Work>;
+    return std::make_unique<SkThreadPool<WorkList, Work>>(numWorkLists,
+                                                          threads > 0 ? threads : num_cores(),
+                                                          allowBorrowing);
 }
-std::unique_ptr<SkExecutor> SkExecutor::MakeMultiListLIFOThreadPool(int numWorkLists,
-                                                                    int threads,
-                                                                    bool allowBorrowing) {
-    using WorkList = TArray<std::function<void(void)>>;
-    return std::make_unique<SkThreadPool<WorkList>>(numWorkLists,
-                                                    threads > 0 ? threads : num_cores(),
-                                                    allowBorrowing);
+template <typename Work>
+std::unique_ptr<SkExecutor<Work>> SkExecutor<Work>::MakeMultiListLIFOThreadPool(
+        int numWorkLists,
+        int threads,
+        bool allowBorrowing) {
+//    using WorkList = TArray<std::function<void(void)>>;
+    using WorkList = TArray<Work>;
+    return std::make_unique<SkThreadPool<WorkList, Work>>(numWorkLists,
+                                                          threads > 0 ? threads : num_cores(),
+                                                          allowBorrowing);
 }

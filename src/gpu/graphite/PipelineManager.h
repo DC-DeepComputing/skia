@@ -20,7 +20,7 @@ namespace skgpu {
 class UniqueKey;
 }
 
-class SkExecutor;
+#include "include/core/SkExecutor.h"
 class SkTaskGroup;
 
 namespace skgpu::graphite {
@@ -36,7 +36,7 @@ class SharedContext;
 
 class PipelineManager {
 public:
-    PipelineManager(SkExecutor* executor);
+    PipelineManager(CallbackExecutor* executor);
     ~PipelineManager();
 
     // If an existing Pipeline is found, it is just wrapped in a Handle and returned.
