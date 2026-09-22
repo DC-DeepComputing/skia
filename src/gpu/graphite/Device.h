@@ -29,6 +29,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -107,7 +108,8 @@ public:
                               const SkSurfaceProps&,
                               LoadOp initialLoadOp,
                               std::string_view label,
-                              bool registerWithRecorder=true);
+                              bool registerWithRecorder=true,
+                              std::optional<Protected> isProtected = std::nullopt);
 
     Device* asGraphiteDevice() override { return this; }
 
