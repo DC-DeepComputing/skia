@@ -266,6 +266,8 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
+    SkEnumBitMask<ResourceUsage> usageFlags() const { return fUsageFlags; }
+
     // A Resource's label consists of its string label and its usage flag
     std::string getLabel() const;
 
@@ -451,15 +453,6 @@ private:
                 (origRefs & PurgeableMask()) == 0,
                 next};
     }
-
-    // void updateUsageFlagsAndLabel(SkEnumBitMask<ResourceUsage> usage, std::string_view label) {
-    //     if (label.empty() && usage == ResourceUsage::kNotPredefined)
-    //     if (fUsageFlags != usage) {
-
-    //     }
-
-    //     fLabel = label;
-    // }
 
     // We allow the label on a Resource to change when used for a different function (e.g. when
     // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
