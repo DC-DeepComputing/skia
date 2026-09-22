@@ -18,8 +18,9 @@
 #include <optional>
 #include <string>
 
+#include "include/core/SkExecutor.h"
+
 class SkData;
-class SkExecutor;
 class SkRuntimeEffect;
 namespace skgpu { class ShaderErrorHandler; }
 
@@ -204,6 +205,8 @@ struct SK_API ContextOptions {
      */
     SkSpan<sk_sp<SkRuntimeEffect>> fUserDefinedKnownRuntimeEffects;
 
+
+
     /**
      * Executor to handle threaded work within Graphite. If this is nullptr, then all work will be
      * done serially on the main thread. To have worker threads assist with various tasks, set this
@@ -211,7 +214,7 @@ struct SK_API ContextOptions {
      * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
      * the lifetime of the Context.
      */
-    SkExecutor* fExecutor = nullptr;
+    CallbackExecutor* fExecutor = nullptr;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the

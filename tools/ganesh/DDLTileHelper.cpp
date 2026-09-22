@@ -271,11 +271,13 @@ DDLTileHelper::DDLTileHelper(GrDirectContext* direct,
 
 void DDLTileHelper::createDDLsInParallel(SkPicture* picture) {
 #if 1
-    SkTaskGroup().batch(this->numTiles(), [&](int i) {
-        fTiles[i].createDDL(picture);
-    });
-    SkTaskGroup().add([this]{ this->createComposeDDL(); });
-    SkTaskGroup().wait();
+    SkStdFunctionTaskGroup taskGroup;
+    for (int i = 0; i < this->numTiles(); ++i) {
+        TileData* tile = &fTiles[i];
+        taskGroup.add([tile, picture]() { tile->createDDL(picture); });
+    }
+    taskGroup.add([this]{ this->createComposeDDL(); });
+    taskGroup.wait();
 #else
     // Use this code path to debug w/o threads
     for (int i = 0; i < this->numTiles(); ++i) {
@@ -300,8 +302,8 @@ static void do_gpu_stuff(GrDirectContext* direct, DDLTileHelper::TileData* tile)
 }
 
 // We expect to have more than one recording thread but just one gpu thread
-void DDLTileHelper::kickOffThreadedWork(SkTaskGroup* recordingTaskGroup,
-                                        SkTaskGroup* gpuTaskGroup,
+void DDLTileHelper::kickOffThreadedWork(SkStdFunctionTaskGroup* recordingTaskGroup,
+                                        SkStdFunctionTaskGroup* gpuTaskGroup,
                                         GrDirectContext* dContext,
                                         SkPicture* picture) {
     SkASSERT(recordingTaskGroup && gpuTaskGroup && dContext);
@@ -357,7 +359,8 @@ void DDLTileHelper::resetAllTiles() {
     fComposeDDL.reset();
 }
 
-void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLTileHelper::createBackendTextures(SkStdFunctionTaskGroup* taskGroup,
+                                          GrDirectContext* direct) {
 
     if (taskGroup) {
         for (int i = 0; i < this->numTiles(); ++i) {
@@ -375,7 +378,8 @@ void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup, GrDirectContex
     }
 }
 
-void DDLTileHelper::deleteBackendTextures(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLTileHelper::deleteBackendTextures(SkStdFunctionTaskGroup* taskGroup,
+                                          GrDirectContext* direct) {
     if (taskGroup) {
         for (int i = 0; i < this->numTiles(); ++i) {
             TileData* tile = &fTiles[i];

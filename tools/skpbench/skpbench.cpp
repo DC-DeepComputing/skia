@@ -222,8 +222,12 @@ private:
     std::vector<SkDocumentPage> fFrames;
 };
 
-static void ddl_sample(GrDirectContext* dContext, DDLTileHelper* tiles, GpuSync& gpuSync,
-                       Sample* sample, SkTaskGroup* recordingTaskGroup, SkTaskGroup* gpuTaskGroup,
+static void ddl_sample(GrDirectContext* dContext,
+                       DDLTileHelper* tiles,
+                       GpuSync& gpuSync,
+                       Sample* sample,
+                       SkStdFunctionTaskGroup* recordingTaskGroup,
+                       SkStdFunctionTaskGroup* gpuTaskGroup,
                        std::chrono::high_resolution_clock::time_point* startStopTime,
                        SkPicture* picture) {
     using clock = std::chrono::high_resolution_clock;

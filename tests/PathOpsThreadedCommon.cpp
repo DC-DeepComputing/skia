@@ -17,7 +17,14 @@ PathOpsThreadedTestRunner::~PathOpsThreadedTestRunner() {
 }
 
 void PathOpsThreadedTestRunner::render() {
-    SkTaskGroup().batch(fRunnables.size(), [&](int i) {
+#if 0
+    SkStdFunctionTaskGroup().batch(fRunnables.size(), [&](int i) {
         (*fRunnables[i])();
     });
+#else
+    SkStdFunctionTaskGroup taskGroup;
+    for (int index = 0; index < fRunnables.size(); index++) {
+        taskGroup.add([runnable = fRunnables[index]]() { (*runnable)(); });
+    }
+#endif
 }
