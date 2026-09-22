@@ -1615,6 +1615,9 @@ SkPathPriv::TransformDirAndStart(const SkMatrix& matrix, bool isRRect, SkPathDir
 
 SkRRect SkPathPriv::DeduceRRectFromContour(const SkRect& bounds, SkSpan<const SkPoint> pts,
                                            SkSpan<const SkPathVerb> vbs) {
+    if (bounds.isEmpty()) {
+        return SkRRect::MakeEmpty();
+    }
     SkASSERT(!vbs.empty());
     SkASSERT(vbs.front() == SkPathVerb::kMove);
 
