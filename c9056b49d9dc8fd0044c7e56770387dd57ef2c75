@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b90f77f_3954e3da",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd496540_eef425f8",
+      "range": {
+        "startLine": 498,
+        "startChar": 0,
+        "endLine": 505,
+        "endChar": 5
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88a60491_26db0e06",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-18T18:49:26Z",
       "side": 1,
       "message": "While in local testing adding the outsetBoundsForAA test helped the overlap issues you were seeing, I think we need to generalize this code to account for the fact that the end caps are being aligned out to the tile size. \n\nCurrently the !renderer check for path atlases works because it just so happens that the final CoverageMask shapes that are rendered are tight to the AA-outset pixel bounds. Unless the end caps clip their rendering to be tight to exclude all the rows/cols that are fully transparent, we actually want this to be rounded out to the tile granularity.",
+      "range": {
+        "startLine": 1711,
+        "startChar": 0,
+        "endLine": 1713,
+        "endChar": 5
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a50c2a5d_3fbf619b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1713,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Ackknowledged. I\u0027ll add to a follow on CL? Seems like it should be separate. I\u0027m thinking something like:\n```\nif (renderer \u003d\u003d sparsestrips) {\n   clip.doSparseStrips();\n}\n```",
+      "parentUuid": "88a60491_26db0e06",
       "range": {
         "startLine": 1711,
         "startChar": 0,
@@ -81,6 +129,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "790f185d_368d68a0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1732,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2164ed5e_394ef26a",
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d49750b_25b92d83",
@@ -94,6 +160,30 @@
       "writtenOn": "2026-09-18T18:49:26Z",
       "side": 1,
       "message": "I think we should remove this code and not handle strokes at all until it can be done as part of strip generation. That will also keep drawGeometry() \"simpler\".",
+      "range": {
+        "startLine": 1757,
+        "startChar": 8,
+        "endLine": 1782,
+        "endChar": 9
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "772d88c2_1480a5a6",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1782,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Was not sure if we wanted to disable stroking with a command line input or something, but I\u0027ll remove this here.",
+      "parentUuid": "9d49750b_25b92d83",
       "range": {
         "startLine": 1757,
         "startChar": 8,
@@ -121,6 +211,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dacc2c06_9e047fd8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1785,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56fe94a9_41d58722",
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d288e9fd_823976b4",
@@ -138,6 +246,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "365f2d20_de19359e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d288e9fd_823976b4",
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a66c6ba_1f0d20a2",
@@ -151,6 +277,30 @@
       "writtenOn": "2026-09-18T18:49:26Z",
       "side": 1,
       "message": "Currently I don\u0027t think we\u0027d ever take these cases because we aren\u0027t calling drawGeometry() with tile Geometries directly. They are only produced as a result of the strip generator that\u0027s run after chooseRenderer() is called, right?",
+      "range": {
+        "startLine": 2202,
+        "startChar": 0,
+        "endLine": 2206,
+        "endChar": 58
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b645bfc3_4e4b307c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 2206,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Yea, wasn\u0027t sure to keep for completeness or remove. I\u0027m going to remove and assert we don\u0027t end up here given the current usage?",
+      "parentUuid": "3a66c6ba_1f0d20a2",
       "range": {
         "startLine": 2202,
         "startChar": 0,
@@ -184,6 +334,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "457df917_76f097dc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 2295,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Acknowledged; for the CPU sparse strips track, I will implement this after left-edge culling lands, and this is the natural entry point for switching RasterPathAtlas over to sparse strips.",
+      "parentUuid": "182378e4_c7b2b21f",
+      "range": {
+        "startLine": 2295,
+        "startChar": 0,
+        "endLine": 2295,
+        "endChar": 62
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54f2fc58_2ae6d8b0",
@@ -197,6 +371,30 @@
       "writtenOn": "2026-09-18T18:49:26Z",
       "side": 1,
       "message": "Seems like we can check this first before doing any work with the tiler right?",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca41c0e5_5071a090",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54f2fc58_2ae6d8b0",
       "range": {
         "startLine": 56,
         "startChar": 1,
@@ -230,6 +428,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75ea5177_85b0b1d1",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Acknowledged; added TODO to rename to \"OverflowCaps\"",
+      "parentUuid": "3cb27de5_01796d90",
+      "range": {
+        "startLine": 86,
+        "startChar": 25,
+        "endLine": 86,
+        "endChar": 40
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ea0cf23_392ebce5",
@@ -253,6 +475,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc5d6e5d_15570f70",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ea0cf23_392ebce5",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed91efb4_0908947b",
@@ -266,6 +512,30 @@
       "writtenOn": "2026-09-18T18:49:26Z",
       "side": 1,
       "message": "span or std::array?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 53
+      },
+      "revId": "c9056b49d9dc8fd0044c7e56770387dd57ef2c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6497f087_60764803",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T19:43:33Z",
+      "side": 1,
+      "message": "Acknowledged; can be an array, but that should be a separate CL.",
+      "parentUuid": "ed91efb4_0908947b",
       "range": {
         "startLine": 26,
         "startChar": 0,
