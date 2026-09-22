@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df55e485_1339a050",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-22T16:57:56Z",
+      "side": 1,
+      "message": "I want to test the new flipping code. Is it possible to define SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT in tests for now while we migrate chrome to define it?",
+      "parentUuid": "8964b32c_e20385d4",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 6
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c47e9d5a_db8b7913",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 6
