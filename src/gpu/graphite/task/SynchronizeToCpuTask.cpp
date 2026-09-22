@@ -25,4 +25,8 @@ Task::Status SynchronizeToCpuTask::addCommands(Context*,
                                                                      : Status::kFail;
 }
 
+Protected SynchronizeToCpuTask::isProtected() const {
+    return Protected::kNo;
+}
+
 }  // namespace skgpu::graphite
