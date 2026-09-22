@@ -44,7 +44,10 @@ CopyBufferToBufferTask::CopyBufferToBufferTask(const Buffer* srcBuffer,
         , fSrcOffset(srcOffset)
         , fDstBuffer(std::move(dstBuffer))
         , fDstOffset(dstOffset)
-        , fSize(size) {}
+        , fSize(size) {
+    SkASSERT(fSrcBuffer->isProtected() == Protected::kNo ||
+             fDstBuffer->isProtected() == Protected::kYes);
+}
 
 CopyBufferToBufferTask::~CopyBufferToBufferTask() = default;
 
@@ -57,11 +60,28 @@ Task::Status CopyBufferToBufferTask::prepareResources(ResourceProvider*,
 Task::Status CopyBufferToBufferTask::addCommands(Context*,
                                                  CommandBuffer* commandBuffer,
                                                  ReplayTargetData) {
+    if (fDstBuffer->isProtected() == Protected::kNo && fSrcBuffer->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("CopyBufferToBufferTask dstBuffer %s is unprotected but srcBuffer %s is "
+                   "protected.",
+                   fDstBuffer->getLabel().c_str(),
+                   fSrcBuffer->getLabel().c_str());
+        return Status::kFail;
+    }
     if (commandBuffer->copyBufferToBuffer(fSrcBuffer, fSrcOffset, fDstBuffer, fDstOffset, fSize)) {
         return Status::kSuccess;
     } else {
         return Status::kFail;
     }
+}
+
+Protected CopyBufferToBufferTask::isProtected() const {
+    if (fDstBuffer && fDstBuffer->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fSrcBuffer && fSrcBuffer->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
 }
 
 sk_sp<CopyTextureToBufferTask> CopyTextureToBufferTask::Make(sk_sp<TextureProxy> textureProxy,
@@ -89,6 +109,8 @@ CopyTextureToBufferTask::CopyTextureToBufferTask(sk_sp<TextureProxy> textureProx
         , fBuffer(std::move(buffer))
         , fBufferOffset(bufferOffset)
         , fBufferRowBytes(bufferRowBytes) {
+    SkASSERT(fTextureProxy->isProtected() == Protected::kNo ||
+             fBuffer->isProtected() == Protected::kYes);
 }
 
 CopyTextureToBufferTask::~CopyTextureToBufferTask() {}
@@ -109,6 +131,14 @@ Task::Status CopyTextureToBufferTask::prepareResources(ResourceProvider* resourc
 Task::Status CopyTextureToBufferTask::addCommands(Context*,
                                                   CommandBuffer* commandBuffer,
                                                   ReplayTargetData) {
+    if (fBuffer && fBuffer->isProtected() == Protected::kNo
+             && fTextureProxy->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("CopyTextureToBufferTask buffer %s is unprotected but texture proxy %s is "
+                   "protected.",
+                   fBuffer->getLabel().c_str(),
+                   fTextureProxy->label());
+        return Status::kFail;
+    }
     if (commandBuffer->copyTextureToBuffer(fTextureProxy->refTexture(),
                                            fSrcRect,
                                            std::move(fBuffer),
@@ -120,6 +150,16 @@ Task::Status CopyTextureToBufferTask::addCommands(Context*,
     } else {
         return Status::kFail;
     }
+}
+
+Protected CopyTextureToBufferTask::isProtected() const {
+    if (fBuffer && fBuffer->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fTextureProxy && fTextureProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -156,7 +196,10 @@ CopyTextureToTextureTask::CopyTextureToTextureTask(sk_sp<TextureProxy> srcProxy,
         , fSrcRect(srcRect)
         , fDstProxy(std::move(dstProxy))
         , fDstPoint(dstPoint)
-        , fDstLevel(dstLevel) {}
+        , fDstLevel(dstLevel) {
+    SkASSERT(fSrcProxy->isProtected() == Protected::kNo ||
+             fDstProxy->isProtected() == Protected::kYes);
+}
 
 CopyTextureToTextureTask::~CopyTextureToTextureTask() {}
 
@@ -192,6 +235,12 @@ Task::Status CopyTextureToTextureTask::prepareResources(ResourceProvider* resour
 Task::Status CopyTextureToTextureTask::addCommands(Context*,
                                                    CommandBuffer* commandBuffer,
                                                    ReplayTargetData) {
+    if (fDstProxy->isProtected() == Protected::kNo && fSrcProxy->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("CopyTextureToTextureTask dstProxy %s is unprotected but srcProxy %s is "
+                   "protected.",
+                   fDstProxy->label(), fSrcProxy->label());
+        return Status::kFail;
+    }
     // prepareResources() doesn't instantiate the source assuming that a prior task will have do so
     // as part of initializing the texture contents.
     SkASSERT(fSrcProxy->isInstantiated());
@@ -207,6 +256,16 @@ Task::Status CopyTextureToTextureTask::addCommands(Context*,
     } else {
         return Status::kFail;
     }
+}
+
+Protected CopyTextureToTextureTask::isProtected() const {
+    if (fDstProxy && fDstProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fSrcProxy && fSrcProxy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return Protected::kNo;
 }
 
 } // namespace skgpu::graphite
