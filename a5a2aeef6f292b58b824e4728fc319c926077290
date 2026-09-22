@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54424bad_4e69bf70",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T18:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "017e929f_d5b339d5",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 62
+      },
+      "revId": "a5a2aeef6f292b58b824e4728fc319c926077290",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56747d36_2df09eed",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "846a2f1f_5a6a6f04",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T18:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56747d36_2df09eed",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 7
+      },
+      "revId": "a5a2aeef6f292b58b824e4728fc319c926077290",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89cf51d5_10e443dc",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-09-22T15:06:03Z",
       "side": 1,
       "message": "Sorry, I should have realized this on a prior CL, but I think if this were a `DrawContext*` instead of the `DrawTask*` it would keep this signature more consistent with the other places where we have to register dependency tasks. At the end of the day, it does boil down to adding the task to the underlying `DrawTask` but it prevents us from leaking the incomplete `DrawTask` until the `DrawContext` wants to snap it.",
+      "range": {
+        "startLine": 217,
+        "startChar": 71,
+        "endLine": 217,
+        "endChar": 90
+      },
+      "revId": "a5a2aeef6f292b58b824e4728fc319c926077290",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e18ea652_4ff7cb0a",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T18:46:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89cf51d5_10e443dc",
       "range": {
         "startLine": 217,
         "startChar": 71,
