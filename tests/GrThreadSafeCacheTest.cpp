@@ -1022,10 +1022,12 @@ static void test_4_75(GrDirectContext* dContext, skiatest::Reporter* reporter,
     dContext->flush();
     dContext->submit(GrSyncCpu::kYes);
 
-    REPORTER_ASSERT(reporter, (helper.*check)(helper.liveCanvas(), kImageWH,
-                                              /*hits*/ 0, /*misses*/ 1, /*refs*/ 0, kNoID));
+    // The flush will fail, which will empty the thread safe cache (b/561987051). The Stats
+    // aren't reset, but we shouldn't find an entry anymore so expect check() to fail.
+    REPORTER_ASSERT(reporter, !(helper.*check)(helper.liveCanvas(), kImageWH,
+                                               /*hits*/ 0, /*misses*/ 1, /*refs*/ 0, kNoID));
 
-    REPORTER_ASSERT(reporter, helper.numCacheEntries() == 1);
+    REPORTER_ASSERT(reporter, helper.numCacheEntries() == 0);
     REPORTER_ASSERT(reporter, helper.stats()->fNumLazyCreations == 1);
     REPORTER_ASSERT(reporter, helper.stats()->fNumHWCreations == 0);
     REPORTER_ASSERT(reporter, helper.stats()->fNumSWCreations == 0);
