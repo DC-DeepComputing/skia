@@ -18,6 +18,10 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/SharedContext.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/Texture.h"
 #endif

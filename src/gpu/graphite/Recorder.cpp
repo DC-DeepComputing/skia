@@ -66,6 +66,10 @@
 #include <utility>
 #include <vector>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #if defined(GPU_TEST_UTILS)
 #include "src/gpu/graphite/RecorderOptionsPriv.h"
 #endif

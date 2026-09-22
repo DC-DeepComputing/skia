@@ -10,6 +10,10 @@
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #include <cstdint>
 
 namespace skgpu::graphite {

@@ -18,6 +18,10 @@
 
 #include <cmath>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 std::optional<AnalyticRRectBlurMask> AnalyticRRectBlurMask::Make(
