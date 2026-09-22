@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "c54d3822a6477a4dc568eae57317d3149dbbd1fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "277db31d_4b939b63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-22T20:20:44Z",
+      "side": 1,
+      "message": "Note: reproduced the issue with the included test, and verified that the data tag resolves the issue.",
+      "revId": "c54d3822a6477a4dc568eae57317d3149dbbd1fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
