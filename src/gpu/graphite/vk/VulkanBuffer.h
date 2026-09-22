@@ -25,7 +25,7 @@ class VulkanBuffer final : public Buffer {
 public:
     static sk_sp<Buffer> Make(const VulkanSharedContext*,
                               size_t,
-                              BufferType,
+                              ResourceUsage,
                               AccessPattern,
                               std::string_view label);
 
@@ -46,7 +46,7 @@ public:
 private:
     VulkanBuffer(const VulkanSharedContext*,
                  size_t,
-                 BufferType,
+                 ResourceUsage,
                  AccessPattern,
                  VkBuffer,
                  const skgpu::VulkanAlloc&,

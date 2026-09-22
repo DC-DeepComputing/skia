@@ -78,7 +78,7 @@ bool DawnCommandBuffer::startStatsQuery(GpuStatsFlags) {
     wgpu::QuerySet querySet = std::move(fTimestampQuerySet);
 
     auto buffer = fResourceProvider->findOrCreateDawnBuffer(2 * sizeof(uint64_t),
-                                                            BufferType::kQuery,
+                                                            ResourceUsage::kQueryBuffer,
                                                             AccessPattern::kHostVisible,
                                                             "TimerQuery");
     if (!buffer) {
@@ -89,7 +89,7 @@ bool DawnCommandBuffer::startStatsQuery(GpuStatsFlags) {
     sk_sp<DawnBuffer> xferBuffer;
     if (!fSharedContext->caps()->drawBufferCanBeMapped()) {
         xferBuffer = fResourceProvider->findOrCreateDawnBuffer(2 * sizeof(uint64_t),
-                                                               BufferType::kXferGpuToCpu,
+                                                               ResourceUsage::kXferGpuToCpuBuffer,
                                                                AccessPattern::kHostVisible,
                                                                "TimerQueryXfer");
         if (!xferBuffer) {

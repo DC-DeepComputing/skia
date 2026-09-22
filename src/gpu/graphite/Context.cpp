@@ -780,7 +780,7 @@ Context::PixelTransferResult Context::transferPixels(Recorder* recorder,
         return {};
     }
     sk_sp<Buffer> buffer = fResourceProvider->findOrCreateNonShareableBuffer(
-            size, BufferType::kXferGpuToCpu, AccessPattern::kHostVisible, "TransferToCpu");
+            size, ResourceUsage::kXferGpuToCpuBuffer, AccessPattern::kHostVisible, "TransferToCpu");
     if (!buffer) {
         return {};
     }

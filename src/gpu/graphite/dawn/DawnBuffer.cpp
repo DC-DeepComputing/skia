@@ -91,7 +91,7 @@ void log_map_error(wgpu::MapAsyncStatus status, wgpu::StringView message) {
 
 sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
                                    size_t size,
-                                   BufferType type,
+                                   ResourceUsage type,
                                    AccessPattern accessPattern,
                                    std::string_view label) {
     if (size <= 0) {
@@ -101,43 +101,47 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
     wgpu::BufferUsage usage = wgpu::BufferUsage::None;
 
     switch (type) {
-        case BufferType::kVertex:
+        case ResourceUsage::kVertexBuffer:
             usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kIndex:
+        case ResourceUsage::kIndexBuffer:
             usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kXferCpuToGpu:
+        case ResourceUsage::kXferCpuToGpuBuffer:
             usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::MapWrite;
             break;
-        case BufferType::kXferGpuToCpu:
+        case ResourceUsage::kXferGpuToCpuBuffer:
             usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::MapRead;
             break;
-        case BufferType::kUniform:
+        case ResourceUsage::kUniformBuffer:
             usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kStorage:
+        case ResourceUsage::kStorageBuffer:
             usage = wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst |
                     wgpu::BufferUsage::CopySrc;
             break;
-        case BufferType::kQuery:
+        case ResourceUsage::kQueryBuffer:
             usage = wgpu::BufferUsage::QueryResolve | wgpu::BufferUsage::CopySrc;
             break;
-        case BufferType::kIndirect:
+        case ResourceUsage::kIndirectBuffer:
             usage = wgpu::BufferUsage::Indirect | wgpu::BufferUsage::Storage |
                     wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kVertexStorage:
+        case ResourceUsage::kVertexStorageBuffer:
             usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::Storage;
             break;
-        case BufferType::kIndexStorage:
+        case ResourceUsage::kIndexStorageBuffer:
             usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::Storage;
+            break;
+        default:
+            SkUNREACHABLE;
             break;
     }
 
     if (sharedContext->caps()->drawBufferCanBeMapped() &&
-        accessPattern == AccessPattern::kHostVisible && type != BufferType::kXferGpuToCpu) {
-        if (type == BufferType::kQuery) {
+        accessPattern == AccessPattern::kHostVisible &&
+        type != ResourceUsage::kXferGpuToCpuBuffer) {
+        if (type == ResourceUsage::kQueryBuffer) {
             // We can map the query buffer to get the results directly rather than having to copy to
             // a transfer buffer.
             usage |= wgpu::BufferUsage::MapRead;
