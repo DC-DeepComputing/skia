@@ -29,6 +29,10 @@
 
 #include <cstdint>
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 namespace skgpu::graphite {
 
 static constexpr char kMeshFSLocalCoordsName[] = "meshLocalCoordsOverride";

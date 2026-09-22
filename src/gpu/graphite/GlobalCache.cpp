@@ -22,6 +22,10 @@
 #include "src/gpu/graphite/SerializationUtils.h"
 #include "src/gpu/graphite/SharedContext.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
+
 #if defined(SK_ENABLE_SPARSE_STRIPS)
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #endif
