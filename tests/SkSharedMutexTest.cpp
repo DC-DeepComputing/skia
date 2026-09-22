@@ -29,27 +29,30 @@ DEF_TEST(SkSharedMutexMultiThreaded, r) {
     for (int i = 0; i < kSharedSize; ++i) {
         shared[i] = 0;
     }
-    SkTaskGroup().batch(8, [&](int threadIndex) {
-        if (threadIndex % 4 != 0) {
-            for (int c = 0; c < 100000; ++c) {
-                sm.acquireShared();
-                sm.assertHeldShared();
-                int v = shared[0];
-                for (int i = 1; i < kSharedSize; ++i) {
-                    REPORTER_ASSERT(r, v == shared[i]);
+    SkStdFunctionTaskGroup taskGroup;
+    for (int i = 0; i < 8; ++i) {
+        taskGroup.add([&]() {
+            if (i % 4 != 0) {
+                for (int c = 0; c < 100000; ++c) {
+                    sm.acquireShared();
+                    sm.assertHeldShared();
+                    int v = shared[0];
+                    for (int j = 1; j < kSharedSize; ++j) {
+                        REPORTER_ASSERT(r, v == shared[j]);
+                    }
+                    sm.releaseShared();
                 }
-                sm.releaseShared();
-            }
-        } else {
-            for (int c = 0; c < 100000; ++c) {
-                sm.acquire();
-                sm.assertHeld();
-                value += 1;
-                for (int i = 0; i < kSharedSize; ++i) {
-                    shared[i] = value;
+            } else {
+                for (int c = 0; c < 100000; ++c) {
+                    sm.acquire();
+                    sm.assertHeld();
+                    value += 1;
+                    for (int j = 0; j < kSharedSize; ++j) {
+                        shared[j] = value;
+                    }
+                    sm.release();
                 }
-                sm.release();
             }
-        }
-    });
+        });
+    }
 }

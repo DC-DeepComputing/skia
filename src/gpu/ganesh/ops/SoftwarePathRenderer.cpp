@@ -370,7 +370,7 @@ bool SoftwarePathRenderer::onDrawPath(const DrawPathArgs& args) {
         SkBackingFit fit = useCache ? SkBackingFit::kExact : SkBackingFit::kApprox;
         GrAA aa = GrAA(GrAAType::kCoverage == args.fAAType);
 
-        SkTaskGroup* taskGroup = nullptr;
+        SkStdFunctionTaskGroup* taskGroup = nullptr;
         if (auto direct = args.fContext->asDirectContext()) {
             taskGroup = direct->priv().getTaskGroup();
         }

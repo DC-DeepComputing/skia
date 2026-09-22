@@ -1821,14 +1821,14 @@ Result GaneshPrecompileTestingSink::draw(const Src& src, SkBitmap* dst, SkWStrea
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 GPUDDLSink::GPUDDLSink(const SkCommandLineConfigGpu* config, const GrContextOptions& ctxOptions)
         : INHERITED(config, ctxOptions)
-        , fRecordingExecutor(SkExecutor::MakeLIFOThreadPool(1))
-        , fGPUExecutor(SkExecutor::MakeFIFOThreadPool(1, false)) {
+        , fRecordingExecutor(StdFunctionExecutor::MakeLIFOThreadPool(1))
+        , fGPUExecutor(StdFunctionExecutor::MakeFIFOThreadPool(1, false)) {
 }
 
 Result GPUDDLSink::ddlDraw(const Src& src,
                            sk_sp<SkSurface> dstSurface,
-                           SkTaskGroup* recordingTaskGroup,
-                           SkTaskGroup* gpuTaskGroup,
+                           SkStdFunctionTaskGroup* recordingTaskGroup,
+                           SkStdFunctionTaskGroup* gpuTaskGroup,
                            sk_gpu_test::TestContext* gpuTestCtx,
                            GrDirectContext* dContext) const {
 
@@ -1959,8 +1959,8 @@ Result GPUDDLSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log
     SkASSERT(otherCtx->priv().getGpu());
 #endif
 
-    SkTaskGroup recordingTaskGroup(*fRecordingExecutor);
-    SkTaskGroup gpuTaskGroup(*fGPUExecutor);
+    SkStdFunctionTaskGroup recordingTaskGroup(*fRecordingExecutor);
+    SkStdFunctionTaskGroup gpuTaskGroup(*fGPUExecutor);
 
     // Make sure 'mainCtx' is current
     mainTestCtx->makeCurrent();
@@ -2036,7 +2036,7 @@ Result PDFSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
     metadata.jpegDecoder = SkPDF::JPEG::Decode;
     metadata.jpegEncoder = SkPDF::JPEG::Encode;
 #if SK_PDF_TEST_EXECUTOR
-    std::unique_ptr<SkExecutor> executor = SkExecutor::MakeFIFOThreadPool();
+    std::unique_ptr<StdFunctionExecutor> executor = StdFunctionExecutor::MakeFIFOThreadPool();
     metadata.fExecutor = executor.get();
 #endif
     auto doc = SkPDF::MakeDocument(dst, metadata);

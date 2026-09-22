@@ -11,26 +11,31 @@
 #include <type_traits>
 #include <utility>
 
-SkTaskGroup::SkTaskGroup(SkExecutor& executor) : fPending(0), fExecutor(executor) {}
+template <typename ExecutorType>
+SkTaskGroup<ExecutorType>::SkTaskGroup(ExecutorType& executor) : fPending(0), fExecutor(executor) {}
 
-void SkTaskGroup::add(std::function<void(void)> fn) {
-    this->add(std::move(fn), /* workList= */ 0);
+template <typename ExecutorType>
+void SkTaskGroup<ExecutorType>::add(ExecutorType::WorkType work) {
+    this->add(std::move(work), /* workList= */ 0);
 }
 
-void SkTaskGroup::add(std::function<void(void)> fn, int workList) {
+template <typename ExecutorType>
+void SkTaskGroup<ExecutorType>::add(ExecutorType::WorkType work, int workList) {
     fPending.fetch_add(+1, std::memory_order_relaxed);
-    fExecutor.add([this, fn{std::move(fn)}] {
-                      fn();
+    fExecutor.add([this, work2{std::move(work)}] {
+                      work2();
                       fPending.fetch_add(-1, std::memory_order_release);
                   },
                   workList);
 }
 
-void SkTaskGroup::discardAllPendingWork() {
+template <typename ExecutorType>
+void SkTaskGroup<ExecutorType>::discardAllPendingWork() {
     int numDiscarded = fExecutor.discardAllPendingWork();
     fPending.fetch_add(-numDiscarded, std::memory_order_release);
 }
 
+#if 0
 void SkTaskGroup::batch(int N, std::function<void(int)> fn) {
     // TODO: I really thought we had some sort of more clever chunking logic.
     fPending.fetch_add(+N, std::memory_order_relaxed);
@@ -41,12 +46,15 @@ void SkTaskGroup::batch(int N, std::function<void(int)> fn) {
         });
     }
 }
+#endif
 
-bool SkTaskGroup::done() const {
+template <typename ExecutorType>
+bool SkTaskGroup<ExecutorType>::done() const {
     return fPending.load(std::memory_order_acquire) == 0;
 }
 
-void SkTaskGroup::wait() {
+template <typename ExecutorType>
+void SkTaskGroup<ExecutorType>::wait() {
     // Actively help the executor do work until our task group is done.
     // This lets SkTaskGroups nest arbitrarily deep on a single SkExecutor:
     // no thread ever blocks waiting for others to do its work.
@@ -56,9 +64,10 @@ void SkTaskGroup::wait() {
     }
 }
 
-SkTaskGroup::Enabler::Enabler(int threads) {
+template <typename ExecutorType>
+SkTaskGroup<ExecutorType>::Enabler::Enabler(int threads) {
     if (threads) {
-        fThreadPool = SkExecutor::MakeLIFOThreadPool(threads);
-        SkExecutor::SetDefault(fThreadPool.get());
+        fThreadPool = ExecutorType::MakeLIFOThreadPool(threads);
+        ExecutorType::SetDefault(fThreadPool.get());
     }
 }

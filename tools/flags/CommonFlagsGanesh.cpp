@@ -90,8 +90,8 @@ static GpuPathRenderers collect_gpu_path_renderers_from_flags() {
 }
 
 void SetCtxOptions(GrContextOptions* ctxOptions) {
-    static std::unique_ptr<SkExecutor> gGpuExecutor = (0 != FLAGS_gpuThreads)
-        ? SkExecutor::MakeFIFOThreadPool(FLAGS_gpuThreads)
+    static std::unique_ptr<StdFunctionExecutor> gGpuExecutor = (0 != FLAGS_gpuThreads)
+        ? StdFunctionExecutor::MakeFIFOThreadPool(FLAGS_gpuThreads)
         : nullptr;
 
     ctxOptions->fExecutor                            = gGpuExecutor.get();
