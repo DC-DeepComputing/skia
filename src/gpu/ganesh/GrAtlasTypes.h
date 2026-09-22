@@ -354,6 +354,11 @@ public:
 
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
     std::pair<const void*, SkIRect> prepareForUpload();
+    void resetDirtyRect() {
+        fDirtyRect.setEmpty();
+        SkDEBUGCODE(fDirty = false;)
+    }
+    void clearDirty() { this->resetDirtyRect(); }
     // Re-initialize Plot. The client should ensure that they process any eviction callbacks
     // before calling this, otherwise any cached references will point to invalid data.
     // If freeData is true, this will free the backing data as well. This should only be used

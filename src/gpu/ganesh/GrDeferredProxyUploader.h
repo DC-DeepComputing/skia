@@ -57,15 +57,17 @@ public:
             GrColorType pixelColorType = SkColorTypeToGrColorType(this->fPixels.info().colorType());
             // If the worker thread was unable to allocate pixels, this check will fail, and we'll
             // end up drawing with an uninitialized mask texture, but at least we won't crash.
+            bool success = true;
             if (this->fPixels.addr()) {
-                writePixelsFn(proxy,
-                              SkIRect::MakeSize(fPixels.dimensions()),
-                              pixelColorType,
-                              this->fPixels.addr(),
-                              this->fPixels.rowBytes());
+                success = writePixelsFn(proxy,
+                                        SkIRect::MakeSize(fPixels.dimensions()),
+                                        pixelColorType,
+                                        this->fPixels.addr(),
+                                        this->fPixels.rowBytes());
             }
             // Upload has finished, so tell the proxy to release this GrDeferredProxyUploader
             proxy->texPriv().resetDeferredUploader();
+            return success;
         };
         flushState->addASAPUpload(std::move(uploadMask));
         fScheduledUpload = true;

@@ -73,7 +73,8 @@ public:
         surface needs to be prepared for being sampled in a draw after the upload, the caller
         should pass in true for shouldPrepareSurfaceForSampling. This feature is needed for Vulkan
         when doing inline uploads to reset the image layout back to sampled. */
-    void doUpload(GrDeferredTextureUploadFn&, bool shouldPrepareSurfaceForSampling = false);
+    [[nodiscard]] bool doUpload(GrDeferredTextureUploadFn&,
+                                bool shouldPrepareSurfaceForSampling = false);
 
     /** Called as ops are executed. Must be called in the same order as the ops were prepared. */
     void executeDrawsAndUploadsForMeshDrawOp(const GrOp* op, const SkRect& chainBounds,

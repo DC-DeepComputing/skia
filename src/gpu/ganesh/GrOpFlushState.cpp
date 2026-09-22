@@ -102,7 +102,9 @@ bool GrOpFlushState::preExecuteDraws() {
         return false;
     }
     for (auto& upload : fASAPUploads) {
-        this->doUpload(upload);
+        if (!this->doUpload(upload)) {
+            return false;
+        }
     }
     // Setup execution iterators.
     fCurrDraw = fDraws.begin();
@@ -124,7 +126,7 @@ void GrOpFlushState::reset() {
     fBaseDrawToken = skgpu::Token::InvalidToken();
 }
 
-void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
+bool GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
                               bool shouldPrepareSurfaceForSampling) {
     GrDeferredTextureUploadWritePixelsFn wp = [this, shouldPrepareSurfaceForSampling](
                                                       GrTextureProxy* dstProxy,
@@ -163,7 +165,7 @@ void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
                                        rowBytes,
                                        shouldPrepareSurfaceForSampling);
     };
-    upload(wp);
+    return upload(wp);
 }
 
 skgpu::Token GrOpFlushState::addInlineUpload(GrDeferredTextureUploadFn&& upload) {
