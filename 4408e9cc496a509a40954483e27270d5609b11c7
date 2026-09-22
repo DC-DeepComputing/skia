@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bd260c1_75b91a15",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-22T14:56:21Z",
+      "side": 1,
+      "message": "nit: a clearer name could be `fCurrentIterations` (I can understand the shift away from `fTotalIterations` since it is getting reset as we go back up the stack).",
+      "range": {
+        "startLine": 111,
+        "startChar": 16,
+        "endLine": 111,
+        "endChar": 34
+      },
+      "revId": "4408e9cc496a509a40954483e27270d5609b11c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ec617b_270798b6",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-22T14:56:21Z",
+      "side": 1,
+      "message": "These should still have {} even when they are a single line if statement (and below)",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 80
+      },
+      "revId": "4408e9cc496a509a40954483e27270d5609b11c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

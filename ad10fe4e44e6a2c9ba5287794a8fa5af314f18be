@@ -140,6 +140,30 @@
       },
       "revId": "ad10fe4e44e6a2c9ba5287794a8fa5af314f18be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9580a2c1_790928fd",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-22T14:56:21Z",
+      "side": 1,
+      "message": "Yes, I believe you\u0027re right. I\u0027d thought `statement` was the ForStatement being processed and not its body statement.",
+      "parentUuid": "7acded83_335ce063",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 92
+      },
+      "revId": "ad10fe4e44e6a2c9ba5287794a8fa5af314f18be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
