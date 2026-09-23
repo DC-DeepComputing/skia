@@ -142,7 +142,7 @@ inline void GrDrawOpAtlas::processEviction(GrPlotLocator plotLocator) {
     fAtlasGeneration = fGenerationCounter->next();
 }
 
-void GrDrawOpAtlas::uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
+bool GrDrawOpAtlas::uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
                                         GrTextureProxy* proxy,
                                         GrPlot* plot) {
     SkASSERT(proxy && proxy->peekTexture());
@@ -152,11 +152,26 @@ void GrDrawOpAtlas::uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& wr
     SkIRect rect;
     std::tie(dataPtr, rect) = plot->prepareForUpload();
 
-    writePixels(proxy,
-                rect,
-                SkColorTypeToGrColorType(fColorType),
-                dataPtr,
-                fBytesPerPixel*fPlotWidth);
+    if (!writePixels(proxy,
+                     rect,
+                     SkColorTypeToGrColorType(fColorType),
+                     dataPtr,
+                     fBytesPerPixel*fPlotWidth)) {
+        // The backend rejected the upload (e.g. a staging-buffer allocation
+        // failure under memory pressure). prepareForUpload() already cleared
+        // the plot's dirty region and the upload token was committed when the
+        // upload was scheduled, so nothing would ever rewrite these texels
+        // and draws would sample whatever the (possibly recycled,
+        // uninitialized) backing texture holds. Restore the dirty state so a
+        // piggy-backed upload rewrites the whole plot, and queue the plot for
+        // eviction at the next compact() so its glyphs are re-rasterized and
+        // re-uploaded.
+        plot->markFullDirty();
+        fFailedUploadPlots.emplace_back(SkRef(plot));
+        return false;
+    }
+    plot->clearDirty();
+    return true;
 }
 
 inline bool GrDrawOpAtlas::updatePlot(GrDeferredUploadTarget* target,
@@ -180,7 +195,7 @@ inline bool GrDrawOpAtlas::updatePlot(GrDeferredUploadTarget* target,
 
         skgpu::Token lastUploadToken = target->addASAPUpload(
                 [this, plotsp, proxy](GrDeferredTextureUploadWritePixelsFn& writePixels) {
-                    this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
+                    return this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
                 });
         plot->setLastUploadToken(lastUploadToken);
     }
@@ -321,7 +336,7 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
 
     skgpu::Token lastUploadToken = target->addInlineUpload(
             [this, plotsp, proxy](GrDeferredTextureUploadWritePixelsFn& writePixels) {
-                this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
+                return this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
             });
     newPlot->setLastUploadToken(lastUploadToken);
 
@@ -333,8 +348,24 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
 
 void GrDrawOpAtlas::compact(skgpu::Token startTokenForNextFlush) {
     if (fNumActivePages < 1) {
+        fFailedUploadPlots.clear();
         fPrevFlushToken = startTokenForNextFlush;
         return;
+    }
+
+    // Evict any plots whose scheduled uploads failed. Eviction bumps the
+    // atlas generation, so their glyphs are treated as absent and get
+    // re-rasterized, re-added and re-uploaded on their next use; without this
+    // the never-uploaded texels would be sampled as glyph data indefinitely.
+    if (!fFailedUploadPlots.empty()) {
+        for (const sk_sp<GrPlot>& plot : fFailedUploadPlots) {
+            uint32_t pageIdx = plot->pageIndex();
+            if (pageIdx < fNumActivePages &&
+                fPages[pageIdx].fPlotArray[plot->plotIndex()].get() == plot.get()) {
+                this->processEvictionAndResetRects(plot.get());
+            }
+        }
+        fFailedUploadPlots.clear();
     }
 
     // For all plots, reset number of flushes since used if used this frame.

@@ -210,9 +210,9 @@ private:
                       const void* image,
                       GrAtlasLocator*);
 
-    void uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
-                             GrTextureProxy* proxy,
-                             GrPlot* plot);
+    [[nodiscard]] bool uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
+                                          GrTextureProxy* proxy,
+                                          GrPlot* plot);
 
     bool createPages(GrProxyProvider*, GrAtlasGenerationCounter*);
     bool activateNewPage(GrResourceProvider*);
@@ -249,6 +249,11 @@ private:
     int                   fFlushesSinceLastUse;
 
     std::vector<GrPlotEvictionCallback*> fEvictionCallbacks;
+
+    // Plots whose scheduled uploads failed (e.g. staging-buffer allocation failure under memory
+    // pressure). They are evicted at the next compact() so their glyphs are re-rasterized, re-added
+    // and re-uploaded instead of sampling backing-texture texels that were never written.
+    std::vector<sk_sp<GrPlot>> fFailedUploadPlots;
 
     struct Page {
         // allocated array of Plots

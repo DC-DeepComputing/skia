@@ -133,9 +133,6 @@ std::pair<const void*, SkIRect> GrPlot::prepareForUpload() {
     dataPtr += fBytesPerPixel * fDirtyRect.fLeft;
     offsetRect = fDirtyRect.makeOffset(fOffset.fX, fOffset.fY);
 
-    fDirtyRect.setEmpty();
-    SkDEBUGCODE(fDirty = false);
-
     return {dataPtr, offsetRect};
 }
 

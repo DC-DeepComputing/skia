@@ -354,6 +354,18 @@ public:
 
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
     std::pair<const void*, SkIRect> prepareForUpload();
+    // Marks the entire plot dirty so the next scheduled upload rewrites all of its texels. Used to
+    // recover when a scheduled upload fails, because prepareForUpload() cleared the dirty state
+    // before the failure was known.
+    void markFullDirty() {
+        fDirtyRect = SkIRect::MakeWH(fWidth, fHeight);
+        SkDEBUGCODE(fDirty = true;)
+    }
+    void resetDirtyRect() {
+        fDirtyRect.setEmpty();
+        SkDEBUGCODE(fDirty = false;)
+    }
+    void clearDirty() { this->resetDirtyRect(); }
     // Re-initialize Plot. The client should ensure that they process any eviction callbacks
     // before calling this, otherwise any cached references will point to invalid data.
     // If freeData is true, this will free the backing data as well. This should only be used

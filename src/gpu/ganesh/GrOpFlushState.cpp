@@ -67,7 +67,10 @@ void GrOpFlushState::executeDrawsAndUploadsForMeshDrawOp(
         // If not all of the uploads succeeded, do not attempt to execute the draw and relevant
         // preparations. Continue on to the next draw operation (which may also fail if subsequent
         // draw calls depended upon these uploads, but we cannot know that at this point).
-        if (drawUploadFailure) {
+        // fDeferredUploadFailed covers upload failures that the render pass cannot report
+        // (the writePixels result inside doUpload, including all ASAP uploads): draws in such a
+        // flush may sample texture regions that were never written, so they are skipped as well.
+        if (drawUploadFailure || fDeferredUploadFailed) {
             fGpu->stats()->incNumFailedDraws();
         } else {
             GrProgramInfo programInfo(this->caps(),
@@ -122,9 +125,10 @@ void GrOpFlushState::reset() {
     fInlineUploads.reset();
     fDraws.reset();
     fBaseDrawToken = skgpu::Token::InvalidToken();
+    fDeferredUploadFailed = false;
 }
 
-void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
+bool GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
                               bool shouldPrepareSurfaceForSampling) {
     GrDeferredTextureUploadWritePixelsFn wp = [this, shouldPrepareSurfaceForSampling](
                                                       GrTextureProxy* dstProxy,
@@ -134,6 +138,7 @@ void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
                                                       size_t rowBytes) {
         GrSurface* dstSurface = dstProxy->peekSurface();
         if (!fGpu->caps()->surfaceSupportsWritePixels(dstSurface)) {
+            fDeferredUploadFailed = true;
             return false;
         }
         GrCaps::SupportedWrite supportedWrite = fGpu->caps()->supportedWritePixelsColorType(
@@ -150,20 +155,29 @@ void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
             GrImageInfo tmpInfo(supportedWrite.fColorType, kAT, nullptr, rect.size());
             if (!GrConvertPixels( GrPixmap(tmpInfo, tmpPixels.get(), tightRB ),
                                  GrCPixmap(srcInfo,          buffer, rowBytes))) {
+                fDeferredUploadFailed = true;
                 return false;
             }
             rowBytes = tightRB;
             buffer = tmpPixels.get();
         }
-        return this->fGpu->writePixels(dstSurface,
-                                       rect,
-                                       colorType,
-                                       supportedWrite.fColorType,
-                                       buffer,
-                                       rowBytes,
-                                       shouldPrepareSurfaceForSampling);
+        bool result = this->fGpu->writePixels(dstSurface,
+                                              rect,
+                                              colorType,
+                                              supportedWrite.fColorType,
+                                              buffer,
+                                              rowBytes,
+                                              shouldPrepareSurfaceForSampling);
+        if (!result) {
+            fDeferredUploadFailed = true;
+        }
+        return result;
     };
-    upload(wp);
+    bool uploadResult = upload(wp);
+    if (!uploadResult) {
+        fDeferredUploadFailed = true;
+    }
+    return uploadResult;
 }
 
 skgpu::Token GrOpFlushState::addInlineUpload(GrDeferredTextureUploadFn&& upload) {
