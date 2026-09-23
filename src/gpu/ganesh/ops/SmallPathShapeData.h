@@ -40,6 +40,11 @@ private:
 
 class SmallPathShapeDataKey {
 public:
+    enum class Type : uint32_t {
+        kSDF = 0,
+        kBitmap = 1,
+    };
+
     // TODO: add a move variant
     SmallPathShapeDataKey(const SmallPathShapeDataKey& that) {
         fKey.reset(that.fKey.count());
