@@ -15,3 +15,7 @@
 
 [unsafe-buffer-usage]
 src:*
+
+# Only enabled in gpu/graphite for now, as a pilot.
+# See http://go/unsafe-buffer-skia
+src:*src/gpu/graphite/*=emit

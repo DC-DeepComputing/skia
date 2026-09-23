@@ -6,6 +6,7 @@
  */
 #include "src/gpu/graphite/DrawPass.h"
 
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/PaintParams.h"
@@ -70,8 +71,8 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         // TODO(b/409888039): Once TextureProxies track their dependendent tasks to include in all
         // Recordings, this "should" be able to changed to asserts.
         if (!fSampledTextures[i]->isInstantiated() && !fSampledTextures[i]->isLazy()) {
-            SKIA_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
-                        fSampledTextures[i]->label());
+            SK_UNSAFE_TODO(SKIA_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
+                                      fSampledTextures[i]->label()));
             return false;
         }
     }

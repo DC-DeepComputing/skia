@@ -15,6 +15,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTLogic.h"
@@ -61,10 +62,11 @@ AtlasConfig::AtlasConfig(int maxTextureSize, size_t maxBytes) {
         ? SkTPin<int>(SkPrevLog2(maxBytes), 0, std::size(kARGBDimensions) - 1)
         : 0;
 
-    SkASSERT(kARGBDimensions[index].width() <= kMaxAtlasDim);
-    SkASSERT(kARGBDimensions[index].height() <= kMaxAtlasDim);
-    fARGBDimensions.set(std::min<int>(kARGBDimensions[index].width(), maxTextureSize),
-                        std::min<int>(kARGBDimensions[index].height(), maxTextureSize));
+    SK_UNSAFE_TODO(SkASSERT(kARGBDimensions[index].width() <= kMaxAtlasDim));
+    SK_UNSAFE_TODO(SkASSERT(kARGBDimensions[index].height() <= kMaxAtlasDim));
+    fARGBDimensions.set(
+            std::min<int>(SK_UNSAFE_TODO(kARGBDimensions[index].width()), maxTextureSize),
+            std::min<int>(SK_UNSAFE_TODO(kARGBDimensions[index].height()), maxTextureSize));
     fMaxTextureSize = std::min<int>(maxTextureSize, kMaxAtlasDim);
 }
 
@@ -117,8 +119,8 @@ TextAtlasManager::~TextAtlasManager() = default;
 void TextAtlasManager::freeGpuResources() {
     auto tokenTracker = fRecorder->priv().tokenTracker();
     for (int i = 0; i < kMaskFormatCount; ++i) {
-        if (fAtlases[i]) {
-            fAtlases[i]->freeGpuResources(tokenTracker->nextFlushToken());
+        if (SK_UNSAFE_TODO(fAtlases[i])) {
+            SK_UNSAFE_TODO(fAtlases[i]->freeGpuResources(tokenTracker->nextFlushToken()));
         }
     }
 }
@@ -139,13 +141,13 @@ static void expand_bits(INT_TYPE* dst,
         const uint8_t* s = src;
         INT_TYPE* d = dst;
         while (rowWritesLeft > 0) {
-            unsigned mask = *s++;
+            unsigned mask = *SK_UNSAFE_TODO(s++);
             for (int x = 7; x >= 0 && rowWritesLeft; --x, --rowWritesLeft) {
-                *d++ = (mask & (1 << x)) ? (INT_TYPE)(~0UL) : 0;
+                *SK_UNSAFE_TODO(d++ = (mask & (1 << x)) ? (INT_TYPE)(~0UL) : 0);
             }
         }
         dst = reinterpret_cast<INT_TYPE*>(reinterpret_cast<intptr_t>(dst) + dstRowBytes);
-        src += srcRowBytes;
+        SK_UNSAFE_TODO(src += srcRowBytes);
     }
 }
 
@@ -164,12 +166,12 @@ static void get_packed_glyph_image(
             if (srcRB != dstRB) {
                 const int bbp = MaskFormatBytesPerPixel(expectedMaskFormat);
                 for (int y = 0; y < height; y++) {
-                    memcpy(dst, src, width * bbp);
-                    src = (const char*) src + srcRB;
-                    dst = (char*) dst + dstRB;
+                    SK_UNSAFE_TODO(memcpy(dst, src, width * bbp));
+                    src = SK_UNSAFE_TODO((const char*)src + srcRB);
+                    dst = SK_UNSAFE_TODO((char*)dst + dstRB);
                 }
             } else {
-                memcpy(dst, src, dstRB * height);
+                SK_UNSAFE_TODO(memcpy(dst, src, dstRB * height));
             }
         } else {
             // Handle 8-bit format by expanding the mask to the expected format.
@@ -208,7 +210,7 @@ static void get_packed_glyph_image(
             dst = dstRow;
             for (int x = 0; x < width; x++) {
                 uint16_t color565 = 0;
-                memcpy(&color565, src, a565Bpp);
+                SK_UNSAFE_TODO(memcpy(&color565, src, a565Bpp));
                 uint32_t color8888;
                 // On Windows (and possibly others), font data is stored as BGR.
                 // So we need to swizzle the data to reflect that.
@@ -223,11 +225,11 @@ static void get_packed_glyph_image(
                                 (masks.getBlue(color565) << 16) |
                                 (0xFF << 24);
                 }
-                memcpy(dst, &color8888, argbBpp);
-                src = (const char*)src + a565Bpp;
-                dst = (      char*)dst + argbBpp;
+                SK_UNSAFE_TODO(memcpy(dst, &color8888, argbBpp));
+                src = SK_UNSAFE_TODO((const char*)src + a565Bpp);
+                dst = SK_UNSAFE_TODO((char*)dst + argbBpp);
             }
-            dstRow += dstRB;
+            SK_UNSAFE_TODO(dstRow += dstRB);
         }
     } else {
         SkUNREACHABLE;
@@ -315,7 +317,7 @@ DrawAtlas::ErrorCode TextAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph, G
     if (padding > 0) {
         sk_bzero(dataPtr, size);
         // Advance in one row and one column.
-        dataPtr = (char*)(dataPtr) + rowBytes + bytesPerPixel;
+        dataPtr = SK_UNSAFE_TODO((char*)(dataPtr) + rowBytes + bytesPerPixel);
     }
 
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
@@ -336,7 +338,7 @@ DrawAtlas::ErrorCode TextAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph, G
 
 bool TextAtlasManager::recordUploads(DrawContext* dc) {
     for (int i = 0; i < skgpu::kMaskFormatCount; i++) {
-        if (fAtlases[i] && !fAtlases[i]->recordUploads(dc, fRecorder)) {
+        if (SK_UNSAFE_TODO(fAtlases[i] && !fAtlases[i]->recordUploads(dc, fRecorder))) {
             return false;
         }
     }
@@ -356,7 +358,7 @@ void TextAtlasManager::setAtlasDimensionsToMinimum_ForTesting() {
     // Delete any old atlases.
     // This should be safe to do as long as we are not in the middle of a flush.
     for (int i = 0; i < skgpu::kMaskFormatCount; i++) {
-        fAtlases[i] = nullptr;
+        SK_UNSAFE_TODO(fAtlases[i] = nullptr);
     }
 
     // Set all the atlas sizes to 1x1 plot each.
@@ -367,18 +369,20 @@ bool TextAtlasManager::initAtlas(MaskFormat resolvedMaskFormat) {
     SkASSERT(resolvedMaskFormat == this->resolveMaskFormat(resolvedMaskFormat));
 
     int index = MaskFormatToAtlasIndex(resolvedMaskFormat);
-    if (fAtlases[index] == nullptr) {
+    if (SK_UNSAFE_TODO(fAtlases[index] == nullptr)) {
         SkISize atlasDimensions = fAtlasConfig.atlasDimensions(resolvedMaskFormat);
         SkISize plotDimensions = fAtlasConfig.plotDimensions(resolvedMaskFormat);
-        fAtlases[index] = DrawAtlas::Make(resolvedMaskFormat,
-                                          atlasDimensions.width(), atlasDimensions.height(),
-                                          plotDimensions.width(), plotDimensions.height(),
-                                          /*generationCounter=*/this,
-                                          fAllowMultitexturing,
-                                          DrawAtlas::UseStorageTextures::kNo,
-                                          /*evictor=*/nullptr,
-                                          /*label=*/"TextAtlas");
-        if (!fAtlases[index]) {
+        SK_UNSAFE_TODO(fAtlases[index] = DrawAtlas::Make(resolvedMaskFormat,
+                                                         atlasDimensions.width(),
+                                                         atlasDimensions.height(),
+                                                         plotDimensions.width(),
+                                                         plotDimensions.height(),
+                                                         /*generationCounter=*/this,
+                                                         fAllowMultitexturing,
+                                                         DrawAtlas::UseStorageTextures::kNo,
+                                                         /*evictor=*/nullptr,
+                                                         /*label=*/"TextAtlas"));
+        if (!SK_UNSAFE_TODO(fAtlases[index])) {
             return false;
         }
     }
@@ -388,8 +392,8 @@ bool TextAtlasManager::initAtlas(MaskFormat resolvedMaskFormat) {
 void TextAtlasManager::compact() {
     auto tokenTracker = fRecorder->priv().tokenTracker();
     for (int i = 0; i < kMaskFormatCount; ++i) {
-        if (fAtlases[i]) {
-            fAtlases[i]->compact(tokenTracker->nextFlushToken());
+        if (SK_UNSAFE_TODO(fAtlases[i])) {
+            SK_UNSAFE_TODO(fAtlases[i]->compact(tokenTracker->nextFlushToken()));
         }
     }
 }
