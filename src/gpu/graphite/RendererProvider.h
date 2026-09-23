@@ -11,6 +11,7 @@
 #include "include/core/SkMesh.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkVertices.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkTArray.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/gpu/graphite/Renderer.h"
@@ -97,14 +98,14 @@ public:
 
     // Path rendering for fills and strokes, used by the kTessellation[AndSmallAtlas] strategies.
     const Renderer* stencilTessellatedCurvesAndTris(SkPathFillType type) const {
-        return &fStencilTessellatedCurves[(int) type];
+        return &SK_UNSAFE_TODO(fStencilTessellatedCurves[(int)type]);
     }
     const Renderer* stencilTessellatedWedges(SkPathFillType type) const {
-        return &fStencilTessellatedWedges[(int) type];
+        return &SK_UNSAFE_TODO(fStencilTessellatedWedges[(int)type]);
     }
     const Renderer* convexTessellatedWedges() const { return &fConvexTessellatedWedges; }
     const Renderer* tessellatedStrokes(bool inverseFill) const {
-        return &fTessellatedStrokes[static_cast<size_t>(inverseFill)];
+        return &SK_UNSAFE_TODO(fTessellatedStrokes[static_cast<size_t>(inverseFill)]);
     }
 
     // Coverage mask rendering. Used by the atlas path rendering strategies and rendering mask
@@ -120,13 +121,13 @@ public:
             return &fBitmapText[(int)MaskFormat::kA565];
         }
         SkASSERT(format != MaskFormat::kA565);
-        return &fBitmapText[(int)format];
+        return &SK_UNSAFE_TODO(fBitmapText[(int)format]);
     }
-    const Renderer* sdfText(bool useLCDText) const { return &fSDFText[useLCDText]; }
+    const Renderer* sdfText(bool useLCDText) const { return &SK_UNSAFE_TODO(fSDFText[useLCDText]); }
 
     // Mesh rendering
     const Renderer* vertices(bool hasColors, bool hasTexCoords) const {
-        return &fVertices[2*hasColors + hasTexCoords];
+        return &SK_UNSAFE_TODO(fVertices[2 * hasColors + hasTexCoords]);
     }
 
     const Renderer* mesh() const {
@@ -158,7 +159,7 @@ public:
     }
 
     const RenderStep* lookup(RenderStep::RenderStepID renderStepID) const {
-        return fRenderSteps[(int) renderStepID].get();
+        SK_UNSAFE_TODO(return fRenderSteps[(int)renderStepID].get());
     }
 
 #ifdef SK_ENABLE_VELLO_SHADERS
@@ -187,9 +188,9 @@ private:
 
     RenderStep* assumeOwnership(std::unique_ptr<RenderStep> renderStep) {
         int index = (int) renderStep->renderStepID();
-        SkASSERT(!fRenderSteps[index]);
-        fRenderSteps[index] = std::move(renderStep);
-        return fRenderSteps[index].get();
+        SK_UNSAFE_TODO(SkASSERT(!fRenderSteps[index]));
+        SK_UNSAFE_TODO(fRenderSteps[index] = std::move(renderStep));
+        SK_UNSAFE_TODO(return fRenderSteps[index].get());
     }
     template<typename... Args>
     void initRenderer(Renderer* member, Args... args) {
