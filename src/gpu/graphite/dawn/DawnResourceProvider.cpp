@@ -686,7 +686,11 @@ wgpu::BindGroup DawnResourceProvider::findOrCreateSingleUniformBindGroup(
 
     wgpu::BindGroupEntry storageBufferNullEntry;
     storageBufferNullEntry.binding = DawnGraphicsPipeline::kStorageBufferIndex;
-    storageBufferNullEntry.buffer  = this->getOrCreateNullBuffer();
+    if (this->dawnSharedContext()->caps()->storageBufferSupport()) {
+        storageBufferNullEntry.buffer = this->getOrCreateNullBuffer();
+    } else {
+        storageBufferNullEntry.textureView = this->getOrCreateNullTextureView();
+    }
 
     std::array<wgpu::BindGroupEntry, kNumUniformEntries> entries = {
         intrinsicConstantNullEntry,
