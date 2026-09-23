@@ -578,9 +578,11 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
     SkASSERT(RenderStep::IsValidRenderStepID(rawKeyData[0]));
     RenderStep::RenderStepID renderStepID = static_cast<RenderStep::RenderStepID>(rawKeyData[0]);
 
-    *pipelineDesc = GraphicsPipelineDesc(renderStepID, UniquePaintParamsID(rawKeyData[1]));
+    *pipelineDesc =
+            GraphicsPipelineDesc(renderStepID,
+                                 UniquePaintParamsID(SK_UNSAFE_TODO(rawKeyData[1])));
 
-    const uint32_t rpDescBits = rawKeyData[2];
+    const uint32_t rpDescBits = SK_UNSAFE_TODO(rawKeyData[2]);
     TextureFormat colorFormat =
             static_cast<TextureFormat>((rpDescBits >> kColorFormatOffset) & kFormatMask);
     SampleCount colorSamples =
@@ -624,7 +626,7 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
     }
 
     renderPassDesc->fSampleCount = colorSamples;
-    renderPassDesc->fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[3]);
+    renderPassDesc->fWriteSwizzle = SwizzleCtorAccessor::Make(SK_UNSAFE_TODO(rawKeyData[3]));
     renderPassDesc->fDstReadStrategy = this->getDstReadStrategy();
 
     return true;
