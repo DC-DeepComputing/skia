@@ -20,8 +20,7 @@ namespace skgpu {
 class UniqueKey;
 }
 
-class SkExecutor;
-class SkTaskGroup;
+#include "src/core/SkTaskGroup.h"
 
 namespace skgpu::graphite {
 
@@ -36,7 +35,7 @@ class SharedContext;
 
 class PipelineManager {
 public:
-    PipelineManager(SkExecutor* executor);
+    PipelineManager(CallbackExecutor* executor);
     ~PipelineManager();
 
     // If an existing Pipeline is found, it is just wrapped in a Handle and returned.
@@ -97,15 +96,16 @@ private:
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
 
-    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
+    std::unique_ptr<SkCallbackTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
 
     void signalCompleted(PipelineCreationTask*);
     void potentiallyWaitOn(SharedContext*, PipelineCreationTask*);
 
+public:
     static void InlineCompile(SharedContext* sharedContext,
                               PipelineManager* pipelineManager,
                               PipelineCreationTask* task);
-
+private:
     // We have the mutex and condition_variable here to limit the number of
     // mutexes/semaphores we need for synchronizing access to the pipelines.
     // The Context thread is the only place that resolves handles so we will only

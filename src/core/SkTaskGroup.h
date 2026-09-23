@@ -17,38 +17,38 @@
 #include <functional>
 #include <memory>
 
+template <typename ExecutorType>
 class SkTaskGroup : SkNoncopyable {
 public:
     // Tasks added to this SkTaskGroup will run on its executor.
-    explicit SkTaskGroup(SkExecutor& executor = SkExecutor::GetDefault());
-    ~SkTaskGroup() { this->wait(); }
+    explicit SkTaskGroup(ExecutorType& executor = ExecutorType::GetDefault());
+    ~SkTaskGroup() { this->wait1(); }
 
     // Add a task to this SkTaskGroup.
-    void add(std::function<void(void)> fn);
-    void add(std::function<void(void)> fn, int workList);
+    void add1(ExecutorType::WorkType work, int workList = 0);
 
-    void discardAllPendingWork();
-
-    // Add a batch of N tasks, all calling fn with different arguments.
-    void batch(int N, std::function<void(int)> fn);
+    void discardAllPendingWork1();
 
     // Returns true if all Tasks previously add()ed to this SkTaskGroup have run.
     // It is safe to reuse this SkTaskGroup once done().
-    bool done() const;
+    bool done1() const;
 
     // Block until done().
-    void wait();
+    void wait1();
 
     // A convenience for testing tools.
     // Creates and owns a thread pool, and passes it to SkExecutor::SetDefault().
     struct Enabler {
         explicit Enabler(int threads = -1);  // -1 -> num_cores, 0 -> noop
-        std::unique_ptr<SkExecutor> fThreadPool;
+        std::unique_ptr<ExecutorType> fThreadPool;
     };
 
 private:
     std::atomic<int32_t> fPending;
-    SkExecutor&          fExecutor;
+    ExecutorType&        fExecutor;
 };
+
+typedef SkTaskGroup<StdFunctionExecutor> SkStdFunctionTaskGroup;
+typedef SkTaskGroup<CallbackExecutor> SkCallbackTaskGroup;
 
 #endif//SkTaskGroup_DEFINED

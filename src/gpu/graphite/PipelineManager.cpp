@@ -49,9 +49,9 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager(SkExecutor* executor) {
+PipelineManager::PipelineManager(CallbackExecutor* executor) {
     if (executor) {
-        fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
+        fTaskGroup = std::make_unique<SkCallbackTaskGroup>(*executor);
     }
 }
 
@@ -156,6 +156,13 @@ void PipelineManager::InlineCompile(SharedContext* sharedContext,
     pipelineManager->removeTask(task);
 }
 
+static void foo(void* context) {
+    PipelineCreationTask* task = static_cast<PipelineCreationTask*>(context);
+
+//    InlineCompile(sharedContext, this, task);
+    PipelineManager::InlineCompile(nullptr, nullptr, task);
+}
+
 void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
                                         sk_sp<PipelineCreationTask> task,
                                         Priority priority) {
@@ -180,7 +187,8 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
                                                       : kHighPriorityWorkList;
 
-            fTaskGroup->add(std::move(compileTask), workList);
+//            fTaskGroup->add(std::move(compileTask), workList);
+            fTaskGroup->add1({ foo, task.get() }, workList);
             return;
         }
     }
@@ -213,7 +221,7 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(SharedContext* sharedCont
 
 void PipelineManager::shutDown() {
     // We null out 'fTaskGroup' so no more threaded work can be added after this point.
-    std::unique_ptr<SkTaskGroup> tmp;
+    std::unique_ptr<SkCallbackTaskGroup> tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
         tmp = std::move(fTaskGroup);
@@ -223,7 +231,7 @@ void PipelineManager::shutDown() {
         // of the SharedContext and the PipelineManager (this).
         // TODO(robertphillips) We could discard any unstarted tasks but would need a way to
         // have them still remove themselves from the task list.
-        tmp->wait();
+        tmp->wait1();
     }
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
@@ -234,7 +242,7 @@ void PipelineManager::shutDown() {
 
 #if defined(GPU_TEST_UTILS)
 void PipelineManager::wait_TestOnly() {
-    SkTaskGroup* tmp;
+    SkCallbackTaskGroup* tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
         tmp = fTaskGroup.get();
@@ -243,7 +251,7 @@ void PipelineManager::wait_TestOnly() {
     // the unit tests know what they're doing (i.e., don't delete the owning Context while
     // in this method).
     if (tmp) {
-        tmp->wait();
+        tmp->wait1();
     }
 }
 
