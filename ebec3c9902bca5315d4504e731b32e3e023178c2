@@ -16,6 +16,75 @@
       "message": "PTAL",
       "revId": "ebec3c9902bca5315d4504e731b32e3e023178c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7028fb85_96bce82f",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-23T20:35:58Z",
+      "side": 1,
+      "message": "nit: could this all be snake case? don\u0027t know about mixing the two naming styles and it seems static functions are usually all snake case.",
+      "range": {
+        "startLine": 321,
+        "startChar": 21,
+        "endLine": 321,
+        "endChar": 53
+      },
+      "revId": "ebec3c9902bca5315d4504e731b32e3e023178c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "584fda93_4125b387",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-23T20:35:58Z",
+      "side": 1,
+      "message": "Could we rename to `fShaderReadOnlyLayoutSrcStageMask` to disambiguate from read only access flags.",
+      "range": {
+        "startLine": 230,
+        "startChar": 25,
+        "endLine": 230,
+        "endChar": 52
+      },
+      "revId": "ebec3c9902bca5315d4504e731b32e3e023178c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8357d961_a89f370d",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-23T20:35:58Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 277,
+        "startChar": 12,
+        "endLine": 277,
+        "endChar": 101
+      },
+      "revId": "ebec3c9902bca5315d4504e731b32e3e023178c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
