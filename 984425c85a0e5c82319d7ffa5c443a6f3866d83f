@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6eb1e3_b98c7a39",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-23T21:45:13Z",
+      "side": 1,
+      "message": "This is the region that we want to apply the fast path too, right? Could we encode this with cell ID in the vertex shader instead of having to inspect the coordinates?",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 54,
+        "endChar": 31
+      },
+      "revId": "984425c85a0e5c82319d7ffa5c443a6f3866d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
