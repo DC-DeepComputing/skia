@@ -8,12 +8,16 @@
 #include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/task/Task.h"
 #include "tests/ComparePixels.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -129,4 +133,84 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(RecordingOrderTest_Graphite, reporter, 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     (void) run_test(reporter, context, recorder.get());
+}
+
+class FailingTask final : public Task {
+public:
+    Status prepareResources(ResourceProvider*, ScratchResourceManager*,
+                            sk_sp<const RuntimeEffectDictionary>) override {
+        return Status::kFail;
+    }
+    Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override {
+        return Status::kFail;
+    }
+};
+
+// Test scenario where an upload recording actually FAILS to snap (Recorder::snap returns nullptr).
+// Submitting only a subsequent Recording B (which draws surface A into surface B) demonstrates upload loss on snap failure.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DroppedUploadRecordingTest_Graphite, reporter, context,
+                                         CtsEnforcement::kNever) {
+    printf("new test=========\n");
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+
+    SkBitmap srcBitmap;
+    srcBitmap.allocN32Pixels(32, 32);
+    srcBitmap.eraseColor(SkColors::kRed);
+
+    SkImageInfo imageInfo = SkImageInfo::MakeN32Premul(32, 32);
+    sk_sp<SkSurface> surfaceA = SkSurfaces::RenderTarget(recorder.get(), imageInfo);
+    if (!surfaceA) {
+        ERRORF(reporter, "Failed to create surface A");
+        return;
+    }
+
+    // Recording A: writes pixels into surface A via writePixels, making surface A dependent on an
+    // upload task.
+    surfaceA->getCanvas()->writePixels(srcBitmap, 0, 0);
+
+    // Inject a failing task into the recorder so that Recording A fails to snap. Losing the upload
+    // task.
+    recorder->priv().add(sk_make_sp<FailingTask>());
+
+    std::unique_ptr<Recording> recordingA = recorder->snap();
+    REPORTER_ASSERT(reporter, recordingA == nullptr, "Expected recordingA to fail snapping");
+
+    // Recording B: Draw surface A into surface B to create a dependency on surface A.
+    sk_sp<SkSurface> surfaceB = SkSurfaces::RenderTarget(recorder.get(), imageInfo);
+    if (!surfaceB) {
+        ERRORF(reporter, "Failed to create surface B");
+        return;
+    }
+    surfaceA->draw(surfaceB->getCanvas(), 0, 0);
+
+    std::unique_ptr<Recording> recordingB = recorder->snap();
+    if (!recordingB) {
+        ERRORF(reporter, "Failed to snap recording B");
+        return;
+    }
+
+    // We snapped recording A so we lost the upload task in the root upload list, however when
+    // using surface A in recording B, we should recognize the upload never occured and still
+    // perform it.
+    InsertRecordingInfo info;
+    info.fRecording = recordingB.get();
+    context->insertRecording(info);
+    context->submit();
+
+    // Read back pixels from surface B, expecting the result to be the upload result due to the
+    // upload task dependency.
+    SkBitmap resultB;
+    resultB.allocN32Pixels(32, 32);
+    SkPixmap pmB;
+    SkAssertResult(resultB.peekPixels(&pmB));
+    if (!surfaceB->readPixels(pmB, 0, 0)) {
+        ERRORF(reporter, "readPixels from surface B failed");
+        return;
+    }
+
+    SkColor4f resultColor = pmB.getColor4f(16, 16);
+    REPORTER_ASSERT(reporter, resultColor == SkColors::kRed,
+                    "Expected red pixels but got (%f, %f, %f, %f) because writePixels "
+                    "upload task was dropped and the dependency wasn't tracked.",
+                    resultColor.fR, resultColor.fG, resultColor.fB, resultColor.fA);
 }
