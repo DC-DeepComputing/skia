@@ -9,6 +9,7 @@
 
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkStream.h"
+#include "include/private/SkAttributes.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/Caps.h"
@@ -39,7 +40,7 @@ constexpr bool is_valid_samplecount(uint32_t sampleCount) {
         return false;
     }
 
-    if (0 != memcmp(magic, kMagic, sizeof(kMagic))) {
+    if (0 != SK_UNSAFE_TODO(memcmp(magic, kMagic, sizeof(kMagic)))) {
         return false;
     }
 
@@ -514,7 +515,7 @@ void DumpPipelineDesc(const Caps* caps,
                       const RenderPassDesc& renderPassDesc) {
     SkString pipelineStr = pipelineDesc.toString(caps, shaderCodeDictionary);
     SkString renderPassStr = renderPassDesc.toPipelineLabel();
-    SkDebugf("%s: %s - %s\n", label, pipelineStr.c_str(), renderPassStr.c_str());
+    SK_UNSAFE_TODO(SkDebugf("%s: %s - %s\n", label, pipelineStr.c_str(), renderPassStr.c_str()));
 }
 
 bool ComparePipelineDescs(const GraphicsPipelineDesc& a1, const RenderPassDesc& b1,
