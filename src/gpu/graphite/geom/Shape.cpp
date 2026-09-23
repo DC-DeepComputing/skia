@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAlign.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
 #include "src/core/SkPathPriv.h"
@@ -164,20 +165,20 @@ void write_path_key_from_data(const SkPath& path, uint32_t* origKey) {
     SkSpan<const float> conics = path.conicWeights();
     SkASSERT(verbs.size() <= kMaxKeyFromDataVerbCnt);
     SkASSERT(points.size() && verbs.size());
-    *key++ = SkToInt(verbs.size());
-    memcpy(key, verbs.data(), verbs.size_bytes());
+    *SK_UNSAFE_TODO(key++ = SkToInt(verbs.size()));
+    SK_UNSAFE_TODO(memcpy(key, verbs.data(), verbs.size_bytes()));
     const size_t verbKeySize = SkAlign4(verbs.size());
     // pad out to uint32_t alignment using value that will stand out when debugging.
-    uint8_t* pad = reinterpret_cast<uint8_t*>(key)+ verbs.size();
-    memset(pad, 0xDE, verbKeySize - verbs.size());
-    key += verbKeySize >> 2;
+    uint8_t* pad = SK_UNSAFE_TODO(reinterpret_cast<uint8_t*>(key) + verbs.size());
+    SK_UNSAFE_TODO(memset(pad, 0xDE, verbKeySize - verbs.size()));
+    SK_UNSAFE_TODO(key += verbKeySize >> 2);
 
-    memcpy(key, points.data(), points.size_bytes());
+    SK_UNSAFE_TODO(memcpy(key, points.data(), points.size_bytes()));
     static_assert(sizeof(SkPoint) == 2 * sizeof(uint32_t));
-    key += 2 * points.size();
+    SK_UNSAFE_TODO(key += 2 * points.size());
     sk_careful_memcpy(key, conics.data(), conics.size_bytes());
     static_assert(sizeof(SkScalar) == sizeof(uint32_t));
-    SkDEBUGCODE(key += conics.size());
+    SK_UNSAFE_TODO(SkDEBUGCODE(key += conics.size()));
     SkASSERT(key - origKey == path_key_from_data_size(path));
 }
 } // anonymous namespace
@@ -224,9 +225,9 @@ void Shape::writeKey(uint32_t* key, bool includeInverted) const {
     SkASSERT(this->keySize());
     SkDEBUGCODE(uint32_t* origKey = key;)
 
-    // Every key starts with the state from the Shape (this includes path fill type,
-    // and any tracked inversion, as well as the class of geometry).
-    *key++ = this->stateKey(includeInverted);
+            // Every key starts with the state from the Shape (this includes path fill type,
+            // and any tracked inversion, as well as the class of geometry).
+            * SK_UNSAFE_TODO(key++ = this->stateKey(includeInverted));
 
     switch(this->type()) {
         case Type::kPath: {
@@ -242,31 +243,31 @@ void Shape::writeKey(uint32_t* key, bool includeInverted) const {
                     write_path_key_from_data(this->path(), key);
                     return;
                 } else {
-                    *key++ = this->path().getGenerationID();
+                    *SK_UNSAFE_TODO(key++ = this->path().getGenerationID());
                 }
             }
             break;
         }
         case Type::kRect:
-            memcpy(key, &this->rect(), sizeof(Rect));
-            key += sizeof(Rect) / sizeof(uint32_t);
+            SK_UNSAFE_TODO(memcpy(key, &this->rect(), sizeof(Rect)));
+            SK_UNSAFE_TODO(key += sizeof(Rect) / sizeof(uint32_t));
             break;
         case Type::kRRect:
             this->rrect().writeToMemory(key);
-            key += SkRRect::kSizeInMemory / sizeof(uint32_t);
+            SK_UNSAFE_TODO(key += SkRRect::kSizeInMemory / sizeof(uint32_t));
             break;
         case Type::kArc: {
             // Write dense floats first
-            memcpy(key, &fArc, sizeof(SkRect) + 2 * sizeof(float));
-            key += (sizeof(SkArc) / sizeof(uint32_t) - 1);
+            SK_UNSAFE_TODO(memcpy(key, &fArc, sizeof(SkRect) + 2 * sizeof(float)));
+            SK_UNSAFE_TODO(key += (sizeof(SkArc) / sizeof(uint32_t) - 1));
             // Then write the final bool as an int, to make sure upper bits are set
-            *key++ = fArc.isWedge() ? 1 : 0;
+            *SK_UNSAFE_TODO(key++ = fArc.isWedge() ? 1 : 0);
             break;
         }
         case Type::kLine: {
             skvx::float4 line = this->line();
-            memcpy(key, &line, sizeof(skvx::float4));
-            key += sizeof(skvx::float4) / sizeof(uint32_t);
+            SK_UNSAFE_TODO(memcpy(key, &line, sizeof(skvx::float4)));
+            SK_UNSAFE_TODO(key += sizeof(skvx::float4) / sizeof(uint32_t));
             break;
         }
         default:

@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkAttributes.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -99,11 +100,13 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
                 SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 
         static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
-        TRACE_EVENT_INSTANT2("skia.gpu",
-                             TRACE_STR_STATIC(kNames[forPrecompile]),
-                             TRACE_EVENT_SCOPE_THREAD,
-                             "key", pipelineKey.hash(),
-                             "compilationID", compilationID);
+        SK_UNSAFE_TODO(TRACE_EVENT_INSTANT2("skia.gpu",
+                                            TRACE_STR_STATIC(kNames[forPrecompile]),
+                                            TRACE_EVENT_SCOPE_THREAD,
+                                            "key",
+                                            pipelineKey.hash(),
+                                            "compilationID",
+                                            compilationID));
 #endif
 
         pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
