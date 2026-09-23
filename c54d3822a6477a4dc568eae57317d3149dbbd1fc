@@ -33,6 +33,75 @@
       "message": "Note: reproduced the issue with the included test, and verified that the data tag resolves the issue.",
       "revId": "c54d3822a6477a4dc568eae57317d3149dbbd1fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fb06944_fa75d105",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-23T12:14:53Z",
+      "side": 1,
+      "message": "(for kSDF) ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 35,
+        "endLine": 72,
+        "endChar": 38
+      },
+      "revId": "c54d3822a6477a4dc568eae57317d3149dbbd1fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea35de2_dceac217",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-23T12:14:53Z",
+      "side": 1,
+      "message": "(for kBitmap) ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 77,
+        "endLine": 72,
+        "endChar": 79
+      },
+      "revId": "c54d3822a6477a4dc568eae57317d3149dbbd1fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69346032_9244c5bd",
+        "filename": "src/gpu/ganesh/ops/SmallPathShapeData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-23T12:14:53Z",
+      "side": 1,
+      "message": "Any thoughts on whether this needs to be 25 now ?",
+      "range": {
+        "startLine": 74,
+        "startChar": 30,
+        "endLine": 74,
+        "endChar": 32
+      },
+      "revId": "c54d3822a6477a4dc568eae57317d3149dbbd1fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
