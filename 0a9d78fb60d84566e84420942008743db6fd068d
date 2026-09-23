@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3353fff_4a4b8aa3",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-23T17:25:06Z",
+      "side": 1,
+      "message": "Yes, the easiest way to do that would be the first approach where the new flipping code is guarded by !defined(FLAG). You just have to land a change in Chrome that defines the FLAG first (one line CL to src/config/SkUserConfig.h).  Then when this main CL lands in Skia, Skia\u0027s waterfall will use the new behavior and Chrome will use the old behavior until we remove the define from SkuserConfig.h in chromium\u0027s repo.\n\nOtherwise, it is possible to configure certain builds on our tree to add extra defines but I don\u0027t think that\u0027s warranted here. We usually reserve that for an in-progress staging that will take quite a long time to migrate to the new behavior so we want to preserve testing both ways.",
+      "parentUuid": "df55e485_1339a050",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 6
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c47e9d5a_db8b7913",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 6
@@ -293,6 +317,30 @@
       "side": 1,
       "message": "Now it failed with `kRGB_565`. I think CopyAsDraw will return null in this case, no renderable_colortype.",
       "parentUuid": "48631b34_8e8abdbd",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3e150c3_fef63d5f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-23T17:25:06Z",
+      "side": 1,
+      "message": "kRGB_565 colortype should be considered renderable (so renderable_colortype takes the default branch and returns kRGB_565). However, if that\u0027s then failing, it means that the TextureFormat::kR5_G6_B5 or kB5_G6_R5 are not renderable on the hardware you\u0027re testing.  It is plausible for some hardware to let you create a 565 sampleable texture but not let you render to it (in that case Graphite\u0027s behavior is to fail, whereas Ganesh would start making guesses about switching to a different format with different components and precision potentially). \n\nIf you\u0027re testing a Dawn config, that\u0027s expected because Dawn/webgpu do not have 565 formats at all (but then I don\u0027t know how you\u0027d get the 565 source texture in the first place).",
+      "parentUuid": "9caeb74b_a02d26ef",
       "range": {
         "startLine": 867,
         "startChar": 0,

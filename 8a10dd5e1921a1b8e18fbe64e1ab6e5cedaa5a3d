@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c67bdec_c3e08cb9",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-23T17:25:06Z",
+      "side": 1,
+      "message": "Does setting `view \u003d AsView(flattened)` and setting `srcColorInfo \u003d dstColorInfo` let us then fall through to the code below that happens outside of the if instead of needing to add a separate call to asyncReadTexture()?\n\n(and if we can move the `tryGpuConversion` logic into this function, then this would also be where we update `xferFn` to match the new format and dst color info, although we can at least assume that the colorspace operations are the identity at this point).",
+      "range": {
+        "startLine": 445,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 31
+      },
+      "revId": "8a10dd5e1921a1b8e18fbe64e1ab6e5cedaa5a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34c0d6de_8d20ace6",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-23T17:25:06Z",
+      "side": 1,
+      "message": "Let\u0027s try and move this logic into the `if (!view || ...) ` code in `asyncReadPixels` (since that takes an SkImage, we know its texture proxy view is texturable already, and the only other place that calls asyncReadTexture directly cannot be an SkImage so we know it\u0027s not going to be texturable so wouldn\u0027t be taking this code path anyways).",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 33
+      },
+      "revId": "8a10dd5e1921a1b8e18fbe64e1ab6e5cedaa5a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "418425bd_74e8cbab",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-23T17:25:06Z",
+      "side": 1,
+      "message": "This is a good point, and one I missed when I claimed that the `CopyAsDraw()` codepath above in `asyncReadPixels()` would always be able to use the identity transform. I think we\u0027ll need to rebuild the TextureFormatXferFn again in that case, but that\u0027s not that expensive to do.",
+      "range": {
+        "startLine": 517,
+        "startChar": 0,
+        "endLine": 520,
+        "endChar": 85
+      },
+      "revId": "8a10dd5e1921a1b8e18fbe64e1ab6e5cedaa5a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
