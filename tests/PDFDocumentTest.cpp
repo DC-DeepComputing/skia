@@ -269,7 +269,7 @@ DEF_TEST(SkPDF_abort_jobs, rep) {
     b.allocN32Pixels(612, 792);
     b.eraseColor(0x4F9643A0);
     SkPDF::Metadata metadata = SkPDF::JPEG::MetadataWithCallbacks();
-    std::unique_ptr<SkExecutor> executor = SkExecutor::MakeFIFOThreadPool();
+    std::unique_ptr<StdFunctionExecutor> executor = StdFunctionExecutor::MakeFIFOThreadPool();
     metadata.fExecutor = executor.get();
     SkNullWStream dst;
     auto doc = SkPDF::MakeDocument(&dst, metadata);
