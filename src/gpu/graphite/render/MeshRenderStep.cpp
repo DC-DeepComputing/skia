@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/render/MeshRenderStep.h"
 
+#include "include/private/SkAttributes.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 
 #include "include/private/SkAssert.h"
@@ -69,24 +70,26 @@ std::string MeshRenderStep::vertexSkSL(const RootNodesInfo& roots) const {
     // and varying.
     std::string attrs = "Attributes attributes;\n";
     for (const auto& attr : spec->attributes()) {
-        attrs += SkSL::String::printf("attributes.%s = %s;\n",
-                                      attr.name.c_str(), attr.name.c_str());
+        attrs += SK_UNSAFE_TODO(SkSL::String::printf(
+                "attributes.%s = %s;\n", attr.name.c_str(), attr.name.c_str()));
     }
 
     std::string varyingAssignments;
     for (const auto& v : SkMeshSpecificationPriv::Varyings(*spec)) {
-        varyingAssignments += SkSL::String::printf("%s%s = varyings.%s;\n",
-                                                   v.name.c_str(), kMeshVaryingMangleSuffix,
-                                                   v.name.c_str());
+        varyingAssignments += SK_UNSAFE_TODO(SkSL::String::printf(
+                "%s%s = varyings.%s;\n", v.name.c_str(), kMeshVaryingMangleSuffix, v.name.c_str()));
     }
 
-    return SkSL::String::printf("%s\n"
-                                "Varyings varyings = %s(attributes);\n"
-                                "float4 devPosition"
-                                "       = localToDevice * float4(varyings.position, depth, 1.0);\n"
-                                "stepLocalCoords = varyings.position;\n"
-                                "%s", attrs.c_str(), kMeshVSMainName,
-                                varyingAssignments.c_str());
+    SK_UNSAFE_TODO(return SkSL::String::printf(
+            "%s\n"
+            "Varyings varyings = %s(attributes);\n"
+            "float4 devPosition"
+            "       = localToDevice * float4(varyings.position, depth, 1.0);\n"
+            "stepLocalCoords = varyings.position;\n"
+            "%s",
+            attrs.c_str(),
+            kMeshVSMainName,
+            varyingAssignments.c_str()));
 }
 
 std::string MeshRenderStep::fragmentColorSkSL(const RootNodesInfo& roots) const {
@@ -97,9 +100,8 @@ std::string MeshRenderStep::fragmentColorSkSL(const RootNodesInfo& roots) const 
     // `ShaderInfo::generateFragmentSkSL` following the same varying name mangling.
     std::string s = "Varyings varyings;\n";
     for (const auto& v : SkMeshSpecificationPriv::Varyings(*spec)) {
-        s += SkSL::String::printf("varyings.%s = %s%s;\n",
-                                  v.name.c_str(), v.name.c_str(),
-                                  kMeshVaryingMangleSuffix);
+        s += SK_UNSAFE_TODO(SkSL::String::printf(
+                "varyings.%s = %s%s;\n", v.name.c_str(), v.name.c_str(), kMeshVaryingMangleSuffix));
     }
 
     bool needsColorConversion = SkMeshSpecificationPriv::GetColorType(*spec)
@@ -112,15 +114,15 @@ std::string MeshRenderStep::fragmentColorSkSL(const RootNodesInfo& roots) const 
 
     // Check if the mesh FS should have a primitive color output parameter.
     bool hasColorOutput = SkMeshSpecificationPriv::HasColors(*spec);
-    std::string methodCall = hasColorOutput ? SkSL::String::printf("%s(varyings, %s)",
-                                                                   kMeshFSMainName,
-                                                                   outColorName.c_str())
-                                            : SkSL::String::printf("%s(varyings)",
-                                                                   kMeshFSMainName);
+    std::string methodCall =
+            hasColorOutput ? SK_UNSAFE_TODO(SkSL::String::printf(
+                                     "%s(varyings, %s)",
+                                     kMeshFSMainName,
+                                     outColorName.c_str()) : SkSL::String::printf("%s(varyings)",
+                                                                                  kMeshFSMainName));
 
-    s += SkSL::String::printf("float2 %s = %s;\n",
-                              kMeshFSLocalCoordsName,
-                              methodCall.c_str());
+    s += SK_UNSAFE_TODO(
+            SkSL::String::printf("float2 %s = %s;\n", kMeshFSLocalCoordsName, methodCall.c_str()));
     if (needsColorConversion) {
         s += "primitiveColor = half4(" + outColorName + ");\n";
     }
@@ -142,15 +144,15 @@ void MeshRenderStep::writeVertices(DrawWriter* writer,
     auto* cpuVertexBuffer = static_cast<const SkMeshPriv::CpuVertexBuffer*>(mesh.vertexBuffer());
     size_t vertexStride = spec->stride();
     size_t vertexCount = mesh.vertexCount();
-    const uint8_t* vertexData = static_cast<const uint8_t*>(
-                                    cpuVertexBuffer->peek()) + mesh.vertexOffset();
+    const uint8_t* vertexData = SK_UNSAFE_TODO(
+            static_cast<const uint8_t*>(cpuVertexBuffer->peek()) + mesh.vertexOffset());
 
     const uint16_t* indices = nullptr;
     size_t indexCount = mesh.indexCount();
     if (mesh.indexBuffer()) {
         auto* cpuIndexBuffer = static_cast<const SkMeshPriv::CpuIndexBuffer*>(mesh.indexBuffer());
-        indices = reinterpret_cast<const uint16_t*>(static_cast<const uint8_t*>(
-                            cpuIndexBuffer->peek()) + mesh.indexOffset());
+        indices = reinterpret_cast<const uint16_t*>(SK_UNSAFE_TODO(
+                static_cast<const uint8_t*>(cpuIndexBuffer->peek()) + mesh.indexOffset()));
     }
 
     DrawWriter::Vertices verts(*writer);
@@ -162,13 +164,13 @@ void MeshRenderStep::writeVertices(DrawWriter* writer,
         VertexWriter vertWriter = verts.append(3);
         for (uint32_t i = 0; i < 3; ++i) {
             uint32_t vertIndex = i == 0 ? state.f0 : (i == 1 ? state.f1 : state.f2);
-            const uint8_t* vertexDataBase = vertexData + vertIndex * vertexStride;
+            const uint8_t* vertexDataBase = SK_UNSAFE_TODO(vertexData + vertIndex * vertexStride);
 
             vertWriter << ssboIndex;
             for (const SkMeshSpecification::Attribute& attr : spec->attributes()) {
                 vertWriter << VertexWriter::Array(
-                                    vertexDataBase + attr.offset,
-                                    SkMeshSpecificationPriv::AttrTypeByteSize(attr.type));
+                        SK_UNSAFE_TODO(vertexDataBase + attr.offset),
+                        SkMeshSpecificationPriv::AttrTypeByteSize(attr.type));
             }
         }
     }
@@ -210,7 +212,7 @@ void MeshRenderStep::writeUniformsAndTextures(const DrawParams& params,
         gatherer->write(Uniform(nullptr,
                                 ShaderCodeDictionary::UniformTypeToSkSLType(u),
                                 u.isArray() ? u.count : Uniform::kNonArray),
-                        transformedUniforms->bytes() + u.offset);
+                        SK_UNSAFE_TODO(transformedUniforms->bytes() + u.offset));
     }
 }
 
