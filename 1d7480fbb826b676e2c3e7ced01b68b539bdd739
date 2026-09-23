@@ -16,6 +16,24 @@
       "message": "LGTM.  I wonder if returning an error upon malformed `IEND` may have been needed for some specific reason in the past, but I can\u0027t recall specifics and landing this is probably the best way to find out.  The new behavior LGTM if we can get away with it.",
       "revId": "1d7480fbb826b676e2c3e7ced01b68b539bdd739",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b26ed25c_06a0e19a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-23T17:21:49Z",
+      "side": 1,
+      "message": "Note that `finish_decoding` is a no-op on Chrome (guarded with the `for_android` flag in `FFI.rs`), and Chrome does not have `partialDecode` (no subsetting or sampling). \n\nSo I think this CL only affects this behavior in AOSP: Chrome was already not returning an error upon malformed `IEND` since `finish_decoding` doesn’t do anything.\n\nThe behavior is being changed to match libpng here, so hopefully it means the change should continue on passing the CTS suite just fine (tested locally and it does).\n\nAlso had to fix a merge conflict so it’ll need your review again, sorry!",
+      "parentUuid": "820de12f_04a483a9",
+      "revId": "1d7480fbb826b676e2c3e7ced01b68b539bdd739",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
