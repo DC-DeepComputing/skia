@@ -109,11 +109,15 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
         SkASSERT(desc.fDepthStencilAttachment.fSampleCount == desc.fSampleCount);
     }
 
-    return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes),
-                                                    desc,
-                                                    std::move(target),
-                                                    std::move(dstCopy),
-                                                    dstReadBounds));
+    sk_sp<RenderPassTask> task(new RenderPassTask(std::move(passes),
+                                                   desc,
+                                                   std::move(target),
+                                                   std::move(dstCopy),
+                                                   dstReadBounds));
+    if (task->fTarget) {
+        task->fTarget->addPendingTask(task);
+    }
+    return task;
 }
 
 RenderPassTask::RenderPassTask(DrawPassList passes,
@@ -284,6 +288,9 @@ Task::Status RenderPassTask::addCommands(Context* context,
                                      resolveOffset,
                                      fTarget->dimensions(),
                                      fDrawPasses)) {
+        if (fTarget) {
+            fTarget->markTasksSubmitted();
+        }
         return Status::kSuccess;
     } else {
         return Status::kFail;
