@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "820de12f_04a483a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-23T16:26:09Z",
+      "side": 1,
+      "message": "LGTM.  I wonder if returning an error upon malformed `IEND` may have been needed for some specific reason in the past, but I can\u0027t recall specifics and landing this is probably the best way to find out.  The new behavior LGTM if we can get away with it.",
+      "revId": "1d7480fbb826b676e2c3e7ced01b68b539bdd739",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
