@@ -1226,7 +1226,8 @@ float4 analytic_rrect_blur_vertex_fn(int4 gridAndBevel,
                                      float4 bounds0,
                                      float4 bounds1,
                                      float4 bounds2,
-                                     float4 safeLimits,
+                                     float4 cornerSafeLimits,
+                                     uint canSaturateEdge,
                                      float2 drawPad,
                                      float4[2] rrectRadii,
                                      float depth,
@@ -1277,16 +1278,27 @@ float4 analytic_rrect_blur_vertex_fn(int4 gridAndBevel,
     // Saturate our bounds when we are far enough from the edge and within the corner safe bounds
     // of the other axis. This should usually result in the center cell and the 4 adjacent cells
     // being fully saturated.
-    bool isHorizontalEdgeSaturated = (cellX0 >= bounds0[1] && cellX1 <= bounds0[0] &&
-                                     cellY0 >= safeLimits.y && cellY1 <= safeLimits.w);
-    bool isVerticalEdgeSaturated = (cellX0 >= safeLimits.x && cellX1 <= safeLimits.z &&
-                                    cellY0 >= bounds1[3] && cellY1 <= bounds1[2]);
+    bool isHorizontalEdgeInsideSaturated = cellX0 >= bounds0[1] && cellX1 <= bounds0[0] &&
+                                    cellY0 >= cornerSafeLimits.y && cellY1 <= cornerSafeLimits.w;
+    bool isVerticalEdgeInsideSaturated = cellX0 >= cornerSafeLimits.x && cellX1 <= cornerSafeLimits.z &&
+                                    cellY0 >= bounds1[3] && cellY1 <= bounds1[2];
 
     const half kCornerActive = 1.0;
     const half kCornerInactive = 0.0;
     const half kInside = 0.5;
+    // Determines if we can skip CDF checks for an edge, resulting in only 1 sample instead of 4.
+    const half kEdgeSaturated = -1.0;
 
-    if (isHorizontalEdgeSaturated || isVerticalEdgeSaturated) {
+    // Mark each outer edge cell since this will allow us to skip samples (Left, Right, Top, Bottom)
+    if (cId == 10 && bool(canSaturateEdge & 1)) {
+        vFlags = half4(kEdgeSaturated, 0.0, 0.0, 0.0);
+    } else if (cId == 14 && bool(canSaturateEdge & 2)) {
+        vFlags = half4(0.0, kEdgeSaturated, 0.0, 0.0);
+    } else if (cId == 2 && bool(canSaturateEdge & 4)) {
+        vFlags = half4(0.0, 0.0, kEdgeSaturated, 0.0);
+    } else if (cId == 22 && bool(canSaturateEdge & 8)) {
+        vFlags = half4(0.0, 0.0, 0.0, kEdgeSaturated);
+    } else if (isHorizontalEdgeInsideSaturated || isVerticalEdgeInsideSaturated) {
         vFlags = half4(kInside);
     } else {
         // Determine which corner which may affect the blur for the current cell.
