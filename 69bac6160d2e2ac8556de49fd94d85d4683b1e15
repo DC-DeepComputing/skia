@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0501f370_9bc19b78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-23T23:00:49Z",
+      "side": 1,
+      "message": "LGTM.  Please note https://crbug.com/480993677 and `SkIcoRustCodec` (close to being code complete but A/B field trials in Chromium haven\u0027t started yet).",
+      "revId": "69bac6160d2e2ac8556de49fd94d85d4683b1e15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
