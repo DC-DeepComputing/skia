@@ -181,4 +181,9 @@ void VulkanComputePipeline::freeGpuData() {
     }
 }
 
+VkDescriptorType VulkanComputePipeline::bindingType(size_t index) const {
+    SkASSERT(index < fDescriptorData.size());
+    return DsTypeEnumToVkDs(fDescriptorData[index].fType);
+}
+
 }  // namespace skgpu::graphite
