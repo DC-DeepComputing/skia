@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c01e914_4948e6a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2026-09-23T15:14:58Z",
+      "side": 1,
+      "message": "I\u0027m not sure why the function isn\u0027t declared in VulkanGraphiteUtils.h but that is another thing we could change to fix this.",
+      "revId": "a780358ebb96acb7fdf5fcbe0df59457e63e95d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
