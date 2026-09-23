@@ -271,9 +271,12 @@ DDLTileHelper::DDLTileHelper(GrDirectContext* direct,
 
 void DDLTileHelper::createDDLsInParallel(SkPicture* picture) {
 #if 1
-    SkTaskGroup().batch(this->numTiles(), [&](int i) {
-        fTiles[i].createDDL(picture);
-    });
+    SkTaskGroup taskGroup;
+    for (TileData& tile : fTiles) {
+        taskGroup.add([&]() {
+            tile.createDDL(picture);
+        });
+    }
     SkTaskGroup().add([this]{ this->createComposeDDL(); });
     SkTaskGroup().wait();
 #else
