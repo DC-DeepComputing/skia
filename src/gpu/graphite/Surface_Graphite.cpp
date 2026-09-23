@@ -307,9 +307,9 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
     if (label.empty()) {
         label = "SkSurfaceWrappedTexture";
     }
-
-    sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    // TODO(nicolettep) use flag
+    sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
+            backendTex, ResourceUsage::kNotPredefined, label);
     if (!texture) {
         return nullptr;
     }

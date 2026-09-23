@@ -59,32 +59,38 @@ sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(
 
 sk_sp<Texture> ResourceProvider::findOrCreateShareableTexture(SkISize dimensions,
                                                               const TextureInfo& info,
+                                                              SkEnumBitMask<ResourceUsage> usages,
                                                               std::string_view label) {
-    return this->findOrCreateTexture(dimensions, info, label, Budgeted::kYes, Shareable::kYes);
+    return this->findOrCreateTexture(
+            dimensions, info, Budgeted::kYes, Shareable::kYes, usages, label);
 }
 
-sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensions,
-                                                                 const TextureInfo& info,
-                                                                 std::string_view label,
-                                                                 Budgeted budgeted) {
-    return this->findOrCreateTexture(dimensions, info, label, budgeted, Shareable::kNo);
+sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(
+        SkISize dimensions,
+        const TextureInfo& info,
+        Budgeted budgeted,
+        SkEnumBitMask<ResourceUsage> usages,
+        std::string_view label) {
+    return this->findOrCreateTexture(dimensions, info, budgeted, Shareable::kNo, usages, label);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
-        std::string_view label,
-        const ResourceCache::ScratchResourceSet& unavailable) {
+        const ResourceCache::ScratchResourceSet& unavailable,
+        SkEnumBitMask<ResourceUsage> usages,
+        std::string_view label) {
     return this->findOrCreateTexture(
-            dimensions, info, label, Budgeted::kYes, Shareable::kScratch, &unavailable);
+            dimensions, info, Budgeted::kYes, Shareable::kScratch, usages, label, &unavailable);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(
         SkISize dimensions,
         const TextureInfo& info,
-        std::string_view label,
         Budgeted budgeted,
         Shareable shareable,
+        SkEnumBitMask<ResourceUsage> usages,
+        std::string_view label,
         const ResourceCache::ScratchResourceSet* unavailable) {
     // If the resource is shareable it should be budgeted since it shouldn't be backing any client
     // owned object.
@@ -103,11 +109,11 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
     if (Resource* resource = fResourceCache->findAndRefResource(
-                key, budgeted, shareable, ResourceUsage::kNotPredefined, label, unavailable)) {
+                key, budgeted, shareable, usages, label, unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
-    if (auto tex = this->createTexture(dimensions, info, label)) {
+    if (auto tex = this->createTexture(dimensions, info, usages, label)) {
         fResourceCache->insertResource(tex.get(), key, budgeted, shareable);
         return tex;
     }
@@ -116,8 +122,9 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
 }
 
 sk_sp<Texture> ResourceProvider::createWrappedTexture(const BackendTexture& backendTexture,
+                                                      SkEnumBitMask<ResourceUsage> usages,
                                                       std::string_view label) {
-    sk_sp<Texture> texture = this->onCreateWrappedTexture(backendTexture, label);
+    sk_sp<Texture> texture = this->onCreateWrappedTexture(backendTexture, usages, label);
     SkASSERT(!texture || texture->ownership() == Ownership::kWrapped);
     return texture;
 }
@@ -141,7 +148,8 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
         }
     }
 
-    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, kBudgeted, kShareable, ResourceUsage::kNotPredefined)) {
         return sk_sp<Sampler>(static_cast<Sampler*>(resource));
     }
 

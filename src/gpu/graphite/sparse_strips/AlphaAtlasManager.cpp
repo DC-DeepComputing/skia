@@ -52,6 +52,7 @@ bool AlphaAtlasManager::createPageInSlot(int32_t slot, int32_t minRequiredBytes)
                                SkISize::Make(SparseStripConfig::kAtlasWidth, rows),
                                info,
                                Budgeted::kYes,
+                               ResourceUsage::kNotPredefined, // TODO update
                                "AlphaAtlas");
 
     if (!proxy) {

@@ -182,7 +182,7 @@ void ResourceCache::insertResource(Resource* resource,
 Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                                             Budgeted budgeted,
                                             Shareable shareable,
-                                            ResourceUsage usage,
+                                            SkEnumBitMask<ResourceUsage> usages,
                                             std::string_view label,
                                             const ScratchResourceSet* unavailable) {
     ASSERT_SINGLE_OWNER
@@ -226,7 +226,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                         resource->isProtected(), resource->gpuMemorySize(), Budgeted::kNo);
             }
             // It is safe to update non-shareable resources when returning them from the cache.
-            resource->updateUsageFlagsAndLabel(usage, label);
+            resource->updateUsageFlagsAndLabel(usages, label);
             resource->synchronizeBackendLabel();
         } else {
             // Shareable and scratch resources should never be requested as non-budgeted
@@ -236,7 +236,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
             // handled per the threadsafe label update model outlined in Resource.h. For now,
             // maintain original functionality by allowing label reassignment here.
             if (shareable == Shareable::kScratch) {
-                resource->updateUsageFlagsAndLabel(usage, label);
+                resource->updateUsageFlagsAndLabel(usages, label);
                 resource->synchronizeBackendLabel();
             } else {
                 // Shareable resource labels should never change after initial creation.

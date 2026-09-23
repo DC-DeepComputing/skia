@@ -52,7 +52,7 @@ public:
     // non-null and is used to filter the scratch resources that can fulfill this request.
     Resource* findAndRefResource(const GraphiteResourceKey& key,
                                  Budgeted, Shareable,
-                                 ResourceUsage = ResourceUsage::kNotPredefined,
+                                 SkEnumBitMask<ResourceUsage>,
                                  std::string_view label = {},
                                  const ScratchResourceSet* unavailable = nullptr);
 
