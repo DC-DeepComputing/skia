@@ -608,5 +608,6 @@ generate_cpp_files_for_headers(
         "SkJpegMultiPicture.h",
         "SkJpegSegmentScan.h",
         "SkRawCodec.h",
+        "SkDngDecoderWrapper.h",
     ],
 )

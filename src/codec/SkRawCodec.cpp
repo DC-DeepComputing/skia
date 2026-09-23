@@ -17,24 +17,30 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEncodedInfo.h"
-#include "include/private/SkMutex.h"
-#include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegCodec.h"
 #include "src/core/SkStreamPriv.h"
-#include "src/core/SkTaskGroup.h"
 
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
-#include <functional>
 #include <limits>
 #include <memory>
 #include <mutex>
-#include <type_traits>
 #include <utility>
+
+#if defined(SK_USE_DNG_WRAPPER)
+#include "src/codec/SkDngDecoderWrapper.h"
+#include <dlfcn.h>
+#else
+#include "include/private/SkMutex.h"
+#include "include/private/SkTArray.h"
+#include "src/core/SkTaskGroup.h"
+
+#include <functional>
+#include <type_traits>
 #include <vector>
 
 #include "dng_area_task.h"  // NO_G3_REWRITE
@@ -74,13 +80,22 @@
 #define OPT_PROGRESS_ARG ,dng_area_task_progress*
 #endif
 
-using namespace skia_private;
-
 template <typename T> struct sk_is_trivially_relocatable;
 template <> struct sk_is_trivially_relocatable<dng_exception> : std::true_type {};
+#endif
+
+using namespace skia_private;
+
+#if defined(SK_USE_DNG_WRAPPER)
+using uint64 = uint64_t;
+using uint8 = uint8_t;
+using uint32 = uint32_t;
+using int32 = int32_t;
+#endif
 
 namespace {
 
+#if !defined(SK_USE_DNG_WRAPPER)
 // Calculates the number of tiles of tile_size that fit into the area in vertical and horizontal
 // directions.
 dng_point num_tiles_in_area(const dng_point &areaSize,
@@ -197,6 +212,7 @@ public:
 private:
     using INHERITED = dng_host;
 };
+#endif
 
 // T must be unsigned type.
 template <class T>
@@ -277,7 +293,11 @@ public:
 
     uint64 getLength() override {
         if (!this->bufferMoreData(kReadToEnd)) {  // read whole stream
+#if defined(SK_USE_DNG_WRAPPER)
+            return 0;
+#else
             ThrowReadFile();
+#endif
         }
         return fStreamBuffer.bytesWritten();
     }
@@ -437,6 +457,122 @@ private:
     std::unique_ptr<SkStream> fStream;
 };
 
+#if defined(SK_USE_DNG_WRAPPER)
+struct DngDecoderProcs {
+    decltype(&DngDecoder_Create) create;
+    decltype(&DngDecoder_RenderInit) render_init;
+    decltype(&DngDecoder_RenderGetRow) render_get_row;
+    decltype(&DngDecoder_RenderDestroy) render_destroy;
+    decltype(&DngDecoder_Destroy) destroy;
+};
+
+static const DngDecoderProcs* GetDngDecoderProcs() {
+    static const DngDecoderProcs* sProcs = []() -> const DngDecoderProcs* {
+        void* handle = dlopen(SK_USE_DNG_WRAPPER, RTLD_NOW | RTLD_NODELETE);
+        if (!handle) {
+            SkCodecPrintf("Failed to dlopen %s: %s\n", SK_USE_DNG_WRAPPER, dlerror());
+            return nullptr;
+        }
+        auto* procs = new DngDecoderProcs();
+        procs->create = reinterpret_cast<decltype(&DngDecoder_Create)>(
+                dlsym(handle, "DngDecoder_Create"));
+        procs->render_init = reinterpret_cast<decltype(&DngDecoder_RenderInit)>(
+                dlsym(handle, "DngDecoder_RenderInit"));
+        procs->render_get_row = reinterpret_cast<decltype(&DngDecoder_RenderGetRow)>(
+                dlsym(handle, "DngDecoder_RenderGetRow"));
+        procs->render_destroy = reinterpret_cast<decltype(&DngDecoder_RenderDestroy)>(
+                dlsym(handle, "DngDecoder_RenderDestroy"));
+        procs->destroy = reinterpret_cast<decltype(&DngDecoder_Destroy)>(
+                dlsym(handle, "DngDecoder_Destroy"));
+
+        if (!procs->create || !procs->render_init || !procs->render_get_row ||
+            !procs->render_destroy || !procs->destroy) {
+            SkCodecPrintf("Failed to dlsym functions from %s\n", SK_USE_DNG_WRAPPER);
+            delete procs;
+            return nullptr;
+        }
+        return procs;
+    }();
+    return sProcs;
+}
+
+static size_t DngStream_Read(void* user_data, void* dst, size_t offset, size_t count) {
+    auto* stream = static_cast<SkRawStream*>(user_data);
+    if (!stream->read(dst, offset, count)) {
+        return 0;
+    }
+    return count;
+}
+
+static uint64_t DngStream_GetLength(void* user_data) {
+    auto* stream = static_cast<SkRawStream*>(user_data);
+    return stream->getLength();
+}
+
+class SkDngImage {
+public:
+    SkDngImage(DngImageHandle handle, const DngDecoderProcs* procs,
+               std::unique_ptr<SkRawStream> stream, const DngImageInfo& info)
+        : fHandle(handle)
+        , fProcs(procs)
+        , fStream(std::move(stream))
+        , fWidth(info.width)
+        , fHeight(info.height)
+        , fIsScalable(info.is_scalable)
+        , fIsXtransImage(info.is_xtrans) {}
+
+    ~SkDngImage() {
+        if (fHandle && fProcs) {
+            fProcs->destroy(fHandle);
+        }
+    }
+
+    int width() const { return fWidth; }
+    int height() const { return fHeight; }
+    bool isScalable() const { return fIsScalable; }
+    bool isXtransImage() const { return fIsXtransImage; }
+
+    DngRenderHandle renderInit(int target_w, int target_h, int* actual_w, int* actual_h) {
+        if (!fHandle || !fProcs) return nullptr;
+        return fProcs->render_init(fHandle, target_w, target_h, actual_w, actual_h);
+    }
+
+    bool renderGetRow(DngRenderHandle render_handle, int row_index, void* dst) {
+        if (!render_handle || !fProcs) return false;
+        return fProcs->render_get_row(render_handle, row_index, dst);
+    }
+
+    void renderDestroy(DngRenderHandle render_handle) {
+        if (render_handle && fProcs) {
+            fProcs->render_destroy(render_handle);
+        }
+    }
+
+    static bool IsTiffHeaderValid(SkRawStream* stream) {
+        const size_t kHeaderSize = 4;
+        unsigned char header[kHeaderSize];
+        if (!stream->read(header, 0 /* offset */, kHeaderSize)) {
+            return false;
+        }
+
+        bool littleEndian;
+        if (!SkCodecPriv::IsValidEndianMarker(header, &littleEndian)) {
+            return false;
+        }
+
+        return 0x2A == SkCodecPriv::GetEndianShort(header + 2, littleEndian);
+    }
+
+private:
+    DngImageHandle fHandle;
+    const DngDecoderProcs* fProcs;
+    std::unique_ptr<SkRawStream> fStream;
+    int fWidth;
+    int fHeight;
+    bool fIsScalable;
+    bool fIsXtransImage;
+};
+#else
 class SkPiexStream : public ::piex::StreamInterface {
 public:
     // Will NOT take the ownership of the stream.
@@ -681,6 +817,7 @@ private:
     bool fIsScalable;
     bool fIsXtransImage;
 };
+#endif
 
 /*
  * Tries to handle the image with PIEX. If PIEX returns kOk and finds the preview image, create a
@@ -701,6 +838,50 @@ std::unique_ptr<SkCodec> SkRawCodec::MakeFromStream(std::unique_ptr<SkStream> st
         rawStream = std::make_unique<SkRawBufferedStream>(std::move(stream));
     }
 
+#if defined(SK_USE_DNG_WRAPPER)
+    const DngDecoderProcs* procs = GetDngDecoderProcs();
+    if (!procs) {
+        *result = kUnimplemented;
+        return nullptr;
+    }
+
+    DngStreamOps streamOps;
+    streamOps.user_data = rawStream.get();
+    streamOps.read = DngStream_Read;
+    streamOps.get_length = DngStream_GetLength;
+
+    DngImageInfo imageInfo = {};
+    DngImageHandle handle = procs->create(&streamOps, &imageInfo);
+
+    if (imageInfo.preview.has_jpeg_preview && imageInfo.preview.preview_length > 0) {
+        if (handle) {
+            procs->destroy(handle);
+        }
+        auto memoryStream = rawStream->transferBuffer(imageInfo.preview.preview_offset,
+                                                      imageInfo.preview.preview_length);
+        if (!memoryStream) {
+            *result = kInvalidInput;
+            return nullptr;
+        }
+
+        std::unique_ptr<SkCodecs::ColorProfile> profile;
+        if (imageInfo.preview.is_adobe_rgb) {
+            profile = SkCodecs::ColorProfile::Make(
+                SkNamedTransferFn::k2Dot2, SkNamedGamut::kAdobeRGB);
+        }
+
+        return SkJpegCodec::MakeFromStream(std::move(memoryStream), result, std::move(profile));
+    }
+
+    if (!handle) {
+        *result = kInvalidInput;
+        return nullptr;
+    }
+
+    auto dngImage = std::make_unique<SkDngImage>(handle, procs, std::move(rawStream), imageInfo);
+    *result = kSuccess;
+    return std::unique_ptr<SkCodec>(new SkRawCodec(dngImage.release()));
+#else
     // Does not take the ownership of rawStream.
     SkPiexStream piexStream(rawStream.get());
     ::piex::PreviewImageData imageData;
@@ -750,6 +931,7 @@ std::unique_ptr<SkCodec> SkRawCodec::MakeFromStream(std::unique_ptr<SkStream> st
 
     *result = kSuccess;
     return std::unique_ptr<SkCodec>(new SkRawCodec(dngImage.release()));
+#endif
 }
 
 SkCodec::Result SkRawCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst,
@@ -757,6 +939,62 @@ SkCodec::Result SkRawCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst,
                                         int* rowsDecoded) {
     const int width = dstInfo.width();
     const int height = dstInfo.height();
+#if defined(SK_USE_DNG_WRAPPER)
+    int actual_width = 0;
+    int actual_height = 0;
+    DngRenderHandle renderHandle = fDngImage->renderInit(width, height, &actual_width, &actual_height);
+    if (!renderHandle) {
+        return kInvalidInput;
+    }
+
+    // Because the DNG SDK can not guarantee to render to requested size, we allow a small
+    // difference. Only the overlapping region will be converted.
+    const float maxDiffRatio = 1.03f;
+    if (actual_width / (float) width > maxDiffRatio || actual_width < width ||
+        actual_height / (float) height > maxDiffRatio || actual_height < height) {
+        fDngImage->renderDestroy(renderHandle);
+        return SkCodec::kInvalidScale;
+    }
+
+    void* dstRow = dst;
+    AutoTMalloc<uint8_t> srcRow(actual_width * 3);
+
+    constexpr auto srcFormat = skcms_PixelFormat_RGB_888;
+    skcms_PixelFormat dstFormat;
+    if (!SkCodecPriv::SelectXformFormat(dstInfo.colorType(), false, &dstFormat)) {
+        fDngImage->renderDestroy(renderHandle);
+        return kInvalidConversion;
+    }
+
+    const skcms_ICCProfile* const srcProfile = this->getEncodedInfo().profile();
+    skcms_ICCProfile dstProfileStorage;
+    const skcms_ICCProfile* dstProfile = nullptr;
+    if (auto cs = dstInfo.colorSpace()) {
+        cs->toProfile(&dstProfileStorage);
+        dstProfile = &dstProfileStorage;
+    }
+
+    for (int i = 0; i < height; ++i) {
+        if (!fDngImage->renderGetRow(renderHandle, i, srcRow.get())) {
+            *rowsDecoded = i;
+            fDngImage->renderDestroy(renderHandle);
+            return kIncompleteInput;
+        }
+
+        if (!skcms_Transform(srcRow.get(), srcFormat, skcms_AlphaFormat_Unpremul, srcProfile,
+                             dstRow,       dstFormat, skcms_AlphaFormat_Unpremul, dstProfile,
+                             dstInfo.width())) {
+            SkDebugf("failed to transform\n");
+            *rowsDecoded = i;
+            fDngImage->renderDestroy(renderHandle);
+            return kInternalError;
+        }
+
+        dstRow = SkTAddOffset<void>(dstRow, dstRowBytes);
+    }
+    fDngImage->renderDestroy(renderHandle);
+    return kSuccess;
+#else
     std::unique_ptr<dng_image> image(fDngImage->render(width, height));
     if (!image) {
         return kInvalidInput;
@@ -819,6 +1057,7 @@ SkCodec::Result SkRawCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst,
         dstRow = SkTAddOffset<void>(dstRow, dstRowBytes);
     }
     return kSuccess;
+#endif
 }
 
 SkISize SkRawCodec::onGetScaledDimensions(float desiredScale) const {
