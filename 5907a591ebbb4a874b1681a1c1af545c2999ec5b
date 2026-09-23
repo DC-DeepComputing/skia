@@ -22,6 +22,30 @@
       },
       "revId": "5907a591ebbb4a874b1681a1c1af545c2999ec5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b9edeae_e8e2ca5b",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-23T19:42:34Z",
+      "side": 1,
+      "message": "Yeah, I think we leave it and worst case, we remove it later.",
+      "parentUuid": "5418f22a_bc5cb45f",
+      "range": {
+        "startLine": 40,
+        "startChar": 33,
+        "endLine": 40,
+        "endChar": 49
+      },
+      "revId": "5907a591ebbb4a874b1681a1c1af545c2999ec5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
