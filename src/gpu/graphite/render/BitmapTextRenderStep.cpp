@@ -77,8 +77,8 @@ BitmapTextRenderStep::BitmapTextRenderStep(Layout layout, skgpu::MaskFormat vari
                      /*storageUniforms=*/{},
                      /*varyings=*/
                      {{{"textureCoords", SkSLType::kFloat2},
-                      {"texIndex", SkSLType::kHalf},
-                      {"maskFormat", SkSLType::kHalf}}}) {}
+                      {"texIndex", SkSLType::kHalf, Interpolation::kFlat},
+                      {"maskFormat", SkSLType::kHalf, Interpolation::kFlat}}}) {}
 
 BitmapTextRenderStep::~BitmapTextRenderStep() {}
 
