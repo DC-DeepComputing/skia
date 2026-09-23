@@ -25,9 +25,9 @@ class VulkanBuffer final : public Buffer {
 public:
     static sk_sp<Buffer> Make(const VulkanSharedContext*,
                               size_t,
-                              BufferType,
                               AccessPattern,
-                              std::string_view label);
+                              ResourceUsage,
+                              std::string_view label = {});
 
     void freeGpuData() override;
     VkBuffer vkBuffer() const { return fBuffer; }
@@ -46,12 +46,12 @@ public:
 private:
     VulkanBuffer(const VulkanSharedContext*,
                  size_t,
-                 BufferType,
                  AccessPattern,
                  VkBuffer,
                  const skgpu::VulkanAlloc&,
                  VkBufferUsageFlags,
                  Protected isProtected,
+                 ResourceUsage,
                  std::string_view label);
 
     void onMap() override;
