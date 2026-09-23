@@ -187,6 +187,30 @@
       },
       "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c172fade_88bbdf5e",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-23T15:05:36Z",
+      "side": 0,
+      "message": "Talking offline, we should be able to remove `are_radius_check_predicates_valid` if we re-arrange the logic inside `are_radii_predicates_valid`: the sumValid and ptsValid checks need to be validated first, if both are true then it continues to check the min/max coord and radiusFromFoo conditions (although the `sum \u003c\u003d limit` can be removed).  Currently the bug was that the `if (sum \u003c\u003d limit ...)` check early\u0027s out with a return true that something was valid. In this case, `minCoord + radiusFromMin \u003c\u003d maxCoord - radiusFromMax` was failing so it fell through to simply `return sumValid \u0026\u0026 ptsValid` which were true in isolation.",
+      "parentUuid": "3504d60d_b255250d",
+      "range": {
+        "startLine": 769,
+        "startChar": 8,
+        "endLine": 769,
+        "endChar": 19
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
