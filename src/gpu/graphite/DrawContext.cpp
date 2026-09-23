@@ -212,10 +212,12 @@ PathAtlas* DrawContext::getComputePathAtlas(Recorder* recorder) {
 }
 
 void DrawContext::flush(Recorder* recorder) {
+    uint32_t recordingID = recorder->priv().nextRecordingID();
     if (fPendingUploads->size() > 0) {
         TRACE_EVENT_INSTANT1("skia.gpu", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
                              "# uploads", fPendingUploads->size());
         fCurrentDrawTask->addTask(UploadTask::Make(fPendingUploads.get()));
+        fTarget.proxy()->markTaskRecordedForRecording(recordingID);
         // The UploadTask steals the collected upload instances, automatically resetting this list
         SkASSERT(fPendingUploads->size() == 0);
     }
@@ -268,6 +270,17 @@ void DrawContext::flush(Recorder* recorder) {
 
     if (pass) {
         SkASSERT(fTarget.proxy() == pass->target());
+
+        for (const auto& sampledProxy : pass->sampledTextures()) {
+            if (sampledProxy && sampledProxy->hasPendingTasks()) {
+                if (!sampledProxy->isTaskRecordedForRecording(recordingID)) {
+                    for (const auto& task : sampledProxy->pendingTasks()) {
+                        fCurrentDrawTask->addTask(task);
+                    }
+                    sampledProxy->markTaskRecordedForRecording(recordingID);
+                }
+            }
+        }
 
         // If any paint used within the DrawPass reads from the dst texture (indicated by nonempty
         // dstReadPixelBounds) and the dstReadStrategy is kTextureCopy, then add a CopyTask.

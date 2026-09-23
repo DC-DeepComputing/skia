@@ -245,6 +245,7 @@ std::unique_ptr<Recording> Recorder::snap() {
         // count, so each task gets a flushToken---just an int---to track this.
         SK_DUMP_TASKS_CODE(uploadTask->fFlushToken =
                 this->priv().tokenTracker()->currentFlushToken();)
+            printf("flusht oken is %d \n",uploadTask->fFlushToken);
 
         recording->priv().taskList()->add(std::move(uploadTask));
         SkASSERT(fRootUploads->size() == 0); // Drained by the newly added task

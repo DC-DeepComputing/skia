@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/task/TaskList.h"
 
+#include <format>
 #include <functional>
 #include <utility>
 
@@ -101,8 +102,9 @@ private:
             }
         }
 
+        int childIndex = 0;
         fChildTasks.visit([&](const Task* task, bool isLast) {
-            task->dump(-1, (childPrefix + (isLast ? "└── " : "│   ")).c_str());
+            task->dump(childIndex++, (childPrefix + (isLast ? "└── " : "│   ")).c_str());
         });
     }
 #endif
