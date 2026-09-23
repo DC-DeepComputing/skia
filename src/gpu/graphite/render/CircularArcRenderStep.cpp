@@ -163,12 +163,12 @@ CircularArcRenderStep::CircularArcRenderStep(Layout layout, StaticBufferManager*
                              // Normalized offset vector plus radii
                              {"circleEdge", SkSLType::kFloat4},
                              // Half-planes used to clip to arc shape.
-                             {"clipPlane", SkSLType::kFloat3},
-                             {"isectPlane", SkSLType::kFloat3},
-                             {"unionPlane", SkSLType::kFloat3},
+                             {"clipPlane", SkSLType::kFloat3, Interpolation::kFlat},
+                             {"isectPlane", SkSLType::kFloat3, Interpolation::kFlat},
+                             {"unionPlane", SkSLType::kFloat3, Interpolation::kFlat},
                              // Roundcap data
-                             {"roundCapRadius", SkSLType::kFloat},
-                             {"roundCapPos", SkSLType::kFloat4},
+                             {"roundCapRadius", SkSLType::kFloat, Interpolation::kFlat},
+                             {"roundCapPos", SkSLType::kFloat4, Interpolation::kFlat},
                      }}) {
     // Initialize the static buffer we'll use when recording draw calls.
     // NOTE: Each instance of this RenderStep gets its own copy of the data. Since there should only

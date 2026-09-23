@@ -74,7 +74,7 @@ SDFTextLCDRenderStep::SDFTextLCDRenderStep(Layout layout)
                      /*varyings=*/
                      {{{"unormTexCoords", SkSLType::kFloat2},
                       {"textureCoords", SkSLType::kFloat2},
-                      {"texIndex", SkSLType::kFloat}}}) {}
+                      {"texIndex", SkSLType::kFloat, Interpolation::kFlat}}}) {}
 
 SDFTextLCDRenderStep::~SDFTextLCDRenderStep() {}
 

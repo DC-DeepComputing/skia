@@ -94,10 +94,10 @@ CoverageMaskRenderStep::CoverageMaskRenderStep(Layout layout)
                       // can spill beyond `maskBounds` for inverse fills.
                       // TODO: maskBounds is constant for all fragments for a given instance,
                       // could we store them in the draw's SSBO?
-                      {"maskBounds"   , SkSLType::kFloat4},
+                      {"maskBounds"   , SkSLType::kFloat4, Interpolation::kFlat},
                       {"textureCoords", SkSLType::kFloat2},
                       // 'invert' is set to 0 use unmodified coverage, and set to 1 for "1-c".
-                      {"invert", SkSLType::kHalf}}}) {}
+                      {"invert", SkSLType::kHalf, Interpolation::kFlat}}}) {}
 
 std::string CoverageMaskRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
