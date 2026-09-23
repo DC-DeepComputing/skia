@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aa9c789_68ddefff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-23T18:30:58Z",
+      "side": 1,
+      "message": "This is the missing release notes CL from m155, done with my fixes for `sk release-branch`.",
+      "revId": "f27a14003857d6b9ca0cb9eb7a548d9d947f7910",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
