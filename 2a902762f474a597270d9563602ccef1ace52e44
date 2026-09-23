@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb8c55e2_6109d4d4",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-23T18:24:15Z",
+      "side": 0,
+      "message": "This CL isn\u0027t really required but it seemed like a good chance to reduce the API surface since things get more complicated with templating.",
+      "revId": "2a902762f474a597270d9563602ccef1ace52e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
