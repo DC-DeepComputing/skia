@@ -70,15 +70,14 @@ public:
     sk_sp<Texture> createWrappedTexture(const BackendTexture&, std::string_view label);
 
     sk_sp<Buffer> findOrCreateNonShareableBuffer(size_t,
-                                                 BufferType,
                                                  AccessPattern,
-                                                 std::string_view label);
+                                                 ResourceUsage bufferType,
+                                                 std::string_view label = {});
     sk_sp<Buffer> findOrCreateScratchBuffer(size_t,
-                                            BufferType,
                                             AccessPattern,
-                                            std::string_view label,
-                                            const ResourceCache::ScratchResourceSet& unavailable);
-
+                                            const ResourceCache::ScratchResourceSet& unavailable,
+                                            ResourceUsage bufferType,
+                                            std::string_view label = {});
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SamplerDesc&);
 
@@ -138,9 +137,9 @@ private:
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&, std::string_view label) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t,
-                                       BufferType,
                                        AccessPattern,
-                                       std::string_view label) = 0;
+                                       ResourceUsage bufferType,
+                                       std::string_view label = {}) = 0;
     virtual sk_sp<Sampler> createSampler(const SamplerDesc&) = 0;
 
     sk_sp<Texture> findOrCreateTexture(SkISize dimensions,
@@ -151,10 +150,10 @@ private:
                                        const ResourceCache::ScratchResourceSet* = nullptr);
 
     sk_sp<Buffer> findOrCreateBuffer(size_t,
-                                     BufferType,
                                      AccessPattern,
-                                     std::string_view label,
                                      Shareable,
+                                     ResourceUsage bufferType,
+                                     std::string_view label = {},
                                      const ResourceCache::ScratchResourceSet* = nullptr);
 
     virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&,

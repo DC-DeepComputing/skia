@@ -67,8 +67,8 @@ void* map_buffer(Context* context,
 sk_sp<Buffer> get_readback_buffer(Recorder* recorder, size_t copyBufferSize) {
     return recorder->priv().resourceProvider()->findOrCreateNonShareableBuffer(
             copyBufferSize,
-            BufferType::kXferGpuToCpu,
             AccessPattern::kHostVisible,
+            ResourceUsage::kXferGpuToCpuBuffer,
             "VerticesPaddingTest_Copy");
 }
 

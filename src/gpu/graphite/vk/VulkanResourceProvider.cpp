@@ -163,10 +163,10 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size,
 }
 
 sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
-                                                   BufferType type,
                                                    AccessPattern accessPattern,
+                                                   ResourceUsage bufferType,
                                                    std::string_view label) {
-    return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern, label);
+    return VulkanBuffer::Make(this->vulkanSharedContext(), size, accessPattern, bufferType, label);
 }
 
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
