@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e890037c_cd91e398",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-23T14:42:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24d7fcc1_0081b43e",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 803,
+        "endChar": 78
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e437c79_68e46cc4",
@@ -257,6 +281,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9caeb74b_a02d26ef",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-23T14:42:46Z",
+      "side": 1,
+      "message": "Now it failed with `kRGB_565`. I think CopyAsDraw will return null in this case, no renderable_colortype.",
+      "parentUuid": "48631b34_8e8abdbd",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6563d5db_2a5a3fee",
         "filename": "src/gpu/graphite/Surface_Graphite.h",
         "patchSetId": 6
@@ -268,6 +316,30 @@
       "writtenOn": "2026-09-21T14:45:42Z",
       "side": 1,
       "message": "Can we add a comment here like:\n\n`allowUnpremul\u003dtrue` should only be used if the surface is only going to be rendered into with src-blending with calls to drawPaint or pixel-aligned drawRect calls to avoid anti-aliasing?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 52
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c05227e_b0c8e0af",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-23T14:42:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6563d5db_2a5a3fee",
       "range": {
         "startLine": 44,
         "startChar": 0,
@@ -301,6 +373,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e721f3_abbecfd7",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-23T14:42:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae2c3754_520e574a",
+      "range": {
+        "startLine": 118,
+        "startChar": 49,
+        "endLine": 118,
+        "endChar": 56
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21a5ab08_c562a50c",
@@ -314,6 +410,30 @@
       "writtenOn": "2026-09-21T14:45:42Z",
       "side": 1,
       "message": "Can we comment here that since we\u0027re treating the backend texture as a bottom-left origin, but didn\u0027t flip the data when we uploaded it to the texture, the GPU readback\u0027s flip from bottom-left to top-left results in flipping the actual data so `ref` has to be updated to match. If instead we pre-flipped the upload data, then the actual and ref pixmaps would match regardless of the origin.",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 347,
+        "endChar": 77
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87eba598_58a4da97",
+        "filename": "tests/graphite/ReadWritePixelsGraphiteTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-23T14:42:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21a5ab08_c562a50c",
       "range": {
         "startLine": 347,
         "startChar": 0,
