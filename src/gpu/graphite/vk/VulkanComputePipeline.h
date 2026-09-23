@@ -35,6 +35,7 @@ public:
     VkPipeline                       vkPipeline() const { return fPipeline;       }
     VkPipelineLayout           vkPipelineLayout() const { return fPipelineLayout; }
     SkSpan<const DescriptorData> descriptorData() const { return fDescriptorData; }
+    VkDescriptorType                bindingType(size_t index) const;
 
 private:
     VulkanComputePipeline(const SharedContext*,

@@ -156,6 +156,12 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // TODO(b/353983969): Enable storage buffers once perf regressions are addressed.
     fStorageBufferSupport = false;
 
+    // These are guaranteed to be supported on Vulkan 1.0+.
+    SkASSERT(deviceLimits.maxComputeWorkGroupInvocations > 0);
+    SkASSERT(deviceLimits.maxPerStageDescriptorStorageBuffers > 0);
+    fComputeSupport = true;
+    fStorageBufferSupportForCompute = true;
+
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
     fSupportsMemorylessAttachments = false;
@@ -698,7 +704,8 @@ void VulkanCaps::initShaderCaps(const EnabledFeatures enabledFeatures, const uin
     // TODO(skbug.com/40045541): We must force std430 array stride when using SSBOs since SPIR-V
     // generation cannot handle mixed array strides being passed into functions.
     fShaderCaps->fForceStd430ArrayLayout =
-            fStorageBufferSupport && fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430;
+            (fStorageBufferSupport || fStorageBufferSupportForCompute) &&
+            fResourceBindingReqs.fStorageBufferLayout == Layout::kStd430;
 
     // Avoid RelaxedPrecision with OpImageSampleImplicitLod due to driver bug with YCbCr sampling.
     // (skbug.com/421927604)
