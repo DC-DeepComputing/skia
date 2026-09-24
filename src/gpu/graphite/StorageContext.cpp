@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/StorageContext.h"
 
+#include "include/core/SkScalar.h"
 #include "include/private/SkAlign.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
@@ -77,11 +78,14 @@ std::pair<float*, int> StorageContext::allocateGradientData(int numStops,
         return {nullptr, *existingLocalOffset};
     }
 
+    // TODO(thomsmit): Originally non storage buffer support was not aligned:
+    // floatCount = numStops * 5. Aligning to 4 unifies the behavior across storage buffer
+    // capability and possibly increases loading performance by guaranteeing aligned memory loads.
+    // However, this comes at the cost of less dense gradient packing, and slightly more complicated
+    // loading logic in the shader. Test whether this makes a significant difference in performance.
     int floatOffset = fGradientCache.fGradientData.size();
-    const int floatCount = fStorageBufferSupport
-            ? (numStops * 5)
-            : (SkAlign4(numStops) + numStops * 4);
-    SkASSERT(fStorageBufferSupport || SkIsAlign4(floatCount));
+    const int floatCount = SkAlign4(numStops) + numStops * 4;
+    SkASSERT(SkIsAlign4(floatCount));
     if (GradientCache::kMaxStorageFloats - floatCount < floatOffset) {
         return {nullptr, -1};
     }
@@ -95,6 +99,39 @@ std::pair<float*, int> StorageContext::allocateGradientData(int numStops,
     fGradientCache.fGradientDataSize = fGradientCache.fGradientData.size_bytes();
 
     return {dstData, floatOffset};
+}
+
+int StorageContext::writeGradientData(int numStops,
+                                      const SkPMColor4f* colors,
+                                      const float* offsets,
+                                      const SkGradientBaseShader* shader) {
+    SkASSERT(colors && shader && numStops >= 2);
+
+    auto [dstData, bufferOffset] = this->allocateGradientData(numStops, shader);
+    if (dstData) {
+        SkASSERT(bufferOffset >= 0);
+        // Offsets and Colors are contiguous in memory. All offsets precede all color
+        // data. This way when binary searching through the offsets, there is better cache locality.
+        for (int i = 0; i < numStops; ++i) {
+            float offset = offsets ? offsets[i] : SkIntToFloat(i) / (numStops - 1);
+            SkASSERT(offset >= 0.0f && offset <= 1.0f);
+            dstData[i] = offset;
+        }
+
+        const int alignedOffsetsCount = SkAlign4(numStops);
+        for (int i = numStops; i < alignedOffsetsCount; ++i) {
+            dstData[i] = dstData[numStops - 1];
+        }
+
+        for (int i = 0, colorIdx = alignedOffsetsCount; i < numStops; ++i, colorIdx += 4) {
+            dstData[colorIdx + 0] = colors[i].fR;
+            dstData[colorIdx + 1] = colors[i].fG;
+            dstData[colorIdx + 2] = colors[i].fB;
+            dstData[colorIdx + 3] = colors[i].fA;
+        }
+    }
+
+    return bufferOffset;
 }
 
 void StorageContext::recordAlignment(size_t stride, size_t align) {

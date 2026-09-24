@@ -126,9 +126,6 @@ public:
 
     SkTileMode getTileMode() const { return fTileMode; }
 
-    const SkBitmap& cachedBitmap() const { return fColorsAndOffsetsBitmap; }
-    void setCachedBitmap(SkBitmap b) const { fColorsAndOffsetsBitmap = b; }
-
 private:
     SkColor4f* fColors;               // points into fStorage
     SkScalar* fPositions;             // points into fStorage, or nullptr
@@ -137,12 +134,6 @@ private:
     size_t fColorCount;               // length of fColors (and fPositions, if not nullptr)
     bool fFirstStopIsImplicit;
     bool fLastStopIsImplicit;
-
-    // When the number of stops exceeds Graphite's uniform-based limit the colors and offsets
-    // are stored in this bitmap. It is stored in the shader so it can be cached with a stable
-    // id and easily regenerated if purged.
-    // TODO(b/293160919) remove this field when we can store bitmaps in the cache by id.
-    mutable SkBitmap fColorsAndOffsetsBitmap;
 
     // Reserve inline space for up to 4 stops.
     inline static constexpr size_t kInlineStopCount = 4;

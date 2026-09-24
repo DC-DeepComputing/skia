@@ -65,7 +65,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextAlignmentTest,
             useStorage);
     StorageContext* ctxHandle = &ctxStorage;
 
-    const int kFloatCount = useStorage ? 10 : 12;
+    const int kFloatCount = 12;
 
     // 1. Allocate gradient data for shader1
     auto [ptr1, offset1] = ctxHandle->allocateGradientData(2, grad1.get());
@@ -137,7 +137,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextPaddingAlignmentTest,
             useStorage);
     StorageContext* ctxHandle = &ctxStorage;
 
-    const int kFloatCount = useStorage ? 10 : 12;
+    const int kFloatCount = 12;
     const int kBytes = kFloatCount * sizeof(float);
 
     // Allocate gradient data for 1 shader with 2 stops
@@ -199,7 +199,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextAppendVertexTest,
             useStorage);
     StorageContext* ctxHandle = &ctxStorage;
 
-    const int kFloatCount = useStorage ? 10 : 12;
+    const int kFloatCount = 12;
     const int kBytes = kFloatCount * sizeof(float);
 
     // 1. Allocate gradient data
@@ -272,7 +272,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextMultipleRenderStepsTest,
             useStorage);
     StorageContext* ctxHandle = &ctxStorage;
 
-    const int kFloatCount = useStorage ? 10 : 12;
+    const int kFloatCount = 12;
     const int kBytes = kFloatCount * sizeof(float);
 
     // 1. Allocate gradient data
@@ -370,7 +370,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextLCMVariantsTest,
     auto grad = sk_make_sp<SkLinearGradient>(pts, SkGradient{{colors, {}, SkTileMode::kClamp}, {}});
 
     const bool useStorage = recorder->priv().caps()->storageBufferSupport();
-    const int kFloatCount = useStorage ? 10 : 12;
+    const int kFloatCount = 12;
     const size_t kBytes = kFloatCount * sizeof(float);
 
     for (const auto& tc : testCases) {
@@ -497,7 +497,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextVertexOnlyAndResetTest,
     SkPoint pts[2] = {{0, 0}, {100, 100}};
     SkColor4f colors[2] = {SkColors::kRed, SkColors::kBlue};
     auto grad = sk_make_sp<SkLinearGradient>(pts, SkGradient{{colors, {}, SkTileMode::kClamp}, {}});
-    const int kFloatCount = useStorage ? 10 : 12;
+    const int kFloatCount = 12;
     auto [gradPtr, gradOffset] = ctx.allocateGradientData(2, grad.get());
     REPORTER_ASSERT(reporter, gradPtr != nullptr);
     REPORTER_ASSERT(reporter, gradOffset == 0);
@@ -541,8 +541,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextMultiStopGradientTest,
 
     SkPoint pts[2] = {{0, 0}, {100, 100}};
 
-    const int alignedOffsets9 = useStorage ? 9 : SkAlign4(9);
-    const int count9 = useStorage ? (9 * 5) : SkAlign4(alignedOffsets9 + 9 * 4);
+    const int alignedOffsets9 = SkAlign4(9);
+    const int count9 = SkAlign4(alignedOffsets9 + 9 * 4);
 
     std::vector<SkColor4f> colors9(9, SkColors::kRed);
     std::vector<SkScalar> pos9 = {0.f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 1.0f};
@@ -567,8 +567,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextMultiStopGradientTest,
         ptr9[alignedOffsets9 + i * 4 + 3] = 1.0f;
     }
 
-    const int alignedOffsets17 = useStorage ? 17 : SkAlign4(17);
-    const int count17 = useStorage ? (17 * 5) : SkAlign4(alignedOffsets17 + 17 * 4);
+    const int alignedOffsets17 = SkAlign4(17);
+    const int count17 = SkAlign4(alignedOffsets17 + 17 * 4);
 
     std::vector<SkColor4f> colors17(17, SkColors::kBlue);
     std::vector<SkScalar> pos17(17);
@@ -604,7 +604,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextMultiStopGradientTest,
         auto bindInfo = std::get<BindBufferInfo>(*storageResult);
         REPORTER_ASSERT(reporter, bindInfo.fBuffer != nullptr);
         REPORTER_ASSERT(reporter, bindInfo.fSize == (count9 + count17) * sizeof(float));
-        REPORTER_ASSERT(reporter, bindInfo.fSize % 16 == 0 || useStorage);
+        REPORTER_ASSERT(reporter, bindInfo.fSize % 16 == 0);
 
         if (!recorder->priv().caps()->drawBufferCanBeMapped()) {
             return;
