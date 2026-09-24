@@ -1613,7 +1613,8 @@ SkPathPriv::TransformDirAndStart(const SkMatrix& matrix, bool isRRect, SkPathDir
     };
 }
 
-SkRRect SkPathPriv::DeduceRRectFromContour(const SkRect& bounds, SkSpan<const SkPoint> pts,
+SkRRect SkPathPriv::DeduceRRectFromContour(const SkRect& bounds,
+                                           SkSpan<const SkPoint> pts,
                                            SkSpan<const SkPathVerb> vbs) {
     SkASSERT(!vbs.empty());
     SkASSERT(vbs.front() == SkPathVerb::kMove);
@@ -1667,4 +1668,3 @@ SkRRect SkPathPriv::DeduceRRectFromContour(const SkRect& bounds, SkSpan<const Sk
     rrect.setRectRadii(bounds, radii);
     return rrect;
 }
-
