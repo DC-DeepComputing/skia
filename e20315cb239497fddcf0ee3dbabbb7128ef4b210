@@ -16,6 +16,46 @@
       "message": "First time adding a build test, let me know if this looks correct.",
       "revId": "e20315cb239497fddcf0ee3dbabbb7128ef4b210",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e5b590a_cb4d1ef2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-24T18:56:49Z",
+      "side": 1,
+      "message": "I recommend running the try job before submitting to ensure that it\u0027s doing everything you expect.",
+      "revId": "e20315cb239497fddcf0ee3dbabbb7128ef4b210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41a3d290_c79a4489",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-24T18:56:49Z",
+      "side": 1,
+      "message": "Is it impossible that this build breaks when changes are made outside of these directories?  I guess we\u0027d catch those failures after submission, so maybe it doesn\u0027t matter.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 7
+      },
+      "revId": "e20315cb239497fddcf0ee3dbabbb7128ef4b210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
