@@ -25,13 +25,21 @@ clang_arm_sha256 = "946f9bd47ccad906dddde6c426fb5a685ea2c1b660a5ccaef314deadfa1a
 # This should be the same across both arm and intel.
 clang_ver = "22"
 
-mac_sdk_root = "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/"
-
 def _get_system_sdk_path(ctx):
     res = ctx.execute(["xcode-select", "--print-path"])
     if res.return_code != 0:
         fail("Error Getting SDK path: " + res.stderr)
-    return res.stdout.rstrip()
+    dev_dir = res.stdout.rstrip()
+
+    xcode_sdk = ctx.path(dev_dir + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
+    if xcode_sdk.exists:
+        return str(xcode_sdk)
+
+    clt_sdk = ctx.path(dev_dir + "/SDKs/MacOSX.sdk")
+    if clt_sdk.exists:
+        return str(clt_sdk)
+
+    fail("Could not find MacOSX.sdk under " + dev_dir)
 
 def _delete_macos_sdk_symlinks(ctx):
     ctx.delete("./symlinks/xcode/MacSDK/usr")
@@ -43,7 +51,7 @@ def _create_macos_sdk_symlinks(ctx):
     # https://bazel.build/rules/lib/actions#symlink
     ctx.symlink(
         # from =
-        system_sdk_path + mac_sdk_root + "usr",
+        system_sdk_path + "/usr",
         # to =
         "./symlinks/xcode/MacSDK/usr",
     )
@@ -55,7 +63,7 @@ def _create_macos_sdk_symlinks(ctx):
     # from breaking.
     ctx.symlink(
         # from =
-        system_sdk_path + mac_sdk_root + "System/Library/Frameworks",
+        system_sdk_path + "/System/Library/Frameworks",
         # to =
         "./symlinks/xcode/MacSDK/System/Library/Frameworks",
     )
