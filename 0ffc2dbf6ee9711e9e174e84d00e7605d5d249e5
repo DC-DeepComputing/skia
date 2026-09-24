@@ -68,6 +68,30 @@
       },
       "revId": "0ffc2dbf6ee9711e9e174e84d00e7605d5d249e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef182167_c0ad54f9",
+        "filename": "tests/FontHostTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-24T20:19:01Z",
+      "side": 1,
+      "message": "I should clarify that this mainly applies to structs where there was a spacing before and after the first and last elements of the struct before your change. If this wasn\u0027t done prior to your change it\u0027s okay, just want to keep the formatting consist before and after.",
+      "parentUuid": "ce176e49_3e4417b9",
+      "range": {
+        "startLine": 240,
+        "startChar": 12,
+        "endLine": 248,
+        "endChar": 59
+      },
+      "revId": "0ffc2dbf6ee9711e9e174e84d00e7605d5d249e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
