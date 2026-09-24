@@ -296,9 +296,10 @@ SkPath SkPathBuilder::snapshot(const SkMatrix* mx) const {
     if (auto raw = SkPathPriv::Raw(*this, SkResolveConvexity::kNo)) {
         pdata = SkPathData::MakeTransform(*raw, *mx);
     }
+
     if (pdata && fType != SkPathIsAType::kGeneral) {
         SkASSERT(SkPathPriv::IsAxisAligned(fPts));
-        if (mx->rectStaysRect()) {
+        if (mx->rectStaysRect() && !pdata->bounds().isEmpty()) {
             auto [dir, start] = SkPathPriv::TransformDirAndStart(
                     *mx, fType == SkPathIsAType::kRRect, fIsA.fDirection, fIsA.fStartIndex);
             pdata->setupIsA(fType, dir, start);
