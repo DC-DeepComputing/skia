@@ -307,7 +307,7 @@ DEF_TEST_DISABLED(SkParagraph_Flutter_121680_108720_KeycapEmojiCluster, reporter
 // controls like ALM (U+061C) cause cluster indices to be generated outside the run's
 // textRange() ([16, 25)), which ParagraphImpl::cluster requires to be strictly bounded.
 // =============================================================================
-DEF_TEST_DISABLED(SkParagraph_Flutter_190569_BiDi_ALM_Monotonicity, reporter) {
+DEF_TEST(SkParagraph_Flutter_190569_BiDi_ALM_Monotonicity, reporter) {
     auto fontCollection = make_test_font_collection();
     auto unicode = get_test_unicode();
     if (!unicode) {
@@ -337,7 +337,7 @@ DEF_TEST_DISABLED(SkParagraph_Flutter_190569_BiDi_ALM_Monotonicity, reporter) {
     for (size_t r = 0; r < runs.size(); ++r) {
         const auto& run = runs[r];
         for (size_t c = 0; c < run.size(); ++c) {
-            size_t clusterIndex = run.clusterIndex(c);
+            size_t clusterIndex = run.globalClusterIndex(c);
             REPORTER_ASSERT(reporter, clusterIndex >= run.textRange().start &&
                                       clusterIndex < run.textRange().end,
                             "Cluster index %zu out of run bounds [%zu, %zu)",
