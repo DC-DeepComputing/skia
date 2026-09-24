@@ -225,7 +225,7 @@ DEF_TEST_DISABLED(SkParagraph_Skia_b_40040287_UTF16_AstralPlaneIndices, reporter
 // strictly mapped/bounded within the run's textRange() ([6, 14)), generating cluster
 // indices 0, 2, 4 that point outside the run range.
 // =============================================================================
-DEF_TEST_DISABLED(SkParagraph_Skia_b_448789662_BiDi_MixedRunsClusterBounds, reporter) {
+DEF_TEST(SkParagraph_Skia_b_448789662_BiDi_MixedRunsClusterBounds, reporter) {
     auto fontCollection = make_test_font_collection();
     auto unicode = get_test_unicode();
     if (!unicode) {
@@ -254,7 +254,7 @@ DEF_TEST_DISABLED(SkParagraph_Skia_b_448789662_BiDi_MixedRunsClusterBounds, repo
     for (size_t r = 0; r < runs.size(); ++r) {
         const auto& run = runs[r];
         for (size_t c = 0; c < run.size(); ++c) {
-            size_t cluster = run.clusterIndex(c);
+            size_t cluster = run.globalClusterIndex(c);
             REPORTER_ASSERT(reporter, cluster >= run.textRange().start &&
                                       cluster < run.textRange().end,
                             "Cluster %zu outside of run range [%zu, %zu)",
