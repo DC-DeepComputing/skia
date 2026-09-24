@@ -22,6 +22,30 @@
       },
       "revId": "984425c85a0e5c82319d7ffa5c443a6f3866d83f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "430b308f_e204c6a8",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-24T16:54:45Z",
+      "side": 1,
+      "message": "Yes this cell is the region, I was using the cell ID in the vertex shader to determine which edge cells should be checked to be eligible for the fast path. \n\nFollowing your suggestion, I was able to encode the bit of the edge for the current vertex within the `cellID` attribute (previously was named `cellIndex`) with the same encoding as `canSaturateEdge`. This allowed me to reduce the branching within the vertex shader so now we only have a single branch for edge checking.\n\nAdded some comments within the render step to explain this.",
+      "parentUuid": "af6eb1e3_b98c7a39",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 54,
+        "endChar": 31
+      },
+      "revId": "984425c85a0e5c82319d7ffa5c443a6f3866d83f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
