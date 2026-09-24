@@ -91,8 +91,8 @@ void log_map_error(wgpu::MapAsyncStatus status, wgpu::StringView message) {
 
 sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
                                    size_t size,
-                                   BufferType type,
                                    AccessPattern accessPattern,
+                                   ResourceUsage bufferType,
                                    std::string_view label) {
     if (size <= 0) {
         return nullptr;
@@ -100,44 +100,48 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
 
     wgpu::BufferUsage usage = wgpu::BufferUsage::None;
 
-    switch (type) {
-        case BufferType::kVertex:
+    switch (bufferType) {
+        case ResourceUsage::kVertexBuffer:
             usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kIndex:
+        case ResourceUsage::kIndexBuffer:
             usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kXferCpuToGpu:
+        case ResourceUsage::kXferCpuToGpuBuffer:
             usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::MapWrite;
             break;
-        case BufferType::kXferGpuToCpu:
+        case ResourceUsage::kXferGpuToCpuBuffer:
             usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::MapRead;
             break;
-        case BufferType::kUniform:
+        case ResourceUsage::kUniformBuffer:
             usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kStorage:
+        case ResourceUsage::kStorageBuffer:
             usage = wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst |
                     wgpu::BufferUsage::CopySrc;
             break;
-        case BufferType::kQuery:
+        case ResourceUsage::kQueryBuffer:
             usage = wgpu::BufferUsage::QueryResolve | wgpu::BufferUsage::CopySrc;
             break;
-        case BufferType::kIndirect:
+        case ResourceUsage::kIndirectBuffer:
             usage = wgpu::BufferUsage::Indirect | wgpu::BufferUsage::Storage |
                     wgpu::BufferUsage::CopyDst;
             break;
-        case BufferType::kVertexStorage:
+        case ResourceUsage::kVertexStorageBuffer:
             usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::Storage;
             break;
-        case BufferType::kIndexStorage:
+        case ResourceUsage::kIndexStorageBuffer:
             usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::Storage;
+            break;
+        default:
+            SkUNREACHABLE;
             break;
     }
 
     if (sharedContext->caps()->drawBufferCanBeMapped() &&
-        accessPattern == AccessPattern::kHostVisible && type != BufferType::kXferGpuToCpu) {
-        if (type == BufferType::kQuery) {
+        accessPattern == AccessPattern::kHostVisible &&
+        bufferType != ResourceUsage::kXferGpuToCpuBuffer) {
+        if (bufferType == ResourceUsage::kQueryBuffer) {
             // We can map the query buffer to get the results directly rather than having to copy to
             // a transfer buffer.
             usage |= wgpu::BufferUsage::MapRead;
@@ -172,18 +176,20 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         SkASSERT(mappedAtCreationPtr);
     }
 
-    return sk_sp<DawnBuffer>(
-            new DawnBuffer(sharedContext, size, std::move(buffer), mappedAtCreationPtr, label));
+    return sk_sp<DawnBuffer>(new DawnBuffer(
+            sharedContext, size, std::move(buffer), mappedAtCreationPtr, bufferType, label));
 }
 
 DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
                        size_t size,
                        wgpu::Buffer buffer,
                        void* mappedAtCreationPtr,
+                       ResourceUsage bufferType,
                        std::string_view label)
         : Buffer(sharedContext,
                  size,
                  Protected::kNo, // Dawn doesn't support protected memory
+                 bufferType,
                  label,
                  /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
                  // prepareForReturnToCache only needs to be called for a buffer that is mappable

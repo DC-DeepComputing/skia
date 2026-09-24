@@ -102,8 +102,8 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     GraphiteResourceKey key;
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
-    if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, budgeted, shareable, ResourceUsage::kNotPredefined, label, unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
@@ -155,30 +155,31 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateNonShareableBuffer(size_t size,
-                                                               BufferType type,
                                                                AccessPattern accessPattern,
+                                                               ResourceUsage bufferType,
                                                                std::string_view label) {
-    return this->findOrCreateBuffer(size, type, accessPattern, label, Shareable::kNo);
+    return this->findOrCreateBuffer(size, accessPattern, Shareable::kNo, bufferType, label);
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateScratchBuffer(
         size_t size,
-        BufferType type,
         AccessPattern access,
-        std::string_view label,
-        const ResourceCache::ScratchResourceSet& unvailable) {
+        const ResourceCache::ScratchResourceSet& unvailable,
+        ResourceUsage bufferType,
+        std::string_view label) {
     // Scratch buffers must be GPU only, mapped access makes it too difficult to scope their
     // reads and writes within the actual command buffer execution.
     SkASSERT(access != AccessPattern::kHostVisible);
-    return this->findOrCreateBuffer(size, type, access, label, Shareable::kScratch, &unvailable);
+    return this->findOrCreateBuffer(
+            size, access, Shareable::kScratch, bufferType, label, &unvailable);
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         size_t size,
-        BufferType type,
         AccessPattern accessPattern,
-        std::string_view label,
         Shareable shareable,
+        ResourceUsage bufferType,
+        std::string_view label,
         const ResourceCache::ScratchResourceSet* unavailable) {
     static constexpr Budgeted kBudgeted = Budgeted::kYes;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
@@ -191,12 +192,14 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         static const uint16_t kSizeKeyNum32DataCnt = (sizeof(size_t) + 3) / 4;
         static const uint16_t kKeyNum32DataCnt =  kSizeKeyNum32DataCnt + 1;
 
-        SkASSERT(static_cast<uint32_t>(type) < (1u << 4));
+        SkASSERT(bufferType <= ResourceUsage::kFinalBufferTypeUsageFlag);
         SkASSERT(static_cast<uint32_t>(accessPattern) < (1u << 2));
+        // Ensure both pieces of information fit within 32 bits
+        static_assert(kFinalBufferTypeBitshiftVal + 2 <= 32);
 
         GraphiteResourceKey::Builder builder(&key, kType, kKeyNum32DataCnt);
-        builder[0] = (static_cast<uint32_t>(type) << 0) |
-                     (static_cast<uint32_t>(accessPattern) << 4);
+        builder[0] = (static_cast<uint32_t>(bufferType) << 0) |
+                     (static_cast<uint32_t>(accessPattern) << (kFinalBufferTypeBitshiftVal + 1));
         size_t szKey = size;
         for (int i = 0; i < kSizeKeyNum32DataCnt; ++i) {
             builder[i + 1] = (uint32_t) szKey;
@@ -209,12 +212,12 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         }
     }
 
-    if (Resource* resource =
-            fResourceCache->findAndRefResource(key, kBudgeted, shareable, label, unavailable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, kBudgeted, shareable, bufferType, label, unavailable)) {
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
 
-    if (auto buffer = this->createBuffer(size, type, accessPattern, label)) {
+    if (auto buffer = this->createBuffer(size, accessPattern, bufferType, label)) {
         fResourceCache->insertResource(buffer.get(), key, kBudgeted, shareable);
         return buffer;
     }
