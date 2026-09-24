@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eb4488a_a1692bbc",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-24T13:30:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c67bdec_c3e08cb9",
+      "range": {
+        "startLine": 445,
+        "startChar": 0,
+        "endLine": 457,
+        "endChar": 31
+      },
+      "revId": "8a10dd5e1921a1b8e18fbe64e1ab6e5cedaa5a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34c0d6de_8d20ace6",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-23T17:25:06Z",
       "side": 1,
       "message": "Let\u0027s try and move this logic into the `if (!view || ...) ` code in `asyncReadPixels` (since that takes an SkImage, we know its texture proxy view is texturable already, and the only other place that calls asyncReadTexture directly cannot be an SkImage so we know it\u0027s not going to be texturable so wouldn\u0027t be taking this code path anyways).",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 33
+      },
+      "revId": "8a10dd5e1921a1b8e18fbe64e1ab6e5cedaa5a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9c98548_fb05195c",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-24T13:30:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34c0d6de_8d20ace6",
       "range": {
         "startLine": 492,
         "startChar": 0,

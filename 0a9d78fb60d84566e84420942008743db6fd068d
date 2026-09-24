@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76d340bd_d0914eaf",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-24T13:30:32Z",
+      "side": 1,
+      "message": "OK done moving forward with `SK_LEGACY_GRAPHITE_READ_PIXELS_BOTTOM_LEFT_BEHAVIOR` approach. Initially I preferred  `SK_GRAPHITE_READ_PIXELS_SUPPORTS_BOTTOM_LEFT` because chrome is already using that flag as a guard.",
+      "parentUuid": "a3353fff_4a4b8aa3",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 6
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c47e9d5a_db8b7913",
@@ -341,6 +365,30 @@
       "side": 1,
       "message": "kRGB_565 colortype should be considered renderable (so renderable_colortype takes the default branch and returns kRGB_565). However, if that\u0027s then failing, it means that the TextureFormat::kR5_G6_B5 or kB5_G6_R5 are not renderable on the hardware you\u0027re testing.  It is plausible for some hardware to let you create a 565 sampleable texture but not let you render to it (in that case Graphite\u0027s behavior is to fail, whereas Ganesh would start making guesses about switching to a different format with different components and precision potentially). \n\nIf you\u0027re testing a Dawn config, that\u0027s expected because Dawn/webgpu do not have 565 formats at all (but then I don\u0027t know how you\u0027d get the 565 source texture in the first place).",
       "parentUuid": "9caeb74b_a02d26ef",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 880,
+        "endChar": 13
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fbfa5e9_198c0928",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-24T13:30:32Z",
+      "side": 1,
+      "message": "The ReadWritePixelsGraphiteTest tests multiple combinations of src/dst color types.\nOne example is reading a R8 image and convert to RGB565 pixels.",
+      "parentUuid": "e3e150c3_fef63d5f",
       "range": {
         "startLine": 867,
         "startChar": 0,
