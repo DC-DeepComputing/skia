@@ -264,7 +264,9 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
-    const std::string& getLabel() const { return fLabel; }
+    // A Resource's label consists of its string label and the string representation of its usage
+    // flag(s).
+    std::string getLabel() const;
 
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
@@ -294,6 +296,9 @@ protected:
     Resource(const SharedContext*,
              Ownership,
              size_t gpuMemorySize,
+             // TODO(b/431796811): Remove default assignment once texture flags are added to
+             // encourage Resources to leverage predefined usage flags wherever possible
+             ResourceUsage = ResourceUsage::kNotPredefined,
              std::string_view label = {},
              bool reusableRequiresPurgeable = false,
              bool requiresPrepareForReturnToCache = false);
@@ -450,16 +455,24 @@ private:
     // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
     // This method is only expected to be called when returning a non-shareable or scratch resource
     // from the cache.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
+    void setUsageFlagsAndLabel(SkEnumBitMask<ResourceUsage> usages, std::string_view label) {
+        if (fLabel == label && fUsageFlags == usages) {
             return;
         }
 
+        fUsageFlags = usages;
         fLabel = label;
 
         // It is not always safe to immediately update the backend GPU resource label. Mark it
         // as dirty so it can be updated when appropriate.
         fBackendLabelDirty = true;
+    }
+    SkEnumBitMask<ResourceUsage> usageFlags() const { return fUsageFlags; }
+
+
+    // Private method to access fLabel without its usage(s) translated to and appended as a string
+    const std::string& labelWithoutUsageFlags() const {
+        return fLabel;
     }
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
@@ -748,7 +761,10 @@ private:
     uint32_t fLastUseToken = 0;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
+    SkEnumBitMask<ResourceUsage> fUsageFlags;
+
     // String used to describe the current use of this Resource.
+    // TODO(nicolettep): rename to fDynamicLabel or fCustomLabel or something like that?
     std::string fLabel;
     // Flag to signal whether this Resource's label has been updated and its backend label is now
     // out of sync. This attribute does not need to be atomic or otherwise explicitly threadsafe
