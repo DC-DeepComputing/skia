@@ -133,9 +133,8 @@ std::pair<const void*, SkIRect> GrPlot::prepareForUpload() {
     dataPtr += fBytesPerPixel * fDirtyRect.fLeft;
     offsetRect = fDirtyRect.makeOffset(fOffset.fX, fOffset.fY);
 
-    fDirtyRect.setEmpty();
-    SkDEBUGCODE(fDirty = false);
-
+    // We cannot clear the dirty rect here because we do not know the results of the
+    // associated writePixels call.
     return {dataPtr, offsetRect};
 }
 

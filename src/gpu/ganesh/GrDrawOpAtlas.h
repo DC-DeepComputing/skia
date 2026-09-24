@@ -210,9 +210,9 @@ private:
                       const void* image,
                       GrAtlasLocator*);
 
-    void uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
-                             GrTextureProxy* proxy,
-                             GrPlot* plot);
+    [[nodiscard]] bool uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
+                                           GrTextureProxy* proxy,
+                                           GrPlot* plot);
 
     bool createPages(GrProxyProvider*, GrAtlasGenerationCounter*);
     bool activateNewPage(GrResourceProvider*);
@@ -249,6 +249,7 @@ private:
     int                   fFlushesSinceLastUse;
 
     std::vector<GrPlotEvictionCallback*> fEvictionCallbacks;
+    std::vector<GrPlotLocator> fPlotsToEvict;
 
     struct Page {
         // allocated array of Plots

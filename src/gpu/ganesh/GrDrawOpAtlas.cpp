@@ -142,7 +142,7 @@ inline void GrDrawOpAtlas::processEviction(GrPlotLocator plotLocator) {
     fAtlasGeneration = fGenerationCounter->next();
 }
 
-void GrDrawOpAtlas::uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
+bool GrDrawOpAtlas::uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
                                         GrTextureProxy* proxy,
                                         GrPlot* plot) {
     SkASSERT(proxy && proxy->peekTexture());
@@ -151,12 +151,24 @@ void GrDrawOpAtlas::uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& wr
     const void* dataPtr;
     SkIRect rect;
     std::tie(dataPtr, rect) = plot->prepareForUpload();
+    if (!dataPtr || rect.isEmpty()) {
+        return false;
+    }
 
-    writePixels(proxy,
-                rect,
-                SkColorTypeToGrColorType(fColorType),
-                dataPtr,
-                fBytesPerPixel*fPlotWidth);
+    if (!writePixels(proxy,
+                     rect,
+                     SkColorTypeToGrColorType(fColorType),
+                     dataPtr,
+                     fBytesPerPixel*fPlotWidth)) {
+        if (std::find(fPlotsToEvict.begin(), fPlotsToEvict.end(), plot->plotLocator()) ==
+            fPlotsToEvict.end()) {
+            fPlotsToEvict.push_back(plot->plotLocator());
+        }
+        return false;
+    } else {
+        plot->clearDirty();
+        return true;
+    }
 }
 
 inline bool GrDrawOpAtlas::updatePlot(GrDeferredUploadTarget* target,
@@ -180,7 +192,7 @@ inline bool GrDrawOpAtlas::updatePlot(GrDeferredUploadTarget* target,
 
         skgpu::Token lastUploadToken = target->addASAPUpload(
                 [this, plotsp, proxy](GrDeferredTextureUploadWritePixelsFn& writePixels) {
-                    this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
+                    return this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
                 });
         plot->setLastUploadToken(lastUploadToken);
     }
@@ -321,7 +333,7 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
 
     skgpu::Token lastUploadToken = target->addInlineUpload(
             [this, plotsp, proxy](GrDeferredTextureUploadWritePixelsFn& writePixels) {
-                this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
+                return this->uploadPlotToTexture(writePixels, proxy, plotsp.get());
             });
     newPlot->setLastUploadToken(lastUploadToken);
 
@@ -332,6 +344,20 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
 }
 
 void GrDrawOpAtlas::compact(skgpu::Token startTokenForNextFlush) {
+    if (!fPlotsToEvict.empty()) {
+        for (GrPlotLocator locator : fPlotsToEvict) {
+            uint32_t pageIdx = locator.pageIndex();
+            uint32_t plotIdx = locator.plotIndex();
+            if (pageIdx < fNumActivePages && plotIdx < fNumPlots) {
+                GrPlot* plot = fPages[pageIdx].fPlotArray[plotIdx].get();
+                if (plot->plotLocator() == locator) {
+                    this->processEvictionAndResetRects(plot);
+                }
+            }
+        }
+        fPlotsToEvict.clear();
+    }
+
     if (fNumActivePages < 1) {
         fPrevFlushToken = startTokenForNextFlush;
         return;
