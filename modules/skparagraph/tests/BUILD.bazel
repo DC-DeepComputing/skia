@@ -7,6 +7,8 @@ package(
 licenses(["notice"])
 
 TESTS_FILES = [
+    "SkParagraphFlutterBugsTest.cpp",
+    "SkParagraphSkiaBugsTest.cpp",
     "SkParagraphTest.cpp",
     "SkShaperJSONWriter.cpp",
     "SkShaperJSONWriter.h",

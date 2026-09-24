@@ -99,6 +99,9 @@ config("skia_private") {
   if (skia_use_lcd_text_3x_filter) {
     defines += [ "SK_USE_LCD_TEXT_3X_FILTER" ]
   }
+  if (skia_use_apple_unicode) {
+    defines += [ "SK_ENABLE_SF_SYMBOLS_FALLBACK" ]
+  }
   if (is_skia_dev_build && !is_canvaskit) {
     defines += [
       "SK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1",
@@ -3258,6 +3261,19 @@ if (skia_enable_tools) {
         deps = [
           ":skia",
           "modules/skshaper",
+        ]
+      }
+    }
+
+    if (skia_enable_skunicode && !is_win) {
+      test_app("paragraph_perf") {
+        sources = [ "tools/paragraph_perf.cpp" ]
+        deps = [
+          ":skia",
+          ":tool_utils",
+          "modules/skparagraph",
+          "modules/skshaper",
+          "modules/skunicode",
         ]
       }
     }

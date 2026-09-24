@@ -8,9 +8,13 @@
 #ifndef SkShaper_coretext_DEFINED
 #define SkShaper_coretext_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "modules/skshaper/include/SkShaper.h"
+#include "modules/skshaper/include/SkShaper_factory.h"
 
 #include <memory>
+
+class SkUnicode;
 
 namespace SkShapers::CT {
 
@@ -20,7 +24,9 @@ enum class LineBreakMode {
 };
 
 SKSHAPER_API std::unique_ptr<SkShaper> CoreText(LineBreakMode = LineBreakMode::kDefault);
+SKSHAPER_API sk_sp<SkShapers::Factory> Factory(sk_sp<SkUnicode> unicode,
+                                               LineBreakMode = LineBreakMode::kDefault);
 
-}
+}  // namespace SkShapers::CT
 
-#endif
+#endif  // SkShaper_coretext_DEFINED

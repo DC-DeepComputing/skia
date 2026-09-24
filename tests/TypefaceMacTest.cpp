@@ -8,8 +8,10 @@
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
+#include "include/ports/SkFontMgr_mac_ct.h"
 #include "include/ports/SkTypeface_mac.h"
 #include "src/core/SkZip.h"
+#include "src/ports/SkTypeface_mac_symbols.h"
 #include "src/utils/SkFloatUtils.h"
 #include "tests/Test.h"
 
@@ -188,5 +190,99 @@ DEF_TEST(TypefaceMacVariation, reporter) {
         SkMaybeDebugf("\n");
     }
     }
+    }
+}
+
+DEF_TEST(TypefaceMac_SFSymbols, reporter) {
+    REPORTER_ASSERT(reporter, SkGetSFSymbolsCount() > 0);
+    REPORTER_ASSERT(reporter, SkIsSFSymbolsCodepoint(kSFSymbolsBaseCodepoint));
+    REPORTER_ASSERT(reporter, !SkIsSFSymbolsCodepoint(0x41));
+    REPORTER_ASSERT(reporter, SkGetSFSymbolName(kSFSymbolsBaseCodepoint) != nullptr);
+
+    sk_sp<SkTypeface> tf = SkMakeTypeface_SFSymbols(SkFontStyle::Normal());
+    REPORTER_ASSERT(reporter, tf != nullptr);
+    if (tf) {
+        SkString family;
+        tf->getFamilyName(&family);
+        REPORTER_ASSERT(reporter, family.equals("SF Symbols"));
+
+        SkString psName;
+        tf->getPostScriptName(&psName);
+        REPORTER_ASSERT(reporter, psName.equals("SF-Symbols"));
+
+        REPORTER_ASSERT(reporter, tf->countGlyphs() == (int)SkGetSFSymbolsCount() + 1);
+
+        SkGlyphID glyph = tf->unicharToGlyph(kSFSymbolsBaseCodepoint);
+        REPORTER_ASSERT(reporter, glyph == 1);
+
+        SkGlyphID missingGlyph = tf->unicharToGlyph(0x41);
+        REPORTER_ASSERT(reporter, missingGlyph == 0);
+    }
+
+    sk_sp<SkFontMgr> fm = SkFontMgr_New_CoreText(nullptr);
+    REPORTER_ASSERT(reporter, fm != nullptr);
+
+#if defined(SK_ENABLE_SF_SYMBOLS_FALLBACK)
+    sk_sp<SkTypeface> matched = fm->matchFamilyStyle("SF Symbols", SkFontStyle::Normal());
+    REPORTER_ASSERT(reporter, matched != nullptr);
+
+    sk_sp<SkTypeface> fallback = fm->matchFamilyStyleCharacter(
+            nullptr, SkFontStyle::Normal(), nullptr, 0, kSFSymbolsBaseCodepoint);
+    REPORTER_ASSERT(reporter, fallback != nullptr);
+    if (fallback) {
+        SkString fallbackFamily;
+        fallback->getFamilyName(&fallbackFamily);
+        REPORTER_ASSERT(reporter, fallbackFamily.equals("SF Symbols"));
+    }
+#endif
+}
+
+DEF_TEST(TypefaceMac_OpticalSizing, reporter) {
+    CTFontRef fontText = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, 16.0, nullptr);
+    if (fontText) {
+        sk_sp<SkTypeface> tfText = SkMakeTypefaceFromCTFont(fontText);
+        CFRelease(fontText);
+        REPORTER_ASSERT(reporter, tfText != nullptr);
+        if (tfText) {
+            SkString psText;
+            tfText->getPostScriptName(&psText);
+            REPORTER_ASSERT(reporter, psText.equals(".SFNS-Text"));
+        }
+    }
+
+    CTFontRef fontDisplay = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, 28.0, nullptr);
+    if (fontDisplay) {
+        sk_sp<SkTypeface> tfDisplay = SkMakeTypefaceFromCTFont(fontDisplay);
+        CFRelease(fontDisplay);
+        REPORTER_ASSERT(reporter, tfDisplay != nullptr);
+        if (tfDisplay) {
+            SkString psDisplay;
+            tfDisplay->getPostScriptName(&psDisplay);
+            REPORTER_ASSERT(reporter, psDisplay.equals(".SFNS-Display"));
+        }
+    }
+
+    CTFontRef fontBoldText = CTFontCreateUIFontForLanguage(kCTFontUIFontEmphasizedSystem, 16.0, nullptr);
+    if (fontBoldText) {
+        sk_sp<SkTypeface> tfBoldText = SkMakeTypefaceFromCTFont(fontBoldText);
+        CFRelease(fontBoldText);
+        REPORTER_ASSERT(reporter, tfBoldText != nullptr);
+        if (tfBoldText) {
+            SkString psBoldText;
+            tfBoldText->getPostScriptName(&psBoldText);
+            REPORTER_ASSERT(reporter, psBoldText.equals(".SFNS-TextBold"));
+        }
+    }
+
+    CTFontRef fontBoldDisplay = CTFontCreateUIFontForLanguage(kCTFontUIFontEmphasizedSystem, 28.0, nullptr);
+    if (fontBoldDisplay) {
+        sk_sp<SkTypeface> tfBoldDisplay = SkMakeTypefaceFromCTFont(fontBoldDisplay);
+        CFRelease(fontBoldDisplay);
+        REPORTER_ASSERT(reporter, tfBoldDisplay != nullptr);
+        if (tfBoldDisplay) {
+            SkString psBoldDisplay;
+            tfBoldDisplay->getPostScriptName(&psBoldDisplay);
+            REPORTER_ASSERT(reporter, psBoldDisplay.equals(".SFNS-DisplayBold"));
+        }
     }
 }

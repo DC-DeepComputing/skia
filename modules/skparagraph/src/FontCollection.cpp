@@ -289,7 +289,9 @@ void FontCollection::clearCaches() {
     fParagraphCache.reset();
     fFaceCache->fTypefaces.reset();
     fVariationCache->fTypefaces.reset();
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE)
     SkShapers::HB::PurgeCaches();
+#endif
 }
 
 }  // namespace textlayout
