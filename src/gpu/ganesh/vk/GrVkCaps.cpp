@@ -1518,8 +1518,22 @@ void GrVkCaps::FormatInfo::initSampleCounts(const GrContextOptions& contextOptio
         fColorSampleCounts.push_back(1);
     }
     if (skgpu::kImagination_VkVendor == physProps.vendorID) {
-        // MSAA does not work on imagination
-        return;
+        switch (contextOptions.fImaginationMSAAMode) {
+            case GrContextOptions::ImaginationMSAAMode::kDisabled:
+                // MSAA does not work on imagination
+                return;
+            case GrContextOptions::ImaginationMSAAMode::kR8Only:
+                // Historically MSAA was disabled outright for Imagination (2017, Nexus
+                // Player). Measurement on Tensor G5 shows colour-target MSAA is still
+                // pathologically slow there, but R8_UNORM is the coverage-atlas format
+                // AtlasPathRenderer needs, and allowing MSAA for it alone is a large win.
+                if (format != VK_FORMAT_R8_UNORM) {
+                    return;
+                }
+                break;
+            case GrContextOptions::ImaginationMSAAMode::kAllFormats:
+                break;
+        }
     }
     if (skgpu::kIntel_VkVendor == physProps.vendorID) {
         if (GetIntelGen(GetIntelGPUType(physProps.deviceID)) < 12 ||
