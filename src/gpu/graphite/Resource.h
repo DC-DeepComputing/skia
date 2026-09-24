@@ -264,7 +264,12 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
-    const std::string& getLabel() const { return fLabel; }
+    // Public getter to obtain a comprehensive Resource label consisting of any custom label and/or
+    // usage flag(s) represented as a string.
+    // TODO(b/476118698): Eventually, this should be private to the Resource and ResourceCache.
+    // Label and usage flag getter methods will need to be gated behind lock acquisitions to ensure
+    // thread safety when querying this data.
+    std::string getLabel() const { return this->getLabelWithUsageFlags(); }
 
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
@@ -294,6 +299,7 @@ protected:
     Resource(const SharedContext*,
              Ownership,
              size_t gpuMemorySize,
+             SkEnumBitMask<ResourceUsage> = ResourceUsage::kNotPredefined,
              std::string_view label = {},
              bool reusableRequiresPurgeable = false,
              bool requiresPrepareForReturnToCache = false);
@@ -301,13 +307,18 @@ protected:
 
     const SharedContext* sharedContext() const { return fSharedContext; }
 
-    // Update the backend GPU resource label to match fLabel. This should only ever be called by the
-    // ResourceCache or Resource subclass constructors.
+    // Update the backend GPU resource label to represent the Resource's label. This should only
+    // ever be called by the ResourceCache or Resource subclass constructors.
     void synchronizeBackendLabel() {
-        if (!fLabel.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
+        if (!fBackendLabelDirty) {
+            return;
+        }
+
+        if (!fCustomLabel.empty() || fUsageFlags != ResourceUsage::kNotPredefined) {
+            const std::string fullLabel = "Skia_" + this->getLabelWithUsageFlags();
             this->setBackendLabel(fullLabel.c_str());
         }
+
         fBackendLabelDirty = false;
     }
 
@@ -450,17 +461,25 @@ private:
     // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
     // This method is only expected to be called when returning a non-shareable or scratch resource
     // from the cache.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
+    void setUsageFlagsAndLabel(SkEnumBitMask<ResourceUsage> usages, std::string_view label) {
+        if (fUsageFlags == usages && fCustomLabel == label) {
             return;
         }
 
-        fLabel = label;
+        fUsageFlags = usages;
+        fCustomLabel = label;
 
         // It is not always safe to immediately update the backend GPU resource label. Mark it
         // as dirty so it can be updated when appropriate.
         fBackendLabelDirty = true;
     }
+    SkEnumBitMask<ResourceUsage> usageFlags() const { return fUsageFlags; }
+
+    // Private method to access fLabel without its usage(s) translated to and appended as a string.
+    // This enables more efficient equality comparison than generating and comparing strings.
+    const std::string& labelWithoutUsageFlags() const { return fCustomLabel; }
+    // Private helper which performs the logic to generate a complete label that includes flag info.
+    std::string getLabelWithUsageFlags() const;
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
     bool hasCacheRef() const {
@@ -748,8 +767,11 @@ private:
     uint32_t fLastUseToken = 0;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
-    // String used to describe the current use of this Resource.
-    std::string fLabel;
+    SkEnumBitMask<ResourceUsage> fUsageFlags;
+
+    // String used to describe the current use of this Resource that cannot be represented by
+    // ResourceUsage flags (e.g. one provided by the client).
+    std::string fCustomLabel;
     // Flag to signal whether this Resource's label has been updated and its backend label is now
     // out of sync. This attribute does not need to be atomic or otherwise explicitly threadsafe
     // because labels will only ever be read from or written to when either:
