@@ -18,6 +18,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkGradient.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/private/SkAttributes.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -268,14 +269,28 @@ struct ComposeBlock {
 struct MatrixColorFilterBlock {
     struct MatrixColorFilterData {
         MatrixColorFilterData(const float matrix[20], bool inHSLA, bool clamp)
-                : fMatrix(matrix[ 0], matrix[ 1], matrix[ 2], matrix[ 3],
-                          matrix[ 5], matrix[ 6], matrix[ 7], matrix[ 8],
-                          matrix[10], matrix[11], matrix[12], matrix[13],
-                          matrix[15], matrix[16], matrix[17], matrix[18])
-                , fTranslate{matrix[4], matrix[9], matrix[14], matrix[19]}
+                : fMatrix(matrix[0],
+                          SK_UNSAFE_TODO(matrix[1]),
+                          SK_UNSAFE_TODO(matrix[2]),
+                          SK_UNSAFE_TODO(matrix[3]),
+                          SK_UNSAFE_TODO(matrix[5]),
+                          SK_UNSAFE_TODO(matrix[6]),
+                          SK_UNSAFE_TODO(matrix[7]),
+                          SK_UNSAFE_TODO(matrix[8]),
+                          SK_UNSAFE_TODO(matrix[10]),
+                          SK_UNSAFE_TODO(matrix[11]),
+                          SK_UNSAFE_TODO(matrix[12]),
+                          SK_UNSAFE_TODO(matrix[13]),
+                          SK_UNSAFE_TODO(matrix[15]),
+                          SK_UNSAFE_TODO(matrix[16]),
+                          SK_UNSAFE_TODO(matrix[17]),
+                          SK_UNSAFE_TODO(matrix[18]))
+                , fTranslate{SK_UNSAFE_TODO(matrix[4]),
+                             SK_UNSAFE_TODO(matrix[9]),
+                             SK_UNSAFE_TODO(matrix[14]),
+                             SK_UNSAFE_TODO(matrix[19])}
                 , fInHSLA(inHSLA)
-                , fClamp(clamp) {
-        }
+                , fClamp(clamp) {}
 
         SkM44 fMatrix;
         SkV4  fTranslate;

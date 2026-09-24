@@ -9,6 +9,7 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkFloatingPoint.h"
 #include "src/core/SkMatrixInvert.h"
 #include "src/core/SkMatrixPriv.h"
@@ -64,14 +65,15 @@ Rect map_rect(Transform::Type type, const SkM44& m, const Rect& r) {
 
 void map_points(const SkM44& m, const SkV4* in, SkV4* out, int count) {
     // TODO: These maybe should go into SkM44, since bulk point mapping seems generally useful
-    auto c0 = skvx::float4::Load(SkMatrixPriv::M44ColMajor(m) + 0);
-    auto c1 = skvx::float4::Load(SkMatrixPriv::M44ColMajor(m) + 4);
-    auto c2 = skvx::float4::Load(SkMatrixPriv::M44ColMajor(m) + 8);
-    auto c3 = skvx::float4::Load(SkMatrixPriv::M44ColMajor(m) + 12);
+    auto c0 = skvx::float4::Load(SK_UNSAFE_TODO(SkMatrixPriv::M44ColMajor(m) + 0));
+    auto c1 = skvx::float4::Load(SK_UNSAFE_TODO(SkMatrixPriv::M44ColMajor(m) + 4));
+    auto c2 = skvx::float4::Load(SK_UNSAFE_TODO(SkMatrixPriv::M44ColMajor(m) + 8));
+    auto c3 = skvx::float4::Load(SK_UNSAFE_TODO(SkMatrixPriv::M44ColMajor(m) + 12));
 
     for (int i = 0; i < count; ++i) {
-        auto p = (c0 * in[i].x) + (c1 * in[i].y) + (c2 * in[i].z) + (c3 * in[i].w);
-        p.store(out + i);
+        auto p = (c0 * SK_UNSAFE_TODO(in[i].x)) + (c1 * SK_UNSAFE_TODO(in[i].y)) +
+                 (c2 * SK_UNSAFE_TODO(in[i].z)) + (c3 * SK_UNSAFE_TODO(in[i].w));
+        p.store(SK_UNSAFE_TODO(out + i));
     }
 }
 
@@ -296,14 +298,15 @@ void Transform::mapPoints(const Rect& localRect, SkV4 deviceOut[4]) const {
 void Transform::mapPoints(const SkV2* localIn, SkV4* deviceOut, int count) const {
     SkASSERT(this->valid());
     // TODO: These maybe should go into SkM44, since bulk point mapping seems generally useful
-    auto c0 = skvx::float4::Load(SkMatrixPriv::M44ColMajor(fM) + 0);
-    auto c1 = skvx::float4::Load(SkMatrixPriv::M44ColMajor(fM) + 4);
+    auto c0 = skvx::float4::Load(SK_UNSAFE_TODO(SkMatrixPriv::M44ColMajor(fM) + 0));
+    auto c1 = skvx::float4::Load(SK_UNSAFE_TODO(SkMatrixPriv::M44ColMajor(fM) + 4));
     // skip c2 since localIn's z is assumed to be 0
-    auto c3 = skvx::float4::Load(SkMatrixPriv::M44ColMajor(fM) + 12);
+    auto c3 = skvx::float4::Load(SK_UNSAFE_TODO(SkMatrixPriv::M44ColMajor(fM) + 12));
 
     for (int i = 0; i < count; ++i) {
-        auto p = c0 * localIn[i].x + c1 * localIn[i].y /* + c2*0.f */ + c3 /* *1.f */;
-        p.store(deviceOut + i);
+        auto p = c0 *
+                 SK_UNSAFE_TODO(localIn[i].x + c1 * localIn[i].y /* + c2*0.f */ + c3 /* *1.f */);
+        p.store(SK_UNSAFE_TODO(deviceOut + i));
     }
 }
 
