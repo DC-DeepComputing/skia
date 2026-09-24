@@ -16,6 +16,24 @@
       "message": "This is breaking the Android roller, but it could be patched downstream (to allow inclusion of stdlib in a build target that includes skcms).\n\nHowever, I\u0027m not sure if we want this regardless. IIUC, skcms\u0027s canonical source lives in its own repo, and this is just a rolled copy? Also, it seems to historically avoid using any stdlib, and I believe even compiles with -std\u003dc++11 upstream (`to_array` is C++20)",
       "revId": "d3e4f374722e2acb90c472c9cf4af976daf777a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13865418_e500c199",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-24T20:21:47Z",
+      "side": 1,
+      "message": "Yes! it\u0027s correct. Thank you!\nHere\u0027s the new [CL](https://skia-review.git.corp.google.com/c/skia/+/1372476) excluding `skcms`.\nThanks!",
+      "parentUuid": "87d2bf74_cb26c853",
+      "revId": "d3e4f374722e2acb90c472c9cf4af976daf777a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
