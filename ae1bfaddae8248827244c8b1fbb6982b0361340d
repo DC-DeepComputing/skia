@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d99795_5f64288b",
+        "filename": "tests/PathOpsAngleIdeas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-24T20:16:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 494,
+        "startChar": 4,
+        "endLine": 494,
+        "endChar": 105
+      },
+      "revId": "ae1bfaddae8248827244c8b1fbb6982b0361340d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a59db927_6b0fe6b0",
+        "filename": "tests/PathOpsConicLineIntersectionTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-24T20:16:39Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 103
+      },
+      "revId": "ae1bfaddae8248827244c8b1fbb6982b0361340d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53073e18_6b79a70b",
+        "filename": "tests/PathOpsCubicLineIntersectionTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-24T20:16:39Z",
+      "side": 1,
+      "message": "Could you align the { with the { above, same with the other elements in this array",
+      "range": {
+        "startLine": 65,
+        "startChar": 21,
+        "endLine": 67,
+        "endChar": 64
+      },
+      "revId": "ae1bfaddae8248827244c8b1fbb6982b0361340d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df5cd4c7_af1e8a72",
+        "filename": "tests/PathOpsCubicQuadIntersectionTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-24T20:16:39Z",
+      "side": 1,
+      "message": "Could you do same align of { here and other places in this array.",
+      "range": {
+        "startLine": 24,
+        "startChar": 20,
+        "endLine": 27,
+        "endChar": 64
+      },
+      "revId": "ae1bfaddae8248827244c8b1fbb6982b0361340d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4e20a31_1459255f",
+        "filename": "tests/PathOpsExtendedTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-24T20:16:39Z",
+      "side": 1,
+      "message": "Can we move this comment above the new place for `#include \u003csstream\u003e`",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 46
+      },
+      "revId": "ae1bfaddae8248827244c8b1fbb6982b0361340d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
