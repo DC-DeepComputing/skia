@@ -78,8 +78,8 @@ bool DawnCommandBuffer::startStatsQuery(GpuStatsFlags) {
     wgpu::QuerySet querySet = std::move(fTimestampQuerySet);
 
     auto buffer = fResourceProvider->findOrCreateDawnBuffer(2 * sizeof(uint64_t),
-                                                            BufferType::kQuery,
                                                             AccessPattern::kHostVisible,
+                                                            ResourceUsage::kQueryBuffer,
                                                             "TimerQuery");
     if (!buffer) {
         SKIA_LOG_W("Failed to create buffer for resolving results, timer query will "
@@ -89,8 +89,8 @@ bool DawnCommandBuffer::startStatsQuery(GpuStatsFlags) {
     sk_sp<DawnBuffer> xferBuffer;
     if (!fSharedContext->caps()->drawBufferCanBeMapped()) {
         xferBuffer = fResourceProvider->findOrCreateDawnBuffer(2 * sizeof(uint64_t),
-                                                               BufferType::kXferGpuToCpu,
                                                                AccessPattern::kHostVisible,
+                                                               ResourceUsage::kXferGpuToCpuBuffer,
                                                                "TimerQueryXfer");
         if (!xferBuffer) {
             SKIA_LOG_W("Failed to create buffer for transferring timestamp results, timer "
