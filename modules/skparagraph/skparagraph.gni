@@ -67,6 +67,8 @@ skparagraph_utils = [
 #  //modules/skparagraph/tests:tests_hdrs
 #  //modules/skparagraph/tests:tests_srcs
 skparagraph_tests = [
+  "$_modules/skparagraph/tests/SkParagraphFlutterBugsTest.cpp",
+  "$_modules/skparagraph/tests/SkParagraphSkiaBugsTest.cpp",
   "$_modules/skparagraph/tests/SkParagraphTest.cpp",
   "$_modules/skparagraph/tests/SkShaperJSONWriter.cpp",
   "$_modules/skparagraph/tests/SkShaperJSONWriter.h",
