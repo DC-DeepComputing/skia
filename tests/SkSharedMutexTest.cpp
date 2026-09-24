@@ -29,10 +29,10 @@ DEF_TEST(SkSharedMutexMultiThreaded, r) {
     for (int i = 0; i < kSharedSize; ++i) {
         shared[i] = 0;
     }
-    SkTaskGroup taskGroup;
+    SkStdFunctionTaskGroup taskGroup;
 
     for (int threadIndex = 0; threadIndex < 8; ++threadIndex) {
-        taskGroup.add([&, threadIndex]() {
+        taskGroup.add1([&, threadIndex]() {
             if (threadIndex % 4 != 0) {
                 for (int c = 0; c < 100000; ++c) {
                     sm.acquireShared();
@@ -56,5 +56,5 @@ DEF_TEST(SkSharedMutexMultiThreaded, r) {
             }
         });
     }
-    taskGroup.wait();
+    taskGroup.wait1();
 }

@@ -15,6 +15,8 @@
 #include "include/private/chromium/GrDeferredDisplayList.h"
 #include "include/private/chromium/GrSurfaceCharacterization.h"
 
+#include "src/core/SkTaskGroup.h"
+
 class DDLPromiseImageHelper;
 class PromiseImageCallbackContext;
 class SkCanvas;
@@ -24,7 +26,6 @@ class SkImage;
 class SkPicture;
 class SkSurface;
 class GrSurfaceCharacterization;
-class SkTaskGroup;
 
 class DDLTileHelper {
 public:
@@ -106,8 +107,8 @@ public:
                   int numXDivisions, int numYDivisions,
                   bool addRandomPaddingToDst);
 
-    void kickOffThreadedWork(SkTaskGroup* recordingTaskGroup,
-                             SkTaskGroup* gpuTaskGroup,
+    void kickOffThreadedWork(SkStdFunctionTaskGroup* recordingTaskGroup,
+                             SkStdFunctionTaskGroup* gpuTaskGroup,
                              GrDirectContext*,
                              SkPicture*);
 
@@ -133,8 +134,8 @@ public:
 
     int numTiles() const { return fNumXDivisions * fNumYDivisions; }
 
-    void createBackendTextures(SkTaskGroup*, GrDirectContext*);
-    void deleteBackendTextures(SkTaskGroup*, GrDirectContext*);
+    void createBackendTextures(SkStdFunctionTaskGroup*, GrDirectContext*);
+    void deleteBackendTextures(SkStdFunctionTaskGroup*, GrDirectContext*);
 
 private:
     int                                    fNumXDivisions; // number of tiles horizontally

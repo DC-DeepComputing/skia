@@ -1194,7 +1194,7 @@ static bool should_skip(const char* sink, const char* src,
 
 // Even when a Task Sink reports to be non-threadsafe (e.g. GPU), we know things like
 // .png encoding are definitely thread safe.  This lets us offload that work to CPU threads.
-static SkTaskGroup* gDefinitelyThreadSafeWork = new SkTaskGroup;
+static SkStdFunctionTaskGroup* gDefinitelyThreadSafeWork = new SkStdFunctionTaskGroup;
 
 // The finest-grained unit of work we can run: draw a single Src into a single Sink,
 // report any errors, and perhaps write out the output: a .png of the bitmap, or a raw stream.
@@ -1237,7 +1237,7 @@ struct Task {
 
             // We're likely switching threads here, so we must capture by value, [=] or [foo,bar].
             SkStreamAsset* data = stream.detachAsStream().release();
-            gDefinitelyThreadSafeWork->add([task,name,bitmap,data]{
+            gDefinitelyThreadSafeWork->add1([task,name,bitmap,data]{
                 std::unique_ptr<SkStreamAsset> ownedData(data);
 
                 std::unique_ptr<HashAndEncode> hashAndEncode;
@@ -1692,7 +1692,7 @@ int main(int argc, char** argv) {
 #if defined(SK_ENABLE_SVG)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
-    SkTaskGroup::Enabler enabled(FLAGS_threads);
+    SkStdFunctionTaskGroup::Enabler1 enabled(FLAGS_threads);
     CodecUtils::RegisterAllAvailable();
     ToolUtils::RegisterAvailableTypefaceFactories();
 
@@ -1742,7 +1742,7 @@ int main(int argc, char** argv) {
     // However, execute all CPU-serial tests first so that they don't have races with parallel tests
     for (skiatest::Test& test : *gCPUSerialTests) { run_cpu_test(test); }
 
-    SkTaskGroup parallel;
+    SkStdFunctionTaskGroup parallel;
     TArray<Task> serial;
 
     for (TaggedSink& sink : *gSinks) {
@@ -1759,13 +1759,13 @@ int main(int argc, char** argv) {
             if (src->serial() || sink->serial()) {
                 serial.push_back(task);
             } else {
-                parallel.add([task] { Task::Run(task); });
+                parallel.add1([task] { Task::Run(task); });
             }
         }
     }
 
     for (skiatest::Test& test : *gCPUTests) {
-        parallel.add([test] { run_cpu_test(test); });
+        parallel.add1([test] { run_cpu_test(test); });
     }
 
     // With the parallel work running, run serial tasks and tests here on main thread.
@@ -1780,8 +1780,8 @@ int main(int argc, char** argv) {
 #endif
 
     // Wait for any remaining parallel work to complete (including any spun off of serial tasks).
-    parallel.wait();
-    gDefinitelyThreadSafeWork->wait();
+    parallel.wait1();
+    gDefinitelyThreadSafeWork->wait1();
 
     for (const TaggedSink& sink : *gSinks) {
         sink->done();

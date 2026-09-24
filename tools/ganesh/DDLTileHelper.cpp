@@ -271,15 +271,15 @@ DDLTileHelper::DDLTileHelper(GrDirectContext* direct,
 
 void DDLTileHelper::createDDLsInParallel(SkPicture* picture) {
 #if 1
-    SkTaskGroup taskGroup;
+    SkStdFunctionTaskGroup taskGroup;
     for (int i = 0; i < this->numTiles(); ++i) {
-        taskGroup.add([picture, tile = &fTiles[i]]() {
+        taskGroup.add1([picture, tile = &fTiles[i]]() {
             tile->createDDL(picture);
         });
     }
-    taskGroup.wait();
-    taskGroup.add([this]{ this->createComposeDDL(); });
-    taskGroup.wait();
+    taskGroup.wait1();
+    taskGroup.add1([this]{ this->createComposeDDL(); });
+    taskGroup.wait1();
 #else
     // Use this code path to debug w/o threads
     for (int i = 0; i < this->numTiles(); ++i) {
@@ -304,8 +304,8 @@ static void do_gpu_stuff(GrDirectContext* direct, DDLTileHelper::TileData* tile)
 }
 
 // We expect to have more than one recording thread but just one gpu thread
-void DDLTileHelper::kickOffThreadedWork(SkTaskGroup* recordingTaskGroup,
-                                        SkTaskGroup* gpuTaskGroup,
+void DDLTileHelper::kickOffThreadedWork(SkStdFunctionTaskGroup* recordingTaskGroup,
+                                        SkStdFunctionTaskGroup* gpuTaskGroup,
                                         GrDirectContext* dContext,
                                         SkPicture* picture) {
     SkASSERT(recordingTaskGroup && gpuTaskGroup && dContext);
@@ -321,16 +321,16 @@ void DDLTileHelper::kickOffThreadedWork(SkTaskGroup* recordingTaskGroup,
         //    schedule gpu-thread processing of the DDL
         // Note: a finer grained approach would be add a scheduling task which would evaluate
         //       which DDLs were ready to be rendered based on their prerequisites
-        recordingTaskGroup->add([tile, gpuTaskGroup, dContext, picture]() {
+        recordingTaskGroup->add1([tile, gpuTaskGroup, dContext, picture]() {
                                     tile->createDDL(picture);
 
-                                    gpuTaskGroup->add([dContext, tile]() {
+                                    gpuTaskGroup->add1([dContext, tile]() {
                                         do_gpu_stuff(dContext, tile);
                                     });
                                 });
     }
 
-    recordingTaskGroup->add([this] { this->createComposeDDL(); });
+    recordingTaskGroup->add1([this] { this->createComposeDDL(); });
 }
 
 // Only called from skpbench
@@ -361,7 +361,8 @@ void DDLTileHelper::resetAllTiles() {
     fComposeDDL.reset();
 }
 
-void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLTileHelper::createBackendTextures(SkStdFunctionTaskGroup* taskGroup,
+                                          GrDirectContext* direct) {
 
     if (taskGroup) {
         for (int i = 0; i < this->numTiles(); ++i) {
@@ -370,7 +371,7 @@ void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup, GrDirectContex
                 continue;
             }
 
-            taskGroup->add([direct, tile]() { TileData::CreateBackendTexture(direct, tile); });
+            taskGroup->add1([direct, tile]() { TileData::CreateBackendTexture(direct, tile); });
         }
     } else {
         for (int i = 0; i < this->numTiles(); ++i) {
@@ -379,12 +380,13 @@ void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup, GrDirectContex
     }
 }
 
-void DDLTileHelper::deleteBackendTextures(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLTileHelper::deleteBackendTextures(SkStdFunctionTaskGroup* taskGroup,
+                                          GrDirectContext* direct) {
     if (taskGroup) {
         for (int i = 0; i < this->numTiles(); ++i) {
             TileData* tile = &fTiles[i];
 
-            taskGroup->add([direct, tile]() { TileData::DeleteBackendTexture(direct, tile); });
+            taskGroup->add1([direct, tile]() { TileData::DeleteBackendTexture(direct, tile); });
         }
     } else {
         for (int i = 0; i < this->numTiles(); ++i) {

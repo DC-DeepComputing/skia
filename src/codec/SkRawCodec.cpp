@@ -139,7 +139,7 @@ public:
     explicit SkDngHost(dng_memory_allocator* allocater) : dng_host(allocater) {}
 
     void PerformAreaTask(dng_area_task& task, const dng_rect& area OPT_PROGRESS_ARG) override {
-        SkTaskGroup taskGroup;
+        SkTaskGroup<StdFunctionExecutor> taskGroup;
 
         // tileSize is typically 256x256
         const dng_point tileSize(task.FindTileSize(area));
@@ -155,7 +155,7 @@ public:
         task.Start(numTasks, area, tileSize, &Allocator(), Sniffer());
 #endif
         for (int taskIndex = 0; taskIndex < numTasks; ++taskIndex) {
-            taskGroup.add([&mutex, &exceptions, &task, this, taskIndex, taskAreas, tileSize] {
+            taskGroup.add1([&mutex, &exceptions, &task, this, taskIndex, taskAreas, tileSize] {
                 try {
 #if SK_DNG_VERSION <= 0x01040000
                     task.ProcessOnThread(taskIndex, taskAreas[taskIndex], tileSize, this->Sniffer());
@@ -172,7 +172,7 @@ public:
             });
         }
 
-        taskGroup.wait();
+        taskGroup.wait1();
         task.Finish(numTasks);
 
         // We only re-throw the first exception.

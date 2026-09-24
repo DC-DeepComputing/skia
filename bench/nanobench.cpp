@@ -1409,7 +1409,7 @@ int main(int argc, char** argv) {
 #endif
     SkCodecs::Register(SkJpegDecoder::Decoder());
 
-    SkTaskGroup::Enabler enabled(FLAGS_threads);
+    SkStdFunctionTaskGroup::Enabler1 enabled(FLAGS_threads);
 
     CommonFlags::SetCtxOptions(&grContextOpts);
 

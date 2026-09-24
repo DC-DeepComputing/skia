@@ -161,7 +161,7 @@ public:
     }
 
     ~MovingGlyphAnimator() override {
-        fBackgroundAnimationTask.wait();
+        fBackgroundAnimationTask.wait1();
     }
 
     void reset(SkRandom* rand, int screenWidth, int screenHeight) override {
@@ -178,19 +178,19 @@ public:
         }
 
         // Get valid front data.
-        fBackgroundAnimationTask.wait();
+        fBackgroundAnimationTask.wait1();
         this->runAnimationTask(0, 0, screenWidth, screenHeight);
         std::copy_n(fBackMatrices.get(), kNumPaths, fFrontMatrices.get());
         fLastTick = 0;
     }
 
     bool animate(double nanos, int screenWidth, int screenHeight) final {
-        fBackgroundAnimationTask.wait();
+        fBackgroundAnimationTask.wait1();
         this->swapAnimationBuffers();
 
         const double tsec = 1e-9 * nanos;
         const double dt = fLastTick ? (1e-9 * nanos - fLastTick) : 0;
-        fBackgroundAnimationTask.add(std::bind(&MovingGlyphAnimator::runAnimationTask, this, tsec,
+        fBackgroundAnimationTask.add1(std::bind(&MovingGlyphAnimator::runAnimationTask, this, tsec,
                                                dt, screenWidth, screenHeight));
         fLastTick = 1e-9 * nanos;
         return true;
@@ -253,7 +253,7 @@ protected:
     std::array<Velocity, kNumPaths> fVelocities;
     std::unique_ptr<SkMatrix[]> fFrontMatrices;
     std::unique_ptr<SkMatrix[]> fBackMatrices;
-    SkTaskGroup fBackgroundAnimationTask;
+    SkStdFunctionTaskGroup fBackgroundAnimationTask;
     double fLastTick;
 };
 
@@ -269,7 +269,7 @@ public:
     }
 
     ~WavyGlyphAnimator() override {
-        fBackgroundAnimationTask.wait();
+        fBackgroundAnimationTask.wait1();
     }
 
     void reset(SkRandom* rand, int screenWidth, int screenHeight) override {

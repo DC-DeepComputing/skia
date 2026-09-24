@@ -34,13 +34,13 @@ DEF_TEST(SkOnce_Multithreaded, r) {
 
     // Run a bunch of tasks to be the first to add six to x.
     SkOnce once;
-    SkTaskGroup taskGroup;
+    SkStdFunctionTaskGroup taskGroup;
     for (int i = 0; i < 1021; ++i) {
-        taskGroup.add([&]() {
+        taskGroup.add1([&]() {
             once([&] { x += 6; });
         });
     }
-    taskGroup.wait();
+    taskGroup.wait1();
 
     // Only one should have done the +=.
     REPORTER_ASSERT(r, 6 == x);

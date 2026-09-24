@@ -11,34 +11,44 @@
 #include <type_traits>
 #include <utility>
 
-SkTaskGroup::SkTaskGroup(SkExecutor& executor) : fPending(0), fExecutor(executor) {}
+template <typename ExecutorType>
+SkTaskGroup<ExecutorType>::SkTaskGroup(ExecutorType& executor) : fPending(0), fExecutor(executor) {}
 
-void SkTaskGroup::add(std::function<void()> fn, int workList) {
+template <typename ExecutorType>
+void SkTaskGroup<ExecutorType>::add1(ExecutorType::WorkType work, int workList) {
     fPending.fetch_add(+1, std::memory_order_relaxed);
-    fExecutor.add([this, fn{std::move(fn)}] {
-                      fn();
+#if 0
+    fExecutor.add1([this, work2{std::move(work)}] {
+                      ExecutorType::WorkTraits::Execute(work2);
                       fPending.fetch_add(-1, std::memory_order_release);
                   },
                   workList);
+#endif
 }
 
-bool SkTaskGroup::done() const {
+template <typename ExecutorType>
+bool SkTaskGroup<ExecutorType>::done1() const {
     return fPending.load(std::memory_order_acquire) == 0;
 }
 
-void SkTaskGroup::wait() {
+template <typename ExecutorType>
+void SkTaskGroup<ExecutorType>::wait1() {
     // Actively help the executor do work until our task group is done.
     // This lets SkTaskGroups nest arbitrarily deep on a single SkExecutor:
     // no thread ever blocks waiting for others to do its work.
     // (We may end up doing work that's not part of our task group.  That's fine.)
-    while (!this->done()) {
+    while (!this->done1()) {
         fExecutor.borrow();
     }
 }
 
-SkTaskGroup::Enabler::Enabler(int threads) {
+template <typename ExecutorType>
+SkTaskGroup<ExecutorType>::Enabler1::Enabler1(int threads) {
     if (threads) {
-        fThreadPool = SkExecutor::MakeLIFOThreadPool(threads);
-        SkExecutor::SetDefault(fThreadPool.get());
+        fThreadPool = ExecutorType::MakeLIFOThreadPool(threads);
+        ExecutorType::SetDefault(fThreadPool.get());
     }
 }
+
+template class SkTaskGroup<StdFunctionExecutor>;
+template class SkTaskGroup<CallbackExecutor>;
