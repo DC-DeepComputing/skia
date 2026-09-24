@@ -38,7 +38,7 @@ TextureProxy::TextureProxy(sk_sp<Texture> texture)
         , fInfo(texture->textureInfo())
         , fBudgeted(texture->budgeted())
         , fVolatile(Volatile::kNo)
-        , fLabel(texture->getLabel())
+        , fLabel(texture->getLabel()) // ?
         , fTexture(std::move(texture)) {
     SkASSERT(fInfo.isValid());
 }

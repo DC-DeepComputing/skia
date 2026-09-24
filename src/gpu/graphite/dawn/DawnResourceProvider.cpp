@@ -271,8 +271,8 @@ BindBufferInfo DawnResourceProvider::IntrinsicConstantsManager::add(
         DawnResourceProvider* resourceProvider = fResourceProvider;
         auto dawnBuffer =
                 resourceProvider->findOrCreateDawnBuffer(stride * IntrinsicBuffer::kNumSlots,
-                                                         BufferType::kUniform,
                                                          AccessPattern::kGpuOnly,
+                                                         ResourceUsage::kUniformBuffer,
                                                          "IntrinsicConstantBuffer");
         if (!dawnBuffer) {
             // If we failed to create a GPU buffer to hold the intrinsic uniforms, we will fail the
@@ -552,10 +552,10 @@ sk_sp<Texture> DawnResourceProvider::createTexture(
 }
 
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
-                                                 BufferType type,
                                                  AccessPattern accessPattern,
+                                                 ResourceUsage bufferType,
                                                  std::string_view label) {
-    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern, label);
+    return DawnBuffer::Make(this->dawnSharedContext(), size, accessPattern, bufferType, label);
 }
 
 sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
@@ -596,10 +596,11 @@ DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
 }
 
 sk_sp<DawnBuffer> DawnResourceProvider::findOrCreateDawnBuffer(size_t size,
-                                                               BufferType type,
                                                                AccessPattern accessPattern,
+                                                               ResourceUsage bufferType,
                                                                std::string_view label) {
-    sk_sp<Buffer> buffer = this->findOrCreateNonShareableBuffer(size, type, accessPattern, label);
+    sk_sp<Buffer> buffer =
+            this->findOrCreateNonShareableBuffer(size, accessPattern, bufferType, label);
     DawnBuffer* ptr = static_cast<DawnBuffer*>(buffer.release());
     return sk_sp<DawnBuffer>(ptr);
 }
