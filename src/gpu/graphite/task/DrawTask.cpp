@@ -69,4 +69,11 @@ Task::Status DrawTask::addCommands(Context* ctx,
     return fChildTasks.addCommands(ctx, commandBuffer, replayTarget);
 }
 
+Protected DrawTask::isProtected() const {
+    if (fTarget && fTarget->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    return fChildTasks.hasTasks(Protected::kYes) ? Protected::kYes : Protected::kNo;
+}
+
 } // namespace skgpu::graphite

@@ -9,6 +9,7 @@
 #define skgpu_graphite_GpuWorkSubmission_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkTArray.h"
 
 #include <memory>
 
@@ -31,15 +32,19 @@ public:
     void addFinishedProc(sk_sp<RefCntedCallback> finishedProc);
 
 protected:
-    CommandBuffer* commandBuffer() { return fCommandBuffer.get(); }
+    CommandBuffer* commandBuffer() {
+        return fCommandBuffers.empty() ? nullptr : fCommandBuffers.back().get();
+    }
 
+    GpuWorkSubmission(skia_private::TArray<std::unique_ptr<CommandBuffer>> cmdBuffers,
+                      QueueManager* queueManager);
     GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer, QueueManager* queueManager);
 
 private:
     virtual bool onIsFinished(const SharedContext* sharedContext) = 0;
     virtual void onWaitUntilFinished(const SharedContext* sharedContext) = 0;
 
-    std::unique_ptr<CommandBuffer> fCommandBuffer;
+    skia_private::TArray<std::unique_ptr<CommandBuffer>> fCommandBuffers;
     sk_sp<SkRefCnt> fOutstandingAsyncMapCounter;
     QueueManager* fQueueManager;
 };

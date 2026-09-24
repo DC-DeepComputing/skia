@@ -26,7 +26,15 @@ struct SK_API VulkanBackendContext {
     VkInstance                       fInstance = VK_NULL_HANDLE;
     VkPhysicalDevice                 fPhysicalDevice = VK_NULL_HANDLE;
     VkDevice                         fDevice = VK_NULL_HANDLE;
+    // If SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS is defined, fQueue should be set if
+    // fProtectedContext is false, if true then fProtectedQueue should be set instead. In the case
+    // fProtectedMultiQueueSupport is true, both fields should be set with an unprotected and
+    // protected queue respective.
+    //
+    // If SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS is not defined, fQueue should always be the field
+    // set for the context's queue, regardless of if the context is protected or not.
     VkQueue                          fQueue = VK_NULL_HANDLE;
+    VkQueue                          fProtectedQueue = VK_NULL_HANDLE;
     uint32_t                         fGraphicsQueueIndex = 0;
     // The max api version set here should match the value set in VkApplicationInfo::apiVersion when
     // then VkInstance was created. Skia requires Vulkan 1.1 as the minimum version.
@@ -43,7 +51,11 @@ struct SK_API VulkanBackendContext {
     // for allocating Vulkan resources that use VkDeviceMemory.
     sk_sp<VulkanMemoryAllocator>     fMemoryAllocator;
     skgpu::VulkanGetProc             fGetProc;
+    // Always true if fProtectedMultiQueueSupport is true.
     Protected                        fProtectedContext = Protected::kNo;
+    // Allows a single Graphite context to utilize both fQueue and fProtectedQueue, removing the
+    // need to manage multiple contexts.
+    bool                             fProtectedMultiQueueSupport = false;
     // Optional callback which will be invoked if a VK_ERROR_DEVICE_LOST error code is received from
     // the driver. Debug information from the driver will be provided to the callback if the
     // VK_EXT_device_fault extension is supported and enabled (VkPhysicalDeviceFaultFeaturesEXT must
