@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a5c6366_8482e855",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-24T16:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7028fb85_96bce82f",
+      "range": {
+        "startLine": 321,
+        "startChar": 21,
+        "endLine": 321,
+        "endChar": 53
+      },
+      "revId": "ebec3c9902bca5315d4504e731b32e3e023178c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "584fda93_4125b387",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99de5df1_cf8df41a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-24T16:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "584fda93_4125b387",
+      "range": {
+        "startLine": 230,
+        "startChar": 25,
+        "endLine": 230,
+        "endChar": 52
+      },
+      "revId": "ebec3c9902bca5315d4504e731b32e3e023178c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8357d961_a89f370d",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-09-23T20:35:58Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 277,
+        "startChar": 12,
+        "endLine": 277,
+        "endChar": 101
+      },
+      "revId": "ebec3c9902bca5315d4504e731b32e3e023178c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "657c4a09_9f312fe9",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-24T16:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8357d961_a89f370d",
       "range": {
         "startLine": 277,
         "startChar": 12,
