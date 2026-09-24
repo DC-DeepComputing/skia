@@ -22,6 +22,30 @@
       },
       "revId": "c7ffb47ef44814a755c0bdf075d3ad2f422a3470",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a544da5a_eabb2e5a",
+        "filename": "gm/dropshadowimagefilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-24T20:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed8e88de_fd6ec328",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 7
+      },
+      "revId": "c7ffb47ef44814a755c0bdf075d3ad2f422a3470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
