@@ -248,10 +248,12 @@ struct AndroidDecodeResult {
 static AndroidDecodeResult DecodeAndroidPixelsHalting(SkAndroidCodec* androidCodec,
                                                       int sampleSize,
                                                       SkColorType colorType = kN32_SkColorType,
-                                                      const SkIRect* subset = nullptr) {
+                                                      const SkIRect* subset = nullptr,
+                                                      size_t maxDecodeMemory = 0) {
     SkAndroidCodec::AndroidOptions opts;
     opts.fSampleSize = sampleSize;
     opts.fSubset = subset;
+    opts.fMaxDecodeMemory = maxDecodeMemory;
     // Prevent SkCodec::fillIncompleteImage from zero-filling undecoded rows over SK_ColorBLUE so
     // DetectRowsDecoded can accurately measure the rows written by the codec.
     opts.fZeroInitialized = SkCodec::kYes_ZeroInitialized;
@@ -362,7 +364,9 @@ static std::optional<SkBitmap> DecodeAndroidPixels(
         skiatest::Reporter* r,
         std::unique_ptr<SkCodec> codec,
         int sampleSize,
-        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr) {
+        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr,
+        size_t maxDecodeMemory = 0,
+        SkCodec::Result expectedResult = SkCodec::kSuccess) {
     REPORTER_ASSERT(r, codec);
     if (!codec) {
         return std::nullopt;
@@ -381,9 +385,13 @@ static std::optional<SkBitmap> DecodeAndroidPixels(
         subsetPtr = &subset;
     }
 
-    auto res =
-            DecodeAndroidPixelsHalting(androidCodec.get(), sampleSize, kN32_SkColorType, subsetPtr);
-    REPORTER_ASSERT(r, res.fResult == SkCodec::kSuccess);
+    auto res = DecodeAndroidPixelsHalting(
+            androidCodec.get(), sampleSize, kN32_SkColorType, subsetPtr, maxDecodeMemory);
+    REPORTER_ASSERT(r,
+                    res.fResult == expectedResult,
+                    "Expected %s, got %s",
+                    SkCodec::ResultToString(expectedResult),
+                    SkCodec::ResultToString(res.fResult));
     if (res.fResult != SkCodec::kSuccess) {
         return std::nullopt;
     }
@@ -2464,4 +2472,51 @@ DEF_TEST(RustPngCodec_subsampling_subset_interlaced_halting, r) {
                     return SkIRect::MakeXYWH(0, 1, info.width(), info.height() - 1);
                 });
     }
+}
+
+// Regression test helper for b/565484678:
+// Verifies that `fPreblendBuffer` in `SkPngRustCodec` is charged against `fMaxDecodeMemory`
+// (`allocateFromBudget`) for interlaced subset/sampled decodes.
+static void AssertInterlacedPreblendBufferBudget(
+        skiatest::Reporter* r,
+        int sampleSize,
+        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr) {
+    static constexpr char kPath[] = "images/plane_interlaced.png";
+    sk_sp<SkData> data = GetResourceAsData(kPath);
+    if (!data) {
+        ERRORF(r, "Missing resource: %s", kPath);
+        return;
+    }
+
+    // `plane_interlaced.png` is 250x126, 8-bit RGB with `tRNS` (expanded to RGBA8 -> 4 bytes per
+    // encoded pixel = 1000 bytes/row). Subsampling or subsetting an interlaced image requires all
+    // 126 rows in `fPreblendBuffer`.
+    constexpr size_t kEncodedRowBytes = 250 * 4;
+    constexpr size_t kFullBufferBytes = 126 * kEncodedRowBytes;
+
+    std::ignore = DecodeAndroidPixels(
+            r,
+            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr),
+            sampleSize,
+            getSubset,
+            kFullBufferBytes - 1,
+            SkCodec::kOutOfMemory);
+
+    std::optional<SkBitmap> bm = DecodeAndroidPixels(
+            r,
+            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr),
+            sampleSize,
+            std::move(getSubset),
+            kFullBufferBytes);
+    REPORTER_ASSERT(r, bm.has_value());
+}
+
+DEF_TEST(RustPngCodec_subsampling_interlaced_preblend_buffer_budget, r) {
+    AssertInterlacedPreblendBufferBudget(r, /*sampleSize=*/2);
+}
+
+DEF_TEST(RustPngCodec_subset_interlaced_preblend_buffer_budget, r) {
+    AssertInterlacedPreblendBufferBudget(r, /*sampleSize=*/1, [](const SkImageInfo& info) {
+        return SkIRect::MakeXYWH(0, 1, info.width(), info.height() - 1);
+    });
 }
