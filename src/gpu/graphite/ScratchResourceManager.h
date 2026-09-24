@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/private/SkEnumBitMask.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTHash.h"
 
@@ -22,6 +23,7 @@ class ResourceProvider;
 class Texture;
 class TextureInfo;
 class TextureProxy;
+enum class ResourceUsage : uint32_t;
 
 // NOTE: This is temporary while atlas management requires flushing an entire Recorder. That
 // can break a scratch Device into multiple DrawTasks and the proxy read count needs to count
@@ -88,7 +90,8 @@ public:
     // It is the caller's responsibility to determine when it's acceptable to return a resource.
     // That said, it's not mandatory that the scratch resources be returned. In that case, they just
     // stop being available for reuse for later tasks in a Recording.
-    sk_sp<Texture> getScratchTexture(SkISize, const TextureInfo&, std::string_view label);
+    sk_sp<Texture> getScratchTexture(
+            SkISize, const TextureInfo&, SkEnumBitMask<ResourceUsage>, std::string_view label);
 
     // TODO: Eventually update BufferSubAllocator and DrawBufferManager to leverage the
     // BufferSubAllocator. There are a few open issues to address first:

@@ -225,7 +225,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
         }
 
         colorAttachment = resourceProvider->findOrCreateShareableTexture(
-                msaaSize, colorInfo, "DiscardableMSAAAttachment");
+                msaaSize, colorInfo, ResourceUsage::kDiscardableLoadMSAA);
         if (!colorAttachment) {
             SKIA_LOG_W("Could not get Color attachment for RenderPassTask");
             return Status::kFail;
@@ -254,7 +254,8 @@ Task::Status RenderPassTask::addCommands(Context* context,
             dimensions = GetApproxSize(dimensions);
         }
         depthStencilAttachment = resourceProvider->findOrCreateShareableTexture(
-                dimensions, dsInfo, "DepthStencilAttachment");
+                dimensions, dsInfo, ResourceUsage::kNotPredefined, "DepthStencilAttachment");
+        // TODO update
         if (!depthStencilAttachment) {
             SKIA_LOG_W("Could not get DepthStencil attachment for RenderPassTask");
             return Status::kFail;

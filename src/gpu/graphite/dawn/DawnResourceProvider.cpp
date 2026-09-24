@@ -536,7 +536,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     auto texture = this->findOrCreateShareableTexture(
             dimensions,
             TextureInfos::MakeDawn(dawnMsaaLoadTextureInfo),
-            "DiscardableLoadMSAATexture");
+            ResourceUsage::kDiscardableLoadMSAA);
 
     return sk_sp<DawnTexture>(static_cast<DawnTexture*>(texture.release()));
 }

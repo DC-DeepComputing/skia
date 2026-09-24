@@ -32,7 +32,7 @@ sk_sp<TextureProxy> create_texture_proxy(Recorder* recorder, int width, int heig
                                                    SkISize::Make(width, height),
                                                    info,
                                                    Budgeted::kYes,
-                                                   "StorageFallbackTexture");
+                                                   ResourceUsage::kStorageFallback);
     return proxy;
 }
 

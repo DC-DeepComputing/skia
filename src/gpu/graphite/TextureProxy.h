@@ -24,6 +24,7 @@ namespace skgpu::graphite {
 class Caps;
 class Recorder;
 class ResourceProvider;
+enum class ResourceUsage : uint32_t;
 class ScratchResourceManager;
 class Texture;
 enum class TextureFormat : uint8_t;
@@ -95,13 +96,16 @@ public:
         fBudgeted = budgeted;
     }
 
+    SkEnumBitMask<ResourceUsage> usage() const { return fUsage; }
+
     // Make() will immediately instantiate non-budgeted proxies.
     static sk_sp<TextureProxy> Make(const Caps*,
                                     ResourceProvider*,
                                     SkISize dimensions,
                                     const TextureInfo&,
                                     skgpu::Budgeted,
-                                    std::string_view label);
+                                    ResourceUsage,
+                                    std::string_view label = {});
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 
@@ -122,6 +126,7 @@ private:
     TextureProxy(SkISize dimensions,
                  const TextureInfo& info,
                  Budgeted budgeted,
+                 ResourceUsage usage,
                  std::string_view label);
     TextureProxy(SkISize dimensions,
                  const TextureInfo&,
@@ -142,6 +147,8 @@ private:
     Budgeted fBudgeted;
     const Volatile fVolatile;
 
+    // A TextureProxy should only have one usage, and can only be set upon creation.
+    const ResourceUsage fUsage;
     // String used to describe the current use of this TextureProxy. It will be set on its
     // Texture object when the proxy gets instantiated.
     std::string fLabel;

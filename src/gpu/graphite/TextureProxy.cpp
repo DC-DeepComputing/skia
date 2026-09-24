@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureUtils.h"
@@ -22,12 +23,14 @@ namespace skgpu::graphite {
 TextureProxy::TextureProxy(SkISize dimensions,
                            const TextureInfo& info,
                            skgpu::Budgeted budgeted,
+                           ResourceUsage usage,
                            std::string_view label)
         : SkPixelStorage(SkPixelStorage::Type::kTextureProxy)
         , fDimensions(dimensions)
         , fInfo(info)
         , fBudgeted(budgeted)
         , fVolatile(Volatile::kNo)
+        , fUsage(usage)
         , fLabel(label) {
     SkASSERT(fInfo.isValid());
 }
@@ -38,8 +41,11 @@ TextureProxy::TextureProxy(sk_sp<Texture> texture)
         , fInfo(texture->textureInfo())
         , fBudgeted(texture->budgeted())
         , fVolatile(Volatile::kNo)
-        , fLabel(texture->getLabel()) // ?
+        , fUsage(texture->usageFlags())
+        , fLabel(texture->getLabel())
         , fTexture(std::move(texture)) {
+    // TODO: If a Texture has multiple usage flags, how do we reconcile this when representing its
+    // proxy?
     SkASSERT(fInfo.isValid());
 }
 
@@ -96,7 +102,7 @@ bool TextureProxy::instantiate(ResourceProvider* resourceProvider) {
     // TODO(389908374): Once all tasks use the ScratchResourceManager, this can be updated to just
     // finding and creating a non-shareable AND non-budgeted texture.
     fTexture = resourceProvider->findOrCreateNonShareableTexture(
-            fDimensions, fInfo, fLabel, fBudgeted);
+            fDimensions, fInfo, fBudgeted, fUsage, fLabel);
     if (!fTexture) {
         return false;
     }
@@ -136,6 +142,7 @@ bool TextureProxy::InstantiateIfNotLazy(ScratchResourceManager* scratchManager,
 
     textureProxy->fTexture = scratchManager->getScratchTexture(textureProxy->dimensions(),
                                                                textureProxy->textureInfo(),
+                                                               textureProxy->usage(),
                                                                textureProxy->fLabel);
     if (!textureProxy->fTexture) {
         return false;
@@ -172,12 +179,13 @@ sk_sp<TextureProxy> TextureProxy::Make(const Caps* caps,
                                        SkISize dimensions,
                                        const TextureInfo& textureInfo,
                                        skgpu::Budgeted budgeted,
+                                       ResourceUsage usage,
                                        std::string_view label) {
     if (!texture_info_and_size_are_valid(dimensions, textureInfo, caps->maxTextureSize())) {
         return nullptr;
     }
 
-    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, budgeted, label)};
+    sk_sp<TextureProxy> proxy {new TextureProxy(dimensions, textureInfo, budgeted, usage, label)};
     if (budgeted == Budgeted::kNo) {
         // Instantiate immediately to avoid races later on if the client starts to use the wrapping
         // object on multiple threads.

@@ -31,7 +31,7 @@ uint32_t create_unique_id() {
 Resource::Resource(const SharedContext* sharedContext,
                    Ownership ownership,
                    size_t gpuMemorySize,
-                   SkEnumBitMask<ResourceUsage> usage,
+                   SkEnumBitMask<ResourceUsage> usageFlags,
                    std::string_view label,
                    bool reusableRequiresPurgeable,
                    bool requiresPrepareForReturnToCache)
@@ -44,7 +44,7 @@ Resource::Resource(const SharedContext* sharedContext,
         , fOwnership(ownership)
         , fRequiresPrepareForReturnToCache(requiresPrepareForReturnToCache)
         , fGpuMemorySize(gpuMemorySize)
-        , fUsageFlags(usage)
+        , fUsageFlags(usageFlags)
         , fCustomLabel(label)
         , fBackendLabelDirty(!label.empty()) {
     // At initialization time, a Resource should not be considered budgeted because it does not yet
@@ -152,18 +152,42 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
 namespace {
 const char* usage_flag_to_str(ResourceUsage usage) {
     switch (usage) {
-        case ResourceUsage::kNotPredefined:       return "";
-        case ResourceUsage::kVertexBuffer:        return "VertexBuffer";
-        case ResourceUsage::kIndexBuffer:         return "IndexBuffer";
-        case ResourceUsage::kXferCpuToGpuBuffer:  return "XferCpuToGpuBuffer";
-        case ResourceUsage::kXferGpuToCpuBuffer:  return "XferGpuToCpuBuffer";
-        case ResourceUsage::kUniformBuffer:       return "UniformBuffer";
-        case ResourceUsage::kStorageBuffer:       return "StorageBuffer";
-        case ResourceUsage::kQueryBuffer:         return "QueryBuffer";
-        case ResourceUsage::kIndirectBuffer:      return "IndirectBuffer";
-        case ResourceUsage::kVertexStorageBuffer: return "VertexStorageBuffer";
-        case ResourceUsage::kIndexStorageBuffer:  return "IndexStorageBuffer";
-        default: SkUNREACHABLE;                   return "";
+        case ResourceUsage::kNotPredefined:            return "";
+        // Buffer usages
+        case ResourceUsage::kVertexBuffer:             return "VertexBuffer";
+        case ResourceUsage::kIndexBuffer:              return "IndexBuffer";
+        case ResourceUsage::kXferCpuToGpuBuffer:       return "XferCpuToGpuBuffer";
+        case ResourceUsage::kXferGpuToCpuBuffer:       return "XferGpuToCpuBuffer";
+        case ResourceUsage::kUniformBuffer:            return "UniformBuffer";
+        case ResourceUsage::kStorageBuffer:            return "StorageBuffer";
+        case ResourceUsage::kQueryBuffer:              return "QueryBuffer";
+        case ResourceUsage::kIndirectBuffer:           return "IndirectBuffer";
+        case ResourceUsage::kVertexStorageBuffer:      return "VertexStorageBuffer";
+        case ResourceUsage::kIndexStorageBuffer:       return "IndexStorageBuffer";
+        // Texture usages
+        case ResourceUsage::kAsyncReadPixelsFallback:  return "AsyncReadPixelsFallback";
+        case ResourceUsage::kChildDevice:              return "ChildDevice";
+        case ResourceUsage::kCopyDevice:               return "DeviceCopy";
+        case ResourceUsage::kDiscardableLoadMSAA:      return "DiscardableLoadMSAA";
+        case ResourceUsage::kDispatchWriteOnlyStorage: return "DispatchWriteOnlyStorage";
+        case ResourceUsage::kDstCopy:                  return "DstCopy";
+        case ResourceUsage::kEvalBlur:                 return "EvalBlur";
+        case ResourceUsage::kGenerateMipmapsScratch:   return "GenerateMipmaps";
+        case ResourceUsage::kImageFilterCachedBitmap:  return "ImageFilterCachedBitmap";
+        case ResourceUsage::kImageFilterResult:        return "ImageFilterResult";
+        case ResourceUsage::kImageMakeCTandCS:         return "CTandCSConversion";
+        case ResourceUsage::kImageSubset:              return "Subset";
+        case ResourceUsage::kLazySkImageBitmap:        return "LazySkImageBitmap";
+        case ResourceUsage::kPrecompileTarget:         return "PrecompileTarget";
+        case ResourceUsage::kRasterBitmap:             return "RasterBitmap";
+        case ResourceUsage::kRescaleDst:               return "RescaleDst";
+        case ResourceUsage::kRescaleImageTemp:         return "RescaleImageTemp";
+        case ResourceUsage::kRescaleLinearGamma:       return "RescaleLinearGamma";
+        case ResourceUsage::kStorageFallback:          return "StorageFallback";
+        case ResourceUsage::kYUVRasterBitmapPlane:     return "YUVRasterBitmapPlane";
+        // TODO reorder per enum ordering
+        // case ResourceUsage::kDepthStencilAttachment:   return "DepthStencilAttachment";
+        default: SkUNREACHABLE;                        return "";
     }
 }
 

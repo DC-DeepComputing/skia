@@ -228,8 +228,8 @@ public:
         sk_sp<RefCntedCallback> textureReleaseCB = RefCntedCallback::Make(fTextureReleaseProc,
                                                                           textureReleaseCtx);
 
-        sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture,
-                                                                        std::move(fLabel));
+        sk_sp<Texture> texture = resourceProvider->createWrappedTexture(
+                backendTexture, ResourceUsage::kNotPredefined, std::move(fLabel));
         if (!texture) {
             SKIA_LOG_W("Failed to wrap BackendTexture returned by fulfill proc");
             return nullptr;
@@ -298,6 +298,7 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
                                                    bitmap.dimensions(),
                                                    textureInfo,
                                                    budgeted,
+                                                   ResourceUsage::kNotPredefined,
                                                    label);
     if (!proxy) {
         return {};

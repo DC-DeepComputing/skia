@@ -473,7 +473,6 @@ private:
         // as dirty so it can be updated when appropriate.
         fBackendLabelDirty = true;
     }
-    SkEnumBitMask<ResourceUsage> usageFlags() const { return fUsageFlags; }
 
     // Private method to access fLabel without its usage(s) translated to and appended as a string.
     // This enables more efficient equality comparison than generating and comparing strings.
