@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0106a4bf_ca847e2f",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-24T19:02:01Z",
+      "side": 1,
+      "message": "removed the oval check\n\nI don\u0027t think we can set the pdata as empty here if the bounds are empty. My reasoning is that this function (`snapshot`) is supposed to accept SkRects with empty bounds because they can still draw some real geometry (e.g. a degenerate SkRect can be a straight line or a singular point).\n\npdata-\u003ebounds().isEmpty() evaluates to true if either the width or the height is zero, but not necessarily both\n\n```\n        return !(fLeft \u003c fRight \u0026\u0026 fTop \u003c fBottom);\n```\n\nSo returning an SkRect::MakeEmpty here (which corresponds to no geometry being drawn) would be wrong.",
+      "parentUuid": "a14af7fa_f1aaa684",
+      "range": {
+        "startLine": 301,
+        "startChar": 36,
+        "endLine": 301,
+        "endChar": 66
+      },
+      "revId": "7ee28c8c734162213563f3b391112e5aac6c9ea5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dadeb535_49d28ce5",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08b13eb9_5beaba39",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-24T19:02:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dadeb535_49d28ce5",
+      "range": {
+        "startLine": 304,
+        "startChar": 0,
+        "endLine": 304,
+        "endChar": 32
+      },
+      "revId": "7ee28c8c734162213563f3b391112e5aac6c9ea5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78ec1436_4a4cfc58",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-09-23T15:05:36Z",
       "side": 1,
       "message": "I like pulling out the `isNotGeneral` check, but I think we should also handle empty bounds more explicitly by resetting the path. That should let us remove both this condition and the `(fType \u003d\u003d SkPathIsType::kOval)` term.",
+      "range": {
+        "startLine": 311,
+        "startChar": 60,
+        "endLine": 311,
+        "endChar": 87
+      },
+      "revId": "7ee28c8c734162213563f3b391112e5aac6c9ea5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f0d38a2_95c57623",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-24T19:02:01Z",
+      "side": 1,
+      "message": "I removed the oval check.\n\nFor a similar reason to the comment on `snapshot()`, this function should not reset the path because it would remove geometry that we might want to draw (e.g. a squished SkRect that would draw a line or a point with caps).\n\nResetting the path would erase that data",
+      "parentUuid": "78ec1436_4a4cfc58",
       "range": {
         "startLine": 311,
         "startChar": 60,

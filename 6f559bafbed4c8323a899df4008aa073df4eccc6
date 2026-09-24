@@ -211,6 +211,30 @@
       },
       "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "914dd813_e67b5553",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-24T19:02:01Z",
+      "side": 0,
+      "message": "talking offline.\n\nWe realized that handling fuzzy floating points values should not exist within these functions.\nThis would lead to difficulties in asserting assumptions down the line.\n\nFor now, our plan is to apply the latest fix in the latest patch, and later on remove the fuzzy \"nearly equal\" conditions.\n\nWe also have to resolve previous fuzzer bugs that these fuzzy conditions were meant to fix",
+      "parentUuid": "c172fade_88bbdf5e",
+      "range": {
+        "startLine": 769,
+        "startChar": 8,
+        "endLine": 769,
+        "endChar": 19
+      },
+      "revId": "6f559bafbed4c8323a899df4008aa073df4eccc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

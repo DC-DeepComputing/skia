@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd960f2c_05883c31",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-24T19:02:01Z",
+      "side": 1,
+      "message": "that all makes sense. I removed the function and this for loop",
+      "parentUuid": "df65423b_054b8998",
+      "range": {
+        "startLine": 878,
+        "startChar": 0,
+        "endLine": 885,
+        "endChar": 5
+      },
+      "revId": "54792636c72c4ed21fac8bf3bb12e2973c9c744d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a6e967c_cfdf6b6d",
