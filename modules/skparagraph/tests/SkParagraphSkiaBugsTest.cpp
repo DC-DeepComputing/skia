@@ -216,16 +216,11 @@ DEF_TEST_DISABLED(SkParagraph_Skia_b_40040287_UTF16_AstralPlaneIndices, reporter
 }
 
 // =============================================================================
-// Skia Buganizer b/448789662 & b/519671848:
-// Mixed RTL/LTR runs with font fallback causing cluster out-of-order crashes.
-//
-// [FAILS ON APPLE]
-// Reason: In OneLineShaper.cpp, during BiDi run partitioning, cluster indices inside
-// the RTL Hebrew fallback run are indexed relative to the local block rather than
-// strictly mapped/bounded within the run's textRange() ([6, 14)), generating cluster
-// indices 0, 2, 4 that point outside the run range.
+// Mixed RTL/LTR runs with font fallback.
+// Verifies that Run::globalClusterIndex values are monotonic and stay within
+// the run's textRange() for BiDi fallback runs.
 // =============================================================================
-DEF_TEST_DISABLED(SkParagraph_Skia_b_448789662_BiDi_MixedRunsClusterBounds, reporter) {
+DEF_TEST(SkParagraph_Skia_b_448789662_BiDi_MixedRunsClusterBounds, reporter) {
     auto fontCollection = make_test_font_collection();
     auto unicode = get_test_unicode();
     if (!unicode) {
@@ -254,7 +249,7 @@ DEF_TEST_DISABLED(SkParagraph_Skia_b_448789662_BiDi_MixedRunsClusterBounds, repo
     for (size_t r = 0; r < runs.size(); ++r) {
         const auto& run = runs[r];
         for (size_t c = 0; c < run.size(); ++c) {
-            size_t cluster = run.clusterIndex(c);
+            size_t cluster = run.globalClusterIndex(c);
             REPORTER_ASSERT(reporter, cluster >= run.textRange().start &&
                                       cluster < run.textRange().end,
                             "Cluster %zu outside of run range [%zu, %zu)",
