@@ -1,0 +1,222 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b8d7e0c_8aa89da0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "lgtm, just some minor nits and a change to the testing readPixels() impl",
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379141a3_9244e94d",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "nit: I just saw SkColorSpaceXformSteps has a template constructor that should let this simplify to `csSteps{srcColorInfo, dstColorInfo}`.",
+      "range": {
+        "startLine": 387,
+        "startChar": 44,
+        "endLine": 388,
+        "endChar": 96
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad226706_af3913cc",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "same ctor simplification here",
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2265d93_1967984e",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "This term shouldn\u0027t be necessary; a graphite-backed SkImage already requires the texture to be texturable.",
+      "range": {
+        "startLine": 443,
+        "startChar": 11,
+        "endLine": 443,
+        "endChar": 59
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4139c2cf_1228a06c",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "ctor simplify",
+      "range": {
+        "startLine": 476,
+        "startChar": 35,
+        "endLine": 476,
+        "endChar": 42
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "546e761e_24ffc267",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "add `// else it couldn\u0027t be rendered so apply the GPU-optional conversions on the CPU instead",
+      "range": {
+        "startLine": 485,
+        "startChar": 8,
+        "endLine": 485,
+        "endChar": 9
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a34c34e0_2fe46e0b",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "We can remove this parameter now",
+      "range": {
+        "startLine": 500,
+        "startChar": 0,
+        "endLine": 500,
+        "endChar": 63
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db0b9ade_6013b0db",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "You should be able to use `dstSurface-\u003etarget().proxy()-\u003eformat()` to skip having to call `ViewFormat()` manually.",
+      "range": {
+        "startLine": 665,
+        "startChar": 16,
+        "endLine": 665,
+        "endChar": 88
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3590df5_03fc55a3",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "I was going to ask about this 😊",
+      "range": {
+        "startLine": 893,
+        "startChar": 0,
+        "endLine": 893,
+        "endChar": 69
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66ced673_a7e42d93",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "Since asyncReadTexture() now has no fallbacks and everything is in asyncReadPixels(), this synchronous readPixels() should ideally match the public async case.\n\nI think that can be achieved by changing this condition to be `caps-\u003eisTexturable()` so in most cases we\u0027ll wrap it in a new Image and then go through asyncReadPixels. Then we change the else branch to an `else if (isCopyableSrc(...))` to go directly to asyncReadTexture. Lastly, if we\u0027re not texturable or copyable it should return false since there\u0027s nothing to be done.",
+      "range": {
+        "startLine": 1071,
+        "startChar": 8,
+        "endLine": 1071,
+        "endChar": 88
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

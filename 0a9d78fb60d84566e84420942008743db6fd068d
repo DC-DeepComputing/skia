@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c890eb17_360a4f07",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-24T16:05:14Z",
+      "side": 1,
+      "message": "Sorry, I hadn\u0027t realized you\u0027d updated Chrome already with a flag.",
+      "parentUuid": "76d340bd_d0914eaf",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 6
+      },
+      "revId": "0a9d78fb60d84566e84420942008743db6fd068d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c47e9d5a_db8b7913",
