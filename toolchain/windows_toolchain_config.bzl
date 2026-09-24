@@ -25,6 +25,11 @@ load(
     "with_feature_set",
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
+load(
+    ":unsafe_buffers.bzl",
+    "UNSAFE_BUFFERS_MAPPINGS_LABEL",
+    "make_unsafe_buffers_features",
+)
 
 # These variables were copied from the generated @clang_windows_amd64//:vars.bzl file.
 # They are available to be directly used here, but in order to do so, Bazel needs access
@@ -72,6 +77,10 @@ def _windows_amd64_toolchain_info(ctx):
     ]
     features += _make_default_flags(clang_toolchain_path)
     features += _make_diagnostic_flags()
+    features += make_unsafe_buffers_features(
+        ctx.file.unsafe_buffers_mappings.path,
+        supported = ctx.attr.supports_warning_suppression_mappings,
+    )
 
     # Tells Bazel that our compiler will add .exe etc to the outputs
     # https://stackoverflow.com/a/63889676
@@ -112,6 +121,16 @@ def _windows_amd64_toolchain_info(ctx):
 provide_windows_amd64_toolchain_config = rule(
     attrs = {
         "clang_windows_amd64": attr.label(default = "@clang_windows_amd64//:compile_files"),
+        "supports_warning_suppression_mappings": attr.bool(
+            mandatory = True,
+            doc = "Whether the Clang this toolchain downloads accepts " +
+                  "--warning-suppression-mappings, as probed when its repository was fetched. " +
+                  "See //toolchain/unsafe_buffers.bzl.",
+        ),
+        "unsafe_buffers_mappings": attr.label(
+            default = UNSAFE_BUFFERS_MAPPINGS_LABEL,
+            allow_single_file = True,
+        ),
     },
     provides = [CcToolchainConfigInfo],
     implementation = _windows_amd64_toolchain_info,

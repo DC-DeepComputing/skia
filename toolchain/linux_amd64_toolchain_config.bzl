@@ -26,6 +26,11 @@ load(
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 load(":clang_layering_check.bzl", "make_layering_check_features")
+load(
+    ":unsafe_buffers.bzl",
+    "UNSAFE_BUFFERS_MAPPINGS_LABEL",
+    "make_unsafe_buffers_features",
+)
 
 def _linux_amd64_toolchain_info(ctx):
     # https://bazel.build/rules/lib/builtins/Label#repo_name
@@ -37,6 +42,10 @@ def _linux_amd64_toolchain_info(ctx):
     features += _make_default_flags(external_toolchain)
     features += make_layering_check_features()
     features += _make_diagnostic_flags()
+    features += make_unsafe_buffers_features(
+        ctx.file.unsafe_buffers_mappings.path,
+        supported = ctx.attr.supports_warning_suppression_mappings,
+    )
 
     # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
@@ -64,6 +73,16 @@ def _linux_amd64_toolchain_info(ctx):
 provide_linux_amd64_toolchain_config = rule(
     attrs = {
         "clang_linux_amd64": attr.label(default = "@clang_linux_amd64//:compile_files"),
+        "supports_warning_suppression_mappings": attr.bool(
+            mandatory = True,
+            doc = "Whether the Clang this toolchain downloads accepts " +
+                  "--warning-suppression-mappings, as probed when its repository was fetched. " +
+                  "See //toolchain/unsafe_buffers.bzl.",
+        ),
+        "unsafe_buffers_mappings": attr.label(
+            default = UNSAFE_BUFFERS_MAPPINGS_LABEL,
+            allow_single_file = True,
+        ),
     },
     provides = [CcToolchainConfigInfo],
     implementation = _linux_amd64_toolchain_info,

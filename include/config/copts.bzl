@@ -87,7 +87,6 @@ WARNINGS = [
     "-Wno-undefined-func-template",
     "-Wno-unused-parameter",  # It is common to have unused parameters in src/
     "-Wno-zero-as-null-pointer-constant",  # VK_NULL_HANDLE is defined as 0
-    "-Wno-unsafe-buffer-usage",
     #### Warnings we would like to fix ####
     "-Wno-abstract-vbase-init",
     "-Wno-cast-align",
@@ -173,6 +172,19 @@ WARNINGS = [
         "-D_CRT_USE_BUILTIN_OFFSETOF",
     ],
     "//conditions:default": [],
+}) + select({
+    # -Wunsafe-buffer-usage flags pointer arithmetic that cannot be bounds checked, and is part of
+    # -Weverything. Enforcing it requires Clang's suppression mappings file (Clang 20+) to list the
+    # directories that have been spanified so far (b/532990050).
+    #
+    # Skia's hermetic toolchains know which Clang they download, so they decide this for themselves
+    # and we add nothing here; see //toolchain/unsafe_buffers.bzl. For any other toolchain
+    # (Emscripten, the NDK, or an external client's own) we cannot know whether the mappings flag
+    # is understood, so the warning stays off.
+    "//bazel/common_config_settings:uses_hermetic_toolchain": [],
+    "//conditions:default": [
+        "-Wno-unsafe-buffer-usage",
+    ],
 })
 
 DEFAULT_COPTS = CORE_COPTS + OPT_LEVEL + WARNINGS
