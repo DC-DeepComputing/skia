@@ -145,4 +145,45 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(CanvasBaseRecorder_GaneshBasedCanvas_IsLinkedTo
     REPORTER_ASSERT(reporter, ganeshRecorder->directContext() == ctx);
 }
 
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GaneshRecorder_CpuRecorder_ProvidesValidCPURecorder,
+                                 reporter,
+                                 ctxInfo,
+                                 CtsEnforcement::kApiLevel_202604) {
+    auto ctx = ctxInfo.directContext();
+    SkRecorder* ganeshRecorder = ctx->asRecorder();
+    REPORTER_ASSERT(reporter, ganeshRecorder != nullptr);
+    REPORTER_ASSERT(reporter, ganeshRecorder->type() == SkRecorder::Type::kGanesh);
+
+    // Strict downcast to skcpu::Recorder returns nullptr for a Ganesh recorder,
+    // whereas cpuRecorder() always provides a valid skcpu::Recorder*.
+    REPORTER_ASSERT(reporter, skcpu::AsRecorder(ganeshRecorder) == nullptr);
+    skcpu::Recorder* cpuRec = ganeshRecorder->cpuRecorder();
+    REPORTER_ASSERT(reporter, cpuRec != nullptr);
+    REPORTER_ASSERT(reporter, cpuRec->type() == SkRecorder::Type::kCPU);
+    REPORTER_ASSERT(reporter, cpuRec->cpuRecorder() == cpuRec);
+
+    // Client use case 1: Create a synchronous CPU bitmap surface from a GPU recorder's cpuRecorder().
+    auto ii = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> cpuSurface = cpuRec->makeBitmapSurface(ii);
+    REPORTER_ASSERT(reporter, cpuSurface != nullptr);
+    REPORTER_ASSERT(reporter, cpuSurface->getCanvas()->baseRecorder() == cpuRec);
+    cpuSurface->getCanvas()->clear(SK_ColorRED);
+    SkPixmap pmap;
+    REPORTER_ASSERT(reporter, cpuSurface->peekPixels(&pmap));
+    REPORTER_ASSERT(reporter, pmap.getColor(10, 10) == SK_ColorRED);
+
+    // Client use case 2: Raster SkImages use recorder->cpuRecorder() to validate and allocate
+    // surfaces (e.g., in makeScaled) even when passed a Ganesh SkRecorder*.
+    sk_sp<SkImage> rasterImg = cpuSurface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, rasterImg != nullptr);
+    REPORTER_ASSERT(reporter, !rasterImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, rasterImg->isValid(ganeshRecorder));
+
+    sk_sp<SkImage> scaledRasterImg = rasterImg->makeScaled(
+            ganeshRecorder, ii.makeWH(32, 32), SkSamplingOptions(SkFilterMode::kLinear));
+    REPORTER_ASSERT(reporter, scaledRasterImg != nullptr);
+    REPORTER_ASSERT(reporter, scaledRasterImg->width() == 32);
+    REPORTER_ASSERT(reporter, !scaledRasterImg->isTextureBacked());
+}
+
 #endif  // defined(SK_GANESH)

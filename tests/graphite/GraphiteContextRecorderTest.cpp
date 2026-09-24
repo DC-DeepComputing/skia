@@ -11,8 +11,10 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
+#include "include/cpu/Recorder.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
 #include "tests/Test.h"
 
@@ -121,4 +123,45 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CanvasBaseRecorder_GraphiteBasedCanvas_IsOrig
     REPORTER_ASSERT(reporter, baseRecorder);
     REPORTER_ASSERT(reporter, baseRecorder->type() == SkRecorder::Type::kGraphite);
     REPORTER_ASSERT(reporter, baseRecorder == recorder.get());
+}
+
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteRecorder_CpuRecorder_ProvidesValidCPURecorder,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kApiLevel_202604) {
+    std::unique_ptr<skgpu::graphite::Recorder> graphiteRecorder = context->makeRecorder();
+    REPORTER_ASSERT(reporter, graphiteRecorder != nullptr);
+    REPORTER_ASSERT(reporter, graphiteRecorder->type() == SkRecorder::Type::kGraphite);
+
+    // Strict downcast to skcpu::Recorder returns nullptr for a Graphite recorder,
+    // whereas cpuRecorder() always provides a valid skcpu::Recorder*.
+    REPORTER_ASSERT(reporter, skcpu::AsRecorder(graphiteRecorder.get()) == nullptr);
+    skcpu::Recorder* cpuRec = graphiteRecorder->cpuRecorder();
+    REPORTER_ASSERT(reporter, cpuRec != nullptr);
+    REPORTER_ASSERT(reporter, cpuRec->type() == SkRecorder::Type::kCPU);
+    REPORTER_ASSERT(reporter, cpuRec->cpuRecorder() == cpuRec);
+
+    // Client use case 1: Create a synchronous CPU bitmap surface from a Graphite recorder's
+    // cpuRecorder() without needing async GPU readback.
+    auto ii = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> cpuSurface = cpuRec->makeBitmapSurface(ii);
+    REPORTER_ASSERT(reporter, cpuSurface != nullptr);
+    REPORTER_ASSERT(reporter, cpuSurface->getCanvas()->baseRecorder() == cpuRec);
+    cpuSurface->getCanvas()->clear(SK_ColorRED);
+    SkPixmap pmap;
+    REPORTER_ASSERT(reporter, cpuSurface->peekPixels(&pmap));
+    REPORTER_ASSERT(reporter, pmap.getColor(10, 10) == SK_ColorRED);
+
+    // Client use case 2: Raster SkImages use recorder->cpuRecorder() to validate and allocate
+    // surfaces (e.g., in makeScaled) even when passed a Graphite Recorder*.
+    sk_sp<SkImage> rasterImg = cpuSurface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, rasterImg != nullptr);
+    REPORTER_ASSERT(reporter, !rasterImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, rasterImg->isValid(graphiteRecorder.get()));
+
+    sk_sp<SkImage> scaledRasterImg = rasterImg->makeScaled(
+            graphiteRecorder.get(), ii.makeWH(32, 32), SkSamplingOptions(SkFilterMode::kLinear));
+    REPORTER_ASSERT(reporter, scaledRasterImg != nullptr);
+    REPORTER_ASSERT(reporter, scaledRasterImg->width() == 32);
+    REPORTER_ASSERT(reporter, !scaledRasterImg->isTextureBacked());
 }
