@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87cf82c1_454f4481",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-09-24T20:25:32Z",
+      "side": 1,
+      "message": "PTAL and LMKWYT!",
+      "revId": "2bda8cf077c4a2b0aee4508636f5b76b96ce5ca8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
