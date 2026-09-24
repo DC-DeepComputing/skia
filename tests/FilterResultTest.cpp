@@ -644,7 +644,8 @@ public:
     TestRunner(skiatest::Reporter* reporter, skgpu::graphite::Recorder* recorder)
             : fReporter(reporter)
             , fRecorder(recorder)
-            , fBackend(skif::MakeGraphiteBackend(recorder, /*surfaceProps=*/{}, kColorType)) {}
+            , fBackend(skif::MakeGraphiteBackend(recorder, /*surfaceProps=*/{},
+                                                 kColorType, skgpu::Protected::kNo)) {}
 #endif
 
     // Let TestRunner be passed in to places that take a Reporter* or to REPORTER_ASSERT etc.
