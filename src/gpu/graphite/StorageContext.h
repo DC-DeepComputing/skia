@@ -10,6 +10,7 @@
 
 #include "include/core/SkColorType.h"
 #include "include/private/SkTDArray.h"
+#include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -52,6 +53,15 @@ public:
     }
 
     std::pair<float*, int> allocateGradientData(int numStops, const SkGradientBaseShader* shader);
+
+    // Writes the color and offset data directly into the cached gradient data and returns the
+    // float offset the data begins at in the buffer.
+    //
+    // Returns a negative offset to signal failure.
+    int writeGradientData(int numStops,
+                          const SkPMColor4f* colors,
+                          const float* offsets,
+                          const SkGradientBaseShader* shader);
 
     // Used to determine the LCM across the stride/alignment requirements of all draws in a
     // drawPass, but does not write any data to the storageContext. Instead, at snapDrawPass() time,

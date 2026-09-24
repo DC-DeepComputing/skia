@@ -306,12 +306,10 @@ std::string emit_uniforms_from_storage_buffer(const char* indexVariableName,
 
 std::string emit_step_storage_buffer(const ResourceBindingRequirements& bindingReqs,
                                      const RenderStep* step) {
-    // NOTE: currently no renderstep declares fsUsesStorage() = true. Only gradients use fragment
-    // shader storage, but they emit their storage buffer declaration directly inside
-    // generateFragmentSkSL(). This is redundant and will be fixed in a follow-on patch.
-    SkASSERT(!step->fsUsesStorage());
+    if (!step || step->storageUniforms().empty()) {
+        return "";
+    }
 
-    SkASSERT(step->numStorageUniforms() > 0);
     std::string fields;
     for (auto a : step->storageUniforms()) {
         SkSL::String::appendf(&fields, "%s %s", SkSLTypeString(a.type()), a.name());
@@ -340,8 +338,13 @@ std::string emit_step_storage_buffer(const ResourceBindingRequirements& bindingR
 
 std::string emit_storage_fallback_texture(const ResourceBindingRequirements& bindingReqs,
                                           const RenderStep* step) {
+    std::string result = SkSL::String::printf(
+            "layout(set=%d, binding=%d) readonly texture2D %s;\n",
+            bindingReqs.fUniformsSetIdx,
+            bindingReqs.fStorageBufferBinding,
+            ShaderInfo::kStorageFallbackTextureName);
     if (!step || step->storageUniforms().empty()) {
-        return "";
+        return result;
     }
 
     std::string fields;
@@ -442,8 +445,7 @@ std::string emit_storage_fallback_texture(const ResourceBindingRequirements& bin
                 i, nTexels, i, i, i, i, i, i);
     }
 
-    return SkSL::String::printf(
-            "layout(set=%d, binding=%d) readonly texture2D storageFallbackTexture;\n"
+    return result + SkSL::String::printf(
             "struct StepStorageData {\n%s};\n"
             "StepStorageData readStepStorageData(int index) {\n"
             "%s"
@@ -454,8 +456,6 @@ std::string emit_storage_fallback_texture(const ResourceBindingRequirements& bin
             "inline StepStorageData readStepStorageData(uint index) {\n"
             "    return readStepStorageData(int(index));\n"
             "}\n",
-            bindingReqs.fUniformsSetIdx,
-            bindingReqs.fStorageBufferBinding,
             fields.c_str(),
             texelLoads.c_str(),
             fieldAssignments.c_str());
@@ -1066,7 +1066,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     const bool hasFragShader = paintID.isValid() && step->performsShading();
 
     // Create the final ShaderInfo object.
-    auto result = std::unique_ptr<ShaderInfo>(new ShaderInfo(dict, rteDict, uniformSsboIndex,
+    auto result = std::unique_ptr<ShaderInfo>(new ShaderInfo(caps, dict, rteDict, uniformSsboIndex,
                                               hasFragShader ? rpDesc.fDstReadStrategy
                                                             : DstReadStrategy::kNoneRequired));
 
@@ -1138,11 +1138,13 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     return result;
 }
 
-ShaderInfo::ShaderInfo(const ShaderCodeDictionary* shaderCodeDictionary,
+ShaderInfo::ShaderInfo(const Caps* caps,
+                       const ShaderCodeDictionary* shaderCodeDictionary,
                        const RuntimeEffectDictionary* rteDict,
                        const char* uniformSsboIndex,
                        DstReadStrategy dstReadStrategy)
-        : fShaderCodeDictionary(shaderCodeDictionary)
+        : fCaps(caps)
+        , fShaderCodeDictionary(shaderCodeDictionary)
         , fRuntimeEffectDictionary(rteDict)
         , fUniformSsboIndex(uniformSsboIndex)
         , fDstReadStrategy(dstReadStrategy) {}
@@ -1259,28 +1261,22 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                 /*binding=*/0);
     }
 
-    bool useStorageBuffer = caps->storageBufferSupport() &&
-                            (allReqFlags & SnippetRequirementFlags::kStorageBuffer);
-    SkASSERT(caps->storageBufferSupport() ||
-             !SkToBool(allReqFlags & SnippetRequirementFlags::kStorageBuffer));
-    if (useStorageBuffer) {
-        SkSL::String::appendf(&fsPreamble,
-                              "layout (set=%d, binding=%d) readonly buffer FSStorageBuffer {\n"
-                              "float %s[];\n"
-                              "};\n",
-                              bindingReqs.fUniformsSetIdx,
-                              bindingReqs.fStorageBufferBinding,
-                              ShaderInfo::kStorageBufferName);
+    bool needsStorage = (allReqFlags & SnippetRequirementFlags::kStorageBuffer) || // e.g. gradients
+                        (step->fsUsesStorage() && step->numStorageUniforms() > 0);
+    if (needsStorage) {
         fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
-    }
-
-    if (step->fsUsesStorage() && step->numStorageUniforms() > 0) {
         if (caps->storageBufferSupport()) {
+            SkSL::String::appendf(&fsPreamble,
+                                  "layout (set=%d, binding=%d) readonly buffer FSStorageBuffer {\n"
+                                  "float %s[];\n"
+                                  "};\n",
+                                  bindingReqs.fUniformsSetIdx,
+                                  bindingReqs.fStorageBufferBinding,
+                                  ShaderInfo::kStorageBufferName);
             fsPreamble += emit_step_storage_buffer(bindingReqs, step);
         } else {
             fsPreamble += emit_storage_fallback_texture(bindingReqs, step);
         }
-        fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
     }
 
     const bool useDstSampler = fDstReadStrategy == DstReadStrategy::kTextureCopy ||

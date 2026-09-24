@@ -361,6 +361,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
                             info.backendType != wgpu::BackendType::Vulkan &&
                             compatLimits.maxStorageBuffersInVertexStage >= 4 &&
                             compatLimits.maxStorageBuffersInFragmentStage >= 4;
+    fStorageBufferSupport = false;
 #else
     // WASM doesn't provide a way to query the backend, so can't tell if we are on a backend that
     // needs to have SSBOs disabled. Pessimistically assume we could be. Once the above conditions
