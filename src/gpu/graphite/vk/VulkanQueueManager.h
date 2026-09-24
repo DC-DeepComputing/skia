@@ -18,7 +18,7 @@ class VulkanSharedContext;
 
 class VulkanQueueManager final : public QueueManager {
 public:
-    VulkanQueueManager(VkQueue queue, const SharedContext*);
+    VulkanQueueManager(VkQueue queue, VkQueue protectedQueue, const SharedContext*);
     ~VulkanQueueManager() override {}
 
 private:
@@ -34,6 +34,7 @@ private:
 #endif
 
     VkQueue fQueue;
+    VkQueue fProtectedQueue;
 };
 
 } // namespace skgpu::graphite

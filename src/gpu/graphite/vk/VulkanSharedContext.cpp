@@ -67,13 +67,21 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
         featuresPtr = context.fDeviceFeatures2;
     }
 
+#ifdef SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS
+    // Only supported if we can have the unprotected and protected queues explicity defined.
+    bool protectedMultiQueueSupport = context.fProtectedMultiQueueSupport;
+#else
+    bool protectedMultiQueueSupport = false;
+#endif
+
     std::unique_ptr<const VulkanCaps> caps(new VulkanCaps(options,
                                                           interface.get(),
                                                           context.fPhysicalDevice,
                                                           physDevVersion,
                                                           featuresPtr,
                                                           extensions,
-                                                          context.fProtectedContext));
+                                                          context.fProtectedContext,
+                                                          protectedMultiQueueSupport));
 
     sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator = context.fMemoryAllocator;
     if (!memoryAllocator) {
