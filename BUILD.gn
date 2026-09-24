@@ -3045,6 +3045,9 @@ if (skia_enable_tools) {
         "modules/skparagraph:bench",
         "modules/skshaper",
       ]
+      if (skia_use_rust_jpeg_decode) {
+        deps += [ ":jpeg_decode_rust" ]
+      }
     }
   }
 
