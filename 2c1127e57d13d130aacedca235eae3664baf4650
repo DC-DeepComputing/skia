@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d8858c9_12333939",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-24T13:44:17Z",
+      "side": 1,
+      "message": "We could skip this CL. A following CL will move the taskgroup\u0027s wait functionality into SkExecutor in which case Graphite could just use a raw SkExecutor while Ganesh (and all our internal tools) could continue using the std::function-based SkTaskGroup.",
+      "revId": "2c1127e57d13d130aacedca235eae3664baf4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
