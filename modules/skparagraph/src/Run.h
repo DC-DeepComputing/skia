@@ -101,7 +101,6 @@ public:
     SkScalar baselineShift() const { return fBaselineShift; }
     PlaceholderStyle* placeholderStyle() const;
     bool isPlaceholder() const { return fPlaceholderIndex != std::numeric_limits<size_t>::max(); }
-    size_t clusterIndex(size_t pos) const { return fClusterIndexes[pos]; }
     size_t globalClusterIndex(size_t pos) const { return fClusterStart + fClusterIndexes[pos]; }
     SkScalar positionX(size_t pos) const;
 
@@ -226,9 +225,9 @@ void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
     // Can't go through clusters because there are no cluster table yet
     if (leftToRight()) {
         size_t start = 0;
-        size_t cluster = this->clusterIndex(start);
+        size_t cluster = fClusterIndexes[start];
         for (size_t glyph = 1; glyph <= this->size(); ++glyph) {
-            auto nextCluster = this->clusterIndex(glyph);
+            auto nextCluster = fClusterIndexes[glyph];
             if (nextCluster <= cluster) {
                 continue;
             }
@@ -248,7 +247,7 @@ void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
         size_t cluster = this->fUtf8Range.begin();
         for (int32_t start = this->size() - 1; start >= 0; --start) {
             size_t nextCluster =
-                    start == 0 ? this->fUtf8Range.end() : this->clusterIndex(start - 1);
+                    start == 0 ? this->fUtf8Range.end() : fClusterIndexes[start - 1];
             if (nextCluster <= cluster) {
                 continue;
             }

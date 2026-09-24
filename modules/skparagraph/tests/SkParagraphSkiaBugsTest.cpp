@@ -254,7 +254,7 @@ DEF_TEST(SkParagraph_Skia_b_448789662_BiDi_MixedRunsClusterBounds, reporter) {
     for (size_t r = 0; r < runs.size(); ++r) {
         const auto& run = runs[r];
         for (size_t c = 0; c < run.size(); ++c) {
-            size_t cluster = run.clusterIndex(c);
+            size_t cluster = run.globalClusterIndex(c);
             REPORTER_ASSERT(reporter, cluster >= run.textRange().start &&
                                       cluster < run.textRange().end,
                             "Cluster %zu outside of run range [%zu, %zu)",

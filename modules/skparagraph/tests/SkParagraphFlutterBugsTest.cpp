@@ -332,7 +332,7 @@ DEF_TEST(SkParagraph_Flutter_190569_BiDi_ALM_Monotonicity, reporter) {
     for (size_t r = 0; r < runs.size(); ++r) {
         const auto& run = runs[r];
         for (size_t c = 0; c < run.size(); ++c) {
-            size_t clusterIndex = run.clusterIndex(c);
+            size_t clusterIndex = run.globalClusterIndex(c);
             REPORTER_ASSERT(reporter, clusterIndex >= run.textRange().start &&
                                       clusterIndex < run.textRange().end,
                             "Cluster index %zu out of run bounds [%zu, %zu)",
