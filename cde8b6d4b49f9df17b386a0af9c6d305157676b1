@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3b1418e_fe54a7b8",
+        "filename": "src/gpu/ganesh/GrAtlasTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-24T18:13:19Z",
+      "side": 0,
+      "message": "I think I know but why not clearDirty here anymore ?",
+      "revId": "cde8b6d4b49f9df17b386a0af9c6d305157676b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

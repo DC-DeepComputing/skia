@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "be625944a9e9d90a4622b1fce6e5a5e9a6ab8cb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53f15523_fa3e5a46",
+        "filename": "src/gpu/ganesh/GrDeferredUpload.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-24T18:13:19Z",
+      "side": 1,
+      "message": "I preferred the prior formatting of this file",
+      "revId": "be625944a9e9d90a4622b1fce6e5a5e9a6ab8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
