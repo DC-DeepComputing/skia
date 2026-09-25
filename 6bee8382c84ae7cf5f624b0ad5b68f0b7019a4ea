@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdbf17c4_e95389ee",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-25T14:31:09Z",
+      "side": 1,
+      "message": "I think our hope for surface creation was that the function itself wasn\u0027t specific to the backend type of the surface. The Recorder already knows the type of surface it has, so if we just have a function like SkRecorder::makeSurface(SkImageInfo), then it will make a CPU vs GPU surface based on the recorder\u0027s type. Alternatively we could consider a static function like SkSurfaces::Make(SkRecorder*, SkImageInfo). Both both acheive the same thing where a client can use any recorder they have and the call can succeed.",
+      "range": {
+        "startLine": 54,
+        "startChar": 44,
+        "endLine": 54,
+        "endChar": 61
+      },
+      "revId": "6bee8382c84ae7cf5f624b0ad5b68f0b7019a4ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
