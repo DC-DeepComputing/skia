@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58c80b5d_c52604a2",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T15:07:08Z",
+      "side": 1,
+      "message": "I think we can lean into using this as an `SkEnumBitMask\u003cResourceUsage\u003e` on `Resource` to remove some of these redundant usages. We need to keep `kIndirectBuffer`, but `kVertexStorageBuffer` and `kIndexStorageBuffer` could be `kVertexBuffer | kStorageBuffer` etc.\n\nIt\u0027s not needed in MtlBuffer because all buffers seem to have the same behaviors, but for Dawn and VulkanBuffers, the big switch table over specific ResourceUsages can instead be changed to a list of `if (usage \u0026 kVertex) { add backend specific usage flag }`.\n\nThere are other types of usage that just impact label that we could fold into this instead of having static strings. Currently these are the static buffers (TransferForStaticBuffer, StaticVertexBuffer, StaticIndexBuffer) and the TextureUploadBuffer.\n\nThis does open up a bit of a design question, which is that these other proposed buffer usages and the texture usages you\u0027re adding in a follow-up do not impact anything but the final label. This current set of usages impacts both the label and the actual usage settings or memory allocation preferences of the backend buffer. This is what we discussed in our whiteboard meeting, but now seeing it in code, I\u0027m having second thoughts.\n\nI could see an argument to be made that we should keep BufferType around as it is, but also accept some equivalent ResourceUsages that might get used. Arguably they may not even be redundant. For instance, if we consider `BufferType::kVertex` this could be matched with 3 possible ResourceUsages: the static vertex buffer, the dynamic vertex buffers we append to, and (eventually) the GPU buffers that an SkMesh gets to own.  The same scenarios apply to kIndex.  kXferCpuToGpuBuffer has a few different usages depending on the source of the upload. \n\nThe main ones that really only have one current usage for a fixed BufferType are the GpuToCpu (just asyncReadback), then the uniform, storage, and query buffers. I suspect that these and the GPU-only buffers will get more complicated usages when we start to have better scratch buffer integration and compute steps that have buffers with specific purposes.\n\nSo rewinding my train of thought, I think we want these ResourceUsages (plus some extras that correspond to the current custom labels) but we also shouldn\u0027t get rid of BufferType. We can still have Buffer/Resource take in a bitmask of usages so that the single BufferType of kVertexStorage for instance would be paired with `ResourceUsage::kVertex | ResourceUsage::kStorage`. Alternatively, we look at where the current",
+      "range": {
+        "startLine": 97,
+        "startChar": 3,
+        "endLine": 116,
+        "endChar": 2
+      },
+      "revId": "f7cc43322370dcd87af6508c8b7d43fa3b9a2edc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
