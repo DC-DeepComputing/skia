@@ -36,6 +36,8 @@ std::unique_ptr<CommandBuffer> VulkanQueueManager::getNewCommandBuffer(
 
 class VulkanWorkSubmission final : public GpuWorkSubmission {
 public:
+    VulkanWorkSubmission(SubmittedCommandBufferList cmdBuffers, QueueManager* queueManager)
+        : GpuWorkSubmission(std::move(cmdBuffers), queueManager) {}
     VulkanWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer, QueueManager* queueManager)
         : GpuWorkSubmission(std::move(cmdBuffer), queueManager) {}
     ~VulkanWorkSubmission() override {}
@@ -49,17 +51,40 @@ private:
     }
 };
 
-QueueManager::OutstandingSubmission VulkanQueueManager::onSubmitToGpu(const SubmitInfo& submitInfo) {
-    SkASSERT(fCurrentCommandBuffer);
-    VulkanCommandBuffer* vkCmdBuffer =
-            static_cast<VulkanCommandBuffer*>(fCurrentCommandBuffer.get());
-    if (!vkCmdBuffer->submit(fQueue, submitInfo)) {
-        fCurrentCommandBuffer->callFinishedProcs(/*success=*/false);
+QueueManager::OutstandingSubmission VulkanQueueManager::onSubmitToGpu(
+        const SubmitInfo& submitInfo) {
+    GpuWorkSubmission::SubmittedCommandBufferList cmdBuffers;
+
+    if (fCurrentCommandBuffer) {
+        VulkanCommandBuffer* vkCmdBuffer =
+                static_cast<VulkanCommandBuffer*>(fCurrentCommandBuffer.get());
+        bool useFence = !fCurrentProtectedCommandBuffer;
+        if (!vkCmdBuffer->submit(fQueue, submitInfo, useFence)) {
+            SKIA_LOG_E("VulkanQueueManager::onSubmitToGpu - UNPROTECTED submission failed!");
+            fCurrentCommandBuffer->callFinishedProcs(/*success=*/false);
+            return nullptr;
+        }
+        cmdBuffers.emplace_back(std::move(fCurrentCommandBuffer));
+    }
+
+    if (fCurrentProtectedCommandBuffer) {
+        VulkanCommandBuffer* vkCmdBuffer =
+                static_cast<VulkanCommandBuffer*>(fCurrentProtectedCommandBuffer.get());
+        if (!vkCmdBuffer->submit(fQueue, submitInfo, /*useFence=*/true)) {
+            SKIA_LOG_E("VulkanQueueManager::onSubmitToGpu - PROTECTED submission failed!");
+            fCurrentProtectedCommandBuffer->callFinishedProcs(/*success=*/false);
+            return nullptr;
+        }
+        cmdBuffers.emplace_back(std::move(fCurrentProtectedCommandBuffer));
+    }
+
+    if (cmdBuffers.empty()) {
+        SKIA_LOG_W("VulkanQueueManager::onSubmitToGpu - no command buffers to submit");
         return nullptr;
     }
 
     std::unique_ptr<GpuWorkSubmission> submission(
-            new VulkanWorkSubmission(std::move(fCurrentCommandBuffer), this));
+            new VulkanWorkSubmission(std::move(cmdBuffers), this));
     return submission;
 }
 
