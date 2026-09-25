@@ -1,0 +1,614 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2fb6201_163a5271",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "The commit message seems to have concatenated the previous CL\u0027s description and has three Change-Id footers. Could you clean it up to keep only the description and single Change-Id for this CL?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07324800_0a7a7be5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Thanks Francisco!",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c00ff50_2700b3fc",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: Line exceeds 100 columns (104 chars).\n\ngit cl format?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2e19446_b960e303",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` keyword in the macro (as documented in `SkAttributes.h`).",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15a4c3e5_90450fad",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement.",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35c2127f_9eed4253",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2001,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "The semicolon is inside the macro, and in Release builds `SkDEBUGFAILF` expands to empty, leaving `SK_UNSAFE_TODO(;)`. Wrapping only the unsafe index avoids this:\n```cpp\nSkDEBUGFAILF(\"Unexpected swizzle for YUVA data: %c in %s\",\n             SK_UNSAFE_TODO(view.swizzle()[0]),\n             view.swizzle().asString().c_str());\n```",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8d69f2b_9959930d",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement (same on lines 176 and 187).",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb1cdbd8_75d97241",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 78
+      },
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13f48615_c4a8c030",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 74
+      },
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47a0f15d_d96dc04e",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement (same on line 207).",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8bd93c9_f5ffb705",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement (same on line 193).",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cc4422c_4eaaa30c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement.",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4268e0fc_dbdf7318",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "I checked locally with Clang (`-Wunsafe-buffer-usage`): because the `%s` argument here is a ternary between two string literals (`\"vulkan\"` and `\"webgpu\"`), Clang proves it is null-terminated and compiles cleanly without `SK_UNSAFE_TODO`.\n\nCould this `SK_UNSAFE_TODO` be removed, or did this trigger a warning on a specific compiler version / platform?\n\n(I noticed the same pattern with string literal/`c_str()` ternaries in `TessellateCurvesRenderStep.cpp:119`, `TessellateStrokesRenderStep.cpp:116`, `TessellateWedgesRenderStep.cpp:123`, `VulkanTexture.cpp:53`, and `VulkanTextureInfo.cpp:21`).",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f60a64c_8d3dfb25",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement (same across lines 662–680).",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7598f4d8_80bafb4d",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement.",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2083734_0b8ea226",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Same pattern here:\n```cpp\nSK_UNSAFE_TODO(*key++) \u003d SkToInt(verbs.size());\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "4b32916c_fb66f736",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/geom/Shape.cpp",
+              "range": {
+                "startLine": 168,
+                "startChar": 0,
+                "endLine": 169,
+                "endChar": 0
+              },
+              "replacement": "    SK_UNSAFE_TODO(*key++) \u003d SkToInt(verbs.size());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d30d987_5eeb35d8",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "In non-debug builds, `SkDEBUGCODE` expands to nothing, which leaves `SK_UNSAFE_TODO(;)`. Inverting the macros avoids the orphan semicolon:\n```cpp\nSkDEBUGCODE(SK_UNSAFE_TODO(key +\u003d conics.size()));\n```",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8076ee5d_938aefe6",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "The dereference operator `*` is left outside while the assignment is inside the macro:\n```cpp\n* SK_UNSAFE_TODO(key++ \u003d this-\u003estateKey(includeInverted));\n```\nThis reads awkwardly as dereferencing the result of an assignment. It should wrap the dereference instead:\n```cpp\nSK_UNSAFE_TODO(*key++) \u003d this-\u003estateKey(includeInverted);\n```\n(Same pattern on lines 168, 246, 264, and `TextAtlasManager.cpp:146`).",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "332eca26_e95d9a9f",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Same pattern here:\n```cpp\nSK_UNSAFE_TODO(*key++) \u003d this-\u003epath().getGenerationID();\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "33dbf775_e0f10ea3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/geom/Shape.cpp",
+              "range": {
+                "startLine": 246,
+                "startChar": 0,
+                "endLine": 247,
+                "endChar": 0
+              },
+              "replacement": "                    SK_UNSAFE_TODO(*key++ \u003d this-\u003epath().getGenerationID());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b273bb2_35d82162",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Same pattern here:",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "648f216b_b7652738",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Can we avoid wrapping \u003d4?",
+      "range": {
+        "startLine": 647,
+        "startChar": 60,
+        "endLine": 647,
+        "endChar": 66
+      },
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4165951f_2c698a6d",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 650,
+        "startChar": 0,
+        "endLine": 650,
+        "endChar": 66
+      },
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f8970e1_e86df712",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 655,
+        "endChar": 38
+      },
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68800d3a_d90b5cab",
+        "filename": "src/gpu/graphite/render/MeshRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement.",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd2c16d8_c8f4020f",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Similar to `ShaderInfo.cpp:208`, the ternary here is between two string literals (`\"curve_type_using_inf_support(p23)\"` and `\"curveType\"`). Could this `SK_UNSAFE_TODO` be removed as well, or did a specific compiler version require it?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e46b5c7_39b87637",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Same pattern with string literal ternary here (`\"curve_type_using_inf_support(p23)\"` and `\"curveType\"`). Could `SK_UNSAFE_TODO` be removed here too?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a5142aa_21043da0",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Same pattern with string literal ternary here (`\"curve_type_using_inf_support(p23)\"` and `\"curveType\"`). Could `SK_UNSAFE_TODO` be removed here too?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "829c0fe2_d7c8a6dc",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "This `SK_UNSAFE_TODO` spans 14 lines containing safe tokens (`ssboIndex`, `VertexWriter::If`, `SkPoint{0.f, 0.f}`). Could the macro be scoped more narrowly to the unsafe buffer accesses (`positions[...]`, `colors[...]`, `texCoords[...]`), or wrapped per-statement?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa7addb_78f1c170",
+        "filename": "src/gpu/graphite/text/TextAtlasManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "The dereference operator `*` is left outside while the assignment is inside the macro:\n```cpp\n*SK_UNSAFE_TODO(d++ \u003d (mask \u0026 (1 \u003c\u003c x)) ? (INT_TYPE)(~0UL) : 0);\n```\nIt would be cleaner to wrap the dereference as well:\n\n```cpp\nSK_UNSAFE_TODO(*d++) \u003d (mask \u0026 (1 \u003c\u003c x)) ? (INT_TYPE)(~0UL) : 0;\n```",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cad6b97_08f162c8",
+        "filename": "src/gpu/graphite/text/TextAtlasManager.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "Nit: `return SK_UNSAFE_TODO(...)` is preferred over wrapping the `return` statement.",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "894a44d0_973f987d",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "The arguments here are string literals (`\"protected\"` vs `\"unprotected\"`). Could `SK_UNSAFE_TODO` be removed here too?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "687088a0_7515ef8a",
+        "filename": "src/gpu/graphite/vk/VulkanTextureInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-25T16:24:35Z",
+      "side": 1,
+      "message": "The semicolon is placed inside the macro rather than terminating the `return` statement:\n```cpp\nreturn SK_UNSAFE_TODO(SkStringPrintf(\n        ...\n        : \"mutable\"));\n```\n\nAlso, since the `%s` argument is a ternary between `std::string::c_str()` and `\"mutable\"`, Clang proves null-termination and compiles cleanly without `SK_UNSAFE_TODO` locally. Could this macro be removed entirely, or did a specific compiler version require it?",
+      "revId": "f30f3a6ed5e11cae71568a9341f579ebfbb87200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
