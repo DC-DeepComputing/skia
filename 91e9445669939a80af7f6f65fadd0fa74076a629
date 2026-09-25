@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4886d527_bd63847f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T15:20:17Z",
+      "side": 1,
+      "message": "Can you reference these page faults in the GrVkCaps change that disables DMSAA for Imagination?",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "91e9445669939a80af7f6f65fadd0fa74076a629",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e81871_3e53740b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T15:20:17Z",
+      "side": 1,
+      "message": "Similarly, can you update the comments around these caps changes to incorporate the failure modes you\u0027ve seen on imagination devices.",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "revId": "91e9445669939a80af7f6f65fadd0fa74076a629",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
