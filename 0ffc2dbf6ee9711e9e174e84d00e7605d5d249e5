@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bbccb68_6f54cc53",
+        "filename": "tests/DashPathEffectTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-25T15:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1d6496e_0ba8b5b4",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 54,
+        "endChar": 25
+      },
+      "revId": "0ffc2dbf6ee9711e9e174e84d00e7605d5d249e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "260bb646_83399c92",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-24T14:44:52Z",
       "side": 1,
       "message": "nit: looks like this can all fit on the line above, could you bring this up",
+      "range": {
+        "startLine": 296,
+        "startChar": 20,
+        "endLine": 296,
+        "endChar": 68
+      },
+      "revId": "0ffc2dbf6ee9711e9e174e84d00e7605d5d249e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51b2570a_a04f2d3c",
+        "filename": "tests/DataRefTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-25T15:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "260bb646_83399c92",
       "range": {
         "startLine": 296,
         "startChar": 20,
@@ -84,6 +132,30 @@
       "side": 1,
       "message": "I should clarify that this mainly applies to structs where there was a spacing before and after the first and last elements of the struct before your change. If this wasn\u0027t done prior to your change it\u0027s okay, just want to keep the formatting consist before and after.",
       "parentUuid": "ce176e49_3e4417b9",
+      "range": {
+        "startLine": 240,
+        "startChar": 12,
+        "endLine": 248,
+        "endChar": 59
+      },
+      "revId": "0ffc2dbf6ee9711e9e174e84d00e7605d5d249e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "284c6a8a_6eeca61d",
+        "filename": "tests/FontHostTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-25T15:43:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef182167_c0ad54f9",
       "range": {
         "startLine": 240,
         "startChar": 12,
