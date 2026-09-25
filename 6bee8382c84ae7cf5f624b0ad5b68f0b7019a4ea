@@ -22,6 +22,30 @@
       },
       "revId": "6bee8382c84ae7cf5f624b0ad5b68f0b7019a4ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b491846_1e06921c",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-09-25T15:27:00Z",
+      "side": 1,
+      "message": "sounds good, I updated the tests to go with the SkRecorder::makeSurface(SkImageInfo) approach.",
+      "parentUuid": "cdbf17c4_e95389ee",
+      "range": {
+        "startLine": 54,
+        "startChar": 44,
+        "endLine": 54,
+        "endChar": 61
+      },
+      "revId": "6bee8382c84ae7cf5f624b0ad5b68f0b7019a4ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
