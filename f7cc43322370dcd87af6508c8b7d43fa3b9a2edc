@@ -22,6 +22,30 @@
       },
       "revId": "f7cc43322370dcd87af6508c8b7d43fa3b9a2edc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cc8c318_ff0063ca",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-09-25T18:06:48Z",
+      "side": 1,
+      "message": "Yeah, I also started to wonder how to represent usages as well as the buffer\u0027s type (like a uniform buffer, but that is for instrinsic constants) and how to enforce that cleanly since it wouldn\u0027t be as simple as checking that only one flag is set. I do think your comment got cut off, but I think I am in agreement and will refactor accordingly!",
+      "parentUuid": "58c80b5d_c52604a2",
+      "range": {
+        "startLine": 97,
+        "startChar": 3,
+        "endLine": 116,
+        "endChar": 2
+      },
+      "revId": "f7cc43322370dcd87af6508c8b7d43fa3b9a2edc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
