@@ -31,8 +31,12 @@ public:
     void addFinishedProc(sk_sp<RefCntedCallback> finishedProc);
 
 protected:
-    CommandBuffer* commandBuffer() { return fCommandBuffer.get(); }
+    CommandBuffer* commandBuffer() const { return fCommandBuffer.get(); }
+    CommandBuffer* protectedCommandBuffer() const { return fProtectedCommandBuffer.get(); }
 
+    GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
+                      std::unique_ptr<CommandBuffer> protectedCmdBuffer,
+                      QueueManager* queueManager);
     GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer, QueueManager* queueManager);
 
 private:
@@ -40,6 +44,7 @@ private:
     virtual void onWaitUntilFinished(const SharedContext* sharedContext) = 0;
 
     std::unique_ptr<CommandBuffer> fCommandBuffer;
+    std::unique_ptr<CommandBuffer> fProtectedCommandBuffer;
     sk_sp<SkRefCnt> fOutstandingAsyncMapCounter;
     QueueManager* fQueueManager;
 };

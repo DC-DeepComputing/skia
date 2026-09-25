@@ -16,26 +16,46 @@ namespace skgpu::graphite {
 
 GpuWorkSubmission::GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
                                      QueueManager* queueManager)
+        : GpuWorkSubmission(std::move(cmdBuffer), /*protectedCmdBuffer=*/nullptr, queueManager) {}
+
+GpuWorkSubmission::GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
+                                     std::unique_ptr<CommandBuffer> protectedCmdBuffer,
+                                     QueueManager* queueManager)
         : fCommandBuffer(std::move(cmdBuffer))
+        , fProtectedCommandBuffer(std::move(protectedCmdBuffer))
         , fQueueManager(queueManager) {
-    SkSpan<const sk_sp<Buffer>> buffers = fCommandBuffer->buffersToAsyncMapOnSubmit();
-    if (!buffers.empty()) {
-        fOutstandingAsyncMapCounter = sk_make_sp<SkRefCnt>();
-        for (auto& buffer : fCommandBuffer->buffersToAsyncMapOnSubmit()) {
-            SkASSERT(!buffer->isUnmappable());
-            fOutstandingAsyncMapCounter->ref();
-            buffer->asyncMap([](GpuFinishedContext c, CallbackResult) {
-                                static_cast<SkRefCnt*>(c)->unref();
-                             },
-                             fOutstandingAsyncMapCounter.get());
+    auto setupAsyncMaps = [this](CommandBuffer* cb) {
+        if (!cb) {
+            return;
         }
-    }
+        SkSpan<const sk_sp<Buffer>> buffers = cb->buffersToAsyncMapOnSubmit();
+        if (!buffers.empty()) {
+            if (!fOutstandingAsyncMapCounter) {
+                fOutstandingAsyncMapCounter = sk_make_sp<SkRefCnt>();
+            }
+            for (auto& buffer : buffers) {
+                SkASSERT(!buffer->isUnmappable());
+                fOutstandingAsyncMapCounter->ref();
+                buffer->asyncMap([](GpuFinishedContext c, CallbackResult) {
+                                     static_cast<SkRefCnt*>(c)->unref();
+                                 }, fOutstandingAsyncMapCounter.get());
+            }
+        }
+    };
+    setupAsyncMaps(fCommandBuffer.get());
+    setupAsyncMaps(fProtectedCommandBuffer.get());
 }
 
 GpuWorkSubmission::~GpuWorkSubmission() {
-    fCommandBuffer->callFinishedProcs(/*success=*/true);
-    fCommandBuffer->resetCommandBuffer();
-    fQueueManager->returnCommandBuffer(std::move(fCommandBuffer));
+    auto cleanup = [this](std::unique_ptr<CommandBuffer>& cb) {
+        if (cb) {
+            cb->callFinishedProcs(/*success=*/true);
+            cb->resetCommandBuffer();
+            fQueueManager->returnCommandBuffer(std::move(cb));
+        }
+    };
+    cleanup(fCommandBuffer);
+    cleanup(fProtectedCommandBuffer);
 }
 
 bool GpuWorkSubmission::isFinished(const SharedContext* sharedContext) {
@@ -53,7 +73,11 @@ void GpuWorkSubmission::waitUntilFinished(const SharedContext* sharedContext) {
 }
 
 void GpuWorkSubmission::addFinishedProc(sk_sp<RefCntedCallback> finishedProc) {
-    fCommandBuffer->addFinishedProc(std::move(finishedProc));
+    if (fProtectedCommandBuffer) {
+        fProtectedCommandBuffer->addFinishedProc(std::move(finishedProc));
+    } else if (fCommandBuffer) {
+        fCommandBuffer->addFinishedProc(std::move(finishedProc));
+    }
 }
 
 } // namespace skgpu::graphite
