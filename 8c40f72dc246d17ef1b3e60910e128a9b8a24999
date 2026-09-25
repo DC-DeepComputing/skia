@@ -34,6 +34,24 @@
       "parentUuid": "6d5b6b35_626c0dce",
       "revId": "8c40f72dc246d17ef1b3e60910e128a9b8a24999",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f862ed7_40172fcd",
+        "filename": "src/core/SkPathData.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-25T15:29:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05ce771f_156722da",
+      "revId": "8c40f72dc246d17ef1b3e60910e128a9b8a24999",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
