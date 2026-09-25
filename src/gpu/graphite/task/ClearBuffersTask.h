@@ -39,6 +39,8 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    Protected isProtected() const override;
+
     SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Clear Buffers Task"; })
 
 private:
