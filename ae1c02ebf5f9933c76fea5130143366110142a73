@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c28bdde_c445c3a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T22:00:33Z",
+      "side": 1,
+      "message": "Just a few quick comments (I am not in the attention set, so I wasn\u0027t sure if this is ready for another round of reviews).",
+      "revId": "ae1c02ebf5f9933c76fea5130143366110142a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26747d9_2632c9e4",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T22:00:33Z",
+      "side": 1,
+      "message": "Please move together with the other includes.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 17
+      },
+      "revId": "ae1c02ebf5f9933c76fea5130143366110142a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d367c39_a96f8120",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T22:00:33Z",
+      "side": 1,
+      "message": "I don\u0027t understand why scanline decoding is added in this CL.  Is this related to fixing decoding dimensions?  I thought that for now we\u0027ll try to stick with the decoding APIs used by `blink::SkiaImageDecoderBase` (e.g. `startIncrementalDecode` and `incrementalDecode`).",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 45
+      },
+      "revId": "ae1c02ebf5f9933c76fea5130143366110142a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08cf8a06_232b6a57",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T22:00:33Z",
+      "side": 1,
+      "message": "not: Looks like some stray indentation/whitespace?",
+      "range": {
+        "startLine": 136,
+        "startChar": 5,
+        "endLine": 136,
+        "endChar": 8
+      },
+      "revId": "ae1c02ebf5f9933c76fea5130143366110142a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
