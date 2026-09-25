@@ -51,8 +51,10 @@ public:
         return fChildTasks.visitProxies(visitor, readsOnly);
     }
 
+    Protected isProtected() const override;
+
 private:
-    friend class DrawContext;       // for "addTask"
+    friend class DrawContext; // for "addTask"
 
     // DrawTask is modified directly by DrawContext for efficiency, but its task list will be
     // fixed once DrawContext snaps the task.

@@ -16,6 +16,7 @@
 #include "include/private/SkLog.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/BufferWriter.h"
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -89,6 +90,36 @@ sk_sp<Task> DispatchGroup::snapChildTask() {
         return nullptr;
     }
     return ClearBuffersTask::Make(std::move(fClearList));
+}
+
+Protected DispatchGroup::isProtected() const {
+    for (const auto& c : fClearList) {
+        if (c.fBuffer && c.fBuffer->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+    }
+    for (const auto& t : fTextures) {
+        if (t && t->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+    }
+    for (const auto& dispatch : fDispatchList) {
+        if (std::holds_alternative<BindBufferInfo>(dispatch.fGlobalSizeOrIndirect)) {
+            const auto& info = std::get<BindBufferInfo>(dispatch.fGlobalSizeOrIndirect);
+            if (info.fBuffer && info.fBuffer->isProtected() == Protected::kYes) {
+                return Protected::kYes;
+            }
+        }
+        for (const auto& binding : dispatch.fBindings) {
+            if (std::holds_alternative<BindBufferInfo>(binding.fResource)) {
+                const auto& info = std::get<BindBufferInfo>(binding.fResource);
+                if (info.fBuffer && info.fBuffer->isProtected() == Protected::kYes) {
+                    return Protected::kYes;
+                }
+            }
+        }
+    }
+    return Protected::kNo;
 }
 
 const Texture* DispatchGroup::getTexture(size_t index) const {
