@@ -22,6 +22,30 @@
       },
       "revId": "40dafcdf5c6be9cc95000513ec0568e03c7972cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84746f67_8dce3dd3",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1393,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-25T16:17:10Z",
+      "side": 1,
+      "message": "I used `using Op \u003d SkRasterPipelineOp;` to be consistent with line 1437.",
+      "parentUuid": "51131d9c_b1f0523e",
+      "range": {
+        "startLine": 1390,
+        "startChar": 8,
+        "endLine": 1393,
+        "endChar": 109
+      },
+      "revId": "40dafcdf5c6be9cc95000513ec0568e03c7972cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
