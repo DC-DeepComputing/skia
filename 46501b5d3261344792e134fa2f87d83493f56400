@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de684db5_85821e9b",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-25T17:20:01Z",
+      "side": 1,
+      "message": "Because it’s in the base class (and covers both decoders), I’m a bit warry about doing this change here (e.g. libpng doesn’t track the caller memory budget atm, IIRC only the JPEG codec does)\n\nI’d say it’d probably a good idea to do this in a follow-up CL, WDYT?",
+      "parentUuid": "87d10dab_a7ae72f9",
+      "range": {
+        "startLine": 210,
+        "startChar": 12,
+        "endLine": 210,
+        "endChar": 44
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b881d0b_b8f0989e",
         "filename": "src/codec/SkPngRustCodec.cpp",
         "patchSetId": 6
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-25T16:28:03Z",
       "side": 1,
       "message": "Why not `kOutOfMemory`?",
+      "range": {
+        "startLine": 799,
+        "startChar": 19,
+        "endLine": 799,
+        "endChar": 33
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae19fc15_229021fe",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-25T17:20:01Z",
+      "side": 1,
+      "message": "This is to match libpng: my understanding is that `kOutOfMemory` is specifically for when you go over memory budget (as declared by the caller), whereas `kInternalError` is used for allocation failures (e.g. you could be within budget, yet fail to allocate due to environment memory constraints).",
+      "parentUuid": "5b881d0b_b8f0989e",
       "range": {
         "startLine": 799,
         "startChar": 19,
@@ -77,6 +125,30 @@
       "writtenOn": "2026-09-25T16:28:03Z",
       "side": 1,
       "message": "It seems a bit unfortunate that `fPreblendBuffer` and `fPreblendBufferStorage` are separate fields - the former may become dangling.  I think that ideally \"somebody\" (common/shared/base part of Skia?) would provide a `BudgetedVector` as a single abstraction.\n\nOTOH I understand that this is beyond the scope of this CL.  /cc @fmalita",
+      "range": {
+        "startLine": 102,
+        "startChar": 39,
+        "endLine": 102,
+        "endChar": 40
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f0a6f3_2fb0d63f",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-25T17:20:01Z",
+      "side": 1,
+      "message": "See other comment: note that `sk_calloc_canfail` isn’t related to the budget here, but rather allocation failures (the budget is checked and updated before the actual allocation), so I’m not sure if \"budget\" would be the right term",
+      "parentUuid": "07620d76_3e55fa26",
       "range": {
         "startLine": 102,
         "startChar": 39,
