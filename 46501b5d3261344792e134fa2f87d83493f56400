@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e866c1e_fda35ece",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-25T17:43:04Z",
+      "side": 1,
+      "message": "Looks like there are other vector allocations in the Rust codec too, I think it’d be good to at least cover these too (up to you if you prefer we do that here or in a follow-up)",
+      "parentUuid": "de684db5_85821e9b",
+      "range": {
+        "startLine": 210,
+        "startChar": 12,
+        "endLine": 210,
+        "endChar": 44
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b881d0b_b8f0989e",
         "filename": "src/codec/SkPngRustCodec.cpp",
         "patchSetId": 6
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "See other comment: note that `sk_calloc_canfail` isn’t related to the budget here, but rather allocation failures (the budget is checked and updated before the actual allocation), so I’m not sure if \"budget\" would be the right term",
       "parentUuid": "07620d76_3e55fa26",
+      "range": {
+        "startLine": 102,
+        "startChar": 39,
+        "endLine": 102,
+        "endChar": 40
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff65fe23_cadef2b1",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-25T17:43:04Z",
+      "side": 1,
+      "message": "Re-reading, I focused on the name rather than your point, sorry. I agree the owner/view split is fragile, the name also makes sense if the budget is checked at the same time as the allocation.",
+      "parentUuid": "84f0a6f3_2fb0d63f",
       "range": {
         "startLine": 102,
         "startChar": 39,
