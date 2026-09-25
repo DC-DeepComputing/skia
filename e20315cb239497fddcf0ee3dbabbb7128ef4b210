@@ -56,6 +56,30 @@
       },
       "revId": "e20315cb239497fddcf0ee3dbabbb7128ef4b210",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3985ba15_17f97182",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-25T17:02:56Z",
+      "side": 1,
+      "message": "I was thinking that `ck_full_webgl2_debug-linux_x64` already tests CK for other changes. This job only triggers things more directly touching CK and the debugger.\n\nI thought about modifying the above test to also build the debugger, but that would require changing a default in the bazelrc that makes CK always build the debugger bindings.",
+      "parentUuid": "41a3d290_c79a4489",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 7
+      },
+      "revId": "e20315cb239497fddcf0ee3dbabbb7128ef4b210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
