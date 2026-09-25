@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4687817c_24f62c00",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-25T17:17:01Z",
+      "side": 1,
+      "message": "I\u0027ve added the asserts inside drawPass-\u003eAddResourceRefs() to try to keep things deduplicated. It\u0027s a little awkward because the placement of the asserts draws attention to the redundant tracking.",
+      "parentUuid": "d7f0c6e7_91c9a728",
+      "range": {
+        "startLine": 669,
+        "startChar": 0,
+        "endLine": 669,
+        "endChar": 74
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d91c49cd_fb6d25d7",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 44
@@ -54,6 +78,30 @@
       "writtenOn": "2026-09-25T13:33:03Z",
       "side": 1,
       "message": "We could move this into the storagebuffer if case, and in the storagetexture case, just always set `fBoundStorageFallbackTexture` to `drawPass-\u003estorageFallbackTexture()-\u003etexture()` and `fBoundUniformbuffersDirty \u003d SkToBool(fBoundStorageFallbackTexture)`",
+      "range": {
+        "startLine": 674,
+        "startChar": 0,
+        "endLine": 674,
+        "endChar": 43
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ae49cf_9539ff76",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-25T17:17:01Z",
+      "side": 1,
+      "message": "In the storageBuffer case, no clearing is necessary, as the leak must have an originating texture. Since we do not dynamically change storageBufferSupport, the storageBuffer path will never have a texture to leak from. \n\nIn the storageTexture case, we can\u0027t elide the clear by setting the texture directly; this is because we only enter the `else if` part of the block if the `drawPass`\u0027s storageTexture is non-null. Perhaps we can change it to:\n```\nif (fBoundStorageFallbackTexture) {\n   fBoundStorageFallbackTexture \u003d nullptr;\n}\n```\nBut I would expect the cost of branching to be more expensive than simply clearing it everytime.",
+      "parentUuid": "d91c49cd_fb6d25d7",
       "range": {
         "startLine": 674,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca6d7cbd_20c29efe",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 44
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-25T17:17:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "862ea984_8fbbd5eb",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 81
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "017be4a6_75192d68",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-09-25T13:33:03Z",
       "side": 1,
       "message": "This already is a no-op if the layouts aren\u0027t changing, so you could remove the outer if.",
+      "range": {
+        "startLine": 681,
+        "startChar": 31,
+        "endLine": 681,
+        "endChar": 45
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ba9d89_5ae25987",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-25T17:17:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "017be4a6_75192d68",
       "range": {
         "startLine": 681,
         "startChar": 31,
