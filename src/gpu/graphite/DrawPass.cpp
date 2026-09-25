@@ -8,6 +8,7 @@
 
 #include "include/private/SkLog.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineCreationTask.h"
@@ -122,6 +123,8 @@ bool DrawPass::addResourceRefs(ResourceProvider* resourceProvider,
 
     if (fStorageFallbackTexture) {
         commandBuffer->trackResource(fStorageFallbackTexture->refTexture());
+        SkASSERT(fStorageFallbackTexture->isInstantiated());
+        SkASSERT(commandBuffer->isResourceTracked(fStorageFallbackTexture->texture()));
     }
 
     return true;
