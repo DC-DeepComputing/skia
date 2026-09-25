@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05dcd8fa_f9e9fd01",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:31:41Z",
+      "side": 1,
+      "message": "Follow-up CL SGTM.  For Rust side see https://docs.rs/png/latest/png/struct.Decoder.html#method.set_limits (not hooked up today I think :-/).",
+      "parentUuid": "6e866c1e_fda35ece",
+      "range": {
+        "startLine": 210,
+        "startChar": 12,
+        "endLine": 210,
+        "endChar": 44
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b881d0b_b8f0989e",
@@ -126,6 +150,30 @@
       "side": 1,
       "message": "This is to match libpng: my understanding is that `kOutOfMemory` is specifically for when you go over memory budget (as declared by the caller), whereas `kInternalError` is used for allocation failures (e.g. you could be within budget, yet fail to allocate due to environment memory constraints).",
       "parentUuid": "5b881d0b_b8f0989e",
+      "range": {
+        "startLine": 799,
+        "startChar": 19,
+        "endLine": 799,
+        "endChar": 33
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce8566b_b232e114",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:31:41Z",
+      "side": 1,
+      "message": "Huh.  Thanks for explaining.  SGTM.",
+      "parentUuid": "ae19fc15_229021fe",
       "range": {
         "startLine": 799,
         "startChar": 19,
