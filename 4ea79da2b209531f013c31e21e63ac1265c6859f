@@ -16,6 +16,98 @@
       "message": "PTAL! Note, the previous comments on this CL are outdated, as this was the original CL that was split up.",
       "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7f0c6e7_91c9a728",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T13:33:03Z",
+      "side": 1,
+      "message": "nit: addResourceRefs isn\u0027t instantiating anything, but I agree that we should be adding the resource refs to the command buffer before we record any commands that might rely on those resources.\n\nAlso right now, the instantiation of the storage texture should be happening in the UploadTask that the StorageContext creates. This is also then going to be where the storage texture\u0027s ref is moved to the command buffer when UploadTask calls copyBufferToTexture.\n\nWe could assert that the storage fallback texture isTracked by the command buffer already. That would catch a situation where something isn\u0027t preparing the texture correctly, at which point DrawPass may need to be more responsible for it.",
+      "range": {
+        "startLine": 669,
+        "startChar": 0,
+        "endLine": 669,
+        "endChar": 74
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d91c49cd_fb6d25d7",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T13:33:03Z",
+      "side": 1,
+      "message": "We could move this into the storagebuffer if case, and in the storagetexture case, just always set `fBoundStorageFallbackTexture` to `drawPass-\u003estorageFallbackTexture()-\u003etexture()` and `fBoundUniformbuffersDirty \u003d SkToBool(fBoundStorageFallbackTexture)`",
+      "range": {
+        "startLine": 674,
+        "startChar": 0,
+        "endLine": 674,
+        "endChar": 43
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "862ea984_8fbbd5eb",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 44
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T13:33:03Z",
+      "side": 1,
+      "message": "nit: same comment nit",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 363,
+        "endChar": 81
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "017be4a6_75192d68",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T13:33:03Z",
+      "side": 1,
+      "message": "This already is a no-op if the layouts aren\u0027t changing, so you could remove the outer if.",
+      "range": {
+        "startLine": 681,
+        "startChar": 31,
+        "endLine": 681,
+        "endChar": 45
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
