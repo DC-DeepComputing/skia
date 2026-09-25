@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa9b2cd0_d0740577",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T12:59:27Z",
+      "side": 1,
+      "message": "Good point",
+      "parentUuid": "0106a4bf_ca847e2f",
+      "range": {
+        "startLine": 301,
+        "startChar": 36,
+        "endLine": 301,
+        "endChar": 66
+      },
+      "revId": "7ee28c8c734162213563f3b391112e5aac6c9ea5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dadeb535_49d28ce5",
