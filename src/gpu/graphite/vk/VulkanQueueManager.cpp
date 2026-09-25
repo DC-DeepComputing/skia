@@ -14,9 +14,11 @@
 
 namespace skgpu::graphite {
 
-VulkanQueueManager::VulkanQueueManager(VkQueue queue, const SharedContext* sharedContext)
+VulkanQueueManager::VulkanQueueManager(VkQueue queue, VkQueue protectedQueue,
+                                       const SharedContext* sharedContext)
         : QueueManager(sharedContext)
-        , fQueue(queue) {
+        , fQueue(queue)
+        , fProtectedQueue(protectedQueue) {
 }
 
 const VulkanSharedContext* VulkanQueueManager::vkSharedContext() const {
@@ -76,7 +78,7 @@ QueueManager::OutstandingSubmission VulkanQueueManager::onSubmitToGpu(
     if (fCurrentCommandBuffer) {
         VulkanCommandBuffer* vkCmdBuffer =
                 static_cast<VulkanCommandBuffer*>(fCurrentCommandBuffer.get());
-        if (!vkCmdBuffer->submit(fQueue, submitInfo,
+        if (!vkCmdBuffer->submit(fQueue ? fQueue : fProtectedQueue, submitInfo,
                                  /*useFence=*/!fCurrentProtectedCommandBuffer)) {
             SKIA_LOG_E("VulkanQueueManager::onSubmitToGpu - unprotected submission failed!");
             fCurrentCommandBuffer->callFinishedProcs(/*success=*/false);
@@ -87,7 +89,7 @@ QueueManager::OutstandingSubmission VulkanQueueManager::onSubmitToGpu(
     if (fCurrentProtectedCommandBuffer) {
         VulkanCommandBuffer* vkCmdBuffer =
                 static_cast<VulkanCommandBuffer*>(fCurrentProtectedCommandBuffer.get());
-        if (!vkCmdBuffer->submit(fQueue, submitInfo, /*useFence=*/true)) {
+        if (!vkCmdBuffer->submit(fProtectedQueue, submitInfo, /*useFence=*/true)) {
             SKIA_LOG_E("VulkanQueueManager::onSubmitToGpu - protected submission failed!");
             fCurrentProtectedCommandBuffer->callFinishedProcs(/*success=*/false);
             return nullptr;
