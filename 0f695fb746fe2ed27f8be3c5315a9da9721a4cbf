@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f258dcb4_c222e649",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T19:28:20Z",
+      "side": 1,
+      "message": "hypothetically we could append an additional unprotected command buffer submission with a barrier after the protected one that completes the query right?",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 71
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9bde7c2_8ee7eca3",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T19:28:20Z",
+      "side": 1,
+      "message": "For the future, we\u0027ll want to have the wait semaphores on the unprotected command buffer if there was any unprotected work since that is always submitted before the protected one, right?",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 86
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8b5835f_4ec80617",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T19:28:20Z",
+      "side": 1,
+      "message": "WDYT about `includeFence`? `useFence` makes me think that there\u0027s some alternative that is used instead of a fence, instead of it actually having no synchronization primitive.",
+      "range": {
+        "startLine": 39,
+        "startChar": 49,
+        "endLine": 39,
+        "endChar": 57
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5d472cd_3ff4fc33",
+        "filename": "src/gpu/graphite/vk/VulkanQueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T19:28:20Z",
+      "side": 1,
+      "message": "If we\u0027ve failed the unprotected command buffer and have a protected command buffer, should we reset it and signal failure to its finish procs?",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 72
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1361bacc_2a896837",
+        "filename": "src/gpu/graphite/vk/VulkanQueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T19:28:20Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure what we can do, but it\u0027s maybe a bit weird for there to be a successful unprotected submission and a protected submission failure, since then finish procs will diverge on success depending on which command buffer they were added to.",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 81
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
