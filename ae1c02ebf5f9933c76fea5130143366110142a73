@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37019897_ce4c6775",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-25T22:58:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a26747d9_2632c9e4",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 17
+      },
+      "revId": "ae1c02ebf5f9933c76fea5130143366110142a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d367c39_a96f8120",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae1dfdf6_b86615d2",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-25T22:58:27Z",
+      "side": 1,
+      "message": "I see that it was added in patchset 5 from original CL\n\nhttps://skia-review.googlesource.com/c/skia/+/1328756/5\n\nAnd there was some discussion which confirms that it was not part of the fix:\n\nhttps://skia-review.googlesource.com/c/skia/+/1328756/8/experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp#443\n\nMy understanding is same than yours, it should only be used incremental decoding API for chromium, so it should not be required to have them for this fix specifically, and in fact will simplify a bit the fix as it will not have to consider if the decoding in progress is scanline or not.",
+      "parentUuid": "3d367c39_a96f8120",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 45
+      },
+      "revId": "ae1c02ebf5f9933c76fea5130143366110142a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08cf8a06_232b6a57",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-09-25T22:00:33Z",
       "side": 1,
       "message": "not: Looks like some stray indentation/whitespace?",
+      "range": {
+        "startLine": 136,
+        "startChar": 5,
+        "endLine": 136,
+        "endChar": 8
+      },
+      "revId": "ae1c02ebf5f9933c76fea5130143366110142a73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e43c7b9e_66bc06c9",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-25T22:58:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08cf8a06_232b6a57",
       "range": {
         "startLine": 136,
         "startChar": 5,
