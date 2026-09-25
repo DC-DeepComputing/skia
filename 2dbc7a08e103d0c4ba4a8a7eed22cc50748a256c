@@ -3,6 +3,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e95d672c_86928f1e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-25T20:47:37Z",
+      "side": 1,
+      "message": "You are right: 370522089 was unrelated stream-rewind work for Wuffs/Rust PNG. The footer now points to 480993677, the tracking bug associated with the original Rust ICO work.",
+      "parentUuid": "3914b6ad_7c04a802",
+      "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3914b6ad_7c04a802",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -37,6 +55,24 @@
       "writtenOn": "2026-09-25T17:51:19Z",
       "side": 1,
       "message": "Just some high-level initial feedback for now.  I think that figuring out the Chromium-side would be beneficial, given the past challenges with Skia\u003d\u003eChromium rolls/canaries.",
+      "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a5e132e_115b7962",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-25T20:47:37Z",
+      "side": 1,
+      "message": "Thanks for pushing on this. I traced the Chromium side: the landed integration is chromium/src CL 8164520, where IcoRustImageDecoder inherits SkiaImageDecoderBase and therefore depends on getFrameCount/getFrameInfo. The open CL 8257029 only prepares an A/B trial; it does not introduce the adapter discussed in the previous Skia review.\n\nI revised this patch accordingly rather than relying on an unfinished migration: getEmbeddedImage* is removed, the existing frame API remains the supported Chromium path, entries are ordered like Blink’s legacy ICO decoder, and a nonzero frame index now selects the requested entry and decodes its native rect into SkiaImageDecoderBase’s full-canvas buffer. Frame zero retains dimension-based selection for existing SkCodec callers. The new test covers regular and incremental decoding with exactly that Blink allocation pattern.\n\nI agree that selection and indexed decoding were being conflated. This patch now keeps indexed decoding and uses the existing frame metadata for selection; any future ICO-specific API should arrive together with a concrete Chromium consumer rather than speculatively in Skia.",
+      "parentUuid": "f3c4b712_0ccec5a6",
       "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
