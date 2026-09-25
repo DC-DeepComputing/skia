@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b9c961b_f35a1df1",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T17:55:48Z",
+      "side": 1,
+      "message": "optional feedback:\n\nThis works.  I wondered if nesting lines 555-561 in a `{ ... }` block would achieve the same effect?  But then I guess other `drop`s below may not be as easy to avoid, so maybe this doesn\u0027t matter that much...",
+      "range": {
+        "startLine": 562,
+        "startChar": 8,
+        "endLine": 562,
+        "endChar": 23
+      },
+      "revId": "ab7754afa8e040fbbb3d2a9518aae27aa1687135",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
