@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3914b6ad_7c04a802",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T17:51:19Z",
+      "side": 1,
+      "message": "Is this the right bug?  IIUC this bug is about \n\"`SkWuffsCodec` and `SkPngRustCodec`\" and not about ICO?",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 49
+      },
+      "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e216e09_554ae6fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T17:51:19Z",
+      "side": 1,
+      "message": "Just some high-level initial feedback for now.  I think that figuring out the Chromium-side would be beneficial, given the past challenges with Skia\u003d\u003eChromium rolls/canaries.",
+      "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3c4b712_0ccec5a6",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T17:51:19Z",
+      "side": 1,
+      "message": "How can I learn about the plan for using these from Chromium?  I am just trying to double-check that this will all work in the long term.  Maybe just seeing corresponding Chromium-side changes would help us get confident in the direction we are taking here?\n\nAnd if you have a plan that you are confident in, then this is probably all that matters.  I am asking some questions below to help check that the plan is okay, but ultimately you probably are more familiar with this area than me at this point.\n\nSome specific questions / observations::\n\n* I assume that going forward we won\u0027t be able to use `blink::SkiaImageDecoderBase` (because it relies on `getFrameCount` / `getFrameInfo`).  At least not its `::Decode` method (but maybe we would still be able to reuse some helpers).  Hopefully we can avoid some of that complexity (around color space transformations for example).\n* I see that the legacy decoder\u0027s `blink::ICOImageDecoder::Decode` takes a frame `index` (well, image `index`).  So it seems that a lets-decode-specific-frame-index API fits okay on Blink side, right?\n* Maybe the animation-frames-based-decoding-API is okay as long as there is also **additional** API for finding the right frame index?  Maybe the root problem [in the previous CL discussion](https://skia-review.git.corp.google.com/c/skia/+/1328756/12#message-051fbfad75184496b5ffff3997defb2ad8c4c9dd) wasn\u0027t the decoding API, but using the decoding API for selecting the frame to decode?",
+      "range": {
+        "startLine": 51,
+        "startChar": 58,
+        "endLine": 51,
+        "endChar": 59
+      },
+      "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
