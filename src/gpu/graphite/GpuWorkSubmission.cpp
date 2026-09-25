@@ -16,26 +16,41 @@ namespace skgpu::graphite {
 
 GpuWorkSubmission::GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
                                      QueueManager* queueManager)
+        : GpuWorkSubmission(std::move(cmdBuffer), /*protectedCmdBuffer=*/nullptr, queueManager) {}
+
+GpuWorkSubmission::GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
+                                     std::unique_ptr<CommandBuffer> protectedCmdBuffer,
+                                     QueueManager* queueManager)
         : fCommandBuffer(std::move(cmdBuffer))
+        , fProtectedCommandBuffer(std::move(protectedCmdBuffer))
         , fQueueManager(queueManager) {
-    SkSpan<const sk_sp<Buffer>> buffers = fCommandBuffer->buffersToAsyncMapOnSubmit();
-    if (!buffers.empty()) {
-        fOutstandingAsyncMapCounter = sk_make_sp<SkRefCnt>();
-        for (auto& buffer : fCommandBuffer->buffersToAsyncMapOnSubmit()) {
-            SkASSERT(!buffer->isUnmappable());
-            fOutstandingAsyncMapCounter->ref();
-            buffer->asyncMap([](GpuFinishedContext c, CallbackResult) {
-                                static_cast<SkRefCnt*>(c)->unref();
-                             },
-                             fOutstandingAsyncMapCounter.get());
+    // Protected command buffers cannot write to unprotected host-accessible memory,
+    // so they will never have buffers to async map.
+    if (fCommandBuffer) {
+        SkSpan<const sk_sp<Buffer>> buffers = fCommandBuffer->buffersToAsyncMapOnSubmit();
+        if (!buffers.empty()) {
+            fOutstandingAsyncMapCounter = sk_make_sp<SkRefCnt>();
+            for (auto& buffer : buffers) {
+                SkASSERT(!buffer->isUnmappable());
+                fOutstandingAsyncMapCounter->ref();
+                buffer->asyncMap([](GpuFinishedContext c, CallbackResult) {
+                                     static_cast<SkRefCnt*>(c)->unref();
+                                 }, fOutstandingAsyncMapCounter.get());
+            }
         }
     }
 }
 
 GpuWorkSubmission::~GpuWorkSubmission() {
-    fCommandBuffer->callFinishedProcs(/*success=*/true);
-    fCommandBuffer->resetCommandBuffer();
-    fQueueManager->returnCommandBuffer(std::move(fCommandBuffer));
+    auto cleanup = [this](std::unique_ptr<CommandBuffer>& commandBuffer) {
+        if (commandBuffer) {
+            commandBuffer->callFinishedProcs(/*success=*/true);
+            commandBuffer->resetCommandBuffer();
+            fQueueManager->returnCommandBuffer(std::move(commandBuffer));
+        }
+    };
+    cleanup(fCommandBuffer);
+    cleanup(fProtectedCommandBuffer);
 }
 
 bool GpuWorkSubmission::isFinished(const SharedContext* sharedContext) {
@@ -53,7 +68,12 @@ void GpuWorkSubmission::waitUntilFinished(const SharedContext* sharedContext) {
 }
 
 void GpuWorkSubmission::addFinishedProc(sk_sp<RefCntedCallback> finishedProc) {
-    fCommandBuffer->addFinishedProc(std::move(finishedProc));
+    if (fProtectedCommandBuffer) {
+        fProtectedCommandBuffer->addFinishedProc(std::move(finishedProc));
+    } else {
+        SkASSERT(fCommandBuffer);
+        fCommandBuffer->addFinishedProc(std::move(finishedProc));
+    }
 }
 
 } // namespace skgpu::graphite

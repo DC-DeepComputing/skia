@@ -45,7 +45,7 @@ private:
         return static_cast<MtlCommandBuffer*>(this->commandBuffer())->isFinished();
     }
     void onWaitUntilFinished(const SharedContext*) override {
-        return static_cast<MtlCommandBuffer*>(this->commandBuffer())->waitUntilFinished();
+        static_cast<MtlCommandBuffer*>(this->commandBuffer())->waitUntilFinished();
     }
 };
 
