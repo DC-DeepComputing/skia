@@ -1,0 +1,303 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "193234ca_f6eed9d4",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 2116,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "Can this be done in a separate CL?  Maybe bundled with `nanobench.cpp` changes and/or some of the formatting changes (e.g. see the comment about `onGetEncodedFormat` in `SkJpegRustCodec.h`).",
+      "range": {
+        "startLine": 2116,
+        "startChar": 2,
+        "endLine": 2116,
+        "endChar": 3
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e49cc615_842f2203",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "What is the plan for Chromium?  Just wait until a new crates.io version is published?  Patch?  Something else?",
+      "range": {
+        "startLine": 166,
+        "startChar": 11,
+        "endLine": 166,
+        "endChar": 51
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f5f176c_5f5b279e",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "I wonder if a quick comment may help future maintainers/readers know why we depend on a specific revision - maybe something like:\n\n```suggestion\n    # To enable rapid iteration with `SkJpegRustCodec` we pin a specific revision,\n    # rather than relying on a crate version published to crates.io.  This is okay,\n    # because `SkJpegRustCodec` is currently in experimental mode and is not yet\n    # shipping in Chromium nor other Skia clients)\n    rev \u003d \"cd97e00434645b244fb6433be87a1377fc51f6fc\",\n```",
+      "range": {
+        "startLine": 166,
+        "startChar": 51,
+        "endLine": 166,
+        "endChar": 53
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad311aba_627331a8",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "nit: Merge `case` for `Complete` and `Ready`, since both return `kSuccess`?",
+      "range": {
+        "startLine": 920,
+        "startChar": 0,
+        "endLine": 921,
+        "endChar": 28
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36690af4_4c986425",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "This constant is already defined on line 938.  Please deduplicate (i.e. hoist outside of the function).",
+      "range": {
+        "startLine": 991,
+        "startChar": 4,
+        "endLine": 991,
+        "endChar": 52
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62bd1eba_7ae1a928",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "This is already checked by `SkCodec::skipScanlines`, so it can be replaced with:\n\n```suggestion\n    SkASSERT_RELEASE(countLines \u003e\u003d 0);  // Already checked in `SkCodec::skipScanlines`\n```",
+      "range": {
+        "startLine": 1048,
+        "startChar": 0,
+        "endLine": 1050,
+        "endChar": 5
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "506aa8a4_823679cd",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "This works, but I wonder if the re-formatting changes can be moved into a separate CL?",
+      "range": {
+        "startLine": 54,
+        "startChar": 99,
+        "endLine": 54,
+        "endChar": 100
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c74ca02_73d6ab7e",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "Would it be possible to move those `bool` flags into the `OutputSequence` enum variants themselves?  I assume that `raw_output_complete` doesn\u0027t make sense unless in `OutputSequence::Raw` state.  Something like:\n\n```\nenum OutputSequence {\n    Idle,\n    Raw { complete: bool; },\n    Scanline { started: bool; complete: bool; },\n    Incremental,\n    FullImage,\n}\n```\n\nWDYT?",
+      "range": {
+        "startLine": 504,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 34
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b7668f_992a0e92",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "Please explain why it\u0027s okay to ignore the error here.  I assume that this is something like:\n\n```suggestion\n                // Pre-allocating the buffer is just a performance optimization.\n                // In particular `MAX_DECODE_IMAGE_BYTES` is also enforced during\n                // the actual decode.  Therefore it\u0027s ok to ignore allocation errors.\n                let _ignore_errors \u003d raw_data.try_reserve_exact(capacity);\n```",
+      "range": {
+        "startLine": 548,
+        "startChar": 60,
+        "endLine": 548,
+        "endChar": 61
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deccee7a_2760b264",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "On one hand `MAX_DECODE_IMAGE_BYTES` will be enforced during the actual decode.  OTOH, can\u0027t we just return a memory error here if `capacity` is bigger than `MAX_DECODE_IMAGE_BYTES`?\n\n```suggestion\n            } else {\n                return Err(DecodingResult::MemoryError);\n            }\n```\n\nWDYT?",
+      "range": {
+        "startLine": 549,
+        "startChar": 12,
+        "endLine": 549,
+        "endChar": 13
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96f96f75_3da0a1e8",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "Is it possible to (safely) panic here (because of OOB access)?  Can a malformed input can trigger this?  Do we want to also use `layout.len() in the `.min`-based trimming?",
+      "range": {
+        "startLine": 703,
+        "startChar": 39,
+        "endLine": 703,
+        "endChar": 44
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ae933f1_f76f28a2",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "Can this be `unreachable!()`?",
+      "range": {
+        "startLine": 995,
+        "startChar": 17,
+        "endLine": 995,
+        "endChar": 25
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ad9b789_4a26ade6",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:24:03Z",
+      "side": 1,
+      "message": "Can this be `unreachable!()`?",
+      "range": {
+        "startLine": 1041,
+        "startChar": 12,
+        "endLine": 1041,
+        "endChar": 13
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
