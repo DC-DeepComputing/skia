@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd789059_23a2434b",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "379141a3_9244e94d",
+      "range": {
+        "startLine": 387,
+        "startChar": 44,
+        "endLine": 388,
+        "endChar": 96
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad226706_af3913cc",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be3f388f_51dead51",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad226706_af3913cc",
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2265d93_1967984e",
@@ -71,6 +113,30 @@
       "writtenOn": "2026-09-24T16:05:14Z",
       "side": 1,
       "message": "This term shouldn\u0027t be necessary; a graphite-backed SkImage already requires the texture to be texturable.",
+      "range": {
+        "startLine": 443,
+        "startChar": 11,
+        "endLine": 443,
+        "endChar": 59
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9fa33d8_b5a70ed4",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2265d93_1967984e",
       "range": {
         "startLine": 443,
         "startChar": 11,
@@ -104,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cd4d524_0e665eef",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4139c2cf_1228a06c",
+      "range": {
+        "startLine": 476,
+        "startChar": 35,
+        "endLine": 476,
+        "endChar": 42
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "546e761e_24ffc267",
@@ -117,6 +207,30 @@
       "writtenOn": "2026-09-24T16:05:14Z",
       "side": 1,
       "message": "add `// else it couldn\u0027t be rendered so apply the GPU-optional conversions on the CPU instead",
+      "range": {
+        "startLine": 485,
+        "startChar": 8,
+        "endLine": 485,
+        "endChar": 9
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c89a660f_5c63fa91",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "546e761e_24ffc267",
       "range": {
         "startLine": 485,
         "startChar": 8,
@@ -150,6 +264,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a5faf46_878fe24a",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a34c34e0_2fe46e0b",
+      "range": {
+        "startLine": 500,
+        "startChar": 0,
+        "endLine": 500,
+        "endChar": 63
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db0b9ade_6013b0db",
@@ -163,6 +301,30 @@
       "writtenOn": "2026-09-24T16:05:14Z",
       "side": 1,
       "message": "You should be able to use `dstSurface-\u003etarget().proxy()-\u003eformat()` to skip having to call `ViewFormat()` manually.",
+      "range": {
+        "startLine": 665,
+        "startChar": 16,
+        "endLine": 665,
+        "endChar": 88
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "536be175_9fb6b75d",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db0b9ade_6013b0db",
       "range": {
         "startLine": 665,
         "startChar": 16,
@@ -209,6 +371,30 @@
       "writtenOn": "2026-09-24T16:05:14Z",
       "side": 1,
       "message": "Since asyncReadTexture() now has no fallbacks and everything is in asyncReadPixels(), this synchronous readPixels() should ideally match the public async case.\n\nI think that can be achieved by changing this condition to be `caps-\u003eisTexturable()` so in most cases we\u0027ll wrap it in a new Image and then go through asyncReadPixels. Then we change the else branch to an `else if (isCopyableSrc(...))` to go directly to asyncReadTexture. Lastly, if we\u0027re not texturable or copyable it should return false since there\u0027s nothing to be done.",
+      "range": {
+        "startLine": 1071,
+        "startChar": 8,
+        "endLine": 1071,
+        "endChar": 88
+      },
+      "revId": "9da672ad201ab70ab29733f340d2cc15af6094c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c859b73_7874d6ac",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1071,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-25T10:44:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66ced673_a7e42d93",
       "range": {
         "startLine": 1071,
         "startChar": 8,
