@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d453e114_b79aa070",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T21:27:11Z",
+      "side": 1,
+      "message": "I think this needs to be reviewed by somebody on the Skia team - I don\u0027t feel competent to review the infrastructure change + I don\u0027t feel empowered to approve what kinds of bots should be on the Skia CQ.  I hope that @ccameron and/or @fmalita can help.",
+      "revId": "1d7156b9a7b528a0c9b4d42a4590aee037d9957b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
