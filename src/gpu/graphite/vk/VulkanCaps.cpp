@@ -52,10 +52,11 @@ VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        uint32_t physicalDeviceVersion,
                        const VkPhysicalDeviceFeatures2* features,
                        const skgpu::VulkanExtensions* extensions,
-                       Protected isProtected)
+                       Protected isProtected,
+                       bool protectedMultiQueueSupport)
         : Caps() {
     this->init(contextOptions, vkInterface, physDev, physicalDeviceVersion, features, extensions,
-               isProtected);
+               isProtected, protectedMultiQueueSupport);
 }
 
 VulkanCaps::~VulkanCaps() {}
@@ -97,7 +98,8 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
                       uint32_t physicalDeviceVersion,
                       const VkPhysicalDeviceFeatures2* features,
                       const skgpu::VulkanExtensions* extensions,
-                      Protected isProtected) {
+                      Protected isProtected,
+                      bool protectedMultiQueueSupport) {
     const EnabledFeatures enabledFeatures =
             this->getEnabledFeatures(features, physicalDeviceVersion);
 
@@ -116,10 +118,11 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     this->setDeviceName(deviceProperties.fBase.properties.deviceName);
 #endif
 
-    if (isProtected == Protected::kYes && enabledFeatures.fProtectedMemory) {
+    if ((isProtected == Protected::kYes && enabledFeatures.fProtectedMemory)
+            || protectedMultiQueueSupport) {
         fProtectedSupport = true;
-        fShouldAlwaysUseDedicatedImageMemory = true;
     }
+    fProtectedMultiQueueSupport = protectedMultiQueueSupport;
 
     fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
     fPhysicalDeviceMemoryProperties2.pNext = nullptr;
