@@ -16,6 +16,29 @@
       "message": "Please take a look. Thanks!",
       "revId": "22741c0fedf5c429f5fbf821b0dbcbf9b0d236eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44c32e8c_0cbf5ea4",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1458,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-25T13:01:08Z",
+      "side": 1,
+      "message": "Since 422 is always going to be a single plane, right(?), I think we can simplify this implementation and diverge a bit from the more flexible multi-planar YUV shaders.",
+      "range": {
+        "startLine": 1455,
+        "startChar": 36,
+        "endLine": 1458,
+        "endChar": 54
+      },
+      "revId": "22741c0fedf5c429f5fbf821b0dbcbf9b0d236eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
