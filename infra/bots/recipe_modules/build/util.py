@@ -61,6 +61,7 @@ def set_dawn_args_and_env(args, env, api, extra_tokens, skia_dir):
     args['dawn_enable_metal'] = 'false'
     args['dawn_enable_opengles'] = 'false'
     args['dawn_enable_vulkan'] = 'false'
+    args['dawn_enable_desktop_gl'] = 'false'
     if 'D3D11' in extra_tokens:
       args['dawn_enable_d3d11'] = 'true'
     if 'D3D12' in extra_tokens:
