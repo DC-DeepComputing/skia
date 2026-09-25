@@ -103,6 +103,23 @@
       "message": "@ccameron - I hear that you may be able to take a look from Skia side?",
       "revId": "f2bf3a983888f790cf79ceb76464d302d2ce7830",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0a54fff_0f1b1175",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-25T12:26:47Z",
+      "side": 1,
+      "message": "Test-Ubuntu RustALL policy failed due to some linking error\n\n```\nld.lld: error: undefined symbol: SkIcoCodec::MakeFromStream(std::unique_ptr\u003cSkStream, std::default_delete\u003cSkStream\u003e\u003e, SkCodec::Result*)\n\u003e\u003e\u003e referenced by SkIcoRustDecoderTest.cpp:177 (../../../tests/SkIcoRustDecoderTest.cpp:177)\n\u003e\u003e\u003e               obj/tests/ico_decode_rust_tests.SkIcoRustDecoderTest.o:(test_RustIcoCodec_matches_legacy_size_selection(skiatest::Reporter*))\n```\n\nI will take a look and fix it",
+      "revId": "f2bf3a983888f790cf79ceb76464d302d2ce7830",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
