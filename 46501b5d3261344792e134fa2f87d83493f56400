@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f775e17f_a1033718",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T16:28:03Z",
+      "side": 1,
+      "message": "LGTM with some questions below (one future-looking - maybe more for @fmalita).",
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87d10dab_a7ae72f9",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T16:28:03Z",
+      "side": 1,
+      "message": "Should that also be taken from the allocation budget?",
+      "range": {
+        "startLine": 210,
+        "startChar": 12,
+        "endLine": 210,
+        "endChar": 44
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b881d0b_b8f0989e",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T16:28:03Z",
+      "side": 1,
+      "message": "Why not `kOutOfMemory`?",
+      "range": {
+        "startLine": 799,
+        "startChar": 19,
+        "endLine": 799,
+        "endChar": 33
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07620d76_3e55fa26",
+        "filename": "src/codec/SkPngRustCodec.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-25T16:28:03Z",
+      "side": 1,
+      "message": "It seems a bit unfortunate that `fPreblendBuffer` and `fPreblendBufferStorage` are separate fields - the former may become dangling.  I think that ideally \"somebody\" (common/shared/base part of Skia?) would provide a `BudgetedVector` as a single abstraction.\n\nOTOH I understand that this is beyond the scope of this CL.  /cc @fmalita",
+      "range": {
+        "startLine": 102,
+        "startChar": 39,
+        "endLine": 102,
+        "endChar": 40
+      },
+      "revId": "46501b5d3261344792e134fa2f87d83493f56400",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
