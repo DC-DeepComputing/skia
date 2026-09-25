@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5642df2_778757fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-09-25T15:58:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4886d527_bd63847f",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "91e9445669939a80af7f6f65fadd0fa74076a629",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65e81871_3e53740b",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-25T15:20:17Z",
       "side": 1,
       "message": "Similarly, can you update the comments around these caps changes to incorporate the failure modes you\u0027ve seen on imagination devices.",
+      "range": {
+        "startLine": 16,
+        "startChar": 2,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "revId": "91e9445669939a80af7f6f65fadd0fa74076a629",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d2d5e5d_61c8913c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-09-25T15:58:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65e81871_3e53740b",
       "range": {
         "startLine": 16,
         "startChar": 2,
