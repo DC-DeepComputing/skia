@@ -80,6 +80,30 @@
       },
       "revId": "e20315cb239497fddcf0ee3dbabbb7128ef4b210",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65cf6f6f_a4fd3a62",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-09-25T17:04:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3985ba15_17f97182",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 7
+      },
+      "revId": "e20315cb239497fddcf0ee3dbabbb7128ef4b210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
