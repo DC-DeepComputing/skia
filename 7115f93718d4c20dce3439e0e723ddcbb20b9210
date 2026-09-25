@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "789f51c2_668fa167",
+        "filename": "gm/circularclips.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-25T15:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b237e701_8fc3ecd5",
+      "range": {
+        "startLine": 43,
+        "startChar": 37,
+        "endLine": 46,
+        "endChar": 43
+      },
+      "revId": "7115f93718d4c20dce3439e0e723ddcbb20b9210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76bbab8a_5eb32546",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-24T21:06:44Z",
       "side": 1,
       "message": "please keep as it was. As in\n\n            SkBlendMode::kClear,\n            SkBlendMode::kSrc,\n            SkBlendMode::kDst,\n            SkBlendMode::kSrcOver,\n            SkBlendMode::kDstOver,\n            SkBlendMode::kSrcIn,\n            SkBlendMode::kDstIn,\n            SkBlendMode::kSrcOut,\n            SkBlendMode::kDstOut,\n            SkBlendMode::kSrcATop,\n            SkBlendMode::kDstATop,\n\n            SkBlendMode::kXor,\n            SkBlendMode::kPlus,\n            SkBlendMode::kModulate,\n            SkBlendMode::kScreen,\n            SkBlendMode::kOverlay,\n            SkBlendMode::kDarken,\n            SkBlendMode::kLighten,\n            SkBlendMode::kColorDodge,\n            SkBlendMode::kColorBurn,\n            SkBlendMode::kHardLight,\n            SkBlendMode::kSoftLight,\n            SkBlendMode::kDifference,\n            SkBlendMode::kExclusion,\n            SkBlendMode::kMultiply,\n            SkBlendMode::kHue,\n            SkBlendMode::kSaturation,\n            SkBlendMode::kColor,\n            SkBlendMode::kLuminosity,",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 11
+      },
+      "revId": "7115f93718d4c20dce3439e0e723ddcbb20b9210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a526f3a_60533fc1",
+        "filename": "gm/coloremoji_blendmodes.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-09-25T15:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76bbab8a_5eb32546",
       "range": {
         "startLine": 84,
         "startChar": 8,
