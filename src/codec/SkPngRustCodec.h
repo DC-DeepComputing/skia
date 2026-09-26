@@ -11,6 +11,7 @@
 #include <variant>
 #include <vector>
 
+#include "include/core/SkSpan.h"
 #include "rust/png/FFI.rs.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkPngCodecBase.h"
@@ -19,7 +20,6 @@
 struct SkEncodedInfo;
 class SkFrame;
 class SkStream;
-template <typename T> class SkSpan;
 
 // This class provides the Skia image decoding API (`SkCodec`) on top of:
 // * The third-party `png` crate (PNG decompression and decoding implemented in
