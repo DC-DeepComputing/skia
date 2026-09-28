@@ -11,6 +11,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkPathPriv.h"
@@ -94,7 +95,7 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(Layout layout,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
                      /*staticAttrs=*/{{{"resolveLevel_and_idx",
                                        VertexAttribType::kFloat2, SkSLType::kFloat2}}},
-                     /*appendAttrs=*/kAttributes[infinitySupport],
+                     /*appendAttrs=*/SK_UNSAFE_TODO(kAttributes[infinitySupport]),
                      /*storageUniforms=*/{})
         , fInfinitySupport(infinitySupport) {
     // Initialize the static buffers we'll use when recording draw calls.
@@ -124,7 +125,7 @@ std::string TessellateCurvesRenderStep::vertexSkSL(const RootNodesInfo&) const {
             // work).
             "float2x2 vectorXform = float2x2(localToDevice[0].xy, localToDevice[1].xy);\n"
             "float2 localCoord = tessellate_filled_curve("
-                    "vectorXform, resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, %s);\n"
+            "vectorXform, resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, %s);\n"
             "float4 devPosition = localToDevice * float4(localCoord, 0.0, 1.0);\n"
             "devPosition.z = depth;\n"
             "stepLocalCoords = localCoord;\n",

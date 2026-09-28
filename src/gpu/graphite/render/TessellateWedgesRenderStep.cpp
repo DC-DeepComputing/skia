@@ -12,6 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSLTypeShared.h"
@@ -99,9 +100,9 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(Layout layout,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
                      depthStencilSettings,
-                     /*staticAttrs=*/{{{"resolveLevel_and_idx",
-                                       VertexAttribType::kFloat2, SkSLType::kFloat2}}},
-                     /*appendAttrs=*/kAttributes[infinitySupport],
+                     /*staticAttrs=*/
+                     {{{"resolveLevel_and_idx", VertexAttribType::kFloat2, SkSLType::kFloat2}}},
+                     /*appendAttrs=*/SK_UNSAFE_TODO(kAttributes[infinitySupport]),
                      /*storageUniforms=*/{})
         , fInfinitySupport(infinitySupport) {
     // Initialize the static buffers we'll use when recording draw calls.
@@ -128,15 +129,15 @@ std::string TessellateWedgesRenderStep::vertexSkSL(const RootNodesInfo&) const {
     return SkSL::String::printf(
             "float2 localCoord;\n"
             "if (resolveLevel_and_idx.x < 0) {\n"
-                // A negative resolve level means this is the fan point.
-                "localCoord = fanPointAttrib;\n"
+            // A negative resolve level means this is the fan point.
+            "   localCoord = fanPointAttrib;\n"
             "} else {\n"
-                // TODO: Approximate perspective scaling to match how PatchWriter is configured
-                // (or provide explicit tessellation level in instance data instead of
-                // replicating work)
-                "float2x2 vectorXform = float2x2(localToDevice[0].xy, localToDevice[1].xy);\n"
-                "localCoord = tessellate_filled_curve("
-                    "vectorXform, resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, %s);\n"
+            // TODO: Approximate perspective scaling to match how PatchWriter is configured
+            // (or provide explicit tessellation level in instance data instead of
+            // replicating work)
+            "   float2x2 vectorXform = float2x2(localToDevice[0].xy, localToDevice[1].xy);\n"
+            "   localCoord = tessellate_filled_curve("
+            "       vectorXform, resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, %s);\n"
             "}\n"
             "float4 devPosition = localToDevice * float4(localCoord, 0.0, 1.0);\n"
             "devPosition.z = depth;\n"
@@ -187,20 +188,20 @@ void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw,
                 case SkPathVerb::kLine:
                     // Unlike curve tessellation, wedges have to handle lines as part of the patch,
                     // effectively forming a single triangle with the fan point.
-                    writer.writeLine(pts[0], pts[1]);
-                    lastPoint = pts[1];
+                    writer.writeLine(pts[0], SK_UNSAFE_TODO(pts[1]));
+                    lastPoint = SK_UNSAFE_TODO(pts[1]);
                     break;
                 case SkPathVerb::kQuad:
                     writer.writeQuadratic(pts);
-                    lastPoint = pts[2];
+                    lastPoint = SK_UNSAFE_TODO(pts[2]);
                     break;
                 case SkPathVerb::kConic:
                     writer.writeConic(pts, *w);
-                    lastPoint = pts[2];
+                    lastPoint = SK_UNSAFE_TODO(pts[2]);
                     break;
                 case SkPathVerb::kCubic:
                     writer.writeCubic(pts);
-                    lastPoint = pts[3];
+                    lastPoint = SK_UNSAFE_TODO(pts[3]);
                     break;
                 default: break;
             }
