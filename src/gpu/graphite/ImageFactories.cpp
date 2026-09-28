@@ -18,6 +18,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/YUVABackendTextures.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
@@ -48,8 +49,8 @@ using namespace skgpu::graphite;
 namespace {
 
 bool validate_backend_texture(const Caps* caps,
-                                     const BackendTexture& texture,
-                                     const SkColorInfo& info) {
+                              const BackendTexture& texture,
+                              const SkColorInfo& info) {
     if (!texture.isValid() || texture.dimensions().width() <= 0 ||
         texture.dimensions().height() <= 0) {
         return false;
@@ -67,7 +68,7 @@ bool validate_backend_texture(const Caps* caps,
                                            TextureInfoPriv::ViewFormat(texture.info()));
 }
 
-} // anonymous namespace
+}  // anonymous namespace
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
@@ -113,8 +114,9 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
     if (genMipmaps == GenerateMipmapsFromBase::kYes) {
         if (view.proxy()->mipmapped() == skgpu::Mipmapped::kNo) {
-            SKIA_LOG_W("Failed SkImage:::WrapTexture because asked to generate mipmaps for "
-                        "nonmipmapped texture");
+            SKIA_LOG_W(
+                    "Failed SkImage:::WrapTexture because asked to generate mipmaps for "
+                    "nonmipmapped texture");
             return nullptr;
         }
         if (!GenerateMipmaps(recorder, /*drawContext=*/nullptr, view.refProxy())) {
@@ -152,10 +154,17 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     // be interpreted as an alpha texture; if it's opaque then it'll be red.
     if (at == kPremul_SkAlphaType || at == kUnpremul_SkAlphaType) {
         switch (ct) {
-            case kR8_unorm_SkColorType: ct = kAlpha_8_SkColorType; break;
-            case kR16_unorm_SkColorType: ct = kA16_unorm_SkColorType; break;
-            case kR16_float_SkColorType: ct = kA16_float_SkColorType; break;
-            default: break; // no adjustment
+            case kR8_unorm_SkColorType:
+                ct = kAlpha_8_SkColorType;
+                break;
+            case kR16_unorm_SkColorType:
+                ct = kA16_unorm_SkColorType;
+                break;
+            case kR16_float_SkColorType:
+                ct = kA16_float_SkColorType;
+                break;
+            default:
+                break;  // no adjustment
         }
     }
 
@@ -170,11 +179,20 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
             swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
             // Patch `ct` if possible:
             switch (ct) {
-                case kRGBA_8888_SkColorType:    ct = kRGB_888x_SkColorType; break;
-                case kRGBA_1010102_SkColorType: ct = kRGB_101010x_SkColorType; break;
-                case kBGRA_1010102_SkColorType: ct = kBGR_101010x_SkColorType; break;
-                case kRGBA_F16_SkColorType:     ct = kRGB_F16F16F16x_SkColorType; break;
-                default: break; // no further adjustment
+                case kRGBA_8888_SkColorType:
+                    ct = kRGB_888x_SkColorType;
+                    break;
+                case kRGBA_1010102_SkColorType:
+                    ct = kRGB_101010x_SkColorType;
+                    break;
+                case kBGRA_1010102_SkColorType:
+                    ct = kBGR_101010x_SkColorType;
+                    break;
+                case kRGBA_F16_SkColorType:
+                    ct = kRGB_F16F16F16x_SkColorType;
+                    break;
+                default:
+                    break;  // no further adjustment
             }
         }
     }
@@ -199,8 +217,9 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     TextureProxyView view(TextureProxy::Wrap(std::move(texture)), swizzle, origin);
     if (genMipmaps == GenerateMipmapsFromBase::kYes) {
         if (view.proxy()->mipmapped() == skgpu::Mipmapped::kNo) {
-            SKIA_LOG_W("Failed SkImage:::WrapTexture because asked to generate mipmaps for "
-                        "nonmipmapped texture");
+            SKIA_LOG_W(
+                    "Failed SkImage:::WrapTexture because asked to generate mipmaps for "
+                    "nonmipmapped texture");
             return nullptr;
         }
         if (!GenerateMipmaps(recorder, /*drawContext=*/nullptr, view.refProxy())) {
@@ -359,21 +378,23 @@ sk_sp<SkImage> PromiseTextureFromYUVA(Recorder* recorder,
 
     TextureProxyView planes[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < backendTextureInfo.numPlanes(); ++i) {
-        sk_sp<TextureProxy> lazyProxy = MakePromiseImageLazyProxy(
-                recorder->priv().caps(),
-                planeDimensions[i],
-                backendTextureInfo.planeTextureInfo(i),
-                isVolatile,
-                releaseHelper,
-                fulfillProc,
-                planeContexts[i],
-                textureReleaseProc,
-                labelStr);
+        sk_sp<TextureProxy> lazyProxy =
+                MakePromiseImageLazyProxy(recorder->priv().caps(),
+                                          SK_UNSAFE_TODO(planeDimensions[i]),
+                                          backendTextureInfo.planeTextureInfo(i),
+                                          isVolatile,
+                                          releaseHelper,
+                                          fulfillProc,
+                                          SK_UNSAFE_TODO(planeContexts[i]),
+                                          textureReleaseProc,
+                                          labelStr);
         // Promise YUVA images assume the default rgba swizzle.
-        planes[i] = TextureProxyView(std::move(lazyProxy));
+        SK_UNSAFE_TODO(planes[i]) = TextureProxyView(std::move(lazyProxy));
     }
-    return Image_YUVA::Make(recorder->priv().caps(), backendTextureInfo.yuvaInfo(),
-                            SkSpan(planes), std::move(imageColorSpace));
+    return Image_YUVA::Make(recorder->priv().caps(),
+                            backendTextureInfo.yuvaInfo(),
+                            SkSpan(planes),
+                            std::move(imageColorSpace));
 }
 
 sk_sp<SkImage> SubsetTextureFrom(Recorder* recorder,
@@ -399,12 +420,8 @@ sk_sp<SkImage> MakeWithFilter(Recorder* recorder,
     }
 
     sk_sp<skif::Backend> backend = skif::MakeGraphiteBackend(recorder, {}, src->colorType());
-    sk_sp<SkImage> image = as_IFB(filter)->makeImageWithFilter(std::move(backend),
-                                                               std::move(src),
-                                                               subset,
-                                                               clipBounds,
-                                                               outSubset,
-                                                               offset);
+    sk_sp<SkImage> image = as_IFB(filter)->makeImageWithFilter(
+            std::move(backend), std::move(src), subset, clipBounds, outSubset, offset);
     // The skif backend creates budgeted, scratch textures. This is what we want most of the time,
     // but for the final result image returned from MakeWithFilter(), it needs to be a non-budgeted
     // non-shareable texture (i.e. matching what we return from the other factory methods).
@@ -440,7 +457,6 @@ static sk_sp<SkImage> generate_picture_texture(Recorder* recorder,
     // the tasks when 'surface' goes out of scope.
     return surface->asImage();
 }
-
 
 sk_sp<SkImage> make_from_bitmap(Recorder* recorder,
                                 const SkColorInfo& colorInfo,
@@ -588,12 +604,14 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(Recorder* recorder,
             }
         }
 
-        auto view = MakeBitmapProxyView(recorder, bmp, /*mipmapsIn=*/nullptr, mipmapped,
-                                        skgpu::Budgeted::kNo, labelStr);
-        planes[i] = std::move(view);
+        auto view = MakeBitmapProxyView(
+                recorder, bmp, /*mipmapsIn=*/nullptr, mipmapped, skgpu::Budgeted::kNo, labelStr);
+        SK_UNSAFE_TODO(planes[i]) = std::move(view);
     }
-    return Image_YUVA::Make(recorder->priv().caps(), finalInfo.yuvaInfo(),
-                            SkSpan(planes), std::move(imageColorSpace));
+    return Image_YUVA::Make(recorder->priv().caps(),
+                            finalInfo.yuvaInfo(),
+                            SkSpan(planes),
+                            std::move(imageColorSpace));
 }
 
 sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
@@ -623,11 +641,13 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
             return nullptr;
         }
         texture->setReleaseCallback(releaseHelper);
-        planes[i] = TextureProxyView(TextureProxy::Wrap(std::move(texture)));
+        SK_UNSAFE_TODO(planes[i]) = TextureProxyView(TextureProxy::Wrap(std::move(texture)));
     }
 
-    return Image_YUVA::Make(recorder->priv().caps(), yuvaTextures.yuvaInfo(),
-                            SkSpan(planes), std::move(imageColorSpace));
+    return Image_YUVA::Make(recorder->priv().caps(),
+                            yuvaTextures.yuvaInfo(),
+                            SkSpan(planes),
+                            std::move(imageColorSpace));
 }
 
 sk_sp<SkImage> TextureFromYUVAImages(Recorder* recorder,
