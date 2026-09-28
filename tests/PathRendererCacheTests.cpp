@@ -6,20 +6,27 @@
  */
 
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkExecutor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStrokeRec.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkPathPriv.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -214,3 +221,52 @@ DEF_GANESH_TEST(SoftwarePathRendererCacheTest,
     test_path(reporter, create_concave_path, createPR, kExpectedResources, true,
               GrAAType::kCoverage, std::move(style));
 }
+
+// Test verifying that SkPixmap::erase detects coordinate space mismatches. When a caller passes a
+// subset in device coordinates ([0, 207, 1405, 1121]) to an SkPixmap that represents a
+// local/clipped buffer ([0, 0, 1405, 914]), SkPixmap::erase should detect that the subset is not
+// contained within local bounds and reject it safely.
+DEF_TEST(PixmapEraseCoordinateSpaceMismatchTest, reporter) {
+    const int kWidth = 1405;
+    const int kClipTop = 207;
+    const int kClipBottom = 1121;
+    const int kClippedHeight = kClipBottom - kClipTop;  // 914
+
+    SkAutoPixmapStorage storage;
+    storage.alloc(SkImageInfo::MakeA8(kWidth, kClippedHeight));
+    sk_bzero(storage.writable_addr(), storage.computeByteSize());
+
+    // 1. Device-space subset [0, 207, 1405, 1121] passed to local-space pixmap [0, 0, 1405, 914].
+    SkIRect devSubset = SkIRect::MakeLTRB(0, kClipTop, kWidth, kClipBottom);
+    REPORTER_ASSERT(reporter, !storage.bounds().contains(devSubset));
+
+    // SkPixmap::erase must detect the coordinate space mismatch and safely return false
+    // without performing any out-of-bounds writes or corrupting memory.
+    bool erasedDev = storage.erase(SkColors::kWhite, &devSubset);
+    REPORTER_ASSERT(reporter, !erasedDev);
+
+    // Verify no memory was modified (all bytes remain zero)
+    for (int y = 0; y < kClippedHeight; ++y) {
+        REPORTER_ASSERT(reporter, *storage.addr8(0, y) == 0);
+    }
+
+    // 2. Local-space subset [0, 0, 1405, 914] must succeed and erase all pixels.
+    SkIRect localSubset = SkIRect::MakeWH(kWidth, kClippedHeight);
+    REPORTER_ASSERT(reporter, storage.bounds().contains(localSubset));
+    bool erasedLocal = storage.erase(SkColors::kWhite, &localSubset);
+    REPORTER_ASSERT(reporter, erasedLocal);
+
+    // Verify all bytes are now erased to 0xFF
+    for (int y = 0; y < kClippedHeight; ++y) {
+        REPORTER_ASSERT(reporter, *storage.addr8(0, y) == 0xFF);
+    }
+
+    // 3. Sub-rectangles strictly within local bounds must also succeed.
+    SkIRect subRect = SkIRect::MakeXYWH(10, 10, 100, 100);
+    REPORTER_ASSERT(reporter, storage.bounds().contains(subRect));
+    REPORTER_ASSERT(reporter, storage.erase(SkColors::kTransparent, &subRect));
+    REPORTER_ASSERT(reporter, *storage.addr8(10, 10) == 0);
+    REPORTER_ASSERT(reporter, *storage.addr8(0, 0) == 0xFF);
+}
+
+

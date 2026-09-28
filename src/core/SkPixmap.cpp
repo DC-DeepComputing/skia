@@ -753,8 +753,17 @@ bool SkPixmap::erase(const SkColor4f& color, const SkIRect* subset) const {
     }
 
     SkIRect clip = this->bounds();
-    if (subset && !clip.intersect(*subset)) {
-        return false;   // is this check really needed (i.e. to return false in this case?)
+    if (subset) {
+        if (!clip.contains(*subset)) {
+            SkDEBUGFAILF("SkPixmap::erase: subset [%d, %d, %d, %d] is not contained within pixmap "
+                         "bounds [%d, %d, %d, %d] (coordinate space mismatch or invalid subset)",
+                         subset->fLeft, subset->fTop, subset->fRight, subset->fBottom,
+                         clip.fLeft, clip.fTop, clip.fRight, clip.fBottom);
+            return false;
+        }
+        clip = *subset;
+    } else if (clip.isEmpty()) {
+        return false;
     }
 
     // Erase is meant to simulate drawing in kSRC mode -- which means we have to convert out

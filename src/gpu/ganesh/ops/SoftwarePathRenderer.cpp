@@ -69,20 +69,24 @@ namespace {
  */
 class SoftwarePathData {
 public:
-    SoftwarePathData(const SkIRect& maskBounds, const SkMatrix& viewMatrix,
+    SoftwarePathData(const SkIRect& deviceBounds, const SkMatrix& viewMatrix,
                      const GrStyledShape& shape, GrAA aa)
-            : fMaskBounds(maskBounds)
+            : fDeviceBounds(deviceBounds)
             , fViewMatrix(viewMatrix)
             , fShape(shape)
             , fAA(aa) {}
 
-    const SkIRect& getMaskBounds() const { return fMaskBounds; }
+    // Bounding rectangle in device coordinates.
+    const SkIRect& getDeviceBounds() const { return fDeviceBounds; }
+    const SkIRect& getMaskBounds() const { return fDeviceBounds; }
+    // Dimensions of the local mask texture.
+    SkISize getMaskDimensions() const { return fDeviceBounds.size(); }
     const SkMatrix* getViewMatrix() const { return &fViewMatrix; }
     const GrStyledShape& getShape() const { return fShape; }
     GrAA getAA() const { return fAA; }
 
 private:
-    SkIRect fMaskBounds;
+    SkIRect fDeviceBounds;
     SkMatrix fViewMatrix;
     GrStyledShape fShape;
     GrAA fAA;
@@ -388,7 +392,7 @@ bool SoftwarePathRenderer::onDrawPath(const DrawPathArgs& args) {
             auto drawAndUploadMask = [uploaderRaw] {
                 TRACE_EVENT0("skia.gpu", "Threaded SW Mask Render");
                 GrSWMaskHelper helper(uploaderRaw->getPixels());
-                if (helper.init(uploaderRaw->data().getMaskBounds())) {
+                if (helper.init(uploaderRaw->data().getDeviceBounds())) {
                     helper.drawShape(uploaderRaw->data().getShape(),
                                      *uploaderRaw->data().getViewMatrix(),
                                      uploaderRaw->data().getAA(), 0xFF);

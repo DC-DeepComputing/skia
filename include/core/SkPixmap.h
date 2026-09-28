@@ -696,11 +696,11 @@ public:
     bool scalePixels(const SkPixmap& dst, const SkSamplingOptions&) const;
 
     /** Writes color to pixels bounded by subset; returns true on success.
-        Returns false if colorType() is kUnknown_SkColorType, or if subset does
-        not intersect bounds().
+        Returns false if colorType() is kUnknown_SkColorType, or if subset is
+        not contained within bounds().
 
         @param color   sRGB unpremultiplied color to write
-        @param subset  bounding integer SkRect of written pixels
+        @param subset  bounding integer SkRect of written pixels in local coordinates
         @return        true if pixels are changed
 
         example: https://fiddle.skia.org/c/@Pixmap_erase
@@ -718,11 +718,11 @@ public:
 
     /** Writes color to pixels bounded by subset; returns true on success.
         if subset is nullptr, writes colors pixels inside bounds(). Returns false if
-        colorType() is kUnknown_SkColorType, if subset is not nullptr and does
-        not intersect bounds(), or if subset is nullptr and bounds() is empty.
+        colorType() is kUnknown_SkColorType, if subset is not nullptr and is
+        not contained within bounds(), or if subset is nullptr and bounds() is empty.
 
         @param color   unpremultiplied color to write
-        @param subset  bounding integer SkRect of pixels to write; may be nullptr
+        @param subset  bounding integer SkRect of pixels to write in local coords; may be nullptr
         @return        true if pixels are changed
     */
     bool erase(const SkColor4f& color, const SkIRect* subset = nullptr) const;
