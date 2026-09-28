@@ -34,6 +34,23 @@
       "parentUuid": "d453e114_b79aa070",
       "revId": "1d7156b9a7b528a0c9b4d42a4590aee037d9957b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04cbdb4c_0e3c5006",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-28T13:16:35Z",
+      "side": 1,
+      "message": "LGTM, but Eric should also take a look.",
+      "revId": "1d7156b9a7b528a0c9b4d42a4590aee037d9957b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
