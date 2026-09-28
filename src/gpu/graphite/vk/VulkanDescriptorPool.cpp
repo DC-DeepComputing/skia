@@ -14,7 +14,7 @@
 namespace skgpu::graphite {
 
 sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext* context,
-                                                       SkSpan<DescriptorData> requestedDescCounts,
+                                                       SkSpan<const DescriptorData> requestedDescCounts,
                                                        VkDescriptorSetLayout layout,
                                                        uint32_t numSets) {
     if (requestedDescCounts.empty() || numSets == 0) {
