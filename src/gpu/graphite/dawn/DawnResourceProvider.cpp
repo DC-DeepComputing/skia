@@ -464,9 +464,10 @@ DawnResourceProvider::BlitWithDrawEncoder DawnResourceProvider::findOrCreateBlit
                 "return sum * (1.0 / f32(sampleCount));"
             "}";
 
-        auto shaderModule = create_shader_module(
-                dawnSharedContext()->device(),
-                SkStringPrintf(kShaderSrc, (unsigned) srcSampleCount).c_str());
+        auto shaderModule =
+                create_shader_module(dawnSharedContext()->device(),
+                                     SkStringPrintf(kShaderSrc, (unsigned)srcSampleCount))
+                        .c_str();
 
         pipeline = create_blit_render_pipeline(
                 dawnSharedContext(),
