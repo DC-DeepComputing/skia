@@ -17,6 +17,7 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkLog.h"
 #include "include/private/SkTemplates.h"
