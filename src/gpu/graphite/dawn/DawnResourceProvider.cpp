@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
 #include "include/private/SingleOwner.h"
 #include "include/private/SkAlign.h"
+#include "include/private/SkAttributes.h"
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
@@ -466,7 +467,7 @@ DawnResourceProvider::BlitWithDrawEncoder DawnResourceProvider::findOrCreateBlit
 
         auto shaderModule = create_shader_module(
                 dawnSharedContext()->device(),
-                SkStringPrintf(kShaderSrc, (unsigned) srcSampleCount).c_str());
+                SK_UNSAFE_TODO(SkStringPrintf(kShaderSrc, (unsigned)srcSampleCount)).c_str());
 
         pipeline = create_blit_render_pipeline(
                 dawnSharedContext(),
