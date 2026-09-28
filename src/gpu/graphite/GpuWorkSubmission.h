@@ -9,6 +9,7 @@
 #define skgpu_graphite_GpuWorkSubmission_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkTArray.h"
 
 #include <memory>
 

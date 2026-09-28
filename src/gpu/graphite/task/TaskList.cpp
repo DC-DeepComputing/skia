@@ -7,7 +7,11 @@
 
 #include "src/gpu/graphite/task/TaskList.h"
 
+#include "include/gpu/graphite/Context.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/ScratchResourceManager.h"
 
 #include <cstdint>
@@ -16,13 +20,26 @@ namespace skgpu::graphite {
 
 using Status = Task::Status;
 
+bool TaskList::hasTasks(Protected isProtected) const {
+    for (const sk_sp<Task>& task: fTasks) {
+        if (task && task->isProtected() == isProtected) {
+            return true;
+        }
+    }
+    return false;
+}
+
 template <typename Fn>
-Status TaskList::visitTasks(Fn fn) {
+Status TaskList::visitTasks(Fn fn, std::optional<Protected> targetProtectedness) {
     int discardCount = 0;
     for (sk_sp<Task>& task: fTasks) {
         if (!task) {
             discardCount++;
             continue; // Skip over discarded tasks
+        }
+
+        if (targetProtectedness.has_value() && task->isProtected() != *targetProtectedness) {
+            continue;
         }
 
         Status status = fn(task.get());
@@ -53,9 +70,14 @@ Status TaskList::addCommands(Context* context,
                              CommandBuffer* commandBuffer,
                              Task::ReplayTargetData replayData) {
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "# tasks", fTasks.size());
+    std::optional<Protected> targetProtectedness;
+    if (context->priv().caps()->protectedMultiQueueSupport()) {
+        targetProtectedness = commandBuffer->isProtected();
+    }
+
     return this->visitTasks([&](Task* task) {
         return task->addCommands(context, commandBuffer, replayData);
-    });
+    }, targetProtectedness);
 }
 
 bool TaskList::visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) {
