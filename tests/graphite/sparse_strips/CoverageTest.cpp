@@ -39,7 +39,7 @@ public:
     CoverageTestRunner(StripFunc func, const char* implName) : fFunc(func), fImplName(implName) {}
 
     void runAll(skiatest::Reporter* reporter, Recorder* recorder) {
-        const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+        const SparseStripConfig::LutArray lut = GenerateMSAALUT();
         constexpr int kErrorLimit = 3;
         std::array<uint32_t, kErrorLimit> minorErrorCount = {0, 0, 0};
         int totalTestsRun = 0;
@@ -206,7 +206,7 @@ static void RunCullingSimplificationSuite(
         Recorder* recorder,
         typename FastValidator<kTileWidth, kTileHeight>::StripFunc stripFunc,
         const char* implName) {
-    const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+    const SparseStripConfig::LutArray lut = GenerateMSAALUT();
     constexpr uint16_t kVpWidth = 120;
     constexpr uint16_t kVpHeight = 120;
     std::array<uint32_t, 3> minorErrors = {0, 0, 0};
@@ -343,7 +343,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_SKP_SIMD_4x4,
                                          context,
                                          CtsEnforcement::kToBeDetermined) {
     auto recorder = context->makeRecorder();
-    const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+    const SparseStripConfig::LutArray lut = GenerateMSAALUT();
     SkpValidator::ValidateSkp<4, 4>(reporter, recorder.get(), "skps/desk_tiger8svg.skp", lut);
 }
 
@@ -352,7 +352,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_SKP_SIMD_8x8,
                                          context,
                                          CtsEnforcement::kToBeDetermined) {
     auto recorder = context->makeRecorder();
-    const SkTDArray<uint8_t> lut = GenerateMSAALUT<uint8_t>();
+    const SparseStripConfig::LutArray lut = GenerateMSAALUT();
     SkpValidator::ValidateSkp<8, 8>(reporter, recorder.get(), "skps/desk_tiger8svg.skp", lut);
 }
 

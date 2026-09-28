@@ -265,7 +265,7 @@ bool FastValidator<kTileWidth, kTileHeight>::ValidatePath(
         uint16_t viewportWidth,
         uint16_t viewportHeight,
         const char* testName,
-        const SkTDArray<uint8_t>& maskLut,
+        const SparseStripConfig::LutArray& maskLut,
         StripFunc stripFunc,
         std::array<uint32_t, 3>* minorErrorCount) {
     if (path.isEmpty() || !path.isFinite()) {

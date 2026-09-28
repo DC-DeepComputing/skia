@@ -7,7 +7,6 @@
 #ifndef skgpu_graphite_sparse_strips_StripProcessorSimd_DEFINED
 #define skgpu_graphite_sparse_strips_StripProcessorSimd_DEFINED
 
-#include "include/private/SkTDArray.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
@@ -40,7 +39,7 @@ public:
 
     StripProcessorSimd(bool isInverse,
                        const Polyline& polyline,
-                       const SkTDArray<uint8_t>& maskLut
+                       const SparseStripConfig::LutArray& maskLut
 #if defined(GPU_TEST_UTILS)
                        , MsaaExactMaskObserver observer = nullptr
 #endif
@@ -402,7 +401,8 @@ private:
                      lutRowOffset;
 
         // Unlike the scalar version, we simply return the raw pointer to the row in the LUT
-        const uint8_t* maskRowLut = fMaskLut.data() + (lutRow * SparseStripConfig::kLutMaskWidth);
+        const SparseStripConfig::SubSampleType* maskRowLut =
+                fMaskLut.data() + (lutRow * SparseStripConfig::kLutMaskWidth);
 
         float stepX = normalX * invD;
         float stepY = normalY * invD;
@@ -607,7 +607,7 @@ private:
     int32_t fCoarseWinding;
     bool fIsInverse;
     const Polyline& fPolyline;
-    const SkTDArray<uint8_t>& fMaskLut;
+    const SparseStripConfig::LutArray& fMaskLut;
 #if defined(GPU_TEST_UTILS)
     MsaaExactMaskObserver fObserver;
 #endif

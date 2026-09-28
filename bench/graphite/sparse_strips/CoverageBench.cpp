@@ -30,7 +30,7 @@ public:
                                   AlphaAtlasManager*,
                                   SkPathFillType,
                                   const Polyline&,
-                                  const SkTDArray<uint8_t>&,
+                                  const SparseStripConfig::LutArray&,
                                   uint16_t viewportWidth,
                                   uint16_t viewportHeight,
                                   MsaaExactMaskObserver);
@@ -38,7 +38,7 @@ public:
     CoverageBench(const char* name, MakeStripsFn func) : fFunc(func) {
         using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
         fName.printf("SparseStrips_%s_%s_%ux%u", name, DatasetInfo::kName, kTileWidth, kTileHeight);
-        fLUT = GenerateMSAALUT<uint8_t>();
+        fLUT = GenerateMSAALUT();
     }
 
 protected:
@@ -82,7 +82,7 @@ private:
     MakeStripsFn fFunc;
     Polyline fPolyline;
     Tiles<kTileWidth, kTileHeight> fTiles;
-    SkTDArray<uint8_t> fLUT;
+    SparseStripConfig::LutArray fLUT;
 };
 
 }  // namespace skgpu::graphite
