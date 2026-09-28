@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "346aa5b0_47afccbe",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T21:52:12Z",
+      "side": 1,
+      "message": "This is intentional. Unlike the legacy `SkIcoCodec`, the Rust codec exposes each ICO entry through `FrameInfo`, and `fFrameRect` is required to be contained by `SkCodec::dimensions()`. Selecting one entry by area can violate that invariant for mixed-aspect entries—for example, neither 256x16 nor 32x32 contains the other. Taking the maximum width and height independently gives a 256x32 canvas that contains both frame rectangles. For the normal square ICO case this is equivalent to selecting the largest-area entry. I added a comment documenting the reason for the divergence.\n\nAs Lukasz pointed in this comment (https://skia-review.googlesource.com/c/skia/+/1373378/comment/f3c4b712_0ccec5a6/) moving away from the frames would not work with current base class used from blink for Skia rust Codecs, so I revisited the suggested approach: \n\n```\n\"Maybe the animation-frames-based-decoding-API is okay as long as there is also additional API for finding the right frame index? Maybe the root problem in the previous CL discussion wasn\u0027t the decoding API, but using the decoding API for selecting the frame to decode?\"\n```",
+      "parentUuid": "946a2fb0_54befd4d",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 49
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83ffd3e4_02703978",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
         "patchSetId": 8
@@ -37,6 +61,24 @@
       "writtenOn": "2026-09-28T15:35:20Z",
       "side": 1,
       "message": "Not sure if problematic, but if we skip the entry here for whatever reason we still keep its `dirMaxWidth` and `dirMaxHeight` contribution.",
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b1554c7_6281e97a",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T21:52:12Z",
+      "side": 1,
+      "message": "Yes, this is intentional. The top-level canvas is established from the parsed directory before payload decodability is known, and every directory entry continues to contribute even if its payload is skipped later. Otherwise the reported dimensions could change as more payload data becomes available, reintroducing the progressive-decode instability fixed earlier. I added a comment making this explicit.",
+      "parentUuid": "83ffd3e4_02703978",
       "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -54,6 +96,30 @@
       "writtenOn": "2026-09-28T15:35:20Z",
       "side": 1,
       "message": "`IcoEntry` `width`/`height` are `u8`, I don\u0027t think this catches anything.",
+      "range": {
+        "startLine": 267,
+        "startChar": 16,
+        "endLine": 267,
+        "endChar": 57
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a7d560a_0453fcd2",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T21:52:12Z",
+      "side": 1,
+      "message": "Good catch",
+      "parentUuid": "f6b7a464_3a0fce88",
       "range": {
         "startLine": 267,
         "startChar": 16,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f112f06e_4e2b33d9",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T21:52:12Z",
+      "side": 1,
+      "message": "Good catch. Preserving the color model while forcing `kUnpremul_Alpha` can create invalid `SkEncodedInfo` combinations such as gray/unpremul. \n\nWith Chromium CL 8471969 allocating native-sized frame buffers, this defensive top-level alpha rewrite is no longer needed. I removed it so maxInfo retains the embedded codec’s valid color/alpha combination.",
+      "parentUuid": "03a99200_ebf68359",
+      "range": {
+        "startLine": 323,
+        "startChar": 68,
+        "endLine": 323,
+        "endChar": 83
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f99b331d_ed061542",
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d08d43_ca9fe525",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T21:52:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f99b331d_ed061542",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 62
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d8b4491_e0006a15",
@@ -123,6 +237,30 @@
       "writtenOn": "2026-09-28T15:35:20Z",
       "side": 1,
       "message": "Nit: is this still accurate?",
+      "range": {
+        "startLine": 79,
+        "startChar": 8,
+        "endLine": 79,
+        "endChar": 19
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80ea144d_6dd6ce1d",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T21:52:12Z",
+      "side": 1,
+      "message": "Good catch. Chromium now uses the indexed frame API together with each entry’s native frame dimensions. I updated the comment to describe the current supported behavior rather than a temporary migration state. Comment updated.",
+      "parentUuid": "9d8b4491_e0006a15",
       "range": {
         "startLine": 79,
         "startChar": 8,
