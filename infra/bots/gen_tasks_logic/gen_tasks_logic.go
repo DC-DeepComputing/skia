@@ -1964,6 +1964,60 @@ func (b *jobBuilder) runWasmGMTests() {
 	})
 }
 
+func (b *jobBuilder) dmStandaloneWasm() {
+	compileTaskName := b.compile()
+
+	b.addTask(b.Name, func(b *TaskBuilder) {
+		b.attempts(1)
+		b.usesNode()
+		b.swarmDimensions()
+		b.usesLUCIAuth()
+		b.cipd(CIPD_PKGS_GOLDCTL)
+		b.dep(compileTaskName)
+		b.timeout(60 * time.Minute)
+		b.cas(CAS_TEST)
+		b.cas(CAS_PUPPETEER)
+		b.serviceAccount(b.cfg.ServiceAccountUploadGM)
+		b.commonTestPerfAssets()
+		iid := b.internalHardwareLabel()
+		iidStr := ""
+		if iid != nil {
+			iidStr = strconv.Itoa(*iid)
+			b.recipeProp("internal_hardware_label", iidStr)
+		}
+		b.dmFlags(iidStr)
+		b.cmd(
+			b.taskDriver("run_wasm_dm", false),
+			"--dm_flags", marshalJson(b.recipeProperties["dm_flags"]),
+			"--project_id", "skia-swarming-bots",
+			"--task_id", specs.PLACEHOLDER_TASK_ID,
+			"--task_name", b.Name,
+			"--test_harness_path", "./tools/run-wasm-gm-tests",
+			"--built_path", OUTPUT_BUILD,
+			"--node_bin_path", "./node/node/bin",
+			"--resource_path", "./resources",
+			"--work_path", "./wasm_gm/work",
+			"--gold_ctl_path", "./cipd_bin_packages/goldctl",
+			"--gold_hashes_url", b.cfg.GoldHashesURL,
+			"--git_commit", specs.PLACEHOLDER_REVISION,
+			"--changelist_id", specs.PLACEHOLDER_ISSUE,
+			"--patchset_order", specs.PLACEHOLDER_PATCHSET,
+			"--tryjob_id", specs.PLACEHOLDER_BUILDBUCKET_BUILD_ID,
+			// TODO(kjlubick) Make these not hard coded if we change the configs we test on.
+			"--webgl_version", "2", // 0 means CPU ; this flag controls cpu_or_gpu and extra_config
+			"--gold_key", "alpha_type:Premul",
+			"--gold_key", "arch:wasm",
+			"--gold_key", "browser:Chrome",
+			"--gold_key", "color_depth:8888",
+			"--gold_key", "config:gles",
+			"--gold_key", "configuration:Release",
+			"--gold_key", "cpu_or_gpu_value:QuadroP400",
+			"--gold_key", "model:Golo",
+			"--gold_key", "os:Ubuntu24.04",
+		)
+	})
+}
+
 // bazelTarget contains a Bazel label (e.g. //tests:some_test) and is open for additional fields
 type bazelTarget struct {
 	label string
