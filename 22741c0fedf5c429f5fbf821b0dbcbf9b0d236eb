@@ -39,6 +39,30 @@
       },
       "revId": "22741c0fedf5c429f5fbf821b0dbcbf9b0d236eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99d4501b_a73f07e8",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1458,
+      "author": {
+        "id": 3645930
+      },
+      "writtenOn": "2026-09-28T03:19:18Z",
+      "side": 1,
+      "message": "Done. The packed snippet now registeres a single `samplerPlane` sampler, binds only the one plane exture in `AddBlock()`, and the shader samples it twice (own texel + pair partner).",
+      "parentUuid": "44c32e8c_0cbf5ea4",
+      "range": {
+        "startLine": 1455,
+        "startChar": 36,
+        "endLine": 1458,
+        "endChar": 54
+      },
+      "revId": "22741c0fedf5c429f5fbf821b0dbcbf9b0d236eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
