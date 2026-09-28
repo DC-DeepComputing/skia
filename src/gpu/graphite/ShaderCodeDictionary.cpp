@@ -9,6 +9,7 @@
 
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkMeshPriv.h"
@@ -241,7 +242,7 @@ std::string ShaderNode::generateDefaultPreamble(const ShaderInfo& shaderInfo) co
     append_uniforms(&params, shaderInfo, this, childOutputVarNames);
 
     SkSL::String::appendf(&code,
-                              "return %s(%s);"
+                          "return %s(%s);"
                           "}",
                           this->entry()->fStaticFunctionName,
                           stitch_csv(params).c_str());
@@ -591,10 +592,7 @@ public:
     void defineFunction(const char* decl, const char* body, bool isMain) override {
         if (isMain) {
             SkSL::String::appendf(
-                    fPreamble,
-                    "%s { %s }",
-                    emit_helper_declaration(fNode).c_str(),
-                    body);
+                    fPreamble, "%s { %s }", emit_helper_declaration(fNode).c_str(), body);
         } else {
             SkSL::String::appendf(fPreamble, "%s {%s}\n", decl, body);
         }
@@ -873,8 +871,8 @@ SkSLType ShaderCodeDictionary::UniformTypeToSkSLType(const SkRuntimeEffect::Unif
 
 static const char* add_text_to_arena(std::string_view text, SkArenaAlloc* arena) {
     char* textInArena = arena->makeArrayDefault<char>(text.size() + 1);
-    memcpy(textInArena, text.data(), text.size());
-    textInArena[text.size()] = '\0';
+    SK_UNSAFE_TODO(memcpy(textInArena, text.data(), text.size()));
+    SK_UNSAFE_TODO(textInArena[text.size()] = '\0');
     return textInArena;
 }
 

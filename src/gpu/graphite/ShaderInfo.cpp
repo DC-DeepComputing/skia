@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/ShaderInfo.h"
 
 #include "include/core/SkMesh.h"
+#include "include/private/SkAttributes.h"
 #include "src/core/SkMeshPriv.h"
 #include "src/gpu/BlendFormula.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -115,8 +116,8 @@ std::string get_node_uniforms(UniformOffsetCalculator* offsetter,
                                   node->keyIndex());
         } else {
 #if defined(SK_DEBUG)
-            SkSL::String::appendf(&result, "// %d - %s uniforms\n",
-                                  node->keyIndex(), node->entry()->fName);
+            SkSL::String::appendf(
+                    &result, "// %d - %s uniforms\n", node->keyIndex(), node->entry()->fName);
 #endif
             result += get_uniforms(offsetter, uniforms, node->keyIndex(), wrotePaintColor);
         }
@@ -179,12 +180,12 @@ std::string get_node_ssbo_fields(const ShaderNode* node,
         }
 
         if (node->entry()->fUniformStructName) {
-            SkSL::String::appendf(&result, "%s node_%d;",
-                                  node->entry()->fUniformStructName, node->keyIndex());
+            SkSL::String::appendf(
+                    &result, "%s node_%d;", node->entry()->fUniformStructName, node->keyIndex());
         } else {
 #if defined(SK_DEBUG)
-            SkSL::String::appendf(&result, "// %d - %s uniforms\n",
-                                  node->keyIndex(), node->entry()->fName);
+            SkSL::String::appendf(
+                    &result, "// %d - %s uniforms\n", node->keyIndex(), node->entry()->fName);
 #endif
             result += get_ssbo_fields(uniforms, node->keyIndex(), wrotePaintColor);
         }
@@ -295,10 +296,8 @@ std::string emit_uniforms_from_storage_buffer(const char* indexVariableName,
         if (u.count()) {
             SkSL::String::appendf(&result, "[%d]", u.count());
         }
-        SkSL::String::appendf(&result,
-                              " = combinedUniformData[%s].%s;\n",
-                              indexVariableName,
-                              u.name());
+        SkSL::String::appendf(
+                &result, " = combinedUniformData[%s].%s;\n", indexVariableName, u.name());
     }
 
     return result;
@@ -397,17 +396,18 @@ std::string emit_storage_fallback_texture(const ResourceBindingRequirements& bin
             // std140/std430 dictates 16-byte alignment for vec3; startComp must be 0 to avoid OOB
             // swizzles.
             SkASSERT(startComp == 0);
-            expr = SkSL::String::printf(
-                    "t%d.%s%s%s",
-                    startTexel,
-                    kSwizzles[startComp],
-                    kSwizzles[startComp + 1],
-                    kSwizzles[startComp + 2]);
+            expr = SkSL::String::printf("t%d.%s%s%s",
+                                        startTexel,
+                                        SK_UNSAFE_TODO(kSwizzles[startComp]),
+                                        SK_UNSAFE_TODO(kSwizzles[startComp + 1]),
+                                        SK_UNSAFE_TODO(kSwizzles[startComp + 2]));
         } else if (vec == 2) {
-            expr = SkSL::String::printf(
-                    "t%d.%s%s", startTexel, kSwizzles[startComp], kSwizzles[startComp + 1]);
+            expr = SkSL::String::printf("t%d.%s%s",
+                                        startTexel,
+                                        SK_UNSAFE_TODO(kSwizzles[startComp]),
+                                        SK_UNSAFE_TODO(kSwizzles[startComp + 1]));
         } else {
-            expr = SkSL::String::printf("t%d.%s", startTexel, kSwizzles[startComp]);
+            expr = SkSL::String::printf("t%d.%s", startTexel, SK_UNSAFE_TODO(kSwizzles[startComp]));
         }
 
         switch (a.type()) {
@@ -483,7 +483,8 @@ void append_sampler_descs(const SkSpan<const uint32_t> samplerData,
             samplerDescLength = usesExternalFormat ? SamplerDesc::kInt32sNeededExternalFormat
                                                    : SamplerDesc::kInt32sNeededKnownFormat;
             // Populate a SamplerDesc with samplerDescLength quantity of immutable sampler data
-            memcpy(&desc, samplerData.data() + i, samplerDescLength * sizeof(uint32_t));
+            SK_UNSAFE_TODO(
+                    memcpy(&desc, samplerData.data() + i, samplerDescLength * sizeof(uint32_t)));
         }
         outDescs.push_back(desc);
         i += samplerDescLength;
@@ -499,8 +500,8 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
 
     if (!samplers.empty()) {
 #if defined(SK_DEBUG)
-        SkSL::String::appendf(&result, "// %d - %s samplers\n",
-                              node->keyIndex(), node->entry()->fName);
+        SkSL::String::appendf(
+                &result, "// %d - %s samplers\n", node->keyIndex(), node->entry()->fName);
 #endif
 
         // Determine whether we need to analyze & interpret a ShaderNode's data as immutable
@@ -578,7 +579,8 @@ std::string emit_varyings(const RenderStep* step,
             case Interpolation::kLinear:      interpolation = "noperspective "; break;
             case Interpolation::kFlat:        interpolation = "flat "; break;
         }
-        SkSL::String::appendf(&result, "layout(location=%d) %s %s%s %s%s;\n",
+        SkSL::String::appendf(&result,
+                              "layout(location=%d) %s %s%s %s%s;\n",
                               location++,
                               direction,
                               interpolation,
@@ -1198,9 +1200,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // Check for unexpected corruption / illegal instructions occurring in the wild.
     SkASSERTF_RELEASE((sharedData.fRootsInfo.fRoots.size() >= 2 &&
                        sharedData.fRootsInfo.fRoots.size() <= 4) &&
-                      sharedData.fRootsInfo.fSrcColor && sharedData.fRootsInfo.fFinalBlend,
+                              sharedData.fRootsInfo.fSrcColor && sharedData.fRootsInfo.fFinalBlend,
                       "root node size = %zu, label = %s",
-                      sharedData.fRootsInfo.fRoots.size(), label);
+                      sharedData.fRootsInfo.fRoots.size(),
+                      label);
 
     // Extract the root nodes for clarity
     const ShaderNode* const srcColorRoot = sharedData.fRootsInfo.fSrcColor;
@@ -1336,10 +1339,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     std::string mainBody = "void main() {";
 
     if (sharedData.fHasSsboIndexVarying) {
-        SkSL::String::appendf(&mainBody,
-                              "%s = %s;\n",
-                              this->uniformSsboIndex(),
-                              RenderStep::ssboIndexVarying());
+        SkSL::String::appendf(
+                &mainBody, "%s = %s;\n", this->uniformSsboIndex(), RenderStep::ssboIndexVarying());
     }
 
     if (srcColorRoot->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
@@ -1396,16 +1397,18 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     }
 
     if (writeSwizzle != Swizzle::RGBA()) {
-        SkSL::String::appendf(&mainBody, "%s = %s.%s;", args.fPriorStageOutput.c_str(),
-                                                        args.fPriorStageOutput.c_str(),
-                                                        writeSwizzle.asString().c_str());
+        SkSL::String::appendf(&mainBody,
+                              "%s = %s.%s;",
+                              args.fPriorStageOutput.c_str(),
+                              args.fPriorStageOutput.c_str(),
+                              writeSwizzle.asString().c_str());
     }
 
     if (finalCoverage == Coverage::kNone) {
         // Either direct HW blending or a dst-read w/o any extra coverage. In both cases we just
         // need to assign directly to sk_FragCoord and update the HW blend info to finalBlendMode.
         SkASSERT(finalBlendMode.has_value());
-        fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
+        fBlendInfo = SK_UNSAFE_TODO(gBlendTable[static_cast<int>(*finalBlendMode)]);
         SkSL::String::appendf(&mainBody, "sk_FragColor = %s;", args.fPriorStageOutput.c_str());
     } else {
         // Accumulate the output coverage. This will either modify the src color and secondary
@@ -1453,7 +1456,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
             // Use kSrc HW BlendInfo and do the coverage blend with dst in the shader.
             SkASSERT(finalBlendMode.has_value() && finalBlendMode.value() == SkBlendMode::kSrc);
-            fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
+            fBlendInfo = SK_UNSAFE_TODO(gBlendTable[static_cast<int>(*finalBlendMode)]);
             SkSL::String::appendf(
                     &mainBody,
                     "sk_FragColor = %s * outputCoverage + dstColor * (1.0 - outputCoverage);",
@@ -1470,7 +1473,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             // the correct output.
             if (finalBlendMode > SkBlendMode::kLastCoeffMode) {
                 SkASSERT(finalCoverage == Coverage::kSingleChannel);
-                fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
+                fBlendInfo = SK_UNSAFE_TODO(gBlendTable[static_cast<int>(*finalBlendMode)]);
                 mainBody += emit_advanced_blend_color_output("sk_FragColor", outColor);
             } else {
                 // Porter-Duff blend modes can utilize BlendFormula.
@@ -1581,8 +1584,10 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     // We define the SSBO index variable immediately if the VS is using storage buffers. This covers
     // both the "Step Uniforms" case and the "Lifted Uniforms Only" case.
     if (sharedData.fUseUniformStorageBufferVS) {
-        SkSL::String::appendf(&mainBody, "%s = %s;\n", this->uniformSsboIndex(),
-                                  RenderStep::ssboIndexAttribute());
+        SkSL::String::appendf(&mainBody,
+                              "%s = %s;\n",
+                              this->uniformSsboIndex(),
+                              RenderStep::ssboIndexAttribute());
         if (sharedData.fHasStepUniforms) {
             mainBody +=
                     emit_uniforms_from_storage_buffer(this->uniformSsboIndex(), step->uniforms());
