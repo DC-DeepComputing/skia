@@ -7,6 +7,7 @@
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
+#include "include/private/SkAttributes.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
