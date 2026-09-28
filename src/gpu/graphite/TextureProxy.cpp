@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/TextureProxy.h"
 
 #include "include/gpu/graphite/Recorder.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkPixelStorage.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Caps.h"
@@ -225,10 +226,10 @@ sk_sp<TextureProxy> TextureProxy::Wrap(sk_sp<Texture> texture) {
 #ifdef SK_DEBUG
 void TextureProxy::validateTexture(const Texture* texture) {
     SkASSERT(this->isFullyLazy() || fDimensions == texture->dimensions());
-    SkASSERTF(fInfo.canBeFulfilledBy(texture->textureInfo()),
-              "proxy->fInfo[%s] incompatible with texture->fInfo[%s]",
-              fInfo.toString().c_str(),
-              texture->textureInfo().toString().c_str());
+    SK_UNSAFE_TODO(SkASSERTF(fInfo.canBeFulfilledBy(texture->textureInfo()),
+                             "proxy->fInfo[%s] incompatible with texture->fInfo[%s]",
+                             fInfo.toString().c_str(),
+                             texture->textureInfo().toString().c_str()));
 }
 #endif
 
