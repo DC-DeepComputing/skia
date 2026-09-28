@@ -18,6 +18,7 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkYUVAInfoLocation.h"
 #include "src/gpu/graphite/Caps.h"
@@ -29,7 +30,6 @@
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/shaders/SkImageShader.h"
-
 
 namespace skgpu::graphite {
 
@@ -49,7 +49,7 @@ static SkAlphaType yuva_alpha_type(const SkYUVAInfo& yuvaInfo) {
     return yuvaInfo.hasAlpha() ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
 }
 
-} // anonymous
+}  // namespace
 
 Image_YUVA::Image_YUVA(const YUVAProxies& proxies,
                        const SkYUVAInfo& yuvaInfo,
@@ -63,7 +63,7 @@ Image_YUVA::Image_YUVA(const YUVAProxies& proxies,
         , fProxies(std::move(proxies))
         , fYUVAInfo(yuvaInfo)
         , fUVSubsampleFactors(SkYUVAInfo::SubsamplingFactors(yuvaInfo.subsampling())) {
-    for (auto &proxy : fProxies) {
+    for (auto& proxy : fProxies) {
         if (proxy) {
             fPixelStorages.push_back(proxy.refProxy());
         }
@@ -110,10 +110,11 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
         if (!planes[i] || !caps->isTexturable(planes[i].proxy()->textureInfo())) {
             return nullptr;
         }
-        if (planes[i].dimensions() != planeDimensions[i]) {
+        if (planes[i].dimensions() != SK_UNSAFE_TODO(planeDimensions[i])) {
             return nullptr;
         }
-        pixmapChannelmasks[i] = TextureInfoPriv::ChannelMask(planes[i].proxy()->textureInfo());
+        SK_UNSAFE_TODO(pixmapChannelmasks[i]) =
+                TextureInfoPriv::ChannelMask(planes[i].proxy()->textureInfo());
     }
 
     // Re-arrange the proxies from planes to channels
@@ -165,7 +166,7 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
                 // Swizzle("aaaa") with the plane's read swizzle.
                 channel = SkColorChannel::kA;
             }
-            Swizzle channelSwizzle = planes[plane].swizzle().selectChannelInR((int) channel);
+            Swizzle channelSwizzle = planes[plane].swizzle().selectChannelInR((int)channel);
 
             // Use replaceSwizzle() since selectChannelInR effectively includes a Swizzle::Concat.
             channelProxies[i] = planes[plane].replaceSwizzle(channelSwizzle);
@@ -178,9 +179,8 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
         }
     }
 
-    return sk_sp<Image_YUVA>(new Image_YUVA(std::move(channelProxies),
-                                            yuvaInfo,
-                                            std::move(imageColorSpace)));
+    return sk_sp<Image_YUVA>(
+            new Image_YUVA(std::move(channelProxies), yuvaInfo, std::move(imageColorSpace)));
 }
 
 sk_sp<Image_YUVA> Image_YUVA::WrapImages(const Caps* caps,
@@ -193,8 +193,8 @@ sk_sp<Image_YUVA> Image_YUVA::WrapImages(const Caps* caps,
 
     TextureProxyView planes[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < yuvaInfo.numPlanes(); ++i) {
-        planes[i] = AsView(images[i]);
-        if (!planes[i]) {
+        SK_UNSAFE_TODO(planes[i]) = AsView(images[i]);
+        if (SK_UNSAFE_TODO(!planes[i])) {
             // A null image, or not graphite-backed, or not backed by a single texture.
             return nullptr;
         }
@@ -222,7 +222,7 @@ size_t Image_YUVA::textureSize() const {
     size_t size = 0;
     for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
         if (!fProxies[i]) {
-            continue; // Null channels (A) have no size.
+            continue;  // Null channels (A) have no size.
         }
         bool repeat = false;
         for (int j = i - 1; j >= 0; --j) {
@@ -244,9 +244,7 @@ size_t Image_YUVA::textureSize() const {
 }
 
 sk_sp<SkImage> Image_YUVA::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
-    sk_sp<Image_YUVA> view{new Image_YUVA(fProxies,
-                                          fYUVAInfo,
-                                          std::move(newCS))};
+    sk_sp<Image_YUVA> view{new Image_YUVA(fProxies, fYUVAInfo, std::move(newCS))};
     // The new Image object shares the same texture planes, so it should also share linked Devices
     view->linkDevices(this);
     return view;
