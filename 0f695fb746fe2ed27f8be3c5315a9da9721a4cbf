@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd978ff6_5567453e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-28T19:29:12Z",
+      "side": 1,
+      "message": "Resolved.",
+      "parentUuid": "215c65fa_940ed088",
+      "range": {
+        "startLine": 39,
+        "startChar": 49,
+        "endLine": 39,
+        "endChar": 57
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5d472cd_3ff4fc33",
