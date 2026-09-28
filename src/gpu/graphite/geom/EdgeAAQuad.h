@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/geom/Rect.h"
@@ -50,8 +51,14 @@ public:
             , fEdgeFlags(edgeFlags)
             , fIsRect(true) {}
     EdgeAAQuad(const SkPoint points[4], SkEnumBitMask<Flags> edgeFlags)
-            : fXs{points[0].fX, points[1].fX, points[2].fX, points[3].fX}
-            , fYs{points[0].fY, points[1].fY, points[2].fY, points[3].fY}
+            : fXs{points[0].fX,
+                  SK_UNSAFE_TODO(points[1].fX),
+                  SK_UNSAFE_TODO(points[2].fX),
+                  SK_UNSAFE_TODO(points[3].fX)}
+            , fYs{points[0].fY,
+                  SK_UNSAFE_TODO(points[1].fY),
+                  SK_UNSAFE_TODO(points[2].fY),
+                  SK_UNSAFE_TODO(points[3].fY)}
             , fEdgeFlags(edgeFlags)
             , fIsRect(false) {}
     EdgeAAQuad(const skvx::float4& xs, const skvx::float4& ys, SkEnumBitMask<Flags> edgeFlags)

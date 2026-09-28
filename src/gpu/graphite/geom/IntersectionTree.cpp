@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkTPin.h"
 #include "src/core/SkVx.h"
 
@@ -94,10 +95,10 @@ public:
         SkASSERT(fNumRects <= kMaxRectsInList);
         auto comp = Rect::ComplementRect(rect).fVals;
         for (int i = 0; i < fNumRects; i += 4) {
-            auto l = skvx::float4::Load(fLefts + i);
-            auto t = skvx::float4::Load(fTops + i);
-            auto nr = skvx::float4::Load(fNegRights + i);
-            auto nb = skvx::float4::Load(fNegBots + i);
+            auto l = skvx::float4::Load(SK_UNSAFE_TODO(fLefts + i));
+            auto t = skvx::float4::Load(SK_UNSAFE_TODO(fTops + i));
+            auto nr = skvx::float4::Load(SK_UNSAFE_TODO(fNegRights + i));
+            auto nb = skvx::float4::Load(SK_UNSAFE_TODO(fNegBots + i));
             if (any((l < comp[0]) &
                     (t < comp[1]) &
                     (nr < comp[2]) &
@@ -124,14 +125,17 @@ private:
         // [maxLeft, maxTop, -minRight, -minBot]
         fSplittableBounds = max(fSplittableBounds, rect.vals());
         fRectValsSum += rect.vals();  // [sum(left), sum(top), -sum(right), -sum(bot)]
-        fLefts[i] = rect.vals()[0];
-        fTops[i] = rect.vals()[1];
-        fNegRights[i] = rect.vals()[2];
-        fNegBots[i] = rect.vals()[3];
+        SK_UNSAFE_TODO(fLefts[i] = rect.vals()[0]);
+        SK_UNSAFE_TODO(fTops[i] = rect.vals()[1]);
+        SK_UNSAFE_TODO(fNegRights[i] = rect.vals()[2]);
+        SK_UNSAFE_TODO(fNegBots[i] = rect.vals()[3]);
     }
 
     Rect loadRect(int i) const {
-        return Rect::FromVals({fLefts[i], fTops[i], fNegRights[i], fNegBots[i]});
+        return Rect::FromVals({SK_UNSAFE_TODO(fLefts[i]),
+                               SK_UNSAFE_TODO(fTops[i]),
+                               SK_UNSAFE_TODO(fNegRights[i]),
+                               SK_UNSAFE_TODO(fNegBots[i])});
     }
 
     // Splits this node with a new LeafNode, then returns a TreeNode that reuses our "this" pointer
@@ -177,10 +181,10 @@ private:
         this->popAll();
         for (int i = 0; i < numCombinedRects; ++i) {
             Rect rect = this->loadRect(i);
-            if (loVals[i] < splitCoord) {
+            if (SK_UNSAFE_TODO(loVals[i] < splitCoord)) {
                 this->appendToList(rect);
             }
-            if (negHiVals[i] < negSplitCoord) {
+            if (SK_UNSAFE_TODO(negHiVals[i] < negSplitCoord)) {
                 hiNode->appendToList(rect);
             }
         }

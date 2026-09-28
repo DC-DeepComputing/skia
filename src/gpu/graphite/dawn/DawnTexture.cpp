@@ -9,6 +9,7 @@
 
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/gpu/MutableTextureState.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Sampler.h"
@@ -246,10 +247,13 @@ void DawnTexture::setBackendLabel(char const* label) {
     SkASSERT(fSampleTextureView);
     SkASSERT(fRenderTextureView);
     if (fSampleTextureView.Get() == fRenderTextureView.Get()) {
-        fSampleTextureView.SetLabel(SkStringPrintf("%s_%s", label, "_TextureView").c_str());
+        fSampleTextureView.SetLabel(
+                SK_UNSAFE_TODO(SkStringPrintf("%s_%s", label, "_TextureView")).c_str());
     } else {
-        fSampleTextureView.SetLabel(SkStringPrintf("%s_%s", label, "_SampleTextureView").c_str());
-        fRenderTextureView.SetLabel(SkStringPrintf("%s_%s", label, "_RenderTextureView").c_str());
+        fSampleTextureView.SetLabel(
+                SK_UNSAFE_TODO(SkStringPrintf("%s_%s", label, "_SampleTextureView")).c_str());
+        fRenderTextureView.SetLabel(
+                SK_UNSAFE_TODO(SkStringPrintf("%s_%s", label, "_RenderTextureView")).c_str());
     }
 }
 
