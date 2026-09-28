@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fb49386_2fd49c55",
+        "filename": "src/gpu/ganesh/GrProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-28T13:41:52Z",
+      "side": 1,
+      "message": "nit: I know this was like this before, but I wonder if we should merge your new comment below and this one to make it clear the use of a spinlock is optional depending on the flag. This reads as if there is always a mutex protecting the pool.",
+      "range": {
+        "startLine": 14,
+        "startChar": 3,
+        "endLine": 14,
+        "endChar": 53
+      },
+      "revId": "49927a8c23127fe1fba66a3336dc9ce03641406e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
