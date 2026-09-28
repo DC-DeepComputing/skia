@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "946a2fb0_54befd4d",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-28T15:35:20Z",
+      "side": 1,
+      "message": "I think switching from area to component wise checks diverges from the legacy behavior.  Is this needed/intentional?",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 49
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83ffd3e4_02703978",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-28T15:35:20Z",
+      "side": 1,
+      "message": "Not sure if problematic, but if we skip the entry here for whatever reason we still keep its `dirMaxWidth` and `dirMaxHeight` contribution.",
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6b7a464_3a0fce88",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-28T15:35:20Z",
+      "side": 1,
+      "message": "`IcoEntry` `width`/`height` are `u8`, I don\u0027t think this catches anything.",
+      "range": {
+        "startLine": 267,
+        "startChar": 16,
+        "endLine": 267,
+        "endChar": 57
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03a99200_ebf68359",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-28T15:35:20Z",
+      "side": 1,
+      "message": "`SkEncodedInfo::VerifyColor`, which is called from the factory, contains some [assertions](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/private/SkEncodedInfo.h;drc\u003dd2b9e48baf1697760afc1dc8ea3ad40110b8cacc;l\u003d193) that look like we may break here.  E.g. if we\u0027re always overriding alpha type with kUnpremul, we can end up with something like kGray/kUnpremul which will trigger.",
+      "range": {
+        "startLine": 323,
+        "startChar": 68,
+        "endLine": 323,
+        "endChar": 83
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f99b331d_ed061542",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-28T15:35:20Z",
+      "side": 1,
+      "message": "Mucking with alpha type at this level (also in `MakeFromStream`) seems iffy: IIUC, we are doing this defensively, for clients that may pass in buffers with padding.  But that hurts clients which are well behaved and size their buffers appropriately.\n\nCan we delegate this logic to clients instead? They should be able to tell if they are using a larger buffer than needed for a frame, and can tweak the alpha type themselves, only when needed.",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 62
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8b4491_e0006a15",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-28T15:35:20Z",
+      "side": 1,
+      "message": "Nit: is this still accurate?",
+      "range": {
+        "startLine": 79,
+        "startChar": 8,
+        "endLine": 79,
+        "endChar": 19
+      },
+      "revId": "fc7c537c08f34d4de19bba4396049e31973b4f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
