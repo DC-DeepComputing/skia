@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/GraphicsPipeline.h"
 
+#include "include/private/SkAttributes.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -33,8 +34,10 @@ GraphicsPipeline::~GraphicsPipeline() {
     TRACE_EVENT_INSTANT2("skia.gpu",
                          TRACE_STR_STATIC(kNames[this->fromPrecompile()]),
                          TRACE_EVENT_SCOPE_THREAD,
-                         "key", this->getPipelineInfo().fUniqueKeyHash,
-                         "compilationID", this->getPipelineInfo().fCompilationID);
+                         "key",
+                         this->getPipelineInfo().fUniqueKeyHash,
+                         "compilationID",
+                         this->getPipelineInfo().fCompilationID);
 #endif
 }
 
