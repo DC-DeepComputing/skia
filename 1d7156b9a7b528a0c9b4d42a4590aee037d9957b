@@ -51,6 +51,24 @@
       "message": "LGTM, but Eric should also take a look.",
       "revId": "1d7156b9a7b528a0c9b4d42a4590aee037d9957b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a8f5b0f_26003dda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-28T14:43:21Z",
+      "side": 1,
+      "message": "Thanks! \n\nFYI I had to re-run `go run infra/bots/gen_tasks.go` as it got out of sync",
+      "parentUuid": "04cbdb4c_0e3c5006",
+      "revId": "1d7156b9a7b528a0c9b4d42a4590aee037d9957b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
