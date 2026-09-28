@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkSurfacePriv.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -301,8 +302,8 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
 
     if (!validate_backend_texture(caps, backendTex, info)) {
         SKIA_LOG_E("validate_backend_texture failed: backendTex.info = %s; colorType = %d",
-                    backendTex.info().toString().c_str(),
-                    info.colorType());
+                   backendTex.info().toString().c_str(),
+                   info.colorType());
         return nullptr;
     }
 
