@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/gpu/graphite/DrawAtlas.h"
 #include "src/text/gpu/GlyphVector.h"
@@ -104,8 +105,8 @@ public:
 
     void evictAtlases() {
         for (int i = 0; i < kMaskFormatCount; ++i) {
-            if (fAtlases[i]) {
-                fAtlases[i]->evictAllPlots();
+            if (SK_UNSAFE_TODO(fAtlases[i])) {
+                SK_UNSAFE_TODO(fAtlases[i]->evictAllPlots());
             }
         }
     }
@@ -143,8 +144,8 @@ private:
     DrawAtlas* getAtlas(MaskFormat resolvedMaskFormat) const {
         SkASSERT(resolvedMaskFormat == this->resolveMaskFormat(resolvedMaskFormat));
         int atlasIndex = MaskFormatToAtlasIndex(resolvedMaskFormat);
-        SkASSERT(fAtlases[atlasIndex]);
-        return fAtlases[atlasIndex].get();
+        SkASSERT(SK_UNSAFE_TODO(fAtlases[atlasIndex]));
+        return SK_UNSAFE_TODO(fAtlases[atlasIndex].get());
     }
 
     Recorder* fRecorder;
