@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/GlobalCache.h"
 
 #include "include/gpu/graphite/Context.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/Buffer.h"
@@ -172,8 +173,10 @@ void GlobalCache::LogPurge(void* context, const UniqueKey& key, sk_sp<GraphicsPi
     TRACE_EVENT_INSTANT2("skia.gpu",
                          TRACE_STR_STATIC(kNames[(*p)->wasUsed()][(*p)->fromPrecompile()]),
                          TRACE_EVENT_SCOPE_THREAD,
-                         "key", key.hash(),
-                         "compilationID", (*p)->getPipelineInfo().fCompilationID);
+                         "key",
+                         key.hash(),
+                         "compilationID",
+                         (*p)->getPipelineInfo().fCompilationID);
 #endif
 }
 
@@ -224,8 +227,10 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
             TRACE_EVENT_INSTANT2("skia.gpu",
                                  TRACE_STR_STATIC(kNames[forPrecompile]),
                                  TRACE_EVENT_SCOPE_THREAD,
-                                 "key", key.hash(),
-                                 "compilationID", result->getPipelineInfo().fCompilationID);
+                                 "key",
+                                 key.hash(),
+                                 "compilationID",
+                                 result->getPipelineInfo().fCompilationID);
 #endif
         } else {
 #if defined(GPU_TEST_UTILS)
@@ -243,8 +248,10 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
                 TRACE_EVENT_INSTANT2("skia.gpu",
                                      TRACE_STR_STATIC(kNames[forPrecompile]),
                                      TRACE_EVENT_SCOPE_THREAD,
-                                     "key", key.hash(),
-                                     "compilationID", *compilationID);
+                                     "key",
+                                     key.hash(),
+                                     "compilationID",
+                                     *compilationID);
 #endif
             }
         }
@@ -314,8 +321,10 @@ std::pair<sk_sp<GraphicsPipeline>, bool> GlobalCache::addGraphicsPipeline(
         TRACE_EVENT_INSTANT2("skia.gpu",
                              TRACE_STR_STATIC(kNames[(*entry)->fromPrecompile()]),
                              TRACE_EVENT_SCOPE_THREAD,
-                             "key", key.hash(),
-                             "compilationID", (*entry)->getPipelineInfo().fCompilationID);
+                             "key",
+                             key.hash(),
+                             "compilationID",
+                             (*entry)->getPipelineInfo().fCompilationID);
 #endif
 
         return {*entry, true};
@@ -338,9 +347,11 @@ std::pair<sk_sp<GraphicsPipeline>, bool> GlobalCache::addGraphicsPipeline(
         TRACE_EVENT_INSTANT2("skia.gpu",
                              TRACE_STR_STATIC(kNames[race]),
                              TRACE_EVENT_SCOPE_THREAD,
-                             "key", key.hash(),
+                             "key",
+                             key.hash(),
                              // The losing compilation
-                             "compilationID", pipeline->getPipelineInfo().fCompilationID);
+                             "compilationID",
+                             pipeline->getPipelineInfo().fCompilationID);
 #endif
 
         SK_HISTOGRAM_ENUMERATION("Graphite.PipelineCreationRace",

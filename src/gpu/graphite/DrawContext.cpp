@@ -13,6 +13,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkColorData.h"
@@ -305,7 +306,8 @@ void DrawContext::flush(Recorder* recorder) {
         if (!writeSwizzle.has_value()) {
             writeSwizzle = Swizzle::RGBA(); // Fall back to rgba in release builds
             SKIA_LOG_W("No valid write swizzle for color type %d with format %s",
-                        (int) this->colorInfo().colorType(), TextureFormatName(format));
+                       (int)this->colorInfo().colorType(),
+                       TextureFormatName(format));
         }
         RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget.proxy()->textureInfo(),
                                                    loadOp, storeOp,

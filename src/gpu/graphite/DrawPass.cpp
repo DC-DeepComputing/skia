@@ -6,6 +6,7 @@
  */
 #include "src/gpu/graphite/DrawPass.h"
 
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/PaintParams.h"
@@ -70,7 +71,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         // Recordings, this "should" be able to changed to asserts.
         if (!fSampledTextures[i]->isInstantiated() && !fSampledTextures[i]->isLazy()) {
             SKIA_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
-                        fSampledTextures[i]->label());
+                       fSampledTextures[i]->label());
             return false;
         }
     }
@@ -79,7 +80,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         SkASSERT(fStorageFallbackTexture->textureInfo().isValid());
         if (!fStorageFallbackTexture->isInstantiated() && !fStorageFallbackTexture->isLazy()) {
             SKIA_LOG_W("Cannot sample from an uninstantiated TextureProxy, label %s",
-                        fStorageFallbackTexture->label());
+                       fStorageFallbackTexture->label());
             return false;
         }
     }
