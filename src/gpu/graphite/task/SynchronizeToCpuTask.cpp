@@ -21,8 +21,17 @@ SynchronizeToCpuTask::~SynchronizeToCpuTask() {}
 Task::Status SynchronizeToCpuTask::addCommands(Context*,
                                                CommandBuffer* commandBuffer,
                                                ReplayTargetData) {
+    if (fBuffer->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("SynchronizeToCpuTask created for a protected buffer %s, reading back from "
+                   "protected buffers is not allowed", fBuffer->getLabel().c_str());
+        return Status::kFail;
+    }
     return commandBuffer->synchronizeBufferToCpu(std::move(fBuffer)) ? Status::kSuccess
                                                                      : Status::kFail;
+}
+
+Protected SynchronizeToCpuTask::isProtected() const {
+    return Protected::kNo;
 }
 
 }  // namespace skgpu::graphite
