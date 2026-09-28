@@ -9,6 +9,7 @@
 
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/private/SkAlign.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
@@ -81,10 +82,10 @@ void log_map_error(wgpu::MapAsyncStatus status, wgpu::StringView message) {
             return;
     }
     SKIA_LOG(SkLogPriority::kError,
-              "Buffer async map failed with status %s, message '%.*s'.",
-              statusStr,
-              static_cast<int>(message.length),
-              message.data);
+             "Buffer async map failed with status %s, message '%.*s'.",
+             statusStr,
+             static_cast<int>(message.length),
+             message.data);
 }
 #endif  // defined(__EMSCRIPTEN__)
 }  // namespace

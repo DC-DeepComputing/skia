@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/TextureProxy.h"
 
 #include "include/gpu/graphite/Recorder.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkPixelStorage.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Caps.h"
