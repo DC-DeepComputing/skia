@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/ShaderInfo.h"
 
 #include "include/core/SkMesh.h"
+#include "include/private/SkAttributes.h"
 #include "src/core/SkMeshPriv.h"
 #include "src/gpu/BlendFormula.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -57,7 +58,7 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
         if (u.isPaintColor() && wrotePaintColor) {
             if (*wrotePaintColor) {
 #if defined(SK_DEBUG)
-                SkSL::String::appendf(&result, "// deduplicated %s\n", u.name());
+                SK_UNSAFE_TODO(SkSL::String::appendf(&result, "// deduplicated %s\n", u.name()));
 #endif
                 continue;
             }
@@ -70,11 +71,11 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
             }
         }
 
-        SkSL::String::appendf(&result,
-                              "layout(offset=%d) %s %s",
-                              offsetter->advanceOffset(u.type(), u.count()),
-                              SkSLTypeString(u.type()),
-                              uniformName.c_str());
+        SK_UNSAFE_TODO(SkSL::String::appendf(&result,
+                                             "layout(offset=%d) %s %s",
+                                             offsetter->advanceOffset(u.type(), u.count()),
+                                             SkSLTypeString(u.type()),
+                                             uniformName.c_str()));
         if (u.count()) {
             result.append("[");
             result.append(std::to_string(u.count()));
@@ -108,15 +109,15 @@ std::string get_node_uniforms(UniformOffsetCalculator* offsetter,
             }
 
             const int structOffset = offsetter->advanceStruct(substruct);
-            SkSL::String::appendf(&result,
-                                  "layout(offset=%d) %s node_%d;",
-                                  structOffset,
-                                  node->entry()->fUniformStructName,
-                                  node->keyIndex());
+            SK_UNSAFE_TODO(SkSL::String::appendf(&result,
+                                                 "layout(offset=%d) %s node_%d;",
+                                                 structOffset,
+                                                 node->entry()->fUniformStructName,
+                                                 node->keyIndex()));
         } else {
 #if defined(SK_DEBUG)
-            SkSL::String::appendf(&result, "// %d - %s uniforms\n",
-                                  node->keyIndex(), node->entry()->fName);
+            SK_UNSAFE_TODO(SkSL::String::appendf(
+                    &result, "// %d - %s uniforms\n", node->keyIndex(), node->entry()->fName));
 #endif
             result += get_uniforms(offsetter, uniforms, node->keyIndex(), wrotePaintColor);
         }
@@ -141,7 +142,7 @@ std::string get_ssbo_fields(SkSpan<const Uniform> uniforms,
         if (u.isPaintColor() && wrotePaintColor) {
             if (*wrotePaintColor) {
 #if defined(SK_DEBUG)
-                SkSL::String::appendf(&result, "// deduplicated %s\n", u.name());
+                SK_UNSAFE_TODO(SkSL::String::appendf(&result, "// deduplicated %s\n", u.name()));
 #endif
                 continue;
             }
@@ -154,7 +155,8 @@ std::string get_ssbo_fields(SkSpan<const Uniform> uniforms,
             }
         }
 
-        SkSL::String::appendf(&result, "%s %s", SkSLTypeString(u.type()), uniformName.c_str());
+        SK_UNSAFE_TODO(SkSL::String::appendf(
+                &result, "%s %s", SkSLTypeString(u.type()), uniformName.c_str()));
         if (u.count()) {
             SkSL::String::appendf(&result, "[%d]", u.count());
         }
@@ -179,12 +181,12 @@ std::string get_node_ssbo_fields(const ShaderNode* node,
         }
 
         if (node->entry()->fUniformStructName) {
-            SkSL::String::appendf(&result, "%s node_%d;",
-                                  node->entry()->fUniformStructName, node->keyIndex());
+            SK_UNSAFE_TODO(SkSL::String::appendf(
+                    &result, "%s node_%d;", node->entry()->fUniformStructName, node->keyIndex()));
         } else {
 #if defined(SK_DEBUG)
-            SkSL::String::appendf(&result, "// %d - %s uniforms\n",
-                                  node->keyIndex(), node->entry()->fName);
+            SK_UNSAFE_TODO(SkSL::String::appendf(
+                    &result, "// %d - %s uniforms\n", node->keyIndex(), node->entry()->fName));
 #endif
             result += get_ssbo_fields(uniforms, node->keyIndex(), wrotePaintColor);
         }
@@ -203,9 +205,9 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
     if (bindingReqs.fUsePushConstantsForIntrinsicConstants) {
         SkASSERT(bindingReqs.fBackendApi == BackendApi::kVulkan ||
                  bindingReqs.fBackendApi == BackendApi::kDawn);
-        result = SkSL::String::printf(
+        result = SK_UNSAFE_TODO(SkSL::String::printf(
                 "layout (%s, push_constant) uniform IntrinsicUniforms {\n",
-                bindingReqs.fBackendApi == BackendApi::kVulkan ? "vulkan" : "webgpu");
+                bindingReqs.fBackendApi == BackendApi::kVulkan ? "vulkan" : "webgpu"));
     } else {
         std::string header;
         SkSL::String::appendf(&header,
@@ -291,14 +293,12 @@ std::string emit_uniforms_from_storage_buffer(const char* indexVariableName,
     std::string result;
 
     for (const Uniform& u : uniforms) {
-        SkSL::String::appendf(&result, "%s %s", SkSLTypeString(u.type()), u.name());
+        SK_UNSAFE_TODO(SkSL::String::appendf(&result, "%s %s", SkSLTypeString(u.type()), u.name()));
         if (u.count()) {
             SkSL::String::appendf(&result, "[%d]", u.count());
         }
-        SkSL::String::appendf(&result,
-                              " = combinedUniformData[%s].%s;\n",
-                              indexVariableName,
-                              u.name());
+        SK_UNSAFE_TODO(SkSL::String::appendf(
+                &result, " = combinedUniformData[%s].%s;\n", indexVariableName, u.name()));
     }
 
     return result;
@@ -314,7 +314,7 @@ std::string emit_step_storage_buffer(const ResourceBindingRequirements& bindingR
     SkASSERT(step->numStorageUniforms() > 0);
     std::string fields;
     for (auto a : step->storageUniforms()) {
-        SkSL::String::appendf(&fields, "%s %s", SkSLTypeString(a.type()), a.name());
+        SK_UNSAFE_TODO(SkSL::String::appendf(&fields, "%s %s", SkSLTypeString(a.type()), a.name()));
         if (a.count()) {
             fields.append("[");
             fields.append(std::to_string(a.count()));
@@ -348,7 +348,8 @@ std::string emit_storage_fallback_texture(const ResourceBindingRequirements& bin
     for (auto a : step->storageUniforms()) {
         // Array storage uniforms are not supported by the texture fallback.
         SkASSERT(a.count() == 0);
-        SkSL::String::appendf(&fields, "    %s %s;\n", SkSLTypeString(a.type()), a.name());
+        SK_UNSAFE_TODO(
+                SkSL::String::appendf(&fields, "    %s %s;\n", SkSLTypeString(a.type()), a.name()));
     }
 
     static const char* kSwizzles[] = {"x", "y", "z", "w"};
@@ -397,17 +398,16 @@ std::string emit_storage_fallback_texture(const ResourceBindingRequirements& bin
             // std140/std430 dictates 16-byte alignment for vec3; startComp must be 0 to avoid OOB
             // swizzles.
             SkASSERT(startComp == 0);
-            expr = SkSL::String::printf(
-                    "t%d.%s%s%s",
-                    startTexel,
-                    kSwizzles[startComp],
-                    kSwizzles[startComp + 1],
-                    kSwizzles[startComp + 2]);
+            expr = SK_UNSAFE_TODO(SkSL::String::printf("t%d.%s%s%s",
+                                                       startTexel,
+                                                       kSwizzles[startComp],
+                                                       kSwizzles[startComp + 1],
+                                                       kSwizzles[startComp + 2]));
         } else if (vec == 2) {
-            expr = SkSL::String::printf(
-                    "t%d.%s%s", startTexel, kSwizzles[startComp], kSwizzles[startComp + 1]);
+            expr = SK_UNSAFE_TODO(SkSL::String::printf(
+                    "t%d.%s%s", startTexel, kSwizzles[startComp], kSwizzles[startComp + 1]));
         } else {
-            expr = SkSL::String::printf("t%d.%s", startTexel, kSwizzles[startComp]);
+            expr = SK_UNSAFE_TODO(SkSL::String::printf("t%d.%s", startTexel, kSwizzles[startComp]));
         }
 
         switch (a.type()) {
@@ -427,7 +427,8 @@ std::string emit_storage_fallback_texture(const ResourceBindingRequirements& bin
                 break;
         }
 
-        SkSL::String::appendf(&fieldAssignments, "    data.%s = %s;\n", a.name(), expr.c_str());
+        SK_UNSAFE_TODO(SkSL::String::appendf(
+                &fieldAssignments, "    data.%s = %s;\n", a.name(), expr.c_str()));
     }
 
     int nTexels = (calculator.size() + 15) / 16;
@@ -483,7 +484,8 @@ void append_sampler_descs(const SkSpan<const uint32_t> samplerData,
             samplerDescLength = usesExternalFormat ? SamplerDesc::kInt32sNeededExternalFormat
                                                    : SamplerDesc::kInt32sNeededKnownFormat;
             // Populate a SamplerDesc with samplerDescLength quantity of immutable sampler data
-            memcpy(&desc, samplerData.data() + i, samplerDescLength * sizeof(uint32_t));
+            SK_UNSAFE_TODO(
+                    memcpy(&desc, samplerData.data() + i, samplerDescLength * sizeof(uint32_t)));
         }
         outDescs.push_back(desc);
         i += samplerDescLength;
@@ -499,8 +501,8 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
 
     if (!samplers.empty()) {
 #if defined(SK_DEBUG)
-        SkSL::String::appendf(&result, "// %d - %s samplers\n",
-                              node->keyIndex(), node->entry()->fName);
+        SK_UNSAFE_TODO(SkSL::String::appendf(
+                &result, "// %d - %s samplers\n", node->keyIndex(), node->entry()->fName));
 #endif
 
         // Determine whether we need to analyze & interpret a ShaderNode's data as immutable
@@ -528,7 +530,8 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
 
         for (const TextureAndSampler& t : samplers) {
             result += EmitSamplerLayout(bindingReqs, binding);
-            SkSL::String::appendf(&result, " sampler2D %s_%d;\n", t.name(), node->keyIndex());
+            SK_UNSAFE_TODO(SkSL::String::appendf(
+                    &result, " sampler2D %s_%d;\n", t.name(), node->keyIndex()));
         }
     }
 
@@ -578,13 +581,14 @@ std::string emit_varyings(const RenderStep* step,
             case Interpolation::kLinear:      interpolation = "noperspective "; break;
             case Interpolation::kFlat:        interpolation = "flat "; break;
         }
-        SkSL::String::appendf(&result, "layout(location=%d) %s %s%s %s%s;\n",
-                              location++,
-                              direction,
-                              interpolation,
-                              SkSLTypeString(v.gpuType()),
-                              v.name(),
-                              mangleSuffix);
+        SK_UNSAFE_TODO(SkSL::String::appendf(&result,
+                                             "layout(location=%d) %s %s%s %s%s;\n",
+                                             location++,
+                                             direction,
+                                             interpolation,
+                                             SkSLTypeString(v.gpuType()),
+                                             v.name(),
+                                             mangleSuffix));
     };
 
     if (emitSsboIndexVarying) {
@@ -639,11 +643,11 @@ void emit_preambles(const ShaderInfo& shaderInfo,
                                            : node->generateDefaultPreamble(shaderInfo);
         if (!nodePreamble.empty()) {
 #if defined(SK_DEBUG)
-            SkSL::String::appendf(preamble,
-                                  "// [%d]   %s: %s\n",
-                                  node->keyIndex(),
-                                  nextLabel.c_str(),
-                                  node->entry()->fName);
+            SK_UNSAFE_TODO(SkSL::String::appendf(preamble,
+                                                 "// [%d]   %s: %s\n",
+                                                 node->keyIndex(),
+                                                 nextLabel.c_str(),
+                                                 node->entry()->fName));
 #endif
             *preamble += nodePreamble + "\n";
         }
@@ -655,23 +659,26 @@ std::string emit_color_output(BlendFormula::OutputType outputType,
                               const char* inColor) {
     switch (outputType) {
         case BlendFormula::kNone_OutputType:
-            return SkSL::String::printf("%s = half4(0.0);", outColor);
+            return SK_UNSAFE_TODO(SkSL::String::printf("%s = half4(0.0);", outColor));
 
         case BlendFormula::kCoverage_OutputType:
-            return SkSL::String::printf("%s = outputCoverage;", outColor);
+            return SK_UNSAFE_TODO(SkSL::String::printf("%s = outputCoverage;", outColor));
 
         case BlendFormula::kModulate_OutputType:
-            return SkSL::String::printf("%s = %s * outputCoverage;", outColor, inColor);
+            return SK_UNSAFE_TODO(
+                    SkSL::String::printf("%s = %s * outputCoverage;", outColor, inColor));
 
         case BlendFormula::kSAModulate_OutputType:
-            return SkSL::String::printf("%s = %s.a * outputCoverage;", outColor, inColor);
+            return SK_UNSAFE_TODO(
+                    SkSL::String::printf("%s = %s.a * outputCoverage;", outColor, inColor));
 
         case BlendFormula::kISAModulate_OutputType:
-            return SkSL::String::printf("%s = (1.0 - %s.a) * outputCoverage;", outColor, inColor);
+            return SK_UNSAFE_TODO(
+                    SkSL::String::printf("%s = (1.0 - %s.a) * outputCoverage;", outColor, inColor));
 
         case BlendFormula::kISCModulate_OutputType:
-            return SkSL::String::printf(
-                    "%s = (half4(1.0) - %s) * outputCoverage;", outColor, inColor);
+            return SK_UNSAFE_TODO(SkSL::String::printf(
+                    "%s = (half4(1.0) - %s) * outputCoverage;", outColor, inColor));
 
         default:
             SkUNREACHABLE;
@@ -1025,7 +1032,7 @@ struct ShaderInfo::SharedGeneratorData {
 
         // Append SSBO Index to preamble if required
         if (useUniformStorageBuffer && uniformSsboIndex) {
-            SkSL::String::appendf(&fSharedPreamble, "uint %s;\n", uniformSsboIndex);
+            SK_UNSAFE_TODO(SkSL::String::appendf(&fSharedPreamble, "uint %s;\n", uniformSsboIndex));
         }
     }
 
@@ -1198,9 +1205,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // Check for unexpected corruption / illegal instructions occurring in the wild.
     SkASSERTF_RELEASE((sharedData.fRootsInfo.fRoots.size() >= 2 &&
                        sharedData.fRootsInfo.fRoots.size() <= 4) &&
-                      sharedData.fRootsInfo.fSrcColor && sharedData.fRootsInfo.fFinalBlend,
+                              sharedData.fRootsInfo.fSrcColor && sharedData.fRootsInfo.fFinalBlend,
                       "root node size = %zu, label = %s",
-                      sharedData.fRootsInfo.fRoots.size(), label);
+                      sharedData.fRootsInfo.fRoots.size(),
+                      label);
 
     // Extract the root nodes for clarity
     const ShaderNode* const srcColorRoot = sharedData.fRootsInfo.fSrcColor;
@@ -1270,13 +1278,14 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     SkASSERT(caps->storageBufferSupport() ||
              !SkToBool(allReqFlags & SnippetRequirementFlags::kStorageBuffer));
     if (useStorageBuffer) {
-        SkSL::String::appendf(&fsPreamble,
-                              "layout (set=%d, binding=%d) readonly buffer FSStorageBuffer {\n"
-                              "float %s[];\n"
-                              "};\n",
-                              bindingReqs.fUniformsSetIdx,
-                              bindingReqs.fStorageBufferBinding,
-                              ShaderInfo::kStorageBufferName);
+        SK_UNSAFE_TODO(SkSL::String::appendf(
+                &fsPreamble,
+                "layout (set=%d, binding=%d) readonly buffer FSStorageBuffer {\n"
+                "float %s[];\n"
+                "};\n",
+                bindingReqs.fUniformsSetIdx,
+                bindingReqs.fStorageBufferBinding,
+                ShaderInfo::kStorageBufferName));
         fStorageBufferStages |= PipelineStageFlags::kFragmentShader;
     }
 
@@ -1336,10 +1345,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     std::string mainBody = "void main() {";
 
     if (sharedData.fHasSsboIndexVarying) {
-        SkSL::String::appendf(&mainBody,
-                              "%s = %s;\n",
-                              this->uniformSsboIndex(),
-                              RenderStep::ssboIndexVarying());
+        SK_UNSAFE_TODO(SkSL::String::appendf(
+                &mainBody, "%s = %s;\n", this->uniformSsboIndex(), RenderStep::ssboIndexVarying()));
     }
 
     if (srcColorRoot->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
@@ -1396,16 +1403,18 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     }
 
     if (writeSwizzle != Swizzle::RGBA()) {
-        SkSL::String::appendf(&mainBody, "%s = %s.%s;", args.fPriorStageOutput.c_str(),
-                                                        args.fPriorStageOutput.c_str(),
-                                                        writeSwizzle.asString().c_str());
+        SK_UNSAFE_TODO(SkSL::String::appendf(&mainBody,
+                                             "%s = %s.%s;",
+                                             args.fPriorStageOutput.c_str(),
+                                             args.fPriorStageOutput.c_str(),
+                                             writeSwizzle.asString().c_str()));
     }
 
     if (finalCoverage == Coverage::kNone) {
         // Either direct HW blending or a dst-read w/o any extra coverage. In both cases we just
         // need to assign directly to sk_FragCoord and update the HW blend info to finalBlendMode.
         SkASSERT(finalBlendMode.has_value());
-        fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
+        fBlendInfo = SK_UNSAFE_TODO(gBlendTable[static_cast<int>(*finalBlendMode)]);
         SkSL::String::appendf(&mainBody, "sk_FragColor = %s;", args.fPriorStageOutput.c_str());
     } else {
         // Accumulate the output coverage. This will either modify the src color and secondary
@@ -1453,24 +1462,24 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
             // Use kSrc HW BlendInfo and do the coverage blend with dst in the shader.
             SkASSERT(finalBlendMode.has_value() && finalBlendMode.value() == SkBlendMode::kSrc);
-            fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
-            SkSL::String::appendf(
+            fBlendInfo = SK_UNSAFE_TODO(gBlendTable[static_cast<int>(*finalBlendMode)]);
+            SK_UNSAFE_TODO(SkSL::String::appendf(
                     &mainBody,
                     "sk_FragColor = %s * outputCoverage + dstColor * (1.0 - outputCoverage);",
-                    outColor);
+                    outColor));
             if (finalCoverage == Coverage::kLCD) {
-                SkSL::String::appendf(
+                SK_UNSAFE_TODO(SkSL::String::appendf(
                         &mainBody,
                         "half3 lerpRGB = mix(dstColor.aaa, %s.aaa, outputCoverage.rgb);"
                         "sk_FragColor.a = max(max(lerpRGB.r, lerpRGB.g), lerpRGB.b);",
-                        outColor);
+                        outColor));
             }
         } else {
             // Adjust the shader output(s) to incorporate the coverage so that HW blending produces
             // the correct output.
             if (finalBlendMode > SkBlendMode::kLastCoeffMode) {
                 SkASSERT(finalCoverage == Coverage::kSingleChannel);
-                fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
+                fBlendInfo = SK_UNSAFE_TODO(gBlendTable[static_cast<int>(*finalBlendMode)]);
                 mainBody += emit_advanced_blend_color_output("sk_FragColor", outColor);
             } else {
                 // Porter-Duff blend modes can utilize BlendFormula.
@@ -1551,7 +1560,7 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
             for (auto a : attrs) {
                 SkSL::String::appendf(&vsPreamble, "layout(location=%d) in ", attr++);
                 vsPreamble.append(SkSLTypeString(a.gpuType()));
-                SkSL::String::appendf(&vsPreamble, " %s;\n", a.name());
+                SK_UNSAFE_TODO(SkSL::String::appendf(&vsPreamble, " %s;\n", a.name()));
             }
         };
         if (!staticAttrs.empty()) {
@@ -1581,8 +1590,10 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     // We define the SSBO index variable immediately if the VS is using storage buffers. This covers
     // both the "Step Uniforms" case and the "Lifted Uniforms Only" case.
     if (sharedData.fUseUniformStorageBufferVS) {
-        SkSL::String::appendf(&mainBody, "%s = %s;\n", this->uniformSsboIndex(),
-                                  RenderStep::ssboIndexAttribute());
+        SK_UNSAFE_TODO(SkSL::String::appendf(&mainBody,
+                                             "%s = %s;\n",
+                                             this->uniformSsboIndex(),
+                                             RenderStep::ssboIndexAttribute()));
         if (sharedData.fHasStepUniforms) {
             mainBody +=
                     emit_uniforms_from_storage_buffer(this->uniformSsboIndex(), step->uniforms());
@@ -1618,8 +1629,8 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
             expression = node->entry()->fLiftableExpressionGenerator(*this, node, expr.fArgs);
 
             // Assign the expression result to the varying or a temporary variable
-            SkSL::String::appendf(
-                    &mainBody, "%s %s = %s;", typeStr, varName.c_str(), expression.c_str());
+            SK_UNSAFE_TODO(SkSL::String::appendf(
+                    &mainBody, "%s %s = %s;", typeStr, varName.c_str(), expression.c_str()));
         }
     }
 
@@ -1627,16 +1638,16 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     if (sharedData.fHasSsboIndexVarying) {
         if (sharedData.fUseUniformStorageBufferVS) {
             // Use the local variable we already defined
-            SkSL::String::appendf(&mainBody,
-                                  "%s = %s;",
-                                  RenderStep::ssboIndexVarying(),
-                                  this->uniformSsboIndex());
+            SK_UNSAFE_TODO(SkSL::String::appendf(&mainBody,
+                                                 "%s = %s;",
+                                                 RenderStep::ssboIndexVarying(),
+                                                 this->uniformSsboIndex()));
         } else {
             // No local variable, read directly from attribute
-            SkSL::String::appendf(&mainBody,
-                                  "%s = %s;",
-                                  RenderStep::ssboIndexVarying(),
-                                  RenderStep::ssboIndexAttribute());
+            SK_UNSAFE_TODO(SkSL::String::appendf(&mainBody,
+                                                 "%s = %s;",
+                                                 RenderStep::ssboIndexVarying(),
+                                                 RenderStep::ssboIndexAttribute()));
         }
     }
 

@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkAttributes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
@@ -122,17 +123,21 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
 }
 
 SkString RenderPassDesc::toString() const {
-    return SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
-                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u)",
-                          fColorAttachment.toString().c_str(),
-                          fColorResolveAttachment.toString().c_str(),
-                          fDepthStencilAttachment.toString().c_str(),
-                          (unsigned)fSampleCount,
-                          fWriteSwizzle.asString().c_str(),
-                          fClearColor[0], fClearColor[1], fClearColor[2], fClearColor[3],
-                          fClearDepth,
-                          fClearStencil,
-                          (unsigned)fDstReadStrategy);
+    return SK_UNSAFE_TODO(
+            SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
+                           "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u)",
+                           fColorAttachment.toString().c_str(),
+                           fColorResolveAttachment.toString().c_str(),
+                           fDepthStencilAttachment.toString().c_str(),
+                           (unsigned)fSampleCount,
+                           fWriteSwizzle.asString().c_str(),
+                           fClearColor[0],
+                           fClearColor[1],
+                           fClearColor[2],
+                           fClearColor[3],
+                           fClearDepth,
+                           fClearStencil,
+                           (unsigned)fDstReadStrategy));
 }
 
 SkString RenderPassDesc::toPipelineLabel() const {
@@ -187,23 +192,23 @@ SkString RenderPassDesc::toPipelineLabel() const {
     // NOTE: This label does not differentiate between explicitly resolved MSAA color attachments
     // and MSAA-render-to-single-sample renderpasses. For a given set of Caps, we currently only
     // expect to generate one or the other variety.
-    return SkStringPrintf("RP((%s+%s %s).%s%s)",
-                          colorFormatStr,
-                          dsFormatStr,
-                          sampleCountStr.c_str(),
-                          fWriteSwizzle.asString().c_str(),
-                          colorLoadStr);
+    return SK_UNSAFE_TODO(SkStringPrintf("RP((%s+%s %s).%s%s)",
+                                         colorFormatStr,
+                                         dsFormatStr,
+                                         sampleCountStr.c_str(),
+                                         fWriteSwizzle.asString().c_str(),
+                                         colorLoadStr));
 }
 
 SkString AttachmentDesc::toString() const {
     if (fFormat == TextureFormat::kUnsupported) {
         return SkString("{}");
     } else {
-        return SkStringPrintf("{f: %s x%u, ops: %s->%s}",
-                              TextureFormatName(fFormat),
-                              (unsigned)fSampleCount,
-                              to_str(fLoadOp),
-                              to_str(fStoreOp));
+        return SK_UNSAFE_TODO(SkStringPrintf("{f: %s x%u, ops: %s->%s}",
+                                             TextureFormatName(fFormat),
+                                             (unsigned)fSampleCount,
+                                             to_str(fLoadOp),
+                                             to_str(fStoreOp)));
     }
 }
 
