@@ -264,10 +264,10 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
     }
 
     ATRACE_ANDROID_FRAMEWORK("Upload %s %sTexture [%dx%d]",
-                             TextureFormatName(textureProxy->format()),
-                             mipLevelCount > 1 ? "MipMap " : "",
-                             dstRect.width(),
-                             dstRect.height());
+                                            TextureFormatName(textureProxy->format()),
+                                            mipLevelCount > 1 ? "MipMap " : "",
+                                            dstRect.width(),
+                                            dstRect.height());
 
     UploadInstance upload{bufferInfo.fBuffer, std::move(textureProxy), std::move(condContext)};
 
