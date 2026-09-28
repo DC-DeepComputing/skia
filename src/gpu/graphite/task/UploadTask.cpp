@@ -17,6 +17,7 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkLog.h"
 #include "include/private/SkTemplates.h"
@@ -263,11 +264,11 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
         return Invalid();
     }
 
-    ATRACE_ANDROID_FRAMEWORK("Upload %s %sTexture [%dx%d]",
-                             TextureFormatName(textureProxy->format()),
-                             mipLevelCount > 1 ? "MipMap " : "",
-                             dstRect.width(),
-                             dstRect.height());
+    SK_UNSAFE_TODO(ATRACE_ANDROID_FRAMEWORK("Upload %s %sTexture [%dx%d]",
+                                            TextureFormatName(textureProxy->format()),
+                                            mipLevelCount > 1 ? "MipMap " : "",
+                                            dstRect.width(),
+                                            dstRect.height()));
 
     UploadInstance upload{bufferInfo.fBuffer, std::move(textureProxy), std::move(condContext)};
 
