@@ -74,6 +74,8 @@ public:
         return fCommandList.commands();
     }
 
+    size_t commandCount() const { return fCommandList.count(); }
+
     // The handles aren't guaranteed to have been resolved to GraphicsPipelines until
     // after addResourceRefs() is called
     const GraphicsPipeline* getPipeline(size_t index) const {
