@@ -348,10 +348,12 @@ static std::optional<SkBitmap> DecodeAndroidPixels(
 
 // Decodes `data` with `SkCodec::getPixels`. The plain-`SkCodec` counterpart of
 // `DecodeAndroidPixels`.
-static std::optional<SkBitmap> DecodePixels(skiatest::Reporter* r,
-                                            sk_sp<SkData> data,
-                                            SkColorType colorType,
-                                            SkAlphaType alphaType) {
+static std::optional<SkBitmap> DecodePixels(
+        skiatest::Reporter* r,
+        sk_sp<SkData> data,
+        std::function<SkImageInfo(const SkImageInfo&)> makeDstInfo,
+        size_t maxDecodeMemory = 0,
+        SkCodec::Result expectedResult = SkCodec::kSuccess) {
     SkCodec::Result result;
     std::unique_ptr<SkCodec> codec =
             SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(std::move(data)), &result);
@@ -360,20 +362,21 @@ static std::optional<SkBitmap> DecodePixels(skiatest::Reporter* r,
         return std::nullopt;
     }
 
+    SkImageInfo dstInfo = makeDstInfo ? makeDstInfo(codec->getInfo()) : codec->getInfo();
     SkBitmap bm;
-    REPORTER_ASSERT(
-            r,
-            bm.tryAllocPixels(codec->getInfo().makeColorType(colorType).makeAlphaType(alphaType)));
+    REPORTER_ASSERT(r, bm.tryAllocPixels(dstInfo));
     bm.eraseColor(SK_ColorMAGENTA);
 
     SkCodec::Options opts;
     opts.fZeroInitialized = SkCodec::kNo_ZeroInitialized;
+    opts.fMaxDecodeMemory = maxDecodeMemory;
     result = codec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes(), &opts);
     REPORTER_ASSERT(r,
-                    result == SkCodec::kSuccess,
-                    "colorType=%d alphaType=%d: %s",
-                    static_cast<int>(colorType),
-                    static_cast<int>(alphaType),
+                    result == expectedResult,
+                    "colorType=%d alphaType=%d: expected %s, got %s",
+                    static_cast<int>(dstInfo.colorType()),
+                    static_cast<int>(dstInfo.alphaType()),
+                    SkCodec::ResultToString(expectedResult),
                     SkCodec::ResultToString(result));
     if (result != SkCodec::kSuccess) {
         return std::nullopt;
@@ -576,7 +579,9 @@ static void AssertDecodesWithBrokenIendTail(skiatest::Reporter* r, const char* p
 
     for (const auto& config : kConfigs) {
         AssertBrokenIendTailMatchesIntact(r, path, [&](sk_sp<SkData> data) {
-            return DecodePixels(r, std::move(data), config.fColorType, config.fAlphaType);
+            return DecodePixels(r, std::move(data), [&](const SkImageInfo& info) {
+                return info.makeColorType(config.fColorType).makeAlphaType(config.fAlphaType);
+            });
         });
     }
 }
@@ -2045,13 +2050,14 @@ DEF_TEST(RustPngCodec_missingOrCorruptIendSucceeds_sampled, r) {
     AssertSampledDecodeWithBrokenIendTail(r, "images/mandrill_128.png", /*sampleSize=*/2);
 }
 
-// Regression test helper for b/565484678:
-// Verifies that `fPreblendBuffer` in `SkPngRustCodec` is charged against `fMaxDecodeMemory`
-// (`allocateFromBudget`) for interlaced subset/sampled decodes.
-static void AssertInterlacedPreblendBufferBudget(
+// Regression test helpers for b/565484678 on `images/plane_interlaced.png` (250x126, 8-bit RGB
+// with `tRNS`, expanded to RGBA8 -> 4 bytes per encoded pixel = 1000 bytes/row).
+// Verifies that decoding with `expectedBudgetBytes - 1` fails with `kOutOfMemory` and decoding
+// with `expectedBudgetBytes` succeeds.
+static void AssertPlaneInterlacedDecodeBudget(
         skiatest::Reporter* r,
-        int sampleSize,
-        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr) {
+        size_t expectedBudgetBytes,
+        std::function<std::optional<SkBitmap>(sk_sp<SkData>, size_t, SkCodec::Result)> decode) {
     static constexpr char kPath[] = "images/plane_interlaced.png";
     sk_sp<SkData> data = GetResourceAsData(kPath);
     if (!data) {
@@ -2059,27 +2065,34 @@ static void AssertInterlacedPreblendBufferBudget(
         return;
     }
 
-    // `plane_interlaced.png` is 250x126, 8-bit RGB with `tRNS` (expanded to RGBA8 -> 4 bytes per
-    // encoded pixel = 1000 bytes/row). Subsampling or subsetting an interlaced image requires all
-    // 126 rows in `fPreblendBuffer`.
+    std::ignore = decode(data, expectedBudgetBytes - 1, SkCodec::kOutOfMemory);
+    std::optional<SkBitmap> bm = decode(std::move(data), expectedBudgetBytes, SkCodec::kSuccess);
+    REPORTER_ASSERT(r, bm.has_value());
+}
+
+// Verifies that `fPreblendBuffer` in `SkPngRustCodec` is charged against `fMaxDecodeMemory`
+// (`allocateFromBudget`) for interlaced subset/sampled decodes.
+static void AssertInterlacedPreblendBufferBudget(
+        skiatest::Reporter* r,
+        int sampleSize,
+        std::function<SkIRect(const SkImageInfo&)> getSubset = nullptr) {
+    // Subsampling or subsetting an interlaced image requires all 126 rows in `fPreblendBuffer`.
     constexpr size_t kEncodedRowBytes = 250 * 4;
     constexpr size_t kFullBufferBytes = 126 * kEncodedRowBytes;
 
-    std::ignore = DecodeAndroidPixels(
+    AssertPlaneInterlacedDecodeBudget(
             r,
-            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr),
-            sampleSize,
-            getSubset,
-            kFullBufferBytes - 1,
-            SkCodec::kOutOfMemory);
-
-    std::optional<SkBitmap> bm = DecodeAndroidPixels(
-            r,
-            SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(data), nullptr),
-            sampleSize,
-            std::move(getSubset),
-            kFullBufferBytes);
-    REPORTER_ASSERT(r, bm.has_value());
+            kFullBufferBytes,
+            [&](sk_sp<SkData> data, size_t maxDecodeMemory, SkCodec::Result expectedResult) {
+                return DecodeAndroidPixels(
+                        r,
+                        SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(std::move(data)),
+                                                 nullptr),
+                        sampleSize,
+                        getSubset,
+                        maxDecodeMemory,
+                        expectedResult);
+            });
 }
 
 DEF_TEST(RustPngCodec_interlacedPreblendBufferBudget_sampled, r) {
@@ -2090,4 +2103,49 @@ DEF_TEST(RustPngCodec_interlacedPreblendBufferBudget_subset, r) {
     AssertInterlacedPreblendBufferBudget(r, /*sampleSize=*/1, [](const SkImageInfo& info) {
         return SkIRect::MakeXYWH(0, 1, info.width(), info.height() - 1);
     });
+}
+
+// Verifies that the single-row interlaced scratch buffers (`fDecodedInterlacedFullWidthRow` and
+// `fXformedInterlacedRow`) are charged against `fMaxDecodeMemory` even when `fPreblendBuffer` is
+// empty (full-image decode of a non-blended interlaced PNG).
+static void AssertInterlacedRowBufferBudget(skiatest::Reporter* r,
+                                            SkAlphaType alphaType,
+                                            size_t expectedBudgetBytes) {
+    // `plane_interlaced.png` has no embedded ICC profile (`getEncodedInfo().profile() ==
+    // nullptr`), so `makeColorSpace(nullptr)` is required for `canReadRow()` to match when
+    // `alphaType == kUnpremul_SkAlphaType`.
+    AssertPlaneInterlacedDecodeBudget(
+            r,
+            expectedBudgetBytes,
+            [&](sk_sp<SkData> data, size_t maxDecodeMemory, SkCodec::Result expectedResult) {
+                return DecodePixels(
+                        r,
+                        std::move(data),
+                        [&](const SkImageInfo& info) {
+                            return info.makeColorType(kRGBA_8888_SkColorType)
+                                    .makeAlphaType(alphaType)
+                                    .makeColorSpace(nullptr);
+                        },
+                        maxDecodeMemory,
+                        expectedResult);
+            });
+}
+
+DEF_TEST(RustPngCodec_interlacedRowBufferBudget_readRow, r) {
+    // `kUnpremul_SkAlphaType` + `kRGBA_8888_SkColorType` + `nullptr` colorSpace takes the
+    // `canReadRow()` path, which only allocates `fDecodedInterlacedFullWidthRow`
+    // (250 * 4 = 1000 bytes).
+    constexpr size_t kEncodedRowBytes = 250 * 4;
+    AssertInterlacedRowBufferBudget(r, kUnpremul_SkAlphaType, kEncodedRowBytes);
+}
+
+DEF_TEST(RustPngCodec_interlacedRowBufferBudget_xform, r) {
+    // `kPremul_SkAlphaType` takes the `!canReadRow()` (`incrementalDecodeXForm`) path, which
+    // allocates both `fDecodedInterlacedFullWidthRow` (1000 bytes) and `fXformedInterlacedRow`
+    // (1000 bytes).
+    // Note: `SkPngCodecBase::allocateStorage` is not yet budgeted, so the budget charged here is
+    // 2 * 1000 = 2000 bytes.
+    constexpr size_t kEncodedRowBytes = 250 * 4;
+    constexpr size_t kDstRowBytes = 250 * 4;
+    AssertInterlacedRowBufferBudget(r, kPremul_SkAlphaType, kEncodedRowBytes + kDstRowBytes);
 }
