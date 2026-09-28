@@ -34,6 +34,7 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/SingleOwner.h"
 #include "include/private/SkAlign.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkLog.h"
 #include "include/private/SkMutex.h"
@@ -688,7 +689,7 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
     // This matrix generates (r,g,b,a) = (0, 0, 0, y)
     float yM[20];
     std::fill_n(yM, 15, 0.f);
-    std::copy_n(baseM + 0, 5, yM + 15);
+    SK_UNSAFE_TODO(std::copy_n(baseM + 0, 5, yM + 15));
     if (!copyPlane(yaInfo, "AsyncReadPixelsYPlane", yM, texMatrix, &transfers[0])) {
         return params.fail();
     }
@@ -710,7 +711,7 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
     // This matrix generates (r,g,b,a) = (0, 0, 0, u)
     float uM[20];
     std::fill_n(uM, 15, 0.f);
-    std::copy_n(baseM + 5, 5, uM + 15);
+    SK_UNSAFE_TODO(std::copy_n(baseM + 5, 5, uM + 15));
     if (!copyPlane(uvInfo, "AsyncReadPixelsUPlane", uM, texMatrix, &transfers[1])) {
         return params.fail();
     }
@@ -718,7 +719,7 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
     // This matrix generates (r,g,b,a) = (0, 0, 0, v)
     float vM[20];
     std::fill_n(vM, 15, 0.f);
-    std::copy_n(baseM + 10, 5, vM + 15);
+    SK_UNSAFE_TODO(std::copy_n(baseM + 10, 5, vM + 15));
     if (!copyPlane(uvInfo, "AsyncReadPixelsVPlane", vM, texMatrix, &transfers[2])) {
         return params.fail();
     }
