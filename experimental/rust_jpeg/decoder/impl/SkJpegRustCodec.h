@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <optional>
+#include <vector>
 
 #include "experimental/rust_jpeg/ffi/FFI.rs.h"
 #include "include/codec/SkCodec.h"
@@ -32,6 +33,18 @@ public:
 
     ~SkJpegRustCodec() override;
 
+    bool supportsStreamingFullDecodeForTesting() const {
+        return fReader->supports_streaming_full_decode();
+    }
+    uint64_t fullImageBufferCapacityForTesting() const {
+        return fReader->full_image_buffer_capacity_for_testing();
+    }
+    size_t scanlineBufferSizeForTesting() const { return fScanlineBuffer.size(); }
+    int lastFullDecodeRowsForTesting() const { return fLastFullDecodeRows; }
+    bool directPackedOutputForTesting() const { return fDirectPackedOutput; }
+    int swizzleRowCountForTesting() const { return fSwizzleRowCount; }
+    void disableDirectPackedOutputForTesting() { fDisableDirectPackedOutputForTesting = true; }
+
 protected:
     SkJpegRustCodec(SkEncodedInfo&&,
                     std::unique_ptr<SkStream>,
@@ -54,6 +67,11 @@ protected:
     bool onGetGainmapCodec(SkGainmapInfo* info,
                            std::unique_ptr<SkCodec>* gainmapCodec) override;
 
+    bool onQueryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes&,
+                         SkYUVAPixmapInfo*) const override;
+
+    Result onGetYUVAPlanes(const SkYUVAPixmaps&) override;
+
 private:
     sk_sp<const SkData> getEncodedData() const override;
 
@@ -72,11 +90,25 @@ private:
 
     Result onIncrementalDecode(int* rowsDecoded) override;
 
+    Result onStartScanlineDecode(const SkImageInfo& dstInfo, const Options& options) override;
+    int onGetScanlines(void* dst, int countLines, size_t rowBytes) override;
+    bool onSkipScanlines(int countLines) override;
+
     // Helper methods
     Result performFullDecode(const SkImageInfo& dstInfo, void* dst, size_t dstRowStride,
                              int* rowsDecoded = nullptr);
     Result initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
+    bool shouldUseDirectPackedOutput(const SkImageInfo&, const Options&) const;
     void swizzleRow(const uint8_t* srcRow, void* dstRow);
+
+    struct ScanlineDecodeResult {
+        Result fResult;
+        int fRowsDecoded;
+    };
+
+    Result startScanlineSession();
+    ScanlineDecodeResult decodeScanlines(void* dst, int countLines, size_t dstRowBytes);
+    ScanlineDecodeResult decodeDirectScanlines(void* dst, int countLines, size_t dstRowBytes);
 
     struct DecodingState {
         SkSpan<uint8_t> fDst;
@@ -87,6 +119,11 @@ private:
     Result incrementalDecode(DecodingState& state, int* rowsDecoded);
 
     std::optional<DecodingState> fIncrementalDecodingState;
+    std::vector<uint8_t> fScanlineBuffer;
+    int fLastFullDecodeRows = -1;
+    int fSwizzleRowCount = 0;
+    bool fDirectPackedOutput = false;
+    bool fDisableDirectPackedOutputForTesting = false;
 
     // Stored separately; SkCodec base gets nullptr. Keep this before fReader so
     // the stream outlives the Rust reader's stream adapter.
@@ -100,8 +137,6 @@ private:
 
     // TODO: Add onGetScaledDimensions for 1/2, 1/4, 1/8 IDCT scaling
     //   (requires zune-jpeg support or post-decode downscale).
-    // TODO: Add onQueryYUVAInfo / onGetYUVAPlanes for GPU-accelerated YUV
-    //   decode (requires zune-jpeg raw plane output).
     // NOTE: Progressive scan limit (100) is enforced by zune-jpeg's default
     //   DecoderOptions, matching Blink's ProgressMonitor.
     // NOTE: APP11 (C2PA/JUMBF) segments are captured by the Rust segment
