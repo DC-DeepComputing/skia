@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/task/CopyTask.h"
 
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -136,8 +137,10 @@ sk_sp<CopyTextureToTextureTask> CopyTextureToTextureTask::Make(sk_sp<TextureProx
     TextureFormat srcFormat = srcProxy->format();
     TextureFormat dstFormat = dstProxy->format();
     if (srcFormat != dstFormat) {
-        SKIA_LOG_E("Unable to copy between textures of different formats, src = %s, dst = %s",
-                    TextureFormatName(srcFormat), TextureFormatName(dstFormat));
+        SK_UNSAFE_TODO(SKIA_LOG_E(
+                "Unable to copy between textures of different formats, src = %s, dst = %s",
+                TextureFormatName(srcFormat),
+                TextureFormatName(dstFormat)));
         return nullptr;
     }
     return sk_sp<CopyTextureToTextureTask>(new CopyTextureToTextureTask(std::move(srcProxy),
