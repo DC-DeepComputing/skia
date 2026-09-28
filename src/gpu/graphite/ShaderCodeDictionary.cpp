@@ -9,6 +9,7 @@
 
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkMeshPriv.h"
@@ -50,7 +51,8 @@ const char* get_known_rte_name(StableKey key) {
 
 std::string get_storage_buffer_access(const char* ssboIndex,
                                       const char* uniformName) {
-    return SkSL::String::printf("combinedUniformData[%s].%s", ssboIndex, uniformName);
+    return SK_UNSAFE_TODO(
+            SkSL::String::printf("combinedUniformData[%s].%s", ssboIndex, uniformName));
 }
 
 std::string get_mangled_name(const std::string& baseName, int manglingSuffix) {
@@ -240,11 +242,11 @@ std::string ShaderNode::generateDefaultPreamble(const ShaderInfo& shaderInfo) co
     append_defaults(&params, this, &ShaderSnippet::kDefaultArgs);
     append_uniforms(&params, shaderInfo, this, childOutputVarNames);
 
-    SkSL::String::appendf(&code,
-                              "return %s(%s);"
-                          "}",
-                          this->entry()->fStaticFunctionName,
-                          stitch_csv(params).c_str());
+    SK_UNSAFE_TODO(SkSL::String::appendf(&code,
+                                         "return %s(%s);"
+                                         "}",
+                                         this->entry()->fStaticFunctionName,
+                                         stitch_csv(params).c_str()));
     return code;
 }
 
@@ -257,13 +259,13 @@ std::string ShaderNode::invokeAndAssign(const ShaderInfo& shaderInfo,
     std::string expr = invoke_node(shaderInfo, this, args);
     std::string outputVar = get_mangled_name("outColor", this->keyIndex());
 #if defined(SK_DEBUG)
-    SkSL::String::appendf(funcBody,
-                          "// [%d] %s\n"
-                          "half4 %s = %s;",
-                          this->keyIndex(),
-                          this->entry()->fName,
-                          outputVar.c_str(),
-                          expr.c_str());
+    SK_UNSAFE_TODO(SkSL::String::appendf(funcBody,
+                                         "// [%d] %s\n"
+                                         "half4 %s = %s;",
+                                         this->keyIndex(),
+                                         this->entry()->fName,
+                                         outputVar.c_str(),
+                                         expr.c_str()));
 #else
     SkSL::String::appendf(funcBody,
                           "half4 %s = %s;",
@@ -590,13 +592,10 @@ public:
 
     void defineFunction(const char* decl, const char* body, bool isMain) override {
         if (isMain) {
-            SkSL::String::appendf(
-                    fPreamble,
-                    "%s { %s }",
-                    emit_helper_declaration(fNode).c_str(),
-                    body);
+            SK_UNSAFE_TODO(SkSL::String::appendf(
+                    fPreamble, "%s { %s }", emit_helper_declaration(fNode).c_str(), body));
         } else {
-            SkSL::String::appendf(fPreamble, "%s {%s}\n", decl, body);
+            SK_UNSAFE_TODO(SkSL::String::appendf(fPreamble, "%s {%s}\n", decl, body));
         }
     }
 
@@ -682,7 +681,8 @@ public:
 
     std::string getMainName() override { return fMainFn; }
     void defineFunction(const char* declaration, const char* body, bool isMain) override {
-        fPreamble = fPreamble.append(SkSL::String::printf("%s {\n %s }\n", declaration, body));
+        fPreamble = fPreamble.append(
+                SK_UNSAFE_TODO(SkSL::String::printf("%s {\n %s }\n", declaration, body)));
     }
     void declareFunction(const char* declaration) override {}
     void defineStruct(const char* definition) override {
@@ -695,9 +695,9 @@ public:
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
         const std::string uniformName = std::string(decl->var()->name());
         if (fShaderInfo && fShaderInfo->uniformSsboIndex()) {
-            return SkSL::String::printf("combinedUniformData[%s].%s",
-                                        fShaderInfo->uniformSsboIndex(),
-                                        uniformName.c_str());
+            return SK_UNSAFE_TODO(SkSL::String::printf("combinedUniformData[%s].%s",
+                                                       fShaderInfo->uniformSsboIndex(),
+                                                       uniformName.c_str()));
         }
         return uniformName;
     }
@@ -873,8 +873,8 @@ SkSLType ShaderCodeDictionary::UniformTypeToSkSLType(const SkRuntimeEffect::Unif
 
 static const char* add_text_to_arena(std::string_view text, SkArenaAlloc* arena) {
     char* textInArena = arena->makeArrayDefault<char>(text.size() + 1);
-    memcpy(textInArena, text.data(), text.size());
-    textInArena[text.size()] = '\0';
+    SK_UNSAFE_TODO(memcpy(textInArena, text.data(), text.size()));
+    SK_UNSAFE_TODO(textInArena[text.size()] = '\0');
     return textInArena;
 }
 
