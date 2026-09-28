@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0edc7571_b6803ab6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-28T20:28:21Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\nPS. @elliotsisteron - I am not on the Skia team, so I don\u0027t feel empowered to LGTM this.  This does LGTM and feels like a great improvement over storing two separate fields in `SkPngRustCodec`, but I think somebody from Skia team should take a quick look before we add a broad API like this.\n\nPPS. @fmalita - how does LGTM / OWNERS work in the Skia repo?  I am a Skia committer, but I expected that that alone wouldn\u0027t be sufficient to LGTM and land CLs.  I thought that `OWNERS` would also require some additional reviews from Skia OWNERS.  Example of CLs that landed with just my LGTM: https://skia-review.git.corp.google.com/q/owner:elliotsisteron@google.com+reviewer:lukasza@google.com+-reviewer:fmalita@google.com+-reviewer:ccameron@google.com+is:merged",
+      "revId": "7329a7f2a71dc26cfc4c5dcddf576e8c0b1d389e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4698cfed_b8092e87",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-28T20:28:21Z",
+      "side": 1,
+      "message": "nit: I wonder if this is a potential foot-gun (violating single-responsibility-principle and sometimes doing **two** operations: reset + allocate).  Not sure if my vague feeling can be made actionable somehow:\n\n* Document the `reset` in the doc comment?\n* `SkASSERT_RELEASE` that there is no pre-allocated buffer?  In other words - force user to explicitly call `reset(...)` + `allocateFromBudget(...)` themselves?\n* Other options?",
+      "range": {
+        "startLine": 383,
+        "startChar": 12,
+        "endLine": 383,
+        "endChar": 26
+      },
+      "revId": "7329a7f2a71dc26cfc4c5dcddf576e8c0b1d389e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28d78659_1bbdd6da",
+        "filename": "src/codec/SkCodecPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-09-28T20:28:21Z",
+      "side": 1,
+      "message": "Can we have a `static_assert` that the new container class is ` contiguous_range`?  Inspiration comes from https://github.com/dtolnay/cxx/blob/b2971717da380618ea8ab5a3bf9ee68434e1f684/src/cxx.cc#L499-L504 (I landed a PR to make `rust::Slice` a contigous range, originally those static asserts were in `cxx.h`).\n\nAI says that once `contiguous_range` holds, `std::span\u003cconst uint8_t\u003e{buf}` constructs directly from our container (if it\u0027s also sized), and generic code can rely on `std::ranges::data` and `std::ranges::size`.",
+      "range": {
+        "startLine": 418,
+        "startChar": 4,
+        "endLine": 418,
+        "endChar": 6
+      },
+      "revId": "7329a7f2a71dc26cfc4c5dcddf576e8c0b1d389e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
