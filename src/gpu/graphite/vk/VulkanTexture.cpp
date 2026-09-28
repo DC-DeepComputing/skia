@@ -10,6 +10,7 @@
 #include "include/gpu/MutableTextureState.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkMipmap.h"
@@ -50,8 +51,8 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
 
     if ((info.isProtected() == Protected::kYes) != caps.protectedSupport()) {
         SKIA_LOG_E("Tried to create %s VkImage in %s Context.",
-                    info.isProtected() == Protected::kYes ? "protected" : "unprotected",
-                    caps.protectedSupport() ? "protected" : "unprotected");
+                   info.isProtected() == Protected::kYes ? "protected" : "unprotected",
+                   caps.protectedSupport() ? "protected" : "unprotected");
         return false;
     }
 
