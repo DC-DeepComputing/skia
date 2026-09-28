@@ -13,6 +13,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkBlurEngine.h"
 #include "src/core/SkCompressedDataUtils.h"
@@ -590,16 +591,17 @@ bool GenerateMipmaps(Recorder* recorder, DrawContext* drawContext, sk_sp<Texture
     SkISize srcSize = texture->dimensions();
     sk_sp<Surface> scratchSurfaces[2];
     for (int i = 0; i < 2; ++i) {
-        scratchSurfaces[i] = Surface::MakeScratch(
-                recorder,
-                SkImageInfo::Make(SkISize::Make(std::max(1, srcSize.width() >> (i + 1)),
-                                                std::max(1, srcSize.height() >> (i + 1))),
-                                  colorInfo),
-                "GenerateMipmapsScratchTexture",
-                Budgeted::kYes,
-                Mipmapped::kNo,
-                SkBackingFit::kApprox);
-        if (!scratchSurfaces[i]) {
+        SK_UNSAFE_TODO(
+                scratchSurfaces[i] = Surface::MakeScratch(
+                        recorder,
+                        SkImageInfo::Make(SkISize::Make(std::max(1, srcSize.width() >> (i + 1)),
+                                                        std::max(1, srcSize.height() >> (i + 1))),
+                                          colorInfo),
+                        "GenerateMipmapsScratchTexture",
+                        Budgeted::kYes,
+                        Mipmapped::kNo,
+                        SkBackingFit::kApprox));
+        if (SK_UNSAFE_TODO(!scratchSurfaces[i])) {
             return false;
         }
     }
