@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkAttributes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
@@ -122,17 +123,21 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
 }
 
 SkString RenderPassDesc::toString() const {
-    return SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
-                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u)",
-                          fColorAttachment.toString().c_str(),
-                          fColorResolveAttachment.toString().c_str(),
-                          fDepthStencilAttachment.toString().c_str(),
-                          (unsigned)fSampleCount,
-                          fWriteSwizzle.asString().c_str(),
-                          fClearColor[0], fClearColor[1], fClearColor[2], fClearColor[3],
-                          fClearDepth,
-                          fClearStencil,
-                          (unsigned)fDstReadStrategy);
+    return SkStringPrintf(
+            "RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
+            "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u)",
+            fColorAttachment.toString().c_str(),
+            fColorResolveAttachment.toString().c_str(),
+            fDepthStencilAttachment.toString().c_str(),
+            (unsigned)fSampleCount,
+            fWriteSwizzle.asString().c_str(),
+            fClearColor[0],
+            fClearColor[1],
+            fClearColor[2],
+            fClearColor[3],
+            fClearDepth,
+            fClearStencil,
+            (unsigned)fDstReadStrategy);
 }
 
 SkString RenderPassDesc::toPipelineLabel() const {
