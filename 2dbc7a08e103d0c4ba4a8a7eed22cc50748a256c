@@ -146,6 +146,30 @@
       },
       "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14cea547_b660e3cf",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T13:33:26Z",
+      "side": 1,
+      "message": "Chromium part is done in CL: https://chromium-review.googlesource.com/c/chromium/src/+/8471969",
+      "parentUuid": "99d3531d_ecb3d949",
+      "range": {
+        "startLine": 51,
+        "startChar": 58,
+        "endLine": 51,
+        "endChar": 59
+      },
+      "revId": "2dbc7a08e103d0c4ba4a8a7eed22cc50748a256c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
