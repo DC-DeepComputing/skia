@@ -981,7 +981,7 @@ protected:
     }
 
     // Returns true if the requested amount keeps the current total under Options::fMaxDecodeMemory.
-    bool allocateFromBudget(size_t numBytes);
+    [[nodiscard]] bool allocateFromBudget(size_t numBytes);
 
 private:
     const SkEncodedInfo                fEncodedInfo;
