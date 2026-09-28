@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70eb2496_4635375d",
+        "filename": "BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 2116,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Yes. The `:skia` dependency and `nanobench` registration affect generic decoder selection rather than raw/scanline decoding itself. I’ll move them, along with the incidental formatting cleanup, into a follow-up CL and keep this CL focused on the codec implementation and tests.\n\nFollow-up: https://skia-review.googlesource.com/c/skia/+/1375636",
+      "parentUuid": "193234ca_f6eed9d4",
+      "range": {
+        "startLine": 2116,
+        "startChar": 2,
+        "endLine": 2116,
+        "endChar": 3
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e49cc615_842f2203",
@@ -70,6 +94,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1162f5c9_409e58b1",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f5f176c_5f5b279e",
+      "range": {
+        "startLine": 166,
+        "startChar": 51,
+        "endLine": 166,
+        "endChar": 53
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b191660_b6bd3662",
+        "filename": "MODULE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "The plan is to update zune-jpeg crate to 0.5.16-rc2 (which will bring all the patches we currently are vendoring) and temporarily carry the additional PR 441 changes as a Chromium crate patch. The Skia roll will be coordinated with that update. Once those APIs are included in a published zune-jpeg release, Chromium can update and remove the temporary patch.\n\nhttps://chromium-review.googlesource.com/c/chromium/src/+/8467970",
+      "parentUuid": "e49cc615_842f2203",
+      "range": {
+        "startLine": 166,
+        "startChar": 11,
+        "endLine": 166,
+        "endChar": 51
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad311aba_627331a8",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-09-25T21:24:03Z",
       "side": 1,
       "message": "nit: Merge `case` for `Complete` and `Ready`, since both return `kSuccess`?",
+      "range": {
+        "startLine": 920,
+        "startChar": 0,
+        "endLine": 921,
+        "endChar": 28
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0359eb5_ae8d8555",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 921,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad311aba_627331a8",
       "range": {
         "startLine": 920,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "933b5d80_02e9c22a",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36690af4_4c986425",
+      "range": {
+        "startLine": 991,
+        "startChar": 4,
+        "endLine": 991,
+        "endChar": 52
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62bd1eba_7ae1a928",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-09-25T21:24:03Z",
       "side": 1,
       "message": "This is already checked by `SkCodec::skipScanlines`, so it can be replaced with:\n\n```suggestion\n    SkASSERT_RELEASE(countLines \u003e\u003d 0);  // Already checked in `SkCodec::skipScanlines`\n```",
+      "range": {
+        "startLine": 1048,
+        "startChar": 0,
+        "endLine": 1050,
+        "endChar": 5
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9907804_c8832964",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62bd1eba_7ae1a928",
       "range": {
         "startLine": 1048,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1e360bc_090b0e61",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Moved to https://skia-review.googlesource.com/c/skia/+/1375636",
+      "parentUuid": "506aa8a4_823679cd",
+      "range": {
+        "startLine": 54,
+        "startChar": 99,
+        "endLine": 54,
+        "endChar": 100
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c74ca02_73d6ab7e",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-09-25T21:24:03Z",
       "side": 1,
       "message": "Would it be possible to move those `bool` flags into the `OutputSequence` enum variants themselves?  I assume that `raw_output_complete` doesn\u0027t make sense unless in `OutputSequence::Raw` state.  Something like:\n\n```\nenum OutputSequence {\n    Idle,\n    Raw { complete: bool; },\n    Scanline { started: bool; complete: bool; },\n    Incremental,\n    FullImage,\n}\n```\n\nWDYT?",
+      "range": {
+        "startLine": 504,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 34
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00907a51_ff75f263",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c74ca02_73d6ab7e",
       "range": {
         "startLine": 504,
         "startChar": 0,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04562c36_6f04d303",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done. I documented that the initial reservation is only a performance optimization. If it fails, the vector can grow as encoded bytes arrive; output allocations still enforce MAX_DECODE_IMAGE_BYTES.",
+      "parentUuid": "d7b7668f_992a0e92",
+      "range": {
+        "startLine": 548,
+        "startChar": 60,
+        "endLine": 548,
+        "endChar": 61
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "deccee7a_2760b264",
@@ -221,6 +437,30 @@
       "writtenOn": "2026-09-25T21:24:03Z",
       "side": 1,
       "message": "On one hand `MAX_DECODE_IMAGE_BYTES` will be enforced during the actual decode.  OTOH, can\u0027t we just return a memory error here if `capacity` is bigger than `MAX_DECODE_IMAGE_BYTES`?\n\n```suggestion\n            } else {\n                return Err(DecodingResult::MemoryError);\n            }\n```\n\nWDYT?",
+      "range": {
+        "startLine": 549,
+        "startChar": 12,
+        "endLine": 549,
+        "endChar": 13
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "223c1afb_b9a37a53",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done, with a follow-up adjustment after CQ testing show a failure. My initial CXX result-wrapper test exposed a cross-allocator teardown issue under `Clang+PartitionAlloc` on RustALL run. I removed that wrapper and the eager reservation. Reader now stores an initialization status that C++ checks immediately, so oversized lengths still return `MemoryError` before decoding. The boundary cases are tested directly in Rust.",
+      "parentUuid": "deccee7a_2760b264",
       "range": {
         "startLine": 549,
         "startChar": 12,
@@ -254,6 +494,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "938ab374_4fe0cc5b",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done. The iteration bound now also includes `layout.len()`, preventing malformed or inconsistent component metadata from indexing beyond the returned layout.",
+      "parentUuid": "96f96f75_3da0a1e8",
+      "range": {
+        "startLine": 703,
+        "startChar": 39,
+        "endLine": 703,
+        "endChar": 44
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ae933f1_f76f28a2",
@@ -277,6 +541,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a11a24ae_6e34fc56",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ae933f1_f76f28a2",
+      "range": {
+        "startLine": 995,
+        "startChar": 17,
+        "endLine": 995,
+        "endChar": 25
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ad9b789_4a26ade6",
@@ -290,6 +578,30 @@
       "writtenOn": "2026-09-25T21:24:03Z",
       "side": 1,
       "message": "Can this be `unreachable!()`?",
+      "range": {
+        "startLine": 1041,
+        "startChar": 12,
+        "endLine": 1041,
+        "endChar": 13
+      },
+      "revId": "90bc9a6be867a9df8e1ed220e92f2b2a2c914f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad4eed48_ce3eae09",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-09-28T22:14:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ad9b789_4a26ade6",
       "range": {
         "startLine": 1041,
         "startChar": 12,
