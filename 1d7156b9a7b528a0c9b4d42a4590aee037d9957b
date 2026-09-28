@@ -16,6 +16,24 @@
       "message": "I think this needs to be reviewed by somebody on the Skia team - I don\u0027t feel competent to review the infrastructure change + I don\u0027t feel empowered to approve what kinds of bots should be on the Skia CQ.  I hope that @ccameron and/or @fmalita can help.",
       "revId": "1d7156b9a7b528a0c9b4d42a4590aee037d9957b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "635db5a0_a2570a84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-28T11:13:18Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t feel empowered to approve what kinds of bots should be on the Skia CQ\n\nJust FYI that this CL isn’t adding to CQ, this would require adding this config:\n\n```\n\"cq_config\": {}\n```\n\nThe reason I didn’t add it to CQ is that it runs every tests, and that RustPNG isn’t on CQ either (although RustALL is, which covers it too). \n\nWe can look into perhaps promoting it to CQ later, making it run only the relevant tests rather than all.",
+      "parentUuid": "d453e114_b79aa070",
+      "revId": "1d7156b9a7b528a0c9b4d42a4590aee037d9957b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
