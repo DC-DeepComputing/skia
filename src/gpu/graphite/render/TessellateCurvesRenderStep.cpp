@@ -11,6 +11,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkPathPriv.h"
@@ -93,8 +94,8 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(Layout layout,
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
                      /*staticAttrs=*/{{{"resolveLevel_and_idx",
-                                        VertexAttribType::kFloat2, SkSLType::kFloat2}}},
-                     /*appendAttrs=*/kAttributes[infinitySupport],
+                                       VertexAttribType::kFloat2, SkSLType::kFloat2}}},
+                     /*appendAttrs=*/SK_UNSAFE_TODO(kAttributes[infinitySupport]),
                      /*storageUniforms=*/{})
         , fInfinitySupport(infinitySupport) {
     // Initialize the static buffers we'll use when recording draw calls.
