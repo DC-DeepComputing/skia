@@ -91,4 +91,18 @@ Task::Status ComputeTask::addCommands(Context* ctx,
                                                                               : Status::kFail;
 }
 
+Protected ComputeTask::isProtected() const {
+    for (const sk_sp<Task>& child: fChildTasks) {
+        if (child && child->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+    }
+    for (const std::unique_ptr<DispatchGroup>& group: fDispatchGroups) {
+        if (group && group->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+    }
+    return Protected::kNo;
+}
+
 }  // namespace skgpu::graphite
