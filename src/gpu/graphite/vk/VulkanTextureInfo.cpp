@@ -7,6 +7,7 @@
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
+#include "include/private/SkAttributes.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
@@ -17,7 +18,7 @@
 namespace skgpu::graphite {
 
 SkString VulkanTextureInfo::toBackendString() const {
-    return SkStringPrintf(
+    return SK_UNSAFE_TODO(SkStringPrintf(
             "flags=0x%08X,imageTiling=%d,imageUsageFlags=0x%08X,sharingMode=%d,"
             "aspectMask=%u,sampler=(%s)",
             fFlags,
@@ -27,7 +28,7 @@ SkString VulkanTextureInfo::toBackendString() const {
             fAspectMask,
             fYcbcrConversionInfo.isValid()
                     ? VulkanYcbcrConversion::InfoToString(fYcbcrConversionInfo).c_str()
-                    : "mutable");
+                    : "mutable");)
 }
 
 TextureFormat VulkanTextureInfo::viewFormat() const {
