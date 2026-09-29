@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ea8f9bf_45d130f7",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-29T14:27:50Z",
+      "side": 1,
+      "message": "This will be GPU draw commands, so in the event that there is good batching, this number will be a lot lower than the high-level Skia draw commands that went into the Recording. I think it\u0027s worth starting with just pending commands but we should keep that in mind since it\u0027s not a perfect proxy for how much work is being done on the GPU. At the same time, batched draw dispatches are probably going to impose less on the GPU  compared to a high command buffer complexity.",
+      "range": {
+        "startLine": 82,
+        "startChar": 29,
+        "endLine": 82,
+        "endChar": 65
+      },
+      "revId": "e7b6851be318678f01da98c1b8c53dba43c69eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "512a7287_e0b9d9e7",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-29T14:27:50Z",
+      "side": 1,
+      "message": "nit: let\u0027s just use int here.",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 10
+      },
+      "revId": "e7b6851be318678f01da98c1b8c53dba43c69eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
