@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e2b49a3_1dd48edf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-09-29T17:19:06Z",
+      "side": 1,
+      "message": "@fmalita@google.com FYI lost the +1 because of the change to https://skia-review.git.corp.google.com/c/skia/+/1375536",
+      "revId": "64152c4c56ba736367662df302b0cf657faedaae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
