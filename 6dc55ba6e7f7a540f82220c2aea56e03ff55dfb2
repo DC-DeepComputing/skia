@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ccc3b76_5be862c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "PTAL; note the previous comments on this CL are a little outdated, as this CL previously contained the entire, unsplit changes",
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

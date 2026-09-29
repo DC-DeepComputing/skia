@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5539e383_c627a50f",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd791634_966fc92e",
+      "range": {
+        "startLine": 324,
+        "startChar": 46,
+        "endLine": 324,
+        "endChar": 47
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a28413a5_38ef929a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-01T19:30:44Z",
       "side": 1,
       "message": "why do you need the \"| write\" here? Isn\u0027t that covered by the fallthrough case above?",
+      "range": {
+        "startLine": 325,
+        "startChar": 40,
+        "endLine": 325,
+        "endChar": 69
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c1f0733_201bf3c0",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "VkAccessFlags is a bitfield; so the write fallthrough wouldn\u0027t catch something with read_write access.",
+      "parentUuid": "a28413a5_38ef929a",
       "range": {
         "startLine": 325,
         "startChar": 40,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a62b140_2315acf7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aeeb1f46_05d533d4",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 91
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4840067c_998cd875",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-08-28T20:02:34Z",
       "side": 1,
       "message": "Might be worth renaming this to just `requestedDescriptors` since IMO this makes we think it is the count of each descriptor type we need but that is not the case anymore after your change since we are now culminating the counts we need.",
+      "range": {
+        "startLine": 17,
+        "startChar": 78,
+        "endLine": 17,
+        "endChar": 97
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bc54a20_d3e2feb4",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4840067c_998cd875",
       "range": {
         "startLine": 17,
         "startChar": 78,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d29798ab_096be3df",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a9e1bba_43452c49",
+      "range": {
+        "startLine": 33,
+        "startChar": 26,
+        "endLine": 33,
+        "endChar": 46
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9605b9df_0eda9830",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-08-28T20:02:34Z",
       "side": 1,
       "message": "We should probably move/change this check to take into account the cumulative number of descriptors per type since we are now adding them up.",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 36,
+        "endChar": 41
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cf92135_5bd00002",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9605b9df_0eda9830",
       "range": {
         "startLine": 36,
         "startChar": 12,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2310901_68427bfa",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3d8dc2b_4aae8b94",
+      "range": {
+        "startLine": 87,
+        "startChar": 26,
+        "endLine": 87,
+        "endChar": 28
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "564cbca7_8bc51ba6",
@@ -175,6 +343,30 @@
       "writtenOn": "2026-09-01T19:30:44Z",
       "side": 1,
       "message": "Is this better then just adding a new DescriptorType, kUniformBuffer and kUniformBufferDynamic? Seems like it would be better to be more explicit in the calling code what they want",
+      "range": {
+        "startLine": 129,
+        "startChar": 20,
+        "endLine": 129,
+        "endChar": 62
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e6c6b0_3f0a6ab5",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "564cbca7_8bc51ba6",
       "range": {
         "startLine": 129,
         "startChar": 20,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "645f00ab_02fa0a71",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d514f9b1_dd74b6f0",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 103
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cde558b_55f895a6",
@@ -221,6 +437,30 @@
       "writtenOn": "2026-09-01T19:30:44Z",
       "side": 1,
       "message": "If we added the new descriptor types as suggested in other file we wouldn\u0027t need to add this to the key",
+      "range": {
+        "startLine": 213,
+        "startChar": 8,
+        "endLine": 213,
+        "endChar": 60
+      },
+      "revId": "36fb0a0a2589efb0c6edd0a48775b616a2c6b70f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9546ba2_2ca8e89e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cde558b_55f895a6",
       "range": {
         "startLine": 213,
         "startChar": 8,

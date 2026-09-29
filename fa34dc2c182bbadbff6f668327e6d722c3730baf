@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b80c322_9408bf10",
+        "filename": "src/gpu/graphite/vk/VulkanComputePipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "296de02f_2505a313",
+      "range": {
+        "startLine": 121,
+        "startChar": 20,
+        "endLine": 121,
+        "endChar": 103
+      },
+      "revId": "fa34dc2c182bbadbff6f668327e6d722c3730baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bae5e610_f830c11e",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7ab2f9d_b5ac4d3e",
+        "filename": "src/gpu/graphite/vk/VulkanComputePipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bae5e610_f830c11e",
+      "range": {
+        "startLine": 152,
+        "startChar": 20,
+        "endLine": 152,
+        "endChar": 103
+      },
+      "revId": "fa34dc2c182bbadbff6f668327e6d722c3730baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f00cfcf_05c0161c",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-28T20:02:34Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 189,
+        "startChar": 20,
+        "endLine": 189,
+        "endChar": 101
+      },
+      "revId": "fa34dc2c182bbadbff6f668327e6d722c3730baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "626512eb_46f95212",
+        "filename": "src/gpu/graphite/vk/VulkanComputePipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-29T17:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f00cfcf_05c0161c",
       "range": {
         "startLine": 189,
         "startChar": 20,
