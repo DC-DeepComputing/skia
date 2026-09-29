@@ -56,6 +56,7 @@ protected:
             bool isTransient,
             sk_sp<MutableTextureState>,
             Ownership,
+            SkEnumBitMask<ResourceUsage>,
             std::string_view label);
 
     MutableTextureState* mutableState() const;

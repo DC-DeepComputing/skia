@@ -22,10 +22,12 @@ Texture::Texture(const SharedContext* sharedContext,
                  bool isTransient,
                  sk_sp<MutableTextureState> mutableState,
                  Ownership ownership,
+                 SkEnumBitMask<ResourceUsage> usageFlags,
                  std::string_view label)
         // For the initial GPU size, this assumes that a transient texture will not have any actual
         // memory. Over a texture's lifetime this may not stay the case.
-        : Resource(sharedContext, ownership, isTransient ? 0 : ComputeSize(dimensions, info), label)
+        : Resource(sharedContext, ownership, isTransient ? 0 : ComputeSize(dimensions, info),
+                   usageFlags, label)
         , fDimensions(dimensions)
         , fInfo(info)
         , fMutableState(std::move(mutableState)) {

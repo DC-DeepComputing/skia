@@ -142,6 +142,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(OptimizeForOpacity,
                                                Protected::kNo,
                                                Renderable::kYes),
             Budgeted::kYes,
+            ResourceUsage::kNotPredefined,
             "OptimizeForOpacityTarget");
     sk_sp<DrawContext> drawContext = DrawContext::Make(
             caps, std::move(target), {16, 16}, targetInfo, {}, /*allowUnpremul=*/false);

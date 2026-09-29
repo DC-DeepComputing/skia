@@ -417,7 +417,8 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex, "");
+    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(
+            backendTex, ResourceUsage::kNotPredefined);
     if (!texture) {
         return false;
     }
@@ -482,7 +483,8 @@ bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex, "");
+    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(
+            backendTex, ResourceUsage::kNotPredefined);
     if (!texture) {
         return false;
     }

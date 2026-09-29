@@ -40,6 +40,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
             kValidColorType, Mipmapped::kNo, isProtected, Renderable::kNo);
     BackendTexture backendTexture = recorder->createBackendTexture(kValidSize, textureInfo);
     sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture,
+                                                                    ResourceUsage::kNotPredefined,
                                                                     "TextureProxyTestWrappedTex");
 
     auto makeProxy = [&](SkISize dimensions, SkColorType colorType, Mipmapped mipmapped,
@@ -47,7 +48,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
         auto textureInfo = caps->getDefaultSampledTextureInfo(colorType, mipmapped,
                                                               isProtected, renderable);
         return TextureProxy::Make(caps, recorder->priv().resourceProvider(),
-                                  dimensions, textureInfo, budgeted, "TextureProxyTestTexture");
+                                  dimensions, textureInfo, budgeted, ResourceUsage::kNotPredefined,
+                                  "TextureProxyTestTexture");
     };
 
     auto nullCallback = [](ResourceProvider*) -> sk_sp<Texture> { return nullptr; };
@@ -175,6 +177,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
     BackendTexture largerBackendTexture =
             recorder->createBackendTexture(kLargerSize, textureInfo);
     assignableTexture = resourceProvider->createWrappedTexture(largerBackendTexture,
+                                                               ResourceUsage::kNotPredefined,
                                                                "TextureProxyTestWrappedTex");
     instantiateSuccess = textureProxy->lazyInstantiate(resourceProvider);
     REPORTER_ASSERT(reporter, instantiateSuccess);
