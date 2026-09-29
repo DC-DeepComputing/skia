@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "644d8bef_49addedd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-29T13:50:37Z",
+      "side": 1,
+      "message": "LGTM but removing auto-submit since we need the Android change to land first",
+      "revId": "8b860fc1fb87e6cd24866ca4e3a1f7b51368009a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
