@@ -6,20 +6,27 @@
  */
 
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkExecutor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStrokeRec.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkPathPriv.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -214,3 +221,56 @@ DEF_GANESH_TEST(SoftwarePathRendererCacheTest,
     test_path(reporter, create_concave_path, createPR, kExpectedResources, true,
               GrAAType::kCoverage, std::move(style));
 }
+
+// Test reproducing the coordinate space mismatch and resulting buffer overflow in SkPixmap::erase.
+// When a caller passes a subset in device coordinates ([0, 207, 1405, 1121]) to an SkPixmap
+// that represents a local/clipped buffer ([0, 0, 1405, 914]), SkPixmap::erase intersects the
+// device subset with local bounds instead of verifying that the subset is in local space.
+DEF_TEST(PixmapEraseCoordinateSpaceMismatchTest, reporter) {
+    const int kWidth = 1405;
+    const int kClipTop = 207;
+    const int kClipBottom = 1121;
+    const int kClippedHeight = kClipBottom - kClipTop;  // 914
+    const int kDeviceHeight = 2605;
+
+    // Part 1: Demonstrate silent coordinate shift and partial erase on local buffer.
+    {
+        SkAutoPixmapStorage storage;
+        storage.alloc(SkImageInfo::MakeA8(kWidth, kClippedHeight));
+        sk_bzero(storage.writable_addr(), storage.computeByteSize());
+
+        // Device-space subset: [0, 207, 1405, 1121]
+        SkIRect devSubset = SkIRect::MakeLTRB(0, kClipTop, kWidth, kClipBottom);
+
+        // In current Skia, storage.erase silently intersects:
+        // [0, 0, 1405, 914] intersect [0, 207, 1405, 1121] -> [0, 207, 1405, 914].
+        bool erased = storage.erase(SkColors::kWhite, &devSubset);
+        REPORTER_ASSERT(reporter, erased);
+
+        // Rows 0..206 are completely skipped (still 0x00)
+        REPORTER_ASSERT(reporter, *storage.addr8(0, 0) == 0);
+        REPORTER_ASSERT(reporter, *storage.addr8(0, kClipTop - 1) == 0);
+
+        // Row 207 was erased (0xFF)
+        REPORTER_ASSERT(reporter, *storage.addr8(0, kClipTop) == 0xFF);
+    }
+
+    // Part 2: Reproduce the exact out-of-bounds heap buffer overflow (ASAN).
+    // In Google Camera, the pixmap info had device height 2605 (x21=2605),
+    // but the underlying buffer was only allocated for the clipped size (914 rows).
+    // Erasing with devSubset [0, 207, 1405, 1121] iterates y from 207 up to 1121,
+    // writing up to row 1120 (offset 1,573,600 in a 1,284,170 byte buffer).
+    {
+        std::unique_ptr<uint8_t[]> undersizedBuf(new uint8_t[kWidth * kClippedHeight]);
+        sk_bzero(undersizedBuf.get(), kWidth * kClippedHeight);
+
+        SkPixmap badPixmap(SkImageInfo::MakeA8(kWidth, kDeviceHeight), undersizedBuf.get(), kWidth);
+        SkIRect devSubset = SkIRect::MakeLTRB(0, kClipTop, kWidth, kClipBottom);
+
+        // This will write past undersizedBuf and trigger ASAN heap-buffer-overflow.
+        badPixmap.erase(SkColors::kWhite, &devSubset);
+    }
+}
+
+
+

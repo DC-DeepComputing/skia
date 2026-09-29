@@ -49,10 +49,10 @@ public:
             : fPixels(pixels ? pixels : &fPixelsStorage) { }
 
     // set up the internal state in preparation for draws. Since many masks
-    // may be accumulated in the helper during creation, "resultBounds"
-    // allows the caller to specify the region of interest - to limit the
+    // may be accumulated in the helper during creation, "deviceBounds"
+    // allows the caller to specify the region of interest in device coordinates - to limit the
     // amount of work.
-    bool init(const SkIRect& resultBounds);
+    bool init(const SkIRect& deviceBounds);
 
     // Draw a single rect into the accumulation bitmap using the specified op
     void drawRect(const SkRect& rect, const SkMatrix& matrix, GrAA, uint8_t alpha);

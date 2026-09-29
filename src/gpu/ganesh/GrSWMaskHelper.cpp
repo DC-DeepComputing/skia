@@ -117,15 +117,17 @@ void GrSWMaskHelper::drawShape(const GrShape& shape, const SkMatrix& matrix,
     }
 }
 
-bool GrSWMaskHelper::init(const SkIRect& resultBounds) {
+bool GrSWMaskHelper::init(const SkIRect& deviceBounds) {
     // We will need to translate draws so the bound's UL corner is at the origin
-    fTranslate = {-SkIntToScalar(resultBounds.fLeft), -SkIntToScalar(resultBounds.fTop)};
-    SkIRect bounds = SkIRect::MakeWH(resultBounds.width(), resultBounds.height());
+    fTranslate = {-SkIntToScalar(deviceBounds.fLeft), -SkIntToScalar(deviceBounds.fTop)};
+    SkIRect bounds = SkIRect::MakeWH(deviceBounds.width(), deviceBounds.height());
 
     const SkImageInfo bmImageInfo = SkImageInfo::MakeA8(bounds.width(), bounds.height());
     if (!fPixels->tryAlloc(bmImageInfo)) {
         return false;
     }
+    // Verify that the allocated pixmap's local bounds match local mask dimensions
+    SkASSERT(fPixels->bounds() == bounds);
     fPixels->erase(0);
 
     fDraw.fBlitterChooser = SkA8Blitter_Choose;
