@@ -1964,6 +1964,39 @@ func (b *jobBuilder) runWasmGMTests() {
 	})
 }
 
+func (b *jobBuilder) dmStandaloneWasm() {
+	compileTaskName := b.compile()
+
+	b.addTask(b.Name, func(b *TaskBuilder) {
+		b.attempts(1)
+		b.usesNode()
+		b.swarmDimensions()
+		b.usesLUCIAuth()
+		b.cipd(CIPD_PKGS_GOLDCTL)
+		b.dep(compileTaskName)
+		b.timeout(60 * time.Minute)
+		b.cas(CAS_TEST)
+		b.serviceAccount(b.cfg.ServiceAccountUploadGM)
+		b.commonTestPerfAssets()
+		iid := b.internalHardwareLabel()
+		iidStr := ""
+		if iid != nil {
+			iidStr = strconv.Itoa(*iid)
+			b.recipeProp("internal_hardware_label", iidStr)
+		}
+		b.dmFlags(iidStr)
+		b.cmd(
+			b.taskDriver("run_wasm_dm", false),
+			"--dm_flags", b.recipeProperties["dm_flags"],
+			"--project_id", "skia-swarming-bots",
+			"--task_id", specs.PLACEHOLDER_TASK_ID,
+			"--task_name", b.Name,
+			"--built_path", OUTPUT_BUILD,
+			"--work_path", "./work",
+		)
+	})
+}
+
 // bazelTarget contains a Bazel label (e.g. //tests:some_test) and is open for additional fields
 type bazelTarget struct {
 	label string
