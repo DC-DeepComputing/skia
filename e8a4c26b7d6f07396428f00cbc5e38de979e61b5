@@ -33,6 +33,42 @@
       "message": "A number of these would be handled as part of the auto-spanification project. Will this complicate those scripts, make it easier, or not really conflict at all?",
       "revId": "e8a4c26b7d6f07396428f00cbc5e38de979e61b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f231f8b3_5e1c8a36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-29T20:52:17Z",
+      "side": 1,
+      "message": "It is hard to provide an approximation for the number of unnecessary SK_UNSAFE_TODOs after the rewrite project. From my understanding, the std::array conversion is almost done, so many of these SK_UNSAFE_TODOs for C-style arrays either weren\u0027t approved due to performance issues or weren\u0027t detected by the rewrite tool. It is also hard to give an estimate for the instances of pointer subscripts that should be handled by the spanification tool.",
+      "parentUuid": "8c1051dd_2912d558",
+      "revId": "e8a4c26b7d6f07396428f00cbc5e38de979e61b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd53f59c_43357b2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-29T20:52:17Z",
+      "side": 1,
+      "message": "There is really no conflict at all between this project and the rewrite project.\n\nIt makes things easier, because when we enforce the -Wunsafe-buffer-usage check, it prevents the number of unsafe patterns from increasing. If we wait for the rewrite tool, the number of instances may increase in the meantime while the file suppressions are deleted and the SK_UNSAFE_TODOs are merged into the codebase.",
+      "parentUuid": "0e83245a_9a36ccea",
+      "revId": "e8a4c26b7d6f07396428f00cbc5e38de979e61b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
