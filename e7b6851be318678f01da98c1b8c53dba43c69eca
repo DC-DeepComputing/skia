@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b65fed_7206876e",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-29T14:55:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7ea8f9bf_45d130f7",
+      "range": {
+        "startLine": 82,
+        "startChar": 29,
+        "endLine": 82,
+        "endChar": 65
+      },
+      "revId": "e7b6851be318678f01da98c1b8c53dba43c69eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "512a7287_e0b9d9e7",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-29T14:27:50Z",
       "side": 1,
       "message": "nit: let\u0027s just use int here.",
+      "range": {
+        "startLine": 91,
+        "startChar": 4,
+        "endLine": 91,
+        "endChar": 10
+      },
+      "revId": "e7b6851be318678f01da98c1b8c53dba43c69eca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bf543c4_4e5493ff",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-29T14:55:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "512a7287_e0b9d9e7",
       "range": {
         "startLine": 91,
         "startChar": 4,

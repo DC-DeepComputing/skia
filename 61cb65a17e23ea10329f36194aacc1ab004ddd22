@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fca0af9_1f2296c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2026-09-29T14:55:00Z",
+      "side": 1,
+      "message": "Lost my sticky +1, Pls review again. Thanks",
+      "revId": "61cb65a17e23ea10329f36194aacc1ab004ddd22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
