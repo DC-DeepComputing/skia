@@ -164,11 +164,11 @@ private:
 
     UploadInstance();
     // Copy data is appended directly after the object is created
-    UploadInstance(const Buffer*,
+    UploadInstance(sk_sp<const Buffer>,
                    sk_sp<TextureProxy>,
                    std::unique_ptr<ConditionalUploadContext> = nullptr);
 
-    const Buffer* fBuffer;
+    sk_sp<const Buffer> fBuffer;
     sk_sp<TextureProxy> fTextureProxy;
     skia_private::STArray<1, BufferTextureCopyData> fCopyData;
     std::unique_ptr<ConditionalUploadContext> fConditionalContext;
@@ -237,6 +237,7 @@ private:
     UploadTask(UploadInstance);
 
     skia_private::STArray<1, UploadInstance> fInstances;
+    bool fPrepared = false;
 };
 
 } // namespace skgpu::graphite

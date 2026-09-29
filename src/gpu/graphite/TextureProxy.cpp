@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/ScratchResourceManager.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureUtils.h"
+#include "src/gpu/graphite/task/Task.h"
 
 namespace skgpu::graphite {
 
@@ -229,5 +230,15 @@ void TextureProxy::validateTexture(const Texture* texture) {
               texture->textureInfo().toString().c_str());
 }
 #endif
+
+void TextureProxy::addPendingTask(sk_sp<Task> task) {
+    if (task) {
+        fPendingTasks.push_back(std::move(task));
+    }
+}
+
+void TextureProxy::markTasksSubmitted() {
+    fPendingTasks.clear();
+}
 
 } // namespace skgpu::graphite

@@ -224,19 +224,29 @@ UploadInstance::UploadInstance(UploadInstance&&) = default;
 UploadInstance& UploadInstance::operator=(UploadInstance&&) = default;
 UploadInstance::~UploadInstance() = default;
 
-UploadInstance::UploadInstance(const Buffer* buffer,
+UploadInstance::UploadInstance(sk_sp<const Buffer> buffer,
                                sk_sp<TextureProxy> textureProxy,
                                std::unique_ptr<ConditionalUploadContext> condContext)
-        : fBuffer(buffer)
+        : fBuffer(std::move(buffer))
         , fTextureProxy(textureProxy)
         , fConditionalContext(std::move(condContext)) {}
 
 UploadInstance UploadInstance::Make(Recorder* recorder,
                                     const UploadSource& source,
                                     std::unique_ptr<ConditionalUploadContext> condContext) {
+    SkASSERT(recorder);
+    if (!source.isValid()) {
+        return Invalid();
+    }
+
     sk_sp<TextureProxy> textureProxy = source.view().refProxy();
-    const SkIRect dstRect = source.dstRect();
-    const SkTextureCompressionType compression =
+    SkASSERT(textureProxy);
+
+    SkIRect dstRect = source.dstRect();
+    SkASSERT(dstRect.isEmpty() ||
+             SkIRect::MakeSize(textureProxy->dimensions()).contains(dstRect));
+
+    SkTextureCompressionType compression =
             TextureFormatCompressionType(textureProxy->format());
 
     const Caps* caps = recorder->priv().caps();
@@ -269,7 +279,7 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
                              dstRect.width(),
                              dstRect.height());
 
-    UploadInstance upload{bufferInfo.fBuffer, std::move(textureProxy), std::move(condContext)};
+    UploadInstance upload{sk_ref_sp(bufferInfo.fBuffer), std::move(textureProxy), std::move(condContext)};
 
     // Fill in copy data
     int32_t currentWidth = dstRect.width();
@@ -343,9 +353,8 @@ Task::Status UploadInstance::addCommand(Context* context,
     }
 
     if (fTextureProxy->texture() != replayData.fTarget) {
-        // The CommandBuffer doesn't take ownership of the upload buffer here; it's owned by
-        // UploadBufferManager, which will transfer ownership in transferToCommandBuffer.
-        if (!commandBuffer->copyBufferToTexture(fBuffer,
+        commandBuffer->trackResource(sk_ref_sp(const_cast<Buffer*>(fBuffer.get())));
+        if (!commandBuffer->copyBufferToTexture(fBuffer.get(),
                                                 fTextureProxy->refTexture(),
                                                 fCopyData.data(),
                                                 fCopyData.size())) {
@@ -384,7 +393,7 @@ Task::Status UploadInstance::addCommand(Context* context,
                 (croppedDstRect.x() - dstRect.x()) * bpp;
         transformedCopyData.fRect = croppedDstRect;
 
-        if (!commandBuffer->copyBufferToTexture(fBuffer,
+        if (!commandBuffer->copyBufferToTexture(fBuffer.get(),
                                                 fTextureProxy->refTexture(),
                                                 &transformedCopyData, 1)) {
             return Status::kFail;
@@ -423,14 +432,26 @@ sk_sp<UploadTask> UploadTask::Make(UploadList* uploadList) {
     if (!uploadList->size()) {
         return nullptr;
     }
-    return sk_sp<UploadTask>(new UploadTask(std::move(uploadList->fInstances)));
+    sk_sp<UploadTask> task(new UploadTask(std::move(uploadList->fInstances)));
+    for (const auto& instance : task->fInstances) {
+        if (instance.fTextureProxy) {
+            instance.fTextureProxy->addPendingTask(task);
+        }
+    }
+    return task;
 }
 
 sk_sp<UploadTask> UploadTask::Make(UploadInstance instance) {
     if (!instance.isValid()) {
         return nullptr;
     }
-    return sk_sp<UploadTask>(new UploadTask(std::move(instance)));
+    sk_sp<UploadTask> task(new UploadTask(std::move(instance)));
+    for (const auto& inst : task->fInstances) {
+        if (inst.fTextureProxy) {
+            inst.fTextureProxy->addPendingTask(task);
+        }
+    }
+    return task;
 }
 
 UploadTask::UploadTask(skia_private::TArray<UploadInstance>&& instances)
@@ -445,6 +466,11 @@ UploadTask::~UploadTask() {}
 Task::Status UploadTask::prepareResources(ResourceProvider* resourceProvider,
                                           ScratchResourceManager*,
                                           sk_sp<const RuntimeEffectDictionary>) {
+    if (fPrepared) {
+        return Status::kDiscard;
+    }
+    fPrepared = true;
+
     for (int i = 0; i < fInstances.size(); ++i) {
         // No upload should be invalidated before prepareResources() is called.
         SkASSERT(fInstances[i].isValid());
@@ -471,6 +497,8 @@ Task::Status UploadTask::addCommands(Context* context,
         } else if (status == Status::kDiscard) {
             fInstances[i] = UploadInstance::Invalid();
             discardCount++;
+        } else if (status == Status::kSuccess && fInstances[i].fTextureProxy) {
+            fInstances[i].fTextureProxy->markTasksSubmitted();
         }
     }
 
