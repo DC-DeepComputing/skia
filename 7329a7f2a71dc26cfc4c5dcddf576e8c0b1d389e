@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f269694_04f38683",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-29T14:33:00Z",
+      "side": 1,
+      "message": "\u003e \u003e @fmalita - how does LGTM / OWNERS work in the Skia repo? I am a Skia committer, but I expected that that alone wouldn\u0027t be sufficient to LGTM and land CLs.\n\u003e \n\u003e +1 to that, it seems I’m a code owner too, see:\n\u003e \n\u003e https://screenshot-v2.corp.google.com/2omikc0jcvei0\n\u003e \n\u003e I’m not sure that’s desirable?\n\nWe don\u0027t have granular owners, and our top-level OWNERS is just `*` which I believe means all committers.  The only exception is `include/OWNERS`, to safeguard public API changes.\n\nGood thing to question, I\u0027ll bring this up with our other leads.",
+      "parentUuid": "b0c6a483_a4f547fe",
+      "revId": "7329a7f2a71dc26cfc4c5dcddf576e8c0b1d389e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4698cfed_b8092e87",
         "filename": "src/codec/SkCodecPriv.h",
         "patchSetId": 4
