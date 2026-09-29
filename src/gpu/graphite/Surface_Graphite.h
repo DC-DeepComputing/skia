@@ -16,6 +16,8 @@
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 
+#include <optional>
+
 namespace skgpu::graphite {
 
 class Context;
@@ -34,9 +36,11 @@ public:
                                Budgeted budgeted,
                                Mipmapped mipmapped = Mipmapped::kNo,
                                SkBackingFit backingFit = SkBackingFit::kExact,
-                               const SkSurfaceProps* props = nullptr) {
+                               const SkSurfaceProps* props = nullptr,
+                               std::optional<Protected> isProtected = std::nullopt) {
         return Make(recorder, info, label, budgeted, mipmapped, backingFit, props,
-                    LoadOp::kClear, /*registerWithRecorder=*/true, /*allowUnpremul=*/false);
+                    LoadOp::kClear, /*registerWithRecorder=*/true, /*allowUnpremul=*/false,
+                    isProtected);
     }
     // Make a surface that is not registered with the provided recorder. This surface should be
     // short-lived and it must be flushed manually for its draw commands to be recorded. Most
@@ -123,7 +127,8 @@ private:
                                const SkSurfaceProps* props,
                                LoadOp initialLoadOp,
                                bool registerWithRecorder,
-                               bool allowUnpremul);
+                               bool allowUnpremul,
+                               std::optional<Protected> isProtected = std::nullopt);
 
     sk_sp<Device> fDevice;
     sk_sp<Image>  fImageView; // the image object returned by asImage()
