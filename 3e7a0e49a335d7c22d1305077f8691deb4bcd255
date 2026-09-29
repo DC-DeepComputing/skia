@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f762547_c5edb843",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-09-29T14:55:50Z",
+      "side": 1,
+      "message": "Can we do this conditionally, only when needed?\n\n```\n  if (this-\u003eoptions().fZeroInitialized \u003d\u003d kYes_ZeroInitialized) {\n      ...\n```",
+      "range": {
+        "startLine": 843,
+        "startChar": 0,
+        "endLine": 849,
+        "endChar": 76
+      },
+      "revId": "3e7a0e49a335d7c22d1305077f8691deb4bcd255",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
