@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c1051dd_2912d558",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-29T19:53:51Z",
+      "side": 1,
+      "message": "How many of these UNSAFE_TODOS would be unnecessary if the spanification and std::array conversions were finished first? Seems like a number of them ought to be handled by that",
+      "revId": "e8a4c26b7d6f07396428f00cbc5e38de979e61b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e83245a_9a36ccea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-29T19:53:51Z",
+      "side": 1,
+      "message": "A number of these would be handled as part of the auto-spanification project. Will this complicate those scripts, make it easier, or not really conflict at all?",
+      "revId": "e8a4c26b7d6f07396428f00cbc5e38de979e61b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
