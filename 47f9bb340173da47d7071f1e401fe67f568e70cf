@@ -16,6 +16,23 @@
       "message": "Hi Brett,\n  \nI used to reach out to Ben Wagner (bungeman@) for font/text reviews, but since he is no longer with the company, you were suggested as a reviewer. I understand this might not be your primary focus area, but could you please take a look, or help redirect this to the right person who currently maintains the Fontations / text stack?\n\nThank you.",
       "revId": "47f9bb340173da47d7071f1e401fe67f568e70cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc6b09a8_d66548dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6050
+      },
+      "writtenOn": "2026-09-29T04:25:09Z",
+      "side": 1,
+      "message": "Hi, Alexis, Julia, can you take a look at this change?\n\nThank you!",
+      "revId": "47f9bb340173da47d7071f1e401fe67f568e70cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
