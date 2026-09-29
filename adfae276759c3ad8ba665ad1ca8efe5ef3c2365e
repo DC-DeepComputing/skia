@@ -16,6 +16,24 @@
       "message": "Unfortunately, even with this lazy allocation, GPU readback for 10x10 pixels is still [2x slower](https://pprof.corp.google.com/?id\u003d8f8d71e48218f11e164f7e811d1dcbd4\u0026id0\u003d63421501ff0973333ae669e40f07e4e8\u0026pivot\u003d%5Egpu::GraphiteSharedContext::asyncRescaleAndReadPixelsAndSubmit%5C(SkImage%20const%5C*%5C,%20SkImageInfo%20const%26%5C,%20SkIRect%20const%26%5C,%20SkImage::RescaleGamma%5C,%20SkImage::RescaleMode%5C,%20base::OnceCallback%5C%3Cvoid%20%5C(void%5C*%5C,%20std::__Cr::unique_ptr%5C%3CSkImage::AsyncReadResult%20const%5C,%20std::__Cr::default_delete%5C%3CSkImage::AsyncReadResult%20const%3E%3E%5C)%3E%5C,%20void%5C*%5C)$) than CPU readback.\n\nThe remaining overheads are from render pass creations (both Dawn and metal).",
       "revId": "adfae276759c3ad8ba665ad1ca8efe5ef3c2365e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c67a71c_94877204",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-29T14:36:02Z",
+      "side": 1,
+      "message": "I think we should do both of these things. The internal recorder is never really going to need the atlas provider, but it\u0027s very reasonable to pick some size heuristic like 32x32 or 64x64 area to assume that the CPU will plow through that conversion faster than the fixed cost of setting up GPU rendering.",
+      "parentUuid": "14e201d0_7a191204",
+      "revId": "adfae276759c3ad8ba665ad1ca8efe5ef3c2365e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
