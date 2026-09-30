@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d9afd1e_9d8d9721",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:17:33Z",
+      "side": 1,
+      "message": "Stray blank line added after the `case` label (also at line 673).",
+      "revId": "8f6944cd71504485405386718b591aea034f4963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
