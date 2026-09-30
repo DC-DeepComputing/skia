@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "725f72e6_dff91a81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-30T19:36:48Z",
+      "side": 1,
+      "message": "LGTM, but it\u0027d be really nice if we could have some tests for this script.",
+      "revId": "6f596f31315c8b3e8f50fb83be0af2bc4d5d150a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
