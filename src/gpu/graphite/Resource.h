@@ -199,6 +199,17 @@ class Resource {
         kReturnQueue, // At most 1 ref, held while in the cache's return queue.
     };
 
+    /**
+     * Static flags representing expected Resource usages which should be captured in a Resource's
+     * label. Certain Resources (e.g. scratch resources) can have multiple usages which can change
+     * over the course of a Recording, so using flags provides a more efficient means of storage and
+     * comparison until its usages are finalized (at which point they can be mapped to string
+     * representations and included on the label).
+     */
+    enum class UsageLabelFlags : uint32_t {
+
+    }
+
 public:
     Resource(const Resource&) = delete;
     Resource(Resource&&) = delete;
