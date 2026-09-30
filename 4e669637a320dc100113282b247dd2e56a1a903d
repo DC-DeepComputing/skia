@@ -18,6 +18,253 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "990d77dd_33b8a292",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "Looks good, mostly just style nits",
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec395ffa_06b9475d",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "nit: was already only tabbed over once, but 2 tabs is the preferred indentation if you can fix it while you\u0027re modifying this file.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44faccab_ff0af8f8",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "nit: was already overlength, but removing this space should solve it.",
+      "range": {
+        "startLine": 34,
+        "startChar": 48,
+        "endLine": 34,
+        "endChar": 49
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6717295d_aa0d00e4",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "nit: wrap comment at 100 characters/line",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 37
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1082f874_da7ccf0c",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "Does this recorder need a BBH to cull the draw operations? Or is that fPic has the BBH so it happens when it\u0027s played back?",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 39
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7de834f5_e00291ff",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "nit: Skia style adds `this-\u003e` to member calls (here and in `createTiles()` below)",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 18
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ea76a98_124bcf6e",
+        "filename": "bench/SKPBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "Can we just always call `createTiles()` since this looks like the same logic as if `xTiles \u003d yTiles \u003d 1`?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 65
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efe36a03_8221ebb2",
+        "filename": "bench/SKPBench.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 104
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "204c06e1_f965efcc",
+        "filename": "bench/SKPBench.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "Add something like `// A tile-specific subset of the original SkPicture`?",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4f2606b_851b6b51",
+        "filename": "bench/SKPBench.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "nit: group with `fClip` and `fScale`",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 28
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d442f9b8_1768de8d",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T13:45:19Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 866,
+        "startChar": 0,
+        "endLine": 866,
+        "endChar": 101
+      },
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e97e50f8_e316aa5d",
