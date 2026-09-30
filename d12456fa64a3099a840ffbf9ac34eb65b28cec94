@@ -70,6 +70,30 @@
       },
       "revId": "d12456fa64a3099a840ffbf9ac34eb65b28cec94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4112e3a_a6acb935",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-09-30T19:59:01Z",
+      "side": 1,
+      "message": "To fix this we can take two approaches:\n\n1- Rewrite the logic so it doesn\u0027t trigger the -Wunsafe-buffer-usage warning; maybe we could implement a std::string_view or std::format.\n\n2- If it is decided that we don\u0027t want to migrate this code, we can change the SK_UNSAFE_TODO macro to SK_UNSAFE_BUFFERS with a safety comment explaining why the approach is safe even if that part of the code triggers the warning. Part of the explanation could be something like what you described. I can take on follow-up CLs cleaning up this code and migrating it into SK_UNSAFE_BUFFERS so it no longer is considered technical debt.",
+      "parentUuid": "7e97d1c1_316bad70",
+      "range": {
+        "startLine": 307,
+        "startChar": 12,
+        "endLine": 309,
+        "endChar": 47
+      },
+      "revId": "d12456fa64a3099a840ffbf9ac34eb65b28cec94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
