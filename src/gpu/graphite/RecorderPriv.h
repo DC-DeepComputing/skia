@@ -104,9 +104,7 @@ public:
 
     uint32_t uniqueID() const { return fRecorder->fUniqueID; }
 
-#if defined(SK_DEBUG)
     uint32_t nextRecordingID() const { return fRecorder->fNextRecordingID; }
-#endif
 
     size_t getResourceCacheLimit() const;
 

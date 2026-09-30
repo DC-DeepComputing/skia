@@ -110,10 +110,10 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
     }
 
     return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes),
-                                                    desc,
-                                                    std::move(target),
-                                                    std::move(dstCopy),
-                                                    dstReadBounds));
+                                                   desc,
+                                                   std::move(target),
+                                                   std::move(dstCopy),
+                                                   dstReadBounds));
 }
 
 RenderPassTask::RenderPassTask(DrawPassList passes,

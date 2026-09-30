@@ -12,6 +12,7 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkPixelStorage.h"
+#include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
@@ -25,6 +26,7 @@ class Caps;
 class Recorder;
 class ResourceProvider;
 class ScratchResourceManager;
+class Task;
 class Texture;
 enum class TextureFormat : uint8_t;
 
@@ -88,6 +90,18 @@ public:
     const Texture* texture() const;
     Texture* texture() { return fTexture.get(); }
 
+    void addPendingTask(sk_sp<Task> task);
+    const skia_private::TArray<sk_sp<Task>>& pendingTasks() const { return fPendingTasks; }
+    bool hasPendingTasks() const { return !fPendingTasks.empty(); }
+    void markTasksSubmitted();
+
+    bool isTaskRecordedForRecording(uint32_t recordingID) const {
+        return fLastRecordedRecordingID == recordingID;
+    }
+    void markTaskRecordedForRecording(uint32_t recordingID) {
+        fLastRecordedRecordingID = recordingID;
+    }
+
     // Change the Budgeted policy. Only allowed for uninstantiated non-lazy proxies.
     void setBudgeted(Budgeted budgeted) {
         SkASSERT(!this->isInstantiated());
@@ -149,6 +163,9 @@ private:
     sk_sp<Texture> fTexture;
 
     const LazyInstantiateCallback fLazyInstantiateCallback;
+
+    skia_private::TArray<sk_sp<Task>> fPendingTasks;
+    uint32_t fLastRecordedRecordingID = SK_InvalidGenID;
 };
 
 // Volatile texture proxy that deinstantiates itself on destruction.
