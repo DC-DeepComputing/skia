@@ -49,11 +49,17 @@ constexpr int kNumSDFAtlasTextures = 4;
 
 }  // namespace
 
+// NOTE: Sub run glyphs can emit triangles that self intersect, and we need those to produce
+// double blending (although usually one glyph will have 0 coverage), so we do not add
+// Flags::kRequiresSelfDepthTest.
 SDFTextLCDRenderStep::SDFTextLCDRenderStep(Layout layout)
         : RenderStep(layout,
                      RenderStepID::kSDFTextLCD,
-                     Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
-                     Flags::kLCDCoverage | Flags::kAppendInstances,
+                     Flags::kPerformsShading | Flags::kHasTextures
+                                             | Flags::kEmitsCoverage
+                                             | Flags::kLCDCoverage
+                                             | Flags::kAppendInstances
+                                             | Flags::kAllowsSelfIntersection,
                      /*uniforms=*/{{"maskToDevice", SkSLType::kFloat4x4},
                                    {"localToDevice", SkSLType::kFloat4x4},
                                    {"atlasSizeInv", SkSLType::kFloat2},
