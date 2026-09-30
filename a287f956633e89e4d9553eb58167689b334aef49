@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c73d8be2_65ad0038",
+        "filename": "src/gpu/graphite/GpuWorkSubmission.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T15:48:48Z",
+      "side": 1,
+      "message": "Adding an assert that `fProtectedCommandBuffer-\u003ebuffersToAsyncMapOnSubmit()` is empty would be helpful here.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 52
+      },
+      "revId": "a287f956633e89e4d9553eb58167689b334aef49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df5e322b_88ef73c5",
+        "filename": "src/gpu/graphite/GpuWorkSubmission.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T15:48:48Z",
+      "side": 1,
+      "message": "Can we add a comment indicating that the protected command buffer is always scheduled after the unprotected one, so attaching the finish proc to it is sufficient to cover the whole workload?",
+      "revId": "a287f956633e89e4d9553eb58167689b334aef49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb660c8f_e3e2a29f",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T15:48:48Z",
+      "side": 1,
+      "message": "WDYT about if this is protected and we already have `fCurrentCommandBuffer`, that we transfer any finish procs on that to the new protected CB?\n\nAlternatively, does all of that logic simplify if we have QueueManager record the finish procs for the pair and then it moves them off itself and on to the GpuWorkSubmission when it submits?",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 81
+      },
+      "revId": "a287f956633e89e4d9553eb58167689b334aef49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

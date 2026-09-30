@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbb1feb0_60968535",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T15:48:48Z",
+      "side": 1,
+      "message": "Let\u0027s file a bug to revisit query handling for protected command buffers.",
+      "parentUuid": "ab479d50_34eaac2a",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 71
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9bde7c2_8ee7eca3",
         "filename": "src/gpu/graphite/QueueManager.cpp",
         "patchSetId": 14
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Yes we will, I have that set up in a follow up CL when I actually add the multi-queue support.",
       "parentUuid": "b9bde7c2_8ee7eca3",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 86
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d044830_b0e0e2e6",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T15:48:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4c27c63a_0b7e3b84",
       "range": {
         "startLine": 204,
         "startChar": 0,
@@ -250,6 +298,30 @@
       "side": 1,
       "message": "I think the approach here in that scenario should be to call `unprotectedCommandBuffer-\u003ecallFinishedProcs(false)` if the protected command buffer fails, and to reset that command buffer as well so a new one can be recorded into.\n\nSimilar to your other comment, I think the strategy for any queue submit failure should probably be to consider the whole submit as failed and reset the command buffer states and call the finish procs with `success\u003dfalse`. I implemented that approach since that seems most correct to me.\n\nIt does seem like before this we never reset the command buffer which failed on submit, so when calling insertRecording it is reusing that same command buffer which doesn\u0027t seem correct to me. Do you know if there is any reasoning behind not resetting the buffer? Since to me it seems correct to always be resetting it.",
       "parentUuid": "1361bacc_2a896837",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 81
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e5d3556_e90643b1",
+        "filename": "src/gpu/graphite/vk/VulkanQueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T15:48:48Z",
+      "side": 1,
+      "message": "I know we don\u0027t reset the command buffer when an insertRecording fails because we don\u0027t want to invalidate correctly inserted work that came before. If submit failed, it probably resulted in a device lost and is generally not a recoverable failure, so in practice I don\u0027t think the issue has ever really come up.\n\nThat makes me think that we could reset the CBs safely enough. If something about the failed CB was invalid and would always cause a failure, we\u0027d be in a bad spot without resetting. If it was a transient failure that didn\u0027t result in a device lost, I could see not resetting being okay since we\u0027d have the ability to retry the submission. Except we\u0027ve already issued an EndCommandBuffer operation to Vulkan, so there\u0027d be no way to append new commands to it. So yes, resetting should be the behavior.",
+      "parentUuid": "d7cdd340_9d4cd29f",
       "range": {
         "startLine": 92,
         "startChar": 0,
