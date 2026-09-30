@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01b0433c_25d8ac4a",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:18:37Z",
+      "side": 1,
+      "message": "nit: `SK_UNSAFE_TODO(scratchSurfaces[i]) \u003d Surface::MakeScratch(...)` would avoid wrapping (and reindenting) the whole call.",
+      "revId": "dab0086445aa9566881bde36b631d7e8d3ae3d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0765cc72_efccb7ed",
+        "filename": "src/gpu/graphite/YUVABackendTextures.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:18:37Z",
+      "side": 1,
+      "message": "This wrap spans across `!\u003d` and `||`. Since the macro adds no parentheses, the behavior is unchanged, but it reads as `dimensions() !\u003d (a || b || c)`. Please narrow it to `SK_UNSAFE_TODO(textures[i].dimensions()) !\u003d SK_UNSAFE_TODO(planeDimensions[i]) ||`.",
+      "fixSuggestions": [
+        {
+          "fixId": "537e25f1_698eaa33",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/YUVABackendTextures.cpp",
+              "range": {
+                "startLine": 100,
+                "startChar": 0,
+                "endLine": 104,
+                "endChar": 0
+              },
+              "replacement": "            textures[i].dimensions() !\u003d SK_UNSAFE_TODO(planeDimensions[i]) ||\n            textures[i].backend() !\u003d textures[0].backend() ||\n            num_channels(fPlaneChannelMasks[i]) \u003c numRequiredChannels) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dab0086445aa9566881bde36b631d7e8d3ae3d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
