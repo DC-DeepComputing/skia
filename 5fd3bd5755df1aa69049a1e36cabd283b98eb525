@@ -16,6 +16,74 @@
       "message": "PTAL",
       "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "357c2491_c81bb0f7",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-30T15:51:40Z",
+      "side": 1,
+      "message": "Since this is file local this should be make_cubic_conic_culling_shape.",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e944a038_2481d115",
+        "filename": "tests/graphite/sparse_strips/FastValidator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-30T15:51:40Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58f9614c_d89b26de",
+        "filename": "tests/graphite/sparse_strips/FastValidator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-30T15:51:40Z",
+      "side": 1,
+      "message": "Since we\u0027re ultimately manually instantiating the FastValidator in the .cpp file, can some of these be predeclared and the #include put in the .cpp file?",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e4deea6_b44fb6cc",
+        "filename": "tests/graphite/sparse_strips/FastValidator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-30T15:51:40Z",
+      "side": 1,
+      "message": "// Maybe a gloss of what this does ?\n\nHigher level than the ValidatePath comment",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
