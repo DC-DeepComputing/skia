@@ -616,6 +616,41 @@ def _CheckDEPS(input_api, output_api):
   )
 
 
+def _CheckForwardDeclarationsSorted(input_api, output_api):
+  """Ensures contiguous blocks of forward declarations are in alphabetical order."""
+  fwd_decl_re = input_api.re.compile(r'^\s*(?:class|struct)\s+([A-Za-z_]\w*)\s*;\s*$')
+  cpp_filter = lambda x: (x.LocalPath().endswith(('.cpp', '.h')) and
+                          not np(x.LocalPath()).startswith('third_party/'))
+  errors = []
+  for f in input_api.AffectedSourceFiles(cpp_filter):
+    changed_line_nums = {line_num for line_num, _ in f.ChangedContents()}
+    if not changed_line_nums:
+      continue
+    block = []
+    block_line_nums = []
+    for idx, line in enumerate(f.NewContents(), start=1):
+      if fwd_decl_re.match(line):
+        block.append(line.strip())
+        block_line_nums.append(idx)
+      else:
+        if len(block) > 1 and (set(block_line_nums) & changed_line_nums):
+          if block != sorted(block):
+            errors.append(
+                '%s:%d: Forward declarations should be in alphabetical order.' %
+                (f.LocalPath(), block_line_nums[0]))
+        block = []
+        block_line_nums = []
+    if len(block) > 1 and (set(block_line_nums) & changed_line_nums):
+      if block != sorted(block):
+        errors.append(
+            '%s:%d: Forward declarations should be in alphabetical order.' %
+            (f.LocalPath(), block_line_nums[0]))
+
+  if errors:
+    return [output_api.PresubmitError('\n'.join(errors))]
+  return []
+
+
 def _CommonChecks(input_api, output_api):
   """Presubmit checks common to upload and commit."""
   results = []
@@ -635,6 +670,7 @@ def _CommonChecks(input_api, output_api):
         input_api, output_api, source_file_filter=sources))
     results.extend(input_api.canned_checks.CheckChangeHasNoStrayWhitespace(
         input_api, output_api, source_file_filter=sources))
+  results.extend(_CheckForwardDeclarationsSorted(input_api, output_api))
   results.extend(_JsonChecks(input_api, output_api))
   results.extend(_IfDefChecks(input_api, output_api))
   results.extend(_CopyrightChecks(input_api, output_api, source_file_filter=sources))

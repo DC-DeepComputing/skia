@@ -126,5 +126,49 @@ class RunCommandAndCheckDiffTest(unittest.TestCase):
 Please commit or discard the above changes.""")
 
 
+class ForwardDeclarationsSortedTest(unittest.TestCase):
+    def testSortedForwardDeclarationsPass(self):
+        mock_input_api = MockInputApi()
+        mock_input_api.files = [
+            MockFile('include/core/SkFoo.h', [
+                'class SkAlpha;',
+                'class SkBeta;',
+                'struct SkGamma;',
+            ]),
+        ]
+        mock_output_api = MockOutputApi()
+        results = PRESUBMIT._CheckForwardDeclarationsSorted(
+            mock_input_api, mock_output_api)
+        self.assertEqual(0, len(results))
+
+    def testUnsortedForwardDeclarationsFail(self):
+        mock_input_api = MockInputApi()
+        mock_input_api.files = [
+            MockFile('include/core/SkFoo.h', [
+                'class SkBeta;',
+                'class SkAlpha;',
+            ]),
+        ]
+        mock_output_api = MockOutputApi()
+        results = PRESUBMIT._CheckForwardDeclarationsSorted(
+            mock_input_api, mock_output_api)
+        self.assertEqual(1, len(results))
+        self.assertIn('include/core/SkFoo.h:1', results[0].message)
+
+    def testUntouchedUnsortedForwardDeclarationsIgnored(self):
+        f = MockFile('include/core/SkFoo.h', [
+            'class SkBeta;',
+            'class SkAlpha;',
+            'int touchedLine = 1;',
+        ], action='M')
+        f._changed_contents = [(3, 'int touchedLine = 1;')]
+        mock_input_api = MockInputApi()
+        mock_input_api.files = [f]
+        mock_output_api = MockOutputApi()
+        results = PRESUBMIT._CheckForwardDeclarationsSorted(
+            mock_input_api, mock_output_api)
+        self.assertEqual(0, len(results))
+
+
 if __name__ == '__main__':
     unittest.main()
