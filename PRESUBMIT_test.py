@@ -126,5 +126,53 @@ class RunCommandAndCheckDiffTest(unittest.TestCase):
 Please commit or discard the above changes.""")
 
 
+class MacroStyleTest(unittest.TestCase):
+    def testValidMacrosPass(self):
+        mock_input_api = MockInputApi()
+        mock_input_api.files = [
+            MockFile('src/gpu/ganesh/gl/GrGLDefines.h', [
+                '#ifndef GrGLDefines_DEFINED',
+                '#define GrGLDefines_DEFINED',
+                '#define GR_GL_TEXTURE0 0xdeadbeef',
+                '#if GR_GO_SLOWER',
+                '#endif',
+                '#endif',
+            ]),
+        ]
+        mock_output_api = MockOutputApi()
+        results = PRESUBMIT._CheckMacroStyle(mock_input_api, mock_output_api)
+        self.assertEqual(0, len(results))
+
+    def testGaneshIfdefGeneratesError(self):
+        mock_input_api = MockInputApi()
+        mock_input_api.files = [
+            MockFile('src/gpu/ganesh/GrFoo.cpp', [
+                '#ifdef GR_GO_SLOWER',
+                '#endif',
+            ]),
+        ]
+        mock_output_api = MockOutputApi()
+        results = PRESUBMIT._CheckMacroStyle(mock_input_api, mock_output_api)
+        self.assertEqual(1, len(results))
+        self.assertIsInstance(results[0], mock_output_api.PresubmitError)
+        self.assertIn('Ganesh prefers `#if GR_GO_SLOWER`', results[0].message)
+
+    def testLowercaseAndUnprefixedHeaderMacrosWarn(self):
+        mock_input_api = MockInputApi()
+        mock_input_api.files = [
+            MockFile('src/gpu/ganesh/gl/GrGLUtil.h', [
+                '#define my_macro 1',
+                '#define GR_TEXTURE0 0xdeadbeef',
+            ]),
+        ]
+        mock_output_api = MockOutputApi()
+        results = PRESUBMIT._CheckMacroStyle(mock_input_api, mock_output_api)
+        self.assertEqual(1, len(results))
+        self.assertIsInstance(results[0], mock_output_api.PresubmitPromptWarning)
+        self.assertIn('ALL_CAPS_WITH_UNDERSCORES (my_macro)', results[0].message)
+        self.assertIn('prefixed with SK, SKGPU, or GR (my_macro)', results[0].message)
+        self.assertIn('prefixed GR_GL (GR_TEXTURE0)', results[0].message)
+
+
 if __name__ == '__main__':
     unittest.main()
