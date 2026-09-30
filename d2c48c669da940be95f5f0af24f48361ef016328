@@ -1,0 +1,86 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7acb3b55_3a2cbae4",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:21:43Z",
+      "side": 1,
+      "message": "Wrapping the whole printf made clang-format flatten the hand-indented SkSL literals (same in TessellateCurves/WedgesRenderStep.cpp).\n\nI think you can insert the spaces inside the string here to restore the original here?",
+      "fixSuggestions": [
+        {
+          "fixId": "65092028_845715e8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+              "range": {
+                "startLine": 116,
+                "startChar": 0,
+                "endLine": 117,
+                "endChar": 0
+              },
+              "replacement": "    return SkSL::String::printf(\n"
+            },
+            {
+              "path": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+              "range": {
+                "startLine": 118,
+                "startChar": 0,
+                "endLine": 120,
+                "endChar": 0
+              },
+              "replacement": "            \"if ((sk_VertexID \u0026 1) !\u003d 0) {\\n\"\n            \"    edgeID \u003d -edgeID;\\n\"\n"
+            },
+            {
+              "path": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+              "range": {
+                "startLine": 123,
+                "startChar": 0,
+                "endLine": 125,
+                "endChar": 0
+              },
+              "replacement": "            \"        edgeID, 16383, affine, translate, maxScale, p01, p23, prevPoint,\\n\"\n            \"        stroke, %s);\\n\"\n"
+            },
+            {
+              "path": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+              "range": {
+                "startLine": 127,
+                "startChar": 0,
+                "endLine": 128,
+                "endChar": 0
+              },
+              "replacement": "            fInfinitySupport ? \"curve_type_using_inf_support(p23)\" : \"curveType\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d2c48c669da940be95f5f0af24f48361ef016328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52026a4e_ac224b7d",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:21:43Z",
+      "side": 1,
+      "message": "`verts.append(3) \u003c\u003c SK_UNSAFE_TODO(positions[...] \u003c\u003c ... \u003c\u003c ssboIndex)` reads as shifting an SkPoint. It is equivalent since the macro adds no parentheses, but misleading. Either wrap the whole statement or each subscript.",
+      "revId": "d2c48c669da940be95f5f0af24f48361ef016328",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
