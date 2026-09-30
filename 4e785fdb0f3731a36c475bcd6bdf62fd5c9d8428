@@ -33,6 +33,24 @@
       "message": "nit: `set[i]` is wrapped ~10 times in this loop. A single `const auto\u0026 entry \u003d SK_UNSAFE_TODO(set[i]);` at the top would be easier to read and to migrate later.",
       "revId": "4e785fdb0f3731a36c475bcd6bdf62fd5c9d8428",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f963dcfb_4658a6f0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1445,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T13:48:55Z",
+      "side": 1,
+      "message": "Marked as unresolved.",
+      "parentUuid": "43011c97_bc2cb826",
+      "revId": "4e785fdb0f3731a36c475bcd6bdf62fd5c9d8428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
