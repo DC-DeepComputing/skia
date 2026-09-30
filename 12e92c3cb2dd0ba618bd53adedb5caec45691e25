@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1af4d88f_0856d124",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-09-30T18:31:24Z",
+      "side": 1,
+      "message": "Without this the follow up CL that makes changes to DawnGraphicsPipeline was triggering asserts, which exposed that we were precompiling pipelines that would normally only appear with depth+stencilx4 to renderpasses that didn\u0027t have those required aspects.",
+      "revId": "12e92c3cb2dd0ba618bd53adedb5caec45691e25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
