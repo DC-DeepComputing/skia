@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "797fc77f_dcda6547",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:19:12Z",
+      "side": 1,
+      "message": "nit: `SK_UNSAFE_TODO(p[x])` reads better than `*(SK_UNSAFE_TODO(p + x))` (also lines 203, 205). Note the outer parentheses are required in the current form since the macro does not add any.",
+      "revId": "25d5d03ec921ce529c63cd7f7c84364a61d4e858",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
