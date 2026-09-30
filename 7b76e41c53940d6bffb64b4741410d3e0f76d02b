@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8209b15d_06569286",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-30T15:02:15Z",
+      "side": 1,
+      "message": "I would remove this line and just let the next one be the title and maybe some text like:\n\nIt is unclear how Skia could be accessing OOB memory in this case. The new assert will, hopefully, clarify what is going on.\n\n?",
+      "range": {
+        "startLine": 7,
+        "startChar": 1,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "7b76e41c53940d6bffb64b4741410d3e0f76d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "428726d2_b15b5c23",
@@ -14,6 +37,23 @@
       "writtenOn": "2026-09-30T14:52:12Z",
       "side": 1,
       "message": "PTAL",
+      "revId": "7b76e41c53940d6bffb64b4741410d3e0f76d02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce3524f_190776ab",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-09-30T15:02:15Z",
+      "side": 1,
+      "message": "I think you can just assert that \u0027clip\u0027 is not empty.",
       "revId": "7b76e41c53940d6bffb64b4741410d3e0f76d02b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
