@@ -236,9 +236,9 @@ public:
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const {
-        return (fDepthStencilSettings.fStencilTestEnabled
+        return (fDepthStencilSettings.stencilEnabled()
                         ? DepthStencilFlags::kStencil : DepthStencilFlags::kNone) |
-               (fDepthStencilSettings.fDepthTestEnabled || fDepthStencilSettings.fDepthWriteEnabled
+               (fDepthStencilSettings.depthEnabled()
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
@@ -409,7 +409,7 @@ private:
         // A render step using non-AA inner fills with a second draw should not also be part of a
         // multi-step renderer (to keep reasoning simple) and must use the LESS depth test.
         SkASSERT(!this->useNonAAInnerFill() ||
-                 (fStepCount == 1 && fSteps[0]->depthStencilSettings().fDepthTestEnabled &&
+                 (fStepCount == 1 &&
                   fSteps[0]->depthStencilSettings().fDepthCompareOp == CompareOp::kLess));
     }
 
