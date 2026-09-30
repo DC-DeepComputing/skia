@@ -100,8 +100,6 @@
 
 using namespace skia_private;
 
-#define kLast_Capability SpvCapabilityMultiViewport
-
 constexpr int DEVICE_FRAGCOORDS_BUILTIN = -1000;
 constexpr int DEVICE_CLOCKWISE_BUILTIN  = -1001;
 static constexpr SkSL::Layout kDefaultTypeLayout;
@@ -531,6 +529,9 @@ private:
 
     void writeReturnStatement(const ReturnStatement& r, SPIRVBlob& out);
 
+    // Records that the module requires `capability`; emitted once by writeCapabilities.
+    void addCapability(SpvCapability capability) { fCapabilities.insert(capability); }
+
     void writeCapabilities(SPIRVBlob& out);
 
     void writeInstructions(const Program& program, SPIRVBlob& out);
@@ -679,7 +680,9 @@ private:
 
     const MemoryLayout fDefaultMemoryLayout{MemoryLayout::Standard::k140};
 
-    uint64_t fCapabilities = 0;
+    // Capability IDs are sparse (extension capabilities are numbered in the thousands), so they
+    // can't be stored in a bitmask. std::set also keeps the emission order deterministic.
+    std::set<SpvCapability> fCapabilities;
     SpvId fIdCount = spirv::kIdFirstUnreserved;
     SpvId fGLSLExtendedInstructions;
     struct Intrinsic {
@@ -1645,9 +1648,10 @@ SpvId SPIRVCodeGenerator::writeOpCompositeExtract(const Type& type,
 }
 
 void SPIRVCodeGenerator::writeCapabilities(SPIRVBlob& out) {
-    for (uint64_t i = 0, bit = 1; i <= kLast_Capability; i++, bit <<= 1) {
-        if (fCapabilities & bit) {
-            this->writeInstruction(SpvOpCapability, (SpvId) i, out);
+    for (SpvCapability capability : fCapabilities) {
+        // Shader is always emitted below.
+        if (capability != SpvCapabilityShader) {
+            this->writeInstruction(SpvOpCapability, (SpvId) capability, out);
         }
     }
     this->writeInstruction(SpvOpCapability, SpvCapabilityShader, out);
@@ -1904,7 +1908,7 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType,
         }
         case Type::TypeKind::kSampler: {
             if (SpvDimBuffer == type->dimensions()) {
-                fCapabilities |= 1ULL << SpvCapabilitySampledBuffer;
+                this->addCapability(SpvCapabilitySampledBuffer);
             }
             SpvId imageTypeId = this->getType(type->textureType(), typeLayout, memoryLayout,
                                               storageClass);
@@ -2428,7 +2432,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             result = this->nextId(&callType);
             SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
 
-            fCapabilities |= 1ULL << SpvCapabilityImageQuery;
+            this->addCapability(SpvCapabilityImageQuery);
 
             SpvId dimsType = this->getType(callType);
             SpvId image = this->writeExpression(*arguments[0], out);
@@ -2449,7 +2453,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
         case kTextureHeight_SpecialIntrinsic: {
             result = this->nextId(&callType);
             SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
-            fCapabilities |= 1ULL << SpvCapabilityImageQuery;
+            this->addCapability(SpvCapabilityImageQuery);
 
             SpvId dimsType = this->getType(*fContext.fTypes.fUInt2);
             SpvId dims = this->nextId(&callType);
@@ -4778,7 +4782,7 @@ void SPIRVCodeGenerator::writeLayout(const Layout& layout, SpvId target, Positio
     if (layout.fInputAttachmentIndex >= 0) {
         this->writeInstruction(SpvOpDecorate, target, SpvDecorationInputAttachmentIndex,
                                layout.fInputAttachmentIndex, fDecorationBuffer);
-        fCapabilities |= (((uint64_t) 1) << SpvCapabilityInputAttachment);
+        this->addCapability(SpvCapabilityInputAttachment);
     }
     if (layout.fBuiltin >= 0 && (layout.fBuiltin != SK_FRAGCOLOR_BUILTIN &&
                                  layout.fBuiltin != SK_SECONDARYFRAGCOLOR_BUILTIN)) {
