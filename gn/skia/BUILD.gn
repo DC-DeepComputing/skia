@@ -854,6 +854,21 @@ if (is_wasm) {
         ]
       }
     }
+
+    config("wasm_exe") {
+      ldflags = [
+        "-sPROXY_TO_PTHREAD=1",
+        "-sEXIT_RUNTIME=1",
+        "-sEXPORTED_RUNTIME_METHODS=['FS', 'callMain']",
+      ]
+      if (!is_official_build) {
+        resources_dir = rebase_path("//resources", root_build_dir)
+        ldflags += [
+          "--preload-file",
+          "$resources_dir@/resources",
+        ]
+      }
+    }
   }
 }
 
