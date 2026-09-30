@@ -1,0 +1,42 @@
+<!doctype html>
+<meta charset="utf-8" />
+
+<head>
+  <script type="module">
+    import createModule from "/dm.js";
+
+    async function dm(argv) {
+      return new Promise((resolve, reject) => {
+        try {
+          createModule({
+            arguments: argv,
+            print: (s) => console.log("[wasmdm:out] " + s),
+            printErr: (s) => console.error("[wasmdm:err] " + s),
+            onExit: resolve,
+            onAbort: (msg) => reject(new Error("abort: " + msg)),
+          });
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }
+
+    window.run = async function (argv = []) {
+      if (argv[0] === "dm") {
+        argv = argv.slice(1);
+      }
+
+      console.log("calling wasm dm with args: " + JSON.stringify(argv));
+      const status = await dm(argv);
+
+      console.log("dm finished; status: " + status);
+      return status;
+    }
+
+    console.log("Page is alive");
+  </script>
+</head>
+
+<body></body>
+
+</html>
