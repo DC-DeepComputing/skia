@@ -50,6 +50,8 @@ public:
         return prev;
     }
 
+    SkCaptureManager* captureManager() { return fCaptureManager.get(); }
+
 private:
     int fTypefaceCacheCountLimit = 1024;  // historical default value
     OpenTypeSVGDecoderFactory fSVGDecoderFactory = nullptr;
@@ -57,6 +59,8 @@ private:
     std::unique_ptr<SkSynchronizedResourceCache> fResourceCache;
     std::unique_ptr<SkStrikeCache> fFontCache;
     std::unique_ptr<SkTypefaceCache> fTypefaceCache;
+
+    sk_sp<SkCaptureManager> fCaptureManager;
 };
 
 #endif  // SkSharedContext_DEFINED
