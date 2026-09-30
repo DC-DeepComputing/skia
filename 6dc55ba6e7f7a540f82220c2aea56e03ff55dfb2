@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "708440f3_2a8ed2be",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T20:44:00Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "cf04c16b_6387c133",
+      "range": {
+        "startLine": 279,
+        "startChar": 4,
+        "endLine": 279,
+        "endChar": 37
+      },
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f5b02b2_80c9f0df",
@@ -54,6 +78,24 @@
       "writtenOn": "2026-09-30T19:00:09Z",
       "side": 1,
       "message": "Is it worth assert bWrite.fType here?",
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b14a57f5_36aaf716",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1802,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T20:44:00Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "8f5b02b2_80c9f0df",
       "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b850775e_727b3e2c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T20:44:00Z",
+      "side": 1,
+      "message": "Eventually this bubbles up to `QueueManager::addRecording` which returns `InsertStatus::kAddCommandsFailed`. However, QueueManager does not reset the command buffer in this situation, potentially leading to a dangling ptr.",
+      "parentUuid": "0b57da4f_fc94b28d",
+      "range": {
+        "startLine": 1887,
+        "startChar": 16,
+        "endLine": 1887,
+        "endChar": 49
+      },
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21a5522b_a7ce3757",
@@ -94,6 +160,30 @@
       "writtenOn": "2026-09-30T14:52:55Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 17,
+        "startChar": 55,
+        "endLine": 17,
+        "endChar": 104
+      },
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9312732_a5a42b3d",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T20:44:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21a5522b_a7ce3757",
       "range": {
         "startLine": 17,
         "startChar": 55,
