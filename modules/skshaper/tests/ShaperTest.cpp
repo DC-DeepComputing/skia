@@ -39,9 +39,22 @@
 #include "modules/skunicode/include/SkUnicode_icu4x.h"
 #endif
 
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_apple.h"
+#endif
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_coretext.h"
+#endif
+
 namespace {
 
-sk_sp<SkUnicode> get_unicode() {
+[[maybe_unused]] sk_sp<SkUnicode> get_unicode() {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Apple::Make()) {
+        return unicode;
+    }
+#endif
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
     if (auto unicode = SkUnicodes::ICU::Make()) {
         return unicode;
@@ -477,3 +490,114 @@ DEF_TEST(Shaper_LineBreaks, reporter) {
 }
 
 #endif  // #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+DEF_TEST(Shaper_CoreText_Basic, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "Hello World! 123";
+    size_t textLen = strlen(text);
+
+    RunHandler rh("Shaper_CoreText_Basic", reporter, text, textLen);
+    shaper->shape(text, textLen, font, true, 400.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+}
+
+DEF_TEST(Shaper_CoreText_With_SkUnicodeApple, reporter) {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    auto unicode = SkUnicodes::Apple::Make();
+    REPORTER_ASSERT(reporter, unicode);
+
+    auto factory = SkShapers::CT::Factory(unicode);
+    REPORTER_ASSERT(reporter, factory);
+
+    auto shaper = factory->makeShaper(nullptr);
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "SkoreText Apple Native Shaping Test!";
+    size_t textLen = strlen(text);
+
+    auto fontRuns = SkShaper::TrivialFontRunIterator(font, textLen);
+    auto bidiRuns = factory->makeBidiRunIterator(text, textLen, 0);
+    auto scriptRuns = factory->makeScriptRunIterator(text, textLen, SkSetFourByteTag('l','a','t','n'));
+    auto langRuns = SkShaper::TrivialLanguageRunIterator("en", textLen);
+
+    RunHandler rh("Shaper_CoreText_With_SkUnicodeApple", reporter, text, textLen);
+    shaper->shape(text, textLen, fontRuns, *bidiRuns, *scriptRuns, langRuns, nullptr, 0, 400.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+#endif
+}
+
+DEF_TEST(Shaper_CoreText_Arabic_RTL, reporter) {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    auto unicode = SkUnicodes::Apple::Make();
+    REPORTER_ASSERT(reporter, unicode);
+
+    auto factory = SkShapers::CT::Factory(unicode);
+    REPORTER_ASSERT(reporter, factory);
+
+    auto shaper = factory->makeShaper(nullptr);
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "مرحبا بالعالم";
+    size_t textLen = strlen(text);
+
+    auto fontRuns = SkShaper::TrivialFontRunIterator(font, textLen);
+    auto bidiRuns = factory->makeBidiRunIterator(text, textLen, 1);
+    auto scriptRuns = factory->makeScriptRunIterator(text, textLen, SkSetFourByteTag('a','r','a','b'));
+    auto langRuns = SkShaper::TrivialLanguageRunIterator("ar", textLen);
+
+    RunHandler rh("Shaper_CoreText_Arabic_RTL", reporter, text, textLen);
+    shaper->shape(text, textLen, fontRuns, *bidiRuns, *scriptRuns, langRuns, nullptr, 0, 400.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+#endif
+}
+
+DEF_TEST(Shaper_CoreText_Ligatures_Clusters, reporter) {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    auto unicode = SkUnicodes::Apple::Make();
+    REPORTER_ASSERT(reporter, unicode);
+
+    auto factory = SkShapers::CT::Factory(unicode);
+    REPORTER_ASSERT(reporter, factory);
+
+    auto shaper = factory->makeShaper(nullptr);
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "Difficult office staffing (ffi, fi, fl) and 👨‍👩‍👧‍👦";
+    size_t textLen = strlen(text);
+
+    auto fontRuns = SkShaper::TrivialFontRunIterator(font, textLen);
+    auto bidiRuns = factory->makeBidiRunIterator(text, textLen, 0);
+    auto scriptRuns = factory->makeScriptRunIterator(text, textLen, SkSetFourByteTag('l','a','t','n'));
+    auto langRuns = SkShaper::TrivialLanguageRunIterator("en", textLen);
+
+    RunHandler rh("Shaper_CoreText_Ligatures_Clusters", reporter, text, textLen);
+    shaper->shape(text, textLen, fontRuns, *bidiRuns, *scriptRuns, langRuns, nullptr, 0, 800.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+#endif
+}
+#endif
+
+

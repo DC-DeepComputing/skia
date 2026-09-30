@@ -376,7 +376,10 @@ skia_cc_library(
 
 skia_filegroup(
     name = "typeface_mac_hdrs",
-    srcs = ["SkTypeface_mac_ct.h"],
+    srcs = [
+        "SkTypeface_mac_ct.h",
+        "SkTypeface_mac_symbols.h",
+    ],
     visibility = ["//src/utils/mac:__pkg__"],
 )
 
@@ -386,6 +389,7 @@ skia_filegroup(
         "SkScalerContext_mac_ct.cpp",
         "SkScalerContext_mac_ct.h",
         "SkTypeface_mac_ct.cpp",
+        "SkTypeface_mac_symbols.mm",
     ],
 )
 
