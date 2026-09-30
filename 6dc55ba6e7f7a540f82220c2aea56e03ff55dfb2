@@ -16,6 +16,29 @@
       "message": "PTAL; note the previous comments on this CL are a little outdated, as this CL previously contained the entire, unsplit changes",
       "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21a5522b_a7ce3757",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-30T14:52:55Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 17,
+        "startChar": 55,
+        "endLine": 17,
+        "endChar": 104
+      },
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
