@@ -616,6 +616,57 @@ def _CheckDEPS(input_api, output_api):
   )
 
 
+def _CheckMacroStyle(input_api, output_api):
+  """Checks macro naming and Ganesh #if / GR_GL macro style on modified lines."""
+  ifdef_gr_re = input_api.re.compile(r'^\s*#\s*ifdef\s+(GR_\w+)')
+  define_re = input_api.re.compile(r'^\s*#\s*define\s+([A-Za-z_]\w*)')
+  upper_macro_re = input_api.re.compile(r'^[A-Z][A-Z0-9_]*$')
+  cpp_filter = lambda x: (x.LocalPath().endswith(('.cpp', '.h')) and
+                          not np(x.LocalPath()).startswith('third_party/'))
+
+  errors = []
+  warnings = []
+  for f in input_api.AffectedSourceFiles(cpp_filter):
+    path = np(f.LocalPath())
+    is_header = path.endswith('.h')
+    is_ganesh_gl = ('src/gpu/ganesh/gl/' in path or
+                    'include/gpu/ganesh/gl/' in path)
+
+    for line_num, line in f.ChangedContents():
+      m_ifdef = ifdef_gr_re.match(line)
+      if m_ifdef:
+        macro = m_ifdef.group(1)
+        if not macro.endswith('_DEFINED'):
+          errors.append(
+              '%s:%d: Ganesh prefers `#if %s` rather than `#ifdef %s`.' %
+              (f.LocalPath(), line_num, macro, macro))
+
+      m_def = define_re.match(line)
+      if m_def:
+        macro = m_def.group(1)
+        if macro.endswith('_DEFINED'):
+          continue
+        if not upper_macro_re.match(macro):
+          warnings.append(
+              '%s:%d: Macros should be ALL_CAPS_WITH_UNDERSCORES (%s).' %
+              (f.LocalPath(), line_num, macro))
+        if is_header and not (macro.startswith('SK') or macro.startswith('GR')):
+          warnings.append(
+              '%s:%d: Macros in headers should be prefixed with SK or GR (%s).' %
+              (f.LocalPath(), line_num, macro))
+        if is_ganesh_gl and macro.startswith('GR_') and not macro.startswith('GR_GL'):
+          warnings.append(
+              '%s:%d: Ganesh GL-specific macros should be prefixed GR_GL (%s).' %
+              (f.LocalPath(), line_num, macro))
+
+  results = []
+  if errors:
+    results.append(output_api.PresubmitError('\n'.join(errors)))
+  if warnings:
+    results.append(output_api.PresubmitPromptWarning('\n'.join(warnings)))
+  return results
+
+
 def _CommonChecks(input_api, output_api):
   """Presubmit checks common to upload and commit."""
   results = []
@@ -635,6 +686,7 @@ def _CommonChecks(input_api, output_api):
         input_api, output_api, source_file_filter=sources))
     results.extend(input_api.canned_checks.CheckChangeHasNoStrayWhitespace(
         input_api, output_api, source_file_filter=sources))
+  results.extend(_CheckMacroStyle(input_api, output_api))
   results.extend(_JsonChecks(input_api, output_api))
   results.extend(_IfDefChecks(input_api, output_api))
   results.extend(_CopyrightChecks(input_api, output_api, source_file_filter=sources))
