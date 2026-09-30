@@ -20,6 +20,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf04c16b_6387c133",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-30T19:00:09Z",
+      "side": 1,
+      "message": "Is this needed? Looks like it will always be nullptr after onAddComputePass",
+      "range": {
+        "startLine": 279,
+        "startChar": 4,
+        "endLine": 279,
+        "endChar": 37
+      },
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f5b02b2_80c9f0df",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1802,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-30T19:00:09Z",
+      "side": 1,
+      "message": "Is it worth assert bWrite.fType here?",
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b57da4f_fc94b28d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-30T19:00:09Z",
+      "side": 1,
+      "message": "Do you really need to reset this here? Like the pipeline is bound to the command buffer. Or does returning false here cause use to completely blow away the current command buffer?",
+      "range": {
+        "startLine": 1887,
+        "startChar": 16,
+        "endLine": 1887,
+        "endChar": 49
+      },
+      "revId": "6dc55ba6e7f7a540f82220c2aea56e03ff55dfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21a5522b_a7ce3757",
         "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
         "patchSetId": 27
