@@ -27,6 +27,25 @@ SkContext::~SkContext() = default;
 SkContextPriv SkContext::priv() { return SkContextPriv(this); }
 SkContextPrivConst SkContext::priv() const { return SkContextPrivConst(this); }
 
+std::unique_ptr<skcpu::Recorder> SkContext::makeCPURecorder() { return nullptr; }
+
+void SkContext::startCapture() {
+    if (!fSharedContext->captureManager()) {
+        return;
+    }
+
+    fSharedContext->captureManager()->toggleCapture(true);
+}
+
+sk_sp<SkCapture> SkContext::endCapture() {
+    if (!fSharedContext->captureManager()) {
+        return nullptr;
+    }
+
+    fSharedContext->captureManager()->toggleCapture(false);
+    fSharedContext->captureManager()->getLastCapture();
+}
+
 SkResourceCache* SkContext::resourceCache() const {
     return fSharedContext->synchronizedResourceCache();
 }
