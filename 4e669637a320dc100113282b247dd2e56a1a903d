@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b79cef6e_2d981421",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-30T13:40:44Z",
+      "side": 1,
+      "message": "Infra changes LGTM.  We don\u0027t run perf tasks as part of the CQ, but I\u0027d recommend that you trigger a few manually to verify that this works.",
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e97e50f8_e316aa5d",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-09-30T13:40:44Z",
+      "side": 1,
+      "message": "Nit: this should include your username or a reference to a bug: TODO(sarahrust) or TODO(b/1234)",
+      "range": {
+        "startLine": 18,
+        "startChar": 5,
+        "endLine": 18,
+        "endChar": 9
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f7a570e9_ef5380de",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "infra/bots/gen_tasks_logic/nano_flags.go",
+              "range": {
+                "startLine": 18,
+                "startChar": 0,
+                "endLine": 19,
+                "endChar": 0
+              },
+              "replacement": "\t\t// TODO(sarahrust): This is a default clip value but should be derived from the task instead.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4e669637a320dc100113282b247dd2e56a1a903d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
