@@ -205,6 +205,8 @@ private:
     friend class SkSurface;
 
 protected:
+    SkCanvas* baseCanvas() const { return fOwnedBaseCanvas.get(); }
+
     sk_sp<SkPixelStorage>     fPixelStorage = nullptr;
 };
 

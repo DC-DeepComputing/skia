@@ -50,6 +50,14 @@ struct SK_API SkContextOptions {
      * paths. If the cache needs to allocate more, it will purge previous entries.
      */
     size_t fFontCacheLimit = 2 * 1024 * 1024;
+
+    /**
+     * An experimental flag in development. Behavior and performance is subject to change.
+     *
+     * Enables the use of startCapture and endCapture functions. Calling these APIs will capture all
+     * draw calls and surface creation from Recorders spawned from the Context.
+     */
+    bool fEnableCapture = false;
 };
 
 #endif  // SkContextOptions_DEFINED

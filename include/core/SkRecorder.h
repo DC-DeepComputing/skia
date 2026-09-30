@@ -12,6 +12,7 @@
 #include "include/private/SkTArray.h"
 
 class SkCanvas;
+class SkCaptureManager;
 class SkSurface;
 
 namespace skcpu {
@@ -25,6 +26,7 @@ public:
     SkRecorder(const SkRecorder&) = delete;
     SkRecorder(SkRecorder&&) = delete;
     SkRecorder& operator=(const SkRecorder&) = delete;
+    SkRecorder& operator=(SkRecorder&&) = delete;
 
     enum class Type {
         kCPU,
@@ -37,6 +39,10 @@ public:
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
 protected:
+    virtual SkCaptureManager* captureManager() { return nullptr; }
+    virtual SkCanvas* makeCaptureCanvas(SkCanvas*);
+    virtual void createCaptureBreakpoint(SkSurface*);
+
     skia_private::TArray<sk_sp<SkPicture>> fCapturedPictures;
 
 private:

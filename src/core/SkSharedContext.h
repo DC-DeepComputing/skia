@@ -12,6 +12,7 @@
 
 #include <memory>
 
+class SkCaptureManager;
 class SkOpenTypeSVGDecoder;
 class SkStrikeCache;
 class SkSynchronizedResourceCache;
@@ -25,6 +26,8 @@ class SkSharedContext : public SkRefCnt {
 public:
     explicit SkSharedContext(const SkContextOptions& options);
     ~SkSharedContext() override;
+
+    SkCaptureManager* captureManager() const { return fCaptureManager.get(); }
 
     const SkSynchronizedResourceCache* synchronizedResourceCache() const {
         return fResourceCache.get();
@@ -54,6 +57,7 @@ private:
     int fTypefaceCacheCountLimit = 1024;  // historical default value
     OpenTypeSVGDecoderFactory fSVGDecoderFactory = nullptr;
 
+    sk_sp<SkCaptureManager> fCaptureManager;
     std::unique_ptr<SkSynchronizedResourceCache> fResourceCache;
     std::unique_ptr<SkStrikeCache> fFontCache;
     std::unique_ptr<SkTypefaceCache> fTypefaceCache;

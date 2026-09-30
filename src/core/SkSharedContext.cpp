@@ -8,6 +8,7 @@
 #include "src/core/SkSharedContext.h"
 
 #include "include/core/SkContextOptions.h"
+#include "src/capture/SkCaptureManager.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
@@ -17,6 +18,10 @@
 #endif
 
 SkSharedContext::SkSharedContext(const SkContextOptions& options) {
+    if (options.fEnableCapture) {
+        fCaptureManager = sk_make_sp<SkCaptureManager>();
+    }
+
 #if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
     fResourceCache = std::make_unique<SkSynchronizedResourceCache>(SkDiscardableMemory::Create);
 #else

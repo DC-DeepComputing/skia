@@ -46,19 +46,16 @@ sk_sp<SkPicture> SkCaptureCanvas::snapPicture() {
         return nullptr;
     }
     this->detachRecordingCanvas(); // remove the stale recording canvas before the recorder finishes
-    auto skp = fRecorder.finishRecordingAsPicture();
-    this->attachRecordingCanvas();
-    return skp;
+    fCapturing = false;
+    return fRecorder.finishRecordingAsPicture();
 }
 
 void SkCaptureCanvas::attachRecordingCanvas() {
-    SkASSERT(this->fList.size() == 1);
     this->addCanvas(fRecorder.beginRecording(fBaseCanvas->imageInfo().width(),
                                               fBaseCanvas->imageInfo().height()));
 }
 
 void SkCaptureCanvas::detachRecordingCanvas() {
-    SkASSERT(this->fList.size() == 2);
     this->removeCanvas(fRecorder.getRecordingCanvas());
 }
 

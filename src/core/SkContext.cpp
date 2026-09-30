@@ -11,6 +11,9 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "include/cpu/Recorder.h"
+#include "src/capture/SkCapture.h"
+#include "src/capture/SkCaptureManager.h"
 #include "src/core/SkContextPriv.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedContext.h"
@@ -24,8 +27,30 @@ SkContext::SkContext(const SkContextOptions& options) {
 
 SkContext::~SkContext() = default;
 
+std::unique_ptr<skcpu::Recorder> SkContext::makeCPURecorder() {
+    return std::unique_ptr<skcpu::Recorder>(new skcpu::Recorder(fSharedContext));
+}
+
+void SkContext::startCapture() {
+    if (fSharedContext->captureManager()) {
+        fSharedContext->captureManager()->toggleCapture(true);
+    }
+}
+
+sk_sp<SkCapture> SkContext::endCapture() {
+    if (fSharedContext->captureManager()) {
+        fSharedContext->captureManager()->toggleCapture(false);
+        return fSharedContext->captureManager()->getLastCapture();
+    }
+    return nullptr;
+}
+
 SkContextPriv SkContext::priv() { return SkContextPriv(this); }
 SkContextPrivConst SkContext::priv() const { return SkContextPrivConst(this); }
+
+SkCaptureManager* SkContext::captureManager() const {
+    return fSharedContext->captureManager();
+}
 
 SkResourceCache* SkContext::resourceCache() const {
     return fSharedContext->synchronizedResourceCache();

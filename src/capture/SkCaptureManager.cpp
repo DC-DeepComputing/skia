@@ -50,21 +50,26 @@ void SkCaptureManager::deregisterCaptureCanvas(SkCanvas* canvas) {
 sk_sp<SkPicture> SkCaptureManager::snapAndIncrement(SkCaptureCanvas* canvas) {
     auto picture = canvas->snapPicture();
     if (picture) {
-        if (auto storage = asSB(canvas->getBaseCanvasSurface())->getPixelStorage()) {
-            storage->incrementContentId();
+        if (SkSurface* surface = canvas->getBaseCanvasSurface()) {
+            if (auto storage = asSB(surface)->getPixelStorage()) {
+                storage->incrementContentId();
+            }
         }
     }
     return picture;
 }
 
 void SkCaptureManager::captureUninsertedDrawTasks() {
+    skia_private::TArray<sk_sp<SkPicture>> uninserted;
     for (auto& canvas : fTrackedCanvases) {
         if (canvas) {
-            auto picture = this->snapAndIncrement(canvas.get());
-            if (picture && fActiveCapture) {
-                fActiveCapture->addAsset(std::move(picture));
+            if (auto picture = this->snapAndIncrement(canvas.get())) {
+                uninserted.push_back(std::move(picture));
             }
         }
+    }
+    if (!uninserted.empty()) {
+        this->onInsertRecording(uninserted);
     }
 }
 

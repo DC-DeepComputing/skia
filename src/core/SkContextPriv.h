@@ -21,6 +21,7 @@ class SkContext;
     data members or virtual methods.*/
 class SkContextPrivConst {
 public:
+    const SkCaptureManager* captureManager() const { return fConstContext->captureManager(); }
 
 protected:
     explicit SkContextPrivConst(const SkContext* context) : fConstContext(context) {}
@@ -43,6 +44,7 @@ private:
 class SkContextPriv : public SkContextPrivConst {
 public:
     SkSharedContext* sharedContext() { return fContext->fSharedContext.get(); }
+    SkCaptureManager* captureManager() { return fContext->captureManager(); }
 
 private:
     friend class SkContext;
