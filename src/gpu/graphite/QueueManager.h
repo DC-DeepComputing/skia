@@ -17,6 +17,10 @@
 #include <memory>
 #include <vector>
 
+namespace skgpu {
+class RefCntedCallback;
+}
+
 namespace skgpu::graphite {
 
 class Buffer;
@@ -86,12 +90,15 @@ protected:
 
     const SharedContext* fSharedContext;
     std::unique_ptr<CommandBuffer> fCurrentCommandBuffer;
+    std::unique_ptr<CommandBuffer> fCurrentProtectedCommandBuffer;
 
 private:
     virtual std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) = 0;
     virtual OutstandingSubmission onSubmitToGpu(const SubmitInfo&) = 0;
 
     bool setupCommandBuffer(ResourceProvider*, Protected);
+    CommandBuffer* getCurrentCommandBuffer(Protected isProtected);
+    Protected getDefaultProtectedness();
 
     std::vector<std::unique_ptr<CommandBuffer>>* getAvailableCommandBufferList(Protected);
 
@@ -99,6 +106,8 @@ private:
 
     std::vector<std::unique_ptr<CommandBuffer>> fAvailableCommandBuffers;
     std::vector<std::unique_ptr<CommandBuffer>> fAvailableProtectedCommandBuffers;
+
+    skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 
     skia_private::THashMap<uint32_t, uint32_t> fLastAddedRecordingIDs;
 };
