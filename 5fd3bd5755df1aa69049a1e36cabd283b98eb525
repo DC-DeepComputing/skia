@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "deb1dc00_0fbb11a5",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T18:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "357c2491_c81bb0f7",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e944a038_2481d115",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-09-30T15:51:40Z",
       "side": 1,
       "message": "overlength",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f0afc11_6d370008",
+        "filename": "tests/graphite/sparse_strips/FastValidator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T18:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e944a038_2481d115",
       "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea4854cc_b6d29dcf",
+        "filename": "tests/graphite/sparse_strips/FastValidator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T18:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58f9614c_d89b26de",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e4deea6_b44fb6cc",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-09-30T15:51:40Z",
       "side": 1,
       "message": "// Maybe a gloss of what this does ?\n\nHigher level than the ValidatePath comment",
+      "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9c007b8_dedd2092",
+        "filename": "tests/graphite/sparse_strips/FastValidator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-09-30T18:06:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e4deea6_b44fb6cc",
       "revId": "5fd3bd5755df1aa69049a1e36cabd283b98eb525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
