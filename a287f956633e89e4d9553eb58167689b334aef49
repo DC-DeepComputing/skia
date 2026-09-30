@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "927b06c2_34eedda9",
+        "filename": "src/gpu/graphite/GpuWorkSubmission.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-30T20:47:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c73d8be2_65ad0038",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 52
+      },
+      "revId": "a287f956633e89e4d9553eb58167689b334aef49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df5e322b_88ef73c5",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72541ee2_0a91b7aa",
+        "filename": "src/gpu/graphite/GpuWorkSubmission.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-30T20:47:43Z",
+      "side": 1,
+      "message": "With moving the finished procs on GpuWorkSubmission, this is no longer relevant.",
+      "parentUuid": "df5e322b_88ef73c5",
+      "revId": "a287f956633e89e4d9553eb58167689b334aef49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb660c8f_e3e2a29f",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-09-30T15:48:48Z",
       "side": 1,
       "message": "WDYT about if this is protected and we already have `fCurrentCommandBuffer`, that we transfer any finish procs on that to the new protected CB?\n\nAlternatively, does all of that logic simplify if we have QueueManager record the finish procs for the pair and then it moves them off itself and on to the GpuWorkSubmission when it submits?",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 81
+      },
+      "revId": "a287f956633e89e4d9553eb58167689b334aef49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85d59eab_3b4112f2",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-30T20:47:43Z",
+      "side": 1,
+      "message": "I think having QueueManager track the finish procs and then move them to GpuWorkSubmission is the better approach here since the finish procs seem tied to the whole submit and not per command buffer (it made sense to have it on CommandBuffer previously since we only had one command buffer per submit). Made the changes to follow that approach.",
+      "parentUuid": "eb660c8f_e3e2a29f",
       "range": {
         "startLine": 73,
         "startChar": 0,

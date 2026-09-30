@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eeb3171_c88cefb4",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-30T20:47:43Z",
+      "side": 1,
+      "message": "Done, created b/567979421 and added a comment. Also changed it so we only query the stats for the active command buffer for the inserted recording since I realized it should be done only for that.",
+      "parentUuid": "bbb1feb0_60968535",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 71
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9bde7c2_8ee7eca3",
@@ -322,6 +346,30 @@
       "side": 1,
       "message": "I know we don\u0027t reset the command buffer when an insertRecording fails because we don\u0027t want to invalidate correctly inserted work that came before. If submit failed, it probably resulted in a device lost and is generally not a recoverable failure, so in practice I don\u0027t think the issue has ever really come up.\n\nThat makes me think that we could reset the CBs safely enough. If something about the failed CB was invalid and would always cause a failure, we\u0027d be in a bad spot without resetting. If it was a transient failure that didn\u0027t result in a device lost, I could see not resetting being okay since we\u0027d have the ability to retry the submission. Except we\u0027ve already issued an EndCommandBuffer operation to Vulkan, so there\u0027d be no way to append new commands to it. So yes, resetting should be the behavior.",
       "parentUuid": "d7cdd340_9d4cd29f",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 81
+      },
+      "revId": "0f695fb746fe2ed27f8be3c5315a9da9721a4cbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "831bd8b6_26e2c519",
+        "filename": "src/gpu/graphite/vk/VulkanQueueManager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-09-30T20:47:43Z",
+      "side": 1,
+      "message": "Sounds good.",
+      "parentUuid": "0e5d3556_e90643b1",
       "range": {
         "startLine": 92,
         "startChar": 0,
