@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81847ea5_68a10903",
+        "filename": "infra/bots/gen_tasks_logic/nano_flags.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-09-30T19:53:55Z",
+      "side": 1,
+      "message": "Looks like these need to be removed",
+      "range": {
+        "startLine": 320,
+        "startChar": 55,
+        "endLine": 321,
+        "endChar": 19
+      },
+      "revId": "5a168301eb41840760fe4dc4cfc40e82aa0047fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
