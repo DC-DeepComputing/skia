@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d1d9739_ffd54d15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:16:42Z",
+      "side": 1,
+      "message": "LGTM % two comments below:",
+      "revId": "81690bc8d15807966178c43c0733a7c85a4f065b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a9f29c3_21ae51dd",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:16:42Z",
+      "side": 1,
+      "message": "The `;` ended up inside the macro: `SK_UNSAFE_TODO(SkDEBUGFAILF(...);)`. Should be `SK_UNSAFE_TODO(SkDEBUGFAILF(...));`.",
+      "revId": "81690bc8d15807966178c43c0733a7c85a4f065b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "097f37d3_0e11761b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2049,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-09-30T08:16:42Z",
+      "side": 1,
+      "message": "Indentation of the continuation line is off; `git cl format` fixes it (same in Image_YUVA_Graphite.cpp:117).\n\nnit: line 2022 wraps the whole assignment while this one wraps only the subscript. Consider being consistent.",
+      "revId": "81690bc8d15807966178c43c0733a7c85a4f065b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
