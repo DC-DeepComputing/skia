@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93513c92_3bf6d525",
+        "filename": "bench/BilerpBench.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-01T14:54:49Z",
+      "side": 1,
+      "message": "These numbers should be defined as constants.",
+      "range": {
+        "startLine": 19,
+        "startChar": 20,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "fdebde678589738481a27440b173626fb9d30db9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7d297b2_e5fccc4f",
+        "filename": "bench/BilerpBench.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-01T14:54:49Z",
+      "side": 1,
+      "message": "I would add this as a const string getter to be able to set up queries later for all these benchmarks.",
+      "range": {
+        "startLine": 25,
+        "startChar": 82,
+        "endLine": 25,
+        "endChar": 89
+      },
+      "revId": "fdebde678589738481a27440b173626fb9d30db9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ef854e3_deba4e7b",
         "filename": "bench/BilerpBench.cpp",
         "patchSetId": 15
