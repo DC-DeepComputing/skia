@@ -2753,6 +2753,7 @@ if (skia_enable_tools) {
 
   test_lib("tool_utils") {
     sources = [
+      "tests/graphite/sparse_strips/CoverageTestUtils.cpp",
       "tools/AndroidSkDebugToStdOut.cpp",
       "tools/AutoreleasePool.h",
       "tools/DecodeUtils.cpp",
