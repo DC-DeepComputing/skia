@@ -42,6 +42,8 @@ protected:
                              SkScalarCeilToInt(fDstSize.fHeight));
     }
 
+    SkISize onGetSize() override { return SkISize::Make(3840, 2160); }
+
     void onDelayedSetup() override {
         fImage = ToolUtils::create_checkerboard_image(
                 fSrcSize.fWidth, fSrcSize.fHeight, SK_ColorGRAY, SK_ColorDKGRAY, 16);
