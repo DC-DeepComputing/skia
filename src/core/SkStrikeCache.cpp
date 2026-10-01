@@ -26,6 +26,9 @@ struct SkFontMetrics;
 
 using namespace sktext;
 
+// This verbose code has only been added because Flutter currently makes use of
+// gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental somewhere in their code.
+// TODO(alexisdavidc) figure out how to resolve this
 #if defined(SK_ENABLE_THREADLOCAL_STRIKECACHE)
 SK_API bool gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental = true;
 #else
