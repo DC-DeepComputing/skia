@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8083a64b_af6fd437",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-01T15:29:43Z",
+      "side": 1,
+      "message": "I reworded it. I kept some of the context just to communicate exactly why/how it breaks",
+      "parentUuid": "4909be68_04f96d61",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 30,
+        "endChar": 98
+      },
+      "revId": "b6bc60134562d628a21117a506ecae7bafc9ff41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33bc71c1_eca510cb",
@@ -61,6 +85,30 @@
           ]
         }
       ],
+      "revId": "b6bc60134562d628a21117a506ecae7bafc9ff41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "197c34dd_36cc291d",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-01T15:29:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33bc71c1_eca510cb",
+      "range": {
+        "startLine": 31,
+        "startChar": 21,
+        "endLine": 31,
+        "endChar": 22
+      },
       "revId": "b6bc60134562d628a21117a506ecae7bafc9ff41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
