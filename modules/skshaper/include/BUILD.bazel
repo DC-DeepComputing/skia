@@ -10,6 +10,7 @@ skia_filegroup(
     name = "hdrs",
     srcs = [
         "SkShaper.h",
+        "SkShaper_coretext.h",
         "SkShaper_factory.h",
         "SkShaper_harfbuzz.h",
         "SkShaper_skunicode.h",
