@@ -39,6 +39,30 @@
       },
       "revId": "2ede56eae7cb1fe6cacdc16d290d2f95c5454adb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcadbc1d_538516c0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-01T15:24:43Z",
+      "side": 1,
+      "message": "Done; but note the difference in emission order for capabilities. It should be fine though.",
+      "parentUuid": "2c8a3dee_46e04002",
+      "range": {
+        "startLine": 685,
+        "startChar": 4,
+        "endLine": 685,
+        "endChar": 12
+      },
+      "revId": "2ede56eae7cb1fe6cacdc16d290d2f95c5454adb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
