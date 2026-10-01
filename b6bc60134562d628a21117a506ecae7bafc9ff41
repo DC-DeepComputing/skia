@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4909be68_04f96d61",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-01T15:24:41Z",
+      "side": 1,
+      "message": "I would shorten this to \"This flag is required by Flutter.\"",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 30,
+        "endChar": 98
+      },
+      "revId": "b6bc60134562d628a21117a506ecae7bafc9ff41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33bc71c1_eca510cb",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-01T15:24:41Z",
+      "side": 1,
+      "message": "TODO comments should be formatted as TODO(alexisdavidc): for consistency. The TODO message should also be more descriptive on why this needs to be resolved if someone else stumbles upon it.",
+      "range": {
+        "startLine": 31,
+        "startChar": 21,
+        "endLine": 31,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "979a16a7_ad6ff51f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkStrikeCache.cpp",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "// TODO(alexisdavidc): Remove this fallback once Flutter is migrated away from this experimental global flag to simplify strike cache initialization.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6bc60134562d628a21117a506ecae7bafc9ff41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
