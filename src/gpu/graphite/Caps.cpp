@@ -43,6 +43,16 @@ void Caps::setDefaultShaderCaps() {
 }
 
 void Caps::finishInitialization(const ContextOptions& options) {
+    // Graphite's compute work assumes subgroups and the minimum limits, so compute is only enabled
+    // when the device provides both. The backends determine fSubgroupSupport (which requires the
+    // backend's own compute support) and the limits before this point.
+    fComputeSupport = fComputeSupport && fShaderCaps->fSubgroupSupport &&
+                      fMaxComputeInvocationsPerWorkgroup >= kMinComputeInvocationsPerWorkgroup &&
+                      fMaxComputeWorkgroupSize.fWidth >= kMinComputeWorkgroupSizeX &&
+                      fMaxComputeWorkgroupStorageSize >= kMinComputeWorkgroupStorageSize;
+    // Subgroups are only exposed in compute shaders.
+    fShaderCaps->fSubgroupSupport = fShaderCaps->fSubgroupSupport && fComputeSupport;
+
     fCapabilities->initSkCaps(fShaderCaps.get());
 
     fMaxInternalSampleCount = options.fInternalMultisampleCount;

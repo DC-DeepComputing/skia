@@ -97,6 +97,19 @@ sk_sp<MtlComputePipeline> MtlComputePipeline::Make(const MtlSharedContext* share
         return nullptr;
     }
 
+    // A pipeline can support fewer threads per threadgroup than the device does, for example when
+    // its shader uses many registers. Dispatching the step's workgroup size would then fail, so
+    // treat it as a pipeline creation failure.
+    const NSUInteger threadsPerThreadgroup =
+            pipelineDesc.computeStep()->localDispatchSize().scalarSize();
+    if (pso.get().maxTotalThreadsPerThreadgroup < threadsPerThreadgroup) {
+        SKIA_LOG_E("Compute pipeline '%s' supports %lu threads per threadgroup, but needs %lu",
+                   pipelineDesc.computeStep()->name(),
+                   (unsigned long)pso.get().maxTotalThreadsPerThreadgroup,
+                   (unsigned long)threadsPerThreadgroup);
+        return nullptr;
+    }
+
     return sk_sp<MtlComputePipeline>(new MtlComputePipeline(sharedContext, std::move(pso)));
 }
 
