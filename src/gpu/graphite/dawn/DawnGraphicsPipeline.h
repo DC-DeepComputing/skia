@@ -34,7 +34,6 @@ class Context;
 class GraphicsPipelineDesc;
 class DawnResourceProvider;
 class DawnSharedContext;
-struct DepthStencilSettings;
 struct RenderPassDesc;
 class RuntimeEffectDictionary;
 
