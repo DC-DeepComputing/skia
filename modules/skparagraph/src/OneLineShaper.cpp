@@ -399,8 +399,21 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
         }
         SkASSERT(combinedBlock.fRange.width() == 0 || combinedBlock.fRange.end == block.fRange.start);
 
+        // Do not break shaping across non-grapheme boundaries (e.g. combining marks,
+        // diacritics, or tone marks). Splitting a base character and its combining
+        // mark into separate shaping runs prevents the shaper (e.g. HarfBuzz) from
+        // positioning marks relative to base glyphs (GPOS mark attachment), which
+        // causes detached or displaced diacritics. If the style boundary falls inside
+        // a grapheme cluster, we combine the style block with the preceding block so
+        // the cluster is shaped atomically. Individual style attributes (color, etc.)
+        // will be applied to the isolated glyphs during painting in TextLine.
+        bool isGraphemeStart = true;
+        if (block.fRange.start > 0) {
+            isGraphemeStart = (fParagraph->fCodeUnitProperties[block.fRange.start] & SkUnicode::CodeUnitFlags::kGraphemeStart) != 0;
+        }
+
         if (!combinedBlock.fRange.empty()) {
-            if (block.fStyle.matchOneAttribute(StyleType::kFont, combinedBlock.fStyle)) {
+            if (block.fStyle.matchOneAttribute(StyleType::kFont, combinedBlock.fStyle) || !isGraphemeStart) {
                 combinedBlock.add(blockRange);
                 addFeatures(block);
                 continue;
