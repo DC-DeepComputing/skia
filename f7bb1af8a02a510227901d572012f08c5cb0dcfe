@@ -33,6 +33,23 @@
       "message": "The bug was approved for M150 LTS. PTAL.",
       "revId": "f7bb1af8a02a510227901d572012f08c5cb0dcfe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9a85ff7_8b6b6586",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4841032
+      },
+      "writtenOn": "2026-10-01T12:24:31Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "f7bb1af8a02a510227901d572012f08c5cb0dcfe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
