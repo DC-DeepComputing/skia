@@ -33,6 +33,24 @@
       "message": "Does Skia require Vulkan 1.1 in Ganesh? This will impact both Ganesh and Graphite.",
       "revId": "6f75db88ade660a96096b2b0d428a4692ca828bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24144f25_8dcad475",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-01T14:58:10Z",
+      "side": 1,
+      "message": "unresolving",
+      "parentUuid": "46ef7c28_6a6f8dfb",
+      "revId": "6f75db88ade660a96096b2b0d428a4692ca828bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
