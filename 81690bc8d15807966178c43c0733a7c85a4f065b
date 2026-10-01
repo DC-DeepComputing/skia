@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4ba960da_55d7e218",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-01T00:38:30Z",
+      "side": 1,
+      "message": "If I put it like this:\n\n```cpp\nSK_UNSAFE_TODO(SkDEBUGFAILF(...));\n```\n\nI get this error:\n```\n../../../../../skia/src/gpu/graphite/KeyHelpers.cpp:2042:84: error: empty expression statement has no effect; remove unnecessary \u0027;\u0027 to silence this warning [-Werror,-Wextra-semi-stmt] 2042 | view.swizzle().asString().c_str()));\n```\n\nI also tried changing the order to:\n\n``` cpp\nSkDEBUGFAILF(SK_UNSAFE_TODO());\n```\nBut SkDEBUGFAILF is unsafe, so this is the only way.",
+      "parentUuid": "8a9f29c3_21ae51dd",
+      "revId": "81690bc8d15807966178c43c0733a7c85a4f065b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "097f37d3_0e11761b",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 6
@@ -48,6 +66,24 @@
       "writtenOn": "2026-09-30T08:16:42Z",
       "side": 1,
       "message": "Indentation of the continuation line is off; `git cl format` fixes it (same in Image_YUVA_Graphite.cpp:117).\n\nnit: line 2022 wraps the whole assignment while this one wraps only the subscript. Consider being consistent.",
+      "revId": "81690bc8d15807966178c43c0733a7c85a4f065b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f57a4960_903edd5b",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2049,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-01T00:38:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "097f37d3_0e11761b",
       "revId": "81690bc8d15807966178c43c0733a7c85a4f065b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
