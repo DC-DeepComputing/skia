@@ -117,6 +117,12 @@ struct ShaderCaps {
     bool fNoPerspectiveInterpolationSupport = false;
     bool fSampleMaskSupport = false;
     bool fExternalTextureSupport = false;
+    /**
+     * Compute shaders may use subgroup builtins and the vote, ballot, broadcast, shuffle, and
+     * arithmetic (reduce/scan) subgroup intrinsics. This is a single flag rather than one per
+     * operation family; backends only set it when every family is supported in compute.
+     */
+    bool fSubgroupSupport = false;
 
     /** isinf() is defined + floating point infinities are handled according to IEEE standards. */
     bool fInfinitySupport = false;
