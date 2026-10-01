@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdacd5d2_b738c09e",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-01T18:32:56Z",
+      "side": 1,
+      "message": "Updated 👍",
+      "parentUuid": "50d4abf2_a050a7fb",
+      "range": {
+        "startLine": 56,
+        "startChar": 33,
+        "endLine": 56,
+        "endChar": 34
+      },
+      "revId": "3a5f07dadc6933099073932f104c04c6fb8cc4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ad5ef5c_36bafeb9",
@@ -190,6 +214,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa9f19b3_c2f3fe58",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-01T18:32:56Z",
+      "side": 1,
+      "message": "ohhhhh I\u0027m sorry, I didn\u0027t realize I wasn\u0027t returning getLastCapture(); 😂 I fixed it, my mistake",
+      "parentUuid": "871eade8_062dacde",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 46,
+        "endChar": 55
+      },
+      "revId": "3a5f07dadc6933099073932f104c04c6fb8cc4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57fb285a_b2d0ff9b",
@@ -251,6 +299,30 @@
       "side": 1,
       "message": "I think there is still a lot of open discussion on exactly where the capture manager should be owned (Context, shared context, per recorder, etc.). And that also ties directly into the thread safety requirements. I wonder if for right now we just put the capture manager on SkContext just to mimic what currently is happening on Context. Then as the other discussions continue we can better place it.",
       "parentUuid": "2f749f74_d0f5c336",
+      "range": {
+        "startLine": 63,
+        "startChar": 27,
+        "endLine": 63,
+        "endChar": 43
+      },
+      "revId": "3a5f07dadc6933099073932f104c04c6fb8cc4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e44ea2e4_c0b12ff5",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-01T18:32:56Z",
+      "side": 1,
+      "message": "that sounds like a plan, I implemented it as such here.",
+      "parentUuid": "ff4978bc_159cf5c9",
       "range": {
         "startLine": 63,
         "startChar": 27,
