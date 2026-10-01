@@ -13,6 +13,8 @@
 
 #include <memory>
 
+class SkCapture;
+class SkCaptureManager;
 class SkContextPriv;
 class SkContextPrivConst;
 class SkResourceCache;
@@ -21,6 +23,10 @@ class SkStrikeCache;
 class SkTraceMemoryDump;
 class SkTypefaceCache;
 struct SkContextOptions;
+
+namespace skcpu {
+class Recorder;
+}
 
 /**
  * @brief SkContext is a central context object that serves as the mandatory first point of
@@ -38,6 +44,16 @@ public:
 
     SkContextPriv priv();
     SkContextPrivConst priv() const;
+
+    /*
+     * Starts the SkCapture. Must have set SkContextOptions::fEnableCapture to start.
+     */
+    void startCapture();
+
+    /*
+     * Ends the SkCapture and returns the collected draws and surface creation.
+     */
+    sk_sp<SkCapture> endCapture();
 
 private:
     SkContext(const SkContextOptions&);
@@ -63,6 +79,7 @@ private:
 
     void dumpMemoryStatistics(SkTraceMemoryDump* dump);
 
+    sk_sp<SkCaptureManager> fCaptureManager;
     sk_sp<SkSharedContext> fSharedContext;
 };
 
