@@ -43,6 +43,7 @@ struct VulkanExts {
     bool fMultisampledRenderToSingleSampledEXT = true;
     bool fHostImageCopyEXT = true;
     bool fPipelineCreationCacheControlEXT = true;
+    bool fPipelineProtectedAccessEXT = true;
     bool fDriverPropertiesKHR = true;
     bool fCreateRenderpass2KHR = true;
     bool fLoadStoreOpNoneEXT = true;
@@ -93,6 +94,7 @@ static std::vector<VkExtensionProperties> get_device_exts(const VulkanExts& conf
     ADD_EXT(fMultisampledRenderToSingleSampledEXT, VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     ADD_EXT(fHostImageCopyEXT, VK_EXT_HOST_IMAGE_COPY);
     ADD_EXT(fPipelineCreationCacheControlEXT, VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
+    ADD_EXT(fPipelineProtectedAccessEXT, VK_EXT_PIPELINE_PROTECTED_ACCESS);
     ADD_EXT(fDriverPropertiesKHR, VK_KHR_DRIVER_PROPERTIES);
     ADD_EXT(fCreateRenderpass2KHR, VK_KHR_CREATE_RENDERPASS_2);
     ADD_EXT(fLoadStoreOpNoneEXT, VK_EXT_LOAD_STORE_OP_NONE);
@@ -160,7 +162,8 @@ static void enable_device_features(const VulkanExts& config, void* basePNext) {
             SET_FEATURES(VULKAN_1_4_FEATURES,
                          Vulkan14Features,
                          SET_IF(fDynamicRenderingLocalReadKHR, dynamicRenderingLocalRead);
-                         SET_IF(fHostImageCopyEXT, hostImageCopy))
+                         SET_IF(fHostImageCopyEXT, hostImageCopy);
+                         SET_IF(fPipelineProtectedAccessEXT, pipelineProtectedAccess))
 
             SET_FEATURES(RASTERIZATION_ORDER_ATTACHMENT_ACCESS_FEATURES_EXT,
                          RasterizationOrderAttachmentAccessFeaturesEXT,
@@ -231,6 +234,10 @@ static void enable_device_features(const VulkanExts& config, void* basePNext) {
             SET_FEATURES(PIPELINE_CREATION_CACHE_CONTROL_FEATURES,
                          PipelineCreationCacheControlFeatures,
                          SET_IF(fPipelineCreationCacheControlEXT, pipelineCreationCacheControl))
+
+            SET_FEATURES(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                         PipelineProtectedAccessFeatures,
+                         SET_IF(fPipelineProtectedAccessEXT, pipelineProtectedAccess))
 
             SET_FEATURES(FRAME_BOUNDARY_FEATURES_EXT,
                          FrameBoundaryFeaturesEXT,
@@ -400,6 +407,7 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan11, reporter) {
     //CHECK_EXT_ENABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_ENABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_ENABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_ENABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_ENABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_ENABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -483,6 +491,10 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan11, reporter) {
 
     CHECK_FEATURE_ENABLED(HOST_IMAGE_COPY_FEATURES, HostImageCopyFeatures, hostImageCopy);
 
+    CHECK_FEATURE_ENABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                          PipelineProtectedAccessFeatures,
+                          pipelineProtectedAccess);
+
     CHECK_FEATURE_ENABLED(PIPELINE_CREATION_CACHE_CONTROL_FEATURES,
                           PipelineCreationCacheControlFeatures,
                           pipelineCreationCacheControl);
@@ -536,6 +548,7 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan12, reporter) {
     //CHECK_EXT_ENABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_ENABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_ENABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_ENABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_DISABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -643,6 +656,10 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan12, reporter) {
 
     CHECK_FEATURE_ENABLED(HOST_IMAGE_COPY_FEATURES, HostImageCopyFeatures, hostImageCopy);
 
+    CHECK_FEATURE_ENABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                          PipelineProtectedAccessFeatures,
+                          pipelineProtectedAccess);
+
     CHECK_FEATURE_ENABLED(PIPELINE_CREATION_CACHE_CONTROL_FEATURES,
                           PipelineCreationCacheControlFeatures,
                           pipelineCreationCacheControl);
@@ -696,6 +713,7 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan13, reporter) {
     //CHECK_EXT_ENABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_ENABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_ENABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_DISABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_DISABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -818,6 +836,10 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan13, reporter) {
 
     CHECK_FEATURE_ENABLED(HOST_IMAGE_COPY_FEATURES, HostImageCopyFeatures, hostImageCopy);
 
+    CHECK_FEATURE_ENABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                          PipelineProtectedAccessFeatures,
+                          pipelineProtectedAccess);
+
     CHECK_FEATURE_DISABLED(PIPELINE_CREATION_CACHE_CONTROL_FEATURES,
                            PipelineCreationCacheControlFeatures,
                            pipelineCreationCacheControl);
@@ -871,6 +893,7 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan14, reporter) {
     CHECK_EXT_DISABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_DISABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_DISABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_DISABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_DISABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -949,6 +972,7 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan14, reporter) {
 
     CHECK_FEATURE_ENABLED(VULKAN_1_4_FEATURES, Vulkan14Features, dynamicRenderingLocalRead);
     CHECK_FEATURE_ENABLED(VULKAN_1_4_FEATURES, Vulkan14Features, hostImageCopy);
+    CHECK_FEATURE_DISABLED(VULKAN_1_4_FEATURES, Vulkan14Features, pipelineProtectedAccess);
 
     CHECK_FEATURE_ENABLED(RASTERIZATION_ORDER_ATTACHMENT_ACCESS_FEATURES_EXT,
                           RasterizationOrderAttachmentAccessFeaturesEXT,
@@ -1007,6 +1031,10 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan14, reporter) {
                           multisampledRenderToSingleSampled);
 
     CHECK_FEATURE_DISABLED(HOST_IMAGE_COPY_FEATURES, HostImageCopyFeatures, hostImageCopy);
+
+    CHECK_FEATURE_DISABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                           PipelineProtectedAccessFeatures,
+                           pipelineProtectedAccess);
 
     CHECK_FEATURE_DISABLED(PIPELINE_CREATION_CACHE_CONTROL_FEATURES,
                            PipelineCreationCacheControlFeatures,
@@ -1093,6 +1121,7 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan11, reporter) {
     CHECK_EXT_DISABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_DISABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_ENABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_ENABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_ENABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_ENABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -1174,6 +1203,10 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan11, reporter) {
     CHECK_FEATURE_ENABLED(PIPELINE_CREATION_CACHE_CONTROL_FEATURES,
                           PipelineCreationCacheControlFeatures,
                           pipelineCreationCacheControl);
+
+    CHECK_FEATURE_ENABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                          PipelineProtectedAccessFeatures,
+                          pipelineProtectedAccess);
 
     // Features enabled by the app must remain enabled
     CHECK_FEATURE_ENABLED(
@@ -1261,6 +1294,7 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan12, reporter) {
     //CHECK_EXT_ENABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_DISABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_ENABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_ENABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_DISABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -1389,6 +1423,10 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan12, reporter) {
 
     CHECK_FEATURE_DISABLED(HOST_IMAGE_COPY_FEATURES, HostImageCopyFeatures, hostImageCopy);
 
+    CHECK_FEATURE_ENABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                          PipelineProtectedAccessFeatures,
+                          pipelineProtectedAccess);
+
     // Features enabled by the app must remain enabled
     CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, subgroupSizeControl);
@@ -1487,6 +1525,7 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan13, reporter) {
     //CHECK_EXT_ENABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_DISABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_ENABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_DISABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
     CHECK_EXT_DISABLED(VK_EXT_LOAD_STORE_OP_NONE);
@@ -1609,6 +1648,10 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan13, reporter) {
 
     CHECK_FEATURE_DISABLED(HOST_IMAGE_COPY_FEATURES, HostImageCopyFeatures, hostImageCopy);
 
+    CHECK_FEATURE_ENABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                          PipelineProtectedAccessFeatures,
+                          pipelineProtectedAccess);
+
     // Features enabled by the app must remain enabled
     CHECK_FEATURE_ENABLED(SHADER_OBJECT_FEATURES_EXT, ShaderObjectFeaturesEXT, shaderObject);
 
@@ -1678,6 +1721,7 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan14, reporter) {
     CHECK_NOT_CHAINED(SYNCHRONIZATION_2_FEATURES);
     CHECK_NOT_CHAINED(PIPELINE_CREATION_CACHE_CONTROL_FEATURES);
     CHECK_NOT_CHAINED(HOST_IMAGE_COPY_FEATURES);
+    CHECK_NOT_CHAINED(PIPELINE_PROTECTED_ACCESS_FEATURES);
 
     CHECK_EXT_ENABLED(VK_ARM_RASTERIZATION_ORDER_ATTACHMENT_ACCESS);
     CHECK_EXT_DISABLED(VK_EXT_RASTERIZATION_ORDER_ATTACHMENT_ACCESS);
@@ -1691,6 +1735,7 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan14, reporter) {
     CHECK_EXT_DISABLED(VK_KHR_DYNAMIC_RENDERING);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     CHECK_EXT_DISABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_DISABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_DISABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_DISABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -1734,6 +1779,7 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan14, reporter) {
     CHECK_FEATURE_ENABLED(VULKAN_1_4_FEATURES, Vulkan14Features, maintenance6);
     CHECK_FEATURE_ENABLED(VULKAN_1_4_FEATURES, Vulkan14Features, dynamicRenderingLocalRead);
     CHECK_FEATURE_ENABLED(VULKAN_1_4_FEATURES, Vulkan14Features, hostImageCopy);
+    CHECK_FEATURE_DISABLED(VULKAN_1_4_FEATURES, Vulkan14Features, pipelineProtectedAccess);
     CHECK_FEATURE_ENABLED(VULKAN_1_4_FEATURES, Vulkan14Features, pushDescriptor);
 
     CHECK_FEATURE_ENABLED(RASTERIZATION_ORDER_ATTACHMENT_ACCESS_FEATURES_EXT,
@@ -1849,6 +1895,7 @@ DEF_TEST(VkPreferredFeaturesTest_EmptyEnableChain, reporter) {
     //CHECK_EXT_ENABLED(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ);
     CHECK_EXT_ENABLED(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED);
     //CHECK_EXT_ENABLED(VK_EXT_HOST_IMAGE_COPY);
+    CHECK_EXT_ENABLED(VK_EXT_PIPELINE_PROTECTED_ACCESS);
     CHECK_EXT_DISABLED(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL);
     CHECK_EXT_DISABLED(VK_KHR_DRIVER_PROPERTIES);
     CHECK_EXT_DISABLED(VK_KHR_CREATE_RENDERPASS_2);
@@ -1919,6 +1966,10 @@ DEF_TEST(VkPreferredFeaturesTest_EmptyEnableChain, reporter) {
     CHECK_FEATURE_ENABLED(MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_FEATURES_EXT,
                           MultisampledRenderToSingleSampledFeaturesEXT,
                           multisampledRenderToSingleSampled);
+
+    CHECK_FEATURE_ENABLED(PIPELINE_PROTECTED_ACCESS_FEATURES,
+                          PipelineProtectedAccessFeatures,
+                          pipelineProtectedAccess);
 
     // Features enabled by the app must remain enabled
     CHECK_FEATURE_ENABLED(SHADER_OBJECT_FEATURES_EXT, ShaderObjectFeaturesEXT, shaderObject);
