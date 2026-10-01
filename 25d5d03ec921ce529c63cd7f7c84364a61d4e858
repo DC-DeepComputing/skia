@@ -34,6 +34,24 @@
       "parentUuid": "797fc77f_dcda6547",
       "revId": "25d5d03ec921ce529c63cd7f7c84364a61d4e858",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d378239_4b3b9366",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-01T00:50:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db3c60ca_32d0cf82",
+      "revId": "25d5d03ec921ce529c63cd7f7c84364a61d4e858",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
