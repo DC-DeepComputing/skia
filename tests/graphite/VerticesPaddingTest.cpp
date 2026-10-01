@@ -69,6 +69,7 @@ sk_sp<Buffer> get_readback_buffer(Recorder* recorder, size_t copyBufferSize) {
             copyBufferSize,
             BufferType::kXferGpuToCpu,
             AccessPattern::kHostVisible,
+            UsageLabelFlag::kNotPredefined,
             "VerticesPaddingTest_Copy");
 }
 

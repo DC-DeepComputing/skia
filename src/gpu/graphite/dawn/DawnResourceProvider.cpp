@@ -269,11 +269,11 @@ BindBufferInfo DawnResourceProvider::IntrinsicConstantsManager::add(
         // We can just replace the current buffer; any prior buffer was already tracked in the LRU
         // list and the intrinsic constants were written directly to the Dawn queue.
         DawnResourceProvider* resourceProvider = fResourceProvider;
-        auto dawnBuffer =
-                resourceProvider->findOrCreateDawnBuffer(stride * IntrinsicBuffer::kNumSlots,
-                                                         BufferType::kUniform,
-                                                         AccessPattern::kGpuOnly,
-                                                         "IntrinsicConstantBuffer");
+        auto dawnBuffer = resourceProvider->findOrCreateDawnBuffer(
+                stride * IntrinsicBuffer::kNumSlots,
+                BufferType::kUniform,
+                AccessPattern::kGpuOnly,
+                {UsageLabelFlag::kUniform | UsageLabelFlag::kIntrinsicConstant});
         if (!dawnBuffer) {
             // If we failed to create a GPU buffer to hold the intrinsic uniforms, we will fail the
             // Recording being inserted, so return an empty bind info.
@@ -554,8 +554,10 @@ sk_sp<Texture> DawnResourceProvider::createTexture(
 sk_sp<Buffer> DawnResourceProvider::createBuffer(size_t size,
                                                  BufferType type,
                                                  AccessPattern accessPattern,
+                                                 LabelUsageBitMask labelUsageFlags,
                                                  std::string_view label) {
-    return DawnBuffer::Make(this->dawnSharedContext(), size, type, accessPattern, label);
+    return DawnBuffer::Make(
+            this->dawnSharedContext(), size, type, accessPattern, labelUsageFlags, label);
 }
 
 sk_sp<Sampler> DawnResourceProvider::createSampler(const SamplerDesc& samplerDesc) {
@@ -598,8 +600,10 @@ DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {
 sk_sp<DawnBuffer> DawnResourceProvider::findOrCreateDawnBuffer(size_t size,
                                                                BufferType type,
                                                                AccessPattern accessPattern,
+                                                               LabelUsageBitMask labelUsageFlags,
                                                                std::string_view label) {
-    sk_sp<Buffer> buffer = this->findOrCreateNonShareableBuffer(size, type, accessPattern, label);
+    sk_sp<Buffer> buffer =
+            this->findOrCreateNonShareableBuffer(size, type, accessPattern, labelUsageFlags, label);
     DawnBuffer* ptr = static_cast<DawnBuffer*>(buffer.release());
     return sk_sp<DawnBuffer>(ptr);
 }

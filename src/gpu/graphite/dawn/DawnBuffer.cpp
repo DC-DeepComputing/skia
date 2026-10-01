@@ -93,6 +93,7 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
                                    size_t size,
                                    BufferType type,
                                    AccessPattern accessPattern,
+                                   LabelUsageBitMask labelUsageFlags,
                                    std::string_view label) {
     if (size <= 0) {
         return nullptr;
@@ -172,18 +173,20 @@ sk_sp<DawnBuffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
         SkASSERT(mappedAtCreationPtr);
     }
 
-    return sk_sp<DawnBuffer>(
-            new DawnBuffer(sharedContext, size, std::move(buffer), mappedAtCreationPtr, label));
+    return sk_sp<DawnBuffer>(new DawnBuffer(
+            sharedContext, size, std::move(buffer), mappedAtCreationPtr, labelUsageFlags, label));
 }
 
 DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
                        size_t size,
                        wgpu::Buffer buffer,
                        void* mappedAtCreationPtr,
+                       LabelUsageBitMask labelUsageFlags,
                        std::string_view label)
         : Buffer(sharedContext,
                  size,
                  Protected::kNo, // Dawn doesn't support protected memory
+                 labelUsageFlags,
                  label,
                  /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
                  // prepareForReturnToCache only needs to be called for a buffer that is mappable

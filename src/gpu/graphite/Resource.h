@@ -9,6 +9,7 @@
 #define skgpu_graphite_Resource_DEFINED
 
 #include "include/gpu/GpuTypes.h"
+#include "include/private/SkEnumBitMask.h"
 #include "include/private/SkMutex.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -191,6 +192,42 @@ class Texture;
  *           be modifiable on the recorder thread, becoming immutable after snap() and being
  *           transferred on to the Recording.
  */
+
+/**
+ * Define static flags to represent expected usages of resources which should be captured in a
+ * Resource's label. Certain Resources (e.g. scratch resources) can have multiple usages which can
+ * change over the course of a Recording, so using flags provides a more efficient means of storage
+ * and comparison until its usages are finalized, at which point they can be mapped to string
+ * representations and included on the label.
+ */
+enum class UsageLabelFlag : uint32_t {
+    kNotPredefined = 0, //  no predefined flags represent a Resource's usage
+
+    // Buffer types and usages
+    kVertex                  = 1 <<  0,
+    kIndex                   = 1 <<  1,
+    kXferCpuToGpu            = 1 <<  2,
+    kXferGpuToCpu            = 1 <<  3,
+    kUniform                 = 1 <<  4,
+    kStorage                 = 1 <<  5,
+    kQuery                   = 1 <<  6,
+    kIndirect                = 1 <<  7,
+    kStatic                  = 1 <<  8,
+    kIntrinsicConstant       = 1 <<  9,
+    kTransferForDataBuffer   = 1 << 10,
+    kTransferForStaticBuffer = 1 << 11,
+    kTextureUpload           = 1 << 12,
+    kTimerQuery              = 1 << 13,
+    kTransferForTimerQuery   = 1 << 14,
+
+    // TODO(b/431796811): Define and utilize flags for anticipated texture usages.
+
+    kLastUsageLabelFlag               = kTransferForTimerQuery,
+};
+
+SK_MAKE_BITMASK_OPS(UsageLabelFlag)
+using LabelUsageBitMask = SkEnumBitMask<UsageLabelFlag>;
+
 class Resource {
     enum class RefType {
         kUsage, // Counts controlled by `sk_sp` and tracks liveness from external C++ code.
@@ -264,7 +301,12 @@ public:
     // when the content of the Resource object changes. This will never return 0.
     UniqueID uniqueID() const { return fUniqueID; }
 
-    const std::string& getLabel() const { return fLabel; }
+    // Getter to generate a comprehensive Resource label which consists of any custom label present
+    // and any usage flags representated as strings.
+    // TODO(b/476118698): Eventually, this should be private to the Resource and ResourceCache.
+    // Label and usage flag getter methods will need to be gated behind lock acquisitions to ensure
+    // thread safety when querying this data.
+    std::string getLabel() const { return this->getLabelIncludingFlags(); }
 
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
@@ -294,6 +336,7 @@ protected:
     Resource(const SharedContext*,
              Ownership,
              size_t gpuMemorySize,
+             LabelUsageBitMask labelUsageFlags = UsageLabelFlag::kNotPredefined,
              std::string_view label = {},
              bool reusableRequiresPurgeable = false,
              bool requiresPrepareForReturnToCache = false);
@@ -304,8 +347,8 @@ protected:
     // Update the backend GPU resource label to match fLabel. This should only ever be called by the
     // ResourceCache or Resource subclass constructors.
     void synchronizeBackendLabel() {
-        if (!fLabel.empty()) {
-            const std::string fullLabel = "Skia_" + fLabel;
+        if (!fLabel.empty() || fLabelUsageFlags != UsageLabelFlag::kNotPredefined) {
+            const std::string fullLabel = "Skia_" + this->getLabelIncludingFlags();
             this->setBackendLabel(fullLabel.c_str());
         }
         fBackendLabelDirty = false;
@@ -446,19 +489,15 @@ private:
                 next};
     }
 
-    // We allow the label on a Resource to change when used for a different function (e.g. when
-    // reusing a scratch Texture, we can change the label to reflect the caller's current usage).
-    // This method is only expected to be called when returning a non-shareable or scratch resource
-    // from the cache.
-    void setLabel(std::string_view label) {
-        if (fLabel == label) {
+    void setLabelInfo(LabelUsageBitMask labelUsageFlags, std::string_view label = {}) {
+        if (labelUsageFlags == fLabelUsageFlags && label == fLabel) {
             return;
         }
-
+        fLabelUsageFlags = labelUsageFlags;
         fLabel = label;
 
-        // It is not always safe to immediately update the backend GPU resource label. Mark it
-        // as dirty so it can be updated when appropriate.
+        // Label / label usage flag updates mean the backend label is out-of-sync until
+        // synchronizeBackendLabel() is called (which should only occur when threadsafe to do so).
         fBackendLabelDirty = true;
     }
 
@@ -672,6 +711,14 @@ private:
         return origRefs;
     }
 
+    // Allow privileged users of Resources to view their label *without* any of its usages
+    // translated to and appended as strings. This allows for more efficient equality comparison and
+    // pushing off string logic until absolutely necessary.
+    const std::string& getLabelWithoutFlags() const { return fLabel; }
+    // Private helper to perform the necessary string logic to generate a complete label, including
+    // usage flag components.
+    std::string getLabelIncludingFlags() const;
+
     static constexpr size_t kInvalidGpuMemorySize = ~static_cast<size_t>(0);
 
     // See RefIncrement() for how the bits in this field are interpreted.
@@ -748,7 +795,10 @@ private:
     uint32_t fLastUseToken = 0;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
-    // String used to describe the current use of this Resource.
+    // Flags used to describe the current use of this Resource.
+    LabelUsageBitMask fLabelUsageFlags;
+    // String used to describe the current use of this Resource (incomplete for reporting until any
+    // label usage flags are converted to strings and included).
     std::string fLabel;
     // Flag to signal whether this Resource's label has been updated and its backend label is now
     // out of sync. This attribute does not need to be atomic or otherwise explicitly threadsafe

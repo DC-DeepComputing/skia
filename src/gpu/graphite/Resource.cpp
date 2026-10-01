@@ -26,6 +26,7 @@ uint32_t create_unique_id() {
 Resource::Resource(const SharedContext* sharedContext,
                    Ownership ownership,
                    size_t gpuMemorySize,
+                   LabelUsageBitMask labelUsageFlags,
                    std::string_view label,
                    bool reusableRequiresPurgeable,
                    bool requiresPrepareForReturnToCache)
@@ -38,6 +39,7 @@ Resource::Resource(const SharedContext* sharedContext,
         , fOwnership(ownership)
         , fRequiresPrepareForReturnToCache(requiresPrepareForReturnToCache)
         , fGpuMemorySize(gpuMemorySize)
+        , fLabelUsageFlags(labelUsageFlags)
         , fLabel(label)
         , fBackendLabelDirty(!label.empty()) {
     // At initialization time, a Resource should not be considered budgeted because it does not yet
@@ -140,6 +142,60 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
     // TODO: implement this to report real gpu id backing the resource. Will be virtual implemented
     // by backend specific resource subclasses.
     //this->setMemoryBacking(traceMemoryDump, resourceName);
+}
+
+
+namespace {
+const char* usage_flag_to_str(UsageLabelFlag usage) {
+    switch (usage) {
+        case UsageLabelFlag::kNotPredefined:           return "";
+        case UsageLabelFlag::kVertex:                  return "Vertex";
+        case UsageLabelFlag::kIndex:                   return "Index";
+        case UsageLabelFlag::kXferCpuToGpu:            return "XferCpuToGpu";
+        case UsageLabelFlag::kXferGpuToCpu:            return "XferGpuToCpu";
+        case UsageLabelFlag::kUniform:                 return "Uniform";
+        case UsageLabelFlag::kStorage:                 return "Storage";
+        case UsageLabelFlag::kQuery:                   return "Query";
+        case UsageLabelFlag::kIndirect:                return "Indirect";
+        case UsageLabelFlag::kStatic:                  return "Static";
+        case UsageLabelFlag::kIntrinsicConstant:       return "IntrinsicConstant";
+        case UsageLabelFlag::kTransferForDataBuffer:   return "DataBufferTransfer";
+        case UsageLabelFlag::kTransferForStaticBuffer: return "StaticBufferTransfer";
+        case UsageLabelFlag::kTextureUpload:           return "TextureUpload";
+        case UsageLabelFlag::kTimerQuery:              return "TimerQuery";
+        case UsageLabelFlag::kTransferForTimerQuery:   return "TimerQueryBufferTransfer";
+    }
+    return "";
+}
+
+std::string append_usage_flag_strings(std::string& str, LabelUsageBitMask labelUsageFlags) {
+    for (int bitShiftVal = 0; (1u << bitShiftVal) <= (uint32_t)UsageLabelFlag::kLastUsageLabelFlag;
+         bitShiftVal++) {
+        auto flag = UsageLabelFlag(1 << bitShiftVal);
+        if (SkToBool(labelUsageFlags & flag)) {
+            str += usage_flag_to_str(flag);
+        }
+    }
+    return str;
+}
+} // anonymous namespace
+std::string Resource::getLabelIncludingFlags() const {
+    std::string comprehensiveLabel;
+
+    if (!fLabel.empty()) {
+        comprehensiveLabel += fLabel;
+        comprehensiveLabel += "_";
+    }
+
+    if (fLabelUsageFlags != UsageLabelFlag::kNotPredefined) {
+        append_usage_flag_strings(comprehensiveLabel, fLabelUsageFlags);
+        // In order to avoid redundancy, usage flag string representations do not include the
+        // Resource type (e.g. "StaticBufferVertexBuffer"), so follow up the flag strings with the
+        // resource's type ("StaticVertexBuffer").
+        comprehensiveLabel.append(this->getResourceType());
+    }
+
+    return comprehensiveLabel;
 }
 
 } // namespace skgpu::graphite

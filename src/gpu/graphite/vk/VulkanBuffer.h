@@ -27,7 +27,8 @@ public:
                               size_t,
                               BufferType,
                               AccessPattern,
-                              std::string_view label);
+                              LabelUsageBitMask,
+                              std::string_view label = {});
 
     void freeGpuData() override;
     VkBuffer vkBuffer() const { return fBuffer; }
@@ -52,6 +53,7 @@ private:
                  const skgpu::VulkanAlloc&,
                  VkBufferUsageFlags,
                  Protected isProtected,
+                 LabelUsageBitMask,
                  std::string_view label);
 
     void onMap() override;

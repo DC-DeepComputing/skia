@@ -80,7 +80,7 @@ bool DawnCommandBuffer::startStatsQuery(GpuStatsFlags) {
     auto buffer = fResourceProvider->findOrCreateDawnBuffer(2 * sizeof(uint64_t),
                                                             BufferType::kQuery,
                                                             AccessPattern::kHostVisible,
-                                                            "TimerQuery");
+                                                            UsageLabelFlag::kTimerQuery);
     if (!buffer) {
         SKIA_LOG_W("Failed to create buffer for resolving results, timer query will "
                     "not be reported.");
@@ -88,10 +88,11 @@ bool DawnCommandBuffer::startStatsQuery(GpuStatsFlags) {
     }
     sk_sp<DawnBuffer> xferBuffer;
     if (!fSharedContext->caps()->drawBufferCanBeMapped()) {
-        xferBuffer = fResourceProvider->findOrCreateDawnBuffer(2 * sizeof(uint64_t),
-                                                               BufferType::kXferGpuToCpu,
-                                                               AccessPattern::kHostVisible,
-                                                               "TimerQueryXfer");
+        xferBuffer = fResourceProvider->findOrCreateDawnBuffer(
+                2 * sizeof(uint64_t),
+                BufferType::kXferGpuToCpu,
+                AccessPattern::kHostVisible,
+                UsageLabelFlag::kTransferForTimerQuery);
         if (!xferBuffer) {
             SKIA_LOG_W("Failed to create buffer for transferring timestamp results, timer "
                         "query will not be reported.");

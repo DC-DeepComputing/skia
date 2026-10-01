@@ -268,17 +268,17 @@ void BufferSubAllocator::reset() {
 // DrawBufferManager::BufferState
 
 DrawBufferManager::BufferState::BufferState(BufferType type,
-                                            const char* label,
                                             bool isGpuOnly,
                                             const Options& opts,
-                                            const Caps* caps)
+                                            const Caps* caps,
+                                            LabelUsageBitMask labelUsageFlags)
         : fType(type)
         // The buffer can be GPU-only if
         //     a) the caller does not intend to ever upload CPU data to the buffer; or
         //     b) CPU data will get uploaded to fBuffer only via a transfer buffer
         , fAccessPattern(get_gpu_access_pattern(isGpuOnly || !caps->drawBufferCanBeMapped(), opts))
         , fUseTransferBuffer(!isGpuOnly && !caps->drawBufferCanBeMapped())
-        , fLabel(label)
+        , fLabelUsageFlags(labelUsageFlags)
         , fMinAlignment(minimum_alignment(type, fUseTransferBuffer, caps))
         , fMinBlockSize(min_block_size(type, fMinAlignment, opts))
         , fMaxBlockSize(max_block_size(type, fMinAlignment, opts)) {
@@ -291,18 +291,24 @@ sk_sp<Buffer> DrawBufferManager::BufferState::findOrCreateBuffer(ResourceProvide
                                                                  uint32_t byteCount) {
     if (shareable == Shareable::kScratch) {
         sk_sp<Buffer> scratchBuffer = provider->findOrCreateScratchBuffer(
-                byteCount, fType, fAccessPattern, fLabel, fUnavailableScratchBuffers);
+                byteCount, fType, fAccessPattern, fUnavailableScratchBuffers, fLabelUsageFlags);
         if (scratchBuffer) {
             fUnavailableScratchBuffers.add(scratchBuffer.get());
         }
         return scratchBuffer;
     } else {
-        return provider->findOrCreateNonShareableBuffer(byteCount, fType, fAccessPattern, fLabel);
+        return provider->findOrCreateNonShareableBuffer(byteCount, fType, fAccessPattern,
+                                                        fLabelUsageFlags);
     }
 }
 
 // ------------------------------------------------------------------------------------------------
 // DrawBufferManager
+
+static constexpr LabelUsageBitMask kVertexStorageLabelFlags = {UsageLabelFlag::kVertex |
+                                                               UsageLabelFlag::kStorage};
+static constexpr LabelUsageBitMask kIndexStorageLabelFlags = {UsageLabelFlag::kIndex |
+                                                              UsageLabelFlag::kStorage};
 
 DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider,
                                      const Caps* caps,
@@ -313,15 +319,15 @@ DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider,
         , fUploadManager(uploadManager)
         , fCurrentBuffers{{
             // Mappable buffers
-            {BufferType::kVertex, "VertexBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
-            {BufferType::kIndex, "IndexBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
-            {BufferType::kUniform, "UniformBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
-            {BufferType::kStorage, "StorageBuffer", /*isGpuOnly=*/false, dbmOpts, caps},
-            // GPU-only buffers
-            {BufferType::kStorage, "GPUOnlyStorageBuffer", /*isGpuOnly=*/true, dbmOpts, caps},
-            {BufferType::kVertexStorage, "VertexStorageBuffer", /*isGpuOnly=*/true, dbmOpts, caps},
-            {BufferType::kIndexStorage, "IndexStorageBuffer", /*isGpuOnly=*/true, dbmOpts, caps},
-            {BufferType::kIndirect, "IndirectStorageBuffer", /*isGpuOnly=*/true, dbmOpts, caps}}} {}
+            {BufferType::kVertex,        false, dbmOpts, caps, UsageLabelFlag::kVertex},
+            {BufferType::kIndex,         false, dbmOpts, caps, UsageLabelFlag::kIndex},
+            {BufferType::kUniform,       false, dbmOpts, caps, UsageLabelFlag::kUniform},
+            {BufferType::kStorage,       false, dbmOpts, caps, UsageLabelFlag::kStorage},
+            // GPU-only
+            {BufferType::kStorage,       true,  dbmOpts, caps, UsageLabelFlag::kStorage},
+            {BufferType::kVertexStorage, true,  dbmOpts, caps, kVertexStorageLabelFlags},
+            {BufferType::kIndexStorage,  true,  dbmOpts, caps, kIndexStorageLabelFlags},
+            {BufferType::kIndirect,      true,  dbmOpts, caps, UsageLabelFlag::kIndirect}}} {}
 
 DrawBufferManager::~DrawBufferManager() {
     // Must reset these *before* we are deleted
@@ -483,8 +489,10 @@ BufferSubAllocator DrawBufferManager::getBuffer(
     void* mappedPtr = nullptr;
     if (supportCpuUpload) {
         if (state.fUseTransferBuffer) {
-            std::tie(mappedPtr, transferBuffer) = fUploadManager->makeBindInfo(buffer->size(),
-                    fCaps->requiredTransferBufferAlignment(), "TransferForDataBuffer");
+            std::tie(mappedPtr, transferBuffer) = fUploadManager->makeBindInfo(
+                    buffer->size(),
+                    fCaps->requiredTransferBufferAlignment(),
+                    UsageLabelFlag::kTransferForDataBuffer);
         } else {
             mappedPtr = buffer->map();
         }
@@ -575,7 +583,7 @@ void* StaticBufferManager::prepareStaticData(BufferState* state,
     auto [transferMapPtr, transferBindInfo] =
             fUploadManager.makeBindInfo(size32,
                                         fRequiredTransferAlignment,
-                                        "TransferForStaticBuffer");
+                                        UsageLabelFlag::kTransferForStaticBuffer);
     if (!transferMapPtr) {
         SKIA_LOG_E("Failed to create or map transfer buffer that initializes static GPU data.");
         fMappingFailed = true;
@@ -601,7 +609,7 @@ bool StaticBufferManager::BufferState::createAndUpdateBindings(
         Context* context,
         QueueManager* queueManager,
         GlobalCache* globalCache,
-        std::string_view label) const {
+        LabelUsageBitMask labelUsageFlags) const {
     if (!fTotalRequiredBytes) {
         return true; // No buffer needed
     }
@@ -615,10 +623,7 @@ bool StaticBufferManager::BufferState::createAndUpdateBindings(
 #endif
 
     sk_sp<Buffer> staticBuffer = resourceProvider->findOrCreateNonShareableBuffer(
-            fTotalRequiredBytes,
-            fBufferType,
-            gpuAccessPattern,
-            label);
+            fTotalRequiredBytes, fBufferType, gpuAccessPattern, labelUsageFlags);
     if (!staticBuffer) {
         SKIA_LOG_E("Failed to create static buffer for type %d of size %u bytes.\n",
                     (int) fBufferType, fTotalRequiredBytes);
@@ -675,11 +680,12 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
 
     queueManager->addUploadBufferManagerRefs(&fUploadManager, context->priv().resourceProvider());
 
-    if (!fVertexBufferState.createAndUpdateBindings(fResourceProvider,
-                                                   context,
-                                                   queueManager,
-                                                   globalCache,
-                                                   "StaticVertexBuffer")) {
+    if (!fVertexBufferState.createAndUpdateBindings(
+            fResourceProvider,
+            context,
+            queueManager,
+            globalCache,
+            {UsageLabelFlag::kVertex | UsageLabelFlag::kStatic})) {
         return FinishResult::kFailure;
     }
 
@@ -696,11 +702,12 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
             fVertexBufferState.fData[0].fTarget->fBuffer);
 #endif
 
-    if (!fIndexBufferState.createAndUpdateBindings(fResourceProvider,
-                                                   context,
-                                                   queueManager,
-                                                   globalCache,
-                                                   "StaticIndexBuffer")) {
+    if (!fIndexBufferState.createAndUpdateBindings(
+            fResourceProvider,
+            context,
+            queueManager,
+            globalCache,
+            {UsageLabelFlag::kIndex | UsageLabelFlag::kStatic})) {
         return FinishResult::kFailure;
     }
 

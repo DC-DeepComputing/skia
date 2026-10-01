@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/RecordingPriv.h"
+#include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 
 namespace skgpu::graphite {
@@ -31,7 +32,7 @@ std::tuple<TextureUploadWriter, BindBufferInfo> UploadBufferManager::getTextureU
         size_t requiredBytes, size_t requiredAlignment) {
     auto[bufferMapPtr, bindInfo] = this->makeBindInfo(requiredBytes,
                                                       requiredAlignment,
-                                                      "TextureUploadBuffer");
+                                                      UsageLabelFlag::kTextureUpload);
     if (!bufferMapPtr) {
         return {TextureUploadWriter(), BindBufferInfo()};
     }
@@ -40,7 +41,7 @@ std::tuple<TextureUploadWriter, BindBufferInfo> UploadBufferManager::getTextureU
 }
 
 std::tuple<void* /*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInfo(
-        size_t requiredBytes, size_t requiredAlignment, std::string_view label) {
+        size_t requiredBytes, size_t requiredAlignment, LabelUsageBitMask labelUsageFlags) {
     if (!SkTFitsIn<uint32_t>(requiredBytes)) {
         return {nullptr, BindBufferInfo()};
     }
@@ -53,7 +54,7 @@ std::tuple<void* /*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInf
                 requiredBytes32,
                 BufferType::kXferCpuToGpu,
                 AccessPattern::kHostVisible,
-                label);
+                labelUsageFlags);
         void* bufferMapPtr = buffer ? buffer->map() : nullptr;
         if (!bufferMapPtr) {
             // Unlike [Draw|Static]BufferManager, the UploadManager does not track if any buffer
@@ -84,7 +85,7 @@ std::tuple<void* /*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInf
                 kReusedBufferSize,
                 BufferType::kXferCpuToGpu,
                 AccessPattern::kHostVisible,
-                label);
+                labelUsageFlags);
         fReusedBufferOffset = 0;
         if (!fReusedBuffer || !fReusedBuffer->map()) {
             fReusedBuffer = nullptr;

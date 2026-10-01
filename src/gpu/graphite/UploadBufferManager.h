@@ -9,11 +9,11 @@
 #define skgpu_graphite_UploadBufferManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkEnumBitMask.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
-#include <string_view>
 #include <tuple>
 #include <vector>
 
@@ -25,6 +25,8 @@ class CommandBuffer;
 class Recorder;
 class Recording;
 class ResourceProvider;
+enum class UsageLabelFlag : uint32_t;
+using LabelUsageBitMask = SkEnumBitMask<UsageLabelFlag>;
 
 class UploadBufferManager {
 public:
@@ -44,7 +46,7 @@ private:
 
     std::tuple<void* /*mappedPtr*/, BindBufferInfo> makeBindInfo(size_t requiredBytes,
                                                                  size_t requiredAlignment,
-                                                                 std::string_view label);
+                                                                 LabelUsageBitMask labelUsageFlags);
 
     ResourceProvider* fResourceProvider;
 

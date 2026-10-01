@@ -23,12 +23,17 @@ public:
                               size_t,
                               BufferType,
                               AccessPattern,
-                              std::string_view label);
+                              LabelUsageBitMask,
+                              std::string_view label = {});
 
     id<MTLBuffer> mtlBuffer() const { return fBuffer.get(); }
 
 private:
-    MtlBuffer(const MtlSharedContext*, size_t, sk_cfp<id<MTLBuffer>>, std::string_view label);
+    MtlBuffer(const MtlSharedContext*,
+              size_t,
+              sk_cfp<id<MTLBuffer>>,
+              LabelUsageBitMask,
+              std::string_view label);
 
     void onMap() override;
     void onUnmap() override;

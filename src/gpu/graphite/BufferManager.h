@@ -367,10 +367,10 @@ private:
     friend class BufferSubAllocator;
 
     struct BufferState {
-        const BufferType    fType;
-        const AccessPattern fAccessPattern;
-        const bool          fUseTransferBuffer;
-        const char*         fLabel;
+        const BufferType     fType;
+        const AccessPattern  fAccessPattern;
+        const bool           fUseTransferBuffer;
+        const LabelUsageBitMask fLabelUsageFlags;
 
         const uint32_t fMinAlignment; // guaranteed power of two, required for binding
         const uint32_t fMinBlockSize;
@@ -386,8 +386,7 @@ private:
         // number of buffer allocations for large Recordings.
         uint32_t fLastBufferSize = 0;
 
-        BufferState(BufferType, const char* label, bool isGpuOnly,
-                    const Options&, const Caps* caps);
+        BufferState(BufferType, bool isGpuOnly, const Options&, const Caps*, LabelUsageBitMask);
 
         sk_sp<Buffer> findOrCreateBuffer(ResourceProvider*, Shareable, uint32_t byteCount);
     };
@@ -546,7 +545,7 @@ private:
         BufferState(BufferType type, const Caps* caps);
 
         bool createAndUpdateBindings(ResourceProvider*, Context*, QueueManager*, GlobalCache*,
-                                     std::string_view label) const;
+                                     LabelUsageBitMask labelUsageFlags) const;
         void reset() {
             fData.clear();
             fTotalRequiredBytes = 0;
