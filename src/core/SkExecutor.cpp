@@ -12,6 +12,7 @@
 #include "include/private/SkTPin.h"
 #include "src/core/SkNoDestructor.h"
 
+#include <atomic>
 #include <deque>
 #include <thread>
 #include <utility>
@@ -81,6 +82,7 @@ class SkThreadPool final : public SkExecutor {
 public:
     explicit SkThreadPool(int numWorkLists, int threads, bool allowBorrowing)
             : fNumWorkLists(numWorkLists < 1 ? 1 : numWorkLists)
+            , fPending(0)
             , fAllowBorrowing(allowBorrowing) {
 
         fWorkLists = std::make_unique<WorkList[]>(fNumWorkLists);
@@ -106,6 +108,7 @@ public:
         workList = SkTPin(workList, 0, fNumWorkLists-1);
 
         // Add some work to our pile of work to do.
+        fPending.fetch_add(+1, std::memory_order_relaxed);
         {
             SkAutoMutexExclusive lock(fWorkLock);
 
@@ -126,7 +129,23 @@ public:
         }
     }
 
+    void wait() override {
+        // Actively help the executor do work until our task group is done.
+        // This lets SkTaskGroups nest arbitrarily deep on a single SkExecutor:
+        // no thread ever blocks waiting for others to do its work.
+        // (We may end up doing work that's not part of our task group.  That's fine.)
+        while (!this->done()) {
+            this->borrow();
+        }
+    }
+
 private:
+    // Returns true if all tasks previously add()ed to this SkExecutor have run.
+    // It is safe to reuse this SkThreadPool once done().
+    bool done() const {
+        return fPending.load(std::memory_order_acquire) == 0;
+    }
+
     // This method should usually be called only when fWorkAvailable indicates there's work to do.
     bool do_work() {
         std::function<void(void)> work;
@@ -154,6 +173,7 @@ private:
         }
 
         work();
+        fPending.fetch_add(-1, std::memory_order_release);
         return true;
     }
 
@@ -172,6 +192,7 @@ private:
     std::unique_ptr<WorkList[]> fWorkLists SK_GUARDED_BY(fWorkLock);
     Lock                        fWorkLock;
     SkSemaphore                 fWorkAvailable;
+    std::atomic<int32_t>        fPending;
     const bool                  fAllowBorrowing;
 };
 
