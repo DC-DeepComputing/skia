@@ -7,8 +7,8 @@
 
 #include "src/gpu/graphite/PipelineManager.h"
 
+#include "include/core/SkExecutor.h"
 #include "include/private/SkLog.h"
-#include "src/core/SkTaskGroup.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/PipelineCreationTask.h"
@@ -49,18 +49,13 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager(SkExecutor* executor) {
-    if (executor) {
-        fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
-    }
-}
+PipelineManager::PipelineManager(SkExecutor* executor) : fExecutor(executor) {}
 
 PipelineManager::~PipelineManager() {
-    // The task group should've been shutdown and deleted in Context's destructor (via
-    // shutDown()).
+    // The executor should've been shutdown in Context's destructor (via shutDown()).
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fExecutor);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
@@ -181,11 +176,11 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
     {
         SkAutoSpinlock lock{fSpinLock};
 
-        if (fTaskGroup) {
+        if (fExecutor) {
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
                                                       : kHighPriorityWorkList;
 
-            fTaskGroup->add([task]{ InlineCompile(task.get()); } , workList);
+            fExecutor->add([task]{ InlineCompile(task.get()); } , workList);
             return;
         }
     }
@@ -216,11 +211,12 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHan
 }
 
 void PipelineManager::shutDown() {
-    // We null out 'fTaskGroup' so no more threaded work can be added after this point.
-    std::unique_ptr<SkTaskGroup> tmp;
+    // We null out 'fExecutor' so no more threaded work can be added after this point.
+    SkExecutor* tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
-        tmp = std::move(fTaskGroup);
+        tmp = fExecutor;
+        fExecutor = nullptr;
     }
     if (tmp) {
         // We have to wait for the remaining tasks to complete bc they rely on the existence
@@ -231,19 +227,19 @@ void PipelineManager::shutDown() {
     }
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fExecutor);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
 
 #if defined(GPU_TEST_UTILS)
 void PipelineManager::wait_TestOnly() {
-    SkTaskGroup* tmp;
+    SkExecutor* tmp;
     {
         SkAutoSpinlock lock{fSpinLock};
-        tmp = fTaskGroup.get();
+        tmp = fExecutor;
     }
-    // This isn't safe (since 'fTaskGroup' could be altered on some other thread) but, hopefully,
+    // This isn't safe (since 'fExecutor' could be altered on some other thread) but, hopefully,
     // the unit tests know what they're doing (i.e., don't delete the owning Context while
     // in this method).
     if (tmp) {

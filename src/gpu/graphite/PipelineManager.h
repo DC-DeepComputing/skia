@@ -21,7 +21,6 @@ class UniqueKey;
 }
 
 class SkExecutor;
-class SkTaskGroup;
 
 namespace skgpu::graphite {
 
@@ -98,7 +97,7 @@ private:
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
 
-    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
+    SkExecutor* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
 
     void signalCompleted(PipelineCreationTask*);
     void potentiallyWaitOn(PipelineCreationTask*);

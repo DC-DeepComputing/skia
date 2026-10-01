@@ -47,6 +47,9 @@ public:
     // If it makes sense for this executor, use this thread to execute work for a little while.
     virtual void borrow() {}
 
+    // Wait until all the submitted work has been completed.
+    virtual void wait() {}
+
 protected:
     SkExecutor() = default;
     SkExecutor(const SkExecutor&) = delete;

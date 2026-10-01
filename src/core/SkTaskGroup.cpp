@@ -11,29 +11,14 @@
 #include <type_traits>
 #include <utility>
 
-SkTaskGroup::SkTaskGroup(SkExecutor& executor) : fPending(0), fExecutor(executor) {}
+SkTaskGroup::SkTaskGroup(SkExecutor& executor) : fExecutor(executor) {}
 
 void SkTaskGroup::add(std::function<void()> fn, int workList) {
-    fPending.fetch_add(+1, std::memory_order_relaxed);
-    fExecutor.add([this, fn{std::move(fn)}] {
-                      fn();
-                      fPending.fetch_add(-1, std::memory_order_release);
-                  },
-                  workList);
-}
-
-bool SkTaskGroup::done() const {
-    return fPending.load(std::memory_order_acquire) == 0;
+    fExecutor.add(std::move(fn), workList);
 }
 
 void SkTaskGroup::wait() {
-    // Actively help the executor do work until our task group is done.
-    // This lets SkTaskGroups nest arbitrarily deep on a single SkExecutor:
-    // no thread ever blocks waiting for others to do its work.
-    // (We may end up doing work that's not part of our task group.  That's fine.)
-    while (!this->done()) {
-        fExecutor.borrow();
-    }
+    fExecutor.wait();
 }
 
 SkTaskGroup::Enabler::Enabler(int threads) {
