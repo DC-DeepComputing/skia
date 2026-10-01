@@ -51,6 +51,24 @@
       "parentUuid": "46ef7c28_6a6f8dfb",
       "revId": "6f75db88ade660a96096b2b0d428a4692ca828bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78031bc2_ae472cd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-01T21:12:09Z",
+      "side": 1,
+      "message": "Confirmed with Michael that Ganesh should also require Vulkan 1.1",
+      "parentUuid": "24144f25_8dcad475",
+      "revId": "6f75db88ade660a96096b2b0d428a4692ca828bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
