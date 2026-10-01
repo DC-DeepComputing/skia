@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1b905cb_5e92f0a1",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-01T16:27:42Z",
+      "side": 1,
+      "message": "Is there a downside to also reporting for success? I assume the call sites would just ignore it, no harm done?",
+      "range": {
+        "startLine": 1144,
+        "startChar": 8,
+        "endLine": 1144,
+        "endChar": 26
+      },
+      "revId": "bbe15d22b41334622d5be71564c7f1d22ebce81c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
