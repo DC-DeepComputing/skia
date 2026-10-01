@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "389d66a5_ff137b14",
+        "filename": "fuzz/oss_fuzz/FuzzPNGRustDecoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-10-01T18:49:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbd4e50d_9b855c05",
+      "range": {
+        "startLine": 73,
+        "startChar": 36,
+        "endLine": 73,
+        "endChar": 82
+      },
+      "revId": "daa3a376fd50cdd47f7d7f730eb1c87f16de8368",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "170dae8e_89f40128",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-01T17:24:23Z",
       "side": 1,
       "message": "nit: now above :)",
+      "range": {
+        "startLine": 161,
+        "startChar": 75,
+        "endLine": 161,
+        "endChar": 80
+      },
+      "revId": "daa3a376fd50cdd47f7d7f730eb1c87f16de8368",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "441db6fb_668ff7fc",
+        "filename": "fuzz/oss_fuzz/FuzzPNGRustDecoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-10-01T18:49:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "170dae8e_89f40128",
       "range": {
         "startLine": 161,
         "startChar": 75,
