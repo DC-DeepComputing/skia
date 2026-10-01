@@ -901,6 +901,47 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     //  to calculate the proportions
     auto leftCorrection = start->sizeToChar(originalTextRange.start);
     auto rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+
+    // When a grapheme cluster contains multiple glyphs (for instance, a base consonant
+    // and one or more combining diacritics/tone marks shaped together), applying a style
+    // (such as a different foreground color, shadow, or decoration) to a sub-range of the
+    // cluster should isolate the specific glyphs belonging to that sub-range.
+    //
+    // Previously, SkParagraph applied a proportional geometric clip across the entire cluster's
+    // bounding box. That caused glyphs to be clipped in half geometrically rather than colored
+    // or decorated individually.
+    //
+    // If the cluster resolved to multiple glyphs (result.size > 1) and styling applies to a
+    // sub-range (indicated by non-zero left or right corrections), we find the exact glyph range
+    // [minGlyph, maxGlyph] whose cluster index falls within originalTextRange. We then adjust
+    // result.pos and result.size to render only those glyphs, clearing the geometric clipping.
+    // Single precomposed glyphs (result.size == 1) continue to use proportional clipping.
+    if (result.size > 1 && (leftCorrection != 0 || rightCorrection != 0)) {
+        size_t minGlyph = result.pos + result.size;
+        size_t maxGlyph = result.pos;
+        bool found = false;
+        for (size_t i = result.pos; i < result.pos + result.size; ++i) {
+            size_t clusterIndex = run->globalClusterIndex(i);
+            if (clusterIndex >= originalTextRange.start && clusterIndex < originalTextRange.end) {
+                minGlyph = std::min(minGlyph, i);
+                maxGlyph = std::max(maxGlyph, i);
+                found = true;
+            }
+        }
+        if (found && (maxGlyph - minGlyph + 1) < result.size) {
+            size_t oldPos = result.pos;
+            result.pos = minGlyph;
+            result.size = maxGlyph - minGlyph + 1;
+            leftCorrection = 0;
+            rightCorrection = 0;
+            result.clip = SkRect::MakeXYWH(0,
+                                           sizes().runTop(run, this->fAscentStyle),
+                                           run->calculateWidth(result.pos, result.pos + result.size, false),
+                                           run->calculateHeight(this->fAscentStyle, this->fDescentStyle));
+            textStartInLine += run->positionX(result.pos) - run->positionX(oldPos);
+        }
+    }
+
     /*
     SkDebugf("[%d: %d) => [%d: %d), @%d, %d: [%f:%f) + [%f:%f) = ", // جَآَهُ
              originalTextRange.start, originalTextRange.end, textRange.start, textRange.end,
