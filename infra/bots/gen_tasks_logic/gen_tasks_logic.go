@@ -584,6 +584,11 @@ func GenTasks(cfg *Config) {
 			"skia/include/config", // There's a Bazel workspace in here
 			"skia/requirements.txt",
 			"skia/toolchain",
+			// Our C++ toolchain points Clang at this file via
+			// --warning-suppression-mappings, so it must be present for any Bazel
+			// invocation, even ones which only build Go code.
+			// See //toolchain/unsafe_buffers.bzl.
+			"skia/tools/unsafe_buffers",
 			// Needed for icu_utils bazel_dep
 			"skia/third_party",
 			// Actually needed to build the task drivers

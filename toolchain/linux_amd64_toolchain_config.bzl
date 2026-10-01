@@ -26,6 +26,17 @@ load(
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 load(":clang_layering_check.bzl", "make_layering_check_features")
+load(
+    ":unsafe_buffers.bzl",
+    "make_unsafe_buffers_features",
+)
+
+# Major version of the pinned Clang. Must stay in sync with download_linux_amd64_toolchain.bzl.
+# Clang 18 predates --warning-suppression-mappings, so -Wunsafe-buffer-usage stays suppressed.
+# TODO(b/532990050): When upgrading to Clang 20+, also add an "unsafe_buffers_mappings" attribute
+# (see mac_toolchain_config.bzl), pass its path to make_unsafe_buffers_features(), and add the
+# mappings file to :compile_linux_amd64_files in //toolchain/BUILD.bazel.
+CLANG_MAJOR_VERSION = 18
 
 def _linux_amd64_toolchain_info(ctx):
     # https://bazel.build/rules/lib/builtins/Label#repo_name
@@ -37,6 +48,7 @@ def _linux_amd64_toolchain_info(ctx):
     features += _make_default_flags(external_toolchain)
     features += make_layering_check_features()
     features += _make_diagnostic_flags()
+    features += make_unsafe_buffers_features(CLANG_MAJOR_VERSION)
 
     # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark

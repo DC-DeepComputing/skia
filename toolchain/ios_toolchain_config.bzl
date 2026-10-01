@@ -26,9 +26,19 @@ load(
 )
 load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 load(":clang_layering_check.bzl", "make_layering_check_features")
+load(
+    ":unsafe_buffers.bzl",
+    "COMPILE_ACTIONS",
+    "OBJC_COMPILE_ACTIONS",
+    "make_unsafe_buffers_features",
+)
 
 # The location of the created clang toolchain.
 EXTERNAL_TOOLCHAIN = "external/+_repo_rules+clang_ios"
+
+# Major version of the pinned Clang. Must stay in sync with download_ios_toolchain.bzl.
+# Clang 15 predates --warning-suppression-mappings, so -Wunsafe-buffer-usage stays suppressed.
+CLANG_MAJOR_VERSION = 15
 
 # Root of our symlinks. These symlinks are created in download_ios_toolchain.bzl
 XCODE_IOSSDK_SYMLINK = EXTERNAL_TOOLCHAIN + "/symlinks/xcode/iOSSDK"
@@ -44,6 +54,10 @@ def _ios_toolchain_info(ctx):
     features += make_layering_check_features()
     features += _make_diagnostic_flags()
     features += _make_target_specific_flags(ctx)
+    features += make_unsafe_buffers_features(
+        CLANG_MAJOR_VERSION,
+        actions = COMPILE_ACTIONS + OBJC_COMPILE_ACTIONS,
+    )
 
     # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
