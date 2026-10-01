@@ -2697,6 +2697,10 @@ DEF_GRAPHITE_TEST_FOR_COMPUTE_CONTEXTS(Compute_WorkgroupUniformLoadTest,
         return;
     }
 
+    if (context->supportsProtectedContent()) {
+        return;
+    }
+
     constexpr uint32_t kProblemSize = 256;
     constexpr uint32_t kWorkgroupSize = 256;
 
