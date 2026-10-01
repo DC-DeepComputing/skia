@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f7fd68c_a0e06096",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-01T20:27:34Z",
+      "side": 1,
+      "message": "Just checking: Is there a risk of integer overflow from this multiplication?",
+      "range": {
+        "startLine": 296,
+        "startChar": 0,
+        "endLine": 297,
+        "endChar": 74
+      },
+      "revId": "e15da3bc506a66c34a552051a2a00ca4c949b8fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
