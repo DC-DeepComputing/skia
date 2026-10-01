@@ -12,8 +12,6 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
 
-#include <atomic>
-#include <cstdint>
 #include <functional>
 #include <memory>
 
@@ -26,10 +24,6 @@ public:
     // Add a task to this SkTaskGroup.
     void add(std::function<void()> fn, int workList = 0);
 
-    // Returns true if all Tasks previously add()ed to this SkTaskGroup have run.
-    // It is safe to reuse this SkTaskGroup once done().
-    bool done() const;
-
     // Block until done().
     void wait();
 
@@ -41,7 +35,6 @@ public:
     };
 
 private:
-    std::atomic<int32_t> fPending;
     SkExecutor&          fExecutor;
 };
 
