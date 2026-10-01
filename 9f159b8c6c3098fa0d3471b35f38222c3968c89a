@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f73ce13c_81a338ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-10-01T10:58:38Z",
+      "side": 1,
+      "message": "Hey Florin, looking at enabling more fuzzing for the rust png Android codec and I’ve ran into this issue while doing so",
+      "revId": "9f159b8c6c3098fa0d3471b35f38222c3968c89a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
