@@ -58,13 +58,15 @@ You can run a command like:
 bazel build //example:bazel_test_exe
 ```
 
-When building for Mac, we require the user to have Xcode installed on their device so that we can
-use system headers and Mac-specific includes when compiling. Googlers, as per usual, follow the
-instructions at [go/skia-corp-xcode](http://go/skia-corp-xcode) to install Xcode.
+We leverage CIPD directly (via depot_tools) to fetch a pinned version of the Mac SDK
+and Apple linker matching the version used by our CI bots, without requiring `sudo` or
+system-level Xcode installs. If `cipd` is detected in your `$PATH` (typically via `depot_tools`),
+Bazel will automatically download and unpack the pinned SDK into its external cache.
 
-Our Bazel toolchain assumes you have `xcode-select` in your path so that we may symlink the
-user's current Xcode directory in the toolchain's cache. Make sure `xcode-select -p`
-returns a valid path.
+If `cipd` is not available or fails (e.g. for external open-source contributors
+without CIPD access), the toolchain falls back to discovering your locally installed Xcode or
+Command Line Tools via `xcode-select -p`. Make sure `xcode-select -p` returns a valid path
+in that case.
 
 ## .bazelrc Tips
 You should make a [.bazelrc file](https://bazel.build/docs/bazelrc) in your home directory where
