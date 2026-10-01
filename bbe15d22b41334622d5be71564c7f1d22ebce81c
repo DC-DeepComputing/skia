@@ -22,6 +22,30 @@
       },
       "revId": "bbe15d22b41334622d5be71564c7f1d22ebce81c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23a6b554_8b31967e",
+        "filename": "src/codec/SkPngRustCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-10-01T16:51:20Z",
+      "side": 1,
+      "message": "Good question!\n\nI think it is safer to leave it as-is for now, I’ve updated it to this because that’s what [libpng](https://source.corp.google.com/piper///depot/google3/third_party/skia/HEAD/src/codec/SkPngCodec.cpp;l\u003d447) does.\n\nThere is also some complexity about doing this for interlaced PNGs at the moment ([b/562804783](http://b/562804783)), `fRowsWrittenToOutput` is not incremented during pass decoding, so setting it on success would overwrite `*rowsDecoded` with 0 on a complete interlaced decode which may cause issues. Once this issue is fixed it may be relevant to do this as a follow-up if there is no harm in setting it on success.\n\nAlthough `SkCodec`’s contract is a bit ambiguous about these cases:\n\n[incrementalDecode](https://source.corp.google.com/piper///depot/google3/third_party/skia/HEAD/include/codec/SkCodec.h;l\u003d514?q\u003dSkCodec.h):\n\n\u003e Optional output variable returning the total number of lines initialized. Only meaningful if this method returns kIncompleteInput. Otherwise the implementation may not set it.\n\n[onGetPixels](https://source.corp.google.com/piper///depot/google3/third_party/skia/HEAD/include/codec/SkCodec.h;l\u003d871):\n\n\u003e When the encoded image stream is incomplete, this function will return kIncompleteInput and rowsDecoded will be set to the number of scanlines that were successfully decoded. This will allow getPixels() to fill the uninitialized memory.\n\nIt currently says \"only meaningful if this method returns kIncompleteInput\", but I think this might not be quite accurate, e.g. it looks like `rowsDecoded` is also used for [`kErrorInInput`](https://source.corp.google.com/piper///depot/google3/third_party/skia/HEAD/src/codec/SkCodec.cpp;l\u003d552).\n\nPerhaps a good idea to update the documentation as a follow-up CL?",
+      "parentUuid": "c1b905cb_5e92f0a1",
+      "range": {
+        "startLine": 1144,
+        "startChar": 8,
+        "endLine": 1144,
+        "endChar": 26
+      },
+      "revId": "bbe15d22b41334622d5be71564c7f1d22ebce81c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
