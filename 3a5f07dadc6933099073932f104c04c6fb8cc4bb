@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50d4abf2_a050a7fb",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-01T16:16:00Z",
+      "side": 1,
+      "message": "Well I guess this flag also has impact even without calling start/end capture. So I think the comment should say something like \"This enables support for capturing SkCaptures. The client still must call startCapture and endCapture on the SkContext.\"\n\nI don\u0027t think we need to talk about draw calls, surfaces, recorders, etc. here. All those details should live in the documentation for SkCapture itself",
+      "parentUuid": "19b503c1_8129c361",
+      "range": {
+        "startLine": 56,
+        "startChar": 33,
+        "endLine": 56,
+        "endChar": 34
+      },
+      "revId": "3a5f07dadc6933099073932f104c04c6fb8cc4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ad5ef5c_36bafeb9",
         "filename": "src/core/SkContext.cpp",
         "patchSetId": 2
@@ -144,6 +168,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "871eade8_062dacde",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-01T16:16:00Z",
+      "side": 1,
+      "message": "Isn\u0027t that doing a return there as well?",
+      "parentUuid": "fa8c4f41_a3346d48",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 46,
+        "endChar": 55
+      },
+      "revId": "3a5f07dadc6933099073932f104c04c6fb8cc4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "57fb285a_b2d0ff9b",
         "filename": "src/core/SkSharedContext.h",
         "patchSetId": 2
@@ -179,6 +227,30 @@
       "side": 1,
       "message": "could we implement that in a follow up CL? Still figuring out the hierarchy of things. I can definitely implement that here if that\u0027s preferred 👍",
       "parentUuid": "57fb285a_b2d0ff9b",
+      "range": {
+        "startLine": 63,
+        "startChar": 27,
+        "endLine": 63,
+        "endChar": 43
+      },
+      "revId": "3a5f07dadc6933099073932f104c04c6fb8cc4bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff4978bc_159cf5c9",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-01T16:16:00Z",
+      "side": 1,
+      "message": "I think there is still a lot of open discussion on exactly where the capture manager should be owned (Context, shared context, per recorder, etc.). And that also ties directly into the thread safety requirements. I wonder if for right now we just put the capture manager on SkContext just to mimic what currently is happening on Context. Then as the other discussions continue we can better place it.",
+      "parentUuid": "2f749f74_d0f5c336",
       "range": {
         "startLine": 63,
         "startChar": 27,
