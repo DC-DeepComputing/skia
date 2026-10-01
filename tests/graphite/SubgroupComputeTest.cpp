@@ -139,17 +139,20 @@ struct Subgroup {
 class SubgroupTestStep final : public ComputeStep {
 public:
     // `body` must assign the uint `result`. It may read `inData[i]`, which holds `input[i]`.
-    SubgroupTestStep(ValueType type, std::vector<uint32_t> input, std::string body)
+    SubgroupTestStep(ValueType type,
+                     std::vector<uint32_t> input,
+                     std::string body,
+                     std::optional<uint32_t> preferredSubgroupSize = std::nullopt)
             : ComputeStep(
                       /*name=*/"SubgroupTestStep",
                       /*localDispatchSize=*/{kWorkgroupSize, 1, 1},
                       /*resources=*/
                       {{
-                              /*type=*/ResourceType::kStorageBuffer,
-                              /*flow=*/DataFlow::kPrivate,
-                              /*policy=*/ResourcePolicy::kMapped,
-                              /*sksl=*/sksl_input_block(type),
-                      },
+                               /*type=*/ResourceType::kStorageBuffer,
+                               /*flow=*/DataFlow::kPrivate,
+                               /*policy=*/ResourcePolicy::kMapped,
+                               /*sksl=*/sksl_input_block(type),
+                       },
                        {
                                /*type=*/ResourceType::kStorageBuffer,
                                /*flow=*/DataFlow::kShared,
@@ -158,7 +161,8 @@ public:
                                /*sksl=*/"outputBlock { uint4 outData[]; }",
                        }})
             , fInput(std::move(input))
-            , fBody(std::move(body)) {
+            , fBody(std::move(body))
+            , fPreferredSubgroupSize(preferredSubgroupSize) {
         SkASSERT(fInput.size() == kWorkgroupSize);
     }
 
@@ -188,9 +192,14 @@ public:
 
     WorkgroupSize calculateGlobalDispatchSize() const override { return WorkgroupSize(1, 1, 1); }
 
+    std::optional<uint32_t> preferredSubgroupSize(const Caps&) const override {
+        return fPreferredSubgroupSize;
+    }
+
 private:
     std::vector<uint32_t> fInput;
     std::string fBody;
+    std::optional<uint32_t> fPreferredSubgroupSize;
 };
 
 void* map_buffer(Context* context, GraphiteTestContext* testContext, Buffer* buffer,
@@ -621,6 +630,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ComputeSupportRequirementsTest,
     const Caps* caps = context->priv().caps();
     const bool subgroupSupport = caps->shaderCaps()->fSubgroupSupport;
     REPORTER_ASSERT(reporter, caps->computeSupport() == subgroupSupport);
+    REPORTER_ASSERT(reporter, !caps->subgroupSizeControlSupport() || caps->computeSupport());
     if (caps->computeSupport()) {
         REPORTER_ASSERT(reporter,
                         caps->maxComputeInvocationsPerWorkgroup() >=
@@ -630,5 +640,53 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ComputeSupportRequirementsTest,
         REPORTER_ASSERT(
                 reporter,
                 caps->maxComputeWorkgroupStorageSize() >= Caps::kMinComputeWorkgroupStorageSize);
+    }
+}
+
+// A preferred subgroup size is honored as Caps::resolveSubgroupSize() predicts: every invocation
+// reports the resolved size, and every subgroup is full when Caps::hasFullSubgroups() says so.
+// Without subgroup size control (Metal, Dawn) the preference is ignored and the size varies.
+DEF_SUBGROUP_TEST(SubgroupPreferredSizeTest, reporter, context, testContext) {
+    const Caps* caps = context->priv().caps();
+    if (!caps->shaderCaps()->fSubgroupSupport) {
+        return;
+    }
+    const WorkgroupSize localSize(kWorkgroupSize, 1, 1);
+    std::vector<uint32_t> preferences = {32};
+    if (caps->subgroupSizeControlSupport()) {
+        preferences = {caps->minSubgroupSize(), caps->maxSubgroupSize()};
+    }
+    for (uint32_t preferred : preferences) {
+        const uint32_t resolved = caps->resolveSubgroupSize(preferred, localSize);
+        REPORTER_ASSERT(reporter, caps->subgroupSizeControlSupport() || resolved == 0);
+        const bool full = caps->hasFullSubgroups(resolved, localSize);
+        SubgroupTestStep step(ValueType::kUInt,
+                              test_values(ValueType::kUInt),
+                              "result = sk_SubgroupSize;",
+                              preferred);
+        std::vector<InvocationResult> results = dispatch(reporter, context, testContext, &step);
+        if (results.empty()) {
+            return;
+        }
+        for (const auto& [subgroupID, subgroup] : group_by_subgroup(reporter, results)) {
+            if (resolved) {
+                REPORTER_ASSERT(reporter,
+                                subgroup.fSize == resolved,
+                                "preferred %u: subgroup %u has size %u, expected %u",
+                                preferred,
+                                subgroupID,
+                                subgroup.fSize,
+                                resolved);
+            }
+            if (full) {
+                REPORTER_ASSERT(reporter,
+                                subgroup.fInvocations.size() == subgroup.fSize,
+                                "preferred %u: subgroup %u has %zu of %u invocations",
+                                preferred,
+                                subgroupID,
+                                subgroup.fInvocations.size(),
+                                subgroup.fSize);
+            }
+        }
     }
 }

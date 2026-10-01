@@ -499,7 +499,8 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan11, reporter) {
 
     CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, subgroupSizeControl);
-    CHECK_FEATURE_DISABLED(
+    // Enabled when supported, for compute pipelines with a required subgroup size.
+    CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, computeFullSubgroups);
 
     CHECK_FEATURE_ENABLED(FRAME_BOUNDARY_FEATURES_EXT,
@@ -665,7 +666,8 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan12, reporter) {
 
     CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, subgroupSizeControl);
-    CHECK_FEATURE_DISABLED(
+    // Enabled when supported, for compute pipelines with a required subgroup size.
+    CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, computeFullSubgroups);
 
     CHECK_FEATURE_ENABLED(FRAME_BOUNDARY_FEATURES_EXT,
@@ -780,7 +782,7 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan13, reporter) {
 
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, pipelineCreationCacheControl);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, subgroupSizeControl);
-    CHECK_FEATURE_DISABLED(VULKAN_1_3_FEATURES, Vulkan13Features, computeFullSubgroups);
+    CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, computeFullSubgroups);
     CHECK_NOT_CHAINED(SUBGROUP_SIZE_CONTROL_FEATURES);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, synchronization2);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, dynamicRendering);
@@ -971,7 +973,7 @@ DEF_TEST(VkPreferredFeaturesTest_BasicVulkan14, reporter) {
 
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, pipelineCreationCacheControl);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, subgroupSizeControl);
-    CHECK_FEATURE_DISABLED(VULKAN_1_3_FEATURES, Vulkan13Features, computeFullSubgroups);
+    CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, computeFullSubgroups);
     CHECK_NOT_CHAINED(SUBGROUP_SIZE_CONTROL_FEATURES);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, synchronization2);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, dynamicRendering);
@@ -1207,7 +1209,6 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan11, reporter) {
     // Features enabled by the app must remain enabled
     CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, subgroupSizeControl);
-    // Skia only disables computeFullSubgroups in its own struct; the app's struct is untouched.
     CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, computeFullSubgroups);
     CHECK_FEATURE_ENABLED(SHADER_OBJECT_FEATURES_EXT, ShaderObjectFeaturesEXT, shaderObject);
@@ -1425,7 +1426,6 @@ DEF_TEST(VkPreferredFeaturesTest_CustomVulkan12, reporter) {
     // Features enabled by the app must remain enabled
     CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, subgroupSizeControl);
-    // Skia only disables computeFullSubgroups in its own struct; the app's struct is untouched.
     CHECK_FEATURE_ENABLED(
             SUBGROUP_SIZE_CONTROL_FEATURES, SubgroupSizeControlFeatures, computeFullSubgroups);
     CHECK_FEATURE_ENABLED(SHADER_OBJECT_FEATURES_EXT, ShaderObjectFeaturesEXT, shaderObject);
@@ -1930,7 +1930,7 @@ DEF_TEST(VkPreferredFeaturesTest_EmptyEnableChain, reporter) {
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, synchronization2);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, pipelineCreationCacheControl);
     CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, subgroupSizeControl);
-    CHECK_FEATURE_DISABLED(VULKAN_1_3_FEATURES, Vulkan13Features, computeFullSubgroups);
+    CHECK_FEATURE_ENABLED(VULKAN_1_3_FEATURES, Vulkan13Features, computeFullSubgroups);
     CHECK_NOT_CHAINED(SUBGROUP_SIZE_CONTROL_FEATURES);
 
     CHECK_FEATURE_ENABLED(RASTERIZATION_ORDER_ATTACHMENT_ACCESS_FEATURES_EXT,

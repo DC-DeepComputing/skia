@@ -134,7 +134,22 @@ sk_sp<VulkanComputePipeline> VulkanComputePipeline::Make(VulkanSharedContext* sh
     pipelineInfo.stage.module = shaderModule;
     pipelineInfo.stage.pName = "main";
     pipelineInfo.layout = pipelineLayout;
-    if (outInterface.fUseSubgroups) {
+    // A required size applies whether or not the shader uses subgroup operations, because it also
+    // affects performance (e.g. register allocation). When there is one, sk_SubgroupSize reports
+    // it, so ALLOW_VARYING_SUBGROUP_SIZE isn't needed (Vulkan forbids combining the two).
+    const Caps* caps = sharedContext->caps();
+    const uint32_t requiredSubgroupSize = caps->resolveSubgroupSize(
+            step->preferredSubgroupSize(*caps), step->localDispatchSize());
+    VkPipelineShaderStageRequiredSubgroupSizeCreateInfo requiredSubgroupSizeInfo = {};
+    if (requiredSubgroupSize) {
+        requiredSubgroupSizeInfo.sType =
+                VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_REQUIRED_SUBGROUP_SIZE_CREATE_INFO;
+        requiredSubgroupSizeInfo.requiredSubgroupSize = requiredSubgroupSize;
+        pipelineInfo.stage.pNext = &requiredSubgroupSizeInfo;
+        if (caps->hasFullSubgroups(requiredSubgroupSize, step->localDispatchSize())) {
+            pipelineInfo.stage.flags |= VK_PIPELINE_SHADER_STAGE_CREATE_REQUIRE_FULL_SUBGROUPS_BIT;
+        }
+    } else if (outInterface.fUseSubgroups) {
         // This flag is required for correctness, not performance. Without it (and without a
         // required subgroup size), a SPIR-V module older than 1.6 sees SubgroupSize equal to the
         // device-wide VkPhysicalDeviceSubgroupProperties::subgroupSize, but drivers that compile
@@ -144,7 +159,7 @@ sk_sp<VulkanComputePipeline> VulkanComputePipeline::Make(VulkanSharedContext* sh
         // driver really picked. SPIR-V 1.6 modules get this behavior implicitly, but SkSL emits
         // SPIR-V 1.3. The flag requires subgroupSizeControl, which fSubgroupSupport requires, and
         // SkSL only compiles subgroup use when fSubgroupSupport is set.
-        SkASSERT(sharedContext->caps()->shaderCaps()->fSubgroupSupport);
+        SkASSERT(caps->shaderCaps()->fSubgroupSupport);
         pipelineInfo.stage.flags |= VK_PIPELINE_SHADER_STAGE_CREATE_ALLOW_VARYING_SUBGROUP_SIZE_BIT;
     }
 

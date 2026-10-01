@@ -17,6 +17,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -30,6 +31,7 @@ struct BufferWriter;
 
 namespace skgpu::graphite {
 
+class Caps;
 class UniformManager;
 
 /**
@@ -252,6 +254,19 @@ public:
     // dependent. On Metal, this value should be used when invoking the dispatch API call. On all
     // other backends, this value will be baked into the pipeline.
     WorkgroupSize localDispatchSize() const { return fLocalDispatchSize; }
+
+    // Returns this step's preferred subgroup size (a power of two), or nothing to let the driver
+    // pick, in which case the size may vary. This is the default. For example, a step might prefer
+    // 16 on Intel GPUs, where wider subgroups have fewer registers per invocation.
+    //
+    // Caps::resolveSubgroupSize() gives the size the pipeline actually gets: the preference is
+    // clamped to what the device supports, and it's ignored without subgroup size control (only
+    // Vulkan has it). So the shader should read sk_SubgroupSize rather than assume the
+    // preference, unless the step checks the resolved size. The result must only depend on
+    // `caps`, because it isn't part of the pipeline key.
+    virtual std::optional<uint32_t> preferredSubgroupSize(const Caps&) const {
+        return std::nullopt;
+    }
 
     bool supportsNativeShader() const { return SkToBool(fFlags & Flags::kSupportsNativeShader); }
 
