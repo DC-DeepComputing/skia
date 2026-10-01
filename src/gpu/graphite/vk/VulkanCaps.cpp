@@ -218,6 +218,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fSupportsFrameBoundary = enabledFeatures.fFrameBoundary;
 
     fSupportsPipelineCreationCacheControl = enabledFeatures.fPipelineCreationCacheControl;
+    fSupportsPipelineProtectedAccess = enabledFeatures.fPipelineProtectedAccess;
 
     if (enabledFeatures.fAdvancedBlendModes) {
         fBlendEqSupport = enabledFeatures.fCoherentAdvancedBlendModes
@@ -462,6 +463,13 @@ VulkanCaps::EnabledFeatures VulkanCaps::getEnabledFeatures(
                             const VkPhysicalDeviceProtectedMemoryFeatures*>(pNext);
                     enabled.fProtectedMemory = feature->protectedMemory;
                     break;
+                }
+                case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_PROTECTED_ACCESS_FEATURES_EXT: {
+                    const auto *feature = reinterpret_cast<
+                            const VkPhysicalDevicePipelineProtectedAccessFeaturesEXT*>(pNext);
+                    enabled.fPipelineProtectedAccess = feature->pipelineProtectedAccess;
+                    break;
+
                 }
                 default:
                     break;
