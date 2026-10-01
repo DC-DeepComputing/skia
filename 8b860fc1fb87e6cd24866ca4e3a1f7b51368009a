@@ -16,6 +16,24 @@
       "message": "LGTM but removing auto-submit since we need the Android change to land first",
       "revId": "8b860fc1fb87e6cd24866ca4e3a1f7b51368009a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d6d4cf_f0379246",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19659
+      },
+      "writtenOn": "2026-10-01T11:21:28Z",
+      "side": 1,
+      "message": "Thanks! The Android side change ag/42516605 has been submitted now",
+      "parentUuid": "644d8bef_49addedd",
+      "revId": "8b860fc1fb87e6cd24866ca4e3a1f7b51368009a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
