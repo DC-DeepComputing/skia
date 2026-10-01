@@ -255,3 +255,76 @@ DEF_GM(return new ParagraphGM(kTimeLayout);)
 DEF_GM(return new ParagraphGM(kUseUnderline);)
 DEF_GM(return new ParagraphGM(kShowVisitor);)
 DEF_GM(return new ParagraphGM(kShowVisitor | kUseUnderline);)
+
+DEF_SIMPLE_GM(skparagraph_diacritic_styles, canvas, 600, 300) {
+    sk_sp<SkFontMgr> fontmgr = ToolUtils::TestFontMgr();
+    if (fontmgr->countFamilies() == 0) {
+        return;
+    }
+    auto collection = sk_make_sp<skia::textlayout::FontCollection>();
+    collection->setDefaultFontManager(std::move(fontmgr));
+
+    auto unicode = get_unicode();
+    if (!unicode) {
+        return;
+    }
+
+    skia::textlayout::ParagraphStyle paraStyle;
+    auto builder = skia::textlayout::ParagraphBuilderImpl::make(paraStyle, collection, unicode);
+    if (!builder) {
+        return;
+    }
+
+    skia::textlayout::TextStyle styleBase;
+    styleBase.setFontFamilies({SkString("Roboto")});
+    styleBase.setFontSize(80);
+    styleBase.setColor(SK_ColorBLACK);
+
+    skia::textlayout::TextStyle styleRed;
+    styleRed.setFontFamilies({SkString("Roboto")});
+    styleRed.setFontSize(80);
+    styleRed.setColor(SK_ColorRED);
+
+    skia::textlayout::TextStyle styleBlue;
+    styleBlue.setFontFamilies({SkString("Roboto")});
+    styleBlue.setFontSize(80);
+    styleBlue.setColor(SK_ColorBLUE);
+
+    // 1. Single style
+    builder->pushStyle(styleBase);
+    builder->addText("\u062C\u064E\u0627\u0653\u0647\u064F"); // جَآهُ
+    builder->pop();
+
+    builder->pushStyle(styleBase);
+    builder->addText("   ");
+    builder->pop();
+
+    // 2. Split styles: consonants in red, diacritics in blue
+    builder->pushStyle(styleRed);
+    builder->addText("\u062C"); // Jeem
+    builder->pop();
+
+    builder->pushStyle(styleBlue);
+    builder->addText("\u064E"); // Fatha
+    builder->pop();
+
+    builder->pushStyle(styleRed);
+    builder->addText("\u0627"); // Alef
+    builder->pop();
+
+    builder->pushStyle(styleBlue);
+    builder->addText("\u0653"); // Maddah
+    builder->pop();
+
+    builder->pushStyle(styleRed);
+    builder->addText("\u0647"); // Heh
+    builder->pop();
+
+    builder->pushStyle(styleBlue);
+    builder->addText("\u064F"); // Damma
+    builder->pop();
+
+    auto paragraph = builder->Build();
+    paragraph->layout(500);
+    paragraph->paint(canvas, 20, 20);
+}
