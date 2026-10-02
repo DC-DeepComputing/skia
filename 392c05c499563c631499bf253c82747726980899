@@ -22,6 +22,30 @@
       },
       "revId": "392c05c499563c631499bf253c82747726980899",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "825e2f63_06c4792a",
+        "filename": "src/gpu/graphite/render/CoverBoundsRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T20:10:06Z",
+      "side": 1,
+      "message": "The CoverBoundsRenderStep constructor is private so make_unique can\u0027t see it :/",
+      "parentUuid": "c0d3b093_5d28bdf3",
+      "range": {
+        "startLine": 62,
+        "startChar": 11,
+        "endLine": 62,
+        "endChar": 26
+      },
+      "revId": "392c05c499563c631499bf253c82747726980899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
