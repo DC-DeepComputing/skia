@@ -31,4 +31,12 @@ std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
     return Decode(SkMemoryStream::Make(std::move(data)), result);
 }
 
+bool GetHotSpot(const SkCodec* codec, int frameIndex, SkIPoint* hotSpot) {
+    if (!codec || !hotSpot || frameIndex < 0 ||
+        codec->getEncodedFormat() != SkEncodedImageFormat::kICO) {
+        return false;
+    }
+    return static_cast<const SkIcoRustCodec*>(codec)->getHotSpot(frameIndex, hotSpot);
+}
+
 }  // namespace SkIcoRustDecoder
