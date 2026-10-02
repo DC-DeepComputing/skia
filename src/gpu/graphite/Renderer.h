@@ -246,7 +246,7 @@ public:
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 
     bool usesStencil() const {
-        return fDepthStencilSettings.stencilEnabled();
+        return fDepthStencilSettings.second.enabled();
     }
 
     // This is true if the RenderStep forces a renderpass to have a depth attachment, which is
@@ -259,7 +259,7 @@ public:
         // to back, and not strictly-speaking a requirement of the RenderStep's internal behavior.
         // In the event that the inner fill isn't recorded, we don't want to force depth.
         // return !SkToBool(fFlags & (Flags::kAllowsSelfIntersection | Flags::kNoSelfIntersections));
-        return fDepthStencilSettings.depthEnabled();
+        return fDepthStencilSettings.first.enabled();
     }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const {
@@ -332,7 +332,7 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
                SkEnumBitMask<Flags> flags,
                std::initializer_list<Uniform> uniforms,
                PrimitiveType primitiveType,
-               DepthStencilSettings depthStencilSettings,
+               StencilSettings stencilSettings,
                SkSpan<const Attribute> staticAttrs,
                SkSpan<const Attribute> appendAttrs,
                SkSpan<const Uniform> storageUniforms = {},
