@@ -176,6 +176,7 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
     };
     std::vector<CodecEntry> entries;
     entries.reserve(numImages);
+    bool hasIncompleteEntry = false;
 
     // Construct a candidate codec for each of the embedded images
     // Entries are already sorted by offset in Rust for proper size calculation
@@ -192,6 +193,7 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
         }
         if (offset >= totalSize) {
             SkCodecPrintf("Warning: could not skip to ico offset.\n");
+            hasIncompleteEntry = true;
             break;
         }
         bytesRead = offset;
@@ -230,6 +232,7 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
         // the caller see kIncompleteInput below.
         if (dataTruncated) {
             SkCodecPrintf("Warning: ico entry truncated; skipping.\n");
+            hasIncompleteEntry = true;
             continue;
         }
 
@@ -259,29 +262,34 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
             codec = SkBmpRustCodec::MakeFromStream(std::move(entryStream), &entryResult,
                                                    SkBmpRustCodec::StreamType::kICO);
         }
+        if (!codec && entryResult == kIncompleteInput) {
+            hasIncompleteEntry = true;
+        }
 
         if (nullptr != codec) {
             const SkISize directorySize = SkISize::Make(entry.width == 0 ? 256 : entry.width,
                                                         entry.height == 0 ? 256 : entry.height);
             const SkISize payloadSize = codec->dimensions();
-            if (payloadSize.width() > dirMaxWidth || payloadSize.height() > dirMaxHeight) {
-                SkCodecPrintf("Warning: ico payload dimensions exceed canvas; skipping.\n");
+            if (payloadSize.width() > directorySize.width() ||
+                payloadSize.height() > directorySize.height()) {
+                SkCodecPrintf("Warning: ico payload dimensions exceed directory size; skipping.\n");
                 continue;
             }
-            const SkISize reportedFrameSize =
-                    payloadSize == directorySize ? payloadSize : directorySize;
 
             // Store codec with its bit count for sorting
             entries.push_back({
                 std::move(codec),
                 std::move(bmpData),
-                reportedFrameSize,
+                directorySize,
                 entry.bit_count,
             });
         }
     }
 
     if (entries.empty()) {
+        if (hasIncompleteEntry) {
+            *result = kIncompleteInput;
+        }
         SkCodecPrintf("Error: could not find any valid embedded ico codecs.\n");
         return nullptr;
     }
