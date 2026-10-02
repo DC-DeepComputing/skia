@@ -7,13 +7,19 @@
 
 #include "tests/Test.h"
 
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/core/SkStrokeRec.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
+#include "tests/graphite/sparse_strips/CullingRepros.h"
 
 #include <cmath>
 
@@ -405,7 +411,7 @@ template <FlattenMode kMode> class FlattenTestRunner {
         const float kViewH = 100.0f;
 
         enum class Expect {
-            kCulled,      // Removed: Init NaN + Start pt + Cull NaN + Last pt + Start pt (5 points)
+            kCulled,      // Removed: Start pt + Cull NaN (2 points)
             kSimplified,  // Left side simplification: Start pt + End pt + Close pt + NaN (4 points)
             kSubdivided   // Intersects viewport: Subdivided curve (> 4 points)
         };
@@ -420,8 +426,8 @@ template <FlattenMode kMode> class FlattenTestRunner {
             if (expect == Expect::kCulled) {
                 REPORTER_ASSERT(
                         reporter,
-                        count == 5,
-                        "[%s] Expected curve to be entirely culled (5 points), got %d points",
+                        count == 2,
+                        "[%s] Expected curve to be entirely culled (2 points), got %d points",
                         testName,
                         count);
             } else if (expect == Expect::kSimplified) {
@@ -460,6 +466,113 @@ template <FlattenMode kMode> class FlattenTestRunner {
         checkPath(SkPathBuilder().moveTo(-20, -20).quadTo(120, -20, 120, 120).detach(),
                   Expect::kSubdivided,
                   "Crosses_Viewport");
+    }
+
+    // Returns the winding of `polyline` at `pt`, accumulated from the lines that cross the horizontal
+    // ray extending left from `pt`. Flatten only culls geometry that lies entirely above, right of, or
+    // below the clip, none of which can cross this ray when `pt` is inside the clip. So for such
+    // points, this must match the winding of the source path.
+    static int PolylineWindingAt(const Polyline& polyline, SkPoint pt) {
+        int winding = 0;
+        for (auto [line, index] : polyline) {
+            // Half-open in y, so a vertex shared by two lines is only counted once.
+            const bool down = line.p0.fY <= pt.fY && pt.fY < line.p1.fY;
+            const bool up = line.p1.fY <= pt.fY && pt.fY < line.p0.fY;
+            if (!down && !up) {
+                continue;
+            }
+            const float t = (pt.fY - line.p0.fY) / (line.p1.fY - line.p0.fY);
+            if (line.p0.fX + t * (line.p1.fX - line.p0.fX) < pt.fX) {
+                winding += down ? 1 : -1;
+            }
+        }
+        return winding;
+    }
+
+    // Flattens `path` with culling and verifies that the culled polyline fills the same samples as
+    // the source path on a grid of points inside `clip`.
+    static void CheckCulledFill(skiatest::Reporter* reporter,
+                                const SkPath& path,
+                                const SkMatrix& ctm,
+                                const SkIRect& clip,
+                                const char* testName) {
+        Flatten flattener;
+        Polyline polyline;
+        // Note: Flatten only supports clips anchored at the origin at this point.
+        SkASSERT(clip.fLeft == 0 && clip.fTop == 0);
+        flattener.processPaths<kMode>(path,
+                                      ctm,
+                                      static_cast<float>(clip.width()),
+                                      static_cast<float>(clip.height()),
+                                      &polyline);
+
+        const SkPath devicePath = path.makeTransform(ctm);
+        const SkPathFillType fillType = devicePath.getFillType();
+
+        constexpr int kSamplesPerAxis = 16;
+        int mismatches = 0;
+        SkPoint firstMismatch = {0.0f, 0.0f};
+        for (int j = 0; j < kSamplesPerAxis; ++j) {
+            for (int i = 0; i < kSamplesPerAxis; ++i) {
+                const SkPoint pt = {clip.fLeft + (i + 0.5f) * clip.width() / kSamplesPerAxis,
+                                    clip.fTop + (j + 0.5f) * clip.height() / kSamplesPerAxis};
+                const int winding = PolylineWindingAt(polyline, pt);
+                bool inside = SkPathFillType_IsEvenOdd(fillType) ? (winding & 1) != 0
+                                                                 : winding != 0;
+                if (SkPathFillType_IsInverse(fillType)) {
+                    inside = !inside;
+                }
+                if (inside != devicePath.contains(pt.fX, pt.fY) && mismatches++ == 0) {
+                    firstMismatch = pt;
+                }
+            }
+        }
+
+        REPORTER_ASSERT(reporter,
+                        mismatches == 0,
+                        "[%s] Culled polyline (%d points) disagrees with the path's fill at %d of %d "
+                        "samples, first at (%f, %f)",
+                        testName,
+                        polyline.points().size(),
+                        mismatches,
+                        kSamplesPerAxis * kSamplesPerAxis,
+                        firstMismatch.fX,
+                        firstMismatch.fY);
+    }
+
+    // A contour whose verbs are all culled must still emit its closing edge whenever that edge is not
+    // itself culled, since it may be the only geometry contributing winding inside the clip. This
+    // only matters for open contours: an explicit close() reaches Flatten as a (never culled) line.
+    static void TestCulledContourClosingEdge(skiatest::Reporter* reporter) {
+        const SkIRect clip = SkIRect::MakeWH(100, 100);
+
+        // Closing edge runs down the left of the clip, covering all of it.
+        CheckCulledFill(reporter,
+                        CullingRepros::AllVerbsCulledContour(clip, /*close=*/false),
+                        SkMatrix::I(),
+                        clip,
+                        "AllVerbsCulled_ClosingEdgeLeft_Open");
+        CheckCulledFill(reporter,
+                        CullingRepros::AllVerbsCulledContour(clip, /*close=*/true),
+                        SkMatrix::I(),
+                        clip,
+                        "AllVerbsCulled_ClosingEdgeLeft_Closed");
+
+        // Closing edge crosses the clip at x = 50, covering only its right half.
+        CheckCulledFill(reporter,
+                        SkPathBuilder()
+                                .moveTo(50, -20)
+                                .cubicTo(70, -60, 100, -60, 120, -20)  // Above
+                                .cubicTo(160, 20, 160, 80, 120, 120)   // Right
+                                .cubicTo(100, 160, 70, 160, 50, 120)   // Below
+                                .detach(),
+                        SkMatrix::I(),
+                        clip,
+                        "AllVerbsCulled_ClosingEdgeCrossesClip");
+
+        // Exact inputs captured from the viewer, with a non-identity ctm.
+        const CullingRepros::Repro repro = CullingRepros::DeskTiger8Capture3Draw2();
+        CheckCulledFill(reporter, repro.fPath, repro.fCtm, repro.fClip, "DeskTiger8Capture3Draw2");
     }
 
     static void TestTrickyStrokes(skiatest::Reporter* reporter) {
@@ -644,6 +757,7 @@ public:
                            "CulledEndQuadClosed");
 
         TestCulling(reporter);
+        TestCulledContourClosingEdge(reporter);
         TestTrickyStrokes(reporter);
     }
 };
