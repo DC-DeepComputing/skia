@@ -412,6 +412,9 @@ def copy_build_products(api, src, dst):
         api.vars.swarming_out_dir.joinpath('swiftshader_out'),
         util.DEFAULT_BUILD_PRODUCTS)
 
+  if 'StandaloneWasm' in extra_tokens:
+    util.copy_listed_files(api, src, dst, ['*.js', '*.wasm', '*.data', '*.html'])
+
   if configuration == 'OptimizeForSize':
     util.copy_listed_files(api, src, dst, ['skottie_tool_cpu', 'skottie_tool_gpu'])
 
