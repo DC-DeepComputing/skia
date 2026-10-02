@@ -1964,6 +1964,65 @@ func (b *jobBuilder) runWasmGMTests() {
 	})
 }
 
+func (b *jobBuilder) dmStandaloneWasm() {
+	compileTaskName := b.compile()
+	workdir := CACHES_WORKDIR[0].Path
+
+	const dmWritePath = "dm-out"
+	addWritePath := func(dmFlagsJson string) string {
+		var dmFlags []string
+		if err := json.Unmarshal([]byte(dmFlagsJson), &dmFlags); err != nil {
+			log.Fatal(err)
+		}
+
+		opfsRootDir := "/opfs"
+		dmFlags = append(dmFlags, "--writePath", filepath.Join(opfsRootDir, dmWritePath))
+		newJsonBytes, err := json.Marshal(dmFlags)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return string(newJsonBytes)
+	}
+
+	b.addTask(b.Name, func(b *TaskBuilder) {
+		b.attempts(1)
+		b.usesNode()
+		b.swarmDimensions()
+		b.usesLUCIAuth()
+		b.cipd(CIPD_PKGS_GOLDCTL)
+		b.dep(compileTaskName)
+		b.timeout(60 * time.Minute)
+		b.cas(CAS_TEST)
+		b.serviceAccount(b.cfg.ServiceAccountUploadGM)
+		b.commonTestPerfAssets()
+		iid := b.internalHardwareLabel()
+		iidStr := ""
+		if iid != nil {
+			iidStr = strconv.Itoa(*iid)
+			b.recipeProp("internal_hardware_label", iidStr)
+		}
+		b.cache(CACHES_WORKDIR...)
+		b.dmFlags(iidStr)
+		b.cmd(
+			b.taskDriver("run_wasm_dm", false),
+			"--local=false",
+			"--dm_flags", addWritePath(b.recipeProperties["dm_flags"]),
+			"--dm_properties", b.recipeProperties["dm_properties"],
+			"--build", OUTPUT_BUILD,
+			"--work_cache", workdir,
+			"--project_id", "skia-swarming-bots",
+			"--task_id", specs.PLACEHOLDER_TASK_ID,
+			"--task_name", b.Name,
+			"--git_commit", specs.PLACEHOLDER_REVISION,
+			"--tryjob_id", specs.PLACEHOLDER_BUILDBUCKET_BUILD_ID,
+			"--changelist_id", specs.PLACEHOLDER_ISSUE,
+			"--patchset_order", specs.PLACEHOLDER_PATCHSET,
+			"--gold_ctl_path", "./cipd_bin_packages/goldctl",
+			"--gold_hashes_url", b.cfg.GoldHashesURL,
+		)
+	})
+}
+
 // bazelTarget contains a Bazel label (e.g. //tests:some_test) and is open for additional fields
 type bazelTarget struct {
 	label string

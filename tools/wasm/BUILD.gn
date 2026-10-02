@@ -1,0 +1,17 @@
+# Copyright 2026 Google LLC
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_set("wasm_fs_hooks") {
+  sources = [ "fs_hooks.cpp" ]
+  configs += [ "//:skia_public" ]
+  public_configs = [ ":wasm_fs_hooks_config" ]
+}
+
+config("wasm_fs_hooks_config") {
+  ldflags = [
+    "-sWASMFS",
+    "-Wl,--wrap=__main_argc_argv",
+  ]
+}
