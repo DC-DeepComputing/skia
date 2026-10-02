@@ -8969,6 +8969,123 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenWordBoundary, reporter) {
     }
 }
 
+UNIX_ONLY_TEST(SkParagraph_DiacriticWithMultipleStyles, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    // Base character 'A' (U+0041) + combining acute accent (U+0301)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+
+    TextStyle style1;
+    style1.setFontFamilies({SkString("Roboto")});
+    style1.setColor(SK_ColorRED);
+    builder.pushStyle(style1);
+    builder.addText("A", 1);
+    builder.pop();
+
+    TextStyle style2;
+    style2.setFontFamilies({SkString("Roboto")});
+    style2.setColor(SK_ColorBLUE);
+    builder.pushStyle(style2);
+    // \xCC\x81 is 2 bytes
+    builder.addText("\xCC\x81", 2);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(1000);
+    REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+
+    // The combining mark falls within the same grapheme cluster as the base character.
+    // The OneLineShaper should combine the shaping blocks, resulting in a single run.
+    REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+
+    // Check that styles were properly distributed to the TextRanges
+    REPORTER_ASSERT(reporter, impl->styles().size() == 2);
+    REPORTER_ASSERT(reporter, impl->styles()[0].fStyle.equals(style1));
+    REPORTER_ASSERT(reporter, impl->styles()[0].fRange.start == 0 && impl->styles()[0].fRange.end == 1);
+    REPORTER_ASSERT(reporter, impl->styles()[1].fStyle.equals(style2));
+    REPORTER_ASSERT(reporter, impl->styles()[1].fRange.start == 1 && impl->styles()[1].fRange.end == 3);
+}
+
+UNIX_ONLY_TEST(SkParagraph_LigatureWithMultipleStyles, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+
+    TextStyle style1;
+    style1.setFontFamilies({SkString("Roboto")});
+    style1.setColor(SK_ColorRED);
+    builder.pushStyle(style1);
+    builder.addText("ff", 2);
+    builder.pop();
+
+    TextStyle style2;
+    style2.setFontFamilies({SkString("Roboto")});
+    style2.setColor(SK_ColorBLUE);
+    builder.pushStyle(style2);
+    builder.addText("i", 1);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(1000);
+    REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+
+    // The ligature falls within a single run but spans multiple styles
+    REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+
+    // Check that styles were properly distributed to the TextRanges
+    REPORTER_ASSERT(reporter, impl->styles().size() == 2);
+    REPORTER_ASSERT(reporter, impl->styles()[0].fStyle.equals(style1));
+    REPORTER_ASSERT(reporter, impl->styles()[0].fRange.start == 0 && impl->styles()[0].fRange.end == 2);
+    REPORTER_ASSERT(reporter, impl->styles()[1].fStyle.equals(style2));
+    REPORTER_ASSERT(reporter, impl->styles()[1].fRange.start == 2 && impl->styles()[1].fRange.end == 3);
+}
+
+DEF_TEST(SkParagraph_DiacriticWithDifferentFontSubsequentText, reporter) {
+    sk_sp<TestFontCollection> fontCollection =
+            sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+
+    TextStyle style1;
+    style1.setFontFamilies({SkString("Roboto")});
+    style1.setColor(SK_ColorRED);
+    builder.pushStyle(style1);
+    builder.addText("A", 1);
+    builder.pop();
+
+    TextStyle style2;
+    style2.setFontFamilies({SkString("Ahem")});
+    style2.setColor(SK_ColorBLUE);
+    builder.pushStyle(style2);
+    const char text2[] = "\xCC\x81" "BC";
+    builder.addText(text2, strlen(text2));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(1000);
+    REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+
+    REPORTER_ASSERT(reporter, impl->runs().size() == 2);
+    if (impl->runs().size() == 2) {
+        REPORTER_ASSERT(reporter, impl->runs()[0].textRange().start == 0 && impl->runs()[0].textRange().end == 3);
+        REPORTER_ASSERT(reporter, impl->runs()[1].textRange().start == 3 && impl->runs()[1].textRange().end == 5);
+    }
+}
+
+
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkParagraph_ICU_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU::Make(), reporter);

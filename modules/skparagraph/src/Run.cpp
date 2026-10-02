@@ -295,6 +295,38 @@ SkScalar Cluster::sizeToChar(TextIndex ch) const {
     if (ch < fTextRange.start || ch >= fTextRange.end) {
         return 0;
     }
+    if (fOwner != nullptr && fRunIndex != EMPTY_RUN && fWidth > 0) {
+        // Calculate the physical width of the cluster's text up to `ch`.
+        // We use measureText on individual characters to calculate the exact proportion,
+        // rather than blindly dividing by N, which breaks multi-character ligatures.
+        const Run& run = fOwner->run(fRunIndex);
+        const SkFont& font = run.font();
+        const char* text = fOwner->text().data();
+        const char* ptr = text + fTextRange.start;
+        const char* end = text + fTextRange.end;
+        const char* split = text + ch;
+
+        SkScalar prefixWidth = 0;
+        SkScalar totalWidth = 0;
+        while (ptr < end) {
+            const char* charStart = ptr;
+            SkUnichar u = SkUTF::NextUTF8(&ptr, end);
+            if (u < 0) {
+                break;
+            }
+            // Measure standalone character to determine its contribution to the cluster's total logical width
+            SkScalar w = font.measureText(charStart, ptr - charStart, SkTextEncoding::kUTF8);
+            if (charStart < split) {
+                prefixWidth += w;
+            }
+            totalWidth += w;
+        }
+
+        if (totalWidth > 0) {
+            return SkDoubleToScalar(fWidth * (prefixWidth / totalWidth));
+        }
+    }
+
     auto shift = ch - fTextRange.start;
     auto ratio = shift * 1.0 / fTextRange.width();
 
@@ -305,6 +337,37 @@ SkScalar Cluster::sizeFromChar(TextIndex ch) const {
     if (ch < fTextRange.start || ch >= fTextRange.end) {
         return 0;
     }
+    if (fOwner != nullptr && fRunIndex != EMPTY_RUN && fWidth > 0) {
+        // Calculate the physical width of the cluster's text starting after `ch`.
+        // Proportionally distributes the cluster's width (fWidth) based on individual
+        // character measurements, preventing ligatures like 'ffi' from being cut arbitrarily.
+        const Run& run = fOwner->run(fRunIndex);
+        const SkFont& font = run.font();
+        const char* text = fOwner->text().data();
+        const char* ptr = text + fTextRange.start;
+        const char* end = text + fTextRange.end;
+
+        SkScalar suffixWidth = 0;
+        SkScalar totalWidth = 0;
+        while (ptr < end) {
+            const char* charStart = ptr;
+            SkUnichar u = SkUTF::NextUTF8(&ptr, end);
+            if (u < 0) {
+                break;
+            }
+            // Measure standalone character width
+            SkScalar w = font.measureText(charStart, ptr - charStart, SkTextEncoding::kUTF8);
+            if (charStart > (text + ch)) {
+                suffixWidth += w;
+            }
+            totalWidth += w;
+        }
+
+        if (totalWidth > 0) {
+            return SkDoubleToScalar(fWidth * (suffixWidth / totalWidth));
+        }
+    }
+
     auto shift = fTextRange.end - ch - 1;
     auto ratio = shift * 1.0 / fTextRange.width();
 
