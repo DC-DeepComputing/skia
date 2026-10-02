@@ -295,6 +295,40 @@ SkScalar Cluster::sizeToChar(TextIndex ch) const {
     if (ch < fTextRange.start || ch >= fTextRange.end) {
         return 0;
     }
+    if (fOwner != nullptr && fRunIndex != EMPTY_RUN && fWidth > 0) {
+        // Calculate the physical width of the cluster's text up to `ch`.
+        // We measure individual characters to compute exact proportions rather than
+        // dividing width equally by character count. This ensures accurate boundaries
+        // for multi-character ligatures (for example, in "ffi" when only the trailing "i"
+        // is styled with a different color, but the shaper outputs a single cluster).
+        const Run& run = fOwner->run(fRunIndex);
+        const SkFont& font = run.font();
+        const char* text = fOwner->text().data();
+        const char* ptr = text + fTextRange.start;
+        const char* end = text + fTextRange.end;
+        const char* split = text + ch;
+
+        SkScalar prefixWidth = 0;
+        SkScalar totalWidth = 0;
+        while (ptr < end) {
+            const char* charStart = ptr;
+            SkUnichar u = SkUTF::NextUTF8(&ptr, end);
+            if (u < 0) {
+                break;
+            }
+            // Measure standalone character to determine its contribution to the cluster's total logical width
+            SkScalar w = font.measureText(charStart, ptr - charStart, SkTextEncoding::kUTF8);
+            if (charStart < split) {
+                prefixWidth += w;
+            }
+            totalWidth += w;
+        }
+
+        if (totalWidth > 0) {
+            return SkDoubleToScalar(fWidth * (prefixWidth / totalWidth));
+        }
+    }
+
     auto shift = ch - fTextRange.start;
     auto ratio = shift * 1.0 / fTextRange.width();
 
@@ -305,6 +339,39 @@ SkScalar Cluster::sizeFromChar(TextIndex ch) const {
     if (ch < fTextRange.start || ch >= fTextRange.end) {
         return 0;
     }
+    if (fOwner != nullptr && fRunIndex != EMPTY_RUN && fWidth > 0) {
+        // Calculate the physical width of the cluster's text starting after `ch`.
+        // Proportionally distributes the cluster's width (fWidth) based on individual
+        // character measurements. This ensures accurate boundaries for multi-character
+        // ligatures (for example, in "ffi" when only the trailing "i" is styled with a
+        // different color, but the entire ligature forms a single cluster).
+        const Run& run = fOwner->run(fRunIndex);
+        const SkFont& font = run.font();
+        const char* text = fOwner->text().data();
+        const char* ptr = text + fTextRange.start;
+        const char* end = text + fTextRange.end;
+
+        SkScalar suffixWidth = 0;
+        SkScalar totalWidth = 0;
+        while (ptr < end) {
+            const char* charStart = ptr;
+            SkUnichar u = SkUTF::NextUTF8(&ptr, end);
+            if (u < 0) {
+                break;
+            }
+            // Measure standalone character width
+            SkScalar w = font.measureText(charStart, ptr - charStart, SkTextEncoding::kUTF8);
+            if (charStart > (text + ch)) {
+                suffixWidth += w;
+            }
+            totalWidth += w;
+        }
+
+        if (totalWidth > 0) {
+            return SkDoubleToScalar(fWidth * (suffixWidth / totalWidth));
+        }
+    }
+
     auto shift = fTextRange.end - ch - 1;
     auto ratio = shift * 1.0 / fTextRange.width();
 
