@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3554a2f0_9a27b1fa",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-02T17:58:53Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 101
+      },
+      "revId": "89949ce961480b6ea22bb4d2fd0a7cc24b253017",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3caa03d4_57dd3b32",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-02T17:58:53Z",
+      "side": 1,
+      "message": "I see this flag mentioned in a couple of render step comments but don\u0027t actually see it as a defined flag. Is this for a follow up CL?",
+      "range": {
+        "startLine": 90,
+        "startChar": 37,
+        "endLine": 90,
+        "endChar": 66
+      },
+      "revId": "89949ce961480b6ea22bb4d2fd0a7cc24b253017",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
