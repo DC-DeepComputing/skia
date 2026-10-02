@@ -37,7 +37,7 @@ sk_sp<GraphicsPipeline> GraphicsPipelineHandle::pipelineOrNull() const {
         return std::get<sk_sp<GraphicsPipeline>>(fTaskOrPipeline);
     }
     sk_sp<PipelineCreationTask> task = std::get<sk_sp<PipelineCreationTask>>(fTaskOrPipeline);
-    if (!task->fCompleted) {
+    if (!task->fCompleted.load(std::memory_order_acquire)) {
         return nullptr;
     }
     return task->fPipeline;
@@ -168,10 +168,13 @@ bool PipelineManager::InlineCompile(PipelineCreationTask* task) {
         SKIA_LOG_W("Failed to create GraphicsPipeline!");
     }
 
-    pipelineManager->signalCompleted(task);
+    // The Context thread is the only place that resolves handles so we will only
+    // ever be waiting on a task on a single thread.
+    task->fSharedContext = nullptr;
     pipelineManager->removeTask(task);
 
-    task->fSharedContext = nullptr;
+    task->fCompleted.store(true, std::memory_order_release);
+    task->fCompleted.notify_one();
     return true;
 }
 
@@ -210,7 +213,9 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHan
             std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
 
     // For the non-threaded PipelineManager, the GraphicsPipeline will have been compiled in-line
-    // so will already have been completed.
+    // so will already have been completed. For the threaded PipelineManager, resolveHandle
+    // should only ever be called from the main thread (on which Context::insertRecording is
+    // called) so only one thread should ever be waiting.
     this->potentiallyWaitOn(task.get());
     return task->fPipeline;
 }
@@ -296,37 +301,14 @@ void PipelineManager::removeTask(PipelineCreationTask* task) {
     fActiveTasks.remove(task->fPipelineKey);
 }
 
-void PipelineManager::signalCompleted(PipelineCreationTask* task) {
-    std::unique_lock<std::mutex> lock(fMutex);
-
-    // Even though 'fCompleted' is atomic it is still required that it be
-    // modified within the locked mutex lest the 'wait' in potentiallyWaitOn
-    // misses the signal.
-    task->fCompleted = true;
-
-    lock.unlock();
-    // potentiallyWaitOn should only ever be called from the main thread (on which
-    // Context::insertRecording is called) so only one thread should ever be waiting
-    fConditionVariable.notify_one();
-}
-
-
 void PipelineManager::potentiallyWaitOn(PipelineCreationTask* task) {
     // If we can preempt some thread that is scheduled to compile this Pipeline, do so rather
     // than waiting.
     if (InlineCompile(task)) {
-        SkASSERT(task->fCompleted);
         return;
     }
 
-    std::unique_lock<std::mutex> lock(fMutex);
-
-    if (task->fCompleted) {
-        return;
-    }
-    fConditionVariable.wait(lock, [task]{ return task->fCompleted.load(); });
-
-    SkASSERT(task->fCompleted);
+    task->fCompleted.wait(false, std::memory_order_acquire);
 }
 
 } // namespace skgpu::graphite
