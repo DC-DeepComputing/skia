@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79224cf1_353e4745",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-02T18:49:22Z",
+      "side": 1,
+      "message": "yea, that makes sense. I agree that AI can check a lot of the more fluid restrictions and we should work on some kind of implementation there.\n\nI have been working on AI to add more presubmit checks and scripts to improve our readability, and it\u0027s made me realize that it might not be that hard to implement parsing scripts that verify things like macro naming, fields starting with `f`, enum names, etc. I was impressed. \n\nI can send a CL for one of those example changes to you and you can let me know if the parsing code seems to complicated \n\n```\nIts funny you say Agents do better on more human readable because there is also a large camp that will claim the complete opposite. Also the more human readable the more tokens that need to be passed into the agent.\n```\n\nHonestly, I did not know about this 😂 I\u0027ve mainly heard the opposite. But that makes sense; I can see that if a text is too verbose, the LLM will waste a lot of tokens, but the dry, concise style that is already present in `style.md` should work fine. I could also ask an LLM to optimize it in a follow up CL so it is both human and AI legible.",
+      "parentUuid": "4fc9e170_f37035c1",
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6642a443_13a46f15",
         "filename": "site/docs/dev/contrib/style.md",
         "patchSetId": 3
