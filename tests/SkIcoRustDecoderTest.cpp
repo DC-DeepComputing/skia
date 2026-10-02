@@ -6,6 +6,7 @@
  */
 
 #include "experimental/rust_ico/decoder/SkIcoRustDecoder.h"
+#include "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h"
 
 #include <cstdint>
 #include <cstring>
@@ -367,6 +368,68 @@ DEF_TEST(RustIcoCodec_IsIco_cursor, r) {
     const uint8_t curData[] = {0x00, 0x00, 0x02, 0x00, 0x01, 0x00};
     bool isIco = SkIcoRustDecoder::IsIco(curData, sizeof(curData));
     REPORTER_ASSERT(r, isIco, "IsIco should return true for CUR data");
+}
+
+DEF_TEST(RustIcoCodec_cursor_hotspots, r) {
+    sk_sp<SkData> data = GetResourceAsData("images/color_wheel.ico");
+    REPORTER_ASSERT(r, data);
+    if (!data) {
+        return;
+    }
+
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> icoCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(data), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, icoCodec);
+    const auto* rustIcoCodec = static_cast<const SkIcoRustCodec*>(icoCodec.get());
+
+    SkIPoint hotSpot;
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(nullptr, 0, &hotSpot));
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(rustIcoCodec, 0, &hotSpot));
+
+    sk_sp<SkData> cursorData = SkData::MakeUninitialized(data->size());
+    std::memcpy(cursorData->writable_data(), data->data(), data->size());
+    auto* bytes = static_cast<uint8_t*>(cursorData->writable_data());
+    bytes[2] = 2;  // CUR file type.
+
+    constexpr size_t kDirectoryHeaderSize = 6;
+    constexpr size_t kDirectoryEntrySize = 16;
+    constexpr size_t kEntryCount = 5;
+    REPORTER_ASSERT(r, data->size() >= kDirectoryHeaderSize + kEntryCount * kDirectoryEntrySize);
+    if (data->size() < kDirectoryHeaderSize + kEntryCount * kDirectoryEntrySize) {
+        return;
+    }
+    for (size_t i = 0; i < kEntryCount; ++i) {
+        const size_t entryOffset = kDirectoryHeaderSize + i * kDirectoryEntrySize;
+        bytes[entryOffset + 4] = static_cast<uint8_t>(i + 1);
+        bytes[entryOffset + 5] = 0;
+        bytes[entryOffset + 6] = static_cast<uint8_t>(i + 6);
+        bytes[entryOffset + 7] = 0;
+    }
+
+    std::unique_ptr<SkCodec> cursorCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(std::move(cursorData)), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, cursorCodec);
+    if (!cursorCodec) {
+        return;
+    }
+    const auto* rustCursorCodec = static_cast<const SkIcoRustCodec*>(cursorCodec.get());
+
+    REPORTER_ASSERT(r, cursorCodec->getFrameCount() == static_cast<int>(kEntryCount));
+    for (int frameIndex = 0; frameIndex < cursorCodec->getFrameCount(); ++frameIndex) {
+        const int originalEntryIndex = static_cast<int>(kEntryCount) - frameIndex - 1;
+        REPORTER_ASSERT(r, SkIcoRustDecoder::GetHotSpot(rustCursorCodec, frameIndex, &hotSpot));
+        REPORTER_ASSERT(r, hotSpot.x() == originalEntryIndex + 1);
+        REPORTER_ASSERT(r, hotSpot.y() == originalEntryIndex + 6);
+    }
+
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(rustCursorCodec, -1, &hotSpot));
+    REPORTER_ASSERT(
+            r,
+            !SkIcoRustDecoder::GetHotSpot(rustCursorCodec, cursorCodec->getFrameCount(), &hotSpot));
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(rustCursorCodec, 0, nullptr));
 }
 
 // Table-based test for handling invalid/corrupted ICO files.
