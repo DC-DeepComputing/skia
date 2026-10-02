@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f625a75_e2d2e9c2",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-02T18:24:26Z",
+      "side": 1,
+      "message": "Good catch! Moved directly to declaration.",
+      "parentUuid": "b68a290b_2c33b4b8",
+      "revId": "16ac70ea56e42c103497dd068df675e9bd7314fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c92dfde_0185a741",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-10-02T17:39:49Z",
       "side": 1,
       "message": "I missed it earlier, but this is the same as `directorySize`, right?",
+      "range": {
+        "startLine": 274,
+        "startChar": 20,
+        "endLine": 274,
+        "endChar": 78
+      },
+      "revId": "16ac70ea56e42c103497dd068df675e9bd7314fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae9e29d_1db78ec1",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-02T18:24:26Z",
+      "side": 1,
+      "message": "Yes, it is always the directory size: in the equal case both values are identical, and in the mismatch case the ternary selects directorySize. I removed the useless payload/ternary variables and store directorySize directly.",
+      "parentUuid": "2c92dfde_0185a741",
       "range": {
         "startLine": 274,
         "startChar": 20,
