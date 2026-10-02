@@ -16,6 +16,75 @@
       "message": "Moving who has the responsibility of reviewing, and adding Michael to this CL.",
       "revId": "66164185f750637a78c06807956243ae9a032516",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77d4b3a1_9e041402",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T18:27:03Z",
+      "side": 1,
+      "message": "what would block us from making this not be in include and just in src?",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 17
+      },
+      "revId": "66164185f750637a78c06807956243ae9a032516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebc6b13c_27489c78",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T18:27:03Z",
+      "side": 1,
+      "message": "Do we want to support this function long term? Instead should we just have SkIamge::FromBitmap(Recorder*, bitmap)?",
+      "range": {
+        "startLine": 56,
+        "startChar": 36,
+        "endLine": 56,
+        "endChar": 51
+      },
+      "revId": "66164185f750637a78c06807956243ae9a032516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed06f5e5_f3993027",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T18:27:03Z",
+      "side": 1,
+      "message": "I don\u0027t think this should be a public API on SkRecorder",
+      "range": {
+        "startLine": 84,
+        "startChar": 42,
+        "endLine": 84,
+        "endChar": 58
+      },
+      "revId": "66164185f750637a78c06807956243ae9a032516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
