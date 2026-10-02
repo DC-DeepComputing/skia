@@ -156,6 +156,12 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // TODO(b/353983969): Enable storage buffers once perf regressions are addressed.
     fStorageBufferSupport = false;
 
+    // These are guaranteed to be supported on Vulkan 1.0+.
+    SkASSERT(deviceLimits.maxComputeWorkGroupInvocations > 0);
+    SkASSERT(deviceLimits.maxPerStageDescriptorStorageBuffers > 0);
+    fComputeSupport = true;
+    fStorageBufferSupportForCompute = true;
+
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
     fSupportsMemorylessAttachments = false;
@@ -613,6 +619,9 @@ void VulkanCaps::applyDriverCorrectnessWorkarounds(const PhysicalDevicePropertie
     const bool isARM = skgpu::kARM_VkVendor == vendorID;
     const bool isIntel = skgpu::kIntel_VkVendor == vendorID;
     const bool isQualcomm = skgpu::kQualcomm_VkVendor == vendorID;
+    const bool isImagination = skgpu::kImagination_VkVendor == vendorID;
+
+    const bool isSwiftshader = skgpu::kGoogle_VkVendor == vendorID && 0xC0DE == deviceID;
 
     const bool isARMProprietary = isARM && VK_DRIVER_ID_ARM_PROPRIETARY == driverID;
     const bool isIntelWindowsProprietary =
@@ -634,10 +643,11 @@ void VulkanCaps::applyDriverCorrectnessWorkarounds(const PhysicalDevicePropertie
     // msaa image into the resolve image. This was reproed on a Pixel4 using the DstReadShuffle GM
     // where the top half of the GM would drop out. In Ganesh we had also seen this on Arm devices,
     // but the issue hasn't appeared yet in Graphite. It may just have occurred on older Arm drivers
-    // that we don't even test any more. This also occurs on swiftshader: b/303705884 in Ganesh, but
-    // we aren't currently testing that in Graphite yet so leaving that off the workaround for now
-    // until we run into it.
-    if (isQualcommProprietary) {
+    // that we don't even test any more.
+    // On Imagination (PowerVR) GPUs, using discardable MSAA attachments and loading from resolve in
+    // DMSAA subpasses causes 3D MMU page faults and GPU lockups.
+    // This also occurs on swiftshader, see b/303705884.
+    if (isQualcommProprietary || isImagination || isSwiftshader) {
         fMustLoadFullImageForMSAA = true;
     }
 

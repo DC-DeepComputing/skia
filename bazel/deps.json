@@ -9,7 +9,7 @@
     },
     {
       "build_file": "//bazel/external/dawn:BUILD.bazel",
-      "commit": "cd061e9948a12df12d69c754765dee91e912f04f",
+      "commit": "bb2ef251eefb77454c6fbd7ef0e7576e2f511978",
       "name": "dawn",
       "remote": "https://dawn.googlesource.com/dawn.git"
     },
@@ -197,7 +197,7 @@
       "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers.git"
     },
     {
-      "commit": "19e35eae1ab1574f31704ac002d77cbad6a064aa",
+      "commit": "4f3a92dfbd5b49593e43b3c245b6688da2ad933a",
       "name": "spirv_tools",
       "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git"
     },
@@ -209,19 +209,19 @@
     },
     {
       "build_file": "//bazel/external/vulkan_headers:BUILD.bazel",
-      "commit": "3c65a01745e4a1134d32b9c2c456472212dba16d",
+      "commit": "c46850864f4661461b0f6cb9922c058ffea4915e",
       "name": "vulkan_headers",
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers"
     },
     {
       "build_file": "//bazel/external/vulkan_tools:BUILD.bazel",
-      "commit": "69ca4d4b6590ab32e7a398725bfc90f81e6338e6",
+      "commit": "e66cf3b66a876cd795621e2096f3189162cb4345",
       "name": "vulkan_tools",
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools"
     },
     {
       "build_file": "//bazel/external/vulkan_utility_libraries:BUILD.bazel",
-      "commit": "666fdaa0f87b9d49ae576473227b4b4cf428ba7e",
+      "commit": "ad949c938b19bf00f18d9f2a99f099033f2cfcfa",
       "name": "vulkan_utility_libraries",
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries"
     },
@@ -245,7 +245,7 @@
       "remote": "https://skia.googlesource.com/external/github.com/google/brotli.git"
     },
     {
-      "commit": "7f06dec0efe9f5c51b08761baff62dde5c4d7576",
+      "commit": "af5aede14a0b4013be6890148d34e0fd7b1fac69",
       "name": "abseil_cpp",
       "patch_cmds": [
         "find . -name BUILD.bazel -type f -exec sed -i.bak -e '/do_not_use_for_gloop_visibility_only/d' {} +",

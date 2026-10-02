@@ -18,9 +18,9 @@
 #include "src/codec/SkPngCodecBase.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
-struct SkEncodedInfo;
 class SkFrame;
 class SkStream;
+struct SkEncodedInfo;
 
 // This class provides the Skia image decoding API (`SkCodec`) on top of:
 // * The third-party `png` crate (PNG decompression and decoding implemented in
@@ -99,6 +99,18 @@ private:
         // a separate fInterlacedBuffer along with fPreblendBuffer.
         SkCodecPriv::BudgetedBuffer fPreblendBuffer;
 
+        // Single-row scratch buffers used when decoding interlaced images (unless
+        // decoding a subset or sampling, where the whole untransformed image is
+        // decoded into `fPreblendBuffer` first):
+        // * `fDecodedInterlacedFullWidthRow` (size `getEncodedRowBytes()`): holds
+        //   the decoded interlaced row padded to full width (used by `read_row` in
+        //   `incrementalDecode`, or to pad `srcRow` for `applyXformRow` in
+        //   `expandDecodedInterlacedRow`).
+        // * `fXformedInterlacedRow` (size `fDstRowSize`): holds the color-transformed
+        //   interlaced row in `expandDecodedInterlacedRow` when `!canReadRow()`.
+        SkCodecPriv::BudgetedBuffer fDecodedInterlacedFullWidthRow;
+        SkCodecPriv::BudgetedBuffer fXformedInterlacedRow;
+
         int fFirstRow = 0;
         int fLastRow = 0;
 
@@ -107,7 +119,9 @@ private:
         // across multiple calls without resetting progress.
         int fCurrentSourceRow = 0;
         // Tracks the number of rows actually written to the destination buffer.
-        // Used to correctly report progress via rowsDecoded in incrementalDecode.
+        // Reported via `rowsDecoded` when decoding fails. Must never exceed the
+        // number of fully written rows, because callers such as
+        // `SkCodec::getPixels` only fill the rows after it.
         int fRowsWrittenToOutput = 0;
 
         // The y offset for a subset in the encoded color type, not the dst color type.
@@ -130,17 +144,25 @@ private:
 
     // Helper for taking a decoded interlaced `srcRow`, applying color
     // transformations, and then expanding it into the `frame`.
-    void expandDecodedInterlacedRow(SkSpan<uint8_t> dstFrame,
+    void expandDecodedInterlacedRow(DecodingState& decodingState,
+                                    SkSpan<uint8_t> dstFrame,
                                     SkSpan<const uint8_t> srcRow,
                                     const DecodingDstInfo& decodingDst,
                                     bool xFormNeeded);
 
     // Helper for row-by-row decoding which is used from `onGetPixels` and/or
     // `onIncrementalDecode`.
-    Result incrementalDecode(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecode(DecodingState& decodingState);
     // The same as incrementalDecode but uses `applyXFormRow()`. Should only
     // be used if this->canReadRows() is false.
-    Result incrementalDecodeXForm(DecodingState& decodingState, int* rowsDecoded);
+    Result incrementalDecodeXForm(DecodingState& decodingState);
+
+    // Reports the number of decoded rows via `rowsDecoded` after any failed
+    // decode (not just `kIncompleteInput`), matching `SkPngCodec`, so that
+    // callers keep the rows decoded before a `kErrorInInput`.
+    void reportRowsDecoded(Result result,
+                           const DecodingState& decodingState,
+                           int* rowsDecoded) const;
 
     // Helper for reading until the start of the next `fdAT` sequence.
     Result readToStartOfNextFrame();

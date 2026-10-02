@@ -111,6 +111,7 @@ def main():
       "-DDAWN_FORCE_SYSTEM_COMPONENT_LOAD=ON", # https://g-issues.chromium.org/issues/399358291
       "-DDAWN_ENABLE_INSTALL=OFF",
       "-DTINT_ENABLE_INSTALL=OFF",
+      "-DDAWN_USE_AGILITY_SDK=OFF",
       f"-DDAWN_ENABLE_D3D11={gn_bool_to_cmake(args.dawn_enable_d3d11)}",
       f"-DDAWN_ENABLE_D3D12={gn_bool_to_cmake(args.dawn_enable_d3d12)}",
       f"-DDAWN_ENABLE_OPENGLES={gn_bool_to_cmake(args.dawn_enable_opengles)}",
