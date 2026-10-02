@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f61a16a9_ab700d95",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T18:32:35Z",
+      "side": 1,
+      "message": "Oh you\u0027re right, given the relaxed definition of `requiresDepth()` everything would hit this case. I\u0027ll split it out to requiresDepth() and usesDepth(), where requiresDepth() is the strict requirement and usesDepth() is the legacy behavior that matches depth being enabled in the depth-stencil settings.",
+      "parentUuid": "011c2532_48c0eda0",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 75
+      },
+      "revId": "89949ce961480b6ea22bb4d2fd0a7cc24b253017",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3554a2f0_9a27b1fa",
         "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
         "patchSetId": 5
@@ -60,6 +84,30 @@
       "writtenOn": "2026-10-02T17:58:53Z",
       "side": 1,
       "message": "I see this flag mentioned in a couple of render step comments but don\u0027t actually see it as a defined flag. Is this for a follow up CL?",
+      "range": {
+        "startLine": 90,
+        "startChar": 37,
+        "endLine": 90,
+        "endChar": 66
+      },
+      "revId": "89949ce961480b6ea22bb4d2fd0a7cc24b253017",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c057ea_b468c07a",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T18:32:35Z",
+      "side": 1,
+      "message": "That was leftover; I decided it was better to assume requires-depth by default and have render steps opt into allowing self intersections or declaring they had no self intersection as a way to document their behavior. I\u0027ll update these stale comments.",
+      "parentUuid": "3caa03d4_57dd3b32",
       "range": {
         "startLine": 90,
         "startChar": 37,
