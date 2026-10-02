@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b853f0c4_c05e56af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-02T20:18:54Z",
+      "side": 1,
+      "message": "Running presubmits to see if the revert fixes the android roller. Looking to revert since its the weekend and trying to land a Graphite android change. If this is safe to revert let me know, if presubmits and canaries look good and don\u0027t hear back soon then will submit the revert.",
+      "revId": "3c29d674552dbec777b9974c04aceda90d719342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
