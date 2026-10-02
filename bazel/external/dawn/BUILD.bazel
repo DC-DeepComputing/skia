@@ -304,6 +304,7 @@ DAWN_WINDOWS_DEFINES = [
     "DAWN_ENABLE_BACKEND_D3D12",
     "DAWN_ENABLE_BACKEND_D3D11",
     "DAWN_ENABLE_BACKEND_VULKAN",
+    "DAWN_USE_AGILITY_SDK",
     "TINT_BUILD_HLSL_WRITER=1",
     "TINT_BUILD_SPV_READER=1",
     "TINT_BUILD_SPV_WRITER=1",
@@ -494,6 +495,13 @@ cc_library(
 )
 
 cc_library(
+    name = "dawn_agility_sdk",
+    hdrs = ["@agility_sdk//:build/native/include/d3d12.h"],
+    includes = ["external/agility_sdk/build/native/include"],
+    deps = [],
+)
+
+cc_library(
     name = "dawn_native",
     srcs = NATIVE_SRCS + NATIVE_OBJECTS_SRCS + NATIVE_UTILS_GEN_SRCS + select({
         "@platforms//os:linux": NATIVE_OBJECTS_USE_X11_SRCS +
@@ -538,6 +546,7 @@ cc_library(
     ] + select({
         "@platforms//os:macos": [":dawn_native_objc"],
         "@platforms//os:ios": [":dawn_native_objc"],
+        "@platforms//os:windows": [":dawn_agility_sdk"],
         "//conditions:default": [],
     }),
 )
