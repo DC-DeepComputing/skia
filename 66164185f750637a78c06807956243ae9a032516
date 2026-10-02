@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fd0da7c_a23966a5",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T18:34:52Z",
+      "side": 1,
+      "message": "Is it a problem to be public? Currently Graphite\u0027s Recorder is public. Or is the goal to eventually say SkRecorder is expressive enough that a client shouldn\u0027t need a backend-specific recorder ever?",
+      "parentUuid": "77d4b3a1_9e041402",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 17
+      },
+      "revId": "66164185f750637a78c06807956243ae9a032516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bede989d_aa7c8405",
         "filename": "tests/CPUContextRecorderTest.cpp",
         "patchSetId": 6
