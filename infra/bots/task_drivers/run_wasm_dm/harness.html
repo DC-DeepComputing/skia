@@ -1,0 +1,108 @@
+<!doctype html>
+<meta charset="utf-8" />
+
+<head>
+  <script type="module">
+    import createModule from "/dm.js";
+
+    async function walk(dir, prefix, out) {
+      for await (const [name, h] of dir.entries()) {
+        const p = prefix + name;
+        if (h.kind === "directory") {
+          await walk(h, p + "/", out);
+        }
+        else {
+          out.push(p);
+        }
+      }
+      return out;
+    }
+
+    async function dm(argv) {
+      return new Promise((resolve, reject) => {
+        try {
+          createModule({
+            arguments: argv,
+            print: (s) => console.log("[wasmdm:out] " + s),
+            printErr: (s) => console.error("[wasmdm:err] " + s),
+            onExit: resolve,
+            onAbort: (msg) => reject(new Error("abort: " + msg)),
+          });
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }
+
+    async function getOpfsFileHandle(path, { create = false } = {}) {
+      let dir = await navigator.storage.getDirectory();
+      const parts = path.split("/").filter(Boolean);
+      for (const d of parts.slice(0, -1)) {
+        dir = await dir.getDirectoryHandle(d, { create });
+      }
+      return dir.getFileHandle(parts.at(-1), { create });
+    }
+
+
+    async function getOpfsFile(path) {
+      return (await getOpfsFileHandle(path)).getFile();
+    }
+
+    async function blobToBase64(blob) {
+      return new Uint8Array(await blob.arrayBuffer()).toBase64();
+    }
+
+    function base64ToBytes(b64) {
+      return Uint8Array.fromBase64(b64);
+    }
+
+    window.listOpfsDir = async function (path = "") {
+      const parts = path.split("/").filter(Boolean); // non-empty path segments
+
+      // Walk from OPFS root to the topmost dir in path.
+      let dir = await navigator.storage.getDirectory();
+      for (const part of parts) {
+        dir = await dir.getDirectoryHandle(part);
+      }
+
+      return walk(dir, parts.length ? parts.join("/") + "/" : "", []);
+    }
+
+    window.readOpfsFile = async function (path) {
+      const blob = await getOpfsFile(path);
+      if (!blob) {
+        throw new Error(`readOpfsFile failed; no file`);
+      }
+      return blobToBase64(blob);
+    }
+
+    window.writeOpfsFile = async function (path, b64) {
+      const bytes = base64ToBytes(b64);
+      const handle = await getOpfsFileHandle(path, { create: true });
+      const writable = await handle.createWritable();
+      try {
+        await writable.write(bytes);
+      } finally {
+        await writable.close();
+      }
+    };
+
+    window.run = async function (argv = []) {
+      if (argv[0] === "dm") {
+        argv = argv.slice(1);
+      }
+
+      console.log("calling wasm dm with args: " + JSON.stringify(argv));
+      const status = await dm(argv);
+
+      console.log("dm finished; status: " + status);
+      return status;
+    }
+
+    console.log("Page is alive");
+  </script>
+</head>
+
+<body></body>
+
+</html>
