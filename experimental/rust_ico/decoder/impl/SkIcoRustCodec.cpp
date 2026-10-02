@@ -34,6 +34,10 @@ using namespace skia_private;
 
 class SkSampler;
 
+static bool dimensions_fit_within(const SkISize& dimensions, const SkISize& bounds) {
+    return dimensions.width() <= bounds.width() && dimensions.height() <= bounds.height();
+}
+
 static bool clear_canvas(const SkImageInfo& info,
                          void* dst,
                          size_t rowBytes,
@@ -176,6 +180,7 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
     };
     std::vector<CodecEntry> entries;
     entries.reserve(numImages);
+    bool hasIncompleteEntry = false;
 
     // Construct a candidate codec for each of the embedded images
     // Entries are already sorted by offset in Rust for proper size calculation
@@ -192,6 +197,7 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
         }
         if (offset >= totalSize) {
             SkCodecPrintf("Warning: could not skip to ico offset.\n");
+            hasIncompleteEntry = true;
             break;
         }
         bytesRead = offset;
@@ -230,6 +236,7 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
         // the caller see kIncompleteInput below.
         if (dataTruncated) {
             SkCodecPrintf("Warning: ico entry truncated; skipping.\n");
+            hasIncompleteEntry = true;
             continue;
         }
 
@@ -259,44 +266,57 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
             codec = SkBmpRustCodec::MakeFromStream(std::move(entryStream), &entryResult,
                                                    SkBmpRustCodec::StreamType::kICO);
         }
+        if (!codec && entryResult == kIncompleteInput) {
+            hasIncompleteEntry = true;
+        }
 
         if (nullptr != codec) {
             const SkISize directorySize = SkISize::Make(entry.width == 0 ? 256 : entry.width,
                                                         entry.height == 0 ? 256 : entry.height);
-            const SkISize payloadSize = codec->dimensions();
-            if (payloadSize.width() > dirMaxWidth || payloadSize.height() > dirMaxHeight) {
-                SkCodecPrintf("Warning: ico payload dimensions exceed canvas; skipping.\n");
-                continue;
-            }
-            const SkISize reportedFrameSize =
-                    payloadSize == directorySize ? payloadSize : directorySize;
 
             // Store codec with its bit count for sorting
             entries.push_back({
                 std::move(codec),
                 std::move(bmpData),
-                reportedFrameSize,
+                directorySize,
                 entry.bit_count,
             });
         }
     }
 
     if (entries.empty()) {
+        if (hasIncompleteEntry) {
+            *result = kIncompleteInput;
+        }
         SkCodecPrintf("Error: could not find any valid embedded ico codecs.\n");
         return nullptr;
     }
 
-    // Blink treats entry zero as the default representation. Match its legacy
-    // ICO decoder by ordering entries from largest to smallest, using bit depth
-    // as the tie breaker.
-    std::stable_sort(entries.begin(), entries.end(),
-                     [](const CodecEntry& a, const CodecEntry& b) {
+    const auto isDecodable = [](const CodecEntry& entry) {
+        return dimensions_fit_within(entry.codec->dimensions(), entry.reportedFrameSize);
+    };
+
+    // Keep decodable entries ahead of metadata-only entries so frame zero
+    // remains usable, then preserve the existing quality ordering.
+    std::stable_sort(entries.begin(),
+                     entries.end(),
+                     [isDecodable](const CodecEntry& a, const CodecEntry& b) {
+                         const bool aDecodable = isDecodable(a);
+                         const bool bDecodable = isDecodable(b);
+                         if (aDecodable != bDecodable) {
+                             return aDecodable;
+                         }
                          const SkISize aDims = a.codec->dimensions();
                          const SkISize bDims = b.codec->dimensions();
                          const int aArea = aDims.width() * aDims.height();
                          const int bArea = bDims.width() * bDims.height();
                          return aArea != bArea ? aArea > bArea : a.bitCount > b.bitCount;
                      });
+
+    if (!isDecodable(entries.front()) && hasIncompleteEntry) {
+        *result = kIncompleteInput;
+        return nullptr;
+    }
 
     // Bundling the codec with its AND-mask payload keeps the two from drifting
     // out of sync when entries are reordered.
@@ -320,9 +340,9 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
         maxInfo = SkEncodedInfo::Make(dirMaxWidth, dirMaxHeight, maxInfo.color(),
                                       maxInfo.alpha(), maxInfo.bitsPerComponent());
     }
-    // Report kSuccess as long as we produced at least one usable embedded codec,
-    // mirroring SkIcoCodec. The directory is fully parsed and getInfo()/
-    // dimensions() are stable and valid, so callers can establish the image size.
+    // Report kSuccess as long as at least one embedded payload supplies metadata.
+    // The directory-derived dimensions let callers establish the image size even
+    // when a malformed payload cannot be decoded at its reported frame size.
     // Returning kIncompleteInput here would leave clients such as Blink's
     // SkiaImageDecoderBase without a size (its OnSetData only calls SetSize on
     // kSuccess), corrupting decoder state and later yielding an invalid
@@ -380,26 +400,34 @@ SkISize SkIcoRustCodec::onGetScaledDimensions(float desiredScale) const {
     const int origHeight = this->dimensions().height();
     const float desiredSize = desiredScale * origWidth * origHeight;
     float minError = std::numeric_limits<float>::max();
-    size_t minIndex = 0;
+    size_t minIndex = fEmbeddedImages.size();
 
     for (size_t i = 0; i < fEmbeddedImages.size(); i++) {
-        const SkISize dimensions = fEmbeddedImages[i].fCodec->dimensions();
-        const float error = SkTAbs(static_cast<float>(dimensions.width() * dimensions.height()) -
-                                   desiredSize);
+        const EmbeddedImage& image = fEmbeddedImages[i];
+        const SkISize dimensions = image.fCodec->dimensions();
+        if (!dimensions_fit_within(dimensions, image.fReportedFrameSize)) {
+            continue;
+        }
+        const float error =
+                SkTAbs(static_cast<float>(dimensions.width() * dimensions.height()) - desiredSize);
         if (error < minError) {
             minError = error;
             minIndex = i;
         }
     }
 
-    return fEmbeddedImages[minIndex].fCodec->dimensions();
+    return minIndex < fEmbeddedImages.size() ? fEmbeddedImages[minIndex].fCodec->dimensions()
+                                             : this->dimensions();
 }
 
 int SkIcoRustCodec::chooseCodec(const SkISize& requestedSize, int startIndex) {
     SkASSERT_RELEASE(startIndex >= 0);
 
     for (int i = startIndex; i < SkToInt(fEmbeddedImages.size()); i++) {
-        if (fEmbeddedImages[i].fCodec->dimensions() == requestedSize) {
+        const EmbeddedImage& image = fEmbeddedImages[i];
+        const SkISize dimensions = image.fCodec->dimensions();
+        if (dimensions_fit_within(dimensions, image.fReportedFrameSize) &&
+            dimensions == requestedSize) {
             return i;
         }
     }
@@ -442,18 +470,21 @@ SkCodec::Result SkIcoRustCodec::selectAndDecode(
         if (opts.fFrameIndex >= SkToInt(fEmbeddedImages.size())) {
             return kIncompleteInput;
         }
-        const SkISize entryDims = fEmbeddedImages[opts.fFrameIndex].fCodec->dimensions();
-        if (entryDims.width() > dims.width() || entryDims.height() > dims.height()) {
+        const EmbeddedImage& image = fEmbeddedImages[opts.fFrameIndex];
+        const SkISize entryDims = image.fCodec->dimensions();
+        if (!dimensions_fit_within(entryDims, image.fReportedFrameSize) ||
+            entryDims.width() > dims.width() || entryDims.height() > dims.height()) {
             return kInvalidScale;
         }
-        return fn(fEmbeddedImages[opts.fFrameIndex].fCodec.get(),
-                  opts.fFrameIndex,
-                  embeddedOpts);
+        return fn(image.fCodec.get(), opts.fFrameIndex, embeddedOpts);
     }
 
     int index = this->chooseCodec(dims, 0);
     if (index < 0 && dims == this->dimensions()) {
-        index = 0;
+        const EmbeddedImage& fallback = fEmbeddedImages.front();
+        if (dimensions_fit_within(fallback.fCodec->dimensions(), fallback.fReportedFrameSize)) {
+            index = 0;
+        }
     }
     Result lastResult = kInvalidScale;
     while (index >= 0) {
