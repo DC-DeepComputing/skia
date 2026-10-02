@@ -175,7 +175,7 @@ Context::~Context() {
     // tasks (that rely on the SharedContext's existence) are cleared out.
     //
     // Note that, because this is happening on the main thread, the PipelineManager should not
-    // be waiting to resolve any Pipelines (in resolveHandle/potentiallyWaitOn) so we
+    // be waiting to resolve any Pipelines (in resolveHandle) so we
     // shouldn't deadlock.
     fSharedContext->pipelineManager()->shutDown();
 
