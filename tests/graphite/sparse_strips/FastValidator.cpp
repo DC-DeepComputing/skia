@@ -319,7 +319,7 @@ void FastValidator<kTileWidth, kTileHeight>::RunScalarWinding(
         AlphaAtlasManager* atlasManager,
         SkPathFillType fillType,
         const Polyline& polyline,
-        const SkTDArray<uint8_t>& maskLut,
+        const SparseStripConfig::LutArray& maskLut,
         MsaaExactMaskObserver observer,
         uint16_t viewportWidth,
         uint16_t viewportHeight) {
@@ -343,7 +343,7 @@ void FastValidator<kTileWidth, kTileHeight>::RunSimdWinding(
         AlphaAtlasManager* atlasManager,
         SkPathFillType fillType,
         const Polyline& polyline,
-        const SkTDArray<uint8_t>& maskLut,
+        const SparseStripConfig::LutArray& maskLut,
         MsaaExactMaskObserver observer,
         uint16_t viewportWidth,
         uint16_t viewportHeight) {
@@ -559,7 +559,7 @@ bool FastValidator<kTileWidth, kTileHeight>::ValidatePath(
         uint16_t viewportWidth,
         uint16_t viewportHeight,
         const char* testName,
-        const SkTDArray<uint8_t>& maskLut,
+        const SparseStripConfig::LutArray& maskLut,
         StripFunc stripFunc,
         std::array<uint32_t, 3>* minorErrorCount) {
     if (path.isEmpty() || !path.isFinite()) {
