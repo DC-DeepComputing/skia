@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e59ddc65_cb63b0da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-02T18:09:40Z",
+      "side": 1,
+      "message": "Moving who has the responsibility of reviewing, and adding Michael to this CL.",
+      "revId": "66164185f750637a78c06807956243ae9a032516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
