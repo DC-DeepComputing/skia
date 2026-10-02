@@ -12,6 +12,7 @@
 #include "include/private/SkTArray.h"
 
 class SkCanvas;
+class SkCaptureManager;
 class SkSurface;
 
 namespace skcpu {
@@ -25,6 +26,7 @@ public:
     SkRecorder(const SkRecorder&) = delete;
     SkRecorder(SkRecorder&&) = delete;
     SkRecorder& operator=(const SkRecorder&) = delete;
+    SkRecorder& operator=(SkRecorder&&) = delete;
 
     enum class Type {
         kCPU,
@@ -37,21 +39,14 @@ public:
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
 protected:
+    virtual SkCaptureManager* captureManager() { return nullptr; }
+    virtual SkCanvas* makeCaptureCanvas(SkCanvas*);
+    virtual void createCaptureBreakpoint(SkSurface*);
+    virtual void deregisterCaptureCanvas(SkCanvas*);
+
     skia_private::TArray<sk_sp<SkPicture>> fCapturedPictures;
 
 private:
-
-    /**
-    * Attempts to create and return an SkCaptureCanvas that wraps the provided base canvas.
-    * Returns nullptr if capture is not enabled.
-    *
-    * TODO: When implementing in all Recorder subclasses, see if the implementations can be shared
-    * and moved here.
-    */
-    virtual SkCanvas* makeCaptureCanvas(SkCanvas*) = 0;
-    virtual void createCaptureBreakpoint(SkSurface*) = 0;
-    virtual void deregisterCaptureCanvas(SkCanvas*) = 0;
-
     friend class SkSurface_Base; // for capture functionality
 };
 
