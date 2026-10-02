@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "011c2532_48c0eda0",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-02T18:19:55Z",
+      "side": 1,
+      "message": "Doesn\u0027t this assert fire for any renderstep that requires depth but uses LEqual? I fired up cq?",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 75
+      },
+      "revId": "89949ce961480b6ea22bb4d2fd0a7cc24b253017",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3554a2f0_9a27b1fa",
         "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
         "patchSetId": 5
