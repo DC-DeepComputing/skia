@@ -470,6 +470,30 @@
       },
       "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19f16dad_a5d4c610",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-02T20:27:36Z",
+      "side": 1,
+      "message": "Marking as resolved for now",
+      "parentUuid": "ada37274_f97d919b",
+      "range": {
+        "startLine": 270,
+        "startChar": 1,
+        "endLine": 270,
+        "endChar": 46
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
