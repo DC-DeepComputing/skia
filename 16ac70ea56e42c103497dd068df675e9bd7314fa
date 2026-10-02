@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b68a290b_2c33b4b8",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-02T17:39:49Z",
+      "side": 1,
+      "message": "Same expression as the else branch, let\u0027s hoist to the declaration site.",
+      "revId": "16ac70ea56e42c103497dd068df675e9bd7314fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c92dfde_0185a741",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-02T17:39:49Z",
+      "side": 1,
+      "message": "I missed it earlier, but this is the same as `directorySize`, right?",
+      "range": {
+        "startLine": 274,
+        "startChar": 20,
+        "endLine": 274,
+        "endChar": 78
+      },
+      "revId": "16ac70ea56e42c103497dd068df675e9bd7314fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
