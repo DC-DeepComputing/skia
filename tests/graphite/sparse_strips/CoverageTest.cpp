@@ -10,16 +10,27 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/geom/EndCaps.h"
+#include "src/gpu/graphite/geom/WideTiles.h"
+#include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
+#include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/MakeStrips.h"
+#include "src/gpu/graphite/sparse_strips/Polyline.h"
+#include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
+#include "tests/graphite/sparse_strips/CullingRepros.h"
 #include "tests/graphite/sparse_strips/FastValidator.h"
 #include "tests/graphite/sparse_strips/SkpValidator.h"
 
+#include <algorithm>
 #include <array>
 #include <vector>
 
@@ -281,6 +292,140 @@ static void RunCullingSimplificationSuite(
           minorErrors[2]);
 }
 
+// Runs the production pipeline (mirroring StripGenerator::processGeometry) for a draw whose geometry
+// lies entirely outside of `clip` but covers all of it, and verifies that every tile row of the clip
+// is completely filled by WideTiles. Note: OracleValidator only checks tile rows that produced
+// output, so it cannot detect rows that are missing entirely.
+template <uint16_t kTileWidth, uint16_t kTileHeight>
+static void ValidateFullyCoveredClip(skiatest::Reporter* reporter,
+                                     Recorder* recorder,
+                                     const SkPath& path,
+                                     const SkMatrix& ctm,
+                                     const SkIRect& clip,
+                                     SkISize targetSize,
+                                     const SparseStripConfig::LutArray& lut,
+                                     const char* testName) {
+    Flatten flattener;
+    Polyline polyline;
+    flattener.processPaths<FlattenMode::kSimd>(path, ctm, clip, &polyline);
+
+    WideTiles wides;
+    EndCaps ends;
+    if (polyline.count() > 0) {
+        const int numTileRows = (targetSize.height() + kTileHeight - 1) / kTileHeight;
+        WindingHistogram histogram(numTileRows);
+        histogram.resize(numTileRows);
+        histogram.clear();
+
+        Tiles<kTileWidth, kTileHeight> tiler;
+        const bool isCulled = tiler.makeTilesMSAA(polyline, clip, histogram);
+        tiler.sortTiles();
+
+        AlphaAtlasManager atlasManager(recorder);
+        const bool success = MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(tiler,
+                                                                           &wides,
+                                                                           &ends,
+                                                                           &atlasManager,
+                                                                           path.getFillType(),
+                                                                           polyline,
+                                                                           lut,
+                                                                           isCulled,
+                                                                           histogram,
+                                                                           clip);
+        REPORTER_ASSERT(reporter, success, "[%s] MakeStrips failed", testName);
+    }
+
+    REPORTER_ASSERT(reporter,
+                    ends.caps().empty(),
+                    "[%s] Expected no EndCaps, got %d",
+                    testName,
+                    ends.caps().size());
+
+    const int firstRow = clip.fTop / kTileHeight;
+    const int numRows = (clip.fBottom + kTileHeight - 1) / kTileHeight - firstRow;
+    std::vector<int> filledWidth(numRows, 0);
+    for (const WideTiles::WideTile& wide : wides.tiles()) {
+        const int row = wide.fY / kTileHeight - firstRow;
+        if (row >= 0 && row < numRows) {
+            const int left = std::max<int>(wide.fX, clip.fLeft);
+            const int right = std::min<int>(wide.fX + wide.fWidth, clip.fRight);
+            filledWidth[row] += std::max(0, right - left);
+        }
+    }
+
+    int unfilledRows = 0;
+    int firstUnfilledRow = -1;
+    for (int row = 0; row < numRows; ++row) {
+        if (filledWidth[row] != clip.width() && unfilledRows++ == 0) {
+            firstUnfilledRow = firstRow + row;
+        }
+    }
+    REPORTER_ASSERT(reporter,
+                    unfilledRows == 0,
+                    "[%s] %d of %d tile rows are not completely filled by WideTiles (first: %d)",
+                    testName,
+                    unfilledRows,
+                    numRows,
+                    firstUnfilledRow);
+}
+
+template <uint16_t kTileWidth, uint16_t kTileHeight>
+static void RunFullyCoveredClipSuite(skiatest::Reporter* reporter, Recorder* recorder) {
+    const SparseStripConfig::LutArray lut = GenerateMSAALUT();
+
+    // Tall enough that the WindingHistogram spans multiple 32-row words.
+    const SkIRect clip = SkIRect::MakeWH(8 * kTileWidth, 64 * kTileHeight);
+    const float l = static_cast<float>(clip.fLeft);
+    const float t = static_cast<float>(clip.fTop);
+    const float r = static_cast<float>(clip.fRight);
+    const float b = static_cast<float>(clip.fBottom);
+
+    // The left side of this quad is split halfway through tile row 32, so its upper segment is culled
+    // into histogram rows [0, 32), an entire 32-row word. That used to produce an empty active-row
+    // mask, leaving those rows unfilled. The other sides are above, right of, and below the clip.
+    const SkPath splitLeftEdge = SkPathBuilder()
+                                         .moveTo(l - 10.0f, t - 20.0f)
+                                         .lineTo(l - 12.0f, t + 32.5f * kTileHeight)
+                                         .lineTo(l - 10.0f, b + 20.0f)
+                                         .lineTo(r + 20.0f, b + 20.0f)
+                                         .lineTo(r + 20.0f, t - 20.0f)
+                                         .close()
+                                         .detach();
+    ValidateFullyCoveredClip<kTileWidth, kTileHeight>(reporter,
+                                                      recorder,
+                                                      splitLeftEdge,
+                                                      SkMatrix::I(),
+                                                      clip,
+                                                      clip.size(),
+                                                      lut,
+                                                      "SplitLeftEdge_HistogramWord");
+
+    // Every verb is culled, so the closing edge (left of the clip) is the only geometry left. Flatten
+    // used to drop the implicit closing edge of the open contour, leaving the clip unfilled.
+    for (bool close : {false, true}) {
+        ValidateFullyCoveredClip<kTileWidth, kTileHeight>(
+                reporter,
+                recorder,
+                CullingRepros::AllVerbsCulledContour(clip, close),
+                SkMatrix::I(),
+                clip,
+                clip.size(),
+                lut,
+                close ? "AllVerbsCulled_Closed" : "AllVerbsCulled_Open");
+    }
+
+    // Exact inputs captured from the viewer.
+    const CullingRepros::Repro repro = CullingRepros::DeskTiger8Capture3Draw2();
+    ValidateFullyCoveredClip<kTileWidth, kTileHeight>(reporter,
+                                                      recorder,
+                                                      repro.fPath,
+                                                      repro.fCtm,
+                                                      repro.fClip,
+                                                      repro.fTargetSize,
+                                                      lut,
+                                                      "DeskTiger8Capture3Draw2");
+}
+
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_CoverageScalar_4x4,
                                          reporter,
                                          context,
@@ -336,6 +481,22 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_CullingSimplifica
     auto recorder = context->makeRecorder();
     RunCullingSimplificationSuite<4, 4>(
             reporter, recorder.get(), &FastValidator<4, 4>::RunScalarWinding, "Scalar");
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_FullyCoveredClip_4x4,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kToBeDetermined) {
+    auto recorder = context->makeRecorder();
+    RunFullyCoveredClipSuite<4, 4>(reporter, recorder.get());
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_FullyCoveredClip_8x8,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kToBeDetermined) {
+    auto recorder = context->makeRecorder();
+    RunFullyCoveredClipSuite<8, 8>(reporter, recorder.get());
 }
 
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_SKP_SIMD_4x4,

@@ -46,9 +46,10 @@ public:
                                SkPathFillType fillType,
                                const Polyline& polyline,
                                const SparseStripConfig::LutArray& msaaLut,
-                               MsaaExactMaskObserver observer,
-                               uint16_t viewportWidth,
-                               uint16_t viewportHeight);
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
+                               const SkIRect& clipRect,
+                               MsaaExactMaskObserver observer);
 
     static void RunScalarWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
                                  WideTiles* wides,
@@ -57,12 +58,13 @@ public:
                                  SkPathFillType fillType,
                                  const Polyline& polyline,
                                  const SparseStripConfig::LutArray& maskLut,
-                                 MsaaExactMaskObserver observer,
-                                 uint16_t viewportWidth,
-                                 uint16_t viewportHeight) {
+                                 bool isCulled,
+                                 const WindingHistogram& windingHistogram,
+                                 const SkIRect& clipRect,
+                                 MsaaExactMaskObserver observer) {
         MakeStrips::MsaaScalar<kTileWidth, kTileHeight>(
                 tileContainer, wides, ends, atlasManager,
-                fillType, polyline, maskLut, viewportWidth, viewportHeight, observer);
+                fillType, polyline, maskLut, isCulled, windingHistogram, clipRect, observer);
     }
 
     static void RunSimdWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
@@ -72,12 +74,13 @@ public:
                                SkPathFillType fillType,
                                const Polyline& polyline,
                                const SparseStripConfig::LutArray& maskLut,
-                               MsaaExactMaskObserver observer,
-                               uint16_t viewportWidth,
-                               uint16_t viewportHeight) {
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
+                               const SkIRect& clipRect,
+                               MsaaExactMaskObserver observer) {
         MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(
                 tileContainer, wides, ends, atlasManager,
-                fillType, polyline, maskLut, viewportWidth, viewportHeight, observer);
+                fillType, polyline, maskLut, isCulled, windingHistogram, clipRect, observer);
     }
 
     // Validates a single path end-to-end:
