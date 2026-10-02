@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0d3b093_5d28bdf3",
+        "filename": "src/gpu/graphite/render/CoverBoundsRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-02T19:03:15Z",
+      "side": 1,
+      "message": "Why not std::make_unique ?",
+      "range": {
+        "startLine": 62,
+        "startChar": 11,
+        "endLine": 62,
+        "endChar": 26
+      },
+      "revId": "392c05c499563c631499bf253c82747726980899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
