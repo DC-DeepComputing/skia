@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6642a443_13a46f15",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T17:55:46Z",
+      "side": 1,
+      "message": "Yes we minimize in cases where we can forward declare, but we also prefer \"include what you use\" and to not depend on transitive includes. So in that case we actual bloat our includes",
+      "range": {
+        "startLine": 21,
+        "startChar": 9,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8eb8be82_b48ee90e",
         "filename": "site/docs/dev/contrib/style.md",
         "patchSetId": 3
@@ -53,6 +76,29 @@
         "startChar": 0,
         "endLine": 28,
         "endChar": 46
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bc7e802_a7d1159a",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T17:55:46Z",
+      "side": 1,
+      "message": "I wonder if we could have AI generate our clang-format rules for us based of the rules set here (or new style skill).",
+      "range": {
+        "startLine": 52,
+        "startChar": 5,
+        "endLine": 52,
+        "endChar": 17
       },
       "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -99,6 +145,52 @@
         "startChar": 8,
         "endLine": 154,
         "endChar": 54
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57932a1a_723d4f42",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T17:55:46Z",
+      "side": 1,
+      "message": "should we add in somewhere that we prefer `#if defined(` over `#ifdef`",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 6
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7016d9a_6837422a",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T17:55:46Z",
+      "side": 1,
+      "message": "I feel like we violate this in many places",
+      "range": {
+        "startLine": 270,
+        "startChar": 1,
+        "endLine": 270,
+        "endChar": 46
       },
       "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
