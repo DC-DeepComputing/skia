@@ -39,6 +39,30 @@
       },
       "revId": "a9dfd73c0364ed9344b08b69cd5094f4749ce09b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b71edd44_6cd94d74",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1850,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-02T17:34:01Z",
+      "side": 1,
+      "message": "This logic is when we are going through the client\u0027s `pNext` chain of `VkPhysicalDeviceFeatures2`, and we also see that the extension `VK_EXT_pipeline_protected_access` is present on the device meaning it is supported, so in that case we can always enable it to be true. So we shouldn\u0027t need to condition this on `protectedMemory` since the extension is present (done similarly to other features we query for).\n\nIn the case you\u0027re talking about where Skia adds the feature struct in `addFeaturesToQuery`, we only enable it in the case the extension is present. We also don\u0027t need to condition on `protectedMemory` in this case since the driver will populate the support in `pipelineProtectedAccess` when the client makes the call to `vkGetPhysicalDeviceFeatures2`, which I believe should always populate to true when the extension is present (this is how the other features are enabled here as well IIUC).\n\nWe only need to check `protectedMemory` in the case of auto enabling it in Vulkan 1.4 since per the spec that extension is only required in Vulkan 1.4 if `protectedMemory` is supported.",
+      "parentUuid": "b2fe56b8_143d50ee",
+      "range": {
+        "startLine": 1850,
+        "startChar": 0,
+        "endLine": 1850,
+        "endChar": 69
+      },
+      "revId": "a9dfd73c0364ed9344b08b69cd5094f4749ce09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
