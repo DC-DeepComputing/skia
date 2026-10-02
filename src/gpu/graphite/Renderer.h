@@ -239,27 +239,21 @@ public:
     //
     // RenderSteps cannot control depth settings as the depth attachment is used more fluidly to
     // ensure rendering correctness. Instead, the render step's flags are the source of truth for
-    // its depth behavior. These depth settings must be consistent with those flags under the
-    // assumption that they are used by a renderpass that has depth and is combined with a paint
-    // that is opaque. ShaderInfo inspects the flags to relax the settings and the renderpass
+    // its depth behavior. ShaderInfo inspects the flags to relax the settings and the renderpass
     // when possible.
-    const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
+    const StencilSettings& stencilSettings() const { return fStencilSettings; }
 
-    bool usesStencil() const {
-        return fDepthStencilSettings.second.enabled();
-    }
+    bool usesStencil() const { return fStencilSettings.enabled(); }
 
     // This is true if the RenderStep forces a renderpass to have a depth attachment, which is
     // stricter than the depthWrite and depthTest provided in `depthStencilSettings()`, as those
     // represent what should be set *if* depth ends up being used.
     bool requiresDepth() const {
-        // TODO(michaelludwig): Uncomment the more permissive logic below
         // NOTE: kUseNonAAInnerFill in a RenderStep will likely trigger the use of depth for the
         // renderpass, but that is a result of it producing a second draw that is ordered front
         // to back, and not strictly-speaking a requirement of the RenderStep's internal behavior.
         // In the event that the inner fill isn't recorded, we don't want to force depth.
-        // return !SkToBool(fFlags & (Flags::kAllowsSelfIntersection | Flags::kNoSelfIntersections));
-        return fDepthStencilSettings.first.enabled();
+        return !SkToBool(fFlags & (Flags::kAllowsSelfIntersection | Flags::kNoSelfIntersections));
     }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const {
@@ -351,7 +345,7 @@ private:
     SkEnumBitMask<Flags>              fFlags;
     SkEnumBitMask<PipelineStageFlags> fStorageBufferStages;
     PrimitiveType                     fPrimitiveType;
-    DepthStencilSettings              fDepthStencilSettings;
+    StencilSettings                   fStencilSettings;
 
     // TODO: When we always use C++17 for builds, we should be able to just let subclasses declare
     // constexpr arrays and point to those, but we need explicit storage for C++14.
