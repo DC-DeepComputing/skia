@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1fe6dfc3_2fa650d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-02T19:04:21Z",
+      "side": 1,
+      "message": "I tried getting jetski to create a CL for checking that fields start with f (cl here https://skia-review.git.corp.google.com/c/skia/+/1381417/2/PRESUBMIT.py)\n\nThe code doesn\u0027t look too bad but now it\u0027s making me think about long term maintenance of these script tools vs AI tools. Script tools use a ton of hard-to-read regex and AI tools can be non-deterministic so trade offs there",
+      "parentUuid": "79224cf1_353e4745",
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6642a443_13a46f15",
         "filename": "site/docs/dev/contrib/style.md",
         "patchSetId": 3
