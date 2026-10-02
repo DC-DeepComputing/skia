@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04700600_9512cd60",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T17:02:44Z",
+      "side": 1,
+      "message": "These are the two new flags that determine whether or not LESS vs. LEQUAL is used, and whether or not the RenderStep will force depth to be added to the render pass.",
+      "range": {
+        "startLine": 316,
+        "startChar": 4,
+        "endLine": 319,
+        "endChar": 76
+      },
+      "revId": "1049be0e429938a55c24346121ae2417ccc56095",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
