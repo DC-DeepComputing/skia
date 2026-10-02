@@ -6347,21 +6347,6 @@ SI U32 ix_and_ptr(T** ptr, const SkRasterPipelineContexts::GatherCtx* ctx, F x, 
     return trunc_(y)*ctx->stride + trunc_(x);
 }
 
-template <typename T>
-SI U32 ix_and_ptr(T** ptr, const SkRasterPipelineContexts::GatherCtx* ctx, I32 x, I32 y) {
-    // This flag doesn't make sense when the coords are integers.
-    SkASSERT(ctx->roundDownAtInteger == 0);
-    // Exclusive -> inclusive.
-    const I32 w = I32_( ctx->width - 1),
-              h = I32_(ctx->height - 1);
-
-    U32 ax = cast<U32>(min_intr(max_intr(0, x), w)),
-        ay = cast<U32>(min_intr(max_intr(0, y), h));
-
-    *ptr = (const T*)ctx->pixels;
-    return ay * ctx->stride + ax;
-}
-
 template <typename V, typename T>
 SI V load(const T* ptr) {
     V v;
@@ -7100,6 +7085,41 @@ LOWP_STAGE_GP(evenly_spaced_2_stop_gradient,
                    &r,&g,&b,&a);
 }
 
+// Returns true if all N lanes of `v` contain the same value.
+// We check all lanes (rather than just `v[0] == v[N - 1]`) because non-affine transforms
+// (e.g. perspective or runtime shaders) can produce non-monotonic coordinates where the first
+// and last lanes match while middle lanes differ. Target-specific intrinsics are used so both
+// Clang and GCC emit a single mask/test check instead of a multi-step extract reduction or loop.
+SI bool is_uniform(I32 v) {
+#if defined(SKRP_CPU_ML4)
+    return _mm512_cmpeq_epi32_mask((__m512i)v, _mm512_set1_epi32(v[0])) == 0xffff;
+#elif defined(SKRP_CPU_AVX2)
+    __m256i lo, hi;
+    split(v ^ I32_(v[0]), &lo, &hi);
+    __m256i d = _mm256_or_si256(lo, hi);
+    return _mm256_testz_si256(d, d);
+#elif defined(SKRP_CPU_SSE2) || defined(SKRP_CPU_SSE41) || defined(SKRP_CPU_AVX)
+    __m128i lo, hi;
+    split(v, &lo, &hi);
+    __m128i b = _mm_shuffle_epi32(lo, 0);
+    return _mm_movemask_epi8(_mm_and_si128(_mm_cmpeq_epi32(lo, b), _mm_cmpeq_epi32(hi, b))) == 0xffff;
+#elif defined(SKRP_CPU_NEON) && defined(SK_CPU_ARM64)
+    uint32x4_t lo, hi;
+    split(cast<U32>(v ^ I32_(v[0])), &lo, &hi);
+    return vmaxvq_u32(vorrq_u32(lo, hi)) == 0;
+#elif defined(__clang__)
+    return __builtin_reduce_or(v ^ v[0]) == 0;
+#else
+    I32 d = v ^ I32_(v[0]);
+    for (size_t i = 1; i < N; ++i) {
+        if (d[i] != 0) {
+            return false;
+        }
+    }
+    return true;
+#endif
+}
+
 LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx) {
     // Quantize sample point and transform into lerp coordinates converting them to 16.16 fixed
     // point number.
@@ -7120,9 +7140,8 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
         qy = cast<I32>(floor_(65536.0f * y + 0.5f)) - 32768;
 #endif
 
-    // Calculate screen coordinates sx & sy by flooring qx and qy.
-    I32 sx = qx >> 16,
-        sy = qy >> 16;
+    // Calculate screen coordinate sx by flooring qx (sy is floored below).
+    I32 sx = qx >> 16;
 
     // We are going to perform a change of parameters for qx on [0, 1) to tx on [-1, 1).
     // This will put tx in Q15 format for use with q_mult.
@@ -7182,30 +7201,70 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
         return v2 >> 1;
     };
 
-    const uint32_t* ptr;
-    U32 ix = ix_and_ptr(&ptr, ctx, sx, sy);
+    // `roundDownAtInteger` is only used by nearest-neighbor (`gather_*`) stages.
+    SkASSERT(ctx->roundDownAtInteger == 0);
+
+    // We inline and split the coordinate clamping from `ix_and_ptr`:
+    // The top row `(sx, sy)`, `(sx + 1, sy)` and bottom row `(sx, sy + 1)`, `(sx + 1, sy + 1)`
+    // share the exact same clamped X indices (`ax0` and `ax1`), so we clamp `sx` and `sx + 1`
+    // once up front instead of repeating the X clamp for both rows.
+    const uint32_t* ptr = (const uint32_t*)ctx->pixels;
+    const I32 w = I32_(ctx->width - 1);
+    U32 ax0 = cast<U32>(min_intr(max_intr(0, sx), w)),
+        ax1 = cast<U32>(min_intr(max_intr(0, sx + 1), w));
+
     U16 leftR, leftG, leftB, leftA;
-    from_8888(gather_unaligned<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
-
-    ix = ix_and_ptr(&ptr, ctx, sx+1, sy);
     U16 rightR, rightG, rightB, rightA;
-    from_8888(gather_unaligned<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
+    U16 topR, topG, topB, topA;
+    U16 bottomR, bottomG, bottomB, bottomA;
 
-    U16 topR = lerpX(leftR, rightR),
-        topG = lerpX(leftG, rightG),
-        topB = lerpX(leftB, rightB),
+    // Fast path for horizontal scanlines (e.g. axis-aligned scale/translate with no rotation or
+    // skew): when all N lanes have the same `qy`, every lane samples from the same two source
+    // rows (`row0` and `row1`). We can clamp Y and multiply by `stride` in scalar registers to
+    // pre-offset the row pointers, avoiding vector Y clamping, vector `stride` multiplication,
+    // and 4 vector index additions (`ay + ax`), while reusing `ax0` and `ax1` directly.
+    if (is_uniform(qy)) {
+        int sy0 = qy[0] >> 16;
+        int h = ctx->height - 1;
+        const uint32_t* row0 = ptr + std::min(std::max(0, sy0), h) * ctx->stride;
+        const uint32_t* row1 = ptr + std::min(std::max(0, sy0 + 1), h) * ctx->stride;
+
+        from_8888(gather_unaligned<U32>(row0, ax0), &leftR, &leftG, &leftB, &leftA);
+        from_8888(gather_unaligned<U32>(row0, ax1), &rightR, &rightG, &rightB, &rightA);
+        topR = lerpX(leftR, rightR);
+        topG = lerpX(leftG, rightG);
+        topB = lerpX(leftB, rightB);
         topA = lerpX(leftA, rightA);
 
-    ix = ix_and_ptr(&ptr, ctx, sx, sy+1);
-    from_8888(gather_unaligned<U32>(ptr, ix), &leftR,&leftG,&leftB,&leftA);
-
-    ix = ix_and_ptr(&ptr, ctx, sx+1, sy+1);
-    from_8888(gather_unaligned<U32>(ptr, ix), &rightR,&rightG,&rightB,&rightA);
-
-    U16 bottomR = lerpX(leftR, rightR),
-        bottomG = lerpX(leftG, rightG),
-        bottomB = lerpX(leftB, rightB),
+        from_8888(gather_unaligned<U32>(row1, ax0), &leftR, &leftG, &leftB, &leftA);
+        from_8888(gather_unaligned<U32>(row1, ax1), &rightR, &rightG, &rightB, &rightA);
+        bottomR = lerpX(leftR, rightR);
+        bottomG = lerpX(leftG, rightG);
+        bottomB = lerpX(leftB, rightB);
         bottomA = lerpX(leftA, rightA);
+    } else {
+        // General path (rotation, skew, perspective, or non-linear shader coords): each lane may
+        // sample from a different Y row, so we clamp `sy` and `sy + 1` and multiply by `stride`
+        // per lane as vectors.
+        I32 sy = qy >> 16;
+        const I32 h = I32_(ctx->height - 1);
+        U32 ay0 = cast<U32>(min_intr(max_intr(0, sy), h)) * ctx->stride,
+            ay1 = cast<U32>(min_intr(max_intr(0, sy + 1), h)) * ctx->stride;
+
+        from_8888(gather_unaligned<U32>(ptr, ay0 + ax0), &leftR, &leftG, &leftB, &leftA);
+        from_8888(gather_unaligned<U32>(ptr, ay0 + ax1), &rightR, &rightG, &rightB, &rightA);
+        topR = lerpX(leftR, rightR);
+        topG = lerpX(leftG, rightG);
+        topB = lerpX(leftB, rightB);
+        topA = lerpX(leftA, rightA);
+
+        from_8888(gather_unaligned<U32>(ptr, ay1 + ax0), &leftR, &leftG, &leftB, &leftA);
+        from_8888(gather_unaligned<U32>(ptr, ay1 + ax1), &rightR, &rightG, &rightB, &rightA);
+        bottomR = lerpX(leftR, rightR);
+        bottomG = lerpX(leftG, rightG);
+        bottomB = lerpX(leftB, rightB);
+        bottomA = lerpX(leftA, rightA);
+    }
 
     // lerpY plays the same mathematical tricks as lerpX, but the final divide is by 256 resulting
     // in a value on [0, 255].
