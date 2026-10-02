@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e35225_f40651af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T16:54:48Z",
+      "side": 1,
+      "message": "lgtm, just one question",
+      "revId": "a9dfd73c0364ed9344b08b69cd5094f4749ce09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2fe56b8_143d50ee",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1850,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T16:54:48Z",
+      "side": 1,
+      "message": "Do we want to condition this on protectedMemory if Skia is the one adding the pipeline-protected-access extension? Or is it sufficient to rely on the driver setting `pipelineProtectedAccess` when protected memory is not also enabled, when VulkanCaps queries the enabled features?",
+      "range": {
+        "startLine": 1850,
+        "startChar": 0,
+        "endLine": 1850,
+        "endChar": 69
+      },
+      "revId": "a9dfd73c0364ed9344b08b69cd5094f4749ce09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
