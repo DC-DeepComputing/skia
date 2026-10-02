@@ -489,6 +489,25 @@ DEF_TEST(RustIcoCodec_partial_directory_payload_dimension_mismatch, r) {
     REPORTER_ASSERT(r, SkColorGetA(bitmap.getColor(255, 255)) == 0);
 }
 
+DEF_TEST(RustIcoCodec_incomplete_before_first_payload, r) {
+    sk_sp<SkData> data = GetResourceAsData("images/wrong-frame-dimensions.ico");
+    REPORTER_ASSERT(r, data);
+    if (!data) {
+        return;
+    }
+
+    constexpr size_t kPartialSize = 100;
+    REPORTER_ASSERT(r, data->size() > kPartialSize);
+    sk_sp<SkData> partial = SkData::MakeSubset(data.get(), 0, kPartialSize);
+
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(std::move(partial)), &result);
+
+    REPORTER_ASSERT(r, !codec);
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput);
+}
+
 DEF_TEST(RustIcoCodec_reject_payload_exceeding_directory_canvas, r) {
     sk_sp<SkData> data = GetResourceAsData("images/color_wheel.ico");
     REPORTER_ASSERT(r, data);
@@ -763,11 +782,11 @@ DEF_TEST(RustIcoCodec_truncated_all_entries_missing, r) {
     std::unique_ptr<SkCodec> codec =
             SkIcoRustDecoder::Decode(SkMemoryStream::Make(std::move(truncated)), &result);
 
-    // No embedded images can be decoded, so codec creation should fail.
+    // No embedded images can be decoded yet, so callers should retry with more data.
     REPORTER_ASSERT(r, !codec,
                     "Codec should not be created when all entries are truncated");
-    REPORTER_ASSERT(r, result == SkCodec::kInvalidInput,
-                    "Expected kInvalidInput, got %s", SkCodec::ResultToString(result));
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput,
+                    "Expected kIncompleteInput, got %s", SkCodec::ResultToString(result));
 }
 
 // Test that an ICO file truncated so that only some embedded images are present
