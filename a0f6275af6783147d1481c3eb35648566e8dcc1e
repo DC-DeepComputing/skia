@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54146737_b1f3d272",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 7226,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-02T21:33:41Z",
+      "side": 1,
+      "message": "Do we have benchmarks to gauge the perf impact for these changes?  Adding a predicate and a branch will eat into (and could negate) whatever benefit we\u0027re getting from the fast path, so it would be interesting to compare against just the branchless/general impl below.\n\nIdeally, I think we should be able to evaluate uniformity upfront at pipeline build time, and use a separate specialized stage for the uniform case.  Then we\u0027d get the best of both worlds (fast path without branching or predicate penalty on every iteration).",
+      "range": {
+        "startLine": 7226,
+        "startChar": 4,
+        "endLine": 7226,
+        "endChar": 25
+      },
+      "revId": "a0f6275af6783147d1481c3eb35648566e8dcc1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
