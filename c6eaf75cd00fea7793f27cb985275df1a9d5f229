@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6363d04_12570fbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T16:32:27Z",
+      "side": 1,
+      "message": "Adding Greg since this is relevant to a skill he\u0027s working on.",
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eb8be82_b48ee90e",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T16:32:27Z",
+      "side": 1,
+      "message": "We usually do Skia headers first and then system headers, for both .cpp and .h files.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 46
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0f81412_85e8938d",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T16:32:27Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with this type",
+      "range": {
+        "startLine": 152,
+        "startChar": 61,
+        "endLine": 152,
+        "endChar": 65
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6e495f6_15745a05",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T16:32:27Z",
+      "side": 1,
+      "message": "\"and is derived from using a `kLast` member of the enum.\"\n\nIf we define a count, we should also include a kLast enum.",
+      "range": {
+        "startLine": 154,
+        "startChar": 8,
+        "endLine": 154,
+        "endChar": 54
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
