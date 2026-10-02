@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2fbf7227_402c65fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T17:41:50Z",
+      "side": 1,
+      "message": "For context Alexis, I\u0027ve been working a style check skill that we can run and reports where we differ from Skia\u0027s style (eventually can be part of CQ and/or presubmit checks).\n\nBut I wonder want the best way to write that Skill is. Like to test things out I have a small skill md file that has some of these style rules in it. Though I\u0027m trying to keep it minimally verbose to be more efficient for Agents. But then we also have our doc style.md here. In theory I can have my skill just read this md file. But are all the extra words and examples to make it human friendly worse for AI? But I also don\u0027t want to duplicate all the rules and keep both files in sync.",
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8eb8be82_b48ee90e",
         "filename": "site/docs/dev/contrib/style.md",
         "patchSetId": 3
