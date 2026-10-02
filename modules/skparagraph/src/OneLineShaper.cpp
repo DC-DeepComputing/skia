@@ -399,14 +399,42 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
         }
         SkASSERT(combinedBlock.fRange.width() == 0 || combinedBlock.fRange.end == block.fRange.start);
 
+        // Do not break shaping across non-grapheme boundaries (e.g. combining marks,
+        // diacritics, or tone marks). Splitting a base character and its combining
+        // mark into separate shaping runs prevents the shaper (e.g. HarfBuzz) from
+        // positioning marks relative to base glyphs (GPOS mark attachment), which
+        // causes detached or displaced diacritics. If the style boundary falls inside
+        // a grapheme cluster, we combine the style block with the preceding block so
+        // the cluster is shaped atomically. Individual style attributes (color, etc.)
+        // will be applied to the isolated glyphs during painting in TextLine.
+        bool isGraphemeStart = true;
+        if (blockRange.start > 0) {
+            isGraphemeStart = (fParagraph->fCodeUnitProperties[blockRange.start] & SkUnicode::CodeUnitFlags::kGraphemeStart) != 0;
+        }
+
         if (!combinedBlock.fRange.empty()) {
             if (block.fStyle.matchOneAttribute(StyleType::kFont, combinedBlock.fStyle)) {
                 combinedBlock.add(blockRange);
                 addFeatures(block);
                 continue;
             }
-            // Resolve all characters in the block for this style
-            visitor(combinedBlock, features);
+
+            if (!isGraphemeStart) {
+                TextIndex graphemeEnd = fParagraph->findNextGraphemeBoundary(blockRange.start);
+                TextIndex clusterEnd = std::min(graphemeEnd, blockRange.end);
+                combinedBlock.add(BlockRange(blockRange.start, clusterEnd));
+                addFeatures(block);
+
+                if (clusterEnd == blockRange.end) {
+                    continue;
+                }
+
+                visitor(combinedBlock, features);
+                blockRange.start = clusterEnd;
+            } else {
+                // Resolve all characters in the block for this style
+                visitor(combinedBlock, features);
+            }
         }
 
         combinedBlock.fRange = blockRange;
@@ -415,7 +443,9 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
         addFeatures(block);
     }
 
-    visitor(combinedBlock, features);
+    if (!combinedBlock.fRange.empty()) {
+        visitor(combinedBlock, features);
+    }
 #ifdef SK_DEBUG
     //printState();
 #endif
