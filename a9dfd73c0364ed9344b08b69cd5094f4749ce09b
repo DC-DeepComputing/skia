@@ -63,6 +63,30 @@
       },
       "revId": "a9dfd73c0364ed9344b08b69cd5094f4749ce09b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f36e30bf_def18258",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1850,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-02T17:36:46Z",
+      "side": 1,
+      "message": "All to say, I believe it should be sufficient to rely on the driver to set `pipelineProtectedAccess` when protected memory is not also enabled, though I imagine a device would usually support protected memory if this extension is also present.",
+      "parentUuid": "b71edd44_6cd94d74",
+      "range": {
+        "startLine": 1850,
+        "startChar": 0,
+        "endLine": 1850,
+        "endChar": 69
+      },
+      "revId": "a9dfd73c0364ed9344b08b69cd5094f4749ce09b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
