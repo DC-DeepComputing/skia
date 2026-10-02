@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce498d2_a50b64a0",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-02T21:27:50Z",
+      "side": 1,
+      "message": "Good catch. Checking only against the global canvas is too weak. I changed the fitting invariant to require each payload’s native dimensions to fit that entry’s directory-reported frame size, and reused it for sorting, scaled-size selection, exact matching, indexed decode, and canvas fallback. I also added a regression where a 128x128 payload is reported as 1x1 while a 64x64 payload is validly reported as 128x128; the valid entry now controls frame zero and the oversized one remains metadata-only.",
+      "parentUuid": "eae12d6e_c20d3738",
+      "revId": "f38ff95661c148762782f29060af3ff1f83f1d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d20cd334_d5ec0bcc",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "366cd7a3_c6b2434d",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-02T21:27:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d20cd334_d5ec0bcc",
+      "range": {
+        "startLine": 436,
+        "startChar": 8,
+        "endLine": 436,
+        "endChar": 33
+      },
+      "revId": "f38ff95661c148762782f29060af3ff1f83f1d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "761dbce5_03240a88",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-10-02T20:21:50Z",
       "side": 1,
       "message": "Since we\u0027ve already sorted the entries based on fitment, would it be sufficient to just check `fEmbeddedImages[0]`?  IOW if any entry fits, `fEmbeddedImages[0]` must also fit.",
+      "range": {
+        "startLine": 478,
+        "startChar": 21,
+        "endLine": 485,
+        "endChar": 9
+      },
+      "revId": "f38ff95661c148762782f29060af3ff1f83f1d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bbb5b53_9efe2bec",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-02T21:27:50Z",
+      "side": 1,
+      "message": "Yes. Now that all entries whose payload fits their reported frame sort ahead of metadata-only entries, checking `fEmbeddedImages.front()` is sufficient. I replaced the scan with a single front-entry fitment check.",
+      "parentUuid": "761dbce5_03240a88",
       "range": {
         "startLine": 478,
         "startChar": 21,

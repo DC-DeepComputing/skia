@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b573b30_c058cff2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-02T21:27:50Z",
+      "side": 1,
+      "message": "I also found that a malformed `bytesInRes` could mark a complete non-final entry as truncated -or consume following entries— so payloads are now bounded by the next distinct offset or EOF. This also handles duplicate offsets as aliases of one payload, preserving each directory record’s independent metadata.",
+      "revId": "39e560c55239a4db0031c1c03e99713daa43e110",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
