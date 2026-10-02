@@ -30,10 +30,6 @@ public:
 
 private:
     GrRecordingContext* fGaneshCtx;
-
-    SkCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
-    void createCaptureBreakpoint(SkSurface*) override { }
-    void deregisterCaptureCanvas(SkCanvas*) override { }
 };
 
 inline SkGaneshRecorder* AsGaneshRecorder(SkRecorder* recorder) {
