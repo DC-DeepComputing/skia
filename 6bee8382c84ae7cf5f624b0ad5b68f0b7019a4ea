@@ -70,6 +70,30 @@
       },
       "revId": "6bee8382c84ae7cf5f624b0ad5b68f0b7019a4ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eda52fc_d7c94916",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T18:36:16Z",
+      "side": 1,
+      "message": "I don\u0027t think it makes sense to expose backend selection into surface/image creation. I think the right thing to do is just always pass in a Recorder. That will tell Skia what the backend for the Image/Surface is and also some cases will require having the Recorder (e.g. uploading data to a gpu image).",
+      "parentUuid": "778b8936_f47827c3",
+      "range": {
+        "startLine": 54,
+        "startChar": 44,
+        "endLine": 54,
+        "endChar": 61
+      },
+      "revId": "6bee8382c84ae7cf5f624b0ad5b68f0b7019a4ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
