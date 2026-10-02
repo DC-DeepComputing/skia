@@ -494,6 +494,30 @@
       },
       "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b49aab6_ea014a87",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T20:49:21Z",
+      "side": 1,
+      "message": "The hard rule should be that you need braces; A single-line if with braces is conditionally acceptable if it helps with readability. Generally why Skia style has relatively few hard rules 😊",
+      "parentUuid": "19f16dad_a5d4c610",
+      "range": {
+        "startLine": 270,
+        "startChar": 1,
+        "endLine": 270,
+        "endChar": 46
+      },
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
