@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2943fe37_f5a1a8e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-02T18:50:52Z",
+      "side": 1,
+      "message": "Triggered an android canary tryjob to ensure this fixes it before submitting.",
+      "revId": "50838e0f3f240bf6f50eee888d6c175371832b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
