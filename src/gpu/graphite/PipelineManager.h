@@ -21,7 +21,6 @@ class UniqueKey;
 }
 
 class SkExecutor;
-class SkTaskGroup;
 
 namespace skgpu::graphite {
 
@@ -30,9 +29,9 @@ class GraphicsPipelineDesc;
 class GraphicsPipelineHandle;
 enum class PipelineCreationFlags : uint8_t;
 class PipelineCreationTask;
-struct RenderPassDesc;
 class RuntimeEffectDictionary;
 class SharedContext;
+struct RenderPassDesc;
 
 class PipelineManager {
 public:
@@ -98,10 +97,13 @@ private:
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
 
-    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
+    SkExecutor* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
 
     void signalCompleted(PipelineCreationTask*);
     void potentiallyWaitOn(PipelineCreationTask*);
+
+    sk_sp<PipelineCreationTask> getWork(bool inclInProgress) SK_EXCLUDES(fSpinLock);
+    void wait();
 
     // Returns true if compilation occurred; false otherwise.
     static bool InlineCompile(PipelineCreationTask*);
