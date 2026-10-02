@@ -168,7 +168,11 @@ bool PipelineManager::InlineCompile(PipelineCreationTask* task) {
         SKIA_LOG_W("Failed to create GraphicsPipeline!");
     }
 
-    pipelineManager->signalCompleted(task);
+    // The Context thread is the only place that resolves handles so we will only
+    // ever be waiting on at most one pipeline at a time and no other thread will
+    // need to block on waiting for a different pipeline.
+    task->fCompleted = true;
+    task->fCompleted.notify_one();
     pipelineManager->removeTask(task);
 
     task->fSharedContext = nullptr;
@@ -209,8 +213,16 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHan
     sk_sp<PipelineCreationTask> task =
             std::get<sk_sp<PipelineCreationTask>>(handle.fTaskOrPipeline);
 
+    if (!task->fStarted.exchange(true)) {
+        // If we can preempt some thread that is scheduled to compile this Pipeline, do so rather
+        // than waiting.
+        InlineCompile(task.get());
+    }
+
     // For the non-threaded PipelineManager, the GraphicsPipeline will have been compiled in-line
-    // so will already have been completed.
+    // so will already have been completed. For the threaded PipelineManager, resolveHandle
+    // should only ever be called from the main thread (on which Context::insertRecording is
+    // called) so only one thread should ever be waiting.
     this->potentiallyWaitOn(task.get());
     return task->fPipeline;
 }
@@ -296,21 +308,6 @@ void PipelineManager::removeTask(PipelineCreationTask* task) {
     fActiveTasks.remove(task->fPipelineKey);
 }
 
-void PipelineManager::signalCompleted(PipelineCreationTask* task) {
-    std::unique_lock<std::mutex> lock(fMutex);
-
-    // Even though 'fCompleted' is atomic it is still required that it be
-    // modified within the locked mutex lest the 'wait' in potentiallyWaitOn
-    // misses the signal.
-    task->fCompleted = true;
-
-    lock.unlock();
-    // potentiallyWaitOn should only ever be called from the main thread (on which
-    // Context::insertRecording is called) so only one thread should ever be waiting
-    fConditionVariable.notify_one();
-}
-
-
 void PipelineManager::potentiallyWaitOn(PipelineCreationTask* task) {
     // If we can preempt some thread that is scheduled to compile this Pipeline, do so rather
     // than waiting.
@@ -319,14 +316,7 @@ void PipelineManager::potentiallyWaitOn(PipelineCreationTask* task) {
         return;
     }
 
-    std::unique_lock<std::mutex> lock(fMutex);
-
-    if (task->fCompleted) {
-        return;
-    }
-    fConditionVariable.wait(lock, [task]{ return task->fCompleted.load(); });
-
-    SkASSERT(task->fCompleted);
+    task->fCompleted.wait(false);
 }
 
 } // namespace skgpu::graphite
