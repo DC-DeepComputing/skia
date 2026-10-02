@@ -16,6 +16,23 @@
       "message": "Triggered an android canary tryjob to ensure this fixes it before submitting.",
       "revId": "50838e0f3f240bf6f50eee888d6c175371832b6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb98ce0_5827f059",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-10-02T21:12:37Z",
+      "side": 1,
+      "message": "Thanks for fixing this! And yeah a fix forward seems reasonable considering there are other changes which depend on this (we could have reverted them too but that may have been more trouble than it’s worth, and the fix here is pretty clean)\n\nSorry the `static_assert`s were added in a later patchset and I wasn’t aware `#include \u003cranges\u003e`  wasn’t available in AOSP. Let me know if the change fixes it.\n\nThanks again!",
+      "revId": "50838e0f3f240bf6f50eee888d6c175371832b6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
