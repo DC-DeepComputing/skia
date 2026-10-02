@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4fc9e170_f37035c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T18:32:28Z",
+      "side": 1,
+      "message": "There are some things that are harder to write specific tools to check vs having an AI check. Most formating things I agree can be done by tools. But things like put an `f` in front of member variables or prefer enum class vs enum are much easier for an AI to detect IMO then manually writing complicated parsers to understand all the various use cases and match the right style guide.\n\nIts funny you say Agents do better on more human readable because there is also a large camp that will claim the complete opposite. Also the more human readable the more tokens that need to be passed into the agent.",
+      "parentUuid": "a92c96ab_7f674f69",
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6642a443_13a46f15",
         "filename": "site/docs/dev/contrib/style.md",
         "patchSetId": 3
