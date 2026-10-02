@@ -1,0 +1,345 @@
+// SparseStripsDebug capture
+//   SKP:          skps/desk_tiger8svg.skp
+//   Session:      capture (#3), inputs via StripGenerator device hook (exact)
+//   Clip policy:  left/top tile-aligned
+//   Target size:  2560 x 1410, device clip [0 0 2560 1410]
+//   Draws:        5 (3 culled, 0 pipeline failures)
+//   Errors (pixels) winding strict/non-strict: 4265533 / 4264960, coverage strict/non-strict: 4265533 / 4264960 (diagnostic list truncated)
+// Canvas total matrix at capture (viewer transform):
+    // [361.935 0 -308640 | 0 361.935 -204002 | 0 0 1]
+    SkMatrix viewMatrix = SkMatrix::MakeAll(
+            SkBits2Float(0x43b4f7bc), SkBits2Float(0x00000000), SkBits2Float(0xc896b3f2),
+            SkBits2Float(0x00000000), SkBits2Float(0x43b4f7bc), SkBits2Float(0xc8473891),
+            SkBits2Float(0x00000000), SkBits2Float(0x00000000), SkBits2Float(0x3f800000));
+
+// ---- Draw #0 | kWinding | verbs=266 | culled=yes | tiles=0 caps=0 wides=145
+// Error pixels: winding 655360/655360, coverage 655360/655360 (strict/non-strict)
+// Device bounds: [-79174.8 -15566.6 6501.95 46536.6]; clip tile-aligned (left % 8 = 0, top % 8 = 0)
+{
+    // Inputs to StripGenerator::processGeometry(path, ctm, clip)
+    SkIRect clip = SkIRect::MakeLTRB(0, 0, 2560, 1410);
+    SkISize target = SkISize::Make(2560, 1410);  // StripGenerator size
+    // [379.604 0 -190171 | 0 379.604 -204002 | 0 0 1]
+    SkMatrix ctm = SkMatrix::MakeAll(
+            SkBits2Float(0x43bdcd5e), SkBits2Float(0x00000000), SkBits2Float(0xc839b6c7),
+            SkBits2Float(0x00000000), SkBits2Float(0x43bdcd5e), SkBits2Float(0xc8473891),
+            SkBits2Float(0x00000000), SkBits2Float(0x00000000), SkBits2Float(0x3f800000));
+    SkPathBuilder pathBuilder(SkPathFillType::kWinding);
+    pathBuilder.moveTo(SkBits2Float(0x4401199a), SkBits2Float(0x4409d99a));  // 516.4, 551.4
+    pathBuilder.cubicTo(SkBits2Float(0x44016000), SkBits2Float(0x44091334), SkBits2Float(0x44018667), SkBits2Float(0x4408399a), SkBits2Float(0x44018667), SkBits2Float(0x4407599a));
+    pathBuilder.cubicTo(SkBits2Float(0x44018667), SkBits2Float(0x44068ccd), SkBits2Float(0x44016667), SkBits2Float(0x4405c000), SkBits2Float(0x44012ccd), SkBits2Float(0x44050000));
+    pathBuilder.lineTo(SkBits2Float(0x4400f99a), SkBits2Float(0x44047333));  // 515.9, 529.8
+    pathBuilder.cubicTo(SkBits2Float(0x4400f99a), SkBits2Float(0x44047333), SkBits2Float(0x4400eccd), SkBits2Float(0x44045333), SkBits2Float(0x4400eccd), SkBits2Float(0x44045333));
+    pathBuilder.cubicTo(SkBits2Float(0x4400eccd), SkBits2Float(0x44045333), SkBits2Float(0x4400b333), SkBits2Float(0x4403d333), SkBits2Float(0x4400b333), SkBits2Float(0x4403d333));
+    pathBuilder.cubicTo(SkBits2Float(0x4400b333), SkBits2Float(0x4403cccd), SkBits2Float(0x44007333), SkBits2Float(0x44036000), SkBits2Float(0x44007333), SkBits2Float(0x44036000));
+    pathBuilder.cubicTo(SkBits2Float(0x44007333), SkBits2Float(0x44036000), SkBits2Float(0x44006666), SkBits2Float(0x44034666), SkBits2Float(0x44006666), SkBits2Float(0x44034666));
+    pathBuilder.cubicTo(SkBits2Float(0x44006666), SkBits2Float(0x44034666), SkBits2Float(0x44002000), SkBits2Float(0x4402d999), SkBits2Float(0x44002000), SkBits2Float(0x4402d999));
+    pathBuilder.cubicTo(SkBits2Float(0x4400199a), SkBits2Float(0x4402d333), SkBits2Float(0x43ff999a), SkBits2Float(0x44027999), SkBits2Float(0x43ff999a), SkBits2Float(0x44027999));
+    pathBuilder.cubicTo(SkBits2Float(0x43ff999a), SkBits2Float(0x44027999), SkBits2Float(0x43ff8000), SkBits2Float(0x44026ccc), SkBits2Float(0x43ff8000), SkBits2Float(0x44026ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43ff8000), SkBits2Float(0x44026ccc), SkBits2Float(0x43fed99a), SkBits2Float(0x44021332), SkBits2Float(0x43fed99a), SkBits2Float(0x44021332));
+    pathBuilder.cubicTo(SkBits2Float(0x43fed99a), SkBits2Float(0x44021332), SkBits2Float(0x43fe2667), SkBits2Float(0x4401c665), SkBits2Float(0x43fe2667), SkBits2Float(0x4401c665));
+    pathBuilder.cubicTo(SkBits2Float(0x43fe2667), SkBits2Float(0x4401c665), SkBits2Float(0x43fe199a), SkBits2Float(0x4401bfff), SkBits2Float(0x43fe0ccd), SkBits2Float(0x4401bfff));
+    pathBuilder.cubicTo(SkBits2Float(0x43facccd), SkBits2Float(0x44007332), SkBits2Float(0x43f73333), SkBits2Float(0x44005332), SkBits2Float(0x43f6b333), SkBits2Float(0x44004ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43f01999), SkBits2Float(0x43ffd998), SkBits2Float(0x43ec3333), SkBits2Float(0x44015999), SkBits2Float(0x43ea0000), SkBits2Float(0x44029fff));
+    pathBuilder.cubicTo(SkBits2Float(0x43e90000), SkBits2Float(0x44025fff), SkBits2Float(0x43e7f333), SkBits2Float(0x44022ccc), SkBits2Float(0x43e6e666), SkBits2Float(0x4401f999));
+    pathBuilder.cubicTo(SkBits2Float(0x43e6e666), SkBits2Float(0x4401f999), SkBits2Float(0x43e55999), SkBits2Float(0x4401b999), SkBits2Float(0x43e55999), SkBits2Float(0x4401b999));
+    pathBuilder.cubicTo(SkBits2Float(0x43e55999), SkBits2Float(0x4401b999), SkBits2Float(0x43e4f333), SkBits2Float(0x4401accc), SkBits2Float(0x43e4f333), SkBits2Float(0x4401accc));
+    pathBuilder.lineTo(SkBits2Float(0x43e19999), SkBits2Float(0x44014666));  // 451.2, 517.1
+    pathBuilder.lineTo(SkBits2Float(0x43e13333), SkBits2Float(0x44013999));  // 450.4, 516.9
+    pathBuilder.cubicTo(SkBits2Float(0x43e13333), SkBits2Float(0x44013999), SkBits2Float(0x43df6666), SkBits2Float(0x44011333), SkBits2Float(0x43df6666), SkBits2Float(0x44011333));
+    pathBuilder.cubicTo(SkBits2Float(0x43df5999), SkBits2Float(0x44011333), SkBits2Float(0x43df5999), SkBits2Float(0x44011333), SkBits2Float(0x43df4ccc), SkBits2Float(0x44011333));
+    pathBuilder.lineTo(SkBits2Float(0x43df0ccc), SkBits2Float(0x44010ccd));  // 446.1, 516.2
+    pathBuilder.cubicTo(SkBits2Float(0x43df0ccc), SkBits2Float(0x44010ccd), SkBits2Float(0x43deb332), SkBits2Float(0x44010ccd), SkBits2Float(0x43deb332), SkBits2Float(0x44010ccd));
+    pathBuilder.lineTo(SkBits2Float(0x43de3fff), SkBits2Float(0x44010ccd));  // 444.5, 516.2
+    pathBuilder.cubicTo(SkBits2Float(0x43de3fff), SkBits2Float(0x44010ccd), SkBits2Float(0x43de0ccc), SkBits2Float(0x44010ccd), SkBits2Float(0x43de0ccc), SkBits2Float(0x44010ccd));
+    pathBuilder.lineTo(SkBits2Float(0x43ddbfff), SkBits2Float(0x44010ccd));  // 443.5, 516.2
+    pathBuilder.cubicTo(SkBits2Float(0x43ddbfff), SkBits2Float(0x44010ccd), SkBits2Float(0x43dd1999), SkBits2Float(0x44010ccd), SkBits2Float(0x43dd1999), SkBits2Float(0x44010ccd));
+    pathBuilder.lineTo(SkBits2Float(0x43dcbfff), SkBits2Float(0x44010ccd));  // 441.5, 516.2
+    pathBuilder.cubicTo(SkBits2Float(0x43dcb332), SkBits2Float(0x44010ccd), SkBits2Float(0x43dc6665), SkBits2Float(0x44010ccd), SkBits2Float(0x43dc6665), SkBits2Float(0x44010ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x43dc6665), SkBits2Float(0x44010ccd), SkBits2Float(0x43dbf332), SkBits2Float(0x44010ccd), SkBits2Float(0x43dbf332), SkBits2Float(0x44010ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x43dbe665), SkBits2Float(0x44010ccd), SkBits2Float(0x43db9998), SkBits2Float(0x44010ccd), SkBits2Float(0x43db9998), SkBits2Float(0x44010ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x43db9998), SkBits2Float(0x44010ccd), SkBits2Float(0x43db7ffe), SkBits2Float(0x44010ccd), SkBits2Float(0x43db6665), SkBits2Float(0x44010ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x43daa665), SkBits2Float(0x43fce667), SkBits2Float(0x43d68ccb), SkBits2Float(0x43fa7334), SkBits2Float(0x43d65998), SkBits2Float(0x43fa599a));
+    pathBuilder.cubicTo(SkBits2Float(0x43d3f332), SkBits2Float(0x43f8e667), SkBits2Float(0x43d0cccb), SkBits2Float(0x43f83334), SkBits2Float(0x43cdf332), SkBits2Float(0x43f88000));
+    pathBuilder.cubicTo(SkBits2Float(0x43cb9998), SkBits2Float(0x43f8c000), SkBits2Float(0x43c98ccc), SkBits2Float(0x43f98ccd), SkBits2Float(0x43c7cccc), SkBits2Float(0x43fae666));
+    pathBuilder.lineTo(SkBits2Float(0x43c70ccc), SkBits2Float(0x43fb8000));  // 398.1, 503
+    pathBuilder.cubicTo(SkBits2Float(0x43c70ccc), SkBits2Float(0x43fb8000), SkBits2Float(0x43c6d999), SkBits2Float(0x43fbb333), SkBits2Float(0x43c6d999), SkBits2Float(0x43fbb333));
+    pathBuilder.lineTo(SkBits2Float(0x43c64ccc), SkBits2Float(0x43fc4000));  // 396.6, 504.5
+    pathBuilder.cubicTo(SkBits2Float(0x43c64ccc), SkBits2Float(0x43fc4000), SkBits2Float(0x43c63332), SkBits2Float(0x43fc599a), SkBits2Float(0x43c63332), SkBits2Float(0x43fc599a));
+    pathBuilder.cubicTo(SkBits2Float(0x43c63332), SkBits2Float(0x43fc599a), SkBits2Float(0x43c5a665), SkBits2Float(0x43fd0000), SkBits2Float(0x43c5a665), SkBits2Float(0x43fd0000));
+    pathBuilder.lineTo(SkBits2Float(0x43c57fff), SkBits2Float(0x43fd3333));  // 395, 506.4
+    pathBuilder.cubicTo(SkBits2Float(0x43c57fff), SkBits2Float(0x43fd3333), SkBits2Float(0x43c52665), SkBits2Float(0x43fdb333), SkBits2Float(0x43c52665), SkBits2Float(0x43fdb333));
+    pathBuilder.cubicTo(SkBits2Float(0x43c52665), SkBits2Float(0x43fdb333), SkBits2Float(0x43c50ccb), SkBits2Float(0x43fdd999), SkBits2Float(0x43c50ccb), SkBits2Float(0x43fdd999));
+    pathBuilder.cubicTo(SkBits2Float(0x43c50ccb), SkBits2Float(0x43fdd999), SkBits2Float(0x43c4b331), SkBits2Float(0x43fe7333), SkBits2Float(0x43c4b331), SkBits2Float(0x43fe7333));
+    pathBuilder.cubicTo(SkBits2Float(0x43c4b331), SkBits2Float(0x43fe7333), SkBits2Float(0x43c4a664), SkBits2Float(0x43fe8ccd), SkBits2Float(0x43c4a664), SkBits2Float(0x43fe8ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x43c49997), SkBits2Float(0x43fe999a), SkBits2Float(0x43c46664), SkBits2Float(0x43ff0ccd), SkBits2Float(0x43c46664), SkBits2Float(0x43ff0ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x43c46664), SkBits2Float(0x43ff199a), SkBits2Float(0x43c45997), SkBits2Float(0x43ff3333), SkBits2Float(0x43c45997), SkBits2Float(0x43ff3333));
+    pathBuilder.cubicTo(SkBits2Float(0x43c45997), SkBits2Float(0x43ff3333), SkBits2Float(0x43c41997), SkBits2Float(0x43ffb333), SkBits2Float(0x43c41997), SkBits2Float(0x43ffb333));
+    pathBuilder.cubicTo(SkBits2Float(0x43c41997), SkBits2Float(0x43ffb333), SkBits2Float(0x43c40cca), SkBits2Float(0x43ffcccd), SkBits2Float(0x43c40cca), SkBits2Float(0x43ffcccd));
+    pathBuilder.lineTo(SkBits2Float(0x43c40cca), SkBits2Float(0x43ffcccd));  // 392.1, 511.6
+    pathBuilder.cubicTo(SkBits2Float(0x43c40cca), SkBits2Float(0x43ffcccd), SkBits2Float(0x43c3e664), SkBits2Float(0x44001333), SkBits2Float(0x43c3e664), SkBits2Float(0x44001333));
+    pathBuilder.cubicTo(SkBits2Float(0x43c3e664), SkBits2Float(0x44001333), SkBits2Float(0x43c3d997), SkBits2Float(0x44002666), SkBits2Float(0x43c3d997), SkBits2Float(0x44002666));
+    pathBuilder.cubicTo(SkBits2Float(0x43c3d997), SkBits2Float(0x44002666), SkBits2Float(0x43c3bffd), SkBits2Float(0x44004ccc), SkBits2Float(0x43c3bffd), SkBits2Float(0x44004ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43c3bffd), SkBits2Float(0x44005332), SkBits2Float(0x43c3a663), SkBits2Float(0x44006ccc), SkBits2Float(0x43c3a663), SkBits2Float(0x44006ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43c3a663), SkBits2Float(0x44007332), SkBits2Float(0x43c39996), SkBits2Float(0x44007999), SkBits2Float(0x43c39996), SkBits2Float(0x44007999));
+    pathBuilder.cubicTo(SkBits2Float(0x43c39996), SkBits2Float(0x44007333), SkBits2Float(0x43c3a663), SkBits2Float(0x44006ccc), SkBits2Float(0x43c3a663), SkBits2Float(0x44006666));
+    pathBuilder.cubicTo(SkBits2Float(0x43c31996), SkBits2Float(0x44014666), SkBits2Float(0x43c2d996), SkBits2Float(0x44020ccc), SkBits2Float(0x43c2d996), SkBits2Float(0x4402c000));
+    pathBuilder.cubicTo(SkBits2Float(0x43c2d996), SkBits2Float(0x44046ccd), SkBits2Float(0x43c42663), SkBits2Float(0x4405a666), SkBits2Float(0x43c58cc9), SkBits2Float(0x44068666));
+    pathBuilder.cubicTo(SkBits2Float(0x43c47ffc), SkBits2Float(0x44073333), SkBits2Float(0x43c38cc9), SkBits2Float(0x4407e666), SkBits2Float(0x43c2b32f), SkBits2Float(0x4408accc));
+    pathBuilder.cubicTo(SkBits2Float(0x43c2732f), SkBits2Float(0x4408bfff), SkBits2Float(0x43c22662), SkBits2Float(0x4408d999), SkBits2Float(0x43c1f32f), SkBits2Float(0x4408f332));
+    pathBuilder.cubicTo(SkBits2Float(0x43c0fffc), SkBits2Float(0x44095fff), SkBits2Float(0x43bff32f), SkBits2Float(0x4409ffff), SkBits2Float(0x43bff32f), SkBits2Float(0x440ab332));
+    pathBuilder.cubicTo(SkBits2Float(0x43bff32f), SkBits2Float(0x440acccc), SkBits2Float(0x43bffffc), SkBits2Float(0x440aeccc), SkBits2Float(0x43c00cc9), SkBits2Float(0x440b0ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43c01996), SkBits2Float(0x440b1fff), SkBits2Float(0x43c0332f), SkBits2Float(0x440b4666), SkBits2Float(0x43c05996), SkBits2Float(0x440b6666));
+    pathBuilder.cubicTo(SkBits2Float(0x43c00cc9), SkBits2Float(0x440be000), SkBits2Float(0x43bfb330), SkBits2Float(0x440c5999), SkBits2Float(0x43bfb330), SkBits2Float(0x440c5999));
+    pathBuilder.cubicTo(SkBits2Float(0x43bfb330), SkBits2Float(0x440c5333), SkBits2Float(0x43bfbffd), SkBits2Float(0x440c4666), SkBits2Float(0x43bfbffd), SkBits2Float(0x440c3fff));
+    pathBuilder.cubicTo(SkBits2Float(0x43bfbffd), SkBits2Float(0x440c3fff), SkBits2Float(0x43bf0cca), SkBits2Float(0x440d1999), SkBits2Float(0x43be2663), SkBits2Float(0x440d0665));
+    pathBuilder.cubicTo(SkBits2Float(0x43bd4cc9), SkBits2Float(0x440cf332), SkBits2Float(0x43bc7330), SkBits2Float(0x440d2665), SkBits2Float(0x43bbf330), SkBits2Float(0x440d7fff));
+    pathBuilder.cubicTo(SkBits2Float(0x43bbb330), SkBits2Float(0x440db332), SkBits2Float(0x43bb8cca), SkBits2Float(0x440deccc), SkBits2Float(0x43bb8cca), SkBits2Float(0x440e2665));
+    pathBuilder.cubicTo(SkBits2Float(0x43bb8cca), SkBits2Float(0x440e5998), SkBits2Float(0x43bba664), SkBits2Float(0x440e8665), SkBits2Float(0x43bbd997), SkBits2Float(0x440eb332));
+    pathBuilder.cubicTo(SkBits2Float(0x43bbe664), SkBits2Float(0x440ebfff), SkBits2Float(0x43bbfffd), SkBits2Float(0x440ed332), SkBits2Float(0x43bc2664), SkBits2Float(0x440eeccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43bb7ffe), SkBits2Float(0x440f2ccc), SkBits2Float(0x43bae664), SkBits2Float(0x440f7fff), SkBits2Float(0x43ba4cca), SkBits2Float(0x440ff332));
+    pathBuilder.cubicTo(SkBits2Float(0x43ba0cca), SkBits2Float(0x44102665), SkBits2Float(0x43b9e664), SkBits2Float(0x44105998), SkBits2Float(0x43b9e664), SkBits2Float(0x44109332));
+    pathBuilder.cubicTo(SkBits2Float(0x43b9b331), SkBits2Float(0x44109998), SkBits2Float(0x43b98cca), SkBits2Float(0x44109fff), SkBits2Float(0x43b96664), SkBits2Float(0x4410accc));
+    pathBuilder.cubicTo(SkBits2Float(0x43b7d997), SkBits2Float(0x4410c666), SkBits2Float(0x43b67331), SkBits2Float(0x4410f332), SkBits2Float(0x43b52664), SkBits2Float(0x44112666));
+    pathBuilder.cubicTo(SkBits2Float(0x43b2fffe), SkBits2Float(0x44113333), SkBits2Float(0x43b0d997), SkBits2Float(0x44117999), SkBits2Float(0x43aeccca), SkBits2Float(0x4411f999));
+    pathBuilder.cubicTo(SkBits2Float(0x43aebffd), SkBits2Float(0x4411f999), SkBits2Float(0x43ae0cca), SkBits2Float(0x44122666), SkBits2Float(0x43ae0cca), SkBits2Float(0x44122666));
+    pathBuilder.cubicTo(SkBits2Float(0x43adfffd), SkBits2Float(0x44122666), SkBits2Float(0x43adfffd), SkBits2Float(0x44122666), SkBits2Float(0x43adf330), SkBits2Float(0x44122ccc));
+    pathBuilder.lineTo(SkBits2Float(0x43ad4cca), SkBits2Float(0x44125fff));  // 346.6, 585.5
+    pathBuilder.cubicTo(SkBits2Float(0x43ad4cca), SkBits2Float(0x44125fff), SkBits2Float(0x43ad3330), SkBits2Float(0x44126665), SkBits2Float(0x43ad3330), SkBits2Float(0x44126665));
+    pathBuilder.lineTo(SkBits2Float(0x43ac7330), SkBits2Float(0x4412a665));  // 344.9, 586.6
+    pathBuilder.cubicTo(SkBits2Float(0x43ac7330), SkBits2Float(0x4412a665), SkBits2Float(0x43abb330), SkBits2Float(0x4412eccb), SkBits2Float(0x43abb330), SkBits2Float(0x4412eccb));
+    pathBuilder.cubicTo(SkBits2Float(0x43aaa663), SkBits2Float(0x44135331), SkBits2Float(0x43a99996), SkBits2Float(0x4413cccb), SkBits2Float(0x43a8a663), SkBits2Float(0x44145331));
+    pathBuilder.cubicTo(SkBits2Float(0x43a89996), SkBits2Float(0x44145997), SkBits2Float(0x43a88cc9), SkBits2Float(0x44145ffe), SkBits2Float(0x43a88cc9), SkBits2Float(0x44146664));
+    pathBuilder.lineTo(SkBits2Float(0x43a86663), SkBits2Float(0x44147ffe));  // 336.8, 594
+    pathBuilder.cubicTo(SkBits2Float(0x43a81996), SkBits2Float(0x4414accb), SkBits2Float(0x43a74cc9), SkBits2Float(0x44151ffe), SkBits2Float(0x43a62663), SkBits2Float(0x44158664));
+    pathBuilder.cubicTo(SkBits2Float(0x43a57330), SkBits2Float(0x4415c664), SkBits2Float(0x43a4ccc9), SkBits2Float(0x4415f331), SkBits2Float(0x43a42663), SkBits2Float(0x44160cca));
+    pathBuilder.cubicTo(SkBits2Float(0x43a37330), SkBits2Float(0x44162cca), SkBits2Float(0x43a2ccc9), SkBits2Float(0x44163330), SkBits2Float(0x43a22663), SkBits2Float(0x44162664));
+    pathBuilder.cubicTo(SkBits2Float(0x43a1b330), SkBits2Float(0x44161ffe), SkBits2Float(0x43a13ffd), SkBits2Float(0x44160664), SkBits2Float(0x43a0ccc9), SkBits2Float(0x4415e664));
+    pathBuilder.cubicTo(SkBits2Float(0x43a08cc9), SkBits2Float(0x4415c664), SkBits2Float(0x439fccc9), SkBits2Float(0x44157331), SkBits2Float(0x439fccc9), SkBits2Float(0x44157331));
+    pathBuilder.lineTo(SkBits2Float(0x439e9996), SkBits2Float(0x4414d331));  // 317.2, 595.3
+    pathBuilder.cubicTo(SkBits2Float(0x439e9996), SkBits2Float(0x4414d331), SkBits2Float(0x439df330), SkBits2Float(0x44147331), SkBits2Float(0x439df330), SkBits2Float(0x44147331));
+    pathBuilder.cubicTo(SkBits2Float(0x439df330), SkBits2Float(0x44147331), SkBits2Float(0x439d5996), SkBits2Float(0x44140ccb), SkBits2Float(0x439d5996), SkBits2Float(0x44140ccb));
+    pathBuilder.cubicTo(SkBits2Float(0x439cf330), SkBits2Float(0x4413c665), SkBits2Float(0x439c9996), SkBits2Float(0x44137ffe), SkBits2Float(0x439c6663), SkBits2Float(0x44134665));
+    pathBuilder.cubicTo(SkBits2Float(0x439c5996), SkBits2Float(0x44133fff), SkBits2Float(0x439c5996), SkBits2Float(0x44133998), SkBits2Float(0x439c4cc9), SkBits2Float(0x44133332));
+    pathBuilder.cubicTo(SkBits2Float(0x439c332f), SkBits2Float(0x44131fff), SkBits2Float(0x439b7ffc), SkBits2Float(0x44128ccc), SkBits2Float(0x439a5996), SkBits2Float(0x44121332));
+    pathBuilder.cubicTo(SkBits2Float(0x439a4cc9), SkBits2Float(0x44120ccc), SkBits2Float(0x439a0cc9), SkBits2Float(0x4411f332), SkBits2Float(0x439a0cc9), SkBits2Float(0x4411f332));
+    pathBuilder.cubicTo(SkBits2Float(0x4399fffc), SkBits2Float(0x4411eccc), SkBits2Float(0x4399fffc), SkBits2Float(0x4411eccc), SkBits2Float(0x4399f32f), SkBits2Float(0x4411eccc));
+    pathBuilder.lineTo(SkBits2Float(0x4399b32f), SkBits2Float(0x4411d999));  // 307.4, 583.4
+    pathBuilder.cubicTo(SkBits2Float(0x4399a662), SkBits2Float(0x4411d333), SkBits2Float(0x4399a662), SkBits2Float(0x4411d333), SkBits2Float(0x43999995), SkBits2Float(0x4411d333));
+    pathBuilder.lineTo(SkBits2Float(0x43994cc8), SkBits2Float(0x4411c000));  // 306.6, 583
+    pathBuilder.cubicTo(SkBits2Float(0x43993ffb), SkBits2Float(0x4411b99a), SkBits2Float(0x43993ffb), SkBits2Float(0x4411b99a), SkBits2Float(0x4399332e), SkBits2Float(0x4411b99a));
+    pathBuilder.lineTo(SkBits2Float(0x4398d994), SkBits2Float(0x4411a667));  // 305.7, 582.6
+    pathBuilder.cubicTo(SkBits2Float(0x4398ccc7), SkBits2Float(0x4411a001), SkBits2Float(0x43984cc7), SkBits2Float(0x44118ccd), SkBits2Float(0x43984cc7), SkBits2Float(0x44118ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x4398332d), SkBits2Float(0x44118667), SkBits2Float(0x43984cc7), SkBits2Float(0x44118ccd), SkBits2Float(0x4398332d), SkBits2Float(0x44118ccd));
+    pathBuilder.lineTo(SkBits2Float(0x4397ccc7), SkBits2Float(0x44118000));  // 303.6, 582
+    pathBuilder.cubicTo(SkBits2Float(0x4397bffa), SkBits2Float(0x44118000), SkBits2Float(0x4397b32d), SkBits2Float(0x44118000), SkBits2Float(0x43979994), SkBits2Float(0x44118000));
+    pathBuilder.cubicTo(SkBits2Float(0x43979994), SkBits2Float(0x44118000), SkBits2Float(0x43973ffa), SkBits2Float(0x44118000), SkBits2Float(0x43973ffa), SkBits2Float(0x44118000));
+    pathBuilder.lineTo(SkBits2Float(0x43970cc7), SkBits2Float(0x44118000));  // 302.1, 582
+    pathBuilder.cubicTo(SkBits2Float(0x43970cc7), SkBits2Float(0x44118000), SkBits2Float(0x4396a661), SkBits2Float(0x44118666), SkBits2Float(0x4396a661), SkBits2Float(0x44118666));
+    pathBuilder.cubicTo(SkBits2Float(0x4396a661), SkBits2Float(0x44118666), SkBits2Float(0x4396732e), SkBits2Float(0x44118ccc), SkBits2Float(0x4396732e), SkBits2Float(0x44118ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x4396732e), SkBits2Float(0x44118ccc), SkBits2Float(0x43960cc8), SkBits2Float(0x44119999), SkBits2Float(0x43960cc8), SkBits2Float(0x44119999));
+    pathBuilder.cubicTo(SkBits2Float(0x4395f32e), SkBits2Float(0x44119fff), SkBits2Float(0x4395fffb), SkBits2Float(0x44119999), SkBits2Float(0x4395e662), SkBits2Float(0x44119fff));
+    pathBuilder.lineTo(SkBits2Float(0x43954cc8), SkBits2Float(0x4411bfff));  // 298.6, 583
+    pathBuilder.cubicTo(SkBits2Float(0x43954cc8), SkBits2Float(0x4411bfff), SkBits2Float(0x43954cc8), SkBits2Float(0x4411bfff), SkBits2Float(0x43953ffb), SkBits2Float(0x4411c665));
+    pathBuilder.lineTo(SkBits2Float(0x4394d995), SkBits2Float(0x4411e665));  // 297.7, 583.6
+    pathBuilder.cubicTo(SkBits2Float(0x4394ccc8), SkBits2Float(0x4411eccb), SkBits2Float(0x4394bffb), SkBits2Float(0x4411eccb), SkBits2Float(0x4394b32f), SkBits2Float(0x4411f332));
+    pathBuilder.lineTo(SkBits2Float(0x43946662), SkBits2Float(0x44121332));  // 296.8, 584.3
+    pathBuilder.cubicTo(SkBits2Float(0x43946662), SkBits2Float(0x44121332), SkBits2Float(0x4394332f), SkBits2Float(0x44122665), SkBits2Float(0x4394332f), SkBits2Float(0x44122665));
+    pathBuilder.cubicTo(SkBits2Float(0x4394332f), SkBits2Float(0x44122665), SkBits2Float(0x4393e662), SkBits2Float(0x44124ccb), SkBits2Float(0x4393e662), SkBits2Float(0x44124ccb));
+    pathBuilder.cubicTo(SkBits2Float(0x4393e662), SkBits2Float(0x44124ccb), SkBits2Float(0x4393bffc), SkBits2Float(0x44125ffe), SkBits2Float(0x4393bffc), SkBits2Float(0x44125ffe));
+    pathBuilder.cubicTo(SkBits2Float(0x4393bffc), SkBits2Float(0x44125ffe), SkBits2Float(0x43937ffc), SkBits2Float(0x44128ccb), SkBits2Float(0x43937ffc), SkBits2Float(0x44128ccb));
+    pathBuilder.cubicTo(SkBits2Float(0x43937ffc), SkBits2Float(0x44128ccb), SkBits2Float(0x43936662), SkBits2Float(0x44129ffe), SkBits2Float(0x43936662), SkBits2Float(0x44129ffe));
+    pathBuilder.cubicTo(SkBits2Float(0x43936662), SkBits2Float(0x44129ffe), SkBits2Float(0x4392fffc), SkBits2Float(0x4412e664), SkBits2Float(0x4392fffc), SkBits2Float(0x4412e664));
+    pathBuilder.cubicTo(SkBits2Float(0x4392e662), SkBits2Float(0x4412fffe), SkBits2Float(0x4392332f), SkBits2Float(0x44139997), SkBits2Float(0x4392332f), SkBits2Float(0x44149331));
+    pathBuilder.cubicTo(SkBits2Float(0x4392332f), SkBits2Float(0x44150664), SkBits2Float(0x43925995), SkBits2Float(0x44158ccb), SkBits2Float(0x4392bffc), SkBits2Float(0x44162664));
+    pathBuilder.cubicTo(SkBits2Float(0x43933ffc), SkBits2Float(0x4416d997), SkBits2Float(0x43940cc9), SkBits2Float(0x44178cca), SkBits2Float(0x43952662), SkBits2Float(0x44183997));
+    pathBuilder.cubicTo(SkBits2Float(0x43952662), SkBits2Float(0x44183997), SkBits2Float(0x4395d995), SkBits2Float(0x44189ffd), SkBits2Float(0x4395d995), SkBits2Float(0x44189ffd));
+    pathBuilder.cubicTo(SkBits2Float(0x4395e662), SkBits2Float(0x4418a663), SkBits2Float(0x4396a662), SkBits2Float(0x44190cca), SkBits2Float(0x4396a662), SkBits2Float(0x44190cca));
+    pathBuilder.cubicTo(SkBits2Float(0x4397ccc8), SkBits2Float(0x44199ffd), SkBits2Float(0x43993ffc), SkBits2Float(0x441a3330), SkBits2Float(0x439ad995), SkBits2Float(0x441abffd));
+    pathBuilder.cubicTo(SkBits2Float(0x4399f32f), SkBits2Float(0x441b6cca), SkBits2Float(0x4399732f), SkBits2Float(0x441c2663), SkBits2Float(0x4399732f), SkBits2Float(0x441cf330));
+    pathBuilder.cubicTo(SkBits2Float(0x4399732f), SkBits2Float(0x441d0cca), SkBits2Float(0x4399732f), SkBits2Float(0x441d2663), SkBits2Float(0x43997ffc), SkBits2Float(0x441d3ffd));
+    pathBuilder.cubicTo(SkBits2Float(0x43997ffc), SkBits2Float(0x441d3997), SkBits2Float(0x43997ffc), SkBits2Float(0x441d3330), SkBits2Float(0x43997ffc), SkBits2Float(0x441d2cca));
+    pathBuilder.cubicTo(SkBits2Float(0x43997ffc), SkBits2Float(0x441d3330), SkBits2Float(0x43997ffc), SkBits2Float(0x441d3997), SkBits2Float(0x43997ffc), SkBits2Float(0x441d3ffd));
+    pathBuilder.cubicTo(SkBits2Float(0x43997ffc), SkBits2Float(0x441d3ffd), SkBits2Float(0x43997ffc), SkBits2Float(0x441d3ffd), SkBits2Float(0x43997ffc), SkBits2Float(0x441d3ffd));
+    pathBuilder.lineTo(SkBits2Float(0x43997ffc), SkBits2Float(0x441d3ffd));  // 307, 629
+    pathBuilder.cubicTo(SkBits2Float(0x43997ffc), SkBits2Float(0x441d4cca), SkBits2Float(0x43997ffc), SkBits2Float(0x441d5997), SkBits2Float(0x43997ffc), SkBits2Float(0x441d7330));
+    pathBuilder.cubicTo(SkBits2Float(0x43997ffc), SkBits2Float(0x441e0cca), SkBits2Float(0x4399b32f), SkBits2Float(0x441f4663), SkBits2Float(0x439b4cc9), SkBits2Float(0x44200cca));
+    pathBuilder.cubicTo(SkBits2Float(0x439bd996), SkBits2Float(0x44205330), SkBits2Float(0x439c8cc9), SkBits2Float(0x44207997), SkBits2Float(0x439d4cc9), SkBits2Float(0x44209330));
+    pathBuilder.cubicTo(SkBits2Float(0x439de663), SkBits2Float(0x4420fffd), SkBits2Float(0x439ed996), SkBits2Float(0x44217ffd), SkBits2Float(0x43a06663), SkBits2Float(0x4421c663));
+    pathBuilder.cubicTo(SkBits2Float(0x43a06663), SkBits2Float(0x4421c663), SkBits2Float(0x43a0b330), SkBits2Float(0x4421d330), SkBits2Float(0x43a0b330), SkBits2Float(0x4421d330));
+    pathBuilder.cubicTo(SkBits2Float(0x43a0bffd), SkBits2Float(0x4421d330), SkBits2Float(0x43a0d996), SkBits2Float(0x4421d996), SkBits2Float(0x43a0d996), SkBits2Float(0x4421d996));
+    pathBuilder.cubicTo(SkBits2Float(0x43a0d996), SkBits2Float(0x4421d996), SkBits2Float(0x43a12663), SkBits2Float(0x4421dffc), SkBits2Float(0x43a12663), SkBits2Float(0x4421dffc));
+    pathBuilder.cubicTo(SkBits2Float(0x43a12663), SkBits2Float(0x4421dffc), SkBits2Float(0x43a15996), SkBits2Float(0x4421e662), SkBits2Float(0x43a15996), SkBits2Float(0x4421e662));
+    pathBuilder.cubicTo(SkBits2Float(0x43a15996), SkBits2Float(0x4421e662), SkBits2Float(0x43a1a663), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a1a663), SkBits2Float(0x4421ecc8));
+    pathBuilder.cubicTo(SkBits2Float(0x43a1a663), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a1d996), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a1d996), SkBits2Float(0x4421ecc8));
+    pathBuilder.lineTo(SkBits2Float(0x43a22663), SkBits2Float(0x4421ecc8));  // 324.3, 647.7
+    pathBuilder.lineTo(SkBits2Float(0x43a26663), SkBits2Float(0x4421ecc8));  // 324.8, 647.7
+    pathBuilder.cubicTo(SkBits2Float(0x43a26663), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a2b330), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a2b330), SkBits2Float(0x4421ecc8));
+    pathBuilder.cubicTo(SkBits2Float(0x43a2b330), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a2f330), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a2f330), SkBits2Float(0x4421ecc8));
+    pathBuilder.cubicTo(SkBits2Float(0x43a2fffd), SkBits2Float(0x4421ecc8), SkBits2Float(0x43a33ffd), SkBits2Float(0x4421e662), SkBits2Float(0x43a33ffd), SkBits2Float(0x4421e662));
+    pathBuilder.cubicTo(SkBits2Float(0x43a33ffd), SkBits2Float(0x4421e662), SkBits2Float(0x43a38cca), SkBits2Float(0x4421dffc), SkBits2Float(0x43a38cca), SkBits2Float(0x4421dffc));
+    pathBuilder.cubicTo(SkBits2Float(0x43a38cca), SkBits2Float(0x4421dffc), SkBits2Float(0x43a3ccca), SkBits2Float(0x4421d996), SkBits2Float(0x43a3ccca), SkBits2Float(0x4421d996));
+    pathBuilder.cubicTo(SkBits2Float(0x43a3ccca), SkBits2Float(0x4421d996), SkBits2Float(0x43a45997), SkBits2Float(0x4421c663), SkBits2Float(0x43a45997), SkBits2Float(0x4421c663));
+    pathBuilder.cubicTo(SkBits2Float(0x43a45997), SkBits2Float(0x4421c663), SkBits2Float(0x43a48cca), SkBits2Float(0x4421bffd), SkBits2Float(0x43a48cca), SkBits2Float(0x4421bffd));
+    pathBuilder.cubicTo(SkBits2Float(0x43a49997), SkBits2Float(0x4421bffd), SkBits2Float(0x43a4f330), SkBits2Float(0x4421acca), SkBits2Float(0x43a4f330), SkBits2Float(0x4421acca));
+    pathBuilder.cubicTo(SkBits2Float(0x43a4f330), SkBits2Float(0x4421acca), SkBits2Float(0x43a52663), SkBits2Float(0x4421a664), SkBits2Float(0x43a52663), SkBits2Float(0x4421a664));
+    pathBuilder.cubicTo(SkBits2Float(0x43a53330), SkBits2Float(0x44219ffe), SkBits2Float(0x43a58cc9), SkBits2Float(0x44219331), SkBits2Float(0x43a58cc9), SkBits2Float(0x44219331));
+    pathBuilder.cubicTo(SkBits2Float(0x43a58cc9), SkBits2Float(0x44219331), SkBits2Float(0x43a59996), SkBits2Float(0x44219331), SkBits2Float(0x43a5a663), SkBits2Float(0x44218ccb));
+    pathBuilder.cubicTo(SkBits2Float(0x43a5fffd), SkBits2Float(0x4421d998), SkBits2Float(0x43a67ffd), SkBits2Float(0x44222665), SkBits2Float(0x43a73330), SkBits2Float(0x44226665));
+    pathBuilder.cubicTo(SkBits2Float(0x43a76663), SkBits2Float(0x44227fff), SkBits2Float(0x43a80cca), SkBits2Float(0x4422d332), SkBits2Float(0x43a93ffd), SkBits2Float(0x44231998));
+    pathBuilder.cubicTo(SkBits2Float(0x43a93ffd), SkBits2Float(0x44231998), SkBits2Float(0x43a97ffd), SkBits2Float(0x44232665), SkBits2Float(0x43a97ffd), SkBits2Float(0x44232665));
+    pathBuilder.cubicTo(SkBits2Float(0x43a97ffd), SkBits2Float(0x44232665), SkBits2Float(0x43a9ccca), SkBits2Float(0x44233332), SkBits2Float(0x43a9ccca), SkBits2Float(0x44233332));
+    pathBuilder.lineTo(SkBits2Float(0x43aa5997), SkBits2Float(0x44234ccc));  // 340.7, 653.2
+    pathBuilder.cubicTo(SkBits2Float(0x43aa5997), SkBits2Float(0x44234ccc), SkBits2Float(0x43aa7ffd), SkBits2Float(0x44235332), SkBits2Float(0x43aa7ffd), SkBits2Float(0x44235332));
+    pathBuilder.cubicTo(SkBits2Float(0x43aa8cca), SkBits2Float(0x44235332), SkBits2Float(0x43ab0cca), SkBits2Float(0x44236665), SkBits2Float(0x43ab0cca), SkBits2Float(0x44236665));
+    pathBuilder.cubicTo(SkBits2Float(0x43ab0cca), SkBits2Float(0x44236665), SkBits2Float(0x43ab4cca), SkBits2Float(0x44236ccb), SkBits2Float(0x43ab4cca), SkBits2Float(0x44236ccb));
+    pathBuilder.cubicTo(SkBits2Float(0x43ab4cca), SkBits2Float(0x44236ccb), SkBits2Float(0x43ac1997), SkBits2Float(0x44237ffe), SkBits2Float(0x43ac1997), SkBits2Float(0x44237ffe));
+    pathBuilder.cubicTo(SkBits2Float(0x43ac2664), SkBits2Float(0x44237ffe), SkBits2Float(0x43ac3331), SkBits2Float(0x44237ffe), SkBits2Float(0x43ac3ffd), SkBits2Float(0x44237ffe));
+    pathBuilder.lineTo(SkBits2Float(0x43ac3330), SkBits2Float(0x44237ffe));  // 344.4, 654
+    pathBuilder.cubicTo(SkBits2Float(0x43ac3330), SkBits2Float(0x44237ffe), SkBits2Float(0x43acfffd), SkBits2Float(0x44238664), SkBits2Float(0x43acfffd), SkBits2Float(0x44238664));
+    pathBuilder.lineTo(SkBits2Float(0x43ad3ffd), SkBits2Float(0x44238664));  // 346.5, 654.1
+    pathBuilder.lineTo(SkBits2Float(0x43ae3330), SkBits2Float(0x44238664));  // 348.4, 654.1
+    pathBuilder.cubicTo(SkBits2Float(0x43ae3ffd), SkBits2Float(0x44238664), SkBits2Float(0x43af3330), SkBits2Float(0x44237997), SkBits2Float(0x43af3330), SkBits2Float(0x44237997));
+    pathBuilder.lineTo(SkBits2Float(0x43af7330), SkBits2Float(0x44237331));  // 350.9, 653.8
+    pathBuilder.lineTo(SkBits2Float(0x43b07ffd), SkBits2Float(0x44235997));  // 353, 653.4
+    pathBuilder.cubicTo(SkBits2Float(0x43b08cca), SkBits2Float(0x44235997), SkBits2Float(0x43b1a663), SkBits2Float(0x44233331), SkBits2Float(0x43b1a663), SkBits2Float(0x44233331));
+    pathBuilder.cubicTo(SkBits2Float(0x43b1a663), SkBits2Float(0x44233331), SkBits2Float(0x43b1f330), SkBits2Float(0x44232664), SkBits2Float(0x43b1f330), SkBits2Float(0x44232664));
+    pathBuilder.cubicTo(SkBits2Float(0x43b1f330), SkBits2Float(0x44232664), SkBits2Float(0x43b23ffd), SkBits2Float(0x44231997), SkBits2Float(0x43b27ffd), SkBits2Float(0x44230cca));
+    pathBuilder.cubicTo(SkBits2Float(0x43b44cca), SkBits2Float(0x44233330), SkBits2Float(0x43b98cca), SkBits2Float(0x44239330), SkBits2Float(0x43bd3330), SkBits2Float(0x44236664));
+    pathBuilder.cubicTo(SkBits2Float(0x43be1996), SkBits2Float(0x4423f331), SkBits2Float(0x43c04cca), SkBits2Float(0x4424acca), SkBits2Float(0x43c34cca), SkBits2Float(0x44245ffe));
+    pathBuilder.cubicTo(SkBits2Float(0x43c5ccca), SkBits2Float(0x4424d331), SkBits2Float(0x43ca4cca), SkBits2Float(0x4424fffe), SkBits2Float(0x43cdccca), SkBits2Float(0x44232ccb));
+    pathBuilder.cubicTo(SkBits2Float(0x43cea664), SkBits2Float(0x4422f998), SkBits2Float(0x43d0a664), SkBits2Float(0x44226ccb), SkBits2Float(0x43d19997), SkBits2Float(0x44217ffe));
+    pathBuilder.cubicTo(SkBits2Float(0x43d37331), SkBits2Float(0x44217ffe), SkBits2Float(0x43d51997), SkBits2Float(0x44217ffe), SkBits2Float(0x43d67331), SkBits2Float(0x44217998));
+    pathBuilder.cubicTo(SkBits2Float(0x43d67331), SkBits2Float(0x44218ccb), SkBits2Float(0x43d66664), SkBits2Float(0x4421a665), SkBits2Float(0x43d66664), SkBits2Float(0x4421b998));
+    pathBuilder.cubicTo(SkBits2Float(0x43d66664), SkBits2Float(0x4421f998), SkBits2Float(0x43d67ffe), SkBits2Float(0x44223ffe), SkBits2Float(0x43d6a664), SkBits2Float(0x44228665));
+    pathBuilder.cubicTo(SkBits2Float(0x43d75997), SkBits2Float(0x44238ccb), SkBits2Float(0x43d97331), SkBits2Float(0x44243998), SkBits2Float(0x43dcb331), SkBits2Float(0x44248ccb));
+    pathBuilder.cubicTo(SkBits2Float(0x43dcbffe), SkBits2Float(0x44249331), SkBits2Float(0x43dccccb), SkBits2Float(0x44249998), SkBits2Float(0x43dccccb), SkBits2Float(0x44249998));
+    pathBuilder.cubicTo(SkBits2Float(0x43dd7331), SkBits2Float(0x4424d998), SkBits2Float(0x43de3ffe), SkBits2Float(0x4424dffe), SkBits2Float(0x43def331), SkBits2Float(0x4424b998));
+    pathBuilder.cubicTo(SkBits2Float(0x43e05997), SkBits2Float(0x4424cccb), SkBits2Float(0x43e1d997), SkBits2Float(0x4424d332), SkBits2Float(0x43e39997), SkBits2Float(0x4424cccb));
+    pathBuilder.cubicTo(SkBits2Float(0x43e3e664), SkBits2Float(0x4424cccb), SkBits2Float(0x43e52664), SkBits2Float(0x4424d998), SkBits2Float(0x43e6f331), SkBits2Float(0x4424c665));
+    pathBuilder.cubicTo(SkBits2Float(0x43e6fffe), SkBits2Float(0x4424c665), SkBits2Float(0x43e70ccb), SkBits2Float(0x4424c665), SkBits2Float(0x43e70ccb), SkBits2Float(0x4424c665));
+    pathBuilder.cubicTo(SkBits2Float(0x43e70ccb), SkBits2Float(0x4424c665), SkBits2Float(0x43e77ffe), SkBits2Float(0x4424bfff), SkBits2Float(0x43e77ffe), SkBits2Float(0x4424bfff));
+    pathBuilder.cubicTo(SkBits2Float(0x43e77ffe), SkBits2Float(0x4424bfff), SkBits2Float(0x43e7bffe), SkBits2Float(0x4424bfff), SkBits2Float(0x43e7bffe), SkBits2Float(0x4424bfff));
+    pathBuilder.lineTo(SkBits2Float(0x43e82664), SkBits2Float(0x4424b999));  // 464.3, 658.9
+    pathBuilder.cubicTo(SkBits2Float(0x43e82664), SkBits2Float(0x4424b999), SkBits2Float(0x43e87ffe), SkBits2Float(0x4424b333), SkBits2Float(0x43e87ffe), SkBits2Float(0x4424b333));
+    pathBuilder.cubicTo(SkBits2Float(0x43e87ffe), SkBits2Float(0x4424b333), SkBits2Float(0x43e8d998), SkBits2Float(0x4424accd), SkBits2Float(0x43e8d998), SkBits2Float(0x4424accd));
+    pathBuilder.lineTo(SkBits2Float(0x43e98ccb), SkBits2Float(0x4424a000));  // 467.1, 658.5
+    pathBuilder.cubicTo(SkBits2Float(0x43e98ccb), SkBits2Float(0x4424a000), SkBits2Float(0x43ea5998), SkBits2Float(0x44248ccd), SkBits2Float(0x43ea5998), SkBits2Float(0x44248ccd));
+    pathBuilder.lineTo(SkBits2Float(0x43ea8ccb), SkBits2Float(0x44248667));  // 469.1, 658.1
+    pathBuilder.cubicTo(SkBits2Float(0x43ea9998), SkBits2Float(0x44248667), SkBits2Float(0x43eb2665), SkBits2Float(0x44247334), SkBits2Float(0x43eb2665), SkBits2Float(0x44247334));
+    pathBuilder.cubicTo(SkBits2Float(0x43eb2665), SkBits2Float(0x44247334), SkBits2Float(0x43eb6665), SkBits2Float(0x44246cce), SkBits2Float(0x43eb6665), SkBits2Float(0x44246cce));
+    pathBuilder.lineTo(SkBits2Float(0x43ec0ccb), SkBits2Float(0x4424599b));  // 472.1, 657.4
+    pathBuilder.cubicTo(SkBits2Float(0x43ec1998), SkBits2Float(0x4424599b), SkBits2Float(0x43ec3ffe), SkBits2Float(0x44245335), SkBits2Float(0x43ec3ffe), SkBits2Float(0x44245335));
+    pathBuilder.lineTo(SkBits2Float(0x43edf331), SkBits2Float(0x44240ccf));  // 475.9, 656.2
+    pathBuilder.cubicTo(SkBits2Float(0x43edf331), SkBits2Float(0x44240ccf), SkBits2Float(0x43ee1997), SkBits2Float(0x44240669), SkBits2Float(0x43ee1997), SkBits2Float(0x44240669));
+    pathBuilder.cubicTo(SkBits2Float(0x43ee2664), SkBits2Float(0x44240669), SkBits2Float(0x43eed997), SkBits2Float(0x4423e003), SkBits2Float(0x43eed997), SkBits2Float(0x4423e003));
+    pathBuilder.cubicTo(SkBits2Float(0x43eed997), SkBits2Float(0x4423e003), SkBits2Float(0x43ef0cca), SkBits2Float(0x4423d336), SkBits2Float(0x43ef0cca), SkBits2Float(0x4423d336));
+    pathBuilder.cubicTo(SkBits2Float(0x43ef0cca), SkBits2Float(0x4423d336), SkBits2Float(0x43efbffd), SkBits2Float(0x4423acd0), SkBits2Float(0x43efbffd), SkBits2Float(0x4423acd0));
+    pathBuilder.cubicTo(SkBits2Float(0x43efccca), SkBits2Float(0x4423acd0), SkBits2Float(0x43efe663), SkBits2Float(0x4423a003), SkBits2Float(0x43efe663), SkBits2Float(0x4423a003));
+    pathBuilder.lineTo(SkBits2Float(0x43f19996), SkBits2Float(0x44232669));  // 483.2, 652.6
+    pathBuilder.cubicTo(SkBits2Float(0x43f19996), SkBits2Float(0x44232669), SkBits2Float(0x43f1bffc), SkBits2Float(0x4423199c), SkBits2Float(0x43f1bffc), SkBits2Float(0x4423199c));
+    pathBuilder.cubicTo(SkBits2Float(0x43f1ccc9), SkBits2Float(0x44231336), SkBits2Float(0x43f26662), SkBits2Float(0x4422d99c), SkBits2Float(0x43f26662), SkBits2Float(0x4422d99c));
+    pathBuilder.cubicTo(SkBits2Float(0x43f26662), SkBits2Float(0x4422d99c), SkBits2Float(0x43f29995), SkBits2Float(0x4422c669), SkBits2Float(0x43f29995), SkBits2Float(0x4422c669));
+    pathBuilder.cubicTo(SkBits2Float(0x43f29995), SkBits2Float(0x4422c669), SkBits2Float(0x43f3332f), SkBits2Float(0x44228669), SkBits2Float(0x43f3332f), SkBits2Float(0x44228669));
+    pathBuilder.cubicTo(SkBits2Float(0x43f3332f), SkBits2Float(0x44228669), SkBits2Float(0x43f35995), SkBits2Float(0x44227336), SkBits2Float(0x43f35995), SkBits2Float(0x44227336));
+    pathBuilder.cubicTo(SkBits2Float(0x43f35995), SkBits2Float(0x44227336), SkBits2Float(0x43f4bffb), SkBits2Float(0x4421acd0), SkBits2Float(0x43f4bffb), SkBits2Float(0x4421acd0));
+    pathBuilder.cubicTo(SkBits2Float(0x43f4bffb), SkBits2Float(0x4421acd0), SkBits2Float(0x43f4e661), SkBits2Float(0x44219336), SkBits2Float(0x43f4e661), SkBits2Float(0x44219336));
+    pathBuilder.cubicTo(SkBits2Float(0x43f4f32e), SkBits2Float(0x44218cd0), SkBits2Float(0x43f56661), SkBits2Float(0x4421399c), SkBits2Float(0x43f56661), SkBits2Float(0x4421399c));
+    pathBuilder.cubicTo(SkBits2Float(0x43f56661), SkBits2Float(0x4421399c), SkBits2Float(0x43f58cc7), SkBits2Float(0x44211336), SkBits2Float(0x43f58cc7), SkBits2Float(0x44211336));
+    pathBuilder.cubicTo(SkBits2Float(0x43f58cc7), SkBits2Float(0x44211336), SkBits2Float(0x43f5f32d), SkBits2Float(0x4420b99c), SkBits2Float(0x43f5f32d), SkBits2Float(0x4420b99c));
+    pathBuilder.cubicTo(SkBits2Float(0x43f5f32d), SkBits2Float(0x4420b336), SkBits2Float(0x43f61993), SkBits2Float(0x4420999c), SkBits2Float(0x43f61993), SkBits2Float(0x4420999c));
+    pathBuilder.cubicTo(SkBits2Float(0x43f6732d), SkBits2Float(0x44204669), SkBits2Float(0x43f6b32d), SkBits2Float(0x441fe669), SkBits2Float(0x43f6e660), SkBits2Float(0x441f8669));
+    pathBuilder.lineTo(SkBits2Float(0x43f6f32d), SkBits2Float(0x441f6669));  // 493.9, 637.6
+    pathBuilder.lineTo(SkBits2Float(0x43f6f32d), SkBits2Float(0x441f599c));  // 493.9, 637.4
+    pathBuilder.cubicTo(SkBits2Float(0x43f6f32d), SkBits2Float(0x441f599c), SkBits2Float(0x43f72660), SkBits2Float(0x441eeccf), SkBits2Float(0x43f72660), SkBits2Float(0x441eeccf));
+    pathBuilder.cubicTo(SkBits2Float(0x43f72660), SkBits2Float(0x441eeccf), SkBits2Float(0x43f7332d), SkBits2Float(0x441eb99c), SkBits2Float(0x43f7332d), SkBits2Float(0x441eb99c));
+    pathBuilder.cubicTo(SkBits2Float(0x43f7332d), SkBits2Float(0x441eb99c), SkBits2Float(0x43f74cc7), SkBits2Float(0x441e4ccf), SkBits2Float(0x43f74cc7), SkBits2Float(0x441e4ccf));
+    pathBuilder.lineTo(SkBits2Float(0x43f75994), SkBits2Float(0x441e199c));  // 494.7, 632.4
+    pathBuilder.cubicTo(SkBits2Float(0x43f75994), SkBits2Float(0x441e199c), SkBits2Float(0x43f76661), SkBits2Float(0x441d799c), SkBits2Float(0x43f76661), SkBits2Float(0x441d7336));
+    pathBuilder.cubicTo(SkBits2Float(0x43f76661), SkBits2Float(0x441d6cd0), SkBits2Float(0x43f76661), SkBits2Float(0x441d6cd0), SkBits2Float(0x43f76661), SkBits2Float(0x441d6003));
+    pathBuilder.cubicTo(SkBits2Float(0x43f76661), SkBits2Float(0x441cd99d), SkBits2Float(0x43f72661), SkBits2Float(0x441a8669), SkBits2Float(0x43f3b32e), SkBits2Float(0x44183336));
+    pathBuilder.cubicTo(SkBits2Float(0x43f3d994), SkBits2Float(0x44182669), SkBits2Float(0x43f41994), SkBits2Float(0x4418199c), SkBits2Float(0x43f41994), SkBits2Float(0x4418199c));
+    pathBuilder.cubicTo(SkBits2Float(0x43f41994), SkBits2Float(0x4418199c), SkBits2Float(0x43f4332e), SkBits2Float(0x44181336), SkBits2Float(0x43f4332e), SkBits2Float(0x44181336));
+    pathBuilder.cubicTo(SkBits2Float(0x43f4332e), SkBits2Float(0x44181336), SkBits2Float(0x43f52661), SkBits2Float(0x4417e003), SkBits2Float(0x43f52661), SkBits2Float(0x4417e003));
+    pathBuilder.cubicTo(SkBits2Float(0x43f6ccc7), SkBits2Float(0x44179336), SkBits2Float(0x43f79994), SkBits2Float(0x4417a003), SkBits2Float(0x43f7b32e), SkBits2Float(0x4417a669));
+    pathBuilder.lineTo(SkBits2Float(0x43f7b32e), SkBits2Float(0x4417a669));  // 495.4, 606.6
+    pathBuilder.cubicTo(SkBits2Float(0x43f85994), SkBits2Float(0x4417e003), SkBits2Float(0x43f93ffb), SkBits2Float(0x4417eccf), SkBits2Float(0x43f9f32e), SkBits2Float(0x4417c669));
+    pathBuilder.cubicTo(SkBits2Float(0x43faa661), SkBits2Float(0x4417a003), SkBits2Float(0x43fb332e), SkBits2Float(0x44174669), SkBits2Float(0x43fb4cc8), SkBits2Float(0x4416e669));
+    pathBuilder.cubicTo(SkBits2Float(0x43fb4cc8), SkBits2Float(0x4416e003), SkBits2Float(0x43fb4cc8), SkBits2Float(0x4416cccf), SkBits2Float(0x43fb4cc8), SkBits2Float(0x4416accf));
+    pathBuilder.cubicTo(SkBits2Float(0x43fb4cc8), SkBits2Float(0x44168ccf), SkBits2Float(0x43fb4cc8), SkBits2Float(0x44166002), SkBits2Float(0x43fb332e), SkBits2Float(0x44163335));
+    pathBuilder.cubicTo(SkBits2Float(0x43fba661), SkBits2Float(0x44163335), SkBits2Float(0x43fc1994), SkBits2Float(0x44162002), SkBits2Float(0x43fc732e), SkBits2Float(0x4415f99b));
+    pathBuilder.cubicTo(SkBits2Float(0x43fd0cc8), SkBits2Float(0x4415c001), SkBits2Float(0x43fd5994), SkBits2Float(0x44156cce), SkBits2Float(0x43fd5994), SkBits2Float(0x44151335));
+    pathBuilder.cubicTo(SkBits2Float(0x43fd5994), SkBits2Float(0x4414f99b), SkBits2Float(0x43fd5994), SkBits2Float(0x4414e002), SkBits2Float(0x43fd4cc7), SkBits2Float(0x4414cccf));
+    pathBuilder.lineTo(SkBits2Float(0x43fd332d), SkBits2Float(0x4414a669));  // 506.4, 594.6
+    pathBuilder.cubicTo(SkBits2Float(0x43fd332d), SkBits2Float(0x4414a003), SkBits2Float(0x43fd0cc7), SkBits2Float(0x44146ccf), SkBits2Float(0x43fd0cc7), SkBits2Float(0x44146ccf));
+    pathBuilder.cubicTo(SkBits2Float(0x43fdbffa), SkBits2Float(0x44144669), SkBits2Float(0x43fe6661), SkBits2Float(0x44141335), SkBits2Float(0x43fefffa), SkBits2Float(0x4413c669));
+    pathBuilder.cubicTo(SkBits2Float(0x43ff732d), SkBits2Float(0x44138ccf), SkBits2Float(0x43ffa660), SkBits2Float(0x44134669), SkBits2Float(0x43ffa660), SkBits2Float(0x44130003));
+    pathBuilder.cubicTo(SkBits2Float(0x43ffa660), SkBits2Float(0x4412d336), SkBits2Float(0x43ff8cc6), SkBits2Float(0x4412a669), SkBits2Float(0x43ff6660), SkBits2Float(0x44128003));
+    pathBuilder.cubicTo(SkBits2Float(0x43fef32d), SkBits2Float(0x44121336), SkBits2Float(0x43fdfffa), SkBits2Float(0x4411d336), SkBits2Float(0x43fd0cc6), SkBits2Float(0x4411e003));
+    pathBuilder.cubicTo(SkBits2Float(0x43fcccc6), SkBits2Float(0x4411e669), SkBits2Float(0x43fc5993), SkBits2Float(0x4411e003), SkBits2Float(0x43fc0cc6), SkBits2Float(0x4411ccd0));
+    pathBuilder.cubicTo(SkBits2Float(0x43fc0cc6), SkBits2Float(0x4411066a), SkBits2Float(0x43fbd993), SkBits2Float(0x440f6cd0), SkBits2Float(0x43faf32c), SkBits2Float(0x440d799d));
+    pathBuilder.cubicTo(SkBits2Float(0x44003333), SkBits2Float(0x440c8666), SkBits2Float(0x44011333), SkBits2Float(0x4409f99a), SkBits2Float(0x4401199a), SkBits2Float(0x4409d99a));
+    pathBuilder.close();
+    pathBuilder.moveTo(SkBits2Float(0x43c2199a), SkBits2Float(0x440c2000));  // 388.2, 560.5
+    pathBuilder.cubicTo(SkBits2Float(0x43c20000), SkBits2Float(0x440c199a), SkBits2Float(0x43c1e667), SkBits2Float(0x440c1333), SkBits2Float(0x43c1cccd), SkBits2Float(0x440c0ccd));
+    pathBuilder.cubicTo(SkBits2Float(0x43c1cccd), SkBits2Float(0x440c0ccd), SkBits2Float(0x43c1c000), SkBits2Float(0x440c0ccd), SkBits2Float(0x43c1c000), SkBits2Float(0x440c0667));
+    pathBuilder.cubicTo(SkBits2Float(0x43c1e666), SkBits2Float(0x440c1333), SkBits2Float(0x43c20000), SkBits2Float(0x440c199a), SkBits2Float(0x43c2199a), SkBits2Float(0x440c2000));
+    pathBuilder.cubicTo(SkBits2Float(0x43c2199a), SkBits2Float(0x440c2000), SkBits2Float(0x43c2199a), SkBits2Float(0x440c2000), SkBits2Float(0x43c2199a), SkBits2Float(0x440c2000));
+    pathBuilder.close();
+    pathBuilder.moveTo(SkBits2Float(0x43fbf333), SkBits2Float(0x44123333));  // 503.9, 584.8
+    pathBuilder.cubicTo(SkBits2Float(0x43fbf333), SkBits2Float(0x44123333), SkBits2Float(0x43fbf333), SkBits2Float(0x44123333), SkBits2Float(0x43fbf333), SkBits2Float(0x44123333));
+    pathBuilder.cubicTo(SkBits2Float(0x43fbf333), SkBits2Float(0x44123999), SkBits2Float(0x43fbf333), SkBits2Float(0x44123999), SkBits2Float(0x43fbf333), SkBits2Float(0x44123999));
+    pathBuilder.cubicTo(SkBits2Float(0x43fbf333), SkBits2Float(0x4412399a), SkBits2Float(0x43fbf333), SkBits2Float(0x44123333), SkBits2Float(0x43fbf333), SkBits2Float(0x44123333));
+    pathBuilder.close();
+    SkPath path = pathBuilder.detach();
+}
+
+// ---- Draw #2 | kWinding | verbs=5 | culled=no | tiles=0 caps=0 wides=0
+// Error pixels: winding 3609600/3609600, coverage 3609600/3609600 (strict/non-strict)
+// Device bounds: [-13123.6 -8430.06 5059.47 10246.5]; clip tile-aligned (left % 8 = 0, top % 8 = 0)
+{
+    // Inputs to StripGenerator::processGeometry(path, ctm, clip)
+    SkIRect clip = SkIRect::MakeLTRB(0, 0, 2560, 1410);
+    SkISize target = SkISize::Make(2560, 1410);  // StripGenerator size
+    // [379.604 0 -190171 | 0 379.604 -204002 | 0 0 1]
+    SkMatrix ctm = SkMatrix::MakeAll(
+            SkBits2Float(0x43bdcd5e), SkBits2Float(0x00000000), SkBits2Float(0xc839b6c7),
+            SkBits2Float(0x00000000), SkBits2Float(0x43bdcd5e), SkBits2Float(0xc8473891),
+            SkBits2Float(0x00000000), SkBits2Float(0x00000000), SkBits2Float(0x3f800000));
+    SkPathBuilder pathBuilder(SkPathFillType::kWinding);
+    pathBuilder.moveTo(SkBits2Float(0x43e93333), SkBits2Float(0x44059333));  // 466.4, 534.3
+    pathBuilder.cubicTo(SkBits2Float(0x43e93333), SkBits2Float(0x44059333), SkBits2Float(0x43ebc000), SkBits2Float(0x4400cccd), SkBits2Float(0x43f68ccd), SkBits2Float(0x44017333));
+    pathBuilder.cubicTo(SkBits2Float(0x43f68ccd), SkBits2Float(0x44017333), SkBits2Float(0x43fdc000), SkBits2Float(0x44018ccd), SkBits2Float(0x4400199a), SkBits2Float(0x44055999));
+    pathBuilder.cubicTo(SkBits2Float(0x44007334), SkBits2Float(0x44066ccc), SkBits2Float(0x44009334), SkBits2Float(0x44080666), SkBits2Float(0x44000ccd), SkBits2Float(0x44097fff));
+    pathBuilder.cubicTo(SkBits2Float(0x44000ccd), SkBits2Float(0x44097fff), SkBits2Float(0x43fdc000), SkBits2Float(0x440d1999), SkBits2Float(0x43f5199a), SkBits2Float(0x440cc665));
+    SkPath path = pathBuilder.detach();
+}
+
+// ---- Draw #4 | kWinding | verbs=12 | culled=yes | tiles=145 caps=101 wides=98
+// Error pixels: winding 573/0, coverage 573/0 (strict/non-strict)
+// Device bounds: [-8264.67 -2014.75 390.312 7019.8]; clip tile-aligned (left % 8 = 0, top % 8 = 0)
+{
+    // Inputs to StripGenerator::processGeometry(path, ctm, clip)
+    SkIRect clip = SkIRect::MakeLTRB(0, 0, 391, 1410);
+    SkISize target = SkISize::Make(2560, 1410);  // StripGenerator size
+    // [379.604 0 -190171 | 0 379.604 -204002 | 0 0 1]
+    SkMatrix ctm = SkMatrix::MakeAll(
+            SkBits2Float(0x43bdcd5e), SkBits2Float(0x00000000), SkBits2Float(0xc839b6c7),
+            SkBits2Float(0x00000000), SkBits2Float(0x43bdcd5e), SkBits2Float(0xc8473891),
+            SkBits2Float(0x00000000), SkBits2Float(0x00000000), SkBits2Float(0x3f800000));
+    SkPathBuilder pathBuilder(SkPathFillType::kWinding);
+    pathBuilder.moveTo(SkBits2Float(0x43fb0000), SkBits2Float(0x4407f333));  // 502, 543.8
+    pathBuilder.cubicTo(SkBits2Float(0x43fb0000), SkBits2Float(0x44065999), SkBits2Float(0x43f86666), SkBits2Float(0x44050666), SkBits2Float(0x43f52666), SkBits2Float(0x44050666));
+    pathBuilder.cubicTo(SkBits2Float(0x43f28ccc), SkBits2Float(0x44050666), SkBits2Float(0x43f05999), SkBits2Float(0x4405e000), SkBits2Float(0x43ef9999), SkBits2Float(0x44070ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43efffff), SkBits2Float(0x44071332), SkBits2Float(0x43f06666), SkBits2Float(0x44071332), SkBits2Float(0x43f0bfff), SkBits2Float(0x44070ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43f09999), SkBits2Float(0x44072666), SkBits2Float(0x43f06665), SkBits2Float(0x44078666), SkBits2Float(0x43f02665), SkBits2Float(0x4407accc));
+    pathBuilder.cubicTo(SkBits2Float(0x43f06665), SkBits2Float(0x4407b999), SkBits2Float(0x43f09998), SkBits2Float(0x4407c666), SkBits2Float(0x43f0f332), SkBits2Float(0x4407cccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43f0e665), SkBits2Float(0x4407f332), SkBits2Float(0x43f0d998), SkBits2Float(0x44082666), SkBits2Float(0x43f0cccc), SkBits2Float(0x44084ccc));
+    pathBuilder.cubicTo(SkBits2Float(0x43f10ccc), SkBits2Float(0x44085332), SkBits2Float(0x43f15999), SkBits2Float(0x44084ccc), SkBits2Float(0x43f19999), SkBits2Float(0x44085332));
+    pathBuilder.cubicTo(SkBits2Float(0x43f17333), SkBits2Float(0x44087332), SkBits2Float(0x43f15999), SkBits2Float(0x4408accc), SkBits2Float(0x43f13333), SkBits2Float(0x4408d332));
+    pathBuilder.cubicTo(SkBits2Float(0x43f20000), SkBits2Float(0x4408ffff), SkBits2Float(0x43f3cccd), SkBits2Float(0x440a2ccc), SkBits2Float(0x43f4cccd), SkBits2Float(0x440af998));
+    pathBuilder.cubicTo(SkBits2Float(0x43f7f333), SkBits2Float(0x440aeccd), SkBits2Float(0x43fb0000), SkBits2Float(0x44098ccd), SkBits2Float(0x43fb0000), SkBits2Float(0x4407f333));
+    pathBuilder.close();
+    SkPath path = pathBuilder.detach();
+}
+

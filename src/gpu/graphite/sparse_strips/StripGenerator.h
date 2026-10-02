@@ -15,6 +15,12 @@
 
 #include <cstdint>
 
+#if defined(GPU_TEST_UTILS)
+#include "include/core/SkSize.h"
+
+#include <functional>
+#endif
+
 class SkMatrix;
 class SkPath;
 
@@ -38,6 +44,18 @@ public:
 
     bool hasNullCaps() const { return fEnds.hasNullCaps(); }
     bool cleanupNullCaps();
+
+#if defined(GPU_TEST_UTILS)
+    // Debug-only hook which observes the exact inputs of every processGeometry() call. Intended for
+    // tooling (e.g. viewer's SparseStripsDebug slide) that captures a frame for offline repro.
+    // Not thread safe; install and remove it from the thread that records draws. Pass an empty
+    // function to uninstall.
+    using DebugCaptureFn = std::function<void(const SkPath& path,
+                                              const SkMatrix& ctm,
+                                              const SkIRect& clip,
+                                              SkISize targetSize)>;
+    static void SetDebugCaptureCallback(DebugCaptureFn fn);
+#endif
 
 private:
     int fWidth;

@@ -34,11 +34,27 @@ StripGenerator::StripGenerator(int width,
 
 StripGenerator::~StripGenerator() = default;
 
+#if defined(GPU_TEST_UTILS)
+static StripGenerator::DebugCaptureFn& debug_capture_fn() {
+    static StripGenerator::DebugCaptureFn* gFn = new StripGenerator::DebugCaptureFn();
+    return *gFn;
+}
+
+void StripGenerator::SetDebugCaptureCallback(DebugCaptureFn fn) {
+    debug_capture_fn() = std::move(fn);
+}
+#endif
+
 bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm) {
     return this->processGeometry(path, ctm, SkIRect::MakeWH(fWidth, fHeight));
 }
 
 bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+#if defined(GPU_TEST_UTILS)
+    if (const auto& captureFn = debug_capture_fn()) {
+        captureFn(path, ctm, clip, SkISize::Make(fWidth, fHeight));
+    }
+#endif
     fEnds.clear();
     fWides.clear();
 
