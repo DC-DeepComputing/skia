@@ -5,20 +5,91 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/RasterContext.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPixmap.h"
 #include "include/core/SkRRect.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
+#include "include/cpu/Recorder.h"
+#include "src/capture/SkCapture.h"
 #include "src/core/SkResourceCache.h"
 #include "tests/Test.h"
 
 #include <memory>
+
+DEF_TEST(SkContext_CPURecorderCaptureAndBreakpoints, reporter) {
+    SkContextOptions opts;
+    opts.fEnableCapture = true;
+    std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
+    REPORTER_ASSERT(reporter, ctx != nullptr);
+
+    std::unique_ptr<skcpu::Recorder> recorder = ctx->makeCPURecorder();
+    REPORTER_ASSERT(reporter, recorder != nullptr);
+
+    SkImageInfo imageInfo =
+            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = recorder->makeBitmapSurface(imageInfo);
+    REPORTER_ASSERT(reporter, surface != nullptr);
+
+    ctx->startCapture();
+
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorBLUE);
+    SkPaint paint;
+    paint.setColor(SK_ColorRED);
+    canvas->drawRect(SkRect::MakeWH(50, 50), paint);
+
+    // Trigger a capture breakpoint via makeImageSnapshot().
+    sk_sp<SkImage> snap = surface->makeImageSnapshot();
+    REPORTER_ASSERT(reporter, snap != nullptr);
+
+    // Draw again after the snapshot (triggers copy-on-write and records a second picture).
+    paint.setColor(SK_ColorGREEN);
+    canvas->drawRect(SkRect::MakeXYWH(50, 50, 50, 50), paint);
+
+    sk_sp<SkCapture> capture = ctx->endCapture();
+    REPORTER_ASSERT(reporter, capture != nullptr);
+
+    SkCapture::Metadata meta = capture->getMetadata();
+    REPORTER_ASSERT(reporter, meta.numAssets == 2);
+    REPORTER_ASSERT(reporter, meta.numRecordingCaptures == 2);
+
+    sk_sp<SkPicture> asset0 = capture->getAsset(0);
+    sk_sp<SkPicture> asset1 = capture->getAsset(1);
+    REPORTER_ASSERT(reporter, asset0 != nullptr);
+    REPORTER_ASSERT(reporter, asset1 != nullptr);
+
+    const SkCapture::RecordingCapture* rec0 = capture->getRecordingCapture(0);
+    const SkCapture::RecordingCapture* rec1 = capture->getRecordingCapture(1);
+    REPORTER_ASSERT(reporter, rec0 != nullptr && rec0->fDrawTasks.size() == 1);
+    REPORTER_ASSERT(reporter, rec0->fDrawTasks[0].fAssetIndex == 0);
+    REPORTER_ASSERT(reporter, rec1 != nullptr && rec1->fDrawTasks.size() == 1);
+    REPORTER_ASSERT(reporter, rec1->fDrawTasks[0].fAssetIndex == 1);
+
+    // Verify that replaying the captured assets reproduces the drawn pixels.
+    sk_sp<SkSurface> replaySurface = SkSurfaces::Raster(imageInfo);
+    asset0->playback(replaySurface->getCanvas());
+    asset1->playback(replaySurface->getCanvas());
+
+    SkPixmap pm;
+    REPORTER_ASSERT(reporter, replaySurface->peekPixels(&pm));
+    REPORTER_ASSERT(reporter, pm.getColor(25, 25) == SK_ColorRED);
+    REPORTER_ASSERT(reporter, pm.getColor(75, 75) == SK_ColorGREEN);
+    REPORTER_ASSERT(reporter, pm.getColor(75, 25) == SK_ColorBLUE);
+}
 
 // TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
 #if 0
