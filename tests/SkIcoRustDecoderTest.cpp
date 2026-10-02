@@ -6,6 +6,7 @@
  */
 
 #include "experimental/rust_ico/decoder/SkIcoRustDecoder.h"
+#include "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h"
 
 #include <cstdint>
 #include <cstring>
@@ -367,6 +368,146 @@ DEF_TEST(RustIcoCodec_IsIco_cursor, r) {
     const uint8_t curData[] = {0x00, 0x00, 0x02, 0x00, 0x01, 0x00};
     bool isIco = SkIcoRustDecoder::IsIco(curData, sizeof(curData));
     REPORTER_ASSERT(r, isIco, "IsIco should return true for CUR data");
+}
+
+DEF_TEST(RustIcoCodec_cursor_hotspots, r) {
+    sk_sp<SkData> data = GetResourceAsData("images/color_wheel.ico");
+    REPORTER_ASSERT(r, data);
+    if (!data) {
+        return;
+    }
+
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> icoCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(data), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, icoCodec);
+    const auto* rustIcoCodec = static_cast<const SkIcoRustCodec*>(icoCodec.get());
+
+    SkIPoint hotSpot;
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(nullptr, 0, &hotSpot));
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(rustIcoCodec, 0, &hotSpot));
+
+    sk_sp<SkData> cursorData = SkData::MakeUninitialized(data->size());
+    std::memcpy(cursorData->writable_data(), data->data(), data->size());
+    auto* bytes = static_cast<uint8_t*>(cursorData->writable_data());
+    bytes[2] = 2;  // CUR file type.
+
+    constexpr size_t kDirectoryHeaderSize = 6;
+    constexpr size_t kDirectoryEntrySize = 16;
+    const size_t entryCount = static_cast<size_t>(bytes[4]) | (static_cast<size_t>(bytes[5]) << 8);
+    REPORTER_ASSERT(r, entryCount == 5);
+    REPORTER_ASSERT(r, data->size() >= kDirectoryHeaderSize + entryCount * kDirectoryEntrySize);
+    if (entryCount != 5 || data->size() < kDirectoryHeaderSize + entryCount * kDirectoryEntrySize) {
+        return;
+    }
+    for (size_t i = 0; i < entryCount; ++i) {
+        const size_t entryOffset = kDirectoryHeaderSize + i * kDirectoryEntrySize;
+        bytes[entryOffset + 4] = static_cast<uint8_t>(i + 1);
+        bytes[entryOffset + 5] = 0;
+        bytes[entryOffset + 6] = static_cast<uint8_t>(i + 6);
+        bytes[entryOffset + 7] = 0;
+    }
+
+    std::unique_ptr<SkCodec> cursorCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(cursorData), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, cursorCodec);
+    if (!cursorCodec) {
+        return;
+    }
+    const auto* rustCursorCodec = static_cast<const SkIcoRustCodec*>(cursorCodec.get());
+
+    REPORTER_ASSERT(r, cursorCodec->getFrameCount() == static_cast<int>(entryCount));
+    for (int frameIndex = 0; frameIndex < cursorCodec->getFrameCount(); ++frameIndex) {
+        const int originalEntryIndex = static_cast<int>(entryCount) - frameIndex - 1;
+        REPORTER_ASSERT(r, SkIcoRustDecoder::GetHotSpot(rustCursorCodec, frameIndex, &hotSpot));
+        REPORTER_ASSERT(r, hotSpot.x() == originalEntryIndex + 1);
+        REPORTER_ASSERT(r, hotSpot.y() == originalEntryIndex + 6);
+    }
+    SkIPoint completeDefaultHotSpot;
+    REPORTER_ASSERT(r, SkIcoRustDecoder::GetHotSpot(rustCursorCodec, 0, &completeDefaultHotSpot));
+
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(rustCursorCodec, -1, &hotSpot));
+    REPORTER_ASSERT(
+            r,
+            !SkIcoRustDecoder::GetHotSpot(rustCursorCodec, cursorCodec->getFrameCount(), &hotSpot));
+    REPORTER_ASSERT(r, !SkIcoRustDecoder::GetHotSpot(rustCursorCodec, 0, nullptr));
+
+    const auto readU32 = [](const uint8_t* ptr) {
+        return static_cast<uint32_t>(ptr[0]) | (static_cast<uint32_t>(ptr[1]) << 8) |
+               (static_cast<uint32_t>(ptr[2]) << 16) | (static_cast<uint32_t>(ptr[3]) << 24);
+    };
+    const uint8_t* firstEntry = bytes + kDirectoryHeaderSize;
+    const size_t firstPayloadEnd = readU32(firstEntry + 12) + readU32(firstEntry + 8);
+    REPORTER_ASSERT(r, firstPayloadEnd <= cursorData->size());
+    sk_sp<SkData> partialData = SkData::MakeSubset(cursorData.get(), 0, firstPayloadEnd);
+    std::unique_ptr<SkCodec> partialCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(std::move(partialData)), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, partialCodec);
+    if (!partialCodec) {
+        return;
+    }
+    REPORTER_ASSERT(r, partialCodec->dimensions() == SkISize::Make(128, 128));
+    REPORTER_ASSERT(r, partialCodec->getFrameCount() == 1);
+    const auto* rustPartialCodec = static_cast<const SkIcoRustCodec*>(partialCodec.get());
+    REPORTER_ASSERT(r, SkIcoRustDecoder::GetHotSpot(rustPartialCodec, 0, &hotSpot));
+    REPORTER_ASSERT(r, hotSpot == completeDefaultHotSpot);
+    REPORTER_ASSERT(r, hotSpot == SkIPoint::Make(5, 10));
+    REPORTER_ASSERT(r, hotSpot != SkIPoint::Make(1, 6));
+
+    sk_sp<SkData> equalQualityData = SkData::MakeWithCopy(cursorData->data(), cursorData->size());
+    auto* equalBytes = static_cast<uint8_t*>(equalQualityData->writable_data());
+    const size_t firstEqualEntry = kDirectoryHeaderSize + (entryCount - 2) * kDirectoryEntrySize;
+    const size_t secondEqualEntry = kDirectoryHeaderSize + (entryCount - 1) * kDirectoryEntrySize;
+    equalBytes[firstEqualEntry] = equalBytes[secondEqualEntry] = 128;
+    equalBytes[firstEqualEntry + 1] = equalBytes[secondEqualEntry + 1] = 128;
+    std::unique_ptr<SkCodec> equalQualityCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(std::move(equalQualityData)), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, equalQualityCodec);
+    if (!equalQualityCodec) {
+        return;
+    }
+    const auto* rustEqualQualityCodec = static_cast<const SkIcoRustCodec*>(equalQualityCodec.get());
+    REPORTER_ASSERT(r, SkIcoRustDecoder::GetHotSpot(rustEqualQualityCodec, 0, &hotSpot));
+    REPORTER_ASSERT(r, hotSpot == SkIPoint::Make(4, 9));
+
+    sk_sp<SkData> skippedEntryData = SkData::MakeWithCopy(cursorData->data(), cursorData->size());
+    auto* skippedBytes = static_cast<uint8_t*>(skippedEntryData->writable_data());
+    constexpr size_t kSkippedDirectoryIndex = 2;
+    const uint8_t* skippedDirectoryEntry =
+            skippedBytes + kDirectoryHeaderSize + kSkippedDirectoryIndex * kDirectoryEntrySize;
+    const size_t skippedPayloadOffset = readU32(skippedDirectoryEntry + 12);
+    REPORTER_ASSERT(r, skippedPayloadOffset + 4 <= skippedEntryData->size());
+    if (skippedPayloadOffset + 4 > skippedEntryData->size()) {
+        return;
+    }
+    std::memset(skippedBytes + skippedPayloadOffset, 0, 4);
+
+    std::unique_ptr<SkCodec> skippedEntryCodec =
+            SkIcoRustDecoder::Decode(SkMemoryStream::Make(std::move(skippedEntryData)), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, skippedEntryCodec);
+    if (!skippedEntryCodec) {
+        return;
+    }
+    const auto* rustSkippedEntryCodec = static_cast<const SkIcoRustCodec*>(skippedEntryCodec.get());
+    const SkIPoint kExpectedHotSpots[] = {
+            SkIPoint::Make(5, 10),
+            SkIPoint::Make(4, 9),
+            SkIPoint::Make(2, 7),
+            SkIPoint::Make(1, 6),
+    };
+    REPORTER_ASSERT(
+            r,
+            skippedEntryCodec->getFrameCount() == static_cast<int>(std::size(kExpectedHotSpots)));
+    for (int frameIndex = 0; frameIndex < skippedEntryCodec->getFrameCount(); ++frameIndex) {
+        REPORTER_ASSERT(r,
+                        SkIcoRustDecoder::GetHotSpot(rustSkippedEntryCodec, frameIndex, &hotSpot));
+        REPORTER_ASSERT(r, hotSpot == kExpectedHotSpots[frameIndex]);
+    }
 }
 
 // Table-based test for handling invalid/corrupted ICO files.
