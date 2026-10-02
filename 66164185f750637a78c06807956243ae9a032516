@@ -43,6 +43,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bede989d_aa7c8405",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T18:29:25Z",
+      "side": 1,
+      "message": "It feels like a code-rot potential to create these recorders on the stack when the normal flow is to create them from a skcpu::Context. Can we keep up the pattern used in other tests in this file like:\n```\nSkContextOptions opts;\n    std::unique_ptr\u003cSkContext\u003e ctx \u003d SkContexts::MakeRaster(opts);\n    std::unique_ptr\u003cskcpu::Recorder\u003e recorder \u003d ctx-\u003emakeCPURecorder();\n    ```",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 29
+      },
+      "revId": "66164185f750637a78c06807956243ae9a032516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b43419e5_90df4158",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T18:29:25Z",
+      "side": 1,
+      "message": "This could be a separate CpuRecorder_TODO test?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 75
+      },
+      "revId": "66164185f750637a78c06807956243ae9a032516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ebc6b13c_27489c78",
         "filename": "tests/CPUContextRecorderTest.cpp",
         "patchSetId": 6

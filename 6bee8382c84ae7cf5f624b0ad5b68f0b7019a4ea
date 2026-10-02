@@ -46,6 +46,30 @@
       },
       "revId": "6bee8382c84ae7cf5f624b0ad5b68f0b7019a4ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "778b8936_f47827c3",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T18:29:25Z",
+      "side": 1,
+      "message": "To add to what Greg said, the design doc for SkSurface creation from an SkRecorder states that the surface type will be specific to the recorder\u0027s backend. If a client wants to explicitly create a CPU-backed image, they need a CPU-based recorder. There is backend-selection enum passed in to the context\u0027s makeRecorder() function so that they can create CPU recorders when on a GPU context. This is separate from whether or not it\u0027s a SkRecorder member function or a static function, but I prefer the member function in this case.\n\nI think this model for backend selection is sufficient to start, but we could also consider exposing the backend selection as a parameter to the surface/image factories too.",
+      "parentUuid": "0b491846_1e06921c",
+      "range": {
+        "startLine": 54,
+        "startChar": 44,
+        "endLine": 54,
+        "endChar": 61
+      },
+      "revId": "6bee8382c84ae7cf5f624b0ad5b68f0b7019a4ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
