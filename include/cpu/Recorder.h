@@ -14,6 +14,8 @@
 #include "include/private/SkAPI.h"
 
 class SkCanvas;
+class SkCaptureManager;
+class SkContext;
 class SkSurface;
 class SkSurfaceProps;
 struct SkImageInfo;
@@ -24,7 +26,8 @@ namespace skcpu {
 
 class SK_API Recorder : public SkRecorder {
 public:
-    Recorder() = default;
+    Recorder();
+    ~Recorder() override;
 
     /** Returns a non-null global context. Can be used as a means of transitioning onto
      * new APIs when a skcpu::Context/Recorder has not been piped down into the code paths
@@ -58,7 +61,14 @@ public:
                                        const SkSurfaceProps* surfaceProps = nullptr);
 
 private:
+    friend class ::SkContext;
+
+    explicit Recorder(sk_sp<SkCaptureManager>);
+
+    SkCaptureManager* captureManager() final;
     void createCaptureBreakpoint(SkSurface*) final;
+
+    sk_sp<SkCaptureManager> fCaptureManager;
 };
 
 inline Recorder* AsRecorder(SkRecorder* recorder) {

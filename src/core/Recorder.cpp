@@ -36,12 +36,28 @@ void SkRecorder::deregisterCaptureCanvas(SkCanvas* canvas) {
 
 namespace skcpu {
 
+Recorder::Recorder() = default;
+
+Recorder::Recorder(sk_sp<SkCaptureManager> captureManager)
+        : fCaptureManager(std::move(captureManager)) {}
+
+Recorder::~Recorder() = default;
+
 Recorder* Recorder::TODO() {
     static Recorder* gRecorder = std::make_unique<Recorder>().release();
     return gRecorder;
 }
 
-void Recorder::createCaptureBreakpoint(SkSurface*) {
+SkCaptureManager* Recorder::captureManager() { return fCaptureManager.get(); }
+
+void Recorder::createCaptureBreakpoint(SkSurface* surface) {
+    if (SkCaptureManager* cm = this->captureManager()) {
+        if (auto picture = cm->snapPicture(surface)) {
+            skia_private::TArray<sk_sp<SkPicture>> captured;
+            captured.push_back(std::move(picture));
+            cm->onInsertRecording(captured);
+        }
+    }
 }
 
 }  // namespace skcpu
