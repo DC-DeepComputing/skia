@@ -39,6 +39,30 @@
       },
       "revId": "a197159889120c4ec57cecc2867facb01b9906cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61a900de_46a54b4f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-02T16:56:01Z",
+      "side": 1,
+      "message": "Yeah, I just wanted to group the fields that were being assigned constants together.",
+      "parentUuid": "71a1b108_308fe81c",
+      "range": {
+        "startLine": 290,
+        "startChar": 8,
+        "endLine": 290,
+        "endChar": 54
+      },
+      "revId": "a197159889120c4ec57cecc2867facb01b9906cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
