@@ -8,6 +8,7 @@ default_args = {
 
   dawn_use_built_dxc = false
   dawn_force_system_component_load = true
+  dawn_use_agility_sdk = false
 
   skia_enable_packed_422_yuv = true
 }
