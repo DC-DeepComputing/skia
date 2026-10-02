@@ -21,7 +21,6 @@ class UniqueKey;
 }
 
 class SkExecutor;
-class SkTaskGroup;
 
 namespace skgpu::graphite {
 
@@ -30,9 +29,9 @@ class GraphicsPipelineDesc;
 class GraphicsPipelineHandle;
 enum class PipelineCreationFlags : uint8_t;
 class PipelineCreationTask;
-struct RenderPassDesc;
 class RuntimeEffectDictionary;
 class SharedContext;
+struct RenderPassDesc;
 
 class PipelineManager {
 public:
@@ -53,10 +52,10 @@ public:
 
     // Wait for any in-flight tasks to complete. Additionally, disable the addition of any
     // more threaded tasks.
-    void shutDown();
+    void shutDown() SK_EXCLUDES(fSpinLock);
 
 #if defined(GPU_TEST_UTILS)
-    void wait_TestOnly();
+    void wait_TestOnly() SK_EXCLUDES(fSpinLock);
 
     struct Stats {
         // The number of times we find a pre-existing task for a Pipeline
@@ -82,7 +81,7 @@ private:
 
     void addTaskToWorkList(SharedContext*,
                            sk_sp<PipelineCreationTask>,
-                           Priority);
+                           Priority) SK_EXCLUDES(fSpinLock);
 
     void removeTask(PipelineCreationTask*) SK_EXCLUDES(fSpinLock);
 
@@ -98,13 +97,16 @@ private:
     Stats fStats SK_GUARDED_BY(fSpinLock);
 #endif
 
-    std::unique_ptr<SkTaskGroup> fTaskGroup SK_GUARDED_BY(fSpinLock);
+    SkExecutor* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
 
     void signalCompleted(PipelineCreationTask*);
-    void potentiallyWaitOn(PipelineCreationTask*);
+    void potentiallyWaitOn(PipelineCreationTask*) SK_EXCLUDES(fSpinLock);
+
+    sk_sp<PipelineCreationTask> getWork(bool inclInProgress) SK_EXCLUDES(fSpinLock);
+    void wait() SK_EXCLUDES(fSpinLock);
 
     // Returns true if compilation occurred; false otherwise.
-    static bool InlineCompile(PipelineCreationTask*);
+    static bool InlineCompile(PipelineCreationTask*) SK_EXCLUDES(fSpinLock);
 
     // We have the mutex and condition_variable here to limit the number of
     // mutexes/semaphores we need for synchronizing access to the pipelines.
