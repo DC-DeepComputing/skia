@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eae12d6e_c20d3738",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-02T20:21:50Z",
+      "side": 1,
+      "message": "Should we also validate that the codec dimensions fit within its directory size?  The sort metric favors large codec dimensions, so we could end up with a first entry that fits within the canvas but exceeds its directory size - which I think would confuse Blink.\n\nE.g.\n```\nentry0 dirSize: 64x64, payloadSize: 32x32\nentry1 dirSize: 1x1, payloadSize: 48x48\n```\nSince entry1 passes `fitsCanvas` and has the largest payload size it gets promoted to frame 0, and I think trying to decode it using a 1x1 frame size would fail.",
+      "revId": "f38ff95661c148762782f29060af3ff1f83f1d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d20cd334_d5ec0bcc",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-02T20:21:50Z",
+      "side": 1,
+      "message": "Not new to this CL, but `SkCodec::dimensionsSupported()` short-circuits when `dim \u003d\u003d this-\u003edimensions()`, so this should always be true?  Which means everything after this block is unreachable.",
+      "range": {
+        "startLine": 436,
+        "startChar": 8,
+        "endLine": 436,
+        "endChar": 33
+      },
+      "revId": "f38ff95661c148762782f29060af3ff1f83f1d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "761dbce5_03240a88",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-02T20:21:50Z",
+      "side": 1,
+      "message": "Since we\u0027ve already sorted the entries based on fitment, would it be sufficient to just check `fEmbeddedImages[0]`?  IOW if any entry fits, `fEmbeddedImages[0]` must also fit.",
+      "range": {
+        "startLine": 478,
+        "startChar": 21,
+        "endLine": 485,
+        "endChar": 9
+      },
+      "revId": "f38ff95661c148762782f29060af3ff1f83f1d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
