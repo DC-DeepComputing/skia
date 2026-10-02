@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2df7150_336f443a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-02T19:29:41Z",
+      "side": 1,
+      "message": "This appears to be forcing all \"struct\" lines to appear after all \"class\" lines whereas, before, it allowed them to be interleaved - just using the struct/class name for alphabetization.",
+      "revId": "6182a3cf8f985f4737b856bef835f049549a43fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
