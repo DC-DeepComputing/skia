@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aae1ccd2_e59ed4c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-02T19:08:02Z",
+      "side": 1,
+      "message": "Right it is much easier to maintain one short sentence then an arbitrary script.",
+      "parentUuid": "1fe6dfc3_2fa650d8",
+      "revId": "c6eaf75cd00fea7793f27cb985275df1a9d5f229",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6642a443_13a46f15",
         "filename": "site/docs/dev/contrib/style.md",
         "patchSetId": 3
