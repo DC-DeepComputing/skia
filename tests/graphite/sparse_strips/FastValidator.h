@@ -18,6 +18,7 @@
 class SkMatrix;
 class SkPath;
 enum class SkPathFillType : uint8_t;
+struct SkIRect;
 template <typename T> class SkTDArray;
 
 namespace skgpu::graphite {
@@ -27,6 +28,7 @@ class EndCaps;
 class Polyline;
 class Recorder;
 class WideTiles;
+class WindingHistogram;
 template <uint16_t kTileWidth, uint16_t kTileHeight> class Tiles;
 
 // The FastValidator is a faster alternative to the Oracle that is intended to run on CQ. Like the
@@ -48,9 +50,10 @@ public:
                                SkPathFillType fillType,
                                const Polyline& polyline,
                                const SparseStripConfig::LutArray& msaaLut,
-                               MsaaExactMaskObserver observer,
-                               uint16_t viewportWidth,
-                               uint16_t viewportHeight);
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
+                               const SkIRect& clipRect,
+                               MsaaExactMaskObserver observer);
 
     static void RunScalarWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
                                  WideTiles* wides,
@@ -59,9 +62,10 @@ public:
                                  SkPathFillType fillType,
                                  const Polyline& polyline,
                                  const SparseStripConfig::LutArray& maskLut,
-                                 MsaaExactMaskObserver observer,
-                                 uint16_t viewportWidth,
-                                 uint16_t viewportHeight);
+                                 bool isCulled,
+                                 const WindingHistogram& windingHistogram,
+                                 const SkIRect& clipRect,
+                                 MsaaExactMaskObserver observer);
 
     static void RunSimdWinding(const Tiles<kTileWidth, kTileHeight>& tileContainer,
                                WideTiles* wides,
@@ -70,9 +74,10 @@ public:
                                SkPathFillType fillType,
                                const Polyline& polyline,
                                const SparseStripConfig::LutArray& maskLut,
-                               MsaaExactMaskObserver observer,
-                               uint16_t viewportWidth,
-                               uint16_t viewportHeight);
+                               bool isCulled,
+                               const WindingHistogram& windingHistogram,
+                               const SkIRect& clipRect,
+                               MsaaExactMaskObserver observer);
 
     // Validates a single path end-to-end:
     // 1. Flattens using unculled Flatten::processPathsSimdTest to get ground-truth polyline.

@@ -1766,7 +1766,9 @@ void Device::drawGeometry(const Transform& localToDevice,
         const SkPath& finalPath = geometry.shape().asPath();
         SkMatrix ctm = localToDevice.matrix().asM33();
 
-        if (!fStripGenerator->processGeometry(finalPath, ctm)) {
+        SkIRect clipBounds =
+                clip.transformedShapeBounds().makeIntersect(clip.scissor()).asSkIRect();
+        if (!fStripGenerator->processGeometry(finalPath, ctm, clipBounds)) {
             SKIA_LOG_E("Failed to process geometry for sparse strips!");
             return;
         }

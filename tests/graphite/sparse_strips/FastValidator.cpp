@@ -26,6 +26,7 @@
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 #include "tests/Test.h"
 #include "tests/graphite/sparse_strips/CoverageTestUtils.h"
 
@@ -320,9 +321,10 @@ void FastValidator<kTileWidth, kTileHeight>::RunScalarWinding(
         SkPathFillType fillType,
         const Polyline& polyline,
         const SparseStripConfig::LutArray& maskLut,
-        MsaaExactMaskObserver observer,
-        uint16_t viewportWidth,
-        uint16_t viewportHeight) {
+        bool isCulled,
+        const WindingHistogram& windingHistogram,
+        const SkIRect& clipRect,
+        MsaaExactMaskObserver observer) {
     MakeStrips::MsaaScalar<kTileWidth, kTileHeight>(tileContainer,
                                                     wides,
                                                     ends,
@@ -330,8 +332,9 @@ void FastValidator<kTileWidth, kTileHeight>::RunScalarWinding(
                                                     fillType,
                                                     polyline,
                                                     maskLut,
-                                                    viewportWidth,
-                                                    viewportHeight,
+                                                    isCulled,
+                                                    windingHistogram,
+                                                    clipRect,
                                                     observer);
 }
 
@@ -344,9 +347,10 @@ void FastValidator<kTileWidth, kTileHeight>::RunSimdWinding(
         SkPathFillType fillType,
         const Polyline& polyline,
         const SparseStripConfig::LutArray& maskLut,
-        MsaaExactMaskObserver observer,
-        uint16_t viewportWidth,
-        uint16_t viewportHeight) {
+        bool isCulled,
+        const WindingHistogram& windingHistogram,
+        const SkIRect& clipRect,
+        MsaaExactMaskObserver observer) {
     MakeStrips::MsaaSimd<kTileWidth, kTileHeight>(tileContainer,
                                                   wides,
                                                   ends,
@@ -354,8 +358,9 @@ void FastValidator<kTileWidth, kTileHeight>::RunSimdWinding(
                                                   fillType,
                                                   polyline,
                                                   maskLut,
-                                                  viewportWidth,
-                                                  viewportHeight,
+                                                  isCulled,
+                                                  windingHistogram,
+                                                  clipRect,
                                                   observer);
 }
 
@@ -568,24 +573,23 @@ bool FastValidator<kTileWidth, kTileHeight>::ValidatePath(
 
     Flatten flattener;
 
+    SkIRect clipRect = SkIRect::MakeWH(viewportWidth, viewportHeight);
+
     // 1. Unculled ground-truth polyline (computes true topology without culling)
     Polyline unculledPolyline;
-    flattener.processPathsSimdTest(path,
-                                   ctm,
-                                   static_cast<float>(viewportWidth),
-                                   static_cast<float>(viewportHeight),
-                                   &unculledPolyline);
+    flattener.processPathsSimdTest(path, ctm, clipRect, &unculledPolyline);
 
     // 2. Production culled polyline for the pipeline under test
     Polyline testPolyline;
-    flattener.processPaths<FlattenMode::kSimd>(path,
-                                               ctm,
-                                               static_cast<float>(viewportWidth),
-                                               static_cast<float>(viewportHeight),
-                                               &testPolyline);
+    flattener.processPaths<FlattenMode::kSimd>(path, ctm, clipRect, &testPolyline);
+
+    uint16_t numTileRows = (viewportHeight + kTileHeight - 1) / kTileHeight;
+    WindingHistogram windingHistogram(numTileRows);
+    windingHistogram.resize(numTileRows);
+    windingHistogram.clear();
 
     Tiles<kTileWidth, kTileHeight> tiler;
-    tiler.makeTilesMSAA(testPolyline, viewportWidth, viewportHeight);
+    bool isCulled = tiler.makeTilesMSAA(testPolyline, clipRect, windingHistogram);
     tiler.sortTiles();
 
     WideTiles wides;
@@ -603,9 +607,10 @@ bool FastValidator<kTileWidth, kTileHeight>::ValidatePath(
                   path.getFillType(),
                   testPolyline,
                   maskLut,
-                  observer,
-                  viewportWidth,
-                  viewportHeight);
+                  isCulled,
+                  windingHistogram,
+                  clipRect,
+                  observer);
     } else {
         RunSimdWinding(tiler,
                        &wides,
@@ -614,9 +619,10 @@ bool FastValidator<kTileWidth, kTileHeight>::ValidatePath(
                        path.getFillType(),
                        testPolyline,
                        maskLut,
-                       observer,
-                       viewportWidth,
-                       viewportHeight);
+                       isCulled,
+                       windingHistogram,
+                       clipRect,
+                       observer);
     }
 
     return ValidateStripOutput(reporter,

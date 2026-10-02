@@ -293,8 +293,9 @@ void run_culled_geometry_suite(skiatest::Reporter* reporter,
     std::vector<TestCase> cases;
 
     // A quad that covers all of a tall clip from outside of it. Its left side is split into two
-    // lines that meet halfway through tile row 32, and its other sides are above, right of, and
-    // below the clip.
+    // lines that meet halfway through tile row 32, so the upper line is culled into the
+    // WindingHistogram rows [0, 32), an entire 32-row word. Its other sides are above, right of,
+    // and below the clip.
     const SkIRect tallClip = SkIRect::MakeWH(8 * kTileWidth, 64 * kTileHeight);
     const float l = static_cast<float>(tallClip.fLeft);
     const float t = static_cast<float>(tallClip.fTop);

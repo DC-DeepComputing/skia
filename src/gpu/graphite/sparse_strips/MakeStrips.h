@@ -8,6 +8,7 @@
 #define skgpu_graphite_sparse_strips_MakeStrips_DEFINED
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkRect.h"
 #include "src/gpu/graphite/geom/EndCaps.h"
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
@@ -18,7 +19,9 @@
 #include "src/gpu/graphite/sparse_strips/StripProcessorScalar.h"
 #include "src/gpu/graphite/sparse_strips/StripProcessorSimd.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
+#include <bit>
 #include <cstring>
 #include <utility>
 
@@ -124,8 +127,9 @@ public:
                            SkPathFillType fillType,
                            const Polyline& polyline,
                            const SparseStripConfig::LutArray& maskLut,
-                           uint16_t viewportWidth,
-                           uint16_t viewportHeight
+                           bool isCulled,
+                           const WindingHistogram& windingHistogram,
+                           const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
                            , MsaaExactMaskObserver observer = nullptr
 #endif
@@ -146,12 +150,45 @@ public:
                                                            wides,
                                                            ends,
                                                            atlasManager,
-                                                           viewportWidth,
-                                                           viewportHeight,
+                                                           isCulled,
+                                                           windingHistogram,
+                                                           clipRect,
                                                            isInverse,
                                                            &processor);
         });
         return success;
+    }
+
+    template <uint16_t kTileWidth, uint16_t kTileHeight>
+    static bool MsaaScalar(const Tiles<kTileWidth, kTileHeight>& tileContainer,
+                           WideTiles* wides,
+                           EndCaps* ends,
+                           AlphaAtlasManager* atlasManager,
+                           SkPathFillType fillType,
+                           const Polyline& polyline,
+                           const SparseStripConfig::LutArray& maskLut,
+                           uint16_t viewportWidth,
+                           uint16_t viewportHeight
+#if defined(GPU_TEST_UTILS)
+                           , MsaaExactMaskObserver observer = nullptr
+#endif
+    ) {
+        WindingHistogram dummy(0);
+        return MsaaScalar<kTileWidth, kTileHeight>(
+                tileContainer,
+                wides,
+                ends,
+                atlasManager,
+                fillType,
+                polyline,
+                maskLut,
+                /*isCulled=*/false,
+                dummy,
+                SkIRect::MakeWH(viewportWidth, viewportHeight)
+#if defined(GPU_TEST_UTILS)
+                , observer
+#endif
+        );
     }
 
     template <uint16_t kTileWidth, uint16_t kTileHeight>
@@ -162,8 +199,9 @@ public:
                          SkPathFillType fillType,
                          const Polyline& polyline,
                          const SparseStripConfig::LutArray& maskLut,
-                         uint16_t viewportWidth,
-                         uint16_t viewportHeight
+                         bool isCulled,
+                         const WindingHistogram& windingHistogram,
+                         const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
                          , MsaaExactMaskObserver observer = nullptr
 #endif
@@ -184,12 +222,45 @@ public:
                                                            wides,
                                                            ends,
                                                            atlasManager,
-                                                           viewportWidth,
-                                                           viewportHeight,
+                                                           isCulled,
+                                                           windingHistogram,
+                                                           clipRect,
                                                            isInverse,
                                                            &processor);
         });
         return success;
+    }
+
+    template <uint16_t kTileWidth, uint16_t kTileHeight>
+    static bool MsaaSimd(const Tiles<kTileWidth, kTileHeight>& tileContainer,
+                         WideTiles* wides,
+                         EndCaps* ends,
+                         AlphaAtlasManager* atlasManager,
+                         SkPathFillType fillType,
+                         const Polyline& polyline,
+                         const SparseStripConfig::LutArray& maskLut,
+                         uint16_t viewportWidth,
+                         uint16_t viewportHeight
+#if defined(GPU_TEST_UTILS)
+                         , MsaaExactMaskObserver observer = nullptr
+#endif
+    ) {
+        WindingHistogram dummy(0);
+        return MsaaSimd<kTileWidth, kTileHeight>(
+                tileContainer,
+                wides,
+                ends,
+                atlasManager,
+                fillType,
+                polyline,
+                maskLut,
+                /*isCulled=*/false,
+                dummy,
+                SkIRect::MakeWH(viewportWidth, viewportHeight)
+#if defined(GPU_TEST_UTILS)
+                , observer
+#endif
+        );
     }
 
 private:
@@ -209,16 +280,6 @@ private:
                 return;
         }
         SkUNREACHABLE;
-    }
-
-    template <uint16_t kTileHeight>
-    SK_ALWAYS_INLINE static void EmitBackground(WideTiles* wides,
-                                                uint16_t start,
-                                                uint16_t end,
-                                                uint16_t width) {
-        for (uint16_t row = start; row < end; row += kTileHeight) {
-            wides->addTile(0, row, width);
-        }
     }
 
     template <uint16_t kTileWidth, uint16_t kTileHeight>
@@ -267,25 +328,106 @@ private:
     //       buffer in the atlas manager and emitting an `EndCap`.
     //    b) If the coarse winding indicates an interior fill, emits a solid `WideTile` covering
     //       the gap up to the current tile.
-    //    c) If `rowStart`, closes out the previous row (emitting trailing inverse fills if needed),
-    //       resets the coarse winding to 0, emits any inverse background rows, and begins the new
-    //       row.
+    //    c) If `rowStart`, closes out the previous row (emitting trailing fills up to clip right
+    //       if needed), processes any intervening empty tile rows via the winding histogram,
+    //       seeds the coarse winding from the winding histogram for the new row, emits any
+    //       leading WideTile from clip left, and begins the new row.
     template <uint16_t kTileWidth, uint16_t kTileHeight, typename Processor>
     static SK_ALWAYS_INLINE bool TraverseCPU(const Tiles<kTileWidth, kTileHeight>& tileContainer,
                                              WideTiles* wides,
                                              EndCaps* ends,
                                              AlphaAtlasManager* atlasManager,
-                                             uint16_t viewportWidth,
-                                             uint16_t viewportHeight,
+                                             bool isCulled,
+                                             const WindingHistogram& windingHistogram,
+                                             const SkIRect& clipRect,
                                              bool isInverse,
                                              Processor* processor) {
         constexpr size_t kTilePixelCount = kTileWidth * kTileHeight;
 
+        auto processEmptyTileRows = [&](uint16_t startTileY, uint16_t endTileY) {
+            if (startTileY >= endTileY) {
+                return;
+            }
+
+            uint16_t y = startTileY;
+            uint16_t startX = static_cast<uint16_t>(clipRect.left());
+            uint16_t width = static_cast<uint16_t>(clipRect.width());
+
+            if (isCulled && isInverse) {
+                const auto& activeRows = windingHistogram.activeRows();
+                endTileY = std::min<uint16_t>(endTileY, windingHistogram.size());
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                    uint32_t mask = activeRows[wordIdx];
+                    mask &= (~0u << (y & 31));
+
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) {
+                        mask &= (1u << endShift) - 1;
+                    }
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        uint16_t nextActiveY = (wordIdx << 5) + bit;
+
+                        for (; y < nextActiveY; ++y) {
+                            wides->addTile(startX, y * kTileHeight, width);
+                        }
+
+                        if (!processor->ShouldFill(windingHistogram[y])) {
+                            wides->addTile(startX, y * kTileHeight, width);
+                        }
+
+                        y++;
+                        mask &= mask - 1;
+                    }
+
+                    for (; y < wordEnd; ++y) {
+                        wides->addTile(startX, y * kTileHeight, width);
+                    }
+                }
+            } else if (isCulled) {
+                const auto& activeRows = windingHistogram.activeRows();
+                endTileY = std::min<uint16_t>(endTileY, windingHistogram.size());
+                while (y < endTileY) {
+                    int wordIdx = y >> 5;
+                    uint16_t wordEnd = std::min<uint16_t>(endTileY, (wordIdx + 1) << 5);
+
+                    uint32_t mask = activeRows[wordIdx];
+                    mask &= (~0u << (y & 31));
+
+                    uint32_t endShift = wordEnd & 31;
+                    if (endShift != 0) {
+                        mask &= (1u << endShift) - 1;
+                    }
+
+                    while (mask != 0) {
+                        int bit = std::countr_zero(mask);
+                        y = (wordIdx << 5) + bit;
+
+                        if (processor->ShouldFill(windingHistogram[y])) {
+                            wides->addTile(startX, y * kTileHeight, width);
+                        }
+                        mask &= mask - 1;
+                    }
+
+                    y = wordEnd;
+                }
+            } else if (isInverse) {
+                for (; y < endTileY; ++y) {
+                    wides->addTile(startX, y * kTileHeight, width);
+                }
+            }
+        };
+
+        uint16_t totalRows = isCulled ? windingHistogram.size()
+                                      : (clipRect.bottom() + kTileHeight - 1) / kTileHeight;
+
         const auto& tiles = tileContainer.getTiles();
         if (tiles.empty()) {
-            if (isInverse) {
-                EmitBackground<kTileHeight>(wides, 0, viewportHeight, viewportWidth);
-            }
+            processEmptyTileRows(0, totalRows);
             return true;
         }
 
@@ -294,10 +436,18 @@ private:
 
         uint16_t runStartX = prevTile.x;
 
-        if (isInverse) {
-            EmitBackground<kTileHeight>(wides, 0, prevTile.y * kTileHeight, viewportWidth);
-            if (prevTile.x > 0) {
-                wides->addTile(0, prevTile.y * kTileHeight, prevTile.x * kTileWidth);
+        processEmptyTileRows(0, prevTile.y);
+
+        int32_t windingDelta = isCulled ? windingHistogram[prevTile.y] : 0;
+        processor->setCoarseWinding(windingDelta);
+        processor->clearWithCoarseWinding();
+
+        bool fillLeftStart = processor->ShouldFill(windingDelta) ^ isInverse;
+        if (fillLeftStart) {
+            uint16_t wideStartX = static_cast<uint16_t>(clipRect.left());
+            uint16_t wideEndX = prevTile.x * kTileWidth;
+            if (wideEndX > wideStartX) {
+                wides->addTile(wideStartX, prevTile.y * kTileHeight, wideEndX - wideStartX);
             }
         }
 
@@ -354,24 +504,28 @@ private:
                 // 3. Handle Row Breaks
                 if (rowStart) {
                     if (shouldFill) {
-                        if (viewportWidth > runEndX) {
+                        uint16_t clipRight = static_cast<uint16_t>(clipRect.right());
+                        if (clipRight > runEndX) {
                             wides->addTile(runEndX,
                                            prevTile.y * kTileHeight,
-                                           viewportWidth - runEndX);
+                                           clipRight - runEndX);
                         }
                     }
 
-                    // Reset coarse winding for the new row
-                    processor->setCoarseWinding(0);
-                    processor->clearWindingForNewRow();
+                    // Process intervening empty rows
+                    processEmptyTileRows(prevTile.y + 1, tile.y);
 
-                    if (isInverse) {
-                        EmitBackground<kTileHeight>(wides,
-                                                    (prevTile.y + 1) * kTileHeight,
-                                                    tile.y * kTileHeight,
-                                                    viewportWidth);
-                        if (tile.x > 0) {
-                            wides->addTile(0, tile.y * kTileHeight, tile.x * kTileWidth);
+                    // Reset and seed coarse winding for the new row
+                    windingDelta = isCulled ? windingHistogram[tile.y] : 0;
+                    processor->setCoarseWinding(windingDelta);
+                    processor->clearWithCoarseWinding();
+
+                    bool fillLeftNewRow = processor->ShouldFill(windingDelta) ^ isInverse;
+                    if (fillLeftNewRow) {
+                        uint16_t wideStartX = static_cast<uint16_t>(clipRect.left());
+                        uint16_t wideEndX = tile.x * kTileWidth;
+                        if (wideEndX > wideStartX) {
+                            wides->addTile(wideStartX, tile.y * kTileHeight, wideEndX - wideStartX);
                         }
                     }
                 }
@@ -410,16 +564,15 @@ private:
         bool shouldFill = processor->ShouldFill(processor->coarseWinding()) ^ isInverse;
         if (shouldFill) {
             uint16_t runEndX = (prevTile.x + 1) * kTileWidth;
-            if (viewportWidth > runEndX) {
+            uint16_t clipRight = static_cast<uint16_t>(clipRect.right());
+            if (clipRight > runEndX) {
                 wides->addTile(runEndX,
                                prevTile.y * kTileHeight,
-                               viewportWidth - runEndX);
+                               clipRight - runEndX);
             }
         }
-        if (isInverse) {
-            EmitBackground<kTileHeight>(
-                    wides, (prevTile.y + 1) * kTileHeight, viewportHeight, viewportWidth);
-        }
+
+        processEmptyTileRows(prevTile.y + 1, totalRows);
         return true;
     }
 };
