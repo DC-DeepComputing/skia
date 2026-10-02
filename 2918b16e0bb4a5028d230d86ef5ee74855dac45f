@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4582648_ff989bb3",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-02T18:46:46Z",
+      "side": 1,
+      "message": "SkDebugf and SkStringPrintf and the other ones, are actual functions, whereas the other logging utilities are macros (which are expanded before parsing). This makes it difficult to fix these function calls without triggering the -Wunsafe-buffer-usage warning.\n\nThe first problem is that Clang reports the warning at the call site, rather than within the function itself. Another issue is that the arguments passed to the functions can trigger the warning, not just the internal logic of SkDebugf. Furthermore, because this function is shared across other repositories, adding pragmas might interfere with existing UNSAFE_TODO macros in other codebases and cause nested pragma issues.   \n\nOne solution we could try implementing is suppressing the -Wunsafe-buffer-usage-in-format-attr-call warning (which is a sub-warning of -Wunsafe-buffer-usage). This specifically targets string formatting functions like printf, while allowing other unsafe patterns like pointer subscripts and pointer arithmetic to still be enforced.",
+      "parentUuid": "71124c2d_c4e0dc5a",
+      "range": {
+        "startLine": 504,
+        "startChar": 8,
+        "endLine": 504,
+        "endChar": 16
+      },
+      "revId": "2918b16e0bb4a5028d230d86ef5ee74855dac45f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe48b60e_c474f9ce",
         "filename": "src/gpu/graphite/PaintParamsKey.cpp",
         "patchSetId": 16
