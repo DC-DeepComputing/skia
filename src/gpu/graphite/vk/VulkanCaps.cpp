@@ -276,6 +276,22 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     this->initShaderCaps(enabledFeatures, vendorID, deviceProperties.fSubgroup);
 
+    // Required subgroup sizes (ComputeStep::preferredSubgroupSize()) need the subgroupSizeControl
+    // feature and the compute stage in requiredSubgroupSizeStages. Caps::finishInitialization()
+    // also disables this when compute is disabled.
+    const VkPhysicalDeviceSubgroupSizeControlProperties& sizeControl =
+            deviceProperties.fSubgroupSizeControl;
+    fSubgroupSizeControlSupport =
+            enabledFeatures.fSubgroupSizeControl &&
+            (sizeControl.requiredSubgroupSizeStages & VK_SHADER_STAGE_COMPUTE_BIT);
+    if (fSubgroupSizeControlSupport) {
+        fMinSubgroupSize = sizeControl.minSubgroupSize;
+        fMaxSubgroupSize = sizeControl.maxSubgroupSize;
+        fMaxComputeWorkgroupSubgroups = sizeControl.maxComputeWorkgroupSubgroups;
+        // Lets pipelines with a required subgroup size also require full subgroups.
+        fComputeFullSubgroupsSupport = enabledFeatures.fComputeFullSubgroups;
+    }
+
     // Vulkan 1.0 dynamic state is always supported.  Dynamic state based on features of
     // VK_EXT_extended_dynamic_state and VK_EXT_extended_dynamic_state2 are also considered basic
     // given the extensions' age and the fact that they are core since Vulkan 1.3.
@@ -368,6 +384,7 @@ VulkanCaps::EnabledFeatures VulkanCaps::getEnabledFeatures(
                             reinterpret_cast<const VkPhysicalDeviceVulkan13Features*>(pNext);
                     enabled.fPipelineCreationCacheControl = feature->pipelineCreationCacheControl;
                     enabled.fSubgroupSizeControl = feature->subgroupSizeControl;
+                    enabled.fComputeFullSubgroups = feature->computeFullSubgroups;
                     break;
                 }
                 case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_4_FEATURES: {
@@ -389,6 +406,7 @@ VulkanCaps::EnabledFeatures VulkanCaps::getEnabledFeatures(
                             reinterpret_cast<const VkPhysicalDeviceSubgroupSizeControlFeatures*>(
                                     pNext);
                     enabled.fSubgroupSizeControl = feature->subgroupSizeControl;
+                    enabled.fComputeFullSubgroups = feature->computeFullSubgroups;
                     break;
                 }
                 case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES: {
@@ -524,6 +542,15 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
     props->fSubgroup = {};
     props->fSubgroup.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_PROPERTIES;
     AddToPNextChain(&props->fBase, &props->fSubgroup);
+
+    // The feature can only be enabled with VK_EXT_subgroup_size_control or Vulkan 1.3, either of
+    // which provides this struct.
+    props->fSubgroupSizeControl = {};
+    props->fSubgroupSizeControl.sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_SIZE_CONTROL_PROPERTIES;
+    if (features.fSubgroupSizeControl) {
+        AddToPNextChain(&props->fBase, &props->fSubgroupSizeControl);
+    }
 
     const bool hasDriverProperties =
             physicalDeviceVersion >= VK_API_VERSION_1_2 ||

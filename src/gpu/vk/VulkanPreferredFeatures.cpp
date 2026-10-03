@@ -1023,7 +1023,6 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
         fVulkan13.privateData = VK_FALSE;
         fVulkan13.shaderDemoteToHelperInvocation = VK_FALSE;
         fVulkan13.shaderTerminateInvocation = VK_FALSE;
-        fVulkan13.computeFullSubgroups = VK_FALSE;
         fVulkan13.textureCompressionASTC_HDR = VK_FALSE;
         fVulkan13.shaderZeroInitializeWorkgroupMemory = VK_FALSE;
         fVulkan13.shaderIntegerDotProduct = VK_FALSE;
@@ -1031,7 +1030,8 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
 
         // synchronization2, dynamicRendering, pipelineCreationCacheControl and subgroupSizeControl
         // are required features of Vulkan 1.3. Graphite requires subgroupSizeControl to expose
-        // subgroup operations in compute shaders.
+        // subgroup operations in compute shaders. computeFullSubgroups is optional and stays
+        // enabled if supported; compute pipelines with a required subgroup size use it.
         fVulkan13.synchronization2 = VK_TRUE;
         fVulkan13.dynamicRendering = VK_TRUE;
         fVulkan13.pipelineCreationCacheControl = VK_TRUE;
@@ -1084,8 +1084,9 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     fExtendedDynamicState2.extendedDynamicState2LogicOp = VK_FALSE;
     fExtendedDynamicState2.extendedDynamicState2PatchControlPoints = VK_FALSE;
 
-    // If chained by Skia, only enable subgroupSizeControl; Skia does not require full subgroups.
-    fSubgroupSizeControl.computeFullSubgroups = VK_FALSE;
+    // If chained by Skia, subgroupSizeControl and (if supported) computeFullSubgroups are both
+    // left enabled. Graphite doesn't require full subgroups, but compute pipelines with a required
+    // subgroup size use them when available.
 
 // Helper to enable a feature in the feature aggregate struct if it's enabled in the
 // extension-specific struct.  It reduces code verbosity but more importantly ensures the feature

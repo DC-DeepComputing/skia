@@ -25,6 +25,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -362,6 +363,39 @@ public:
     uint32_t maxComputeWorkgroupStorageSize() const { return fMaxComputeWorkgroupStorageSize; }
 
     /**
+     * Whether a compute pipeline's subgroup size can be required (see
+     * ComputeStep::preferredSubgroupSize()). Only Vulkan supports this, through
+     * VK_EXT_subgroup_size_control or Vulkan 1.3; Metal and WebGPU have no equivalent. When true,
+     * the subgroup size limits below are valid.
+     */
+    bool subgroupSizeControlSupport() const { return fSubgroupSizeControlSupport; }
+    uint32_t minSubgroupSize() const { return fMinSubgroupSize; }
+    uint32_t maxSubgroupSize() const { return fMaxSubgroupSize; }
+    // The most subgroups a workgroup may contain when the subgroup size is required.
+    uint32_t maxComputeWorkgroupSubgroups() const { return fMaxComputeWorkgroupSubgroups; }
+
+    /**
+     * Returns the subgroup size that a compute pipeline with workgroup size `localSize` gets for
+     * the preferred size `preferred`, or 0 if its subgroup size varies (sk_SubgroupSize then
+     * reports the size the driver picked).
+     *
+     * The preference must be a power of two. It's clamped to [minSubgroupSize(), maxSubgroupSize()]
+     * and then raised as needed so that the workgroup fits in maxComputeWorkgroupSubgroups()
+     * subgroups. Without a preference, without subgroup size control, or if no supported size
+     * fits, the size varies. A ComputeStep that needs a specific size can call this to check
+     * whether it'll get it.
+     */
+    uint32_t resolveSubgroupSize(std::optional<uint32_t> preferred, WorkgroupSize localSize) const;
+
+    /**
+     * Returns true if a compute pipeline whose subgroup size resolved to `subgroupSize` (see
+     * resolveSubgroupSize()) has only full subgroups, i.e. every subgroup has exactly
+     * `subgroupSize` invocations. This requires the computeFullSubgroups Vulkan feature and a
+     * workgroup width that's a multiple of the subgroup size.
+     */
+    bool hasFullSubgroups(uint32_t subgroupSize, WorkgroupSize localSize) const;
+
+    /**
      * Returns true if the given backend supports importing AHardwareBuffers. This will only
      * ever be supported on Android devices with API level >= 26.
      */
@@ -514,6 +548,12 @@ protected:
     WorkgroupSize fMaxComputeWorkgroupSize = {0, 0, 0};
     uint32_t fMaxComputeInvocationsPerWorkgroup = 0;
     uint32_t fMaxComputeWorkgroupStorageSize = 0;
+    // Set by backends that support required subgroup sizes (Vulkan).
+    bool fSubgroupSizeControlSupport = false;
+    bool fComputeFullSubgroupsSupport = false;
+    uint32_t fMinSubgroupSize = 0;
+    uint32_t fMaxSubgroupSize = 0;
+    uint32_t fMaxComputeWorkgroupSubgroups = 0;
     bool fSupportsAHardwareBufferImages = false;
     bool fFullCompressedUploadSizeMustAlignToBlockDims = false;
 
