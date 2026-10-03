@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "062a824c_b434c61e",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-03T00:19:33Z",
+      "side": 1,
+      "message": "nit: `availableSize` is computed in both loops. Optional: compute `dataTruncated` in the first pass too, because the group loop already has `offset`, `availableSize`, and each entry\u0027s `size`. Then the second loop only reads `payloadBoundaries[i]`. Not blocking.",
+      "range": {
+        "startLine": 198,
+        "startChar": 21,
+        "endLine": 198,
+        "endChar": 34
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90360c16_b87bf60c",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-03T00:19:33Z",
+      "side": 1,
+      "message": "Question: when *no* entry fits its reported frame and nothing is incomplete (e.g. `ico_oversized_512x384.ico`), we now return `kSuccess` with a codec where every decode returns `kInvalidScale` (before this CL: `kInvalidInput`). What is the reason to prefer this?\n\n- Is this required by `icon-decoding.html`? If yes, could you say in the CL description which icon(s) need this?\n- `kInvalidScale` for a request at exactly `getInfo().dimensions()` is unusual for an `SkCodec`. Callers usually read it as \"try another size\", not \"this image is broken\". `kInvalidInput` from `MakeFromStream` seems like a more accurate signal for \"complete data, nothing decodable\".\n\nIf there is no client that needs metadata from an undecodable ICO, I would prefer to keep returning `kInvalidInput` in this case.",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 80
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1061128a_bf06585c",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-03T00:19:33Z",
+      "side": 1,
+      "message": "Metadata-only entries are now exposed as frames (`getFrameCount()` includes them). Decoding them returns `kInvalidScale`. Did you check that Blink does not mark the *whole* decoder as failed when one frame `i \u003e 0` fails? For example, `WebImage::FramesFromData` (used for favicons) iterates over all frames. Before this CL, these entries were not visible, so this is seems like a new path for Blink.",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 70
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d7c4a0_5ddea27c",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-03T00:19:33Z",
+      "side": 1,
+      "message": "nit: Can you please revert formatting-only changes or move them into a separate CL?",
+      "range": {
+        "startLine": 272,
+        "startChar": 97,
+        "endLine": 272,
+        "endChar": 98
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fdeedea_e55bd9c6",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-03T00:19:33Z",
+      "side": 1,
+      "message": "nit: Can you please revert re-formatting changes (or move them into a separate CL)?",
+      "range": {
+        "startLine": 812,
+        "startChar": 0,
+        "endLine": 816,
+        "endChar": 44
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
