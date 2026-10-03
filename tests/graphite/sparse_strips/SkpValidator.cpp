@@ -115,23 +115,29 @@ bool SkpValidator::ValidatePath(skiatest::Reporter* reporter,
     uint16_t vpWidth = (rawWidth + kTileWidth - 1) & ~(kTileWidth - 1);
     uint16_t vpHeight = (rawHeight + kTileHeight - 1) & ~(kTileHeight - 1);
 
+    SkIRect clipRect = SkIRect::MakeWH(vpWidth, vpHeight);
+
     Flatten flattener;
     Polyline polyline;
     flattener.processPaths<FlattenMode::kSimd>(localPath,
                                                SkMatrix(),
-                                               static_cast<float>(vpWidth),
-                                               static_cast<float>(vpHeight),
+                                               clipRect,
                                                &polyline);
 
-    if (polyline.count() == 0) {
+    if (polyline.count() == 0 && !localPath.isInverseFillType()) {
         return true;
     }
 
+    uint16_t numTileRows = (vpHeight + kTileHeight - 1) / kTileHeight;
+    WindingHistogram windingHistogram(numTileRows);
+    windingHistogram.resize(numTileRows);
+    windingHistogram.clear();
+
     Tiles<kTileWidth, kTileHeight> tiler;
-    tiler.makeTilesMSAA(polyline, vpWidth, vpHeight);
+    bool isCulled = tiler.makeTilesMSAA(polyline, clipRect, windingHistogram);
     tiler.sortTiles();
 
-    if (tiler.getTiles().empty()) {
+    if (tiler.getTiles().empty() && !isCulled && !SkPathFillType_IsInverse(localPath.getFillType())) {
         return true;
     }
 
@@ -152,8 +158,9 @@ bool SkpValidator::ValidatePath(skiatest::Reporter* reporter,
             localPath.getFillType(),
             polyline,
             maskLut,
-            vpWidth,
-            vpHeight,
+            isCulled,
+            windingHistogram,
+            clipRect,
             observer);
 
     OracleValidator<kTileWidth, kTileHeight> validator(
