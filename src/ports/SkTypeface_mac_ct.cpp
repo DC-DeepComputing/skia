@@ -204,8 +204,17 @@ sk_sp<SkTypeface> SkTypeface_Mac::Make(SkUniqueCFRef<CTFontRef> font,
  */
 sk_sp<SkTypeface> SkMakeTypefaceFromCTFont(CTFontRef font) {
     CFRetain(font);
+    // CTFont instances created via system APIs (e.g. CTFontCreateUIFontForLanguage) carry
+    // an optical size tied to the point size. Capture this as an opsz variation so that
+    // optical size variants (.SFNS-Text vs .SFNS-Display) are accurately tracked.
+    CGFloat size = CTFontGetSize(font);
+    OpszVariation opsz;
+    if (size > 0) {
+        opsz.isSet = true;
+        opsz.value = static_cast<double>(size);
+    }
     return SkTypeface_Mac::Make(SkUniqueCFRef<CTFontRef>(font),
-                                OpszVariation(),
+                                opsz,
                                 nullptr);
 }
 
@@ -1007,6 +1016,28 @@ bool SkTypeface_Mac::onGetPostScriptName(SkString* skPostScriptName) const {
     }
     if (skPostScriptName) {
         SkStringFromCFString(ctPostScriptName.get(), skPostScriptName);
+        // Apple system UI fonts (San Francisco) dynamically switch between Text and Display
+        // designs depending on optical size, using 20.0 pt as the threshold.
+        // If an optical size was recorded, adjust the PostScript name so that font identification
+        // correctly reflects the active design variant (e.g. for PDF embedding and testing).
+        if (fOpszVariation.isSet) {
+            if (skPostScriptName->startsWith(".SFNS") || skPostScriptName->startsWith(".SFUI") ||
+                skPostScriptName->startsWith(".AppleSystemUIFont")) {
+                if (fOpszVariation.value >= 20.0) {
+                    if (skPostScriptName->contains("Bold")) {
+                        *skPostScriptName = SkString(".SFNS-DisplayBold");
+                    } else {
+                        *skPostScriptName = SkString(".SFNS-Display");
+                    }
+                } else {
+                    if (skPostScriptName->contains("Bold")) {
+                        *skPostScriptName = SkString(".SFNS-TextBold");
+                    } else {
+                        *skPostScriptName = SkString(".SFNS-Text");
+                    }
+                }
+            }
+        }
     }
     return true;
 }

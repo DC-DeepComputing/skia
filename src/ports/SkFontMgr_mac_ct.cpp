@@ -32,6 +32,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkUTF.h"
 #include "src/ports/SkTypeface_mac_ct.h"
+#include "src/ports/SkTypeface_mac_symbols.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 
 #include <string.h>
@@ -270,6 +271,52 @@ private:
     }
 };
 
+#if defined(SK_ENABLE_SF_SYMBOLS_FALLBACK)
+// Checks if the family name corresponds to SF Symbols or one of its known aliases.
+static bool is_sf_symbols_family(const char familyName[]) {
+    if (!familyName) {
+        return false;
+    }
+    return strcmp(familyName, "SF Symbols") == 0 ||
+           strcmp(familyName, ".SFUI-Symbols") == 0 ||
+           strcmp(familyName, "SFSymbols") == 0 ||
+           strcmp(familyName, "SF-Symbols") == 0;
+}
+
+// Virtual font style set for SF Symbols. Because SF Symbols are dynamically rendered
+// rather than being installed as physical fonts in CoreText font collections, this style set
+// creates and returns the virtual SF Symbols typeface.
+class SkFontStyleSet_SFSymbols : public SkFontStyleSet {
+public:
+    int count() override {
+        return 1;
+    }
+
+    void getStyle(int index, SkFontStyle* style, SkString* name) override {
+        if (index != 0) {
+            return;
+        }
+        if (style) {
+            *style = SkFontStyle();
+        }
+        if (name) {
+            name->reset();
+        }
+    }
+
+    sk_sp<SkTypeface> createTypeface(int index) override {
+        if (index != 0) {
+            return nullptr;
+        }
+        return SkMakeTypeface_SFSymbols(SkFontStyle());
+    }
+
+    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
+        return SkMakeTypeface_SFSymbols(pattern);
+    }
+};
+#endif
+
 SkUniqueCFRef<CFArrayRef> SkCopyAvailableFontFamilyNames(CTFontCollectionRef collection) {
     // Create a CFArray of all available font descriptors.
     SkUniqueCFRef<CFArrayRef> descriptors(
@@ -381,12 +428,24 @@ protected:
         if (!familyName) {
             return nullptr;
         }
+#if defined(SK_ENABLE_SF_SYMBOLS_FALLBACK)
+        // SF Symbols is a virtual typeface not indexed in CoreText system font collections.
+        if (is_sf_symbols_family(familyName)) {
+            return sk_make_sp<SkFontStyleSet_SFSymbols>();
+        }
+#endif
         SkUniqueCFRef<CFStringRef> cfName = make_CFString(familyName);
         return CreateSet(cfName.get());
     }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
                                    const SkFontStyle& style) const override {
+#if defined(SK_ENABLE_SF_SYMBOLS_FALLBACK)
+        // Direct family name lookup for SF Symbols.
+        if (familyName && is_sf_symbols_family(familyName)) {
+            return SkMakeTypeface_SFSymbols(style);
+        }
+#endif
         SkUniqueCFRef<CTFontDescriptorRef> reqDesc = create_descriptor(familyName, style);
         if (!reqDesc) {
             return nullptr;
@@ -412,6 +471,13 @@ protected:
                                                   const SkFontStyle& style,
                                                   const char* bcp47[], int bcp47Count,
                                                   SkUnichar character) const override {
+#if defined(SK_ENABLE_SF_SYMBOLS_FALLBACK)
+        // If character belongs to Plane 16 PUA (U+100000..), route directly to SF Symbols
+        // typeface rather than searching physical CoreText fallback fonts.
+        if (SkIsSFSymbolsCodepoint(character)) {
+            return SkMakeTypeface_SFSymbols(style);
+        }
+#endif
         SkUniqueCFRef<CTFontDescriptorRef> desc = create_descriptor(familyName, style);
         if (!desc) {
             return nullptr;
@@ -509,6 +575,12 @@ protected:
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char familyName[], SkFontStyle style) const override {
         if (familyName) {
+#if defined(SK_ENABLE_SF_SYMBOLS_FALLBACK)
+            // Intercept legacy creation for SF Symbols family requests.
+            if (is_sf_symbols_family(familyName)) {
+                return SkMakeTypeface_SFSymbols(style);
+            }
+#endif
             familyName = map_css_names(familyName);
         }
 
