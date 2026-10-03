@@ -85,7 +85,7 @@ private:
             const TextureInfo&) const override;
 
     void initCaps(const DawnBackendContext&, const ContextOptions&);
-    void initShaderCaps(const wgpu::Device&);
+    void initShaderCaps(const wgpu::Instance&, const wgpu::Device&);
     void initFormatTable(const wgpu::Device&);
 
     // When supported, this value will hold the TransientAttachment usage symbol that is only

@@ -95,7 +95,7 @@ bool is_valid_view(const DawnTextureInfo& dawnInfo) {
 DawnCaps::DawnCaps(const DawnBackendContext& backendContext, const ContextOptions& options)
         : Caps() {
     this->initCaps(backendContext, options);
-    this->initShaderCaps(backendContext.fDevice);
+    this->initShaderCaps(backendContext.fInstance, backendContext.fDevice);
     this->initFormatTable(backendContext.fDevice);
     this->finishInitialization(options);
 }
@@ -470,7 +470,8 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fFullCompressedUploadSizeMustAlignToBlockDims = true;
 }
 
-void DawnCaps::initShaderCaps(const wgpu::Device& device) {
+void DawnCaps::initShaderCaps([[maybe_unused]] const wgpu::Instance& instance,
+                              const wgpu::Device& device) {
     SkSL::ShaderCaps* shaderCaps = fShaderCaps.get();
 
     // WGSL does not actually support infinities regardless of hardware support. There are
@@ -489,9 +490,16 @@ void DawnCaps::initShaderCaps(const wgpu::Device& device) {
     // Dawn only exposes Subgroups when vote, ballot, shuffle, and arithmetic operations are all
     // available in compute, which matches what fSubgroupSupport promises. The client must request
     // the feature when creating the device.
-    if (device.HasFeature(wgpu::FeatureName::Subgroups)) {
+    //
+    // sk_SubgroupID lowers to @builtin(subgroup_id), which additionally needs the subgroup_id WGSL
+    // language feature. It has shipped but can be disabled by a killswitch, so check for it. The
+    // Emscripten bindings Skia builds against can't query it, so subgroups stay disabled there.
+#if !defined(__EMSCRIPTEN__)
+    if (device.HasFeature(wgpu::FeatureName::Subgroups) && instance &&
+        instance.HasWGSLLanguageFeature(wgpu::WGSLLanguageFeatureName::SubgroupId)) {
         shaderCaps->fSubgroupSupport = true;
     }
+#endif
 }
 
 // TextureFormat is backed by a uint8_t, so 8 bits are always sufficient (including using
