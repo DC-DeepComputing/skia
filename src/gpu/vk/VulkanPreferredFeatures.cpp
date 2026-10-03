@@ -137,6 +137,7 @@ struct DeviceExtensions {
     bool fHostImageCopyEXT = false;
     bool fPipelineCreationCacheControlEXT = false;
     bool fPipelineProtectedAccessEXT = false;
+    bool fSubgroupSizeControlEXT = false;
     bool fDriverPropertiesKHR = false;
     bool fCreateRenderpass2KHR = false;
     bool fLoadStoreOpNoneEXT = false;
@@ -208,6 +209,8 @@ void mark_device_extensions(DeviceExtensions& exts, const char* name) {
         exts.fPipelineCreationCacheControlEXT = true;
     } else if (strcmp(name, VK_EXT_PIPELINE_PROTECTED_ACCESS_EXTENSION_NAME) == 0) {
         exts.fPipelineProtectedAccessEXT = true;
+    } else if (strcmp(name, VK_EXT_SUBGROUP_SIZE_CONTROL_EXTENSION_NAME) == 0) {
+        exts.fSubgroupSizeControlEXT = true;
     } else if (strcmp(name, VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME) == 0) {
         exts.fDriverPropertiesKHR = true;
     } else if (strcmp(name, VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME) == 0) {
@@ -284,6 +287,7 @@ struct FeaturesToAdd {
     bool fHostImageCopy = true;
     bool fPipelineCreationCacheControl = true;
     bool fPipelineProtectedAccess = true;
+    bool fSubgroupSizeControl = true;
     bool fFrameBoundary = true;
     bool fSamplerYcbcrConversion = true;
 };
@@ -319,6 +323,8 @@ FeaturesToAdd get_features_to_query(uint32_t apiVersion,
         // VK_EXT_pipeline_creation_cache_control's feature is included in
         // VkPhysicalDeviceVulkan13Features
         toQuery.fPipelineCreationCacheControl = false;
+        // VK_EXT_subgroup_size_control's feature is included in VkPhysicalDeviceVulkan13Features
+        toQuery.fSubgroupSizeControl = false;
         // VK_EXT_extended_dynamic_state is core in Vulkan 1.3, but no feature for it is present in
         // VkPhysicalDeviceVulkan13Features; it's assumed supported / enabled.
         toQuery.fExtendedDynamicState = false;
@@ -333,6 +339,7 @@ FeaturesToAdd get_features_to_query(uint32_t apiVersion,
         toQuery.fSynchronization2 = exts.fSynchronization2KHR;
         toQuery.fDynamicRendering = exts.fDynamicRenderingKHR;
         toQuery.fPipelineCreationCacheControl = exts.fPipelineCreationCacheControlEXT;
+        toQuery.fSubgroupSizeControl = exts.fSubgroupSizeControlEXT;
         toQuery.fExtendedDynamicState = exts.fExtendedDynamicStateEXT;
         toQuery.fExtendedDynamicState2 = exts.fExtendedDynamicState2EXT;
     }
@@ -420,6 +427,9 @@ FeaturesToAdd get_features_to_query(uint32_t apiVersion,
                 break;
             case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_PROTECTED_ACCESS_FEATURES:
                 toQuery.fPipelineProtectedAccess = false;
+                break;
+            case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_SIZE_CONTROL_FEATURES:
+                toQuery.fSubgroupSizeControl = false;
                 break;
             case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FRAME_BOUNDARY_FEATURES_EXT:
                 toQuery.fFrameBoundary = false;
@@ -534,6 +544,10 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
         if (exts.fPipelineCreationCacheControlEXT) {
             fPipelineCreationCacheControl.sType =
                     VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_CREATION_CACHE_CONTROL_FEATURES;
+        }
+        if (exts.fSubgroupSizeControlEXT) {
+            fSubgroupSizeControl.sType =
+                    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_SIZE_CONTROL_FEATURES;
         }
         if (exts.fExtendedDynamicStateEXT) {
             fExtendedDynamicState.sType =
@@ -701,6 +715,10 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
         SkASSERT(fPipelineProtectedAccess.sType != 0);
         AddToPNextChain(&appFeatures, &fPipelineProtectedAccess);
     }
+    if (toQuery.fSubgroupSizeControl) {
+        SkASSERT(fSubgroupSizeControl.sType != 0);
+        AddToPNextChain(&appFeatures, &fSubgroupSizeControl);
+    }
     if (toQuery.fFrameBoundary) {
         SkASSERT(fFrameBoundary.sType != 0);
         AddToPNextChain(&appFeatures, &fFrameBoundary);
@@ -737,6 +755,7 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     toEnable.fHostImageCopy = fHostImageCopy.sType != 0;
     toEnable.fPipelineCreationCacheControl = fPipelineCreationCacheControl.sType != 0;
     toEnable.fPipelineProtectedAccess = fPipelineProtectedAccess.sType != 0;
+    toEnable.fSubgroupSizeControl = fSubgroupSizeControl.sType != 0;
     toEnable.fFrameBoundary = fFrameBoundary.sType != 0;
 
     // Note on enabling the YCbCr conversion feature: Regardless of whether Skia or the app added
@@ -811,6 +830,10 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
             toEnable.fPipelineCreationCacheControl) {
             appExtensions.push_back(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME);
             appEnabledExts.fPipelineCreationCacheControlEXT = true;
+        }
+        if (!appEnabledExts.fSubgroupSizeControlEXT && toEnable.fSubgroupSizeControl) {
+            appExtensions.push_back(VK_EXT_SUBGROUP_SIZE_CONTROL_EXTENSION_NAME);
+            appEnabledExts.fSubgroupSizeControlEXT = true;
         }
         if (!appEnabledExts.fFrameBoundaryEXT && toEnable.fFrameBoundary) {
             appExtensions.push_back(VK_EXT_FRAME_BOUNDARY_EXTENSION_NAME);
@@ -1000,18 +1023,19 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
         fVulkan13.privateData = VK_FALSE;
         fVulkan13.shaderDemoteToHelperInvocation = VK_FALSE;
         fVulkan13.shaderTerminateInvocation = VK_FALSE;
-        fVulkan13.subgroupSizeControl = VK_FALSE;
         fVulkan13.computeFullSubgroups = VK_FALSE;
         fVulkan13.textureCompressionASTC_HDR = VK_FALSE;
         fVulkan13.shaderZeroInitializeWorkgroupMemory = VK_FALSE;
         fVulkan13.shaderIntegerDotProduct = VK_FALSE;
         fVulkan13.maintenance4 = VK_FALSE;
 
-        // synchronization2, dynamicRendering and pipelineCreationCacheControl are required features
-        // of Vulkan 1.3.
+        // synchronization2, dynamicRendering, pipelineCreationCacheControl and subgroupSizeControl
+        // are required features of Vulkan 1.3. Graphite requires subgroupSizeControl to expose
+        // subgroup operations in compute shaders.
         fVulkan13.synchronization2 = VK_TRUE;
         fVulkan13.dynamicRendering = VK_TRUE;
         fVulkan13.pipelineCreationCacheControl = VK_TRUE;
+        fVulkan13.subgroupSizeControl = VK_TRUE;
     }
     if (toEnable.fVulkan14) {
         // Disable all features not used by Skia
@@ -1059,6 +1083,9 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     // If chained by Skia, disable dynamic state that is unused by Skia.
     fExtendedDynamicState2.extendedDynamicState2LogicOp = VK_FALSE;
     fExtendedDynamicState2.extendedDynamicState2PatchControlPoints = VK_FALSE;
+
+    // If chained by Skia, only enable subgroupSizeControl; Skia does not require full subgroups.
+    fSubgroupSizeControl.computeFullSubgroups = VK_FALSE;
 
 // Helper to enable a feature in the feature aggregate struct if it's enabled in the
 // extension-specific struct.  It reduces code verbosity but more importantly ensures the feature
@@ -1695,14 +1722,19 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
                 break;
             }
             case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_SIZE_CONTROL_FEATURES: {
+                auto* features =
+                        reinterpret_cast<VkPhysicalDeviceSubgroupSizeControlFeatures*>(pNext);
                 if (hasVulkan13Features) {
-                    auto* features =
-                            reinterpret_cast<VkPhysicalDeviceSubgroupSizeControlFeatures*>(pNext);
                     DUP_INTO(fVulkan13, subgroupSizeControl);
                     DUP_INTO(fVulkan13, computeFullSubgroups);
                 } else {
                     chain(newChainEnd, pNext);
+                    // Enable the main feature
+                    if (appEnabledExts.fSubgroupSizeControlEXT) {
+                        features->subgroupSizeControl = VK_TRUE;
+                    }
                 }
+                toEnable.fSubgroupSizeControl = false;
                 break;
             }
             case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TEXTURE_COMPRESSION_ASTC_HDR_FEATURES: {
@@ -1946,6 +1978,9 @@ void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appE
     }
     if (toEnable.fPipelineProtectedAccess) {
         chain(newChainEnd, &fPipelineProtectedAccess);
+    }
+    if (toEnable.fSubgroupSizeControl) {
+        chain(newChainEnd, &fSubgroupSizeControl);
     }
     if (toEnable.fFrameBoundary) {
         chain(newChainEnd, &fFrameBoundary);

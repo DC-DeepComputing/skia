@@ -485,6 +485,13 @@ void DawnCaps::initShaderCaps(const wgpu::Device& device) {
         shaderCaps->fFBFetchSupport = true;
     }
 #endif
+
+    // Dawn only exposes Subgroups when vote, ballot, shuffle, and arithmetic operations are all
+    // available in compute, which matches what fSubgroupSupport promises. The client must request
+    // the feature when creating the device.
+    if (device.HasFeature(wgpu::FeatureName::Subgroups)) {
+        shaderCaps->fSubgroupSupport = true;
+    }
 }
 
 // TextureFormat is backed by a uint8_t, so 8 bits are always sufficient (including using
