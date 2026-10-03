@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "305f43ef_f1b0c028",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-03T00:22:38Z",
+      "side": 1,
+      "message": "Disclaimer: code review was AI-assisted.",
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "062a824c_b434c61e",
@@ -14,6 +31,30 @@
       "writtenOn": "2026-10-03T00:19:33Z",
       "side": 1,
       "message": "nit: `availableSize` is computed in both loops. Optional: compute `dataTruncated` in the first pass too, because the group loop already has `offset`, `availableSize`, and each entry\u0027s `size`. Then the second loop only reads `payloadBoundaries[i]`. Not blocking.",
+      "range": {
+        "startLine": 198,
+        "startChar": 21,
+        "endLine": 198,
+        "endChar": 34
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b9f7275_43bf28a8",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-03T00:22:38Z",
+      "side": 1,
+      "message": "i.e. something like this:\n\n```\nstruct PayloadBoundary {\n    size_t size;\n    bool truncated;\n};\n...\nfor (uint32_t i \u003d groupStart; i \u003c groupEnd; ++i) {\n    const bool truncated \u003d !hasCompleteNextOffset \u0026\u0026\n                           directoryResult-\u003eget_entry(i).size \u003e availableSize;\n    payloadBoundaries[i] \u003d {size, truncated};\n}\n```\n\nThen the second loop only reads `payloadBoundaries[i].truncated` and `.size`, and the `dirSize` / `availableSize` locals there go away.",
+      "parentUuid": "062a824c_b434c61e",
       "range": {
         "startLine": 198,
         "startChar": 21,
