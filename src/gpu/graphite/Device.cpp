@@ -604,6 +604,12 @@ bool Device::notifyInUse(Recorder* recorder, DependencySink* sink) {
                 // If there's no `sink` this notify represents a copy, so for now append the
                 // task to the root task list since that is where the subsequent copy task will go
                 // as well.
+                // TODO (thomsmit): The pending read added above is never consumed on this path.
+                // The re-appended DrawTask marks its listener in the root scope, which popScope()
+                // drops without invoking, so the target is never returned to the scratch pool and
+                // ~ScratchResourceManager's !hasPendingReads() assert can fire. Skip the pending
+                // read and pin the target as a regular resource instead, like ComputeOutput does
+                // for reads without a sink.
                 recorder->priv().add(fLastTask);
             }
         } else {
