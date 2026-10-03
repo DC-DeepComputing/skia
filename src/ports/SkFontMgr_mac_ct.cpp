@@ -32,6 +32,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkUTF.h"
 #include "src/ports/SkTypeface_mac_ct.h"
+#include "src/ports/SkTypeface_mac_symbols.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 
 #include <string.h>
@@ -270,6 +271,46 @@ private:
     }
 };
 
+static bool is_sf_symbols_family(const char familyName[]) {
+    if (!familyName) {
+        return false;
+    }
+    return strcmp(familyName, "SF Symbols") == 0 ||
+           strcmp(familyName, ".SFUI-Symbols") == 0 ||
+           strcmp(familyName, "SFSymbols") == 0 ||
+           strcmp(familyName, "SF-Symbols") == 0;
+}
+
+class SkFontStyleSet_SFSymbols : public SkFontStyleSet {
+public:
+    int count() override {
+        return 1;
+    }
+
+    void getStyle(int index, SkFontStyle* style, SkString* name) override {
+        if (index != 0) {
+            return;
+        }
+        if (style) {
+            *style = SkFontStyle();
+        }
+        if (name) {
+            name->reset();
+        }
+    }
+
+    sk_sp<SkTypeface> createTypeface(int index) override {
+        if (index != 0) {
+            return nullptr;
+        }
+        return SkMakeTypeface_SFSymbols(SkFontStyle());
+    }
+
+    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
+        return SkMakeTypeface_SFSymbols(pattern);
+    }
+};
+
 SkUniqueCFRef<CFArrayRef> SkCopyAvailableFontFamilyNames(CTFontCollectionRef collection) {
     // Create a CFArray of all available font descriptors.
     SkUniqueCFRef<CFArrayRef> descriptors(
@@ -381,12 +422,18 @@ protected:
         if (!familyName) {
             return nullptr;
         }
+        if (is_sf_symbols_family(familyName)) {
+            return sk_make_sp<SkFontStyleSet_SFSymbols>();
+        }
         SkUniqueCFRef<CFStringRef> cfName = make_CFString(familyName);
         return CreateSet(cfName.get());
     }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
                                    const SkFontStyle& style) const override {
+        if (familyName && is_sf_symbols_family(familyName)) {
+            return SkMakeTypeface_SFSymbols(style);
+        }
         SkUniqueCFRef<CTFontDescriptorRef> reqDesc = create_descriptor(familyName, style);
         if (!reqDesc) {
             return nullptr;
@@ -412,6 +459,9 @@ protected:
                                                   const SkFontStyle& style,
                                                   const char* bcp47[], int bcp47Count,
                                                   SkUnichar character) const override {
+        if (SkIsSFSymbolsCodepoint(character)) {
+            return SkMakeTypeface_SFSymbols(style);
+        }
         SkUniqueCFRef<CTFontDescriptorRef> desc = create_descriptor(familyName, style);
         if (!desc) {
             return nullptr;
@@ -509,6 +559,9 @@ protected:
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char familyName[], SkFontStyle style) const override {
         if (familyName) {
+            if (is_sf_symbols_family(familyName)) {
+                return SkMakeTypeface_SFSymbols(style);
+            }
             familyName = map_css_names(familyName);
         }
 
