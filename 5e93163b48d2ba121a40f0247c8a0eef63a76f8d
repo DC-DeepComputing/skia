@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3f1356_e8d76b26",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-03T18:40:24Z",
+      "side": 1,
+      "message": "Done. `PayloadBoundary` now stores `size` and `truncated`; truncation is computed in the group pass from each entry’s declared size. The decode loop now only consumes those two fields.",
+      "parentUuid": "2b9f7275_43bf28a8",
+      "range": {
+        "startLine": 198,
+        "startChar": 21,
+        "endLine": 198,
+        "endChar": 34
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90360c16_b87bf60c",
@@ -78,6 +102,30 @@
       "writtenOn": "2026-10-03T00:19:33Z",
       "side": 1,
       "message": "Question: when *no* entry fits its reported frame and nothing is incomplete (e.g. `ico_oversized_512x384.ico`), we now return `kSuccess` with a codec where every decode returns `kInvalidScale` (before this CL: `kInvalidInput`). What is the reason to prefer this?\n\n- Is this required by `icon-decoding.html`? If yes, could you say in the CL description which icon(s) need this?\n- `kInvalidScale` for a request at exactly `getInfo().dimensions()` is unusual for an `SkCodec`. Callers usually read it as \"try another size\", not \"this image is broken\". `kInvalidInput` from `MakeFromStream` seems like a more accurate signal for \"complete data, nothing decodable\".\n\nIf there is no client that needs metadata from an undecodable ICO, I would prefer to keep returning `kInvalidInput` in this case.",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 80
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d382aa98_ff2839fe",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-03T18:40:24Z",
+      "side": 1,
+      "message": "Yes, this behavior is required by `images/icon-decoding.html`, specifically its `bad.ico` resource.\n\nThe test contains a comment saying that it does not care how `bad.ico` displays as long as decoding does not corrupt memory. In practice, however, this is a pixel test and it fails if the Rust decoder does not produce the same rendered pixels as the legacy decoder.\n\n`bad.ico` advertises an 8x8 directory entry but contains a 16x16 BMP payload. The legacy path exposes the 8x8 directory-derived size before payload decoding fails. Blink therefore renders the expected size-aware broken-image result. \n\nIf the Rust codec returns `kInvalidInput` during codec creation, Blink never receives the 8x8 size and renders a different broken-image placeholder. This causes `images/icon-decoding.html` and its virtual variants to fail.\n\nTherefore, preserving directory metadata for an otherwise undecodable entry is currently needed to match the existing Chromium test.\n\nThat said, the test comment and its pixel-sensitive expectation are inconsistent. \n\n@fmalita@google.com / @lukasza@google.com, what do you prefer:\n\n1. Keeping metadata-only codec behavior so the Rust decoder matches the    existing legacy rendering, or\n2. Removing this behavior from Skia and updating the Chromium test so `bad.ico` is decoded only for no-crash coverage without asserting its exact broken-image rendering?\n\nI can proceed with either direction, but until option 2 lands in Chromium, the metadata-only behavior is required for the existing feature-enabled CQ test to pass.",
+      "parentUuid": "90360c16_b87bf60c",
       "range": {
         "startLine": 341,
         "startChar": 0,
@@ -111,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e733f1c3_a0eb6d3b",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-03T18:40:24Z",
+      "side": 1,
+      "message": "Thanks for pointing this, I was using that during validation but it is not really required. Metadata-only frame exposure has been removed. Only entries whose payload fits their reported frame are added to `fEmbeddedImages` and `fFrameHolder`.",
+      "parentUuid": "1061128a_bf06585c",
+      "range": {
+        "startLine": 457,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 70
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32d7c4a0_5ddea27c",
@@ -134,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19908701_6346436d",
+        "filename": "experimental/rust_ico/ffi/FFI.rs",
+        "patchSetId": 10
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-03T18:40:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32d7c4a0_5ddea27c",
+      "range": {
+        "startLine": 272,
+        "startChar": 97,
+        "endLine": 272,
+        "endChar": 98
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fdeedea_e55bd9c6",
@@ -147,6 +243,30 @@
       "writtenOn": "2026-10-03T00:19:33Z",
       "side": 1,
       "message": "nit: Can you please revert re-formatting changes (or move them into a separate CL)?",
+      "range": {
+        "startLine": 812,
+        "startChar": 0,
+        "endLine": 816,
+        "endChar": 44
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a48dd9d_3dd44989",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-03T18:40:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fdeedea_e55bd9c6",
       "range": {
         "startLine": 812,
         "startChar": 0,
