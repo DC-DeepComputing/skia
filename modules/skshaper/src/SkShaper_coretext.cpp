@@ -7,6 +7,10 @@
 
 #include "modules/skshaper/include/SkShaper.h"
 #include "modules/skshaper/include/SkShaper_coretext.h"
+#if defined(SK_SHAPER_UNICODE_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_skunicode.h"
+#include "modules/skunicode/include/SkUnicode.h"
+#endif
 
 #ifdef SK_BUILD_FOR_MAC
 #import <ApplicationServices/ApplicationServices.h>
@@ -19,19 +23,47 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#include "include/core/SkFont.h"
+#include "include/core/SkFontMgr.h"
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_mac.h"
+#include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkUTF.h"
 #include "src/utils/mac/SkCGBase.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 
-#include <vector>
+#include <algorithm>
+#include <memory>
+#include <unordered_map>
 #include <utility>
+#include <vector>
 
 using namespace skia_private;
 
-class SkShaper_CoreText final : public SkShaper {
+class TypefaceCache {
+public:
+    sk_sp<SkTypeface> getOrCreate(CTFontRef ctFont) {
+        if (!ctFont) {
+            return nullptr;
+        }
+        auto it = fCache.find(ctFont);
+        if (it != fCache.end()) {
+            return it->second;
+        }
+        sk_sp<SkTypeface> tf = SkMakeTypefaceFromCTFont(ctFont);
+        fCache[ctFont] = tf;
+        return tf;
+    }
+
+private:
+    std::unordered_map<CTFontRef, sk_sp<SkTypeface>> fCache;
+};
+
+class SkShaper_CoreText : public SkShaper {
 public:
     explicit SkShaper_CoreText(SkShapers::CT::LineBreakMode lbm) : fLineBreakMode(lbm) {}
 
@@ -164,27 +196,147 @@ public:
     CFDictionaryAddValue(d, name, number.get());
 }
 
+static bool is_sf_symbols_typeface(const SkTypeface* tf) {
+    if (!tf) {
+        return false;
+    }
+    SkString name;
+    tf->getFamilyName(&name);
+    return name.equals("SF Symbols");
+}
+
+static bool is_apple_system_font(const SkTypeface* tf) {
+    if (!tf) return true;
+    SkString name;
+    tf->getFamilyName(&name);
+    if (!name.isEmpty()) {
+        if (name.startsWith("System Font") || name.startsWith("SF Pro") ||
+            name.startsWith("-apple-system") || name.equals("system-ui")) {
+            return true;
+        }
+    }
+    tf->getPostScriptName(&name);
+    if (!name.isEmpty()) {
+        if (name.startsWith(".AppleSystemUIFont") || name.startsWith(".SFNS") ||
+            name.startsWith(".SFUI") || name.startsWith("SFPro")) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Apple HIG dynamic tracking specifications for San Francisco
+// SF Pro Text is used for sizes < 20pt; SF Pro Display is used for sizes >= 20pt
+// Values are specified in 1/1000 of an em
+struct AppleHIGTrackingPoint {
+    float fontSize;
+    float tracking; // in 1/1000 of an em
+};
+
+static constexpr AppleHIGTrackingPoint kAppleHIGTrackingText[] = {
+    {  6.0f,  41.0f },
+    {  7.0f,  34.0f },
+    {  8.0f,  26.0f },
+    {  9.0f,  19.0f },
+    { 10.0f,  12.0f },
+    { 11.0f,   6.0f },
+    { 12.0f,   0.0f },
+    { 13.0f,  -6.0f },
+    { 14.0f, -11.0f },
+    { 15.0f, -16.0f },
+    { 16.0f, -20.0f },
+    { 17.0f, -26.0f },
+    { 18.0f, -25.0f },
+    { 19.0f, -24.0f },
+};
+
+static constexpr AppleHIGTrackingPoint kAppleHIGTrackingDisplay[] = {
+    { 20.0f,  19.0f },
+    { 24.0f,  10.0f },
+    { 28.0f,   3.0f },
+    { 32.0f,  -2.0f },
+    { 36.0f,  -6.0f },
+    { 40.0f, -10.0f },
+    { 48.0f, -16.0f },
+    { 64.0f, -22.0f },
+    { 80.0f, -24.0f },
+};
+
+template <size_t N>
+static float interpolate_tracking_table(const AppleHIGTrackingPoint (&table)[N], float fontSize) {
+    if (fontSize <= table[0].fontSize) {
+        return table[0].tracking / 1000.0f;
+    }
+    if (fontSize >= table[N - 1].fontSize) {
+        return table[N - 1].tracking / 1000.0f;
+    }
+    for (size_t i = 0; i < N - 1; ++i) {
+        if (fontSize >= table[i].fontSize && fontSize <= table[i + 1].fontSize) {
+            float t = (fontSize - table[i].fontSize) / (table[i + 1].fontSize - table[i].fontSize);
+            float track = table[i].tracking + t * (table[i + 1].tracking - table[i].tracking);
+            return track / 1000.0f;
+        }
+    }
+    return 0.0f;
+}
+
+static float get_apple_hig_tracking(float fontSize) {
+    if (fontSize < 20.0f) {
+        return interpolate_tracking_table(kAppleHIGTrackingText, fontSize);
+    }
+    return interpolate_tracking_table(kAppleHIGTrackingDisplay, fontSize);
+}
+
 static SkUniqueCFRef<CTFontRef> create_ctfont_from_font(const SkFont& font) {
     auto typeface = font.getTypeface();
+    if (is_apple_system_font(typeface)) {
+        CTFontRef sysFont = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, font.getSize(), nullptr);
+        if (typeface) {
+            auto ctfont = SkTypeface_GetCTFontRef(typeface);
+            if (ctfont) {
+                CTFontSymbolicTraits traits = CTFontGetSymbolicTraits(ctfont);
+                if (traits & (kCTFontTraitBold | kCTFontTraitItalic)) {
+                    CTFontRef styledFont = CTFontCreateCopyWithSymbolicTraits(sysFont, font.getSize(), nullptr, traits, traits);
+                    if (styledFont) {
+                        CFRelease(sysFont);
+                        return SkUniqueCFRef<CTFontRef>(styledFont);
+                    }
+                }
+            }
+        }
+        return SkUniqueCFRef<CTFontRef>(sysFont);
+    }
     auto ctfont = SkTypeface_GetCTFontRef(typeface);
     if (!ctfont) {
-        return nullptr;
+        return SkUniqueCFRef<CTFontRef>(
+                CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, font.getSize(), nullptr));
     }
     return SkUniqueCFRef<CTFontRef>(
             CTFontCreateCopyWithAttributes(ctfont, font.getSize(), nullptr, nullptr));
 }
 
-static SkFont run_to_font(CTRunRef run, const SkFont& orig) {
+static SkFont run_to_font(CTRunRef run, const SkFont& orig, TypefaceCache& cache) {
     CFDictionaryRef attr = CTRunGetAttributes(run);
     CTFontRef ct = (CTFontRef)CFDictionaryGetValue(attr, kCTFontAttributeName);
     if (!ct) {
-        SkDebugf("no ctfont in Run Attributes\n");
-        CFShow(attr);
         return orig;
     }
-    // Do I need to add a local cache, or allow the caller to manage this lookup?
     SkFont font(orig);
-    font.setTypeface(SkMakeTypefaceFromCTFont(ct));
+    sk_sp<SkTypeface> tf = cache.getOrCreate(ct);
+    if (tf) {
+        font.setTypeface(std::move(tf));
+    }
+
+    // Detect synthetic bold / italic matrix applied by CoreText
+    CGAffineTransform matrix = CTFontGetMatrix(ct);
+    if (matrix.c != 0) {
+        font.setSkewX(-matrix.c);
+    }
+    CTFontSymbolicTraits traits = CTFontGetSymbolicTraits(ct);
+    if ((traits & kCTFontTraitBold) && font.getTypeface() && font.getTypeface()->fontStyle().weight() < SkFontStyle::kBold_Weight) {
+        font.setEmbolden(true);
+    }
+
     return font;
 }
 
@@ -256,16 +408,11 @@ void SkShaper_CoreText::shape(const char* utf8,
                               bool,
                               SkScalar width,
                               RunHandler* handler) const {
-    std::unique_ptr<FontRunIterator> fontRuns(
-            MakeFontMgrRunIterator(utf8, utf8Bytes, font, nullptr));
-    if (!fontRuns) {
-        return;
-    }
-    // bidi, script, and lang are all unused so we can construct them with empty data.
-    TrivialBiDiRunIterator bidi{0, 0};
-    TrivialScriptRunIterator script{0, 0};
-    TrivialLanguageRunIterator lang{nullptr, 0};
-    return this->shape(utf8, utf8Bytes, *fontRuns, bidi, script, lang, nullptr, 0, width, handler);
+    TrivialFontRunIterator fontRuns(font, utf8Bytes);
+    TrivialBiDiRunIterator bidi{0, utf8Bytes};
+    TrivialScriptRunIterator script{0, utf8Bytes};
+    TrivialLanguageRunIterator lang{nullptr, utf8Bytes};
+    return this->shape(utf8, utf8Bytes, fontRuns, bidi, script, lang, nullptr, 0, width, handler);
 }
 #endif  // !defined(SK_DISABLE_LEGACY_SKSHAPER_FUNCTIONS)
 
@@ -284,7 +431,7 @@ void SkShaper_CoreText::shape(const char* utf8,
 
 void SkShaper_CoreText::shape(SkSpan<const char> utf8,
                               FontRunIterator& fontRuns,
-                              BiDiRunIterator&,
+                              BiDiRunIterator& bidiRuns,
                               ScriptRunIterator&,
                               LanguageRunIterator&,
                               SkSpan<const Feature>,
@@ -296,9 +443,87 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
         font = fontRuns.currentFont();
     }
 
+    if (utf8.size() == 0) {
+        handler->beginLine();
+        handler->commitRunInfo();
+        handler->commitLine();
+        return;
+    }
+
+    // Pre-extract BiDi levels per byte
+    std::vector<uint8_t> bidiLevels(utf8.size(), 0);
+    size_t bidiPos = 0;
+    while (!bidiRuns.atEnd() && bidiPos < utf8.size()) {
+        bidiRuns.consume();
+        size_t end = std::min(bidiRuns.endOfCurrentRun(), utf8.size());
+        uint8_t level = bidiRuns.currentLevel();
+        while (bidiPos < end) {
+            bidiLevels[bidiPos++] = level;
+        }
+    }
+
+    if (is_sf_symbols_typeface(font.getTypeface())) {
+        // Direct shape for virtual typefaces (such as SkTypeface_SFSymbols)
+        handler->beginLine();
+        size_t count = SkUTF::CountUTF8(utf8.data(), utf8.size());
+        if (count == 0) {
+            handler->commitRunInfo();
+            handler->commitLine();
+            return;
+        }
+        AutoSTArray<64, SkGlyphID> glyphs(count);
+        AutoSTArray<64, SkScalar> widths(count);
+        AutoSTArray<64, size_t> clusters(count);
+
+        const char* ptr = utf8.data();
+        const char* end = ptr + utf8.size();
+        size_t i = 0;
+        SkScalar totalAdvance = 0;
+        while (ptr < end && i < count) {
+            clusters[i] = ptr - utf8.data();
+            SkUnichar u = SkUTF::NextUTF8WithReplacement(&ptr, end);
+            glyphs[i] = font.unicharToGlyph(u);
+            font.getWidths(SkSpan(&glyphs[i], 1), SkSpan(&widths[i], 1));
+            totalAdvance += widths[i];
+            ++i;
+        }
+
+        SkShaper::RunHandler::RunInfo info{
+            font,
+            0,
+            0,
+            "",
+            {totalAdvance, 0},
+            count,
+            {0, utf8.size()},
+        };
+        handler->runInfo(info);
+        handler->commitRunInfo();
+
+        auto buffer = handler->runBuffer(info);
+        SkScalar curX = 0;
+        for (size_t k = 0; k < count; ++k) {
+            buffer.glyphs[k] = glyphs[k];
+            buffer.positions[k] = {buffer.point.fX + curX, buffer.point.fY};
+            if (buffer.offsets) {
+                buffer.offsets[k] = {0, 0};
+            }
+            if (buffer.clusters) {
+                buffer.clusters[k] = clusters[k];
+            }
+            curX += widths[k];
+        }
+        handler->commitRunBuffer(info);
+        handler->commitLine();
+        return;
+    }
+
     SkUniqueCFRef<CFStringRef> textString(
             CFStringCreateWithBytes(kCFAllocatorDefault, (const uint8_t*)utf8.data(), utf8.size(),
                                     kCFStringEncodingUTF8, false));
+    if (!textString) {
+        return;
+    }
 
     UTF16ToUTF8IndicesMap utf8IndicesMap;
     if (!utf8IndicesMap.setUTF8(utf8.data(), utf8.size())) {
@@ -315,24 +540,27 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
                                       &kCFTypeDictionaryKeyCallBacks,
                                       &kCFTypeDictionaryValueCallBacks));
     CFDictionaryAddValue(attr.get(), kCTFontAttributeName, ctfont.get());
-    if (opts.tracking) {
-        // Tracking is specified in em units, while CoreText expects absolute values.
+    if (opts.tracking != 0.0f) {
+        // Tracking is specified in em units, while CoreText expects absolute values
         dict_add_double(attr.get(), kCTTracking_AttributeName, opts.tracking * font.getSize());
-    }
-    if ((false)) {
-        // trying to see what these affect
-        dict_add_double(attr.get(), kCTTracking_AttributeName, 1);
-        dict_add_double(attr.get(), kCTKernAttributeName, 0.0);
+    } else if (font.getSize() > 0.0f && is_apple_system_font(font.getTypeface())) {
+        dict_add_double(attr.get(), kCTTracking_AttributeName,
+                        get_apple_hig_tracking(font.getSize()) * font.getSize());
     }
 
     SkUniqueCFRef<CFAttributedStringRef> attrString(
             CFAttributedStringCreate(kCFAllocatorDefault, textString.get(), attr.get()));
+    if (!attrString) {
+        return;
+    }
 
     SkUniqueCFRef<CTTypesetterRef> typesetter(
             CTTypesetterCreateWithAttributedString(attrString.get()));
+    if (!typesetter) {
+        return;
+    }
 
-    // We have to compute RunInfos in a loop, and then reuse them in a 2nd loop,
-    // so we store them in an array (we reuse the array's storage for each line).
+    TypefaceCache typefaceCache;
     std::vector<SkFont> fontStorage;
     std::vector<SkShaper::RunHandler::RunInfo> infos;
 
@@ -345,7 +573,7 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
         }
         handler->beginLine();
         fontStorage.clear();
-        fontStorage.reserve(runCount); // ensure the refs won't get invalidated
+        fontStorage.reserve(runCount);
         infos.clear();
         for (CFIndex j = 0; j < runCount; ++j) {
             CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(run_array, j);
@@ -362,13 +590,21 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
 
             CFRange cfRange = CTRunGetStringRange(run);
             auto range = utf8IndicesMap.mapRange(cfRange.location, cfRange.length);
+            uint8_t runBidiLevel = (range.first < bidiLevels.size()) ? bidiLevels[range.first] : 0;
+            CTRunStatus status = CTRunGetStatus(run);
+            bool isRTL = (status & kCTRunStatusRightToLeft) != 0;
+            if (isRTL && !(runBidiLevel & 1)) {
+                runBidiLevel |= 1;
+            } else if (!isRTL && (runBidiLevel & 1)) {
+                runBidiLevel &= ~1;
+            }
 
-            fontStorage.push_back(run_to_font(run, font));
+            fontStorage.push_back(run_to_font(run, font, typefaceCache));
             infos.push_back(SkShaper::RunHandler::RunInfo{
-                fontStorage.back(), // info just stores a ref to the font
-                0,                  // TODO: need fBidiLevel
-                0,                  // TODO: need fScript
-                "",                 // TODO: need fLanguage
+                fontStorage.back(),
+                runBidiLevel,
+                0,
+                "",
                 {adv, 0},
                 (size_t)runGlyphs,
                 {range.first, range.second},
@@ -377,7 +613,7 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
         }
         handler->commitRunInfo();
 
-        // Now loop through again and fill in the buffers
+        // Fill in the glyph buffers and cluster mappings
         SkScalar lineAdvance = 0;
         for (CFIndex j = 0; j < runCount; ++j) {
             const auto& info = infos[j];
@@ -385,9 +621,17 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
 
             CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(run_array, j);
             CFIndex runGlyphs = info.glyphCount;
-            SkASSERT(CTRunGetGlyphCount(run) == (CFIndex)info.glyphCount);
-
-            CTRunGetGlyphs(run, {0, runGlyphs}, buffer.glyphs);
+            SkString runPSName;
+            if (info.fFont.getTypeface()) {
+                info.fFont.getTypeface()->getPostScriptName(&runPSName);
+            }
+            if (runPSName.contains("LastResort")) {
+                for (CFIndex k = 0; k < runGlyphs; ++k) {
+                    buffer.glyphs[k] = 0;
+                }
+            } else {
+                CTRunGetGlyphs(run, {0, runGlyphs}, buffer.glyphs);
+            }
 
             AutoSTArray<4096, CGPoint> positions(runGlyphs);
             CTRunGetPositions(run, {0, runGlyphs}, positions.data());
@@ -400,10 +644,10 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
             for (CFIndex k = 0; k < runGlyphs; ++k) {
                 buffer.positions[k] = {
                     buffer.point.fX + SkScalarFromCGFloat(positions[k].x) - lineAdvance,
-                    buffer.point.fY,
+                    buffer.point.fY - SkScalarFromCGFloat(positions[k].y),
                 };
                 if (buffer.offsets) {
-                    buffer.offsets[k] = {0, 0}; // offset relative to the origin for this glyph
+                    buffer.offsets[k] = {0, -SkScalarFromCGFloat(positions[k].y)};
                 }
                 if (buffer.clusters) {
                     buffer.clusters[k] = utf8IndicesMap.mapIndex(indices[k]);
@@ -416,8 +660,56 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
     }
 }
 
+namespace {
+class CoreTextFactory final : public SkShapers::Factory {
+public:
+#if defined(SK_SHAPER_UNICODE_AVAILABLE)
+    CoreTextFactory(sk_sp<SkUnicode> unicode, SkShapers::CT::LineBreakMode lbm)
+        : fUnicode(std::move(unicode)), fLineBreakMode(lbm) {}
+#else
+    CoreTextFactory(sk_sp<SkUnicode>, SkShapers::CT::LineBreakMode lbm)
+        : fLineBreakMode(lbm) {}
+#endif
+
+    std::unique_ptr<SkShaper> makeShaper(sk_sp<SkFontMgr>) override {
+        return SkShapers::CT::CoreText(fLineBreakMode);
+    }
+    std::unique_ptr<SkShaper::BiDiRunIterator> makeBidiRunIterator(
+            const char* utf8, size_t utf8Bytes, uint8_t bidiLevel) override {
+#if defined(SK_SHAPER_UNICODE_AVAILABLE)
+        if (fUnicode) {
+            return SkShapers::unicode::BidiRunIterator(fUnicode, utf8, utf8Bytes, bidiLevel);
+        }
+#endif
+        return std::make_unique<SkShaper::TrivialBiDiRunIterator>(bidiLevel, utf8Bytes);
+    }
+    std::unique_ptr<SkShaper::ScriptRunIterator> makeScriptRunIterator(
+            const char* utf8, size_t utf8Bytes, SkFourByteTag script) override {
+        return std::make_unique<SkShaper::TrivialScriptRunIterator>(script, utf8Bytes);
+    }
+
+    SkUnicode* getUnicode() override {
+#if defined(SK_SHAPER_UNICODE_AVAILABLE)
+        return fUnicode.get();
+#else
+        return nullptr;
+#endif
+    }
+
+private:
+#if defined(SK_SHAPER_UNICODE_AVAILABLE)
+    sk_sp<SkUnicode> fUnicode;
+#endif
+    SkShapers::CT::LineBreakMode fLineBreakMode;
+};
+}  // namespace
+
 namespace SkShapers::CT {
 std::unique_ptr<SkShaper> CoreText(LineBreakMode lbm) {
     return std::make_unique<SkShaper_CoreText>(lbm);
+}
+
+sk_sp<SkShapers::Factory> Factory(sk_sp<SkUnicode> unicode, LineBreakMode lbm) {
+    return sk_make_sp<CoreTextFactory>(std::move(unicode), lbm);
 }
 }  // namespace SkShapers::CT

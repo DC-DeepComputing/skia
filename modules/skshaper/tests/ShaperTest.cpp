@@ -39,9 +39,25 @@
 #include "modules/skunicode/include/SkUnicode_icu4x.h"
 #endif
 
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_apple.h"
+#endif
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+#include "modules/skshaper/include/SkShaper_coretext.h"
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#include "src/ports/SkTypeface_mac_symbols.h"
+#endif
+#endif
+
 namespace {
 
-sk_sp<SkUnicode> get_unicode() {
+[[maybe_unused]] sk_sp<SkUnicode> get_unicode() {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    if (auto unicode = SkUnicodes::Apple::Make()) {
+        return unicode;
+    }
+#endif
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
     if (auto unicode = SkUnicodes::ICU::Make()) {
         return unicode;
@@ -477,3 +493,522 @@ DEF_TEST(Shaper_LineBreaks, reporter) {
 }
 
 #endif  // #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
+
+#if defined(SK_SHAPER_CORETEXT_AVAILABLE)
+DEF_TEST(Shaper_CoreText_Basic, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "Hello World! 123";
+    size_t textLen = strlen(text);
+
+    RunHandler rh("Shaper_CoreText_Basic", reporter, text, textLen);
+    shaper->shape(text, textLen, font, true, 400.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+}
+
+DEF_TEST(Shaper_CoreText_With_SkUnicodeApple, reporter) {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    auto unicode = SkUnicodes::Apple::Make();
+    REPORTER_ASSERT(reporter, unicode);
+
+    auto factory = SkShapers::CT::Factory(unicode);
+    REPORTER_ASSERT(reporter, factory);
+
+    auto shaper = factory->makeShaper(nullptr);
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "SkoreText Apple Native Shaping Test!";
+    size_t textLen = strlen(text);
+
+    auto fontRuns = SkShaper::TrivialFontRunIterator(font, textLen);
+    auto bidiRuns = factory->makeBidiRunIterator(text, textLen, 0);
+    auto scriptRuns = factory->makeScriptRunIterator(text, textLen, SkSetFourByteTag('l','a','t','n'));
+    auto langRuns = SkShaper::TrivialLanguageRunIterator("en", textLen);
+
+    RunHandler rh("Shaper_CoreText_With_SkUnicodeApple", reporter, text, textLen);
+    shaper->shape(text, textLen, fontRuns, *bidiRuns, *scriptRuns, langRuns, nullptr, 0, 400.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+#endif
+}
+
+DEF_TEST(Shaper_CoreText_Arabic_RTL, reporter) {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    auto unicode = SkUnicodes::Apple::Make();
+    REPORTER_ASSERT(reporter, unicode);
+
+    auto factory = SkShapers::CT::Factory(unicode);
+    REPORTER_ASSERT(reporter, factory);
+
+    auto shaper = factory->makeShaper(nullptr);
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "مرحبا بالعالم";
+    size_t textLen = strlen(text);
+
+    auto fontRuns = SkShaper::TrivialFontRunIterator(font, textLen);
+    auto bidiRuns = factory->makeBidiRunIterator(text, textLen, 1);
+    auto scriptRuns = factory->makeScriptRunIterator(text, textLen, SkSetFourByteTag('a','r','a','b'));
+    auto langRuns = SkShaper::TrivialLanguageRunIterator("ar", textLen);
+
+    RunHandler rh("Shaper_CoreText_Arabic_RTL", reporter, text, textLen);
+    shaper->shape(text, textLen, fontRuns, *bidiRuns, *scriptRuns, langRuns, nullptr, 0, 400.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+#endif
+}
+
+DEF_TEST(Shaper_CoreText_Ligatures_Clusters, reporter) {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    auto unicode = SkUnicodes::Apple::Make();
+    REPORTER_ASSERT(reporter, unicode);
+
+    auto factory = SkShapers::CT::Factory(unicode);
+    REPORTER_ASSERT(reporter, factory);
+
+    auto shaper = factory->makeShaper(nullptr);
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "Difficult office staffing (ffi, fi, fl) and 👨‍👩‍👧‍👦";
+    size_t textLen = strlen(text);
+
+    auto fontRuns = SkShaper::TrivialFontRunIterator(font, textLen);
+    auto bidiRuns = factory->makeBidiRunIterator(text, textLen, 0);
+    auto scriptRuns = factory->makeScriptRunIterator(text, textLen, SkSetFourByteTag('l','a','t','n'));
+    auto langRuns = SkShaper::TrivialLanguageRunIterator("en", textLen);
+
+    RunHandler rh("Shaper_CoreText_Ligatures_Clusters", reporter, text, textLen);
+    shaper->shape(text, textLen, fontRuns, *bidiRuns, *scriptRuns, langRuns, nullptr, 0, 800.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+#endif
+}
+
+DEF_TEST(Shaper_CoreText_OpticalSizing, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    struct FontCaptureHandler : public SkShaper::RunHandler {
+        skiatest::Reporter* fReporter;
+        sk_sp<SkTypeface> fTypeface;
+        std::vector<SkGlyphID> fGlyphs;
+        std::vector<SkPoint> fPositions;
+        FontCaptureHandler(skiatest::Reporter* r) : fReporter(r) {}
+        void beginLine() override {}
+        void runInfo(const RunInfo& info) override {
+            fTypeface = sk_ref_sp(info.fFont.getTypeface());
+        }
+        void commitRunInfo() override {}
+        Buffer runBuffer(const RunInfo& info) override {
+            fGlyphs.resize(info.glyphCount);
+            fPositions.resize(info.glyphCount);
+            return Buffer{fGlyphs.data(), fPositions.data(), nullptr, nullptr, {0, 0}};
+        }
+        void commitRunBuffer(const RunInfo&) override {}
+        void commitLine() override {}
+    };
+
+    const char* text = "Optical Sizing Test";
+    size_t textLen = strlen(text);
+
+    SkFont fontText(nullptr, 14.0f);
+    FontCaptureHandler rhText(reporter);
+    shaper->shape(text, textLen, fontText, true, 400.0f, &rhText);
+    REPORTER_ASSERT(reporter, rhText.fTypeface);
+
+    SkFont fontDisplay(nullptr, 24.0f);
+    FontCaptureHandler rhDisplay(reporter);
+    shaper->shape(text, textLen, fontDisplay, true, 400.0f, &rhDisplay);
+    REPORTER_ASSERT(reporter, rhDisplay.fTypeface);
+
+    SkString psText, psDisplay;
+    rhText.fTypeface->getPostScriptName(&psText);
+    rhDisplay.fTypeface->getPostScriptName(&psDisplay);
+
+    if (psText.contains(".SFNS") || psText.contains("SFPro") || psText.contains(".AppleSystemUIFont")) {
+        REPORTER_ASSERT(reporter, psText.contains("Text"));
+        REPORTER_ASSERT(reporter, psDisplay.contains("Display"));
+    }
+}
+
+DEF_TEST(Shaper_CoreText_HIGTracking, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    struct AdvanceHandler : public SkShaper::RunHandler {
+        SkScalar fTotalAdvance = 0;
+        std::vector<SkGlyphID> fGlyphs;
+        std::vector<SkPoint> fPositions;
+        void beginLine() override {}
+        void runInfo(const RunInfo& info) override {
+            fTotalAdvance += info.fAdvance.fX;
+        }
+        void commitRunInfo() override {}
+        Buffer runBuffer(const RunInfo& info) override {
+            fGlyphs.resize(info.glyphCount);
+            fPositions.resize(info.glyphCount);
+            return Buffer{fGlyphs.data(), fPositions.data(), nullptr, nullptr, {0, 0}};
+        }
+        void commitRunBuffer(const RunInfo&) override {}
+        void commitLine() override {}
+    };
+
+    const char* text = "Apple HIG Dynamic Tracking Verification";
+    size_t textLen = strlen(text);
+    SkFont font(nullptr, 16.0f);
+
+    AdvanceHandler rhDefault;
+    shaper->shape(text, textLen, font, true, 1000.0f, &rhDefault);
+    REPORTER_ASSERT(reporter, rhDefault.fTotalAdvance > 0);
+
+    SkShaper::TrivialFontRunIterator fontRuns(font, textLen);
+    SkShaper::TrivialBiDiRunIterator bidi(0, textLen);
+    SkShaper::TrivialScriptRunIterator script(0, textLen);
+    SkShaper::TrivialLanguageRunIterator lang("en", textLen);
+    SkShaper::Options opts;
+    opts.tracking = 0.1f;
+
+    AdvanceHandler rhTracked;
+    shaper->shape({text, textLen}, fontRuns, bidi, script, lang, {}, opts, &rhTracked);
+    REPORTER_ASSERT(reporter, rhTracked.fTotalAdvance > rhDefault.fTotalAdvance);
+}
+
+#if (defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS))
+DEF_TEST(Shaper_CoreText_VirtualTypeface_SFSymbols, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    sk_sp<SkTypeface> sfSymbols = SkMakeTypeface_SFSymbols(SkFontStyle::Normal());
+    if (!sfSymbols) {
+        return;
+    }
+
+    SkFont font(sfSymbols, 20.0f);
+    const char utf8[] = "\xF4\x80\x80\x80";
+    size_t textLen = sizeof(utf8) - 1;
+
+    RunHandler rh("Shaper_CoreText_VirtualTypeface_SFSymbols", reporter, utf8, textLen);
+    shaper->shape(utf8, textLen, font, true, 400.0f, &rh);
+
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount == 1);
+    REPORTER_ASSERT(reporter, rh.fGlyphs[0] == 1);
+}
+#endif
+
+DEF_TEST(Shaper_CoreText_EmptyInput, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+
+    struct EmptyHandler : public SkShaper::RunHandler {
+        bool fBeginLine = false;
+        bool fCommitRunInfo = false;
+        bool fCommitLine = false;
+        size_t fGlyphCount = 0;
+
+        void beginLine() override { fBeginLine = true; }
+        void runInfo(const RunInfo& info) override {
+            fGlyphCount += info.glyphCount;
+        }
+        void commitRunInfo() override { fCommitRunInfo = true; }
+        Buffer runBuffer(const RunInfo&) override {
+            return Buffer{nullptr, nullptr, nullptr, nullptr, {0, 0}};
+        }
+        void commitRunBuffer(const RunInfo&) override {}
+        void commitLine() override { fCommitLine = true; }
+    };
+
+    // Contract on legacy shape with empty buffer
+    EmptyHandler rhLegacy;
+    shaper->shape("", 0, font, true, 100.0f, &rhLegacy);
+    REPORTER_ASSERT(reporter, rhLegacy.fBeginLine);
+    REPORTER_ASSERT(reporter, rhLegacy.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rhLegacy.fCommitLine);
+    REPORTER_ASSERT(reporter, rhLegacy.fGlyphCount == 0);
+
+    // Contract on Options / SkSpan-based shape with empty input
+    SkShaper::TrivialFontRunIterator fontRuns(font, 0);
+    SkShaper::TrivialBiDiRunIterator bidi(0, 0);
+    SkShaper::TrivialScriptRunIterator script(0, 0);
+    SkShaper::TrivialLanguageRunIterator lang("en", 0);
+    SkShaper::Options opts;
+
+    EmptyHandler rhSpan;
+    shaper->shape(SkSpan<const char>(), fontRuns, bidi, script, lang, {}, opts, &rhSpan);
+    REPORTER_ASSERT(reporter, rhSpan.fBeginLine);
+    REPORTER_ASSERT(reporter, rhSpan.fCommitRunInfo);
+    REPORTER_ASSERT(reporter, rhSpan.fCommitLine);
+    REPORTER_ASSERT(reporter, rhSpan.fGlyphCount == 0);
+}
+
+DEF_TEST(Shaper_CoreText_MultiLineWrapping, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "The quick brown fox jumps over the lazy dog repeatedly to test multi-line line breaking in SkShaper.";
+    size_t textLen = strlen(text);
+
+    struct LineTracker : public SkShaper::RunHandler {
+        int fBeginLineCount = 0;
+        int fCommitLineCount = 0;
+        size_t fTotalGlyphs = 0;
+        std::vector<SkGlyphID> fGlyphs;
+        std::vector<SkPoint> fPositions;
+
+        void beginLine() override { fBeginLineCount++; }
+        void runInfo(const RunInfo& info) override {
+            fTotalGlyphs += info.glyphCount;
+        }
+        void commitRunInfo() override {}
+        Buffer runBuffer(const RunInfo& info) override {
+            fGlyphs.resize(info.glyphCount);
+            fPositions.resize(info.glyphCount);
+            return Buffer{fGlyphs.data(), fPositions.data(), nullptr, nullptr, {0, 0}};
+        }
+        void commitRunBuffer(const RunInfo&) override {}
+        void commitLine() override { fCommitLineCount++; }
+    };
+
+    // Unconstrained shaping: should fit into a single line
+    {
+        SkShaper::TrivialFontRunIterator fontRuns(font, textLen);
+        SkShaper::TrivialBiDiRunIterator bidi(0, textLen);
+        SkShaper::TrivialScriptRunIterator script(0, textLen);
+        SkShaper::TrivialLanguageRunIterator lang("en", textLen);
+        SkShaper::Options opts;
+        opts.width = 10000.0f;
+
+        LineTracker tracker;
+        shaper->shape({text, textLen}, fontRuns, bidi, script, lang, {}, opts, &tracker);
+        REPORTER_ASSERT(reporter, tracker.fBeginLineCount == 1);
+        REPORTER_ASSERT(reporter, tracker.fCommitLineCount == 1);
+        REPORTER_ASSERT(reporter, tracker.fTotalGlyphs > 0);
+    }
+
+    // Constrained width: text must wrap across multiple lines
+    {
+        SkShaper::TrivialFontRunIterator fontRuns(font, textLen);
+        SkShaper::TrivialBiDiRunIterator bidi(0, textLen);
+        SkShaper::TrivialScriptRunIterator script(0, textLen);
+        SkShaper::TrivialLanguageRunIterator lang("en", textLen);
+        SkShaper::Options opts;
+        opts.width = 100.0f;
+
+        LineTracker tracker;
+        shaper->shape({text, textLen}, fontRuns, bidi, script, lang, {}, opts, &tracker);
+        REPORTER_ASSERT(reporter, tracker.fBeginLineCount > 1);
+        REPORTER_ASSERT(reporter, tracker.fCommitLineCount == tracker.fBeginLineCount);
+        REPORTER_ASSERT(reporter, tracker.fTotalGlyphs > 0);
+    }
+}
+
+DEF_TEST(Shaper_CoreText_LineBreakMode_StrictVsDefault, reporter) {
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "SupercalifragilisticexpialidociousLongWordThatExceedsTheLineWidthByFar";
+    size_t textLen = strlen(text);
+
+    struct LineTracker : public SkShaper::RunHandler {
+        int fLineCount = 0;
+        std::vector<SkGlyphID> fGlyphs;
+        std::vector<SkPoint> fPositions;
+
+        void beginLine() override { fLineCount++; }
+        void runInfo(const RunInfo&) override {}
+        void commitRunInfo() override {}
+        Buffer runBuffer(const RunInfo& info) override {
+            fGlyphs.resize(info.glyphCount);
+            fPositions.resize(info.glyphCount);
+            return Buffer{fGlyphs.data(), fPositions.data(), nullptr, nullptr, {0, 0}};
+        }
+        void commitRunBuffer(const RunInfo&) override {}
+        void commitLine() override {}
+    };
+
+    // kStrict: Never splits words across multiple lines, but can overflow paragraph width
+    {
+        auto strictShaper = SkShapers::CT::CoreText(SkShapers::CT::LineBreakMode::kStrict);
+        REPORTER_ASSERT(reporter, strictShaper);
+
+        SkShaper::TrivialFontRunIterator fontRuns(font, textLen);
+        SkShaper::TrivialBiDiRunIterator bidi(0, textLen);
+        SkShaper::TrivialScriptRunIterator script(0, textLen);
+        SkShaper::TrivialLanguageRunIterator lang("en", textLen);
+        SkShaper::Options opts;
+        opts.width = 50.0f;
+
+        LineTracker tracker;
+        strictShaper->shape({text, textLen}, fontRuns, bidi, script, lang, {}, opts, &tracker);
+        // Under kStrict, the unbroken word is never split and stays on 1 line (overflowing width)
+        REPORTER_ASSERT(reporter, tracker.fLineCount == 1);
+    }
+
+    // kDefault: Default CT line breaking, may split long words
+    {
+        auto defaultShaper = SkShapers::CT::CoreText(SkShapers::CT::LineBreakMode::kDefault);
+        REPORTER_ASSERT(reporter, defaultShaper);
+
+        SkShaper::TrivialFontRunIterator fontRuns(font, textLen);
+        SkShaper::TrivialBiDiRunIterator bidi(0, textLen);
+        SkShaper::TrivialScriptRunIterator script(0, textLen);
+        SkShaper::TrivialLanguageRunIterator lang("en", textLen);
+        SkShaper::Options opts;
+        opts.width = 50.0f;
+
+        LineTracker tracker;
+        defaultShaper->shape({text, textLen}, fontRuns, bidi, script, lang, {}, opts, &tracker);
+        // Under kDefault, CT line breaking can split the long word into multiple lines
+        REPORTER_ASSERT(reporter, tracker.fLineCount > 1);
+    }
+}
+
+DEF_TEST(Shaper_CoreText_Tracking_NegativeAndPositive, reporter) {
+    auto shaper = SkShapers::CT::CoreText();
+    REPORTER_ASSERT(reporter, shaper);
+
+    SkFont font = ToolUtils::DefaultFont();
+    const char* text = "Testing CoreText Tracking Property Advance";
+    size_t textLen = strlen(text);
+
+    auto measureAdvance = [&](float tracking) -> SkScalar {
+        struct AdvanceTracker : public SkShaper::RunHandler {
+            SkScalar fAdvance = 0;
+            std::vector<SkGlyphID> fGlyphs;
+            std::vector<SkPoint> fPositions;
+            void beginLine() override {}
+            void runInfo(const RunInfo& info) override {
+                fAdvance += info.fAdvance.fX;
+            }
+            void commitRunInfo() override {}
+            Buffer runBuffer(const RunInfo& info) override {
+                fGlyphs.resize(info.glyphCount);
+                fPositions.resize(info.glyphCount);
+                return Buffer{fGlyphs.data(), fPositions.data(), nullptr, nullptr, {0, 0}};
+            }
+            void commitRunBuffer(const RunInfo&) override {}
+            void commitLine() override {}
+        };
+
+        SkShaper::TrivialFontRunIterator fontRuns(font, textLen);
+        SkShaper::TrivialBiDiRunIterator bidi(0, textLen);
+        SkShaper::TrivialScriptRunIterator script(0, textLen);
+        SkShaper::TrivialLanguageRunIterator lang("en", textLen);
+        SkShaper::Options opts;
+        opts.tracking = tracking;
+
+        AdvanceTracker tracker;
+        shaper->shape({text, textLen}, fontRuns, bidi, script, lang, {}, opts, &tracker);
+        return tracker.fAdvance;
+    };
+
+    SkScalar advZero = measureAdvance(0.0f);
+    SkScalar advPos  = measureAdvance(0.15f);
+    SkScalar advNeg  = measureAdvance(-0.08f);
+
+    REPORTER_ASSERT(reporter, advZero > 0);
+    REPORTER_ASSERT(reporter, advPos > advZero);
+    REPORTER_ASSERT(reporter, advNeg > 0);
+    REPORTER_ASSERT(reporter, advNeg < advZero);
+}
+
+DEF_TEST(Shaper_CoreText_FactoryContract, reporter) {
+    sk_sp<SkUnicode> unicode = get_unicode();
+    if (!unicode) {
+        return;
+    }
+
+    auto factoryDefault = SkShapers::CT::Factory(unicode, SkShapers::CT::LineBreakMode::kDefault);
+    REPORTER_ASSERT(reporter, factoryDefault);
+    REPORTER_ASSERT(reporter, factoryDefault->getUnicode() == unicode.get());
+
+    auto factoryStrict = SkShapers::CT::Factory(unicode, SkShapers::CT::LineBreakMode::kStrict);
+    REPORTER_ASSERT(reporter, factoryStrict);
+    REPORTER_ASSERT(reporter, factoryStrict->getUnicode() == unicode.get());
+
+    auto shaper = factoryDefault->makeShaper(nullptr);
+    REPORTER_ASSERT(reporter, shaper);
+
+    auto shaperWithFallback = factoryDefault->makeShaper(ToolUtils::TestFontMgr());
+    REPORTER_ASSERT(reporter, shaperWithFallback);
+
+    const char* text = "Testing Factory Contract With SkUnicode";
+    size_t textLen = strlen(text);
+
+    auto bidi = factoryDefault->makeBidiRunIterator(text, textLen, 0);
+    REPORTER_ASSERT(reporter, bidi);
+    REPORTER_ASSERT(reporter, !bidi->atEnd());
+    REPORTER_ASSERT(reporter, bidi->currentLevel() == 0);
+    int bidiLoopGuard = 0;
+    while (!bidi->atEnd() && ++bidiLoopGuard < 100) {
+        REPORTER_ASSERT(reporter, bidi->endOfCurrentRun() <= textLen);
+        bidi->consume();
+    }
+    REPORTER_ASSERT(reporter, bidi->atEnd());
+
+    auto script = factoryDefault->makeScriptRunIterator(text, textLen, SkSetFourByteTag('l','a','t','n'));
+    REPORTER_ASSERT(reporter, script);
+    REPORTER_ASSERT(reporter, !script->atEnd());
+    int scriptLoopGuard = 0;
+    while (!script->atEnd() && ++scriptLoopGuard < 100) {
+        REPORTER_ASSERT(reporter, script->endOfCurrentRun() <= textLen);
+        script->consume();
+    }
+    REPORTER_ASSERT(reporter, script->atEnd());
+
+    // Verify end-to-end shaping using the components produced by the factory
+    SkFont font = ToolUtils::DefaultFont();
+    SkShaper::TrivialFontRunIterator fontRuns(font, textLen);
+    auto bidiRuns = factoryDefault->makeBidiRunIterator(text, textLen, 0);
+    auto scriptRuns = factoryDefault->makeScriptRunIterator(text, textLen, SkSetFourByteTag('l','a','t','n'));
+    SkShaper::TrivialLanguageRunIterator langRuns("en", textLen);
+
+    struct FactoryRunHandler : public SkShaper::RunHandler {
+        bool fBeginLine = false;
+        bool fCommitLine = false;
+        size_t fGlyphCount = 0;
+        std::vector<SkGlyphID> fGlyphs;
+        std::vector<SkPoint> fPositions;
+
+        void beginLine() override { fBeginLine = true; }
+        void runInfo(const RunInfo& info) override {
+            fGlyphCount += info.glyphCount;
+        }
+        void commitRunInfo() override {}
+        Buffer runBuffer(const RunInfo& info) override {
+            fGlyphs.resize(info.glyphCount);
+            fPositions.resize(info.glyphCount);
+            return Buffer{fGlyphs.data(), fPositions.data(), nullptr, nullptr, {0, 0}};
+        }
+        void commitRunBuffer(const RunInfo&) override {}
+        void commitLine() override { fCommitLine = true; }
+    } rh;
+
+    shaper->shape(text, textLen, fontRuns, *bidiRuns, *scriptRuns, langRuns, nullptr, 0, 800.0f, &rh);
+    REPORTER_ASSERT(reporter, rh.fBeginLine);
+    REPORTER_ASSERT(reporter, rh.fCommitLine);
+    REPORTER_ASSERT(reporter, rh.fGlyphCount > 0);
+}
+#endif
+
