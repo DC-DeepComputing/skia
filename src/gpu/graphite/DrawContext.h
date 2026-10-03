@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
+#include "src/gpu/graphite/task/DependencySink.h"
 #include "src/gpu/graphite/task/UploadTask.h"
 
 #include <array>
@@ -47,7 +48,7 @@ class Transform;
  * DrawContext records draw commands into a specific Surface, via a general task graph
  * representing GPU work and their inter-dependencies.
  */
-class DrawContext final : public SkRefCnt {
+class DrawContext final : public SkRefCnt, public DependencySink {
 public:
     // allowUnpremul=true should only be used if the target is only going to be rendered
     // into with src-blending with calls to drawPaint or pixel-aligned drawRect calls to
@@ -96,7 +97,7 @@ public:
 
     // Add a Task that will be executed *before* any of the pending draws and uploads are
     // executed as part of the next flush().
-    void recordDependency(sk_sp<Task>);
+    void recordDependency(sk_sp<Task>) override;
 
     // Returns the transient path atlas that uses compute to accumulate coverage masks for atlas
     // draws recorded to this SDC. The atlas gets created lazily upon request. Returns nullptr

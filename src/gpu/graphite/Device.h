@@ -73,6 +73,7 @@ namespace skgpu::graphite {
 
 class BoundsManager;
 class Clip;
+class DependencySink;
 class DrawContext;
 class Geometry;
 class Image;
@@ -175,10 +176,11 @@ public:
     sk_sp<Task> lastDrawTask() const;
 
     // Called by an Image wrapping this Device to mark that the pending contents of this Device
-    // will be read by `recorder`, and specifically by `drawContext` (if non-null). Flushes any
-    // necessary work (depending on scratch state) and records task dependencies. Returns true if
-    // the caller does not need to track the Device on the Image anymore.
-    bool notifyInUse(Recorder* recorder, DrawContext* drawContext);
+    // will be read by `recorder`, and specifically by the work recorded into `sink` (if non-null),
+    // e.g. a DrawContext. Flushes any necessary work (depending on scratch state) and records task
+    // dependencies. Returns true if the caller does not need to track the Device on the Image
+    // anymore.
+    bool notifyInUse(Recorder* recorder, DependencySink* sink);
 
     // Returns true if the Device has pending reads to the given texture
     bool hasPendingReads(const TextureProxy* texture) const;

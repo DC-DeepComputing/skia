@@ -97,6 +97,7 @@
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/SubRunData.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/gpu/graphite/task/DependencySink.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/task/UploadTask.h"
 #include "src/gpu/graphite/text/GlyphData.h"
@@ -590,16 +591,16 @@ void Device::setImmutable() {
     }
 }
 
-bool Device::notifyInUse(Recorder* recorder, DrawContext* drawContext) {
+bool Device::notifyInUse(Recorder* recorder, DependencySink* sink) {
     if (this->isScratchDevice()) {
         if (fLastTask) {
             // Increment the pending read count for the device's target
             recorder->priv().addPendingRead(fDC->target().proxy());
-            if (drawContext) {
-                // Add a reference to the device's drawTask to `drawContext` if that's provided.
-                drawContext->recordDependency(fLastTask);
+            if (sink) {
+                // Add a reference to the device's drawTask to `sink` if that's provided.
+                sink->recordDependency(fLastTask);
             } else {
-                // If there's no `drawContext` this notify represents a copy, so for now append the
+                // If there's no `sink` this notify represents a copy, so for now append the
                 // task to the root task list since that is where the subsequent copy task will go
                 // as well.
                 recorder->priv().add(fLastTask);
@@ -635,10 +636,10 @@ bool Device::notifyInUse(Recorder* recorder, DrawContext* drawContext) {
         if (fRecorder == recorder) {
             // Non-scratch devices push their tasks to the root task list to maintain an order
             // consistent with the client-triggering actions. Because of this, there's no need to
-            // add references to the `drawContext` that the device is being drawn into.
+            // add references to the `sink` that the device is being read by.
             this->flushPendingWork(/*drawContext=*/nullptr);
 
-            if (drawContext) {
+            if (sink) {
                 // But if we are being drawn into another context, remember that there is an
                 // outstanding dependency on the current state of this device, in which case it's
                 // next flush must also flush those other devices before its new tasks are added.

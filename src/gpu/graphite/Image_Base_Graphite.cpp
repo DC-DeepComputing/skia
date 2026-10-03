@@ -48,10 +48,10 @@ void Image_Base::linkDevice(sk_sp<Device> device) {
 }
 
 void Image_Base::notifyInUse(Recorder* recorder,
-                             DrawContext* drawContext,
+                             DependencySink* sink,
                              bool unlinkDevices) const {
     SkASSERT(recorder);
-    SkASSERT(!drawContext || !unlinkDevices); // unlinkDevices can't be used with a DrawContext
+    SkASSERT(!sink || !unlinkDevices); // unlinkDevices can't be used with a DependencySink
 
     // The ref counts stored on each linked device are thread safe, but the Image's sk_sp's that
     // track the refs its responsible for are *not* thread safe. Use a spin lock since the majority
@@ -63,7 +63,7 @@ void Image_Base::notifyInUse(Recorder* recorder,
     if (!fLinkedDevices.empty()) {
         int emptyCount = 0;
         for (sk_sp<Device>& device : fLinkedDevices) {
-            if (!device || device->notifyInUse(recorder, drawContext) || unlinkDevices) {
+            if (!device || device->notifyInUse(recorder, sink) || unlinkDevices) {
                 // Already unlinked or notifyInUse() signals the device doesn't need to be linked
                 // anymore. reset() is a no-op if device is already holding null. If we are force
                 // unlinking a device, it should already be immutable (which do not return true from
