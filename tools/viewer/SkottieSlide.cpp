@@ -177,10 +177,12 @@ sk_sp<SkShapers::Factory> make_shapers_factory(bool prefer_coretext) {
         return sk_make_sp<SkShapers::CoreTextFactory>(SkShapers::CT::LineBreakMode::kStrict);
     }
 #endif
-#if defined(SK_SHAPER_UNICODE_AVAILABLE)
+#if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
     return sk_make_sp<SkShapers::HarfbuzzFactory>(
         skottie::MakeStrictLinebreakUnicode(
             SkShapers::BestAvailableUnicode()));
+#elif defined(SK_SHAPER_CORETEXT_AVAILABLE)
+    return sk_make_sp<SkShapers::CoreTextFactory>(SkShapers::CT::LineBreakMode::kStrict);
 #else
     return nullptr;
 #endif
