@@ -32,6 +32,9 @@ public:
     const RendererProvider* rendererProvider() const {
         return fPrecompileContext->fSharedContext->rendererProvider();
     }
+    const ComputeProvider* computeProvider() const {
+        return fPrecompileContext->fSharedContext->computeProvider();
+    }
     SharedContext* sharedContext() {
         return fPrecompileContext->fSharedContext.get();
     }

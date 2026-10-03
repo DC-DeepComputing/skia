@@ -38,6 +38,7 @@ namespace skgpu::graphite {
 
 class AtlasProvider;
 class Caps;
+class ComputeProvider;
 class Context;
 class Device;
 class DrawBufferManager;
@@ -78,6 +79,9 @@ public:
 
     const RendererProvider* rendererProvider() const {
         return fRecorder->fSharedContext->rendererProvider();
+    }
+    const ComputeProvider* computeProvider() const {
+        return fRecorder->fSharedContext->computeProvider();
     }
 
     Protected isProtected() const {

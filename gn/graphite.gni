@@ -90,6 +90,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/ComputePipeline.cpp",
   "$_src/gpu/graphite/ComputePipeline.h",
   "$_src/gpu/graphite/ComputePipelineDesc.h",
+  "$_src/gpu/graphite/ComputeProvider.cpp",
+  "$_src/gpu/graphite/ComputeProvider.h",
   "$_src/gpu/graphite/ComputeTypes.h",
   "$_src/gpu/graphite/Context.cpp",
   "$_src/gpu/graphite/ContextOptionsPriv.h",

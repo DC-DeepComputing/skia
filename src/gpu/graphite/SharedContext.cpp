@@ -12,6 +12,7 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ComputeProvider.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -53,6 +54,12 @@ void SharedContext::setRendererProvider(std::unique_ptr<RendererProvider> render
     // Should only be called once and be non-null
     SkASSERT(rendererProvider && !fRendererProvider);
     fRendererProvider = std::move(rendererProvider);
+}
+
+void SharedContext::setComputeProvider(std::unique_ptr<ComputeProvider> computeProvider) {
+    // Should only be called once and be non-null
+    SkASSERT(computeProvider && !fComputeProvider);
+    fComputeProvider = std::move(computeProvider);
 }
 
 void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
