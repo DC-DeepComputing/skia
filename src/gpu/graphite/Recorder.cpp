@@ -33,6 +33,7 @@
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ComputeScheduler.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -162,6 +163,14 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                                                              fUploadBufferManager.get(),
                                                              dbmOpts);
 
+    std::optional<size_t> computeBatchBudget;
+#if defined(GPU_TEST_UTILS)
+    if (options.fRecorderOptionsPriv) {
+        computeBatchBudget = options.fRecorderOptionsPriv->fComputeBatchBudget;
+    }
+#endif
+    fComputeScheduler = std::make_unique<ComputeScheduler>(this, computeBatchBudget);
+
     SkASSERT(fResourceProvider);
 }
 
@@ -204,6 +213,9 @@ std::unique_ptr<Recording> Recorder::snap() {
     }
     // Collect all pending tasks on the deferred recording canvas and any other tracked device.
     this->priv().flushTrackedDevices(SK_DUMP_TASKS_CODE("Recorder::Snap"));
+    // Compute batches never span Recordings, so add the queued batch (if any) to the root task list
+    // before it's moved, and before the buffers its dispatches use are transferred below.
+    fComputeScheduler->snap();
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.

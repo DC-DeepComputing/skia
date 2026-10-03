@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/SkLog.h"
 #include "include/private/SkPixelStorage.h"
+#include "src/gpu/graphite/ComputeScheduler.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Graphite.h"
@@ -37,6 +38,11 @@ void Image_Base::linkDevices(const Image_Base* other) {
     for (const auto& device : other->fLinkedDevices) {
         this->linkDevice(device);
     }
+    for (const sk_sp<ComputeOutput>& output : other->fComputeOutputs) {
+        if (output) {
+            this->linkComputeOutput(output);
+        }
+    }
 }
 
 void Image_Base::linkDevice(sk_sp<Device> device) {
@@ -45,6 +51,13 @@ void Image_Base::linkDevice(sk_sp<Device> device) {
     // should be uncontested.
     SkAutoSpinlock lock{fDeviceLinkLock};
     fLinkedDevices.push_back(std::move(device));
+}
+
+void Image_Base::linkComputeOutput(sk_sp<ComputeOutput> output) {
+    SkASSERT(output);
+    // See linkDevice() for why this is locked.
+    SkAutoSpinlock lock{fDeviceLinkLock};
+    fComputeOutputs.push_back(std::move(output));
 }
 
 void Image_Base::notifyInUse(Recorder* recorder,
@@ -76,6 +89,22 @@ void Image_Base::notifyInUse(Recorder* recorder,
 
         if (emptyCount == fLinkedDevices.size()) {
             fLinkedDevices.clear();
+        }
+    }
+
+    if (!fComputeOutputs.empty()) {
+        int emptyCount = 0;
+        for (sk_sp<ComputeOutput>& output : fComputeOutputs) {
+            // Like a device, an output is notified even when it's force unlinked, which adds its
+            // dispatch to the root task list ahead of whatever the caller records there.
+            if (!output || output->notifyInUse(recorder, sink) || unlinkDevices) {
+                output.reset();
+                emptyCount++;
+            }
+        }
+
+        if (emptyCount == fComputeOutputs.size()) {
+            fComputeOutputs.clear();
         }
     }
 }

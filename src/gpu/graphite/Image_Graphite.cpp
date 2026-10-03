@@ -17,6 +17,7 @@
 #include "include/private/SkLog.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ComputeScheduler.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -80,6 +81,16 @@ sk_sp<Image> Image::WrapDevice(sk_sp<Device> device, std::optional<SkColorInfo> 
     // propagated to the SkImageInfo of this image view.
     sk_sp<Image> image = sk_make_sp<Image>(std::move(view), *overrideInfo);
     image->linkDevice(std::move(device));
+    return image;
+}
+
+sk_sp<Image> Image::WrapComputeOutput(sk_sp<ComputeOutput> output,
+                                      TextureProxyView view,
+                                      const SkColorInfo& colorInfo) {
+    SkASSERT(output && view.proxy() == output->proxy());
+    // Like WrapDevice(), the Image reports the dimensions of the proxy, which may be approx-fit.
+    sk_sp<Image> image = sk_make_sp<Image>(std::move(view), colorInfo);
+    image->linkComputeOutput(std::move(output));
     return image;
 }
 

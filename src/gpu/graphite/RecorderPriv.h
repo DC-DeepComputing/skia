@@ -39,6 +39,7 @@ namespace skgpu::graphite {
 class AtlasProvider;
 class Caps;
 class ComputeProvider;
+class ComputeScheduler;
 class Context;
 class Device;
 class DrawBufferManager;
@@ -91,6 +92,7 @@ public:
     UploadList* rootUploadList() { return fRecorder->fRootUploads.get(); }
     DrawBufferManager* drawBufferManager() { return fRecorder->fDrawBufferManager.get(); }
     UploadBufferManager* uploadBufferManager() { return fRecorder->fUploadBufferManager.get(); }
+    ComputeScheduler* computeScheduler() { return fRecorder->fComputeScheduler.get(); }
 
     AtlasProvider* getOrCreateAtlasProvider();
     void recordAtlasProviderUploads(DrawContext*);
