@@ -172,6 +172,7 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
         std::unique_ptr<SkCodec> codec;
         sk_sp<const SkData> bmpEntryData;  // Raw entry data for BMP (nullptr for PNG)
         SkISize reportedFrameSize;
+        SkIPoint hotSpot;
         uint16_t bitCount;
     };
     std::vector<CodecEntry> entries;
@@ -275,12 +276,14 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
                 SkCodecPrintf("Warning: ico payload dimensions exceed directory size; skipping.\n");
                 continue;
             }
+            const SkIPoint hotSpot = SkIPoint::Make(entry.hotspot_x, entry.hotspot_y);
 
             // Store codec with its bit count for sorting
             entries.push_back({
                 std::move(codec),
                 std::move(bmpData),
                 directorySize,
+                hotSpot,
                 entry.bit_count,
             });
         }
@@ -291,6 +294,12 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
             *result = kIncompleteInput;
         }
         SkCodecPrintf("Error: could not find any valid embedded ico codecs.\n");
+        return nullptr;
+    }
+
+    const bool isCursor = directoryResult->file_type() == rust_ico::IcoFileType::Cursor;
+    if (isCursor && hasIncompleteEntry) {
+        *result = kIncompleteInput;
         return nullptr;
     }
 
@@ -311,8 +320,10 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
     std::vector<EmbeddedImage> embeddedImages;
     embeddedImages.reserve(entries.size());
     for (auto& entry : entries) {
-        embeddedImages.push_back(
-                {std::move(entry.codec), std::move(entry.bmpEntryData), entry.reportedFrameSize});
+        embeddedImages.push_back({std::move(entry.codec),
+                                  std::move(entry.bmpEntryData),
+                                  entry.reportedFrameSize,
+                                  entry.hotSpot});
     }
 
     // Report the codec's overall dimensions from the largest image described by
@@ -336,18 +347,19 @@ std::unique_ptr<SkCodec> SkIcoRustCodec::MakeFromStream(
     // kSuccess), corrupting decoder state and later yielding an invalid
     // SkImageInfo / a null generator during partial decode.
     *result = kSuccess;
-    return std::unique_ptr<SkCodec>(
-            new SkIcoRustCodec(std::move(maxInfo), std::move(stream),
-                               std::move(embeddedImages)));
+    return std::unique_ptr<SkCodec>(new SkIcoRustCodec(
+            std::move(maxInfo), std::move(stream), std::move(embeddedImages), isCursor));
 }
 
 SkIcoRustCodec::SkIcoRustCodec(SkEncodedInfo&& info,
                                std::unique_ptr<SkStream> stream,
-                               std::vector<EmbeddedImage> embeddedImages)
+                               std::vector<EmbeddedImage> embeddedImages,
+                               bool isCursor)
         // The source skcms_PixelFormat will not be used. The embedded
         // codec's will be used instead.
         : INHERITED(std::move(info), skcms_PixelFormat(), std::move(stream))
         , fEmbeddedImages(std::move(embeddedImages))
+        , fIsCursor(isCursor)
         , fCurrCodec(nullptr) {
     fFrameHolder.setScreenSize(this->dimensions().width(), this->dimensions().height());
     for (int i = 0; i < SkToInt(fEmbeddedImages.size()); ++i) {
@@ -356,6 +368,14 @@ SkIcoRustCodec::SkIcoRustCodec(SkEncodedInfo&& info,
                 image.fCodec->getInfo().makeDimensions(image.fReportedFrameSize);
         fFrameHolder.appendFrame(i, frameInfo, image.fCodec->getEncodedInfo().alpha());
     }
+}
+
+bool SkIcoRustCodec::getHotSpot(int frameIndex, SkIPoint* hotSpot) const {
+    if (!fIsCursor || !hotSpot || frameIndex < 0 || frameIndex >= SkToInt(fEmbeddedImages.size())) {
+        return false;
+    }
+    *hotSpot = fEmbeddedImages[frameIndex].fHotSpot;
+    return true;
 }
 
 SkIcoRustCodec::Frame::Frame(int index,
