@@ -126,6 +126,7 @@ std::string TessellateStrokesRenderStep::vertexSkSL(const RootNodesInfo&) const 
 
 void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                                                 StorageContext* /*storageContext*/,
+                                                ComputeManager* /*computeManager*/,
                                                 const DrawParams& params,
                                                 uint32_t ssboIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly

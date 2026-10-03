@@ -208,6 +208,7 @@ const char* CircularArcRenderStep::fragmentCoverageSkSL() const {
 
 void CircularArcRenderStep::writeVertices(DrawWriter* writer,
                                           StorageContext* /*storageContext*/,
+                                          ComputeManager* /*computeManager*/,
                                           const DrawParams& params,
                                           uint32_t ssboIndex) const {
     SkASSERT(params.geometry().isShape() && params.geometry().shape().isArc());

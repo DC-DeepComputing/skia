@@ -259,6 +259,7 @@ const char* PerEdgeAAQuadRenderStep::fragmentCoverageSkSL() const {
 
 void PerEdgeAAQuadRenderStep::writeVertices(DrawWriter* writer,
                                            StorageContext* /*storageContext*/,
+                                           ComputeManager* /*computeManager*/,
                                            const DrawParams& params,
                                            uint32_t ssboIndex) const {
     SkASSERT(params.geometry().isEdgeAAQuad());

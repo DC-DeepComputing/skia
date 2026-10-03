@@ -30,6 +30,7 @@
 
 namespace skgpu::graphite {
 
+class ComputeManager;
 class DrawPass;
 class Geometry;
 class Renderer;
@@ -62,7 +63,8 @@ public:
                                            DrawContext* drawContext,
                                            sk_sp<TextureProxy> target,
                                            const SkImageInfo& targetInfo,
-                                           const DstReadStrategy dstReadStrategy) override;
+                                           const DstReadStrategy dstReadStrategy,
+                                           ComputeManager* computeManager) override;
 
     // Discard all previously recorded draws and set to the requested load op (with optional clear
     // color).

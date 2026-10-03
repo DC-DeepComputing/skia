@@ -286,6 +286,7 @@ const char* AnalyticRRectBlurRenderStep::fragmentCoverageSkSL() const {
 
 void AnalyticRRectBlurRenderStep::writeVertices(DrawWriter* writer,
                                                 StorageContext* /*storageContext*/,
+                                                ComputeManager* /*computeManager*/,
                                                 const DrawParams& params,
                                                 uint32_t ssboIndex) const {
     const AnalyticRRectBlurMask& blur = params.geometry().analyticRRectBlurMask();

@@ -496,6 +496,7 @@ const char* AnalyticRRectRenderStep::fragmentCoverageSkSL() const {
 
 void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
                                             StorageContext* /*storageContext*/,
+                                            ComputeManager* /*computeManager*/,
                                             const DrawParams& params,
                                             uint32_t ssboIndex) const {
     SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad());

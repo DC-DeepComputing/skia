@@ -133,6 +133,7 @@ const char* MeshRenderStep::fragmentColorSkSLLocalCoordsVariable() const {
 
 void MeshRenderStep::writeVertices(DrawWriter* writer,
                                    StorageContext* /*storageContext*/,
+                                   ComputeManager* /*computeManager*/,
                                    const DrawParams& params,
                                    uint32_t ssboIndex) const {
     const SkMesh& mesh = params.geometry().mesh();

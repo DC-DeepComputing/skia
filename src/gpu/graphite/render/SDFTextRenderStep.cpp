@@ -131,6 +131,7 @@ const char* SDFTextRenderStep::fragmentCoverageSkSL() const {
 
 void SDFTextRenderStep::writeVertices(DrawWriter* dw,
                                       StorageContext* /*storageContext*/,
+                                      ComputeManager* /*computeManager*/,
                                       const DrawParams& params,
                                       uint32_t ssboIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();

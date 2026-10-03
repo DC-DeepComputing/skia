@@ -53,6 +53,7 @@ std::string MiddleOutFanRenderStep::vertexSkSL(const RootNodesInfo&) const {
 
 void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer,
                                            StorageContext* /*storageContext*/,
+                                           ComputeManager* /*computeManager*/,
                                            const DrawParams& params,
                                            uint32_t ssboIndex) const {
     // TODO: Have Shape provide a path-like iterator so we don't actually have to convert non

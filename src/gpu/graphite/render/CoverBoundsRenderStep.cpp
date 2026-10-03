@@ -59,6 +59,7 @@ std::string CoverBoundsRenderStep::vertexSkSL(const RootNodesInfo&) const {
 
 void CoverBoundsRenderStep::writeVertices(DrawWriter* writer,
                                           StorageContext* /*storageContext*/,
+                                          ComputeManager* /*computeManager*/,
                                           const DrawParams& params,
                                           uint32_t ssboIndex) const {
     // Each instance is 4 vertices, forming 2 triangles from a single triangle strip, so no indices

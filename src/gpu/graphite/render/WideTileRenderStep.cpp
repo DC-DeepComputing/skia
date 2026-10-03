@@ -57,6 +57,7 @@ std::string WideTileRenderStep::vertexSkSL(const RootNodesInfo&) const {
 
 void WideTileRenderStep::writeVertices(DrawWriter* writer,
                                        StorageContext* /*storageContext*/,
+                                       ComputeManager* /*computeManager*/,
                                        const DrawParams& params,
                                        uint32_t ssboIndex) const {
     const auto& tiles = params.geometry().wideTiles().tiles();

@@ -10,6 +10,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkSafetyChecks.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/ComputeManager.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -101,7 +102,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                                                  DrawContext* drawContext,
                                                  sk_sp<TextureProxy> target,
                                                  const SkImageInfo& targetInfo,
-                                                 DstReadStrategy dstReadStrategy) {
+                                                 DstReadStrategy dstReadStrategy,
+                                                 ComputeManager* computeManager) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
@@ -236,12 +238,20 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
         }
 
         uint32_t uniformSsboIndex = useStorageBuffers ? uniformTracker.ssboIndex() : 0;
-        renderStep.writeVertices(&drawWriter, storageContext, draw.drawParams(), uniformSsboIndex);
+        renderStep.writeVertices(&drawWriter,
+                                 storageContext,
+                                 computeManager,
+                                 draw.drawParams(),
+                                 uniformSsboIndex);
 
         if (bufferMgr->hasMappingFailed()) {
             SKIA_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
             this->reset(LoadOp::kLoad);
             return nullptr;
+        }
+
+        if (computeManager) {
+            renderStep.recordComputeSteps(computeManager, draw.drawParams(), &drawWriter);
         }
 
         // Update priorDrawPaintOrder value before iterating to analyze the next draw.

@@ -124,6 +124,7 @@ bool CoverageMaskRenderStep::usesUniformsInFragmentSkSL() const { return false; 
 
 void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
                                            StorageContext* /*storageContext*/,
+                                           ComputeManager* /*computeManager*/,
                                            const DrawParams& params,
                                            uint32_t ssboIndex) const {
     const CoverageMaskShape& coverageMask = params.geometry().coverageMaskShape();

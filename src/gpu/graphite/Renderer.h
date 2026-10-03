@@ -32,6 +32,7 @@ namespace skgpu { enum class MaskFormat; }
 
 namespace skgpu::graphite {
 
+class ComputeManager;
 class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
@@ -129,6 +130,7 @@ public:
     // this RenderStep.
     virtual void writeVertices(DrawWriter*,
                                StorageContext*,
+                               ComputeManager*,
                                const DrawParams&,
                                uint32_t ssboIndex) const = 0;
 
@@ -155,6 +157,9 @@ public:
                                                 int* nextBindingIndex) const {
         return "";
     }
+
+    // If this step requires compute, appends dispatches using the draw parameters
+    virtual void recordComputeSteps(ComputeManager*, const DrawParams&, const DrawWriter*) const {}
 
     // Emits code to set up coverage value. Should only be defined if overridesCoverage is true.
     // When implemented the returned SkSL fragment should write its coverage into a
@@ -192,6 +197,7 @@ public:
     bool appendsVertices()     const { return SkToBool(fFlags & Flags::kAppendVertices);      }
     bool vsUsesStorage()       const { return SkToBool(fFlags & Flags::kVsUsesStorage);       }
     bool fsUsesStorage()       const { return SkToBool(fFlags & Flags::kFsUsesStorage);       }
+    bool hasCompute()          const { return SkToBool(fFlags & Flags::kHasCompute);          }
     SkEnumBitMask<PipelineStageFlags> storageBufferStages() const { return fStorageBufferStages; }
     SkEnumBitMask<RenderStateFlags>   getRenderStateFlags() const {
         SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
@@ -269,23 +275,24 @@ public:
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
 protected:
 enum class Flags : unsigned {
-    kNone                   = 0x0000,
-    kFixed                  = 0x0001, // Uses explicit DrawWriter::draw functions
-    kAppendVertices         = 0x0002, // Appends vertices
-    kAppendInstances        = 0x0004, // Appends instances with static vertex count
-    kAppendDynamicInstances = 0x0008, // Appends instances with a flexible vertex count
-    kRequiresMSAA           = 0x0010, // MSAA is required for anti-aliasing
-    kPerformsShading        = 0x0020, // This step is responsible for shading/color output
-    kHasTextures            = 0x0040, // Adds textures via overridden texturesAndSamplersSkSL()
-    kEmitsCoverage          = 0x0080, // Adds analytic coverage via fragmentCoverageSkSL()
-    kLCDCoverage            = 0x0100, // The added analytic coverage is LCD, not single channel
-    kEmitsPrimitiveColor    = 0x0200, // Injects primitive color via fragmentColorSkSL()
-    kOutsetBoundsForAA      = 0x0400, // Drawn geometry will be outset beyond shape's bounds for AA
-    kUseNonAAInnerFill      = 0x0800, // Opt into Device recording extra inner fill draws
-    kIgnoreInverseFill      = 0x1000, // Rasterization treats all shapes as non-inverted for scissor
-    kInverseFillsScissor    = 0x2000, // Rasterization of inverse fills scissor geometrically
-    kVsUsesStorage          = 0x4000, // Does the vertex shader require storage buffer access?
-    kFsUsesStorage          = 0x8000, // Does the fragment shader require storage buffer access?
+    kNone                   = 0x00000,
+    kFixed                  = 0x00001, // Uses explicit DrawWriter::draw functions
+    kAppendVertices         = 0x00002, // Appends vertices
+    kAppendInstances        = 0x00004, // Appends instances with static vertex count
+    kAppendDynamicInstances = 0x00008, // Appends instances with a flexible vertex count
+    kRequiresMSAA           = 0x00010, // MSAA is required for anti-aliasing
+    kPerformsShading        = 0x00020, // This step is responsible for shading/color output
+    kHasTextures            = 0x00040, // Adds textures via overridden texturesAndSamplersSkSL()
+    kEmitsCoverage          = 0x00080, // Adds analytic coverage via fragmentCoverageSkSL()
+    kLCDCoverage            = 0x00100, // The added analytic coverage is LCD, not single channel
+    kEmitsPrimitiveColor    = 0x00200, // Injects primitive color via fragmentColorSkSL()
+    kOutsetBoundsForAA      = 0x00400, // Drawn geometry will be outset beyond shape's bounds for AA
+    kUseNonAAInnerFill      = 0x00800, // Opt into Device recording extra inner fill draws
+    kIgnoreInverseFill      = 0x01000, // Rasterization treats all shapes as non-inverted for scissor
+    kInverseFillsScissor    = 0x02000, // Rasterization of inverse fills scissor geometrically
+    kVsUsesStorage          = 0x04000, // Does the vertex shader require storage buffer access?
+    kFsUsesStorage          = 0x08000, // Does the fragment shader require storage buffer access?
+    kHasCompute             = 0x10000, // This step relies on a compute shader
 };
 SK_DECL_BITMASK_OPS_FRIENDS(Flags)
 

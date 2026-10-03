@@ -141,6 +141,7 @@ std::string TessellateWedgesRenderStep::vertexSkSL(const RootNodesInfo&) const {
 
 void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw,
                                                StorageContext* /*storageContext*/,
+                                               ComputeManager* /*computeManager*/,
                                                const DrawParams& params,
                                                uint32_t ssboIndex) const {
     SkASSERT(this->appendDataStride(params) ==

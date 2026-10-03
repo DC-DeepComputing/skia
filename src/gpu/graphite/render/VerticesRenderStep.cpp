@@ -140,6 +140,7 @@ std::string VerticesRenderStep::fragmentColorSkSL(const RootNodesInfo&) const {
 
 void VerticesRenderStep::writeVertices(DrawWriter* writer,
                                        StorageContext* /*storageContext*/,
+                                       ComputeManager* /*computeManager*/,
                                        const DrawParams& params,
                                        uint32_t ssboIndex) const {
     SkVerticesPriv info(params.geometry().vertices()->priv());

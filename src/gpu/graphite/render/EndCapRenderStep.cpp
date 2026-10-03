@@ -92,6 +92,7 @@ const char* EndCapRenderStep::fragmentCoverageSkSL() const {
 
 void EndCapRenderStep::writeVertices(DrawWriter* writer,
                                      StorageContext* /*storageContext*/,
+                                     ComputeManager* /*computeManager*/,
                                      const DrawParams& params,
                                      uint32_t ssboIndex) const {
     SkASSERT(params.geometry().isEndCaps());
