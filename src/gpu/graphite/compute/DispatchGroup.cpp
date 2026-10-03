@@ -125,6 +125,26 @@ bool Builder::appendStepInternal(
     SkASSERT(fObj);
     SkASSERT(step);
 
+    // The step must fit within the device's compute limits, which it always does if it stays within
+    // Caps' minimums. Static `workgroup` variables in the step's SkSL aren't counted, since that
+    // would require compiling it here; steps must keep those within
+    // Caps::kMinComputeWorkgroupStorageSize.
+    const Caps* caps = fRecorder->priv().caps();
+    const WorkgroupSize localSize = step->localDispatchSize();
+    const WorkgroupSize maxLocalSize = caps->maxComputeWorkgroupSize();
+    uint64_t workgroupBufferBytes = 0;
+    for (const ComputeStep::WorkgroupBufferDesc& buffer : step->workgroupBuffers()) {
+        workgroupBufferBytes += buffer.size;
+    }
+    if (localSize.fWidth > maxLocalSize.fWidth || localSize.fHeight > maxLocalSize.fHeight ||
+        localSize.fDepth > maxLocalSize.fDepth ||
+        uint64_t{localSize.fWidth} * localSize.fHeight * localSize.fDepth >
+                caps->maxComputeInvocationsPerWorkgroup() ||
+        workgroupBufferBytes > caps->maxComputeWorkgroupStorageSize()) {
+        SKIA_LOG_E("ComputeStep '%s' exceeds the device's compute limits", step->name());
+        return false;
+    }
+
     Dispatch dispatch;
 
     // Process the step's resources.

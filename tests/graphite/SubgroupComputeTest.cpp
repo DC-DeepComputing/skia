@@ -611,3 +611,24 @@ DEF_SUBGROUP_TEST(SubgroupShuffleTest, reporter, context, testContext) {
         }
     }
 }
+
+// Graphite only enables compute when the device supports subgroups and meets Caps' minimum compute
+// limits, and subgroups are only exposed when compute is enabled.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ComputeSupportRequirementsTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNever) {
+    const Caps* caps = context->priv().caps();
+    const bool subgroupSupport = caps->shaderCaps()->fSubgroupSupport;
+    REPORTER_ASSERT(reporter, caps->computeSupport() == subgroupSupport);
+    if (caps->computeSupport()) {
+        REPORTER_ASSERT(reporter,
+                        caps->maxComputeInvocationsPerWorkgroup() >=
+                                Caps::kMinComputeInvocationsPerWorkgroup);
+        REPORTER_ASSERT(reporter,
+                        caps->maxComputeWorkgroupSize().fWidth >= Caps::kMinComputeWorkgroupSizeX);
+        REPORTER_ASSERT(
+                reporter,
+                caps->maxComputeWorkgroupStorageSize() >= Caps::kMinComputeWorkgroupStorageSize);
+    }
+}

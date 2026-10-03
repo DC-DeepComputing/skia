@@ -17,6 +17,7 @@
 #include "src/core/SkSafeMath.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/Swizzle.h"
+#include "src/gpu/graphite/ComputeTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/text/gpu/SubRunControl.h"
@@ -335,8 +336,30 @@ public:
      */
     bool bufferMapsAreAsync() const { return fBufferMapsAreAsync; }
 
-    /* Returns whether compute shaders are supported. */
+    /**
+     * Returns whether compute shaders are supported. Graphite only enables compute when the device
+     * also supports subgroups (SkSL::ShaderCaps::fSubgroupSupport) and meets the minimum limits
+     * below, so ComputeSteps can rely on both.
+     */
     bool computeSupport() const { return fComputeSupport; }
+
+    /**
+     * The minimum compute limits Graphite requires to enable compute. Every ComputeStep must fit
+     * within them. They match WebGPU's default limits, so they hold on any core WebGPU device.
+     * Vulkan only guarantees 128 invocations (and 128 along x), WebGPU's compatibility mode
+     * defaults to 128, and Metal guarantees 1024 on the GPU families that support subgroups.
+     * Every backend guarantees 16 KB of workgroup memory, so that check shouldn't fail.
+     */
+    static constexpr uint32_t kMinComputeInvocationsPerWorkgroup = 256;
+    static constexpr uint32_t kMinComputeWorkgroupSizeX = 256;
+    static constexpr uint32_t kMinComputeWorkgroupStorageSize = 16384;
+
+    /* The device's compute limits. They're only meaningful when computeSupport() is true. */
+    WorkgroupSize maxComputeWorkgroupSize() const { return fMaxComputeWorkgroupSize; }
+    uint32_t maxComputeInvocationsPerWorkgroup() const {
+        return fMaxComputeInvocationsPerWorkgroup;
+    }
+    uint32_t maxComputeWorkgroupStorageSize() const { return fMaxComputeWorkgroupStorageSize; }
 
     /**
      * Returns true if the given backend supports importing AHardwareBuffers. This will only
@@ -487,6 +510,10 @@ protected:
 
     bool fComputeSupport = false;
     bool fStorageBufferSupportForCompute = false;
+    // Set by each backend; finishInitialization() disables compute if they're below the minimums.
+    WorkgroupSize fMaxComputeWorkgroupSize = {0, 0, 0};
+    uint32_t fMaxComputeInvocationsPerWorkgroup = 0;
+    uint32_t fMaxComputeWorkgroupStorageSize = 0;
     bool fSupportsAHardwareBufferImages = false;
     bool fFullCompressedUploadSizeMustAlignToBlockDims = false;
 

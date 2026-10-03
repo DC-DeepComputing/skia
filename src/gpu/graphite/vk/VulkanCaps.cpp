@@ -161,6 +161,13 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     SkASSERT(deviceLimits.maxPerStageDescriptorStorageBuffers > 0);
     fComputeSupport = true;
     fStorageBufferSupportForCompute = true;
+    // Vulkan guarantees at least 128 invocations, (128, 128, 64) and 16 KB. Caps checks these
+    // against its minimums in finishInitialization().
+    fMaxComputeWorkgroupSize = WorkgroupSize(deviceLimits.maxComputeWorkGroupSize[0],
+                                             deviceLimits.maxComputeWorkGroupSize[1],
+                                             deviceLimits.maxComputeWorkGroupSize[2]);
+    fMaxComputeInvocationsPerWorkgroup = deviceLimits.maxComputeWorkGroupInvocations;
+    fMaxComputeWorkgroupStorageSize = deviceLimits.maxComputeSharedMemorySize;
 
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));

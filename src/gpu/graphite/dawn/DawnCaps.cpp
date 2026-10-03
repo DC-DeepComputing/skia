@@ -371,6 +371,14 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fDrawBufferCanBeMapped = false;
 
     fComputeSupport = true;
+    // These are the device's limits, so they only exceed WebGPU's defaults if the client requested
+    // higher limits when creating the device. Compatibility mode defaults to 128 invocations (and
+    // 128 along x), below Caps' minimums. Caps checks them in finishInitialization().
+    fMaxComputeWorkgroupSize = WorkgroupSize(limits.maxComputeWorkgroupSizeX,
+                                             limits.maxComputeWorkgroupSizeY,
+                                             limits.maxComputeWorkgroupSizeZ);
+    fMaxComputeInvocationsPerWorkgroup = limits.maxComputeInvocationsPerWorkgroup;
+    fMaxComputeWorkgroupStorageSize = limits.maxComputeWorkgroupStorageSize;
 
     // TODO: support clamp to border.
     fClampToBorderSupport = false;

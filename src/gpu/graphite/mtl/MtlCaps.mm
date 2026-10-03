@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/gpu/graphite/mtl/MtlGraphiteTypes.h"
 #include "include/private/SkLog.h"
+#include "include/private/SkTo.h"
 #include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
@@ -118,6 +119,17 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
     fStorageBufferSupport = true;
 
     fComputeSupport = true;
+    // The per-dimension limit and the threadgroup memory size come from the device. The total
+    // number of threads per threadgroup is 1024 on Apple4+ and Mac2, and 512 before that (see the
+    // feature set tables linked below). A specific pipeline may support fewer threads, which
+    // MtlComputePipeline checks when it's created.
+    const MTLSize maxThreadsPerThreadgroup = device.maxThreadsPerThreadgroup;
+    fMaxComputeWorkgroupSize = WorkgroupSize(SkToU32(maxThreadsPerThreadgroup.width),
+                                             SkToU32(maxThreadsPerThreadgroup.height),
+                                             SkToU32(maxThreadsPerThreadgroup.depth));
+    fMaxComputeInvocationsPerWorkgroup =
+            (this->isMac() || fGPUFamily >= MTLGPUFamilyApple4) ? 1024 : 512;
+    fMaxComputeWorkgroupStorageSize = SkToU32(device.maxThreadgroupMemoryLength);
 
     // See https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf, and what Dawn does at
     // https://crsrc.org/c/third_party/dawn/src/dawn/native/metal/PhysicalDeviceMTL.mm?q=maxInterStageShaderVariables
