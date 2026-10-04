@@ -228,6 +228,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/compute/ComputeStep.h",
   "$_src/gpu/graphite/compute/DispatchGroup.cpp",
   "$_src/gpu/graphite/compute/DispatchGroup.h",
+  "$_src/gpu/graphite/compute/DownsampleStep.cpp",
+  "$_src/gpu/graphite/compute/DownsampleStep.h",
   "$_src/gpu/graphite/compute/GaussianBlurStep.cpp",
   "$_src/gpu/graphite/compute/GaussianBlurStep.h",
   "$_src/gpu/graphite/compute/SharedBlurSksl.h",

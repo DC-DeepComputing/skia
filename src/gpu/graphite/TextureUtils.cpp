@@ -52,6 +52,7 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
+#include "src/gpu/graphite/compute/DownsampleStep.h"
 #include "src/gpu/graphite/compute/GaussianBlurStep.h"
 #include "src/gpu/graphite/task/CopyTask.h"
 #include "src/gpu/graphite/task/SynchronizeToCpuTask.h"
@@ -731,16 +732,19 @@ namespace skif {
 
 namespace {
 
-// Blurs with GaussianBlurStep, and falls back to the shader blur for the blurs that the step
-// doesn't support. Which those are depends on the source image, which findAlgorithm() can't see.
+// Blurs with GaussianBlurStep. The sigmas that need a downscale run DownsampleStep first, in the
+// same batch. Falls back to the shader blur (after the caller's downscale) for the blurs that the
+// steps don't support. Which those are depends on the source image, which findAlgorithm() can't
+// see.
 class ComputeBlurAlgorithm final : public SkBlurEngine::Algorithm {
 public:
     ComputeBlurAlgorithm(skgpu::graphite::Recorder* recorder,
-                         const skgpu::graphite::GaussianBlurStep* step,
+                         const skgpu::graphite::ComputeProvider* provider,
                          const SkShaderBlurAlgorithm* fallback,
                          const SkSurfaceProps& surfaceProps)
             : fRecorder(recorder)
-            , fStep(step)
+            , fStep(provider ? provider->gaussianBlur() : nullptr)
+            , fDownsample(provider ? provider->downsample() : nullptr)
             , fFallback(fallback)
             , fSurfaceProps(surfaceProps) {}
 
@@ -786,17 +790,94 @@ public:
         return fFallback->blur(sigma, std::move(src), srcRect, tileMode, dstRect);
     }
 
+    sk_sp<SkSpecialImage> downscaleAndBlur(SkSize sigma,
+                                           SkISize downscale,
+                                           sk_sp<SkSpecialImage> src,
+                                           const SkIRect& srcRect,
+                                           SkTileMode tileMode,
+                                           const SkIRect& dstRect) const override {
+        SkASSERT(fStep);
+        sk_sp<SkImage> image = src->asImage();
+        if (!fDownsample || !image || as_IB(image)->type() != SkImage_Base::Type::kGraphite) {
+            return nullptr;
+        }
+        // The downsample's source rect and grid are relative to the texture, rather than to the
+        // special image. The downscaled rects are relative to the grid, so they're unchanged.
+        const SkIPoint origin = src->subset().topLeft();
+        // The downsample covers the texels that the blur reads, with the tile mode applied, and
+        // GaussianBlurStep blurs it in the same batch. Its reads past the downsample are clamped,
+        // and only reach taps with zero weight or outputs outside dstRect.
+        const int radiusX = SkBlurEngine::SigmaToRadius(sigma.width());
+        const int radiusY = SkBlurEngine::SigmaToRadius(sigma.height());
+        SkIRect footprint = dstRect.makeOutset(radiusX, radiusY);
+        SkTileMode blurTileMode = SkTileMode::kClamp;
+        if (tileMode == SkTileMode::kDecal || tileMode == SkTileMode::kClamp) {
+            auto floor_div = [](int a, int b) {
+                return a >= 0 ? a / b : -((b - 1 - a) / b);
+            };
+            const int fx = downscale.width();
+            const int fy = downscale.height();
+            SkIRect maxFootprint = {floor_div(srcRect.left(), fx),
+                                    floor_div(srcRect.top(), fy),
+                                    -floor_div(-srcRect.right(), fx),
+                                    -floor_div(-srcRect.bottom(), fy)};
+            if (tileMode == SkTileMode::kDecal) {
+                if (!footprint.intersect(maxFootprint)) {
+                    return nullptr;
+                }
+                blurTileMode = SkTileMode::kDecal;
+            } else {
+                maxFootprint.outset(fx > 1 ? 1 : 0, fy > 1 ? 1 : 0);
+                if (!maxFootprint.isEmpty()) {
+                    footprint = {std::clamp(footprint.left(),
+                                            maxFootprint.left(),
+                                            maxFootprint.right() - 1),
+                                 std::clamp(footprint.top(),
+                                            maxFootprint.top(),
+                                            maxFootprint.bottom() - 1),
+                                 std::clamp(footprint.right(),
+                                            maxFootprint.left() + 1,
+                                            maxFootprint.right()),
+                                 std::clamp(footprint.bottom(),
+                                            maxFootprint.top() + 1,
+                                            maxFootprint.bottom())};
+                }
+            }
+        }
+        sk_sp<skgpu::graphite::Image> lowRes =
+                fDownsample->downsample(fRecorder,
+                                        downscale,
+                                        static_cast<const skgpu::graphite::Image&>(*image),
+                                        srcRect.makeOffset(origin),
+                                        tileMode,
+                                        origin,
+                                        footprint);
+        if (!lowRes) {
+            return nullptr;
+        }
+        sk_sp<skgpu::graphite::Image> blurred =
+                fStep->blur(fRecorder,
+                            sigma,
+                            *lowRes,
+                            SkIRect::MakeSize(footprint.size()),
+                            blurTileMode,
+                            dstRect.makeOffset(-footprint.left(), -footprint.top()));
+        if (!blurred) {
+            return nullptr;
+        }
+        return SkSpecialImages::MakeGraphite(fRecorder,
+                                             SkIRect::MakeSize(dstRect.size()),
+                                             std::move(blurred),
+                                             fSurfaceProps);
+    }
+
 private:
     skgpu::graphite::Recorder* fRecorder;
     const skgpu::graphite::GaussianBlurStep* fStep;
+    const skgpu::graphite::DownsampleStep* fDownsample;
     const SkShaderBlurAlgorithm* fFallback;
     SkSurfaceProps fSurfaceProps;
 };
-
-const skgpu::graphite::GaussianBlurStep* compute_blur_step(skgpu::graphite::Recorder* recorder) {
-    const skgpu::graphite::ComputeProvider* provider = recorder->priv().computeProvider();
-    return provider ? provider->gaussianBlur() : nullptr;
-}
 
 // TODO(michaelludwig): The skgpu::BlurUtils effects will be migrated to src/core to implement a
 // shader BlurEngine that can be shared by rastr, Ganesh, and Graphite. This is blocked by having
@@ -813,7 +894,7 @@ public:
             : Backend(SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize),
                       surfaceProps, colorType)
             , fRecorder(recorder)
-            , fComputeBlur(recorder, compute_blur_step(recorder), this, surfaceProps) {}
+            , fComputeBlur(recorder, recorder->priv().computeProvider(), this, surfaceProps) {}
 
     // Backend
     sk_sp<SkDevice> makeDevice(SkISize size,

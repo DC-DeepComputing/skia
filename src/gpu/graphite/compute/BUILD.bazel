@@ -11,6 +11,8 @@ CORE_FILES = [
     "ComputeStep.h",
     "DispatchGroup.cpp",
     "DispatchGroup.h",
+    "DownsampleStep.cpp",
+    "DownsampleStep.h",
     "GaussianBlurStep.cpp",
     "GaussianBlurStep.h",
     "SharedBlurSksl.h",

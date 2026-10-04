@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/ComputeProvider.h"
 
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/compute/DownsampleStep.h"
 #include "src/gpu/graphite/compute/GaussianBlurStep.h"
 
 namespace skgpu::graphite {
@@ -17,6 +18,9 @@ ComputeProvider::ComputeProvider(const Caps* caps) {
     // decides whether small blurs should keep using the shader blur.
     if (caps->useComputeBlur() && GaussianBlurStep::IsSupported(caps)) {
         fGaussianBlur = std::make_unique<GaussianBlurStep>();
+    }
+    if (caps->useComputeBlur() && DownsampleStep::IsSupported(caps)) {
+        fDownsample = std::make_unique<DownsampleStep>();
     }
 }
 

@@ -101,8 +101,10 @@ private:
 class ComputeScheduler final : public DependencySink {
 public:
     // The shared slots that a dispatch's resources are assigned to. A step that's queued must
-    // declare these resources (all with DataFlow::kShared), and may also declare private ones.
-    static constexpr int kSourceSlot = 0;  // ResourceType::kReadOnlyTexture
+    // declare these resources (all with DataFlow::kShared), and may also declare private ones. The
+    // source may be sampled, in which case DispatchGroup allocates its sampler from the step's
+    // calculateSamplerParameters().
+    static constexpr int kSourceSlot = 0;  // ResourceType::kReadOnlyTexture or kSampledTexture
     static constexpr int kOutputSlot = 1;  // ResourceType::kWriteOnlyStorageTexture
     static constexpr int kParamsSlot = 2;  // ResourceType::kUniformBuffer
 

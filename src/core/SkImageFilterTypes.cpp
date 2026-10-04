@@ -2136,6 +2136,157 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
 
     float sx = sigma.width()  > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.width()  : 1.f;
     float sy = sigma.height() > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.height() : 1.f;
+
+    // If the algorithm can downscale the input itself, it reads the input directly, rather than
+    // rescale() rendering a downscaled copy of it first. That only applies to inputs that rescale()
+    // would just downscale: pixel-aligned, with no color filter, color conversion or cubic
+    // sampling, and with tiling that downscaleAndBlur() can apply to the image's pixels. Returns an
+    // empty result if the input or the blur isn't supported.
+    auto downscaleAndBlur = [&]() -> FilterResult {
+        const FilterResult& input = fInputs[0].fImage;
+        LayerSpace<SkIPoint> origin;
+        if (!input.fImage ||
+            !is_nearly_integer_translation(input.fTransform, &origin) ||
+            input.fColorFilter ||
+            input.fSamplingOptions.useCubic ||
+            input.fImage->colorType() != fContext.backend()->colorType()) {
+            return {};
+        }
+        // To match rescale()'s color space conversion logic, treat a null src as sRGB and a null
+        // dst as the src CS.
+        const SkColorSpace* srcCS = input.fImage->getColorSpace() ? input.fImage->getColorSpace()
+                                                                  : sk_srgb_singleton();
+        const SkColorSpace* dstCS = fContext.colorSpace() ? fContext.colorSpace() : srcCS;
+        if (!SkColorSpace::Equals(srcCS, dstCS)) {
+            return {};
+        }
+
+        // Choose the source pixels and their tiling the way rescale() does: visible tiling is
+        // applied to the whole image, and otherwise the layer bounds are decal-tiled.
+        LayerSpace<SkIRect> visibleLayerBounds = input.fLayerBounds;
+        if (!visibleLayerBounds.intersect(sampleBounds)) {
+            return {};
+        }
+        const LayerSpace<SkIRect> imageBounds{SkIRect::MakeXYWH(
+                origin.x(), origin.y(), input.fImage->width(), input.fImage->height())};
+        const SkEnumBitMask<BoundsAnalysis> analysis =
+                input.analyzeBounds(sampleBounds, BoundsScope::kRescale);
+        LayerSpace<SkIRect> srcBounds = imageBounds;
+        SkTileMode tileMode = input.fTileMode;
+        if ((analysis & BoundsAnalysis::kRequiresLayerCrop) ||
+            !(analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
+            // rescale() renders the image with its tiling, clipped to the layer bounds, so the
+            // tiling must not reach into the layer bounds for the pixels to be the image's.
+            if (input.fTileMode != SkTileMode::kDecal &&
+                !imageBounds.contains(visibleLayerBounds)) {
+                return {};
+            }
+            srcBounds = visibleLayerBounds;
+            tileMode = SkTileMode::kDecal;
+            if (!srcBounds.intersect(imageBounds)) {
+                return {};
+            }
+        }
+        if (algorithm->supportsOnlyDecalTiling() && tileMode != SkTileMode::kDecal) {
+            return {};
+        }
+        srcBounds = srcBounds.relevantSubset(sampleBounds, tileMode);
+        if (srcBounds.isEmpty()) {
+            return {};
+        }
+
+        // Each axis is downscaled by the smallest power of two that brings its sigma within
+        // maxSigma(). Unlike rescale(), which scales decal and clamp tiled images by the exact
+        // factor, the factor jumps at powers of two, so the low-res sigma is corrected to keep the
+        // effective sigma continuous. Averaging f pixels adds a variance of (f^2 - 1)/12 source
+        // pixels squared, and the bilinear upscale adds (2f^2 + 1)/12 on average, so together they
+        // add a quarter of a low-res pixel squared.
+        static constexpr int kMaxDownscale = 1 << 12;
+        const float maxSigma = algorithm->maxSigma();
+        int factors[2];
+        float lowResSigmas[2];
+        for (int i = 0; i < 2; ++i) {
+            const float s = i == 0 ? sigma.width() : sigma.height();
+            int f = 1;
+            while (s > maxSigma * f && f < kMaxDownscale) {
+                f *= 2;
+            }
+            if (s > maxSigma * f) {
+                return {};
+            }
+            const float lowResSigma = s / f;
+            factors[i] = f;
+            lowResSigmas[i] =
+                    f == 1 ? s : std::sqrt(std::max(lowResSigma * lowResSigma - 0.25f, 0.f));
+        }
+        const int fx = factors[0];
+        const int fy = factors[1];
+
+        // Pixel (i, j) of the low-res image covers the layer pixels
+        // origin + [i*fx, (i+1)*fx) x [j*fy, (j+1)*fy).
+        auto floorDiv = [](int64_t a, int b) {
+            return SkTo<int>(a >= 0 ? a / b : -((b - 1 - a) / b));
+        };
+        auto toLowRes = [&](const LayerSpace<SkIRect>& r) {
+            return PixelSpace<SkIRect>({floorDiv(int64_t{r.left()} - origin.x(), fx),
+                                        floorDiv(int64_t{r.top()} - origin.y(), fy),
+                                        -floorDiv(int64_t{origin.x()} - r.right(), fx),
+                                        -floorDiv(int64_t{origin.y()} - r.bottom(), fy)});
+        };
+        PixelSpace<SkIRect> dstBounds = toLowRes(outputBounds);
+        if (tileMode == SkTileMode::kDecal || tileMode == SkTileMode::kClamp) {
+            // Beyond the blur's radius from the low-res source, the blur is transparent (decal) or
+            // repeats its edge (clamp), which the tiling of the result reproduces.
+            PixelSpace<SkIRect> lowResMaxOutput = toLowRes(srcBounds);
+            lowResMaxOutput.outset(
+                    PixelSpace<SkSize>({3.f * lowResSigmas[0], 3.f * lowResSigmas[1]}).ceil());
+            dstBounds = lowResMaxOutput.relevantSubset(dstBounds, tileMode);
+            if (dstBounds.isEmpty()) {
+                return {};
+            }
+        }
+        // Include 1px of blur output so that it can be sampled during the upscale, as below.
+        dstBounds.outset(PixelSpace<SkISize>({1, 1}));
+
+        // Offset the source rect directly to avoid negating the origin, as in subset(). It's within
+        // the image, so the differences are within its dimensions.
+        const SkIRect srcRect = {srcBounds.left() - origin.x(),
+                                 srcBounds.top() - origin.y(),
+                                 srcBounds.right() - origin.x(),
+                                 srcBounds.bottom() - origin.y()};
+        sk_sp<SkSpecialImage> lowResBlur = algorithm->downscaleAndBlur(
+                {lowResSigmas[0], lowResSigmas[1]},
+                {fx, fy},
+                input.fImage,
+                srcRect,
+                tileMode,
+                SkIRect(dstBounds));
+        if (!lowResBlur) {
+            return {};
+        }
+
+        FilterResult result{std::move(lowResBlur), dstBounds.topLeft()};
+        // Undo the outset padding, which keeps it available to the upscale's sampling.
+        result = result.insetByPixel();
+        result.fTransform.postConcat(LayerSpace<SkMatrix>(
+                SkMatrix::Scale(fx, fy).postTranslate(origin.x(), origin.y())));
+        LayerSpace<SkIRect> layerBounds = outputBounds;
+        if (tileMode == SkTileMode::kDecal) {
+            // As below, avoid cropping to a rounded-out image.
+            layerBounds = this->outputBounds(result.fTransform.mapRect(
+                    LayerSpace<SkIRect>(result.fImage->dimensions())));
+        }
+        result.fLayerBounds = layerBounds;
+        // Periodic tiling was applied to the source pixels, and the result covers the output.
+        result.fTileMode = tileMode == SkTileMode::kClamp ? SkTileMode::kClamp : SkTileMode::kDecal;
+        return result;
+    };
+    if (sx < 1.f || sy < 1.f) {
+        if (FilterResult result = downscaleAndBlur()) {
+            return result;
+        }
+    }
+
     // For identity scale factors, this rescale() is a no-op when possible, but otherwise it will
     // also handle resolving any color filters or transform similar to a resolve() except that it
     // can defer the tile mode.
