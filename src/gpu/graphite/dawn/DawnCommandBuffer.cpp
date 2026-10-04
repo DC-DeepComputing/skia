@@ -197,6 +197,7 @@ wgpu::CommandBuffer DawnCommandBuffer::finishEncoding() {
 
 void DawnCommandBuffer::onResetCommandBuffer() {
     fActiveGraphicsPipeline = nullptr;
+    fActiveComputePipeline = nullptr;
     fActiveRenderPassEncoder = nullptr;
     fActiveComputePassEncoder = nullptr;
     fCommandEncoder = nullptr;
@@ -1163,8 +1164,12 @@ void DawnCommandBuffer::beginComputePass() {
 void DawnCommandBuffer::bindComputePipeline(const ComputePipeline* computePipeline) {
     SkASSERT(fActiveComputePassEncoder);
 
-    fActiveComputePipeline = static_cast<const DawnComputePipeline*>(computePipeline);
-    fActiveComputePassEncoder.SetPipeline(fActiveComputePipeline->dawnComputePipeline());
+    // TODO split this into a separate CL
+    const auto* dawnComputePipeline = static_cast<const DawnComputePipeline*>(computePipeline);
+    if (fActiveComputePipeline != dawnComputePipeline) {
+        fActiveComputePipeline = dawnComputePipeline;
+        fActiveComputePassEncoder.SetPipeline(fActiveComputePipeline->dawnComputePipeline());
+    }
 }
 
 void DawnCommandBuffer::bindDispatchResources(const DispatchGroup& group,
@@ -1230,6 +1235,7 @@ void DawnCommandBuffer::endComputePass() {
     SkASSERT(fActiveComputePassEncoder);
     fActiveComputePassEncoder.End();
     fActiveComputePassEncoder = nullptr;
+    fActiveComputePipeline = nullptr;
 }
 
 bool DawnCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
