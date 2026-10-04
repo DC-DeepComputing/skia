@@ -33,6 +33,23 @@
       "message": "Hi, could you please review this SkParagraph fix?\n\nCurrently, placeholder runs are forced back into their logical insertion order after Unicode bidi reordering. This causes incorrect placement of inline objects in RTL and mixed-direction text.\n\nThe change preserves the bidi visual order during layout, while returning getRectsForPlaceholders() boxes in logical insertion order so clients still associate each box with the correct inline object.\n\nIt also corrects the placeholder hit-testing offset by subtracting the original shaping position. Regressions tests cover RTL and mixed-direction text, different placeholder widths, wrapping, repeated layout, maxLines, range boxes and cursor positions.\n\nThanks!\n\n(The previous change enforcing placeholder insertion order was https://skia-review.googlesource.com/c/skia/+/584540)",
       "revId": "0330936a12c0bb6d61389765d2468c56e2b1a462",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "514ea179_d93b594c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-04T00:53:56Z",
+      "side": 1,
+      "message": "Thank you for fixing thing bug.",
+      "revId": "0330936a12c0bb6d61389765d2468c56e2b1a462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
