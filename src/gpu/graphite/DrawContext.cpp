@@ -139,6 +139,11 @@ void DrawContext::resetForClearOrDiscard() {
     }
 }
 
+bool DrawContext::hasPendingWork() const {
+    return fPendingDraws->modifiesTarget() || fPendingUploads->size() > 0 ||
+           fCurrentDrawTask->hasTasks();
+}
+
 bool DrawContext::readsTexture(const TextureProxy* texture) const {
     if (fPendingDraws->samplesTexture(texture)) {
         return true;

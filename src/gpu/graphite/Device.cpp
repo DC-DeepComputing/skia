@@ -63,6 +63,7 @@
 #include "src/gpu/TiledTextureUtils.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ComputeScheduler.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/ContextUtils.h"
@@ -2365,6 +2366,11 @@ void Device::flushPendingWork(DrawContext* drawContext) {
         fMustFlushDependencies = false;
         fRecorder->priv().flushTrackedDevices(fDC->target().proxy());
     }
+
+    // Queued compute dispatches that the pending work reads (T1) or overwrites the sources of (T2)
+    // must be added to the root task list before that work is snapped, whether it's added to the
+    // root task list or to `drawContext` below. This never flushes another Device.
+    fRecorder->priv().computeScheduler()->flushIfNeeded(fDC.get());
 
     // While unbounded recursion is gone, bounded re-entrant flushing is still possible during
     // dependency resolution. We assert *after* the dependency flush to permit this valid re-entry.

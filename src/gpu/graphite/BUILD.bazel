@@ -37,6 +37,8 @@ GRAPHITE_FILES = [
     "ComputePipeline.cpp",
     "ComputePipeline.h",
     "ComputePipelineDesc.h",
+    "ComputeScheduler.cpp",
+    "ComputeScheduler.h",
     "ComputeTypes.h",
     "Context.cpp",
     "ContextOptionsPriv.h",
