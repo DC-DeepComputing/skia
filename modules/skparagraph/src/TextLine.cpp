@@ -1539,6 +1539,7 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                     int graphemeIndex = SkScalarNearlyZero(averageGraphemeWidth)
                                          ? 0
                                          : SkScalarFloorToInt(delta / averageGraphemeWidth);
+                    graphemeIndex = std::clamp(graphemeIndex, 0, (int)graphemes.size() - 1);
                     auto graphemeCenter = glyphemePosLeft + graphemeIndex * averageGraphemeWidth +
                                           averageGraphemeWidth / 2;
                     auto graphemeUtf8Index = graphemes[graphemeIndex];
