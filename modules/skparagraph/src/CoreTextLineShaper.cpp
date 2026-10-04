@@ -110,6 +110,60 @@ static SkFourByteTag resolve_codepoint_script(SkUnichar c) {
     return 0;
 }
 
+static bool cfstring_equals_skstring(CFStringRef cfStr, const SkString& skStr) {
+    if (!cfStr || skStr.isEmpty()) {
+        return false;
+    }
+    SkUniqueCFRef<CFStringRef> skCFStr(
+        CFStringCreateWithBytesNoCopy(kCFAllocatorDefault,
+                                      reinterpret_cast<const UInt8*>(skStr.c_str()),
+                                      skStr.size(),
+                                      kCFStringEncodingUTF8,
+                                      false,
+                                      kCFAllocatorNull));
+    if (!skCFStr) {
+        return false;
+    }
+    return CFStringCompare(cfStr, skCFStr.get(), kCFCompareCaseInsensitive) == kCFCompareEqualTo;
+}
+
+static bool is_allowed_font(CTFontRef ctFont,
+                            const std::vector<sk_sp<SkTypeface>>& allowedTypefaces,
+                            const std::vector<SkString>& fontFamilies) {
+    if (!ctFont || CoreTextLineShaper::isLastResortFont(ctFont)) {
+        return false;
+    }
+    SkUniqueCFRef<CFStringRef> ctPsName(CTFontCopyPostScriptName(ctFont));
+    SkUniqueCFRef<CFStringRef> ctFamName(CTFontCopyFamilyName(ctFont));
+
+    for (const auto& tf : allowedTypefaces) {
+        if (!tf) {
+            continue;
+        }
+        SkString tfPs;
+        tf->getPostScriptName(&tfPs);
+        if (ctPsName && cfstring_equals_skstring(ctPsName.get(), tfPs)) {
+            return true;
+        }
+        SkString tfFam;
+        tf->getFamilyName(&tfFam);
+        if (ctFamName && cfstring_equals_skstring(ctFamName.get(), tfFam)) {
+            return true;
+        }
+    }
+
+    for (const auto& fam : fontFamilies) {
+        if (ctFamName && cfstring_equals_skstring(ctFamName.get(), fam)) {
+            return true;
+        }
+        if (ctPsName && cfstring_equals_skstring(ctPsName.get(), fam)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 }  // namespace
 
 SkFourByteTag CoreTextLineShaper::detectScript(const char* utf8, size_t len) {
@@ -318,30 +372,48 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
             continue;
         }
 
-        CFDictionaryRef runAttrs = CTRunGetAttributes(ctRun);
-        CTFontRef ctFont = (CTFontRef)CFDictionaryGetValue(runAttrs, kCTFontAttributeName);
-        bool isLastResort = isLastResortFont(ctFont);
-
-        sk_sp<SkTypeface> typeface;
-        if (ctFont) {
-            sk_sp<SkTypeface>* cached = typefaceCache.find(ctFont);
-            if (cached) {
-                typeface = *cached;
-            } else {
-                typeface = SkMakeTypefaceFromCTFont(ctFont);
-                typefaceCache.set(ctFont, typeface);
-            }
-        }
-
-        CGFloat fontSize = ctFont ? CTFontGetSize(ctFont) : 14.0f;
-        SkFont font(std::move(typeface), SkScalarFromCGFloat(fontSize));
-
         const TextStyle* style = &fParagraph->paragraphStyle().getTextStyle();
         for (const auto& block : fParagraph->fTextStyles) {
             if (runUtf8Range.start >= block.fRange.start && runUtf8Range.start < block.fRange.end) {
                 style = &block.fStyle;
                 break;
             }
+        }
+
+        sk_sp<SkTypeface> primary = style->refTypeface();
+        std::vector<sk_sp<SkTypeface>> allowedTypefaces;
+        if (primary) {
+            allowedTypefaces.push_back(primary);
+        } else if (fParagraph->fFontCollection) {
+            allowedTypefaces = fParagraph->fFontCollection->findTypefaces(
+                style->getFontFamilies(), style->getFontStyle());
+            if (!allowedTypefaces.empty()) {
+                primary = allowedTypefaces.front();
+            }
+        }
+
+        CFDictionaryRef runAttrs = CTRunGetAttributes(ctRun);
+        CTFontRef ctFont = (CTFontRef)CFDictionaryGetValue(runAttrs, kCTFontAttributeName);
+        bool isLastResort = isLastResortFont(ctFont);
+        const bool fallbackDisabled = fParagraph->fFontCollection && !fParagraph->fFontCollection->fontFallbackEnabled();
+        const bool isFallback = isLastResort || (fallbackDisabled && !is_allowed_font(ctFont, allowedTypefaces, style->getFontFamilies()));
+
+        CGFloat fontSize = ctFont ? CTFontGetSize(ctFont) : (style->getFontSize() > 0 ? style->getFontSize() : 14.0f);
+        SkFont font;
+        if (isFallback) {
+            font = SkFont(primary, SkScalarFromCGFloat(fontSize));
+        } else {
+            sk_sp<SkTypeface> typeface;
+            if (ctFont) {
+                sk_sp<SkTypeface>* cached = typefaceCache.find(ctFont);
+                if (cached) {
+                    typeface = *cached;
+                } else {
+                    typeface = SkMakeTypefaceFromCTFont(ctFont);
+                    typefaceCache.set(ctFont, typeface);
+                }
+            }
+            font = SkFont(std::move(typeface), SkScalarFromCGFloat(fontSize));
         }
 
         font.setEdging(style->getFontEdging());
@@ -371,11 +443,58 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
         SkFourByteTag script = detectScript(
             fParagraph->text().data() + runUtf8Range.start, runUtf8Range.width());
 
+        skia_private::AutoSTArray<64, CFIndex> indexBuffer(glyphCount);
+        CTRunGetStringIndices(ctRun, CFRangeMake(0, glyphCount), indexBuffer.data());
+
+        skia_private::AutoSTArray<64, SkScalar> glyphAdvances(glyphCount);
         SkScalar runAdvanceX = 0;
-        skia_private::AutoSTArray<64, CGSize> advances(glyphCount);
-        CTRunGetAdvances(ctRun, CFRangeMake(0, glyphCount), advances.data());
-        for (CFIndex k = 0; k < glyphCount; ++k) {
-            runAdvanceX += SkScalarFromCGFloat(advances[k].width);
+
+        if (isFallback) {
+            SkScalar notdefAdvance = font.getWidth(0);
+            if (SkScalarNearlyZero(notdefAdvance)) {
+                notdefAdvance = font.getSize();
+            }
+
+            for (CFIndex k = 0; k < glyphCount; ++k) {
+                CFIndex u16Start = indexBuffer[k];
+                CFIndex u16End = u16Start;
+                if (ctIsRtl) {
+                    u16End = (k > 0) ? indexBuffer[k - 1] : (cfRange.location + cfRange.length);
+                } else {
+                    u16End = (k + 1 < glyphCount) ? indexBuffer[k + 1] : (cfRange.location + cfRange.length);
+                }
+                if (u16Start > u16End) {
+                    std::swap(u16Start, u16End);
+                }
+
+                TextRange u8GlyphRelRange = builder.indexMap().cfrangeToTextRange(
+                    CFRangeMake(u16Start, u16End - u16Start));
+                size_t glyphCharStart = regionRange.start + u8GlyphRelRange.start;
+                size_t glyphCharEnd = regionRange.start + u8GlyphRelRange.end;
+
+                const char* p = fParagraph->text().data() + glyphCharStart;
+                const char* pEnd = fParagraph->text().data() + glyphCharEnd;
+                size_t visibleCount = 0;
+                while (p < pEnd) {
+                    SkUnichar u = SkUTF::NextUTF8(&p, pEnd);
+                    if (u < 0) {
+                        break;
+                    }
+                    if (!is_zero_width_codepoint(u)) {
+                        ++visibleCount;
+                    }
+                }
+
+                glyphAdvances[k] = visibleCount * notdefAdvance;
+                runAdvanceX += glyphAdvances[k];
+            }
+        } else {
+            skia_private::AutoSTArray<64, CGSize> advances(glyphCount);
+            CTRunGetAdvances(ctRun, CFRangeMake(0, glyphCount), advances.data());
+            for (CFIndex k = 0; k < glyphCount; ++k) {
+                glyphAdvances[k] = SkScalarFromCGFloat(advances[k].width);
+                runAdvanceX += glyphAdvances[k];
+            }
         }
 
         SkFontMetrics fontMetrics;
@@ -404,37 +523,47 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
             advanceX
         );
 
-        skia_private::AutoSTArray<64, CGGlyph> glyphBuffer(glyphCount);
-        CTRunGetGlyphs(ctRun, CFRangeMake(0, glyphCount), glyphBuffer.data());
-
-        skia_private::AutoSTArray<64, CGPoint> posBuffer(glyphCount);
-        CTRunGetPositions(ctRun, CFRangeMake(0, glyphCount), posBuffer.data());
-
-        skia_private::AutoSTArray<64, CFIndex> indexBuffer(glyphCount);
-        CTRunGetStringIndices(ctRun, CFRangeMake(0, glyphCount), indexBuffer.data());
-
-        for (CFIndex k = 0; k < glyphCount; ++k) {
+        if (isFallback) {
             // CoreText renders missing glyphs through LastResort; remap to glyph 0 (.notdef) to honor SkParagraph unresolved contract
-            if (isLastResort) {
+            SkScalar accumulatedX = 0;
+            for (CFIndex k = 0; k < glyphCount; ++k) {
                 run.fGlyphs[k] = 0;
-            } else {
-                run.fGlyphs[k] = glyphBuffer[k];
-            }
-            if (run.fGlyphs[k] == 0) {
                 ++fUnresolvedGlyphs;
+
+                run.fPositions[k] = SkPoint::Make(advanceX + accumulatedX, 0);
+                accumulatedX += glyphAdvances[k];
+                run.fOffsets[k] = SkPoint::Make(0, 0);
+
+                size_t u8InRegion = builder.indexMap().toUtf8Index(indexBuffer[k]);
+                size_t globalU8 = regionRange.start + u8InRegion;
+                size_t clusterInRun = (globalU8 >= runUtf8Range.start) ? (globalU8 - runUtf8Range.start) : 0;
+                run.fClusterIndexes[k] = SkToU32(clusterInRun);
             }
+        } else {
+            skia_private::AutoSTArray<64, CGGlyph> glyphBuffer(glyphCount);
+            CTRunGetGlyphs(ctRun, CFRangeMake(0, glyphCount), glyphBuffer.data());
 
-            CGFloat relX = posBuffer[k].x - posBuffer[0].x;
-            // Invert Y coordinate because CoreText uses a bottom-left Cartesian origin while Skia expects a top-left origin
-            run.fPositions[k] = SkPoint::Make(
-                advanceX + SkScalarFromCGFloat(relX),
-                -SkScalarFromCGFloat(posBuffer[k].y));
-            run.fOffsets[k] = SkPoint::Make(0, 0);
+            skia_private::AutoSTArray<64, CGPoint> posBuffer(glyphCount);
+            CTRunGetPositions(ctRun, CFRangeMake(0, glyphCount), posBuffer.data());
 
-            size_t u8InRegion = builder.indexMap().toUtf8Index(indexBuffer[k]);
-            size_t globalU8 = regionRange.start + u8InRegion;
-            size_t clusterInRun = (globalU8 >= runUtf8Range.start) ? (globalU8 - runUtf8Range.start) : 0;
-            run.fClusterIndexes[k] = SkToU32(clusterInRun);
+            for (CFIndex k = 0; k < glyphCount; ++k) {
+                run.fGlyphs[k] = glyphBuffer[k];
+                if (run.fGlyphs[k] == 0) {
+                    ++fUnresolvedGlyphs;
+                }
+
+                CGFloat relX = posBuffer[k].x - posBuffer[0].x;
+                // Invert Y coordinate because CoreText uses a bottom-left Cartesian origin while Skia expects a top-left origin
+                run.fPositions[k] = SkPoint::Make(
+                    advanceX + SkScalarFromCGFloat(relX),
+                    -SkScalarFromCGFloat(posBuffer[k].y));
+                run.fOffsets[k] = SkPoint::Make(0, 0);
+
+                size_t u8InRegion = builder.indexMap().toUtf8Index(indexBuffer[k]);
+                size_t globalU8 = regionRange.start + u8InRegion;
+                size_t clusterInRun = (globalU8 >= runUtf8Range.start) ? (globalU8 - runUtf8Range.start) : 0;
+                run.fClusterIndexes[k] = SkToU32(clusterInRun);
+            }
         }
 
         // Trailing N+1 sentinel terminates position and cluster interpolations during line breaking and caret hit-testing
@@ -442,7 +571,7 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
         run.fOffsets[glyphCount] = SkPoint::Make(0, 0);
         run.fClusterIndexes[glyphCount] = run.leftToRight() ? SkToU32(runUtf8Range.width()) : 0;
 
-        if (isLastResort) {
+        if (isFallback) {
             fParagraph->addUnresolvedCodepoints(runUtf8Range);
         }
 
