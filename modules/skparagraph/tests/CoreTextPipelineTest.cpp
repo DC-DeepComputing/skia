@@ -16,29 +16,16 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "modules/skparagraph/include/DartTypes.h"
+#include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
 #include "tests/Test.h"
 #include "tools/fonts/FontToolUtils.h"
 
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-
 #include "modules/skparagraph/include/FontCollection.h"
-#include "modules/skparagraph/include/ParagraphStyle.h"
-#include "modules/skparagraph/src/CoreTextAttrStringBuilder.h"
-#include "modules/skparagraph/src/CoreTextFontRegistry.h"
-#include "modules/skparagraph/src/CoreTextIndexMap.h"
-#include "modules/skparagraph/src/CoreTextLineShaper.h"
 #include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
-#include "modules/skparagraph/src/Run.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "src/utils/mac/SkUniqueCFRef.h"
-
-#include <CoreFoundation/CoreFoundation.h>
-#include <CoreGraphics/CoreGraphics.h>
-#include <CoreText/CoreText.h>
-#include <string.h>
 
 using namespace skia::textlayout;
 
@@ -48,6 +35,64 @@ sk_sp<SkUnicode> get_unicode() {
     return sk_ref_sp<SkUnicode>(factory->getUnicode());
 }
 }  // namespace
+
+DEF_TEST(CoreTextPipeline_ParagraphStyleFrozenABI, reporter) {
+    REPORTER_ASSERT(reporter, sizeof(ParagraphStyle) == 544);
+
+    ParagraphStyle defaultStyle;
+    REPORTER_ASSERT(reporter, defaultStyle.getTextShapingEngine() == TextShapingEngine::kDefault);
+
+    ParagraphStyle hbStyle;
+    hbStyle.setTextShapingEngine(TextShapingEngine::kHarfBuzz);
+    REPORTER_ASSERT(reporter, hbStyle.getTextShapingEngine() == TextShapingEngine::kHarfBuzz);
+
+    ParagraphStyle ctStyle;
+    ctStyle.setTextShapingEngine(TextShapingEngine::kCoreText);
+    REPORTER_ASSERT(reporter, ctStyle.getTextShapingEngine() == TextShapingEngine::kCoreText);
+
+    REPORTER_ASSERT(reporter, !(defaultStyle == hbStyle));
+    REPORTER_ASSERT(reporter, !(defaultStyle == ctStyle));
+    REPORTER_ASSERT(reporter, !(hbStyle == ctStyle));
+}
+
+#if !defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+
+DEF_TEST(CoreTextPipeline_DisabledFallbackToHarfBuzz, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    TextStyle style;
+    style.setFontFamilies({SkString("Roboto")});
+    style.setFontSize(16.0f);
+
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.setTextShapingEngine(TextShapingEngine::kCoreText);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(style);
+    builder.addText("Fallback to HarfBuzz when CoreText is disabled");
+    builder.pop();
+    auto paragraph = builder.Build();
+    paragraph->layout(500.0f);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    REPORTER_ASSERT(reporter, !impl->isCoreTextShaped());
+    REPORTER_ASSERT(reporter, paragraph->getMaxIntrinsicWidth() > 0);
+}
+
+#else  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+
+#include "modules/skparagraph/include/ParagraphCache.h"
+#include "modules/skparagraph/src/CoreTextAttrStringBuilder.h"
+#include "modules/skparagraph/src/CoreTextFontRegistry.h"
+#include "modules/skparagraph/src/CoreTextIndexMap.h"
+#include "modules/skparagraph/src/CoreTextLineShaper.h"
+#include "modules/skparagraph/src/Run.h"
+#include "src/utils/mac/SkUniqueCFRef.h"
+
+#include <CoreFoundation/CoreFoundation.h>
+#include <CoreGraphics/CoreGraphics.h>
+#include <CoreText/CoreText.h>
+#include <string.h>
 
 DEF_TEST(CoreTextPipeline_IndexMap_AsciiAndMultibyte, reporter) {
     CoreTextIndexMap emptyMap("", 0);
@@ -1077,5 +1122,144 @@ DEF_TEST(CoreTextPipeline_DisableFontFallback, reporter) {
     }
 }
 
-#endif  // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+DEF_TEST(CoreTextPipeline_EngineSwitch, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    TextStyle style;
+    style.setFontFamilies({SkString("Roboto")});
+    style.setFontSize(16.0f);
+
+    auto makeParagraph = [&](TextShapingEngine engine) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextShapingEngine(engine);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        builder.addText("Hello World, Native Shaping Switcher");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(500.0f);
+        return paragraph;
+    };
+
+    auto pDefault = makeParagraph(TextShapingEngine::kDefault);
+    auto implDefault = static_cast<ParagraphImpl*>(pDefault.get());
+    REPORTER_ASSERT(reporter, implDefault->isCoreTextShaped());
+
+    auto pCoreText = makeParagraph(TextShapingEngine::kCoreText);
+    auto implCoreText = static_cast<ParagraphImpl*>(pCoreText.get());
+    REPORTER_ASSERT(reporter, implCoreText->isCoreTextShaped());
+
+    auto pHarfBuzz = makeParagraph(TextShapingEngine::kHarfBuzz);
+    auto implHarfBuzz = static_cast<ParagraphImpl*>(pHarfBuzz.get());
+    REPORTER_ASSERT(reporter, !implHarfBuzz->isCoreTextShaped());
+}
+
+DEF_TEST(CoreTextPipeline_EngineSwitchLetterSpacing, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    auto testEngine = [&](TextShapingEngine engine, bool expectedCoreText) {
+        ParagraphStyle styleNoSpacing;
+        styleNoSpacing.setTextShapingEngine(engine);
+        TextStyle textStyleNoSpacing;
+        textStyleNoSpacing.setFontFamilies({SkString("Roboto")});
+        textStyleNoSpacing.setFontSize(16.0f);
+
+        ParagraphBuilderImpl b1(styleNoSpacing, fontCollection, get_unicode());
+        b1.pushStyle(textStyleNoSpacing);
+        b1.addText("Letter Spacing Test");
+        b1.pop();
+        auto p1 = b1.Build();
+        p1->layout(1000.0f);
+
+        auto impl1 = static_cast<ParagraphImpl*>(p1.get());
+        REPORTER_ASSERT(reporter, impl1->isCoreTextShaped() == expectedCoreText);
+
+        ParagraphStyle styleSpacing;
+        styleSpacing.setTextShapingEngine(engine);
+        TextStyle textStyleSpacing;
+        textStyleSpacing.setFontFamilies({SkString("Roboto")});
+        textStyleSpacing.setFontSize(16.0f);
+        textStyleSpacing.setLetterSpacing(4.0f);
+
+        ParagraphBuilderImpl b2(styleSpacing, fontCollection, get_unicode());
+        b2.pushStyle(textStyleSpacing);
+        b2.addText("Letter Spacing Test");
+        b2.pop();
+        auto p2 = b2.Build();
+        p2->layout(1000.0f);
+
+        auto impl2 = static_cast<ParagraphImpl*>(p2.get());
+        REPORTER_ASSERT(reporter, impl2->isCoreTextShaped() == expectedCoreText);
+        REPORTER_ASSERT(reporter, p2->getMaxIntrinsicWidth() > p1->getMaxIntrinsicWidth());
+    };
+
+    testEngine(TextShapingEngine::kCoreText, true);
+    testEngine(TextShapingEngine::kHarfBuzz, false);
+}
+
+DEF_TEST(CoreTextPipeline_CacheKeyEngineSeparation, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    ParagraphCache cache;
+    cache.turnOn(true);
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Roboto")});
+    textStyle.setFontSize(16.0f);
+
+    auto makeParagraph = [&](TextShapingEngine engine) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextShapingEngine(engine);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText("Paragraph Cache Shaping Engine Test");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(500.0f);
+        return paragraph;
+    };
+
+    auto pCT1 = makeParagraph(TextShapingEngine::kCoreText);
+    auto implCT1 = static_cast<ParagraphImpl*>(pCT1.get());
+    REPORTER_ASSERT(reporter, implCT1->isCoreTextShaped());
+    REPORTER_ASSERT(reporter, cache.updateParagraph(implCT1));
+    REPORTER_ASSERT(reporter, cache.count() == 1);
+
+    auto pHB1 = makeParagraph(TextShapingEngine::kHarfBuzz);
+    auto implHB1 = static_cast<ParagraphImpl*>(pHB1.get());
+    REPORTER_ASSERT(reporter, !implHB1->isCoreTextShaped());
+    REPORTER_ASSERT(reporter, !cache.findParagraph(implHB1));
+
+    REPORTER_ASSERT(reporter, cache.updateParagraph(implHB1));
+    REPORTER_ASSERT(reporter, cache.count() == 2);
+
+    ParagraphStyle ctQueryStyle;
+    ctQueryStyle.setTextShapingEngine(TextShapingEngine::kCoreText);
+    ParagraphBuilderImpl bCT(ctQueryStyle, fontCollection, get_unicode());
+    bCT.pushStyle(textStyle);
+    bCT.addText("Paragraph Cache Shaping Engine Test");
+    bCT.pop();
+    auto pCTQuery = bCT.Build();
+    auto implCTQuery = static_cast<ParagraphImpl*>(pCTQuery.get());
+    REPORTER_ASSERT(reporter, !implCTQuery->isCoreTextShaped());
+    REPORTER_ASSERT(reporter, cache.findParagraph(implCTQuery));
+    REPORTER_ASSERT(reporter, implCTQuery->isCoreTextShaped());
+
+    ParagraphStyle hbQueryStyle;
+    hbQueryStyle.setTextShapingEngine(TextShapingEngine::kHarfBuzz);
+    ParagraphBuilderImpl bHB(hbQueryStyle, fontCollection, get_unicode());
+    bHB.pushStyle(textStyle);
+    bHB.addText("Paragraph Cache Shaping Engine Test");
+    bHB.pop();
+    auto pHBQuery = bHB.Build();
+    auto implHBQuery = static_cast<ParagraphImpl*>(pHBQuery.get());
+    REPORTER_ASSERT(reporter, !implHBQuery->isCoreTextShaped());
+    REPORTER_ASSERT(reporter, cache.findParagraph(implHBQuery));
+    REPORTER_ASSERT(reporter, !implHBQuery->isCoreTextShaped());
+}
+
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 

@@ -15,8 +15,18 @@
 #include <utility>
 #include <vector>
 
+#if !defined(SK_PARAGRAPH_NATIVE_CORETEXT) && (defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)) && !defined(SK_PARAGRAPH_DISABLE_CORETEXT)
+#define SK_PARAGRAPH_NATIVE_CORETEXT 1
+#endif
+
 namespace skia {
 namespace textlayout {
+
+enum class TextShapingEngine : uint8_t {
+    kDefault = 0,
+    kHarfBuzz = 1,
+    kCoreText = 2,
+};
 
 struct StrutStyle {
     StrutStyle();
@@ -85,7 +95,8 @@ struct ParagraphStyle {
                this->fDefaultTextStyle == rhs.fDefaultTextStyle &&
                this->fReplaceTabCharacters == rhs.fReplaceTabCharacters &&
                this->fFakeMissingFontStyles == rhs.fFakeMissingFontStyles &&
-               this->fRenderSoftHyphens == rhs.fRenderSoftHyphens;
+               this->fRenderSoftHyphens == rhs.fRenderSoftHyphens &&
+               this->fTextShapingEngine == rhs.fTextShapingEngine;
     }
 
     const StrutStyle& getStrutStyle() const { return fStrutStyle; }
@@ -137,6 +148,9 @@ struct ParagraphStyle {
     bool getRenderSoftHyphens() const { return fRenderSoftHyphens; }
     void setRenderSoftHyphens(bool value) { fRenderSoftHyphens = value; }
 
+    TextShapingEngine getTextShapingEngine() const { return fTextShapingEngine; }
+    void setTextShapingEngine(TextShapingEngine engine) { fTextShapingEngine = engine; }
+
 private:
     StrutStyle fStrutStyle;
     TextStyle fDefaultTextStyle;
@@ -153,6 +167,7 @@ private:
     bool fApplyRoundingHack = true;
     bool fLetterSpacingByCSSSpec = false;
     bool fRenderSoftHyphens = false;
+    TextShapingEngine fTextShapingEngine = TextShapingEngine::kDefault;
 };
 }  // namespace textlayout
 }  // namespace skia
