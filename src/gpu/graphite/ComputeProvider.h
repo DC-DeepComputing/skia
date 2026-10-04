@@ -13,6 +13,7 @@
 namespace skgpu::graphite {
 
 class Caps;
+class DownsampleStep;
 class GaussianBlurStep;
 
 class ComputeProvider {
@@ -23,6 +24,11 @@ public:
     // unless Caps::useComputeBlur() is set and the device supports the step.
     const GaussianBlurStep* gaussianBlur() const { return fGaussianBlur.get(); }
 
+    // The step that downscales a source ahead of gaussianBlur(), for the sigmas that need a
+    // downscale. Like gaussianBlur(), this is null unless Caps::useComputeBlur() is set and the
+    // device supports it.
+    const DownsampleStep* downsample() const { return fDownsample.get(); }
+
 private:
     friend class Context; // for constructor access
 
@@ -32,6 +38,7 @@ private:
     ComputeProvider(ComputeProvider&&) = delete;
 
     std::unique_ptr<GaussianBlurStep> fGaussianBlur;
+    std::unique_ptr<DownsampleStep> fDownsample;
 };
 
 } // namespace skgpu::graphite
