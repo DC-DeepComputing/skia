@@ -94,7 +94,7 @@ class [[nodiscard]] SkAutoToGlyphs {
 public:
     SkAutoToGlyphs(const SkFont& font, const void* text, size_t length, SkTextEncoding encoding) {
         if (encoding == SkTextEncoding::kGlyphID || length == 0) {
-            fGlyphs = {reinterpret_cast<const uint16_t*>(text), length >> 1};
+            fGlyphs = {reinterpret_cast<const SkGlyphID*>(text), length / sizeof(SkGlyphID)};
         } else {
             const size_t count = font.countText(text, length, encoding);
             fStorage.reset(count);

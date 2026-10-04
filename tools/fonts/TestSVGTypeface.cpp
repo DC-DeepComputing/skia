@@ -127,7 +127,7 @@ TestSVGTypeface::Glyph::Glyph() : fOrigin{0, 0}, fAdvance(0) {}
 TestSVGTypeface::Glyph::~Glyph() {}
 
 SkVector TestSVGTypeface::getAdvance(SkGlyphID glyphID) const {
-    glyphID = glyphID < fGlyphCount ? glyphID : 0;
+    glyphID = glyphID < SkTo<SkGlyphID>(fGlyphCount) ? glyphID : 0;
     return {fGlyphs[glyphID].fAdvance, 0};
 }
 
@@ -200,7 +200,7 @@ protected:
 
     GlyphMetrics generateMetrics(const SkGlyph& glyph, SkArenaAlloc*) override {
         SkGlyphID glyphID = glyph.getGlyphID();
-        glyphID           = glyphID < this->getTestSVGTypeface()->fGlyphCount ? glyphID : 0;
+        glyphID           = glyphID < SkTo<SkGlyphID>(this->getTestSVGTypeface()->fGlyphCount) ? glyphID : 0;
 
         GlyphMetrics mx(SkMask::kARGB32_Format);
         mx.neverRequestPath = true;
@@ -223,7 +223,7 @@ protected:
 
     void generateImage(const SkGlyph& glyph, void* imageBuffer) override {
         SkGlyphID glyphID = glyph.getGlyphID();
-        glyphID           = glyphID < this->getTestSVGTypeface()->fGlyphCount ? glyphID : 0;
+        glyphID           = glyphID < SkTo<SkGlyphID>(this->getTestSVGTypeface()->fGlyphCount) ? glyphID : 0;
 
         SkBitmap bm;
         // TODO: this should be SkImageInfo::MakeS32 when that passes all the tests.
@@ -261,7 +261,7 @@ protected:
 
         void onDraw(SkCanvas* canvas) override {
             SkGlyphID glyphID = fGlyph.getGlyphID();
-            glyphID = glyphID < fSelf->getTestSVGTypeface()->fGlyphCount ? glyphID : 0;
+            glyphID = glyphID < SkTo<SkGlyphID>(fSelf->getTestSVGTypeface()->fGlyphCount) ? glyphID : 0;
 
             TestSVGTypeface::Glyph& glyphData = fSelf->getTestSVGTypeface()->fGlyphs[glyphID];
 

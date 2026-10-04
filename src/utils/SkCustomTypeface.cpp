@@ -376,7 +376,7 @@ std::unique_ptr<SkScalerContext> SkUserTypeface::onCreateScalerContext(
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-static constexpr int kMaxGlyphCount = 65536;
+static constexpr int kMaxGlyphCount = 1 << 24;
 static constexpr size_t kHeaderSize = 16;
 static const char gHeaderString[] = "SkUserTypeface01";
 static_assert(sizeof(gHeaderString) == 1 + kHeaderSize, "need header to be 16 bytes");

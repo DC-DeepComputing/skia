@@ -24,8 +24,8 @@
 
 #include <memory>
 
-class SkStreamAsset;
 class SkFontationsScalerContext;
+class SkStreamAsset;
 
 namespace sk_fontations {
 
@@ -59,7 +59,7 @@ public:
     virtual bool is_bounds_mode() override { return false; }
     virtual void push_transform(const fontations_ffi::Transform& transform) override;
     virtual void pop_transform() override;
-    virtual void push_clip_glyph(uint16_t glyph_id) override;
+    virtual void push_clip_glyph(uint32_t glyph_id) override;
     virtual void push_clip_rectangle(float x_min, float y_min, float x_max, float y_max) override;
     virtual void pop_clip() override;
 
@@ -76,18 +76,18 @@ public:
                             uint8_t extend_mode) override;
 
     // Optimized calls that allow a SkCanvas::drawPath() call.
-    virtual void fill_glyph_solid(uint16_t glyph_id, uint16_t palette_index, float alpha) override;
-    virtual void fill_glyph_radial(uint16_t glyph_id,
+    virtual void fill_glyph_solid(uint32_t glyph_id, uint16_t palette_index, float alpha) override;
+    virtual void fill_glyph_radial(uint32_t glyph_id,
                                    const fontations_ffi::Transform& transform,
                                    const fontations_ffi::FillRadialParams& fill_radial_params,
                                    fontations_ffi::BridgeColorStops& stops,
                                    uint8_t) override;
-    virtual void fill_glyph_linear(uint16_t glyph_id,
+    virtual void fill_glyph_linear(uint32_t glyph_id,
                                    const fontations_ffi::Transform& transform,
                                    const fontations_ffi::FillLinearParams& fill_linear_params,
                                    fontations_ffi::BridgeColorStops& stops,
                                    uint8_t) override;
-    virtual void fill_glyph_sweep(uint16_t glyph_id,
+    virtual void fill_glyph_sweep(uint32_t glyph_id,
                                   const fontations_ffi::Transform& transform,
                                   const fontations_ffi::FillSweepParams& fill_sweep_params,
                                   fontations_ffi::BridgeColorStops& stops,
@@ -136,7 +136,7 @@ public:
     virtual bool is_bounds_mode() override { return true; }
     virtual void push_transform(const fontations_ffi::Transform& transform) override;
     virtual void pop_transform() override;
-    virtual void push_clip_glyph(uint16_t glyph_id) override;
+    virtual void push_clip_glyph(uint32_t glyph_id) override;
     virtual void push_clip_rectangle(float x_min, float y_min, float x_max, float y_max) override;
     virtual void pop_clip() override {}
 
@@ -157,18 +157,18 @@ public:
 
     // Stubs for optimized calls. We're only interested in the glyph bounds, so we forward this to
     // push_clip_glyph()
-    virtual void fill_glyph_solid(uint16_t glyph_id, uint16_t, float) override;
-    virtual void fill_glyph_radial(uint16_t glyph_id,
+    virtual void fill_glyph_solid(uint32_t glyph_id, uint16_t, float) override;
+    virtual void fill_glyph_radial(uint32_t glyph_id,
                                    const fontations_ffi::Transform&,
                                    const fontations_ffi::FillRadialParams&,
                                    fontations_ffi::BridgeColorStops&,
                                    uint8_t) override;
-    virtual void fill_glyph_linear(uint16_t glyph_id,
+    virtual void fill_glyph_linear(uint32_t glyph_id,
                                    const fontations_ffi::Transform&,
                                    const fontations_ffi::FillLinearParams&,
                                    fontations_ffi::BridgeColorStops&,
                                    uint8_t) override;
-    virtual void fill_glyph_sweep(uint16_t glyph_id,
+    virtual void fill_glyph_sweep(uint32_t glyph_id,
                                   const fontations_ffi::Transform&,
                                   const fontations_ffi::FillSweepParams&,
                                   fontations_ffi::BridgeColorStops&,

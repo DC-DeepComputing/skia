@@ -32,8 +32,7 @@ struct PackedGPUGlyphID {
 
     explicit constexpr operator SkPackedGlyphID() const { return this->packedGlyphID(); }
 
-    // NOTE: SkPackedGlyphID's raw uint32_t constructor masks off bits it doesn't know about.
-    constexpr SkPackedGlyphID packedGlyphID() const { return SkPackedGlyphID(fID); }
+    constexpr SkPackedGlyphID packedGlyphID() const { return SkPackedGlyphID::FromRaw(fID); }
 
     constexpr skgpu::MaskFormat maskFormat() const {
         return static_cast<skgpu::MaskFormat>((fID >> kMaskFormatOffset) & kMaskFormatMask);
@@ -50,11 +49,11 @@ struct PackedGPUGlyphID {
     // This hash incorporates the GPU metadata so it will not necessarily hash to the same value as
     // what SkPackedGlyphID hashes to by itself.
     uint32_t hash() const {
-        return SkChecksum::CheapMix(fID);
+        return SkChecksum::Hash32(&fID, sizeof(fID));
     }
 
 private:
-    // SkPackedGlyphID is 20 bits, so we can use 5 of the spare to store the GPU metadata that
+    // SkPackedGlyphID is 36 bits, so we can use 5 of the spare to store the GPU metadata that
     // determines the full contents of a glyph entry in the atlas.
     enum {
         // Bit counts
@@ -75,17 +74,17 @@ private:
     };
 
     static_assert(skgpu::kMaskFormatCount <= (1 << kMaskFormatBits));
-    static_assert(kEndGPUData <= 32); // Must still fit within a uint32_t
+    static_assert(kEndGPUData <= 64);
 
-    static constexpr uint32_t PackGPUData(skgpu::MaskFormat format, int padding, bool isSDF) {
+    static constexpr uint64_t PackGPUData(skgpu::MaskFormat format, int padding, bool isSDF) {
         SkASSERT((uint32_t) format < (1u << kMaskFormatBits));
         SkASSERT(0 <= padding && padding < (1 << kPaddingBits));
-        return ((uint32_t) format << kMaskFormatOffset) |
-               ((uint32_t) padding << kPaddingOffset) |
-               ((uint32_t) isSDF << kSDFOffset);
+        return (static_cast<uint64_t>(format) << kMaskFormatOffset) |
+               (static_cast<uint64_t>(padding) << kPaddingOffset) |
+               (static_cast<uint64_t>(isSDF) << kSDFOffset);
     }
 
-    uint32_t fID;
+    uint64_t fID;
 };
 
 } // namespace sktext::gpu

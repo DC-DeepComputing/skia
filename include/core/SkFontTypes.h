@@ -12,7 +12,7 @@ enum class SkTextEncoding {
     kUTF8,      //!< uses bytes to represent UTF-8 or ASCII
     kUTF16,     //!< uses two byte words to represent most of Unicode
     kUTF32,     //!< uses four byte words to represent all of Unicode
-    kGlyphID,   //!< uses two byte words to represent glyph indices
+    kGlyphID,   //!< uses four byte words to represent glyph indices
 };
 
 enum class SkFontHinting {

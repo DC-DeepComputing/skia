@@ -545,7 +545,10 @@ void* HDCOffscreen::draw(const SkGlyph& glyph, bool isBW, size_t* srcRBPtr) {
     xform.eDy = (float)-glyph.top();
     SetWorldTransform(fDC, &xform);
 
-    uint16_t glyphID = glyph.getGlyphID();
+    if (!SkTFitsIn<WORD>(glyph.getGlyphID())) {
+        return nullptr;
+    }
+    WORD glyphID = SkTo<WORD>(glyph.getGlyphID());
     BOOL ret = ExtTextOutW(fDC, 0, 0, ETO_GLYPH_INDEX, nullptr, reinterpret_cast<LPCWSTR>(&glyphID),
                            1, nullptr);
     GdiFlush();
@@ -814,9 +817,13 @@ SkScalerContext::GlyphMetrics SkScalerContext_GDI::generateMetrics(const SkGlyph
 
     GlyphMetrics mx(glyph.maskFormat());
 
+    if (!SkTFitsIn<WORD>(glyph.getGlyphID())) {
+        return mx;
+    }
+
     if (fType == SkScalerContext_GDI::kBitmap_Type || fType == SkScalerContext_GDI::kLine_Type) {
         SIZE size;
-        WORD glyphs = glyph.getGlyphID();
+        WORD glyphs = SkTo<WORD>(glyph.getGlyphID());
         int width, height;
         if (0 == GetTextExtentPointI(fDDC, &glyphs, 1, &size)) {
             width = fTM.tmMaxCharWidth;
@@ -1501,6 +1508,9 @@ bool SkGDIGeometrySink::process(const uint8_t* glyphbuf, DWORD total_size,
 DWORD SkScalerContext_GDI::getGDIGlyphPath(SkGlyphID glyph, UINT flags,
                                            AutoSTMalloc<BUFFERSIZE, uint8_t>* glyphbuf)
 {
+    if (!SkTFitsIn<WORD>(glyph)) {
+        return GDI_ERROR;
+    }
     GLYPHMETRICS gm;
 
     DWORD total_size = GetGlyphOutlineW(fDDC, glyph, flags, &gm, BUFFERSIZE, glyphbuf->get(), &fMat22);
@@ -1857,7 +1867,7 @@ sk_sp<SkTypeface> LogFontTypeface::onMakeClone(const SkFontArguments& args) cons
     return sk_ref_sp(this);
 }
 
-static void bmpCharsToGlyphs(HDC hdc, const WCHAR* bmpChars, int count, uint16_t* glyphs,
+static void bmpCharsToGlyphs(HDC hdc, const WCHAR* bmpChars, int count, SkGlyphID* glyphs,
                              bool Ox1FHack)
 {
     // Type1 fonts fail with uniscribe API. Use GetGlyphIndices for plane 0.
@@ -1875,7 +1885,9 @@ static void bmpCharsToGlyphs(HDC hdc, const WCHAR* bmpChars, int count, uint16_t
      *  glyph 0x1F instead ('Terminal' appears to be special, returning 0xFFFF).
      *  Type1 PFM/PFB, TT, OT TT, OT CFF all appear to use 0xFFFF, even on XP.
      */
-    DWORD result = GetGlyphIndicesW(hdc, bmpChars, count, glyphs, GGI_MARK_NONEXISTING_GLYPHS);
+    AutoSTMalloc<256, WORD> nativeGlyphs(count);
+    DWORD result = GetGlyphIndicesW(hdc, bmpChars, count, nativeGlyphs.get(),
+                                    GGI_MARK_NONEXISTING_GLYPHS);
     if (GDI_ERROR == result) {
         for (int i = 0; i < count; ++i) {
             glyphs[i] = 0;
@@ -1883,18 +1895,9 @@ static void bmpCharsToGlyphs(HDC hdc, const WCHAR* bmpChars, int count, uint16_t
         return;
     }
 
-    if (Ox1FHack) {
-        for (int i = 0; i < count; ++i) {
-            if (0xFFFF == glyphs[i] || 0x1F == glyphs[i]) {
-                glyphs[i] = 0;
-            }
-        }
-    } else {
-        for (int i = 0; i < count; ++i) {
-            if (0xFFFF == glyphs[i]){
-                glyphs[i] = 0;
-            }
-        }
+    for (int i = 0; i < count; ++i) {
+        WORD glyph = nativeGlyphs[i];
+        glyphs[i] = glyph == 0xFFFF || (Ox1FHack && glyph == 0x1F) ? 0 : glyph;
     }
 }
 

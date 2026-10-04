@@ -125,7 +125,7 @@ impl<'a> OutlinePen for VerbsPointsPen<'a> {
 
 pub fn get_path_verbs_points(
     outlines: &BridgeOutlineCollection,
-    glyph_id: u16,
+    glyph_id: u32,
     size: f32,
     coords: &BridgeNormalizedCoords,
     hinting_instance: &BridgeHintingInstance,

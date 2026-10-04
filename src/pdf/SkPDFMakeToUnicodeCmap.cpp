@@ -233,11 +233,11 @@ void SkPDFAppendCmapSections(const SkUnichar* glyphToUnicode,
             // e.g. <1035> <10FF> <2222> is ok, but
             //      <1035> <1100> <2222> is no good
             bool inRange =
-                i == currentRangeEntry.fEnd + 1 &&
-                i >> 8 == currentRangeEntry.fStart >> 8 &&
+                i == SkTo<int>(currentRangeEntry.fEnd) + 1 &&
+                i >> 8 == SkTo<int>(currentRangeEntry.fStart) >> 8 &&
                 i < limit &&
                 glyphToUnicode[gid] ==
-                    currentRangeEntry.fUnicode + i - currentRangeEntry.fStart;
+                    currentRangeEntry.fUnicode + i - SkTo<int>(currentRangeEntry.fStart);
             if (!inSubset || !inRange) {
                 if (currentRangeEntry.fEnd > currentRangeEntry.fStart) {
                     bfrangeEntries.push_back(currentRangeEntry);

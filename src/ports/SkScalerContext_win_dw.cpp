@@ -1487,14 +1487,14 @@ bool SkScalerContext_DW::drawColorV1Image(const SkGlyph&, SkCanvas&) { return fa
 
 bool SkScalerContext_DW::setAdvance(const SkGlyph& glyph, SkVector* advance) {
     *advance = {0, 0};
-    UINT16 glyphId = glyph.getGlyphID();
     DWriteFontTypeface* typeface = this->getDWriteTypeface();
 
     // DirectWrite treats all out of bounds glyph ids as having the same data as glyph 0.
     // For consistency with all other backends, treat out of range glyph ids as an error.
-    if (fGlyphCount <= glyphId) {
+    if (fGlyphCount <= glyph.getGlyphID()) {
         return false;
     }
+    UINT16 glyphId = SkTo<UINT16>(glyph.getGlyphID());
 
     DWRITE_GLYPH_METRICS gm;
 
@@ -1550,7 +1550,7 @@ bool SkScalerContext_DW::generateDWMetrics(const SkGlyph& glyph,
 
     FLOAT advance = 0;
 
-    UINT16 glyphId = glyph.getGlyphID();
+    UINT16 glyphId = SkTo<UINT16>(glyph.getGlyphID());
 
     DWRITE_GLYPH_OFFSET offset;
     offset.advanceOffset = 0.0f;
@@ -1620,7 +1620,7 @@ bool SkScalerContext_DW::getColorGlyphRun(const SkGlyph& glyph,
                                           IDWriteColorGlyphRunEnumerator** colorGlyph)
 {
     FLOAT advance = 0;
-    UINT16 glyphId = glyph.getGlyphID();
+    UINT16 glyphId = SkTo<UINT16>(glyph.getGlyphID());
 
     DWRITE_GLYPH_OFFSET offset;
     offset.advanceOffset = 0.0f;
@@ -2070,7 +2070,7 @@ const void* SkScalerContext_DW::getDWMaskBits(const SkGlyph& glyph,
 
     FLOAT advance = 0.0f;
 
-    UINT16 index = glyph.getGlyphID();
+    UINT16 index = SkTo<UINT16>(glyph.getGlyphID());
 
     DWRITE_GLYPH_OFFSET offset;
     offset.advanceOffset = 0.0f;

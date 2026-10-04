@@ -43,7 +43,7 @@ public:
     sk_sp<SkTextBlob> makeBlob() {
         const SkTextBlobBuilder::RunBuffer& run =
             fBuilder.allocRunPosH(fFont, fGlyphs.size(), 10, nullptr);
-        memcpy(run.glyphs, &fGlyphs[0], fGlyphs.size() * sizeof(uint16_t));
+        memcpy(run.glyphs, &fGlyphs[0], fGlyphs.size() * sizeof(SkGlyphID));
         memcpy(run.pos, &fXPos[0], fXPos.size() * sizeof(SkScalar));
         return fBuilder.make();
     }

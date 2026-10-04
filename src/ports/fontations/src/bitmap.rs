@@ -178,7 +178,7 @@ fn bitmap_dimensions(metrics: &BitmapMetrics) -> Option<AlphaBitmapDimensions> {
     Some(AlphaBitmapDimensions { width, height })
 }
 
-pub fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool {
+pub fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u32) -> bool {
     font_ref
         .with_font(|font| {
             let glyph_id = GlyphId::from(glyph_id);
@@ -206,7 +206,7 @@ fn glyf_bounds(font_ref: &FontRef, glyph_id: GlyphId) -> Option<BoundingBox<i16>
 
 pub unsafe fn bitmap_glyph<'a>(
     font_ref: &'a BridgeFontRef,
-    glyph_id: u16,
+    glyph_id: u32,
     font_size: f32,
 ) -> Box<BridgeBitmapGlyph<'a>> {
     let glyph_id = GlyphId::from(glyph_id);

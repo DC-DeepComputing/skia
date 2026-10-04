@@ -23,8 +23,10 @@
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/text/gpu/PackedGPUGlyphID.h"
 #include "tests/Test.h"
 
 #include <cstddef>
@@ -84,6 +86,76 @@ public:
         glyph->fMaskFormat = SkMask::Format::kA8_Format;
     }
 };
+
+DEF_TEST(SkPackedGlyphID_32Bit, reporter) {
+    for (SkGlyphID glyph : {0u, 1u, 0xFFFFu, 0x10000u, 0x10001u, 0xFFFFFFu,
+                           0x80000000u, 0xFFFFFFFFu}) {
+        for (uint32_t x = 0; x < 4; ++x) {
+            for (uint32_t y = 0; y < 4; ++y) {
+                SkPackedGlyphID id(glyph, x, y);
+                REPORTER_ASSERT(reporter, id.glyphID() == glyph);
+                REPORTER_ASSERT(reporter, id.getSubXFixed() == SkFixed(x << 14));
+                REPORTER_ASSERT(reporter, id.getSubYFixed() == SkFixed(y << 14));
+                REPORTER_ASSERT(reporter, id != SkPackedGlyphID());
+                REPORTER_ASSERT(reporter, SkPackedGlyphID::FromRaw(id.value()) == id);
+                REPORTER_ASSERT(reporter,
+                                SkPackedGlyphID(glyph, SkFixed(x << 14), SkFixed(y << 14)) == id);
+                REPORTER_ASSERT(reporter,
+                                SkPackedGlyphID(glyph, {x * 0.25f - 1, y * 0.25f - 1},
+                                                SkPackedGlyphID::kXYFieldMask) == id);
+                SkBinaryWriteBuffer writer({});
+                id.flatten(writer);
+                auto data = writer.snapshotAsData();
+                SkReadBuffer reader(data->data(), data->size());
+                REPORTER_ASSERT(reporter, SkPackedGlyphID::MakeFromBuffer(reader) == id);
+                REPORTER_ASSERT(reporter, reader.isValid());
+
+                SkGlyph src(id);
+                SkGlyphTestPeer::SetGlyph1(&src);
+                SkGlyphDigest digest(123, src);
+                REPORTER_ASSERT(reporter, SkGlyphDigest::GetKey(digest) == id);
+                REPORTER_ASSERT(reporter, digest.index() == 123);
+                SkBinaryWriteBuffer metricsWriter({});
+                src.flattenMetrics(metricsWriter);
+                auto metricsData = metricsWriter.snapshotAsData();
+                SkReadBuffer metricsReader(metricsData->data(), metricsData->size());
+                auto dst = SkGlyph::MakeFromBuffer(metricsReader);
+                REPORTER_ASSERT(reporter, dst && dst->getPackedID() == id);
+            }
+        }
+    }
+    REPORTER_ASSERT(reporter, SkPackedGlyphID(1).hash() != SkPackedGlyphID(0x10001).hash());
+}
+
+DEF_TEST(PackedGPUGlyphID_32Bit, reporter) {
+    using sktext::gpu::PackedGPUGlyphID;
+    for (SkGlyphID glyph : {1u, 0x10001u, 0xFFFFFFFFu}) {
+        SkPackedGlyphID id(glyph, 2u, 3u);
+        for (auto format : {skgpu::MaskFormat::kA8, skgpu::MaskFormat::kA565,
+                            skgpu::MaskFormat::kARGB}) {
+            for (int padding = 0; padding <= 2; ++padding) {
+                for (bool isSDF : {false, true}) {
+                    PackedGPUGlyphID gpuID(id, format, padding, isSDF);
+                    REPORTER_ASSERT(reporter, gpuID.packedGlyphID() == id);
+                    REPORTER_ASSERT(reporter, gpuID.maskFormat() == format);
+                    REPORTER_ASSERT(reporter, gpuID.padding() == padding);
+                    REPORTER_ASSERT(reporter, gpuID.isSDF() == isSDF);
+                }
+            }
+        }
+    }
+}
+
+DEF_TEST(SkPackedGlyphID_16BitDeserialize, reporter) {
+    SkBinaryWriteBuffer writer({});
+    writer.writeUInt((0xFFFFu << 2) | 2 | (3u << 18));
+    auto data = writer.snapshotAsData();
+    SkReadBuffer reader(data->data(), data->size());
+    reader.setVersion(SkPicturePriv::k32BitGlyphIDs - 1);
+    REPORTER_ASSERT(reporter,
+                    SkPackedGlyphID::MakeFromBuffer(reader) == SkPackedGlyphID(0xFFFFu, 2u, 3u));
+    REPORTER_ASSERT(reporter, reader.isValid());
+}
 
 DEF_TEST(SkGlyph_SendMetrics, reporter) {
     {

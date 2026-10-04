@@ -21,12 +21,12 @@ public:
     virtual size_t size() const = 0;
 };
 
-struct ColorStop;
 struct BridgeColorStops;
-struct Transform;
+struct ColorStop;
 struct FillLinearParams;
 struct FillRadialParams;
 struct FillSweepParams;
+struct Transform;
 
 /** C++ pure virtual interface, exposed to Rust side for receiving COLRv0/COLRv1 drawing callback
  * matching Skrifa's ColorPainter trait. */
@@ -36,7 +36,7 @@ public:
     virtual bool is_bounds_mode() = 0;
     virtual void push_transform(const Transform& transform) = 0;
     virtual void pop_transform() = 0;
-    virtual void push_clip_glyph(uint16_t glyph_id) = 0;
+    virtual void push_clip_glyph(uint32_t glyph_id) = 0;
     virtual void push_clip_rectangle(float x_min, float y_min, float x_max, float y_max) = 0;
     virtual void pop_clip() = 0;
 
@@ -53,18 +53,18 @@ public:
                             uint8_t extend_mode) = 0;
 
     // Optimized calls that allow a SkCanvas::drawPath() call.
-    virtual void fill_glyph_solid(uint16_t glyph_id, uint16_t palette_index, float alpha) = 0;
-    virtual void fill_glyph_radial(uint16_t glyph_id,
+    virtual void fill_glyph_solid(uint32_t glyph_id, uint16_t palette_index, float alpha) = 0;
+    virtual void fill_glyph_radial(uint32_t glyph_id,
                                    const fontations_ffi::Transform& transform,
                                    const fontations_ffi::FillRadialParams& fill_radial_params,
                                    fontations_ffi::BridgeColorStops& stops,
                                    uint8_t) = 0;
-    virtual void fill_glyph_linear(uint16_t glyph_id,
+    virtual void fill_glyph_linear(uint32_t glyph_id,
                                    const fontations_ffi::Transform& transform,
                                    const fontations_ffi::FillLinearParams& fill_linear_params,
                                    fontations_ffi::BridgeColorStops& stops,
                                    uint8_t) = 0;
-    virtual void fill_glyph_sweep(uint16_t glyph_id,
+    virtual void fill_glyph_sweep(uint32_t glyph_id,
                                   const fontations_ffi::Transform& transform,
                                   const fontations_ffi::FillSweepParams& fill_sweep_params,
                                   fontations_ffi::BridgeColorStops& stops,

@@ -262,7 +262,7 @@ void PathOpSubmitter::flatten(SkWriteBuffer& buffer) const {
     buffer.writeScalar(fStrikeToSourceScale);
     buffer.writePointArray(fPositions);
     for (IDOrPath& idOrPath : fIDsOrPaths) {
-        buffer.writeInt(idOrPath.fGlyphID);
+        buffer.writeUInt(idOrPath.fGlyphID);
     }
 }
 
@@ -288,7 +288,7 @@ std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buf
     if (!buffer.validateCanReadN<int>(glyphCount)) { return std::nullopt; }
     auto idsOrPaths = SkSpan(alloc->makeUniqueArray<IDOrPath>(glyphCount).release(), glyphCount);
     for (auto& idOrPath : idsOrPaths) {
-        idOrPath.fGlyphID = SkTo<SkGlyphID>(buffer.readInt());
+        idOrPath.fGlyphID = buffer.readUInt();
     }
 
     if (!buffer.isValid()) { return std::nullopt; }
@@ -522,7 +522,7 @@ void DrawableOpSubmitter::flatten(SkWriteBuffer& buffer) const {
     buffer.writeScalar(fStrikeToSourceScale);
     buffer.writePointArray(fPositions);
     for (IDOrDrawable idOrDrawable : fIDsOrDrawables) {
-        buffer.writeInt(idOrDrawable.fGlyphID);
+        buffer.writeUInt(idOrDrawable.fGlyphID);
     }
 }
 
@@ -545,7 +545,7 @@ std::optional<DrawableOpSubmitter> DrawableOpSubmitter::MakeFromBuffer(
     auto idsOrDrawables = alloc->makePODArray<IDOrDrawable>(glyphCount);
     for (int i = 0; i < SkToInt(glyphCount); ++i) {
         // Remember, we stored an int for glyph id.
-        idsOrDrawables[i].fGlyphID = SkTo<SkGlyphID>(buffer.readInt());
+        idsOrDrawables[i].fGlyphID = buffer.readUInt();
     }
 
     if (!buffer.isValid()) {

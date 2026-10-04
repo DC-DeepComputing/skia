@@ -48,7 +48,8 @@ struct GlyphEntry {
 };
 
 /** Adapts GlyphEntry* to conform to GlyphVectors GlyphType requirements. */
-class Glyph {
+// Match the packed-ID storage stride on 32-bit platforms.
+class alignas(sizeof(SkPackedGlyphID)) Glyph {
     GlyphEntry* fEntry;
 
     Glyph() = delete;

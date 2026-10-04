@@ -92,7 +92,7 @@ static int find_with_slope(const SkUnichar base[], int count, SkUnichar value, d
     return index;
 }
 
-int SkCharToGlyphCache::findGlyphIndex(SkUnichar unichar) const {
+int64_t SkCharToGlyphCache::findGlyphIndex(SkUnichar unichar) const {
     const int count = fKUnichar.size();
     int index;
     if (count <= kSmallCountLimit) {

@@ -13,6 +13,7 @@
 #include "src/core/SkStrike.h"  // IWYU pragma: keep
 #include "src/text/gpu/StrikeCache.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -27,8 +28,8 @@ enum class MaskFormat : int;
 }
 
 namespace sktext::gpu {
-class SubRunAllocator;
 class StrikeCache;
+class SubRunAllocator;
 
 /**
  * Concepts used to describe backend-specific (Ganesh v. Graphite) data stored in GlyphVector.
@@ -57,14 +58,14 @@ class StrikeCache;
  */
 namespace GlyphVector_Concepts {
 
-// Both backends currently store pointer-sized types for glyphs and 104 is currently sufficient for
-// Ganesh and Graphite's BackendData.
-static constexpr size_t kMaxGlyphTypeSize = sizeof(void*);
+// Entries hold either packed IDs or backend pointers, including on 32-bit platforms.
+static constexpr size_t kMaxGlyphTypeSize = std::max(sizeof(void*), sizeof(SkPackedGlyphID));
+// 104 is currently sufficient for Ganesh and Graphite's BackendData.
 static constexpr size_t kMaxBackendDataSize = 104;
 
 template <typename T>
 concept GlyphType = requires(const T& t) {
-    requires sizeof(T)  <= kMaxGlyphTypeSize;
+    requires sizeof(T)  == kMaxGlyphTypeSize;
     // We store these in an array with kMaxGlyphTypeSize per entry. So that alignment must be
     // sufficient.
     requires alignof(T) <= kMaxGlyphTypeSize;

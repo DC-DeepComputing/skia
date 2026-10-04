@@ -18,6 +18,7 @@
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -36,6 +37,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
+#include "include/utils/SkCustomTypeface.h"
 #include "src/core/SkSpinlock.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
@@ -69,6 +71,36 @@ static void draw(SkCanvas* canvas, int redraw, const TArray<sk_sp<SkTextBlob>>& 
             yOffset += SkScalarCeilToInt(bounds.height());
             SkPaint paint;
             canvas->drawTextBlob(blob, 0, SkIntToScalar(yOffset), paint);
+        }
+    }
+}
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextBlobCache_32BitGlyphs, reporter, ctxInfo,
+                                     CtsEnforcement::kNever) {
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 2, SkPath::Rect(SkRect::MakeLTRB(0, -1, 1, 0)));
+    builder.setGlyph(0x10001, 4, SkPath::Rect(SkRect::MakeLTRB(0, -1, 3, 0)));
+    SkFont font(builder.detach(), 10);
+    const SkGlyphID glyphs[] = {1, 0x10001};
+    const auto info = SkImageInfo::MakeN32Premul(64, 32);
+    auto surface = SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+    if (!surface) {
+        return;
+    }
+    SkBitmap pixels;
+    pixels.allocPixels(info);
+    for (bool subpixel : {false, true}) {
+        font.setSubpixel(subpixel);
+        auto blob = SkTextBlob::MakeFromText(glyphs, sizeof(glyphs), font, SkTextEncoding::kGlyphID);
+        for (int draw = 0; draw < 3; ++draw) {
+            surface->getCanvas()->clear(SK_ColorWHITE);
+            surface->getCanvas()->drawTextBlob(blob, draw * 0.25f, 20 + draw * 0.25f, SkPaint());
+            REPORTER_ASSERT(reporter, surface->readPixels(pixels, 0, 0));
+            REPORTER_ASSERT(reporter, pixels.getColor(5, 15) == SK_ColorBLACK);
+            REPORTER_ASSERT(reporter, pixels.getColor(15, 15) == SK_ColorWHITE);
+            REPORTER_ASSERT(reporter, pixels.getColor(45, 15) == SK_ColorBLACK);
+            REPORTER_ASSERT(reporter, pixels.getColor(55, 15) == SK_ColorWHITE);
         }
     }
 }
@@ -118,7 +150,7 @@ static void text_blob_cache_inner(skiatest::Reporter* reporter, GrDirectContext*
     int count = std::min(fm->countFamilies(), maxFamilies);
 
     // make a ton of text
-    AutoTArray<uint16_t> text(maxTotalText);
+    AutoTArray<SkGlyphID> text(maxTotalText);
     for (int i = 0; i < maxTotalText; i++) {
         text[i] = i % maxGlyphID;
     }
@@ -163,7 +195,7 @@ static void text_blob_cache_inner(skiatest::Reporter* reporter, GrDirectContext*
                                                                                    maxTotalText,
                                                                                    0, 0,
                                                                                    nullptr);
-                        memcpy(run.glyphs, text.get(), maxTotalText * sizeof(uint16_t));
+                        memcpy(run.glyphs, text.get(), maxTotalText * sizeof(SkGlyphID));
                     }
                 }
             }

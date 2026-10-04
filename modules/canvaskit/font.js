@@ -1,6 +1,16 @@
 CanvasKit._extraInitializations = CanvasKit._extraInitializations || [];
 CanvasKit._extraInitializations.push(function() {
 
+  function copyGlyphIDs(glyphs) {
+    if (wasMalloced(glyphs)) {
+      var array = glyphs['toTypedArray'] ? glyphs['toTypedArray']() : glyphs;
+      if (array.BYTES_PER_ELEMENT !== 4) {
+        throw 'Malloced glyph IDs must use Uint32Array; use CanvasKit.MallocGlyphIDs().';
+      }
+    }
+    return copy1dArray(glyphs, 'HEAPU32');
+  }
+
   CanvasKit.Canvas.prototype.drawText = function(str, x, y, paint, font) {
     // lengthBytesUTF8 and stringToUTF8Array are defined in the emscripten
     // JS.  See https://kripken.github.io/emscripten-site/docs/api_reference/preamble.js.html#stringToUTF8
@@ -18,7 +28,7 @@ CanvasKit._extraInitializations.push(function() {
         throw 'Not enough positions for the array of gyphs';
     }
     CanvasKit.setCurrentContext(this._context);
-    const glyphs_ptr    = copy1dArray(glyphs, 'HEAPU16');
+    const glyphs_ptr    = copyGlyphIDs(glyphs);
     const positions_ptr = copy1dArray(positions, 'HEAPF32');
 
     this._drawGlyphs(glyphs.length, glyphs_ptr, positions_ptr, x, y, font, paint);
@@ -27,12 +37,12 @@ CanvasKit._extraInitializations.push(function() {
     freeArraysThatAreNotMallocedByUsers(glyphs_ptr,    glyphs);
   };
 
-  // Glyphs should be a Uint16Array of glyph ids, e.g. provided by Font.getGlyphIDs.
+  // Glyphs should be a Uint32Array of glyph ids, e.g. provided by Font.getGlyphIDs.
   // If using a Malloc'd array, be sure to use CanvasKit.MallocGlyphIDs() to get the right type.
   // The return value will be a Float32Array that is 4 times as long as the input array. For each
   // glyph, there will be 4 floats for left, top, right, bottom (relative to 0, 0) for that glyph.
   CanvasKit.Font.prototype.getGlyphBounds = function(glyphs, paint, optionalOutputArray) {
-    var glyphPtr = copy1dArray(glyphs, 'HEAPU16');
+    var glyphPtr = copyGlyphIDs(glyphs);
     var bytesPerRect = 4 * 4;
     var rectPtr = CanvasKit._malloc(glyphs.length * bytesPerRect);
     this._getGlyphWidthBounds(glyphPtr, glyphs.length, nullptr, rectPtr, paint || null);
@@ -60,7 +70,7 @@ CanvasKit._extraInitializations.push(function() {
     var strPtr = CanvasKit._malloc(strBytes);
     stringToUTF8(str, strPtr, strBytes); // This includes the null terminator
 
-    var bytesPerGlyph = 2;
+    var bytesPerGlyph = 4;
     var glyphPtr = CanvasKit._malloc(numGlyphIDs * bytesPerGlyph);
     // We don't need to compute the id for the null terminator, so subtract 1.
     var actualIDs = this._getGlyphIDs(strPtr, strBytes - 1, numGlyphIDs, glyphPtr);
@@ -70,30 +80,30 @@ CanvasKit._extraInitializations.push(function() {
       CanvasKit._free(glyphPtr);
       return null;
     }
-    var glyphs = new Uint16Array(CanvasKit.HEAPU8.buffer, glyphPtr, actualIDs);
+    var glyphs = new Uint32Array(CanvasKit.HEAPU8.buffer, glyphPtr, actualIDs);
     if (optionalOutputArray) {
       optionalOutputArray.set(glyphs);
       CanvasKit._free(glyphPtr);
       return optionalOutputArray;
     }
-    var rv = Uint16Array.from(glyphs);
+    var rv = Uint32Array.from(glyphs);
     CanvasKit._free(glyphPtr);
     return rv;
   };
 
   CanvasKit.Font.prototype.getGlyphIntercepts = function(glyphs, positions, top, bottom) {
-    var gPtr = copy1dArray(glyphs, 'HEAPU16');
+    var gPtr = copyGlyphIDs(glyphs);
     var pPtr = copy1dArray(positions, 'HEAPF32');
     return this._getGlyphIntercepts(gPtr, glyphs.length, !wasMalloced(glyphs),
                                     pPtr, positions.length, !wasMalloced(positions),
                                     top, bottom);
   };
 
-  // Glyphs should be a Uint16Array of glyph ids, e.g. provided by Font.getGlyphIDs.
+  // Glyphs should be a Uint32Array of glyph ids, e.g. provided by Font.getGlyphIDs.
   // If using a Malloc'd array, be sure to use CanvasKit.MallocGlyphIDs() to get the right type.
   // The return value will be a Float32Array that has one width per input glyph.
   CanvasKit.Font.prototype.getGlyphWidths = function(glyphs, paint, optionalOutputArray) {
-    var glyphPtr = copy1dArray(glyphs, 'HEAPU16');
+    var glyphPtr = copyGlyphIDs(glyphs);
     var bytesPerWidth = 4;
     var widthPtr = CanvasKit._malloc(glyphs.length * bytesPerWidth);
     this._getGlyphWidthBounds(glyphPtr, glyphs.length, widthPtr, nullptr, paint || null);
@@ -170,7 +180,7 @@ CanvasKit._extraInitializations.push(function() {
     var strPtr = CanvasKit._malloc(strBytes);
     stringToUTF8(str, strPtr, strBytes); // This includes the null terminator
 
-    var bytesPerGlyph = 2;
+    var bytesPerGlyph = 4;
     var glyphPtr = CanvasKit._malloc(numGlyphIDs * bytesPerGlyph);
     // We don't need to compute the id for the null terminator, so subtract 1.
     var actualIDs = this._getGlyphIDs(strPtr, strBytes - 1, numGlyphIDs, glyphPtr);
@@ -180,13 +190,13 @@ CanvasKit._extraInitializations.push(function() {
       CanvasKit._free(glyphPtr);
       return null;
     }
-    var glyphs = new Uint16Array(CanvasKit.HEAPU8.buffer, glyphPtr, actualIDs);
+    var glyphs = new Uint32Array(CanvasKit.HEAPU8.buffer, glyphPtr, actualIDs);
     if (optionalOutputArray) {
       optionalOutputArray.set(glyphs);
       CanvasKit._free(glyphPtr);
       return optionalOutputArray;
     }
-    var rv = Uint16Array.from(glyphs);
+    var rv = Uint32Array.from(glyphs);
     CanvasKit._free(glyphPtr);
     return rv;
   };
@@ -276,9 +286,8 @@ CanvasKit._extraInitializations.push(function() {
   // Glyphs should be a Uint32Array of glyph ids, e.g. provided by Font.getGlyphIDs.
   // If using a Malloc'd array, be sure to use CanvasKit.MallocGlyphIDs() to get the right type.
   CanvasKit.TextBlob.MakeFromRSXformGlyphs = function(glyphs, rsxForms, font) {
-    // Currently on the C++ side, glyph ids are 16bit, but there is an effort to change that.
-    var glyphPtr = copy1dArray(glyphs, 'HEAPU16');
-    var bytesPerGlyph = 2;
+    var glyphPtr = copyGlyphIDs(glyphs);
+    var bytesPerGlyph = 4;
 
     var rPtr = copy1dArray(rsxForms, 'HEAPF32');
 
@@ -294,9 +303,8 @@ CanvasKit._extraInitializations.push(function() {
   // Glyphs should be a Uint32Array of glyph ids, e.g. provided by Font.getGlyphIDs.
   // If using a Malloc'd array, be sure to use CanvasKit.MallocGlyphIDs() to get the right type.
   CanvasKit.TextBlob.MakeFromGlyphs = function(glyphs, font) {
-    // Currently on the C++ side, glyph ids are 16bit, but there is an effort to change that.
-    var glyphPtr = copy1dArray(glyphs, 'HEAPU16');
-    var bytesPerGlyph = 2;
+    var glyphPtr = copyGlyphIDs(glyphs);
+    var bytesPerGlyph = 4;
     var blob = CanvasKit.TextBlob._MakeFromGlyphs(glyphPtr, glyphs.length * bytesPerGlyph, font);
     freeArraysThatAreNotMallocedByUsers(glyphPtr, glyphs);
     if (!blob) {
@@ -327,6 +335,6 @@ CanvasKit._extraInitializations.push(function() {
   // A helper to return the right type for GlyphIDs stored internally. When that changes, this
   // will also be changed, which will help avoid future breakages.
   CanvasKit.MallocGlyphIDs = function(numGlyphIDs) {
-    return CanvasKit.Malloc(Uint16Array, numGlyphIDs);
+    return CanvasKit.Malloc(Uint32Array, numGlyphIDs);
   }
 });

@@ -250,14 +250,14 @@ pub mod ffi {
             font_ref: &BridgeFontRef,
             map: &BridgeMappingIndex,
             codepoint: &[u32],
-            glyphs: &mut [u16],
+            glyphs: &mut [u32],
         );
 
         fn outline_format(outlines: &BridgeOutlineCollection) -> OutlineFormat;
 
         fn get_path_verbs_points(
             outlines: &BridgeOutlineCollection,
-            glyph_id: u16,
+            glyph_id: u32,
             size: f32,
             coords: &BridgeNormalizedCoords,
             hinting_instance: &BridgeHintingInstance,
@@ -272,7 +272,7 @@ pub mod ffi {
             font_ref: &BridgeFontRef,
             size: f32,
             coords: &BridgeNormalizedCoords,
-            glyph_id: u16,
+            glyph_id: u32,
         ) -> f32;
         fn units_per_em_or_zero(font_ref: &BridgeFontRef) -> u16;
         fn get_skia_metrics(
@@ -284,7 +284,7 @@ pub mod ffi {
             font_ref: &BridgeFontRef,
             coords: &BridgeNormalizedCoords,
         ) -> Metrics;
-        fn num_glyphs(font_ref: &BridgeFontRef) -> u16;
+        fn num_glyphs(font_ref: &BridgeFontRef) -> u32;
         fn fill_glyph_to_unicode_map(font_ref: &BridgeFontRef, map: &mut [u32]);
         fn family_name(font_ref: &BridgeFontRef) -> String;
         fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool;
@@ -299,21 +299,21 @@ pub mod ffi {
             palette_overrides: &[PaletteOverride],
         ) -> Vec<u32>;
 
-        fn has_colrv1_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool;
-        fn has_colrv0_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool;
+        fn has_colrv1_glyph(font_ref: &BridgeFontRef, glyph_id: u32) -> bool;
+        fn has_colrv0_glyph(font_ref: &BridgeFontRef, glyph_id: u32) -> bool;
         fn get_colrv1_clip_box(
             font_ref: &BridgeFontRef,
             coords: &BridgeNormalizedCoords,
-            glyph_id: u16,
+            glyph_id: u32,
             size: f32,
             clip_box: &mut ClipBox,
         ) -> bool;
 
         type BridgeBitmapGlyph<'a>;
-        fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool;
+        fn has_bitmap_glyph(font_ref: &BridgeFontRef, glyph_id: u32) -> bool;
         unsafe fn bitmap_glyph<'a>(
             font_ref: &'a BridgeFontRef,
-            glyph_id: u16,
+            glyph_id: u32,
             font_size: f32,
         ) -> Box<BridgeBitmapGlyph<'a>>;
         unsafe fn png_data<'a>(bitmap_glyph: &'a BridgeBitmapGlyph) -> &'a [u8];
@@ -366,7 +366,7 @@ pub mod ffi {
         fn draw_colr_glyph(
             font_ref: &BridgeFontRef,
             coords: &BridgeNormalizedCoords,
-            glyph_id: u16,
+            glyph_id: u32,
             color_painter: Pin<&mut ColorPainterWrapper>,
         ) -> bool;
 
@@ -411,7 +411,7 @@ pub mod ffi {
         fn is_bounds_mode(self: Pin<&mut ColorPainterWrapper>) -> bool;
         fn push_transform(self: Pin<&mut ColorPainterWrapper>, transform: &Transform);
         fn pop_transform(self: Pin<&mut ColorPainterWrapper>);
-        fn push_clip_glyph(self: Pin<&mut ColorPainterWrapper>, glyph_id: u16);
+        fn push_clip_glyph(self: Pin<&mut ColorPainterWrapper>, glyph_id: u32);
         fn push_clip_rectangle(
             self: Pin<&mut ColorPainterWrapper>,
             x_min: f32,
@@ -444,13 +444,13 @@ pub mod ffi {
         // Optimized functions.
         fn fill_glyph_solid(
             self: Pin<&mut ColorPainterWrapper>,
-            glyph_id: u16,
+            glyph_id: u32,
             palette_index: u16,
             alpha: f32,
         );
         fn fill_glyph_linear(
             self: Pin<&mut ColorPainterWrapper>,
-            glyph_id: u16,
+            glyph_id: u32,
             fill_transform: &Transform,
             fill_linear_params: &FillLinearParams,
             color_stops: &mut BridgeColorStops,
@@ -458,7 +458,7 @@ pub mod ffi {
         );
         fn fill_glyph_radial(
             self: Pin<&mut ColorPainterWrapper>,
-            glyph_id: u16,
+            glyph_id: u32,
             fill_transform: &Transform,
             fill_radial_params: &FillRadialParams,
             color_stops: &mut BridgeColorStops,
@@ -466,7 +466,7 @@ pub mod ffi {
         );
         fn fill_glyph_sweep(
             self: Pin<&mut ColorPainterWrapper>,
-            glyph_id: u16,
+            glyph_id: u32,
             fill_transform: &Transform,
             fill_sweep_params: &FillSweepParams,
             color_stops: &mut BridgeColorStops,

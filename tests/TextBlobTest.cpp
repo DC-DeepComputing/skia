@@ -10,6 +10,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
@@ -19,6 +20,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
+#include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkRect.h"
@@ -35,6 +37,7 @@
 #include "include/private/SkTo.h"
 #include "include/utils/SkCustomTypeface.h"
 #include "src/core/SkFontPriv.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkWriteBuffer.h"
@@ -46,6 +49,7 @@
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <utility>
 
 using namespace skia_private;
 
@@ -352,7 +356,7 @@ DEF_TEST(TextBlob_extended, reporter) {
     (void)font.textToGlyphs(text1, strlen(text1), SkTextEncoding::kUTF8, glyphs);
 
     auto run = textBlobBuilder.allocRunText(font, glyphCount, 0, 0, SkToInt(strlen(text2)));
-    memcpy(run.glyphs, glyphs.get(), sizeof(uint16_t) * glyphCount);
+    memcpy(run.glyphs, glyphs.get(), sizeof(SkGlyphID) * glyphCount);
     memcpy(run.utf8text, text2, strlen(text2));
     for (size_t i = 0; i < glyphCount; ++i) {
         run.clusters[i] = std::min(SkToU32(i), SkToU32(strlen(text2)));
@@ -550,6 +554,96 @@ static sk_sp<SkTypeface> make_path_typeface() {
     SkCustomTypefaceBuilder builder;
     builder.setGlyph(0, 0.0f, SkPath::Rect(SkRect::MakeLTRB(0, -1, 1, 0)));
     return builder.detach();
+}
+
+DEF_TEST(TextBlob_32BitGlyphs, reporter) {
+    SkCustomTypefaceBuilder typefaceBuilder;
+    typefaceBuilder.setGlyph(1, 2, SkPath::Rect(SkRect::MakeLTRB(0, -1, 1, 0)));
+    typefaceBuilder.setGlyph(0x10001, 4, SkPath::Rect(SkRect::MakeLTRB(0, -1, 3, 0)));
+    SkFont font(typefaceBuilder.detach(), 10);
+    font.setEdging(SkFont::Edging::kAlias);
+    REPORTER_ASSERT(reporter, font.getTypeface()->countGlyphs() == 0x10002);
+    auto fontStream = font.getTypeface()->openStream(nullptr);
+    auto fontCopy = SkCustomTypefaceBuilder::MakeFromStream(std::move(fontStream), SkFontArguments());
+    REPORTER_ASSERT(reporter, fontCopy && fontCopy->countGlyphs() == 0x10002);
+    if (fontCopy) {
+        REPORTER_ASSERT(reporter, SkFont(fontCopy, 10).getWidth(0x10001) == 40);
+    }
+    const SkGlyphID glyphs[] = {1, 0x10001};
+    SkGlyphID copied[2] = {};
+    REPORTER_ASSERT(reporter, font.countText(glyphs, sizeof(glyphs), SkTextEncoding::kGlyphID) == 2);
+    REPORTER_ASSERT(reporter,
+                    font.textToGlyphs(glyphs, sizeof(glyphs), SkTextEncoding::kGlyphID, copied) == 2);
+    REPORTER_ASSERT(reporter, copied[0] == 1 && copied[1] == 0x10001);
+    REPORTER_ASSERT(reporter, font.getWidth(glyphs[0]) == 20);
+    REPORTER_ASSERT(reporter, font.getWidth(glyphs[1]) == 40);
+    REPORTER_ASSERT(reporter,
+                    font.measureText(glyphs, sizeof(glyphs), SkTextEncoding::kGlyphID) == 60);
+
+    auto blob = SkTextBlob::MakeFromText(glyphs, sizeof(glyphs), font, SkTextEncoding::kGlyphID);
+    REPORTER_ASSERT(reporter, blob);
+    SkTextBlobRunIterator it(blob.get());
+    REPORTER_ASSERT(reporter, it.glyphCount() == 2 && it.glyphs()[1] == 0x10001);
+
+    TArray<sk_sp<SkTypeface>> typefaces;
+    SkSerialProcs serial;
+    serial.fTypefaceProc = &SerializeTypeface;
+    serial.fTypefaceCtx = &typefaces;
+    SkDeserialProcs deserial;
+    deserial.fTypefaceStreamProc = &DeserializeTypeface;
+    deserial.fTypefaceCtx = &typefaces;
+    auto data = blob->serialize(serial);
+    auto copy = SkTextBlob::Deserialize(data->data(), data->size(), deserial);
+    REPORTER_ASSERT(reporter, copy);
+    if (!copy) {
+        return;
+    }
+    SkTextBlobRunIterator copyIt(copy.get());
+    REPORTER_ASSERT(reporter, copyIt.glyphs()[0] == 1 && copyIt.glyphs()[1] == 0x10001);
+
+    SkPictureRecorder recorder;
+    auto* canvas = recorder.beginRecording(SkRect::MakeWH(64, 32));
+    canvas->drawTextBlob(blob, 0, 20, SkPaint());
+    auto pictureData = recorder.finishRecordingAsPicture()->serialize(&serial);
+    auto picture = SkPicture::MakeFromData(pictureData->data(), pictureData->size(), &deserial);
+    REPORTER_ASSERT(reporter, picture);
+    auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(64, 32));
+    surface->getCanvas()->clear(SK_ColorWHITE);
+    surface->getCanvas()->drawPicture(picture);
+    SkPixmap pixels;
+    REPORTER_ASSERT(reporter, surface->peekPixels(&pixels));
+    REPORTER_ASSERT(reporter, pixels.getColor(5, 15) == SK_ColorBLACK);
+    REPORTER_ASSERT(reporter, pixels.getColor(15, 15) == SK_ColorWHITE);
+    REPORTER_ASSERT(reporter, pixels.getColor(45, 15) == SK_ColorBLACK);
+    REPORTER_ASSERT(reporter, pixels.getColor(55, 15) == SK_ColorWHITE);
+}
+
+DEF_TEST(TextBlob_16BitGlyphsDeserialize, reporter) {
+    const uint16_t glyphs[] = {1, 2, 0xFFFF};
+    const SkPoint positions[] = {{0, 0}, {10, 0}, {20, 0}};
+    SkBinaryWriteBuffer writer({});
+    writer.writeRect(SkRect::MakeWH(30, 10));
+    writer.write32(std::size(glyphs));
+    writer.write32(SkTextBlobRunIterator::kFull_Positioning);
+    writer.writePoint({0, 0});
+    SkFontPriv::Flatten(SkFont(), writer);
+    writer.writeByteArray(glyphs, sizeof(glyphs));
+    writer.writeByteArray(positions, sizeof(positions));
+    writer.write32(0);
+    auto data = writer.snapshotAsData();
+    for (uint32_t version : {0u, uint32_t(SkPicturePriv::k32BitGlyphIDs - 1)}) {
+        SkReadBuffer reader(data->data(), data->size());
+        reader.setVersion(version);
+        auto blob = SkTextBlobPriv::MakeFromBuffer(reader);
+        REPORTER_ASSERT(reporter, blob && reader.isValid());
+        if (blob) {
+            SkTextBlobRunIterator it(blob.get());
+            REPORTER_ASSERT(reporter, it.glyphCount() == std::size(glyphs));
+            for (size_t i = 0; i < std::size(glyphs); ++i) {
+                REPORTER_ASSERT(reporter, it.glyphs()[i] == glyphs[i]);
+            }
+        }
+    }
 }
 
 static sk_sp<SkTypeface> make_drawable_typeface(sk_sp<SkDrawable> drawable) {

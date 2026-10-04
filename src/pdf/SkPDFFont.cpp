@@ -263,7 +263,7 @@ const SkAdvancedTypefaceMetrics* SkPDFFont::GetMetrics(const SkTypeface& typefac
     }
 
     int count = typeface.countGlyphs();
-    if (count <= 0 || count > 1 + SkTo<int>(UINT16_MAX)) {
+    if (count <= 0) {
         // Cache nullptr to skip this check.  Use SkSafeUnref().
         canon->fTypefaceMetrics.set(id, nullptr);
         return nullptr;
@@ -331,7 +331,9 @@ THashMap<SkGlyphID, SkString>& SkPDFFont::GetUnicodeMapEx(const SkTypeface& type
 
 SkAdvancedTypefaceMetrics::FontType SkPDFFont::FontType(const SkPDFStrike& pdfStrike,
                                                         const SkAdvancedTypefaceMetrics& metrics) {
-    if (SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kVariable_FontFlag) ||
+    // PDF's embedded-font encodings cannot address glyph IDs above 65535.
+    if (pdfStrike.fPath.fStrikeSpec.typeface().countGlyphs() > 65536 ||
+        SkToBool(metrics.fFlags & SkAdvancedTypefaceMetrics::kVariable_FontFlag) ||
         // PDF is actually interested in the encoding of the data, not just the logical format.
         // If the TrueType is actually wOFF or wOF2 then it should not be directly embedded in PDF.
         // Export these as Type3 if the subsetter cannot handle table based fonts.
@@ -385,7 +387,7 @@ SkPDFFont* SkPDFStrike::getFontResource(const SkGlyph* glyph) {
         return font;
     }
 
-    SkGlyphID lastGlyph = SkToU16(typeface.countGlyphs() - 1);
+    SkGlyphID lastGlyph = SkTo<SkGlyphID>(typeface.countGlyphs() - 1);
     SkASSERT(glyph->getGlyphID() <= lastGlyph); // should be caught by SkPDFDevice::internalDrawText
 
     SkGlyphID firstNonZeroGlyph;
@@ -393,7 +395,7 @@ SkPDFFont* SkPDFStrike::getFontResource(const SkGlyph* glyph) {
         firstNonZeroGlyph = 1;
     } else {
         firstNonZeroGlyph = subsetCode;
-        lastGlyph = SkToU16(std::min<int>((int)lastGlyph, 254 + (int)subsetCode));
+        lastGlyph = std::min(lastGlyph, 254 + subsetCode);
     }
     auto ref = fDoc->reserveRef();
     return fFontMap.set(subsetCode, SkPDFFont(this, firstNonZeroGlyph, lastGlyph, type, ref));
@@ -901,7 +903,7 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
 
     encoding->insertObject("Differences", std::move(encDiffs));
     font.insertInt("FirstChar", 0);
-    font.insertInt("LastChar", lastGlyphID - firstGlyphID + 1);
+    font.insertInt("LastChar", SkTo<int32_t>(lastGlyphID - firstGlyphID + 1));
     /* FontBBox: "A rectangle expressed in the glyph coordinate
       system, specifying the font bounding box. This is the smallest
       rectangle enclosing the shape that would result if all of the
@@ -952,4 +954,3 @@ bool SkPDFFont::CanEmbedTypeface(const SkTypeface& typeface, SkPDFDocument* doc)
     const SkAdvancedTypefaceMetrics* metrics = SkPDFFont::GetMetrics(typeface, doc);
     return metrics && can_embed(*metrics);
 }
-

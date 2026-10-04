@@ -351,8 +351,6 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
             CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(run_array, j);
             CFIndex runGlyphs = CTRunGetGlyphCount(run);
 
-            SkASSERT(sizeof(CGGlyph) == sizeof(uint16_t));
-
             AutoSTArray<4096, CGSize> advances(runGlyphs);
             CTRunGetAdvances(run, {0, runGlyphs}, advances.data());
             SkScalar adv = 0;
@@ -387,7 +385,8 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
             CFIndex runGlyphs = info.glyphCount;
             SkASSERT(CTRunGetGlyphCount(run) == (CFIndex)info.glyphCount);
 
-            CTRunGetGlyphs(run, {0, runGlyphs}, buffer.glyphs);
+            AutoSTArray<4096, CGGlyph> glyphs(runGlyphs);
+            CTRunGetGlyphs(run, {0, runGlyphs}, glyphs.data());
 
             AutoSTArray<4096, CGPoint> positions(runGlyphs);
             CTRunGetPositions(run, {0, runGlyphs}, positions.data());
@@ -398,6 +397,7 @@ void SkShaper_CoreText::shape(SkSpan<const char> utf8,
             }
 
             for (CFIndex k = 0; k < runGlyphs; ++k) {
+                buffer.glyphs[k] = glyphs[k];
                 buffer.positions[k] = {
                     buffer.point.fX + SkScalarFromCGFloat(positions[k].x) - lineAdvance,
                     buffer.point.fY,

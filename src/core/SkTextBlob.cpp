@@ -733,7 +733,13 @@ sk_sp<SkTextBlob> SkTextBlobPriv::MakeFromBuffer(SkReadBuffer& reader) {
 
         // Compute the expected size of the buffer and ensure we have enough to deserialize
         // a run before allocating it.
-        const size_t glyphSize = safe.mul(glyphCount, sizeof(SkGlyphID)),
+        // Standalone blobs have no version header; their glyph array's byte count identifies
+        // the old 16-bit representation.
+        const bool legacyGlyphs = reader.isVersionLT(SkPicturePriv::k32BitGlyphIDs) ||
+                (reader.getVersion() == 0 &&
+                 reader.getArrayCount() == safe.mul(glyphCount, sizeof(uint16_t)));
+        const size_t glyphSize = safe.mul(glyphCount,
+                                         legacyGlyphs ? sizeof(uint16_t) : sizeof(SkGlyphID)),
                      posSize =
                              safe.mul(glyphCount, safe.mul(sizeof(SkScalar),
                              SkTextBlob::ScalarsPerGlyph(pos))),
@@ -769,10 +775,18 @@ sk_sp<SkTextBlob> SkTextBlobPriv::MakeFromBuffer(SkReadBuffer& reader) {
             return nullptr;
         }
 
-        if (!reader.readByteArray(buf->glyphs, glyphSize) ||
-            !reader.readByteArray(buf->pos, posSize)) {
-            return nullptr;
+        if (legacyGlyphs) {
+            AutoTArray<uint16_t> glyphs(glyphCount);
+            if (!reader.readByteArray(glyphs.get(), glyphSize)) {
+                return nullptr;
             }
+            std::copy_n(glyphs.get(), glyphCount, buf->glyphs);
+        } else if (!reader.readByteArray(buf->glyphs, glyphSize)) {
+            return nullptr;
+        }
+        if (!reader.readByteArray(buf->pos, posSize)) {
+            return nullptr;
+        }
 
         if (pe.extended) {
             if (!reader.readByteArray(buf->clusters, clusterSize) ||

@@ -426,7 +426,7 @@ size_t SkTypeface::textToGlyphs(const void* text, size_t byteLength, SkTextEncod
     }
 
     if (encoding == SkTextEncoding::kGlyphID) {
-        memcpy(glyphs.data(), text, count << 1);
+        memcpy(glyphs.data(), text, count * sizeof(SkGlyphID));
         return count;
     }
 

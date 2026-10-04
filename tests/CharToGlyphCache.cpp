@@ -36,12 +36,12 @@ DEF_TEST(chartoglyph_cache, reporter) {
         SkUnichar c = gen.next();
         SkGlyphID glyph = hash_to_glyph(c);
 
-        int index = cache.findGlyphIndex(c);
+        int64_t index = cache.findGlyphIndex(c);
         if (index >= 0) {
             index = cache.findGlyphIndex(c);
         }
         REPORTER_ASSERT(reporter, index < 0);
-        cache.insertCharAndGlyph(~index, c, glyph);
+        cache.insertCharAndGlyph(SkTo<int>(~index), c, glyph);
 
         UnicharGen gen2(step);
         for (int j = 0; j <= i; ++j) {
@@ -53,5 +53,15 @@ DEF_TEST(chartoglyph_cache, reporter) {
             }
             REPORTER_ASSERT(reporter, (unsigned)index == glyph);
         }
+    }
+}
+
+DEF_TEST(chartoglyph_cache_32Bit, reporter) {
+    SkCharToGlyphCache cache;
+    for (SkGlyphID glyph : {0u, 0xFFFFu, 0x10000u, 0x80000000u, 0xFFFFFFFFu}) {
+        SkUnichar c = cache.count();
+        cache.addCharAndGlyph(c, glyph);
+        cache.addCharAndGlyph(c, glyph);
+        REPORTER_ASSERT(reporter, cache.findGlyphIndex(c) == int64_t(glyph));
     }
 }

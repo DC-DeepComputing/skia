@@ -411,7 +411,7 @@ describe('Core canvas behavior', () => {
 
         const DIM = 16; // row/col count for the grid
         const GAP = 32; // spacing between each glyph
-        const glyphs = new Uint16Array(256);
+        const glyphs = new Uint32Array(256);
         const positions = new Float32Array(256*2);
         for (let i = 0; i < 256; ++i) {
             glyphs[i] = i;

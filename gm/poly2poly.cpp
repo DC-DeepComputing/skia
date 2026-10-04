@@ -62,7 +62,7 @@ protected:
         paint->setStyle(SkPaint::kFill_Style);
         SkScalar x = D/2;
         SkScalar y = D/2 - (fm.fAscent + fm.fDescent)/2;
-        uint16_t glyphID = 3; // X
+        SkGlyphID glyphID = 3; // X
         SkTextUtils::Draw(canvas, &glyphID, sizeof(glyphID), SkTextEncoding::kGlyphID, x, y,
                           font, *paint, SkTextUtils::kCenter_Align);
         canvas->restore();

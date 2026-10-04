@@ -368,7 +368,7 @@ function fontTests(CK: CanvasKit, face?: Typeface, paint?: Paint) {
     const glyphBounds = font.getGlyphBounds(glyphMalloc, paint); // $ExpectType Float32Array
     font.getGlyphBounds(someGlyphs, null, glyphBounds);
 
-    const ids = font.getGlyphIDs('abcd');
+    const ids = font.getGlyphIDs('abcd'); // $ExpectType Uint32Array
     font.getGlyphIDs('efgh', 4, ids);
 
     const widths = font.getGlyphWidths(glyphMalloc, paint);

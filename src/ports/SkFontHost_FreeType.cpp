@@ -1774,7 +1774,7 @@ void SkTypeface_FreeType::onCharsToGlyphs(SkSpan<const SkUnichar> uni,
         // Optimistically use a shared lock.
         SkAutoSharedMutexShared ama(fC2GCacheMutex);
         for (i = 0; i < count; ++i) {
-            int index = fC2GCache.findGlyphIndex(uni[i]);
+            int64_t index = fC2GCache.findGlyphIndex(uni[i]);
             if (index < 0) {
                 break;
             }
@@ -1797,12 +1797,12 @@ void SkTypeface_FreeType::onCharsToGlyphs(SkSpan<const SkUnichar> uni,
 
     for (; i < count; ++i) {
         SkUnichar c = uni[i];
-        int index = fC2GCache.findGlyphIndex(c);
+        int64_t index = fC2GCache.findGlyphIndex(c);
         if (index >= 0) {
             glyphs[i] = SkTo<SkGlyphID>(index);
         } else {
             glyphs[i] = SkTo<SkGlyphID>(FT_Get_Char_Index(face, c));
-            fC2GCache.insertCharAndGlyph(~index, c, glyphs[i]);
+            fC2GCache.insertCharAndGlyph(SkTo<int>(~index), c, glyphs[i]);
         }
     }
 

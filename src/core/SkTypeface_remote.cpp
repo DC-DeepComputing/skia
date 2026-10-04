@@ -17,6 +17,7 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkWriteBuffer.h"
 
+#include <cinttypes>
 #include <optional>
 #include <utility>
 
@@ -34,7 +35,8 @@ SkScalerContext::GlyphMetrics SkScalerContextProxy::generateMetrics(const SkGlyp
                                                                     SkArenaAlloc*) {
     TRACE_EVENT1("skia", "generateMetrics", "rec", TRACE_STR_COPY(this->getRec().dump().c_str()));
     if (this->getProxyTypeface()->isLogging()) {
-        SkDebugf("GlyphCacheMiss generateMetrics looking for glyph: %x\n  generateMetrics: %s\n",
+        SkDebugf("GlyphCacheMiss generateMetrics looking for glyph: %" PRIx64
+                 "\n  generateMetrics: %s\n",
                  glyph.getPackedID().value(), this->getRec().dump().c_str());
     }
 

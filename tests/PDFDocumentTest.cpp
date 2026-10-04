@@ -17,11 +17,16 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkImage.h" // IWYU pragma: keep
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTextBlob.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/docs/SkPDFJpegHelpers.h"
+#include "include/utils/SkCustomTypeface.h"
+#include "src/core/SkAdvancedTypefaceMetrics.h"
+#include "src/ports/SkTypeface_proxy.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -30,6 +35,51 @@
 #include <cstdio>
 #include <cstring>
 #include <memory>
+#include <utility>
+
+DEF_TEST(PDF_32BitGlyphs, reporter) {
+    REQUIRE_PDF_DOCUMENT(PDF_32BitGlyphs, reporter);
+    class LargeTypeface final : public SkTypeface_proxy {
+    public:
+        explicit LargeTypeface(sk_sp<SkTypeface> face)
+                : SkTypeface_proxy(face, SkFontStyle()), fFace(std::move(face)) {}
+    private:
+        sk_sp<SkTypeface> onMakeClone(const SkFontArguments&) const override {
+            return sk_ref_sp(this);
+        }
+        std::unique_ptr<SkScalerContext> onCreateScalerContext(
+                const SkScalerContextEffects& effects, const SkDescriptor* desc) const override {
+            return std::make_unique<SkScalerContext_proxy>(
+                    fFace->createScalerContext(effects, desc),
+                    const_cast<LargeTypeface&>(*this), effects, desc);
+        }
+        std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override {
+            auto metrics = std::make_unique<SkAdvancedTypefaceMetrics>();
+            // Pretend this is embeddable TrueType data; the glyph count must force Type3.
+            metrics->fType = SkAdvancedTypefaceMetrics::kTrueType_Font;
+            return metrics;
+        }
+        sk_sp<SkTypeface> fFace;
+    };
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 2, SkPath::Rect(SkRect::MakeLTRB(0, -1, 1, 0)));
+    builder.setGlyph(0x10001, 4, SkPath::Rect(SkRect::MakeLTRB(0, -1, 3, 0)));
+    SkFont font(sk_make_sp<LargeTypeface>(builder.detach()), 10);
+    const SkGlyphID glyphs[] = {1, 0x10001};
+    auto blob = SkTextBlob::MakeFromText(glyphs, sizeof(glyphs), font, SkTextEncoding::kGlyphID);
+    SkDynamicMemoryWStream stream;
+    auto metadata = SkPDF::JPEG::MetadataWithCallbacks();
+    metadata.fCompressionLevel = SkPDF::Metadata::CompressionLevel::None;
+    auto doc = SkPDF::MakeDocument(&stream, metadata);
+    doc->beginPage(64, 32)->drawTextBlob(blob, 0, 20, SkPaint());
+    doc->endPage();
+    doc->close();
+    auto data = stream.detachAsData();
+    SkString pdf(static_cast<const char*>(data->data()), data->size());
+    REPORTER_ASSERT(reporter, pdf.contains("/Subtype /Type3"));
+    REPORTER_ASSERT(reporter, pdf.contains("/g1 "));
+    REPORTER_ASSERT(reporter, pdf.contains("/g10001 "));
+}
 
 static void test_empty(skiatest::Reporter* reporter) {
     SkDynamicMemoryWStream stream;

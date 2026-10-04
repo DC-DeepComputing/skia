@@ -1064,7 +1064,7 @@ void SkPDFDevice::internalDrawGlyphRun(
         }
         for (; glyphIndex < glyphLimit; ++glyphIndex) {
             SkGlyphID gid = glyphIDs[glyphIndex];
-            if (numGlyphs <= gid) {
+            if (SkTo<SkGlyphID>(numGlyphs) <= gid) {
                 continue;
             }
             SkPoint xy = glyphRun.positions()[glyphIndex];

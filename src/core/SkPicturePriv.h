@@ -18,12 +18,12 @@
 #include <atomic>
 #include <cstdint>
 
+class SkBBoxHierarchy;
 class SkReadBuffer;
+class SkRecord;
 class SkStream;
 class SkWriteBuffer;
 struct SkPictInfo;
-class SkRecord;
-class SkBBoxHierarchy;
 
 class SkPicturePriv {
 public:
@@ -144,6 +144,7 @@ public:
     // v108: Serialize stable keys of runtime effects
     // v109: Extend SkWorkingColorSpaceShader to have alpha type + output control
     // v110: Add restrictOutputToInputBounds to SkImageFilters::RuntimeShader
+    // v111: Glyph IDs are 32 bits.
 
     enum Version {
         kPictureShaderFilterParam_Version   = 82,
@@ -175,6 +176,7 @@ public:
         kSerializeStableKeys                = 108,
         kWorkingColorSpaceOutput            = 109,
         kRuntimeImageFilterRestrictedOutput = 110,
+        k32BitGlyphIDs                      = 111,
 
         // Only SKPs within the min/current picture version range (inclusive) can be read.
         //
@@ -199,7 +201,7 @@ public:
         //
         // Contact the Infra Gardener if the above steps do not work for you.
         kMin_Version     = kPictureShaderFilterParam_Version,
-        kCurrent_Version = kRuntimeImageFilterRestrictedOutput
+        kCurrent_Version = k32BitGlyphIDs
     };
 };
 

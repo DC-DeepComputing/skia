@@ -472,7 +472,7 @@ public:
     std::optional<SkScalar> getContourHeightForLetter(SkUnichar letter) {
         SkGlyphID glyphId;
         rust::Slice<const uint32_t> codepointSlice{reinterpret_cast<const uint32_t*>(&letter), 1};
-        rust::Slice<uint16_t> glyphSlice{reinterpret_cast<uint16_t*>(&glyphId), 1};
+        rust::Slice<SkGlyphID> glyphSlice{&glyphId, 1};
         fontations_ffi::lookup_glyph_or_zero(fBridgeFontRef, fMappingIndex,
                                              codepointSlice, glyphSlice);
         if (!glyphId) {
@@ -490,7 +490,7 @@ public:
     // otherwise the size is controlled by the configured hintingInstance.
     // hintingInstance argument is needed as COLRv1 drawing performs unhinted,
     // unscaled path retrieval.
-    std::optional<SkPath> generatePathForGlyphId(uint16_t glyphId,
+    std::optional<SkPath> generatePathForGlyphId(SkGlyphID glyphId,
                                 float yScale,
                                 const fontations_ffi::BridgeHintingInstance& hintingInstance,
                                 fontations_ffi::BridgeScalerMetrics& scalerMetrics) {
@@ -1372,7 +1372,7 @@ void ColorPainter::push_transform(const fontations_ffi::Transform& transform_arg
 
 void ColorPainter::pop_transform() { fCanvas.restore(); }
 
-void ColorPainter::push_clip_glyph(uint16_t glyph_id) {
+void ColorPainter::push_clip_glyph(uint32_t glyph_id) {
     fCanvas.save();
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
     auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
@@ -1410,7 +1410,7 @@ void ColorPainter::fill_solid(uint16_t palette_index, float alpha) {
     fCanvas.drawPaint(paint);
 }
 
-void ColorPainter::fill_glyph_solid(uint16_t glyph_id, uint16_t palette_index, float alpha) {
+void ColorPainter::fill_glyph_solid(uint32_t glyph_id, uint16_t palette_index, float alpha) {
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
     if (auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
                                                           *fontations_ffi::no_hinting_instance(),
@@ -1467,7 +1467,7 @@ void ColorPainter::fill_linear(const fontations_ffi::FillLinearParams& linear_pa
     fCanvas.drawPaint(paint);
 }
 
-void ColorPainter::fill_glyph_linear(uint16_t glyph_id,
+void ColorPainter::fill_glyph_linear(uint32_t glyph_id,
                                      const fontations_ffi::Transform& transform,
                                      const fontations_ffi::FillLinearParams& linear_params,
                                      fontations_ffi::BridgeColorStops& bridge_stops,
@@ -1619,7 +1619,7 @@ void ColorPainter::fill_radial(const fontations_ffi::FillRadialParams& fill_radi
     fCanvas.drawPaint(paint);
 }
 
-void ColorPainter::fill_glyph_radial(uint16_t glyph_id,
+void ColorPainter::fill_glyph_radial(uint32_t glyph_id,
                                      const fontations_ffi::Transform& transform,
                                      const fontations_ffi::FillRadialParams& fill_radial_params,
                                      fontations_ffi::BridgeColorStops& bridge_stops,
@@ -1679,7 +1679,7 @@ void ColorPainter::fill_sweep(const fontations_ffi::FillSweepParams& sweep_param
     fCanvas.drawPaint(paint);
 }
 
-void ColorPainter::fill_glyph_sweep(uint16_t glyph_id,
+void ColorPainter::fill_glyph_sweep(uint32_t glyph_id,
                                     const fontations_ffi::Transform& transform,
                                     const fontations_ffi::FillSweepParams& sweep_params,
                                     fontations_ffi::BridgeColorStops& bridge_stops,
@@ -1723,7 +1723,7 @@ void BoundsPainter::pop_transform() {
     fMatrixStack.pop_back();
 }
 
-void BoundsPainter::push_clip_glyph(uint16_t glyph_id) {
+void BoundsPainter::push_clip_glyph(uint32_t glyph_id) {
     fontations_ffi::BridgeScalerMetrics scalerMetrics;
     if (auto path = fScalerContext.generatePathForGlyphId(glyph_id, fUpem,
                                                           *fontations_ffi::no_hinting_instance(),
@@ -1739,12 +1739,12 @@ void BoundsPainter::push_clip_rectangle(float x_min, float y_min, float x_max, f
     fBounds.join(fMatrixStack.back().mapRect(clipRect));
 }
 
-void BoundsPainter::fill_glyph_solid(uint16_t glyph_id, uint16_t, float) {
+void BoundsPainter::fill_glyph_solid(uint32_t glyph_id, uint16_t, float) {
     push_clip_glyph(glyph_id);
     pop_clip();
 }
 
-void BoundsPainter::fill_glyph_radial(uint16_t glyph_id,
+void BoundsPainter::fill_glyph_radial(uint32_t glyph_id,
                                       const fontations_ffi::Transform&,
                                       const fontations_ffi::FillRadialParams&,
                                       fontations_ffi::BridgeColorStops&,
@@ -1752,7 +1752,7 @@ void BoundsPainter::fill_glyph_radial(uint16_t glyph_id,
     push_clip_glyph(glyph_id);
     pop_clip();
 }
-void BoundsPainter::fill_glyph_linear(uint16_t glyph_id,
+void BoundsPainter::fill_glyph_linear(uint32_t glyph_id,
                                       const fontations_ffi::Transform&,
                                       const fontations_ffi::FillLinearParams&,
                                       fontations_ffi::BridgeColorStops&,
@@ -1761,7 +1761,7 @@ void BoundsPainter::fill_glyph_linear(uint16_t glyph_id,
     pop_clip();
 }
 
-void BoundsPainter::fill_glyph_sweep(uint16_t glyph_id,
+void BoundsPainter::fill_glyph_sweep(uint32_t glyph_id,
                                      const fontations_ffi::Transform&,
                                      const fontations_ffi::FillSweepParams&,
                                      fontations_ffi::BridgeColorStops&,

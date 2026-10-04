@@ -25,32 +25,32 @@ public:
     void reset();       // forget all cache entries (to save memory)
 
     /**
-     *  Given a unichar, return its glyphID (if the return value is positive), else return
+     *  Given a unichar, return its glyphID (if the return value is nonnegative), else return
      *  ~index of where to insert the computed glyphID.
      *
-     *  int result = cache.charToGlyph(unichar);
+     *  int64_t result = cache.findGlyphIndex(unichar);
      *  if (result >= 0) {
      *      glyphID = result;
      *  } else {
      *      glyphID = compute_glyph_using_typeface(unichar);
-     *      cache.insertCharAndGlyph(~result, unichar, glyphID);
+     *      cache.insertCharAndGlyph(SkTo<int>(~result), unichar, glyphID);
      *  }
      */
-    int findGlyphIndex(SkUnichar c) const;
+    int64_t findGlyphIndex(SkUnichar c) const;
 
     /**
      *  Insert a new char/glyph pair into the cache at the specified index.
-     *  See charToGlyph() for how to compute the bit-not of the index.
+     *  See findGlyphIndex() for how to compute the bit-not of the index.
      */
     void insertCharAndGlyph(int index, SkUnichar, SkGlyphID);
 
     // helper to pre-seed an entry in the cache
     void addCharAndGlyph(SkUnichar unichar, SkGlyphID glyph) {
-        int index = this->findGlyphIndex(unichar);
+        int64_t index = this->findGlyphIndex(unichar);
         if (index >= 0) {
-            SkASSERT(SkToU16(index) == glyph);
+            SkASSERT(SkTo<SkGlyphID>(index) == glyph);
         } else {
-            this->insertCharAndGlyph(~index, unichar, glyph);
+            this->insertCharAndGlyph(SkTo<int>(~index), unichar, glyph);
         }
     }
 

@@ -298,9 +298,13 @@ SkScalerContext::GlyphMetrics SkScalerContext_Mac::generateMetrics(const SkGlyph
                                                                    SkArenaAlloc*) {
     GlyphMetrics mx(glyph.maskFormat());
 
+    if (!SkTFitsIn<CGGlyph>(glyph.getGlyphID())) {
+        return mx;
+    }
+
     mx.neverRequestPath = ((SkTypeface_Mac*)this->getTypeface())->fHasColorGlyphs;
 
-    const CGGlyph cgGlyph = (CGGlyph)glyph.getGlyphID();
+    const CGGlyph cgGlyph = SkTo<CGGlyph>(glyph.getGlyphID());
 
     // The following block produces cgAdvance in CG units (pixels, y up).
     CGSize cgAdvance;
@@ -462,6 +466,9 @@ static SkPMColor cgpixels_to_pmcolor(CGRGBPixel rgb) {
 }
 
 void SkScalerContext_Mac::generateImage(const SkGlyph& glyph, void* imageBuffer) {
+    if (!SkTFitsIn<CGGlyph>(glyph.getGlyphID())) {
+        return;
+    }
     CGGlyph cgGlyph = SkTo<CGGlyph>(glyph.getGlyphID());
 
     // FIXME: lcd smoothed un-hinted rasterization unsupported.
@@ -660,6 +667,9 @@ SkScalerContext_Mac::generatePath(const SkGlyph& glyph) {
         xform = CGAffineTransformConcat(fTransform, scale);
     }
 
+    if (!SkTFitsIn<CGGlyph>(glyph.getGlyphID())) {
+        return {};
+    }
     CGGlyph cgGlyph = SkTo<CGGlyph>(glyph.getGlyphID());
     SkUniqueCFRef<CGPathRef> cgPath(CTFontCreatePathForGlyph(fCTFont.get(), cgGlyph, &xform));
 

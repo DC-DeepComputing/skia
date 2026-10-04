@@ -343,7 +343,7 @@ SkSpan<const SkGlyphID> GlyphRunBuilder::textToGlyphIDs(
             return SkSpan<const SkGlyphID>();
         }
     } else {
-        return SkSpan<const SkGlyphID>((const SkGlyphID*)bytes, byteLength / 2);
+        return SkSpan<const SkGlyphID>((const SkGlyphID*)bytes, byteLength / sizeof(SkGlyphID));
     }
 }
 

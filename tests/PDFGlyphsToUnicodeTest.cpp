@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
+#include <vector>
 
 using namespace skia_private;
 
@@ -38,6 +39,25 @@ static bool stream_equals(const SkDynamicMemoryWStream& stream, const char* buff
         return false;
     }
     return memcmp(data.get(), buffer, streamSize) == 0;
+}
+
+DEF_TEST(SkPDF_ToUnicode_32BitGlyphs, reporter) {
+    constexpr SkGlyphID first = 0x10001;
+    std::vector<SkUnichar> glyphToUnicode(first + 3, 0);
+    glyphToUnicode[first] = 'A';
+    glyphToUnicode[first + 1] = 'B';
+    THashMap<SkGlyphID, SkString> extended;
+    extended.set(first + 2, SkString("ffi"));
+    SkPDFGlyphUse subset(first, first + 2);
+    subset.set(first);
+    subset.set(first + 1);
+    subset.set(first + 2);
+    SkDynamicMemoryWStream buffer;
+    SkPDFAppendCmapSections(glyphToUnicode.data(), extended, &subset, &buffer,
+                           false, first, first + 2);
+    REPORTER_ASSERT(reporter, stream_equals(buffer,
+            "1 beginbfchar\n<03> <006600660069>\nendbfchar\n"
+            "1 beginbfrange\n<01> <02> <0041>\nendbfrange\n"));
 }
 
 DEF_TEST(SkPDF_ToUnicode, reporter) {

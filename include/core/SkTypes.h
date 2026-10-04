@@ -178,9 +178,9 @@
 */
 typedef int32_t SkUnichar;
 
-/** 16 bit unsigned integer to hold a glyph index
+/** 32 bit unsigned integer to hold a glyph index
 */
-typedef uint16_t SkGlyphID;
+typedef uint32_t SkGlyphID;
 
 /** The generation IDs in Skia reserve 0 has an invalid marker.
 */

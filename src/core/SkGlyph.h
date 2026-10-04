@@ -44,27 +44,28 @@ class StrikeForGPU;
 // -- SkPackedGlyphID ------------------------------------------------------------------------------
 // A combination of SkGlyphID and sub-pixel position information.
 struct SkPackedGlyphID {
-    inline static constexpr uint32_t kImpossibleID = ~0u;
+    inline static constexpr uint64_t kImpossibleID = ~uint64_t{0};
     enum {
         // Lengths
-        kGlyphIDLen     = 16u,
+        kGlyphIDLen     = 32u,
         kSubPixelPosLen = 2u,
 
         // Bit positions
         kSubPixelX = 0u,
-        kGlyphID   = kSubPixelPosLen,
-        kSubPixelY = kGlyphIDLen + kSubPixelPosLen,
+        kSubPixelY = kSubPixelPosLen,
+        kGlyphID   = 2 * kSubPixelPosLen,
         kEndData   = kGlyphIDLen + 2 * kSubPixelPosLen,
 
         // Masks
-        kGlyphIDMask     = (1u << kGlyphIDLen) - 1,
         kSubPixelPosMask = (1u << kSubPixelPosLen) - 1,
-        kMaskAll         = (1u << kEndData) - 1,
 
         // Location of sub pixel info in a fixed pointer number.
         kFixedPointBinaryPointPos = 16u,
         kFixedPointSubPixelPosBits = kFixedPointBinaryPointPos - kSubPixelPosLen,
     };
+
+    inline static constexpr uint64_t kGlyphIDMask = (uint64_t{1} << kGlyphIDLen) - 1;
+    inline static constexpr uint64_t kMaskAll = (uint64_t{1} << kEndData) - 1;
 
     inline static const constexpr SkScalar kSubpixelRound =
             1.f / (1u << (SkPackedGlyphID::kSubPixelPosLen + 1));
@@ -79,7 +80,7 @@ struct SkPackedGlyphID {
     };
 
     constexpr explicit SkPackedGlyphID(SkGlyphID glyphID)
-            : fID{(uint32_t)glyphID << kGlyphID} { }
+            : fID{uint64_t{glyphID} << kGlyphID} { }
 
     constexpr SkPackedGlyphID(SkGlyphID glyphID, SkFixed x, SkFixed y)
             : fID {PackIDXY(glyphID, x, y)} { }
@@ -90,8 +91,16 @@ struct SkPackedGlyphID {
     SkPackedGlyphID(SkGlyphID glyphID, SkPoint pt, SkIPoint mask)
         : fID{PackIDSkPoint(glyphID, pt, mask)} { }
 
-    constexpr explicit SkPackedGlyphID(uint32_t v) : fID{v & kMaskAll} { }
     constexpr SkPackedGlyphID() : fID{kImpossibleID} {}
+
+    static constexpr SkPackedGlyphID FromRaw(uint64_t value) {
+        SkPackedGlyphID id;
+        id.fID = value & kMaskAll;
+        return id;
+    }
+
+    static SkPackedGlyphID MakeFromBuffer(SkReadBuffer&);
+    void flatten(SkWriteBuffer&) const;
 
     bool operator==(const SkPackedGlyphID& that) const {
         return fID == that.fID;
@@ -107,7 +116,7 @@ struct SkPackedGlyphID {
         return (fID >> kGlyphID) & kGlyphIDMask;
     }
 
-    constexpr uint32_t value() const {
+    constexpr uint64_t value() const {
         return fID;
     }
 
@@ -120,12 +129,12 @@ struct SkPackedGlyphID {
     }
 
     uint32_t hash() const {
-        return SkChecksum::CheapMix(fID);
+        return SkChecksum::Hash32(&fID, sizeof(fID));
     }
 
     SkString dump() const {
         SkString str;
-        str.appendf("glyphID: %d, x: %d, y:%d", glyphID(), getSubXFixed(), getSubYFixed());
+        str.appendf("glyphID: %u, x: %d, y:%d", glyphID(), getSubXFixed(), getSubYFixed());
         return str;
     }
 
@@ -138,11 +147,11 @@ struct SkPackedGlyphID {
     }
 
 private:
-    static constexpr uint32_t PackIDSubXSubY(SkGlyphID glyphID, uint32_t x, uint32_t y) {
+    static constexpr uint64_t PackIDSubXSubY(SkGlyphID glyphID, uint32_t x, uint32_t y) {
         SkASSERT(x < (1u << kSubPixelPosLen));
         SkASSERT(y < (1u << kSubPixelPosLen));
 
-        return (x << kSubPixelX) | (y << kSubPixelY) | (glyphID << kGlyphID);
+        return (x << kSubPixelX) | (y << kSubPixelY) | (uint64_t{glyphID} << kGlyphID);
     }
 
     // Assumptions: pt is properly rounded. mask is set for the x or y fields.
@@ -161,7 +170,7 @@ private:
     // This does not round (floor) properly when converting to integer. Adding one to the range
     // causes truncation and floor to be the same. Coincidentally, masking to produce the field also
     // removes the +1.
-    static uint32_t PackIDSkPoint(SkGlyphID glyphID, SkPoint pt, SkIPoint mask) {
+    static uint64_t PackIDSkPoint(SkGlyphID glyphID, SkPoint pt, SkIPoint mask) {
     #if 0
         // TODO: why does this code not work on GCC 8.3 x86 Debug builds?
         using namespace skvx;
@@ -189,10 +198,10 @@ private:
 
         SkASSERT(sub[0] / (1u << kSubPixelX) < (1u << kSubPixelPosLen));
         SkASSERT(sub[1] / (1u << kSubPixelY) < (1u << kSubPixelPosLen));
-        return (glyphID << kGlyphID) | sub[0] | sub[1];
+        return (uint64_t{glyphID} << kGlyphID) | sub[0] | sub[1];
     }
 
-    static constexpr uint32_t PackIDXY(SkGlyphID glyphID, SkFixed x, SkFixed y) {
+    static constexpr uint64_t PackIDXY(SkGlyphID glyphID, SkFixed x, SkFixed y) {
         return PackIDSubXSubY(glyphID, FixedToSub(x), FixedToSub(y));
     }
 
@@ -209,7 +218,7 @@ private:
         return subPixelPosition << kFixedPointSubPixelPosBits;
     }
 
-    uint32_t fID;
+    uint64_t fID;
 };
 
 // -- SkAxisAlignment ------------------------------------------------------------------------------
@@ -367,7 +376,7 @@ public:
 
     // GetKey and Hash implement the required methods for THashTable.
     static SkPackedGlyphID GetKey(SkGlyphDigest digest) {
-        return SkPackedGlyphID{SkTo<uint32_t>(digest.fPackedID)};
+        return SkPackedGlyphID::FromRaw(digest.fPackedID);
     }
     static uint32_t Hash(SkPackedGlyphID packedID) {
         return packedID.hash();
@@ -392,12 +401,12 @@ private:
         fActions |= SkTo<uint64_t>(action) << actionType;
     }
 
-    static_assert(SkPackedGlyphID::kEndData == 20);
+    static_assert(SkPackedGlyphID::kEndData == 36);
     static_assert(SkMask::kCountMaskFormats <= 8);
     static_assert(SkTo<int>(skglyph::GlyphAction::kSize) <= 4);
     struct {
         uint64_t fPackedID : SkPackedGlyphID::kEndData;
-        uint64_t fIndex    : SkPackedGlyphID::kEndData;
+        uint64_t fIndex    : 31;
         uint64_t fIsEmpty  : 1;
         uint64_t fFormat   : 3;
         uint64_t fActions  : skglyph::ActionTypeSize::kTotalBits;

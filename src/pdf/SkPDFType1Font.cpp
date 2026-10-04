@@ -351,7 +351,7 @@ void SkPDFEmitType1Font(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
     SkASSERT(glyphNames.size() > lastGlyphID);
     const SkString unknown("UNKNOWN");
     encDiffs->appendName(glyphNames[0].isEmpty() ? unknown : glyphNames[0]);
-    for (int gID = firstGlyphID; gID <= lastGlyphID; gID++) {
+    for (SkGlyphID gID = firstGlyphID; gID <= lastGlyphID; gID++) {
         encDiffs->appendName(glyphNames[gID].isEmpty() ? unknown : glyphNames[gID]);
     }
 

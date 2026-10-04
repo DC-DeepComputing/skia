@@ -20,6 +20,7 @@
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBezierCurves.h"
 #include "src/core/SkPictureData.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkWriteBuffer.h"
@@ -99,10 +100,26 @@ void SkPictureBackedGlyphDrawable::onDraw(SkCanvas* canvas) {
     canvas->drawPicture(fPicture);
 }
 
+//-- SkPackedGlyphID -------------------------------------------------------------------------------
+SkPackedGlyphID SkPackedGlyphID::MakeFromBuffer(SkReadBuffer& buffer) {
+    const uint64_t low = buffer.readUInt();
+    if (buffer.isVersionLT(SkPicturePriv::k32BitGlyphIDs)) {
+        // The old key placed a 16-bit glyph ID between the two subpixel fields.
+        return SkPackedGlyphID((low >> 2) & 0xFFFF, uint32_t(low & 3), uint32_t((low >> 18) & 3));
+    }
+    const uint64_t high = buffer.readUInt();
+    return FromRaw(low | (high << 32));
+}
+
+void SkPackedGlyphID::flatten(SkWriteBuffer& buffer) const {
+    buffer.writeUInt(static_cast<uint32_t>(fID));
+    buffer.writeUInt(static_cast<uint32_t>(fID >> 32));
+}
+
 //-- SkGlyph ---------------------------------------------------------------------------------------
 std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
     SkASSERT(buffer.isValid());
-    const SkPackedGlyphID packedID{buffer.readUInt()};
+    const SkPackedGlyphID packedID = SkPackedGlyphID::MakeFromBuffer(buffer);
     const SkVector advance = buffer.readPoint();
     const uint32_t dimensions = buffer.readUInt();
     const uint32_t leftTop = buffer.readUInt();
@@ -338,7 +355,7 @@ SkDrawable* SkGlyph::drawable() const {
 }
 
 void SkGlyph::flattenMetrics(SkWriteBuffer& buffer) const {
-    buffer.writeUInt(fID.value());
+    fID.flatten(buffer);
     buffer.writePoint({fAdvanceX, fAdvanceY});
     buffer.writeUInt(fWidth << 16 | fHeight);
     // Note: << has undefined behavior for negative values, so convert everything to the bit

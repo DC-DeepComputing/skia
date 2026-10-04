@@ -55,16 +55,16 @@ private:
         const SkTextBlobBuilder::RunBuffer* run;
 
         run = &builder.allocRun(font, glyphCount, 10, 10, nullptr);
-        memcpy(run->glyphs, fGlyphs.begin(), glyphCount * sizeof(uint16_t));
+        memcpy(run->glyphs, fGlyphs.begin(), glyphCount * sizeof(SkGlyphID));
 
         run = &builder.allocRunPosH(font, glyphCount,  80, nullptr);
-        memcpy(run->glyphs, fGlyphs.begin(), glyphCount * sizeof(uint16_t));
+        memcpy(run->glyphs, fGlyphs.begin(), glyphCount * sizeof(SkGlyphID));
         for (int i = 0; i < glyphCount; ++i) {
             run->pos[i] = font.getSize() * i * .75f;
         }
 
         run = &builder.allocRunPos(font, glyphCount, nullptr);
-        memcpy(run->glyphs, fGlyphs.begin(), glyphCount * sizeof(uint16_t));
+        memcpy(run->glyphs, fGlyphs.begin(), glyphCount * sizeof(SkGlyphID));
         for (int i = 0; i < glyphCount; ++i) {
             run->pos[i * 2] = font.getSize() * i * .75f;
             run->pos[i * 2 + 1] = 150 + 5 * sinf((float)i * 8 / glyphCount);

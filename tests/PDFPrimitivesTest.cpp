@@ -113,9 +113,10 @@ static void test_issue1083() {
     auto doc = SkPDF::MakeDocument(&outStream, SkPDF::JPEG::MetadataWithCallbacks());
     SkCanvas* canvas = doc->beginPage(100.0f, 100.0f);
 
-    uint16_t glyphID = 65000;
+    SkGlyphID glyphID = 65000;
     SkFont font = ToolUtils::DefaultFont();
-    canvas->drawSimpleText(&glyphID, 2, SkTextEncoding::kGlyphID, 0, 0, font, SkPaint());
+    canvas->drawSimpleText(&glyphID, sizeof(glyphID), SkTextEncoding::kGlyphID,
+                          0, 0, font, SkPaint());
 
     doc->close();
 }

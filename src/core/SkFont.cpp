@@ -393,7 +393,7 @@ size_t SkFontPriv::CountTextElements(const void* text, size_t byteLength, SkText
         case SkTextEncoding::kUTF32:
             return byteLength >> 2;
         case SkTextEncoding::kGlyphID:
-            return byteLength >> 1;
+            return byteLength / sizeof(SkGlyphID);
     }
     SkASSERT(false);
     return 0;

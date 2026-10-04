@@ -12,6 +12,7 @@
 #include "include/core/SkTypes.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkGlyph.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeSpec.h"
@@ -55,7 +56,7 @@ DEF_TEST(GlyphVector_Serialization, r) {
     const int N = 10;
     SkPackedGlyphID* glyphs = alloc.makePODArray<SkPackedGlyphID>(N);
     for (int i = 0; i < N; i++) {
-        glyphs[i] = SkPackedGlyphID(SkGlyphID(i));
+        glyphs[i] = SkPackedGlyphID(0x10000u + i, uint32_t(i % 4), uint32_t((i + 1) % 4));
     }
 
     SkStrikePromise promise{strikeSpec.findOrCreateStrike()};
@@ -79,6 +80,28 @@ DEF_TEST(GlyphVector_Serialization, r) {
         auto s = GlyphVectorTestingPeer::GetPackedID(src, i);
         auto d = GlyphVectorTestingPeer::GetPackedID(*dst, i);
         REPORTER_ASSERT(r, s == d);
+    }
+}
+
+DEF_TEST(GlyphVector_16BitDeserialize, r) {
+    auto [spec, _] = SkStrikeSpec::MakeCanonicalized(ToolUtils::DefaultFont());
+    SkStrikePromise promise{spec.findOrCreateStrike()};
+    SkBinaryWriteBuffer writer({});
+    promise.flatten(writer);
+    writer.write32(3);
+    for (uint32_t glyph : {0u, 0xFFFEu, 0xFFFFu}) {
+        writer.writeUInt((glyph << 2) | 2u | (3u << 18));
+    }
+    auto data = writer.snapshotAsData();
+    SkReadBuffer reader(data->data(), data->size());
+    reader.setVersion(SkPicturePriv::k32BitGlyphIDs - 1);
+    SubRunAllocator alloc;
+    auto vector = GlyphVector::MakeFromBuffer(reader, nullptr, &alloc);
+    REPORTER_ASSERT(r, vector && reader.isValid());
+    if (vector) {
+        REPORTER_ASSERT(r, vector->getPackedGlyphID(0) == SkPackedGlyphID(0u, 2u, 3u));
+        REPORTER_ASSERT(r, vector->getPackedGlyphID(1) == SkPackedGlyphID(0xFFFEu, 2u, 3u));
+        REPORTER_ASSERT(r, vector->getPackedGlyphID(2) == SkPackedGlyphID(0xFFFFu, 2u, 3u));
     }
 }
 

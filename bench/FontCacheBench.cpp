@@ -21,8 +21,8 @@
 
 #define gUniqueGlyphIDs_Sentinel    0xFFFF
 
-static int count_glyphs(const uint16_t start[]) {
-    const uint16_t* curr = start;
+static int count_glyphs(const SkGlyphID start[]) {
+    const SkGlyphID* curr = start;
     while (*curr != gUniqueGlyphIDs_Sentinel) {
         curr += 1;
     }
@@ -42,11 +42,11 @@ protected:
         SkFont font = ToolUtils::DefaultFont();
         font.setEdging(SkFont::Edging::kAntiAlias);
 
-        const uint16_t* array = gUniqueGlyphIDs;
+        const SkGlyphID* array = gUniqueGlyphIDs;
         while (*array != gUniqueGlyphIDs_Sentinel) {
             int count = count_glyphs(array);
             for (int i = 0; i < loops; ++i) {
-                (void)font.measureText(array, count * sizeof(uint16_t), SkTextEncoding::kGlyphID);
+                (void)font.measureText(array, count * sizeof(SkGlyphID), SkTextEncoding::kGlyphID);
             }
             array += count + 1;    // skip the sentinel
         }
@@ -81,7 +81,7 @@ static constexpr auto gRec = std::to_array<HashTestCase>({
 #define kMaxHashBits   12
 #define kMaxHashCount  (1 << kMaxHashBits)
 
-static int count_collisions(const uint16_t array[], int count, HasherProc proc,
+static int count_collisions(const SkGlyphID array[], int count, HasherProc proc,
                             unsigned hashMask) {
     char table[kMaxHashCount];
     sk_bzero(table, sizeof(table));
@@ -95,9 +95,9 @@ static int count_collisions(const uint16_t array[], int count, HasherProc proc,
     return collisions;
 }
 
-static void dump_array(const uint16_t array[], int count) {
+static void dump_array(const SkGlyphID array[], int count) {
     for (int i = 0; i < count; ++i) {
-        SkDebugf(" %d,", array[i]);
+        SkDebugf(" %u,", array[i]);
     }
     SkDebugf("\n");
 }
@@ -127,7 +127,7 @@ protected:
                 for (size_t i = 0; i < std::size(gRec); ++i) {
                     int collisions = 0;
                     int glyphs = 0;
-                    const uint16_t* array = gUniqueGlyphIDs;
+                    const SkGlyphID* array = gUniqueGlyphIDs;
                     while (*array != gUniqueGlyphIDs_Sentinel) {
                         int count = std::min(count_glyphs(array), limit);
                         collisions += count_collisions(array, count, gRec[i].fHasher, hashMask);

@@ -10,6 +10,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkGlyph.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeCache.h"
@@ -80,14 +81,18 @@ std::optional<GlyphVector> GlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
 
     // Check for enough bytes to populate the packedGlyphID array. If not enough something has
     // gone wrong.
-    static_assert(sizeof(GlyphBytes) >= sizeof(uint32_t));
-    if (!buffer.validate(glyphCount * sizeof(uint32_t) <= buffer.available())) {
+    static_assert(sizeof(GlyphBytes) >= sizeof(SkPackedGlyphID));
+    const size_t packedIDSize = buffer.isVersionLT(SkPicturePriv::k32BitGlyphIDs)
+            ? sizeof(uint32_t) : sizeof(SkPackedGlyphID);
+    if (!buffer.validate(glyphCount * packedIDSize <= buffer.available())) {
         return std::nullopt;
     }
 
-    GlyphBytes* glyphs = alloc->makePODArray<GlyphBytes>(glyphCount);
+    GlyphBytes* glyphs =
+            alloc->makePODArray<GlyphBytes, GlyphVector_Concepts::kMaxGlyphTypeSize>(glyphCount);
     for (int i = 0; i < glyphCount; i++) {
-        *reinterpret_cast<SkPackedGlyphID*>(glyphs[i].data()) = SkPackedGlyphID(buffer.readUInt());
+        *reinterpret_cast<SkPackedGlyphID*>(glyphs[i].data()) =
+                SkPackedGlyphID::MakeFromBuffer(buffer);
     }
     return GlyphVector{std::move(promise.value()), SkSpan{glyphs, glyphCount}};
 }
@@ -106,7 +111,7 @@ void GlyphVector::flatten(SkWriteBuffer& buffer) const {
         } else {
             id = *reinterpret_cast<const SkPackedGlyphID*>(g.data());
         }
-        buffer.writeUInt(id.value());
+        id.flatten(buffer);
     }
 }
 

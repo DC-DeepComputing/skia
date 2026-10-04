@@ -587,7 +587,7 @@ DEF_GANESH_TEST_FOR_CONTEXTS(SkRemoteGlyphCache_SubRunBoundsReconstruction,
 
                 SkFont font = it.font();
                 int count = it.glyphCount();
-                const uint16_t* glyphs = it.glyphs();
+                const SkGlyphID* glyphs = it.glyphs();
                 const SkPoint* pos = reinterpret_cast<const SkPoint*>(it.pos());
 
                 std::vector<SkRect> glyphBounds(count);
@@ -1466,7 +1466,7 @@ DEF_TEST(SkRemoteGlyphCache_b513780208, reporter) {
 
         // Craft a path glyph with an invalid mask format (kARGB32_Format).
         buffer.writeInt(1);  // pathsCount
-        buffer.writeUInt(kPackedGlyphID);
+        SkPackedGlyphID::FromRaw(kPackedGlyphID).flatten(buffer);
         buffer.writePoint(SkPoint::Make(static_cast<float>(kW), 0.0f));
         buffer.writeUInt((static_cast<uint32_t>(kW) << 16) | kH);
         buffer.writeUInt(0);

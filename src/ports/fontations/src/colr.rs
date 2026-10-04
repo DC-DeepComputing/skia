@@ -59,10 +59,9 @@ impl<'a> ColorPainter for ColorPainterImpl<'a> {
 
     fn push_clip_glyph(&mut self, glyph: GlyphId) {
         if self.clip_level == 0 {
-            // TODO(drott): Handle large glyph ids in clip operation.
             self.color_painter_wrapper
                 .as_mut()
-                .push_clip_glyph(glyph.to_u32().try_into().ok().unwrap_or_default());
+                .push_clip_glyph(glyph.to_u32());
         }
         if self.color_painter_wrapper.as_mut().is_bounds_mode() {
             self.clip_level += 1;
@@ -190,12 +189,7 @@ impl<'a> ColorPainter for ColorPainterImpl<'a> {
                 palette_index,
                 alpha,
             } => {
-                // TODO(drott): Handle large glyph ids in fill glyph operation.
-                color_painter.fill_glyph_solid(
-                    glyph.to_u32().try_into().ok().unwrap_or_default(),
-                    palette_index,
-                    alpha,
-                );
+                color_painter.fill_glyph_solid(glyph.to_u32(), palette_index, alpha);
             }
             Brush::LinearGradient {
                 p0,
@@ -208,8 +202,7 @@ impl<'a> ColorPainter for ColorPainterImpl<'a> {
                     num_stops: color_stops.len(),
                 };
                 color_painter.fill_glyph_linear(
-                    // TODO(drott): Handle large glyph ids in fill glyph operation.
-                    glyph.to_u32().try_into().ok().unwrap_or_default(),
+                    glyph.to_u32(),
                     &crate::ffi::Transform {
                         xx: brush_transform.xx,
                         xy: brush_transform.xy,
@@ -241,8 +234,7 @@ impl<'a> ColorPainter for ColorPainterImpl<'a> {
                     num_stops: color_stops.len(),
                 };
                 color_painter.fill_glyph_radial(
-                    // TODO(drott): Handle large glyph ids in fill glyph operation.
-                    glyph.to_u32().try_into().ok().unwrap_or_default(),
+                    glyph.to_u32(),
                     &crate::ffi::Transform {
                         xx: brush_transform.xx,
                         xy: brush_transform.xy,
@@ -275,8 +267,7 @@ impl<'a> ColorPainter for ColorPainterImpl<'a> {
                     num_stops: color_stops.len(),
                 };
                 color_painter.fill_glyph_sweep(
-                    // TODO(drott): Handle large glyph ids in fill glyph operation.
-                    glyph.to_u32().try_into().ok().unwrap_or_default(),
+                    glyph.to_u32(),
                     &crate::ffi::Transform {
                         xx: brush_transform.xx,
                         xy: brush_transform.xy,
@@ -355,7 +346,7 @@ pub fn resolve_palette(
         .unwrap_or_default()
 }
 
-pub fn has_colr_glyph(font_ref: &BridgeFontRef, format: ColorGlyphFormat, glyph_id: u16) -> bool {
+pub fn has_colr_glyph(font_ref: &BridgeFontRef, format: ColorGlyphFormat, glyph_id: u32) -> bool {
     font_ref
         .with_font(|f| {
             let colrv1_paintable = f
@@ -366,18 +357,18 @@ pub fn has_colr_glyph(font_ref: &BridgeFontRef, format: ColorGlyphFormat, glyph_
         .unwrap_or_default()
 }
 
-pub fn has_colrv1_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool {
+pub fn has_colrv1_glyph(font_ref: &BridgeFontRef, glyph_id: u32) -> bool {
     has_colr_glyph(font_ref, ColorGlyphFormat::ColrV1, glyph_id)
 }
 
-pub fn has_colrv0_glyph(font_ref: &BridgeFontRef, glyph_id: u16) -> bool {
+pub fn has_colrv0_glyph(font_ref: &BridgeFontRef, glyph_id: u32) -> bool {
     has_colr_glyph(font_ref, ColorGlyphFormat::ColrV0, glyph_id)
 }
 
 pub fn get_colrv1_clip_box(
     font_ref: &BridgeFontRef,
     coords: &BridgeNormalizedCoords,
-    glyph_id: u16,
+    glyph_id: u32,
     size: f32,
     clip_box: &mut ClipBox,
 ) -> bool {
@@ -412,7 +403,7 @@ pub fn get_colrv1_clip_box(
 pub fn draw_colr_glyph(
     font_ref: &BridgeFontRef,
     coords: &BridgeNormalizedCoords,
-    glyph_id: u16,
+    glyph_id: u32,
     color_painter: Pin<&mut ColorPainterWrapper>,
 ) -> bool {
     let mut color_painter_impl = ColorPainterImpl {

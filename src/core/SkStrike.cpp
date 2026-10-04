@@ -231,8 +231,7 @@ void SkStrike::getWidthsStrided(unsigned count,
     const uint32_t* g_ptr = first_glyph;
     SkScalar* a_ptr = first_advance;
     for (unsigned i = 0; i < count; ++i) {
-      // TODO(https://crbug.com/skia/521216502): Handle large glyph ids.
-        SkGlyph* glyph = this->glyph(SkPackedGlyphID{static_cast<SkGlyphID>(*g_ptr)});
+        SkGlyph* glyph = this->glyph(SkPackedGlyphID{*g_ptr});
         *a_ptr = glyph->advanceX() * scale;
         g_ptr += glyph_stride_32;
         a_ptr += advance_stride_32;

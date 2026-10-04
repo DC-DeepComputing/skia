@@ -1042,29 +1042,19 @@ void SkTypeface_Mac::onCharsToGlyphs(SkSpan<const SkUnichar> uni, SkSpan<SkGlyph
     }
     srcCount = SkToInt(utf16 - src);
 
-    // If there are any non-bmp code points, the provided 'glyphs' storage will be inadequate.
-    AutoSTMalloc<1024, uint16_t> glyphStorage;
-    uint16_t* macGlyphs = glyphs.data();
-    if (srcCount > count) {
-        macGlyphs = glyphStorage.reset(srcCount);
-    }
+    // CoreText uses 16-bit glyph IDs, one per UTF-16 code unit.
+    AutoSTMalloc<1024, CGGlyph> glyphStorage(srcCount);
+    CGGlyph* macGlyphs = glyphStorage.get();
 
     CTFontGetGlyphsForCharacters(fFontRef.get(), src, macGlyphs, srcCount);
 
-    // If there were any non-bmp, then copy and compact.
-    // If all are bmp, 'glyphs' already contains the compact glyphs.
-    // If some are non-bmp, copy and compact into 'glyphs'.
-    if (srcCount > count) {
-        SkASSERT(glyphs.data() != macGlyphs);
-        int extra = 0;
-        for (int i = 0; i < count; ++i) {
-            glyphs[i] = macGlyphs[i + extra];
-            if (SkUTF::IsLeadingSurrogateUTF16(src[i + extra])) {
-                ++extra;
-            }
+    // Widen the native IDs and compact surrogate pairs.
+    int extra = 0;
+    for (int i = 0; i < count; ++i) {
+        glyphs[i] = macGlyphs[i + extra];
+        if (SkUTF::IsLeadingSurrogateUTF16(src[i + extra])) {
+            ++extra;
         }
-    } else {
-        SkASSERT(glyphs.data() == macGlyphs);
     }
 }
 

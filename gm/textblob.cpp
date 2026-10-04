@@ -155,7 +155,7 @@ private:
                     const SkTextBlobBuilder::RunBuffer& buf = builder.allocRun(font, count,
                                                                                offset.x(),
                                                                                offset.y());
-                    memcpy(buf.glyphs, fGlyphs.begin() + currentGlyph, count * sizeof(uint16_t));
+                    memcpy(buf.glyphs, fGlyphs.begin() + currentGlyph, count * sizeof(SkGlyphID));
                 } break;
                 case kScalar_Pos: {
                     const SkTextBlobBuilder::RunBuffer& buf = builder.allocRunPosH(font, count,
@@ -165,7 +165,7 @@ private:
                         *pos.append() = offset.x() + i * advanceX;
                     }
 
-                    memcpy(buf.glyphs, fGlyphs.begin() + currentGlyph, count * sizeof(uint16_t));
+                    memcpy(buf.glyphs, fGlyphs.begin() + currentGlyph, count * sizeof(SkGlyphID));
                     memcpy(buf.pos, pos.begin(), count * sizeof(SkScalar));
                 } break;
                 case kPoint_Pos: {
@@ -177,7 +177,7 @@ private:
                         *pos.append() = offset.y() + i * (advanceY / count);
                     }
 
-                    memcpy(buf.glyphs, fGlyphs.begin() + currentGlyph, count * sizeof(uint16_t));
+                    memcpy(buf.glyphs, fGlyphs.begin() + currentGlyph, count * sizeof(SkGlyphID));
                     memcpy(buf.pos, pos.begin(), count * sizeof(SkScalar) * 2);
                 } break;
                 default:

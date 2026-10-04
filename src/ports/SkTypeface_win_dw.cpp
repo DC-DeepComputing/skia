@@ -34,6 +34,8 @@
 #include "src/utils/win/SkDWrite.h"
 #include "src/utils/win/SkDWriteFontFileStream.h"
 
+#include <algorithm>
+
 using namespace skia_private;
 
 SkFontStyle DWriteFontTypeface::GetStyle(IDWriteFont* font, IDWriteFontFace* fontFace) {
@@ -369,7 +371,13 @@ void DWriteFontTypeface::onGetFontDescriptor(SkFontDescriptor* desc,
 void DWriteFontTypeface::onCharsToGlyphs(SkSpan<const SkUnichar> uni,
                                          SkSpan<SkGlyphID> glyphs) const {
     SkASSERT(uni.size() == glyphs.size());
-    fDWriteFontFace->GetGlyphIndices((const UINT32*)uni.data(), uni.size(), glyphs.data());
+    AutoSTMalloc<256, UINT16> nativeGlyphs(glyphs.size());
+    if (FAILED(fDWriteFontFace->GetGlyphIndices((const UINT32*)uni.data(), uni.size(),
+                                              nativeGlyphs.get()))) {
+        std::fill(glyphs.begin(), glyphs.end(), 0);
+        return;
+    }
+    std::copy_n(nativeGlyphs.get(), glyphs.size(), glyphs.data());
 }
 
 int DWriteFontTypeface::onCountGlyphs() const {

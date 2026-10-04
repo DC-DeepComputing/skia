@@ -1398,7 +1398,7 @@ bool colrv1_start_glyph(SkCanvas* canvas,
                         const SkSpan<SkColor>& palette,
                         SkColor foregroundColor,
                         FT_Face face,
-                        uint16_t glyphId,
+                        SkGlyphID glyphId,
                         FT_Color_Root_Transform rootTransform,
                         VisitedSet* activePaints) {
     FT_OpaquePaint opaquePaint{nullptr, 1};
@@ -1530,7 +1530,7 @@ bool colrv1_traverse_paint_bounds(SkMatrix* ctm,
 bool colrv1_start_glyph_bounds(SkMatrix *ctm,
                                SkRect* bounds,
                                FT_Face face,
-                               uint16_t glyphId,
+                               SkGlyphID glyphId,
                                FT_Color_Root_Transform rootTransform,
                                VisitedSet* activePaints) {
     FT_OpaquePaint opaquePaint{nullptr, 1};

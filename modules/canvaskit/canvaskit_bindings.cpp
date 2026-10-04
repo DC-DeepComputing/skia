@@ -1424,13 +1424,13 @@ EMSCRIPTEN_BINDINGS(Skia) {
             .function("_drawGlyphs",
                       optional_override([](SkCanvas& self,
                                            int count,
-                                           WASMPointerU16 glyphs,
+                                           WASMPointerU32 glyphs,
                                            WASMPointerF32 positions,
                                            float x,
                                            float y,
                                            const SkFont& font,
                                            const SkPaint& paint) -> void {
-                          self.drawGlyphs({reinterpret_cast<const uint16_t*>(glyphs), count},
+                          self.drawGlyphs({reinterpret_cast<const SkGlyphID*>(glyphs), count},
                                           {reinterpret_cast<const SkPoint*>(positions), count},
                                           {x, y},
                                           font,
@@ -1802,7 +1802,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             .constructor<sk_sp<SkTypeface>, float, float, float>()
             .function("_getGlyphWidthBounds",
                       optional_override([](SkFont& self,
-                                           WASMPointerU16 gPtr,
+                                           WASMPointerU32 gPtr,
                                            int numGlyphs,
                                            WASMPointerF32 wPtr,
                                            WASMPointerF32 rPtr,
@@ -1823,7 +1823,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            WASMPointerU8 sptr,
                                            size_t strLen,
                                            size_t expectedCodePoints,
-                                           WASMPointerU16 iPtr) -> int {
+                                           WASMPointerU32 iPtr) -> int {
                           char* str = reinterpret_cast<char*>(sptr);
                           SkGlyphID* glyphIDs = reinterpret_cast<SkGlyphID*>(iPtr);
 
@@ -1862,7 +1862,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                       }))
             .function("_getGlyphIntercepts",
                       optional_override([](SkFont& self,
-                                           WASMPointerU16 gPtr,
+                                           WASMPointerU32 gPtr,
                                            size_t numGlyphs,
                                            bool ownGlyphs,
                                            WASMPointerF32 pPtr,
@@ -1870,7 +1870,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            bool ownPos,
                                            float top,
                                            float bottom) -> Float32Array {
-                          JSSpan<uint16_t> glyphs(gPtr, numGlyphs, ownGlyphs);
+                          JSSpan<SkGlyphID> glyphs(gPtr, numGlyphs, ownGlyphs);
                           JSSpan<float> pos(pPtr, numPos, ownPos);
                           if (glyphs.size() > (pos.size() >> 1)) {
                               return emscripten::val("Not enough x,y position pairs for glyphs");
@@ -2960,11 +2960,11 @@ EMSCRIPTEN_BINDINGS(Skia) {
                             }),
                             allow_raw_pointers())
             .class_function("_MakeFromRSXformGlyphs",
-                            optional_override([](WASMPointerU16 gPtr,
+                            optional_override([](WASMPointerU32 gPtr,
                                                  size_t byteLen,
                                                  WASMPointerF32 xptr,
                                                  const SkFont& font) -> sk_sp<SkTextBlob> {
-                                const size_t numGlyphs = byteLen >> 1;
+                                const size_t numGlyphs = byteLen / sizeof(SkGlyphID);
                                 SkSpan<const SkGlyphID> glyphs = {
                                         reinterpret_cast<const SkGlyphID*>(gPtr), numGlyphs};
                                 SkSpan<const SkRSXform> xforms = {
@@ -2983,7 +2983,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                             }),
                             allow_raw_pointers())
             .class_function("_MakeFromGlyphs",
-                            optional_override([](WASMPointerU16 gPtr,
+                            optional_override([](WASMPointerU32 gPtr,
                                                  size_t byteLen,
                                                  const SkFont& font) -> sk_sp<SkTextBlob> {
                                 const SkGlyphID* glyphs = reinterpret_cast<const SkGlyphID*>(gPtr);
@@ -3036,7 +3036,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                            WASMPointerU8 sptr,
                                            size_t strLen,
                                            size_t expectedCodePoints,
-                                           WASMPointerU16 iPtr) -> int {
+                                           WASMPointerU32 iPtr) -> int {
                           const char* str = reinterpret_cast<char*>(sptr);
                           SkSpan<SkGlyphID> glyphIDs = {reinterpret_cast<SkGlyphID*>(iPtr),
                                                         expectedCodePoints};

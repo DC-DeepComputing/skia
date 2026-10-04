@@ -813,7 +813,7 @@ export interface GlyphRun {
     fakeBold: boolean;
     fakeItalic: boolean;
 
-    glyphs: Uint16Array;
+    glyphs: Uint32Array;
     positions: Float32Array;    // alternating x0, y0, x1, y1, ...
     offsets: Uint32Array;
     flags: number;              // see GlyphRunFlags
@@ -1492,7 +1492,7 @@ export interface Canvas extends EmbindObject<"Canvas"> {
 
     /**
      * Draws a run of glyphs, at corresponding positions, in a given font.
-     * @param glyphs the array of glyph IDs (Uint16TypedArray)
+     * @param glyphs the array of glyph IDs (Uint32TypedArray)
      * @param positions the array of x,y floats to position each glyph
      * @param x x-coordinate of the origin of the entire run
      * @param y y-coordinate of the origin of the entire run
@@ -4450,7 +4450,7 @@ export type FlattenedPointArray = Float32Array;
  */
 export type FlattenedRectangleArray = Float32Array;
 
-export type GlyphIDArray = Uint16Array;
+export type GlyphIDArray = Uint32Array;
 /**
  * A command is a verb and then any arguments needed to fulfill that path verb.
  * InputCommands is a flattened structure of one or more of these.

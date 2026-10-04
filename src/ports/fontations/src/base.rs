@@ -7,7 +7,7 @@ use read_fonts::{FileRef, FontRef, ReadError, TableProvider};
 use skrifa::{
     attribute::Style,
     charmap::MappingIndex,
-    instance::{Location, Size},
+    instance::{Location, LocationRef, Size},
     metrics::{GlyphMetrics, Metrics as SkrifaMetrics},
     outline::OutlineGlyphFormat,
     setting::VariationSetting,
@@ -49,24 +49,24 @@ pub fn lookup_glyph_or_zero(
     font_ref: &BridgeFontRef,
     map: &BridgeMappingIndex,
     codepoints: &[u32],
-    glyphs: &mut [u16],
+    glyphs: &mut [u32],
 ) {
     glyphs.fill(0);
     font_ref.with_font(|f| {
         let mappings = map.0.charmap(f);
         for it in codepoints.iter().zip(glyphs.iter_mut()) {
             let (codepoint, glyph) = it;
-            // Remove u16 conversion when implementing large glyph id support in Skia.
-            *glyph = u16::try_from(mappings.map(*codepoint).unwrap_or_default().to_u32())
-                .unwrap_or_default();
+            *glyph = mappings.map(*codepoint).unwrap_or_default().to_u32();
         }
         Some(())
     });
 }
 
-pub fn num_glyphs(font_ref: &BridgeFontRef) -> u16 {
+pub fn num_glyphs(font_ref: &BridgeFontRef) -> u32 {
     font_ref
-        .with_font(|f| Some(f.maxp().ok()?.num_glyphs()))
+        .with_font(|f| {
+            Some(GlyphMetrics::new(f, Size::unscaled(), LocationRef::default()).glyph_count())
+        })
         .unwrap_or_default()
 }
 
@@ -87,7 +87,7 @@ pub fn unhinted_advance_width_or_zero(
     font_ref: &BridgeFontRef,
     size: f32,
     coords: &BridgeNormalizedCoords,
-    glyph_id: u16,
+    glyph_id: u32,
 ) -> f32 {
     font_ref
         .with_font(|f| {
@@ -576,6 +576,38 @@ mod test {
     const TEST_COLLECTION_FILENAME: &str = "resources/fonts/test.ttc";
     const TEST_CONDENSED_BOLD_ITALIC: &str = "resources/fonts/cond-bold-italic.ttf";
     const TEST_VARIABLE: &str = "resources/fonts/Variable.ttf";
+
+    #[test]
+    fn test_32_bit_glyph_mapping() {
+        // A minimal sfnt with a format-12 cmap mapping 'A' to glyph 65537.
+        let font_data: Vec<u8> = [
+            0x00010000u32,
+            0x00010010,
+            0,
+            0x636d6170,
+            0,
+            28,
+            40,
+            0x00000001,
+            0x0003000a,
+            12,
+            0x000c0000,
+            28,
+            0,
+            1,
+            65,
+            65,
+            0x10001,
+        ]
+        .into_iter()
+        .flat_map(u32::to_be_bytes)
+        .collect();
+        let font_ref = make_font_ref(&font_data, 0);
+        let map = super::make_mapping_index(&font_ref);
+        let mut glyphs = [0u32; 2];
+        super::lookup_glyph_or_zero(&font_ref, &map, &[65, 66], &mut glyphs);
+        assert_eq!(glyphs, [0x10001, 0]);
+    }
 
     #[test]
     fn test_num_fonts_in_collection() {

@@ -144,6 +144,7 @@ describe('Font Behavior', () => {
         redPaint.setColor(CanvasKit.parseColorString('#770b1e')); // arbitrary deep red
 
         const ids = notoSerif.getGlyphIDs('AEGIS ægis');
+        expect(ids instanceof Uint32Array).toBe(true);
         expect(ids.length).toEqual(10); // one glyph id per glyph
         expect(ids[0]).toEqual(36); // spot check this, should be consistent as long as the font is.
 
@@ -165,6 +166,7 @@ describe('Font Behavior', () => {
 
         const mIDs = CanvasKit.MallocGlyphIDs(ids.length);
         const mArr = mIDs.toTypedArray();
+        expect(mArr instanceof Uint32Array).toBe(true);
         mArr.set(ids);
 
         const mXforms = CanvasKit.Malloc(Float32Array, ids.length * 4);
@@ -391,6 +393,28 @@ describe('Font Behavior', () => {
         notoSerif.delete();
     });
 
+    it('does not truncate glyph IDs to 16 bits', () => {
+        const font = new CanvasKit.Font(CanvasKit.Typeface.GetDefault(), 100);
+        const ids = font.getGlyphIDs('I');
+        expect(ids instanceof Uint32Array).toBe(true);
+        const high = ids[0] + 0x10000;
+        const widths = font.getGlyphWidths(new Uint32Array([ids[0], high]));
+        expect(widths[0]).toBeGreaterThan(0);
+        expect(widths[1]).toEqual(0);
+        expect(Array.from(font.getGlyphBounds([high]))).toEqual([0, 0, 0, 0]);
+        expect(font.getGlyphIntercepts([high], [0, 0], -60, -40).length).toEqual(0);
+        const malloced = CanvasKit.MallocGlyphIDs(1);
+        expect(malloced.toTypedArray() instanceof Uint32Array).toBe(true);
+        malloced.toTypedArray()[0] = high;
+        expect(font.getGlyphWidths(malloced)[0]).toEqual(0);
+        CanvasKit.Free(malloced);
+        const legacy = CanvasKit.Malloc(Uint16Array, 1);
+        expect(() => font.getGlyphWidths(legacy)).toThrow();
+        expect(() => font.getGlyphWidths(legacy.toTypedArray())).toThrow();
+        CanvasKit.Free(legacy);
+        font.delete();
+    });
+
     it('can get the intercepts of glyphs', () => {
         const font = new CanvasKit.Font(CanvasKit.Typeface.GetDefault(), 100);
         const ids = font.getGlyphIDs('I');
@@ -432,16 +456,16 @@ describe('Font Behavior', () => {
 
         const id_makers = [
             (id) => [ id ],
-            (id) => new Uint16Array([ id ]),
+            (id) => new Uint32Array([ id ]),
             (id) => {
-                const a = CanvasKit.Malloc(Uint16Array, 1);
+                const a = CanvasKit.Malloc(Uint32Array, 1);
                 free_list.push(a);
                 const ta = a.toTypedArray();
                 ta[0] = id;
                 return ta;  // return typed-array
             },
             (id) => {
-                const a = CanvasKit.Malloc(Uint16Array, 1);
+                const a = CanvasKit.Malloc(Uint32Array, 1);
                 free_list.push(a);
                 a.toTypedArray()[0] = id;
                 return a;   // return raw obj
