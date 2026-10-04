@@ -273,6 +273,10 @@ const SkAdvancedTypefaceMetrics* SkPDFFont::GetMetrics(const SkTypeface& typefac
     if (!metrics) {
         metrics = std::make_unique<SkAdvancedTypefaceMetrics>();
     }
+    // PDF viewers cannot reconstruct glyphs from VARC.
+    if (typeface.getTableSize(SkSetFourByteTag('V', 'A', 'R', 'C'))) {
+        metrics->fType = SkAdvancedTypefaceMetrics::kOther_Font;
+    }
     if (0 == metrics->fStemV || 0 == metrics->fCapHeight) {
         SkFont font;
         font.setHinting(SkFontHinting::kNone);
