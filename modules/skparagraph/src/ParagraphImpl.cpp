@@ -15,6 +15,9 @@
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
 #include "modules/skparagraph/src/OneLineShaper.h"
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#include "modules/skparagraph/src/CoreTextLineShaper.h"
+#endif
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
 #include "modules/skparagraph/src/Run.h"
@@ -425,12 +428,14 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
         fTextStyles[0].fRange.width() == fText.size() && fRuns.size() == 1 &&
         !(this->fHasWhitespacesInside && this->fParagraphStyle.getLetterSpacingByCSSSpec())
         ) {
-        auto& run = fRuns[0];
         auto& style = fTextStyles[0].fStyle;
+#if !defined(SK_BUILD_FOR_MAC) && !defined(SK_BUILD_FOR_IOS)
+        auto& run = fRuns[0];
         if (!run.isCursiveScript()) {
             // Do not apply letter spacing for script languages (no exception here)
             run.addLetterSpacesEvenly(style.getLetterSpacing());
         }
+#endif
 
         this->buildClusterTable();
 
@@ -498,12 +503,16 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
             // We do not apply letter spacing for script languages
             // except for one case (cluster is whitespace, and we have to follow CSS spec)
             if ((currentStyle->fStyle.getLetterSpacing() != 0)) {
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+                cluster->setHalfLetterSpacing(currentStyle->fStyle.getLetterSpacing() / 2);
+#else
                 if (!run.isCursiveScript() ||
                     (cluster->isWhitespaceBreak() &&
                      this->fParagraphStyle.getLetterSpacingByCSSSpec())) {
                     shift +=
                         run.addLetterSpacesEvenly(currentStyle->fStyle.getLetterSpacing(), cluster);
                 }
+#endif
             }
 
             if (soFarWhitespacesOnly && !cluster->isWhitespaceBreak()) {
@@ -515,6 +524,9 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
 
 // Clusters in the order of the input text
 void ParagraphImpl::buildClusterTable() {
+    fClustersIndexFromCodeUnit.clear();
+    fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
+
     // It's possible that one grapheme includes few runs; we cannot handle it
     // so we break graphemes by the runs instead
     // It's not the ideal solution and has to be revisited later
@@ -579,9 +591,15 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
     fUnresolvedCodepoints.clear();
     fFontSwitches.clear();
 
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+    CoreTextLineShaper shaper(this);
+    auto result = shaper.shape();
+    fUnresolvedGlyphs = shaper.unresolvedGlyphs();
+#else
     OneLineShaper oneLineShaper(this);
     auto result = oneLineShaper.shape();
     fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
+#endif
 
     this->applySpacingAndBuildClusterTable();
 
