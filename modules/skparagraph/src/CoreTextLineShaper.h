@@ -6,9 +6,10 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "modules/skparagraph/include/DartTypes.h"
+#include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
 
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 #include <CoreText/CoreText.h>
 
 namespace skia {
@@ -40,6 +41,6 @@ private:
 }  // namespace textlayout
 }  // namespace skia
 
-#endif  // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 #endif  // CoreTextLineShaper_DEFINED

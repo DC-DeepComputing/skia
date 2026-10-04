@@ -1,7 +1,7 @@
 // Copyright 2026 Google LLC
 #include "modules/skparagraph/src/CoreTextIndexMap.h"
 
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 #include "include/private/SkTo.h"
 #include "src/core/SkUTF.h"
@@ -128,4 +128,4 @@ TextRange CoreTextIndexMap::cfrangeToTextRange(CFRange cfRange) const {
 }  // namespace textlayout
 }  // namespace skia
 
-#endif  // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
