@@ -179,12 +179,12 @@ SkUniqueCFRef<CFAttributedStringRef> CoreTextAttrStringBuilder::build() {
 
         sk_sp<SkTypeface> primary = span.fStyle.refTypeface();
         std::vector<sk_sp<SkTypeface>> typefaces;
-        if (!primary && fFontCollection) {
+        if (fFontCollection) {
             typefaces = fFontCollection->findTypefaces(
                 span.fStyle.getFontFamilies(), span.fStyle.getFontStyle());
-            if (!typefaces.empty()) {
-                primary = typefaces.front();
-            }
+        }
+        if (!primary && !typefaces.empty()) {
+            primary = typefaces.front();
         }
 
         CGFloat fontSize = span.fStyle.getFontSize() > 0.0f ? span.fStyle.getFontSize() : 14.0f;
@@ -197,7 +197,8 @@ SkUniqueCFRef<CFAttributedStringRef> CoreTextAttrStringBuilder::build() {
                                       &kCFTypeDictionaryValueCallBacks));
 
         // Cascade list provides font fallback chain for characters outside primary typeface
-        if (typefaces.size() > 1) {
+        const bool fallbackDisabled = fFontCollection && !fFontCollection->fontFallbackEnabled();
+        if (typefaces.size() > 1 || fallbackDisabled) {
             SkUniqueCFRef<CFMutableArrayRef> cascadeList(
                 CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks));
             for (size_t i = 1; i < typefaces.size(); ++i) {
@@ -206,6 +207,15 @@ SkUniqueCFRef<CFAttributedStringRef> CoreTextAttrStringBuilder::build() {
                         CoreTextFontRegistry::Instance().getDescriptor(typefaces[i].get());
                     if (desc) {
                         CFArrayAppendValue(cascadeList.get(), desc.get());
+                    }
+                }
+            }
+            if (fallbackDisabled) {
+                SkUniqueCFRef<CTFontRef> lrFont(CTFontCreateWithName(CFSTR("LastResort"), fontSize, nullptr));
+                if (lrFont) {
+                    SkUniqueCFRef<CTFontDescriptorRef> lrDesc(CTFontCopyFontDescriptor(lrFont.get()));
+                    if (lrDesc) {
+                        CFArrayAppendValue(cascadeList.get(), lrDesc.get());
                     }
                 }
             }
