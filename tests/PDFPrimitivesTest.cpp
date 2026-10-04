@@ -38,7 +38,9 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTo.h"
+#include "include/utils/SkCustomTypeface.h"
 #include "include/utils/SkParsePath.h"
+#include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkRandom.h"
@@ -48,6 +50,7 @@
 #include "src/pdf/SkPDFTypes.h"
 #include "src/pdf/SkPDFUnion.h"
 #include "src/pdf/SkPDFUtils.h"
+#include "src/ports/SkTypeface_proxy.h"
 #include "src/text/GlyphRun.h"
 #include "src/utils/SkFloatToDecimal.h"
 #include "tools/Resources.h"
@@ -62,6 +65,7 @@
 #include <cstring>
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 class SkTypeface;
@@ -352,6 +356,90 @@ DEF_TEST(SkPDF_FontCanEmbedTypeface, reporter) {
     sk_sp<SkTypeface> portableTypeface(ToolUtils::DefaultTypeface());
     REPORTER_ASSERT(reporter,
                     SkPDFFont::CanEmbedTypeface(*portableTypeface, &doc));
+}
+
+DEF_TEST(SkPDF_VARCFontsUseType3, reporter) {
+    REQUIRE_PDF_DOCUMENT(SkPDF_VARCFontsUseType3, reporter);
+    class Typeface final : public SkTypeface_proxy {
+    public:
+        Typeface(sk_sp<SkTypeface> face, SkAdvancedTypefaceMetrics::FontType type, bool hasVARC)
+                : SkTypeface_proxy(face, SkFontStyle())
+                , fFace(std::move(face))
+                , fType(type)
+                , fHasVARC(hasVARC) {}
+        int varcQueries() const { return fVARCQueries; }
+    private:
+        sk_sp<SkTypeface> onMakeClone(const SkFontArguments&) const override {
+            return sk_ref_sp(this);
+        }
+        std::unique_ptr<SkScalerContext> onCreateScalerContext(
+                const SkScalerContextEffects& effects, const SkDescriptor* desc) const override {
+            return std::make_unique<SkScalerContext_proxy>(
+                    fFace->createScalerContext(effects, desc),
+                    const_cast<Typeface&>(*this), effects, desc);
+        }
+        std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override {
+            auto metrics = std::make_unique<SkAdvancedTypefaceMetrics>();
+            metrics->fType = fType;
+            metrics->fStemV = 1;
+            metrics->fCapHeight = 1;
+            return metrics;
+        }
+        size_t onGetTableData(SkFontTableTag tag, size_t offset, size_t length,
+                             void* data) const override {
+            if (tag == SkSetFourByteTag('V', 'A', 'R', 'C')) {
+                ++fVARCQueries;
+                if (!fHasVARC || offset != 0 || length == 0) {
+                    return 0;
+                }
+                // Only the presence of the table matters to PDF font selection.
+                if (data) {
+                    *static_cast<uint8_t*>(data) = 0;
+                }
+                return 1;
+            }
+            return SkTypeface_proxy::onGetTableData(tag, offset, length, data);
+        }
+        sk_sp<SkTypeface> fFace;
+        SkAdvancedTypefaceMetrics::FontType fType;
+        bool fHasVARC;
+        mutable int fVARCQueries = 0;
+    };
+
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 2, SkPath::Rect(SkRect::MakeLTRB(0, -1, 1, 0)));
+    auto outline = builder.detach();
+    for (auto type : {SkAdvancedTypefaceMetrics::kTrueType_Font,
+                      SkAdvancedTypefaceMetrics::kCFF_Font}) {
+        for (bool hasVARC : {false, true}) {
+            auto face = sk_make_sp<Typeface>(outline, type, hasVARC);
+            SkDynamicMemoryWStream stream;
+            auto metadata = SkPDF::JPEG::MetadataWithCallbacks();
+            metadata.fCompressionLevel = SkPDF::Metadata::CompressionLevel::None;
+            auto doc = SkPDF::MakeDocument(&stream, metadata);
+            auto* pdfDoc = static_cast<SkPDFDocument*>(doc.get());
+            const auto* metrics = SkPDFFont::GetMetrics(*face, pdfDoc);
+            REPORTER_ASSERT(reporter, metrics);
+            REPORTER_ASSERT(reporter, metrics->fType ==
+                    (hasVARC ? SkAdvancedTypefaceMetrics::kOther_Font : type));
+            REPORTER_ASSERT(reporter, SkPDFFont::GetMetrics(*face, pdfDoc) == metrics);
+            REPORTER_ASSERT(reporter, face->varcQueries() == 1);
+            if (!hasVARC || metrics->fType != SkAdvancedTypefaceMetrics::kOther_Font) {
+                continue;
+            }
+            const SkGlyphID glyph = 1;
+            doc->beginPage(64, 32)->drawSimpleText(
+                    &glyph, sizeof(glyph), SkTextEncoding::kGlyphID,
+                    0, 20, SkFont(face, 10), SkPaint());
+            doc->close();
+            auto data = stream.detachAsData();
+            std::string pdf(static_cast<const char*>(data->data()), data->size());
+            REPORTER_ASSERT(reporter, pdf.find("/Subtype /Type3") != std::string::npos);
+            REPORTER_ASSERT(reporter, pdf.find("/g1 ") != std::string::npos);
+            REPORTER_ASSERT(reporter, pdf.find("/FontFile") == std::string::npos);
+            REPORTER_ASSERT(reporter, face->varcQueries() == 1);
+        }
+    }
 }
 
 
