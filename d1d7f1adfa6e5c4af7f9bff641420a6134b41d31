@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69634829_cb9ad1d7",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-04T13:45:11Z",
+      "side": 1,
+      "message": "Optional: When a soft hyphen is followed by spaces or a hard line break, TextWrapper::trimEndSpaces() trims them from fClusterRange into fGhostClusterRange. Checking fClusterRange.end !\u003d fGhostClusterRange.end (or inspecting fOwner-\u003ecluster(fGhostClusterRange.end - 1)) would express that directly in terms of TextLine\u0027s cluster ranges rather than relying on UAX #14 setting isSoftBreak() \u003d\u003d false before spaces/newlines.",
+      "isAi": true,
+      "revId": "d1d7f1adfa6e5c4af7f9bff641420a6134b41d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
