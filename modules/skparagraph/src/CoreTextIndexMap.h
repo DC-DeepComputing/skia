@@ -5,9 +5,10 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skparagraph/include/DartTypes.h"
+#include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
 
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 #include <CoreFoundation/CoreFoundation.h>
 
 namespace skia {
@@ -44,6 +45,6 @@ private:
 }  // namespace textlayout
 }  // namespace skia
 
-#endif  // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 #endif  // CoreTextIndexMap_DEFINED

@@ -6,10 +6,11 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMutex.h"
+#include "modules/skparagraph/include/ParagraphStyle.h"
 #include "src/core/SkTHash.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 #include <CoreText/CoreText.h>
 
 namespace skia {
@@ -50,6 +51,6 @@ private:
 }  // namespace textlayout
 }  // namespace skia
 
-#endif  // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 #endif  // CoreTextFontRegistry_DEFINED
