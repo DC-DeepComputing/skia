@@ -39,6 +39,7 @@
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ComputeProvider.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Base_Graphite.h"
@@ -51,6 +52,7 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
+#include "src/gpu/graphite/compute/GaussianBlurStep.h"
 #include "src/gpu/graphite/task/CopyTask.h"
 #include "src/gpu/graphite/task/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/task/UploadTask.h"
@@ -729,6 +731,73 @@ namespace skif {
 
 namespace {
 
+// Blurs with GaussianBlurStep, and falls back to the shader blur for the blurs that the step
+// doesn't support. Which those are depends on the source image, which findAlgorithm() can't see.
+class ComputeBlurAlgorithm final : public SkBlurEngine::Algorithm {
+public:
+    ComputeBlurAlgorithm(skgpu::graphite::Recorder* recorder,
+                         const skgpu::graphite::GaussianBlurStep* step,
+                         const SkShaderBlurAlgorithm* fallback,
+                         const SkSurfaceProps& surfaceProps)
+            : fRecorder(recorder)
+            , fStep(step)
+            , fFallback(fallback)
+            , fSurfaceProps(surfaceProps) {}
+
+    bool isEnabled() const { return fStep != nullptr; }
+
+    // The caller rescales the source and applies the tile mode based on these before blur() can
+    // choose between the algorithms, so they're the shader blur's. GaussianBlurStep supports the
+    // same maximum sigma, and every tile mode.
+    float maxSigma() const override {
+        static_assert(skgpu::graphite::GaussianBlurStep::kMaxSigma ==
+                      SkShaderBlurAlgorithm::kMaxLinearSigma);
+        return fFallback->maxSigma();
+    }
+    bool supportsOnlyDecalTiling() const override { return fFallback->supportsOnlyDecalTiling(); }
+
+    sk_sp<SkSpecialImage> blur(SkSize sigma,
+                               sk_sp<SkSpecialImage> src,
+                               const SkIRect& srcRect,
+                               SkTileMode tileMode,
+                               const SkIRect& dstRect) const override {
+        SkASSERT(fStep);
+        // The shader blur returns the source of an identity blur as-is, so leave those to it.
+        const bool isIdentity = SkBlurEngine::IsEffectivelyIdentity(sigma.width()) &&
+                                SkBlurEngine::IsEffectivelyIdentity(sigma.height());
+        sk_sp<SkImage> image = src->asImage();
+        if (!isIdentity && image && as_IB(image)->type() == SkImage_Base::Type::kGraphite) {
+            // The step's rects are relative to the texture, rather than to the special image.
+            const SkIPoint origin = src->subset().topLeft();
+            sk_sp<skgpu::graphite::Image> blurred =
+                    fStep->blur(fRecorder,
+                                sigma,
+                                static_cast<const skgpu::graphite::Image&>(*image),
+                                srcRect.makeOffset(origin),
+                                tileMode,
+                                dstRect.makeOffset(origin));
+            if (blurred) {
+                return SkSpecialImages::MakeGraphite(fRecorder,
+                                                     SkIRect::MakeSize(dstRect.size()),
+                                                     std::move(blurred),
+                                                     fSurfaceProps);
+            }
+        }
+        return fFallback->blur(sigma, std::move(src), srcRect, tileMode, dstRect);
+    }
+
+private:
+    skgpu::graphite::Recorder* fRecorder;
+    const skgpu::graphite::GaussianBlurStep* fStep;
+    const SkShaderBlurAlgorithm* fFallback;
+    SkSurfaceProps fSurfaceProps;
+};
+
+const skgpu::graphite::GaussianBlurStep* compute_blur_step(skgpu::graphite::Recorder* recorder) {
+    const skgpu::graphite::ComputeProvider* provider = recorder->priv().computeProvider();
+    return provider ? provider->gaussianBlur() : nullptr;
+}
+
 // TODO(michaelludwig): The skgpu::BlurUtils effects will be migrated to src/core to implement a
 // shader BlurEngine that can be shared by rastr, Ganesh, and Graphite. This is blocked by having
 // skif::FilterResult handle the resizing to the max supported sigma.
@@ -743,7 +812,8 @@ public:
                     SkColorType colorType)
             : Backend(SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize),
                       surfaceProps, colorType)
-            , fRecorder(recorder) {}
+            , fRecorder(recorder)
+            , fComputeBlur(recorder, compute_blur_step(recorder), this, surfaceProps) {}
 
     // Backend
     sk_sp<SkDevice> makeDevice(SkISize size,
@@ -787,6 +857,11 @@ public:
     // SkBlurEngine
     const SkBlurEngine::Algorithm* findAlgorithm(SkSize sigma,
                                                  SkColorType colorType) const override {
+        // The compute blur falls back to the runtime effect blurs for the sources it doesn't
+        // support. `colorType` is the backend's, which isn't necessarily the source's.
+        if (fComputeBlur.isEnabled()) {
+            return &fComputeBlur;
+        }
         // The runtime effect blurs handle all tilemodes and color types
         return this;
     }
@@ -805,6 +880,7 @@ public:
 
 private:
     skgpu::graphite::Recorder* fRecorder;
+    ComputeBlurAlgorithm fComputeBlur;
 };
 
 } // anonymous namespace

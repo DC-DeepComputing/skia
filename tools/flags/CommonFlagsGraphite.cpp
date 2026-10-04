@@ -27,6 +27,7 @@ DEFINE_int(internalMSAATileSize, 0, "Run Graphite w/ limited MSAA texture's size
 DEFINE_int(minMSAAPathSize, -1,
            "Graphite uses raster atlas for paths smaller than this, or default value if negative");
 DEFINE_bool(useDrawListLayer, false, "Enable experimental layer-based draw ordering.");
+DEFINE_bool(useComputeBlur, false, "Run the blurs that Graphite supports with compute.");
 
 void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
     static std::unique_ptr<SkExecutor> gGpuExecutor;
@@ -51,6 +52,9 @@ void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
     }
     if (FLAGS_useDrawListLayer) {
         testOptions->fOptionsPriv.fDrawListLayer = FLAGS_useDrawListLayer;
+    }
+    if (FLAGS_useComputeBlur) {
+        testOptions->fOptionsPriv.fUseComputeBlur = true;
     }
 
 #if defined(SK_DAWN)
