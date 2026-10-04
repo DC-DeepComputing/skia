@@ -1003,5 +1003,79 @@ DEF_TEST(CoreTextPipeline_JustificationHitTest, reporter) {
     REPORTER_ASSERT(reporter, impl->getClosestUTF16GlyphInfoAt(95.0f, 5.0f, &glyphInfo));
 }
 
+DEF_TEST(CoreTextPipeline_DisableFontFallback, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    fontCollection->disableFontFallback();
+    REPORTER_ASSERT(reporter, !fontCollection->fontFallbackEnabled());
+
+    ParagraphStyle paragraphStyle;
+    TextStyle style;
+    style.setFontFamilies({SkString("Courier")});
+    style.setFontSize(16.0f);
+
+    {
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        const char* mixedText = "Hello 世界 🎉 مرحبا";
+        builder.addText(mixedText);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000.0f);
+
+        REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() > 0);
+        auto unresolvedSet = paragraph->unresolvedCodepoints();
+        REPORTER_ASSERT(reporter, !unresolvedSet.empty());
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        for (const auto& run : impl->runs()) {
+            if (run.glyphs().empty()) {
+                continue;
+            }
+            if (run.glyphs()[0] == 0) {
+                for (size_t i = 0; i < run.size(); ++i) {
+                    REPORTER_ASSERT(reporter, run.glyphs()[i] == 0);
+                }
+            }
+        }
+    }
+
+    {
+        ParagraphBuilderImpl builder1(paragraphStyle, fontCollection, get_unicode());
+        builder1.pushStyle(style);
+        builder1.addText("世界");
+        builder1.pop();
+        auto p1 = builder1.Build();
+        p1->layout(1000.0f);
+
+        ParagraphBuilderImpl builder2(paragraphStyle, fontCollection, get_unicode());
+        builder2.pushStyle(style);
+        builder2.addText("世\u200D界\u200B");
+        builder2.pop();
+        auto p2 = builder2.Build();
+        p2->layout(1000.0f);
+
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(p1->getMaxIntrinsicWidth(), p2->getMaxIntrinsicWidth()));
+    }
+
+    {
+        fontCollection->enableFontFallback();
+        REPORTER_ASSERT(reporter, fontCollection->fontFallbackEnabled());
+
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        const char* mixedText = "Hello 世界 🎉 مرحبا";
+        builder.addText(mixedText);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000.0f);
+
+        REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+        REPORTER_ASSERT(reporter, paragraph->unresolvedCodepoints().empty());
+    }
+}
+
 #endif  // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
 
