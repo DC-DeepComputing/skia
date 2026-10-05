@@ -10,11 +10,12 @@
 
 #include <functional>
 #include <memory>
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 
-class SK_API SkExecutor {
+class SK_API SkExecutor : public SkRefCnt {
 public:
-    virtual ~SkExecutor();
+    ~SkExecutor() override;
 
     // Create a thread pool SkExecutor with a fixed thread count, by default the number of cores.
     static std::unique_ptr<SkExecutor> MakeFIFOThreadPool(int threads = 0,
