@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fde290a_c31dae11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-05T17:13:17Z",
+      "side": 1,
+      "message": "The fixes for `requiresDepth` are also used to fix some of the precompile unit test failures that are on the tree when `--avoidDepth` is passed in to `dm`.",
+      "revId": "adbd61e18c219a65c457acee243bc854b928fc8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
