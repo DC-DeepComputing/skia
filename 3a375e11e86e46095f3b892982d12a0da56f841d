@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7792706_82499f87",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-05T21:32:08Z",
+      "side": 1,
+      "message": "nit: this one should be line above to be alphabetical.",
+      "range": {
+        "startLine": 20,
+        "startChar": 31,
+        "endLine": 20,
+        "endChar": 32
+      },
+      "revId": "3a375e11e86e46095f3b892982d12a0da56f841d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
