@@ -17,6 +17,7 @@ class SkCapture;
 class SkCaptureManager;
 class SkContextPriv;
 class SkContextPrivConst;
+class SkRecorder;
 class SkResourceCache;
 class SkSharedContext;
 class SkStrikeCache;
@@ -38,6 +39,8 @@ public:
 
     ~SkContext();
 
+    std::unique_ptr<SkRecorder> makeRecorder();
+
     SkContextPriv priv();
     SkContextPrivConst priv() const;
 
@@ -58,6 +61,7 @@ private:
     friend class SkContextPriv;
     friend class SkContextCtorAccessor;
 
+    SkCaptureManager* captureManager() const;
     SkResourceCache* resourceCache() const;
     SkStrikeCache* fontCache() const;
     SkTypefaceCache* typefaceCache() const;
