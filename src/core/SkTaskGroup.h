@@ -11,6 +11,7 @@
 #include "include/core/SkExecutor.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
+#include "src/core/SkExecutorFactories.h"
 
 #include <atomic>
 #include <cstdint>
@@ -20,7 +21,7 @@
 class SkTaskGroup : SkNoncopyable {
 public:
     // Tasks added to this SkTaskGroup will run on its executor.
-    explicit SkTaskGroup(SkExecutor& executor = SkExecutor::GetDefault());
+    explicit SkTaskGroup(SkExecutor& executor = SkExecutorFactories::GetDefault());
     ~SkTaskGroup() { this->wait(); }
 
     // Add a task to this SkTaskGroup.
@@ -32,13 +33,6 @@ public:
 
     // Block until done().
     void wait();
-
-    // A convenience for testing tools.
-    // Creates and owns a thread pool, and passes it to SkExecutor::SetDefault().
-    struct Enabler {
-        explicit Enabler(int threads = -1);  // -1 -> num_cores, 0 -> noop
-        std::unique_ptr<SkExecutor> fThreadPool;
-    };
 
 private:
     std::atomic<int32_t> fPending;
