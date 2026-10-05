@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "208d0ab5_8b2d0d9c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 7193,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-05T17:27:38Z",
+      "side": 1,
+      "message": "Let\u0027s factor this out into a helper.",
+      "range": {
+        "startLine": 7185,
+        "startChar": 0,
+        "endLine": 7193,
+        "endChar": 6
+      },
+      "revId": "b90fd2c0a272b78af656fb509d96673d2556b0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

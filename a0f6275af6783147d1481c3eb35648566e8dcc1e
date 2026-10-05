@@ -88,6 +88,30 @@
       },
       "revId": "a0f6275af6783147d1481c3eb35648566e8dcc1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69c11cbd_86fc720a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 7226,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-05T17:27:38Z",
+      "side": 1,
+      "message": "We generally hit lowp for simple pipelines, I think the 20% speedup is pretty sweet - let\u0027s land it.",
+      "parentUuid": "36166f1e_8f58f1d5",
+      "range": {
+        "startLine": 7226,
+        "startChar": 4,
+        "endLine": 7226,
+        "endChar": 25
+      },
+      "revId": "a0f6275af6783147d1481c3eb35648566e8dcc1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
