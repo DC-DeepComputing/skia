@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d772e6a7_c8bde255",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-05T18:57:03Z",
+      "side": 1,
+      "message": "who owns this object? Can this be a std::unique_ptr?\n\nSame question for other pointer types below",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "a05e6ee827f62b4f7db32271e4bd6dd39d5c1531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
