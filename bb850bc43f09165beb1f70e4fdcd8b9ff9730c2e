@@ -22,6 +22,30 @@
       },
       "revId": "bb850bc43f09165beb1f70e4fdcd8b9ff9730c2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dfe2577_2f78531f",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-05T22:12:14Z",
+      "side": 1,
+      "message": "Yeah, we can avoid this hand crafting in the test which may add confusion. I just tried to avoid adding another resource file, but on the other hand size should be small, so I prepared `images/color_wheel.cur` from the former ico file to provide a cursor one.",
+      "parentUuid": "aa6c788d_ae7f3f48",
+      "range": {
+        "startLine": 392,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 5
+      },
+      "revId": "bb850bc43f09165beb1f70e4fdcd8b9ff9730c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
