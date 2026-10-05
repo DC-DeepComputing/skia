@@ -25,6 +25,7 @@ void DrawListLayer::reset(LoadOp loadOp, SkColor4f color) {
     fLayers.reset();
     fDrawCount = 0;
     fOrderCounter = CompressedPaintersOrder::First();
+    fLastRecordedDepth = PaintersDepth::First();
 }
 
 std::pair<Layer*, BindingList*> DrawListLayer::searchBackwards(
@@ -220,9 +221,16 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
     Layer* insertionLayer = nullptr;
     BindingList* lastStepBinding = nullptr;
     // If we're an easy draw, jump to the latestInsertion layer since we don't have to test
+    bool requiresDepth = !paintID.isValid() || // no paint is a depth-only clip draw
+                         ordering.depth() < fLastRecordedDepth; // Out-of-order forces depth
     if (testMask == BoundsFlags::kNone && baseLayerMask == BoundsFlags::kNone) {
+        // TODO(michaelludwig): We need to disable this optimization when avoidDepthMode() is true
+        // since we can't rely on depth to work out painter's order anymore.
         insertionLayer = lastInsertion ? lastInsertion : fLayers.head();
+        requiresDepth |= SkToBool(insertionLayer); // jumping in front of already recorded draws
     }
+    // NOTE: The terms in `requiresDepth` detect inner-fill draws regardless of whether or not the
+    // inner fill or the main draw is recorded first.
 
     SkEnumBitMask<BoundsFlags> allLayerMasks;
     for (int stepIndex = renderer->numRenderSteps() - 1; stepIndex >= 0; --stepIndex) {
@@ -305,6 +313,13 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
     fPassBounds.join(clip.drawBounds());
     fRequiresMSAA |= renderer->requiresMSAA();
     fDepthStencilFlags |= renderer->depthStencilFlags();
+    fLastRecordedDepth = std::max(fLastRecordedDepth, ordering.depth());
+
+    // Account for the paint's behavior on the renderpass's depth usage
+    if (requiresDepth) {
+        fDepthStencilFlags |= DepthStencilFlags::kDepth;
+    }
+
     if (dstUsage & DstUsage::kDstReadRequired) {
         // For paints that read from the dst, update the bounds. It may later be determined that the
         // DstReadStrategy does not require them, but they are inexpensive to track.
