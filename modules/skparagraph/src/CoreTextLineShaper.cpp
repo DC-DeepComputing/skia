@@ -384,7 +384,7 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
         std::vector<sk_sp<SkTypeface>> allowedTypefaces;
         if (primary) {
             allowedTypefaces.push_back(primary);
-        } else if (fParagraph->fFontCollection) {
+        } else if (fParagraph->fFontCollection && !style->getFontFamilies().empty()) {
             allowedTypefaces = fParagraph->fFontCollection->findTypefaces(
                 style->getFontFamilies(), style->getFontStyle());
             if (!allowedTypefaces.empty()) {
