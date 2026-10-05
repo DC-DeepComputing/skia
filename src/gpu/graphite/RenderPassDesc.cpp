@@ -100,7 +100,11 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                  targetInfo.sampleCount()};
     }
 
-    if (depthStencilFlags != DepthStencilFlags::kNone && !caps->avoidDepthMode()) {
+    if (!caps->avoidDepthMode()) {
+        // The depth aspect is now being dropped when possible, but to avoid creating extra pipeline
+        // combinations from renderpass changes, always include depth.
+        // TODO(michaelludwig): Expose a ContextOption to control this behavior.
+        depthStencilFlags |= DepthStencilFlags::kDepth;
         // To reduce pipeline compiles and attachment creations, if we need multisampling and need
         // a depth or stencil attachment, we always choose a depth-AND-stencil format.
         if (desc.fColorAttachment.fSampleCount > SampleCount::k1) {
@@ -110,6 +114,9 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         SkASSERT(dsFormat != TextureFormat::kUnsupported);
         // Depth and stencil values are currently always cleared and don't need to persist.
         // The sample count should always match render pass.
+        // TODO(michaelludwig): If the original depthStencilFlags didn't require depth but we pick
+        // a format with the depth aspect, we should use kNone for load/store ops to help reduce
+        // memory bandwidth even if we have to allocate the attachment.
         desc.fDepthStencilAttachment = {dsFormat,
                                         LoadOp::kClear,
                                         StoreOp::kDiscard,

@@ -31,11 +31,11 @@
 
 namespace skgpu::graphite {
 
-class DrawPass;
 class DrawContext;
+class DrawPass;
 class Geometry;
-class Renderer;
 class Recorder;
+class Renderer;
 
 struct Layer;
 
@@ -66,7 +66,6 @@ public:
             StorageContext* storageContext,
             const StrokeStyle* stroke,
             Layer* latestInsertion) = 0;
-
 
     virtual std::unique_ptr<DrawPass> snapDrawPass(Recorder* recorder,
                                                    StorageContext* storageContext,
@@ -128,8 +127,10 @@ protected:
 
     int fRenderStepCount = 0;
 
+    // Accumulated and then moved to the DrawPass
     Rect fDstReadBounds = Rect::InfiniteInverted();
     Rect fPassBounds = Rect::InfiniteInverted();
+    // Accmulated and defines properties of the RenderPassDesc paired with the DrawPass
     bool fRequiresMSAA = false;
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 
