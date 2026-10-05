@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a550c42b_d73f8040",
+        "filename": "src/core/SkImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:30:55Z",
+      "side": 1,
+      "message": "contentHash() is memoized per SkImageFilter instance, but cc rebuilds the SkImageFilter from the PaintFilter for every raster task, so in Chrome this serializes the whole filter DAG once per filtered layer per tile per frame. For SkPictureImageFilter (SVG reference filters, masks) that is a full picture serialization each time. Needs a measurement on a common non-benchmark filter page before this is net positive.",
+      "revId": "4df3a7f980e3a3f6d3c43538ee56daae2c6411cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e26eb709_25894c4e",
+        "filename": "src/core/SkImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:30:55Z",
+      "side": 1,
+      "message": "Both halves of the key identity are now 32-bit content hashes (filter and source) with no verification on hit. Two different sources with the same dims/clip/matrix under the same filter collide with probability ~N/2^32 per lookup, where N is the number of live entries for that filter. For a per-frame-changing source (video, animation) that is a steady trickle of frames rendered with another element\u0027s or a previous frame\u0027s filtered output, and at fleet scale it happens continuously. Either hash to \u003e\u003d128 bits or keep the source bytes reachable and memcmp on hit.",
+      "revId": "4df3a7f980e3a3f6d3c43538ee56daae2c6411cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb95e22f_b9fdf0e6",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:30:55Z",
+      "side": 1,
+      "message": "This hashes every pixel of the source the first time a given SkSpecialImage is seen. Blink/cc create a fresh source special image per filtered layer per raster, so a full-viewport CSS filter over changing content (video, canvas, scrolling) pays an ~8 MB hash per frame for a cache that can never hit on that content. That\u0027s a regression in the common case, not just a missed optimization. The hashing should be gated on some evidence the content is stable (e.g. only for sources that already hit by uniqueID once), not done unconditionally.\n\nAlso the key at L40 omits color type, alpha type and color space, so two images with identical bytes and different formats collide.",
+      "revId": "4df3a7f980e3a3f6d3c43538ee56daae2c6411cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9dddb7c_cbd557c4",
+        "filename": "src/effects/imagefilters/SkCropImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:30:55Z",
+      "side": 1,
+      "message": "The child is evaluated with desiredOutput \u003d the full rounded crop rect (up to 1024x1024) instead of the context\u0027s desired output. Under tiled raster, every tile that touches this filter now evaluates the whole 1024^2 region on a cache miss instead of its own ~256^2 slice; if the child can\u0027t hit the cache (animated SkPictureImageFilter content, per-frame source), that is up to 16x the filter work plus a 4 MB intermediate per tile. Needs a guard that falls back to the normal path when the cache is known not to help, or a bound relative to the actual desired output.",
+      "revId": "4df3a7f980e3a3f6d3c43538ee56daae2c6411cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
