@@ -22,6 +22,24 @@
       },
       "revId": "a0f6275af6783147d1481c3eb35648566e8dcc1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63e96aee_2c168c3a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 7226,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-05T12:50:02Z",
+      "side": 1,
+      "message": "Done in PS9! Split out `bilerp_clamp_8888_uniform_y` and selected it at pipeline build time in `SkImageShader::appendStages` when `!coordsAlreadySeeded \u0026\u0026 mRec.totalMatrixIsValid() \u0026\u0026 !mRec.totalMatrix().hasPerspective() \u0026\u0026 !totalInv.hasPerspective() \u0026\u0026 totalInv.getSkewY() \u003d\u003d 0`.\n\nThis also lets `bilerp_clamp_8888_uniform_y` do the Y quantization (`qy0`, `sy0`, `ty`) in scalar registers from `y[0]` instead of 8-lane SIMD vectors, and eliminates the runtime `is_uniform(qy)` predicate and branch from both paths.\n\nHere are microbenchmark numbers on ARM64 NEON (`-O3`, median of 25 runs) comparing:\n1. **Baseline (`main`)**: 4x `ix_and_ptr` calls\n2. **Branchless (`bilerp_clamp_8888` only)**: deduplicated X clamp + vector Y clamp/stride\n3. **Runtime branch (PS8)**: `if (is_uniform(qy))` inside `bilerp_clamp_8888`\n4. **Specialized stage (PS9)**: `bilerp_clamp_8888_uniform_y` (axis-aligned) / `bilerp_clamp_8888` (rotated)\n\n| Benchmark | Baseline | Branchless | Runtime Branch (PS8) | Specialized Stage (PS9) |\n| :--- | ---: | ---: | ---: | ---: |\n| `1920x1080 -\u003e 3840x2160` (2x upscale) | 19.84 ms | 19.93 ms (+0.5%) | 16.98 ms (-14.4%) | **15.88 ms (-20.0%)** |\n| `3840x2160 -\u003e 3840x2160` (0.99x scale) | 19.91 ms | 19.92 ms (+0.1%) | 17.10 ms (-14.1%) | **16.05 ms (-19.4%)** |\n| `3840x2160 -\u003e 2880x1620` (0.75x downscale) | 11.62 ms | 11.60 ms (-0.2%) | 9.91 ms (-14.7%) | **9.26 ms (-20.3%)** |\n| `3840x2160 -\u003e 1920x1080` (0.50x downscale) | 5.20 ms | 5.22 ms (+0.4%) | 4.46 ms (-14.2%) | **4.12 ms (-20.8%)** |\n| `3840x2160 -\u003e 1280x720` (0.33x downscale) | 2.24 ms | 2.27 ms (+1.3%) | 1.95 ms (-12.9%) | **1.81 ms (-19.2%)** |\n| `3840x2160 -\u003e 1920x1080` (rotated 17 deg, non-uniform Y) | 13.31 ms | 13.21 ms (-0.8%) | 13.70 ms (+2.9%) | **13.22 ms (-0.7%)** |",
+      "parentUuid": "54146737_b1f3d272",
+      "revId": "a0f6275af6783147d1481c3eb35648566e8dcc1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
