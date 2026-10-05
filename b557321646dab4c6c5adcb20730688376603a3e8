@@ -16,6 +16,161 @@
       "message": "PTAL",
       "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "737acff9_1849ea2f",
+        "filename": "gn/tests.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T12:06:22Z",
+      "side": 1,
+      "message": "CullingTestCases.cpp ?",
+      "range": {
+        "startLine": 376,
+        "startChar": 34,
+        "endLine": 376,
+        "endChar": 47
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58e5d700_d3abbd7b",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T12:06:22Z",
+      "side": 1,
+      "message": "that lie ?",
+      "range": {
+        "startLine": 376,
+        "startChar": 20,
+        "endLine": 376,
+        "endChar": 23
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928cf0a6_069c6ff8",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T12:06:22Z",
+      "side": 1,
+      "message": "Do you think \u0027closed\u0027 should be set to true here and then cleared in the move case ?",
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab2b4d37_33e6cb78",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T12:06:22Z",
+      "side": 1,
+      "message": "Should this be part of CullingRepros ?",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 310,
+        "endChar": 39
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d63cfe5e_53f124ad",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T12:06:22Z",
+      "side": 1,
+      "message": "Same with this ?",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 76
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "642696dd_1306e784",
+        "filename": "tests/graphite/sparse_strips/CullingRepros.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T12:06:22Z",
+      "side": 1,
+      "message": "wdyt about having this call also return a \u0027Repro\u0027 ?",
+      "range": {
+        "startLine": 33,
+        "startChar": 7,
+        "endLine": 33,
+        "endChar": 13
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c07d978a_a616bf7e",
+        "filename": "tests/graphite/sparse_strips/CullingRepros.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T12:06:22Z",
+      "side": 1,
+      "message": "rm \u0027 \u0027 ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 77,
+        "endLine": 41,
+        "endChar": 78
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
