@@ -129,6 +129,19 @@ exports_files(
         tag = "version:3@3.11.9.chromium.36",
     )
 
+    cipd_install(
+        name = "agility_sdk",
+        build_file_content = """
+exports_files(
+    glob(["**/*"]),
+    visibility = ["//visibility:public"]
+)
+""",
+        cipd_package = "chromium/third_party/agility-sdk",
+        sha256 = "7a1ee0b84dd994c5536c1c5308bafce122854e24196c8b46e26a8b383339e054",
+        tag = "version:2@1.721.0-preview",
+    )
+
 cipd_deps = module_extension(
     implementation = _cipd_deps_impl,
 )
