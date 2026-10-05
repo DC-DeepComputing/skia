@@ -138,8 +138,9 @@ def main():
     cxx_flags += win_cxx
     ld_flags += win_ld
 
-    # The D3D backend requires the HLSL writer.
+    # The D3D backend requires the HLSL writer and the Microsoft Agility SDK.
     configure_cmd.append("-DTINT_BUILD_HLSL_WRITER=ON")
+    configure_cmd.append("-DDAWN_USE_AGILITY_SDK=ON")
 
     if args.build_type == "Debug":
       # Override RelWithDebInfo defaults to be unoptimized and debuggable.
