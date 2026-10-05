@@ -64,6 +64,30 @@
       },
       "revId": "a0f6275af6783147d1481c3eb35648566e8dcc1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36166f1e_8f58f1d5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 7226,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-05T13:51:33Z",
+      "side": 1,
+      "message": "I originally intended this CL to target the Rec.709 -\u003e sRGB upscaling path (bilerp_1920x1080_to_3840x2160_rec709), but that benchmark gets 0% speedup from this change because the Rec.709 -\u003e sRGB transfer functions append Op::parametric (a highp-only stage), which forces the entire pipeline out of lowp and into highp.\n\nBenchmark for color transfer\nhttps://paste.googleplex.com/5346865256726528\n\nGiven that this doesn\u0027t speed up the path directly related to the bug, I\u0027m not sure if we want to land this and add complexity to RasterPipeline, or if the ~20% lowp bilerp speedup on same-colorspace axis-aligned draws is worth considering. \n\nLet me know what you think",
+      "parentUuid": "7d273002_be510158",
+      "range": {
+        "startLine": 7226,
+        "startChar": 4,
+        "endLine": 7226,
+        "endChar": 25
+      },
+      "revId": "a0f6275af6783147d1481c3eb35648566e8dcc1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
