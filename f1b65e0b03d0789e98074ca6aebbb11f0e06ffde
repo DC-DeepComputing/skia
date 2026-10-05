@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57b3d01f_a52fbcd3",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-05T17:22:57Z",
+      "side": 1,
+      "message": "Can we assert that this isn\u0027t end?",
+      "range": {
+        "startLine": 224,
+        "startChar": 8,
+        "endLine": 224,
+        "endChar": 22
+      },
+      "revId": "f1b65e0b03d0789e98074ca6aebbb11f0e06ffde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "853d384f_5d0ab8c8",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-05T17:22:57Z",
+      "side": 1,
+      "message": "Can this be grouped with the other fields, I don\u0027t think we need it pre-declared in order to use in the SK_EXCLUDES or SK_GUARDED_BY macros.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "f1b65e0b03d0789e98074ca6aebbb11f0e06ffde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d9cee00_4afb60c9",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-05T17:22:57Z",
+      "side": 1,
+      "message": "nit: Add a lifetime comment about how this is owned by the Context and the context must shutdown the pipeline manager before it unrefs its executor?",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 61
+      },
+      "revId": "f1b65e0b03d0789e98074ca6aebbb11f0e06ffde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b34f224d_d7b06788",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-05T17:22:57Z",
+      "side": 1,
+      "message": "Should we move these functions up by `removeTask`?",
+      "range": {
+        "startLine": 102,
+        "startChar": 5,
+        "endLine": 109,
+        "endChar": 89
+      },
+      "revId": "f1b65e0b03d0789e98074ca6aebbb11f0e06ffde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bda93a6_20a8487a",
+        "filename": "src/gpu/graphite/PipelineManager.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-05T17:22:57Z",
+      "side": 1,
+      "message": "NOTE: for posterity, fMutex is going away when we can wait on atomics directly, so there\u0027s no need to unify fMutex and fSpinLock.",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 22
+      },
+      "revId": "f1b65e0b03d0789e98074ca6aebbb11f0e06ffde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
