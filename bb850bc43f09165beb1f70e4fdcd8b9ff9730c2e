@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa6c788d_ae7f3f48",
+        "filename": "tests/SkIcoRustDecoderTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-05T21:48:51Z",
+      "side": 1,
+      "message": "I guess this LGTM, but it probably would be more maintainable and easy to understand if this just used a real cursor-defining file as test input?  (IIUC the test code here is overwriting some bytes of `images/color_wheel.ico` to make it a cursor-defining file)",
+      "range": {
+        "startLine": 392,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 5
+      },
+      "revId": "bb850bc43f09165beb1f70e4fdcd8b9ff9730c2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
