@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34a1e831_53d387ac",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "256 sets x 8 ways \u003d 2048 entries, each holding a full filtered-layer bitmap, with no byte budget and no hook into SkGraphics::PurgeAllCaches / SkResourceCache memory pressure. A page doing full-viewport filtered drawImage calls with varying parameters can pin gigabytes that are never released. This needs a byte budget and a purge path (or should live in SkResourceCache, which already has both).",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02d58ebd_6fb1fb6d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 919,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "Process-global SkMutex taken on every qualifying saveLayer/restore. In Chrome this runs on all cc raster worker threads concurrently; a single lock here serializes them on exactly the pages that use filtered layers heavily. Needs at least per-set locking or a lock-free read path, and a measurement on a multi-tile raster workload.",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c9c757_a3e3d5a7",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2571,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "Only the source image is checked for !isTextureBacked(); the layer device isn\u0027t. internalDrawDeviceWithFilter runs for Ganesh/Graphite devices too, so with a raster-backed SkImage drawn into a GPU layer the cached skif::FilterResult holds a context-bound texture. That result then sits in a process-global table shared across contexts and threads: a hit from another GrDirectContext draws a foreign texture, and LRU eviction under the mutex destroys GPU resources on whatever thread happens to insert. Needs a device-side guard (CPU raster only) or no caching for GPU layers.",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fa2aa79_7bd26dba",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "SkPath::getGenerationID() returns uint64_t on main (SkPathData::uniqueID, 64-bit atomic counter). Storing it in a uint32_t silently truncates, so two distinct live paths collide once the counter passes 2^32 within a process, and the cache then returns the wrong device path. A long-lived GPU process doing OOP raster allocates new SkPaths per frame per deserialized op, so this is reachable. Same truncation in devPathGenID (SkDraw.h), BlurredPathMaskKey::fDevPathGenID and AAClipPathKey::fPathGenID.\n\nSeparately: Skia\u0027s existing genID-keyed caches register SkIDChangeListeners so entries die with the path; these caches don\u0027t, which is why the collision matters.",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b064e564_92058c1d",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "2048 SkPaths retained process-wide with no byte budget; a single map tile or chart path can be hundreds of KB of verbs/points, so this can hold tens to hundreds of MB with no purge path. Also the global fMutex at L1042/L1059 is taken on every non-volatile path draw on every raster thread.",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2d95505_1e8d5dab",
+        "filename": "src/core/SkMaskFilterBase.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "uint32_t truncation of a 64-bit SkPath generation ID (see SkDraw.cpp comment). A collision here blits a blur mask of a different shape.\n\nAlso on memory: up to 1024 entries x 512 KB (L440) \u003d 512 MB of A8 masks with no purge hook. SkMaskCache / SkResourceCache already exists for exactly this and is budgeted; why not key into that?",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff05a160_e9c41a23",
+        "filename": "src/core/SkRasterClip.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "uint32_t truncation of a 64-bit SkPath generation ID (see SkDraw.cpp comment). After 2^32 path allocations in the process this returns a clip built from a different path.",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b95cd76_54617c56",
+        "filename": "src/core/SkRasterClip.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 3661524
+      },
+      "writtenOn": "2026-10-05T16:29:54Z",
+      "side": 1,
+      "message": "Correctness of the key depends on the new SkAAClip::getGenID() being bumped on every mutation path (setPath, setRect, setRegion, op, translate, copy-assignment, swap). Please point at where that invariant is enforced; a single missed path means a stale clip is served for a different AA mask with identical bounds.",
+      "revId": "d1831165aff28c8dbc7e6bccbf319869edb17863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
