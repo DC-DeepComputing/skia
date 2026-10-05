@@ -8,10 +8,16 @@
 #ifndef SkContextOptions_DEFINED
 #define SkContextOptions_DEFINED
 
+#include "include/core/SkGraphics.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkAPI.h"
+#include "include/utils/SkLogHandler.h"
 
 #include <cstddef>
+
+class SkEventTracer;
+class SkExecutor;
 
 struct SK_API SkContextOptions {
     SkContextOptions() = default;
@@ -50,6 +56,43 @@ struct SK_API SkContextOptions {
      * paths. If the cache needs to allocate more, it will purge previous entries.
      */
     size_t fFontCacheLimit = 2 * 1024 * 1024;
+
+    /**
+     * When true, shared caches (such as SkStrikeCache, SkResourceCache, and SkTypefaceCache) in
+     * SkSharedContext are guarded by internal mutexes so multiple SkRecorder instances can safely
+     * access them concurrently across threads.
+     *
+     * Set to false in single-threaded environments to avoid locking overhead.
+     */
+    bool fThreadSafeSharedResources = true;
+
+    /**
+     * Optional executor to handle background threaded work (such as asynchronous pipeline
+     * compilation or software path rendering). If nullptr, all work is performed serially on the
+     * calling thread.
+     */
+    SkExecutor* fExecutor = nullptr;
+
+    /**
+     * Custom log handler for receiving Skia diagnostic and error messages scoped to this context.
+     */
+    sk_sp<SkLogHandler> fLogHandler = nullptr;
+
+    /**
+     * Custom event tracer for routing Skia TRACE_EVENT instrumentation to an external tracing
+     * system (e.g., Chrome trace_event or Perfetto).
+     */
+    SkEventTracer* fEventTracer = nullptr;
+
+    /**
+     * Runtime factory for decoding and drawing OpenType SVG glyph data.
+     */
+    SkGraphics::OpenTypeSVGDecoderFactory fSVGDecoderFactory = nullptr;
+
+    /**
+     * Runtime factory for instantiating SkImageGenerators from encoded SkData.
+     */
+    SkGraphics::ImageGeneratorFromEncodedDataFactory fImageGeneratorFactory = nullptr;
 
     /**
      * This enables support for capturing SkCaptures. The client still must call startCapture and
