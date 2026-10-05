@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e95926b_d5c5059b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "737acff9_1849ea2f",
@@ -31,6 +48,30 @@
       "writtenOn": "2026-10-05T12:06:22Z",
       "side": 1,
       "message": "CullingTestCases.cpp ?",
+      "range": {
+        "startLine": 376,
+        "startChar": 34,
+        "endLine": 376,
+        "endChar": 47
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b6aafd5_d0136cab",
+        "filename": "gn/tests.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "I would prefer to keep as \"*Repros\"; this file is meant to exclusively hold cases that are  dumped from the debugging GM.",
+      "parentUuid": "737acff9_1849ea2f",
       "range": {
         "startLine": 376,
         "startChar": 34,
@@ -64,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e417b6e_35084cfc",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "This is grammatically correct. If we inserted \"that,\" consider the other part of the sentence: `Culled verbs that lie . . . and contribute`.",
+      "parentUuid": "58e5d700_d3abbd7b",
+      "range": {
+        "startLine": 376,
+        "startChar": 20,
+        "endLine": 376,
+        "endChar": 23
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "928cf0a6_069c6ff8",
@@ -81,6 +146,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01d00253_82a24393",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "Moved setting `closed` into the lambda, should be cleaner now.",
+      "parentUuid": "928cf0a6_069c6ff8",
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab2b4d37_33e6cb78",
@@ -94,6 +177,30 @@
       "writtenOn": "2026-10-05T12:06:22Z",
       "side": 1,
       "message": "Should this be part of CullingRepros ?",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 310,
+        "endChar": 39
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5cb7da7_80625795",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "Sorry, slightly confusing, but as mentioned in the other comment, this is meant for the synthetic tests, and the Repros are the ones captured live.",
+      "parentUuid": "ab2b4d37_33e6cb78",
       "range": {
         "startLine": 303,
         "startChar": 0,
@@ -127,6 +234,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40a02004_2958980d",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "See comment above.",
+      "parentUuid": "d63cfe5e_53f124ad",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 76
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "642696dd_1306e784",
@@ -150,6 +281,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82c9a966_8e738243",
+        "filename": "tests/graphite/sparse_strips/CullingRepros.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "642696dd_1306e784",
+      "range": {
+        "startLine": 33,
+        "startChar": 7,
+        "endLine": 33,
+        "endChar": 13
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c07d978a_a616bf7e",
@@ -163,6 +318,30 @@
       "writtenOn": "2026-10-05T12:06:22Z",
       "side": 1,
       "message": "rm \u0027 \u0027 ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 77,
+        "endLine": 41,
+        "endChar": 78
+      },
+      "revId": "b557321646dab4c6c5adcb20730688376603a3e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feb73244_0a979e1b",
+        "filename": "tests/graphite/sparse_strips/CullingRepros.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T15:25:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c07d978a_a616bf7e",
       "range": {
         "startLine": 41,
         "startChar": 77,
