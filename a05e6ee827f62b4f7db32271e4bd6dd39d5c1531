@@ -22,6 +22,30 @@
       },
       "revId": "a05e6ee827f62b4f7db32271e4bd6dd39d5c1531",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "080f5127_681f12ae",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-05T22:07:23Z",
+      "side": 1,
+      "message": "I was thinking that the SkSharedContext would keep track of the lifetime of the below pointers using an sk_sp\n* fExecutor\n* fLogHandler\n* fEventTracer\n\nSince these are meant to be accessed by multiple SkContexts. Using sk_sp would also allow SkContextOptions to be copyable and thus be able to be passed into the context factory functions.\n\nI was going to implement the logic to add the sk_ref_cnt for SkExecutor and SkEventTracer in a follow up cl, but I added it here for simplicity. Let me know if there is any reason SkExecutor or SkEventTracer should not be ref_cnted\n\nfImageGeneratorFactory and fSVGDecoderFactory are function pointers for factories, so they don\u0027t require any ownership\n\n\nHere is the link to the specific part of the design doc this covers\n* https://docs.google.com/document/d/1wtwgf-Bn9XA_P6DZiboeC7NgqreBxaxFWd36tD2Wzdo/edit?tab\u003dt.4rsc8withiat#heading\u003dh.ok8yo3sjpj7i",
+      "parentUuid": "d772e6a7_c8bde255",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "a05e6ee827f62b4f7db32271e4bd6dd39d5c1531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
