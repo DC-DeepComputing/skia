@@ -16,6 +16,7 @@
 
 #include "src/core/SkImageFilterTypes.h"
 
+#include <atomic>
 #include <optional>
 
 // True base class that all SkImageFilter implementations need to extend from. This provides the
@@ -114,6 +115,19 @@ public:
             const skif::Mapping& mapping,
             const skif::ParameterSpace<SkRect>& contentBounds) const;
 
+    skif::LayerSpace<SkIRect> getInputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& desiredOutput,
+            std::optional<skif::LayerSpace<SkIRect>> contentBounds) const {
+        return this->onGetInputLayerBounds(mapping, desiredOutput, contentBounds);
+    }
+
+    std::optional<skif::LayerSpace<SkIRect>> getOutputLayerBounds(
+            const skif::Mapping& mapping,
+            std::optional<skif::LayerSpace<SkIRect>> contentBounds) const {
+        return this->onGetOutputLayerBounds(mapping, contentBounds);
+    }
+
     // Returns true if this image filter graph transforms a source transparent black pixel to a
     // color other than transparent black.
     bool affectsTransparentBlack() const;
@@ -128,6 +142,7 @@ public:
     MatrixCapability getCTMCapability() const;
 
     uint32_t uniqueID() const { return fUniqueID; }
+    uint32_t contentHash() const;
 
     static SkFlattenable::Type GetFlattenableType() {
         return kSkImageFilter_Type;
@@ -303,6 +318,7 @@ private:
 
     bool fUsesSrcInput;
     uint32_t fUniqueID; // Globally unique
+    mutable std::atomic<uint32_t> fContentHash{0};
 
     using INHERITED = SkImageFilter;
 };

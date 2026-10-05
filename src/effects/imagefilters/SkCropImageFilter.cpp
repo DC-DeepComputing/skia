@@ -162,6 +162,35 @@ void SkCropImageFilter::flatten(SkWriteBuffer& buffer) const {
 skif::FilterResult SkCropImageFilter::onFilterImage(const skif::Context& context) const {
     skif::LayerSpace<SkIRect> cropInput = this->requiredInput(context.mapping(),
                                                               context.desiredOutput());
+    if (cropInput.isEmpty()) {
+        return {};
+    }
+    if (!this->usesSource() && fTileMode == SkTileMode::kDecal) {
+        SkMatrix layerM33 = context.mapping().layerMatrix().asM33();
+        if (layerM33.isTranslate()) {
+            SkScalar tx = layerM33.getTranslateX();
+            SkScalar ty = layerM33.getTranslateY();
+            SkScalar rtx = SkScalarRoundToScalar(tx);
+            SkScalar rty = SkScalarRoundToScalar(ty);
+            if (SkScalarNearlyEqual(tx, rtx, 1e-3f) && SkScalarNearlyEqual(ty, rty, 1e-3f)) {
+                skif::LayerSpace<SkIRect> paramCrop(SkRect(fCropRect).roundOut());
+                if (!paramCrop.isEmpty() &&
+                    paramCrop.width() <= 1024 && paramCrop.height() <= 1024) {
+                    skif::Context paramCtx = context.withNewMapping(skif::Mapping(SkM44()))
+                                                    .withNewDesiredOutput(paramCrop);
+                    skif::FilterResult childOutput = this->getChildOutput(0, paramCtx);
+                    if (rtx != 0.f || rty != 0.f) {
+                        childOutput = childOutput.applyTransform(
+                                context,
+                                skif::LayerSpace<SkMatrix>(SkMatrix::Translate(rtx, rty)),
+                                SkFilterMode::kNearest);
+                    }
+                    return childOutput.applyCrop(
+                            context, this->cropRect(context.mapping()), fTileMode);
+                }
+            }
+        }
+    }
     skif::FilterResult childOutput =
             this->getChildOutput(0, context.withNewDesiredOutput(cropInput));
 

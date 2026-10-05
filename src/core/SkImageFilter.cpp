@@ -8,14 +8,17 @@
 #include "include/core/SkImageFilter.h"
 
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
@@ -160,8 +163,32 @@ SkImageFilter_Base::SkImageFilter_Base(sk_sp<SkImageFilter> const* inputs,
     }
 }
 
-SkImageFilter_Base::~SkImageFilter_Base() {
-    SkImageFilterCache::Get()->purgeByImageFilter(this);
+SkImageFilter_Base::~SkImageFilter_Base() = default;
+
+uint32_t SkImageFilter_Base::contentHash() const {
+    uint32_t h = fContentHash.load(std::memory_order_relaxed);
+    if (h != 0) {
+        return h;
+    }
+    SkSerialProcs procs;
+    procs.fImageProc = [](SkImage* img, void*) -> sk_sp<const SkData> {
+        uint32_t id = img ? img->uniqueID() : 0;
+        return SkData::MakeWithCopy(&id, sizeof(id));
+    };
+    alignas(4) uint8_t storage[1024];
+    SkBinaryWriteBuffer buffer(storage, sizeof(storage), procs);
+    buffer.writeFlattenable(this);
+    if (buffer.usingInitialStorage()) {
+        h = SkChecksum::Hash32(storage, buffer.bytesWritten());
+    } else {
+        sk_sp<SkData> data = buffer.snapshotAsData();
+        h = SkChecksum::Hash32(data->data(), data->size());
+    }
+    if (h == 0) {
+        h = 1;
+    }
+    fContentHash.store(h, std::memory_order_relaxed);
+    return h;
 }
 
 std::pair<sk_sp<SkImageFilter>, std::optional<SkRect>>
@@ -241,10 +268,10 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
     // need to run the filter on it. This means `fUsesSrcInput` is not equivalent to the source
     // being non-null.
     const bool srcInKey = fUsesSrcInput && context.source();
-    uint32_t srcGenID = srcInKey ? context.source().image()->uniqueID() : SK_InvalidUniqueID;
+    uint32_t srcGenID = srcInKey ? context.source().image()->contentHash() : SK_InvalidUniqueID;
     const SkIRect srcSubset = srcInKey ? context.source().image()->subset() : SkIRect::MakeWH(0, 0);
 
-    SkImageFilterCacheKey key(fUniqueID,
+    SkImageFilterCacheKey key(this->contentHash(),
                               context.mapping().layerMatrix().asM33(),
                               SkIRect(context.desiredOutput()),
                               srcGenID, srcSubset);
@@ -256,7 +283,7 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
     result = this->onFilterImage(context);
 
     if (context.backend()->cache()) {
-        context.backend()->cache()->set(key, this, result);
+        context.backend()->cache()->set(key, nullptr, result);
     }
 
     return result;

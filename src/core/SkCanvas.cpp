@@ -612,11 +612,12 @@ get_layer_mapping_and_bounds(
                                kMinDimThreshold);
 
     auto baseLayerBounds = mapping.deviceToLayer(targetOutput);
+    std::optional<skif::LayerSpace<SkIRect>> knownLayerBounds;
     if (contentBounds) {
         // For better or for worse, user bounds currently act as a hard clip on the layer's
         // extent (i.e., they implement the CSS filter-effects 'filter region' feature).
-        skif::LayerSpace<SkIRect> knownBounds = mapping.paramToLayer(*contentBounds).roundOut();
-        if (!baseLayerBounds.intersect(knownBounds)) {
+        knownLayerBounds = mapping.paramToLayer(*contentBounds).roundOut();
+        if (!baseLayerBounds.intersect(*knownLayerBounds)) {
             baseLayerBounds = skif::LayerSpace<SkIRect>::Empty();
         }
     }
@@ -720,6 +721,21 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
     // parameters need to respect the current matrix, which is not necessarily the local matrix that
     // was set on 'src' (e.g. because we've popped src off the stack already).
     SkM44 localToSrc = src ? (src->globalToDevice() * fMCRec->fMatrix) : SkM44();
+    if (compat != DeviceCompatibleWithFilter::kUnknown &&
+        SkScalarNearlyZero(localToSrc.rc(0, 1), 1e-4f) &&
+        SkScalarNearlyZero(localToSrc.rc(1, 0), 1e-4f)) {
+        localToSrc.setRC(0, 1, 0.f);
+        localToSrc.setRC(1, 0, 0.f);
+        for (int r : {0, 1}) {
+            for (int c : {0, 1, 3}) {
+                SkScalar v = localToSrc.rc(r, c);
+                SkScalar rounded = SkScalarRoundToScalar(v);
+                if (SkScalarNearlyEqual(v, rounded, 1e-4f)) {
+                    localToSrc.setRC(r, c, rounded == 0.f ? 0.f : rounded);
+                }
+            }
+        }
+    }
     SkISize srcDims = src ? src->imageInfo().dimensions() : SkISize::Make(0, 0);
 
     // Whether or not we need to make a transformed tmp image from 'src', and what that transform is

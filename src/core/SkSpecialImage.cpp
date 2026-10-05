@@ -14,6 +14,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkAssert.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkNextID.h"
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkImageShader.h"
@@ -26,6 +27,30 @@ SkSpecialImage::SkSpecialImage(const SkIRect& subset,
     , fUniqueID(kNeedNewImageUniqueID_SpecialImage == uniqueID ? SkNextID::ImageID() : uniqueID)
     , fColorInfo(colorInfo)
     , fProps(props) {
+}
+
+uint32_t SkSpecialImage::contentHash() const {
+    uint32_t h = fContentHash.load(std::memory_order_relaxed);
+    if (h != 0) {
+        return h;
+    }
+    SkBitmap bm;
+    if (SkSpecialImages::AsBitmap(this, &bm) && bm.getPixels()) {
+        const size_t rowBytes = bm.width() * bm.bytesPerPixel();
+        const int dims[2] = {bm.width(), bm.height()};
+        h = SkChecksum::Hash32(dims, sizeof(dims));
+        for (int y = 0; y < bm.height(); ++y) {
+            const void* row = bm.getAddr(0, y);
+            h = SkChecksum::Hash32(row, rowBytes, h);
+        }
+        if (h == 0) {
+            h = 1;
+        }
+    } else {
+        h = fUniqueID;
+    }
+    fContentHash.store(h, std::memory_order_relaxed);
+    return h;
 }
 
 void SkSpecialImage::draw(SkCanvas* canvas,

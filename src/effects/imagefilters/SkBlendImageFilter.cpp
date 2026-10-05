@@ -308,9 +308,45 @@ skif::FilterResult SkBlendImageFilter::onFilterImage(const skif::Context& ctx) c
     }
 
     skif::Context inputCtx = ctx.withNewDesiredOutput(*requiredInput);
+    skif::FilterResult bg = this->getChildOutput(kBackground, inputCtx);
+    skif::FilterResult fg = this->getChildOutput(kForeground, inputCtx);
+    if (std::optional<SkBlendMode> bm = as_BB(fBlender)->asBlendMode()) {
+        if (!bg || !fg) {
+            if (*bm > SkBlendMode::kModulate) {
+                return fg ? fg : bg;
+            }
+            SkBlendModeCoeff src, dst;
+            if (SkBlendMode_AsCoeff(*bm, &src, &dst)) {
+                if (!fg) {
+                    if (dst == SkBlendModeCoeff::kOne ||
+                        dst == SkBlendModeCoeff::kISA ||
+                        dst == SkBlendModeCoeff::kISC) {
+                        return bg;
+                    }
+                    if (dst == SkBlendModeCoeff::kZero ||
+                        dst == SkBlendModeCoeff::kSA ||
+                        dst == SkBlendModeCoeff::kSC) {
+                        return {};
+                    }
+                }
+                if (!bg) {
+                    if (src == SkBlendModeCoeff::kOne ||
+                        src == SkBlendModeCoeff::kIDA) {
+                        return fg;
+                    }
+                    if (src == SkBlendModeCoeff::kZero ||
+                        src == SkBlendModeCoeff::kDA ||
+                        src == SkBlendModeCoeff::kDC) {
+                        return {};
+                    }
+                }
+            }
+        }
+    }
+
     skif::FilterResult::Builder builder{ctx};
-    builder.add(this->getChildOutput(kBackground, inputCtx));
-    builder.add(this->getChildOutput(kForeground, inputCtx));
+    builder.add(std::move(bg));
+    builder.add(std::move(fg));
     return builder.eval(
             [&](SkSpan<sk_sp<SkShader>> inputs) -> sk_sp<SkShader> {
                 return this->makeBlendShader(inputs[kBackground], inputs[kForeground]);

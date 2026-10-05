@@ -78,10 +78,12 @@ public:
         fLookup.add(v);
         fLRU.addToHead(v);
         fCurrentBytes += result.image() ? result.image()->getSize() : 0;
-        if (auto* values = fImageFilterValues.find(filter)) {
-            values->push_back(v);
-        } else {
-            fImageFilterValues.set(filter, {v});
+        if (filter) {
+            if (auto* values = fImageFilterValues.find(filter)) {
+                values->push_back(v);
+            } else {
+                fImageFilterValues.set(filter, {v});
+            }
         }
 
         while (fCurrentBytes > fMaxBytes) {

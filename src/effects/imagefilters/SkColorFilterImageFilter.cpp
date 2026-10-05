@@ -24,10 +24,18 @@
 
 namespace {
 
+bool ignores_input(const SkColorFilter* cf) {
+    SkBlendMode mode;
+    return cf && cf->asAColorMode(nullptr, &mode) &&
+           (mode == SkBlendMode::kSrc || mode == SkBlendMode::kClear);
+}
+
 class SkColorFilterImageFilter final : public SkImageFilter_Base {
 public:
     SkColorFilterImageFilter(sk_sp<SkColorFilter> cf, sk_sp<SkImageFilter> input)
-            : SkImageFilter_Base(&input, 1)
+            : SkImageFilter_Base(&input, 1,
+                                 ignores_input(cf.get()) ? std::optional<bool>(false)
+                                                         : std::nullopt)
             , fColorFilter(std::move(cf)) {}
 
     SkRect computeFastBounds(const SkRect& bounds) const override;
@@ -115,6 +123,9 @@ void SkColorFilterImageFilter::flatten(SkWriteBuffer& buffer) const {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 skif::FilterResult SkColorFilterImageFilter::onFilterImage(const skif::Context& ctx) const {
+    if (ignores_input(fColorFilter.get())) {
+        return skif::FilterResult{}.applyColorFilter(ctx, fColorFilter);
+    }
     return this->getChildOutput(0, ctx).applyColorFilter(ctx, fColorFilter);
 }
 
@@ -122,6 +133,9 @@ skif::LayerSpace<SkIRect> SkColorFilterImageFilter::onGetInputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& desiredOutput,
         std::optional<skif::LayerSpace<SkIRect>> contentBounds) const {
+    if (ignores_input(fColorFilter.get())) {
+        return skif::LayerSpace<SkIRect>::Empty();
+    }
     return this->getChildInputLayerBounds(0, mapping, desiredOutput, contentBounds);
 }
 
@@ -133,6 +147,8 @@ std::optional<skif::LayerSpace<SkIRect>> SkColorFilterImageFilter::onGetOutputLa
     // the child's bounds call.
     if (as_CFB(fColorFilter)->affectsTransparentBlack()) {
         return skif::LayerSpace<SkIRect>::Unbounded();
+    } else if (ignores_input(fColorFilter.get())) {
+        return skif::LayerSpace<SkIRect>::Empty();
     } else {
         return this->getChildOutputLayerBounds(0, mapping, contentBounds);
     }

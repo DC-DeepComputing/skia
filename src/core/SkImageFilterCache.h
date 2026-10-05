@@ -14,6 +14,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 
@@ -32,6 +33,13 @@ struct SkImageFilterCacheKey {
         static_assert(sizeof(SkImageFilterCacheKey) == sizeof(uint32_t) + sizeof(SkMatrix) +
                                      sizeof(SkIRect) + sizeof(uint32_t) + 4 * sizeof(int32_t),
                                      "image_filter_key_tight_packing");
+        for (int i = 0; i < 9; ++i) {
+            SkScalar v = fMatrix[i];
+            if (std::isfinite(v)) {
+                SkScalar q = std::round(v * 256.0f) * (1.0f / 256.0f);
+                fMatrix[i] = (q == 0.0f) ? 0.0f : q;
+            }
+        }
         fMatrix.getType();  // force initialization of type, so hashes match
         SkASSERT(fMatrix.isFinite());   // otherwise we can't rely on == self when comparing keys
     }

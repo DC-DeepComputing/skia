@@ -16,6 +16,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSurfaceProps.h"
 
+#include <atomic>
 #include <cstddef>
 #include <cstdint>
 
@@ -59,6 +60,7 @@ public:
     const SkIRect& subset() const { return fSubset; }
 
     uint32_t uniqueID() const { return fUniqueID; }
+    uint32_t contentHash() const;
 
     virtual SkISize backingStoreDimensions() const = 0;
 
@@ -153,6 +155,7 @@ private:
     const uint32_t       fUniqueID;
     const SkColorInfo    fColorInfo;
     const SkSurfaceProps fProps;
+    mutable std::atomic<uint32_t> fContentHash{0};
 };
 
 namespace SkSpecialImages {
