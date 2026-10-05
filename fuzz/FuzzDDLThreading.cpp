@@ -23,6 +23,7 @@
 #include "include/private/chromium/GrDeferredDisplayListRecorder.h"
 #include "include/private/chromium/GrPromiseImageTexture.h"
 #include "include/private/chromium/SkImageChromium.h"
+#include "src/core/SkExecutorFactories.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "tools/ganesh/GrContextFactory.h"
@@ -114,9 +115,9 @@ private:
     AutoTArray<PromiseImageInfo> fPromiseImages{kPromiseImageCount};
     sk_sp<SkSurface> fSurface;
     GrSurfaceCharacterization fSurfaceCharacterization;
-    std::unique_ptr<SkExecutor> fGpuExecutor = SkExecutor::MakeFIFOThreadPool(1, false);
+    std::unique_ptr<SkExecutor> fGpuExecutor = SkExecutorFactories::MakeFIFOThreadPool(1, false);
     std::unique_ptr<SkExecutor> fRecordingExecutor =
-        SkExecutor::MakeFIFOThreadPool(kRecordingThreadCount, false);
+        SkExecutorFactories::MakeFIFOThreadPool(kRecordingThreadCount, false);
     SkTaskGroup fGpuTaskGroup{*fGpuExecutor};
     SkTaskGroup fRecordingTaskGroup{*fRecordingExecutor};
     SkThreadID fGpuThread = kIllegalThreadID;
