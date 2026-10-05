@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ae1600a_d858fbaa",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-10-05T19:25:43Z",
+      "side": 1,
+      "message": "Done, thanks. Switched to comparing fClusterRange with fGhostClusterRange in patchset 2, and kept the last-line check for a soft hyphen that ends the paragraph, since nothing gets trimmed there.",
+      "parentUuid": "69634829_cb9ad1d7",
+      "revId": "d1d7f1adfa6e5c4af7f9bff641420a6134b41d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69634829_cb9ad1d7",
