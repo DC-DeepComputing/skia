@@ -88,7 +88,9 @@ void CoverBoundsRenderStep::writeVertices(DrawWriter* writer,
         bounds = skvx::shuffle</*R*/2, /*B*/3, /*L*/0, /*T*/1>(
                 skvx::cast<float>(skvx::int4::Load(&params.scissor())));
     } else {
-        bounds = params.geometry().bounds().ltrb();
+        // If there's a stroke style, the bounding box needs to increase by the stroke radius
+        float outset = params.isStroke() ? params.strokeStyle().halfWidth() : 0.f;
+        bounds = params.geometry().bounds().makeOutset(outset).ltrb();
     }
 
     // Since the local coords always have Z=0, we can discard the 3rd row and column of the matrix.

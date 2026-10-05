@@ -200,6 +200,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     // The tessellating path renderers that use stencil can share the cover steps.
     auto coverFill = CoverBoundsRenderStep::StencilCover(layout, /*inverseFill=*/false);
     auto coverInverse = CoverBoundsRenderStep::StencilCover(layout, /*inverseFill=*/true);
+    // Stroke-and-fill and inverse-filled strokes can share the stencil-stroking step
+    auto stencilStroke = TessellateStrokesRenderStep::StencilOnly(layout, infinitySupport);
 
     for (bool evenOdd : {false, true}) {
         // These steps can be shared by regular and inverse fills
@@ -217,6 +219,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
             std::string variant = kTessVariants[index];
 
             const RenderStep* coverStep = inverse ? coverInverse.get() : coverFill.get();
+            // Regular fills
             this->initRenderer(&fStencilTessellatedCurves[index],
                                "StencilTessellatedCurvesAndTris" + variant,
                                DrawTypeFlags::kNonSimpleShape,
@@ -229,6 +232,22 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                DrawTypeFlags::kNonSimpleShape,
                                stencilWedge.get(),
                                coverStep);
+
+            // Stroke-and-fill
+            this->initRenderer(&fStrokeAndFillTessellatedCurves[index],
+                               "StrokeAndFillTessellatedCurvesAndTris" + variant,
+                               DrawTypeFlags::kNonSimpleShape,
+                               stencilFan.get(),
+                               stencilCurve.get(),
+                               stencilStroke.get(),
+                               coverStep);
+
+            this->initRenderer(&fStrokeAndFillTessellatedWedges[index],
+                               "StrokeAndFillTessellatedWedges" + variant,
+                               DrawTypeFlags::kNonSimpleShape,
+                               stencilWedge.get(),
+                               stencilStroke.get(),
+                               coverStep);
         }
 
         this->assumeOwnership(std::move(stencilFan));
@@ -237,21 +256,17 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     }
 
     initFromStep(&fTessellatedStrokes[/*inverseFill=*/false],
-                 std::make_unique<TessellateStrokesRenderStep>(layout, infinitySupport,
-                                                               /*inverseFill=*/false),
+                 TessellateStrokesRenderStep::Regular(layout, infinitySupport),
                  DrawTypeFlags::kNonSimpleShape);
-    auto tessellatedStrokesInverseFillStep
-            = std::make_unique<TessellateStrokesRenderStep>(layout, infinitySupport,
-                                                            /*inverseFill=*/true);
     this->initRenderer(&fTessellatedStrokes[/*inverseFill=*/true],
                        "TessellatedStrokesInverseFill",
                        DrawTypeFlags::kNonSimpleShape,
-                       tessellatedStrokesInverseFillStep.get(),
+                       stencilStroke.get(),
                        coverInverse.get());
-    this->assumeOwnership(std::move(tessellatedStrokesInverseFillStep));
 
     this->assumeOwnership(std::move(coverInverse));
     this->assumeOwnership(std::move(coverFill));
+    this->assumeOwnership(std::move(stencilStroke));
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
     {
