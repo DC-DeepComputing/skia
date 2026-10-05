@@ -259,6 +259,14 @@ def get_windows_settings(args):
 
   win_cfgs, win_cxx, win_ld  = [], [], []
 
+  # Point to the Microsoft Agility SDK.
+  third_party_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "externals"))
+  agility_sdk_path = os.path.join(third_party_dir, "agility-sdk")
+  if not os.path.exists(agility_sdk_path):
+    print(f"Third party path {agility_sdk_path} not found - did you sync your DEPS?")
+    sys.exit(1)
+  win_cfgs.append(f"-DDAWN_AGILITY_SDK_DIR={agility_sdk_path}")
+
   # Set the Windows SDK version for CMake.
   win_cfgs.append(
       f"-DCMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION={args.win_sdk_version}")
