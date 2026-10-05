@@ -259,12 +259,113 @@ SkMaskFilterBase::FilterReturn SkMaskFilterBase::filterRects(SkSpan<const SkRect
     return filterReturn;
 }
 
+#include "include/core/SkData.h"
+#include "include/private/SkMutex.h"
+#include "src/core/SkBlurMaskFilterImpl.h"
+#include "src/core/SkChecksum.h"
+#include <cstring>
+
+namespace {
+
+struct BlurredPathMaskKey {
+    uint32_t fDevPathGenID;
+    uint32_t fFillType;
+    uint32_t fInitStyle;
+    uint32_t fBlurStyle;
+    float    fXformedSigma;
+    SkIRect  fClipBounds;
+
+    bool operator==(const BlurredPathMaskKey& o) const {
+        return memcmp(this, &o, sizeof(*this)) == 0;
+    }
+};
+static_assert(sizeof(BlurredPathMaskKey) == 36, "BlurredPathMaskKey must have no padding");
+
+struct BlurredPathMaskVal {
+    SkIRect       fBounds;
+    uint32_t      fRowBytes = 0;
+    SkMask::Format fFormat = SkMask::kA8_Format;
+    sk_sp<SkData> fImageData;
+};
+
+class BlurredPathMaskCache {
+public:
+    static BlurredPathMaskCache& Get() {
+        static BlurredPathMaskCache* gCache = new BlurredPathMaskCache();
+        return *gCache;
+    }
+
+    bool find(const BlurredPathMaskKey& key, BlurredPathMaskVal* out) {
+        const uint32_t hash = SkChecksum::Hash32(&key, sizeof(key));
+        const size_t setIdx = hash & (kNumSets - 1);
+        SkAutoMutexExclusive lock(fMutex);
+        Set& set = fSets[setIdx];
+        for (size_t i = 0; i < kWays; ++i) {
+            Entry& e = set.fWays[i];
+            if (e.fValid && e.fHash == hash && e.fKey == key) {
+                e.fLastUsed = ++fCounter;
+                *out = e.fVal;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void insert(const BlurredPathMaskKey& key, const BlurredPathMaskVal& val) {
+        const uint32_t hash = SkChecksum::Hash32(&key, sizeof(key));
+        const size_t setIdx = hash & (kNumSets - 1);
+        SkAutoMutexExclusive lock(fMutex);
+        Set& set = fSets[setIdx];
+        size_t victim = 0;
+        uint64_t oldest = UINT64_MAX;
+        for (size_t i = 0; i < kWays; ++i) {
+            Entry& e = set.fWays[i];
+            if (!e.fValid || (e.fHash == hash && e.fKey == key)) {
+                victim = i;
+                break;
+            }
+            if (e.fLastUsed < oldest) {
+                oldest = e.fLastUsed;
+                victim = i;
+            }
+        }
+        Entry& dst = set.fWays[victim];
+        dst.fKey = key;
+        dst.fHash = hash;
+        dst.fVal = val;
+        dst.fLastUsed = ++fCounter;
+        dst.fValid = true;
+    }
+
+private:
+    static constexpr size_t kNumSets = 128;
+    static constexpr size_t kWays = 8;
+
+    struct Entry {
+        BlurredPathMaskKey fKey;
+        uint32_t fHash = 0;
+        bool fValid = false;
+        uint64_t fLastUsed = 0;
+        BlurredPathMaskVal fVal;
+    };
+    struct Set {
+        Entry fWays[kWays];
+    };
+
+    SkMutex fMutex;
+    uint64_t fCounter = 0;
+    Set fSets[kNumSets];
+};
+
+}  // namespace
+
 bool SkMaskFilterBase::filterPath(const SkPathRaw& devRaw,
                                   const SkMatrix& matrix,
                                   const SkRasterClip& clip,
                                   SkBlitter* blitter,
                                   SkStrokeRec::InitStyle style,
-                                  SkResourceCache* cache) const {
+                                  SkResourceCache* cache,
+                                  uint32_t devPathGenID) const {
     SkRect rects[2];
     int rectCount = 0;
     if (SkStrokeRec::kFill_InitStyle == style) {
@@ -278,6 +379,36 @@ bool SkMaskFilterBase::filterPath(const SkPathRaw& devRaw,
                 return true;
             case FilterReturn::kUnimplemented:
                 break;
+        }
+    }
+
+    const bool canCacheBlur = (devPathGenID != 0) && (this->type() == Type::kBlur);
+    BlurredPathMaskKey cacheKey;
+    if (canCacheBlur) {
+        const auto* blurImpl = static_cast<const SkBlurMaskFilterImpl*>(this);
+        float sigma = blurImpl->computeXformedSigma(matrix);
+        cacheKey.fDevPathGenID = devPathGenID;
+        cacheKey.fFillType = static_cast<uint32_t>(devRaw.fillType());
+        cacheKey.fInitStyle = static_cast<uint32_t>(style);
+        cacheKey.fBlurStyle = static_cast<uint32_t>(blurImpl->blurStyle());
+        cacheKey.fXformedSigma = (sigma == 0.0f) ? 0.0f : sigma;
+        cacheKey.fClipBounds = clip.getBounds();
+
+        BlurredPathMaskVal cachedVal;
+        if (BlurredPathMaskCache::Get().find(cacheKey, &cachedVal)) {
+            SkMask cachedMask(static_cast<const uint8_t*>(cachedVal.fImageData->data()),
+                              cachedVal.fBounds, cachedVal.fRowBytes, cachedVal.fFormat);
+            SkAAClipBlitterWrapper wrapper(clip, blitter);
+            blitter = wrapper.getBlitter();
+            SkRegion::Cliperator clipper(wrapper.getRgn(), cachedMask.fBounds);
+            if (!clipper.done()) {
+                const SkIRect& cr = clipper.rect();
+                do {
+                    blitter->blitMask(cachedMask, cr);
+                    clipper.next();
+                } while (!clipper.done());
+            }
+            return true;
         }
     }
 
@@ -303,6 +434,18 @@ bool SkMaskFilterBase::filterPath(const SkPathRaw& devRaw,
         return false;
     }
     SkAutoMaskFreeImage autoDst(dstM.image());
+
+    if (canCacheBlur && dstM.fImage) {
+        const size_t totalBytes = dstM.computeTotalImageSize();
+        if (totalBytes > 0 && totalBytes <= 512 * 1024) {
+            BlurredPathMaskVal val;
+            val.fBounds = dstM.fBounds;
+            val.fRowBytes = dstM.fRowBytes;
+            val.fFormat = dstM.fFormat;
+            val.fImageData = SkData::MakeWithCopy(dstM.fImage, totalBytes);
+            BlurredPathMaskCache::Get().insert(cacheKey, val);
+        }
+    }
 
     // if we get here, we need to (possibly) resolve the clip and blitter
     SkAAClipBlitterWrapper wrapper(clip, blitter);

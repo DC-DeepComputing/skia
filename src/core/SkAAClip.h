@@ -32,6 +32,7 @@ public:
 
     bool isEmpty() const { return nullptr == fRunHead; }
     const SkIRect& getBounds() const { return fBounds; }
+    uint32_t getGenID() const;
 
     // Returns true iff the clip is not empty, and is just a hard-edged rect (no partial alpha).
     // If true, getBounds() can be used in place of this clip.

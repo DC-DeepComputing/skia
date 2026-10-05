@@ -2459,6 +2459,18 @@ private:
         // to allow for faster linear filtering under complex transforms.
         bool                                           fIncludesPadding;
 
+        bool                                           fCanCacheSingleImage = false;
+        int                                            fOpCount = 0;
+        sk_sp<const SkImage>                           fDeferredImage;
+        SkRect                                         fDeferredSrc = SkRect::MakeEmpty();
+        SkRect                                         fDeferredDst = SkRect::MakeEmpty();
+        SkSamplingOptions                              fDeferredSampling;
+        SkPaint                                        fDeferredPaint;
+        SrcRectConstraint                              fDeferredConstraint = kFast_SrcRectConstraint;
+        SkM44                                          fDeferredCTM;
+
+        void flushDeferredImageIfNeeded(const SkM44& currentGlobalCTM);
+
         Layer(sk_sp<SkDevice> device,
               FilterSpan imageFilters,
               const SkPaint& paint,
@@ -2656,7 +2668,8 @@ private:
                                       const SkColorInfo& filterColorInfo,
                                       SkScalar scaleFactor = 1.f,
                                       SkTileMode srcTileMode = SkTileMode::kDecal,
-                                      bool srcIsCoverageLayer = false);
+                                      bool srcIsCoverageLayer = false,
+                                      Layer* cacheLayer = nullptr);
 
     /*
      *  Returns true if drawing the specified rect (or all if it is null) with the specified

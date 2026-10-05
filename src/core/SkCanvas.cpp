@@ -37,6 +37,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkSafe32.h"
+#include "include/private/SkMutex.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -45,6 +46,7 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkBlurMaskFilterImpl.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
@@ -57,6 +59,7 @@
 #include "src/core/SkSurfacePriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkVerticesPriv.h"
+#include "src/core/SkWriteBuffer.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/image/SkSurface_Base.h"
 #include "src/shaders/SkImageShader.h"
@@ -64,6 +67,7 @@
 #include "src/utils/SkPatchUtils.h"
 
 #include <algorithm>
+#include <cstring>
 #include <memory>
 #include <new>
 #include <optional>
@@ -143,6 +147,13 @@ bool SkCanvas::wouldOverwriteEntireSurface(const SkRect* rect, const SkPaint* pa
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool SkCanvas::predrawNotify(bool willOverwritesEntireSurface) {
+    if (fMCRec && fMCRec->fLayer) {
+        if (fMCRec->fLayer->fOpCount > 0) {
+            fMCRec->fLayer->flushDeferredImageIfNeeded(fMCRec->fMatrix);
+            fMCRec->fLayer->fCanCacheSingleImage = false;
+        }
+        fMCRec->fLayer->fOpCount++;
+    }
     if (fSurfaceBase) {
         if (!fSurfaceBase->aboutToDraw(willOverwritesEntireSurface
                                        ? SkSurface::kDiscard_ContentChangeMode
@@ -155,6 +166,13 @@ bool SkCanvas::predrawNotify(bool willOverwritesEntireSurface) {
 
 bool SkCanvas::predrawNotify(const SkRect* rect, const SkPaint* paint,
                              SkEnumBitMask<PredrawFlags> flags) {
+    if (fMCRec && fMCRec->fLayer) {
+        if (fMCRec->fLayer->fOpCount > 0) {
+            fMCRec->fLayer->flushDeferredImageIfNeeded(fMCRec->fMatrix);
+            fMCRec->fLayer->fCanCacheSingleImage = false;
+        }
+        fMCRec->fLayer->fOpCount++;
+    }
     if (fSurfaceBase) {
         SkSurface::ContentChangeMode mode = SkSurface::kRetain_ContentChangeMode;
         // Since willOverwriteAllPixels() may not be complete free to call, we only do so if
@@ -190,6 +208,17 @@ SkCanvas::Layer::Layer(sk_sp<SkDevice> device,
     // Any image filter should have been pulled out and stored in 'imageFilter' so that 'paint'
     // can be used as-is to draw the result of the filter to the dst device.
     SkASSERT(!fPaint.getImageFilter());
+}
+
+void SkCanvas::Layer::flushDeferredImageIfNeeded(const SkM44& currentGlobalCTM) {
+    if (fDeferredImage) {
+        fDevice->setGlobalCTM(fDeferredCTM);
+        fDevice->drawImageRect(fDeferredImage.get(), &fDeferredSrc, fDeferredDst,
+                               fDeferredSampling, fDeferredPaint, fDeferredConstraint);
+        fDevice->setGlobalCTM(currentGlobalCTM);
+        fDeferredImage.reset();
+        fCanCacheSingleImage = false;
+    }
 }
 
 SkCanvas::BackImage::BackImage(sk_sp<SkSpecialImage> img, SkIPoint loc)
@@ -234,6 +263,10 @@ void SkCanvas::MCRec::reset(SkDevice* device) {
 class SkCanvas::AutoUpdateQRBounds {
 public:
     explicit AutoUpdateQRBounds(SkCanvas* canvas) : fCanvas(canvas) {
+        if (fCanvas->fMCRec && fCanvas->fMCRec->fLayer) {
+            fCanvas->fMCRec->fLayer->flushDeferredImageIfNeeded(fCanvas->fMCRec->fMatrix);
+            fCanvas->fMCRec->fLayer->fCanCacheSingleImage = false;
+        }
         // pre-condition, fQuickRejectBounds and other state should be valid before anything
         // modifies the device's clip.
         fCanvas->validateClip();
@@ -488,6 +521,10 @@ void SkCanvas::restoreToCount(int count) {
 }
 
 void SkCanvas::internalSave() {
+    if (fMCRec && fMCRec->fLayer) {
+        fMCRec->fLayer->flushDeferredImageIfNeeded(fMCRec->fMatrix);
+        fMCRec->fLayer->fCanCacheSingleImage = false;
+    }
     fMCRec = new (fMCStack.push_back()) MCRec(fMCRec);
 
     this->topDevice()->pushClipStack();
@@ -696,6 +733,56 @@ static skif::FilterResult apply_alpha_and_colorfilter(const skif::Context& ctx,
     return result;
 }
 
+namespace {
+
+struct SingleImageFilteredLayerKey {
+    uint32_t fImageUniqueID;
+    SkRect fSrcRect;
+    SkRect fDstRect;
+    int32_t fSamplingMaxAniso;
+    int32_t fSamplingUseCubic;
+    float fSamplingCubicB;
+    float fSamplingCubicC;
+    int32_t fSamplingFilter;
+    int32_t fSamplingMipmap;
+    int32_t fConstraint;
+    uint32_t fPaintFlags;
+    SkISize fSrcDims;
+    SkIRect fDesiredOutput;
+    float fDeferredLocalToSrc[16];
+    float fLayerMatrix[16];
+    uint64_t fColorSpaceHash;
+    int32_t fFilterColorType;
+    int32_t fCompat;
+    uint32_t fFilterBytesLen;
+    alignas(4) uint8_t fFilterBytes[512];
+};
+
+struct SingleImageFilteredLayerCacheEntry {
+    SingleImageFilteredLayerKey fKey;
+    skif::FilterResult fResult;
+    uint64_t fLastUsed = 0;
+    bool fValid = false;
+};
+
+constexpr int kSingleImageFilterCacheSets = 256;
+constexpr int kSingleImageFilterCacheWays = 8;
+
+struct SingleImageFilteredLayerCache {
+    SkMutex fMutex;
+    SingleImageFilteredLayerCacheEntry fSets[kSingleImageFilterCacheSets][kSingleImageFilterCacheWays];
+    uint64_t fClock = 0;
+};
+
+static SingleImageFilteredLayerCache& get_single_image_filtered_layer_cache() {
+    static SkOnce once;
+    static SingleImageFilteredLayerCache* cache = nullptr;
+    once([] { cache = new SingleImageFilteredLayerCache(); });
+    return *cache;
+}
+
+}  // namespace
+
 void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
                                             SkDevice* dst,
                                             FilterSpan filters,
@@ -704,7 +791,8 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
                                             const SkColorInfo& filterColorInfo,
                                             SkScalar scaleFactor,
                                             SkTileMode srcTileMode,
-                                            bool srcIsCoverageLayer) {
+                                            bool srcIsCoverageLayer,
+                                            Layer* cacheLayer) {
     // The dst is always required, the src can be null if 'filter' is non-null and does not require
     // a source image. For regular filters, 'src' is the layer and 'dst' is the parent device. For
     // backdrop filters, 'src' is the parent device and 'dst' is the layer.
@@ -781,6 +869,80 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
                       skif::FilterResult{},
                       filterColorSpace.get(),
                       &stats};
+
+    SingleImageFilteredLayerKey cacheKey;
+    uint32_t cacheKeyHash = 0;
+    bool canUseFilterCache = false;
+    if (cacheLayer && src && !requiredInput.isEmpty() && !srcIsCoverageLayer &&
+        filters.size() == 1 && filters[0] != nullptr &&
+        paint.getAlphaf() == 1.0f && !paint.getColorFilter()) {
+        std::memset(&cacheKey, 0, sizeof(cacheKey));
+        SkBinaryWriteBuffer wb(cacheKey.fFilterBytes, sizeof(cacheKey.fFilterBytes), SkSerialProcs{});
+        wb.writeFlattenable(filters[0].get());
+        if (wb.usingInitialStorage() && wb.bytesWritten() <= sizeof(cacheKey.fFilterBytes)) {
+            cacheKey.fImageUniqueID = cacheLayer->fDeferredImage->uniqueID();
+            cacheKey.fSrcRect = cacheLayer->fDeferredSrc;
+            cacheKey.fDstRect = cacheLayer->fDeferredDst;
+            const SkSamplingOptions& samp = cacheLayer->fDeferredSampling;
+            cacheKey.fSamplingMaxAniso = samp.maxAniso;
+            cacheKey.fSamplingUseCubic = samp.useCubic ? 1 : 0;
+            cacheKey.fSamplingCubicB = samp.cubic.B;
+            cacheKey.fSamplingCubicC = samp.cubic.C;
+            cacheKey.fSamplingFilter = static_cast<int32_t>(samp.filter);
+            cacheKey.fSamplingMipmap = static_cast<int32_t>(samp.mipmap);
+            cacheKey.fConstraint = static_cast<int32_t>(cacheLayer->fDeferredConstraint);
+            const SkPaint& dp = cacheLayer->fDeferredPaint;
+            cacheKey.fPaintFlags =
+                    (static_cast<uint32_t>(dp.getBlendMode_or(SkBlendMode::kSrcOver)) << 2) |
+                    (dp.isAntiAlias() ? 2u : 0u) |
+                    (dp.isDither() ? 1u : 0u);
+            cacheKey.fSrcDims = srcDims;
+            cacheKey.fDesiredOutput = SkIRect(mapping.deviceToLayer(outputBounds));
+            SkM44 deferredLocalToSrc = src->globalToDevice() * cacheLayer->fDeferredCTM;
+            deferredLocalToSrc.getColMajor(cacheKey.fDeferredLocalToSrc);
+            mapping.layerMatrix().getColMajor(cacheKey.fLayerMatrix);
+            for (int i = 0; i < 16; ++i) {
+                if (cacheKey.fDeferredLocalToSrc[i] == 0.0f) cacheKey.fDeferredLocalToSrc[i] = 0.0f;
+                if (cacheKey.fLayerMatrix[i] == 0.0f) cacheKey.fLayerMatrix[i] = 0.0f;
+            }
+            cacheKey.fColorSpaceHash = filterColorSpace ? filterColorSpace->hash() : 0;
+            cacheKey.fFilterColorType = static_cast<int32_t>(filterColorType);
+            cacheKey.fCompat = static_cast<int32_t>(compat);
+            cacheKey.fFilterBytesLen = static_cast<uint32_t>(wb.bytesWritten());
+            cacheKeyHash = SkChecksum::Hash32(&cacheKey, sizeof(cacheKey));
+            canUseFilterCache = true;
+
+            skif::FilterResult cachedResult;
+            bool hit = false;
+            {
+                auto& cache = get_single_image_filtered_layer_cache();
+                SkAutoMutexExclusive lock(cache.fMutex);
+                auto* set = cache.fSets[cacheKeyHash & (kSingleImageFilterCacheSets - 1)];
+                for (int w = 0; w < kSingleImageFilterCacheWays; ++w) {
+                    if (set[w].fValid &&
+                        std::memcmp(&set[w].fKey, &cacheKey, sizeof(cacheKey)) == 0) {
+                        set[w].fLastUsed = ++cache.fClock;
+                        cachedResult = set[w].fResult;
+                        hit = true;
+                        break;
+                    }
+                }
+            }
+            if (hit) {
+                ctx = ctx.withNewDesiredOutput(mapping.deviceToLayer(outputBounds));
+                cachedResult.draw(ctx, dst, paint.getBlender());
+                stats.reportStats();
+                return;
+            }
+        }
+    }
+
+    if (cacheLayer) {
+        cacheLayer->flushDeferredImageIfNeeded(cacheLayer->fDeferredCTM);
+        if (src) {
+            src->setImmutable();
+        }
+    }
 
     skif::FilterResult source;
     if (src && !requiredInput.isEmpty()) {
@@ -867,6 +1029,27 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
                         result.sampling(), paint);
             }
         } else {
+            if (canUseFilterCache) {
+                auto& cache = get_single_image_filtered_layer_cache();
+                SkAutoMutexExclusive lock(cache.fMutex);
+                auto* set = cache.fSets[cacheKeyHash & (kSingleImageFilterCacheSets - 1)];
+                int victim = 0;
+                uint64_t oldest = UINT64_MAX;
+                for (int w = 0; w < kSingleImageFilterCacheWays; ++w) {
+                    if (!set[w].fValid) {
+                        victim = w;
+                        break;
+                    }
+                    if (set[w].fLastUsed < oldest) {
+                        oldest = set[w].fLastUsed;
+                        victim = w;
+                    }
+                }
+                set[victim].fKey = cacheKey;
+                set[victim].fResult = result;
+                set[victim].fLastUsed = ++cache.fClock;
+                set[victim].fValid = true;
+            }
             result = apply_alpha_and_colorfilter(ctx, result, paint);
             result.draw(ctx, dst, paint.getBlender());
         }
@@ -1086,6 +1269,12 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
     }
 
     fMCRec->newLayer(std::move(newDevice), filters, restorePaint, coverageOnly, paddedLayer);
+    if (strategy == kFullLayer_SaveLayerStrategy && !coverageOnly && !initBackdrop &&
+        rec.fSaveLayerFlags == 0 && !rec.fColorSpace && filters.size() == 1 &&
+        filters[0] != nullptr && trivialRestore && !cf && !blender &&
+        restorePaint.getAlphaf() == 1.0f) {
+        fMCRec->fLayer->fCanCacheSingleImage = true;
+    }
     fQuickRejectBounds = this->computeDeviceClipBounds();
 }
 
@@ -1170,7 +1359,13 @@ void SkCanvas::internalRestore() {
     // Draw the layer's device contents into the now-current older device. We can't call public
     // draw functions since we don't want to record them.
     if (layer && !layer->fDevice->isNoPixelsDevice() && !layer->fDiscard) {
-        layer->fDevice->setImmutable();
+        const bool canCacheSingleImage =
+                layer->fCanCacheSingleImage && layer->fOpCount == 1 &&
+                layer->fDeferredImage != nullptr && layer->fImageFilters.size() == 1;
+        if (!canCacheSingleImage) {
+            layer->flushDeferredImageIfNeeded(layer->fDeferredCTM);
+            layer->fDevice->setImmutable();
+        }
 
         // Don't go through AutoLayerForImageFilter since device draws are so closely tied to
         // internalSaveLayer and internalRestore.
@@ -1187,7 +1382,8 @@ void SkCanvas::internalRestore() {
                                                    layer->fDevice->imageInfo().colorInfo(),
                                                    /*scaleFactor=*/1.0f,
                                                    /*srcTileMode=*/SkTileMode::kDecal,
-                                                   layer->fIsCoverage);
+                                                   layer->fIsCoverage,
+                                                   canCacheSingleImage ? layer.get() : nullptr);
             } else {
                 // NOTE: We don't just call internalDrawDeviceWithFilter with a null filter
                 // because we want to take advantage of overridden drawDevice functions for
@@ -1288,6 +1484,10 @@ void* SkCanvas::accessTopLayerPixels(SkImageInfo* info, size_t* rowBytes, SkIPoi
 }
 
 bool SkCanvas::onAccessTopLayerPixels(SkPixmap* pmap) {
+    if (fMCRec && fMCRec->fLayer) {
+        fMCRec->fLayer->flushDeferredImageIfNeeded(fMCRec->fMatrix);
+        fMCRec->fLayer->fCanCacheSingleImage = false;
+    }
     return this->topDevice()->accessPixels(pmap);
 }
 
@@ -2363,6 +2563,23 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
                                    (image->isOpaque() ? PredrawFlags::kOpaqueShaderOverride
                                                       : PredrawFlags::kNonOpaqueShaderOverride));
     if (layer) {
+        if (fMCRec && fMCRec->fLayer && fMCRec->fLayer->fCanCacheSingleImage &&
+            fMCRec->fLayer->fOpCount == 1 && !fMCRec->fLayer->fDeferredImage) {
+            const SkPaint& lp = layer->paint();
+            if (!lp.getColorFilter() && !lp.getImageFilter() && !lp.getMaskFilter() &&
+                !lp.getShader() && !lp.getBlender() && !lp.getPathEffect() &&
+                lp.getAlphaf() == 1.0f && !image->isAlphaOnly() && !image->isTextureBacked()) {
+                fMCRec->fLayer->fDeferredImage = sk_ref_sp(image);
+                fMCRec->fLayer->fDeferredSrc = src;
+                fMCRec->fLayer->fDeferredDst = dst;
+                fMCRec->fLayer->fDeferredSampling = realSampling;
+                fMCRec->fLayer->fDeferredPaint = lp;
+                fMCRec->fLayer->fDeferredConstraint = constraint;
+                fMCRec->fLayer->fDeferredCTM = fMCRec->fMatrix;
+                return;
+            }
+            fMCRec->fLayer->fCanCacheSingleImage = false;
+        }
         this->topDevice()->drawImageRect(image, &src, dst, realSampling, layer->paint(),
                                          constraint);
     }

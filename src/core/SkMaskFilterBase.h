@@ -186,7 +186,8 @@ private:
                     const SkRasterClip&,
                     SkBlitter*,
                     SkStrokeRec::InitStyle,
-                    SkResourceCache*) const;
+                    SkResourceCache*,
+                    uint32_t devPathGenID = 0) const;
 
     /** Helper method that, given a roundRect in device space, will rasterize it into a kA8_Format
      mask and then call filterMask(). If this returns true, the specified blitter will be called

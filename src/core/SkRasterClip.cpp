@@ -182,8 +182,130 @@ bool SkRasterClip::op(const SkRRect& rrect, const SkMatrix& matrix, SkClipOp op,
     return this->op(SkPath::RRect(rrect), matrix, op, doAA);
 }
 
+#include "include/private/SkMutex.h"
+#include "src/core/SkChecksum.h"
+#include <cstring>
+
+namespace {
+
+struct AAClipPathKey {
+    uint32_t fPathGenID;
+    uint32_t fPathFillType;
+    uint32_t fPrevIsRect;
+    uint32_t fPrevAAGenID;
+    SkIRect  fPrevBounds;
+    uint32_t fClipOp;
+    uint32_t fDoAA;
+    float    fMatrix[6];
+
+    bool operator==(const AAClipPathKey& o) const {
+        return memcmp(this, &o, sizeof(*this)) == 0;
+    }
+};
+static_assert(sizeof(AAClipPathKey) == 64, "AAClipPathKey must have no padding");
+
+class AAClipPathCache {
+public:
+    static AAClipPathCache& Get() {
+        static AAClipPathCache* gCache = new AAClipPathCache();
+        return *gCache;
+    }
+
+    bool find(const AAClipPathKey& key, SkAAClip* outClip) {
+        const uint32_t hash = SkChecksum::Hash32(&key, sizeof(key));
+        const size_t setIdx = hash & (kNumSets - 1);
+        SkAutoMutexExclusive lock(fMutex);
+        Set& set = fSets[setIdx];
+        for (size_t i = 0; i < kWays; ++i) {
+            Entry& e = set.fWays[i];
+            if (e.fValid && e.fHash == hash && e.fKey == key) {
+                e.fLastUsed = ++fCounter;
+                *outClip = e.fClip;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void insert(const AAClipPathKey& key, const SkAAClip& clip) {
+        const uint32_t hash = SkChecksum::Hash32(&key, sizeof(key));
+        const size_t setIdx = hash & (kNumSets - 1);
+        SkAutoMutexExclusive lock(fMutex);
+        Set& set = fSets[setIdx];
+        size_t victim = 0;
+        uint64_t oldest = UINT64_MAX;
+        for (size_t i = 0; i < kWays; ++i) {
+            Entry& e = set.fWays[i];
+            if (!e.fValid || (e.fHash == hash && e.fKey == key)) {
+                victim = i;
+                break;
+            }
+            if (e.fLastUsed < oldest) {
+                oldest = e.fLastUsed;
+                victim = i;
+            }
+        }
+        Entry& dst = set.fWays[victim];
+        dst.fKey = key;
+        dst.fHash = hash;
+        dst.fClip = clip;
+        dst.fLastUsed = ++fCounter;
+        dst.fValid = true;
+    }
+
+private:
+    static constexpr size_t kNumSets = 256;
+    static constexpr size_t kWays = 8;
+
+    struct Entry {
+        AAClipPathKey fKey;
+        uint32_t fHash = 0;
+        bool fValid = false;
+        uint64_t fLastUsed = 0;
+        SkAAClip fClip;
+    };
+    struct Set {
+        Entry fWays[kWays];
+    };
+
+    SkMutex fMutex;
+    uint64_t fCounter = 0;
+    Set fSets[kNumSets];
+};
+
+}  // namespace
+
 bool SkRasterClip::op(const SkPath& path, const SkMatrix& matrix, SkClipOp op, bool doAA) {
     AUTO_RASTERCLIP_VALIDATE(*this);
+
+    const bool canCache = doAA && !path.isVolatile() && !matrix.hasPerspective() &&
+                          (this->isRect() || !this->isBW()) && !this->isEmpty();
+    AAClipPathKey cacheKey;
+    if (canCache) {
+        auto canon = [](float v) { return v == 0.0f ? 0.0f : v; };
+        const bool prevIsRect = this->isRect();
+        cacheKey.fPathGenID = path.getGenerationID();
+        cacheKey.fPathFillType = static_cast<uint32_t>(path.getFillType());
+        cacheKey.fPrevIsRect = prevIsRect ? 1u : 0u;
+        cacheKey.fPrevAAGenID = prevIsRect ? 0u : fAA.getGenID();
+        cacheKey.fPrevBounds = this->getBounds();
+        cacheKey.fClipOp = static_cast<uint32_t>(op);
+        cacheKey.fDoAA = 1u;
+        cacheKey.fMatrix[0] = canon(matrix.getScaleX());
+        cacheKey.fMatrix[1] = canon(matrix.getSkewX());
+        cacheKey.fMatrix[2] = canon(matrix.getTranslateX());
+        cacheKey.fMatrix[3] = canon(matrix.getSkewY());
+        cacheKey.fMatrix[4] = canon(matrix.getScaleY());
+        cacheKey.fMatrix[5] = canon(matrix.getTranslateY());
+
+        SkAAClip cachedAA;
+        if (AAClipPathCache::Get().find(cacheKey, &cachedAA)) {
+            fBW.setEmpty();
+            fAA = cachedAA;
+            fIsBW = false;
+            return this->updateCacheAndReturnNonEmpty();
+        }
+    }
 
     SkPath devPath = path.makeTransform(matrix);
 
@@ -200,9 +322,22 @@ bool SkRasterClip::op(const SkPath& path, const SkMatrix& matrix, SkClipOp op, b
             fBW.setPath(devPath, SkRegion(this->getBounds()));
         } else {
             fAA.setPath(devPath, this->getBounds(), doAA);
+            if (canCache) {
+                AAClipPathCache::Get().insert(cacheKey, fAA);
+            }
         }
         return this->updateCacheAndReturnNonEmpty();
     } else {
+        if (canCache) {
+            if (this->isBW()) {
+                this->convertToAA();
+            }
+            SkAAClip otherAA;
+            otherAA.setPath(devPath, this->getBounds(), doAA);
+            (void)fAA.op(otherAA, op);
+            AAClipPathCache::Get().insert(cacheKey, fAA);
+            return this->updateCacheAndReturnNonEmpty();
+        }
         return this->op(SkRasterClip(devPath, this->getBounds(), doAA), op);
     }
 }

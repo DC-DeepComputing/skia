@@ -52,6 +52,8 @@
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkScan.h"
+#include "include/private/SkMutex.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkTLazy.h"
 #include "src/core/SkZip.h"
 #include "src/image/SkImage_Raster.h"
@@ -60,6 +62,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <optional>
 #include <string>
 
@@ -904,7 +907,8 @@ void Draw::drawDevPath(const SkPathRaw& raw,
                        const SkPaint& paint,
                        SkDrawCoverage drawCoverage,
                        SkBlitter* customBlitter,
-                       bool doFill) const {
+                       bool doFill,
+                       uint32_t devPathGenID) const {
     if (SkPathPriv::TooBigForMath(raw.bounds())) {
         return;
     }
@@ -921,7 +925,8 @@ void Draw::drawDevPath(const SkPathRaw& raw,
         SkStrokeRec::InitStyle style = doFill ? SkStrokeRec::kFill_InitStyle
                                               : SkStrokeRec::kHairline_InitStyle;
         SkResourceCache* cache = nullptr;  // TODO(kjlubick) get this from fCtx
-        if (as_MFB(paint.getMaskFilter())->filterPath(raw, *fCTM, *fRC, blitter, style, cache)) {
+        if (as_MFB(paint.getMaskFilter())->filterPath(
+                    raw, *fCTM, *fRC, blitter, style, cache, devPathGenID)) {
             return;  // filterPath() called the blitter, so we're done
         }
     }
@@ -1005,6 +1010,99 @@ static std::optional<SkPaint> modifyPaintForHairlines(const SkPaint& origPaint,
     return {};
 }
 
+namespace {
+
+struct DevPathKey {
+    uint32_t fSrcPathGenID;
+    uint32_t fSrcFillType;
+    uint32_t fNeedsFillPath;
+    uint32_t fPaintStyle;
+    float    fStrokeWidth;
+    float    fStrokeMiter;
+    uint32_t fStrokeCap;
+    uint32_t fStrokeJoin;
+    float    fMatrix[6];
+
+    bool operator==(const DevPathKey& o) const {
+        return memcmp(this, &o, sizeof(*this)) == 0;
+    }
+};
+static_assert(sizeof(DevPathKey) == 56, "DevPathKey must have no padding");
+
+class DevPathCache {
+public:
+    static DevPathCache& Get() {
+        static DevPathCache* gCache = new DevPathCache();
+        return *gCache;
+    }
+
+    bool find(const DevPathKey& key, SkPath* outPath, bool* outDoFill) {
+        const uint32_t hash = SkChecksum::Hash32(&key, sizeof(key));
+        const size_t setIdx = hash & (kNumSets - 1);
+        SkAutoMutexExclusive lock(fMutex);
+        Set& set = fSets[setIdx];
+        for (size_t i = 0; i < kWays; ++i) {
+            Entry& e = set.fWays[i];
+            if (e.fValid && e.fHash == hash && e.fKey == key) {
+                e.fLastUsed = ++fCounter;
+                *outPath = e.fDevPath;
+                *outDoFill = e.fDoFill;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void insert(const DevPathKey& key, const SkPath& devPath, bool doFill) {
+        const uint32_t hash = SkChecksum::Hash32(&key, sizeof(key));
+        const size_t setIdx = hash & (kNumSets - 1);
+        SkAutoMutexExclusive lock(fMutex);
+        Set& set = fSets[setIdx];
+        size_t victim = 0;
+        uint64_t oldest = UINT64_MAX;
+        for (size_t i = 0; i < kWays; ++i) {
+            Entry& e = set.fWays[i];
+            if (!e.fValid || (e.fHash == hash && e.fKey == key)) {
+                victim = i;
+                break;
+            }
+            if (e.fLastUsed < oldest) {
+                oldest = e.fLastUsed;
+                victim = i;
+            }
+        }
+        Entry& dst = set.fWays[victim];
+        dst.fKey = key;
+        dst.fHash = hash;
+        dst.fDevPath = devPath;
+        dst.fDoFill = doFill;
+        dst.fLastUsed = ++fCounter;
+        dst.fValid = true;
+    }
+
+private:
+    static constexpr size_t kNumSets = 256;
+    static constexpr size_t kWays = 8;
+
+    struct Entry {
+        DevPathKey fKey;
+        uint32_t fHash = 0;
+        bool fValid = false;
+        bool fDoFill = true;
+        uint64_t fLastUsed = 0;
+        SkPath fDevPath;
+    };
+    struct Set {
+        Entry fWays[kWays];
+    };
+
+    SkMutex fMutex;
+    uint64_t fCounter = 0;
+    Set fSets[kNumSets];
+};
+
+}  // namespace
+
 void Draw::drawPath(const SkPath& origSrcPath,
                     const SkPaint& origPaint,
                     const SkMatrix* prePathMatrix,
@@ -1024,44 +1122,99 @@ void Draw::drawPath(const SkPath& origSrcPath,
     const bool needsFillPath = paint->getPathEffect() || paint->getStyle() != SkPaint::kFill_Style;
 
     SkPathBuilder builder;
-    std::optional<SkPathRaw> raw;      // will point to either origSrcPath or builder
+    std::optional<SkPathRaw> raw;      // will point to origSrcPath, devPathStorage, or builder
     bool          doFill = true;
-
+    SkPath        devPathStorage;
+    uint32_t      devPathGenID = 0;
     sk_sp<SkPathData> pdata;
 
-    if (needsFillPath) {
-        SkRect cullRect;
-        const SkRect* cullRectPtr = nullptr;
-        if (this->computeConservativeLocalClipBounds(&cullRect)) {
-            cullRectPtr = &cullRect;
-        }
+    const bool canCacheDevPath = !origSrcPath.isVolatile() && !paint->getPathEffect() &&
+                                 !prePathMatrix && !fCTM->hasPerspective() &&
+                                 (needsFillPath || !fCTM->isIdentity());
+    DevPathKey devKey;
+    bool foundInCache = false;
+    if (canCacheDevPath) {
+        auto canon = [](float v) { return v == 0.0f ? 0.0f : v; };
+        devKey.fSrcPathGenID = origSrcPath.getGenerationID();
+        devKey.fSrcFillType = static_cast<uint32_t>(origSrcPath.getFillType());
+        devKey.fNeedsFillPath = needsFillPath ? 1u : 0u;
+        devKey.fPaintStyle = needsFillPath ? static_cast<uint32_t>(paint->getStyle()) : 0u;
+        devKey.fStrokeWidth = needsFillPath ? canon(paint->getStrokeWidth()) : 0.0f;
+        devKey.fStrokeMiter = needsFillPath ? canon(paint->getStrokeMiter()) : 0.0f;
+        devKey.fStrokeCap = needsFillPath ? static_cast<uint32_t>(paint->getStrokeCap()) : 0u;
+        devKey.fStrokeJoin = needsFillPath ? static_cast<uint32_t>(paint->getStrokeJoin()) : 0u;
+        devKey.fMatrix[0] = canon(fCTM->getScaleX());
+        devKey.fMatrix[1] = canon(fCTM->getSkewX());
+        devKey.fMatrix[2] = canon(fCTM->getTranslateX());
+        devKey.fMatrix[3] = canon(fCTM->getSkewY());
+        devKey.fMatrix[4] = canon(fCTM->getScaleY());
+        devKey.fMatrix[5] = canon(fCTM->getTranslateY());
 
-        std::optional<SkPath> prePathStorage;
-        const SkPath* pathPtr = &origSrcPath;
-        if (prePathMatrix) {
-            prePathStorage = pathPtr->tryMakeTransform(*prePathMatrix);
-            if (!prePathStorage.has_value()) {
-                return;
+        if (DevPathCache::Get().find(devKey, &devPathStorage, &doFill)) {
+            raw = SkPathPriv::Raw(devPathStorage, SkResolveConvexity::kYes);
+            devPathGenID = devPathStorage.getGenerationID();
+            foundInCache = true;
+        }
+    }
+
+    if (!foundInCache) {
+        if (needsFillPath) {
+            SkRect cullRect;
+            const SkRect* cullRectPtr = nullptr;
+            if (paint->getPathEffect() && this->computeConservativeLocalClipBounds(&cullRect)) {
+                cullRectPtr = &cullRect;
             }
-            pathPtr = &prePathStorage.value();
-        }
-        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder, cullRectPtr, *fCTM);
-        builder.transform(*fCTM);
-        raw = SkPathPriv::Raw(builder, SkResolveConvexity::kYes);
-    } else {
-        SkMatrix matrix = *fCTM;
-        if (prePathMatrix) {
-            matrix.preConcat(*prePathMatrix);
-        }
 
-        if (matrix.isIdentity()) {
-            raw = SkPathPriv::Raw(origSrcPath, SkResolveConvexity::kYes);
-        } else {
-            raw = SkPathPriv::Raw(origSrcPath, SkResolveConvexity::kNo);
-            if (raw && (pdata = SkPathData::MakeTransform(*raw, matrix))) {
-                raw = pdata->raw(origSrcPath.getFillType(), SkResolveConvexity::kYes);
+            std::optional<SkPath> prePathStorage;
+            const SkPath* pathPtr = &origSrcPath;
+            if (prePathMatrix) {
+                prePathStorage = pathPtr->tryMakeTransform(*prePathMatrix);
+                if (!prePathStorage.has_value()) {
+                    return;
+                }
+                pathPtr = &prePathStorage.value();
+            }
+            doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder, cullRectPtr, *fCTM);
+            builder.transform(*fCTM);
+            if (canCacheDevPath) {
+                devPathStorage = builder.detach();
+                raw = SkPathPriv::Raw(devPathStorage, SkResolveConvexity::kYes);
+                if (raw) {
+                    devPathGenID = devPathStorage.getGenerationID();
+                    DevPathCache::Get().insert(devKey, devPathStorage, doFill);
+                }
             } else {
-                return; // failed to create pdata
+                raw = SkPathPriv::Raw(builder, SkResolveConvexity::kYes);
+            }
+        } else {
+            SkMatrix matrix = *fCTM;
+            if (prePathMatrix) {
+                matrix.preConcat(*prePathMatrix);
+            }
+
+            if (matrix.isIdentity()) {
+                raw = SkPathPriv::Raw(origSrcPath, SkResolveConvexity::kYes);
+                if (!origSrcPath.isVolatile()) {
+                    devPathGenID = origSrcPath.getGenerationID();
+                }
+            } else if (canCacheDevPath) {
+                if (auto transformed = origSrcPath.tryMakeTransform(matrix)) {
+                    devPathStorage = std::move(*transformed);
+                    raw = SkPathPriv::Raw(devPathStorage, SkResolveConvexity::kYes);
+                    if (raw) {
+                        devPathGenID = devPathStorage.getGenerationID();
+                        DevPathCache::Get().insert(devKey, devPathStorage, true);
+                    }
+                } else {
+                    return;
+                }
+            } else {
+                raw = SkPathPriv::Raw(origSrcPath, SkResolveConvexity::kNo);
+                if (raw && (pdata = SkPathData::MakeTransform(*raw, matrix))) {
+                    raw = pdata->raw(origSrcPath.getFillType(), SkResolveConvexity::kYes);
+                } else {
+                    return; // failed to create pdata
+                }
             }
         }
     }
@@ -1076,7 +1229,7 @@ void Draw::drawPath(const SkPath& origSrcPath,
     }
 #endif
 
-    this->drawDevPath(*raw, *paint, drawCoverage, customBlitter, doFill);
+    this->drawDevPath(*raw, *paint, drawCoverage, customBlitter, doFill, devPathGenID);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

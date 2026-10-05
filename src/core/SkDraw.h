@@ -224,7 +224,8 @@ private:
                      const SkPaint& paint,
                      SkDrawCoverage drawCoverage,
                      SkBlitter* customBlitter,
-                     bool doFill) const;
+                     bool doFill,
+                     uint32_t devPathGenID = 0) const;
     /**
      *  Return the current clip bounds, in local coordinates, with slop to account
      *  for antialiasing or hairlines (i.e. device-bounds outset by 1, and then

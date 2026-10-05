@@ -177,6 +177,7 @@ struct SkAAClip::RunHead {
     std::atomic<int32_t> fRefCnt;
     int32_t fRowCount;
     size_t  fDataSize;
+    uint32_t fGenID;
 
     YOffset* yoffsets() {
         return (YOffset*)((char*)this + sizeof(RunHead));
@@ -192,11 +193,17 @@ struct SkAAClip::RunHead {
     }
 
     static RunHead* Alloc(int rowCount, size_t dataSize) {
+        static std::atomic<uint32_t> gNextGenID{1};
         size_t size = sizeof(RunHead) + rowCount * sizeof(YOffset) + dataSize;
         RunHead* head = (RunHead*)sk_malloc_throw(size);
         head->fRefCnt.store(1);
         head->fRowCount = rowCount;
         head->fDataSize = dataSize;
+        uint32_t id = gNextGenID.fetch_add(1, std::memory_order_relaxed);
+        if (id == 0) {
+            id = gNextGenID.fetch_add(1, std::memory_order_relaxed);
+        }
+        head->fGenID = id;
         return head;
     }
 
@@ -1236,6 +1243,10 @@ bool SkAAClip::trimBounds() {
 SkAAClip::SkAAClip() {
     fBounds.setEmpty();
     fRunHead = nullptr;
+}
+
+uint32_t SkAAClip::getGenID() const {
+    return fRunHead ? fRunHead->fGenID : 0;
 }
 
 SkAAClip::SkAAClip(const SkAAClip& src) {
