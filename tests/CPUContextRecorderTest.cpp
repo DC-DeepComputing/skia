@@ -19,8 +19,8 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkRecorder.h"
 #include "include/core/SkSurface.h"
-#include "include/cpu/Recorder.h"
 #include "src/core/SkResourceCache.h"
+#include "src/cpu/Recorder.h"
 #include "tests/Test.h"
 
 #include <memory>
