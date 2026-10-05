@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e59b8f5b_430c7e28",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-05T15:54:58Z",
+      "side": 1,
+      "message": "I tend to agree that returning `kInvalidScale` is odd in this case, so ultimately I\u0027d like to land on option #2.  But it\u0027s probably easier to get this change in with option #1, and then tweak Blink \u0026 Skia for #2.",
+      "parentUuid": "d382aa98_ff2839fe",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 80
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1061128a_bf06585c",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
         "patchSetId": 10
