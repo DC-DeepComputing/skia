@@ -33,6 +33,24 @@
       "message": "We need to update `args[\u0027ios_min_target\u0027] \u003d \"15.0\" in `infra/bots/recipe_modules/build`",
       "revId": "5c9096722b038cc241ada482c6ad0495eb286bd1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7044021_025e829e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T15:56:30Z",
+      "side": 1,
+      "message": "Yep - I tried that over here:\nhttps://skia-review.git.corp.google.com/c/skia/+/1324796\n\nbut we need to update the iPadPros :(",
+      "parentUuid": "3b1df1be_ef4568b1",
+      "revId": "5c9096722b038cc241ada482c6ad0495eb286bd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
