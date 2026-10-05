@@ -33,6 +33,24 @@
       "message": "What\u0027s the logic behind this ? Maybe a comment ?",
       "revId": "006da27b2db078cd6c7ca55bb362e94df3cbd0db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ed677ca_ed4ee29c",
+        "filename": "src/gpu/graphite/sparse_strips/Flatten.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-05T22:07:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57a4cf0b_15127693",
+      "revId": "006da27b2db078cd6c7ca55bb362e94df3cbd0db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
