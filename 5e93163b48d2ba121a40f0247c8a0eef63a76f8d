@@ -160,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a83f69e8_d3ec4f8c",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-05T16:01:15Z",
+      "side": 1,
+      "message": "Ok, I will plan for a follow-up CL for cleaning-up the odd behaviour, and for now keep this change as is to meet current behavuior. Thanks!",
+      "parentUuid": "e59b8f5b_430c7e28",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 80
+      },
+      "revId": "5e93163b48d2ba121a40f0247c8a0eef63a76f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1061128a_bf06585c",
