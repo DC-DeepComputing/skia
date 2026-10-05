@@ -25,27 +25,74 @@ clang_arm_sha256 = "946f9bd47ccad906dddde6c426fb5a685ea2c1b660a5ccaef314deadfa1a
 # This should be the same across both arm and intel.
 clang_ver = "22"
 
+# Pinned Xcode build version matching Skia CI bots (Xcode 16.4)
+# https://chrome-infra-packages.appspot.com/p/infra_internal/ios/xcode/mac/+/16f6
+CIPD_XCODE_PACKAGE = "infra_internal/ios/xcode/mac"
+CIPD_XCODE_VERSION = "16f6"
+
 def _get_system_sdk_path(ctx):
     res = ctx.execute(["xcrun", "--sdk", "macosx", "--show-sdk-path"])
     if res.return_code != 0:
         fail("Error Getting SDK path: " + res.stderr)
     return res.stdout.rstrip()
 
-def _delete_macos_sdk_symlinks(ctx):
-    ctx.delete("./symlinks/xcode/MacSDK/usr")
-    ctx.delete("./symlinks/xcode/MacSDK/System/Library/Frameworks")
+def _get_sdk_path(ctx):
+    # We leverage CIPD directly to fetch a pinned version of the Mac SDK and linker
+    cipd = ctx.which("cipd")
+    if not cipd and ctx.os.environ.get("HOME"):
+        # Check standard depot_tools location in user's home directory as fallback
+        cipd_candidate = ctx.path(ctx.os.environ.get("HOME") + "/depot_tools/cipd")
+        if cipd_candidate.exists:
+            cipd = str(cipd_candidate)
 
-def _create_macos_sdk_symlinks(ctx):
-    system_sdk_path = _get_system_sdk_path(ctx)
+    if cipd:
+        output_dir = str(ctx.path("xcode"))
+        ctx.file("cipd.ensure", "%s %s\n" % (CIPD_XCODE_PACKAGE, CIPD_XCODE_VERSION))
+        res = ctx.execute([
+            cipd,
+            "ensure",
+            "-root",
+            output_dir,
+            "-ensure-file",
+            str(ctx.path("cipd.ensure")),
+        ], timeout = 900)
+        if res.return_code == 0:
+            sdk_path = output_dir + "/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+            if ctx.path(sdk_path).exists:
+                print("Using pinned Xcode SDK (%s) via CIPD" % CIPD_XCODE_VERSION)
+                return sdk_path
+            else:
+                fail("CIPD installed successfully but SDK path does not exist: " + sdk_path)
+        else:
+            print("WARNING: cipd ensure failed to install pinned Xcode version %s (code %d):\n%s\nFalling back to local SDK." % (
+                CIPD_XCODE_VERSION,
+                res.return_code,
+                res.stderr,
+            ))
+    else:
+        print("WARNING: 'cipd' not found in PATH or ~/depot_tools. Falling back to local SDK.")
+
+    # Fallback to local Xcode or Command Line Tools on the host.
+    sdk_path = _get_system_sdk_path(ctx)
+    print("Using local host SDK: " + sdk_path)
 
     # Watch SDKSettings.plist so that Bazel invalidates and re-runs this
     # repository rule whenever the active Xcode / macOS SDK is updated.
-    ctx.watch(system_sdk_path + "/SDKSettings.plist")
+    ctx.watch(sdk_path + "/SDKSettings.plist")
+    return sdk_path
+
+def _delete_macos_sdk_symlinks(ctx):
+    ctx.delete("./symlinks/xcode/MacSDK/usr")
+    ctx.delete("./symlinks/xcode/MacSDK/System/Library/Frameworks")
+    ctx.delete("./bin/apple-ld")
+
+def _create_macos_sdk_symlinks(ctx):
+    sdk_path = _get_sdk_path(ctx)
 
     # https://bazel.build/rules/lib/actions#symlink
     ctx.symlink(
         # from =
-        system_sdk_path + "/usr",
+        sdk_path + "/usr",
         # to =
         "./symlinks/xcode/MacSDK/usr",
     )
@@ -57,10 +104,15 @@ def _create_macos_sdk_symlinks(ctx):
     # from breaking.
     ctx.symlink(
         # from =
-        system_sdk_path + "/System/Library/Frameworks",
+        sdk_path + "/System/Library/Frameworks",
         # to =
         "./symlinks/xcode/MacSDK/System/Library/Frameworks",
     )
+
+    # If the pinned Apple linker is present in the downloaded Xcode, make it available
+    apple_ld = ctx.path("xcode/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld")
+    if apple_ld.exists:
+        ctx.symlink(str(apple_ld), "bin/apple-ld")
 
 def _download_mac_toolchain_impl(ctx):
     # https://bazel.build/rules/lib/repository_ctx
@@ -208,6 +260,9 @@ filegroup(
         # We attempt to capture a super-set.
         include = FRAMEWORK_GLOB,
         allow_empty = True,
+    ) + glob(
+        include = ["bin/apple-ld"],
+        allow_empty = True,
     ),
     visibility = ["//visibility:public"],
 )
@@ -219,7 +274,7 @@ filegroup(
 download_mac_toolchain = repository_rule(
     implementation = _download_mac_toolchain_impl,
     attrs = {},
-    doc = "Downloads clang to build Skia with." +
-          "Assumes you have xcode located on your device and have" +
-          "xcode-select in your $PATH.",
+    environ = ["PATH", "HOME"],
+    doc = "Downloads clang to build Skia with and fetches a pinned Xcode SDK via CIPD. " +
+          "Falls back to using local Xcode/CommandLineTools via xcode-select if CIPD is unavailable.",
 )
