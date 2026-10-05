@@ -34,6 +34,24 @@
       "parentUuid": "e71d5b23_e8425c65",
       "revId": "ecbbc4a326d9b2e15a55fcbcbb31b4ddb5bb66a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0393a8b5_4481e97a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-05T14:30:58Z",
+      "side": 1,
+      "message": "Sounds good, I updated them in patchset 5. Let me know if this sounds right\n\n\n```\nOpen braces don\u0027t get a newline. `else` and `else if` appear on the same line as\nopening and closing braces unless preprocessor conditional compilation\ninterferes. Braces are always used with `if`, `else`, `while`, `for`, and `do`.\nPrefer multi-line `if` statements over single-line `if` statements, unless\naligning a series of simple checks improves readability.\n```",
+      "parentUuid": "00909df9_eedf0d74",
+      "revId": "ecbbc4a326d9b2e15a55fcbcbb31b4ddb5bb66a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
