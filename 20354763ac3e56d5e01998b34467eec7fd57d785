@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5beadcf8_1a235761",
+        "filename": "tests/graphite/sparse_strips/FastValidator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T19:45:55Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "20354763ac3e56d5e01998b34467eec7fd57d785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39618702_d6a4b069",
+        "filename": "tests/graphite/sparse_strips/FastValidator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T19:45:55Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "20354763ac3e56d5e01998b34467eec7fd57d785",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
