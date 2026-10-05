@@ -172,6 +172,11 @@ var deps = deps_parser.DepsEntries{
 		Version: "845d5476a866141ba35ac133f856fa62f0b7445f",
 		Path:    "third_party/externals/libwebp",
 	},
+	"chromium/third_party/agility-sdk": {
+		Id:      "chromium/third_party/agility-sdk",
+		Version: "version:2@1.721.0-preview",
+		Path:    "third_party/externals/agility-sdk",
+	},
 	"dawn.googlesource.com/dawn": {
 		Id:      "dawn.googlesource.com/dawn",
 		Version: "32f77c02294310054a660c393feded4bcb3f203c",
