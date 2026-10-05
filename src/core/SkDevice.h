@@ -33,24 +33,25 @@
 #include <cstdint>
 #include <utility>
 
-struct SkArc;
-class SkColorSpace;
-class SkMesh;
-struct SkDrawShadowRec;
-class SkImageFilter;
-class SkRasterHandleAllocator;
-class SkSpecialImage;
 class GrRecordingContext;
+class SkColorSpace;
 class SkData;
 class SkDrawable;
 class SkImage;
+class SkImageFilter;
+class SkMesh;
 class SkPaint;
 class SkPath;
 class SkPixmap;
 class SkRRect;
+class SkRasterHandleAllocator;
 class SkRecorder;
+class SkShadowPathOps;
+class SkSpecialImage;
 class SkSurface;
 class SkVertices;
+struct SkArc;
+struct SkDrawShadowRec;
 enum SkColorType : int;
 enum class SkBlendMode;
 enum class SkScalerContextFlags : uint32_t;
@@ -72,8 +73,8 @@ class Device;
 class Recorder;
 }
 namespace sktext::gpu {
-class SubRunControl;
 class Slug;
+class SubRunControl;
 }
 
 struct SkStrikeDeviceInfo {
@@ -386,6 +387,7 @@ public:
                               bool skipColorXform = false) = 0;
     virtual void drawMesh(const SkMesh& mesh, sk_sp<SkBlender>, const SkPaint&) = 0;
     virtual void drawShadow(SkCanvas*, const SkPath&, const SkDrawShadowRec&);
+    virtual const SkShadowPathOps* shadowPathOps() const { return nullptr; }
 
     // default implementation calls drawVertices
     virtual void drawPatch(const SkPoint cubics[12], const SkColor colors[4],
