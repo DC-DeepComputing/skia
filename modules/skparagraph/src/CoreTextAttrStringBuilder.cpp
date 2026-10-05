@@ -179,7 +179,8 @@ SkUniqueCFRef<CFAttributedStringRef> CoreTextAttrStringBuilder::build() {
 
         sk_sp<SkTypeface> primary = span.fStyle.refTypeface();
         std::vector<sk_sp<SkTypeface>> typefaces;
-        if (fFontCollection) {
+        // Empty font families must bypass FontCollection fallback to allow CoreText to bind .AppleSystemUIFont
+        if (fFontCollection && !span.fStyle.getFontFamilies().empty()) {
             typefaces = fFontCollection->findTypefaces(
                 span.fStyle.getFontFamilies(), span.fStyle.getFontStyle());
         }
