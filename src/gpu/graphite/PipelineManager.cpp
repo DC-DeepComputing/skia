@@ -7,8 +7,8 @@
 
 #include "src/gpu/graphite/PipelineManager.h"
 
+#include "include/core/SkExecutor.h"
 #include "include/private/SkLog.h"
-#include "src/core/SkTaskGroup.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineHandle.h"
 #include "src/gpu/graphite/PipelineCreationTask.h"
@@ -49,18 +49,14 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager(SkExecutor* executor) {
-    if (executor) {
-        fTaskGroup = std::make_unique<SkTaskGroup>(*executor);
-    }
-}
+PipelineManager::PipelineManager(SkExecutor* executor) : fExecutor(executor) {}
 
 PipelineManager::~PipelineManager() {
-    // The task group should've been shutdown and deleted in Context's destructor (via
+    // The executor should've been removed from play in Context's destructor (via
     // shutDown()).
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fExecutor);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
@@ -130,7 +126,7 @@ GraphicsPipelineHandle PipelineManager::createHandle(
     return GraphicsPipelineHandle(std::move(task));
 }
 
-bool PipelineManager::InlineCompile(PipelineCreationTask* task) {
+bool PipelineManager::InlineCompile(const sk_sp<PipelineCreationTask>& task) {
     SkASSERT(task);
 
     // Since there might be threaded contention to execute the compilation for the same
@@ -168,10 +164,10 @@ bool PipelineManager::InlineCompile(PipelineCreationTask* task) {
         SKIA_LOG_W("Failed to create GraphicsPipeline!");
     }
 
-    pipelineManager->signalCompleted(task);
+    task->fSharedContext = nullptr;
+    pipelineManager->signalCompleted(task.get());
     pipelineManager->removeTask(task);
 
-    task->fSharedContext = nullptr;
     return true;
 }
 
@@ -181,11 +177,11 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
     {
         SkAutoSpinlock lock{fSpinLock};
 
-        if (fTaskGroup) {
+        if (fExecutor) {
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
                                                       : kHighPriorityWorkList;
 
-            fTaskGroup->add([task]{ InlineCompile(task.get()); } , workList);
+            fExecutor->add([task]{ InlineCompile(task); }, workList);
             return;
         }
     }
@@ -196,7 +192,7 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
     // will kick in to eliminate duplicate work. This does mean, as in the SkExecutor case,
     // that the task's Pipeline need not be resolved at the end of 'compileTask'. That is,
     // after all, the purview of 'resolveHandle'.
-    InlineCompile(task.get());
+    InlineCompile(task);
 }
 
 sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHandle& handle) {
@@ -211,44 +207,65 @@ sk_sp<GraphicsPipeline> PipelineManager::resolveHandle(const GraphicsPipelineHan
 
     // For the non-threaded PipelineManager, the GraphicsPipeline will have been compiled in-line
     // so will already have been completed.
-    this->potentiallyWaitOn(task.get());
+    this->potentiallyWaitOn(task);
     return task->fPipeline;
 }
 
+sk_sp<PipelineCreationTask> PipelineManager::getWork(bool inclInProgress) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    if (fActiveTasks.count() == 0) {
+        return nullptr;
+    }
+
+    using TaskMapIter = typename TaskMap::template Iter<sk_sp<PipelineCreationTask>>;
+
+    TaskMapIter end = TaskMapIter::MakeEnd(&fActiveTasks);
+    for (TaskMapIter it = TaskMapIter::MakeBegin(&fActiveTasks); it != end; ++it) {
+        if (inclInProgress || !(*it)->fStarted) {
+            return *it;
+        }
+    }
+
+    return nullptr;
+}
+
+void PipelineManager::wait() {
+    // First, try to steal any work that hasn't yet been started and run it locally.
+    while (sk_sp<PipelineCreationTask> task = this->getWork(/* inclInProgress= */ false)) {
+        InlineCompile(task);
+    }
+    // Then wait on any work that is in progress but hasn't been completed.
+    while (sk_sp<PipelineCreationTask> task = this->getWork(/* inclInProgress= */ true)) {
+        this->potentiallyWaitOn(task);
+    }
+}
+
 void PipelineManager::shutDown() {
-    // We null out 'fTaskGroup' so no more threaded work can be added after this point.
-    std::unique_ptr<SkTaskGroup> tmp;
+    // We null out 'fExecutor' so no more threaded work can be added after this point.
     {
         SkAutoSpinlock lock{fSpinLock};
-        tmp = std::move(fTaskGroup);
+        fExecutor = nullptr;
     }
-    if (tmp) {
-        // We have to wait for the remaining tasks to complete bc they rely on the existence
-        // of the SharedContext and the PipelineManager (this).
-        // TODO(robertphillips) We could discard any unstarted tasks but would need a way to
-        // have them still remove themselves from the task list.
-        tmp->wait();
-    }
+    // We have to wait for the remaining tasks to complete bc they rely on the existence
+    // of the SharedContext and the PipelineManager (this).
+    // TODO(robertphillips) We could discard any unstarted tasks but would need a way to
+    // have them still remove themselves from the task list.
+    this->wait();
+
     {
         SkDEBUGCODE(SkAutoSpinlock lock{fSpinLock};)
-        SkASSERT(!fTaskGroup);
+        SkASSERT(!fExecutor);
         SkASSERT(fActiveTasks.count() == 0);
     }
 }
 
 #if defined(GPU_TEST_UTILS)
 void PipelineManager::wait_TestOnly() {
-    SkTaskGroup* tmp;
-    {
-        SkAutoSpinlock lock{fSpinLock};
-        tmp = fTaskGroup.get();
-    }
-    // This isn't safe (since 'fTaskGroup' could be altered on some other thread) but, hopefully,
-    // the unit tests know what they're doing (i.e., don't delete the owning Context while
-    // in this method).
-    if (tmp) {
-        tmp->wait();
-    }
+    // This isn't thread safe (since some other thread could be adding more work in parallel) but,
+    // hopefully, the unit tests know what they're doing (i.e., don't be doing other threaded
+    // work when using this method).
+    this->wait();
 }
 
 PipelineManager::Stats PipelineManager::getStats() const {
@@ -290,7 +307,7 @@ sk_sp<PipelineCreationTask> PipelineManager::findOrCreateTask(
     return newTask;
 }
 
-void PipelineManager::removeTask(PipelineCreationTask* task) {
+void PipelineManager::removeTask(const sk_sp<PipelineCreationTask>& task) {
     SkAutoSpinlock lock{fSpinLock};
 
     fActiveTasks.remove(task->fPipelineKey);
@@ -311,7 +328,7 @@ void PipelineManager::signalCompleted(PipelineCreationTask* task) {
 }
 
 
-void PipelineManager::potentiallyWaitOn(PipelineCreationTask* task) {
+void PipelineManager::potentiallyWaitOn(const sk_sp<PipelineCreationTask>& task) {
     // If we can preempt some thread that is scheduled to compile this Pipeline, do so rather
     // than waiting.
     if (InlineCompile(task)) {
