@@ -49,6 +49,7 @@ class SkPixmap;
 class SkRRect;
 class SkRecorder;
 class SkRegion;
+class SkShadowPathOps;
 class SkSpecialImage;
 class SkSurfaceProps;
 class SkSurface_Ganesh;
@@ -83,8 +84,8 @@ namespace gpu {
 namespace skgpu::ganesh {
 
 class SurfaceContext;
-class SurfaceFillContext;
 class SurfaceDrawContext;
+class SurfaceFillContext;
 
 /**
  *  Subclass of SkDevice, which directs all drawing to the GrGpu owned by the canvas.
@@ -196,6 +197,7 @@ public:
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override;
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
     void drawShadow(SkCanvas*, const SkPath&, const SkDrawShadowRec&) override;
+    const SkShadowPathOps* shadowPathOps() const override;
 #endif
     void drawAtlas(SkSpan<const SkRSXform>, SkSpan<const SkRect>, SkSpan<const SkColor>,
                    sk_sp<SkBlender>, const SkPaint&) override;
