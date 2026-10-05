@@ -22,6 +22,30 @@
       },
       "revId": "b474c494e44803c51a5da4b62ed9cdd000195ff2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "586f16a7_eba97e49",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T18:45:42Z",
+      "side": 1,
+      "message": "I\u0027ve added a relnotes file but would like to do the other changes in a follow up.",
+      "parentUuid": "3aee2b24_bfe4a32d",
+      "range": {
+        "startLine": 101,
+        "startChar": 42,
+        "endLine": 101,
+        "endChar": 45
+      },
+      "revId": "b474c494e44803c51a5da4b62ed9cdd000195ff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

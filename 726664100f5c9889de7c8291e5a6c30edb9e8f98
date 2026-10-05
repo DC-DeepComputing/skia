@@ -22,6 +22,30 @@
       },
       "revId": "726664100f5c9889de7c8291e5a6c30edb9e8f98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67b5d9ea_2aeb4030",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-05T18:45:42Z",
+      "side": 1,
+      "message": "Done. Note that, it appears, we have no iOS Graphite Metal jobs.",
+      "parentUuid": "56e44b6c_45c5011c",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 39
+      },
+      "revId": "726664100f5c9889de7c8291e5a6c30edb9e8f98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
