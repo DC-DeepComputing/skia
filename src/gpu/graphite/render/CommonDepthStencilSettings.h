@@ -83,7 +83,7 @@ constexpr DepthStencilSettings kWindingStencilPass = {
         /*stencilRef=*/      0,
         /*stencilReadMask=*/ 0xffffffff,
         /*stencilWriteMask=*/0xffffffff,
-        /*depthCompare=*/    CompareOp::kLess,
+        /*depthCompare=*/    CompareOp::kLEqual,
         /*depthWrite=*/      false // The depth write will be handled by the covering pass
 };
 
@@ -95,7 +95,7 @@ constexpr DepthStencilSettings kEvenOddStencilPass = {
         /*stencilRef=*/      0,
         /*stencilReadMask=*/ 0xffffffff,
         /*stencilWriteMask=*/0x00000001,
-        /*depthCompare=*/    CompareOp::kLess,
+        /*depthCompare=*/    CompareOp::kLEqual,
         /*depthWrite=*/      false // The depth write will be handled by the covering pass
 };
 
@@ -107,7 +107,7 @@ static constexpr DepthStencilSettings kIncrementStencilPass = {
         /*stencilRef=*/      0,
         /*stencilReadMask=*/ 0xffffffff,
         /*stencilWriteMask=*/0xffffffff,
-        /*depthCompare=*/    CompareOp::kLess,
+        /*depthCompare=*/    CompareOp::kLEqual,
         /*depthWrite=*/      false // The depth write will be handled by the covering pass
 };
 
@@ -143,7 +143,7 @@ constexpr DepthStencilSettings kRegularCoverPass = {
         /*stencilRef=*/      0,
         /*stencilReadMask=*/ 0xffffffff,
         /*stencilWriteMask=*/0xffffffff,
-        /*depthCompare=*/    CompareOp::kLess,
+        /*depthCompare=*/    CompareOp::kLEqual,
         /*depthWrite=*/      true
 };
 
@@ -155,7 +155,7 @@ constexpr DepthStencilSettings kInverseCoverPass = {
         /*stencilRef=*/      0,
         /*stencilReadMask=*/ 0xffffffff,
         /*stencilWriteMask=*/0xffffffff,
-        /*depthCompare=*/    CompareOp::kLess,
+        /*depthCompare=*/    CompareOp::kLEqual,
         /*depthWrite=*/      true
 };
 
