@@ -52,6 +52,24 @@
       "parentUuid": "22c55a6b_367389ea",
       "revId": "b6ee6229c5f8a047efef786efce44995561a27ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "574904dd_f22bddad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-06T16:49:03Z",
+      "side": 1,
+      "message": "Just so you know, the real fix is being prepared in this CL: https://skia-review.git.corp.google.com/c/skia/+/1385396",
+      "parentUuid": "b23f4585_4e3d68d7",
+      "revId": "b6ee6229c5f8a047efef786efce44995561a27ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
