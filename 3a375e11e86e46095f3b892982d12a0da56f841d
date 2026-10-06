@@ -22,6 +22,30 @@
       },
       "revId": "3a375e11e86e46095f3b892982d12a0da56f841d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "065bfa0c_5c01ca63",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-06T14:55:53Z",
+      "side": 1,
+      "message": "I think gitclang format uses ASCII sorting (i.e. R \u003e e because capital letters come first). I think this should change given that it exceeds user expectations\n\nWill create a follow up cl to update that. Thanks for the catch",
+      "parentUuid": "b7792706_82499f87",
+      "range": {
+        "startLine": 20,
+        "startChar": 31,
+        "endLine": 20,
+        "endChar": 32
+      },
+      "revId": "3a375e11e86e46095f3b892982d12a0da56f841d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
