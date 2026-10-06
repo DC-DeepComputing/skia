@@ -16,6 +16,23 @@
       "message": "Happy to change or explain anything!\n\nSubsequent CLs will bring in the actual Chrome executor, running dm, etc. I can pull functionality from that into this CL but I thought this skeleton might be easier to review.",
       "revId": "819b1bd5eb02ce12b2f657a8cee9f0194856f434",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dfba886_7f5b1e81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-06T19:35:56Z",
+      "side": 1,
+      "message": "Seems fine to me. I triggered the new job to see it work end-to-end before landing.",
+      "revId": "819b1bd5eb02ce12b2f657a8cee9f0194856f434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
