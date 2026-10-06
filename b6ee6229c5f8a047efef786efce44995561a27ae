@@ -34,6 +34,24 @@
       "parentUuid": "108fc98b_0fc7e54b",
       "revId": "b6ee6229c5f8a047efef786efce44995561a27ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b23f4585_4e3d68d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-06T15:34:02Z",
+      "side": 1,
+      "message": "You are right, it\u0027s DEF_TEST. We run our tests on Unix only (because we can rely on only one platform to compare numbers and we selected Unix). The real bug that ASAN found is not DEF_TEST and I will have to deal with it later (it was in the code for a long time). But for you changing DEF_TEST to UNIX_ONLY_TEST is the right thing.",
+      "parentUuid": "22c55a6b_367389ea",
+      "revId": "b6ee6229c5f8a047efef786efce44995561a27ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
