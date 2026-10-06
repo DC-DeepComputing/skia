@@ -1,0 +1,42 @@
+id: gpu/prefer-makefragmentprocessorfromview-over-skimage-ganesh
+title: When creating a GrFragmentProcessor from an existing GrSurfaceProxyView in Ganesh, call MakeFragmentProcessorFromView
+  directly instead of constructing a temporary SkImage_Ganesh wrapper
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When creating a GrFragmentProcessor to sample an existing GrSurfaceProxyView, call skgpu::ganesh::MakeFragmentProcessorFromView
+  directly. Do not wrap the GrSurfaceProxyView in a temporary SkImage_Ganesh instance to call skgpu::ganesh::AsFragmentProcessor.
+why: AsFragmentProcessor is designed for generic SkImage instances and simply unwraps Ganesh-backed images
+  to delegate to MakeFragmentProcessorFromView. When a GrSurfaceProxyView is already available, constructing
+  a temporary SkImage_Ganesh wrapper adds unnecessary object construction, reference count churn, and
+  boilerplate indirection.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const SkImage_Ganesh image(sk_ref_sp(mask->getContext()),
+                             mask->uniqueID(),
+                             std::move(view),
+                             mask->colorInfo());
+  std::unique_ptr<GrFragmentProcessor> fp = skgpu::ganesh::AsFragmentProcessor(
+      sdc, &image, sampling, tileModes, textureMaskSpace, &maskSubset, &maskSubset);
+  ```
+
+  Good:
+
+  ```cpp
+  std::unique_ptr<GrFragmentProcessor> fp = skgpu::ganesh::MakeFragmentProcessorFromView(
+      this->recordingContext(), std::move(view), mask->alphaType(), sampling, tileModes,
+      textureMaskSpace, &maskSubset, &maskSubset);
+  ```
+include_glob:
+- src/gpu/ganesh/**
+triggers:
+- \bMakeFragmentProcessorFromView\b
+- \bAsFragmentProcessor\s*\(
+- \bSkImage_Ganesh\b
+- \bMakeFragmentProcessor\b
+- \bskgpu::ganesh::(?:MakeFragmentProcessorFromView|AsFragmentProcessor)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,58 @@
+id: general/name-buffer-capacity-queries-with-unit-suffix
+title: When declaring buffer variables, parameters, or capacity query methods, use explicit unit suffixes
+  like Bytes, Count, or Words to distinguish byte sizes from element counts
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring variables, parameters, or query methods for buffers, spans, or allocators containing
+  multi-byte elements, use explicit unit suffixes or count nouns (such as Bytes, Count, IndexCount, or
+  numWords) rather than generic names like size, length, or remaining(). Distinguish raw byte sizes from
+  element, word, or index counts, and unaligned byte capacities from alignment-adjusted slots.
+why: Ambiguous identifiers like dataLength, size, or remaining() for buffers of multi-byte types leave
+  it unclear whether the quantity represents raw bytes or element counts. Explicit unit suffixes make
+  the metric immediately evident to callers, preventing sizing mismatches, indexing errors, and buffer
+  overruns when passing counts to byte-oriented APIs or GPU allocators.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Ambiguous: unclear whether remaining() returns bytes, elements, or slots.
+  class BufferSubAllocator {
+  public:
+      uint32_t remaining() const {
+          return fBuffer ? SkTo<uint32_t>(fBuffer->size()) - fOffset : 0;
+      }
+  };
+
+  // Ambiguous: dataLength obscures whether the quantity represents uint32_t words or bytes.
+  const int dataLength = keyData[currentIndex++];
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicit: unit suffix clarifies that the quantity is an unaligned byte count.
+  class BufferSubAllocator {
+  public:
+      uint32_t remainingBytes() const {
+          return fBuffer ? SkTo<uint32_t>(fBuffer->size()) - fOffset : 0;
+      }
+  };
+
+  // Explicit: clarifies that the quantity is an element/word count for typed buffer indexing.
+  const int dataIndexCount = keyData[currentIndex++];
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:size_t|uint(?:8|16|32|64)_t|int)\s+(?:remaining|available|capacity)(?:Bytes)?\s*\(
+- \b(?:remainingBytes|bytesRemaining|bytesAvailable|availableBytes)\s*\(
+- \b(?:remaining|available)\s*\(\s*\)\s*(?:const)?\s*[{;]
+- \b(?:BufferSubAllocator|DrawBufferManager|UploadBufferManager|StaticBufferManager)\b
+- \b(?:const\s+)?(?:int|size_t|uint(?:8|16|32|64)_t)\s+[a-zA-Z0-9_]*(?:IndexCount|ElementCount|WordCount|NumWords|dataLength|dataIndexCount)\b
+- \b(?:int|size_t|uint(?:8|16|32|64)_t)\s+[a-zA-Z0-9_]*(?:ByteCount|BytesRemaining|BytesAvailable|RemainingBytes)\b
+- \b(?:fOffset|fSize|fBytesRemaining|fRemainingBytes)\b
+confidence: 0.97
+support_cl_count: 2

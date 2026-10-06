@@ -1,0 +1,63 @@
+id: general/use-reset-or-nullopt-to-clear-optional
+title: When returning or clearing an empty std::optional, return std::nullopt or call .reset() instead
+  of using empty braces {}
+polarity: do
+severity: nit
+rubric: readability
+rule: When returning an empty std::optional from a function or clearing an existing std::optional variable,
+  use std::nullopt (or call .reset()) rather than empty braces {}. Do not write return {}; or assign opt
+  = {}; to represent an unengaged or disengaged optional.
+why: Using std::nullopt or .reset() explicitly conveys that the optional contains no value. In contrast,
+  empty braces ({}) are ambiguous and less readable because braced initialization can be confused with
+  default-constructing or value-initializing the wrapped inner type.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Returning an empty optional:
+  std::optional<SkPath> Op(const SkPath& one, const SkPath& two, SkPathOp op) {
+      SkPath result;
+      if (skpathopsinternal::Op(one, two, op, &result)) {
+          return result;
+      }
+      return {};
+  }
+
+  // Clearing an existing optional:
+  if (!validate(bytesRead > 0)) {
+      path = {};
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Returning an empty optional:
+  std::optional<SkPath> Op(const SkPath& one, const SkPath& two, SkPathOp op) {
+      SkPath result;
+      if (skpathopsinternal::Op(one, two, op, &result)) {
+          return result;
+      }
+      return std::nullopt;
+  }
+
+  // Clearing an existing optional:
+  if (!validate(bytesRead > 0)) {
+      path.reset(); // or: path = std::nullopt;
+  }
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+triggers:
+- \bstd::optional<
+- \bstd::nullopt\b
+- \breturn\s*\{\s*\}\s*;
+- \breturn\s+std::nullopt\b
+- \b[a-zA-Z0-9_]+\.reset\(\)
+- \b[a-zA-Z0-9_]+\s*=\s*\{\}\s*;
+- \b[a-zA-Z0-9_]+\s*=\s*std::nullopt\b
+confidence: 0.87
+support_cl_count: 2

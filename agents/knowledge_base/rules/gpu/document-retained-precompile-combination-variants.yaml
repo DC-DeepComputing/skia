@@ -1,0 +1,42 @@
+id: gpu/document-retained-precompile-combination-variants
+title: When subsetting precompile combination counts to an integer literal based on flags in Graphite,
+  add an inline comment identifying which named variant is retained
+polarity: do
+severity: nit
+rubric: readability
+rule: In Graphite precompile classes, when calculating combination counts or initializing combination
+  fields with an integer literal because flags or options exclude specific permutations, add an inline
+  comment identifying the retained variant (e.g., '// Just kHWTiled' or '// just kWithLocalMatrix').
+why: Combination counts in precompilation correspond to discrete named variants (such as specific sampling
+  or local matrix configurations). Using a raw integer literal without an explanatory comment obscures
+  which variant remains active, hindering code reviews and making future precompilation audits error-prone.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: raw integer literal does not indicate which variant is retained.
+  : fNumExtraSamplingTilingCombos((flags & ImageShaderFlags::kExcludeCubic)
+                                          ? 1
+                                          : kExtraNumSamplingTilingCombos)
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: documents which specific combination variant corresponds to the literal count.
+  : fNumExtraSamplingTilingCombos((flags & ImageShaderFlags::kExcludeCubic)
+                                          ? 1  // Just kHWTiled
+                                          : kExtraNumSamplingTilingCombos)
+  ```
+include_glob:
+- src/gpu/graphite/precompile/**
+triggers:
+- \bfNum[A-Za-z0-9_]*Combos?\b
+- \bk(?:Extra)?Num[A-Za-z0-9_]*Combos?\b
+- \b(?:ImageShaderFlags|YUVImageShaderFlags|PrecompileImageShaderFlags)\b
+- \?\s*[0-9]+\s*(?::|//|$)
+- \breturn\s+[0-9]+\s*;
+- //\s*[Jj]ust\s+k[A-Za-z0-9_]+
+confidence: 0.9
+support_cl_count: 1

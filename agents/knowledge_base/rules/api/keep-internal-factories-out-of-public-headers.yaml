@@ -1,0 +1,65 @@
+id: api/keep-internal-factories-out-of-public-headers
+title: When adding factory functions in public module headers under include/, keep internal or bindings-specific
+  helpers in private headers or dedicated component headers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not expose internal, bindings-specific, or consumer-specific factory methods in public module
+  or library headers under include/. Place internal helpers, test hooks, and bindings utilities in private
+  headers under src/ or in dedicated component headers, and remove obsolete or superseded factory declarations
+  when refactoring.
+why: Public headers in include/ and modules/**/include/ define Skia's client-facing API surface. Exposing
+  factory methods meant only for specific internal consumers (such as CanvasKit bindings or test harnesses)
+  pollutes public interfaces, exposes unstable implementation details, and creates unnecessary maintenance
+  burdens.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // modules/skunicode/include/SkUnicode_client.h
+  namespace SkUnicodes::Client {
+  SKUNICODE_API sk_sp<SkUnicode> Make(
+          SkSpan<char> text,
+          std::vector<SkUnicode::Position> words,
+          std::vector<SkUnicode::Position> graphemeBreaks,
+          std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+  // Bad: Exposing internal bidi/bindings factory in general public client header
+  SKUNICODE_API sk_sp<SkUnicode> Make();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // modules/skunicode/include/SkUnicode_client.h
+  namespace SkUnicodes::Client {
+  SKUNICODE_API sk_sp<SkUnicode> Make(
+          SkSpan<char> text,
+          std::vector<SkUnicode::Position> words,
+          std::vector<SkUnicode::Position> graphemeBreaks,
+          std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+  }
+
+  // Dedicated component header: modules/skunicode/include/SkUnicode_bidi.h
+  // or private header under modules/skunicode/src/
+  namespace SkUnicodes::Bidi {
+  SKUNICODE_API sk_sp<SkUnicode> Make();
+  }
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \bSK[A-Z_]*_?API\b
+- \bsk_sp<[A-Za-z0-9_]+>\s+(?:Make|Create)\w*\s*[(]
+- \bstd::unique_ptr<[A-Za-z0-9_]+>\s+(?:Make|Create)\w*\s*[(]
+- \b(?:static\s+)?(?:sk_sp<|std::unique_ptr<)?[A-Za-z0-9_:]+\s+Make\s*[(]
+- \b(?:Client|Bindings?|Test|Internal)::Make\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Folder Organiziation
+  quote: Skia's public API should live in the `include` directory. Skia's private headers and implementation
+    files should live in the `src` directory.
+confidence: 0.9
+support_cl_count: 1

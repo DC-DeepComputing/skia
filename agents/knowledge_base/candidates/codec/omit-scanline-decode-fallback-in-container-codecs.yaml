@@ -1,0 +1,49 @@
+id: codec/omit-scanline-decode-fallback-in-container-codecs
+title: When delegating incremental decoding in container codecs, do not add fallback branches calling
+  startScanlineDecode for sub-codecs that implement incremental decoding rather than scanline decoding
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When delegating incremental decoding in container image decoders (such as SkIcoRustCodec), do not
+  add fallback branches invoking startScanlineDecode on kUnimplemented results from sub-codecs. Verify
+  whether the underlying sub-codec (such as SkBmpRustCodec) supports incremental decoding directly and
+  lacks scanline decoding before carrying over legacy C++ fallback branches.
+why: Legacy C++ codecs like SkBmpCodec only supported scanline decoding, requiring callers to fall back
+  from incremental decode attempts. Modern replacements like SkBmpRustCodec implement startIncrementalDecode
+  directly and do not support scanline decoding, making scanline fallback branches unreachable or broken
+  dead code.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Obsolete fallback from legacy SkBmpCodec that only supported scanline decoding
+  SkCodec::Result r = embeddedCodec->startIncrementalDecode(dstInfo, pixels, rowBytes, &opts);
+  if (r == SkCodec::kUnimplemented) {
+      if (embeddedCodec->startScanlineDecode(dstInfo) == SkCodec::kSuccess) {
+          return SkCodec::kUnimplemented;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // SkBmpRustCodec directly implements incremental decoding; omit dead scanline fallback
+  SkCodec::Result r = embeddedCodec->startIncrementalDecode(dstInfo, pixels, rowBytes, &opts);
+  if (r == SkCodec::kSuccess) {
+      fCurrCodec = embeddedCodec;
+      return SkCodec::kSuccess;
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bstartScanlineDecode\b
+- \bstartIncrementalDecode\b
+- \bonStartIncrementalDecode\b
+- \b(?:embeddedCodec|fCurrCodec)\b
+- \bSk(?:Bmp|Ico)(?:Rust)?Codec\b
+confidence: 0.9
+support_cl_count: 1

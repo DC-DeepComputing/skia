@@ -1,0 +1,49 @@
+id: build-gn/depend-unconditionally-on-optional-targets
+title: When depending on targets defined with optional(...) in GN build files, list them unconditionally
+  in deps instead of wrapping them in conditional if blocks
+polarity: do
+severity: blocking
+rubric: readability
+rule: In GN build files (BUILD.gn), add targets defined with the optional(...) template unconditionally
+  to composite target dependencies (such as skia_component("skia")'s public_deps or deps). Do not wrap
+  them in conditional 'if' blocks; optional(...) targets automatically evaluate to empty source sets when
+  disabled.
+why: Skia's optional(...) GN template evaluates to an empty skia_source_set with no sources, dependencies,
+  or defines when invoker.enabled is false. Because of this, composite targets can depend on optional
+  feature and helper targets unconditionally across all configurations without redundant conditional branching.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  skia_component("skia") {
+    public_deps = [ ":xps" ]
+    if (skia_use_libpng_encode) {
+      public_deps += [ ":xps_libpng_helpers" ]
+    }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  skia_component("skia") {
+    public_deps = [
+      ":xps",
+      ":xps_libpng_helpers",
+      ":xps_rust_png_helpers",
+    ]
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+triggers:
+- \b(?:public_)?deps\s*\+?=\s*\[
+- \bif\s*\(\s*skia_use_[a-zA-Z0-9_]+\s*\)
+- \boptional\s*\(\s*"[^"]+"\s*\)
+- '"(?::|//)[a-zA-Z0-9_/-]*(?:helpers|codec|encode|decode)"'
+- \bskia_component\s*\(\s*"[^"]+"\s*\)
+- '"(?::|//)[a-zA-Z0-9_/-]*xps[a-zA-Z0-9_/-]*"'
+confidence: 0.9
+support_cl_count: 1

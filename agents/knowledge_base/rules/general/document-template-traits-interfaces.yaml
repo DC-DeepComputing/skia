@@ -1,0 +1,52 @@
+id: general/document-template-traits-interfaces
+title: When declaring or extending template classes with traits or policy parameters, document required
+  and optional trait methods, expected signatures, and coupling constraints in header comments
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining or adding customization hooks to template classes parameterized by traits or policy
+  types (such as template <..., typename Traits = T>), document the traits interface contract in the class
+  header comments. Specify required and optional static methods or types, their expected signatures and
+  semantics, and any coupling constraints (e.g., requiring both paired hooks like growth and shrinkage
+  if either is defined).
+why: Template traits interfaces in C++ rely on duck typing rather than abstract base classes or compiler
+  concepts, making interface requirements invisible in class signatures alone. Documenting required and
+  optional methods alongside coupling invariants ensures trait hooks are discoverable and prevents runtime
+  bugs or obscure compile-time template instantiation failures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Traits must have:
+  //   - static K GetKey(T)
+  //   - static uint32_t Hash(K)
+  template <typename T, typename K, typename Traits = T>
+  class THashTable {
+  ```
+
+  Good:
+
+  ```cpp
+  // Traits must have:
+  //   - static K GetKey(T)
+  //   - static uint32_t Hash(K)
+  // Traits may also define (both required if either is defined):
+  //   - static bool ShouldGrow(int count, int capacity)
+  //   - static bool ShouldShrink(int count, int capacity)
+  // , which specify the max/min load factor of the table.
+  template <typename T, typename K, typename Traits = T>
+  class THashTable {
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \btemplate\s*<[^>]*\b(?:typename|class)\s+[A-Za-z0-9_]*(?:Traits|Policy)\b
+- \b(?:typename|class)\s+Traits\s*=
+- \b(?:class|struct)\s+[A-Za-z0-9_]*(?:Traits|Policy)\b
+- \bTraits::[A-Za-z0-9_]+\s*\(
+- \bHas[A-Z][A-Za-z0-9_]*<\s*Traits\s*>
+- //\s*Traits\s+(?:must|requires|may|should|can)\b
+confidence: 0.9
+support_cl_count: 1

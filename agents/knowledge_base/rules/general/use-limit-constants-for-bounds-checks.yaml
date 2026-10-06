@@ -1,0 +1,73 @@
+id: general/use-limit-constants-for-bounds-checks
+title: When declaring fixed-size arrays, bounding loops, clamping values, or mirroring limits, use canonical
+  constants instead of magic numbers and verify with static_assert
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Use canonical configuration, class, or struct limit constants (such as SparseStripConfig::kMaxTexturePages,
+  GainCurve::kMaxNumControlPoints, or kMaxNumAlternateImages) instead of hardcoded magic numbers when
+  declaring fixed-size arrays, loop bounds, clamping ranges, slot checks, or container size assertions.
+  When validating sizes, clamping values, or allocating fixed-capacity buffers, reference the existing
+  named constants defined on the type or configuration struct. Additionally, when defining internal or
+  parsing constants that mirror public API limits or related data structures, enforce synchronization
+  with static_assert at compile time.
+why: Hardcoded numeric literals obscure semantic intent and silently fall out of sync when container limits,
+  buffer capacities, or configuration constants change. Referencing canonical limit constants keeps array
+  dimensions, loop iterations, clamping bounds, and assertions synchronized across subsystems, while static_assert
+  guarantees that mirrored internal and public constants cannot silently diverge when either definition
+  is modified.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: hardcoded magic numbers in array bounds, loops, clamping, and bounds checks
+  TexturePage fPages[2];
+  for (int i = 0; i < 2; ++i) {
+      fPages[i].reset();
+  }
+  fNumAlternateImages = clamp(syntax.num_alternate_images, 0, 4);
+  SkASSERT(cp.size() > 0 && cp.size() <= 32);
+
+  // Bad: duplicate internal constants without compile-time verification
+  struct AgtmSyntax {
+      static constexpr uint8_t kMaxNumAlternateImages = 4;
+      static constexpr uint8_t kMaxNumControlPoints = 32;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: reference canonical configuration and limit constants
+  TexturePage fPages[SparseStripConfig::kMaxTexturePages];
+  for (int i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
+      fPages[i].reset();
+  }
+  fNumAlternateImages = clamp(syntax.num_alternate_images, 0u, kMaxNumAlternateImages);
+  SkASSERT_RELEASE(cp.size() >= AdaptiveGlobalToneMap::GainCurve::kMinNumControlPoints &&
+                   cp.size() <= AdaptiveGlobalToneMap::GainCurve::kMaxNumControlPoints);
+
+  // Good: verify mirrored internal constants match public definitions
+  struct AgtmSyntax {
+      static constexpr uint8_t kMaxNumAlternateImages = 4;
+      static constexpr uint8_t kMaxNumControlPoints = 32;
+  };
+  static_assert(AgtmSyntax::kMaxNumAlternateImages ==
+                skhdr::AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap::kMaxNumAlternateImages);
+  static_assert(AgtmSyntax::kMaxNumControlPoints ==
+                skhdr::AdaptiveGlobalToneMap::GainCurve::kMaxNumControlPoints);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\bk(?:Max|Min|Num)[A-Z]\w*
+- \b(?:size|count|length)\s*[(][)]\s*(?:<=|>=|<|>)\s*(?:[0-9]+|\w+::k(?:Max|Min)\w*)
+- \b(?:for|while)\s*[(][^)]*<\s*(?:[A-Za-z0-9_:]*::)?k(?:Max|Min|Num)[A-Z]\w*
+- \b(?:clamp|SkTPin|std::clamp)\s*[(][^)]*\bk(?:Max|Min|Num)[A-Z]\w*
+- \bk(?:Max|Min|Num)[A-Z]\w*(?:Pages|Slots|Entries|Items|Elements|Points|Lines|Verbs|Buffers|Layers|ControlPoints|Images|Textures)\b
+- \bstatic_assert\s*[(][^;=]+==[^;=]*k(?:Max|Min|Num)[A-Z]\w*
+- \b(?:static\s+)?constexpr\s+[A-Za-z0-9_:]+\s+k(?:Max|Min|Num)[A-Z]\w*\s*=
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\.(?:size|count|length)\s*[(][)]\s*(?:<=|>=|<|>|==)
+confidence: 0.98
+support_cl_count: 4

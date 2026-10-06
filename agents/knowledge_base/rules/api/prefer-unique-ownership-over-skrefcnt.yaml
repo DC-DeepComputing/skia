@@ -1,0 +1,63 @@
+id: api/prefer-unique-ownership-over-skrefcnt
+title: When designing classes like modern backend Contexts, Recorders, or caches, prefer unique ownership
+  via std::unique_ptr over inheriting SkRefCnt and sk_sp
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not make classes inherit from SkRefCnt (or SkNVRefCnt) and require sk_sp management unless genuine
+  shared ownership across multiple contexts is necessary. For modern backend Context and Recorder classes
+  (such as SkRasterContext or SkRecorder), follow Graphite's architecture where contexts and recorders
+  have exclusive ownership managed via std::unique_ptr rather than legacy Ganesh-style reference counting.
+  Similarly, prefer unique ownership or direct value composition for standalone caches, managers, and
+  utility classes.
+why: In modern Skia architecture, backend contexts and recorders are designed with exclusive ownership,
+  aligning new backends with Graphite's decoupled model rather than legacy Ganesh's shared reference counting.
+  Moreover, reference counting introduces atomic increment/decrement overhead, obscures lifetime semantics,
+  and complicates destruction order compared to std::unique_ptr or direct value composition.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Deriving modern backend context from SkRefCnt with sk_sp factory
+  class SK_API SkRasterContext : public SkRefCnt {
+  public:
+      static sk_sp<const SkRasterContext> Make(const Options&);
+  };
+
+  // Bad: Using SkRefCnt for single-owner cache
+  class SkResourceCache : public SkRefCnt {
+  public:
+      static sk_sp<SkResourceCache> Make(size_t byteLimit);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Modern backend context with exclusive ownership via std::unique_ptr
+  class SK_API SkRasterContext {
+  public:
+      static std::unique_ptr<const SkRasterContext> Make(const Options&);
+  };
+
+  // Good: Direct value or std::unique_ptr ownership for single-owner cache
+  class SkResourceCache {
+  public:
+      explicit SkResourceCache(size_t byteLimit);
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bpublic\s+SkRefCnt\b
+- \bclass\s+[A-Za-z0-9_]+\s*:[^{;]*\bSkRefCnt\b
+- \bpublic\s+SkNVRefCnt<
+- \bclass\s+[A-Za-z0-9_]+\s*:[^{;]*\bSkNVRefCnt\b
+- \bstatic\s+sk_sp<[^>]+>\s+(?:Make|Create)\b
+- \b(?:class|struct)\s+(?:SK_API\s+)?\w*(?:Context|Recorder)\b
+- \b(?:SkRasterContext|SkRecorder|SkContext)\b
+confidence: 0.95
+support_cl_count: 2

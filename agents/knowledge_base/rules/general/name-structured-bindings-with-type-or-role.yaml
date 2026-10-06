@@ -1,0 +1,51 @@
+id: general/name-structured-bindings-with-type-or-role
+title: When using structured bindings (auto [...]), name decomposed variables explicitly to convey their
+  concrete type or entity-specific role rather than ambiguous, terse identifiers
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When destructuring pairs, tuples, or structs using structured bindings (`auto [...]` or `const auto&
+  [...]`), name decomposed variables explicitly to convey their concrete type (e.g., suffixing `Rect`
+  for an `SkRect`) or entity-specific semantic role (e.g., `formatSupport` instead of vague `supports`
+  or generic `usages`). Avoid ambiguous, overly terse, or generic identifiers like `drawDst` or bare verbs,
+  and keep decomposed variable names consistent across call sites of the same helper.
+why: Structured bindings hide concrete types behind `auto`. Suffixing decomposed variables with their
+  concrete type or qualifying them with the specific entity being represented (such as `drawDstRect` or
+  `formatSupport`) self-documents data flow and avoids confusion when interacting with related concepts
+  (such as requested usages vs. supported usages).
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 'drawDst' is ambiguous under auto deduction (could be SkRect, SkPoint, SkDevice*, etc.)
+  auto [drawDst, shader] = SkImageShader::MakeForDrawRect(
+          image, realPaint, sampling, src, dst, constraint == kStrict_SrcRectConstraint);
+
+  // Vague identifier 'supports' obscures what entity's capabilities are returned
+  auto [supports, sampleCounts] = this->getTextureSupport(format, Tiling::kOptimal);
+  ```
+
+  Good:
+
+  ```cpp
+  // Type suffix 'Rect' explicitly documents that drawDstRect is an SkRect
+  auto [drawDstRect, shader] = SkImageShader::MakeForDrawRect(
+          image, realPaint, sampling, src, dst, constraint == kStrict_SrcRectConstraint);
+
+  // Entity-qualified 'formatSupport' clarifies the role and stays consistent across call sites
+  auto [formatSupport, sampleCounts] = this->getTextureSupport(format, Tiling::kOptimal);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+exclude_glob:
+- third_party/**
+triggers:
+- \b(?:const\s+)?auto(?:\s*&{1,2})?\s*\[[^\]]+\]\s*=
+- '\bfor\s*\(\s*(?:const\s+)?auto(?:\s*&{1,2})?\s*\[[^\]]+\]\s*:'
+- \bauto\s*\[\s*[a-zA-Z0-9_]+(?:\s*,\s*[a-zA-Z0-9_]+)+\s*\]
+- \b(?:if|while)\s*\(\s*(?:const\s+)?auto(?:\s*&{1,2})?\s*\[[^\]]+\]
+confidence: 0.95
+support_cl_count: 2

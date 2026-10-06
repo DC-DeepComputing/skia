@@ -1,0 +1,43 @@
+id: general/separate-commit-subject-from-body-with-blank-line
+title: When authoring Git commit messages, separate the single-line subject from the detailed body description
+  with an empty blank line
+polarity: do
+severity: nit
+rubric: readability
+rule: Separate the commit message subject line from the body text with an empty blank line. Keep the subject
+  to a single concise line, and leave a full blank line before beginning detailed explanations or subsequent
+  paragraphs.
+why: Git and review tools like Gerrit treat the first line up to the first blank line as the subject summary.
+  Omitting the blank line lumps following body text into the subject line in git log --oneline, git shortlog,
+  and web UI change lists, corrupting change summaries.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Body text immediately follows the subject line without a blank line:
+  Adds a method to retrieve JUMBF metadata, stored with an APP11 marker,
+  from a JPEG. This is to enable detection of a C2PA manifest, so that
+  we can add metrics to address how widespread use of C2PA is.
+
+  Bug: b/385174885
+  Change-Id: I5d4cf81270c109ee7ca5980427e2f5d4e88e8763
+  ```
+
+  Good:
+
+  ```cpp
+  // Blank line separates the concise subject from the body:
+  Adds a method to retrieve JUMBF metadata
+
+  JUMBF metadata is stored with an APP11 marker. It's the format used
+  to embed a C2PA manifest that makes claims about content authenticity
+  inside a JPEG.
+
+  Bug: b/385174885
+  Change-Id: I5d4cf81270c109ee7ca5980427e2f5d4e88e8763
+  ```
+include_glob:
+- '**/COMMIT_MSG'
+confidence: 0.9
+support_cl_count: 1

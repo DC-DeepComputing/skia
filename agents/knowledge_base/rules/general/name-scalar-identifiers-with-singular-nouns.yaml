@@ -1,0 +1,67 @@
+id: general/name-scalar-identifiers-with-singular-nouns
+title: 'When naming scalar variables, parameters, or constants, avoid bare plural nouns: use singular
+  nouns for single items and kNum or Count for quantities'
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring or refactoring parameters, variables, struct fields, or constants of scalar type,
+  avoid bare plural nouns that ambiguously suggest a collection, vector, or array. For single entities
+  or attributes (such as uint32_t or float), name identifiers using singular nouns (e.g., ssboIndex, point,
+  offset) rather than leftover plurals (e.g., ssboIndices). When representing an item count or quantity,
+  use an explicit count prefix or suffix (such as kNum<Items>, num<Items>, or <items>Count) rather than
+  a bare plural noun (e.g., use kNumSamples or numSamples instead of kSamples).
+why: Plural identifiers on scalar types mislead readers and callers into expecting an array, container,
+  or multi-component vector. Using singular nouns for individual elements and explicit count prefixes/suffixes
+  (kNum, num, or Count) for quantities clarifies identifier semantics, aligns with Skia style, and prevents
+  confusion during maintenance.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Plural identifier for a scalar uint32_t or attribute descriptor
+  void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndices) const override;
+  constexpr Attribute kAttributes[] = {
+      {"ssboIndices", VertexAttribType::kUInt, SkSLType::kUInt},
+  };
+
+  // Bare plural noun for an item count constant
+  const int kSamples = 100;
+  const float dt = 1.0f / kSamples;
+  ```
+
+  Good:
+
+  ```cpp
+  // Singular identifier matching scalar uint32_t type and attribute layout
+  void writeVertices(DrawWriter*, const DrawParams&, uint32_t ssboIndex) const override;
+  constexpr Attribute kAttributes[] = {
+      {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt},
+  };
+
+  // Explicit kNum prefix clearly denoting an item count
+  const int kNumSamples = 100;
+  const float dt = 1.0f / kNumSamples;
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \b(?:uint(?:8|16|32|64)_t|int(?:8|16|32|64)_t|float|size_t)\s+[a-zA-Z0-9_]*(?:Indices|Offsets|Points|Coords|Values)\b
+- \b(?:static\s+)?(?:constexpr|const)\s+(?:int|size_t|uint(?:8|16|32|64)_t)\s+k[A-Z]\w*(?:Samples|Points|Lines|Indices|Offsets|Items|Elements|Vertices)\b
+- \bkNum[A-Z]\w*\b
+- '["''][a-zA-Z0-9_]*(?:Indices|Offsets|Points|Coords)["'']\s*,\s*VertexAttribType::k(?:UInt|Float|Int)\b'
+- \b(?:ssboIndices?|k(?:[A-Z]\w*)?Samples)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: |-
+    int herdCats(const Array& cats) {
+        int numCats = cats.count();
+    }
+confidence: 0.95
+support_cl_count: 2

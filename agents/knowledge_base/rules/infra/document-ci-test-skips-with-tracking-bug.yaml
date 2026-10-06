@@ -1,0 +1,40 @@
+id: infra/document-ci-test-skips-with-tracking-bug
+title: When suppressing tests in CI bot configuration files like dm_flags.go, document skips with tracking
+  bugs, narrow conditions, and preserve alphabetical ordering
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When suppressing tests in CI bot configuration (such as skip() in infra/bots/gen_tasks_logic/dm_flags.go),
+  document each suppression with an inline comment citing a tracking issue (e.g., '// b/<id> - <reason>')
+  explaining why the test is disabled, and narrow the suppression condition as tightly as possible to
+  the specific failing backend, OS, hardware model, or build configuration rather than skipping tests
+  globally. Additionally, maintain strict alphabetical order by test or GM name when inserting entries
+  into sorted skip blocks.
+why: Skipping tests without documenting an issue reference creates unmonitored technical debt that is
+  easily forgotten, while broad suppressions risk masking unrelated regressions. In sorted blocks of skip
+  declarations, maintaining alphabetical order makes entries easy to locate, prevents duplicate suppressions,
+  and minimizes merge conflicts across concurrent changes.
+examples:
+- "Bad:\n\n```cpp\n// Bad: missing tracking bug, overly broad suppression, and out of alphabetical order\n\
+  if b.ExtraConfig(\"Metal\") {\n\tskip(ALL, \"test\", ALL, \"ShaderTestNestedBlendsGraphite\")\n\tskip(ALL,\
+  \ \"test\", ALL, \"skbug6653\")\n\tskip(ALL, \"test\", ALL, \"SimplifyPaintTest\")\n\tskip(ALL, \"test\"\
+  , ALL, \"ThreadedPipelineCompilePurgingTest\")\n}\n```\n\nGood:\n\n```cpp\n// Good: narrowed condition,\
+  \ tracking bug citation, and alphabetical order preserved\nif b.ExtraConfig(\"Metal\") {\n\tif b.ExtraConfig(\"\
+  TSAN\") {\n\t\tskip(ALL, \"test\", ALL, \"ShaderTestNestedBlendsGraphite\")\n\t\tskip(ALL, \"test\"\
+  , ALL, \"SimplifyPaintTest\")\n\t\tskip(ALL, \"test\", ALL, \"skbug6653\")\n\t\t// b/389706939 - Dawn/Metal\
+  \ reports a data race for LazyClearCountForTesting w/ TSAN\n\t\tskip(ALL, \"test\", ALL, \"ThreadedPipelineCompilePurgingTest\"\
+  )\n\t}\n}\n```"
+include_glob:
+- infra/bots/**
+triggers:
+- \bskip\s*\(
+- //\s*(?:b/\d+|skbug(?:\.com)?/\d+)
+- \b(?:ExtraConfig|MatchExtraConfig)\s*\(
+- \b(?:MatchOs|MatchGpu|Model|Arch)\s*\(
+- \bALL\s*,\s*"(?:test|gm|image|svg|skp|colorImage)"
+citations:
+- path: site/docs/dev/gardening/_index.md
+  heading: Rebaseline Layout Tests (i.e., add suppressions)
+  quote: 'First create a Chromium bug:'
+confidence: 0.97
+support_cl_count: 2

@@ -1,0 +1,50 @@
+id: core/use-layer-paint-in-about-to-draw-scope
+title: When drawing inside an aboutToDraw layer scope in SkCanvas, dispatch directly to topDevice() and
+  use layer->paint() rather than re-entering onDraw virtuals
+polarity: do
+severity: should_fix
+rubric: design
+rule: Inside an SkCanvas aboutToDraw() layer scope, dispatch draw calls directly to this->topDevice()->draw*()
+  rather than re-entering SkCanvas virtual drawing methods (onDraw*), and pass or query attributes from
+  layer->paint() instead of the original input SkPaint. If per-draw transforms must be applied and the
+  device method lacks a matrix parameter, update the temporary layer device via topDevice()->setLocalToDevice().
+why: aboutToDraw() sets up an AutoLayerForImageFilter with a temporary SkDevice at the top of the canvas
+  stack and prepares adjusted paint attributes. Calling SkCanvas onDraw* virtuals re-enters canvas dispatch
+  and triggers redundant predraw notifications, while drawing with the original paint bypasses filter
+  adjustments and causes double-applied effects.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  auto layer = this->aboutToDraw(realPaint, &drawDst);
+  if (layer) {
+      // Bad: re-enters canvas virtual dispatch and uses original paint
+      this->onDrawEdgeAAQuad(drawDst, clip, aaFlags,
+                             realPaint.getColor4f(),
+                             SkBlendMode::kSrcOver);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  auto layer = this->aboutToDraw(realPaint, &drawDst);
+  if (layer) {
+      // Good: dispatches directly to topDevice() using layer->paint()
+      this->topDevice()->drawEdgeAAQuad(drawDst, clip, aaFlags,
+                                        layer->paint().getColor4f(),
+                                        SkBlendMode::kSrcOver);
+  }
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \baboutToDraw\s*[(]
+- \bAutoLayerForImageFilter\b
+- \b(?:this->)?topDevice\s*[(]\s*[)]->draw
+- \blayer->paint\s*[(]
+- \bsetLocalToDevice\s*[(]
+- '\bPredrawFlags::'
+confidence: 0.92
+support_cl_count: 1

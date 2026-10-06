@@ -1,0 +1,67 @@
+id: general/document-unowned-pointer-member-lifetime
+title: When a class, struct, or adapter stores an unowned pointer or reference member, explicitly document
+  and preserve caller lifetime requirements on declarations and fields
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When a class, struct, or adapter stores an unowned raw pointer or reference member (such as `const
+  T& fMember` or `T* fMember`), explicitly document the lifetime contract on the class, constructor, or
+  member variable declaration. State clearly that the caller must ensure the referenced object remains
+  valid and outlives the instance, and preserve these lifetime documentation comments across refactorings.
+why: Non-owning pointers and references rely on caller-managed lifetimes, creating dangling pointer and
+  use-after-free hazards if the referenced instance is destroyed first. Explicitly documenting and preserving
+  lifetime requirements ensures callers and future maintainers uphold ownership invariants and avoid accidental
+  lifetime mismatches.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Adapter class for reading and seeking Skia SkStreams from Rust.
+  class SkStreamAdapter {
+  public:
+      explicit SkStreamAdapter(SkStream* stream) : fStream(stream) {}
+  private:
+      SkStream* fStream;
+  };
+
+  // Refactored struct dropping member lifetime documentation
+  class DrawParams {
+      const Transform& fTransform;
+      Geometry         fGeometry;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Adapter class for reading and seeking Skia SkStreams from Rust.
+  // The caller must guarantee that `stream` outlives the `SkStreamAdapter`.
+  class SkStreamAdapter {
+  public:
+      explicit SkStreamAdapter(SkStream* stream) : fStream(stream) {}
+  private:
+      SkStream* fStream;
+  };
+
+  // Preserve lifetime invariants when refactoring non-owning member declarations
+  class DrawParams {
+      const Transform& fTransform; // Lifetime of the transform must outlive the geometry
+      Geometry         fGeometry;
+  };
+  ```
+include_glob:
+- '**/*.h'
+triggers:
+- \b(?:class|struct)\s+\w*(?:Adapter|Wrapper|View|Reader|Writer|Helper|Bridge|Sink|Params)\b
+- \bexplicit\s+[A-Z]\w*\s*\(\s*(?:const\s+)?[A-Za-z0-9_:]+\s*[*&]\s*[a-z_]\w*\s*\)
+- \b[A-Za-z0-9_:]+\s*[*&]\s+f[A-Z]\w*;
+- //.*(?:outlive[s]?|lifetime of|alive for at least as long|longer than)
+- \b(?:raw_ptr|raw_ref)<
+citations:
+- path: site/docs/dev/design/dangling_pointer_detector.md
+  heading: Motivation
+  quote: Tracking the lifetime of interacting objects across a complex C++ codebase is difficult. Often,
+    lifetime issues are discovered late when they cause hard-to-reproduce user crashes.
+confidence: 0.95
+support_cl_count: 2

@@ -1,0 +1,76 @@
+id: api/prefer-const-skspan-accessors
+title: When exposing collection or query accessors for stable data, return SkSpan<const T> instead of
+  returning containers by value, wrapping in std::optional, or copying into caller buffers
+polarity: dont
+severity: blocking
+rubric: readability
+rule: When exposing collection, query, or buffer accessors for stable contiguous data, return SkSpan<const
+  T> instead of returning concrete containers (such as std::vector or skia_private::TArray) by value,
+  wrapping container returns in std::optional, or copying elements into caller buffers; rely on an empty
+  span to represent absence. For streamed or computed elements, expose an index accessor (e.g. returning
+  std::optional<T>) or an iterator range. Do not expose non-const span or buffer accessors (such as SkSpan<T>
+  or non-const data()) when callers only need read-only access. On immutable or thread-shared types (such
+  as SkData), restrict mutation to explicit methods like writable_data().
+why: Returning containers by value or copying into caller-provided arrays forces redundant heap allocations
+  and copying overhead when callers only need read access, while wrapping collection return types in std::optional
+  creates redundant empty states when an empty span already indicates absence. Returning SkSpan<const
+  T>, index accessors, or iterator ranges enables zero-allocation, zero-copy access while preserving caller
+  flexibility. Restricting read-only accessors to const views and requiring explicit methods like writable_data()
+  on shared types also prevents unintended mutation and silent data races.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Returning containers by value or wrapping in std::optional:
+  std::vector<LayerInfo> getLayerInfo() const { return fLayerInfo; }
+  std::optional<skia_private::TArray<Range>> getRanges() const;
+  int getVerbs(uint8_t verbs[], int max) const;
+
+  // 2. Non-const span accessor exposes internal storage when callers only read:
+  SkSpan<SkPoint> points() { return {fPoints, fNumPoints}; }
+  SkSpan<const SkPoint> points() const { return {fPoints, fNumPoints}; }
+
+  // 3. Non-const data() on immutable/shared type enables silent data races:
+  const std::byte* data() const { return fSpan.data(); }
+  std::byte* data() { return fSpan.data(); }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Return SkSpan<const T> (relying on empty span for absence):
+  SkSpan<const LayerInfo> getLayerInfo() const { return SkSpan(fLayerInfo); }
+  SkSpan<const Range> getRanges() const { return fRanges; }
+  SkSpan<const SkPathVerb> verbs() const { return fVerbs; }
+  std::optional<SkScalar> getSegmentDistance(size_t index) const;
+
+  // 2. Const accessor returning const elements safely serves all callers:
+  SkSpan<const SkPoint> points() const { return {fPoints, fNumPoints}; }
+
+  // 3. Immutable/shared data buffer restricts mutation to explicit cautionary method:
+  const void* data() const { return fSpan.data(); }
+  void* writable_data() { return fSpan.data(); }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bSkSpan<[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]+\s*\([^)]*\)
+- \bSkSpan<const\s+[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]+\s*\([^)]*\)\s*const\b
+- \b(?:std::vector|TArray|skia_private::TArray)<[^>]+>\s+[a-zA-Z0-9_]+\s*\([^)]*\)\s*(?:const\b)?
+- \bstd::optional<(?:skia_private::)?(?:S?TArray|std::vector|SkSpan)<
+- \bSkSpan<(?:const\s+)?[A-Za-z0-9_:]+>\s+(?:points|rects|indices|vertices|elements|intervals|data|items|span|verbs|ranges)\s*\(
+- \b(?:const\s+)?(?:std::byte|void|uint8_t|char|[A-Za-z0-9_:]+)\s*\*+\s*data\s*\([^)]*\)\s*(?:const\b)?\s*\{
+- \b(?:std::byte|void|uint8_t|char)\s*\*+\s*(?:writable_)?data\s*\([^)]*\)
+- \b(?:SkSpan|std::span)<[^>]+>\s+(?:data|span|bytes|verbs)\s*\(
+- \b(?:int|size_t)\s+get[A-Z]\w*\s*\([^)]*(?:\[\]|\*\s*\w+)[^)]*\)\s*const\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: 1. The API Layer
+  quote: 'SkPathRef: The reference-counted object that actually stores the raw path data: arrays of points,
+    verbs (move, line, quad, conic, cubic, close), and conic weights. SkPathRef objects are always heap-allocated
+    and managed by sk_sp. Internally, SkPathRef uses skia_private::STArray for its geometry data storage.'
+confidence: 0.98
+support_cl_count: 6

@@ -1,0 +1,59 @@
+id: rust/reuse-upstream-crates-for-format-decoders
+title: When introducing Rust support for image formats or codecs, wrap established upstream crates via
+  FFI instead of writing bespoke decoders in-tree
+polarity: do
+severity: should_fix
+rubric: design
+rule: When introducing Rust support for image formats or media codecs, reuse established third-party crates
+  (such as @crates//:image, @crates//:png, or @crates//:zune-jpeg) via thin FFI wrappers and contribute
+  missing functionality upstream, rather than authoring and maintaining bespoke in-tree decoder implementations
+  from scratch.
+why: Writing and maintaining custom image format decoders and parsers in-tree incurs significant long-term
+  maintenance, security review, and fuzzing overhead. Reusing community crates amortizes maintenance across
+  the open-source ecosystem, keeps Skia's codebase focused on thin FFI bridging, and allows feature gaps
+  (such as streaming decode or color profile parsing) to be contributed upstream or bridged incrementally.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Implementing a bespoke format decoder and parser from scratch in-tree:
+  // experimental/rust_bmp/ffi/bmp_decoder.rs
+  // experimental/rust_bmp/ffi/bmp_header.rs
+  struct BmpHeader {
+      width: u32,
+      height: u32,
+      bpp: u16,
+  }
+  impl BmpHeader {
+      fn parse(stream: &mut [u8]) -> Result<Self, DecodeError> { /* ... */ }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Wrapping an established upstream crate (@crates//:image) via an FFI bridge:
+  // rust/bmp/FFI.rs
+  use image::codecs::bmp::BmpDecoder;
+
+  pub struct RustBmpDecoder<'a> {
+      decoder: BmpDecoder<SkStreamReader<'a>>,
+  }
+  ```
+include_glob:
+- rust/**
+- experimental/**
+triggers:
+- \bstruct\s+[A-Z]\w*(?:Decoder|Parser|Header|Reader)\b
+- \bimpl\s+[A-Z]\w*(?:Decoder|Parser|Header|Reader)\b
+- \bfn\s+(?:decode|parse|read)_[a-z0-9_]+\s*\(
+- \buse\s+(?:image|png|jpeg|zune|webp)::\b
+- \bSk[A-Z]\w*Rust(?:Codec|Decoder)\b
+- '@crates//:(?:image|png|jpeg|zune|cxx)'
+citations:
+- path: rust/README.md
+  quote: This directory contains helpers, simplifications, and wrappers that other Skia's C/C++ code can
+    use for interacting with Rust crates. In particular, this is where FFI helpers can be found.
+confidence: 0.9
+support_cl_count: 1

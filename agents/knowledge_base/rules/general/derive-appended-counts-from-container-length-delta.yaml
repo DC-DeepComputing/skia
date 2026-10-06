@@ -1,0 +1,56 @@
+id: general/derive-appended-counts-from-container-length-delta
+title: When appending into an extensible Rust Vec or buffer across a loop, derive added elements from
+  the container length delta instead of a mutable loop accumulator
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not maintain a separate mutable counter variable with per-iteration additions when appending
+  into an extensible container or buffer (such as Vec<u8>). Instead, record the initial container length
+  before the loop (let initial_len = sink.len();) and compute the delta (sink.len() - initial_len) after
+  iteration completes.
+why: Tracking an accumulator variable with repeated additions (such as .saturating_add() or +=) inside
+  the loop introduces unnecessary mutable state, extra arithmetic operations, and potential overflow concerns.
+  Deriving the count directly from the container's length delta relies on the collection as the single
+  source of truth and produces simpler, more idiomatic code.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  let mut total_read = 0usize;
+  let mut buffer = [0u8; 8192];
+  loop {
+      let bytes_read = stream.as_mut().read(&mut buffer);
+      if bytes_read == 0 {
+          break;
+      }
+      sink.extend_from_slice(&buffer[..bytes_read]);
+      total_read = total_read.saturating_add(bytes_read);
+  }
+  Ok(total_read)
+  ```
+
+  Good:
+
+  ```cpp
+  let initial_sink_len = sink.len();
+  let mut buffer = [0u8; 8192];
+  loop {
+      let bytes_read = stream.as_mut().read(&mut buffer);
+      if bytes_read == 0 {
+          break;
+      }
+      sink.extend_from_slice(&buffer[..bytes_read]);
+  }
+  Ok(sink.len() - initial_sink_len)
+  ```
+include_glob:
+- '**/*.rs'
+triggers:
+- \b(?:extend_from_slice|extend|push)\s*[(]
+- \b[a-zA-Z0-9_]+\.len\s*[(][)]\s*-\s*[a-zA-Z0-9_]+
+- \blet\s+(?:[a-zA-Z0-9_]*initial[a-zA-Z0-9_]*|start_[a-zA-Z0-9_]*|old_[a-zA-Z0-9_]*)\s*=\s*[a-zA-Z0-9_.]+\.len\s*[(][)]
+- \b(?:total_[a-zA-Z0-9_]*|[a-zA-Z0-9_]*_read|bytes_written|accum|count)\s*(?:\+=|\.saturating_add|\.checked_add)
+- \blet\s+mut\s+(?:total_[a-zA-Z0-9_]*|[a-zA-Z0-9_]*_read|bytes_written|total_written)\s*=\s*0
+confidence: 0.85
+support_cl_count: 1

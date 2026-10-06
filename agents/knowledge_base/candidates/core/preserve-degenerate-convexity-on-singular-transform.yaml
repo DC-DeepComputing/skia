@@ -1,0 +1,50 @@
+id: core/preserve-degenerate-convexity-on-singular-transform
+title: When transforming convex paths or geometry with singular matrices (determinant zero), preserve
+  convexity as degenerate convex (kConvex_Degenerate) instead of resetting to unknown (kUnknown)
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When transforming a path or geometric shape known to be convex using a singular matrix (where the
+  2x2 determinant is zero), preserve its convexity state as degenerate convex (SkPathConvexity::kConvex_Degenerate).
+  Do not reset convexity to uncomputed or unknown (SkPathConvexity::kUnknown).
+why: An affine transformation with a zero determinant collapses 2D geometry into a point or line segment,
+  which remains geometrically convex even though its contour winding direction cannot be determined. Setting
+  convexity to kUnknown discards established convexity information and forces unnecessary downstream recomputations,
+  whereas kConvex_Degenerate preserves the convexity invariant.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: resets known convexity to unknown on singular transform
+  if (det2x2 < 0) {
+      convexity = SkPathConvexity_OppositeConvexDirection(convexity);
+  } else if (det2x2 > 0) {
+      // direction preserved
+  } else /* det2x2 == 0 */ {
+      convexity = SkPathConvexity::kUnknown;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: preserves convexity invariant as degenerate convex
+  if (det2x2 < 0) {
+      convexity = SkPathConvexity_OppositeConvexDirection(convexity);
+  } else if (det2x2 > 0) {
+      // direction preserved
+  } else /* det2x2 == 0 */ {
+      convexity = SkPathConvexity::kConvex_Degenerate;
+  }
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \bSkPathConvexity::kConvex_Degenerate\b
+- \bSkPathConvexity::kUnknown\b
+- \bTransformConvexity\s*[(]
+- \bdet2x2\b
+- \bSkPathConvexity\b
+confidence: 0.9
+support_cl_count: 1

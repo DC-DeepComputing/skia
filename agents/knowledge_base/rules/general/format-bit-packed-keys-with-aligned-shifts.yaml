@@ -1,0 +1,45 @@
+id: general/format-bit-packed-keys-with-aligned-shifts
+title: When packing multiple fields into a composite integer key or bitmask, format each component on
+  its own line with vertically aligned shift operators
+polarity: do
+severity: nit
+rubric: readability
+rule: When packing multiple fields into a composite integer key or bitmask using bitwise shifts and OR
+  operations, format each field component on its own line and vertically align the shift operators (`<<`).
+  Do not condense multiple shifted fields onto fewer lines solely to satisfy column limits.
+why: Placing each component on a separate line with vertically aligned shift operators makes the bit layout,
+  shift offsets, and field components immediately readable and auditable. Wrapping multiple shifts across
+  arbitrary line breaks obscures the bitfield structure and increases the risk of bit-overlap bugs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  uint64_t key = static_cast<uint64_t>(width) << 48 | static_cast<uint64_t>(height) << 32 |
+                 static_cast<uint64_t>(colorType) << 16 | static_cast<uint64_t>(identifier);
+  ```
+
+  Good:
+
+  ```cpp
+  uint64_t key = static_cast<uint64_t>(width)     << 48 |
+                 static_cast<uint64_t>(height)    << 32 |
+                 static_cast<uint64_t>(colorType) << 16 |
+                 static_cast<uint64_t>(identifier);
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:uint(?:16|32|64)_t|size_t)\s+\w*(?:key|Key|mask|Mask)\s*=
+- static_cast<uint(?:16|32|64)_t>\([^)]*\)\s*<<
+- \b(?:key|mask)\s*=\s*[^;]*<<\s*(?:48|32|16|8)\b
+- <<\s*(?:48|32|24|16|8)\s*\|
+- \|\s*(?:\([^)]+\)|static_cast<[^>]+>\([^)]+\))\s*<<
+- \b(?:key|builder\[\d+\])\s*\|?=\s*(?:\([^)]+\)|static_cast<[^>]+>\([^)]+\))\s*<<
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We wrap lines at 100 columns unless it is excessively ugly (use your judgement).
+confidence: 0.9
+support_cl_count: 1

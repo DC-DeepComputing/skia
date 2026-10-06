@@ -1,0 +1,58 @@
+id: core/avoid-synthetic-draw-for-blitter-selection
+title: When selecting CPU blitters in standalone helpers, invoke chooser functions directly with explicit
+  parameters and SkBlitterSizedArena instead of synthesizing dummy SkDraw contexts
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not construct dummy or synthetic Draw or SkDraw objects solely to choose a blitter via SkAutoBlitterChoose
+  in standalone rasterization helpers. Invoke blitter chooser functions (such as SkChooseA8Blitter or
+  SkBlitter::Choose) directly with explicit parameters and allocate blitters using an SkBlitterSizedArena.
+why: SkDraw is designed as an execution context orchestrating full primitive draws dispatched from SkBitmapDevice.
+  Synthesizing dummy SkDraw instances with placeholder clips, matrices, or chooser pointers adds misleading
+  boilerplate and couples utility functions to device draw harnesses when only blitter allocation is required.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  Draw draw;
+  draw.fRC = &clip;
+  draw.fCTM = &translate;
+  draw.fBlitterChooser = SkA8Blitter_Choose;
+  if (!draw.fDst.reset(mask)) {
+      return;
+  }
+  SkPaint paint;
+  paint.setAntiAlias(true);
+  SkAutoBlitterChoose blitterChooser(draw, nullptr, paint, SkRect::Make(draw.fDst.bounds()));
+  SkBlitter* blitter = blitterChooser.get();
+  ```
+
+  Good:
+
+  ```cpp
+  SkPixmap dst;
+  if (!dst.reset(mask)) {
+      return;
+  }
+  SkPaint paint;
+  paint.setAntiAlias(true);
+  SkBlitterSizedArena alloc;
+  SkBlitter* blitter = SkChooseA8Blitter(dst, translate, paint, alloc.arena(),
+                                        SkDrawCoverage::kNo, nullptr);
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \b(?:skcpu::)?(?:Sk)?Draw\s+[a-zA-Z0-9_]+;
+- \bSkAutoBlitterChoose\b
+- \bSkBlitterSizedArena\b
+- \bSkChoose(?:A8)?Blitter\s*[(]
+- \bSkBlitter::Choose\s*[(]
+citations:
+- path: docs/architecture/CPU.md
+  heading: '### 3. The Orchestrator: SkDraw'
+  quote: The SkBitmapDevice creates an SkDraw object for each primitive. SkDraw orchestrates a single
+    draw, bundling the geometry (SkPath), styling (SkPaint), transform, clip, and destination SkPixmap.
+confidence: 0.9
+support_cl_count: 1

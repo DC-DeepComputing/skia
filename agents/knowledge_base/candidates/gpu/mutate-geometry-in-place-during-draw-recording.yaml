@@ -1,0 +1,45 @@
+id: gpu/mutate-geometry-in-place-during-draw-recording
+title: When adapting geometry in Graphite draw recording methods, update the existing Geometry container
+  in place via its setter methods rather than declaring intermediate local shapes
+polarity: do
+severity: nit
+rubric: readability
+rule: In Graphite draw recording methods (such as `Device::drawGeometry`), update an existing `Geometry`
+  container in place using its setter methods (such as `setCoverageMaskShape()` or `setShape()`) when
+  adapting or replacing primitives. Do not maintain separate intermediate local shape variables across
+  function scope to wrap into a temporary `Geometry` constructor at the draw recording site.
+why: Mutating the in-scope `Geometry` instance directly eliminates unnecessary intermediate local variables
+  floating across function scope and avoids constructing redundant temporary `Geometry` wrappers when
+  dispatching to `recordDraw()`.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  CoverageMaskShape maskShape;
+  ...
+  std::tie(maskShape, pos, renderer) = *shapeResult;
+  ...
+  fDC->recordDraw(renderer, Transform::Translate(pos.fX, pos.fY), Geometry(maskShape), ...);
+  ```
+
+  Good:
+
+  ```cpp
+  geometry.setCoverageMaskShape(std::get<0>(*shapeResult));
+  pos      = std::get<1>(*shapeResult);
+  renderer = std::get<2>(*shapeResult);
+  ...
+  fDC->recordDraw(renderer, Transform::Translate(pos.fX, pos.fY), geometry, ...);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bgeometry\.set(?:CoverageMaskShape|Shape|SubRun|Vertices|Mesh|EdgeAAQuad)\s*[(]
+- \b(?:CoverageMaskShape|Shape|SubRunData|EdgeAAQuad)\s+[a-zA-Z0-9_]+\s*;
+- \bGeometry\s*[(]\s*[a-zA-Z0-9_]+Mask(?:Shape)?\s*[)]
+- \b(?:drawGeometry|recordDraw)\s*[(].*\bGeometry\b
+- \bGeometry\s*&&?\s*geometry\b
+- \bgeometry\.set[A-Z]\w*\s*[(]
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,101 @@
+id: general/initialize-all-members-in-constructors
+title: When defining constructors or class members, initialize all fields via in-class defaults or constructor
+  initializer lists, avoiding body assignments, container push_back, and redundant double-initialization
+polarity: do
+severity: blocking
+rubric: readability
+rule: When defining constructors or adding member variables to a class or struct, explicitly initialize
+  every member variable—especially primitive, enum, and scalar types—either in the constructor's member
+  initialization list or via in-class default initializers, but not both. Avoid omitting fields (even
+  if conditionally used or only read in specific states), redundantly initializing members in both places,
+  or assigning/populating fields (such as assigning scalar values or calling container push_back()) inside
+  the constructor body when they can be initialized directly (e.g., `, fArray({elem})`). When adding constructor
+  parameters, ensure corresponding member variables are updated in the initializer list.
+why: In C++, primitive and enum member variables lacking default initializers remain uninitialized if
+  omitted from in-class defaults or the constructor's initialization list, causing undefined behavior
+  or MSan violations. Leaving conditionally-used fields uninitialized also creates inconsistent state.
+  Assigning values or calling push_back() inside the constructor body performs redundant default-construction
+  and mutation instead of direct construction. Specifying initial values both in-class and in constructor
+  initializer lists is redundant and risks maintenance divergence.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Omitting member leaves enum uninitialized; assigning in body is redundant.
+  PaintParams::PaintParams(const SkPaint& paint, Coverage coverage, TextureFormat targetFormat)
+          : fColor(paint.getColor4f())
+          // BUG: fTargetFormat omitted; enum member remains uninitialized
+          , fRendererCoverage(coverage) {}
+
+  // Bad: In-class defaults omit adjacent enum member because it is conditionally used.
+  IsA fIsA = kIsA_JustMoves;
+  int fIsAStart = -1;
+  SkPathDirection fIsADirection; // Uninitialized
+
+  SkPathData::SkPathData(size_t npts, size_t nvbs, size_t ncns) {
+      fType = SkPathIsAType::kGeneral;
+      fConvexity.store((uint8_t)SkPathConvexity::kUnknown, std::memory_order_relaxed);
+  }
+
+  // Bad: Calling push_back() in constructor body instead of initializer list.
+  BoundsPainter::BoundsPainter(SkMatrix initialTransform) {
+      fMatrixStack.push_back(initialTransform);
+  }
+
+  // Bad: Initializing members both in-class and in constructor initializer list.
+  // Header:
+  int32_t fActiveSlot = 0;
+  // Impl:
+  AlphaAtlasManager::AlphaAtlasManager(Recorder* recorder)
+          : fRecorder(recorder), fActiveSlot(0) {}
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: All members initialized directly in the constructor initializer list.
+  PaintParams::PaintParams(const SkPaint& paint, Coverage coverage, TextureFormat targetFormat)
+          : fColor(paint.getColor4f())
+          , fRendererCoverage(coverage)
+          , fTargetFormat(targetFormat) {}
+
+  // Good: In-class defaults provide default values uniformly across all fields.
+  IsA fIsA = kIsA_JustMoves;
+  int fIsAStart = -1;
+  SkPathDirection fIsADirection = SkPathDirection::kCW;
+
+  SkPathData::SkPathData(size_t npts, size_t nvbs, size_t ncns)
+          : fConvexity((uint8_t)SkPathConvexity::kUnknown)
+          , fType(SkPathIsAType::kGeneral) {}
+
+  // Good: Container seeded with initial element via std::initializer_list.
+  BoundsPainter::BoundsPainter(SkMatrix initialTransform)
+          : fMatrixStack({initialTransform}) {}
+
+  // Good: Initialize members in only one place (either in-class or initializer list).
+  // Header:
+  int32_t fActiveSlot;
+  // Impl:
+  AlphaAtlasManager::AlphaAtlasManager(Recorder* recorder)
+          : fRecorder(recorder), fActiveSlot(0) {}
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- :\s*f[A-Z]\w*\s*[(]
+- ',\s*f[A-Z]\w*\s*[(]'
+- \b[A-Za-z0-9_]+::[A-Za-z0-9_]+\s*[(][^)]*[)]
+- \bf[A-Z]\w*\s*=[^=]
+- \bf[A-Z]\w*\.(?:store|reset|push_back)\s*[(]
+- \b(?:int|uint\d+_t|size_t|bool|float|double)\s+f[A-Z]\w*\s*(?:=|;)
+- \b[A-Za-z0-9_:]+(?:Type|Mode|Kind|Format|Coverage|State|Flags?|Direction|Order)\s+f[A-Z]\w*\s*(?:=|;)
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: Within each visibility section (`public`, `private`), fields should not be intermixed with methods.
+    It's nice to keep all data fields together at the end.
+confidence: 0.98
+support_cl_count: 5

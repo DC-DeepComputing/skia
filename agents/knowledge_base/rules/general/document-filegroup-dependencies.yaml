@@ -1,0 +1,49 @@
+id: general/document-filegroup-dependencies
+title: When declaring dependencies or SDK frameworks on aggregate Bazel targets on behalf of filegroup
+  sources, add comments identifying which source files require them
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring library dependencies or platform SDK frameworks (such as `sdk_frameworks` or `deps`)
+  on an aggregate target on behalf of source files imported via filegroups, add an explanatory comment
+  specifying which source file requires the dependency. Explicitly note that the source file is included
+  as a filegroup to explain why the dependency is injected at the target level.
+why: Bazel `filegroup` rules group source files without tracking or propagating their individual compilation
+  and linking dependencies. When an aggregate target injects SDK frameworks or dependencies on behalf
+  of grouped source files, documenting which source file needs the dependency prevents confusion and avoids
+  accidental removal of seemingly unused dependencies.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  skia_objc_library(
+      name = "ganesh_gl_utils_frameworks",
+      sdk_frameworks = ["OpenGL"],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  # OpenGL needed for CreatePlatformGLTestContext_mac.cpp (which is included as a filegroup).
+  skia_objc_library(
+      name = "ganesh_gl_utils_frameworks",
+      sdk_frameworks = ["OpenGL"],
+  )
+  ```
+include_glob:
+- '**/BUILD.bazel'
+triggers:
+- \bsdk_frameworks\s*=
+- \b(?:skia_)?objc_library\s*[(]
+- \b(?:skia_)?cc_library\s*[(]
+- \b(?:skia_)?filegroup\s*[(]
+- \b(?:linkopts|frameworks)\s*=
+citations:
+- path: site/docs/dev/contrib/submit.md
+  heading: Updating BUILD.bazel files
+  quote: Many `BUILD.bazel` files have a list of files that is broken up into two [`filegroup`](https://bazel.build/reference/be/general#filegroup)
+    rules using the `split_srcs_and_hdrs` macro.
+confidence: 0.9
+support_cl_count: 1

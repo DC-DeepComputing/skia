@@ -1,0 +1,42 @@
+id: infra/retain-oldest-supported-os-ci-coverage
+title: When upgrading or retiring CI bot configurations in infra/bots, retain test coverage for critical
+  platform dependencies like NativeFonts on the oldest supported OS version
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When upgrading, migrating, or retiring CI test bot configurations in infra/bots (such as jobs.json
+  or task generator scripts), retain test coverage for critical platform configurations (such as NativeFonts,
+  FreeType, FontConfig, and GPU drivers) on the project's oldest supported OS or platform release. Do
+  not decommission older OS test bot definitions without ensuring baseline platform compatibility remains
+  validated.
+why: Skia supports older OS baselines matching downstream embedder requirements (such as Chromium on Debian
+  10 or Ubuntu 18.04). Upgrading test bots exclusively to newer OS releases risks missing regressions
+  where Skia code inadvertently relies on newer system font engines, libraries, or GPU driver features
+  not available on older supported platforms.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Retiring the oldest OS bots without preserving critical native library/font tests:
+  -  {"name": "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts"},
+  +  {"name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts"},
+  ```
+
+  Good:
+
+  ```cpp
+  // Preserving NativeFonts test coverage on the oldest supported OS:
+  +  {"name": "Test-Ubuntu18-Clang-Golo-CPU-AVX2-x86_64-Debug-All-NativeFonts"},
+     {"name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts"},
+  ```
+include_glob:
+- infra/bots/**
+triggers:
+- '"name":\s*"(?:Test|Build|Perf)-[A-Za-z0-9_.-]+"'
+- \bTest-(?:Ubuntu|Debian|Mac|Win|Android)[0-9_.-]+
+- '"(?:Ubuntu|Debian|Mac|Win|Android)[0-9.]+"'
+- '"(?:NativeFonts|FontConfig|FreeType|Android_NativeFonts)"'
+- \b(?:ExtraConfig|MatchOs)\s*[(]\s*"(?:NativeFonts|Fontations|FreeType|FontConfig)"
+confidence: 0.9
+support_cl_count: 1

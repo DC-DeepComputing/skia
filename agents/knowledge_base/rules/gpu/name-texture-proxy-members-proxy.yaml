@@ -1,0 +1,42 @@
+id: gpu/name-texture-proxy-members-proxy
+title: When declaring member variables holding TextureProxy or GrTextureProxy in GPU code, use a Proxy
+  suffix rather than naming them fTexture
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring struct or class member variables that hold a TextureProxy (or GrTextureProxy), include
+  a Proxy suffix in the identifier name (such as fProxy, fTextureProxy, or f<Role>Proxy). Do not name
+  proxy members fTexture or f<Role>Texture, which misleadingly implies an instantiated GPU texture resource
+  rather than a deferred proxy handle.
+why: In Graphite and Ganesh, TextureProxy is a deferred proxy handle whose backing GPU Texture resource
+  may not yet be instantiated or allocated. Naming a proxy member fTexture obscures the object's type
+  and instantiation lifecycle, creating confusion with concrete Texture and GrTexture classes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct AtlasPage {
+      // Bad: 'fTexture' misleadingly implies an instantiated Texture resource.
+      sk_sp<TextureProxy> fTexture;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  struct AtlasPage {
+      // Good: Proxy suffix clearly identifies the deferred proxy handle.
+      sk_sp<TextureProxy> fTextureProxy;
+      // Or role-specific: sk_sp<TextureProxy> fPageProxy;
+  };
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:sk_sp<)?(?:Gr)?(?:Texture|Surface)Proxy>?[*&]?\s+f[A-Za-z0-9_]*Texture\b
+- \b(?:sk_sp<)?(?:Gr)?(?:Texture|Surface)Proxy>?[*&]?\s+f[A-Za-z0-9_]*Proxy\b
+- \b(?:sk_sp<)?(?:Gr)?(?:Texture|Surface)Proxy>?[*&]?\s+f[A-Za-z0-9_]+\b
+- \b(?:sk_sp<)?(?:Gr)?(?:Texture|Surface)Proxy>?\s+f[A-Za-z0-9_]+\[
+confidence: 0.82
+support_cl_count: 1

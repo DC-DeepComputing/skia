@@ -1,0 +1,50 @@
+id: general/document-derived-loop-bounds
+title: When using hardcoded loop bounds or iteration limits derived from capacity or domain bounds, document
+  the mathematical derivation and underlying limit in comments
+polarity: do
+severity: nit
+rubric: readability
+rule: When implementing fixed-depth loops, binary searches, or unrolled iterations whose bounds or step
+  counts are derived from a capacity limit or domain bound (e.g., binary search depth ceil(log2(N))),
+  document the mathematical derivation and maximum capacity in an explanatory comment. Explicitly state
+  the formula and underlying capacity bound (e.g., log2(32)=5) rather than leaving an unexplained numeric
+  literal in the loop condition.
+why: Hardcoded loop bounds and iteration counts in fixed-depth algorithms look like arbitrary magic numbers
+  to readers and reviewers. Documenting the derivation formula and underlying capacity limit clarifies
+  why the bound is sufficient for correctness and prevents future maintainers from inadvertently shrinking
+  or relaxing the iteration count during refactoring.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: hardcoded iteration count without documenting the derivation or domain capacity
+  // Binary search for the interval containing x. This will require sampling at most 5 more
+  // control points.
+  for (int step = 0; step < 5; ++step) {
+      int mid = (low + high) / 2;
+      // ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: documents the mathematical formula and capacity bound (log2(32)=5)
+  // Binary search for the interval containing x. This will require sampling at most
+  // log2(32)=5 more control points.
+  for (int step = 0; step < 5; ++step) {
+      int mid = (low + high) / 2;
+      // ...
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bfor\s*[(][^)]*\b(?:step|iter|round|depth|pass|i)\s*<\s*\d+
+- \"\s*for\s*[(][^)]*<\s*\d+
+- //.*\b(?:log2|ceil\s*[(]|binary search|iteration limit|iteration count|loop bound)\b
+- //.*\b(?:derivation|sampling at most|control points)\b
+- \b(?:while|for)\s*[(][^)]*<=\s*\d+
+confidence: 0.9
+support_cl_count: 1

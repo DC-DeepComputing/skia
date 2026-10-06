@@ -1,0 +1,91 @@
+id: api/document-public-api-preconditions-with-doxygen
+title: When declaring or porting public API methods in include headers, document parameter constraints
+  (@param), preconditions, and failure semantics, including on companion and builder classes
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Document public API functions and methods in public headers (include/** and modules/**/include/**)
+  with Doxygen comments (/** ... */) specifying parameter constraints with @param, preconditions, and
+  failure return semantics (such as returning nullptr). Place all API documentation, behavioral nuances,
+  and non-obvious caveats directly on the public interface header rather than only in private or internal
+  headers (include/private/ or src/). Additionally, when porting or mirroring public methods to companion
+  or builder classes (such as SkPathBuilder), copy the doc comments from the original header so all public
+  methods remain documented.
+why: Public headers in include/ and modules/**/include/ define Skia's external API surface and are parsed
+  by Doxygen to generate public documentation. Documenting constraints, failure modes, or behavioral caveats
+  solely in internal headers, or omitting doc comments when porting methods to companion or builder classes,
+  leaves external callers unaware of valid input domains, null fallbacks, and subtle semantics.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Missing parameter constraints and failure return semantics:
+  static sk_sp<SkShader> MakeRadial(SkPoint center, float radius,
+                                    const SkGradient& grad, const SkMatrix* lm = nullptr);
+
+  // 2. Documenting behavioral caveats only on private/internal headers:
+  // In include/codec/SkCodec.h (public header):
+  /** Return the HDR metadata in the encoded data. */
+  const skhdr::Metadata& getHdrMetadata() const;
+
+  // 3. Porting public methods to a builder without copying doc comments:
+  // In include/core/SkPathBuilder.h:
+  bool isEmpty() const { return fVerbs.empty(); }
+  std::optional<SkPoint> getLastPt() const;
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Documented preconditions, parameters, and failure semantics:
+  /** Returns a shader that generates a radial gradient given the center and radius.
+   *  @param center  The center of the circle for this gradient
+   *  @param radius  Must be positive. The radius of the circle for this gradient
+   *  @param grad    Description of the colors and interpolation method
+   *  @param lm      Optional local matrix, may be null
+   *  @return        The new gradient shader, or nullptr on invalid parameters
+   */
+  SK_API sk_sp<SkShader> RadialGradient(SkPoint center, float radius,
+                                        const SkGradient& grad, const SkMatrix* lm = nullptr);
+
+  // 2. Behavioral caveats and nuances documented on the public interface header:
+  // In include/codec/SkCodec.h (public header):
+  /** Return the HDR metadata associated with this image. Note that even SDR images
+   *  can include HDR metadata (e.g., for inverse tone mapping on HDR displays).
+   */
+  const skhdr::Metadata& getHdrMetadata() const;
+
+  // 3. Copied doc comments when porting methods to a companion or builder class:
+  // In include/core/SkPathBuilder.h:
+  /** Returns if SkPath is empty.
+      Empty SkPathBuilder may have FillType but has no SkPoint, SkPath::Verb, or conic weight.
+
+      @return  true if the path contains no SkPath::Verb array
+  */
+  bool isEmpty() const { return fVerbs.empty(); }
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \bSK_API\b
+- \bSK_SPI\b
+- '@(param|return)\b'
+- /[*][*]
+- \bsk_sp<
+- \b(?:Make|Create)[A-Z]\w*\s*[(]
+- \bclass\s+(?:SK_API\s+)?[A-Za-z0-9_]*(?:Builder|Helper|View)\b
+- \b(?:bool|void|size_t|std::optional<[A-Za-z0-9_:]+>)\s+[a-z][A-Za-z0-9_]*\s*[(]
+citations:
+- path: site/docs/user/api/_index.md
+  heading: API Reference and Overview
+  quote: All public APIs are indexed by Doxygen.
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: |-
+    Headers that aren't meant for public consumption should be placed in src
+    directories so that they aren't in a client's search path, or in include/private
+    if they need to be used by public headers.
+confidence: 0.98
+support_cl_count: 4

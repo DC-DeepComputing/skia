@@ -1,0 +1,76 @@
+id: api/keep-internal-headers-in-src
+title: When adding headers or includes in public directories, place internal headers in src/ or include/private/,
+  and include public API headers rather than private implementation headers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not expose internal implementation classes or headers in public API directories (such as include/core/).
+  Place internal headers in src/ directories to keep them out of client search paths, or in include/private/
+  only when directly required by public headers. Additionally, public headers (under include/ and modules/**/include/)
+  must not include private implementation headers (such as include/private/base/*_impl.h or src/); include
+  the corresponding public API header (such as include/core/SkSpan.h) instead.
+why: Public include directories (like include/core/ and modules/**/include/) define Skia's external API
+  surface, and exposing internal headers or entering client search paths leaks implementation details
+  into embedder code. Confining internal headers to src/ enforces proper layering, while public headers
+  must include public API headers so downstream clients compile without depending on private implementation
+  headers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // include/core/SkPixelStorage.h (internal class exposed in public API header)
+  class SkPixelStorage : public SkRefCnt {
+  public:
+      enum Type { kTextureProxy, kPixelRef };
+      uint32_t getId() const { return fID; }
+      virtual Type type() const = 0;
+  ...
+
+  // include/private/gpu/graphite/DebugUtilsGraphite.h (internal header not needed by public headers)
+  #ifndef DebugUtilsGraphite_DEFINED
+  #define DebugUtilsGraphite_DEFINED
+  #define SK_DUMP_TASKS_CODE(...) __VA_ARGS__
+  #endif
+
+  // modules/skottie/include/Skottie.h (including private implementation header in public header)
+  #include "include/private/base/SkSpan_impl.h"
+  ```
+
+  Good:
+
+  ```cpp
+  // include/private/SkPixelStorage.h (placed in include/private/ because public SkPixelRef.h inherits it)
+  class SkPixelStorage : public SkRefCnt {
+  public:
+      enum Type { kTextureProxy, kPixelRef };
+      uint32_t getId() const { return fID; }
+      virtual Type type() const = 0;
+  ...
+
+  // src/gpu/graphite/DebugUtils.h (internal header confined to src/)
+  #ifndef DebugUtils_DEFINED
+  #define DebugUtils_DEFINED
+  #define SK_DUMP_TASKS_CODE(...) __VA_ARGS__
+  #endif
+
+  // modules/skottie/include/Skottie.h (including public API header)
+  #include "include/core/SkSpan.h"
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- ^#(?:pragma\s+once|ifndef\s+[A-Za-z0-9_]+(?:_DEFINED|_h\b))
+- ^#define\s+[A-Za-z0-9_]+_DEFINED
+- \b(?:class|struct)\s+(?:SK_API\s+|SK_SPI\s+)?[A-Za-z0-9_]+
+- ^#include\s+["<](?:include/private/|src/)
+- ^#include\s+["<]include/core/Sk[A-Za-z0-9_]+\.h
+- \bSkSpan<
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Headers that aren't meant for public consumption should be placed in src directories so that
+    they aren't in a client's search path, or in include/private if they need to be used by public headers.
+confidence: 0.98
+support_cl_count: 3

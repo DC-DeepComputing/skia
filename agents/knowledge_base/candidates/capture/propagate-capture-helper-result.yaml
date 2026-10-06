@@ -1,0 +1,49 @@
+id: capture/propagate-capture-helper-result
+title: When delegating work to value-returning capture helpers, return or consume the computed handle
+  or picture rather than discarding it and returning a default
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When delegating capture or resource generation to helper functions (such as snapAndIncrement), verify
+  that callers return or store the resulting handle or picture object. Calling a value-returning helper
+  as an unassigned standalone expression discards the computed state and causes callers to accidentally
+  fall through to default-constructed or null returns.
+why: Discarding the return value of a value-generating helper drops the produced capture or resource handle,
+  leaving callers with a null or invalid default value while hiding the underlying computation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  sk_sp<SkPicture> SkCaptureManager::snapPicture(SkSurface* surface) {
+      for (auto& canvas : fTrackedCanvases) {
+          if (canvas && canvas->getBaseCanvasSurface() == surface) {
+              this->snapAndIncrement(canvas.get());
+          }
+      }
+      return nullptr;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  sk_sp<SkPicture> SkCaptureManager::snapPicture(SkSurface* surface) {
+      for (auto& canvas : fTrackedCanvases) {
+          if (canvas && canvas->getBaseCanvasSurface() == surface) {
+              return this->snapAndIncrement(canvas.get());
+          }
+      }
+      return nullptr;
+  }
+  ```
+include_glob:
+- src/capture/**
+triggers:
+- \b(?:snapPicture|snapAndIncrement|snapDrawTasks)\s*[(]
+- \b(?:fTrackedCanvases|getBaseCanvasSurface)\b
+- \bSkCaptureManager\b
+- \b(?:captureUninsertedDrawTasks|getLastCapture)\b
+- \b(?:snapAndIncrement|processCanvasContent)\s*[(]
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,59 @@
+id: gpu/preserve-pending-resources-in-free-gpu-resources
+title: In GPU resource managers, preserve pending command-buffer resources during cache purges, and actively
+  release them upon destruction instead of asserting empty
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: In GPU resource managers and cache providers, do not release pending or in-flight command-buffer
+  resources during intermediate cache purges or freeGpuResources(). Conversely, in manager destructors,
+  actively release any remaining pending resources (e.g., via releasePending*() helpers) rather than asserting
+  that pending queues are empty (e.g., SkASSERT(fPendingBuffers.isEmpty())), safely handling early context
+  destruction before command buffers finish.
+why: Cache purges can occur while a command buffer is actively recording, where prematurely releasing
+  pending resources risks use-after-free or data corruption when GPU commands execute. Conversely, a GPU
+  Context can be destroyed while command buffers remain unsubmitted or in flight without finishEncoding()
+  running; asserting empty queues in the destructor causes assertion failures on valid teardown, while
+  omitting cleanup leaks resources.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: releasing pending in-flight buffers during cache purges
+  void freeGpuResources() {
+      this->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now());
+      this->releasePendingIntrinsicBuffers();
+  }
+
+  // Bad: asserting pending queues are empty in destructor on context teardown
+  ~IntrinsicConstantsManager() {
+      this->purgeBuffersIf([](IntrinsicBuffer*) { return true; });
+      SkASSERT(fPendingIntrinsicBuffers.isEmpty());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: defer releasing pending resources during cache purges
+  void freeGpuResources() {
+      this->purgeResourcesNotUsedSince(skgpu::StdSteadyClock::now());
+  }
+
+  // Good: actively release remaining pending resources in destructor
+  ~IntrinsicConstantsManager() {
+      this->purgeBuffersIf([](IntrinsicBuffer*) { return true; });
+      this->releasePendingIntrinsicBuffers();
+      SkASSERT(fIntrinsicBuffersLRU.isEmpty());
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bfreeGpuResources\s*[(]
+- \bpurge(?:Resources|Buffers|Textures)(?:NotUsedSince|If)?\s*[(]
+- \breleasePending\w*\s*[(]
+- \bSkASSERT\s*[(][^)]*\bfPending\w*\.(?:empty|isEmpty)\s*[(]
+- \b~[A-Za-z0-9_]*(?:Manager|Provider|Cache)\s*[(]
+confidence: 0.92
+support_cl_count: 1

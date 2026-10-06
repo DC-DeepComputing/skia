@@ -1,0 +1,64 @@
+id: api/retain-non-mutating-make-methods-on-immutable-classes
+title: When designing or migrating classes to be immutable, retain non-mutating make* copy-transformation
+  methods in public APIs rather than hiding them or requiring builders
+polarity: do
+severity: should_fix
+rubric: design
+rule: When designing or migrating classes to be immutable value types (such as geometric paths), retain
+  non-mutating make* copy-transformation methods (such as makeTransform, makeOffset, or makeScale) in
+  the public API. Do not hide or remove them under feature flags or force callers to instantiate an intermediate
+  builder object for simple transformations.
+why: Non-mutating make* transformation methods return a new instance by value without mutating the receiver,
+  preserving immutability invariants. Retaining them preserves caller ergonomics, avoids intermediate
+  builder overhead, and enables single-allocation optimizations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #ifdef SK_HIDE_PATH_EDIT_METHODS
+  private:
+  #endif
+      SkPath makeTransform(const SkMatrix& m,
+                           SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const;
+      SkPath makeOffset(SkScalar dx, SkScalar dy) const;
+      SkPath makeScale(SkScalar sx, SkScalar sy) const;
+  ```
+
+  Good:
+
+  ```cpp
+  public:
+      SkPath makeOffset(SkScalar dx, SkScalar dy) const {
+          SkPath dst;
+          this->offset(dx, dy, &dst);
+          return dst;
+      }
+
+      SkPath makeTransform(const SkMatrix& m,
+                           SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const {
+          SkPath dst;
+          this->transform(m, &dst, pc);
+          return dst;
+      }
+
+      SkPath makeScale(SkScalar sx, SkScalar sy) const {
+          return this->makeTransform(SkMatrix::Scale(sx, sy), SkApplyPerspectiveClip::kNo);
+      }
+  ```
+include_glob:
+- include/core/**
+triggers:
+- \bSK_HIDE_[A-Z0-9_]+\b
+- \bmake(?:Transform|Offset|Scale|Inset|Outset)\s*[(]
+- \b(?:SkPath|[A-Za-z0-9_:]+)\s+make[A-Z]\w*\s*[(]
+- \bmake(?:Transform|Offset|Scale|Inset|Outset)\b
+- '#\s*(?:ifdef|ifndef)\s+SK_HIDE_'
+citations:
+- path: RELEASE_NOTES.md
+  heading: SkPath is migrating to become immutable (its geometry).
+  quote: In this new version, SkPath will lose all of its methds like moveTo(), lineTo(), etc. and rely
+    on SkPathBuilder for creating paths. Additionally, there are now additional Factories for creating
+    paths in one-call, so often a pathbuilder object may not be needed.
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,46 @@
+id: gpu/preserve-round-caps-on-thick-stroked-arcs
+title: When rendering stroked circular arcs, do not gate round cap evaluation on having a positive inner
+  radius because thick strokes still require visible endpoint caps
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When evaluating or generating round caps for stroked circular arcs, do not gate cap computation
+  on having a positive inner radius (innerRadius > 0). Arcs where stroke width exceeds or equals the arc
+  radius collapse the inner boundary to or past the center, but their endpoints still require round caps
+  when configured with SkPaint::kRound_Cap.
+why: When half the stroke width equals or exceeds the arc radius, innerRadius becomes zero or negative.
+  Gating round cap evaluation on innerRadius > 0 causes thick stroked arcs to erroneously drop their endpoint
+  caps and render with clipped or missing caps.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (isStroke && innerRadius > 0 &&
+      params.strokeStyle().halfWidth() > 0 &&
+      params.strokeStyle().cap() == SkPaint::kRound_Cap) {
+      float midRadius = (innerRadius + outerRadius) / (2 * outerRadius);
+      roundCapRadius = (outerRadius - innerRadius) / (2 * outerRadius);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (isStroke &&
+      params.strokeStyle().halfWidth() > 0 &&
+      params.strokeStyle().cap() == SkPaint::kRound_Cap) {
+      float midRadius = (innerRadius + outerRadius) / (2 * outerRadius);
+      roundCapRadius = (outerRadius - innerRadius) / (2 * outerRadius);
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:CircularArc|OvalOp|ArcRenderStep)\b
+- \b(?:kRound_Cap|roundCap(?:Radius|Pos)?|hasRoundCaps?)\b
+- \binnerRadius\s*<=?\s*0\b|\binnerRadius\s*>\s*0\b
+- \b(?:outerRadius\s*-\s*innerRadius|innerRadius\s*\+\s*outerRadius)\b
+- \bparams\.strokeStyle\(\)\.cap\(\)
+confidence: 0.95
+support_cl_count: 1

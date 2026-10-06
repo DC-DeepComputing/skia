@@ -1,0 +1,47 @@
+id: general/wrap-markdown-lines-at-100-columns
+title: When authoring or editing Markdown documentation files, wrap prose lines at 100 columns unless
+  preserving an unbroken URL or table formatting
+polarity: do
+severity: nit
+rubric: readability
+rule: In Markdown documentation files, wrap prose and list item lines at Skia's 100-column line limit
+  rather than letting text run on in long unwrapped lines. Allow individual lines to exceed 100 columns
+  only when breaking them would split an unbroken URL link, corrupt code spans, or disrupt tabular layout.
+why: Skia standardizes on a 100-column line limit across all files. Unlike C++ source files, Markdown
+  documentation is not automatically formatted by repository tooling such as clang-format, so prose must
+  be manually reflowed to keep documentation readable across editors and terminal diffs without horizontal
+  scrolling.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  * Some tests compare [Skia and PyCairo](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/web_tests/external/wpt/html/canvas/tools/README.md).
+    Since Skia makes different choices to Cairo, it's best to increase fuzzy tolerance for these. Look for a
+    `fuzzy` entry in the .yaml file that generates the tests and then regenerate things (or just use find and
+    replace 🫣).
+  ```
+
+  Good:
+
+  ```cpp
+  * Some tests compare [Skia and PyCairo](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/web_tests/external/wpt/html/canvas/tools/README.md).
+    Since Skia makes different choices to Cairo, it's best to increase fuzzy tolerance for these. Look
+    for a `fuzzy` entry in the .yaml file that generates the tests and then regenerate things (or just
+    use find and replace 🫣).
+  ```
+include_glob:
+- '**/*.md'
+triggers:
+- ^\s*[*+-]\s+\S+
+- ^\s*\d+\.\s+\S+
+- ^\s*(?:When|If|In|For|To|As|This|The|Note|Some|Since|Where|See)\b
+- ^\s*(?:and|or|that|which|with|from|by|at|into)\b
+- \[[^\\]]+\\]\(https?://[^)]+\)
+- ^#{1,6}\s+
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We wrap lines at 100 columns unless it is excessively ugly (use your judgement).
+confidence: 0.82
+support_cl_count: 1

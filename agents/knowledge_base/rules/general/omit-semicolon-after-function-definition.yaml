@@ -1,0 +1,46 @@
+id: general/omit-semicolon-after-function-definition
+title: When defining functions or methods in C++ source and header files, omit trailing semicolons after
+  the closing brace to avoid redundant empty declarations
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not place a semicolon after the closing brace of a function or method definition. Reserve trailing
+  semicolons after closing braces for type declarations (such as structs, classes, and enums) and lambda
+  expressions.
+why: In C++, function bodies are fully terminated by their closing brace (`}`); placing a trailing semicolon
+  produces a redundant empty declaration at file, namespace, or class scope. Omitting extraneous semicolons
+  avoids compiler warnings (such as -Wextra-semi) and eliminates unnecessary visual clutter.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static SkPath make_path_for_red_box_around_a_point(SkPoint pt) {
+      SkPathBuilder pb;
+      pb.addRect({pt.fX - 2, pt.fY - 2, pt.fX + 2, pt.fY + 2});
+      return pb.detach();
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  static SkPath make_path_for_red_box_around_a_point(SkPoint pt) {
+      SkPathBuilder pb;
+      pb.addRect({pt.fX - 2, pt.fY - 2, pt.fX + 2, pt.fY + 2});
+      return pb.detach();
+  }
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.mm'
+triggers:
+- ^\s*\}\s*;\s*(?://.*)?$
+- ^\s*\}\s*;
+- \)\s*(?:const\s*)?\{[^}]*\}\s*;
+- \b(?:static|inline)\s+[^;{=]+\([^)]*\)\s*\{[^}]*\}\s*;
+- DEF_(?:SIMPLE_)?GM\s*\([^)]*\)[^{]*\{[^}]*\}\s*;
+confidence: 0.9
+support_cl_count: 1

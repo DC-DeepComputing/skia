@@ -1,0 +1,80 @@
+id: general/prefer-optional-over-validity-flag
+title: When declaring member variables for optional state, prefer std::optional<T> over validity or status
+  flags or std::unique_ptr<T>, but keep always-present fields direct members
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring member variables for optional or conditionally initialized state, prefer std::optional<T>
+  over pairing separate or parallel boolean status/validity flags (such as fIsValid, fIsFinalized, or
+  fHasData) with a value, and over heap-allocating via std::unique_ptr<T> when T is a complete, non-polymorphic
+  type. Conversely, do not wrap member variables in std::optional<T> if the field is always present (never
+  std::nullopt); use a direct member with an explicit reset() method or value assignment for reinitialization.
+why: Using std::unique_ptr<T> for optional state introduces dynamic heap allocation overhead and pointer
+  indirection, while separate validity or status flags create coupled, redundant state that requires manual
+  synchronization and risks desynchronization or uninitialized reads. Conversely, wrapping always-present
+  member variables in std::optional adds unnecessary abstraction and misleads readers into expecting empty
+  states, prompting redundant null checks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Boolean validity or parallel status flags paired with value.
+  class Blitter {
+      bool fCanDirectBlit, fDirectBlitValueIsValid;
+      uint64_t fDirectBlitValue;
+  };
+  class PipelineData {
+      BindBufferInfo fBufferInfo;
+      bool fIsFinalized = false;
+      bool fHasData = false;
+  };
+
+  // Bad: Heap-allocating optional state when T is complete and non-polymorphic.
+  class Codec {
+      std::unique_ptr<DecodingState> fDecodingState;
+  };
+
+  // Bad: Wrapping always-present state in std::optional solely for reinitialization.
+  class Reader {
+      std::optional<DecodingState> fDecodingState; // Always present, never nullopt
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Encapsulate optional validity and value together in std::optional<T>.
+  class Blitter {
+      bool fCanDirectBlit;
+      std::optional<uint64_t> fDirectBlitValue;
+  };
+  class PipelineData {
+      std::optional<BindBufferInfo> fBufferInfo = std::nullopt;
+  };
+
+  // Good: Store optional state inline with std::optional to avoid heap allocations.
+  class Codec {
+      std::optional<DecodingState> fDecodingState;
+  };
+
+  // Good: Direct member variable; reinitialize via reset() method or assignment.
+  class Reader {
+      DecodingState fDecodingState; // Reset via fDecodingState.reset() or = {}
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+triggers:
+- \bstd::optional<[A-Za-z0-9_:]+>
+- \bstd::optional<[A-Za-z0-9_:]+>\s+f[A-Z]\w*
+- \bstd::unique_ptr<[A-Za-z0-9_:]+>\s+f[A-Z]\w*
+- \bbool\s+f[A-Za-z0-9_]*(?:Valid|HasValue|HasData|IsSet|Initialized|Finalized)\b
+- \bbool\s+[a-z][a-zA-Z0-9_]*(?:IsValid|HasValue|HasData|IsSet|IsFinalized)\b
+- \bf[A-Za-z0-9_]*(?:IsValid|HasValue|HasData|IsFinalized)\s*=\s*(?:true|false)\b
+- \bstd::make_unique<[A-Za-z0-9_:]+>\s*[(]
+confidence: 0.98
+support_cl_count: 3

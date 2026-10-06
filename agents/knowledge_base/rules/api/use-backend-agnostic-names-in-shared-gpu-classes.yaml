@@ -1,0 +1,67 @@
+id: api/use-backend-agnostic-names-in-shared-gpu-classes
+title: In shared GPU interfaces, omit backend prefixes like Vk on methods, use generic terms like isTransient,
+  and name descriptor queries after usage flags
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In shared GPU abstractions and public interfaces (such as Context, Recorder, or Texture), use generic,
+  backend-agnostic terminology (such as isTransient) and omit backend-specific prefixes (e.g., Vk, GL,
+  Mtl, Dawn) from method, parameter, and type names (such as storePipelineCacheData() rather than storeVkPipelineCacheData()),
+  even when ported from Ganesh or initially implemented for one backend. Additionally, when declaring
+  queries or predicates that inspect descriptor usage flags (such as VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT),
+  name them after the usage flag (e.g., has_transient_usage()) rather than backing memory properties (such
+  as isMemoryless()).
+why: Shared GPU public interfaces and abstractions define common contracts across graphics APIs. Adding
+  backend prefixes or backend-specific memory concepts leaks internal driver details, causes friction
+  when other backends implement the capability, and falsely conflates descriptor usage flags with physical
+  memory allocation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In shared include/gpu/graphite/Context.h:
+  bool hasNewVkPipelineCacheData() const;
+  void storeVkPipelineCacheData(size_t maxSize);
+
+  // In shared src/gpu/graphite/Texture.h:
+  Texture(const SharedContext*, SkISize dimensions, const TextureInfo& info,
+          bool usesLazyMemory, sk_sp<MutableTextureState>, Ownership);
+
+  // In backend descriptor query:
+  bool isMemoryless() const {
+      return fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In shared include/gpu/graphite/Context.h:
+  bool hasNewPipelineCacheData() const;
+  void storePipelineCacheData(size_t maxSize);
+
+  // In shared src/gpu/graphite/Texture.h:
+  Texture(const SharedContext*, SkISize dimensions, const TextureInfo& info,
+          bool isTransient, sk_sp<MutableTextureState>, Ownership);
+
+  // In backend descriptor query:
+  static bool has_transient_usage(const TextureInfo& info) {
+      const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(info);
+      return vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
+  }
+  ```
+include_glob:
+- include/gpu/**
+- src/gpu/**
+triggers:
+- \bbool\s+(?:isTransient|usesLazyMemory|isMemoryless)\b
+- \b(?:has_transient_usage|uses_lazy_memory)\b
+- \b(?:isMemoryless|usesLazyMemory|lazyMemory)\b
+- \bVK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT\b
+- \b(?:hasNew|store|sync)[A-Za-z0-9_]*(?:Pipeline|CacheData)\b
+- \b(?:hasNew|store|sync|get)[A-Z][A-Za-z0-9_]*(?:Vk|GL|Mtl|Dawn)[A-Za-z0-9_]*\s*[(]
+- \b(?:Texture|DawnTexture|MtlTexture|VulkanTexture|VulkanTextureInfo)\b
+- \b(?:class|struct)\s+(?:SK_API\s+)?(?:Context|Recorder|Texture|Buffer|Resource|TextureInfo)\b
+confidence: 0.98
+support_cl_count: 3

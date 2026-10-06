@@ -1,0 +1,87 @@
+id: general/keep-internal-virtual-overrides-private
+title: When declaring internal helpers, member fields, flags, or virtual hooks and overrides, keep them
+  private rather than public or protected unless subclasses require access
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Declare internal helper methods, member fields, implementation flags, and virtual customization
+  hooks or overrides as `private` rather than `public` or `protected` unless derived classes must directly
+  call the base implementation. When a virtual hook uses a nested type in its signature that derived classes
+  must name to override it, declare that nested type `protected`. In derived classes, keep virtual method
+  overrides `private` rather than exposing them on the public interface.
+why: Exposing internal helper methods, member fields, types, or virtual hooks on public or protected interfaces
+  violates encapsulation and allows unintended callers to invoke internal logic. In C++, subclasses can
+  override private virtual methods without calling them; keeping hooks private prevents direct invocation
+  while keeping nested signature types protected allows derived classes to override them.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SlideBase {
+  public:
+      // Bad: Virtual hooks exposed publicly
+      virtual void drawUnderGrid(SkCanvas*) = 0;
+  protected:
+      // Bad: Helper and virtual hook left protected instead of private
+      void drawGrid(SkCanvas*);
+      virtual void handleClick(const ClickInfo*) {}
+      class ClickInfo { ... };
+  };
+
+  class SkGaneshRecorder final : public SkRecorder {
+  public:
+      // Bad: Exposes internal friend-dispatched or NVI virtual override on public interface
+      SkCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SlideBase {
+  protected:
+      // Good: Nested type needed in derived override signature is protected
+      class ClickInfo { ... };
+  private:
+      // Good: Virtual hooks and internal helper encapsulated under private
+      virtual void drawUnderGrid(SkCanvas*) = 0;
+      void drawGrid(SkCanvas*);
+      virtual void handleClick(const ClickInfo*) {}
+  };
+
+  class SkGaneshRecorder final : public SkRecorder {
+  private:
+      // Good: Internal override remains encapsulated in private section
+      SkCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
+  };
+  ```
+include_glob:
+- '**/*.h'
+triggers:
+- \bclass\s+\w+\s*(?:final\s*)?:\s*public\s+\w+
+- ^\s*class\s+(?:SK_API\s+)?[A-Za-z0-9_]+
+- \boverride\s*(?:=\s*0\s*)?[;{]
+- \bon[A-Z][A-Za-z0-9_]*\s*[(]
+- \b(?:map|update|draw|process|handle|collect|init|setup|build|compute)[A-Z][A-Za-z0-9_]*\s*[(]
+- \benum\s+class\s+(?:Flags?|Options?|State|Kind|Type)\b
+- \b[a-z][A-Za-z0-9_]*(?:Helper|Internal|Impl)\b
+- \b(?:[A-Za-z0-9_:]+[*&]?\s+)+f[A-Z]\w*\s*[;=]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: A common pattern for virtual methods in Skia is to include a public non-virtual (or final) method,
+    paired with a private virtual method named "onMethodName". This ensures that the base-class method
+    is always invoked and gives it control over how the virtual method is used, rather than relying on
+    each subclass to call `Parent::onMethodName()`.
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: 'class GrMotorcyle { public: float getMilesDriven() const { return fMilesDriven; } void setMilesDriven(float
+    milesDriven) { fMilesDriven = milesDriven; } Color getColor() const { return fColor; } private: float
+    fMilesDriven; Color fColor; };'
+- path: site/docs/dev/contrib/style.md
+  heading: Folder Organiziation
+  quote: Skia's public API should live in the `include` directory. Skia's private headers and implementation
+    files should live in the `src` directory.
+confidence: 0.98
+support_cl_count: 8

@@ -1,0 +1,68 @@
+id: gpu/avoid-gpu-test-utils-in-production
+title: 'When writing GPU code in src/gpu or include/gpu, guard test-only helpers, hooks, and call sites
+  with #if defined(GPU_TEST_UTILS) instead of [[maybe_unused]]'
+polarity: do
+severity: blocking
+rubric: correctness
+rule: 'When defining test-only helpers, hooks, or verification methods in src/gpu or include/gpu, guard
+  their definitions with #if defined(GPU_TEST_UTILS) rather than silencing unused-symbol warnings with
+  [[maybe_unused]]. Additionally, do not call test-only methods, accessors, or operators from production
+  GPU code without guarding the call site under #if defined(GPU_TEST_UTILS) (or making the implementation
+  available unconditionally if required in production).'
+why: Symbols and hooks guarded by GPU_TEST_UTILS are omitted from non-test and production library builds.
+  Silencing warnings with [[maybe_unused]] keeps test code in production builds and causes compilation
+  failures when referencing test-only members, while unguarded call sites break builds where GPU_TEST_UTILS
+  is disabled.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: test hook silenced with attribute instead of preprocessor guard
+  [[maybe_unused]]
+  SK_ALWAYS_INLINE void observeChunk(int32_t row, int32_t column, int32_t chunkSize) {
+      fObserver(exactMask); // fObserver only exists under GPU_TEST_UTILS
+  }
+
+  // Bad: calling GPU_TEST_UTILS-only operator== without preprocessor guard
+  bool equal(const GrBackendTextureData* that) const override {
+      if (auto otherD3D = static_cast<const GrD3DBackendTextureData*>(that)) {
+          return fInfo == otherD3D->fInfo;
+      }
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: test hook conditionally compiled under GPU_TEST_UTILS
+  #if defined(GPU_TEST_UTILS)
+  SK_ALWAYS_INLINE void observeChunk(int32_t row, int32_t column, int32_t chunkSize) {
+      fObserver(exactMask);
+  }
+  #endif
+
+  // Good: caller guarded by the same preprocessor condition
+  #if defined(GPU_TEST_UTILS)
+  bool equal(const GrBackendTextureData* that) const override {
+      if (auto otherD3D = static_cast<const GrD3DBackendTextureData*>(that)) {
+          return fInfo == otherD3D->fInfo;
+      }
+      return false;
+  }
+  #endif
+  ```
+include_glob:
+- src/gpu/**
+- include/gpu/**
+triggers:
+- '#(?:if|ifdef)\s+.*\bGPU_TEST_UTILS\b'
+- \bdefined\s*\(\s*GPU_TEST_UTILS\s*\)
+- \bGPU_TEST_UTILS\b
+- \[\[maybe_unused\]\]
+- \b(?:fInfo|fFormat|fSpec|fDesc|fState)\s*==\s*other
+- \bstatic_cast<const\s+Gr[A-Za-z0-9_]*Backend
+- \bbool\s+equal\s*\(const\s+GrBackend
+confidence: 0.97
+support_cl_count: 2

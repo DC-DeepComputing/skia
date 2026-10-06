@@ -1,0 +1,43 @@
+id: general/borrow-smart-pointers-with-get-not-release
+title: When passing a smart pointer to a function or builder that borrows a raw pointer, use .get() instead
+  of .release() to avoid leaking memory
+polarity: dont
+severity: should_fix
+rubric: safety
+rule: Do not call `.release()` on a smart pointer (`std::unique_ptr` or `sk_sp`) when passing it to a
+  function, constructor, or builder that only borrows a non-owning raw pointer (`const T*` or `T*`). Pass
+  `.get()` instead to borrow the raw pointer while retaining ownership.
+why: Calling `.release()` relinquishes ownership of the managed pointer without deleting it. If the target
+  API only borrows or copies from the raw pointer rather than adopting ownership, the released object
+  is never destroyed and permanently leaks memory.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // .release() abandons ownership; the builder only borrows the pointer, leaking the object:
+  fDisplayParams = DisplayParamsBuilder(fDisplayParams.release())
+                           .msaaSampleCount(newMSAA)
+                           .detach();
+  ```
+
+  Good:
+
+  ```cpp
+  // .get() borrows the non-owning raw pointer while fDisplayParams retains ownership:
+  fDisplayParams = DisplayParamsBuilder(fDisplayParams.get())
+                           .msaaSampleCount(newMSAA)
+                           .detach();
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.mm'
+triggers:
+- '[(,]\s*[a-zA-Z0-9_.]+(?:->|\.)release\(\)'
+- \b[a-zA-Z0-9_]+\.release\(\)\s*[,)]
+- \b[A-Za-z0-9_]*Builder\b.*\.release\(\)
+- \b(?:Make|Create)\b.*\.release\(\)
+- \b(?:DisplayParamsBuilder|GraphiteDisplayParamsBuilder)\b
+confidence: 0.95
+support_cl_count: 1

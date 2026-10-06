@@ -1,0 +1,51 @@
+id: general/override-imagedataproc-in-skdeserialprocs
+title: When customizing image deserialization in SkDeserialProcs, set or clear fImageDataProc rather than
+  setting only fImageProc, which is shadowed by default procs
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When customizing or overriding image deserialization in SkDeserialProcs (especially after initializing
+  via helpers like ToolUtils::default_deserial_procs()), assign or clear fImageDataProc rather than assigning
+  only fImageProc. SkReadBuffer prioritizes fImageDataProc over fImageProc, causing any previously populated
+  fImageDataProc to silently shadow fImageProc.
+why: SkReadBuffer::deserialize_image checks and executes fImageDataProc first, ignoring fImageProc entirely
+  whenever fImageDataProc is non-null. Furthermore, fImageDataProc passes sk_sp<SkData> directly, avoiding
+  unsafe non-owning wrappers or redundant copies via SkData::MakeWithoutCopy.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkDeserialProcs procs = ToolUtils::default_deserial_procs();
+  // BUG: fImageDataProc is already set by default_deserial_procs() and takes precedence;
+  // fImageProc is never invoked by SkReadBuffer.
+  procs.fImageProc = [](const void* data, size_t size, std::optional<SkAlphaType> at, void* ctx) -> sk_sp<SkImage> {
+      sk_sp<SkData> tmpData = SkData::MakeWithoutCopy(data, size);
+      return SkImages::DeferredFromEncodedData(std::move(tmpData));
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  SkDeserialProcs procs = ToolUtils::default_deserial_procs();
+  // Override fImageDataProc directly (or clear it if delegating to fImageProc).
+  procs.fImageDataProc =
+      [](sk_sp<SkData> data, std::optional<SkAlphaType> at, void* ctx) -> sk_sp<SkImage> {
+          return SkImages::DeferredFromEncodedData(std::move(data));
+      };
+  ```
+include_glob:
+- '**/*.cpp'
+triggers:
+- \bSkDeserialProcs\b
+- \b(?:fImageDataProc|fImageProc)\s*=
+- \bdefault_deserial_procs\s*\(
+- \bSkDeserialImage(?:FromData)?Proc\b
+citations:
+- path: include/core/SkSerialProcs.h
+  heading: SkDeserialImageProc
+  quote: Clients should set at least SkDeserialImageProc; SkDeserialImageFromDataProc may be called if
+    the internal implementation has a SkData copy already.
+confidence: 0.95
+support_cl_count: 1

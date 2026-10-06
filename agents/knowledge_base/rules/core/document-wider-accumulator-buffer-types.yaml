@@ -1,0 +1,26 @@
+id: core/document-wider-accumulator-buffer-types
+title: When declaring intermediate working buffers or accumulators using wider data types than the pixel
+  format, document why higher precision is required
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring intermediate working buffers, ring buffers, or accumulators that use a wider data
+  type than the source or destination pixel format (e.g., uint32_t or float storage for 8-bit A8 or RGBA
+  channels), add a comment documenting why the wider type is required and what is stored. Clarify that
+  the extra bit depth is necessary for multi-pass accumulation, sliding-window sums, or avoiding overflow
+  during calculations.
+why: In image filtering kernels and blur passes, sliding-window buffers and intermediate accumulators
+  require wider data types to prevent arithmetic overflow during multi-pass summation, even when source
+  and destination pixels are 8-bit. Documenting this discrepancy prevents maintainers from assuming the
+  buffer element type was chosen accidentally or attempting to downcast it to match pixel bit depth.
+include_glob:
+- src/core/**
+- src/effects/**
+triggers:
+- \buint(?:16|32|64)_t\*?\s+fBuffer\d*
+- \b(?:uint(?:16|32|64)_t|float|double|skvx::Vec<\d+,\s*u?int(?:16|32|64)_t>)\*?\s+f[A-Za-z0-9_]*(?:Buffer|Accumulator|Accum)\b
+- \b(?:AutoTMalloc|AutoSTMalloc|SkAutoTMalloc|std::vector|std::unique_ptr)<\s*(?:uint(?:16|32|64)_t|float|uint32_t\[\])\s*>\s+f[A-Za-z0-9_]*(?:Buffer|Accum|Storage)\b
+- //.*\b(?:accumulat(?:ion|or|ing)|single-channel 32-bit|prevent overflow|precision for sum)\b
+- \bclass\s+[A-Za-z0-9_]*(?:BlurEngine|BlurFilter|GaussFilter|ImageFilter|PassData)\b
+confidence: 0.9
+support_cl_count: 1

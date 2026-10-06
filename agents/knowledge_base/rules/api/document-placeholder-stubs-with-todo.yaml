@@ -1,0 +1,51 @@
+id: api/document-placeholder-stubs-with-todo
+title: When implementing placeholder or stub virtual method overrides returning dummy values or nullptr,
+  annotate them with an attributed TODO comment clarifying future implementation
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When providing placeholder or stub implementations for virtual method overrides (such as returning
+  nullptr, false, or dummy values), annotate them with an attributed TODO comment referencing a tracking
+  issue (e.g., TODO(b/...) or TODO(https://issues.skia.org/...)). Clarify that the stub is a temporary
+  implementation awaiting future work, distinguishing it from an intentional permanent no-op or unsupported
+  capability.
+why: Returning nullptr or default dummy values from virtual method overrides without explanation creates
+  ambiguity about whether the feature is permanently unsupported on that backend or merely deferred to
+  follow-up work. An attributed TODO documents architectural intent, clarifies expectations for code reviewers,
+  and tracks the remaining implementation work.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Ambiguous stub override without documentation or tracking TODO
+  class SkCPURecorder final : public SkRecorder {
+  public:
+      SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Attributed TODO clarifies that the stub is temporary and tracks implementation
+  class SkCPURecorder final : public SkRecorder {
+  public:
+      // TODO(b/412351769): Implement this so we can capture from a CPU Recorder.
+      SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+- tools/**
+triggers:
+- \b(?:override|final)\s*(?:const\s*)?\{\s*return\s+(?:nullptr|false|0|-1|\{\\})\s*;\s*\\}
+- \b(?:override|final)\s*\{\s*return\b
+- \bvirtual\s+.*?(?:override|final)?\s*\{\s*return\s+(?:nullptr|false|0|-1|\{\\})\s*;\s*\\}
+- \bmakeCaptureCanvas\b
+- //\s*TODO\b.*?\b(?:implement|placeholder|stub|future|support)\b
+- //.*?\b(?:temporary stub|placeholder override|not yet implemented|unsupported on)\b
+confidence: 0.9
+support_cl_count: 1

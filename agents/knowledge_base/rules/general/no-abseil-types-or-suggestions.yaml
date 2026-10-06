@@ -1,0 +1,47 @@
+id: general/no-abseil-types-or-suggestions
+title: When introducing dependencies or configuring banned C++ feature suggestions, do not use or recommend
+  Abseil (absl::*) types; use Skia internal primitives instead
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not use, include, or recommend Abseil (`absl::*`) types in Skia code or presubmit checks. Skia
+  does not link against Abseil in general builds (Abseil is only pulled in externally for Dawn). Use Skia's
+  own primitives (such as `SkMutex` and `SkSharedMutex`) or leave presubmit replacement suggestions blank.
+why: Skia avoids external dependencies like Abseil to keep build overhead minimal and maintain standalone
+  portability across embedders. Introducing `absl::` headers, types, or presubmit recommendations causes
+  build breakage or misleads developers into using unsupported dependencies outside Dawn.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # In PRESUBMIT.py:
+  (r'std::mutex', 'absl::Mutex'),
+  (r'std::thread', 'absl::Thread'),
+
+  // In C++ source:
+  #include "absl/synchronization/mutex.h"
+  absl::Mutex fLock;
+  ```
+
+  Good:
+
+  ```cpp
+  # In PRESUBMIT.py:
+  (r'std::mutex', 'SkMutex'),
+  (r'std::thread', ''),
+
+  // In C++ source:
+  #include "include/private/base/SkMutex.h"
+  SkMutex fLock;
+  ```
+include_glob:
+- '**'
+triggers:
+- '\babsl::'
+- '#\s*include\s*[<"]absl/'
+- \b(?:@abseil-cpp|@com_google_absl)\b
+- '[''\"][^''\"]*absl::[^''\"]*[''\"]'
+- \babsl/(?:synchronization|strings|types|base|container)/
+confidence: 0.95
+support_cl_count: 1

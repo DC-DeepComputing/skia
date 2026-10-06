@@ -1,0 +1,56 @@
+id: api/preserve-legacy-failure-reset-semantics
+title: When reimplementing legacy mutating methods as wrappers over std::optional factories, preserve
+  the legacy failure contract by resetting to default or identity state
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When wrapping or reimplementing legacy mutating methods (such as bool set...(...)) with modern factory
+  functions returning std::optional<T>, verify and preserve the legacy method's failure contract. If the
+  legacy method guaranteed resetting the instance to an identity or default state on failure, call this->reset()
+  before returning false rather than leaving the object in its prior state.
+why: Callers relying on the legacy method may depend on the established contract that the instance is
+  cleared or reset to identity on failure. Returning false without resetting leaves the instance in its
+  prior state, causing behavioral regressions across downstream consumers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool setRectToRect(const SkRect& src, const SkRect& dst, ScaleToFit stf) {
+      if (auto mx = Rect2Rect(src, dst, stf)) {
+          *this = *mx;
+          return true;
+      }
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  bool setRectToRect(const SkRect& src, const SkRect& dst, ScaleToFit stf) {
+      if (auto mx = Rect2Rect(src, dst, stf)) {
+          *this = *mx;
+          return true;
+      }
+      this->reset();
+      return false;
+  }
+  ```
+include_glob:
+- include/core/**
+- src/core/**
+triggers:
+- \bsetRectToRect\b
+- \bbool\s+set[A-Z]\w*\s*[(]
+- \bthis->reset[(][)]
+- \bRect2Rect\b
+- \bSK_SUPPORT_LEGACY_[A-Za-z0-9_]+
+- \bstd::optional<Sk[A-Za-z0-9_]+>
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Method 1 (preferred) - Make the old code path opt-in for Chromium
+  quote: Add new code to Skia, leaving the old code in place. Deprecate the old code path so that it must
+    be enabled with a flag such as 'SK_SUPPORT_LEGACY_XXX'.
+confidence: 0.95
+support_cl_count: 1

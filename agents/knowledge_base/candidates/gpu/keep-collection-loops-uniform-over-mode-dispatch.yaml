@@ -1,0 +1,50 @@
+id: gpu/keep-collection-loops-uniform-over-mode-dispatch
+title: When iterating over a collection whose element methods encapsulate mode or capability handling,
+  keep the loop uniform rather than branching around duplicated loops
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not branch on capability checks or feature flags around collection iteration loops when the per-element
+  method encapsulates mode-specific handling. Keep caller traversal loops uniform and unconditional, delegating
+  mode dispatch to the per-element method rather than duplicating iteration across branches.
+why: Duplicating collection iteration across capability or feature branches creates redundant traversal
+  boilerplate and risks logic divergence if element processing changes. Encapsulating mode-specific behavior
+  within element handlers keeps collection orchestration clean and avoids exposing internal execution
+  mode differences to callers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void ClipStack::recordDeferredClipDraws() {
+      if (fDevice->caps()->useDrawListLayer()) {
+          for (auto& e : fElements.items()) {
+              e.drawClip(fDevice);
+          }
+      } else {
+          for (auto& e : fElements.items()) {
+              e.resetClipDraw();
+          }
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void ClipStack::recordDeferredClipDraws() {
+      for (auto& e : fElements.items()) {
+          e.drawClip(fDevice);
+      }
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \buseDrawListLayer\s*[(]
+- \bfor\s*[(][^)]*\b(?:fElements|items|elements)\b
+- \b(?:drawClip|recordDeferredClipDraws|resetClipDraw)\b
+- \b(?:caps\(\)->|caps\.)use[A-Z]\w*\s*[(]
+- \b(?:caps|Recorder|recorder)->priv\(\)
+confidence: 0.9
+support_cl_count: 1

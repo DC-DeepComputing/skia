@@ -1,0 +1,46 @@
+id: gpu/omit-redundant-stencil-checks-on-single-step-draws
+title: When filtering, batching, or merging single-renderstep draws (numRenderSteps() == 1) in Graphite,
+  omit redundant !isStencil or stencil flag checks
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When filtering, batching, or merging draws in Graphite that are already constrained to single render
+  steps (`numRenderSteps() == 1`), do not add redundant `!isStencil` checks or test for `DepthStencilFlags::kStencil`.
+  All stencil-using `Renderer`s in Graphite inherently require multiple render steps.
+why: In Graphite's rendering architecture, stencil operations (such as stencil-and-cover or stencil tessellation)
+  always execute across multiple render steps. Checking for stencil exclusion on draws already restricted
+  to single render steps is dead code that misleadingly implies single-step stencil renderers exist.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant check: all stencil-using renderers in Graphite require multiple render steps.
+  if (renderer->numRenderSteps() == 1) {
+      if (!isStencil && !target->fBounds.intersects(drawBounds)) {
+          forwardMerge = target;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Invariant: single-step renderers inherently exclude stencil draws.
+  if (renderer->numRenderSteps() == 1) {
+      if (!target->fBounds.intersects(drawBounds)) {
+          forwardMerge = target;
+      }
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bnumRenderSteps\b
+- \b(?:isStencil|!isStencil|fIsStencil)\b
+- \bDepthStencilFlags::kStencil\b
+- \b(?:canForwardMerge|forwardMerge)\b
+- \b(?:renderer|step)->depthStencilFlags\b
+- \bBoundsFlags::kStencil\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,34 @@
+id: relnotes/docs-frame-threading-models-as-examples
+title: When describing multi-threading architectures or thread allocations in documentation or release
+  notes, frame configurations as illustrative examples rather than canonical requirements
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting multi-threading setups, thread allocations, or concurrency architectures in release
+  notes or architectural documentation, describe specific thread counts and role distributions as illustrative
+  examples (e.g., 'As an example of a possible threading model, one could employ...') rather than prescribing
+  them as the canonical or standard Skia threading model.
+why: Skia is an embeddable graphics library designed to be flexible and integrate into diverse host threading
+  architectures without mandating fixed thread counts or dedicated roles. Describing a specific multi-threaded
+  configuration as 'the general threading model' misleads clients and embedders into believing that exact
+  structure is required or officially standard.
+examples:
+- "Bad:\n\n```cpp\nThe general threading model in Skia, for Compilation and Precompilation, involves 4\
+  \ threads: \n2 for creating Recordings (<r1> and <r2>), 1 for precompiling (<p1>) and the main thread\
+  \ - which \nowns the Context and submits Recordings.\n```\n\nGood:\n\n```cpp\nAs an example of a possible\
+  \ Compilation/Precompilation threading model, one could employ 4 threads:\n\n2 for creating Recordings\
+  \ (<r1> and <r2>)\n1 for precompiling (<p1>)\nand the main thread - which owns the Context and submits\
+  \ Recordings.\n```"
+include_glob:
+- relnotes/**
+- docs/**
+- site/docs/**
+triggers:
+- \b(?:threading model|multi-thread(?:ed|ing)?|thread architecture)\b
+- \b(?:canonical|general|prescribed|standard)\s+threading\b
+- \b(?:threads?|threading)\s+(?:model|setup|configuration|architecture)\b
+- \b(?:main thread|worker threads?|background threads?)\b
+- \b(?:employ|involves?|requires?)\s+\d+\s+threads\b
+- \b(?:PrecompileContext|Recorder|DirectContext)\b
+confidence: 0.9
+support_cl_count: 1

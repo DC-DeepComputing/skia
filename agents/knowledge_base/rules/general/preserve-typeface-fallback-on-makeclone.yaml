@@ -1,0 +1,54 @@
+id: general/preserve-typeface-fallback-on-makeclone
+title: When specializing an existing typeface using SkTypeface::makeClone, verify the returned clone is
+  non-null before reassigning the handle to preserve the original typeface as a fallback
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not overwrite an existing sk_sp<SkTypeface> directly with the return value of SkTypeface::makeClone().
+  Verify that makeClone() returned a non-null typeface before reassigning or moving into the destination
+  handle, preserving the original typeface as a fallback if cloning fails.
+why: SkTypeface::makeClone() can return nullptr if requested font arguments (such as variation design
+  coordinates or palette overrides) are unsupported by the underlying font backend or if font instantiation
+  fails. Directly overwriting the existing typeface handle clobbers a valid typeface with nullptr, breaking
+  subsequent text layout and rendering rather than falling back to the base font.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (finfo->fTypeface && !finfo->fVariation.empty()) {
+      // Bad: if makeClone fails, finfo->fTypeface is clobbered to nullptr.
+      finfo->fTypeface = finfo->fTypeface->makeClone(
+          SkFontArguments().setVariationDesignPosition({
+              finfo->fVariation.data(),
+              SkToInt(finfo->fVariation.size()),
+          }));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (finfo->fTypeface && !finfo->fVariation.empty()) {
+      // Good: keep original typeface as fallback if cloning fails.
+      sk_sp<SkTypeface> clone = finfo->fTypeface->makeClone(
+          SkFontArguments().setVariationDesignPosition({
+              finfo->fVariation.data(),
+              SkToInt(finfo->fVariation.size()),
+          }));
+      if (clone) {
+          finfo->fTypeface = std::move(clone);
+      }
+  }
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- \bmakeClone\b
+- ->makeClone\b
+- \bsetVariationDesignPosition\b
+- \bSkFontArguments\b
+- \bsetPalette\b
+confidence: 0.92
+support_cl_count: 1

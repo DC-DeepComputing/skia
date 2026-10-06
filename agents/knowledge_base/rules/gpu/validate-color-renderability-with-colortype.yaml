@@ -1,0 +1,46 @@
+id: gpu/validate-color-renderability-with-colortype
+title: When validating texture targets for color rendering in Graphite, verify color-type compatibility
+  alongside Caps::isRenderable rather than checking renderability alone
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When validating a texture or proxy target for color rendering in Graphite (such as in DrawContext::Make
+  or surface creation), do not rely solely on Caps::isRenderable(). Verify color-type compatibility (such
+  as via AreColorTypeAndFormatCompatible) because Caps::isRenderable() reports true for all render pass
+  attachments, including non-color depth and stencil formats.
+why: In Graphite, Caps::isRenderable() and FormatInfo::kRenderable_Flag indicate whether a format can
+  be bound as an attachment in a render pass, which encompasses depth and stencil buffers alongside color
+  buffers. Because non-color formats have no valid SkColorType mapping, treating any renderable texture
+  as a valid color target can bind incompatible depth/stencil surfaces to color rendering pipelines.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (!caps->isRenderable(target->textureInfo())) {
+      return nullptr;
+  }
+  // Target is assumed to be a valid color target without checking color-type compatibility
+  ```
+
+  Good:
+
+  ```cpp
+  if (!caps->isRenderable(target->textureInfo())) {
+      return nullptr;
+  }
+  if (!AreColorTypeAndFormatCompatible(colorInfo.colorType(), target->format())) {
+      return nullptr;
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bisRenderable(?:WithMSRTSS)?\s*\(
+- \bAreColorTypeAnd(?:Format|TextureInfo)Compatible\b
+- \b(?:FormatInfo::)?kRenderable_Flag\b
+- \bDrawContext::Make\b
+- \b(?:MTLPixelFormat|TextureFormatIsDepthOrStencil)\b
+- \bTextureInfoPriv::ViewFormat\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,49 @@
+id: general/reserve-container-capacity-before-loop-insertion
+title: When populating dynamic containers or builder objects inside a loop where element count is known,
+  preallocate capacity using reserve() prior to insertion
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When populating dynamic containers (such as skia_private::TArray, std::vector) or builder objects
+  in a loop, preallocate capacity using reserve() or reserve_exact() before the loop if the total count
+  or an upper bound is known or computable up front. Compute the required capacity ahead of time to eliminate
+  repeated buffer reallocations during element insertions.
+why: Dynamically resizing containers during iterative insertions triggers repeated heap allocations, buffer
+  reallocations, and element memory copies as capacity grows. Reserving capacity upfront ensures a single
+  contiguous allocation, reduces allocator pressure, and optimizes loop execution performance.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  outMapping->reserve(lines.size());
+  for (const auto& line : lines) {
+      outPolyline->appendPoint({line.p0.fX, line.p0.fY});
+      outPolyline->appendPoint({line.p1.fX, line.p1.fY});
+      outPolyline->appendSentinel();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  outMapping->reserve(lines.size());
+  outPolyline->reserve(lines.size() * 3);
+  for (const auto& line : lines) {
+      outPolyline->appendPoint({line.p0.fX, line.p0.fY});
+      outPolyline->appendPoint({line.p1.fX, line.p1.fY});
+      outPolyline->appendSentinel();
+  }
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.h'
+triggers:
+- (?:->|\.)(?:reserve|reserve_exact)\s*[(]
+- (?:->|\.)(?:push_back|emplace_back|appendPoint|appendSentinel)\s*[(]
+- '\bfor\s*[(]\s*(?:const\s+)?auto(?:\s*&{1,2})?\s+[a-zA-Z0-9_]+\s*:'
+- \bfor\s*[(][^)]*\b(?:size|count|length)\s*[(][)]
+- \b(?:TArray|STArray|std::vector)<
+confidence: 0.9
+support_cl_count: 1

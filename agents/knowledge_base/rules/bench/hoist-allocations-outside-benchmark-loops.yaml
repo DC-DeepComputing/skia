@@ -1,0 +1,66 @@
+id: bench/hoist-allocations-outside-benchmark-loops
+title: In bench/ microbenchmarks, initialize assets in onDelayedSetup() and hoist reusable scratch buffers
+  outside onDraw() loops, resetting them per iteration
+polarity: do
+severity: should_fix
+rubric: safety
+rule: In Benchmark subclasses under bench/, perform one-time asset creation, path building, and data transformations
+  in onDelayedSetup() rather than inside onDraw(). Within onDraw(), hoist scratch buffers, converters,
+  and reusable helper objects outside timed loops, clearing or resetting containers (e.g., via reset()
+  or clear()) between iterations to retain allocated capacity rather than reallocating.
+why: Benchmark::onDraw() is timed repeatedly by nanobench during benchmark execution; allocating or transforming
+  assets inside onDraw() injects one-time setup latency into timed benchmark measurements. Furthermore,
+  reallocating scratch containers inside timed loops measures memory allocator overhead rather than the
+  performance of the algorithm under test.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: asset setup inside onDraw(); scratch objects reallocated every loop iteration
+  void onDraw(int loops, SkCanvas* canvas) override {
+      SkPath path = this->makePath();
+      if (fFlags & kBig_Flag) {
+          path = path.makeTransform(SkMatrix::Scale(10, 10));
+      }
+
+      for (int i = 0; i < loops; ++i) {
+          SkAutoConicToQuads converter;
+          std::vector<SkPoint> scratchPoints;
+          flattener.processPath(path, &converter, &scratchPoints);
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: one-time setup in onDelayedSetup(); scratch objects hoisted and cleared
+  void onDelayedSetup() override {
+      fPath = this->makePath();
+      if (fFlags & kBig_Flag) {
+          fPath = fPath.makeTransform(SkMatrix::Scale(10, 10));
+      }
+  }
+
+  void onDraw(int loops, SkCanvas* canvas) override {
+      SkAutoConicToQuads converter;
+      std::vector<SkPoint> scratchPoints;
+      for (int i = 0; i < loops; ++i) {
+          flattener.processPath(fPath, &converter, &scratchPoints);
+          scratchPoints.clear();  // Retains capacity across loop iterations
+      }
+  }
+  ```
+include_glob:
+- bench/**
+triggers:
+- \bonDraw\s*[(]\s*int\s+loops\b
+- \bonDelayedSetup\s*[(]
+- \bfor\s*[(][^)]*\bloops\b
+- \b(?:clear|reset)\s*[(][)]
+- \bSkAuto[A-Z]\w+
+- \b(?:std::vector|SkTDArray|SkTArray|TArray|Polyline)\b
+- '\bclass\s+\w*Bench\s*:'
+confidence: 0.95
+support_cl_count: 2

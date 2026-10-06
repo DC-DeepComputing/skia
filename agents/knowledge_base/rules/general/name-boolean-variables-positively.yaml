@@ -1,0 +1,47 @@
+id: general/name-boolean-variables-positively
+title: When declaring boolean variables, members, or predicates, name them positively using affirmative
+  conditions rather than negative phrasing like doesNot or no
+polarity: do
+severity: nit
+rubric: readability
+rule: Name boolean variables, member flags, and predicate functions positively using affirmative conditions
+  (such as needsFoo, hasBar, or isValid) rather than negative phrasing (such as doesNotNeedFoo, hasNoBar,
+  or isInvalid). Express conditions positively so downstream logic does not encounter confusing double
+  negatives when negating or combining expressions.
+why: Negative boolean names lead to awkward, counter-intuitive double negatives (such as !doesNotNeedFoo
+  or !hasNoBar) in conditional checks and compound logic. Phrasing boolean identifiers positively reduces
+  cognitive load and keeps conditional branching clear and maintainable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const bool swizzleDoesNotNeedGamutTransform =
+          data.fReadSwizzle == ReadSwizzle::kRGBA || data.fReadSwizzle == ReadSwizzle::kRGB1;
+  if (!swizzleDoesNotNeedGamutTransform) {
+      applyGamutTransform();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  const bool swizzleNeedsGamutTransform = !(data.fReadSwizzle == ReadSwizzle::kRGBA ||
+                                            data.fReadSwizzle == ReadSwizzle::kRGB1);
+  if (swizzleNeedsGamutTransform) {
+      applyGamutTransform();
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \b(?:const\s+)?bool\s+[a-zA-Z0-9_]*(?:DoesNot|IsNot|HasNo|Cant|Cannot|Dont|Wont)[A-Z]\w*
+- \b(?:const\s+)?bool\s+(?:no|without|skip|disable|prevent)[A-Z]\w*\b
+- \b(?:virtual\s+)?bool\s+[a-z][a-zA-Z0-9_]*(?:DoesNot|IsNot|HasNo|Cant|Cannot|Dont|Wont)[A-Z]\w*\s*\(
+- \b(?:const\s+)?bool\s+f(?:DoesNot|IsNot|HasNo|No|Without|Disable)[A-Z]\w*\b
+- '!\s*[a-zA-Z0-9_.]*(?:DoesNot|IsNot|HasNo|Dont|Wont|No[A-Z]|Without)[A-Za-z0-9_]*'
+- \b(?:const\s+)?bool\s+[a-z][a-zA-Z0-9_]*(?:Needs?|Requires?)[A-Z]\w*\s*=
+confidence: 0.82
+support_cl_count: 1

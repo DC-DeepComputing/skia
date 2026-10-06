@@ -1,0 +1,58 @@
+id: gpu/forward-gpu-stats-to-finish-callbacks
+title: When collecting GPU statistics for completion or finish callbacks, forward the gathered stats via
+  setStats across all polling and teardown paths
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When collecting GPU statistics (such as elapsed time from timer queries) for finish or completion
+  callbacks, ensure gathered stats are forwarded to the callback wrapper via setStats() across all execution
+  paths—including drain or teardown routines like callAll() as well as regular polling checks—before the
+  callback is popped or triggered.
+why: Querying GPU statistics into a temporary local struct without assigning them to the callback via
+  setStats() causes the gathered measurements to be discarded when the queue entry is popped. Callbacks
+  dispatched during teardown or flush drain then receive default-initialized empty statistics.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  skgpu::GpuStats stats;
+  if (doDelete && finishCallback.fSync) {
+      fGpu->deleteSync(finishCallback.fSync);
+      if (finishCallback.fTimerQuery) {
+          stats.elapsedTime = fGpu->getTimerQueryResult(finishCallback.fTimerQuery);
+      }
+  }
+  fCallbacks.pop_front();
+  ```
+
+  Good:
+
+  ```cpp
+  skgpu::GpuStats stats;
+  if (doDelete && finishCallback.fSync) {
+      fGpu->deleteSync(finishCallback.fSync);
+      if (finishCallback.fTimerQuery) {
+          stats.elapsedTime = fGpu->getTimerQueryResult(finishCallback.fTimerQuery);
+          if (finishCallback.fCallback.receivesGpuStats()) {
+              finishCallback.fCallback.setStats(stats);
+          }
+      }
+  }
+  fCallbacks.pop_front();
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:receivesGpuStats|setStats)\s*\(
+- \b(?:GpuStats|GrGpuFinishedWithStatsProc|CallbackWithStats)\b
+- \b(?:FinishCallback|fFinishedProcs|fTimerQuery)\b
+- \b(?:getTimerQueryResult|startTimerQuery|endTimerQuery)\s*\(
+- \b(?:AutoCallback|RefCntedCallback)\b
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 133
+  quote: '`GrDirectContext` provides a similar interface to report the GPU time spent in a flush. The
+    client uses a new callback type, `GrGpuFinishedWithStatsProc` and sets the same flag on `GrFlushInfo`.'
+confidence: 0.92
+support_cl_count: 1

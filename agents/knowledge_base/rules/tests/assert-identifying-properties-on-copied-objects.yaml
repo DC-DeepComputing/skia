@@ -1,0 +1,39 @@
+id: tests/assert-identifying-properties-on-copied-objects
+title: When unit testing copy constructors, assignment operators, or backend wrappers, assert specific
+  identifying properties match rather than relying solely on coarse validity checks
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When unit testing copy constructors, assignment operators, or backend wrapper objects, assert that
+  discriminating properties (such as the backend API or specific type attributes) match between the source
+  and target objects rather than relying solely on coarse boolean validity checks like isInitialized()
+  or isValid().
+why: Coarse validity checks like isInitialized() or isValid() only verify that an object holds non-empty
+  state. They do not ensure that discriminating fields, backend enums, or type attributes were copied
+  correctly and not left uninitialized, defaulted, or mismatched.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  GrBackendSemaphore copy(sema);
+  REPORTER_ASSERT(reporter, copy.isInitialized());
+  ```
+
+  Good:
+
+  ```cpp
+  GrBackendSemaphore copy(sema);
+  REPORTER_ASSERT(reporter, copy.isInitialized());
+  REPORTER_ASSERT(reporter, copy.backend() == GrBackendApi::kVulkan);
+  ```
+include_glob:
+- tests/**
+triggers:
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(][^)]*\.(?:isInitialized|isValid|valid)\s*[(][)]
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(][^)]*\.backend\s*[(][)]\s*==
+- \b(?:GrBackend|skgpu::graphite::Backend|Backend)(?:Semaphore|Texture|RenderTarget|Format)\b
+- \b[A-Za-z0-9_]+\s+(?:copy|assigned|clone)\s*(?:[(][^)]*[)]|=\s*[^;]+);
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(][^)]*\b(?:copy|clone|assigned)\b
+confidence: 0.9
+support_cl_count: 1

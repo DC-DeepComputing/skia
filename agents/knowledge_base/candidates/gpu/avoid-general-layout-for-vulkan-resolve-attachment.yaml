@@ -1,0 +1,40 @@
+id: gpu/avoid-general-layout-for-vulkan-resolve-attachment
+title: When configuring Vulkan image layouts for passes reading dst as input, keep resolve attachments
+  in optimal attachment layouts instead of transitioning to VK_IMAGE_LAYOUT_GENERAL
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not transition or configure Vulkan resolve attachments to VK_IMAGE_LAYOUT_GENERAL when enabling
+  destination texture reads as shader input. Intra-pass destination reads sample exclusively from the
+  active color attachment, so keep resolve attachments in VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL or
+  their optimal layout.
+why: In multisampled passes, shaders reading the destination buffer as an input attachment sample directly
+  from the multisampled color attachment rather than the resolve attachment. Transitioning the resolve
+  attachment to VK_IMAGE_LAYOUT_GENERAL is unnecessary and disables optimal hardware layouts and compression
+  on textures that are only written during pass resolution.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  resolveTexture.updateImageLayout(rp_must_support_reading_dst_as_input(rpDesc)
+          ? VK_IMAGE_LAYOUT_GENERAL
+          : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+  ```
+
+  Good:
+
+  ```cpp
+  // Resolve attachments are not sampled as destination input attachments during drawing.
+  resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+  ```
+include_glob:
+- src/gpu/**/vk/**
+triggers:
+- \bVK_IMAGE_LAYOUT_GENERAL\b
+- \bVK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL\b
+- \b(?:updateImageLayout|setImageLayout)\b
+- \b(?:resolveTexture|resolveAttachment|fResolveAttachment)\b
+- \b(?:reading_dst_as_input|readDstFromInput|dstReadReq)\b
+confidence: 0.92
+support_cl_count: 1

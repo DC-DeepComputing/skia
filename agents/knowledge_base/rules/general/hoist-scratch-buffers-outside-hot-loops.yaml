@@ -1,0 +1,46 @@
+id: general/hoist-scratch-buffers-outside-hot-loops
+title: When unpacking or staging data across iterations in performance-critical inner loops, declare reusable
+  scratch buffers or arrays outside the loop
+polarity: do
+severity: should_fix
+rubric: safety
+rule: In performance-critical inner loops (such as SIMD math, rasterization, or vector flattening loops),
+  declare reusable temporary scratch buffers or fixed-size staging arrays outside the loop header rather
+  than inside the loop body. Reuse the outer buffer across iterations instead of re-entering its scope
+  and re-declaring it inside the loop.
+why: Declaring scratch arrays inside tight loops obscures that the buffer is reused across iterations
+  and risks unnecessary stack frame adjustments or scope re-entry overhead in unoptimized builds. Hoisting
+  the scratch buffer clarifies intent and makes storage reuse explicit across hot loop iterations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  for (uint32_t i = 1; i < numSegments; i += 4) {
+      skvx::float8 p = skvx::fma(skvx::fma(A, t, B), t, C);
+      float out[8];
+      p.store(out);
+      polyline->appendPoint({out[0], out[1]});
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  float out[8];
+  for (uint32_t i = 1; i < numSegments; i += 4) {
+      skvx::float8 p = skvx::fma(skvx::fma(A, t, B), t, C);
+      p.store(out);
+      polyline->appendPoint({out[0], out[1]});
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:float|int|uint\w*|SkScalar|SkPoint|char|uint8_t)\s+[a-zA-Z0-9_]+\s*\[\s*[0-9]+\s*\]
+- \.(?:store|storeAligned|to_array)\s*\(
+- \b(?:skvx::)?(?:float|int|half)(?:2|4|8|16)\b
+- \b(?:skvx|skia_private)::Vec<
+- \b[a-zA-Z0-9_]*(?:scratch|Scratch|tmp|Tmp|buffer|Buffer|storage|Storage)\s*\[\s*[0-9]+\s*\]
+confidence: 0.85
+support_cl_count: 1

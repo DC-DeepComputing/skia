@@ -1,0 +1,74 @@
+id: build-gn/compile-optional-tests-via-sources-for-tests
+title: When configuring optional backend tests in GN, isolate backend-specific test definitions into dedicated
+  files under sources_for_tests and keep generic test helpers unconditional
+polarity: dont
+severity: blocking
+rubric: design
+rule: Do not add test files that depend on optional codecs, backends, or third-party libraries unconditionally
+  to `tests_sources` in `gn/tests.gni`, nor bundle tests for conditionally compiled backends into unrelated
+  targets with `#ifdef`s. Instead, isolate backend-specific test definitions into dedicated test files
+  attached to each backend's `sources_for_tests` under the corresponding `optional(...)` target in `BUILD.gn`.
+  When defining generic test helper targets or shared interface test suites, define them as unconditional
+  `skia_source_set(..., testonly = true)` targets without backend dependencies, rather than wrapping them
+  in `optional()` with compound feature-flag checks or adding backend `deps`.
+why: Attaching isolated backend-specific tests to each optional target's `sources_for_tests` ensures they
+  compile and run only when their required third-party dependencies are enabled, avoiding build failures
+  or tying test execution to unrelated configurations. Conversely, generic test helpers operating on abstract
+  interfaces have no third-party dependencies; wrapping them in `optional()` or adding concrete backend
+  dependencies inverts target layering, couples generic test suites to specific implementations, and breaks
+  modularity.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # gn/tests.gni: test file depending on optional codec added unconditionally
+  tests_sources = [
+    ...
+    "$_tests/PngGainmapTest.cpp",
+  ]
+
+  # BUILD.gn: combining tests for backends under an unrelated target with #ifdefs
+  optional("fontmgr_fontconfig") {
+    sources_for_tests = [
+      "tests/FontMgrFontConfigTest.cpp",
+      "tests/FontScanner.cpp",  # Tests FreeType & Fontations with #ifdefs
+    ]
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  # BUILD.gn: backend tests attached to sources_for_tests; helper decoupled
+  skia_source_set("fontscanner_tests") {
+    testonly = true
+    deps = [ ":skia" ]
+    sources = [
+      "tests/FontScanner.cpp",
+      "tests/FontScanner.h",
+    ]
+  }
+
+  optional("typeface_freetype") {
+    sources_for_tests = [ "tests/FontScanner_FreeTypeTest.cpp" ]
+  }
+
+  optional("fontations") {
+    sources_for_tests = [ "tests/FontScanner_FontationsTest.cpp" ]
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+- gn/tests.gni
+triggers:
+- \bsources_for_tests\b
+- \btests_sources\s*\+?=
+- \boptional\s*[(]\s*"[^"]+"
+- \bskia_source_set\s*[(]\s*"[^"]+"
+- '"(?:\$_)?tests/[^"]+\.(?:cpp|cc|h)"'
+- \bskia_use_[a-zA-Z0-9_]+
+- \btestonly\s*=\s*true\b
+confidence: 0.97
+support_cl_count: 2

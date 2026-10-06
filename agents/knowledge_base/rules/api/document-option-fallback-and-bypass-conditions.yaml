@@ -1,0 +1,66 @@
+id: api/document-option-fallback-and-bypass-conditions
+title: When documenting public configuration options or callbacks, specify exact conditions under which
+  members are ignored, bypassed, or superseded by newer replacements
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting configuration options or callbacks in public headers (such as ContextOptions or
+  options structs), explicitly specify the conditions under which an option or callback will be ignored,
+  bypassed, or invoked (e.g., lack of backend support or presence of more optimal hardware features).
+  Avoid vague phrasing like 'might be a no-op'. Additionally, when deprecating a setting or callback in
+  favor of a replacement, document precedence rules (specifying whether the deprecated member is ignored
+  if the replacement is set) and the exact conditions under which the deprecated member is invoked.
+why: Vague comments stating that a setting 'might be a no-op' or omitting precedence rules leave API consumers
+  uncertain about when an option actually takes effect or why setting it produces no behavior change.
+  Specifying backend requirements, hardware bypass conditions, and whether replacement options supersede
+  deprecated callbacks enables clients to understand configuration semantics and predict runtime behavior.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: vague phrasing leaves clients uncertain when the option is active.
+  /**
+   * Note: this option might be a no-op if the backend doesn't implement it.
+   */
+  std::optional<SkISize> fInternalMSAATileSize = std::nullopt;
+
+  // Bad: omits precedence and exact invocation conditions for deprecated callback.
+  /**
+   * Deprecated version of the Pipeline callback. It corresponds to the kAddingPipeline
+   * case of PipelineCachingCallback but only invokes if serializable.
+   */
+  using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> data);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: explicitly documents backend support and hardware bypass conditions.
+  /**
+   * Note: this option will be ignored if the backend doesn't support it, or if a more
+   * optimal HW feature is available.
+   */
+  std::optional<SkISize> fInternalMSAATileSize = std::nullopt;
+
+  // Good: explicitly documents precedence and exact invocation conditions.
+  /**
+   * Deprecated version of the Pipeline callback. This callback is only invoked for
+   * PipelineCacheOp::kAddingPipeline ops and when serializable. It is ignored if
+   * fPipelineCachingCallback is set.
+   */
+  using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> data);
+  ```
+include_glob:
+- include/**
+triggers:
+- (?://|/\*|\*).*?\b(?:ignored|bypassed|no-op|no op|noop|no-opt|superseded|precedence)\b
+- (?://|/\*|\*).*?\b(?:backend doesn't|backend does not|hardware feature|HW feature|deprecated version|only
+  invoked)\b
+- \b(?:ContextOptions|GrContextOptions)\b
+- \b(?:struct|class)\s+[A-Za-z0-9_]*(?:Options|Descriptor|Config|Settings)\b
+- \bstd::optional<[A-Za-z0-9_:]+>\s+f[A-Z]\w*\b
+- \b(?:using|typedef)\s+[A-Za-z0-9_]*Callback\s*=\s*
+- \b(?:fRequire|fEnable|fDisable|fAllow|fUse|fInternal)[A-Z]\w*\b
+confidence: 0.95
+support_cl_count: 2

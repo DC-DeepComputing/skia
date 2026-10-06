@@ -1,0 +1,55 @@
+id: general/prefer-addraw-between-path-builders
+title: When appending geometry from another SkPathBuilder or raw buffer spans into SkPathBuilder, use
+  SkPathRaw and addRaw instead of allocating an intermediate SkPath
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When appending geometry from another SkPathBuilder or raw buffer spans into an SkPathBuilder, wrap
+  or query an SkPathRaw view (using SkPathPriv::Raw(srcBuilder, ...) or constructing SkPathRaw from point,
+  verb, and weight spans) and call destBuilder.addRaw(raw, reserve) instead of materializing an intermediate
+  SkPath to pass to addPath(). Choose Reserve::kExact when appending a known size or completed contour,
+  or Reserve::kGrow when accumulating repeatedly.
+why: Constructing an intermediate SkPath (via detach(), snapshot(), or Make from raw buffers) allocates
+  and initializes an owning heap-backed SkPathRef/SkPathData object, which is wasted overhead when the
+  geometry is immediately consumed by another builder. SkPathRaw provides a lightweight, non-owning view
+  that SkPathBuilder::addRaw() appends directly without temporary object allocations or ref-count churn.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Materializing a temporary SkPath from another builder or raw spans.
+  fBuilder.addPath(fCurrent.detach());
+
+  SkPath path = MakePathFromVerbsPointsWeights(verbsPtr, numVerbs, ptsPtr, numPts, wtsPtr, numWts);
+  builder.addPath(path);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Query or wrap in SkPathRaw and append directly via addRaw().
+  if (auto raw = SkPathPriv::Raw(fCurrent, SkResolveConvexity::kNo)) {
+      fBuilder.addRaw(*raw, SkPathBuilder::Reserve::kExact);
+  }
+
+  SkPathRaw raw{
+      SkSpan<const SkPoint>(pts, SkToSizeT(numPts)),
+      SkSpan<const SkPathVerb>(verbs, SkToSizeT(numVerbs)),
+      SkSpan<const float>(weights, SkToSizeT(numWts)),
+  };
+  builder.addRaw(raw, SkPathBuilder::Reserve::kExact);
+  ```
+include_glob:
+- src/**
+- modules/**
+triggers:
+- \baddPath\s*[(][^)]*\.(?:detach|snapshot)\s*[(]
+- \b(?:addPath|addRaw)\s*[(]
+- \bSkPath(?:Priv)?::Raw\b
+- \bSkPathRaw\b
+- '\baddRaw\s*[(][^)]*Reserve::'
+- \bSkPathBuilder\b.*(?:\.(?:detach|snapshot|addPath)|->addRaw)\s*[(]
+- \b(?:destBuilder|builder|self|fBuilder)\.add(?:Path|Raw)\s*[(]
+confidence: 0.95
+support_cl_count: 2

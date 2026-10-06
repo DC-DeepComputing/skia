@@ -1,0 +1,45 @@
+id: codec/assert-monotonic-stream-length-incremental-decode
+title: When tracking stream progress or caching stream length in incremental decoding to skip redundant
+  work, assert with SkASSERT that stream length increases monotonically
+polarity: do
+severity: nit
+rubric: readability
+rule: When caching or tracking stream lengths in incremental decoding or streaming parsers to avoid redundant
+  work, assert that the stream length increases monotonically using SkASSERT (e.g., `SkASSERT(currentLength
+  >= oldLength)` or `SkASSERT(currentLength > oldLength)` after an equality bailout). Do not update cached
+  length tracking or return early without verifying that the stream has not been truncated or rewound.
+why: Incremental decoding assumes that incoming stream data only grows over time as additional chunks
+  arrive. Asserting monotonicity documents this invariant and immediately catches unexpected stream rewinding,
+  truncation, or invalid stream re-entry during debug builds and fuzzing.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (oldLength == currentLength) {
+      break;
+  }
+  fCachedStreamLength = currentLength;
+  ```
+
+  Good:
+
+  ```cpp
+  if (oldLength == currentLength) {
+      break;
+  }
+  SkASSERT(currentLength > oldLength);
+  fCachedStreamLength = currentLength;
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bSkASSERT\s*\([^)]*(?:oldLength|previousLength|lastLength|currentLength)\)
+- \bSkASSERT\s*\([^)]*(?:getLength|stream->getLength|StreamLength)\)
+- \b(?:currentLength|newLength|streamLength)\s*[><]=?\s*(?:oldLength|lastLength|previousLength)\b
+- \b(?:oldLength|lastLength|previousLength|currentLength)\s*==\s*(?:currentLength|newLength|streamLength)\b
+- \b(?:fStreamLength|fMaxStreamLength|cachedStreamLength)\w*\b
+- \b(?:getLength\(\)|streamLength|stream->getLength\(\))\b
+confidence: 0.8
+support_cl_count: 1

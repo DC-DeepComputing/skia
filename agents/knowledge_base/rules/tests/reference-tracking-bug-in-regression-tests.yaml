@@ -1,0 +1,60 @@
+id: tests/reference-tracking-bug-in-regression-tests
+title: When authoring regression unit tests or GMs reproducing bugs or fuzzer crashes, document the tracking
+  bug URL or issue ID immediately above the test definition
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When writing a regression unit test (such as DEF_TEST, DEF_GANESH_TEST, or DEF_GRAPHITE_TEST) or
+  Golden Master test (DEF_GM or DEF_SIMPLE_GM) reproducing a defect or fuzzer crash, include a comment
+  referencing the tracking bug URL or issue ID (e.g., '// crbug.com/<id>', '// https://issues.skia.org/issues/<id>',
+  or '// b/<id>') immediately above the test definition. Alternatively, if the test is named directly
+  after the issue ID (such as 'DEF_TEST(bug_<id>, ...)' or 'DEF_SIMPLE_GM(crbug_<id>, ...)'), ensure the
+  issue identifier is clear and traceable.
+why: Attaching the issue tracker reference or URL directly to regression tests links the reproduction
+  case to original crash reports, fuzzer artifacts, stack traces, and triage history. This preserves essential
+  context for future maintainers investigating test failures, minimizing regressions, or refactoring the
+  affected subsystem.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Reproduction test for a fuzzer-reported concave path crash without tracking context
+  DEF_TEST(path_walk_edges_concave_large_dx, r) {
+      auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(1000, 1000));
+      SkPath path = SkPathBuilder().moveTo(0, 0).lineTo(1000, 500).detach();
+      surface->getCanvas()->drawPath(path, SkPaint());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // crbug.com/398075927
+  DEF_TEST(path_walk_edges_concave_large_dx, r) {
+      auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(900, 700));
+      SkPath path = SkPathBuilder().moveTo(0, 0).lineTo(900, 350).detach();
+      surface->getCanvas()->drawPath(path, SkPaint());
+  }
+
+  // Or naming the test after the tracking issue:
+  // DEF_SIMPLE_GM(crbug_404394639, canvas, 500, 500) { ... }
+  ```
+include_glob:
+- tests/**
+- gm/**
+- modules/**
+triggers:
+- \bDEF_(?:GANESH_|GRAPHITE_)?TEST(?:_FOR_[A-Z_]+)?\s*[(]
+- \bDEF_(?:SIMPLE_)?GM(?:_CAN_FAIL)?\s*[(]
+- //\s*(?:https?://)?(?:crbug\.com|issues\.skia\.org|skbug\.com|b/)\d+
+- \b(?:crbug|skbug|issue)_[0-9]{4,}\b
+- \bDEF_CONDITIONAL_GRAPHITE_TEST\s*[(]
+citations:
+- path: agents/skills/skia-gn-workflow/references/fuzz.md
+  heading: 3. Write a Reproduction Unit Test
+  quote: Using the exact logged values, write a reproduction unit test (`DEF_TEST`) in a relevant test
+    file (such as `tests/PathTest.cpp`). Strive to use public APIs to set up the exact input state. It
+    is common to use the bug number in the test name (ask the user for this)
+confidence: 0.9
+support_cl_count: 1

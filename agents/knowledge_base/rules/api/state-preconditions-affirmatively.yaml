@@ -1,0 +1,46 @@
+id: api/state-preconditions-affirmatively
+title: When documenting API preconditions, options, or ordering requirements in public headers, state
+  conditions affirmatively rather than using ambiguous compound negations
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In API doc comments, option descriptions, and interface contracts, state preconditions and ordering
+  requirements affirmatively rather than using ambiguous compound negations (such as 'not A or B'). Frame
+  the condition around what clients must do or what state must hold (e.g., 'replayed in the order they
+  are recorded' rather than 'not replayed or played out of order').
+why: Compound negative conditions like 'not A or B' are grammatically ambiguous because readers cannot
+  determine whether the negation binds to the first clause ('(!A) || B') or distributes over both ('!(A
+  || B)'). Stating requirements and assumptions affirmatively eliminates ambiguity and makes API contracts
+  immediately clear to callers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  /**
+   * If Recordings are not replayed or played out of order, then Graphite
+   * can make certain assumptions that allow for better performance.
+   */
+  bool fRequireOrderedRecordings = false;
+  ```
+
+  Good:
+
+  ```cpp
+  /**
+   * If Recordings are replayed in the order they are recorded, then Graphite
+   * can make certain assumptions that allow for better performance.
+   */
+  bool fRequireOrderedRecordings = false;
+  ```
+include_glob:
+- include/**
+triggers:
+- (?://|/\*|\*).*?\b(?:if|when|unless|where)\s+.*\b(?:not|neither|nor|never|out of order)\b
+- (?://|/\*|\*).*?\b(?:preconditions?|assumes?|assumptions?|requires?|ordering requirements?)\b
+- \b(?:struct|class)\s+[A-Za-z0-9_]*(?:Options|Descriptor|Config|Settings)\b
+- \b(?:fRequire|fEnable|fDisable|fAllow|fUse|fOrdered)[A-Z]\w*\b
+- \bbool\s+f[A-Z]\w*\s*=\s*(?:false|true)\b
+- (?://|/\*|\*).*?\b(?:replayed|recorded|played back|playback|ordered)\b
+confidence: 0.9
+support_cl_count: 1

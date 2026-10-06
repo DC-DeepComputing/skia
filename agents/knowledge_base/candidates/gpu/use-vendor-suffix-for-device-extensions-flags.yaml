@@ -1,0 +1,45 @@
+id: gpu/use-vendor-suffix-for-device-extensions-flags
+title: When toggling extension flags in VulkanPreferredFeatures's DeviceExtensions, assign to vendor-suffixed
+  boolean members rather than string member names with the Extension suffix
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When marking or querying extension availability flags on `DeviceExtensions` helper structs in `VulkanPreferredFeatures`,
+  assign to the boolean member named with the extension's vendor suffix (such as `f...EXT` or `f...KHR`).
+  Do not reference the outer class's extension name string pointer (such as `f...Extension`), which does
+  not exist on `DeviceExtensions`.
+why: '`DeviceExtensions` stores extension support flags as booleans named with vendor suffixes (e.g.,
+  `fQueueFamilyForeignEXT`), whereas `VulkanPreferredFeatures` stores extension string names ending in
+  `Extension` (e.g., `fQueueFamilyForeignExtension`). Referencing the string name on `DeviceExtensions`
+  causes compilation errors that may go unnoticed during host testing if enclosed in platform guards like
+  `#if defined(SK_BUILD_FOR_ANDROID)`.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // On DeviceExtensions exts:
+  #if defined(SK_BUILD_FOR_ANDROID)
+      exts.fQueueFamilyForeignExtension = true;
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // On DeviceExtensions exts:
+  #if defined(SK_BUILD_FOR_ANDROID)
+      exts.fQueueFamilyForeignEXT = true;
+  #endif
+  ```
+include_glob:
+- src/gpu/vk/**
+triggers:
+- \b(?:exts|supportedExts|appEnabledExts)\.f[A-Za-z0-9_]+\s*=
+- \b(?:exts|supportedExts|appEnabledExts)\.f[A-Za-z0-9_]+Extension\b
+- \bDeviceExtensions\b
+- \bVulkanPreferredFeatures\b
+- \bfQueueFamilyForeign(?:EXT|Extension)\b
+- \bbool\s+f[A-Za-z0-9_]+(?:EXT|KHR|ARM)\s*=
+confidence: 0.9
+support_cl_count: 1

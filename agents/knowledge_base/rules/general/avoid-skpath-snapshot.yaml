@@ -1,0 +1,46 @@
+id: general/avoid-skpath-snapshot
+title: When copying or returning an SkPath instance, pass or return it directly by value instead of calling
+  redundant SkPath::snapshot()
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not call snapshot() on an SkPath instance when copying, passing, or returning a path. SkPath
+  has copy-on-write value semantics, so copy or return SkPath directly by value rather than invoking redundant
+  member methods.
+why: SkPath is a lightweight copy-on-write object holding an sk_sp handle to underlying geometry data;
+  its copy constructor and assignment operators share data efficiently without deep copying. Calling snapshot()
+  on an SkPath is a redundant no-op that merely returns *this, confusing SkPath with SkPathBuilder.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkPath CopyPath(const SkPath& path) {
+      return path.snapshot();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkPath CopyPath(SkPath path) {
+      return path;
+  }
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.h'
+triggers:
+- \.(?:snapshot)\s*[(]
+- ->snapshot\s*[(]
+- \bSkPath\b[^\n;]*\.snapshot\b
+- \breturn\s+[a-zA-Z0-9_]+(?:\.|->)snapshot\s*[(]
+- \bCopyPath\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: '### 1. The API Layer'
+  quote: 'SkPath: A high-level object representing vector geometry (lines, curves). It is a lightweight,
+    copy-on-write object that holds a shared pointer (sk_sp) to an SkPathRef.'
+confidence: 0.9
+support_cl_count: 1

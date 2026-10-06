@@ -1,0 +1,57 @@
+id: general/name-generic-template-parameters-t-or-u-not-numbered-suffixe
+title: When declaring generic template parameters in helper traits or detection structs, use standard
+  letters like T or U instead of numbered suffixes
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not use numbered suffixes on domain-specific names (e.g., `Traits1` or `Type1`) to avoid shadowing
+  when declaring generic template parameters in nested helpers or detection traits. Use standard generic
+  single-letter identifiers such as `T` or `U` unless distinguishing multiple parallel types.
+why: In helper type traits and SFINAE/detection structs, the template parameter represents any arbitrary
+  type being inspected. Appending numeric suffixes to domain names (such as `Traits1`) unnecessarily couples
+  the generic trait to an outer caller's domain and creates awkward names; standard single-letter parameters
+  like `T` or `U` clearly signal that the parameter is generic and unconstrained.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Inside templated container SkTHashTable<T, Traits>:
+  template <typename Traits1, typename = void>
+  struct HasShouldGrow : std::false_type {};
+
+  template <typename Traits1>
+  struct HasShouldGrow<
+          Traits1,
+          std::void_t<decltype(Traits1::ShouldGrow(std::declval<int>(), std::declval<int>()))>>
+          : std::true_type {};
+  ```
+
+  Good:
+
+  ```cpp
+  // Inside templated container SkTHashTable<T, Traits>:
+  template <typename U, typename = void>
+  struct HasShouldGrow : std::false_type {};
+
+  template <typename U>
+  struct HasShouldGrow<
+          U,
+          std::void_t<decltype(U::ShouldGrow(std::declval<int>(), std::declval<int>()))>>
+          : std::true_type {};
+  ```
+include_glob:
+- src/**
+- include/**
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \btemplate\s*<[^>]*\b(?:typename|class)\s+[A-Za-z0-9_]+[0-9]\b
+- \btemplate\s*<\s*(?:typename|class)\s+[A-Za-z0-9_]+,\s*(?:typename|class)\s*=\s*void>
+- '\bstruct\s+Has[A-Z]\w*\s*:'
+- \bstd::void_t<
+- \bstruct\s+[A-Za-z0-9_]+<[^>]*std::void_t<
+- :\s*std::(?:true|false)_type\b
+confidence: 0.85
+support_cl_count: 1

@@ -1,0 +1,56 @@
+id: general/omit-redundant-loop-guards
+title: When iterating over collections or ranges, omit redundant size, empty, or boundary checks before
+  a loop whose condition already safely handles those edge cases
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not add redundant size, emptiness, or boundary checks (such as if (len <= 1) or if (container.empty())
+  return;) before a loop when the loop condition already handles those boundary cases without executing
+  the body. Rely on the loop condition naturally evaluating to false on empty or single-element inputs
+  to fall through to the expected return value.
+why: Early-exit guards that duplicate the loop condition's termination behavior add redundant branching
+  and dead code. Omitting unnecessary guards simplifies control flow and allows standard loop semantics
+  to handle boundary cases cleanly.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static bool all_pixels_same_color(uint32_t* buffer, size_t len) {
+      if (len <= 1) {
+          return true;
+      }
+      for (size_t i = 1; i < len; ++i) {
+          if (buffer[0] != buffer[i]) {
+              return false;
+          }
+      }
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  static bool all_pixels_same_color(uint32_t* buffer, size_t len) {
+      for (size_t i = 1; i < len; ++i) {
+          if (buffer[0] != buffer[i]) {
+              return false;
+          }
+      }
+      return true;
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \bif\s*\([^)]*\b(?:len|length|size|count|num[A-Za-z0-9_]*)\s*(?:<=?\s*[01]|==\s*0)
+- \bif\s*\([^)]*\.(?:empty|size)\(\)\s*(?:<=?\s*[01]|==\s*0)?\s*\)\s*(?:\{\s*)?return\b
+- \bif\s*\([^)]*\b(?:len|size|count)\s*<=?\s*1\s*\)
+- \bfor\s*\(\s*(?:size_t|int(?:32_t|64_t)?|uint(?:32_t|64_t)?)\s+[a-zA-Z0-9_]+\s*=\s*1;\s*[^;]+<
+confidence: 0.8
+support_cl_count: 1

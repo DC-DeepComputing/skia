@@ -1,0 +1,49 @@
+id: general/do-not-indent-preprocessor-directives
+title: 'When writing preprocessor directives like #if, #ifdef, #ifndef, or #endif inside indented blocks,
+  place them flush left at column 0'
+polarity: dont
+severity: nit
+rubric: readability
+rule: 'Do not indent preprocessor directives (such as #if, #ifdef, #ifndef, #else, #elif, #endif, #define,
+  or #pragma) with surrounding C++ code blocks, functions, or class definitions. Always place preprocessor
+  directives flush left starting at column 0, while keeping the enclosed C++ code indented to its proper
+  block level.'
+why: Placing preprocessor directives flush left distinguishes source preprocessing and conditional compilation
+  boundaries from C++ lexical scoping. Maintaining column-0 placement conforms to Skia coding conventions
+  and prevents inconsistent indentation across nested scopes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class GlobalCache {
+  public:
+      #if defined(GPU_TEST_UTILS)
+          void setInitialStaticVertexInfo(skia_private::TArray<uint32_t>);
+      #endif
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class GlobalCache {
+  public:
+  #if defined(GPU_TEST_UTILS)
+      void testingOnly_SetStaticVertexInfo(skia_private::TArray<StaticVertexCopyRanges>,
+                                           sk_sp<Buffer>);
+  #endif
+  };
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- ^\s+#(?:if|ifdef|ifndef|elif|else|endif)\b
+- ^\s+#(?:define|undef|pragma)\b
+- ^\s*#(?:if|ifdef|ifndef)\s+
+- ^\s*#(?:elif|else|endif)\b
+- ^\s*#(?:define|undef)\s+[A-Za-z0-9_]+
+confidence: 0.9
+support_cl_count: 1

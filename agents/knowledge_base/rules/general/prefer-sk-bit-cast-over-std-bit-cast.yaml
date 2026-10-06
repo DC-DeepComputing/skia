@@ -1,0 +1,44 @@
+id: general/prefer-sk-bit-cast-over-std-bit-cast
+title: When type-punning or bit-casting values, use sk_bit_cast instead of std::bit_cast to preserve compatibility
+  with supported GCC 10 toolchains
+polarity: dont
+severity: blocking
+rubric: correctness
+rule: Do not use std::bit_cast; use Skia's sk_bit_cast helper (from src/core/SkUtils.h) instead. When
+  converting representations between same-sized trivially copyable types, use sk_bit_cast to maintain
+  build compatibility across all supported compiler baselines.
+why: std::bit_cast was introduced in C++20 but was not implemented in libstdc++ until GCC 11. Because
+  Skia supports toolchains based on GCC 10, direct use of std::bit_cast causes build failures; sk_bit_cast
+  provides a portable equivalent across all supported compilers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #include <bit>
+
+  return std::bit_cast<uint64_t>(*this) == std::bit_cast<uint64_t>(other);
+  ```
+
+  Good:
+
+  ```cpp
+  #include "src/core/SkUtils.h"
+
+  return sk_bit_cast<uint64_t>(*this) == sk_bit_cast<uint64_t>(other);
+  ```
+include_glob:
+- src/**
+- tests/**
+- tools/**
+- modules/**
+- fuzz/**
+triggers:
+- \bstd::bit_cast\b
+- \bstd::bit_cast\s*<
+- \bsk_bit_cast\b
+- \bsk_bit_cast\s*<
+- '#include\s+<bit>'
+- '#include\s+["<]src/core/SkUtils\.h[">]'
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,72 @@
+id: build-bazel/reference-defined-filegroups-in-target-sources
+title: When declaring library targets in BUILD.bazel, reference defined skia_filegroup labels in srcs
+  and hdrs instead of repeating individual file paths
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining library targets (such as `skia_cc_library`) in `BUILD.bazel` files where `skia_filegroup`
+  (or `filegroup`) targets are already declared for sources and headers, reference those filegroup labels
+  (e.g., `srcs = [":<name>_srcs"]`, `hdrs = [":<name>_hdrs"]`) rather than repeating individual file paths
+  in `srcs` and `hdrs`.
+why: Duplicating file paths across filegroups and library targets creates redundant source lists that
+  easily drift out of sync when files are added, renamed, or deleted. Referencing the filegroup targets
+  unifies file list management across local library compilation and external/GN export mappings.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  skia_filegroup(
+      name = "skbmprustcodec_hdrs",
+      srcs = ["SkBmpRustCodec.h"],
+  )
+
+  skia_filegroup(
+      name = "skbmprustcodec_srcs",
+      srcs = ["SkBmpRustCodec.cpp"],
+  )
+
+  skia_cc_library(
+      name = "skbmprustcodec",
+      srcs = ["SkBmpRustCodec.cpp"],
+      hdrs = ["SkBmpRustCodec.h"],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  skia_filegroup(
+      name = "skbmprustcodec_hdrs",
+      srcs = ["SkBmpRustCodec.h"],
+  )
+
+  skia_filegroup(
+      name = "skbmprustcodec_srcs",
+      srcs = ["SkBmpRustCodec.cpp"],
+  )
+
+  skia_cc_library(
+      name = "skbmprustcodec",
+      srcs = [":skbmprustcodec_srcs"],
+      hdrs = [":skbmprustcodec_hdrs"],
+  )
+  ```
+include_glob:
+- BUILD.bazel
+- '**/BUILD.bazel'
+triggers:
+- \b(?:skia_)?filegroup\s*[(]
+- \b(?:skia_)?cc_library\s*[(]
+- \bsrcs\s*=\s*[[]
+- \bhdrs\s*=\s*[[]
+- \"[A-Za-z0-9_]+\.(?:cpp|cc|h)\"
+- \"(?::|//)[a-zA-Z0-9_/-]+:[a-zA-Z0-9_]+_(?:srcs|hdrs)\"
+citations:
+- path: site/docs/dev/contrib/submit.md
+  heading: Updating BUILD.bazel files
+  quote: Many `BUILD.bazel` files have a list of files that is broken up into two [`filegroup`](https://bazel.build/reference/be/general#filegroup)
+    rules using the `split_srcs_and_hdrs` macro. You should add the new file names or delete the old ones
+    from these file lists.
+confidence: 0.95
+support_cl_count: 2

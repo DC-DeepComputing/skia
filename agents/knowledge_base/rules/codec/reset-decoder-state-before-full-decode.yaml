@@ -1,0 +1,58 @@
+id: codec/reset-decoder-state-before-full-decode
+title: When implementing image codec onGetPixels full decodes, reset reader state and stream cursors to
+  row 0 before decoding to ensure kIncompleteInput retries decode correctly
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When implementing full image decoding (`onGetPixels`), explicitly reset the underlying reader, decode
+  cursor, or stream position back to the beginning of the image or frame before starting decode operations.
+  Ensure that if a prior call aborted midway and returned `kIncompleteInput`, retrying `onGetPixels` with
+  additional streamed data restarts decoding from row 0 rather than appending subsequent rows into the
+  start of the destination buffer.
+why: '`onGetPixels` always writes into the destination pixel buffer starting at row 0. If partial input
+  causes an initial decode attempt to return `kIncompleteInput` and the decoder does not reset its internal
+  cursor or reader state, a subsequent call after receiving more stream bytes will resume reading at an
+  intermediate row while writing into destination row 0, corrupting the image.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkCodec::Result SkBmpRustCodec::onGetPixels(const SkImageInfo& info, void* dst,
+                                              size_t dstRowBytes, const Options& opts,
+                                              int* rowsDecoded) {
+      // BUG: Missing reset_decode_state() leaves reader at previous row if retried
+      rust_bmp::DecodingResult result = fReader->read_image_data();
+      if (result == rust_bmp::DecodingResult::IncompleteInput) {
+          return kIncompleteInput;
+      }
+      return fReader->get_next_rows(dst) ? kSuccess : kErrorInInput;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkCodec::Result SkBmpRustCodec::onGetPixels(const SkImageInfo& info, void* dst,
+                                              size_t dstRowBytes, const Options& opts,
+                                              int* rowsDecoded) {
+      // Reset reader to row 0 so retries after kIncompleteInput write from the start
+      fReader->reset_decode_state();
+      rust_bmp::DecodingResult result = fReader->read_image_data();
+      if (result == rust_bmp::DecodingResult::IncompleteInput) {
+          return kIncompleteInput;
+      }
+      return fReader->get_next_rows(dst) ? kSuccess : kErrorInInput;
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bonGetPixels\b
+- \bkIncompleteInput\b
+- \b(?:reset_decode_state|resetDecodeState|resetDecodingState)\b
+- \b(?:rewindStream|seekToStartOfFrame)\b
+- \b(?:read_image_data|readImageData|next_row|get_next_rows)\b
+confidence: 0.9
+support_cl_count: 1

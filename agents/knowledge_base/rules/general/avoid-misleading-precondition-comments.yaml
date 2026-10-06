@@ -1,0 +1,47 @@
+id: general/avoid-misleading-precondition-comments
+title: When commenting conditional guards or optimization fast paths, avoid restating predicates in prose
+  or misframing expected fallback preconditions as unexpected bugs
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not write comments that redundantly restate conditional predicates in prose or mischaracterize
+  optimization fast-path preconditions as unexpected out-of-sync or corruption bugs. When documenting
+  early-return checks or bailouts, explain the underlying safety invariant or concise fallback reason
+  rather than narrating the if condition or implying that failing a fast path is an unexpected failure.
+why: Restating an if condition in prose adds visual clutter and cognitive overhead without providing technical
+  insight. Furthermore, describing fast-path preconditions as unexpected errors misleads readers into
+  suspecting data corruption or upstream defects when the check is merely an expected branch where an
+  optimization is inapplicable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkISize jpegSize = codec->dimensions();
+  if (jpegSize != imageSize) {
+      // We wouldn't expect this to happen given that SkImage should have loaded this correctly,
+      // but if they've gotten out of sync, bail out.
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkISize jpegSize = codec->dimensions();
+  // Safety check: ensure decoded dimensions match before direct embedding.
+  if (jpegSize != imageSize || !goodColorType || kTopLeft_SkEncodedOrigin != exifOrigin) {
+      return false;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- //.*\b(?:wouldn't expect|not expect(?:ed)?|should(?:n't| not) happen)\b
+- //.*\b(?:out of sync|gotten out of sync|desync)\b
+- //.*\b(?:bail(?:ing)? out|early exit|fallback)\b.*\b(?:if|when|unless)\b
+- //.*\b(?:if they|if this|if it|in case)\b.*\b(?:bail|return|exit|fail)\b
+- //.*\b(?:fast[ -]?path|optimization)\b.*\b(?:precondition|bail|fail|fallback)\b
+- //.*\b(?:safety check|sanity check)\b
+confidence: 0.9
+support_cl_count: 1

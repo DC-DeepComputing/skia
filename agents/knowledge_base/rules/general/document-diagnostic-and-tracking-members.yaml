@@ -1,0 +1,51 @@
+id: general/document-diagnostic-and-tracking-members
+title: When declaring diagnostic, debugging, or state-tracking member variables and helper methods in
+  headers, document what data they record and where it originates
+polarity: do
+severity: nit
+rubric: readability
+rule: 'When declaring internal diagnostic, debugging, or state-tracking member variables and helper methods
+  in class headers—especially when conditionally compiled under debug macros such as #if defined(SK_DUMP_TASKS),
+  GPU_TEST_UTILS, or SK_DEBUG—document what data they record, where that data originates, and how it is
+  consumed. Add concise doc comments clarifying the source of logged call sites, tokens, or debug metrics
+  and the role of diagnostic dump helpers.'
+why: Diagnostic and tracking fields often record non-obvious state like call-site identifiers, flush counts,
+  or token histories that are populated across distant call sites. Explanatory comments clarify the purpose
+  and lifecycle of debug instrumentation, preventing confusion for maintainers inspecting class layouts
+  or diagnostic dump output.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #if defined(SK_DUMP_TASKS)
+      void dumpTasks(TaskList*) const;
+
+      SkTDArray<const char*> fFlushSources;
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #if defined(SK_DUMP_TASKS)
+      // Traverses and dumps the task list at Recorder::snap().
+      void dumpTasks(TaskList*) const;
+
+      // Log of all callers of RecorderPriv::flushTrackedDevices.
+      SkTDArray<const char*> fFlushSources;
+  #endif
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- '#\s*(?:if|ifdef)\s+.*(?:SK_DUMP_TASKS|GPU_TEST_UTILS|SK_DEBUG)'
+- \b(?:void\s+)?dump(?:Tasks|Passes|Graph|Buffer|Allocations|State)\s*[(]
+- \b(?:SkTDArray|std::vector|SkTArray)<[^>]+>\s+f[A-Z]\w*(?:Sources|Origins|History|Events|Tokens|Dumps|Logs);?
+- \b(?:SK_DUMP_TASKS_CODE|SkDEBUGCODE)\s*[(]
+- //.*\b(?:[Ll]og of all|[Tt]racks? all|[Tt]raverses and dumps|[Dd]ebug tracking|[Dd]iagnostic tracking)\b
+- \b[A-Za-z0-9_]+Tracker\s+f[A-Z]\w*;
+confidence: 0.9
+support_cl_count: 1

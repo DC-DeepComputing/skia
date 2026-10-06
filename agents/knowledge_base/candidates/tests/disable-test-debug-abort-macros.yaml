@@ -1,0 +1,37 @@
+id: tests/disable-test-debug-abort-macros
+title: When authoring or updating unit tests, re-comment or remove temporary local debugging abort macros
+  and early exits before submitting code for review
+polarity: do
+severity: nit
+rubric: readability
+rule: 'When authoring or modifying unit tests, re-comment or remove temporary local debugging hooks, early
+  exits, and abort macros (such as #define ... SK_ABORT()) before submitting code. Ensure test failures
+  are recorded programmatically through REPORTER_ASSERT or ERRORF rather than aborting test execution
+  prematurely.'
+why: Active debug abort hooks and premature exits cause the test runner (dm) or CI test bots to crash
+  on the first failure instead of recording assertion errors and completing subsequent test cases. Leaving
+  local debugging overrides enabled masks test results across the test suite.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Uncomment the SK_ABORT() to exit on first pixel mismatch to help debugging
+  #define STOP_ON_TRANSFER_FAILURE SK_ABORT();
+  ```
+
+  Good:
+
+  ```cpp
+  // Uncomment the SK_ABORT() to exit on first pixel mismatch to help debugging
+  #define STOP_ON_TRANSFER_FAILURE // SK_ABORT();
+  ```
+include_glob:
+- tests/**
+triggers:
+- ^#\s*define\s+[A-Z0-9_]+\s+.*\bSK_ABORT\b
+- ^#\s*define\s+[A-Z0-9_]*(?:STOP|ABORT|EXIT|TRANSFER|DEBUG)[A-Z0-9_]*
+- //.*\b(?:[Uu]ncomment|[Dd]ebug)\b.*\b(?:SK_ABORT|abort|exit|failure)\b
+- \bSTOP_ON_[A-Z0-9_]+\b
+confidence: 0.9
+support_cl_count: 1

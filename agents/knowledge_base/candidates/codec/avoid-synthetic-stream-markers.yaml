@@ -1,0 +1,44 @@
+id: codec/avoid-synthetic-stream-markers
+title: When implementing decode termination or stream truncation in codec source managers, control decoders
+  via library APIs instead of injecting synthetic marker bytes
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not implement stream truncation or decode termination by injecting synthetic marker bytes (such
+  as JPEG End-of-Image markers) into specific stream source manager subclasses. Ensure decode logic is
+  stream-agnostic and uniform across all SkStream backings, controlling decoder termination and scan handling
+  via the underlying library's decode control APIs instead of forging stream payloads.
+why: Skia decoders adapt multiple SkStream backings (memory, buffered, unseekable) through source managers.
+  Injecting synthetic markers into a specific subclass leaves other stream types broken or inconsistent,
+  and makes fragile assumptions about the third-party decoding library's internal state machine.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SkJpegMemorySourceMgr::fillInputBuffer:
+  if (fShouldTruncate) {
+      uint8_t markerCode[kJpegMarkerCodeSize] = {0xFF, kJpegMarkerEndOfImage};
+      nextInputByte = markerCode;
+      bytesInBuffer = 2;
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Control decode termination and scan handling via decoder library APIs
+  // (e.g., jpeg_consume_input or checking output pass state) rather than
+  // forging synthetic marker bytes in specific stream manager subclasses.
+  ```
+include_glob:
+- src/codec/**
+triggers:
+- \b(?:fillInputBuffer|skipInputBytes|initSource)\b
+- \bSkJpeg(?:Memory|Buffered|Unseekable)?SourceMgr\b
+- \bkJpegMarker\w*\b
+- \b(?:bytes_in_buffer|bytesInBuffer|next_input_byte|nextInputByte)\b
+- \bjpeg_source_mgr\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,53 @@
+id: core/return-complete-shape-info-for-path-queries
+title: When exposing path shape query or inspection APIs, return complete info structs bundling winding
+  direction and start index with geometry rather than bare SkRect or SkRRect
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When exposing query or inspection APIs for path shapes (such as ovals, rectangles, or round rects),
+  return complete shape info structs (such as SkPathOvalInfo or SkPathRRectInfo) that include contour
+  winding direction (SkPathDirection) and start index (fStartIndex) alongside the geometry. Do not return
+  bare geometry types like SkRect or SkRRect without orientation metadata.
+why: In Skia, path representations of primitives preserve winding direction and the starting vertex or
+  corner of the contour. Omitting direction and start index in inspection or query APIs prevents callers
+  from faithfully inspecting, transforming, serializing, or reconstructing the original path contours.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Returns bare geometry and loses contour orientation
+  std::optional<SkRect> asOval() const;
+  std::optional<SkRRect> asRRect() const;
+  ```
+
+  Good:
+
+  ```cpp
+  // Bundles geometry with winding direction and starting vertex
+  struct SkPathOvalInfo {
+      SkRect          fOval;
+      SkPathDirection fDirection;
+      uint8_t         fStartIndex;
+  };
+  std::optional<SkPathOvalInfo> asOval() const;
+
+  struct SkPathRRectInfo {
+      SkRRect         fRRect;
+      SkPathDirection fDirection;
+      uint8_t         fStartIndex;
+  };
+  std::optional<SkPathRRectInfo> asRRect() const;
+  ```
+include_glob:
+- src/core/**
+- include/core/**
+- include/private/**
+triggers:
+- \b(?:as|get|is)(?:Oval|RRect|Rect)(?:Info)?\s*\(
+- \bstd::optional<\s*SkR?Rect\s*>
+- \b(?:SkPath)?(?:Rect|Oval|RRect)Info\b
+- \bSkPathDirection\b
+- \b(?:fStartIndex|startIndex)\b
+confidence: 0.9
+support_cl_count: 1

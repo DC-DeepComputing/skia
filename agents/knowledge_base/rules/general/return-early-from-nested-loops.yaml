@@ -1,0 +1,60 @@
+id: general/return-early-from-nested-loops
+title: When an inner condition terminates a multi-level loop traversal, return directly instead of maintaining
+  an intermediate boolean flag to break inner and outer loops
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When an inner loop condition terminates an entire multi-level traversal or search and no post-loop
+  cleanup or state modification is needed, return directly from the inner loop. Do not declare and set
+  an intermediate boolean flag (such as found, done, or hasPendingDraws) solely to break the inner loop
+  and subsequently break the outer loop.
+why: Returning directly eliminates unnecessary local state, simplifies nested control flow, and avoids
+  redundant outer-loop condition checks and break statements when the search outcome is already determined.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  for (int pageIndex = (int)(fNumActivePages) - 1; pageIndex >= 0; --pageIndex) {
+      const Page& currPage = fPages[pageIndex];
+      bool hasPendingDraws = false;
+      plotIter.init(currPage.fPlotList, PlotList::Iter::kHead_IterStart);
+      while (Plot* plot = plotIter.get()) {
+          if (plot->lastUseToken().inInterval(fPrevFlushToken, token)) {
+              hasPendingDraws = true;
+              break;
+          }
+          plotIter.next();
+      }
+      if (hasPendingDraws) {
+          break;
+      }
+      this->deactivateLastPage();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  for (int pageIndex = (int)(fNumActivePages) - 1; pageIndex >= 0; --pageIndex) {
+      const Page& currPage = fPages[pageIndex];
+      plotIter.init(currPage.fPlotList, PlotList::Iter::kHead_IterStart);
+      while (Plot* plot = plotIter.get()) {
+          if (plot->lastUseToken().inInterval(fPrevFlushToken, token)) {
+              // Found a pending draw; cannot deactivate further pages.
+              return;
+          }
+          plotIter.next();
+      }
+      this->deactivateLastPage();
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bbool\s+[A-Za-z0-9_]*(?:[Pp]ending|[Ff]ound|[Dd]one|[Ee]xit|[Bb]reak|[Ss]top|[Vv]alid)\w*\s*=\s*(?:false|true)\b
+- \b[A-Za-z0-9_]*(?:[Pp]ending|[Ff]ound|[Dd]one|[Ee]xit|[Bb]reak|[Ss]top)\w*\s*=\s*(?:true|false);
+- \bif\s*\(\s*!?\s*[A-Za-z0-9_]*(?:[Pp]ending|[Ff]ound|[Dd]one|[Ee]xit|[Bb]reak|[Ss]top)\w*\s*\)
+- \bif\s*\(\s*!?\s*[A-Za-z0-9_]*(?:[Pp]ending|[Ff]ound|[Dd]one|[Ee]xit|[Bb]reak|[Ss]top)\w*\s*\)\s*break;
+confidence: 0.9
+support_cl_count: 1

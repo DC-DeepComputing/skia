@@ -1,0 +1,48 @@
+id: gpu/match-indexed-instanced-draw-parameter-order
+title: When calling or dispatching drawIndexedInstanced in Graphite, pass baseIndex and indexCount before
+  baseVertex rather than matching non-indexed drawInstanced parameter order
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When issuing or forwarding indexed instanced draw commands (`drawIndexedInstanced`) in Graphite
+  command lists or command buffers, verify that argument positions follow the indexed signature `(type,
+  baseIndex, indexCount, baseVertex, baseInstance, instanceCount)`. Do not transpose `baseVertex` into
+  the second parameter slot by analogy with non-indexed `drawInstanced`.
+why: In Graphite, index, vertex, and instance offset and count parameters are untyped unsigned integers.
+  Placing `baseVertex` before `indexCount` compiles without warnings but silently swaps vertex and index
+  offsets, corrupting geometry fetch and index buffer lookups during GPU execution.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Transposing baseVertex into arg 2 slot by analogy with drawInstanced
+  fCommandList->drawIndexedInstanced(fPrimitiveType,
+                                     fPendingBaseVertex,
+                                     realIndexCount,
+                                     0,
+                                     fPendingBaseInstance,
+                                     fPendingCount);
+  ```
+
+  Good:
+
+  ```cpp
+  // baseIndex and indexCount precede baseVertex
+  fCommandList->drawIndexedInstanced(fPrimitiveType,
+                                     0,
+                                     realIndexCount,
+                                     fPendingBaseVertex,
+                                     fPendingBaseInstance,
+                                     fPendingCount);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bdrawIndexedInstanced\s*[(]
+- \bDrawIndexedInstanced\b
+- \bdrawInstanced\s*[(]
+- \b(?:fCommandList|commandBuffer|commandList)->draw(?:Indexed)?Instanced\b
+- \b(?:baseIndex|indexCount|baseVertex|baseInstance)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,51 @@
+id: gpu/encapsulate-resource-caching-in-provider
+title: When providing cached GPU resources via ResourceProvider, encapsulate creation and caching in a
+  unified findOrCreate method instead of separate find and cache APIs
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not split resource caching into separate lookup and cache/insert methods on ResourceProvider
+  implementations. Encapsulate cache key computation, resource compilation, and cache insertion within
+  a unified findOrCreate* method that accepts high-level descriptors.
+why: Exposing separate find and cache operations leaks internal cache keys, key hashing, and compilation
+  lifecycles to callers, forcing clients to orchestrate multi-step caching logic. Consolidating creation
+  within findOrCreate keeps caching and resource lifecycle encapsulated within the provider and simplifies
+  call sites.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // DawnResourceProvider.h
+  wgpu::RenderPipeline findBlitWithDrawPipeline(uint32_t key);
+  void cacheBlitWithDrawPipeline(uint32_t key, wgpu::RenderPipeline pipeline);
+
+  // In caller:
+  auto pipeline = resourceProvider->findBlitWithDrawPipeline(key);
+  if (!pipeline) {
+      pipeline = create_blit_render_pipeline(...);
+      resourceProvider->cacheBlitWithDrawPipeline(key, pipeline);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // DawnResourceProvider.h
+  BlitWithDrawEncoder findOrCreateBlitWithDrawEncoder(const RenderPassDesc& renderPassDesc,
+                                                      SampleCount srcSampleCount);
+
+  // In caller:
+  DawnResourceProvider::BlitWithDrawEncoder blit =
+          fResourceProvider->findOrCreateBlitWithDrawEncoder(renderPassDesc, srcSampleCount);
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:find|cache|insert)[A-Z]\w*(?:Pipeline|Encoder|Texture|Buffer|Sampler|Desc|Pass|Group)\s*\(
+- \bfindOrCreate[A-Z]\w*\s*\(
+- \b(?:void\s+)?cache[A-Z]\w*\s*\([^)]*(?:Pipeline|Texture|Buffer|Sampler|Encoder|Pass)
+- \b(?:ResourceProvider|DawnResourceProvider|VulkanResourceProvider|MtlResourceProvider)\b
+- \b(?:fResourceProvider|resourceProvider)->(?:find|cache|findOrCreate)\w*\s*\(
+confidence: 0.9
+support_cl_count: 1

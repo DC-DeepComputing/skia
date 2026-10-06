@@ -1,0 +1,57 @@
+id: gpu/document-geometric-bitmask-descriptors
+title: When defining bitmasks or packed flag descriptors for geometric or rasterization state, document
+  boundary tie-breaking rules and non-intuitive flag semantics
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining bitmasks, bitfields, or packed flag descriptors that represent geometric or rasterization
+  state (such as tile edge intersections, boundary touches, outcodes, or coarse winding), document their
+  exact semantics and invariants in an accompanying comment. Explicitly clarify where flag definitions
+  deviate from intuitive geometric properties due to corner tie-breaking rules, differing inclusive/exclusive
+  boundary conventions, or winding accumulation.
+why: Bit flags in rasterization and geometry pipelines frequently encode compact pipeline or hardware
+  state rather than literal geometry. Without explicit documentation of tie-breaking rules and boundary
+  conventions, maintainers can easily confuse flags (such as conflating coarse winding with top-edge touches)
+  or assume intuitive edge-intersection behavior that fails at tile boundaries.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct IntersectionBits {
+      // Edge touch and winding bits for tile rasterization:
+      static constexpr uint32_t L = 1 << 0;
+      static constexpr uint32_t T = 1 << 1;
+      static constexpr uint32_t R = 1 << 2;
+      static constexpr uint32_t B = 1 << 3;
+      static constexpr uint32_t W = 1 << 4;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  struct IntersectionBits {
+      // Records which edges a line touches in its tile and whether the tile contributes
+      // to coarse winding. Due to corner tie-breaking and differing inclusive/exclusive
+      // rules for lines ending on tile boundaries, these do not always represent literal
+      // touches. Additionally, coarse winding (W) is related to, but distinct from, top
+      // edge touches. These bits serve as a rasterization descriptor, not pure geometry.
+      static constexpr uint32_t L = 1 << 0;
+      static constexpr uint32_t T = 1 << 1;
+      static constexpr uint32_t R = 1 << 2;
+      static constexpr uint32_t B = 1 << 3;
+      static constexpr uint32_t W = 1 << 4;
+  };
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- (?:struct|class)\s+[A-Za-z0-9_]*(?:Intersection|Edge|Tile|Outcode|Boundary|Raster|Winding)[A-Za-z0-9_]*(?:Bits|Flags?|Mask)\b
+- (?:static\s+)?constexpr\s+uint\d+_t\s+[TBLR]\s*=\s*(?:0b\d+|1u?\s*<<)
+- \b(?:Intersection|Raster|Tile|Edge|Outcode|Winding)(?:Bits|Flags?|Mask)\b
+- \b(?:static\s+)?constexpr\s+uint\d+_t\s+k[A-Za-z0-9_]*(?:Edge|Boundary|Winding|Tile|Touch|Intersect)[A-Za-z0-9_]*(?:Flag|Mask|Bit)\b
+- \benum\s+(?:class\s+)?[A-Za-z0-9_]*(?:Edge|Tile|Intersection|Outcode|Raster)[A-Za-z0-9_]*(?:Bits?|Flags?|Mask)\b
+- //.*\b(?:coarse winding|tie-breaking|tile boundaries|rasterization descriptor)\b
+confidence: 0.9
+support_cl_count: 1

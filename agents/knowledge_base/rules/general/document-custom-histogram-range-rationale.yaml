@@ -1,0 +1,69 @@
+id: general/document-custom-histogram-range-rationale
+title: When defining custom UMA histograms, document empirical range rationale and underflow/overflow
+  expectations, and align units and bucket bounds across related metrics
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When defining custom histogram metrics (such as SK_HISTOGRAM_CUSTOM_COUNTS, SK_HISTOGRAM_CUSTOM_EXACT_LINEAR,
+  or SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES) with empirical bounds, document the expected sample range
+  and how overflow or underflow buckets will be interpreted, explaining workload assumptions so readers
+  recognize unexpected saturation. Additionally, when defining groups of related telemetry histograms
+  (e.g. comparing feature benefits vs. costs), align underlying counters to use consistent units and scales
+  (such as unique instances rather than mixing per-event usage with unique counts) so bucket ranges align
+  predictably, or document the rationale for any outlier range.
+why: Custom histogram bounds appear arbitrary without contextual comments explaining operating envelopes
+  and saturation limits. Mismatched counter units across related metrics make direct comparisons difficult
+  and distort bucket distributions; aligning scales ensures bucket bounds align meaningfully while documented
+  outlier derivations prevent confusion during telemetry analysis.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Missing range rationale and underflow/overflow saturation interpretation:
+  SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.NormalPreemptedByPrecompile",
+                             fStats.fNormalPreemptedByPrecompile,
+                             /* countMin= */ 1,
+                             /* countMax= */ 51,
+                             /* bucketCount= */ 50);
+
+  // Mismatched counter scales (per-event usage vs. unique instances) across related metrics:
+  SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.NormalPreemptedByPrecompile",
+                             fStats.fNormalPreemptedByPrecompile,
+                             /* countMin= */ 1,
+                             /* countMax= */ 6000,
+                             /* bucketCount= */ 30);
+  SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.UnpreemptedPrecompilePipelines",
+                             fStats.fUnpreemptedPrecompilePipelines,
+                             /* countMin= */ 1,
+                             /* countMax= */ 51,
+                             /* bucketCount= */ 50);
+  ```
+
+  Good:
+
+  ```cpp
+  // Range rationale documented; counters aligned to unique pipelines with consistent bounds:
+  // From local testing we expect these stats to fit in the specified ranges.
+  // Frequent overflow or underflow signals unexpected pipeline saturation.
+  SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.NormalPreemptedByPrecompile",
+                             fStats.fNormalPreemptedByPrecompile,
+                             /* countMin= */ 1,
+                             /* countMax= */ 51,
+                             /* bucketCount= */ 50);
+  SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.UnpreemptedPrecompilePipelines",
+                             fStats.fUnpreemptedPrecompilePipelines,
+                             /* countMin= */ 1,
+                             /* countMax= */ 51,
+                             /* bucketCount= */ 50);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSK_HISTOGRAM_CUSTOM_(?:COUNTS|EXACT_LINEAR|MICROSECONDS_TIMES)\b
+- \bSK_HISTOGRAM_(?:EXACT_LINEAR|PERCENTAGE|MEMORY_KB)\b
+- \bSK_HISTOGRAM_[A-Z0-9_]+\b
+- /[*]\s*(?:countMin|countMax|bucketCount|value_min|value_max|bucket_count)\s*=\s*[*]/
+- //.*\b(?:over-?flow|under-?flow|histogram|bucket|UMA)\b
+confidence: 0.9
+support_cl_count: 1

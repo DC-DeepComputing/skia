@@ -1,0 +1,44 @@
+id: general/avoid-affirmative-static-assert-messages
+title: When writing diagnostic messages in static_assert, phrase them as requirements, failure causes,
+  or questions rather than affirmative success claims
+polarity: dont
+severity: nit
+rubric: readability
+rule: When writing diagnostic messages for static_assert, do not phrase them as affirmative claims that
+  the condition holds (e.g., 'Ok to use X'). Phrase them as the required invariant, the failure cause,
+  or an explanatory question (e.g., 'Is it ok to use X?' or 'Expected sizeof(X) >= sizeof(Y)') so the
+  diagnostic does not contradict the compiler failure output.
+why: 'The string literal in static_assert(condition, message) is emitted by the compiler only when the
+  assertion fails. Phrasing messages as affirmative success claims produces contradictory compiler diagnostics
+  like ''static assertion failed: Ok to use X'', whereas stating requirements, failure causes, or questions
+  clearly conveys what invariant failed.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static_assert(sizeof(int) >= sizeof(int32_t), "Ok to use Sk64_pin_to_s32 below");
+  ```
+
+  Good:
+
+  ```cpp
+  static_assert(sizeof(int) >= sizeof(int32_t), "Is it ok to use Sk64_pin_to_s32 below?");
+  // Or state the requirement directly:
+  static_assert(sizeof(int) >= sizeof(int32_t), "int must be at least 32 bits");
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+- tests/**
+triggers:
+- \bstatic_assert\s*\([^,]+,\s*"
+- \bstatic_assert\s*\(
+- \bstatic_assert\s*\([^)]*"(?:Ok|OK|Valid|True|Safe|Supported)\b
+- \bstatic_assert\s*\(\s*sizeof\s*\(
+- \bstatic_assert\s*\(\s*alignof\s*\(
+- \bstatic_assert\s*\(\s*std::is_
+confidence: 0.82
+support_cl_count: 1

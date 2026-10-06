@@ -1,0 +1,75 @@
+id: gpu/centralize-resource-metadata-in-cache
+title: When managing Graphite Resource metadata and initialization, keep mutators private to ResourceCache,
+  forward construction state to base constructors, and keep shareable resources immutable upon cache reuse
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Centralize GPU Resource lifecycle and metadata mutations inside ResourceCache methods, keeping mutators
+  like setLabel private to ResourceCache rather than exposing public or protected setters, and pass construction-time
+  state directly to the base Resource constructor. Furthermore, do not mutate labels or mutable metadata
+  of Shareable::kYes resources upon cache hits or reuse; shareable resources can be used across threads
+  and must remain immutable, whereas non-shareable or scratch resources with exclusive usage may be safely
+  relabeled.
+why: Exposing public or protected mutators on Resource allows external callers or subclasses to modify
+  state at arbitrary points during an object's lifecycle. Restricting mutators to ResourceCache ensures
+  metadata transitions are managed centrally, while keeping shareable resource labels immutable prevents
+  data races when multiple threads retrieve and use shared resources concurrently.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Resource::setLabel is public or protected; state mutated post-construction
+  class Resource {
+  public:
+      void setLabel(std::string_view label); // or protected: void setLabel(...)
+  };
+
+  // Subclass calls setter in constructor instead of forwarding:
+  Buffer::Buffer(..., std::string_view label) : Resource(sharedContext, ownership, size) {
+      this->setLabel(label);
+  }
+
+  // ResourceCache mutates label unconditionally on cache hits, even for shareable resources:
+  if (Resource* res = fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
+      res->setLabel(std::move(label)); // Unsafe data race if shareable == Shareable::kYes
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Base constructor initializes state; setter is private to ResourceCache
+  class Resource {
+  protected:
+      Resource(const SharedContext*, Ownership, size_t gpuMemorySize, std::string_view label = {});
+  private:
+      friend class ResourceCache;
+      void setLabel(std::string_view label);
+  };
+
+  // Subclass forwards label to base constructor:
+  Buffer::Buffer(..., std::string_view label)
+          : Resource(sharedContext, ownership, size, label) {}
+
+  // ResourceCache updates label only for non-shareable / scratch resources:
+  if (Resource* res = fResourceCache->findAndRefResource(key, budgeted, shareable, unavailable)) {
+      if (shareable == Shareable::kYes) {
+          SkASSERT(res->getLabel() == label);
+      } else {
+          res->setLabel(std::move(label));
+      }
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:void\s+)?(?:getLabel|setLabel)\s*[(]
+- \bResource\s*[(][^)]*std::string_view\s+label
+- \bResourceCache\b
+- \bfriend\s+class\s+ResourceCache\b
+- \b(?:findAndRefResource|insertResource)\s*[(]
+- :\s*Resource\s*[(][^)]*label
+- \bShareable::k(?:Yes|No|Scratch)\b
+confidence: 0.95
+support_cl_count: 2

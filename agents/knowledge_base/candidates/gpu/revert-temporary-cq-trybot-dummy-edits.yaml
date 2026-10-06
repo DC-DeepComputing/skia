@@ -1,0 +1,54 @@
+id: gpu/revert-temporary-cq-trybot-dummy-edits
+title: When modifying files, do not commit temporary dummy edits or unrelated whitespace changes used
+  to trigger CQ trybots; revert them before landing
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not leave temporary dummy edits, artificial comments, or unrelated whitespace changes used to
+  trigger CQ trybots in production or test files. Revert all temporary troubleshooting and trybot-triggering
+  modifications before landing, or trigger required trybots directly using `git cl try` or `Cq-Include-Trybots`
+  in the commit message.
+why: Dummy edits and stray whitespace introduced solely to satisfy CQ path filters create review noise,
+  obscure meaningful code changes, and pollute git commit history. Using official trybot invocation mechanisms
+  (`git cl try` or `Cq-Include-Trybots`) keeps changesets clean and focused.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/gpu/graphite/Texture.cpp (modified solely to trigger (tests|src/gpu)/graphite/.* trybots):
+  #include "src/gpu/graphite/Texture.h"
+
+
+
+  #include "include/core/SkTraceMemoryDump.h"
+  ```
+
+  Good:
+
+  ```cpp
+  // Trigger trybots in COMMIT_MSG instead of adding dummy edits to source files:
+  // Cq-Include-Trybots: skia.primary:Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All-ANGLE
+
+  #include "src/gpu/graphite/Texture.h"
+
+  #include "include/core/SkTraceMemoryDump.h"
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- ^\s*$
+- \bCq-Include-Trybots\b
+- \bTexture\.h\b
+- \bTexture\.cpp\b
+- \bSkTraceMemoryDump\.h\b
+citations:
+- path: site/docs/dev/contrib/submit.md
+  heading: Submit try jobs
+  quote: After uploading your CL to Gerrit, you may trigger a try job for any job listed in tasks.json,
+    either via the Gerrit UI, using git cl try, eg. git cl try -B skia.primary -b Some-Tryjob-Name
+- path: site/docs/dev/contrib/cqkeywords.md
+  heading: Cq-Include-Trybots
+  quote: Allows you to add arbitrary trybots to the CQ's list of default trybots.
+confidence: 0.9
+support_cl_count: 1

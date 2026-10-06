@@ -1,0 +1,50 @@
+id: general/remove-superseded-private-enums
+title: When refactoring methods to use shared parameter structs or common enums, remove superseded private
+  enums and obsolete internal type declarations
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When refactoring methods or functions to accept shared parameter structs, descriptors, or common
+  enums, delete superseded private enums and internal type declarations that are rendered obsolete. Do
+  not retain unused private enum definitions or type aliases in class definitions when all call sites
+  have migrated to shared types.
+why: Leaving superseded private enums or internal type definitions in place creates dead code and visual
+  clutter. Stale declarations mislead readers into believing the class still relies on custom internal
+  states or separate synchronization mechanisms rather than the shared types.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class GrVkGpu {
+  private:
+      enum SyncQueue {
+          kForce_SyncQueue,
+          kSkip_SyncQueue
+      };
+
+      bool submitCommandBuffer(const GrSubmitInfo& submitInfo);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class GrVkGpu {
+  private:
+      // SyncQueue enum deleted after submitCommandBuffer migrated to GrSubmitInfo
+      bool submitCommandBuffer(const GrSubmitInfo& submitInfo);
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \benum\s+(?:class\s+)?[A-Za-z0-9_]+
+- \bk[A-Z]\w*(?:_[A-Z]\w+)?\s*,
+- \b(?:bool|void|size_t|int|[A-Za-z0-9_:]+)\s+[a-z]\w*\s*\([^)]*\b(?:const\s+)?[A-Z][A-Za-z0-9_]+(?:Info|Params|Options|Args|Desc|State|Config)&\s+\w+\)
+- \b(?:submitCommandBuffer|submitDirectCommandList)\s*\(
+- \b(?:GrSubmitInfo|GrSyncCpu|SyncQueue)\b
+- \b(?:using|typedef)\s+[A-Za-z0-9_]+\s*=
+confidence: 0.9
+support_cl_count: 1

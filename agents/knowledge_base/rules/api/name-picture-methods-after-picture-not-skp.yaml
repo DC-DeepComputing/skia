@@ -1,0 +1,47 @@
+id: api/name-picture-methods-after-picture-not-skp
+title: When naming methods or functions returning an in-memory SkPicture, use Picture rather than SKP,
+  reserving SKP for serialized streams or file formats
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not name methods or functions that return an in-memory `SkPicture` after `SKP` (e.g., `snapSKP()`);
+  use `Picture` (e.g., `snapPicture()`, `finishRecordingAsPicture()`) instead. Reserve `SKP` for serialized
+  streams, byte buffers, or file-format operations.
+why: In Skia, `SKP` designates the serialized stream or file format (`.skp`) of an `SkPicture`. Using
+  `SKP` for methods returning live, in-memory `sk_sp<SkPicture>` objects conflates in-memory object lifetimes
+  with serialized storage and contradicts established API naming conventions across Skia.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Names method returning an in-memory SkPicture after serialized format SKP
+  sk_sp<SkPicture> snapSKP();
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Uses Picture for returning an in-memory SkPicture, reserving SKP for serialized formats
+  sk_sp<SkPicture> snapPicture();
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bsk_sp<SkPicture>\b
+- \b[A-Za-z0-9_]*SKP\s*\(
+- \bsk_sp<SkPicture>\s+[A-Za-z0-9_]+\s*\(
+- \b(?:snap|make|finishRecordingAs|onMake)Picture\b
+- \bSkPictureRecorder\b
+citations:
+- path: site/docs/user/api/skcanvas_creation.md
+  heading: SkPicture
+  quote: |-
+    sk_sp<SkPicture> picture = recorder.finishRecordingAsPicture();
+    SkFILEWStream skpStream(path);
+    // Open SKP files with `viewer --skps PATH_TO_SKP --slide SKP_FILE`
+    picture->serialize(&skpStream);
+confidence: 0.9
+support_cl_count: 1

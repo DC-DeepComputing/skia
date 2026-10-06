@@ -1,0 +1,46 @@
+id: general/document-callable-template-signatures
+title: When defining templated visitor, iteration, or callback functions taking generic callable parameters
+  like template <typename Fn>, document the expected signature in an inline comment
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring templated functions or methods that accept an unconstrained callable parameter (such
+  as template <typename Fn>), document the expected callable signature (e.g., // (Task*)->Status or //
+  f(T*)) in an inline comment. Do not leave the callable signature unspecified or require callers to inspect
+  the function body to discover required arguments and return types.
+why: Unconstrained template callable parameters (like Fn) do not communicate parameter types or return
+  values in C++ function signatures. Documenting the expected callable contract directly in a comment
+  clarifies the interface for callers and prevents compile-time errors from mismatched arguments.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <typename Fn>
+  Task::Status visitTasks(Fn);
+
+  template <typename Fn>
+  void foreach(Fn);
+  ```
+
+  Good:
+
+  ```cpp
+  template <typename Fn> // (Task*)->Status
+  Task::Status visitTasks(Fn);
+
+  template <typename Fn> // f(T*) or f(const T&)
+  void foreach(Fn);
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \btemplate\s*<[^>]*\b(?:typename|class)\s+(?:Fn|Func|Function|Callable|Callback|Visitor|Invocable|Op)\b
+- \b(?:visit|forEach|iterate|enumerate|apply|transform|filter|find_if)[A-Za-z0-9_]*\s*\([A-Za-z0-9_]*Fn\b
+- \b(?:visit|forEach|iterate|enumerate|apply|traverse)[A-Za-z0-9_]*\s*\([^)]*\b(?:fn|func|callback|visitor)\b
+- \btemplate\s*<[^>]*>\s*//\s*(?:\([^)]*\)|f\([^)]*\))
+- \b(?:Task::Status|Status)\s+visitTasks\b
+- \bFn\s+(?:fn|visitor|callback|op)\b
+confidence: 0.9
+support_cl_count: 1

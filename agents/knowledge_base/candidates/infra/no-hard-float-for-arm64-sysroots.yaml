@@ -1,0 +1,36 @@
+id: infra/no-hard-float-for-arm64-sysroots
+title: When documenting ARM64 or AArch64 sysroots and toolchains, do not describe them as hard float since
+  hardware floating-point is standard in ARM64
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not describe ARM64 (AArch64) sysroots, toolchain assets, or build environments as 'hard float'.
+  Hardware floating-point support is standard and mandatory in the ARM64 ABI, unlike 32-bit ARM (ARMv7)
+  which distinguishes between soft-float (armel) and hard-float (armhf).
+why: In 32-bit ARM architectures, sysroots and toolchain configurations distinguish between soft-float
+  (armel) and hard-float (armhf) ABIs. In ARM64, hardware floating-point support is an inherent requirement
+  of the standard ABI, making '(hard float)' annotations redundant and misleading when adapting documentation
+  from 32-bit assets.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  ARM64 (hard float) sysroot for cross-compiling c++ code on an x86_64 Linux machine.
+  ```
+
+  Good:
+
+  ```cpp
+  ARM64 sysroot for cross-compiling c++ code on an x86_64 Linux machine.
+  ```
+include_glob:
+- infra/bots/assets/**
+triggers:
+- '[Aa][Rr][Mm]64.*\b(?:hard[ -]float|armhf|hardfp)\b'
+- \b(?:hard[ -]float|armhf|hardfp)\b.*[Aa][Rr][Mm]64
+- '[Aa][Aa][Rr][Cc][Hh]64.*\b(?:hard[ -]float|armhf|hardfp)\b'
+- \barm64_sysroot\b
+- \b(?:hard[ -]float|armhf)\s+sysroot\b
+confidence: 0.88
+support_cl_count: 1

@@ -1,0 +1,47 @@
+id: ports/pass-variation-position-to-font-arguments
+title: When instantiating typefaces or typeface proxies using SkFontArguments in font managers, pass parsed
+  variation coordinates via setVariationDesignPosition to preserve variable font axes
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When constructing a typeface or typeface proxy from a stream, font scanner, or font descriptor using
+  SkFontArguments, pass any parsed or requested font variation coordinates via setVariationDesignPosition().
+  Do not specify only the collection index or leave variation coordinates unset when variation axes are
+  defined for the font entry.
+why: Omitting setVariationDesignPosition() when initializing SkFontArguments causes the font backend to
+  instantiate the typeface with default axis coordinates. This discards custom variation settings (such
+  as requested font weight, width, or slant) specified by the font source, descriptor, or XML configuration.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Omitting parsed axis coordinates causes the font to instantiate with default axis values
+  auto proxy = scanner->MakeFromStream(
+          std::move(stream),
+          SkFontArguments().setCollectionIndex(collectionIndex));
+  ```
+
+  Good:
+
+  ```cpp
+  SkFontArguments::VariationPosition position = {
+          requestAxisValues.get(), SkTo<int>(requestAxisCount)
+  };
+  auto proxy = scanner->MakeFromStream(
+          std::move(stream),
+          SkFontArguments()
+                  .setCollectionIndex(collectionIndex)
+                  .setVariationDesignPosition(position));
+  ```
+include_glob:
+- src/ports/**
+triggers:
+- \bSkFontArguments\b
+- \bsetVariationDesignPosition\b
+- \bVariationPosition\b
+- \bMakeFromStream\b
+- \bsetCollectionIndex\b
+- \bSkTypeface_proxy\b
+confidence: 0.95
+support_cl_count: 1

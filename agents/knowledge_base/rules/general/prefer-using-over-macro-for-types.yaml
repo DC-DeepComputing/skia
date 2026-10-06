@@ -1,0 +1,39 @@
+id: general/prefer-using-over-macro-for-types
+title: 'When creating type or template aliases, use C++ using declarations or template aliases instead
+  of #define preprocessor macros'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer C++ type aliases (`using Name = Type;`) or template aliases (`template <typename T> using
+  Name = Template<T>;`) over `#define` preprocessor macros when aliasing types or templates. Do not use
+  `#define` for type substitutions.
+why: Preprocessor macros perform global, unscoped textual substitution that ignores C++ namespaces and
+  scopes, risking subtle name collisions and bypassing type checking. C++ type and template aliases respect
+  scoping rules and integrate cleanly with the language's type system and template mechanics.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: unscoped preprocessor macro ignores namespaces and template mechanics
+  #define SkSpan std::span
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: template alias respects namespaces and integrates with C++ type mechanics
+  template <typename T> using SkSpan = std::span<T>;
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- ^#\s*define\s+(?:Sk|Gr)[A-Z]\w+
+- ^#\s*define\s+\w+\s+(?:std::)?(?:span|vector|array|unique_ptr|shared_ptr|optional|tuple|pair)\b
+- ^#\s*define\s+\w+\s+(?:const\s+)?[A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)+
+- \btemplate\s*<[^>]*>\s*using\s+\w+\s*=
+- \busing\s+(?:Sk|Gr)[A-Z]\w+\s*=
+confidence: 0.9
+support_cl_count: 1

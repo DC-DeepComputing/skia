@@ -1,0 +1,75 @@
+id: general/prefer-skspan-const-for-read-only-data
+title: When declaring, slicing, or passing spans for read-only buffer data in functions or virtual interfaces,
+  use SkSpan<const T> rather than mutable SkSpan<T>
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring, slicing, or passing spans for read-only buffer data, specify const on the element
+  type (SkSpan<const T> or std::span<const T>) rather than SkSpan<T>. In virtual interfaces and abstract
+  base classes, keep read-only buffer parameters const even if a derived backend calls a legacy C API
+  requiring non-const pointers; isolate any necessary const_cast to that implementation boundary. Avoid
+  relying on top-level const (const SkSpan<T>), which only makes the span view object immutable while
+  leaving elements mutable.
+why: 'Like raw pointers, spans have shallow constness: a const SkSpan<T> prevents reassigning the span
+  variable itself but still allows mutating referenced buffer elements. Qualifying element types as const
+  enforces read-only access at compile time and allows callers to pass const buffers without casting.
+  Isolating unavoidable C-library const-casts within specific backend implementations preserves the const
+  contract across the public interface and sibling implementations.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Non-const element type allows mutation of read-only source buffer
+  SkSpan<uint8_t> srcRow = fullImageBuffer.subspan(offset, rowBytes);
+  this->applyFilter(dstRow, srcRow);
+
+  // Bad: Top-level const on SkSpan has shallow constness; elements remain mutable
+  const SkSpan<uint8_t> inputSpan = buffer.first(chunkSize);
+
+  // Bad: Weakens virtual interface contract because one C backend requires non-const
+  class SkPngEncoderBase {
+      virtual bool onEncodeRow(SkSpan<uint8_t> row) = 0;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Enforces compile-time read-only access to buffer elements
+  SkSpan<const uint8_t> srcRow = fullImageBuffer.subspan(offset, rowBytes);
+  this->applyFilter(dstRow, srcRow);
+
+  // Good: Read-only span parameter and view use const element type
+  void processChunk(SkSpan<const uint8_t> inputSpan, SkSpan<uint8_t> outputSpan);
+
+  // Good: Virtual interface enforces constness; backend isolates C API cast
+  class SkPngEncoderBase {
+      virtual bool onEncodeRow(SkSpan<const uint8_t> row) = 0;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+- tests/**
+- tools/**
+exclude_glob:
+- third_party/**
+triggers:
+- \b(?:const\s+)?(?:SkSpan|std::span)<[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]*(?:[sS]rc|[sS]ource|[iI]nput|[rR]ead|[iI]mage|[bB]uffer|[rR]ow)\b
+- \bconst\s+(?:SkSpan|std::span)<[A-Za-z0-9_:]+>
+- \b(?:SkSpan|std::span)<const\s+[A-Za-z0-9_:]+>
+- \b(?:const\s+)?(?:SkSpan|std::span)<[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]+\s*=\s*[a-zA-Z0-9_.]+\.(?:subspan|first|last)\s*\(
+- \b(?:const\s+)?(?:SkSpan|std::span)<[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]+\s*\([^,)]*\.(?:data|bytes)\(\)
+- (?:[(,]\s*)(?:const\s+)?(?:SkSpan|std::span)<(?:const\s+)?[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]*(?:[sS]rc|[sS]ource|[iI]nput|[bB]uffer|[rR]ow)\b
+- \bvirtual\s+.*(?:SkSpan|std::span)<(?:const\s+)?[A-Za-z0-9_:]+>
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: Mandatory constant object parameters are passed to functions as const references. Optional constant
+    object parameters are passed to functions as const pointers. Mutable object parameters are passed
+    to functions as pointers.
+confidence: 0.95
+support_cl_count: 2

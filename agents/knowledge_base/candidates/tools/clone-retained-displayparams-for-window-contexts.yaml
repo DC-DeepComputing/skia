@@ -1,0 +1,39 @@
+id: tools/clone-retained-displayparams-for-window-contexts
+title: When passing persistent member configuration like DisplayParams to window context factories or
+  consuming child objects, pass ->clone() instead of std::move() to avoid nullifying parent state
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When passing persistent member configuration (such as fRequestedDisplayParams) to window context
+  factory functions (e.g., skwindow::Make*For*) or child objects that consume unique ownership, pass a
+  copy via ->clone() rather than moving the member with std::move(). Retain the persistent configuration
+  pointer intact across the window's lifecycle so subsequent queries and context recreation succeed.
+why: Moving from fRequestedDisplayParams empties the parent Window's member pointer. Subsequent configuration
+  queries or native context recreation events (such as Android surface recreation) will dereference a
+  null pointer and crash.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Moving nullifies fRequestedDisplayParams, breaking subsequent recreation.
+  fWindowContext = skwindow::MakeGLForAndroid(window, std::move(fRequestedDisplayParams));
+  ```
+
+  Good:
+
+  ```cpp
+  // Clone preserves fRequestedDisplayParams for future queries and context recreation.
+  fWindowContext = skwindow::MakeGLForAndroid(window, fRequestedDisplayParams->clone());
+  ```
+include_glob:
+- tools/sk_app/**
+triggers:
+- \bfRequestedDisplayParams\b
+- \bMake\w+For(?:Android|IOS|Mac|Win|Xlib)\b
+- \b(?:MakeGL|MakeVulkan|MakeMetal|MakeRaster|MakeANGLE|MakeD3D12|MakeGraphite)\w*\b
+- \bstd::move\b.*fRequestedDisplayParams
+- fRequestedDisplayParams->clone
+- \bfWindowContext\s*=
+confidence: 0.9
+support_cl_count: 1

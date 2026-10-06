@@ -1,0 +1,57 @@
+id: rust/reuse-spanutils-for-rust-slice
+title: When referencing rust::Slice in C++ FFI headers, include rust/common/SpanUtils.h instead of manually
+  duplicating CXX bridge forward declarations
+polarity: dont
+severity: should_fix
+rubric: design
+rule: In C++ headers interfacing with Rust FFI, do not manually duplicate forward declarations of CXX
+  bridge types such as `rust::Slice` (or `cxxbridge1::Slice`). Instead, `#include "rust/common/SpanUtils.h"`,
+  which provides the canonical forward declaration and slice-to-span conversion helpers (`ToSkSpan`).
+why: CXX bridge types require specific inline namespace nesting (`rust::cxxbridge1`). Re-declaring `rust::Slice`
+  across multiple C++ headers creates redundant boilerplate and maintenance friction if CXX internals
+  or header organizations change. Centralizing the declaration in `rust/common/SpanUtils.h` ensures consistency
+  and provides safe span conversion utilities across the codebase.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Forward declaration of rust::Slice from CXX generated code
+  namespace rust {
+  inline namespace cxxbridge1 {
+  template <typename T> class Slice;
+  }  // namespace cxxbridge1
+  }  // namespace rust
+
+  class SkStreamAdapter {
+  public:
+      size_t read(rust::Slice<uint8_t> buffer);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  #include "rust/common/SpanUtils.h"
+
+  class SkStreamAdapter {
+  public:
+      size_t read(rust::Slice<uint8_t> buffer);
+  };
+  ```
+include_glob:
+- rust/**
+- experimental/**
+- src/**
+triggers:
+- \btemplate\s*<[^>]*>\s*(?:class|struct)\s+Slice\b
+- \b(?:namespace\s+cxxbridge1|cxxbridge1::Slice)\b
+- \brust::Slice<
+- \bToSkSpan\s*\(
+- '#include\s+["'']rust/common/SpanUtils\.h["'']'
+citations:
+- path: rust/README.md
+  quote: This directory contains helpers, simplifications, and wrappers that other Skia's C/C++ code can
+    use for interacting with Rust crates. In particular, this is where FFI helpers can be found.
+confidence: 0.9
+support_cl_count: 1

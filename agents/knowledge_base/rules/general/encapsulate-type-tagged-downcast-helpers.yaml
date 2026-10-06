@@ -1,0 +1,43 @@
+id: general/encapsulate-type-tagged-downcast-helpers
+title: When downcasting base classes that use runtime type tags, encapsulate the null check, tag validation,
+  and static_cast in dedicated helper functions
+polarity: do
+severity: should_fix
+rubric: design
+rule: Encapsulate downcasting of base objects that rely on runtime type tags or enums into dedicated helper
+  functions (e.g., AsGraphiteRecorder(), AsGaneshRecorder()) that handle null checking, type validation,
+  and static_cast. Do not duplicate manual type checks and static_cast calls across multiple call sites.
+why: In class hierarchies where RTTI is disabled and base classes use runtime type discriminators, open-coding
+  null checks, type comparisons, and static_cast across callers produces repetitive boilerplate and risks
+  unchecked or unsafe downcasts. Centralizing the downcast in a dedicated helper provides a concise, safe
+  conversion that returns nullptr on null or type mismatch.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (!recorder || recorder->type() != SkRecorder::Type::kGraphite) {
+      return nullptr;
+  }
+  return SkSurfaces::RenderTarget(static_cast<Recorder*>(recorder), info);
+  ```
+
+  Good:
+
+  ```cpp
+  auto gRecorder = AsGraphiteRecorder(recorder);
+  if (!gRecorder) {
+      return nullptr;
+  }
+  return SkSurfaces::RenderTarget(gRecorder, info);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bAs(?:Graphite|Ganesh)[A-Za-z0-9_]*\s*\(
+- \b(?:->|\.)type\(\)\s*(?:==|!=)
+- \bstatic_cast<\s*(?:const\s+)?[A-Za-z0-9_:]+\s*\*>[a-zA-Z0-9_]*
+- \b(?:Type|Kind)::k(?:Graphite|Ganesh|Raster)\b
+- \b(?:As|as_)[A-Za-z0-9_]+\s*\(
+confidence: 0.92
+support_cl_count: 1

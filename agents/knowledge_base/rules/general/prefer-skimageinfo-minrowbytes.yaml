@@ -1,0 +1,45 @@
+id: general/prefer-skimageinfo-minrowbytes
+title: When computing row bytes or stride from an SkImageInfo, use info.minRowBytes() instead of hardcoded
+  bytes-per-pixel multiplication
+polarity: do
+severity: nit
+rubric: readability
+rule: When computing the minimum row bytes or default stride for an image buffer represented by an SkImageInfo,
+  use info.minRowBytes() rather than hardcoding bytes-per-pixel multiplication (such as width * 4). When
+  non-minimum or custom strides are required, derive the stride using info.bytesPerPixel() or SkColorTypeBytesPerPixel()
+  rather than raw numeric literals.
+why: Hardcoding bytes-per-pixel multipliers makes assumptions about color format layout that break when
+  formats change, and raw arithmetic bypasses overflow validation. SkImageInfo::minRowBytes() automatically
+  queries the color type's bytes-per-pixel and guards against integer overflow.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  constexpr size_t rowBytes = W * 4;
+  const SkImageInfo info = SkImageInfo::MakeN32Premul(W, H);
+  SkReadPixelsRec rec(info, pixels, rowBytes, 0, 0);
+  ```
+
+  Good:
+
+  ```cpp
+  const SkImageInfo info = SkImageInfo::MakeN32Premul(W, H);
+  const size_t rowBytes = info.minRowBytes();
+  SkReadPixelsRec rec(info, pixels, rowBytes, 0, 0);
+  ```
+include_glob:
+- src/**
+- tests/**
+- gm/**
+- bench/**
+- tools/**
+- modules/**
+triggers:
+- \b(?:info|imageInfo|srcInfo|dstInfo|fImageInfo)\.minRowBytes(?:64)?\s*[(]
+- \b(?:rowBytes|fRowBytes|dstRowBytes|srcRowBytes|row_bytes)\s*=\s*[^;]*(?:\*|minRowBytes)
+- \b(?:width|fWidth|W)\s*\*\s*(?:[1248]\b|sizeof\b|bpp|bytesPerPixel)
+- \bSkImageInfo::Make\w*\s*[(]
+- \bSk(?:Read|Write)PixelsRec\b
+confidence: 0.82
+support_cl_count: 1

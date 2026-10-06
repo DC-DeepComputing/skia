@@ -1,0 +1,92 @@
+id: general/use-sksafemath-for-buffer-calculations
+title: When computing buffer sizes, strides, or offsets, use SkSafeMath instead of raw operators, and
+  verify safe.ok() before memory allocation, slicing, or conditional checks
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When computing buffer sizes, row bytes, strides, dimensions, or offsets, use SkSafeMath (e.g., safe.mul(),
+  safe.add(), SkSafeAccumulator) instead of raw arithmetic or ad-hoc 64-bit integer checks, and verify
+  safe.ok() before allocating memory, indexing, or calling bounded slicing methods like SkSpan::subspan().
+  In compound conditionals validating computed values, place !safe.ok() (or safe.ok()) first to short-circuit
+  before evaluating comparisons against potentially overflowed results. When passing signed values into
+  size_t methods, validate them with safe.castTo<size_t>(). For signed results, compute with safe.addInt(),
+  safe.subInt(), or safe.mulInt(), or guard narrowing conversions with safe.castTo<T>() instead of raw
+  casts.
+why: 'Multiplying dimensions by bytes-per-pixel or accumulating element sizes with raw operators can overflow
+  integer types, risking undersized allocations or memory corruption. On overflow, SkSafeMath returns
+  wrapped or sentinel values; consuming unvalidated results in bounded slicing methods like SkSpan::subspan()
+  or evaluating comparisons before checking !safe.ok() risks crashes or operating on invalid data before
+  failure is detected. Additionally, safe.mul() and safe.add() operate on unsigned size_t: passing unvalidated
+  signed values or performing unchecked narrowing casts bypasses safe.ok() detection.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: evaluating comparisons before checking !safe.ok() in compound conditionals
+  if (mpEntriesData->size() != expectedSize || !expectedSizeSafe.ok()) {
+      return false;
+  }
+
+  // Bad: slicing span before verifying safe.ok() crashes on fuzzed/overflowed offsets
+  decodingState->fDst = SkSpan(static_cast<uint8_t*>(pixels), imageSize)
+                                .subspan(xByteOffset)
+                                .subspan(yByteOffset);
+  if (!safe.ok()) {
+      return kErrorInInput;
+  }
+
+  // Bad: ad-hoc 64-bit casting or raw arithmetic for buffer allocation
+  int64_t width64 = (int64_t)4 * devBlurRadius + devLeft + devRight + 1;
+  if (width64 > SK_MaxS32) {
+      return false;
+  }
+  void* storage = ::operator new(npts * sizeof(SkPoint));
+
+  // Bad: passing signed input to size_t or unchecked narrowing cast
+  const size_t srcRowBytes = width * bytesPerPixel;
+  int width = (int)safe.add((size_t)devLeft, (size_t)devRight);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: check !safe.ok() first to short-circuit before comparing computed values
+  if (!expectedSizeSafe.ok() || mpEntriesData->size() != expectedSize) {
+      return false;
+  }
+
+  // Good: verify safe.ok() before passing computed offsets to bounded subspan()
+  if (!safe.ok()) {
+      return kErrorInInput;
+  }
+  decodingState->fDst = SkSpan(static_cast<uint8_t*>(pixels), imageSize)
+                                .subspan(xByteOffset)
+                                .subspan(yByteOffset);
+
+  // Good: SkSafeMath/SkSafeAccumulator with safe.ok() before allocation
+  SkSafeMath safe;
+  int width_safe = safe.addInt(devLeft, devRight);
+  width_safe = safe.addInt(width_safe, safe.mulInt(4, devBlurRadius));
+  if (!safe.ok()) {
+      return false;
+  }
+
+  // Good: safe conversions and typed operations
+  const size_t srcRowBytes = safe.mul(safe.castTo<size_t>(width), bytesPerPixel);
+  ```
+include_glob:
+- src/**
+- experimental/**
+- modules/**
+triggers:
+- \b(?:SkSafeMath|SkSafeAccumulator)\b
+- \b[a-zA-Z0-9_]*(?:safe|Safe|accum)\.(?:mul|add|castTo|ok|addInt|mulInt|subInt)\b
+- \b(?:total_size|totalSize|totalDstSize|neededDataSize|srcRowBytes|dstRowBytes|fRowBytes|rowBytes)\s*=
+- \b(?:width|height|fWidth|fHeight)\s*\*\s*[a-zA-Z0-9_.]*(?:bytes|pixel|bpp|stride|size)
+- '[*+]\s*(?:fBytesPerPixel|bytesPerPixel|fDstBytesPerPixel|bpp|fRowBytes|rowBytes)\b'
+- '[*+]\s*(?:[a-zA-Z0-9_]+\s*[*])?\s*sizeof\s*[(]'
+- \.(?:subspan|first|last)\s*[(]
+- \(int(?:32_t)?\)\s*[^;]*(?:safe|width|height|total|size)
+confidence: 0.98
+support_cl_count: 5

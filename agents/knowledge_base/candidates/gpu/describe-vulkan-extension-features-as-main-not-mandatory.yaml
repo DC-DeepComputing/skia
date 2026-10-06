@@ -1,0 +1,40 @@
+id: gpu/describe-vulkan-extension-features-as-main-not-mandatory
+title: When commenting on Vulkan capability dependencies in Caps, describe extension-provided features
+  as main features rather than mandatory features to avoid implying client requirements
+polarity: dont
+severity: nit
+rubric: readability
+rule: When documenting Vulkan capability dependencies in capability initialization (such as VulkanCaps),
+  avoid describing extension features as 'mandatory'. Refer to them as the 'main feature' of the extension
+  to distinguish Vulkan driver specification requirements from client application requirements in Skia.
+why: Describing a Vulkan extension feature as 'mandatory' misleadingly implies that Skia requires client
+  applications to enable the feature. In Skia, capability initialization only checks whether the client
+  opted to enable the feature on the device; 'main feature' accurately identifies the primary feature
+  provided by an extension without implying a mandatory client requirement.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Vertex input dynamic state depends on the mandatory feature of
+  // VK_EXT_vertex_input_dynamic_state.
+  fUseVertexInputDynamicState = enabledFeatures.fVertexInputDynamicState;
+  ```
+
+  Good:
+
+  ```cpp
+  // Vertex input dynamic state depends on the main feature of
+  // VK_EXT_vertex_input_dynamic_state.
+  fUseVertexInputDynamicState = enabledFeatures.fVertexInputDynamicState;
+  ```
+include_glob:
+- src/gpu/**/vk/**
+triggers:
+- //.*\b(?:mandatory|main)\s+feature\b
+- //.*\bdepends on the (?:mandatory|main) feature\b
+- \b(?:enabledFeatures|fEnabledFeatures)\.f[A-Za-z0-9_]+\b
+- \bVK_EXT_[a-z0-9_]+\b
+- \bfUse[A-Za-z0-9_]+\s*=\s*enabledFeatures\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,56 @@
+id: codec/avoid-legacy-library-includes-in-replacement-backends
+title: When implementing replacement or alternative backends, define standalone local constants instead
+  of including headers from the legacy library being replaced
+polarity: dont
+severity: should_fix
+rubric: design
+rule: 'In independent or replacement backend implementations (such as Rust-based image codecs or Fontations),
+  do not #include legacy C/C++ library headers (such as <png.h> or <ft2build.h>) to reuse constants, macros,
+  or thresholds. Define standalone local constants or helpers instead, keeping replacement backends decoupled
+  from the libraries they replace.'
+why: Replacement and alternative backends are designed to provide memory-safe, isolated, or standalone
+  implementations. Including headers from the legacy library being replaced pulls in unwanted transitive
+  build dependencies, couples independent backends, and defeats target isolation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In Rust PNG codec implementation:
+  #include <png.h>
+
+  bool SkPngRustCodec::readHeader() {
+      // Reusing legacy macro creates unwanted build dependency on libpng
+      if (std::abs(gamma - 1.0f) <= PNG_GAMMA_THRESHOLD_FIXED) { ... }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In Rust PNG codec implementation:
+  // Define local constant to avoid coupling to libpng headers
+  constexpr float kPngGammaThreshold = 0.05f;
+
+  bool SkPngRustCodec::readHeader() {
+      if (std::abs(gamma - 1.0f) <= kPngGammaThreshold) { ... }
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+- src/ports/**
+triggers:
+- ^#include\s+[<"](?:png\.h|ft2build\.h|freetype/|jpeglib\.h|webp/|turbojpeg\.h)
+- \b(?:PNG_|FT_|JPEG_|WEBP_)[A-Z0-9_]+\b
+- \b(?:constexpr\s+)?(?:float|double|uint\w+_t|int)\s+k[A-Za-z0-9_]*(?:Threshold|Limit|Margin|Tolerance|Gamma)\b
+- \b(?:libpng|freetype|libjpeg|libwebp)\b
+- \bclass\s+(?:SK_API\s+)?Sk[A-Za-z0-9_]*(?:Rust|Fontations)[A-Za-z0-9_]*\b
+- \bSk[A-Za-z0-9_]*(?:RustCodec|RustDecoder|FontScanner)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We prefer to minimize includes. If forward declaring a name in a header is sufficient then that
+    is preferred to an include.
+confidence: 0.9
+support_cl_count: 1

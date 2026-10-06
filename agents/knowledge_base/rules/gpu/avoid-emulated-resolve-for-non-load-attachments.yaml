@@ -1,0 +1,66 @@
+id: gpu/avoid-emulated-resolve-for-non-load-attachments
+title: When configuring Dawn resolve emulation, only trigger emulation for LoadOp::kLoad and perform MSAA
+  load blits inline within the main render pass
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When configuring render passes with resolve attachments in Dawn, only trigger emulated load/store
+  resolve if the resolve load operation is LoadOp::kLoad; non-load operations (such as LoadOp::kClear
+  or LoadOp::kDiscard) must use native attachment handling. When MSAA load-from-resolve emulation is required,
+  execute the initial blit draw inside the main render pass rather than creating an extra dedicated render
+  pass.
+why: For non-load operations, resolve content does not need to be loaded into MSAA; forcing emulation
+  bypasses native resolve handling and breaks transient or memoryless attachments. When emulation is needed,
+  creating a separate render pass adds severe tile load/store overhead on tiling GPUs (e.g., Apple Silicon
+  or mobile), whereas drawing an inline blit into the MSAA attachment avoids pass-transition overhead
+  while preserving correctness.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Forcing emulation for non-load operations
+  if (resolveInfo.fLoadOp == LoadOp::kLoad) {
+      wgpuColorAttachment.loadOp = *resolveLoadOp;
+  } else {
+      emulateLoadStoreResolveTexture = true;
+  }
+
+  // 2. Creating a separate render pass to load MSAA from resolve
+  if (renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad) {
+      resolveEmulationHelper.loadFromResolveToMSAATexture(fResourceProvider, fCommandEncoder);
+  }
+  fActiveRenderPassEncoder = fCommandEncoder.BeginRenderPass(&wgpuRenderPass);
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Only emulate load/store resolve for kLoad
+  if (resolveInfo.fLoadOp == LoadOp::kLoad) {
+      if (resolveLoadOp.has_value()) {
+          wgpuColorAttachment.loadOp = *resolveLoadOp;
+      } else {
+          emulateLoadStoreResolveTexture = true;
+      }
+  }
+
+  // 2. Perform MSAA load blit inline at the start of the main render pass
+  auto renderPassEncoder = fCommandEncoder.BeginRenderPass(&dawnRenderPassDescWithoutResolve);
+  if (loadResolve) {
+      this->doBlitWithDraw(renderPassEncoder, renderPassWithoutResolveDesc,
+                           resolveTexture->renderTextureView(), /*srcIsMSAA=*/false, resolveArea);
+  }
+  fActiveRenderPassEncoder = renderPassEncoder;
+  ```
+include_glob:
+- src/gpu/graphite/dawn/**
+triggers:
+- \bemulateLoadStoreResolve(?:Texture)?\b
+- \bresolveInfo\.fLoadOp\b
+- \bLoadOp::kLoad\b
+- \bemulateLoadMSAAFromResolve\b
+- \bdoBlitWithDraw\b
+- \bwgpuColorAttachment\.(?:resolveTarget|loadOp)\b
+confidence: 0.98
+support_cl_count: 2

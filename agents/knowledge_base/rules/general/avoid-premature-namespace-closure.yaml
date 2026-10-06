@@ -1,0 +1,77 @@
+id: general/avoid-premature-namespace-closure
+title: When implementing C++ namespace members, keep definitions inside the open namespace block instead
+  of prematurely closing it, and omit redundant enclosing namespace prefixes
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not prematurely close and reopen a named namespace in C++ source or header files when defining
+  consecutive functions or helpers belonging to that namespace; keep definitions directly inside the open
+  namespace block. Additionally, when inside a namespace definition block, do not qualify member function
+  calls, helper invocations, or types with the enclosing namespace prefix unless explicit disambiguation
+  against an outer or shadowed symbol is required.
+why: Closing and reopening the same namespace fragments implementation structure and forces function definitions
+  to redundantly qualify identifiers out-of-line. Repeating the enclosing namespace prefix on calls or
+  types inside that namespace is similarly redundant because unqualified lookup already resolves them,
+  adding visual noise and boilerplate.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Prematurely closing and reopening namespace forces out-of-line qualification.
+      return ((c3 * t + c2) * t + c1) * t + c0;
+  }
+  }  // namespace Helpers
+
+  SkColor4f Helpers::EvaluateColorGainFunction(const ColorGain& g, const SkColor4f& c) {
+      return Helpers::EvaluateMixingFunction(g.fMixing, c);
+  }
+  namespace Helpers {
+
+  // Bad: Redundantly qualifying calls with the enclosing namespace prefix.
+  namespace SkPngRustEncoder {
+  sk_sp<SkData> Encode(const SkPixmap& src, const Options& options) {
+      SkDynamicMemoryWStream stream;
+      if (!SkPngRustEncoder::Encode(&stream, src, options)) {
+          return nullptr;
+      }
+      return stream.detachAsData();
+  }
+  }  // namespace SkPngRustEncoder
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Keep consecutive definitions grouped inside the open namespace.
+      return ((c3 * t + c2) * t + c1) * t + c0;
+  }
+
+  SkColor4f EvaluateColorGainFunction(const ColorGain& g, const SkColor4f& c) {
+      return EvaluateMixingFunction(g.fMixing, c);
+  }
+
+  // Good: Call namespace members unqualified when already inside the namespace.
+  namespace SkPngRustEncoder {
+  sk_sp<SkData> Encode(const SkPixmap& src, const Options& options) {
+      SkDynamicMemoryWStream stream;
+      if (!Encode(&stream, src, options)) {
+          return nullptr;
+      }
+      return stream.detachAsData();
+  }
+  }  // namespace SkPngRustEncoder
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*namespace\s+[a-zA-Z0-9_]+\s*\{
+- ^\s*\}\s*//\s*namespace(?:\s+[a-zA-Z0-9_]+)?\b
+- \b[A-Za-z0-9_]+::[A-Za-z0-9_]+\s*[(]
+- \b[A-Za-z0-9_]+::[A-Z][A-Za-z0-9_]*\b
+confidence: 0.93
+support_cl_count: 2

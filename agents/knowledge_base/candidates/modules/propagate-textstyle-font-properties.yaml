@@ -1,0 +1,46 @@
+id: modules/propagate-textstyle-font-properties
+title: When adding font configuration properties to TextStyle in SkParagraph, propagate them across all
+  SkFont construction sites including placeholders, ellipses, and metrics
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When adding or modifying font configuration properties on TextStyle in SkParagraph (such as font
+  edging, hinting, or subpixel rendering), update all sites where SkFont instances are created from a
+  TextStyle. Propagate the configuration consistently across normal text runs, inline placeholder shaping
+  in OneLineShaper, ellipsis generation in TextLine, and font metrics calculation in TextStyle.
+why: In SkParagraph, SkFont instances are constructed independently across standard text runs, inline
+  placeholders, truncated ellipses, and font metrics queries. Omitting any construction site leaves those
+  runs rendering with default font settings, causing visual inconsistencies between body text, placeholders,
+  and ellipsis marks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: SkFont configured from TextStyle for placeholders omits custom rendering properties
+  sk_sp<SkTypeface> typeface = typefaces.empty() ? nullptr : typefaces.front();
+  SkFont font(typeface, placeholder.fTextStyle.getFontSize());
+  // Missing propagation of font edging, hinting, and subpixel settings
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: propagate all font rendering properties from TextStyle to SkFont
+  sk_sp<SkTypeface> typeface = typefaces.empty() ? nullptr : typefaces.front();
+  SkFont font(typeface, placeholder.fTextStyle.getFontSize());
+  font.setEdging(placeholder.fTextStyle.getFontEdging());
+  font.setHinting(placeholder.fTextStyle.getFontHinting());
+  font.setSubpixel(placeholder.fTextStyle.getSubpixel());
+  ```
+include_glob:
+- modules/skparagraph/**
+triggers:
+- \bTextStyle\b
+- \bSkFont\s*\([a-zA-Z0-9_]+
+- \b(?:get|set)(?:Font)?(?:Edging|Hinting|Subpixel)\b
+- \bfont\.set(?:Edging|Hinting|Subpixel)\s*\(
+- \bplaceholder\.(?:fStyle|fTextStyle)\b
+- \bgetFontMetrics\s*\(\s*SkFontMetrics\s*\*
+confidence: 0.9
+support_cl_count: 1

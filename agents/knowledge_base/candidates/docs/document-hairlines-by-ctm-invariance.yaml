@@ -1,0 +1,46 @@
+id: docs/document-hairlines-by-ctm-invariance
+title: When documenting hairline stroke semantics (width 0), specify that hairlines do not scale with
+  the CTM rather than defining them as the thinnest stroke
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining or documenting hairline stroke semantics (stroke width 0), specify that hairlines
+  do not scale with the Current Transformation Matrix (CTM) and remain fixed in device space (typically
+  1 device pixel), rather than defining them strictly as the thinnest possible stroke. Stroke widths between
+  0 and 1 can produce subpixel anti-aliased coverage that appears visually thinner or fainter than a 1-pixel
+  hairline.
+why: In Skia, stroke widths between 0 and 1 render using subpixel anti-aliased coverage and can visually
+  appear thinner or lower-opacity than an unscaled 1-pixel hairline. Defining hairlines as 'the thinnest
+  possible line' misrepresents their behavior; their true defining invariant is CTM invariance (remaining
+  fixed in device coordinates regardless of canvas scaling).
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  *   **Hairline**: The thinnest possible line, typically one device pixel wide. A stroke width of 0
+      in a paint is interpreted as a hairline.
+  ```
+
+  Good:
+
+  ```cpp
+  *   **Hairline**: The thinnest visual line, typically one device pixel wide. A stroke width of 0
+      in a paint is interpreted as a hairline. Hairlines do not scale with the CTM.
+  ```
+include_glob:
+- docs/**
+- site/docs/**
+- include/**
+triggers:
+- (?i)\b(?:thinnest (?:possible |visual )?line|thinnest stroke)\b
+- (?i)\b[Hh]airline.*\b(?:stroke width|device pixel|device space|CTM|scale)
+- (?i)\b(?:stroke[ -]width (?:of )?0|zero thickness for hairline)\b
+- (?i)\bHairlines do not scale with the CTM\b
+- (?i)//.*\b(?:hairline|stroke width 0).*\b(?:CTM|device space|thinnest)\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: Background and Definitions
+  quote: Hairlines do not scale with the CTM.
+confidence: 0.9
+support_cl_count: 1

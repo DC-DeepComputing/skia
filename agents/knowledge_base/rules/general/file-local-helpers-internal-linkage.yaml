@@ -1,0 +1,54 @@
+id: general/file-local-helpers-internal-linkage
+title: When defining file-local helper functions, constants, or global variables in C++ implementation
+  or test files, wrap them in an anonymous namespace or declare them static
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Give file-local helper functions, constants, and global variables defined in C++ implementation
+  and test (.cpp) files internal linkage by enclosing them in an anonymous namespace (namespace { ...
+  }) or declaring them static. Do not leave translation-unit local helpers or file-scope globals with
+  external linkage in a named namespace or global scope.
+why: Non-class helper functions and non-const global variables without internal linkage inherit external
+  linkage by default, which pollutes the global symbol table, risks linker collisions and ODR violations
+  across translation units, and prevents compiler optimizations like dead-code elimination.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Free helper and file-scope global left with external linkage
+  void draw_to_mask(const SkIRect& bounds) { ... }
+  RenderDoc gRenderDoc;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Anonymous namespace or static provides internal linkage
+  namespace {
+  void draw_to_mask(const SkIRect& bounds) { ... }
+  }  // namespace
+
+  static RenderDoc gRenderDoc;
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*(?:void|bool|int|float|double|size_t|u?int(?:8|16|32|64)_t|Sk[A-Za-z0-9_]+|sk_sp<[^>]+>)\s+[A-Za-z_][A-Za-z0-9_]*\s*[(]
+- ^\s*static\s+(?:const\s+|constexpr\s+|inline\s+)?[A-Za-z0-9_:]+(?:<[^>]+>)?\s+[A-Za-z_][A-Za-z0-9_]*\s*[(]
+- \b(?:static\s+)?void\s+[A-Za-z0-9_]+\s*[(][^)]*(?:skiatest::)?Reporter
+- ^\s*namespace\s*\{
+- ^\s*(?:const\s+|constexpr\s+)?[A-Za-z0-9_:]+\s+k[A-Z]\w*\s*=
+- ^\s*(?:static\s+)?[A-Za-z_][A-Za-z0-9_:]*(?:<[^>]+>)?\s+g[A-Z]\w*\s*(?:=|;|\{)
+- \bgRenderDoc\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: |-
+    Static non-class functions in implementation files are lower-case with
+    underscores separating words:
+confidence: 0.98
+support_cl_count: 4

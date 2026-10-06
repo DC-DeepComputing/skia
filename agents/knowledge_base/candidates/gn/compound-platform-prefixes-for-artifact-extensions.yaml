@@ -1,0 +1,41 @@
+id: gn/compound-platform-prefixes-for-artifact-extensions
+title: When configuring platform- or target-specific artifact extensions in build toolchains, use compound
+  extensions with leading platform qualifiers instead of trailing suffixes
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When configuring platform- or target-specific file output extensions in build toolchains or targets,
+  use compound extensions that place the platform qualifier before the standard file extension (e.g.,
+  '.wasm.a' or '.wasm.so') rather than appending it after the extension (e.g., '.a-wasm' or '.so-wasm').
+  Keep the standard, recognizable file extension at the end of the filename.
+why: Build systems, linters, package managers, and external tools identify file formats by their terminal
+  extension (such as .a for static archives or .so for shared libraries). Appending a platform qualifier
+  as a suffix breaks standard file type identification, whereas placing the platform qualifier as a prefix
+  preserves the terminal extension while distinguishing target-specific artifacts.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (current_os == "wasm" && !is_canvaskit) {
+    default_output_extension = ".a-wasm"
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (current_os == "wasm" && !is_canvaskit) {
+    default_output_extension = ".wasm.a"
+  }
+  ```
+include_glob:
+- gn/**
+triggers:
+- \bdefault_output_extension\s*=
+- \boutput_extension\s*=
+- '"\.(?:a|so|dylib|lib|dll|exe)-[a-zA-Z0-9_-]+"'
+- '"\.[a-zA-Z0-9_]+\.(?:a|so|dylib|lib|dll)"'
+- \btool\s*\("(?:alink|solink|link)"\)
+confidence: 0.9
+support_cl_count: 1

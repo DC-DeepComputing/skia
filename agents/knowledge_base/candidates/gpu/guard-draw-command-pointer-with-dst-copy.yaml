@@ -1,0 +1,51 @@
+id: gpu/guard-draw-command-pointer-with-dst-copy
+title: When recording texture and sampler descriptors with dst-copy textures, guard draw command access
+  with if (command) rather than assuming non-null pointers when texture counts exceed zero
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When recording texture and sampler descriptor sets or bindings where pipeline-level textures (such
+  as dst-copy textures) are combined with draw commands, do not assume the draw command pointer is non-null
+  merely because total texture counts exceed zero. Guard draw command pointer dereferences with an explicit
+  `if (command)` check.
+why: In Graphite pipelines using DstReadStrategy::kTextureCopy, the dst-copy texture can be the only texture
+  bound for a draw pass, causing descriptor recording helpers to be invoked with a null draw command pointer.
+  Unconditionally dereferencing the command pointer when the total texture count is non-zero causes a
+  null pointer dereference.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  TArray<DescriptorData> descriptors(numTexSamplers);
+  // Unconditionally dereferences command even though numTexSamplers could be >0 purely from hasDstCopy
+  for (int i = 0; i < command->fNumTexSamplers; i++) {
+      const Sampler* immutableSampler = fActiveGraphicsPipeline->immutableSampler(i);
+      descriptors.push_back({DescriptorType::kCombinedTextureSampler, 1, i,
+                             PipelineStageFlags::kFragmentShader, immutableSampler});
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  TArray<DescriptorData> descriptors(numTexSamplers);
+  if (command) {
+      for (int i = 0; i < command->fNumTexSamplers; i++) {
+          const Sampler* immutableSampler = fActiveGraphicsPipeline->immutableSampler(i);
+          descriptors.push_back({DescriptorType::kCombinedTextureSampler, 1, i,
+                                 PipelineStageFlags::kFragmentShader, immutableSampler});
+      }
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bhasDstCopy\b
+- \bDstReadStrategy::kTextureCopy\b
+- \brecordTextureAndSamplerDescSet\b
+- \bif\s*\(command\)
+- \bcommand->fNumTexSamplers\b
+- \bBindTexturesAndSamplers\b
+confidence: 0.9
+support_cl_count: 1

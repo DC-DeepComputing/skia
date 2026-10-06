@@ -1,0 +1,60 @@
+id: general/avoid-sk-sp-in-transient-helpers
+title: When declaring transient, short-lived helper or parameter structs, borrow non-owning raw pointers
+  (const T*) instead of storing owning sk_sp<T>
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not store ref-counted smart pointers (sk_sp<T>) as member variables in transient, short-lived
+  helper, iterator, or parameter structs when the referenced object is guaranteed to outlive the operation.
+  Borrow a non-owning raw pointer (const T* or T*) instead, and forward-declare the referenced type in
+  headers where possible.
+why: Transient helper and execution structs (such as SkDraw or draw iterators) do not own the subsystem
+  contexts, devices, or canvas resources they orchestrate. Storing sk_sp<T> incurs unnecessary atomic
+  reference-count increments and decrements on construction and copying, misrepresents ownership semantics,
+  and forces complete header inclusions instead of forward declarations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: transient helper struct stores an owning smart pointer, adding atomic
+  // ref-count overhead and requiring complete header inclusion.
+  #include "src/core/SkRasterContextPriv.h"
+
+  class SkDrawBase {
+  public:
+      const SkMatrix* fCTM{nullptr};
+      const SkRasterClip* fRC{nullptr};
+      const SkSurfaceProps* fProps{nullptr};
+
+      sk_sp<const SkRasterContextPriv> fCtx{nullptr};
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: borrows a non-owning raw pointer with forward declaration since the
+  // referenced object is guaranteed to outlive the short-lived helper.
+  class SkRasterContext_Base;
+
+  class SkDrawBase {
+  public:
+      const SkMatrix* fCTM{nullptr};
+      const SkRasterClip* fRC{nullptr};
+      const SkSurfaceProps* fProps{nullptr};
+
+      const SkRasterContext_Base* fCtx{nullptr};
+  };
+  ```
+include_glob:
+- src/**
+- modules/**
+triggers:
+- \bsk_sp<\s*(?:const\s+)?[A-Za-z0-9_:]+>\s+f[A-Z]\w*
+- \bsk_sp<[^>]+>\s+f(?:Ctx|Context|Device|State|Props|Info|Drawer|Helper|Canvas|Pipeline)\b
+- \b(?:class|struct)\s+\w*(?:Draw|Helper|Iterator|Visitor|Params|Options)\b
+- \bconst\s+[A-Za-z0-9_:]+\*\s+f(?:Ctx|Context|Device|State|Props|Info)\b
+- \bsk_sp<(?:const\s+)?[A-Za-z0-9_:]*(?:Context|Device|Canvas|State)\b
+confidence: 0.9
+support_cl_count: 1

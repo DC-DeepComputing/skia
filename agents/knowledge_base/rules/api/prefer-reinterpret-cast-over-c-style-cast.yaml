@@ -1,0 +1,80 @@
+id: api/prefer-reinterpret-cast-over-c-style-cast
+title: When converting numeric values or pointers, do not use C-style casts; use static_cast, reinterpret_cast,
+  or Skia checked helpers like SkToInt and SkToSizeT
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not use C-style casts `(Type)val`. For pointer conversions, use explicit C++ casts such as `static_cast<T*>`
+  for downcasts or `reinterpret_cast<T*>` for reinterpreting byte buffers instead of `(T*)` to maintain
+  type safety and avoid silently casting away `const`. For numeric conversions and narrowing (such as
+  `size_t` container sizes to `int`), use Skia's checked conversion helpers (such as `SkToInt`, `SkToSizeT`,
+  or `SkTo<T>`), use `static_cast<T>`, or align variable and parameter types to eliminate the cast entirely.
+why: C-style casts bypass C++ type safety and violate coding conventions. When applied to pointers, they
+  can silently combine static_cast, reinterpret_cast, and const_cast, discarding const qualifiers or masking
+  invalid conversions. When applied to numbers, C-style and unchecked static casts bypass Skia's debug
+  bounds-checking assertions in SkToInt / SkTo<T> / SkToSizeT or mask underlying type mismatches that
+  should be resolved by matching types.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: C-style casts bypass const-safety or mask numeric truncation.
+  const uint8_t* bytes() const {
+      return (uint8_t*)this->data();
+  }
+
+  template <typename T>
+  T* cast() {
+      return (T*)fSpan.data();
+  }
+
+  SkSLTraceUtils::WriteTrace((SkSL::DebugTracePriv*)debugTrace.get(), &traceFile);
+
+  return MakeRadial(..., (int)colors.size(), ...);
+
+  if (count < 1 || pos.size() < (size_t)count) {
+      return;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Explicit C++ casts preserve constness; Skia helpers assert bounds.
+  const uint8_t* bytes() const {
+      return reinterpret_cast<const uint8_t*>(this->data());
+  }
+
+  template <typename T>
+  T* cast() {
+      return reinterpret_cast<T*>(fSpan.data());
+  }
+
+  SkSLTraceUtils::WriteTrace(static_cast<SkSL::DebugTracePriv*>(debugTrace.get()), &traceFile);
+
+  // Use checked conversion helpers or align types to avoid casting:
+  return MakeRadial(..., SkToInt(colors.size()), ...);
+
+  if (count < 1 || pos.size() < SkToSizeT(count)) {
+      return;
+  }
+  const size_t count = font.countText(text, byteLength, encoding);
+  if (count == 0 || pos.size() < count) {
+      return;
+  }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \(\s*(?:size_t|int|uint[0-9]+_t|int[0-9]+_t|float|double|SkScalar)\s*\)
+- \(\s*(?:const\s+)?[A-Za-z0-9_:]+\s*\*\s*\)
+- \bSkTo(?:SizeT|Int|UInt|U16|U8|S16|S8)?\s*\(
+- \bSkTo<[^>]+>\s*\(
+- \b(?:reinterpret_cast|static_cast)<[^>]+>
+confidence: 0.98
+support_cl_count: 5

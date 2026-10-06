@@ -1,0 +1,59 @@
+id: gpu/centralize-alignment-in-buffer-reserve
+title: When designing buffer appender or allocator hierarchies, centralize data alignment and padding
+  calculations inside base reserve() methods rather than requiring caller or subclass pre-alignment
+polarity: do
+severity: should_fix
+rubric: design
+rule: In buffer appender and allocator class hierarchies, enforce data-specific alignment and padding
+  constraints internally within the base reservation method (such as reserve()). Do not require callers
+  (like append()) or derived classes to pre-align reservation counts or define redundant wrapper overrides
+  of reserve().
+why: Centralizing alignment and padding adjustments inside the base reservation function prevents duplicated
+  alignment logic across callers, avoids fragile derived-class overrides that exist solely to wrap reserve(),
+  and ensures consistent buffer reservation behavior whether space is requested via appending helpers
+  or direct reservation calls.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Caller pre-aligns count and derived class overrides reserve():
+  VertexWriter append(unsigned int count) {
+      uint32_t alignedCount = fAppendVerts ? SkAlign4(count) : count;
+      this->reserve(alignedCount);
+      ...
+  }
+  class Vertices : private Appender {
+      void reserve(unsigned int count) {
+          DrawWriter::Appender::reserve(SkAlign4(count));
+      }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Base reserve() adjusts alignment internally; callers and derived classes pass raw count:
+  void reserve(unsigned int count) {
+      const uint32_t alignedCount = count + (fAppendVerts ? countDiff : 0);
+      ...
+  }
+  VertexWriter append(unsigned int count) {
+      this->reserve(count);
+      ...
+  }
+  class Vertices : private Appender {
+      using Appender::reserve;
+  };
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:DrawWriter|BufferWriter|VertexWriter|InstanceWriter)\b
+- \bclass\s+\w+\s*:\s*(?:private|public|protected)\s+(?:DrawWriter::)?Appender\b
+- \b(?:SK_ALWAYS_INLINE\s+)?void\s+reserve\s*\(\s*(?:unsigned\s+int|uint32_t|int|size_t)\s+\w*count\w*\)
+- \b(?:using\s+(?:DrawWriter::)?Appender::reserve|Appender::reserve\b)
+- \b(?:SkAlign4|SkAlignTo)\s*\([^)]*count
+- \b(?:alignedCount|countDiff)\b
+confidence: 0.9
+support_cl_count: 1

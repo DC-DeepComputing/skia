@@ -1,0 +1,49 @@
+id: general/prefer-sdk-frameworks-for-shared-apple-frameworks
+title: In Bazel skia_objc_library targets, use sdk_frameworks for shared Apple frameworks instead of duplicating
+  them across ios_frameworks and mac_frameworks
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In Bazel `skia_objc_library` (and `skia_objc_library_with_testutil`) targets, specify Apple SDK
+  frameworks under `sdk_frameworks` when they apply across Apple platforms. Do not duplicate identical
+  framework entries across both `ios_frameworks` and `mac_frameworks`; reserve `ios_frameworks` and `mac_frameworks`
+  strictly for platform-specific frameworks.
+why: '`skia_objc_library` forwards `sdk_frameworks` directly to the underlying Apple library rule, whereas
+  `ios_frameworks` and `mac_frameworks` generate platform-conditional `select()` branches. Using `sdk_frameworks`
+  for shared frameworks eliminates duplicate declarations and unnecessary `select()` resolution during
+  target analysis.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  skia_objc_library(
+      name = "audioplayer_apple",
+      srcs = ["SkAudioPlayer_mac.mm"],
+      hdrs = ["SkAudioPlayer.h"],
+      ios_frameworks = ["AVFoundation"],
+      mac_frameworks = ["AVFoundation"],
+      deps = ["//:core"],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  skia_objc_library(
+      name = "audioplayer_apple",
+      srcs = ["SkAudioPlayer_mac.mm"],
+      hdrs = ["SkAudioPlayer.h"],
+      sdk_frameworks = ["AVFoundation"],
+      deps = ["//:core"],
+  )
+  ```
+include_glob:
+- '**/BUILD.bazel'
+triggers:
+- \bskia_objc_library(?:_with_testutil)?\s*\(
+- \bsdk_frameworks\s*=
+- \bios_frameworks\s*=
+- \bmac_frameworks\s*=
+confidence: 0.9
+support_cl_count: 1

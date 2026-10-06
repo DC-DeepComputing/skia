@@ -1,0 +1,61 @@
+id: core/defer-options-for-static-singletons
+title: When returning function-local static singletons from lookup functions, avoid constructing options
+  or configuration structs unconditionally outside the static initializer; defer them inside the initialization
+  helper
+polarity: dont
+severity: should_fix
+rubric: safety
+rule: Do not construct configuration, options, or descriptor structs unconditionally in lookup functions
+  that return lazily initialized static singletons. Defer constructing and configuring these structs inside
+  the dedicated static initialization helper or factory function so they only evaluate on first initialization.
+why: Function-local static variables are initialized only once on first execution. Constructing options
+  or configuration objects unconditionally at lookup function scope incurs redundant object creation and
+  initialization overhead on every subsequent retrieval call.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
+      // Bad: options struct is constructed on every lookup call.
+      SkRuntimeEffect::Options options;
+      SkRuntimeEffectPriv::SetStableKeyOnOptions(&options, static_cast<uint32_t>(stableKey));
+      SkRuntimeEffectPriv::AllowPrivateAccess(&options);
+
+      switch (stableKey) {
+          case StableKey::k1DBlur4: {
+              static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_effect(4, options);
+              return s1DBlurEffect;
+          }
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
+      switch (stableKey) {
+          case StableKey::k1DBlur4: {
+              // Good: static initializer runs once; helper creates options lazily.
+              static SkRuntimeEffect* s1DBlurEffect = make_blur_1D_shader(4, stableKey);
+              return s1DBlurEffect;
+          }
+      }
+  }
+
+  static SkRuntimeEffect* make_blur_1D_shader(int kernelWidth, StableKey stableKey) {
+      SkRuntimeEffect::Options options = get_options(stableKey);
+      return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, ..., options);
+  }
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \b(?:static\s+)?[A-Za-z0-9_:]*Options\s+[a-z]\w*\s*[;={]
+- \bstatic\s+(?:const\s+)?[A-Za-z0-9_:]+\*\s+[a-zA-Z0-9_]+\s*=\s*make_\w+\s*\(
+- \bstatic\s+(?:const\s+)?[A-Za-z0-9_:]+\*\s+s[A-Z]\w*\s*=
+- \bSetStableKeyOnOptions\s*\(
+- \bGetKnownRuntimeEffect\s*\(
+confidence: 0.88
+support_cl_count: 1

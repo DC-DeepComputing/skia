@@ -1,0 +1,62 @@
+id: gn/stage-exported-file-list-refactorings
+title: When refactoring exported GN source lists or exporter tool definitions for downstream embedders,
+  retain legacy entries and annotate them with an attributed TODO
+polarity: dont
+severity: blocking
+rubric: readability
+rule: When refactoring, splitting, or renaming GN file list variables (*.gni) or exporter tool definitions
+  (bazel/exporter_tool/) consumed by downstream embedders (such as Chromium, Android, or Flutter), do
+  not remove files or delete legacy list variables in the initial CL. Introduce new granular lists alongside
+  legacy entries (or retain legacy lists as aliases/aggregates), and annotate the temporary legacy entries
+  with an attributed tracking TODO(issue) describing what to delete once downstream clients update. Remove
+  the deprecated lists only in a subsequent cleanup CL after downstream embedders land support.
+why: Downstream projects directly import Skia's exported .gni files into their own build systems (such
+  as Chromium's //third_party/skia/BUILD.gn). Removing files or variables before downstream build targets
+  update causes immediate build breakages on Skia rolls, while omitting tracking TODOs on retained legacy
+  entries causes temporary migration debt to be forgotten.
+examples:
+- "Bad:\n\n```cpp\n# gn/core.gni: Immediately removing sources from an exported list in Skia:\n- skia_encode_png_srcs\
+  \ = [ SkPngEncoderBase.cpp, SkPngEncoderImpl.cpp ]\n+ skia_encode_png_srcs = [ SkPngEncoderImpl.cpp\
+  \ ]\n\n// bazel/exporter_tool/main.go: Retaining compatibility rules without a TODO:\n{Var: \"skia_codec_rust_png_public\"\
+  ,\n\tRules: []string{\n\t\t\"//experimental/rust_png:hdrs\",\n\t\t\"//experimental/rust_png/decoder:hdrs\"\
+  ,\n\t},\n},\n```\n\nGood:\n\n```cpp\n# gn/core.gni: Introduce granular lists and retain legacy lists\
+  \ with a TODO:\nskia_encode_png_base = [ SkPngEncoderBase.cpp ]\n# TODO(https://crbug.com/381900683):\
+  \ Remove once Chromium references skia_encode_png_base.\nskia_encode_png_srcs = [ SkPngEncoderBase.cpp,\
+  \ SkPngEncoderImpl.cpp ]\n\n// bazel/exporter_tool/main.go: Retain legacy targets with an attributed\
+  \ TODO:\n{Var: \"skia_codec_rust_png_public\",\n\tRules: []string{\n\t\t// TODO(https://crbug.com/379312510):\
+  \ Delete `rust_png:hdrs` once Chromium updates.\n\t\t\"//experimental/rust_png:hdrs\",\n\t\t\"//experimental/rust_png/decoder:hdrs\"\
+  ,\n\t},\n},\n```"
+include_glob:
+- gn/**
+- bazel/**
+triggers:
+- \bskia_[a-zA-Z0-9_]+_(?:srcs|hdrs|public|sources|base)\s*\+?=
+- \bskia_[a-zA-Z0-9_]+\s*=\s*\[
+- \b(?:GNIExportDesc|GNIFileListExportDesc)\b
+- \bVar:\s*"skia_[a-zA-Z0-9_]+"
+- '"//(?:include|src|experimental)/[a-zA-Z0-9_/-]+:(?:[a-zA-Z0-9_]+_)?(?:hdrs|public|srcs)"'
+- (?://|#)\s*TODO.*?\b(?:delete|remove|migrat).*?\b(?:Chromium|Flutter|downstream)
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Chrome changes
+  quote: |-
+    Method 1 (preferred) - Make the old code path opt-in for Chromium
+
+      * Add new code to Skia, leaving the old code in place.
+      * Deprecate the old code path so that it must be enabled with a flag such as
+        'SK_SUPPORT_LEGACY_XXX'.
+      * Synchronize the above changes in Skia with a Chromium commit to
+        'skia/skia_common.gypi' or 'skia/config/SkUserConfig.h' to enable the
+        deprecated Skia API.
+- path: site/docs/dev/chrome/_index.md
+  heading: Skia in Chrome
+  quote: |-
+    Changes to the Skia repository will be rolled into Chromium by the AutoRoll bot several times per day.
+
+    If you have a Skia change that needs to be tested in Chrome, or which requires associated changes in that repository, see the guides in this section for tips on execution.
+- path: site/docs/dev/chrome/blink.md
+  heading: Changes that affect a large number of test results
+  quote: Tell Chromium to use the old code path using a staging define in their SkUserConfig.h (or their
+    //skia/BUILD.gn if it impacts only specific builds).
+confidence: 0.98
+support_cl_count: 3

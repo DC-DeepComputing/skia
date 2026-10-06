@@ -1,0 +1,60 @@
+id: tests/document-test-input-domain-restrictions
+title: When a test or test generator intentionally restricts its input domain or omits edge cases, document
+  the rationale and where omitted cases are handled
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When authoring unit tests or test input generators that intentionally restrict their input domain
+  or omit boundary conditions (such as only generating points along bounding edges rather than interior
+  points), add an explanatory comment detailing the rationale. Clarify the component's underlying assumptions
+  and explain why the omitted cases are either not applicable or handled elsewhere in the pipeline.
+why: Without explanatory comments, reviewers and future maintainers cannot determine whether restricted
+  input domains or missing edge cases represent deliberate testing choices or oversight. Documenting the
+  rationale prevents false assumptions about test coverage gaps and clarifies design invariants for future
+  refactorings.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Restricts generated points to bounding edges without explaining why interior points are omitted
+  static SkPoint pick_random_square_point(SkRandom* rand) {
+      int edge = rand->nextU() % 4;
+      float t = rand->nextF();
+      switch (edge) {
+          case 0: return {t, 0.0f};
+          case 1: return {1.0f, t};
+          case 2: return {t, 1.0f};
+          default: return {0.0f, t};
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Explains why interior points are omitted and where that case is handled
+  // Note: Although line segments can end inside a pixel, this test evaluates LUT quantization
+  // which models lines as infinite traversals crossing the entire pixel. Downstream subsample
+  // masking logic independently handles segment endpoints falling within the interior.
+  static SkPoint pick_random_square_point(SkRandom* rand) {
+      int edge = rand->nextU() % 4;
+      float t = rand->nextF();
+      switch (edge) {
+          case 0: return {t, 0.0f};
+          case 1: return {1.0f, t};
+          case 2: return {t, 1.0f};
+          default: return {0.0f, t};
+      }
+  }
+  ```
+include_glob:
+- tests/**
+triggers:
+- \b(?:SkPoint|SkRect|SkScalar|float|int)\s+(?:pick|random|sample|generate)[A-Za-z0-9_]*\s*[(]
+- \b(?:pick|generate|random|sample)_[a-zA-Z0-9_]*(?:point|coord|vector|val|color|rect|input|scalar|edge)\s*[(]
+- \b(?:rand|random)->next(?:U|F|Bool|Range|Int|Bits|S)\s*[(]
+- \bSkRandom\s*[*&]\s*[a-zA-Z0-9_]+
+- //.*\b(?:intentionally|omit|omitted|restricts?|restricted domain|interior points?|edge cases?)\b
+confidence: 0.9
+support_cl_count: 1

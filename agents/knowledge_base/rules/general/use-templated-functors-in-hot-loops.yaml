@@ -1,0 +1,60 @@
+id: general/use-templated-functors-in-hot-loops
+title: When passing callables applied inside performance-critical inner loops or pixel row processors,
+  use templated functors instead of function pointers to enable compiler inlining
+polarity: do
+severity: nit
+rubric: safety
+rule: When implementing or parameterizing operations executed repeatedly inside hot inner loops (such
+  as pixel row, color conversion, or SIMD processing loops), accept the callable as a templated parameter
+  (e.g., template <typename PixelFn>) rather than as a raw function pointer (e.g., Px(*)(Px)) or std::function.
+  Pass and invoke the callable directly so the compiler can monomorphize the loop, inline the operation,
+  and vectorize iterations.
+why: Invoking operations through a function pointer inside an inner loop introduces indirect function
+  call overhead on every iteration and prevents the compiler from inlining the callable, unrolling the
+  loop, or performing SIMD vectorization. Using a template parameter allows the compiler to monomorphize
+  the loop for the concrete callable and inline it directly into the inner loop body.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <typename PxVec>
+  using ApplyPixelFn = PxVec(*)(PxVec);
+
+  template <typename PxVec>
+  XferRowFn create_xfer_row_fn(int n, int srcBpp, int dstBpp, ApplyPixelFn<PxVec> fn) {
+      return [n, srcBpp, dstBpp, fn](const char* src, char* dst, int width) {
+          while (width >= n) {
+              memcpy(&pixel, src, srcBppN);
+              pixel = fn(pixel);
+              memcpy(dst, &pixel, dstBppN);
+          }
+      };
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  template <typename PxVec, typename PixelFn>
+  XferRowFn create_xfer_row_fn(int n, int srcBpp, int dstBpp, PixelFn applyPixel) {
+      return [n, srcBpp, dstBpp, applyPixel](const char* src, char* dst, int width) {
+          while (width >= n) {
+              memcpy(&pixel, src, srcBppN);
+              pixel = applyPixel(pixel);
+              memcpy(dst, &pixel, dstBppN);
+          }
+      };
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \btemplate\s*<[^>]*\btypename\s+\w*(?:Pixel|Row|Elem|Transform|Op|Vec|Kernel|Item|Filter)Fn\b
+- \busing\s+\w*(?:Row|Pixel|Elem|Span|Xfer|Convert|Transform)Fn\s*=
+- \busing\s+\w*Fn\s*=\s*[^;]*\(\s*\*
+- \b(?:create_)?(?:xfer|transform|convert|process|apply)_(?:row|pixel|span|buffer|lines?)_fn\b
+- \bstd::function<void\([^)]*(?:char\*|void\*|uint|int|float|width|count)
+- \b(?:Pixel|Row|Xfer|Convert|Transform)Fn\s+(?:fn|apply|op|process|transform)\b
+confidence: 0.85
+support_cl_count: 1

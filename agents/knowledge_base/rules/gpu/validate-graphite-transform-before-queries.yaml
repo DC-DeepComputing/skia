@@ -1,0 +1,44 @@
+id: gpu/validate-graphite-transform-before-queries
+title: When querying scale factors or coordinate bounds on Graphite Transform instances, verify transform.valid()
+  before invoking methods like maxScaleFactor() that assert validity
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: Before querying scale factors or mapping coordinates on a Graphite Transform (such as calling maxScaleFactor(),
+  scaleFactors(), or localAARadius()), verify that the transform is valid using transform.valid(). For
+  non-invertible or non-finite transforms, bail out or drop the operation early instead of invoking methods
+  that assert validity with SkASSERT.
+why: Graphite's Transform class marks non-invertible or non-finite matrices as invalid and enforces SkASSERT(this->valid())
+  inside scale factor and projection accessors. Calling these methods on unverified transforms crashes
+  debug builds instead of allowing the invalid draw to be safely skipped.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (pathEffect) {
+      float maxScale = localToDevice.maxScaleFactor();
+      SkStrokeRec stroke(paint);
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (pathEffect && localToDevice.valid()) {
+      float maxScale = localToDevice.maxScaleFactor();
+      SkStrokeRec stroke(paint);
+      ...
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:maxScaleFactor|scaleFactors|localAARadius)\s*\(
+- \b(?:localToDevice|localToWorld|transform|xform)\.valid\s*\(
+- \b(?:localToDevice|transform|xform)\.(?:mapRect|inverseMapRect|mapPoints|inverseMapPoints)\s*\(
+- \bTransform\s*&?\s*[a-zA-Z0-9_]+\b
+- \bSkASSERT\s*\([^)]*\bvalid\s*\(
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,65 @@
+id: general/prefer-starray-for-small-bounded-arrays
+title: When managing small bounded collections, stacks, or object pools, prefer skia_private::STArray
+  over dynamic containers or fixed arrays with manual slot counters
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer `skia_private::STArray<N, T>` over purely dynamic heap-allocating array containers (such
+  as `SkTDArray<T>` or `TArray<T>`) and fixed-size arrays with manual slot counters for state stacks,
+  temporary caches, or small object pools. Choose an inline capacity `N` sized to cover typical operations
+  without wasting excessive space, and use standard container operations (`push_back`, `pop_back`, `size()`)
+  rather than maintaining separate slot index counters alongside fixed-size arrays.
+why: '`skia_private::STArray<N, T>` embeds inline storage for `N` elements directly within the enclosing
+  object or stack frame, eliminating heap allocation and deallocation overhead on common paths while preserving
+  cache locality. Using standard container operations like `push_back()` and `pop_back()` also cleanly
+  encapsulates size tracking and bounds checking, avoiding mutable slot counters that can desynchronize
+  with array state.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Dynamic heap-allocating container for small bounded stack
+  SkTDArray<SkMatrix> fMatrixStack;
+
+  // 2. Fixed array with manual slot counter for small object pool
+  std::array<std::unique_ptr<Helper>, kMaxHelpers> fHelpers;
+  int fHelperSlot = 0;
+  if (fHelperSlot < kMaxHelpers) {
+      fHelpers[fHelperSlot++] = std::move(helper);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Inline storage for up to 4 matrices without heap allocation
+  skia_private::STArray<4, SkMatrix> fMatrixStack;
+
+  // 2. Encapsulated size tracking and stack operations via STArray
+  skia_private::STArray<kMaxHelpers, std::unique_ptr<Helper>> fHelpers;
+  if (fHelpers.size() < kMaxHelpers) {
+      fHelpers.push_back(std::move(helper));
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:skia_private::)?STArray<
+- \b(?:skia_private::)?TArray<
+- \bSkTDArray<
+- \b(?:AutoSTArray|AutoTArray)<
+- \bstd::array<
+- \b[A-Za-z0-9_]*(?:Matrix|Clip|State|Transform)?Stack\b
+- \bf[A-Za-z0-9_]*(?:Slot|Slots|Index)\b
+- \.(?:push_back|pop_back)\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: '### 1. The API Layer'
+  quote: Internally, `SkPathRef` uses `skia_private::STArray` for its geometry data storage. This `STArray`
+    is a small-object optimized array, meaning that for small paths, the geometry data is stored directly
+    within the `STArray`'s internal buffer (part of the heap-allocated `SkPathRef` object). For larger
+    paths, the `STArray` dynamically allocates additional memory on the heap to store the geometry data.
+confidence: 0.98
+support_cl_count: 4

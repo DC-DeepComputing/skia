@@ -1,0 +1,68 @@
+id: general/avoid-duplicate-trace-slice-names-in-fallback-paths
+title: When instrumenting fallback or retry paths with TRACE_EVENT, avoid emitting duplicate slice names;
+  wrap the operation in an outer scope with distinct nested slices
+polarity: dont
+severity: should_fix
+rubric: testing
+rule: Do not emit consecutive TRACE_EVENT slices with identical names when an operation falls back, retries,
+  or takes a secondary compilation path. Instead, wrap the overall logical operation in an outer trace
+  slice (e.g., using TRACE_EVENT0 or TRACE_FUNC) and record a distinct, descriptive nested slice (such
+  as '...-CompileRequired' or '...-Fallback') for the secondary attempt.
+why: Emitting duplicate sequential trace event names for an initial failed or partial attempt and its
+  subsequent retry doubles event counts and distorts average duration metrics on performance dashboards.
+  Wrapping the full operation in an outer scope accurately captures end-to-end latency, while distinct
+  nested slices clearly attribute the overhead of the fallback path in trace viewers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  {
+      TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+      GR_VK_CALL_RESULT(gpu, err, CreateGraphicsPipelines(...));
+  }
+  if (err == VK_PIPELINE_COMPILE_REQUIRED) {
+      {
+          TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+          GR_VK_CALL_RESULT(gpu, err, CreateGraphicsPipelines(...));
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  {
+      TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+      if (gpu->vkCaps().supportsPipelineCreationCacheControl()) {
+          GR_VK_CALL_RESULT_NOCHECK(gpu, err, CreateGraphicsPipelines(...));
+      }
+      if (err == VK_PIPELINE_COMPILE_REQUIRED) {
+          TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline-CompileRequired");
+          GR_VK_CALL_RESULT(gpu, err, CreateGraphicsPipelines(...));
+      }
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bTRACE_EVENT\w*\s*[(]
+- \bTRACE_EVENT[0-2]?(?:_ALWAYS)?\s*[(]
+- \bTRACE_FUNC\b
+- \bTRACE_EVENT_INSTANT\w*\s*[(]
+- \bTRACE_EVENT_SCOPE_\w+\b
+citations:
+- path: site/docs/dev/tools/tracing.md
+  heading: Adding More Trace Events
+  quote: |2-
+        // Add an event for the duration of the current function (or other scope)
+        // "skia" is a category name, for filtering events while recording
+        // TRACE_FUNC is the event name, and expands to the name of the current function
+        TRACE_EVENT0("skia", TRACE_FUNC);
+
+        if (doExtraWork) {
+          TRACE_EVENT0("skia", "ExtraWorkBeingDone");
+          ...
+        }
+confidence: 0.92
+support_cl_count: 1

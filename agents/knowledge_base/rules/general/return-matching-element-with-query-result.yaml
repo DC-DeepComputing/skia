@@ -1,0 +1,46 @@
+id: general/return-matching-element-with-query-result
+title: When a query or validation method traverses a collection to find a matching item, return the found
+  element or iterator to avoid redundant follow-up lookups
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When a query, testing, or validation function iterates over a collection or linked structure and
+  locates a matching item, return the found element (as a pointer, reference, iterator, or via std::pair/struct)
+  alongside the query result. Do not discard the located element and require callers to perform a second
+  search or traversal over the same collection.
+why: Discarding an element pointer or iterator found during an initial collection traversal forces callers
+  to perform duplicate search passes to retrieve the object. Bundling the located element with the query
+  status eliminates redundant container iterations on hot code paths.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  BoundsTest result = current->test(drawParams->drawBounds(), key, isStencil);
+  if (result == BoundsTest::kCompatibleOverlap) {
+      // Redundant pass: test() already iterated through bindings to find the match.
+      targetMatch = current->searchBinding(key);
+      break;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  auto [testResult, match] = current->test(drawParams->drawBounds(), key, isStencil);
+  targetMatch = match;
+  if (testResult == BoundsTest::kCompatibleOverlap) {
+      break;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- ->test\s*\(
+- \bresult\.(?:first|second)\b
+- \b(?:search|find|lookup)Binding\b
+- \bstd::pair<[A-Za-z0-9_:]+,\s*[A-Za-z0-9_:]+\*>\b
+- \b(?:targetMatch|foundMatch|matchedItem)\s*=
+- \b(?:search|find|lookup)[A-Z]\w*\s*\([^)]*\)\s*;
+confidence: 0.9
+support_cl_count: 1

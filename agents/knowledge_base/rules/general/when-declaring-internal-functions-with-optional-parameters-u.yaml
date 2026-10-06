@@ -1,0 +1,52 @@
+id: general/when-declaring-internal-functions-with-optional-parameters-u
+title: When declaring internal functions with optional parameters unused by most callers, provide default
+  arguments such as = nullptr instead of requiring explicit nulls
+polarity: do
+severity: blocking
+rubric: readability
+rule: When declaring internal subsystem functions or helper methods with optional parameters that are
+  unused across the vast majority of call sites, supply default parameter arguments (such as = nullptr)
+  in the declaration. Omit explicit null or default literals at typical call sites rather than forcing
+  callers to pass repetitive boilerplate arguments.
+why: Requiring internal callers to pass boilerplate nullptr or sentinel arguments across dozens of call
+  sites creates visual clutter and forces awkward inline parameter comments, whereas default arguments
+  allow callers that do not require the optional functionality to remain concise.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Forcing every internal caller to pass nullptr for rarely-used optional parameters
+  static sk_sp<SkImage_Raster> MakeFromBitmap(const SkBitmap&,
+                                              SkCopyPixelsMode,
+                                              sk_sp<SkMipmap>);
+
+  // Caller:
+  return SkImage_Raster::MakeFromBitmap(fBitmap, cpm, nullptr);
+  ```
+
+  Good:
+
+  ```cpp
+  // Defaulting optional parameters keeps internal call sites clean
+  static sk_sp<SkImage_Raster> MakeFromBitmap(const SkBitmap&,
+                                              SkCopyPixelsMode,
+                                              sk_sp<SkMipmap> = nullptr);
+
+  // Caller:
+  return SkImage_Raster::MakeFromBitmap(fBitmap, cpm);
+  ```
+include_glob:
+- src/**
+triggers:
+- =\s*nullptr\s*[,)]
+- \bsk_sp<[^>]+>(?:\s+\w+)?\s*=\s*nullptr\b
+- \bMakeFromBitmap\s*[(]
+- (?:[(,]\s*)(?:const\s+)?[A-Za-z0-9_:]+(?:<[^>]+>)?\s*[*&]?\s*[a-zA-Z0-9_]*\s*=\s*nullptr\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: void SkCanvas::drawBitmapRect(const SkBitmap& bitmap, const SkIRect* src,\n                              const
+    SkRect& dst, const SkPaint* paint = nullptr);
+confidence: 0.9
+support_cl_count: 1

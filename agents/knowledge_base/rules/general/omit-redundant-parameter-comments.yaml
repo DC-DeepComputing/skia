@@ -1,0 +1,53 @@
+id: general/omit-redundant-parameter-comments
+title: When function arguments are already self-describing via variable names, helper calls, or adjacent
+  descriptive test case labels, omit redundant /*param=*/ comments
+polarity: dont
+severity: nit
+rubric: readability
+rule: Avoid redundant inline parameter name comments (e.g., /*param=*/) when an argument's semantic role
+  is already self-evident from variable names, member field accesses, descriptive helper calls, or adjacent
+  test case description strings. Reserve inline parameter comments for genuinely ambiguous call-site literals
+  (such as booleans, numeric constants, nullptr, or empty braces) whose meaning cannot be deduced from
+  surrounding context.
+why: Inline parameter comments clarify ambiguous call-site literals whose purpose cannot be deduced from
+  context. When arguments are already self-describing or explicitly documented by adjacent parameters
+  like test case names, repeating parameter names adds visual clutter and line wrapping without conveying
+  new information.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: redundant inline parameter comments on self-describing arguments or test cases
+  VULKAN_CALL(interface,
+              CmdSetStencilCompareMask(commandBuffer,
+                                       VK_STENCIL_FACE_FRONT_BIT,
+                                       /*compareMask=*/frontStencil.fReadMask));
+  setPipelineLayout(/*layout=*/pipelineLayout, /*dynamic=*/isDynamicState());
+  test("base-1, target-0", /*targetedHdrHeadroom=*/0.f, params);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: omit comments when argument or adjacent test label makes role self-evident
+  VULKAN_CALL(interface,
+              CmdSetStencilCompareMask(commandBuffer,
+                                       VK_STENCIL_FACE_FRONT_BIT,
+                                       frontStencil.fReadMask));
+  setPipelineLayout(pipelineLayout, /*dynamic=*/true);
+  test("base-1, target-0", 0.f, params);
+  ```
+include_glob:
+- src/**
+- tests/**
+- modules/**
+triggers:
+- /\*\s*[a-zA-Z0-9_]+\s*=\s*\*/\s*[a-zA-Z_]\w*(?:\.|->)
+- /\*\s*[a-zA-Z0-9_]+\s*=\s*\*/\s*[a-zA-Z_]\w*\s*[(]
+- ',\s*/\*\s*[a-zA-Z0-9_]+\s*=\s*\*/\s*[a-zA-Z_]'
+- \"[^\"]*\",\s*/\*\s*[a-zA-Z0-9_]+\s*=\s*\*/
+- /\*\s*[a-zA-Z0-9_]+\s*=\s*\*/\s*-?\d
+- /\*\s*[a-zA-Z0-9_]+\s*=\s*\*/\s*(?:std::|Sk|sk_sp)
+confidence: 0.93
+support_cl_count: 2

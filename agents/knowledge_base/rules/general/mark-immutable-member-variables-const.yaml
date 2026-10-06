@@ -1,0 +1,99 @@
+id: general/mark-immutable-member-variables-const
+title: Mark immutable primitive and raw pointer members const in classes fixed at construction, but avoid
+  const on options structs or smart pointers (sk_sp)
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Mark class member variables const and initialize them in constructor initializer lists when their
+  values are fixed at construction, provided the class does not require copy or move assignment operators.
+  For raw pointer members where the pointee is mutated but the pointer reference is fixed, mark the pointer
+  itself const (e.g., T* const fMember). Conversely, do not declare fields const in plain data or options
+  structs (to preserve assignment and customization), and avoid declaring ref-counted smart pointers const
+  (e.g., const sk_sp<T>), which inhibits move semantics and ref-count transfer without qualifying the
+  pointee.
+why: Declaring invariant primitive and raw pointer members const enforces immutability at compile time,
+  prevents accidental reassignment, and documents class invariants. Conversely, const fields in options
+  structs disable compiler-generated copy- and move-assignment operators. For smart pointers like sk_sp<T>,
+  const qualification disables move construction and assignment (causing moves to silently fall back to
+  atomic ref-count copies) while qualifying only the smart pointer handle rather than the pointee.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class DrawAtlas {
+      ...
+      int fMaxPages;
+      GenerationCounter* fGenerationCounter;
+  };
+
+  // Mutable fields assigned post-construction rather than initialized const:
+  struct RPOps {
+      int fSrcBpp;
+      int fDstBpp;
+  };
+  auto ops = std::make_unique<RPOps>();
+  ops->fSrcBpp = SkColorTypeBytesPerPixel(srcColorType);
+
+  // Plain data or options struct with const fields disabling assignment:
+  struct BufferOptions {
+      const uint32_t fVertexBufferMinSize;
+      const uint32_t fVertexBufferMaxSize;
+  };
+
+  // Const smart pointers disable move semantics and only qualify the handle:
+  class PrecompileColorSpaceXformColorFilter : public PrecompileColorFilter {
+      ...
+  private:
+      const sk_sp<SkColorSpace> fSrc;
+      const sk_sp<SkColorSpace> fDst;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class DrawAtlas {
+      ...
+      const int fMaxPages;
+      GenerationCounter* const fGenerationCounter;
+  };
+
+  // Immutable fields declared const and initialized in constructor:
+  class RPOps {
+  public:
+      RPOps(int srcBpp, int dstBpp) : fSrcBpp(srcBpp), fDstBpp(dstBpp) {}
+      const int fSrcBpp;
+      const int fDstBpp;
+  };
+  auto ops = std::make_unique<RPOps>(SkColorTypeBytesPerPixel(srcColorType), ...);
+
+  // Keep options struct fields mutable; pass by const-ref or value:
+  struct BufferOptions {
+      uint32_t fVertexBufferMinSize = 16 << 10;
+  };
+  void init(const BufferOptions& options);
+
+  // Leave smart pointers non-const to permit move semantics and ref transfer:
+  class PrecompileColorSpaceXformColorFilter : public PrecompileColorFilter {
+      ...
+  private:
+      sk_sp<SkColorSpace> fSrc;
+      sk_sp<SkColorSpace> fDst;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+triggers:
+- \b(?:int|uint\d+_t|size_t|bool|float|double)\s+f[A-Z]\w*(?:\s*=[^;]+)?;
+- \bconst\s+(?:int|uint\d+_t|size_t|bool|float|double|[A-Za-z0-9_:]+)\s+f[A-Z]\w*
+- \b(?:const\s+)?sk_sp<[^>]+>\s+f[A-Z]\w*
+- \b[A-Za-z0-9_:]+\*\s*(?:const\s+)?f[A-Z]\w*;
+- ->f[A-Z]\w*\s*=
+- :\s*f[A-Z]\w*\s*\([^)]*\)
+- \bstruct\s+[A-Za-z0-9_]*(?:Options|Params|Config|Settings|Sizes)\b
+confidence: 0.98
+support_cl_count: 6

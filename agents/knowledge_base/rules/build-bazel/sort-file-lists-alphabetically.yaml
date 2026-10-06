@@ -1,0 +1,54 @@
+id: build-bazel/sort-file-lists-alphabetically
+title: When adding or updating file paths, sources, or test targets in Bazel and GN build files, keep
+  list entries sorted alphabetically rather than appending them
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When adding or organizing file paths, sources, or test targets in Bazel (`BUILD.bazel`, `*.bzl`)
+  and GN (`BUILD.gn`, `*.gni`) list variables, maintain strict alphabetical ordering of entries. Place
+  newly added files in their lexicographical position relative to surrounding entries rather than appending
+  them to the end of the list.
+why: Build file list variables in GN and Bazel are not always sorted automatically by formatters. Maintaining
+  alphabetical order prevents merge conflicts across concurrent changes, makes entries easy to locate,
+  and prevents duplicate entries from being introduced unnoticed.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # GN (*.gni) or Bazel (BUILD.bazel) list
+  sksl_error_tests = [
+      "errors/InterfaceBlockWithInvalidStruct.sksl",
+      "errors/InterfaceBlockWithNoMembers.sksl",
+      "errors/InterfaceBlockMixedCommasAndSemicolons.sksl",
+      "errors/IntrinsicInGlobalVariable.sksl",
+  ]
+  ```
+
+  Good:
+
+  ```cpp
+  # GN (*.gni) or Bazel (BUILD.bazel) list
+  sksl_error_tests = [
+      "errors/InterfaceBlockMemberReservedName.sksl",
+      "errors/InterfaceBlockMixedCommasAndSemicolons.sksl",
+      "errors/InterfaceBlockPrivateType.sksl",
+      "errors/InterfaceBlockWithInvalidStruct.sksl",
+  ]
+  ```
+include_glob:
+- BUILD.bazel
+- '**/*.bazel'
+- '**/*.bzl'
+- BUILD.gn
+- '**/*.gn'
+- '**/*.gni'
+triggers:
+- \"[a-zA-Z0-9_./-]+\.(?:cpp|cc|c|h|sksl|inc)\",
+- \b(?:srcs|hdrs|sources|files)\s*(?:\+?=|=)\s*[[]
+- \b[a-zA-Z0-9_]+_(?:sources|srcs|hdrs|tests|files)\s*(?:\+?=|=)\s*[[]
+- \b(?:skia_)?filegroup\s*\(
+- \bsksl_[a-zA-Z0-9_]+_tests\s*(?:\+?=|=)\s*[[]
+- \"//[a-zA-Z0-9_./-]+:[a-zA-Z0-9_./-]+\",
+confidence: 0.92
+support_cl_count: 1

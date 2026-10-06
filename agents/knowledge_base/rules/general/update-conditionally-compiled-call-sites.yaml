@@ -1,0 +1,59 @@
+id: general/update-conditionally-compiled-call-sites
+title: When refactoring APIs, types, or members across platform ports, update all call sites inside conditionally
+  compiled preprocessor blocks to prevent downstream build breaks
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When refactoring, renaming, or encapsulating APIs, types, or member variables, verify and update
+  all call sites across conditionally compiled preprocessor blocks throughout the codebase. Include inactive
+  branches guarded by tracing macros (such as SK_TRACE_*), debug utilities (SK_DEBUG, GPU_TEST_UTILS),
+  or specialized platform and SDK feature macros (such as DWRITE_CORE or NTDDI_VERSION) that standard
+  CQ builders may not compile.
+why: Standard developer builds and baseline CQ test configurations often compile with optional tracing,
+  diagnostic flags, or advanced SDK versions disabled. Overlooked call sites inside inactive conditional
+  blocks do not trigger compiler errors in standard CI, but break specialized builders, downstream rolls
+  (such as Android or Chromium), or builds against newer platform SDKs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Encapsulating fDrawParams into drawParams():
+  #if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
+      drawPass->fPipelineDrawAreas[key.pipelineIndex()] +=
+              draw.fDrawParams.clip().drawBounds().area();  // Stale member
+  #endif
+
+  // Refactoring common port API while testing only on standard CQ SDKs:
+  #if DWRITE_CORE || (defined(NTDDI_WIN11_ZN) && NTDDI_VERSION >= NTDDI_WIN11_ZN)
+      this->generateImageFromPath(glyph, imageBuffer);  // Outdated signature
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // Update call sites inside conditionally compiled tracing blocks:
+  #if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
+      drawPass->fPipelineDrawAreas[key.pipelineIndex()] +=
+              draw.drawParams().clip().drawBounds().area();
+  #endif
+
+  // Update call sites inside platform SDK/feature-guarded blocks:
+  #if DWRITE_CORE || (defined(NTDDI_WIN11_ZN) && NTDDI_VERSION >= NTDDI_WIN11_ZN)
+      this->generateImageFromPath(glyph, imageBuffer, /*newArg=*/true);
+  #endif
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- '#(?:if|ifdef|ifndef)\s+.*\bSK_TRACE_[A-Z0-9_]+\b'
+- \bdefined\s*\(\s*SK_TRACE_[A-Z0-9_]+\s*\)
+- '#(?:if|ifdef|ifndef)\s+.*\b(?:SK_DEBUG|GPU_TEST_UTILS|SK_ENABLE_[A-Z0-9_]+)\b'
+- '#(?:if|ifdef|ifndef)\s+.*\b(?:DWRITE_CORE|NTDDI_VERSION)\b'
+- \bdefined\s*\(\s*(?:DWRITE_CORE|NTDDI_[A-Z0-9_]+)\s*\)
+- \b(?:drawParams\s*[(]|fPipelineDrawAreas\b)
+- \b(?:DWRITE_CORE|NTDDI_VERSION)\b
+confidence: 0.97
+support_cl_count: 2

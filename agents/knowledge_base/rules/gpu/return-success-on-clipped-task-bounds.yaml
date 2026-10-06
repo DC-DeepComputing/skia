@@ -1,0 +1,45 @@
+id: gpu/return-success-on-clipped-task-bounds
+title: When intersecting replay clips or task bounds with render targets in Graphite tasks, verify the
+  intersection and return Status::kSuccess early without emitting commands
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: In Graphite tasks (such as RenderPassTask or UploadTask), check the boolean return value when intersecting
+  replay clips, draw bounds, or copy rects with target dimensions. If the bounds do not intersect or are
+  clipped out, return Status::kSuccess early without recording commands to the command buffer rather than
+  returning Status::kFail or emitting unclipped commands.
+why: In Graphite's task execution model, conditionally skipped or clipped-out work must return Status::kSuccess
+  so the recording remains valid and subsequent tasks continue replaying, whereas Status::kFail invalidates
+  the entire recording. Furthermore, ignoring intersect() results risks emitting redundant GPU commands
+  or incorrectly treating an empty clip rectangle as unclipped.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkIRect replayClip = replayData.fClip;
+  // Missing intersection check can emit unnecessary GPU commands or treat empty clip as unclipped
+  replayClip.intersect(colorAttachmentBounds);
+  commandBuffer->setReplayTranslationAndClip(replayData.fTranslation, replayClip);
+  ```
+
+  Good:
+
+  ```cpp
+  SkIRect replayClip = replayData.fClip;
+  if (!replayClip.intersect(colorAttachmentBounds)) {
+      return Status::kSuccess;
+  }
+  commandBuffer->setReplayTranslationAndClip(replayData.fTranslation, replayClip);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bStatus::kSuccess\b
+- \bsetReplayTranslationAndClip\b
+- \.(?:intersect|intersects)\s*\(
+- \bTask::Status\b
+- \b(?:replayClip|ReplayTargetData)\b
+- \b(?:renderTargetBounds|colorAttachmentBounds)\b
+confidence: 0.92
+support_cl_count: 1

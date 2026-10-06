@@ -1,0 +1,90 @@
+id: general/inline-simple-accessor-calls
+title: Inline simple accessors, casts, and single-use wrapper arguments directly into calls, but hoist
+  complex math expressions or loop bounds into named variables
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not declare redundant single-use intermediate local variables or reference aliases solely to
+  hold trivial member field accesses, container sizes/counts, cheap accessors, simple casts, or temporary
+  wrapper objects when they can be cleanly evaluated inline (such as `{arg}` or inline constructors) in
+  assertions, function arguments, or loop conditions. Conversely, extract non-trivial loop start or boundary
+  expressions involving math functions or multi-step rounding casts (such as static_cast<int32_t>(std::ceil(...)))
+  into a descriptive named local variable before the loop rather than embedding them directly in the for-loop
+  header.
+why: Inlining simple getters, container sizes, straightforward casts, and temporary wrapper arguments
+  directly into calls and loop conditions eliminates visual noise and boilerplate variables. Conversely,
+  embedding complex math computations, rounding functions, or multi-step casts inside a loop header clutters
+  the loop statement and obscures loop bounds; defining a descriptive local variable upfront clarifies
+  intent.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant intermediate variable for trivial loop bound
+  size_t childCount = node->fChildCount;
+  for (size_t i = 0; i < childCount; ++i) {
+      process(node->fChildren[i]);
+  }
+
+  // Redundant temporary aliases for cheap getter and argument casts
+  const Rect& drawBounds = clip.drawBounds();
+  SkASSERT(!drawBounds.isEmptyNegativeOrNaN());
+  SkColor actual = pixmap.getColor((int)pt.x(), (int)pt.y());
+
+  // Redundant temporary local variable for single-use wrapper argument
+  GrD3DBackendSemaphoreData data(info);
+  return MakeGrBackendSemaphore(backend, data);
+
+  // Cluttered loop header with embedded math and rounding cast
+  for (int32_t row = static_cast<int32_t>(std::ceil(yEdge)); row < kTileHeight; ++row) {
+      processRow(row);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Inlined directly into loop condition
+  for (size_t i = 0; i < node->fChildCount; ++i) {
+      process(node->fChildren[i]);
+  }
+
+  // Inlined directly into assertion, call site, and wrapper argument
+  SkASSERT(!clip.drawBounds().isEmptyNegativeOrNaN());
+  SkColor actual = pixmap.getColor(pt.x(), pt.y());
+  return MakeGrBackendSemaphore<GrD3DBackendSemaphoreData>(backend, {info});
+
+  // Complex loop bound hoisted to descriptive named local variable
+  int32_t startY = static_cast<int32_t>(std::ceil(yEdge));
+  for (int32_t row = startY; row < kTileHeight; ++row) {
+      processRow(row);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \b(?:const\s+)?(?:auto|[A-Za-z0-9_:]+)&?\s+[a-zA-Z0-9_]+\s*=\s*(?:[(][a-zA-Z0-9_:]+[)]\s*)?[a-zA-Z0-9_]+(?:->|\.)[a-zA-Z0-9_]+
+- \b(?:size_t|int|uint\w*)\s+[a-zA-Z0-9_]*(?:Count|Size|Length|Bound|Limit|Start|End|[xyXY])\s*=\s*
+- \bfor\s*[(][^;]*\b(?:static_cast<|std::(?:ceil|floor|round|clamp)|SkScalar(?:Ceil|Floor|Round)\b)
+- \bfor\s*[(]\s*(?:size_t|int|uint\w*)\s+[a-zA-Z0-9_]+\s*=\s*0;\s*[^;]+<\s*
+- (?:->|\.)(?:drawBounds|size|count|getColor)\s*[(]
+- \bSkASSERT\s*[(][^)]*(?:drawBounds|Count|size[(][)])
+- \b(?:int(?:8|16|32|64)_t|uint(?:8|16|32|64)_t|int|size_t)\s+[a-zA-Z0-9_]+\s*=\s*static_cast<[^>]+>\s*[(]\s*std::(?:ceil|floor|round)
+- ',\s*\{[a-zA-Z0-9_.]+\}\s*[,)]'
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Integer Types
+  quote: 'Summary: Use `int` unless you have need a guarantee on the bit count, then use `stdint.h` types
+    (`int32_t`, etc). Assert that counts, etc are not negative instead of using unsigned. Bitfields use
+    `uint32_t` unless they have to be made shorter for packing or performance reasons.'
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: Constructors that take one argument should almost always be explicit, with exceptions made only
+    for the (rare) automatic compatibility class.
+confidence: 0.98
+support_cl_count: 6

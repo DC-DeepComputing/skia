@@ -1,0 +1,71 @@
+id: general/avoid-redundant-preprocessor-guards
+title: 'When writing conditionally compiled code, omit whole-file preprocessor guards on build-gated files
+  and redundant inner #if checks where earlier directives or #error guarantee prerequisites'
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not wrap dedicated, feature-specific source files (.cpp) in whole-file `#if defined(...)` preprocessor
+  guards; rely on build systems (GN and Bazel) to conditionally compile the file only when enabled. Additionally,
+  within files or blocks already conditionally compiled under a preprocessor flag, or where an earlier
+  compile-time directive (such as `#error`) already halts compilation if prerequisites are missing, do
+  not add redundant downstream `#if`, `#ifdef`, or `#if defined(...)` guards or dead fallback (`#else`)
+  branches; implement the guarded behavior directly.
+why: Dedicated feature files are already gated by GN and Bazel source lists, so whole-file preprocessor
+  wrappers are redundant and produce empty translation units when disabled. Similarly, re-checking an
+  already active preprocessor condition or a prerequisite guaranteed by an earlier `#error` check creates
+  misleading, unreachable dead code in `#else` fallback branches.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant whole-file guard on a dedicated file already gated by GN/Bazel:
+  #if defined(SK_CODEC_COLOR_PROFILE_PARSE_WITH_RUST)
+  #include "rust/icc/FFI.rs.h"
+  ...
+  #endif
+
+  // Redundant inner check when an earlier #error already halted missing prerequisites:
+  #if !defined(SK_UNICODE_BIDI_IMPLEMENTATION)
+  #error "SkUnicode bidi component is required but missing"
+  #endif
+
+  static sk_sp<SkUnicode> getUnicode() {
+  #if defined(SK_UNICODE_BIDI_IMPLEMENTATION)
+      return SkUnicodes::Bidi::Make();
+  #else
+      return nullptr; // Dead fallback branch
+  #endif
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Rely on GN and Bazel target source lists to conditionally compile dedicated files:
+  #include "rust/icc/FFI.rs.h"
+
+  // Implement behavior directly without redundant inner checks or dead fallbacks:
+  #if !defined(SK_UNICODE_BIDI_IMPLEMENTATION)
+  #error "SkUnicode bidi component is required but missing"
+  #endif
+
+  static sk_sp<SkUnicode> getUnicode() {
+      return SkUnicodes::Bidi::Make();
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+exclude_glob:
+- third_party/**
+triggers:
+- ^#\s*(?:if|ifdef)\s+.*\b(?:SK_|CK_)[A-Z0-9_]+
+- ^#\s*if\s+!?defined\s*\(\s*(?:SK_|CK_)[A-Z0-9_]+
+- \bdefined\s*\(\s*(?:SK_|CK_)[A-Z0-9_]+\s*\)
+- ^#\s*endif\s*//\s*(?:SK_|CK_)[A-Z0-9_]+
+- ^#\s*elif\s+.*\b(?:SK_|CK_)[A-Z0-9_]+
+- ^#\s*error\b
+confidence: 0.98
+support_cl_count: 3

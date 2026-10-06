@@ -1,0 +1,51 @@
+id: api/avoid-hardcoding-build-flags-in-headers
+title: 'When modifying public headers under include/, do not hardcode opt-in feature flags, tracing macros,
+  or build variants via #define; configure them in build files or SkUserConfig.h'
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: 'Do not hardcode feature flags, opt-in build variants, or diagnostic/tracing macros (such as SK_TRACE_*
+  or staging flags) via #define in public or core headers like include/core/SkTypes.h. Configure opt-in
+  features and build variants through build systems (BUILD.gn or Bazel) or embedder configuration files
+  (SkUserConfig.h). Always remove temporary test #defines used during local development before submitting
+  for review.'
+why: Hardcoding a feature or tracing macro in a public header enables it unconditionally across all client
+  targets and platforms, bypassing build configurations and incurring unexpected CPU or memory overhead
+  across all consumers. Managing flags in build files or SkUserConfig.h preserves build variant separation
+  and lets downstream embedders control their configuration.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // include/core/SkTypes.h
+  // Hardcoding opt-in or temporary test define in a public header
+  #define SK_TRACE_GRAPHITE_PIPELINE_USE
+  ```
+
+  Good:
+
+  ```cpp
+  // BUILD.gn
+  // Configure opt-in tracing in build files rather than public headers
+  if (!skia_disable_tracing && skia_enable_pipeline_label_tracing) {
+      defines += [ "SK_TRACE_GRAPHITE_PIPELINE_USE" ]
+  }
+  ```
+include_glob:
+- include/**
+exclude_glob:
+- include/config/SkUserConfig.h
+triggers:
+- ^#\s*define\s+SK_TRACE_[A-Z0-9_]+
+- ^#\s*define\s+SK_(?:ENABLE|DISABLE|SUPPORT|USE)_[A-Z0-9_]+
+- ^#\s*define\s+SK_[A-Z0-9_]+(?:_USE_|_ENABLED|_SUPPORT_)[A-Z0-9_]+
+- ^#\s*define\s+(?:SK|SKGPU)_[A-Z0-9_]*(?:FEATURE|CONFIG|PIPELINE|STAGING)[A-Z0-9_]*
+- ^#\s*define\s+SK_[A-Z0-9_]+\s+(?:0|1)\b
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Method 2 - Make the new code path opt-in for Chromium
+  quote: Set the flag in Chromium's 'skia/skia_common.gypi' or 'skia/config/SkUserConfig.h' to enable
+    the new or updated Skia API.
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,54 @@
+id: general/sync-declaration-count-comments
+title: When writing or updating comments that specify numerical item counts for following declarations,
+  verify the stated count matches the actual items
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When adding, modifying, or removing declarations introduced by a comment specifying an explicit
+  numerical count (such as enum values, methods, or struct fields), verify that the stated count accurately
+  matches the actual number of subsequent items. Prefer keeping introductory comments descriptive without
+  hardcoded counts if the list is expected to change frequently, but ensure any explicit numbers remain
+  synchronized.
+why: Hardcoded numerical counts in section comments easily become stale as items are added or removed
+  during refactoring. Outdated counts mislead readers, create ambiguity about whether declarations were
+  inadvertently omitted or misplaced, and erode trust in surrounding documentation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // The following 6 colortypes are just for reading from - not for rendering to
+  kR8G8_unorm_SkColorType,
+  kA16_float_SkColorType,
+  kR16_float_SkColorType,
+  kR16G16_float_SkColorType,
+  kA16_unorm_SkColorType,
+  kR16_unorm_SkColorType,
+  kR16G16_unorm_SkColorType,
+  kR16G16B16A16_unorm_SkColorType,
+  ```
+
+  Good:
+
+  ```cpp
+  // The following 8 colortypes are just for reading from - not for rendering to
+  kR8G8_unorm_SkColorType,
+  kA16_float_SkColorType,
+  kR16_float_SkColorType,
+  kR16G16_float_SkColorType,
+  kA16_unorm_SkColorType,
+  kR16_unorm_SkColorType,
+  kR16G16_unorm_SkColorType,
+  kR16G16B16A16_unorm_SkColorType,
+  ```
+include_glob:
+- '**/*.h'
+triggers:
+- \b[A-Za-z0-9_]+_SkColorType\b
+- \bk[A-Za-z0-9_]+,\s*(?://.*)?$
+- \benum\s+(?:class\s+)?[A-Za-z0-9_]+
+- //.*\b(?:[Tt]he following|[Tt]hese|[Nn]ext)\s+(?:[0-9]+|two|three|four|five|six|seven|eight|nine|ten)\b
+- //.*\b(?:[0-9]+|two|three|four|five|six|seven|eight|nine|ten)\s+(?:colortypes|formats|methods|functions|types|values|fields|members|entries)\b
+- //.*\b(?:[Cc]ount|[Nn]umber of)\s+(?:following|subsequent|below)\b
+confidence: 0.9
+support_cl_count: 1

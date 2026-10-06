@@ -1,0 +1,40 @@
+id: tests/preserve-empty-state-assertions
+title: When updating unit tests to reflect changed semantics for non-empty edge cases, preserve explicit
+  test assertions for genuinely empty inputs
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When updating unit tests to reflect changed semantics for non-empty or non-trimmed edge cases, preserve
+  explicit test coverage for genuinely empty inputs. Retain or add explicit assertions verifying that
+  empty containers or zero-length inputs still yield empty objects or expected empty-state values, rather
+  than replacing or inverting existing empty-state assertions.
+why: Modifying or inverting edge-case test assertions to accommodate changed trimming, padding, or degenerate-input
+  semantics can inadvertently delete coverage for true zero-length inputs. Retaining explicit assertions
+  for genuinely empty states prevents regressions where basic zero-element creation or initialization
+  paths break unnoticed.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const SkPathVerb move[] = { M };  // the M will not be trimmed
+  REPORTER_ASSERT(reporter, !SkPathData::Make({pts, 1}, move, {})->empty());
+  ```
+
+  Good:
+
+  ```cpp
+  const SkPathVerb move[] = { M };  // the M will not be trimmed
+  REPORTER_ASSERT(reporter, SkPathData::Make({}, {}, {})->empty());
+  REPORTER_ASSERT(reporter, !SkPathData::Make({pts, 1}, move, {})->empty());
+  ```
+include_glob:
+- tests/**
+triggers:
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*\(.*(?:empty|isEmpty)\s*\(
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*\(.*!.*(?:empty|isEmpty)\s*\(
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*\(.*(?:size|count|length)\s*\(\)\s*==\s*0
+- \bSkPath(?:Data)?::Make\s*\(
+- \b(?:pts|verbs?|points?|bytes|tokens?)\.empty\(\)
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,38 @@
+id: general/name-va-list-functions-with-valist-suffix
+title: When naming functions or methods that accept a va_list parameter, use a VAList suffix instead of
+  a C-style v prefix
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Name functions and methods that accept a `va_list` parameter using a `VAList` suffix (e.g., `SkLogVAList`,
+  `appendVAList`, `printVAList`) rather than a C standard library-style `v` prefix (e.g., `vSkLog`).
+why: A leading 'v' prefix is ambiguous and inconsistent with Skia's naming conventions. Using the 'VAList'
+  suffix clearly distinguishes `va_list` overloads from their variadic (`...`) counterparts and maintains
+  uniform, searchable API naming across the codebase.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void vSkLog(SkLogPriority priority, const char format[], va_list args) SK_PRINTF_LIKE(2, 0);
+  ```
+
+  Good:
+
+  ```cpp
+  void SkLogVAList(SkLogPriority priority, const char format[], va_list args) SK_PRINTF_LIKE(2, 0);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \bva_list\b
+- \b[a-zA-Z0-9_]+VAList\s*\(
+- \bv[A-Z][a-zA-Z0-9_]*\s*\(
+- \bSK_PRINTF_LIKE\s*\(\s*\d+\s*,\s*0\s*\)
+confidence: 0.92
+support_cl_count: 1

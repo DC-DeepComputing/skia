@@ -1,0 +1,69 @@
+id: general/decode-embedded-images-via-deferred-from-encoded-data
+title: 'When decoding embedded image assets in font backends or subsystems, use SkImages::DeferredFromEncodedData
+  with any_decoder instead of compile-time #ifdef branching and split targets'
+polarity: do
+severity: should_fix
+rubric: design
+rule: 'When decoding embedded image assets (such as bitmap font glyphs or embedded document resources),
+  decode them using SkImages::DeferredFromEncodedData or SkCodecs::DeferredImage rather than hardcoding
+  concrete decoders or using compile-time #ifdef guards. In build configurations, depend generically on
+  //src/codec:any_decoder instead of duplicating library targets for each decoder backend.'
+why: Hardcoding specific decoder backends or toggling them via compile-time preprocessor macros and separate
+  build targets (such as _libpng vs. _rustpng) creates One-Definition-Rule (ODR) violations in monorepos
+  and leads to build target explosion. Using Skia's runtime codec registration architecture decouples
+  subsystems from specific decoders, allowing downstream embedders to register their preferred format
+  decoders via SkCodecs::Register without modifying asset-consuming libraries.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SkTypeface_fontations.cpp:
+  #if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+  #include "include/codec/SkPngDecoder.h"
+  #elif defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+  #include "experimental/rust_png/decoder/SkPngRustDecoder.h"
+  #endif
+
+  // In BUILD.bazel:
+  skia_cc_library(name = "fontations_support_libpng", ...)
+  skia_cc_library(name = "fontations_support_rustpng", ...)
+  ```
+
+  Good:
+
+  ```cpp
+  // In SkTypeface_fontations.cpp:
+  sk_sp<SkImage> img = SkImages::DeferredFromEncodedData(
+          SkData::MakeWithoutCopy(png_data.data(), png_data.size()));
+
+  // In BUILD.bazel:
+  skia_cc_library(
+      name = "fontations_support",
+      deps = [
+          "//:core",
+          "//src/codec:any_decoder",
+      ],
+  )
+  ```
+include_glob:
+- src/**
+- modules/**
+- '**/BUILD.bazel'
+- BUILD.gn
+triggers:
+- \bSkImages::DeferredFromEncodedData\b
+- \bSkCodecs::(?:DeferredImage|Register)\b
+- '#if(?:def)?\s+SK_CODEC_DECODES_\w+'
+- '#include\s+[\"<](?:include|experimental|src)/codec/Sk\w+(?:Rust)?Decoder\.h[\">]'
+- '[\"'']//src/codec:any_decoder[\"'']'
+- \b[a-z0-9_]+_(?:libpng|rustpng|rust_png|decoder)\b
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 115
+  quote: 'Clients now need to register codecs which Skia should use to decode raw bytes. For example:
+    `SkCodecs::Register(SkJpegDecoder::Decoder());`. Skia still provides many supported formats (see `include/codec/*Decoder.h`).
+    Clients are free to specify their own, either supplementing the existing set or using a custom version
+    instead of the one previously provided by default by Skia.'
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,67 @@
+id: general/prefer-ternary-for-simple-conditional-assignments
+title: When assigning a variable on a two-branch condition, prefer a concise ternary expression unless
+  an if block for that condition already exists
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'Prefer a concise ternary expression (`cond ? a : b`) over a multi-line `if`/`else` statement when
+  initializing or assigning a variable based on a simple two-branch condition. Declare local variables
+  as `const` at initialization whenever ternary assignment makes immediate definition possible. However,
+  do not re-evaluate a condition using a ternary operator when an `if` block checking that same condition
+  already exists nearby; initialize the variable with its default value upfront and update it inside the
+  existing `if` block alongside related state updates.'
+why: Using a ternary expression eliminates repetitive target variable assignments and vertical boilerplate,
+  making two-branch selection immediately readable and allowing variables to be declared const at initialization.
+  However, re-evaluating a condition in a subsequent ternary when a conditional block already exists duplicates
+  logic and scatters related state mutations; consolidating updates inside the existing block keeps related
+  configuration cohesive.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Standalone two-branch assignment using verbose if/else:
+  if (vendorID == kAMD_VkVendor) {
+      fMaxVertexAttributes = 32;
+  } else {
+      fMaxVertexAttributes = deviceLimits.maxVertexInputAttributes;
+  }
+
+  // Redundant ternary re-checking condition from preceding if block:
+  if (rpMayReadDstAsInput) {
+      stageFlags |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+      access |= VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+  }
+  VkImageLayout layout = rpMayReadDstAsInput ? VK_IMAGE_LAYOUT_GENERAL
+                                             : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+  ```
+
+  Good:
+
+  ```cpp
+  // Concise ternary for standalone two-branch assignment:
+  fMaxVertexAttributes = vendorID == kAMD_VkVendor ? 32 : deviceLimits.maxVertexInputAttributes;
+
+  // Consolidate mutation into existing conditional block with default initialization:
+  VkImageLayout layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+  if (rpMayReadDstAsInput) {
+      stageFlags |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+      access |= VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+      layout = VK_IMAGE_LAYOUT_GENERAL;
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \s*=\s*[^;?]+\s*\?\s*[^;:]+\s*:\s*[^;]+;
+- \b(?:return|const\s+\w+)\s+[^;?]+\s*\?\s*[^;:]+\s*:\s*[^;]+;
+- \bif\s*\([^=)]+\s*(?:==|!=)\s*[^)]+\)\s*\{?$
+- \b[a-zA-Z0-9_]+\s*=\s*!?[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+|->[a-zA-Z0-9_]+)?\s*\?
+- \belse\s*\{\s*\\n?\s*[a-zA-Z0-9_]+\s*=
+- \bf[A-Z][a-zA-Z0-9_]*\s*=\s*
+confidence: 0.95
+support_cl_count: 2

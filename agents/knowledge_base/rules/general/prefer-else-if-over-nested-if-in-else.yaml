@@ -1,0 +1,56 @@
+id: general/prefer-else-if-over-nested-if-in-else
+title: When an else block contains only a single nested if statement, condense it into an else if branch
+  to flatten control flow and avoid unnecessary indentation
+polarity: do
+severity: nit
+rubric: readability
+rule: When an else block contains only a single nested if statement, condense it into an else if branch
+  rather than nesting the condition inside the else body. Preserve mutually exclusive control flow at
+  a flat indentation level, and use a trailing else only for the final fallback path.
+why: Nesting an if statement inside an else block adds unnecessary indentation depth and obscures that
+  the conditions represent a chain of mutually exclusive alternatives. Using else if keeps control flow
+  flat, idiomatic, and easier to follow.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (table_entry.to_xyzd50) {
+      table_entry_to_xyzd50 = *table_entry.to_xyzd50;
+  } else {
+      if (!table_entry.sk_primaries.toXYZD50(&table_entry_to_xyzd50)) {
+          continue;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (table_entry.to_xyzd50) {
+      table_entry_to_xyzd50 = *table_entry.to_xyzd50;
+  } else if (!table_entry.sk_primaries.toXYZD50(&table_entry_to_xyzd50)) {
+      continue;
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+exclude_glob:
+- third_party/**
+triggers:
+- \belse\s*\{
+- \}\s*else\s*\{
+- \}\s*else\s*$
+- \}\s*else\s+if\s*\(
+- \belse\s+if\s*\(
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Braces
+  quote: '`else` and `else if` appear on same line as opening and closing braces unless preprocessor conditional
+    compilation interferes.'
+confidence: 0.88
+support_cl_count: 1

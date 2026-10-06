@@ -1,0 +1,48 @@
+id: general/avoid-forward-declaring-skspan
+title: When referencing SkSpan in header files, include include/core/SkSpan.h directly instead of forward-declaring
+  template <typename T> class SkSpan
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not forward-declare template <typename T> class SkSpan; in header files; include "include/core/SkSpan.h"
+  directly instead.
+why: SkSpan is a lightweight vocabulary type that is conditionally defined as an alias template (template
+  <typename T> using SkSpan = std::span<T>;). In C++, alias templates cannot be forward-declared as class
+  templates, causing compilation failures when transitioning to std::span or when legacy SkSpan mode is
+  disabled.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Header file: forward-declaring SkSpan as a template class
+  template <typename T> class SkSpan;
+
+  class Codec {
+  public:
+      void decode(SkSpan<uint8_t> dst);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Header file: directly include the lightweight SkSpan header
+  #include "include/core/SkSpan.h"
+
+  class Codec {
+  public:
+      void decode(SkSpan<uint8_t> dst);
+  };
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- \btemplate\s*<[^>]*>\s*(?:class|struct)\s+SkSpan\b
+- \b(?:class|struct)\s+SkSpan\s*;
+- '#include\s+[\"<]include/core/SkSpan\.h[\">]'
+- \bSkSpan<
+confidence: 0.9
+support_cl_count: 1

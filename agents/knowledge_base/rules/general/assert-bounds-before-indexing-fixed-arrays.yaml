@@ -1,0 +1,70 @@
+id: general/assert-bounds-before-indexing-fixed-arrays
+title: When copying elements into fixed-capacity arrays or encoding count-minus-one fields, assert dynamic
+  counts satisfy both minimum and maximum bounds with SkASSERT
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When copying dynamic elements or indexing into fixed-size arrays (such as std::array or raw C arrays
+  in syntax or serialization structs), assert that dynamic counts satisfy both maximum capacity and minimum
+  bounds (e.g., SkASSERT(kMin <= count) and SkASSERT(count <= kMaxCapacity)). Additionally, assert minimum
+  bounds before decrementing counts when encoding zero-based or count-minus-one syntax fields to prevent
+  underflow. Do not rely on implicit loop limits alone when writing to fixed containers or decremented
+  fields.
+why: Standard fixed-size arrays and raw syntax buffers do not validate bounds in their subscript operators,
+  risking out-of-bounds writes if dynamic counts exceed capacity. Furthermore, unvalidated counts can
+  underflow when calculating count-minus-one header fields. Asserting both minimum and maximum bounds
+  verifies class invariants and catches buffer overflows or underflow bugs early in debug builds.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: writes into fixed-size array without verifying count <= capacity
+  syntax.num_alternate_images = images.size();
+  for (size_t a = 0; a < images.size(); ++a) {
+      syntax.alternate_hdr_headrooms[a] = float_to_uint16(
+          alternateHeadrooms[a], 0u, 60000u, 0u, 10000.f);
+  }
+
+  // Bad: decrements count and populates fixed array without asserting kMin and kMax
+  syntax.gain_curve_num_control_points_minus_1[a] = cubic.fNumControlPoints - 1u;
+  for (size_t c = 0; c < cubic.fNumControlPoints; ++c) {
+      syntax.gain_curve_control_points_x[a][c] =
+          float_to_uint16(cubic.fX[c], 0u, 64000u, 0u, 1000.f);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: asserts dynamic count does not exceed fixed array capacity
+  SkASSERT(images.size() <= HeadroomAdaptiveToneMap::kMaxNumAlternateImages);
+  syntax.num_alternate_images = images.size();
+  for (size_t a = 0; a < images.size(); ++a) {
+      syntax.alternate_hdr_headrooms[a] = float_to_uint16(
+          alternateHeadrooms[a], 0u, 60000u, 0u, 10000.f);
+  }
+
+  // Good: asserts both minimum and maximum bounds before decrementing and indexing
+  SkASSERT(PiecewiseCubicFunction::kMinNumControlPoints <= cubic.fNumControlPoints);
+  SkASSERT(cubic.fNumControlPoints <= PiecewiseCubicFunction::kMaxNumControlPoints);
+  syntax.gain_curve_num_control_points_minus_1[a] = cubic.fNumControlPoints - 1u;
+  for (uint8_t c = 0; c < cubic.fNumControlPoints; ++c) {
+      syntax.gain_curve_control_points_x[a][c] =
+          float_to_uint16(cubic.fX[c], 0u, 64000u, 0u, 1000.f);
+  }
+  ```
+include_glob:
+- src/**
+- modules/**
+triggers:
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*<=\s*(?:[A-Za-z0-9_:]*::)?kMax[A-Z]\w*
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*(?:[A-Za-z0-9_:]*::)?kMin[A-Z]\w*\s*<=
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\.(?:size|count)\s*[(][)]\s*<=\s*(?:[A-Za-z0-9_:]*::)?kMax[A-Z]\w*
+- \bfor\s*[(][^)]*<\s*[A-Za-z0-9_.]*(?:size|count|Num[A-Z]\w*)\s*[(]?[)]?
+- \bstd::array<[^,>]+,\s*(?:[A-Za-z0-9_:]*::)?kMax[A-Z]\w*>
+- \[\s*[a-zA-Z0-9_]+\s*\\]\s*=
+- \b(?:num_|fNum|fCount|count|size)\s*<=\s*(?:[A-Za-z0-9_:]*::)?kMax[A-Z]\w*
+- \b[a-zA-Z0-9_.]*(?:Count|Points|size|count)\s*-\s*1u?\b
+confidence: 0.9
+support_cl_count: 1

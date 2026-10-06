@@ -1,0 +1,65 @@
+id: general/unconditional-signatures-for-logging-metadata
+title: When adding optional logging, tracing, or diagnostics, keep signatures, fields, and call sites
+  unconditional by encapsulating preprocessor guards inside helper bodies
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'Keep interface signatures, class fields, and call sites unconditional when adding optional logging,
+  tracing, or debugging instrumentation. Do not wrap method parameters or struct/class fields in #if preprocessor
+  guards when overhead is negligible. Furthermore, encapsulate conditional compilation guards (#if / #ifdef)
+  inside helper function bodies or provide empty inline stubs rather than wrapping helper definitions
+  and call sites in preprocessor checks.'
+why: 'Guarding method parameters and object fields with preprocessor blocks clutters declarations and
+  causes divergent API surfaces across build configurations. Similarly, scattering #if checks across call
+  sites creates boilerplate; encapsulating guards inside helper bodies allows unconditional calls that
+  the compiler optimizes away when disabled.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In header/interface:
+  sk_sp<GraphicsPipeline> findGraphicsPipeline(
+      const UniqueKey& key
+  #if defined(SK_PIPELINE_LIFETIME_LOGGING)
+      , SkEnumBitMask<PipelineCreationFlags> flags = PipelineCreationFlags::kNone
+  #endif
+  );
+
+  // In implementation and call site:
+  #if SK_HISTOGRAMS_ENABLED
+  void log_pipeline_creation(const AsyncPipelineCreationBase* apcb) { ... }
+  #endif
+  #if SK_HISTOGRAMS_ENABLED
+  log_pipeline_creation(asyncCreationPtr);
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // In header/interface:
+  sk_sp<GraphicsPipeline> findGraphicsPipeline(
+      const UniqueKey& key,
+      SkEnumBitMask<PipelineCreationFlags> flags = PipelineCreationFlags::kNone);
+
+  // In implementation and call site:
+  void log_pipeline_creation(const AsyncPipelineCreationBase* apcb) {
+  #if SK_HISTOGRAMS_ENABLED
+      ...
+  #endif
+  }
+  log_pipeline_creation(asyncCreationPtr);
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- '#(?:if|ifdef)\s+.*(?:LOG|TRACE|DEBUG|HISTOGRAM|STATS)'
+- '#(?:if|ifdef)\s+.*SK_[A-Z0-9_]*(?:LOG|TRACE|DEBUG|STATS|HISTOGRAM)'
+- \bSK_[A-Z0-9_]*(?:LOG|TRACE|DEBUG|STATS|HISTOGRAM)[A-Z0-9_]*\b
+- \bSK_HISTOGRAMS?_[A-Z0-9_]+\b
+- \bSK_PIPELINE_LIFETIME_LOGGING\b
+- \b(?:futurePipelineID|PipelineCreationFlags|AsyncPipelineCreationBase|log_pipeline_creation)\b
+confidence: 0.95
+support_cl_count: 2

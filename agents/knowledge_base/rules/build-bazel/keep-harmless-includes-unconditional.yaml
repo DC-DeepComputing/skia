@@ -1,0 +1,54 @@
+id: build-bazel/keep-harmless-includes-unconditional
+title: When configuring Bazel cc_library includes, list header search paths unconditionally instead of
+  wrapping harmless, collision-free directories in platform select() expressions
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not use select() to conditionally add include directories in Bazel cc_library (or skia_cc_library)
+  includes attributes when the directories are harmless and cause no header collisions or shadowing across
+  other platforms. List header search directories unconditionally in includes, reserving select() strictly
+  for directories containing conflicting header filenames that would break compilation on other targets.
+why: Wrapping include search paths in platform-specific select() expressions adds unnecessary configuration
+  verbosity, complicates build inspection, and increases maintenance overhead. When header filenames within
+  a directory do not conflict with or shadow headers used on other platforms or architectures, adding
+  the directory unconditionally is safe and keeps build targets concise.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  cc_library(
+      name = "libjpeg_turbo",
+      srcs = [...],
+      includes = ["src"] + select({
+          ":arm_or_arm64": [
+              "simd/arm",
+          ],
+          "//conditions:default": [],
+      }),
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  cc_library(
+      name = "libjpeg_turbo",
+      srcs = [...],
+      includes = [
+          "simd/arm",
+          "src",
+      ],
+  )
+  ```
+include_glob:
+- BUILD.bazel
+- '**/BUILD.bazel'
+triggers:
+- \bincludes\s*=
+- \bincludes\s*=.*\bselect\s*[(]
+- \bselect\s*[(]\s*[{]
+- \b(?:skia_)?cc_library\s*[(]
+- \"//conditions:default\"
+confidence: 0.9
+support_cl_count: 1

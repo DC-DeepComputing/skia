@@ -1,0 +1,49 @@
+id: docs/document-conic-curves-in-path-primitives
+title: When documenting SkPath curve primitives or geometry models, describe conic curves (rational quadratics)
+  alongside quadratic and cubic Bézier curves
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting or describing SkPath curve primitives or geometry models, include conic curves
+  (rational quadratics) alongside quadratic and cubic Bézier curves. Explicitly describe conics as using
+  control points and a weight to represent circles, ovals, and arcs exactly without polynomial approximation.
+why: SkPath natively supports conics (rational quadratics specified by control points and a weight) to
+  represent conic sections such as circles and arcs exactly. Describing Skia's curve model as only quadratic
+  and cubic Bézier curves is technically inaccurate and misrepresents the core path geometry engine.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  * **Path**: A sequence of lines and curves that describe a shape. Skia uses
+    quadratic and cubic Bézier curves to create smooth, scalable curves. A
+    quadratic curve has one control point, while a cubic curve has two for
+    more complex shapes.
+  ```
+
+  Good:
+
+  ```cpp
+  * **Path**: A sequence of lines and curves that describe a shape. Skia uses
+    quadratic, cubic, and conic Bézier curves to create smooth, scalable curves. A
+    quadratic curve has one control point, while a cubic curve has two for more
+    complex shapes. A conic curve represents perfect circles etc using one control
+    point and one weight.
+  ```
+include_glob:
+- docs/**
+- site/docs/**
+triggers:
+- (?i)\b(?:quadratic|cubic|conic)\s+(?:B[eé]zier\s+)?curves?\b
+- (?i)\b(?:B[eé]zier|curve)\s+primitives?\b
+- (?i)\b(?:conic|rational\s+quadratic)\b
+- (?i)\bSkPath\b.*\b(?:curve|geometry|primitive)s?\b
+- (?i)\b(?:lines?\s+and\s+curves?|curves?\s+and\s+lines?)\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: Background and Definitions
+  quote: Skia uses quadratic, cubic, and conic Bézier curves to create smooth, scalable curves. A quadratic
+    curve has one control point, while a cubic curve has two for more complex shapes. A conic curve represents
+    perfect circles etc using one control point and one weight.
+confidence: 0.88
+support_cl_count: 1

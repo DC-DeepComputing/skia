@@ -1,0 +1,47 @@
+id: tests/assert-expected-test-setup-calculations
+title: When deriving test scenario capacities or limits from multiple subsystem constants, assert that
+  the calculated value matches expected quantities using SkASSERT or static_assert
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When test setup derives scenario limits, capacities, or item counts from combinations of constants
+  and subsystem properties (such as grid dimensions multiplied by maximum pages), assert that the computed
+  quantity matches the expected test scenario value using SkASSERT or static_assert. Do not leave multi-constant
+  capacity derivations unasserted.
+why: Deriving test capacities or iteration counts from external subsystem constants creates an implicit
+  dependency on those definitions. Asserting the calculated quantity guarantees that future changes to
+  subsystem limits or configuration formulas fail fast at test setup rather than silently altering test
+  coverage or causing confusing downstream failures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  constexpr int numPlots = 2;
+  constexpr int maxPages = skgpu::PlotLocator::kMaxMultitexturePages;
+  constexpr int totalPlots = numPlots * numPlots * maxPages;
+
+  // totalPlots assumed to be 16, but unverified
+  std::vector<skgpu::AtlasLocator> locators(totalPlots);
+  ```
+
+  Good:
+
+  ```cpp
+  constexpr int numPlots = 2;
+  constexpr int maxPages = skgpu::PlotLocator::kMaxMultitexturePages;
+  constexpr int totalPlots = numPlots * numPlots * maxPages;
+
+  std::vector<skgpu::AtlasLocator> locators(totalPlots);
+  SkASSERT(totalPlots == 16);
+  ```
+include_glob:
+- tests/graphite/**
+triggers:
+- \b(?:constexpr|const)\s+(?:int|size_t|uint32_t)\s+\w*(?:Total|Count|Plots|Pages|Items|Capacity|Limit|Size|Max)\w*\s*=
+- \b(?:SkASSERT|static_assert)\s*[(][^)]*==\s*[0-9]+
+- \b(?:numPlots|totalPlots|maxPages|kMax[A-Z]\w*)\b
+- \bstd::vector<[^>]+>\s+\w+\s*[(]\s*\w*(?:Total|Count|Plots|Pages|Capacity|Limit|Size)\w*\s*[)]
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\w*(?:Total|Count|Plots|Pages|Capacity|Limit|Size)\w*\s*==
+confidence: 0.8
+support_cl_count: 1

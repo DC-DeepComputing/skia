@@ -1,0 +1,55 @@
+id: gn/build-gn-omit-public-headers-from-source-lists
+title: When defining GN file lists or Bazel exporter mappings, omit public headers from internal source
+  lists when already declared in public lists
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not include public header files in internal source file lists (*_srcs or *_sources in *.gni files
+  and Bazel exporter configurations) when they are already listed in the corresponding public header list
+  (*_public). Keep public headers exclusively in the public list so that GN targets combining them via
+  public and sources do not list the header twice.
+why: Listing the same header in both public and source lists causes GN targets that assign both public
+  and sources to contain duplicate header entries, which triggers warnings or duplicate file conflicts
+  in IDE project generators like Xcode and Visual Studio.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  skia_encode_rust_png_public = [
+    "$_experimental/rust_png/encoder/SkPngRustEncoder.h",
+  ]
+
+  skia_encode_rust_png_srcs = [
+    "$_experimental/rust_png/encoder/SkPngRustEncoder.cpp",
+    "$_experimental/rust_png/encoder/SkPngRustEncoder.h",  # Redundant duplicate
+    "$_experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+  ]
+  ```
+
+  Good:
+
+  ```cpp
+  skia_encode_rust_png_public = [
+    "$_experimental/rust_png/encoder/SkPngRustEncoder.h",
+  ]
+
+  skia_encode_rust_png_srcs = [
+    "$_experimental/rust_png/encoder/SkPngRustEncoder.cpp",
+    "$_experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+  ]
+  ```
+include_glob:
+- gn/**
+- '**/*.gni'
+- bazel/exporter_tool/**
+- BUILD.gn
+- '**/*.gn'
+triggers:
+- \bskia_[a-zA-Z0-9_]+_(?:public|srcs|sources|hdrs)\s*\+?=\s*\[
+- \bVar:\s*\"skia_[a-zA-Z0-9_]+_(?:public|srcs|sources|hdrs)\"
+- \"(?:\$_)?(?:include|src|experimental|modules)/[a-zA-Z0-9_/-]+\.h\"
+- \b(?:public|sources)\s*=\s*skia_[a-zA-Z0-9_]+_(?:public|srcs|sources)\b
+- \"//(?:include|src|experimental|modules)/[a-zA-Z0-9_/-]+:(?:public_hdrs|hdrs|srcs)\"
+confidence: 0.9
+support_cl_count: 1

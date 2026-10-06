@@ -1,0 +1,49 @@
+id: general/omit-redundant-condition-parentheses
+title: When writing if, else-if, or while conditions, omit redundant outer parentheses wrapping the expression
+  unless required for operator precedence or assignment
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not wrap entire conditional expressions in `if`, `else if`, or `while` statements with redundant
+  outer parentheses. Preserve extra parentheses only when required for operator precedence between sub-expressions
+  or when intentionally enclosing an assignment in a condition to suppress compiler warnings.
+why: Redundant outer parentheses add visual clutter to control flow statements without altering evaluation
+  order or precedence. Skia style avoids superfluous parentheses around boolean conditions, and code formatters
+  do not strip them automatically.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if ((a == b && c == d)) {
+      do_something();
+  } else if ((imgData.fTileModes.first == SkTileMode::kClamp &&
+              imgData.fTileModes.second == SkTileMode::kClamp)) {
+      handle_clamp();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (a == b && c == d) {
+      do_something();
+  } else if (imgData.fTileModes.first == SkTileMode::kClamp &&
+             imgData.fTileModes.second == SkTileMode::kClamp) {
+      handle_clamp();
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \belse\s+if\s*\(\s*\(
+- \bif\s*\(\s*\(!?[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+|->[a-zA-Z0-9_]+)?\s*(?:==|!=|<|>|<=|>=)
+- \bif\s*\(\s*\(!?[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+|->[a-zA-Z0-9_]+)?\s*(?:&&|\|\|)
+- \bwhile\s*\(\s*\(!?[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+|->[a-zA-Z0-9_]+)?\s*(?:==|!=|&&|\|\|)
+- \b(?:if|while)\s*\(\s*\([a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+|->[a-zA-Z0-9_]+)?\s*\)\s*\{
+confidence: 0.85
+support_cl_count: 1

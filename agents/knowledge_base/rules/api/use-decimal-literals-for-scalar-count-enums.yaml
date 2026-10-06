@@ -1,0 +1,53 @@
+id: api/use-decimal-literals-for-scalar-count-enums
+title: When defining enum values that represent discrete scalar quantities or counts rather than bit flags,
+  use decimal literals instead of hexadecimal notation
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining enum or enum class values that represent discrete scalar quantities, counts, or dimensions
+  rather than bit flags, use decimal integer literals rather than hexadecimal notation (e.g., 1, 2, 4,
+  8, 16 rather than 0x01, 0x02, 0x04). Reserve hexadecimal literals specifically for bitfields and bitmasks
+  intended for bitwise combination.
+why: Hexadecimal literals in enum definitions strongly imply composable bitmask flags. Using decimal literals
+  for scalar quantities prevents API consumers and maintainers from misinterpreting mutually exclusive
+  values as combinable bit flags.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  enum class SampleCount : uint8_t {
+      k1  = 0x01,
+      k2  = 0x02,
+      k4  = 0x04,
+      k8  = 0x08,
+      k16 = 0x10,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  enum class SampleCount : uint8_t {
+      k1  = 1,
+      k2  = 2,
+      k4  = 4,
+      k8  = 8,
+      k16 = 16,
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \benum\s+(?:class\s+)?[A-Za-z0-9_]+
+- \bk[A-Za-z0-9_]+\s*=\s*0x[0-9a-fA-F]+
+- \bk(?:1|2|4|8|16|32|64|128|256)\s*=\s*
+- \benum\s+class\s+[A-Za-z0-9_]*(?:Count|Size|Dimension)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: The enum itself should be singular for exclusive values or plural for a bitfield... enum SkSausageIngredientBits
+    { kFennel_SausageIngredientBit = 0x1, kBeef_SausageIngredientBit = 0x2 };
+confidence: 0.9
+support_cl_count: 1

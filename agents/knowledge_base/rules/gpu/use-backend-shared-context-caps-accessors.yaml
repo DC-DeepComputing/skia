@@ -1,0 +1,44 @@
+id: gpu/use-backend-shared-context-caps-accessors
+title: When retrieving backend capabilities from Graphite SharedContext subclasses, call backend-specific
+  caps accessors like dawnCaps(), mtlCaps(), or vulkanCaps() instead of manually casting caps()
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When accessing backend-specific Caps from a Graphite SharedContext subclass (such as DawnSharedContext,
+  MtlSharedContext, or VulkanSharedContext), invoke the backend's typed caps accessor (dawnCaps(), mtlCaps(),
+  or vulkanCaps()). Do not call caps() and manually downcast the returned base pointer or reference with
+  static_cast.
+why: Graphite's backend-specific SharedContext subclasses provide inline accessors that encapsulate downcasting
+  to their concrete Caps subclass. Calling these accessors reduces boilerplate, improves readability,
+  and avoids redundant manual casts across backend implementations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In Dawn backend implementation:
+  const auto* caps = static_cast<const DawnCaps*>(sharedContext->caps());
+
+  // In Vulkan backend implementation:
+  const auto& vkCaps = static_cast<const VulkanCaps&>(*sharedContext->caps());
+  ```
+
+  Good:
+
+  ```cpp
+  // In Dawn backend implementation:
+  const auto* caps = sharedContext->dawnCaps();
+
+  // In Vulkan backend implementation:
+  const auto& vkCaps = sharedContext->vulkanCaps();
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bstatic_cast<\s*(?:const\s+)?(?:Dawn|Vulkan|Mtl)Caps\s*[*&]\s*>
+- \bstatic_cast<\s*(?:const\s+)?(?:Dawn|Vulkan|Mtl)Caps
+- \b(?:sharedContext|fSharedContext)->caps\(\)
+- \b(?:sharedContext|fSharedContext|context)->(?:dawn|mtl|vulkan)Caps\(\)
+- \b(?:dawn|mtl|vulkan)Caps\(\)
+confidence: 0.9
+support_cl_count: 1

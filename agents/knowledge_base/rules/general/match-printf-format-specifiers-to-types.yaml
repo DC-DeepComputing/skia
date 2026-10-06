@@ -1,0 +1,45 @@
+id: general/match-printf-format-specifiers-to-types
+title: When formatting integer variables with printf-style functions like SkStringPrintf or SkDebugf,
+  use matching format specifiers rather than casting values to int
+polarity: dont
+severity: nit
+rubric: readability
+rule: When formatting integer variables or expressions with printf-style functions (such as SkStringPrintf,
+  SkDebugf, or ERRORF), use the format specifier that matches the variable's type (e.g., %u for uint32_t,
+  %zu for size_t) rather than casting values to signed int. Do not add C-style or static_cast conversions
+  merely to satisfy mismatched %d specifiers.
+why: Casting unsigned values or container sizes to signed int to satisfy %d adds unnecessary clutter and
+  risks negative display values or incorrect sign extension when values exceed INT_MAX. Matching the format
+  specifier to the variable's actual type preserves numeric semantics and eliminates cast boilerplate.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Casting unsigned integer or size_t to int to satisfy %d
+  case Signed: numeric = SkStringPrintf("%d", (int)channelValue); break;
+  SkDebugf("Buffer size: %d bytes\n", static_cast<int>(buffer.size()));
+  ```
+
+  Good:
+
+  ```cpp
+  // Matching format specifier to variable type directly without casts
+  case Signed: numeric = SkStringPrintf("%u", channelValue); break;
+  SkDebugf("Buffer size: %zu bytes\n", buffer.size());
+  ```
+include_glob:
+- src/**
+- tests/**
+- tools/**
+- modules/**
+- gm/**
+- bench/**
+triggers:
+- \b(?:SkStringPrintf|appendf|SkDebugf|ERRORF|sprintf)\s*[(][^)]*%
+- \b(?:SkStringPrintf|appendf|SkDebugf|ERRORF)\s*[(][^)]*,\s*(?:[(][a-zA-Z0-9_:]+[)]|static_cast<)
+- \b(?:SkStringPrintf|appendf|SkDebugf|ERRORF)\s*[(][^)]*%[0-9]*[duoxX]
+- \b(?:SkStringPrintf|appendf|SkDebugf|ERRORF)\s*[(][^)]*%(?:u|zu|PRIu64|PRId64)
+- (?:[(][a-zA-Z0-9_:]*int[a-zA-Z0-9_:]*[)]|static_cast<[a-zA-Z0-9_:]*int[a-zA-Z0-9_:]*>)\s*[a-zA-Z0-9_.]*(?:value|Value|channel|size|Size|count|Count|offset|Offset)
+confidence: 0.8
+support_cl_count: 1

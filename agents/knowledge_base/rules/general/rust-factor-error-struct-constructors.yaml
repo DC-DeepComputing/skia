@@ -1,0 +1,56 @@
+id: general/rust-factor-error-struct-constructors
+title: When returning error result structs across early-exit branches, encapsulate repeated struct initialization
+  and boxing in associated constructor helpers rather than open-coding boilerplate
+polarity: do
+severity: should_fix
+rubric: design
+rule: When functions return composite result structs or boxed types on failure across multiple early exits,
+  encapsulate repeated struct instantiation in associated constructor helper functions (such as Self::error(...)
+  or StructName::error(...)). Do not duplicate boilerplate struct fields, default collections, or heap
+  allocations (Box::new(...)) across individual error-handling branches.
+why: Inlining struct literals and heap allocations across multiple error exit points duplicates boilerplate
+  fields (such as default enum values or empty vectors), leaks internal initialization details across
+  parsing branches, and creates maintenance hazards if the struct layout or default state changes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if !is_ico_data(data) {
+      return Box::new(DirectoryResult {
+          status: DirectoryParseResult::InvalidSignature,
+          file_type: IcoFileType::Icon,
+          entries: Vec::new(),
+      });
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  impl DirectoryResult {
+      fn error(status: DirectoryParseResult) -> Box<Self> {
+          Self::error_for(status, IcoFileType::Icon)
+      }
+
+      fn error_for(status: DirectoryParseResult, file_type: IcoFileType) -> Box<Self> {
+          Box::new(Self { status, file_type, entries: Vec::new() })
+      }
+  }
+
+  // Call site:
+  if !is_ico_data(data) {
+      return DirectoryResult::error(DirectoryParseResult::InvalidSignature);
+  }
+  ```
+include_glob:
+- '**/*.rs'
+triggers:
+- \b(?:return\s+)?(?:Box::new\s*[(]\s*)?[A-Za-z0-9_]*(?:Result|Output|Response)\s*[{]
+- \b[A-Za-z0-9_]*(?:Result|Output|Response)::(?:error|failure|new_error|from_error|error_for)\b
+- \bfn\s+(?:error|failure|new_error|error_for)\s*[(][^)]*->\s*(?:Box<)?(?:Self|[A-Za-z0-9_]+)\b
+- '\b(?:status|error|err):\s*[A-Za-z0-9_]*(?:Result|Error|Status)::'
+- \bBox::new\s*[(]\s*Self\s*[{]
+- \b[A-Za-z0-9_]+::error(?:_for)?\s*[(]
+confidence: 0.92
+support_cl_count: 1

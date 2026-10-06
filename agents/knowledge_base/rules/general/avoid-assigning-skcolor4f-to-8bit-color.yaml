@@ -1,0 +1,58 @@
+id: general/avoid-assigning-skcolor4f-to-8bit-color
+title: When converting between SkColor4f and 8-bit color components, scale by 255.0f or use FromColor/toSkColor
+  instead of direct assignment or unscaled casts
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When converting between SkColor4f and 8-bit integer color components (0–255), explicitly scale by
+  255.0f or use conversion helpers like SkColor4f::FromColor() and color.toSkColor(). When initializing
+  SkColor4f from 8-bit integers, normalize the channels to [0.0f, 1.0f] rather than casting raw integers
+  directly to float; when assigning SkColor4f to 8-bit integer structures, scale normalized floats to
+  255 or use floating-point platform formats instead of assigning unscaled float components directly.
+why: SkColor4f stores unpremultiplied color components as floats normalized to [0.0f, 1.0f], whereas 8-bit
+  color types (such as SkColor or platform byte channels) store values in [0, 255]. Assigning raw 8-bit
+  integers to SkColor4f without dividing by 255.0f results in out-of-range components (> 1.0f) and blown-out
+  rendering, while assigning SkColor4f float components directly to integer fields truncates fractional
+  values below 1.0f to 0.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Initializing SkColor4f from 8-bit integer components without normalizing:
+  float ambientf = static_cast<float>(fLight.fAmbient); // fAmbient is uint8_t [0..255]
+  SkColor4f ambientColor = {ambientf, ambientf, ambientf, 1.0f};
+
+  // 2. Assigning normalized SkColor4f float components directly to 8-bit fields:
+  XPS_COLOR xpsColor;
+  xpsColor.colorType = XPS_COLOR_TYPE_SRGB;
+  xpsColor.value.sRGB.red = skColor.fR; // Truncates float in [0.0f, 1.0f] to 0 or 1
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Normalize 8-bit channels to [0.0f, 1.0f] or use SkColor4f::FromColor:
+  float ambientf = static_cast<float>(fLight.fAmbient) / 255.0f;
+  SkColor4f ambientColor = {ambientf, ambientf, ambientf, 1.0f};
+  // Or: SkColor4f color = SkColor4f::FromColor(skColor8888);
+
+  // 2. Use floating-point formats, toSkColor(), or explicit scaling:
+  XPS_COLOR xpsColor;
+  xpsColor.colorType = XPS_COLOR_TYPE_SCRGB;
+  xpsColor.value.scRGB.red = skColor.fR;
+  // Or: uint8_t r = SkColorGetR(skColor.toSkColor());
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bSkColor4f\b
+- \bSkColor4f::(?:FromColor|FromPMColor)\b
+- \btoSkColor\s*[(][)]
+- \b(?:skColor|color4f|color|ambientColor)\.f[RGBA]\b
+- \b(?:sRGB|scRGB)\.(?:red|green|blue|alpha)\b
+- \bXPS_COLOR(?:_TYPE)?\b
+confidence: 0.97
+support_cl_count: 2

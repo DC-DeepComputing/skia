@@ -1,0 +1,87 @@
+id: general/name-parameters-in-declarations
+title: When declaring functions, function pointers, or callbacks, name parameters descriptively rather
+  than leaving them anonymous, and keep names consistent across declarations, definitions, and doc comments
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Explicitly name all parameters in function declarations, definitions, function pointer types, member
+  function pointers, and callback signatures rather than leaving them anonymous or using single-letter
+  loop induction names like i, j, or k. Provide clear, descriptive parameter names (such as quadIdx, offset,
+  size, or byteLength) that convey each argument's semantic role—especially when adjacent parameters share
+  the same type or when doc comments reference parameters by name (e.g., |src| or @param)—and keep parameter
+  names consistent between header declarations (.h), source definitions (.cpp), and accompanying documentation
+  comments.
+why: Anonymous parameters and cryptic single-letter names like i obscure argument meaning and force callers
+  and reviewers to inspect implementation bodies or call sites to understand an API. Omitting parameter
+  names when doc comments reference them breaks the connection between documentation and signatures. In
+  function pointers, member function pointers, and callback signatures, omitting parameter names leaves
+  the expected order of arguments ambiguous (such as distinguishing offset from size when both are uint32_t).
+  Mismatched parameter names between header declarations and source definitions cause confusion when reading
+  code, contradict accompanying comments, and make code search and refactoring error-prone.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Anonymous parameters in declarations obscure argument meaning and break doc comment references:
+  /** Encode the |src| pixels to the |dst| stream. */
+  SK_API bool Encode(SkWStream*, const SkPixmap&);
+
+  // Anonymous parameters in declarations:
+  sk_sp<SkPathData> finishInit(std::optional<SkRect>, std::optional<uint8_t> segmentMask);
+
+  // Unnamed parameters in function pointers leave argument ordering ambiguous:
+  T reserve(size_t count, T (BufferSubAllocator::*create)(uint32_t, uint32_t) const);
+
+  // Single-letter index parameters fail to convey what entity is indexed:
+  void outputLinesFromQuadSimd(uint32_t i, float x0, float dx, uint32_t numSegments,
+                               uint32_t startIdx);
+
+  // Parameter name mismatch between declaration and definition:
+  // In Header (.h):
+  void drawShape(const Shape& shape, const SkIRect& drawBounds);
+  // In Implementation (.cpp):
+  void RasterMaskHelper::drawShape(const Shape& shape, const SkIRect& shapeBounds);
+  ```
+
+  Good:
+
+  ```cpp
+  // Named parameters align with doc comments and clarify argument roles:
+  /** Encode the |src| pixels to the |dst| stream. */
+  SK_API bool Encode(SkWStream* dst, const SkPixmap& src);
+
+  // Explicit parameter names clarify each argument's role in the header declaration:
+  sk_sp<SkPathData> finishInit(std::optional<SkRect> bounds, std::optional<uint8_t> segmentMask);
+
+  // Named parameters in function pointers clarify expected argument roles:
+  T reserve(size_t count, T (BufferSubAllocator::*create)(uint32_t offset, uint32_t size) const);
+
+  // Descriptive names clarify the indexed entity:
+  void outputLinesFromQuadSimd(uint32_t quadIdx, float x0, float dx, uint32_t numSegments,
+                               uint32_t startIdx);
+
+  // Parameter names match consistently between declaration, definition, and comments:
+  // In Header (.h):
+  void drawShape(const Shape& shape, const SkIRect& drawBounds);
+  // In Implementation (.cpp):
+  void RasterMaskHelper::drawShape(const Shape& shape, const SkIRect& drawBounds);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- (?:[(,]\s*)(?:const\s+)?(?:std::optional|sk_sp|std::unique_ptr)<[^>]+>\s*[,)]
+- (?:[(,]\s*)(?:const\s+)?[A-Za-z0-9_:]+[*&]\s*[,)]
+- (?:[(,]\s*)(?:const\s+)?(?:bool|int|size_t|float|double|char|u?int(?:8|16|32|64)_t|SkScalar|SkRect|SkPoint|SkColor|SkSize|SkIRect)\s*[,)]
+- (?:[(,]\s*)(?:const\s+)?(?:uint(?:8|16|32|64)_t|int(?:8|16|32|64)_t|size_t|int|unsigned)\s+[ijkmn]\s*[,)]
+- (?:[(,]\s*)(?:uint(?:8|16|32|64)_t|int(?:8|16|32|64)_t|size_t)\s+[a-zA-Z0-9_]*(?:Idx|Index)\s*[,)]
+- '[(][A-Za-z0-9_:]*\s*\*\s*[a-zA-Z0-9_]*[)]\s*[(]'
+- (?://|/\*|\*)\s*.*\|[a-zA-Z0-9_]+\|
+- \b(?:RasterMaskHelper|finishInit|outputLinesFromQuadSimd|drawShape|BufferSubAllocator|Encode)\b
+confidence: 0.98
+support_cl_count: 7

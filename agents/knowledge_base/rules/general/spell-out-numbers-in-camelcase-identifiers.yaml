@@ -1,0 +1,46 @@
+id: general/spell-out-numbers-in-camelcase-identifiers
+title: When naming methods, variables, or types in camelCase, spell out numbers as words or use descriptive
+  adjectives instead of embedding raw digits
+polarity: do
+severity: nit
+rubric: readability
+rule: When naming methods, variables, parameters, or types in camelCase, spell out numeric quantities
+  as words (e.g., ZeroSized or OneByte) or use descriptive adjectives (e.g., Sizeless) instead of embedding
+  raw numeric digits (e.g., 0Size). Standard dimensional suffixes and fixed format designations (such
+  as 2D, 3D, or RGBA8888) are acceptable exceptions.
+why: Embedding numeric digits directly in camelCase identifiers (such as 0Size) disrupts natural word
+  boundaries and casing conventions, reducing readability. Spelling out numbers as words (such as ZeroSized)
+  or using descriptive adjectives (such as Sizeless) maintains clean, idiomatic naming consistent with
+  Skia conventions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Avoid embedding raw numeric digits in camelCase identifiers
+  virtual bool shouldDump0SizeObjects() const { return false; }
+  bool is0ByteAllocation = (size == 0);
+  ```
+
+  Good:
+
+  ```cpp
+  // Spell out numbers as words or use descriptive adjectives
+  virtual bool shouldDumpSizelessObjects() const { return false; }
+  bool isZeroByteAllocation = (size == 0);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \b[a-zA-Z]+0(?:Size|Sized|Byte|Bytes|Length|Count|Offset)\w*\b
+- \b[a-zA-Z]+[0-9]+(?:Size|Sized|Bytes?|Length|Count|Width|Height)\w*\b
+- \b(?:should|can|has|is|get|set)[A-Z]\w*[0-9]+[A-Z]\w*\b
+- \b[a-zA-Z]+[0-9]+[A-Z][a-z0-9_]+\b
+- \bshouldDump[A-Za-z0-9_]*\b
+confidence: 0.8
+support_cl_count: 1

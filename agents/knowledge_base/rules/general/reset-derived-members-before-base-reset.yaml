@@ -1,0 +1,53 @@
+id: general/reset-derived-members-before-base-reset
+title: When implementing custom reset or teardown methods in derived classes, reset derived members referencing
+  base-managed storage before calling the base class reset
+polarity: do
+severity: nit
+rubric: safety
+rule: In class hierarchies with custom reset(), clear(), or teardown methods, reset or clear derived class
+  members that reference base-class-managed storage before invoking the base class reset method. Mirror
+  standard C++ destructor destruction order so that dependent child members are dismantled before the
+  parent allocators, arenas, or caches they point into are cleared.
+why: Derived class members often hold raw pointers, references, or iterators into arenas, block allocators,
+  or caches owned by the base class. Invoking the base class reset first destroys or invalidates that
+  underlying storage while derived members still exist, creating dangling pointers, use-after-free hazards,
+  or dangling pointer detector violations during teardown.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void DrawList::reset(LoadOp op, SkColor4f clearColor) {
+      // Calling base reset first clears allocators while derived members still reference them.
+      DrawListBase::reset(op, clearColor);
+      fDraws.reset();
+      fSortKeys.clear();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void DrawList::reset(LoadOp op, SkColor4f clearColor) {
+      // Clear derived members before clearing base storage to prevent dangling references.
+      fDraws.reset();
+      fSortKeys.clear();
+      DrawListBase::reset(op, clearColor);
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b[A-Za-z0-9_]+Base::(?:reset|teardown|clear)\s*\(
+- \b(?:INHERITED|Super)::(?:reset|teardown|clear)\s*\(
+- \bvoid\s+[A-Za-z0-9_]+::(?:reset|teardown|clear)\s*\(
+- \bf[A-Z]\w*\.(?:reset|clear)\s*\(
+- \b(?:reset|teardown|clear)\s*\([^)]*\)\s*override\b
+citations:
+- path: site/docs/dev/design/dangling_pointer_detector.md
+  heading: Dangling Pointer Detector
+  quote: A pointer is dangling when it references freed memory. Dangling pointers are a source of Use-After-Free
+    (UAF) bugs and are highly discouraged unless you can definitively ensure that they will never be dereferenced
+    or used after the pointed-to object is freed.
+confidence: 0.85
+support_cl_count: 1

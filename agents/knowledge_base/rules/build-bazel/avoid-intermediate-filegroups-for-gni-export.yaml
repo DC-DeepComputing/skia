@@ -1,0 +1,87 @@
+id: build-bazel/avoid-intermediate-filegroups-for-gni-export
+title: When defining skia_filegroup targets in BUILD.bazel, populate srcs with literal file paths only
+  and avoid duplicate or composite filegroups for GNI export
+polarity: do
+severity: should_fix
+rubric: design
+rule: When defining skia_filegroup (or filegroup) targets in BUILD.bazel, populate srcs with literal file
+  paths only, and avoid creating duplicate or composite filegroups solely for GN export. Do not replicate
+  canonical :srcs or :hdrs file lists into secondary filegroups or reference target labels within srcs
+  to aggregate sources; configure bazel/exporter_tool to consume or aggregate private leaf filegroups
+  directly (as the exporter ignores Bazel visibility), and declare target dependencies directly on consuming
+  rules like skia_cc_library.
+why: The Skia GNI exporter tool (bazel/exporter_tool) ignores Bazel visibility rules and maps or aggregates
+  leaf filegroups directly into GN variables, making duplicate filegroups redundant. Furthermore, the
+  exporter does not recursively resolve target labels inside srcs, which causes nested filegroup references
+  to be omitted during export, while duplicate filegroups drift out of sync when files are modified.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # Bad: duplicate filegroup created for GN export with public visibility
+  skia_filegroup(
+      name = "hdrs",
+      srcs = ["SkBmpRustDecoder.h"],
+  )
+  skia_filegroup(
+      name = "rust_bmp_public_hdrs",
+      srcs = ["SkBmpRustDecoder.h"],
+      visibility = ["//:__pkg__"],
+  )
+
+  # Bad: referencing nested target labels or composite filegroups in srcs
+  skia_filegroup(
+      name = "srcs",
+      srcs = [
+          "SkPngRustEncoder.cpp",
+          "//include/encode:encode_hdrs",
+      ],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  # Good: canonical leaf filegroups with literal file paths only
+  skia_filegroup(
+      name = "hdrs",
+      srcs = ["SkBmpRustDecoder.h"],
+  )
+  skia_filegroup(
+      name = "srcs",
+      srcs = ["SkPngRustEncoder.cpp"],
+  )
+
+  # Consuming libraries declare target dependencies directly in hdrs/deps
+  skia_cc_library(
+      name = "encoder",
+      srcs = [":srcs"],
+      hdrs = [
+          ":hdrs",
+          "//include/encode:encode_hdrs",
+      ],
+  )
+  # bazel/exporter_tool maps private leaf filegroups directly to GNI variables
+  ```
+include_glob:
+- BUILD.bazel
+- '**/BUILD.bazel'
+triggers:
+- \b(?:skia_)?filegroup\s*[(]
+- name\s*=\s*\"[a-zA-Z0-9_]+_(?:public_hdrs|hdrs|srcs|sources)\"
+- \"(?::|//)[a-zA-Z0-9_/-]+:[a-zA-Z0-9_]+_(?:srcs|hdrs|sources)\"
+- \b(?:skia_)?cc_library\s*[(]
+- \"//:__pkg__\"
+- \bhdrs\s*=\s*[[]
+citations:
+- path: bazel/exporter_tool/README.md
+  heading: Bazel Rule to GNI File List Mapping
+  quote: The exporter tool is hardcoded with the Bazel rules to be exported, and to which GNI file and
+    file list they should be mapped... Bazel visibility rules are ignored. The exporter tool can export
+    private files.
+- path: bazel/exporter_tool/README.md
+  heading: '## Bazel Rule to GNI File List Mapping'
+  quote: only files directly listed in a rule are exported to a GNI file.
+confidence: 0.97
+support_cl_count: 2

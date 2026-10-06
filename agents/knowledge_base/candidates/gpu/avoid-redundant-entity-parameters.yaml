@@ -1,0 +1,55 @@
+id: gpu/avoid-redundant-entity-parameters
+title: When managing shared GPU resources or render pass targets, decouple shared samplers from texture
+  pairs and pass requirement flags instead of redundant entity pointers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not store shared GPU resources (such as samplers) in coupled pairs with specific texture sources
+  (e.g., std::pair<Texture*, Sampler*>) or pass redundant entity pointers in method signatures when the
+  underlying texture is already provided by another parameter. Decouple shared resources into standalone
+  managed members (e.g., fDstSampler) and pass only distinct configuration state or boolean requirement
+  flags (such as requiresDstSampler).
+why: Coupling shared samplers with texture pointers duplicates member state, complicates method signatures,
+  and forces callers to construct and pass redundant resource objects. Decoupling the shared sampler allows
+  the command buffer to centralize resource management across render passes, ensures a single source of
+  truth for target attachments, and simplifies task APIs to a simple requirement flag.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In CommandBuffer:
+  std::pair<const Texture*, const Sampler*> fDstCopy;
+  std::pair<const Texture*, const Sampler*> fDstTextureSampler;
+
+  bool addRenderPass(const RenderPassDesc&,
+                     sk_sp<Texture> colorTexture,
+                     const Texture* dstCopy,
+                     std::pair<const Texture*, sk_sp<Sampler>> dstTextureSampler,
+                     const DrawPassList& drawPasses);
+  ```
+
+  Good:
+
+  ```cpp
+  // In CommandBuffer:
+  const Texture* fDstCopy;
+  const Sampler* fDstSampler;
+
+  bool addRenderPass(const RenderPassDesc&,
+                     sk_sp<Texture> colorTexture,
+                     const Texture* dstCopy,
+                     bool requiresDstSampler,
+                     const DrawPassList& drawPasses);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \baddRenderPass\s*[(]
+- \b(?:dstTextureSampler|requiresDstSampler)\b
+- \b(?:fDstSampler|fDstCopy|fDstTextureSampler)\b
+- \bstd::pair<(?:const\s+)?Texture\*,\s*(?:const\s+|sk_sp<)?Sampler[*>]\b
+- \b(?:colorTexture|resolveTexture|depthStencilTexture)\b
+- \b(?:RenderPassDesc|DrawPassList|RenderPassTask)\b
+confidence: 0.9
+support_cl_count: 1

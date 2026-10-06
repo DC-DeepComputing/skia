@@ -1,0 +1,46 @@
+id: general/match-comment-header-underline-length
+title: When writing or updating underlined section headers in multiline or block comments, match the underline
+  length exactly to the header title
+polarity: do
+severity: nit
+rubric: readability
+rule: When adding or updating underlined section titles or headings in multiline block comments or line
+  comments, ensure the underline character sequence (such as '===' or '---') matches the exact character
+  length of the title text above it. Do not leave the underline shorter or longer than the section title.
+why: Mismatched underline lengths create visual clutter and disrupt clean comment formatting. Automatic
+  code formatters do not adjust comment contents, so section underlines must be maintained manually to
+  keep documentation visually aligned and consistent.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  /*
+   * Resource Thread Safe Labeling Model
+   * ========================
+   */
+  ```
+
+  Good:
+
+  ```cpp
+  /*
+   * Resource Thread Safe Labeling Model
+   * ===================================
+   */
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*\*?\s*={3,}\s*$
+- ^\s*//\s*={3,}\s*$
+- ^\s*\*?\s*-{3,}\s*$
+- ^\s*//\s*-{3,}\s*$
+- ^\s*\*?\s*~{3,}\s*$
+- ^\s*//\s*~{3,}\s*$
+confidence: 0.8
+support_cl_count: 1

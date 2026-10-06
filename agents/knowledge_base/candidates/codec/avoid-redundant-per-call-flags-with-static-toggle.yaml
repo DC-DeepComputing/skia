@@ -1,0 +1,48 @@
+id: codec/avoid-redundant-per-call-flags-with-static-toggle
+title: When defining factory or creation methods for classes with static configuration toggles, avoid
+  redundant per-call override flags and query the static setting instead
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not add redundant per-call configuration parameters (such as bool forceX) to factory or creation
+  methods when the enclosing class already provides a static configuration toggle for that behavior. Expose
+  the setting as a static member function and let creation methods query that single source of truth internally
+  rather than accepting duplicate override arguments at call sites.
+why: Supplying both a static configuration toggle and a per-call override parameter creates redundant
+  configuration paths and unnecessary API complexity. Centralizing the toggle as a static member function
+  provides a single source of truth and keeps factory call sites clean.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void ForceSkcmsForICCProfiles(bool force);
+
+  class ICCProfileChromium {
+  public:
+      static std::unique_ptr<ICCProfileChromium> Make(sk_sp<SkData> data, bool forceSkcms);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class ICCProfileChromium {
+  public:
+      static void ForceSkcms(bool forceSkcms);
+      static std::unique_ptr<ICCProfileChromium> Make(sk_sp<SkData> data);
+  };
+  ```
+include_glob:
+- src/codec/**
+- include/codec/**
+- include/private/chromium/**
+triggers:
+- \bstatic\s+void\s+(?:Force|Set)[A-Z]\w*\s*\(\s*bool
+- \bstatic\s+std::unique_ptr<[A-Za-z0-9_]+>\s+Make(?:From[A-Za-z0-9_]+)?\s*\(
+- \b(?:Make|Create)[A-Za-z0-9_]*\s*\([^)]*\bbool\s+(?:force|enable|use)[A-Z]\w*
+- \bstatic\s+bool\s+g(?:Force|Use|Enable)[A-Z]\w*\b
+- \bForceSkcms\b
+- \bICCProfileChromium\b
+confidence: 0.9
+support_cl_count: 1

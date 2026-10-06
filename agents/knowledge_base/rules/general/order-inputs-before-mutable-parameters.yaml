@@ -1,0 +1,55 @@
+id: general/order-inputs-before-mutable-parameters
+title: When declaring function, method, or lambda parameter lists, place all input parameters before mutable
+  output or in-out parameters
+polarity: do
+severity: nit
+rubric: readability
+rule: Place all input parameters before mutable (output or in-out) parameters in function, method, and
+  lambda parameter lists, pushing mutable arguments to the end unless default arguments require otherwise.
+  When adding new input parameters to an existing signature, insert them before existing output parameters
+  rather than appending them to the end of the list.
+why: Ordering inputs first and mutable parameters at the end creates consistent and predictable call sites
+  where data flow proceeds from source inputs to modified destinations. Appending new inputs after output
+  parameters disrupts caller readability and makes parameter roles harder to discern.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: input parameter (stride) placed after mutable parameters
+  auto bind = [&](const BindBufferInfo& buffer,
+                  BindBufferInfo& boundBuffer,
+                  uint32_t& pendingBase,
+                  uint32_t stride) { ... };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: inputs first (buffer, stride), followed by mutable parameters
+  auto bind = [&](const BindBufferInfo& buffer,
+                  uint32_t stride,
+                  BindBufferInfo& boundBuffer,
+                  uint32_t& pendingBase) { ... };
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- (?:[(,]\s*)[A-Za-z0-9_:]+(?:<[^>]+>)?\s*&\s*[a-zA-Z0-9_]+\s*[,)]
+- (?:[(,]\s*)[A-Za-z0-9_:]+(?:<[^>]+>)?\s*\*\s*(?:out[A-Za-z0-9_]*|dst[A-Za-z0-9_]*|result)\s*[,)]
+- '[*&]\s*[a-zA-Z0-9_]+,\s*(?:const\s+)?[A-Za-z0-9_:]+(?:<[^>]+>)?[\s&*]+[a-zA-Z0-9_]+'
+- \b(?:out[A-Z]\w*|dst\w*|pending[A-Z]\w*)\s*,\s*(?:const\s+)?[A-Za-z0-9_:]+
+- \b(?:bool|void|int|auto)\s+[a-zA-Z0-9_]+\s*[(][^)]*&
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: Mandatory constant object parameters are passed to functions as const references. Optional constant
+    object parameters are passed to functions as const pointers. Mutable object parameters are passed
+    to functions as pointers.
+confidence: 0.9
+support_cl_count: 1

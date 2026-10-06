@@ -1,0 +1,49 @@
+id: tools/avoid-redundant-swapchain-backbuffer
+title: When managing Vulkan swapchain presentation, store the acquired image index directly rather than
+  maintaining a redundant backbuffer ring buffer wrapping the index
+polarity: dont
+severity: should_fix
+rubric: design
+rule: In Vulkan swapchain presentation contexts, store the acquired image index returned by vkAcquireNextImageKHR
+  directly into a scalar member rather than maintaining a separate backbuffer tracking array or ring buffer
+  that merely wraps the image index. Use the stored image index directly to access per-image swapchain
+  resources across acquisition, draw submission, and presentation.
+why: When render completion semaphores and surfaces are tracked per swapchain image, maintaining a separate
+  backbuffer array or ring-buffer index introduces redundant indirection and complicates synchronization
+  state. Storing the acquired image index directly streamlines state management and matches Vulkan's image
+  acquisition model.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct Backbuffer {
+      uint32_t fImageIndex = -1;
+  };
+  Backbuffer* fBackbuffers;
+  uint32_t fCurrentBackbufferIndex;
+
+  Backbuffer* availableBackbuffer = this->getAvailableBackbuffer();
+  fAcquireNextImageKHR(fDevice, fSwapchain, UINT64_MAX, fAcquireSemaphore,
+                       VK_NULL_HANDLE, &availableBackbuffer->fImageIndex);
+  ```
+
+  Good:
+
+  ```cpp
+  uint32_t fCurrentImageIndex;
+
+  fAcquireNextImageKHR(fDevice, fSwapchain, UINT64_MAX, fAcquireSemaphore,
+                       VK_NULL_HANDLE, &fCurrentImageIndex);
+  SkSurface* surface = fImages[fCurrentImageIndex].fSurface.get();
+  ```
+include_glob:
+- tools/window/**
+triggers:
+- \b(?:struct|class)\s+Backbuffer\b
+- \b(?:fCurrentImageIndex|fCurrentBackbufferIndex|fBackbuffers)\b
+- \b(?:vkAcquireNextImageKHR|fAcquireNextImageKHR)\b
+- \b(?:getBackbufferSurface|getAvailableBackbuffer)\b
+- \bfImages\[fCurrentImageIndex\]
+confidence: 0.92
+support_cl_count: 1

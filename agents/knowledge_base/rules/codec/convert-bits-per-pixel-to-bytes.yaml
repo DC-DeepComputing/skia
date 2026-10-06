@@ -1,0 +1,44 @@
+id: codec/convert-bits-per-pixel-to-bytes
+title: When computing row byte sizes, strides, or buffer allocations from pixel counts and bitsPerPixel,
+  convert bits to bytes before multiplying by width
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When computing row byte sizes, strides, or buffer allocations from pixel counts and bitsPerPixel
+  (such as SkEncodedInfo::bitsPerPixel()), convert bits to bytes (e.g. dividing by 8) before multiplying
+  by pixel width. Do not multiply pixel width directly by bitsPerPixel when byte quantities are required,
+  and assert byte divisibility when byte-aligned formats are expected.
+why: Multiplying pixel count or image width directly by bits per pixel computes bits per row rather than
+  bytes per row. Neglecting to divide bits by 8 calculates an 8x oversized buffer allocation or causes
+  incorrect byte offsets and strides when indexing image memory.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  size_t bitsPerPixel = static_cast<size_t>(dstInfo.bitsPerPixel());
+  SkSafeMath safe;
+  fBytesPerEncodedRow = safe.mul(safe.castTo<size_t>(dstInfo.width()), bitsPerPixel);
+  ```
+
+  Good:
+
+  ```cpp
+  size_t bitsPerPixel = static_cast<size_t>(dstInfo.bitsPerPixel());
+  SkASSERT((bitsPerPixel % 8) == 0);
+  size_t bytesPerPixel = bitsPerPixel / 8;
+  SkSafeMath safe;
+  fBytesPerEncodedRow = safe.mul(safe.castTo<size_t>(dstInfo.width()), bytesPerPixel);
+  ```
+include_glob:
+- src/codec/**
+- src/encode/**
+triggers:
+- \bbitsPerPixel\b
+- \b(?:dstInfo|srcInfo|encodedInfo|info)\.bitsPerPixel\s*[(]
+- \b(?:bytesPerPixel|fBytesPerPixel)\b
+- \b(?:bytesPerPixel|fBytesPerPixel)\s*=\s*[^;]*(?:bitsPerPixel|bpp)\s*/\s*8\b
+- \b(?:fBytesPerEncodedRow|dstRowSize|srcRowSize|bytesPerRow)\b
+- \b(?:safe\.mul|safeMul)\s*[(][^)]*bitsPerPixel
+confidence: 0.95
+support_cl_count: 1

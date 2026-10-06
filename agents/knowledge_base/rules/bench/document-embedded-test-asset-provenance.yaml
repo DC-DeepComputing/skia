@@ -1,0 +1,45 @@
+id: bench/document-embedded-test-asset-provenance
+title: When embedding static asset data, raw path strings, or test datasets in tests or benchmarks, document
+  their source, originating asset, or provenance in a comment
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When embedding static asset data, raw path strings, or test datasets in source code, add a comment
+  documenting their source or provenance (such as the originating SVG, SKP, or specification). Note the
+  motivating workload, bug reference, or specific pipeline path exercised by the asset.
+why: Without documenting the origin or provenance of embedded asset data, reviewers and maintainers cannot
+  verify licensing, understand whether the data represents a realistic test case, or identify whether
+  duplicate assets already exist elsewhere in the codebase.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static constexpr const char* kTigerPathStrings[] = {
+      "M27.014 90.57s.039.744-.287.736...",
+      // ...
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Paths extracted from desk_tigersvg.skp that exercise the "inner triangulation"
+  // path through the tessellator (see b/123456789).
+  static constexpr const char* kTigerPathStrings[] = {
+      "M27.014 90.57s.039.744-.287.736...",
+      // ...
+  };
+  ```
+include_glob:
+- bench/**
+- tests/**
+- gm/**
+triggers:
+- \b(?:static\s+)?(?:inline\s+)?constexpr\s+(?:const\s+)?char\*(?:\s+const)?\s+[A-Za-z0-9_]*\s*\[[^\]]*\]
+- \b(?:static\s+)?(?:const\s+)?(?:char|uint8_t)\s+(?:const\s+)?\*\s*k[A-Z][A-Za-z0-9_]*(?:Paths?|Strings?|Data|Bytes?|Asset)\b
+- \"[MmLlHhVvCcSsQqTtAaZz][0-9.-]{2,}
+- \b(?:kTiger|kPath|kSvg|kSkp|kAsset|kTestData)[A-Za-z0-9_]*\s*\[[^\]]*\]\s*=
+- \b(?:SkParsePath::FromSVGString|MakePathFromSVGString)\b
+confidence: 0.85
+support_cl_count: 1

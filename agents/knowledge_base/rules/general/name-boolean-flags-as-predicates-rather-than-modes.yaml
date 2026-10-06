@@ -1,0 +1,47 @@
+id: general/name-boolean-flags-as-predicates-rather-than-modes
+title: When naming boolean member flags representing data source, provenance, or conditions, name them
+  as predicates rather than using Mode suffixes
+polarity: do
+severity: nit
+rubric: readability
+rule: Name boolean member flags after the concrete condition, origin, or provenance they represent (such
+  as fIsFromIco) using predicate phrasing. Do not suffix boolean flags with Mode (such as fIsIcoMode)
+  when they merely track data origin or a binary condition rather than a configurable operational state
+  machine.
+why: A 'Mode' suffix implies an operational state machine, execution policy, or multi-state configuration.
+  Using 'Mode' for a simple boolean provenance or condition flag misleads readers about the object's lifecycle
+  and state space, whereas predicate naming makes its boolean nature and intent self-documenting.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: 'Mode' suffix falsely suggests an operational state machine or configurable mode.
+  class SkBmpRustCodec : public SkCodec {
+      ...
+      const bool fIsIcoMode;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: predicate phrasing clearly communicates data provenance and boolean condition.
+  class SkBmpRustCodec : public SkCodec {
+      ...
+      const bool fIsFromIco;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+triggers:
+- \bbool\s+f[A-Za-z0-9_]*Mode\b
+- \b(?:const\s+)?bool\s+fIs[A-Z]\w*Mode\b
+- \b(?:const\s+)?bool\s+f(?:IsFrom|From|Origin|Source)[A-Z]\w*\b
+- \bbool\s+f[A-Za-z0-9_]*(?:Mode|State)\s*=\s*(?:true|false)\b
+- \b(?:const\s+)?bool\s+f[A-Z]\w*Mode\s*[;=]
+confidence: 0.82
+support_cl_count: 1

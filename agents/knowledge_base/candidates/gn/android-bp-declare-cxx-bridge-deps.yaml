@@ -1,0 +1,64 @@
+id: gn/android-bp-declare-cxx-bridge-deps
+title: When configuring Android Blueprint library targets in gn/gn_to_bp.py that enable Rust or Fontations,
+  declare generated CXX bridge headers and sources
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When enabling Fontations or Rust CXX bridge dependencies in Android Blueprint library targets (such
+  as libskia_renderengine in gn/gn_to_bp.py), explicitly declare generated bridge dependencies in both
+  generated_headers and generated_sources. Ensure targets compiling translation units that include CXX
+  bridge headers (such as ffi.rs.h) depend on libskia_cxx_bridge_header and libskia_cxx_bridge_code.
+why: Android's Soong build system does not automatically expose generated CXX bridge headers and object
+  files to static library targets. Omitting generated_headers and generated_sources causes compilation
+  failures in translation units that include bridge headers during Android platform tree builds.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # gn/gn_to_bp.py
+  cc_library_static {
+      name: "libskia_renderengine",
+      defaults: ["skia_defaults",
+                 "skia_renderengine_deps"],
+      srcs: [
+          $renderengine_srcs
+      ],
+      export_include_dirs: [
+          "renderengine",
+      ],
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  # gn/gn_to_bp.py
+  cc_library_static {
+      name: "libskia_renderengine",
+      defaults: ["skia_defaults",
+                 "skia_renderengine_deps"],
+      srcs: [
+          $renderengine_srcs
+      ],
+      export_include_dirs: [
+          "renderengine",
+      ],
+      generated_headers: [
+          "libskia_cxx_bridge_header",
+      ],
+      generated_sources: [
+          "libskia_cxx_bridge_code",
+      ],
+  }
+  ```
+include_glob:
+- gn/**
+triggers:
+- \bcc_library_(?:static|shared|host_static)\b
+- \b(?:lib)?skia_renderengine(?:_deps|_srcs)?\b
+- \b(?:generated_headers|generated_sources)\b
+- \blibskia_cxx_bridge_(?:header|code)\b
+- \b(?:skia_use_fontations|fontations|cxx_bridge)\b
+confidence: 0.9
+support_cl_count: 1

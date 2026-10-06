@@ -1,0 +1,58 @@
+id: partition_alloc/distinct-template-trait-constants-in-stubs
+title: When defining no-op or fallback stub implementations of template trait constants, assign distinct
+  values rather than collapsing differing traits to zero
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: In no-op or fallback stub implementations of template classes that take trait or policy constants,
+  assign distinct values (such as unique bit flags) to differing traits rather than collapsing them all
+  to zero. Ensure distinct traits produce distinct template instantiations across all build configurations.
+why: Collapsing distinct trait or policy constants to zero in fallback builds causes distinct template
+  instantiations (such as raw_ptr<T, TraitA> and raw_ptr<T, TraitB>) to collapse into identical concrete
+  types. This allows invalid cross-trait assignments or implicit conversions to compile undetected in
+  fallback configurations while failing in builds where the feature is enabled.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Fallback no-op stub:
+  using RawPtrTraits = int;
+  constexpr RawPtrTraits DisableDanglingPtrDetection = 0;
+  constexpr RawPtrTraits DanglingUntriaged = 0;
+  constexpr RawPtrTraits AllowPtrArithmetic = 0;
+
+  template <typename T, RawPtrTraits Traits = 0>
+  class raw_ptr { /* ... */ };
+  ```
+
+  Good:
+
+  ```cpp
+  // Fallback no-op stub:
+  using RawPtrTraits = int;
+  constexpr RawPtrTraits DisableDanglingPtrDetection = 1 << 0;
+  constexpr RawPtrTraits DanglingUntriaged = 1 << 0;
+  constexpr RawPtrTraits AllowPtrArithmetic = 1 << 1;
+
+  template <typename T, RawPtrTraits Traits = 0>
+  class raw_ptr { /* ... */ };
+  ```
+include_glob:
+- src/partition_alloc/**
+triggers:
+- \bconstexpr\s+[A-Za-z0-9_:]*Traits?\s+[A-Za-z0-9_]+\s*=\s*\d+
+- \b(?:using|typedef)\s+[A-Za-z0-9_:]*Traits?\s*=
+- \bconstexpr\s+[A-Za-z0-9_:]*Traits?\b
+- \btemplate\s*<[^>]*[A-Za-z0-9_:]*Traits?\b
+- \bRawPtrTraits\b
+- \bAllowPtrArithmetic\b
+- \bDisableDanglingPtrDetection\b
+citations:
+- path: site/docs/dev/design/dangling_pointer_detector.md
+  heading: Flavors & Annotations
+  quote: 'When a pointer must temporarily dangle safely, or represents an untriaged legacy instance, you
+    can use these annotations: raw_ptr<T> ptr_never_dangling; raw_ptr<T, DisableDanglingPtrDetection>
+    ptr_allowed_to_dangle; raw_ptr<T, DanglingUntriaged> ptr_dangling_to_investigate;'
+confidence: 0.9
+support_cl_count: 1

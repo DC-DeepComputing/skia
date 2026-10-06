@@ -1,0 +1,48 @@
+id: modules/prefer-jsarray-over-typedarray-for-generic-arrays
+title: When writing CanvasKit Emscripten bindings that accept or return generic JavaScript arrays, use
+  JSArray rather than TypedArray aliases like Int32Array
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In CanvasKit Emscripten C++ bindings, use JSArray rather than typed array aliases (such as Int32Array,
+  Uint8Array, or Float32Array) in function signatures when accepting or returning a generic JavaScript
+  array (emscripten::val::array()). Reserve TypedArray aliases specifically for methods that exchange
+  actual JavaScript TypedArray buffer instances.
+why: In CanvasKit's WasmCommon.h, aliases like JSArray, JSObject, Int32Array, and Float32Array all alias
+  emscripten::val to document the JavaScript-WASM contract. Using a typed array alias for standard JavaScript
+  arrays ([]) obscures the return type and falsely implies to readers and binding consumers that the method
+  produces or expects an underlying typed array buffer.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  .function("_getBidiRegions",
+            optional_override([](JSString jtext, int dir) -> Int32Array {
+                JSArray result = emscripten::val::array();
+                // ...
+                return result;
+            }))
+  ```
+
+  Good:
+
+  ```cpp
+  .function("_getBidiRegions",
+            optional_override([](JSString jtext, int dir) -> JSArray {
+                JSArray result = emscripten::val::array();
+                // ...
+                return result;
+            }))
+  ```
+include_glob:
+- modules/canvaskit/**
+triggers:
+- \b(?:Int|Uint)(?:8|16|32)Array\b
+- \bFloat(?:32|64)Array\b
+- \bJSArray\b
+- \bemscripten::val::array\s*\(
+- ->\s*(?:(?:Int|Uint)(?:8|16|32)Array|Float(?:32|64)Array|JSArray)\b
+- \b(?:JSArray|JSObject|JSString|TypedArray)\b
+confidence: 0.92
+support_cl_count: 1

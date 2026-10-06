@@ -1,0 +1,43 @@
+id: gpu/group-ycbcr-model-and-range-in-conversion-strings
+title: When formatting YCbCr conversion or sampler info for debug labels, group coupled color model and
+  range properties using '+' rather than whitespace
+polarity: do
+severity: nit
+rubric: readability
+rule: When formatting YCbCr conversion or sampler descriptor properties into human-readable strings (such
+  as debug dumps or pipeline labels), group closely coupled color properties like model and range using
+  '+' (e.g., '<model>+<range>') rather than plain whitespace delimiters.
+why: YCbCr conversion descriptors contain many individual properties (format, external format, model,
+  range, chroma offsets, chroma filters, swizzles). Separating all fields with plain spaces impairs visual
+  parsing; binding coupled color attributes like model and range with '+' makes the composite descriptor
+  easier to scan in logs and pipeline keys.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Separating tightly coupled color model and range with spaces
+  result += VkModelToStr(info.model());
+  result += " ";
+  result += VkRangeToStr(info.range());
+  ```
+
+  Good:
+
+  ```cpp
+  // Group tightly coupled color model and range with '+'
+  result += VkModelToStr(info.model());
+  result += "+";
+  result += VkRangeToStr(info.range());
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bVkModelToStr\b
+- \bVkRangeToStr\b
+- \b(?:ycbcrModel|ycbcrRange|fYcbcrModel|fYcbcrRange)\b
+- \bVulkanYcbcrConversion(?:Info)?\b
+- \bVkSamplerYcbcrConversionCreateInfo\b
+- \b(?:ycbcrDescriptor|ycbcrConversion)\b
+confidence: 0.8
+support_cl_count: 1

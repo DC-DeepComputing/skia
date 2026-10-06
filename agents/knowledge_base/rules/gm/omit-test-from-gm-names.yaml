@@ -1,0 +1,62 @@
+id: gm/omit-test-from-gm-names
+title: When defining GM tests via DEF_GM or GM::getName(), name feature scenarios directly without 'test'
+  suffixes and name bug reproducers after their issue ID
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining Golden Master tests via DEF_GM, DEF_SIMPLE_GM, or skiagm::GM::getName(), name feature
+  GMs directly after the feature, shape, or rendering scenario being exercised without redundant 'test'
+  or '_test' suffixes, and ensure names accurately reflect the full scope of what is rendered rather than
+  retaining outdated or overly restrictive qualifiers (such as 'closed' when both open and closed paths
+  are covered). For GMs reproducing a specific defect or fuzzer crash, name the GM after the tracking
+  issue identifier (e.g., bug_<id> or crbug_<id>) rather than using vague descriptive names like blurbug.
+why: GM identifiers serve directly as unique test match filters in dm (--match), slide names in Viewer
+  (GM_<name>), and baseline keys in Skia Gold. Redundant 'test' suffixes add clutter to Gold baselines,
+  overly restrictive qualifiers mislead about coverage, and vague bug names (like 'blurbug') cause naming
+  collisions and obscure which bug tracker issue or regression is being validated.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Redundant 'test' suffix
+  DEF_SIMPLE_GM_CAN_FAIL(closedcappedhairlinetest, canvas, errorMsg, 100, 500) { ... }
+
+  // Bad: Retaining restrictive 'closed' qualifier when testing both open and closed contours
+  DEF_SIMPLE_GM(closedcappedhairlinebuttcap, canvas, WIDTH, HEIGHT) { ... }
+
+  // Bad: Vague bug reproducer GM name instead of tracking issue ID
+  class BlurBugGM : public skiagm::GM {
+      SkString getName() const override { return SkString("blurbug"); }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Direct feature name without redundant 'test'
+  DEF_SIMPLE_GM_CAN_FAIL(closedcappedhairline, canvas, errorMsg, 100, 500) { ... }
+
+  // Good: Accurately reflects full scope with butt caps
+  DEF_SIMPLE_GM(hairlines_buttcap, canvas, WIDTH, HEIGHT) { ... }
+
+  // Good: Named after the bug tracker issue identifier
+  class Bug399631317GM : public skiagm::GM {
+      SkString getName() const override { return SkString("bug_399631317"); }
+  };
+  ```
+include_glob:
+- gm/**
+- modules/**
+triggers:
+- \bDEF_(?:SIMPLE_)?GM(?:_CAN_FAIL)?\s*[(]
+- \bgetName\s*[(][)]\s*const\s+override\b
+- \bSkString\s+getName\s*[(]
+- \bclass\s+\w+\s*:\s*public\s+(?:skiagm::)?GM\b
+- \bRegisterGM\s*[(]
+citations:
+- path: agents/skills/skia-gn-workflow/references/gms.md
+  heading: Defining a GM
+  quote: 'getName(): Returns the unique name of the GM. This is used with the --match flag.'
+confidence: 0.95
+support_cl_count: 2

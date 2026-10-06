@@ -1,0 +1,45 @@
+id: gpu/avoid-misleading-defaults-for-overwritten-fields
+title: When defining helper structs with default member initializers, avoid giving specific fields non-uniform
+  defaults and comments if callers unconditionally overwrite them
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not assign non-uniform default member initializers or add explanatory comments justifying a default
+  value for struct fields when all code paths constructing or populating the struct unconditionally overwrite
+  those fields. Keep default initializers uniform across the struct and document field semantics at the
+  usage site rather than commenting dead default states.
+why: Giving a field a different default value accompanied by an explanatory comment implies that certain
+  code paths fall back to that default. When callers unconditionally overwrite the field, such comments
+  and non-uniform initializers are misleading dead documentation that obscures how the struct is actually
+  used.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct FeaturesToAdd {
+      bool fDynamicRendering = true;
+      // By default, do not query for or enable YCbCr conversion. Our implementation always opts to
+      // query for it in 1.1, meaning it either will be enabled or the client manually disables it.
+      bool fSamplerYcbcrConversion = false;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  struct FeaturesToAdd {
+      bool fDynamicRendering = true;
+      bool fSamplerYcbcrConversion = true;
+  };
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bstruct\s+[A-Za-z0-9_]+\s*\{
+- \bbool\s+f[A-Z]\w*\s*=\s*(?:true|false);
+- //.*\b(?:[Bb]y default|[Dd]efaults? to)\b
+- \bstruct\s+\w*(?:Features|Options|Config|Settings)\w*\b
+- \bf[A-Z]\w*\s*=\s*(?:true|false);\s*//
+confidence: 0.9
+support_cl_count: 1

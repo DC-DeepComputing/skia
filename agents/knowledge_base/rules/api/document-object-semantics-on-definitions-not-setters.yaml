@@ -1,0 +1,51 @@
+id: api/document-object-semantics-on-definitions-not-setters
+title: When documenting setter or attachment methods accepting polymorphic objects or dependencies, place
+  behavioral contracts on the object's definition or factory rather than the setter
+polarity: dont
+severity: optional
+rubric: readability
+rule: Do not document an object's requirements, behavioral contracts, or evaluation semantics on consumer
+  setter or attachment methods that merely accept or bind the object. Instead, document object contracts
+  on the class interface, header overview, or factory functions where the object type is defined and created.
+why: Consumer setter methods are responsible for binding an object reference, not specifying the object's
+  intrinsic behavior or implementation rules. Placing dependency requirements on consumer methods clutters
+  the setter API and hides critical contracts from developers implementing, subclassing, or instantiating
+  the object elsewhere.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  /** Sets SkShader to shader, decreasing SkRefCnt of the previous SkShader.
+      Increments shader SkRefCnt by one. Note that the shader should return
+      color that is premultiplied.
+  */
+  void setShader(sk_sp<SkShader> shader);
+  ```
+
+  Good:
+
+  ```cpp
+  /** Sets SkShader to shader, decreasing SkRefCnt of the previous SkShader.
+      Increments shader SkRefCnt by one.
+  */
+  void setShader(sk_sp<SkShader> shader);
+
+  // In include/core/SkShader.h (on class or factory declaration):
+  /** Shaders specify the source color(s) for what is being drawn.
+      Returned colors must be premultiplied.
+  */
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \b(?:[Ss]hader|[Ff]ilter|[Bb]lender|[Ee]ffect|[Tt]ypeface)\s+(?:should|must|needs to|returns?)\b
+- \bNote\s+that\s+the\s+[A-Za-z0-9_]+\s+(?:should|must|needs to)\b
+- \b(?:color|source|output)\s+(?:that\s+is\s+)?(?:un)?premultiplied\b
+- \b(?:shader|filter|blender|effect)\s+SkRefCnt\b
+- \bvoid\s+set[A-Z]\w*\s*\(
+- \b(?:set|attach|bind)[A-Z]\w*\s*\([^)]*sk_sp<
+- \b(?:Sets?|Binds?)\s+Sk(?:Shader|ColorFilter|Blender|ImageFilter|PathEffect)\b
+confidence: 0.88
+support_cl_count: 1

@@ -1,0 +1,53 @@
+id: general/validate-sentinel-on-deserialization-fallback
+title: When deserializing from SkReadBuffer where a field encodes a known identifier or fallback payload,
+  validate that unrecognized values match the expected sentinel via buffer.validate()
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When deserializing untrusted data from SkReadBuffer where a field distinguishes between a recognized
+  key/identifier and an inline fallback representation, validate that any unrecognized value equals the
+  expected sentinel (e.g., buffer.validate(key == 0)). Do not silently take the fallback branch on unrecognized
+  non-sentinel values without validating and marking the buffer invalid.
+why: Data from SkReadBuffer originates from external, untrusted streams. If an unrecognized non-sentinel
+  value is silently interpreted as the fallback branch, corrupted or malicious streams bypass validation,
+  misparse subsequent fields, and introduce deserialization vulnerabilities. Calling buffer.validate()
+  ensures unknown values mark the buffer invalid and halt deserialization safely.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  uint32_t candidateStableKey = buffer.readUInt();
+  auto effect = SkKnownRuntimeEffects::MaybeGetKnownRuntimeEffect(candidateStableKey);
+  if (!effect) {
+      // Silently assumes candidateStableKey == 0 without validation
+      SkString sksl;
+      buffer.readString(&sksl);
+      effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  uint32_t candidateStableKey = buffer.readUInt();
+  auto effect = SkKnownRuntimeEffects::MaybeGetKnownRuntimeEffect(candidateStableKey);
+  if (!effect && !buffer.validate(candidateStableKey == 0)) {
+      return nullptr;
+  }
+  if (!effect) {
+      SkString sksl;
+      buffer.readString(&sksl);
+      effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:buffer|reader)\.read(?:UInt|Int|32|Scalar|String)\s*\(
+- \b(?:buffer|reader|this)(?:\.|->)validate\s*\(
+- \b(?:candidate|stableKey|key|id|tag|type|sentinel)\s*==\s*0\b
+- \b(?:MaybeGetKnownRuntimeEffect|IsKnownRuntimeEffect|IsSkiaKnownRuntimeEffect)\b
+- \bCreateProc\s*\(\s*SkReadBuffer
+confidence: 0.92
+support_cl_count: 1

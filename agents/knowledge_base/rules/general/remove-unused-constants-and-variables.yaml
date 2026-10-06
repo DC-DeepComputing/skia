@@ -1,0 +1,91 @@
+id: general/remove-unused-constants-and-variables
+title: When refactoring or writing code, delete unreferenced constants, dead computations, write-only
+  local variables, redundant flags, and unused member fields or debug-only declarations
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not leave unused or write-only local variables (such as abandoned loop counters that are incremented
+  but never read), unreferenced constants, lookup tables, dead allocations masked by null checks, or obsolete
+  calculations populated via out-parameter calls (such as mapPoints) in source or test files. In classes
+  and structs, remove unused member fields, unneeded constructor parameters, dead method overrides, and
+  debug-only declarations (such as fields wrapped in SkDEBUGCODE) that are never referenced or asserted
+  upon. When deleting or deprecating an interface, delete any private fields, counters, and bookkeeping
+  logic that exclusively supported it. Additionally, do not maintain redundant or dead member flags that
+  are never updated or duplicate existing metadata.
+why: Unused constants, write-only local variables, dead allocations, orphaned bookkeeping state, unreferenced
+  variables, dead or redundant flags, and unused debug declarations clutter code, increase object memory
+  footprint, and mislead readers into believing state or loop progress is actively tracked. In templated
+  classes, loop bodies with write-only counters, under debug macros like SkDEBUGCODE, or when variables
+  are tested for null or passed by address to out-parameter APIs (such as mapPoints), compiler diagnostics
+  do not always trigger, allowing dead code and resource allocations to persist undetected.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Write-only local variable or abandoned loop counter
+  for (auto width : widths) {
+      int i = 0;
+      for (auto cap : caps) {
+          drawPath(canvas, cap, width);
+      }
+      i++;
+  }
+
+  // Dead allocation masked by null check
+  auto surface = canvas->makeSurface(canvas->imageInfo().makeWH(80, 80));
+  if (!surface) {
+      return DrawResult::kSkip;
+  }
+  drawScaledPath(canvas, path, paint);
+
+  // Dead calculation populated via out-parameter
+  SkPoint center;
+  m.mapPoints(&center, &localCenter, 1);
+  float radius = m.mapRadius(localOuterRadius);
+
+  // Unused debug-only member variable or redundant flag
+  class Tiler {
+      SkTDArray<Tile> fTileBuf;
+      SkDEBUGCODE(bool fSorted;) // Never referenced or asserted
+      bool fUpdated; // Never updated to true, creating dead checks
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Write-only counter removed
+  for (auto width : widths) {
+      for (auto cap : caps) {
+          drawPath(canvas, cap, width);
+      }
+  }
+
+  // Dead allocation and unused null check removed
+  drawScaledPath(canvas, path, paint);
+
+  // Unused out-parameter and obsolete transformation removed
+  float radius = localOuterRadius * transform.maxScaleFactor();
+
+  // Dead debug declarations and redundant flags removed
+  class Tiler {
+      SkTDArray<Tile> fTileBuf;
+      bool isDrawn() const { return !fTileBuf.empty(); }
+  };
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.h'
+triggers:
+- \b(?:static\s+)?(?:inline\s+)?(?:constexpr|const)\s+[A-Za-z0-9_:]+(?:<[^>]+>)?\s+\w+\s*(?:\[[^\\]]*\\])?\s*=
+- \b(?:const\s+)?[A-Za-z0-9_:]+(?:<[^>]+>)?\s+f[A-Z]\w*\s*(?:=\s*[^;]+)?(?:;|,s*f[A-Z])
+- \bSkDEBUGCODE\s*\([^)]*\bf[A-Z]\w*
+- \b(?:this->)?f[A-Za-z0-9_]*(?:Updated|Dirty|Valid|Pending|Drawn|Initialized)\b
+- \bif\s*[(]\s*!?\s*(?:this->)?f[A-Za-z0-9_]+
+- \bf[A-Z]\w*\s*(?:\+\+|--|\+=|-=)|\b[a-z]\w*\s*(?:\+\+|--);
+- (?:->|\.)make(?:Surface|Image|Texture|RenderTarget)\s*[(]|\bif\s*[(]\s*!(?:surface|image|texture|buffer|device|canvas|res)\b
+- (?:->|\.)map(?:Points?|Rect|Radius|Vectors?)\s*[(]
+confidence: 0.98
+support_cl_count: 7

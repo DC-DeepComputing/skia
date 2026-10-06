@@ -1,0 +1,75 @@
+id: core/symmetric-growth-and-shrink-container-traits
+title: When customizing container capacity or growth policies via traits, provide symmetric growth and
+  shrinkage hooks and update all methods like reserve() to respect them
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When allowing container capacity, resizing, or load-factor policies to be customized via traits
+  or policy classes, provide symmetric customization hooks for both growth and shrinkage (e.g., paired
+  ShouldGrow and ShouldShrink predicates) and enforce their mutual presence at compile time via static_assert.
+  Additionally, update all capacity-management methods—such as reserve() and remove()—to query the trait
+  hooks rather than retaining hardcoded sizing thresholds or load-factor calculations.
+why: Container templates must maintain self-consistent sizing invariants across both insertion and deletion
+  workflows to prevent resize thrashing or permanent over-allocation. Furthermore, failing to query custom
+  growth hooks in reserve() causes it to allocate insufficient capacity for custom load factors, triggering
+  premature reallocations upon subsequent insertions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Asymmetric traits missing ShouldShrink:
+  template <typename U>
+  struct HasShouldGrow<U, std::void_t<decltype(U::ShouldGrow(std::declval<int>(), std::declval<int>()))>> : std::true_type {};
+
+  // 2. reserve() retains hardcoded load factor instead of querying ShouldGrow:
+  void reserve(int n) {
+      int newCapacity = SkNextPow2(n);
+      if (n * 4 > newCapacity * 3) {
+          newCapacity *= 2;
+      }
+      if (newCapacity > fCapacity) {
+          this->resize(newCapacity);
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Enforce symmetric traits at compile time:
+  template <typename U>
+  struct HasShouldGrow<U, std::void_t<decltype(U::ShouldGrow(std::declval<int>(), std::declval<int>()))>> : std::true_type {
+      static_assert(HasShouldShrink<U>::value, "Traits defining ShouldGrow must also provide ShouldShrink().");
+  };
+
+  // 2. reserve() queries custom policy traits:
+  void reserve(int n) {
+      int newCapacity = SkNextPow2(n);
+      bool shouldGrow = false;
+      if constexpr (HasShouldGrow<Traits>::value) {
+          shouldGrow = Traits::ShouldGrow(n, newCapacity);
+      } else {
+          shouldGrow = (n * 4 > newCapacity * 3);
+      }
+      if (shouldGrow) {
+          newCapacity *= 2;
+      }
+      if (newCapacity > fCapacity) {
+          this->resize(newCapacity);
+      }
+  }
+  ```
+include_glob:
+- src/core/**
+- src/base/**
+triggers:
+- \b(?:Has)?ShouldGrow\b
+- \b(?:Has)?ShouldShrink\b
+- \bTraits::Should(?:Grow|Shrink)\b
+- \b(?:HasShouldGrow|HasShouldShrink)<
+- \b(?:struct|class)\s+HasShould[A-Z]\w*
+- \b(?:shouldGrow|shouldShrink)\s*=
+- \bvoid\s+reserve\s*\(\s*int\s+\w*\)
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,41 @@
+id: general/use-inv-prefix-for-reciprocal-values
+title: When naming reciprocal or inverted quantities like 1/dx, use an 'inv' prefix rather than 'idx'
+  or 'idy' to prevent confusion with indices
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When naming reciprocal or inverse quantities (such as 1/dx, 1/dy, or 1/det), prefix the identifier
+  with 'inv' (e.g., invDx, invDy, invDet) rather than abbreviations like 'idx' or 'idy'. Reserve 'idx'
+  strictly as shorthand for index variables or container subscripts.
+why: In Skia and standard C++ conventions, 'idx' is ubiquitous shorthand for 'index'. Using 'idx' or 'idy'
+  to denote reciprocal differences (such as 1/dx) causes confusion and collides with loop indices or container
+  lookups. An 'inv' prefix clearly communicates the reciprocal mathematical operation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  float idx = (std::abs(dx) <= kEpsilon) ? 0.0f : 1.0f / dx;
+  float idy = (std::abs(dy) <= kEpsilon) ? 0.0f : 1.0f / dy;
+  std::array<float, 4> derivs = {dx, dy, idx, idy};
+  ```
+
+  Good:
+
+  ```cpp
+  float invDx = (std::abs(dx) <= kEpsilon) ? 0.0f : 1.0f / dx;
+  float invDy = (std::abs(dy) <= kEpsilon) ? 0.0f : 1.0f / dy;
+  std::array<float, 4> derivs = {dx, dy, invDx, invDy};
+  ```
+include_glob:
+- src/**
+- include/**
+- tests/**
+triggers:
+- \b(?:float|double|auto|SkScalar)\s+id[xy]\b
+- \bid[xy]\s*=\s*[^;]*1(?:\.0?f?)?\s*/
+- \b(?:float|double|auto|SkScalar)\s+inv[A-Z]\w*\s*=
+- \b1(?:\.0?f?)?\s*/\s*d[xy]\b
+- \b(?:invDx|invDy|invDet|invScale|invWidth|invHeight)\b
+confidence: 0.9
+support_cl_count: 1

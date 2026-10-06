@@ -1,0 +1,52 @@
+id: bazel/export-subsystem-source-lists-to-dedicated-gni-files
+title: When configuring Bazel-to-GN exports in bazel/exporter_tool, export subsystem-specific or optional
+  feature source lists into dedicated <subsystem>.gni files rather than gn/core.gni
+polarity: dont
+severity: should_fix
+rubric: design
+rule: When mapping Bazel filegroup rules to GN in bazel/exporter_tool/main.go, do not export subsystem-specific,
+  optional, or module-dependent source lists (such as Rust FFI bindings, codecs, or experimental modules)
+  into gn/core.gni. Define a dedicated gn/<subsystem>.gni file mapping in gniExportDescs and import the
+  generated file in BUILD.gn.
+why: GN file lists are factored modularly by subsystem to isolate build dependencies and prevent bloat.
+  Appending subsystem or optional feature sources into gn/core.gni pollutes the core source sets, forces
+  unnecessary rebuilds, and exposes downstream embedders that import core.gni to unwanted or unsupported
+  source lists.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Inside gniExportDescs for "gn/core.gni" in bazel/exporter_tool/main.go:
+  {Var: "skia_rust_common_ffi_rs_srcs",
+      Rules: []string{"//rust/common:rs_srcs"}},
+  {Var: "skia_rust_common_ffi_cxx_bridge_srcs",
+      Rules: []string{"//rust/common:cxx_bridge_srcs"}},
+  ```
+
+  Good:
+
+  ```cpp
+  // In gniExportDescs as a dedicated GNI export in bazel/exporter_tool/main.go:
+  {GNI: "gn/rust.gni", Vars: []exporter.GNIFileListExportDesc{
+      {Var: "skia_rust_common_ffi_rs_srcs",
+          Rules: []string{"//rust/common:rs_srcs"}},
+      {Var: "skia_rust_common_ffi_cxx_bridge_srcs",
+          Rules: []string{"//rust/common:cxx_bridge_srcs"}},
+  }},
+  ```
+include_glob:
+- bazel/exporter_tool/**
+triggers:
+- \b(?:GNIExportDesc|GNIFileListExportDesc)\b
+- \bVar:\s*\"skia_[a-zA-Z0-9_]+\"
+- \bGNI:\s*\"gn/[a-zA-Z0-9_]+\.gni\"
+- \"//(?:rust|codec|pdf|sksl|gpu|graphite|svg|xml|xps|effects)/[a-zA-Z0-9_/-]+:[a-zA-Z0-9_]+\"
+- \bRules:\s*\[\]string\{
+citations:
+- path: bazel/exporter_tool/README.md
+  heading: Bazel to *.gni
+  quote: The exporter tool is hardcoded with the Bazel rules to be exported, and to which GNI file and
+    file list they should be mapped.
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,50 @@
+id: general/document-scalar-fallback-in-simd-pipeline
+title: When invoking scalar routines or falling back to scalar execution in a SIMD pipeline, document
+  the empirical performance or workload rationale in an inline comment
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When invoking a scalar helper or falling back to scalar execution within an ostensibly vectorized
+  or SIMD pipeline, document the non-obvious performance or workload rationale in an inline comment. Explain
+  the empirical benchmarking results or workload characteristics (such as typical input sizes or low element
+  counts making vector setup overhead inefficient) so maintainers understand the scalar choice is deliberate
+  and not an oversight.
+why: In performance-critical SIMD code, calling a scalar implementation when a vectorized alternative
+  exists or is expected looks like an accidental omission or copy-paste bug. Explicit inline documentation
+  prevents future maintainers from refactoring the call to SIMD without benchmarking and records the empirical
+  tradeoffs for future optimizations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (skvx::all(X < 0.0f) ||
+      is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
+      polyline->appendPoint(pts[2]);
+  } else {
+      this->flattenQuadScalar(pts, polyline);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (skvx::all(X < 0.0f) ||
+      is_within_dist_sq(pts[1], pts[0], pts[2], kQuadSubdivThreshold)) {
+      polyline->appendPoint(pts[2]);
+  } else {
+      // Note: testing shows scalar is slightly faster here, likely because
+      // typical quads don't produce enough segments to offset SIMD overhead.
+      this->flattenQuadScalar(pts, polyline);
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b[a-zA-Z0-9_]+Scalar\s*\(
+- \b[a-zA-Z0-9_]+Simd\s*\(
+- \bskvx::(?:Vec|all|any|shuffle|bit_cast|join|split|cast)\b
+- //.*\b(?:scalar|simd|vectoriz(?:ed?|ation)?|overhead|bench(?:mark)?)\b
+- \b(?:run|eval|flatten|draw|compute|process)[A-Za-z0-9_]*(?:Scalar|Simd)\b
+confidence: 0.9
+support_cl_count: 1

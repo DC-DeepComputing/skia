@@ -1,0 +1,71 @@
+id: general/initialize-local-singletons-at-declaration
+title: When defining function-local singletons or default instances, initialize static pointers at declaration
+  directly instead of using static sk_sp, unsynchronized checks, or SkOnce
+polarity: dont
+severity: blocking
+rubric: readability
+rule: Do not store function-local singletons or default instances in static smart pointers (`static sk_sp<T>`),
+  nor use manual `SkOnce` / `std::call_once` synchronization or unsynchronized lazy initialization (`if
+  (!ptr)`). Instead, initialize function-local static pointers directly at declaration (`static T* gSingleton
+  = Factory().release();`), relying on C++11 thread-safe static initialization without registering exit-time
+  destructors, and return via `sk_ref_sp(gSingleton)` if ref-counted.
+why: In C++11 and later, function-local static variables are guaranteed by the standard to be initialized
+  in a thread-safe manner on first execution ('magic statics'), making SkOnce or manual synchronization
+  redundant boilerplate. Additionally, static smart pointers like static sk_sp<T> register exit-time destructors
+  that run in non-deterministic order during process shutdown, risking use-after-free crashes; leaking
+  raw pointers avoids exit-time destruction.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: static sk_sp registers an exit-time destructor, risking shutdown UAF.
+  sk_sp<SkPathData> SkPathData::Empty() {
+      static sk_sp<SkPathData> gEmpty = MakeNoCheck({}, {}, {}, {}, {});
+      return gEmpty;
+  }
+
+  // Bad: unsynchronized lazy check creates a data race.
+  sk_sp<SkPathData> SkPathData::Empty() {
+      static sk_sp<SkPathData> gEmpty;
+      if (!gEmpty) { gEmpty = MakeNoCheck({}, {}, {}, {}, {}); }
+      return gEmpty;
+  }
+
+  // Bad: redundant SkOnce synchronization when magic statics suffice.
+  SkRasterRecorder* SkRasterRecorder::Get() {
+      static SkRasterRecorder* gRecorder;
+      static SkOnce once;
+      once([]() { gRecorder = MakeRecorder().release(); });
+      return gRecorder;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: magic statics ensure thread-safe one-time initialization;
+  // raw pointer avoids exit-time destructor registration.
+  sk_sp<SkPathData> SkPathData::Empty() {
+      static SkPathData* gEmpty = MakeNoCheck({}, {}, {}, {}, {}).release();
+      return sk_ref_sp(gEmpty);
+  }
+
+  SkRasterRecorder* SkRasterRecorder::Get() {
+      static SkRasterRecorder* gRecorder = MakeRecorder().release();
+      return gRecorder;
+  }
+  ```
+include_glob:
+- src/**
+- modules/**
+triggers:
+- \bstatic\s+(?:sk_sp|std::unique_ptr|std::shared_ptr)<[A-Za-z0-9_:]+>\s+[gk]?[A-Za-z0-9_]+
+- \bstatic\s+[A-Za-z0-9_:]+\*\s+[gk]?[A-Za-z0-9_]+\s*=\s*(?:nullptr|NULL|0);
+- \bstatic\s+(?:SkOnce|std::once_flag)\b
+- \b(?:SkOnce|std::call_once)\b
+- \bstatic\s+[A-Za-z0-9_:]+\*\s+[gk]?[A-Za-z0-9_]+\s*=.*\.release\(\)
+- \b(?:static\s+)?[A-Za-z0-9_:]+\*\s+[gk]?(?:Instance|Singleton|Empty|Default|Recorder)\s*=
+- \bsk_ref_sp\s*\(\s*[gk]?[A-Za-z0-9_]*(?:Instance|Singleton|Empty|Default)\b
+confidence: 0.98
+support_cl_count: 2

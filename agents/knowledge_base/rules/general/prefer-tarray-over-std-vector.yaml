@@ -1,0 +1,64 @@
+id: general/prefer-tarray-over-std-vector
+title: When managing dynamic contiguous arrays in internal Skia code, prefer skia_private::TArray or STArray
+  over std::vector for memory and relocation efficiency
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Prefer Skia's internal skia_private::TArray or skia_private::STArray<N, T> over std::vector for
+  array containers in internal Skia code. For local or bounded collections where the element count is
+  typically small (e.g., N = 1 or a small constant), use STArray<N, T> to provide inline stack storage
+  and eliminate heap allocation overhead. When wrapping or populating dynamic arrays from C-style APIs,
+  size the array with resize_back() or reserve_exact() and pass .data() rather than using std::vector.
+why: skia_private::TArray and STArray are Skia's canonical array containers, optimized for Skia's memory
+  allocators and leveraging sk_is_trivially_relocatable optimizations (via memcpy) during resizing while
+  avoiding <vector> header overhead. For small local collections, STArray<N, T> embeds inline storage
+  for N elements directly in the stack frame or enclosing object, eliminating dynamic heap allocation
+  and deallocation on common paths while still permitting growth.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Dynamic arrays or C-style query APIs:
+  #include <vector>
+  std::vector<VkQueueFamilyProperties> queueProps(queueFamilyCount);
+  vkGetPhysicalDeviceQueueFamilyProperties(physDev, &queueFamilyCount, queueProps.data());
+
+  // Small local collections:
+  std::vector<const Expression*> nextExprs;
+  ```
+
+  Good:
+
+  ```cpp
+  // Dynamic arrays or C-style query APIs:
+  #include "include/private/base/SkTArray.h"
+  skia_private::TArray<VkQueueFamilyProperties> queueProps;
+  queueProps.resize_back(queueFamilyCount);
+  vkGetPhysicalDeviceQueueFamilyProperties(physDev, &queueFamilyCount, queueProps.data());
+
+  // Small local collections with inline stack storage:
+  skia_private::STArray<1, const Expression*> nextExprs;
+  ```
+include_glob:
+- src/**
+- include/private/**
+triggers:
+- \bstd::vector<
+- '#\s*include\s+<vector>'
+- \bstd::vector\s+[a-zA-Z0-9_]+
+- \b(?:skia_private::)?(?:S?TArray|AutoS?TArray)<
+- \busing\s+\w*Array\s*=\s*skia_private::(?:S?TArray)<
+citations:
+- path: site/docs/dev/tools/debugvis.md
+  heading: Debug Visualization
+  quote: Skia uses custom container types, such as `SkString` and `SkTArray<>`, which can be inconvenient
+    to view in a debugger.
+- path: docs/architecture/CPU.md
+  heading: '### 1. The API Layer'
+  quote: This `STArray` is a small-object optimized array, meaning that for small paths, the geometry
+    data is stored directly within the `STArray`'s internal buffer (part of the heap-allocated `SkPathRef`
+    object). For larger paths, the `STArray` dynamically allocates additional memory on the heap to store
+    the geometry data.
+confidence: 0.98
+support_cl_count: 4

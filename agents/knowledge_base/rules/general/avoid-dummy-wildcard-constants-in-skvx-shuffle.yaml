@@ -1,0 +1,22 @@
+id: general/avoid-dummy-wildcard-constants-in-skvx-shuffle
+title: When padding unused trailing lanes in skvx::shuffle, explicitly repeat the last valid lane index
+  rather than defining a pseudo-wildcard dummy variable
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When filling unused or don't-care trailing lanes in skvx::shuffle, explicitly repeat the last valid
+  lane index as integer literals rather than defining a pseudo-wildcard dummy variable (such as static
+  constexpr int _ = ... or kDontCare).
+why: skvx::shuffle requires valid compile-time lane indices within the input vector bounds. Defining a
+  dummy variable to represent don't-care trailing lanes adds unnecessary indirection, requires an arbitrary
+  index calculation, and obscures which lane is actually duplicated. Explicitly repeating the last valid
+  lane index makes the padding transparent and consistent.
+include_glob:
+- src/**
+triggers:
+- \bskvx::shuffle<
+- \b(?:static\s+)?constexpr\s+(?:int|size_t)\s+k?(?:[A-Za-z0-9_]*Pad|DontCare|Unused|Dummy|_)\s*=
+- \bshuffle<[^>]*\b(?:_|k?DontCare|k?Unused|k?Dummy)\b
+- \bskvx::Vec<[0-9]+,\s*[a-zA-Z0-9_]+>\s+[a-zA-Z0-9_]+\s*=\s*(?:skvx::)?shuffle<
+confidence: 0.88
+support_cl_count: 1

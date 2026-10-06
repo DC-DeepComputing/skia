@@ -1,0 +1,48 @@
+id: gpu/avoid-mutating-invariant-draw-parameters
+title: When updating captured draw parameters in deferred passes, do not reassign invariant transform
+  or geometry fields; update only dynamic properties like scissor, bounds, and order
+polarity: dont
+severity: should_fix
+rubric: design
+rule: When updating captured draw parameters in deferred clip or draw recording passes (such as ClipStack
+  or DrawListLayer), do not reassign or mutate invariant draw parameters such as transforms, geometry,
+  or unclipped shape bounds. Initialize invariant parameters once during initial draw recording, and restrict
+  deferred update passes strictly to properties that depend on accumulated draw usage (such as scissor
+  rects, aggregated draw bounds, and painter's depth/order).
+why: Static draw properties like geometry and coordinate transforms are fixed once a draw command is recorded.
+  Reassigning or recomputing them during deferred passes violates lifecycle separation, introduces redundant
+  state mutations, and risks clobbering transformed state or creating inconsistencies with the pre-recorded
+  draw command.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In deferred clip update pass:
+  fCaptureParams->fTransform = transform;
+  fCaptureParams->fGeometry = geom;
+  fCaptureParams->fTransformedShapeBounds = fOuterBounds;
+  fCaptureParams->fOrder = order;
+  fCaptureParams->fDrawBounds = drawBounds;
+  fCaptureParams->fScissor = scissor.asSkIRect();
+  ```
+
+  Good:
+
+  ```cpp
+  // In deferred clip update pass, only update properties depending on accumulated usage:
+  fCaptureParams->fOrder = order;
+  fCaptureParams->fDrawBounds = drawBounds;
+  fCaptureParams->fScissor = scissor.asSkIRect();
+  device->updateNextDepthForClipping(fCaptureParams->fOrder.depth());
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bfCaptureParams->f(?:Transform|Geometry|TransformedShapeBounds)\b
+- \bfCaptureParams->f(?:Order|DrawBounds|Scissor)\b
+- \b(?:updateDeferredClipDraw|drawClipImmediate|drawClipShapeImmediate)\s*[(]
+- \bDrawParams\s*[*]?\s*fCaptureParams\b
+- \bupdateNextDepthForClipping\s*[(]
+confidence: 0.9
+support_cl_count: 1

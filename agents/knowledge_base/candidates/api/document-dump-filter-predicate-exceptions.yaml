@@ -1,0 +1,47 @@
+id: api/document-dump-filter-predicate-exceptions
+title: When documenting memory dump or diagnostic filter predicates in public headers, explicitly document
+  any unconditional inclusions or exclusions that bypass filtering
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In doc comments for memory dump or diagnostic filter predicates (such as SkTraceMemoryDump::shouldDump*),
+  explicitly document any unconditional exclusions or inclusions that bypass the filter—such as memoryless
+  textures being dumped regardless of zero-size filtering—rather than stating an unqualified filtering
+  rule.
+why: Filter predicates that claim to suppress certain categories of resources (such as zero-sized objects)
+  confuse callers and implementers if specific resources bypass the check and are dumped regardless. Explicitly
+  noting exceptions in header documentation prevents misunderstandings of dump statistics and keeps filtering
+  contracts accurate.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  /**
+   * Returns true if we should dump zero-sized objects (e.g. Samplers, pipelines, etc).
+   * This call is only used when dumping Graphite memory statistics.
+   */
+  virtual bool shouldDump0SizeObjects() const { return false; }
+  ```
+
+  Good:
+
+  ```cpp
+  /**
+   * Returns true if we should dump sizeless non-texture objects (e.g. Samplers, pipelines, etc).
+   * Memoryless textures are always dumped. This call is only used when dumping Graphite memory
+   * statistics.
+   */
+  virtual bool shouldDumpSizelessObjects() const { return false; }
+  ```
+include_glob:
+- include/**
+triggers:
+- \bvirtual\s+bool\s+shouldDump[A-Za-z0-9_]*\s*[(]
+- \bshouldDump(?:Sizeless|Wrapped|Unbudgeted|[A-Z]\w*)Objects?\b
+- \bSkTraceMemoryDump::shouldDump\b
+- //.*\b(?:always dumped|dumped regardless|unconditional(?:ly)? dumped)\b
+- /[*][*]?\s*.*\b(?:should dump|dump zero-sized|dump sizeless|Memoryless textures)\b
+- \bclass\s+(?:SK_API\s+)?SkTraceMemoryDump\b
+confidence: 0.9
+support_cl_count: 1

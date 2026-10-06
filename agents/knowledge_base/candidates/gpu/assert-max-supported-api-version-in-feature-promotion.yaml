@@ -1,0 +1,47 @@
+id: gpu/assert-max-supported-api-version-in-feature-promotion
+title: When initializing backend feature promotion helpers with caller API versions, assert that the version
+  does not exceed the maximum supported version
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When initializing or configuring backend feature promotion helpers that branch on core API versions,
+  assert with SkASSERT that caller-provided API versions do not exceed the maximum version supported by
+  the promotion logic (e.g., SkASSERT(apiVersion <= VK_API_VERSION_1_4)). Do not assert only a lower baseline
+  bound without bounding the upper version.
+why: Feature promotion and extension negotiation logic branches on known core API versions to replace
+  separate extensions with core feature structs. If a caller passes an unhandled newer API version, execution
+  falls through without necessary promotion checks, causing silent misconfiguration.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void VulkanPreferredFeatures::init(uint32_t appAPIVersion) {
+      fAPIVersion = appAPIVersion;
+      // Only verifies minimum supported baseline
+      SkASSERT(fAPIVersion >= VK_API_VERSION_1_1);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void VulkanPreferredFeatures::init(uint32_t appAPIVersion) {
+      fAPIVersion = appAPIVersion;
+      SkASSERT(fAPIVersion >= VK_API_VERSION_1_1);
+      // Alert maintainers if caller passes a higher version needing updated promotion logic
+      SkASSERT(fAPIVersion <= VK_API_VERSION_1_4);
+  }
+  ```
+include_glob:
+- src/gpu/vk/**
+- src/gpu/**/vk/**
+triggers:
+- \bSkASSERT\s*[(][^)]*(?:fAPIVersion|apiVersion|version)\s*<=
+- \bSkASSERT\s*[(][^)]*(?:fAPIVersion|apiVersion|version)\s*>=
+- \b(?:init|setup|configure)\s*[(][^)]*(?:appAPIVersion|apiVersion|vulkanApiVersion)\b
+- \b(?:fAPIVersion|apiVersion)\s*=\s*(?:appAPIVersion|apiVersion)\b
+- \bVK_API_VERSION_1_[0-9]+\b
+- \bVulkanPreferredFeatures\b
+confidence: 0.9
+support_cl_count: 1

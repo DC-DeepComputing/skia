@@ -1,0 +1,56 @@
+id: general/prefix-test-only-methods-with-testing-only
+title: Avoid adding test-only hooks to production classes when tests can instantiate subcomponents directly;
+  prefix necessary test-only methods with testingOnly_
+polarity: dont
+severity: should_fix
+rubric: design
+rule: 'Do not add test-only methods, accessors, or #if defined(GPU_TEST_UTILS) hooks to higher-level production
+  classes when unit tests can instantiate the target subcomponent directly using local or stack-allocated
+  dependencies. When test-only helper methods, accessors, or hooks are genuinely required on production
+  classes, prefix their names with testingOnly_ (giving them descriptive names) rather than standard method
+  names or Chromium-style ForTesting suffixes.'
+why: Exposing test hooks or factory methods on production classes adds unnecessary maintenance overhead,
+  leaks internal details, and risks accidental invocation from production code. Direct subcomponent instantiation
+  in tests simplifies fixtures without polluting production types, while the testingOnly_ prefix clearly
+  alerts callers and reviewers that any unavoidable hook violates normal encapsulation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: adding unnecessary test factory/hook to production class
+  #if defined(GPU_TEST_UTILS)
+  std::unique_ptr<DrawWriter> DrawPass::getDrawWriter(DrawBufferManager* bufferMgr) {
+      return std::make_unique<DrawWriter>(&fCommandList, bufferMgr);
+  }
+  // Bad: test hooks using standard method names without testingOnly_ prefix
+  void setInitialStaticVertexInfo(skia_private::TArray<uint32_t>);
+  int32_t getBackingRefCnt() const;
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: test constructs subcomponent directly with stack dependencies
+  DrawPassCommands::List commandList;
+  auto dw = std::make_unique<DrawWriter>(&commandList, bufferMgr);
+
+  // Good: unavoidable test hooks prefixed with testingOnly_
+  #if defined(GPU_TEST_UTILS)
+  void testingOnly_SetStaticVertexInfo(skia_private::TArray<StaticVertexCopyRanges>,
+                                       sk_sp<Buffer>);
+  int32_t testingOnly_getBackingRefCnt() const;
+  #endif
+  ```
+include_glob:
+- src/**
+triggers:
+- \btestingOnly_[A-Za-z0-9_]+\s*[(]
+- '#(?:if|ifdef)\s+.*\b(?:GPU_TEST_UTILS|TEST_UTILS)\b'
+- \bdefined\s*[(]\s*GPU_TEST_UTILS\s*[)]
+- //.*\b(?:test(?:ing)?[- ]only|for testing|test hook)\b
+- \b\w+(?:ForTest(?:ing)?|TestingOnly|_for_testing)\s*[(]
+- \b(?:getTest[A-Z]|makeTest[A-Z]|createTest[A-Z])[A-Za-z0-9_]*\s*[(]
+confidence: 0.95
+support_cl_count: 2

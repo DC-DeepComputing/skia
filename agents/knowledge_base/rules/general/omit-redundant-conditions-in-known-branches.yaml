@@ -1,0 +1,93 @@
+id: general/omit-redundant-conditions-in-known-branches
+title: When branching with guards, if-else ladders, or ternaries, eliminate redundant conditions and null
+  checks already guaranteed by enclosing flow or early returns
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: 'Do not retain duplicate or redundant conditional checks, nested guards, null checks, or ternary
+  operators whose condition is already determined by enclosing control flow or preceding early returns
+  (e.g., checking if (ptr) after an early-return if (!ptr) guard, or evaluating cond ? a : b inside an
+  else branch of if (cond)). When moving or consolidating conditional logic into an enclosing guard block,
+  remove the original trailing check. Similarly, do not use a redundant condition in an else if branch
+  when preceding checks and domain constraints make the alternative branch exhaustive (e.g., checking
+  x > 0 followed by else if (x < 0)); use a plain else instead.'
+why: Evaluating a condition whose truth value is already fixed by an enclosing block, an else branch,
+  or preceding early exits creates dead code and unnecessary branch logic. In exhaustive branches, a redundant
+  else if check also misleads readers into expecting an unhandled fallback case and risks uninitialized
+  variable warnings or shader compilation hazards. Redundant null checks on guaranteed non-null objects
+  introduce dead branches that obscure object lifetimes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant ternary in known else branch:
+  if (fSkipColorXform) {
+      AddPrimitiveColor(keyContext, keyBuilder, gatherer, keyContext.dstColorInfo().colorSpace());
+  } else {
+      const SkColorSpace* primitiveCS =
+              fSkipColorXform ? keyContext.dstColorInfo().colorSpace()
+                              : sk_srgb_singleton();
+      AddPrimitiveColor(keyContext, keyBuilder, gatherer, primitiveCS);
+  }
+
+  // Redundant else if on exhaustive sign check:
+  if (radiiAndFlags.z > 0) {
+      clipPlane = fragClipPlane0;
+      isectPlane = fragClipPlane1;
+  } else if (radiiAndFlags.z < 0) {
+      clipPlane = fragClipPlane0;
+      isectPlane = float3(0, 0, 1);
+  }
+
+  // Redundant null check following early return:
+  if (!content) {
+      return DrawResult::kSkip;
+  }
+  if (content) {
+      input = content->makeTemporaryImage();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Simplified branch value:
+  if (fSkipColorXform) {
+      AddPrimitiveColor(keyContext, keyBuilder, gatherer, keyContext.dstColorInfo().colorSpace());
+  } else {
+      const SkColorSpace* primitiveCS = sk_srgb_singleton();
+      AddPrimitiveColor(keyContext, keyBuilder, gatherer, primitiveCS);
+  }
+
+  // Plain else for exhaustive alternative case:
+  if (radiiAndFlags.z > 0) {
+      clipPlane = fragClipPlane0;
+      isectPlane = fragClipPlane1;
+  } else {
+      clipPlane = fragClipPlane0;
+      isectPlane = float3(0, 0, 1);
+  }
+
+  // Unconditional access following early return:
+  if (!content) {
+      return DrawResult::kSkip;
+  }
+  input = content->makeTemporaryImage();
+  ```
+include_glob:
+- src/**
+- include/**
+- gm/**
+- tests/**
+- tools/**
+- modules/**
+triggers:
+- \s*=\s*[^;?]+\s*\?\s*
+- \b(?:return|const\s+\w+)\s+[^;?]+\s*\?\s*
+- \belse\s+if\s*[(]
+- \bif\s*[(][^)]*&&
+- \bif\s*[(]\s*!?[a-zA-Z0-9_]+(?:\s*==\s*nullptr|\s*!=\s*nullptr)?\s*[)]
+- \bDrawResult::kSkip\b
+confidence: 0.98
+support_cl_count: 4

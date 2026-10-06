@@ -1,0 +1,51 @@
+id: gpu/test-vk-preferred-features-extensions
+title: When adding Vulkan extensions or feature structs in VulkanPreferredFeatures, update tests/VkPreferredFeaturesTest.cpp
+  to verify feature negotiation and promotion across Vulkan versions
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When adding support for a new Vulkan extension or feature struct in VulkanPreferredFeatures, update
+  tests/VkPreferredFeaturesTest.cpp to verify that the extension and its features are negotiated correctly.
+  Test that the extension and struct are enabled when available, omitted when unavailable, and properly
+  promoted or suppressed across all supported Vulkan versions and client-provided pNext feature chains.
+why: VulkanPreferredFeatures dynamically negotiates extension and feature struct chains based on device
+  support, Vulkan core version promotions, and client overrides. Updating tests/VkPreferredFeaturesTest.cpp
+  ensures that new extensions and feature structs are enabled or promoted without violating Vulkan specification
+  rules against duplicate or conflicting pNext structures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/gpu/vk/VulkanPreferredFeatures.cpp:
+  // Added support for VK_EXT_frame_boundary and VkPhysicalDeviceFrameBoundaryFeaturesEXT
+  // without updating tests/VkPreferredFeaturesTest.cpp.
+  ```
+
+  Good:
+
+  ```cpp
+  // In tests/VkPreferredFeaturesTest.cpp:
+  struct VulkanExts {
+      ...
+      bool fFrameBoundaryEXT = true;
+  };
+  ...
+  DEF_TEST(VkPreferredFeaturesTest_BasicVulkan11, reporter) {
+      ...
+      CHECK_EXT_ENABLED(VK_EXT_FRAME_BOUNDARY);
+      CHECK_FEATURE_ENABLED(FRAME_BOUNDARY_FEATURES, FrameBoundaryFeatures, frameBoundary);
+  }
+  ```
+include_glob:
+- src/gpu/vk/**
+- include/gpu/vk/**
+triggers:
+- \bVK_[A-Z0-9_]+_EXTENSION_NAME\b
+- \bVkPhysicalDevice[A-Za-z0-9]+Features(?:[A-Z0-9]+)?\b
+- \bVK_STRUCTURE_TYPE_PHYSICAL_DEVICE_[A-Z0-9_]+_FEATURES\b
+- \bVulkanPreferredFeatures\b
+- \b(?:addFeaturesToQuery|addFeaturesToEnable|get_features_to_query)\b
+- \b(?:DeviceExtensions|FeaturesToAdd)\b
+confidence: 0.95
+support_cl_count: 1

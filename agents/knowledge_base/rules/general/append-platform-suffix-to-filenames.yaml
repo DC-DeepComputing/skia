@@ -1,0 +1,40 @@
+id: general/append-platform-suffix-to-filenames
+title: When naming platform-specific source or header files specializing a base component, append the
+  platform name as a terminal suffix rather than infixing it
+polarity: do
+severity: nit
+rubric: readability
+rule: When naming platform-specific source or header files that extend or specialize a base component
+  or factory, append the platform name as a terminal suffix (e.g., <Base>_<Platform>.cpp) rather than
+  inserting it into the middle of the filename. Keep the base component name intact at the beginning of
+  the filename so platform variants group together alphabetically.
+why: Appending the platform name as a terminal suffix keeps platform-specific files consistently aligned
+  with the base component name in directory listings, build file source lists, and search results, preventing
+  fragmentation across alphabetically sorted lists.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // When extending SkImage_GaneshFactories for Android:
+  src/gpu/ganesh/image/SkImage_AndroidGaneshFactories.cpp
+  ```
+
+  Good:
+
+  ```cpp
+  // When extending SkImage_GaneshFactories for Android:
+  src/gpu/ganesh/image/SkImage_GaneshFactories_Android.cpp
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \bSK_BUILD_FOR_(?:ANDROID|WIN|MAC|IOS|UNIX|LINUX)\b
+- ^#include\s+[<"](?:[A-Za-z0-9_/-]+/)?(?:android|ports|gpu/ganesh)/
+- ^#include\s+[<"].*_(?:Android|android|win|mac|posix|ios|linux|dw|ct|gdi)\.h[>"]
+- \b(?:AHardwareBuffer|ID3D\d+|HWND|CAMetalLayer|EGLNative|GrAHardwareBufferUtils)\b
+- \b[A-Za-z0-9_]*(?:Android|Win|Mac|Posix|Ios|Linux)(?:Factories|Ganesh|Graphite)[A-Za-z0-9_]*\b
+- \bSkImage_(?:[A-Za-z0-9_]+Factories|GaneshFactories)[A-Za-z0-9_]*\b
+confidence: 0.88
+support_cl_count: 1

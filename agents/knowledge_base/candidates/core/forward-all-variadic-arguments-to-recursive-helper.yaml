@@ -1,0 +1,54 @@
+id: core/forward-all-variadic-arguments-to-recursive-helper
+title: When delegating variadic arguments to a recursive helper, forward all arguments directly instead
+  of manually unpacking or inserting leading elements at the call site
+polarity: dont
+severity: should_fix
+rubric: design
+rule: When delegating variadic arguments to a recursive helper function that unpacks parameter packs,
+  forward all arguments directly to the helper. Do not manually extract, unpack, or insert leading elements
+  at the entry call site before invoking the helper.
+why: Manually processing leading arguments before delegating to a recursive helper duplicates insertion
+  and conversion logic between the caller and the helper. Passing all arguments directly into the helper
+  centralizes pack processing, guarantees consistent container insertion semantics, and avoids redundant
+  call-site boilerplate.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <typename... Args>
+  DebugStageBuilder& add(const SkBitmap& panel, SkRasterPipelineOp op, Args... args) {
+      std::vector<SkBitmap> panels;
+      std::vector<SkRasterPipelineOp> ops;
+      panels.push_back(panel);
+      ops.push_back(op);
+
+      add_next(panels, ops, args...);
+      fDebugStages.push_back({panels, ops});
+      return *this;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  template <typename... Args>
+  DebugStageBuilder& add(const SkBitmap& panel, SkRasterPipelineOp op, Args... args) {
+      std::vector<SkBitmap> panels;
+      std::vector<SkRasterPipelineOp> ops;
+
+      add_next(panels, ops, panel, op, args...);
+      fDebugStages.push_back({panels, ops});
+      return *this;
+  }
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \btemplate\s*<[^>]*typename\.\.\.\s*[A-Za-z0-9_]+
+- \b[A-Za-z0-9_]+&&?\.\.\.\s+[a-z][A-Za-z0-9_]*
+- \b[A-Za-z0-9_]+\.\.\.\s+[a-z][A-Za-z0-9_]*
+- \b[a-z][A-Za-z0-9_]*\([^)]*\b[a-z][A-Za-z0-9_]*\.\.\.\s*\)
+- \bstd::forward<[A-Za-z0-9_]+>\([a-zA-Z0-9_]+\)\.\.\.
+confidence: 0.9
+support_cl_count: 1

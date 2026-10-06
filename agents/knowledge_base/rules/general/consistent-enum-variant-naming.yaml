@@ -1,0 +1,81 @@
+id: general/consistent-enum-variant-naming
+title: When defining enums, prefer scoped enum class, use parallel state-based variant phrasing, and omit
+  redundant type-name prefixes or suffixes
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer scoped enumerations (`enum class`) over unscoped enums for new types. In scoped enums (C++
+  `enum class` or Rust `enum`), name enumerators with a leading 'k' (in C++) and do not repeat the enum
+  type name as a prefix or suffix (e.g., use `kYes` rather than `kIsAnimated_Yes`, and `Fallback` rather
+  than `AutoAsFallback`). Name sibling variants using parallel phrasing across shared dimensions, and
+  name variants after the feature's state or policy (such as `ForceOff`) rather than assuming an alternative
+  mechanism (such as `ForceInterpreter`) or using misleading terms like `Prefer` for unconditional overrides.
+why: Scoped enums provide strong type safety and namespace isolation, eliminating the need for legacy
+  prefix/suffix disambiguation that causes redundant stutter. Consistent parallel phrasing and state-based
+  naming prevent caller confusion about fallback behavior and alternative mechanisms.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Unscoped enum repeating type name in enumerator suffixes:
+  enum IsAnimated {
+      kIsAnimated_Yes,
+      kIsAnimated_No,
+      kIsAnimated_Unknown,
+  };
+
+  // Inconsistent phrasing, misleading 'Prefer', and repeating enum name:
+  pub enum AutoHintingControl {
+      PreferAutoOverHintsForGlyf,
+      ForceForGlyfAndCff,
+      ForceInterpreter,
+      AutoAsFallback,
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Scoped enum class with concise k-prefixed enumerators:
+  enum class IsAnimated {
+      kYes,
+      kNo,
+      kUnknown,
+  };
+
+  // Parallel phrasing, state-based naming, and concise variants:
+  pub enum AutoHintingControl {
+      ForceForGlyf,
+      ForceForGlyfAndCff,
+      ForceOff,
+      Fallback,
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \b(?:pub\s+)?enum\s+(?:class\s+)?[A-Za-z0-9_]+
+- \benum\s+class\b
+- \bk[A-Z][A-Za-z0-9_]+_(?:Yes|No|Unknown|True|False|[A-Z][a-z0-9]+)\b
+- \b(?:Prefer|Force|Require|Allow|Ignore|Enable|Disable)[A-Z][A-Za-z0-9_]+
+- \bk(?:Prefer|Force|Require|Allow|Ignore|Enable|Disable)[A-Z][A-Za-z0-9_]+
+- \bk[A-Z][A-Za-z0-9_]+(?:Type|Kind|Mode)\b
+- \b(?:kYes|kNo|kUnknown)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: |-
+    // Enum class does not need suffixes.
+    enum class SkPancakeType {
+         kBlueberry,
+         kPlain,
+         kChocolateChip,
+    };
+confidence: 0.97
+support_cl_count: 2

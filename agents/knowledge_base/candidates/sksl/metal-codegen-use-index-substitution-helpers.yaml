@@ -1,0 +1,53 @@
+id: sksl/metal-codegen-use-index-substitution-helpers
+title: In SkSL Metal code generation, use writeWithIndexSubstitution and writeIndexInnerExpression when
+  emitting reused subexpressions instead of manually allocating temporary variables
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In SkSL Metal code generation, use writeWithIndexSubstitution and writeIndexInnerExpression when
+  emitting subexpressions that are evaluated or swizzled multiple times. Rely on these helpers to manage
+  scratch variable allocation, deduplication, triviality checks, and sequence-expression wrapping rather
+  than manually creating temporary variables and sequence expressions.
+why: MetalCodeGenerator provides writeWithIndexSubstitution and writeIndexInnerExpression to automatically
+  handle temporary allocation, deduplication, trivial-expression checks, and sequence-expression formatting
+  for subexpressions. Open-coding manual temporary variable management and sequence expressions duplicates
+  complex boilerplate and risks improper expression wrapping or unnecessary temporary variables.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (arg.type().isVector() && !Analysis::IsTrivialExpression(arg)) {
+      argTemporaries[i] = this->getTempVariable(arg.type());
+      needsSequenceExpr = true;
+  }
+  if (needsSequenceExpr) {
+      this->write("((");
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  this->writeWithIndexSubstitution([&]() {
+      ...
+      if (arguments[j]->type().isScalar()) {
+          this->writeExpression(*arguments[j], Precedence::kSequence);
+      } else {
+          this->writeIndexInnerExpression(*arguments[j]);
+          this->write(kSwizzleChars[i]);
+      }
+  });
+  ```
+include_glob:
+- src/sksl/codegen/**
+triggers:
+- \b(?:writeWithIndexSubstitution|writeIndexInnerExpression)\b
+- \bwriteScalarizedIntrinsicCall\s*[(]
+- \bgetTempVariable\s*[(]
+- \bAnalysis::IsTrivialExpression\s*[(]
+- \bwrite\s*[(]\s*"\(\("
+- \b(?:needsSequenceExpr|sequenceExpr)\b
+confidence: 0.9
+support_cl_count: 1

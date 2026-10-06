@@ -1,0 +1,78 @@
+id: build-bazel/remove-relocated-files-from-build-file-lists
+title: When adding, relocating, renaming, or deleting files, update Bazel (BUILD.bazel) and GN (gn/*.gni)
+  source lists with exact matching paths and prune stale entries
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When adding, relocating, renaming, or deleting source and header files (such as GMs, unit tests,
+  or library sources), update the corresponding build manifests in Bazel (`BUILD.bazel` `srcs`, `hdrs`,
+  or filegroups) and GN (`gn/*.gni` lists like `gm_sources`, `tests_sources`, or `BUILD.gn`). Ensure newly
+  declared file paths exactly match the filesystem path on disk, and prune stale, relocated, or renamed
+  entries from existing lists.
+why: In Bazel, undeclared headers fail sandboxed compilation, while stale entries cause dangling reference
+  errors. In GN, mismatched filenames or stale paths in *.gni lists break Ninja build execution with missing-target
+  errors and leave newly added GMs or tests uncompiled.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // gn/gm.gni: adding a GM with mismatched filename
+  gm_sources = [
+      ...
+      "$_gm/squarecappedhairlines.cpp", // file created was gm/closedcappedhairlines.cpp
+  ]
+
+  // BUILD.bazel: missing header Delaunator.h or retaining relocated StripGenerator.h
+  GRAPHITE_FILES = [
+      "SpecialImage_Graphite.h",
+      "StripGenerator.h", // moved to sparse_strips/ but left in parent list
+  ]
+  ```
+
+  Good:
+
+  ```cpp
+  // gn/gm.gni: exact matching filename
+  gm_sources = [
+      ...
+      "$_gm/closedcappedhairlines.cpp",
+  ]
+
+  // BUILD.bazel: pruning relocated files and declaring in new subpackage
+  GRAPHITE_FILES = [
+      "SpecialImage_Graphite.h",
+  ]
+  // src/gpu/graphite/sparse_strips/BUILD.bazel
+  SPARSE_STRIPS_FILES = [
+      "StripGenerator.cpp",
+      "StripGenerator.h",
+  ]
+  ```
+include_glob:
+- BUILD.bazel
+- '**/BUILD.bazel'
+- gn/**
+- BUILD.gn
+- '**/*.gni'
+triggers:
+- \b(?:srcs|hdrs)\s*=\s*\[
+- \b[A-Z0-9_]+_FILES\s*=\s*\[
+- \b[a-zA-Z0-9_]+_(?:sources|srcs|hdrs|files)\s*(?:\+?=|=)\s*\[
+- \b(?:gm_sources|tests_sources|bench_sources)\s*(?:\+?=|=)\s*\[
+- '"\$?[A-Za-z0-9_./-]+\.(?:cpp|cc|c|h|hpp)"'
+- \bsplit_srcs_and_hdrs\s*\(
+- \b(?:skia_)?filegroup\s*\(
+citations:
+- path: site/docs/dev/contrib/submit.md
+  heading: Updating BUILD.bazel files
+  quote: If you added or removed files, you will need to update the `BUILD.bazel` file in the directory
+    of those files. Many `BUILD.bazel` files have a list of files that is broken up into two [`filegroup`](https://bazel.build/reference/be/general#filegroup)
+    rules using the `split_srcs_and_hdrs` macro. You should add the new file names or delete the old ones
+    from these file lists.
+- path: agents/skills/skia-gn-workflow/references/gms.md
+  heading: Adding to the Build
+  quote: When you create a new GM file in `gm/`, you **must** add it to the `gm_sources` list in `gn/gm.gni`
+    for it to be included in the build.
+confidence: 0.98
+support_cl_count: 3

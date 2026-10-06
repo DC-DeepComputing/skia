@@ -1,0 +1,51 @@
+id: gpu/use-skgpu-std-steady-clock
+title: When measuring elapsed time, recording timestamps, or calculating durations in GPU code, use skgpu::StdSteadyClock
+  instead of std::chrono::steady_clock
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In GPU code under src/gpu/, use skgpu::StdSteadyClock (along with its member types and methods like
+  time_point, duration, and now()) instead of referencing std::chrono::steady_clock directly.
+why: skgpu::StdSteadyClock (defined in src/gpu/GpuTypesPriv.h) provides portability across standard library
+  implementations (handling older libstdc++ releases where steady_clock was monotonic_clock) and ensures
+  consistency across Ganesh and Graphite cache management and performance timing.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #include <chrono>
+
+  struct PipelineCreation {
+      std::chrono::steady_clock::time_point fStartTime;
+
+      void record() {
+          auto elapsed = std::chrono::steady_clock::now() - fStartTime;
+      }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  #include "src/gpu/GpuTypesPriv.h"
+
+  struct PipelineCreation {
+      skgpu::StdSteadyClock::time_point fStartTime;
+
+      void record() {
+          skgpu::StdSteadyClock::duration elapsed = skgpu::StdSteadyClock::now() - fStartTime;
+      }
+  };
+  ```
+include_glob:
+- src/gpu/**
+exclude_glob:
+- src/gpu/GpuTypesPriv.h
+triggers:
+- \b(?:std::chrono::)?steady_clock\b
+- \b(?:skgpu::)?StdSteadyClock\b
+- \bstd::chrono::(?:high_resolution_clock|system_clock)\b
+- \bstd::chrono::time_point<
+confidence: 0.85
+support_cl_count: 1

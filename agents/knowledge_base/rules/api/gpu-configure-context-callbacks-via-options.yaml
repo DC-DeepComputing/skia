@@ -1,0 +1,65 @@
+id: api/gpu-configure-context-callbacks-via-options
+title: When adding callbacks to GPU contexts, supply lifetime callbacks via ContextOptions and attach
+  workload completion procs via parameter structs like SubmitInfo
+polarity: do
+severity: should_fix
+rubric: design
+rule: Place context-level configuration and callbacks that should be immutable for the context's lifetime
+  into ContextOptions (Graphite) or GrContextOptions (Ganesh) rather than exposing mutable setter methods
+  on Context or GrDirectContext. Similarly, attach workload completion callbacks (such as GpuFinishedProc)
+  via operation parameter structs (like SubmitInfo or InsertRecordingInfo) rather than adding standalone
+  callback-registration methods to Context, leaving client-specific queueing helpers to client wrappers.
+why: Exposing mutable setters or ad-hoc registration methods directly on Context complicates thread safety,
+  alters object configuration mid-lifecycle, and clutters the core API with client-specific queueing semantics.
+  Passing configuration through ContextOptions guarantees immutability throughout the context's lifetime,
+  while encapsulating completion callbacks in parameter structs like SubmitInfo or InsertRecordingInfo
+  keeps submission metadata and synchronization cohesive.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Exposing mutable setters or standalone callback registration on Context
+  class SK_API Context final {
+  public:
+      void setPipelineCallback(PipelineCallback callback, PipelineCallbackContext context);
+      void insertFinishProc(GpuFinishedProc proc, GpuFinishedContext context);
+      bool submit(SubmitInfo submitInfo = {});
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Configure lifetime callbacks via Options and attach completion procs via SubmitInfo
+  struct SK_API ContextOptions {
+      PipelineCallback fPipelineCallback = nullptr;
+      PipelineCallbackContext fPipelineCallbackContext = nullptr;
+  };
+
+  struct SK_API SubmitInfo {
+      GpuFinishedProc fFinishedProc = nullptr;
+      GpuFinishedContext fFinishedContext = nullptr;
+  };
+
+  class SK_API Context final {
+  public:
+      bool submit(SubmitInfo submitInfo = {});
+  };
+  ```
+include_glob:
+- include/gpu/**
+- src/gpu/**
+triggers:
+- \bvoid\s+(?:set|insert|add)[A-Z]\w*\s*[(]
+- \b(?:ContextOptions|GrContextOptions|SubmitInfo|InsertRecordingInfo)\b
+- \b(?:class|struct)\s+(?:SK_API\s+)?(?:Context|GrDirectContext)\b
+- \b(?:PipelineCallback|PipelineCachingCallback|GpuFinishedProc|GpuFinishedContext)\b
+- \b(?:insertFinishProc|addFinishedProc)\s*[(]
+- \bf[A-Z]\w*(?:Callback|Proc|Context)\b
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 142
+  quote: Add struct `skgpu::graphite::SubmitInfo` to hold metadata used for submitting workloads for execution.
+confidence: 0.97
+support_cl_count: 2

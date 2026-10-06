@@ -1,0 +1,56 @@
+id: gpu/document-protected-kno-overrides
+title: When passing hardcoded Protected::kNo for GPU resources, base constructors, or tasks, document
+  the backend limitation or hardware constraint requiring it
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When explicitly specifying Protected::kNo in base GPU resource/command constructors (such as DawnBuffer
+  or DawnCommandBuffer in backends lacking protected memory support) or for specific tasks/allocations
+  rather than inheriting ambient context protectedness, document the constraint with an explanatory comment.
+  Clarify whether the fixed value is due to the backend API lacking protected memory support or a hardware
+  constraint prohibiting protected access (such as vertex/index buffers or indirect dispatches).
+why: In protected GPU contexts, resources and tasks normally inherit the protected status of the context,
+  while multi-backend base classes accept dynamic protectedness. Unconditionally passing Protected::kNo
+  without an explanatory comment appears to be an accidental omission or oversight, risking inadvertent
+  edits that introduce unsupported protected allocations or break driver validation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Backend constructors lacking protected memory support:
+  DawnBuffer::DawnBuffer(const DawnSharedContext* ctx, size_t size, wgpu::Buffer buffer)
+          : Buffer(ctx, size, Protected::kNo, /*usageRefs=*/...) {}
+
+  // 2. Specific tasks or allocations overriding ambient context protectedness:
+  auto copyTask = CopyBufferToBufferTask::Make(src, srcOffset, dst, dstOffset, size);
+  if (!queueManager->addTask(copyTask.get(), context, Protected::kNo)) {
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Backend constructors lacking protected memory support:
+  DawnBuffer::DawnBuffer(const DawnSharedContext* ctx, size_t size, wgpu::Buffer buffer)
+          : Buffer(ctx, size, Protected::kNo /*Dawn lacks protected support*/, /*usageRefs=*/...) {}
+
+  // 2. Specific tasks or allocations overriding ambient context protectedness:
+  auto copyTask = CopyBufferToBufferTask::Make(src, srcOffset, dst, dstOffset, size);
+  // Static vertex/index buffers prohibit protected memory access in shaders; uploads must be non-protected.
+  if (!queueManager->addTask(copyTask.get(), context, Protected::kNo)) {
+      return false;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:skgpu::|Gr)?Protected::kNo\b
+- :\s*(?:Buffer|CommandBuffer)\s*\(
+- '\b(?:addTask|addUploadTask)\s*\([^)]*Protected::'
+- '\b(?:create|make|get|find)Buffer\s*\([^)]*Protected::'
+- \bProtected\s+[A-Za-z0-9_]*protected\s*=\s*(?:skgpu::|Gr)?Protected::kNo\b
+- \b(?:isProtected|supportsProtectedContent)\s*\(\)
+confidence: 0.9
+support_cl_count: 1

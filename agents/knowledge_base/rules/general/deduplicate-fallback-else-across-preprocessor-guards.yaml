@@ -1,0 +1,109 @@
+id: general/deduplicate-fallback-else-across-preprocessor-guards
+title: 'When conditionally executing feature or capability branches under preprocessor guards, share trailing
+  returns or fallback blocks after #endif rather than duplicating logic across #else'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'Do not rely on a preprocessor #else directive as the fallback path for runtime capability checks
+  inside an #if block; unsupported runtime states must execute explicit fallback or assertion logic. When
+  conditionally prepending an ''if'' check before a shared fallback path under an #if directive, place
+  ''} else'' before #endif and keep the shared fallback block ''{ ... }'' after #endif rather than duplicating
+  logic across #else branches. Similarly, when a conditionally compiled function returns a default or
+  failure value on fallthrough, place #endif before the final return statement rather than duplicating
+  the return inside a redundant #else branch.'
+why: 'Preprocessor directives (#if / #else) control compile-time inclusion, whereas capability queries
+  evaluate at runtime; relying on #else leaves native builds without fallback handling when a capability
+  is unsupported at runtime. Furthermore, duplicating fallback blocks or return statements across #if
+  and #else branches risks maintenance divergence and preprocessor boilerplate; placing #endif before
+  the shared fallback block or trailing return cleanly unifies the fallback path across both disabled
+  and runtime-failure states.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: relying on #else omits fallback when capability is false at runtime
+  #if !defined(__EMSCRIPTEN__)
+      if (fSharedContext->dawnCaps()->supportsPartialLoadResolve()) {
+          wgpuRenderPass.nextInChain = &wgpuPartialRect;
+      }
+  #else
+      SkASSERT(resolveOffset.isZero());
+  #endif
+
+  // Bad: opening duplicate braces across preprocessor branches
+  #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+      if (!textureUsesExternalFormat && bufferDesc.format == AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM) {
+          ct = kBGRA_8888_SkColorType;
+      } else {
+  #else
+      {
+  #endif
+          ct = fallbackColorType;
+      }
+
+  // Bad: duplicating fallback return statements across #ifdef and #else branches
+  #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+      if (foundGainmap) {
+          *info = gainmapInfo;
+          return true;
+      }
+      return false;
+  #else
+      return false;
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: place '} else' before #endif so the shared fallback executes in all unsupported cases
+  #if !defined(__EMSCRIPTEN__)
+      if (fSharedContext->dawnCaps()->supportsPartialLoadResolve()) {
+          wgpuRenderPass.nextInChain = &wgpuPartialRect;
+      } else
+  #endif
+      {
+          SkASSERT(resolveOffset.isZero());
+      }
+
+  #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+      if (!textureUsesExternalFormat && bufferDesc.format == AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM) {
+          ct = kBGRA_8888_SkColorType;
+      } else
+  #endif
+      {
+          ct = fallbackColorType;
+      }
+
+  // Good: share the trailing fallback return after #endif
+  #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+      if (foundGainmap) {
+          *info = gainmapInfo;
+          return true;
+      }
+  #endif
+      return false;
+  ```
+include_glob:
+- src/**
+- experimental/**
+- modules/**
+- include/**
+exclude_glob:
+- third_party/**
+triggers:
+- \\\\}\s*else\s*$
+- ^#\s*else\b
+- '#\s*(?:if|ifdef|ifndef)\s+.*\b(?:__EMSCRIPTEN__|SK_BUILD_FOR_[A-Z_]+|SK_ENABLE_[A-Z_]+|SK_CODEC_[A-Z_]+)'
+- \bdefined\s*\(\s*(?:__EMSCRIPTEN__|SK_BUILD_FOR_[A-Z_]+|SK_ENABLE_[A-Z_]+|SK_CODEC_[A-Z_]+)\s*\)
+- \\\\}\s*else\s*\{\s*(?://.*)?$
+- \b(?:dawnCaps|caps|vkCaps|glCaps)\s*\(\s*\)->supports[A-Z]\w*
+- \breturn\s+(?:false|true|nullptr|std::nullopt)\s*;
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Braces
+  quote: else and else if appear on same line as opening and closing braces unless preprocessor conditional
+    compilation interferes.
+confidence: 0.98
+support_cl_count: 3

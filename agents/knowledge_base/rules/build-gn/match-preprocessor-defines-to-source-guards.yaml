@@ -1,0 +1,69 @@
+id: build-gn/match-preprocessor-defines-to-source-guards
+title: 'When adding or updating preprocessor defines in build files or source guards, ensure macro identifiers
+  in BUILD.gn and BUILD.bazel match source #ifdef checks exactly'
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When introducing, renaming, or guarding code behind preprocessor flags, verify that the macro name
+  defined in build files (such as `defines` or `public_defines` in `BUILD.gn`, `BUILD.bazel`, and `*.gni`)
+  matches the exact identifier checked in C++ source files (`#if defined(...)` or `#ifdef`). Ensure any
+  change to a flag name is updated simultaneously in all build files and corresponding source guards.
+why: Preprocessor guards checking undefined or mismatched macro names silently evaluate to false at compile
+  time without producing compiler errors. A naming mismatch between build manifests and source code leaves
+  the guarded code path permanently inactive and unexercised during builds and tests.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // BUILD.gn defines one macro name:
+  optional("png_encode") {
+    public_defines = [
+      "SK_CODEC_ENCODES_PNG",
+      "SK_CODEC_ENCODES_PNG_WITH_LIBPNG",
+      "SK_PNG_ENCODER_USE_CONVERT_PIXELS",
+    ]
+  }
+  // But src/encode/SkPngEncoderBase.cpp checks a different name:
+  #ifdef SK_CODEC_ENCODES_PNG_WITH_CONVERT_PIXELS
+      // Code here is never compiled because the macro names do not match.
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // BUILD.gn and BUILD.bazel match the source guard identifier:
+  optional("png_encode") {
+    public_defines = [
+      "SK_CODEC_ENCODES_PNG",
+      "SK_CODEC_ENCODES_PNG_WITH_LIBPNG",
+      "SK_CODEC_ENCODES_PNG_WITH_CONVERT_PIXELS",
+    ]
+  }
+  // src/encode/SkPngEncoderBase.cpp:
+  #ifdef SK_CODEC_ENCODES_PNG_WITH_CONVERT_PIXELS
+      // Code compiles and executes as intended.
+  #endif
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.bazel'
+- '**/*.bzl'
+- '**/*.gni'
+- src/**
+- include/**
+- modules/**
+triggers:
+- \"SK_[A-Za-z0-9_]+\"
+- \b(?:public_)?defines\s*(?:\+?=|=)\s*\[
+- \blocal_defines\s*=\s*\[
+- '#(?:if|elif|ifdef|ifndef)\s+.*\bSK_[A-Za-z0-9_]+'
+- \bdefined\s*\(\s*SK_[A-Za-z0-9_]+\s*\)
+- \bdeclare_args\s*\(
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Macros
+  quote: The rest of Skia tends to use `#ifdef SK_MACRO` for boolean flags.
+confidence: 0.95
+support_cl_count: 1

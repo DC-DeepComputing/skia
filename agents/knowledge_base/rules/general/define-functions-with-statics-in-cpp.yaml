@@ -1,0 +1,57 @@
+id: general/define-functions-with-statics-in-cpp
+title: When declaring functions with static local variables or counters in headers, define them in .cpp
+  translation units instead of exporting with SK_SPI or SK_API
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not define functions containing static or stateful objects (such as function-local statics, atomic
+  counters, or singleton instances) inline in headers and export them with SK_SPI or SK_API. Declare the
+  function in the header without symbol export macros and move its definition into a .cpp translation
+  unit.
+why: Functions defined inline in headers that declare static objects get instantiated separately with
+  hidden visibility in each shared library that includes them, leading to duplicate state across dynamic
+  shared objects (DSOs). While exporting them via SK_SPI or SK_API forces dynamic linker deduplication,
+  it needlessly enlarges Skia's exported symbol table with internal implementation details. Moving definitions
+  into .cpp translation units prevents duplicate DSO state while keeping symbols private.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In GrVkSampler.h
+  static SK_SPI uint32_t GenID() {
+      static std::atomic<uint32_t> nextID{1};
+      uint32_t id;
+      do {
+          id = nextID++;
+      } while (id == SK_InvalidUniqueID);
+      return id;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In GrVkSampler.h
+  static uint32_t GenID();
+
+  // In GrVkSampler.cpp
+  uint32_t GrVkSampler::GenID() {
+      static std::atomic<uint32_t> nextID{1};
+      uint32_t id;
+      do {
+          id = nextID++;
+      } while (id == SK_InvalidUniqueID);
+      return id;
+  }
+  ```
+include_glob:
+- '**/*.h'
+triggers:
+- \bstatic\s+(?:SK_API|SK_SPI)\b
+- \b(?:SK_API|SK_SPI)\s+static\b
+- \b(?:SK_API|SK_SPI)\b[^;=]*\{
+- \bstatic\s+std::atomic<
+- \bstatic\s+(?:uint(?:32|64)_t|int|size_t)\s+next[A-Z]\w*
+confidence: 0.92
+support_cl_count: 1

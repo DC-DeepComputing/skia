@@ -1,0 +1,34 @@
+id: api/avoid-unused-parameters
+title: When declaring or defining functions, constructors, or internal helpers, do not accept unused parameters,
+  retain unconsumed out-parameters, or plumb speculative arguments
+polarity: dont
+severity: should_fix
+rubric: design
+rule: 'Do not declare or retain unused parameters, unconsumed out-parameters, speculative plumbing, or
+  obsolete configuration flags in functions, constructors, or internal helpers; remove dead parameters
+  from signatures and call sites along with internal calculations that exist solely to produce unread
+  outputs. In particular, remove obsolete boolean flags (such as includeData or verbose on diagnostic
+  formatting helpers) when all callers require the detailed data. Do not plumb intermediate variables,
+  FFI results, or constructor arguments for unbuilt future features before their consumer design is implemented.
+  Similarly, do not pass unneeded state across platform-specific branches (#if / #else). If an unused
+  parameter is strictly required by a virtual interface or callback signature, omit or comment out its
+  name (such as /*param*/ or [[maybe_unused]]) rather than retaining an active named parameter.'
+why: Unused parameters, unconsumed out-parameters, and speculative plumbing mislead readers into believing
+  a function depends on or produces active state, waste cycles computing discarded outputs, and clutter
+  call sites with dummy receiver variables. Retaining obsolete configuration flags adds unnecessary branching
+  and call-site clutter when all consumers require the same data.
+include_glob:
+- include/**
+- src/**
+- experimental/**
+triggers:
+- \b[A-Za-z0-9_]+\s*[(][^)]*(?:const\s+)?[A-Za-z0-9_:]+[*&]\s+[a-z]\w*[,)]
+- \bbool\s+[a-z]\w*\s*[,)]
+- :\s*f[A-Za-z0-9_]+\s*[(]
+- ^#(?:if|elif)\s+defined[(][A-Za-z0-9_]+[)]
+- \[\[maybe_unused\\]\\]\s+[A-Za-z0-9_:]+
+- /\*(?:[a-zA-Z0-9_]+\s*=|\s*[a-zA-Z0-9_]+)\*/
+- \bnew\s+[A-Za-z0-9_]+(?:Codec)?\s*[(]
+- \b(?:idToString|toString)\s*[(]
+confidence: 0.98
+support_cl_count: 6

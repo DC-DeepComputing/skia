@@ -1,0 +1,44 @@
+id: general/avoid-double-premultiplying-color-components
+title: When converting colors using SkPreMultiplyColor or SkPreMultiplyARGB, pass straight unpremultiplied
+  RGB components instead of pre-scaling color channels by alpha
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not scale RGB color components by alpha prior to passing them into SkPreMultiplyColor or SkPreMultiplyARGB.
+  Provide straight (unpremultiplied) RGB inputs so that alpha premultiplication is applied exactly once.
+why: SkPreMultiplyColor and SkPreMultiplyARGB explicitly multiply the RGB channels by alpha. Passing already-scaled
+  RGB components causes double premultiplication, resulting in incorrectly darkened colors.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  int a = 0xFF * (x + y) / (w - 1 + h - 1);
+  storage[x + y * w] = SkPreMultiplyColor(SkColorSetARGB(a, a * x / (w - 1), a * y / (h - 1), a));
+  ```
+
+  Good:
+
+  ```cpp
+  const int a = 0xFF * (x + y) / (w - 1 + h - 1),
+            r = 0xFF * x / (w - 1),
+            g = 0xFF * y / (h - 1),
+            b = 0xFF;
+  storage[x + y * w] = SkPreMultiplyColor(SkColorSetARGB(a, r, g, b));
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+triggers:
+- \bSkPreMultiply(?:Color|ARGB)\b
+- \bSkColorSetARGB\b
+- \bSkPackARGB32(?:NoCheck)?\b
+- \bSkPMColor\b
+- \bSkColorSetRGB\b
+citations:
+- path: site/docs/user/sksl.md
+  heading: Premultiplied Alpha
+  quote: For more complex shaders, you must understand which of your colors are premultiplied vs. unpremultiplied.
+    Many operations don't make sense if you mix both kinds of color together.
+confidence: 0.95
+support_cl_count: 1

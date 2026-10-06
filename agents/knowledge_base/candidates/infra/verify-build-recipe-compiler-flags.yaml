@@ -1,0 +1,45 @@
+id: infra/verify-build-recipe-compiler-flags
+title: When adding or adapting bot build recipe configs, verify that each compiler flag or preprocessor
+  define is required rather than copying unneeded settings
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When introducing new build targets or recipe configurations based on existing targets, verify that
+  each compiler flag and preprocessor define (such as extra_cflags) is actively required for the new target.
+  Do not copy legacy defines (such as -DMESA_EGL_NO_X11_HEADERS or target-specific workarounds) across
+  architectures or configurations without confirming their necessity.
+why: Copying flags and preprocessor defines between build configs or architectures introduces obsolete
+  and redundant technical debt. Ensuring only necessary flags are carried prevents carrying dead configuration
+  settings and masking build differences across platforms.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  args['extra_cflags'] = [
+      '--target=aarch64-linux-gnueabihf',
+      '--sysroot=%s' % sysroot_dir,
+      '-DMESA_EGL_NO_X11_HEADERS',
+      '-U_GLIBCXX_DEBUG',
+  ]
+  ```
+
+  Good:
+
+  ```cpp
+  args['extra_cflags'] = [
+      '--target=aarch64-linux-gnueabihf',
+      '--sysroot=%s' % sysroot_dir,
+      '-U_GLIBCXX_DEBUG',
+  ]
+  ```
+include_glob:
+- infra/bots/**
+triggers:
+- args\[['\"]extra_cflags['\"]\]
+- \bextra_cflags\b
+- \bextra_ldflags\b
+- '''-D[A-Za-z0-9_]+'''
+- \"-D[A-Za-z0-9_]+\"
+confidence: 0.9
+support_cl_count: 1

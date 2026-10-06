@@ -1,0 +1,43 @@
+id: tests/prefer-generic-test-utilities
+title: When writing or modifying test utilities and assertions, reuse generic helpers taking standard
+  types like SkPixmap rather than introducing backend-specific duplicates
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not introduce or maintain backend-specific duplicates of test utility functions when a generic
+  helper operating on standard types (such as SkPixmap or SkBitmap) already exists or can be used. Verify
+  whether existing common utilities (such as CheckSolidPixels or ComparePixels) fulfill the requirement
+  before authoring backend-prefixed test helpers.
+why: Duplicating generic test utilities with backend-prefixed variants that operate on standard data types
+  adds maintenance overhead and code duplication across backend test suites. Reusing generic utilities
+  ensures consistent validation logic and bug fixes across all backends.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant backend-specific helper when generic CheckSolidPixels(..., const SkPixmap&, ...) exists
+  bool CheckGaneshSolidPixels(const SkColor4f& col,
+                              const SkPixmap& pixmap,
+                              const float tolRGBA[4],
+                              std::function<ComparePixmapsErrorReporter>& error);
+  ```
+
+  Good:
+
+  ```cpp
+  // Use the generic SkPixmap-based test utility directly
+  bool CheckSolidPixels(const SkColor4f& col,
+                        const SkPixmap& pixmap,
+                        const float tolRGBA[4],
+                        std::function<ComparePixmapsErrorReporter>& error);
+  ```
+include_glob:
+- tests/**
+triggers:
+- \b(?:Check|Compare)(?:Ganesh|Graphite|Gpu|Raster|Backend)[A-Z]\w*\s*\(
+- \b(?:Check|Compare)(?:Solid)?Pixels\s*\(
+- \bComparePixmapsErrorReporter\b
+- \b(?:Check|Compare)[A-Za-z0-9_]*\([^)]*\b(?:SkPixmap|SkBitmap|SkImageInfo)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,49 @@
+id: general/document-branchless-bitwise-boolean-rationale
+title: When using bitwise operators instead of logical operators on boolean expressions for branchless
+  evaluation, document the performance rationale in an inline comment
+polarity: do
+severity: nit
+rubric: readability
+rule: When intentionally using bitwise operators (`&`, `|`) instead of logical operators (`&&`, `||`)
+  on boolean operands or predicate expressions to eliminate branching and short-circuiting overhead, document
+  the rationale in an inline comment. Clarify that bitwise evaluation is an intentional branchless micro-optimization
+  so future maintainers or linters do not refactor the logic back to branching operators.
+why: Bitwise operators applied to boolean conditions can look like typos or unidiomatic C++ to readers
+  and static analysis tools. Documenting that the branchless evaluation was measured and deliberate prevents
+  well-intentioned refactoring that re-introduces branch misprediction penalties in performance-critical
+  paths.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Bitwise '&' on booleans appears like an accidental typo or linter violation.
+  if (!(((v0.fX == 0) ^ (v0.fY == 0)) &
+        axis_aligned_orthogonal(v0, v1) &
+        axis_aligned_orthogonal(v1, v2))) {
+      return std::nullopt;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Comment documents intentional bitwise evaluation for branchless performance.
+  // Note: bitwise operators are measurably faster in microbenchmarks (no short-circuiting).
+  if (!(((v0.fX == 0) ^ (v0.fY == 0)) &
+        axis_aligned_orthogonal(v0, v1) &
+        axis_aligned_orthogonal(v1, v2))) {
+      return std::nullopt;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- '[)]\s*[&|]\s*[(]'
+- '[)]\s*[&|]\s*(?:$|[(]|[a-zA-Z0-9_])'
+- (?:==|!=|<=|>=)\s*[^;&|\\n]*[&|]
+- '[&|]\s*[^;&|\\n]*(?:==|!=|<=|>=)'
+- //.*\b(?:bitwise|branchless|short-circuit(?:ing)?|no short-circuit)\b
+- \bif\s*[(][^;]*[&|][^;]*(?:==|!=|&&|\|\|)
+confidence: 0.9
+support_cl_count: 1

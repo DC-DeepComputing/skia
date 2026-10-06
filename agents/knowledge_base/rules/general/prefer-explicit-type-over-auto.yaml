@@ -1,0 +1,90 @@
+id: general/prefer-explicit-type-over-auto
+title: When declaring variables for scalars, counts, container sizes, documentation examples, or non-obvious
+  API returns, specify explicit concrete types instead of auto
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Specify variable types explicitly rather than using 'auto' when declaring primitive integer counts,
+  indices, sizes, or scalars (such as 'int', 'size_t', 'float', or 'SkScalar'), when accessing member
+  fields or pointers that could be confused with core project types, and when initializing from expressions
+  or function calls returning non-obvious types such as 'std::optional<T>', structs, fixed-size arrays
+  (like 'std::array'), or spans. In documentation and Fiddle examples, always spell out API return types
+  (such as 'SkVector' from mapVector) explicitly. For trivial scalar constants, pass them directly or
+  spell out the concrete type. Reserve 'auto' strictly for cases where the type is already explicit in
+  the expression or in iterator loops.
+why: Using 'auto' for primitive integer types, scalar constants, container sizes, member fields, or non-obvious
+  return types obscures bitwidth, signedness, value semantics, and nullability, and can mislead readers
+  into mistaking external types for native core abstractions (like SkImage). In documentation and tutorial
+  examples, 'auto' obscures API return types for readers who view snippets without IDE tooltip support.
+  Explicit types document the variable's contract at a glance, preventing subtle comparison mismatches
+  and clarifying lifetime, ownership, and representation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Obscures primitive scalar constant or integer type
+  auto tolerance = GrPathUtils::kDefaultTolerance;
+  auto numPlots = this->plotsPerPage();
+
+  // Obscures size_t signedness and bitwidth
+  const auto count = pts.size();
+
+  // Obscures array type, dimensions, and copy semantics
+  auto pts = r.toQuad();
+
+  // Obscures third-party pointer vs native SkImage
+  auto image = fAvifDecoder->image;
+
+  // Obscures optionality and result struct fields
+  if (auto addRectResult = plot->addRect(size, image)) {
+      doSomething(addRectResult->fID);
+  }
+
+  // Obscures API return type in documentation examples
+  auto minorAxis = matrix.mapVector({0, circleRadius});
+  ```
+
+  Good:
+
+  ```cpp
+  // Pass constant directly or spell out primitive scalar type
+  int vertexCount = GrAATriangulator::PathToAATriangles(
+      path, GrPathUtils::kDefaultTolerance, clipBounds, &alloc);
+  int numPlots = this->plotsPerPage();
+
+  // Explicit size_t clarifies integer signedness and bitwidth
+  const size_t count = pts.size();
+
+  // Explicit std::array documents element type and fixed length
+  std::array<SkPoint, 4> pts = r.toQuad();
+
+  // Explicit pointer clarifies third-party struct type
+  crabbyavif::avifImage* image = fAvifDecoder->image;
+
+  // Explicit type documents std::optional and struct type
+  if (std::optional<Plot::AddResult> addRectResult = plot->addRect(size, image)) {
+      doSomething(addRectResult->fID);
+  }
+
+  // Explicit type makes API return obvious to doc readers
+  SkVector minorAxis = matrix.mapVector({0, circleRadius});
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+- docs/**
+triggers:
+- \b(?:const\s+)?auto(?:[*&])?\s+[a-zA-Z0-9_]+\s*=\s*[^;]*(?:->|\.)[a-zA-Z0-9_]+
+- \bif\s*[(]\s*(?:const\s+)?auto(?:[*&])?\s+[a-zA-Z0-9_]+\s*=
+- \b(?:const\s+)?auto\s+[a-zA-Z0-9_]+\s*=\s*(?:this->)?[a-zA-Z0-9_]+[(]
+- '\b(?:const\s+)?auto\s+[a-zA-Z0-9_]+\s*=\s*[A-Za-z0-9_]+::'
+- \bstd::optional<[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]+\s*=
+- \b(?:const\s+)?(?:size_t|int)\s+[a-zA-Z0-9_]*(?:count|Count|size|Size|num|Num|index|Index)\s*=
+- \b(?:std::array|SkSpan)<[^>]+>\s+[a-zA-Z0-9_]+\s*=
+- \b(?:const\s+)?(?:SkVector|SkPoint|SkRect|SkScalar)\s+[a-zA-Z0-9_]+\s*=
+confidence: 0.98
+support_cl_count: 7

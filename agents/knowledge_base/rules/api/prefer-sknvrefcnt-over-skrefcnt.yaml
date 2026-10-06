@@ -1,0 +1,49 @@
+id: api/prefer-sknvrefcnt-over-skrefcnt
+title: When defining reference-counted classes without virtual methods, inherit from SkNVRefCnt<T> instead
+  of SkRefCnt and mark the class final
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Inherit from SkNVRefCnt<T> instead of SkRefCnt for reference-counted classes that do not require
+  virtual methods, and mark the derived class final. If the destructor is protected or private, declare
+  'friend class SkNVRefCnt<T>;' to allow CRTP non-virtual deletion.
+why: SkRefCnt derives from SkRefCntBase, which defines a virtual destructor that adds a vtable pointer
+  (vptr) and dynamic dispatch overhead to every instance. SkNVRefCnt<T> provides non-virtual reference
+  counting via CRTP and deletes through static_cast<const T*>(this), eliminating vptr memory overhead
+  but requiring classes to be final to avoid slicing or undefined behavior during polymorphic destruction.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Adds 8-byte vptr overhead despite having no virtual methods
+  class SkPathData : public SkRefCnt {
+  public:
+      ...
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Eliminates vptr overhead via non-virtual CRTP ref-counting
+  class SkPathData final : public SkNVRefCnt<SkPathData> {
+  public:
+      ...
+  private:
+      ~SkPathData() = default;
+      friend class SkNVRefCnt<SkPathData>;
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bpublic\s+SkRefCnt\b
+- \bclass\s+[A-Za-z0-9_]+\s*:\s*public\s+SkRefCnt\b
+- \bSkNVRefCnt<[A-Za-z0-9_]+>
+- \bpublic\s+SkNVRefCnt<
+- \bfriend\s+class\s+SkNVRefCnt<
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,69 @@
+id: general/prefer-defined-over-ifdef
+title: 'When writing configuration, feature, platform, compiler, or debug macro guards outside standard
+  header include guards, prefer #if !defined(...) or #if defined(...) over #ifndef or #ifdef'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer `#if !defined(...)` or `#if defined(...)` over `#ifndef` or `#ifdef` when writing conditional
+  compilation guards for configuration flags, feature macros, platform checks, compiler/toolchain detection
+  (such as `__clang__` or `_MSC_VER`), and debug-only logic (such as `SK_DEBUG`). Standard header include
+  guards (e.g., `#ifndef <Header>_DEFINED`) remain `#ifndef`. When checking multiple or compound preprocessor
+  conditions, use `#if defined(...)` or `#if !defined(...)` consistently, and never leave ad-hoc modified
+  or disabled macro suffixes (such as `SK_DEBUGx`) from local testing in submitted code.
+why: Using `#if !defined(...)` and `#if defined(...)` provides a consistent preprocessor syntax across
+  simple and compound boolean conditions (`&&`, `||`), avoiding syntax mismatches when conditions evolve.
+  It aligns with modern Skia preprocessor conventions for configuration flags, feature toggles, compiler
+  detection, and debug compilation. Furthermore, leaving ad-hoc macro suffixes (like `SK_DEBUGx`) silently
+  disables code or bypasses intended debug assertions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #ifndef SK_SUPPORT_UNSPANNED_APIS
+  #define SK_SUPPORT_UNSPANNED_APIS
+  #endif
+
+  #ifdef SK_DEBUGx
+      SkSpan<const SkPathVerb> verbs = path.verbs();
+      if (!verbs.empty()) {
+          SkASSERT(verbs[0] == SkPathVerb::kMove);
+      }
+  #endif
+
+  #ifdef __clang__
+      do_clang_specific_work();
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #if !defined(SK_SUPPORT_UNSPANNED_APIS)
+  #define SK_SUPPORT_UNSPANNED_APIS
+  #endif
+
+  #if defined(SK_DEBUG)
+      SkSpan<const SkPathVerb> verbs = path.verbs();
+      if (!verbs.empty()) {
+          SkASSERT(verbs[0] == SkPathVerb::kMove);
+      }
+  #endif
+
+  #if defined(__clang__)
+      do_clang_specific_work();
+  #endif
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- ^#\s*(?:ifdef|ifndef)\s+
+- ^#\s*if\s+!?defined\s*[(]
+- ^#\s*elif\s+!?defined\s*[(]
+- '#(?:if|ifdef|ifndef)\s+.*\bSK_[A-Za-z0-9_]+'
+- '#(?:if|ifdef|ifndef)\s+.*\b(?:GR_|SKGPU_)[A-Za-z0-9_]+'
+- '#(?:if|ifdef|ifndef)\s+.*\b(?:__clang__|__GNUC__|_MSC_VER)\b'
+confidence: 0.98
+support_cl_count: 4

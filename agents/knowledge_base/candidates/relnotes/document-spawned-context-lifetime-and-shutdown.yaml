@@ -1,0 +1,40 @@
+id: relnotes/document-spawned-context-lifetime-and-shutdown
+title: When documenting spawned helper or worker context lifetimes and threading in headers or release
+  notes, state destruction ordering and shutdown behavior explicitly
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting API object lifetimes and threading models for spawned helper or worker contexts
+  (such as worker contexts created from a main context), state explicitly whether the spawned object can
+  safely outlive its creator and describe its shutdown or degraded fallback behavior if the parent context
+  is destroyed first. Avoid vague descriptions like 'manages the lifetime' that leave destruction ordering
+  and invalidation contracts unspecified.
+why: Vague phrasing like 'manages the lifetime' obscures ownership hierarchies and multithreaded destruction
+  invariants. API clients need explicit contracts on whether worker or background contexts can safely
+  outlive their creator and how they behave if the parent is destroyed first, preventing use-after-free
+  bugs and unexpected shutdown failures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  The PrecompileContext will manage the lifetime of the Context objects needed for precompilation.
+  ```
+
+  Good:
+
+  ```cpp
+  The PrecompileContext can safely outlive the Context that created it, but it will effectively be shut down at that point.
+  ```
+include_glob:
+- relnotes/**
+- include/gpu/**
+triggers:
+- \b(?:PrecompileContext|Recorder|RecordingContext)\b
+- \b(?:makePrecompileContext|makeRecorder)\b
+- \b(?:safely outlive|outlive[s]? the)\b
+- \b(?:shut[ -]?down|shutting down)\b
+- \bmanage[s]? the lifetime\b
+- //.*\b(?:outlive|lifetime|thread|spawned)\b
+confidence: 0.88
+support_cl_count: 1

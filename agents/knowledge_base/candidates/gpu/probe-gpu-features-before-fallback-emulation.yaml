@@ -1,0 +1,66 @@
+id: gpu/probe-gpu-features-before-fallback-emulation
+title: When configuring GPU backend capabilities in Caps, probe native device feature extensions first
+  and gate emulation fallbacks on their absence rather than hardcoding backend checks
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When initializing GPU backend capabilities (such as in Caps subclasses), probe driver and device
+  feature extensions first to set native capability flags, and only enable emulation or fallback logic
+  when those native features are unsupported. Do not predetermine emulation by hardcoding backend API
+  or device type checks.
+why: Hardcoding backend or device checks (such as backendType != D3D11) creates brittle fallback logic
+  that can skip supported native features or fail if an individual device lacks driver support. Probing
+  native features first ensures emulation cleanly acts as a fallback only when native support is absent.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (fSupportedTransientAttachmentUsage == wgpu::TextureUsage::None) {
+  #if !defined(__EMSCRIPTEN__)
+      fEmulateLoadStoreResolve = info.backendType != wgpu::BackendType::D3D11;
+  #else
+      fEmulateLoadStoreResolve = true;
+  #endif
+      fDifferentResolveAttachmentSizeSupport = true;
+  }
+
+  #if !defined(__EMSCRIPTEN__)
+  if (!fEmulateLoadStoreResolve &&
+      backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
+      fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
+      fSupportsPartialLoadResolve =
+              backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
+  }
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #if !defined(__EMSCRIPTEN__)
+  if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
+      fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
+      fSupportsPartialLoadResolve =
+              backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
+      fDifferentResolveAttachmentSizeSupport = fSupportsPartialLoadResolve;
+  }
+  #endif
+
+  if (!fSupportsPartialLoadResolve && fSupportedTransientAttachmentUsage == wgpu::TextureUsage::None) {
+      fEmulateLoadStoreResolve = true;
+      fDifferentResolveAttachmentSizeSupport = true;
+      fSupportedResolveTextureLoadOp = std::nullopt;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:fEmulate[A-Za-z0-9_]+|emulate[A-Za-z0-9_]+)\b
+- \bHasFeature\s*[(]
+- \bwgpu::FeatureName::[A-Za-z0-9_]+
+- \b(?:backendType|fBackendType)\s*(?:==|!=)
+- '\b(?:Dawn|Vulkan|Mtl|GrGL)Caps::'
+- \b(?:fSupports[A-Za-z0-9_]+|supports[A-Za-z0-9_]+)\b
+confidence: 0.9
+support_cl_count: 1

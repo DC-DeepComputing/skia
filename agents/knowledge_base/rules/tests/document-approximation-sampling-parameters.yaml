@@ -1,0 +1,54 @@
+id: tests/document-approximation-sampling-parameters
+title: When defining sample counts, step sizes, or tolerances for numerical approximations in tests, document
+  what the approximation represents and the sampling strategy
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining sample counts, step sizes (such as dt), or iteration bounds for numerical approximations
+  in tests (such as discrete parametric curve sampling or distance estimation), document what the approximation
+  represents and the sampling strategy with an explanatory comment. Clarify the geometric or mathematical
+  purpose of the samples so maintainers understand the verification logic without needing to reverse-engineer
+  loop increments and division formulas.
+why: Constants controlling numerical approximations, sample counts, and step sizes appear arbitrary without
+  contextual comments. Documenting what the sampling routine evaluates and the spacing or resolution of
+  the steps ensures test intent is clear and prevents maintainers from misinterpreting approximation bounds
+  or removing necessary sample density during refactoring.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Opaque sample count and step size without explanation of approximation strategy
+  static constexpr int kLineSamples = 100;
+  static constexpr float kLineDt = 1.0f / static_cast<float>(kLineSamples);
+
+  for (int i = 0; i < kLineSamples; i += 4) {
+      skvx::float4 t03 = skvx::float4(i, i + 1, i + 2, i + 3) * kLineDt;
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Documents the number of evenly spaced parametric samples and their geometric purpose
+  // The number of evenly spaced parametric samples evaluated to estimate distance to a curve.
+  static constexpr int kLineSamples = 100;
+  static constexpr float kLineDt = 1.0f / static_cast<float>(kLineSamples);
+
+  for (int i = 0; i < kLineSamples; i += 4) {
+      skvx::float4 t03 = skvx::float4(i, i + 1, i + 2, i + 3) * kLineDt;
+      ...
+  }
+  ```
+include_glob:
+- tests/**
+- gm/**
+triggers:
+- \b(?:static\s+)?constexpr\s+(?:int|float|double|size_t)\s+k[A-Z]\w*(?:Samples?|Steps?|Dt|SubSamples?)\b
+- \b(?:static\s+)?const(?:expr)?\s+(?:float|double)\s+k[A-Z]\w*Dt\s*=
+- \bk[A-Z]\w*(?:Samples?|NumSamples|SubSamples?|Steps?|StepSize|Dt)\s*=\s*[-0-9]
+- \b(?:1\.0f?\s*/\s*(?:static_cast<float>\()?(?:float\()?[a-zA-Z0-9_:]*(?:Samples?|Steps?))\b
+- \bfor\s*\([^;]*;\s*\w+\s*<\s*k[A-Z]\w*(?:Samples?|Steps?)\b
+confidence: 0.85
+support_cl_count: 1

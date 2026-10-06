@@ -1,0 +1,75 @@
+id: general/pass-mutable-parameters-as-pointers
+title: When declaring function parameters, pass mandatory objects by const reference, scalars by value,
+  mutable parameters as pointers, and optional value types as std::optional
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Pass mandatory constant object parameters to functions by const reference (const T&) and primitive
+  scalar types by value. Pass mutable (in-out or out) parameters and optional output parameters as raw
+  pointers (such as T* or T** defaulting to nullptr); avoid non-const references and std::optional<std::reference_wrapper>.
+  For mutable array out-parameters, pass base skia_private::TArray<T>*. For optional inputs, use std::optional<T>
+  (defaulting to std::nullopt) for value types (scalars, chrono durations) so callers can pass literals
+  directly, reserving const pointers (const T* = nullptr) strictly for optional constant objects.
+why: Const references prevent copying large objects while scalars pass efficiently in registers. Mutable
+  raw pointers make side effects explicit at call sites (&) and avoid std::reference_wrapper overhead.
+  Using std::optional<T> for optional value types allows callers to pass literals or values directly without
+  creating temporary lvalues for address-of (&), while const pointers reserve pointer semantics for optional
+  objects.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: pass non-trivial object by value; const ref for scalar; mutable ref
+  void trackLayerInfo(LayerInfo info) const;
+  static double AdaptiveEpsilon(const double& a, const double& b);
+  void populateProxies(EndCaps<kTileHeight>& ends);
+
+  // Bad: non-const std::vector reference for mutable array out-parameter
+  void collectExpressions(const Expression& expr, std::vector<const Expression*>& out);
+
+  // Bad: optional reference_wrapper for out-param; const pointer for optional value
+  void recordDraw(..., std::optional<std::reference_wrapper<Layer*>> layer = {});
+  void performDeferredCleanup(std::chrono::milliseconds msNotUsed,
+                              const std::chrono::milliseconds* stopPurging = nullptr);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: const ref for objects; scalar by value; raw pointer for mutable param
+  void trackLayerInfo(const LayerInfo& info) const;
+  static double AdaptiveEpsilon(const double a, const double b);
+  void populateProxies(EndCaps* ends);
+
+  // Good: pointer to base TArray for mutable array out-parameter
+  void collectExpressions(const Expression& expr, skia_private::TArray<const Expression*>* out);
+
+  // Good: pointer defaulting to nullptr for out-param; std::optional for value
+  void recordDraw(..., Layer** layer = nullptr);
+  void performDeferredCleanup(
+          std::chrono::milliseconds msNotUsed,
+          std::optional<std::chrono::milliseconds> stopPurging = std::nullopt);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- (?:[(,]\s*)[A-Za-z0-9_:]+(?:<[^>]+>)?\s*&\s*[a-zA-Z0-9_]+
+- (?:[(,]\s*)const\s+[A-Za-z0-9_:]+(?:<[^>]+>)?\s*&\s*[a-zA-Z0-9_]+
+- (?:[(,]\s*)[A-Za-z0-9_:]+(?:<[^>]+>)?\s*\*+\s*[a-zA-Z0-9_]+
+- \b(?:std::vector|(?:skia_private::)?S?TArray)<[^;()]+>\s*[*&]
+- \b[A-Za-z0-9_:]+(?:<[^>]+>)?\s*[*&]\s*(?:out|dst|result|pixel|metrics|src|stream|ends|state)\b
+- \b(?:processPixel|WriteTrace|getFontMetrics|populateProxies|makeTextureProxy|trackLayerInfo|AdaptiveEpsilon|performDeferredCleanup)\b
+- \bstd::reference_wrapper<
+- \bstd::optional<\s*std::reference_wrapper<
+- \bconst\s+[A-Za-z0-9_:]+\s*\*\s*[a-zA-Z0-9_]+\s*=\s*nullptr\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: Mandatory constant object parameters are passed to functions as const references. Optional constant
+    object parameters are passed to functions as const pointers. Mutable object parameters are passed
+    to functions as pointers. We very rarely pass anything by non-const reference.
+confidence: 0.98
+support_cl_count: 12

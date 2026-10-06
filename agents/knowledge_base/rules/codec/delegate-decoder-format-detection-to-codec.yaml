@@ -1,0 +1,58 @@
+id: codec/delegate-decoder-format-detection-to-codec
+title: When implementing image decoder wrappers (Sk<Format>Decoder), delegate format detection (Is<Format>)
+  to the underlying codec implementation instead of calling backend or FFI routines directly
+polarity: do
+severity: should_fix
+rubric: design
+rule: In image decoder wrappers (`Sk<Format>Decoder` or `Sk<Format>RustDecoder`), delegate format sniffing
+  (`Is<Format>`) to the underlying codec implementation (such as `Sk<Format>Codec::Is<Format>`) rather
+  than invoking backend parsing libraries or FFI functions directly. Keep decoder registration wrappers
+  decoupled from third-party bridge headers and direct FFI dependencies.
+why: Decoder wrappers act as lightweight registration entry points for `SkCodecs::Register`. Calling backend
+  or FFI functions directly in the wrapper requires extra header includes and forces the decoder's build
+  target (such as `BUILD.bazel`) to depend directly on internal FFI bridges and third-party runtime crates,
+  violating target layering.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #include "experimental/rust_ico/ffi/FFI.rs.h"
+  #include "rust/common/SkStreamAdapter.h"
+
+  bool IsIco(const void* buff, size_t bytesRead) {
+      auto data = SkData::MakeWithoutCopy(buff, bytesRead);
+      auto stream = std::make_unique<SkMemoryStream>(std::move(data));
+      auto inputAdapter = std::make_unique<rust::stream::SkStreamAdapter>(stream.get());
+      return rust_ico::is_ico(std::move(inputAdapter));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  #include "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h"
+
+  bool IsIco(const void* buff, size_t bytesRead) {
+      return SkIcoRustCodec::IsIco(buff, bytesRead);
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bnamespace\s+Sk\w+Decoder\b
+- \bbool\s+Is[A-Z]\w*\s*[(]const\s+void
+- \bSk\w+Codec::Is[A-Z]\w*\b
+- '#include\s+[\"<].*FFI\.rs\.h[\">]'
+- \b(?:is_[a-z0-9_]+|is_ico|is_bmp|is_jpeg|is_png)(?:_data)?\b
+- \bSkCodecs::Register\b
+citations:
+- path: rust/bmp/README.md
+  heading: '## Architecture'
+  quote: |-
+    include/codec/SkBmpRustDecoder.h      # Skia SkCodec factory API
+    src/codec/SkBmpRustDecoder.cpp        # Skia SkCodec factory implementation
+    src/codec/SkBmpRustCodec.h/.cpp       # Core codec implementation
+confidence: 0.92
+support_cl_count: 1

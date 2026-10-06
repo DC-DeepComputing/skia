@@ -1,0 +1,55 @@
+id: general/avoid-redundant-empty-ternary-for-container-pointer
+title: When passing container pointers to functions or descriptor fields alongside an element count, pass
+  .data() or .begin() directly without ternary empty-checks
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: 'When passing contiguous container pointers to API functions or populating descriptor struct pointer
+  fields alongside an element count, pass container .data() or .begin() directly. Do not wrap pointer
+  retrieval in redundant ternary empty checks (such as empty() ? nullptr : begin() or !empty() ? data()
+  : nullptr).'
+why: Container methods like data() and begin() safely evaluate on empty containers without dereferencing
+  or throwing, and APIs that accept an explicit element count do not dereference the pointer when the
+  count is zero. Guarding with ternary empty checks introduces redundant boilerplate and visual clutter.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Direct function call argument:
+  CmdSetVertexInput(commandBuffer,
+                    fVertexBindingDescriptions.size(),
+                    fVertexBindingDescriptions.empty()
+                            ? nullptr
+                            : fVertexBindingDescriptions.begin());
+
+  // Populating descriptor struct field:
+  vertexInputInfo->vertexBindingDescriptionCount = bindingDescs.size();
+  vertexInputInfo->pVertexBindingDescriptions =
+          !bindingDescs.empty() ? bindingDescs.begin() : nullptr;
+  ```
+
+  Good:
+
+  ```cpp
+  // Direct function call argument:
+  CmdSetVertexInput(commandBuffer,
+                    fVertexBindingDescriptions.size(),
+                    fVertexBindingDescriptions.begin());
+
+  // Populating descriptor struct field:
+  vertexInputInfo->vertexBindingDescriptionCount = bindingDescs.size();
+  vertexInputInfo->pVertexBindingDescriptions = bindingDescs.begin();
+  ```
+include_glob:
+- src/**
+triggers:
+- \?\s*[a-zA-Z0-9_.]+(?:->|\.)(?:data|begin)\(\)
+- :\s*[a-zA-Z0-9_.]+(?:->|\.)(?:data|begin)\(\)
+- \?\s*nullptr\s*:\s*[a-zA-Z0-9_.]+(?:->|\.)(?:data|begin)\(\)
+- '!\s*[a-zA-Z0-9_.]+(?:->|\.)empty\(\)\s*\?\s*[a-zA-Z0-9_.]+(?:->|\.)(?:begin|data)\(\)'
+- '[a-zA-Z0-9_.]+(?:->|\.)size\(\)\s*(?:!=|>)\s*0\s*\?\s*[a-zA-Z0-9_.]+(?:->|\.)(?:begin|data)\(\)'
+- \bp[A-Z]\w+\s*=\s*!\w+(?:->|\.)empty\(\)
+- \bp[A-Z]\w+\s*=\s*\w+(?:->|\.)(?:data|begin)\(\)
+confidence: 0.9
+support_cl_count: 1

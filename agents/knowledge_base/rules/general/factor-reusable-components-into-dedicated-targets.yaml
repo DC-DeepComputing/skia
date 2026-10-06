@@ -1,0 +1,67 @@
+id: general/factor-reusable-components-into-dedicated-targets
+title: When defining build targets in Bazel, factor shared base classes and reusable utilities into dedicated
+  targets so alternative backends avoid bundled third-party dependencies
+polarity: do
+severity: should_fix
+rubric: design
+rule: Factor generic base classes, reusable utilities, and proxy implementations into dedicated, granular
+  build targets (e.g., skia_cc_library) rather than bundling them into backend-specific or library-specific
+  targets. When implementing or depending on alternative backends (such as Rust-based decoders or custom
+  font managers), depend on the unbundled base target (e.g., :png_codec_base, :typeface_proxy) rather
+  than concrete implementation targets (e.g., //src/codec:png_decode) that bundle third-party C/C++ libraries
+  (such as @libpng, FontConfig, or FreeType).
+why: Bundling reusable utility code or base classes into concrete backend targets couples common interfaces
+  to third-party C/C++ libraries. This forces alternative implementations to inherit unwanted transitive
+  dependencies, bloats binaries, and defeats backend isolation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: fontmgr bundles reusable proxy with FreeType/FontConfig deps
+  skia_cc_library(
+      name = "fontmgr_fontconfig_freetype",
+      srcs = ["SkFontMgr_fontconfig.cpp", "SkTypeface_proxy.cpp"],
+      hdrs = ["SkTypeface_proxy.h", "//include/ports:fontconfig_fontmgr_hdrs"],
+      deps = [":freetype_support", "//:core", "//bazel/external/fontconfig"],
+  )
+
+  // Bad: Rust decoder depends on C++ png_decode, pulling in @libpng
+  skia_cc_library(
+      name = "decoder",
+      srcs = [":srcs"],
+      hdrs = [":hdrs"],
+      deps = ["//:core", "//src/codec:png_decode"],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Typeface proxy factored into standalone target
+  skia_cc_library(
+      name = "typeface_proxy",
+      srcs = ["SkTypeface_proxy.cpp"],
+      hdrs = ["SkTypeface_proxy.h"],
+      deps = ["//:core"],
+  )
+
+  // Good: Rust decoder depends on isolated base target without @libpng
+  skia_cc_library(
+      name = "decoder",
+      srcs = [":srcs"],
+      hdrs = [":hdrs"],
+      deps = ["//:core", "//src/codec:png_codec_base"],
+  )
+  ```
+include_glob:
+- '**/BUILD.bazel'
+triggers:
+- \bSk[A-Za-z0-9_]+\.(?:cpp|h)\b
+- '[\"'']//(?:src|include|modules|tools|bazel|experimental)/[a-zA-Z0-9_:/.-]+[\"'']'
+- '[\"'']:[a-zA-Z0-9_]+[\"'']'
+- \b(?:skia_)?(?:cc_library|filegroup)\b
+- \b(?:srcs|hdrs|deps)\s*=
+- \b[a-zA-Z0-9_]+_(?:proxy|support|utils|common|base)\b
+confidence: 0.95
+support_cl_count: 2

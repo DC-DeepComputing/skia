@@ -1,0 +1,46 @@
+id: gpu/name-intentional-zero-budget-kempty
+title: When creating GPU ResourceProviders for operations that do not allocate budgeted resources, pass
+  a zero budget and name the constant kEmpty... rather than kDefault...
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When creating temporary or auxiliary GPU ResourceProviders for operations that do not allocate budgeted
+  GPU resources (such as precompilation), specify a cache budget of 0 bytes rather than an arbitrary non-zero
+  budget. When defining constants for intentionally zero cache budgets or capacity limits, name the constant
+  with a kEmpty... or kZero... prefix (e.g., kEmptyBudget) rather than kDefault....
+why: Operations like pipeline precompilation produce objects stored in global caches rather than budgeted
+  buffers or textures in ResourceCache, making non-zero budgets misleading. Naming an intentional zero
+  budget kDefault... falsely implies that the subsystem normally defaults to unbudgeted or disabled caching,
+  whereas kEmpty... or kZero... clearly signals an intentional zero invariant.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Arbitrary non-zero budget for operations that do not allocate budgeted resources.
+  static constexpr size_t kDefaultBudgetInBytes = 256 * (1 << 20);
+  auto provider = sharedContext->makeResourceProvider(&singleOwner, SK_InvalidGenID, kDefaultBudgetInBytes);
+
+  // Bad: 'kDefault...' misleadingly implies the subsystem's standard default budget is zero.
+  static constexpr size_t kDefaultBudgetInBytes = 0;
+  auto provider = sharedContext->makeResourceProvider(&singleOwner, SK_InvalidGenID, kDefaultBudgetInBytes);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Pass zero budget for unbudgeted operations and name constant kEmpty... / kZero...
+  static constexpr size_t kEmptyBudget = 0;
+  auto provider = sharedContext->makeResourceProvider(&singleOwner, SK_InvalidGenID, kEmptyBudget);
+  ```
+include_glob:
+- src/gpu/**
+- include/gpu/**
+triggers:
+- \b(?:static\s+)?constexpr\s+(?:size_t|int|uint(?:32|64)_t)\s+k(?:Default|Empty|Zero)[A-Z]\w*\s*=\s*0\b
+- \b(?:static\s+)?constexpr\s+(?:size_t|int|uint(?:32|64)_t)\s+kDefault[A-Z]\w*(?:Budget|Bytes|Limit|Capacity|Size)\b
+- \bk(?:Default|Empty|Zero)[A-Z]\w*(?:Budget|Capacity|Bytes)\b
+- \bmakeResourceProvider\s*\([^)]*\bk[A-Z]\w*Budget
+- \bmakeResourceProvider\s*\([^)]*(?:k(?:Empty|Zero|Default)[A-Z]\w*|0\b)
+confidence: 0.87
+support_cl_count: 2

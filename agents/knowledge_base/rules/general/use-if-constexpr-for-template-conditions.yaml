@@ -1,0 +1,67 @@
+id: general/use-if-constexpr-for-template-conditions
+title: When branching on template parameters, type traits, compile-time constants, or configuration macros,
+  use 'if constexpr' rather than runtime 'if'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Use 'if constexpr' instead of runtime 'if' when branching on template boolean parameters, type traits,
+  compile-time constants, enum values, or configuration levels in template helpers and macros. Ensure
+  compile-time branch selection is explicit to guarantee dead-code elimination across all build configurations
+  and prevent passing dynamic runtime expressions where a constant expression is expected.
+why: While optimizing compilers often eliminate branches conditioned on constant values, using 'if constexpr'
+  makes compile-time evaluation intent explicit and guarantees dead-code elimination across all optimization
+  levels without runtime overhead. In templates and macros, it also enforces that arguments are valid
+  compile-time constants and prevents compiling unselected invalid branches.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <bool kAppendVerts>
+  void reserve(unsigned int count) {
+      // Runtime 'if' on compile-time template boolean
+      if (kAppendVerts) {
+          alignedCount = SkAlign4(fPendingCount + count) - fPendingCount;
+      }
+  }
+
+  #define SKIA_LOG(priority, fmt, ...)                        \
+      do {                                                    \
+          if (priority <= SKIA_LOWEST_ACTIVE_LOG_PRIORITY) {  \
+              SkLog(priority, fmt, ##__VA_ARGS__);            \
+          }                                                   \
+      } while (0)
+  ```
+
+  Good:
+
+  ```cpp
+  template <bool kAppendVerts>
+  void reserve(unsigned int count) {
+      // Compile-time 'if constexpr' guarantees branch elimination
+      if constexpr (kAppendVerts) {
+          alignedCount = SkAlign4(fPendingCount + count) - fPendingCount;
+      }
+  }
+
+  #define SKIA_LOG(priority, fmt, ...)                                  \
+      do {                                                              \
+          if constexpr (priority <= SKIA_LOWEST_ACTIVE_LOG_PRIORITY) {  \
+              SkLog(priority, fmt, ##__VA_ARGS__);                      \
+          }                                                             \
+      } while (0)
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bif\s+constexpr\b
+- \btemplate\s*<[^>]*\bbool\s+[A-Za-z0-9_]+
+- \bif\s*[(][^)]*\bstd::is_[a-z_]+(?:_v)?<
+- \bif\s*[(][^)]*\bsizeof\s*[(][^)]+[)]\s*(?:==|!=|<|>|<=|>=)
+- \bif\s*[(]\s*!?(?:[A-Za-z0-9_]+::)?k[A-Z]\w*\s*[)]
+- \bif\s*[(][^)]*\b(?:priority|SKIA_LOWEST|kFatal|kDebug|kInfo|kWarning|LogLevel|Priority)\b
+- '#\s*define\s+[A-Za-z0-9_]+\s*[(][^)]*[)]\s*\?\s*(?:do\s*\{)?\s*\?\s*if\b'
+confidence: 0.95
+support_cl_count: 2

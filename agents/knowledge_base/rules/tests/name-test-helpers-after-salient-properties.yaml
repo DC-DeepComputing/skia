@@ -1,0 +1,60 @@
+id: tests/name-test-helpers-after-salient-properties
+title: When defining test helper factories, name them with snake_case describing salient configured properties
+  rather than generic PascalCase names like CreateTestPaint
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining test helper factory functions (e.g., creating SkPaint, SkSurface, SkCanvas, or SkPath),
+  name them in lowercase snake_case describing the salient properties or configurations they set up (such
+  as create_aa_hairline_paint() or create_white_raster_surface()). Avoid generic PascalCase or vague names
+  like CreateTestPaint() or make_test_surface() that obscure test preconditions at call sites.
+why: Generic helper names like CreateTestPaint() obscure fixture state and test preconditions at call
+  sites, forcing readers to inspect helper definitions to understand what is being tested. Descriptive
+  names make test cases self-documenting, and using lowercase snake_case conforms to Skia's style guide
+  for static non-class helper functions in implementation and test files.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Vague generic PascalCase helper obscures configured properties at call sites
+  static inline SkPaint CreateTestPaint() {
+      SkPaint paint;
+      paint.setStyle(SkPaint::kStroke_Style);
+      paint.setStrokeWidth(0);
+      paint.setColor(SK_ColorBLACK);
+      paint.setAntiAlias(true);
+      return paint;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicit snake_case name documents salient properties at call sites
+  static SkPaint create_aa_hairline_paint() {
+      SkPaint paint;
+      paint.setStyle(SkPaint::kStroke_Style);
+      paint.setStrokeWidth(0);
+      paint.setColor(SK_ColorBLACK);
+      paint.setAntiAlias(true);
+      return paint;
+  }
+  ```
+include_glob:
+- tests/**
+- gm/**
+triggers:
+- \b(?:Create|Make)Test(?:Paint|Surface|Canvas|Path|Image|Bitmap|Device)\b
+- \b(?:create|make)_test_(?:paint|surface|canvas|path|image|bitmap)\b
+- static\s+(?:inline\s+)?[A-Za-z0-9_:<>]+\s+(?:Create|Make)[A-Z]\w*\s*\(
+- static\s+(?:inline\s+)?(?:SkPaint|SkPath|SkBitmap|sk_sp<Sk(?:Surface|Image|Canvas)>)\s+\w+\s*\(
+- \b(?:create|make)_[a-z0-9_]*(?:paint|surface|canvas|path|image|bitmap)\s*\(
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: '## Naming'
+  quote: |-
+    Static non-class functions in implementation files are lower-case with
+    underscores separating words:
+confidence: 0.9
+support_cl_count: 1

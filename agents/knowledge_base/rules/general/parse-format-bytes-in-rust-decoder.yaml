@@ -1,0 +1,64 @@
+id: general/parse-format-bytes-in-rust-decoder
+title: When wrapping Rust decoders or parsers in C++, parse format header bytes inside Rust and expose
+  structured properties rather than indexing raw bytes in C++
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not inspect, unpack, or manipulate raw format header bytes in C++ wrapper code when integrating
+  a Rust parser or decoder. Perform all format parsing, header inspection, and byte validation inside
+  the Rust implementation, exposing structured properties, enums, or query methods across the FFI boundary
+  instead.
+why: Format-specific header parsing and raw byte manipulation belong inside the decoder/parser layer,
+  not in the C++ codec wrapper. Delegating all parsing to the Rust implementation maintains clean architectural
+  layering, prevents brittle ad-hoc byte indexing in C++, and upholds the memory-safety guarantee of parsing
+  untrusted input formats in memory-safe code.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Inspecting raw BMP header bytes in C++ wrapper to determine row order
+  if (data->size() >= 26) {
+      const uint8_t* rawData = reinterpret_cast<const uint8_t*>(data->data());
+      int32_t heightSigned = static_cast<int32_t>(
+          rawData[22] | (rawData[23] << 8) | (rawData[24] << 16) | (rawData[25] << 24)
+      );
+      if (heightSigned < 0) {
+          rowOrder = SkCodec::kTopDown_SkScanlineOrder;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Rust decoder parses header and exposes structured property across FFI
+  // In Rust decoder / FFI:
+  pub fn bottom_up(&self) -> bool {
+      self.bottom_up
+  }
+
+  // In C++ SkCodec wrapper:
+  SkCodec::SkScanlineOrder rowOrder = reader->bottom_up()
+      ? SkCodec::kBottomUp_SkScanlineOrder
+      : SkCodec::kTopDown_SkScanlineOrder;
+  ```
+include_glob:
+- src/**
+- experimental/**
+- rust/**
+triggers:
+- \bSk[A-Z]\w*Rust(?:Codec|Decoder|Parser)\b
+- '#include\s+["<].*FFI\.rs\.h[">]'
+- \b(?:reinterpret_cast|static_cast)<(?:const\s+)?(?:uint8_t|char|unsigned\s+char)\*\s*>
+- \b[a-zA-Z0-9_]*(?:data|bytes|raw|buffer|stream)\[\d+\]\s*(?:\||<<|>>|&)
+- \bSkCodec::k(?:TopDown|BottomUp)_SkScanlineOrder\b
+- \b(?:reader|decoder|parser)->(?:bottom_up|top_down|is_[a-z0-9_]+|has_[a-z0-9_]+)\s*\(
+citations:
+- path: rust/icc/README.md
+  heading: Memory Safety
+  quote: All ICC profile parsing happens in Rust, mirroring the structure and logic of `skcms.cc`. This
+    prevents memory safety vulnerabilities from malformed ICC data. The validated, parsed data is then
+    converted to `skcms_ICCProfile` structures for use by Skia's color management system (skcms).
+confidence: 0.9
+support_cl_count: 1

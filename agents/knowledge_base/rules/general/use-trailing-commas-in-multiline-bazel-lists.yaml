@@ -1,0 +1,52 @@
+id: general/use-trailing-commas-in-multiline-bazel-lists
+title: When defining multi-line lists, dictionaries, or call arguments in Bazel and Starlark files, include
+  a trailing comma after the final element
+polarity: do
+severity: nit
+rubric: readability
+rule: Include a trailing comma on the final element of multi-line lists, dictionaries, and keyword argument
+  lists in Bazel and Starlark build files. Do not omit the trailing comma when closing multi-line sequences
+  across separate lines.
+why: Omitting trailing commas in multi-line sequences causes subsequent line additions to modify existing
+  lines, creating unnecessary git diff churn and increasing merge conflict potential. Trailing commas
+  ensure diffs remain isolated to newly added or removed lines.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  crate.annotation(
+      crate = "image",
+      features = [
+          "bmp",
+          "ico"
+      ],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  crate.annotation(
+      crate = "image",
+      features = [
+          "bmp",
+          "ico",
+      ],
+  )
+  ```
+include_glob:
+- '**/*.bazel'
+- '**/*.bzl'
+- BUILD.bazel
+- MODULE.bazel*
+- WORKSPACE*
+triggers:
+- \b[a-zA-Z0-9_]+\s*=\s*[[]
+- ^\s*[\"'][a-zA-Z0-9_./:-]+[\"']\s*,?\s*$
+- \b[a-zA-Z0-9_]+\s*=\s*[{]
+- \bselect\s*[(]\s*[{]
+- '^\s*[\"''][a-zA-Z0-9_./:-]+[\"'']\s*:'
+- \b(?:crate\.spec|crate\.annotation|skia_cc_library|skia_filegroup)\s*[(]
+confidence: 0.85
+support_cl_count: 1

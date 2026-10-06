@@ -1,0 +1,52 @@
+id: general/bind-pointer-and-reference-qualifiers-to-type
+title: When declaring C++ variables, parameters, or return types, bind pointer and reference qualifiers
+  (* and &) to the type rather than the identifier name
+polarity: do
+severity: nit
+rubric: readability
+rule: In C++ declarations and definitions, bind reference (`&`) and pointer (`*`) qualifiers to the type
+  rather than the identifier name (e.g., `const Type& name` and `Type* ptr`, not `const Type &name` or
+  `Type *ptr`). Maintain this alignment consistently across function parameters, return types, local variables,
+  and member fields.
+why: 'Skia follows C++ type-binding conventions (configured as PointerAlignment: Left in .clang-format
+  and exemplified throughout the style guide) where pointer and reference qualifiers are treated as an
+  integral part of the type. Binding qualifiers to the type maintains stylistic consistency across the
+  codebase.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool submit(const SubmitInfo &info);
+  SkCanvas *canvas = nullptr;
+  void process(int *count, const SkBitmap &bitmap);
+  ```
+
+  Good:
+
+  ```cpp
+  bool submit(const SubmitInfo& info);
+  SkCanvas* canvas = nullptr;
+  void process(int* count, const SkBitmap& bitmap);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \bconst\s+[A-Za-z0-9_:]+\s+[*&][A-Za-z0-9_]+
+- \b(int|uint[0-9]+_t|size_t|float|double|char|bool|auto)\s+[*&][A-Za-z0-9_]+
+- \b(Sk|Gr)[A-Za-z0-9_]+\s+[*&][A-Za-z0-9_]+
+- '[(,]\s*(const\s+)?[A-Za-z0-9_:]+(<[^>]+>)?\s+[*&][A-Za-z0-9_]+'
+- \b(const\s+)?[A-Za-z0-9_:]+(<[^>]+>)?\s+[*&]\s+[A-Za-z0-9_]+[,);]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: |-
+    void SkCanvas::drawBitmapRect(const SkBitmap& bitmap, const SkIRect* src,
+                                  const SkRect& dst, const SkPaint* paint = nullptr);
+confidence: 0.85
+support_cl_count: 1

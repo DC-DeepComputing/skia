@@ -1,0 +1,53 @@
+id: general/document-cross-file-definitions-in-headers
+title: When declaring functions or methods in headers that are defined in a different .cpp file, document
+  their definition location and rationale
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When a class member function or free function declared in a header is defined in a different translation
+  unit rather than its matching <Class>.cpp or <Header>.cpp file, document where it is defined and why
+  at the declaration. Clarify which .cpp file contains the definition and the reason for placing it there
+  (such as sharing internal helper functions or avoiding duplicate logic across subsystems).
+why: Developers expect member functions to be implemented in their corresponding .cpp source file. When
+  an implementation lives in a different translation unit to access internal helpers or consolidate shared
+  logic, documenting the target file and rationale directly at the declaration prevents confusion and
+  eases code navigation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SkEmbossMaskFilter.h
+  class SkEmbossMaskFilter : public SkMaskFilterBase {
+  public:
+      // Defined across translation units without documenting where or why
+      static sk_sp<SkImageFilter> LegacySpecular(const SkPoint3& direction, SkColor lightColor,
+                                                 SkScalar surfaceScale, SkScalar ks,
+                                                 SkScalar shininess, sk_sp<SkImageFilter> input);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // In SkEmbossMaskFilter.h
+  class SkEmbossMaskFilter : public SkMaskFilterBase {
+  public:
+      // Defined in SkLightingImageFilter.cpp because it overlaps heavily with
+      // SkImageFilters::DistantLitSpecular and shares internal lighting logic.
+      static sk_sp<SkImageFilter> LegacySpecular(const SkPoint3& direction, SkColor lightColor,
+                                                 SkScalar surfaceScale, SkScalar ks,
+                                                 SkScalar shininess, sk_sp<SkImageFilter> input);
+  };
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- \b(?:static\s+)?(?:sk_sp|std::unique_ptr)<[A-Za-z0-9_:]+>\s+[A-Za-z0-9_]+\s*[(]
+- (?:\\/\\/|\*).*\b(?:[Dd]efined|[Ii]mplemented) in\s+[A-Za-z0-9_]+\.cpp\b
+- \b(?:static|virtual)?\s*[A-Za-z0-9_:]+(?:<[^>]+>)?\s*[*&]?\s+[A-Z][A-Za-z0-9_]*\s*[(][^;]*$
+- \b(?:class|struct)\s+(?:SK_API\s+)?[A-Za-z0-9_]+\s*(?::\s*public|\{)
+confidence: 0.9
+support_cl_count: 1

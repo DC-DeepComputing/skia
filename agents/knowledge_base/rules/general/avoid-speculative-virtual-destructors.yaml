@@ -1,0 +1,74 @@
+id: general/avoid-speculative-virtual-destructors
+title: When defining classes or interfaces, do not declare methods, destructors, or accessors virtual
+  unless polymorphic dispatch or subclass customization is required
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not speculatively declare member functions, destructors, or subclass customization hooks as virtual
+  until polymorphic dispatch or subclass customization is concretely required. On concrete classes or
+  standalone adapters without subclasses, keep member methods and destructors strictly non-virtual. In
+  extensible base classes or interfaces, keep simple field accessors non-virtual and provide non-virtual
+  methods when the base implementation suffices, rather than introducing virtual accessors or speculative
+  virtual hooks (such as virtual onMethod()) that no existing subclass needs to override.
+why: Declaring virtual functions, destructors, or field accessors when polymorphism is not needed incurs
+  dynamic dispatch overhead, adds unnecessary vtable pointer (vptr) bloat, inhibits compiler inlining,
+  and misleads readers into expecting subclass customization points.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Declaring virtual methods or destructors on a non-polymorphic concrete class
+  class SkStreamAdapter {
+  public:
+      virtual ~SkStreamAdapter() = default;
+      virtual size_t read(rust::Slice<uint8_t> buffer);
+  };
+
+  // Bad: Declaring virtual accessors or speculative NVI hooks when base suffices
+  class Window {
+  public:
+      virtual const DisplayParams* getRequestedDisplayParams() {
+          return fRequestedDisplayParams.get();
+      }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Keep concrete classes and adapters non-virtual
+  class SkStreamAdapter {
+  public:
+      ~SkStreamAdapter() = default;
+      size_t read(rust::Slice<uint8_t> buffer);
+  };
+
+  // Good: Keep simple accessors and base methods non-virtual
+  class Window {
+  public:
+      const DisplayParams* getRequestedDisplayParams() {
+          return fRequestedDisplayParams.get();
+      }
+  };
+  ```
+include_glob:
+- '**/*.h'
+triggers:
+- \bvirtual\s+~[A-Za-z0-9_]+
+- \bvirtual\s+(?:const\s+)?[A-Za-z0-9_:*&<>]+\s+[a-z][A-Za-z0-9_]*\s*[(]
+- \bvirtual\s+(?:const\s+)?[A-Za-z0-9_:*&<>]+\s+on[A-Z]\w*\s*[(]
+- \bvirtual\s+(?:const\s+)?[A-Za-z0-9_:*&<>]+\s+(?:get|is|has)[A-Z]\w*\s*[(]
+- \bclass\s+[A-Za-z0-9_]+Adapter\b
+- \bvirtual\s+~[A-Za-z0-9_]+\s*\(\s*\)\s*=\s*default
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: A common pattern for virtual methods in Skia is to include a public non-virtual (or final) method,
+    paired with a private virtual method named "onMethodName".
+- path: site/docs/dev/contrib/style.md
+  heading: Coding Style Guidelines
+  quote: A common pattern for virtual methods in Skia is to include a public non-virtual (or final) method,
+    paired with a private virtual method named "onMethodName".
+confidence: 0.98
+support_cl_count: 3

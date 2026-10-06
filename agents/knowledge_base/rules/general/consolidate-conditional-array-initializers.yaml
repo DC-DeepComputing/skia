@@ -1,0 +1,62 @@
+id: general/consolidate-conditional-array-initializers
+title: 'When initializing static arrays or lists with build-dependent items, consolidate conditional entries
+  into one #if/#else/#endif block and group unconditional entries together'
+polarity: do
+severity: nit
+rubric: readability
+rule: 'When initializing static arrays, tables, or lists that contain configuration-dependent entries
+  (such as debug vs. release toggles or platform features), consolidate mutually exclusive conditional
+  entries into a single `#if ... #else ... #endif` block. Group common unconditional entries together
+  rather than scattering separate `#if` directives throughout the list initializer.'
+why: Interleaving multiple `#if` and `#if !defined(...)` blocks across an array initializer fragments
+  list definitions and obscures which entries are common versus configuration-specific. Consolidating
+  mutually exclusive entries into a single `#if/#else/#endif` section keeps build variants clearly visible
+  and avoids scattered preprocessor boilerplate.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static constexpr const char* kToggles[] = {
+  #if !defined(SK_DEBUG)
+          "skip_validation",
+  #endif
+          "disable_lazy_clear_for_mapped_at_creation_buffer",
+          "allow_unsafe_apis",
+  #if defined(SK_DEBUG)
+          "use_user_defined_labels_in_backend",
+  #endif
+          "disable_robustness",
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  static constexpr const char* kToggles[] = {
+  #if defined(SK_DEBUG)
+          // Setting labels on backend objects has performance overhead.
+          "use_user_defined_labels_in_backend",
+  #else
+          "skip_validation",
+  #endif
+          "disable_lazy_clear_for_mapped_at_creation_buffer",
+          "allow_unsafe_apis",
+          "disable_robustness",
+  };
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- '#(?:if|ifdef|ifndef)\s+.*\b(?:SK_DEBUG|SK_BUILD_FOR_|SK_ENABLE_|GR_|SKGPU_)\w*'
+- ^#\s*if\s+!?defined\s*[(]\s*(?:SK_DEBUG|SK_BUILD_FOR_|SK_ENABLE_)\w*
+- \b(?:static\s+)?(?:constexpr\s+)?(?:const\s+)?[A-Za-z0-9_:]+\s+\*?\s*k[A-Za-z0-9_]*(?:Toggles?|Options?|Flags?|Extensions?|Features?|Names?)\[\]\s*=
+- \b(?:kToggles|kFeatures|kExtensions|kDefaultFlags|kDawnToggles|kDefaultFeatures)\b
+- \b(?:DawnTogglesDescriptor|enabledToggles|requiredExtensions)\b
+- \"(?:skip_validation|use_user_defined_labels_in_backend|allow_unsafe_apis|disable_robustness)\"
+confidence: 0.85
+support_cl_count: 1

@@ -1,0 +1,51 @@
+id: api/order-struct-member-comparisons-by-declaration
+title: When implementing struct equality operators or equivalence helper functions, evaluate member fields
+  in the exact order they are declared in the struct definition
+polarity: do
+severity: nit
+rubric: readability
+rule: When implementing operator==, operator!=, or struct equivalence helper functions, compare member
+  fields in the exact sequential order they are declared in the struct or class definition. Do not evaluate
+  members out of order or transpose adjacent fields.
+why: Evaluating fields in declaration order makes comparison routines predictable, intuitive to audit
+  against struct header definitions, and easier to maintain. It minimizes the risk of accidentally omitting
+  newly added members or redundantly checking the same field twice.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool DawnDescriptorsAreEquivalent(const wgpu::YCbCrVkDescriptor& desc1,
+                                    const wgpu::YCbCrVkDescriptor& desc2) {
+      // vkYCbCrModel is compared before vkFormat despite being declared after it in the struct.
+      return desc1.vkYCbCrModel            == desc2.vkYCbCrModel            &&
+             desc1.vkFormat                == desc2.vkFormat                &&
+             desc1.vkYCbCrRange            == desc2.vkYCbCrRange;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  bool DawnDescriptorsAreEquivalent(const wgpu::YCbCrVkDescriptor& desc1,
+                                    const wgpu::YCbCrVkDescriptor& desc2) {
+      // Fields are evaluated in the exact order they are declared in the struct definition.
+      return desc1.vkFormat                == desc2.vkFormat                &&
+             desc1.vkYCbCrModel            == desc2.vkYCbCrModel            &&
+             desc1.vkYCbCrRange            == desc2.vkYCbCrRange;
+  }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+exclude_glob:
+- third_party/**
+triggers:
+- \b(?:bool|constexpr\s+bool|friend\s+bool)?\s*operator\s*==\s*[(]
+- \b(?:bool|constexpr\s+bool)\s+[A-Za-z0-9_]*(?:Equivalent|Equal|Equals)\s*[(]
+- \b[A-Za-z0-9_]+(?:\.|->)[a-zA-Z0-9_]+\s*==\s*[A-Za-z0-9_]+(?:\.|->)[a-zA-Z0-9_]+
+- \bf[A-Z][A-Za-z0-9_]*\s*==\s*(?:that|other|o|b)\.f[A-Z][A-Za-z0-9_]*
+- \breturn\s+[a-zA-Z0-9_]+(?:\.|->)[a-zA-Z0-9_]+\s*==
+confidence: 0.88
+support_cl_count: 1

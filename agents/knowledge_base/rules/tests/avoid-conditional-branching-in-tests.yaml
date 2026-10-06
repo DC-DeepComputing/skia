@@ -1,0 +1,69 @@
+id: tests/avoid-conditional-branching-in-tests
+title: In unit tests and parameterized test loops, avoid conditional branching (if) to guard assertions
+  or handle alternate outcomes; assert exact states deterministically
+polarity: dont
+severity: should_fix
+rubric: testing
+rule: Do not use conditional branching (`if`) in unit tests or parameterized test loops to execute assertions
+  conditionally, tolerate alternate outcomes, or guard downstream checks on deterministic inputs. Assert
+  exact expected states and return codes deterministically with `REPORTER_ASSERT`. When testing distinct
+  variants or optional features, keep execution linear by splitting scenarios into dedicated test functions
+  or modeling test data to run uniform assertions across all cases.
+why: In unit tests, fixed inputs should yield deterministic results. Conditional branches (`if`) can silently
+  conceal skipped assertions if an earlier step fails unexpectedly, mask regressions by accepting divergent
+  behaviors, and make test flow hard to reason about. Linear, deterministic tests ensure failures are
+  easy to trace and every expected assertion executes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Anti-pattern 1: Branching on test case properties in parameterized loops
+  for (const auto& test : kTestCases) {
+      skiatest::ReporterContext ctx(r, test.name);
+      REPORTER_ASSERT(r, parse(test.primaryData));
+      if (test.alternateData) {
+          REPORTER_ASSERT(r, parse(test.alternateData));
+      }
+  }
+
+  // Anti-pattern 2: Tolerating alternate outcomes or guarding assertions on fixed inputs
+  std::unique_ptr<SkCodec> codec = SkBmpRustDecoder::Decode(std::move(stream), &result);
+  if (codec) {
+      SkCodec::Result decodeResult = codec->getPixels(info, pixels, rowBytes);
+      REPORTER_ASSERT(r, decodeResult != SkCodec::kSuccess);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Pattern 1: Structure test data so all iterations run uniform assertions, or split tests
+  for (const auto& test : kTestCases) {
+      for (const auto& encoding : test.encodings) {
+          skiatest::ReporterContext ctx(r, encoding.name);
+          REPORTER_ASSERT(r, parse(encoding.data));
+      }
+  }
+
+  // Pattern 2: Assert exact intermediate states and expected return codes deterministically
+  std::unique_ptr<SkCodec> codec = SkBmpRustDecoder::Decode(std::move(stream), &result);
+  REPORTER_ASSERT(r, codec && result == SkCodec::kSuccess);
+  if (!codec) {
+      return;
+  }
+  SkCodec::Result decodeResult = codec->getPixels(info, pixels, rowBytes);
+  REPORTER_ASSERT(r, decodeResult == SkCodec::kIncompleteInput);
+  ```
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(]
+- \b(?:skiatest::)?ReporterContext\b
+- \bfor\s*[(][^)]*\b(?:tests?|cases?|subtests?|encodings?|params?)\b
+- \bif\s*[(][^)]*\b(?:test|subtest|case|param|config|alternate|option|feature|extra|has_)\b
+- \bif\s*[(][^)]*\b(?:codec|result|success|stream|data|bitmap|surface|device|status)\b
+- \bDEF_(?:GANESH_|GRAPHITE_)?TEST\s*[(]
+confidence: 0.95
+support_cl_count: 2

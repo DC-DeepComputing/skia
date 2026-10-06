@@ -1,0 +1,43 @@
+id: gpu/gpu-document-post-loop-batch-flushes
+title: When finalizing batch-processing loops with a trailing flush call, retain or add explanatory comments
+  clarifying that pending batched data must be emitted
+polarity: do
+severity: nit
+rubric: readability
+rule: When finalizing batch-processing loops in Graphite (such as DrawWriter iteration over draws or render
+  steps), retain or add inline comments above trailing flush calls (e.g., drawWriter.flush()). Clarify
+  that the call is necessary to emit any remaining pending data accumulated before iteration ended, and
+  do not remove existing comments during refactoring.
+why: In dynamic batching loops where flushes occur conditionally upon state changes or buffer limits,
+  trailing flush calls can appear redundant to maintainers unfamiliar with batch lifecycles. Retaining
+  explanatory comments prevents post-loop flushes from being mistakenly deleted or reordered during refactoring.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+      for (const auto& draw : fDraws) {
+          ...
+      }
+      drawWriter.flush();
+  ```
+
+  Good:
+
+  ```cpp
+      for (const auto& draw : fDraws) {
+          ...
+      }
+      // Finish recording draw calls for any collected data still pending at end of the loop.
+      drawWriter.flush();
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bdrawWriter\.flush\s*[(]
+- \bdrawWriter\.(?:flush|newDynamicState)\b
+- //.*\b(?:pending|remaining|collected data|Finish recording|end of (?:the )?loop)\b
+- \bDrawWriter\b
+- \bwriteVertices\s*[(]
+confidence: 0.88
+support_cl_count: 1

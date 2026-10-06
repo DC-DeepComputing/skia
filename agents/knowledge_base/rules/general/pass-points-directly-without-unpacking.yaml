@@ -1,0 +1,55 @@
+id: general/pass-points-directly-without-unpacking
+title: When passing geometric points, vectors, or point differences to geometry APIs, pass instances or
+  operator- results directly instead of unpacking coordinates
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not unpack an existing geometric object (such as SkPoint, SkIPoint, or SkVector) into an initializer
+  list or temporary constructor {pt.fX, pt.fY} when passing it to functions that accept the object type
+  directly (such as SkMatrix::mapPoint or mapVector). Similarly, do not manually compute and pass scalar
+  coordinate differences (dst.fX - src.fX, dst.fY - src.fY) when translating between points; pass the
+  vector difference (dst - src) directly to SkMatrix::Translate() or setTranslate().
+why: Unpacking fields into {pt.fX, pt.fY} redundantly reconstructs an aggregate temporary of an identical
+  type already in scope. Likewise, subtracting two SkPoint instances directly yields an SkVector via operator-,
+  which SkMatrix::Translate and setTranslate accept natively. Passing objects or vector expressions directly
+  eliminates unnecessary scalar operations, avoids redundant temporary construction, and reduces boilerplate.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundantly unpacking an existing SkPoint when calling mapPoint()
+  static XPS_POINT xps_point(const SkPoint& point, const SkMatrix& matrix) {
+      return xps_point(matrix.mapPoint({point.fX, point.fY}));
+  }
+
+  // Manually subtracting coordinates instead of using SkPoint::operator-
+  SkMatrix m = SkMatrix::Translate(dst[0].fX - src[0].fX, dst[0].fY - src[0].fY);
+  ```
+
+  Good:
+
+  ```cpp
+  // Pass the existing SkPoint instance directly
+  static XPS_POINT xps_point(const SkPoint& point, const SkMatrix& matrix) {
+      return xps_point(matrix.mapPoint(point));
+  }
+
+  // Pass the vector difference directly to SkMatrix::Translate(SkVector)
+  SkMatrix m = SkMatrix::Translate(dst[0] - src[0]);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- gm/**
+triggers:
+- '[{]\s*[a-zA-Z0-9_.]+(?:->|\.)fX\s*,\s*[a-zA-Z0-9_.]+(?:->|\.)fY\s*[}]'
+- \b(?:mapPoint|mapVector)\s*[(]\s*[{]
+- \b(?:SkPoint|SkIPoint|SkVector)\s*[{]\s*[a-zA-Z0-9_.]+(?:->|\.)f[XY]
+- \.(?:mapPoint|mapVector)\s*[(]
+- \b(?:SkMatrix::)?(?:Translate|setTranslate)\s*[(][^;]*\bf[XY]\b
+- \b(?:SkMatrix::)?(?:Translate|setTranslate)\s*[(][^,;)]+-[^,;)]+[,)]
+confidence: 0.95
+support_cl_count: 2

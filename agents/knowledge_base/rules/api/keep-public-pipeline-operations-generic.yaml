@@ -1,0 +1,46 @@
+id: api/keep-public-pipeline-operations-generic
+title: When declaring public API methods, keep operation names generic rather than exposing internal execution
+  or pipeline distinctions like graphics versus compute
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not expose internal execution or pipeline distinctions (such as graphics vs. compute pipelines)
+  in public API method names; keep client-facing operations generic (e.g., `purgePipelines...` instead
+  of `purgeGraphicsPipelines...`). Name operations after high-level client intent rather than backend
+  execution mechanisms, even if the current implementation only applies to one pipeline category.
+why: Whether client operations map to graphics or compute pipelines is an internal implementation detail
+  of Skia's render backends. Exposing execution categories in public APIs leaks internal implementation
+  details, burdens callers with backend knowledge, and causes unnecessary API churn if backend execution
+  strategies evolve.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In include/gpu/graphite/PrecompileContext.h
+  class SK_API PrecompileContext {
+  public:
+      void purgeGraphicsPipelinesNotUsedInMs(std::chrono::milliseconds msNotUsed);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // In include/gpu/graphite/PrecompileContext.h
+  class SK_API PrecompileContext {
+  public:
+      void purgePipelinesNotUsedInMs(std::chrono::milliseconds msNotUsed);
+  };
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \b(?:void|bool|int|size_t)\s+purge[A-Z]\w*\s*[(]
+- \bpurge(?:Graphics|Compute)?Pipelines[A-Za-z0-9_]*\s*[(]
+- \b(?:Graphics|Compute)Pipeline(?:s|Desc|Key)?\b
+- \b(?:compile|precompile|purge)[A-Z]\w*Pipelines?\b
+- \b(?:sync|store|purge)Pipeline(?:s|Data)?\s*[(]
+confidence: 0.9
+support_cl_count: 1

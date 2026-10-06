@@ -1,0 +1,80 @@
+id: general/use-atomics-for-worker-thread-flags
+title: When managing cross-thread state flags, use std::atomic and exchange() for concurrent access, but
+  use plain types and document lifecycle invariants when access is serialized
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Use atomic types (such as std::atomic<bool> or std::atomic<int>) or explicit synchronization primitives
+  for state flags and counters in shared managers, contexts, or caches accessed across multiple threads,
+  and detect compound transitions using exchange() alongside a mutex for accompanying shared data. Conversely,
+  do not use std::atomic for isolated member flags when state access is already serialized by lifecycle
+  or reference-ownership invariants; use plain types instead and document the non-overlapping execution
+  phases or ownership conditions that guarantee thread safety.
+why: Concurrent read and write operations on plain, non-atomic shared variables across threads constitute
+  data races, causing undefined behavior and memory incoherency, while un-synchronized compound transitions
+  cause check-then-act races. Conversely, declaring isolated member variables as std::atomic when access
+  is already serialized by lifecycle or ownership invariants adds unnecessary overhead and misleadingly
+  suggests concurrent access to the overall object is safe.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Non-atomic field toggled across threads causes data races:
+  class SkCaptureManager : public SkRefCnt {
+      bool fIsCurrentlyCapturing = false;
+  };
+
+  // Check-then-act race and unguarded shared state despite atomic flag:
+  void SkCaptureManager::toggleCapture(bool capturing) {
+      if (capturing != fIsCurrentlyCapturing && !capturing) {
+          fPictures.clear();
+      }
+      fIsCurrentlyCapturing = capturing;
+  }
+
+  // Misleading atomic flag when access is serialized by lifecycle invariants:
+  class Resource {
+      std::string fLabel;
+      std::atomic<bool> fBackendLabelDirty;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Thread-safe atomic flag prevents data races across threads:
+  class SkCaptureManager : public SkRefCnt {
+      std::atomic<bool> fIsCurrentlyCapturing = false;
+  };
+
+  // Atomic exchange detects transition; mutex protects shared mutable state:
+  void SkCaptureManager::toggleCapture(bool capturing) {
+      bool wasCapturing = fIsCurrentlyCapturing.exchange(capturing);
+      if (wasCapturing && !capturing) {
+          SkAutoMutexExclusive lock(fMutex);
+          fPictures.clear();
+      }
+  }
+
+  // Plain bool with documented non-overlapping lifecycle invariants:
+  class Resource {
+      std::string fLabel;
+      // Unsynchronized: only accessed when the caller holds sole ownership or
+      // during non-overlapping Context insertion phases.
+      bool fBackendLabelDirty = false;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \bstd::atomic<[A-Za-z0-9_:]+>
+- \bbool\s+f(?:Has|Is|Needs|Should|Can|Backend)[A-Z]\w*\s*=
+- \b(?:SharedContext|GlobalCache|PipelineCache|CaptureManager|Recorder|Resource)\b
+- \b(?:pipelineCompile|compilePipeline|hasNewPipeline|toggleCapture|setLabel|synchronizeBackendLabel)\w*\b
+- \b[a-zA-Z0-9_]*\.(?:exchange|compare_exchange_(?:weak|strong))\s*\(
+- \bf(?:Is|Has|Needs|Should|Can|Backend)[A-Z]\w*\s*=\s*[a-zA-Z0-9_]+;
+- //.*\b(?:thread[ -]?safe|thread[ -]?safety|lifecycle|sole ref|atomic)\b
+confidence: 0.98
+support_cl_count: 4

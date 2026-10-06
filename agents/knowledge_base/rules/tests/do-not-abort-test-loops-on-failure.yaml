@@ -1,0 +1,29 @@
+id: tests/do-not-abort-test-loops-on-failure
+title: In unit tests iterating over parameter loops or matrices, do not use return on assertion failure;
+  use continue or inner break so all cases run
+polarity: dont
+severity: should_fix
+rubric: testing
+rule: In unit tests iterating over multiple parameter combinations, format matrices, or test cases in
+  loops, do not use return upon an assertion failure to abort the test function. Use continue (or break
+  from an inner loop to advance the outer loop) so that all remaining configurations continue to execute.
+  Attach a stack-allocated skiatest::ReporterContext on each iteration so that failure reports identify
+  the failing combination.
+why: In Skia tests, REPORTER_ASSERT records failures on the reporter without halting execution. Using
+  return inside a loop bails out of the entire test function prematurely, skipping remaining combinations
+  and concealing whether an issue is isolated to a specific configuration or affects all of them.
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(]
+- \b(?:skiatest::)?ReporterContext\b
+- \bfor\s*[(][^)]*\b(?:tests?|cases?|subtests?|params?|configs?|colorType|alphaType|types?|formats?)\b
+- \bif\s*[(][^)]*!\s*\w+[^)]*[)]\s*(?:\{\s*)?return\s*;
+citations:
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: Reporter and Assertions
+  quote: 'skiatest::ReporterContext: Use this stack-allocated object to provide additional context (like
+    subtest names) for failure reports.'
+confidence: 0.9
+support_cl_count: 1

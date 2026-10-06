@@ -1,0 +1,48 @@
+id: sksl/parenthesize-inlined-synthesized-expressions
+title: When synthesizing inlined polyfills or multi-term expressions in shader backend code generators,
+  enclose the emitted expression in parentheses to preserve operator precedence
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When inlining synthesized polyfills or multi-term expressions in shader backend code generators
+  rather than assigning them to temporary variables, wrap the synthesized expression in parentheses. Ensure
+  outer parentheses are emitted around the entire expression so caller operators cannot bind to internal
+  terms.
+why: Inlined multi-term expressions (such as synthesizing 'x - y * floor(x / y)' for mod) lack atomic
+  variable isolation. If inlined into a compound caller expression without enclosing parentheses, outer
+  operators with higher precedence (such as multiplication or unary negation) bind unexpectedly to subterms,
+  altering evaluation semantics.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Synthesized expression inlined directly without enclosing parentheses
+  case k_mod_IntrinsicKind: {
+      std::string arg0 = this->assembleExpression(*call.arguments()[0]);
+      std::string arg1 = this->assembleExpression(*call.arguments()[1]);
+      return arg0 + " - " + arg1 + " * floor(" + arg0 + " / " + arg1 + ")";
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Synthesized expression wrapped in parentheses to preserve operator precedence
+  case k_mod_IntrinsicKind: {
+      std::string arg0 = this->assembleExpression(*call.arguments()[0]);
+      std::string arg1 = this->assembleExpression(*call.arguments()[1]);
+      return "(" + arg0 + " - " + arg1 + " * floor(" + arg0 + " / " + arg1 + "))";
+  }
+  ```
+include_glob:
+- src/sksl/codegen/**
+triggers:
+- '\bcase\s+k_\w+_IntrinsicKind:'
+- \b(?:assemble|write)(?:[A-Za-z0-9_]*Intrinsic|Expression|Binary|Polyfill)\b
+- \bSynthesize\b
+- \bparentPrecedence\b
+- return\s+[^;]*[\"']\s*[-+*/]
+- return\s+\"[^\"]*\"\s*\+
+confidence: 0.92
+support_cl_count: 1

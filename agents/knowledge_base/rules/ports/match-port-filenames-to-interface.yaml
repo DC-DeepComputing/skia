@@ -1,0 +1,65 @@
+id: ports/match-port-filenames-to-interface
+title: When authoring or refactoring port implementations in src/ports/ or gn/ports.gni, name files after
+  the primary interface or class implemented rather than coordinating types or legacy names
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Name platform-specific port implementation files in src/ports/ (and their corresponding source lists
+  in gn/ports.gni) after the primary port interface or class hierarchy they define and implement (following
+  the Sk<Interface>_<platform>.cpp convention or Sk<Class>_<specialization>.{h,cpp}, such as SkTypeface_proxy.{h,cpp}
+  rather than coordinating subsystem types like SkFontMgr). When refactoring, replacing, or splitting
+  an underlying port interface (e.g., migrating from SkDebugf to SkLogVAList), rename the corresponding
+  port source files to match the new interface rather than retaining outdated legacy filenames.
+why: Source files in src/ports/ are organized around the specific interfaces and classes they adapt across
+  platforms. Naming files after adjacent or coordinating types or retaining obsolete filenames obscures
+  the primary contract provided by the translation unit and complicates navigation across the codebase
+  and build system.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/ports/SkDebug_android.cpp (file retains obsolete SkDebug prefix after interface refactoring):
+  #include "include/private/SkLog.h"
+
+  void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
+      ...
+  }
+
+  // In gn/ports.gni (named after coordinating SkFontMgr rather than implemented SkTypeface):
+  skia_ports_fontmgr_fontconfig_sources = [
+    "$_src/ports/SkFontMgr_fontconfig.cpp",
+    "$_src/ports/SkFontMgr_proxy.cpp",
+    "$_src/ports/SkFontMgr_proxy.h",
+  ]
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/ports/SkLog_android.cpp (renamed to match the SkLog port interface):
+  #include "include/private/SkLog.h"
+
+  void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
+      ...
+  }
+
+  // In gn/ports.gni (named after the primary SkTypeface subclass hierarchy implemented):
+  skia_ports_fontmgr_fontconfig_sources = [
+    "$_src/ports/SkFontMgr_fontconfig.cpp",
+    "$_src/ports/SkTypeface_proxy.cpp",
+    "$_src/ports/SkTypeface_proxy.h",
+  ]
+  ```
+include_glob:
+- src/ports/**
+- gn/ports.gni
+triggers:
+- \b(?:SkDebugf|SkLogVAList|vSkLog)\b
+- \bSkLogPriority\b
+- \bSk(?:OSFile|FontMgr|ScalerContext|Typeface|ImageGenerator|DiscardableMemory)_\w+\b
+- ^#include\s+[<"](?:(?:include/)?(?:private/|ports/)?)?Sk[A-Za-z0-9_]+\.h[>"]
+- \b(?:class|struct)\s+Sk[A-Za-z0-9_]+_(?:win|android|posix|mac|stdio|custom|fuchsia|gdi|ct|dw|proxy)\b
+- \bskia_ports_[a-zA-Z0-9_]+_sources\b
+confidence: 0.95
+support_cl_count: 2

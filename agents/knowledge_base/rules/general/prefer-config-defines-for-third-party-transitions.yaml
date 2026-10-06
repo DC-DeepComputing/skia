@@ -1,0 +1,65 @@
+id: general/prefer-config-defines-for-third-party-transitions
+title: When handling differing third-party library API signatures across version migrations, use explicit
+  compile-time defines in SkUserConfig.h or build flags instead of SFINAE or template introspection
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not use SFINAE, std::is_invocable, or template introspection to detect differing third-party
+  library API signatures across version transitions. Use explicit compile-time preprocessor configuration
+  defines (documented in include/config/SkUserConfig.h or build flags) so downstream clients can control
+  their migration schedule.
+why: Template introspection bloats compilation, triggers compiler and linter warnings, complicates error
+  handling, and obscures which API overload is being invoked. Compile-time defines in SkUserConfig.h cleanly
+  decouple library versions and allow embedders (such as Chromium and Android) to transition on their
+  own schedule before obsolete paths are removed.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Avoid SFINAE or template introspection to detect third-party API differences:
+  template <typename F, typename... Args>
+  auto invoke_if_invocable(F&& f, Args&&... args)
+      -> std::enable_if_t<std::is_invocable_v<F, Args...>, decltype(std::invoke(std::forward<F>(f), std::forward<Args>(args)...))> {
+      return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+  }
+
+  if constexpr (std::is_invocable_v<decltype(&dng_area_task::Start), dng_area_task&, uint32_t,
+          const dng_rect&, const dng_point&, dng_memory_allocator*, dng_abort_sniffer*>) {
+      invoke_if_invocable(&dng_area_task::Start, task, numTasks, area, tileSize, &Allocator(), Sniffer());
+  } else {
+      invoke_if_invocable(&dng_area_task::Start, task, numTasks, tileSize, &Allocator(), Sniffer());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In include/config/SkUserConfig.h:
+  // #define SK_DNG_VERSION 0x01040000
+
+  // In src/codec/SkRawCodec.cpp:
+  #if SK_DNG_VERSION <= 0x01040000
+      task.Start(numTasks, tileSize, &Allocator(), Sniffer());
+  #else
+      task.Start(numTasks, area, tileSize, &Allocator(), Sniffer());
+  #endif
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:std::)?is_invocable(?:_v)?\s*<
+- \b(?:std::)?enable_if(?:_t)?\s*<
+- \bif\s+constexpr\s*\(
+- \bdecltype\s*\(\s*&\w+::\w+\)
+- \bSkUserConfig\.h\b
+- '#\s*define\s+SK_[A-Z0-9_]+_VERSION\b'
+- '#\s*if(?:ndef)?\s+SK_[A-Z0-9_]+_VERSION\b'
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Chrome changes
+  quote: The strategy you use to synchronize changes in the Skia and Chromium repositories may differ
+    based on the nature of the change, but in general, we recommend using build flag suppressions (defines).
+confidence: 0.9
+support_cl_count: 1

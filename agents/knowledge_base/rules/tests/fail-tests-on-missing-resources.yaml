@@ -1,0 +1,49 @@
+id: tests/fail-tests-on-missing-resources
+title: When loading test fixtures or resource files in unit tests, explicitly report failures using ERRORF
+  or REPORTER_ASSERT instead of silently returning
+polarity: dont
+severity: should_fix
+rubric: testing
+rule: In unit tests, do not silently return or skip test execution when a test fixture, asset, or resource
+  file (such as data loaded via GetResourceAsData() or GetResourcePath()) fails to load or is missing.
+  Explicitly fail the test by reporting the error via ERRORF(reporter, ...) or asserting the resource's
+  validity with REPORTER_ASSERT(reporter, ...).
+why: Silently returning when test assets fail to load masks missing files, path typos, and checkout or
+  sync failures, allowing tests to falsely pass without exercising their intended assertions. Explicitly
+  reporting the failure alerts developers immediately that a required fixture is unavailable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  sk_sp<SkData> data = GetResourceAsData(file);
+  if (!data) {
+      // Skip if test file not available
+      return;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  sk_sp<SkData> data = GetResourceAsData(file);
+  if (!data) {
+      ERRORF(reporter, "Missing resource: %s", file);
+      return;
+  }
+  ```
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- \bGetResource(?:AsData|Path)?\s*\(
+- \bSkData::MakeFrom(?:FileName|File|Stream)\s*\(
+- \bif\s*\(\s*!(?:data|stream|file|resource|asset|fixture)\b
+- \bERRORF\s*\([^)]*"(?:Missing|Cannot find|Failed to load)\s+(?:resource|asset|file|fixture)
+- \bREPORTER_ASSERT\s*\([^)]*\b(?:data|stream|file|resource)\b
+citations:
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: Reporter and Assertions
+  quote: 'ERRORF(reporter, ...): Report a failure with a formatted message.'
+confidence: 0.9
+support_cl_count: 1

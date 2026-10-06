@@ -1,0 +1,50 @@
+id: core/support-anisotropic-blur-in-separable-algorithms
+title: When selecting or implementing separable SkBlurEngine algorithms, do not restrict algorithm dispatch
+  to symmetric sigmas when independent 1D passes support anisotropic blurs
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When implementing or selecting separable blur algorithms (such as in SkBlurEngine::findAlgorithm),
+  do not require symmetric blur radii (sigma.width() == sigma.height()). Allow anisotropic blurs to use
+  the fast separable passes unless the underlying implementation specifically requires isotropic inputs.
+why: Gaussian and box blurs naturally separate into independent horizontal and vertical 1D passes that
+  handle unequal X and Y sigmas. Artificially requiring equal sigmas forces anisotropic blurs to unnecessarily
+  fall back to slower general-purpose shader blurs or pipeline fallbacks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Restricting separable algorithm selection to symmetric sigmas
+  const bool a8Blur = colorType == kAlpha_8_SkColorType;
+  const bool sigmasAreEqual = sigma.width() == sigma.height();
+
+  if (a8Blur && sigmasAreEqual) {
+      return &fA8BlurAlgorithm;
+  }
+  return &fShaderBlurAlgorithm;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Allow separable algorithms to handle anisotropic sigmas
+  const bool a8Blur = colorType == kAlpha_8_SkColorType;
+
+  if (a8Blur) {
+      return &fA8BlurAlgorithm;
+  }
+  return &fShaderBlurAlgorithm;
+  ```
+include_glob:
+- src/core/**
+- src/gpu/**
+triggers:
+- \bfindAlgorithm\s*\(
+- \bsigma\.(?:width|height)\(\)
+- \b(?:sigma\.width\(\)\s*==\s*sigma\.height\(\)|sigmasAreEqual)\b
+- \b(?:fA8BlurAlgorithm|fRGBA8BlurAlgorithm|fShaderBlurAlgorithm)\b
+- \b(?:SkBlurEngine|BlurEngine)::findAlgorithm\b
+- \bclass\s+\w*BlurAlgorithm\b
+confidence: 0.9
+support_cl_count: 1

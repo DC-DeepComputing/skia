@@ -1,0 +1,45 @@
+id: general/prefer-makeoffset-over-in-place-offset
+title: When creating a translated or adjusted copy of an SkRect, SkIRect, or SkRRect, use makeOffset,
+  makeInset, or makeOutset instead of copying and mutating in place
+polarity: do
+severity: nit
+rubric: readability
+rule: When deriving a translated or adjusted copy of an SkRect, SkIRect, or SkRRect, call non-mutating
+  transformation methods like makeOffset(), makeInset(), or makeOutset() directly. Do not assign or copy
+  the rectangle to a new variable or member and then mutate it in place with offset(), inset(), or outset().
+why: Direct copy-transformation methods like makeOffset() are more idiomatic and concise, communicate
+  caller intent clearly, and eliminate redundant multi-step mutation sequences while enabling const initialization.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: copying the rectangle and mutating it in place
+  fReplayClip = clip;
+  fReplayClip.offset(translation);
+
+  SkIRect adjustedBounds = bounds;
+  adjustedBounds.inset(dx, dy);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: directly constructing the transformed copy
+  fReplayClip = clip.makeOffset(translation);
+
+  const SkIRect adjustedBounds = bounds.makeInset(dx, dy);
+  ```
+include_glob:
+- src/**
+- tests/**
+- gm/**
+- modules/**
+triggers:
+- \.(?:makeOffset|makeInset|makeOutset)\s*\(
+- \.(?:offset|inset|outset)\s*\([^)]*\)
+- \b(?:SkI?Rect|SkRRect)\b.*\.make(?:Offset|Inset|Outset)\b
+- \b(?:fReplayClip|fReplayTranslation)\b
+- \bmakeOffset\s*\(
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,85 @@
+id: general/name-container-elements-descriptively
+title: When declaring local variables, collection aliases, or indices, use descriptive names rather than
+  cryptic abbreviations or single-letter identifiers, reserving single letters for loop counters
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring local variables, loop variables, collection aliases, or array and lookup table indices,
+  use descriptive names (such as 'shader', 'line', 'tile', 'column', 'colIndex', 'windingBytes', or 'fillBytes')
+  representing the entity, indexed dimension, or data representation rather than cryptic abbreviations
+  or single-letter identifiers (such as 's', 'l', 't', 'u', 'wB', or 'fB'). Reserve single-letter variable
+  names strictly for standard numeric loop induction counters (such as 'i', 'j', 'k') or spatial coordinates
+  (such as 'x', 'y', 'z').
+why: Cryptic abbreviations and single-letter variable names obscure an object's type, role, data representation,
+  and semantic intent at call sites—especially when using 'auto', manipulating packed SIMD vectors, or
+  indexing into data structures—forcing readers to search back to declarations. When indexing multi-dimensional
+  lookup tables or arrays, single-letter math symbols like 'u' obscure which dimension or coordinate axis
+  is accessed. Descriptive names make element access, data representations, and data flow self-documenting.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Single-letter local variable used across multiple statements
+  auto s = SkImageShader::MakeForPaint(
+          std::move(img), paint, SkTileMode::kClamp, SkTileMode::kClamp, sampling, &matrix);
+  if (!s) {
+      return;
+  }
+  paintWithShader.setShader(std::move(s));
+
+  // Bad: Single-letter collection alias
+  const auto& l = rawLines[i];
+
+  // Bad: Single-letter parametric coordinate 'u' used as an array/LUT index
+  int u = std::clamp(tFixed >> 16, 0, Strip::kLutMaskWidthExcl);
+  uint8_t maskVal = maskRowLut[u];
+
+  // Bad: Cryptic abbreviations for SIMD vector representations
+  auto wB = sk_bit_cast<skvx::Vec<N * 4, uint8_t>>(vSubsampleWinding);
+  auto fB = sk_bit_cast<skvx::Vec<N * 4, uint8_t>>(vFill);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Descriptive local variable name clarifies role across statements
+  auto shader = SkImageShader::MakeForPaint(
+          std::move(img), paint, SkTileMode::kClamp, SkTileMode::kClamp, sampling, &matrix);
+  if (!shader) {
+      return;
+  }
+  paintWithShader.setShader(std::move(shader));
+
+  // Good: Descriptive element alias
+  const auto& line = rawLines[i];
+
+  // Good: Descriptive dimension name for table index
+  int column = std::clamp(tFixed >> 16, 0, Strip::kLutMaskWidthExcl);
+  uint8_t maskVal = maskRowLut[column];
+
+  // Good: Descriptive variable names clearly convey data representation
+  auto windingBytes = sk_bit_cast<skvx::Vec<N * 4, uint8_t>>(vSubsampleWinding);
+  auto fillBytes = sk_bit_cast<skvx::Vec<N * 4, uint8_t>>(vFill);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+- gm/**
+- bench/**
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \b(?:const\s+)?auto(?:\s*&{1,2})?\s+[a-z][A-Za-z0-9]?\s*=
+- '\bfor\s*[(]\s*(?:const\s+)?(?:auto|[A-Za-z0-9_:]+)(?:\s*&{1,2})?\s+[a-z]\s*:'
+- \b(?:const\s+)?[A-Za-z0-9_:]+(?:<[^>]+>)?\s*&\s*[a-z][A-Za-z0-9]?\s*=\s*
+- \b(?:sk_sp<[^>]+>|std::unique_ptr<[^>]+>|[A-Z][A-Za-z0-9_]+[*&]?)\s+[a-z][A-Za-z0-9]?\s*=
+- \b(?:int(?:8|16|32|64)_t|uint(?:8|16|32|64)_t|int|size_t)\s+[a-z]\s*=
+- \b[a-zA-Z0-9_]*(?:LUT|Lut|Table|table|Array|array|Row|Mask)\s*\[\s*[a-z]\s*\]
+- \bfor\s*[(]\s*(?:const\s+)?auto(?:\s*&{1,2})?\s+[a-zA-Z0-9_]+\s*:\s*[a-zA-Z0-9_]+
+confidence: 0.98
+support_cl_count: 3

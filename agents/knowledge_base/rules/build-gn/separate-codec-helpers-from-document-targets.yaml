@@ -1,0 +1,91 @@
+id: build-gn/separate-codec-helpers-from-document-targets
+title: When configuring document or serializer targets in BUILD.gn or Bazel, keep primary targets unbundled
+  and expose optional codecs as additive helper targets instead of inverted `_no_<feature>` targets
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not bundle optional image codec dependencies (such as libpng, Rust PNG, or JPEG) or adapter headers
+  directly into core document or serializer build targets (such as 'pdf', 'xps', or 'pdf_writer'), and
+  do not offer inverted `_no_<feature>` targets (such as 'pdf_writer_no_jpeg'). Keep primary library targets
+  unbundled and factor codec integrations into separate additive helper targets (such as 'pdf_jpeg_helpers'
+  or 'xps_libpng_helpers') that consumers can compose into their dependencies.
+why: Skia decouples document generators (e.g., PDF, XPS) and canvas writers from concrete image codecs
+  via dependency injection. Bundling optional codecs into primary targets or exposing inverted `_no_<feature>`
+  targets creates mutually exclusive targets in build dependency DAGs, breaks modular layering, and forces
+  unwanted transitive dependencies onto consumers who inject custom codecs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # GN: Bundling codec dependencies into core document target
+  optional("xps") {
+    enabled = skia_use_xps && is_win
+    public = skia_xps_public
+    if (skia_use_libpng_encode) {
+      public += skia_xps_libpng_public
+    }
+  }
+
+  # Bazel: Bundling into default alias and offering an inverted target
+  alias(
+      name = "pdf_writer",
+      actual = "//src/pdf:pdf_and_jpeg",
+  )
+  alias(
+      name = "pdf_writer_no_jpeg",
+      actual = "//src/pdf:pdf",
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  # GN: Decoupled target and additive helper target
+  optional("xps") {
+    enabled = skia_use_xps && is_win
+    public = skia_xps_public
+  }
+  optional("xps_libpng_helpers") {
+    enabled = skia_use_libpng_encode
+    deps = [ ":png_encode_libpng" ]
+    public = skia_xps_libpng_public
+  }
+
+  # Bazel: Unbundled default target and additive helper alias
+  alias(
+      name = "pdf_writer",
+      actual = "//src/pdf:pdf",
+  )
+  alias(
+      name = "pdf_jpeg_helpers",
+      actual = "//src/pdf:jpeg_helpers",
+  )
+  ```
+include_glob:
+- BUILD.gn
+- '**/BUILD.bazel'
+triggers:
+- \boptional\s*[(]\s*[\"'][a-z0-9_]*(?:pdf|xps|svg)[a-z0-9_]*[\"']
+- \b(?:skia_)?cc_library\s*[(]\s*name\s*=\s*[\"'][a-z0-9_]*(?:pdf|xps|svg)[a-z0-9_]*[\"']
+- \balias\s*[(]\s*name\s*=\s*[\"'][a-z0-9_]*(?:pdf|xps|svg)[a-z0-9_]*[\"']
+- \b[a-z0-9_]*(?:pdf|xps|svg)_[a-z0-9_]*(?:png|jpeg|webp|codec)[a-z0-9_]*\b
+- \b[a-z0-9_]*(?:pdf|xps|svg)_[a-z0-9_]*(?:helpers|no_[a-z0-9_]+)\b
+- \bskia_use_(?:libpng|rust_png|jpeg|webp)_(?:encode|decode)\b
+- '[\"'']//src/(?:pdf|xps|svg):[a-z0-9_]+[\"'']'
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 144
+  quote: New `SkSVGCanvas::Make` overload allows explicitly specifying which PNG encoder should be used.  This
+    enables avoiding a hardcoded, transitive dependency on either `libpng` or Rust PNG.
+- path: RELEASE_NOTES.md
+  heading: Milestone 135
+  quote: To make these easier to supply `include/docs/SkPDFJpegHelpers.h` has been added, which will use
+    Skia's built-in jpeg encoder and decoder.
+- path: RELEASE_NOTES.md
+  heading: Milestone 120
+  quote: In order to make a reasonable PDF, those must be supplied (using the two argument factory). To
+    make these easier to supply `include/docs/SkPDFJpegHelpers.h` has been added, which will use Skia's
+    built-in jpeg encoder and decoder.
+confidence: 0.98
+support_cl_count: 3

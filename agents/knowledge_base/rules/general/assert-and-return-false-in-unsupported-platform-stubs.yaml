@@ -1,0 +1,58 @@
+id: general/assert-and-return-false-in-unsupported-platform-stubs
+title: When stubbing out methods in preprocessor conditional blocks for unsupported platforms or configurations,
+  assert SkASSERT(false) and return false instead of silently returning true
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When providing fallback or stub implementations in preprocessor conditional blocks (#if/#else) for
+  unsupported platforms or disabled build configurations, do not silently return success (true). Assert
+  SkASSERT(false) in debug builds and return failure (false, nullptr, or an error status) so callers detect
+  the unsupported capability and avoid proceeding with uninitialized state.
+why: Returning success (true) from a platform stub when the underlying operation is unsupported silently
+  masks capability mismatches and allows execution to proceed with uninitialized state (such as missing
+  uniform updates or unrecorded commands). Asserting with SkASSERT(false) ensures invalid invocations
+  fail fast in debug builds, while returning false cleanly propagates the failure to callers in release
+  builds.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: silently returns true on unsupported platforms (e.g., __EMSCRIPTEN__)
+  bool DawnCommandBuffer::updateIntrinsicUniformsAsPushConstant(UniformDataBlock uniformData) {
+  #if !defined(__EMSCRIPTEN__)
+      SkASSERT(fActiveRenderPassEncoder);
+      SkASSERT(uniformData.size() <= DawnGraphicsPipeline::kIntrinsicUniformSize);
+      fActiveRenderPassEncoder.SetImmediateData(0, uniformData.data(), uniformData.size());
+  #endif
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: asserts in debug builds and returns false when unsupported on the active platform
+  bool DawnCommandBuffer::updateIntrinsicUniformsAsPushConstant(UniformDataBlock uniformData) {
+  #if !defined(__EMSCRIPTEN__)
+      SkASSERT(fActiveRenderPassEncoder);
+      SkASSERT(uniformData.size() <= DawnGraphicsPipeline::kIntrinsicUniformSize);
+      fActiveRenderPassEncoder.SetImmediateData(0, uniformData.data(), uniformData.size());
+      return true;
+  #else
+      SkASSERT(false); // No push constant support in WASM yet
+      return false;
+  #endif
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- ^#\s*else\b
+- ^#\s*endif\b
+- '#\s*(?:if|ifdef|ifndef|elif)\s+.*\b(?:__EMSCRIPTEN__|SK_BUILD_FOR_[A-Z_]+|SK_ENABLE_[A-Z_]+)'
+- \bdefined\s*\(\s*(?:__EMSCRIPTEN__|SK_BUILD_FOR_[A-Z_]+|SK_ENABLE_[A-Z_]+)\s*\)
+- \bSkASSERT\s*\(\s*(?:false|0)\s*\)
+- \breturn\s+(?:false|true)\s*;
+confidence: 0.9
+support_cl_count: 1

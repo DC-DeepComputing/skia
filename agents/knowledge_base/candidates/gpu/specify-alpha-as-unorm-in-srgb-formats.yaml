@@ -1,0 +1,41 @@
+id: gpu/specify-alpha-as-unorm-in-srgb-formats
+title: When defining sRGB texture format channels or test expectation tables, specify alpha channel encoding
+  as linear UNorm rather than sRGB
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: In sRGB texture format definitions, channel descriptor structs, and format test expectation tables
+  (such as sRGBA or BC1_sRGB), declare the alpha channel encoding as linear UNorm rather than sRGB. Ensure
+  only the color channels (red, green, blue) specify non-linear sRGB transfer characteristics.
+why: Standard graphics format specifications apply non-linear sRGB transfer functions exclusively to RGB
+  color components; the alpha channel represents linear opacity or coverage and is universally sampled
+  and encoded as linear UNorm. Specifying sRGB encoding for alpha causes incorrect gamma decoding or invalid
+  test expectations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Incorrectly assigning sRGB transfer encoding to the alpha channel
+  {.fFormat=TextureFormat::kRGBA8_BC1_sRGB,
+   .fChannels={{'r', 10, sRGB}, {'g', 8, sRGB}, {'b', 8, sRGB}, {'a', 8, sRGB}}},
+  ```
+
+  Good:
+
+  ```cpp
+  // Alpha channel is linear UNorm even in sRGB texture formats
+  {.fFormat=TextureFormat::kRGBA8_BC1_sRGB,
+   .fChannels={{'r', 10, sRGB}, {'g', 8, sRGB}, {'b', 8, sRGB}, {'a', 8, UNorm}}},
+  ```
+include_glob:
+- src/gpu/**
+- tests/**
+triggers:
+- \bTextureFormat::k\w*sRGB\b
+- \bfChannels\s*=\s*\{
+- \{\s*['\"]a['\"]\s*,\s*\d+\s*,\s*(?:sRGB|UNorm)\b
+- \b(?:RGBA8|BGRA8|BC1_RGBA|ETC2_RGBA8|ASTC_\w+)_sRGB\b
+- \b(?:sRGB|UNorm)\s*\\}\s*\\}\s*,
+confidence: 0.92
+support_cl_count: 1

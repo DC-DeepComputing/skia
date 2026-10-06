@@ -1,0 +1,46 @@
+id: gpu/avoid-exact-sizing-hooks-on-staging-buffers
+title: When testing GPU buffer allocations or padding in Graphite, do not add test-only options or hooks
+  to force exact sizing on staging transfer buffers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not add test-only flags, options, or allocation hooks (such as bypassing suballocation or forcing
+  exact buffer sizes) to staging or transfer buffer managers when verifying destination GPU buffer allocations.
+  Rely on standard suballocation for intermediate transfer buffers, keeping test-specific sizing constraints
+  isolated to destination resources.
+why: Staging and upload buffers are transient intermediate resources used only to copy host data into
+  destination GPU buffers. Suballocation or alignment padding on transfer buffers does not impact destination
+  buffer bounds, so adding dedicated test options to transfer allocators introduces unnecessary complexity.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #if defined(GPU_TEST_UTILS)
+      fUseExactBuffSizes ? fUploadManager->makeBindInfoNoReuse(
+              info->fBuffer->size(),
+              fCaps->requiredTransferBufferAlignment(),
+              "TransferForDataBuffer") :
+  #endif
+      fUploadManager->makeBindInfo(info->fBuffer->size(),
+                                   fCaps->requiredTransferBufferAlignment(),
+                                   "TransferForDataBuffer");
+  ```
+
+  Good:
+
+  ```cpp
+      fUploadManager->makeBindInfo(info->fBuffer->size(),
+                                   fCaps->requiredTransferBufferAlignment(),
+                                   "TransferForDataBuffer");
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:UploadBufferManager|DrawBufferManager)\b
+- \bmakeBindInfo(?:NoReuse)?\s*[(]
+- \b(?:fUseExactBuffSizes|useExactBuffSizes|fExactBufferSizes)\b
+- \bTransferFor(?:DataBuffer|Buffer)?\b
+- '#(?:if|ifdef)\s+.*\bGPU_TEST_UTILS\b'
+confidence: 0.9
+support_cl_count: 1

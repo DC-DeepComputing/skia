@@ -1,0 +1,47 @@
+id: general/name-test-forcing-helpers-with-action-and-timing
+title: When declaring test-only hooks that prime internal state to trigger edge cases on subsequent operations,
+  name them with forceNext rather than setup
+polarity: do
+severity: nit
+rubric: readability
+rule: When naming test hooks or simulation helpers that prime internal state to trigger an edge case,
+  failure, or boundary condition on a subsequent call, use explicit action verbs and temporal qualifiers
+  (such as `forceNext...`) instead of ambiguous prefixes like `setup...`. Make the intended side effect
+  and timing immediately clear to readers at both declaration and test call sites.
+why: 'Method names like `setupEpochOverflow()` or `setupFailure()` are ambiguous: they suggest general
+  configuration or fixture initialization rather than actively forcing an impending edge-case state for
+  the immediate next operation. Naming helpers with `forceNext...` clearly communicates the helper''s
+  purpose, action, and immediate temporal scope.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #if defined(GPU_TEST_UTILS)
+  // Vague: suggests general configuration rather than priming state for the next call
+  void setupEpochOverflow();
+  void setupPurgeFailure();
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #if defined(GPU_TEST_UTILS)
+  // Clear action verb and timing: explicitly primes state for the subsequent call
+  void forceNextEpochOverflow();
+  void forceNextPurgeFailure();
+  #endif
+  ```
+include_glob:
+- src/**
+- include/**
+- tests/**
+triggers:
+- \b(?:setup|forceNext)[A-Z]\w*(?:Overflow|Wrap|Failure|Error|Limit|Drain|Eviction)\b
+- \bforceNext[A-Z]\w*\b
+- \bvoid\s+(?:[A-Za-z0-9_]+::)?(?:setup|forceNext)[A-Z]\w*\s*[(]
+- \b(?:setup|forceNext|force)[A-Z]\w*Epoch\b
+- \b(?:forceNext|force)[A-Z]\w*\s*[(][)]
+confidence: 0.9
+support_cl_count: 1

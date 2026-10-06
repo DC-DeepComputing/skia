@@ -1,0 +1,50 @@
+id: codec/document-intermediate-codec-buffer-types
+title: When defining intermediate color types or declaring primitive row buffers for codec swizzling and
+  color transformation, document format invariants and element widths
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining intermediate color types (such as kXformSrcColorType = kRGBA_8888_SkColorType) for
+  codec swizzling and color transformation, document the format invariants (e.g., fixed 8-bit depth) justifying
+  that choice without precision loss. Additionally, when declaring intermediate row buffers typed as primitive
+  arrays (such as std::unique_ptr<uint32_t[]> fXformBuffer), document the primitive element width and
+  explicitly link it to the intermediate color format.
+why: Hardcoding intermediate color types like kRGBA_8888_SkColorType assumes the encoded format does not
+  exceed 8 bits per component; documenting this invariant clarifies why precision is preserved. Similarly,
+  primitive array types like uint32_t[] obscure byte width assumptions, risking sizing confusion or subtle
+  buffer overrun bugs if intermediate color types are refactored.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Color type to use when creating the swizzler for xform
+  static constexpr SkColorType kXformSrcColorType = kRGBA_8888_SkColorType;
+
+  // Intermediate buffer between swizzler and color transformation.
+  std::unique_ptr<uint32_t[]> fXformBuffer;
+  ```
+
+  Good:
+
+  ```cpp
+  // Color type to use when creating the swizzler for xform.
+  // Note that `bitsPerComponent` is always 8 for all supported BMP images.
+  static constexpr SkColorType kXformSrcColorType = kRGBA_8888_SkColorType;
+
+  // Using 4-bytes-wide `uint32_t` for each pixel, because
+  // `kXformSrcColorType = kRGBA_8888_SkColorType`.
+  std::unique_ptr<uint32_t[]> fXformBuffer;
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \b(?:static\s+constexpr\s+)?SkColorType\s+k[A-Za-z0-9_]*Xform[A-Za-z0-9_]*\b
+- \bkXformSrcColorType\b
+- \b(?:std::)?unique_ptr<\s*uint(?:8|16|32)_t\[\]\s*>\s+f[A-Za-z0-9_]*
+- \b(?:AutoTMalloc|AutoSTMalloc)<\s*uint(?:8|16|32)_t\b
+- \b(?:fXformBuffer|fColorXformBuffer|fSrcBuffer|fDstBuffer)\b
+- //.*\b(?:bitsPerComponent|bytes-wide|kRGBA_8888_SkColorType|intermediate color)\b
+confidence: 0.9
+support_cl_count: 1

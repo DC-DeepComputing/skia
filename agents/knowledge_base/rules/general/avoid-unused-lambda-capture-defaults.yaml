@@ -1,0 +1,46 @@
+id: general/avoid-unused-lambda-capture-defaults
+title: When declaring lambdas that do not reference enclosing variables, use an empty capture list []
+  instead of default captures [&] or [=]
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not specify capture defaults (such as `[&]` or `[=]`) on lambdas that do not access or capture
+  any variables from the enclosing scope. Use an explicit empty capture list `[]` to clearly communicate
+  that the lambda is stateless and self-contained.
+why: Specifying default captures like `[&]` or `[=]` on stateless lambdas is misleading to readers and
+  risks unintentionally capturing enclosing variables or `this`. Using an empty capture list `[]` ensures
+  the closure is self-contained and allows implicit conversion to function pointers where applicable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
+          [&](const GraphicsPipeline* pipeline) {
+              return !pipeline->didAsyncCompilationFail();
+          });
+  ```
+
+  Good:
+
+  ```cpp
+  const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
+          [](const GraphicsPipeline* pipeline) {
+              return !pipeline->didAsyncCompilationFail();
+          });
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.h'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- '[[]\s*&\s*[\]]\s*[(]'
+- '[[]\s*=\s*[\]]\s*[(]'
+- '[[]\s*&\s*[\]]\s*[{]'
+- '[[]\s*=\s*[\]]\s*[{]'
+- '[[]\s*[&=]\s*[\]]\s*(?:mutable\b|->)'
+confidence: 0.9
+support_cl_count: 1

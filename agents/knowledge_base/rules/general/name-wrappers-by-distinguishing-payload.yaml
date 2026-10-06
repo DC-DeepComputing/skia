@@ -1,0 +1,58 @@
+id: general/name-wrappers-by-distinguishing-payload
+title: When defining wrapper classes bundling additional resources or capabilities with a core type, name
+  them after their distinguishing payload rather than generic base equivalents
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining wrapper classes or structs that bundle additional resources or capabilities with a
+  core type (such as mipmaps with an SkBitmap), name the wrapper after its distinguishing payload or capability
+  (e.g., GrMippedBitmap) rather than using generic subsystem names (e.g., GrBitmap). Do not use names
+  that misleadingly imply simple equivalence with a base type that intentionally excludes those resources.
+why: Generic subsystem names (such as GrBitmap for a bitmap bundling mipmaps) falsely imply that the wrapper
+  is merely the subsystem's direct counterpart to the core type, obscuring the extra responsibilities
+  or payload it carries. Explicit naming makes the wrapper's contract self-documenting and prevents confusion
+  when the underlying core type has been intentionally refactored to separate those concerns.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // src/gpu/ganesh/image/GrBitmap.h
+  // Bad: 'GrBitmap' misleadingly implies a direct Ganesh equivalent of SkBitmap,
+  // obscuring that it specifically bundles mipmap resources.
+  class GrBitmap {
+  public:
+      explicit GrBitmap(SkBitmap b, sk_sp<const SkMipmap> m) : fBitmap(b), fMips(m) {}
+      ...
+  private:
+      SkBitmap fBitmap;
+      sk_sp<const SkMipmap> fMips;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // src/gpu/ganesh/image/GrMippedBitmap.h
+  // Good: 'GrMippedBitmap' explicitly reflects the distinguishing mipmap payload.
+  class GrMippedBitmap {
+  public:
+      explicit GrMippedBitmap(SkBitmap b, sk_sp<const SkMipmap> m) : fBitmap(b), fMips(m) {}
+      ...
+  private:
+      SkBitmap fBitmap;
+      sk_sp<const SkMipmap> fMips;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*(?:class|struct)\s+(?:SK_API\s+)?(?:Sk|Gr)[A-Z][A-Za-z0-9_]*
+- \b(?:class|struct)\s+(?:SK_API\s+)?(?:Sk|Gr)[A-Z]\w*(?:Bitmap|Image|Surface|Pixmap|Texture|Buffer)\b
+- \b(?:GrBitmap|GrMippedBitmap)\b
+- \b(?:class|struct)\s+[A-Za-z0-9_]*(?:Wrapper|Adapter|Proxy)\b
+confidence: 0.9
+support_cl_count: 1

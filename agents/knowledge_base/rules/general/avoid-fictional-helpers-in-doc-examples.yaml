@@ -1,0 +1,50 @@
+id: general/avoid-fictional-helpers-in-doc-examples
+title: When writing example code snippets in header doc comments, use generic variable placeholders or
+  ellipses instead of inventing fictional helper functions
+polarity: dont
+severity: nit
+rubric: readability
+rule: When illustrating API usage with code snippets in header documentation comments, do not define or
+  call fictional helper functions to construct inputs. Use generic variable placeholders (such as `Type*
+  var = ...;` or ellipses) to represent prerequisites so readers do not mistake non-existent helpers for
+  class or library methods.
+why: Fictional helper functions in example snippets (such as make_panel()) look like actual convenience
+  methods provided by the class or library, confusing consumers who attempt to call them. Generic variable
+  placeholders or ellipses make required parameter types obvious without implying the existence of non-existent
+  helper APIs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Example usage:
+  //   SkBitmap make_panel() { ... }
+  //
+  //   DebugStageBuilder stageBuilder;
+  //   stageBuilder.add(make_panel(), SkRasterPipelineOp::debug_x,
+  //                    make_panel(), SkRasterPipelineOp::debug_y);
+  ```
+
+  Good:
+
+  ```cpp
+  // Example usage:
+  //   SkBitmap* panels = ...;  // acquired or constructed by caller
+  //
+  //   DebugStageBuilder stageBuilder;
+  //   stageBuilder.add(panels[0], SkRasterPipelineOp::debug_x,
+  //                    panels[1], SkRasterPipelineOp::debug_y);
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- //\s{2,}(?:class|struct|void|bool|int|auto|[A-Za-z0-9_:]+)\s+[a-z0-9_]+\s*[(][^)]*[)]\s*[{]?
+- //\s{2,}(?:auto\s+)?[A-Za-z0-9_:]+(?:\s*\*|\s*&)?\s+[a-z0-9_]+\s*=\s*
+- //\s{2,}[A-Z][A-Za-z0-9_]*\s+[a-z][A-Za-z0-9_]*;
+- //\s{2,}[a-zA-Z0-9_]+(?:->|\.)[a-zA-Z0-9_]+\s*[(]
+- //.*\b(?:[Ee]xample(?:\s+usage)?|[Uu]sage:?)\b
+- (?:/\*|//).*\b(?:e\.g\.|for example|usage example)\b
+confidence: 0.9
+support_cl_count: 1

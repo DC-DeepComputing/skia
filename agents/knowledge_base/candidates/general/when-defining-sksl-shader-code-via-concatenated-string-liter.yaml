@@ -1,0 +1,39 @@
+id: general/when-defining-sksl-shader-code-via-concatenated-string-liter
+title: When defining SkSL shader code via concatenated string literals, omit newline escape sequences
+  across statements separated by syntax delimiters
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not include explicit newline escape sequences ('\n') in concatenated C++ string literals defining
+  SkSL shader code; SkSL syntax delimiters (such as semicolons and braces) already separate statements.
+why: When defining multi-line SkSL shaders via concatenated C++ string literals, SkSL statements and declarations
+  are already syntactically delimited by semicolons and braces. Explicit '\n' characters inside the string
+  fragments are redundant and add unnecessary visual clutter.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static constexpr char gAgtmSKSL[] =
+      "uniform shader curve_xym;\n"
+      "uniform half weight_i;\n"
+      "uniform half4 mix_rgbx_i;\n";
+  ```
+
+  Good:
+
+  ```cpp
+  static constexpr char gAgtmSKSL[] =
+      "uniform shader curve_xym;"
+      "uniform half weight_i;"
+      "uniform half4 mix_rgbx_i;";
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:static\s+)?constexpr\s+char\s+[a-zA-Z0-9_]*(?:SKSL|Shader|Effect|Code)\[\]
+- \\\"(?:layout\([^)]*\)\s+)?uniform\s+(?:shader|colorFilter|blender|half|float)
+- \\\"(?:half|float|void|bool|int|uint|vec|mat)[234]?(?:x[234])?\s+[A-Za-z0-9_]+\b
+- \bSkRuntimeEffect::MakeFor(?:Shader|ColorFilter|Blender)\b
+confidence: 0.85
+support_cl_count: 1

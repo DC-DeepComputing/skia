@@ -1,0 +1,67 @@
+id: release_notes-md/do-not-edit-release-notes-directly
+title: When documenting changes or updating release notes, author files in relnotes/ without leading bullet
+  asterisks and avoid direct edits or duplicate bullets in RELEASE_NOTES.md
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not edit RELEASE_NOTES.md directly for new features, bug fixes, or API changes; add individual
+  Markdown (*.md) files under relnotes/ instead. When authoring notes in relnotes/ or updating milestone
+  sections in RELEASE_NOTES.md, do not prefix entries with asterisks, hyphens, or list markers, and verify
+  that aggregated notes do not contain duplicate bullet marks ('* *').
+why: Skia's release automation aggregates individual files from relnotes/ into RELEASE_NOTES.md during
+  milestone releases and automatically inserts an unordered list bullet (' * ') before each note. Editing
+  RELEASE_NOTES.md directly bypasses release tooling and causes branch merge conflicts, while starting
+  notes with an asterisk or list marker causes malformed duplicate bullet points (' * * ') in published
+  release notes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  <!-- RELEASE_NOTES.md: direct edit instead of relnotes/ file -->
+  Milestone 148
+  -------------
+    * Virtuals in SkTypeface subclasses now take SkSpan.
+
+  <!-- relnotes/texture_wrap.md: note starts with leading asterisk bullet -->
+  * `SkSurfaces::WrapBackendTexture` no longer requires providing an `SkColorType`.
+
+  <!-- RELEASE_NOTES.md: duplicate bullet points from aggregated leading asterisk -->
+    * * `SkSurfaces::WrapBackendTexture` no longer requires providing an `SkColorType`.
+  ```
+
+  Good:
+
+  ```cpp
+  <!-- relnotes/typeface_virtuals.md: individual note without leading bullet -->
+  Virtuals in `SkTypeface` subclasses now take `SkSpan` instead of pointer and count.
+
+  <!-- relnotes/texture_wrap.md: plain markdown text without leading asterisk -->
+  `SkSurfaces::WrapBackendTexture` no longer requires providing an `SkColorType`.
+
+  <!-- RELEASE_NOTES.md: aggregated output with clean single bullet -->
+    * `SkSurfaces::WrapBackendTexture` no longer requires providing an `SkColorType`.
+  ```
+include_glob:
+- RELEASE_NOTES.md
+- relnotes/**
+exclude_glob:
+- relnotes/README.md
+triggers:
+- ^\s*[*+-]\s+[*+-]\s+
+- ^\s*[*+-]\s+`?[A-Za-z0-9_]
+- ^\s*Milestone\s+\d+
+- \bRELEASE_NOTES\.md\b
+- \b(?:relnotes|release notes?)\b
+citations:
+- path: relnotes/README.md
+  heading: Markdown Support
+  quote: Do not use start your note with an [asterisk](https://www.markdownguide.org/basic-syntax/#unordered-lists)
+    or other leading marks. These are automatically inserted by the script.
+- path: relnotes/README.md
+  heading: Skia Release Notes
+  quote: All Markdown (`*.md`) files in this directory are treated as release notes - except this file
+    (`README.md`). As part of the release process, the contents of these files will be inserted into `RELEASE_NOTES.md`,
+    and these files will be deleted.
+confidence: 0.98
+support_cl_count: 3

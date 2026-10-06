@@ -1,0 +1,79 @@
+id: general/always-brace-control-flow-bodies
+title: Enclose control flow bodies in braces on the header line, breaking opening braces to a newline
+  when multiline predicates align with body indentation
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Always enclose the body of control flow statements (`if`, `else`, `while`, `for`, and `do`) in curly
+  braces (`{ ... }`), even for single-line or empty statements. Place open braces on the same line as
+  the statement header, and keep `else` and `else if` on the same line as adjacent braces (`} else {`).
+  When a multi-line conditional predicate wraps such that its continuation lines match the indentation
+  level of the following body, place the opening brace `{` on its own line to visually separate the predicate
+  from the body.
+why: Skia style mandates braces on all control flow statements to maintain codebase consistency and prevent
+  dangling-else logic errors or accidental statement execution. Breaking the opening brace to its own
+  line for indented multi-line conditions prevents condition continuation lines from visually bleeding
+  into the statement body.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Missing braces on single-line bodies:
+  if (doSDFT)
+      fRec.fFlags |= SkScalerContext::kSDFTData_Flag;
+
+  for (int i = 0; i < count; ++i)
+      process(i);
+
+  // Opening brace on header line when multiline condition aligns with body:
+  if (autoHintingControl != AutoHinting::ForceForGlyfAndCff &&
+      autoHintingControl != AutoHinting::ForceOff) {
+      autoHintingControl = AutoHinting::ForceForGlyf;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Always enclose bodies in braces:
+  if (doSDFT) {
+      fRec.fFlags |= SkScalerContext::kSDFTData_Flag;
+  }
+
+  for (int i = 0; i < count; ++i) {
+      process(i);
+  }
+
+  // Break opening brace to newline when multiline predicate lines up with body:
+  if (autoHintingControl != AutoHinting::ForceForGlyfAndCff &&
+      autoHintingControl != AutoHinting::ForceOff)
+  {
+      autoHintingControl = AutoHinting::ForceForGlyf;
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*if\s*\([^)]+\)\s*[^{\s/]
+- ^\s*else\s+[^{\s/]
+- ^\s*(?:for|while)\s*\([^)]+\)\s*[^{\s/;]
+- ^\s*(?:if|for|while)\s*\([^)]+\)\s*(?://.*)?$
+- ^\s*else\s*(?://.*)?$
+- ^\s*do\s*(?://.*)?$
+- ^\s*(?:if|for|while)\s*\([^)]*$
+- ^\s*(?:&&|\|\|).*\)\s*\{\s*$
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Braces
+  quote: Open braces don't get a newline. `else` and `else if` appear on same line as opening and closing
+    braces unless preprocessor conditional compilation interferes. Braces are always used with `if`, `else`,
+    `while`, `for`, and `do`.
+confidence: 0.98
+support_cl_count: 4

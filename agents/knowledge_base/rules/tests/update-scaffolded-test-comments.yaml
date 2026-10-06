@@ -1,0 +1,70 @@
+id: tests/update-scaffolded-test-comments
+title: When authoring, scaffolding, or updating test cases, ensure introductory descriptions and calculation
+  breakdown comments accurately reflect verified behavior and assertion values
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When authoring, scaffolding, or updating test files and test cases (such as DEF_TEST or DEF_GRAPHITE_TEST),
+  ensure introductory comments, test descriptions, and assertion breakdown notes accurately describe the
+  component, verified behavior, and expected values. Do not leave stale or copy-pasted comments from template
+  files or operations the test does not execute (such as claiming to test subset decoding when only verifying
+  dimensions). Additionally, when modifying test parameters, factors, or assertion targets, keep accompanying
+  comments explaining expected values or arithmetic breakdowns synchronized with actual assertion expressions.
+why: Stale, copy-pasted, or out-of-sync comments contradict test logic, obscure test intent during maintenance
+  or failure triage, and create false confidence by claiming unasserted test coverage or presenting arithmetic
+  breakdowns that contradict assertion expressions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Stale comment copied from template file describing an unrelated subsystem:
+  // These are intended to be unit tests of the PaintParamsKeyBuilder and PaintParamsKey.
+  DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(InnerFillTest, reporter, context,
+                                     CtsEnforcement::kNextRelease) { ... }
+
+  // Comment claiming to verify operations not executed by the test:
+  // Test decoding with subset (if supported).
+  DEF_TEST(RustBmpCodec_dimensions, r) {
+      ...
+      REPORTER_ASSERT(r, dimensions.width() == 320);
+  }
+
+  // Stale arithmetic breakdown contradicting updated assertion value:
+  // The 144 comes from:
+  //     4 gradient flavors * 3 types * 4 threads
+  REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+  ```
+
+  Good:
+
+  ```cpp
+  // Synchronized comment accurately describing the test purpose and behavior:
+  // These are unit tests that ensure the secondary "inner fill" draw is recorded when possible.
+  DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(InnerFillTest, reporter, context,
+                                     CtsEnforcement::kNextRelease) { ... }
+
+  // Comment accurately describing the test scope (or omitted if redundant):
+  // Table-based test for decoding valid BMP files.
+  DEF_TEST(RustBmpCodec_decode_valid_bmp, r) { ... }
+
+  // Arithmetic breakdown kept in sync with updated assertion expression:
+  // The 48 comes from:
+  //     4 gradient flavors * 3 types * 4 threads
+  REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+  ```
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- (?://|/\*)\s*(?:These are|This (?:file|test|suite)|Unit tests? (?:for|of)|Test(?:s|ing)?\b)
+- (?://|/\*)\s*(?:intended to be|unit tests? of|scaffolded from|test cases? for|verifying|ensuring)\b
+- (?://|/\*)\s*.*\b(?:comes from|expected (?:total|value|count)|breakdown|calculated as)\b
+- //.*\b\d+\s*(?:[*x+]|comes from)\s*\d*
+- \bDEF_(?:GANESH_|GRAPHITE_)?TEST(?:_FOR_[A-Z_]+)?\s*[(]
+- \bDEF_TEST\s*[(]
+- \bDEF_CONDITIONAL_(?:GRAPHITE_|GANESH_)?TEST\s*[(]
+- \bDEF_SERIAL_TEST\s*[(]
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(]
+confidence: 0.98
+support_cl_count: 3

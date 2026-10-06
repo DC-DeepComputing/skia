@@ -1,0 +1,45 @@
+id: codec/prefer-stream-getdata-for-readonly-skdata
+title: When obtaining read-only SkData from an SkStream, call stream->getData() directly rather than using
+  intermediate const-casting helpers or casting away constness
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When obtaining read-only `SkData` from an `SkStream`, call `stream->getData()` directly rather than
+  wrapping the call in intermediate helpers or casting away constness with `const_cast`. Preserve the
+  native `sk_sp<const SkData>` return type instead of converting to mutable `sk_sp<SkData>` when caller
+  code only reads the buffer.
+why: '`SkStream::getData()` already returns `sk_sp<const SkData>` directly. Introducing intermediate helper
+  functions or using `const_cast` to obtain non-const `SkData` is unnecessary and undermines const-correctness
+  when callers only require read-only access to the stream''s underlying data.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Calling intermediate const-casting helper when read-only data is sufficient
+  fCachedData = SkStreamPriv::GetNonConstData(stream.get());
+  ```
+
+  Good:
+
+  ```cpp
+  // Obtaining read-only sk_sp<const SkData> directly from the stream
+  fCachedData = stream->getData();
+  ```
+include_glob:
+- src/codec/**
+- src/core/**
+triggers:
+- \bGetNonConstData\s*[(]
+- \bSkStreamPriv::Get\w*Data\b
+- ->getData\s*[(]
+- \bconst_cast<\s*SkData\s*\*>
+- \bsk_sp<const\s+SkData>\b
+- \b(?:fStream|stream|fPrivStream)->getData\s*[(]
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 124
+  quote: SkStream::getData() has been added as a virtual. Subclasses can implement this if it is efficient
+    to turn the underlying contents into an SkData
+confidence: 0.9
+support_cl_count: 1

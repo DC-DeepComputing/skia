@@ -1,0 +1,47 @@
+id: general/name-template-constants-uppercamelcase-without-k-prefix
+title: When declaring non-type template parameters or template constants, name them in UpperCamelCase
+  without a leading 'k' rather than lowerCamelCase or kCamelCase
+polarity: do
+severity: nit
+rubric: readability
+rule: Name non-type template parameters (template constants) using UpperCamelCase (PascalCase) without
+  a 'k' prefix (e.g., `AppendVertices`, not `appendVerts` or `kAppendVerts`). Distinguish template parameters
+  from runtime function arguments (which use lowerCamelCase) and static or constexpr constants (which
+  use a leading 'k').
+why: In Skia coding style, all template parameters use UpperCamelCase to distinguish them from runtime
+  function arguments. Unlike constexpr variables or enums, template constants do not take a 'k' prefix.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <bool appendVerts>
+  void reserve(unsigned int count);
+
+  template <int kTileWidth, bool kShouldSort>
+  void processTiles();
+  ```
+
+  Good:
+
+  ```cpp
+  template <bool AppendVerts>
+  void reserve(unsigned int count);
+
+  template <int TileWidth, bool ShouldSort>
+  void processTiles();
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \btemplate\s*<[^>]*\b(?:bool|int|size_t|auto)\s+[a-z][a-zA-Z0-9_]*\s*[,>=]
+- \btemplate\s*<[^>]*\b(?:bool|int|size_t|auto)\s+k[A-Z][a-zA-Z0-9_]*\s*[,>=]
+- \btemplate\s*<[^>]*\b(?:bool|int|size_t|auto)\s+[A-Z][a-zA-Z0-9_]*\s*[,>=]
+- \btemplate\s*<[^>]*\b(?:unsigned|uint\d+_t|int\d+_t)\s+[a-zA-Z0-9_]+\s*[,>=]
+confidence: 0.9
+support_cl_count: 1

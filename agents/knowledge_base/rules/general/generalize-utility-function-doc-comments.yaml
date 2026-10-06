@@ -1,0 +1,56 @@
+id: general/generalize-utility-function-doc-comments
+title: When documenting functions, methods, or shared utilities, phrase comments around their general
+  contract, invariants, and return conditions rather than a single caller's use case
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting functions, methods, or shared utilities, describe their general contract, mathematical
+  invariants, and return value conditions rather than framing comments solely around a single caller or
+  specific data type (e.g., vertex buffers). Frame the explanation around what the function itself requires,
+  computes, or returns; mention specific callers or secondary use cases only as supplementary context.
+why: Restricting a function or helper's documentation to one caller or narrow use case misleads readers
+  and maintainers into assuming the function is specialized or unsafe for other scenarios. Phrasing comments
+  around general contracts and return conditions clarifies true behavior and encourages proper, reusable
+  usage across the codebase.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Variant 1: Utility functions tied to a specific data type
+  // Vertex buffers will explicitly require a certain alignment. To ensure correctness, we thus need
+  // to find the lcm of the required alignment and the minimum alignment...
+  uint32_t align_to_req_min_lcm(uint32_t bytes, uint32_t req, uint32_t min);
+
+  // Variant 2: Methods framed solely around a single caller's use case
+  // AppendVerts needs to check if a new reservation will overflow the buffer
+  bool willVertexOverflow(size_t count, size_t dataStride, size_t alignStride);
+  ```
+
+  Good:
+
+  ```cpp
+  // Variant 1: General contract and invariants
+  // Buffers can explicitly require a certain alignment. To ensure correctness, we thus need to find
+  // the lcm of the required alignment and the minimum alignment...
+  uint32_t align_to_req_min_lcm(uint32_t bytes, uint32_t req, uint32_t min);
+
+  // Variant 2: General contract and return conditions (with caller noted secondarily)
+  // Return true if the next call to getVertexWriter() with the same values would require a new
+  // buffer. This is only called by render steps that are appending verts.
+  bool willVertexOverflow(size_t count, size_t dataStride, size_t alignStride) const;
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- //+/?\s*.*\b(?:buffers?|vertices|vertex|indices|index|textures?|images?|shaders?)\s+(?:will|must|should|require|can|need)\b
+- //+/?\s*.*\b(?:alignment|stride|offset|padding|pitch|dimensions?|bounds?)\b
+- //+/?\s*.*\b(?:lcm|least common multiple|gcd|divisor|multiple of|aligned to)\b
+- //+/?\s*.*\b(?:needs?\s+to\s+(?:check|know|ensure|determine)|only\s+called\s+by|called\s+by|used\s+by\s+[A-Za-z0-9_]+)\b
+- //+/?\s*.*\b(?:overflow|underflow|require\s+a\s+new\s+buffer|new\s+reservation)\b
+- \b(?:uint32_t|int|size_t|bool|float|auto)\s+[a-z0-9_]*(?:align|lcm|gcd|stride|padding|offset|overflow)[a-z0-9_]*\s*\(
+- //+/?\s*.*\b(?:helper|utility|shared across|general contract|all callers)\b
+confidence: 0.95
+support_cl_count: 2

@@ -1,0 +1,44 @@
+id: tests/tests-exercise-nullable-parameters-in-random-generators
+title: When generating randomized test cases for APIs accepting optional pointer arguments, exercise both
+  non-null pointers and nullptr rather than unconditionally passing non-null values
+polarity: do
+severity: should_fix
+rubric: testing
+rule: 'In randomized test generators and test fixtures calling APIs that accept optional pointer arguments
+  (such as WithWorkingFormat where nullptr indicates destination or default fallback), randomly pass both
+  valid pointers and nullptr (e.g., using rand->nextBool() ? &value : nullptr) rather than unconditionally
+  supplying non-null pointers.'
+why: APIs accepting optional pointer parameters typically treat nullptr as an explicit signal to take
+  fallback, default, or inherited behaviors (such as adopting a destination surface's gamut or transfer
+  function). Unconditionally passing non-null values leaves the nullptr fallback path unexercised in randomized
+  testing, masking regressions in default pipeline construction.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const skcms_TransferFunction* tf = &random_xfer_function(rand);
+  const skcms_Matrix3x3* gamut = &random_gamut(rand);
+  sk_sp<SkColorFilter> cf =
+          SkColorFilterPriv::WithWorkingFormat(std::move(childCF), tf, gamut, &unpremul);
+  ```
+
+  Good:
+
+  ```cpp
+  const skcms_TransferFunction* tf = rand->nextBool() ? &random_xfer_function(rand) : nullptr;
+  const skcms_Matrix3x3* gamut = rand->nextBool() ? &random_gamut(rand) : nullptr;
+  sk_sp<SkColorFilter> cf =
+          SkColorFilterPriv::WithWorkingFormat(std::move(childCF), tf, gamut, &unpremul);
+  ```
+include_glob:
+- tests/**
+triggers:
+- \bWithWorkingFormat\b
+- \b(?:rand|random)->nextBool\b
+- \b(?:rand|random)->next(?:Bool|Range|U|F|Int|Bits)\b
+- \bSkRandom\s*[*&]?\s*[a-zA-Z0-9_]+
+- '[?]\s*(?:&?[a-zA-Z0-9_]+|nullptr)\s*:\s*(?:nullptr|&?[a-zA-Z0-9_]+)'
+- '&random_[a-zA-Z0-9_]+\b'
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,45 @@
+id: general/declare-each-variable-on-its-own-line
+title: When declaring multiple initialized local variables, declare each variable on its own line instead
+  of combining them with commas
+polarity: do
+severity: nit
+rubric: readability
+rule: Declare each variable on its own line rather than combining multiple variables or initializers into
+  a single comma-separated declaration statement (such as type a = expr1, b = expr2;). Outside of for-loop
+  initialization headers, give each variable an independent declaration line.
+why: Combining multiple initialized variable declarations on a single line obscures individual types,
+  expressions, and casts, making the code harder to read. Placing each declaration on its own line clarifies
+  variable types and lifetimes, avoids confusion with pointer or reference binding, and keeps version
+  control diffs clean and focused.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: multiple initialized variables combined in one comma-separated statement
+  int x = static_cast<int>(pt.x()), y = static_cast<int>(pt.y());
+  float minVal = compute_min(), maxVal = compute_max();
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: each variable declared on its own line
+  int x = static_cast<int>(pt.x());
+  int y = static_cast<int>(pt.y());
+  float minVal = compute_min();
+  float maxVal = compute_max();
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \b(?:int(?:8|16|32|64)_t|uint(?:8|16|32|64)_t|int|size_t|float|double|bool|SkScalar)\s+[a-zA-Z0-9_]+\s*=[^;]+,\s*[a-zA-Z0-9_]+\s*=
+- ^[ \t]*(?:const\s+)?[a-zA-Z0-9_:]+(?:<[^>]+>)?\s+[a-zA-Z0-9_]+\s*=[^;]+,\s*[a-zA-Z0-9_]+\s*=
+- \bstatic_cast<[^>]+>\([^)]*\),\s*[a-zA-Z0-9_]+\s*=\s*static_cast<
+- \b[a-zA-Z0-9_]+\s*=\s*(?:static_cast<[^>]+>\()?[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+|->[a-zA-Z0-9_]+)\(\)[^,;]*,\s*[a-zA-Z0-9_]+\s*=
+confidence: 0.85
+support_cl_count: 1

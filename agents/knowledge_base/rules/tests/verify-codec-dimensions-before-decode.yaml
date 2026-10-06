@@ -1,0 +1,55 @@
+id: tests/verify-codec-dimensions-before-decode
+title: When writing or modifying image decoder unit tests, assert that codec->dimensions() matches expected
+  or reference dimensions immediately after creation before allocating destination buffers or decoding
+polarity: do
+severity: should_fix
+rubric: testing
+rule: In image decoder and codec unit tests (especially when validating against a reference decoder or
+  fixed expected dimensions), assert that the codec's reported dimensions (such as codec->dimensions()
+  == referenceCodec->dimensions()) immediately after codec instantiation. Perform this check before allocating
+  destination pixel buffers (e.g., bitmap.allocPixels(codec->getInfo())) or initiating pixel decode operations.
+why: Image headers and metadata are parsed upon codec creation before pixel decoding begins. Explicitly
+  checking codec->dimensions() immediately after codec instantiation verifies that header metadata was
+  parsed correctly before allocating pixel memory and prevents masking metadata errors behind subsequent
+  pixel decode failures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  std::unique_ptr<SkCodec> codec =
+          SkBmpRustDecoder::Decode(std::move(haltingStream), &result);
+  REPORTER_ASSERT(r, codec);
+
+  // Bad: Allocating destination pixels and decoding without verifying dimensions
+  SkBitmap bitmap;
+  bitmap.allocPixels(codec->getInfo());
+  result = codec->startIncrementalDecode(
+          bitmap.info(), bitmap.getPixels(), bitmap.rowBytes(), &options);
+  ```
+
+  Good:
+
+  ```cpp
+  std::unique_ptr<SkCodec> codec =
+          SkBmpRustDecoder::Decode(std::move(haltingStream), &result);
+  REPORTER_ASSERT(r, codec);
+  // Good: Verify dimensions match reference codec before allocating and decoding
+  REPORTER_ASSERT(r, codec->dimensions() == stdCodec->dimensions(),
+                  "Streaming codec dimensions should match standard codec");
+
+  SkBitmap bitmap;
+  bitmap.allocPixels(codec->getInfo());
+  result = codec->startIncrementalDecode(
+          bitmap.info(), bitmap.getPixels(), bitmap.rowBytes(), &options);
+  ```
+include_glob:
+- tests/**
+triggers:
+- \b(?:codec|decoder)->dimensions\s*[(]
+- \b(?:allocPixels|startIncrementalDecode|incrementalDecode)\s*[(]
+- \bSk[A-Z]\w*(?:Rust)?Decoder::Decode\s*[(]
+- \b(?:stdCodec|refCodec|referenceCodec)->dimensions\s*[(]
+- \bDEF_TEST\s*[(]\s*\w*(?:Decoder|Codec|Incremental)\w*
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,48 @@
+id: general/prefer-span-iterators-over-pointer-arithmetic
+title: When traversing or bounding SkSpan or std::span, use begin() and end() with auto rather than raw
+  pointer types, pointer arithmetic, or data_end
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer standard container iterators (such as span.begin() and span.end()) over manual pointer arithmetic
+  (span.data() + span.size()) or custom end-pointer helpers (such as data_end) when traversing, bounding,
+  or obtaining endpoints of SkSpan and contiguous collections. When capturing or binding span iterators,
+  declare variables with auto rather than binding to raw pointer types (such as const T*).
+why: In std::span and standard containers, iterator types are implementation-defined and not guaranteed
+  to be raw pointers (e.g., in debug or hardened standard libraries). Binding span iterators directly
+  to raw pointer types breaks portability and std::span migration, while manual pointer arithmetic or
+  custom helper functions clutter code with non-standard idioms.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Raw pointer arithmetic, helpers, or binding iterators to raw pointers:
+  template <typename T> T* data_end(SkSpan<T> span) {
+      return span.data() + span.size();
+  }
+  const SkPathVerb* verbsEnd = data_end(verbSpan);
+  const SkScalar* conicWeights = src.conicWeights().end();
+  ```
+
+  Good:
+
+  ```cpp
+  // Use standard begin()/end() iterators deduced with auto:
+  auto verbsEnd = verbSpan.end();
+  auto conicWeights = src.conicWeights().end();
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bdata_end\b
+- (?:->|\.)data\s*[(][)]\s*\+\s*[a-zA-Z0-9_.]*(?:->|\.)size\b
+- (?:const\s+)?[A-Za-z0-9_:]+\s*\*\s*[a-zA-Z0-9_]+\s*=\s*[^;]*(?:->|\.)(?:begin|end)\s*[(][)]
+- \bauto\s+[a-zA-Z0-9_]+\s*=\s*[^;]*(?:->|\.)(?:begin|end)\s*[(][)]
+- \b(?:begin|end|data_end)\s*[(]\s*[a-zA-Z0-9_]*(?:span|Span)\b
+- template\s*<[^>]*>[^;{]*\b(?:data_end|end_ptr)\b
+- \b[a-zA-Z0-9_]+End\s*=\s*[^;]*(?:->|\.)(?:begin|end|data)\s*[(]
+confidence: 0.9
+support_cl_count: 1

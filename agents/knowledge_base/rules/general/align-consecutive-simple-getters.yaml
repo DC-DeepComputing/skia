@@ -1,0 +1,44 @@
+id: general/align-consecutive-simple-getters
+title: When declaring groups of consecutive simple inline getters or one-line accessors in headers, vertically
+  align return types, method names, and bodies into columns
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring or updating groups of adjacent simple one-line getters or field accessors in class
+  declarations, preserve or apply vertical column alignment across return types, method names, and inline
+  bodies. Do not collapse intentional columnar whitespace when running automated formatters or editing
+  adjacent accessors.
+why: Consecutive one-line getters and accessors are much easier to scan and audit when return types, method
+  names, const qualifiers, and return expressions align in vertical columns. Because .clang-format disables
+  AlignConsecutiveDeclarations, automated formatting collapses this whitespace unless authors intentionally
+  preserve or restore columnar alignment.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Collapsed spacing across consecutive one-line getters:
+  size_t instanceStride() const { return fInstanceStride; }
+  size_t vertexStride() const { return fVertexStride; }
+  PrimitiveType primitiveType() const { return fPrimitiveType; }
+  ```
+
+  Good:
+
+  ```cpp
+  // Columnar alignment of types, method names, and inline bodies:
+  size_t        instanceStride() const { return fInstanceStride; }
+  size_t        vertexStride()   const { return fVertexStride;   }
+  PrimitiveType primitiveType()  const { return fPrimitiveType;  }
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- \b[a-z][A-Za-z0-9_]*\(\)\s*const\s*\{\s*return\s+f[A-Z]\w*;\s*\}
+- \b(?:size_t|uint\d+_t|int|bool|float|Sk[A-Za-z0-9_]+)\s+[a-z][A-Za-z0-9_]*\(\)\s*const\b
+- \b[a-z][A-Za-z0-9_]*\(\)\s*(?:const\s*)?\{\s*return\b
+- \b(?:stride|type|offset|count|size|index|format|id|flags|bounds)\(\)\s*const\b
+confidence: 0.8
+support_cl_count: 1

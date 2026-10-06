@@ -1,0 +1,48 @@
+id: gpu/accept-resource-directly-over-binding-descriptor
+title: When methods or helpers inherently require an entire GPU resource, accept the resource handle directly
+  rather than an open-ended BindBufferInfo descriptor
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not require callers to pass open-ended view or binding descriptors (such as BindBufferInfo) when
+  a method inherently expects the entire resource. Accept the resource handle directly (such as sk_sp<Buffer>
+  or const Buffer*) and construct the full-resource binding descriptor internally with a zero offset and
+  complete size.
+why: Accepting slice or binding structs (which pair a resource pointer with byte offsets and sizes) when
+  an operation requires the full resource exposes unnecessary flexibility that callers can misuse by passing
+  invalid offsets or sub-ranges. Accepting the resource directly simplifies call sites and guarantees
+  the full-resource invariant.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Exposes unnecessary offset and size parameters when the full buffer is required.
+  class GlobalCache {
+  public:
+      void addStaticVertexBuffer(const BindBufferInfo& bufferInfo, sk_sp<Resource> resource);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Accepts the resource directly and constructs the binding descriptor internally.
+  class GlobalCache {
+  public:
+      void setStaticVertexBuffer(sk_sp<Buffer> buffer) {
+          fStaticVertexData = {buffer.get(), /*offset=*/0, buffer->size()};
+          this->addStaticResource(std::move(buffer));
+      }
+  };
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bBindBufferInfo\b
+- \bconst\s+BindBufferInfo\s*&
+- \b(?:add|set|register)Static[A-Za-z0-9_]*\s*\(
+- \b(?:set|add|bind)[A-Za-z0-9_]*(?:Buffer|Resource)\s*\([^)]*BindBufferInfo
+- \b(?:fStatic|fBound|fCurrent)[A-Za-z0-9_]*(?:Buffer|Data)\s*=
+confidence: 0.9
+support_cl_count: 1

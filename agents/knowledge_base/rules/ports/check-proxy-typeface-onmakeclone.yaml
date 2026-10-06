@@ -1,0 +1,49 @@
+id: ports/check-proxy-typeface-onmakeclone
+title: When implementing onMakeClone in wrapper or proxy typefaces, check for nullptr from the underlying
+  typeface clone before invoking wrapper factories
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When overriding onMakeClone() in typeface wrappers or proxies (such as subclasses of SkTypeface_proxy),
+  check that cloning the underlying typeface succeeded before passing the result to a wrapper constructor
+  or factory. If the underlying onMakeClone() or makeClone() returns nullptr, return nullptr immediately
+  rather than wrapping a null typeface.
+why: Cloning an underlying typeface is fallible (e.g., unsupported font variation arguments or memory
+  allocation failure). Passing an unchecked null typeface into a wrapper factory creates an invalid wrapper
+  object that causes null pointer dereferences during subsequent rendering or font queries.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
+      return SkTypeface_Wrapper::Make(
+              SkTypeface_proxy::onMakeClone(args),
+              fFamilyName,
+              this->fontStyle());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
+      sk_sp<SkTypeface> proxy = SkTypeface_proxy::onMakeClone(args);
+      if (!proxy) {
+          return nullptr;
+      }
+      return SkTypeface_Wrapper::Make(
+              std::move(proxy),
+              fFamilyName,
+              this->fontStyle());
+  }
+  ```
+include_glob:
+- src/ports/**
+triggers:
+- \bonMakeClone\s*\(
+- \bmakeClone\s*\(
+- \bSkTypeface_proxy\b
+- \bSkFontArguments\b
+confidence: 0.9
+support_cl_count: 1

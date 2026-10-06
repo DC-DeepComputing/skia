@@ -1,0 +1,45 @@
+id: infra/prefer-clang-over-msvc-for-perf-bots
+title: When defining or updating performance benchmark bots (Perf-*) in infra/bots, use Clang instead
+  of MSVC, reserving MSVC for build and correctness testing
+polarity: do
+severity: optional
+rubric: safety
+rule: When defining or modifying performance benchmark tasks (Perf-*) in infra/bots/ (such as jobs.json
+  or tasks.json), configure them to build with Clang rather than MSVC. Reserve MSVC and other secondary
+  compilers for build and correctness testing (Test-* or Build-*), and track continuous performance regressions
+  only on Clang toolchains.
+why: Skia's core routines and downstream embedders like Chromium are explicitly optimized for Clang. MSVC
+  frequently exhibits compiler regressions and CPU-side overhead even on GPU configurations, which creates
+  noisy and misleading performance alerts on Skia Perf.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  "name": "Perf-Win11-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Graphite_Dawn_D3D11"
+  ```
+
+  Good:
+
+  ```cpp
+  "name": "Perf-Win11-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Graphite_Dawn_D3D11"
+  ```
+include_glob:
+- infra/bots/**
+triggers:
+- '"name":\s*"Perf-[A-Za-z0-9_.-]+-MSVC'
+- \bPerf-[A-Za-z0-9_.-]+-MSVC\b
+- \bPerf-[A-Za-z0-9_.-]+-Clang\b
+- '"name":\s*"Perf-Win[A-Za-z0-9_.-]+"'
+- '"name":\s*"Perf-[A-Za-z0-9_.-]+"'
+citations:
+- path: site/docs/user/build.md
+  heading: Supported and Preferred Compilers
+  quote: While Skia should compile with GCC, MSVC, and other compilers, a number of routines in Skia's
+    software backend have been written to run fastest when compiled with Clang. If you depend on software
+    rasterization, image decoding, or color space conversion and compile Skia with a compiler other than
+    Clang, you will see dramatically worse performance. This choice was only a matter of prioritization;
+    there is nothing fundamentally wrong with non-Clang compilers. So if this is a serious issue for you,
+    please let us know on the mailing list.
+confidence: 0.9
+support_cl_count: 1

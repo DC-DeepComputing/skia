@@ -1,0 +1,55 @@
+id: gpu/distinguish-resolve-offset-from-viewport-translation
+title: When defining origin offsets between intermediate attachments and resolve targets in Graphite render
+  passes, name them resolveOffset rather than viewportTranslation
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When specifying origin offsets between intermediate color or MSAA attachments and their resolve
+  targets in Graphite render passes, name the parameter or field after its resolve role (such as resolveOffset
+  or resolveArea) rather than viewportTranslation. Keep viewport naming reserved for transforms visible
+  to shaders and NDC projection.
+why: In Graphite, logical rendering and NDC coordinates are defined in device space and remain unaffected
+  by attachment placement or sub-allocation. Naming an attachment origin shift viewportTranslation misleadingly
+  suggests a transform applied to the viewport or vertex shader pipeline rather than a sub-region resolve
+  offset.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Misleadingly implies vertex shaders or viewport transforms are affected
+  bool addRenderPass(const RenderPassDesc&,
+                     sk_sp<Texture> colorTexture,
+                     sk_sp<Texture> resolveTexture,
+                     sk_sp<Texture> depthStencilTexture,
+                     const Texture* dstCopy,
+                     SkIRect dstReadBounds,
+                     SkIPoint viewportTranslation,
+                     SkISize viewportDims,
+                     const DrawPassList& drawPasses);
+  ```
+
+  Good:
+
+  ```cpp
+  // Clearly identifies offset between color attachment and resolve target
+  bool addRenderPass(const RenderPassDesc&,
+                     sk_sp<Texture> colorTexture,
+                     sk_sp<Texture> resolveTexture,
+                     sk_sp<Texture> depthStencilTexture,
+                     const Texture* dstCopy,
+                     SkIRect dstReadBounds,
+                     SkIPoint resolveOffset,
+                     SkISize viewportDims,
+                     const DrawPassList& drawPasses);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:viewportTranslation|resolveOffset)\b
+- \baddRenderPass\b
+- \b(?:get_msaa_size_and_resolve_offset|get_msaa_size_and_viewport_translation)\b
+- \bSkIPoint\s+(?:viewportTranslation|resolveOffset)\b
+- \b(?:colorTexture|resolveTexture)\b
+confidence: 0.92
+support_cl_count: 1

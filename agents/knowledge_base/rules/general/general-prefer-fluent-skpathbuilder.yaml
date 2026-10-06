@@ -1,0 +1,69 @@
+id: general/general-prefer-fluent-skpathbuilder
+title: When creating SkPath instances, use dedicated shape factories for standard primitives; for custom
+  paths, chain SkPathBuilder fluently to detach()
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When creating SkPath instances from standard geometric shapes (such as rectangles, ovals, round
+  rects, polygons, or lines), use dedicated shape factories (SkPath::Rect, SkPath::Oval, etc., or SkPathData
+  shape factories internally) rather than SkPathBuilder().add...().detach(). For custom multi-verb paths,
+  chain SkPathBuilder methods fluently in a single expression terminating with .detach(), avoiding mutable
+  local builder variables across statements.
+why: Dedicated shape factories preallocate exact storage in one step and compute shape bounds and convexity
+  directly, avoiding intermediate buffer reallocations and builder post-processing overhead. For custom
+  paths, fluent chaining eliminates redundant mutable builder state, minimizes boilerplate, and allows
+  constructing const paths inline.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Using SkPathBuilder for standard shapes incurs intermediate allocations
+  SkPath path = SkPathBuilder().addOval(r, dir, startIndex).detach();
+
+  // Bad: Declaring intermediate mutable builder across multiple mutating statements
+  SkPathBuilder builder;
+  builder.moveTo(0, 0).lineTo(100, 0).lineTo(100, 100).close();
+  SkPath custom = builder.detach();
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Dedicated one-call factory preallocates exact storage and metadata
+  SkPath path = SkPath::Oval(r, dir, startIndex); // or SkPathData::Oval(...) internally
+
+  // Good: Fluent chaining directly to detach() without mutable builder variables
+  const SkPath custom = SkPathBuilder()
+                                .moveTo(0, 0)
+                                .lineTo(100, 0)
+                                .lineTo(100, 100)
+                                .close()
+                                .detach();
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- \bSkPathBuilder\b
+- \bdetach\s*[(][)]
+- \bsnapshot\s*[(][)]
+- \.(?:moveTo|lineTo|quadTo|conicTo|cubicTo)\s*[(]
+- \.(?:addRect|addOval|addRRect|addCircle|addPolygon)\s*[(]
+- \bSkPath(?:Data)?::(?:Rect|Oval|RRect|Circle|Polygon|Line)\b
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 143
+  quote: Additionally, there are now additional Factories for creating paths in one-call, so often a pathbuilder
+    object may not be needed.
+- path: agents/skills/skia-gn-workflow/references/fuzz.md
+  heading: 3. Write a Reproduction Unit Test
+  quote: |-
+    SkPath path = SkPathBuilder()
+            .moveTo(SkBits2Float(0x7dfee5c4), SkBits2Float(0x417ea0a5))
+            .conicTo(SkBits2Float(0x7dfee5c4), SkBits2Float(0x417ea0a5),
+                     SkBits2Float(0x7e8ebca2), SkBits2Float(0x417ea0a5),
+                     0.0f)
+            .detach();
+confidence: 0.97
+support_cl_count: 2

@@ -1,0 +1,60 @@
+id: general/annotate-duplicate-call-arguments
+title: When passing identical expressions or variables to consecutive function parameters, annotate each
+  argument with parameter-name comments to clarify intentional duplication
+polarity: do
+severity: nit
+rubric: readability
+rule: When passing identical expressions, variables, or function calls to consecutive parameters of the
+  same type at a call site, annotate each argument with a parameter-name comment (e.g., /*param=*/ or
+  trailing // param). Clarify each argument's semantic role so readers and reviewers know the duplicate
+  value is deliberate rather than an accidental copy-paste error.
+why: Passing repeated identical arguments to adjacent parameters looks like an unintentional copy-paste
+  bug. Parameter-name comments confirm that the repeated value is intentional and make it obvious which
+  parameter each argument populates without needing to inspect the function declaration.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  return SkEncodedInfo::Make(width,
+                             height,
+                             skColor,
+                             ToAlpha(rustColor, reader),
+                             reader.output_bits_per_component(),
+                             reader.output_bits_per_component(),
+                             std::move(profile),
+                             hdrMetadata);
+  ```
+
+  Good:
+
+  ```cpp
+  return SkEncodedInfo::Make(width,
+                             height,
+                             skColor,
+                             ToAlpha(rustColor, reader),
+                             reader.output_bits_per_component(), // bitsPerComponent
+                             reader.output_bits_per_component(), // colorDepth
+                             std::move(profile),
+                             hdrMetadata);
+  ```
+include_glob:
+- src/**
+- tests/**
+- tools/**
+- modules/**
+triggers:
+- \bSkEncodedInfo::Make\b
+- ',\s*//\s*[a-zA-Z0-9_]+$'
+- /\*\s*[a-zA-Z0-9_]+\s*=\s*\*/
+- \b([a-zA-Z_]\w*(?:\(\))?)\s*,\s*\\1\b
+- //\s*(?:bitsPerComponent|colorDepth|param|arg|dst|src)\b
+- \boutput_bits_per_component\b
+citations:
+- path: https://google.github.io/styleguide/cppguide.html#Function_Argument_Comments
+  heading: Implementation Comments > Function Argument Comments
+  quote: The argument is a variable or expression whose name does not make the role of the argument clear
+    (for example, passing an identical variable or expression multiple times to different parameters of
+    the same type).
+confidence: 0.9
+support_cl_count: 1

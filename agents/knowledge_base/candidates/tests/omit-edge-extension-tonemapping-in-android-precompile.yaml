@@ -1,0 +1,40 @@
+id: tests/omit-edge-extension-tonemapping-in-android-precompile
+title: When generating Android RenderEngine precompilation combinations, do not pair RE_EdgeExtensionEffect
+  with tone mapping or crosstalk shaders; wrap only simple image draws
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: In Android RenderEngine precompilation combinations, do not pair RE_EdgeExtensionEffect with HDR
+  tone mapping (such as RE_MouriMap_TonemapEffect) or crosstalk effects. Only apply RE_EdgeExtensionEffect
+  directly to simple image draws, optionally wrapped in a linear effect (RE_LinearEffect).
+why: Real-world Android RenderEngine pipeline traces show that edge extension is only evaluated directly
+  on simple image draws and never combined with HDR tonemapping or crosstalk. Generating precompilation
+  permutations with tone mapping models non-existent Android workloads and creates dead pipeline variants.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Do not pair edge extension with tonemapping or crosstalk:
+  sk_sp<PrecompileShader> wrapped = wrap_in_MouriMapToneMap(effectManager, hdrImg);
+  sk_sp<PrecompileShader> edgeEffect = wrap_in_edge_extension(effectManager, std::move(wrapped));
+  ```
+
+  Good:
+
+  ```cpp
+  // Edge extension only wraps simple image draws (optionally wrapped in a linear effect):
+  sk_sp<PrecompileShader> edgeEffect = wrap_in_edge_extension(effectManager, hdrImg);
+  sk_sp<PrecompileShader> linear = wrap_in_linear_effect(
+      effectManager, linearEffect, std::move(edgeEffect), SkColorSpace::MakeSRGBLinear());
+  ```
+include_glob:
+- tests/graphite/precompile/**
+triggers:
+- \bwrap_in_edge_extension\b
+- \bRE_EdgeExtensionEffect\b
+- \b(?:wrap_in_)?(?:MouriMapToneMap|linear_effect_edge_extension)\w*\b
+- \b(?:RE_)?(?:MouriMap_TonemapEffect|CrossTalkAndChunk)\w*\b
+- \bKnownId::k(?:EdgeExtensionEffect|MouriMap_[A-Za-z0-9_]+)\b
+confidence: 0.88
+support_cl_count: 1

@@ -1,0 +1,43 @@
+id: general/when-verifying-whether-an-skmatrix-or-layer-transform-is-inv
+title: When verifying whether an SkMatrix or layer transform is invertible without needing the inverse
+  matrix, pass nullptr rather than declaring a dummy out-parameter variable
+polarity: do
+severity: nit
+rubric: readability
+rule: When calling SkMatrix::invert() or LayerSpace<SkMatrix>::invert() solely to check whether a matrix
+  is invertible, pass nullptr (such as /*inverse=*/nullptr) instead of declaring an unread dummy local
+  matrix out-parameter. Alternatively, use the parameterless invert() overload returning std::optional<SkMatrix>
+  when checking validity directly.
+why: SkMatrix::invert(SkMatrix* inverse) and its layer-space wrappers explicitly support a null pointer
+  when the caller only checks invertibility. Declaring a dummy local matrix solely to receive an unread
+  out-parameter adds local variable clutter and incurs an unnecessary matrix copy on success.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkMatrix inv;
+  if (!transform.invert(&inv)) {
+      return nullptr;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (!transform.invert(/*inverse=*/nullptr)) {
+      return nullptr;
+  }
+  ```
+include_glob:
+- src/**
+- modules/**
+triggers:
+- \.(?:asM33[(][)][.])?invert\s*[(]
+- \.invert\s*[(]\s*&
+- \.invert\s*[(][^)]*nullptr
+- /\*\s*inverse\s*=\s*\*/\s*nullptr
+- \bif\s*[(]\s*!?[a-zA-Z0-9_.]+\.invert\b
+- \bSkMatrix\s+[a-zA-Z0-9_]*(?:inv|dummy|unused|temp|tmp)[a-zA-Z0-9_]*
+confidence: 0.9
+support_cl_count: 1

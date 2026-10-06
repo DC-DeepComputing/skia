@@ -1,0 +1,40 @@
+id: general/spell-out-transparent-in-identifiers
+title: When naming identifiers representing transparent colors, shaders, or paints, spell out 'transparent'
+  fully rather than using ambiguous contractions like 'xparent'
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When naming variables, functions, or parameters representing transparent colors, paints, shaders,
+  or transparency states, spell out 'transparent' (or 'transparency') fully. Do not use informal or non-standard
+  contractions such as 'xparent' or 'xparency'.
+why: Informal contractions like 'xparent' are ambiguous and easily misread as 'ex-parent' or 'cross-parent'.
+  Spelling out 'transparent' maintains readability and consistency across the codebase.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  PaintOptions xparent_paint_image_premul_hw_and_clamp_srcover();
+  SkColor xparent_color = SK_ColorTRANSPARENT;
+  ```
+
+  Good:
+
+  ```cpp
+  PaintOptions transparent_paint_image_premul_hw_and_clamp_srcover();
+  SkColor transparent_color = SK_ColorTRANSPARENT;
+  ```
+include_glob:
+- src/**
+- include/**
+- tests/**
+- modules/**
+- gm/**
+triggers:
+- \b[a-zA-Z0-9_]*[xX]parent[a-zA-Z0-9_]*\b
+- \b[a-zA-Z0-9_]*[xX]paren(?:t|cy)\b
+- \b[xX]parent_[a-z0-9_]+\b
+- \b[a-zA-Z0-9_]+[xX]parent[A-Z]\w*\b
+- \b(?:PaintOptions|SkColor|SkPaint|SkShader)\s+[a-zA-Z0-9_]*xparent\b
+confidence: 0.9
+support_cl_count: 1

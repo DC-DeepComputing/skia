@@ -1,0 +1,40 @@
+id: gpu/omit-redundant-sample-count-guard-before-compatible-msaa
+title: When querying compatible MSAA sample counts via Caps::getCompatibleMSAASampleCount, omit redundant
+  sample count checks since it handles already-multisampled textures internally
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not guard calls to Caps::getCompatibleMSAASampleCount(textureInfo) with checks testing whether
+  the texture is single-sampled (such as textureInfo.sampleCount() == SampleCount::k1). Invoke getCompatibleMSAASampleCount
+  directly, relying on its internal check to return the existing sample count if the texture is already
+  multisampled.
+why: Caps::getCompatibleMSAASampleCount internally checks if the target texture already has a sample count
+  greater than 1 and immediately returns it. Adding an external single-sampled guard at the call site
+  duplicates this check and complicates conditional expressions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  desc.fSampleCount = requiresMSAA && targetInfo.sampleCount() == SampleCount::k1
+          ? caps->getCompatibleMSAASampleCount(targetInfo)
+          : targetInfo.sampleCount();
+  ```
+
+  Good:
+
+  ```cpp
+  desc.fSampleCount = requiresMSAA ? caps->getCompatibleMSAASampleCount(targetInfo)
+                                   : targetInfo.sampleCount();
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bgetCompatibleMSAASampleCount\s*[(]
+- \b(?:sampleCount|fSampleCount)\s*==\s*SampleCount::k1\b
+- \bSampleCount::k1\b
+- \brequiresMSAA\b
+- \bdesc\.fSampleCount\s*=
+- \bcaps->getCompatibleMSAASampleCount\b
+confidence: 0.9
+support_cl_count: 1

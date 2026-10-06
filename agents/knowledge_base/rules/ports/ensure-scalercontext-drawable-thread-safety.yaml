@@ -1,0 +1,55 @@
+id: ports/ensure-scalercontext-drawable-thread-safety
+title: When returning an SkDrawable from SkScalerContext::generateDrawable(), ensure any accessed scaler
+  context state or scratch buffer is synchronized or pre-rendered into an SkPicture
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When implementing or modifying SkScalerContext::generateDrawable(), ensure that any scaler context
+  state or scratch buffer accessed by the returned SkDrawable is thread-safe. Guard shared mutable scaler
+  context state with a mutex, or pre-render the drawing commands into an immutable SkPicture (via SkPictureRecorder)
+  inside generateDrawable().
+why: SkScalerContext operations like generateMetrics, generateImage, and generatePath execute sequentially
+  under the SkStrike lock, but SkDrawable::draw() runs outside of that lock and may be invoked concurrently
+  across multiple raster threads. Accessing or mutating un-synchronized scaler context scratch buffers
+  or state during onDraw() causes data races.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Retaining SkScalerContext pointer and mutating scratch buffers in SkDrawable::onDraw():
+  bool generateYScalePathForGlyphId(uint16_t glyphId, SkPath* path, ...) {
+      fontations_ffi::BridgeScalerMetrics scalerMetrics;
+      SK_AT_SCOPE_EXIT(fontations_ffi::shrink_verbs_points_if_needed(fPathVerbs, fPathPoints));
+      if (!fontations_ffi::get_path_verbs_points(fOutlines, glyphId, ..., fPathVerbs, fPathPoints, scalerMetrics)) {
+          return false;
+      }
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Guarding shared scaler context state with a mutex (or pre-recording into SkPicture):
+  bool generateYScalePathForGlyphId(uint16_t glyphId, SkPath* path, ...) {
+      fontations_ffi::BridgeScalerMetrics scalerMetrics;
+      SkAutoMutexExclusive l(fPathMutex);
+      SK_AT_SCOPE_EXIT(fontations_ffi::shrink_verbs_points_if_needed(fPathVerbs, fPathPoints));
+      if (!fontations_ffi::get_path_verbs_points(fOutlines, glyphId, ..., fPathVerbs, fPathPoints, scalerMetrics)) {
+          return false;
+      }
+      return true;
+  }
+  ```
+include_glob:
+- src/ports/**
+- src/core/**
+triggers:
+- \bgenerateDrawable\s*[(]
+- \b(?:class|struct)\s+\w*Drawable\s*:\s*public\s+SkDrawable\b
+- \bsk_sp<SkDrawable>\b
+- \bSkScalerContext::generateDrawable\b
+- \bSkAutoMutexExclusive\b
+confidence: 0.9
+support_cl_count: 1

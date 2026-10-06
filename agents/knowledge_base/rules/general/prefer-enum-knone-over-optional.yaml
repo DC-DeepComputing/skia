@@ -1,0 +1,51 @@
+id: general/prefer-enum-knone-over-optional
+title: When representing optional enum states or the absence of an action, define a kNone sentinel enumerator
+  instead of wrapping the enum in std::optional<T>
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When an enum type can naturally represent the absence of a feature, action, or requirement, define
+  an explicit `kNone` sentinel enumerator within the enum instead of wrapping the enum type in `std::optional<T>`.
+  Use the `kNone` enumerator directly for member variables, function parameters, and return types.
+why: Defining a `kNone` sentinel directly in an enum avoids the wrapper boilerplate, indirection, and
+  padding overhead of `std::optional<T>`, while simplifying member storage and call-site branching when
+  'none' is a valid domain state.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  enum class BarrierType : uint8_t {
+      kAdvancedNoncoherentBlend,
+      kReadDstFromInput,
+  };
+
+  // Bad: Wrapping enum in std::optional adds padding overhead and unwrap checks.
+  std::optional<BarrierType> fBarrierBeforeDraws;
+  void recordDraw(std::optional<BarrierType> barrier);
+  ```
+
+  Good:
+
+  ```cpp
+  enum class BarrierType : uint8_t {
+      kNone,
+      kAdvancedNoncoherentBlend,
+      kReadDstFromInput,
+  };
+
+  // Good: kNone sentinel simplifies storage, initialization, and comparisons.
+  BarrierType fBarrierBeforeDraws = BarrierType::kNone;
+  void recordDraw(BarrierType barrier);
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \bstd::optional<[A-Za-z0-9_:]*(?:Type|Mode|Kind|Usage|State|Barrier|Action)>
+- \bstd::optional<[A-Za-z0-9_:]+>\s+f[A-Z]\w*
+- \benum\s+class\s+[A-Za-z0-9_]*(?:Type|Mode|Kind|Barrier|Usage|State)\b
+- \b[A-Za-z0-9_]+::kNone\b
+- \bkNone\s*[,=]
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,51 @@
+id: api/document-planned-enum-values-with-todo
+title: When declaring enum values or API hooks reserved for planned features, annotate them with an attributed
+  TODO comment rather than leaving them undocumented
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring enum values, flags, or architectural hooks that are reserved for planned future features
+  and currently unreferenced, annotate them with an explanatory TODO(b/...) or TODO(skbug.com/...) comment
+  referencing a tracking issue and describing the planned usage. Do not delete them as dead code if they
+  establish intentional API design, and do not leave them undocumented without an attributed tracking
+  issue.
+why: Unreferenced enum values and architectural hooks are easily mistaken for dead code or abandoned prototypes
+  during review and refactoring. Documenting them with an attributed TODO comment preserves design intent,
+  clarifies why the value exists ahead of implementation, and prevents accidental deletion in cleanups.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  enum class DstReadStrategy : uint8_t {
+      kNoneRequired,
+      kTextureCopy,
+      kTextureSample,  // Unused in current CL; easily mistaken for dead code
+      kReadFromInput,
+      kFramebufferFetch,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  enum class DstReadStrategy : uint8_t {
+      kNoneRequired,
+      kTextureCopy,
+      kTextureSample,  // TODO(b/238756862): To be used once direct texture sampling is implemented
+      kReadFromInput,
+      kFramebufferFetch,
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \benum\s+(?:class\s+)?[A-Za-z0-9_]+
+- \bk[A-Z][A-Za-z0-9_]+,\s*(?://.*)?$
+- \bk[A-Z][A-Za-z0-9_]+,\s*//\s*TODO
+- //.*\b(?:planned|reserved for|future use|currently unused)\b
+- //\s*TODO\s*\([^)]*\):?\s*.*(?:planned|implement|future|reserved|unused)
+- \bDstReadStrategy\b
+confidence: 0.9
+support_cl_count: 1

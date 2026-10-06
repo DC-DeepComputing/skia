@@ -1,0 +1,61 @@
+id: codec/hold-shared-ownership-for-incremental-state
+title: When managing state across incremental decode operations (onStartIncrementalDecode and onIncrementalDecode),
+  retain explicit shared ownership of required resources directly rather than storing container indices
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When managing state across multi-step or incremental decode operations (such as `onStartIncrementalDecode`
+  and `onIncrementalDecode`), retain explicit shared ownership (`sk_sp<T>`) of required buffers or resources
+  directly on the session state. Do not store an integer index into an underlying collection to look up
+  resources on subsequent decode steps.
+why: Storing container indices requires repetitive defensive bounds checks and container lookups across
+  incremental calls, and risks use-after-free or out-of-bounds access if the underlying container is reallocated
+  or modified. Holding an explicit `sk_sp` keeps the required resource alive for the duration of the incremental
+  operation and decouples the session state from parent container layout.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In decoder header:
+  int fCurrCodecIndex = -1;
+
+  // In onStartIncrementalDecode:
+  fCurrCodecIndex = codecIndex;
+
+  // In onIncrementalDecode:
+  if (fCurrCodecIndex >= 0 &&
+      fCurrCodecIndex < static_cast<int>(fBmpEntryData.size()) &&
+      fBmpEntryData[fCurrCodecIndex]) {
+      const auto& entryData = fBmpEntryData[fCurrCodecIndex];
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In decoder header:
+  sk_sp<const SkData> fIncrementalBmpEntryData;
+
+  // In onStartIncrementalDecode:
+  fIncrementalBmpEntryData = fEmbeddedImages[codecIndex].fBmpEntryData;
+
+  // In onIncrementalDecode:
+  if (fIncrementalBmpEntryData) {
+      const auto& entryData = fIncrementalBmpEntryData;
+      ...
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \b(?:onStartIncrementalDecode|onIncrementalDecode)\b
+- \b(?:startIncrementalDecode|incrementalDecode)\b
+- \b(?:fIncremental|incremental)[A-Z]\w*\b
+- \bsk_sp<[^>]*SkData>\b
+- \b(?:int|size_t)\s+f[A-Z]\w*(?:Index|CodecIndex)\b
+- \b(?:fCurrCodecIndex|fIncrementalBmpEntryData|fBmpEntryData)\b
+confidence: 0.9
+support_cl_count: 1

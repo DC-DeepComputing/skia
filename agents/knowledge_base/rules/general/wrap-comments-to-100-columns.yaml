@@ -1,0 +1,47 @@
+id: general/wrap-comments-to-100-columns
+title: When writing or refactoring multi-line comments in C++ files, wrap comment lines to Skia's 100-column
+  limit rather than wrapping early at 80 columns
+polarity: do
+severity: nit
+rubric: readability
+rule: When writing or editing multi-line comments, wrap and reflow comment text to Skia's 100-column line
+  limit rather than breaking early (such as at 80 columns). Do not leave prematurely wrapped comment lines
+  when clang-format does not automatically join them.
+why: Skia standardizes on a 100-column limit instead of the 80-column convention common in other projects
+  like Chromium. Because automated formatters like clang-format may not reflow or combine already wrapped
+  lines that fall below the column threshold, comments should be manually reflowed to keep formatting
+  consistent and make efficient use of horizontal line space.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // We try to prevent additional draw calls + bindings in reserve
+  // by starting the new pendingBase at the previous pendingBase byte usage,
+  // aligned to the new stride usage:
+  ```
+
+  Good:
+
+  ```cpp
+  // We try to prevent additional draw calls + bindings in reserve by starting the new pendingBase
+  // at the previous pendingBase byte usage, aligned to the new stride usage:
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*//\s+(?:We|This|The|When|If|In|For|To|As|By|Note|Each|All)\b
+- ^\s*//\s+(?:by|with|from|and|or|that|which|at|into)\b
+- ^\s*\*\s+(?:We|This|The|When|If|In|For|To|As|By|Note|Each|All)\b
+- ^\s*\*\s+(?:by|with|from|and|or|that|which|at|into)\b
+- ^\s*//\s*(?:TODO|NOTE|FIXME):?\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We wrap lines at 100 columns unless it is excessively ugly (use your judgement).
+confidence: 0.85
+support_cl_count: 1

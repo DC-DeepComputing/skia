@@ -1,0 +1,52 @@
+id: general/name-multi-variant-predicates-by-category
+title: When naming predicates for variant types or enum sets, use category names for multi-variant checks
+  and qualify subtype-specific queries with the concrete subtype
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring variables, predicates, or helpers that test whether an enum value belongs to a range
+  or set of variants, name them after the general category or concept represented rather than a single
+  specific variant (e.g., isContourVerb, not isVerbALine). Additionally, when adding a predicate to a
+  variant or discriminated union class that checks a property exclusive to one underlying subtype, explicitly
+  include the subtype in the method name (e.g., isVolatilePath(), not isVolatile()).
+why: Naming a multi-variant check after a single variant misleads readers into believing only that specific
+  variant is handled. Conversely, using an unqualified predicate name on a variant type falsely suggests
+  the property applies across all subtypes; returning false for non-matching subtypes can mislead callers
+  into assuming the property was evaluated as false rather than inapplicable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: checks a range of variants but named after a single variant.
+  bool isVerbALine = verb >= SkPathVerb::kLine && verb <= SkPathVerb::kCubic;
+
+  // Bad: unqualified predicate on a variant type queries a subtype-specific property.
+  bool isVolatile() const {
+      return fType == Type::kPath && this->path().isVolatile();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: category-level name clearly conveys that multiple variants are matched.
+  bool isContourVerb = verb >= SkPathVerb::kLine && verb <= SkPathVerb::kCubic;
+
+  // Good: explicitly qualifies the predicate with the subtype being queried.
+  bool isVolatilePath() const {
+      return fType == Type::kPath && this->path().isVolatile();
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:const\s+)?(?:bool|auto)\s+is[A-Z]\w*\s*=\s*[^;]*\bk[A-Z]
+- \b(?:bool|constexpr\s+bool|inline\s+bool)\s+is[A-Z]\w*\s*\([^)]*\bk[A-Z]
+- \b(?:bool|constexpr\s+bool|inline\s+bool)\s+is[A-Z]\w*\s*\([^)]*\)(?:\s*const)?\s*\{
+- \b(?:is|has)[A-Z]\w*(?:Verb|Type|Kind|Op|Cmd|Tag|Action|Path|Rect|RRect)\b
+- \b(?:verb|kind|type|op|cmd)\s*(?:>=|<=|==)\s*[A-Za-z0-9_:]*k[A-Z]
+- \b[A-Za-z0-9_]+::k[A-Z]\w*\s*(?:<=|>=|&&|\|\|)\s*
+confidence: 0.95
+support_cl_count: 2

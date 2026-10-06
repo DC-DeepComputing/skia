@@ -1,0 +1,59 @@
+id: build-bazel/bazel-introduce-aliases-immediately-on-rename
+title: When standardizing or renaming public Bazel targets, introduce the canonical alias immediately
+  and redirect the legacy alias with deprecation rather than deferring via TODO
+polarity: do
+severity: should_fix
+rubric: design
+rule: When standardizing or renaming public Bazel target names in BUILD.bazel, introduce the canonical
+  target alias immediately alongside the legacy name rather than deferring the rename with a TODO comment.
+  Redirect the legacy alias to the new canonical target (actual = ":<new_target>") and annotate it with
+  Bazel's deprecation attribute so downstream consumers can migrate without breaking.
+why: Bazel permits multiple aliases to point to the same underlying target at zero runtime cost. Creating
+  the new canonical alias immediately allows callers to adopt the standardized target name right away,
+  while redirecting the legacy alias with a deprecation notice avoids breaking downstream consumers during
+  migrations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # In BUILD.bazel
+  # BAD: Deferring the canonical alias rename with a TODO leaves naming inconsistent
+  # and prevents downstream consumers from adopting the standardized target.
+  alias(
+      # TODO: Consider renaming to `png_decode_libpng` for consistency with BUILD.gn.
+      name = "png_decode_codec",
+      actual = "//src/codec:png_decode",
+      visibility = ["//visibility:public"],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  # In BUILD.bazel
+  # GOOD: Define the canonical alias immediately and redirect the legacy alias with deprecation.
+  alias(
+      name = "png_decode_codec",
+      actual = ":png_decode_libpng",
+      deprecation = "Please use the `png_decode_libpng` target instead.",
+      visibility = ["//visibility:public"],
+  )
+
+  alias(
+      name = "png_decode_libpng",
+      actual = "//src/codec:png_decode",
+      visibility = ["//visibility:public"],
+  )
+  ```
+include_glob:
+- BUILD.bazel
+- '**/BUILD.bazel'
+triggers:
+- \balias\s*\(
+- \bdeprecation\s*=\s*["']
+- \bactual\s*=\s*["'](?::|//)
+- (?:#|//)\s*TODO.*?\b(?:rename|renaming|alias|deprecated?)\b
+- '["'']//visibility:public["'']'
+confidence: 0.9
+support_cl_count: 1

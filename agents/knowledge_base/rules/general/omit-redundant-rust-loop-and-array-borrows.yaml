@@ -1,0 +1,41 @@
+id: general/omit-redundant-rust-loop-and-array-borrows
+title: In Rust loops and collections, iterate slices without redundant & patterns and pass owned arrays
+  to Vec::extend instead of extend_from_slice(&...)
+polarity: do
+severity: nit
+rubric: readability
+rule: In Rust, iterate over slice elements with 'for value in slice' rather than destructuring with 'for
+  &value in slice' when method calls on the element auto-dereference. Additionally, when appending owned
+  fixed-size arrays (such as the return value of .to_le_bytes() or array literals) to a Vec, pass the
+  array directly to Vec::extend by value rather than calling extend_from_slice(&...).
+why: Rust method call syntax automatically dereferences reference receivers (such as calling .to_le_bytes()
+  on a &u32 reference), rendering & destructuring in slice loops redundant. Furthermore, fixed-size arrays
+  implement IntoIterator, allowing Vec::extend to consume owned arrays directly without creating intermediate
+  slice borrows.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  for &value in values {
+      bytes.extend_from_slice(&value.to_le_bytes());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  for value in values {
+      bytes.extend(value.to_le_bytes());
+  }
+  ```
+include_glob:
+- '**/*.rs'
+triggers:
+- \bfor\s+&[a-zA-Z0-9_]+\s+in\s+
+- \bfor\s+&?\s*[(][a-zA-Z0-9_,\s&]+[)]\s+in\s+
+- \bextend_from_slice\s*[(]
+- \.(?:to_le_bytes|to_be_bytes|to_ne_bytes)\s*[(][)]
+- \bextend\s*[(][^)]*\.(?:to_le_bytes|to_be_bytes|to_ne_bytes)
+confidence: 0.8
+support_cl_count: 1

@@ -1,0 +1,67 @@
+id: general/remove-temporary-debug-logging
+title: When modifying production code or unit tests, remove temporary debug logging (printf, SkDebugf)
+  and assert test expectations programmatically with REPORTER_ASSERT
+polarity: dont
+severity: should_fix
+rubric: change_scope
+rule: Remove temporary debug logging and ad-hoc print statements—such as SkDebugf, SkDEBUGF, SKIA_LOG_D,
+  SKGPU_LOG_D, printf, or std::cout—from production source files and headers before submitting code for
+  review. In unit tests, do not leave temporary print statements to inspect values; assert test expectations
+  programmatically using REPORTER_ASSERT or report failures via ERRORF. If permanent diagnostic logging
+  is genuinely required in production code, use the appropriate subsystem logging macro or guard it behind
+  a dedicated debug configuration flag.
+why: Temporary debug prints added during development or troubleshooting pollute console, test runner (dm),
+  and system logcat output, clutter code review diffs, and can degrade runtime performance. In unit tests,
+  debug prints fail to verify behavior automatically, whereas REPORTER_ASSERT and ERRORF integrate directly
+  with test failure reporting.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Production code:
+  outEffectiveElements->push_back(&e);
+  SkDebugf("MSAA-based clip required\n");
+  break;
+
+  // Unit test:
+  printf("firstPoint at (%f, %f): %08X\n", firstPoint.x(), firstPoint.y(), firstPointColor);
+  ```
+
+  Good:
+
+  ```cpp
+  // Production code:
+  outEffectiveElements->push_back(&e);
+  break;
+
+  // Unit test:
+  REPORTER_ASSERT(reporter, actual == expected,
+                  "color mismatch at (%f, %f)", pt.x(), pt.y());
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+triggers:
+- \bSkDebugf\s*[(]
+- \bSkDEBUGF\s*[(]
+- \bSK(IA|GPU)_LOG_D\s*[(]
+- \bstd::(cout|cerr|clog)\b
+- (^|\s|[=(;,!])(std::)?printf\s*[(]
+- \bfprintf\s*[(]\s*(stderr|stdout)\b
+citations:
+- path: agents/skills/skia-gn-workflow/references/fuzz.md
+  heading: 6. Clean Up
+  quote: Always remove all temporary debug SKIA_LOG_D statements before finalizing the changes.
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: Reporter and Assertions
+  quote: |-
+    - `REPORTER_ASSERT(reporter, condition, ...)`: Standard assertion.
+    - `ERRORF(reporter, ...)`: Report a failure with a formatted message.
+- path: agents/skills/skia-gn-workflow/references/fuzz.md
+  heading: '## 6. Clean Up'
+  quote: Always remove all temporary debug `SKIA_LOG_D` statements before finalizing the changes.
+confidence: 0.98
+support_cl_count: 6

@@ -1,0 +1,48 @@
+id: general/prefer-enum-kdefault-sentinel
+title: When passing or assigning enum values where default behavior is intended, use the enum's kDefault
+  sentinel rather than underlying enumerators like kWinding
+polarity: do
+severity: nit
+rubric: readability
+rule: When an enum defines a kDefault sentinel (such as SkPathFillType::kDefault or SkPathDirection::kDefault),
+  pass or assign Enum::kDefault whenever default behavior is intended. Do not specify the underlying default
+  enumerator (such as kWinding or kCW) unless the call site specifically and intentionally requires that
+  particular mode regardless of defaults.
+why: Using kDefault explicitly documents the caller's intent to rely on standard default semantics. It
+  decouples the call site from the underlying enumerator value, ensuring that changes to the default enum
+  mapping propagate cleanly without code churn or silent semantic drift.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Passing concrete enumerator when default behavior is intended
+  return SkPath::Raw(ptsSpan, verbsSpan, weightsSpan, SkPathFillType::kWinding);
+
+  SkPath path = SkPath::Rect(rect, SkPathDirection::kCW);
+  ```
+
+  Good:
+
+  ```cpp
+  // Use kDefault sentinel to explicitly convey default behavior
+  return SkPath::Raw(ptsSpan, verbsSpan, weightsSpan, SkPathFillType::kDefault);
+
+  SkPath path = SkPath::Rect(rect, SkPathDirection::kDefault);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- gm/**
+- tests/**
+- bench/**
+- tools/**
+triggers:
+- \b[A-Za-z0-9_]+::kDefault\b
+- \bSkPathFillType::k(?:Default|Winding|EvenOdd)\b
+- \bSkPathDirection::k(?:Default|CW|CCW)\b
+- \bSkPath::(?:Raw|Rect|Oval|RRect)\b
+- \b(?:SkPathFillType|SkPathDirection)\b
+confidence: 0.88
+support_cl_count: 1

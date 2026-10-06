@@ -1,0 +1,77 @@
+id: general/name-members-after-semantic-role
+title: When declaring configuration options, member fields, or parameter structs, name them after their
+  concrete domain role rather than generic placeholders, keeping parallel implementations consistent
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Name member fields, configuration options, local variables, and parameter structs after the specific
+  domain concept or semantic role they control or represent rather than generic type names or vague descriptors
+  (e.g., 'fInternalMSAATileSize' rather than 'fInternalMultisampleDimsLimit', 'fBindingList' instead of
+  'fWrapper', or 'stepParams' instead of generic 'params'). Furthermore, maintain consistent naming and
+  terminology across parallel implementations—such as SIMD vectorizations and scalar reference algorithms—using
+  descriptive names (e.g., 'sortedXDir' or 'fSortedXDir' rather than generic 'xDir') that align with existing
+  counterparts.
+why: Naming a configuration option or field after a vague abstraction (like DimsLimit) or base wrapper
+  type obscures its concrete role and domain mechanism within the subsystem. Similarly, generic identifiers
+  like 'params' or 'xDir' lack context about calculation steps or coordinate trajectories. Using domain-specific,
+  role-based identifiers and keeping naming consistent across parallel counterparts eliminates ambiguity
+  and makes configurations and debugging intuitive.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Vague configuration option descriptor:
+  std::optional<SkISize> fInternalMultisampleDimsLimit = std::nullopt;
+
+  // Generic wrapper type name:
+  struct Insertion {
+      Layer* fLayer;
+      BindingWrapper* fWrapper;
+  };
+
+  // Generic parameter name in StripProcessorScalar.h:
+  LineStepParams params = this->computeLineStepParams(pTop, pBot, dx, dy);
+
+  // Inconsistent naming in SIMD counterpart:
+  bool xDir = pTop.fX <= pBot.fX;
+  return {maskRowLut, stepXFixed, stepYFixed, tBaseFixed, xDir};
+  ```
+
+  Good:
+
+  ```cpp
+  // Concrete domain mechanism (MSAA tile size):
+  std::optional<SkISize> fInternalMSAATileSize = std::nullopt;
+
+  // Semantic role:
+  struct Insertion {
+      Layer* fLayer;
+      BindingWrapper* fBindingList;
+  };
+
+  // Descriptive parameter name:
+  LineStepParams stepParams = this->computeLineStepParams(pTop, pBot, dx, dy);
+
+  // Matching scalar counterpart's LineStepParams::fSortedXDir:
+  bool fSortedXDir = pTop.fX <= pBot.fX;
+  return {fMaskRowLut, fStepXFixed, fStepYFixed, fTBaseFixed, fSortedXDir};
+  ```
+include_glob:
+- src/**
+- include/**
+exclude_glob:
+- third_party/**
+triggers:
+- \b[A-Za-z0-9_]+[*&]?\s+f(?:Wrapper|Base|Object|Container|Impl|Data|Item|State)\b
+- \b(?:fWrapper|fBindingList|fDrawList)\b
+- \b(?:std::unique_ptr|sk_sp)<[A-Za-z0-9_]+>\s+f(?:Wrapper|Base|Object|Container|Impl)\b
+- \b(?:const\s+)?[A-Za-z0-9_]+[*&]?\s+(?:wrapper|baseObj|baseInstance|implPtr)\b
+- \b(?:const\s+)?[A-Za-z0-9_]*Params[*&]?\s+(?:params|stepParams)\b
+- \b(?:stepParams|LineStepParams)\b
+- \b(?:bool\s+)?(?:f)?(?:sorted|canonical)?XDir\b
+- \b(?:StripProcessorSimd|StripProcessorScalar)\b
+- \bf[A-Z][A-Za-z0-9_]*(?:DimsLimit|TileSize)\b
+- \bstd::optional<SkISize>\s+f[A-Z]\w*\b
+confidence: 0.98
+support_cl_count: 3

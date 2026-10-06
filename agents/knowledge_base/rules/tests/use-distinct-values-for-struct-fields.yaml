@@ -1,0 +1,52 @@
+id: tests/use-distinct-values-for-struct-fields
+title: When testing struct conversions, serialization, or FFI mappings, assign distinct values to fields
+  of the same type to catch transposed field assignments
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When writing unit tests for struct conversions, redefinitions, FFI bridges, or serialization, assign
+  distinct values to each field of the same type rather than reusing identical or default values. Ensure
+  every field has a unique test value so that accidental field transposition or swapped assignments trigger
+  assertion failures.
+why: If multiple fields of the same type share identical values, an accidental transposition or swapped
+  assignment during struct mapping, FFI bridging, or serialization will not cause test assertions to fail.
+  Assigning distinct values ensures field-to-field alignment is strictly validated.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  rust_icc::TransferFunction rust_tf;
+  rust_tf.g = 2.4f;
+  rust_tf.a = 1.0f / 1.055f;
+  rust_tf.b = 0.055f / 1.055f;
+  rust_tf.c = 1.0f / 12.92f;
+  rust_tf.d = 0.04045f;
+  rust_tf.e = 0.0f;
+  // Both e and f are 0.0f; accidental transposition cannot be detected:
+  rust_tf.f = 0.0f;
+  ```
+
+  Good:
+
+  ```cpp
+  rust_icc::TransferFunction rust_tf;
+  rust_tf.g = 2.4f;
+  rust_tf.a = 1.0f / 1.055f;
+  rust_tf.b = 0.055f / 1.055f;
+  rust_tf.c = 1.0f / 12.92f;
+  rust_tf.d = 0.04045f;
+  rust_tf.e = 0.0f;
+  // Assign distinct values so accidental field transpositions are caught:
+  rust_tf.f = 1.0f;
+  ```
+include_glob:
+- tests/**
+triggers:
+- \b[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+\s*=\s*[-+]?\d+
+- \.[a-zA-Z0-9_]+\s*=\s*[-+]?\d+
+- \b(?:skcms|rust_icc)?_?(?:TransferFunction|Matrix|ColorSpace|ICCProfile)\b
+- \bDEF_(?:GANESH_)?TEST\s*\(\s*\w*(?:Conversion|Layout|FFI|Bridge|Serialize|Deserialize|Struct|TransferFunction)\w*
+- \bREPORTER_ASSERT\s*\([^)]*\.[a-zA-Z0-9_]+\s*==\s*[^)]*\.[a-zA-Z0-9_]+
+confidence: 0.92
+support_cl_count: 1

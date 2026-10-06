@@ -1,0 +1,26 @@
+id: capture/finalize-and-clear-buffers-on-capture-stop
+title: When toggling or stopping session-based capture managers, guard finalization side effects on actual
+  state transitions, cache the active artifact, and clear working buffers
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When implementing session-based capture or recording managers that track active state across frames
+  or draw calls, guard teardown and finalization side effects (such as snapping pictures or flushes) so
+  they only execute on an actual state transition (e.g., active to inactive). Finalize the active session
+  artifact into a cached result and clear accumulated working buffers upon stopping capture, rather than
+  triggering teardown unconditionally or retaining in-flight buffers across inactive sessions.
+why: Invoking a state setter or toggle when already inactive or uninitialized should be a no-op; triggering
+  teardown whenever the target state is false leads to spurious snapping or serialization on duplicate
+  stop calls. Furthermore, failing to clear working buffers upon stopping causes recorded data from previous
+  sessions to bleed into subsequent sessions and leaks memory.
+include_glob:
+- src/capture/**
+triggers:
+- \btoggleCapture\s*[(]
+- \b(?:stopCapture|endCapture|finishCapture|startCapture)\s*[(]
+- \b(?:fLastCapture|fActiveCapture|getLastCapture)\b
+- \b(?:isCurrentlyCapturing|fIsCurrentlyCapturing)\b
+- \bSkCaptureManager\b
+- \b(?:MakeFromPictures|snapPictures|captureUninsertedDrawTasks)\b
+confidence: 0.95
+support_cl_count: 2

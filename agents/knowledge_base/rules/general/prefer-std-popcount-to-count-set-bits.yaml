@@ -1,0 +1,43 @@
+id: general/prefer-std-popcount-to-count-set-bits
+title: When counting set bits in an integer or bitmask, use std::popcount or SkPopCount instead of manual
+  bit-shifting loops or hand-rolled bitwise arithmetic
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When counting set bits in an integer, bitmask, or difference mask, use std::popcount (from <bit>)
+  or Skia's SkPopCount helper (from SkMathPriv.h). Do not open-code manual bit-shifting loops (such as
+  looping over bit indices and testing (x >> b) & 1) or hand-rolled bitwise counting tricks.
+why: Standard bit-manipulation utilities clearly convey programmer intent, eliminate loop and masking
+  boilerplate, and map directly to dedicated hardware popcount CPU instructions rather than executing
+  multi-iteration branching loops or multi-step bitwise arithmetic.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  uint32_t bitErrors = 0;
+  for (int b = 0; b < 8; ++b) {
+      bitErrors += (diff >> b) & 1;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  uint32_t bitErrors = std::popcount(diff);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \b(?:std::)?popcount\b
+- \bSkPopCount\s*\(
+- '>>\s*[a-zA-Z0-9_]+\s*\)?\s*&\s*1'
+- '&\s*1u?\s*;\s*[a-zA-Z0-9_]+\s*>>='
+- \bfor\s*\([^;]*\b(?:b|bit|shift|i)\s*<\s*(?:8|16|32|64)\b
+- \b(?:numBits|numSetBits|setBits|bitCount|bitErrors)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,52 @@
+id: gpu/mask-node-local-flags-during-child-propagation
+title: When propagating snippet requirement flags upward from child ShaderNodes to parent nodes in Graphite,
+  mask off node-local behavioral flags like kPassthroughLocalCoords and kLiftExpression
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When propagating snippet requirement flags upward from child ShaderNodes to parent nodes in an effect
+  tree, mask off node-local behavioral flags (such as SnippetRequirementFlags::kPassthroughLocalCoords
+  and kLiftExpression). Ensure parent nodes only aggregate transitive input requirements rather than inheriting
+  child-local properties.
+why: Node-specific flags represent local behavioral properties of a particular snippet rather than transitive
+  requirements that bubble up to ancestors. Allowing them to propagate upward causes parent nodes to falsely
+  inherit coordinate passthrough or expression lifting states, leading to invalid varying allocation and
+  coordinate lifting decisions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkEnumBitMask<SnippetRequirementFlags> mask = SnippetRequirementFlags::kNone;
+  if (isRuntimeEffect || (isCompose && child == children.back())) {
+      mask = SnippetRequirementFlags::kLocalCoords |
+             SnippetRequirementFlags::kPriorStageOutput |
+             SnippetRequirementFlags::kBlenderDstColor;
+  }
+  fRequiredFlags |= (child->requiredFlags() & ~mask);
+  ```
+
+  Good:
+
+  ```cpp
+  SkEnumBitMask<SnippetRequirementFlags> mask =
+          SnippetRequirementFlags::kPassthroughLocalCoords |
+          SnippetRequirementFlags::kLiftExpression;
+  if (isRuntimeEffect || (isCompose && child == children.back())) {
+      mask |= SnippetRequirementFlags::kLocalCoords |
+              SnippetRequirementFlags::kPriorStageOutput |
+              SnippetRequirementFlags::kBlenderDstColor;
+  }
+  fRequiredFlags |= (child->requiredFlags() & ~mask);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bSnippetRequirementFlags::kPassthroughLocalCoords\b
+- \bSnippetRequirementFlags::kLiftExpression\b
+- \bchild->requiredFlags\(\)
+- \bfRequiredFlags\b
+- \bSkEnumBitMask<SnippetRequirementFlags>\b
+- \bSnippetRequirementFlags::k(?:LocalCoords|PriorStageOutput|BlenderDstColor)\b
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,59 @@
+id: general/simplify-sequential-early-returns-to-boolean-expression
+title: When returning boolean status from condition checks without intermediate side effects, return boolean
+  expressions directly or chain short-circuiting logical operators instead of branching
+polarity: do
+severity: nit
+rubric: readability
+rule: When returning a boolean value from condition checks without intermediate side effects, return the
+  boolean expression directly (`return cond;`) or chain short-circuiting logical expressions (`return
+  a && b;` or `return a || b;`) instead of writing redundant `if (cond) return true; return false;` branches
+  or repetitive sequential `if (!cond) return false;` checks.
+why: Directly returning or chaining boolean expressions eliminates redundant conditional branching and
+  nesting depth, simplifies control flow, and adheres to idiomatic C++ while preserving identical short-circuit
+  evaluation semantics.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant single-condition branch:
+  if (globalCache->isResourceTracked(resource)) {
+      return true;
+  }
+  return false;
+
+  // Redundant sequential early returns:
+  if (!visitor(fSrcProxy.get())) {
+      return false;
+  }
+  if (!visitor(fDstProxy.get())) {
+      return false;
+  }
+  return true;
+  ```
+
+  Good:
+
+  ```cpp
+  // Return boolean expression directly:
+  return globalCache->isResourceTracked(resource);
+
+  // Chain short-circuiting logical expressions directly:
+  return visitor(fSrcProxy.get()) && visitor(fDstProxy.get());
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \breturn\s+false\s*;
+- \breturn\s+true\s*;
+- \bif\s*\([^)]*\)\s*\{?\s*return\s+(?:false|true);
+- \breturn\s+[^;]+\s*&&\s*[^;]+;
+- \breturn\s+[^;]+\s*\|\|\s*[^;]+;
+- \breturn\s+!?\w+(?:->|\.)\w+\([^)]*\)\s*;
+- \bbool\s+visit(?:Proxies|Pipelines|Tasks|Children)\b
+confidence: 0.95
+support_cl_count: 2

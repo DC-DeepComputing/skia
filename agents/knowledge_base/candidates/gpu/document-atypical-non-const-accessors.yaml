@@ -1,0 +1,44 @@
+id: gpu/document-atypical-non-const-accessors
+title: When exposing atypical non-const accessors for shared or normally const-held objects in ResourceProviders,
+  document the mutating operations and requirements that necessitate non-const access
+polarity: do
+severity: optional
+rubric: readability
+rule: When exposing an atypical non-const accessor for a shared or normally const-held object (such as
+  a SharedContext in a backend ResourceProvider), document the specific mutating operation and subsystem
+  requirement (e.g., pipeline cache persistence updates) that necessitates non-const access. Clarify why
+  the object cannot be held or accessed via standard const references.
+why: In Graphite, ResourceProvider implementations generally treat SharedContext as const to respect immutability
+  and thread-safety invariants across context operations. Exposing an atypical non-const accessor breaks
+  standard const-correctness conventions and confuses readers unless documented with the specific mutating
+  subsystem operations that necessitate it.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const VulkanSharedContext* vulkanSharedContext() const;
+  VulkanSharedContext* nonConstVulkanSharedContext();
+  ```
+
+  Good:
+
+  ```cpp
+  const VulkanSharedContext* vulkanSharedContext() const;
+  // VulkanSharedContext::pipelineCompileWasRequired() - which drives PipelineCache persistence
+  // - modifies the SharedContext so, when creating Pipelines, the ResourceProvider must
+  // provide a non-const SharedContext.
+  VulkanSharedContext* nonConstVulkanSharedContext();
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bnonConst[A-Za-z0-9_]+\s*[(]
+- \b(?:const\s+)?[A-Za-z0-9_]*SharedContext\s*\*\s*[a-zA-Z0-9_]*[sS]haredContext\s*[(]
+- \b(?:class|struct)\s+[A-Za-z0-9_]*ResourceProvider\b
+- //.*\b(?:non-const (?:SharedContext|accessor)|modifies the SharedContext|pipeline compile|PipelineCache
+  persistence)\b
+- \b(?:const\s+)?[A-Za-z0-9_]+SharedContext\*\s+[a-zA-Z0-9_]+\s*[(]
+- \b[A-Za-z0-9_]*ResourceProvider::nonConst[A-Za-z0-9_]*
+confidence: 0.9
+support_cl_count: 1

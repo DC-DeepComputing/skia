@@ -1,0 +1,25 @@
+id: codec/omit-vestigial-buffer-checks-in-skip-scanlines
+title: When skipping scanlines into a temporary scratch buffer, decode rows directly without retaining
+  vestigial buffer capacity checks or cumulative offset calculations
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: In image decoder skip routines (such as SkCodec::onSkipScanlines), do not retain vestigial cumulative
+  offset calculations or capacity checks against unrelated decoded image buffers when reading rows into
+  a fixed-size scratch buffer. Decode each row directly into the scratch buffer to advance the reader
+  or stream cursor without guarding the decode call behind persistent buffer size checks.
+why: When skipping scanlines by discarding rows into a dedicated single-row buffer, calculating cumulative
+  byte offsets and checking the size of unrelated image buffers (such as cached decoded data) is dead
+  code typically copied from onGetScanlines. This arithmetic obscures state invariants and risks failing
+  to advance the stream if the referenced buffer is non-empty.
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bonSkipScanlines\s*[(]
+- \b(?:linesToSkip|countToSkip|rowsToSkip)\b
+- \b(?:neededDataSize|neededBufferSize|srcRowBytes|dstRowBytes)\b
+- \b(?:tempBuffer|scratchBuffer|row_span|next_row)\b
+- \b(?:fCurrentScanline|fCurrScanline)\b
+confidence: 0.9
+support_cl_count: 1

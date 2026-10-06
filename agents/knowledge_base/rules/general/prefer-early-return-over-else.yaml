@@ -1,0 +1,81 @@
+id: general/prefer-early-return-over-else
+title: When handling errors or branch completions, return early with guard clauses rather than wrapping
+  subsequent logic in else or if (success) blocks
+polarity: do
+severity: nit
+rubric: readability
+rule: Prefer returning early from a conditional branch once its processing is complete rather than wrapping
+  subsequent fallback or alternative logic in an else block. Similarly, use early returns on failure (guard
+  clauses such as if (!success) return false;) rather than wrapping the remainder of the function in if
+  (success) and returning the status variable; keep the success path un-nested at the outer indentation
+  level and return explicit status (e.g., return true;) at the function exit.
+why: Returning early eliminates unnecessary indentation and reduces nesting depth by keeping primary execution
+  and alternative logic un-nested. Guarding against failure upfront makes bailouts explicit and ensures
+  terminal return statements clearly signify success rather than relying on ambiguous status fallthrough.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Branch completion: unnecessary else block
+  if (mask & kScale_Mask) {
+      ComputeScale(dst, src);
+      if (inv) {
+          ComputeInverse(inv);
+      }
+  } else {
+      ComputeTranslate(dst, src);
+  }
+  return true;
+
+  // Failure check: wrapping success path
+  bool success = skcms_ApproximateCurve(&curve, &skcms_approx, &max_error);
+  if (success) {
+      memcpy(&out_approx, &skcms_approx, sizeof(skcms_TransferFunction));
+      out_max_error = max_error;
+  }
+  return success;
+  ```
+
+  Good:
+
+  ```cpp
+  // Branch completion: return early, keep fallback un-nested
+  if (mask & kScale_Mask) {
+      ComputeScale(dst, src);
+      if (inv) {
+          ComputeInverse(inv);
+      }
+      return true;
+  }
+  ComputeTranslate(dst, src);
+  return true;
+
+  // Failure check: bail out early, keep success path un-nested
+  bool success = skcms_ApproximateCurve(&curve, &skcms_approx, &max_error);
+  if (!success) {
+      return false;
+  }
+  memcpy(&out_approx, &skcms_approx, sizeof(skcms_TransferFunction));
+  out_max_error = max_error;
+  return true;
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+- rust/**
+- experimental/**
+exclude_glob:
+- third_party/**
+triggers:
+- \}\s*else\s*\{
+- \belse\s*\{
+- \breturn\s+(?:true|false|nullptr|std::nullopt|0|-1)\s*;
+- \bif\s*[(]\s*!(?:success|ok|result|res|valid)\b
+- \bif\s*[(]\s*(?:success|ok|result|res|valid)\s*[)]\s*\{
+- \breturn\s+(?:success|ok|result|res)\s*;
+confidence: 0.85
+support_cl_count: 2

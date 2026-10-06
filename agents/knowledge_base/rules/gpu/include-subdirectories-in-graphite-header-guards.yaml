@@ -1,0 +1,50 @@
+id: gpu/include-subdirectories-in-graphite-header-guards
+title: When defining header guard macros for files in Graphite subdirectories, include the enclosing subdirectory
+  in the macro name (skgpu_graphite_<subdir>_<Header>_DEFINED) rather than omitting it
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'When defining header include guards in Graphite subdirectories (`src/gpu/graphite/<subdir>/` or
+  `include/gpu/graphite/<subdir>/`, such as `render/`, `geom/`, `task/`, `compute/`, `sparse_strips/`,
+  or `precompile/`), include the enclosing subdirectory path in the guard macro: `#ifndef skgpu_graphite_<subdir>_<Header>_DEFINED`.
+  Conversely, omit subdirectory tokens only for headers residing directly in the top-level Graphite root
+  directory (`skgpu_graphite_<Header>_DEFINED`).'
+why: Including the directory hierarchy in header guard macros prevents macro naming collisions across
+  sibling subdirectories that implement counterpart components or have identically named headers, and
+  maintains consistent preprocessor symbol naming across the Graphite subsystem.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/gpu/graphite/sparse_strips/StripGenerator.h
+  #ifndef skgpu_graphite_StripGenerator_DEFINED
+  #define skgpu_graphite_StripGenerator_DEFINED
+
+  ...
+
+  #endif // skgpu_graphite_StripGenerator_DEFINED
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/gpu/graphite/sparse_strips/StripGenerator.h
+  #ifndef skgpu_graphite_sparse_strips_StripGenerator_DEFINED
+  #define skgpu_graphite_sparse_strips_StripGenerator_DEFINED
+
+  ...
+
+  #endif // skgpu_graphite_sparse_strips_StripGenerator_DEFINED
+  ```
+include_glob:
+- src/gpu/graphite/**
+- include/gpu/graphite/**
+triggers:
+- ^#\s*(?:ifndef|define)\s+skgpu_graphite_[A-Za-z0-9_]+_DEFINED
+- ^#\s*endif\s*//\s*skgpu_graphite_[A-Za-z0-9_]+_DEFINED
+- ^#\s*(?:ifndef|define)\s+[A-Za-z0-9_]+_DEFINED
+- \bskgpu_graphite_[A-Za-z0-9_]+_DEFINED\b
+- ^#\s*(?:pragma\s+once|ifndef\s+[A-Za-z0-9_]+)
+confidence: 0.9
+support_cl_count: 1

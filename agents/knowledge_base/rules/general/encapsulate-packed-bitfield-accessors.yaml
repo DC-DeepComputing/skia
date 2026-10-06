@@ -1,0 +1,56 @@
+id: general/encapsulate-packed-bitfield-accessors
+title: When a struct packs multiple logical fields into a composite integer member, provide member accessors
+  to unpack them rather than bit-shifting at call sites
+polarity: do
+severity: nit
+rubric: design
+rule: When a struct or class packs multiple logical fields or bitmasks into an integer member variable,
+  provide member accessor methods to extract each component. Do not require callers or test code to open-code
+  bitwise shifts and masks on the packed member directly.
+why: Directly shifting and masking packed fields at call sites leaks the internal bit layout, duplicates
+  extraction logic across callers, and increases maintenance costs when bit widths or offsets change.
+  Member accessors encapsulate unpacking in a single location and keep call sites readable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Callers manually unpack packed bitfields:
+  uint32_t rawLine = tile.fPackedLineIdxIntersectionMask >> IntersectionBits::INT_MASK_SHIFT;
+  uint32_t mask = tile.fPackedLineIdxIntersectionMask & IntersectionBits::INTERSECTION_MASK;
+  bool hasWinding = (tile.fPackedLineIdxIntersectionMask & IntersectionBits::W) != 0;
+  ```
+
+  Good:
+
+  ```cpp
+  struct Tile {
+      uint32_t lineIdx() const {
+          return fPackedLineIdxIntersectionMask >> IntersectionBits::INT_MASK_SHIFT;
+      }
+      uint32_t intersectionMask() const {
+          return fPackedLineIdxIntersectionMask & IntersectionBits::INTERSECTION_MASK;
+      }
+      bool hasWinding() const {
+          return (fPackedLineIdxIntersectionMask & IntersectionBits::W) != 0;
+      }
+  };
+
+  // Callers use encapsulated accessors:
+  uint32_t rawLine = tile.lineIdx();
+  uint32_t mask = tile.intersectionMask();
+  bool hasWinding = tile.hasWinding();
+  ```
+include_glob:
+- src/**
+- include/**
+- tests/**
+triggers:
+- \b[a-zA-Z0-9_]*\.(?:fPacked|packed)[A-Za-z0-9_]*\s*(?:>>|&)
+- \b(?:fPacked|packed)[A-Za-z0-9_]+\s*>>\s*[A-Za-z0-9_:]+
+- \breturn\s+\(?f(?:Packed)?[A-Za-z0-9_]+\s*>>\s*[A-Za-z0-9_:]+
+- \b(?:uint(?:8|16|32|64)_t|int|bool)\s+[a-z][a-zA-Z0-9_]*\s*\(\s*\)\s*const\s*\{[^}]*>>
+- \b[a-zA-Z0-9_]+\.(?:lineIdx|intersectionMask)\s*\(
+- \b[a-zA-Z0-9_]+\.(?:fPacked|packed)[A-Za-z0-9_]*\b
+confidence: 0.9
+support_cl_count: 1

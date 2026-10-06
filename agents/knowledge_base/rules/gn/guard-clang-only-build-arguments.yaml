@@ -1,0 +1,47 @@
+id: gn/guard-clang-only-build-arguments
+title: When declaring default values for build arguments in GN files, guard Clang-specific features with
+  is_clang instead of setting them unconditionally to true
+polarity: dont
+severity: blocking
+rubric: correctness
+rule: When declaring default values for build arguments in GN files (such as gn/skia.gni), do not unconditionally
+  set arguments for features, dependencies, or tools only supported or tested on Clang to true. Guard
+  their defaults with compiler checks such as is_clang (e.g., skia_use_feature = is_clang or is_skia_standalone
+  && is_clang) so non-Clang compilers (GCC, MSVC) do not attempt to build unsupported configurations.
+why: Skia supports compiling with non-Clang compilers including GCC and MSVC, but certain external dependencies
+  or features (such as PartitionAlloc) lack CI coverage or support on non-Clang toolchains. Enabling them
+  unconditionally causes build failures on non-Clang CQ bots and downstream embedders.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  declare_args() {
+    skia_use_partition_alloc = true
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  declare_args() {
+    skia_use_partition_alloc = is_clang
+  }
+  ```
+include_glob:
+- gn/**
+- BUILD.gn
+- '**/*.gni'
+triggers:
+- \bdeclare_args\s*\(
+- \bskia_use_[a-zA-Z0-9_]+\s*=
+- \bskia_enable_[a-zA-Z0-9_]+\s*=
+- \bis_clang\b
+- \b(?:is|use)_[a-zA-Z0-9_]+\s*=\s*(?:true|is_clang)\b
+citations:
+- path: site/docs/user/build.md
+  heading: Supported and Preferred Compilers
+  quote: While Skia should compile with GCC, MSVC, and other compilers, a number of routines in Skia's
+    software backend have been written to run fastest when compiled with Clang.
+confidence: 0.9
+support_cl_count: 1

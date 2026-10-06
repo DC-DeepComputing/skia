@@ -1,0 +1,40 @@
+id: general/include-identifiers-in-bazel-fail-messages
+title: When raising build errors with fail() in Bazel or Starlark files, include the offending target,
+  dependency, or argument value in the error message
+polarity: do
+severity: nit
+rubric: readability
+rule: When raising build errors using fail(...) in Bazel and Starlark macros or rules (*.bzl), include
+  the offending identifier, target, dependency label, or invalid value in the error message instead of
+  using a generic static string. Use string concatenation, % formatting, or .format() to identify the
+  exact problematic input.
+why: Static error messages like fail("not supported") or fail("unknown CPU") leave developers without
+  context when a build fails during loading or analysis. Interpolating the offending dependency label,
+  target name, or configuration argument pinpoints the problematic input immediately in build logs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  for dep in implementation_deps:
+      if dep in _REWRITE_TEST_UTIL_DEPS:
+          fail("not supported")
+  ```
+
+  Good:
+
+  ```cpp
+  for dep in implementation_deps:
+      if dep in _REWRITE_TEST_UTIL_DEPS:
+          fail("not supported " + dep)
+  ```
+include_glob:
+- '**/*.bzl'
+triggers:
+- \bfail\s*\(
+- \bfail\s*\(\s*["'][^"']*["']\s*\)
+- \bfail\s*\(\s*["'][^"']*\b(?:not supported|unsupported|unknown|invalid|error|failed)\b
+- \bfail\s*\([^)]*%\s*
+- \bfail\s*\([^)]*\.format\s*\(
+confidence: 0.9
+support_cl_count: 1

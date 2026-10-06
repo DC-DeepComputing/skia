@@ -1,0 +1,44 @@
+id: general/pass-nullopt-for-omitted-optional-argument
+title: When omitting an optional value in a function call expecting std::optional<T>, pass std::nullopt
+  instead of a default-constructed object T()
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When calling a function with a parameter expecting std::optional<T>, pass std::nullopt rather than
+  a default-constructed object T() to indicate the absence of a value. Do not pass an empty or default-constructed
+  instance to an optional parameter unless the callee explicitly requires an engaged optional containing
+  a default value.
+why: Passing a default-constructed object T() implicitly constructs an engaged std::optional<T> containing
+  the default instance. When the callee checks if (opt) or opt.has_value() to determine whether a value
+  was supplied or needs to be computed or generated, the engaged optional evaluates to true, unintentionally
+  bypassing fallback or generation logic and operating on an uninitialized or empty object.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void SkScalerContext::getPath(SkGlyph& glyph, SkArenaAlloc* alloc) {
+      this->internalGetPath(glyph, alloc, GeneratedPath());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void SkScalerContext::getPath(SkGlyph& glyph, SkArenaAlloc* alloc) {
+      this->internalGetPath(glyph, alloc, std::nullopt);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+triggers:
+- \bstd::nullopt\b
+- \bstd::optional<[A-Za-z0-9_:]+>
+- (?:,\s*|\()[A-Z][A-Za-z0-9_]*\(\s*\)
+- \bGeneratedPath\b
+- \b[a-zA-Z0-9_]+\.has_value\(\)
+confidence: 0.92
+support_cl_count: 1

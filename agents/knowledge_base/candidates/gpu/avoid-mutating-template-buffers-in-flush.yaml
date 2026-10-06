@@ -1,0 +1,75 @@
+id: gpu/avoid-mutating-template-buffers-in-flush
+title: When flushing draw batchers in Graphite, distinguish instanced draws by template count, preserve
+  persistent template descriptors, and guard buffer resets by append state
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: In draw-recording and batching helpers (such as DrawWriter), distinguish instanced from non-instanced
+  draws using fTemplateCount rather than RenderStateFlags append flags, since fixed instanced draws have
+  non-zero template counts without dynamic append flags. When binding and flushing buffers, preserve persistent
+  template buffer descriptors across flushes by operating on local copies, and guard post-flush buffer
+  resets (such as fInstances or fVertices) with corresponding RenderStateFlags (e.g., kAppendInstances
+  or kAppendVertices) so fixed template bindings are retained.
+why: Distinguishing instanced draws via append flags misses fixed instanced draws that lack dynamic append
+  flags. Mutating member buffer descriptors during flush corrupts persistent template state across draws.
+  Unconditionally resetting buffer bindings clears templates needed by subsequent batched draws or causes
+  buffer management to assume non-contiguous allocations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Mutating persistent member state during flush
+  if (fVertices.fOffset % fVertexStride == 0) {
+      pendingBaseVertex = fVertices.fOffset / fVertexStride;
+      fVertices.fOffset = 0;
+      fVertices.fSize = fVertices.fBuffer->size();
+  }
+
+  // Bad: Distinguishing instanced draws via append flags and unconditionally clearing buffers
+  if (fRenderState & (RenderStateFlags::kAppendInstances | RenderStateFlags::kAppendDynamicInstances)) {
+      fCommandList->drawInstanced(fPrimitiveType, pendingBaseVertex, fTemplateCount,
+                                  pendingBaseInstance, fPendingCount);
+      fInstances = {};
+  } else {
+      fCommandList->draw(fPrimitiveType, pendingBaseVertex, fPendingCount);
+      fVertices = {};
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Calculate bindings using local copies without mutating member descriptors
+  if (fVertices.fBuffer && fVertices.fOffset % fVertexStride == 0) {
+      pendingBaseVertex = fVertices.fOffset / fVertexStride;
+      boundVertices = {fVertices.fBuffer, 0, SkTo<uint32_t>(fVertices.fBuffer->size())};
+  }
+
+  // Good: Distinguish instanced draws via fTemplateCount, and guard resets with append flags
+  if (fTemplateCount) {
+      fCommandList->drawInstanced(fPrimitiveType, pendingBaseVertex, fTemplateCount,
+                                  pendingBaseInstance, fPendingCount);
+      if (fRenderState & (RenderStateFlags::kAppendInstances | RenderStateFlags::kAppendDynamicInstances)) {
+          fInstances = {};
+          fTemplateCount = 0;
+      }
+  } else {
+      fCommandList->draw(fPrimitiveType, pendingBaseVertex, fPendingCount);
+      if (fRenderState & RenderStateFlags::kAppendVertices) {
+          fVertices = {};
+      }
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bDrawWriter::(?:flushInternal|bindAndFlush|flush)\b
+- \bRenderStateFlags::kAppend(?:Vertices|Instances|DynamicInstances)\b
+- \b(?:fVertices|fInstances)\s*=\s*\{\\}
+- \bfTemplateCount\b
+- \b(?:fAppend|fStatic|fVertices|fInstances)\.f(?:Offset|Size|Buffer)\b
+- \b(?:fBoundAppend|fBoundStatic|fBoundVertices|fBoundInstances)\b
+- \bBindBufferInfo\b
+confidence: 0.92
+support_cl_count: 1

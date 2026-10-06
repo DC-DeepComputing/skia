@@ -1,0 +1,49 @@
+id: general/prefer-elaborated-friend-declarations
+title: When befriending a class in C++ headers, use elaborated friend declarations (`friend class ClassName;`)
+  instead of bare `friend ClassName;` to avoid redundant forward declarations
+polarity: do
+severity: nit
+rubric: readability
+rule: When granting friendship to a class or struct, use an elaborated friend declaration (`friend class
+  ClassName;` or `friend struct StructName;`) rather than a bare friend declaration (`friend ClassName;`).
+  Avoid preceding the class with a separate forward declaration when the type is only referenced in friend
+  declarations.
+why: Bare friend declarations (`friend ClassName;`) require the named type to already be declared in scope,
+  necessitating an extra forward declaration. Elaborated friend declarations (`friend class ClassName;`)
+  introduce the type into the enclosing namespace if not already declared, keeping headers clean and avoiding
+  redundant forward declarations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant forward declaration needed only for bare friend declaration
+  class SkSurface_Base;
+
+  class SkRecorder {
+      ...
+      friend SkSurface_Base;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SkRecorder {
+      ...
+      // Elaborated friend declaration introduces the class without a separate forward declaration
+      friend class SkSurface_Base;
+  };
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*friend\s+[A-Za-z0-9_:]+\s*;
+- ^\s*friend\s+class\s+[A-Za-z0-9_:]+;
+- ^\s*friend\s+struct\s+[A-Za-z0-9_:]+;
+- \bfriend\s+(?:class|struct)\s+[A-Za-z0-9_:]+;
+- \bfriend\s+[A-Z][A-Za-z0-9_]*;
+confidence: 0.82
+support_cl_count: 1

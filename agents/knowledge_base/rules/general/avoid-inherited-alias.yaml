@@ -1,0 +1,60 @@
+id: general/avoid-inherited-alias
+title: When defining derived classes or qualifying base members, reference concrete base classes explicitly
+  and do not define or retain INHERITED aliases
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not define or use an `INHERITED` type alias (`using INHERITED = BaseClass;` or `typedef BaseClass
+  INHERITED;`), and remove unused or boilerplate `INHERITED` aliases. Explicitly qualify base class member
+  calls, overrides, and constructor initializers with the concrete base class name (e.g., `this->BaseClass::method()`
+  or `BaseClass(args)`).
+why: Explicitly qualifying base class references clarifies which ancestor in the inheritance hierarchy
+  is being invoked, adheres to modern Skia style conventions, and eliminates redundant or dead alias boilerplate
+  from class declarations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: defining INHERITED to qualify base calls, or keeping unused alias boilerplate
+  class SkCaptureCanvas : public SkNWayCanvas {
+      using INHERITED = SkNWayCanvas;
+      void willSave() override { this->INHERITED::willSave(); }
+  };
+
+  class SkTypeface_AndroidSystem : public SkTypeface_proxy {
+      using INHERITED = SkTypeface_proxy; // unused boilerplate
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: qualify base class directly and omit INHERITED alias
+  class SkCaptureCanvas : public SkNWayCanvas {
+      void willSave() override { this->SkNWayCanvas::willSave(); }
+  };
+
+  class SkTypeface_AndroidSystem : public SkTypeface_proxy {
+      // concrete base class qualified directly when needed
+  };
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- \busing\s+INHERITED\s*=
+- \btypedef\s+[A-Za-z0-9_:]+\s+INHERITED\s*;
+- '\bINHERITED::'
+- '\bthis->INHERITED::'
+- '[:,]\s*INHERITED\s*\('
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: '## Classes'
+  quote: If you call a method on a parent type that must stand out as specifically the parent's version
+    of that method, such as Parent::method().
+confidence: 0.98
+support_cl_count: 4

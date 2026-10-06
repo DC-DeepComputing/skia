@@ -1,0 +1,61 @@
+id: tests/wrap-reporter-assert-for-custom-assertions
+title: When defining custom assertion helpers in unit tests, wrap REPORTER_ASSERT in a macro rather than
+  directly calling reportFailedWithContext or plumbing __FILE__ and __LINE__
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In unit tests, use REPORTER_ASSERT (or define a macro wrapper around REPORTER_ASSERT for custom
+  reusable assertions) rather than directly calling Reporter::reportFailedWithContext or manually passing
+  __FILE__ and __LINE__. Keep test assertions standard and let REPORTER_ASSERT capture call-site source
+  locations and condition expressions.
+why: REPORTER_ASSERT already encapsulates failure reporting, condition stringification, and __FILE__/__LINE__
+  tracking. Directly calling reportFailedWithContext bypasses standard test assertion conventions and
+  requires tedious manual plumbing of source locations, whereas a macro wrapping REPORTER_ASSERT preserves
+  accurate call-site reporting cleanly.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool AssertCodecResult(skiatest::Reporter* r,
+                         SkCodec::Result actualResult,
+                         SkCodec::Result expectedResult,
+                         const char* condition,
+                         const char* file = __FILE__,
+                         int line = __LINE__) {
+      if (actualResult != expectedResult) {
+          SkString msg = SkStringPrintf("actualResult=%s != expectedResult=%s",
+                                        SkCodec::ResultToString(actualResult),
+                                        SkCodec::ResultToString(expectedResult));
+          r->reportFailedWithContext(skiatest::Failure(file, line, condition, std::move(msg)));
+          return false;
+      }
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  #define REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, actualResult) \
+      REPORTER_ASSERT(r,                                           \
+                      actualResult == SkCodec::kSuccess,           \
+                      "actualResult=\"%s\" != kSuccess",           \
+                      SkCodec::ResultToString(actualResult))
+  ```
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- \breportFailedWithContext\b
+- \bskiatest::Failure\b
+- \bFailure\s*\(\s*__FILE__
+- __FILE__.*__LINE__|__LINE__.*__FILE__
+- '#define\s+[A-Z0-9_]*ASSERT[A-Z0-9_]*\s*\([^)]*\)\s*REPORTER_ASSERT'
+- \bREPORTER_ASSERT\s*\(
+citations:
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: Reporter and Assertions
+  quote: '- `REPORTER_ASSERT(reporter, condition, ...)`: Standard assertion.'
+confidence: 0.9
+support_cl_count: 1

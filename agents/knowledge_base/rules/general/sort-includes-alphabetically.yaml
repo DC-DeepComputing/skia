@@ -1,0 +1,89 @@
+id: general/sort-includes-alphabetically
+title: 'When organizing #include directives in C++ files, separate the primary header with a blank line,
+  sort remaining project headers alphabetically, and isolate conditional includes'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'In C++ source files (.cpp), place the matching primary header first, separated by a blank line
+  from subsequent includes; do not attach secondary project includes directly below the primary header.
+  Consolidate all other unconditional project #include directives (e.g. include/, src/, rust/, modules/)
+  into a single contiguous block sorted strictly alphabetically without separating by directory prefix.
+  Isolate conditional preprocessor directives (#if, #ifdef) into their own blocks separated by blank lines,
+  and format with git clang-format origin/main.'
+why: Splitting unconditional project includes across directory prefixes, grouping secondary headers with
+  the primary header, or embedding conditional preprocessor directives breaks up contiguous blocks and
+  disrupts automatic alphabetical sorting by clang-format. Isolating the primary header verifies its self-sufficiency,
+  while keeping the remaining project includes in a single alphabetical block minimizes merge conflicts
+  and maintains predictable header dependencies.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Attaching secondary includes directly under the primary header:
+  #include "src/gpu/AtlasTypes.h"
+  #include "src/gpu/Token.h"
+
+  #include "include/core/SkAlphaType.h"
+  #include "src/core/SkSwizzlePriv.h"
+
+  // Fragmenting by directory prefix or embedding conditional includes:
+  #include "include/core/SkPathTypes.h"
+  #if defined(SK_DEBUG)
+  #include "src/gpu/graphite/SharedContext.h"
+  #endif
+
+  #include "src/core/SkPathData.h"
+  ```
+
+  Good:
+
+  ```cpp
+  // Matching primary header separated by a blank line:
+  #include "src/gpu/AtlasTypes.h"
+
+  // Remaining project headers in a single contiguous alphabetically sorted block:
+  #include "include/core/SkAlphaType.h"
+  #include "include/core/SkPathTypes.h"
+  #include "src/core/SkPathData.h"
+  #include "src/core/SkSwizzlePriv.h"
+  #include "src/gpu/Token.h"
+
+  // Conditional includes isolated in a separate block:
+  #if defined(SK_DEBUG)
+  #include "src/gpu/graphite/SharedContext.h"
+  #endif
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^#include\s+"(?:include|src|modules|rust|tools|gm|tests|bench)/
+- ^#include\s+"[A-Za-z0-9_./-]+\.h"
+- ^#include\s+"[A-Za-z0-9_./-]+\.rs\.h"
+- ^#include\s+<[A-Za-z0-9_./]+>
+- ^#include\s+<(?:string|vector|memory|utility|algorithm|cmath|cstdint|cstddef|array|optional|variant|tuple|type_traits)>
+- ^#\s*(?:if|ifdef|ifndef)\s+.*\b(?:SK_|GR_|SKGPU_)
+- ^#\s*if\s+!?defined\s*[(]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Forward declarations and file includes should be in alphabetical order.
+- path: agents/skills/skia-gn-workflow/SKILL.md
+  heading: 3. Formatting Code
+  quote: git clang-format origin/main
+- path: site/docs/dev/contrib/style.md
+  heading: '## Files'
+  quote: Forward declarations and file includes should be in alphabetical order.
+- path: agents/skills/skia-gn-workflow/SKILL.md
+  heading: '### 3. Formatting Code'
+  quote: |-
+    Near the end of your workflow, before uploading a CL or finalizing changes, format your code using:
+    ```bash
+    git clang-format origin/main
+    ```
+confidence: 0.98
+support_cl_count: 5

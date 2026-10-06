@@ -1,0 +1,75 @@
+id: api/define-equality-on-composite-types
+title: When comparing structs or composite types for equality or ordering, define comparison operators
+  on the type itself rather than unpacking fields memberwise at call sites
+polarity: do
+severity: should_fix
+rubric: design
+rule: Define comparison operators (operator==, operator<, operator>) directly on structs and embedded
+  value types rather than unpacking their fields memberwise inside enclosing equality operators or call
+  sites. When sorting or comparing records with multi-step member comparisons, tie-breakers, or nullability
+  checks, encapsulate the comparison logic within overloaded operators on the struct itself so callers
+  can compare instances directly.
+why: Inlining field-by-field comparisons, tie-breakers, or nullability checks leaks struct internals,
+  clutters calling functions, and duplicates comparison logic across callers. Encapsulating comparisons
+  in dedicated operators on the struct centralizes ordering semantics, simplifies call sites, and prevents
+  bugs when new fields or tie-breakers are added.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Variant 1: Enclosing struct unpacking inner struct fields memberwise
+  bool MasteringDisplayColorVolume::operator==(const MasteringDisplayColorVolume& o) const {
+      return fPrimaries.fRX == o.fPrimaries.fRX && fPrimaries.fRY == o.fPrimaries.fRY &&
+             fMaxLuminance == o.fMaxLuminance;
+  }
+
+  // Variant 2: Call site inlining multi-branch ordering and null checks
+  if (latest.layer) {
+      if (curr.layer->fOrder > latest.layer->fOrder) {
+          latest = curr;
+      } else if (curr.layer->fOrder == latest.layer->fOrder &&
+                 curr.wrapper->fOrder > latest.wrapper->fOrder) {
+          latest = curr;
+      }
+  } else {
+      latest = curr;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Variant 1: Embedded struct defines operator==; enclosing struct delegates
+  bool SkColorSpacePrimaries::operator==(const SkColorSpacePrimaries& o) const {
+      return fRX == o.fRX && fRY == o.fRY;
+  }
+  bool MasteringDisplayColorVolume::operator==(const MasteringDisplayColorVolume& o) const {
+      return fPrimaries == o.fPrimaries && fMaxLuminance == o.fMaxLuminance;
+  }
+
+  // Variant 2: Struct encapsulates ordering and nullability in operator>
+  bool Insertion::operator>(const Insertion& other) const {
+      if (!other.fLayer) { return true; }
+      if (fLayer->fOrder != other.fLayer->fOrder) {
+          return fLayer->fOrder > other.fLayer->fOrder;
+      }
+      return fWrapper->fOrder > other.fWrapper->fOrder;
+  }
+  // Call site:
+  if (curr > latest) { latest = curr; }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+exclude_glob:
+- third_party/**
+triggers:
+- \b(?:constexpr\s+)?(?:bool|friend\s+bool)?\s*operator\s*(?:==|<|>|<=|>=)\s*\(
+- \boperator\s*(?:==|<|>|<=|>=)\s*\([^)]*\)\s*(?:const)?
+- \b[A-Za-z0-9_]+(?:\.|->)[A-Za-z0-9_]+\s*(?:==|!=|<|>)\s*[A-Za-z0-9_]+(?:\.|->)
+- \bf[A-Z][A-Za-z0-9_]*\.[a-zA-Z0-9_]+\s*(?:==|!=|<|>)
+- \boperator\s*(?:==|<|>)\s*\(const\s+[A-Za-z0-9_]+&
+confidence: 0.95
+support_cl_count: 2

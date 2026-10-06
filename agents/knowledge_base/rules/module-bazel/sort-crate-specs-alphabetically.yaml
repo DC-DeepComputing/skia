@@ -1,0 +1,50 @@
+id: module-bazel/sort-crate-specs-alphabetically
+title: When declaring crate dependencies in MODULE.bazel, keep repetitive crate.spec declarations sorted
+  alphabetically by package name rather than appending entries
+polarity: do
+severity: nit
+rubric: readability
+rule: In `MODULE.bazel`, keep repetitive top-level dependency declarations such as `crate.spec` sorted
+  alphabetically by package name rather than appending new entries to the end of the block. When adding
+  or modifying crate dependencies, place each entry in its lexicographical position relative to surrounding
+  declarations.
+why: Top-level macro invocations like `crate.spec` are not automatically sorted by code formatters such
+  as buildifier. Maintaining alphabetical order prevents duplicate dependency declarations, avoids merge
+  conflicts, and makes it straightforward to audit existing packages.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  crate.spec(
+      package = "thiserror",
+      version = "=1.0.69",
+  )
+  crate.spec(
+      package = "moxcms",
+      version = "=0.7.9",
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  crate.spec(
+      package = "moxcms",
+      version = "=0.7.9",
+  )
+  crate.spec(
+      package = "thiserror",
+      version = "=1.0.69",
+  )
+  ```
+include_glob:
+- MODULE.bazel*
+triggers:
+- \bcrate\.spec\s*[(]
+- \bcrate\.annotation\s*[(]
+- \bpackage\s*=\s*["'][^"']+["']
+- \bcrate\s*=\s*["'][^"']+["']
+- \bversion\s*=\s*["'][^"']+["']
+confidence: 0.8
+support_cl_count: 1

@@ -1,0 +1,55 @@
+id: tests/prefer-direct-reporter-assert
+title: In unit tests, assert conditions directly with REPORTER_ASSERT instead of wrapping logic in if-else
+  branches; use ERRORF for explicit branch failure reporting
+polarity: dont
+severity: nit
+rubric: readability
+rule: In unit tests, assert boolean operations and preconditions directly with `REPORTER_ASSERT(reporter,
+  condition)` rather than wrapping test logic in `if (condition) { ... } else { REPORTER_ASSERT(reporter,
+  false, ...); }`. If an explicit failure report is required in an unhandled branch or error path, use
+  `ERRORF(reporter, ...)` or `REPORT_FAILURE(...)` instead of passing `false` to `REPORTER_ASSERT`.
+why: Direct assertions flatten test control flow, eliminate unnecessary nesting, and automatically print
+  the failed condition expression upon failure. Calling `REPORTER_ASSERT(reporter, false)` obscures what
+  condition was expected, whereas `ERRORF` formats descriptive failure messages when control flow reaches
+  an unexpected state.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (surface->peekPixels(&pixmap)) {
+      // test body
+  } else {
+      REPORTER_ASSERT(reporter, false, "Could not read pixels");
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  REPORTER_ASSERT(reporter, surface->peekPixels(&pixmap));
+  // test body
+
+  // When explicit branch failure reporting is necessary:
+  if (unhandledType) {
+      ERRORF(reporter, "Unhandled surface type: %d", type);
+      return;
+  }
+  ```
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- \bREPORTER_ASSERT\s*\([^)]*,\s*false\b
+- \bREPORTER_ASSERT\s*\(
+- \bERRORF\s*\(
+- \bREPORT_FAILURE\s*\(
+- \bREPORTER_ASSERT_MESSAGE\s*\(
+citations:
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: '### Reporter and Assertions'
+  quote: |-
+    - `REPORTER_ASSERT(reporter, condition, ...)`: Standard assertion.
+    - `ERRORF(reporter, ...)`: Report a failure with a formatted message.
+confidence: 0.9
+support_cl_count: 1

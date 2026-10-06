@@ -1,0 +1,39 @@
+id: gpu/name-gatherer-extractors-by-combined-scope
+title: When finalizing or extracting data from multi-stage accumulators or gatherers, name extraction
+  methods after the combined data scope rather than the final constituent stage
+polarity: do
+severity: nit
+rubric: readability
+rule: When an accumulator, builder, or data gatherer aggregates data across multiple lifecycle stages
+  (such as paint parameters and render steps), name methods that finalize or extract the data to reflect
+  the full aggregated scope (e.g., endCombinedData()) rather than naming only the most recent stage (e.g.,
+  endRenderStepData()).
+why: Naming an extraction or finalization method after only the most recent stage is misleading when the
+  returned block contains merged data accumulated across multiple prior phases. Reflecting the combined
+  scope makes call sites self-documenting and clarifies that all prior stages' contributions are included.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Misleading: method name implies only render-step data is finalized,
+  // even though the returned block includes previously accumulated paint data.
+  std::pair<UniformDataBlock, TextureDataBlock> endRenderStepData(bool performsShading);
+  ```
+
+  Good:
+
+  ```cpp
+  // Accurate: name reflects the full combined scope of paint and render-step data.
+  std::pair<UniformDataBlock, TextureDataBlock> endCombinedData(bool performsShading);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:endCombinedData|endRenderStepData)\s*[(]
+- \b(?:end|finish|extract)(?:Combined|RenderStep|Paint|Step|Stage)Data\s*[(]
+- \b(?:std::pair<)?(?:UniformDataBlock|TextureDataBlock)\b
+- ->(?:endCombinedData|endRenderStepData)\s*[(]
+- \bPipelineDataGatherer::(?:end|finish|extract)\w*\s*[(]
+confidence: 0.82
+support_cl_count: 1

@@ -1,0 +1,54 @@
+id: build-gn/avoid-optional-for-internal-helpers
+title: When defining internal helper targets in GN build files, use unconditional skia_source_set instead
+  of wrapping them in optional() with borrowed feature flags
+polarity: dont
+severity: should_fix
+rubric: design
+rule: In GN build files, do not wrap internal helper source sets or utility targets in the optional(...)
+  template or tie them to borrowed or temporary feature flags. Define internal helpers unconditionally
+  as skia_source_set targets and have consuming targets depend on them directly via deps.
+why: Skia's optional(...) GN template is intended for features requiring third-party libraries or public
+  feature-flag gating. Wrapping internal helper targets in optional() with borrowed feature flags unnecessarily
+  couples the helper to unrelated configurations and disables it for other consumers when that flag is
+  off.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  optional("typeface_proxy") {
+    enabled = skia_enable_fontmgr_fontconfig # for now
+    sources = [
+      "src/ports/SkTypeface_proxy.cpp",
+      "src/ports/SkTypeface_proxy.h",
+    ]
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  skia_source_set("typeface_proxy") {
+    sources = [
+      "src/ports/SkTypeface_proxy.cpp",
+      "src/ports/SkTypeface_proxy.h",
+    ]
+  }
+
+  optional("fontmgr_fontconfig") {
+    enabled = skia_enable_fontmgr_fontconfig
+    deps = [ ":typeface_proxy" ]
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+- '**/*.gni'
+triggers:
+- \boptional\s*\(\s*"[a-zA-Z0-9_]+"\s*\)
+- \bskia_source_set\s*\(\s*"[a-zA-Z0-9_]+"\s*\)
+- \benabled\s*=\s*skia_(?:enable|use)_[a-zA-Z0-9_]+
+- '"(?:src|modules)/[a-zA-Z0-9_/-]*(?:proxy|helper|support|util)[a-zA-Z0-9_/-]*\.(?:cpp|cc|h)"'
+- \b(?:public_)?deps\s*(?:\+?=|=)\s*\[[^\]]*"(?::|//)[a-zA-Z0-9_/-]*(?:proxy|helper|support)"
+confidence: 0.9
+support_cl_count: 1

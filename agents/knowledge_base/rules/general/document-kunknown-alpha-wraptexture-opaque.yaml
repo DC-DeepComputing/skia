@@ -1,0 +1,51 @@
+id: general/document-kunknown-alpha-wraptexture-opaque
+title: When passing kUnknown_SkAlphaType to SkImages::WrapTexture to force an RGB1 swizzle and treat the
+  texture as opaque, document the intent with an inline comment
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When passing kUnknown_SkAlphaType to SkImages::WrapTexture (or related Graphite texture wrapping
+  helpers) to force an RGB1 swizzle and treat the texture as opaque, add an inline explanatory comment
+  (e.g., '// force alpha channel to 1' or '// force opaque'). Clarify the non-obvious intent so readers
+  and reviewers do not mistake the unknown alpha type for uninitialized or placeholder data.
+why: In Graphite, kUnknown_SkAlphaType instructs texture sampling to force the alpha channel to 1 via
+  an RGB1 swizzle and reports kOpaque_SkAlphaType. Because kUnknown_SkAlphaType conventionally implies
+  missing or uninitialized alpha metadata, call sites must explicitly document that the value intentionally
+  forces opaque sampling.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  fYCbCrImage = SkImages::WrapTexture(recorder,
+                                      ycbcrHelper->backendTexture(),
+                                      kUnknown_SkAlphaType,
+                                      /*colorSpace=*/nullptr,
+                                      release_ycbcrhelper,
+                                      ycbcrHelper.get());
+  ```
+
+  Good:
+
+  ```cpp
+  fYCbCrImage = SkImages::WrapTexture(recorder,
+                                      ycbcrHelper->backendTexture(),
+                                      kUnknown_SkAlphaType, // force alpha channel to 1
+                                      /*colorSpace=*/nullptr,
+                                      release_ycbcrhelper,
+                                      ycbcrHelper.get());
+  ```
+include_glob:
+- '**/*.cpp'
+triggers:
+- \bWrapTexture\s*\(
+- \bSkImages::WrapTexture\b
+- \bkUnknown_SkAlphaType\b
+- \b(?:WrapTexture|wrapTexture)[^;]*kUnknown_SkAlphaType
+- //.*\bforce\s+(?:alpha|opaque)\b
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 148
+  quote: Additionally, wrapped textures can now be forced to opaque by specifying `kUnknown_SkAlphaType`.
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,49 @@
+id: general/qualify-constants-instead-of-inheriting
+title: When using constants, bitmasks, or static helpers from utility structs, qualify them explicitly
+  with the scope name instead of inheriting from the struct
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not inherit from a struct or class solely to import its constants, bitmasks, enum values, or
+  static helper members into local scope. Access static members and constants explicitly via scope qualification
+  (e.g., Helper::kConstant or MaskDefs::kShift).
+why: Inheritance models an 'is-a' subtyping relationship and introduces unnecessary coupling into the
+  type hierarchy when used merely to avoid typing scope qualifiers. Explicit scope qualification clarifies
+  the source of constants and keeps data structs decoupled from unrelated utility types.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: inheriting from a utility struct solely to import bitmask constants.
+  struct Tile : public IntersectionBits {
+      Tile(uint32_t lineIdx, uint32_t mask)
+          : fPackedLineIdxIntersectionMask((lineIdx << INT_MASK_SHIFT) | mask) {}
+      uint32_t fPackedLineIdxIntersectionMask;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: reference constants with explicit scope qualification.
+  struct Tile {
+      Tile(uint32_t lineIdx, uint32_t mask)
+          : fPackedLineIdxIntersectionMask(
+                    (lineIdx << IntersectionBits::INT_MASK_SHIFT) | mask) {}
+      uint32_t fPackedLineIdxIntersectionMask;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+exclude_glob:
+- third_party/**
+triggers:
+- \b(?:class|struct)\s+[A-Za-z0-9_]+\s*:\s*(?:public\s+)?[A-Za-z0-9_]*(?:Bits|Flags|Mask|Constants|Config|Defs)\b
+- :\s*public\s+[A-Za-z0-9_]*(?:Bits|Flags|Mask|Constants|Defs)\b
+- \bIntersectionBits\b
+- \b[A-Za-z0-9_]*(?:Bits|Flags|Mask)::[A-Z0-9_]+_(?:MASK|SHIFT)\b
+- \b[A-Za-z0-9_]*(?:Bits|Flags|Constants)::k[A-Z]\w*\b
+confidence: 0.92
+support_cl_count: 1

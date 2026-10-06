@@ -1,0 +1,43 @@
+id: docs/distinguish-coverage-mask-from-alpha-mask
+title: When documenting geometry rasterization or SkMaskFilter operations, describe masks as coverage
+  masks rather than alpha masks to distinguish coverage from opacity
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In architectural documentation, guides, and comments describing SkMaskFilter or rasterization pipelines,
+  refer to the geometry mask representing pixel coverage as a 'coverage mask' rather than an 'alpha mask'.
+  Reserve 'alpha' or 'opacity' for color channels and blending operations, clarifying that coverage masks
+  dictate geometric anti-aliasing before shading.
+why: While coverage masks are commonly stored in an 8-bit format identical to an alpha channel, they represent
+  geometric pixel coverage rather than color transparency. Calling them 'alpha masks' conflates geometry
+  anti-aliasing with color opacity and obscures SkMaskFilter's role in modifying geometry coverage before
+  shader evaluation and blending.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  - **`SkMaskFilter`**: Operates on the shape's alpha mask, not its color (e.g. blurring the mask before drawing).
+  ```
+
+  Good:
+
+  ```cpp
+  - **`SkMaskFilter`**: Operates on the shape's coverage mask, not its color (e.g. blurring the mask before drawing).
+  ```
+include_glob:
+- docs/**
+- site/docs/**
+triggers:
+- \bSkMaskFilter\b
+- \b(?:alpha|coverage)\s+masks?\b
+- \bmask(?:ed)?\s+filters?\b
+- \b(?:raster(?:izer|ization)?|geometry)\s+masks?\b
+- \b(?:shape|path)['’]?s\s+(?:alpha|coverage)\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: Background and Definitions
+  quote: 'Coverage Mask: An array of values (typically 8-bit alpha) that represents how much a geometric
+    shape covers each pixel.'
+confidence: 0.9
+support_cl_count: 1

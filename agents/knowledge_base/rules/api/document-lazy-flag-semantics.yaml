@@ -1,0 +1,44 @@
+id: api/document-lazy-flag-semantics
+title: When documenting configuration or option flags that unlock APIs rather than executing immediately,
+  state that the flag enables the APIs and action occurs upon invocation
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting configuration or option flags that gate access to separate control APIs rather
+  than triggering behavior immediately, state that the flag enables those APIs first. Explicitly clarify
+  that the underlying action occurs only when those APIs are called, avoiding imperative phrasing that
+  implies eager or immediate execution upon setting the flag.
+why: Imperative descriptions on boolean option flags lead callers to believe that enabling the flag immediately
+  and eagerly initiates the action. Explaining that the flag gates API access and that operations execute
+  only upon calling those APIs prevents misunderstandings about performance costs and operational timing.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  /**
+   * Capture all draw calls and surface creation from Recorders spawned from the Context. Enables
+   * the use of startCapture and endCapture functions.
+   */
+  bool fEnableCapture = false;
+  ```
+
+  Good:
+
+  ```cpp
+  /**
+   * Enables the use of startCapture and endCapture functions. Calling these APIs will capture all
+   * draw calls and surface creation from Recorders spawned from the Context.
+   */
+  bool fEnableCapture = false;
+  ```
+include_glob:
+- include/**
+triggers:
+- \bbool\s+f[A-Z]\w*\s*=\s*(?:false|true)\b
+- \b(?:fEnable|fDisable|fAllow|fRequire|fDisallow|fUse)[A-Z]\w*\b
+- \b(?:Enables?|Controls?|Allows?)\s+(?:the\s+use\s+of|calling)\b
+- \b(?:struct|class)\s+[A-Za-z0-9_]*Options\b
+- \b(?:Calling|Invoking)\s+these\s+APIs\b
+confidence: 0.9
+support_cl_count: 1

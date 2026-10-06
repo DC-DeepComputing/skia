@@ -1,0 +1,44 @@
+id: general/general-prefer-skmemorystream-make-over-make-unique
+title: When constructing heap-allocated SkMemoryStream instances from SkData or raw buffers, use static
+  SkMemoryStream::Make factory methods rather than std::make_unique<SkMemoryStream>
+polarity: do
+severity: nit
+rubric: readability
+rule: When constructing a heap-allocated SkMemoryStream (or SkFILEStream) from SkData, raw memory, or
+  file paths, use the static factory SkMemoryStream::Make(...) rather than std::make_unique<SkMemoryStream>(...).
+  When only a temporary stream is needed for a local call and ownership is not transferred, allocate it
+  on the stack instead.
+why: SkMemoryStream::Make is Skia's dedicated static factory that returns std::unique_ptr<SkMemoryStream>,
+  providing more idiomatic and concise stream construction than invoking std::make_unique directly.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Calling std::make_unique directly for SkMemoryStream
+  std::unique_ptr<SkCodec> codec = SkBmpRustDecoder::Decode(
+          std::make_unique<SkMemoryStream>(std::move(data)), &result);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Calling SkMemoryStream::Make factory method
+  std::unique_ptr<SkCodec> codec = SkBmpRustDecoder::Decode(
+          SkMemoryStream::Make(std::move(data)), &result);
+  ```
+include_glob:
+- src/**
+- tests/**
+- modules/**
+- experimental/**
+- fuzz/**
+- tools/**
+triggers:
+- \bstd::make_unique<\s*SkMemoryStream\s*>
+- \bstd::make_unique<\s*SkFILEStream\s*>
+- \bSkMemoryStream::Make(?:Copy|Direct)?\s*[(]
+- \bSkFILEStream::Make\s*[(]
+- \bDecode\s*[(]\s*std::make_unique<\s*SkMemoryStream
+confidence: 0.85
+support_cl_count: 1

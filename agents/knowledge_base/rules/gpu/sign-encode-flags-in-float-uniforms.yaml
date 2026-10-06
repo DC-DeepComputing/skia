@@ -1,0 +1,55 @@
+id: gpu/sign-encode-flags-in-float-uniforms
+title: When sign-encoding flags into non-negative float uniforms, encode signs on the host and compare
+  directly against zero (x < 0) instead of sign() in shaders
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When passing boolean or mode flags to GPU shaders alongside float parameters that are strictly non-negative
+  in real usage (such as insets, radii, dimensions, or tolerances), sign-encode the flags into the sign
+  of the float components rather than allocating separate integer or boolean uniforms. In the shader,
+  check the flag by comparing directly against zero (e.g., `param < 0` or `param > 0`) rather than calling
+  `sign(param) < 0`, and restore the positive parameter value using `abs(param)`.
+why: Allocating separate integer or boolean uniforms increases uniform buffer footprint, upload bandwidth,
+  and GPU register pressure. In shader code, comparing directly against zero (x < 0) is more concise,
+  idiomatic, and readable than calling sign(x) < 0, and avoids an unnecessary intrinsic evaluation before
+  restoring parameter magnitude with abs().
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Host: Passing a dedicated integer uniform for a boolean mode alongside positive floats:
+  gatherer->write(imgData.fLinearFilterUVInset);
+  gatherer->write(SkTo<int>(imgData.fSampling.filter));
+
+  // Shader: Unpacking the flag using sign() comparison:
+  float2 uvCoords = sign(linearFilterUVInset.x) < 0 ? floor(coords) + 0.5 : coords;
+  ```
+
+  Good:
+
+  ```cpp
+  // Host: Sign-encode the filter mode into positive float components:
+  SkPoint linearFilterUVInset = imgData.fLinearFilterUVInset;
+  if (imgData.fSampling.filter == SkFilterMode::kNearest) {
+      linearFilterUVInset.fX = -linearFilterUVInset.fX;
+  }
+  gatherer->write(linearFilterUVInset);
+
+  // Shader: Check flag directly against zero and restore magnitude with abs():
+  float2 uvCoords = linearFilterUVInset.x < 0 ? floor(coords) + 0.5 : coords;
+  linearFilterUVInset = abs(linearFilterUVInset);
+  ```
+include_glob:
+- src/gpu/**
+- src/sksl/**
+triggers:
+- \b(?:pipelineDataGatherer[(][)]|gatherer|writer)->write\b
+- \badd(?:Fragment|Vertex)?Uniform\b
+- \bUniform\s*\{[^}]*k(?:Float|Int|Bool|Half)
+- \b(?:linearFilterUVInset|radiiWithInverse|strokeParams)\b
+- \bsign\s*\([^)]*\)\s*(?:<|>|<=|>=|==|!=)
+- \babs\s*\([^)]*(?:Uniform|Inset|Radii|Params|stroke|radii|coords)\)
+- \bSkSLType::k(?:Float|Int|Bool|Half)[234]?\b
+confidence: 0.9
+support_cl_count: 1

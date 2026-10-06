@@ -1,0 +1,77 @@
+id: api/declare-factories-in-plural-namespaces
+title: When declaring public factories in headers or referencing them in documentation, use plural namespaces
+  (e.g., SkSurfaces::, SkImages::, SkShaders::) instead of singular class names
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring public factory functions for shaders, images, or surfaces in headers, place them
+  in the corresponding plural namespace (such as SkShaders::, SkImages::, or SkSurfaces::) rather than
+  defining static Make* methods on non-constructable classes (such as SkGradientShader or SkSurface).
+  In documentation, guides, and Markdown code samples, reference factory and creation functions using
+  the plural namespace (e.g., SkSurfaces::WrapPixels, SkSurfaces::RenderTarget) rather than the singular
+  class name (e.g., SkSurface::).
+why: Skia's public API architecture migrated object creation from static methods on classes to dedicated
+  plural namespaces to establish a consistent, modern factory API. Because code samples in Markdown documentation
+  are not compiled by CI builds, using legacy or singular class names (such as SkSurface::) easily slips
+  through review, teaching obsolete patterns that fail when copied into client code.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In public headers (include/**):
+  class SK_API SkGradientShader {
+  public:
+      static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const SkGradient&,
+                                        const SkMatrix* lm = nullptr);
+  };
+
+  // In documentation and code samples (docs/**):
+  sk_sp<SkSurface> surface = SkSurface::WrapPixels(info, &pixelMemory[0], rowBytes);
+  sk_sp<SkSurface> gpuSurface(SkSurface::RenderTarget(context.get(), skgpu::Budgeted::kNo, info));
+  ```
+
+  Good:
+
+  ```cpp
+  // In public headers (include/**):
+  namespace SkShaders {
+      SK_API sk_sp<SkShader> LinearGradient(const SkPoint pts[2], const SkGradient&,
+                                            const SkMatrix* lm = nullptr);
+  }
+
+  // In documentation and code samples (docs/**):
+  sk_sp<SkSurface> surface = SkSurfaces::WrapPixels(info, &pixelMemory[0], rowBytes);
+  sk_sp<SkSurface> gpuSurface(SkSurfaces::RenderTarget(context.get(), skgpu::Budgeted::kNo, info));
+  ```
+include_glob:
+- include/**
+- site/docs/**
+- docs/**
+- '**/*.md'
+triggers:
+- \b(?:static\s+)?sk_sp<Sk(?:Shader|Image|Surface)>\s+Make[A-Z]\w*\s*[(]
+- \bclass\s+SK_API\s+Sk(?:GradientShader|PerlinNoiseShader|Shader|Image|Surface)\b
+- \bnamespace\s+Sk(?:Shaders|Images|Surfaces)\b
+- \bSk(?:Shaders|Images|Surfaces)::[A-Za-z0-9_]+
+- \bSk(?:Shader|Image|Surface)::(?:Make|Wrap|Render|Raster|Null)[A-Za-z0-9_]*\s*[(]
+- \bSkSurface::[A-Za-z0-9_]+\s*[(]
+- \b(?:WrapPixels|RenderTarget|MakeRasterDirect)\b
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 115
+  quote: SkSurface factory methods have been moved to the SkSurfaces namespace. Many have been renamed
+    to be more succinct or self-consistent. Factory methods specific to the Ganesh GPU backend are defined
+    publicly in include/gpu/ganesh/SkSurfaceGanesh.h.
+- path: RELEASE_NOTES.md
+  heading: Milestone 116
+  quote: SkShaders is now a namespace (was previously a non-constructable class with only static functions).
+    SkPerlinNoiseShader::MakeFractalNoise and SkPerlinNoiseShader::MakeTurbulence have been moved to the
+    SkShaders namespace and SkPerlinNoiseShader (the public non-constructable class) has been slated for
+    moving into private internals of Skia.
+- path: docs/architecture/CPU.md
+  heading: '### 1. The API Layer'
+  quote: A CPU-backed surface, created via **`SkSurfaces::Raster(...)`**, allocates and owns pixel memory
+    via an `SkPixelRef`.
+confidence: 0.97
+support_cl_count: 2

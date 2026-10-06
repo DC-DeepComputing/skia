@@ -1,0 +1,46 @@
+id: general/document-narrowing-integer-bounds
+title: When narrowing integer types or accumulating into fixed-width integers using remote bounds, document
+  the limiting invariant in an inline comment
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When narrowing integer types or accumulating into fixed-width integers (such as with SkTo<uint16_t>,
+  SkToU16, or SkToU8) where values are bounded non-locally, document the upper bound or limiting invariant
+  in an inline comment. Explain why truncation or overflow cannot occur (e.g., citing a remote helper's
+  bailout threshold or structural limit) so readers and reviewers know the cast is safe.
+why: Narrowing casts and fixed-width integer accumulations look like potential truncation or overflow
+  vulnerabilities when the input appears arbitrarily sized. Documenting the non-local constraint or helper
+  bailout clarifies why the value is guaranteed to fit within the narrower integer type and prevents mistaken
+  review comments or unnecessary runtime checks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  int dataKeySize = path_key_from_data_size(fShape.path());
+  if (dataKeySize >= 0) {
+      count += SkTo<uint16_t>(dataKeySize);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // When >= 0, `dataKeySize` is a small number bounded by
+  // kMaxKeyFromDataVerbCnt since point count is derived from verb count.
+  int dataKeySize = path_key_from_data_size(fShape.path());
+  if (dataKeySize >= 0) {
+      count += SkTo<uint16_t>(dataKeySize);
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSkTo<[a-z0-9_]+>\s*[(]
+- \bSkTo(?:U16|U8|S16|S8)?\s*[(]
+- \b(?:count|size|length|offset|total)\s*\+=\s*(?:SkTo|static_cast)<
+- \+=\s*SkTo
+- //.*\b(?:bounded by|cannot overflow|safe to narrow|narrowing|upper bound|max value)\b
+- \bstatic_cast<u?int(?:8|16)(?:_t)?>\s*[(]
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,59 @@
+id: rust/consolidate-rust-static-libraries
+title: When defining Rust static libraries, do not use '-C metadata' to work around symbol collisions;
+  consolidate targets under the unified GN Bazel build action
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not add '-C metadata=...' to rustc_flags in rust_static_library build definitions to prevent
+  symbol collisions between multiple Rust static libraries. Instead, integrate the Rust target into the
+  unified Bazel invocation in BUILD.gn (_rust_targets and action('rust_all_ffi_bazel_build')) so that
+  std and core runtime symbols are shared and not duplicated across the binary.
+why: Compiling multiple Rust static libraries through separate Bazel invocations bundles a separate copy
+  of the Rust runtime (std/core) into each archive. Adding '-C metadata=...' alters symbol mangling to
+  bypass linker collision errors, but causes binary bloat and potential symbol conflicts in downstream
+  embedders like Chromium. Consolidating compilation into a single unified build invocation ensures runtime
+  symbols are shared.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # In BUILD.bazel: using metadata flag to avoid duplicate symbol collision
+  rust_static_library(
+      name = "ffi_rs",
+      srcs = [":rs_srcs"],
+      crate_root = "FFI.rs",
+      rustc_flags = [
+          "-C",
+          "metadata=bmp_ffi",
+      ],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  # In BUILD.bazel: standard rust_static_library without workaround flags
+  rust_static_library(
+      name = "ffi_rs",
+      srcs = [":rs_srcs"],
+      crate_root = "FFI.rs",
+  )
+
+  # In BUILD.gn: aggregate into unified Bazel invocation
+  _rust_targets += [ "//rust/bmp:ffi_rs" ]
+  # Compiled together via action("rust_all_ffi_bazel_build")
+  ```
+include_glob:
+- rust/**
+- experimental/**
+- BUILD.gn
+- '**/BUILD.bazel'
+triggers:
+- \brust_static_library\s*\(
+- '"metadata=[^"]+"'
+- \brustc_flags\s*=\s*\[
+- '"rust_all_ffi_bazel_build"'
+- \b_rust_(?:targets|sources|outputs)\s*\+?=\s*\[
+confidence: 0.9
+support_cl_count: 1

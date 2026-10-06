@@ -1,0 +1,66 @@
+id: general/document-backend-invariants-on-subclasses
+title: When documenting virtual methods, driver invariants, or TODOs across polymorphic hierarchies, document
+  backend-specific details on concrete subclasses rather than generic base or proxy classes
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Document backend- or platform-specific state transitions, image layouts, driver invariants, and
+  implementation TODOs on concrete backend subclasses or overrides (such as VulkanTexture or SkTypeface_fontconfig)
+  rather than in backend-agnostic base classes or generic proxies (such as Texture or SkTypeface_proxy).
+  Keep base and proxy class comments focused on portable interface contracts and semantics that hold across
+  all backends; if a backend-specific TODO or caveat must be tracked, retain an override in the concrete
+  subclass to anchor the comment.
+why: Backend-agnostic base and proxy classes define shared interfaces across graphics APIs (Vulkan, Metal,
+  Dawn, GL) and platform backends (FontConfig, CoreText, DirectWrite). Leaking backend-specific state
+  assumptions, driver invariants, or backend TODOs into generic classes violates architectural layering,
+  clutters shared abstractions, and misplaces tracking of backend-specific technical debt.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/gpu/graphite/Texture.h (generic GPU base class):
+  // Attempts to write to texture on host. In Vulkan, the image will be in
+  // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL layout at the end.
+  virtual bool uploadDataOnHost(const UploadSource& source);
+
+  // In src/ports/SkTypeface_proxy.cpp (generic proxy class):
+  sk_sp<SkTypeface> SkTypeface_proxy::onMakeClone(const SkFontArguments& args) const {
+      // TODO: need to clone FC_MATRIX and FC_EMBOLDEN by wrapping this
+      return fProxy->onMakeClone(args);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/gpu/graphite/Texture.h:
+  virtual bool uploadDataOnHost(const UploadSource& source);
+
+  // In src/gpu/graphite/vk/VulkanTexture.h (backend subclass):
+  // On completion, image is in VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL layout.
+  bool uploadDataOnHost(const UploadSource& source) override;
+
+  // In src/ports/SkTypeface_proxy.cpp:
+  sk_sp<SkTypeface> SkTypeface_proxy::onMakeClone(const SkFontArguments& args) const {
+      return fProxy->onMakeClone(args);
+  }
+
+  // In src/ports/SkFontMgr_fontconfig.cpp (backend subclass):
+  sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
+      // TODO: need to clone FC_MATRIX and FC_EMBOLDEN by wrapping this
+      return SkTypeface_proxy::onMakeClone(args);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- (?://|[*])\s*.*\b(?:Vulkan|Metal|Dawn|OpenGL|Direct3D|FontConfig|FreeType|CoreText|DirectWrite)\b
+- (?://|[*])\s*.*\bTODO\b.*\b(?:FC_|Vk|MTL|wgpu|GL_|FT_|DWRITE|FontConfig|CoreText)\b
+- \bVK_IMAGE_LAYOUT_[A-Z0-9_]+\b
+- (?://|[*])\s*.*\b(?:VkImageLayout|MTLStorageMode|wgpu::TextureUsage)\b
+- \bSk(?:Typeface|ScalerContext|FontMgr)_proxy\b
+- \bclass\s+\w+\s*:\s*public\s+Sk(?:Typeface|ScalerContext)_proxy\b
+confidence: 0.95
+support_cl_count: 2

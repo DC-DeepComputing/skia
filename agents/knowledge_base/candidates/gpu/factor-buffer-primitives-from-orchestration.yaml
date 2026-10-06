@@ -1,0 +1,61 @@
+id: gpu/factor-buffer-primitives-from-orchestration
+title: When designing low-level buffer managers, keep primitive operations distinct rather than overloading
+  parameters with sentinel values, composing them with explicit conditions in higher-level orchestrators
+polarity: do
+severity: should_fix
+rubric: design
+rule: Keep low-level state and buffer managers factored into distinct, single-purpose primitive methods
+  (such as separate mark and align operations) rather than overloading numeric parameters with sentinel
+  or sign-encoded values (e.g., -1 or 0/1) to bypass logic. Compose multiple primitive steps into convenience
+  helpers with explicit boolean flags on higher-level coordinating or orchestrator classes.
+why: Overloading numeric parameters like alignments or sizes with sentinel values to branch or skip low-level
+  operations risks corrupting internal state tracking, validation assertions, or maximum alignment calculations.
+  Keeping low-level manager operations focused on distinct primitives ensures clean invariants, while
+  exposing higher-level convenience methods preserves caller ergonomics.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Low-level manager overloads parameter with sentinel to branch or skip:
+  class UniformManager {
+  public:
+      void markAndAlign(int requiredAlignment) {
+          this->markOffset();
+          if (requiredAlignment > 0) { // Sentinel -1 used to skip alignment
+              this->align(requiredAlignment);
+          }
+      }
+  };
+
+  gatherer->markAndAlign(performsShading ? -1 : requiredAlignment);
+  ```
+
+  Good:
+
+  ```cpp
+  // Low-level manager maintains distinct, focused primitives:
+  class UniformManager {
+  public:
+      void markOffset() { ... }
+      void align(int requiredAlignment) { ... }
+  };
+
+  // Higher-level orchestrator combines primitives with explicit boolean conditions:
+  void PipelineDataGatherer::markOffsetAndAlign(bool performsShading, int requiredAlignment) {
+      fUniformManager.markOffset();
+      if (!performsShading) {
+          fUniformManager.align(requiredAlignment);
+      }
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bvoid\s+markOffset(?:AndAlign)?\s*\(
+- \b(?:markOffsetAndAlign|alignForNonShading)\s*\(
+- \b(?:PipelineDataGatherer|UniformManager)\b
+- \bfUniformManager\.(?:mark|align|rewind)\w*\s*\(
+- \b(?:markAndAlign|alignForNonShading)\b
+confidence: 0.88
+support_cl_count: 1

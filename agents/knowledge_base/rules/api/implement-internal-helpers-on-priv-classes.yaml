@@ -1,0 +1,87 @@
+id: api/implement-internal-helpers-on-priv-classes
+title: When exposing or accessing internal helpers or state for public include/ classes, use companion
+  *Priv helpers instead of public methods or caller-specific friend declarations
+polarity: do
+severity: should_fix
+rubric: design
+rule: When adding internal helpers, niche methods, subsystem operations (such as pathops_*), or test accessors
+  for public API classes, do not expose them on public interfaces under include/. Implement them in src/
+  on companion *Priv classes (such as RecorderPriv, SkPathPriv, or SkCanvasPriv), or keep them private
+  on the public class with friend class *Priv without redundant forwarding wrappers. Correspondingly,
+  internal and module callers needing private class state must use existing *Priv helper functions (such
+  as SkCanvasPriv::TopDevice) rather than adding caller-specific friend declarations to public headers.
+why: Public headers under include/ define Skia's public API surface and external contracts; exposing internal
+  helpers or adding caller-specific friend declarations leaks subsystem details, breaches architectural
+  layering, and increases API maintenance burdens. Routing internal access through companion *Priv types
+  confines private workflows to library internals without indirection or header pollution.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // include/core/SkPathBuilder.h
+  class SK_API SkPathBuilder {
+  public:
+      // Bad: Niche internal helper, inspection hook, and subsystem method exposed publicly
+      bool isZeroLengthSincePoint(int startPtIndex) const;
+      int getVerbs(uint8_t verbs[], int max) const;
+      SkPathBuilder& pathops_reversePathTo(const SkPath& path);
+  };
+
+  // include/core/SkCanvas.h
+  class SK_API SkCanvas {
+      // Bad: Adding caller-specific friend declarations in public header
+      friend class SkCaptureCanvas;
+  };
+
+  // Caller
+  fBaseCanvas->rootDevice()->recorder()->isCapturing();
+  ```
+
+  Good:
+
+  ```cpp
+  // include/core/SkPathBuilder.h
+  class SK_API SkPathBuilder {
+  private:
+      // Good: Internal helper kept private; accessible via friend *Priv
+      bool isZeroLengthSincePoint(int startPtIndex) const;
+      friend class SkPathPriv;
+  };
+
+  // src/core/SkPathPriv.h - inspection and subsystem operations handled in src/
+  class SkPathPriv {
+      static SkSpan<const SkPathVerb> GetVerbs(const SkPathBuilder& b) { return b.fVerbs; }
+      static void ReversePathTo(SkPathBuilder* b, const SkPath& path) {
+          b->privateReversePathTo(path);
+      }
+  };
+
+  // Caller: access private canvas state via existing companion *Priv helper
+  SkCanvasPriv::TopDevice(fBaseCanvas)->recorder()->isCapturing();
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \b[A-Za-z0-9_]+Priv\b
+- ->priv[(][)]
+- \bfriend\s+class\s+[A-Za-z0-9_]+(?:Priv)?\b
+- \b(?:bool|int|uint32_t|size_t)\s+(?:is|has|get)[A-Z][A-Za-z0-9_]*\s*\([^)]*\)\s*(?:const\s*)?[{;]
+- \b(?:is|has)(?:Memoryless|Transient|Internal|Priv|Backend)\w*\s*[(]
+- \b(?:std::unique_ptr|sk_sp)<[A-Za-z0-9_]+>\s+[a-z][A-Za-z0-9_]*\s*[(]
+- \b(?:pathops|internal|private)_[a-zA-Z0-9_]+\s*[(]
+- \b[A-Za-z0-9_]+Priv::[A-Za-z0-9_]+\s*[(]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Folder Organiziation
+  quote: Skia's public API should live in the `include` directory. Skia's private headers and implementation
+    files should live in the `src` directory. The `modules` directory contains extra features that are
+    built on top of Skia (`modules/skcms` being an exception) and can be used by clients.
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Headers that aren't meant for public consumption should be placed in src directories so that
+    they aren't in a client's search path, or in include/private if they need to be used by public headers.
+confidence: 0.98
+support_cl_count: 6

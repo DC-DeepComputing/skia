@@ -1,0 +1,48 @@
+id: pdf/verify-stream-dimensions-before-pdf-direct-embedding
+title: When embedding raw encoded image streams directly into a PDF, verify that encoded dimensions and
+  orientation match the logical image before bypassing re-encoding
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When bypassing image decoding and re-encoding by embedding raw encoded image data (such as JPEG
+  streams) directly into a PDF, verify that the encoded stream's dimensions match the logical image's
+  dimensions, that the EXIF orientation is canonical (kTopLeft_SkEncodedOrigin), and that the color format
+  is supported. If dimensions differ (such as for cropped, subset, or scaled images) or the orientation
+  is non-canonical, fall back to rasterizing and re-encoding the image.
+why: Logical image instances may represent cropped, subset, or transformed views of an underlying encoded
+  stream. Directly embedding untouched encoded data without validating dimensions and orientation causes
+  PDF viewers to render the full uncropped or unrotated asset rather than the intended image.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Embedding raw encoded stream without verifying dimensions and orientation match logical bounds:
+  if (sk_sp<const SkData> data = img->refEncodedData()) {
+      emit_image_stream(doc, ref, data, img->dimensions(), ...);
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Verify encoded stream dimensions, color format, and orientation match before direct embedding:
+  std::unique_ptr<SkCodec> codec = decodeJPEG(data);
+  if (!codec || codec->dimensions() != img->dimensions() ||
+      codec->getOrigin() != kTopLeft_SkEncodedOrigin || !goodColorType) {
+      return false;  // Fall back to rasterizing and re-encoding.
+  }
+  emit_image_stream(doc, ref, std::move(data), img->dimensions(), ...);
+  ```
+include_glob:
+- src/pdf/**
+triggers:
+- \b(?:refEncodedData|refEncoded)\b
+- \bcodec->dimensions\s*[(]
+- \bjpegSize\s*!=\s*\w+
+- \bkTopLeft_SkEncodedOrigin\b
+- \b(?:do_jpeg|serialize_image|emit_image_stream)\b
+- \bexifOrientation\b
+confidence: 0.9
+support_cl_count: 1

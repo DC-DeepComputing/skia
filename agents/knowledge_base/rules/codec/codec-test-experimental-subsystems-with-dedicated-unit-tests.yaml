@@ -1,0 +1,62 @@
+id: codec/codec-test-experimental-subsystems-with-dedicated-unit-tests
+title: When implementing new features or codec capabilities in experimental subsystems unable to run general
+  test suites, add dedicated unit tests covering key modes
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When adding features or format capabilities (such as subset or incremental decoding) to experimental
+  or evolving codecs and subsystems that cannot yet execute the general test suite (such as CodecTest.cpp),
+  add dedicated unit tests under tests/ covering key modes and edge cases rather than deferring test coverage
+  to future test suite integration.
+why: Deferring test coverage until an evolving subsystem is integrated into broad test suites leaves new
+  code paths unvalidated in continuous integration. Dedicated unit tests catch regressions immediately
+  and ensure operational variations (such as progressive passes, subsets, or streaming chunks) are verified
+  against baseline expectations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Adding subset decoding to an experimental codec without unit test coverage,
+  // planning to rely on broad test suite integration (e.g. CodecTest.cpp) in a future CL.
+  bool SkPngRustCodec::onGetSubset(const SkIRect* desiredSubset) {
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  static void test_subset_decode(skiatest::Reporter* r, const char* resource) {
+      ...
+      SkIRect subset = SkIRect::MakeLTRB(left, top, right, bottom);
+      SkCodec::Options options;
+      options.fSubset = &subset;
+      REPORTER_ASSERT(r, SkCodec::kSuccess == codec->startIncrementalDecode(
+          info, tiledBM.getAddr(left, top), tiledBM.rowBytes(), &options));
+      REPORTER_ASSERT(r, SkCodec::kSuccess == codec->incrementalDecode());
+  }
+
+  DEF_TEST(RustPngCodec_subset, r) {
+      test_subset_decode(r, "images/baby_tux.png");
+      test_subset_decode(r, "images/plane_interlaced.png");
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+- tests/**
+triggers:
+- \bDEF_TEST\s*[(]\s*\w*Codec\w*
+- \b(?:startIncrementalDecode|incrementalDecode|onGetSubset)\b
+- options[(][)]\.fSubset\b
+- \bSkCodec::(?:Options|kSuccess|kIncompleteInput)\b
+- \bclass\s+(?:SK_API\s+)?Sk\w+RustCodec\b
+- \btest_subset_decode\b
+citations:
+- path: site/docs/dev/contrib/submit.md
+  heading: Adding a unit test
+  quote: If you are willing to change Skia codebase, it's nice to add a test at the same time. Skia has
+    a simple unittest framework so you can add a case to it. Test code is located under the 'tests' directory.
+confidence: 0.88
+support_cl_count: 1

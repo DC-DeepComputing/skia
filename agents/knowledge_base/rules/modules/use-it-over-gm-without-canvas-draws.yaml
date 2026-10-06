@@ -1,0 +1,52 @@
+id: modules/use-it-over-gm-without-canvas-draws
+title: In CanvasKit tests, use Jasmine unit tests (it) rather than GM rendering tests (gm) when verifying
+  API behavior without drawing to canvas
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In CanvasKit tests (modules/canvaskit/tests/), use Jasmine unit tests (it(...)) rather than GM rendering
+  tests (gm(...)) when verifying API behavior or data logic without drawing to a canvas. Reserve gm(...)
+  strictly for visual tests that render content onto the canvas to snapshot and report to Skia Gold.
+why: In CanvasKit tests, gm(...) allocates a canvas surface, clears it to white, executes the callback,
+  and uploads the snapshotted image to Skia Gold for visual regression testing. Using gm(...) for tests
+  that only assert API logic or data structures wastes surface allocations and uploads blank snapshots
+  to Gold, whereas Jasmine it(...) blocks execute pure unit logic without surface overhead.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  gm('get_bidi_regions', (canvas) => {
+      const sampleText = '...';
+      const regions = CanvasKit.Bidi.getBidiRegions(sampleText, CanvasKit.TextDirection.LTR);
+      expect(regions.length).toEqual(10);
+  });
+  ```
+
+  Good:
+
+  ```cpp
+  it('should provide correct level data from getBidiRegions', () => {
+      const sampleText = '...';
+      const regions = CanvasKit.Bidi.getBidiRegions(sampleText, CanvasKit.TextDirection.LTR);
+      expect(regions.length).toEqual(10);
+  });
+  ```
+include_glob:
+- modules/canvaskit/tests/**
+triggers:
+- \b(?:gm|fgm|force_gm|skip_gm)\s*[(]
+- \bit\s*[(]
+- \bdescribe\s*[(]
+- \bexpect\s*[(]
+- \bCanvasKit\.[A-Za-z0-9_]+
+citations:
+- path: modules/canvaskit/README.md
+  heading: Adding tests
+  quote: |-
+    Within each file there are `describe` blocks further organizing the tests, and within those
+    `it()` functions which test particular behaviors... We have also defined `gm` which is a method for defining a test which draws something to a canvas
+    that is shapshotted and reported to gold.skia.org, where you can compare it with the snapshot at
+    head.
+confidence: 0.95
+support_cl_count: 1

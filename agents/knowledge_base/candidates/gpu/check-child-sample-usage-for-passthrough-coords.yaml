@@ -1,0 +1,57 @@
+id: gpu/check-child-sample-usage-for-passthrough-coords
+title: When analyzing runtime effects for coordinate optimizations, do not assume !usesSampleCoords()
+  implies passthrough coordinates; verify each child's sample usage directly
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not rely on SkRuntimeEffect::usesSampleCoords() returning false to infer that a runtime shader
+  never accesses coordinates or safely passes them through unmodified to all children. When determining
+  whether coordinates are passed through unmodified (such as when setting SnippetRequirementFlags::kPassthroughLocalCoords),
+  inspect each child effect's sample usage individually via SkRuntimeEffectPriv::ChildSampleUsage(effect,
+  i).isPassThrough().
+why: In SkRuntimeEffect analysis, the SkSL compiler unsets kUsesSampleCoords_Flag when input coordinates
+  are passed unmodified to child effects. Consequently, usesSampleCoords() returning false does not guarantee
+  coordinates are unneeded or that every child receives unmodified coordinates, which can break coordinate-expression
+  lifting and cause invalid sampling.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Assuming !usesSampleCoords means all children receive unmodified coordinates
+  if (effect->allowShader()) {
+      snippetFlags |= SnippetRequirementFlags::kLocalCoords;
+      if (!SkRuntimeEffectPriv::UsesSampleCoords(effect)) {
+          snippetFlags |= SnippetRequirementFlags::kPassthroughLocalCoords;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Inspect each child's sample usage to verify all children are passthrough
+  if (effect->allowShader()) {
+      snippetFlags |= SnippetRequirementFlags::kLocalCoords;
+      bool allPassthrough = true;
+      for (int i = 0; i < effect->children().size(); ++i) {
+          if (!SkRuntimeEffectPriv::ChildSampleUsage(effect, i).isPassThrough()) {
+              allPassthrough = false;
+              break;
+          }
+      }
+      if (allPassthrough) {
+          snippetFlags |= SnippetRequirementFlags::kPassthroughLocalCoords;
+      }
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:usesSampleCoords|UsesSampleCoords)\b
+- \bSnippetRequirementFlags::kPassthroughLocalCoords\b
+- \b(?:isPassThrough|ChildSampleUsage)\b
+- \ball_sample_usages_are_passthrough\b
+- \bSnippetRequirementFlags::kLocalCoords\b
+confidence: 0.9
+support_cl_count: 1

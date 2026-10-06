@@ -1,0 +1,101 @@
+id: general/sync-comment-identifiers-with-declarations
+title: When referencing types, parameters, or identifiers in comments, TODOs, or call-site labels, use
+  exact declared names and capitalization rather than ad-hoc shorthand or acronyms
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When referencing types, classes, variables, functions, member fields, or parameters in comments,
+  TODOs, or call-site labels (e.g., /*param=*/), ensure identifiers and capitalization exactly match active
+  code declarations (e.g., 'RenderStep' rather than 'renderstep'). Spell out type and concept names in
+  full rather than using ad-hoc acronyms or informal shorthand (e.g., 'RuntimeEffect' instead of 'RE',
+  and exact 'startList' instead of colloquial 'start'). When refactoring, renaming, or porting logic,
+  keep referenced parameter and variable names synchronized with actual identifiers in scope and remove
+  stale symbol names; if a referenced legacy method does not exist, describe the mathematical operation
+  directly.
+why: Mismatched capitalization, stale symbol names, or informal acronyms and abbreviations in comments
+  confuse readers, break symbol search during maintenance, and obscure technical meaning. Using exact
+  declared names and spelling out types in full clarifies whether comments refer to concrete code abstractions
+  or generic prose.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Ad-hoc acronym abbreviation for type in comment:
+  // Scope of a SkRuntimeEffect based on how the RE's SkSL invokes each child.
+
+  // Lowercased type name in documentation comments:
+  // * Each renderstep may have "Static" data and/or "Append" data.
+
+  // Stale snake_case variable names in condition comment:
+  // If y_top_tiles == y_bottom_tiles, then the line is either completely above or below
+  if (yTopTiles >= yBottomTiles) {
+      return;
+  }
+
+  // Mismatched parameter name from refactoring or drafting:
+  // Copy `decodedRow` into `decodedInterlacedFullWidthRow`.
+  void expandRow(SkSpan<uint8_t> dst, SkSpan<const uint8_t> srcRow);
+
+  // Informal shorthand for parameter 'startList' confusing container boundary:
+  // Search backwards towards the start, inclusive. Matching on the start is valid.
+  BindingList* searchBinding(const LayerKey& key, BindingList* startList);
+
+  // Call-site label mismatch with formal parameter:
+  auto pattern = get_gpu_access_pattern(/*useTransferBuffer=*/true);
+  ```
+
+  Good:
+
+  ```cpp
+  // Spelled-out class name matching concept:
+  // Scope of a SkRuntimeEffect based on how the RuntimeEffect's SkSL invokes each child.
+
+  // Exact capitalized class name matching declaration:
+  // * Each RenderStep may have "Static" data and/or "Append" data.
+
+  // Synchronized variable names and casing in condition comment:
+  // If yTopTiles == yBottomTiles, then the line is either completely above or below
+  if (yTopTiles >= yBottomTiles) {
+      return;
+  }
+
+  // Synchronized parameter name matching active declaration:
+  // Copy `srcRow` into `decodedInterlacedFullWidthRow`.
+  void expandRow(SkSpan<uint8_t> dst, SkSpan<const uint8_t> srcRow);
+
+  // Exact parameter identifier avoids ambiguity with container start/head:
+  // Search backwards towards startList, inclusive. Matching on startList is valid.
+  BindingList* searchBinding(const LayerKey& key, BindingList* startList);
+
+  // Call-site label matching formal parameter:
+  auto pattern = get_gpu_access_pattern(/*isGpuOnlyAccess=*/true);
+  ```
+include_glob:
+- src/**
+- include/**
+- tests/**
+- modules/**
+- experimental/**
+triggers:
+- (?://|[*]).*[`'][a-zA-Z0-9_]{3,}[`']
+- (?://|[*]).*\b(?:TODO|FIXME|Once|after|f[A-Z]\w*|k[A-Z]\w*)\b.*\b(?:remove|delete|rename|replace|clean
+  up|can be removed|implemented|instead of)\b
+- (?://|[*]).*\b(?:variable|parameter|argument|field|member|method|function|helper|type|class|struct)\s+[`'\\\\\\\\\"]?[a-zA-Z0-9_]+[`'\\\\\\\\\"]?
+- (?://|[*]|/\*).*\b(?:renamed|replaced|documented|defined in|matches|corresponds to|copied from|adapted
+  from|ported from)\b
+- /\*\s*[a-zA-Z0-9_]+\s*=?\s*\*/\s*(?:true|false|nullptr|-?\d|\\\\\\\"[^\\\\\\\"]*\\\\\\\"|[A-Za-z_])
+- (?://|[*]).*\b(?:from|into|through|to get|index into|iterate)\b.*\b[A-Z]\w*(?:List|Cache|Map|Table|Entry)\b
+- (?://|[*]).*\b(?:(?:[Ii]f|[Ww]hen|[Ww]hile)\b.*(?:==|!=|<=|>=|<|>)|(?:[Tt]owards|[Ff]rom|[Bb]efore|[Aa]fter|[Mm]atching
+  on)\s+(?:the\s+)?(?:start|end|head|tail|cutoff|limit)\b)
+- (?://|[*]).*\b[A-Z]{2,}'s?\s+[A-Za-z0-9_]+
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Most externally visible types and functions use an Sk- prefix to designate they're part of Skia,
+    but code in Ganesh uses Gr-. Nested types need not be prefixed.
+- path: site/docs/dev/contrib/style.md
+  heading: '## Naming'
+  quote: Local variables and arguments are camel-capped with no initial cap.
+confidence: 0.98
+support_cl_count: 12

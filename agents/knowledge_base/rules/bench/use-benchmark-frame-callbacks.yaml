@@ -1,0 +1,29 @@
+id: bench/use-benchmark-frame-callbacks
+title: When implementing per-frame GPU submissions in benchmarks and harness targets, invoke submitFrame()
+  via onDrawFrame() and name submission hooks submitFrame rather than endFrame
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In Benchmark subclasses under bench/ that require per-frame or per-loop GPU submissions, override
+  submitsInternalFrames() to return true and implement onDrawFrame() to invoke the provided submitFrame()
+  callback instead of executing manual backend-specific GPU flush and submit calls inside onDraw(). Additionally,
+  name frame callbacks and harness Target methods that flush recordings and submit GPU work submitFrame()
+  rather than vague lifecycle names like endFrame().
+why: The nanobench benchmarking harness coordinates frame timing, artificial GPU frame lag, and backend-specific
+  submissions across Ganesh and Graphite targets; manual GPU flushes inside individual benchmarks duplicate
+  submission logic and bypass harness-level throttling. Furthermore, generic lifecycle names like endFrame()
+  obscure whether recorded commands are merely delimited or actively flushed and submitted to the GPU
+  context and queue.
+include_glob:
+- bench/**
+triggers:
+- \b(?:void\s+)?(?:submit|end)Frame\s*[(]
+- \bonDrawFrame\s*[(]
+- \bsubmitsInternalFrames\s*[(]
+- \bflushAndSubmit\s*[(]
+- \binsertRecording\s*[(]
+- ->submit\s*[(]
+- '\bclass\s+\w*Bench\s*:'
+- \bonDraw\s*[(]\s*int\s+loops\b
+confidence: 0.9
+support_cl_count: 1

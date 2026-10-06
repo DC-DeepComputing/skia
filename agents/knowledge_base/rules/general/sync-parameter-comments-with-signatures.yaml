@@ -1,0 +1,85 @@
+id: general/sync-parameter-comments-with-signatures
+title: When modifying function signatures, adding parameters, or refactoring constructors, update or remove
+  accompanying doc comments, @param tags, and obsolete parameter descriptions
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When adding parameters, introducing optional arguments, or refactoring function and constructor
+  signatures (including replacing out-parameters with std::optional<T>), update or remove accompanying
+  explanatory comments and Doxygen doc comments (@param and @return tags). Describe newly added parameters
+  and their semantics, remove stale @param tags or preceding comments describing eliminated parameters
+  and obsolete wrapping responsibilities, update @return tags to reflect active return types and fallbacks,
+  and ensure parameter descriptions accurately reflect active types, constness, mutability, and defaults.
+why: Stale comments, obsolete @param tags, omitted parameter descriptions, or outdated @return descriptions
+  that contradict active parameters, eliminated arguments, or return semantics mislead callers about the
+  true API contract and break Doxygen-generated documentation. Retaining comments that describe eliminated
+  parameters or failing to document new optional parameters erodes trust in documentation and leads to
+  caller errors.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Variant 1: Stale note on refactored parameter type/constness:
+  // Note: Non-const ref of SharedGeneratorData to allow std::move of the preamble string
+  void generateVertexSkSL(const Caps*, const RenderStep*, const SharedGeneratorData&);
+
+  // Variant 2: Stale doc comment contradicting newly parameterized default argument:
+  /** Constructs an empty SkPath. FillType is set to kWinding. */
+  SkPath(SkPathFillType = SkPathFillType::kDefault);
+
+  // Variant 3: Stale @param and @return tags when replacing out-parameter with std::optional:
+  /** @param result The product. @return True if succeeded. */
+  std::optional<SkPath> SK_API Op(const SkPath& one, const SkPath& two, SkPathOp op);
+
+  // Variant 4: Stale comment describing eliminated parameter or obsolete wrapping:
+  // wrap path to keep track of whether the contour is initialized and non-empty
+  SkPathWriter::SkPathWriter(SkPathFillType ft) : fBuilder(ft);
+  ```
+
+  Good:
+
+  ```cpp
+  // Variant 1: Removed stale comment contradicting const reference:
+  void generateVertexSkSL(const Caps*, const RenderStep*, const SharedGeneratorData&);
+
+  // Variant 2: Doc comment updated to reflect default parameter:
+  /** Constructs an empty SkPath: no verbs, no points, no conic weights. */
+  explicit SkPath(SkPathFillType = SkPathFillType::kDefault);
+
+  // Variant 3: Removed obsolete @param tag and updated @return description:
+  /** @return The product of the operands, or {} on failure. */
+  std::optional<SkPath> SK_API Op(const SkPath& one, const SkPath& two, SkPathOp op);
+
+  // Variant 4: Removed obsolete comment describing eliminated path parameter:
+  SkPathWriter::SkPathWriter(SkPathFillType ft) : fBuilder(ft);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- /[*][*]?.*\b(?:[Bb]y default|[Dd]efaults? to|is set to|[Ff]illType|[Oo]ptionally)\b
+- //.*\b(?:[Nn]on-const|const ref|by ref|by pointer|by value|takes? ownership|passed by|wraps?\b|wrapping|contour)\b
+- '@(?:param|return)\b'
+- \b(?:explicit\s+)?[A-Z][A-Za-z0-9_]*\s*[(][^)]*=\s*[A-Za-z0-9_:]+
+- \b[A-Z][A-Za-z0-9_]*::[A-Z][A-Za-z0-9_]*\s*[(][^)]*[)]\s*:\s*f[A-Z]
+- \b(?:void|bool|int|size_t|float|sk_sp<[A-Za-z0-9_]+>)\s+[a-z][A-Za-z0-9_]*\s*[(][^)]*&
+- \bstd::optional<[A-Za-z0-9_:]+>\s+(?:SK_API\s+)?[a-zA-Z0-9_]+\s*[(]
+- =\s*(?:nullptr|std::nullopt|false|true|\{\\\\})\s*[,)]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: Mandatory constant object parameters are passed to functions as const references. Optional constant
+    object parameters are passed to functions as const pointers. Mutable object parameters are passed
+    to functions as pointers. We very rarely pass anything by non-const reference.
+- path: site/docs/dev/contrib/style.md
+  heading: Folder Organiziation
+  quote: Skia's public API should live in the `include` directory. Skia's private headers and implementation
+    files should live in the `src` directory. The `modules` directory contains extra features that are
+    built on top of Skia (`modules/skcms` being an exception) and can be used by clients.
+- path: site/docs/user/api/_index.md
+  heading: API Reference and Overview
+  quote: Skia documentation is actively under development.
+confidence: 0.98
+support_cl_count: 5

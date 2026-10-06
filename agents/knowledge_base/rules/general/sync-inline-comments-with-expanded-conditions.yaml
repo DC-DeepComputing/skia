@@ -1,0 +1,87 @@
+id: general/sync-inline-comments-with-expanded-conditions
+title: When modifying code logic, traversals, or pipeline stages, keep explanatory comments synchronized
+  with implementation semantics and remove obsolete, speculative, or contradictory comments
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting code logic, conditional guards, traversal algorithms, or restored state, ensure
+  explanatory comments stay synchronized with implementation semantics. When removing or consolidating
+  pipeline stages or tree traversals, update comments so they do not reference obsolete passes or eliminated
+  prior visits. Accurately identify which pipeline stage or baseline state is restored (such as base paint
+  uniforms during rewind) rather than misrepresenting baseline state as a subsequent renderstep result.
+  Remove obsolete, speculative, or WIP comments describing satisfied hypotheses. When updating checks
+  to be conditional (such as keying paint parameters only when shading or bypassing filters), remove stale
+  comments claiming unconditional behavior and document branching ordering invariants (such as dependsOnDst).
+why: Inaccurate, stale, or speculative comments that contradict implementation expressions or reference
+  eliminated pipeline stages mislead maintainers about safety invariants, execution order, and active
+  constraints. Keeping comments synchronized with actual code and removing obsolete notes prevents confusion
+  over whether preconditions are met, baseline buffers are preserved, or prior passes executed.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1) Stale comment claims unconditional behavior despite conditional ternary:
+  GraphicsPipelineCache::Index idx = fPipelineCache.insert(
+          {step->renderStepID(), step->performsShading() ? paintID : UniquePaintParamsID::Invalid()});
+
+  // 2) Misrepresents restored baseline state as combined subsequent stage result:
+  // Store the required alignment from the previous (Paint + RenderStep) combination.
+  fStorage.resize(fEndPaintOffset);
+  fReqAlignment = fEndPaintAlignment;
+
+  // 3) Explanatory comment omits newly handled variants or bypassed modes:
+  // Consolidates constant shaders and color filters; if present, cannot extract.
+  if (paint.shader() || paint.imageShader() || paint.colorFilter()) {
+      return std::nullopt;
+  }
+
+  // 4) Speculative or WIP comments contradict actual code semantics:
+  // if we had a 2x2, this would be equivalent to c0*coord.x + c1*coord.y + translation
+  return SkSL::String::printf("float2x2(%s.xy, %s.zw)*%s + %s",
+                              upper2x2.c_str(), upper2x2.c_str(),
+                              args.fFragCoord.c_str(), translation.c_str());
+
+  // 5) References obsolete traversal passes or eliminated tree visits:
+  // Original image was not available during initial NotifyInUse() tree visit.
+  ```
+
+  Good:
+
+  ```cpp
+  // 1) Comment removed or updated to reflect conditional parameter binding:
+  GraphicsPipelineCache::Index idx = fPipelineCache.insert(
+          {step->renderStepID(), step->performsShading() ? paintID : UniquePaintParamsID::Invalid()});
+
+  // 2) Accurately documents that restored storage represents base paint uniforms:
+  // Grow directly from paint state if shading; align to step requirement if non-shading.
+  fStorage.resize(fEndPaintOffset);
+  fReqAlignment = fEndPaintAlignment;
+
+  // 3) Inline comment accurately reflects all handled variants and bypassed modes:
+  // Consolidates constant shaders, images, and color filters; if present, cannot extract.
+  if (paint.shader() || paint.imageShader() || paint.colorFilter()) {
+      return std::nullopt;
+  }
+
+  // 4) Obsolete WIP comment removed since float2x2 is directly used:
+  return SkSL::String::printf("float2x2(%s.xy, %s.zw)*%s + %s",
+                              upper2x2.c_str(), upper2x2.c_str(),
+                              args.fFragCoord.c_str(), translation.c_str());
+
+  // 5) Accurately describes origin without referencing eliminated passes:
+  // Original image was produced through Image::Copy from a different DrawContext.
+  ```
+include_glob:
+- src/**
+triggers:
+- //.*\b(?:dependsOnDst|backwards?|forwards?|traversal|ordering|Graphite-backed|DrawContext)\b
+- //.*\b(?:PaintParams|imageShader|colorFilter|maskfilter|SDF|shading|paintID|sans|bypassing)\b
+- //.*\b(?:if we (?:had|could)|would be|equivalent to|hypothetical|WIP)\b
+- //.*\b(?:renderstep|paint uniforms?|checkpoint|rewind|NotifyInUse|tree visit)\b
+- \b(?:dependsOnDst|searchBackwards|findTargetLayer|DrawListLayer)\b
+- \b(?:imageShader|paint\.(?:imageShader|shader|colorFilter)|fMaskFilter|kSDFTData_Flag|doSDFT)\b
+- \b(?:performsShading|UniquePaintParamsID::Invalid|float[234]x[234])\b
+- \b(?:fEndPaintOffset|fEndPaintAlignment|rewindToMark|rewindToOffset)\b
+confidence: 0.98
+support_cl_count: 6

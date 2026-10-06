@@ -1,0 +1,29 @@
+id: gm/avoid-duplicate-canvas-draws-in-gms
+title: When authoring rendering tests or slides, avoid duplicate canvas draw or paint calls and redundant
+  shapes that repeat identical geometry without distinct coverage
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When authoring rendering tests (such as GM tests via DEF_GM or DEF_SIMPLE_GM) or viewer slides,
+  verify that each draw or paint operation exercises distinct rendering behavior. Do not issue duplicate
+  draw or paint calls on the same geometry or object (such as canvas->drawPath() or paragraph->paint(canvas,
+  ...)) at identical coordinates without an intervening canvas transform or state modification. Additionally,
+  in GM rendering tests, avoid adding duplicate contours or redundant test shapes that repeat existing
+  geometric coverage without exercising distinct verbs, orientations, or cap/join behaviors.
+why: Duplicate draw or paint calls cause redundant rendering work and accidental overdraw that distorts
+  antialiased edges, semi-transparent blending, and visual inspection in Skia Gold. Redundant test shapes
+  inflate canvas dimensions and increase visual triage overhead without validating new code paths.
+include_glob:
+- gm/**
+- modules/skparagraph/**
+- tools/viewer/**
+triggers:
+- \bcanvas->draw(?:Path|Rect|RRect|Oval|Points|Arc|Image)\s*[(]
+- \bcanvas->draw\w+\s*[(]
+- ->paint\s*[(]\s*canvas\b
+- \bparagraph->paint\s*[(]
+- \bDEF_(?:SIMPLE_)?GM(?:_CAN_FAIL)?\s*[(]
+- \bSkPathBuilder\b
+- \.(?:lineTo|quadTo|conicTo|cubicTo)\s*[(]
+confidence: 0.95
+support_cl_count: 2

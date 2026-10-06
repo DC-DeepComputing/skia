@@ -1,0 +1,45 @@
+id: general/avoid-in-band-state-in-count-variables
+title: When an explicit state enum or bitmask tracks operational modes, store pure unsigned counts rather
+  than multiplexing state using negative sentinels
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not encode operational modes, states, or dynamic behaviors into numeric count or size variables
+  using in-band sentinels, sign tricks (such as negative values), or inverted arithmetic formulas when
+  an explicit state enum or bitmask is available. Store pure non-negative counts using unsigned integer
+  types (such as uint32_t or size_t) and determine operational modes directly from the explicit state
+  flags.
+why: Multiplexing mode information into signed count fields obscures variable invariants and inverts operations
+  (such as using std::min to track an increasing maximum). Storing pure counts in unsigned fields simplifies
+  bounds checking and assertions while centralizing mode dispatch in explicit state enums.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Sign-based state encoding: == 0 is static, > 0 is fixed instanced, < 0 is dynamic
+  int fTemplateCount;
+  ...
+  fDrawer.fTemplateCount = std::min(fDrawer.fTemplateCount, -SkTo<int>(count) - 1);
+  ```
+
+  Good:
+
+  ```cpp
+  // Mode is explicitly tracked by fRenderState; fTemplateCount stores purely the count.
+  SkEnumBitMask<RenderStateFlags> fRenderState;
+  uint32_t fTemplateCount;
+  ...
+  fDrawer.fTemplateCount = std::max(fDrawer.fTemplateCount, static_cast<uint32_t>(count));
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:int|int32_t|uint32_t|size_t)\s+f[A-Za-z0-9_]*(?:Count|Size|Length|Capacity)\b
+- \b[a-zA-Z0-9_.]*(?:Count|Size|Length)\s*=\s*std::(?:min|max)\s*\(
+- \b(?:templateCount|fTemplateCount)\b
+- -\s*(?:SkTo<int>|static_cast<int>)?\s*[(]?[a-zA-Z0-9_.]*(?:Count|count|Size|size)\s*-\s*1
+- \b[a-zA-Z0-9_.]*(?:Count|Size|Length)\s*<\s*0\b
+- \bSkEnumBitMask<[A-Za-z0-9_:]*(?:State|Flags?|Mode)>\s+f[A-Z]\w*
+confidence: 0.9
+support_cl_count: 1

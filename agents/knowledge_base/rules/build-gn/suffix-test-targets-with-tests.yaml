@@ -1,0 +1,51 @@
+id: build-gn/suffix-test-targets-with-tests
+title: When defining GN build targets containing test utilities, harnesses, or test cases, suffix target
+  names with _tests to distinguish them from production libraries
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining GN build targets (such as `skia_source_set`, `source_set`, or `optional`) that contain
+  test utilities, test harnesses, or test cases, suffix the target name with `_tests` (or name module-local
+  targets `tests`) rather than using a bare component name. Do not use bare names for test-only targets,
+  and mark test helper targets with `testonly = true`.
+why: Bare target names imply that the target compiles production functionality or a core library component.
+  Suffixing test targets and test utility sets with `_tests` makes their test-only role immediately explicit
+  in build files and dependency lists, preventing accidental production dependencies.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  optional("fontscanner") {
+    enabled = skia_use_freetype || skia_use_fontations
+    sources = [
+      "tests/FontScanner.cpp",
+      "tests/FontScanner.h",
+    ]
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  skia_source_set("fontscanner_tests") {
+    testonly = true
+    deps = [ ":skia" ]
+    sources = [
+      "tests/FontScanner.cpp",
+      "tests/FontScanner.h",
+    ]
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+- '**/*.gni'
+triggers:
+- \b(?:skia_source_set|source_set|optional)\s*[(]\s*["'][a-zA-Z0-9_]+["']
+- '["''](?:\$_)?tests/[^"'']+\.(?:cpp|cc|h)["'']'
+- \btestonly\s*=\s*true\b
+- \b[a-zA-Z0-9_]+_(?:tests|test)\b
+- \b(?:sources_for_tests|tests_sources)\b
+confidence: 0.92
+support_cl_count: 1

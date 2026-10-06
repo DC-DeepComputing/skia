@@ -1,0 +1,54 @@
+id: general/document-planned-public-type-graduation-with-todo
+title: When introducing incubating classes or types in internal headers under src/ that are planned for
+  public API exposure, document the intended graduation with an attributed TODO comment
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When introducing a class, struct, or interface type in an internal header under src/ that is slated
+  to graduate to the public API (under include/), document the planned graduation with an explanatory
+  comment or attributed TODO(b/...) / TODO(skbug.com/...) comment directly above the type declaration.
+  State the tracking bug and intended public exposure so contributors do not introduce tight couplings
+  to private internals or question the public naming conventions.
+why: Headers in src/ are private and excluded from client search paths. Incubating new public API types
+  in internal headers while in progress prevents premature public API commitments, but without explicit
+  documentation, maintainers may tightly couple the type to private internals or misunderstand why it
+  uses public naming conventions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // src/capture/SkCapture.h
+  class SkCapture : public SkRefCnt {
+  public:
+      static sk_sp<SkCapture> MakeFromData(sk_sp<SkData> data);
+      ...
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // src/capture/SkCapture.h
+  // TODO(b/412351769): Make this class public in include/core/SkCapture.h.
+  class SkCapture : public SkRefCnt {
+  public:
+      static sk_sp<SkCapture> MakeFromData(sk_sp<SkData> data);
+      ...
+  };
+  ```
+include_glob:
+- src/**
+triggers:
+- \bclass\s+(?:SK_API\s+)?(?:Sk|Gr)[A-Z][A-Za-z0-9_]*
+- \bstruct\s+(?:SK_API\s+)?(?:Sk|Gr)[A-Z][A-Za-z0-9_]*
+- \b(?:class|struct)\s+[A-Za-z0-9_]+\s*:\s*public\s+SkRefCnt\b
+- //\s*TODO\s*\([^)]*\):?\s*.*(?:public|graduate|include/)
+- //.*(?:public\s+(?:API|class|header)|graduate\s+to\s+include)
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Headers that aren't meant for public consumption should be placed in src directories so that
+    they aren't in a client's search path, or in include/private if they need to be used by public headers.
+confidence: 0.9
+support_cl_count: 1

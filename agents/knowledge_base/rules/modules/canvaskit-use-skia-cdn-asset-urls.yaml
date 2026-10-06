@@ -1,0 +1,49 @@
+id: modules/canvaskit-use-skia-cdn-asset-urls
+title: In CanvasKit demo and test HTML pages, load font and media assets using the Skia CDN variable (`cdn
+  + '<asset>'`) instead of hardcoding external URLs
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In CanvasKit demo and test HTML pages, load font and media assets using the Skia CDN URL variable
+  (`cdn + '<asset_name>'`) rather than hardcoding direct external URLs (such as `fonts.gstatic.com`).
+  Ensure the `cdn` base URL is defined as `'https://cdn.skia.org/misc/'` and references mirrored asset
+  filenames.
+why: Direct external URLs (such as hashed Google Fonts links) are brittle, subject to unexpected upstream
+  breakage or CORS restrictions, and can fail in isolated test environments without external network access.
+  Skia mirrors standard demo assets on its CDN to provide stable, reproducible asset URLs across CanvasKit
+  examples.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  <script>
+    const loadArabic = fetch('https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfyGyvu3CBFQLaig.ttf')
+        .then((response) => response.arrayBuffer());
+  </script>
+  ```
+
+  Good:
+
+  ```cpp
+  <script>
+    const cdn = 'https://cdn.skia.org/misc/';
+    const loadArabic = fetch(cdn + 'NotoSansArabic.v18.ttf')
+        .then((response) => response.arrayBuffer());
+  </script>
+  ```
+include_glob:
+- modules/canvaskit/**
+triggers:
+- fetch\s*\(\s*['\"]https?://
+- fetch\s*\(\s*cdn\s*\+
+- \bcdn\s*\+\s*['\"][A-Za-z0-9_.-]+
+- '[''\"]https?://fonts\.gstatic\.com/'
+- '[''\"]https?://cdn\.skia\.org/'
+- \b(?:const|var|let)\s+cdn\s*=\s*['\"]https?://cdn\.skia\.org
+citations:
+- path: site/docs/user/modules/canvaskit.md
+  heading: CanvasKit
+  quote: fetch('https://cdn.skia.org/misc/NotoColorEmoji.ttf').then((resp) => {
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,43 @@
+id: api/document-policy-and-strategy-enum-options
+title: When introducing enums that configure operational policies, resource strategies, or allocation
+  modes, document each enumerator to explain its behavior and trade-offs
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring or extending an enum that configures operational policies, resource strategies, or
+  allocation behaviors (such as exact reservation vs. growth policies), document each enumerator to clarify
+  its behavior, performance implications, and decision criteria for API callers. Avoid bare enumerators
+  whose trade-offs cannot be deduced from their names alone.
+why: Callers cannot deduce performance characteristics or behavioral trade-offs (such as avoiding overallocation
+  versus avoiding repeated buffer reallocations) from bare enumerator names alone. Explicitly documenting
+  each option guides callers to select the appropriate policy and prevents improper resource utilization.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  enum class Reserve { kExact, kGrow };
+  SkPathBuilder& addRaw(const SkPathRaw&, Reserve);
+  ```
+
+  Good:
+
+  ```cpp
+  enum class Reserve {
+      // Reserves the exact amount of storage needed for pathraw (never overallocates).
+      kExact,
+      // Allows the storage buffers to overallocate, based on their internal growth policy.
+      kGrow,
+  };
+  SkPathBuilder& addRaw(const SkPathRaw&, Reserve);
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \benum\s+class\s+[A-Za-z0-9_]+\s*(?::\s*[A-Za-z0-9_]+)?\s*\{
+- \benum\s+(?:class\s+)?[A-Za-z0-9_]*(?:Reserve|Policy|Strategy|Mode|Allocation|Behavior)\b
+- \bk(?:Exact|Grow|Dynamic|Static|Lazy|Eager|Fast|Conservative|Aggressive|Strict|Relaxed)\b
+- \bk[A-Z][A-Za-z0-9_]+,\s*(?://.*)?$
+confidence: 0.9
+support_cl_count: 1

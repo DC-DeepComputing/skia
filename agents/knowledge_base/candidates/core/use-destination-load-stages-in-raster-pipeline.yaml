@@ -1,0 +1,45 @@
+id: core/use-destination-load-stages-in-raster-pipeline
+title: When assembling SkRasterPipeline destination stages or appending to appendLoadDst, use destination
+  load stage variants (*_dst) rather than source load stages (load_*)
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When assembling destination stages in SkRasterPipeline (such as within SkRasterPipeline::appendLoadDst
+  or custom blitter pipeline builders), append destination load stage variants (such as Op::load_*_dst)
+  rather than standard source load stages (Op::load_*).
+why: Standard load stages write pixel data into the active source color registers (r, g, b, a), whereas
+  *_dst stage variants load into destination registers (dr, dg, db, da). Appending a source load inside
+  destination loading helpers clobbers the active source color and fails to supply the destination color
+  needed for blending.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  case kR16_float_SkColorType:
+      this->append(Op::load_rf16, ctx);
+      break;
+  ```
+
+  Good:
+
+  ```cpp
+  case kR16_float_SkColorType:
+      this->append(Op::load_rf16_dst, ctx);
+      break;
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \bappendLoadDst\b
+- \b(?:Op|SkRasterPipelineOp)::load_[a-z0-9_]+
+- \b(?:this->|p->|pipeline->)?append\s*\(\s*(?:Op|SkRasterPipelineOp)::load_
+- \bload_[a-z0-9]+_dst\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: '### 6. The Workhorse: `SkRasterPipeline`'
+  quote: The **`SkRasterPipeline`** calculates final pixel colors by chaining together single-purpose
+    **stages**. For example, a draw might use stages for loading coverage (`load_a8`), setting a source
+    color (`uniform_color`), loading the destination, blending (`srcover`), and storing the result (`store_8888`).
+confidence: 0.95
+support_cl_count: 1

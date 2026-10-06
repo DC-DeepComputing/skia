@@ -1,0 +1,39 @@
+id: codec/verify-destination-index-in-shared-parameter-copy
+title: When copying shared or default parameters from a base array element to secondary indices, verify
+  all destination fields target the secondary index rather than self-assigning
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When replicating shared or default parameters from a base element (such as index 0) to subsequent
+  array elements, ensure each assignment writes to the destination index rather than self-assigning to
+  the base index. Audit copy-pasted assignment blocks to ensure no array subscripts inadvertently retain
+  the source index.
+why: Copy-pasting propagation statements from earlier fields easily leads to accidental self-assignments
+  (e.g., arr[0] = arr[0]). Because self-assignments compile without warning and target fields frequently
+  default to zero in unit tests, such bugs silently leave secondary array elements uninitialized or unpopulated.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bug: copy-paste error accidentally self-assigns to index 0 instead of index a.
+  gain_curve_num_control_points_minus_1[a] = gain_curve_num_control_points_minus_1[0];
+  gain_curve_use_pchip_slope_flag[0] = gain_curve_use_pchip_slope_flag[0];
+  ```
+
+  Good:
+
+  ```cpp
+  gain_curve_num_control_points_minus_1[a] = gain_curve_num_control_points_minus_1[0];
+  gain_curve_use_pchip_slope_flag[a] = gain_curve_use_pchip_slope_flag[0];
+  ```
+include_glob:
+- src/codec/**
+triggers:
+- \b[a-zA-Z0-9_]+\[[a-zA-Z0-9_]+\]\s*=\s*[a-zA-Z0-9_]+\[0\]
+- \b[a-zA-Z0-9_]+\[0\]\s*=\s*[a-zA-Z0-9_]+\[0\]
+- \b[a-zA-Z0-9_]+\[[a-zA-Z0-9_]+\]\[[^\]]+\]\s*=\s*[a-zA-Z0-9_]+\[0\]\[
+- \bshared_[a-zA-Z0-9_]+_flag\b
+- \b(?:gain_curve_|hdr_)[a-zA-Z0-9_]+\[
+confidence: 0.92
+support_cl_count: 1

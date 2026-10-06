@@ -1,0 +1,59 @@
+id: api/export-exposed-types-with-sk-api
+title: When annotating types, functions, or operators with SK_API, export exposed declarations in include/
+  but omit SK_API on internal declarations in src/
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Annotate classes and structs declared in public or exposed headers (include/** and modules/**/include/**)
+  with SK_API (or SK_SPI for private headers) whenever they define non-inline member functions or virtual
+  tables implemented in library source files. Conversely, do not mark internal classes, methods, or friend
+  operators in src/ with SK_API or SK_SPI, reserving symbol export macros strictly for Skia's public dynamic
+  library boundary.
+why: In shared library builds, public types with out-of-line members must be exported with SK_API to prevent
+  unresolved external symbol errors for downstream embedders. Conversely, marking internal classes and
+  helper operators in src/ with SK_API unnecessarily pollutes the dynamic library export table and exposes
+  private implementation details.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // include/private/SkHdrMetadata.h (exposed type missing SK_API)
+  struct ContentLightLevelInformation {
+      bool parse(const SkData* data);
+      sk_sp<SkData> serialize() const;
+  };
+
+  // src/core/SkPathData.h (internal operator marked with SK_API)
+  friend SK_API bool operator==(const SkPathData& a, const SkPathData& b);
+  ```
+
+  Good:
+
+  ```cpp
+  // include/private/SkHdrMetadata.h (exposed type exported with SK_API)
+  struct SK_API ContentLightLevelInformation {
+      bool parse(const SkData* data);
+      sk_sp<SkData> serialize() const;
+  };
+
+  // src/core/SkPathData.h (internal operator kept unexported)
+  friend bool operator==(const SkPathData& a, const SkPathData& b);
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+- src/**
+triggers:
+- \b(?:class|struct)\s+(?:SK_API|SK_SPI)\b
+- \b(?:SK_API|SK_SPI)\s+(?:class|struct)\b
+- \b(?:class|struct)\s+[A-Za-z0-9_]+(?:\s+final)?\s*[{:]
+- \b(?:friend\s+)?(?:SK_API|SK_SPI)\b
+- \bvirtual\s+~?[A-Za-z0-9_]+\s*\(
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Headers that aren't meant for public consumption should be placed in src directories so that
+    they aren't in a client's search path, or in include/private if they need to be used by public headers.
+confidence: 0.97
+support_cl_count: 2
