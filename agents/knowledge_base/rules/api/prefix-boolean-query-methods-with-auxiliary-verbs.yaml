@@ -1,0 +1,64 @@
+id: api/prefix-boolean-query-methods-with-auxiliary-verbs
+title: When declaring boolean query or predicate methods, use concise auxiliary verbs (is, has, can, supports)
+  rather than bare nouns, procedural prefixes, or event-style phrases
+polarity: do
+severity: nit
+rubric: readability
+rule: Name boolean query and predicate functions or methods using concise auxiliary verbs or predicate
+  prefixes (such as is.../Is..., has.../Has..., can.../Can..., did.../Did..., supports...) or natural,
+  fluent verb phrases with fully spelled terms (such as appendsVertices(), requiresMSAA()). In capability
+  or Caps classes, prefix feature queries with supports... or is... rather than bare nouns or raw API
+  feature names (e.g., supportsOcclusionQueryPrecise(), not occlusionQueryPrecise()). Avoid verbose procedural
+  action phrases (e.g., DetermineIf..., CheckIf...), declarative past-tense phrases resembling event notifications
+  (e.g., asyncCompilationFailed()), and awkward noun-stacked jargon or truncated abbreviations (e.g.,
+  isAppendRateVert()).
+why: Boolean predicates represent assertions or questions evaluated at conditional call sites (e.g., if
+  (caps->supportsOcclusionQueryPrecise()) or if (appendsVertices())). Bare nouns and raw API property
+  names resemble value getters rather than boolean checks, procedural prefixes (DetermineIf) add redundant
+  verbosity, declarative past-tense phrases obscure whether a function is a query or an event callback,
+  and noun-stacked jargon hinders readability.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Declarative past-tense phrase resembles an event callback rather than a query
+  bool asyncCompilationFailed() const override;
+
+  // Procedural prefix adds unnecessary verbosity to boolean predicate
+  bool DetermineIfDstReadRequired(const Caps*, std::optional<SkBlendMode>, Coverage);
+
+  // Awkward noun-stacked jargon and truncated terms hinder readability
+  bool isAppendRateVert() const { return SkToBool(fFlags & Flags::kAppendVertices); }
+
+  // Bare noun or raw API property name resembles a value getter rather than a capability query
+  bool occlusionQueryPrecise() const { return fOcclusionQueryPrecise; }
+  ```
+
+  Good:
+
+  ```cpp
+  // Auxiliary verb clarifies that the method is a boolean query
+  bool didAsyncCompilationFail() const override;
+
+  // Concise predicate prefix reads naturally in conditional expressions
+  bool IsDstReadRequired(const Caps*, std::optional<SkBlendMode>, Coverage);
+
+  // Natural verb phrase with fully spelled words reads fluently at call sites
+  bool appendsVertices() const { return SkToBool(fFlags & Flags::kAppendVertices); }
+
+  // Predicate prefix clarifies feature capability check
+  bool supportsOcclusionQueryPrecise() const { return fOcclusionQueryPrecise; }
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \b(?:virtual\s+)?(?:bool|std::optional<[^>]+>)\s+[a-z][A-Za-z0-9_]*(?:Failed|Succeeded|Completed|Finished|Occurred|Passed)\s*[(]
+- \b(?:virtual\s+)?(?:static\s+)?bool\s+(?:Determine|Check)If[A-Z]\w*\s*[(]
+- \b(?:virtual\s+)?(?:static\s+)?bool\s+(?:did|has|can|is|was|were|supports|Is|Has|Can|Did|Supports)[A-Z]\w*\s*[(][^)]*[)]
+- \b(?:virtual\s+)?bool\s+[a-z][A-Za-z0-9_]*(?:Fail|Failure|Success|Error)\s*[(]
+- \b(?:virtual\s+)?bool\s+(?:appends|requires|emits|performs)[A-Z]\w*\s*[(]
+- \b(?:didAsyncCompilationFail|asyncCompilationFailed|IsDstReadRequired|isAppendRateVert|appendsVertices|supportsOcclusionQueryPrecise)\b
+confidence: 0.98
+support_cl_count: 4

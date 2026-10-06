@@ -1,0 +1,45 @@
+id: gpu/serialize-new-caps-in-dumpjson
+title: When adding new capability, feature, or workaround flags to GrCaps or backend subclasses, update
+  dumpJSON or onDumpJSON to serialize the flag
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When adding a new capability, workaround, or driver feature flag to GrCaps or its backend subclasses
+  (such as GrGLCaps, GrShaderCaps, or GrMtlCaps), update dumpJSON (or backend onDumpJSON) to serialize
+  the flag using SkJSONWriter (e.g., writer->appendBool). Ensure newly introduced boolean flags, feature
+  limits, and driver workaround states are reflected in JSON diagnostics.
+why: Ganesh capability classes provide dumpJSON and onDumpJSON to export GPU capabilities, limits, and
+  driver workaround states for debugging tools, crash reporting, and diagnostic logging. Omitting newly
+  added capability fields leaves diagnostic dumps out of date and prevents inspection tools from accurately
+  reflecting the active driver configuration.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/gpu/ganesh/GrCaps.h / GrCaps.cpp:
+  fDisableTessellationPathRenderer = false;
+  fAvoidStencilBuffers = true;
+
+  // GrCaps::dumpJSON() is left unchanged, omitting the new capability flags.
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/gpu/ganesh/GrCaps.cpp dumpJSON(SkJSONWriter* writer):
+  writer->appendBool("Disable TessellationPathRenderer current driver [workaround]",
+                     fDisableTessellationPathRenderer);
+  writer->appendBool("Avoid stencil buffers [workaround]", fAvoidStencilBuffers);
+  ```
+include_glob:
+- src/gpu/ganesh/**
+triggers:
+- \b(?:dumpJSON|onDumpJSON)\s*\(
+- \bwriter->append(?:Bool|S32|U32|Hex|String)\s*\(
+- \b(?:class|struct)\s+(?:SK_API\s+)?Gr(?:GL|Vk|Mtl|Mock|Shader)?Caps\b
+- \bbool\s+f(?:Use|Supports|Disable|Avoid|Must|Prefer|Allow|Has)[A-Z]\w*
+- \bf(?:Use|Supports|Disable|Avoid|Must|Prefer|Allow|Has)[A-Z]\w*\s*=\s*
+- \bbool\s+(?:use|supports|disable|avoid|must|prefer|allow|has)[A-Z]\w*\s*\([^)]*\)\s*const
+confidence: 0.9
+support_cl_count: 1

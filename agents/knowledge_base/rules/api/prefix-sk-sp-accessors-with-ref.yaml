@@ -1,0 +1,66 @@
+id: api/prefix-sk-sp-accessors-with-ref
+title: When defining accessors for ref-counted members (sk_sp<T>), return const sk_sp<T>& or borrowed
+  T* for plain getters, and reserve ref-prefixed names for by-value owning copies
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When defining accessors for ref-counted member variables (sk_sp<T>), reserve plain or get-prefixed
+  names (e.g., shader(), colorSpace()) for borrowed non-owning access, returning either a borrowed raw
+  pointer (T*) or const sk_sp<T>& instead of returning sk_sp<T> by value. Reserve ref-prefixed names (e.g.,
+  refShader()) strictly for accessors that return an owning sk_sp<T> handle (+1 reference count), and
+  prefer borrowed accessors when callers only need to inspect or forward the object without extending
+  its lifetime.
+why: Returning sk_sp<T> by value creates an owning copy that incurs atomic reference-count increments
+  and decrements (ref() and unref()), degrading performance. Returning a borrowed raw pointer (T*) or
+  const sk_sp<T>& provides zero-overhead access while still allowing callers that require shared ownership
+  to explicitly copy the smart pointer, and reserving the ref prefix for owning accessors explicitly signals
+  reference-count modification.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class Context {
+  public:
+      // Bad: plain getters return owning sk_sp by value, causing ref-count churn.
+      sk_sp<SkCaptureManager> captureManager() const { return fCaptureManager; }
+      sk_sp<SkColorSpace> colorSpace() const { return fColorSpace; }
+
+      // Bad: 'ref' prefix used for an accessor returning a borrowed raw pointer.
+      SkShader* refShader() const { return fShader.get(); }
+  private:
+      sk_sp<SkCaptureManager> fCaptureManager;
+      sk_sp<SkColorSpace> fColorSpace;
+      sk_sp<SkShader> fShader;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class Context {
+  public:
+      // Good: plain getters return borrowed raw pointer or const ref without ref churn.
+      SkCaptureManager* captureManager() const { return fCaptureManager.get(); }
+      const sk_sp<SkColorSpace>& colorSpace() const { return fColorSpace; }
+
+      // Good: 'ref' prefix explicitly signals that an owning sk_sp is returned (+1 ref).
+      sk_sp<SkShader> refShader() const { return fShader; }
+  private:
+      sk_sp<SkCaptureManager> fCaptureManager;
+      sk_sp<SkColorSpace> fColorSpace;
+      sk_sp<SkShader> fShader;
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \b(?:const\s+)?sk_sp<[^>]+>(?:\s*&)?\s+[a-z][A-Za-z0-9_]*\s*[(]
+- \bsk_sp<[^>]+>\s+ref[A-Z]\w*\s*[(]
+- \b[A-Za-z0-9_:]+[*]\s+ref[A-Z]\w*\s*[(]
+- \b(?:ref|get)[A-Z]\w*\s*[(][^)]*[)]\s*(?:const\b|;)
+- \breturn\s+f[A-Za-z0-9_]+(?:\.get[(][)])?;
+confidence: 0.98
+support_cl_count: 3

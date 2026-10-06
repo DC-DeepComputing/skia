@@ -1,0 +1,51 @@
+id: ports/preserve-fontconfig-fclocker-thread-safety
+title: When modifying FontConfig port code in src/ports, retain FCLocker synchronization and FCLocker::AssertHeld()
+  assertions to support older thread-unsafe FontConfig releases
+polarity: dont
+severity: should_fix
+rubric: safety
+rule: In FontConfig port implementations (such as SkFontMgr_fontconfig and SkFontConfigInterface_direct),
+  retain FCLocker locking and FCLocker::AssertHeld() assertions around all operations accessing FontConfig
+  data structures or APIs. Do not remove locking or assertions under the assumption that FontConfig is
+  inherently thread-safe; older FontConfig releases (< 2.13.93) remain supported and require external
+  synchronization.
+why: FontConfig was not thread-safe prior to version 2.13.93, where internal mutex locking was introduced.
+  Skia continues to support Linux distributions running older FontConfig releases, so omitting FCLocker
+  synchronization or FCLocker::AssertHeld() checks causes data races, memory corruption, and multithreaded
+  crashes on supported platforms.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Accessing or modifying FontConfig patterns without asserting or holding FCLocker:
+  static void remove_weak(FcPattern* pattern, const char object[]) {
+      SkAutoFcObjectSet requestedObjectOnly(FcObjectSetBuild(object, nullptr));
+      FcPattern* stripped = FcPatternFilter(pattern, requestedObjectOnly);
+      // ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Asserting FCLocker is held (or acquiring FCLocker lock) before invoking FontConfig APIs:
+  static void remove_weak(FcPattern* pattern, const char object[]) {
+      FCLocker::AssertHeld();
+
+      SkAutoFcObjectSet requestedObjectOnly(FcObjectSetBuild(object, nullptr));
+      FcPattern* stripped = FcPatternFilter(pattern, requestedObjectOnly);
+      // ...
+  }
+  ```
+include_glob:
+- src/ports/**
+triggers:
+- \bFCLocker\b
+- \bFcPattern[A-Za-z0-9_]*\b
+- \bFcConfig[A-Za-z0-9_]*\b
+- \b(?:SkAutoFc|FcObjectSet|FcCharSet)[A-Za-z0-9_]*\b
+- \bFcFont(?:Match|Sort|List|RenderPrepare)\b
+- \bFontConfigThreadSafeVersion\b
+confidence: 0.9
+support_cl_count: 1

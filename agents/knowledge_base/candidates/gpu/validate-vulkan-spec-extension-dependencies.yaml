@@ -1,0 +1,51 @@
+id: gpu/validate-vulkan-spec-extension-dependencies
+title: When determining Vulkan capability support in GPU caps, validate all spec-mandated extension dependencies
+  rather than omitting required companion extensions or carrying forward obsolete workarounds
+polarity: do
+severity: nit
+rubric: correctness
+rule: When initializing Vulkan capability flags in Caps (such as VulkanCaps or GrVkCaps) for an extension
+  that depends on companion extensions per the Vulkan specification, verify that all required dependent
+  extensions are present. Do not omit spec-mandated extension checks or carry forward legacy driver workarounds
+  from older backends without confirming current device support.
+why: Vulkan extensions often specify hard dependencies on other extensions (such as VK_ANDROID_external_memory_android_hardware_buffer
+  requiring VK_EXT_queue_family_foreign). Omitting required dependencies to accommodate obsolete driver
+  bugs risks spec violations and validation errors on conforming devices, while copying forward legacy
+  workarounds without re-evaluating device support unnecessarily compromises correctness.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #ifdef SK_BUILD_FOR_ANDROID
+      // Legacy workaround: older Adreno drivers omitted VK_EXT_queue_family_foreign.
+      if (extensions->hasExtension(
+                  VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2)
+          /* && extensions->hasExtension(VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, 1) */) {
+          fSupportsAHardwareBufferImages = true;
+      }
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #ifdef SK_BUILD_FOR_ANDROID
+      if (extensions->hasExtension(
+                  VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME, 2) &&
+          extensions->hasExtension(VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME, 1)) {
+          fSupportsAHardwareBufferImages = true;
+      }
+  #endif
+  ```
+include_glob:
+- src/gpu/**/vk/**
+triggers:
+- \b(?:hasExtension|hasDeviceExtension|hasInstanceExtension)\s*\(
+- \b(?:VulkanCaps|GrVkCaps)::\w+
+- \bVK_[A-Z0-9_]+_EXTENSION_NAME\b
+- \bVK_EXT_QUEUE_FAMILY_FOREIGN\b
+- \bVK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER\b
+- \b(?:fSupports|supports)[A-Za-z0-9_]*(?:HardwareBuffer|ExternalMemory)\w*\b
+confidence: 0.9
+support_cl_count: 1

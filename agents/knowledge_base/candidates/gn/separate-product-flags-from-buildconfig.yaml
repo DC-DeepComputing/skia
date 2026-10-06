@@ -1,0 +1,63 @@
+id: gn/separate-product-flags-from-buildconfig
+title: When configuring GN build arguments, keep platform flags scoped to target OS detection and define
+  dedicated product flags in gn/skia.gni rather than overloading platform booleans
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not overload target platform or OS booleans (such as is_wasm or is_android) to represent specific
+  products or modules (such as CanvasKit), and do not define product-specific build arguments in gn/BUILDCONFIG.gn.
+  Keep gn/BUILDCONFIG.gn strictly scoped to generic toolchains and OS/CPU detection (is_<os> = current_os
+  == "<os>"), placing dedicated product and library build arguments (such as is_canvaskit or skia_enable_*)
+  in gn/skia.gni across sequential declare_args() blocks.
+why: Target platform booleans represent the target architecture or operating system. Overloading a platform
+  flag to imply a specific downstream product (like CanvasKit) breaks when other targets compile for the
+  same platform, forcing convoluted workaround flags. Furthermore, gn/BUILDCONFIG.gn executes before other
+  build files and must remain generic for any C++ target, whereas isolating feature toggles in gn/skia.gni
+  maintains clean architectural layering.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # In gn/BUILDCONFIG.gn:
+  declare_args() {
+    is_standalone_wasm = false
+  }
+
+  # Overloading platform check for product-specific config:
+  is_wasm = current_os == "wasm" && !is_standalone_wasm
+  is_any_wasm = is_wasm || is_standalone_wasm
+
+  # In gn/skia.gni:
+  skia_enable_pdf = !is_wasm  # Overloading platform flag for CanvasKit product toggle
+  ```
+
+  Good:
+
+  ```cpp
+  # In gn/BUILDCONFIG.gn:
+  is_wasm = current_os == "wasm"
+
+  # In gn/skia.gni:
+  declare_args() {
+    is_canvaskit = false
+  }
+
+  declare_args() {
+    skia_enable_pdf = !is_canvaskit
+    skia_use_webgl = is_wasm
+  }
+  ```
+include_glob:
+- gn/**
+- BUILD.gn
+- '**/*.gni'
+triggers:
+- \bdeclare_args\s*\(
+- \bis_[a-zA-Z0-9_]+\s*=
+- \bskia_[a-zA-Z0-9_]+\s*=
+- \bcurrent_os\s*==\s*"[^"]+"
+- \bis_(?:wasm|android|linux|mac|ios|win|fuchsia)\b
+- \bis_canvaskit\b
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,58 @@
+id: general/preserve-distinguishing-feature-suffixes
+title: When naming variables, parameters, or flags for specialized features or sub-paths, name them specifically
+  after the concrete feature rather than using generic names or truncating suffixes
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring variables, parameters, or configuration flags representing a specialized feature,
+  sub-path, or capability, name the identifier specifically after the concrete feature or condition being
+  governed (such as renderLazyPictureTilesOnGPU or useDrawListLayer). Do not use broad, generic names
+  (such as shouldUseSubsets) or truncate identifiers to match base concepts (such as useDrawList) that
+  falsely imply a wider scope across the entire operation or subsystem. Alternatively, inline single-use
+  capability checks directly into condition expressions.
+why: Generic parameter names and truncated identifiers falsely imply that a flag controls a general subsystem
+  or default path rather than a specialized sub-operation or extension. Explicitly identifying the concrete
+  feature or condition makes function signatures and call sites self-documenting, clarifies what sub-path
+  is actually modified, and prevents misconceptions about the flag's scope.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: 'useDrawList' implies controlling the entire DrawList system, but checks DrawListLayer.
+  bool useDrawList = device->fRecorder->priv().caps()->useDrawListLayer();
+  if (useDrawList) {
+      ...
+  }
+
+  // Bad: 'shouldUseSubsets' implies general tiling subsetting, but only controls lazy picture tiles on GPU.
+  static std::tuple<bool, size_t> DrawAsTiledImageRect(..., bool shouldUseSubsets);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Preserves distinguishing suffix matching the capability and feature class.
+  bool useDrawListLayer = device->fRecorder->priv().caps()->useDrawListLayer();
+  if (useDrawListLayer) {
+      ...
+  }
+  // Also good: Inlines single-use capability check directly.
+  if (device->fRecorder->priv().caps()->useDrawListLayer()) {
+      ...
+  }
+
+  // Good: Names the specific sub-feature and condition being governed.
+  static std::tuple<bool, size_t> DrawAsTiledImageRect(..., bool renderLazyPictureTilesOnGPU = true);
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- (?:\(|,\s*)(?:const\s+)?bool\s+(?:use|should|allow|enable|render|draw|is|has)[A-Z]\w*
+- \b(?:const\s+)?bool\s+use[A-Z]\w*\s*=
+- \b(?:caps|capabilities)[(][)]->(?:use|has|supports|can)[A-Z]\w*\s*[(]
+- ->caps[(][)]->use[A-Z]\w*\s*[(]
+- \b(?:useDrawList(?:Layer)?|renderLazyPictureTilesOnGPU|shouldUseSubsets)\b
+confidence: 0.93
+support_cl_count: 2

@@ -1,0 +1,122 @@
+id: general/remove-commented-out-code
+title: 'When modifying source files, headers, tests, or build files, remove commented-out code, access
+  specifiers, #includes, empty conditionals, debug overrides, and #if 0 blocks'
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: 'Do not leave commented-out code, commented-out access specifiers (e.g., `// private:`), commented-out
+  `#include` directives, empty conditionals, obsolete build configurations, temporary debug overrides
+  (such as ''false || ...''), testing holdovers, or #if 0 blocks in source, header, test, or build files.
+  Restore intended access specifiers and delete dead, obsolete, or disabled lines directly rather than
+  commenting them out, along with empty checks, unused member variables, or orphaned helpers left behind;
+  if commented-out debug helpers in tests are intentionally retained, ensure signatures match. Restore
+  capability and runtime conditions bypassed during local testing, and omit deferred APIs entirely until
+  enabled.'
+why: 'Commented-out code, commented-out access specifiers, commented-out includes, empty conditional blocks,
+  temporary debug overrides, disabled build configurations, and #if 0 blocks alter expected behavior,
+  inadvertently expose internal methods, create visual clutter, obscure active dependencies, and quickly
+  become stale. Disabling logic by commenting out call sites or bypassing checks with hardcoded booleans
+  leaves behind orphaned checks, dead members, or forced fallbacks on unaffected hardware; restoring intended
+  visibility, deleting obsolete code, and reverting debugging hacks keeps the codebase clean, correct,
+  and maintainable.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Variant 1: Commented-out code, access specifiers, unused includes, stale debug calls, empty conditionals, or test overrides
+  //#include "src/core/SkPathPriv.h"
+  //    private:
+      void reset() { fStrings.clear(); }
+  // fDst[j] = fM.mapPointCheck(src);
+  fDst[j] = mapcheck(fM, src);
+
+  // Stale or signature-mismatched commented-out debug call in tests
+  // find_duplicates(labels, labels);
+
+  if ((fEmpty || fHasValidBounds) && fRect.isFinite()) {
+      // fPath->setBounds(fRect);
+  }
+
+  // Bypassing capability checks with temporary test overrides
+  if (false || !c.type().isVector()) {
+      this->writeSimpleIntrinsic(c);
+  }
+
+  fDefaultMSAASamples = 1;//options.fInternalMultisampleCount;
+
+  // Variant 2: #if 0 disabled methods or deferred APIs
+  #if 0
+  bool canDetectNewPipelineCacheData() const;
+  #endif
+
+  // Variant 3: Commented-out build configurations (e.g. BUILD.gn)
+  skia_static_library("pathkit") {
+    # sources += skia_pathops_sources
+    sources += [ "src/base/SkArenaAlloc.cpp" ]
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Cleanly implement active code without dead lines, commented-out includes, empty conditionals, or test overrides
+      private:
+      void reset() { fStrings.clear(); }
+  fDst[j] = mapcheck(fM, src);
+
+  // Remove dead debug calls, or update signature if intentionally retained in tests
+  // find_duplicates(labels);
+
+  // Omit orphaned conditional block and delete unused bounds-checking members
+
+  // Gate fallback paths properly on capability flags
+  if (fCaps.fVectorClampMinMaxSupport || !c.type().isVector()) {
+      this->writeSimpleIntrinsic(c);
+  }
+
+  fDefaultMSAASamples = options.fInternalMultisampleCount;
+
+  // Omit deferred or unimplemented methods entirely until the CL that enables them.
+
+  // Delete obsolete build configurations directly
+  skia_static_library("pathkit") {
+    sources += [ "src/base/SkArenaAlloc.cpp" ]
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- bench/**
+- tests/**
+- tools/**
+- gm/**
+- modules/**
+- experimental/**
+- BUILD.gn
+- '**/*.gn'
+- '**/*.gni'
+- '**/BUILD.bazel'
+- '**/*.bzl'
+triggers:
+- ^#\s*(?:if|elif)\s+0\b
+- (?:#|//|/\*)\s*[A-Za-z0-9_]+(?:\[[^\\]]*\\])?\s*\+?=\s*
+- (?://|/\*)\s*[A-Za-z0-9_]+(?:->|\.)[A-Za-z0-9_]+
+- (?://|/\*)\s*(?:if|for|while|switch)\s*[(]
+- (?://|/\*)\s*(?:return|delete|new)\s+
+- (?://|/\*)\s*[A-Za-z0-9_]+(?:<[^>]*>)?\s*[(][^;\\n]*[)];\s*(?:\*/)?$
+- (?://|/\*)\s*!?[A-Za-z0-9_]+(?:->|\.)[A-Za-z0-9_]+.*(?:!=|==|[<>]|&&|\|\|)
+- \b(?:true|false)\s*(?:\|\||&&)|(?:\|\||&&)\s*(?:true|false)\b
+- (?://|/\*)\s*#include\b
+- '(?://|/\*)\s*(?:private|protected|public)\s*:'
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 152
+  quote: Since SkPath data is now immutable and we always compute the bounds upfront, SkPath::updateBoundsCache()
+    no longer serves any purpose and has been removed.
+- path: RELEASE_NOTES.md
+  heading: SkPath
+  quote: Since SkPath data is now immutable and we always compute the bounds upfront, SkPath::updateBoundsCache()
+    no longer serves any purpose
+confidence: 0.98
+support_cl_count: 25

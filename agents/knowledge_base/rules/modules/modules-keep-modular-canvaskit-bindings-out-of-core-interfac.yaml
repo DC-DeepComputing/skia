@@ -1,0 +1,60 @@
+id: modules/modules-keep-modular-canvaskit-bindings-out-of-core-interfac
+title: In CanvasKit JS files, define module-specific enums and bindings in their respective module files
+  guarded by existence checks rather than in core interface.js
+polarity: dont
+severity: should_fix
+rubric: design
+rule: In CanvasKit, do not define module-specific enums, constants, or JS bindings in the core interface.js.
+  Place module-specific definitions in their respective module file (such as bidi.js or paragraph.js)
+  within CanvasKit._extraInitializations, and guard shared enums with an existence check (e.g., if (!CanvasKit['<Enum>']))
+  when another optional module or Embind C++ binding might also define them.
+why: CanvasKit supports modular builds where optional components (such as paragraph, skottie, or bidi)
+  can be selectively omitted to produce stripped-down binaries. Placing module-specific bindings in core
+  interface.js bloats minimal builds that exclude those features, and omitting existence checks causes
+  duplicate definition conflicts when Embind C++ bindings also register the enum.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // modules/canvaskit/interface.js
+  CanvasKit['TextDirection'] = {
+    'LTR': 1,
+    'RTL': 0,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // modules/canvaskit/bidi.js
+  CanvasKit._extraInitializations.push(function() {
+    if (!CanvasKit['TextDirection']) {
+      CanvasKit['TextDirection'] = {
+        'LTR': 1,
+        'RTL': 0,
+      };
+    }
+  });
+  ```
+include_glob:
+- modules/canvaskit/**
+triggers:
+- \bCanvasKit\[['"][A-Za-z0-9_]+['"]\]\s*=
+- \bCanvasKit\.[A-Za-z0-9_]+\s*=
+- \bCanvasKit\._extraInitializations\b
+- \bif\s*\(!CanvasKit\[['"][A-Za-z0-9_]+['"][^)]*\)
+- \b(?:TextDirection|Affinity|RectHeightStyle|RectWidthStyle|TextAlign)\b
+- \b(?:Paragraph|Bidi|Skottie|Font|PathOps)\b
+citations:
+- path: modules/canvaskit/README.md
+  heading: Compile and Run Local Example
+  quote: |-
+    For example, building a stripped-down version of CanvasKit with no text support or
+    any of the "extras", one might run:
+
+        ./compile.sh no_skottie no_font
+
+    Such a stripped-down version is about half the size of the default release build.
+confidence: 0.9
+support_cl_count: 1

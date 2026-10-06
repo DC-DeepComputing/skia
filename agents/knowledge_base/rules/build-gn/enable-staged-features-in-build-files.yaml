@@ -1,0 +1,61 @@
+id: build-gn/enable-staged-features-in-build-files
+title: When guarding new implementations behind preprocessor flags to stage Chromium rollouts, enable
+  the flags by default in Skia build files or make legacy code opt-in
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When guarding a new implementation behind a preprocessor flag to stage rollouts for Chromium, enable
+  the flag by default in Skia's build files (BUILD.gn and Bazel) or invert the guard to make legacy code
+  opt-in (#if defined(SK_SUPPORT_LEGACY_...)) so that Skia CI and unit tests exercise the new code path
+  immediately.
+why: Chromium maintains independent build files for Skia (//third_party/skia/BUILD.gn), so defining a
+  feature flag in Skia's build files does not affect Chromium builds. If a staging flag guarding new code
+  is omitted from Skia's build targets, Skia tests will continue running the legacy path and fail to validate
+  the new code before it rolls into Chromium.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // BUILD.gn: Flag omitted in Skia; new implementation remains unexercised in Skia CI
+  optional("png_encode") {
+    public_defines = [
+      "SK_CODEC_ENCODES_PNG",
+      "SK_CODEC_ENCODES_PNG_WITH_LIBPNG",
+    ]
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // BUILD.gn: Flag defined in Skia so tests exercise new code without affecting Chromium builds
+  optional("png_encode") {
+    public_defines = [
+      "SK_CODEC_ENCODES_PNG",
+      "SK_CODEC_ENCODES_PNG_WITH_LIBPNG",
+      "SK_PNG_ENCODER_USE_CONVERT_PIXELS",
+    ]
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.bazel'
+- gn/**
+- src/**
+- include/**
+triggers:
+- \"SK_[A-Za-z0-9_]+\"
+- '#(?:if|ifdef|ifndef)\s+.*\bSK_SUPPORT_LEGACY_'
+- '#(?:if|ifdef|ifndef)\s+.*\bSK_USE_'
+- \bSK_[A-Za-z0-9_]+_USE_[A-Za-z0-9_]+\b
+- \bpublic_defines\s*\+?=
+- \bdefines\s*\+?=\s*\[
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Method 1 (preferred) - Make the old code path opt-in for Chromium
+  quote: The strategy you use to synchronize changes in the Skia and Chromium repositories may differ
+    based on the nature of the change, but in general, we recommend using build flag suppressions (defines).
+    We also prefer making the old code path opt-in where possible.
+confidence: 0.9
+support_cl_count: 1

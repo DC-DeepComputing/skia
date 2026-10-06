@@ -1,0 +1,72 @@
+id: general/use-constexpr-with-k-prefix-for-constants
+title: When defining constants, flags, mode selectors, sentinels, or tolerances, declare named constexpr
+  constants with leading 'k' rather than 'f' or magic numbers
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Declare compile-time constants (including mode flags, selector values, and sentinel IDs), fallback
+  sentinels, specification scale factors, divisors, and comparison tolerances as named constexpr (or static
+  const for non-constexpr sentinels) with a leading 'k' and camel-casing rather than mutable variables
+  or magic numbers. Do not prefix constants with 'f' or Hungarian type prefixes (use 'kInt32Max', not
+  'fInt32Max'), as 'f' is reserved for class and struct member fields. Prefer constexpr over plain const
+  for compile-time literals, express tolerance bounds via named constexpr thresholds (e.g., 1.0f - kThreshold),
+  and hoist loop-invariant expressions into static constexpr with leading 'k'.
+why: Declaring fixed constants, mode flags, and fallback sentinels as named constexpr or static const
+  variables prevents accidental mutation, avoids mutable static state, documents available states, and
+  eliminates magic numbers. The leading 'k' prefix conforms to Skia's style guide and immediately signals
+  program-duration immutability. Conversely, prefixing constants with 'f' misleadingly implies instance
+  member state access at the point of use.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: using 'f' prefix on a constant, or using mutable variables / magic numbers for flags
+  static constexpr float fInt32Max = static_cast<float>(std::numeric_limits<int32_t>::max());
+  const size_t image_header_size = 5;
+  size_t partialSize = 30;
+  bool is_neutral = 0.95f < tmp && tmp < 1.05f;
+
+  float flags = 1;
+  if (needsRoundCaps) {
+      flags = 2;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: named constexpr constants with leading 'k' for limits, thresholds, and mode flags
+  static constexpr float kInt32Max = static_cast<float>(std::numeric_limits<int32_t>::max());
+  static constexpr size_t kImageHeaderSize = 5;
+  constexpr size_t kPartialSize = 30;
+  constexpr float kPngGammaThreshold = 0.05f;
+  bool is_neutral = (1.0f - kPngGammaThreshold) < tmp && tmp < (1.0f + kPngGammaThreshold);
+
+  static constexpr float kIntersection_NoRoundCaps = 1;
+  static constexpr float kIntersection_RoundCaps = 2;
+  float flags = needsRoundCaps ? kIntersection_RoundCaps : kIntersection_NoRoundCaps;
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \b(?:static\s+)?(?:inline\s+)?constexpr\s+[A-Za-z0-9_:]+\s+k[A-Z]\w*\s*=
+- \b(?:static\s+)?(?:u?int(?:8|16|32|64)_t|size_t|int|float|double|bool)\s+k[A-Z]\w*\s*[;=]
+- \bstatic\s+[A-Za-z0-9_:]+\s+k[A-Z]\w*\s*[;=]
+- \bconstexpr\s+(?:inline\s+)?[A-Za-z0-9_:]+\s+[a-z][A-Za-z0-9_]*\s*=
+- \b(?:static\s+)?const\s+[A-Za-z0-9_:]+\s+k[A-Z]\w*\s*[;=]
+- \b(?:static\s+)?const\s+[A-Za-z0-9_:]+\s+[a-z][A-Za-z0-9_]*\s*=\s*[-0-9\\\\\"'{]
+- \b(?:size_t|u?int(?:8|16|32|64)_t|int|float|double|bool)\s+[a-z][A-Za-z0-9_]*(?:Size|Width|Height|Count|Limit|Threshold|Factor|Divisor|Scale|Tolerance|Error|Epsilon|Flag|Flags|Mode|State)\s*=\s*[-0-9k]
+- \b(?:clli_png_luminance_divisor|k[A-Z]\w*(?:Divisor|Multiplier|Scale|Factor|Error|Tolerance|Epsilon|Threshold|Bound|ID|Format|Sentinel|Height|Width|Flag|Mode))\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Variables declared `constexpr` or `const`, and whose value is fixed for the duration of the program,
+    are named with a leading "k" and then camel-capped.
+confidence: 0.98
+support_cl_count: 23

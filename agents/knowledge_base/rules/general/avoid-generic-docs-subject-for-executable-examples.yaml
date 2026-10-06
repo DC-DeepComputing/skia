@@ -1,0 +1,72 @@
+id: general/avoid-generic-docs-subject-for-executable-examples
+title: When authoring commit subject lines, write descriptive summaries completing '[This commit] ...'
+  within 72 characters rather than vague phrases, temporary WIP prefixes, or generic labels
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When authoring commit subject lines, write descriptive summaries that identify concrete components,
+  dependencies, accurate upstream repositories (e.g., distinguishing Android from Chromium in dependency
+  rolls), or conditional enablement within 72 characters, phrasing them to grammatically complete the
+  sentence '[This commit] ...' (e.g., 'Guards against...', 'Fixes...') rather than using informal fragments
+  or noun phrases. Avoid vague phrases such as 'More tweaks', temporary draft prefixes like 'WIP:', and
+  generic labels or prefixes like 'docs:' or 'Update docs' when modifying executable code examples (e.g.,
+  fiddle under `docs/examples/`) or build scripts. Accurately indicate conditional enablement rather than
+  stating a feature is unconditionally enabled.
+why: Gardeners, roll sheriffs, and reviewers skimming commit logs or triaging roll failures rely on concise,
+  accurate, and grammatically consistent subject lines to quickly assess change scope and potential breakage
+  vectors. Vague summaries like 'More tweaks' or temporary draft tags like 'WIP:' obscure what was changed,
+  informal fragments fail to state the action, misidentifying upstream repositories (such as Chromium
+  vs. Android) confuses roll tracking and git history, mislabeling executable examples with generic 'docs'
+  prefixes causes maintainers to overlook compiled changes, and claiming unconditional enablement for
+  feature-flagged code misleads readers about active runtime behavior.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Informal noun phrase fragment:
+  blur rrect params overflow guard
+
+  // Vague commit subject obscuring modified targets and dependencies:
+  More gn_to_bp.py tweaks
+
+  // Inaccurate upstream repository or platform in dependency roll subject:
+  Roll dng_sdk to latest in Chromium and remove obsolete workaround
+
+  // Generic 'docs' label hiding changes to compiled code or build scripts:
+  Update docs to explicitly use SkSerialProcs
+  [docs] Update bitmap serialization in examples
+
+  // Claiming unconditional enablement for feature-flagged or conditional logic:
+  Enable gray16 precision
+
+  // Temporary draft placeholder tag left in subject line:
+  WIP: Try to make IsA and Convexity tracking match SkPath
+  ```
+
+  Good:
+
+  ```cpp
+  // Verb phrase completing '[This commit] ...' and identifying concrete subsystem:
+  Guards against overflow in Ganesh rrect blurring
+
+  // Specific commit subject identifying affected script and dependencies:
+  gn_to_bp.py tweaks for libdng_sdk dep and libskia_skcms
+
+  // Accurate upstream repository identified for dependency rolls:
+  Roll dng_sdk to latest in Android and remove obsolete workaround
+
+  // Concrete component or tool specified for compiled example changes:
+  Update fiddle examples to explicitly use SkSerialProcs
+  [fiddle] Update bitmap serialization in examples
+
+  // Accurately describing conditional enablement within 72 characters:
+  Conditionally enable gray16 precision to support running Chromium tests
+
+  // Clear, descriptive subject with temporary draft prefix removed:
+  Try to make IsA and Convexity tracking match SkPath
+  ```
+include_glob:
+- '**/COMMIT_MSG'
+confidence: 0.98
+support_cl_count: 6

@@ -1,0 +1,49 @@
+id: general/prefix-out-parameters-with-out
+title: When declaring functions with mutable pointer out-parameters, prefix parameter names with out (e.g.,
+  outAT) to distinguish them from optional input pointers
+polarity: do
+severity: nit
+rubric: readability
+rule: Prefix out-parameter and in-out pointer arguments with `out` (e.g., `outAT`, `outColor`, or `outFoo`)
+  in function declarations and definitions. Do not use bare or unadorned names for output pointers to
+  ensure they are clearly distinguished from optional input pointer parameters.
+why: In Skia C++ conventions, raw pointers can represent either optional input parameters (const T*) or
+  mutable output parameters (T*). Prefixing output parameters with `out` makes argument directionality
+  immediately obvious in declarations and at call sites without requiring readers to inspect the function
+  implementation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: raw pointer out-parameter uses a bare name, easily confused with optional input pointers
+  sk_sp<SkColorSpace> workingFormat(const sk_sp<SkColorSpace>& dstCS,
+                                    SkAlphaType* at) const;
+
+  bool decodeHeader(SkStream* stream, SkISize* size);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: out-parameter is explicitly prefixed with 'out'
+  sk_sp<SkColorSpace> workingFormat(const sk_sp<SkColorSpace>& dstCS,
+                                    SkAlphaType* outAT) const;
+
+  bool decodeHeader(SkStream* stream, SkISize* outSize);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- (?:[(,]\s*)[A-Za-z0-9_:]+\s*\*\s*out[A-Za-z0-9_]*
+- (?:[(,]\s*)[A-Za-z0-9_:]+\s*\*\s*[a-z][a-zA-Z0-9_]*\s*[,)]
+- (?:[(,]\s*)[A-Za-z0-9_:]+\s*\*\*\s*(?:out)?[A-Za-z0-9_]*
+- \b(?:SkAlphaType|SkColorType|SkColorSpace|SkISize|SkIRect|SkRect)\s*\*\s*\w+
+- \bworkingFormat\s*\(
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,48 @@
+id: general/prefer-explicit-overloads-for-closed-type-sets
+title: When defining operations over a closed set of types where some require safety guards, write explicit
+  overloads rather than unconstrained template fallbacks
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not use an unconstrained fallback template (`template <typename T>`) when implementing operations
+  over a closed set of types where specific types require special safety handling (such as integer division
+  zero-checks or overflow guards). Define explicit overloads for each supported type instead so that unsupported
+  or unsafe types produce a compile-time error.
+why: Unconstrained fallback templates allow unsupported types to silently match and bypass necessary safety
+  checks, such as division-by-zero or overflow protection. When the supported domain is a fixed, closed
+  set of types, explicit overloads provide static type safety, ensure required guards are tailored to
+  each type, and prevent unintended instantiations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Unconstrained fallback template silently matches unintended types
+  SI void div_fn(I32* dst, I32* src) { /* zero and INT32_MIN overflow guards */ }
+  SI void div_fn(U32* dst, U32* src) { /* zero guards */ }
+  template <typename T>
+  SI void div_fn(T* dst, T* src) {
+      *dst /= *src;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Explicit overloads for the closed set of supported types (I32, U32, F)
+  SI void div_fn(I32* dst, I32* src) { /* zero and INT32_MIN overflow guards */ }
+  SI void div_fn(U32* dst, U32* src) { /* zero guards */ }
+  SI void div_fn(F* dst, F* src) {
+      *dst /= *src;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \btemplate\s*<\s*(?:typename|class)\s+[A-Za-z0-9_]+>
+- \b(?:SI|inline|static)\s+(?:void|[A-Za-z0-9_]+)\s+[a-z0-9_]*(?:div|mod|mul|add|sub)_fn\s*[(]
+- \bdiv_fn\b
+- \b(?:I32|U32|F|I16|U16|F16)[*]\s+(?:dst|src)\b
+- \b(?:SI|inline|static)\s+void\s+[a-zA-Z0-9_]+\s*[(]\s*T\s*[*]
+confidence: 0.9
+support_cl_count: 1

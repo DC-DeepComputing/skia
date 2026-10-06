@@ -1,0 +1,68 @@
+id: general/encapsulate-optional-dependencies-in-shim-headers
+title: When integrating optional or embedder-varying dependencies in internal code, encapsulate them behind
+  repo-relative shim headers instead of Bazel includes or GN include_dirs
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not use Bazel `includes` or GN `include_dirs` in internal source directories (`src/**`, `include/private/**`)
+  to expose subdirectories as root include paths. Encapsulate optional or embedder-varying third-party
+  dependencies behind repository-relative shim headers (such as `src/partition_alloc/raw_ptr.h`) that
+  conditionally `#include` either the real dependency or a local fallback, keeping preprocessor guards
+  and custom include search paths hidden from calling code.
+why: Skia's internal source files, downstream roll scripts (e.g. Google3), and embedder integrations rely
+  on consistent repo-relative include paths (`src/...` or `include/...`). Exposing internal subdirectories
+  as root include paths via build directives pollutes search paths and breaks builds across embedders
+  where dependency layouts differ.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # src/partition_alloc/BUILD.bazel
+  skia_cc_library(
+      name = "raw_ptr_noop",
+      hdrs = ["partition_alloc/pointers/raw_ptr.h"],
+      includes = ["."],
+  )
+
+  // src/sksl/SkSLParser.cpp
+  #include "partition_alloc/pointers/raw_ptr.h"
+  ```
+
+  Good:
+
+  ```cpp
+  # src/partition_alloc/BUILD.bazel
+  skia_cc_library(
+      name = "raw_ptr",
+      srcs = ["noop/raw_ptr.h"],
+      hdrs = ["raw_ptr.h"],
+      visibility = ["//:__subpackages__"],
+  )
+
+  // src/partition_alloc/raw_ptr.h
+  #if defined(SK_USE_PARTITION_ALLOC)
+  #include "partition_alloc/pointers/raw_ptr.h"
+  #else
+  #include "src/partition_alloc/noop/raw_ptr.h"
+  #endif
+
+  // src/sksl/SkSLParser.cpp
+  #include "src/partition_alloc/raw_ptr.h"
+  ```
+include_glob:
+- src/**
+- include/private/**
+triggers:
+- \bincludes\s*=\s*\[
+- \binclude_dirs\s*\+?=\s*\[
+- ^#include\s+["<](?:partition_alloc|third_party|noop)/
+- '#if\s+defined\s*\(\s*SK_USE_[A-Za-z0-9_]+\s*\)'
+- \b(?:skia_)?cc_library\s*\(\s*name\s*=\s*["'](?:raw_ptr|[a-z0-9_]*shim)[^"']*["']
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Headers that aren't meant for public consumption should be placed in src directories so that
+    they aren't in a client's search path, or in include/private if they need to be used by public headers.
+confidence: 0.9
+support_cl_count: 1

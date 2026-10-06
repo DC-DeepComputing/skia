@@ -1,0 +1,48 @@
+id: general/prefer-skmatrix-static-factories
+title: When constructing translation, scale, or rotation matrices, use SkMatrix static factories (Translate,
+  Scale, RotateDeg) instead of default-constructing and mutating
+polarity: do
+severity: nit
+rubric: readability
+rule: Prefer SkMatrix static factory functions (such as SkMatrix::Translate, SkMatrix::Scale, SkMatrix::RotateDeg,
+  SkMatrix::RotateRad, or SkMatrix::RectToRect) over default-constructing a mutable SkMatrix and initializing
+  it via setTranslate(), setScale(), setRotate(), or similar mutators.
+why: Static factory functions condense multi-line declaration and mutation sequences into a single self-documenting
+  expression. This eliminates unnecessary mutable local state, allows the resulting matrix variable to
+  be const-qualified, and supports passing matrix values inline directly to transformation APIs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Default construction followed by imperative mutation
+  SkMatrix matrix;
+  matrix.setTranslate(dx, dy);
+  return this->addPath(path, matrix, mode);
+  ```
+
+  Good:
+
+  ```cpp
+  // Direct initialization with static factory, enabling const qualification
+  const SkMatrix matrix = SkMatrix::Translate(dx, dy);
+  return this->addPath(path, matrix, mode);
+
+  // Or passed directly inline
+  return this->addPath(path, SkMatrix::Translate(dx, dy), mode);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- gm/**
+- bench/**
+triggers:
+- \.(?:setTranslate|setScale|setRotate|setSkew|setRectToRect)\s*[(]
+- \bSkMatrix::(?:Translate|Scale|RotateDeg|RotateRad|Skew|ScaleTranslate|RectToRect)\s*[(]
+- '\b(?:const\s+)?SkMatrix\s+[a-zA-Z0-9_]+\s*=\s*SkMatrix::'
+- \bSkMatrix\s+[a-zA-Z0-9_]+\s*;
+- ->(?:setTranslate|setScale|setRotate|setSkew)\s*[(]
+confidence: 0.85
+support_cl_count: 1

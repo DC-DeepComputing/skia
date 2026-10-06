@@ -1,0 +1,50 @@
+id: encode/encode-kblendonblack-only-on-unpremul
+title: When encoding images with SkJpegEncoder kBlendOnBlack, apply alpha premultiplication only for kUnpremul_SkAlphaType
+  and ignore it for kPremul_SkAlphaType
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When handling SkJpegEncoder::AlphaOption::kBlendOnBlack in image encoders, only perform alpha premultiplication
+  if the source image has unpremultiplied alpha (kUnpremul_SkAlphaType). Treat kBlendOnBlack as kIgnore
+  if the source is already premultiplied (kPremul_SkAlphaType) or opaque.
+why: Blending color over black (C * A + 0 * (1 - A) = C * A) is mathematically identical to alpha premultiplication.
+  When source pixel data is already premultiplied, applying kBlendOnBlack again multiplies color channels
+  by alpha a second time (C * A^2), incorrectly darkening semi-transparent pixels.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  rust_jpeg::JpegEncodeAlpha alphaOption;
+  switch (options.fAlphaOption) {
+      case SkJpegEncoder::AlphaOption::kBlendOnBlack:
+          alphaOption = rust_jpeg::JpegEncodeAlpha::BlendOnBlack;
+          break;
+      default:
+          alphaOption = rust_jpeg::JpegEncodeAlpha::Ignore;
+          break;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  const bool hasUnpremulAlpha = (info.colorType() == kRGBA_8888_SkColorType ||
+                                 info.colorType() == kBGRA_8888_SkColorType) &&
+                                info.alphaType() == kUnpremul_SkAlphaType;
+  const rust_jpeg::JpegEncodeAlpha alphaOption =
+          options.fAlphaOption == SkJpegEncoder::AlphaOption::kBlendOnBlack && hasUnpremulAlpha
+                  ? rust_jpeg::JpegEncodeAlpha::BlendOnBlack
+                  : rust_jpeg::JpegEncodeAlpha::Ignore;
+  ```
+include_glob:
+- src/encode/**
+- experimental/**
+triggers:
+- \b(?:SkJpegEncoder::AlphaOption::)?kBlendOnBlack\b
+- \b(?:JpegEncodeAlpha::)?BlendOnBlack\b
+- \bfAlphaOption\b
+- \bSkJpegEncoder::AlphaOption\b
+- \b(?:hasUnpremulAlpha|applyPremul)\b
+confidence: 0.92
+support_cl_count: 1

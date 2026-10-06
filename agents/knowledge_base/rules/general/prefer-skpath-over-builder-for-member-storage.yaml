@@ -1,0 +1,58 @@
+id: general/prefer-skpath-over-builder-for-member-storage
+title: When storing path geometry as class or struct members that are not modified after initialization,
+  store SkPath instead of SkPathBuilder
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not use SkPathBuilder for class or struct member storage when the path geometry is immutable
+  and neither edited nor passed to builder-only APIs; store SkPath (or an optional/lazy wrapper like std::optional<SkPath>
+  or SkTLazy<SkPath>) instead.
+why: SkPathBuilder is designed for constructing and mutating paths, whereas SkPath represents immutable
+  geometry and has lightweight copy-on-write semantics. Storing SkPathBuilder in classes or structs that
+  only inspect or query path geometry introduces unnecessary abstraction, prevents returning const SkPath&
+  or caching bounds, and forces callers to call snapshot() to obtain an SkPath.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class Element {
+  public:
+      SkPath getDeviceSpacePath() const {
+          return fDeviceSpacePath.snapshot();
+      }
+  private:
+      SkPathBuilder fDeviceSpacePath;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class Element {
+  public:
+      const SkPath& getDeviceSpacePath() const {
+          return *fDeviceSpacePath;
+      }
+  private:
+      std::optional<SkPath> fDeviceSpacePath;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \bSkPathBuilder\s+f[A-Za-z0-9_]+
+- \b(?:std::optional|SkTLazy|std::unique_ptr)<\s*SkPathBuilder\s*>
+- \bSkPathBuilder\b[^;]*\bf[A-Z]\w*
+- \bSkPath\b[^;\n]*\bget[A-Za-z0-9_]*\s*\([^)]*\)\s*const\b
+- \b(?:return\s+[a-zA-Z0-9_.]+\.snapshot\s*\(\s*\))
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 143
+  quote: |-
+    SkPath is migrating to become immutable (its geometry).
+
+        In this new version, SkPath will lose all of its methds like moveTo(), lineTo(), etc. and rely on SkPathBuilder for creating paths. Additionally, there are now additional Factories for creating paths in one-call, so often a pathbuilder object may not be needed.
+confidence: 0.9
+support_cl_count: 1

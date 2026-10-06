@@ -1,0 +1,68 @@
+id: api/delegate-const-and-non-const-overloads
+title: When member functions do not vary return constness, omit redundant non-const overloads; when return
+  constness differs, delegate between overloads rather than duplicating logic
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Do not define redundant non-const member function overloads when a const member function with identical
+  parameters and return type already exists; const methods can be invoked directly on non-const instances.
+  When const and non-const overloads are genuinely required because return types differ in constness (such
+  as returning mutable vs. const pointers or references), delegate between overloads (using const_cast
+  on this or on the result of the const method) rather than duplicating the implementation body.
+why: In C++, const member functions can be called on both const and non-const instances, making an identical
+  non-const overload dead code. When distinct overloads are necessary to return const and non-const references
+  or pointers, duplicating identical validation or lookup logic creates maintenance hazards if fixes diverge;
+  delegating to a single implementation keeps behavior consistent.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant non-const overload with identical implementation:
+  void setConvexity(SkPathConvexity c) {
+      fPathData->setConvexity(c);
+  }
+  void setConvexity(SkPathConvexity c) const {
+      fPathData->setConvexity(c);
+  }
+
+  // Duplicating logic across const and non-const overloads:
+  sk_sp<SkData> SkData::shareSubset(size_t offset, size_t length) {
+      VALIDATE_SUBSET(this->size(), offset, length);
+      // ... identical lookup and bounds checks ...
+  }
+  sk_sp<const SkData> SkData::shareSubset(size_t offset, size_t length) const {
+      VALIDATE_SUBSET(this->size(), offset, length);
+      // ... duplicated lookup and bounds checks ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Single const method suffices for both const and non-const callers:
+  void setConvexity(SkPathConvexity c) const {
+      fPathData->setConvexity(c);
+  }
+
+  // Delegate between overloads using const_cast when return constness differs:
+  sk_sp<SkData> SkData::shareSubset(size_t offset, size_t length) {
+      // ... canonical implementation ...
+  }
+  sk_sp<const SkData> SkData::shareSubset(size_t offset, size_t length) const {
+      return const_cast<SkData*>(this)->shareSubset(offset, length);
+  }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bconst_cast<[A-Za-z0-9_:]+[*&]?>\s*[(]\s*this\s*[)]->
+- \b[A-Za-z0-9_:]+::[a-zA-Z0-9_]+\s*[(][^)]*[)]\s*const\s*[{]
+- \b(?:sk_sp<const\s+[A-Za-z0-9_:]+>|const\s+[A-Za-z0-9_:]+[*&])\s+[a-zA-Z0-9_:]+::[a-zA-Z0-9_]+
+- '[)]\s*const\s*[{]\s*return\s+const_cast<'
+- \bconst_cast<[A-Za-z0-9_:]+[*&]?>\s*[(](?:std::as_const|static_cast<const)
+- \bvoid\s+[A-Za-z0-9_:]+::[a-zA-Z0-9_]+\s*[(][^)]*[)]\s*const\s*[{]
+confidence: 0.95
+support_cl_count: 2

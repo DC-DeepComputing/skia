@@ -1,0 +1,72 @@
+id: general/document-math-derivations-and-lut-layouts
+title: When implementing non-trivial math, coordinate transformations, precomputed LUTs, or coordinate-to-mask
+  bit manipulations, document theoretical derivations, layout invariants, and reference formulas
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When implementing non-trivial mathematical algorithms, coordinate transformations, precomputed lookup
+  tables (LUTs), or coordinate-to-mask bit manipulations, document the underlying mathematical derivations,
+  citations to prior art, and subsample/table layout conventions. Explain geometric parameterizations,
+  domain bounds, and coordinate mapping formulas so future maintainers can audit the code without reverse-engineering
+  the mathematics. When implementing SIMD variants alongside a reference or scalar implementation, place
+  comprehensive algorithmic explanations in the canonical reference implementation and factor shared bitwise
+  formulas into self-describing helpers.
+why: Discrete lookup tables, coordinate reparameterizations, and continuous-to-discrete bit manipulation
+  tricks (such as mapping subpixel coordinates to subsample bitmasks) rely on non-obvious geometric and
+  hardware layout invariants. Documenting equations, subsample layouts, domain bounds, and canonical reference
+  implementations preserves institutional knowledge and prevents regressions during maintenance or SIMD
+  optimization.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1) Mathematical LUT without derivations:
+  template <typename T> class MSAA_LUT {
+  public:
+      static constexpr int32_t kWidth = 64;
+      static constexpr int32_t kHeight = 64;
+  };
+
+  // 2) Opaque coordinate-to-mask bit manipulation:
+  if (!topIsOnLeftEdge) {
+      uint32_t shift = static_cast<uint32_t>(std::round(8.0f * (pTopY - static_cast<float>(startY))));
+      startMaskVal = static_cast<uint8_t>(0xff << shift);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1) Document derivations and squashing formulas in header:
+  /*
+   * Calculating MSAA coverage naively is O(n) per sample. Instead we adapt a lookup
+   * technique from Laine & Karras (2010), Li et al. (2016), and the Vello project.
+   * Squashing the Slope (m -> s): s = 1 / (m + 1); Squashing Translation (b -> t): t = (b + m) * s
+   */
+  template <typename T> class MSAA_LUT { ... };
+
+  // 2) Document subsample layout invariants and extract self-describing helper:
+  // When truncating, we rely on LUT mask invariants:
+  // 1) N-Rooks Subsample Pattern: each of 8 subsamples occupies its own 1/8th vertical slice.
+  // 2) Vertically Sorted Subsamples: bits ordered bottom-to-top, so (0xff << shift) masks samples above p.
+  template<bool kIsStart>
+  SK_ALWAYS_INLINE static uint8_t GetTruncationMask(float p, float row) {
+      uint32_t shift = static_cast<uint32_t>(std::round(8.0f * (p - static_cast<float>(row))));
+      return kIsStart ? static_cast<uint8_t>(0xff << shift) : static_cast<uint8_t>(~(0xff << shift));
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:class|struct)\s+[A-Za-z0-9_]*(?:LUT|LookupTable)\b
+- \b[A-Za-z0-9_]*(?:_LUT|LookupTable)\b
+- (?:constexpr|const)\s+.*(?:k[A-Za-z0-9_]*(?:LUT|LookupTable|Pattern|Weights)|k(?:Width|Height|TableSize)\s*=)
+- //.*\b(?:LUT|lookup table|reparameteriz|prior art|derivation|subsamples?|truncat(?:e|ion)|N-Rooks)\b
+- \b(?:Get|compute|calc|make)[A-Za-z0-9_]*(?:Truncation|Subsample|Coverage)?Mask\b
+- (?:0x[fF]{2}|0b1{4,})\s*<<
+- static_cast<uint(?:8|16|32)_t>.*<<
+- \b(?:std::)?round[(][0-9.]+f?\s*[*]
+confidence: 0.95
+support_cl_count: 2

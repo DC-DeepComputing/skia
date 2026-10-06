@@ -1,0 +1,52 @@
+id: general/document-upstream-assertion-invariants
+title: When writing assertions relying on caller preconditions, class invariants, or external/FFI validation,
+  document with inline comments where the invariant is guaranteed
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When writing assertions (such as SkASSERT or SkASSERT_RELEASE) whose invariants rely on external
+  libraries, FFI boundaries, caller preconditions, or non-local class invariants (such as state established
+  in a constructor), add an inline comment explaining why the condition is guaranteed to hold and who
+  enforces it. Avoid leaving unannotated assertions on data properties, buffer sizes, or parser state
+  that appear to be crash hazards or missing runtime checks on untrusted input.
+why: In code parsing untrusted input or invoking FFI functions, assertions on buffer bounds, chunk sizes,
+  or object state look like crash hazards or missing runtime error checks if readers cannot tell whether
+  verification was inadvertently omitted. Documenting which upstream function, crate, caller contract,
+  or constructor invariant guarantees the condition clarifies why runtime checks are unnecessary and prevents
+  reviewer confusion.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Unclear whether external data was pre-validated or if verification was omitted.
+  SkASSERT_RELEASE(sBit.size() == 3);
+
+  SkASSERT(reader.has_fctl_chunk());
+  SkASSERT(!fFrames.empty());
+  reader.get_fctl_info(...);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Inline comments explain where the invariant or precondition is established.
+  SkASSERT_RELEASE(sBit.size() == 3);  // Verified in `png` crate in `fn parse_sbit`.
+
+  SkASSERT(reader.has_fctl_chunk());   // Caller should guarantee this
+  SkASSERT(!fFrames.empty());          // SkPngRustCodec's invariant (see constructor)
+  reader.get_fctl_info(...);
+  ```
+include_glob:
+- src/**
+- modules/**
+- experimental/**
+triggers:
+- \bSkASSERT(?:_RELEASE)?\s*\([^)]*(?:size|length|count|capacity|empty|data|bytes)\s*\(
+- \bSkASSERT(?:_RELEASE)?\s*\([^)]*(?:==|!=|<=|>=|<|>)\s*\d+
+- \bSkASSERT(?:_RELEASE)?\s*\([^)]*\b(?:reader|codec|stream|parser|chunk|header|slice|span|buffer|frame)\b
+- //.*\b(?:[Vv]erified|[Gg]uaranteed|[Vv]alidated|[Ee]nforced)\s+(?:in|by|at)\b
+- //.*\b(?:upstream|crate|FFI|external library|parser|spec|caller|invariant)\b
+- \bSkASSERT_RELEASE\s*\(
+confidence: 0.95
+support_cl_count: 2

@@ -1,0 +1,46 @@
+id: general/avoid-speculative-placeholder-files
+title: When adding files for new features, do not commit speculative placeholder files or empty headers;
+  defer them until their implementation and build targets are required
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not add speculative placeholder files, empty headers, or unpopulated namespaces for anticipated
+  future features or extensions. Introduce new source and header files cohesively only when their concrete
+  implementation, build rules (GN/Bazel), and bindings or callers are actively implemented and required.
+why: Adding mostly empty placeholder files or empty headers introduces visual clutter and speculative
+  scaffolding before designs are settled. Introducing files together with their implementation, build
+  targets, and consumers ensures all components are validated by CI and avoids leaving orphaned stubs
+  in the tree.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In experimental/rust_bmp/ffi/FFI.h
+  // This header is a placeholder for future FFI extensions.
+  namespace rust_bmp {
+  // Reserved for future processor interfaces
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Omit placeholder files and empty headers entirely. Introduce new files
+  // only when their implementation, build definitions (BUILD.gn / BUILD.bazel),
+  // and active callers are ready in the change.
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.hpp'
+- '**/*.cc'
+- '**/*.cpp'
+- '**/*.rs'
+triggers:
+- //.*\b(?:[Pp]laceholder|[Ss]tub)\b
+- //.*\b(?:[Rr]eserved for future|for future (?:use|extensions?|interfaces?|work))\b
+- //\s*TODO.*\b(?:implement in future|future (?:file|interface|extension)|placeholder)\b
+- \bnamespace\s+[A-Za-z0-9_:]*\s*\{\s*(?://[^\n]*\n\s*)?\}
+- //\s*(?:This (?:file|header) is (?:a )?placeholder|Placeholder header)
+confidence: 0.9
+support_cl_count: 1

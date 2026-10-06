@@ -1,0 +1,40 @@
+id: infra/clean-up-recipe-tokens-when-removing-bot-jobs
+title: When removing bot configurations or builder tokens, delete obsolete checks, make negated conditions
+  unconditional, and regenerate recipe expectations
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When removing bot jobs or tryjob configurations, delete matching builder token checks (such as extra_tokens
+  in recipes or ExtraConfig in gen_tasks_logic). When removing checks on eliminated configurations, preserve
+  and make unconditional any code guarded by negated conditions (e.g., !b.ExtraConfig(...) or 'token'
+  not in extra_tokens) rather than deleting the guarded block. Run make train in infra/bots to delete
+  obsolete simulation test cases and regenerate recipe expectations.
+why: Negated conditions guard functionality that must run for all configurations except the excluded bot;
+  when that bot is eliminated, the condition becomes unconditionally true for all remaining builders,
+  and deleting the block inadvertently drops required assets or properties. Removing obsolete token checks
+  and running make train prevents dead code and stale expectations across the infra subsystem.
+examples:
+- "Bad:\n\n```cpp\n// In infra/bots/gen_tasks_logic/nano_flags.go when retiring \"Valgrind\":\n-\tif !b.ExtraConfig(\"\
+  Valgrind\") {\n-\t\tb.asset(\"svg\")\n-\t\tb.recipeProp(\"svgs\", \"true\")\n-\t}\n\n# In infra/bots/recipe_modules/build/default.py\
+  \ after removing Vello jobs from jobs.json:\nif 'Vello' in extra_tokens:\n  args['skia_enable_vello_shaders']\
+  \ = 'true'\n```\n\nGood:\n\n```cpp\n// Retain negated condition body unconditionally when retiring the\
+  \ configuration:\n-\tif !b.ExtraConfig(\"Valgrind\") {\n-\t\tb.asset(\"svg\")\n-\t\tb.recipeProp(\"\
+  svgs\", \"true\")\n-\t}\n+\tb.asset(\"svg\")\n+\tb.recipeProp(\"svgs\", \"true\")\n\n# Clean up obsolete\
+  \ builder token checks and run `make train` to update expectations:\nif 'Fontations' in extra_tokens:\n\
+  \  args['skia_use_fontations'] = 'true'\n```"
+include_glob:
+- infra/bots/**
+triggers:
+- '"name":\s*"(?:Test|Build|Perf|Housekeeper|BazelBuild)-[A-Za-z0-9_.-]+"'
+- \b(?:extra_tokens|ExtraConfig|MatchExtraConfig)\b
+- \b(?:asset|recipeProp)\s*\(
+- \bextra_tokens\s*=\s*api\.vars\.extra_tokens\b
+- infra/bots/recipe_modules/build/
+- \bmake train\b
+citations:
+- path: site/docs/dev/testing/automated_testing.md
+  heading: Adding new jobs
+  quote: After modifying any of the above files, run `make train` in the infra/bots directory to update
+    generated files.
+confidence: 0.98
+support_cl_count: 2

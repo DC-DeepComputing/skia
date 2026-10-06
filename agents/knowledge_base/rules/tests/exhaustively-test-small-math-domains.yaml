@@ -1,0 +1,65 @@
+id: tests/exhaustively-test-small-math-domains
+title: When unit-testing integer math or bit utilities, exhaustively verify feasible input domains against
+  an independent reference formula rather than sparse sample tables
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When authoring unit tests for integer math, bit-manipulation, or numerical approximation functions,
+  exhaustively test feasible input domains (such as ranges up to 64K) in a loop against an independent
+  mathematical formula, standard library function, or reference oracle. Reserve explicit hardcoded test
+  case tables for base values (such as zero or negative inputs) and extreme boundary or overflow limits.
+why: Sparse handcrafted test tables leave large gaps between sampled inputs, miss off-by-one errors across
+  powers of two or boundary transitions, and create verbose boilerplate. Exhaustively verifying a small,
+  bounded input range against an independent mathematical formula guarantees complete coverage across
+  the feasible domain while keeping test suites compact and readable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const struct {
+      int fInput;
+      int fExpected;
+  } cases[] = {
+      { 1, 1 }, { 2, 2 }, { 3, 4 }, { 4, 4 }, { 5, 8 },
+      { 7, 8 }, { 8, 8 }, { 9, 16 }, { 15, 16 }, { 16, 16 },
+      // dozens of sparse manual cases up to 4194304...
+      { 1073741824, 1073741824},
+  };
+  for (auto c : cases) {
+      REPORTER_ASSERT(reporter, c.fExpected == SkNextPow2(c.fInput));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicit cases for base values and overflow boundaries
+  const struct {
+      int fInput;
+      int fExpected;
+  } cases[] = {
+      { 1, 1 }, { 2, 2 }, { 3, 4 }, { 4, 4 }, { 5, 8 },
+      { 1073741824, 1073741824},
+  };
+  for (auto c : cases) {
+      REPORTER_ASSERT(reporter, c.fExpected == SkNextPow2(c.fInput));
+  }
+
+  // Exhaustive check across the lower domain against an independent mathematical oracle
+  for (int i = 6; i < 65536; i++) {
+      int expected = std::pow(2.f, std::ceil(logf(i)/logf(2)));
+      REPORTER_ASSERT(reporter, expected == SkNextPow2(i));
+  }
+  ```
+include_glob:
+- tests/**
+triggers:
+- \bDEF_(?:GANESH_|GRAPHITE_)?TEST\s*[(]\s*\w*(?:Math|Pow2|Bits?|Log2|Fixed|Int|Ceil|Floor|Round|Approx|Sqrt)\w*
+- \b(?:cases|kCases|tests|kTests)\s*\[\\]\s*=\s*\{
+- \b(?:SkNextPow2|SkPrevPow2|SkLog2|SkCountLeadingZeros|SkBits2Float)\b
+- \b(?:std::pow|std::log2?|std::ceil|std::floor|std::round|std::sqrt|log2?f|powf)\s*[(]
+- \bfor\s*[(]\s*(?:int|size_t|uint\w+_t)\s+\w+\s*=\s*\d+;\s*\w+\s*<\s*\d+;
+- \b(?:fInput|fExpected|input|expected)\s*[,;=}]
+confidence: 0.9
+support_cl_count: 1

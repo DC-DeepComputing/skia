@@ -1,0 +1,61 @@
+id: bazel/export-private-chromium-headers-in-dedicated-gni-lists
+title: When exporting private Chromium headers to GN in bazel/exporter_tool/main.go, declare dedicated
+  GNI file group variables rather than bundling them into shared internal source lists
+polarity: do
+severity: should_fix
+rubric: design
+rule: Export headers under include/private/chromium/ into their own dedicated GNI file group variable
+  in bazel/exporter_tool/main.go rather than bundling them into shared internal Skia source lists. Regenerate
+  the corresponding gn/*.gni files so embedders can include Chromium-specific interfaces independently.
+why: Chromium consumes Skia by importing generated gn/*.gni file lists into its GN build. If Chromium-facing
+  private headers are bundled into generic internal source lists, Chromium targets cannot depend on or
+  include those headers selectively without pulling in internal implementation files or triggering gn
+  check header dependency and visibility errors.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In bazel/exporter_tool/main.go:
+  {Var: "skia_codec_shared",
+      Rules: []string{
+          "//src/codec:any_decoder",
+          "//include/codec:any_codec_hdrs",
+          "//include/private/chromium:codec_icc_chromium_hdrs",
+      },
+  },
+  ```
+
+  Good:
+
+  ```cpp
+  // In bazel/exporter_tool/main.go:
+  {Var: "skia_codec_shared",
+      Rules: []string{
+          "//src/codec:any_decoder",
+          "//include/codec:any_codec_hdrs",
+      },
+  },
+  {Var: "skia_codec_icc_chromium",
+      Rules: []string{
+          "//include/private/chromium:codec_icc_chromium_hdrs",
+      },
+  },
+  ```
+include_glob:
+- bazel/exporter_tool/**
+- gn/**
+triggers:
+- \bVar:\s*\"skia_[a-zA-Z0-9_]+\"
+- \"//include/private/chromium:[a-zA-Z0-9_]+\"
+- \bskia_[a-zA-Z0-9_]*chromium[a-zA-Z0-9_]*\s*=
+- \"(?:\$_)?include/private/chromium/[a-zA-Z0-9_/-]+\.h\"
+- \bskia_[a-zA-Z0-9_]+_(?:shared|sources|srcs|hdrs)\s*\+?=
+citations:
+- path: bazel/exporter_tool/README.md
+  heading: Bazel to *.gni
+  quote: This will update the `*.gni` files that reside in `//gn` that contain file lists necessary for
+    a GN build. The exporter tool is hardcoded with the Bazel rules to be exported, and to which GNI file
+    and file list they should be mapped.
+confidence: 0.92
+support_cl_count: 1

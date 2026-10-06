@@ -1,0 +1,42 @@
+id: gpu/separate-opportunistic-cleanup-from-mandatory-resets
+title: When organizing cleanup routines or resets, separate opportunistic maintenance calls from mandatory
+  cleanup blocks and document their distinct purpose and frequency
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not place opportunistic maintenance or periodic resource processing calls under comment blocks
+  that describe mandatory state cleanups or invariant resets. Separate opportunistic routines into distinct
+  statements and document their specific motivations and triggers.
+why: Grouping opportunistic calls under comments designating mandatory cleanups misleads readers into
+  assuming the operation is required for correctness, state consistency, or error recovery. Documenting
+  opportunistic tasks separately clarifies why they run and when their execution is expected.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Remaining cleanup that must always happen regardless of success or failure
+  fResourceProvider->forceProcessReturnedResources();
+  fRuntimeEffectDict->reset();
+  ```
+
+  Good:
+
+  ```cpp
+  // Process the return queue at least once to keep it from growing too large.
+  fResourceProvider->forceProcessReturnedResources();
+
+  // Remaining cleanup that must always happen regardless of success or failure
+  fRuntimeEffectDict->reset();
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- //.*\b(?:Remaining cleanup|mandatory cleanup|cleanup that must always happen)\b
+- //.*\b(?:return queue|processReturnedResources|opportunistic cleanup)\b
+- //.*\b(?:regardless of success or failure|keep it from growing)\b
+- \bforceProcessReturnedResources\s*[(]
+- \bfResourceProvider->(?:forceProcessReturnedResources|freeGpuResources)\s*[(]
+- \b(?:processReturnedResources|purgeUnlockedResources)\s*[(]
+confidence: 0.82
+support_cl_count: 1

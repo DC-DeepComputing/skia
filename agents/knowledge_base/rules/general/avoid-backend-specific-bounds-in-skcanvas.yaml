@@ -1,0 +1,64 @@
+id: general/avoid-backend-specific-bounds-in-skcanvas
+title: When guarding draw operations against backend-specific finiteness or bounds issues, implement checks
+  inside the target SkDevice rather than computing bounds in SkCanvas
+polarity: dont
+severity: should_fix
+rubric: safety
+rule: Do not add geometry bounds calculations or quick-reject checks to SkCanvas draw methods to prevent
+  backend-specific crashes or non-finite assertions. Implement geometry bounds, matrix mapping, or finiteness
+  checks inside the specific SkDevice backend implementation that requires them, unless SkCanvas requires
+  bounds for filter evaluation.
+why: Computing geometry bounds in shared SkCanvas methods forces backends that already perform post-transform
+  clipping and bounds checking (such as CPU rasterization in SkDraw) to calculate bounds twice. Confining
+  backend-specific guards to that backend's SkDevice avoids redundant overhead across other rendering
+  pipelines.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SkCanvas::onDrawPoints, computing bounds for all backends:
+  SkRect bounds;
+  bounds.setBounds(pts, SkToInt(count));
+  if (this->internalQuickReject(bounds, strokePaint)) {
+      return;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In SkCanvas::onDrawPoints, only compute bounds if required by filters:
+  if (paint.getImageFilter() || paint.getMaskFilter()) {
+      auto bounds = SkRect::Bounds(pts);
+      if (bounds && this->internalQuickReject(bounds.value(), strokePaint)) {
+          return;
+      }
+  }
+  // In src/gpu/ganesh/Device.cpp (drawPoints), guard GPU-specific finiteness:
+  auto bounds = SkRect::Bounds(pts);
+  if (!bounds || paint.nothingToDraw()) {
+      return;
+  }
+  SkRect devBounds = SkMatrixPriv::MapRect(this->localToDevice44(), bounds.value());
+  if (!devBounds.isFinite()) {
+      return;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \binternalQuickReject\s*\(
+- \bquickReject\s*\(
+- \bSkRect::Bounds\s*\(
+- \bdevBounds\.isFinite\s*\(
+- \bMapRect\s*\([^)]*localToDevice
+- \bonDrawPoints\b
+- \bSkCanvas::onDraw\w*\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: '### 1. The API Layer'
+  quote: When a draw call is made, the `SkCanvas` forwards all the information to an internal `SkDevice`
+    for rendering.
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,44 @@
+id: tests/name-test-oracle-values-after-semantic-role
+title: When declaring test oracle or reference values in unit tests, name variables after their semantic
+  role (e.g., expectedClip) rather than cryptic abbreviations or type suffixes
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring variables for test oracle outputs, reference algorithm results, or baseline expectations
+  in unit tests, name them after their semantic role using an expected<Concept> prefix (such as expectedClip
+  or expectedClipLb). Avoid cryptic algorithm acronyms, terse shorthand, or container type-tag suffixes
+  (such as lbOpt).
+why: Cryptic abbreviations and type tags like lbOpt encode low-level implementation mechanics and container
+  wrappers rather than the test value's semantic role. Descriptive names like expectedClipLb clarify test
+  intent and make assertions, comparison failures, and debugging straightforward.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Encodes algorithm acronym and container type rather than semantic role
+  auto lbOpt = reference_clip(line, tileMinX, tileMinY, tileMaxX, tileMaxY);
+  if (lbOpt.has_value()) {
+      matchesLb = matchPt(result[i], (*lbOpt)[i]);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Semantically identifies the expected value and reference algorithm
+  auto expectedClipLb = reference_clip(line, tileMinX, tileMinY, tileMaxX, tileMaxY);
+  if (expectedClipLb.has_value()) {
+      matchesLb = matchPt(result[i], (*expectedClipLb)[i]);
+  }
+  ```
+include_glob:
+- tests/**
+triggers:
+- \b(?:auto|const\s+auto&?)\s+[a-z0-9_]*(?:Opt|Ref|Result|Output|Val)\s*=
+- \b(?:auto|const\s+auto&?)\s+expected[A-Z]\w*\s*=
+- \b(?:reference|oracle|baseline)_[a-z0-9_]+\s*[(]
+- \b(?:auto|const\s+auto&?)\s+[a-z]{1,4}Opt\b
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(][^)]*==\s*\(?[*]?[a-z0-9_]*(?:Opt|Ref|Res)\b
+confidence: 0.88
+support_cl_count: 1

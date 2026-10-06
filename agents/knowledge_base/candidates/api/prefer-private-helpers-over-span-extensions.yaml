@@ -1,0 +1,52 @@
+id: api/prefer-private-helpers-over-span-extensions
+title: When implementing utility operations for transitional standard types like SkSpan, place internal
+  helpers in private utility headers instead of adding member methods to public classes
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not add custom convenience member methods (such as equals()) to public transitional vocabulary
+  types like SkSpan. Implement internal span operations, comparisons, or copy routines as static non-member
+  helpers in private headers (such as SkSpanPriv::EQ in SkSpanPriv.h) or standard algorithms instead.
+why: SkSpan is designed to align with and transition directly to C++20 std::span, and may be directly
+  aliased (template <typename T> using SkSpan = std::span<T>). Adding bespoke member functions to public
+  SkSpan causes interface divergence, breaks compilation when aliased to std::span, and creates migration
+  friction across the codebase.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // include/core/SkSpan.h
+  template <typename T>
+  class SkSpan {
+  public:
+      // Anti-pattern: adding custom member methods to a transitional standard type
+      bool equals(SkSpan<T> other) const;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // src/core/SkSpanPriv.h
+  class SkSpanPriv {
+  public:
+      template <typename T>
+      static bool EQ(SkSpan<T> a, SkSpan<T> b) {
+          return (a.size() == b.size()) &&
+                 (a.empty() || a.data() == b.data() || std::equal(a.begin(), a.end(), b.begin()));
+      }
+  };
+  ```
+include_glob:
+- include/core/**
+- src/core/**
+triggers:
+- \bSkSpanPriv\b
+- \bSkSpanPriv::(?:EQ|Copy)\b
+- \btemplate\s*<[^>]*>\s*class\s+SkSpan\b
+- \bclass\s+(?:SK_API\s+)?SkSpan\b
+- '#include\s+["<](?:src/core/)?SkSpanPriv\.h[">]'
+- \bSkSpan<[^>]+>\s+[a-zA-Z0-9_]+\s*\([^)]*\)
+confidence: 0.9
+support_cl_count: 1

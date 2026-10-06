@@ -1,0 +1,48 @@
+id: tools/document-developer-workflow-in-viewer-slides
+title: When authoring interactive visualization slides or debugging tools in tools/viewer/, document the
+  step-by-step developer workflow inline for customizing the harness for new test cases
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When implementing interactive visualization slides, diagnostic inspection tools, or debugging harnesses
+  in tools/viewer/, document the step-by-step developer workflow in an inline comment above the setup
+  routine. Explicitly explain the sequence of steps required to adapt, configure, or rebuild the harness
+  for investigating custom shaders, pipelines, or test cases.
+why: Interactive visualization slides and diagnostic harnesses frequently involve non-obvious multi-step
+  workflows—such as inspecting stdout stage dumps, matching operations to debug panels, or editing stage
+  builders. Documenting the recipe inline enables other developers to reuse and customize the diagnostic
+  tool without reverse-engineering its setup process.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Diagnostic slide sets up a specific pipeline without explaining how to adapt it.
+  SkRasterPipelineVisualizer::DebugStageBuilder stageBuilder;
+  stageBuilder.add(panel1, SkRasterPipelineOp::stage_a)
+              .add(panel2, SkRasterPipelineOp::stage_b);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Step-by-step recipe documents how to customize the harness for other shaders.
+  // Suggested flow for customizing this harness:
+  // 1) Assign the shader of interest to a paint.
+  // 2) Pass an empty DebugStageBuilder to CreateBlitter to dump pipeline stages to stdout.
+  // 3) Add stageBuilder entries for the target stages to inspect.
+  // 4) Rebuild and run to inspect custom stage lanes.
+  SkRasterPipelineVisualizer::DebugStageBuilder stageBuilder;
+  stageBuilder.add(panel1, SkRasterPipelineOp::stage_a);
+  ```
+include_glob:
+- tools/viewer/**
+triggers:
+- \bDEF_SLIDE\s*[(]
+- \bclass\s+[A-Za-z0-9_]*(?:Viz|Visualizer|Debug|Inspect)[A-Za-z0-9_]*Slide\b
+- \bSkRasterPipelineVisualizer\b
+- \bDebugStageBuilder\b
+- //.*\b(?:Suggested flow|customiz(?:ing|e)|workflow|steps? to)\b
+- \bclass\s+[A-Za-z0-9_]+Slide\s*:\s*public\s+(?:ClickHandler)?Slide\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,45 @@
+id: general/rust-use-byte-literals-for-ascii-constants
+title: When defining ASCII byte constants, signatures, or character assertions in Rust, use byte character
+  literals (b'x') instead of numeric hex values
+polarity: do
+severity: nit
+rubric: readability
+rule: In Rust code, use byte character or byte string literals (e.g., `b'B'` or `b"BM"`) rather than numeric
+  hexadecimal values with inline comments (e.g., `0x42 // 'B'`) when defining ASCII constants, file magic
+  signatures, or byte assertions. For non-ASCII bytes, keep hexadecimal notation (e.g., `0x89`).
+why: Byte character literals evaluate directly to `u8` (or `&[u8; N]`) and are inherently self-documenting,
+  eliminating the need for redundant explanatory comments while preventing discrepancies between hex codes
+  and commented character values.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  pub const BMP_SIGNATURE: [u8; 2] = [0x42, 0x4D]; // 'B', 'M'
+
+  assert_eq!(data[0], 0x42); // 'B'
+  assert_eq!(data[1], 0x4D); // 'M'
+  ```
+
+  Good:
+
+  ```cpp
+  pub const BMP_SIGNATURE: [u8; 2] = [b'B', b'M']; // or *b"BM"
+
+  assert_eq!(data[0], b'B');
+  assert_eq!(data[1], b'M');
+  ```
+include_glob:
+- '**/*.rs'
+exclude_glob:
+- third_party/**
+triggers:
+- b'[a-zA-Z0-9]'
+- b\"[^\"]+\"
+- 0x[0-9a-fA-F]{1,2}\s*[,;)]?\s*//
+- assert_eq!\s*\([^)]*0x[0-9a-fA-F]{1,2}
+- assert_eq!\s*\([^)]*b'
+- \b[A-Z0-9_]*(?:SIGNATURE|MAGIC|HEADER|TAG|MARKER)\b
+- \[\s*0x[0-9a-fA-F]{1,2}\s*,\s*0x[0-9a-fA-F]{1,2}
+confidence: 0.92
+support_cl_count: 1

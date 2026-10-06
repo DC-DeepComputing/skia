@@ -1,0 +1,39 @@
+id: general/avoid-raw-pointer-cache-keys-across-lifetimes
+title: When implementing caches or lookup maps that outlive referenced objects, avoid bare raw pointer
+  keys; use persistent unique IDs or owning sk_sp
+polarity: dont
+severity: should_fix
+rubric: safety
+rule: Do not use bare raw pointers as cache or deduplication keys when the cache outlives the referenced
+  objects. Key caches by an immutable unique ID (such as uniqueID()) or retain ownership using smart pointers
+  (such as sk_sp) to prevent false cache hits from allocator address recycling.
+why: When an object is destroyed, its memory address can be recycled by the allocator for a newly constructed
+  object. Caches that store bare pointer keys without holding strong references will produce false cache
+  hits on recycled addresses, reusing stale or corrupted data.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Caching by bare pointer risks collision if the shader is freed and its address recycled.
+  skia_private::THashMap<const SkGradientBaseShader*, int> fGradientOffsetCache;
+  int* existingOffset = fGradientOffsetCache.find(shader);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Key by an immutable unique ID or hold an owning sk_sp to prevent address reuse collisions.
+  skia_private::THashMap<uint32_t, int> fGradientOffsetCache;
+  int* existingOffset = fGradientOffsetCache.find(shader->uniqueID());
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:THashMap|THashSet|DenseBiMap|SkLRUCache)\s*<[^>]*\*
+- \b(?:THashMap|THashSet|DenseBiMap|SkLRUCache)\s*<
+- \b(?:uniqueID|getUniqueID)\s*\(\s*\)
+- \b(?:f[A-Z]\w*Cache|f[A-Z]\w*Map)\b
+- \b(?:f[A-Za-z0-9_]+Cache|f[A-Za-z0-9_]+Map)\.(?:find|set|remove|contains)\s*\(
+confidence: 0.92
+support_cl_count: 1

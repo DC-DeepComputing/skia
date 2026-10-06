@@ -1,0 +1,27 @@
+id: modules/avoid-temporary-clean-targets
+title: When modifying Makefiles or build scripts, do not commit temporary clean or debug targets introduced
+  during local troubleshooting once the underlying build issue is resolved
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not commit ad-hoc clean or debug targets (such as `clean_<target>`) in Makefiles or build scripts
+  that were introduced to work around stale artifacts during troubleshooting. Rely on standard clean and
+  build targets, and remove temporary troubleshooting recipes before landing.
+why: One-off clean targets duplicate existing clean recipes, clutter build scripts, and risk bitrotting
+  once the specific build issue is resolved.
+examples:
+- "Bad:\n\n```cpp\nclean_bidi:\n\t- rm -rf ../../out/canvaskit_wasm\n\t- rm -rf ./npm_build/bin\n\t- rm\
+  \ -rf ./build/\n\t$(MAKE) release_bidi\n```\n\nGood:\n\n```cpp\nrelease_bidi:\n\t# Does an incremental\
+  \ build where possible.\n\t./compile.sh client_bidi no_paragraph no_skottie\n\t- rm -rf build/\n\tmkdir\
+  \ build\n\tcp ../../out/canvaskit_wasm/canvaskit.js   ./build/\n\tcp ../../out/canvaskit_wasm/canvaskit.wasm\
+  \ ./build/\n```"
+include_glob:
+- modules/canvaskit/**
+triggers:
+- '^clean_[a-zA-Z0-9_]+:'
+- \bclean_[a-zA-Z0-9_]+\b
+- \brm\s+-rf\s+\.\.?/
+- \b\$\((?:MAKE|make)\)\s+(?:release|debug)
+- '^[a-zA-Z0-9_]+_clean:'
+confidence: 0.9
+support_cl_count: 1

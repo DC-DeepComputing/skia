@@ -1,0 +1,48 @@
+id: general/avoid-redundant-intermediate-stream-buffers
+title: When serializing data to an SkWStream, write sequential sections directly into the destination
+  stream instead of buffering in a temporary SkDynamicMemoryWStream
+polarity: dont
+severity: nit
+rubric: safety
+rule: Do not buffer serialized data in a temporary intermediate stream (such as SkDynamicMemoryWStream)
+  when the data order matches the output layout and can be written directly to the destination SkWStream.
+  Reserve intermediate memory streams strictly for cases where data must be staged out-of-order, such
+  as calculating variable block lengths or deferring payload offsets.
+why: Buffering sequential data into a temporary intermediate stream only to immediately copy it via writeToStream()
+  incurs redundant heap allocations, unnecessary memory copies, and superfluous error handling. Writing
+  directly into the destination stream avoids intermediate allocator churn and streamlines serialization.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkDynamicMemoryWStream subIFD;
+  if (subIFDExists) {
+      SkStreamPriv::WriteU16BE(&subIFD, numSubIFDTags);
+      // ... write subIFD entries into &subIFD ...
+  }
+  if (subIFDExists && !subIFD.writeToStream(&stream)) {
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (subIFDExists) {
+      if (!SkStreamPriv::WriteU16BE(&stream, numSubIFDTags)) {
+          return false;
+      }
+      // ... write subIFD entries directly into &stream ...
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSkDynamicMemoryWStream\s+[A-Za-z0-9_]+
+- \b(?:writeToStream|writeToAndReset)\s*[(]
+- \bSkStreamPriv::Write\w*\s*[(]
+- \bSkWStreamWrite\w*\b
+- \b[A-Za-z0-9_]*[sS]tream(?:->|\.)write(?:8|16|32|64|Text|Stream|Bytes)?\s*[(]
+confidence: 0.9
+support_cl_count: 1

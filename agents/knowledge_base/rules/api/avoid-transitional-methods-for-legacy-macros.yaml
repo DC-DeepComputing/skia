@@ -1,0 +1,33 @@
+id: api/avoid-transitional-methods-for-legacy-macros
+title: When migrating method signatures or tightening constness under legacy compatibility macros, update
+  existing methods in place rather than introducing transitional names
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not introduce newly named transitional or parallel member functions (such as fooConst() or getDataView())
+  or deprecate existing methods solely to migrate return types or tighten constness. Instead, update the
+  signature of the existing method in place, conditionally compiling the declaration in headers and the
+  return expression in source files under a legacy compatibility macro (such as SK_DISABLE_LEGACY_* or
+  SK_SUPPORT_LEGACY_*) when staged migration is required.
+why: Renaming methods or adding parallel variants clutters class interfaces, causes unnecessary churn
+  across downstream consumers (like Chromium and Android) that only read the data, and requires extra
+  cleanup passes later. Updating the existing method in place under a build flag minimizes downstream
+  call-site changes and keeps interfaces single-sourced and clean.
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- ^#\s*(?:if|ifdef|ifndef)\s+.*\bSK_(?:DISABLE|SUPPORT|USE)_LEGACY_
+- \bdefined\s*[(]\s*SK_(?:DISABLE|SUPPORT|USE)_LEGACY_[A-Za-z0-9_]+
+- \bSK_(?:DISABLE|SUPPORT|USE)_LEGACY_[A-Za-z0-9_]+\b
+- \b[A-Za-z0-9_]+(?:Const|View)\s*[(]
+- \b(?:virtual\s+)?sk_sp<const\s+[A-Za-z0-9_]+>\s+[A-Za-z0-9_]+\s*[(]
+- \bonRefEncodedData(?:Const)?\s*[(]
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Chrome changes
+  quote: The strategy you use to synchronize changes in the Skia and Chromium repositories may differ
+    based on the nature of the change, but in general, we recommend using build flag suppressions (defines).
+confidence: 0.95
+support_cl_count: 2

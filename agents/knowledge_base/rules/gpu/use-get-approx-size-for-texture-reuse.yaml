@@ -1,0 +1,39 @@
+id: gpu/use-get-approx-size-for-texture-reuse
+title: When allocating GPU textures or surfaces for approximate reuse, use skgpu::GetApproxSize instead
+  of manual power-of-two rounding like SkNextPow2
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When allocating GPU textures, surfaces, or intermediate scratch buffers for approximate reuse, size
+  dimensions using `skgpu::GetApproxSize()` rather than manually rounding dimensions with `SkNextPow2()`.
+  Pass dimensions directly to `GetApproxSize()` when creating or sizing resources with `SkBackingFit::kApprox`.
+why: '`skgpu::GetApproxSize()` implements Skia''s canonical bucketing policy for GPU resource reuse: it
+  rounds to powers of two for dimensions up to 1024, and to midpoints between powers of two for larger
+  dimensions. Open-coding pure power-of-two rounding with `SkNextPow2()` allocates excessively large textures
+  for dimensions above 1024, wasting significant GPU VRAM.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Manual power-of-two rounding wastes VRAM on dimensions > 1024.
+  SkISize dstCopyTextureSize =
+          SkISize::Make(SkNextPow2(dstReadPixelBounds.size().width()),
+                        SkNextPow2(dstReadPixelBounds.size().height()));
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Use canonical helper that balances reuse bucketing and VRAM overhead.
+  SkISize dstCopyTextureSize = skgpu::GetApproxSize(dstReadPixelBounds.size());
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:skgpu::)?GetApproxSize\s*\(
+- \bSkNextPow2\s*\(
+- \bSkBackingFit::kApprox\b
+- \bSkBackingFit\b
+confidence: 0.92
+support_cl_count: 1

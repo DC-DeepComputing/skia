@@ -1,0 +1,55 @@
+id: codec/avoid-temporary-scanline-decode
+title: When implementing new SkCodec subclasses, omit optional scanline decoding overrides (onStartScanlineDecode,
+  onGetScanlines) and rely on default base stubs unless specifically required
+polarity: dont
+severity: should_fix
+rubric: design
+rule: When implementing new SkCodec subclasses, do not implement optional scanline decoding methods (onStartScanlineDecode,
+  onGetScanlines, onSkipScanlines) unless specifically required by the target platform. Rely on default
+  kUnimplemented stubs in base SkCodec rather than writing unused scanline boilerplate or introducing
+  temporary non-streaming scanline decoding; implement onGetPixels for full-frame decoding and add onStartIncrementalDecode/onIncrementalDecode
+  when streaming is needed.
+why: Scanline decoding is an optional decoding mode that modern consumers (such as Chromium and Blink)
+  do not use, relying instead on full-frame pixel decoding or push-model incremental streaming. Implementing
+  unused scanline methods introduces substantial dead code and state tracking, while temporary non-streaming
+  scanline decoders fail to satisfy streaming requirements.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Implementing optional or temporary scanline decoding in new SkCodec
+  class SkExampleCodec : public SkCodec {
+      Result onStartScanlineDecode(const SkImageInfo& dstInfo,
+                                   const Options& options) override;
+      int onGetScanlines(void* dst, int count, size_t rowBytes) override;
+      bool onSkipScanlines(int count) override;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Rely on base SkCodec defaults (returning kUnimplemented) for scanlines
+  class SkExampleCodec : public SkCodec {
+      Result onGetPixels(const SkImageInfo& info,
+                         void* dst,
+                         size_t dstRowStride,
+                         const Options& options,
+                         int* rowsDecoded) override;
+      // Implement onStartIncrementalDecode / onIncrementalDecode if streaming is needed.
+  };
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bonStartScanlineDecode\b
+- \bonGetScanlines\b
+- \bonSkipScanlines\b
+- \bonStartIncrementalDecode\b
+- \bonIncrementalDecode\b
+- \bpublic\s+SkCodec\b
+- \bclass\s+(?:SK_API\s+)?Sk\w*Codec\b
+confidence: 0.95
+support_cl_count: 2

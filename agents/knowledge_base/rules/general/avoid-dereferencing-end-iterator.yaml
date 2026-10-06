@@ -1,0 +1,51 @@
+id: general/avoid-dereferencing-end-iterator
+title: When computing end or element pointers on contiguous containers or spans, do not dereference end
+  iterators; use data() + size(), back(), or iterator comparisons
+polarity: dont
+severity: blocking
+rubric: safety
+rule: Do not dereference past-the-end iterators (e.g. `*c.end()` or `&(*c.end())`) to obtain end pointers,
+  perform offset arithmetic, or inspect container bounds. For contiguous containers or spans (such as
+  `SkSpan` or `std::span`), compute the end pointer using `c.data() + c.size()`, access trailing elements
+  using `&c.back()` or `c.data() + c.size() - 1`, or compare iterators directly.
+why: In C++, dereferencing a past-the-end iterator (`*end()`) is undefined behavior even when immediately
+  taking its address (e.g. `&(*c.end()) - 1`). In debug builds or standard libraries with checked iterators
+  (such as libc++ hardening), dereferencing past-the-end iterators triggers runtime assertion failures
+  and enables compiler misoptimizations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Undefined behavior: dereferencing past-the-end iterator to get end pointer or element pointer
+  bool atEnd() const override {
+      return fCurrentChar >= &(*fText.end());
+  }
+  if (&line != &(*impl->lines().end()) - 1) {
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Calculate past-the-end or trailing element pointer via base pointer and size
+  bool atEnd() const override {
+      return fCurrentChar >= fText.data() + fText.size();
+  }
+  if (&line != impl->lines().data() + impl->lines().size() - 1) {
+      ...
+  }
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+triggers:
+- \\&\s*\(\s*\*\s*[^)]*(?:->|\.)(?:r?end|cend)\s*\(\)\s*\)
+- \\&\s*\*\s*[^;]*(?:->|\.)(?:r?end|cend)\s*\(\)[^;]*
+- \*\s*[^;]*(?:->|\.)(?:r?end|cend)\s*\(\)[^;]*
+- (?:->|\.)data\s*\(\)\s*\+\s*[^;]*\bsize\s*\(\)
+- \\&\s*[^;]*(?:->|\.)back\s*\(\)
+- \b(?:atEnd|isAtEnd)\s*\(\s*\)
+confidence: 0.95
+support_cl_count: 1

@@ -1,0 +1,72 @@
+id: tests/use-cts-enforcement-next-release
+title: When defining new GPU tests or enabling previously skipped tests for CTS, specify CtsEnforcement::kNextRelease
+  instead of older milestones or kNever
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When defining new GPU unit tests or enabling previously skipped tests for Android CTS (such as when
+  resolving a TODO or backend bug), set the CTS enforcement level to CtsEnforcement::kNextRelease (or
+  CtsEnforcement::kNever only if the test is permanently excluded from CTS). Do not copy older finalized
+  CtsEnforcement::kApiLevel_* milestones from existing tests, and do not leave tests on kNever or kToBeDetermined
+  once backend support is complete.
+why: New or newly enabled tests must not retroactively enforce CTS requirements on older Android vendor
+  API levels where driver support or behavior may differ. CtsEnforcement::kNextRelease ensures the test
+  is enforced only starting with the next Android release, after which entries are bulk-migrated to a
+  finalized kApiLevel_* during milestone branching.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Copied older kApiLevel milestone into new test
+  DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SimplifyPaintTest_Graphite,
+                                           reporter,
+                                           context,
+                                           CtsEnforcement::kApiLevel_202404) {
+      // ...
+  }
+
+  // Bad: Left on kNever after resolving TODO to enable test in CTS
+  DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest,
+                                     reporter,
+                                     context,
+                                     CtsEnforcement::kNever) {
+      // ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Uses kNextRelease placeholder for new tests
+  DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SimplifyPaintTest_Graphite,
+                                           reporter,
+                                           context,
+                                           CtsEnforcement::kNextRelease) {
+      // ...
+  }
+
+  // Good: Promoted to kNextRelease when backend support is implemented
+  DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest,
+                                     reporter,
+                                     context,
+                                     CtsEnforcement::kNextRelease) {
+      // ...
+  }
+  ```
+include_glob:
+- tests/**
+triggers:
+- \bCtsEnforcement::kApiLevel_\w+\b
+- \bCtsEnforcement::kNextRelease\b
+- \bCtsEnforcement::(?:kNever|kToBeDetermined)\b
+- \bDEF_GRAPHITE_TEST(?:_[A-Z_]+)?\s*[(]
+- \bDEF_GANESH_TEST(?:_[A-Z_]+)?\s*[(]
+- \bDEF_CONDITIONAL_(?:GRAPHITE_|GANESH_)?TEST(?:_[A-Z_]+)?\s*[(]
+citations:
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: CtsEnforcement
+  quote: CtsEnforcement is used to track tests that should be run as part of Android's Conformance Test
+    Suite (CTS) for a specific milestone (e.g., kApiLevel_T) or later.
+confidence: 0.97
+support_cl_count: 2

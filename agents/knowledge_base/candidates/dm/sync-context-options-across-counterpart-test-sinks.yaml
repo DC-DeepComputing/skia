@@ -1,0 +1,52 @@
+id: dm/sync-context-options-across-counterpart-test-sinks
+title: When updating context or test option setup in DM test sinks, update all counterpart sink implementations
+  sharing parallel initialization consistently
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When updating or refactoring context configuration, test options, or private option structures (such
+  as TestOptions or ContextOptionsPriv) in a DM test sink, verify and update all counterpart sink implementations
+  sharing parallel setup logic (such as GraphiteSink and GraphitePrecompileTestingSink). Do not modify
+  option lifecycle, assertions, or overrides in only one sink while leaving sibling sinks with outdated
+  configuration.
+why: Test harness sinks frequently duplicate context initialization, option overrides, and validation
+  assertions across sibling classes to evaluate different rendering or pipeline caching modes under identical
+  conditions. Updating option management in only a subset of sinks introduces configuration drift, inconsistent
+  test environments, or assertion failures across counterpart test configurations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In GraphitePrecompileTestingSink::draw, manual ContextOptionsPriv setup was removed,
+  // but counterpart GraphiteSink::draw retained outdated manual setup:
+  Result GraphiteSink::draw(const Src& src, SkBitmap* dst, SkWStream* dstStream, SkString* log) const {
+      skiatest::graphite::TestOptions options = fOptions;
+      SkASSERT(!options.fContextOptions.fOptionsPriv);
+      skgpu::graphite::ContextOptionsPriv optionsPriv;
+      options.fContextOptions.fOptionsPriv = &optionsPriv;
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Sibling test sinks are updated consistently when TestOptions manages ContextOptionsPriv:
+  Result GraphiteSink::draw(const Src& src, SkBitmap* dst, SkWStream* dstStream, SkString* log) const {
+      skiatest::graphite::TestOptions options = fOptions;
+      SkASSERT(!options.fContextOptions.fOptionsPriv);
+      ...
+  }
+  ```
+include_glob:
+- dm/**
+triggers:
+- \b(?:Graphite|GPU|Raster|PDF)?Sink::draw\b
+- \b(?:skiatest::graphite::)?TestOptions\b
+- \b(?:ContextOptionsPriv|fOptionsPriv)\b
+- \b(?:fOptions|options)\.fContextOptions\b
+- \b(?:modifyGraphiteContextOptions|modifyGrContextOptions)\b
+- \bclass\s+\w*Sink\s*:\s*public\s+(?:Graphite)?Sink\b
+confidence: 0.9
+support_cl_count: 1

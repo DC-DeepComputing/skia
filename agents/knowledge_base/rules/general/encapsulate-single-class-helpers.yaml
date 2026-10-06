@@ -1,0 +1,57 @@
+id: general/encapsulate-single-class-helpers
+title: When implementing internal helper logic for a single class, encapsulate state and methods within
+  the owning class rather than creating standalone helper classes and headers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not declare standalone helper classes in dedicated header files for logic that serves only a
+  single owning class. Keep single-caller helper state, structs, and methods encapsulated as private class
+  members, nested types, or static functions within the owning class or its .cpp translation unit.
+why: Exposing single-use helpers in separate header files unnecessarily expands internal header surface
+  area, increases build-system and include overhead, and exposes private implementation details that belong
+  solely to the owning class.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // DawnLoadResolveWithDrawHelper.h
+  class DawnLoadResolveWithDrawHelper {
+  public:
+      DawnLoadResolveWithDrawHelper(const DawnTexture* msaaTexture,
+                                    const DawnTexture* resolveTexture,
+                                    SkIRect bounds);
+      bool loadFromResolveToMSAATexture(DawnResourceProvider*,
+                                        const wgpu::CommandEncoder&);
+      bool storeFromMSAAToResolveTexture(DawnResourceProvider*,
+                                         const wgpu::CommandEncoder&);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // DawnCommandBuffer.h
+  class DawnCommandBuffer : public CommandBuffer {
+  ...
+  private:
+      struct ResolveStepEmulationInfo {
+          const DawnTexture* fMSAATexture;
+          const DawnTexture* fResolveTexture;
+          SkIRect fResolveArea;
+      };
+      std::optional<ResolveStepEmulationInfo> fResolveStepEmulationInfo;
+
+      bool doBlitWithDraw(...);
+  };
+  ```
+include_glob:
+- src/**
+triggers:
+- \bclass\s+[A-Za-z0-9_]+Helper\b
+- \bstruct\s+[A-Za-z0-9_]+Helper\b
+- '#include\s+["<][A-Za-z0-9_/]+Helper\.h[">]'
+- \bclass\s+[A-Za-z0-9_]+Util(?:ity)?\b
+- \bclass\s+DawnLoadResolveWithDrawHelper\b
+confidence: 0.9
+support_cl_count: 1

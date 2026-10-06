@@ -1,0 +1,51 @@
+id: gpu/gpu-document-packed-vector-component-mappings
+title: When declaring GPU vertex/instance attributes or packed vector fields, document component mappings
+  and specify default fallback values for conditionally active attributes
+polarity: do
+severity: nit
+rubric: readability
+rule: When packing multiple distinct semantic properties, coordinates, or flags into compound vectors
+  or GPU vertex/instance attributes (such as `SkV3`, `SkV4`, or `float4`), explicitly document the component
+  mapping (e.g., `.xy` and `.z`) in accompanying comments. Additionally, when attributes or shader varyings
+  are only conditionally active or optional, document their expected default or fallback values (such
+  as all zeroes or no-op clip bounds) when the feature is inactive.
+why: Compound vector types frequently pack disparate parameters to conserve attribute slots, and GPU shaders
+  often avoid branching by expecting inactive attributes to contain benign sentinel or zero values. Documenting
+  component layouts and default values ensures CPU writer code and GPU shader code maintain consistent
+  assumptions, preventing attribute misalignment and subtle rendering bugs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct Vertex {
+      // Unit circle space position and AA offset
+      SkV3 fPosition;
+  };
+
+  // float4 inRoundCapPos - locations of the centers of the round caps.
+  {"inRoundCapPos", VertexAttribType::kFloat4, SkSLType::kFloat4},
+  ```
+
+  Good:
+
+  ```cpp
+  struct Vertex {
+      // Unit circle local space position (.xy) and AA offset (.z)
+      SkV3 fPosition;
+  };
+
+  // float4 inRoundCapPos - centers of round caps; all zeroes if not needed.
+  {"inRoundCapPos", VertexAttribType::kFloat4, SkSLType::kFloat4},
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:SkV[234]|float[234]|half[234]|skvx::(?:Vec|float|half)[234])\s+f[A-Z]\w*
+- \bVertexAttribType::k(?:Float[234]|Half[234]|Int[234]|UInt|UShort[24]?)\b
+- (?:struct|class)\s+[A-Za-z0-9_]*(?:Vertex|Instance|StaticData|Attribute)\b
+- //.*\.(?:xy|zw|xyz|[xyzw])\b
+- //.*\b(?:all zero(?:es)?|if not needed|when inactive|default value|fallback value)\b
+- \bSkSLType::k(?:Float[234]|Half[234]|Int[234])\b
+confidence: 0.95
+support_cl_count: 2

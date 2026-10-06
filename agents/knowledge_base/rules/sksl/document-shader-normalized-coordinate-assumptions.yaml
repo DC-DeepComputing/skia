@@ -1,0 +1,44 @@
+id: sksl/document-shader-normalized-coordinate-assumptions
+title: When defining shader functions that sample textures using pre-normalized coordinates without image
+  dimension uniforms, document the coordinate space precondition with an explicit comment
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining SkSL shader functions or image helpers that sample textures directly using pre-normalized
+  coordinates rather than taking image dimensions or inverse-dimension parameters (such as invImgSize),
+  explicitly document in a comment that the coordinate parameter is assumed to be normalized. Clarify
+  caller expectations whenever a shader entry point bypasses standard pixel-space normalization.
+why: Most SkSL image shaders receive pixel coordinates and perform normalization internally using dimensions
+  or invImgSize uniforms. When a shader function expects coordinates already normalized in [0, 1] texture
+  space, omitting dimension parameters without documenting the assumption confuses callers and leads to
+  coordinate space mismatches or redundant normalization.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  $pure half4 sk_hw_image_shader(float2 coords, sampler2D s) {
+      return sample(s, coords);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  $pure half4 sk_hw_image_shader(float2 coords, sampler2D s) {
+      // This assumes that `coords` have already been normalized.
+      return sample(s, coords);
+  }
+  ```
+include_glob:
+- src/sksl/**
+- src/gpu/**
+triggers:
+- \bsample\s*[(][^)]*coords
+- \b(?:half4|float4)\s+[a-zA-Z0-9_]*image_shader\s*[(]
+- \bfloat2\s+coords\b.*\bsampler2D\b
+- //.*\b(?:normalized|coords have already been normalized)\b
+- \b(?:half4|float4)\s+sk_[a-zA-Z0-9_]*\s*[(][^)]*float2\s+coords
+- \bsample\s*[(]\s*[a-zA-Z0-9_]+\s*,\s*coords\s*[)]
+confidence: 0.9
+support_cl_count: 1

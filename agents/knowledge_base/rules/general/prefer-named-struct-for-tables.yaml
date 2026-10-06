@@ -1,0 +1,48 @@
+id: general/prefer-named-struct-for-tables
+title: When defining lookup tables or static arrays of structured data, declare a named struct rather
+  than an anonymous C-style struct definition
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer declaring a named struct over an anonymous struct (such as `const struct { ... } table[]`)
+  when defining lookup tables, static mapping arrays, or tabular data. Define the named struct type first
+  (e.g., `struct TableEntry`), then declare the array using that named type.
+why: C-style anonymous structs obscure entry types, making them impossible to reference in helper function
+  signatures, templates, or loop bindings without decltype. Defining an explicit named struct improves
+  readability, clarifies member semantics, and allows subsequent code to refer to the entry type cleanly.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Anonymous struct table obscures the entry type
+  const struct {
+      CicpId cicp_id;
+      SkColorSpacePrimaries sk_primaries;
+  } cicp_table[] = {
+      { CicpId::kRec709, kRec709 },
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicit named struct allows clean type references in signatures and loops
+  struct TableEntry {
+      CicpId cicp_id;
+      SkColorSpacePrimaries sk_primaries;
+  };
+  static const TableEntry cicp_table[] = {
+      { CicpId::kRec709, kRec709 },
+  };
+  ```
+include_glob:
+- src/**
+- modules/**
+triggers:
+- \bstruct\s*\{
+- \}\s*k?[A-Za-z0-9_]*(?:Table|table|Entries|entries|Map|map|LUT|Array|List)?\s*\[\s*\]\s*=
+- \bstruct\s+[A-Za-z0-9_]*(?:Entry|Row|Record|Item|Mapping|TableEntry)\s*\{
+- \b(?:static\s+)?(?:const(?:expr)?\s+)?[A-Za-z0-9_]*(?:Entry|Row|Record|Item|Mapping)\s+k?[A-Za-z0-9_]+(?:Table|table)?\s*\[\s*\]
+confidence: 0.9
+support_cl_count: 1

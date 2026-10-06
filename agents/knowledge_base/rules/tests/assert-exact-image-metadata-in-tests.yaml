@@ -1,0 +1,66 @@
+id: tests/assert-exact-image-metadata-in-tests
+title: When testing image decoders or format variants in unit tests, assert exact variant metadata and
+  avoid duplicate tests checking identical assets and pixels
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When testing image decoders, codecs, or format variants (such as bit depths, color types, or compression
+  modes) in unit tests, assert exact expected metadata and variant-specific properties (such as info.colorType()
+  == expectedColorType, scanline order, or pixel values) rather than repeating generic dimension checks,
+  permissive disjunctions, or non-sentinel states (!= kUnknown_SkColorType). Do not add redundant DEF_TEST
+  functions that duplicate existing tests on identical assets, dimensions, or pixel values without exercising
+  distinct codepaths or APIs; fold property, invariant, and lifecycle checks into existing table-driven
+  decode or rewind tests.
+why: Deterministic test images and format variants have known specifications. Asserting merely non-unknown
+  states or repeating generic dimension checks masks decoder fallbacks and incorrect channel interpretations.
+  Adding redundant standalone test functions that repeat identical asset decodes, dimensions, or invariant
+  checks introduces boilerplate and maintenance overhead without exercising distinct codepaths or providing
+  new regression coverage.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Redundant tests repeating identical asset decodes and pixel checks
+  DEF_TEST(RustBmpCodec_getPixels, r) {
+      std::unique_ptr<SkCodec> codec = decode_bmp(r, "images/randPixels.bmp");
+      REPORTER_ASSERT(r, codec->getInfo().colorType() != kUnknown_SkColorType); // weak sentinel check
+      assert_pixel_color(r, pixmap, 0, 0, 0xFFBBA570, "pixel (0,0)");
+  }
+  DEF_TEST(RustBmpCodec_pixel_accuracy, r) { // Duplicates getPixels on identical asset and pixels
+      sk_sp<SkImage> image = decode_bmp_as_image(r, "images/randPixels.bmp");
+      REPORTER_ASSERT(r, bitmap.width() == 8);
+      assert_pixel_color(r, pixmap, 0, 0, 0xFFBBA570, "pixel (0,0)");
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Table-driven subtests assert exact metadata, scanline order, and pixel colors without duplicate tests
+  auto test = [&r](const char* desc, const char* file, SkISize size, SkColorType colorType,
+                   SkCodec::SkScanlineOrder order, SkColor expectedPixel) {
+      skiatest::ReporterContext ctx(r, desc);
+      std::unique_ptr<SkCodec> codec = decode_bmp(r, file);
+      if (!codec) return;
+      REPORTER_ASSERT(r, codec->dimensions() == size);
+      REPORTER_ASSERT(r, codec->getInfo().colorType() == colorType);
+      REPORTER_ASSERT(r, codec->getScanlineOrder() == order);
+      assert_pixel_color(r, pixmap, 0, 0, expectedPixel, "pixel (0,0)");
+  };
+  test("24-bit RGB", "images/randPixels.bmp", {8, 8}, kN32_SkColorType,
+       SkCodec::kBottomUp_SkScanlineOrder, SkColorSetARGB(0xFF, 0xBB, 0xA5, 0x70));
+  ```
+include_glob:
+- tests/**
+triggers:
+- \b(?:colorType|alphaType|colorSpace|dimensions)\s*[(][)]\s*!=\s*kUnknown_
+- \bkUnknown_SkColorType\b
+- \binfo\.(?:colorType|alphaType|colorSpace)\s*[(][)]
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(][^)]*\b(?:colorType|alphaType|dimensions|width|height)\s*[(][)]
+- \b(?:expectedColorType|expectedAlphaType|expectedDimensions|expectedScanlineOrder)\b
+- \bSkCodec::(?:SkScanlineOrder|kBottomUp_SkScanlineOrder|kTopDown_SkScanlineOrder)\b
+- \bDEF_TEST\s*[(]\s*\w*(?:Codec|Decoder)\w*
+- \bassert_pixel_color\s*[(]
+confidence: 0.9
+support_cl_count: 1

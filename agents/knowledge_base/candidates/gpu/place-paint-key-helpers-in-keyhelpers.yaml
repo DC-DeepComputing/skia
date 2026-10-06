@@ -1,0 +1,65 @@
+id: gpu/place-paint-key-helpers-in-keyhelpers
+title: When defining PaintParamsKey block-building helper templates or functions in Graphite, place them
+  in KeyHelpers.h rather than caller headers like PaintParams.h
+polarity: do
+severity: should_fix
+rubric: design
+rule: Place PaintParamsKey block-building helper functions and templates (such as Blend and Compose) in
+  KeyHelpers.h and KeyHelpers.cpp rather than in higher-level state headers like PaintParams.h. Keep key-generation
+  utilities centralized in KeyHelpers to avoid improper coupling and unnecessary header includes in state
+  descriptors.
+why: KeyHelpers is Graphite's designated utility module for constructing shader and pipeline dictionary
+  key blocks. Defining key-construction helpers in higher-level state headers improperly couples high-level
+  parameter descriptors to low-level key-building blocks, forcing them to pull in KeyHelpers.h and PaintParamsKey.h.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/gpu/graphite/PaintParams.h
+  #include "src/gpu/graphite/KeyHelpers.h"
+  #include "src/gpu/graphite/PaintParamsKey.h"
+
+  template <typename AddBlendToKeyT, typename AddSrcToKeyT, typename AddDstToKeyT>
+  void Blend(const KeyContext& keyContext,
+             PaintParamsKeyBuilder* keyBuilder,
+             PipelineDataGatherer* gatherer,
+             const AddBlendToKeyT& addBlendToKey,
+             const AddSrcToKeyT& addSrcToKey,
+             const AddDstToKeyT& addDstToKey) {
+      BlendComposeBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+      addSrcToKey();
+      addDstToKey();
+      addBlendToKey();
+      keyBuilder->endBlock();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/gpu/graphite/KeyHelpers.h
+  template <typename AddBlendToKeyT, typename AddSrcToKeyT, typename AddDstToKeyT>
+  void Blend(const KeyContext& keyContext,
+             PaintParamsKeyBuilder* keyBuilder,
+             PipelineDataGatherer* gatherer,
+             AddBlendToKeyT addBlendToKey,
+             AddSrcToKeyT addSrcToKey,
+             AddDstToKeyT addDstToKey) {
+      BlendComposeBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+      addSrcToKey();
+      addDstToKey();
+      addBlendToKey();
+      keyBuilder->endBlock();
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:Blend|Compose|BlendComposeBlock)::BeginBlock\b
+- \b(?:PaintParamsKeyBuilder|PipelineDataGatherer)\s*\*
+- \b(?:Blend|Compose)\s*[(]\s*const\s+KeyContext&
+- ^#include\s+[\\\"']src/gpu/graphite/(?:KeyHelpers|PaintParamsKey)\.h[\\\"']
+- \btemplate\s*<[^>]*AddTo[A-Za-z0-9_]*KeyT
+confidence: 0.92
+support_cl_count: 1

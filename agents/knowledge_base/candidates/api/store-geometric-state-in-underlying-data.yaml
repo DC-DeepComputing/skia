@@ -1,0 +1,59 @@
+id: api/store-geometric-state-in-underlying-data
+title: When adding geometric or validity properties to lightweight wrapper classes like SkPath, store
+  state in underlying data objects rather than wrapper members
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not store geometric or data-dependent properties (such as finiteness or validity) on high-level
+  wrapper objects like SkPath. Keep intrinsic geometry state on or derived from the underlying data object
+  (such as SkPathData or SkPathRef), using dedicated sentinel data singletons to represent error or invalid
+  states if needed.
+why: Wrapper types like SkPath are lightweight value handles referencing shared, copy-on-write underlying
+  geometry data. Storing geometry-dependent properties in the wrapper bloats object size, requires redundant
+  state synchronization across mutating methods, and risks inconsistencies where multiple wrappers sharing
+  the same data disagree.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SkPath {
+      sk_sp<SkPathData> fPathData;
+      SkPathFillType    fFillType;
+      bool              fIsVolatile;
+      bool              fIsFinite; // Geometric property stored in wrapper
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SkPath {
+      sk_sp<SkPathData> fPathData;
+      SkPathFillType    fFillType;
+      bool              fIsVolatile;
+
+      bool isFinite() const {
+          return fPathData.get() != PeekErrorSingleton();
+      }
+      static SkPathData* PeekErrorSingleton();
+  };
+  ```
+include_glob:
+- include/core/**
+- src/core/**
+triggers:
+- \bclass\s+(?:SK_API\s+)?SkPath\b
+- \bsk_sp<SkPathData>
+- \bSkPathData\b
+- \b(?:PeekErrorSingleton|peek_error_pathdata)\b
+- \b(?:bool\s+)?fIsFinite\b
+- \bbool\s+isFinite\s*\(\s*\)
+citations:
+- path: docs/architecture/CPU.md
+  heading: 1. The API Layer
+  quote: 'SkPath: A high-level object representing vector geometry (lines, curves). It is a lightweight,
+    copy-on-write object that holds a shared pointer (sk_sp) to an SkPathRef. - SkPathRef: The reference-counted
+    object that actually stores the raw path data: arrays of points, verbs'
+confidence: 0.92
+support_cl_count: 1

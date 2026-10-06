@@ -1,0 +1,49 @@
+id: core/dispatch-draw-before-paint-adaptation
+title: When delegating canvas batch draw operations to drawImageRect, dispatch before invoking paint and
+  geometry adaptation helpers to avoid double transformation.
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When delegating canvas draw operations (such as in drawEdgeAAImageSet) to high-level methods like
+  drawImageRect, dispatch to them before applying paint and destination geometry adaptations (such as
+  SkModifyPaintAndDstForDrawImageRect or SkImageShader::MakeForDrawRect). Pass the original unmodified
+  destination rect and paint to the delegated draw call, as high-level entry points apply these transformations
+  internally.
+why: High-level canvas drawing methods like drawImageRect already handle paint shading and destination
+  rect adaptation for mask filters or subset constraints. Delegating to drawImageRect after transforming
+  the destination rect and paint results in corrupt paint setups and double-transformed destination geometry.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Adapting destination rect and paint before delegating to drawImageRect
+  SkRect drawDst = SkModifyPaintAndDstForDrawImageRect(
+          image.get(), sampling, srcRect, dstRect, strict, &paint);
+  if (canDelegateToDrawImageRect) {
+      this->drawImageRect(image.get(), srcRect, drawDst, sampling, &paint, strict);
+      return;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Delegate with original rect and paint before applying low-level adaptations
+  if (canDelegateToDrawImageRect) {
+      this->drawImageRect(image.get(), srcRect, dstRect, sampling, &paint, strict);
+      return;
+  }
+  SkRect drawDst = SkModifyPaintAndDstForDrawImageRect(
+          image.get(), sampling, srcRect, dstRect, strict, &paint);
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \b(?:this->)?drawImageRect\s*\(
+- \bSkModifyPaint(?:AndDst)?ForDrawImageRect\s*\(
+- \bSkImageShader::MakeForDrawRect\s*\(
+- \bdrawEdgeAAImageSet(?:2)?\s*\(
+- \bImageSetEntry\b
+confidence: 0.9
+support_cl_count: 1

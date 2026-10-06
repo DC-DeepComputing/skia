@@ -1,0 +1,69 @@
+id: general/collapse-nested-if-with-duplicate-fallback
+title: When nested if statements have no intermediate code and no else branches, or share duplicate fallback
+  blocks, collapse them using &&
+polarity: do
+severity: nit
+rubric: readability
+rule: Flatten nested if statements into a single compound condition using && when an inner operation relies
+  on an outer precondition check and there is no intermediate code or else branch. Additionally, when
+  nested if statements execute identical fallback or reset logic across their else branches, collapse
+  the nested checks into a single compound condition using &&, hoisting side-effect-free variable declarations
+  so both conditions can be evaluated together.
+why: Combining precondition guards and dependent operations into a single condition using && reduces nesting
+  and indentation while safely relying on short-circuit evaluation. Collapsing checks that share identical
+  fallback branches eliminates duplicate fallback code and avoids maintenance divergence.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Precondition guard with no intermediate code or else branch:
+  if (info.fRecording->priv().hasVolatileLazyProxies()) {
+      if (!info.fRecording->priv().instantiateVolatileLazyProxies(resourceProvider)) {
+          return fail(InsertStatus::kPromiseImageInstantiationFailed);
+      }
+  }
+
+  // Duplicate fallback logic across nested branches:
+  const size_t prevStride = fInstanceStride ? fInstanceStride : fVertexStride;
+  if (prevStride) {
+      const size_t currStride = instanceStride ? instanceStride : vertexStride;
+      if (currStride) {
+          fPendingBase = computeBase(prevStride, currStride);
+      } else {
+          fPendingBase = 0;
+      }
+  } else {
+      fPendingBase = 0;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Flattened into a single short-circuit condition:
+  if (info.fRecording->priv().hasVolatileLazyProxies() &&
+      !info.fRecording->priv().instantiateVolatileLazyProxies(resourceProvider)) {
+      return fail(InsertStatus::kPromiseImageInstantiationFailed);
+  }
+
+  // Hoisted declaration and collapsed into a single fallback branch:
+  const size_t prevStride = fInstanceStride ? fInstanceStride : fVertexStride;
+  const size_t currStride = instanceStride ? instanceStride : vertexStride;
+  if (prevStride && currStride) {
+      fPendingBase = computeBase(prevStride, currStride);
+  } else {
+      fPendingBase = 0;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bif\s*[(][a-zA-Z0-9_]+(?:\s*!=\s*0)?\s*&&\s*[a-zA-Z0-9_]+
+- \bif\s*[(][^)]*&&\s*!?\w+
+- \b(?:has|instantiate)[A-Za-z0-9_]*(?:LazyProxies|Proxy)\b
+- \b(?:currStride|prevStride|fPendingBase|instanceStride|vertexStride)\b
+- \b[a-zA-Z0-9_]+\s*=\s*0;\s*(?://.*)?$
+- \bRETURN_FAIL_IF\s*[(][^)]*&&
+confidence: 0.89
+support_cl_count: 2

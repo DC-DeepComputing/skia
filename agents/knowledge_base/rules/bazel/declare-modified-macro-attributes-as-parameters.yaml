@@ -1,0 +1,25 @@
+id: bazel/declare-modified-macro-attributes-as-parameters
+title: When defining Starlark rule wrapper macros that forward kwargs, declare modified attributes as
+  explicit parameters instead of filtering kwargs dictionaries
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In Starlark rule wrapper macros that forward **kwargs, declare any attributes that the macro inspects,
+  modifies, or sets (such as srcs, hdrs, or deps) as explicit parameters with default values in the macro
+  signature. Do not extract or remove attributes from kwargs at runtime using dictionary operations (like
+  kwargs.get() or kwargs.pop()) or custom filtering helpers.
+why: Declaring rule attributes as explicit parameters automatically removes them from kwargs, preventing
+  duplicate keyword argument collisions when **kwargs is forwarded to the underlying rule. It also makes
+  the macro's public interface explicit and self-documenting without requiring ad-hoc dictionary-filtering
+  boilerplate.
+include_glob:
+- bazel/**/*.bzl
+triggers:
+- \bdef\s+[a-zA-Z0-9_]+\([^)]*\*\*kwargs\)
+- \bkwargs\.(?:get|pop)\s*\(
+- \bkwargs\[["'][a-zA-Z0-9_]+["']\]
+- \b(?:_without_keys|without_keys|filter_kwargs|_filter_kwargs)\s*\(
+- \b(?:srcs|hdrs|deps|copts|defines)\s*=\s*kwargs\b
+- \*\*kwargs\b
+confidence: 0.9
+support_cl_count: 1

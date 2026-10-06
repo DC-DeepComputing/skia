@@ -1,0 +1,51 @@
+id: api/keep-prerequisite-includes-outside-iwyu-export-blocks
+title: When including prerequisite headers in wrapper files with IWYU export pragmas, place them outside
+  and above begin_exports blocks and mark with keep
+polarity: do
+severity: nit
+rubric: readability
+rule: 'Place prerequisite header includes outside and above ''// IWYU pragma: begin_exports'' blocks in
+  wrapper and forwarding headers. If IDEs, linters, or include analyzers flag the prerequisite include
+  as unused, annotate the directive with ''// IWYU pragma: keep'' rather than moving it inside the export
+  block.'
+why: 'Marking a block with ''IWYU pragma: begin_exports'' instructs include analyzers that the file re-exports
+  everything declared within that block. Placing prerequisite headers inside ''begin_exports'' incorrectly
+  advertises internal setup or default dependencies as public re-exports, whereas ''// IWYU pragma: keep''
+  preserves necessary includes without re-exporting them.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // IWYU pragma: begin_exports
+  // Prerequisite for configuration macros
+  #include "include/private/base/SkLogPriority.h"
+  #if defined(SK_USER_CONFIG_HEADER)
+      #include SK_USER_CONFIG_HEADER
+  #endif
+  // IWYU pragma: end_exports
+  ```
+
+  Good:
+
+  ```cpp
+  // Prerequisite for configuration macros
+  #include "include/private/base/SkLogPriority.h"  // IWYU pragma: keep
+
+  // IWYU pragma: begin_exports
+  #if defined(SK_USER_CONFIG_HEADER)
+      #include SK_USER_CONFIG_HEADER
+  #endif
+  // IWYU pragma: end_exports
+  ```
+include_glob:
+- include/**
+triggers:
+- //\s*IWYU pragma:\s*begin_exports
+- //\s*IWYU pragma:\s*end_exports
+- \bIWYU pragma:\s*keep\b
+- \bIWYU pragma:\s*export\b
+- \bIWYU pragma\b
+- ^#include\s+["<].*SkLogPriority\.h
+confidence: 0.8
+support_cl_count: 1

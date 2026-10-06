@@ -1,0 +1,49 @@
+id: gpu/bind-pass-invariant-vulkan-resources-upfront
+title: When recording Vulkan command buffers, bind render-pass-invariant resources once at render pass
+  start using a compatible layout rather than deferring to bindGraphicsPipeline
+polarity: do
+severity: should_fix
+rubric: design
+rule: When recording Vulkan command buffers, bind descriptor sets and push constants that remain invariant
+  across an entire render pass (such as destination input attachments) once at render pass initialization
+  using a compatible mock pipeline layout. Do not defer invariant resource binding to bindGraphicsPipeline()
+  using per-pipeline state flags.
+why: In Vulkan, resource bindings recorded against a compatible pipeline layout persist across pipeline
+  switches within the same subpass. Binding invariant resources once upfront avoids redundant per-pipeline
+  tracking, unnecessary conditional checks on the draw path, and complex state invalidation across graphics
+  pipeline changes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In bindGraphicsPipeline:
+  if (fBindDstAsInputAttachment) {
+      this->updateAndBindInputAttachment(*fTargetTexture,
+                                         VulkanGraphicsPipeline::kDstAsInputDescSetIndex);
+      fBindDstAsInputAttachment = false;
+      fBindUniformBuffers = true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In performOncePerRPUpdates (called once at render pass start):
+  if (bindDstAsInputAttachment) {
+      this->updateAndBindInputAttachment(*fTargetTexture,
+                                         VulkanGraphicsPipeline::kDstAsInputDescSetIndex,
+                                         fResourceProvider->mockPipelineLayout());
+  }
+  ```
+include_glob:
+- src/gpu/graphite/vk/**
+triggers:
+- \bperformOncePerRPUpdates\b
+- \bmockPipelineLayout\b
+- \bupdateAndBindInputAttachment\b
+- \bbindGraphicsPipeline\b
+- \b(?:fBindDstAsInputAttachment|bindDstAsInputAttachment)\b
+- \bkDstAsInputDescSetIndex\b
+confidence: 0.92
+support_cl_count: 1

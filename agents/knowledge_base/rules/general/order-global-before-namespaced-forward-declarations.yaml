@@ -1,0 +1,51 @@
+id: general/order-global-before-namespaced-forward-declarations
+title: When writing forward declarations in C++ headers, place top-level global forward declarations before
+  namespaced forward-declaration blocks to ensure clear scope boundaries
+polarity: do
+severity: nit
+rubric: readability
+rule: In C++ header files, place top-level (global namespace) forward declarations before any namespaced
+  forward-declaration blocks. Group and order declarations alphabetically within each section, and avoid
+  placing top-level declarations below namespace blocks where their scoping could be misread.
+why: Placing global forward declarations below namespaced forward declaration blocks can mislead readers
+  into assuming those declarations belong to the preceding namespace. Placing top-level declarations first
+  provides unambiguous scoping and maintains consistent header organization.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  namespace skcpu {
+  class Recorder;
+  }
+
+  class SkCanvas;
+  class SkSurface;
+  ```
+
+  Good:
+
+  ```cpp
+  class SkCanvas;
+  class SkSurface;
+
+  namespace skcpu {
+  class Recorder;
+  }
+  ```
+include_glob:
+- '**/*.h'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*(?:class|struct)\s+(?:SK_API\s+)?[A-Za-z0-9_]+;
+- ^\s*namespace\s+[a-z0-9_:]+\s*\{
+- ^\s*namespace\s+[a-z0-9_:]+\s*\{\s*(?:class|struct)\s+
+- ^\s*(?:template\s*<[^>]*>\s*)?(?:class|struct)\s+Sk[A-Za-z0-9_]+;
+- ^\s*\}\s*//\s*namespace\s+[a-z0-9_:]+
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Forward declarations and file includes should be in alphabetical order.
+confidence: 0.88
+support_cl_count: 1

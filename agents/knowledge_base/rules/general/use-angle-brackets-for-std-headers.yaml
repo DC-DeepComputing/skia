@@ -1,0 +1,75 @@
+id: general/use-angle-brackets-for-std-headers
+title: When organizing imports and declarations in C++ files, place quoted headers first, system headers
+  second, and separate include sections and code with blank lines
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'Organize C++ file imports and declarations into distinct, alphabetically sorted blocks separated
+  by blank lines: quoted Skia project headers ("...") first, standard library and system headers (<...>)
+  second, and forward declarations third. Always separate the #include section from subsequent forward
+  declarations, code declarations, or function definitions (such as DEF_TEST macros) with an empty line.
+  Do not place standard headers above Skia headers, use double quotes for standard headers, or omit separating
+  blank lines between sections or before code.'
+why: Placing Skia project headers before standard library includes ensures internal configuration and
+  macros take precedence and prevents embedder include collisions. Separating quoted headers, angle-bracketed
+  system headers, forward declarations, and subsequent code implementations with blank lines visually
+  demarcates imports from logic, maintains uniform file structure across the codebase, and minimizes merge
+  conflicts.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Missing blank lines between blocks, standard before local, or code directly after include:
+  #include <optional>
+  #include "include/core/SkColorSpace.h"
+  #include "string"
+  #include "tools/ToolUtils.h"
+  class SkData;
+
+  #include <cmath>
+  DEF_TEST(HairlineClosedContourCapOffset_Draw, reporter) {
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Quoted Skia headers first, system headers second, separated by blank lines:
+  #include "include/core/SkColorSpace.h"
+  #include "tools/ToolUtils.h"
+
+  #include <cmath>
+  #include <optional>
+  #include <string>
+
+  class SkData;
+
+  // Empty line between includes and subsequent code declarations:
+  DEF_TEST(HairlineClosedContourCapOffset_Draw, reporter) {
+      ...
+  }
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^#include\s+\"(?:string|vector|memory|utility|algorithm|cmath|cstdint|cstddef|array|optional|variant|tuple|map|set|chrono|type_traits|cstring|climits)\"
+- ^#include\s+<(?:string|vector|memory|utility|algorithm|cmath|cstdint|cstddef|array|optional|variant|tuple|type_traits)>
+- ^#include\s+<(?:chrono|functional|iterator|limits|numeric|sstream|string_view|unordered_map|unordered_set)>
+- ^#include\s+\"(?:include|src|modules|rust|tools|gm|tests|bench)/
+- ^\s*(?:class|struct)\s+(?:SK_API\s+)?[A-Za-z0-9_]+;
+- ^\s*DEF_(?:TEST|GRAPHITE_TEST|GANESH_TEST)\s*\(
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: Forward declarations and file includes should be in alphabetical order.
+- path: site/docs/dev/contrib/style.md
+  heading: '## Files'
+  quote: Forward declarations and file includes should be in alphabetical order.
+confidence: 0.98
+support_cl_count: 4

@@ -1,0 +1,65 @@
+id: general/name-local-variables-and-arguments-lowercamelcase
+title: When declaring local variables, structured bindings, or function arguments, name them using lowerCamelCase
+  without member prefix 'f', snake_case, or UpperCamelCase
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Name local variables, structured bindings, and function arguments using lowerCamelCase (camel-capped
+  with no initial capital) rather than snake_case, UpperCamelCase, or member-field prefixes. Do not prefix
+  local variables or arguments with 'f' (which is strictly reserved for class and struct member fields),
+  and do not use underscore separators unless conforming to an external interface.
+why: Skia style specifies lowerCamelCase for local variables, structured bindings, and arguments to distinguish
+  them from static non-class helper functions (which use snake_case), compile-time constants (which use
+  a 'k' prefix), and member fields (which use an 'f' prefix). Prefixing local variables with 'f' misleadingly
+  implies instance state access at the point of use.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: snake_case, UpperCamelCase, or member prefix 'f' used for local variables and arguments.
+  void processItems(int item_count) {
+      const bool fProgressive = true;
+      bool should_grow = false;
+      int CurrentIndex = 0;
+      std::array<float, 4> sub_x;
+      auto [rs_udb, combined_tdb] = gatherer.endRenderStepData(/*performsShading=*/true);
+      UniformDataBlock paint_udb = gatherer.endPaintData();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: lowerCamelCase without 'f' prefix used for local variables and arguments.
+  void processItems(int itemCount) {
+      const bool isProgressive = true;
+      bool shouldGrow = false;
+      int currentIndex = 0;
+      std::array<float, 4> subX;
+      auto [rsUdb, combinedTdb] = gatherer.endRenderStepData(/*performsShading=*/true);
+      UniformDataBlock paintUdb = gatherer.endPaintData();
+  }
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \b(?:bool|int|uint\d+_t|size_t|float|double|char|auto)\s+[a-z][a-z0-9]*_[a-z0-9_]*\s*[=;]
+- \b(?:sk_sp<[^>]+>|std::[a-z0-9_]+<[^>]+>|[A-Z][A-Za-z0-9_]+[*&]?)\s+[a-z][a-z0-9]*_[a-z0-9_]*\s*[=;]
+- '[(,]\s*(?:const\s+)?[A-Za-z0-9_:<>&*]+\s+[a-z][a-z0-9]*_[a-z0-9_]*\s*[,)=]'
+- '\b(?:for|while)\s*[(]\s*(?:const\s+)?auto[&*]?\s+[a-z][a-z0-9]*_[a-z0-9_]*\s*:'
+- \b(?:const\s+)?auto(?:\s*&{1,2})?\s*\[[^\]]*[a-z][a-z0-9]*_[a-z0-9_]*[^\]]*\]\s*=
+- \b(?:const\s+)?(?:bool|int|uint\d+_t|size_t|float|double|auto)\s+[A-Z][a-z0-9]+[A-Z]\w*\s*=
+- \b(?:const\s+)?(?:bool|int|uint\d+_t|size_t|float|double|auto|[A-Za-z0-9_]+[*&]?)\s+f[A-Z]\w*\s*=
+- '[(,]\s*(?:const\s+)?[A-Za-z0-9_:<>&*]+\s+f[A-Z]\w*\s*[,)=]'
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Local variables and arguments are camel-capped with no initial cap.
+confidence: 0.98
+support_cl_count: 7

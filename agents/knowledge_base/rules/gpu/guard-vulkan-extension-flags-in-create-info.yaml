@@ -1,0 +1,42 @@
+id: gpu/guard-vulkan-extension-flags-in-create-info
+title: When setting Vulkan extension- or feature-dependent flags in create info structures, guard them
+  with backend capability checks rather than setting them unconditionally
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When setting Vulkan extension- or optional feature-dependent flags in create info structures (such
+  as VkGraphicsPipelineCreateInfo, VkImageCreateInfo, or VkBufferCreateInfo), do not set them unconditionally.
+  Guard feature-dependent flags with backend capability queries (e.g., gpu->vkCaps().supports...() or
+  caps->supports...()) to ensure the feature is supported and enabled on the VkDevice before specifying
+  the flag.
+why: Under the Vulkan specification, passing extension- or optional feature-dependent creation flags is
+  only valid when the corresponding feature or extension is supported and enabled on the VkDevice. Setting
+  extension flags unconditionally causes Vulkan validation layer errors and pipeline or resource creation
+  failures on devices and drivers where the feature is unsupported or disabled.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  pipelineCreateInfo.flags = VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
+  ```
+
+  Good:
+
+  ```cpp
+  pipelineCreateInfo.flags = 0;
+  if (gpu->vkCaps().supportsPipelineCreationCacheControl()) {
+      pipelineCreateInfo.flags |=
+              VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
+  }
+  ```
+include_glob:
+- src/gpu/**/vk/**
+triggers:
+- \bVk[A-Za-z0-9]+CreateInfo(?:[0-9]+)?(?:[A-Z]+)?\b
+- \bVK_[A-Z0-9_]+_CREATE_[A-Z0-9_]+\b
+- \b(?:pipelineCreateInfo|imageCreateInfo|bufferCreateInfo)\.flags\b
+- \b(?:flags|createflags|createFlags|imageFlags)\s*[|]?=\s*VK_
+- \b(?:vkCaps|caps|fCaps)->supports[A-Z]\w*
+confidence: 0.95
+support_cl_count: 1

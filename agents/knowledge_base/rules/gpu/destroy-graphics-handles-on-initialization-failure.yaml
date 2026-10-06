@@ -1,0 +1,73 @@
+id: gpu/destroy-graphics-handles-on-initialization-failure
+title: In multi-step GPU resource or pipeline creation, fail fast on intermediate errors using RAII wrappers
+  to prevent wasted work without leaking unmanaged graphics handles
+polarity: do
+severity: should_fix
+rubric: safety
+rule: In multi-step GPU resource and pipeline creation routines (such as shader compilation and pipeline
+  layout setup), fail fast and return early upon intermediate failures rather than deferring checks past
+  downstream stages. Encapsulate intermediate unmanaged graphics API handles (such as VkShaderModule or
+  VkPipelineLayout) in RAII wrappers so early exits automatically destroy partially created resources
+  without manual tracking or driver memory leaks.
+why: Deferring error checks until downstream pipeline or layout stages wastes CPU time, allocations, and
+  driver calls on subsequent steps when earlier compilation has already failed. Conversely, returning
+  early without RAII wrappers abandons raw unmanaged graphics handles, causing unrecoverable GPU driver
+  memory and resource leaks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Deferring validation past subsequent compilation steps wastes CPU/driver work;
+  // alternatively, returning early between steps without RAII leaks previously created handles.
+  if (hasFragmentSkSL) {
+      if (skgpu::SkSLToSPIRV(caps, fsSkSL, ..., &fsSPIRV, ...)) {
+          program.fFS = CreateVulkanShaderModule(sharedContext, fsSPIRV, ...);
+      }
+  }
+  if (skgpu::SkSLToSPIRV(caps, vsSkSL, ..., &vsSPIRV, ...)) {
+      program.fVS = CreateVulkanShaderModule(sharedContext, vsSPIRV, ...);
+  }
+  program.fLayout = setup_pipeline_layout(...);
+  if (!program.fVS || !program.fLayout || (hasFragmentSkSL && !program.fFS)) {
+      program.destroy(sharedContext);
+      return nullptr;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: RAII wrapper (VulkanProgramInfo) frees created handles automatically on early return,
+  // enabling fail-fast early exits without wasting downstream work or leaking resources.
+  auto program = VulkanProgramInfo::Make(sharedContext);
+  if (hasFragmentSkSL) {
+      if (!skgpu::SkSLToSPIRV(caps, fsSkSL, ..., &fsSPIRV, ...)) {
+          return nullptr;
+      }
+      if (!program->setFragmentShader(CreateVulkanShaderModule(sharedContext, fsSPIRV, ...))) {
+          return nullptr;
+      }
+  }
+  if (!skgpu::SkSLToSPIRV(caps, vsSkSL, ..., &vsSPIRV, ...)) {
+      return nullptr;
+  }
+  if (!program->setVertexShader(CreateVulkanShaderModule(sharedContext, vsSPIRV, ...))) {
+      return nullptr;
+  }
+  if (!program->setLayout(setup_pipeline_layout(...))) {
+      return nullptr;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:VkShaderModule|VkPipelineLayout|VkDescriptorSetLayout)\b
+- \bCreateVulkan(?:ShaderModule|PipelineLayout)\b
+- \b(?:setFragmentShader|setVertexShader|setLayout)\b
+- \bSkSLToSPIRV\b
+- \bVulkanProgramInfo\b
+- \b(?:destroy|Destroy)[A-Za-z0-9_]*\s*[(]
+- \bprogram(?:->|\.)(?:fFS|fVS|fLayout|destroy)\b
+confidence: 0.9
+support_cl_count: 1

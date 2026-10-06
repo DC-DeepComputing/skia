@@ -1,0 +1,66 @@
+id: tests/concise-reporter-context-labels
+title: When formatting labels for skiatest::ReporterContext in unit tests, use concise yet descriptive
+  names, avoiding cryptic single-letter abbreviations and verbose C++ qualifiers
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When formatting labels, subtest descriptions, or stringified parameters for skiatest::ReporterContext
+  in unit tests, use descriptive yet concise tokens. Avoid ambiguous single-letter or cryptic abbreviations
+  (such as spelling out "CIE Y (luminance)" rather than "Y"), while omitting redundant C++ type qualifications
+  (such as using "clamp" instead of "SkTileMode::kClamp").
+why: skiatest::ReporterContext appends labels onto a context stack printed during assertion failures.
+  Cryptic single-letter labels impair failure diagnostics by obscuring what domain concept failed, while
+  verbose fully qualified C++ identifiers bloat failure outputs and make stacked messages hard to read.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: cryptic single-letter subtest label
+  test("Y", mixingFn, inputColor, expectedColor);
+
+  // Bad: verbose fully qualified enum identifier in ReporterContext
+  static std::string to_string(SkTileMode tm) {
+      switch (tm) {
+          case SkTileMode::kClamp:  return "SkTileMode::kClamp";
+          case SkTileMode::kRepeat: return "SkTileMode::kRepeat";
+          default: return "invalid";
+      }
+  }
+  skiatest::ReporterContext ctx(r, to_string(tm));
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: descriptive subtest label clarifying test intent
+  test("CIE Y (luminance)", mixingFn, inputColor, expectedColor);
+
+  // Good: concise, unqualified string token for failure context
+  static std::string to_string(SkTileMode tm) {
+      switch (tm) {
+          case SkTileMode::kClamp:  return "clamp";
+          case SkTileMode::kRepeat: return "repeat";
+          default: return "invalid";
+      }
+  }
+  skiatest::ReporterContext ctx(r, to_string(tm));
+  ```
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- \b(?:skiatest::)?ReporterContext\s+\w+\s*[(]
+- \b(?:skiatest::)?ReporterContext\b
+- (?:test|subtest|run_test|check)\s*[(]\s*"[^"]*"
+- \bcase\s+[A-Za-z0-9_:]+::k[A-Za-z0-9_]+:\s*return\s*"
+- static\s+(?:std::string|SkString|const\s+char\*)\s+(?:to_string|to_str|label|name)\s*[(]
+- (?:to_string|ToString|to_str|ToStr)\s*[(][^)]*\b(?:Mode|Type|Cap|Join|Format|Color|Tile|Blend|Filter)\b
+- \bReporterContext\s*[(][^,]+,\s*"
+citations:
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: Reporter and Assertions
+  quote: 'skiatest::ReporterContext: Use this stack-allocated object to provide additional context (like
+    subtest names) for failure reports.'
+confidence: 0.95
+support_cl_count: 2

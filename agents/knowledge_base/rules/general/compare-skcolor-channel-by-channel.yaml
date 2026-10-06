@@ -1,0 +1,49 @@
+id: general/compare-skcolor-channel-by-channel
+title: When comparing SkColor values for bounds, ranges, or tolerances, compare each ARGB channel individually
+  instead of using relational operators
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not compare `SkColor` values using relational operators (`<`, `<=`, `>`, `>=`) to check bounds,
+  ranges, or tolerances. Because `SkColor` is a packed 32-bit ARGB integer, compare each color channel
+  (A, R, G, B) individually using accessors like `SkColorGetA()`, `SkColorGetR()`, `SkColorGetG()`, and
+  `SkColorGetB()`, or convert to `SkColor4f` component-wise.
+why: '`SkColor` is a `uint32_t` typedef representing packed 8-bit ARGB components (`(a << 24) | (r <<
+  16) | (g << 8) | b`). Relational scalar comparisons evaluate colors by their most-significant bits,
+  allowing out-of-range lower-order channels (like green and blue) to pass when higher-order channels
+  differ, masking rendering errors or causing spurious test failures.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Buggy: relational comparison on packed 32-bit integer allows channel bleed
+  REPORTER_ASSERT(reporter, expected_min <= actual && actual <= expected_max);
+  ```
+
+  Good:
+
+  ```cpp
+  static bool color_in_range(SkColor c, SkColor min, SkColor max) {
+      return SkColorGetA(c) >= SkColorGetA(min) && SkColorGetA(c) <= SkColorGetA(max) &&
+             SkColorGetR(c) >= SkColorGetR(min) && SkColorGetR(c) <= SkColorGetR(max) &&
+             SkColorGetG(c) >= SkColorGetG(min) && SkColorGetG(c) <= SkColorGetG(max) &&
+             SkColorGetB(c) >= SkColorGetB(min) && SkColorGetB(c) <= SkColorGetB(max);
+  }
+  REPORTER_ASSERT(reporter, color_in_range(actual, expected_min, expected_max));
+  ```
+include_glob:
+- src/**
+- tests/**
+- gm/**
+- tools/**
+- modules/**
+- include/**
+triggers:
+- \bSkColorGet[ARGB]\s*\(
+- \bSkColor\s+[a-zA-Z0-9_]+\s*[,=)]
+- (?:<=|>=|<|>)\s*(?:k?[A-Za-z0-9_]*[Cc]olor[A-Za-z0-9_]*|expected(?:_min|_max)?|actual)
+- (?:k?[A-Za-z0-9_]*[Cc]olor[A-Za-z0-9_]*|expected(?:_min|_max)?|actual)\s*(?:<=|>=|<|>)
+- \b(?:color|Color)_[a-z_]*(?:lteq?|gteq?|lt|gt|range|bounds|compare)\b
+confidence: 0.95
+support_cl_count: 1

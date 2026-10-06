@@ -1,0 +1,97 @@
+id: general/reuse-in-scope-accessor-variable
+title: Factor repeated subexpressions, coordinate differences, or conditional calculations into named
+  local variables, and reuse bound in-scope variables consistently instead of recomputing accessors
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When complex expressions (such as coordinate deltas p1 - p0, arithmetic calculations, member accesses,
+  or conditional/ternary expressions) are evaluated repeatedly across operations, branches, or successive
+  calls (such as pre-flight checks and allocations), factor them into descriptive local variables upfront
+  rather than duplicating calculations inline, consolidating any associated flag resets or state updates.
+  Furthermore, when a local variable already aliases an object member (such as obj.fMember), holds an
+  accessor result (such as surf->getCanvas()), or stores a computed subexpression, reuse that local variable
+  consistently across all operations and branches within the scope instead of repeating member accesses,
+  getter calls, or duplicate calculations.
+why: Factoring repeated subexpressions, coordinate differences, and conditional calculations into named
+  local variables eliminates redundant arithmetic, reduces visual clutter, and keeps related state or
+  flag updates consolidated. Reusing an existing local variable consistently prevents logic divergence
+  if an expression or access is modified in only one place, eliminates duplicate getter calls, and clarifies
+  data flow.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Recomputing repeated coordinate deltas across branches:
+  double s = (std::abs(fBottom->fPt.fX - fTop->fPt.fX) > std::abs(fBottom->fPt.fY - fTop->fPt.fY))
+      ? (p->fX - fTop->fPt.fX) / (fBottom->fPt.fX - fTop->fPt.fX)
+      : (p->fY - fTop->fPt.fY) / (fBottom->fPt.fY - fTop->fPt.fY);
+
+  // Duplicating conditional parameter calculations across consecutive calls:
+  if (mgr->willOverflow(count, stride, shouldAlign ? stride * 4 : stride)) { ... }
+  auto [writer, chunk] = mgr->getWriter(count, stride, shouldAlign ? stride * 4 : stride);
+  if (shouldAlign) { shouldAlign = false; }
+
+  // Repeating accessor call when local variable already exists:
+  auto canvas = surf->getCanvas();
+  canvas->translate(1 - ir.fLeft, 1 - ir.fTop);
+  surf->getCanvas()->drawPath(path, paint);
+
+  // Mixing member access with local alias or re-evaluating subexpressions:
+  const size_t stride = decodingDst.fDstRowStride;
+  if (xForm) {
+      expand(dst, stride);
+  } else {
+      expand(dst, decodingDst.fDstRowStride);
+  }
+  return SkToInt((innerKey.dataSize() >> 2) + extra);
+  ```
+
+  Good:
+
+  ```cpp
+  // Factoring repeated deltas into named local variables:
+  float sDx = fBottom->fPt.fX - fTop->fPt.fX;
+  float sDy = fBottom->fPt.fY - fTop->fPt.fY;
+  double s = (std::abs(sDx) > std::abs(sDy)) ? (p->fX - fTop->fPt.fX) / sDx
+                                             : (p->fY - fTop->fPt.fY) / sDy;
+
+  // Hoisting conditional parameter and consolidating flag reset upfront:
+  uint32_t alignedStride = stride;
+  if (shouldAlign) {
+      alignedStride *= 4;
+      shouldAlign = false;
+  }
+  if (mgr->willOverflow(count, stride, alignedStride)) { ... }
+  auto [writer, chunk] = mgr->getWriter(count, stride, alignedStride);
+
+  // Reusing bound local canvas variable:
+  auto canvas = surf->getCanvas();
+  canvas->translate(1 - ir.fLeft, 1 - ir.fTop);
+  canvas->drawPath(path, paint);
+
+  // Consistently using local alias and reusing computed subexpression:
+  const size_t stride = decodingDst.fDstRowStride;
+  expand(dst, stride);
+  return innerData32Cnt + extra;
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+- gm/**
+- bench/**
+- experimental/**
+triggers:
+- \b(?:const\s+)?(?:size_t|int|uint\w*|float|double|SkScalar|auto|[a-zA-Z0-9_:]+)&?\s+[a-zA-Z0-9_]+\s*=\s*[a-zA-Z0-9_]+(?:\.|->)f[A-Z][a-zA-Z0-9_]*
+- \b(?:const\s+)?(?:size_t|int|uint\w*|auto|[a-zA-Z0-9_:]+)&?\s+[a-zA-Z0-9_]+\s*=\s*[a-zA-Z0-9_]+(?:\.|->)[a-zA-Z0-9_]+\s*[(]
+- \b(?:const\s+)?(?:size_t|int|uint\w*|auto)\s+[a-zA-Z0-9_]*(?:Stride|Count|Offset|Size|Limit|Bound|Delta)\s*=\s*
+- \b(?:const\s+)?(?:auto|[a-zA-Z0-9_:]+)[*&]?\s+[a-zA-Z0-9_]+\s*=\s*[a-zA-Z0-9_]+(?:->|\.)get[A-Z]\w*\s*[(]
+- (?:->|\.)(?:getCanvas|getDevice|getContext|getSurface)\s*[(]
+- \b(?:float|double|SkScalar)\s+[a-zA-Z0-9_]*(?:Dx|Dy|Delta|Diff)\s*=
+- \b[a-zA-Z0-9_]+(?:->|\.)(?:fX|fY|fPoint|x\(\)|y\(\))\s*-\s*[a-zA-Z0-9_]+(?:->|\.)(?:fX|fY|fPoint|x\(\)|y\(\))
+- \b(?:willVertexOverflow|willInstanceOverflow|getVertexWriter|getInstanceWriter)\s*[(]
+confidence: 0.98
+support_cl_count: 5

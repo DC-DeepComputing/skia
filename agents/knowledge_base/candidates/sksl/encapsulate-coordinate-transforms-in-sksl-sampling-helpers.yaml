@@ -1,0 +1,52 @@
+id: sksl/encapsulate-coordinate-transforms-in-sksl-sampling-helpers
+title: When defining SkSL texture sampling helpers, encapsulate coordinate scaling and normalization inside
+  the helper instead of stripping transforms to accommodate pre-normalized callers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not strip coordinate normalization or transformations from shared SkSL sampling helpers to accommodate
+  callers whose coordinates are already normalized. Keep coordinate scaling (such as pos * invImgSize)
+  encapsulated within the shared helper for unnormalized callers, and have callers with pre-normalized
+  coordinates invoke the built-in sample() intrinsic directly.
+why: Removing coordinate transformations from a shared helper reduces it to an empty wrapper around built-in
+  intrinsics like sample() and forces all other call sites to duplicate coordinate scaling arithmetic.
+  Preserving encapsulated transformations keeps call sites concise while avoiding redundant intermediate
+  wrapper functions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Helper degenerates into trivial wrapper; callers duplicate pos * invImgSize
+  $pure half4 $sample_image(float2 pos, sampler2D s) {
+      return sample(s, pos);
+  }
+
+  // In caller:
+  half4 color = $sample_image(clampedPos * invImgSize, s);
+  ```
+
+  Good:
+
+  ```cpp
+  // Helper encapsulates coordinate normalization for pixel-space callers
+  $pure half4 $sample_image(float2 pos, float2 invImgSize, sampler2D s) {
+      return sample(s, pos * invImgSize);
+  }
+
+  // Caller with already-normalized coordinates calls sample() directly
+  $pure half4 sk_hw_image_shader(float2 coords, sampler2D s) {
+      return sample(s, coords);
+  }
+  ```
+include_glob:
+- src/sksl/**
+triggers:
+- \b\$sample_image(?:_subset)?\s*\(
+- \bsk_hw_image_shader\b
+- \b\$pure\s+(?:half|float)[234]?\s+\$?[a-zA-Z0-9_]*sample[a-zA-Z0-9_]*\s*\(
+- \bsample\s*\(\s*[a-zA-Z0-9_]+\s*,\s*[a-zA-Z0-9_]+\s*\*\s*[a-zA-Z0-9_]*inv
+- \bfloat2\s+invImgSize\b
+- \bsample\s*\(\s*[a-zA-Z0-9_]+\s*,\s*coords?\s*\)
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,37 @@
+id: gpu/distinguish-gpu-backend-from-skia-in-comments
+title: When documenting engine-specific capabilities, features, or requirements in GPU backend comments,
+  refer specifically to Graphite or Ganesh rather than generic Skia
+polarity: do
+severity: nit
+rubric: readability
+rule: In comments within GPU backends (such as Graphite or Ganesh), refer specifically to the subsystem
+  or engine (e.g., 'Graphite' or 'Ganesh') rather than generic 'Skia' when describing requirements, capabilities,
+  or features specific to that engine. Keep comments precise to the active architecture rather than implying
+  project-wide Skia requirements.
+why: Skia contains multiple distinct GPU rendering engines and backends that maintain separate capability
+  checks, feature chains, and driver requirements. Referring to generic 'Skia' in engine-specific code
+  is imprecise and misleading because other backends or core modules may handle features differently or
+  not require them at all.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Walk the feature chain once and extract any enabled features that Skia cares about.
+  ```
+
+  Good:
+
+  ```cpp
+  // Walk the feature chain once and extract any enabled features that Graphite cares about.
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- //.*\b(?:Skia|Graphite|Ganesh)\s+(?:cares about|requires|supports|expects|relies on)\b
+- //.*\b(?:that|what)\s+(?:Skia|Graphite|Ganesh)\b
+- //.*\b(?:features?|capabilities|properties|extensions)\s+(?:that|which)\s+Skia\b
+- //.*\bSkia(?:'s)?\s+(?:backend|engine|renderer|pipeline|caps)\b
+- //.*\b(?:needed|required|used)\s+by\s+Skia\b
+confidence: 0.85
+support_cl_count: 1

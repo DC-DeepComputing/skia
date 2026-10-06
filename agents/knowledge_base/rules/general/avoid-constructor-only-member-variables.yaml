@@ -1,0 +1,62 @@
+id: general/avoid-constructor-only-member-variables
+title: When initializing class members, do not declare member variables to hold temporary initialization
+  state; duplicate simple expressions across initializers or use delegating constructors
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not declare class member variables to hold temporary state that is only needed during constructor
+  member initialization. Duplicate simple expressions directly across member initializer list entries,
+  or use a delegating constructor or private helper function if initialization logic is complex. Ensure
+  member variables represent persistent object state rather than one-time construction artifacts.
+why: Member variables persist for the entire lifetime of an object, so storing temporary evaluation results
+  as fields increases class memory footprint and adds dead state that is never accessed after construction.
+  Duplicating simple expressions in the initializer list or delegating to a helper keeps the class definition
+  clean with zero per-instance overhead.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class DrawWriter::Appender {
+  public:
+      Appender(DrawWriter& w, SkEnumBitMask<RenderStateFlags> renderState)
+              : fDrawer(w)
+              , fAppendVertices(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices))
+              , fTarget(fAppendVertices ? w.fVertices : w.fInstances)
+              , fStride(fAppendVertices ? w.fVertexStride : w.fInstanceStride) {}
+  protected:
+      DrawWriter&     fDrawer;
+      bool            fAppendVertices; // Only needed during constructor initialization
+      BindBufferInfo& fTarget;
+      uint32_t        fStride;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class DrawWriter::Appender {
+  public:
+      Appender(DrawWriter& w, SkEnumBitMask<RenderStateFlags> renderState)
+              : fDrawer(w)
+              , fTarget(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices) ?
+                                 w.fVertices : w.fInstances)
+              , fStride(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices) ?
+                                 w.fVertexStride : w.fInstanceStride) {}
+  protected:
+      DrawWriter&     fDrawer;
+      BindBufferInfo& fTarget;
+      uint32_t        fStride;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- '[:,]\s*f[A-Za-z0-9_]+\s*[(][^)]*\?[^)]*:[^)]*[)]'
+- '[:,]\s*f[A-Za-z0-9_]+\s*[(][^)]*\bf[A-Z]\w*'
+- \b(?:bool|int|uint32_t|size_t)\s+f[A-Z]\w*\s*;
+- :\s*f[A-Z]\w*\s*[(][^)]*[)]
+- '\b[A-Za-z0-9_]+::[A-Za-z0-9_]+\s*[(][^)]*[)]\s*:'
+confidence: 0.9
+support_cl_count: 1

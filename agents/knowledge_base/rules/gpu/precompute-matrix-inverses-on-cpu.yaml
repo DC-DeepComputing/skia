@@ -1,0 +1,46 @@
+id: gpu/precompute-matrix-inverses-on-cpu
+title: When transforming coordinates in GPU shaders, precompute matrix inversions on the CPU during uniform
+  or instance setup rather than calling inverse() per vertex
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Precompute matrix inversions on the CPU when recording instance attributes or uniforms rather than
+  evaluating inverse() per vertex invocation in vertex shaders. Upload the inverted matrix directly so
+  shaders can apply it without redundant runtime matrix inversion.
+why: Evaluating inverse() inside a vertex or fragment shader executes redundantly across thousands of
+  vertex or pixel invocations. Computing the inverted matrix once on the CPU before uploading instance
+  data or uniforms saves GPU compute cycles and prevents shader performance regressions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // C++ RenderStep uploads local-to-device:
+  const SkM44& m = params.transform().matrix();
+  instances.append(1) << ... << m.rc(0,0) << m.rc(1,0) << m.rc(3,0);
+
+  // Vertex shader SkSL inverts per vertex invocation:
+  float3 localCoords = inverse(localToDevice) * drawCoords;
+  ```
+
+  Good:
+
+  ```cpp
+  // C++ RenderStep precomputes inverse on CPU:
+  SkMatrix deviceToLocal;
+  (void)params.transform().matrix().asM33().invert(&deviceToLocal);
+  instances.append(1) << ... << deviceToLocal;
+
+  // Vertex shader SkSL applies precomputed matrix directly:
+  float3 localCoords = deviceToLocal * drawCoords;
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \binverse\s*[(]
+- \b(?:deviceToLocal|localToDevice)\b
+- \b(?:invert|asM33[(][)][.]invert)\s*[(]
+- \binstances[.]append\s*[(]
+- \bstepLocalCoords\b
+confidence: 0.85
+support_cl_count: 1

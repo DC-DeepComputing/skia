@@ -1,0 +1,50 @@
+id: general/avoid-confusing-makexywh-with-makeltrb
+title: When positioning rectangles of known size at an offset, use MakeSize().makeOffset() or MakePtSize()
+  instead of passing offset-added coordinates to MakeXYWH
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not pass right/bottom edge coordinates (such as x + width or padding + width) into SkIRect::MakeXYWH
+  or SkRect::MakeXYWH, which expects width and height dimensions rather than boundary coordinates. When
+  constructing a rectangle of known size at an offset or padding, use SkIRect::MakeSize(size).makeOffset(dx,
+  dy) or SkIRect::MakePtSize(pt, size) to decouple dimensions from position and avoid confusing MakeXYWH
+  with MakeLTRB.
+why: SkIRect::MakeXYWH(x, y, w, h) internally computes right and bottom as x + w and y + h. Passing offset
+  + width or right-edge coordinates into the width and height arguments inadvertently adds the offset
+  twice, creating an oversized rectangle that leads to texture atlas padding bugs, clipping inaccuracies,
+  or out-of-bounds reads.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Passing offset + width double-adds the offset in MakeXYWH.
+  SkIRect entry = SkIRect::MakeXYWH(kEntryPadding,
+                                    kEntryPadding,
+                                    maskSize.x() + kEntryPadding,
+                                    maskSize.y() + kEntryPadding);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Decouple dimensions from offset using MakeSize().makeOffset().
+  SkIRect entry = SkIRect::MakeSize({maskSize.x(), maskSize.y()})
+                          .makeOffset(kEntryPadding, kEntryPadding);
+  // Or use MakePtSize when starting from a point and size.
+  SkIRect entry2 = SkIRect::MakePtSize({kEntryPadding, kEntryPadding},
+                                       {maskSize.x(), maskSize.y()});
+  ```
+include_glob:
+- src/**
+- tests/**
+- gm/**
+- modules/**
+triggers:
+- \bSkI?Rect::MakeXYWH\s*[(]
+- \bSkI?Rect::MakeLTRB\s*[(]
+- \bSkI?Rect::MakeSize\s*[(]
+- \bSkI?Rect::MakePtSize\s*[(]
+- \bmakeOffset\s*[(]
+confidence: 0.9
+support_cl_count: 1

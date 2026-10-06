@@ -1,0 +1,57 @@
+id: api/avoid-unchecked-bypass-methods
+title: When an accessor assertion proves too restrictive for valid use cases, relax the assertion and
+  document caller invariants instead of adding parallel unchecked bypass methods
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not introduce parallel `*_nocheck`, `*NoCheck`, or unchecked accessor variants to bypass assertions
+  that prove too restrictive for legitimate use cases. Instead, remove or relax the assertion in the primary
+  method and clearly document safety expectations and threading constraints for callers in header doc
+  comments.
+why: Adding unchecked backdoor accessors bloats the public API, duplicates maintenance surface, and fragments
+  call sites across checked and unchecked variants. If an assertion (such as single-ownership enforcement)
+  prevents valid multi-owner or concurrent workflows, relaxing the assertion directly and documenting
+  caller obligations preserves a single canonical interface.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SkData {
+  public:
+      // Bad: Adding a parallel unchecked method to bypass a restrictive assert
+      void* writable_data_nocheck() { return fSpan.data(); }
+
+      void* writable_data() {
+          SkASSERT(this->unique());
+          return fSpan.data();
+      }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SkData {
+  public:
+      // Good: Relax the assert in the canonical method and document caller constraints
+      /**
+       *  USE WITH CAUTION.
+       *  Be sure other 'owners' of this object are not accessing it in another thread.
+       */
+      void* writable_data() {
+          return fSpan.data();
+      }
+  };
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \b[a-zA-Z0-9_]+(?:_nocheck|NoCheck|_unchecked|Unchecked|_unsafe|Bypass)\s*\(
+- \b(?:void|std::byte|uint8_t|char)\s*\*?\s*[a-zA-Z0-9_]*writable[a-zA-Z0-9_]*\s*\(
+- \bSkASSERT\s*\([^)]*\b(?:unique|isUnique|fRefCnt)\s*\(
+- //.*\b(?:bypass|without (?:assert|check)|no (?:assert|check)|unchecked)\b
+- \b(?:writable|mutable)_[a-z0-9_]+\s*\(
+confidence: 0.9
+support_cl_count: 1

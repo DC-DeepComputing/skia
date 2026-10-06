@@ -1,0 +1,49 @@
+id: api/document-mutex-guarded-state
+title: When declaring class mutexes, spinlocks, or lock members, document what shared resources, state,
+  or operations they guard or use SK_GUARDED_BY
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring a mutex or lock member variable (such as SkMutex, SkSpinlock, or std::mutex), document
+  in an explanatory comment which shared resources, critical sections, or operations the lock protects.
+  If the lock guards specific member variables, annotate those fields with SK_GUARDED_BY or explicitly
+  identify them in the lock's doc comment.
+why: Synchronization primitives declared without explanatory comments or annotations leave thread-safety
+  boundaries unclear, making it difficult for maintainers to determine which methods require locking and
+  risking data races or deadlocks during maintenance.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SkCrabbyAvifCodec : public SkScalingCodec {
+      ...
+  private:
+      static SkMutex fMutex;
+      SkCodecImage fImage;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SkCrabbyAvifCodec : public SkScalingCodec {
+      ...
+  private:
+      // Guards access to onGetPixels to ensure only one decoder instance is created at a time.
+      static SkMutex fMutex;
+      SkCodecImage fImage SK_GUARDED_BY(fMutex);
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \b(?:mutable\s+|static\s+)*(?:SkMutex|SkSpinlock|std::mutex)\s+f?[A-Z]\w*
+- \bSK_GUARDED_BY\s*[(]
+- \b(?:SkMutex|SkSpinlock|std::mutex)\s+[A-Za-z0-9_]+;
+- //.*[Gg]uards?\b.*(?:mutex|lock|access|call)
+- \b(?:SkAutoMutexExclusive|SkAutoSpinlock)\s+\w+\s*[(]
+confidence: 0.85
+support_cl_count: 1

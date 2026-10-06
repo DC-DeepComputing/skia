@@ -1,0 +1,73 @@
+id: gpu/gpu-combine-non-pow2-alignments-with-lcm
+title: When combining buffer alignments, use std::lcm for non-power-of-two constraints, document power-of-two
+  invariants for std::max, and explain underlying copy constraints rather than restating code
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When combining multiple buffer, transfer, or texture alignment constraints where any constraint
+  may not be a power of two (such as vertex strides or bytes-per-pixel), compute the combined alignment
+  using std::lcm (or BufferAligner::LcmAlignment) instead of std::max. Conversely, when combining alignments
+  using std::max because all inputs are known powers of two, document that invariant in an inline comment
+  explaining why max provides correct alignment semantics. Update stale comments when transitioning from
+  std::max to std::lcm, and document underlying transfer copy constraints rather than tautological restatements
+  of code.
+why: std::max only satisfies combined alignment constraints when every requirement is a power of two.
+  If an element stride is not a power of two, an offset aligned to std::max may not be divisible by the
+  stride. Documenting power-of-two invariants and underlying transfer copy constraints ensures maintainers
+  understand hardware-mandated alignment invariants instead of relying on stale or tautological comments.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1) Non-power-of-two stride combined with max fails alignment:
+  const size_t alignment = stride > fRequiredTransferAlignment ? stride : fRequiredTransferAlignment;
+
+  // 2) Using std::max without documenting power-of-two invariant:
+  if (useTransferBuffers) {
+      alignment = std::max(alignment, SkTo<uint32_t>(caps->requiredTransferBufferAlignment()));
+  }
+
+  // 3) Stale comment describing max alignment after switching to LCM:
+  // Each copy range's size should be aligned to the max of required and minimum alignment.
+  offset = align_to_req_min_lcm(offset, data.fRequiredAlignment, fMinimumAlignment);
+
+  // 4) Tautological comment merely restating the LCM operation:
+  // We now align our bytes to the lcm of the required alignment and the minimum alignment.
+  size32 = align_to_req_min_lcm(size32, requiredAlignment, info->fMinimumAlignment);
+  ```
+
+  Good:
+
+  ```cpp
+  // 1) Use LCM so non-power-of-two strides satisfy both constraints:
+  const size_t alignment = std::lcm(stride, fRequiredTransferAlignment);
+
+  // 2) Document the power-of-two invariant justifying std::max:
+  if (useTransferBuffers) {
+      // Both alignment and requiredTransferBufferAlignment are powers of two, so max is correct.
+      alignment = std::max(alignment, SkTo<uint32_t>(caps->requiredTransferBufferAlignment()));
+  }
+
+  // 3) Accurately document LCM alignment when calculating buffer offsets:
+  // Each copy range's size should be aligned to the lcm of required and minimum alignment.
+  offset = align_to_req_min_lcm(offset, data.fRequiredAlignment, fMinimumAlignment);
+
+  // 4) Document underlying transfer copy constraints and rationale:
+  // Copies must copy an amount of bytes aligned to transfer alignment. Sizing to the LCM of
+  // minimum alignment and required stride satisfies both copy and vertex requirements.
+  size32 = align_to_req_min_lcm(size32, requiredAlignment, info->fMinimumAlignment);
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:std::)?lcm\s*[(]
+- \bBufferAligner::LcmAlignment\b
+- \bstd::max\s*[(][^;]*(?:[aA]lign|stride|bpp)
+- \b(?:stride|bpp)\s*>[^;]*(?:[aA]lign|min)
+- \b(?:SkAlignNonPow2|SkAlignTo)\s*[(][^)]*(?:[aA]lignment|stride|bpp)
+- \b(?:transferBufferRowBytesAlignment|requiredTransferBufferAlignment|requiredTransferAlignment|fMinimumAlignment)\b
+- \b(?:align_to_req_min_lcm|align_to_lcm)\b
+- //.*\b(?:aligned to the (?:max|lcm)|align.*lcm|power-of-two|pow2|transfer alignment|copy alignment)\b
+confidence: 0.95
+support_cl_count: 1

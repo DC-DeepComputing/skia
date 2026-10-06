@@ -1,0 +1,79 @@
+id: general/assert-established-invariants-over-runtime-checks
+title: When prior validation, assertions, or loop bounds guarantee valid states, assert with SkASSERT/SkASSERT_RELEASE
+  or .value() instead of redundant runtime checks
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When prior validation, factory logic, class invariants, preceding assertions, or loop bounds guarantee
+  that an operation cannot fail, a pointer is non-null, or an index is within bounds, assert the invariant
+  using SkASSERT (or SkASSERT_RELEASE) or unpack optional values directly with .value(). Do not add redundant
+  defensive runtime checks, bounds checks, error logs, clamping operations (such as SkTPin), or conditional
+  fallback branches for impossible failure conditions, guaranteed-initialized values, or loop indices
+  already constrained by size equality assertions and loop bounds.
+why: Defensive runtime checks, dead bounds checks inside loops, conditional fallback branches, or clamping
+  operations for impossible failures clutter control flow with unreachable code, mislead maintainers into
+  expecting out-of-bounds conditions, and harbor latent logic defects (like off-by-one comparisons). Asserting
+  invariants via SkASSERT or SkASSERT_RELEASE documents contracts and catches violations in debug/release
+  builds while eliminating redundant runtime branching.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Redundant runtime error check when anim->size() was already validated
+  const auto scale_matrix = SkMatrix::Rect2Rect(SkRect::MakeSize(anim->size()),
+                                                SkRect::MakeIWH(FLAGS_width, FLAGS_height),
+                                                SkMatrix::kCenter_ScaleToFit);
+  if (!scale_matrix) {
+      return 1;
+  }
+
+  // Bad: Clamping when value is mathematically constrained to valid range
+  int idx = static_cast<int>(pixelValue * std::size(shades) / 256);
+  idx = SkTPin(idx, 0, (int)std::size(shades) - 1);
+
+  // Bad: Redundant defensive bounds check in loop when size equality was already asserted
+  SkASSERT_RELEASE(stages.size() == debugStages.size());
+  for (size_t i = 0; i < stages.size(); i++) {
+      shaderPipeline2.append(stages[i].stage, stages[i].ctx);
+      if (i > debugStages.size()) {
+          continue;
+      }
+      auto stage = debugStages[i];
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: anim->size() is guaranteed non-empty by construction; unpack directly with .value()
+  const SkMatrix scale_matrix = SkMatrix::Rect2Rect(SkRect::MakeSize(anim->size()),
+                                                    SkRect::MakeIWH(FLAGS_width, FLAGS_height),
+                                                    SkMatrix::kCenter_ScaleToFit).value();
+
+  // Good: Document and assert invariants with SkASSERT instead of runtime clamping
+  int idx = static_cast<int>(pixelValue * std::size(shades) / 256);
+  SkASSERT(idx >= 0 && idx < (int)std::size(shades));
+
+  // Good: Rely on size equality assertion and loop bound without defensive inner checks
+  SkASSERT_RELEASE(stages.size() == debugStages.size());
+  for (size_t i = 0; i < stages.size(); i++) {
+      shaderPipeline2.append(stages[i].stage, stages[i].ctx);
+      auto stage = debugStages[i];
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tools/**
+triggers:
+- \bvalue\s*[(][)]
+- \bSkASSERT(?:_RELEASE)?\s*[(]\s*!?[A-Za-z0-9_]+\s*[)]
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*(?:>=|<=|>|<|==|!=)
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\b(?:has_value|isValid|isFinite|empty|size)\b
+- \bSkTPin(?:<[^>]+>)?\s*[(]
+- \bif\s*[(]\s*![A-Za-z0-9_]+
+- \bif\s*[(]\s*[a-zA-Z0-9_]+\s*(?:>=?|>)\s*[a-zA-Z0-9_.]*size\(\)
+confidence: 0.98
+support_cl_count: 7

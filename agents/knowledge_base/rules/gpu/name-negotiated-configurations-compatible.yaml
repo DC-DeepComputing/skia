@@ -1,0 +1,39 @@
+id: gpu/name-negotiated-configurations-compatible
+title: When declaring GPU methods that dynamically negotiate a configuration matching an input resource
+  or format, name them getCompatible* rather than getDefault*
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not name methods getDefault* when they dynamically inspect an input resource, format, or target
+  descriptor to negotiate or select a supported configuration; use getCompatible* (e.g., getCompatibleMSAASampleCount)
+  or a more descriptive query name instead. Reserve getDefault* for fixed, canonical fallback values that
+  do not depend on matching an input target.
+why: '''Default'' implies a fixed, canonical fallback value independent of target constraints. When a
+  method evaluates input parameters (such as a TextureInfo''s format and capabilities) and computes or
+  negotiates the best supported configuration, ''getCompatible*'' accurately conveys that the returned
+  value is dynamically matched to the input resource.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Misleading: implies a static default independent of the input texture
+  SampleCount Caps::getDefaultMSAASampleCount(const TextureInfo& info) const;
+  ```
+
+  Good:
+
+  ```cpp
+  // Accurate: dynamically evaluates info to find a compatible sample count
+  SampleCount Caps::getCompatibleMSAASampleCount(const TextureInfo& info) const;
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:getCompatible|getDefault)[A-Z]\w*\s*\(
+- \b(?:getCompatible|getDefault)MSAASampleCount\b
+- \bgetCompatible(?:MSAASampleCount|StencilIndex|RenderPass|DepthStencilState)\b
+- \b(?:SampleCount|int|TextureInfo)\s+(?:Caps::)?[A-Za-z0-9_]*\s*\([^)]*TextureInfo
+- \bgetDefault(?:MSAASampleCount|TextureInfo|AttachmentTextureInfo|BackendFormat)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,40 @@
+id: general/avoid-redundant-vector-splats-in-sksl-arithmetic
+title: In SkSL shaders, use scalar values directly in scalar-vector operations instead of wrapping single-channel
+  samples or scalars in redundant vector constructors
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: In SkSL code, do not wrap single-channel texture samples or scalar expressions in vector constructors
+  (such as half4(...) or float4(...)) when performing arithmetic with vectors. Rely on native scalar-vector
+  arithmetic by multiplying or combining vectors with scalar (half or float) operands directly.
+why: SkSL natively supports scalar-vector operations (such as half4 * half), broadcasting the scalar across
+  all vector components. Splatting a scalar into a vector constructor adds redundant code, introduces
+  unnecessary constructor calls, and obscures that the value represents scalar coverage or mask data.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant vector constructor wrapping a single-channel texture sample
+  half4 atlasClip = half4(sample(atlasSampler, clampedTexCoord * invAtlasSize).r);
+  return analyticClip * atlasClip;
+  ```
+
+  Good:
+
+  ```cpp
+  // Multiply vector directly by scalar sample
+  half atlasClip = sample(atlasSampler, clampedTexCoord * invAtlasSize).r;
+  return analyticClip * atlasClip;
+  ```
+include_glob:
+- '**/*.sksl'
+triggers:
+- \b(?:half|float)[234]\s*[(]\s*sample\b
+- \b(?:half|float)[234]\s*[(][^)]*\.[rgba]\s*[)]
+- \b(?:half|float)[234]\s*[(][^)]*[)]\s*[-+*/]
+- '[-+*/]\s*(?:half|float)[234]\s*[(]'
+- \bsample\s*[(][^)]*[)]\.[rgba]\b
+- \b(?:half|float)[234]?\s+[a-zA-Z0-9_]*(?:Clip|Mask|Alpha|Coverage)\s*=
+confidence: 0.9
+support_cl_count: 1

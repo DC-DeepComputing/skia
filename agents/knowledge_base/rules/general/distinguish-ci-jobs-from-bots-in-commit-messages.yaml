@@ -1,0 +1,39 @@
+id: general/distinguish-ci-jobs-from-bots-in-commit-messages
+title: When describing CI build or test configurations in commit messages, refer to them as jobs or compile/test
+  jobs rather than bots or buildbots
+polarity: dont
+severity: nit
+rubric: readability
+rule: In commit messages, do not use the term 'bot' or 'buildbot' when referring to CI build or test configurations;
+  use precise terms such as 'job', 'compile job', or 'test job' instead. Reserve 'bot' specifically for
+  physical or virtual Swarming worker machines.
+why: In Skia infrastructure, a 'bot' is the physical or virtual Swarming machine that executes tasks,
+  whereas a 'job' is a directed acyclic graph (DAG) of tasks scheduled by the Task Scheduler. Conflating
+  CI build or test configurations with bots creates confusion between machine worker nodes and scheduled
+  execution DAGs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  Add two WASM buildbots
+
+  Build changes to enable these bots to succeed:
+  ```
+
+  Good:
+
+  ```cpp
+  Add two WASM compile jobs
+
+  Build changes to enable these jobs to succeed:
+  ```
+include_glob:
+- '**/COMMIT_MSG'
+citations:
+- path: site/docs/dev/testing/automated_testing.md
+  heading: Overview
+  quote: A *task* corresponds to a single Swarming task. A *job* is composed of a directed acyclic graph
+    of one or more *tasks*.
+confidence: 0.9
+support_cl_count: 1

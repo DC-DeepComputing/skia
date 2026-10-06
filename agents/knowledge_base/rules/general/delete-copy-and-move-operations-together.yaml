@@ -1,0 +1,52 @@
+id: general/delete-copy-and-move-operations-together
+title: When preventing an object from being copied or moved, explicitly delete both copy and move constructors
+  and assignment operators rather than deleting only move operations
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When preventing a class or struct from being copied or moved, explicitly declare both copy and move
+  constructors and assignment operators as deleted (`= delete`). Do not rely on implicit suppression of
+  copy operations by deleting only move operations, nor leave the corresponding copy or move counterpart
+  undeclared.
+why: C++ special member function generation rules are intricate and easy to misremember; although declaring
+  move operations suppresses implicit copy operations, relying on implicit suppression is fragile and
+  ambiguous to readers. Explicitly deleting all four special members (`Foo(const Foo&) = delete;`, `Foo(Foo&&)
+  = delete;`, `Foo& operator=(const Foo&) = delete;`, `Foo& operator=(Foo&&) = delete;`) makes non-copyable
+  and non-movable invariants unambiguous.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: deleting only move operations relies on implicit suppression of copy operations
+  class SkShaderBlitter : public SkRasterBlitter {
+  public:
+      SkShaderBlitter(SkShaderBlitter&&) = delete;
+      SkShaderBlitter& operator=(SkShaderBlitter&&) = delete;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: explicitly delete both copy and move constructors and assignment operators
+  class SkShaderBlitter : public SkRasterBlitter {
+  public:
+      SkShaderBlitter(const SkShaderBlitter&) = delete;
+      SkShaderBlitter(SkShaderBlitter&&) = delete;
+      SkShaderBlitter& operator=(const SkShaderBlitter&) = delete;
+      SkShaderBlitter& operator=(SkShaderBlitter&&) = delete;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \b(\w+)\s*\(\s*(?:const\s+)?\w+\s*&&\s*\)\s*=\s*delete\b
+- \boperator=\s*\(\s*(?:const\s+)?[A-Za-z0-9_:]+\s*&&\s*\)\s*=\s*delete\b
+- \b(\w+)\s*\(\s*const\s+\w+\s*&\s*\)\s*=\s*delete\b
+- \boperator=\s*\(\s*const\s+[A-Za-z0-9_:]+\s*&\s*\)\s*=\s*delete\b
+- \b[A-Za-z0-9_:]+\s*&&\s*\)\s*=\s*delete\b
+confidence: 0.9
+support_cl_count: 1

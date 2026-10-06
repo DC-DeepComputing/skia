@@ -1,0 +1,53 @@
+id: general/move-sk-sp-into-value-sinks
+title: When passing an expiring sk_sp<T> to a sink or initializing a member from a by-value parameter,
+  use std::move to avoid ref-count churn
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When passing an owned or expiring sk_sp<T> to a function, constructor, or factory that consumes
+  it by value, or when initializing a member field from a by-value parameter in a constructor initializer
+  list, wrap the argument in std::move(sp). Do not pass or initialize with sk_sp by lvalue copy when the
+  source instance is no longer needed.
+why: Copying an sk_sp<T> invokes SkSafeRef() to increment the atomic reference count, and its subsequent
+  destruction invokes SkSafeUnref(). Using std::move() transfers pointer ownership directly via nullification
+  without executing atomic ref-count increments or decrements.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Passing and initializing sk_sp by lvalue copy causes atomic ref-count churn
+  explicit SkFontStyleSet_AndroidNDK(sk_sp<TypefaceCache> cache)
+      : fCache(cache) {}
+
+  std::unique_ptr<SkCodec> MakeCodec(sk_sp<SkData> data) {
+      return std::unique_ptr<SkBmpRustCodec>(new SkBmpRustCodec(data));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: std::move transfers ownership directly without atomic ref-count churn
+  explicit SkFontStyleSet_AndroidNDK(sk_sp<TypefaceCache> cache)
+      : fCache(std::move(cache)) {}
+
+  std::unique_ptr<SkCodec> MakeCodec(sk_sp<SkData> data) {
+      return std::unique_ptr<SkBmpRustCodec>(new SkBmpRustCodec(std::move(data)));
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- experimental/**
+triggers:
+- \bsk_sp<[A-Za-z0-9_:]+>
+- \bstd::move\s*[(][^)]*(?:data|image|stream|codec|info|decoder|buffer|sp|blob|typeface|font|shader|filter|cache)[)]
+- '[:;,]\s*f[A-Za-z0-9_]+\s*[(]\s*std::move\s*[(]'
+- \bnew\s+[A-Za-z0-9_:]+\s*[(][^)]*\bstd::move
+- \b(?:Make|MakeFrom|Create)\w*\s*[(][^)]*\bstd::move
+- \bstd::move\s*[(][A-Za-z0-9_]+[)]
+confidence: 0.98
+support_cl_count: 4

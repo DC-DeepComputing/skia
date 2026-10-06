@@ -1,0 +1,43 @@
+id: api/omit-duplicate-base-comments-on-overrides
+title: When declaring virtual function overrides, do not duplicate documentation comments from the base
+  class declaration unless noting subclass-specific behavior or caveats
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not duplicate documentation comments on overridden virtual functions when the base class declaration
+  already documents the method contract. Omit redundant doc comments on overrides, and only document derived
+  overrides when introducing subclass-specific behaviors, implementation details, or non-obvious caveats.
+why: A virtual method's contract and behavioral documentation belong on the base class declaration where
+  the interface is defined. Duplicating comments on derived class overrides clutters class definitions
+  and creates redundant text that risks drifting out of sync when the interface changes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class DawnGraphicsPipeline : public GraphicsPipeline {
+  public:
+      // If the compilation failed, this will return an error message.
+      std::optional<std::string> didAsyncCompilationFail() const override;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class DawnGraphicsPipeline : public GraphicsPipeline {
+  public:
+      std::optional<std::string> didAsyncCompilationFail() const override;
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \boverride\s*(?:final)?\s*[;{]
+- \bvirtual\s+.*\boverride\b
+- //+/?\s*(?:Returns|Retrieves|Gets|Sets|Checks|Determines|If|Whether|True if|When)\b
+- //+/?\s*(?:See\s+base|Overridden\s+from|Implements|Overrides)\b
+- \bclass\s+\w+\s*(?:final\s*)?:\s*public\s+\w+
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,87 @@
+id: api/use-non-virtual-interface-pattern
+title: When designing extensible class hierarchies, use Non-Virtual Interface (NVI) with virtual onMethod
+  hooks; avoid virtual public methods, fragmented lifecycle virtuals, or non-virtual on* names
+polarity: do
+severity: should_fix
+rubric: design
+rule: 'When designing extensible class hierarchies, follow the Non-Virtual Interface (NVI) pattern: expose
+  non-virtual public entry points delegating to private or protected virtual on<MethodName>() hooks. Do
+  not make public entry points virtual or split operations across multiple virtual lifecycle hooks; provide
+  a single virtual customization point and expose protected helpers for sub-steps instead. When an intermediate
+  class must enforce common logic across subclasses, override the base on<MethodName>() as final and expose
+  a dedicated hook for subclasses. Conversely, never prefix non-virtual methods with ''on''; reserve on*
+  exclusively for polymorphic hooks.'
+why: Relying on derived classes to explicitly invoke superclass methods is error-prone and risks bypassing
+  base invariants, while overriding intermediate hooks as final guarantees execution order. Splitting
+  an operation across multiple virtual lifecycle hooks introduces confusing responsibility splits and
+  unnecessary virtual interface surface; a single virtual customization point delegating sub-steps to
+  protected helpers keeps interfaces cohesive. Furthermore, in Skia the 'on' prefix specifically denotes
+  polymorphic NVI hooks; prefixing non-virtual methods with 'on' creates misleading API surfaces.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Fragmenting an operation across multiple virtual lifecycle hooks
+  class SkCodec {
+  public:
+      bool rewindIfNeeded() {
+          return this->attemptRewind() && this->onRewind();
+      }
+  protected:
+      virtual bool attemptRewind() { return !fStream || fStream->rewind(); }
+      virtual bool onRewind() = 0;
+  };
+
+  // Bad: Virtual public entry points and 'on' prefix on non-virtual methods
+  class SkSVGNode {
+  public:
+      virtual SkRect objectBoundingBox(const SkSVGRenderContext&) const;
+      void onPipelineCompileRequired(); // Non-virtual method should not use 'on'
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Single virtual customization point delegating sub-steps to protected helpers
+  class SkCodec {
+  public:
+      bool rewindIfNeeded() { return this->onRewind(); }
+  protected:
+      bool rewindStream() { return !fStream || fStream->rewind(); }
+      virtual bool onRewind() { return this->rewindStream(); }
+  };
+
+  // Good: Public non-virtual NVI entry point, final intermediate hook, descriptive event name
+  class SkSVGNode {
+  public:
+      SkRect objectBoundingBox(const SkSVGRenderContext& ctx) const {
+          return this->onObjectBoundingBox(ctx);
+      }
+      void pipelineCompileWasRequired(); // Descriptive past-tense for non-virtual event
+  protected:
+      virtual SkRect onObjectBoundingBox(const SkSVGRenderContext&) const = 0;
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bvirtual\s+(?:void|bool|[A-Za-z0-9_:]+)\s+on[A-Z]\w*\s*[(]
+- \bvirtual\s+(?:void|bool|[A-Za-z0-9_:]+)\s+[a-z][A-Za-z0-9_]*\s*[(]
+- \bon[A-Z][A-Za-z0-9_]*\s*[(]
+- \b(?:void|bool|[A-Za-z0-9_:]+)\s+on[A-Z][A-Za-z0-9_]*\s*[(]
+- \b(?:onObjectBoundingBox|onTransformableObjectBoundingBox|objectBoundingBox)\b
+- \b(?:freeGpuResources|purgeResourcesNotUsedSince|onFreeGpuResources|onPurgeResourcesNotUsedSince|pipelineCompileWasRequired)\b
+- \b(?:rewindIfNeeded|onRewind|rewindStream|attemptRewind)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: A common pattern for virtual methods in Skia is to include a public non-virtual (or final) method,
+    paired with a private virtual method named "onMethodName". This ensures that the base-class method
+    is always invoked and gives it control over how the virtual method is used, rather than relying on
+    each subclass to call `Parent::onMethodName()`.
+confidence: 0.98
+support_cl_count: 4

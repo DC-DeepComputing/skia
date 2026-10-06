@@ -1,0 +1,66 @@
+id: codec/deduplicate-format-property-calculations
+title: When computing format-dependent metrics (like bytes per pixel) across multiple codec decode paths,
+  consolidate calculations into a shared helper using a canonical SkEncodedInfo enum
+polarity: do
+severity: should_fix
+rubric: design
+rule: When computing format-dependent image properties (such as bytes per pixel, bits per pixel, or row
+  bytes) across multiple codec decode paths, deduplicate the calculations into a shared helper function.
+  Parameterize the helper using a single canonical enum (such as SkEncodedInfo::Color) rather than re-evaluating
+  properties across paths with diverging logic or disparate backend-specific enums.
+why: Image codecs frequently support multiple decode mechanisms (such as full decode, scanline decode,
+  and incremental decode). Calculating format metrics separately across paths invites subtle behavioral
+  divergence, duplicates validation checks, and creates cognitive confusion when mixing third-party/FFI
+  enums with Skia's internal representations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In ensureDecodedData():
+  uint32_t bytesPerPixel = 3;
+  if (this->getEncodedInfo().color() == SkEncodedInfo::kRGBA_Color ||
+      this->getEncodedInfo().color() == SkEncodedInfo::kBGRA_Color) {
+      bytesPerPixel = 4;
+  }
+
+  // In onStartScanlineDecode():
+  rust_bmp::BmpColor color = fReader->color();
+  if (color == rust_bmp::BmpColor::BGR || color == rust_bmp::BmpColor::RGB) {
+      fDecodingState->fBytesPerPixel = 3;
+  } else if (color == rust_bmp::BmpColor::BGRA || color == rust_bmp::BmpColor::RGBA) {
+      fDecodingState->fBytesPerPixel = 4;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In shared helper:
+  size_t getBytesPerPixel(SkEncodedInfo::Color color) {
+      switch (color) {
+          case SkEncodedInfo::kRGB_Color:
+          case SkEncodedInfo::kBGR_Color:
+              return 3;
+          case SkEncodedInfo::kRGBA_Color:
+          case SkEncodedInfo::kBGRA_Color:
+              return 4;
+          default:
+              return 0;
+      }
+  }
+
+  // In ensureDecodedData() and onStartScanlineDecode():
+  size_t bpp = getBytesPerPixel(this->getEncodedInfo().color());
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \b(?:bytesPerPixel|fBytesPerPixel|srcRowBytes|dstRowBytes)\b
+- \bSkEncodedInfo::(?:k\w+_Color|Color)\b
+- \b(?:onGetPixels|onStartScanlineDecode|onGetScanlines|onStartIncrementalDecode|ensureDecodedData)\b
+- \b(?:getEncodedInfo|encodedInfo)[(][)]\.color[(][)]
+- \b(?:size_t|int|uint32_t)\s+(?:get|compute)?(?:BytesPerPixel|RowBytes)\s*[(]
+confidence: 0.9
+support_cl_count: 1

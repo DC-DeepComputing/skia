@@ -1,0 +1,31 @@
+id: modules/separate-specialized-canvaskit-build-targets
+title: When modifying CanvasKit Makefile targets, do not alter the default release target with specialized
+  build flags; introduce a dedicated variant target instead
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not modify the default release build target in CanvasKit Makefiles with specialized or experimental
+  build flags (such as feature-specific shapers, tracing, or omitted modules). Introduce a dedicated variant
+  target (e.g., release_<variant>) instead to preserve the canonical release build for standard workflows.
+why: CanvasKit's default release target is invoked by standard build workflows, clean recipes, and documentation
+  instructions. Mutating the default target with specialized flags alters the output artifact for all
+  consumers, whereas dedicated targets allow opt-in variants without breaking downstream expectations.
+examples:
+- "Bad:\n\n```cpp\nrelease:\n\t# Does an incremental build where possible.\n\t./compile.sh client_unicode\
+  \ force_tracing # no_paragraph\n```\n\nGood:\n\n```cpp\nrelease:\n\t# Does an incremental build where\
+  \ possible.\n\t./compile.sh\n\nrelease_bidi:\n\t# Does an incremental build where possible.\n\t./compile.sh\
+  \ client_bidi no_paragraph no_skottie\n```"
+include_glob:
+- modules/canvaskit/**
+triggers:
+- '^[a-zA-Z0-9_]*release[a-zA-Z0-9_]*:'
+- \b(?:compile|build)\.sh\b
+- \b(?:client_unicode|client_bidi|force_tracing|no_paragraph|no_skottie)\b
+- \b\./compile\.sh\b
+- \b\$\((?:MAKE|make)\)\s+release\b
+citations:
+- path: modules/canvaskit/README.md
+  heading: Compile and Run Local Example
+  quote: For other available build targets, see `Makefile` and `compile.sh`.
+confidence: 0.9
+support_cl_count: 1

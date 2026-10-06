@@ -1,0 +1,40 @@
+id: api/avoid-redundant-tokens-in-helper-header-filenames
+title: When naming helper header files, avoid redundant format or subsystem token stuttering merely for
+  alphabetical sorting; name them directly by subsystem and implementation
+polarity: dont
+severity: nit
+rubric: readability
+rule: When naming helper header files (such as `Sk<Subsystem><Format>Helpers.h`), do not insert redundant
+  format or subsystem prefixes (e.g., avoid `SkXPSPngLibPngHelpers.h`) merely to group related files alphabetically.
+  Name them directly by combining the subsystem prefix with the specific implementation or format (e.g.,
+  prefer `SkXPSLibpngHelpers.h` or `SkPDFJpegHelpers.h`).
+why: Repeating format or subsystem identifiers in file names (such as 'Png' in 'PngLibPng') produces redundant
+  stuttering and clutters include paths. Concise names that pair the subsystem directly with the implementation
+  are clearer, avoid duplication, and adhere to established header naming conventions across Skia.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant format prefix ('Png') added for alphabetical grouping
+  #include "include/docs/SkXPSPngLibPngHelpers.h"
+  #include "include/docs/SkXPSPngRustPngHelpers.h"
+  ```
+
+  Good:
+
+  ```cpp
+  // Direct naming by subsystem and implementation without stuttering
+  #include "include/docs/SkXPSLibpngHelpers.h"
+  #include "include/docs/SkXPSRustPngHelpers.h"
+  ```
+include_glob:
+- include/**
+triggers:
+- ^#include\s+[\"<](?:[A-Za-z0-9_/-]+/)?(?:Sk|Gr)[A-Za-z0-9_]+Helpers\.h[\">]
+- ^#\s*(?:ifndef|define)\s+(?:Sk|Gr)[A-Za-z0-9_]+Helpers_DEFINED\b
+- \"(?:include/|src/|modules/)[A-Za-z0-9_/-]*(?:Sk|Gr)[A-Za-z0-9_]+Helpers\.h\"
+- \b(?:Sk|Gr)[A-Za-z0-9_]+Helpers\.h\b
+- \bnamespace\s+Sk(?:PDF|XPS|SVG)\b
+confidence: 0.9
+support_cl_count: 1

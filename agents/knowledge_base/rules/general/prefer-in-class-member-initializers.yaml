@@ -1,0 +1,79 @@
+id: general/prefer-in-class-member-initializers
+title: When defining structs or classes with default or sentinel values, use in-class member initializers
+  and prefer = default or aggregate initialization over manual constructors
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When struct or class member variables have fixed default or sentinel values, initialize them directly
+  at declaration using in-class member initializers rather than assigning constants in constructor bodies
+  or defining boilerplate constructors. On plain configuration or options structs, prefer in-class defaults
+  without custom constructors to preserve aggregate initialization and clean default parameters. When
+  default constructors are provided, define them as `= default;` (marked `constexpr` where applicable)
+  instead of duplicating initializers or relying on default parameter values (`Struct(Param p = kDefault)`).
+  Initializing defaults at declaration ensures a canonical initial state across all constructors.
+why: In-class member initializers eliminate boilerplate constructors, preserve aggregate initialization
+  on configuration structs, avoid burying default values in callee parameter lists, and ensure a single
+  canonical initial state across all constructors. This prevents uninitialized member reads during copy
+  construction or delegated assignments, avoids redundant member initializer lists, and enables `= default;`
+  and `constexpr` evaluation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Boilerplate constructor on config struct prevents aggregate initialization
+  struct BufferSizes {
+      BufferSizes(uint32_t minSize, uint32_t maxSize) : fMinSize(minSize), fMaxSize(maxSize) {}
+      uint32_t fMinSize;
+      uint32_t fMaxSize;
+  };
+  DrawBufferManager(ResourceProvider*, BufferSizes sizes = {16 << 10, 1 << 20});
+
+  // Duplicating default initializers in constructor or body assignment
+  struct DstUsage {
+      SkEnumBitMask<Flags> fFlags = Flags::kNone;
+      constexpr DstUsage() : fFlags(Flags::kNone) {}
+  };
+  struct SubmitInfo {
+      SyncToCpu fSync = SyncToCpu::kNo;
+      SubmitInfo(SyncToCpu sync = SyncToCpu::kNo) : fSync(sync) {}
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // In-class defaults enable aggregate initialization and clean call-site defaults
+  struct BufferSizes {
+      uint32_t fMinSize = 16 << 10;
+      uint32_t fMaxSize = 1 << 20;
+  };
+  DrawBufferManager(ResourceProvider*, BufferSizes sizes = BufferSizes());
+
+  // Defaulted constructor leveraging in-class initializers
+  struct DstUsage {
+      SkEnumBitMask<Flags> fFlags = Flags::kNone;
+      constexpr DstUsage() = default;
+  };
+  struct SubmitInfo {
+      SyncToCpu fSync = SyncToCpu::kNo;
+      constexpr SubmitInfo() = default;
+      constexpr SubmitInfo(SyncToCpu sync) : fSync(sync) {}
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tools/**
+triggers:
+- \b(?:struct|class)\s+[A-Za-z0-9_]+\b
+- \bstruct\s+[A-Za-z0-9_]*(?:Options|Params|Config|Settings|Sizes)\b
+- \b[A-Za-z0-9_:]+\s+f[A-Z]\w*\s*=\s*[^;]+;
+- :\s*f[A-Z]\w*\([^)]*\)
+- \b[A-Za-z0-9_:]+\s*\([^)]*\)\s*:\s*f[A-Z]\w*
+- \b(?:constexpr\s+)?(?:[A-Za-z0-9_]+::)?[A-Za-z0-9_]+\s*\(\s*\)\s*=\s*default\b
+- \bconstexpr\s+[A-Za-z0-9_]+\s*\([^)]*\)
+- \bf[A-Z]\w*\s*=\s*[A-Za-z0-9_:]+::k[A-Za-z0-9_]+;
+confidence: 0.98
+support_cl_count: 5

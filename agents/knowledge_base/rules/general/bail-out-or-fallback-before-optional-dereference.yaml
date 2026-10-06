@@ -1,0 +1,52 @@
+id: general/bail-out-or-fallback-before-optional-dereference
+title: When handling an empty std::optional check (!opt), ensure the failure branch early-returns, throws,
+  or provides a fallback before subsequent code dereferences *opt or opt->
+polarity: dont
+severity: blocking
+rubric: correctness
+rule: When checking a fallible operation returning std::optional (such as matrix.invert() or lookup queries),
+  ensure that handling an empty state (e.g., if (!opt)) terminates execution with an early return, throw,
+  or bailout before subsequent code dereferences the optional (*opt or opt->). If fallback behavior without
+  bailing out is intended, use opt.value_or(...) or supply default values rather than allowing control
+  flow to fall through to an unverified dereference.
+why: Failing to early-return or bail out after handling an empty optional allows execution to fall through
+  and unconditionally dereference *opt or opt->, causing undefined behavior or crashes on std::nullopt
+  in release and debug builds. Using opt.value_or(...) or returning early makes fallback and control-flow
+  semantics explicit.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  auto inverse = matrix.invert();
+  if (!inverse) {
+      SkPath empty;
+      glyph.setPath(alloc, &empty, false, pathModified);
+      // Missing return: execution falls through to null dereference below.
+  }
+  auto localPath = path.makeTransform(*inverse);
+  ```
+
+  Good:
+
+  ```cpp
+  auto inverse = matrix.invert();
+  if (!inverse) {
+      SkPath empty;
+      glyph.setPath(alloc, &empty, false, pathModified);
+      return;
+  }
+  auto localPath = path.makeTransform(*inverse);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bif\s*\(\s*![a-zA-Z0-9_]+(?:->|\.)has_value\s*\(\)
+- \bif\s*\(\s*![a-zA-Z0-9_]+\s*\)\s*\{
+- \b(?:invert|Rect2Rect|PolyToPoly)\s*\(
+- \bstd::optional<[A-Za-z0-9_:]+>
+- \b[a-zA-Z0-9_]+\.value_or\s*\(
+confidence: 0.95
+support_cl_count: 1

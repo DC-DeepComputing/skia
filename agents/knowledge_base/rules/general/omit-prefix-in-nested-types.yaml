@@ -1,0 +1,75 @@
+id: general/omit-prefix-in-nested-types
+title: When defining helper, metadata, or data structs for a class, nest them within the enclosing class
+  and omit redundant class prefixes
+polarity: do
+severity: should_fix
+rubric: design
+rule: 'Declare or forward-declare helper, options, and metadata structs nested inside the class they belong
+  to (under private: when used strictly internally) rather than at top-level namespace or file scope.
+  In source files (.cpp), define nested types using the enclosing class scope (Outer::Inner). When naming
+  nested structs, classes, or types, omit the enclosing class name and Sk or Gr prefixes (e.g., prefer
+  SkCapture::Metadata over SkCapture::SkCaptureMetadata or top-level SkCaptureMetadata), as the outer
+  class scope already provides namespace context.'
+why: Nesting closely coupled helper and metadata structs within their enclosing class encapsulates implementation
+  details, prevents namespace clutter, and makes ownership explicit. Omitting library prefixes and the
+  enclosing class name in nested types avoids redundant stutter and conforms to Skia style conventions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Standalone top-level / file-scope helper struct with redundant prefix
+  struct SkCaptureMetadata {
+      uint32_t version;
+      uint32_t numPictures;
+  };
+
+  // Bad: Forward-declared at namespace scope instead of nested in private:
+  struct SharedGeneratorData;
+  class ShaderInfo {
+      void generateVertexSkSL(const SharedGeneratorData&);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Nested within enclosing class with redundant prefixes omitted
+  class SkCapture : public SkRefCnt {
+  public:
+      struct Metadata {
+          uint32_t version;
+          uint32_t numPictures;
+      };
+      Metadata fMetadata;
+  };
+
+  // Good: Internal helper forward-declared in private: and defined via class scope
+  class ShaderInfo {
+  private:
+      struct SharedGeneratorData;
+      void generateVertexSkSL(const SharedGeneratorData&);
+  };
+  struct ShaderInfo::SharedGeneratorData { ... };
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*(?:struct|class)\s+(?:Sk|Gr)[A-Za-z0-9_]+
+- ^\s*(?:struct|class)\s+[A-Z][A-Za-z0-9_]+(?:Metadata|Info|Options|Rec|Params|Args|Config|State|Data)\b
+- \b(?:Sk|Gr)[A-Za-z0-9_]+::(?:Sk|Gr)[A-Za-z0-9_]+
+- \b(?:struct|class)\s+[A-Za-z0-9_]+::[A-Za-z0-9_]+
+- \b(?:using|typedef)\s+[A-Za-z0-9_]+::(?:Sk|Gr)[A-Za-z0-9_]+
+- \b(?:struct|class)\s+Shared[A-Za-z0-9_]*Data\b
+- \bSharedGeneratorData\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Most externally visible types and functions use an Sk- prefix to designate they're part of Skia,
+    but code in Ganesh uses Gr-. Nested types need not be prefixed.
+confidence: 0.98
+support_cl_count: 2

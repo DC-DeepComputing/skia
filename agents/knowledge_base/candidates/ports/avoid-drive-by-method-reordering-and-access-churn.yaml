@@ -1,0 +1,46 @@
+id: ports/avoid-drive-by-method-reordering-and-access-churn
+title: When refactoring class hierarchies in port implementations, preserve existing method ordering and
+  visibility specifiers instead of introducing drive-by access churn
+polarity: dont
+severity: should_fix
+rubric: design
+rule: When refactoring class hierarchies or proxy wrappers, do not reorder existing member methods or
+  modify their access specifiers (such as changing public to protected) unless directly required by the
+  change's design. Keep existing method positions and visibility intact to prevent unnecessary diff churn
+  and retain predictable interface layout.
+why: Gratuitous reorganization and arbitrary visibility changes clutter review diffs, obscure intentional
+  behavioral edits, and risk altering external or derived class access invariants without architectural
+  necessity.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In a refactoring CL modifying base class or proxy usage:
+  // Reordering existing methods and introducing 'protected:' to previously public methods
+  public:
+      std::unique_ptr<SkStreamAsset> makeStream() const;
+      const SkString fFamilyName;
+  protected:
+      void onGetFamilyName(SkString* familyName) const override;
+  ```
+
+  Good:
+
+  ```cpp
+  // Retain existing method ordering and visibility to avoid diff churn:
+  public:
+      std::unique_ptr<SkStreamAsset> makeStream() const;
+      void onGetFamilyName(SkString* familyName) const override;
+      const SkString fFamilyName;
+  ```
+include_glob:
+- src/ports/**
+triggers:
+- ^\s*protected:\s*$
+- \bclass\s+[A-Za-z0-9_]+\s*:\s*public\s+Sk(?:Typeface|FontMgr)
+- \bonGetFamilyName\s*\(
+- \bmakeStream\s*\(
+- \bvoid\s+onGet[A-Z]\w*\s*\(
+confidence: 0.88
+support_cl_count: 1

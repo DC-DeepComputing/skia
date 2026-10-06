@@ -1,0 +1,60 @@
+id: tests/document-fallback-test-expectations
+title: When unit tests assert against fallback or dual expected values because reference oracles deviate
+  on edge cases, document the diverging edge-case behavior
+polarity: do
+severity: nit
+rubric: readability
+rule: When authoring unit or algorithmic tests that compare a tested routine against a reference oracle
+  or baseline algorithm and accept fallback or secondary expected values, add an explanatory comment detailing
+  why the reference oracle deviates on those specific edge cases. Clarify the differing handling (such
+  as coordinate clamping, degenerate geometry, or rounding rules) that necessitates matching the fallback
+  expected outcome.
+why: Tests comparing implementations against reference algorithms or ground-truth oracles are expected
+  to produce identical results. When a test permits a secondary or fallback expected value without explanation,
+  reviewers and future maintainers cannot determine whether the disparity stems from a known edge-case
+  compromise, numerical limitation, or an unhandled bug in the implementation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Undocumented fallback expected values when reference algorithm deviates
+  std::array<SkPoint, 2> fallbackExp;
+  if (rawP1.fY < rawP0.fY) {
+      fallbackExp = {rawP1, rawP0};
+  } else {
+      fallbackExp = {rawP0, rawP1};
+  }
+  auto exp = expectedClipRef.has_value() ? expectedClipRef.value() : fallbackExp;
+  REPORTER_ASSERT(r, result == exp || result == fallbackExp);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Explains why the reference oracle diverges on corner cases and why fallback is valid
+  // If a line lies entirely outside the tile but touches it at a single point (grazing a corner),
+  // the reference Liang-Barsky oracle reports only a single intersection. However, ClipToTile
+  // clamps coordinates to emit a zero-width degenerate line. We calculate a fallback expected
+  // value here to verify and allow that intentional clamping behavior.
+  std::array<SkPoint, 2> fallbackExp;
+  if (rawP1.fY < rawP0.fY) {
+      fallbackExp = {rawP1, rawP0};
+  } else {
+      fallbackExp = {rawP0, rawP1};
+  }
+  auto exp = expectedClipRef.has_value() ? expectedClipRef.value() : fallbackExp;
+  REPORTER_ASSERT(r, result == exp || result == fallbackExp);
+  ```
+include_glob:
+- tests/**
+triggers:
+- \b\w*(?:[Ff]allback|[Ss]econdary|[Aa]lternat(?:e|ive))(?:Exp|Expected|Val|Value|Result)?\b
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*[(][^)]*\|\|\s*[^)]*\b(?:[Ff]allback|[Ss]econdary|[Aa]lt)\b
+- \b(?:has_value[(][)]|hasValue[(][)])\s*\?\s*[^:]+:\s*\w*(?:[Ff]allback|[Ss]econdary|[Aa]lt)\b
+- //.*\b(?:reference (?:oracle|algorithm|implementation)|ground truth|deviat(?:es?|ing)|fallback (?:expected|behavior|outcome)|clamping
+  behavior)\b
+- \b(?:reference|oracle|baseline)_(?:result|expected|val|output)\b
+- \b(?:matchPt|matches|compare)[A-Za-z0-9_]*\s*[(][^,]+,\s*\w*(?:[Ff]allback|[Ss]econdary|[Aa]lt)\w*\b
+confidence: 0.88
+support_cl_count: 1

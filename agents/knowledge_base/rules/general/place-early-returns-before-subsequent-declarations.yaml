@@ -1,0 +1,78 @@
+id: general/place-early-returns-before-subsequent-declarations
+title: When writing early-return guards, bailouts, or validation checks, evaluate cheap preconditions
+  before declaring variables, acquiring resources, or performing expensive operations
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When writing early-return, bailout, or validation checks (such as in onCanDrawPath, canReadRow,
+  or fast paths), evaluate cheap preconditions (such as null, empty, bounds intersection, identity, surface
+  flags, shape style, alpha type, or convexity) before declaring subsequent variables, acquiring ref-counted
+  resources, extracting geometry via asPath(), or performing expensive operations (such as SkMatrix::invert,
+  mapRadius, toProfile conversions, or skcms_ApproximatelyEqualProfiles). Place local variable declarations
+  in the narrowest scope after early returns, deferring expensive allocations, profile extractions, or
+  fallible operations until after cheap rejection filters pass.
+why: Evaluating cheap preconditions and early-return guards before declaring variables avoids unnecessary
+  object construction and destruction, buffer allocations, ref-count churn, profile conversions, and geometry
+  traversals on paths that exit early. In addition, keeping local variables in the narrowest scope close
+  to their first use improves readability and prevents premature bailouts on degenerate inputs that simpler
+  shortcuts could otherwise handle.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Eagerly extracting geometry before cheap property guards
+  SkPath path = args.fShape->asPath();
+  if (path.countVerbs() > kMaxVerbs) return CanDrawPath::kNo;
+  if (args.fSurfaceProps->flags() & SkSurfaceProps::kDynamicMSAA_Flag) return CanDrawPath::kNo;
+
+  // Declaring variables before early-return checks
+  PixelSpace<SkRect> stepBoundsF{srcRect};
+  PixelSpace<SkRect> stepPixelBounds{srcRect};
+  if (stepBoundsF.isEmpty()) return {};
+
+  // Performing expensive profile extraction before cheap enum/alpha reject checks
+  if (this->getEncodedInfo().profile() && this->dstInfo().colorSpace()) {
+      skcms_ICCProfile dstProfile;
+      this->dstInfo().colorSpace()->toProfile(&dstProfile);
+      if (!skcms_ApproximatelyEqualProfiles(this->getEncodedInfo().profile(), &dstProfile)) return false;
+  }
+  if (this->dstInfo().alphaType() != kUnpremul_SkAlphaType) return false;
+  ```
+
+  Good:
+
+  ```cpp
+  // Check cheap flags before expensive geometry extraction or transformations
+  if (args.fSurfaceProps->flags() & SkSurfaceProps::kDynamicMSAA_Flag) return CanDrawPath::kNo;
+  SkPath path = args.fShape->asPath();
+  if (path.countVerbs() > kMaxVerbs) return CanDrawPath::kNo;
+
+  // Place declarations after early-return guards close to first use
+  PixelSpace<SkRect> stepBoundsF{srcRect};
+  if (stepBoundsF.isEmpty()) return {};
+  PixelSpace<SkRect> stepPixelBounds{srcRect};
+
+  // Evaluate cheap rejects before expensive profile extraction and comparison
+  if (this->dstInfo().alphaType() != kUnpremul_SkAlphaType) return false;
+  if (this->getEncodedInfo().profile() && this->dstInfo().colorSpace()) {
+      skcms_ICCProfile dstProfile;
+      this->dstInfo().colorSpace()->toProfile(&dstProfile);
+      if (!skcms_ApproximatelyEqualProfiles(this->getEncodedInfo().profile(), &dstProfile)) return false;
+  }
+  ```
+include_glob:
+- src/**
+- modules/**
+- experimental/**
+triggers:
+- \bif\s*[(][^)]*\b(?:isEmpty|empty|isFinite|isNull|Identity|intersect)\s*[(]
+- (?:\.|->)(?:invert|mapRadius|mapRect|asPath|countVerbs|toProfile)\s*[(]
+- \b(?:onCanDrawPath|CanDrawPath::k(?:No|Yes)|canReadRow|canReadRows)\b
+- (?:->|\.)ref[A-Z]\w*\s*[(]
+- \bsk_sp<[A-Za-z0-9_]+>\s+[a-zA-Z0-9_]+\s*=
+- \breturn\s+std::nullopt;
+- \bskcms_ApproximatelyEqualProfiles\b
+- \bPixelSpace<[A-Za-z0-9_]+>
+confidence: 0.98
+support_cl_count: 7

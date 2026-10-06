@@ -1,0 +1,41 @@
+id: api/parenthesize-exclusion-clauses-in-doc-comments
+title: When writing doc comments or function descriptions with exclusion clauses or exceptions, enclose
+  the exclusions in parentheses to prevent modifier ambiguity
+polarity: do
+severity: nit
+rubric: readability
+rule: In doc comments and function descriptions that detail operations or lists alongside exclusions or
+  exceptions (such as 'excluding' or 'except for'), enclose the exclusion clause in parentheses. Do not
+  append exclusion lists with bare commas where trailing items can be ambiguously parsed as additional
+  primary actions rather than excluded items.
+why: Appending an exclusion list to an action description with commas (e.g., 'Attaches A, excluding B,
+  C, and D') leaves it grammatically ambiguous whether trailing items are part of the action or part of
+  the exclusion. Enclosing the exclusion clause in parentheses explicitly scopes the modifier and eliminates
+  grammatical ambiguity.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Attaches the layer content, excluding motion blur, top level layer controller, and mattes.
+  sk_sp<sksg::RenderNode> buildContentTree(const AnimationBuilder&, CompositionBuilder*);
+  ```
+
+  Good:
+
+  ```cpp
+  // Attaches the layer content (excluding motion blur, layer controller, and mattes).
+  sk_sp<sksg::RenderNode> buildContentTree(const AnimationBuilder&, CompositionBuilder*);
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+- tests/**
+triggers:
+- (?://|/\*).*\bexcluding\b
+- (?://|/\*).*\bexcept(?:ing)?\s+(?:for\b|that\b)?
+- (?://|/\*).*\b(?:with the exception of|other than)\b
+- (?://|/\*).*\b(?:omitting|ignoring|disregarding)\b
+confidence: 0.85
+support_cl_count: 1

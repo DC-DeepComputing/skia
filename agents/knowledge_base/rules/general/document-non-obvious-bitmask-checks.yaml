@@ -1,0 +1,60 @@
+id: general/document-non-obvious-bitmask-checks
+title: When checking that a bitmask contains only specific flags using negated mask expressions, add an
+  explanatory comment or extract a descriptive helper
+polarity: do
+severity: nit
+rubric: readability
+rule: When testing whether a bitmask contains only a specific subset of flags—especially when using negated
+  bitmask expressions like `0 == (mask & ~(kFlagA | kFlagB))` or `!(mask & ~kAllowedMask)`—add an explanatory
+  inline comment or extract the condition into an intention-revealing helper method. Document the exact
+  combination of active or permitted states being tested so reviewers do not have to perform mental bitwise
+  arithmetic.
+why: Negated bitmask expressions that verify subset inclusion require non-trivial mental boolean algebra
+  to decode. An inline comment or dedicated predicate immediately conveys the intent and business logic,
+  preventing misunderstandings and accidental bugs during refactoring.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  TypeMask mask = this->getType();
+
+  // Bad: reviewer must mentally invert the bitmask expression to deduce intent.
+  if (0 == (mask & ~(kScale_Mask | kTranslate_Mask))) {
+      if (mask & kScale_Mask) {
+          ...
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  TypeMask mask = this->getType();
+
+  // Good: inline comment clarifies that only scale and/or translate states are handled.
+  // Optimized invert for only scale and/or translation matrices.
+  if (0 == (mask & ~(kScale_Mask | kTranslate_Mask))) {
+      if (mask & kScale_Mask) {
+          ...
+      }
+  }
+
+  // Good: alternatively, extract into an intention-revealing helper function:
+  bool isScaleOrTranslateOnly(TypeMask mask) {
+      return 0 == (mask & ~(kScale_Mask | kTranslate_Mask));
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:flags?|mask|bitfield|bits?)\s*&\s*[A-Za-z0-9_]+(?:Flags?|Mask|Bits?)\b
+- \b(?:flags?|mask|bits?)\b[^;&\n]*&[^;&\n]*~
+- \b0\s*==\s*[(]?[^;{}]*&
+- \b(?:TypeMask|SkEnumBitMask)\b
+- \bk[A-Za-z0-9_]*(?:_Mask|Mask|_Flag|Flags?)\b
+- \b(?:this->)?getType\(\)
+- \bstd::optional<SkMatrix>\b
+confidence: 0.84
+support_cl_count: 1

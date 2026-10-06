@@ -1,0 +1,68 @@
+id: rust/factor-shared-rust-ffi-utilities
+title: When defining shared Rust FFI utilities, adapters, or build targets, place them in rust/common
+  instead of root rust/ or format-specific directories
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not place generic Rust FFI utilities (such as slice-to-span converters, stream adapters, or helper
+  headers) directly in the root rust/ directory or in format-specific directories (such as rust/png/),
+  and do not grant cross-codec visibility into them. Factor shared FFI helpers into rust/common/ (e.g.,
+  //rust/common:ffi_utils), keeping format-specific crates decoupled and the root directory clean.
+why: Generic Rust FFI utilities are needed across multiple Rust codecs (such as PNG, BMP, and JPEG). The
+  rust/ root directory is organized into crate subdirectories, while leaving shared utilities in format-specific
+  folders or exposing them via cross-codec visibility couples unrelated codecs together, violates subsystem
+  layering, and complicates modular builds.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Placing shared helpers in root rust/ or format-specific directories
+  // rust/SpanUtils.h
+  #include <span>
+
+  // Or in rust/png/BUILD.bazel:
+  skia_cc_library(
+      name = "utils",
+      hdrs = ["UtilsForFFI.h"],
+      visibility = ["//experimental/rust_bmp/ffi:__pkg__"],
+  )
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Factoring shared FFI helpers and build targets into rust/common/
+  // rust/common/SpanUtils.h
+  #include <span>
+
+  // In rust/common/BUILD.bazel:
+  skia_cc_library(
+      name = "ffi_utils",
+      hdrs = ["SpanUtils.h", "SkStreamAdapter.h"],
+      visibility = ["//:__subpackages__"],
+  )
+  ```
+include_glob:
+- rust/**
+- experimental/rust_*/**
+triggers:
+- \bvisibility\s*=\s*[[]
+- \b(?:skia_)?cc_library\s*[(]
+- \b(?:skia_)?rust_library\s*[(]
+- //rust/common:(?:ffi_utils|cxx_bridge|skia_rust_common)\b
+- '["'']//(?:rust|experimental/[a-z0-9_]+)/(?:png|bmp|jpeg|ico|icc|common|ffi)'
+- '#include\s+["'']rust(?:/common)?/(?:SpanUtils|SkStreamAdapter)\.h["'']'
+- include!\s*[(]\s*["']rust/common/
+- \brust::(?:Slice|stream)\b
+citations:
+- path: rust/README.md
+  quote: |-
+    This directory contains helpers, simplifications, and wrappers that other
+    Skia's C/C++ code can use for interacting with Rust crates.  In particular,
+    this is where FFI helpers can be found.
+- path: rust/icc/README.md
+  heading: Dependencies
+  quote: '- **rust/common**: Shared FFI utilities'
+confidence: 0.97
+support_cl_count: 2

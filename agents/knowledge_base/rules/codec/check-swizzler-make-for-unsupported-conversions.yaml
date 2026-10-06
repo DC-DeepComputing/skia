@@ -1,0 +1,45 @@
+id: codec/check-swizzler-make-for-unsupported-conversions
+title: When initializing an SkSwizzler in image decoders via SkSwizzler::Make or MakeSimple, check for
+  nullptr and return kInvalidConversion instead of asserting with SkASSERT
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When creating an SkSwizzler via SkSwizzler::Make or SkSwizzler::MakeSimple in image decoders, do
+  not assume creation always succeeds using SkASSERT. Check if the returned swizzler pointer is null and
+  return an error result such as SkCodec::kInvalidConversion or kUnimplemented to handle unsupported format
+  conversions gracefully.
+why: While SkCodec::conversionSupported permits certain destination color types, SkSwizzler only supports
+  a subset of format conversions and returns nullptr for unsupported configurations (such as kBGRA_10101010_XR_SkColorType).
+  Relying on SkASSERT results in assertion failures in debug builds and null pointer dereferences in release
+  builds when callers request these formats.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  fSwizzler = SkSwizzler::Make(this->getEncodedInfo(), nullptr, swizzlerInfo, swizzlerOptions);
+  SkASSERT(fSwizzler);
+  return kSuccess;
+  ```
+
+  Good:
+
+  ```cpp
+  fSwizzler = SkSwizzler::Make(this->getEncodedInfo(), nullptr, swizzlerInfo, swizzlerOptions);
+  if (!fSwizzler) {
+      return kInvalidConversion;
+  }
+  return kSuccess;
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bSkSwizzler::Make(?:Simple)?\b
+- \b(?:fSwizzler|swizzler)\s*=
+- \bSkASSERT\s*\([^)]*(?:fSwizzler|swizzler)\b
+- \bif\s*\(!\s*(?:fSwizzler|swizzler)\)
+- \b(?:kInvalidConversion|kUnimplemented)\b
+- \binitializeSwizzler\b
+confidence: 0.92
+support_cl_count: 1

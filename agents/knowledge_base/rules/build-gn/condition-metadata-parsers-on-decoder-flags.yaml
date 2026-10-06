@@ -1,0 +1,55 @@
+id: build-gn/condition-metadata-parsers-on-decoder-flags
+title: When gating metadata or ICC profile parsing targets in build files, condition them only on decoder
+  flags rather than encoder flags
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not gate metadata or ICC profile parsing build targets on image encoder feature flags (such as
+  'skia_use_*_encode'); condition them strictly on decoder flags (such as 'skia_use_*_decode'). Decoders
+  require dedicated parser libraries to validate untrusted input streams, whereas encoders pass through
+  pre-existing serialized byte buffers directly into output containers without parsing or deserializing
+  profile data.
+why: Coupling metadata parser libraries to encoder feature flags creates unnecessary build dependencies
+  and pulls unused parser code or FFI bridges into encoder-only configurations. Restricting parser build
+  targets to decoder flags maintains clean separation between decode and encode build graphs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # Bad: Gating ICC profile parsing target on both decode and encode flags
+  if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
+    action("rust_icc_ffi_bazel_build") { ... }
+    skia_source_set("rust_icc_cxx_bridge") { ... }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  # Good: Gating ICC profile parser target strictly on decoder flags
+  if (skia_use_rust_png_decode) {
+    action("rust_icc_ffi_bazel_build") { ... }
+    skia_source_set("rust_icc_cxx_bridge") { ... }
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gni'
+- '**/BUILD.bazel'
+triggers:
+- \bskia_use_[a-z0-9_]+_(?:decode|encode)\b
+- \b(?:rust_)?icc(?:_[a-z0-9_]+)?\b
+- \bskia_use_rust_(?:icc|exif)\b
+- \b(?:rust_)?exif(?:_[a-z0-9_]+)?\b
+- \b(?:parse_icc_profile|moxcms|rust_icc)\b
+citations:
+- path: rust/icc/README.md
+  heading: Rust ICC profile parser
+  quote: |-
+    This directory contains the pure Rust ICC (International Color Consortium)
+    profile parser for Skia codecs:
+
+    * Used by `SkPngRustCodec` and `SkBmpRustCodec`
+confidence: 0.9
+support_cl_count: 1

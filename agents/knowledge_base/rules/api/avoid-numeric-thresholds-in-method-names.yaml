@@ -1,0 +1,48 @@
+id: api/avoid-numeric-thresholds-in-method-names
+title: When declaring public API query methods, name methods after high-level semantic concepts rather
+  than baking specific numeric thresholds into identifiers
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring public API methods (such as format or capability queries), prefer conventional, semantic
+  names over identifiers that bake in specific numeric thresholds or comparison criteria (e.g., use hasHighBitDepthEncodedData
+  instead of wasEncodedWith16bitsOrMorePerComponent). Document the exact numerical threshold criteria
+  and boundaries in header documentation comments.
+why: Encoding exact numeric thresholds in method names creates awkward, brittle identifiers that age poorly
+  if criteria or format specs evolve. Semantic names aligned with client expectations keep public interfaces
+  durable and call sites clean, while doc comments allow threshold nuances to be explained without breaking
+  API contracts.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SK_API SkCodec {
+  public:
+      // Avoid baking specific numeric thresholds into public method names
+      bool wasEncodedWith16bitsOrMorePerComponent() const;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SK_API SkCodec {
+  public:
+      /**
+       * Whether the encoded input uses high bit depth (16 or more bits per component).
+       */
+      bool hasHighBitDepthEncodedData() const;
+  };
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \b(?:virtual\s+)?bool\s+(?:has|is|was|can|should)[A-Z]\w*(?:[0-9]+|[A-Z]\w*)\s*[(][^)]*[)]\s*(?:const)?
+- \b(?:bool|virtual\s+bool)\s+[a-z][A-Za-z0-9_]*(?:[0-9]+(?:bits?|Bytes?|Pixels?|Elements?)|(?:OrMore|OrLess|GreaterThan|LessThan))\w*\s*[(]
+- \b(?:virtual\s+)?bool\s+has[A-Z]\w*(?:BitDepth|Bits|EncodedData|Components?)\w*\s*[(]
+- \b(?:wasEncodedWith|hasHighBitDepth)[A-Za-z0-9_]*\s*[(]
+- //.*\b(?:bits? per component|threshold criteria|high bit depth)\b
+confidence: 0.85
+support_cl_count: 1

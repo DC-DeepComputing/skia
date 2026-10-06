@@ -1,0 +1,81 @@
+id: general/document-restricted-optimization-pass-todo
+title: When introducing intentionally restricted passes, hardcoded types, or unoptimized shortcuts in
+  initial implementations, document the technical debt and planned generalization with an attributed TODO
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When introducing an intentionally restricted pass (such as evaluating only root nodes or skipping
+  subtrees), hardcoding a type or dimension (such as fixed varying types), or adopting a temporary unoptimized
+  shortcut (such as snapshotting state instead of in-place mutation), document the limitation with an
+  attributed TODO(b/...) comment. Detail the deferred generalization, tree traversal requirements, or
+  planned in-place optimizations so future maintainers understand that the shortcut is an intentional
+  stopgap.
+why: Hardcoded types, restricted passes, and unoptimized shortcuts appear identical to unintended oversights
+  or permanent architectural limitations unless documented. Attaching an attributed TODO preserves design
+  intent, clarifies why full generalization or in-place mutation was deferred, and tracks the technical
+  debt for follow-up work.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Hardcoded type shortcut in generic generation without tracking TODO
+  for (const ShaderNode* node : liftedExpressions) {
+      std::string name = node->getExpressionVarying();
+      appendVarying({name.c_str(), SkSLType::kFloat2});
+  }
+
+  // Bad: Restricted optimization pass without documenting planned tree traversal
+  const int liftableNodes = hasClipNode ? 2 : roots.size();
+  for (ShaderNode* node : SkSpan(roots.data(), liftableNodes)) {
+      if (node->entry()->fLiftableExpressionGenerator) {
+          node->setLiftExpressionFlag();
+      }
+  }
+
+  // Bad: Temporary unoptimized copy shortcut without documenting planned in-place mutation
+  SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) {
+      *this = this->snapshot().transform(matrix, pc);
+      return *this;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Attributed TODO tracking generalization of hardcoded type
+  for (const ShaderNode* node : liftedExpressions) {
+      // TODO(b/402402925): Provide a way for lifted expressions to declare their varying type.
+      std::string name = node->getExpressionVarying();
+      appendVarying({name.c_str(), SkSLType::kFloat2});
+  }
+
+  // Good: Attributed TODO detailing planned extensions and traversal requirements
+  // TODO(b/402402925): This only lifts expressions from root nodes; allow combining from nested nodes.
+  const int liftableNodes = hasClipNode ? 2 : roots.size();
+  for (ShaderNode* node : SkSpan(roots.data(), liftableNodes)) {
+      if (node->entry()->fLiftableExpressionGenerator) {
+          node->setLiftExpressionFlag();
+      }
+  }
+
+  // Good: Attributed TODO documenting technical debt and planned in-place optimization
+  SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) {
+      // TODO(b/414645289): Rewrite to avoid snapshotting/copying; most transforms can be applied in place.
+      *this = this->snapshot().transform(matrix, pc);
+      return *this;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- //\s*TODO(?:\([^)]*\))?:?\s*.*\b(?:snapshot|copying|in-place|lift|root nodes|subtrees|unoptimized|shortcut|hardcode|varying
+  type)\b
+- \b(?:this->)?snapshot\(\)\.
+- \*this\s*=\s*(?:this->)?snapshot\(\)
+- \b(?:ShaderNode|fLiftableExpressionGenerator|setLiftExpressionFlag)\b
+- \b(?:liftableNodes|liftableRoots|liftedExpressions)\b
+- \bSkPathBuilder::transform\b
+- '\bappendVarying\s*\(\s*\{[^}]*SkSLType::'
+confidence: 0.97
+support_cl_count: 2

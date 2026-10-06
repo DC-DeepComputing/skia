@@ -1,0 +1,51 @@
+id: general/assert-finite-preconditions-rather-than-commenting
+title: When implementing geometry routines that assume finite coordinates or bounds, enforce the precondition
+  with SkASSERT rather than relying solely on prose comments
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When a function or geometry operation assumes a precondition—such as coordinates, bounds, or sizes
+  being finite—enforce the requirement explicitly with an assertion (such as `SkASSERT(this->computeFiniteBounds().has_value())`
+  or `SkASSERT(coord.isFinite())`). Do not rely solely on prose comments to state that a calculation is
+  only valid under those conditions.
+why: Prose comments like '// this is only valid if we're finite' are ignored by the compiler and runtime,
+  leaving preconditions unverified when invalid or NaN values are passed. Asserting the condition fails
+  fast in debug builds, preventing invalid calculations, NaN propagation, and subtle downstream rendering
+  bugs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkPathConvexity SkPathBuilder::computeConvexity() const {
+      auto convexity = fConvexity;
+      if (convexity == SkPathConvexity::kUnknown) {
+          // this is only valid if we're finite
+          convexity = SkPathPriv::ComputeConvexity(fPts, fVerbs, fConicWeights);
+      }
+      return convexity;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkPathConvexity SkPathBuilder::computeConvexity() const {
+      auto convexity = fConvexity;
+      if (convexity == SkPathConvexity::kUnknown) {
+          SkASSERT(this->computeFiniteBounds().has_value());
+          convexity = SkPathPriv::ComputeConvexity(fPts, fVerbs, fConicWeights);
+      }
+      return convexity;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:computeFiniteBounds|isFinite)\b
+- \bSkASSERT\s*\([^)]*\b(?:isFinite|computeFiniteBounds|has_value)\b
+- //.*\b(?:finite|isFinite|only valid)\b
+- \b(?:computeConvexity|ComputeConvexity)\b
+- '\bSkPathConvexity::'
+confidence: 0.9
+support_cl_count: 1

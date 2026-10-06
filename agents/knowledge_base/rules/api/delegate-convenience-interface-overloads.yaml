@@ -1,0 +1,50 @@
+id: api/delegate-convenience-interface-overloads
+title: When adding convenience overloads with default arguments to an interface, provide a delegating
+  base implementation rather than making all overloads pure virtual
+polarity: do
+severity: should_fix
+rubric: design
+rule: When designing or extending an interface or base class with convenience overloads that supply default
+  parameter values, provide an inline delegating implementation in the base class rather than making all
+  overloads pure virtual (`= 0`). Subclasses should only need to override the primary, generalized virtual
+  method.
+why: Declaring every overload pure virtual forces every derived subclass to implement redundant forwarding
+  boilerplate, duplicating trivial parameter forwarding across all implementations. Delegating convenience
+  overloads in the base class centralizes default argument handling and keeps subclass definitions minimal.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In base class interface:
+  class SkExecutor {
+  public:
+      virtual ~SkExecutor() = default;
+      virtual void add(std::function<void()>) = 0;
+      virtual void add(std::function<void()>, int workList) = 0;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // In base class interface:
+  class SkExecutor {
+  public:
+      virtual ~SkExecutor() = default;
+      void add(std::function<void()> fn) { this->add(std::move(fn), 0); }
+      virtual void add(std::function<void()>, int workList) = 0;
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \bvirtual\s+[^;{=]+=\s*0\s*;
+- \)\s*(?:const\s*)?=\s*0\s*;
+- \bvirtual\s+(?:void|bool|[A-Za-z0-9_:]+)\s+[a-z][A-Za-z0-9_]*\s*\([^)]*\)
+- \bthis->[a-z][A-Za-z0-9_]*\s*\(
+- \b(?:this->)?[a-z][A-Za-z0-9_]*\s*\([^;{}]*\);\s*\}
+- \bstd::function<void\s*\(
+confidence: 0.9
+support_cl_count: 1

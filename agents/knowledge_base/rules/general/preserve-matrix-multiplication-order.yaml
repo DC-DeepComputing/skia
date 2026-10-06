@@ -1,0 +1,60 @@
+id: general/preserve-matrix-multiplication-order
+title: When composing SkMatrix or Transform instances, prefer operator* or Concat and preserve column-vector
+  order (postConcat(B) is B*A; relative A-to-B is bToC^-1 * aToC)
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: 'When composing SkMatrix or Transform instances, prefer SkMatrix::Concat(a, b) or operator* over
+  copy-constructing a mutable matrix and calling preConcat() or postConcat(). Preserve column-vector multiplication
+  order when composing or refactoring transforms: A.postConcat(B) applies B after A and corresponds to
+  SkMatrix::Concat(B, A) or B * A (not A * B). Likewise, when computing a relative transformation from
+  space A to space B via common space C (from aToC and bToC), multiply bToC.inverse() * aToC to apply
+  A->C followed by C->B, not aToC.inverse() * bToC.'
+why: Evaluating matrix composition via SkMatrix::Concat(a, b) or operator* eliminates mutable local state
+  and makes transformation order explicit at call sites. Because matrix multiplication follows column-vector
+  convention ((B * A) * v = B * (A * v)), applying B after A requires Concat(B, A) or B * A. Reversing
+  the operands—such as replacing postConcat(B) with A * B or calculating relative transforms as aToC.inverse()
+  * bToC—computes the reverse mapping (B -> A instead of A -> B) and corrupts non-commutative operations,
+  rotations, skews, and coordinate mapping.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Anti-pattern 1: Copy-constructing and mutating via preConcat/postConcat
+  SkMatrix maskToLocal = deviceToLocal;
+  maskToLocal.preConcat(maskToDevice);
+
+  // Anti-pattern 2: Replacing postConcat(B) with A * B reverses transformation order
+  SkMatrix combined = localMatrix * matrix2x2; // Bug: postConcat(B) requires B * A
+
+  // Anti-pattern 3: Relative transform A -> B multiplied in reverse order (yields B -> A)
+  Transform localToOther = Transform(localToDevice.inverse() * otherToDevice);
+  ```
+
+  Good:
+
+  ```cpp
+  // Pattern 1: Explicit composition in a single expression
+  SkMatrix maskToLocal = SkMatrix::Concat(deviceToLocal, maskToDevice);
+
+  // Pattern 2: Preserved order for postConcat(B) -> B * A or Concat(B, A)
+  SkMatrix combined = matrix2x2 * localMatrix;
+  // Alternatively: SkMatrix combined = SkMatrix::Concat(matrix2x2, localMatrix);
+
+  // Pattern 3: Correct relative transform A -> B applies A -> C then (B -> C)^-1
+  Transform localToOther = Transform(otherToDevice.inverse() * localToDevice);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \b(?:postConcat|preConcat|setConcat)\s*\(
+- \bSkMatrix::Concat\s*\(
+- \b[a-zA-Z0-9_]*(?:Matrix|Transform)\b[^;]*\*
+- \*\s*[a-zA-Z0-9_]*(?:Matrix|Transform)\b
+- \b(?:inverse|invert)\s*\([^)]*\)\s*\*
+- \b(?:localTo|devTo|otherTo)[A-Za-z0-9_]*\s*\*
+confidence: 0.98
+support_cl_count: 3

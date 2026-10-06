@@ -1,0 +1,44 @@
+id: gpu/decouple-texture-upload-preparation-from-execution
+title: When implementing GPU texture upload operations, decouple shared data preparation into an intermediate
+  UploadSource object instead of duplicating format-specific backend virtuals
+polarity: do
+severity: should_fix
+rubric: design
+rule: Decouple texture upload operations into a shared data preparation phase (validating mip levels,
+  dimensions, and format metadata into an UploadSource intermediate) and an execution phase (direct host
+  copy or GPU transfer buffer). In Texture base classes and backend implementations, expose unified upload
+  execution virtual methods (such as canUploadOnHost() and uploadDataOnHost(const UploadSource&)) rather
+  than adding format-specific virtual methods.
+why: Texture upload paths across formats share extensive validation, mip-level calculation, and compatibility
+  checking. Proliferating format-specific virtual methods on backend Texture classes duplicates preparation
+  logic across backends and complicates introducing alternative upload pathways, whereas encapsulating
+  prepared data into an UploadSource standardizes validation and unifies backend execution entry points.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Backend Texture base class exposes separate virtuals per data format,
+  // duplicating validation and mip calculations across backend subclasses:
+  virtual bool updateDataOnHost(const SkColorInfo& colorInfo, SkSpan<const MipLevel> levels);
+  virtual bool updateCompressedDataOnHost(const void* data, size_t dataSize);
+  ```
+
+  Good:
+
+  ```cpp
+  // Unified data preparation in UploadSource handles validation for all formats;
+  // Texture base class exposes unified upload execution virtuals:
+  virtual bool canUploadOnHost() const { return false; }
+  virtual bool uploadDataOnHost(const UploadSource& source);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bUploadSource\b
+- \b(?:uploadDataOnHost|canUploadOnHost|updateDataOnHost)\b
+- \bvirtual\s+bool\s+(?:can|upload|update)[A-Za-z0-9_]*Host\s*[(]
+- \bUploadSource::Make(?:Compressed)?\b
+- \b(?:Texture|VulkanTexture|DawnTexture|MtlTexture)::(?:canUpload|uploadData)\w*\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,45 @@
+id: general/use-predefined-math-constants
+title: When using mathematical constants like pi or sqrt(2), use predefined constants from SkFloatingPoint.h
+  (such as SK_FloatPI) instead of local definitions or hardcoded literals
+polarity: do
+severity: nit
+rubric: readability
+rule: Use predefined mathematical constants from include/private/SkFloatingPoint.h (such as SK_FloatPI,
+  SK_DoublePI, or SK_FloatSqrt2) instead of hardcoding numeric approximations, using non-standard macros
+  (like M_PI), or defining local copies of pi.
+why: Skia provides centralized float and double mathematical constants in SkFloatingPoint.h to avoid redundant
+  definitions, eliminate precision discrepancies across platforms, and maintain consistency where standard
+  library constants (such as std::numbers::pi) are not available across all target toolchains.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: defining local copies of pi or hardcoding numeric literals
+  static constexpr float kPi = 3.1415926535897932384626f;
+  const float theta = uint16_to_float(data, 1u, 35999u, 18000, 36000.f / kPi);
+  const float circumference = 2.0f * 3.14159265f * radius;
+  ```
+
+  Good:
+
+  ```cpp
+  #include "include/private/SkFloatingPoint.h"
+
+  // Good: use centralized mathematical constants from SkFloatingPoint.h
+  const float theta = uint16_to_float(data, 1u, 35999u, 18000u, 36000.f / SK_FloatPI);
+  const float circumference = 2.0f * SK_FloatPI * radius;
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- 3\.14159\d*f?
+- \b(?:static\s+)?(?:inline\s+)?constexpr\s+(?:float|double)\s+k[A-Za-z0-9_]*Pi\b
+- \b(?:std::numbers::pi|M_PI|M_PI_2|M_PI_4|M_SQRT2)\b
+- \bSK_(?:Float|Double)(?:PI|Sqrt2)\b
+- 1\.41421\d*f?
+- '#include\s+[<\"].*SkFloatingPoint\.h[>\"]'
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,42 @@
+id: api/define-boolean-enums-with-bool-type
+title: 'When defining two-state boolean enum classes, declare them with an explicit '': bool'' underlying
+  type and ''kNo = false, kYes = true'' enumerators'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'Define two-state (boolean) scoped enums with an explicit underlying type of '': bool'' and explicit
+  values ''kNo = false, kYes = true''. Do not omit the underlying '': bool'' type or leave enumerator
+  values implicit when representing binary yes/no states.'
+why: 'Specifying '': bool'' guarantees the enum is stored as a single byte rather than defaulting to ''int'',
+  conserving memory in structs and arrays. Explicitly defining ''kNo = false, kYes = true'' establishes
+  a consistent, self-documenting convention across Skia and ensures safe, predictable conversions between
+  boolean expressions and enum states.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  enum class SkResolveConvexity {
+      kNo,
+      kYes,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  enum class SkResolveConvexity : bool {
+      kNo = false,
+      kYes = true,
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \benum\s+class\s+[A-Za-z0-9_]+\s*:\s*bool\b
+- \benum\s+class\s+[A-Za-z0-9_]+\b
+- \b(?:kNo|kYes)\b
+- \b(?:kNo\s*=\s*false|kYes\s*=\s*true)\b
+confidence: 0.9
+support_cl_count: 1

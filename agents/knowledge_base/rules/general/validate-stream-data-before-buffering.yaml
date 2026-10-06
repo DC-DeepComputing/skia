@@ -1,0 +1,50 @@
+id: general/validate-stream-data-before-buffering
+title: When buffering input from an SkStream into an accumulation buffer or SkDynamicMemoryWStream, validate
+  the read byte count and magic header bytes before writing
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Validate stream read counts and header magic bytes before buffering or writing data into an output
+  or accumulation stream (such as SkDynamicMemoryWStream). Do not write unverified bytes into in-memory
+  streams or allocate dynamic buffers ahead of early validation bailouts.
+why: Writing unvalidated bytes to an accumulation stream or dynamic memory buffer causes unnecessary heap
+  allocations, block expansions, and memory copies when the input stream is truncated, corrupted, or of
+  an unexpected format. Validating read lengths and magic bytes upfront ensures malformed inputs fail
+  fast with zero allocation overhead.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkDynamicMemoryWStream tempStream;
+  size_t bytesRead = stream->read(buffer, kHeaderSize);
+  tempStream.write(buffer, bytesRead);
+  if (bytesRead < kHeaderSize ||
+      memcmp(buffer, "RIFF", 4) != 0 ||
+      memcmp(&buffer[8], "WEBP", 4) != 0) {
+      return {false, nullptr};
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkDynamicMemoryWStream tempStream;
+  size_t bytesRead = stream->read(buffer, kHeaderSize);
+  if (bytesRead < kHeaderSize ||
+      memcmp(buffer, "RIFF", 4) != 0 ||
+      memcmp(&buffer[8], "WEBP", 4) != 0) {
+      return {false, nullptr};
+  }
+  tempStream.write(buffer, bytesRead);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSkDynamicMemoryWStream\b
+- '[A-Za-z0-9_]*[sS]tream(?:->|\.)read(?:Bytes)?\s*[(]'
+- \b(?:bytes_read|bytesRead)\s*<\s*[A-Za-z0-9_]+
+- \bmemcmp\s*[(][^,]+,\s*"[A-Z0-9_]{4}"
+- \b(?:writeToStream|writeToAndReset|detachAsData)\s*[(]
+confidence: 0.9
+support_cl_count: 1

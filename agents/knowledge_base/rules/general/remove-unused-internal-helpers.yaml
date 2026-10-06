@@ -1,0 +1,70 @@
+id: general/remove-unused-internal-helpers
+title: When refactoring internal code or tests, remove unreferenced helper functions, obsolete declarations,
+  dead test fixtures, companion friend declarations, and speculative shims
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When refactoring internal classes, translation units, or tests, delete unreferenced helper functions,
+  leftover member methods, and obsolete overloads rather than retaining dead code. When eliminating a
+  helper's sole caller or deleting obsolete tests, remove all associated declarations, orphaned test-only
+  helper classes, and companion `friend class` declarations from headers and source files. Do not retain
+  obsolete helpers under `#if defined(SK_DEBUG)` solely to re-verify caller invariants, nor introduce
+  speculative utility methods (such as `shrink_to_fit` on transient builders) or private `*Priv.h` shims
+  solely for test/fuzzer parity lacking production callers.
+why: Internal headers, classes, and test files should not accumulate dead code, uncalled leftover methods,
+  speculative APIs, or redundant debug scaffolding. Retaining unreferenced helpers or orphaned test fixtures
+  adds maintenance burden, leaves private class internals unnecessarily exposed via obsolete friend declarations,
+  and misleads readers into believing the functionality is actively maintained.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SkPathPriv.h, leaving an obsolete overload after callers pass bounds directly:
+  static bool TooBigForMath(const SkPath& path) { return TooBigForMath(path.getBounds()); }
+
+  // In KeyHelpers.h, retaining declarations after sole caller in PaintParams was deleted:
+  void NotifyImagesInUse(Recorder*, DrawContext*, const SkBlender*);
+
+  // Retaining a helper under SK_DEBUG solely to assert an invariant guaranteed by its caller:
+  #if defined(SK_DEBUG)
+  bool paint_depends_on_dst(const PaintParams& paintParams) { return ...; }
+  #endif
+
+  // Leaving dead test-only helpers and friend declarations after deleting obsolete tests:
+  class ForceIsRRect_Private { ... };
+  static void force_path_contains_rrect(skiatest::Reporter* r, SkPath& p, ...) { ... }
+  ```
+
+  Good:
+
+  ```cpp
+  // Remove the unused overload once callers pass bounds directly:
+  static bool TooBigForMath(const SkRect& bounds) { ... }
+
+  // Remove unused helper declarations from KeyHelpers.h when deleting their sole caller.
+
+  // Remove the obsolete helper and redundant assertion when the caller establishes the contract:
+  std::optional<SkColor4f> extract_paint_color(const PaintParams& paint, const SkColorInfo& info) {
+      ...
+  }
+
+  // When deleting obsolete tests, remove dead test helpers and companion 'friend class' declarations:
+  // (deleted ForceIsRRect_Private and friend declaration from SkPath.h)
+  ```
+include_glob:
+- src/**
+- include/**
+- fuzz/**
+- tests/**
+triggers:
+- \b[A-Za-z0-9_]+Priv::[A-Za-z0-9_]+\s*[(]
+- \bclass\s+[A-Za-z0-9_]+(?:Priv|_Private|Helper|Fixture)\b
+- \bstatic\s+(?:inline\s+)?(?:bool|void|[A-Za-z0-9_:]+)\s+[A-Za-z0-9_]+\s*[(]
+- \bfriend\s+class\s+[A-Za-z0-9_]+
+- \bsk_sp<[A-Za-z0-9_]+>\s+[a-z]\w*\s*[(]
+- \b(?:shrink_to_fit|shrink_and_clear)\s*[(]
+- '#(?:if|ifdef)\s+.*SK_DEBUG'
+- \b(?:AddToKey|NotifyImagesInUse|notifyImagesInUse|TooBigForMath|MAX_PATH_OPERATION|ForceIsRRect)\b
+confidence: 0.98
+support_cl_count: 7

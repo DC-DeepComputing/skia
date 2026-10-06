@@ -1,0 +1,61 @@
+id: general/check-optional-pointer-before-member-access
+title: 'When forwarding optional pointer arguments to underlying methods accepting nullptr, use ternary
+  unwrapping (ptr ? &ptr->member : nullptr) instead of unconditional member access or branching if-else
+  calls'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'When forwarding optional pointer arguments or extracting member addresses in wrapper types, guard
+  member access against nullptr to avoid undefined behavior. When delegating to an underlying function
+  that accepts nullptr, prefer a concise ternary expression (`ptr ? &ptr->member : nullptr`) instead of
+  branching with an `if (!ptr)` check that duplicates call sites.'
+why: In C++, `ptr->member` is equivalent to `(*ptr).member`, which dereferences `ptr` and invokes undefined
+  behavior if `ptr` is `nullptr`—even when taking its address (`&ptr->member`). Using a ternary expression
+  safely checks for `nullptr` and passes the underlying member address or `nullptr` in a single call,
+  avoiding both undefined behavior and redundant branching boilerplate.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Unconditional member access invokes undefined behavior if caller passes nullptr
+  bool invert(LayerSpace<SkMatrix>* inverse) const {
+      return fData.invert(&inverse->fData);
+  }
+
+  // Bad: Redundant branching duplicates the underlying call site
+  bool invert(LayerSpace<SkMatrix>* inverse) const {
+      if (!inverse) {
+          return fData.invert(nullptr);
+      }
+      return fData.invert(&inverse->fData);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Ternary expression guards against nullptr without duplicating the call
+  bool invert(LayerSpace<SkMatrix>* inverse) const {
+      return fData.invert(inverse ? &inverse->fData : nullptr);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \binvert\s*[(]\s*nullptr\s*[)]
+- \b[a-zA-Z0-9_]+\.invert\s*[(]
+- \bLayerSpace<
+- '&[A-Za-z0-9_]+->[A-Za-z0-9_]+'
+- '[?]\s*&[A-Za-z0-9_]+->'
+- \bif\s*\(![a-zA-Z0-9_]+\)\s*\{\s*return\b
+- \b[A-Za-z0-9_:]+\*\s*[a-zA-Z0-9_]+\s*=\s*nullptr\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: Optional constant object parameters are passed to functions as const pointers. Mutable object
+    parameters are passed to functions as pointers.
+confidence: 0.98
+support_cl_count: 2

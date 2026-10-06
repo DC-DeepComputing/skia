@@ -1,0 +1,52 @@
+id: gpu/preserve-nested-if-for-unconditional-early-exit
+title: When refactoring nested if statements where an outer block terminates with an early return or break,
+  do not collapse inner conditions into the outer guard
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When an outer conditional block performs an early exit (`return`, `break`) that must unconditionally
+  apply to all items meeting the outer condition, keep nested `if` statements separate. Do not combine
+  inner conditions into the outer `if` using `&&`, which would allow elements failing the inner check
+  to skip the required early exit and continue execution.
+why: Collapsing a nested condition into an outer conditional statement changes the control flow for elements
+  that satisfy the outer check but fail the inner check. Instead of executing the outer block's terminal
+  return or break, those elements fall through, bypassing early exit guarantees and causing logic errors
+  in search and traversal algorithms.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Buggy refactoring: items satisfying outerCondition but failing innerCondition
+  // bypass the early return and incorrectly fall through.
+  if (outerCondition && innerCondition && result.isValid()) {
+      process(result);
+      return true;
+  } else {
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Outer condition ensures all matching items trigger early exit.
+  if (outerCondition) {
+      if (innerCondition && result.isValid()) {
+          process(result);
+      }
+      return true;
+  } else {
+      return false;
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bdependsOnDst\b
+- \bcanForwardMerge\b
+- \bforwardMerge\b
+- \bDrawListLayer\b
+- \bif\s*[(][^)]*\bdependsOnDst\b
+confidence: 0.9
+support_cl_count: 1

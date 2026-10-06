@@ -1,0 +1,81 @@
+id: general/general-document-geometry-simplification-exclusions
+title: When implementing or expanding geometry simplifications and shape fast paths, update accompanying
+  comments to enumerate handled cases and document disqualifying conditions
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When implementing or expanding geometry simplifications, shape conversions, draw fast paths, or
+  coordinate transformations, update accompanying block comments so they accurately enumerate all handled
+  cases rather than describing only an earlier subset. Additionally, document non-obvious disqualifying
+  conditions and round-trip tolerance checks with inline comments, explicitly explaining the geometric
+  or precision rationale behind each guard (such as stroked square caps extending past endpoints, radial
+  wedge lines, or precision loss) and specifying fallback behavior.
+why: Fast-path and geometric optimization guards often exclude edge cases that superficially appear eligible
+  or guard against subtle floating-point precision loss under extreme scaling or matrix inversions. Stale
+  comments that describe only original subsets mislead maintainers about active conditions, while missing
+  inline explanations risk accidental removal of necessary exclusion checks during refactoring.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Variant 1: Stale comment describes only original fills; lacks rationale for exclusions
+  // Simple fills with large sweeps are ovals. Culling these simplifies path processing.
+  if (!paint.getPathEffect() &&
+      SkScalarAbs(arc.sweepAngle()) >= 360.f &&
+      (paint.getStyle() == SkPaint::kFill_Style ||
+       (paint.getStyle() == SkPaint::kStroke_Style &&
+        paint.getStrokeCap() != SkPaint::kSquare_Cap &&
+        !arc.isWedge()))) {
+      this->drawRRect(SkRRect::MakeOval(arc.oval()), paint);
+      return;
+  }
+
+  // Variant 2: Precision-loss tolerance bailout
+  const float otherTol = 0.001f * otherToDevice.localAARadius(localOtherRect);
+  if (localOtherRect.isEmptyNegativeOrNaN() ||
+      !localToOther->mapRect(mapped).nearlyEquals(localOtherRect, otherTol)) {
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Variant 1: Comment covers both fills and strokes; inline comments explain exclusions
+  // Sweeps >= 360 with simple fills or strokes (without square caps or wedge lines) are ovals.
+  if (!paint.getPathEffect() &&
+      SkScalarAbs(arc.sweepAngle()) >= 360.f &&
+      (paint.getStyle() == SkPaint::kFill_Style ||
+       (paint.getStyle() == SkPaint::kStroke_Style &&
+        // Square caps stick out past endpoints, so cannot be drawn as an RRect.
+        paint.getStrokeCap() != SkPaint::kSquare_Cap &&
+        // Non-wedge stroked arcs draw lines to the center.
+        !arc.isWedge()))) {
+      this->drawRRect(SkRRect::MakeOval(arc.oval()), paint);
+      return;
+  }
+
+  // Variant 2: Document precision-loss failure mode and fallback behavior
+  // If we don't have enough precision, the other shape might not map back to the geometry.
+  // Allow up to 1/1000th of a pixel in tolerance when mapping between coordinate spaces,
+  // otherwise we'll have to clip the shapes independently.
+  const float otherTol = 0.001f * otherToDevice.localAARadius(localOtherRect);
+  if (localOtherRect.isEmptyNegativeOrNaN() ||
+      !localToOther->mapRect(mapped).nearlyEquals(localOtherRect, otherTol)) {
+      return false;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSkRRect::Make(?:Oval|Rect)\s*[(]
+- \b(?:drawRRect|drawOval)\s*[(]\s*SkRRect::Make
+- \b(?:sweepAngle|isWedge|getStrokeCap)\s*[(]
+- \b(?:isOval|isRRect|isRect|asOval|asRRect|asRect)\s*[(]
+- \b(?:nearlyEquals|nearly_equal|nearlyEqual)\s*[(]
+- \b(?:localAARadius|kDefaultPixelTolerance)\b
+- '//.*\b(?:square caps?|wedge cases?|can(?:''t|not) (?:do this with|be drawn as)|disqualif|simplif|precision(?:
+  loss)?|round-?trip)\b'
+confidence: 0.95
+support_cl_count: 2

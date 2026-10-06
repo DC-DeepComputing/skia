@@ -1,0 +1,49 @@
+id: build-gn/use-canonical-codec-defines
+title: When configuring image codec targets in build files, export canonical SK_CODEC_DECODES_<FORMAT>
+  or SK_CODEC_ENCODES_<FORMAT> macros and avoid redundant secondary defines like SK_USE_*
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: In build configurations (such as BUILD.gn or Bazel), export only canonical SK_CODEC_DECODES_<FORMAT>[_WITH_<BACKEND>]
+  and SK_CODEC_ENCODES_<FORMAT>[_WITH_<BACKEND>] preprocessor defines on codec targets. Do not introduce
+  ad-hoc or redundant secondary feature defines (such as SK_USE_<BACKEND>_<FORMAT>_DECODE or SK_USE_*).
+why: Codec targets and consumers across Skia consistently standardize on the SK_CODEC_DECODES_* and SK_CODEC_ENCODES_*
+  macro family for conditional compilation. Defining redundant secondary macros fragments feature detection,
+  creates preprocessor clutter, and introduces inconsistent gating across build files and platforms.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  optional("bmp_decode_rust") {
+    enabled = skia_use_rust_bmp_decode
+    public_defines = [
+      "SK_CODEC_DECODES_BMP_WITH_RUST",
+      "SK_USE_RUST_BMP_DECODE",
+    ]
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  optional("bmp_decode_rust") {
+    enabled = skia_use_rust_bmp_decode
+    public_defines = [
+      "SK_CODEC_DECODES_BMP_WITH_RUST",
+    ]
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+- '**/*.gni'
+- '**/BUILD.bazel'
+triggers:
+- \"SK_CODEC_(?:DECODES|ENCODES)_[A-Z0-9_]+\"
+- \"SK_USE_[A-Z0-9_]+(?:DECODE|ENCODE)[A-Z0-9_]*\"
+- \boptional\s*\(\s*\"[a-z0-9_]*(?:decode|encode)[a-z0-9_]*\"
+- \b(?:public_)?defines\s*(?:\+?=|=)\s*\[[^\]]*\"SK_
+- \bskia_use_[a-z0-9_]+_(?:decode|encode)\b
+confidence: 0.95
+support_cl_count: 2

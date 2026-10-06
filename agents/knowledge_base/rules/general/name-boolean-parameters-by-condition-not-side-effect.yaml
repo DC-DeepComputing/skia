@@ -1,0 +1,58 @@
+id: general/name-boolean-parameters-by-condition-not-side-effect
+title: When declaring or defining functions with boolean parameters controlling branching, name flags
+  after their semantic condition rather than a specific side effect
+polarity: do
+severity: nit
+rubric: readability
+rule: Name boolean parameters after their underlying semantic condition or state (e.g., isFirstElement,
+  hasExistingBounds) rather than a specific side effect (e.g., clearMask, resetBounds), especially when
+  the parameter controls multiple behaviors or branches across the function. Use predicate naming that
+  communicates why the caller passes the flag and why internal logic branches on it.
+why: Naming a boolean parameter after an operational side effect obscures why other branches in the function
+  depend on that flag and hides caller-side intent. Naming parameters by their semantic condition makes
+  both the call site and internal control flow self-documenting and resilient to future implementation
+  changes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: 'clearMask' names a single side effect, obscuring why other branches depend on it.
+  void draw_to_sw_mask(RasterMaskHelper* helper,
+                       const ClipStack::Element& e,
+                       bool clearMask,
+                       const SkIRect& resultBounds) {
+      if (clearMask) {
+          helper->clear(resultBounds);
+      }
+      // Why does inversion mode depend on 'clearMask'?
+      helper->draw(e, clearMask ? InvertMode::kInvert : InvertMode::kNormal);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: 'isFirstElement' names the semantic state, clarifying call sites and internal branches.
+  void draw_to_sw_mask(RasterMaskHelper* helper,
+                       const ClipStack::Element& e,
+                       bool isFirstElement,
+                       const SkIRect& resultBounds) {
+      if (isFirstElement) {
+          helper->clear(resultBounds);
+      }
+      // Semantic condition explains why the first element requires inverted setup.
+      helper->draw(e, isFirstElement ? InvertMode::kInvert : InvertMode::kNormal);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- (?:[(,]\s*)(?:const\s+)?bool\s+(?:clear|reset|flush|update|erase|discard|init|setup|apply)[A-Z][a-zA-Z0-9_]*\s*[,)]
+- (?:[(,]\s*)(?:const\s+)?bool\s+(?:is|has|should|can|was|will)[A-Z][a-zA-Z0-9_]*\s*[,)]
+- (?:[(,]\s*)(?:const\s+)?bool\s+[a-z][a-zA-Z0-9_]*(?:Mask|Clip|Draw|Pass|Buffer|State|Bounds|Element|Entry)\b
+- \bdraw_to_sw_mask\s*\(
+- \b(?:clearMask|isFirstElement)\b
+confidence: 0.9
+support_cl_count: 1

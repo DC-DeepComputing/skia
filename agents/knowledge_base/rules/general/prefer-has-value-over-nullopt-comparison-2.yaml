@@ -1,0 +1,49 @@
+id: general/prefer-has-value-over-nullopt-comparison-2
+title: When checking whether a std::optional holds a value or is empty, call .has_value() or !opt.has_value()
+  instead of comparing against std::nullopt
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When checking whether a std::optional<T> is engaged or empty, call opt.has_value() (or !opt.has_value())
+  rather than comparing against std::nullopt (such as opt == std::nullopt or opt != std::nullopt). Use
+  member predicates rather than equality comparisons to check optional presence.
+why: In Skia conventions, calling .has_value() or testing optional presence directly expresses intent
+  concisely and idiomatically. Avoiding equality comparisons against std::nullopt maintains consistency
+  with codebase style and avoids unnecessary verbose syntax.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (offset == std::nullopt) {
+      return {};
+  }
+  if (result != std::nullopt) {
+      process(*result);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (!offset.has_value()) {
+      return {};
+  }
+  if (result.has_value()) {
+      process(*result);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- (?:==|!=)\s*std::nullopt\b
+- \bstd::nullopt\s*(?:==|!=)
+- \bif\s*\([^)]*std::nullopt
+- \bstd::optional<[A-Za-z0-9_:]+>
+- \b[a-zA-Z0-9_]+\.has_value\(\)
+confidence: 0.9
+support_cl_count: 1

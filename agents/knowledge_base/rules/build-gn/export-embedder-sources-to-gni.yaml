@@ -1,0 +1,74 @@
+id: build-gn/export-embedder-sources-to-gni
+title: When managing embedder-facing GN source lists, export from Bazel using make generate_gni instead
+  of hardcoding sources in BUILD.gn or manually creating or editing .gni files
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not hardcode source file paths inline in sources lists of GN build targets when embedders need
+  them, and never manually create or edit source-list files in gn/*.gni. Instead, declare filegroup targets
+  in BUILD.bazel, register export mappings in bazel/exporter_tool/main.go (and custom footers or templates
+  in bazel/exporter/gni_exporter.go if needed), regenerate GN file lists via make -C bazel generate_gni,
+  and assign the generated variables in BUILD.gn.
+why: Downstream embedders (such as Chromium and Flutter) build Skia by importing generated gn/*.gni file
+  lists into their own builds rather than referencing Skia's BUILD.gn directly. Hardcoding sources inline
+  inside BUILD.gn leaves them inaccessible to embedders, while manually creating or editing .gni files
+  causes GN and Bazel builds to diverge, failing presubmit verification and getting overwritten during
+  subsequent export runs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # BUILD.gn: Hardcoding sources inline prevents embedders from consuming them
+  skia_source_set("typeface_proxy") {
+    sources = [ "src/ports/SkTypeface_proxy.cpp" ]
+  }
+
+  # gn/*.gni: Manually creating or editing source lists bypasses Bazel export
+  rust_shared_cpp_sources = [ "$_rust/SpanUtils.h" ]
+  skia_codec_rust_ico = [ "$_experimental/rust_ico/decoder/SkIcoRustDecoder.cpp" ]
+  ```
+
+  Good:
+
+  ```cpp
+  # 1. Define filegroups in BUILD.bazel (e.g. //rust/common:span_utils)
+  # 2. Register export mappings in bazel/exporter_tool/main.go:
+  {Var: "skia_codec_rust_png",
+      Rules: []string{
+          "//src/codec:rust_png_srcs",
+          "//rust/common:span_utils",
+      },
+  },
+  # 3. Regenerate GN file lists: `make -C bazel generate_gni`
+  # 4. Reference generated variable in BUILD.gn:
+  skia_source_set("typeface_proxy") {
+    sources = skia_ports_typeface_proxy_sources
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+- '**/*.gni'
+triggers:
+- \b(?:skia_source_set|skia_component|optional)\s*\(\s*"[a-zA-Z0-9_]+"\s*\)
+- \bsources\s*=\s*\[
+- \bsources\s*\+?=\s*(?:skia_[a-zA-Z0-9_]+|[a-zA-Z0-9_]+_(?:sources|srcs))
+- '"(?:\$_)?(?:src|include|modules|experimental|rust)/[a-zA-Z0-9_/-]+\.(?:cpp|cc|h|rs)"'
+- \bimport\s*\(\s*"//gn/[a-zA-Z0-9_]+\.gni"\s*\)
+- \b[a-zA-Z0-9_]+_(?:sources|srcs|hdrs)\s*=\s*\[
+- \bskia_[a-zA-Z0-9_]+\s*=\s*\[
+- '"(?:\$_|\.\./)(?:src|include|experimental|rust)/[a-zA-Z0-9_/-]+"'
+citations:
+- path: bazel/exporter_tool/README.md
+  heading: Bazel to *.gni
+  quote: |-
+    Generating the predefined `*.gni` files is done by running the following at the root level of the Skia workspace:
+
+    ```sh
+    make -C bazel generate_gni
+    ```
+
+    This will update the `*.gni` files that reside in `//gn` that contain file lists necessary for a GN build. The exporter tool is hardcoded with the Bazel rules to be exported, and to which GNI file and file list they should be mapped. As Bazel project rules are refactored it may be necessary to update the exporter tool to reflect those changes.
+confidence: 0.98
+support_cl_count: 3

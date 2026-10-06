@@ -1,0 +1,52 @@
+id: gn/avoid-premature-shared-gni-files
+title: When sharing a header across multiple GN targets, include the header directly in existing subsystem
+  source lists instead of creating a premature dedicated .gni file
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not introduce a new dedicated .gni file solely to share individual C++ header files across targets.
+  Include the header directly in each consuming target's existing subsystem source list (*.gni) until
+  a broader shared component or library target is genuinely required.
+why: Unlike C++ implementation files (.cpp/.cc), C++ header files can safely be listed across multiple
+  GN target source lists without causing duplicate symbol linker errors or ODR violations. Creating a
+  dedicated .gni file and import for isolated headers introduces unnecessary build maintenance, extra
+  imports, and build configuration complexity.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # gn/rust_shared_cpp_sources.gni
+  rust_shared_cpp_sources = [ "$_rust/SpanUtils.h" ]
+
+  # BUILD.gn
+  import("//gn/rust_shared_cpp_sources.gni")
+  sources = skia_codec_rust_png + rust_shared_cpp_sources
+  ```
+
+  Good:
+
+  ```cpp
+  # gn/codec.gni
+  skia_codec_rust_png = [
+    "$_rust/SpanUtils.h",
+    "$_src/codec/SkPngRustCodec.cpp",
+  ]
+
+  # gn/encode.gni
+  skia_encode_rust_png = [
+    "$_rust/SpanUtils.h",
+    "$_src/encode/SkPngRustEncoderImpl.cpp",
+  ]
+  ```
+include_glob:
+- gn/**
+- BUILD.gn
+- '**/*.gni'
+triggers:
+- \b[a-zA-Z0-9_]+_(?:shared_)?(?:sources|srcs|hdrs|headers)\s*=\s*\[
+- \"(?:\$_)?[a-zA-Z0-9_/-]+\.h\"
+- \bimport\s*\(\s*\"//gn/[a-zA-Z0-9_.-]+\.gni\"\s*\)
+- \bsources\s*\+?=\s*[a-zA-Z0-9_]+_shared
+confidence: 0.88
+support_cl_count: 1

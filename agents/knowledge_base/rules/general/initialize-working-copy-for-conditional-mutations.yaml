@@ -1,0 +1,47 @@
+id: general/initialize-working-copy-for-conditional-mutations
+title: When conditionally modifying a small descriptor or value struct, initialize a working copy upfront
+  from the original object rather than using default-constructed temporaries and ternary references
+polarity: do
+severity: nit
+rubric: readability
+rule: When a small descriptor, options struct, or value object requires conditional field modifications,
+  initialize the working instance directly from the original object upfront and mutate its fields in place.
+  Do not default-construct a separate temporary, conditionally copy and mutate it inside an if block,
+  and bind a ternary reference or pointer to select between the original and the temporary.
+why: Small value objects and descriptor structs are cheap to copy. Initializing the working copy upfront
+  simplifies control flow into a single mutable variable and a simple if statement, eliminating an unnecessary
+  default constructor call, redundant assignment, and awkward ternary reference aliasing.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Default-constructing a temporary and selecting via ternary reference
+  RenderPassDesc compatibleDesc;
+  if (compatibleOnly) {
+      compatibleDesc = originalDesc;
+      compatibleDesc.fColorAttachment.fLoadOp = LoadOp::kDiscard;
+  }
+  const RenderPassDesc& renderPassDesc = compatibleOnly ? compatibleDesc : originalDesc;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Initialize working copy directly from original and mutate in place
+  RenderPassDesc renderPassDesc = originalDesc;
+  if (compatibleOnly) {
+      renderPassDesc.fColorAttachment.fLoadOp = LoadOp::kDiscard;
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b[A-Za-z0-9_]*(?:Desc|Options|Params?|Info|Config|State)\s+[a-zA-Z0-9_]+;
+- \b(?:const\s+)?[A-Za-z0-9_:]+&\s+[a-zA-Z0-9_]+\s*=\s*.*?\?
+- \s*\?\s*[a-zA-Z0-9_]+(?:Desc|Options|Params?|Info|Config)\s*:\s*[a-zA-Z0-9_]+;
+- \b[a-zA-Z0-9_]+(?:Desc|Options|Params?|Info|Config)\s*=\s*[a-zA-Z0-9_]+;
+- \bconst\s+[A-Za-z0-9_:]+\*\s+[a-zA-Z0-9_]+\s*=\s*&
+confidence: 0.8
+support_cl_count: 1

@@ -1,0 +1,52 @@
+id: rust/document-unowned-adapter-pointer-migration-todo
+title: When retaining unowned raw pointers in shared adapters or FFI bridges instead of abstracting ownership,
+  document the migration path with an actionable TODO
+polarity: do
+severity: optional
+rubric: readability
+rule: When deferring ownership abstraction for a shared adapter or FFI bridge class that retains an unowned
+  raw pointer (such as an input stream), document the technical debt with an actionable TODO comment.
+  Detail the planned architectural migration, such as replacing the raw pointer member with a pure virtual
+  accessor (e.g., virtual SkStream& stream() = 0) to delegate resource ownership and lifetime management
+  to derived classes.
+why: Holding raw unowned pointers in shared adapter layers forces external callers into rigid lifetime
+  guarantees and prevents derived clients from managing custom resource ownership or caching. Documenting
+  the planned migration with concrete refactoring steps preserves the design path when full ownership
+  abstraction is deferred.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SkStreamAdapter {
+  public:
+      explicit SkStreamAdapter(SkStream* stream) : fStream(stream) {}
+  private:
+      SkStream* fStream;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SkStreamAdapter {
+  public:
+      explicit SkStreamAdapter(SkStream* stream) : fStream(stream) {}
+  private:
+      // TODO: Consider avoiding holding a raw / unowned pointer here:
+      // * Replace `fStream` field with an abstract method declaration:
+      //   `virtual SkStream& stream() = 0`.
+      // * Derive-from/implement this in child classes to manage stream ownership.
+      SkStream* fStream;
+  };
+  ```
+include_glob:
+- rust/**
+triggers:
+- \bSkStreamAdapter\b
+- \bSkStream\s*\*
+- //\s*TODO.*\b(?:unowned|raw|pointer|abstract|stream)\b
+- \bvirtual\s+SkStream\s*&
+- \b(?:class|struct)\s+\w*Adapter\b
+confidence: 0.9
+support_cl_count: 1

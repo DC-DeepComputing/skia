@@ -1,0 +1,63 @@
+id: general/avoid-sktoint-to-silence-size-narrowing
+title: When computing counts, sizes, or pointer differences, do not add SkToInt or SkToU16 narrowing casts
+  to silence warnings; use size_t or logical position types instead
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not add explicit narrowing casts such as `SkToInt`, `SkToU16`, or `SkTo<...>` merely to silence
+  compiler or IDE conversion warnings when computing counts, sizes, pointer differences, or container
+  offsets. Instead of papering over the type mismatch, update the function signature or variable type
+  to `size_t`, `ptrdiff_t`, or the logical index/position type (such as `SkBidiIterator::Position`) to
+  prevent silent truncation or assertion failures on large inputs.
+why: Narrowing `size_t` sizes or `ptrdiff_t` pointer differences to arbitrary small types like signed
+  `int` or `uint16_t` masks underlying API type mismatches without fixing them. On large inputs (e.g.
+  buffers larger than 64KB), narrowing casts cause silent data truncation, overflow, or debug assertion
+  failures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Adding SkToInt merely suppresses narrowing warnings on an int-returning API
+  int SkFontPriv::CountTextElements(const void* text, size_t byteLength, SkTextEncoding encoding) {
+      switch (encoding) {
+          case SkTextEncoding::kUTF32:
+              return SkToInt(byteLength >> 2);
+          case SkTextEncoding::kGlyphID:
+              return SkToInt(byteLength >> 1);
+      }
+  }
+
+  // Bad: Narrowing pointer difference to uint16_t truncates on buffers > 64KB
+  uint16_t nextPos16 = SkToU16(start16 - utf16);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Update the API signature to return size_t directly
+  size_t SkFontPriv::CountTextElements(const void* text, size_t byteLength, SkTextEncoding encoding) {
+      switch (encoding) {
+          case SkTextEncoding::kUTF32:
+              return byteLength >> 2;
+          case SkTextEncoding::kGlyphID:
+              return byteLength >> 1;
+      }
+  }
+
+  // Good: Use the logical position/index type or ptrdiff_t
+  const auto nextPos16 = SkTo<SkBidiIterator::Position>(start16 - utf16);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \breturn\s+SkToInt\s*\(
+- \bSkTo(?:Int|U16|U8|S16|S8)\s*\(
+- \bSkTo<[^>]+>\s*\(
+- \bstatic_cast<int(?:16|32)?_t|uint(?:16|32)?_t>\s*\([^)]*(?:size|count|length|sizeof|[-+])
+- \b(?:int|int32_t)\s+[A-Za-z0-9_:]*count[A-Za-z0-9_]*\s*\(
+- \b(?:int|int32_t)\s+[A-Za-z0-9_:]*Count[A-Za-z0-9_]*\s*\(
+confidence: 0.95
+support_cl_count: 2

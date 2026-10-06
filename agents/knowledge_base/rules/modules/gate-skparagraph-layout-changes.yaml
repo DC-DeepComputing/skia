@@ -1,0 +1,56 @@
+id: modules/gate-skparagraph-layout-changes
+title: When introducing new SkParagraph text layout or line-breaking behaviors that alter rendered output,
+  gate them behind opt-in ParagraphStyle flags defaulting to false
+polarity: do
+severity: blocking
+rubric: design
+rule: Gate new SkParagraph text layout, line-breaking, and shaping behaviors that alter existing text
+  output behind runtime configuration flags on ParagraphStyle (such as setRenderSoftHyphens() or setLetterSpacingByCSSSpec()).
+  Default these options to false (or the established legacy behavior) so existing client layouts remain
+  unaffected until embedders explicitly opt in.
+why: Downstream embedders like Flutter and Chromium rely on SkParagraph's established line breaks, text
+  metrics, and glyph shaping. Enabling layout or shaping changes unconditionally risks breaking existing
+  golden tests and user-visible layouts across clients, whereas opt-in ParagraphStyle flags allow clients
+  to migrate and test changes safely.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // modules/skparagraph/src/ParagraphImpl.cpp
+  // Unconditionally executes new layout or shaping behavior for all clients:
+  line.createSoftHyphen();
+  ```
+
+  Good:
+
+  ```cpp
+  // modules/skparagraph/include/ParagraphStyle.h
+  bool getRenderSoftHyphens() const { return fRenderSoftHyphens; }
+  void setRenderSoftHyphens(bool value) { fRenderSoftHyphens = value; }
+  ...
+  bool fRenderSoftHyphens = false;
+
+  // modules/skparagraph/src/ParagraphImpl.cpp
+  if (this->paragraphStyle().getRenderSoftHyphens()) {
+      line.createSoftHyphen();
+  }
+  ```
+include_glob:
+- modules/skparagraph/**
+triggers:
+- \bParagraphStyle\b
+- \bparagraphStyle\s*\(\s*\)
+- \bfParagraphStyle\b
+- \b(?:get|set)(?:RenderSoftHyphens|LetterSpacingByCSSSpec|ApplyRoundingHack|ReplaceTabCharacters)\b
+- \b(?:createSoftHyphen|SoftHyphen)\b
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Method 2 - Make the new code path opt-in for Chromium
+  quote: Add new code to Skia, suppressed by a flag. Leave the old code path in place.
+- path: site/docs/dev/chrome/blink.md
+  heading: Changes that affect a large number of test results
+  quote: If this needs to be staged across multiple clients, if defined(SK_USE_NEW_xxx) is better to let
+    clients "opt-in" one at a time.
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,56 @@
+id: core/document-shape-factory-start-index
+title: When declaring shape or path factory or builder methods taking a startIndex parameter, document
+  that it defines the initial contour vertex and cite SkPath conventions
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring shape or path factory or builder methods (such as Rect, Oval, or RRect on SkPath,
+  SkPathBuilder, or SkPathData) that accept a startIndex parameter, document its semantics with an explanatory
+  comment. Explicitly state that startIndex defines the initial vertex position of the constructed contour
+  and cite the established conventions in SkPath and SkPathBuilder.
+why: Parameters named startIndex on geometry factories are ambiguous without documentation—callers and
+  reviewers cannot determine whether the index specifies a vertex position, a contour index, or an array
+  offset. Clarifying the parameter's meaning and cross-referencing SkPath conventions ensures consistent
+  contour construction across the path subsystem.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static sk_sp<SkPathData> Rect(const SkRect&,
+                                SkPathDirection = SkPathDirection::kDefault,
+                                unsigned startIndex = 0);
+  static sk_sp<SkPathData> Oval(const SkRect&,
+                                SkPathDirection = SkPathDirection::kDefault,
+                                unsigned startIndex = 1);
+  static sk_sp<SkPathData> RRect(const SkRRect&, SkPathDirection, unsigned startIndex);
+  ```
+
+  Good:
+
+  ```cpp
+  /*
+   *  When a factory takes a startIndex, this refers to the position of the first point
+   *  when constructing one of our simple shapes: rect, oval, rrect.
+   *  The index is the same as that passed to the equivalent factories in SkPath
+   *  and in the associated addRect/Oval/RRect methods on SkPathBuilder.
+   */
+  static sk_sp<SkPathData> Rect(const SkRect&,
+                                SkPathDirection = SkPathDirection::kDefault,
+                                unsigned startIndex = 0);
+  static sk_sp<SkPathData> Oval(const SkRect&,
+                                SkPathDirection = SkPathDirection::kDefault,
+                                unsigned startIndex = 1);
+  static sk_sp<SkPathData> RRect(const SkRRect&, SkPathDirection, unsigned startIndex);
+  ```
+include_glob:
+- src/core/**
+- include/core/**
+triggers:
+- \bunsigned\s+startIndex\b
+- \b(?:startIndex|fStartIndex)\s*=
+- \b(?:Rect|Oval|RRect|Circle)\([^)]*\bstartIndex\b
+- \badd(?:Rect|Oval|RRect|Circle)\([^)]*\bstartIndex\b
+- \bSkPathDirection\s*[,)]\s*(?:unsigned\s+)?startIndex\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,49 @@
+id: docs/match-reg-fiddle-to-filename
+title: When defining Fiddle examples in docs/examples/, ensure the identifier passed to REG_FIDDLE, REG_FIDDLE_ANIMATED,
+  or REG_FIDDLE_SRGB matches the filename basename
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining Fiddle examples in docs/examples/<Name>.cpp, ensure the example identifier passed
+  to REG_FIDDLE, REG_FIDDLE_ANIMATED, or REG_FIDDLE_SRGB matches the file's basename (<Name>). Do not
+  retain or duplicate an existing example's identifier when copying or adapting an example file.
+why: All example files under docs/examples/ are compiled together into a single translation unit (tools/fiddle/all_examples.cpp).
+  Duplicating an identifier causes compiler redefinition errors (reg_##NAME and example_##NAME::draw)
+  and breaks documentation @<Name> lookup embeds.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In docs/examples/SKIA_LOGO_pride.cpp:
+  #include "tools/fiddle/examples.h"
+
+  REG_FIDDLE(SKIA_LOGO, 816, 464, false, 0) {
+  void draw(SkCanvas* canvas) {
+      // ...
+  }
+  }  // END FIDDLE
+  ```
+
+  Good:
+
+  ```cpp
+  // In docs/examples/SKIA_LOGO_pride.cpp:
+  #include "tools/fiddle/examples.h"
+
+  REG_FIDDLE(SKIA_LOGO_pride, 816, 464, false, 0) {
+  void draw(SkCanvas* canvas) {
+      // ...
+  }
+  }  // END FIDDLE
+  ```
+include_glob:
+- docs/examples/**
+triggers:
+- \bREG_FIDDLE\b
+- \bREG_FIDDLE_ANIMATED\b
+- \bREG_FIDDLE_SRGB\b
+- ^#include\s+[<"]tools/fiddle/examples\.h[>"]
+- \bvoid\s+draw\s*[(]\s*SkCanvas\s*[*]
+confidence: 0.9
+support_cl_count: 1

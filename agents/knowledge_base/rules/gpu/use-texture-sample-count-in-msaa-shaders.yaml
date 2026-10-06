@@ -1,0 +1,56 @@
+id: gpu/use-texture-sample-count-in-msaa-shaders
+title: When generating pipelines or shaders that read from or resolve MSAA textures, query the source
+  texture's sample count rather than assuming default MSAA caps
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When generating pipelines, render passes, or fragment shaders that read from, blit, or resolve multisampled
+  (MSAA) textures or attachments, determine the sample count from the source texture's metadata (such
+  as TextureInfo::numSamples() or sampleCount()). Never hardcode or assume the context's default MSAA
+  sample count (such as Caps::defaultMSAASampleCount()).
+why: Textures and attachments may be created with non-default sample counts (e.g., 2x or 8x instead of
+  a context default of 4x). Generating shaders or configuring pipelines using default context caps instead
+  of the source texture's actual sample count results in incorrect sample weighting, out-of-bounds sample
+  indexing, or pipeline creation failures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Assuming default sample count from Caps when building MSAA blit shader:
+  std::string generate_read_from_msaa_fs(const Caps& caps) {
+      const int sampleCount = caps.defaultMSAASampleCount();
+      return SkStringPrintf(kReadMSAAFSTemplate, sampleCount).c_str();
+  }
+  auto fsModule = create_shader_module(
+          device,
+          srcIsMSAA ? generate_read_from_msaa_fs(*caps).c_str() : kReadSingleSampledFS);
+  ```
+
+  Good:
+
+  ```cpp
+  // Passing explicit sample count from source texture metadata:
+  wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
+          const RenderPassDesc& renderPassDesc, SampleCount srcSampleCount) {
+      ...
+      auto fsModule = create_shader_module(
+              device,
+              srcIsMSAA ? SkStringPrintf(kReadMSAAFSTemplate, (unsigned)srcSampleCount).c_str()
+                        : kReadSingleSampledFS);
+  }
+  // Caller passes the actual texture's sample count:
+  fResourceProvider->findOrCreateBlitWithDrawPipeline(
+          renderPassDesc, fMSAATexture->textureInfo().sampleCount());
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:defaultMSAASamples?Count|fMaxInternalSampleCount)\b
+- \b(?:srcSampleCount|src_sample_count)\b
+- \b(?:numSamples|sampleCount)\s*\(
+- \b(?:findOrCreateBlitWithDraw|doBlitWithDraw)\b
+- \b(?:kReadMSAAFSTemplate|generate_read_from_msaa)\b
+- \b(?:BlitWithDraw|loadMSAAFromResolve|emulateLoadMSAAFromResolve)\b
+confidence: 0.9
+support_cl_count: 1

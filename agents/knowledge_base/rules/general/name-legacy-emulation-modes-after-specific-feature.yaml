@@ -1,0 +1,50 @@
+id: general/name-legacy-emulation-modes-after-specific-feature
+title: When defining enum variants, internal modes, or types for historical compatibility, name them after
+  the specific emulated feature rather than generic kLegacy identifiers
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When defining enum values, internal modes, or types that exist to support or emulate historical
+  behavior, name the identifier after the specific feature or subsystem being emulated (e.g., 'kEmbossSpecular'
+  instead of 'kLegacySpecular'). Avoid generic 'kLegacy...' or 'kCompat...' names that obscure the concrete
+  compatibility purpose, and document the specific legacy behavior or source subsystem in a comment.
+why: Generic names like 'kLegacy' or 'kLegacySpecular' are ambiguous about what historical behavior they
+  implement and make it difficult to determine when the code path can be retired. Naming the identifier
+  after the specific emulated feature clarifies caller intent, prevents new code from accidentally misusing
+  a niche compatibility path, and eases auditing.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  enum class Type {
+      kDiffuse,
+      kSpecular,
+      // Vague legacy identifier leaves historical purpose unclear:
+      kLegacySpecular,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  enum class Type {
+      kDiffuse,
+      kSpecular,
+      // Explicitly named after the legacy emboss filter emulation:
+      kEmbossSpecular,
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+exclude_glob:
+- third_party/**
+triggers:
+- \bkLegacy[A-Z]\w*\b
+- \bk(?:Compat|Historical|Emulation)[A-Z]\w*\b
+- \b(?:Type|Mode|Kind)\s*::\s*kLegacy\w*\b
+- \benum\s+class\s+[A-Za-z0-9_]*(?:Type|Mode|Kind|Lighting)\b
+- \bkEmbossSpecular\b
+confidence: 0.85
+support_cl_count: 1

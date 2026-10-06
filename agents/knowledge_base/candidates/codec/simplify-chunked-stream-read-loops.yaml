@@ -1,0 +1,58 @@
+id: codec/simplify-chunked-stream-read-loops
+title: When reading a fixed payload from a stream in buffer-sized chunks, pass std::min(remaining, buffer_size)
+  directly and decrement remaining bytes in-place
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When reading a fixed payload from a stream in buffer-sized chunks, pass std::min(remaining, buffer_size)
+  directly to the read call and decrement remaining -= bytes_read in-place. Do not introduce intermediate
+  counter variables, separate clamp variables, or manual branching to compute chunk sizes.
+why: Using std::min directly in the read call and decrementing the remaining byte count in-place eliminates
+  redundant tracking variables and manual branching. It also leaves remaining as a clean loop exit check,
+  allowing callers to verify remaining == 0 after the loop to detect premature stream truncation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  size_t payloadCounter = payloadSize;
+  while (payloadCounter) {
+      size_t readSize = payloadCounter;
+      if (payloadCounter > bufferSize) {
+          readSize = bufferSize;
+      }
+      bytes_read = stream->read(buffer, readSize);
+      if (bytes_read < readSize) {
+          return {false, nullptr};
+      }
+      payloadCounter -= readSize;
+      tempStream.write(buffer, bytes_read);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  while (payloadSize) {
+      bytes_read = stream->read(buffer, std::min((size_t)payloadSize, kBufferSize));
+      if (!bytes_read) {
+          break;
+      }
+      tempStream.write(buffer, bytes_read);
+      payloadSize -= bytes_read;
+  }
+  if (payloadSize) {
+      SkASSERT(stream->isAtEnd());
+      return {false, nullptr};
+  }
+  ```
+include_glob:
+- src/codec/**
+triggers:
+- \bstd::min\s*[(][^,;]+,\s*k?BufferSize\b
+- '[A-Za-z0-9_]*[sS]tream(?:->|\.)read\s*[(][^,]+,\s*std::min\b'
+- \b[A-Za-z0-9_]*(?:[pP]ayload|[rR]emaining|[bB]ytes)\w*\s*-=\s*(?:bytes_read|bytesRead)\b
+- \bwhile\s*[(]\s*[A-Za-z0-9_]*(?:[pP]ayload|[rR]emaining)\w*\s*[)]
+- \bif\s*[(]\s*[A-Za-z0-9_]+\s*>\s*k?[bB]uffer(?:Size)?\s*[)]
+confidence: 0.85
+support_cl_count: 1

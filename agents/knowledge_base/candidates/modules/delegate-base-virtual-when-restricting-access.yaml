@@ -1,0 +1,49 @@
+id: modules/delegate-base-virtual-when-restricting-access
+title: When overriding base class virtual methods as private to restrict external access, delegate to
+  the base class implementation if internal methods rely on base behavior
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When overriding a base class virtual method under a private access specifier to restrict external
+  caller access, ensure the override explicitly forwards to the base class implementation (e.g., BaseClass::method(...)).
+  Do not override base virtual methods with empty bodies when internal operations or dynamic dispatch
+  within the class hierarchy still depend on the base class functionality.
+why: In C++, overriding a virtual method with an empty body displaces the base class implementation for
+  all dynamic dispatch, including unqualified internal member calls on this. If internal member functions
+  rely on base behavior, an empty override silently turns those internal calls into no-ops, breaking functionality.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SkCaptureCanvas : public SkNWayCanvas {
+  private:
+      // Bad: Empty overrides displace base virtual dispatch and break internal callers
+      void addCanvas(SkCanvas*) override {}
+      void removeCanvas(SkCanvas*) override {}
+      void removeAll() override {}
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SkCaptureCanvas : public SkNWayCanvas {
+  private:
+      // Good: Forward to base class to preserve internal behavior while hiding from external callers
+      void addCanvas(SkCanvas* canvas) override { SkNWayCanvas::addCanvas(canvas); }
+      void removeCanvas(SkCanvas* canvas) override { SkNWayCanvas::removeCanvas(canvas); }
+      void removeAll() override { SkNWayCanvas::removeAll(); }
+  };
+  ```
+include_glob:
+- modules/**
+- src/**
+triggers:
+- \boverride\s*\{\s*\}
+- '\boverride\s*\{\s*[A-Za-z0-9_]+::'
+- \b(?:addCanvas|removeCanvas|removeAll)\s*\(
+- \bclass\s+\w+\s*:\s*(?:public\s+)?SkNWayCanvas\b
+- '\bSkNWayCanvas::'
+confidence: 0.95
+support_cl_count: 1

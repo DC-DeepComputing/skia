@@ -1,0 +1,60 @@
+id: sksl/consolidate-intrinsic-codegen-cases
+title: In SkSL backend code generators, consolidate switch cases across related intrinsic kinds and query
+  function names from AST nodes instead of duplicating logic
+polarity: dont
+severity: should_fix
+rubric: design
+rule: In SkSL backend code generators, do not duplicate identical dispatch and formatting logic across
+  related intrinsic kinds (such as min, max, clamp). Consolidate switch cases with [[fallthrough]] and
+  query the function or intrinsic name directly from the FunctionCall AST node (e.g., c.function().mangledName())
+  rather than passing hardcoded string literals.
+why: Duplicating boilerplate across related intrinsic kinds increases code size and maintenance overhead
+  across backends. Extracting the function name directly from the AST node allows related intrinsics to
+  share a unified code path and prevents naming drift or copy-paste discrepancies.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  case k_clamp_IntrinsicKind:
+      if (fCaps.fVectorClampMinMaxSupport || !c.type().isVector()) {
+          this->writeSimpleIntrinsic(c);
+      } else {
+          this->writeScalarizedIntrinsicCall("clamp", c);
+      }
+      return true;
+  case k_min_IntrinsicKind:
+      if (fCaps.fVectorClampMinMaxSupport || !c.type().isVector()) {
+          this->writeSimpleIntrinsic(c);
+      } else {
+          this->writeScalarizedIntrinsicCall("min", c);
+      }
+      return true;
+  ```
+
+  Good:
+
+  ```cpp
+  case k_min_IntrinsicKind:
+      [[fallthrough]];
+  case k_max_IntrinsicKind:
+      [[fallthrough]];
+  case k_clamp_IntrinsicKind: {
+      if (fCaps.fVectorClampMinMaxSupport || !c.type().isVector()) {
+          this->writeSimpleIntrinsic(c);
+      } else {
+          this->writeScalarizedIntrinsicCall(c);  // queries c.function().mangledName()
+      }
+      return true;
+  }
+  ```
+include_glob:
+- src/sksl/codegen/**
+triggers:
+- '\bcase\s+k_\w+_IntrinsicKind:'
+- \bIntrinsicKind::k\w+\b
+- \b(?:writeSimpleIntrinsic|writeScalarizedIntrinsicCall|assembleSimpleIntrinsic)\b
+- \b(?:function\(\)\.(?:mangledName|name)\(\)|\.mangledName\(\))
+- \bswitch\s*\([^)]*(?:intrinsicKind|IntrinsicKind)[^)]*\)
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,57 @@
+id: general/represent-loop-budgets-as-countdowns
+title: When implementing loops with an iteration budget or penalty, do not name incrementing counters
+  limit; use countdown budgets decremented toward zero
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not name an increasing loop counter limit or budget; reserve limit for the maximum upper bound
+  and budget for the remaining allowance. When reducing or penalizing the remaining iteration allowance
+  in a bounded loop, represent the allowance as a countdown budget (initialized to the upper limit and
+  decremented toward zero) rather than artificially incrementing a progress counter toward the bound.
+why: Calling an incrementing progress counter limit is misleading because limit conventionally denotes
+  a fixed boundary. Furthermore, penalizing a budget by incrementing a counter toward a limit inverts
+  natural intuition (adding to a variable suggests expanding capacity rather than consuming it), whereas
+  countdown budgets make penalties straightforward subtractions and keep the upper limit constant.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  uint32_t limit = 0;
+  // Penalize search allowance by incrementing counter toward bound
+  if (shouldPenalize) {
+      limit += kMaxSearchLimit >> 1;
+  }
+  for (; limit < kMaxSearchLimit && current != stop; ++limit) {
+      if (process(current)) {
+          break;
+      }
+      current = current->next();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  int32_t budget = kMaxSearchLimit;
+  // Penalize remaining allowance directly by subtraction
+  if (shouldPenalize) {
+      budget -= kMaxSearchLimit >> 1;
+  }
+  for (; budget > 0 && current != stop; --budget) {
+      if (process(current)) {
+          break;
+      }
+      current = current->next();
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:int|uint(?:32|64)_t|size_t)\s+[a-zA-Z0-9_]*(?:limit|budget|Limit|Budget)\s*=\s*
+- \bfor\s*[(][^;]*\b[a-zA-Z0-9_]*(?:limit|budget|Limit|Budget)\s*=\s*
+- \bfor\s*[(][^;]*;[^;]*\b[a-zA-Z0-9_]*(?:limit|budget|Limit|Budget)\s*(?:<=?|>=?|<|>)
+- \b[a-zA-Z0-9_]*(?:limit|budget|Limit|Budget)\s*(?:\+\+|--|\+=|-=)
+- \bkMax[A-Z]\w*(?:Limit|Budget|Depth|Steps|Iterations)\b
+confidence: 0.9
+support_cl_count: 1

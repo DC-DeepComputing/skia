@@ -1,0 +1,50 @@
+id: general/register-global-factories-at-startup
+title: When registering global deserializer or codec factories like SkTypeface::Register, register during
+  upfront startup alongside SkGraphics::Init rather than lazily in utility getters
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not register global deserializer or codec factories (such as SkTypeface::Register or SkCodecs::Register)
+  lazily inside on-demand getters, font managers, or utility helpers. Register global factories upfront
+  in explicit process or harness startup routines alongside SkGraphics::Init() before concurrent tasks
+  or deserialization run.
+why: 'Registering global factories lazily inside utility helpers introduces initialization-order races:
+  deserialization tasks or test workers executing before the helper is invoked fail to find the required
+  factory, and concurrent execution can cause data races. Upfront registration ensures all deserializers
+  are available project-wide prior to multithreaded test or rendering execution.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  sk_sp<SkFontMgr> TestFontMgr() {
+      // Bad: lazily registering global deserializer factory inside utility helper
+      SkTypeface::Register(SkTypeface_Fontations::FactoryId,
+                           SkTypeface_Fontations::MakeFromStream);
+      return ToolUtils::MakeFontMgr();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Register upfront during harness/process startup (e.g. dm, viewer main)
+  SkGraphics::Init();
+  ToolUtils::RegisterAvailableTypefaceFactories();
+
+  // In utility helper:
+  sk_sp<SkFontMgr> TestFontMgr() {
+      return ToolUtils::MakeFontMgr();
+  }
+  ```
+include_glob:
+- '**'
+triggers:
+- \bSkTypeface::Register\b
+- \bSkCodecs::Register\b
+- \bRegisterAvailableTypefaceFactories\b
+- \b(?:Test|Get)FontMgr\s*\(
+- \bSkGraphics::Init\s*\(
+- \bFactoryId\b
+confidence: 0.9
+support_cl_count: 1

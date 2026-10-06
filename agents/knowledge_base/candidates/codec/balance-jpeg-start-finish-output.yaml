@@ -1,0 +1,48 @@
+id: codec/balance-jpeg-start-finish-output
+title: When using libjpeg buffered-image mode for progressive decoding, balance every jpeg_start_output
+  call with jpeg_finish_output on all early return and error paths
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When decoding progressive JPEGs in libjpeg buffered-image mode, ensure every call to jpeg_start_output
+  is balanced by a call to jpeg_finish_output on all early exit, break, and error return paths. Do not
+  return or exit the decode loop without completing the output pass, ensuring the decompressor state remains
+  consistent.
+why: Calling jpeg_start_output transitions libjpeg's decompression engine into an active output pass.
+  Returning early without calling jpeg_finish_output leaves the decompressor struct in an incomplete pass
+  state, corrupting subsequent decode passes or decoder teardown.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Returning early between jpeg_start_output and jpeg_finish_output leaves decompressor in partial pass state
+  jpeg_start_output(dinfo, scan_number);
+  SkCodec::Result result = this->readRows(dstInfo, dst, dstRowBytes, count, options, &rows);
+  if (result != kSuccess) {
+      return fDecoderMgr->returnFailure("readRows", result);
+  }
+  jpeg_finish_output(dinfo);
+  ```
+
+  Good:
+
+  ```cpp
+  // Balance jpeg_start_output with jpeg_finish_output before checking results or returning early
+  jpeg_start_output(dinfo, scan_number);
+  SkCodec::Result result = this->readRows(dstInfo, dst, dstRowBytes, count, options, &rows);
+  jpeg_finish_output(dinfo);
+  if (result != kSuccess) {
+      return fDecoderMgr->returnFailure("readRows", result);
+  }
+  ```
+include_glob:
+- src/codec/**
+triggers:
+- \bjpeg_start_output\b
+- \bjpeg_finish_output\b
+- \bjpeg_decompress_struct\b
+- \b(?:last_scan_completed|input_scan_number)\b
+- \b(?:readRows|fDecoderMgr->returnFailure)\b
+confidence: 0.9
+support_cl_count: 1

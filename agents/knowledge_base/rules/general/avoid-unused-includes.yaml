@@ -1,0 +1,84 @@
+id: general/avoid-unused-includes
+title: 'When managing #include directives, forward declarations, type aliases, and using-namespace directives
+  in C++ files, avoid unused dependencies, prefer forward declarations, and remove obsolete declarations'
+polarity: dont
+severity: blocking
+rubric: readability
+rule: Do not include unused headers or add unreferenced `using namespace` directives (e.g., `using namespace
+  skia_private;`), and remove obsolete forward declarations and unused type aliases (`using` / `typedef`)
+  when types are no longer referenced. In header files, minimize includes by only including types required
+  by value or definition, preferring alphabetically ordered forward declarations for pointer, reference,
+  and smart pointer members (`sk_sp<T>`, `std::unique_ptr<T>`) when destructors are out-of-line and accessors
+  return raw pointers. In source files, avoid including full header definitions when passing `nullptr`
+  to functions with forward-declared parameter types.
+why: Unused includes, unreferenced using-namespace directives, obsolete forward declarations, and orphaned
+  type aliases clutter files, obscure active interfaces, and bloat translation units by pulling in unneeded
+  headers (such as <functional>) or exposing unneeded symbols, increasing compilation and incremental
+  build times. Pruning unused dependencies, obsolete aliases, and dead forward declarations keeps code
+  clean and reduces rebuild cascades.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Header: unnecessary include when forward declaration suffices
+  #include "include/core/SkCanvas.h"
+  #include "src/codec/SkPngCompositeChunkReader.h"
+  #include <functional>
+
+  class SkCaptureCanvas; // unused in header
+  using AddToKeyFn = std::function<void()>; // obsolete alias after refactoring
+
+  class SkPngCodec {
+  public:
+      ~SkPngCodec();
+      sk_sp<SkPngCompositeChunkReader> reader() { return fReader; }
+  private:
+      sk_sp<SkPngCompositeChunkReader> fReader;
+  };
+
+  // Source: unused header, unreferenced using-namespace, or include when passing nullptr
+  #include "include/private/base/SkTArray.h"
+  #include "src/gpu/graphite/DrawContext.h"
+  using namespace skia_private; // no skia_private symbols used
+
+  GenerateMipmaps(recorder, nullptr, view.refProxy(), info);
+  ```
+
+  Good:
+
+  ```cpp
+  // Header: forward declarations in alphabetical order; full includes in .cpp only
+  class SkCanvas;
+  class SkPngCompositeChunkReader;
+
+  class SkPngCodec {
+  public:
+      ~SkPngCodec(); // defined out-of-line in .cpp
+      SkPngCompositeChunkReader* reader() { return fReader.get(); }
+  private:
+      sk_sp<SkPngCompositeChunkReader> fReader;
+  };
+
+  // Source: DrawContext.h omitted when passing nullptr; omit unused headers and namespace imports
+  GenerateMipmaps(recorder, nullptr, view.refProxy(), info);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- ^#include\s+[\\\"<]
+- \b(?:using\s+namespace|using|typedef)\s+[A-Za-z0-9_:]+
+- \b(?:class|struct)\s+(?:SK_API\s+)?[A-Za-z0-9_]+;
+- \bnamespace\s+[A-Za-z0-9_:]+\s*\{\s*(?:class|struct)\s+
+- \btemplate\s*<[^>]*>\s*(?:class|struct)\s+[A-Za-z0-9_]+;
+- \btemplate\s*<[^>]*>\s*(?:void|bool|auto|[A-Za-z0-9_:]+)\s+[A-Za-z0-9_]+\s*[(]
+- \b(?:sk_sp|std::unique_ptr)<[A-Za-z0-9_:]+>
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We prefer to minimize includes. If forward declaring a name in a header is sufficient then that
+    is preferred to an include.
+confidence: 0.98
+support_cl_count: 18

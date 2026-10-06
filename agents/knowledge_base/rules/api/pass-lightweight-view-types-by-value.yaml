@@ -1,0 +1,45 @@
+id: api/pass-lightweight-view-types-by-value
+title: When declaring function parameters for lightweight view and span types (such as SkSpan, std::span,
+  or std::string_view), pass them by value rather than const reference
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Pass lightweight view and span types (such as SkSpan, std::span, std::string_view, or small non-owning
+  domain wrappers like UniformDataBlock) by value rather than by const reference (const T&). Do not declare
+  parameters taking cheap, trivially copyable non-owning views with const reference wrappers.
+why: View and span types typically consist of only a pointer and a size and are designed to pass cheaply
+  in CPU registers. Passing them by const reference introduces an unnecessary layer of pointer indirection
+  and violates standard C++ and Skia conventions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: passing lightweight view and span types by const reference
+  void trackIntrinsic(const UniformDataBlock& intrinsicValues, uint32_t offset);
+  uint32_t* findIntrinsic(const UniformDataBlock& intrinsicValues) const;
+  void processNames(const std::string_view& name, const SkSpan<const int>& values);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: pass lightweight view and span types by value
+  void trackIntrinsic(UniformDataBlock intrinsicValues, uint32_t offset);
+  uint32_t* findIntrinsic(UniformDataBlock intrinsicValues) const;
+  void processNames(std::string_view name, SkSpan<const int> values);
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \bconst\s+(?:SkSpan|std::span)<[^>]+>&
+- \bconst\s+std::(?:basic_)?string_view(?:<[^>]+>)?&
+- \bconst\s+[A-Za-z0-9_]*(?:Span|View|DataBlock)&
+- \bconst\s+[A-Za-z0-9_]*(?:Span|View)<[^>]+>&
+- \bUniformDataBlock\b
+confidence: 0.92
+support_cl_count: 1

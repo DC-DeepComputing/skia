@@ -1,0 +1,50 @@
+id: general/treat-non-finite-geometry-as-zero-coverage
+title: When handling non-finite geometry or transforms in drawing and clipping pipelines, treat them as
+  producing zero coverage rather than undefined behavior
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: Treat non-finite geometry (containing NaN or Infinity) and non-finite transformation matrices as
+  producing zero coverage rather than dismissing them as undefined behavior. Drawing operations with non-finite
+  geometry or non-invertible/non-finite transforms must early-exit or no-op without rendering, and clipping
+  operations must behave as clipping against an empty path (collapsing the clip on kIntersect or leaving
+  the clip unaffected on kDifference, inverted if the path is inverse-filled).
+why: Skia establishes a well-defined contract across CPU and GPU backends where non-finite coordinates
+  produce zero coverage rather than arbitrary rendering artifacts, crashes, or unconstrained undefined
+  behavior. Adhering to this contract ensures consistent behavior across rendering pipelines and keeps
+  clipping invariants and unit tests predictable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Dismissing non-finite geometry as undefined behavior
+  void MyDevice::onDrawPath(const SkPath& path, const SkPaint& paint) {
+      // Drawing without checking finiteness, assuming callers never pass NaN
+      this->drawShape(path, paint);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Treat non-finite geometry as zero coverage (draws no-op, clips act as empty)
+  void MyDevice::onDrawPath(const SkPath& path, const SkPaint& paint) {
+      if (!path.isFinite()) {
+          return; // Non-finite geometry produces zero coverage; safe no-op
+      }
+      this->drawShape(path, paint);
+  }
+  ```
+include_glob:
+- src/**
+- tests/**
+triggers:
+- \b(?:isFinite|computeFiniteBounds)\b
+- \b(?:clipPath|onClipPath|clipRect|onClipRect|clipRRect|onClipRRect)\b
+- \b(?:drawPath|onDrawPath|drawRect|onDrawRect|drawRRect|onDrawRRect)\b
+- \b(?:isClipEmpty|devClipBounds)\b
+- \b(?:isInverseFillType|isInverse)\b
+- \b(?:SkClipOp::)?k(?:Intersect|Difference)\b
+confidence: 0.95
+support_cl_count: 1

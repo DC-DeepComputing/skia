@@ -1,0 +1,50 @@
+id: modules/use-test-fonts-in-skparagraph-tests
+title: In SkParagraph unit tests, instantiate ResourceFontCollection with testOnly=true or use structural
+  assertions instead of hardcoded line counts to prevent native font metric failures
+polarity: do
+severity: blocking
+rubric: correctness
+rule: In SkParagraph unit tests, instantiate ResourceFontCollection with testOnly=true (or set a deterministic
+  test font manager) to prevent fallback to system fonts. When asserting layout results across line breaks,
+  verify structural properties or non-emptiness rather than asserting exact platform-dependent line counts
+  or pixel coordinates.
+why: Bot configurations with native fonts enabled (such as Ubuntu-NativeFonts) resolve system typefaces
+  whose glyph advances and line metrics differ from bundled test fonts. Relying on default system font
+  fallback or asserting exact line counts across layout widths causes tests to fail non-deterministically
+  across platforms and CI bots.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  UNIX_ONLY_TEST(SkParagraph_SoftHyphenAtLineBreak, reporter) {
+      sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+      // ...
+      paragraph->layout(60);
+      auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+      REPORTER_ASSERT(reporter, impl->lines().size() == 2);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  UNIX_ONLY_TEST(SkParagraph_SoftHyphenAtLineBreak, reporter) {
+      sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(/*testOnly=*/true);
+      // ...
+      paragraph->layout(80);
+      auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+      REPORTER_ASSERT(reporter, !impl->lines().empty());
+  }
+  ```
+include_glob:
+- modules/skparagraph/**
+triggers:
+- \bResourceFontCollection\b
+- \bsk_make_sp<ResourceFontCollection>
+- (?:UNIX_ONLY_TEST|DEF_TEST)\s*[(]\s*SkParagraph
+- \bparagraph->layout\s*[(]
+- \bimpl->lines[(][)]
+- \bsetDefaultFontManager\s*[(]
+confidence: 0.9
+support_cl_count: 1

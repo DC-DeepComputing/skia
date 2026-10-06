@@ -1,0 +1,50 @@
+id: readme-chromium/specify-autoroll-update-mechanism-in-readme-chromium
+title: When adding or modifying README.chromium metadata files for repositories or modules rolled by bots,
+  set Update Mechanism to Autoroll rather than Manual
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'In README.chromium metadata files, specify ''Update Mechanism: Autoroll'' rather than ''Manual''
+  when the repository or component is updated in Chromium via an automated roll bot. Ensure the third-party
+  metadata accurately reflects the project''s automated roll integration.'
+why: Skia and its vendored submodules (such as skcms) are integrated into Chromium via automated roll
+  bots rather than manual merges. Specifying 'Autoroll' satisfies Chromium third-party metadata conventions
+  and prevents tooling or maintainers from assuming manual update procedures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  Name: Skia
+  URL: https://skia.org/
+  Version: N/A
+  Revision: DEPS
+  Update Mechanism: Manual
+  ```
+
+  Good:
+
+  ```cpp
+  Name: Skia
+  URL: https://skia.org/
+  Version: N/A
+  Revision: DEPS
+  Update Mechanism: Autoroll
+  ```
+include_glob:
+- README.chromium
+- '**/README.chromium'
+triggers:
+- '^Update Mechanism\s*:'
+- '\bUpdate Mechanism\s*:'
+- ^Name:\s*
+- ^Revision:\s*
+- ^URL:\s*
+- \b(?:Autoroll|Manual)\b
+citations:
+- path: site/docs/dev/chrome/_index.md
+  heading: Skia in Chrome
+  quote: Changes to the Skia repository will be rolled into Chromium by the AutoRoll bot several times
+    per day.
+confidence: 0.92
+support_cl_count: 1

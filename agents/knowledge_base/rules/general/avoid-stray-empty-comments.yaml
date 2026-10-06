@@ -1,0 +1,51 @@
+id: general/avoid-stray-empty-comments
+title: When writing comments and code, do not leave stray '//' markers on statements or trailing empty
+  '//' lines ending comment blocks
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not leave stray empty comment markers (such as trailing '//' or empty '/* */' blocks) or leftover
+  touch edits on statements or declarations. Additionally, do not end a comment block with a trailing
+  empty comment line ('//'); separate the comment block from subsequent code statements with a blank line
+  instead.
+why: Empty comment delimiters or dangling '//' lines add visual clutter, convey no explanatory value,
+  and confuse readers by suggesting that an intentional note or code snippet was accidentally omitted.
+  Multi-line comment blocks should be cleanly separated from subsequent code with blank lines rather than
+  trailing comment delimiters.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static constexpr const RunHead* const kRectRunHeadPtr = nullptr;//
+
+  // * frontFace
+  // * rasterizerDiscardEnable
+  //
+  if (fSharedContext->caps()->useBasicDynamicState()) {
+  ```
+
+  Good:
+
+  ```cpp
+  static constexpr const RunHead* const kRectRunHeadPtr = nullptr;
+
+  // * frontFace
+  // * rasterizerDiscardEnable
+
+  if (fSharedContext->caps()->useBasicDynamicState()) {
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.mm'
+triggers:
+- ;\s*//\s*$
+- '[)\\\\]}]\s*//\s*$'
+- ',\s*//\s*$'
+- /\*\s*\*/
+- \b[a-zA-Z0-9_]+\s*//\s*$
+- ^\s*//\s*$
+confidence: 0.9
+support_cl_count: 2

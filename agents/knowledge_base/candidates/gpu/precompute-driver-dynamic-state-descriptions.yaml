@@ -1,0 +1,54 @@
+id: gpu/precompute-driver-dynamic-state-descriptions
+title: When configuring GPU dynamic pipeline states, precompute driver description structs at pipeline
+  creation time rather than rebuilding them during command recording
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Precompute driver dynamic state structures (such as Vulkan dynamic vertex input binding and attribute
+  descriptions) during graphics pipeline creation and store them as pipeline members. Do not rebuild,
+  reallocate, or format driver dynamic state descriptors on the fly during command buffer recording or
+  dynamic state updates.
+why: Pipeline binding and dynamic state updates execute on the command recording hot path, where frequent
+  pipeline switches occur during rendering. Rebuilding driver descriptor structs per bind incurs repeated
+  CPU allocation, traversal, and formatting overhead that slows command recording.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void VulkanGraphicsPipeline::updateDynamicState(VulkanCommandBuffer* cmdBuffer, ...) {
+      if (vertexInputDirty) {
+          skia_private::STArray<2, VkVertexInputBindingDescription2EXT> bindingDescs;
+          skia_private::STArray<16, VkVertexInputAttributeDescription2EXT> attributeDescs;
+          get_vertex_input_state(..., &bindingDescs, &attributeDescs);
+          CmdSetVertexInput(cmdBuffer->vkCommandBuffer(),
+                            bindingDescs.size(), bindingDescs.begin(),
+                            attributeDescs.size(), attributeDescs.begin());
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Precomputed during MakePipeline() and stored in member arrays
+  void VulkanGraphicsPipeline::updateDynamicState(VulkanCommandBuffer* cmdBuffer, ...) {
+      if (vertexInputDirty) {
+          CmdSetVertexInput(cmdBuffer->vkCommandBuffer(),
+                            fVertexBindingDescriptions.size(),
+                            fVertexBindingDescriptions.begin(),
+                            fVertexAttributeDescriptions.size(),
+                            fVertexAttributeDescriptions.begin());
+      }
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bupdateDynamicState\s*[(]
+- \bCmdSetVertexInput\b
+- \bVkVertexInput(?:Binding|Attribute)Description(?:2EXT)?\b
+- \b(?:fVertexBindingDescriptions|fVertexAttributeDescriptions)\b
+- \b(?:bindingDescs|attributeDescs)\b
+confidence: 0.9
+support_cl_count: 1

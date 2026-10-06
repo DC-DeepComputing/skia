@@ -1,0 +1,46 @@
+id: ports/omit-postscript-name-in-ongetadvancedmetrics
+title: When implementing SkTypeface::onGetAdvancedMetrics in font backends, omit populating fPostScriptName
+  because the base class getAdvancedMetrics wrapper automatically resolves it
+polarity: dont
+severity: should_fix
+rubric: design
+rule: In SkTypeface::onGetAdvancedMetrics() overrides, do not manually query or assign fPostScriptName
+  in the returned SkAdvancedTypefaceMetrics. Allow the base class SkTypeface::getAdvancedMetrics() wrapper
+  to automatically populate fPostScriptName via getPostScriptName() and fallback to getFamilyName().
+why: The public SkTypeface::getAdvancedMetrics() Non-Virtual Interface (NVI) wrapper already checks if
+  fPostScriptName is empty and automatically resolves it using getPostScriptName() or getFamilyName().
+  Populating it manually inside backend overrides duplicates logic and introduces redundant platform queries.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  std::unique_ptr<SkAdvancedTypefaceMetrics> Typeface::onGetAdvancedMetrics() const {
+      auto info = std::make_unique<SkAdvancedTypefaceMetrics>();
+      if (!this->onGetPostScriptName(&info->fPostScriptName)) {
+          SkDEBUGF("Unable to get postscript name\n");
+      }
+      return info;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  std::unique_ptr<SkAdvancedTypefaceMetrics> Typeface::onGetAdvancedMetrics() const {
+      auto info = std::make_unique<SkAdvancedTypefaceMetrics>();
+      // Leave info->fPostScriptName empty; SkTypeface::getAdvancedMetrics()
+      // automatically populates it via getPostScriptName() or getFamilyName().
+      return info;
+  }
+  ```
+include_glob:
+- src/ports/**
+triggers:
+- \bonGetAdvancedMetrics\b
+- \bSkAdvancedTypefaceMetrics\b
+- \bfPostScriptName\b
+- \bonGetPostScriptName\b
+- \bgetPostScriptName\b
+confidence: 0.9
+support_cl_count: 1

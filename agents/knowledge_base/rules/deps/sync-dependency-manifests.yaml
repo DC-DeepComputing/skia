@@ -1,0 +1,59 @@
+id: deps/sync-dependency-manifests
+title: When rolling dependencies or maintaining third-party roll scripts, synchronize manifests (DEPS,
+  Bazel deps.json, deps_gen.go) and regenerate downstream patches and configs
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: 'When rolling or updating third-party dependencies (or writing and maintaining dependency roll scripts),
+  synchronize all dependency manifests in the same CL: update DEPS, update Bazel dependencies (bazel/deps.json
+  via bazelisk run //bazel/deps_parser), and update bot dependencies (infra/bots/deps/deps_gen.go via
+  go run infra/bots/deps/generate.go). Additionally, when dependencies rely on generated configuration
+  headers or downstream build patches (e.g., bazel/external/<dep>/*.patch), ensure roll scripts regenerate
+  and stage those artifacts (e.g., via tools/generate_patches.py).'
+why: Skia pins external dependencies across DEPS, bazel/deps.json, and deps_gen.go for bots, while downstream
+  build targets may depend on generated patches and config headers. Omitting manifest updates breaks CI
+  bots and Bazel builds, and failing to automate patch and config regeneration in roll scripts causes
+  downstream builds to fall out of sync during dependency rolls.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # third_party/expat/roll-expat.sh
+  # Omits bot manifest synchronization and downstream patch regeneration:
+  rolldeps "$@" &&
+  rollbazel &&
+  update_expat_config_h &&
+  commit
+  ```
+
+  Good:
+
+  ```cpp
+  # third_party/expat/roll-expat.sh
+  # Synchronizes all manifests and regenerates downstream Bazel patch files:
+  rolldeps "$@" &&
+  rollbazel &&
+  rolldepsgen &&
+  update_expat_config_h &&
+  update_bazel_patch &&
+  commit
+  ```
+include_glob:
+- DEPS
+- bazel/deps.json
+- bazel/deps.bzl
+- bazel/external/**
+- infra/bots/deps/**
+- third_party/**
+- tools/generate_patches.py
+triggers:
+- \b(?:rolldeps|rollbazel|rolldepsgen|update_bazel_patch)\b
+- infra/bots/deps/deps_gen\.go
+- '\"third_party/externals/[a-zA-Z0-9_.-]+\"\s*:'
+- \b(?:deps_parser|generate\.go|deps_gen\.go|generate_patches\.py)\b
+- (?:\"rev\"|Version):\s*\"[0-9a-fA-F]+\"
+- \b(?:FT|EXPAT|HB|LIBPNG|ZLIB)_(?:PREVIOUS|NEXT)_REV\b
+- bazel/external/[a-zA-Z0-9_.-]+/.*\.patch
+confidence: 0.98
+support_cl_count: 2

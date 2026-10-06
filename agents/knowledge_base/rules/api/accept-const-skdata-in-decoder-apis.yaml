@@ -1,0 +1,70 @@
+id: api/accept-const-skdata-in-decoder-apis
+title: When accepting, returning, or storing read-only, serialized, or decoded buffer data, use sk_sp<const
+  SkData> instead of mutable sk_sp<SkData>
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When accepting, returning, or storing read-only, serialized, or immutable data buffers (such as
+  in decoder `Decode` functions, image/generator encoded data accessors, or serialized metadata members
+  and parameters), use `sk_sp<const SkData>` rather than mutable `sk_sp<SkData>`. In image decoder `Decode`
+  functions (such as `Sk<Format>Decoder::Decode`), avoid introducing or maintaining signatures that take
+  non-const `sk_sp<SkData>`, except for deprecated inline backward-compatibility overloads where required
+  for legacy callers.
+why: '`SkData` provides a mutable `writable_data()` accessor unless qualified as `const`. Using `sk_sp<const
+  SkData>` explicitly signals that the underlying buffer is read-only, prevents accidental mutation across
+  shared references, avoids unsafe `const_cast`s by callers holding const data, and enforces const-correctness
+  across Skia''s public and internal APIs.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: accepts or stores mutable sk_sp<SkData> for read-only data
+  namespace SkBmpRustDecoder {
+  SK_API std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
+                                         SkCodec::Result* result = nullptr,
+                                         SkCodecs::DecodeContext ctx = nullptr);
+  }
+
+  class SkHdrMetadata {
+      sk_sp<SkData> fAgtm;
+      sk_sp<SkData> getSerializedAgtm() const;
+      void setSerializedAgtm(sk_sp<SkData> agtm);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: enforces immutability with sk_sp<const SkData>
+  namespace SkBmpRustDecoder {
+  SK_API std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
+                                         SkCodec::Result* result = nullptr,
+                                         SkCodecs::DecodeContext ctx = nullptr);
+  }
+
+  class SkHdrMetadata {
+      sk_sp<const SkData> fAgtm;
+      sk_sp<const SkData> getSerializedAgtm() const;
+      void setSerializedAgtm(sk_sp<const SkData> agtm);
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- experimental/**
+- modules/**
+triggers:
+- \bsk_sp<\s*(?:const\s+)?SkData\s*>
+- \bDecode\s*\(\s*sk_sp<
+- \bSk(?:[A-Z]\w+)?Decoder::Decode\b
+- \bstd::unique_ptr<SkCodec>\s+Decode\s*\(
+- \b(?:ref|get)EncodedData\s*\(
+- \b(?:get|set)Serialized[A-Za-z0-9_]*\s*\(
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 144
+  quote: SkImage::refEncodedData() and SkImageGenerator::refEncodedData() now returns a pointer to const
+    SkData to more explicitly signal that this is a read-only view into the data.
+confidence: 0.98
+support_cl_count: 2

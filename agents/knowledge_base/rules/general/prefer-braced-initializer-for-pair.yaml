@@ -1,0 +1,53 @@
+id: general/prefer-braced-initializer-for-pair
+title: When constructing or returning std::pair instances, prefer braced initializer lists {first, second}
+  over explicit std::make_pair calls to reduce boilerplate
+polarity: do
+severity: nit
+rubric: readability
+rule: Prefer braced initializer lists (`{first, second}`) over `std::make_pair(...)` or explicit `std::pair<...>(...)`
+  constructor calls when returning, initializing, or passing `std::pair` instances. When the destination
+  type is known from a function return type, variable declaration, or container signature, use braced
+  initialization to minimize boilerplate and avoid multi-line wrapping.
+why: Braced initialization `{a, b}` eliminates redundant `std::make_pair` boilerplate and allows compact
+  expressions to fit on a single line, following modern C++ idioms across the codebase.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: using std::make_pair adds verbose boilerplate and line wrapping
+  std::pair<sk_sp<SkImageFilter>, bool> processFilter(sk_sp<SkImageFilter> filter) {
+      if (!filter) {
+          return std::make_pair(nullptr, false);
+      }
+      return std::make_pair(
+              SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(filter), nullptr), false);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: braced initializer list {first, second} is concise and idiomatic
+  std::pair<sk_sp<SkImageFilter>, bool> processFilter(sk_sp<SkImageFilter> filter) {
+      if (!filter) {
+          return {nullptr, false};
+      }
+      return {SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(filter), nullptr), false};
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \b(?:std::)?make_pair\s*[(<]
+- \breturn\s+(?:std::)?make_pair\b
+- \breturn\s+std::pair<[^>]+>\s*[(]
+- \b(?:push_back|emplace_back|insert)\s*\(\s*(?:std::)?make_pair
+- =\s*(?:std::)?make_pair\s*[(<]
+- (?:[(,]\s*)(?:std::)?make_pair\s*[(]
+confidence: 0.9
+support_cl_count: 1

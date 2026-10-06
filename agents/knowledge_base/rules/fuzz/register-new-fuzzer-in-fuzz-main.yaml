@@ -1,0 +1,90 @@
+id: fuzz/register-new-fuzzer-in-fuzz-main
+title: When adding a fuzzer target or codec dependency in fuzz/, register it in FuzzMain.cpp, update g_type_message
+  help, and conditionalize codec helpers
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When adding a new fuzzer target (via DEF_FUZZ or in fuzz/oss_fuzz/), register it in fuzz/FuzzMain.cpp
+  by adding forward declarations, a wrapper function, CLI dispatch in fuzz_file(), its type name in g_type_message
+  (in alphabetical order), and entries in cf_api_map. Additionally, when adding or modifying codec fuzzer
+  targets, ensure shared helper utilities in FuzzMain.cpp (such as dump_png) use matching conditional
+  compilation guards (e.g., SK_CODEC_ENCODES_PNG_WITH_*).
+why: The standalone fuzz CLI executable driven by FuzzMain.cpp and ClusterFuzz/OSS-Fuzz reproduce crashes
+  by resolving fuzzer names via CLI --type flags, g_type_message help output, or cf_api_map; omitting
+  registration or help strings leaves targets unexecutable or undiscoverable. Furthermore, hardcoded codec
+  calls in FuzzMain.cpp break compilation when builds enable alternative codec backends or disable specific
+  codecs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In fuzz/FuzzEncoders.cpp:
+  #if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+  DEF_FUZZ(PNGRustEncoder, fuzz) { ... }
+  #endif
+
+  // In fuzz/oss_fuzz/FuzzHdrAgtm.cpp:
+  void FuzzHdrAgtm(const uint8_t* data, size_t size) { ... }
+
+  // In fuzz/FuzzMain.cpp:
+  // Target omitted from g_type_message help and cf_api_map, and dump_png unconditionally calls libpng:
+  static constexpr char g_type_message[] = "How to interpret --bytes, one of:\n"
+                                           "image_decode\n";
+  static void dump_png(const SkBitmap& bitmap) {
+      if (!FLAGS_dump.isEmpty()) {
+          SkFILEWStream file(FLAGS_dump[0]);
+          SkPngEncoder::Encode(&file, bitmap.pixmap(), {});
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In fuzz/FuzzMain.cpp:
+  void FuzzHdrAgtm(const uint8_t* data, size_t size);
+  static void fuzz_hdr_agtm(const sk_sp<SkData>& data) {
+      FuzzHdrAgtm(data->bytes(), data->size());
+  }
+
+  static constexpr char g_type_message[] = "How to interpret --bytes, one of:\n"
+                                           "hdr_agtm\n"
+                                           "image_decode\n";
+
+  static std::map<std::string, std::string> cf_api_map = {
+      ...
+      {"png_rust_encoder", "PNGRustEncoder"},
+      {"hdr_agtm", "hdr_agtm"},
+  };
+
+  static void dump_png(const SkBitmap& bitmap) {
+      if (!FLAGS_dump.isEmpty()) {
+          SkFILEWStream file(FLAGS_dump[0]);
+  #if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+          SkPngRustEncoder::Encode(&file, bitmap.pixmap(), {});
+  #elif defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
+          SkPngEncoder::Encode(&file, bitmap.pixmap(), {});
+  #endif
+      }
+  }
+  ```
+include_glob:
+- fuzz/**
+triggers:
+- \bDEF_FUZZ\s*[(]
+- \b(?:void|bool)\s+Fuzz[A-Z]\w*\s*[(]
+- \bLLVMFuzzerTestOneInput\b
+- \bcf_api_map\b
+- \btype\.equals\s*[(]
+- \bg_type_message\b
+- \bdump_png\s*[(]
+- \bSK_CODEC_ENCODES_PNG_WITH_
+citations:
+- path: site/docs/dev/testing/fuzz.md
+  heading: Writing fuzzers with libfuzzer
+  quote: |-
+    After adding a new fuzzer, one should connect it with //fuzz/FuzzMain.cpp and then update
+    **OSS-Fuzz** (see below) to get the fuzzer running automatically.
+confidence: 0.97
+support_cl_count: 2

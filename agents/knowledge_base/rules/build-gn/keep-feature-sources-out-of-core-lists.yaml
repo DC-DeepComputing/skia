@@ -1,0 +1,68 @@
+id: build-gn/keep-feature-sources-out-of-core-lists
+title: When adding experimental or optional features in GN, isolate sources in dedicated .gni variables
+  and gate inclusion behind opt-in build flags and defines
+polarity: do
+severity: should_fix
+rubric: safety
+rule: In GN build files (*.gni), isolate optional, experimental, or work-in-progress source files in dedicated
+  feature variables rather than unconditional core source lists. In gn/skia.gni and BUILD.gn, gate the
+  feature behind an explicit build argument defaulting to false (declare_args() { skia_enable_<feature>
+  = false }) and conditionally include the source list and corresponding preprocessor define (SK_ENABLE_<FEATURE>)
+  only when the flag is enabled.
+why: Compiling experimental features, work-in-progress path renderers, or large lookup tables unconditionally
+  increases binary size and compile times for all downstream embedders. Isolating feature sources in dedicated
+  variables and gating them behind opt-in build flags keeps production builds lean while enabling developers
+  and CI bots to opt in.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # gn/graphite.gni: Feature sources included in unconditional core list
+  skia_graphite_sources = [
+    ...
+    "$_src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+  ]
+
+  # BUILD.gn: Feature compiled unconditionally into core targets
+  optional("graphite") {
+    sources = skia_graphite_sources
+    sources += skia_graphite_sparse_strips_sources
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  # gn/graphite.gni: Feature sources isolated in dedicated variable
+  skia_graphite_sparse_strips_sources = [
+    "$_src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+  ]
+
+  # gn/skia.gni: Dedicated build argument defaulting to false
+  declare_args() {
+    skia_enable_sparse_strips = false
+  }
+
+  # BUILD.gn: Conditionally included with companion preprocessor define
+  optional("graphite") {
+    if (skia_enable_sparse_strips) {
+      sources += skia_graphite_sparse_strips_sources
+      public_defines += [ "SK_ENABLE_SPARSE_STRIPS" ]
+    }
+  }
+  ```
+include_glob:
+- BUILD.gn
+- gn/**
+- '**/*.gni'
+triggers:
+- \bskia_[a-zA-Z0-9_]+_(?:sources|srcs|hdrs)\s*\+?=\s*\[
+- '"(?:\$_)?(?:src|modules|experimental)/[a-zA-Z0-9_/-]+\.(?:cpp|cc|c|h)"'
+- \bsources\s*\+?=\s*skia_[a-zA-Z0-9_]+
+- \bdeclare_args\s*\(
+- \bskia_enable_[a-zA-Z0-9_]+\s*=
+- '"SK_ENABLE_[A-Z0-9_]+"'
+- \bif\s*\(\s*skia_(?:enable|use)_[a-zA-Z0-9_]+\s*\)
+confidence: 0.9
+support_cl_count: 1

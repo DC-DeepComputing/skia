@@ -1,0 +1,58 @@
+id: general/remove-obsolete-maybe-unused-attributes
+title: When refactoring code or adding preprocessor guards that ensure a declaration is always referenced,
+  remove obsolete [[maybe_unused]] attributes from classes, functions, and variables
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not retain [[maybe_unused]] attributes on class, struct, function, or variable declarations when
+  refactoring or conditional compilation (#if) guards guarantee the entity is always referenced in every
+  build configuration where it is compiled. Remove stale [[maybe_unused]] attributes once active call
+  sites or preprocessor branches are established so compiler diagnostics can detect future unreferenced
+  code.
+why: Retaining [[maybe_unused]] on symbols that are unconditionally referenced within their active compilation
+  configuration adds visual clutter and misleads readers about how the code is used. Furthermore, suppressing
+  unused warnings on symbols that should be active risks masking future dead code or broken wiring if
+  call sites are later eliminated.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #if defined(__EMSCRIPTEN__)
+  // DawnWorkSubmission with AsyncWait for wasm builds where wgpu::Future is unavailable.
+  class [[maybe_unused]] DawnWorkSubmissionWithAsyncWait final : public GpuWorkSubmission {
+  public:
+      DawnWorkSubmissionWithAsyncWait(std::unique_ptr<CommandBuffer> cmdBuffer,
+                                      const DawnQueueManager* queueManager);
+      ...
+  };
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #if defined(__EMSCRIPTEN__)
+  // DawnWorkSubmission with AsyncWait for wasm builds where wgpu::Future is unavailable.
+  class DawnWorkSubmissionWithAsyncWait final : public GpuWorkSubmission {
+  public:
+      DawnWorkSubmissionWithAsyncWait(std::unique_ptr<CommandBuffer> cmdBuffer,
+                                      const DawnQueueManager* queueManager);
+      ...
+  };
+  #endif
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.h'
+triggers:
+- \[\[maybe_unused\]\]
+- ^#\s*(?:if|elif)\s+defined\s*\([A-Za-z0-9_]+\)
+- \bdefined\s*\(\s*__EMSCRIPTEN__\s*\)
+- (?:class|struct)\s+(?:\[\[maybe_unused\]\]\s+)?[A-Za-z0-9_]+(?:AsyncWait|WorkSubmission)\b
+- (?:class|struct)\s+\[\[maybe_unused\]\]\s+[A-Za-z0-9_]+
+- \[\[maybe_unused\]\]\s*(?:class|struct|enum|union)\b
+- \[\[maybe_unused\]\]\s+(?:static\s+|inline\s+|constexpr\s+|const\s+)?[A-Za-z0-9_:]+\s+[a-z]\w*
+confidence: 0.9
+support_cl_count: 1

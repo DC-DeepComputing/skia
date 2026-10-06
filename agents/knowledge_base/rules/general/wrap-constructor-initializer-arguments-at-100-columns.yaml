@@ -1,0 +1,70 @@
+id: general/wrap-constructor-initializer-arguments-at-100-columns
+title: When formatting multi-line constructor initializers, place punctuation before each initializer
+  on its own line, and wrap overflowing arguments aligned under the opening parenthesis
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When a constructor initializer list does not fit on a single line, place each member initializer
+  on its own indented line with punctuation (`:` for the first item, `,` for subsequent items) placed
+  at the start of the line rather than trailing. When an individual initializer call or base class delegation
+  exceeds the 100-column line limit, wrap its arguments across continuation lines aligned under the opening
+  parenthesis.
+why: Skia's style guide specifies that multi-line constructor initializers must place punctuation before
+  the initializer to keep punctuation visible and consistent across classes. Aligning long argument lists
+  under the opening parenthesis avoids horizontal overflow past the 100-column limit while keeping delegating
+  calls structured and readable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Trailing colon and commas in constructor initializer list
+  AtlasClipData(SkPoint texCoordOffset, SkRect maskBounds, SkISize atlasSize) :
+      fTexCoordOffset(texCoordOffset),
+      fMaskBounds(maskBounds),
+      fAtlasSize(atlasSize) {}
+
+  // Bad: Base delegation overflowing 100 columns on a single line
+  VulkanBuffer::VulkanBuffer(...)
+          : Buffer(sharedContext, size, isProtected, alloc.fFlags & skgpu::VulkanAlloc::kMappable_Flag) {}
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Leading punctuation on indented member initializers
+  AtlasClipData(SkPoint texCoordOffset, SkRect maskBounds, SkISize atlasSize)
+          : fTexCoordOffset(texCoordOffset)
+          , fMaskBounds(maskBounds)
+          , fAtlasSize(atlasSize) {}
+
+  // Good: Continuation arguments wrapped and aligned under opening parenthesis
+  VulkanBuffer::VulkanBuffer(...)
+          : Buffer(sharedContext,
+                   size,
+                   isProtected,
+                   /*reusableRequiresPurgeable=*/alloc.fFlags & skgpu::VulkanAlloc::kMappable_Flag) {}
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- ^\s*:\s*[A-Za-z0-9_:]+
+- ^\s*,\s*[A-Za-z0-9_:]+
+- '[)]\s*:\s*$'
+- ^\s*f[A-Z]\w*[(][^)]*[)][,:]\s*$
+- ^\s{8,}[A-Za-z0-9_/*].*[,)]$
+- \b[A-Za-z0-9_]+::[A-Za-z0-9_]+[(][^)]*[)]\s*:\s*
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: Constructor initializers should be placed on the same line as the constructor, if they fit. Otherwise,
+    each initializer should be on its own line, indented, with punctuation placed before the initializer.
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We wrap lines at 100 columns unless it is excessively ugly (use your judgement).
+confidence: 0.98
+support_cl_count: 2

@@ -1,0 +1,45 @@
+id: general/pass-wrapper-context-to-c-callbacks
+title: When invoking C-style callback APIs accepting void* user data, pass the wrapper or sink object
+  expected by the callback rather than the inner wrapped object
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When invoking C-style callback APIs that accept an untyped void* user-data or context parameter
+  (such as FreeType's FT_Outline_Decompose or CoreGraphics' CGPathApply), pass the pointer to the wrapper,
+  adapter, or sink object expected by the callback functions rather than the underlying wrapped object.
+  Ensure the object passed matches the exact type that the callback functions cast the context pointer
+  to.
+why: Untyped void* context arguments bypass compiler type checking, implicitly accepting any pointer.
+  Passing the inner wrapped object (such as SkPathBuilder*) instead of the wrapper or sink adapter compiles
+  without warning, but causes type confusion and memory corruption when callbacks cast the context pointer
+  back to the wrapper type.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkFTGeometrySink sink{builder};
+  if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE ||
+      FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, builder)) {
+      return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkFTGeometrySink sink{builder};
+  if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE ||
+      FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, &sink)) {
+      return false;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:FT_Outline_Decompose|CGPathApply|FcFontSort|hb_face_create_for_tables)\b
+- \b\w*GeometrySink\b
+- \b(?:class|struct)\s+\w*(?:Sink|Adapter)\b
+- \b(?:static_cast<|\()\s*\w*(?:Sink|Adapter)\s*\*?\s*\)?\s*(?:ctx|user(?:_data)?)\b
+confidence: 0.95
+support_cl_count: 1

@@ -1,0 +1,58 @@
+id: relnotes/reference-public-apis-not-internal-classes
+title: When authoring release notes in relnotes/, describe changes in terms of client-facing capabilities
+  and public APIs rather than internal mechanisms or private classes
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When authoring release notes (`relnotes/*.md` or `RELEASE_NOTES.md`), describe additions, improvements,
+  and deprecations in terms of client-facing capabilities and public APIs (such as `Sk<Format>Decoder`
+  in `include/` or priority-based log filtering) rather than private internal implementation classes (such
+  as `Sk<Format>Codec` in `src/`) or internal technical mechanisms (such as logging macros). Verify that
+  all referenced types and entry points exist in public headers.
+why: Release note snippets under `relnotes/` are aggregated into `RELEASE_NOTES.md` during milestone releases
+  and published for external clients and embedders. Referencing private types or internal implementation
+  details (such as macros or internal class moves) confuses downstream developers who cannot access those
+  symbols and care about user-visible capabilities and public APIs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  <!-- relnotes/sk_png_hdr.md -->
+  Add HDR metadata support to `SkPngCodec`, `SkPngEncoder`, `SkPngRustCodec`, and `SkPngRustEncoder`.
+
+  <!-- relnotes/logging.md -->
+  Logging macros are now supported at a core Skia level. This update includes moving LoggingPriority out of graphite and into core.
+  ```
+
+  Good:
+
+  ```cpp
+  <!-- relnotes/sk_png_hdr.md -->
+  Add HDR metadata support to `SkPngDecoder`, `SkPngRustDecoder`, and `SkPngEncoder`.
+
+  <!-- relnotes/logging.md -->
+  Priority-based log filtering is now supported at a core Skia level. This update includes moving LoggingPriority out of Graphite and into core Skia.
+  ```
+include_glob:
+- relnotes/**
+- RELEASE_NOTES.md
+exclude_glob:
+- relnotes/README.md
+triggers:
+- \b(?:[Aa]dd(?:ed|s)?|[Ss]upport(?:ed|s)?|[Ii]ntroduce[d]?|[Rr]emove[d]?|[Dd]eprecat(?:ed?|ion)|[Rr]eplace[d]?)\b
+- \bSk[A-Z]\w*(?:Codec|Decoder|Encoder|Impl)\b
+- \b(?:Sk[A-Z]\w+|Gr[A-Z]\w+|skgpu|skcms|Graphite)\b
+- '`[A-Za-z0-9_:]+`'
+- \b(?:public|private|internal)\s+(?:APIs?|classes?|interfaces?|details?)\b
+- \b(?:macros?|classes?|APIs?|interfaces?|functions?|methods?)\b
+- \b(?:user-facing|client-facing|implementation details?)\b
+citations:
+- path: relnotes/README.md
+  heading: Skia Release Notes
+  quote: This directory contains release notes for the upcoming milestone.
+- path: RELEASE_NOTES.md
+  heading: Skia Graphics Release Notes
+  quote: This file includes a list of high level updates for each milestone release.
+confidence: 0.95
+support_cl_count: 2

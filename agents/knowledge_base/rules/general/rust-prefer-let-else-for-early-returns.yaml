@@ -1,0 +1,40 @@
+id: general/rust-prefer-let-else-for-early-returns
+title: When extracting inner values from Result or Option and returning early on mismatch in Rust, prefer
+  let-else statements over verbose match expressions
+polarity: do
+severity: nit
+rubric: readability
+rule: In Rust, prefer let-else statements (e.g. let Ok(val) = expr else { return ...; }) over multi-line
+  match expressions when extracting an inner value and returning early or diverging on pattern mismatch.
+  Keep the extracted variable in scope at the outer indentation level without nested blocks.
+why: Using let-else eliminates boilerplate match statements that only extract a payload or return early,
+  keeping the extracted variable in the outer scope and avoiding unnecessary indentation or nested control
+  flow.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  let profile = match ColorProfile::new_from_slice(data) {
+      Ok(profile) => profile,
+      Err(_) => return false,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  let Ok(profile) = ColorProfile::new_from_slice(data) else {
+      return false;
+  };
+  ```
+include_glob:
+- '**/*.rs'
+triggers:
+- \blet\s+(?:mut\s+)?[a-zA-Z0-9_]+\s*=\s*match\b
+- \b(?:Ok|Some)\s*\([a-zA-Z0-9_]+\)\s*=>\s*[a-zA-Z0-9_]+
+- \b(?:Err|None)(?:\([^)]*\))?\s*=>\s*(?:return|break|continue|panic!)\b
+- \blet\s+(?:Some|Ok|[A-Za-z0-9_:]+).*\belse\s*\{
+- \bif\s+let\s+(?:Some|Ok|[A-Za-z0-9_:]+).*\belse\s*\{
+confidence: 0.9
+support_cl_count: 2

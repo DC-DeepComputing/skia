@@ -1,0 +1,47 @@
+id: modules/prefer-standard-arrays-over-canvaskit-malloc
+title: When passing array arguments to CanvasKit APIs, prefer standard JavaScript arrays or TypedArrays
+  over CanvasKit.Malloc unless reusing memory across frames
+polarity: do
+severity: optional
+rubric: readability
+rule: When passing array data to CanvasKit APIs (such as ParagraphBuilder break methods or color/matrix
+  helpers), pass standard JavaScript arrays or TypedArrays directly instead of allocating memory with
+  CanvasKit.Malloc. Reserve CanvasKit.Malloc for performance-critical paths that persistently reuse allocations
+  across multiple frames, and ensure any CanvasKit.Malloc allocation is released with CanvasKit.Free.
+why: CanvasKit's internal array marshalling automatically allocates and frees WASM heap memory for standard
+  JavaScript arrays and TypedArrays. Manually allocating with CanvasKit.Malloc introduces unnecessary
+  boilerplate for one-off calls and risks permanent WASM heap memory leaks if CanvasKit.Free is omitted.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const mallocedWords = CanvasKit.Malloc(Uint32Array, 2);
+  mallocedWords.toTypedArray().set([0, text.length]);
+  builder.setWordsUtf16(mallocedWords);
+  // Leaked: CanvasKit.Free(mallocedWords) was omitted
+  ```
+
+  Good:
+
+  ```cpp
+  // CanvasKit automatically marshals standard JS arrays to WASM
+  const words = [0, text.length];
+  builder.setWordsUtf16(words);
+  ```
+include_glob:
+- modules/canvaskit/**
+triggers:
+- \bCanvasKit\.Malloc(?:GlyphIDs)?\s*\(
+- \bCanvasKit\.Free\s*\(
+- \.set(?:Words|GraphemeBreaks|LineBreaks)Utf16\s*\(
+- \b(?:builder|paragraphBuilder)\.set\w+Utf16\s*\(
+- \b(?:copy1dArray|wasMalloced)\b
+citations:
+- path: modules/canvaskit/CHANGELOG.md
+  heading: Added
+  quote: CanvasKit.Free to explicitly clean up memory after CanvasKit.Malloc. All memory allocated with
+    CanvasKit.Malloc must be released with CanvasKit.Free or it will be leaked. This can improve performance
+    by reducing the copying of data between the JS and WASM side.
+confidence: 0.82
+support_cl_count: 1

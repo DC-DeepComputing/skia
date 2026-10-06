@@ -1,0 +1,54 @@
+id: modules/consume-active-builder-before-member-assignment
+title: When refactoring path mutation to SkPathBuilder, consume intermediate geometry from the active
+  builder via detach() or snapshot(), not unfinalized members
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When refactoring path construction from in-place mutation of an SkPath member to a local SkPathBuilder,
+  ensure intermediate reads and downstream builder operations consume from the active SkPathBuilder (e.g.
+  via detach() or snapshot()) rather than the destination SkPath member. Do not read the destination member
+  before finalization, as it remains empty or stale while the local builder accumulates.
+why: Deferred assignment to an SkPath destination member leaves it holding uninitialized or stale state
+  while the local SkPathBuilder accumulates intermediate geometry. Reading from the unfinalized member
+  feeds empty or stale data into downstream consumers like SkOpBuilder, causing silent visual regressions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkPathBuilder merger;
+  // ... accumulate paths into merger ...
+  if (!in_builder) {
+      builder.add(fMerged.snapshot(), kUnion_SkPathOp); // Bug: fMerged is stale/empty
+      in_builder = true;
+  }
+  fMerged = in_builder ? builder.detach() : merger.detach();
+  ```
+
+  Good:
+
+  ```cpp
+  SkPathBuilder merger;
+  // ... accumulate paths into merger ...
+  if (!in_builder) {
+      builder.add(merger.detach(), kUnion_SkPathOp); // Consumes accumulated paths from merger
+      in_builder = true;
+  }
+  fMerged = in_builder ? builder.detach() : merger.detach();
+  ```
+include_glob:
+- modules/sksg/**
+triggers:
+- \bSkPathBuilder\b
+- \b(?:builder|merger)\.(?:detach|snapshot)\s*[(]
+- \bbuilder\.add\s*[(]
+- \bSkOpBuilder\b
+- \bfMerged\b
+- \.(?:detach|snapshot)\s*[(]\s*[)]
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 143
+  quote: SkPath is migrating to become immutable (its geometry). In this new version, SkPath will lose
+    all of its methds like moveTo(), lineTo(), etc. and rely on SkPathBuilder for creating paths.
+confidence: 0.92
+support_cl_count: 1

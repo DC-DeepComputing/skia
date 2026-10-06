@@ -1,0 +1,51 @@
+id: codec/reuse-shared-format-constants
+title: When decoding or encoding format-specific metadata across codec backends, reuse shared constants
+  from private headers instead of hardcoding magic numbers
+polarity: do
+severity: optional
+rubric: readability
+rule: When implementing image decoding or encoding logic across codec backends (such as C++ and Rust decoders
+  or encoders), reuse established format constants from shared private headers (such as kGraySigBit_GrayAlphaIsJustAlpha
+  in src/codec/SkPngPriv.h) instead of hardcoding raw numeric literals. Mirroring format conventions using
+  shared constants documents the protocol invariant and prevents behavioral divergence between backends.
+why: Image codecs often define internal conventions or sentinel values (such as signaling an alpha-only
+  grayscale PNG via a specific sBIT value) that must match across encoders and decoders. Hardcoding magic
+  numbers obscures why the value was chosen, risks divergence across alternative backends, and makes format-specific
+  protocols difficult to track and maintain.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In alternative PNG decoder backend:
+  if (sBit.size() == 2 && reader.output_bits_per_component() == 8) {
+      // Hardcoding magic number 1 obscures Skia's internal alpha-only convention
+      if (sBit[0] == 1 && sBit[1] == 8) {
+          return SkEncodedInfo::kXAlpha_Color;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  #include "src/codec/SkPngPriv.h"
+
+  // In alternative PNG decoder backend:
+  if (sBit.size() == 2 && reader.output_bits_per_component() == 8) {
+      if (sBit[0] == kGraySigBit_GrayAlphaIsJustAlpha && sBit[1] == 8) {
+          return SkEncodedInfo::kXAlpha_Color;
+      }
+  }
+  ```
+include_glob:
+- src/codec/**
+- src/encode/**
+triggers:
+- \b(?:sBit|sbit|sigBit|sig_bit)\b
+- \bk[A-Z]\w*(?:SigBit|Marker|Sentinel|Tag|Flag)\b
+- ^#include\s+[\\\"<]src/codec/Sk\w+Priv\.h[\\\">]
+- \bSkEncodedInfo::k[A-Z]\w*_Color\b
+- \bkGraySigBit_GrayAlphaIsJustAlpha\b
+confidence: 0.8
+support_cl_count: 1

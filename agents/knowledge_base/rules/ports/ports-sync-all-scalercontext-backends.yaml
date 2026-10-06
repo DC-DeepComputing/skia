@@ -1,0 +1,31 @@
+id: ports/ports-sync-all-scalercontext-backends
+title: When modifying virtual methods on SkScalerContext or port base classes, update all backend implementations
+  across src/ports, including legacy font hosts like Windows GDI
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When modifying virtual method signatures or interface contracts on SkScalerContext, update all platform
+  backend implementations across src/ports/ in lockstep. Ensure non-default and legacy font hosts, such
+  as Windows GDI (SkFontHost_win.cpp), are updated alongside mainstream backends (FreeType, CoreText,
+  DirectWrite, and Fontations).
+why: Developers typically build and test against modern or host-default font engines (such as FreeType
+  on Linux, CoreText on macOS, or DirectWrite on Windows) and easily overlook legacy backends like Windows
+  GDI. Leaving any backend with an outdated signature breaks compilation on platforms or downstream configurations
+  that still rely on those font hosts.
+include_glob:
+- src/ports/**
+- src/core/**
+triggers:
+- \bSkScalerContext(?:_[A-Za-z0-9_]+)?\b
+- \bgenerate(?:Path|Metrics|Image|FontMetrics|Drawable)\s*[(]
+- \bSkScalerContext::(?:GeneratedPath|GlyphMetrics)\b
+- \bSkFontHost_win\b
+- \bonCreateScalerContext\s*[(]
+citations:
+- path: site/docs/user/tips.md
+  heading: Does Skia support Font hinting?
+  quote: For that it relies on the platform to supply an instance of `SkScalerContext`. This is Skia's
+    abstract interface for communicating with a font scaler engine. In src/ports you can see support files
+    for FreeType, macOS, and Windows GDI font engines.
+confidence: 0.92
+support_cl_count: 1

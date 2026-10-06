@@ -1,0 +1,25 @@
+id: general/gn-avoid-hardcoded-absolute-paths
+title: When referencing scripts, tools, or dependencies in GN build files, use repository-relative paths
+  ('//...') or GN args instead of hardcoding host-specific absolute paths
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: In GN build files and toolchain configurations, do not hardcode host-, machine-, or CI-runner-specific
+  absolute paths (such as /b/s/w/... or local user directories). Reference repository scripts, tools,
+  and files using source-root relative paths (//...) or expose configurable build arguments in declare_args()
+  when locating external SDKs or tools.
+why: Hardcoded filesystem paths break builds across developer workstations, different operating systems
+  (such as Windows), and differing CI environments. In GN, source-root relative paths (//...) resolve
+  deterministically relative to the repository checkout root across all platforms.
+include_glob:
+- '**/*.gn'
+- '**/*.gni'
+triggers:
+- '"/(?:b/s/w|home|Users|usr|tmp|var|[a-zA-Z]:/)[^"]*"'
+- \bget_path_info\s*\(
+- \brebase_path\s*\(
+- \bscript\s*=\s*
+- \baction(?:_foreach)?\s*\(
+- \b(?:command|ar|cc|cxx|ld)\s*=\s*
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,42 @@
+id: gpu/match-buffer-type-index-in-wrappers
+title: When implementing typed GPU buffer manager wrappers, verify each specialized helper forwards its
+  corresponding buffer type index rather than a copy-pasted sibling constant
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When implementing specialized wrapper methods or dispatch helpers in GPU buffer managers, verify
+  that each typed helper forwards its corresponding buffer type index or constant (such as kIndexBufferIndex
+  for index buffers) rather than a copy-pasted sibling constant (such as kVertexBufferIndex). Ensure all
+  sibling wrappers in the family match their target resource type.
+why: Buffer managers maintain distinct allocation pools, alignment constraints, and GPU usage flags for
+  different buffer types. Forwarding the wrong buffer type index allocates from an unintended pool or
+  binds resources with invalid usage flags, resulting in pipeline validation errors, layout corruption,
+  or silent rendering defects.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  MappedAllocationInfo getMappedIndexBuffer(size_t count) {
+      // Bug: copy-pasted kVertexBufferIndex forwards the wrong buffer pool and flags.
+      return this->getMappedBuffer(kVertexBufferIndex, count, sizeof(uint16_t));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  MappedAllocationInfo getMappedIndexBuffer(size_t count) {
+      return this->getMappedBuffer(kIndexBufferIndex, count, sizeof(uint16_t));
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:getMappedBuffer|getBuffer|getBinding)\s*\(
+- \b(?:getMappedIndexBuffer|getMappedVertexBuffer|getMappedUniformBuffer|getMappedStorageBuffer)\s*\(
+- \bk(?:Vertex|Index|Uniform|Storage|Indirect|GpuOnly)Buffer(?:Index)?\b
+- \b(?:BufferManager|DrawBufferManager|GrBufferAllocPool)\b
+- \b(?:kIndexBufferIndex|kVertexBufferIndex|kUniformBufferIndex|kStorageBufferIndex)\b
+confidence: 0.9
+support_cl_count: 1

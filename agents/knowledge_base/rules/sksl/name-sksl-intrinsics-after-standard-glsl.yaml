@@ -1,0 +1,46 @@
+id: sksl/name-sksl-intrinsics-after-standard-glsl
+title: When declaring built-in SkSL intrinsics, name them to match standard GLSL function names rather
+  than backend-specific equivalents
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When introducing or modifying built-in SkSL intrinsics in modules or compiler tables, name them
+  to match standard GLSL built-in function names (such as textureSize rather than backend-specific equivalents
+  like WGSL's textureDimensions). Preserve standard GLSL naming conventions across SkSL intrinsic signatures,
+  compiler tables, and backend code generators.
+why: SkSL is designed as a standardized variant of GLSL. Adhering to standard GLSL intrinsic naming keeps
+  SkSL and AGSL consistent with GLSL specifications, simplifies porting existing GLSL shaders to SkSL,
+  and avoids leaking target-backend nomenclature into frontend shading language interfaces.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/sksl/sksl_gpu.sksl:
+  $pure uint2 textureDimensions(sampler2D s);
+  $pure uint2 textureDimensions($genTexture2D t);
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/sksl/sksl_gpu.sksl:
+  $pure uint2 textureSize(sampler2D s);
+  $pure uint2 textureSize($genTexture2D t);
+  ```
+include_glob:
+- src/sksl/**
+triggers:
+- \$pure\s+
+- \bSKSL_INTRINSIC\s*\([A-Za-z0-9_]+\)
+- \btexture(?:Size|Dimensions|Width|Height)\b
+- \bk_\w+_IntrinsicKind\b
+- \bIntrinsicKind::k\w+\b
+citations:
+- path: src/sksl/README.md
+  heading: Overview
+  quote: SkSL ("Skia Shading Language") is a variant of GLSL which is used as Skia's internal shading
+    language. SkSL is, at its heart, a single standardized version of GLSL which avoids all of the various
+    version and dialect differences found in GLSL "in the wild"
+confidence: 0.9
+support_cl_count: 1

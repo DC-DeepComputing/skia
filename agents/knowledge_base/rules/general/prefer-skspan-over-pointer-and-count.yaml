@@ -1,0 +1,84 @@
+id: general/prefer-skspan-over-pointer-and-count
+title: When passing, returning, or iterating over contiguous buffers, use SkSpan instead of pointer/array-count
+  pairs, raw pointer views, or const std::vector references
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer accepting or returning contiguous sequences and buffer views as SkSpan<T> (or SkSpan<const
+  T>) rather than separate pointer- or array-count arguments (such as T* ptr, int count or const T[] arr,
+  int count), raw pointer views that force callers to reconstruct spans with magic lengths, or concrete
+  container references (such as const std::vector<T>&). When touching or modifying existing signatures
+  that accept pointer/array and count pairs, take the opportunity to span-ify the parameters. When an
+  existing pointer-and-count API cannot be modified or when iterating over raw pointers, wrap the pointer
+  and count in a temporary SkSpan(ptr, count) to enable range-based for loops without manual index tracking.
+why: Taking or returning SkSpan encapsulates the element count with the pointer, preventing length mismatches,
+  eliminating redundant manual {ptr, count} constructions at call sites, and decoupling APIs from caller
+  container implementations. For raw pointer buffers, SkSpan enables clean range-based for loops and bounds
+  safety without manual index tracking.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Concrete container references for read-only inspection:
+  bool ValidateSPIRV(ErrorReporter&, const std::vector<uint32_t>&);
+
+  // 2. Separate pointer/array and count parameters in signatures:
+  void extend_pts(SkPoint* pts, int ptCount);
+  virtual FilterReturn filterRectsToNine(const SkRect rects[], int count, ...) const;
+
+  // 3. Helper function returning raw pointer view without length:
+  static const SkPoint* rect_points(const SkRect& r) {
+      return reinterpret_cast<const SkPoint*>(&r);
+  }
+  // Call site forces manual span reconstruction:
+  fCTM->mapPoints({rect_points(devRect), 2}, {rect_points(paintRect), 2});
+
+  // 4. Manual indexed loop over pointer and count:
+  for (int i = 0; i < count; i++) {
+      process(pts[i]);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Accept SkSpan to decouple from caller container representations:
+  bool ValidateSPIRV(ErrorReporter&, SkSpan<const uint32_t>);
+
+  // 2. Accept SkSpan directly in function signatures:
+  void extend_pts(SkSpan<SkPoint> pts);
+  virtual FilterReturn filterRectsToNine(SkSpan<const SkRect> rects, ...) const;
+
+  // 3. Return SkSpan from view helpers to bundle element count:
+  static SkSpan<const SkPoint> rect_points(const SkRect& r) {
+      return {reinterpret_cast<const SkPoint*>(&r), 2};
+  }
+  // Call site passes span directly:
+  fCTM->mapPoints(rect_points(devRect), rect_points(paintRect));
+
+  // 4. Wrap pointer and count in a temporary SkSpan for range-for loops:
+  for (const auto& pt : SkSpan(pts, count)) {
+      process(pt);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bSkSpan<
+- \bconst\s+std::vector<[^>]+>&
+- \b(?:const\s+)?[A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)?\s*(?:\*|\[\s*\])[\s*]*[a-zA-Z0-9_]*\s*,\s*(?:int|size_t|uint\w*|int\w*)\s+[a-zA-Z0-9_]*(?:count|Count|size|Size|len|Len|num|Num)
+- \b(?:int|size_t|uint\w*|int\w*)\s+[a-zA-Z0-9_]*(?:count|Count|size|Size|len|Len|num|Num)[a-zA-Z0-9_]*\s*,\s*(?:const\s+)?[A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)?\s*(?:\*|\[\s*\])
+- \b(?:const\s+)?[A-Za-z0-9_]+(?:::[A-Za-z0-9_]+)?\s*\[\s*\]\s*,
+- \{\s*[a-zA-Z0-9_]+(?:\.(?:data|begin)\(\))?\s*,\s*(?:kNum|\w*(?:count|size|Count|Size|len|Len))\w*\s*\}
+- \bSkSpan\s*[\{\(]
+- \bfor\s*[(][^:]+:\s*SkSpan
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 140
+  quote: Virtuals in `SkTypeface` subclasses (5 of them) now take SkSpan instead of ptr/count. This is
+    part of the larger change where public APIs are being converted to take SkSpan where applicable.
+confidence: 0.98
+support_cl_count: 5

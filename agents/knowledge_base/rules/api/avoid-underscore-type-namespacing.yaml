@@ -1,0 +1,68 @@
+id: api/avoid-underscore-type-namespacing
+title: When defining families of related types or helper shapes, scope them in a dedicated namespace or
+  enclosing class instead of using underscore pseudo-namespacing
+polarity: do
+severity: nit
+rubric: readability
+rule: Scope related types and shape variants inside a dedicated namespace (e.g., namespace SkPathRawShapes)
+  or as nested structs or classes within an enclosing type, rather than using underscore delimiters in
+  type names (such as SkPathRawShape_Rect) to emulate namespacing. Do not introduce new pseudo-namespaced
+  type names that mimic legacy Skia underscore naming patterns.
+why: Using underscore separators to emulate namespacing in type names is a legacy C idiom that pollutes
+  the enclosing scope with long symbol names. Modern C++ namespaces and nested structs provide proper
+  modular scoping, eliminate redundant type prefixes, and avoid collision hazards without awkward underscore
+  delimiters.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Using underscore delimiters to emulate namespacing for related types
+  struct SkPathRawShape_Rect : public SkPathRaw {
+      SkPoint fStorage[4];
+      explicit SkPathRawShape_Rect(const SkRect&);
+  };
+
+  struct SkPathRawShape_Oval : public SkPathRaw {
+      SkPoint fStorage[9];
+      explicit SkPathRawShape_Oval(const SkRect&);
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Scoping related types inside a dedicated namespace
+  namespace SkPathRawShapes {
+
+  struct Rect : public SkPathRaw {
+      SkPoint fStorage[4];
+      explicit Rect(const SkRect&);
+  };
+
+  struct Oval : public SkPathRaw {
+      SkPoint fStorage[9];
+      explicit Oval(const SkRect&);
+  };
+
+  }  // namespace SkPathRawShapes
+  ```
+include_glob:
+- include/**
+- src/**
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- ^\s*(?:struct|class)\s+(?:SK_API\s+)?(?:Sk|Gr)[A-Za-z0-9]+_[A-Za-z0-9]+
+- \b(?:struct|class)\s+(?:Sk|Gr)[A-Za-z0-9]+_[A-Za-z0-9]+\b
+- ^\s*(?:struct|class)\s+[A-Z][A-Za-z0-9]+_[A-Z][A-Za-z0-9]+\b
+- ^\s*namespace\s+Sk[A-Z][A-Za-z0-9_]+\s*\{
+- \b(?:using|typedef)\s+[A-Za-z0-9]+_[A-Za-z0-9]+\s*=
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Most externally visible types and functions use an Sk- prefix to designate they're part of Skia,
+    but code in Ganesh uses Gr-. Nested types need not be prefixed.
+confidence: 0.9
+support_cl_count: 1

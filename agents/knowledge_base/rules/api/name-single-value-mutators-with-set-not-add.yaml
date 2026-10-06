@@ -1,0 +1,45 @@
+id: api/name-single-value-mutators-with-set-not-add
+title: When naming methods that overwrite a single stored member variable rather than appending to a collection,
+  use set instead of add to convey replacement semantics
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not name a method with an `add...` prefix if calling it overwrites or replaces a single member
+  variable instead of appending or accumulating into a collection; use `set...` to reflect replacement
+  semantics.
+why: In C++ APIs, an `add` prefix implies accumulating elements into a collection. When a method actually
+  overwrites a single member variable and erases any previously stored value, naming it `add` is misleading
+  and can hide bugs where multiple calls unintentionally overwrite each other. Using `set` clearly signals
+  single-value mutation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Overwrites fStaticVertexInfo and fStaticVertexBuffer on each call:
+  void addStaticVertexResource(const BindBufferInfo& info, sk_sp<Resource> resource) {
+      fStaticVertexInfo = info;
+      fStaticVertexBuffer = resource;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Clearly conveys single-value replacement:
+  void setStaticVertexBuffer(const BindBufferInfo& info, sk_sp<Resource> resource) {
+      fStaticVertexInfo = info;
+      fStaticVertexBuffer = resource;
+  }
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \bvoid\s+add[A-Z]\w*\s*[(]
+- \badd[A-Z]\w*\s*[(][^)]*[)]\s*[{;]
+- \b(?:void\s+)?set[A-Z]\w*\s*[(]
+- \b(?:add|set)Static[A-Z]\w*\b
+- ->add[A-Z]\w*\s*[(]
+confidence: 0.9
+support_cl_count: 1

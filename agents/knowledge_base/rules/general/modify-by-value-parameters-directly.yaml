@@ -1,0 +1,48 @@
+id: general/modify-by-value-parameters-directly
+title: When sanitizing, normalizing, or adjusting a function parameter passed by value, mutate the parameter
+  directly instead of creating an intermediate local copy
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not create an auxiliary local copy of a function parameter that is already passed by value. Modify
+  the by-value parameter directly in place when sanitizing, clamping, or normalizing its fields before
+  consumption.
+why: A parameter passed by value provides the function with an independent, owned copy. Creating an intermediate
+  local variable (such as usedParam = param) introduces redundant variable clutter and an unnecessary
+  extra copy, whereas modifying the by-value parameter directly keeps function bodies concise.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool Context::submit(SubmitInfo submitInfo) {
+      SubmitInfo usedSubmitInfo = submitInfo;
+      if (usedSubmitInfo.fSync == SyncToCpu::kYes && !fSharedContext->caps()->allowCpuSync()) {
+          usedSubmitInfo.fSync = SyncToCpu::kNo;
+      }
+      return fQueueManager->submitToGpu(usedSubmitInfo);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  bool Context::submit(SubmitInfo submitInfo) {
+      if (submitInfo.fSync == SyncToCpu::kYes && !fSharedContext->caps()->allowCpuSync()) {
+          submitInfo.fSync = SyncToCpu::kNo;
+      }
+      return fQueueManager->submitToGpu(submitInfo);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \b(?:auto|[A-Za-z0-9_:]+)\s+(?:used|local|temp|copy|sanitized|adjusted)[A-Z][a-zA-Z0-9_]*\s*=\s*[a-zA-Z0-9_]+;
+- \b(?:auto|[A-Za-z0-9_:]+)\s+[a-zA-Z0-9_]+(?:Copy|Local|Temp)\s*=\s*[a-zA-Z0-9_]+;
+- \b(?:info|options|params?|config|settings|submitInfo)\.f[A-Z]\w*\s*=\s*
+- \b(?:SubmitInfo|ContextOptions|GrContextOptions)\s+[a-zA-Z0-9_]+\s*=
+- \b(?:submitInfo|usedSubmitInfo)\b
+confidence: 0.9
+support_cl_count: 1

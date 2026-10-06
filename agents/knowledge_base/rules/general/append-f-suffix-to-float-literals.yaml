@@ -1,0 +1,51 @@
+id: general/append-f-suffix-to-float-literals
+title: When passing or assigning floating-point literals to float or SkScalar parameters and variables,
+  append the f suffix (e.g., 1.0f) to avoid double conversions
+polarity: do
+severity: nit
+rubric: readability
+rule: Append the 'f' suffix to floating-point numeric literals (e.g., 1.0f instead of 1.0) when passing
+  arguments to functions expecting float or SkScalar values, assigning to float variables, or returning
+  float results. Do not use unsuffixed floating-point literals where a 32-bit float value is expected.
+why: In C++, unsuffixed floating-point literals (like 1.0 or 0.5) are typed as double. Passing or assigning
+  them to float or SkScalar (a typedef for float) causes implicit double-to-float narrowing conversions,
+  potential precision warnings, and unwanted double-precision arithmetic promotions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Unsuffixed double literals narrow implicitly to float / SkScalar
+  SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0, false);
+  SkRRect::MakeRectXY(rect, 3.1, 1.5);
+
+  float scale = 0.5;
+  SkPoint pt = {1.0, 2.0};
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicit 'f' suffix avoids double-to-float narrowing conversions
+  SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0f, false);
+  SkRRect::MakeRectXY(rect, 3.1f, 1.5f);
+
+  float scale = 0.5f;
+  SkPoint pt = {1.0f, 2.0f};
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- '[(,]\s*[-+]?[0-9]+\.[0-9]+[fF]?\s*[,)]'
+- \b(?:float|SkScalar)\s+[a-zA-Z0-9_]+\s*=\s*[-+]?[0-9]*\.[0-9]+[fF]?\b
+- \b(?:MakeBlur|MakeRectXY|MakeXYWH|MakeLTRB|MakeWH|MakeRadius)\s*[(]
+- \b(?:SkPoint|SkVector|SkSize|SkRect|SkRRect|SkColor4f)\b
+- \bSkMaskFilter::MakeBlur\b
+- \b[-+]?[0-9]+\.[0-9]+f\b
+confidence: 0.85
+support_cl_count: 1

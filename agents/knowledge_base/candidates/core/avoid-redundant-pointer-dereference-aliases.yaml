@@ -1,0 +1,48 @@
+id: core/avoid-redundant-pointer-dereference-aliases
+title: When accessing members through a pointer or smart pointer, use direct arrow notation instead of
+  introducing redundant local pointer-dereference reference aliases
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not introduce or retain unnecessary local reference aliases (such as `const Type& alias = *ptr;`)
+  solely to dereference a pointer or smart pointer when direct member access via arrow notation (`ptr->member`)
+  is clear and concise. Access members directly through the pointer rather than creating a local dereferenced
+  alias, especially after refactoring removes the primary need to query the underlying object.
+why: Creating local reference aliases that merely dereference a pointer adds visual noise and extra named
+  variables without providing meaningful abstraction. Furthermore, retaining obsolete local aliases after
+  refactoring can obscure object ownership boundaries and tempt callers to inspect internal state that
+  should remain encapsulated.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant local reference alias to dereference a pointer
+  const SkPathData& pdata = *src.fPathData;
+
+  this->addRaw(pdata.raw(src.getFillType(), SkResolveConvexity::kYes));
+  fLastMoveIndex = SkPathPriv::FindLastMoveToIndex(fVerbs, fPts.size());
+  fType = pdata.fType;
+  fIsA  = pdata.fIsA;
+  ```
+
+  Good:
+
+  ```cpp
+  // Direct arrow member access through the pointer
+  this->addRaw(src.fPathData->raw(src.getFillType(), SkResolveConvexity::kYes));
+  fLastMoveIndex = SkPathPriv::FindLastMoveToIndex(fVerbs, fPts.size());
+  fType = src.fPathData->fType;
+  fIsA  = src.fPathData->fIsA;
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \b(?:const\s+)?[A-Za-z0-9_:]+&\s+[a-zA-Z0-9_]+\s*=\s*\*
+- \b(?:const\s+)?auto&\s+[a-zA-Z0-9_]+\s*=\s*\*
+- \bf[A-Z][a-zA-Z0-9_]*->[a-zA-Z0-9_]+
+- \baddRaw\s*[(]
+- \bfPathData\b
+- \bfLastMoveIndex\b
+confidence: 0.9
+support_cl_count: 1

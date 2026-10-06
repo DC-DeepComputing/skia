@@ -1,0 +1,57 @@
+id: general/prefer-function-local-static-mutex
+title: When a static mutex or spinlock synchronizes only a single method, declare it as a function-local
+  static instead of a class member
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When a static mutex or spinlock (such as SkMutex or SkSpinlock) is only used to synchronize execution
+  of a single function or method, declare it as a function-local static variable inside that function
+  rather than as a static data member of the class. Move any mutex headers out of the class header into
+  the .cpp implementation file.
+why: Scoping the static mutex inside the function that uses it encapsulates synchronization logic to where
+  it is needed, avoids exposing internal locks to other class methods, keeps class declarations clean,
+  and eliminates unnecessary header include dependencies.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In header:
+  class SkAvifCodec : public SkScalingCodec {
+      ...
+  private:
+      static SkMutex fMutex;
+  };
+
+  // In .cpp:
+  SkMutex SkAvifCodec::fMutex;
+
+  SkCodec::Result SkAvifCodec::onGetPixels(...) {
+      SkAutoMutexExclusive lock(fMutex);
+      return this->decodePixels(...);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In header: class definition requires no static mutex member or mutex header include
+
+  // In .cpp:
+  SkCodec::Result SkAvifCodec::onGetPixels(...) {
+      static SkMutex mutex;
+      SkAutoMutexExclusive lock(mutex);
+      return this->decodePixels(...);
+  }
+  ```
+include_glob:
+- src/**
+- modules/**
+triggers:
+- \bstatic\s+(?:SkMutex|SkSpinlock|std::mutex)\b
+- \b(?:SkMutex|SkSpinlock|std::mutex)\s+[A-Za-z0-9_]+::f?[A-Z]\w*
+- \b(?:SkAutoMutexExclusive|SkAutoSpinlock)\s+\w+\s*[(]
+- \b(?:SkMutex|SkSpinlock|std::mutex)\s+f[A-Z]\w*;
+- \bstd::(?:lock_guard|unique_lock)<(?:SkMutex|std::mutex)>
+confidence: 0.92
+support_cl_count: 1

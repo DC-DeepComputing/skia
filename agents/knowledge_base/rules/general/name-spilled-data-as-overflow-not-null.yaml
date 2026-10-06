@@ -1,0 +1,43 @@
+id: general/name-spilled-data-as-overflow-not-null
+title: When naming storage, entries, or helpers for data that exceeded buffer or atlas capacity, use overflow
+  or spill rather than null
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not use 'null' (such as NullCaps or fNullBuffer) to name valid data, entries, or storage buffers
+  that exceeded primary capacity and spilled over. Name them using explicit 'overflow' or 'spill' terminology
+  (such as resolveOverflowCaps or fOverflowBuffer) to reflect their capacity-exceeded state accurately.
+why: The term 'null' implies that an object is absent, invalid, or empty (such as a null pointer or empty
+  geometry). Valid entries that merely exceeded texture, atlas, or buffer capacity and were diverted to
+  secondary storage remain valid data; labeling them 'null' obscures their validity and misleads callers
+  into treating them as missing or uninitialized.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Misleading: 'null' implies geometry or entries are invalid or missing.
+  bool resolveNullCaps(EndCaps* ends);
+  skia_private::TArray<uint8_t> fNullBuffer;
+  bool hasNullCaps() const { return fFirstNullCapIndex != kInvalidIndex; }
+  ```
+
+  Good:
+
+  ```cpp
+  // Accurate: 'overflow' indicates valid entries that exceeded atlas capacity.
+  bool resolveOverflowCaps(EndCaps* ends);
+  skia_private::TArray<uint8_t> fOverflowBuffer;
+  bool hasOverflowCaps() const { return fFirstOverflowCapIndex != kInvalidIndex; }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:resolve|handle|process|clear|has)Null[A-Z]\w*\s*\(
+- \b[A-Za-z0-9_]*(?:NullCaps|NullBuffer|nullCaps|nullBuffer)[A-Za-z0-9_]*\b
+- \b[A-Za-z0-9_]*(?:Null|null)(?:Storage|Entries|Items|Records|Data)[A-Za-z0-9_]*\b
+- \b(?:resolve|handle|process|clear|has)(?:Overflow|Spill)[A-Z]\w*\s*\(
+- \b[A-Za-z0-9_]*(?:Overflow|Spill)(?:Caps|Buffer|Storage|Entries|Data)[A-Za-z0-9_]*\b
+- \b(?:EndCaps|AlphaAtlasManager|StripGenerator)\b
+confidence: 0.9
+support_cl_count: 1

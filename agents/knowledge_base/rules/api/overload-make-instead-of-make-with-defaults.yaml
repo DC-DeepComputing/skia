@@ -1,0 +1,45 @@
+id: api/overload-make-instead-of-make-with-defaults
+title: When defining factory methods for constructing objects with default options, overload Make() rather
+  than creating separate suffixed functions like MakeWithDefaults()
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer providing a parameterless Make() factory overload (or defaulting the options parameter) rather
+  than introducing a separate factory function with a descriptive suffix like MakeWithDefaults() or MakeDefault()
+  for constructing an object with default options.
+why: In Skia C++ APIs, static factory methods canonically use function overloading under the uniform name
+  Make(...). Providing a no-argument Make() overload that forwards to Make({}) keeps the API surface clean,
+  concise, and consistent with project-wide idioms while avoiding redundant and verbose variant names.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class Context {
+  public:
+      static std::unique_ptr<const Context> Make(const Options&);
+      static std::unique_ptr<const Context> MakeWithDefaults();
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class Context {
+  public:
+      static std::unique_ptr<const Context> Make(const Options&);
+      static std::unique_ptr<const Context> Make();
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bMakeWithDefaults?\s*\(
+- \bMake(?:With)?Default(?:Options)?\s*\(
+- \b(?:Make|Create)WithDefaults?\b
+- \bstatic\s+.*\bMakeWithDefaults?\b
+- \bMake\s*\(\s*const\s+\w*(?:Options|Config|Params|Args|Info)\s*&
+confidence: 0.9
+support_cl_count: 1

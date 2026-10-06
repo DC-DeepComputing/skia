@@ -1,0 +1,33 @@
+id: general/prefer-sk-bzero-over-memset
+title: When clearing raw memory buffers to zero, use the project helper sk_bzero(ptr, size) instead of
+  std::memset or memset
+polarity: do
+severity: nit
+rubric: readability
+rule: Use `sk_bzero(ptr, size)` instead of `std::memset(ptr, 0, size)` or `memset(ptr, 0, size)` when
+  clearing raw memory buffers to zero.
+why: '`sk_bzero` is Skia''s project-standard utility for zeroing memory buffers and avoids undefined behavior
+  when passing null pointers or zero-length sizes to standard `memset`.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Undefined behavior if buffer is nullptr or size is 0
+  std::memset(fBuffer0, 0, (fBuffer2End - fBuffer0) * sizeof(*fBuffer0));
+  ```
+
+  Good:
+
+  ```cpp
+  sk_bzero(fBuffer0, (fBuffer2End - fBuffer0) * sizeof(*fBuffer0));
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:std::)?memset\s*[(][^,]+,\s*0x?0*\b
+- \b(?:std::)?memset\s*[(]
+- \bsk_bzero\s*[(]
+- \bsk_careful_memcpy\s*[(]
+confidence: 0.9
+support_cl_count: 1

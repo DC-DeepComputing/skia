@@ -1,0 +1,60 @@
+id: general/group-operational-methods-in-priv-classes
+title: When declaring methods in internal Priv classes, group operational behavioral methods together
+  separately from simple inline subsystem and member accessors
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In internal privileged classes (such as companion `*Priv` headers in `src/`), group operational
+  and behavioral methods representing private APIs together, separate from simple inline member and subsystem
+  accessors (getters). Do not scatter behavioral methods or factory operations among lists of inline field
+  accessors.
+why: Placing operational methods in a distinct section separates Skia's internal behavioral API from routine
+  getter boilerplate. Scattering operational methods among trivial inline accessors obscures key behavioral
+  operations, reduces interface scannability, and makes private capabilities harder to discover.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class RecorderPriv {
+      UploadBufferManager* uploadBufferManager() { return fRecorder->fUploadBufferManager.get(); }
+      sk_sp<FloatStorageManager> refFloatStorageManager() { return fRecorder->fFloatStorageManager; }
+
+      // Anti-pattern: operational methods scattered inside accessor list
+      std::unique_ptr<KeyAndDataBuilder> popOrCreateKeyAndDataBuilder() {
+          return fRecorder->popOrCreateKeyAndDataBuilder();
+      }
+      void pushKeyAndDataBuilder(std::unique_ptr<KeyAndDataBuilder> keyDB) {
+          return fRecorder->pushKeyAndDataBuilder(std::move(keyDB));
+      }
+
+      AtlasProvider* atlasProvider() { return fRecorder->fAtlasProvider.get(); }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class RecorderPriv {
+      // Group operational / behavioral private APIs together first
+      void flushTrackedDevices(const TextureProxy* dependency);
+      std::unique_ptr<KeyAndDataBuilder> popOrCreateKeyAndDataBuilder();
+      void pushKeyAndDataBuilder(std::unique_ptr<KeyAndDataBuilder> keyDB);
+
+      // Group simple inline subsystem and member accessors together
+      const Caps* caps() const { return fRecorder->fSharedContext->caps(); }
+      UploadBufferManager* uploadBufferManager() { return fRecorder->fUploadBufferManager.get(); }
+      sk_sp<FloatStorageManager> refFloatStorageManager() { return fRecorder->fFloatStorageManager; }
+      AtlasProvider* atlasProvider() { return fRecorder->fAtlasProvider.get(); }
+  };
+  ```
+include_glob:
+- src/**
+triggers:
+- \bclass\s+[A-Za-z0-9_]+Priv\b
+- \b(?:std::unique_ptr|sk_sp)<[A-Za-z0-9_]+>\s+[a-z][A-Za-z0-9_]*\s*\([^)]*\)
+- \bvoid\s+[a-z][A-Za-z0-9_]*\s*\([^)]*\)\s*[{;]
+- \b[a-z][A-Za-z0-9_]*\s*\([^)]*\)\s*\{\s*return\s+(?:this->)?f[A-Za-z0-9_]+
+- \b[A-Za-z0-9_]+Priv::[a-z][A-Za-z0-9_]*\s*\(
+confidence: 0.9
+support_cl_count: 1

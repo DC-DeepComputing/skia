@@ -1,0 +1,45 @@
+id: gpu/preserve-gpu-only-copy-src-in-buffer-manager
+title: When determining the AccessPattern for GPU-only buffers in Graphite buffer managers, do not hardcode
+  AccessPattern::kGpuOnly; preserve AccessPattern::kGpuOnlyCopySrc for tests
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When determining the AccessPattern for GPU-only buffers in Graphite buffer managers, do not unconditionally
+  hardcode AccessPattern::kGpuOnly. Route pattern selection through access helpers or DrawBufferManager::Options
+  that return AccessPattern::kGpuOnlyCopySrc when GPU_TEST_UTILS is enabled.
+why: Graphite testing infrastructure relies on AccessPattern::kGpuOnlyCopySrc to add copy-source usage
+  flags to otherwise private GPU buffers, allowing test fixtures to copy back and inspect buffer contents
+  during validation. Hardcoding AccessPattern::kGpuOnly bypasses test configuration and prevents test
+  readbacks from succeeding.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  info->fBuffer = fResourceProvider->findOrCreateBuffer(
+      bufferSize,
+      info->fType,
+      (useTransferBuffer || !supportCpuUpload) ? AccessPattern::kGpuOnly :
+                                                 AccessPattern::kHostVisible,
+      std::move(label));
+  ```
+
+  Good:
+
+  ```cpp
+  info->fBuffer = fResourceProvider->findOrCreateBuffer(
+      bufferSize,
+      info->fType,
+      get_gpu_access_pattern(useTransferBuffer || !supportCpuUpload, fOptions),
+      std::move(label));
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bAccessPattern::kGpuOnly\b
+- \bAccessPattern::kGpuOnlyCopySrc\b
+- \b(?:get_gpu_access_pattern|getGpuAccessPattern)\b
+- \bDrawBufferManager\b
+- \bfindOrCreate(?:NonShareable)?Buffer\s*\(
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,56 @@
+id: general/inline-hot-helpers-for-non-lto-builds
+title: When defining functions for cross-translation-unit inlining, place definitions in headers instead
+  of .cpp files, and avoid redundant inline in .cpp or unprofiled SK_ALWAYS_INLINE
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Define performance-sensitive or single-consumer helper functions directly in headers (or in the
+  consuming translation unit) rather than in a separate .cpp file so compilers can inline across callsites
+  without LTO. Do not add redundant 'inline' qualifiers to function definitions in .cpp files, and reserve
+  'SK_ALWAYS_INLINE' for profiled hot paths rather than premature optimization.
+why: Skia builds developer tooling, tests, and benchmarks without Link-Time Optimization (LTO), preventing
+  cross-translation-unit inlining when function definitions are isolated in .cpp files. Marking a definition
+  'inline' in a .cpp file does not expose its body to other compilation units, and modern compilers already
+  apply heuristics within the same file. Forcing 'SK_ALWAYS_INLINE' prematurely increases binary size
+  without verified benefit.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // DrawListTypes.cpp (isolated TU prevents cross-TU inlining without LTO)
+  BindingList* Layer::searchBinding(const LayerKey& key) {
+      return findBinding(key);
+  }
+
+  // DrawAtlas.cpp (redundant 'inline' in .cpp does not allow cross-TU inlining)
+  inline std::optional<EntryID> DrawAtlas::Plot::makeEntry(SkISize size) {
+      return fRectanizer.addRect(size.width(), size.height());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // DrawListTypes.h (defined in header or consuming .cpp so compiler can inline)
+  struct Layer {
+      BindingList* searchBinding(const LayerKey& key) { return findBinding(key); }
+  };
+
+  // DrawAtlas.h (defined in header for cross-TU callers; reserve SK_ALWAYS_INLINE for hot paths)
+  class Plot {
+      std::optional<EntryID> makeEntry(SkISize size) {
+          return fRectanizer.addRect(size.width(), size.height());
+      }
+  };
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSK_ALWAYS_INLINE\b
+- \binline\s+(?:SK_ALWAYS_INLINE\s+)?[A-Za-z0-9_:]+
+- ^\s*inline\s+[A-Za-z0-9_:]+
+- \b[A-Za-z0-9_]+::(?:search|find|match|make|get|add|test|update|insert)[A-Za-z0-9_]*\s*[(]
+- \b(?:DrawAtlas|Plot|DrawListLayer|BindingList|BindingWrapper)\b
+confidence: 0.95
+support_cl_count: 2

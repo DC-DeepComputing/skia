@@ -1,0 +1,53 @@
+id: api/avoid-compiler-deprecation-attributes
+title: When deprecating public APIs in headers, do not annotate declarations with [[deprecated]]; use
+  // DEPRECATED comments or build flags until callers migrate
+polarity: dont
+severity: blocking
+rubric: correctness
+rule: Do not annotate legacy public APIs with [[deprecated]] while internal callers or downstream clients
+  still use them; migrate all internal call sites upfront, and delay compiler deprecation attributes until
+  downstream clients have migrated. Deprecate public APIs using documentation comments (such as // DEPRECATED)
+  or build flag guards (such as SK_SUPPORT_LEGACY_*) instead.
+why: Skia and downstream embedders like Chromium and Android compile with warnings treated as errors (-Werror
+  or /WX). Marking an API with [[deprecated]] triggers compiler warnings (-Wdeprecated-declarations or
+  MSVC C4996) that immediately break builds for unconverted callers across platforms before migrations
+  complete.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In public header include/pathops/SkPathOps.h:
+  [[deprecated]]
+  static inline bool Simplify(const SkPath& path, SkPath* resultPath) {
+      return Simplify(path, resultPath);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In public header include/pathops/SkPathOps.h:
+  // DEPRECATED: Migrate callers to std::optional<SkPath> Simplify(const SkPath&).
+  static inline bool Simplify(const SkPath& path, SkPath* resultPath) {
+      return Simplify(path, resultPath);
+  }
+  ```
+include_glob:
+- include/**
+- modules/**/include/**
+triggers:
+- \[\[deprecated
+- __attribute__\s*\(\s*\(\s*deprecated
+- __declspec\s*\(\s*deprecated
+- \bSK_ATTRIBUTE\s*\(\s*deprecated
+- //\s*\(?DEPRECATED\b
+- \bSK_SUPPORT_LEGACY_[A-Za-z0-9_]+
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Chrome changes
+  quote: If your change modifies the Skia API, you may also need to land a change in Chromium. The strategy
+    you use to synchronize changes in the Skia and Chromium repositories may differ based on the nature
+    of the change, but in general, we recommend using build flag suppressions (defines).
+confidence: 0.92
+support_cl_count: 1

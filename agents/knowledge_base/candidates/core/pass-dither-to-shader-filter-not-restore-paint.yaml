@@ -1,0 +1,55 @@
+id: core/pass-dither-to-shader-filter-not-restore-paint
+title: When decomposing an SkPaint into an image filter graph or saveLayer, pass dithering into SkImageFilters::Shader
+  and omit setDither from the restore paint
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: Treat dithering as a shading effect rather than a layer restoration property. When decomposing an
+  SkPaint into an image filter graph or saveLayer where the filter evaluates shading, pass paint.isDither()
+  into SkImageFilters::Shader (as SkImageFilters::Dither::kYes/kNo) and omit setDither() from the layer's
+  restore paint; only call restorePaint.setDither() when shading is not handled by the filter.
+why: Dithering is evaluated when generating pixels from shaders during rasterization, not as a compositing
+  or blending operation on a completed layer. Setting dithering on the restore paint when an image filter
+  already evaluated shading fails to dither the filter's shader draw and redundantly, incorrectly applies
+  dithering to the layer's pixels during restoration.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkPaint restorePaint;
+  if (!appliesShading) {
+      restorePaint.setColor4f(fPaint.getColor4f());
+      restorePaint.setShader(fPaint.refShader());
+      restorePaint.setColorFilter(fPaint.refColorFilter());
+  }
+  restorePaint.setBlender(fPaint.refBlender());
+  restorePaint.setDither(fPaint.isDither());
+  restorePaint.setImageFilter(maskFilterAsImageFilter);
+  ```
+
+  Good:
+
+  ```cpp
+  SkPaint restorePaint;
+  if (!appliesShading) {
+      restorePaint.setColor4f(fPaint.getColor4f());
+      restorePaint.setShader(fPaint.refShader());
+      restorePaint.setColorFilter(fPaint.refColorFilter());
+      restorePaint.setDither(fPaint.isDither());
+  }
+  restorePaint.setBlender(fPaint.refBlender());
+  restorePaint.setImageFilter(maskFilterAsImageFilter);
+  ```
+include_glob:
+- src/core/**
+- src/effects/**
+triggers:
+- \b(?:restorePaint|layerPaint)\.setDither\b
+- \bsetDither\s*\([^)]*isDither
+- \bSkImageFilters::Shader\s*\(
+- \bSkImageFilters::Dither::k(?:Yes|No)\b
+- \bAutoLayerForImageFilter\b
+- \bappliesShading\b
+confidence: 0.9
+support_cl_count: 1

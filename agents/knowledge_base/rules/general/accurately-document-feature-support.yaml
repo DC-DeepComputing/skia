@@ -1,0 +1,79 @@
+id: general/accurately-document-feature-support
+title: When documenting feature support, limitations, or using fallback backends in docs, headers, release
+  notes, or tests, explicitly state constraints and backend applicability
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting component capabilities or APIs in READMEs, release notes, or public headers, ensure
+  descriptions accurately reflect implementation capabilities and backend availability; never claim support
+  for unimplemented formats or features. In release notes or public documentation for features not universally
+  supported, explicitly state backend applicability (such as Graphite-only). Additionally, visibly document
+  known limitations, unsupported options, or parity gaps in public headers, release notes, or test setups
+  (such as documenting why an alternative or legacy backend is intentionally used when the primary backend
+  lacks feature support) rather than leaving rationale undocumented.
+why: Overstating component support or omitting backend restrictions misleads users and embedders about
+  what Skia handles, creating false expectations of universal compliance. Documenting limitations, backend
+  scope, or intentional test fallback usage in comments and release notes ensures downstream clients and
+  future maintainers understand feature boundaries without mistaking mixed-backend usage for an oversight
+  or having to inspect Gerrit review threads.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  <!-- README.md: claiming unimplemented features -->
+  - **Advanced**: Embedded JPEG/PNG, ICO containers, OS/2 bitmap variants
+
+  <!-- relnotes/cache_purge_time_limit.md: backend restriction omitted -->
+  Allow clients to pass in a maximum time duration when purging resources from caches.
+
+  // tests/CodecTest.cpp: unexplained fallback to legacy backend
+  DEF_TEST(PngRustHdrMetadataRoundTrip, r) {
+      SkPngEncoder::Options options;
+      SkDynamicMemoryWStream wstream;
+      SkPngEncoder::Encode(&wstream, bm.pixmap(), options);
+      auto codec = SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(wstream.detachAsData()), &result);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  <!-- README.md: accurate support list -->
+  - **Advanced**: OS/2 bitmap variants (ICO and embedded JPEG/PNG not supported)
+
+  <!-- relnotes/cache_purge_time_limit.md: explicit backend restriction -->
+  The following new feature is only supported by the Graphite backend:
+  Allow clients to pass in a maximum time duration when purging resources from caches.
+
+  // tests/CodecTest.cpp: documented parity gap
+  DEF_TEST(PngRustHdrMetadataRoundTrip, r) {
+      // SkPngRustEncoder does not support writing HDR metadata; using libpng encoder.
+      SkPngEncoder::Options options;
+      SkDynamicMemoryWStream wstream;
+      SkPngEncoder::Encode(&wstream, bm.pixmap(), options);
+      auto codec = SkPngRustDecoder::Decode(std::make_unique<SkMemoryStream>(wstream.detachAsData()), &result);
+  }
+  ```
+include_glob:
+- '**/*.md'
+- include/**
+- tests/**
+- src/**
+triggers:
+- \b(?:Graphite|Ganesh|Dawn|Vulkan|Metal)(?:-only|\s+backend)\b
+- \b(?:only supported|supported (?:only )?by|only available)\b
+- \b(?:unsupported|unimplemented|not (?:yet )?supported|known limitation|lacks feature parity)\b
+- \b(?:format support|supported (?:formats?|features?|platforms?|architectures?|codecs?|operations?))\b
+- //.*\b(?:doesn't support|does not support|unsupported|not supported|known limitation)\b
+- \b(?:support|unsupported|metadata|limitation)\b.*\bSk[A-Z]\w*(?:Decoder|Encoder|Codec)\b
+- \bSkPng(?:Rust)?(?:Encoder|Decoder)\b
+- \b(?:purgeable resources|purgeable|ResourceCache|performDeferredCleanup)\b
+citations:
+- path: relnotes/README.md
+  heading: Skia Release Notes
+  quote: All Markdown (`*.md`) files in this directory are treated as release notes - except this file
+    (`README.md`). As part of the release process, the contents of these files will be inserted into `RELEASE_NOTES.md`,
+    and these files will be deleted.
+confidence: 0.98
+support_cl_count: 3

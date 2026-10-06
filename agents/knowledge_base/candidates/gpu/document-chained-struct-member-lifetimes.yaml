@@ -1,0 +1,52 @@
+id: gpu/document-chained-struct-member-lifetimes
+title: When bundling structs into a container to manage pointer-chain lifetime dependencies, explicitly
+  document which member fields are chained into the target struct
+polarity: do
+severity: nit
+rubric: readability
+rule: When bundling structs or resources into a container to manage pointer lifetime dependencies (such
+  as Vulkan pNext chains), explicitly document which member fields are chained into the target struct
+  and must share its lifetime. Avoid vague or generic scoping comments that describe arbitrary chained
+  structs rather than naming the specific container fields.
+why: Generic comments stating that chained structs must remain in scope obscure why specific fields are
+  grouped together. Explicitly naming which member fields are chained into which target struct clarifies
+  the purpose of the container and documents exact lifetime dependencies for callers and maintainers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct TestVkFeatures {
+      VkPhysicalDeviceFeatures2 deviceFeatures;
+
+      // Note: Any struct that CreateVkBackendContext may chain to VkPhysicalDeviceFeatures2
+      // should remain in scope together with the physical device features.
+      skgpu::VulkanPreferredFeatures skiaFeatures;
+      VkPhysicalDeviceProtectedMemoryFeatures protectedMemoryFeatures;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  struct TestVkFeatures {
+      VkPhysicalDeviceFeatures2 deviceFeatures;
+
+      // protectedMemoryFeatures and structs from skiaFeatures may be chained into deviceFeatures,
+      // so must share the same lifetime.
+      skgpu::VulkanPreferredFeatures skiaFeatures;
+      VkPhysicalDeviceProtectedMemoryFeatures protectedMemoryFeatures;
+  };
+  ```
+include_glob:
+- src/gpu/**
+- tools/gpu/**
+triggers:
+- //.*\b(?:chained into|chained to|share the same lifetime|pNext chain)\b
+- (?://|/\*).*\b(?:remain in scope|same lifetime|lifetime of the physical device)\b
+- \b(?:struct|class)\s+[A-Za-z0-9_]*(?:VkFeatures|Features|Chain|Chained)\b
+- \bVkPhysicalDeviceFeatures2\s+[a-z][a-zA-Z0-9_]*;
+- \b(?:AddToPNextChain|pNext)\b
+- \b(?:VulkanPreferredFeatures|VkPhysicalDeviceProtectedMemoryFeatures)\b
+confidence: 0.9
+support_cl_count: 1

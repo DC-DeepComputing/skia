@@ -1,0 +1,51 @@
+id: gpu/document-raii-scope-exit-callback-execution
+title: When documenting immediate callback execution that relies on RAII wrappers like RefCntedCallback
+  or AutoCallback, state that execution occurs upon scope exit
+polarity: do
+severity: nit
+rubric: readability
+rule: When relying on RAII wrappers (such as RefCntedCallback or AutoCallback) to trigger callbacks or
+  cleanup actions implicitly on destruction, explicitly document in explanatory comments that invocation
+  occurs when the wrapper goes out of scope. Avoid phrasing comments as though an immediate function call
+  is performed when no explicit call is made in the branch.
+why: In C++, RAII wrappers invoke callbacks or release procs inside their destructors rather than through
+  explicit call sites. Stating in comments that a callback 'fires immediately' without noting that it
+  triggers upon scope exit confuses readers and maintainers who expect an explicit call or suspect missing
+  logic.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // If a finish proc was provided, attach it to the most recent outstanding submission,
+  // or let it fire immediately if the GPU is idle.
+  if (callback) {
+      if (!fOutstandingSubmissions.empty()) {
+          fOutstandingSubmissions.back()->addFinishInfo(std::move(callback));
+      }
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // If a finish proc was provided, attach it to the most recent outstanding submission,
+  // or let it fire immediately if the GPU is idle (when callback goes out of scope).
+  if (callback) {
+      if (!fOutstandingSubmissions.empty()) {
+          fOutstandingSubmissions.back()->addFinishInfo(std::move(callback));
+      }
+      return true;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:RefCntedCallback|AutoCallback)\b
+- //.*\b(?:fire(?:s)? immediately|trigger(?:s)? immediately)\b
+- //.*\b(?:goes? out of scope|out of scope|on scope exit)\b
+- \b(?:addFinishInfo|addFinishedProc|addFinishedCallback)\s*\(
+- //.*\b(?:callback|proc|cleanup)\b.*\b(?:idle|immediately|scope)\b
+confidence: 0.88
+support_cl_count: 1

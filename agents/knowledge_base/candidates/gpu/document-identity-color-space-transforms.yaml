@@ -1,0 +1,52 @@
+id: gpu/document-identity-color-space-transforms
+title: When achieving a no-op color conversion by passing the destination color space as source, document
+  that input color is assumed to match the destination
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When producing an identity or no-op color space transform by passing the destination color space
+  as the source color space (such as when a flag skips color conversion), add an inline explanatory comment.
+  Clarify that the input color is assumed to already be in the destination color space to produce an identity
+  transform rather than leaving readers to wonder if the color space assignment is inverted.
+why: Passing a destination color space as a source argument appears counterintuitive or backwards to reviewers
+  and readers inspecting color transform pipelines. Explicitly documenting that the source color is assumed
+  to already match the destination clarifies that setting the source to the destination produces a deliberate
+  identity transform (dst -> dst) to bypass conversion.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const SkColorSpace* primitiveCS =
+          fSkipColorXform ? keyContext.dstColorInfo().colorSpace()
+                          : sk_srgb_singleton();
+  AddPrimitiveColor(keyContext, keyBuilder, gatherer, primitiveCS);
+  ```
+
+  Good:
+
+  ```cpp
+  // When fSkipColorXform is true, the primitive color is assumed to already
+  // be in the destination color space, so passing dstColorSpace as the source
+  // produces a deliberate identity transform.
+  const SkColorSpace* primitiveCS =
+          fSkipColorXform ? keyContext.dstColorInfo().colorSpace()
+                          : sk_srgb_singleton();
+  AddPrimitiveColor(keyContext, keyBuilder, gatherer, primitiveCS);
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:fSkipColorXform|skipColorXform|skipPrimitiveColorXform)\b
+- \b(?:dstColorInfo|dstColorSpace)[(][)]\.(?:colorSpace|refColorSpace)\b
+- \bkeyContext\.dstColorInfo\b
+- \bAddPrimitiveColor\b
+- \b(?:ColorSpaceTransform|refColorSpaceXform)\b
+- //.*\b(?:identity CS|identity transform|already in the dst color space)\b
+citations:
+- path: site/docs/user/color.md
+  heading: Optimizations
+  quote: If you're drawing opaque colors in a given color space to a destination tagged with that same
+    color space, we'll notice we can skip all six steps.
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,59 @@
+id: tests/omit-client-migration-guards-in-tests
+title: When updating unit tests under tests/ during API migrations, omit conditional compilation guards
+  for client staging flags like SK_IGNORE_* or SK_SUPPORT_LEGACY_*
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not add '#if !defined(...)' or '#ifdef' conditional compilation guards for client migration or
+  staging flags (such as SK_IGNORE_* or SK_SUPPORT_LEGACY_*) in Skia unit test files ('tests/**'). Target
+  the latest Skia API directly in test code, as downstream clients like Chromium only compile Skia library
+  targets and do not build Skia's internal test suite.
+why: Temporary staging flags decouple Skia API modifications in downstream client repositories during
+  rolls. Because downstream embedders never compile Skia's internal unit tests, wrapping test code in
+  client migration flags is redundant, clutters tests with dead preprocessor branches, and increases maintenance
+  overhead.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  RenderPassProperties bgra_1_depth() {
+      return { DepthStencilFlags::kDepth,
+               kBGRA_8888_SkColorType,
+  #if !defined(SK_IGNORE_RENDER_PASS_PROPERTIES_COLOR_SPACE)
+               /* dstColorSpace= */ nullptr,
+  #endif
+               /* requiresMSAA= */ false };
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  RenderPassProperties bgra_1_depth() {
+      return { DepthStencilFlags::kDepth,
+               kBGRA_8888_SkColorType,
+               /* dstColorSpace= */ nullptr,
+               /* requiresMSAA= */ false };
+  }
+  ```
+include_glob:
+- tests/**
+triggers:
+- '#(?:if|ifdef|ifndef)\s+.*\bSK_IGNORE_'
+- '#(?:if|ifdef|ifndef)\s+.*\bSK_SUPPORT_LEGACY_'
+- \bSK_IGNORE_[A-Za-z0-9_]+
+- \bSK_SUPPORT_LEGACY_[A-Za-z0-9_]+
+- \bdefined\s*[(]\s*SK_
+- \bRenderPassProperties\b
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Method 1 (preferred) - Make the old code path opt-in for Chromium
+  quote: |-
+    If your change modifies the Skia API, you may also need to land a change in Chromium.
+
+    The strategy you use to synchronize changes in the Skia and Chromium
+    repositories may differ based on the nature of the change, but in general, we
+    recommend using build flag suppressions (defines).
+confidence: 0.9
+support_cl_count: 1

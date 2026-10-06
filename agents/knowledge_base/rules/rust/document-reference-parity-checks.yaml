@@ -1,0 +1,56 @@
+id: rust/document-reference-parity-checks
+title: When writing Rust parsers or FFI bridges that mirror reference C++ implementations, document intentional
+  validation checks and bailouts with comments citing reference behavior
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In Rust codecs, format parsers, and FFI bridges written to mirror reference C++ implementations
+  (such as skcms or native image decoders), document intentional validation and rejection checks with
+  inline comments citing the reference behavior or specification. When bailing out on unsupported variants
+  or strict invariants, explain whether the check enforces specification constraints or mirrors reference
+  implementation limits.
+why: Without explanatory comments citing reference behavior and specifications, future maintainers cannot
+  distinguish intentional strict bailouts from missing functionality or overly restrictive checks. Clear
+  documentation prevents contributors from inadvertently introducing divergent fallback paths or breaking
+  behavioral parity with the reference C++ parser.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  out.connection_space = match profile.pcs {
+      moxcms::DataColorSpace::Xyz => ffi::skcms_Signature::skcms_Signature_XYZ,
+      moxcms::DataColorSpace::Lab => ffi::skcms_Signature::skcms_Signature_Lab,
+      _ => return false,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Profile Connection Space (PCS) must be XYZ or Lab per ICC spec.
+  // skcms only supports these two PCS values. Reject profiles with other values
+  // to match skcms_ParseWithA2BPriority behavior.
+  out.connection_space = match profile.pcs {
+      moxcms::DataColorSpace::Xyz => ffi::skcms_Signature::skcms_Signature_XYZ,
+      moxcms::DataColorSpace::Lab => ffi::skcms_Signature::skcms_Signature_Lab,
+      _ => return false, // Reject unsupported PCS to mirror skcms
+  };
+  ```
+include_glob:
+- rust/**
+- experimental/rust_*/**
+triggers:
+- //.*\b(?:[Mm]irror|[Mm]atch|[Pp]arity)\b.*\b(?:behavior|implementation|reference|skcms|C\+\+)
+- //.*\b(?:[Rr]eject|[Uu]nsupported|strict)\b.*\b(?:to match|reference|spec|behavior)\b
+- //.*\b(?:Profile Connection Space|PCS|ICC spec|specification)\b
+- \b(?:connection_space|data_color_space|DataColorSpace)\b
+- \b(?:skcms_Signature|skcms_Parse[A-Za-z0-9_]*|skcms_ICCProfile)\b
+- _\s*=>\s*return\s+(?:false|Err\b)
+- \bmatch\s+profile\.[a-z_]+
+citations:
+- path: rust/icc/README.md
+  heading: Memory Safety
+  quote: All ICC profile parsing happens in Rust, mirroring the structure and logic of `skcms.cc`.
+confidence: 0.9
+support_cl_count: 1

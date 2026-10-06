@@ -1,0 +1,66 @@
+id: tests/use-reporter-context-for-subtests
+title: In unit tests with repetitive assertion blocks or test cases, structure table-driven tests using
+  skiatest::ReporterContext rather than copying assertion boilerplate or formatting strings
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Consolidate repetitive unit test functions (DEF_TEST) or assertion blocks that execute identical
+  setup and verification sequences across different inputs into table-based tests or helper functions.
+  Use a stack-allocated skiatest::ReporterContext to attach descriptive subtest names, iteration parameters,
+  file paths, or test descriptions to failure reports, rather than omitting context, copying assertion
+  boilerplate, or repeatedly formatting description strings into individual REPORTER_ASSERT calls.
+why: Repetitive test functions or assertion sequences duplicate boilerplate and increase maintenance burden
+  when test logic evolves. Without skiatest::ReporterContext, assertion failures inside loops, test tables,
+  or shared helper functions report only line numbers without identifying which input case failed, while
+  formatting description strings into individual REPORTER_ASSERT calls clutters assertion expressions
+  and duplicates formatting across multiple assertions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Repetitive assertion boilerplate without subtest context:
+  SkPoint firstPoint = {5.0, 5.0};
+  SkColor firstPointColor = pixmap.getColor(firstPoint.x(), firstPoint.y());
+  REPORTER_ASSERT(reporter, SkColorGetR(firstPointColor) > 0 && SkColorGetR(firstPointColor) < 255);
+
+  SkPoint firstPointOffset = {4.0, 5.0};
+  SkColor firstPointOffsetColor = pixmap.getColor(firstPointOffset.x(), firstPointOffset.y());
+  REPORTER_ASSERT(reporter, SkColorGetR(firstPointOffsetColor) > 0 && SkColorGetR(firstPointOffsetColor) < 255);
+  ```
+
+  Good:
+
+  ```cpp
+  // Factored helper lambda with skiatest::ReporterContext:
+  auto test = [&](const std::string& name, SkPoint pt, SkColor expected) {
+      skiatest::ReporterContext subtest(reporter, name);
+      SkColor actual = pixmap.getColor((int)pt.x(), (int)pt.y());
+      REPORTER_ASSERT(reporter, actual == expected, "%s: %x != %x", name.c_str(), actual, expected);
+  };
+
+  test("above first point", {5.0, 4.0}, SK_ColorWHITE);
+  test("on first point", {5.0, 5.0}, SK_ColorBLACK);
+  ```
+include_glob:
+- tests/**
+- modules/**
+triggers:
+- \b(?:skiatest::)?ReporterContext\b
+- \bReporterContext\s+\w+\s*\(
+- \bREPORTER_ASSERT(?:_MESSAGE)?\s*\(
+- \bERRORF\s*\(
+- \bfor\s*\([^)]*\b(?:tests?|cases?|subtests?|files?|paths?|params?)\b
+- auto\s+(?:test|subtest|run_test|check)\s*=
+- \bDEF_TEST\s*\(\s*\w*(?:Mix|Table|Param|Batch|Cases?|Loop|Multi|Suite)\w*
+citations:
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: Reporter and Assertions
+  quote: '- `skiatest::ReporterContext`: Use this stack-allocated object to provide additional context
+    (like subtest names) for failure reports.'
+- path: agents/skills/skia-add-test/SKILL.md
+  heading: '### Reporter and Assertions'
+  quote: '`skiatest::ReporterContext`: Use this stack-allocated object to provide additional context (like
+    subtest names) for failure reports.'
+confidence: 0.98
+support_cl_count: 6

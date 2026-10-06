@@ -1,0 +1,56 @@
+id: codec/destroy-libjpeg-struct-on-early-return
+title: When managing manual libjpeg decompressor or compressor structs, ensure jpeg_destroy_decompress
+  or jpeg_destroy_compress is invoked on all early return and error paths
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When initializing a `jpeg_decompress_struct` or `jpeg_compress_struct` without an RAII wrapper (such
+  as `SkJpegDecoderMgr` or `SkJpegEncoderMgr`), ensure `jpeg_destroy_decompress` or `jpeg_destroy_compress`
+  is called on all control-flow paths, including early returns and error branches. Alternatively, wrap
+  the struct in an RAII guard to guarantee destruction on scope exit.
+why: '`jpeg_create_decompress` and `jpeg_create_compress` allocate internal memory structures within libjpeg''s
+  memory manager. Exiting early without invoking the matching destroy routine leaks those internal resources.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  jpeg_decompress_struct dinfo;
+  jpeg_create_decompress(&dinfo);
+  ...
+  while (dinfo.output_width != dstWidth || dinfo.output_height != dstHeight) {
+      if (1 == num || dstWidth > dinfo.output_width || dstHeight > dinfo.output_height) {
+          return false; // Leaks internal libjpeg memory allocations
+      }
+      ...
+  }
+  jpeg_destroy_decompress(&dinfo);
+  ```
+
+  Good:
+
+  ```cpp
+  jpeg_decompress_struct dinfo;
+  jpeg_create_decompress(&dinfo);
+  ...
+  while (dinfo.output_width != dstWidth || dinfo.output_height != dstHeight) {
+      if (1 == num || dstWidth > dinfo.output_width || dstHeight > dinfo.output_height) {
+          jpeg_destroy_decompress(&dinfo);
+          return false;
+      }
+      ...
+  }
+  jpeg_destroy_decompress(&dinfo);
+  ```
+include_glob:
+- src/codec/**
+- src/encode/**
+triggers:
+- \bjpeg_destroy_decompress\b
+- \bjpeg_create_decompress\b
+- \bjpeg_decompress_struct\b
+- \bjpeg_destroy_compress\b
+- \bjpeg_create_compress\b
+- \bjpeg_compress_struct\b
+confidence: 0.95
+support_cl_count: 1

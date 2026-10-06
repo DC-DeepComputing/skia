@@ -1,0 +1,66 @@
+id: ports/subclass-proxy-for-platform-typefaces
+title: When implementing platform-specific typeface wrappers in SkFontMgr ports supporting pluggable scanners,
+  delegate instantiation to scanner->MakeFromStream and subclass SkTypeface_proxy rather than SkTypeface_FreeTypeStream
+polarity: do
+severity: should_fix
+rubric: design
+rule: When implementing or updating an SkFontMgr port to support pluggable scanners, delegate typeface
+  instantiation to scanner->MakeFromStream() and subclass SkTypeface_proxy if platform-specific wrapping
+  is required. Do not subclass backend-specific classes like SkTypeface_FreeTypeStream or call backend-specific
+  scanner helpers (such as SkFontScanner_FreeType::computeAxisValues).
+why: Hardcoding SkTypeface_FreeTypeStream or FreeType-specific scanner helpers couples the font manager
+  directly to FreeType, preventing it from working with alternative font scanners such as Fontations.
+  Delegating typeface creation to scanner->MakeFromStream() and wrapping the result in SkTypeface_proxy
+  keeps the font manager backend-agnostic while preserving platform-specific identifiers and metadata.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SkTypeface_Fuchsia : public SkTypeface_FreeTypeStream { ... };
+
+  sk_sp<SkTypeface> CreateTypefaceFromSkStream(SkFontScanner* scanner,
+                                               std::unique_ptr<SkStreamAsset> stream,
+                                               const SkFontArguments& args, TypefaceId id) {
+      SkFontScanner_FreeType::computeAxisValues(axisDefinitions, currentPos, position, axisValues,
+                                                name, &style);
+      auto fontData = std::make_unique<SkFontData>(std::move(stream), ...);
+      return sk_make_sp<SkTypeface_Fuchsia>(std::move(fontData), style, isFixedPitch, name, id);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  class SkTypeface_Fuchsia : public SkTypeface_proxy {
+  public:
+      static sk_sp<SkTypeface_Fuchsia> Make(sk_sp<SkTypeface> realTypeface, TypefaceId id) {
+          return sk_sp(new SkTypeface_Fuchsia(std::move(realTypeface), id));
+      }
+  private:
+      SkTypeface_Fuchsia(sk_sp<SkTypeface> realTypeface, TypefaceId id)
+              : SkTypeface_proxy(std::move(realTypeface), realTypeface->fontStyle(),
+                                 realTypeface->isFixedPitch())
+              , fId(id) {}
+      TypefaceId fId;
+  };
+
+  sk_sp<SkTypeface> CreateTypefaceFromSkStream(SkFontScanner* scanner,
+                                               std::unique_ptr<SkStreamAsset> stream,
+                                               const SkFontArguments& args, TypefaceId id) {
+      sk_sp<SkTypeface> realTypeface = scanner->MakeFromStream(std::move(stream), args);
+      return realTypeface ? SkTypeface_Fuchsia::Make(std::move(realTypeface), id) : nullptr;
+  }
+  ```
+include_glob:
+- src/ports/**
+triggers:
+- \bclass\s+\w+\s*:\s*public\s+SkTypeface_FreeType(?:Stream)?\b
+- \bclass\s+\w+\s*:\s*public\s+SkTypeface_proxy\b
+- \bSkTypeface_FreeTypeStream\b
+- \bSkTypeface_proxy\b
+- \bSkFontScanner_FreeType\b
+- \b(?:scanner|fScanner)->MakeFromStream\b
+- \bSkFontScanner\b
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,54 @@
+id: gpu/sync-paint-option-with-paint-params
+title: When modifying or optimizing shader key generation stages in PaintParams or ShadingParams, update
+  counterpart methods in PaintOption to prevent pipeline key divergence
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When adding, modifying, or optimizing shader and pipeline key generation stages in PaintParams or
+  ShadingParams (such as handlePrimitiveColor, handleClipping, handlePaintAlpha, handleColorFilter, or
+  handleDithering), update the counterpart helper methods in PaintOption in lockstep. Ensure precompiled
+  key building reproduces the exact same snippet sequence, fixed blend modes, and conditional branches
+  emitted during runtime draws.
+why: Graphite's precompilation system in PaintOption directly mirrors runtime pipeline key assembly in
+  PaintParams. Divergence between runtime key generation and precompile helpers causes precompiled pipeline
+  keys to mismatch draw-time keys, triggering cache misses and runtime shader compilation jank.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In PaintParams.cpp / ShadingParams.cpp:
+  bool ShadingParams::handlePrimitiveColor(const KeyContext& keyContext) const {
+      if (fPrimitiveBlendMode == SkBlendMode::kDst) {
+          AddFixedBlendMode(keyContext, keyBuilder, gatherer, SkBlendMode::kDst);
+      } ...
+  }
+
+  // In PaintOption.cpp: left unchanged using unoptimized blender key generation
+  bool PaintOption::handlePrimitiveColor(const KeyContext& keyContext) const {
+      AddToKey(keyContext, keyBuilder, gatherer, SkBlender::Mode(fPrimitiveBlendMode).get());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In PaintOption.cpp: updated in lockstep to mirror ShadingParams logic
+  bool PaintOption::handlePrimitiveColor(const KeyContext& keyContext) const {
+      if (fPrimitiveBlendMode == SkBlendMode::kDst) {
+          AddFixedBlendMode(keyContext, keyBuilder, gatherer, SkBlendMode::kDst);
+      } else {
+          AddToKey(keyContext, keyBuilder, gatherer, SkBlender::Mode(fPrimitiveBlendMode).get());
+      }
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:PaintParams|ShadingParams|PaintOption)::(?:toKey|handle[A-Za-z0-9_]+|add[A-Za-z0-9_]+ToKey)\b
+- \bhandle(?:PrimitiveColor|Clipping|PaintAlpha|ColorFilter|Dithering)\b
+- \b(?:addPaintColorToKey|AddFixedBlendMode|AddPrimitiveColor)\b
+- \b(?:PaintOption|PaintOptions)\b
+- \b(?:fPrimitiveBlender|primitiveBlender|fPrimitiveBlendMode)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,52 @@
+id: general/use-sk-abort-for-unimplemented-stubs
+title: When stubbing out unimplemented virtual methods or unsupported fallback paths, terminate with SK_ABORT
+  and a descriptive message instead of bare SkUNREACHABLE
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When stubbing out unimplemented virtual methods, interface overrides, or unsupported fallback paths,
+  terminate the function using `SK_ABORT("Not implemented")` (or a descriptive message stating the unsupported
+  operation) rather than `SkUNREACHABLE;`. Reserve `SkUNREACHABLE` strictly for execution paths that are
+  provably unreachable under valid program invariants (such as after exhaustive enum switches).
+why: '`SkUNREACHABLE` expands to a bare trap instruction (`__builtin_trap()` or `__fastfail()`) without
+  logging or diagnostic context, which is intended solely for statically impossible branches. In contrast,
+  unimplemented stubs and unsupported fallback paths are potentially reachable if a caller invokes an
+  unsupported backend feature or method; `SK_ABORT` logs a fatal error with source file, line number,
+  and a descriptive message before terminating.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool Texture::uploadDataOnHost(const UploadSource& source, const SkIRect& dstRect) {
+      SkUNREACHABLE;
+  }
+
+  virtual bool startStatsQuery(GpuStatsFlags) {
+      SkUNREACHABLE;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  bool Texture::uploadDataOnHost(const UploadSource& source, const SkIRect& dstRect) {
+      SK_ABORT("Not implemented");
+  }
+
+  virtual bool startStatsQuery(GpuStatsFlags) {
+      SK_ABORT("Stats query unsupported.");
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bSkUNREACHABLE\b
+- \bSK_ABORT\b
+- \bSK_ABORT\s*[(]
+- \b(?:[Nn]ot implemented|[Uu]nsupported)\b
+- \"[Nn]ot implemented\"
+confidence: 0.92
+support_cl_count: 1

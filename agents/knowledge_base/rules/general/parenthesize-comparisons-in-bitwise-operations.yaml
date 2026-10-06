@@ -1,0 +1,51 @@
+id: general/parenthesize-comparisons-in-bitwise-operations
+title: When combining bitwise operators (&, |, ^) with comparison (==, !=, <) or arithmetic (+, -) expressions,
+  explicitly parenthesize sub-expressions to prevent -Wparentheses warnings
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Always enclose comparison expressions (such as <, <=, >, >=, ==, !=) and arithmetic sub-expressions
+  (such as +, -) in explicit parentheses when combining them with bitwise operators (&, |, ^). Ensure
+  both left- and right-hand operands are parenthesized (e.g. `(a > b) & (c <= d)` or `(x - 1) & x`) to
+  clarify evaluation order and avoid operator precedence ambiguity.
+why: In C++, bitwise operators (&, |, ^) have lower precedence than arithmetic (+, -) and comparison (<,
+  <=, ==) operators, which frequently confuses readers and triggers compiler warnings (such as GCC's -Wparentheses).
+  Explicit parentheses guarantee intended evaluation order, improve readability, and prevent -Werror build
+  breakages across compiler toolchains.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // GCC warns with -Wparentheses: suggest parentheses around comparison or arithmetic in operand of '&'
+  if (!all((gap > tolerance) & abs(gap - strokeWidth) <= tolerance)) {
+      return;
+  }
+  SkASSERT((requiredAlignment - 1 & requiredAlignment) == 0);
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicit parentheses around comparison and arithmetic operands satisfy compiler and clarify intent
+  if (!all((gap > tolerance) & (abs(gap - strokeWidth) <= tolerance))) {
+      return;
+  }
+  SkASSERT(((requiredAlignment - 1) & requiredAlignment) == 0);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- '[&|^]\s*[^;&|\\n]*(?:==|!=|<=|>=|<|>)'
+- (?:==|!=|<=|>=|<|>)[^;&|\\n]*[&|^]
+- '[-+]\s*\d+\s*[&|^]'
+- '[&|^]\s*[^;&|\\n]*[-+]\s*\d+'
+- \b(?:all|any)\s*[(][^;]*[&|^]
+- \bskvx::(?:byte|int|float|Vec)\b[^;]*[&|^]
+- '[)]\s*[&|^]\s*(?:[(]|[a-zA-Z0-9_])'
+confidence: 0.98
+support_cl_count: 3

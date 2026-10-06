@@ -1,0 +1,46 @@
+id: gpu/name-serialization-methods-after-target
+title: When adding serialization or deserialization helper methods to capability or context classes, name
+  them after the target entity rather than using bare deserialize
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring serialization or deserialization dispatch or helper methods on multipurpose host
+  classes (such as Caps, Context, or ResourceProvider), name the method after the target entity being
+  converted (e.g., deserializeTextureInfo or serializePipelineDesc) rather than using bare serialize or
+  deserialize. Keep member function names explicit so call sites clearly indicate what object is being
+  reconstructed or written.
+why: A bare serialize() or deserialize() member function on a capability, context, or manager class misleadingly
+  implies that the host object itself is being serialized or restored. Explicitly naming the target type
+  removes ambiguity at call sites (e.g., caps->deserializeTextureInfo(...)) and avoids collisions when
+  the class provides conversion utilities for multiple resource types.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class Caps {
+      virtual bool deserialize(SkStream*, BackendApi, Mipmapped, Protected, uint32_t, TextureInfo*) const;
+      virtual bool serialize(const TextureInfo&, SkWStream*) const;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class Caps {
+      virtual bool deserializeTextureInfo(SkStream*, BackendApi, Mipmapped, Protected, uint32_t, TextureInfo*) const;
+      virtual bool serializeTextureInfo(const TextureInfo&, SkWStream*) const;
+  };
+  ```
+include_glob:
+- src/gpu/**
+- include/gpu/**
+triggers:
+- \b(?:virtual\s+)?bool\s+(?:de)?serialize\s*[(]
+- \b(?:de)?serialize[A-Z]\w*\s*[(]
+- ->(?:de)?serialize(?:[A-Z]\w*)?\s*[(]
+- \b(?:virtual\s+)?bool\s+(?:de)?serialize[A-Z]\w*\s*[(]
+- \b(?:Caps|Context|ResourceProvider)::(?:de)?serialize
+- \b(?:SkStream|SkWStream)\s*\*[^,)]*,[^)]*\bTextureInfo\b
+confidence: 0.88
+support_cl_count: 1

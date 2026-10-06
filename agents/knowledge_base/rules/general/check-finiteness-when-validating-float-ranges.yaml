@@ -1,0 +1,59 @@
+id: general/check-finiteness-when-validating-float-ranges
+title: When validating floating-point coordinates against numeric thresholds for low-precision or fast
+  paths, check finiteness to prevent NaN from falsely passing range checks
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When testing floating-point coordinates, scalars, or bounds against numeric range thresholds (such
+  as [INT16_MIN, INT16_MAX] or fixed-point limits for low-precision fast paths), explicitly verify finiteness
+  using `!std::isfinite(val)` (or `.isFinite()`). Do not rely solely on relational inequality checks (such
+  as `val > MAX || val < MIN`), as relational comparisons against NaN always evaluate to false and allow
+  non-finite values to bypass out-of-range guards.
+why: Under IEEE 754 rules, relational comparisons (<, >, <=, >=) against NaN evaluate to false. Out-of-bounds
+  guards using only relational operators fail to detect NaN, erroneously routing non-finite coordinates
+  to low-precision or fixed-point routines that cause undefined behavior, integer overflow, or rendering
+  artifacts.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  for (float val : SkSpan<const float>(deviceCoords.asScalars(), 4)) {
+      if (val > INT16_MAX || val < INT16_MIN) {
+          shouldUseHighPrecision = true;
+          break;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  for (float val : SkSpan<const float>(deviceCoords.asScalars(), 4)) {
+      if (val > INT16_MAX || val < INT16_MIN || !std::isfinite(val)) {
+          shouldUseHighPrecision = true;
+          break;
+      }
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \b(?:INT16_MAX|INT16_MIN|INT32_MAX|INT32_MIN)\b
+- (?:>|<|>=|<=)\s*(?:INT16_|INT32_|kMin|kMax)
+- \b(?:std::)?isfinite\s*[(]
+- \b(?:SkIsFinite|SkScalarsAreFinite|SkScalarIsFinite)\s*[(]
+- \.(?:isFinite)\s*[(]
+- \bshouldUseHighPBilerp\b
+citations:
+- path: tools/raster_pipeline/README.md
+  heading: Precision Modes
+  quote: 'Lowp (Low Precision): Uses fixed-point (16-bit) math. Significantly faster. Most standard drawing
+    operations use lowp.'
+- path: RELEASE_NOTES.md
+  heading: Milestone 126
+  quote: |-
+    `SkScalarIsFinite`, `SkScalarsAreFinite`, and `SkScalarIsNaN` have been removed from the Skia API.
+        These calls can be replaced with the functionally-equivalent `std::isfinite` and `std::isnan`.
+confidence: 0.92
+support_cl_count: 1

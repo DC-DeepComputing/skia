@@ -1,0 +1,71 @@
+id: general/avoid-passing-member-variables-to-member-methods
+title: When declaring or calling non-static member functions, access member variables directly within
+  the method instead of passing or accepting redundant parameters
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not declare non-static member methods with parameters for state or resources already accessible
+  via member variables of the class, and do not pass member variables (such as fMember or fMember.get())
+  as arguments when invoking member functions of the same class. Access the member variable directly within
+  the method implementation instead of introducing redundant or dead parameters.
+why: Non-static member methods already have direct access to instance fields via this. Accepting or passing
+  member variables as parameters introduces unnecessary function arguments, creates dead or duplicate
+  parameters, clutters call sites, and misleadingly suggests configurability or caller-controlled state
+  for methods tightly coupled to instance state.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Passing member variable to a member method:
+  class SkFontMgr_AndroidNDK : public SkFontMgr {
+      sk_sp<SkTypeface_AndroidNDK> make(SkAFont font, bool cacheFontFiles,
+                                        const SkFontScanner* scanner) const {
+          return scanner->MakeFromStream(...);
+      }
+      void foo(SkAFont font) {
+          this->make(std::move(font), true, fScanner.get());
+      }
+  };
+
+  // 2. Declaring redundant parameter for state already held in member variable:
+  sk_sp<SkTypeface> SkFontMgr_Fuchsia::GetOrCreateTypeface(SkFontScanner* scanner,
+                                                           TypefaceId id,
+                                                           const fuchsia::mem::Buffer& buf) const {
+      return CreateTypefaceFromSkData(fScanner.get(), std::move(data), id);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Access member variable directly in member method:
+  class SkFontMgr_AndroidNDK : public SkFontMgr {
+      sk_sp<SkTypeface_AndroidNDK> make(SkAFont font, bool cacheFontFiles) const {
+          return fScanner->MakeFromStream(...);
+      }
+      void foo(SkAFont font) {
+          this->make(std::move(font), true);
+      }
+  };
+
+  // 2. Omit redundant parameter from member method signature:
+  sk_sp<SkTypeface> SkFontMgr_Fuchsia::GetOrCreateTypeface(TypefaceId id,
+                                                           const fuchsia::mem::Buffer& buf) const {
+      return CreateTypefaceFromSkData(fScanner.get(), std::move(data), id);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- ',\s*f[A-Z][a-zA-Z0-9_]*\.(?:get|release)[(][)]\s*[,)]'
+- \bf[A-Z][a-zA-Z0-9_]*\.(?:get|get_ref|release)[(][)]\s*[,)]
+- ',\s*f[A-Z][a-zA-Z0-9_]*\s*[,)]'
+- \bthis->f[A-Z][a-zA-Z0-9_]*\s*[,)]
+- \bthis->[a-zA-Z0-9_]+[(]\s*(?:this->)?f[A-Z][a-zA-Z0-9_]*\s*[,)]
+- \bstd::move[(]\s*(?:this->)?f[A-Z][a-zA-Z0-9_]*\s*[)]\s*[,)]
+- \bGetOrCreateTypeface\b
+confidence: 0.95
+support_cl_count: 2

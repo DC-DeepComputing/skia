@@ -1,0 +1,59 @@
+id: general/encapsulate-derived-attributes-in-factory-methods
+title: When defining factory methods or constructors that wrap an existing object, extract derived properties
+  internally rather than accepting redundant caller parameters
+polarity: dont
+severity: should_fix
+rubric: design
+rule: When defining factory methods (such as Make()) or constructors that wrap, adapt, or proxy an existing
+  object, do not accept redundant parameters for attributes or properties that can be directly extracted
+  from the wrapped object unless callers are explicitly expected to override them. Extract and query those
+  properties inside the factory method or constructor implementation instead of requiring callers to unpack
+  and forward them.
+why: Accepting parameters for attributes already provided by an underlying wrapped object clutters caller
+  code with redundant accessors and misleadingly suggests that callers are expected or permitted to customize
+  those properties. Encapsulating property extraction inside the factory method preserves a clean API
+  contract and guarantees that the wrapper inherits the underlying object's attributes unmodified.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Caller extracts attributes and passes them to factory method:
+  const SkFontStyle style = realTypeface->fontStyle();
+  const bool isFixedPitch = realTypeface->isFixedPitch();
+  return SkTypeface_Fuchsia::Make(std::move(realTypeface), style, isFixedPitch, id);
+
+  static sk_sp<SkTypeface_Fuchsia> Make(sk_sp<SkTypeface> realTypeface,
+                                        const SkFontStyle& style,
+                                        bool isFixedPitch,
+                                        TypefaceId id) {
+      return sk_sp(new SkTypeface_Fuchsia(std::move(realTypeface), style, isFixedPitch, id));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Caller passes the wrapped object directly without redundant parameters:
+  return SkTypeface_Fuchsia::Make(std::move(realTypeface), id);
+
+  static sk_sp<SkTypeface_Fuchsia> Make(sk_sp<SkTypeface> realTypeface,
+                                        TypefaceId id) {
+      SkASSERT(realTypeface);
+      const SkFontStyle style = realTypeface->fontStyle();
+      const bool isFixedPitch = realTypeface->isFixedPitch();
+      return sk_sp(new SkTypeface_Fuchsia(std::move(realTypeface), style, isFixedPitch, id));
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \b(?:static\s+)?sk_sp<[A-Za-z0-9_:]+>\s+Make\w*\s*\([^)]*(?:sk_sp|unique_ptr)<
+- \b(?:Make|Create)\w*\s*\([^)]*(?:realTypeface|wrapped|proxy|delegate)
+- (?:->|\.)(?:fontStyle|isFixedPitch|dimensions|imageInfo|colorType)\s*\(\)
+- \b[A-Za-z0-9_]+::Make\w*\s*\([^)]*\b(?:realTypeface|wrapped|proxy|style|isFixedPitch)\b
+- :\s*SkTypeface_proxy\s*\(
+confidence: 0.92
+support_cl_count: 1

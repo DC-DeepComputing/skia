@@ -1,0 +1,76 @@
+id: general/cite-published-spec-clause-and-title
+title: When documenting types implementing external specifications, verify citations match published clause
+  titles, document governing scopes at enclosing types, and note multi-standard semantic discrepancies
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting data structures, constants, or algorithms implementing external specifications
+  (such as SMPTE, ISO/IEC, ITU-R, or XMP), verify clause citations match the published standard rather
+  than outdated drafts, and cite descriptive section or table titles alongside clause numbers. Document
+  governing clauses in a blanket comment at the enclosing class or header level rather than repeating
+  fragmented citations across nested member structs. Additionally, when unifying metadata specified across
+  multiple standards (such as CTA and W3C PNG), document all relevant specifications, highlight semantic
+  or unit discrepancies, and advise callers on compatible usage.
+why: Draft citations and section numbers frequently shift before ratification; citing current published
+  standards with descriptive titles ensures cross-references remain identifiable, while enclosing blanket
+  comments prevent fragmented citations. When identically named metadata fields diverge across standards
+  (such as luminance definitions or outlier filtering in CTA vs. PNG), documenting semantic discrepancies
+  prevents caller misuse and ensures cross-format compatibility.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Draft clause citation without descriptive title and fragmented across nested structs:
+  struct ComponentMixingFunction { /* Clause 5.2 */ };
+  struct HeadroomAdaptiveToneMap { /* Clause 7.1 */ };
+
+  // Unifying metadata across standards without noting semantic discrepancies:
+  /**
+   * Content light level metadata defined in ANSI/CTA-861-H Annex P.
+   */
+  struct ContentLightLevelInformation {
+      float fMaxCLL = 0.f;
+      float fMaxFALL = 0.f;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  /**
+   * Adaptive global tone mapping metadata defined in SMPTE ST 2094-50.
+   * Names correspond to the ColorVolumeTransform group in Clause 7.1: Metadata set.
+   */
+  class AgtmImpl final : public Agtm {
+      struct GainCurve {
+          // Function evaluation described in Clause 6.1.3: Gain curve evaluation.
+          float evaluate(float x) const;
+      };
+      struct ComponentMixingFunction { ... };
+  };
+
+  /**
+   * Content light level metadata defined in ANSI/CTA-861-H Annex P.
+   * Slightly different semantics are defined in PNG Specification (Third Edition)
+   * Clause 11.3.2.8 cLLI (https://www.w3.org/TR/png-3/#cLLI-chunk).
+   * This metadata should only be used in ways that work with both semantics.
+   */
+  struct ContentLightLevelInformation {
+      float fMaxCLL = 0.f;
+      float fMaxFALL = 0.f;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:Clause|Section|Annex)\s+[0-9A-Z]+(?:\.[0-9A-Z]+)*\b
+- \b(?:SMPTE(?:\s+ST)?|ISO(?:/IEC)?|ITU-R|CTA(?:-[0-9]+)?|XMP|RFC)\s+[0-9]+[A-Z]?\b
+- /[*][*]?\s*.*\b(?:specification|standard|defined in|semantics|Clause|Section)\b
+- //.*\b(?:specification|standard|draft|described in Clause)\b
+- \b(?:GainCurve|ColorVolumeTransform|AdaptiveGlobalToneMap|Agtm)\b
+- \b(?:ContentLightLevel|MaxCLL|MaxFALL|HdrMetadata)\b
+- \b(?:st2094|iso21496|cta861|cLLI)\b
+confidence: 0.95
+support_cl_count: 2

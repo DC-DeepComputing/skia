@@ -1,0 +1,46 @@
+id: codec/require-complete-initial-progressive-pass
+title: When handling progressive or multi-pass image decoding, fail with kIncompleteInput if the initial
+  pass fails rather than treating incomplete first-pass data as usable
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When implementing progressive or multi-pass image decoding (such as progressive JPEG), return SkCodec::kIncompleteInput
+  if the initial output pass fails to finish or decode completely. Only allow breaking early or treating
+  a truncated stream as partially usable after at least one full scan pass has successfully completed.
+why: Progressive decoding refines an image over successive passes across the entire frame. If the very
+  first pass fails to finish, no valid baseline frame has been decoded, so treating the buffer as valid
+  produces corrupted or uninitialized output rather than reporting an incomplete input error.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Breaking or continuing when pass 0 fails leaves an incomplete, unusable image
+  if (!jpeg_finish_output(dinfo)) {
+      break;
+  }
+  output_passes++;
+  ```
+
+  Good:
+
+  ```cpp
+  // Require at least one complete pass before accepting partial stream data
+  if (!jpeg_finish_output(dinfo)) {
+      if (output_passes > 0) {
+          break;
+      }
+      return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+  }
+  output_passes++;
+  ```
+include_glob:
+- src/codec/**
+triggers:
+- \b(?:jpeg_finish_output|jpeg_start_output)\b
+- \b(?:output_passes|last_scan_completed)\b
+- \b(?:progressive_mode|fProgressive|isProgressive)\b
+- \bkIncompleteInput\b
+- \b(?:returnFailure|fDecoderMgr->returnFailure)\b
+confidence: 0.9
+support_cl_count: 1

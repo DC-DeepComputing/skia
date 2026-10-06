@@ -1,0 +1,48 @@
+id: api/dispatch-through-virtual-getter-not-member-field
+title: When refactoring a class property to be virtual, update internal convenience helpers to invoke
+  this->getter() instead of directly accessing raw member fields
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When refactoring a property or field to be virtual (such as introducing an NVI getter with onMethodName()
+  hooks), update all convenience methods and internal callers in the base class to dispatch through this->getter()
+  instead of reading the underlying member field directly.
+why: Reading member fields directly bypasses dynamic dispatch. Derived classes and wrapper proxies that
+  override or virtualize the property do not update or synchronize the base member variable, causing base
+  convenience helpers to return stale or incorrect data.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: fontStyle() is virtual/NVI, but helper methods read fStyle directly
+  SkFontStyle fontStyle() const { return this->onGetFontStyle(); }
+  bool isBold() const { return fStyle.weight() >= SkFontStyle::kSemiBold_Weight; }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Convenience helper invokes the virtual getter to preserve dynamic dispatch
+  SkFontStyle fontStyle() const { return this->onGetFontStyle(); }
+  bool isBold() const { return this->fontStyle().weight() >= SkFontStyle::kSemiBold_Weight; }
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \bvirtual\s+[A-Za-z0-9_:]+\s+on[A-Z]\w*\s*[(]
+- \bon[A-Z][A-Za-z0-9_]*\s*[(][^)]*[)]\s*const
+- \bvirtual\s+[A-Za-z0-9_:]+\s+[a-z][A-Za-z0-9_]*\s*[(][^)]*[)]\s*const
+- \b(?:is|has)[A-Z]\w*\s*[(][^)]*[)]\s*const
+- \bthis->(?:onGet|[a-z])[A-Za-z0-9_]*\s*[(]
+- return\s+f[A-Z]\w*\.[a-zA-Z0-9_]+\s*[(]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: A common pattern for virtual methods in Skia is to include a public non-virtual (or final) method,
+    paired with a private virtual method named "onMethodName". This ensures that the base-class method
+    is always invoked and gives it control over how the virtual method is used, rather than relying on
+    each subclass to call `Parent::onMethodName()`.
+confidence: 0.9
+support_cl_count: 1

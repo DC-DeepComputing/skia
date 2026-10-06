@@ -1,0 +1,59 @@
+id: general/override-device-virtuals-across-backends
+title: When adding or calling new virtual capabilities on SkDevice or SkCanvas, implement fallback overrides
+  across all backends including PDF and XPS to prevent test failures
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When adding new virtual methods or capabilities to SkDevice (such as baseRecorder()) that SkCanvas
+  callers or GMs rely upon, implement or override them across all SkDevice subclasses—including vector
+  and document backends like SkPDFDevice, SkXPSDevice, and SkSVGDevice. Provide an appropriate fallback
+  (such as returning skcpu::Recorder::TODO()) rather than returning null when callers or GM tests require
+  a non-null object.
+why: GMs and tests run across all supported device backends on continuous integration bots. If a new virtual
+  method on SkDevice defaults to nullptr and is only overridden in raster and GPU backends, vector and
+  document devices like PDF will return null and trigger assertion failures or crashes during test runs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // src/core/SkDevice.h:
+  virtual SkRecorder* baseRecorder() const { return nullptr; }
+  // Overridden in SkBitmapDevice and GPU devices, but omitted in SkPDFDevice.
+
+  // gm/makecolorspace.cpp:
+  auto recorder = canvas->baseRecorder();
+  SkASSERT(recorder); // Asserts when GM runs against PDF backend!
+  ```
+
+  Good:
+
+  ```cpp
+  // src/pdf/SkPDFDevice.h & src/xps/SkXPSDevice.h:
+  SkRecorder* baseRecorder() const override { return skcpu::Recorder::TODO(); }
+
+  // src/svg/SkSVGDevice.h:
+  SkRecorder* baseRecorder() const override { return skcpu::Recorder::TODO(); }
+  ```
+include_glob:
+- src/**
+- gm/**
+triggers:
+- \bbaseRecorder\b
+- \bSkDevice\b
+- \bSkPDFDevice\b
+- \bSkXPSDevice\b
+- \bSkSVGDevice\b
+- \bskcpu::Recorder::TODO\b
+- \bSkBitmapDevice\b
+citations:
+- path: site/docs/dev/design/pdftheory.md
+  heading: Typical usage of the PDF backend
+  quote: SkPDFDevice is the main interface to the PDF backend. This child of SkDevice can be set on an
+    SkCanvas and drawn to.
+- path: RELEASE_NOTES.md
+  heading: Milestone 140
+  quote: In the case you are working with CPU-backed images, `skcpu::Recorder::TODO()` should work until
+    a `skcpu::Context` and `skcpu::Recorder` can be used properly.
+confidence: 0.92
+support_cl_count: 1

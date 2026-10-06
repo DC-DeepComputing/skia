@@ -1,0 +1,58 @@
+id: gm/define-gms-at-file-scope-without-skiagm-namespace
+title: When authoring GM tests or registering them with DEF_GM or DEF_SIMPLE_GM, define tests at file
+  scope instead of wrapping implementations in namespace skiagm
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not wrap GM test files, classes, or macro registrations (such as DEF_GM and DEF_SIMPLE_GM) in
+  namespace skiagm { ... }. Define GM tests and file-local helpers at global file scope (using static
+  or anonymous namespaces for internal linkage), and explicitly qualify GM framework types such as skiagm::GM
+  or skiagm::DrawResult only where needed.
+why: GM registration macros expand at file scope and already qualify framework internals. Wrapping tests
+  in namespace skiagm pollutes the shared framework namespace with translation-unit helpers and constants,
+  and conflicts with modern Skia GM conventions that maintain test implementations at global scope.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  namespace skiagm {
+
+  static constexpr size_t kScale = 4;
+  static void draw_scaled_path(SkCanvas* canvas, const SkPath& path, const SkPaint& paint) {
+      ...
+  }
+
+  DEF_SIMPLE_GM(hairlines_buttcap, canvas, 100, 500) {
+      ...
+  }
+
+  }  // namespace skiagm
+  ```
+
+  Good:
+
+  ```cpp
+  static constexpr size_t kScale = 4;
+  static void draw_scaled_path(SkCanvas* canvas, const SkPath& path, const SkPaint& paint) {
+      ...
+  }
+
+  DEF_SIMPLE_GM(hairlines_buttcap, canvas, 100, 500) {
+      ...
+  }
+  ```
+include_glob:
+- gm/**
+triggers:
+- \bnamespace\s+skiagm\b
+- \bDEF_(?:SIMPLE_)?GM(?:_[A-Z_]+)?\s*[(]
+- \bclass\s+\w+\s*:\s*public\s+(?:skiagm::)?GM\b
+- ^\s*\\}\s*//\s*namespace\s+skiagm\b
+- \b(?:skiagm::)?DrawResult\b
+citations:
+- path: agents/skills/skia-gn-workflow/references/gms.md
+  heading: Defining a GM
+  quote: Most GMs inherit from `skiagm::GM` and use the `DEF_GM` macro.
+confidence: 0.9
+support_cl_count: 1

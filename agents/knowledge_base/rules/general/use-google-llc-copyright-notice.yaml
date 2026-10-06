@@ -1,0 +1,94 @@
+id: general/use-google-llc-copyright-notice
+title: When adding files or vendoring third-party code, place current-year Google LLC or upstream copyright
+  notices at the very top preceding header guards
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When authoring new source, build, or test files in Skia, place the standard copyright and BSD license
+  header attributing copyright to 'Google LLC' with the current calendar year at the very top of the file,
+  preceding `#pragma once`, header guards (`#ifndef`), and `#include` directives. Do not omit the header,
+  use legacy 'Google Inc.', copy a stale past year, or use external conventions like 'The Chromium Authors'.
+  Conversely, when copying or vendoring third-party source files, preserve and place upstream copyright
+  and license notices at the very top before header guards rather than replacing or omitting them.
+why: Placing copyright and license notices at the very top maintains consistent repository file structure
+  and ensures legal attribution is immediately visible before preprocessor directives or implementation
+  logic. Skia requires 'Google LLC' attribution under its standard BSD-style license with the creation
+  year for project code, while open-source licenses legally require preserving upstream copyright notices
+  for vendored third-party code.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Stale year copied from an older file:
+  /*
+   * Copyright 2025 Google LLC
+   *
+   * Use of this source code is governed by a BSD-style license that can be
+   * found in the LICENSE file.
+   */
+
+  // Header guard preceding upstream license notice:
+  #pragma once
+  /**
+   * MIT License
+   * Copyright (c) 2018 Volodymyr Bilonenko
+   */
+  #include <algorithm>
+  ```
+
+  Good:
+
+  ```cpp
+  /*
+   * Copyright 2026 Google LLC
+   *
+   * Use of this source code is governed by a BSD-style license that can be
+   * found in the LICENSE file.
+   */
+
+  // Upstream license placed at the very top preceding header guards:
+  /**
+   * MIT License
+   * Copyright (c) 2018 Volodymyr Bilonenko
+   */
+  #pragma once
+
+  #include <algorithm>
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.hpp'
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.c'
+- '**/*.rs'
+- '**/*.py'
+- '**/*.go'
+- '**/*.gn'
+- '**/*.gni'
+- '**/*.bzl'
+exclude_glob:
+- third_party/externals/**
+triggers:
+- \bCopyright\s+(?:\(c\)\s*)?[0-9]{4}\b
+- \bGoogle Inc\.\b
+- \bThe Chromium Authors\b
+- \bBSD-style license\b
+- \b(?:MIT|Apache|BSD|Mozilla|GPL|LGPL)\s+License\b
+- ^#(?:pragma\s+once|ifndef\s+[A-Za-z0-9_]+_DEFINED\b)
+- ^// Copyright\b
+- ^//!\s+
+citations:
+- path: site/docs/dev/testing/tests.md
+  heading: Writing a Unit Test
+  quote: |-
+    /*
+     * Copyright ........
+     *
+     * Use of this source code is governed by a BSD-style license
+     * that can be found in the LICENSE file.
+     */
+    #include "Test.h"
+confidence: 0.98
+support_cl_count: 18

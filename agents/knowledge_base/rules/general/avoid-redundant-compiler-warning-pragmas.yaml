@@ -1,0 +1,43 @@
+id: general/avoid-redundant-compiler-warning-pragmas
+title: When adding compiler diagnostic pragmas in source files, do not re-enable globally configured flags
+  like -Wall or -Wextra; reserve pragmas for selectively disabled warnings
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not redundantly re-enable warning sets like `-Wall` or `-Wextra` via `#pragma clang diagnostic`
+  in individual source files, as they are already globally enabled by Skia build configurations. Reserve
+  per-file diagnostic pragmas for selectively opting into warnings that are globally disabled (such as
+  `-Wconversion`) or for targeted local suppressions.
+why: Re-enabling globally active flags adds boilerplate without benefit, whereas opting into specific
+  disabled warnings like `-Wconversion` enables incremental enforcement that carries over into embedder
+  builds.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #ifdef __clang__
+  #pragma clang diagnostic error "-Wall"
+  #pragma clang diagnostic error "-Wextra"
+  #pragma clang diagnostic error "-Wconversion"
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #ifdef __clang__
+  #pragma clang diagnostic error "-Wconversion"
+  #endif
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.h'
+triggers:
+- '#pragma\s+(?:clang|GCC)\s+diagnostic\s+(?:error|warning)\b'
+- '#pragma\s+(?:clang|GCC)\s+diagnostic\s+ignored\b'
+- '#pragma\s+(?:clang|GCC)\s+diagnostic\s+(?:push|pop)\b'
+- '"-W(?:all|extra|conversion)"'
+confidence: 0.9
+support_cl_count: 1

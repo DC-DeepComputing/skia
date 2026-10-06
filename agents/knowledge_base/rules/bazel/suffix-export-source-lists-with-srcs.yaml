@@ -1,0 +1,36 @@
+id: bazel/suffix-export-source-lists-with-srcs
+title: When defining GNI file list export variables in Bazel exporter configurations, suffix implementation
+  source lists with _srcs rather than bare component names
+polarity: do
+severity: optional
+rubric: readability
+rule: When defining build file list variables that export implementation sources in bazel/exporter_tool/main.go
+  (or gn/*.gni), suffix the variable name with _srcs (or _sources) rather than using a bare component
+  name. Reserve bare component names or _public suffixes for public header lists, ensuring source and
+  header lists remain clearly distinguished.
+why: Using an unadorned component name (such as skia_codec_libpng) for an internal source list is ambiguous
+  and leaves no clean convention when public header lists (_public) or separate interface targets are
+  added later. Suffixing with _srcs makes list contents explicit and future-proofs export mappings.
+examples:
+- "Bad:\n\n```cpp\n{Var: \"skia_codec_libpng\",\n\tRules: []string{\n\t\t\"//src/codec:buffet_libpng_srcs\"\
+  ,\n\t\t\"//src/codec:common_libpng_srcs\",\n\t},\n}\n```\n\nGood:\n\n```cpp\n{Var: \"skia_codec_libpng_srcs\"\
+  ,\n\tRules: []string{\n\t\t\"//src/codec:buffet_libpng_srcs\",\n\t\t\"//src/codec:common_libpng_srcs\"\
+  ,\n\t},\n}\n```"
+include_glob:
+- bazel/exporter_tool/**
+- gn/**
+triggers:
+- \bVar:\s*\\\"[a-zA-Z0-9_]+\\\"
+- \b(?:GNIExportDesc|GNIFileListExportDesc)\b
+- \bRules:\s*\[\\]string\{
+- \bskia_[a-zA-Z0-9_]+\s*=
+- \bskia_[a-zA-Z0-9_]+_(?:public|srcs|sources|hdrs)\b
+citations:
+- path: bazel/exporter_tool/README.md
+  heading: Bazel Rule to GNI File List Mapping
+  quote: "var gniExportDescs = []exporter.GNIExportDesc{\n    // ... Other GNI definitions.\n    {GNI:\
+    \ \"gn/example.gni\", Vars: []exporter.GNIFileListExportDesc{\n\t\t{Var: \"example_headers\",\n\t\t\
+    \tRules: []string{\"//include/example:public_hdrs\"}},\n\t\t{Var: \"example_sources\",\n\t\t\tRules:\
+    \ []string{\"//src/example:example_srcs\"}}},\n\t},\n    // ... Other GNI definitions.\n}"
+confidence: 0.88
+support_cl_count: 1

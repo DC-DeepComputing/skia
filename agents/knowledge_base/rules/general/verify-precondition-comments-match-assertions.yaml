@@ -1,0 +1,44 @@
+id: general/verify-precondition-comments-match-assertions
+title: When writing doc comments specifying caller preconditions or dispatch requirements, verify described
+  conditions match actual implementation semantics and assertions
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting caller preconditions, requirements, or dispatch conditions in doc comments, verify
+  that the condition and boolean polarity match the actual implementation and assertions (such as SkASSERT).
+  Do not state the inverse polarity or describe calling conditions that contradict the method's runtime
+  checks.
+why: Inverted boolean polarity or contradictory preconditions in comments mislead callers and future maintainers
+  about when a method is safe to invoke. Inaccurate doc comments can lead callers to pass invalid state
+  or trigger debug assertion failures at runtime.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // The same as incrementalDecode but uses a color transformation. Should only
+  // be used if this->canReadRows() is true.
+  Result incrementalDecodeColorXForm(DecodingState& decodingState, int* rowsDecoded);
+  ```
+
+  Good:
+
+  ```cpp
+  // The same as incrementalDecode but uses a color transformation. Should only
+  // be used if this->canReadRows() is false.
+  Result incrementalDecodeColorXForm(DecodingState& decodingState, int* rowsDecoded);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+triggers:
+- //.*\b(?:[Oo]nly (?:called|valid|used|safe)|[Ss]hould only)\b
+- //.*\b(?:[Pp]recondition|[Rr]equires?|[Aa]ssumes?)\b
+- //.*\b(?:if|when)\s+.*\b(?:is|==)\s*(?:true|false)\b
+- //.*\b(?:[Cc]aller must|[Mm]ust be called|[Dd]o not call unless)\b
+- \bSkASSERT\s*[(][^)]*\b(?:can|is|has)[A-Z]\w*
+- \b(?:canReadRows?|canDirectDecode)\b
+confidence: 0.9
+support_cl_count: 1

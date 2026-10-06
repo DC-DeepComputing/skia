@@ -1,0 +1,40 @@
+id: gpu/guard-telemetry-hit-counters-to-first-use
+title: When collecting cache hit telemetry compared against object creation costs or waste, increment
+  hit counters only on first use rather than on every cache lookup
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When recording telemetry counters for cache hit benefits that are compared against unique object
+  creation costs or purge waste, guard counter increments so they record only initial usage (e.g. checking
+  !wasUsed()) rather than firing on every lookup. Do not increment benefit counters unconditionally on
+  repeated cache hits when comparing against unique-object metrics.
+why: Incrementing benefit counters on every cache lookup measures per-draw event frequency rather than
+  unique object reuse. This inflates the counter scale relative to object creation and purge counts, distorting
+  telemetry comparisons and bucket alignment across complementary metrics.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (!forPrecompile && (*entry)->fromPrecompile()) {
+      ++fStats.fNormalPreemptedByPrecompile;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (!forPrecompile && (*entry)->fromPrecompile() && !(*entry)->wasUsed()) {
+      ++fStats.fNormalPreemptedByPrecompile;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:fromPrecompile|wasUsed|markUsed)\s*[(]
+- \+\+fStats\.[A-Za-z0-9_]+
+- \b(?:fNormalPreemptedByPrecompile|fUnpreemptedPrecompilePipelines)\b
+- \b(?:fStats|stats)\.f[A-Za-z0-9_]*(?:Preempted|Hit|Hits|Misses)\b
+- \b(?:findOrCreate|find|lookup)[A-Za-z0-9_]*(?:Pipeline|Resource|Entry)\s*[(]
+confidence: 0.9
+support_cl_count: 1

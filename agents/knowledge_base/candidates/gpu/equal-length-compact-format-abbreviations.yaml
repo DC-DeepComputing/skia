@@ -1,0 +1,40 @@
+id: gpu/equal-length-compact-format-abbreviations
+title: When formatting compact debug strings or pipeline labels for mutually exclusive options, use equal-length
+  abbreviations to maintain uniform token width
+polarity: do
+severity: nit
+rubric: readability
+rule: When formatting compact debug strings, pipeline labels, or key representations for enumerated or
+  boolean options, prefer equal-length abbreviations (such as 'cos' and 'mid' for cosited and midpoint
+  chroma locations). Keep abbreviation lengths uniform across mutually exclusive choices to preserve consistent
+  token width and columnar alignment in formatted output.
+why: Compact debug representations and pipeline labels are frequently scanned in columnar logs or key
+  dumps. Using equal-length abbreviations for alternative states keeps formatted tokens aligned and prevents
+  jitter in string lengths across different configurations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Midpoint and cosited-even use uneven abbreviation lengths (3 vs 8 chars)
+  result += info.xChromaOffset() ? "mid" : "cos-even";
+  result += info.yChromaOffset() ? "mid" : "cos-even";
+  ```
+
+  Good:
+
+  ```cpp
+  // Both options use uniform 3-character abbreviations to preserve column width
+  result += info.xChromaOffset() ? "mid" : "cos"; // midpoint or cosited-even
+  result += info.yChromaOffset() ? "mid" : "cos";
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:toString|InfoToString|GetPipelineLabel|idToString)\b
+- \b(?:f?XChromaOffset|f?YChromaOffset)\b
+- \?\s*"[^"]+"\s*:\s*"[^"]+"
+- \b(?:cosited|midpoint|VkChromaLocation)\b
+- '"(?:mid|cos|cos-even)"'
+confidence: 0.8
+support_cl_count: 1

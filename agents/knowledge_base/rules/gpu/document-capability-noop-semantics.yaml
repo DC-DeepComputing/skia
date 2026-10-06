@@ -1,0 +1,47 @@
+id: gpu/document-capability-noop-semantics
+title: When declaring backend helper methods that handle capability checks internally, document that they
+  safely no-op when unsupported to clarify unconditional invocation
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring backend helper or pipeline methods that encapsulate capability checks or dynamic
+  feature availability internally, document in the declaration comment that the method is safe to invoke
+  unconditionally. Explicitly state that the method safely acts as a no-op when the underlying capability
+  or dynamic state is unsupported or absent, clarifying caller expectations.
+why: Without explicit declaration comments, callers cannot deduce whether a method requires pre-checking
+  Caps or handles unsupported configurations internally. Clarifying unconditional no-op fallback behavior
+  prevents callers from adding redundant capability checks or assuming the call is invalid on unsupported
+  hardware.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: callers cannot tell whether they must verify caps before calling.
+  void updateDynamicState(const VulkanSharedContext*,
+                          VkCommandBuffer commandBuffer,
+                          const VulkanGraphicsPipeline* previous) const;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: declaration explicitly documents safe no-op behavior when unsupported.
+  // Update any dynamic state (including none, if dynamic state is not available) that has changed
+  // since the previously bound Graphite pipeline.
+  void updateDynamicState(const VulkanSharedContext*,
+                          VkCommandBuffer commandBuffer,
+                          const VulkanGraphicsPipeline* previous) const;
+  ```
+include_glob:
+- src/gpu/**
+- include/gpu/**
+triggers:
+- \b(?:update|bind|set|record|sync|apply)[A-Z]\w*State\b
+- \b(?:update|bind|set|record|apply)Dynamic[A-Z]\w*\b
+- \bvoid\s+(?:update|sync|record|apply|bind)[A-Za-z0-9_]*\s*[(][^)]*\b(?:Context|Pipeline|CommandBuffer)\b
+- \b(?:VkCommandBuffer|MTLCommandBuffer|wgpu::CommandBuffer)\b
+- //.*\b(?:dynamic state|capability|capabilities|no-op|unconditionally?)\b
+- \b(?:Pipeline|CommandBuffer|SharedContext|Caps)\b
+confidence: 0.9
+support_cl_count: 1

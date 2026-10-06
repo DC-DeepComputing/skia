@@ -1,0 +1,55 @@
+id: modules/sync-canvaskit-types-and-tests-with-bindings
+title: When exposing or modifying C++ APIs in CanvasKit bindings, add counterpart declarations to types/index.d.ts
+  and verify them in canvaskit-wasm-tests.ts
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When exposing or modifying C++ APIs in CanvasKit Emscripten bindings (such as canvaskit_bindings.cpp),
+  add corresponding type declarations to npm_build/types/index.d.ts and add type test coverage in npm_build/types/canvaskit-wasm-tests.ts.
+  Verify type assertions ($ExpectType) pass by running npm run dtslint.
+why: CanvasKit publishes its public API to npm and TypeScript consumers via types/index.d.ts. Omitting
+  declarations prevents consumers from accessing newly bound methods with type safety, and omitting dtslint
+  test coverage risks regressions in parameter and return type signatures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In modules/canvaskit/canvaskit_bindings.cpp:
+  // .function("snapshot", optional_override([](SkPathBuilder& self) -> SkPath {
+  //     return self.snapshot();
+  // }))
+  //
+  // In modules/canvaskit/npm_build/types/index.d.ts:
+  // Method snapshot() is omitted from interface PathBuilder, leaving
+  // canvaskit-wasm-tests.ts without type assertions for the new method.
+  ```
+
+  Good:
+
+  ```cpp
+  // In modules/canvaskit/npm_build/types/index.d.ts:
+  export interface PathBuilder extends EmbindObject<"SkPathBuilder"> {
+      ...
+      snapshot(): Path;
+  }
+
+  // In modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts:
+  const p8 = builder.snapshot(); // $ExpectType Path
+  ```
+include_glob:
+- modules/canvaskit/**
+triggers:
+- \.(?:function|property|class_|constant|constructor)\s*[(]
+- \bEMSCRIPTEN_BINDINGS\s*[(]
+- //\s*[$]ExpectType\b
+- \bexport\s+interface\s+[A-Za-z0-9_]+
+- \binterface\s+[A-Za-z0-9_]+\s+extends\s+EmbindObject\b
+- \bbuilder\.(?:snapshot|detach|close|reset)\s*[(]
+citations:
+- path: modules/canvaskit/npm_build/README.md
+  heading: Using the CanvasKit API
+  quote: See `types/index.d.ts` for a typescript definition file that contains all the APIs and some documentation
+    about them.
+confidence: 0.9
+support_cl_count: 1

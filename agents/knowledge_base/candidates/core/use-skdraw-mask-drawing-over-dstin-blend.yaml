@@ -1,0 +1,66 @@
+id: core/use-skdraw-mask-drawing-over-dstin-blend
+title: When rendering coverage or alpha masks on CPU raster devices, use SkDraw mask-drawing routines
+  rather than allocating intermediate bitmaps with SkBlendMode::kDstIn
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When rendering an alpha or coverage mask on CPU raster devices (such as SkBitmapDevice), apply the
+  mask directly to the paint via SkDraw mask-drawing routines like drawBitmapAsMask or drawDevMask. Do
+  not allocate a temporary intermediate N32 bitmap to evaluate the paint and composite the mask using
+  SkBlendMode::kDstIn.
+why: Allocating temporary N32 bitmaps and performing dst-in compositing introduces heap churn and requires
+  multiple pixel passes. Skia's CPU blitters natively support applying 8-bit alpha masks directly as coverage
+  to the paint's shader in a single rasterization pass.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkBitmap paintBM;
+  if (!paintBM.tryAllocN32Pixels(maskBM.width(), maskBM.height())) {
+      return;
+  }
+  SkCanvas paintCanvas(paintBM);
+  paintCanvas.concat(localToMask);
+  paintCanvas.drawPaint(paint);
+
+  SkPaint blendPaint;
+  blendPaint.setBlendMode(SkBlendMode::kDstIn);
+  paintCanvas.drawImage(maskBM.asImage(), 0, 0, SkSamplingOptions{}, &blendPaint);
+
+  SkDraw draw;
+  if (this->accessPixels(&draw.fDst)) {
+      draw.drawBitmap(paintBM, SkMatrix::I(), nullptr, sampling, paint, nullptr);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkDraw draw;
+  if (!this->accessPixels(&draw.fDst)) {
+      return;
+  }
+  draw.fRC = &fRCStack.rc();
+  draw.fCTM = &maskToDevice;
+  draw.drawBitmapAsMask(maskBM, sampling, paint, &this->localToDevice());
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \bdrawCoverageMask\s*\(
+- \bdrawBitmapAsMask\s*\(
+- \bdrawDevMask\s*\(
+- \bSkBlendMode::kDstIn\b
+- \btryAllocN32Pixels\s*\(
+- \bSkDraw\s+\w+
+citations:
+- path: docs/architecture/CPU.md
+  heading: '5. The Pixel Writer: SkRasterPipelineBlitter'
+  quote: The SkRasterPipelineBlitter is the primary SkBlitter in the CPU backend. It implements the SkBlitter
+    interface, but instead of writing pixels directly, it translates calls like blitH or blitRect from
+    SkScan into an execution of its internal SkRasterPipeline. It configures the pipeline with the correct
+    coverage information from the blitter call and then runs the pipeline to compute and write the final
+    pixel colors to those lines.
+confidence: 0.95
+support_cl_count: 1

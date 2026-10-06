@@ -1,0 +1,41 @@
+id: general/prefer-mappoint-and-mapvector-over-single-element-batch-call
+title: When transforming a single SkPoint or SkVector with SkMatrix, call mapPoint or mapVector returning
+  by value instead of single-element mapPoints or mapVectors
+polarity: do
+severity: nit
+rubric: readability
+rule: When transforming an individual point or vector using SkMatrix, call mapPoint() or mapVector() returning
+  the transformed instance by value instead of calling the batch methods mapPoints() or mapVectors() with
+  a single-element span (such as {&v, 1}).
+why: mapPoint() and mapVector() return transformed instances directly by value, enabling clean initialization
+  of const variables and inline expressions. Calling batch mapPoints() or mapVectors() with a single-element
+  span adds unnecessary boilerplate and forces declaring a mutable temporary variable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkVector v = SkVector::Make(SkIntToScalar(geom.fX), SkIntToScalar(geom.fY));
+  matrix.mapVectors({&v, 1});
+  return IVector(SkScalarRoundToInt(v.fX), SkScalarRoundToInt(v.fY));
+  ```
+
+  Good:
+
+  ```cpp
+  const SkVector v = matrix.mapVector({SkIntToScalar(geom.fX), SkIntToScalar(geom.fY)});
+  return IVector(SkScalarRoundToInt(v.fX), SkScalarRoundToInt(v.fY));
+  ```
+include_glob:
+- src/**
+- modules/**
+- tests/**
+- gm/**
+triggers:
+- \.(?:mapVectors?|mapPoints?|mapPointsToHomogeneous)\s*\(
+- ->(?:mapVectors?|mapPoints?|mapPointsToHomogeneous)\s*\(
+- \b(?:mapVectors|mapPoints)\s*\(
+- \b(?:mapVector|mapPoint)\s*\(
+- \{\s*&[A-Za-z0-9_.*->]+\s*,\s*1\s*\}
+confidence: 0.95
+support_cl_count: 2

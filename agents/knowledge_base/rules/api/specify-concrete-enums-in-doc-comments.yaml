@@ -1,0 +1,73 @@
+id: api/specify-concrete-enums-in-doc-comments
+title: When documenting behaviors, execution modes, or configuration overrides, specify concrete enum
+  types, query accessors, or override tools and mechanisms instead of informal descriptors
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting behavior, invariants, alternative execution modes, or configuration overrides,
+  specify concrete enum types, enumerator values (e.g., 'Shareable' with 'kNo' vs 'kScratch', or 'SampleCount'
+  'k1' and 'k4'), governing accessors or flags (e.g., 'getRenderStateFlags()'), and the specific tools
+  or mechanisms (e.g., viewer, dm, or nanobench via command-line flags). Avoid informal descriptors (e.g.,
+  'reuse mode'), ambiguous quantifiers (e.g., 'one sample count > 1'), or bare possibility statements
+  that omit how alternative modes, formats, or default overrides are configured or queried.
+why: Informal descriptors, ambiguous quantifiers, or vague references to unspecified tools or overrides
+  leave API contracts ambiguous because readers cannot determine valid configurations, state spaces, or
+  reproduction steps. Naming concrete types, values, query accessors, and override tools/mechanisms enables
+  developers to navigate directly to definitions, understand exact state spaces, and inspect, configure,
+  or reproduce component behaviors.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Case 1: Informal descriptor in interface doc comment
+  // Depending on the reuse mode, either:
+  //  - kNo: The buffer cannot be shared.
+  //  - kScratch: The buffer can be overwritten.
+  void reset();
+
+  // Case 2: Ambiguous quantifier in backend invariant comment
+  // Currently Dawn only supports one sample count > 1.
+  SkASSERT(srcSampleCount == SampleCount::k1 || srcSampleCount == SampleCount::k4);
+
+  // Case 3: Bare possibility statement without query accessor or configuration
+  // Vertices or Instances can be appended.
+
+  // Case 4: Vague override statement omitting concrete tools and mechanisms
+  * It is also possible for internal tools to override the Caps' default selection process.
+  ```
+
+  Good:
+
+  ```cpp
+  // Case 1: Concrete enum type and enumerator names
+  // Depending on the GPU buffer's Shareable value, either:
+  //  - kNo: The buffer cannot be shared.
+  //  - kScratch: The buffer can be overwritten.
+  void reset();
+
+  // Case 2: Explicit enumerator values
+  // Currently Dawn only supports k1 and k4.
+  SkASSERT(srcSampleCount == SampleCount::k1 || srcSampleCount == SampleCount::k4);
+
+  // Case 3: Explicit query accessor documenting the alternative modes
+  // Currently, either Vertices or Instances can be appended, and this can be queried by getRenderStateFlags().
+
+  // Case 4: Explicit tools and override mechanisms
+  * It is also possible for internal tools (viewer, dm, nanobench) to override the Caps' default
+  * selection process by using command line flags.
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- (?://|\*).*\b(?:[Dd]epending on|[Bb]ased on|[Aa]ccording to)\b
+- (?://|\*).*\b(?:reuse|caching|buffer|sharing|allocation|draw|render|binding|pipeline)\s+(?:mode|state|policy|type|strategy)\b
+- (?://|\*).*\b(?:k[A-Za-z0-9_]+|[A-Za-z0-9_]+::k[A-Za-z0-9_]+)\s*(?:vs\.?|or|and|/|instead of)\b
+- (?://|\*).*\b(?:only supports?|supports only)\s+(?:one|a single|k[0-9A-Za-z_]+)\b
+- (?://|\*).*\b(?:either\s+\w+\s+or\s+\w+\s+can be|can be appended)\b
+- (?://|\*).*\b(?:queried|configured)\s+by\s+[a-zA-Z0-9_]+\b
+- (?://|\*).*\b(?:override|overridden)\s+(?:the\s+)?(?:Caps'?\s+)?(?:default|selection)\b
+- (?://|\*).*\b(?:internal tools|command line flags?|viewer|dm|nanobench)\b
+confidence: 0.98
+support_cl_count: 4

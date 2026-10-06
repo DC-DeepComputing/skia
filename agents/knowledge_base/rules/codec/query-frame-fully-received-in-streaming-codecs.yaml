@@ -1,0 +1,54 @@
+id: codec/query-frame-fully-received-in-streaming-codecs
+title: When implementing SkCodec::onGetFrameInfo in streaming or incremental decoders, query whether frame
+  data is complete rather than hardcoding FrameInfo::fFullyReceived to true
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When implementing SkCodec::onGetFrameInfo in codecs supporting streaming, partial, or incremental
+  decoding, dynamically query the underlying reader or stream to determine whether the frame or image
+  payload has been completely received. Do not hardcode info->fFullyReceived = true unconditionally, which
+  falsely signals to callers that truncated frames are complete.
+why: In streaming and incremental decoding environments (such as web browsers), image streams arrive in
+  progressive chunks. Hardcoding fFullyReceived = true misleads callers like animated image decoders and
+  render pipelines into treating incomplete or truncated frames as final, preventing subsequent updates
+  when remaining data arrives.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool SkBmpRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
+      if (index != 0) {
+          return false;
+      }
+      if (info) {
+          info->fFullyReceived = true;
+      }
+      return true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  bool SkBmpRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
+      if (index != 0) {
+          return false;
+      }
+      if (info) {
+          info->fFullyReceived = fReader->image_data_loaded();
+      }
+      return true;
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \bonGetFrameInfo\b
+- \bfFullyReceived\b
+- \bFrameInfo\b
+- \b(?:image_data_loaded|isFullyReceived)\b
+- \b(?:info|frameInfo)->fFullyReceived\b
+confidence: 0.92
+support_cl_count: 1

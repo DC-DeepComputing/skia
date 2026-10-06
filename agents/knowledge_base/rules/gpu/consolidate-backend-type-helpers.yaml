@@ -1,0 +1,26 @@
+id: gpu/consolidate-backend-type-helpers
+title: When implementing GPU backend conversion helpers, consolidate them into shared utility files (<Backend>UtilsPriv
+  or <Backend>GraphiteUtils) instead of adding standalone files or duplicating local helpers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Consolidate GPU backend helper, conversion, and formatting routines into designated shared utility
+  files (src/gpu/<backend>/<Backend>UtilsPriv.h/.cpp for shared GPU code, or src/gpu/graphite/<backend>/<Backend>GraphiteUtils.h/.cpp
+  for Graphite). Do not introduce standalone source files (such as <Backend>Types.cpp) for individual
+  backend types, and do not duplicate local static conversion functions (such as mapping TextureFormat
+  to backend aspect or format flags) across multiple translation units.
+why: Centralizing backend conversions and utilities prevents code duplication and behavioral drift across
+  translation units (such as render passes and textures), avoids unnecessary compilation units that bloat
+  build targets, and keeps backend format mappings consistent across components.
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:Vulkan|Mtl|Dawn|D3D)[A-Za-z0-9_]+::(?:to[A-Z]\w*|from[A-Z]\w*|toString)\s*[(]
+- '\b(?:Vulkan|Mtl|Dawn|D3D)(?:UtilsPriv|GraphiteUtils)::'
+- ^#include\s+[\"']src/gpu/(?:graphite/)?(?:vk/Vulkan|mtl/Mtl|dawn/Dawn|d3d/D3D)(?:UtilsPriv|GraphiteUtils)\.h[\"']
+- '\b(?:Vulkan|Mtl|Dawn|D3D)(?:Backend|Image|Texture|Sampler|Surface|Format|Ycbcr)[A-Za-z0-9_]*::'
+- \bGet(?:Vk|Dawn|Mtl)[A-Za-z0-9_]*(?:Flags|Format)\s*[(]
+- \b(?:VkImageAspectFlags|wgpu::TextureAspect)\b
+- \btoVk[A-Z]\w*CreateInfo\b
+confidence: 0.95
+support_cl_count: 2

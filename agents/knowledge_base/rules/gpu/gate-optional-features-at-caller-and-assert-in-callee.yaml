@@ -1,0 +1,67 @@
+id: gpu/gate-optional-features-at-caller-and-assert-in-callee
+title: When delegating optional feature operations to internal GPU backend methods, gate checks on feature
+  pointers at the caller and assert non-null with SkASSERT in callees
+polarity: do
+severity: nit
+rubric: readability
+rule: When delegating optional feature operations (such as persistent pipeline caching or storage) from
+  frontend contexts to internal backend methods, gate the call at the caller by checking the feature pointer.
+  In the callee backend implementation, enforce the non-null invariant with SkASSERT rather than adding
+  defensive early-return null checks.
+why: Gating optional feature checks at the outer caller avoids unnecessary virtual dispatch or delegation
+  when the feature is disabled, clarifies the interface contract, and allows backend callees to enforce
+  non-null preconditions with debug assertions rather than carrying redundant runtime bailout branches.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In Context.cpp:
+  void Context::syncPipelineData(size_t maxSize) {
+      fSharedContext->syncPipelineData(fPersistentPipelineStorage, maxSize);
+  }
+
+  // In VulkanSharedContext.cpp:
+  void VulkanSharedContext::syncPipelineData(PersistentPipelineStorage* persistentPipelineStorage,
+                                             size_t maxSize) {
+      if (!persistentPipelineStorage) {
+          return;
+      }
+      if (fPipelineCache == VK_NULL_HANDLE) {
+          return;
+      }
+      ...
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In Context.cpp:
+  void Context::syncPipelineData(size_t maxSize) {
+      if (fPersistentPipelineStorage) {
+          fSharedContext->syncPipelineData(fPersistentPipelineStorage, maxSize);
+      }
+  }
+
+  // In VulkanSharedContext.cpp:
+  void VulkanSharedContext::syncPipelineData(PersistentPipelineStorage* persistentPipelineStorage,
+                                             size_t maxSize) {
+      SkASSERT(persistentPipelineStorage);
+      if (fPipelineCache == VK_NULL_HANDLE) {
+          return;
+      }
+      ...
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bSkASSERT\s*[(]\s*(?:persistent|storage|cache|pipelineCache|fPersistent)
+- \b(?:store|sync|load)(?:Pipeline|Shader)?(?:Cache|Storage|Data)\s*[(]
+- \bPersistent(?:PipelineStorage|Cache)\b
+- \b(?:fSharedContext|sharedContext)->[a-zA-Z0-9_]+\s*[(]
+- \bif\s*[(]\s*!?f(?:Persistent|Pipeline|Cache)[a-zA-Z0-9_]*\s*[)]
+- \b(?:SharedContext|VulkanSharedContext|DawnSharedContext|MtlSharedContext)::[a-zA-Z0-9_]+\s*[(]
+confidence: 0.85
+support_cl_count: 1

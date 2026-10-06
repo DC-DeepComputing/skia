@@ -1,0 +1,54 @@
+id: general/align-comment-order-with-branch-order
+title: When writing explanatory comments before conditional if-else statements, align the sequence of
+  described cases with the code's branch execution order
+polarity: do
+severity: nit
+rubric: readability
+rule: When documenting conditional if-else branches, align the sequence of cases described in the explanatory
+  comment with the execution order of the corresponding code branches (or reorder the branches to match
+  the comment). Do not describe the fallback or alternative case first when the code checks the primary
+  or initial condition first.
+why: Inverting the order between an explanatory comment and the code branches it describes creates cognitive
+  friction for readers attempting to map each described behavior to its implementation block. Matching
+  the sequence allows readers to follow the rationale naturally alongside the execution flow.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // If this isn't the first element, draw the inverse-filled shape with 0 coverage
+  // to erase pixels outside geometry. But if we are the first element, draw directly
+  // with coverage 1 since the target was cleared to 0.
+  if (isFirstElement) {
+      alpha = 0xFF;
+      invert = false;
+  } else {
+      alpha = 0x00;
+      invert = true;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // If this is the first element, draw directly with coverage 1 since the target
+  // was cleared to 0. Otherwise, draw the inverse-filled shape with 0 coverage to
+  // erase pixels outside geometry.
+  if (isFirstElement) {
+      alpha = 0xFF;
+      invert = false;
+  } else {
+      alpha = 0x00;
+      invert = true;
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- //.*\b(?:[Oo]therwise|[Bb]ut if|[Hh]owever, if|[Ii]f not)\b
+- //.*\b(?:first|initial|subsequent|fallback|alternate)\s+(?:element|op|draw|case|pass|branch)\b
+- //.*\b(?:[Ii]f this is|[Ii]f we are|[Ii]f there is)\b.*\b(?:first|default|fallback)\b
+- //.*\b(?:branch|case|condition)\s*(?:order|sequence|1|2|A|B)\b
+- \bif\s*\([a-zA-Z0-9_.]*(?:[Ff]irst|[Ii]nitial|[Ff]allback)[a-zA-Z0-9_]*\)
+confidence: 0.85
+support_cl_count: 1

@@ -1,0 +1,51 @@
+id: general/omit-url-scheme-in-skbug-references
+title: When referencing Skia bugs in code comments, omit the 'http://' or 'https://' URL scheme prefix
+  and use the bare 'skbug.com/<id>' format instead
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When referencing Skia bugs in code comments, omit the 'http://' or 'https://' scheme prefix and
+  write the bare 'skbug.com/<id>' domain format. Do not include protocol schemes such as 'http://skbug.com/<id>'
+  or 'https://skbug.com/<id>'.
+why: Skia standardizes bug tracker references in comments on concise domain shortlinks like 'skbug.com/<id>'.
+  Modern code review tools, IDEs, and terminals automatically linkify bare domain URLs, so including protocol
+  schemes adds unnecessary visual noise without functional benefit.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // http://skbug.com/40038559
+  DEF_SIMPLE_GM(text_scale_skew, canvas, 256, 128) {
+      // See https://skbug.com/40040947 for workaround details.
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // skbug.com/40038559
+  DEF_SIMPLE_GM(text_scale_skew, canvas, 256, 128) {
+      // See skbug.com/40040947 for workaround details.
+  }
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.c'
+- '**/*.rs'
+- '**/*.py'
+- '**/*.go'
+- '**/*.gn'
+- '**/*.gni'
+- '**/*.bazel'
+- '**/*.bzl'
+triggers:
+- https?://skbug\.com
+- https?://(?:www\.)?skbug\.com/\d+
+- //.*https?://skbug\.com
+- '#.*https?://skbug\.com'
+- /\*.*https?://skbug\.com
+confidence: 0.88
+support_cl_count: 1

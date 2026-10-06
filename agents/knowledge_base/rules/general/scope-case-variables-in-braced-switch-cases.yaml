@@ -1,0 +1,76 @@
+id: general/scope-case-variables-in-braced-switch-cases
+title: When declaring variables needed only within individual switch cases, wrap the case in braces rather
+  than hoisting declarations outside the switch
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: 'Do not declare variables outside a switch statement when they are only needed locally within individual
+  cases. Wrap the relevant switch case in curly braces (''case <value>: { ... } break;'') to keep variable
+  scope and lifetime local to that case.'
+why: Declaring case-specific variables outside the switch statement needlessly widens their scope and
+  lifetime across all other cases, increasing the risk of uninitialized reads or accidental state leakage
+  across loop iterations. Wrapping the case in braces creates a distinct lexical block that isolates local
+  variable lifetimes and conforms to Skia style conventions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool isDegenerate;
+  switch (verb) {
+      case SkPathVerb::kLine:
+          isDegenerate = SkPath::IsLineDegenerate(pts[0], pts[1], true);
+          if (isDegenerate) {
+              return;
+          }
+          break;
+      case SkPathVerb::kQuad:
+          ...
+          break;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  switch (verb) {
+      case SkPathVerb::kLine: {
+          bool isDegenerate = SkPath::IsLineDegenerate(pts[0], pts[1], true);
+          if (isDegenerate) {
+              return;
+          }
+      } break;
+      case SkPathVerb::kQuad:
+          ...
+          break;
+  }
+  ```
+include_glob:
+- src/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \bswitch\s*\([^)]+\)
+- \bcase\s+[^:]+:\s*\{
+- '\bcase\s+(?:[A-Za-z0-9_]+::)?k[A-Za-z0-9_]+:'
+- \}\s*break;
+- \bcase\s+[0-9A-Za-z_]+:\s*$
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Flow Control
+  quote: |-
+    When a block is needed to declare variables within a case follow this pattern:
+
+    ```
+    switch (filter) {
+        ...
+        case kGaussian_Filter: {
+            Bitmap srcCopy = src->makeCopy();
+            ...
+        } break;
+        ...
+    };
+    ```
+confidence: 0.9
+support_cl_count: 1

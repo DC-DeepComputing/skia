@@ -1,0 +1,25 @@
+id: api/avoid-prescribing-rgb-for-pdf-jpeg-encoders
+title: When documenting custom JPEG encoder callbacks for PDF export, do not specify RGB color space requirements;
+  standard JPEGs use JFIF YCbCr or grayscale
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When documenting custom JPEG encoder callbacks or options in PDF export APIs, do not instruct callers
+  to encode to RGB rather than YUV or YCbCr. Standard JPEGs embedded via PDF DCTDecode filters use JFIF
+  DCT compression (internally YCbCr or grayscale) and are mapped to DeviceRGB or DeviceGray by PDF readers.
+why: Standard JPEGs naturally compress image data in YCbCr (YUV) or grayscale color spaces; true RGB JPEGs
+  are non-standard and rarely supported. Instructing clients that custom encoders must produce RGB to
+  match Skia metadata misleads implementers into seeking non-standard JPEG encoders and creates confusion
+  about PDF DCT stream embedding.
+include_glob:
+- include/docs/**
+- src/pdf/**
+triggers:
+- \b(?:Encode|Decode)JpegCallback\b
+- \bjpegEncoder\b
+- //.*\b(?:jpeg|dct|jfif)\b.*\b(?:rgb|yuv|ycbcr|color)\b
+- /\*.*\b(?:jpeg|dct|jfif)\b
+- \bSkPDF::(?:EncodeJpegCallback|DecodeJpegCallback|Metadata)\b
+- \b(?:DCTDecode|DeviceRGB|DeviceGray)\b
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,38 @@
+id: gpu/name-channel-mask-functions-with-mask-suffix
+title: When declaring functions or accessors that return color channel bitmasks, name them with a Mask
+  suffix rather than plural nouns like Channels
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Name functions and accessors that return a bitmask or bitfield of color channels with a '*Mask'
+  or '*ChannelMask' suffix (e.g., 'TextureFormatChannelMask', 'channelMask()') rather than plural nouns
+  like '*Channels'. Document that the return value is a bitfield of 'SkColorChannelFlag' values.
+why: Function names ending in plural nouns like '*Channels' that return an integer are easily misread
+  as returning a channel count (such as 3 for RGB or 4 for RGBA) or a collection of channels. Using a
+  '*Mask' suffix clarifies that the integer represents a bitfield of channel flags.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Ambiguous whether it returns a channel count (e.g., 4) or a bitmask
+  uint32_t TextureFormatChannels(TextureFormat);
+  ```
+
+  Good:
+
+  ```cpp
+  // Returns a bitmask of SkColorChannelFlag values.
+  uint32_t TextureFormatChannelMask(TextureFormat);
+  ```
+include_glob:
+- src/gpu/**
+- include/gpu/**
+triggers:
+- \buint(?:32|16|8)_t\s+[A-Za-z0-9_]*Channels?\b
+- \b(?:TextureFormat|BackendFormat|ColorType|Format)Channels?\b
+- \b[A-Za-z0-9_]*(?:ChannelMask|channelMask)\b
+- \bSkColorChannelFlag\b
+- \b[A-Za-z0-9_]*ChannelFlags\b
+confidence: 0.9
+support_cl_count: 1

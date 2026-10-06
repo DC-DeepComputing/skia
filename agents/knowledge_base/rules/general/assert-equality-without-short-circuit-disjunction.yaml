@@ -1,0 +1,41 @@
+id: general/assert-equality-without-short-circuit-disjunction
+title: When asserting that two state flags or values agree, test equality directly with SkASSERT(a ==
+  b) instead of writing short-circuiting disjunctions like SkASSERT(a || a == b)
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When asserting that two flags, states, or values agree, verify equality directly with SkASSERT(a
+  == b). Do not write short-circuiting disjunctions of the form SkASSERT(a || a == b), which evaluate
+  to true vacuously whenever the first term holds and fail to verify whether both values match.
+why: An assertion of the form SkASSERT(a || a == b) evaluates to true unconditionally whenever a is truthy,
+  short-circuiting before evaluating the equality comparison. This creates a vacuous pass that masks invariant
+  violations where a is true but b is false.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Flawed: passes unconditionally if dependsOnDst or dstReadReq is true
+  SkASSERT(dependsOnDst || dependsOnDst == draw.dependsOnDst());
+  SkASSERT(dstReadReq || dstReadReq == draw.dstReadReq());
+  ```
+
+  Good:
+
+  ```cpp
+  // Correct: verifies both values match regardless of truthiness
+  SkASSERT(dependsOnDst == draw.dependsOnDst());
+  SkASSERT(dstReadReq == draw.dstReadReq());
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bSkASSERT(?:_RELEASE)?\s*[(]\s*!?[A-Za-z0-9_.]+\s*[|][|]\s*!?[A-Za-z0-9_.]+\s*==
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\|\|[^)]*==
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*==[^)]*\|\|
+- \bSkASSERT(?:_RELEASE)?\s*[(]\s*!?[A-Za-z0-9_.]+\s*[|][|]\s*!?[A-Za-z0-9_.]+\s*!=
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\|\|[^)]*!=
+confidence: 0.9
+support_cl_count: 1

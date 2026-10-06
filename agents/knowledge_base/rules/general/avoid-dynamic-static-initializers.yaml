@@ -1,0 +1,69 @@
+id: general/avoid-dynamic-static-initializers
+title: When declaring namespace- or class-scope static variables, avoid dynamic initializers and free
+  atomics; use constexpr tables, on-demand helpers, or function-local statics
+polarity: dont
+severity: blocking
+rubric: correctness
+rule: Do not declare namespace- or class-static variables of types requiring runtime dynamic initialization
+  (such as std::vector, std::string, std::map, or types with non-trivial constructors like SkColorInfo),
+  nor declare free static variables (such as std::atomic ID counters) at file or namespace scope. Use
+  constexpr data structures (such as constexpr std::array) for compile-time lookup tables, provide static
+  helper functions that construct and return instances on demand, or declare mutable state and counters
+  as function-local static variables inside their accessor function.
+why: Dynamic initialization of namespace- or class-static variables runs at library load time before main(),
+  increasing application startup latency, risking static initialization order bugs, and triggering failures
+  on automated static initializer checkers (such as Chromium's check_static_initializers bot). Free mutable
+  statics at file or namespace scope also trigger build constraints in downstream Chrome builds and leak
+  mutable state across the translation unit. Deferring creation to on-demand helper functions, evaluating
+  at compile time, or scoping statics locally inside the accessor function eliminates static initializers
+  and encapsulates state.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Static containers requiring dynamic initialization:
+  const std::vector<SkColorInfo> PrecompileImageShader::kDefaultColorInfos = {
+          kDefaultColorInfoPremul, kDefaultColorInfoSRGB, kDefaultColorInfoGeneral,
+          kDefaultColorInfoAlphaOnly};
+
+  // Free static atomic counter at file/namespace scope:
+  namespace {
+  static std::atomic<uint32_t> gNextUniqueID{1};
+
+  uint32_t next_unique_id() {
+      return gNextUniqueID.fetch_add(1, std::memory_order_relaxed);
+  }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Static helper functions returning instances on demand:
+  static std::vector<SkColorInfo> DefaultColorInfos() {
+      return { DefaultColorInfoPremul(), DefaultColorInfoSRGB(), DefaultColorInfoGeneral(),
+               DefaultColorInfoAlphaOnly() };
+  }
+
+  // Function-local static variable scoped to accessor:
+  namespace {
+  uint32_t next_unique_id() {
+      static std::atomic<uint32_t> gNextUniqueID{SK_InvalidUniqueID + 1};
+      return gNextUniqueID.fetch_add(1, std::memory_order_relaxed);
+  }
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:static\s+)?const\s+std::vector<
+- \b(?:static\s+)?const\s+std::(?:string|map|set|unordered_\w+)<
+- \b(?:static\s+const|const\s+static)\s+[A-Za-z0-9_:]+\s+[gk][A-Z]\w*\s*=
+- \bstatic\s+(?:const\s+)?[A-Za-z0-9_]+::k[A-Z]\w*\s*=
+- \bstatic\s+(?:inline\s+)?(?:const\s+)?[A-Za-z0-9_:]+(?:<[^>]+>)?\s+[gk][A-Z]\w*\s*(?:=|[({])
+- \bstatic\s+std::atomic<[A-Za-z0-9_:]+>
+- \bcheck_static_initializers\b
+confidence: 0.97
+support_cl_count: 2

@@ -1,0 +1,53 @@
+id: gpu/add-texture-binding-for-dawn-resolve-color-attachments
+title: When configuring Dawn attachment texture usage flags under load/store resolve emulation, include
+  TextureBinding only for color formats and exclude depth/stencil formats
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When configuring Dawn attachment texture usage (wgpu::TextureUsage), add wgpu::TextureUsage::TextureBinding
+  if emulating load/store resolve (fEmulateLoadStoreResolve), but only for color attachments (!TextureFormatIsDepthOrStencil).
+  Do not add TextureBinding to depth or stencil attachment usages.
+why: Emulating MSAA load/store resolve performs texture copies via shader sampling in a separate render
+  pass, requiring wgpu::TextureUsage::TextureBinding on the sampled MSAA color attachment. Depth and stencil
+  attachments are not sampled during resolve emulation, so adding TextureBinding to them imposes unnecessary
+  usage constraints and can violate driver format requirements.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  DawnTextureInfo info;
+  info.fUsage = wgpu::TextureUsage::RenderAttachment;
+  if (fSupportedTransientAttachmentUsage != wgpu::TextureUsage::None &&
+      discardable == Discardable::kYes) {
+      info.fUsage |= fSupportedTransientAttachmentUsage;
+  }
+  return TextureInfos::MakeDawn(info);
+  ```
+
+  Good:
+
+  ```cpp
+  DawnTextureInfo info;
+  info.fUsage = wgpu::TextureUsage::RenderAttachment;
+  if (fSupportedTransientAttachmentUsage != wgpu::TextureUsage::None &&
+      discardable == Discardable::kYes) {
+      info.fUsage |= fSupportedTransientAttachmentUsage;
+  }
+  if (fEmulateLoadStoreResolve && !TextureFormatIsDepthOrStencil(desc.fFormat)) {
+      // When emulating resolve, the MSAA color attachment is sampled into the resolve target.
+      info.fUsage |= wgpu::TextureUsage::TextureBinding;
+  }
+  return TextureInfos::MakeDawn(info);
+  ```
+include_glob:
+- src/gpu/graphite/dawn/**
+triggers:
+- \bfEmulateLoadStoreResolve\b
+- \bwgpu::TextureUsage::TextureBinding\b
+- \bwgpu::TextureUsage::RenderAttachment\b
+- \bTextureFormatIsDepthOrStencil\b
+- \bfSupportedTransientAttachmentUsage\b
+- \b(?:getDefaultSampledTextureInfo|onGetDefaultTextureInfo)\b
+confidence: 0.95
+support_cl_count: 1

@@ -1,0 +1,58 @@
+id: general/unit-test-curve-subdivision-and-flattening
+title: When introducing or modifying curve subdivision, flattening, or geometry-mapping algorithms, add
+  unit tests exercising core calculations across standard and degenerate curves
+polarity: do
+severity: should_fix
+rubric: testing
+rule: When introducing or modifying mathematical routines for curve subdivision, geometry flattening,
+  or reparameterization, add unit tests exercising the core estimation and chopping routines. Test both
+  standard curves and edge-case or degenerate geometries (such as coincident points, collinear control
+  points, zero-length segments, or extreme curvatures).
+why: Curve subdivision and flattening routines rely on sensitive floating-point estimations and parameter
+  mappings that are prone to numerical instability, division by zero, or underflow. Direct unit tests
+  covering degenerate and edge-case geometries verify numerical robustness and prevent rendering regressions
+  that high-level visual tests miss.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Introducing curve subdivision or flattening without unit tests exercising the math:
+  class Flattener {
+  public:
+      void flatten(SkSpan<const SkPoint> pts, float tolerance, Polyline* out);
+      // No unit test verifying subdivision accuracy or handling of degenerate collinear curves.
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // tests/FlattenTest.cpp:
+  DEF_TEST(CurveFlattening, reporter) {
+      // Test standard quadratic curve
+      CheckFlattenedPath(reporter, SkPathBuilder().moveTo(10, 10).quadTo(50, 100, 90, 10).detach(), "StandardQuad");
+
+      // Test degenerate curves (collinear, zero length, coincident control points)
+      CheckFlattenedPath(reporter, SkPathBuilder().moveTo(0, 0).quadTo(50, 50, 100, 100).detach(), "Collinear");
+      CheckFlattenedPath(reporter, SkPathBuilder().moveTo(20, 20).quadTo(20, 20, 20, 20).detach(), "ZeroLength");
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bclass\s+(?:SK_API\s+)?[A-Za-z0-9_]*(?:Flatten|Subdivide|Tessellat)\w*\b
+- \b(?:flatten|subdivide|flattenQuad|flattenCubic)\w*\s*\(
+- \b(?:SkChop|Chop)(?:Quad|Cubic|Conic)\w*\s*\(
+- \b(?:kQuad|kCubic|kConic)(?:ErrTolerance|SubdivThreshold|Tolerance)\b
+- \b(?:WangsFormula|wangs_formula)\b
+- \b(?:subdivide|flatten)_(?:quad|cubic|conic|curve)\w*\s*\(
+citations:
+- path: site/docs/dev/contrib/submit.md
+  heading: Adding a unit test
+  quote: Unit tests are best, but if your change touches rendering and you can't think of an automated
+    way to verify the results, consider writing a GM test. Also, if your change is in the GPU code, you
+    may not be able to write it as part of the standard unit test suite, but there are GPU-specific testing
+    paths you can extend.
+confidence: 0.9
+support_cl_count: 1

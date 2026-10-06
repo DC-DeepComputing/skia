@@ -1,0 +1,101 @@
+id: general/avoid-scope-creep-in-feature-cls
+title: When authoring focused feature, bugfix, or maintenance CLs, omit unrelated drive-by edits, untouched
+  line reformatting, branch leakage, leftover scratch files, test deletions, and broad refactorings
+polarity: dont
+severity: should_fix
+rubric: change_scope
+rule: Do not combine large-scale refactorings, broad code deletions, unrelated drive-by modifications,
+  untouched line reformatting, branch leakage, leftover scratch files, test deletions, build churn, or
+  unused utility methods with focused feature updates or bug fixes. Verify that diffs are scoped strictly
+  to modified logic, that rebases do not accidentally revert commits or drop compiler flags, and that
+  all added files are intentional and integrated into build targets rather than orphaned experimentation
+  code. Keep changes scoped to their primary objective, retaining existing test coverage, diagnostic logging,
+  and shared utilities, deferring broad cleanups to follow-up CLs.
+why: Bundling major architectural refactorings, broad code deletions, branch leakage, unreferenced scratch
+  files, drive-by formatting churn on untouched lines, or unrelated edits into focused changes inflates
+  patch size, pollutes git blame history, obscures primary intent, risks accidental loss of test coverage
+  or diagnostic instrumentation, and complicates bisection. Isolating cleanups, formatting overhauls,
+  build adjustments, test removals, and broad refactorings into dedicated follow-up CLs minimizes review
+  surface area and prevents regressions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Unused utility accessor edits bundled into a focused feature or refactoring CL:
+  Iter begin() const { return Iter(fHead); }
+  Iter end() const { return Iter(); }
+  Iter tail() const { return Iter(fTail); }
+
+  // 2. Bundling task compiler migration (MSVC -> Clang) into an urgent bot OS upgrade CL
+
+  // 3. Bundling a sweeping API refactoring (~1000 lines) into a focused feature/bugfix CL:
+  void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appExtensions) { ... }
+
+  // 4. Bundling unrelated unit test deletions or cleanups into a feature CL:
+  -UNIX_ONLY_TEST(SkParagraph_ArabicWithLetterSpacingWhitespacesAsChrome, reporter) { ... }
+
+  // 5. Unrelated build flag deletion or accidental commit reversion during rebase:
+  cflags_cc += [
+    "-Wno-c++98-compat",
+    # -Wc++98-compat-extra-semi accidentally removed during rebase
+  ]
+
+  // 6. Accidental deletion of instrumentation or WIP edits leaked from another branch:
+  - TRACE_EVENT_INSTANT0("skia.gpu.cache", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD);
+
+  // 7. Drive-by reformatting of untouched lines during a functional change:
+  setMetric(out_metrics->fUnderlinePosition,
+            -metrics.underline_position,
+            out_metrics->fFlags,
+            SkFontMetrics::kUnderlinePositionIsValid_Flag);
+
+  // 8. Stray scratch or temporary test files leftover from local experimentation:
+  // modules/skparagraph/slides/test.cpp (unreferenced in headers and build files)
+  int main() { ... }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Leave shared utility classes untouched when edits are unused by the core change:
+  Iter begin() { return Iter(fHead); }
+  Iter end() { return Iter(); }
+  Iter tail() { return Iter(fTail); }
+
+  // 2. Keep urgent tree-unblocking fixes minimal; defer compiler migrations to a follow-up:
+  // Separate follow-up CL: "Migrate Windows bot tasks from MSVC to Clang"
+
+  // 3. Keep focused feature CLs scoped; defer broad parameter/cleanup pivots to follow-up:
+  void VulkanPreferredFeatures::addFeaturesToEnable(std::vector<const char*>& appExtensions, VkPhysicalDeviceFeatures2& appFeatures) { ... }
+
+  // 4. Retain unrelated unit tests; split intentional test removals into a dedicated cleanup CL:
+  UNIX_ONLY_TEST(SkParagraph_ArabicWithLetterSpacingWhitespacesAsChrome, reporter) { ... }
+
+  // 5. Keep build configurations untouched; verify rebases retain recently landed flags:
+  cflags_cc += [
+    "-Wno-c++98-compat",
+    "-Wc++98-compat-extra-semi",
+  ]
+
+  // 6. Retain existing instrumentation; keep CL strictly scoped to its stated purpose:
+  TRACE_EVENT_INSTANT0("skia.gpu.cache", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD);
+
+  // 7. Retain existing formatting on untouched lines; scope diff strictly to modified logic:
+  setMetric(out_metrics->fUnderlinePosition, -metrics.underline_position,
+            out_metrics->fFlags, SkFontMetrics::kUnderlinePositionIsValid_Flag);
+
+  // 8. Omit temporary scratch files and verify all added files are wired into build targets
+  ```
+include_glob:
+- '**'
+citations:
+- path: site/docs/dev/contrib/_index.md
+  heading: Contribute Code
+  quote: Keep your code submissions small and targeted.
+- path: site/docs/dev/contrib/submit.md
+  heading: Updating BUILD.bazel files
+  quote: If you added or removed files, you will need to update the `BUILD.bazel` file in the directory
+    of those files.
+confidence: 0.98
+support_cl_count: 11

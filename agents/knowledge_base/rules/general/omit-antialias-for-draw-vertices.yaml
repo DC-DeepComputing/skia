@@ -1,0 +1,47 @@
+id: general/omit-antialias-for-draw-vertices
+title: When configuring SkPaint for SkCanvas::drawVertices, drawMesh, or drawPatch, omit setAntiAlias,
+  mask filters, and path effects as mesh draws ignore them
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not configure antialiasing, mask filters, or path effects (such as calling paint.setAntiAlias(true))
+  on SkPaint objects passed to SkCanvas::drawVertices, drawMesh, or drawPatch. These mesh and patch draw
+  methods intentionally ignore antialiasing, mask filters, and path effects to avoid visible seams along
+  shared internal triangle edges.
+why: Mesh and patch primitives rasterize adjacent triangles that must align seamlessly; per-primitive
+  antialiasing would create visible seams along shared edges. Because SkCanvas mesh draw methods explicitly
+  ignore antialiasing, mask filters, and path effects, configuring them is dead code and misleads readers
+  about rendering behavior.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkPaint paint;
+  paint.setAntiAlias(true);
+  paint.setColor(SK_ColorWHITE);
+  canvas->drawVertices(vertices, SkBlendMode::kModulate, paint);
+  ```
+
+  Good:
+
+  ```cpp
+  SkPaint paint;
+  paint.setColor(SK_ColorWHITE);
+  canvas->drawVertices(vertices, SkBlendMode::kModulate, paint);
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- ->drawVertices\s*\(
+- ->draw(?:Mesh|Patch)\s*\(
+- \bdrawVertices\s*\(
+- \b(?:paint|p)\.setAntiAlias\s*\(
+- \b(?:paint|p)\.set(?:MaskFilter|PathEffect)\s*\(
+citations:
+- path: include/core/SkCanvas.h
+  heading: SkCanvas::drawVertices
+  quote: SkMaskFilter, SkPathEffect, and antialiasing on SkPaint are ignored.
+confidence: 0.92
+support_cl_count: 1

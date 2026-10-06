@@ -1,0 +1,77 @@
+id: rust/panic-on-unexpected-enum-variants
+title: When matching crate enums in Rust FFI or decoders, explicitly match variants without wildcard fallbacks,
+  and panic on contract errors or unexpected variants
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When matching on third-party or crate enums (such as error, format, or color type enums) in Rust
+  FFI and decoder wrappers, do not use silent wildcard (`_ =>`) fallback arms that return default metadata
+  or convert errors to generic input failures. Explicitly enumerate all variants to preserve compiler
+  exhaustiveness diagnostics when dependencies update, and fail fast with `panic!` (or `unreachable!`)
+  on unexpected variants or internal contract/parameter errors (such as `ImageError::Parameter`).
+why: Silently defaulting formats or error codes masks decoder misconfigurations, suppresses compiler exhaustiveness
+  checks when crate enums change, and misreports internal crate usage bugs as malformed external input
+  rather than failing fast.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Silently returning default format on unhandled variant:
+  let (color, alpha, bpp) = match image_color_type {
+      image::ColorType::Rgb8 => (BmpColor::RGB, BmpAlpha::Opaque, 3),
+      image::ColorType::Rgba8 => (BmpColor::RGBA, BmpAlpha::Unpremul, 4),
+      _ => (BmpColor::RGB, BmpAlpha::Opaque, 3),
+  };
+
+  // Wildcard fallback masking compiler checks and contract errors:
+  impl From<image::ImageError> for BmpError {
+      fn from(err: image::ImageError) -> Self {
+          match err {
+              image::ImageError::Decoding(_) => BmpError::FormatError,
+              image::ImageError::Limits(_) => BmpError::UnsupportedFeature,
+              _ => BmpError::InvalidData,
+          }
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicitly panic on invariant-violating format variants:
+  let (color, alpha, bpp) = match image_color_type {
+      image::ColorType::Rgb8 => (BmpColor::RGB, BmpAlpha::Opaque, 3),
+      image::ColorType::Rgba8 => (BmpColor::RGBA, BmpAlpha::Unpremul, 4),
+      _ => panic!("Unexpected color type: {:?}", image_color_type),
+  };
+
+  // Exhaustively match variants and panic on internal contract bugs:
+  impl From<image::ImageError> for BmpError {
+      fn from(err: image::ImageError) -> Self {
+          match err {
+              image::ImageError::Decoding(_) => BmpError::FormatError,
+              image::ImageError::Limits(_) => BmpError::UnsupportedFeature,
+              image::ImageError::Parameter(_) => {
+                  panic!("Internal caller contract bug in crate usage: {:?}", err);
+              }
+              image::ImageError::IoError(e) => BmpError::from(e),
+              image::ImageError::Unsupported(_) => BmpError::UnsupportedFeature,
+          }
+      }
+  }
+  ```
+include_glob:
+- rust/**
+- experimental/**
+- src/ports/**
+triggers:
+- \bpanic!\s*[(]
+- \bunreachable!\s*[(]
+- \bmatch\s+[a-zA-Z0-9_.]+\s*\{
+- \b_\s*=>
+- \b(?:ImageError|ColorType|PixelFormat|Format)::[A-Za-z0-9_]+
+- \bmatch\s+[^{]*(?:color_type|format|variant|state|mode|kind|type|err|error)\b
+- \bimpl\s+From<[A-Za-z0-9_:]+Error>\s+for\b
+confidence: 0.98
+support_cl_count: 2

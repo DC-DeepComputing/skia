@@ -1,0 +1,70 @@
+id: general/prefer-int-for-sizes-and-offsets
+title: When declaring buffer offsets and container sizes, prefer int and use SkTo<int> for required narrowing,
+  but keep external unsigned APIs unsigned
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer signed int over size_t or unsigned integer types for internal buffer offsets, byte sizes,
+  and container counts (matching Skia containers like SkTArray and SkTDArray), and use SkTo<int>() or
+  SkToInt() when narrowing from size_t so debug assertions verify the value fits. Conversely, when consuming
+  external APIs, FFI structs, or third-party libraries that return unsigned types (such as uint32_t or
+  size_t), do not introduce redundant static_cast<int32_t> or SkToInt conversions for local variables
+  and loop counters; keep them unsigned to avoid cast boilerplate and signed/unsigned comparison warnings.
+why: Skia follows Google C++ guidelines preferring signed int for internal sizes and offsets to eliminate
+  64-bit storage bloat and match Skia container size() return types, with SkTo<int>() catching overflows
+  in debug builds. However, forcing signed conversions on external APIs or FFI types that already produce
+  unsigned values introduces visual clutter, redundant static_cast boilerplate, and signed/unsigned comparison
+  warnings across local loops.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: internal buffer/container size uses size_t, forcing unverified casts
+  void rewindTo(size_t size) {
+      fStorage.resize(static_cast<int>(size));
+      fStartingOffset = size; // fStartingOffset is int
+  }
+  size_t size() const { return fStorage.size(); } // fStorage is SkTDArray<char>
+
+  // Bad: unnecessary static_cast from external unsigned FFI API
+  const int32_t dstRowStart = static_cast<int32_t>(rowsInfo.dst_row_start);
+  for (int32_t i = 0; i < rowCount; ++i) { ... }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: match Skia container int sizing, or use SkTo<int>() when narrowing
+  int size() const { return fStorage.size(); }
+  void rewindTo(int size) {
+      fStorage.resize(size);
+      fStartingOffset = size;
+  }
+  fStartingOffset = SkTo<int>(externalSize);
+
+  // Good: preserve external unsigned API types without redundant casts
+  const uint32_t dstRowStart = rowsInfo.dst_row_start;
+  for (uint32_t i = 0; i < rowCount; ++i) { ... }
+  ```
+include_glob:
+- src/**
+- include/**
+- experimental/**
+triggers:
+- \bsize_t\s+[a-zA-Z0-9_]*(?:[oO]ffset|[sS]ize|[cC]ount|[iI]ndex|[pP]adding)\b
+- \b(?:const\s+)?size_t\s+[a-zA-Z0-9_]*\s*=\s*[^;]*(?:size|offset|count|align)\b
+- \bstatic_cast<size_t>\s*\([^)]*(?:size|count|length)\(\)
+- \bstatic_cast<int(?:32_t)?>\s*\([^)]*(?:row|count|size|offset|width|height|start|end|length|Info|info)
+- \b(?:const\s+)?int(?:32_t)?\s+[a-zA-Z0-9_]*(?:Row|Count|Size|Offset|Width|Height)\s*=\s*static_cast<int(?:32_t)?>
+- \b(?:uint32_t|unsigned)\s+[a-zA-Z0-9_]*(?:[oO]ffset|[sS]ize|[cC]ount|[iI]ndex)\b
+- \bfor\s*\(\s*(?:uint32_t|int32_t|int)\s+[a-zA-Z0-9_]+\s*=\s*0;\s*[^;]+<\s*[a-zA-Z0-9_]*(?:Count|Size|row|Row)
+- \bSkTo(?:<int>|Int)\s*\(
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Integer Types
+  quote: 'Summary: Use `int` unless you have need a guarantee on the bit count, then use `stdint.h` types
+    (`int32_t`, etc). Assert that counts, etc are not negative instead of using unsigned. Bitfields use
+    `uint32_t` unless they have to be made shorter for packing or performance reasons.'
+confidence: 0.97
+support_cl_count: 2

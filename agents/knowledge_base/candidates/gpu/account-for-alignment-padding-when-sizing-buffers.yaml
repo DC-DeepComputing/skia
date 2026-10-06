@@ -1,0 +1,47 @@
+id: gpu/account-for-alignment-padding-when-sizing-buffers
+title: When calculating total capacity to pack multiple sub-allocations into a buffer, align the running
+  total before adding each reservation size
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When calculating the total size required to pack multiple sub-allocations into a single buffer,
+  advance the running total by aligning it to the reservation's required alignment before adding its size
+  (e.g., align(total, req_alignment) + size) rather than accumulating raw sizes. Ensure the alignment
+  calculation accounts for both element-specific alignment constraints and any minimum buffer binding
+  alignments.
+why: When packing multiple sub-allocations with alignment requirements into a single target buffer, inter-element
+  padding is required so each allocation begins at a properly aligned offset. Merely summing raw sizes
+  underestimates required buffer capacity, leading to buffer overruns, failed copy operations, or assertion
+  failures when data is placed at aligned offsets.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Flawed: accumulating raw sizes ignores required inter-element alignment padding
+  for (const auto& req : reservations) {
+      fData.push_back({req.fBinding, req.fTarget});
+      fTotalRequiredBytes += req.fSize;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Correct: align running total to element and buffer requirements before adding size
+  for (const auto& req : reservations) {
+      fData.push_back({req.fBinding, req.fTarget, req.fAlignment});
+      const uint32_t alignment = BufferAligner::LcmAlignment(fMinimumAlignment, req.fAlignment);
+      fTotalRequiredBytes = SkAlignNonPow2(fTotalRequiredBytes, alignment) + req.fSize;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:fTotalRequiredBytes|fRequiredBytes|totalRequiredBytes)\b
+- \b(?:SkAlignNonPow2|SkAlignTo)\s*\([^)]*(?:[bB]ytes|[sS]ize|[oO]ffset|total)
+- \bBufferAligner::LcmAlignment\b
+- \b(?:fMinimumAlignment|requiredAlignment|minAlignment)\b
+- \b(?:totalBytes|totalSize|fTotalBytes|fTotalSize)\s*[+]=
+confidence: 0.92
+support_cl_count: 1

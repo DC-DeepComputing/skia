@@ -1,0 +1,80 @@
+id: general/avoid-single-caller-helper-indirection
+title: When implementing internal helpers or factory functions with a single caller or constructor, inline
+  logic directly instead of adding single-use member functions or tuple wrappers
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not introduce single-caller internal helper functions, member methods, or factory functions that
+  add unnecessary indirection, intermediate return structures (such as packing and unpacking a std::tuple
+  or std::pair), or artificial abstraction boundaries. When helper logic is only used once within a single
+  caller or constructor, inline the initialization or operation directly into that caller rather than
+  defining a separate helper method or wrapper.
+why: Single-use internal helper functions and member methods clutter class interfaces, add unnecessary
+  function call indirection, and introduce boilerplate packaging (such as tuples or structured bindings)
+  without providing genuine reuse or abstraction. Inlining single-caller logic directly into constructors
+  or calling functions keeps execution flow transparent, simplifies debugging, and keeps interfaces minimal.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Intermediate tuple wrapper with single caller:
+  static std::tuple<SkCodec::Result, std::unique_ptr<SkCodec>> Make(
+          std::unique_ptr<SkStream> stream,
+          std::unique_ptr<SkCodecs::ColorProfile> defaultColorProfile);
+
+  std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(...) {
+      auto [r, codec] = SkJpegCodec::Make(std::move(stream), std::move(defaultColorProfile));
+      *result = r;
+      return std::move(codec);
+  }
+
+  // Single-use helper member method called only in constructor:
+  struct SkColorConverter {
+      SkColorConverter(const SkColor* colors, int count);
+      SkSpan<SkColor4f> convert(SkSpan<const SkColor>);
+      skia_private::STArray<2, SkColor4f> fColors4f;
+  };
+  SkColorConverter::SkColorConverter(const SkColor* colors, int count) {
+      (void)this->convert({colors, (size_t)count});
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Logic merged directly into the single caller:
+  std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(...) {
+      auto [r, decoderMgr] = read_header(stream.get(), SaveMarkers::kYes);
+      if (r != SkCodec::kSuccess) {
+          *result = r;
+          return nullptr;
+      }
+      *result = SkCodec::kSuccess;
+      return std::unique_ptr<SkJpegCodec>(
+              new SkJpegCodec(std::move(info), std::move(stream), decoderMgr.release(), orientation));
+  }
+
+  // Initialization inlined directly in constructor:
+  struct SkColorConverter {
+      SkColorConverter(const SkColor* colors, int count);
+      skia_private::STArray<2, SkColor4f> fColors4f;
+  };
+  SkColorConverter::SkColorConverter(const SkColor* colors, int count) {
+      fColors4f.resize(count);
+      std::transform(colors, colors + count, fColors4f.data(), [](SkColor c) {
+          return SkColor4f::FromColor(c);
+      });
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bauto\s*\[
+- \bstd::(?:tuple|pair)<
+- \b(?:std::unique_ptr<|sk_sp<)[A-Za-z0-9_:]+>\s+[A-Za-z0-9_:]+::Make
+- \bstd::make_(?:tuple|pair)[(]
+- \b(?:this->)?(?:convert|init|setup|build|populate|fill|compute)[A-Za-z0-9_]*\s*[(]
+- \b(?:this->)?[a-z][A-Za-z0-9_]*\s*[(]\s*[{]
+confidence: 0.95
+support_cl_count: 2

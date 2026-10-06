@@ -1,0 +1,41 @@
+id: general/general-avoid-wildcard-asterisks-in-comment-lists
+title: When enumerating identifiers, flags, or settings in comments, list names explicitly rather than
+  using trailing wildcard asterisks that resemble footnotes
+polarity: do
+severity: nit
+rubric: readability
+rule: When documenting or enumerating identifiers, flags, configuration options, or state properties in
+  comments, list each name explicitly rather than using trailing wildcard asterisks (such as 'prefix*').
+  Avoid trailing asterisks on identifiers—especially in bulleted lists—where they can be confused with
+  footnote references, markdown emphasis, or placeholder markers.
+why: Trailing asterisks on identifier names in comments are ambiguous; readers and reviewers can easily
+  misinterpret them as footnote markers, placeholder notes, or pointer types rather than glob patterns.
+  Listing identifiers explicitly clarifies exactly which settings or states are covered and ensures the
+  comment remains discoverable via code search.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // The following state are constants in Graphite:
+  // * lineWidth
+  // * depthBias*
+  ```
+
+  Good:
+
+  ```cpp
+  // The following state are constants in Graphite:
+  // * lineWidth
+  // * depthBiasEnable, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- (?://|[*]).*\b[a-zA-Z0-9_]{3,}\*(?:\s*$|\s*[,;.\)])
+- ^\s*//\s*[*+-]\s+[a-zA-Z0-9_]+(?:\*|\s*$)
+- (?://|/\*).*\b(?:[Tt]he following|[Tt]hese|[Aa]ll)\s+(?:state|flags?|fields?|properties|settings?|constants?|enums?)\b
+- (?://|[*]).*\b(?:wildcard|asterisk|glob|placeholder)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,46 @@
+id: codec/document-container-chunk-padding-rules
+title: When parsing container formats and adjusting chunk payload sizes or stream offsets for specification-mandated
+  padding, document the format requirement in comments
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When parsing container image or media formats and adjusting chunk payload sizes or stream read offsets
+  to account for specification-mandated padding (such as RIFF 2-byte alignment for odd chunk sizes), document
+  the governing format specification rule in an inline comment. Explain why payload sizes are incremented
+  or trailing padding bytes are skipped rather than leaving unannotated offset arithmetic.
+why: In container formats like RIFF or WebP, odd-sized chunk payloads are followed by a padding byte to
+  maintain word alignment. Incrementing chunk payload sizes or advancing stream offsets without an explanatory
+  comment looks like an off-by-one bug or unhandled read failure to maintainers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  uint32_t payloadSize;
+  memcpy(&payloadSize, &buffer[4], 4);
+  if (payloadSize % 2 != 0) {
+      payloadSize += 1;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // According to the RIFF document format, if 'payloadSize' is odd a single
+  // padding byte -- which must be 0 to conform with RIFF -- is added.
+  uint32_t payloadSize;
+  memcpy(&payloadSize, &buffer[4], 4);
+  if (payloadSize % 2 != 0) {
+      payloadSize += 1;
+  }
+  ```
+include_glob:
+- src/codec/**
+triggers:
+- \b(?:payloadSize|chunkSize|payload_size|chunk_size|chunkBytes|chunk_bytes)\b
+- \b(?:payloadSize|chunkSize|payload_size|chunk_size)\s*%\s*2
+- \b(?:payloadSize|chunkSize|payload_size|chunk_size)\s*\+=\s*1\b
+- //.*\b(?:RIFF|padding byte|chunk padding|odd.*padding)\b
+- \b(?:skip|read|advance)\w*\s*\([^;]*(?:padding|pad|\b1u?\b)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,59 @@
+id: general/document-c-api-buffer-lifetime
+title: When passing locally-scoped or stack buffers to C library APIs or structs requiring non-const pointers,
+  document that internal copying makes immediate deallocation safe
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When passing stack-allocated or locally-scoped buffers to C library APIs whose parameters or structs
+  require non-const pointers (such as png_unknown_chunk.data in png_set_unknown_chunks), document with
+  an explanatory comment that the library copies the buffer internally. Confirm that the non-const pointer
+  is not retained or mutated so reviewers and maintainers know immediate deallocation is safe.
+why: Many C library APIs use non-const pointer types even when they only read and copy input data. Passing
+  locally-scoped buffers or casting away const to non-const C structs creates apparent use-after-free
+  and mutation hazards unless comments confirm internal copy semantics and safe immediate deallocation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  skhdr::ContentLightLevelInformation clli;
+  if (options.fHdrMetadata.getContentLightLevelInformation(&clli)) {
+      auto data = clli.serializePngChunk();
+      png_unknown_chunk chunk = {
+          .name = {'c', 'L', 'L', 'I', 0},
+          .data = reinterpret_cast<png_byte*>(data->writable_data()),
+          .size = data->size(),
+          .location = PNG_HAVE_IHDR,
+      };
+      png_set_unknown_chunks(fPngPtr, fInfoPtr, &chunk, 1);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // png_unknown_chunk.data is non-const, but png_set_unknown_chunks copies
+  // the buffer internally, so immediate deallocation after the call is safe.
+  skhdr::ContentLightLevelInformation clli;
+  if (options.fHdrMetadata.getContentLightLevelInformation(&clli)) {
+      auto data = clli.serializePngChunk();
+      png_unknown_chunk chunk = {
+          .name = {'c', 'L', 'L', 'I', 0},
+          .data = reinterpret_cast<png_byte*>(data->writable_data()),
+          .size = data->size(),
+          .location = PNG_HAVE_IHDR,
+      };
+      png_set_unknown_chunks(fPngPtr, fInfoPtr, &chunk, 1);
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bpng_set_unknown_chunks\b
+- \bpng_unknown_chunk\b
+- \b(?:png_byte|png_bytep)\b
+- \breinterpret_cast<\s*png_byte\s*\*\s*>
+- \b(?:reinterpret_cast|const_cast)<[^>]*\*\s*>\s*\([^)]*writable_data
+- //.*\b(?:copies (?:the )?buffer|copied by|safe to (?:be )?deallocated?|immediate deallocation)\b
+confidence: 0.9
+support_cl_count: 1

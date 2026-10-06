@@ -1,0 +1,81 @@
+id: general/place-binary-operators-at-end-of-line
+title: When wrapping multi-line boolean or comparison expressions, place binary operators at line ends,
+  and extract multiline calls or repetitive subexpressions into local variables
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When breaking multi-line expressions across lines, place binary operators (such as `&&`, `||`, `<`,
+  `>`, `==`, `!=`, `+`, or `-`) at the end of the line rather than at the start of continuation lines.
+  Where comparison operands involve multi-line wrapped function calls, repetitive subexpressions, or coordinate
+  differences, extract them into descriptive local variables so the comparison fits cleanly on a single
+  line rather than trailing comparison operators after wrapped arguments.
+why: 'Placing binary, boolean, and comparison operators at the end of lines conforms to Skia''s coding
+  conventions and `.clang-format` configuration (`BreakBeforeBinaryOperators: None`). Tacking comparison
+  operators onto the tail of wrapped multi-line function calls obscures the operator and confuses readers,
+  whereas extracting call results and repetitive subexpressions into named local variables keeps comparisons
+  readable and on a single line.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Variant 1: Binary boolean operator on continuation line
+  if (src.fFormat != SkMask::kA8_Format
+      && src.fFormat != SkMask::kBW_Format) {
+      return false;
+  }
+
+  // Variant 2: Trailing comparison operator after multiline wrapped arguments
+  fMSAASupported = fRecorder->priv().caps()->getCompatibleMSAASampleCount(
+          fDC->target()->textureInfo()) > SampleCount::k1;
+
+  // Variant 3: Comparison operator on continuation line with redundant subexpressions
+  double s = (std::abs(fBottom->fPt.fX - fTop->fPt.fX)
+      > std::abs(fBottom->fPt.fY - fTop->fPt.fY))
+      ? (p->fX - fTop->fPt.fX) / (fBottom->fPt.fX - fTop->fPt.fX)
+      : (p->fY - fTop->fPt.fY) / (fBottom->fPt.fY - fTop->fPt.fY);
+  ```
+
+  Good:
+
+  ```cpp
+  // Variant 1: Binary boolean operator placed at the end of the preceding line
+  if (src.fFormat != SkMask::kA8_Format &&
+      src.fFormat != SkMask::kBW_Format) {
+      return false;
+  }
+
+  // Variant 2: Extract call result into intermediate variable to keep comparison clean
+  const SampleCount supportedCount = fRecorder->priv().caps()->getCompatibleMSAASampleCount(
+          fDC->target()->textureInfo());
+  fMSAASupported = supportedCount > SampleCount::k1;
+
+  // Variant 3: Extract delta variables so comparison fits cleanly on one line
+  float dx = fBottom->fPt.fX - fTop->fPt.fX;
+  float dy = fBottom->fPt.fY - fTop->fPt.fY;
+  double s = (std::abs(dx) > std::abs(dy)) ? (p->fX - fTop->fPt.fX) / dx
+                                           : (p->fY - fTop->fPt.fY) / dy;
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+triggers:
+- ^\s*(?:&&|\|\|)\s*
+- ^\s*(?:[-+*&|^]|==|!=|<=|>=|<|>)\s+\w+
+- (?:&&|\|\|)\s*$
+- (?:==|!=|<=|>=|<|>)\s*$
+- '[)]\s*(?:==|!=|<=|>=|<|>)\s*'
+- (?:fX|fY)\s*-\s*[a-zA-Z0-9_]+(?:->|\.)(?:fX|fY)
+- \?\s*[(]?[a-zA-Z0-9_]+(?:->|\.)
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: |-
+    If function arguments or parameters do not all fit on one line, the overflowing
+    parameters may be lined up with the first parameter on the next line
+- path: site/docs/dev/contrib/style.md
+  heading: '## Function Parameters'
+  quote: or all parameters placed on the next line and indented eight spaces
+confidence: 0.98
+support_cl_count: 4

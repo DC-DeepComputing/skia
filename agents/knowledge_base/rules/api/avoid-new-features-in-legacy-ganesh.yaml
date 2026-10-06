@@ -1,0 +1,45 @@
+id: api/avoid-new-features-in-legacy-ganesh
+title: When developing new GPU capabilities, do not add new features, optional parameters, or public API
+  extensions to legacy Ganesh without explicit client need
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not add new features, optional parameters, or public API capabilities to the legacy Ganesh backend
+  (`include/gpu/ganesh/**`, `src/gpu/ganesh/**`) when developing functionality for Graphite unless there
+  is an explicit requirement or active client need. Direct new GPU capabilities, configuration options,
+  and architectural extensions exclusively to Graphite.
+why: Ganesh is Skia's legacy GPU backend and is maintained only for existing client integrations as the
+  codebase migrates to Graphite. Extending Ganesh with new features or optional configuration adds dead
+  code and maintenance overhead without clear client benefit, conflicting with migration goals.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Adding new optional configuration or feature parameters to legacy Ganesh API:
+  void performDeferredCleanup(
+          std::chrono::milliseconds msNotUsed,
+          GrPurgeResourceOptions opts = GrPurgeResourceOptions::kAllResources,
+          const std::chrono::milliseconds* stopPurgingPastDuration = nullptr);
+  ```
+
+  Good:
+
+  ```cpp
+  // Keep legacy Ganesh signatures frozen; implement new features only in Graphite:
+  void performDeferredCleanup(
+          std::chrono::milliseconds msNotUsed,
+          GrPurgeResourceOptions opts = GrPurgeResourceOptions::kAllResources);
+  ```
+include_glob:
+- include/gpu/ganesh/**
+- src/gpu/ganesh/**
+triggers:
+- \bSK_API\s+(?:virtual\s+|static\s+)?[A-Za-z0-9_:<>]+\s+[a-zA-Z0-9_]+\s*\(
+- =\s*(?:nullptr|std::nullopt|false|true|\{\}|0|[A-Za-z0-9_:]+::k[A-Za-z0-9_]+)\s*[,)]
+- \b(?:GrDirectContext|GrRecordingContext|GrContextOptions|GrResourceCache)\b
+- \bperformDeferredCleanup\b
+- \bstd::chrono::(?:microseconds|milliseconds|seconds)\b
+- \bstruct\s+(?:SK_API\s+)?[A-Za-z0-9_]*(?:Options|Params|Settings)\b
+confidence: 0.9
+support_cl_count: 1

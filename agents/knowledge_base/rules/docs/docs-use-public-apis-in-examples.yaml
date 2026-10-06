@@ -1,0 +1,53 @@
+id: docs/docs-use-public-apis-in-examples
+title: When writing or modifying documentation and Fiddle examples in docs/examples/, use only public
+  Skia APIs instead of internal macros, private headers, or SkAssertResult
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not use private Skia APIs, internal macros (such as SkAssertResult or SkASSERT), or headers from
+  include/private/ and src/ in public documentation and Fiddle examples under docs/examples/. Write example
+  code using exclusively public client-facing APIs and standard control flow or assertions.
+why: Examples under docs/examples/ are compiled for Fiddle and published as public documentation for external
+  developers. Using internal macros like SkAssertResult or including private headers leaks internal implementation
+  details and causes build failures when external clients copy and paste example snippets into downstream
+  projects.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #include "include/private/base/SkAssert.h"
+
+  void draw(SkCanvas* canvas) {
+      SkPixmap pm;
+      SkAssertResult(image->makeRasterImage()->peekPixels(&pm));
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void draw(SkCanvas* canvas) {
+      SkPixmap pm;
+      if (image->makeRasterImage()->peekPixels(&pm)) {
+          // Use pixel data
+      }
+  }
+  ```
+include_glob:
+- docs/examples/**
+triggers:
+- \bREG_FIDDLE\b
+- \bSkAssert(?:Result)?\b
+- \bSkASSERT(?:_RELEASE)?\b
+- \b(?:peekPixels|makeRasterImage|asLegacyBitmap)\b
+- '#include\s+[\"<](?:include/private/|src/)'
+- '\bskia_private::'
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 126
+  quote: '`SkFloat2Bits` and `SkBits2Float` have been removed from the Skia public headers. These were
+    always private API (since they lived in `/include/private`) but they had leaked into some example
+    code, and tended to be available once a handful of Skia headers were #included.'
+confidence: 0.9
+support_cl_count: 1

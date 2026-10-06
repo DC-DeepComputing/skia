@@ -1,0 +1,77 @@
+id: general/inject-codec-callbacks-in-document-backends
+title: 'When implementing document or canvas export backends, inject image encoder and decoder callbacks
+  via options structs rather than hardcoding or #ifdef-ing codec dependencies'
+polarity: dont
+severity: should_fix
+rubric: design
+rule: 'Do not hardcode image codec dependencies (such as SkPngEncoder or SkPngRustEncoder) or use compile-time
+  #ifdef guards to select codecs inside document or canvas export backends. Instead, accept an options
+  or metadata struct containing encoder and decoder callback function pointers (such as EncodePngCallback
+  or jpegEncoder) so callers can inject their preferred codec implementation.'
+why: Hardcoding codec dependencies or toggling them via compile-time preprocessor guards forces document
+  and canvas backends to transitively depend on concrete codec libraries (such as libpng). This causes
+  link errors for downstream clients that compile without those libraries. Passing callbacks via options
+  structs decouples backends and allows clients to supply custom codecs or omit unused dependencies.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/xps/SkXPSDevice.cpp:
+  #ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
+  #include "include/encode/SkPngRustEncoder.h"
+  #else
+  #include "include/encode/SkPngEncoder.h"
+  #endif
+  ...
+  #ifdef SK_CODEC_ENCODES_PNG_WITH_RUST
+      bool success = SkPngRustEncoder::Encode(&write, bitmap, {});
+  #else
+      bool success = SkPngEncoder::Encode(&write, bitmap, {});
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // In include/docs/SkXPSDocument.h:
+  struct Options {
+      float dpi = SK_ScalarDefaultRasterDPI;
+      SkXPS::EncodePngCallback pngEncoder = nullptr;
+  };
+  SK_API sk_sp<SkDocument> MakeDocument(SkWStream* stream,
+                                        IXpsOMObjectFactory* xpsFactory,
+                                        SkXPS::Options opts);
+
+  // In src/xps/SkXPSDevice.cpp:
+  if (!fOpts.pngEncoder || !fOpts.pngEncoder(&write, bitmap)) {
+      HRM(E_FAIL, "Unable to encode bitmap as png.");
+  }
+  ```
+include_glob:
+- src/**
+- include/docs/**
+- include/svg/**
+triggers:
+- \b(?:Encode|Decode)(?:Png|Jpeg|Webp)?Callback\b
+- \b(?:png|jpeg|webp)Encoder\b
+- \b(?:png|jpeg|webp)Decoder\b
+- \bSk(?:PDF::Metadata|XPS::Options|SVGCanvas::Options)\b
+- \bSk(?:Png|Jpeg|Webp)(?:Rust)?Encoder::Encode\b
+- '#if(?:def)?\s+SK_CODEC_ENCODES_\w+'
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 143
+  quote: New `SkXPS::MakeDocument` overload allows explicitly specifying which PNG encoder should be used.  This
+    enables avoiding a hardcoded, transitive dependency on either `libpng` or Rust PNG.
+- path: RELEASE_NOTES.md
+  heading: Milestone 144
+  quote: New `SkSVGCanvas::Make` overload allows explicitly specifying which PNG encoder should be used.  This
+    enables avoiding a hardcoded, transitive dependency on either `libpng` or Rust PNG.
+- path: RELEASE_NOTES.md
+  heading: Milestone 135
+  quote: SkPDF::MakeDocument(SkWStream*) [one argument] has been deprecated and will be removed. This
+    is because SkPDFMetdata has added 2 required fields `jpegDecoder` and `jpegEncoder`. In order to make
+    a reasonable PDF, those must be supplied (using the two argument factory).
+confidence: 0.92
+support_cl_count: 1

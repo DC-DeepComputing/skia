@@ -1,0 +1,63 @@
+id: bazel/factor-duplicated-macro-argument-transformations
+title: When transforming target arguments across multiple Bazel/Starlark wrapper macros, factor duplicated
+  list-processing loops into a shared private helper function
+polarity: do
+severity: nit
+rubric: design
+rule: In Bazel/Starlark macro files, factor duplicated argument transformation logic (such as dependency
+  rewriting, flag manipulation, or list filtering) into a shared private helper function. Do not duplicate
+  element-transformation loops or dictionary lookup logic across sibling macro wrappers.
+why: Repeating argument-transformation loops across multiple rule wrappers introduces code bloat and creates
+  a maintenance hazard where changes to lookup tables or transformation logic risk diverging across macros.
+  Extracting common transformations into a private helper keeps macros concise and guarantees consistent
+  target definitions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  # In skia_cc_library_with_testutil:
+  rewritten_deps = []
+  for dep in deps:
+      if dep in _REWRITE_TEST_UTIL_DEPS:
+          rewritten_deps.append(_REWRITE_TEST_UTIL_DEPS[dep])
+      else:
+          rewritten_deps.append(dep)
+
+  # In skia_objc_library_with_testutil:
+  rewritten_deps = []
+  for dep in deps:
+      if dep in _REWRITE_TEST_UTIL_DEPS:
+          rewritten_deps.append(_REWRITE_TEST_UTIL_DEPS[dep])
+      else:
+          rewritten_deps.append(dep)
+  ```
+
+  Good:
+
+  ```cpp
+  def _rewrite_deps(deps):
+      rewritten_deps = []
+      for dep in deps:
+          if dep in _REWRITE_TEST_UTIL_DEPS:
+              rewritten_deps.append(_REWRITE_TEST_UTIL_DEPS[dep])
+          else:
+              rewritten_deps.append(dep)
+      return rewritten_deps
+
+  # In skia_cc_library_with_testutil:
+  rewritten_deps = _rewrite_deps(deps)
+
+  # In skia_objc_library_with_testutil:
+  rewritten_deps = _rewrite_deps(deps)
+  ```
+include_glob:
+- bazel/**
+triggers:
+- \bdef\s+[a-zA-Z0-9_]*(?:library|binary|test)[a-zA-Z0-9_]*\s*[(]
+- '\bfor\s+[a-zA-Z0-9_]+\s+in\s+(?:deps|srcs|hdrs|copts|defines)\s*:'
+- \b(?:rewritten|filtered)_[a-zA-Z0-9_]+\s*=\s*\[\]
+- \b[a-zA-Z0-9_]+\.append\s*[(]
+- \bdef\s+_(?:rewrite|filter|transform)_[a-zA-Z0-9_]+\s*[(]
+confidence: 0.82
+support_cl_count: 1

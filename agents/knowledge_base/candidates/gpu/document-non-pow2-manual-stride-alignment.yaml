@@ -1,0 +1,40 @@
+id: gpu/document-non-pow2-manual-stride-alignment
+title: When performing manual ceiling division or stride alignment arithmetic instead of using SkAlignTo,
+  add a comment explaining that strides are non-power-of-two
+polarity: do
+severity: optional
+rubric: readability
+rule: When computing alignment or ceiling division via manual arithmetic (such as (bytes + stride - 1)
+  / stride) rather than SkAlignTo, document that SkAlignTo is intentionally avoided because the stride
+  is not guaranteed to be a power of two. This clarifies that manual ceiling arithmetic is deliberate
+  and prevents mistaken refactoring to power-of-two alignment helpers.
+why: SkAlignTo requires its alignment argument to be a power of two and asserts SkIsPow2 in debug builds.
+  When strides (such as arbitrary vertex or instance attribute sizes) may be non-powers of two, open-coding
+  ceiling division without an inline comment invites confusion or mistaken refactoring to SkAlignTo that
+  fails debug assertions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const size_t prevBytes = fPendingBase * prevStride;
+  fPendingBase = SkTo<uint32_t>((prevBytes + currStride - 1) / currStride);
+  ```
+
+  Good:
+
+  ```cpp
+  const size_t prevBytes = fPendingBase * prevStride;
+  // Not using SkAlignTo because currStride is not guaranteed to be a power of two.
+  fPendingBase = SkTo<uint32_t>((prevBytes + currStride - 1) / currStride);
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- '[(]\s*[A-Za-z0-9_.]+\s*\+\s*[A-Za-z0-9_.]*(?:stride|alignment|Stride|Alignment)\s*-\s*1\s*[)]\s*/'
+- \b(?:prevStride|currStride|fAppendStride|fStaticStride)\b
+- \bSkAlignTo\s*[(]
+- \bSkAlignNonPow2\s*[(]
+- //.*\b(?:SkAlignTo|power-of-two|pow2)\b
+confidence: 0.9
+support_cl_count: 1

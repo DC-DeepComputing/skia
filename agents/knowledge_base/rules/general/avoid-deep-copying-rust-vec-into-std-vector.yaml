@@ -1,0 +1,56 @@
+id: general/avoid-deep-copying-rust-vec-into-std-vector
+title: When transferring buffers across Rust CXX FFI boundaries, move rust::Vec or pass a mutable rust::Slice
+  rather than deep-copying into std::vector
+polarity: dont
+severity: optional
+rubric: safety
+rule: Do not deep-copy buffers across the CXX FFI boundary by assigning or copying a rust::Vec<T> into
+  a std::vector<T>. Instead, take ownership of the Rust buffer directly by moving it (std::move) into
+  a rust::Vec<T> member, or pass a mutable rust::Slice<T> so Rust can write directly into caller-allocated
+  memory without intermediate allocations.
+why: Copying elements from rust::Vec<T> into std::vector<T> via .assign(), range inserts, or copy construction
+  allocates redundant heap memory and performs unnecessary buffer copies. CXX's rust::Vec<T> supports
+  move semantics in C++ for zero-copy ownership transfer, while passing rust::Slice<T> allows Rust routines
+  to write directly into destination memory.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundantly copying a rust::Vec into a std::vector:
+  fDecodingState->fRustDecodedData.assign(
+      decode_result.pixels.begin(),
+      decode_result.pixels.end()
+  );
+  ```
+
+  Good:
+
+  ```cpp
+  // Either take ownership of the rust::Vec buffer directly via std::move:
+  fDecodingState->fRustDecodedData = std::move(decode_result.pixels);
+
+  // Or pass a destination rust::Slice for Rust to write directly into caller memory:
+  rust::Slice<uint8_t> rowSlice(rowSpan);
+  fReader->next_row(rowSlice);
+  ```
+include_glob:
+- src/**
+- rust/**
+- experimental/**
+- tests/**
+triggers:
+- \brust::Vec<
+- \brust::Slice<
+- \.(?:assign|insert)\s*[(][^)]*(?:begin|pixels|data|slice)
+- \bstd::move\s*[(][^)]*(?:pixels|vec|Vec|data)
+- (?:->|\.)[a-zA-Z0-9_]*(?:pixels|Rust[A-Za-z0-9_]*)\.(?:begin|data|assign)
+- \bstd::vector<[^>]+>\s+fRust[A-Za-z0-9_]*
+citations:
+- path: rust/bmp/README.md
+  heading: Performance & Integration
+  quote: |-
+    - **Zero-Copy**: Efficient memory handling with minimal allocations
+    - **FFI Optimized**: Clean Rust-to-C++ interface via CXX bridge
+confidence: 0.85
+support_cl_count: 1

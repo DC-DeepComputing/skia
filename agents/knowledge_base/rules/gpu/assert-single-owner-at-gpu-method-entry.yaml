@@ -1,0 +1,46 @@
+id: gpu/assert-single-owner-at-gpu-method-entry
+title: When defining or adding public methods to single-threaded GPU classes guarded by SingleOwner, invoke
+  ASSERT_SINGLE_OWNER at method entry to catch data races
+polarity: do
+severity: should_fix
+rubric: safety
+rule: In single-threaded GPU classes that enforce thread confinement with SingleOwner (such as Graphite's
+  Context, Recorder, PrecompileContext, and Ganesh's GrDirectContext or SurfaceContext), invoke ASSERT_SINGLE_OWNER
+  (or ASSERT_SINGLE_OWNER_PRIV) at the entry of public and client-facing methods. Do not execute context
+  operations or delegate to shared helpers without first validating single-thread ownership.
+why: GPU context and recording classes are not thread-safe and rely on single-threaded execution. Invoking
+  ASSERT_SINGLE_OWNER upon method entry ensures concurrent calls, data races, and re-entrant usage from
+  multiple threads fail fast in debug builds rather than causing silent state corruption.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void Context::syncPipelineData(size_t maxSize) {
+      if (fPersistentPipelineStorage) {
+          fSharedContext->syncPipelineData(fPersistentPipelineStorage, maxSize);
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void Context::syncPipelineData(size_t maxSize) {
+      ASSERT_SINGLE_OWNER
+
+      if (fPersistentPipelineStorage) {
+          fSharedContext->syncPipelineData(fPersistentPipelineStorage, maxSize);
+      }
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bASSERT_SINGLE_OWNER(?:_PRIV)?\b
+- \bSKGPU_ASSERT_SINGLE_OWNER\b
+- \b(?:Context|Recorder|PrecompileContext|GrDirectContext|SurfaceContext)::[a-zA-Z0-9_]+\s*[(]
+- \b(?:singleOwner|fSingleOwner)\b
+- \bSingleOwner\b
+confidence: 0.92
+support_cl_count: 1

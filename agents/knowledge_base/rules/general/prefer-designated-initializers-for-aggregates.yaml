@@ -1,0 +1,58 @@
+id: general/prefer-designated-initializers-for-aggregates
+title: When initializing aggregate structs, particularly those with multiple fields of identical types
+  or defaulted members, prefer C++20 designated initializers (`{.field = value}`) over positional aggregate
+  initialization
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefer C++20 designated initializers (`{.field = value}`) over positional aggregate initialization
+  when constructing or initializing aggregate structs. Explicitly name fields using designators, especially
+  when structs have multiple members of the same type, defaulted fields, or nested configurations. Ensure
+  designators follow the struct's member declaration order as required by C++20.
+why: 'Positional aggregate initialization (`{a, b, c, ...}`) is fragile: adding, removing, or reordering
+  struct members can silently rebind values to unintended fields or break when intermediate fields are
+  defaulted (`{}`). Designated initializers make assignments self-documenting, prevent silent member transpositions
+  across identical types, and produce compile errors if members are renamed, removed, or out of order.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Fragile: positional initialization easily misaligns if struct members are reordered
+  DecodingDstInfo fullImageDecodingDst = {decodingState.fPreblendBuffer,
+                                          this->getEncodedRowBytes(),
+                                          this->getEncodedRowBytes(),
+                                          encodedBytesPerPixel};
+  ```
+
+  Good:
+
+  ```cpp
+  // Explicit and robust against struct layout changes
+  DecodingDstInfo fullImageDecodingDst = {
+      .fDst = decodingState.fPreblendBuffer,
+      .fDstRowStride = this->getEncodedRowBytes(),
+      .fDstRowSize = this->getEncodedRowBytes(),
+      .fDstBytesPerPixel = encodedBytesPerPixel,
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+- tests/**
+- tools/**
+triggers:
+- (?:^|\s)\.[a-zA-Z_]\w*\s*=
+- \b[A-Za-z0-9_]+(?:Info|State|Params|Config|Desc|Options|Data|Record|Args|Dst)\s+[a-zA-Z0-9_]+\s*=\s*\{
+- \b[A-Za-z0-9_]+(?:Info|State|Params|Config|Desc|Options|Data|Record|Args)\s*\{
+- =\s*\{[^;\\n]+,[^;\\n]+,[^;\\n]+\}
+- \breturn\s+[A-Za-z0-9_]+(?:::|::[A-Za-z0-9_]+)*\s*\{
+citations:
+- path: site/docs/user/build.md
+  heading: Supported and Preferred Compilers
+  quote: Skia makes use of C++20 language features (compiles with `-std=c++20` flag) and thus requires
+    a C++20 compatible compiler.
+confidence: 0.92
+support_cl_count: 1

@@ -1,0 +1,50 @@
+id: general/declare-dependency-members-before-borrowers
+title: When declaring class members where one field references or borrows from another, declare dependency
+  storage before dependent borrower members for safe reverse-order destruction
+polarity: do
+severity: should_fix
+rubric: safety
+rule: When declaring class data members where one member depends on, borrows from, or references another
+  (such as a reader, adapter, view, or raw pointer borrowing an underlying stream, buffer, or symbol table),
+  declare the dependency or storage member before the dependent member. Ensure member destruction in reverse
+  declaration order dismantles the dependent object first while the underlying dependency remains valid.
+why: In C++, class data members are destroyed in reverse order of declaration. If a dependent borrower
+  is declared before the backing resource it references, the backing resource is destroyed first during
+  class teardown, leaving the borrower with a dangling pointer or referencing deallocated memory in its
+  destructor and causing use-after-free crashes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class JpegDecoder {
+      // BUG: C++ destroys members in reverse declaration order, so fPrivStream
+      // is destroyed before fReader, causing use-after-free if the reader touches
+      // the stream during teardown.
+      rust::Box<rust_jpeg::Reader> fReader;
+      std::unique_ptr<SkStream> fPrivStream;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class JpegDecoder {
+      // Dependencies declared before borrowers so fReader is destroyed first.
+      std::unique_ptr<SkStream> fPrivStream;
+      rust::Box<rust_jpeg::Reader> fReader;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- experimental/**
+triggers:
+- \b(?:std::unique_ptr|rust::Box|sk_sp)<[A-Za-z0-9_:]+>\s+f[A-Z]\w*
+- \b(?:const\s+)?[A-Za-z0-9_:]+\s*[*&]\s+f[A-Z]\w*
+- \b(?:std::unique_ptr|rust::Box)<[^>]+(?:Reader|Decoder|Adapter|View|Stream|Storage|Buffer|Table)>
+- //.*\b(?:outlive[s]?|destruction order|destroyed before|destroyed after|reverse[- ]order)\b
+- \b(?:SkAutoPixmapStorage|SkArenaAlloc|SkArenaAllocList|SkTInternalLList)<
+confidence: 0.92
+support_cl_count: 1

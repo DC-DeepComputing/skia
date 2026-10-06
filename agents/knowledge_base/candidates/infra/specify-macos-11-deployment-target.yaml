@@ -1,0 +1,34 @@
+id: infra/specify-macos-11-deployment-target
+title: When configuring macOS deployment targets or target triples for macOS 11 (Big Sur), specify '11.0'
+  rather than '10.11' to avoid lowering the target baseline
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When setting macOS deployment targets (such as MACOSX_DEPLOYMENT_TARGET or compiler target flags),
+  specify macOS 11 as '11.0' (or '11') rather than '10.11'. Remember that macOS versioning transitioned
+  directly from 10.15 (Catalina) to 11.0 (Big Sur).
+why: Specifying '10.11' refers to OS X 10.11 (El Capitan), which inadvertently lowers the minimum OS deployment
+  target rather than raising it to macOS 11 (Big Sur).
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  env['MACOSX_DEPLOYMENT_TARGET'] = '10.11'
+  ```
+
+  Good:
+
+  ```cpp
+  env['MACOSX_DEPLOYMENT_TARGET'] = '11.0'
+  ```
+include_glob:
+- infra/bots/**
+triggers:
+- \bMACOSX_DEPLOYMENT_TARGET\b
+- '[''\"]10\.11(?:\.0)?[''\"]'
+- \bmacos[a-z_]*deployment_target\b
+- -m?macosx-version-min=
+- '[''\"](?:Mac|macOS)10\.11[''\"]'
+confidence: 0.9
+support_cl_count: 1

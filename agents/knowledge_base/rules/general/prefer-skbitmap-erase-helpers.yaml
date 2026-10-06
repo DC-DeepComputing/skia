@@ -1,0 +1,40 @@
+id: general/prefer-skbitmap-erase-helpers
+title: When filling or clearing an SkBitmap or SkPixmap with a uniform color or alpha, use eraseColor
+  or eraseARGB instead of looping over getAddr pixels
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When filling or clearing an SkBitmap or SkPixmap with a uniform color or alpha value, use eraseColor()
+  or eraseARGB() (or SkPixmap::erase()) instead of manually iterating over coordinates with getAddr*().
+  Pass the uniform color or channel components directly to the erase helper.
+why: Skia's built-in erase methods replace verbose nested coordinate loops with optimized fill routines.
+  They also correctly handle color type channel masking (such as ignoring RGB channels for kAlpha_8_SkColorType)
+  and alpha premultiplication.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  for (int y = 0; y < bitmap.height(); y++) {
+      for (int x = 0; x < bitmap.width(); x++) {
+          uint8_t* addr = bitmap.getAddr8(x, y);
+          *addr = alpha;
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  bitmap.eraseARGB(alpha, 0, 0, 0);
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+triggers:
+- \bgetAddr(?:8|16|32)?\s*[(]
+- \b(?:eraseColor|eraseARGB)\s*[(]
+- \.(?:erase|eraseColor|eraseARGB)\s*[(]
+- \b(?:bitmap|pixmap|bm)\.getAddr
+confidence: 0.9
+support_cl_count: 1

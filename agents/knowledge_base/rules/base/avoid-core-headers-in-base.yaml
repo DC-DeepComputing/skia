@@ -1,0 +1,53 @@
+id: base/avoid-core-headers-in-base
+title: When editing code in src/base or include/private/base, do not include core headers from include/core
+  or src/core; use standard C++ types or base utilities instead
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not include core headers (from `include/core/` or `src/core/`, such as `SkTypes.h` or `SkString.h`)
+  in `src/base/` or `include/private/base/`. Base is a foundational subsystem that must not depend on
+  higher layers; use C++ standard library types (such as `std::string` or `std::optional`) or base utilities
+  instead of core Skia types.
+why: '`src/base/` and `include/private/base/` form Skia''s foundational layer upon which core and other
+  subsystems depend. Including core headers introduces circular architectural dependencies, leaks higher-level
+  types into lower layers, and violates build-time layering checks.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/base/SkAutoLocaleSetter.h
+  #include "include/core/SkString.h"
+  #include "include/core/SkTypes.h"
+
+  class SkAutoLocaleSetter : public SkNoncopyable {
+      ...
+      SkString fOldLocale;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/base/SkAutoLocaleSetter.h
+  #include "include/private/base/SkNoncopyable.h"
+  #include <optional>
+  #include <string>
+
+  class SkAutoLocaleSetter : public SkNoncopyable {
+      ...
+      std::optional<std::string> fOldLocale;
+  };
+  ```
+include_glob:
+- src/base/**
+- include/private/base/**
+triggers:
+- ^#include\s+["<](?:include|src)/core/
+- ^#include\s+["<]include/private/base/
+- \bSkString\b
+- \bSkNoncopyable\b
+- \bstd::(?:string|optional)\b
+- ^#include\s+<(?:string|optional)>
+confidence: 0.9
+support_cl_count: 1

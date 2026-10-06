@@ -1,0 +1,43 @@
+id: general/qualify-curve-tolerance-constants-by-degree
+title: When defining tolerance or threshold constants in curve flattening and tessellation algorithms,
+  qualify names by curve degree or stage rather than generic kTol
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In curve flattening, tessellation, and geometry algorithms, qualify tolerance and threshold constants
+  with the specific curve degree (e.g., kQuadTolerance / kQuadErrTolerance, kCubicTolerance, kConicTolerance)
+  or approximation stage (e.g., kConicToCubicErrTolerance, kQuadToLineTolFromCubic). Do not use bare,
+  generic names like kTol or kTolerance when algorithms process or convert between multiple curve types.
+why: Curve flattening and tessellation pipelines often process multiple curve types (quadratics, cubics,
+  conics) or chained approximation stages, each with its own error threshold and budget. Generic names
+  like kTol or kTolerance obscure which curve degree or error phase is controlled, making error budget
+  tuning and maintenance error-prone.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Generic tolerance names obscure which curve degree or stage is controlled.
+  static constexpr SkScalar kTolerance = Flatten::kTol;
+  static constexpr SkScalar kToleranceSqd = Flatten::kTol2;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Qualify tolerance constants by curve degree and approximation stage.
+  static constexpr SkScalar kTolerance = Flatten::kQuadErrTolerance;
+  static constexpr SkScalar kToleranceSqd = Flatten::kQuadTolerance2;
+  ```
+include_glob:
+- src/**
+- bench/**
+triggers:
+- \bkTol(?:2|Sqd)?\s*=
+- \b(?:static\s+)?constexpr\s+[A-Za-z0-9_:]+\s+k(?:Quad|Cubic|Conic)?Tol\w*\s*=
+- \b(?:static\s+)?constexpr\s+[A-Za-z0-9_:]+\s+kTolerance(?:Sqd|2)?\s*=
+- \bk(?:Quad|Cubic|Conic)(?:Err)?Tolerance(?:2|Sqd)?\b
+- \b(?:kQuadToLine|kConicToCubic|kConicToQuad)(?:Err)?Tol\w*\b
+- \b(?:Flatten|Tessellat\w*|Subdiv\w*)::k[A-Za-z0-9_]*Tol\w*\b
+confidence: 0.9
+support_cl_count: 1

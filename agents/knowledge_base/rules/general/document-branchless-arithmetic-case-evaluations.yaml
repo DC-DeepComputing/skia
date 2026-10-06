@@ -1,0 +1,50 @@
+id: general/document-branchless-arithmetic-case-evaluations
+title: When using branchless arithmetic to conditionally apply operations without branching, document
+  the case breakdown showing how discrete inputs evaluate to identity or active operations
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When using branchless arithmetic expressions (such as `max`, `min`, `mix`, or algebraic flag weighting)
+  to conditionally apply operations or blend modes without branching, document the case breakdown in an
+  inline comment. Explicitly show how each discrete input mode or flag value evaluates mathematically
+  to either an identity/no-op or the intended transformation.
+why: Branchless arithmetic tricks in shaders and raster pipelines simulate control flow without explicit
+  `if`/`else` branches, making edge cases and operational modes difficult to deduce at a glance. Documenting
+  the mathematical evaluation for each discrete state ensures maintainers can verify correctness, understand
+  identity fallbacks, and avoid introducing regressions when modifying parameters.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Premul cases:
+  //  1. No-op (doPremul = 0) -> max(...) = 1.0 -> identity function
+  //  2. Premultiply (doPremul = 1) -> max(...) = color.a -> premul
+  color.a = max(color.a, opaque);
+  color.rgb = color.rgb * max(color.a, 1.0 - doPremul);
+  ```
+
+  Good:
+
+  ```cpp
+  // Opaque cases:
+  //  1. No-op (opaque = 0) -> max(...) = color.a -> identity function
+  //  2. Make opaque (opaque = 1) -> max(...) = 1.0 -> make opaque
+  color.a = max(color.a, opaque);
+
+  // Premul cases:
+  //  1. No-op (doPremul = 0) -> max(...) = 1.0 -> identity function
+  //  2. Premultiply (doPremul = 1) -> max(...) = color.a -> premul
+  color.rgb = color.rgb * max(color.a, 1.0 - doPremul);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bmax\s*[(]\s*[a-zA-Z0-9_.]*\.a\s*,
+- \b(?:max|min|mix|clamp)\s*[(][^,]+,\s*[^)]*\b(?:opaque|premul|unpremul|noPremul|mode|flag)\b
+- \b(?:1\.0?\s*[-+]\s*[a-zA-Z0-9_.]+|[a-zA-Z0-9_.]+\s*[-+]\s*1\.0?)\b
+- '[a-zA-Z0-9_.]*\.(?:rgb|rgba|a|xyz)\s*[*+-]?=\s*[^;]*(?:max|min|mix)\s*[(]'
+- //.*\b(?:(?:identity|no-op|premul|unpremul|opaque)\s*(?:function|case|mode)?|cases?:)\b
+- //.*(?:=>|->)\s*.*\b(?:identity|no-op|premul|unpremul|force-|make )\b
+confidence: 0.9
+support_cl_count: 1

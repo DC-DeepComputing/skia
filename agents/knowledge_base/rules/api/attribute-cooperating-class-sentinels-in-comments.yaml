@@ -1,0 +1,41 @@
+id: api/attribute-cooperating-class-sentinels-in-comments
+title: When documenting fields using sentinel values from cooperating classes, explicitly name the managing
+  class or constant rather than referring vaguely to a special sentinel value
+polarity: do
+severity: nit
+rubric: readability
+rule: When documenting member fields, pointers, or methods that rely on sentinel values or special markers
+  assigned by a cooperating class, explicitly name the managing class (e.g., ResourceCache) or the specific
+  constant instead of referring vaguely to 'a special sentinel value'. Clarify which component establishes
+  the sentinel contract and what state it represents.
+why: Referring vaguely to 'a special sentinel value' obscures ownership and forces readers to search across
+  the codebase to deduce which component produces the value and how it is checked. Explicitly attributing
+  sentinel values to their managing class clarifies cross-class contracts and aids code navigation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // A null value means the Resource is not in the return queue. A non-null value means it is
+  // in the queue, although a special sentinel value is used for the tail address.
+  Resource* fNextInReturnQueue = nullptr;
+  ```
+
+  Good:
+
+  ```cpp
+  // A null value means the Resource is not in the return queue. A non-null value means it is in
+  // the queue, although the ResourceCache assigns a special sentinel value for the tail address.
+  Resource* fNextInReturnQueue = nullptr;
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- //.*\b(?:special\s+sentinel|sentinel\s+(?:value|pointer|entry|address|node|marker)|sentinel)\b
+- (?://|/\*).*\b(?:null\s+means|nullptr\s+means|non-null\s+means)\b
+- (?://|/\*).*\b(?:sentinel\s+value\s+is\s+used|special\s+marker)\b
+- \b[A-Za-z0-9_]+\*\s+fNext[A-Z]\w*\s*=\s*nullptr\b
+- //.*\b(?:tail\s+address|head\s+address|end\s+marker)\b
+confidence: 0.82
+support_cl_count: 1

@@ -1,0 +1,46 @@
+id: gpu/when-passing-mandatory-mutable-container-out-parameters-to-i
+title: When passing mandatory mutable container out-parameters to internal helper functions, pass by non-const
+  reference rather than raw pointer
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When passing mandatory mutable containers (such as skia_private::TArray or STArray out-parameters)
+  to internal helper functions, pass them by non-const reference rather than pointer. Do not take pointers
+  or perform null checks when the output container is required and always populated by the helper.
+why: Passing mandatory mutable containers by reference explicitly communicates non-nullability, avoids
+  defensive null checks in helpers, and simplifies call sites by eliminating redundant address-of (&)
+  operators.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  static VkPipeline MakePipeline(...,
+                                 VertexInputBindingDescriptions* vertexBindingDescriptions,
+                                 VertexInputAttributeDescriptions* vertexAttributeDescriptions,
+                                 ...);
+  ```
+
+  Good:
+
+  ```cpp
+  static VkPipeline MakePipeline(...,
+                                 VertexInputBindingDescriptions& vertexBindingDescriptions,
+                                 VertexInputAttributeDescriptions& vertexAttributeDescriptions,
+                                 ...);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- (?:[(,]\s*)[A-Za-z0-9_:]+(?:<[^>]+>)?\s*&\s*[a-zA-Z0-9_]+
+- \b(?:skia_private::)?(?:S?TArray)<[^;()]+>\s*&
+- \b(?:VertexInputBindingDescriptions|VertexInputAttributeDescriptions)&
+- (?:[(,]\s*)[A-Za-z0-9_:]+(?:<[^>]+>)?\s*\*+\s*[a-zA-Z0-9_]+
+- \bMakePipeline\s*[(]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: Mutable object parameters are passed to functions as pointers. We very rarely pass anything by
+    non-const reference.
+confidence: 0.85
+support_cl_count: 1

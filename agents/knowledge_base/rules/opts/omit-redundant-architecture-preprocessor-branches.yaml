@@ -1,0 +1,71 @@
+id: opts/omit-redundant-architecture-preprocessor-branches
+title: When implementing architecture-specialized SIMD stages or helpers, omit redundant architecture
+  preprocessor branches that duplicate generic fallbacks, or annotate temporary placeholders with a TODO
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: 'When defining architecture-specialized functions or SIMD stages, do not keep redundant architecture
+  preprocessor branches (#if / #elif defined(...)) that duplicate the generic #else fallback when no architecture-specific
+  intrinsics or optimizations are required. Fold architectures that rely on generic code or compiler auto-vectorization
+  into the generic #else path, or document temporary placeholders under active investigation with an explanatory
+  TODO.'
+why: Explicit preprocessor branches for specific CPU architectures imply specialized intrinsic implementations
+  or tuning. Duplicating the generic fallback across architecture branches creates unnecessary code clutter,
+  increases maintenance burden, and confuses readers about whether architecture-specific optimization
+  was actually achieved.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #if defined(SKRP_CPU_ML4)
+  SI I32 max(I32 x, I32 y) { return if_then_else(x < y, y, x); }
+  SI I32 min(I32 x, I32 y) { return if_then_else(x < y, x, y); }
+  #elif defined(SKRP_CPU_AVX2)
+  SI I32 max(I32 x, I32 y) {
+      __m256i x_lo, x_hi, y_lo, y_hi;
+      split(x, &x_lo, &x_hi);
+      split(y, &y_lo, &y_hi);
+      return join<I32>(_mm256_max_epi32(x_lo, y_lo), _mm256_max_epi32(x_hi, y_hi));
+  }
+  #else
+  SI I32 max(I32 x, I32 y) { return if_then_else(x < y, y, x); }
+  SI I32 min(I32 x, I32 y) { return if_then_else(x < y, x, y); }
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  #if defined(SKRP_CPU_AVX2)
+  SI I32 max(I32 x, I32 y) {
+      __m256i x_lo, x_hi, y_lo, y_hi;
+      split(x, &x_lo, &x_hi);
+      split(y, &y_lo, &y_hi);
+      return join<I32>(_mm256_max_epi32(x_lo, y_lo), _mm256_max_epi32(x_hi, y_hi));
+  }
+  #elif defined(SKRP_CPU_NEON)
+  // TODO(author): make sure NEON code is handled well.
+  SI I32 max(I32 x, I32 y) { return if_then_else(x < y, y, x); }
+  SI I32 min(I32 x, I32 y) { return if_then_else(x < y, x, y); }
+  #else
+  SI I32 max(I32 x, I32 y) { return if_then_else(x < y, y, x); }
+  SI I32 min(I32 x, I32 y) { return if_then_else(x < y, x, y); }
+  #endif
+  ```
+include_glob:
+- src/opts/**
+- modules/skcms/**
+triggers:
+- ^#\s*(?:el)?if\s+.*\bSKRP_CPU_[A-Z0-9_]+
+- ^#\s*(?:el)?if\s+.*\bSK_CPU_[A-Z0-9_]+
+- \bSKRP_CPU_(?:ML4|AVX2?|NEON|LASX|LSX|SSE\w*|SCALAR)\b
+- \bSK_CPU_X64_LEVEL_\w+\b
+- \bSI\s+(?:F|I32|U32|U16|I16|F16|U8|Vec<\w+>)\s+[a-zA-Z0-9_]+\s*[(]
+- \bSTAGE\s*[(][a-zA-Z0-9_]+
+citations:
+- path: tools/raster_pipeline/README.md
+  heading: SIMD Namespaces
+  quote: Skia compiles the same stage logic for multiple CPU architectures and chooses the best at runtime.
+confidence: 0.9
+support_cl_count: 1

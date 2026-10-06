@@ -1,0 +1,51 @@
+id: api/name-level-enums-by-magnitude
+title: When defining enums that represent a level, scale, or degree, name enumerators after the magnitude
+  itself rather than secondary tradeoffs like speed
+polarity: do
+severity: nit
+rubric: readability
+rule: Name enumerators of an enum representing a level, scale, or degree (such as `CompressionLevel`,
+  `QualityLevel`, or `OptimizationLevel`) after the magnitude or level itself (e.g., `kLow`, `kMedium`,
+  `kHigh`) rather than secondary characteristics or operational tradeoffs like execution speed (e.g.,
+  `kFast`, `kSlow`).
+why: When an enum models a degree or intensity scale, naming enumerators after side-effect tradeoffs like
+  speed inverts the semantic relationship and creates ambiguity about which direction represents greater
+  intensity. Naming variants directly by magnitude keeps the enumerators aligned with the enum type's
+  dimension.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  enum class CompressionLevel : uint8_t {
+      kFast,
+      kAverage,
+      kSlow,
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  enum class CompressionLevel : uint8_t {
+      kLow,
+      kMedium,
+      kHigh,
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+- experimental/**
+exclude_glob:
+- third_party/**
+- include/third_party/**
+triggers:
+- \benum\s+(?:class\s+)?[A-Za-z0-9_]*(?:Level|Scale|Degree|Tier|Priority|Quality|Compression|Effort|Opt)\b
+- \bk(?:Low|Medium|High)\b
+- \bk(?:Fast|Slow|Fastest|Slowest)\b
+- \bk(?:Min|Max|Average|Default|Normal)\b
+- \bCompressionLevel\b
+confidence: 0.85
+support_cl_count: 1

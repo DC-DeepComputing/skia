@@ -1,0 +1,24 @@
+id: general/reserve-draw-prefix-for-canvas-drawing
+title: When defining functions that construct and return geometry like SkPath without drawing, use make_
+  or build_ prefixes instead of draw_
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not prefix helper functions with draw_ if they only construct and return geometry (such as SkPath,
+  SkRect, or SkBitmap) without performing drawing operations. Name geometry builders and factories with
+  creation verbs like make_ or build_, or refactor the function to accept an SkCanvas* parameter and perform
+  the drawing operations directly.
+why: A draw_ prefix conveys side-effecting rendering operations onto an SkCanvas or target surface. Using
+  draw_ for pure factory or builder functions that return data structures without rendering creates misleading
+  call sites and obscures whether canvas state or pixels are being modified.
+include_glob:
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- \b(?:static\s+)?(?:inline\s+)?SkPath\s+draw_[a-z0-9_]*\s*[(]
+- \b(?:static\s+)?(?:inline\s+)?(?:SkPath|SkRect|SkRRect|SkBitmap|sk_sp<[^>]+>)\s+draw_[a-z0-9_]*\s*[(]
+- \bSkPath\s+draw_[a-z0-9_]*\b
+- \bstatic\s+SkPath\s+(?:make|build)_[a-z0-9_]*\s*[(]
+- \bstatic\s+void\s+draw_[a-z0-9_]*\s*[(][^)]*SkCanvas
+confidence: 0.9
+support_cl_count: 1

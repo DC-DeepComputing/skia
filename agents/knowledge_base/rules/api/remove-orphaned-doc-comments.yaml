@@ -1,0 +1,39 @@
+id: api/remove-orphaned-doc-comments
+title: When removing, renaming, or refactoring methods or member variables, remove or relocate preceding
+  doc comments so they do not linger above unrelated declarations
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When removing, renaming, or refactoring methods, functions, or member variables, remove or relocate
+  any preceding documentation comments that described the altered declaration. Do not leave orphaned or
+  misplaced doc comments sitting above adjacent, unrelated declarations where they misrepresent the adjacent
+  code's semantics.
+why: Doc comments left behind after deleting or refactoring an adjacent member contradict the semantics
+  of whatever declaration happens to follow them. This confuses reviewers, API consumers, and future maintainers
+  about what the remaining method or field actually does.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Indicates if any paint uniforms are needed by expressions evaluated in the vertex shader
+  bool hasGradientBuffer() const { return fHasGradientBuffer; }
+  ```
+
+  Good:
+
+  ```cpp
+  bool hasGradientBuffer() const { return fHasGradientBuffer; }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- //+/?\s*(?:Indicates|Whether|Determines|True if|Specifies|Represents|Stores|Holds)\b
+- //+/?.*\b(?:uniforms?|shader|buffer|expressions?|vertex|fragment)\b
+- \b(?:bool|int|uint32_t|float|size_t|auto)\s+(?:is|has|can|should|needs)[A-Z]\w*\s*\([^)]*\)\s*(?:const)?
+- \bf(?:Has|Is|Can|Should|Needs)[A-Z]\w*\b
+- //+/?\s*.*\b(?:needed by|evaluated in|used by)\b
+confidence: 0.9
+support_cl_count: 1

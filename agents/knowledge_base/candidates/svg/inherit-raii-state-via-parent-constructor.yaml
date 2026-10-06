@@ -1,0 +1,56 @@
+id: svg/inherit-raii-state-via-parent-constructor
+title: When propagating shared context to nested child RAII helper scopes, inherit state via a parent-referencing
+  constructor rather than bundling fields into an options struct
+polarity: do
+severity: optional
+rubric: design
+rule: When propagating shared context and writers to nested child RAII scope helpers, provide a constructor
+  that takes a reference to the parent scope (e.g., const AutoHelper& parent) and initializes members
+  directly. Do not wrap parameters into an intermediate options struct solely to pass state down to nested
+  helper instances.
+why: Creating an intermediate struct solely to bundle parameters for nested RAII scopes adds unnecessary
+  abstraction and forces existing direct member accesses to be rewritten through the struct. Initializing
+  directly from the parent helper avoids indirection and call-site churn while keeping member access direct.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct Options {
+      SkSVGCanvas::EncodePngCallback pngEncoder = nullptr;
+      SkXMLWriter* xmlWriter = nullptr;
+  };
+  AutoElement(const char name[], Options opts) : fOpts(opts) {
+      fOpts.xmlWriter->startElement(name);
+  }
+  Options fOpts;
+
+  // Inside helper method:
+  AutoElement defs("defs", fOpts);
+  ```
+
+  Good:
+
+  ```cpp
+  AutoElement(const char name[], const AutoElement& parent)
+      : fWriter(parent.fWriter)
+      , fPngEncoder(parent.fPngEncoder) {
+      fWriter->startElement(name);
+  }
+  SkXMLWriter*                   fWriter = nullptr;
+  SkSVGCanvas::EncodePngCallback fPngEncoder = nullptr;
+
+  // Inside helper method:
+  AutoElement defs("defs", *this);
+  ```
+include_glob:
+- src/svg/**
+triggers:
+- \bAutoElement\s*[(]
+- \bconst\s+AutoElement\s*&\s*parent\b
+- \bstruct\s+[A-Za-z0-9_]*(?:Options|Params|Args|Config)\b
+- \bAuto[A-Za-z0-9_]+\s*[(][^)]*\*this\b
+- \b(?:fOpts|opts)\.[a-zA-Z0-9_]+
+- \bAuto[A-Za-z0-9_]+\s*[(][^)]*const\s+Auto[A-Za-z0-9_]+\s*&
+confidence: 0.8
+support_cl_count: 1

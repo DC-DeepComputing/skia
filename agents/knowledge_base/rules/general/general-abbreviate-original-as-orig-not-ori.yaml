@@ -1,0 +1,40 @@
+id: general/general-abbreviate-original-as-orig-not-ori
+title: When naming identifiers representing original values or entities, use 'orig' or spell out 'original';
+  avoid 'ori' to prevent confusion with origin or orientation
+polarity: do
+severity: nit
+rubric: readability
+rule: When abbreviating 'original' in variable, parameter, or field identifiers, use 'orig' (e.g., origTop,
+  origSegment) or spell out 'original'. Do not use non-standard abbreviations such as 'ori'.
+why: In graphics and geometry code, the abbreviation 'ori' is ambiguous and easily mistaken for coordinate
+  'origin' or 'orientation'. Standardizing on 'orig' or 'original' avoids confusion and aligns with established
+  Skia naming conventions.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  Vertex* oriTop = edge->fTop;
+  Vertex* oriBottom = edge->fBottom;
+  Segment* oriSegment = fAlloc->make<Segment>(oriTop, oriBottom);
+  ```
+
+  Good:
+
+  ```cpp
+  Vertex* origTop = edge->fTop;
+  Vertex* origBottom = edge->fBottom;
+  Segment* origSegment = fAlloc->make<Segment>(origTop, origBottom);
+  ```
+include_glob:
+- src/**
+- include/**
+- tests/**
+triggers:
+- \b(?:ori|orig)[A-Z]\w*\b
+- \b(?:const\s+)?[A-Za-z0-9_*&]+(?:\s+const)?\s+(?:ori|orig)[A-Z]\w*\b
+- \bori(?:Top|Bottom|Left|Right|Point|Vertex|Edge|Segment|Mesh|Poly|Rect|Bounds|Path|Shape)\b
+- \b(?:ori|orig)_[a-z0-9_]+\b
+- \b[a-zA-Z0-9_]+->(?:ori|orig)[A-Z]\w*\b
+confidence: 0.9
+support_cl_count: 1

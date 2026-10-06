@@ -1,0 +1,54 @@
+id: general/remove-duplicate-or-misplaced-comments
+title: When refactoring or copy-pasting code blocks or declarations, remove duplicate or redundant comments
+  so they do not linger above unrelated logic
+polarity: dont
+severity: nit
+rubric: readability
+rule: When refactoring, duplicating, or copy-pasting sequential code blocks or variable initializations,
+  ensure accompanying comments accurately describe the immediately following logic. Remove or update duplicate
+  comments rather than leaving copy-pasted comments above unrelated statements where they describe a preceding
+  operation or different variable.
+why: Leaving duplicate comments copied from earlier operations above unrelated statements creates misleading
+  documentation and visual clutter. Stale copy-pasted comments confuse readers about whether subsequent
+  variables or method calls are performing the commented operation or if code was copied without being
+  properly updated.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // The family name(s) are not reported.
+  // This would be very helpful for aliases, like "sans-serif", "Arial", etc.
+  SkString familyName;
+  proxy->getFamilyName(&familyName);
+
+  // The family name(s) are not reported.
+  // This would be very helpful for aliases, like "sans-serif", "Arial", etc.
+  STArray<4, SkLanguage> skLangs;
+  proxy->getLanguages(&skLangs);
+  ```
+
+  Good:
+
+  ```cpp
+  // The family name(s) are not reported.
+  // This would be very helpful for aliases, like "sans-serif", "Arial", etc.
+  SkString familyName;
+  proxy->getFamilyName(&familyName);
+
+  STArray<4, SkLanguage> skLangs;
+  proxy->getLanguages(&skLangs);
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- //.*\b(?:not reported|not supported|not available|unsupported|not implemented)\b
+- //.*\b(?:helpful for|aliases|fallback font|font family)\b
+- \bSTArray<[0-9]+,\s*[A-Za-z0-9_]+>\s+[a-z]\w*
+- \b(?:SkString|SkSpan<[^>]+>|std::string)\s+[a-z]\w*\s*;(?:\s*//.*)?
+- \b(?:get|set)(?:FamilyName|PostScriptName|Typeface|Language|FontData)\s*[(]
+- //.*\b(?:duplicate|copied from|same as (?:above|below)|as above)\b
+confidence: 0.9
+support_cl_count: 1

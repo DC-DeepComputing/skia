@@ -1,0 +1,68 @@
+id: api/query-backend-capabilities-via-caps
+title: When querying backend capabilities, define checks on Caps rather than Context classes, and encapsulate
+  capability predicates inside operations rather than exposing them to clients
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Expose static backend capabilities, limits, and feature support on Caps (pushed up to base Caps
+  if common across backends) rather than adding capability query methods or hardcoding ad-hoc backend
+  API checks on Context, SharedContext, or proxy classes. High-level classes should query generic Caps
+  methods via caps() rather than inspecting BackendApi directly. Furthermore, avoid exposing backend capability
+  queries or change-detection predicates in public client APIs when operations can encapsulate the condition
+  internally; provide self-contained methods (such as syncPipelineData()) that perform necessary checks
+  internally.
+why: Caps subclasses are the authoritative system for static hardware limits and API feature support established
+  during initialization. Defining capability queries directly in context or proxy classes violates layering
+  and conflates static backend support with dynamic runtime state. Moreover, exposing internal capability
+  queries and change-detection predicates to clients leaks backend implementation details and forces callers
+  to coordinate platform-specific heuristics that should be encapsulated internally.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SharedContext.h or Context.h (adding capability/detection queries to context):
+  virtual bool canDetectNewPipelineCacheData() const { return false; }
+  bool hasNewPipelineCacheData() const;
+
+  // In GrContextThreadSafeProxy.cpp (hardcoding ad-hoc backend checks):
+  bool avoidRenderBuffersOnGL = GrBackendApi::kOpenGL == backendFormat.backend() &&
+                                (fCaps->avoidStencilBuffers() ||
+                                 fCaps->supportsProtectedContent());
+  if (avoidRenderBuffersOnGL && sampleCnt > 1) {
+      return {};
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // In Caps.h (exposing static capability query on Caps):
+  bool canDetectNewPipelineCacheData() const { return fCanDetectNewPipelineCacheData; }
+
+  // In Context.cpp (encapsulating checks internally rather than exposing query methods to clients):
+  void Context::syncPipelineData(size_t maxSize) {
+      if (fSharedContext->caps()->canDetectNewPipelineCacheData()) {
+          fSharedContext->syncPipelineData(fPersistentPipelineStorage, maxSize);
+      }
+  }
+
+  // In GrContextThreadSafeProxy.cpp (querying generic Caps methods):
+  if (!fCaps->isFormatAsColorTypeRenderable(grColorType, backendFormat, sampleCnt)) {
+      return {};
+  }
+  ```
+include_glob:
+- include/gpu/**
+- src/gpu/**
+triggers:
+- \b(?:backendFormat|format|target)\.backend\b
+- \b(?:Gr|skgpu::)?BackendApi::k(?:OpenGL|Vulkan|Metal|Dawn|Direct3D)\b
+- \b(?:fCaps|caps)->(?:isFormatAsColorTypeRenderable|isRenderable|isTexturable|isSampleCountSupported)\b
+- \bvirtual\s+bool\s+(?:can|supports)[A-Z]\w*\s*\([^)]*\)\s*const
+- \b(?:canDetect|hasNew)[A-Za-z0-9_]*PipelineCacheData\b
+- \b(?:syncPipelineData|storePipelineData|storeVkPipelineCacheData)\s*[(]
+- \b(?:setupSampleCounts|supportedSampleCounts|avoidStencilBuffers|avoidMSAA)\b
+- \b(?:fSharedContext|sharedContext|fContext|context)->caps\(\)
+confidence: 0.95
+support_cl_count: 2

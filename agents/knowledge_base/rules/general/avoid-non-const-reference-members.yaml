@@ -1,0 +1,29 @@
+id: general/avoid-non-const-reference-members
+title: When declaring class or struct member variables for mutable external objects or buffers, store
+  them as raw pointers (T*) rather than non-const references (T&)
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not declare non-const reference member variables (T& fMember) in classes or structs. Store non-owning
+  references to external mutable objects or buffers as raw pointers (T* fMember), and pass them as pointers
+  through constructor parameters without dereferencing them in member initializer lists.
+why: Non-const reference members make the enclosing class non-assignable by implicitly deleting copy and
+  move assignment operators, and they risk lifetime bugs. Storing pointers maintains consistency with
+  Skia's convention of passing mutable objects as pointers, makes mutability explicit at usage sites,
+  and allows re-seating or nullability when necessary.
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- (?:^|\s)[A-Za-z0-9_:]+(?:<[^>]+>)?\s*&\s*f[A-Z]\w*;?
+- '[:;,]\s*f[A-Z]\w*\s*[(]\s*\*[a-zA-Z0-9_]+'
+- \b(?:SkTDArray|(?:skia_private::)?S?TArray|std::vector)<[^>]+>\s*&\s*f[A-Z]\w*
+- \b[A-Za-z0-9_:]+&\s+f[A-Z]\w*;
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Function Parameters
+  quote: Mutable object parameters are passed to functions as pointers. We very rarely pass anything by
+    non-const reference.
+confidence: 0.9
+support_cl_count: 1

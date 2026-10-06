@@ -1,0 +1,57 @@
+id: gpu/group-tracking-member-variables-by-role
+title: When declaring member variables in stateful manager or tracking classes, group related fields together
+  by functional role or lifecycle rather than interleaving them arbitrarily
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring member variables in classes that track multi-phase state, offsets, or alignments,
+  group related fields together by functional role, subsystem, or lifecycle phase. Avoid interleaving
+  unrelated tracking state (such as phase checkpoints, rewind marks, and progressive alignments), and
+  separate distinct functional groups with blank lines or explanatory comments.
+why: Interleaving member variables from different mechanisms or recording phases obscures their dependencies
+  and makes class state difficult to reason about and maintain. Grouping related fields together clarifies
+  which variables change together and helps prevent state desynchronization across lifecycle operations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class UniformManager {
+      Layout fLayout;
+      int fRewindOffset = 0;
+      int fReqAlignment = 1;
+      int fEndPaintOffset = 0;
+      int fStructBaseAlignment = 0;
+      int fEndPaintAlignment = 1;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class UniformManager {
+      Layout fLayout;
+
+      // Progressive and structural alignment requirements
+      int fReqAlignment = 1;
+      int fStructBaseAlignment = 0;
+
+      // Phase boundary checkpoints and offsets
+      int fEndPaintOffset = 0;
+      int fEndPaintAlignment = 1;
+  };
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:int|uint32_t|size_t)\s+f[A-Z]\w*(?:Alignment|Offset|Bound|Limit)\b
+- \b(?:int|uint32_t|size_t)\s+fEndPaint\w*\b
+- \bf(?:Req|EndPaint|NonShading|Marked)(?:Alignment|Offset)\b
+- \bclass\s+UniformManager\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: Within each visibility section (`public`, `private`), fields should not be intermixed with methods.
+    It's nice to keep all data fields together at the end.
+confidence: 0.85
+support_cl_count: 1

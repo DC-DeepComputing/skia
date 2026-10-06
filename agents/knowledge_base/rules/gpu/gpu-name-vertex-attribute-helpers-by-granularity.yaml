@@ -1,0 +1,48 @@
+id: gpu/gpu-name-vertex-attribute-helpers-by-granularity
+title: When defining helpers that return vertex attribute arrays in GPU render steps, name them after
+  the attributes and granularity rather than ambiguous single-item getters
+polarity: do
+severity: nit
+rubric: readability
+rule: When generating vertex attribute arrays or geometry buffers in GPU render steps, name helper functions
+  after the specific attributes and structural granularity they return (e.g., get_per_corner_vertex_attrs
+  rather than get_vertex_corner). Avoid ambiguous names that sound like getters for a single vertex coordinate,
+  corner ID, or scalar index.
+why: Helper functions generating arrays of vertex attributes produce structured multi-vertex collections.
+  Ambiguous names like get_vertex_corner sound like accessors for an individual corner index or vertex
+  coordinate, obscuring the return type and data granularity at call sites.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <uint32_t kCornerID>
+  constexpr std::array<Vertex, kCornerVertexCount> get_vertex_corner() {
+      return {{
+          { kCornerID, {1.0f, 0.0f} },
+          // ...
+      }};
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  template <uint32_t kCornerID>
+  constexpr std::array<Vertex, kCornerVertexCount> get_per_corner_vertex_attrs() {
+      return {{
+          { kCornerID, {1.0f, 0.0f} },
+          // ...
+      }};
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- (?:std::)?array<Vertex,\s*k\w+>\s+[a-z0-9_]*\s*[(<]
+- \b(?:get|make|build)_[a-z0-9_]*(?:vertex|corner|edge|attr)[a-z0-9_]*\s*[(<]
+- \b(?:get|make|build)_[a-z0-9_]*(?:attrs?|vertices)\s*[(<]
+- \bwriter\s*<<\s*(?:get|make)_[a-z0-9_]+\s*<
+- \b(?:kCornerVertexCount|kPerCornerVertexCount)\b
+confidence: 0.82
+support_cl_count: 1

@@ -1,0 +1,41 @@
+id: general/avoid-ableist-language-dummy
+title: When writing comments, parameter annotations, or identifiers, avoid non-inclusive terms like dummy;
+  prefer precise descriptors like unused, placeholder, or parameter labels
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not use non-inclusive or potentially ableist terminology such as 'dummy' in code comments, parameter
+  annotations, or identifier names. Prefer precise, neutral descriptions such as 'unused', 'ignored',
+  'placeholder', or explicit inline parameter name labels (e.g., '/*paramName=*/{}' or '/*paramName=*/nullptr').
+why: Terms like 'dummy' are non-inclusive and obscure technical intent. Using precise, neutral terms or
+  explicit parameter labels keeps the codebase welcoming, clarifies whether an argument is value-initialized
+  or ignored, and maintains readability.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: using 'dummy' in comments or parameter annotations
+  /*dummy value, not used*/ MTLVertexStepFunctionPerVertex,
+  int dummyVar = 0;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: using explicit parameter labels or neutral descriptors
+  /*appendStepFunc=*/{},
+  int unusedVar = 0;
+  ```
+include_glob:
+- '**'
+exclude_glob:
+- third_party/**
+triggers:
+- (?i)(?://|/\*|\*).*?\bdummy\b
+- (?i)/\*\s*dummy\b
+- (?i)\b(?:kDummy|dummy[A-Z]\w*|[a-z0-9_]*_dummy)\b
+- (?i)\b(?:dummy|dummy_t|DummyStruct|DummyClass)\b
+- (?i)\b(?:make|create|get)[A-Za-z0-9_]*Dummy\b
+confidence: 0.85
+support_cl_count: 1

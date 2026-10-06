@@ -1,0 +1,28 @@
+id: build-gn/retain-build-targets-for-existing-headers
+title: When deprecating public headers in GN or Bazel, do not remove build targets while headers still
+  exist; retain targets until headers are deleted.
+polarity: dont
+severity: should_fix
+rubric: testing
+rule: When refactoring, deprecating, or migrating public or helper headers in GN (BUILD.gn) or Bazel (BUILD.bazel),
+  do not remove their build targets while the header files still exist in the repository. Retain the build
+  targets—annotated with an attributed tracking TODO—so that CI continues to build and test the headers
+  until downstream embedders complete migration and both the headers and targets can be deleted simultaneously.
+why: Public and inline helper headers rely on active build targets to ensure they are compiled and validated
+  across platforms in Skia CI builds. Deleting build targets while retaining header files leaves those
+  headers unbuilt and unverified by Skia, allowing regressions to go unnoticed while external embedders
+  (such as Chromium or PDFium) still depend on them.
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+- '**/BUILD.bazel'
+triggers:
+- \boptional\s*[(]\s*["'][a-zA-Z0-9_]+["']
+- \b(?:skia_source_set|source_set|static_library|shared_library)\s*[(]
+- \b(?:skia_)?cc_library\s*[(]
+- \bpublic\s*=\s*
+- \b(?:public_)?deps\s*(?:\+?=|=)\s*[[]
+- (?:#|//)\s*TODO.*?\b(?:remove|delete|migrat|deprecat)
+- \bskia_[a-zA-Z0-9_]+_public\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,53 @@
+id: gpu/document-device-id-bitmask-assumptions
+title: When using bitmasks or prefix matching on hardware or PCI device IDs to classify GPU models, document
+  bit-field layout assumptions, driver sources, and known exceptions
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When using bitmasks, bit shifts, or prefix ranges on hardware device IDs (such as PCI device IDs
+  in GPU Caps or utility helpers) to classify GPU models or architectures, document the underlying bit-field
+  layout assumptions in an accompanying comment. Cite authoritative driver sources or hardware references
+  (such as Mesa PCI ID tables), and explicitly note any known architecture exceptions or ID collisions
+  where the heuristic deviates.
+why: Hardware device IDs pack architecture family, tier, market segment, and stepping across disparate
+  bit fields, and different product lines may deviate from general masking patterns. Documenting bit-field
+  heuristics and known exceptions ensures reviewers can verify masking logic against upstream sources,
+  prevents false assumptions about future hardware IDs, and simplifies maintaining hardware workarounds.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Check Intel GPU model for driver workarounds
+  switch (deviceID & 0xFF00) {
+      case 0x1900:
+          return IntelGPUType::kSkyLake;
+      case 0x7D00:
+          return IntelGPUType::kMeteorLake;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Referenced from Mesa iris driver PCI IDs (pci_ids/iris_pci_ids.h):
+  // High-order byte generally defines the GPU generation.
+  // Note: MTL/ARL share 0x7D00 across differing markets; inspect low bytes for exceptions.
+  switch (deviceID & 0xFF00) {
+      case 0x1900:
+          return IntelGPUType::kSkyLake;
+      case 0x7D00:
+          return IntelGPUType::kMeteorLake;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:deviceID|fDeviceID|deviceId|pci_id|pciId)\s*&\s*(?:0x[0-9a-fA-F]+|k[A-Za-z0-9_]*Mask)\b
+- \b(?:switch|if)\s*[(]\s*(?:deviceID|fDeviceID|deviceId|pci_id)\b
+- \b(?:GetIntelGPUType|GrGetIntelGpuFamily|is_adreno_[0-9a-z_]+)\s*[(]
+- \b(?:IntelGPUType|GrIntelGpuFamily)\b
+- //.*\b(?:pci_ids|device IDs?|GPU (?:type|models?|family)|Mesa|bitmask(?:ing)?)\b
+- \b(?:deviceID|fDeviceID|pci_id)\s*==\s*0x[0-9a-fA-F]{4}\b
+confidence: 0.9
+support_cl_count: 1

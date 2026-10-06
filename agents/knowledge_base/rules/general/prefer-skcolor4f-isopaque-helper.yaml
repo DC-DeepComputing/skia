@@ -1,0 +1,50 @@
+id: general/prefer-skcolor4f-isopaque-helper
+title: When checking opacity or clamping alpha on SkColor4f or SkRGBA4f, use isOpaque() or pinAlpha()
+  instead of float comparisons or SkTPin
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When checking opacity or clamping alpha on SkColor4f or SkRGBA4f instances, use dedicated member
+  methods instead of open-coding raw float operations. Call color.isOpaque() (or !color.isOpaque()) rather
+  than comparing alpha directly against 1.0f (such as color.fA == 1.0f), and call color.pinAlpha() instead
+  of unpacking RGB channels and clamping with SkTPin(color.fA, 0.0f, 1.0f).
+why: SkColor4f member methods convey intent directly and encapsulate alpha validation. isOpaque() includes
+  internal debug assertions verifying normalized [0.0f, 1.0f] ranges while avoiding floating-point comparison
+  noise, and pinAlpha() eliminates verbose aggregate unpacking and reconstruction when clamping alpha.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Check opacity
+  if (fColor.fA != 1.0f) {
+      applyTransparency();
+  }
+  // Clamp alpha
+  SkColor4f srgb = {color.fR, color.fG, color.fB, SkTPin(color.fA, 0.0f, 1.0f)};
+  ```
+
+  Good:
+
+  ```cpp
+  // Check opacity
+  if (!fColor.isOpaque()) {
+      applyTransparency();
+  }
+  // Clamp alpha
+  SkColor4f srgb = color.pinAlpha();
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+triggers:
+- \b(?:SkColor4f|SkRGBA4f)\b
+- \.[fF][aA]\s*[!=]=\s*1(?:\.0?f?)?\b
+- \bSkTPin\s*\([^,]+(?:\.[fF][aA]|fA)\s*,
+- \b(?:color|fColor|color4f)\.[fF][aA]\b
+- \b(?:pinAlpha|isOpaque)\s*\(\)
+- \.(?:color|getColor)\(\)\.(?:isOpaque|pinAlpha)\s*\(
+confidence: 0.95
+support_cl_count: 2

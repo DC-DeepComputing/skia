@@ -1,0 +1,47 @@
+id: gpu/avoid-by-value-transforms-in-draw-records
+title: When defining per-draw records like DrawParams in GPU recording, store large shared structures
+  like Transform by const reference rather than by value
+polarity: dont
+severity: should_fix
+rubric: safety
+rule: In GPU draw recording pipelines, do not store large, frequently shared structures like Transform
+  (~144 bytes) by value in per-draw records (such as DrawParams). Hold a const reference to deduplicated
+  instances managed by enclosing draw lists or arena storage (such as DrawListBase's SkTBlockList) instead.
+why: Transform contains SkM44 matrices and metadata (~144 bytes) that are frequently identical across
+  consecutive draw commands. Storing Transform by value in per-draw parameter structs substantially inflates
+  per-draw memory footprint, whereas referencing deduplicated instances avoids redundant data copies across
+  batches.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class DrawParams {
+      ...
+  private:
+      Transform fTransform;
+      Geometry  fGeometry;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class DrawParams {
+      ...
+  private:
+      const Transform& fTransform;
+      Geometry         fGeometry;
+  };
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:class|struct)\s+DrawParams\b
+- \bTransform\s+f[A-Z]\w*
+- \bconst\s+Transform\s*&\s*f[A-Z]\w*
+- \bdeduplicateTransform\b
+- \bSkTBlockList<\s*Transform\b
+- \b(?:DrawParams|DrawListBase)\b
+confidence: 0.9
+support_cl_count: 1

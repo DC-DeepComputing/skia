@@ -1,0 +1,52 @@
+id: general/document-temporary-assertions-with-todo
+title: When adding assertions that enforce temporary work-in-progress limitations or incomplete feature
+  support, document them with an explanatory TODO comment referencing a tracking bug
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When adding or modifying assertions (such as SkASSERT) that enforce temporary work-in-progress limitations
+  or incomplete feature support rather than permanent architectural invariants, document them with an
+  explanatory TODO(b/...) or TODO(skbug.com/...) comment. Reference an active tracking issue and state
+  the specific prerequisite condition or capability required before the assertion can be safely removed.
+why: Assertions guarding incomplete features look identical to permanent architectural invariants unless
+  explicitly documented. Annotating them with an attributed TODO and tracking issue preserves design intent,
+  clarifies why otherwise valid configurations are restricted, and provides clear criteria for when future
+  maintainers can remove the assertion.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (bindDstAsInputAttachment) {
+      // Bad: Undocumented assertion enforcing a temporary limitation looks like a permanent invariant
+      SkASSERT(fTargetTexture && fTargetTexture->numSamples() == 1);
+      this->updateAndBindInputAttachment(*fTargetTexture,
+                                         VulkanGraphicsPipeline::kDstAsInputDescSetIndex,
+                                         fResourceProvider->mockPipelineLayout());
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (bindDstAsInputAttachment) {
+      // Good: Attributed TODO explains the limitation and specifies the removal condition
+      // TODO(b/390458117): This assert can be removed once the sample loading shader supports
+      // sample counts > 1.
+      SkASSERT(fTargetTexture && fTargetTexture->numSamples() == 1);
+      this->updateAndBindInputAttachment(*fTargetTexture,
+                                         VulkanGraphicsPipeline::kDstAsInputDescSetIndex,
+                                         fResourceProvider->mockPipelineLayout());
+  }
+  ```
+include_glob:
+- src/**
+triggers:
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*numSamples
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*(?:==|<=|>=|<|>)\s*[0-9]+
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*->
+- //\s*TODO\s*\([^)]*\):?\s*.*\b(?:assert|can be removed|temporary|once supported)\b
+- //.*\b(?:assert can be removed|temporary assert|temporary limitation)\b
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\b(?:isSupported|supports|supported)\b
+confidence: 0.9
+support_cl_count: 1

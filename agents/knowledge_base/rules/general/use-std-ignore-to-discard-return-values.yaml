@@ -1,0 +1,44 @@
+id: general/use-std-ignore-to-discard-return-values
+title: When intentionally discarding function return values or unused variables, use std::ignore = expr
+  rather than a C-style (void) cast
+polarity: do
+severity: nit
+rubric: readability
+rule: When intentionally discarding the return value of a function call (such as in tests, benchmarks,
+  or fuzzers) or suppressing unused variable warnings, assign to std::ignore (`std::ignore = expr;` from
+  `<utility>`) rather than using a C-style `(void)expr;` cast.
+why: Using `std::ignore = expr;` provides a standard, idiomatic C++ mechanism that explicitly conveys
+  the intent to drop a value. In contrast, C-style `(void)` casts are legacy idioms that bypass type safety
+  and are less readable.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: C-style (void) cast to discard return value or unused variable
+  (void)AsWinding(path);
+  (void)codec->incrementalDecode();
+  (void)unusedParam;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Use std::ignore from <utility> to explicitly drop unused values
+  std::ignore = AsWinding(path);
+  std::ignore = codec->incrementalDecode();
+  std::ignore = unusedParam;
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+- '**/*.mm'
+triggers:
+- \bstd::ignore\s*=
+- '[(]\s*void\s*[)]\s*[a-zA-Z0-9_:]+\s*[(]'
+- '[(]\s*void\s*[)]\s*[a-zA-Z0-9_]+;'
+- '[(]\s*void\s*[)]\s*[*&]?[a-zA-Z0-9_]'
+- \bstd::ignore\b
+confidence: 0.84
+support_cl_count: 1

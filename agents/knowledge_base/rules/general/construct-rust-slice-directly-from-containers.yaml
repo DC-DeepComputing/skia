@@ -1,0 +1,42 @@
+id: general/construct-rust-slice-directly-from-containers
+title: When constructing rust::Slice from contiguous containers like std::array, std::vector, or SkSpan,
+  pass the container directly instead of separate data() and size()
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When constructing a rust::Slice<T> from a contiguous container (such as std::array, std::vector,
+  or SkSpan), use the container-taking constructor rust::Slice<T>(container) rather than passing separate
+  .data() and .size() arguments.
+why: Constructing slices directly from containers avoids passing raw pointer and size pairs, reducing
+  the risk of buffer bounds mismatches and producing cleaner, idiomatic FFI code under spanification guidelines.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  std::array<float, 10> mdcvArray;
+  // ...
+  rust::Slice<const float> mdcvSlice(mdcvArray.data(), mdcvArray.size());
+  ```
+
+  Good:
+
+  ```cpp
+  std::array<float, 10> mdcvArray;
+  // ...
+  rust::Slice<const float> mdcvSlice(mdcvArray);
+  ```
+include_glob:
+- src/**
+- rust/**
+- experimental/**
+- tests/**
+triggers:
+- \brust::Slice<
+- \brust::Slice\s*[(]
+- \brust::Slice<[^>]+>\s*[(]
+- (?:->|\.)(?:data|bytes)[(][)]\s*,\s*[a-zA-Z0-9_.]+(?:->|\.)size[(][)]
+- \brust::Slice<[^>]+>\s*[(][^,)]+,\s*[^,)]+[)]
+- \brust::Slice<[^>]+>\s*[(][^,)]+\.(?:data|bytes)[(][)]
+confidence: 0.95
+support_cl_count: 2

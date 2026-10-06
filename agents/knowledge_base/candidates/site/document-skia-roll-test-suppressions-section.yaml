@@ -1,0 +1,47 @@
+id: site/document-skia-roll-test-suppressions-section
+title: When documenting Blink layout test suppressions in Chromium's TestExpectations for Skia rolls,
+  instruct developers to use the dedicated '# --- Skia roll test suppressions' section
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting or updating instructions for temporary Blink layout test suppressions in Chromium's
+  TestExpectations ahead of a Skia roll, instruct developers to place entries in the dedicated '# ---
+  Skia roll test suppressions' section.
+why: Chromium's third_party/blink/web_tests/TestExpectations file reserves a dedicated '# --- Skia roll
+  test suppressions' block for roll-related failures. Isolating Skia roll suppressions in this section
+  minimizes merge conflicts with concurrent Chromium changes and facilitates cleanup after the roll lands.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  Ahead of the Skia auto roll, manually push a change to Blink's TestExpectations file flagging failing tests:
+  ```
+  foo/bar/test-name.html [ Failure Pass ]  # Needs rebaseline
+  ```
+  ```
+
+  Good:
+
+  ```cpp
+  Ahead of the Skia auto roll, manually push a change to Blink's TestExpectations file flagging failing tests:
+  ```
+  foo/bar/test-name.html [ Failure Pass ]  # Needs rebaseline
+  ```
+  Add these under the `# --- Skia roll test suppressions` section to avoid merge conflicts with other changes.
+  ```
+include_glob:
+- site/docs/**
+triggers:
+- \b(?:TestExpectations|web_test_expectations)\b
+- \b(?:Skia roll|roll)\s+test\s+suppressions\b
+- \b(?:suppress(?:ion|ions)?|suppress(?:ing)?)\b.*(?:Blink|layout|web_tests?|roll)
+- \b(?:Blink|layout|web)_tests?/(?:TestExpectations|flaky_expectations)\b
+- \b(?:#\s*Needs\s+rebaseline|\[\s*Failure\s+Pass\s*\])\b
+- \b(?:Chromium|Blink|auto)\s*rolls?\b
+citations:
+- path: site/docs/dev/chrome/blink.md
+  heading: Changes that affect a small number of layout test results
+  quote: There's a section `Skia roll test suppressions` to use (to avoid conflicts with other changes).
+confidence: 0.9
+support_cl_count: 1

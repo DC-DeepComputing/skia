@@ -1,0 +1,47 @@
+id: general/when-adding-parameters-to-internal-functions-to-gate-optimiz
+title: When adding parameters to internal functions to gate optimizations or hardware workarounds, provide
+  default arguments representing the standard enabled behavior
+polarity: do
+severity: nit
+rubric: readability
+rule: When adding a parameter to disable an optimization or feature for a hardware workaround or fallback,
+  provide a default argument representing the standard, desired behavior (such as `= true`). Emphasize
+  that the feature should normally be active while allowing exceptional callers to override it without
+  updating typical call sites.
+why: Defaulting workaround or fallback parameters to their standard state documents the baseline behavior,
+  emphasizes that disabling the feature is exceptional, and avoids requiring typical callers across the
+  subsystem to supply the argument explicitly.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Omitting default argument forces standard callers to supply the baseline value
+  static std::tuple<bool, size_t> DrawAsTiledImageRect(
+          SkCanvas* canvas,
+          const SkImage* image,
+          ...,
+          bool renderLazyPictureTilesOnGPU);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Default argument documents baseline behavior and avoids caller churn
+  static std::tuple<bool, size_t> DrawAsTiledImageRect(
+          SkCanvas* canvas,
+          const SkImage* image,
+          ...,
+          bool renderLazyPictureTilesOnGPU = true);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bshouldUseSubsets\b
+- (?:[(,]\s*)(?:const\s+)?bool\s+(?:use|should|allow|enable|render|draw|is|has)[A-Z]\w*
+- \b(?:bool|int|size_t)\s+[a-zA-Z0-9_]+\s*=\s*(?:true|false)\b
+- =\s*(?:true|false)\s*[,)]
+- \brenderLazyPictureTilesOnGPU\b
+- (?:[(,]\s*)bool\s+[a-zA-Z0-9_]*(?:Workaround|Fallback|Quirk|GPU|Cpu|Opt|FastPath)\b
+confidence: 0.82
+support_cl_count: 1

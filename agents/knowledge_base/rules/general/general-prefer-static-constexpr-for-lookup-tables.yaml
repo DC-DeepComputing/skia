@@ -1,0 +1,52 @@
+id: general/general-prefer-static-constexpr-for-lookup-tables
+title: When defining fixed lookup tables or constant arrays, declare them as (static) constexpr arrays
+  rather than plain const or dynamic std::string containers
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining fixed lookup tables, character mappings, or constant numerical/matrix arrays, declare
+  them as constexpr (or static constexpr for local helpers) arrays rather than plain const. For fixed
+  character tables or strings, use static constexpr char[] (or std::to_array<char>) or static constexpr
+  const char*[] instead of local non-static containers like std::string[] or std::vector<std::string>.
+why: Declaring compile-time constant arrays as constexpr guarantees compile-time initialization, prevents
+  dynamic initialization overhead, and allows values to be used in constant expressions and static assertions.
+  For local lookup tables, using static constexpr primitive or pointer arrays avoids repeated heap allocation
+  and object construction/destruction on every function invocation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: plain const on compile-time numerical lookup table
+  const float JPEG_full_rgb_to_yuv[] = {
+      0.299000f, 0.587000f, 0.114000f, 0.000000f, 0.000000f,
+  };
+
+  // Bad: local std::string array allocates and destroys strings per call
+  const std::string shades[] = {"0", "1", "2", "3", "4", "5", "6", "7"};
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: constexpr ensures compile-time evaluation and zero runtime initialization
+  constexpr float JPEG_full_rgb_to_yuv[] = {
+      0.299000f, 0.587000f, 0.114000f, 0.000000f, 0.000000f,
+  };
+
+  // Good: static constexpr char array evaluated at compile time with zero allocation
+  static constexpr char shades[] = {'0', '1', '2', '3', '4', '5', '6', '7'};
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bstd::to_array\b
+- \b(?:static\s+)?(?:const|constexpr)\s+(?:[A-Za-z0-9_:]+\s*\*?|auto)\s+[A-Za-z0-9_]+\s*\[[^\]]*\]
+- \b(?:static\s+)?(?:const|constexpr)\s+(?:float|double|int|uint\d+_t|size_t|char)\b.*(?:\[[^\]]*\]|\b(?:Matrix|Table|LUT|Array)\b)
+- \b(?:static\s+)?(?:const|constexpr)\s+(?:const\s+)?char\s*\*?\s*[A-Za-z0-9_]+\s*\[[^\]]*\]
+- \b(?:const\s+)?std::string\s+[A-Za-z0-9_]+\s*\[[^\]]*\]
+- \bSkColorMatrix_DumpYUVMatrixTables\b
+confidence: 0.97
+support_cl_count: 2

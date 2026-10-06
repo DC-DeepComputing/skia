@@ -1,0 +1,54 @@
+id: core/include-fill-type-in-path-equality
+title: When implementing equality (operator==) for path containers, representations, or builders, compare
+  fundamental semantic properties like SkPathFillType alongside verbs and points
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: When implementing equality (operator==) for path representations, builders, or geometry containers
+  (such as SkPath or SkPathBuilder), include fundamental semantic properties like SkPathFillType in the
+  comparison alongside raw geometry (verbs, points, and conic weights). Do not rely solely on coordinate
+  and verb equivalence when shapes can differ in fill rules.
+why: A path's fill type determines how contours and interior areas are evaluated (e.g. winding vs. even-odd)
+  during rasterization and hit-testing. Paths with identical verbs and coordinates but different fill
+  types produce distinct visual output, so omitting fill type from equality comparisons produces false-positive
+  equality.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bool SkPathBuilder::operator==(const SkPathBuilder& o) const {
+      if (this == &o) {
+          return true;
+      }
+      if (fSegmentMask != o.fSegmentMask) {
+          return false;
+      }
+      return fVerbs == o.fVerbs && fPts == o.fPts && fConicWeights == o.fConicWeights;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  bool SkPathBuilder::operator==(const SkPathBuilder& o) const {
+      if (this == &o) {
+          return true;
+      }
+      if (fSegmentMask != o.fSegmentMask || fFillType != o.fFillType) {
+          return false;
+      }
+      return fVerbs == o.fVerbs && fPts == o.fPts && fConicWeights == o.fConicWeights;
+  }
+  ```
+include_glob:
+- src/core/**
+- include/core/**
+triggers:
+- \b(?:bool\s+)?(?:[A-Za-z0-9_]+::)?operator==\s*\([^)]*SkPath(?:Builder)?
+- \boperator==\s*\(\s*const\s+SkPath(?:Builder)?\s*&
+- \b(?:fFillType|fillType)\s*[!=]=\s*
+- \b(?:fVerbs|verbs)\s*==\s*[a-zA-Z0-9_.]*(?:fVerbs|verbs)\b
+- \bSkPathFillType\b
+confidence: 0.92
+support_cl_count: 1

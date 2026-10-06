@@ -1,0 +1,82 @@
+id: api/consistent-getter-setter-nomenclature
+title: When defining class accessors, member variables, or constructors, align getter/setter nomenclature
+  symmetrically, match member and accessor names to parameters and backing fields, and avoid acronyms
+polarity: do
+severity: nit
+rubric: readability
+rule: 'Maintain consistent naming across class accessors, member variables, and constructor parameters:
+  pair getter and setter methods symmetrically using identical nomenclature for the property accessed
+  and modified (e.g., maxBudgetedBytes() with setMaxBudgetedBytes()). Keep getter conventions uniform
+  within each class without mixing get-prefixed accessors (e.g., getSegmentMask()) with bare noun phrases
+  (e.g., points()), and spell out descriptive names in camelCase rather than opaque acronyms (e.g., floatStorageManager()
+  over fsm()). Align member fields (''f'' prefixed), getters, and constructor parameters with each other
+  and the underlying property (e.g., fDstReadRequired(dstReadRequired) with dstReadRequired()) rather
+  than introducing divergent synonyms or retaining legacy terminology.'
+why: Mismatched terminology between getters and setters makes APIs unintuitive to discover, while mixing
+  get-prefixes with bare noun phrases creates an unpredictable interface. Using opaque acronyms obscures
+  caller semantics. Divergent naming between constructor parameters, member fields, and accessors creates
+  confusion across call sites and causes terminology drift within the subsystem.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Divergent getter and setter nomenclature
+  size_t maxBudgetedBytes() const;
+  void setMaxGpuCacheBudget(size_t bytes);
+
+  // Mixed getter styles in a single class
+  SkSpan<const SkPoint> points() const { return fPoints; }
+  uint8_t getSegmentMask() const { return fSegmentMask; }
+
+  // Opaque acronym in getter name
+  FloatStorageManager* fsm() const { return fFloatStorageManager; }
+
+  // Divergent member/getter name from constructor parameter
+  PaintParams::PaintParams(bool dstReadRequired)
+      : fReadsDst(dstReadRequired) {}
+
+  // Legacy accessor name contradicting refactored type and field
+  DstReadStrategy dstReadRequirement() const { return fPipelineInfo.fDstReadStrategy; }
+  ```
+
+  Good:
+
+  ```cpp
+  // Matching getter and setter nomenclature
+  size_t maxBudgetedBytes() const;
+  void setMaxBudgetedBytes(size_t bytes);
+
+  // Uniform getter naming within the class
+  SkSpan<const SkPoint> points() const { return fPoints; }
+  uint8_t segmentMask() const { return fSegmentMask; }
+
+  // Descriptive getter name matching sibling accessors
+  FloatStorageManager* floatStorageManager() const { return fFloatStorageManager; }
+
+  // Aligned constructor parameter, member variable, and getter
+  PaintParams::PaintParams(bool dstReadRequired)
+      : fDstReadRequired(dstReadRequired) {}
+  bool dstReadRequired() const { return fDstReadRequired; }
+
+  // Accessor name aligned with refactored type and backing field
+  DstReadStrategy dstReadStrategy() const { return fPipelineInfo.fDstReadStrategy; }
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \b(?:void\s+)?set[A-Z]\w*\s*[(]
+- \bget[A-Z]\w*\s*[(][^)]*[)]\s*(?:const\b|;)
+- \b(?:size_t|int|float|bool|uint\d+_t|[A-Za-z0-9_:]+)[*&]?\s+[a-z][A-Za-z0-9_]*\s*[(][^)]*[)]\s*const\b
+- \b(?:SkSpan|sk_sp|std::unique_ptr)<[^>]+>\s+[a-z][A-Za-z0-9_]*\s*[(][^)]*[)]\s*const\b
+- '[:,]\s*f[A-Z]\w*\s*\([a-z][a-zA-Z0-9_]*\)'
+- \b(?:maxBudgetedBytes|setMaxBudgetedBytes|segmentMask|getSegmentMask|floatStorageManager|dstReadStrategy|dstReadRequired|fDstReadRequired|fReadsDst|fsm)\b
+- ->(?:fsm|floatStorageManager|pipelineDataGatherer|paintParamsKeyBuilder|dstReadStrategy)\s*[(]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Data fields in structs, classes, and unions that have methods begin with lower-case f and are
+    then camel-capped, to distinguish those fields from other variables.
+confidence: 0.98
+support_cl_count: 4

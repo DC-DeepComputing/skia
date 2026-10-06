@@ -1,0 +1,53 @@
+id: site/distinguish-blink-reference-tests-in-roll-docs
+title: When documenting Chromium roll procedures and test triage, distinguish Blink reference tests from
+  image tests and identify non-layout image tests as pixel tests
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When documenting Chromium roll procedures or Blink layout test rebaselining, distinguish reference
+  tests (comparing .html to -expected.html) from image-based layout tests, noting that automated tooling
+  (such as rebaseline-cl) only updates reference images while reference test failures must be resolved
+  manually by updating HTML or configuring <meta name="fuzzy"> tags. Additionally, when documenting non-layout
+  tests that compare against checked-in expected images (such as browser or views tests), refer to them
+  as 'pixel tests' (Chromium's standard terminology).
+why: Blink layout tests and non-layout pixel tests follow distinct triage and rebaselining workflows in
+  Chromium. Automated tools like rebaseline-cl only update layout PNG baselines and cannot resolve HTML
+  reference tests, while non-layout tests verifying checked-in images are standardly called pixel tests.
+  Using standard terminology prevents confusion when developers search for failure logs or triage roll
+  breaks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  * Create Chromium CL to update expectations. Follow rebaselining steps to rebaseline all failing layout tests.
+  * Some non-layout tests will fail as a result of rendering changes because they have their own checked-in images.
+  ```
+
+  Good:
+
+  ```cpp
+  * Create Chromium CL to update expectations. Follow rebaselining steps for layout tests that use reference images; for reference tests (.html vs. -expected.html), manually update the HTML or adjust <meta name="fuzzy"> tags.
+  * Some non-layout tests (also called pixel tests) will fail as a result of rendering changes because they have their own checked-in images.
+  ```
+include_glob:
+- site/docs/dev/chrome/**
+triggers:
+- \b(?:rebaseline(?:-cl)?|rebaselining)\b
+- \b(?:layout|web)_tests?\b
+- \b(?:-expected\.html|\bcompanion\s+html\b)
+- \b<meta\s+name=["']fuzzy["']
+- \bweb_test_expectations\b
+- \b(?:reference|pixel|non-layout)\s+(?:tests?|images?)\b
+citations:
+- path: site/docs/dev/chrome/blink.md
+  heading: General tips about layout tests
+  quote: Some non-layout tests (also called pixel tests) will fail as a result of rendering changes because
+    they have their own checked-in images.
+- path: site/docs/dev/chrome/blink.md
+  heading: Changes that affect a large number of test results
+  quote: Follow the rebaselining steps to update layout tests that use a reference image. For other types
+    of tests (including the .html and -expected.html type), observe the above tips to manually update
+    them.
+confidence: 0.9
+support_cl_count: 1

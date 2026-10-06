@@ -1,0 +1,59 @@
+id: api/prefer-class-for-non-trivial-types
+title: When declaring types with inheritance or private members, use class rather than struct and stage
+  downstream forward-declaration changes using build flags
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Declare types as 'class' rather than 'struct' when they involve inheritance, private members, or
+  encapsulated invariants; reserve 'struct' for simple data-carrying aggregates. When changing an existing
+  public type from 'struct' to 'class' causes forward-declaration mismatches in downstream embedders like
+  Chromium (-Wmismatched-tags), do not compromise type declarations by keeping them 'struct'; stage the
+  transition using a temporary build flag.
+why: In Skia, 'struct' signals plain passive data structures primarily meant for direct field access,
+  whereas types with inheritance and member functions represent encapsulated abstractions that belong
+  in 'class'. Downgrading types to 'struct' to avoid staging forward-declaration updates compromises code
+  design, whereas temporary build flags safely coordinate the transition across downstream repositories.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Compromising type declaration to 'struct' to avoid staging downstream forward-declaration mismatches:
+  struct SK_API DawnTextureInfo final : public TextureInfo::Data {
+  public:
+      ...
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Declare non-trivial types as 'class' and stage downstream forward-declaration updates with a build flag:
+  #if defined(SK_DAWN_TEXTURE_INFO_IS_STRUCT)
+  struct SK_API DawnTextureInfo final : public TextureInfo::Data {
+  #else
+  class SK_API DawnTextureInfo final : public TextureInfo::Data {
+  #endif
+  public:
+      ...
+  };
+  ```
+include_glob:
+- include/**
+triggers:
+- \b(?:struct|class)\s+SK_API\s+\w+
+- \bstruct\s+\w+\s*(?:final\s*)?:\s*public\b
+- \b(?:struct|class)\s+\w+\s*:\s*public\s+TextureInfo::Data\b
+- \bdefined\(SK_[A-Za-z0-9_]+_IS_STRUCT\)
+- \bclass\s+SK_API\s+\w+\s*final\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Types that are predominantly meant for direct field access don't need f-decoration.
+- path: site/docs/dev/chrome/changes.md
+  heading: Chrome changes
+  quote: If your change modifies the Skia API, you may also need to land a change in Chromium. The strategy
+    you use to synchronize changes in the Skia and Chromium repositories may differ based on the nature
+    of the change, but in general, we recommend using build flag suppressions (defines).
+confidence: 0.92
+support_cl_count: 1

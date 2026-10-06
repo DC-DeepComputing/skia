@@ -1,0 +1,63 @@
+id: general/encapsulate-composite-validity-in-operator-bool
+title: When checking composite structs or handle types with multi-field validity invariants, define explicit
+  operator bool() const instead of repeating compound member checks
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Define an explicit operator bool() const on composite structs, state records, or handle types whose
+  validity or presence depends on multiple member pointers or fields. Do not require callers to repeatedly
+  inspect internal members with compound boolean checks (such as f.a && f.b or !f.a && !f.b) across assertions
+  and conditional guards.
+why: Encapsulating multi-field validity checks in an explicit operator bool() centralizes the type's validity
+  invariant in a single location, avoids brittle duplication of compound pointer checks across call sites,
+  and simplifies assertions and if-conditions. Marking the conversion explicit prevents accidental implicit
+  conversions to integer or arithmetic types while still supporting contextual boolean evaluation.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct Insertion {
+      Layer* fLayer = nullptr;
+      BindingWrapper* fWrapper = nullptr;
+  };
+
+  // Callers repeatedly write compound member checks:
+  SkASSERT(!fInsertion.fLayer && !fInsertion.fWrapper);
+  if (fInsertion.fLayer && fInsertion.fWrapper) {
+      applyInsertion(fInsertion);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  struct Insertion {
+      Layer* fLayer = nullptr;
+      BindingWrapper* fWrapper = nullptr;
+
+      explicit operator bool() const {
+          return (fLayer != nullptr) && (fWrapper != nullptr);
+      }
+  };
+
+  // Callers test validity contextually:
+  SkASSERT(!fInsertion);
+  if (fInsertion) {
+      applyInsertion(fInsertion);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+exclude_glob:
+- third_party/**
+triggers:
+- \b(?:constexpr\s+)?(?:explicit\s+)?operator\s+bool\s*[(]
+- \bexplicit\s+operator\s+bool\b
+- \b[a-zA-Z0-9_]+(?:\.|->)[a-zA-Z0-9_]+\s*&&\s*[a-zA-Z0-9_]+(?:\.|->)
+- '!\s*[a-zA-Z0-9_]+(?:\.|->)[a-zA-Z0-9_]+\s*&&\s*!\s*[a-zA-Z0-9_]+(?:\.|->)'
+- \bSkASSERT\s*[(][^)]*(?:\.|->)[a-zA-Z0-9_]+\s*&&
+- \bif\s*[(][^)]*(?:\.|->)[a-zA-Z0-9_]+\s*&&
+confidence: 0.92
+support_cl_count: 1

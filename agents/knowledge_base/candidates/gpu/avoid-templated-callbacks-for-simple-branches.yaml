@@ -1,0 +1,59 @@
+id: gpu/avoid-templated-callbacks-for-simple-branches
+title: When code paths differ only by a simple condition or capability check, branch directly inside the
+  function rather than introducing templated callback abstractions
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not introduce templated callback abstractions, higher-order functions, or wrapper methods solely
+  to parameterize a simple conditional branch or capability check between callers. Place the conditional
+  check directly inside the shared function and invoke the appropriate operations inline.
+why: Using templated function parameters (such as `Fn&&`) and caller wrappers to parameterize a two-way
+  branch introduces unnecessary template instantiation overhead, indirection, and code complexity. Inlining
+  the conditional check keeps control flow straightforward and easier to read and debug.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <typename Fn>
+  void RawElement::handleClipDraw(Device* device, Fn&& onDraw) {
+      // common setup...
+      onDraw(drawBounds, scissor, order);
+  }
+
+  void RawElement::drawClip(Device* device) {
+      if (device->caps()->useDrawListLayer()) {
+          this->updateDeferredClipDraw(device); // calls handleClipDraw with capture lambda
+      } else {
+          this->handleClipDraw(device, [&](...) { device->drawClipShape(...); });
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void RawElement::drawClip(Device* device) {
+      // common setup...
+      if (device->caps()->useDrawListLayer()) {
+          fCaptureParams->fOrder = order;
+          fCaptureParams->fDrawBounds = drawBounds;
+          fCaptureParams->fScissor = scissor.asSkIRect();
+          device->updateNextDepthForClipping(fCaptureParams->fOrder.depth());
+          fCaptureParams = nullptr;
+          fDeferredLayer = nullptr;
+      } else {
+          device->drawClipShape(fLocalToDevice, fShape, ...);
+      }
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \btemplate\s*<[^>]*\b(?:typename|class)\s+(?:Fn|Func|Callable|Callback|F)\b
+- \b(?:Fn|Func|Callback)&&\s+\w+
+- \b(?:handleClipDraw|drawClip|updateDeferredClipDraw)\b
+- \buseDrawListLayer\s*[(]
+- \b(?:drawClipShape|drawClipShapeImmediate)\b
+confidence: 0.9
+support_cl_count: 1

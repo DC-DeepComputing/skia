@@ -1,0 +1,53 @@
+id: pdf/preserve-icc-profile-fallback-precedence
+title: When determining color space metadata for embedded image streams in PDF, evaluate the container
+  image color space strictly as a fallback after stream ICC profiles
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When determining color space metadata for embedded image streams, evaluate the container image's
+  color space strictly as a fallback after checking embedded stream and codec ICC profiles. Do not check
+  or apply the container color space unconditionally in downstream emitter helpers where it would overwrite
+  valid stream ICC profiles.
+why: Embedded image streams may carry their own native ICC profiles via SkEncodedInfo or SkCodec, which
+  must take precedence over the container SkImage's color space. Evaluating the container image's color
+  space unconditionally in a shared emitter clobbers the stream's native profile and corrupts color rendering.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Moving fallback logic into a shared emitter unconditionally overwrites stream profiles:
+  void emit_jpeg_stream(..., SkColorSpace* imageColorSpace, SkPDFUnion colorSpace, ...) {
+      if (imageColorSpace) {
+          // Unconditionally overwrites profile resolved from encodedInfo or codec!
+          colorSpace = write_icc_profile(doc, std::move(imageIccData), channels);
+      }
+      emit_image_stream(..., std::move(colorSpace), ...);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Retain the strict fallback precedence chain:
+  if (sk_sp<const SkData> encodedIcc = encodedInfo.profileData();
+      encodedIcc && !icc_channel_mismatch(encodedInfo.profile(), channels)) {
+      colorSpace = write_icc_profile(doc, std::move(encodedIcc), channels);
+  } else if (const skcms_ICCProfile* codecIcc = codec->getICCProfile();
+             codecIcc && !icc_channel_mismatch(codecIcc, channels)) {
+      colorSpace = write_icc_profile(doc, std::move(codecIccData), channels);
+  } else if (imageColorSpace) {
+      colorSpace = write_icc_profile(doc, std::move(imageIccData), channels);
+  }
+  ```
+include_glob:
+- src/pdf/**
+triggers:
+- \bwrite_icc_profile\b
+- \bgetICCProfile\b
+- \bprofileData\(\)
+- \bicc_channel_mismatch\b
+- \bemit_image_stream\b
+- \bSkWriteICCProfile\b
+confidence: 0.95
+support_cl_count: 1

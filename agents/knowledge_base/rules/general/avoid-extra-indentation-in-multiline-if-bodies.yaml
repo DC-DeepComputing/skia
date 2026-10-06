@@ -1,0 +1,51 @@
+id: general/avoid-extra-indentation-in-multiline-if-bodies
+title: When formatting if statements with multi-line wrapped conditions, maintain standard four-space
+  body indentation instead of extra spaces; use an explanatory comment for visual separation
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not use extra indentation levels in an `if` block body to visually separate it from multi-line
+  wrapped conditions. Maintain Skia's standard four-space block indentation for the body, and add a concise
+  explanatory comment at the start of the block if visual separation from the condition is needed.
+why: Skia mandates consistent four-space indentation for code blocks. Introducing irregular eight-space
+  or arbitrary indentation disrupts codebase uniformity and conflicts with code formatting conventions,
+  whereas an explanatory comment cleanly distinguishes the condition from the statement while clarifying
+  the bailout reason.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (src.fFormat != SkMask::kA8_Format &&
+      src.fFormat != SkMask::kBW_Format &&
+      src.fFormat != SkMask::kLCD16_Format) {
+          return false;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (src.fFormat != SkMask::kA8_Format &&
+      src.fFormat != SkMask::kBW_Format &&
+      src.fFormat != SkMask::kLCD16_Format) {
+      // Mask format not supported.
+      return false;
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+exclude_glob:
+- third_party/**
+triggers:
+- (?:&&|\|\|)\s*$
+- ^\s*(?:&&|\|\|)\s+[A-Za-z0-9_(!]
+- \bif\s*[(][^)]*(?:&&|\|\|)
+- \belse\s+if\s*[(][^)]*(?:&&|\|\|)
+- \bSkMask::k[A-Za-z0-9_]+_Format\b
+confidence: 0.82
+support_cl_count: 1

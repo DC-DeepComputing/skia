@@ -1,0 +1,61 @@
+id: gpu/consolidate-buffer-binding-methods
+title: When implementing GPU command buffer binding methods for multiple buffer slots, consolidate duplicate
+  binding routines into a single helper parameterized by binding index
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not write separate buffer binding methods that differ only by the target buffer slot or binding
+  index (such as separate static and append data binders). Consolidate identical null checks, buffer casts,
+  and backend encoder calls into a single helper parameterized by the binding slot index.
+why: Backend command buffer binding routines across Metal, Dawn, and Vulkan perform identical null checking,
+  buffer downcasting, and alignment verification before recording encoder commands. Duplicating these
+  routines across individual buffer slots bloats command buffer interfaces and risks divergent validation
+  or encoder handling across slots.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  void MtlCommandBuffer::bindStaticDataBuffer(const Buffer* staticBuffer, size_t offset) {
+      SkASSERT(fActiveRenderCommandEncoder);
+      if (staticBuffer) {
+          id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(staticBuffer)->mtlBuffer();
+          SkASSERT((offset & 0b11) == 0);
+          fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, offset,
+                                                       MtlGraphicsPipeline::kStaticDataBufferIndex);
+      }
+  }
+
+  void MtlCommandBuffer::bindAppendDataBuffer(const Buffer* appendBuffer, size_t offset) {
+      SkASSERT(fActiveRenderCommandEncoder);
+      if (appendBuffer) {
+          id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(appendBuffer)->mtlBuffer();
+          SkASSERT((offset & 0b11) == 0);
+          fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, offset,
+                                                       MtlGraphicsPipeline::kAppendDataBufferIndex);
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  void MtlCommandBuffer::bindInputBuffer(const Buffer* buffer, size_t offset, uint32_t bindingIndex) {
+      SkASSERT(fActiveRenderCommandEncoder);
+      if (buffer) {
+          id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(buffer)->mtlBuffer();
+          SkASSERT((offset & 0b11) == 0);
+          fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, offset, bindingIndex);
+      }
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bvoid\s+[A-Za-z0-9_]*CommandBuffer::bind[A-Za-z0-9_]*Buffer\s*\(
+- \b(?:bindInputBuffer|bindVertexBuffer|bindUniformBuffer|bindBuffer)\s*\(
+- \b(?:bindStaticDataBuffer|bindAppendDataBuffer)\s*\(
+- \b(?:setVertexBuffer|setFragmentBuffer)\s*\([^)]*(?:BufferIndex|bindingIndex|binding|slot)\b
+- \b(?:kStaticDataBufferIndex|kAppendDataBufferIndex)\b
+confidence: 0.9
+support_cl_count: 1

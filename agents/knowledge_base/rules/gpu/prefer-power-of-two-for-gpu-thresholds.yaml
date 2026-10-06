@@ -1,0 +1,47 @@
+id: gpu/prefer-power-of-two-for-gpu-thresholds
+title: When defining heuristic complexity limits or capacity thresholds in GPU subsystems, use power-of-two
+  bit shifts rather than arbitrary decimal constants
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When defining heuristic complexity limits, resource bounds, or capacity thresholds in GPU subsystems
+  (such as path verb or edge limits for path renderers), prefer standard power-of-two values expressed
+  as bit shifts (e.g., 1 << 14 or (1 << 14) - 1) rather than arbitrary decimal constants (e.g., 10240)
+  derived from individual pathological test cases. Expressing limits as power-of-two bit shifts signals
+  intentional capacity headroom, conforms to GPU memory and hardware alignment conventions, and avoids
+  overly restrictive limits tailored to a single test input.
+why: Decimal constants derived solely from an isolated test failure appear as unexplained magic numbers
+  and risk being prematurely restrictive for valid complex workloads. Standard power-of-two boundaries
+  expressed via bit shifts clarify sizing intent, follow GPU subsystem conventions, and provide predictable
+  exponential headroom.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class PathRenderer : public SkRefCnt {
+  public:
+      // Bad: Arbitrary decimal constant tuned to a single pathological test input
+      static constexpr int kMaxGPUPathRendererVerbs = 10240;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class PathRenderer : public SkRefCnt {
+  public:
+      // Good: Standard power-of-two threshold expressed as a bit shift with headroom
+      static constexpr int kMaxGPUPathRendererVerbs = 1 << 14;
+  };
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:static\s+)?constexpr\s+(?:int|size_t|uint(?:16|32|64)_t)\s+kMax[A-Z]\w*\s*=\s*\d+
+- \b(?:static\s+)?constexpr\s+(?:int|size_t|uint(?:16|32|64)_t)\s+k[A-Z]\w*(?:Limit|Threshold|Capacity|Cutoff|Bound|Max)\s*=\s*\d+
+- \bkMax[A-Z]\w*(?:Verbs|Points|Lines|Quads|Edges|Segments|Paths|Items|Entries)\s*=
+- \b(?:static\s+)?constexpr\s+(?:int|size_t|uint(?:16|32|64)_t)\s+k[A-Z]\w*\s*=\s*1\s*<<
+- \bk(?:Max|Default|Initial)[A-Z]\w*(?:BufferSize|AllocSize|PoolSize|Limit|Verbs|Edges)\s*=
+confidence: 0.9
+support_cl_count: 1

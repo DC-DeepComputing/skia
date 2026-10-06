@@ -1,0 +1,45 @@
+id: build-gn/avoid-redundant-macro-acronym-stuttering
+title: When naming preprocessor macros or build feature defines, avoid redundant acronym stuttering or
+  prefix expansions when an acronym token already encapsulates that prefix
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: In preprocessor macros and build feature defines (such as in BUILD.gn, Bazel, or public headers),
+  do not duplicate an expanded prefix before an acronym that already encapsulates it. Name availability
+  and feature macros concisely without redundant stuttering (e.g., prefer SK_FONTMGR_FCI_AVAILABLE over
+  SK_FONTMGR_FONTCONFIG_FCI_AVAILABLE).
+why: Including both an expanded name and its abbreviation (such as FONTCONFIG and FCI, where FCI already
+  stands for FontConfigInterface) creates redundant acronym stuttering. Concise, non-redundant macro identifiers
+  keep build definitions readable and maintain consistent naming patterns across feature toggles.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  optional("fontmgr_fci") {
+    public_defines = [ "SK_FONTMGR_FONTCONFIG_FCI_AVAILABLE" ]
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  optional("fontmgr_fci") {
+    public_defines = [ "SK_FONTMGR_FCI_AVAILABLE" ]
+  }
+  ```
+include_glob:
+- BUILD.gn
+- '**/*.gn'
+- '**/*.gni'
+- '**/BUILD.bazel'
+- include/**
+- src/**
+triggers:
+- \"SK_[A-Z0-9_]+_AVAILABLE\"
+- \b(?:public_)?defines\s*(?:\+?=|=)\s*\[[^\]]*\"SK_
+- ^#\s*define\s+SK_[A-Z0-9_]+
+- \bSK_[A-Z0-9_]+_AVAILABLE\b
+- \"SK_FONTMGR_[A-Z0-9_]+\"
+confidence: 0.88
+support_cl_count: 1

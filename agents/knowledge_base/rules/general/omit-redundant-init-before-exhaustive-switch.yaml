@@ -1,0 +1,55 @@
+id: general/omit-redundant-init-before-exhaustive-switch
+title: When declaring local variables populated by an exhaustive switch statement or one with a default
+  case, omit redundant variable initializers at declaration
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not redundantly initialize a local variable at declaration when it is unconditionally assigned
+  in every case or default branch of a subsequent switch statement. Leave the local variable uninitialized
+  at declaration so each branch explicitly defines its value and dead stores are avoided.
+why: Initializing a local variable to a dummy or default value that is immediately overwritten across
+  all branches of a switch statement creates dead stores and visual clutter. Redundant pre-initialization
+  can also mislead readers into believing the initial value might survive the switch or mask unhandled
+  cases.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Redundant initial value is immediately overwritten in every switch branch
+  int android_priority = ANDROID_LOG_DEBUG;
+  switch (priority) {
+      case SkLogPriority::kFatal:   android_priority = ANDROID_LOG_FATAL;   break;
+      case SkLogPriority::kError:   android_priority = ANDROID_LOG_ERROR;   break;
+      default:                      android_priority = ANDROID_LOG_DEBUG;   break;
+  }
+  __android_log_vprint(android_priority, LOG_TAG, format, args);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Omit dead store initialization; all switch cases explicitly assign the variable
+  int android_priority;
+  switch (priority) {
+      case SkLogPriority::kFatal:   android_priority = ANDROID_LOG_FATAL;   break;
+      case SkLogPriority::kError:   android_priority = ANDROID_LOG_ERROR;   break;
+      default:                      android_priority = ANDROID_LOG_DEBUG;   break;
+  }
+  __android_log_vprint(android_priority, LOG_TAG, format, args);
+  ```
+include_glob:
+- src/**
+- modules/**
+- tests/**
+- tools/**
+exclude_glob:
+- third_party/**
+triggers:
+- \bswitch\s*\([^)]+\)
+- \bcase\s+[A-Za-z0-9_:]+:\s*[a-zA-Z0-9_]+\s*=
+- \bdefault:\s*[a-zA-Z0-9_]+\s*=
+- \b(?:int|bool|size_t|float|uint32_t|[A-Za-z0-9_]+)\s+[a-z][a-zA-Z0-9_]*\s*=\s*[^;]+;
+- \bcase\s+[^:]+:[^;\\n]+;\s*break;
+confidence: 0.85
+support_cl_count: 1

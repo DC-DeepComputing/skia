@@ -1,0 +1,53 @@
+id: infra/enable-cq-on-superset-test-jobs
+title: When adding a comprehensive CI test job in infra/bots/jobs.json that supersedes narrower feature
+  jobs, enable cq_config on the superset job and remove it from subset jobs
+polarity: do
+severity: should_fix
+rubric: testing
+rule: 'When adding a comprehensive or superset CI test job in infra/bots/jobs.json that subsumes narrower
+  feature-specific jobs, enable Commit Queue execution on the superset job (e.g., "cq_config": {}) and
+  remove "cq_config" from the redundant subset jobs. Retain the subset job definitions for manual or post-submit
+  runs if needed, but do not execute both on CQ.'
+why: Enabling "cq_config" on the superset job ensures complete pre-submit coverage across all features
+  of the subsystem. Removing CQ execution from redundant subset jobs prevents duplicate testing, conserving
+  CI bot capacity and avoiding unnecessary increases in CQ cycle times.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+    {
+      "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-RustALL"
+    },
+    {
+      "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-RustPNG",
+      "cq_config": {}
+    }
+  ```
+
+  Good:
+
+  ```cpp
+    {
+      "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-RustALL",
+      "cq_config": {}
+    },
+    {
+      "name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-RustPNG"
+    }
+  ```
+include_glob:
+- infra/bots/jobs.json
+triggers:
+- '"cq_config"\s*:'
+- '"name":\s*"Test-[A-Za-z0-9_.-]+"'
+- '"name":\s*"(?:Test|Build)-[A-Za-z0-9_.-]+-All-[A-Za-z0-9_.-]+"'
+- '"\"name\":\s*\"[A-Za-z0-9_.-]*(?:RustALL|RustPNG)[A-Za-z0-9_.-]*\"'
+citations:
+- path: infra/bots/README.md
+  heading: Tasks and Jobs
+  quote: |-
+    jobs.json - The list of all jobs to run. Edit this to add or remove
+          bots.
+confidence: 0.9
+support_cl_count: 1

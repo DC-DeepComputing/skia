@@ -1,0 +1,31 @@
+id: infra/isolate-tool-env-vars-to-tool-helpers
+title: When configuring task builder specs in infra/bots, attach tool-specific environment variables and
+  dependencies within dedicated tool helpers rather than generic task constructors
+polarity: do
+severity: should_fix
+rubric: design
+rule: When generating bot tasks in infra/bots (such as in gen_tasks_logic), attach tool-specific environment
+  variables, CIPD packages, and PATH entries within dedicated tool helper methods (e.g., usesBazel, usesCCache)
+  rather than in generic task constructors (such as newTaskBuilder). Keep generic task constructors scoped
+  strictly to baseline properties common to all tasks.
+why: Setting tool-specific environment variables or dependencies in generic task constructors pollutes
+  the generated task specifications across all bots, bloating tasks.json and risking unintended side effects
+  or configuration conflicts in tasks that do not use the tool.
+examples:
+- "Bad:\n\n```cpp\nfunc newTaskBuilder(b *jobBuilder, name string) *taskBuilder {\n\treturn &taskBuilder{\n\
+  \t\tjobBuilder: b,\n\t\tName:       name,\n\t\tSpec: &specs.TaskSpec{\n\t\t\tEnvironment: map[string]string{\n\
+  \t\t\t\t\"USE_BAZEL_FALLBACK_VERSION\": \"error\",\n\t\t\t},\n\t\t},\n\t}\n}\n```\n\nGood:\n\n```cpp\n\
+  func (b *taskBuilder) usesBazel(hostOSArch string) {\n\tpkg, ok := archToPkg[hostOSArch]\n\tif !ok {\n\
+  \t\tpanic(\"Unsupported osAndArch for bazelisk: \" + hostOSArch)\n\t}\n\tb.cipd(b.MustGetCipdPackageFromAsset(pkg))\n\
+  \tb.addToPATH(pkg)\n\tb.env(\"USE_BAZEL_FALLBACK_VERSION\", \"error\")\n}\n```"
+include_glob:
+- infra/bots/**
+triggers:
+- \b(?:newTaskBuilder|newJobBuilder)\s*\(
+- \bfunc\s*\([^)]*\*?(?:TaskBuilder|taskBuilder)\)\s*uses[A-Z]\w*
+- \b(?:b\.)?env\s*\(\s*"[A-Z0-9_]+"
+- '"USE_BAZEL_FALLBACK_VERSION"'
+- \buses(?:Bazel|CCache|CMake|Docker|Git|Go|GCloud|Python|XCode|Node|LUCIAuth)\b
+- \b(?:TaskBuilder|taskBuilder)\b
+confidence: 0.92
+support_cl_count: 1

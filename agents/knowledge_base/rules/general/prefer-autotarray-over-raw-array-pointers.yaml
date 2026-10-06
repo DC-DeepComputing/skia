@@ -1,0 +1,46 @@
+id: general/prefer-autotarray-over-raw-array-pointers
+title: When managing dynamically allocated arrays in class members or local scopes, prefer skia_private::AutoTArray
+  over raw heap pointers and separate size fields
+polarity: do
+severity: should_fix
+rubric: safety
+rule: Prefer RAII array wrappers such as skia_private::AutoTArray<T> (or AutoSTArray<N, T> for inline
+  storage) over raw heap pointers (T*) and manual length members when storing dynamically allocated arrays.
+  Rely on the container's built-in .size() and automatic lifetime management instead of manually allocating
+  with new[], tracking element counts, and deleting in destructors or reset helpers.
+why: Raw heap array pointers allocated with new[] require manual cleanup and are prone to memory leaks,
+  dangling references, or double-frees if error paths or destructors miss delete[]. Sized RAII containers
+  like AutoTArray tie memory deallocation to object lifecycle, eliminate separate count member tracking,
+  and avoid count-pointer synchronization mismatches.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Raw array pointer requires manual delete[] and redundant count member.
+  class SwapchainTracker {
+      uint32_t fImageCount = 0;
+      VkImage* fImages = nullptr;
+      ~SwapchainTracker() { delete[] fImages; }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // RAII wrapper automatically manages heap lifetime and tracks .size().
+  class SwapchainTracker {
+      skia_private::AutoTArray<VkImage> fImages;
+  };
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+triggers:
+- \b(?:skia_private::)?AutoS?TArray<
+- \bnew\s+[A-Za-z0-9_:]+\s*\[
+- \bdelete\s*\[\]\s*[A-Za-z0-9_]
+- \b[A-Za-z0-9_]+\s*\*\s*f[A-Za-z0-9_]*;
+- \b(?:uint32_t|int|size_t)\s+f[A-Za-z0-9_]*(?:Count|Size|Len)\b
+confidence: 0.92
+support_cl_count: 1

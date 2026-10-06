@@ -1,0 +1,49 @@
+id: rust/reject-unsupported-icc-profile-connection-space
+title: When parsing ICC profiles or wrapping profile parsers, reject unsupported Profile Connection Space
+  signatures (non-XYZ/non-Lab) immediately instead of falling back to Unknown
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: When parsing ICC profiles or wrapping profile parsers, validate that the Profile Connection Space
+  (PCS) signature is XYZ or Lab. Immediately fail parsing (returning `false` or `None`) if the profile
+  specifies an unsupported or unrecognized PCS signature rather than falling back to an `Unknown` or default
+  connection space.
+why: Per the ICC specification and skcms reference behavior (skcms_ParseWithA2BPriority), the Profile
+  Connection Space (PCS) must be XYZ or Lab. Proceeding with an unknown or fallback connection space allows
+  invalid profiles to succeed parsing, producing invalid color transformations downstream.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  let connection_space = match profile.pcs {
+      DataColorSpace::Xyz => ColorSpace::XYZ,
+      DataColorSpace::Lab => ColorSpace::Lab,
+      _ => ColorSpace::Unknown, // Fallback allows invalid profiles to pass parsing
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  out.connection_space = match profile.pcs {
+      moxcms::DataColorSpace::Xyz => ffi::skcms_Signature::skcms_Signature_XYZ,
+      moxcms::DataColorSpace::Lab => ffi::skcms_Signature::skcms_Signature_Lab,
+      _ => return false, // Reject unsupported PCS immediately
+  };
+  ```
+include_glob:
+- rust/icc/**
+- modules/skcms/**
+triggers:
+- \b(?:connection_space|pcs)\b
+- \b(?:DataColorSpace|ColorSpace)::(?:Xyz|Lab|Unknown)\b
+- \b(?:skcms_Signature_XYZ|skcms_Signature_Lab|SKCMS_SIGNATURE_XYZ|SKCMS_SIGNATURE_LAB)\b
+- \b(?:profile->pcs|profile\.pcs|out\.connection_space)\b
+- \b(?:pcs_is_xyz|read_to_xyzd50)\b
+citations:
+- path: rust/icc/README.md
+  heading: Memory Safety
+  quote: All ICC profile parsing happens in Rust, mirroring the structure and logic of `skcms.cc`.
+confidence: 0.95
+support_cl_count: 1

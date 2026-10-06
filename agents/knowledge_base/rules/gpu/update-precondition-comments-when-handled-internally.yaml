@@ -1,0 +1,40 @@
+id: gpu/update-precondition-comments-when-handled-internally
+title: When implementing alternative draw recording classes in Graphite, update copied doc comments to
+  remove caller preconditions that the implementation handles internally
+polarity: do
+severity: nit
+rubric: readability
+rule: When implementing alternative or specialized draw recording classes in Graphite (such as DrawListLayer
+  vs. DrawList), update copied header documentation comments to remove caller preconditions (such as supplying
+  compressed painter's order or stencil index in DrawOrder) that the new implementation satisfies internally.
+  Do not leave stale doc comments that misstate caller obligations.
+why: Copied doc comments that describe caller preconditions for an earlier implementation are inaccurate
+  and misleading when the new class handles ordering or state internally. Accurate documentation ensures
+  callers understand the simplified contract without preparing redundant ordering structures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // The provided Renderer must be compatible with the 'shape' and 'stroke' parameters. If the
+  // renderer uses coverage AA, 'ordering' must have a compressed painters order that reflects that.
+  // If the renderer uses stencil, the 'ordering' must have a valid stencil index as well.
+  std::pair<DrawParams*, Layer*> recordDraw(...);
+  ```
+
+  Good:
+
+  ```cpp
+  // The provided Renderer must be compatible with the 'shape' and 'stroke' parameters.
+  std::pair<DrawParams*, Layer*> recordDraw(...);
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:DrawList|DrawListLayer|DrawListBase)\b
+- \b(?:recordDraw|recordCustomDraw)\b
+- \b(?:DrawOrder|CompressedPaintersOrder|PaintersOrder)\b
+- //.*\b(?:compressed painters order|stencil index|ordering)\b
+- \bclass\s+(?:DrawList|DrawListLayer)\b
+confidence: 0.86
+support_cl_count: 1

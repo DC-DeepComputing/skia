@@ -1,0 +1,39 @@
+id: fuzz/remove-obsolete-fuzz-inputs
+title: When updating fuzz tests in fuzz/ for API changes, delete obsolete fuzz input reads (fuzz->next)
+  rather than preserving dead reads for corpus compatibility
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When updating fuzz tests in fuzz/ to reflect API changes, delete obsolete fuzz input reads (`fuzz->next(...)`
+  or `fuzz->nextRange(...)`) and their associated unused variables instead of retaining dead reads to
+  preserve existing fuzz corpus compatibility.
+why: Retaining dead fuzz input reads wastes fuzzer byte budget, clutters test harnesses with unused variables,
+  and misleads maintainers. While altering the input byte stream can invalidate existing corpus seeds,
+  keeping the fuzzer harness clean and aligned with the active API outweighs preserving backwards compatibility
+  with legacy seed corpora.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In fuzz/FuzzPathop.cpp, retaining an obsolete read after an API parameter is removed:
+  bool isSame;
+  fuzz->next(&isSame);
+  std::ignore = Simplify(path);
+  ```
+
+  Good:
+
+  ```cpp
+  // Delete the obsolete fuzz->next call and unused variable:
+  std::ignore = Simplify(path.makeFillType(ft));
+  ```
+include_glob:
+- fuzz/**
+triggers:
+- \bfuzz->next(?:Range)?\s*[(]
+- \bFuzz\s*\*\s*fuzz\b
+- \bDEF_FUZZ\s*[(]
+- \bstd::ignore\s*=
+confidence: 0.9
+support_cl_count: 1

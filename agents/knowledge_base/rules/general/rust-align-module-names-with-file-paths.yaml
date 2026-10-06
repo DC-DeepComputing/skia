@@ -1,0 +1,38 @@
+id: general/rust-align-module-names-with-file-paths
+title: 'When declaring Rust modules, keep module names aligned with source file paths using standard mod
+  declarations instead of #[path = "..."] attributes'
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: 'Do not use #[path = "..."] attributes on Rust module declarations to point to differently named
+  source files. Keep module names and filesystem file paths strictly aligned by using standard mod <name>;
+  declarations matching <name>.rs (or <name>/mod.rs).'
+why: 'Using #[path = "..."] to bind a differently named module to a file creates an unexpected discrepancy
+  between the module hierarchy and the filesystem layout. Keeping module names aligned with source file
+  paths adheres to idiomatic Rust conventions and ensures consistent code navigation, tooling support,
+  and maintainability.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  #[path = "exif_parse.rs"]
+  mod tiff;
+  ```
+
+  Good:
+
+  ```cpp
+  mod exif_parse;
+  ```
+include_glob:
+- '**/*.rs'
+exclude_glob:
+- third_party/**
+triggers:
+- '#\s*\[\s*path\s*='
+- \b#\s*\[\s*path\b
+- (?:pub\s*(?:\([^)]*\)\s*)?)?mod\s+[a-zA-Z0-9_]+\s*;
+- \bmod\s+[a-zA-Z0-9_]+\s*;
+confidence: 0.9
+support_cl_count: 1

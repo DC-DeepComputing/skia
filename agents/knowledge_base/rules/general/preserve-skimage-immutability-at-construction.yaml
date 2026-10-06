@@ -1,0 +1,57 @@
+id: general/preserve-skimage-immutability-at-construction
+title: When instantiating or subclassing SkImage, pass all components and metadata directly to constructors
+  or factories instead of mutating internal fields post-instantiation
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not mutate the internal structure or member fields of an SkImage after instantiation; pass all
+  components (such as mipmaps, pixel buffers, or subsets) directly into constructor parameters or internal
+  Make factory functions so the image is fully initialized and immutable upon creation. Avoid downcasting
+  an SkImage to access and modify internal member variables post-construction.
+why: SkImage objects are architecturally designed as immutable snapshots of pixel data so they can be
+  safely cached and shared across threads without synchronization. Mutating internal fields post-construction
+  breaks this immutability contract, inviting data races and unpredictable behavior across concurrent
+  consumers.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Mutating SkImage internals post-construction breaks immutability
+  auto img = SkImages::RasterFromPixmapCopy(pmap);
+  auto imgRaster = static_cast<SkImage_Raster*>(img.get());
+  imgRaster->fMips = std::move(mips);
+  return img;
+  ```
+
+  Good:
+
+  ```cpp
+  // Pass all state directly into constructor or internal factory
+  sk_sp<SkData> data(SkData::MakeWithCopy(bm.getPixels(), size));
+  return sk_sp<SkImage>(new SkImage_Raster(bm.info(),
+                                           std::move(data),
+                                           bm.info().minRowBytes(),
+                                           std::move(mips),
+                                           kNeedNewImageUniqueID));
+  ```
+include_glob:
+- src/**
+triggers:
+- \bstatic_cast<\s*SkImage_[A-Za-z0-9_]*\s*[*>]
+- ->fMips\s*=
+- \bnew\s+SkImage_[A-Za-z0-9_]+\s*[(]
+- \bSkImage_[A-Za-z0-9_]+::Make[A-Za-z0-9_]*\s*[(]
+- \b(?:class|struct)\s+SkImage_[A-Za-z0-9_]+
+- \bSkImages::(?:Raster|Texture|Promise|Deferred|Borrow)\w*\s*[(]
+citations:
+- path: docs/architecture/CPU.md
+  heading: '### 1. The API Layer'
+  quote: |-
+    - **`SkImage`**: Represents an immutable snapshot of pixel data. It can be created from an
+      `SkSurface` (via `surface->makeImageSnapshot()`), from an `SkBitmap`, or from encoded data
+      (e.g., a PNG file). On the CPU backend, this is implemented by **`SkImage_Raster`**, which holds
+      an `SkBitmap` that in turn points to the underlying pixels via an `SkPixelRef`. Because it is
+      immutable, it can be cached and shared safely across threads.
+confidence: 0.92
+support_cl_count: 1

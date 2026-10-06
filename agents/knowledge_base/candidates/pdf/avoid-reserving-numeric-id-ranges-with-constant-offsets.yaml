@@ -1,0 +1,49 @@
+id: pdf/avoid-reserving-numeric-id-ranges-with-constant-offsets
+title: When allocating shared numeric keys or IDs across multiple entity types, allocate dynamically from
+  a unified container instead of reserving arbitrary constant base offsets
+polarity: dont
+severity: should_fix
+rubric: design
+rule: Do not partition shared numeric key or ID namespaces across multiple entity types by reserving arbitrary
+  constant base offsets (such as kFirst...Key = 50000). Instead, allocate keys dynamically and sequentially
+  from a unified container (such as a dynamic array of variants) or an explicit allocator.
+why: Hardcoding arbitrary base offsets introduces artificial capacity ceilings, risks silent collisions
+  when entity counts exceed initial assumptions, and fragments related data into parallel collections.
+  Dynamic sequential allocation from a unified table ensures safe growth without arbitrary limits.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Reserving ID ranges using arbitrary constant offsets
+  const int kFirstContentItemStructParentKey = 100000;
+  static constexpr int kFirstXObjectStructParentsKey = 50000;
+
+  unsigned allocateStructParentsKeyForXObject() {
+      return kFirstXObjectStructParentsKey + fXObjectMcidMappings.size();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Allocating keys sequentially from a unified dynamic table
+  using ParentTreeEntry = std::variant<Item, Stream>;
+  skia_private::TArray<ParentTreeEntry> fParentTree;
+
+  if (structParentsKey < 0) {
+      structParentsKey = fParentTree.size();
+      fParentTree.push_back(Stream());
+  }
+  ```
+include_glob:
+- src/pdf/**
+triggers:
+- \b(?:static\s+)?constexpr\s+(?:int|unsigned|uint(?:16|32|64)_t|size_t)\s+k(?:First|Base|Start|Min)[A-Z]\w*(?:Key|Id|ID)\b
+- \b(?:const\s+)?(?:int|unsigned|uint(?:16|32|64)_t)\s+k(?:First|Base|Start|Min)[A-Z]\w*(?:Key|Id|ID)\s*=
+- \b(?:allocate|reserve|generate|create|get)[A-Z]\w*(?:Key|Id|ID)\s*\([^)]*\)
+- \b(?:ParentTree|ParentTreeEntry|StructParents?Key)\b
+- \b(?:kFirst|kBase|kStart)[A-Z]\w*(?:Key|Id|ID)\s*\+
+- \b(?:TArray|std::vector)<(?:ParentTreeEntry|std::variant<[^>]+>)\s*>
+confidence: 0.9
+support_cl_count: 1

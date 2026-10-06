@@ -1,0 +1,52 @@
+id: general/general-encapsulate-derived-helper-types
+title: When defining class inheritance hierarchies, keep implementation-specific helper structs and nested
+  types private to concrete derived classes rather than in base classes
+polarity: do
+severity: should_fix
+rubric: design
+rule: Keep implementation-specific helper structs, nested types, and data structures encapsulated as private
+  members of the concrete derived class that uses them. Do not declare helper types in an abstract or
+  common base class (even under protected:) when they only serve a specific concrete subclass implementation.
+why: Placing implementation-specific helper types in a base class pollutes the base abstraction with data
+  structures irrelevant to other subclasses. Encapsulating internal helper structs within the concrete
+  subclass maintains clean separation of concerns and prevents implementation detail leakage across the
+  class hierarchy.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class DrawListBase {
+  protected:
+      struct Draw {
+          const Renderer* fRenderer;
+          DrawParams fDrawParams;
+          BarrierType fBarrierBeforeDraws;
+      };
+      // ...
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class DrawList : public DrawListBase {
+  private:
+      struct Draw {
+          const Renderer* fRenderer;
+          DrawParams fDrawParams;
+          BarrierType fBarrierBeforeDraws;
+      };
+      // ...
+  };
+  ```
+include_glob:
+- src/**
+triggers:
+- \bclass\s+[A-Za-z0-9_]+Base\b
+- \bclass\s+\w+\s*:\s*public\s+\w+Base\b
+- \bstruct\s+(?:Draw|Step|Record|Entry|Item|Info)\b
+- \bDrawList(?:Base)?\b
+- ^\s*protected:\s*$
+confidence: 0.9
+support_cl_count: 1

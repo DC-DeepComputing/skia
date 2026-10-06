@@ -1,0 +1,52 @@
+id: modules/free-temporary-canvaskit-wasm-arrays
+title: When passing temporary WASM heap buffers created with copy1dArray to C++ CanvasKit bindings, free
+  them using freeArraysThatAreNotMallocedByUsers to prevent memory leaks
+polarity: do
+severity: should_fix
+rubric: safety
+rule: In CanvasKit JavaScript bindings, always clean up temporary WASM heap buffers allocated for FFI
+  calls (such as via copy1dArray or copyColorArray) by calling freeArraysThatAreNotMallocedByUsers(ptr,
+  originalArray). Do not assume C++ Skia APIs accepting SkSpan, raw pointers, or element counts take ownership
+  of the underlying buffer.
+why: Passing temporary WASM arrays across the JavaScript-to-C++ boundary does not transfer buffer ownership;
+  C++ Skia functions copy input data into internal structures (such as SkPathRef) and leave the WASM heap
+  allocations untouched. Omitting freeArraysThatAreNotMallocedByUsers leaves these heap buffers uncollected,
+  causing unbounded memory leaks across API invocations.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  var verbsPtr = copy1dArray(verbs, 'HEAPU8');
+  var pointsPtr = copy1dArray(pts, 'HEAPF32');
+  var weightsPtr = copy1dArray(weights, 'HEAPF32');
+  var numWeights = (weights && weights.length) || 0;
+  // Memory leak: C++ does not take ownership of verbsPtr, pointsPtr, or weightsPtr
+  return CanvasKit.Path._MakeFromVerbsPointsWeights(
+      verbsPtr, verbs.length, pointsPtr, pts.length / 2, weightsPtr, numWeights);
+  ```
+
+  Good:
+
+  ```cpp
+  var verbsPtr = copy1dArray(verbs, 'HEAPU8');
+  var pointsPtr = copy1dArray(pts, 'HEAPF32');
+  var weightsPtr = copy1dArray(weights, 'HEAPF32');
+  var numWeights = (weights && weights.length) || 0;
+  var path = CanvasKit.Path._MakeFromVerbsPointsWeights(
+      verbsPtr, verbs.length, pointsPtr, pts.length / 2, weightsPtr, numWeights);
+  freeArraysThatAreNotMallocedByUsers(verbsPtr, verbs);
+  freeArraysThatAreNotMallocedByUsers(pointsPtr, pts);
+  freeArraysThatAreNotMallocedByUsers(weightsPtr, weights);
+  return path;
+  ```
+include_glob:
+- modules/canvaskit/**
+triggers:
+- \bcopy1dArray\s*[(]
+- \b(?:copyFlexibleColorArray|copyColorArray)\s*[(]
+- \bfreeArraysThatAreNotMallocedByUsers\s*[(]
+- \bCanvasKit\.(?:Path|Paragraph|Font|ColorFilter|ImageFilter|Vertices)\._?\w*\s*[(]
+- \b(?:HEAPU8|HEAPU16|HEAPU32|HEAPF32)\b
+confidence: 0.95
+support_cl_count: 1

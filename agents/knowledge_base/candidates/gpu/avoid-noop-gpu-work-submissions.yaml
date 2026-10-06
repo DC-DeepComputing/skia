@@ -1,0 +1,51 @@
+id: gpu/avoid-noop-gpu-work-submissions
+title: When implementing or enqueuing GpuWorkSubmission objects in Graphite's QueueManager, do not use
+  dummy or no-op waitUntilFinished implementations that break FIFO synchronization
+polarity: dont
+severity: should_fix
+rubric: correctness
+rule: Do not enqueue dummy, marker, or placeholder GpuWorkSubmission objects with no-op waitUntilFinished()
+  or onWaitUntilFinished() methods into QueueManager's outstanding submissions. Every submitted work object
+  must genuinely synchronize its command buffer on the GPU when waited upon.
+why: QueueManager::checkForFinishedWork(SyncToCpu::kYes) relies on GPU command streams completing in FIFO
+  order and synchronizes the CPU solely by calling waitUntilFinished() on the most recent submission (fOutstandingSubmissions.back()).
+  If a marker submission with a no-op wait is at the back of the queue, the CPU sync returns immediately
+  while prior GPU work remains active, leading to data races and assertion failures.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Enqueuing a dummy submission that returns immediately without waiting for GPU work
+  class DummyWorkSubmission final : public GpuWorkSubmission {
+      bool onIsFinished(const SharedContext*) override { return true; }
+      void onWaitUntilFinished(const SharedContext*) override {} // No-op wait
+  };
+  queueManager->onSubmitToGpu(std::make_unique<DummyWorkSubmission>(...));
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Every submission must genuinely block until its GPU work completes
+  class BackendWorkSubmission final : public GpuWorkSubmission {
+      bool onIsFinished(const SharedContext* ctx) override {
+          return fFence->isSignaled();
+      }
+      void onWaitUntilFinished(const SharedContext* ctx) override {
+          fFence->wait();
+      }
+  };
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bhasPendingGPUWork\b
+- \bsubmitToGpu\b
+- \bSubmitInfo\b
+- \b(?:GpuWorkSubmission|OutstandingSubmission)\b
+- \b(?:waitUntilFinished|onWaitUntilFinished)\b
+- \bcheckForFinishedWork\b
+- \baddFinishedProc\b
+confidence: 0.9
+support_cl_count: 1

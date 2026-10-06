@@ -1,0 +1,70 @@
+id: gpu/verify-matching-colortype-in-caps-format-tables
+title: When configuring ColorTypeInfo and format tables in GPU backend Caps, fetch entries with fColorTypeInfos[ctIdx++],
+  match color types and backend format encodings, and keep comments synchronized
+polarity: do
+severity: blocking
+rubric: correctness
+rule: When adding or configuring ColorTypeInfo entries and format mappings in GPU backend caps format
+  tables (such as initFormatTable, setColorType, or setColorTypeFormat), ensure each entry block fetches
+  and increments its element (e.g., auto& ctInfo = info.fColorTypeInfos[ctIdx++]) and initializes fColorType.
+  Verify that fColorType, fTransferColorType, and format mappings specify the exact matching GrColorType,
+  SkColorType, and backend format enum—especially verifying numeric encodings like float (e.g., kR_F16,
+  kR16F, MTLPixelFormatR16Float) versus unorm (e.g., kR_16, kR16)—rather than retaining copied enums from
+  adjacent entries, and ensure section header comments accurately reflect the registered color type or
+  alias.
+why: Caps format tables allocate arrays of ColorTypeInfo sized to fColorTypeInfoCount. Omitting the indexing
+  fetch leaves entries unpopulated. Retaining copied color types or assigning unorm enums to floating-point
+  formats configures incorrect channel encodings for texture creation, read/write transfers, and render
+  target validation, while mismatched section comments mislead maintainers about supported capabilities.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Retained copied unorm GrColorType or format enum for float formats
+  this->setColorType(GrColorType::kR_16, { MTLPixelFormatR16Float });
+  this->setColorTypeFormat(GrColorType::kR_16, GrGLFormat::kR16);
+
+  // Missing entry fetch and fColorType initialization
+  {
+      ctInfo.fTransferColorType = ct;
+      ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+  }
+
+  // Stale comment says kBGRA_8888 but registers kRGBA_8888
+  // Format: VK_FORMAT_B8G8R8A8_UNORM, Surface: kBGRA_8888
+  ```
+
+  Good:
+
+  ```cpp
+  // Match float color types to floating-point backend formats
+  this->setColorType(GrColorType::kR_F16, { MTLPixelFormatR16Float });
+  this->setColorTypeFormat(GrColorType::kR_F16, GrGLFormat::kR16F);
+
+  // Properly fetch and initialize ColorTypeInfo entry
+  {
+      constexpr SkColorType ct = SkColorType::kARGB_4444_SkColorType;
+      auto& ctInfo = info.fColorTypeInfos[ctIdx++];
+      ctInfo.fColorType = ct;
+      ctInfo.fTransferColorType = ct;
+      ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+  }
+
+  // Format: VK_FORMAT_B8G8R8A8_UNORM, Surface: kRGBA_8888
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bColorTypeInfo\b
+- \bfColorTypeInfos\b
+- \bctIdx\b
+- \bfColorType\s*=
+- \bfTransferColorType\s*=
+- \bsetColorType\s*[(]
+- \bsetColorTypeFormat\s*[(]
+- \bconstexpr\s+(?:Gr|Sk)ColorType\s+\w+\s*=
+- '//\s*Format:.*Surface:'
+- \binitFormatTable\b
+confidence: 0.98
+support_cl_count: 6

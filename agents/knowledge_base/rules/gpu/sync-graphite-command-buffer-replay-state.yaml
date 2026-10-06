@@ -1,0 +1,64 @@
+id: gpu/sync-graphite-command-buffer-replay-state
+title: When modifying GPU base classes or command replay state, factor common coordinate clamping into
+  base CommandBuffer and update backend subclasses in lockstep
+polarity: do
+severity: blocking
+rubric: design
+rule: When implementing GPU command recording, replay state, or coordinate transformations, factor common
+  render pass bounds and coordinate clamping (such as intersecting scissor rects with attachment dimensions)
+  into shared helpers or base `CommandBuffer` rather than duplicating checks across backends. When backend
+  subclasses (Dawn, Vulkan, Metal) or shared base classes (`CommandBuffer`, `Caps`, `ResourceProvider`)
+  must track backend-specific state or member variables, update all backend implementations in lockstep
+  to prevent build breaks on platform-restricted targets like Metal and behavioral drift across backends.
+why: Duplicating common bounds clamping or coordinate logic across individual backend command buffers
+  causes redundant code and leads to missed backends like Vulkan. When backend-specific implementations
+  or base interfaces are modified, keeping all backends synchronized prevents multi-context test divergence
+  and avoids breaking platform-restricted targets like Metal that do not compile on all development environments.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Duplicating scissor bounds clipping across Dawn and Metal instead of base:
+  // In DawnCommandBuffer.cpp and MtlCommandBuffer.mm:
+  SkIRect rect = scissor.getRect(fReplayTranslation, fReplayClip);
+  if (!rect.intersect(SkIRect::MakeSize(fColorAttachmentSize))) {
+      rect.setEmpty();
+  }
+
+  // 2. Base CommandBuffer member renamed, but platform-specific Metal backend omitted:
+  void MtlCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
+      UniformManager intrinsicValues{Layout::kMetal};
+      CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fDstCopyBounds, &intrinsicValues);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Base CommandBuffer unifies render pass bounds across clip and attachments:
+  fRenderPassBounds = renderTargetBounds;
+  if (!clip.isEmpty()) {
+      fRenderPassBounds.intersect(clip.makeOffset(translation));
+  }
+  // Backend command buffers (Dawn, Metal, Vulkan) share clamped bounds uniformly:
+  SkIRect rect = scissor.getRect(fReplayTranslation, fRenderPassBounds);
+
+  // 2. All backends updated in lockstep when base members or replay state change:
+  void MtlCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {
+      UniformManager intrinsicValues{Layout::kMetal};
+      CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fDstReadBounds, &intrinsicValues);
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:Dawn|Mtl|Vulkan|GL)?CommandBuffer\b
+- \b(?:Dawn|Mtl|Vulkan|GL)(?:Caps|ResourceProvider)\b
+- \b(?:setScissor|setViewport)\s*[(]
+- \b(?:scissor|Scissor)\.getRect\s*[(]
+- \bfRender(?:Pass|Target|Area)Bounds\b
+- \bfReplay(?:Translation|Clip)\b
+- \bfDst(?:Read|Copy)Bounds\b
+confidence: 0.98
+support_cl_count: 3

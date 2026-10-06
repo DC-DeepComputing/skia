@@ -1,0 +1,46 @@
+id: general/avoid-encoding-types-in-function-names
+title: When naming helper functions, name them after the action or algorithm they perform rather than
+  encoding return types or transitional wrappers
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not encode return types or transient wrapper types (such as `_special` for `SkSpecialImage`)
+  into function names. Name helper functions after the operation, action, or algorithm they execute rather
+  than what type or wrapper they return.
+why: Embedding return types or transitional wrapper types into function names is redundant with the function
+  signature and creates unnecessary refactoring churn when types evolve or get phased out. Naming functions
+  after the algorithm or action they perform clearly conveys intent and keeps function interfaces stable
+  across type changes.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Encodes return type / transitional wrapper 'special' into the helper name
+  template <typename T>
+  static sk_sp<SkSpecialImage> make_blurred_special(PassMaker* makerX, PassMaker* makerY,
+                                                    SkBitmap src, const SkIRect& originalSrcBounds,
+                                                    const SkIRect& originalDstBounds,
+                                                    SkArenaAlloc* alloc);
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Names function after the operation and algorithm it executes
+  template <typename T>
+  static sk_sp<SkSpecialImage> eval_blur_passes(PassMaker* makerX, PassMaker* makerY,
+                                                SkBitmap src, const SkIRect& originalSrcBounds,
+                                                const SkIRect& originalDstBounds,
+                                                SkArenaAlloc* alloc);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bmake_blurred_special\b
+- ^\s*(?:template\s*<[^>]*>\s*)?(?:static\s+)?(?:inline\s+)?sk_sp<[A-Za-z0-9_]+>\s+[a-z_][a-z0-9_]*\s*[(]
+- \b[a-z][a-z0-9_]*_(?:special|image|bitmap|pixmap|texture|buffer)\s*[(]
+- \b(?:make|create|get|eval)_[a-z0-9_]*(?:_special|_bitmap|_image)\b
+- \bSkSpecialImage\b
+confidence: 0.88
+support_cl_count: 1

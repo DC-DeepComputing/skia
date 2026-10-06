@@ -1,0 +1,49 @@
+id: bench/document-benchmark-purpose-and-api-improvements
+title: When adding or modifying microbenchmarks under bench/ that evaluate container or builder performance
+  tradeoffs, document the measured scenario and note potential API enhancements or optimization knobs
+polarity: do
+severity: optional
+rubric: readability
+rule: When introducing or modifying microbenchmarks under `bench/` that evaluate container or builder
+  performance tradeoffs, document the scenario being measured in a comment above the benchmark class.
+  Include breadcrumbs or TODO notes identifying potential API enhancements or optimization knobs (such
+  as exposing explicit storage reservation or allocation growth controls on helper methods).
+why: Microbenchmarks often expose API design tradeoffs or missing optimization parameters discovered during
+  performance analysis. Documenting what the benchmark isolates and recording potential follow-up API
+  improvements provides crucial context for future maintainers investigating regressions or refining those
+  APIs.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Lacks explanation of what usage scenario is being measured or follow-up opportunities
+  class PathBuilderManyShapes final : public Benchmark {
+  public:
+      PathBuilderManyShapes(const char* suffix, Proc proc) : fSuffix(suffix), fProc(proc) {}
+      ...
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Measures SkPathBuilder perf when appending a large number of simple shapes (addRect etc).
+  // Since internally we know how to reserve exactly or with growth, might consider exposing
+  // that option in these helpers: addRect, addOval, etc.
+  class PathBuilderManyShapes final : public Benchmark {
+  public:
+      PathBuilderManyShapes(const char* suffix, Proc proc) : fSuffix(suffix), fProc(proc) {}
+      ...
+  };
+  ```
+include_glob:
+- bench/**
+triggers:
+- \bpublic\s+Benchmark\b
+- \bclass\s+[A-Za-z0-9_]+\s+(?:final\s+)?:\s*public\s+Benchmark\b
+- \bDEF_BENCH(?:_F)?\s*\(
+- \bclass\s+[A-Za-z0-9_]*Bench\b
+- //\s*(?:Measures?|Benchmark for)\b
+confidence: 0.85
+support_cl_count: 1

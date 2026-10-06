@@ -1,0 +1,51 @@
+id: general/name-packed-bitfields-to-describe-all-components
+title: When naming packed integer fields or composite bitmasks, describe all packed components or use
+  an encompassing descriptor name rather than omitting constituent flags
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Name packed integer fields, composite keys, and bitmasks to accurately reflect all components they
+  encode (e.g., naming both index and mask as in fPackedLineIdxIntersectionMask, or using an encompassing
+  suffix like Desc, Mask, or Key) rather than naming only a subset of the packed fields. In structs and
+  classes with methods, also ensure member fields follow the 'f' prefix convention.
+why: Naming a packed integer after only a subset of its contents (such as naming a field containing both
+  an index and an intersection mask as only an index or winding) obscures the presence of other packed
+  flags and misleads readers about what data the field holds. Accurate composite names ensure maintainers
+  know all constituent components packed into the integer.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct Tile {
+      // Packs lineIdx and intersectionMask (W | R | L | T | B)
+      uint32_t packedWindingLineIdx;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  struct Tile {
+      // Accurately describes both the line index and the full intersection mask
+      uint32_t fPackedLineIdxIntersectionMask;
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+exclude_glob:
+- third_party/**
+triggers:
+- \buint(?:16|32|64)_t\s+(?:f)?[A-Za-z0-9_]*Packed[A-Za-z0-9_]*\b
+- \buint(?:16|32|64)_t\s+(?:f)?[A-Za-z0-9_]*(?:Bitfield|Mask|Desc|Key)\s*[;=]
+- \b(?:fPacked|packed)[A-Z]\w*\b
+- \b[a-zA-Z0-9_]*(?:LineIdx|Idx|Index)[A-Za-z0-9_]*(?:Mask|Bits?|Flags?|Desc)\b
+- \b(?:uint(?:16|32|64)_t|size_t)\s+f?[a-z][a-zA-Z0-9_]*(?:Idx|Index)\s*[;=]
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Data fields in structs, classes, and unions that have methods begin with lower-case f and are
+    then camel-capped, to distinguish those fields from other variables.
+confidence: 0.9
+support_cl_count: 1

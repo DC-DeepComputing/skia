@@ -1,0 +1,65 @@
+id: api/return-base-class-from-interface-factories
+title: When declaring factory or interface methods, return root base interfaces rather than derived types
+  or intermediate proxy classes to avoid leaking implementation details
+polarity: do
+severity: should_fix
+rubric: readability
+rule: 'Return root base class or interface pointers (or smart pointers) from factory and interface methods
+  rather than concrete derived types when callers only interact with the base interface, avoiding unnecessary
+  #include dependencies on derived headers. When implementing classes that inherit from intermediate helper
+  or proxy base classes (such as SkTypeface_proxy), do not return the intermediate base class from static
+  Make factories; return either the polymorphic root interface (e.g., sk_sp<SkTypeface>) or the concrete
+  derived type itself.'
+why: Returning concrete derived class pointers from polymorphic or factory methods forces callers to include
+  internal implementation headers, causing header dependencies and build cascades. Returning intermediate
+  helper or proxy base classes leaks internal adapter inheritance structure to callers who only need the
+  polymorphic root interface or the concrete subclass's interface.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Leaking intermediate proxy base from static Make:
+  class SkTypeface_fontconfig : public SkTypeface_proxy {
+  public:
+      static sk_sp<SkTypeface_proxy> Make(SkAutoFcPattern pattern,
+                                          SkString sysroot,
+                                          SkFontScanner* scanner);
+  };
+
+  // Returning concrete derived pointer forces derived #include:
+  virtual SkCaptureCanvas* makeCaptureCanvas(SkCanvas*) = 0;
+  ```
+
+  Good:
+
+  ```cpp
+  // Returning polymorphic root interface from static Make:
+  class SkTypeface_fontconfig : public SkTypeface_proxy {
+  public:
+      static sk_sp<SkTypeface> Make(SkAutoFcPattern pattern,
+                                    SkString sysroot,
+                                    SkFontScanner* scanner);
+  };
+
+  // Returning base interface pointer decouples callers:
+  virtual SkCanvas* makeCaptureCanvas(SkCanvas*) = 0;
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \bmakeCaptureCanvas\b
+- \bstatic\s+sk_sp<[A-Za-z0-9_:]+>\s+Make\b
+- \bclass\s+\w+\s*:\s*public\s+Sk[A-Za-z0-9_]+_proxy\b
+- \bsk_sp<Sk(?:Typeface|ScalerContext)_proxy>\b
+- \bvirtual\s+[A-Za-z0-9_:]+\s*\*\s*[a-z][A-Za-z0-9_]*Canvas\b
+- \bSkTypeface_proxy\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We prefer to minimize includes. If forward declaring a name in a header is sufficient then that
+    is preferred to an include.
+confidence: 0.95
+support_cl_count: 2

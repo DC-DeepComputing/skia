@@ -1,0 +1,73 @@
+id: general/consistent-integer-types-in-functions
+title: When implementing integer loops or functions, match loop counter types to bounds and keep parameters,
+  checks, and casts consistently typed as int or int32_t
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Maintain consistent integer types across functions and loops instead of mixing generic int with
+  fixed-width types like int32_t. In functions operating on plain int, keep signatures, local variables,
+  intermediate range checks (such as std::numeric_limits<int>::max()), and return casts as int. In loops,
+  match the iteration variable's type to the limit or bound variable's type (e.g., use int32_t y when
+  iterating up to an int32_t bound) to avoid mixing types or triggering comparison warnings.
+why: Mixing generic int and fixed-width int32_t creates type confusion, risks compiler comparison warnings,
+  and falsely implies bit-width guarantees that are not enforced. Keeping integer types uniform across
+  function bodies, bounds checks, and loop counters adheres to Skia style and avoids needless conversions
+  between nominally distinct types.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: mixing int32_t cast into a function operating on int
+  int mulInt(int x, int y) {
+      int64_t result = (int64_t)x * (int64_t)y;
+      if (result > std::numeric_limits<int>::max() || result < std::numeric_limits<int>::min()) {
+          fOK = false;
+      }
+      return (int32_t)result;
+  }
+
+  // Bad: mixing generic int counter with fixed-width int32_t bound
+  const int32_t height = this->dimensions().height();
+  for (int y = 0; y < height; ++y) {
+      processRow(y);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: consistent int types throughout signature, checks, and cast
+  int mulInt(int x, int y) {
+      int64_t result = (int64_t)x * (int64_t)y;
+      if (result > std::numeric_limits<int>::max() || result < std::numeric_limits<int>::min()) {
+          fOK = false;
+      }
+      return static_cast<int>(result);
+  }
+
+  // Good: loop counter type matches the int32_t bound
+  const int32_t height = this->dimensions().height();
+  for (int32_t y = 0; y < height; ++y) {
+      processRow(y);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- experimental/**
+triggers:
+- \b(?:static_cast<int32_t>|[(]int32_t[)])
+- \breturn\s+(?:static_cast<int(?:32_t)?>|[(]int(?:32_t)?[)])
+- \bstd::numeric_limits<int(?:32_t)?>::(?:max|min)[(][)]
+- \b(?:int|int32_t)\s+[a-zA-Z0-9_]+\s*[(][^)]*\b(?:int|int32_t)\s+[a-zA-Z0-9_]+
+- \b(?:int|int32_t)\s+[a-zA-Z0-9_]*(?:add|sub|mul|div|Safe)[A-Za-z0-9_]*\s*[(]
+- \bfor\s*[(]\s*(?:int|int32_t)\s+[a-zA-Z0-9_]+\s*=\s*0;\s*[^;]+<\s*[a-zA-Z0-9_]+
+- \b(?:const\s+)?int32_t\s+[a-zA-Z0-9_]*(?:[hH]eight|[wW]idth|[sS]ize|[cC]ount|[dD]im|[bB]ound|[lL]imit)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Integer Types
+  quote: Use `int` unless you have need a guarantee on the bit count, then use `stdint.h` types (`int32_t`,
+    etc).
+confidence: 0.95
+support_cl_count: 2

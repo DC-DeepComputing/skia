@@ -1,0 +1,51 @@
+id: rust/omit-redundant-parser-prevalidation
+title: When delegating input buffers to external parser or decoder libraries, omit redundant manual pre-validation
+  checks like buffer lengths or magic bytes
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: When passing input buffers or byte streams to an underlying parser, codec, or decoding library that
+  validates input invariants internally, omit manual pre-validation checks (such as buffer length bounds
+  or magic header signatures). Delegate parsing directly to the library and handle validation failures
+  through its returned error status or Result.
+why: Duplicating manual pre-validation checks before delegating to an underlying parser introduces redundant
+  code and creates maintenance hazards if caller checks diverge from the parser's internal validation
+  rules. Trusting the parser's internal validation simplifies control flow and prevents premature rejections.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  const ICC_SIGNATURE: &[u8; 4] = b"acsp";
+  if data.is_empty() || data.len() < 40 || &data[36..40] != ICC_SIGNATURE {
+      return false;
+  }
+  match ColorProfile::new_from_slice(data) {
+      Ok(profile) => profile,
+      Err(_) => return false,
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Delegate directly to parser library; it validates length and magic bytes
+  let profile = match ColorProfile::new_from_slice(data) {
+      Ok(profile) => profile,
+      Err(_) => return false,
+  };
+  ```
+include_glob:
+- rust/**
+- src/codec/**
+- experimental/**
+- modules/**
+triggers:
+- \b(?:data|buffer|bytes|slice)\.(?:is_empty|len)\s*[(]
+- \b(?:data|buffer|bytes|stream)->(?:size|getLength)\s*[(][)]\s*<
+- '&[a-zA-Z0-9_]+\[\d+\.\.\d+\]\s*(?:==|!=)'
+- \b(?:[A-Z0-9_]+_)?(?:SIGNATURE|MAGIC)\b
+- \b(?:new_from_slice|parse_icc_profile|parse_from_slice|read_from_slice)\s*[(]
+- '\bColorProfile::'
+confidence: 0.88
+support_cl_count: 1

@@ -1,0 +1,82 @@
+id: general/prefer-debug-asserts-for-prevalidated-inputs
+title: In internal helpers and constructors handling pre-validated inputs or descriptor flags, assert
+  preconditions and consistency using debug SkASSERT rather than SkASSERT_RELEASE or omitting checks
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In internal constructors, resource creators, and helper methods handling pre-validated inputs or
+  descriptor flags, assert all preconditions, non-null pointers, and descriptor consistency using debug
+  SkASSERT rather than omitting checks or asserting a partial subset. When accepting pre-queried capability
+  tokens, filters, or pre-populated flags, assert with SkASSERT that arguments match validator queries
+  (e.g., SkASSERT(arg && arg == this->canDo(source))) and that descriptor flags agree with backend capabilities
+  and high-level properties. Do not rely solely on upstream validation, and do not use SkASSERT_RELEASE
+  or redundant runtime checks when inputs are already sanitized.
+why: Internal constructors and callee helpers can gain new call sites over time that bypass factory checks,
+  pass mismatched tokens, or supply desynchronized descriptor flags; callee-side debug assertions document
+  class contracts, prevent regressions, and catch invalid states early during development. Because boundary
+  entry points already validate untrusted input, debug assertions (SkASSERT) enforce invariants and capability
+  consistency uniformly without incurring production overhead or runtime bloat.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Asserting only a subset of required member pointers in internal constructor
+  SkWorkingColorSpaceShader::SkWorkingColorSpaceShader(sk_sp<SkShader> shader,
+                                                       sk_sp<SkColorSpace> space)
+          : fShader(std::move(shader)), fWorkingSpace(std::move(space)) {
+      SkASSERT(fWorkingSpace); // Omits fShader assertion
+  }
+
+  // Bad: Omitting precondition checks, query matching, or descriptor flag validation
+  bool DrawContext::recordUpload(Recorder* recorder, const UploadSource& source) {
+      return fPendingUploads->recordUpload(recorder, source);
+  }
+  // Descriptor flags passed directly to creation info without asserting capability consistency:
+  const VkImageCreateInfo imageCreateInfo = {
+      VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO, nullptr, vkInfo.fFlags, ...};
+
+  // Bad: Using release asserts in internal helpers when input is pre-validated
+  SkASSERT_RELEASE((unsigned)verb < sizeof(gPtsPerVerb));
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Consistently assert all required non-null member pointers in constructor
+  SkWorkingColorSpaceShader::SkWorkingColorSpaceShader(sk_sp<SkShader> shader,
+                                                       sk_sp<SkColorSpace> space)
+          : fShader(std::move(shader)), fWorkingSpace(std::move(space)) {
+      SkASSERT(fShader);
+      SkASSERT(fWorkingSpace);
+  }
+
+  // Good: Callee debug assertions guard preconditions and matching descriptor flags
+  bool DrawContext::recordUpload(Recorder* recorder, const UploadSource& source) {
+      SkASSERT(source.isValid());
+      return fPendingUploads->recordUpload(recorder, source);
+  }
+  SkASSERT(info.isProtected() == Protected::kNo ||
+           (caps.protectedSupport() && SkToBool(VK_IMAGE_CREATE_PROTECTED_BIT & vkInfo.fFlags)));
+  const VkImageCreateInfo imageCreateInfo = {
+      VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO, nullptr, vkInfo.fFlags, ...};
+
+  // Good: Debug assertion documents invariant without production overhead
+  SkASSERT((unsigned)verb < sizeof(gPtsPerVerb));
+  ```
+include_glob:
+- src/**
+- modules/**
+exclude_glob:
+- src/codec/**
+triggers:
+- \bSkASSERT_RELEASE\s*[(]
+- \bSkASSERT\s*[(][^)]*\b(?:isValid|valid)\s*[(]
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*<\s*sizeof\s*[(]
+- \bSkASSERT\s*[(][^)]*\b(?:isFullyLazy|dimensions)\b
+- \bSkASSERT\s*[(]\s*!?f[A-Za-z0-9_]+\s*[)]
+- \bSkASSERT\s*[(][^)]*\b(?:can|check|is|get)[A-Za-z0-9_]+\s*[(]
+- \bSkASSERT\s*[(][^)]*\b(?:flags|Flags|PredrawFlags)\b
+- \b(?:canAttempt|attempt)[A-Z]\w*\s*[(]
+confidence: 0.98
+support_cl_count: 5

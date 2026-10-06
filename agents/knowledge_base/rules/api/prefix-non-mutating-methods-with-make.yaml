@@ -1,0 +1,46 @@
+id: api/prefix-non-mutating-methods-with-make
+title: When declaring methods that return a new transformed or derived copy of an object, prefix the name
+  with make rather than bare verbs
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring methods that return a new transformed or derived copy of an object (such as applying
+  a matrix, offset, or configuration adjustment), prefix the method name with make (e.g., makeTransform(),
+  makeOffset()). Do not use bare verb names (e.g., transform(), offset()) for non-mutating methods that
+  return a new instance.
+why: In Skia conventions, bare verb method names conventionally perform in-place mutation on the object
+  or write to an out-parameter. Prefixing non-mutating transformation and factory methods with make clarifies
+  at declaration and call sites that the original object remains unmodified and a newly allocated or derived
+  instance is returned.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  class SkPathData {
+  public:
+      sk_sp<SkPathData> transform(const SkMatrix&) const;
+      sk_sp<SkPathData> offset(SkVector) const;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  class SkPathData {
+  public:
+      sk_sp<SkPathData> makeTransform(const SkMatrix&) const;
+      sk_sp<SkPathData> makeOffset(SkVector) const;
+  };
+  ```
+include_glob:
+- include/**
+- src/**
+triggers:
+- \b(?:sk_sp<[A-Za-z0-9_:]+>|[A-Za-z0-9_:]+)\s+make[A-Z]\w*\s*\([^)]*\)\s*const
+- \b(?:sk_sp<[A-Za-z0-9_:]+>|[A-Za-z0-9_:]+)\s+(?:transform|offset|inset|outset|scale|rotate)\s*\([^)]*\)\s*const
+- \bmake(?:Transform|Offset|Inset|Outset|Scaled|Clone)\s*\(
+- \b(?:transform|offset|inset|outset)\s*\([^)]*\)\s*const\b
+- \bsk_sp<[A-Za-z0-9_:]+>\s+make[A-Z]\w*\s*\(
+confidence: 0.9
+support_cl_count: 1

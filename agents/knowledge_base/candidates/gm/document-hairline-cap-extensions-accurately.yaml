@@ -1,0 +1,48 @@
+id: gm/document-hairline-cap-extensions-accurately
+title: When documenting hairline stroke cap geometry, describe capped hairlines as extending by up to
+  half a pixel rather than using approximate phrasing like 'about half a pixel'
+polarity: do
+severity: nit
+rubric: readability
+rule: When documenting hairline stroke cap geometry and rasterization behavior, accurately describe capped
+  hairlines as extending line endpoints by up to half a device pixel (0.5 pixels for round and square
+  caps, 0 for butt caps) rather than using approximate phrasing like 'about half a pixel'. Hairline strokes
+  have an exact 1-pixel effective width, and cap bounds are geometrically bounded.
+why: In Skia, hairline strokes (width 0) rasterize with an exact effective stroke width of 1 device pixel.
+  Describing capped hairlines as extending by 'about half a pixel' implies non-deterministic or variable
+  geometry, when in reality square and round caps extend endpoints along the stroke direction by exactly
+  half the stroke width (0.5 device pixels) while butt caps do not extend beyond endpoints.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Capped hairlines have interesting behavior because they extend out
+  // by about half a pixel, which has led to unintended effects when closing
+  // contours with antialiasing on.
+  ```
+
+  Good:
+
+  ```cpp
+  // Capped hairlines have interesting behavior because they extend out
+  // by up to half a pixel (0.5 device pixels for round/square caps, 0 for
+  // butt caps), which has led to unintended effects when closing contours.
+  ```
+include_glob:
+- gm/**
+- tests/**
+triggers:
+- //.*\b(?:capped hairlines?|hairline(?:s)? (?:with )?caps?)\b
+- //.*\b(?:extend(?:s|ing)? out|extends?)\b.*\b(?:half a pixel|0\.5 pixels?)\b
+- //.*\b(?:about|approx(?:imately)?|up to)\s+half a pixel\b
+- \b(?:SkPaint::k(?:Round|Square|Butt)_Cap|Cap::k(?:Round|Square|Butt))\b
+- \b(?:setStrokeCap|getStrokeCap)\s*[(]
+- //.*\b(?:hairline|stroke width 0|zero[- ]width).*\b(?:cap|join|endpoint)\b
+citations:
+- path: docs/architecture/CPU.md
+  heading: Background and Definitions
+  quote: 'Hairline: The thinnest visual line, typically one device pixel wide. A stroke width of 0 in
+    a paint is interpreted as a hairline. Hairlines do not scale with the CTM.'
+confidence: 0.88
+support_cl_count: 1

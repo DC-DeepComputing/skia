@@ -1,0 +1,49 @@
+id: gpu/document-empirical-atlas-and-cache-sizing
+title: When configuring texture atlases or GPU caches with non-standard, reduced, or empirically tuned
+  dimensions, document the motivating workload characteristics or benchmarks in an inline comment
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When initializing texture atlases (such as DrawAtlas or DrawAtlasMgr) or GPU resource caches with
+  non-standard, scaled-down, or empirically tuned dimensions and plot subdivisions, add an inline comment
+  justifying the sizing choice. Explicitly cite the workload characteristics, empirical profiling observations
+  (such as typical asset sizes or low frequency in target workloads), or benchmark trade-offs motivating
+  the non-default dimensions.
+why: Non-standard, fractional, or scaled-down dimensions look like arbitrary magic numbers or potential
+  copy-paste bugs to reviewers and maintainers. Inline documentation explaining empirical workload distributions
+  or performance trade-offs clarifies why smaller or custom bounds were chosen and prevents future refactorings
+  from unintentionally resizing or standardizing the cache.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Undocumented reduced atlas dimensions appear to be arbitrary magic numbers
+  fSaveRecordKeyAtlasMgr(kClipAtlasWidth / 2, kClipAtlasHeight / 2,
+                         /*plotWidth=*/kClipAtlasWidth / 2, /*plotHeight=*/kClipAtlasHeight / 2,
+                         DrawAtlas::UseStorageTextures::kNo,
+                         "SaveRecordKeyClipAtlas", recorder->priv().caps())
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Explains empirical workload distribution justifying the smaller atlas
+  // Examining results across common web pages, SaveRecord keyed clips tend to be
+  // considerably smaller and rarer, so we use a smaller atlas here.
+  fSaveRecordKeyAtlasMgr(kClipAtlasWidth / 2, kClipAtlasHeight / 2,
+                         /*plotWidth=*/kClipAtlasWidth / 2, /*plotHeight=*/kClipAtlasHeight / 2,
+                         DrawAtlas::UseStorageTextures::kNo,
+                         "SaveRecordKeyClipAtlas", recorder->priv().caps())
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \b(?:DrawAtlas|DrawAtlasMgr|GrDrawAtlas)::(?:Make|PlotLocator|UseStorageTextures)\b
+- \b(?:DrawAtlasMgr|DrawAtlas)\s*[(]
+- \b(?:k[A-Za-z0-9_]*Atlas(?:Width|Height)|kAtlas(?:Width|Height)|fAtlas(?:Width|Height)|fPlot(?:Width|Height))\s*[/]\s*\d+\b
+- /[*]\s*plot(?:Width|Height)\s*=\s*[*]/
+- \b(?:f[A-Za-z0-9_]*AtlasMgr|f[A-Za-z0-9_]*Atlas)\s*[(]
+- //.*\b(?:smaller atlas|atlas size|rarer|workload|empirical|plot size)\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,65 @@
+id: gpu/document-complementary-backend-query-helpers
+title: When declaring complementary GPU backend query helpers or Caps capability accessors, document their
+  semantic differences, hardware guarantees, and underlying extension requirements
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring closely related or complementary backend query helpers or Caps capability accessors,
+  document their semantic differences, underlying hardware mechanisms, and driver requirements in header
+  comments. Explicitly clarify whether a query represents an automatic driver/hardware capability (e.g.,
+  handling operations implicitly vs. requiring manual fallback passes) or an inherent hardware behavioral
+  guarantee (such as hardware coherency across known architectures) versus tracking whether a specific
+  backend API extension is enabled to govern pipeline creation flags or descriptor setup.
+why: Query helpers and capability accessors with similar names confuse callers regarding which predicate
+  to check at different pipeline stages. Documenting underlying driver extensions, hardware guarantees,
+  and API flag requirements clarifies architectural responsibilities, preventing callers from passing
+  invalid pipeline creation flags, emitting redundant barriers, or making incorrect assumptions about
+  hardware behavior.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Undocumented complementary queries leave caller semantics ambiguous.
+  bool RenderPassDescWillLoadMSAAFromResolve(const RenderPassDesc& renderPassDesc);
+  bool RenderPassDescWillImplicitlyLoadMSAA(const RenderPassDesc& renderPassDesc);
+
+  // Ambiguous capability accessors: does coherency imply the API extension is active?
+  bool isInputAttachmentReadCoherent() const { return fIsInputAttachmentReadCoherent; }
+  bool supportsRasterizationOrderColorAttachmentAccess() const {
+      return fSupportsRasterizationOrderColorAttachmentAccess;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Clarify automatic driver/hardware handling vs manual software pass:
+  // When multisampling is used, MSAA data may need to be initialized from resolve.
+  // RenderPassDescWillLoadMSAAFromResolve returns true if this load is needed.
+  // When VK_EXT_multisampled_render_to_single_sampled is available, the driver loads
+  // it automatically (RenderPassDescWillImplicitlyLoadMSAA returns true); otherwise,
+  // Graphite manually executes a fallback draw.
+  bool RenderPassDescWillLoadMSAAFromResolve(const RenderPassDesc& renderPassDesc);
+  bool RenderPassDescWillImplicitlyLoadMSAA(const RenderPassDesc& renderPassDesc);
+
+  // Clarify inherent hardware guarantee vs backend API extension creation flag:
+  bool isInputAttachmentReadCoherent() const { return fIsInputAttachmentReadCoherent; }
+  // isInputAttachmentReadCoherent() is true if VK_EXT_rasterization_order_attachment_access
+  // is enabled OR if the architecture inherently guarantees coherency. The following
+  // indicates specifically if the extension is enabled (requiring pipeline creation flags).
+  bool supportsRasterizationOrderColorAttachmentAccess() const {
+      return fSupportsRasterizationOrderColorAttachmentAccess;
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bbool\s+[A-Za-z0-9_]*(?:Will|Requires|Supports|Is)(?:Implicitly)?[A-Z]\w*\s*[(]
+- \bbool\s+(?:is|supports|requires|can|has|will)[A-Z]\w*[(][^)]*[)]\s*const
+- \bRenderPassDescWill(?:LoadMSAAFromResolve|ImplicitlyLoadMSAA)\b
+- \b(?:isInputAttachmentReadCoherent|supportsRasterizationOrderColorAttachmentAccess)\b
+- //.*\b(?:VK_EXT_|implicitly load|hardware coherency|driver extension|hardware mechanism|creation flag)\b
+- \bbool\s+\w*(?:LoadMSAA|MSAAFromResolve|ImplicitlyLoad|ReadCoherent)\w*\s*[(]
+confidence: 0.95
+support_cl_count: 2

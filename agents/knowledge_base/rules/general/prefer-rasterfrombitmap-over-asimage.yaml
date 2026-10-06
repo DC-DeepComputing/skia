@@ -1,0 +1,44 @@
+id: general/prefer-rasterfrombitmap-over-asimage
+title: When converting an SkBitmap to an SkImage, call SkImages::RasterFromBitmap(bitmap) directly rather
+  than invoking the legacy member wrapper bitmap.asImage()
+polarity: do
+severity: nit
+rubric: readability
+rule: When converting an SkBitmap into an SkImage, call SkImages::RasterFromBitmap(bitmap) directly rather
+  than invoking bitmap.asImage(). Prefer the modern plural-namespace factory function over the legacy
+  SkBitmap member wrapper.
+why: SkBitmap::asImage() is a legacy forwarding wrapper that merely calls SkImages::RasterFromBitmap(*this).
+  Directly invoking SkImages::RasterFromBitmap aligns with Skia's plural-namespace factory architecture
+  and eliminates redundant wrapper indirection.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  bm.setImmutable();
+  fGainCurvesXYM = bm.asImage();
+  ```
+
+  Good:
+
+  ```cpp
+  bm.setImmutable();
+  fGainCurvesXYM = SkImages::RasterFromBitmap(bm);
+  ```
+include_glob:
+- src/**
+- tests/**
+- gm/**
+- modules/**
+triggers:
+- \basImage\s*[(]
+- \bSkImages::RasterFromBitmap\s*[(]
+- \bRasterFromBitmap\s*[(]
+- \bSkImages::PinnableRasterFromBitmap\s*[(]
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 113
+  quote: SkImage factory methods have been moved to the SkImages namespace. Many have been renamed to
+    be more succinct or self-consistent.
+confidence: 0.82
+support_cl_count: 1

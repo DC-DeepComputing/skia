@@ -1,0 +1,84 @@
+id: general/hoist-common-statements-from-conditional-branches
+title: When conditional branches duplicate identical statements, return multi-field aggregates, or emit
+  boilerplate strings differing by few values, hoist common logic or isolate differing tokens
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When both arms of an if-else conditional block execute identical initialization, function calls,
+  or execution steps, hoist the common statements outside the conditional block. Similarly, when returning
+  aggregate structs or formatting boilerplate strings that differ by only one or two fields or keywords,
+  isolate the differing values (using a ternary expression or local variable, with SkASSERT for valid
+  variants) and use a single return site or formatted template (e.g., SkSL::String::printf or SkStringPrintf)
+  rather than duplicating entire blocks or string literals across branches.
+why: Duplicating identical statements, large aggregate initializations, or boilerplate declaration strings
+  across branches introduces redundant boilerplate, obscures which logic or tokens actually differ, and
+  risks maintenance divergence when one branch is updated without the others. Hoisting common statements
+  or isolating differing tokens into a single template flattens control flow and makes variations immediately
+  obvious.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Duplicating identical execution across branches
+  if (validateSPIRV) {
+      SPIRVCodeGenerator cg(program.fContext.get(), caps, &program, out);
+      result = cg.generateCode();
+      if (result) { validateSPIRV(*program.fContext->fErrors, *out); }
+  } else {
+      SPIRVCodeGenerator cg(program.fContext.get(), caps, &program, out);
+      result = cg.generateCode();
+  }
+
+  // Bad: Duplicating aggregate return across branches for one differing field
+  if (ref->isFinite()) {
+      return { ref->points(), ref->verbs(), ref->bounds(), path.getFillType() };
+  } else {
+      return { ref->points(), ref->verbs(), SkRect::MakeEmpty(), path.getFillType() };
+  }
+
+  // Bad: Duplicating layout declaration strings across backend branches
+  if (bindingReqs.fBackendApi == BackendApi::kVulkan) {
+      result = "layout (vulkan, push_constant) uniform IntrinsicUniforms {\n";
+  } else if (bindingReqs.fBackendApi == BackendApi::kDawn) {
+      result = "layout (webgpu, push_constant) uniform IntrinsicUniforms {\n";
+  } else {
+      SkUNREACHABLE;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Hoist common statements outside the conditional block
+  SPIRVCodeGenerator cg(program.fContext.get(), caps, &program, out);
+  result = cg.generateCode();
+  if (validateSPIRV && result) {
+      validateSPIRV(*program.fContext->fErrors, *out);
+  }
+
+  // Good: Compute differing field conditionally and return aggregate once
+  const SkRect bounds = ref->isFinite() ? ref->bounds() : SkRect::MakeEmpty();
+  return { ref->points(), ref->verbs(), bounds, path.getFillType() };
+
+  // Good: Assert valid backends and format differing keyword into a template
+  SkASSERT(bindingReqs.fBackendApi == BackendApi::kVulkan ||
+           bindingReqs.fBackendApi == BackendApi::kDawn);
+  result = SkSL::String::printf(
+          "layout (%s, push_constant) uniform IntrinsicUniforms {\n",
+          bindingReqs.fBackendApi == BackendApi::kVulkan ? "vulkan" : "webgpu");
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \breturn\s+[A-Za-z0-9_:]*\s*\{
+- \b(?:generateCode|emitCode|buildPipeline|compileShader|createProgram)\s*[(]
+- \b(?:SPIRVCodeGenerator|PipelineBuilder|ShaderBuilder|ProgramBuilder)\b
+- \b(?:isFinite|isEmpty|isValid|isNull)\s*[(]\s*[)]
+- \bSkSL::String::(?:printf|appendf)\b
+- \b(?:SkStringPrintf|printf)\s*[(]
+- \b(?:bindingReqs|fBackendApi|BackendApi::k[A-Za-z0-9_]+)\b
+- '"layout\s*[(][^)]*(?:push_constant|uniform|set=|%s)'
+confidence: 0.98
+support_cl_count: 3

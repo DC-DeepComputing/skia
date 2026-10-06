@@ -1,0 +1,47 @@
+id: general/avoid-var-in-javascript
+title: When declaring variables or loop counters in JavaScript, TypeScript, or HTML scripts, use block-scoped
+  const or let instead of function-scoped var
+polarity: dont
+severity: nit
+rubric: readability
+rule: In JavaScript, TypeScript, and HTML script blocks, do not use `var` for variable or loop declarations;
+  use `const` by default for bindings that are not reassigned and `let` for reassigned variables and loop
+  indices.
+why: '`var` declarations are function-scoped rather than block-scoped and get hoisted, which can lead
+  to accidental variable leakage, shadowing bugs, and scoping issues across loop iterations. Block-scoped
+  `const` and `let` enforce lexical scoping and clarify mutability.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  var height = 40;
+  var bidi = CanvasKit.Bidi.Make();
+  for (var i = 0; i < regions.length; ++i) {
+      var result = '[' + region.start + ':' + region.end + '): ';
+      expect(regions[i * 2].level).toEqual(2);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  let height = 40;
+  const bidi = CanvasKit.Bidi.Make();
+  for (let i = 0; i < regions.length; ++i) {
+      const result = '[' + region.start + ':' + region.end + '): ';
+      expect(regions[i * 2].level).toEqual(2);
+  }
+  ```
+include_glob:
+- '**/*.js'
+- '**/*.ts'
+- '**/*.html'
+triggers:
+- \bvar\s+[a-zA-Z0-9_$]+
+- \bfor\s*\(\s*var\b
+- \bfor\s*\(\s*(?:let|const|var)\b
+- \b(?:let|const)\s+[a-zA-Z0-9_$]+
+- \bfor\s*\(\s*(?:let|const|var)\s+[a-zA-Z0-9_$]+\s+(?:in|of)\b
+confidence: 0.9
+support_cl_count: 1

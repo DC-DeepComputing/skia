@@ -1,0 +1,51 @@
+id: api/store-enums-directly-in-containers
+title: When storing enum values in containers or collection members, use the strongly typed enum directly
+  rather than raw integer types to avoid reinterpret_cast on SkSpan
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Store strongly typed enums directly as the element type in containers and collection members (such
+  as `skia_private::STArray`, `TArray`, or `std::vector`) rather than their underlying integer type (such
+  as `uint8_t`). When exposing a span of elements via `SkSpan` or accessing elements, return or pass the
+  container directly without relying on `reinterpret_cast`.
+why: Storing the enum type directly preserves type safety across insertions, indexing, and iteration.
+  Storing raw integer types requires unsafe `reinterpret_cast` when exposing `SkSpan` views or passing
+  spans, bypassing compile-time type checking.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Storing underlying integer type requires reinterpret_cast when exposing an SkSpan
+  using VerbsArray = skia_private::STArray<4, uint8_t>;
+  VerbsArray fVerbs;
+
+  SkSpan<const SkPathVerb> verbs() const {
+      return {reinterpret_cast<const SkPathVerb*>(fVerbs.begin()), fVerbs.size()};
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Storing the strongly typed enum directly preserves type safety and converts cleanly to SkSpan
+  using VerbsArray = skia_private::STArray<4, SkPathVerb>;
+  VerbsArray fVerbs;
+
+  SkSpan<const SkPathVerb> verbs() const {
+      return fVerbs;
+  }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+triggers:
+- \breinterpret_cast<const\s+[A-Za-z0-9_:]*\*>
+- \breinterpret_cast<[A-Za-z0-9_:]*\*>
+- \b(?:STArray|TArray|skia_private::STArray|skia_private::TArray|std::vector)<[^>]*uint(?:8|16|32)_t>
+- \bSkSpan<(?:const\s+)?[A-Za-z0-9_:]+>\s+[a-zA-Z0-9_]+\s*\([^)]*\)
+- \busing\s+\w*Array\s*=\s*skia_private::(?:ST|T)Array<
+- \{\s*reinterpret_cast<
+confidence: 0.88
+support_cl_count: 1

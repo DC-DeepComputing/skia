@@ -1,0 +1,53 @@
+id: gpu/gpu-avoid-unused-backend-format-aliases
+title: When mapping backend formats to Graphite TextureFormat in bidirectional conversion functions, avoid
+  asymmetric one-way switch cases outside the shared format mapping macro; eliminate unused formats.
+polarity: dont
+severity: nit
+rubric: readability
+rule: In Graphite backend format conversion utilities (such as VulkanGraphiteUtils, DawnGraphiteUtils,
+  or MtlGraphiteUtils), maintain a 1-to-1 correspondence between backend formats and TextureFormat within
+  the shared bidirectional mapping macro (*_FORMAT_MAPPING). Do not introduce asymmetric, one-way format
+  conversions or aliases in manual switch cases outside the mapping macro; if an alternate backend format
+  is unused in the codebase, eliminate it entirely rather than preserving an ad-hoc alias.
+why: Graphite uses bidirectional X-macros to synchronize <Backend>FormatToTextureFormat and TextureFormatToBackendFormat.
+  Introducing one-way format cases outside the shared macro breaks the 1-to-1 relationship, creates ambiguity
+  about canonical format encodings, and retains dead format code that complicates backend capability tables.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  TextureFormat VkFormatToTextureFormat(VkFormat format) {
+  #define M(TF, VK) case VK: return TF;
+      switch (format) {
+          VK_FORMAT_MAPPING(M)
+          // Kept outside bidirectional macro to avoid duplicate cases
+          case VK_FORMAT_A8B8G8R8_UNORM_PACK32: return TextureFormat::kRGBA8;
+          default: return TextureFormat::kUnsupported;
+      }
+  #undef M
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  TextureFormat VkFormatToTextureFormat(VkFormat format) {
+  #define M(TF, VK) case VK: return TF;
+      switch (format) {
+          VK_FORMAT_MAPPING(M)
+          default: return TextureFormat::kUnsupported;
+      }
+  #undef M
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \b(?:VK|DAWN|MTL)_FORMAT_MAPPING(?:_NATIVE_ONLY)?\b
+- \b(?:VkFormat|DawnFormat|MtlFormat)ToTextureFormat\b
+- \bTextureFormatTo(?:VkFormat|DawnFormat|MtlFormat)\b
+- 'case\s+(?:VK_FORMAT_|wgpu::TextureFormat::|MTLPixelFormat)[A-Za-z0-9_]+:\s*return\s+TextureFormat::'
+- case\s+TextureFormat::k[A-Za-z0-9_]+:\s*return\s+(?:VK_FORMAT_|wgpu::TextureFormat::|MTLPixelFormat)
+confidence: 0.88
+support_cl_count: 1

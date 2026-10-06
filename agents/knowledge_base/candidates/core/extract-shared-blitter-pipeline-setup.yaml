@@ -1,0 +1,82 @@
+id: core/extract-shared-blitter-pipeline-setup
+title: When implementing specialized or debugging blitter factories that intercept or augment raster pipelines,
+  extract shared pipeline initialization into a common helper
+polarity: do
+severity: should_fix
+rubric: design
+rule: When implementing specialized, debugging, or visualizer blitter factories that intercept or augment
+  SkRasterPipeline stages, extract shared pipeline initialization—such as paint color conversion, shader
+  root stage appending, and opacity resolution—into a common static helper. Ensure both production and
+  diagnostic blitters share the same pipeline assembly routine to prevent configuration divergence.
+why: Duplicating pipeline setup logic across blitter creation entry points leads to behavioral divergence
+  when shader stage appending, color translation, or alpha modulation rules change. Factoring setup into
+  a shared helper guarantees consistent pipeline configuration across production and visualization blitter
+  variants.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Duplicating pipeline creation in both SkCreateRasterPipelineBlitter and CreateBlitter:
+  SkBlitter* CreateBlitter(...) {
+      SkColor4f dstPaintColor = paint_color_to_dst(paint, dst);
+      auto shader = as_SB(paint.getShader());
+      SkRasterPipeline_<256> shaderPipeline;
+      if (!shader) {
+          shaderPipeline.appendConstantColor(alloc, dstPaintColor.premul().vec());
+          ...
+      }
+      if (shader->appendRootStages(SkStageRec{&shaderPipeline, alloc, dstCT, dstCS, dstPaintColor, props}, ctm)) {
+          if (dstPaintColor.fA != 1.0f) {
+              shaderPipeline.append(SkRasterPipelineOp::scale_1_float, alloc->make<float>(dstPaintColor.fA));
+          }
+          ...
+      }
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  static bool create_pipeline_for_blitter(const SkPixmap& dst,
+                                          const SkPaint& paint,
+                                          const SkMatrix& ctm,
+                                          SkArenaAlloc* alloc,
+                                          const SkSurfaceProps& props,
+                                          SkRasterPipeline* shaderPipeline,
+                                          SkColor4f* dstPaintColor,
+                                          bool* isOpaqueOut,
+                                          bool* isConstantOut) {
+      *dstPaintColor = paint_color_to_dst(paint, dst);
+      ...
+  }
+
+  SkBlitter* CreateBlitter(...) {
+      SkRasterPipeline_<256> shaderPipeline;
+      SkColor4f dstPaintColor;
+      bool is_opaque, is_constant;
+      if (!create_pipeline_for_blitter(dst, paint, ctm, alloc, props,
+                                       &shaderPipeline, &dstPaintColor,
+                                       &is_opaque, &is_constant)) {
+          return nullptr;
+      }
+      // Inspect or augment stages in shaderPipeline...
+  }
+  ```
+include_glob:
+- src/core/**
+triggers:
+- \b(?:create_pipeline_for_blitter|CreateBlitter)\s*\(
+- \bSkCreateRasterPipelineBlitter\s*\(
+- \bSkRasterPipelineVisualizer\b
+- \bSkBlitter\*\s+[A-Za-z0-9_]*Create[A-Za-z0-9_]*Blitter\s*\(
+- \bappendRootStages\s*\(
+- \bpaint_color_to_dst\s*\(
+citations:
+- path: docs/architecture/CPU.md
+  heading: '5. The Pixel Writer: SkRasterPipelineBlitter'
+  quote: The SkRasterPipelineBlitter is the primary SkBlitter in the CPU backend. It implements the SkBlitter
+    interface, but instead of writing pixels directly, it translates calls like blitH or blitRect from
+    SkScan into an execution of its internal SkRasterPipeline.
+confidence: 0.9
+support_cl_count: 1

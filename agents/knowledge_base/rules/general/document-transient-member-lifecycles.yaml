@@ -1,0 +1,60 @@
+id: general/document-transient-member-lifecycles
+title: When declaring member variables, staging buffers, or dedicated caches storing transient state,
+  document their lifecycle and scope using 'transient' rather than 'volatile'
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When declaring struct or class member variables, CPU staging buffers, or dedicated caches and atlas
+  managers that hold transient state rather than persistent object invariants—such as pass-specific bounds,
+  single-upload buffers, or scope-keyed cache entries—document their lifecycle, scope boundary, and retention
+  semantics in an explanatory comment. Explicitly specify the operation that initializes or clears them
+  (such as when an enclosing record or pass ends), state when their values are undefined or reset, and
+  describe short-lived entries as 'transient' rather than 'volatile' (which implies mutating data).
+why: Member variables, internal buffers, and caches are generally assumed to maintain persistent invariants
+  across operations. Documenting transient lifecycles prevents maintainers from assuming data persists
+  or reading stale state. Furthermore, using 'transient' rather than 'volatile' avoids confusing short-lived,
+  single-scope data with resources whose contents dynamically mutate over time.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bounds of rendering operations in the render pass.
+  SkIRect fRenderAreaBounds;
+
+  // Separate atlas because SaveRecord keyed clips are far more volatile.
+  DrawAtlasMgr fSaveRecordKeyAtlasMgr;
+
+  struct TexturePage {
+      sk_sp<TextureProxy> fTexture;
+      SkTDArray<uint8_t> fAlphaBuffer;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Bounds of rendering operations in current pass; undefined outside addRenderPass().
+  SkIRect fRenderAreaBounds;
+
+  // Separate atlas because SaveRecord keyed clips are transient (never reused once popped).
+  DrawAtlasMgr fSaveRecordKeyAtlasMgr;
+
+  // Backing struct; fAlphaBuffer only stages data for a single pending upload.
+  struct TexturePage {
+      sk_sp<TextureProxy> fTexture;
+      SkTDArray<uint8_t> fAlphaBuffer;
+  };
+  ```
+include_glob:
+- src/**
+triggers:
+- //.*\b(?:render[ -]pass|current pass|pass-specific|transient|volatile|undefined outside|valid during|single
+  upload)\b
+- \b[A-Za-z0-9_:]+(?:<[^>]+>)?\s+f[A-Z]\w*(?:Bounds|Area|State|Pass|Phase|Info|Context|Buffer|AtlasMgr|AtlasManager);
+- \b(?:class|struct)\s+\w*(?:CommandBuffer|Encoder|Renderer|Pass|Recorder|Builder|AtlasManager|UploadManager|TexturePage)\b
+- \b(?:SkTDArray|std::vector|SkTArray)<[^>]+>\s+f[A-Z]\w*(?:Buffer|Data|Storage|Staging|Upload|Queue|Array);?
+- \b(?:SkIRect|SkRect|SkISize|SkSize|SkPoint)\s+f[A-Z]\w*;
+- \b(?:u?int(?:8|16|32|64)_t|int|size_t|bool|float)\s+f[A-Z]\w*(?:Index|Count|Id|State|Offset|Bytes)\b
+confidence: 0.98
+support_cl_count: 3

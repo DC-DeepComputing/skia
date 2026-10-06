@@ -1,0 +1,54 @@
+id: gpu/init-cpu-lookup-tables-in-cache-constructor
+title: When initializing pure CPU lookup tables or immutable caches in Graphite, construct them directly
+  in the owning cache constructor rather than Context::finishInitialization()
+polarity: do
+severity: should_fix
+rubric: design
+rule: Initialize static or immutable CPU lookup tables directly in the owning cache's constructor (such
+  as GlobalCache) rather than deferring setup to two-phase lifecycle methods like Context::finishInitialization().
+  Reserve finishInitialization() exclusively for GPU resources that require a ResourceProvider, Caps,
+  or command submission.
+why: Pure CPU data structures have no dependency on GPU devices or command queues. Initializing them directly
+  at construction eliminates unnecessary coupling between Context lifecycle and cache internals, avoids
+  multi-phase initialization, and guarantees thread-safe immutability without requiring runtime locks
+  or checks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In Context::finishInitialization():
+  #if defined(GPU_TEST_UTILS) && defined(SK_ENABLE_SPARSE_STRIPS)
+      auto pathRendererStrategy = fSharedContext->caps()->requestedPathRendererStrategy();
+      if (pathRendererStrategy.has_value() &&
+          pathRendererStrategy.value() == PathRendererStrategy::kCPUSparseStripsMSAA8) {
+          if (!fSharedContext->globalCache()->initializeMSAA8MaskLUT()) {
+              return false;
+          }
+      }
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // In GlobalCache.cpp constructor:
+  GlobalCache::GlobalCache()
+          : fGraphicsPipelineCache(kGlobalGraphicsPipelineCacheSizeLimit, &fStats)
+          , fComputePipelineCache(kGlobalComputePipelineCacheSizeLimit)
+          , fDynamicSamplers({})
+  #if defined(SK_ENABLE_SPARSE_STRIPS)
+          , fMSAAMaskLUT(GenerateMSAALUT<uint8_t>())
+  #endif
+          {}
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bfinishInitialization\s*\(
+- \bGlobalCache\s*\(
+- \b(?:initialize|init)[A-Z]\w*(?:LUT|Table|Mask|Cache)\s*\(
+- \b(?:fMSAAMaskLUT|GenerateMSAALUT)\b
+- \b(?:fSharedContext|sharedContext)->globalCache\s*\(
+confidence: 0.9
+support_cl_count: 1

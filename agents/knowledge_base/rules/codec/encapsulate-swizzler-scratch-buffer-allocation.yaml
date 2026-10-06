@@ -1,0 +1,48 @@
+id: codec/encapsulate-swizzler-scratch-buffer-allocation
+title: When allocating intermediate color transformation scratch buffers in image decoders, encapsulate
+  buffer allocation inside initializeSwizzler rather than duplicating checks across decode entry points
+polarity: do
+severity: should_fix
+rubric: design
+rule: In image decoders, encapsulate intermediate scratch buffer allocations and condition checks (such
+  as allocating fXformBuffer when xformOnDecode() is true) directly inside initializeSwizzler(). Do not
+  duplicate scratch buffer sizing or allocation logic across individual decode entry points (such as onGetPixels,
+  onStartScanlineDecode, or onStartIncrementalDecode).
+why: Multiple decode entry points require identical swizzler and scratch buffer configurations when color
+  transformation on decode is enabled. Centralizing buffer allocation inside initializeSwizzler eliminates
+  repetitive boilerplate across call sites and prevents buffer omission bugs when introducing new decode
+  entry points.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Duplicated in onGetPixels() and onStartScanlineDecode():
+  if (this->xformOnDecode()) {
+      fXformBuffer.reset(new uint32_t[info.width()]);
+  }
+  return this->initializeSwizzler(info, options);
+  ```
+
+  Good:
+
+  ```cpp
+  // Inside initializeSwizzler():
+  if (this->xformOnDecode()) {
+      fXformBuffer.reset(new uint32_t[dstInfo.width()]);
+      swizzlerInfo = swizzlerInfo.makeColorType(kXformSrcColorType);
+  }
+  // Callers simply invoke initializeSwizzler():
+  return this->initializeSwizzler(info, options);
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \binitializeSwizzler\s*[(]
+- \b(?:fXformBuffer|fColorXformBuffer)\.reset\b
+- \bxformOnDecode\s*[(]
+- \b(?:onGetPixels|onStartScanlineDecode|onStartIncrementalDecode)\s*[(]
+- \b(?:fXformBuffer|fColorXformBuffer)\b
+confidence: 0.9
+support_cl_count: 1

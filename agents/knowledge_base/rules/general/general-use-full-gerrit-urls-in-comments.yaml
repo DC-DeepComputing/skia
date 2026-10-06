@@ -1,0 +1,48 @@
+id: general/general-use-full-gerrit-urls-in-comments
+title: When citing past Gerrit changes or code reviews in comments, provide the full clickable URL rather
+  than a bare CL number
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When referencing or citing a Gerrit change or code review in comments, provide the full clickable
+  URL (e.g., https://skia-review.googlesource.com/c/skia/+/<cl_number>) rather than a bare CL number or
+  change ID. If citing an external Chromium or Git change, provide its full review URL or repository link.
+why: Bare Gerrit change numbers in comments are ambiguous and not clickable in code review tools, IDEs,
+  or terminals. Providing the full URL allows future maintainers and reviewers to directly navigate to
+  the change's discussion, diffs, and context during git archaeology.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Attempted to solve this ordering issue by adding a variable epsilon in 1004396, but this had to
+  // be removed as it caused regressions in the fuzzer.
+  ```
+
+  Good:
+
+  ```cpp
+  // Attempted to solve this ordering issue by adding a variable epsilon in
+  // https://skia-review.googlesource.com/c/skia/+/1004396, but this had to be removed as it caused
+  // regressions in the fuzzer.
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+- '**/*.c'
+- '**/*.rs'
+- '**/*.py'
+- '**/*.go'
+- '**/*.gn'
+- '**/*.gni'
+- '**/*.bazel'
+- '**/*.bzl'
+triggers:
+- //.*\b(?:CL|cl|change|review|patch)\s*[:#]?\s*[0-9]{5,7}\b
+- //.*\b(?:in|see|from|per|with|by)\s+[0-9]{5,7}\b
+- //.*https?://skia-review\.googlesource\.com\b
+- //.*\bcrrev\.com/c/\b
+- (?:#|//|/\*).*\b(?:CL|cl)\s*#?[0-9]{5,7}\b
+confidence: 0.9
+support_cl_count: 1

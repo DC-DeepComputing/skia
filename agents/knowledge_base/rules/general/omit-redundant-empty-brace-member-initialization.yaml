@@ -1,0 +1,67 @@
+id: general/omit-redundant-empty-brace-member-initialization
+title: When declaring member or local variables of default-constructible types (such as containers, sk_sp,
+  or std::optional), omit redundant '= {}', '= nullptr', or '= std::nullopt' initializers
+polarity: dont
+severity: nit
+rubric: readability
+rule: Do not add redundant '= {}', '= nullptr', or '= std::nullopt' initializers to member or variable
+  declarations whose types already provide default constructors that initialize an empty or null state
+  (such as skia_private::AutoTArray, TArray, sk_sp, std::unique_ptr, SkString, std::vector, or std::optional).
+  Rely on standard C++ default initialization to construct the object in its empty, null, or disengaged
+  initial state.
+why: In C++, member and local variables of default-constructible classes are automatically default-constructed
+  to an empty state (e.g., an empty container, null sk_sp/unique_ptr, or disengaged std::optional). Adding
+  '= {}', '= nullptr', or '= std::nullopt' introduces redundant syntactic noise without altering initialization
+  semantics, and can mislead readers into expecting custom value or aggregate initialization.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Redundant '= {}', '= nullptr', or '= std::nullopt' on default-constructible members/variables
+  class Encoder {
+      skia_private::AutoTArray<SwapchainImage> fImages = {};
+      sk_sp<SkSurface> fSurface = {};
+      std::vector<int> fIndices = {};
+      std::optional<SkImageInfo> fSrcInfo = std::nullopt;
+  };
+
+  void process() {
+      sk_sp<SkColorSpace> inputSpace = nullptr;
+      sk_sp<SkColorSpace> outputSpace = nullptr;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Rely on default initialization to construct empty, null, or disengaged state
+  class Encoder {
+      skia_private::AutoTArray<SwapchainImage> fImages;
+      sk_sp<SkSurface> fSurface;
+      std::vector<int> fIndices;
+      std::optional<SkImageInfo> fSrcInfo;
+  };
+
+  void process() {
+      sk_sp<SkColorSpace> inputSpace;
+      sk_sp<SkColorSpace> outputSpace;
+  }
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- \bsk_sp<[^>]+>\s+[a-zA-Z0-9_]+\s*=\s*(?:nullptr|\{\s*\\})
+- \b(?:skia_private::)?(?:Auto)?S?TArray<[^>]+>\s+f[A-Z]\w*\s*=\s*\{\s*\\}
+- \bstd::(?:vector|string|unique_ptr|deque|list)<[^>]+>\s+[a-zA-Z0-9_]+\s*=\s*(?:nullptr|\{\s*\\})
+- \bSk(?:String|Path|TDArray|BitSet)\s+f[A-Z]\w*\s*=\s*\{\s*\\}
+- \bstd::optional<[^>]+>\s+[a-zA-Z0-9_]+\s*=\s*(?:std::nullopt|\{\s*\\})
+- \b[A-Za-z0-9_:]+<[^>]+>\s+f[A-Z]\w*\s*=\s*\{\s*\\}
+citations:
+- path: chromium:styleguide/c++/c++-dos-and-donts.md
+  heading: Initialize members in the declaration where possible
+  quote: std::string c_;  // No initializer needed due to string's default constructor.
+confidence: 0.98
+support_cl_count: 3

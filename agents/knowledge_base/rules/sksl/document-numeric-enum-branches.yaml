@@ -1,0 +1,51 @@
+id: sksl/document-numeric-enum-branches
+title: When branching on numeric scalar constants representing enum modes in SkSL shaders, label each
+  branch with an inline comment and keep introductory comments generic
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When branching on numeric constants representing conceptual enum modes in SkSL shaders, label each
+  conditional branch with an inline comment naming the mode (e.g., '// diffuse'). Keep introductory comments
+  generalized rather than enumerating a fixed subset of modes so they do not become stale as new variants
+  are added.
+why: In shader code, modes or enums from C++ are often passed as scalar primitives (such as half or int),
+  which obscures the conceptual variants being handled. Labeling each branch clarifies the intent of magic
+  numbers, and keeping introductory comments generic prevents documentation drift when new cases are introduced.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Diffuse and specular reflections scale the light's color differently
+  if (materialType == 0) {
+      return color * diffuse;
+  } else if (materialType == 1) {
+      return color * specular;
+  } else {
+      return color * emboss;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Scale color by material type
+  if (materialType == 0) { // diffuse
+      return color * diffuse;
+  } else if (materialType == 1) { // specular
+      return color * specular;
+  } else { // emboss
+      return color * emboss;
+  }
+  ```
+include_glob:
+- src/sksl/**
+triggers:
+- \b(?:if|\} else if)\s*\(\s*[a-zA-Z0-9_.]*(?:Type|Mode|Style|Kind|Params)\s*==\s*[0-9]+
+- \b(?:if|\} else if)\s*\([^)]*==\s*[0-9]+(?:\.[0-9]+)?\s*\)\s*\{
+- \b(?:half|float|int)\s+[a-zA-Z0-9_]*(?:Type|Mode|Style|Kind)\b
+- \bswitch\s*\(\s*(?:int\()?[a-zA-Z0-9_.]*(?:Type|Mode|Style|Kind)
+- \{\s*//\s*[a-zA-Z0-9_-]+
+- //.*(?:materialType|lightType|invertStyle|strokeParams)
+confidence: 0.9
+support_cl_count: 1

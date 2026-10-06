@@ -1,0 +1,59 @@
+id: general/avoid-default-params-on-internal-methods
+title: When declaring internal subsystem functions or methods, avoid default parameter values; require
+  callers to pass explicit arguments, deliberate fallbacks, or std::nullopt
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not add default parameter values (such as `= nullptr`, `= std::nullopt`, or fallback literals
+  like `= {0, 0, 0, 0}`) to internal subsystem functions or methods. Require callers to explicitly pass
+  arguments (such as a concrete value, pointer, deliberate fallback like `SkRect::MakeEmpty()`, or `std::nullopt`)
+  so that call sites are deliberately audited and data flow remains unambiguous.
+why: Default parameter values allow internal callers to silently inherit fallback or sentinel values without
+  conscious auditing. Unlike public APIs in include/ where default arguments preserve backward compatibility
+  for external consumers, internal APIs benefit from forcing all call sites to deliberately supply intended
+  values or explicitly justify fallbacks.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Default arguments allow callers to silently omit deliberate choices
+  void purgeResourcesNotUsedSince(
+          StdSteadyClock::time_point purgeTime,
+          const StdSteadyClock::time_point* stopPurgingPastTime = nullptr);
+
+  SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&,
+                                           const SkPaint&,
+                                           const SkMatrix& ctm,
+                                           SkArenaAlloc*,
+                                           sk_sp<SkShader> clipShader,
+                                           const SkSurfaceProps& props,
+                                           const SkRect& devBounds = {0, 0, 0, 0});
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Callers must explicitly pass arguments or justify fallbacks
+  void purgeResourcesNotUsedSince(
+          StdSteadyClock::time_point purgeTime,
+          std::optional<StdSteadyClock::time_point> stopPurgingPastTime);
+
+  SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&,
+                                           const SkPaint&,
+                                           const SkMatrix& ctm,
+                                           SkArenaAlloc*,
+                                           sk_sp<SkShader> clipShader,
+                                           const SkSurfaceProps& props,
+                                           const SkRect& devBounds);
+  ```
+include_glob:
+- src/**
+triggers:
+- =\s*(?:nullptr|std::nullopt|\{[^}]*\})\s*[,)]
+- \b(?:const\s+)?[A-Za-z0-9_:]+\s*[*&]\s*[a-zA-Z0-9_]+\s*=\s*(?:nullptr|\{[^}]*\})
+- \bstd::optional<[^>]+>\s+[a-zA-Z0-9_]+\s*=\s*(?:std::nullopt|\{\})
+- \b(?:bool|int|size_t|SkScalar)\s+[a-zA-Z0-9_]+\s*=\s*(?:true|false|0(?:\.[0-9]+)?f?)\b
+- \b(?:purgeResources(?:NotUsedSince)?|SkCreateRasterPipelineBlitter)\b
+confidence: 0.95
+support_cl_count: 2

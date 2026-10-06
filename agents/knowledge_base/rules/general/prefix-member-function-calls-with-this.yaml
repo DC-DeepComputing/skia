@@ -1,0 +1,65 @@
+id: general/prefix-member-function-calls-with-this
+title: When accessing class members within member functions, prefix instance method calls with this->,
+  but omit this-> for static member functions and f-prefixed fields
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Prefix non-static (instance) member function calls on the current object with 'this->' (e.g., 'this->method()')
+  when invoked from within member functions, unless using an explicit base-class scope qualifier like
+  'Parent::method()'. Conversely, do not prefix static member function calls with 'this->' (call them
+  unqualified or with class qualification like 'Class::StaticMethod()'), and do not prefix member variable
+  accesses with 'this->'; access 'f'-prefixed member fields directly (e.g., 'fMember', not 'this->fMember').
+why: Explicitly dereferencing 'this->' distinguishes instance member function calls from free helper or
+  static functions at a glance and makes member dispatch transparent. Conversely, static member functions
+  do not operate on an instance, so invoking them via 'this->' is redundant and misleadingly implies instance
+  state access. Similarly, Skia's member fields are already distinguished from local variables and arguments
+  by their leading 'f' prefix, making 'this->' qualification redundant when accessing variables.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: calling instance methods without this->, or prefixing member fields or static methods with this->
+  bool BufferManager::hasSpace(size_t requiredBytes, size_t alignStride) {
+      this->fAvoidStencilBuffers = true;
+      return willBufferOverflow(&fCurrentBuffers[kVertexBufferIndex], requiredBytes, alignStride);
+  }
+  uint16_t tileColumns = this->DivCeil(viewportWidth, kTileWidth) - 1;
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: prefix instance method calls with this->, access fields directly, and omit this-> on static methods
+  bool BufferManager::hasSpace(size_t requiredBytes, size_t alignStride) {
+      fAvoidStencilBuffers = true;
+      auto [overflows, offset] = this->willBufferOffsetOverflow(
+              &fCurrentBuffers[kVertexBufferIndex], requiredBytes, alignStride);
+      return !overflows;
+  }
+  uint16_t tileColumns = DivCeil(viewportWidth, kTileWidth) - 1;
+  ```
+include_glob:
+- '**/*.h'
+- '**/*.cpp'
+- '**/*.cc'
+triggers:
+- \bthis->[a-zA-Z0-9_]+\s*[(]
+- \bthis->[A-Z][a-zA-Z0-9_]*\s*[(]
+- \bthis->f[A-Z]\w*
+- \b(?:if\s*[(]\s*|return\s+)[a-z][A-Za-z0-9_]*\s*[(][^)]*[)]
+- \bauto\s+(?:\[[^\]]+\]|\w+)\s*=\s*(?:this->)?[a-zA-Z][A-Za-z0-9_]*\s*[(]
+- \b[A-Za-z0-9_]+::[a-zA-Z][A-Za-z0-9_]*\s*[(][^)]*[)]
+- \b(?:willBufferOverflow|willBufferOffsetOverflow|snapSkps|snapPictures)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Classes
+  quote: 'Method calls within method calls should be prefixed with dereference of the ''this'' pointer.
+    For example: this->method();'
+- path: site/docs/dev/contrib/style.md
+  heading: Naming
+  quote: Data fields in structs, classes, and unions that have methods begin with lower-case f and are
+    then camel-capped, to distinguish those fields from other variables. Types that are predominantly
+    meant for direct field access don't need f-decoration.
+confidence: 0.98
+support_cl_count: 22

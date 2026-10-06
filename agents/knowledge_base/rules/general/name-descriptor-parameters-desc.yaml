@@ -1,0 +1,43 @@
+id: general/name-descriptor-parameters-desc
+title: When declaring SkDescriptor or SkFontDescriptor parameters or variables, name them desc rather
+  than descr to maintain codebase consistency
+polarity: do
+severity: nit
+rubric: readability
+rule: Name SkDescriptor and SkFontDescriptor parameters and local variables desc rather than descr or
+  verbose alternatives. Maintain this naming consistency across font interfaces, scaler context methods
+  (such as onCreateScalerContext), and typeface implementations.
+why: Across Skia's font subsystem and scaler context interfaces, descriptor pointers are consistently
+  named desc. Deviating to descr breaks consistency with base virtual method signatures and peer typeface
+  implementations, while also adding unnecessary characters to already long parameter lists.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  std::unique_ptr<SkScalerContext> SkTypeface_proxy::onCreateScalerContext(
+          const SkScalerContextEffects& effects, const SkDescriptor* descr) const {
+      return this->onCreateScalerContextAsProxyTypeface(effects, descr, nullptr);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  std::unique_ptr<SkScalerContext> SkTypeface_proxy::onCreateScalerContext(
+          const SkScalerContextEffects& effects, const SkDescriptor* desc) const {
+      return this->onCreateScalerContextAsProxyTypeface(effects, desc, nullptr);
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \b(?:const\s+)?SkDescriptor\s*\*\s*[a-zA-Z0-9_]+
+- \b(?:const\s+)?SkFontDescriptor\s*[*&]\s*[a-zA-Z0-9_]+
+- \bonCreateScalerContext(?:AsProxyTypeface)?\s*\(
+- \bonGetFontDescriptor\s*\(
+- \bSkDescriptor\s*\*\s*descr\b
+- \bSkScalerContext::CreateDescriptor\b
+confidence: 0.9
+support_cl_count: 1

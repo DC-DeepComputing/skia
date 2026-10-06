@@ -1,0 +1,53 @@
+id: general/avoid-redundant-index-or-resource-flags
+title: When tracking index or resource presence in classes, query the resource object directly or use
+  a signed sentinel instead of redundant boolean flags
+polarity: dont
+severity: should_fix
+rubric: readability
+rule: Do not maintain redundant boolean member variables (such as fIsIndexed or fHasResource) to track
+  whether an index or resource is active. Instead, query the underlying resource wrapper directly when
+  it evaluates as a boolean (such as BindBufferInfo or smart pointers), or represent the inactive state
+  using a signed sentinel value (such as int32_t with -1 or kInvalidIndex).
+why: Maintaining separate boolean flags alongside indices or resource objects creates duplicate member
+  state that must be synchronized manually across mutations, risking state desynchronization. Querying
+  the resource object or using an in-band sentinel eliminates redundant bookkeeping and simplifies class
+  invariants.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: Redundant boolean flags tracking whether an index or resource is present.
+  class DrawWriter {
+      BindBufferInfo fIndices;
+      uint32_t fPendingStaticBaseIndices;
+      bool fPendingIsIndexed;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: Query resource directly or represent inactive index with a signed sentinel.
+  class DrawWriter {
+      BindBufferInfo fIndices;
+      int32_t fPendingStaticBaseIndices = -1; // -1 represents non-indexed / inactive
+  };
+
+  // Check index or resource presence directly:
+  if (fIndices) {
+      ...
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+triggers:
+- \bbool\s+f[A-Za-z0-9_]*(?:Indexed|Index|Resource|Buffer)\b
+- \bbool\s+fPending[A-Z]\w*\b
+- \b(?:uint32_t|int32_t|int)\s+f[A-Za-z0-9_]*(?:Index|Indices)\b
+- \b(?:int|int32_t)\s+f[A-Za-z0-9_]*(?:Index|Slot)\s*=\s*-1\b
+- \bstatic\s+constexpr\s+int(?:32_t)?\s+kInvalid(?:Index|Slot)\s*=\s*-1\b
+- \bBindBufferInfo\s+f[A-Za-z0-9_]*(?:Indices|Index|Buffer)\b
+confidence: 0.85
+support_cl_count: 1

@@ -1,0 +1,66 @@
+id: codec/update-local-staging-variable-before-commit
+title: When performing fallible initialization or parsing, stage state updates and container elements
+  in local variables and commit to member state only upon success
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: In fallible initialization, parsing, or decoding methods, do not directly mutate member fields,
+  mode flags, or persistent containers before verifying that construction and validation have succeeded.
+  Stage state updates or newly created elements in local temporary variables across all intermediate branches,
+  and commit to member fields or append to persistent containers only upon final success.
+why: Directly modifying member fields or appending unvalidated elements to persistent collections before
+  fallible operations succeed leaves the object or container corrupted or in an inconsistent state on
+  error, breaking fallback paths and subsequent operations. Staging state locally ensures operations are
+  transactional so failure leaves existing state intact.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Anti-pattern 1: Mutating member state before resource creation succeeds
+  fXformMode = kSwizzleColor_XformMode;
+  fSwizzler = SkSwizzler::Make(...);
+  if (!fSwizzler) {
+      return kUnimplemented; // fXformMode left mutated on failure
+  }
+
+  // Anti-pattern 2: Appending to persistent container before validation succeeds
+  fFrames.emplace_back(id, info.alpha());
+  if (reader.has_fctl_chunk()) {
+      return this->setLastFrameInfoFromCurrentFctlChunk(reader); // Corrupt element on failure
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Pattern 1: Stage state in local variable across branches and commit only on success
+  XformMode newXformMode = kSwizzleColor_XformMode;
+  fSwizzler = SkSwizzler::Make(...);
+  if (!fSwizzler) {
+      return kUnimplemented; // Member state untouched on failure
+  }
+  fXformMode = newXformMode;
+
+  // Pattern 2: Validate into local temporary and append to container only on success
+  if (reader.has_fctl_chunk()) {
+      PngFrame frame(id, info.alpha());
+      SkCodec::Result result = this->setFrameInfoFromCurrentFctlChunk(reader, &frame);
+      if (result == SkCodec::kSuccess) {
+          fFrames.push_back(std::move(frame));
+      }
+      return result;
+  }
+  ```
+include_glob:
+- src/codec/**
+- experimental/**
+triggers:
+- \b[A-Za-z0-9_]+\s+new[A-Z]\w*\s*=
+- \bf[A-Z]\w*(?:Mode|State|Format)\s*=\s*
+- \b(?:initializeSwizzler|SkSwizzler::Make|fSwizzler\s*=)
+- \bf[A-Za-z0-9_]*\.(?:push_back|emplace_back)\s*\(
+- \bset(?:Last)?FrameInfo[A-Za-z0-9_]*\s*\(
+- \b(?:has_fctl_chunk|has_actl_chunk|parseAdditionalFrameInfos)\b
+confidence: 0.98
+support_cl_count: 2

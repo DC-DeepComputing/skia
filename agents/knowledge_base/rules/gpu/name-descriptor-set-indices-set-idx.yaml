@@ -1,0 +1,45 @@
+id: gpu/name-descriptor-set-indices-set-idx
+title: When naming fields, constants, or variables for GPU descriptor set or bind group indices, include
+  SetIdx or BindGroupIndex instead of generic Idx
+polarity: do
+severity: nit
+rubric: readability
+rule: When declaring fields, constants, or variables representing GPU resource descriptor set or bind
+  group indices, include SetIdx, DescSetIndex, or BindGroupIndex in the identifier rather than a generic
+  Idx suffix. Reserve Binding or Slot for binding indices within a set to clearly distinguish set indices
+  from binding slot indices.
+why: In modern GPU pipelines (such as Vulkan and WebGPU/Dawn), resources are identified hierarchically
+  by both a descriptor set or bind group index and a binding slot index within that set (layout(set=X,
+  binding=Y)). Naming a set index with a generic Idx suffix (such as fUniformsIdx) leaves it ambiguous
+  whether the identifier represents the set index or a buffer/texture binding slot.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  struct ResourceBindingRequirements {
+      int fUniformsIdx = kUnassigned;
+      int fTextureSamplerIdx = kUnassigned;
+      int fRenderStepBufferBinding = kUnassigned;
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  struct ResourceBindingRequirements {
+      int fUniformsSetIdx = kUnassigned;
+      int fTextureSamplerSetIdx = kUnassigned;
+      int fRenderStepBufferBinding = kUnassigned;
+  };
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bResourceBindingRequirements\b
+- \b[A-Za-z0-9_]*(?:SetIdx|BindGroupIndex|DescSetIndex)\b
+- \b(?:int|uint(?:8|16|32|64)_t|size_t)\s+f[A-Za-z0-9_]*(?:Uniforms?|TextureSampler|Attachment|Buffer|Resource)Idx\b
+- \b(?:k[A-Za-z0-9_]*(?:DescSet|BindGroup)(?:Index|Idx)|k[A-Za-z0-9_]*SetIdx)\b
+- \b(?:DescriptorSet|BindGroup|DescSet)(?:Index|Idx)\b
+confidence: 0.88
+support_cl_count: 1

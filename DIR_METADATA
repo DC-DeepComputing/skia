@@ -4,3 +4,8 @@ monorail {
 buganizer_public: {
   component_id: 1457031
 }
+agentic_review {
+  capability_groups {
+    review_knowledge_bases: "agents/knowledge_base"
+  }
+}

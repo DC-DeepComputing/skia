@@ -1,0 +1,54 @@
+id: api/prefer-static-cast-for-void-pointers
+title: When converting a void* or const void* pointer to a concrete typed pointer, use static_cast instead
+  of reinterpret_cast
+polarity: do
+severity: should_fix
+rubric: readability
+rule: Use static_cast instead of reinterpret_cast when converting a void* or const void* pointer to a
+  concrete typed pointer (such as const uint8_t*). Reserve reinterpret_cast strictly for conversions between
+  unrelated non-void pointer types or pointer-to-integer conversions.
+why: In standard C++, converting from void* to a typed object pointer is well-defined and type-checked
+  with static_cast. Using reinterpret_cast is overly permissive, suppresses compiler safety checks, and
+  misleadingly signals an unsafe reinterpretation between unrelated types.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Bad: reinterpret_cast is overly permissive for void* conversions.
+  bool IsBmp(const void* buff, size_t bytesRead) {
+      const rust::Slice<const uint8_t> slice{
+          reinterpret_cast<const uint8_t*>(buff),
+          bytesRead
+      };
+      return is_bmp(slice);
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Good: static_cast correctly and safely converts from void*.
+  bool IsBmp(const void* buff, size_t bytesRead) {
+      const rust::Slice<const uint8_t> slice{
+          static_cast<const uint8_t*>(buff),
+          bytesRead
+      };
+      return is_bmp(slice);
+  }
+  ```
+include_glob:
+- include/**
+- src/**
+- modules/**
+- tests/**
+- experimental/**
+triggers:
+- \breinterpret_cast<\s*(?:const\s+)?[A-Za-z0-9_:]+\s*\*\s*>
+- \bstatic_cast<\s*(?:const\s+)?[A-Za-z0-9_:]+\s*\*\s*>
+- \brust::Slice<(?:const\s+)?[A-Za-z0-9_:]+>
+- \bSkSpan<(?:const\s+)?[A-Za-z0-9_:]+>
+- \breinterpret_cast<\s*(?:const\s+)?uint8_t\s*\*\s*>
+- \bstatic_cast<\s*(?:const\s+)?uint8_t\s*\*\s*>
+confidence: 0.9
+support_cl_count: 1

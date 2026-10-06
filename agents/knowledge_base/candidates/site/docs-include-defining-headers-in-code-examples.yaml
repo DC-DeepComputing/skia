@@ -1,0 +1,58 @@
+id: site/docs-include-defining-headers-in-code-examples
+title: 'When authoring C++ code examples in Markdown documentation, directly include defining headers
+  for all referenced APIs and eliminate duplicate #include directives'
+polarity: do
+severity: nit
+rubric: readability
+rule: 'When writing or modifying C++ code examples in Markdown documentation, ensure all referenced APIs
+  and factory methods (such as backend-specific SkSurfaces factory functions like SkSurfaces::RenderTarget)
+  explicitly include their defining headers (e.g., include/gpu/ganesh/SkSurfaceGanesh.h) rather than relying
+  on core umbrella headers. Additionally, check for and remove duplicate #include directives.'
+why: Documentation code snippets are not compiled or validated by CI builds, allowing missing header includes
+  and duplicate directives to slip through unnoticed. Ensuring complete and deduplicated includes prevents
+  build errors and confusion for developers copying example snippets into their projects.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  <!--?prettify lang=cc?-->
+
+      #include "include/gpu/ganesh/GrDirectContext.h"
+      #include "include/gpu/ganesh/gl/GrGLInterface.h"
+      #include "include/gpu/ganesh/gl/GrGLInterface.h"
+      #include "include/core/SkSurface.h"
+
+      sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context.get(), skgpu::Budgeted::kNo, info);
+  ```
+
+  Good:
+
+  ```cpp
+  <!--?prettify lang=cc?-->
+
+      #include "include/gpu/ganesh/GrDirectContext.h"
+      #include "include/gpu/ganesh/gl/GrGLInterface.h"
+      #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+      #include "include/core/SkSurface.h"
+
+      sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context.get(), skgpu::Budgeted::kNo, info);
+  ```
+include_glob:
+- site/docs/**/*.md
+- docs/**/*.md
+triggers:
+- ^\s*#include\s+[\"<]include/gpu/(?:ganesh|graphite)/
+- ^\s*#include\s+[\"<]include/core/SkSurface
+- \bSkSurfaces::[A-Za-z0-9_]+\s*[(]
+- \bSkImages::[A-Za-z0-9_]+\s*[(]
+- <!--\?prettify\s+lang=cc\?-->
+- ^```(?:cpp|cc|c\+\+)
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 115
+  quote: SkSurface factory methods have been moved to the SkSurfaces namespace. Many have been renamed
+    to be more succinct or self-consistent. Factory methods specific to the Ganesh GPU backend are defined
+    publicly in include/gpu/ganesh/SkSurfaceGanesh.h.
+confidence: 0.9
+support_cl_count: 1

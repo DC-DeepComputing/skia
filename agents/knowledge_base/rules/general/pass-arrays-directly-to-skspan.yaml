@@ -1,0 +1,61 @@
+id: general/pass-arrays-directly-to-skspan
+title: When passing fixed-size arrays to SkSpan, pass them directly without {ptr, count}; for single scalar
+  variables, pass {&val, 1} instead of a 1-element array
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When passing a fixed-size C-style array (such as T[N]), std::array, or standard contiguous container
+  to a function taking SkSpan<T>, pass the container directly rather than wrapping it in an explicit {ptr,
+  count} brace pair or redundant SkSpan constructor. Conversely, when passing an individual scalar variable
+  to an SkSpan parameter, declare a scalar variable and pass an inline singleton span {&val, 1} instead
+  of declaring a 1-element C array (T val[1]) and indexing val[0].
+why: SkSpan provides implicit constructors for fixed-size arrays (T(&)[N]) and standard containers supporting
+  std::data() and std::size(), making manual {ptr, count} wrappers redundant. For single scalar variables,
+  declaring a 1-element array solely to exploit implicit span conversion introduces unnecessary array
+  indexing syntax (val[0]); passing {&val, 1} directly operates on standard scalar variables cleanly.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Redundant brace pair for fixed-size array
+  SkVector vec[2];
+  localMatrix.mapVectors({vec, 2});
+
+  // 1-element array declared solely for implicit span conversion
+  SkPoint3 mapHomogeneousPoint(SkPoint3 src) const {
+      SkPoint3 dst[1];
+      this->mapHomogeneousPoints(dst, {&src, 1});
+      return dst[0];
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Pass fixed-size array directly
+  SkVector vec[2];
+  localMatrix.mapVectors(vec);
+
+  // Pass scalar as inline singleton span without 1-element array
+  SkPoint3 mapHomogeneousPoint(SkPoint3 src) const {
+      SkPoint3 dst;
+      this->mapHomogeneousPoints({&dst, 1}, {&src, 1});
+      return dst;
+  }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+- tests/**
+- tools/**
+triggers:
+- \{\s*[a-zA-Z0-9_.]+\s*,\s*[0-9]+\s*\\}
+- \{\s*&[a-zA-Z0-9_.*->]+\s*,\s*1\s*\\}
+- \b[A-Za-z0-9_:]+\s+[a-zA-Z0-9_]+\s*\[\s*1\s*\\]
+- \{\s*[a-zA-Z0-9_.]+\s*,\s*std::size[(][^)]+[)]\s*\\}
+- \bSkSpan<[^>]+>\s*[({\[]
+- \.(?:mapVectors?|mapPoints?|mapHomogeneousPoints?|mapPointsToHomogeneous)\s*[(]
+confidence: 0.95
+support_cl_count: 2

@@ -1,0 +1,51 @@
+id: core/core-handle-non-invertible-transforms-in-filterresult
+title: When applying layer-space transformations to image filters, rely on FilterResult::applyTransform
+  to handle non-invertible matrices centrally rather than checking invertibility in individual filters
+polarity: do
+severity: should_fix
+rubric: design
+rule: When applying layer-space transforms to image filters, handle non-invertible matrices centrally
+  inside skif::FilterResult::applyTransform by returning an empty FilterResult. Do not add ad-hoc matrix
+  invertibility checks (such as transform.invert()) in individual SkImageFilter subclasses or caller call
+  sites.
+why: Individual image filter factories validate that their input transforms are invertible, but layer-space
+  matrix concatenation can still produce non-invertible matrices under extreme floating-point inputs.
+  Handling non-invertible transforms centrally in FilterResult::applyTransform protects all filter implementations
+  uniformly without duplicating ad-hoc bailout boilerplate across subclasses.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SkImageFilter subclass onFilterImage():
+  skif::LayerSpace<SkMatrix> transform = context.mapping().paramToLayer(fTransform);
+  if (!transform.invert(nullptr)) {
+      return {};
+  }
+  return childOutput.applyTransform(context, transform, fSampling);
+  ```
+
+  Good:
+
+  ```cpp
+  // In SkImageFilter subclass onFilterImage():
+  skif::LayerSpace<SkMatrix> transform = context.mapping().paramToLayer(fTransform);
+  return childOutput.applyTransform(context, transform, fSampling);
+
+  // Handled centrally in FilterResult::applyTransform (SkImageFilterTypes.cpp):
+  if (!transform.invert(nullptr)) {
+      return {};
+  }
+  ```
+include_glob:
+- src/core/**
+- src/effects/**
+triggers:
+- \bapplyTransform\b
+- \bparamToLayer\b
+- \btransform\.invert\b
+- \bLayerSpace<SkMatrix>\b
+- \bFilterResult::applyTransform\b
+- \bskif::FilterResult\b
+confidence: 0.9
+support_cl_count: 1

@@ -1,0 +1,48 @@
+id: gpu/gpu-prefer-skgpu-log-over-skdebugf
+title: When adding intentional diagnostic, error, or warning logs in Graphite, use structured logging
+  macros (SKGPU_LOG_* or SKIA_LOG_*) rather than SkDebugf or SkDEBUGFAIL
+polarity: do
+severity: should_fix
+rubric: readability
+rule: In Graphite, emit intentional diagnostic, error, and warning messages using structured logging macros
+  (SKGPU_LOG_* or SKIA_LOG_*, such as SKGPU_LOG_W / SKIA_LOG_W) instead of unstructured SkDebugf or SkDEBUGFAIL.
+  For unexpected or out-of-sync conditions that have a safe, recoverable fallback, log at the warning
+  level (SKGPU_LOG_W / SKIA_LOG_W).
+why: SKIA_LOG and SKGPU_LOG_* route messages through Skia's priority-filtered logging system, attach subsystem
+  tags, and allow clients to intercept diagnostics via SkLogHandler. In contrast, SkDebugf and SkDEBUGFAIL
+  bypass priority thresholds and log handlers, producing untagged and unfilterable console output.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  if (!fShapeCache.find(key)) {
+      SkDebugf("Evicted entry not in cache!");
+      return;
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  if (!fShapeCache.find(key)) {
+      SKGPU_LOG_W("Evicted entry not in cache!");
+      return;
+  }
+  ```
+include_glob:
+- src/gpu/graphite/**
+triggers:
+- \bSkDebugf\s*\(
+- \bSkDEBUGFAIL\b
+- \bSK(?:IA|GPU)_LOG_[A-Z]+\b
+- \bSK(?:IA|GPU)_LOG_W\b
+- \bSK(?:IA|GPU)_LOG_E\b
+- '\bSkLogPriority::'
+citations:
+- path: RELEASE_NOTES.md
+  heading: Milestone 153
+  quote: Clients can implement this interface and install it via `SkLogHandler::SetInstance` to receive
+    all messages generated through the `SKIA_LOG` macros.
+confidence: 0.9
+support_cl_count: 1

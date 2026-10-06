@@ -1,0 +1,67 @@
+id: general/sort-constant-and-extension-lists-alphabetically
+title: When defining or updating static arrays, macro lists, enums, or registration tables that follow
+  an alphabetical scheme, maintain strict alphabetical ordering
+polarity: do
+severity: nit
+rubric: readability
+rule: When defining or updating static arrays, macro lists (such as SKSL_INTRINSIC_LIST), enums, or registration
+  tables that follow an alphabetical scheme, ensure all entries remain in strict alphabetical order. Insert
+  newly added or moved items into their proper lexicographical position rather than appending them or
+  placing them out of order.
+why: Alphabetical ordering in static arrays, macro lists, and symbol registration tables keeps long definitions
+  easy to scan and audit, simplifies code reviews and diffs, and prevents duplicate entries or merge conflicts.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Static array:
+  const char* kValidExtensions[] = {
+      VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
+      VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME,
+      VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME,
+      VK_KHR_BIND_MEMORY_2_EXTENSION_NAME,
+  };
+
+  // Macro list:
+  #define SKSL_INTRINSIC_LIST          \
+      SKSL_INTRINSIC(textureHeight)    \
+      SKSL_INTRINSIC(textureSize)      \
+      SKSL_INTRINSIC(textureRead)      \
+      SKSL_INTRINSIC(textureWidth)
+  ```
+
+  Good:
+
+  ```cpp
+  // Static array:
+  const char* kValidExtensions[] = {
+      VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
+      VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME,
+      VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME,
+      VK_KHR_BIND_MEMORY_2_EXTENSION_NAME,
+  };
+
+  // Macro list:
+  #define SKSL_INTRINSIC_LIST          \
+      SKSL_INTRINSIC(textureHeight)    \
+      SKSL_INTRINSIC(textureRead)      \
+      SKSL_INTRINSIC(textureSize)      \
+      SKSL_INTRINSIC(textureWidth)
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+exclude_glob:
+- third_party/**
+triggers:
+- \bVK_[A-Z0-9_]+_EXTENSION_NAME\b
+- \b(?:kExtensions|kValidExtensions|kExtensionsForTests|kExtensionNames|kRequiredExtensions)\b
+- \bconst\s+char\*\s+(?:const\s+)?k[A-Za-z0-9_]*Extensions?\[\\]
+- \b(?:static\s+)?(?:const(?:expr)?\s+)?[A-Za-z0-9_:]+\s+k[A-Za-z0-9_]*(?:List|Array|Table|Names|Extensions|Features|Flags)\s*\[\\]\s*=
+- \bSKSL_INTRINSIC(?:_LIST)?\b
+- '#define\s+[A-Z0-9_]+_(?:LIST|TABLE|MAP)\b'
+- ^\s*[A-Z0-9_]+\s*\([a-zA-Z0-9_]+\)\s*\\\?$
+confidence: 0.95
+support_cl_count: 2

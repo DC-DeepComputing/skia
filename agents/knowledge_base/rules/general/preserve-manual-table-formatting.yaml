@@ -1,0 +1,94 @@
+id: general/preserve-manual-table-formatting
+title: When moving files or editing tabular data, matrices, and ternary expressions, avoid blind auto-formatting
+  and preserve intentional column alignment or compact layouts
+polarity: do
+severity: should_fix
+rubric: design
+rule: Do not blindly run auto-formatters (such as git-clang-format) across entire moved or existing files.
+  Preserve intentional human layouts—including compact ternary expressions, structurally parallel member
+  initializers, transformation matrices, and 2D lookup tables—rather than letting automated formatting
+  collapse bespoke column spacing or wrap compact statements into verbose diff churn. When field token
+  lengths differ in multi-line tabular initializers, maintain vertical column alignment using space padding,
+  and protect hand-crafted tables with // clang-format off and // clang-format on comments.
+why: Auto-formatters like clang-format treat all lines in moved or added files as new, often collapsing
+  multi-space column padding into single spaces or expanding compact rows and ternary branches into awkward,
+  multi-line wrapping. Preserving intentional column alignment and compact layouts highlights structural
+  symmetry, keeps data legible, and prevents unnecessary diff churn.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // 1. Column misalignment in multi-line tabular initializers:
+  { kCornerID, {1.0f, 0.0f}, {1.0f, 0.0f}, kInset, _______ },
+  { kCornerID, {0.0f, 1.0f}, {0.0f, 1.0f}, kInset,  kCenter },
+
+  // 2. Collapsing bespoke column alignment across parallel member initializers / ternaries:
+  Appender(DrawWriter& w, Target target)
+          : fDrawer(w)
+          , fTarget(target == Target::kVertices ? w.fVertices : w.fInstances)
+          , fStride(target == Target::kVertices ? w.fVertexStride : w.fInstanceStride)
+
+  // 3. Blind auto-formatting breaking compact tabular layout:
+  static constexpr uint8_t gTokenFlags[256] = {
+          4,
+          4,
+          // ... expands compact 2D table into single elements per line
+  };
+
+  // 4. Blind auto-formatting breaking compact ternary expressions on moved files:
+  return (sizeof(T) > sizeof(*this) / 2)
+          ? reinterpret_cast<const T*>(this) + 0  // need all the bits
+          : reinterpret_cast<const T*>(this) +
+                    1;  // skip the first word (where the tag lives)
+  ```
+
+  Good:
+
+  ```cpp
+  // 1. Maintain vertical column alignment using space padding:
+  { kCornerID, {1.0f, 0.0f}, {1.0f, 0.0f}, kInset,  _______ },
+  { kCornerID, {0.0f, 1.0f}, {0.0f, 1.0f}, kInset,  _______ },
+  { kCornerID, {1.0f, 0.0f}, {1.0f, 0.0f}, kInset,  kCenter },
+
+  // 2. Preserve bespoke column alignment in parallel member initializers / ternaries:
+  Appender(DrawWriter& w, Target target)
+          : fDrawer(w)
+          , fTarget(target == Target::kVertices ? w.fVertices     : w.fInstances)
+          , fStride(target == Target::kVertices ? w.fVertexStride : w.fInstanceStride)
+
+  // 3. Protect hand-crafted 2D table with clang-format comments:
+  // clang-format off
+  static constexpr uint8_t gTokenFlags[256] = {
+      4,   4,   4,   4,   4,   4,   4,   4,     4,   6,   6,   4,   4,   6,   4,   4,
+      // ...
+  };
+  // clang-format on
+
+  // 4. Retain compact ternary layout without mechanical wrapping:
+  return (sizeof(T) > sizeof(*this) / 2)
+          ? reinterpret_cast<const T*>(this) + 0  // need all the bits
+          : reinterpret_cast<const T*>(this) + 1; // skip the first word (where the tag lives)
+  ```
+include_glob:
+- '**/*.cpp'
+- '**/*.h'
+- '**/*.cc'
+triggers:
+- //\s*clang-format\s+(?:off|on)
+- (?:static\s+)?constexpr\s+std::array<[^>]+>\s+[A-Za-z0-9_]+\s*=
+- (?:static\s+)?constexpr\s+[A-Za-z0-9_:]+\s+[A-Za-z0-9_]+\[[0-9]+\](?:\s*\[[0-9]+\])?\s*=
+- (?:static\s+)?const(?:expr)?\s+[A-Za-z0-9_:]+\s+[A-Za-z0-9_]*(?:Table|Matrix|Flags|Map|LUT)\b.*=
+- ^\s*(?:0x[0-9a-fA-F]+|[0-9]+),\s*(?:0x[0-9a-fA-F]+|[0-9]+),
+- ^\s*//\s*0\s+1\s+2\s+3\b
+- ^\s*(?:\{\s*)?(?:-?[0-9]+(?:\.[0-9]+)?f?,\s*){3,}
+- ^\s*\{\s*[A-Za-z0-9_]+,\s*\{
+- ',\s*f[A-Za-z0-9_]+\([^)]*\?[^:]+:[^)]+\)'
+- '\?[^:\n]+\s{2,}:'
+- ^\s*\?\s+
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We wrap lines at 100 columns unless it is excessively ugly (use your judgement).
+confidence: 0.98
+support_cl_count: 3

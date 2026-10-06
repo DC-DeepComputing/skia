@@ -1,0 +1,58 @@
+id: general/match-legacy-macro-guards-to-subsystem
+title: When guarding legacy APIs, factories, or fallbacks with SK_DISABLE_LEGACY_* or SK_SUPPORT_LEGACY_*
+  directives, ensure the macro identifier matches the target subsystem
+polarity: do
+severity: should_fix
+rubric: correctness
+rule: 'When guarding legacy APIs, factory overloads, or fallback paths with conditional preprocessor directives
+  (such as #if !defined(SK_DISABLE_LEGACY_...) or #if defined(SK_SUPPORT_LEGACY_...)), verify that the
+  macro identifier matches the subsystem and component being guarded rather than an unrelated subsystem.
+  Do not copy macro guards from other subsystems or features without updating the subsystem token.'
+why: 'Preprocessor directives checking undefined macros silently evaluate to false in #if defined(...)
+  or true in #if !defined(...). Checking an unrelated subsystem''s macro (such as XPS in SVG code) prevents
+  embedders and build configurations from selectively disabling deprecated code or optional dependencies,
+  causing compilation or link failures.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In src/svg/SkSVGCanvas.cpp:
+  #if !defined(SK_DISABLE_LEGACY_XPS_FACTORIES)
+      if (!opts.pngEncoder) {
+          opts.pngEncoder = [](SkWStream* dst, const SkPixmap& src) {
+              return SkPngEncoder::Encode(dst, src, {});
+          };
+      }
+  #endif
+  ```
+
+  Good:
+
+  ```cpp
+  // In src/svg/SkSVGCanvas.cpp:
+  #if !defined(SK_DISABLE_LEGACY_SVG_FACTORIES)
+      if (!opts.pngEncoder) {
+          opts.pngEncoder = [](SkWStream* dst, const SkPixmap& src) {
+              return SkPngEncoder::Encode(dst, src, {});
+          };
+      }
+  #endif
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- '#(?:if|elif|ifdef|ifndef)\s+.*\bSK_DISABLE_LEGACY_[A-Za-z0-9_]+'
+- \bdefined\s*\(\s*SK_DISABLE_LEGACY_[A-Za-z0-9_]+\s*\)
+- '#(?:if|elif|ifdef|ifndef)\s+.*\bSK_SUPPORT_LEGACY_[A-Za-z0-9_]+'
+- \bdefined\s*\(\s*SK_SUPPORT_LEGACY_[A-Za-z0-9_]+\s*\)
+- \bSK_DISABLE_LEGACY_[A-Za-z0-9_]+\b
+- \bSK_SUPPORT_LEGACY_[A-Za-z0-9_]+\b
+citations:
+- path: site/docs/dev/chrome/changes.md
+  heading: Chrome changes
+  quote: Deprecate the old code path so that it must be enabled with a flag such as 'SK_SUPPORT_LEGACY_XXX'.
+confidence: 0.9
+support_cl_count: 1

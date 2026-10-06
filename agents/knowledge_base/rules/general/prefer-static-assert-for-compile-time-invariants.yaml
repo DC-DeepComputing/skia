@@ -1,0 +1,66 @@
+id: general/prefer-static-assert-for-compile-time-invariants
+title: When validating compile-time conditions, type sizes, or element counts, use static_assert rather
+  than runtime assertions like SkASSERT
+polarity: do
+severity: should_fix
+rubric: readability
+rule: When validating conditions known at compile time—such as type sizes (sizeof), alignments (alignof),
+  type traits (std::is_*), platform constants, or template parameters—use static_assert rather than runtime
+  assertions like SkASSERT or SkASSERT_RELEASE. Place static_assert at class, template, or function scope
+  so violations are caught immediately at build time across all configurations without runtime overhead.
+  Additionally, when deriving element or channel counts from aggregate types, compute counts explicitly
+  as sizeof(T) / sizeof(ElementType) and assert divisibility or size constraints with static_assert.
+why: Runtime assertions like SkASSERT only execute if the containing code path is exercised during a debug
+  run, silently permitting invalid configurations or template instantiations to build and slip into release
+  binaries. Expressing element counts as sizeof(T) / sizeof(ElementType) conveys intent without assuming
+  1-byte channels, and static_assert verifies compile-time invariants across all build targets with zero
+  runtime cost.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  template <typename T>
+  class GaussianPass final : public Pass {
+  public:
+      static constexpr int N = sizeof(T);
+
+      static PassMaker* MakeMaker(float sigma, SkArenaAlloc* alloc) {
+          // Bad: Assumes 1-byte elements implicitly and uses runtime SkASSERT for compile-time invariants
+          SkASSERT(CHAR_BIT == 8);
+          SkASSERT(sizeof(T) <= 16);
+          return alloc->make<GaussianPass<T>>(sigma);
+      }
+  };
+  ```
+
+  Good:
+
+  ```cpp
+  template <typename T>
+  class GaussianPass final : public Pass {
+  public:
+      static constexpr int N = sizeof(T) / sizeof(uint8_t);
+      // Good: static_assert validates compile-time invariants across all builds
+      static_assert(N * sizeof(uint8_t) == sizeof(T), "N must be size of T in bytes");
+      static_assert(sizeof(T) <= 16, "Type T exceeds maximum supported filter size");
+
+      static PassMaker* MakeMaker(float sigma, SkArenaAlloc* alloc) {
+          return alloc->make<GaussianPass<T>>(sigma);
+      }
+  };
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\bsizeof\b
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\balignof\b
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\bstd::is_[a-z_]+
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\bCHAR_BIT\b
+- \bSkASSERT(?:_RELEASE)?\s*[(][^)]*\b(?:numeric_limits|is_same|is_base_of)\b
+- \bstatic_assert\s*[(][^)]*\bsizeof\b
+- \bsizeof\s*[(][^)]+[)]\s*/\s*sizeof\b
+confidence: 0.9
+support_cl_count: 1

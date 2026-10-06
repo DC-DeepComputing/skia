@@ -1,0 +1,50 @@
+id: gpu/set-default-fill-type-when-converting-grshape-to-path
+title: When converting GrShape or geometry containers with non-standard fill defaults to SkPath, explicitly
+  set kDefaultFillType rather than relying on SkPath's default winding fill
+polarity: dont
+severity: nit
+rubric: correctness
+rule: When converting or materializing an SkPath from a GrShape (such as in GrShape::asPath), explicitly
+  set the path's fill type to GrShape::kDefaultFillType. Do not omit setFillType or assume default-constructed
+  SkPath instances share GrShape's default fill convention.
+why: Default-constructed SkPath instances initialize with SkPathFillType::kWinding (SkPathFillType::kDefault),
+  whereas GrShape defines kDefaultFillType as SkPathFillType::kEvenOdd. Omitting explicit fill type configuration
+  causes converted non-path shapes to render with winding fill rules rather than GrShape's even-odd convention.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  SkPath GrShape::asPath() const {
+      SkPathBuilder builder;
+      // WRONG: Omitting setFillType leaves builder with SkPath's default kWinding fill
+      if (fInverted) {
+          builder.toggleInverseFillType();
+      }
+      return builder.detach();
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  SkPath GrShape::asPath() const {
+      SkPathBuilder builder;
+      builder.setFillType(kDefaultFillType);
+      if (fInverted) {
+          builder.toggleInverseFillType();
+      }
+      return builder.detach();
+  }
+  ```
+include_glob:
+- src/gpu/**
+triggers:
+- \bGrShape\b
+- \bkDefaultFillType\b
+- \b(?:builder|path|out)\.setFillType\b
+- \bsetFillType\s*[(]\s*(?:GrShape::)?kDefaultFillType
+- \b(?:toggleInverseFillType|asPath)\b
+- \bSkPathFillType::k(?:EvenOdd|Winding)\b
+confidence: 0.9
+support_cl_count: 1

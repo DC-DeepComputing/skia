@@ -1,0 +1,47 @@
+id: general/place-subtype-methods-on-derived-class
+title: When implementing subtype-specific operations, place methods on the concrete derived class and
+  return concrete smart pointers from factories rather than downcasting
+polarity: do
+severity: should_fix
+rubric: design
+rule: Place subtype-specific methods directly on the concrete derived class rather than on general base
+  or utility classes that enforce subtype requirements via runtime assertions (such as isRasterBacked()).
+  Additionally, concrete factory functions should return smart pointers to the derived type (e.g., sk_sp<Derived>)
+  instead of the base type, avoiding downcasting at call sites.
+why: Exposing an operation on a base or utility class that only functions for a specific subclass misrepresents
+  the API's contract and violates encapsulation by relying on runtime assertions instead of compile-time
+  types. Returning the concrete derived type from factory methods provides static type safety and allows
+  callers to invoke subtype-specific methods directly without downcasts.
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // In SkImageShader:
+  sk_sp<SkShader> SkImageShader::MakeForPaint(sk_sp<SkImage> image, const SkPaint& paint, ...) {
+      SkASSERT(as_IB(image)->isRasterBacked());
+      ...
+  }
+
+  // In SkImage_Raster:
+  static sk_sp<SkImage> MakeFromBitmap(const SkBitmap&, SkCopyPixelsMode);
+  ```
+
+  Good:
+
+  ```cpp
+  // In SkImage_Raster:
+  static sk_sp<SkImage_Raster> MakeFromBitmap(const SkBitmap&, SkCopyPixelsMode);
+  sk_sp<SkShader> makeShaderForPaint(const SkPaint& paint, ...);
+  ```
+include_glob:
+- src/**
+triggers:
+- \bMakeForPaint\b
+- \bmakeShaderForPaint\b
+- \bisRasterBacked\b
+- \bstatic\s+sk_sp<[A-Za-z0-9_]+>\s+Make\w*\b
+- \bSkImageShader::Make\w*\b
+- \bMakeFromBitmap\b
+confidence: 0.9
+support_cl_count: 1

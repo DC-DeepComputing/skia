@@ -1,0 +1,91 @@
+id: general/inline-trivial-accessors-in-headers
+title: 'When defining class methods or constructors, inline trivial accessors in headers, but move non-trivial
+  logic, overrides, and #ifdef branches to .cpp files'
+polarity: do
+severity: should_fix
+rubric: design
+rule: 'Define trivial one-line accessors, mutators, and helper methods (such as field getters, boolean
+  state queries, or simple container appenders) inline directly within the class declaration in the header,
+  provided doing so does not require adding new #include dependencies instead of forward declarations.
+  Conversely, do not define non-trivial methods, constructors, virtual functions, overrides, or methods
+  with conditional compilation (#ifdef) branches (particularly those containing loops, branching fallback
+  logic, multi-line initialization, debug assertions, backend or configuration #ifdef blocks, synchronization
+  locks, or stream operations) inline in header files; declare them in the header and define them out-of-line
+  in the corresponding .cpp source file.'
+why: 'Inlining simple getters, setters, and one-line helpers inside the header declaration eliminates
+  boilerplate out-of-line definitions in source files and enables compiler optimizations across translation
+  units. Conversely, inlining non-trivial methods, complex constructors, virtual overrides, or #ifdef
+  branches bloats translation units, leaks internal preprocessor guards or backend implementation details
+  into public/shared headers, forces heavy include dependencies, and degrades incremental build times.'
+examples:
+- |-
+  Bad:
+
+  ```cpp
+  // Foo.h / Foo.cpp - Bad: trivial accessor or one-line helper defined out-of-line
+  class Foo {
+  public:
+      bool hasActivePassEncoder() const;
+      void trackLayerInfo(const LayerInfo& info) const;
+  };
+  void Foo::trackLayerInfo(const LayerInfo& info) const {
+      fLayerInfo.emplace_back(info);
+  }
+
+  // GlobalCache.h - Bad: non-trivial method with loop/lock defined inline in header
+  const Sampler* getDynamicSampler(SamplerDesc desc) const SK_EXCLUDES(fSpinLock) {
+      SkAutoSpinlock lock{fSpinLock};
+      for (uint32_t i = 0; i < kNumDynamicSamplers; ++i) { ... }
+  }
+
+  // VulkanTypes.h - Bad: non-trivial constructor with #ifdef and asserts inline in header
+  VulkanYcbcrConversionInfo(VkFormat format, ...)
+          : fFormat(format) {
+  #ifdef SK_DEBUG
+      if (fFormat == VK_FORMAT_UNDEFINED) { SkASSERT(...); }
+  #endif
+  }
+  ```
+
+  Good:
+
+  ```cpp
+  // Foo.h - Good: trivial accessor and one-line helper inlined in header declaration
+  class Foo {
+  public:
+      bool hasActivePassEncoder() const {
+          return fActiveRenderPassEncoder || fActiveComputePassEncoder;
+      }
+      void trackLayerInfo(const LayerInfo& info) const { fLayerInfo.emplace_back(info); }
+  };
+
+  // GlobalCache.h / .cpp - Good: declared in header, defined in .cpp
+  const Sampler* getDynamicSampler(SamplerDesc desc) const SK_EXCLUDES(fSpinLock);
+
+  // VulkanTypes.h / VulkanUtilsPriv.cpp - Good: constructor declared in header, defined in .cpp
+  // In VulkanTypes.h:
+  VulkanYcbcrConversionInfo(VkFormat format, ...);
+  // In VulkanUtilsPriv.cpp:
+  VulkanYcbcrConversionInfo::VulkanYcbcrConversionInfo(VkFormat format, ...)
+          : fFormat(format) { ... }
+  ```
+include_glob:
+- src/**
+- include/**
+- modules/**
+triggers:
+- \breturn\s+(?:f[A-Z]\w*|this->f[A-Z]\w*)\s*;
+- \b(?:has|is|get|can)[A-Z]\w*\s*[(][^)]*[)]\s*const\s*;
+- \bf[A-Z]\w*\.(?:emplace_back|push_back|insert|append)\s*[(]
+- \b(?:override|final)\s*\{
+- ^\s*(?:static\s+)?(?:const\s+)?[A-Za-z0-9_:*&<>]+\s+[a-zA-Z]\w*[(][^;)]*[)]\s*(?:const\s*)?(?:override|final)?\s*(?:SK_EXCLUDES[(][^)]*[)]\s*)?\{
+- ^\s*(?:explicit\s+)?[A-Z]\w*\([^;()]*\)\s*(?::\s*\w+[({].*)?\{
+- ^\s*:\s*f[A-Z]\w*[(]
+- \b(?:SKGPU_LOG_[A-Z]|SkAutoSpinlock|SkAutoMutexAcquire)\b
+citations:
+- path: site/docs/dev/contrib/style.md
+  heading: Files
+  quote: We prefer to minimize includes. If forward declaring a name in a header is sufficient then that
+    is preferred to an include.
+confidence: 0.98
+support_cl_count: 7
