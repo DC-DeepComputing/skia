@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84974c5_c62dd036",
+        "filename": "src/cpu/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-06T19:50:34Z",
+      "side": 1,
+      "message": "you\u0027re including Recorder.h in files that are not in src/core. For example src/pdf. I think Bazel will complain if you tried to compile right now",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "5301738697eb94b0125a06f962220bd130c04d7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
