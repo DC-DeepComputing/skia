@@ -77,6 +77,13 @@ private:
                              const BackendSemaphore* signalSemaphores) override;
     void prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                       const MutableTextureState* newState) override;
+    void prepareTextureForStateUpdate(const BackendTexture& texture,
+                                      const MutableTextureState* newState) override;
+    void prepareTextureForStateUpdate(VkImage image,
+                                      SkISize dimensions,
+                                      const TextureInfo& info,
+                                      MutableTextureState* currentState,
+                                      const MutableTextureState* newState);
 
     const Sampler* getSampler(const DrawPassCommands::BindTexturesAndSamplers* command,
                               int32_t index);
