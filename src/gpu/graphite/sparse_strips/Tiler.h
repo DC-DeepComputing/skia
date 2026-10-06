@@ -8,10 +8,12 @@
 #ifndef skgpu_graphite_sparse_strips_Tiler_DEFINED
 #define skgpu_graphite_sparse_strips_Tiler_DEFINED
 
+#include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
+#include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <algorithm>
 #include <array>
@@ -279,18 +281,32 @@ public:
     //     - W (Winding): Tracks whether the line touched the top edge of the tile.
     //     - R/L/B/T: Right, Left, Bottom, and Top edge intersections.
     void makeTilesMSAA(const Polyline& polyline, uint16_t viewportWidth, uint16_t viewportHeight) {
+        int32_t numRows = (viewportHeight + kTileHeight - 1) / kTileHeight;
+        WindingHistogram culled(numRows);
+        culled.resize(numRows);
+        this->makeTilesMSAA(polyline, SkIRect::MakeWH(viewportWidth, viewportHeight), culled);
+    }
+
+    bool makeTilesMSAA(const Polyline& polyline, SkIRect clip, WindingHistogram& histogram) {
         SkASSERT(polyline.count() <= MAX_LINES_PER_PATH);
 
-        if (viewportWidth == 0 || viewportHeight == 0) {
-            return;
+        bool cullingEventOccurred = false;
+        if (clip.isEmpty()) {
+            return cullingEventOccurred;
         }
 
-        // Will never underflow
-        uint16_t tileColumns = DivCeil(viewportWidth, kTileWidth) - 1;
-        uint16_t tileRows = DivCeil(viewportHeight, kTileHeight);
+        uint16_t tileColumns = DivCeil(clip.right(), kTileWidth);
+        uint16_t tileRows = DivCeil(clip.bottom(), kTileHeight);
 
         constexpr float invW = 1.0f / static_cast<float>(kTileWidth);
         constexpr float invH = 1.0f / static_cast<float>(kTileHeight);
+
+        uint16_t minTileX = f32ToU16Sat(clip.left() * invW);
+        uint16_t minTileY = f32ToU16Sat(clip.top() * invH);
+
+        float clipLeftTile = static_cast<float>(minTileX);
+        float clipTopTile = static_cast<float>(minTileY);
+        float clipRightTile = clip.right() * invW;
 
         for (auto it = polyline.begin(); it != polyline.end(); ++it) {
             auto [line, lineIdx] = *it;
@@ -310,35 +326,36 @@ public:
                 lineRightX = p0X;
             }
 
-            // If the leftmost point of this line is right of the viewport, cull it. Although we
+            // If the leftmost point of this line is right of the clip bounds, cull it. Although we
             // cull path verbs right of the viewport in the flattening stage, a right edge crossing
             // path verb may still be flattened into lines, some of which may be completely outside
-            // of the viewport.
-            if (lineLeftX >= static_cast<float>(tileColumns + 1)) {
-                // Note, lineLeftX > tileColumns is NOT equiavalent here, and so the + 1 cannot be
-                // dropped
+            // of the viewport/clip.
+            if (lineLeftX > clipRightTile) {
                 continue;
             }
 
             float lineTopY, lineTopX, lineBottomY, lineBottomX;
+            int16_t windingDir;
             if (p0Y < p1Y) {
                 lineTopY = p0Y;
                 lineTopX = p0X;
                 lineBottomY = p1Y;
                 lineBottomX = p1X;
+                windingDir = 1;
             } else {
                 lineTopY = p1Y;
                 lineTopX = p1X;
                 lineBottomY = p0Y;
                 lineBottomX = p0X;
+                windingDir = -1;
             }
 
-            uint16_t yTopTiles = std::min(f32ToU16Sat(lineTopY), tileRows);
+            uint16_t yTopTiles = std::max(minTileY, std::min(f32ToU16Sat(lineTopY), tileRows));
             float lineBottomYCeil = std::ceil(lineBottomY);
-            uint16_t yBottomTiles = std::min(f32ToU16Sat(lineBottomYCeil), tileRows);
+            uint16_t yBottomTiles = std::max(minTileY, std::min(f32ToU16Sat(lineBottomYCeil), tileRows));
 
             // If yTopTiles == yBottomTiles, then the line is either completely above or below the
-            // viewport OR it is perfectly horizontal and aligned to the tile grid, contributing no
+            // viewport/clip OR it is perfectly horizontal and aligned to the tile grid, contributing no
             // winding. In either case, it should be culled.
             if (yTopTiles >= yBottomTiles) {
                 // Technically, the `>` part of the `>=` is unnecessary due to clamping, but this
@@ -356,26 +373,53 @@ public:
                 p1TileY = static_cast<int32_t>(std::floor(lineBottomY));
             }
 
-            // Each line processed falls into 1 of three categories:
-            //  1) The line produces a single tile.
+            // Each line processed falls into 1 of four categories:
+            //  1) The line is completely to the left of the clip (culled into WindingHistogram).
             //  2) The line is perfectly vertical.
-            //  3) The line is neither 1 or 2 (general case)
+            //  3) The line produces a single tile.
+            //  4) The line is general (sloped across tiles, potentially crossing clip edges).
             bool notSameTile = (p0TileY != p1TileY) || (p0TileX != p1TileX);
+
+            // Left-edge culling: Lines completely to the left of the clip bounds do not generate
+            // any tiles in the visible grid. However, their vertical span contributes winding to
+            // all scanlines to their right. Record this winding directly into the WindingHistogram
+            // rather than allocating tiles into fTileBuf.
+            if (lineRightX < clipLeftTile) {
+                cullingEventOccurred = true;
+                bool isStartCulled = (lineTopY < clipTopTile);
+                if (!isStartCulled) {
+                    if (static_cast<float>(yTopTiles) >= lineTopY) {
+                        histogram.addWinding(yTopTiles, windingDir);
+                    }
+                }
+
+                uint16_t yStart = isStartCulled ? yTopTiles : (yTopTiles + 1);
+                float lineBottomFloor = std::floor(lineBottomY);
+                uint16_t yEndIdx = std::min(f32ToU16Sat(lineBottomFloor), tileRows);
+                histogram.addWindingRange(yStart, yEndIdx, windingDir);
+
+                if ((p0TileY != p1TileY) && lineBottomY != lineBottomFloor && yEndIdx < tileRows) {
+                    histogram.addWinding(yEndIdx, windingDir);
+                }
+                continue;
+            }
+
             if (notSameTile) {
                 if (lineLeftX == lineRightX) { // Vertical line case
-                    uint16_t x = std::min(f32ToU16Sat(lineLeftX), tileColumns);
+                    uint16_t x = std::min(f32ToU16Sat(lineLeftX),
+                                          static_cast<uint16_t>(tileColumns > 0 ? tileColumns - 1 : 0));
+                    x = std::max(minTileX, x);
 
                     // Process the Top Row (if visible on screen)
-                    uint16_t yStart = yTopTiles;
-                    bool isStartCulled = (lineTopY < 0.0f);
+                    bool isStartCulled = (lineTopY < clipTopTile);
                     if (!isStartCulled) {
                         uint32_t winding = (static_cast<float>(yTopTiles) >= lineTopY) ? W : 0;
                         uint32_t intersectionMask = B | winding;
-                        fTileBuf.push_back(Tile(x, yStart, lineIdx, intersectionMask));
-                        yStart++;
+                        fTileBuf.push_back(Tile(x, yTopTiles, lineIdx, intersectionMask));
                     }
 
                     // Process all "fully crossed" tiles (W | T | B).
+                    uint16_t yStart = isStartCulled ? yTopTiles : (yTopTiles + 1);
                     int32_t yEndIdx = std::min(p1TileY, static_cast<int32_t>(tileRows));
                     for (int32_t yIdx = yStart; yIdx < yEndIdx; ++yIdx) {
                         uint32_t intersectionMask = W | T | B;
@@ -406,21 +450,44 @@ public:
                         lineLeftX, lineRightX,
                         p0TileX, p0TileY,
                         p1TileX, p1TileY,
-                        tileColumns
+                        tileColumns,
+                        windingDir,
+                        clipLeftTile,
+                        clipTopTile,
+                        minTileX
                     };
 
-                    if (lineBottomX > lineTopX) { // cannot be equal at this point
-                        runLoops</*kXDir=*/true>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows);
+                    bool leftCrossing = lineLeftX < clipLeftTile;
+                    bool rightCrossing = lineRightX >= clipRightTile;
+                    bool kXDir = lineBottomX >= lineTopX;
+                    bool crossesEdge = leftCrossing || rightCrossing;
+
+                    if (crossesEdge) {
+                        if (leftCrossing) {
+                            cullingEventOccurred = true;
+                        }
+
+                        if (kXDir)
+                            runLoops<true, true>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
+                        else
+                            runLoops<false, true>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
                     } else {
-                        runLoops</*kXDir=*/false>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows);
+                        if (kXDir)
+                            runLoops<true, false>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
+                        else
+                            runLoops<false, false>(ctx, lineTopY, lineBottomY, yTopTiles, tileRows, histogram);
                     }
                 }
             } else { // Single tile case
-                uint16_t xClamped = std::min(f32ToU16Sat(lineLeftX), tileColumns);
+                uint16_t xClamped = std::min(f32ToU16Sat(lineLeftX),
+                                             static_cast<uint16_t>(tileColumns > 0 ? tileColumns - 1 : 0));
+                xClamped = std::max(minTileX, xClamped);
                 uint32_t winding = static_cast<float>(yTopTiles) >= lineTopY ? W : 0;
                 fTileBuf.push_back(Tile(xClamped, yTopTiles, lineIdx, winding));
             }
         }
+
+        return cullingEventOccurred;
     }
 
 private:
@@ -436,6 +503,10 @@ private:
         int32_t  p0TileX, p0TileY;
         int32_t  p1TileX, p1TileY;
         uint16_t tileColumns;
+        int16_t  windingDir;
+        float    clipLeftTile;
+        float    clipTopTile;
+        uint16_t minTileX;
     };
 
     SkTDArray<Tile> fTileBuf;
@@ -524,25 +595,53 @@ private:
         fTileBuf.push_back(Tile(xIdx, y, ctx.lineIdx, mask));
     }
 
-    template<bool kXDir>
+    template<bool kXDir, bool kCrossesEdge>
     SK_ALWAYS_INLINE void processRow(const LineContext& ctx,
                                      uint16_t yIdx,
                                      float rowTopX,
                                      float rowBottomX,
                                      uint32_t wMask,
                                      bool checkStart,
-                                     bool checkEnd) {
-        float lx = std::fmin(rowTopX, rowBottomX);
-        float rx = std::fmax(rowTopX, rowBottomX);
+                                     bool checkEnd,
+                                     WindingHistogram& histogram) {
+        float lx, rx;
+        uint16_t xEndVal;
+
+        if constexpr (kCrossesEdge) {
+            // When the line crosses the clip's left boundary, the portion of the segment left of
+            // the boundary contributes winding but no visible tiles. If the entire segment is left
+            // of clip, early-out. Otherwise, clear the winding flag from interior tiles so winding
+            // is not double-counted.
+            if (rowTopX < ctx.clipLeftTile) {
+                if (wMask & W) {
+                    histogram.addWinding(yIdx, ctx.windingDir);
+                }
+
+                if (rowBottomX < ctx.clipLeftTile) {
+                    return;
+                } else {
+                    wMask &= ~W;
+                }
+            }
+
+            lx = std::fmax(std::fmin(rowTopX, rowBottomX), ctx.lineLeftX);
+            rx = std::fmin(std::fmax(rowTopX, rowBottomX), ctx.lineRightX);
+
+            xEndVal = std::min(f32ToU16Sat(rx),
+                               static_cast<uint16_t>(ctx.tileColumns > 0 ? ctx.tileColumns - 1 : 0));
+        } else {
+            lx = std::fmin(rowTopX, rowBottomX);
+            rx = std::fmax(rowTopX, rowBottomX);
+            xEndVal = std::min(f32ToU16Sat(rx),
+                               static_cast<uint16_t>(ctx.tileColumns > 0 ? ctx.tileColumns - 1 : 0));
+        }
 
         // Convert floating-point boundaries into discrete integer tile indices. Note:
         // `canonicalXStart` preserves the true start (even if negative) before clamping, which is
         // required by `pushEdge` to tie-break in some cases.
         int32_t canonicalXStart = static_cast<int32_t>(std::floor(lx));
         uint16_t canonicalXEnd = f32ToU16Sat(rx);
-        uint16_t xStart = f32ToU16Sat(lx);
-        // Clamp the end of the row to the right viewport if necessary.
-        uint16_t xEndVal = std::min(canonicalXEnd, ctx.tileColumns);
+        uint16_t xStart = std::max(ctx.minTileX, f32ToU16Sat(lx));
 
         if (xStart <= xEndVal) {
             // Process the Leftmost Tile of the row. If this is the *only* tile in the row,
@@ -575,15 +674,16 @@ private:
         }
     }
 
-    template<bool kXDir>
+    template<bool kXDir, bool kCrossesEdge>
     SK_ALWAYS_INLINE void runLoops(const LineContext& ctx,
                                    float lineTopY,
                                    float lineBottomY,
                                    uint16_t yTopTiles,
-                                   uint16_t tileRows) {
+                                   uint16_t tileRows,
+                                   WindingHistogram& histogram) {
         // Process the Top Row (if visible on screen)
         uint16_t yStart = yTopTiles;
-        bool isStartCulled = (lineTopY < 0.0f);
+        bool isStartCulled = (lineTopY < ctx.clipTopTile);
         if (!isStartCulled) {
             float y = static_cast<float>(yStart);
             float rowBottomY = std::min(y + 1.0f, lineBottomY);
@@ -593,8 +693,8 @@ private:
                                        : ctx.topX + (rowBottomY - ctx.topY) * ctx.xSlope;
             uint32_t mask = y >= lineTopY ? W : 0;
             // The top row might ALSO be the bottom row, so checkEnd = true
-            processRow<kXDir>(ctx, yStart, ctx.topX, rowBottomX, mask,
-                              /*checkStart=*/true, /*checkEnd=*/true);
+            processRow<kXDir, kCrossesEdge>(ctx, yStart, ctx.topX, rowBottomX, mask,
+                                            /*checkStart=*/true, /*checkEnd=*/true, histogram);
             yStart++;
         }
 
@@ -606,8 +706,8 @@ private:
             // independently allows the entire loop to auto-vectorize, and is well worth it.
             float rowTopX = ctx.topX + (y - ctx.topY) * ctx.xSlope;
             float rowBottomX = ctx.topX + (y + 1.0f - ctx.topY) * ctx.xSlope;
-            processRow<kXDir>(ctx, yIdx, rowTopX, rowBottomX, 0xffffffff,
-                              /*checkStart=*/false, /*checkEnd=*/false);
+            processRow<kXDir, kCrossesEdge>(ctx, yIdx, rowTopX, rowBottomX, 0xffffffff,
+                                            /*checkStart=*/false, /*checkEnd=*/false, histogram);
         }
 
         // Process the Terminal Row, if it exists. I.e. if it's on-screen AND wasn't already
@@ -618,8 +718,8 @@ private:
             // have been processed as a starting row.
             float rowTopX = ctx.topX + (y - ctx.topY) * ctx.xSlope;
             // No need to check start (we are past it), but must check end.
-            processRow<kXDir>(ctx, ctx.p1TileY, rowTopX, ctx.bottomX, 0xffffffff,
-                              /*checkStart=*/false, /*checkEnd=*/true);
+            processRow<kXDir, kCrossesEdge>(ctx, ctx.p1TileY, rowTopX, ctx.bottomX, 0xffffffff,
+                                            /*checkStart=*/false, /*checkEnd=*/true, histogram);
         }
     }
 };
