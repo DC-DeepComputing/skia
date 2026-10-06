@@ -33,6 +33,24 @@
       "message": "Seems fine to me. I triggered the new job to see it work end-to-end before landing.",
       "revId": "819b1bd5eb02ce12b2f657a8cee9f0194856f434",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbdcc37d_b92d1892",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-06T19:48:13Z",
+      "side": 1,
+      "message": "Thanks! Looks to be passing.",
+      "parentUuid": "1dfba886_7f5b1e81",
+      "revId": "819b1bd5eb02ce12b2f657a8cee9f0194856f434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
