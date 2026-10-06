@@ -89,29 +89,54 @@ static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveT
 
 }  // namespace
 
-// NOTE: The stroke geometry can self intersect, and when it is performing shading, this is not
-// desired. However, when it is an inverse fill, any self intersections are gracefully handled by
-// the stencil buffer and shading is a follow-up cover step so they can be allowed.
 TessellateStrokesRenderStep::TessellateStrokesRenderStep(Layout layout,
+                                                         RenderStepID renderStepId,
+                                                         SkEnumBitMask<Flags> xtraFlags,
                                                          bool infinitySupport,
-                                                         bool inverseFill)
+                                                         StencilSettings stencilSettings)
         : RenderStep(layout,
-                     inverseFill ? RenderStepID::kTessellateStrokes_InverseFill
-                                 : RenderStepID::kTessellateStrokes_Fill,
-                     (inverseFill ? Flags::kAllowsSelfIntersection : Flags::kPerformsShading)
-                            | Flags::kRequiresMSAA
-                            | Flags::kAppendDynamicInstances,
+                     renderStepId,
+                     Flags::kRequiresMSAA | Flags::kAppendDynamicInstances | xtraFlags,
                      /*uniforms=*/{{"affineMatrix", SkSLType::kFloat4},
                                    {"translate", SkSLType::kFloat2},
                                    {"maxScale", SkSLType::kFloat}},
                      PrimitiveType::kTriangleStrip,
+<<<<<<< PATCH SET (ee805eb0c2349bc9c7066cb96fae5946cc37f90e [graphite] Handle stroke-and-fill by composing RenderSteps i)
+                     stencilSettings,
+                     /*staticAttrs=*/ {},
+                     /*appendAttrs=*/kAttributes[infinitySupport],
+||||||| BASE      (dc322655d4673532f37cc964157ce43b7f61463e [graphite] Use winding instead of even/odd for non-path fill)
+                     inverseFill ? kIncrementStencilPass : StencilSettings(),
+                     /*staticAttrs=*/ {},
+                     /*appendAttrs=*/kAttributes[infinitySupport],
+=======
                      inverseFill ? kIncrementStencilPass : StencilSettings(),
                      /*staticAttrs=*/{},
                      /*appendAttrs=*/SK_UNSAFE_TODO(kAttributes[infinitySupport]),
+>>>>>>> BASE      (e81c7dfaacc5a2cd90bce43153867021c17f0e03 [graphite] Use winding instead of even/odd for non-path fill)
                      /*storageUniforms=*/{})
         , fInfinitySupport(infinitySupport) {}
 
 TessellateStrokesRenderStep::~TessellateStrokesRenderStep() {}
+
+std::unique_ptr<TessellateStrokesRenderStep> TessellateStrokesRenderStep::Regular(
+        Layout layout, bool infinitySupport) {
+    // NOTE: The stroke geometry can self intersect and this step performs shading, so do not
+    // include `kAllowsSelfIntersection` or `kNoSelfIntersection`. This allows the depth test to
+    // eliminate double blending when a transparent stroke crosses over itself.
+    return std::unique_ptr<TessellateStrokesRenderStep>(new TessellateStrokesRenderStep(
+            layout, RenderStepID::kTessellateStrokes_Fill, Flags::kPerformsShading,
+            infinitySupport, /*stencilSettings=*/{}));
+}
+
+std::unique_ptr<TessellateStrokesRenderStep> TessellateStrokesRenderStep::StencilOnly(
+        Layout layout, bool infinitySupport) {
+    // Unlike `Regular()`, this variant can allow self intersections because overlap is gracefully
+    // handled by the stencil buffer updates and then any follow-up cover step will shade once.
+    return std::unique_ptr<TessellateStrokesRenderStep>(new TessellateStrokesRenderStep(
+            layout, RenderStepID::kTessellateStrokes_Stencil, Flags::kAllowsSelfIntersection,
+            infinitySupport, kIncrementStencilPass));
+}
 
 std::string TessellateStrokesRenderStep::vertexSkSL(const RootNodesInfo&) const {
     // TODO: Assumes vertex ID support for now, max edges must equal
