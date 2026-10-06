@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28e136ed_8d9e9efc",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-06T22:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "595ac0e8_3c79e477",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 44
+      },
+      "revId": "2918b16e0bb4a5028d230d86ef5ee74855dac45f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e48774e_232fa925",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28dbc24b_fd6d5b4d",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-06T22:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e48774e_232fa925",
+      "range": {
+        "startLine": 156,
+        "startChar": 1,
+        "endLine": 196,
+        "endChar": 13
+      },
+      "revId": "2918b16e0bb4a5028d230d86ef5ee74855dac45f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6137d883_a3a6257b",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-10-02T18:14:32Z",
       "side": 1,
       "message": "excessive clang-format blast radius, can you restore?",
+      "range": {
+        "startLine": 221,
+        "startChar": 17,
+        "endLine": 222,
+        "endChar": 44
+      },
+      "revId": "2918b16e0bb4a5028d230d86ef5ee74855dac45f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cade535_a21ca3cd",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-06T22:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6137d883_a3a6257b",
       "range": {
         "startLine": 221,
         "startChar": 17,
@@ -130,6 +202,30 @@
       "writtenOn": "2026-10-02T18:14:32Z",
       "side": 1,
       "message": "Unnecessary after folding SK_UNSAFE_TODO into SkDebugf.",
+      "range": {
+        "startLine": 512,
+        "startChar": 23,
+        "endLine": 512,
+        "endChar": 75
+      },
+      "revId": "2918b16e0bb4a5028d230d86ef5ee74855dac45f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5341e23_3195f681",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-06T22:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe48b60e_c474f9ce",
       "range": {
         "startLine": 512,
         "startChar": 23,
