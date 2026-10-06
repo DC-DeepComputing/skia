@@ -33,6 +33,24 @@
       "message": "Probably not blocking but this is what gemini was saying:\n\n`Pipeline Cache Miss Risk: At runtime, DrawPass still sets DepthStencilFlags::kDepth because fDepthStencilFlags uses step-\u003eusesDepth() (which is still true for all these steps). Therefore, at runtime, draws are recorded with depth attachments. Precompiling them without depth for non-depth render passes compiles pipelines that will never match runtime draws, leading to runtime compilation jank and cache misses.`",
       "revId": "e2c0bb6af95fdf80c99d27d8241862f7f7fb4b18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d1854e_a9555a33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-06T18:43:32Z",
+      "side": 1,
+      "message": "This will get mitigated as the depth tracking system lands.",
+      "parentUuid": "f9c381ec_7a6a79c7",
+      "revId": "e2c0bb6af95fdf80c99d27d8241862f7f7fb4b18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
