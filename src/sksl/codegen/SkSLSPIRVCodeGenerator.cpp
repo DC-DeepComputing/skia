@@ -31,6 +31,7 @@
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/analysis/SkSLSpecialization.h"
 #include "src/sksl/codegen/SkSLCodeGenTypes.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
@@ -5705,6 +5706,14 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, SPIRVBlob& ou
     for (const ProgramElement* e : program.elements()) {
         if (e->is<GlobalVarDeclaration>()) {
             const VarDeclaration& decl = e->as<GlobalVarDeclaration>().varDeclaration();
+            const Variable& var = *decl.var();
+            if ((var.modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut)) &&
+                var.layout().fBuiltin < 0) {
+                ProgramUsage::VariableCounts counts = program.usage()->get(var);
+                if (counts.fRead == 0 && counts.fWrite == 0) {
+                    continue;
+                }
+            }
             if (!this->writeGlobalVarDeclaration(program.fConfig->fKind, decl)) {
                 return;
             }
