@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "005d3a0d_f7b449fd",
+        "filename": "src/core/SkExecutorFactories.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-06T17:16:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afd38a6e_fd8951ba",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 90
+      },
+      "revId": "881747d766eb37165e4f25dce70d74d64a3c7624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d12a29a1_d054f614",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-06T15:02:23Z",
       "side": 1,
       "message": "The naming convention we\u0027ve used in the past for other factory collections would be `SkExecutors`. I think we can also make this a namespace and move the `gDefaultExecutor` into a CPP file.",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 25
+      },
+      "revId": "881747d766eb37165e4f25dce70d74d64a3c7624",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52728e8f_a119525f",
+        "filename": "src/core/SkExecutorFactories.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-06T17:16:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d12a29a1_d054f614",
       "range": {
         "startLine": 16,
         "startChar": 6,
