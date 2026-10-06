@@ -60096,6 +60096,8 @@
       "command": [
         "./run_wasm_dm",
         "--local=false",
+        "--chrome_cache",
+        "cache/work",
         "--work_path",
         "tmp",
         "--project_id",
