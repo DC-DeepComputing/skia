@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "108fc98b_0fc7e54b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-06T12:29:15Z",
+      "side": 1,
+      "message": "It does appear that this CL, somehow, was causing the ASAN issues for the following jobs:\n\nTest-Win11-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN\nTest-Win11-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN_BonusConfigs",
+      "revId": "b6ee6229c5f8a047efef786efce44995561a27ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
