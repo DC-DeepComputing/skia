@@ -392,8 +392,22 @@ void VulkanCommandBuffer::addSignalSemaphores(size_t numSignalSemaphores,
 
 void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                                        const MutableTextureState* newState) {
+    if (!targetSurface) {
+        return;
+    }
     TextureProxy* textureProxy = static_cast<Surface*>(targetSurface)->target().proxy();
-    VulkanTexture* texture = static_cast<VulkanTexture*>(textureProxy->texture());
+    if (!textureProxy) {
+        return;
+    }
+    this->prepareTextureForStateUpdate(textureProxy->texture(), newState);
+}
+
+void VulkanCommandBuffer::prepareTextureForStateUpdate(Texture* tex,
+                                                       const MutableTextureState* newState) {
+    if (!tex || !newState) {
+        return;
+    }
+    VulkanTexture* texture = static_cast<VulkanTexture*>(tex);
 
     // Even though internally we use this helper for getting src access flags and stages they
     // can also be used for general dst flags since we don't know exactly what the client
@@ -426,6 +440,8 @@ void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                          dstAccess,
                                          dstStage,
                                          newQueueFamilyIndex);
+
+    SkDEBUGCODE(fHasWork = true;)
 }
 
 // Requests a sampler. Dynamic samplers live in the global cache, requiring no tracking, but

@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/task/TaskList.h"
@@ -289,6 +290,22 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
     }
     fCurrentCommandBuffer->addBuffersToAsyncMapOnSubmit(buffersToAsyncMap);
 
+    return true;
+}
+
+bool QueueManager::prepareTextureForStateUpdate(Texture* texture,
+                                               const skgpu::MutableTextureState* newState,
+                                               ResourceProvider* resourceProvider) {
+    if (!texture || !newState) {
+        return false;
+    }
+
+    if (!this->setupCommandBuffer(resourceProvider, texture->isProtected())) {
+        SKIA_LOG_E("CommandBuffer creation failed");
+        return false;
+    }
+
+    fCurrentCommandBuffer->prepareTextureForStateUpdate(texture, newState);
     return true;
 }
 

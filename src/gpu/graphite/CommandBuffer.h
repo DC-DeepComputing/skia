@@ -81,6 +81,8 @@ public:
                                      const BackendSemaphore* signalSemaphores) {}
     virtual void prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                               const MutableTextureState* newState) {}
+    virtual void prepareTextureForStateUpdate(Texture* texture,
+                                              const MutableTextureState* newState) {}
 
     void addBuffersToAsyncMapOnSubmit(SkSpan<const sk_sp<Buffer>>);
     SkSpan<const sk_sp<Buffer>> buffersToAsyncMapOnSubmit() const;

@@ -26,6 +26,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/MutableTextureState.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -71,6 +72,7 @@
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureFormatXferFn.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -1046,6 +1048,27 @@ sk_sp<SkCapture> Context::endCapture() {
         return fSharedContext->captureManager()->getLastCapture();
     }
     return nullptr;
+}
+
+void Context::setMutableState(const BackendTexture& tex, const skgpu::MutableTextureState& state) {
+    ASSERT_SINGLE_OWNER
+
+    if (!tex.isValid() || tex.backend() != this->backend()) {
+        SKIA_LOG_E("Context::setMutableState: Invalid or mismatched BackendTexture");
+        return;
+    }
+    if (!state.isValid() || state.backend() != this->backend()) {
+        SKIA_LOG_E("Context::setMutableState: Invalid or mismatched MutableTextureState");
+        return;
+    }
+
+    sk_sp<Texture> texture = fResourceProvider->createWrappedTexture(tex, "Context::setMutableState");
+    if (!texture) {
+        SKIA_LOG_E("Context::setMutableState: Failed to wrap BackendTexture");
+        return;
+    }
+
+    fQueueManager->prepareTextureForStateUpdate(texture.get(), &state, fResourceProvider.get());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
