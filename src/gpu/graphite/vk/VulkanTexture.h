@@ -24,11 +24,11 @@ namespace skgpu::graphite {
 
 class Sampler;
 class VulkanCaps;
-class VulkanSharedContext;
 class VulkanCommandBuffer;
 class VulkanDescriptorSet;
 class VulkanFramebuffer;
 class VulkanResourceProvider;
+class VulkanSharedContext;
 struct RenderPassDesc;
 
 class VulkanTexture : public Texture {
@@ -79,6 +79,17 @@ public:
                                      VkAccessFlags dstAccessMask,
                                      VkPipelineStageFlags dstStageMask,
                                      uint32_t newQueueFamilyIndex) const;
+
+    static void SetImageLayoutAndQueueIndex(VulkanCommandBuffer*,
+                                            const VulkanSharedContext*,
+                                            VkImage,
+                                            SkISize dimensions,
+                                            const TextureInfo&,
+                                            MutableTextureState*,
+                                            VkImageLayout newLayout,
+                                            VkAccessFlags dstAccessMask,
+                                            VkPipelineStageFlags dstStageMask,
+                                            uint32_t newQueueFamilyIndex);
 
     // This simply updates our internal tracking of the image layout and does not actually perform
     // any gpu work.

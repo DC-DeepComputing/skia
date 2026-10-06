@@ -33,6 +33,7 @@ class RefCntedCallback;
 namespace skgpu::graphite {
 
 class BackendSemaphore;
+class BackendTexture;
 class Buffer;
 class DispatchGroup;
 class DrawPass;
@@ -80,6 +81,8 @@ public:
     virtual void addSignalSemaphores(size_t numWaitSemaphores,
                                      const BackendSemaphore* signalSemaphores) {}
     virtual void prepareSurfaceForStateUpdate(SkSurface* targetSurface,
+                                              const MutableTextureState* newState) {}
+    virtual void prepareTextureForStateUpdate(const BackendTexture& texture,
                                               const MutableTextureState* newState) {}
 
     void addBuffersToAsyncMapOnSubmit(SkSpan<const sk_sp<Buffer>>);

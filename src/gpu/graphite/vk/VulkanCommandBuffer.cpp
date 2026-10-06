@@ -392,22 +392,58 @@ void VulkanCommandBuffer::addSignalSemaphores(size_t numSignalSemaphores,
 
 void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                                        const MutableTextureState* newState) {
+    if (!targetSurface) {
+        return;
+    }
     TextureProxy* textureProxy = static_cast<Surface*>(targetSurface)->target().proxy();
+    if (!textureProxy || !textureProxy->texture()) {
+        return;
+    }
     VulkanTexture* texture = static_cast<VulkanTexture*>(textureProxy->texture());
+    this->trackResource(sk_ref_sp(texture));
+    this->prepareTextureForStateUpdate(texture->vkImage(),
+                                       texture->dimensions(),
+                                       texture->textureInfo(),
+                                       texture->mutableState(),
+                                       newState);
+}
+
+void VulkanCommandBuffer::prepareTextureForStateUpdate(const BackendTexture& texture,
+                                                       const MutableTextureState* newState) {
+    if (!texture.isValid() || texture.backend() != BackendApi::kVulkan) {
+        return;
+    }
+    this->prepareTextureForStateUpdate(BackendTextures::GetVkImage(texture),
+                                       texture.dimensions(),
+                                       texture.info(),
+                                       BackendTextures::GetMutableState(texture).get(),
+                                       newState);
+}
+
+void VulkanCommandBuffer::prepareTextureForStateUpdate(VkImage image,
+                                                       SkISize dimensions,
+                                                       const TextureInfo& info,
+                                                       MutableTextureState* currentState,
+                                                       const MutableTextureState* newState) {
+    if (image == VK_NULL_HANDLE || !currentState || !newState) {
+        return;
+    }
 
     // Even though internally we use this helper for getting src access flags and stages they
     // can also be used for general dst flags since we don't know exactly what the client
     // plans on using the image for.
     VkImageLayout newLayout = skgpu::MutableTextureStates::GetVkImageLayout(newState);
     if (newLayout == VK_IMAGE_LAYOUT_UNDEFINED) {
-        newLayout = texture->currentLayout();
+        newLayout = skgpu::MutableTextureStates::GetVkImageLayout(currentState);
     }
+    const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(info);
     VkPipelineStageFlags dstStage =
             VulkanTexture::LayoutToPipelineSrcStageFlags(newLayout, fSharedContext->vulkanCaps());
-    VkAccessFlags dstAccess = VulkanTexture::LayoutToSrcAccessMask(
-            newLayout, texture->vulkanTextureInfo().fImageUsageFlags);
+    VkAccessFlags dstAccess =
+            VulkanTexture::LayoutToSrcAccessMask(newLayout, vkInfo.fImageUsageFlags);
 
-    uint32_t currentQueueFamilyIndex = texture->currentQueueFamilyIndex();
+    uint32_t currentQueueFamilyIndex =
+            skgpu::MutableTextureStates::GetVkQueueFamilyIndex(currentState);
     uint32_t newQueueFamilyIndex = skgpu::MutableTextureStates::GetVkQueueFamilyIndex(newState);
     auto isSpecialQueue = [](uint32_t queueFamilyIndex) {
         return queueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
@@ -419,13 +455,18 @@ void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
         return;
     }
 
-    this->trackResource(sk_ref_sp(texture));
+    VulkanTexture::SetImageLayoutAndQueueIndex(this,
+                                               fSharedContext,
+                                               image,
+                                               dimensions,
+                                               info,
+                                               currentState,
+                                               newLayout,
+                                               dstAccess,
+                                               dstStage,
+                                               newQueueFamilyIndex);
 
-    texture->setImageLayoutAndQueueIndex(this,
-                                         newLayout,
-                                         dstAccess,
-                                         dstStage,
-                                         newQueueFamilyIndex);
+    SkDEBUGCODE(fHasWork = true;)
 }
 
 // Requests a sampler. Dynamic samplers live in the global cache, requiring no tracking, but
@@ -2191,7 +2232,6 @@ void VulkanCommandBuffer::addImageMemoryBarrier(const Resource* resource,
                                                 VkPipelineStageFlags dstStageMask,
                                                 bool byRegion,
                                                 VkImageMemoryBarrier* barrier) {
-    SkASSERT(resource);
     this->pipelineBarrier(resource,
                           srcStageMask,
                           dstStageMask,
