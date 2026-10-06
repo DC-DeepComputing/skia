@@ -46,6 +46,30 @@
       },
       "revId": "a05e6ee827f62b4f7db32271e4bd6dd39d5c1531",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af17bf1a_5738336e",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-06T13:05:14Z",
+      "side": 1,
+      "message": "I think there is two different questions here. My first question was about who owns the objects as in the client vs Skia. By just passing in raw pointers that suggests the client and skia just has a temporary pointer to the object. I suspect this is not what we want and Skia itself should own them. So I think in that case it is reasonable for them to be passed in as unique_ptr.\n\nThe second questions of ownership, which you touch on, is where inside Skia do they live. First, I don\u0027t think we want these owned by multiple SkContexts. The point of moving to an SkContext model is that they are independent of each other. Additionally I think a client would be using us wrong if they actually did try to have multiple SkContexts.\n\nWe do not need to make SkContextOptions copyable. In fact I don\u0027t think SkContextOptions is even a thing we keep around after the factories/ctor. It is just a struct used to conveniently pass us information. Everything should be consumed and objects needed moved off it onto the SkSharedContext. So for example I would expect SkSharedContext to possibly own unique_ptrs to the objects that must be kept alive by Skia.",
+      "parentUuid": "080f5127_681f12ae",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "a05e6ee827f62b4f7db32271e4bd6dd39d5c1531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
