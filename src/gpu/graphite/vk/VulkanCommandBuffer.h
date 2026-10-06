@@ -44,15 +44,10 @@ public:
 
     void waitUntilFinished();
 
-    void addBufferMemoryBarrier(const Resource* resource,
-                                VkPipelineStageFlags srcStageMask,
-                                VkPipelineStageFlags dstStageMask,
-                                VkBufferMemoryBarrier* barrier);
     void addBufferMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                 VkPipelineStageFlags dstStageMask,
                                 VkBufferMemoryBarrier* barrier);
-    void addImageMemoryBarrier(const Resource*,
-                               VkPipelineStageFlags srcStageMask,
+    void addImageMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                VkPipelineStageFlags dstStageMask,
                                bool byRegion,
                                VkImageMemoryBarrier* barrier);
@@ -77,6 +72,10 @@ private:
                              const BackendSemaphore* signalSemaphores) override;
     void prepareSurfaceForStateUpdate(SkSurface* targetSurface,
                                       const MutableTextureState* newState) override;
+    void prepareTextureForStateUpdate(Texture* texture,
+                                      const MutableTextureState* newState) override;
+    void prepareBackendTextureForStateUpdate(const BackendTexture& texture,
+                                             const MutableTextureState* newState) override;
 
     const Sampler* getSampler(const DrawPassCommands::BindTexturesAndSamplers* command,
                               int32_t index);
