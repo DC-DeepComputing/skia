@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1feff0a6_c043d83d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-06T17:28:39Z",
+      "side": 1,
+      "message": "ptal -- just small fixes for scary inputs (which we\u0027ll likely also filter out in IPC, too)",
+      "revId": "4fd2252856662aeccd672d55b9298963bcb4db76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
