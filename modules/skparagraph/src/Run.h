@@ -222,6 +222,17 @@ private:
 
 template<typename Visitor>
 void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
+    // Emit a single 0-width cluster when HarfBuzz hides all default-ignorables in the run
+    if (this->size() == 0) {
+        SkASSERT(!fTextRange.empty());
+        visitor(0,
+                0,
+                fTextRange.start,
+                fTextRange.end,
+                0.0f,
+                this->calculateHeight(LineMetricStyle::CSS, LineMetricStyle::CSS));
+        return;
+    }
     // Can't figure out how to do it with one code for both cases without 100 ifs
     // Can't go through clusters because there are no cluster table yet
     if (leftToRight()) {
