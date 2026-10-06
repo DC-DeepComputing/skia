@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a408f66b_e67dc617",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-06T13:37:19Z",
+      "side": 1,
+      "message": "Should be good now, I ended up relaxing the assert that RenderSteps not requiring depth had to be LEQUAL so that the stencil steps could remain on LESS for now. This was the reason for the gold diffs on the inverse-stroke-and-fill GMs, because the multi recordDraws() with the same depth was expecting the LESS op to reject where the fill overlapped the draw.\n\nIn follow-up CLs I rework the stroke-and-fill rendering logic to be a contained Renderer instead of relying on multiple recorded draws sharing a depth value. This makes it possible to then to be more exacting on which depth test to use.",
+      "revId": "e2c0bb6af95fdf80c99d27d8241862f7f7fb4b18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
