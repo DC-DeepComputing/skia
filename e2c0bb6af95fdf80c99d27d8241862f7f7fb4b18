@@ -16,6 +16,23 @@
       "message": "Should be good now, I ended up relaxing the assert that RenderSteps not requiring depth had to be LEQUAL so that the stencil steps could remain on LESS for now. This was the reason for the gold diffs on the inverse-stroke-and-fill GMs, because the multi recordDraws() with the same depth was expecting the LESS op to reject where the fill overlapped the draw.\n\nIn follow-up CLs I rework the stroke-and-fill rendering logic to be a contained Renderer instead of relying on multiple recorded draws sharing a depth value. This makes it possible to then to be more exacting on which depth test to use.",
       "revId": "e2c0bb6af95fdf80c99d27d8241862f7f7fb4b18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9c381ec_7a6a79c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-06T14:57:03Z",
+      "side": 1,
+      "message": "Probably not blocking but this is what gemini was saying:\n\n`Pipeline Cache Miss Risk: At runtime, DrawPass still sets DepthStencilFlags::kDepth because fDepthStencilFlags uses step-\u003eusesDepth() (which is still true for all these steps). Therefore, at runtime, draws are recorded with depth attachments. Precompiling them without depth for non-depth render passes compiles pipelines that will never match runtime draws, leading to runtime compilation jank and cache misses.`",
+      "revId": "e2c0bb6af95fdf80c99d27d8241862f7f7fb4b18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
