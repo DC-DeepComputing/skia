@@ -1,0 +1,24 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/effects/.*"
+    rules: "agents/knowledge_base/rules/core/pass-dither-to-shader-filter-not-restore-paint.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/prefer-skspanpriv-helpers.md"
+    rules: "agents/knowledge_base/rules/core/scan-ahead-with-copied-path-iterator.md"
+    rules: "agents/knowledge_base/rules/core/share-path-traversal-via-skpathiter.md"
+    rules: "agents/knowledge_base/rules/core/use-layer-paint-in-about-to-draw-scope.md"
+  }
+  capability_groups {
+    path_expression: "include/core/.*"
+    path_expression: "include/private/.*"
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/return-complete-shape-info-for-path-queries.md"
+  }
+}
