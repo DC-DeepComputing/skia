@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea2e44b4_6074be46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T21:43:29Z",
+      "side": 1,
+      "message": "Florin, this is Jetski suggestion about this bug in empty run we discussed. There is a test that demonstrates that. Do whatever you want with it - it\u0027s probably not going to happen on Skottie (but in theory it can).",
+      "revId": "335b97aa7f40f22d2fd8f57601302363758051b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
