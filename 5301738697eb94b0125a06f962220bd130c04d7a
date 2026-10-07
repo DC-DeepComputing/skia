@@ -22,6 +22,30 @@
       },
       "revId": "5301738697eb94b0125a06f962220bd130c04d7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f65951f_c23a2874",
+        "filename": "src/cpu/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-07T18:29:27Z",
+      "side": 1,
+      "message": "Verified locally with `bazel build //tools:full_build`\n\nhttps://paste.googleplex.com/4900750359134208\n\nThe code compiles because `//src/cpu:cpu_hdrs` is a `skia_filegroup` that gets bundled into `//src/core:core_priv_hdrs` (the same pattern as `//src/capture:capture_hdrs`). \n\n```\nskia_filegroup(\n    name \u003d \"capture_hdrs\",\n    srcs \u003d [\n        \"SkCapture.h\",\n        \"SkCaptureCanvas.h\",\n        \"SkCaptureManager.h\",\n    ],\n    visibility \u003d [\"//src/core:__pkg__\"],\n)\n```\nInternal modules like `//src/pdf` and `//src/svg` depend on `//src/core:core_priv`, which exports `core_priv_hdrs` to internal Skia targets while keeping it in srcs for external consumers of //:core.",
+      "parentUuid": "d84974c5_c62dd036",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "5301738697eb94b0125a06f962220bd130c04d7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
