@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93ce54cb_2cb218e8",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:58:26Z",
+      "side": 1,
+      "message": "Done; keeping for safety?",
+      "parentUuid": "92d1bcae_14e61151",
+      "range": {
+        "startLine": 206,
+        "startChar": 20,
+        "endLine": 206,
+        "endChar": 35
+      },
+      "revId": "ce052125495fbb92967d7c6d29eb0f83db9ba20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04d3c3a8_13226117",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eefcd404_996eae19",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:58:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d3c3a8_13226117",
+      "range": {
+        "startLine": 300,
+        "startChar": 11,
+        "endLine": 300,
+        "endChar": 13
+      },
+      "revId": "ce052125495fbb92967d7c6d29eb0f83db9ba20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "307c80f7_221b233a",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-10-07T15:36:06Z",
       "side": 1,
       "message": "Can we add a function to SkSLLayout like `isBuiltin()` or could check to see if the the layout flags contains kBuiltin, just so it\u0027s more clear what this check is.",
+      "range": {
+        "startLine": 5727,
+        "startChar": 16,
+        "endLine": 5727,
+        "endChar": 41
+      },
+      "revId": "ce052125495fbb92967d7c6d29eb0f83db9ba20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54930e75_1bea1ee0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 5727,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:58:26Z",
+      "side": 1,
+      "message": "Done; there was an existing helper!",
+      "parentUuid": "307c80f7_221b233a",
       "range": {
         "startLine": 5727,
         "startChar": 16,
