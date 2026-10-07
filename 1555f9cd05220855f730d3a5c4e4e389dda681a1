@@ -16,6 +16,23 @@
       "message": "(moving from ag/42654844)",
       "revId": "1555f9cd05220855f730d3a5c4e4e389dda681a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64988f1f_9ec734cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T14:46:33Z",
+      "side": 1,
+      "message": "I\u0027m fine with this as it brings it to parity with AHardwareBufferGL.cpp, although this is specific to using Ganesh-Vk.",
+      "revId": "1555f9cd05220855f730d3a5c4e4e389dda681a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
