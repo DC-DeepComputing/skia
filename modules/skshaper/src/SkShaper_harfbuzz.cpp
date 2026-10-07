@@ -300,7 +300,6 @@ HBFace create_hb_face(const SkTypeface& typeface) {
     if (!face) {
         return nullptr;
     }
-    hb_face_set_upem(face.get(), typeface.getUnitsPerEm());
 
     SkDEBUGCODE(
         hb_face_set_user_data(face.get(), &gDataIdKey, const_cast<SkTypeface*>(&typeface),
