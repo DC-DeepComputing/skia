@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79193e3c_3cc56ffe",
+        "filename": "bench/graphite/sparse_strips/CoverageBench.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:45:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c9a790e_4f4e581e",
+      "revId": "050707746a80a6f5b1bd3ebd7bd3d6d18917a6c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02d32e34_fb1d438f",
@@ -52,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4f4368d_0dfa3efa",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:45:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02d32e34_fb1d438f",
+      "revId": "050707746a80a6f5b1bd3ebd7bd3d6d18917a6c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d4f108d_6985c9ae",
@@ -65,6 +101,24 @@
       "writtenOn": "2026-10-07T14:51:48Z",
       "side": 1,
       "message": "Can this be const ?",
+      "revId": "050707746a80a6f5b1bd3ebd7bd3d6d18917a6c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0cf0d8f_82a58cc2",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:45:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d4f108d_6985c9ae",
       "revId": "050707746a80a6f5b1bd3ebd7bd3d6d18917a6c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -92,6 +146,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8ace10e_7eea2437",
+        "filename": "src/gpu/graphite/sparse_strips/MSAA_LUT.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:45:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "566c7aab_2e595d8e",
+      "range": {
+        "startLine": 124,
+        "startChar": 46,
+        "endLine": 124,
+        "endChar": 54
+      },
+      "revId": "050707746a80a6f5b1bd3ebd7bd3d6d18917a6c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d3f9092_86e5cef8",
@@ -105,6 +183,24 @@
       "writtenOn": "2026-10-07T14:51:48Z",
       "side": 1,
       "message": "overlength",
+      "revId": "050707746a80a6f5b1bd3ebd7bd3d6d18917a6c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af66264_9c49cfbf",
+        "filename": "tests/graphite/sparse_strips/LUTTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-07T15:45:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d3f9092_86e5cef8",
       "revId": "050707746a80a6f5b1bd3ebd7bd3d6d18917a6c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
