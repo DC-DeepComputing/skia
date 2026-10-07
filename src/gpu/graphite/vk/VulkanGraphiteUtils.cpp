@@ -17,9 +17,11 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/vk/VulkanQueueManager.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
+#include "src/gpu/graphite/vk/VulkanTexture.h"
 #include "src/sksl/SkSLProgramSettings.h"
 
 namespace SkContexts {
@@ -78,6 +80,86 @@ VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext* context,
         return VK_NULL_HANDLE;
     }
     return shaderModule;
+}
+
+std::optional<VkImageMemoryBarrier> CreateVulkanImageMemoryBarrier(
+        const VulkanSharedContext& sharedContext,
+        VkImage image,
+        const TextureInfo& textureInfo,
+        uint32_t numMipLevels,
+        VkImageLayout currentLayout,
+        uint32_t currentQueueIndex,
+        VkImageLayout newLayout,
+        VkAccessFlags dstAccessMask,
+        uint32_t newQueueFamilyIndex) {
+    SkASSERT(newLayout == currentLayout ||
+             (VK_IMAGE_LAYOUT_UNDEFINED != newLayout &&
+              VK_IMAGE_LAYOUT_PREINITIALIZED != newLayout));
+
+    const auto& vulkanTextureInfo = TextureInfoPriv::Get<VulkanTextureInfo>(textureInfo);
+
+#ifdef SK_DEBUG
+    if (vulkanTextureInfo.fSharingMode == VK_SHARING_MODE_CONCURRENT) {
+        if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
+            SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
+                     currentQueueIndex == VK_QUEUE_FAMILY_EXTERNAL ||
+                     currentQueueIndex == VK_QUEUE_FAMILY_FOREIGN_EXT);
+        } else {
+            SkASSERT(newQueueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
+                     newQueueFamilyIndex == VK_QUEUE_FAMILY_FOREIGN_EXT);
+            SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED);
+        }
+    } else {
+        SkASSERT(vulkanTextureInfo.fSharingMode == VK_SHARING_MODE_EXCLUSIVE);
+        if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED ||
+            currentQueueIndex == sharedContext.queueIndex()) {
+            SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
+                     currentQueueIndex == VK_QUEUE_FAMILY_EXTERNAL ||
+                     currentQueueIndex == VK_QUEUE_FAMILY_FOREIGN_EXT ||
+                     currentQueueIndex == sharedContext.queueIndex());
+        } else if (newQueueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
+                   newQueueFamilyIndex == VK_QUEUE_FAMILY_FOREIGN_EXT) {
+            SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
+                     currentQueueIndex == sharedContext.queueIndex());
+        }
+    }
+#endif
+
+    if (vulkanTextureInfo.fSharingMode == VK_SHARING_MODE_EXCLUSIVE) {
+        if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
+            newQueueFamilyIndex = sharedContext.queueIndex();
+        }
+        if (currentQueueIndex == VK_QUEUE_FAMILY_IGNORED) {
+            currentQueueIndex = sharedContext.queueIndex();
+        }
+    }
+
+    // If the old and new layout are the same and the layout is a read only layout, there is no need
+    // to put in a barrier unless we also need to switch queues.
+    if (newLayout == currentLayout && currentQueueIndex == newQueueFamilyIndex &&
+        (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL == currentLayout ||
+         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == currentLayout ||
+         VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == currentLayout)) {
+        return std::nullopt;
+    }
+
+    VkAccessFlags srcAccessMask =
+            VulkanTexture::LayoutToSrcAccessMask(currentLayout, vulkanTextureInfo.fImageUsageFlags);
+
+    VkImageAspectFlags aspectFlags
+        = GetVkImageAspectFlags(TextureInfoPriv::ViewFormat(textureInfo));
+    return VkImageMemoryBarrier{
+        VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,          // sType
+        nullptr,                                         // pNext
+        srcAccessMask,                                   // srcAccessMask
+        dstAccessMask,                                   // dstAccessMask
+        currentLayout,                                   // oldLayout
+        newLayout,                                       // newLayout
+        currentQueueIndex,                               // srcQueueFamilyIndex
+        newQueueFamilyIndex,                             // dstQueueFamilyIndex
+        image,                                           // image
+        { aspectFlags, 0, numMipLevels, 0, 1 }           // subresourceRange
+    };
 }
 
 void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,

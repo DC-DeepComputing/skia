@@ -16,6 +16,7 @@
 #include "src/gpu/vk/VulkanInterface.h"
 #include "src/sksl/codegen/SkSLNativeShader.h"
 
+#include <optional>
 #include <string>
 
 class SkStream;
@@ -79,6 +80,17 @@ enum class TextureFormat : uint8_t;
 VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext*,
                                         const SkSL::NativeShader& spirv,
                                         VkShaderStageFlagBits);
+
+std::optional<VkImageMemoryBarrier> CreateVulkanImageMemoryBarrier(
+        const VulkanSharedContext& sharedContext,
+        VkImage image,
+        const TextureInfo& textureInfo,
+        uint32_t numMipLevels,
+        VkImageLayout currentLayout,
+        uint32_t currentQueueIndex,
+        VkImageLayout newLayout,
+        VkAccessFlags dstAccessMask,
+        uint32_t newQueueFamilyIndex);
 
 VkDescriptorType DsTypeEnumToVkDs(DescriptorType);
 void DescriptorDataToVkDescSetLayout(const VulkanSharedContext*,
