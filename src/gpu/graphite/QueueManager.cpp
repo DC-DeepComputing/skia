@@ -203,9 +203,11 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
         std::string failureMsg;
         const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
                 [&failureMsg](const GraphicsPipeline* pipeline) {
-                    if (auto failure = pipeline->didAsyncCompilationFail()) {
-                        failureMsg = *failure;
-                        return false;
+                    if (pipeline) {
+                        if (auto failure = pipeline->didAsyncCompilationFail()) {
+                            failureMsg = *failure;
+                            return false;
+                        }
                     }
                     return true;
                 });
