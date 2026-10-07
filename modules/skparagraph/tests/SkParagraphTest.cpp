@@ -9248,3 +9248,37 @@ DEF_TEST(SkParagraph_InlineCapacityGrowthRelocation, reporter) {
     REPORTER_ASSERT(reporter, impl->styles()[2].fStyle.getShadowNumber() == 1);
 }
 
+DEF_TEST(SkParagraph_ControlClusterResolution, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    struct TestCase {
+        const char* text;
+        bool shouldResolveEntirely;
+    } cases[] = {
+        {"\u200E\u200F", true},
+        {"\r\n", true},
+        {"\u200EA", true},
+        {"fi", true},
+        {"\u200E\u4E2D", false},
+    };
+
+    for (const auto& c : cases) {
+        ParagraphStyle paragraph_style;
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        builder.pushStyle(text_style);
+        builder.addText(c.text, strlen(c.text));
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        if (c.shouldResolveEntirely) {
+            REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+        } else {
+            REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() > 0);
+        }
+    }
+}
+
