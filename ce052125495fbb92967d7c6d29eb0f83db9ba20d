@@ -16,6 +16,75 @@
       "message": "PTAL",
       "revId": "ce052125495fbb92967d7c6d29eb0f83db9ba20d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92d1bcae_14e61151",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T15:36:06Z",
+      "side": 1,
+      "message": "Could we remove the nesting and just do `if (!pipeline) { return false; }`, since we should be returning false anyways. Though I think with your change in RenderPassTask::visitPipelines this check isn\u0027t necessary and can assume pipeline is non-null.",
+      "range": {
+        "startLine": 206,
+        "startChar": 20,
+        "endLine": 206,
+        "endChar": 35
+      },
+      "revId": "ce052125495fbb92967d7c6d29eb0f83db9ba20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04d3c3a8_13226117",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T15:36:06Z",
+      "side": 1,
+      "message": "I think we should have an else branch here that returns false, since the pipeline also isn\u0027t valid if null. Or might be cleaner to take the assignment out of the if and have `if (!pipeline) { return false; }`.",
+      "range": {
+        "startLine": 300,
+        "startChar": 11,
+        "endLine": 300,
+        "endChar": 13
+      },
+      "revId": "ce052125495fbb92967d7c6d29eb0f83db9ba20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "307c80f7_221b233a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 5727,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T15:36:06Z",
+      "side": 1,
+      "message": "Can we add a function to SkSLLayout like `isBuiltin()` or could check to see if the the layout flags contains kBuiltin, just so it\u0027s more clear what this check is.",
+      "range": {
+        "startLine": 5727,
+        "startChar": 16,
+        "endLine": 5727,
+        "endChar": 41
+      },
+      "revId": "ce052125495fbb92967d7c6d29eb0f83db9ba20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
