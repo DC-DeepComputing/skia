@@ -16,6 +16,24 @@
       "message": "LGTM! Disabling -Wunsafe-buffer-usage-in-format-attr-call in GN and narrowing SK_UNSAFE_TODO to kNames[...] in GlobalCache.cpp.\n\nLong term, I think we want to remove `-Wunsafe-buffer-usage-in-format-attr-call`, but that can happen later.",
       "revId": "5dcdcdf77775321cea1662fabd3aa55cd5c8b962",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a507d66_576bf006",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-07T16:26:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3ada2a96_59d89321",
+      "revId": "5dcdcdf77775321cea1662fabd3aa55cd5c8b962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
