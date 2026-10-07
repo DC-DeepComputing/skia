@@ -568,6 +568,24 @@ DEF_TEST(RustJpegCodec_incomplete_input, r) {
     (void)decodeResult;
 }
 
+DEF_TEST(RustJpegCodec_empty_input_is_incomplete, r) {
+    SkCodec::Result result;
+    std::unique_ptr<SkCodec> codec =
+            SkJpegRustDecoder::Decode(SkMemoryStream::Make(SkData::MakeEmpty()), &result);
+    REPORTER_ASSERT(r, !codec);
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput);
+
+    sk_sp<SkData> data = GetResourceAsData("images/color_wheel.jpg");
+    REPORTER_ASSERT(r, data);
+    if (!data) {
+        return;
+    }
+
+    codec = SkJpegRustDecoder::Decode(SkMemoryStream::Make(std::move(data)), &result);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, codec);
+}
+
 DEF_TEST(RustJpegCodec_reject_non_jpeg, r) {
     sk_sp<SkData> data = GetResourceAsData("images/color_wheel.png");
     if (!data) {
