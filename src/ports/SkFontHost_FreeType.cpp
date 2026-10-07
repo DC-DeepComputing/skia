@@ -2048,28 +2048,7 @@ void SkTypeface_FreeTypeStream::onGetFontDescriptor(SkFontDescriptor* desc, bool
 sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                       const SkFontArguments& args) {
     static SkFontScanner_FreeType scanner;
-    bool isFixedPitch;
-    SkFontStyle style;
-    SkString name;
-    SkFontScanner::AxisDefinitions axisDefinitions;
-    SkFontScanner::VariationPosition current;
-    if (!scanner.scanInstance(stream.get(), args.getCollectionIndex(), 0,
-                              &name, &style, &isFixedPitch, &axisDefinitions, &current)) {
-        return nullptr;
-    }
-
-    AutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.size());
-    SkFontScanner_FreeType::computeAxisValues(
-        axisDefinitions,
-        SkFontArguments::VariationPosition{current.data(), current.size()},
-        args.getVariationDesignPosition(),
-        axisValues, name, &style);
-
-    auto data = std::make_unique<SkFontData>(
-        std::move(stream), args.getCollectionIndex(), args.getPalette().index,
-        axisValues.get(), axisDefinitions.size(),
-        args.getPalette().overrides, args.getPalette().overrideCount);
-    return sk_make_sp<SkTypeface_FreeTypeStream>(std::move(data), name, style, isFixedPitch);
+    return scanner.MakeFromStream(std::move(stream), args);
 }
 
 SkFontScanner_FreeType::SkFontScanner_FreeType() : fLibrary(nullptr) {
@@ -2158,8 +2137,20 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                                           bool* isFixedPitch,
                                           AxisDefinitions* axes,
                                           VariationPosition* position) const {
-
     SkAutoMutexExclusive libraryLock(fLibraryMutex);
+    return this->scanInstanceLocked(
+            stream, faceIndex, instanceIndex, name, style, isFixedPitch, axes, position);
+}
+
+bool SkFontScanner_FreeType::scanInstanceLocked(SkStreamAsset* stream,
+                                                int faceIndex,
+                                                int instanceIndex,
+                                                SkString* name,
+                                                SkFontStyle* style,
+                                                bool* isFixedPitch,
+                                                AxisDefinitions* axes,
+                                                VariationPosition* position) const {
+    fLibraryMutex.assertHeld();
 
     FT_StreamRec streamRec;
     SkUniqueFTFace face(this->openFace(stream, (instanceIndex << 16) + faceIndex, &streamRec));
@@ -2324,7 +2315,60 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
 
 sk_sp<SkTypeface> SkFontScanner_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                          const SkFontArguments& args) const {
-    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
+    if (!stream) {
+        return nullptr;
+    }
+
+    const int faceIndex = args.getCollectionIndex();
+    sk_sp<const SkData> streamData = stream->getData();
+
+    bool isFixedPitch = false;
+    SkFontStyle style;
+    SkString name;
+    SkFontScanner::AxisDefinitions axisDefinitions;
+    SkFontScanner::VariationPosition current;
+
+    {
+        SkAutoMutexExclusive libraryLock(fLibraryMutex);
+        if (streamData &&
+            fLastScannedInstance.fData.get() == streamData.get() &&
+            fLastScannedInstance.fFaceIndex == faceIndex)
+        {
+            name = fLastScannedInstance.fName;
+            style = fLastScannedInstance.fStyle;
+            isFixedPitch = fLastScannedInstance.fIsFixedPitch;
+            axisDefinitions = fLastScannedInstance.fAxes;
+            current = fLastScannedInstance.fPosition;
+        } else {
+            if (!this->scanInstanceLocked(stream.get(), faceIndex, 0,
+                                          &name, &style, &isFixedPitch,
+                                          &axisDefinitions, &current)) {
+                return nullptr;
+            }
+            if (streamData) {
+                fLastScannedInstance.fData = streamData;
+                fLastScannedInstance.fFaceIndex = faceIndex;
+                fLastScannedInstance.fName = name;
+                fLastScannedInstance.fStyle = style;
+                fLastScannedInstance.fIsFixedPitch = isFixedPitch;
+                fLastScannedInstance.fAxes = axisDefinitions;
+                fLastScannedInstance.fPosition = current;
+            }
+        }
+    }
+
+    AutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.size());
+    SkFontScanner_FreeType::computeAxisValues(
+        axisDefinitions,
+        SkFontArguments::VariationPosition{current.data(), current.size()},
+        args.getVariationDesignPosition(),
+        axisValues, name, &style);
+
+    auto data = std::make_unique<SkFontData>(
+        std::move(stream), faceIndex, args.getPalette().index,
+        axisValues.get(), axisDefinitions.size(),
+        args.getPalette().overrides, args.getPalette().overrideCount);
+    return sk_make_sp<SkTypeface_FreeTypeStream>(std::move(data), name, style, isFixedPitch);
 }
 
 SkTypeface::FactoryId SkFontScanner_FreeType::getFactoryId() const {
