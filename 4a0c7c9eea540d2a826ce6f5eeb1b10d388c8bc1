@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a0168a_ac41a119",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-07T13:41:45Z",
+      "side": 1,
+      "message": "This looks to be be producing a lot of bad images on gold now",
+      "revId": "4a0c7c9eea540d2a826ce6f5eeb1b10d388c8bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
