@@ -1821,14 +1821,14 @@ Result GaneshPrecompileTestingSink::draw(const Src& src, SkBitmap* dst, SkWStrea
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 GPUDDLSink::GPUDDLSink(const SkCommandLineConfigGpu* config, const GrContextOptions& ctxOptions)
         : INHERITED(config, ctxOptions)
-        , fRecordingExecutor(SkExecutor::MakeLIFOThreadPool(1))
-        , fGPUExecutor(SkExecutor::MakeFIFOThreadPool(1, false)) {
+        , fRecordingExecutor(StdFunctionExecutor::MakeLIFOThreadPool(1))
+        , fGPUExecutor(StdFunctionExecutor::MakeFIFOThreadPool(1, false)) {
 }
 
 Result GPUDDLSink::ddlDraw(const Src& src,
                            sk_sp<SkSurface> dstSurface,
-                           SkTaskGroup* recordingTaskGroup,
-                           SkTaskGroup* gpuTaskGroup,
+                           SkStdFunctionTaskGroup* recordingTaskGroup,
+                           SkStdFunctionTaskGroup* gpuTaskGroup,
                            sk_gpu_test::TestContext* gpuTestCtx,
                            GrDirectContext* dContext) const {
 
@@ -1863,7 +1863,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
     gpuTestCtx->makeNotCurrent();
 
     // Job one for the GPU thread is to make 'gpuTestCtx' current!
-    gpuTaskGroup->add([gpuTestCtx] { gpuTestCtx->makeCurrent(); });
+    gpuTaskGroup->add1([gpuTestCtx] { gpuTestCtx->makeCurrent(); });
 
     // TODO: move the image upload to the utility thread
     promiseImageHelper.uploadAllToGPU(gpuTaskGroup, dContext);
@@ -1883,7 +1883,7 @@ Result GPUDDLSink::ddlDraw(const Src& src,
     // We have to wait for the recording threads to schedule all their work on the gpu thread
     // before we can schedule the composition draw and the flush. Note that the gpu thread
     // is not blocked at this point and this thread is borrowing recording work.
-    recordingTaskGroup->wait();
+    recordingTaskGroup->wait1();
 
     // Note: at this point the recording thread(s) are stalled out w/ nothing to do.
 
@@ -1895,12 +1895,12 @@ Result GPUDDLSink::ddlDraw(const Src& src,
     // thread. The composition DDL must be scheduled last bc it relies on the result of all
     // the tiles' rendering. Additionally, bc we're aliasing the tiles' backend textures,
     // there is nothing in the DAG to automatically force the required order.
-    gpuTaskGroup->add([dstSurface, ddl = tiles.composeDDL()]() {
+    gpuTaskGroup->add1([dstSurface, ddl = tiles.composeDDL()]() {
                           skgpu::ganesh::DrawDDL(dstSurface, ddl);
                       });
 
     // This should be the only explicit flush for the entire DDL draw.
-    gpuTaskGroup->add([dContext]() {
+    gpuTaskGroup->add1([dContext]() {
                                            // We need to ensure all the GPU work is finished so
                                            // the following 'deleteAllFromGPU' call will work
                                            // on Vulkan.
@@ -1919,10 +1919,10 @@ Result GPUDDLSink::ddlDraw(const Src& src,
 
     // A flush has already been scheduled on the gpu thread along with the clean up of the backend
     // textures so it is safe to schedule making 'gpuTestCtx' not current on the gpuThread.
-    gpuTaskGroup->add([gpuTestCtx] { gpuTestCtx->makeNotCurrent(); });
+    gpuTaskGroup->add1([gpuTestCtx] { gpuTestCtx->makeNotCurrent(); });
 
     // All the work is scheduled on the gpu thread, we just need to wait
-    gpuTaskGroup->wait();
+    gpuTaskGroup->wait1();
 
     return Result::Ok();
 }
@@ -1959,8 +1959,8 @@ Result GPUDDLSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log
     SkASSERT(otherCtx->priv().getGpu());
 #endif
 
-    SkTaskGroup recordingTaskGroup(*fRecordingExecutor);
-    SkTaskGroup gpuTaskGroup(*fGPUExecutor);
+    SkStdFunctionTaskGroup recordingTaskGroup(*fRecordingExecutor);
+    SkStdFunctionTaskGroup gpuTaskGroup(*fGPUExecutor);
 
     // Make sure 'mainCtx' is current
     mainTestCtx->makeCurrent();
@@ -2036,7 +2036,7 @@ Result PDFSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
     metadata.jpegDecoder = SkPDF::JPEG::Decode;
     metadata.jpegEncoder = SkPDF::JPEG::Encode;
 #if SK_PDF_TEST_EXECUTOR
-    std::unique_ptr<SkExecutor> executor = SkExecutor::MakeFIFOThreadPool();
+    std::unique_ptr<StdFunctionExecutor> executor = StdFunctionExecutor::MakeFIFOThreadPool();
     metadata.fExecutor = executor.get();
 #endif
     auto doc = SkPDF::MakeDocument(dst, metadata);

@@ -17,6 +17,8 @@
 #include "src/core/SkCachedData.h"
 #include "src/core/SkTLazy.h"
 
+#include "src/core/SkTaskGroup.h"
+
 #include <array>
 
 class GrContextThreadSafeProxy;
@@ -24,7 +26,7 @@ class GrDirectContext;
 class SkImage;
 class SkMipmap;
 class SkPicture;
-class SkTaskGroup;
+template<typename ExecutorType> class SkTaskGroup;
 
 // This class acts as a proxy for a GrBackendTexture that backs an image.
 // Whenever a promise image is created for the image, the promise image receives a ref to
@@ -117,8 +119,8 @@ public:
     // images.
     sk_sp<SkPicture> recreateSKP(GrDirectContext*, SkPicture*);
 
-    void uploadAllToGPU(SkTaskGroup*, GrDirectContext*);
-    void deleteAllFromGPU(SkTaskGroup*, GrDirectContext*);
+    void uploadAllToGPU(SkStdFunctionTaskGroup*, GrDirectContext*);
+    void deleteAllFromGPU(SkStdFunctionTaskGroup*, GrDirectContext*);
 
     // Remove this class' refs on the promise images and the PromiseImageCallbackContexts
     void reset() {

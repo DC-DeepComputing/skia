@@ -36,7 +36,7 @@ class GrResourceProvider;
 class GrSurfaceProxy;
 class SkImage;
 class SkString;
-class SkTaskGroup;
+template<typename ExecutorType> class SkTaskGroup;
 enum class GrBackendApi : unsigned int;
 enum class GrSemaphoresSubmitted : bool;
 struct GrFlushInfo;
@@ -118,7 +118,7 @@ public:
     std::unique_ptr<GrFragmentProcessor> createPMToUPMEffect(std::unique_ptr<GrFragmentProcessor>);
     std::unique_ptr<GrFragmentProcessor> createUPMToPMEffect(std::unique_ptr<GrFragmentProcessor>);
 
-    SkTaskGroup* getTaskGroup() { return this->context()->fTaskGroup.get(); }
+    SkStdFunctionTaskGroup* getTaskGroup() { return this->context()->fTaskGroup.get(); }
 
     GrResourceProvider* resourceProvider() { return this->context()->fResourceProvider.get(); }
     const GrResourceProvider* resourceProvider() const {

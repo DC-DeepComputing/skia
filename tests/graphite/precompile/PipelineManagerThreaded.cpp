@@ -73,12 +73,12 @@ void draw_an_arc(skiatest::Reporter* reporter, Context* context) {
 
 void run_test(skiatest::Reporter* reporter, GraphiteTestContext* testContext,
               const TestOptions& origOptions, bool allowThreads, bool precompileFirst) {
-    std::unique_ptr<SkExecutor> executor;
+    std::unique_ptr<CallbackExecutor> executor;
     if (allowThreads) {
         // Ensure the threaded PipelineManager will be used
-        executor = SkExecutor::MakeMultiListFIFOThreadPool(/* numWorkLists= */ 2,
-                                                           /* threads= */ 1,
-                                                           /* allowBorrowing= */ false);
+        executor = CallbackExecutor::MakeMultiListFIFOThreadPool(/* numWorkLists= */ 2,
+                                                                 /* threads= */ 1,
+                                                                 /* allowBorrowing= */ false);
     }
 
     TestOptions newOptions(origOptions);

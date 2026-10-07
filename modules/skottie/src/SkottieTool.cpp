@@ -589,9 +589,9 @@ int main(int argc, char** argv) {
     std::vector<double> frames_ms(frame_count);
 
     const auto thread_count = FLAGS_gpu ? 0 : FLAGS_threads - 1;
-    SkTaskGroup::Enabler enabler(thread_count);
+    SkStdFunctionTaskGroup::Enabler1 enabler(thread_count);
 
-    SkTaskGroup tg;
+    SkStdFunctionTaskGroup tg;
     {
         // Depending on type (gpu vs. everything else), we use either a single generator
         // or one generator per worker thread, respectively.
@@ -603,7 +603,7 @@ int main(int argc, char** argv) {
         }
 
         for (int frame = 0; frame < frame_count; ++frame) {
-            tg.add([&, frame]() {
+            tg.add1([&, frame]() {
                 // SkTaskGroup::Enabler creates a LIFO work pool,
                 // but we want our early frames to start first.
                 int i = frame_count - 1 - frame;
@@ -628,7 +628,7 @@ int main(int argc, char** argv) {
     }
 
     sink->finalize(fps);
-    tg.wait();
+    tg.wait1();
 
 
     std::sort(frames_ms.begin(), frames_ms.end());

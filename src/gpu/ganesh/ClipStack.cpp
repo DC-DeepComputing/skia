@@ -352,7 +352,7 @@ GrSurfaceProxyView render_sw_mask(GrRecordingContext* context,
                                   int count) {
     SkASSERT(count > 0);
 
-    SkTaskGroup* taskGroup = nullptr;
+    SkStdFunctionTaskGroup* taskGroup = nullptr;
     if (auto direct = context->asDirectContext()) {
         taskGroup = direct->priv().getTaskGroup();
     }
@@ -399,7 +399,7 @@ GrSurfaceProxyView render_sw_mask(GrRecordingContext* context,
             uploaderRaw->signalAndFreeData();
         };
 
-        taskGroup->add(std::move(drawAndUploadMask));
+        taskGroup->add1(std::move(drawAndUploadMask));
         proxy->texPriv().setDeferredUploader(std::move(uploader));
 
         return {std::move(proxy), kMaskOrigin, swizzle};

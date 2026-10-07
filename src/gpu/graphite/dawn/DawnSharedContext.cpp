@@ -60,7 +60,7 @@ sk_sp<SharedContext> DawnSharedContext::Make(const DawnBackendContext& backendCo
 DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
                                      std::unique_ptr<const DawnCaps> caps,
                                      wgpu::ShaderModule noopFragment,
-                                     SkExecutor* executor,
+                                     CallbackExecutor* executor,
                                      SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
         : SharedContext(std::move(caps),
                         BackendApi::kDawn,

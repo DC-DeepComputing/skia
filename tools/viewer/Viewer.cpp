@@ -729,7 +729,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
 #endif
 
     initializeEventTracingForTools();
-    static SkTaskGroup::Enabler kTaskGroupEnabler(FLAGS_threads);
+    static SkStdFunctionTaskGroup::Enabler1 kTaskGroupEnabler(FLAGS_threads);
 
     fBackendType = get_backend_type(FLAGS_backend[0]);
     fWindow = Windows::CreateNativeWindow(platformData);

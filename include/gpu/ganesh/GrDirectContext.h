@@ -23,10 +23,10 @@
 #include <string_view>
 
 class GrAtlasManager;
-class GrBackendSemaphore;
 class GrBackendFormat;
-class GrBackendTexture;
 class GrBackendRenderTarget;
+class GrBackendSemaphore;
+class GrBackendTexture;
 class GrClientMappedBufferManager;
 class GrContextThreadSafeProxy;
 class GrDirectContextPriv;
@@ -37,7 +37,10 @@ class SkData;
 class SkImage;
 class SkPixmap;
 class SkSurface;
-class SkTaskGroup;
+
+template <typename ExecutorType> class SkTaskGroup;
+typedef SkTaskGroup<StdFunctionExecutor> SkStdFunctionTaskGroup;
+
 class SkTraceMemoryDump;
 enum SkColorType : int;
 enum class SkTextureCompressionType;
@@ -1021,7 +1024,7 @@ private:
     // after all of its users. Clients of fTaskGroup will generally want to ensure that they call
     // wait() on it as they are being destroyed, to avoid the possibility of pending tasks being
     // invoked after objects they depend upon have already been destroyed.
-    std::unique_ptr<SkTaskGroup>              fTaskGroup;
+    std::unique_ptr<SkStdFunctionTaskGroup>   fTaskGroup;
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
     std::unique_ptr<GrGpu>                    fGpu;
     std::unique_ptr<GrResourceCache>          fResourceCache;

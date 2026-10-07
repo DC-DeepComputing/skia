@@ -136,14 +136,14 @@ DEF_TEST(SkStrikeMultiThread, Reporter) {
     SkStrikeCache strikeCache;
 
     // Make our own executor so the --threads parameter doesn't mess things up.
-    auto executor = SkExecutor::MakeFIFOThreadPool(kThreadCount);
+    auto executor = StdFunctionExecutor::MakeFIFOThreadPool(kThreadCount);
     for (int tries = 0; tries < 100; tries++) {
         SkStrike strike{&strikeCache, strikeSpec, strikeSpec.createScalerContext(), nullptr,
                         nullptr};
 
-        SkTaskGroup taskGroup(*executor);
+        SkStdFunctionTaskGroup taskGroup(*executor);
         for (int threadIndex = 0; threadIndex < kThreadCount; ++threadIndex) {
-            taskGroup.add([&, threadIndex]() {
+            taskGroup.add1([&, threadIndex]() {
                 barrier.waitForAll();
 
                 auto local = data.subspan(threadIndex * 2, data.size() - kThreadCount * 2);
@@ -171,7 +171,7 @@ DEF_TEST(SkStrikeMultiThread, Reporter) {
                 }
             });
         }
-        taskGroup.wait();
+        taskGroup.wait1();
     }
 }
 

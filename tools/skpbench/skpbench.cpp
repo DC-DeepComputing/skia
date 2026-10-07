@@ -222,8 +222,12 @@ private:
     std::vector<SkDocumentPage> fFrames;
 };
 
-static void ddl_sample(GrDirectContext* dContext, DDLTileHelper* tiles, GpuSync& gpuSync,
-                       Sample* sample, SkTaskGroup* recordingTaskGroup, SkTaskGroup* gpuTaskGroup,
+static void ddl_sample(GrDirectContext* dContext,
+                       DDLTileHelper* tiles,
+                       GpuSync& gpuSync,
+                       Sample* sample,
+                       SkStdFunctionTaskGroup* recordingTaskGroup,
+                       SkStdFunctionTaskGroup* gpuTaskGroup,
                        std::chrono::high_resolution_clock::time_point* startStopTime,
                        SkPicture* picture) {
     using clock = std::chrono::high_resolution_clock;
@@ -244,14 +248,14 @@ static void ddl_sample(GrDirectContext* dContext, DDLTileHelper* tiles, GpuSync&
         tiles->drawAllTilesDirectly(dContext, picture);
     } else {
         tiles->kickOffThreadedWork(recordingTaskGroup, gpuTaskGroup, dContext, picture);
-        recordingTaskGroup->wait();
+        recordingTaskGroup->wait1();
     }
 
     if (gpuTaskGroup) {
-        gpuTaskGroup->add([&]{
+        gpuTaskGroup->add1([&]{
             flush_with_sync(dContext, gpuSync);
         });
-        gpuTaskGroup->wait();
+        gpuTaskGroup->wait1();
     } else {
         flush_with_sync(dContext, gpuSync);
     }
@@ -295,17 +299,17 @@ static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
 
     // In comparable modes, there is no GPU thread. The following pointers are all null.
     // Otherwise, we transfer testContext onto the GPU thread until after the bench.
-    std::unique_ptr<SkExecutor> gpuThread;
-    std::unique_ptr<SkTaskGroup> gpuTaskGroup;
-    std::unique_ptr<SkExecutor> recordingThreadPool;
-    std::unique_ptr<SkTaskGroup> recordingTaskGroup;
+    std::unique_ptr<StdFunctionExecutor> gpuThread;
+    std::unique_ptr<SkStdFunctionTaskGroup> gpuTaskGroup;
+    std::unique_ptr<StdFunctionExecutor> recordingThreadPool;
+    std::unique_ptr<SkStdFunctionTaskGroup> recordingTaskGroup;
     if (!FLAGS_comparableDDL && !FLAGS_comparableSKP) {
-        gpuThread = SkExecutor::MakeFIFOThreadPool(1, false);
-        gpuTaskGroup = std::make_unique<SkTaskGroup>(*gpuThread);
-        recordingThreadPool = SkExecutor::MakeFIFOThreadPool(FLAGS_ddlNumRecordingThreads, false);
-        recordingTaskGroup = std::make_unique<SkTaskGroup>(*recordingThreadPool);
+        gpuThread = StdFunctionExecutor::MakeFIFOThreadPool(1, false);
+        gpuTaskGroup = std::make_unique<SkStdFunctionTaskGroup>(*gpuThread);
+        recordingThreadPool = StdFunctionExecutor::MakeFIFOThreadPool(FLAGS_ddlNumRecordingThreads, false);
+        recordingTaskGroup = std::make_unique<SkStdFunctionTaskGroup>(*recordingThreadPool);
         testContext->makeNotCurrent();
-        gpuTaskGroup->add([=]{ testContext->makeCurrent(); });
+        gpuTaskGroup->add1([=]{ testContext->makeCurrent(); });
     }
 
     clock::time_point startStopTime = clock::now();
@@ -331,10 +335,10 @@ static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
 
     // Move the context back to this thread now that we're done benching.
     if (gpuTaskGroup) {
-        gpuTaskGroup->add([=]{
+        gpuTaskGroup->add1([=]{
             testContext->makeNotCurrent();
         });
-        gpuTaskGroup->wait();
+        gpuTaskGroup->wait1();
         testContext->makeCurrent();
     }
 

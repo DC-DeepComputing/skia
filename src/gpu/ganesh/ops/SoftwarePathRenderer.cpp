@@ -370,7 +370,7 @@ bool SoftwarePathRenderer::onDrawPath(const DrawPathArgs& args) {
         SkBackingFit fit = useCache ? SkBackingFit::kExact : SkBackingFit::kApprox;
         GrAA aa = GrAA(GrAAType::kCoverage == args.fAAType);
 
-        SkTaskGroup* taskGroup = nullptr;
+        SkStdFunctionTaskGroup* taskGroup = nullptr;
         if (auto direct = args.fContext->asDirectContext()) {
             taskGroup = direct->priv().getTaskGroup();
         }
@@ -397,7 +397,7 @@ bool SoftwarePathRenderer::onDrawPath(const DrawPathArgs& args) {
                 }
                 uploaderRaw->signalAndFreeData();
             };
-            taskGroup->add(std::move(drawAndUploadMask));
+            taskGroup->add1(std::move(drawAndUploadMask));
             view.asTextureProxy()->texPriv().setDeferredUploader(std::move(uploader));
         } else {
             GrSWMaskHelper helper;

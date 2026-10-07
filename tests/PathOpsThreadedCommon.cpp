@@ -17,9 +17,9 @@ PathOpsThreadedTestRunner::~PathOpsThreadedTestRunner() {
 }
 
 void PathOpsThreadedTestRunner::render() {
-    SkTaskGroup taskGroup;
+    SkStdFunctionTaskGroup taskGroup;
     for (PathOpsThreadedRunnable* runnable : fRunnables) {
-        taskGroup.add([runnable]() { (*runnable)(); });
+        taskGroup.add1([runnable]() { (*runnable)(); });
     }
-    taskGroup.wait();
+    taskGroup.wait1();
 }

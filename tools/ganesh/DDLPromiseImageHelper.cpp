@@ -262,12 +262,13 @@ void DDLPromiseImageHelper::createCallbackContexts(GrDirectContext* direct) {
     }
 }
 
-void DDLPromiseImageHelper::uploadAllToGPU(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLPromiseImageHelper::uploadAllToGPU(SkStdFunctionTaskGroup* taskGroup,
+                                           GrDirectContext* direct) {
     if (taskGroup) {
         for (int i = 0; i < fImageInfo.size(); ++i) {
             PromiseImageInfo* info = &fImageInfo[i];
 
-            taskGroup->add([direct, info]() { CreateBETexturesForPromiseImage(direct, info); });
+            taskGroup->add1([direct, info]() { CreateBETexturesForPromiseImage(direct, info); });
         }
     } else {
         for (int i = 0; i < fImageInfo.size(); ++i) {
@@ -276,12 +277,13 @@ void DDLPromiseImageHelper::uploadAllToGPU(SkTaskGroup* taskGroup, GrDirectConte
     }
 }
 
-void DDLPromiseImageHelper::deleteAllFromGPU(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLPromiseImageHelper::deleteAllFromGPU(SkStdFunctionTaskGroup* taskGroup,
+                                             GrDirectContext* direct) {
     if (taskGroup) {
         for (int i = 0; i < fImageInfo.size(); ++i) {
             PromiseImageInfo* info = &fImageInfo[i];
 
-            taskGroup->add([info]() { DeleteBETexturesForPromiseImage(info); });
+            taskGroup->add1([info]() { DeleteBETexturesForPromiseImage(info); });
         }
     } else {
         for (int i = 0; i < fImageInfo.size(); ++i) {

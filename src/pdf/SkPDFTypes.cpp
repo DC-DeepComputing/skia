@@ -593,7 +593,7 @@ SkPDFIndirectReference SkPDFStreamOut(std::unique_ptr<SkPDFDict> dict,
                                       SkPDFDocument* doc,
                                       SkPDFSteamCompressionEnabled compress) {
     SkPDFIndirectReference ref = doc->reserveRef();
-    if (SkExecutor* executor = doc->executor()) {
+    if (StdFunctionExecutor* executor = doc->executor1()) {
         SkPDFDict* dictPtr = dict.release();
         SkStreamAsset* contentPtr = content.release();
         // Pass ownership of both pointers into a std::function, which should
