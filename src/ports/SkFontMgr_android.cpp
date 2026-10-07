@@ -17,6 +17,7 @@
 #include "include/core/SkString.h"
 #include "include/ports/SkFontMgr_android.h"
 #include "include/private/SkFixed.h"
+#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"
@@ -30,7 +31,9 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <limits>
+#include <memory>
 
 using namespace skia_private;
 
@@ -108,36 +111,131 @@ template <typename D, typename S> sk_sp<D> sk_sp_static_cast(sk_sp<S>&& s) {
     return sk_sp<D>(static_cast<D*>(s.release()));
 }
 
-using StreamForPathCache = skia_private::THashMap<SkString, std::unique_ptr<SkStreamAsset>>;
+class SharedStreamCache {
+public:
+    std::unique_ptr<SkStreamAsset> duplicateStreamForPath(const SkString& pathName) {
+        {
+            SkAutoMutexExclusive lock(fMutex);
+            if (std::unique_ptr<SkStreamAsset>* streamPtr = fStreamForPath.find(pathName)) {
+                return *streamPtr ? (*streamPtr)->duplicate() : nullptr;
+            }
+        }
+        std::unique_ptr<SkStreamAsset> newStream = SkStream::MakeFromFile(pathName.c_str());
+        SkAutoMutexExclusive lock(fMutex);
+        std::unique_ptr<SkStreamAsset>* streamPtr = fStreamForPath.find(pathName);
+        if (!streamPtr) {
+            streamPtr = fStreamForPath.set(pathName, std::move(newStream));
+        }
+        return *streamPtr ? (*streamPtr)->duplicate() : nullptr;
+    }
+
+    void clear() {
+        SkAutoMutexExclusive lock(fMutex);
+        fStreamForPath.reset();
+    }
+
+private:
+    SkMutex fMutex;
+    skia_private::THashMap<SkString, std::unique_ptr<SkStreamAsset>> fStreamForPath;
+};
 
 class SkFontStyleSet_Android : public SkFontStyleSet {
 public:
-    explicit SkFontStyleSet_Android(const FontFamily& family, const SkFontScanner* scanner,
-                                    const bool cacheFontFiles, StreamForPathCache& streamForPath) {
-        const SkString* cannonicalFamilyName = nullptr;
-        if (!family.fNames.empty()) {
-            cannonicalFamilyName = &family.fNames[0];
-        }
-        fFallbackFor = family.fFallbackFor;
-
-        // TODO? make this lazy
+    static bool HasExistingFontFile(const FontFamily& family) {
         for (int i = 0; i < family.fFonts.size(); ++i) {
-            const FontFileInfo& fontFile = family.fFonts[i];
-
             SkString pathName(family.fBasePath);
+            pathName.append(family.fFonts[i].fFileName);
+            if (sk_exists(pathName.c_str(), kRead_SkFILE_Flag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    explicit SkFontStyleSet_Android(const FontFamily& family,
+                                    std::shared_ptr<SkFontScanner> scanner,
+                                    std::shared_ptr<SharedStreamCache> streamCache)
+            : fScanner(std::move(scanner))
+            , fStreamCache(std::move(streamCache))
+            , fPendingFontFiles(family.fFonts)
+            , fFallbackFor(family.fFallbackFor)
+            , fBasePath(family.fBasePath)
+            , fLanguages(family.fLanguages)
+            , fVariantStyle(family.fVariant == kDefault_FontVariant
+                                    ? (kCompact_FontVariant | kElegant_FontVariant)
+                                    : family.fVariant) {
+        if (!family.fNames.empty()) {
+            fCanonicalFamilyName = family.fNames[0];
+        }
+    }
+
+    void ensureInitialized() const {
+        if (fInitialized.load(std::memory_order_acquire)) {
+            return;
+        }
+        SkAutoMutexExclusive lock(fInitMutex);
+        if (!fInitialized.load(std::memory_order_relaxed)) {
+            this->initializeStyles();
+            fInitialized.store(true, std::memory_order_release);
+        }
+    }
+
+    int count() override {
+        this->ensureInitialized();
+        return fStyles.size();
+    }
+    void getStyle(int index, SkFontStyle* style, SkString* name) override {
+        this->ensureInitialized();
+        if (index < 0 || fStyles.size() <= index) {
+            return;
+        }
+        if (style) {
+            *style = fStyles[index]->fontStyle();
+        }
+        if (name) {
+            name->reset();
+        }
+    }
+    sk_sp<SkTypeface> createTypeface(int index) override {
+        this->ensureInitialized();
+        if (index < 0 || fStyles.size() <= index) {
+            return nullptr;
+        }
+        return fStyles[index];
+    }
+
+    sk_sp<SkTypeface_AndroidSystem> matchAStyle(const SkFontStyle& pattern) {
+        this->ensureInitialized();
+        return sk_sp_static_cast<SkTypeface_AndroidSystem>(this->matchStyleCSS3(pattern));
+    }
+    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
+        return this->matchAStyle(pattern);
+    }
+
+    bool matchesLanguage(const SkString& langTag) const {
+        if (langTag.isEmpty()) {
+            return true;
+        }
+        return std::any_of(fLanguages.begin(), fLanguages.end(), [&](const SkLanguage& lang) {
+            return lang.getTag().startsWith(langTag.c_str());
+        });
+    }
+
+    bool matchesVariant(bool elegant) const {
+        return SkToBool(fVariantStyle & kElegant_FontVariant) == elegant;
+    }
+
+private:
+    void initializeStyles() const {
+        for (int i = 0; i < fPendingFontFiles.size(); ++i) {
+            const FontFileInfo& fontFile = fPendingFontFiles[i];
+
+            SkString pathName(fBasePath);
             pathName.append(fontFile.fFileName);
 
-            std::unique_ptr<SkStreamAsset>* streamPtr = streamForPath.find(pathName);
-            if (!streamPtr) {
-                streamPtr = streamForPath.set(pathName, SkStream::MakeFromFile(pathName.c_str()));
-            }
-            if (!*streamPtr) {
-                SkDEBUGF("Requested font file %s cannot be opened.\n", pathName.c_str());
-                continue;
-            }
-            std::unique_ptr<SkStreamAsset> stream = (*streamPtr)->duplicate();
+            std::unique_ptr<SkStreamAsset> stream = fStreamCache->duplicateStreamForPath(pathName);
             if (!stream) {
-                SkDEBUGF("Requested font file %s could not be duplicated.\n", pathName.c_str());
+                SkDEBUGF("Requested font file %s cannot be opened.\n", pathName.c_str());
                 continue;
             }
 
@@ -146,7 +244,7 @@ public:
                     fontFile.fVariationDesignPosition.size()
             };
             // TODO: this creates the proxy with the given stream, so always cacheFontFiles.
-            auto proxy = scanner->MakeFromStream(
+            auto proxy = fScanner->MakeFromStream(
                 std::move(stream),
                 SkFontArguments().setCollectionIndex(fontFile.fIndex)
                                  .setVariationDesignPosition(position));
@@ -156,18 +254,13 @@ public:
                 continue;
             }
 
-            uint32_t variant = family.fVariant;
-            if (kDefault_FontVariant == variant) {
-                variant = kCompact_FontVariant | kElegant_FontVariant;
-            }
-
             // The first specified family name overrides the family name found in the font.
             // TODO: SkTypeface_AndroidSystem::onCreateFamilyNameIterator should return
             // all of the specified family names in addition to the names found in the font.
             SkString familyName;
             proxy->getFamilyName(&familyName);
-            if (cannonicalFamilyName != nullptr) {
-                familyName = *cannonicalFamilyName;
+            if (!fCanonicalFamilyName.isEmpty()) {
+                familyName = fCanonicalFamilyName;
             }
 
             SkFontStyle fontStyle = proxy->fontStyle();
@@ -184,41 +277,24 @@ public:
             fStyles.push_back(
                 SkTypeface_AndroidSystem::Make(proxy,
                                                fontStyle, proxy->isFixedPitch(),
-                                               familyName, family.fLanguages, variant));
+                                               familyName, fLanguages, fVariantStyle));
         }
+        fPendingFontFiles.clear();
+        fScanner.reset();
+        fStreamCache.reset();
     }
 
-    int count() override {
-        return fStyles.size();
-    }
-    void getStyle(int index, SkFontStyle* style, SkString* name) override {
-        if (index < 0 || fStyles.size() <= index) {
-            return;
-        }
-        if (style) {
-            *style = fStyles[index]->fontStyle();
-        }
-        if (name) {
-            name->reset();
-        }
-    }
-    sk_sp<SkTypeface> createTypeface(int index) override {
-        if (index < 0 || fStyles.size() <= index) {
-            return nullptr;
-        }
-        return fStyles[index];
-    }
-
-    sk_sp<SkTypeface_AndroidSystem> matchAStyle(const SkFontStyle& pattern) {
-        return sk_sp_static_cast<SkTypeface_AndroidSystem>(this->matchStyleCSS3(pattern));
-    }
-    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
-        return this->matchAStyle(pattern);
-    }
-
-private:
-    TArray<sk_sp<SkTypeface_AndroidSystem>> fStyles;
+    mutable std::shared_ptr<SkFontScanner> fScanner;
+    mutable std::shared_ptr<SharedStreamCache> fStreamCache;
+    mutable SkMutex fInitMutex;
+    mutable std::atomic<bool> fInitialized{false};
+    mutable TArray<FontFileInfo> fPendingFontFiles;
+    mutable TArray<sk_sp<SkTypeface_AndroidSystem>> fStyles;
+    SkString fCanonicalFamilyName;
     SkString fFallbackFor;
+    SkString fBasePath;
+    STArray<4, SkLanguage, true> fLanguages;
+    FontVariant fVariantStyle;
 
     friend struct NameToFamily;
     friend class SkFontMgr_Android;
@@ -240,7 +316,8 @@ class SkFontMgr_Android : public SkFontMgr {
 public:
     SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom,
                       std::unique_ptr<SkFontScanner> scanner)
-        : fScanner(std::move(scanner)) {
+        : fScanner(std::shared_ptr<SkFontScanner>(std::move(scanner)))
+        , fStreamCache(std::make_shared<SharedStreamCache>()) {
         std::vector<std::unique_ptr<FontFamily>> families;
         if (custom && SkFontMgr_Android_CustomFonts::kPreferSystem != custom->fSystemFontUse) {
             SkString base(custom->fBasePath);
@@ -259,6 +336,7 @@ public:
         }
         this->buildNameToFamilyMap(families, custom ? custom->fIsolated : false);
         this->findDefaultStyleSet();
+        fStreamCache->clear();
     }
 
 protected:
@@ -281,6 +359,9 @@ protected:
         if (index < 0 || fNameToFamilyMap.size() <= index) {
             return nullptr;
         }
+        if (fNameToFamilyMap[index].styleSet->count() == 0) {
+            return nullptr;
+        }
         return sk_ref_sp(fNameToFamilyMap[index].styleSet);
     }
 
@@ -291,13 +372,17 @@ protected:
         SkAutoAsciiToLC tolc(familyName);
         for (int i = 0; i < fNameToFamilyMap.size(); ++i) {
             if (fNameToFamilyMap[i].name.equals(tolc.lc())) {
-                return sk_ref_sp(fNameToFamilyMap[i].styleSet);
+                if (fNameToFamilyMap[i].styleSet->count() > 0) {
+                    return sk_ref_sp(fNameToFamilyMap[i].styleSet);
+                }
             }
         }
         // TODO: eventually we should not need to name fallback families.
         for (int i = 0; i < fFallbackNameToFamilyMap.size(); ++i) {
             if (fFallbackNameToFamilyMap[i].name.equals(tolc.lc())) {
-                return sk_ref_sp(fFallbackNameToFamilyMap[i].styleSet);
+                if (fFallbackNameToFamilyMap[i].styleSet->count() > 0) {
+                    return sk_ref_sp(fFallbackNameToFamilyMap[i].styleSet);
+                }
             }
         }
         return nullptr;
@@ -321,21 +406,18 @@ protected:
             if (!matcher(familyName, nameToFamily)) {
                 continue;
             }
-            sk_sp<SkTypeface_AndroidSystem> face(nameToFamily.styleSet->matchAStyle(style));
-
-            if (!langTag.isEmpty() &&
-                std::none_of(face->fLang.begin(), face->fLang.end(), [&](const SkLanguage& lang){
-                    return lang.getTag().startsWith(langTag.c_str());
-                }))
-            {
+            SkFontStyleSet_Android* styleSet = nameToFamily.styleSet;
+            // Filter by XML <family lang="..." variant="..."> metadata BEFORE lazily
+            // instantiating the family's SkTypeface from disk.
+            if (!styleSet->matchesLanguage(langTag)) {
+                continue;
+            }
+            if (!styleSet->matchesVariant(elegant)) {
                 continue;
             }
 
-            if (SkToBool(face->fVariantStyle & kElegant_FontVariant) != elegant) {
-                continue;
-            }
-
-            if (face->unicharToGlyph(character) != 0) {
+            sk_sp<SkTypeface_AndroidSystem> face(styleSet->matchAStyle(style));
+            if (face && face->unicharToGlyph(character) != 0) {
                 return face;
             }
         }
@@ -475,7 +557,8 @@ protected:
 
 private:
 
-    std::unique_ptr<SkFontScanner> fScanner;
+    std::shared_ptr<SkFontScanner> fScanner;
+    std::shared_ptr<SharedStreamCache> fStreamCache;
 
     TArray<sk_sp<SkFontStyleSet_Android>> fStyleSets;
     sk_sp<SkFontStyleSet> fDefaultStyleSet;
@@ -483,9 +566,12 @@ private:
     TArray<NameToFamily, true> fNameToFamilyMap;
     TArray<NameToFamily, true> fFallbackNameToFamilyMap;
 
-    void addFamily(FontFamily& family, const bool isolated, int familyIndex,
-                   StreamForPathCache& streamForPath)
+    void addFamily(FontFamily& family, const bool /*isolated*/, int familyIndex)
     {
+        if (!SkFontStyleSet_Android::HasExistingFontFile(family)) {
+            return;
+        }
+
         TArray<NameToFamily, true>* nameToFamily = &fNameToFamilyMap;
         if (family.fIsFallbackFont) {
             nameToFamily = &fFallbackNameToFamilyMap;
@@ -497,8 +583,8 @@ private:
         }
 
         sk_sp<SkFontStyleSet_Android> newSet =
-            sk_make_sp<SkFontStyleSet_Android>(family, fScanner.get(), isolated, streamForPath);
-        if (0 == newSet->count()) {
+            sk_make_sp<SkFontStyleSet_Android>(family, fScanner, fStreamCache);
+        if (!family.fIsFallbackFont && 0 == newSet->count()) {
             return;
         }
 
@@ -509,12 +595,11 @@ private:
     }
     void buildNameToFamilyMap(std::vector<std::unique_ptr<FontFamily>>& families,
                               const bool isolated) {
-        StreamForPathCache streamForPath;
         int familyIndex = 0;
         for (std::unique_ptr<FontFamily>& family : families) {
-            addFamily(*family, isolated, familyIndex++, streamForPath);
+            addFamily(*family, isolated, familyIndex++);
             for (const auto& [unused, fallbackFamily] : family->fallbackFamilies) {
-                addFamily(*fallbackFamily, isolated, familyIndex++, streamForPath);
+                addFamily(*fallbackFamily, isolated, familyIndex++);
             }
         }
     }
@@ -527,8 +612,13 @@ private:
                 break;
             }
         }
-        if (!fDefaultStyleSet && !fStyleSets.empty()) {
-            fDefaultStyleSet = fStyleSets[0];
+        if (!fDefaultStyleSet) {
+            for (int i = 0; i < fStyleSets.size(); ++i) {
+                if (fStyleSets[i]->count() > 0) {
+                    fDefaultStyleSet = fStyleSets[i];
+                    break;
+                }
+            }
         }
     }
 
