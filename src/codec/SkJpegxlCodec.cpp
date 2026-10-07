@@ -22,6 +22,7 @@
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkFrameHolder.h"
+#include "src/core/SkColorData.h"
 #include "src/core/SkStreamPriv.h"
 #include "src/core/SkSwizzlePriv.h"
 
@@ -80,7 +81,7 @@ SkJpegxlCodec::SkJpegxlCodec(std::unique_ptr<SkJpegxlCodecPriv> codec,
                              SkEncodedInfo&& info,
                              std::unique_ptr<SkStream> stream,
                              sk_sp<const SkData> data)
-        : INHERITED(std::move(info), skcms_PixelFormat_RGBA_16161616LE, std::move(stream))
+        : INHERITED(std::move(info), skcms_PixelFormat_RGBA_hhhh, std::move(stream))
         , fCodec(std::move(codec))
         , fData(std::move(data)) {}
 
@@ -184,7 +185,7 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
         profile = SkCodecs::ColorProfile::MakeICCProfile(std::move(icc));
     }
 
-    int bitsPerChannel = 16;
+    int bitsPerChannel = info.bits_per_sample > 0 ? info.bits_per_sample : 8;
 
     *result = kSuccess;
     SkEncodedInfo encodedInfo =
@@ -199,6 +200,9 @@ SkCodec::Result SkJpegxlCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst
     // TODO(eustas): implement
     if (options.fSubset) {
         return kUnimplemented;
+    }
+    if (dstInfo.dimensions() != this->dimensions()) {
+        return kInvalidScale;
     }
     auto& codec = *fCodec.get();
     const int index = options.fFrameIndex;
@@ -243,6 +247,7 @@ SkCodec::Result SkJpegxlCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst
     codec.fDst = dst;
     codec.fRowBytes = rowBytes;
     codec.fPixelShift = dstInfo.shiftPerPixel();
+    codec.fDstColorType = dstInfo.colorType();
 
     // TODO(eustas): consider grayscale.
     uint32_t numColorChannels = 3;
@@ -305,16 +310,15 @@ bool SkJpegxlCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOp
             return true;  // rgba->bgra
 
         case kRGBA_F16_SkColorType:
-            SkASSERT(needsColorXform);  // TODO(eustas): not necessary for JXL.
             return true;  // memcpy
 
-        // TODO(eustas): implement
         case kRGB_565_SkColorType:
-            return false;
+            return srcIsOpaque;
+
         case kGray_8_SkColorType:
-            return false;
+            return this->getEncodedInfo().color() == SkEncodedInfo::kGray_Color;
         case kAlpha_8_SkColorType:
-            return false;
+            return this->getEncodedInfo().color() == SkEncodedInfo::kGray_Color && !needsColorXform;
 
         default:
             return false;
@@ -326,6 +330,13 @@ void SkJpegxlCodec::imageOutCallback(void* opaque, size_t x, size_t y,
                                      size_t num_pixels, const void* pixels) {
     SkJpegxlCodec* instance = reinterpret_cast<SkJpegxlCodec*>(opaque);
     auto& codec = *instance->fCodec.get();
+    if (y >= (size_t)instance->dimensions().height() ||
+        x >= (size_t)instance->dimensions().width()) {
+        return;
+    }
+    if (x + num_pixels > (size_t)instance->dimensions().width()) {
+        num_pixels = instance->dimensions().width() - x;
+    }
     size_t offset = y * codec.fRowBytes + (x << codec.fPixelShift);
     void* dst = SkTAddOffset<void>(codec.fDst, offset);
     if (instance->colorXform()) {
@@ -342,6 +353,23 @@ void SkJpegxlCodec::imageOutCallback(void* opaque, size_t x, size_t y,
         case kRGBA_F16_SkColorType:
             memcpy(dst, pixels, 8 * num_pixels);
             return;
+        case kRGB_565_SkColorType: {
+            const uint8_t* src = reinterpret_cast<const uint8_t*>(pixels);
+            uint16_t* dst16 = reinterpret_cast<uint16_t*>(dst);
+            for (size_t i = 0; i < num_pixels; ++i) {
+                dst16[i] = SkPack888ToRGB16(src[4 * i + 0], src[4 * i + 1], src[4 * i + 2]);
+            }
+            return;
+        }
+        case kGray_8_SkColorType:
+        case kAlpha_8_SkColorType: {
+            const uint8_t* src = reinterpret_cast<const uint8_t*>(pixels);
+            uint8_t* dst8 = reinterpret_cast<uint8_t*>(dst);
+            for (size_t i = 0; i < num_pixels; ++i) {
+                dst8[i] = src[4 * i + 0];
+            }
+            return;
+        }
         default:
             SK_ABORT("Selected output format is not supported yet");
             return;
