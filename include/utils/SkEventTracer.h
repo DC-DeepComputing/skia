@@ -16,11 +16,12 @@
 // If you're looking for the tracing macros to instrument Skia itself, those
 // live in src/core/SkTraceEvent.h
 
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 
 #include <cstdint>
 
-class SK_API SkEventTracer {
+class SK_API SkEventTracer : public SkRefCnt {
 public:
 
     typedef uint64_t Handle;
@@ -43,7 +44,7 @@ public:
      */
     static SkEventTracer* GetInstance();
 
-    virtual ~SkEventTracer() = default;
+    ~SkEventTracer() override = default;
 
     // The pointer returned from GetCategoryGroupEnabled() points to a
     // value with zero or more of the following bits. Used in this class only.
