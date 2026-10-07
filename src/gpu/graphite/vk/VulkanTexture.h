@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/vk/VulkanImageView.h"
 
+#include <optional>
 #include <utility>
 
 namespace skgpu { class MutableTextureState; }
@@ -24,11 +25,11 @@ namespace skgpu::graphite {
 
 class Sampler;
 class VulkanCaps;
-class VulkanSharedContext;
 class VulkanCommandBuffer;
 class VulkanDescriptorSet;
 class VulkanFramebuffer;
 class VulkanResourceProvider;
+class VulkanSharedContext;
 struct RenderPassDesc;
 
 class VulkanTexture : public Texture {
@@ -79,6 +80,17 @@ public:
                                      VkAccessFlags dstAccessMask,
                                      VkPipelineStageFlags dstStageMask,
                                      uint32_t newQueueFamilyIndex) const;
+
+    static std::optional<VkImageMemoryBarrier> CreateImageMemoryBarrier(
+            const VulkanSharedContext& sharedContext,
+            VkImage image,
+            const TextureInfo& textureInfo,
+            SkISize dimensions,
+            VkImageLayout currentLayout,
+            uint32_t currentQueueIndex,
+            VkImageLayout newLayout,
+            VkAccessFlags dstAccessMask,
+            uint32_t newQueueFamilyIndex);
 
     // This simply updates our internal tracking of the image layout and does not actually perform
     // any gpu work.
