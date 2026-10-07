@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d14cfdb3_4ae0aa1c",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T16:09:23Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "be1a5527_2e48d4e9",
+      "revId": "eeb73340b14310b6bfba8670c8d6c6c69f8308e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bba93962_1b6cff71",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-07T15:13:33Z",
       "side": 1,
       "message": "I asked in another file: do we need this 0-width cluster? What is its purpose?",
+      "revId": "eeb73340b14310b6bfba8670c8d6c6c69f8308e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f77d4a1_0932414c",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T16:09:23Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "bba93962_1b6cff71",
       "revId": "eeb73340b14310b6bfba8670c8d6c6c69f8308e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "233fa391_73a61c4f",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T16:09:23Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "109110bf_fc8e30fb",
+      "revId": "eeb73340b14310b6bfba8670c8d6c6c69f8308e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1cf5e16_b8c0f99b",
@@ -69,6 +123,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85c3c920_580077b2",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1492,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T16:09:23Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "a1cf5e16_b8c0f99b",
+      "revId": "eeb73340b14310b6bfba8670c8d6c6c69f8308e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8e5d625_094a4367",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-10-07T15:13:33Z",
       "side": 1,
       "message": "When do we use this 0-width cluster? What is going to happen when we have no clusters in this 0-glyph run?",
+      "revId": "eeb73340b14310b6bfba8670c8d6c6c69f8308e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d81474d_31c76e39",
+        "filename": "modules/skparagraph/src/Run.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T16:09:23Z",
+      "side": 1,
+      "message": "Marked as resolved.",
+      "parentUuid": "d8e5d625_094a4367",
       "revId": "eeb73340b14310b6bfba8670c8d6c6c69f8308e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
