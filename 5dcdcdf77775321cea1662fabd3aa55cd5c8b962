@@ -34,6 +34,46 @@
       "parentUuid": "3ada2a96_59d89321",
       "revId": "5dcdcdf77775321cea1662fabd3aa55cd5c8b962",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb67c25a_813c66f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T16:57:19Z",
+      "side": 1,
+      "message": "I filed b/571083401 to capture what needs to be done in Skia to stop relying on const char* and %s so much.",
+      "revId": "5dcdcdf77775321cea1662fabd3aa55cd5c8b962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bee2ef4e_dc284b96",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T16:57:19Z",
+      "side": 1,
+      "message": "Can you tag this with `// TODO(571083401): Remove this warning Skia\u0027s string story is improved`?",
+      "range": {
+        "startLine": 657,
+        "startChar": 0,
+        "endLine": 657,
+        "endChar": 76
+      },
+      "revId": "5dcdcdf77775321cea1662fabd3aa55cd5c8b962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
