@@ -582,3 +582,36 @@ DEF_SIMPLE_GM(blur_matrix_rect, canvas, 650, 685) {
         canvas->translate(bounds.width(), 0);
     }
 }
+
+class RepeatLargeBlurRectGM : public skiagm::GM {
+    SkString getName() const override { return SkString("repeat_large_blur_rect"); }
+
+    SkISize getISize() override { return {800, 800}; }
+
+    bool runAsBench() const override { return true; }
+
+    void onDraw(SkCanvas* canvas) override {
+        constexpr float kSigma = 25.f;
+        constexpr int kNumDraws = 16;
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, kSigma));
+
+        const SkRect rect = SkRect::MakeWH(500.f, 500.f);
+
+        for (int i = 0; i < kNumDraws; ++i) {
+            SkAutoCanvasRestore acr(canvas, true);
+            float offset = 80.f + i * 10.f;
+            canvas->translate(offset, offset);
+            paint.setColor(SkColorSetARGB(128,
+                                          (i * 47) & 0xFF,
+                                          (i * 97) & 0xFF,
+                                          (i * 151) & 0xFF));
+            canvas->drawRect(rect, paint);
+        }
+    }
+};
+
+DEF_GM(return new RepeatLargeBlurRectGM();)
+

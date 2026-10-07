@@ -294,8 +294,6 @@ void AnalyticRRectBlurRenderStep::writeVertices(DrawWriter* writer,
 
     float drawPadX = blur.drawPadX();
     float drawPadY = blur.drawPadY();
-    float satPadX = std::ceil(3.5f * blur.localSigma().x);
-    float satPadY = std::ceil(3.5f * blur.localSigma().y);
 
     // Calculate distance from edge where the corner curvature has ended and is saturated.
     float safeOffsetLeft = std::max(radii[0].fX, radii[3].fX) + drawPadX;
@@ -309,10 +307,10 @@ void AnalyticRRectBlurRenderStep::writeVertices(DrawWriter* writer,
     float cornerSafeYMax = rect.fBottom - safeOffsetBottom;
 
     // Innermost safe bounds that we define as our fully saturated bounds.
-    float insXMin = rect.fLeft + std::max(satPadX, safeOffsetLeft);
-    float insXMax = rect.fRight - std::max(satPadX, safeOffsetRight);
-    float insYMin = rect.fTop + std::max(satPadY, safeOffsetTop);
-    float insYMax = rect.fBottom - std::max(satPadY, safeOffsetBottom);
+    float insXMin = cornerSafeXMin;
+    float insXMax = cornerSafeXMax;
+    float insYMin = cornerSafeYMin;
+    float insYMax = cornerSafeYMax;
 
     // Snap innermost inset bounds to the center if they are overlapping.
     if (insXMin >= insXMax) {
@@ -325,10 +323,10 @@ void AnalyticRRectBlurRenderStep::writeVertices(DrawWriter* writer,
     // Our outermost edge safe inset bounds. This allows us to assume full coverage when we are
     // far enough from an edge on one axis and within the corner radius safe limits on the other
     // axis.
-    float edgeInsXMin = std::min(insXMin, rect.fLeft + std::min(satPadX, safeOffsetLeft));
-    float edgeInsXMax = std::max(insXMax, rect.fRight - std::min(satPadX, safeOffsetRight));
-    float edgeInsYMin = std::min(insYMin, rect.fTop + std::min(satPadY, safeOffsetTop));
-    float edgeInsYMax = std::max(insYMax, rect.fBottom - std::min(satPadY, safeOffsetBottom));
+    float edgeInsXMin = std::min(insXMin, rect.fLeft + drawPadX);
+    float edgeInsXMax = std::max(insXMax, rect.fRight - drawPadX);
+    float edgeInsYMin = std::min(insYMin, rect.fTop + drawPadY);
+    float edgeInsYMax = std::max(insYMax, rect.fBottom - drawPadY);
 
     // Bounds mapping to each row and columns of our 5x5 vertex grid.
     const float xBounds[6] = {rect.fLeft - drawPadX, edgeInsXMin, insXMin,
