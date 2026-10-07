@@ -206,26 +206,50 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
                                                 VkAccessFlags dstAccessMask,
                                                 VkPipelineStageFlags dstStageMask,
                                                 uint32_t newQueueFamilyIndex) const {
+    auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
+    VkImageLayout currentLayout = this->currentLayout();
+    std::optional<VkImageMemoryBarrier> imageMemoryBarrier =
+            VulkanTexture::CreateImageMemoryBarrier(*sharedContext,
+                                                    fImage,
+                                                    this->textureInfo(),
+                                                    this->dimensions(),
+                                                    currentLayout,
+                                                    this->currentQueueFamilyIndex(),
+                                                    newLayout,
+                                                    dstAccessMask,
+                                                    newQueueFamilyIndex);
+    if (!imageMemoryBarrier) {
+        return;
+    }
 
-    SkASSERT(newLayout == this->currentLayout() ||
+    VkPipelineStageFlags srcStageMask =
+            VulkanTexture::LayoutToPipelineSrcStageFlags(currentLayout,
+                                                         sharedContext->vulkanCaps());
+    cmdBuffer->addImageMemoryBarrier(srcStageMask, dstStageMask, /*byRegion=*/false,
+                                     &imageMemoryBarrier.value());
+
+    skgpu::MutableTextureStates::SetVkImageLayout(this->mutableState(),
+                                                  imageMemoryBarrier->newLayout);
+    skgpu::MutableTextureStates::SetVkQueueFamilyIndex(this->mutableState(),
+                                                       imageMemoryBarrier->dstQueueFamilyIndex);
+}
+
+std::optional<VkImageMemoryBarrier> VulkanTexture::CreateImageMemoryBarrier(
+        const VulkanSharedContext& sharedContext,
+        VkImage image,
+        const TextureInfo& info,
+        SkISize dimensions,
+        VkImageLayout currentLayout,
+        uint32_t currentQueueIndex,
+        VkImageLayout newLayout,
+        VkAccessFlags dstAccessMask,
+        uint32_t newQueueFamilyIndex) {
+    SkASSERT(newLayout == currentLayout ||
              (VK_IMAGE_LAYOUT_UNDEFINED != newLayout &&
               VK_IMAGE_LAYOUT_PREINITIALIZED != newLayout));
-    VkImageLayout currentLayout = this->currentLayout();
-    uint32_t currentQueueIndex = this->currentQueueFamilyIndex();
 
-    const auto& textureInfo = this->vulkanTextureInfo();
-    auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
+    const auto& textureInfo = TextureInfoPriv::Get<VulkanTextureInfo>(info);
 
-    // Enable the following block on new devices to test that their lazy images stay at 0 memory use
-#if 0
-    auto device = sharedContext->device();
-    if (fAlloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag) {
-        VkDeviceSize size;
-        VULKAN_CALL(sharedContext->interface(),
-                    GetDeviceMemoryCommitment(device, fAlloc.fMemory, &size));
-        SkDebugf("Lazy Image. This: %p, image: %d, size: %d\n", this, fImage, size);
-    }
-#endif
 #ifdef SK_DEBUG
     if (textureInfo.fSharingMode == VK_SHARING_MODE_CONCURRENT) {
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
@@ -240,25 +264,25 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
     } else {
         SkASSERT(textureInfo.fSharingMode == VK_SHARING_MODE_EXCLUSIVE);
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED ||
-            currentQueueIndex == sharedContext->queueIndex()) {
+            currentQueueIndex == sharedContext.queueIndex()) {
             SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
                      currentQueueIndex == VK_QUEUE_FAMILY_EXTERNAL ||
                      currentQueueIndex == VK_QUEUE_FAMILY_FOREIGN_EXT ||
-                     currentQueueIndex == sharedContext->queueIndex());
+                     currentQueueIndex == sharedContext.queueIndex());
         } else if (newQueueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
                    newQueueFamilyIndex == VK_QUEUE_FAMILY_FOREIGN_EXT) {
             SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
-                     currentQueueIndex == sharedContext->queueIndex());
+                     currentQueueIndex == sharedContext.queueIndex());
         }
     }
 #endif
 
     if (textureInfo.fSharingMode == VK_SHARING_MODE_EXCLUSIVE) {
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
-            newQueueFamilyIndex = sharedContext->queueIndex();
+            newQueueFamilyIndex = sharedContext.queueIndex();
         }
         if (currentQueueIndex == VK_QUEUE_FAMILY_IGNORED) {
-            currentQueueIndex = sharedContext->queueIndex();
+            currentQueueIndex = sharedContext.queueIndex();
         }
     }
 
@@ -268,23 +292,18 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
         (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL == currentLayout ||
          VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == currentLayout ||
          VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == currentLayout)) {
-        return;
+        return std::nullopt;
     }
 
     VkAccessFlags srcAccessMask =
             VulkanTexture::LayoutToSrcAccessMask(currentLayout, textureInfo.fImageUsageFlags);
-    VkPipelineStageFlags srcStageMask =
-            VulkanTexture::LayoutToPipelineSrcStageFlags(currentLayout,
-                                                         sharedContext->vulkanCaps());
 
-    VkImageAspectFlags aspectFlags =
-            GetVkImageAspectFlags(TextureInfoPriv::ViewFormat(this->textureInfo()));
+    VkImageAspectFlags aspectFlags = GetVkImageAspectFlags(TextureInfoPriv::ViewFormat(info));
     uint32_t numMipLevels = 1;
-    SkISize dimensions = this->dimensions();
-    if (this->mipmapped() == Mipmapped::kYes) {
+    if (info.mipmapped() == Mipmapped::kYes) {
         numMipLevels = SkMipmap::ComputeLevelCount(dimensions) + 1;
     }
-    VkImageMemoryBarrier imageMemoryBarrier = {
+    return VkImageMemoryBarrier{
         VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,          // sType
         nullptr,                                         // pNext
         srcAccessMask,                                   // srcAccessMask
@@ -293,16 +312,11 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
         newLayout,                                       // newLayout
         currentQueueIndex,                               // srcQueueFamilyIndex
         newQueueFamilyIndex,                             // dstQueueFamilyIndex
-        fImage,                                          // image
+        image,                                           // image
         { aspectFlags, 0, numMipLevels, 0, 1 }           // subresourceRange
     };
-    SkASSERT(srcAccessMask == imageMemoryBarrier.srcAccessMask);
-    cmdBuffer->addImageMemoryBarrier(this, srcStageMask, dstStageMask, /*byRegion=*/false,
-                                     &imageMemoryBarrier);
-
-    skgpu::MutableTextureStates::SetVkImageLayout(this->mutableState(), newLayout);
-    skgpu::MutableTextureStates::SetVkQueueFamilyIndex(this->mutableState(), newQueueFamilyIndex);
 }
+
 
 namespace {
 
