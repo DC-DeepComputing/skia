@@ -397,8 +397,10 @@ fn map_color_space(cs: ZuneColorSpace) -> (JpegColor, u32) {
     }
 }
 
+const JPEG_SIGNATURE: [u8; 2] = [0xFF, jpeg_marker::SOI];
+
 pub fn is_jpeg_data(data: &[u8]) -> bool {
-    data.len() >= 2 && data[0] == 0xFF && data[1] == jpeg_marker::SOI
+    data.starts_with(&JPEG_SIGNATURE)
 }
 
 /// Streaming JPEG reader wrapping zune-jpeg with Rust-side segment scanning.
@@ -553,10 +555,14 @@ impl Reader {
         self.try_read_more();
 
         let raw_data = self.raw_data.borrow();
+        if raw_data.len() < JPEG_SIGNATURE.len() {
+            return if JPEG_SIGNATURE.starts_with(raw_data.as_slice()) {
+                DecodingResult::IncompleteInput
+            } else {
+                DecodingResult::FormatError
+            };
+        }
         if !is_jpeg_data(&raw_data) {
-            if raw_data.len() < 2 && !self.stream_exhausted {
-                return DecodingResult::IncompleteInput;
-            }
             return DecodingResult::FormatError;
         }
         drop(raw_data);
@@ -570,10 +576,10 @@ impl Reader {
 
         match decoder.decode_headers() {
             Ok(()) => {}
+            Err(ref e) if e.is_recoverable_eof() => {
+                return DecodingResult::IncompleteInput;
+            }
             Err(ref e) => {
-                if !self.stream_exhausted {
-                    return DecodingResult::IncompleteInput;
-                }
                 return map_zune_error(e);
             }
         }
