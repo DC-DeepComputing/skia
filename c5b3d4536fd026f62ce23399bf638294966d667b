@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47296b71_5c874874",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T18:59:46Z",
+      "side": 1,
+      "message": "Can we have this return the bool for success?",
+      "range": {
+        "startLine": 317,
+        "startChar": 4,
+        "endLine": 317,
+        "endChar": 8
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dda682fc_47b139f3",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T18:59:46Z",
+      "side": 1,
+      "message": "nit: comment here that this means there was no barrier to issue, not that it failed",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 15
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d84394e_c0edeb88",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T18:59:46Z",
+      "side": 1,
+      "message": "Is it easier if we just type this to take in a `VulkanTextureInfo`?",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 32
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8239dc81_5aa51d7e",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T18:59:46Z",
+      "side": 1,
+      "message": "Can this parameter be the mipmap count instead of dimensions?",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 27
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8abf306_48126f2d",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-07T18:59:46Z",
+      "side": 1,
+      "message": "WDYT about having this function live in `VulkanGraphiteUtils.h`",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 72
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
