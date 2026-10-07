@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56caa77b_456482b1",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T20:01:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47296b71_5c874874",
+      "range": {
+        "startLine": 317,
+        "startChar": 4,
+        "endLine": 317,
+        "endChar": 8
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dda682fc_47b139f3",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-07T18:59:46Z",
       "side": 1,
       "message": "nit: comment here that this means there was no barrier to issue, not that it failed",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 15
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c44b5f9a_fe0b62ed",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T20:01:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dda682fc_47b139f3",
       "range": {
         "startLine": 222,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca166e8f_d6ed5407",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T20:01:30Z",
+      "side": 1,
+      "message": "No since we do call `TextureInfoPriv::ViewFormat(info)` which requires TextureInfo and the field `fViewFormat` in TextureInfo which is not in TextureInfo::Data which is what `VulkanTextureInfo` inherits from.",
+      "parentUuid": "2d84394e_c0edeb88",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 32
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8239dc81_5aa51d7e",
         "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
         "patchSetId": 11
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74131f91_0542d0cd",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T20:01:30Z",
+      "side": 1,
+      "message": "Sure done, though I do think it does add some duplication of calculating the mipmap count at the call sites so IMO it might be better to leave that calculation in `VulkanTexture::CreateImageMemoryBarrier` and keep dimensions. Either is good with me though.",
+      "parentUuid": "8239dc81_5aa51d7e",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 27
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8abf306_48126f2d",
         "filename": "src/gpu/graphite/vk/VulkanTexture.h",
         "patchSetId": 11
@@ -106,6 +202,30 @@
       "writtenOn": "2026-10-07T18:59:46Z",
       "side": 1,
       "message": "WDYT about having this function live in `VulkanGraphiteUtils.h`",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 72
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9029ea9_9861debc",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-07T20:01:30Z",
+      "side": 1,
+      "message": "I think that makes sense for static Vulkan helpers like this, WDYT about also moving `VulkanTexture::LayoutToPipelineSrcStageFlags` and `VulkanTexture::LayoutToSrcAccessMask` there as well? Can just renamed Layout part to VkImageLayout to be more specific since the functions will just be sitting in the skgpu::graphite namespace.",
+      "parentUuid": "f8abf306_48126f2d",
       "range": {
         "startLine": 84,
         "startChar": 0,
