@@ -961,6 +961,9 @@ void SkPictureRecord::addTextBlob(const SkTextBlob* blob) {
 }
 
 void SkPictureRecord::addSlug(const sktext::gpu::Slug* slug) {
+    if (slug) {
+        slug->cacheForSKP();
+    }
     // follow the convention of recording a 1-based index
     this->addInt(find_or_append(fSlugs, slug) + 1);
 }

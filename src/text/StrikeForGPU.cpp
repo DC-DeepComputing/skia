@@ -34,6 +34,13 @@ SkStrike* SkStrikePromise::strike() {
     return std::get<sk_sp<SkStrike>>(fStrikeOrSpec).get();
 }
 
+SkStrike* SkStrikePromise::strikeOrNull() const {
+    if (const auto* s = std::get_if<sk_sp<SkStrike>>(&fStrikeOrSpec)) {
+        return s->get();
+    }
+    return nullptr;
+}
+
 void SkStrikePromise::resetStrike() {
     fStrikeOrSpec = sk_sp<SkStrike>();
 }

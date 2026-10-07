@@ -7,6 +7,7 @@
 #ifndef sktext_SlugImpl_DEFINED
 #define sktext_SlugImpl_DEFINED
 
+#include "include/core/SkData.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -47,6 +48,7 @@ public:
     static sk_sp<Slug> MakeFromBuffer(SkReadBuffer& buffer,
                                       const SkStrikeClient* client);
     void doFlatten(SkWriteBuffer& buffer) const override;
+    void cacheForSKP() const override;
 
     SkRect sourceBounds() const override { return fSourceBounds; }
     SkRect sourceBoundsWithOrigin() const override { return fSourceBounds.makeOffset(fOrigin); }
@@ -69,6 +71,7 @@ private:
     gpu::SubRunContainerOwner fSubRuns;
     const SkRect fSourceBounds;
     const SkPoint fOrigin;
+    mutable sk_sp<SkData> fCachedSKPData;
 };
 
 }  // namespace sktext::gpu

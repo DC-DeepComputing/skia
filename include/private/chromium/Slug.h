@@ -58,6 +58,7 @@ public:
     virtual SkRect sourceBoundsWithOrigin () const = 0;
 
     virtual void doFlatten(SkWriteBuffer&) const = 0;
+    virtual void cacheForSKP() const {}
 
     uint32_t uniqueID() const { return fUniqueID; }
 

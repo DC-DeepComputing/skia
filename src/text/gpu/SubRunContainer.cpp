@@ -30,6 +30,7 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkEnumerate.h"
+#include "src/core/SkFontMetricsPriv.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
@@ -227,7 +228,7 @@ public:
                                 SubRunAllocator* alloc);
 
     int unflattenSize() const;
-    void flatten(SkWriteBuffer& buffer) const;
+    void flatten(SkWriteBuffer& buffer, bool embedStrikeData = false) const;
     static std::optional<PathOpSubmitter> MakeFromBuffer(SkReadBuffer& buffer,
                                                          SubRunAllocator* alloc,
                                                          const SkStrikeClient* client);
@@ -255,8 +256,27 @@ int PathOpSubmitter::unflattenSize() const {
     return fPositions.size_bytes() + fIDsOrPaths.size_bytes();
 }
 
-void PathOpSubmitter::flatten(SkWriteBuffer& buffer) const {
+void PathOpSubmitter::flatten(SkWriteBuffer& buffer, bool embedStrikeData) const {
     fStrikePromise.flatten(buffer);
+
+    SkStrike* strike = embedStrikeData ? fStrikePromise.strikeOrNull() : nullptr;
+    buffer.writeBool(strike != nullptr);
+    if (strike != nullptr) {
+        SkFontMetricsPriv::Flatten(buffer, strike->getFontMetrics());
+        std::vector<SkGlyphID> glyphIDs;
+        glyphIDs.reserve(fIDsOrPaths.size());
+        for (const IDOrPath& idOrPath : fIDsOrPaths) {
+            glyphIDs.push_back(idOrPath.fGlyphID);
+        }
+        std::vector<const SkGlyph*> glyphPtrs(glyphIDs.size());
+        strike->preparePaths(glyphIDs, glyphPtrs.data());
+        std::vector<SkGlyph> paths;
+        paths.reserve(glyphPtrs.size());
+        for (const SkGlyph* glyph : glyphPtrs) {
+            paths.push_back(*glyph);
+        }
+        SkStrike::FlattenGlyphsByType(buffer, {}, paths, {});
+    }
 
     buffer.writeInt(fIsAntiAliased);
     buffer.writeScalar(fStrikeToSourceScale);
@@ -438,7 +458,7 @@ public:
 
 protected:
     SubRunStreamTag subRunStreamTag() const override { return SubRunStreamTag::kPathStreamTag; }
-    void doFlatten(SkWriteBuffer& buffer) const override;
+    void doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const override;
 
 private:
     PathOpSubmitter fPathDrawing;
@@ -448,8 +468,8 @@ int PathSubRun::unflattenSize() const {
     return sizeof(PathSubRun) + fPathDrawing.unflattenSize();
 }
 
-void PathSubRun::doFlatten(SkWriteBuffer& buffer) const {
-    fPathDrawing.flatten(buffer);
+void PathSubRun::doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const {
+    fPathDrawing.flatten(buffer, embedStrikeData);
 }
 
 SubRunOwner PathSubRun::MakeFromBuffer(SkReadBuffer& buffer,
@@ -496,7 +516,7 @@ public:
     }
 
     int unflattenSize() const;
-    void flatten(SkWriteBuffer& buffer) const;
+    void flatten(SkWriteBuffer& buffer, bool embedStrikeData = false) const;
     static std::optional<DrawableOpSubmitter> MakeFromBuffer(SkReadBuffer& buffer,
                                                              SubRunAllocator* alloc,
                                                              const SkStrikeClient* client);
@@ -516,8 +536,28 @@ int DrawableOpSubmitter::unflattenSize() const {
     return fPositions.size_bytes() + fIDsOrDrawables.size_bytes();
 }
 
-void DrawableOpSubmitter::flatten(SkWriteBuffer& buffer) const {
+void DrawableOpSubmitter::flatten(SkWriteBuffer& buffer, bool embedStrikeData) const {
     fStrikePromise.flatten(buffer);
+
+    SkStrike* strike = embedStrikeData ? fStrikePromise.strikeOrNull() : nullptr;
+    buffer.writeBool(strike != nullptr);
+    if (strike != nullptr) {
+        SkFontMetricsPriv::Flatten(buffer, strike->getFontMetrics());
+        skia_private::STArray<32, SkGlyphID> glyphIDs;
+        glyphIDs.reserve(fIDsOrDrawables.size());
+        for (const IDOrDrawable& idOrDrawable : fIDsOrDrawables) {
+            glyphIDs.push_back(idOrDrawable.fGlyphID);
+        }
+        skia_private::STArray<32, const SkGlyph*> glyphPtrs;
+        glyphPtrs.push_back_n(glyphIDs.size());
+        SkSpan<const SkGlyph*> results = strike->prepareDrawables(glyphIDs, glyphPtrs.data());
+        skia_private::STArray<32, SkGlyph> drawables;
+        drawables.reserve(results.size());
+        for (const SkGlyph* glyph : results) {
+            drawables.push_back(*glyph);
+        }
+        SkStrike::FlattenGlyphsByType(buffer, {}, {}, drawables);
+    }
 
     buffer.writeScalar(fStrikeToSourceScale);
     buffer.writePointArray(fPositions);
@@ -645,7 +685,7 @@ public:
 
 protected:
     SubRunStreamTag subRunStreamTag() const override { return SubRunStreamTag::kDrawableStreamTag; }
-    void doFlatten(SkWriteBuffer& buffer) const override;
+    void doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const override;
 
 private:
     DrawableOpSubmitter fDrawingDrawing;
@@ -655,8 +695,8 @@ int DrawableSubRun::unflattenSize() const {
     return sizeof(DrawableSubRun) + fDrawingDrawing.unflattenSize();
 }
 
-void DrawableSubRun::doFlatten(SkWriteBuffer& buffer) const {
-    fDrawingDrawing.flatten(buffer);
+void DrawableSubRun::doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const {
+    fDrawingDrawing.flatten(buffer, embedStrikeData);
 }
 
 SubRunOwner DrawableSubRun::MakeFromBuffer(SkReadBuffer& buffer,
@@ -766,8 +806,8 @@ protected:
         return SubRunStreamTag::kDirectMaskStreamTag;
     }
 
-    void doFlatten(SkWriteBuffer& buffer) const override {
-        fGlyphVector.flatten(buffer);
+    void doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const override {
+        fGlyphVector.flatten(buffer, embedStrikeData);
         flatten_vertex_filler(buffer, fVertexFiller);
     }
 };
@@ -867,8 +907,8 @@ protected:
         return SubRunStreamTag::kTransformMaskStreamTag;
     }
 
-    void doFlatten(SkWriteBuffer& buffer) const override {
-        fGlyphVector.flatten(buffer);
+    void doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const override {
+        fGlyphVector.flatten(buffer, embedStrikeData);
         flatten_vertex_filler(buffer, fVertexFiller);
     }
 
@@ -997,11 +1037,11 @@ public:
 
 protected:
     SubRunStreamTag subRunStreamTag() const override { return SubRunStreamTag::kSDFTStreamTag; }
-    void doFlatten(SkWriteBuffer& buffer) const override {
+    void doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const override {
         buffer.writeInt(fUseLCDText);
         buffer.writeInt(fAntiAliased);
         fMatrixRange.flatten(buffer);
-        fGlyphVector.flatten(buffer);
+        fGlyphVector.flatten(buffer, embedStrikeData);
         flatten_vertex_filler(buffer, fVertexFiller);
     }
 
@@ -1045,9 +1085,9 @@ void add_multi_mask_format(
 namespace sktext::gpu {
 SubRun::~SubRun() = default;
 
-void SubRun::flatten(SkWriteBuffer& buffer) const {
+void SubRun::flatten(SkWriteBuffer& buffer, bool embedStrikeData) const {
     buffer.writeInt(this->subRunStreamTag());
-    this->doFlatten(buffer);
+    this->doFlatten(buffer, embedStrikeData);
 }
 
 SubRunOwner SubRun::MakeFromBuffer(SkReadBuffer& buffer,
@@ -1099,7 +1139,7 @@ int SubRunContainer::AllocSizeHintFromBuffer(SkReadBuffer& buffer) {
     return subRunsSizeHint;
 }
 
-void SubRunContainer::flattenRuns(SkWriteBuffer& buffer) const {
+void SubRunContainer::flattenRuns(SkWriteBuffer& buffer, bool embedStrikeData) const {
     buffer.writeMatrix(fInitialPositionMatrix);
     int subRunCount = 0;
     for ([[maybe_unused]] auto& subRun : fSubRuns) {
@@ -1107,7 +1147,7 @@ void SubRunContainer::flattenRuns(SkWriteBuffer& buffer) const {
     }
     buffer.writeInt(subRunCount);
     for (auto& subRun : fSubRuns) {
-        subRun.flatten(buffer);
+        subRun.flatten(buffer, embedStrikeData);
     }
 }
 

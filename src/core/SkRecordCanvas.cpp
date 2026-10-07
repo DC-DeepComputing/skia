@@ -271,6 +271,9 @@ void SkRecordCanvas::onDrawTextBlob(const SkTextBlob* blob,
 }
 
 void SkRecordCanvas::onDrawSlug(const sktext::gpu::Slug* slug, const SkPaint& paint) {
+    if (slug) {
+        slug->cacheForSKP();
+    }
     this->append<SkRecords::DrawSlug>(paint, sk_ref_sp(slug));
 }
 

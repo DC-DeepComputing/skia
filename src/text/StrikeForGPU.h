@@ -56,6 +56,7 @@ public:
 
     // Do what is needed to return a strike.
     SkStrike* strike();
+    SkStrike* strikeOrNull() const;
 
     // Reset the sk_sp<SkStrike> to nullptr.
     void resetStrike();

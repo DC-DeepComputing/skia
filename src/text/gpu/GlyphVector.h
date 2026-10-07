@@ -151,7 +151,7 @@ public:
     static std::optional<GlyphVector> MakeFromBuffer(SkReadBuffer& buffer,
                                                      const SkStrikeClient* strikeClient,
                                                      SubRunAllocator* alloc);
-    void flatten(SkWriteBuffer& buffer) const;
+    void flatten(SkWriteBuffer& buffer, bool embedStrikeData = false) const;
 
     // This doesn't need to include sizeof(GlyphVector) because this is embedded in each of
     // the sub runs.

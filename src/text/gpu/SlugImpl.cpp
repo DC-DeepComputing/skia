@@ -36,11 +36,27 @@ SlugImpl::SlugImpl(SubRunAllocator&& alloc,
         , fSourceBounds{sourceBounds}
         , fOrigin{origin} {}
 
-void SlugImpl::doFlatten(SkWriteBuffer& buffer) const {
+void SlugImpl::cacheForSKP() const {
+    if (fCachedSKPData) {
+        return;
+    }
+    SkBinaryWriteBuffer buffer({});
     buffer.writeRect(fSourceBounds);
     buffer.writePoint(fOrigin);
     fSubRuns->flattenAllocSizeHint(buffer);
-    fSubRuns->flattenRuns(buffer);
+    fSubRuns->flattenRuns(buffer, /*embedStrikeData=*/true);
+    fCachedSKPData = buffer.snapshotAsData();
+}
+
+void SlugImpl::doFlatten(SkWriteBuffer& buffer) const {
+    if (fCachedSKPData) {
+        buffer.writePad32(fCachedSKPData->data(), fCachedSKPData->size());
+        return;
+    }
+    buffer.writeRect(fSourceBounds);
+    buffer.writePoint(fOrigin);
+    fSubRuns->flattenAllocSizeHint(buffer);
+    fSubRuns->flattenRuns(buffer, /*embedStrikeData=*/false);
 }
 
 sk_sp<Slug> SlugImpl::MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client) {
