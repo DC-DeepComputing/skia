@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89f3b631_e6fc5464",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9394
+      },
+      "writtenOn": "2026-10-07T18:13:49Z",
+      "side": 1,
+      "message": "Hi Heather,\n\nI work with the Google Fonts team as a contractor. These three changes are needed in Skia to support the newly released ISO Open Font Format 5th edition, which we would like to ship in Chrome and Android.\n\nThank you.",
+      "revId": "b744f35045f9c5bb2fcf20c5608ecc2f43111f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
