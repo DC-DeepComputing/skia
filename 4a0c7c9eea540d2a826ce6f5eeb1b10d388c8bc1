@@ -16,6 +16,24 @@
       "message": "This looks to be be producing a lot of bad images on gold now",
       "revId": "4a0c7c9eea540d2a826ce6f5eeb1b10d388c8bc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47dd9bcc_d77ff269",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10941
+      },
+      "writtenOn": "2026-10-07T14:00:15Z",
+      "side": 1,
+      "message": "This workaround is only active on old Mac using 9th Gen Intel GPUs and ANGLE is on GL. How is that possible that removing this workaround leads to bad images?",
+      "parentUuid": "88a0168a_ac41a119",
+      "revId": "4a0c7c9eea540d2a826ce6f5eeb1b10d388c8bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
