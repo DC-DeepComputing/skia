@@ -227,13 +227,10 @@ namespace skia_private {
         return std::string(str);
     }
 
-    constexpr bool StrEndsWithAndLongerThan(const char* str, const char* suffix) {
+    consteval bool StrEndsWithAndLongerThan(const char* str, const char* suffix) {
         auto strView = std::basic_string_view(str);
         auto suffixView = std::basic_string_view(suffix);
-        // string_view::ends_with isn't available until C++20
-        return strView.size() > suffixView.size() &&
-                strView.compare(strView.size() - suffixView.size(),
-                                std::string_view::npos, suffixView) == 0;
+        return strView.size() > suffixView.size() && strView.ends_with(suffixView);
     }
 }
 
@@ -365,9 +362,12 @@ namespace skia_private {
             /* scope if used in a single line if statement.                      */                \
             EventFinalizer(...) {}                                                                 \
             ~EventFinalizer() {                                                                    \
-                if (force_always_trace ||                                                          \
+                const bool usePerfettoAndCategoryEnabled =                                         \
+                        SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents() &&               \
+                        TRACE_EVENT_CATEGORY_ENABLED(category);                                    \
+                if (force_always_trace || usePerfettoAndCategoryEnabled ||                         \
                     CC_UNLIKELY(SkAndroidFrameworkTraceUtils::getEnableDetailedTracing())) {       \
-                    if (SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents()) {               \
+                    if (usePerfettoAndCategoryEnabled) {                                           \
                         TRACE_EVENT_END(category);                                                 \
                     } else {                                                                       \
                         SK_INTERNAL_ATRACE_ARGS_END(__VA_ARGS__);                                  \
@@ -386,9 +386,12 @@ namespace skia_private {
             static_assert(!force_always_trace ||                                                   \
                                   ::skia_private::StrEndsWithAndLongerThan(category, ".always"),   \
                           "[force_always_trace == true] requires [category] to end in '.always'"); \
-            if (force_always_trace ||                                                              \
+            const bool usePerfettoAndCategoryEnabled =                                             \
+                    SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents() &&                   \
+                    TRACE_EVENT_CATEGORY_ENABLED(category);                                        \
+            if (force_always_trace || usePerfettoAndCategoryEnabled ||                             \
                 CC_UNLIKELY(SkAndroidFrameworkTraceUtils::getEnableDetailedTracing())) {           \
-                if (SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents()) {                   \
+                if (usePerfettoAndCategoryEnabled) {                                               \
                     TRACE_EVENT_BEGIN(category, name, ##__VA_ARGS__);                              \
                 } else {                                                                           \
                     SK_INTERNAL_ATRACE_ARGS_BEGIN(name, ##__VA_ARGS__);                            \
@@ -502,18 +505,24 @@ namespace skia_private {
 // Records the value of a counter called "name" immediately. Value
 // must be representable as a 32 bit integer.
 #define TRACE_COUNTER1(category_group, name, value)                              \
-    if (CC_UNLIKELY(SkAndroidFrameworkTraceUtils::getEnableDetailedTracing())) { \
-        if (SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents()) {         \
+    const bool usePerfettoAndCategoryEnabled =                                   \
+            SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents() &&         \
+            TRACE_EVENT_CATEGORY_ENABLED(category);                              \
+    if (usePerfettoAndCategoryEnabled ||                                         \
+        CC_UNLIKELY(SkAndroidFrameworkTraceUtils::getEnableDetailedTracing())) { \
+        if (usePerfettoAndCategoryEnabled) {                                     \
             TRACE_COUNTER(category_group, name, value);                          \
         } else {                                                                 \
             ATRACE_INT(name, value);                                             \
         }                                                                        \
     }
-#define TRACE_COUNTER1_ALWAYS(category_group, name, value)           \
-    if (SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents()) { \
-        TRACE_COUNTER(category_group ".always", name, value);        \
-    } else {                                                         \
-        ATRACE_INT(name, value);                                     \
+#define TRACE_COUNTER1_ALWAYS(category_group, name, value)                        \
+    static_assert(::skia_private::StrEndsWithAndLongerThan(category, ".always")); \
+    if (SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents() &&              \
+        TRACE_EVENT_CATEGORY_ENABLED(category)) {                                 \
+        TRACE_COUNTER(category_group ".always", name, value);                     \
+    } else {                                                                      \
+        ATRACE_INT(name, value);                                                  \
     }
 
 // ATrace has no object tracking, and would require a legacy shim for Perfetto (which likely no-ops
@@ -525,15 +534,18 @@ namespace skia_private {
 #define TRACE_EVENT_OBJECT_DELETED_WITH_ID(category_group, name, id) \
     TRACE_EMPTY(category_group, name, id)
 
-// Macro to efficiently determine if a given category group is enabled. Only works with Perfetto.
-// This is only used for some shader text logging that isn't supported in ATrace anyway.
-#define TRACE_EVENT_CATEGORY_GROUP_ENABLED(category_group, ret)                 \
-    if (CC_UNLIKELY(SkAndroidFrameworkTraceUtils::getEnableDetailedTracing() && \
-                    SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents)) { \
-        *ret = TRACE_EVENT_CATEGORY_ENABLED(category_group);                    \
-    } else {                                                                    \
-        *ret = false;                                                           \
-    }
+// Macro to efficiently determine if a given category is enabled.
+#define TRACE_CATEGORY_ENABLED(category)                                      \
+    [&]() -> bool {                                                           \
+        const bool willPerfettoSucceed =                                      \
+                SkAndroidFrameworkTraceUtils::getUsePerfettoTrackEvents() &&  \
+                TRACE_EVENT_CATEGORY_ENABLED(category);                       \
+        const bool willATraceSucceed =                                        \
+                (::StrEndsWithAndLongerThan(category, ".always") ||           \
+                 SkAndroidFrameworkTraceUtils::getEnableDetailedTracing()) && \
+                ATRACE_ENABLED();                                             \
+        return CC_UNLIKELY(willPerfettoSucceed || willATraceSucceed);         \
+    }()
 
 #else // Route through SkEventTracer (!SK_DISABLE_TRACING && !SK_ANDROID_FRAMEWORK_USE_PERFETTO)
 
@@ -638,16 +650,12 @@ namespace skia_private {
       TRACE_EVENT_PHASE_DELETE_OBJECT, category_group, name, id,     \
       TRACE_EVENT_FLAG_NONE)
 
-// Macro to efficiently determine if a given category group is enabled.
-#define TRACE_EVENT_CATEGORY_GROUP_ENABLED(category_group, ret)             \
-  do {                                                                      \
-    INTERNAL_TRACE_EVENT_GET_CATEGORY_INFO(category_group);                 \
-    if (INTERNAL_TRACE_EVENT_CATEGORY_GROUP_ENABLED_FOR_RECORDING_MODE()) { \
-      *ret = true;                                                          \
-    } else {                                                                \
-      *ret = false;                                                         \
-    }                                                                       \
-  } while (0)
+// Macro to efficiently determine if a given category is enabled.
+#define TRACE_CATEGORY_ENABLED(category)                                         \
+    [&]() -> bool {                                                              \
+        INTERNAL_TRACE_EVENT_GET_CATEGORY_INFO(category);                        \
+        return INTERNAL_TRACE_EVENT_CATEGORY_GROUP_ENABLED_FOR_RECORDING_MODE(); \
+    }()
 
 #endif
 
