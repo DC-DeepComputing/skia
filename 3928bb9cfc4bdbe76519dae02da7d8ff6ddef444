@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3106624d_472d8962",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-07T20:19:40Z",
+      "side": 1,
+      "message": "Good point, the issue really was in `read_metadata()`: its short-input path returned `IncompleteInput` only while the stream was not exhausted, so a known empty stream fell through to `FormatError`. I moved the fix there by treating `raw_data.is_empty()` as incomplete regardless of the exhaustion flag. `SkJpegRustCodec::MakeFromStream()` already maps that result to `kIncompleteInput`.",
+      "parentUuid": "d455b7bb_d0319a2d",
+      "revId": "3928bb9cfc4bdbe76519dae02da7d8ff6ddef444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "facbde1a_42962a9a",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e097ed9_f17be422",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-07T20:19:40Z",
+      "side": 1,
+      "message": "You’re right—the zero-byte check was too tied to the specific failure case from the test where we reproduced the failure in windows. I added coverage for empty, FF, 00, FF D8, and complete JPEG input.",
+      "parentUuid": "facbde1a_42962a9a",
+      "range": {
+        "startLine": 32,
+        "startChar": 64,
+        "endLine": 32,
+        "endChar": 65
+      },
+      "revId": "3928bb9cfc4bdbe76519dae02da7d8ff6ddef444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84e1b1c1_8ab2a00d",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-10-07T19:31:40Z",
       "side": 1,
       "message": "Why is this extra `if` required?  Why cannot this be handled by `SkJpegRustCodec::MakeFromStream` - when it calls `rust_jpeg::new_reader` and maps the result via `MapDecodingResult` (which seems to cover `kIncompleteInput`)?",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 5
+      },
+      "revId": "3928bb9cfc4bdbe76519dae02da7d8ff6ddef444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f0d9431_fe40d402",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-07T20:19:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84e1b1c1_8ab2a00d",
       "range": {
         "startLine": 37,
         "startChar": 4,
