@@ -1,0 +1,186 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "287aa1a5_be1560e3",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "I don\u0027t want to assume apple_unicode just because we are not mac. It has to be an explicit set of this flag.",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aabe47b_7b73dd89",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "I thought that CoreText only gives us yes/no answer for RTL, not actual level as a number? If it\u0027s correct, we need to use ICU bidi here.",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e6dc912_9a736114",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we update the SkUnicodeHardCodedCharProperties version with this method? I assume it would be useful in general, not just for Apple.",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e38be25_388f4f14",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "Same comment as above. Isn\u0027t it generic?",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948e0a06_a3539d69",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "Same comment as above. Isn\u0027t it generic?",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa0ad865_3f4b7234",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "Same comment as above. Isn\u0027t it generic?",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "834b5583_19941a3c",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "Same comment as above. Isn\u0027t it generic?",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33b0eee0_e70b4946",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "Does it mean that you wrote reorderVisual yourself? We do have one in ICU bidi that we probably should use here. It\u0027s tested, used everywhere and much safer I think.",
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e298692d_47dd7b96",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "We have this code in two places which is wrong already. Also, there is a comment on the first place about using ICU bidi instead of this code which does not give you the real bidi level.",
+      "range": {
+        "startLine": 419,
+        "startChar": 0,
+        "endLine": 424,
+        "endChar": 13
+      },
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99aad80e_9aa98f20",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-07T14:47:08Z",
+      "side": 1,
+      "message": "We use this pattern everywhere with some small differences (kCFStringTokenizerUnitWordBoundary in this case). Shouldn\u0027t we make it into the method (as it was done for ICU Unicode, by the way)?\nAlso: even with the common method we will call the same thing so many times probably for the same text. Shouldn\u0027t we check if the text is the same and keep the tokenizer (if it\u0027s possible) or CFStringRef (if it makes sense)?\nOr we can cache all the results and return them without recomputing at least to the last text (I don\u0027t want to go for real cache here).",
+      "range": {
+        "startLine": 466,
+        "startChar": 0,
+        "endLine": 499,
+        "endChar": 0
+      },
+      "revId": "d610f33d39db620b42cce0b9f7c939122b3b5462",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
