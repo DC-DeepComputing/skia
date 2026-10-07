@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce630f0_ab338789",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2222,
+      "author": {
+        "id": 4679461
+      },
+      "writtenOn": "2026-10-07T14:59:18Z",
+      "side": 1,
+      "message": "Done. Also simplified the comment.",
+      "parentUuid": "bb5650f9_cb1d4cdf",
+      "range": {
+        "startLine": 2222,
+        "startChar": 0,
+        "endLine": 2222,
+        "endChar": 89
+      },
+      "revId": "f6892d63d5c53c8173a0402cc66ddccbe8a849f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "187a96b2_c72793be",
@@ -71,6 +95,24 @@
       "writtenOn": "2026-10-07T14:50:17Z",
       "side": 1,
       "message": "nit: extra newline",
+      "revId": "f6892d63d5c53c8173a0402cc66ddccbe8a849f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "913801ad_8ce6fee3",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2224,
+      "author": {
+        "id": 4679461
+      },
+      "writtenOn": "2026-10-07T14:59:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "187a96b2_c72793be",
       "revId": "f6892d63d5c53c8173a0402cc66ddccbe8a849f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
