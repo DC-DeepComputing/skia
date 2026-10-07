@@ -52,6 +52,24 @@
       "parentUuid": "47dd9bcc_d77ff269",
       "revId": "4a0c7c9eea540d2a826ce6f5eeb1b10d388c8bc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af2e0c50_3427ca1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2026-10-07T15:27:24Z",
+      "side": 1,
+      "message": "Thanks, as per offline discussion it was a flake on the Gold image bot which let to bad images. Closing this as resolved.",
+      "parentUuid": "ccf8ba69_01306d5d",
+      "revId": "4a0c7c9eea540d2a826ce6f5eeb1b10d388c8bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
