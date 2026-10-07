@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc4e89b_7a8da1f7",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-07T20:10:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "57600adf_0df735d1",
+      "range": {
+        "startLine": 127,
+        "startChar": 12,
+        "endLine": 127,
+        "endChar": 26
+      },
+      "revId": "88a93812fff3d4583a3c2a9df97e3ce788864baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5d85b79_1cf29fb0",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-02T18:18:23Z",
       "side": 1,
       "message": "Can be removed once SkDebugf is marked unsafe internally",
+      "range": {
+        "startLine": 518,
+        "startChar": 4,
+        "endLine": 518,
+        "endChar": 18
+      },
+      "revId": "88a93812fff3d4583a3c2a9df97e3ce788864baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba844361_3a424025",
+        "filename": "src/gpu/graphite/SerializationUtils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-07T20:10:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a5d85b79_1cf29fb0",
       "range": {
         "startLine": 518,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cc06987_b4568ec9",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-07T20:10:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6f6dfac5_b649f5fa",
+      "range": {
+        "startLine": 55,
+        "startChar": 11,
+        "endLine": 55,
+        "endChar": 32
+      },
+      "revId": "88a93812fff3d4583a3c2a9df97e3ce788864baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb578313_26ef610a",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-10-02T18:18:23Z",
       "side": 1,
       "message": "SkSL::STring::appendf is another SkLog/SkDebugf class function",
+      "range": {
+        "startLine": 245,
+        "startChar": 33,
+        "endLine": 245,
+        "endChar": 40
+      },
+      "revId": "88a93812fff3d4583a3c2a9df97e3ce788864baf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d499384a_7d1d49df",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-07T20:10:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fb578313_26ef610a",
       "range": {
         "startLine": 245,
         "startChar": 33,
