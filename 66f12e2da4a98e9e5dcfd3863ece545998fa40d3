@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dde00b58_c220394a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2026-10-07T03:45:18Z",
+      "side": 1,
+      "message": "Hi Jiamei, I would like us to change a few things.\n\nThe intent is that the rules should be placed next to the source code, to make it clear where the rules apply and owned, rather than in agents/*. Could you change to the following the following directory setup:\n\nRemove the `rules` \u0026 `candidates` folders, and combine their contents.\n\nPlace the rules in RULES/ folders in their corresponding location in the source tree as follows:\n\nsrc/bazel/RULES/factor-deduplicated-macro-argument-transformations.yaml\nsrc/gpu/RULES/accept-resource-directly-over-binding-descriptor.yaml\n...",
+      "revId": "66f12e2da4a98e9e5dcfd3863ece545998fa40d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
