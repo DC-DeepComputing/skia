@@ -34,6 +34,24 @@
       "parentUuid": "88a0168a_ac41a119",
       "revId": "4a0c7c9eea540d2a826ce6f5eeb1b10d388c8bc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccf8ba69_01306d5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10941
+      },
+      "writtenOn": "2026-10-07T14:02:06Z",
+      "side": 1,
+      "message": "This is the only driver bug entry: https://source.chromium.org/chromium/chromium/src/+/main:gpu/config/gpu_driver_bug_list.json;drc\u003dd7ce2e8017817ac685a3e11e4ed836ea2cdc6b5d;l\u003d1219",
+      "parentUuid": "47dd9bcc_d77ff269",
+      "revId": "4a0c7c9eea540d2a826ce6f5eeb1b10d388c8bc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
