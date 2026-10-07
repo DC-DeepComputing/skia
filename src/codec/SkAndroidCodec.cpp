@@ -64,11 +64,11 @@ std::unique_ptr<SkAndroidCodec> SkAndroidCodec::MakeFromCodec(std::unique_ptr<Sk
         // SkAndroidCodecAdapter for both these formats.
         case SkEncodedImageFormat::kAVIF:
         case SkEncodedImageFormat::kHEIF:
+        case SkEncodedImageFormat::kJPEGXL:
             return std::make_unique<SkAndroidCodecAdapter>(codec.release());
         case SkEncodedImageFormat::kPKM:
         case SkEncodedImageFormat::kKTX:
         case SkEncodedImageFormat::kASTC:
-        case SkEncodedImageFormat::kJPEGXL:
             return nullptr;
     }
     SkUNREACHABLE;
