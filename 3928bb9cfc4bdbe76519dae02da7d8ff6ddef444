@@ -16,6 +16,52 @@
       "message": "Sorry, I know I pointed you at this exact function but I was really thinking of the lowest-level factory that performs stream validation.\n\nLooking at SkJpegRustCodec::MakeFromStream, it seems it\u0027s already [wired](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp;drc\u003d226ac8e4ca0aa08b467d1eaa8333b1eae0276150;l\u003d99) to pass through errors from `rust_jpeg::Reader::read_metadata()`, which I presume is the failure point we\u0027re hitting for zero-length streams.  Is the issue that `read_metadata` does not return `IncompleteInput` for short streams?\n\nMy preference order for where to address this would be\n\n1) read_metadata()\n2) SkJpegRustCodec::MakeFromStream()",
       "revId": "3928bb9cfc4bdbe76519dae02da7d8ff6ddef444",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "facbde1a_42962a9a",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-07T19:31:40Z",
+      "side": 1,
+      "message": "Is a zero-length stream the only problem that `SkJpegRustCodec::MakeFromStream` doesn\u0027t handle today?  What about 1-byte-long streams?  What is the cut-off / where does the cut-off come from?",
+      "range": {
+        "startLine": 32,
+        "startChar": 64,
+        "endLine": 32,
+        "endChar": 65
+      },
+      "revId": "3928bb9cfc4bdbe76519dae02da7d8ff6ddef444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84e1b1c1_8ab2a00d",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-07T19:31:40Z",
+      "side": 1,
+      "message": "Why is this extra `if` required?  Why cannot this be handled by `SkJpegRustCodec::MakeFromStream` - when it calls `rust_jpeg::new_reader` and maps the result via `MapDecodingResult` (which seems to cover `kIncompleteInput`)?",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 5
+      },
+      "revId": "3928bb9cfc4bdbe76519dae02da7d8ff6ddef444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
