@@ -70,6 +70,30 @@
       },
       "revId": "a05e6ee827f62b4f7db32271e4bd6dd39d5c1531",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bdef184_f66b06a0",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-07T19:12:00Z",
+      "side": 1,
+      "message": "Discussed offline. I understood that the model for SkContext is\n* One SkContext per process. Client should only be using one SkContext\n* SkContextOptions does not need to be copyable and can be passed by reference\n* Skia should own the objects so the client does not have to \n\nUpdated the pointers to use unique_ptrs",
+      "parentUuid": "af17bf1a_5738336e",
+      "range": {
+        "startLine": 74,
+        "startChar": 4,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "a05e6ee827f62b4f7db32271e4bd6dd39d5c1531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
