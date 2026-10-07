@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f27d632_938a1da2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3467061
+      },
+      "writtenOn": "2026-10-07T14:04:32Z",
+      "side": 1,
+      "message": "(moving from ag/42654844)",
+      "revId": "1555f9cd05220855f730d3a5c4e4e389dda681a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
