@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1c0979e_f5724b26",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-07T20:21:01Z",
+      "side": 1,
+      "message": "These objects could be used by anything in Skia (e.g. SkContext). So I wouldn\u0027t call out SkRecorder specifically here. Just say something like \"guarded by internal mutexes so they can safely be accessed concurrently across threads.\"",
+      "range": {
+        "startLine": 61,
+        "startChar": 58,
+        "endLine": 61,
+        "endChar": 87
+      },
+      "revId": "21b7edb5294df49b62ab18fc73b99726fea76dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25376961_c29854fa",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-07T20:21:01Z",
+      "side": 1,
+      "message": "This isn\u0027t a public object so we shouldn\u0027t reference it in a public API since it won\u0027t mean anything to a client.",
+      "range": {
+        "startLine": 61,
+        "startChar": 7,
+        "endLine": 61,
+        "endChar": 22
+      },
+      "revId": "21b7edb5294df49b62ab18fc73b99726fea76dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe4786a6_ac96e5aa",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-07T20:21:01Z",
+      "side": 1,
+      "message": "unique_ptr default initializes to nullptr, so we typically don\u0027t explicitly set it here. We use the same pattern for things like sk_sp.",
+      "range": {
+        "startLine": 73,
+        "startChar": 41,
+        "endLine": 73,
+        "endChar": 51
+      },
+      "revId": "21b7edb5294df49b62ab18fc73b99726fea76dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
