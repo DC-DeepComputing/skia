@@ -29,6 +29,12 @@ bool IsJpeg(const void* buff, size_t bytesRead) {
 std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
                                 SkCodec::Result* result,
                                 SkCodecs::DecodeContext) {
+    if (stream && stream->hasLength() && stream->getLength() == 0) {
+        if (result) {
+            *result = SkCodec::kIncompleteInput;
+        }
+        return nullptr;
+    }
     return SkJpegRustCodec::MakeFromStream(std::move(stream), result);
 }
 
