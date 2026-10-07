@@ -25,3 +25,8 @@ DEF_TEST(FontScanner_Fontations_NamedInstances2, reporter) {
 DEF_TEST(FontScanner_Fontations_FontCollection, reporter) {
     FontScanner_FontCollection(reporter, SkFontScanner_Make_Fontations().get());
 }
+
+DEF_TEST(FontScanner_Fontations_MakeFromStreamDeduplication, reporter) {
+    FontScanner_MakeFromStreamDeduplication(reporter, SkFontScanner_Make_Fontations().get());
+}
+
