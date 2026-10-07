@@ -46,6 +46,30 @@
       },
       "revId": "5301738697eb94b0125a06f962220bd130c04d7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "434b4bd4_6159ecc4",
+        "filename": "src/cpu/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-07T18:29:57Z",
+      "side": 1,
+      "message": "Resolving for now but let me know if you have any questions",
+      "parentUuid": "3f65951f_c23a2874",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "5301738697eb94b0125a06f962220bd130c04d7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
