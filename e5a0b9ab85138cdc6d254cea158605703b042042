@@ -16,6 +16,63 @@
       "message": "PTAL",
       "revId": "e5a0b9ab85138cdc6d254cea158605703b042042",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09541279_62cdf0b6",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-08T21:45:35Z",
+      "side": 1,
+      "message": "enabled ?",
+      "range": {
+        "startLine": 273,
+        "startChar": 46,
+        "endLine": 273,
+        "endChar": 47
+      },
+      "revId": "e5a0b9ab85138cdc6d254cea158605703b042042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "722877a9_a8eb5467",
+        "filename": "tests/GLFramebufferDeletionTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-08T21:45:35Z",
+      "side": 1,
+      "message": "I\u0027m unsure if this second set of tests is worth keeping. Skia has to make sure our usage is correct (and works around the driver bug) but we make no promises about raw GL calls.",
+      "revId": "e5a0b9ab85138cdc6d254cea158605703b042042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6911c242_f0f9ef6d",
+        "filename": "tests/GLFramebufferDeletionTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-08T21:45:35Z",
+      "side": 1,
+      "message": "iiuc won\u0027t these be causing driver crashes when run? That seems problematic on the bots.",
+      "revId": "e5a0b9ab85138cdc6d254cea158605703b042042",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
