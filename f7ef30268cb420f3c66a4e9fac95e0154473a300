@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d769b84_6e76a4e1",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T16:01:58Z",
+      "side": 1,
+      "message": "Nice find 😊",
+      "range": {
+        "startLine": 155,
+        "startChar": 22,
+        "endLine": 155,
+        "endChar": 33
+      },
+      "revId": "f7ef30268cb420f3c66a4e9fac95e0154473a300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

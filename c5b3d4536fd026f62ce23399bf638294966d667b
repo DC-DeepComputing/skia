@@ -166,6 +166,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c01c525b_e2a3b83a",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T16:01:58Z",
+      "side": 1,
+      "message": "Using fAspectMask is a nice solution that sidesteps this whole issue.",
+      "parentUuid": "85928bde_10203691",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 32
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8239dc81_5aa51d7e",
@@ -237,6 +261,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50477015_ba907500",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T16:01:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ec9c68c_ab0f174f",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 27
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8abf306_48126f2d",
@@ -298,6 +346,30 @@
       "side": 1,
       "message": "Yes I think that makes sense.",
       "parentUuid": "e9029ea9_9861debc",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 72
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28cdfd58_f73dc6dd",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T16:01:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc26e51a_aeb1f00a",
       "range": {
         "startLine": 84,
         "startChar": 0,
