@@ -8,7 +8,10 @@
 #ifndef SKFONTSCANNER_FREE_TYPE_PRIV_H_
 #define SKFONTSCANNER_FREE_TYPE_PRIV_H_
 
+#include "include/core/SkData.h"
 #include "include/core/SkFontScanner.h"
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "src/ports/SkTypeface_FreeType.h"
@@ -39,9 +42,20 @@ public:
             const SkString& name,
             SkFontStyle* style);
 private:
+    struct CachedScanInstance {
+        sk_sp<const SkData> fData;
+        int fFaceIndex = -1;
+        SkString fName;
+        SkFontStyle fStyle;
+        bool fIsFixedPitch = false;
+        AxisDefinitions fAxes;
+        VariationPosition fPosition;
+    };
+
     FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
     FT_Library fLibrary;
     mutable SkMutex fLibraryMutex;
+    mutable CachedScanInstance fLastScannedInstance;
 };
 
 #endif // SKFONTSCANNER_FREE_TYPE_PRIV_H_

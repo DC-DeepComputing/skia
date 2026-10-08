@@ -27,3 +27,8 @@ DEF_TEST(FontScanner_FreeType__NamedInstances2, reporter) {
 DEF_TEST(FontScanner_FreeType_FontCollection, reporter) {
     FontScanner_FontCollection(reporter, SkFontScanner_Make_FreeType().get());
 }
+
+DEF_TEST(FontScanner_FreeType_MakeFromStreamDeduplication, reporter) {
+    FontScanner_MakeFromStreamDeduplication(reporter, SkFontScanner_Make_FreeType().get());
+}
+

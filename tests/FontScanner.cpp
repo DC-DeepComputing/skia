@@ -231,3 +231,77 @@ void FontScanner_FontCollection(skiatest::Reporter* reporter, SkFontScanner* sca
         REPORTER_ASSERT(reporter, (faceIndex != 1) || (style.weight() == 700.0f));
     }
 }
+
+void FontScanner_MakeFromStreamDeduplication(skiatest::Reporter* reporter,
+                                             SkFontScanner* scanner) {
+    SkString varName = GetResourcePath("fonts/Variable.ttf");
+    std::unique_ptr<SkStreamAsset> varStream = SkStream::MakeFromFile(varName.c_str());
+    if (!varStream) {
+        REPORTER_ASSERT(reporter, false, "Cannot open the font file %s\n", varName.c_str());
+        return;
+    }
+
+    // Prime the scanner's default instance cache via scanInstance, then invoke MakeFromStream
+    // repeatedly with different variation coordinates on duplicated streams.
+    bool isFixedPitch = false;
+    SkString realName;
+    SkFontStyle scannedStyle;
+    SkFontScanner::AxisDefinitions axes;
+    SkFontScanner::VariationPosition current;
+    REPORTER_ASSERT(reporter,
+                    scanner->scanInstance(varStream.get(), 0, 0,
+                                          &realName, &scannedStyle, &isFixedPitch,
+                                          &axes, &current));
+
+    const SkFourByteTag wghtTag = SkSetFourByteTag('w', 'g', 'h', 't');
+    const SkFourByteTag wdthTag = SkSetFourByteTag('w', 'd', 't', 'h');
+    constexpr float kWeights[] = {100.0f, 400.0f, 700.0f, 900.0f};
+    constexpr float kWidths[] = {50.0f, 100.0f, 150.0f, 200.0f};
+
+    for (size_t i = 0; i < std::size(kWeights); ++i) {
+        SkFontArguments::VariationPosition::Coordinate coords[] = {
+            {wghtTag, kWeights[i]},
+            {wdthTag, kWidths[i]},
+        };
+        SkFontArguments args;
+        args.setCollectionIndex(0);
+        args.setVariationDesignPosition({coords, std::size(coords)});
+
+        sk_sp<SkTypeface> face = scanner->MakeFromStream(varStream->duplicate(), args);
+        REPORTER_ASSERT(reporter, face);
+        if (!face) {
+            continue;
+        }
+
+        SkFontArguments::VariationPosition::Coordinate actualCoords[2];
+        int numCoords = face->getVariationDesignPosition(actualCoords);
+        REPORTER_ASSERT(reporter, numCoords == 2);
+        if (numCoords == 2) {
+            REPORTER_ASSERT(reporter, actualCoords[0].axis == wghtTag);
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(actualCoords[0].value, kWeights[i]));
+            REPORTER_ASSERT(reporter, actualCoords[1].axis == wdthTag);
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(actualCoords[1].value, kWidths[i]));
+        }
+    }
+
+    // Verify that switching to a TTC collection and varying collectionIndex invalidates any
+    // cached scan result from a different face index or file.
+    SkString ttcName = GetResourcePath("fonts/test.ttc");
+    std::unique_ptr<SkStreamAsset> ttcStream = SkStream::MakeFromFile(ttcName.c_str());
+    if (!ttcStream) {
+        REPORTER_ASSERT(reporter, false, "Cannot open the font file %s\n", ttcName.c_str());
+        return;
+    }
+
+    sk_sp<SkTypeface> ttcFace0 = scanner->MakeFromStream(
+        ttcStream->duplicate(), SkFontArguments().setCollectionIndex(0));
+    sk_sp<SkTypeface> ttcFace1 = scanner->MakeFromStream(
+        ttcStream->duplicate(), SkFontArguments().setCollectionIndex(1));
+    REPORTER_ASSERT(reporter, ttcFace0);
+    REPORTER_ASSERT(reporter, ttcFace1);
+    if (ttcFace0 && ttcFace1) {
+        REPORTER_ASSERT(reporter, ttcFace0->fontStyle().weight() == 400);
+        REPORTER_ASSERT(reporter, ttcFace1->fontStyle().weight() == 700);
+    }
+}
+

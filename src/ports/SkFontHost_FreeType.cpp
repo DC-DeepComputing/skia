@@ -2048,13 +2048,18 @@ void SkTypeface_FreeTypeStream::onGetFontDescriptor(SkFontDescriptor* desc, bool
 sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                       const SkFontArguments& args) {
     static SkFontScanner_FreeType scanner;
+    return scanner.MakeFromStream(std::move(stream), args);
+}
+
+sk_sp<SkTypeface> SkFontScanner_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                                         const SkFontArguments& args) const {
     bool isFixedPitch;
     SkFontStyle style;
     SkString name;
     SkFontScanner::AxisDefinitions axisDefinitions;
     SkFontScanner::VariationPosition current;
-    if (!scanner.scanInstance(stream.get(), args.getCollectionIndex(), 0,
-                              &name, &style, &isFixedPitch, &axisDefinitions, &current)) {
+    if (!this->scanInstance(stream.get(), args.getCollectionIndex(), 0,
+                            &name, &style, &isFixedPitch, &axisDefinitions, &current)) {
         return nullptr;
     }
 
@@ -2160,6 +2165,21 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                                           VariationPosition* position) const {
 
     SkAutoMutexExclusive libraryLock(fLibraryMutex);
+
+    sk_sp<const SkData> streamData =
+            (stream && instanceIndex == 0 && name && style && isFixedPitch && axes && position)
+                    ? stream->getData()
+                    : nullptr;
+    if (streamData &&
+        fLastScannedInstance.fData.get() == streamData.get() &&
+        fLastScannedInstance.fFaceIndex == faceIndex) {
+        *name = fLastScannedInstance.fName;
+        *style = fLastScannedInstance.fStyle;
+        *isFixedPitch = fLastScannedInstance.fIsFixedPitch;
+        *axes = fLastScannedInstance.fAxes;
+        *position = fLastScannedInstance.fPosition;
+        return true;
+    }
 
     FT_StreamRec streamRec;
     SkUniqueFTFace face(this->openFace(stream, (instanceIndex << 16) + faceIndex, &streamRec));
@@ -2319,12 +2339,12 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
         return false;
     }
 
-    return true;
-}
+    if (streamData) {
+        fLastScannedInstance = {
+                std::move(streamData), faceIndex, *name, *style, *isFixedPitch, *axes, *position};
+    }
 
-sk_sp<SkTypeface> SkFontScanner_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
-                                                         const SkFontArguments& args) const {
-    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
+    return true;
 }
 
 SkTypeface::FactoryId SkFontScanner_FreeType::getFactoryId() const {
