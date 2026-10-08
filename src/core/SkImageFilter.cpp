@@ -262,6 +262,17 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
     return result;
 }
 
+bool SkImageFilter_Base::filterAndDraw(const skif::Context& context,
+                                           SkDevice* device,
+                                           const SkBlender* blender) const {
+    if (context.desiredOutput().isEmpty() || !context.mapping().layerMatrix().isFinite()) {
+        // Let filterImage() produce the empty result and FilterResult::draw() handle blenders
+        // that affect transparent black.
+        return false;
+    }
+    return this->onFilterAndDraw(context, device, blender);
+}
+
 sk_sp<SkImage> SkImageFilter_Base::makeImageWithFilter(sk_sp<skif::Backend> backend,
                                                        sk_sp<SkImage> src,
                                                        const SkIRect& subset,
