@@ -6,12 +6,17 @@
  */
 #include "src/text/gpu/StrikeCache.h"
 
+#include "include/core/SkFontMetrics.h"
+#include "include/core/SkTypeface.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/core/SkDescriptor.h"
+#include "src/core/SkFontMetricsPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTraceEvent.h"
@@ -179,9 +184,31 @@ std::optional<SkStrikePromise> SkStrikePromise::MakeFromBuffer(
     }
 
     const bool hasEmbeddedStrike = buffer.readBool();
+    if (!buffer.isValid()) {
+        return std::nullopt;
+    }
+
     if (hasEmbeddedStrike) {
-        // TODO(viewer): Reconstruct or merge the embedded SkFontMetrics and
-        // SkStrike::FlattenGlyphsByType data into strikeCache here when replaying in Viewer.
+        std::optional<SkFontMetrics> fontMetrics = SkFontMetricsPriv::MakeFromBuffer(buffer);
+        if (!buffer.validate(fontMetrics.has_value())) {
+            return std::nullopt;
+        }
+
+        uint32_t size = 0;
+        const void* ptr = descriptor->getDesc()->findEntry(kRec_SkDescriptorTag, &size);
+        if (!buffer.validate(ptr != nullptr && size == sizeof(SkScalerContextRec))) {
+            return std::nullopt;
+        }
+
+        sk_sp<SkStrike> strike = strikeCache->findStrike(*descriptor->getDesc());
+        if (strike == nullptr) {
+            SkStrikeSpec strikeSpec{*descriptor->getDesc(), SkTypeface::MakeEmpty()};
+            strike = strikeCache->createStrike(strikeSpec, &fontMetrics.value());
+        }
+        if (!buffer.validate(strike != nullptr && strike->mergeFromBuffer(buffer))) {
+            return std::nullopt;
+        }
+        return SkStrikePromise{std::move(strike)};
     }
 
     // If there is a client, then this from a different process. Translate the SkTypefaceID from
