@@ -16,6 +16,52 @@
       "message": "SGTM!",
       "revId": "7557b6a0a8d554ecd3f5a7739f6c4eb5135e3233",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78e83415_929e6ec8",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:36:11Z",
+      "side": 1,
+      "message": "Restore",
+      "range": {
+        "startLine": 1342,
+        "startChar": 8,
+        "endLine": 1345,
+        "endChar": 0
+      },
+      "revId": "7557b6a0a8d554ecd3f5a7739f6c4eb5135e3233",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e3237a3_98e51311",
+        "filename": "src/gpu/graphite/SharedContext.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:36:11Z",
+      "side": 1,
+      "message": "These lines don\u0027t need to be modified",
+      "range": {
+        "startLine": 106,
+        "startChar": 29,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "7557b6a0a8d554ecd3f5a7739f6c4eb5135e3233",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
