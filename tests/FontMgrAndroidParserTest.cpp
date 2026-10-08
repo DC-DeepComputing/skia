@@ -404,7 +404,33 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemVariableTypeface, reporter) {
     custom.fIsolated = false;
 
     sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
-    // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf"
+    // "sans-serif" in "fonts/fonts.xml" is "fonts/Distortable.ttf" with 9 weight entries.
+    sk_sp<SkFontStyleSet> sansSerifSet(fontMgr->matchFamily("sans-serif"));
+    REPORTER_ASSERT(reporter, sansSerifSet);
+    REPORTER_ASSERT(reporter, sansSerifSet->count() == 9);
+
+    constexpr float kExpectedWeights[9] = {
+        0.5f, 0.65f, 0.85f, 1.0f, 1.2f, 1.4f, 1.6f, 1.8f, 2.0f
+    };
+    const SkFourByteTag wghtTag = SkSetFourByteTag('w', 'g', 'h', 't');
+    for (int i = 0; i < sansSerifSet->count(); ++i) {
+        SkFontStyle style;
+        sansSerifSet->getStyle(i, &style, nullptr);
+        REPORTER_ASSERT(reporter, style.weight() == (i + 1) * 100);
+
+        sk_sp<SkTypeface> face(sansSerifSet->createTypeface(i));
+        REPORTER_ASSERT(reporter, face);
+        REPORTER_ASSERT(reporter, face->fontStyle().weight() == (i + 1) * 100);
+
+        SkFontArguments::VariationPosition::Coordinate coord;
+        int numCoords = face->getVariationDesignPosition({&coord, 1});
+        REPORTER_ASSERT(reporter, numCoords == 1);
+        if (numCoords == 1) {
+            REPORTER_ASSERT(reporter, coord.axis == wghtTag);
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(coord.value, kExpectedWeights[i]));
+        }
+    }
+
     sk_sp<SkTypeface> typeface(fontMgr->legacyMakeTypeface("sans-serif", SkFontStyle()));
 
     SkBitmap bitmapStream;
@@ -487,5 +513,140 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
     sk_sp<SkTypeface> typeface(fontMgr->matchFamilyStyleCharacter(
         "sans-serif", SkFontStyle(), nullptr, 0, '!'));
 
-    REPORTER_ASSERT(reporter, typeface->fontStyle() == SkFontStyle::Bold());
+    REPORTER_ASSERT(reporter, typeface);
+    if (typeface) {
+        REPORTER_ASSERT(reporter, typeface->fontStyle() == SkFontStyle::Bold());
+    }
 }
+
+DEF_TEST_SCANNERS(FontMgrAndroidMissingFilesAndLifetime, reporter) {
+    SkString basePath = GetResourcePath("fonts/");
+    SkString v22FontsXml = GetResourcePath("android_fonts/v22/fonts.xml");
+    if (!sk_exists(v22FontsXml.c_str())) {
+        ERRORF(reporter, "file missing: android_fonts/v22/fonts.xml\n");
+        return;
+    }
+
+    // Test missing font file filtering and partial family loading using v22/fonts.xml
+    // pointed at resources/fonts/ (where Roboto-Regular.ttf and Distortable.ttf exist,
+    // while other Roboto weights and Noto* fonts do not exist).
+    SkFontMgr_Android_CustomFonts custom;
+    custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+    custom.fBasePath = basePath.c_str();
+    custom.fFontsXml = v22FontsXml.c_str();
+    custom.fFallbackFontsXml = nullptr;
+    custom.fIsolated = false;
+
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
+    REPORTER_ASSERT(reporter, fontMgr);
+
+    // "serif" has only missing NotoSerif-*.ttf files, so it should be skipped.
+    sk_sp<SkFontStyleSet> serifSet(fontMgr->matchFamily("serif"));
+    REPORTER_ASSERT(reporter, serifSet && serifSet->count() == 0);
+    REPORTER_ASSERT(reporter, fontMgr->matchFamilyStyle("serif", SkFontStyle()) == nullptr);
+
+    // "sans-serif" lists 12 Roboto files, of which only Roboto-Regular.ttf exists on disk.
+    sk_sp<SkFontStyleSet> sansSet(fontMgr->matchFamily("sans-serif"));
+    REPORTER_ASSERT(reporter, sansSet && sansSet->count() == 1);
+
+    // "var" lists 9 variable-font instances of Distortable.ttf, all of which exist.
+    sk_sp<SkFontStyleSet> varSet(fontMgr->matchFamily("var"));
+    REPORTER_ASSERT(reporter, varSet && varSet->count() == 9);
+
+    // Verify that an SkFontStyleSet outliving SkFontMgr remains safe to use.
+    fontMgr.reset();
+    sk_sp<SkTypeface> varFace(varSet->createTypeface(0));
+    REPORTER_ASSERT(reporter, varFace);
+    sk_sp<SkTypeface> matchedFace(varSet->matchStyle(SkFontStyle::Bold()));
+    REPORTER_ASSERT(reporter, matchedFace);
+}
+
+DEF_TEST_SCANNERS(FontMgrAndroidFallbackLangAndVariant, reporter) {
+    SkString basePath = GetResourcePath("fonts/");
+    SkString tmpDir = skiatest::GetTmpDir();
+    if (tmpDir.isEmpty()) {
+        return;
+    }
+
+    SkString customXmlPath = SkOSPath::Join(tmpDir.c_str(), "skia_android_fallback_test.xml");
+    // Place compact fallback before elegant fallback for "en", and separate "ja" (weight 400)
+    // and "zh-Hans" (weight 700) fallbacks to test language and variant pre-filtering.
+    constexpr char kCustomXml[] =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<familyset version=\"21\">\n"
+        "    <family name=\"sans-serif\">\n"
+        "        <font weight=\"400\" style=\"normal\">Distortable.ttf</font>\n"
+        "    </family>\n"
+        "    <family name=\"missing-family\">\n"
+        "        <font weight=\"400\" style=\"normal\">NonExistentFont.ttf</font>\n"
+        "    </family>\n"
+        "    <family lang=\"ja\">\n"
+        "        <font weight=\"400\" style=\"normal\" index=\"0\">test.ttc</font>\n"
+        "    </family>\n"
+        "    <family lang=\"zh-Hans\">\n"
+        "        <font weight=\"700\" style=\"normal\" index=\"1\">test.ttc</font>\n"
+        "    </family>\n"
+        "    <family lang=\"en\" variant=\"compact\">\n"
+        "        <font weight=\"400\" style=\"normal\" index=\"0\">test.ttc</font>\n"
+        "    </family>\n"
+        "    <family lang=\"en\" variant=\"elegant\">\n"
+        "        <font weight=\"700\" style=\"normal\" index=\"1\">test.ttc</font>\n"
+        "    </family>\n"
+        "</familyset>\n";
+    {
+        SkFILEWStream xmlStream(customXmlPath.c_str());
+        if (xmlStream.isValid()) {
+            xmlStream.write(kCustomXml, sizeof(kCustomXml) - 1);
+            xmlStream.flush();
+        }
+    }
+    if (!sk_exists(customXmlPath.c_str())) {
+        return;
+    }
+
+    SkFontMgr_Android_CustomFonts custom;
+    custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+    custom.fBasePath = basePath.c_str();
+    custom.fFontsXml = customXmlPath.c_str();
+    custom.fFallbackFontsXml = nullptr;
+    custom.fIsolated = false;
+
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
+
+    // "missing-family" should be filtered out by HasExistingFontFile.
+    REPORTER_ASSERT(reporter,
+                    fontMgr->matchFamilyStyle("missing-family", SkFontStyle()) == nullptr);
+
+    // Requesting '!' with "ja" should match the Japanese fallback (index 0, weight 400).
+    const char* jaBcp47[] = {"ja"};
+    sk_sp<SkTypeface> jaFace(fontMgr->matchFamilyStyleCharacter(
+        "sans-serif", SkFontStyle(), jaBcp47, 1, '!'));
+    REPORTER_ASSERT(reporter, jaFace);
+    if (jaFace) {
+        REPORTER_ASSERT(reporter, jaFace->fontStyle() == SkFontStyle::Normal());
+    }
+
+    // Requesting '!' with "zh-Hans-CN" should walk parent tag to "zh-Hans" and match
+    // the Simplified Chinese fallback (index 1, weight 700).
+    const char* zhBcp47[] = {"zh-Hans-CN"};
+    sk_sp<SkTypeface> zhFace(fontMgr->matchFamilyStyleCharacter(
+        "sans-serif", SkFontStyle(), zhBcp47, 1, '!'));
+    REPORTER_ASSERT(reporter, zhFace);
+    if (zhFace) {
+        REPORTER_ASSERT(reporter, zhFace->fontStyle() == SkFontStyle::Bold());
+    }
+
+    // Requesting '!' with "en" tries elegant=true before elegant=false, so it should skip
+    // the compact "en" fallback and match the elegant "en" fallback (index 1, weight 700).
+    const char* enBcp47[] = {"en"};
+    sk_sp<SkTypeface> enFace(fontMgr->matchFamilyStyleCharacter(
+        "sans-serif", SkFontStyle(), enBcp47, 1, '!'));
+    REPORTER_ASSERT(reporter, enFace);
+    if (enFace) {
+        REPORTER_ASSERT(reporter, enFace->fontStyle() == SkFontStyle::Bold());
+    }
+
+    remove(customXmlPath.c_str());
+}
+
+

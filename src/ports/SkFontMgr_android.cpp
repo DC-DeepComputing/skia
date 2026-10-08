@@ -17,6 +17,7 @@
 #include "include/core/SkString.h"
 #include "include/ports/SkFontMgr_android.h"
 #include "include/private/SkFixed.h"
+#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTemplates.h"
@@ -30,7 +31,9 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <limits>
+#include <memory>
 
 using namespace skia_private;
 
@@ -112,15 +115,49 @@ using StreamForPathCache = skia_private::THashMap<SkString, std::unique_ptr<SkSt
 
 class SkFontStyleSet_Android : public SkFontStyleSet {
 public:
-    explicit SkFontStyleSet_Android(const FontFamily& family, const SkFontScanner* scanner,
-                                    const bool cacheFontFiles, StreamForPathCache& streamForPath) {
+    explicit SkFontStyleSet_Android(const FontFamily& family,
+                                    std::shared_ptr<SkFontScanner> scanner,
+                                    const bool cacheFontFiles,
+                                    StreamForPathCache& streamForPath)
+            : fFallbackFor(family.fFallbackFor)
+            , fLang(family.fLanguages)
+            , fVariantStyle(kDefault_FontVariant == family.fVariant
+                                    ? (kCompact_FontVariant | kElegant_FontVariant)
+                                    : family.fVariant) {
+        if (family.fIsFallbackFont) {
+            fScanner = std::move(scanner);
+            fPendingFamily = std::make_unique<FontFamily>(family.fBasePath, true);
+            fPendingFamily->fNames = family.fNames;
+            fPendingFamily->fFonts = family.fFonts;
+            fPendingFamily->fLanguages = family.fLanguages;
+            fPendingFamily->fVariant = family.fVariant;
+        } else {
+            this->loadStyles(family, scanner.get(), streamForPath);
+            fInitialized.store(true, std::memory_order_relaxed);
+        }
+    }
+
+    void ensureInitialized() const {
+        if (fInitialized.load(std::memory_order_acquire)) {
+            return;
+        }
+        SkAutoMutexExclusive lock(fInitMutex);
+        if (!fInitialized.load(std::memory_order_relaxed)) {
+            StreamForPathCache streamForPath;
+            this->loadStyles(*fPendingFamily, fScanner.get(), streamForPath);
+            fPendingFamily.reset();
+            fScanner.reset();
+            fInitialized.store(true, std::memory_order_release);
+        }
+    }
+
+    void loadStyles(const FontFamily& family, const SkFontScanner* scanner,
+                    StreamForPathCache& streamForPath) const {
         const SkString* cannonicalFamilyName = nullptr;
         if (!family.fNames.empty()) {
             cannonicalFamilyName = &family.fNames[0];
         }
-        fFallbackFor = family.fFallbackFor;
 
-        // TODO? make this lazy
         for (int i = 0; i < family.fFonts.size(); ++i) {
             const FontFileInfo& fontFile = family.fFonts[i];
 
@@ -189,9 +226,11 @@ public:
     }
 
     int count() override {
+        this->ensureInitialized();
         return fStyles.size();
     }
     void getStyle(int index, SkFontStyle* style, SkString* name) override {
+        this->ensureInitialized();
         if (index < 0 || fStyles.size() <= index) {
             return;
         }
@@ -203,6 +242,7 @@ public:
         }
     }
     sk_sp<SkTypeface> createTypeface(int index) override {
+        this->ensureInitialized();
         if (index < 0 || fStyles.size() <= index) {
             return nullptr;
         }
@@ -210,6 +250,7 @@ public:
     }
 
     sk_sp<SkTypeface_AndroidSystem> matchAStyle(const SkFontStyle& pattern) {
+        this->ensureInitialized();
         return sk_sp_static_cast<SkTypeface_AndroidSystem>(this->matchStyleCSS3(pattern));
     }
     sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
@@ -217,8 +258,14 @@ public:
     }
 
 private:
-    TArray<sk_sp<SkTypeface_AndroidSystem>> fStyles;
+    mutable std::shared_ptr<SkFontScanner> fScanner;
+    mutable SkMutex fInitMutex;
+    mutable std::atomic<bool> fInitialized{false};
+    mutable std::unique_ptr<FontFamily> fPendingFamily;
+    mutable TArray<sk_sp<SkTypeface_AndroidSystem>> fStyles;
     SkString fFallbackFor;
+    const STArray<4, SkLanguage, true> fLang;
+    const FontVariant fVariantStyle;
 
     friend struct NameToFamily;
     friend class SkFontMgr_Android;
@@ -297,7 +344,9 @@ protected:
         // TODO: eventually we should not need to name fallback families.
         for (int i = 0; i < fFallbackNameToFamilyMap.size(); ++i) {
             if (fFallbackNameToFamilyMap[i].name.equals(tolc.lc())) {
-                return sk_ref_sp(fFallbackNameToFamilyMap[i].styleSet);
+                if (fFallbackNameToFamilyMap[i].styleSet->count() > 0) {
+                    return sk_ref_sp(fFallbackNameToFamilyMap[i].styleSet);
+                }
             }
         }
         return nullptr;
@@ -321,21 +370,22 @@ protected:
             if (!matcher(familyName, nameToFamily)) {
                 continue;
             }
-            sk_sp<SkTypeface_AndroidSystem> face(nameToFamily.styleSet->matchAStyle(style));
+            SkFontStyleSet_Android* styleSet = nameToFamily.styleSet;
 
             if (!langTag.isEmpty() &&
-                std::none_of(face->fLang.begin(), face->fLang.end(), [&](const SkLanguage& lang){
+                std::none_of(styleSet->fLang.begin(), styleSet->fLang.end(), [&](const SkLanguage& lang){
                     return lang.getTag().startsWith(langTag.c_str());
                 }))
             {
                 continue;
             }
 
-            if (SkToBool(face->fVariantStyle & kElegant_FontVariant) != elegant) {
+            if (SkToBool(styleSet->fVariantStyle & kElegant_FontVariant) != elegant) {
                 continue;
             }
 
-            if (face->unicharToGlyph(character) != 0) {
+            sk_sp<SkTypeface_AndroidSystem> face(styleSet->matchAStyle(style));
+            if (face && face->unicharToGlyph(character) != 0) {
                 return face;
             }
         }
@@ -475,7 +525,7 @@ protected:
 
 private:
 
-    std::unique_ptr<SkFontScanner> fScanner;
+    std::shared_ptr<SkFontScanner> fScanner;
 
     TArray<sk_sp<SkFontStyleSet_Android>> fStyleSets;
     sk_sp<SkFontStyleSet> fDefaultStyleSet;
@@ -497,8 +547,8 @@ private:
         }
 
         sk_sp<SkFontStyleSet_Android> newSet =
-            sk_make_sp<SkFontStyleSet_Android>(family, fScanner.get(), isolated, streamForPath);
-        if (0 == newSet->count()) {
+            sk_make_sp<SkFontStyleSet_Android>(family, fScanner, isolated, streamForPath);
+        if (!family.fIsFallbackFont && 0 == newSet->count()) {
             return;
         }
 
@@ -527,8 +577,13 @@ private:
                 break;
             }
         }
-        if (!fDefaultStyleSet && !fStyleSets.empty()) {
-            fDefaultStyleSet = fStyleSets[0];
+        if (!fDefaultStyleSet) {
+            for (int i = 0; i < fStyleSets.size(); ++i) {
+                if (fStyleSets[i]->count() > 0) {
+                    fDefaultStyleSet = fStyleSets[i];
+                    break;
+                }
+            }
         }
     }
 
