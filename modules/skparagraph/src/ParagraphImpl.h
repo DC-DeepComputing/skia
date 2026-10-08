@@ -205,6 +205,7 @@ public:
     int32_t unresolvedGlyphs() override;
     std::unordered_set<SkUnichar> unresolvedCodepoints() override;
     void addUnresolvedCodepoints(TextRange textRange);
+    bool isCoreTextShaped() const { return fCoreTextShaped; }
 
     void setState(InternalState state);
     sk_sp<SkPicture> getPicture() { return fPicture; }
@@ -318,6 +319,7 @@ private:
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
     TextIndex fTrailingSpaces;
+    bool fCoreTextShaped;
 };
 }  // namespace textlayout
 }  // namespace skia

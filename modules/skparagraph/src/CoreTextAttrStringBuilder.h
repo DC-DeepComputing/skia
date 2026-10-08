@@ -11,9 +11,10 @@
 #include "modules/skparagraph/include/TextStyle.h"
 #include "modules/skparagraph/src/CoreTextFontRegistry.h"
 #include "modules/skparagraph/src/CoreTextIndexMap.h"
+#include "modules/skparagraph/include/ParagraphStyle.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 #include <CoreText/CoreText.h>
 
 namespace skia {
@@ -51,6 +52,6 @@ private:
 }  // namespace textlayout
 }  // namespace skia
 
-#endif  // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 #endif  // CoreTextAttrStringBuilder_DEFINED
