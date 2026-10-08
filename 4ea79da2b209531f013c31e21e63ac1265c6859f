@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8f13f50_c7e2f7ae",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T15:49:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4687817c_24f62c00",
+      "range": {
+        "startLine": 669,
+        "startChar": 0,
+        "endLine": 669,
+        "endChar": 74
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d91c49cd_fb6d25d7",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "In the storageBuffer case, no clearing is necessary, as the leak must have an originating texture. Since we do not dynamically change storageBufferSupport, the storageBuffer path will never have a texture to leak from. \n\nIn the storageTexture case, we can\u0027t elide the clear by setting the texture directly; this is because we only enter the `else if` part of the block if the `drawPass`\u0027s storageTexture is non-null. Perhaps we can change it to:\n```\nif (fBoundStorageFallbackTexture) {\n   fBoundStorageFallbackTexture \u003d nullptr;\n}\n```\nBut I would expect the cost of branching to be more expensive than simply clearing it everytime.",
       "parentUuid": "d91c49cd_fb6d25d7",
+      "range": {
+        "startLine": 674,
+        "startChar": 0,
+        "endLine": 674,
+        "endChar": 43
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb27ccc5_c2f453a4",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T15:49:30Z",
+      "side": 1,
+      "message": "I\u0027d been thinking something like:\n```\nif (drawPass-\u003estorageBufferInfo()) {\n    this-\u003ebindUniformBuffer(...);\n} else {\n    // storage texture case\n    fBoundStorageFallbackTexture \u003d drawPass-\u003estorageFallbackTexture();\n}\n```\n\nwhich would handle the null case automatically, except I now realize there are two issues with that:\n1. We have to check for the null texture proxy first before calling `texture()`, so that\u0027s a bit annoying.\n2. We probably have scenarios where we aren\u0027t in storage texture mode, but we don\u0027t have storage buffer binding either. Do you think it\u0027s better for this control branch to be based on a caps check? e.g.\n```\nif (caps-\u003euseStorageTextures()) {\n    fBoundStorageFallbackTexture \u003d drawPass-\u003estorageTexture() ? proxy-\u003etexture() : nullptr;\n} else {\n    this-\u003ebindUniformbuffer(...);\n}\n```\nThis would also then clear the storage slot\u0027s binding.",
+      "parentUuid": "55ae49cf_9539ff76",
       "range": {
         "startLine": 674,
         "startChar": 0,
