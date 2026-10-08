@@ -852,6 +852,14 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
     FilterSpan filtersOrNull = filters.empty() ? FilterSpan{&nullFilter, 1} : filters;
 
     for (const sk_sp<SkImageFilter>& filter : filtersOrNull) {
+        // Paint alpha and color filters are applied to the filter's final result, so they prevent
+        // the filter from drawing its inputs directly into 'dst'.
+        const bool postProcessesResult = paint.getAlphaf() < 1.f || paint.getColorFilter();
+        if (filter && !srcIsCoverageLayer && !postProcessesResult &&
+            as_IFB(filter)->filterAndDraw(ctx, dst, paint.getBlender())) {
+            continue;
+        }
+
         auto result = filter ? as_IFB(filter)->filterImage(ctx) : source;
 
         if (srcIsCoverageLayer) {
@@ -2333,8 +2341,10 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
         // and a desired output matching the device clip bounds.
         ctx = ctx.withNewDesiredOutput(mapping.deviceToLayer(outputBounds))
                  .withNewSource(source);
-        auto result = as_IFB(realPaint.getImageFilter())->filterImage(ctx);
-        result.draw(ctx, device, realPaint.getBlender());
+        const SkImageFilter_Base* filter = as_IFB(realPaint.getImageFilter());
+        if (!filter->filterAndDraw(ctx, device, realPaint.getBlender())) {
+            filter->filterImage(ctx).draw(ctx, device, realPaint.getBlender());
+        }
         stats.reportStats();
         return;
     }

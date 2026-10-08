@@ -8,6 +8,7 @@
 #include "include/core/SkImageFilter.h"
 
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
@@ -16,6 +17,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
+#include "src/core/SkDevice.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
@@ -260,6 +262,30 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
     }
 
     return result;
+}
+
+bool SkImageFilter_Base::filterAndDraw(const skif::Context& context,
+                                       SkDevice* device,
+                                       const SkBlender* blender) const {
+    if (context.desiredOutput().isEmpty() || !context.mapping().layerMatrix().isFinite()) {
+        // Let filterImage() produce the empty result and FilterResult::draw() handle blenders
+        // that affect transparent black.
+        return false;
+    }
+    // Drawing directly composites in the device's color space and type instead of the filter's.
+    // Src-over is not invariant under a non-linear transfer function, so only take the fast path
+    // when the two are the same (and require matching color types to keep precision identical).
+    const SkColorInfo& dstInfo = device->imageInfo().colorInfo();
+    if (!SkColorSpace::Equals(context.colorSpace(), dstInfo.colorSpace()) ||
+        context.backend()->colorType() != dstInfo.colorType()) {
+        return false;
+    }
+    if (!this->onFilterAndDraw(context, device, blender)) {
+        return false;
+    }
+    // Keep skif::Stats consistent with filterImage(), which would have visited this node.
+    context.markVisitedImageFilter();
+    return true;
 }
 
 sk_sp<SkImage> SkImageFilter_Base::makeImageWithFilter(sk_sp<skif::Backend> backend,

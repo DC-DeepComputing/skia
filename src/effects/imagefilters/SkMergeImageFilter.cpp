@@ -7,11 +7,13 @@
 
 #include "include/effects/SkImageFilters.h"
 
+#include "include/core/SkBlendMode.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkBlenderBase.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkReadBuffer.h"
@@ -39,6 +41,9 @@ private:
     MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kComplex; }
 
     skif::FilterResult onFilterImage(const skif::Context& ctx) const override;
+    bool onFilterAndDraw(const skif::Context& ctx,
+                             SkDevice* device,
+                             const SkBlender* blender) const override;
 
     skif::LayerSpace<SkIRect> onGetInputLayerBounds(
             const skif::Mapping& mapping,
@@ -88,6 +93,25 @@ skif::FilterResult SkMergeImageFilter::onFilterImage(const skif::Context& ctx) c
         builder.add(this->getChildOutput(i, ctx));
     }
     return builder.merge();
+}
+
+bool SkMergeImageFilter::onFilterAndDraw(const skif::Context& ctx,
+                                         SkDevice* device,
+                                         const SkBlender* blender) const {
+    // merge() src-overs every child into an intermediate surface that is then composited with
+    // 'blender'. Src-over is associative, so when 'blender' is also src-over the intermediate is
+    // unnecessary and the children can be drawn directly. Any other blend mode would see the
+    // partially merged destination instead of the fully merged result, so fall back.
+    if (blender && as_BB(blender)->asBlendMode() != SkBlendMode::kSrcOver) {
+        return false;
+    }
+    // Each child's draw() clips to its own layer bounds and the device clip already restricts the
+    // output to the desired output bounds, so no extra crop is needed to match merge().
+    const int inputCount = this->countInputs();
+    for (int i = 0; i < inputCount; ++i) {
+        this->getChildOutput(i, ctx).draw(ctx, device, /*blender=*/nullptr);
+    }
+    return true;
 }
 
 skif::LayerSpace<SkIRect> SkMergeImageFilter::onGetInputLayerBounds(
