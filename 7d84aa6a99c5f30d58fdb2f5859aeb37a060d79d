@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54d68024_6cb67eda",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 2155,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-10-08T17:04:47Z",
+      "side": 1,
+      "message": "Edit: technically Bazel to Android.bp conversions aren\u0027t supported yet*",
+      "parentUuid": "79dfb538_858b2ece",
+      "range": {
+        "startLine": 2155,
+        "startChar": 0,
+        "endLine": 2155,
+        "endChar": 51
+      },
+      "revId": "7d84aa6a99c5f30d58fdb2f5859aeb37a060d79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9ac4295_5a45028d",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Fair, especially if we\u0027re moving towards a world of parallel Recorders. Looks like mutexes are faster on modern Arm than I feared. :)",
       "parentUuid": "dd54d89e_6cea4951",
+      "range": {
+        "startLine": 63,
+        "startChar": 11,
+        "endLine": 63,
+        "endChar": 15
+      },
+      "revId": "7d84aa6a99c5f30d58fdb2f5859aeb37a060d79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdc523bd_7138cf6d",
+        "filename": "include/android/SkAndroidFrameworkTraceUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-10-08T17:04:47Z",
+      "side": 1,
+      "message": "Edit: atomics*",
+      "parentUuid": "4c6de57c_8167658c",
       "range": {
         "startLine": 63,
         "startChar": 11,
