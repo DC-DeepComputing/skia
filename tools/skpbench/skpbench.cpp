@@ -222,8 +222,12 @@ private:
     std::vector<SkDocumentPage> fFrames;
 };
 
-static void ddl_sample(GrDirectContext* dContext, DDLTileHelper* tiles, GpuSync& gpuSync,
-                       Sample* sample, SkTaskGroup* recordingTaskGroup, SkTaskGroup* gpuTaskGroup,
+static void ddl_sample(GrDirectContext* dContext,
+                       DDLTileHelper* tiles,
+                       GpuSync& gpuSync,
+                       Sample* sample,
+                       SkTaskGroup* recordingTaskGroup,
+                       SkTaskGroup* gpuTaskGroup,
                        std::chrono::high_resolution_clock::time_point* startStopTime,
                        SkPicture* picture) {
     using clock = std::chrono::high_resolution_clock;
@@ -295,15 +299,16 @@ static void run_ddl_benchmark(sk_gpu_test::TestContext* testContext,
 
     // In comparable modes, there is no GPU thread. The following pointers are all null.
     // Otherwise, we transfer testContext onto the GPU thread until after the bench.
-    std::unique_ptr<SkExecutor> gpuThread;
+    std::unique_ptr<SkStdFunctionExecutor> gpuThread;
     std::unique_ptr<SkTaskGroup> gpuTaskGroup;
-    std::unique_ptr<SkExecutor> recordingThreadPool;
+    std::unique_ptr<SkStdFunctionExecutor> recordingThreadPool;
     std::unique_ptr<SkTaskGroup> recordingTaskGroup;
     if (!FLAGS_comparableDDL && !FLAGS_comparableSKP) {
-        gpuThread = SkExecutors::MakeFIFOThreadPool(1, /* allowBorrowing= */ false);
+        gpuThread = SkStdFunctionExecutors::MakeFIFOThreadPool(1, /* allowBorrowing= */ false);
         gpuTaskGroup = std::make_unique<SkTaskGroup>(*gpuThread);
-        recordingThreadPool = SkExecutors::MakeFIFOThreadPool(FLAGS_ddlNumRecordingThreads,
-                                                              /* allowBorrowing= */ false);
+        recordingThreadPool =
+            SkStdFunctionExecutors::MakeFIFOThreadPool(FLAGS_ddlNumRecordingThreads,
+                                                       /* allowBorrowing= */ false);
         recordingTaskGroup = std::make_unique<SkTaskGroup>(*recordingThreadPool);
         testContext->makeNotCurrent();
         gpuTaskGroup->add([=]{ testContext->makeCurrent(); });
