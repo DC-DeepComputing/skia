@@ -1198,6 +1198,10 @@ void VulkanCommandBuffer::addDrawPass(DrawPass* drawPass) {
                 this->addBarrier(barrierCmd->fType);
                 break;
             }
+            case DrawPassCommands::Type::kInsertDebugMarker: {
+                // Debug markers are not forwarded to Vulkan (would need VK_EXT_debug_utils).
+                break;
+            }
         }
     }
 }

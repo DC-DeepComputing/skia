@@ -15,8 +15,10 @@
 #    to macOS/iOS objc_library compile sandboxes.
 # 4. Backend Exclusions: Null (/null/) and WebGPU-on-WebGPU (/webgpu/) subdirectories are
 #    routed to separate suffixes and excluded from compilation to avoid compile-time
-#    dependencies on uncompiled Tint compiler components.
+#    dependencies on uncompiled Tint compiler components. The WebGPU-on-WebGPU backend can be
+#    opted into with --@dawn//:dawn_enable_webgpu_on_webgpu (see below).
 
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:objc_library.bzl", "objc_library")
 load("@rules_python//python:defs.bzl", "py_binary")
@@ -52,9 +54,12 @@ load(
     "NATIVE_OBJECTS_USE_X11_SRCS",
     "NATIVE_OBJECTS_VULKAN_PRIV_HDRS",
     "NATIVE_OBJECTS_VULKAN_SRCS",
+    "NATIVE_OBJECTS_WEBGPU_PRIV_HDRS",
+    "NATIVE_OBJECTS_WEBGPU_SRCS",
     "NATIVE_SRCS",
     "NATIVE_UTILS_GEN_PRIV_HDRS",
     "NATIVE_UTILS_GEN_SRCS",
+    "NATIVE_WEBGPU_SRCS",
     "PARTITION_ALLOC_HDRS",
     "PLATFORM_HDRS",
     "PLATFORM_PRIV_HDRS",
@@ -77,6 +82,38 @@ config_setting(
     name = "debug_build",
     values = {"compilation_mode": "dbg"},
 )
+
+# Equivalent of Dawn's GN arg `dawn_enable_webgpu_on_webgpu`. Enables the
+# WebGPU-on-WebGPU backend (src/dawn/native/webgpu), which wraps an inner Dawn
+# instance and supports Dawn-level capture (dawn::native::webgpu::StartCapture).
+# Enable with --@dawn//:dawn_enable_webgpu_on_webgpu
+bool_flag(
+    name = "dawn_enable_webgpu_on_webgpu",
+    build_setting_default = False,
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "webgpu_on_webgpu_enabled",
+    flag_values = {":dawn_enable_webgpu_on_webgpu": "True"},
+    visibility = ["//visibility:public"],
+)
+
+DAWN_WEBGPU_ON_WEBGPU_SRCS = select({
+    ":webgpu_on_webgpu_enabled": NATIVE_OBJECTS_WEBGPU_SRCS +
+                                 NATIVE_OBJECTS_WEBGPU_PRIV_HDRS +
+                                 NATIVE_WEBGPU_SRCS,
+    "//conditions:default": [],
+})
+
+DAWN_WEBGPU_ON_WEBGPU_DEFINES = select({
+    ":webgpu_on_webgpu_enabled": [
+        "DAWN_ENABLE_BACKEND_WEBGPU",
+        # The WebGPU backend uses Tint's null writer to reflect compute workgroup sizes.
+        "TINT_BUILD_NULL_WRITER=1",
+    ],
+    "//conditions:default": [],
+})
 
 # These are hardcoded to avoid the complexity of linking in the gl xml inputs used by the generator.
 NATIVE_OPENGL_AUTOGEN_SRCS = [
@@ -495,7 +532,7 @@ cc_library(
 
 cc_library(
     name = "dawn_native",
-    srcs = NATIVE_SRCS + NATIVE_OBJECTS_SRCS + NATIVE_UTILS_GEN_SRCS + select({
+    srcs = NATIVE_SRCS + NATIVE_OBJECTS_SRCS + NATIVE_UTILS_GEN_SRCS + DAWN_WEBGPU_ON_WEBGPU_SRCS + select({
         "@platforms//os:linux": NATIVE_OBJECTS_USE_X11_SRCS +
                                 NATIVE_OBJECTS_OPENGL_SRCS +
                                 NATIVE_OBJECTS_VULKAN_SRCS +
@@ -510,7 +547,7 @@ cc_library(
     }),
     hdrs = [],
     copts = DAWN_COPTS,
-    defines = TINT_WGSL_DEFINES + select({
+    defines = TINT_WGSL_DEFINES + DAWN_WEBGPU_ON_WEBGPU_DEFINES + select({
         "@platforms//os:linux": DAWN_LINUX_DEFINES,
         "@platforms//os:android": [],  # TODO(kjlubick)
         "@platforms//os:macos": DAWN_METAL_DEFINES,

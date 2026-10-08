@@ -1,3 +1,7 @@
+# Needed to compile objc_library targets (e.g. Metal backends) on macOS/iOS.
+# This must come before rules_cc so its toolchain takes precedence.
+bazel_dep(name = "apple_support", version = "1.21.1", repo_name = "build_bazel_apple_support")
+
 # Rules for building C++ things in general
 bazel_dep(name = "rules_cc", version = "0.1.1")
 bazel_dep(name = "platforms", version = "0.0.11")
@@ -85,3 +89,10 @@ use_repo(
     "wuffs",
     "zlib",
 )
+
+# Dawn's Tint build runs a Go code generator (@dawn//tools/src:gen-sources), so
+# the Dawn repo (created by Skia's cpp_modules extension) needs to see rules_go.
+# Skia only has rules_go as a dev_dependency, which is not visible to consumers.
+bazel_dep(name = "rules_go", version = "0.59.0")
+
+inject_repo(skia_deps, "rules_go")

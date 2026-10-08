@@ -44,6 +44,9 @@ public:
     SkISize getDepthAttachmentDimensions(const TextureInfo&,
                                          const SkISize colorAttachmentDimensions) const override;
 
+    TextureInfo getDebugReadableDepthAttachmentTextureInfo(AttachmentDesc,
+                                                           Protected) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     bool extractGraphicsDescs(const UniqueKey&,

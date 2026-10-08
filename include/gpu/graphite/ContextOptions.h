@@ -228,6 +228,15 @@ struct SK_API ContextOptions {
      */
      bool fEnableCapture = false;
 
+    /**
+     * An experimental debugging flag in development. Requires fEnableCapture.
+     *
+     * While capturing, tags the GPU work of every captured draw with that draw's SkCapture command
+     * (inserted as GPU debug markers before each draw call), so capture tools can map GPU commands
+     * and pixels back to the Skia draw calls that produced them.
+     */
+     bool fEnableCaptureDrawIdTracking = false;
+
      /**
       * Avoid using depth/stencil buffers. This will disable depth-occlusion-culling (more GPU work)
       * and fall back to analytic path algorithm instead of MSAA (more CPU work).

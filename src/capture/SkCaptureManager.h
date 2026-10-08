@@ -45,6 +45,11 @@ public:
         return fIsCurrentlyCapturing;
     }
 
+    // When enabled, SkCaptureCanvas tags every forwarded draw with an SkCaptureDrawId (see
+    // SkCaptureDrawId.h) so GPU backends can attribute their GPU work to captured draw commands.
+    void setDrawIdTracking(bool enabled) { fDrawIdTracking = enabled; }
+    bool drawIdTracking() const { return fDrawIdTracking; }
+
     /**
      * Snaps and returns draws from tracked canvases whose backing PixelStorage matches any
      * of the given IDs. This allows callers (such as Recorder::snap()) to isolate and capture draws
@@ -67,6 +72,7 @@ private:
     sk_sp<SkPicture> snapAndIncrement(SkCaptureCanvas*);
 
     std::atomic<bool> fIsCurrentlyCapturing = false;
+    bool fDrawIdTracking = false;
     skia_private::TArray<std::unique_ptr<SkCaptureCanvas>> fTrackedCanvases;
     sk_sp<SkCapture> fActiveCapture;
 

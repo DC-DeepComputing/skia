@@ -18,6 +18,11 @@ def _dawn_repo_impl(repo_ctx):
 
     repo_ctx.execute(["git", "reset", "--hard", "FETCH_HEAD"])
 
+    # Apply local patches (paths relative to the Dawn root, i.e. `git diff` output, -p1).
+    for patch in repo_ctx.attr.patches:
+        repo_ctx.watch(patch)
+        repo_ctx.patch(patch, strip = 1)
+
     # On Windows, the checked-in headers conflict with the generated headers (Windows doesn't
     # sandbox like Linux/Mac). Dawn is planning on deleting these anyway, so we do it until then.
     for h in [
@@ -86,5 +91,6 @@ dawn_repo = repository_rule(
         "generator_py": attr.label(mandatory = True),
         "jinja2": attr.label(default = "@jinja2//:BUILD.bazel"),
         "markupsafe": attr.label(default = "@markupsafe//:BUILD.bazel"),
+        "patches": attr.label_list(default = []),
     },
 )

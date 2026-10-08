@@ -1,2 +1,10 @@
 # Skia requires at least C++20
 build --cxxopt='-std=c++20'
+
+# apple_support's toolchain compiles objc_library targets with ARC by default, but
+# Skia and Dawn's Objective-C(++) code uses manual retain/release.
+build:macos --objccopt=-fno-objc-arc
+build --enable_platform_specific_config
+
+# Build Dawn's WebGPU-on-WebGPU backend (GN equivalent: dawn_enable_webgpu_on_webgpu = true).
+build --@dawn//:dawn_enable_webgpu_on_webgpu=true

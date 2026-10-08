@@ -17,6 +17,7 @@
 
 #include <array>
 #include <cstdint>
+#include <cstring>
 #include <type_traits>
 #include <utility>
 
@@ -44,6 +45,7 @@ struct DrawIndexedIndirect;
 struct DrawIndexedInstanced;
 struct DrawIndirect;
 struct DrawInstanced;
+struct InsertDebugMarker;
 struct SetBlendConstants;
 struct SetScissor;
 
@@ -72,7 +74,8 @@ struct SetScissor;
     M(DrawIndexedInstanced)              \
     M(DrawIndirect)                      \
     M(DrawIndexedIndirect)               \
-    M(AddBarrier)
+    M(AddBarrier)                        \
+    M(InsertDebugMarker)
 
 // Defines DrawPassCommands::Type, an enum of all draw command types.
 #define ENUM(T) k##T,
@@ -154,6 +157,9 @@ COMMAND(DrawIndexedIndirect,
             PrimitiveType fType)
 COMMAND(AddBarrier,
             BarrierType fType)
+// A debug marker (null-terminated label) for GPU debugging/capture tools. Backends may ignore it.
+COMMAND(InsertDebugMarker,
+            PODArray<const char> fLabel)
 
 #undef COMMAND
 
@@ -250,6 +256,14 @@ public:
 
     void addBarrier(BarrierType type) {
         this->add<AddBarrier>(type);
+    }
+
+    // Copies 'label' (which must be null-terminated) into the command list's storage.
+    void insertDebugMarker(const char* label) {
+        size_t len = strlen(label);
+        char* copy = fAlloc.makeArrayDefault<char>(len + 1);
+        memcpy(copy, label, len + 1);
+        this->add<InsertDebugMarker>(copy);
     }
 
     using Command = std::pair<Type, void*>;

@@ -21,6 +21,7 @@ skia_filegroup(
     srcs = [
         "SkCapture.h",
         "SkCaptureCanvas.h",
+        "SkCaptureDrawId.h",
         "SkCaptureManager.h",
     ],
     visibility = ["//src/core:__pkg__"],

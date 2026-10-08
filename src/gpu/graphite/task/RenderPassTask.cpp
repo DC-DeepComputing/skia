@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/task/RenderPassTask.h"
 
+
 #include "include/core/SkPoint.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
@@ -14,6 +15,7 @@
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkLog.h"
+#include "src/capture/SkCaptureManager.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -26,6 +28,8 @@
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include <atomic>
+#include <string>
 #include <tuple>
 #include <utility>
 
@@ -235,14 +239,29 @@ Task::Status RenderPassTask::addCommands(Context* context,
         colorAttachment = fTarget->refTexture();
     }
 
+    // With SkCapture draw id tracking, every render pass gets its own depth/stencil attachment
+    // that is stored at the end of the pass and readable by capture tools, so that the depth value
+    // of each pixel (the Graphite PaintersDepth of the draw that last wrote it) can be mapped back
+    // to the Skia draw via the "sk d=..." debug markers.
+    SkCaptureManager* captureManager = context->priv().sharedContext()->captureManager();
+    const bool keepDepthForCapture = captureManager && captureManager->drawIdTracking() &&
+                                     captureManager->isCurrentlyCapturing();
+    RenderPassDesc renderPassDesc = fRenderPassDesc;
+
     sk_sp<Texture> depthStencilAttachment;
     if (fRenderPassDesc.fDepthStencilAttachment.fFormat != TextureFormat::kUnsupported) {
         SkASSERT(!caps->avoidDepthMode());
         // We always make depth and stencil attachments shareable. Between any render pass the
         // values are reset. Thus it is safe to be used by multiple different render passes without
         // worry of stomping on each other's data.
-        TextureInfo dsInfo = caps->getDefaultAttachmentTextureInfo(
-                fRenderPassDesc.fDepthStencilAttachment, fTarget->isProtected(), Discardable::kYes);
+        TextureInfo dsInfo =
+                keepDepthForCapture
+                        ? caps->getDebugReadableDepthAttachmentTextureInfo(
+                                  fRenderPassDesc.fDepthStencilAttachment, fTarget->isProtected())
+                        : caps->getDefaultAttachmentTextureInfo(
+                                  fRenderPassDesc.fDepthStencilAttachment,
+                                  fTarget->isProtected(),
+                                  Discardable::kYes);
 
         SkISize dimensions = caps->getDepthAttachmentDimensions(
                 colorAttachment->textureInfo(), colorAttachment->dimensions());
@@ -253,8 +272,22 @@ Task::Status RenderPassTask::addCommands(Context* context,
         if (caps->attachmentSizePolicy() == AttachmentSizePolicy::kApprox) {
             dimensions = GetApproxSize(dimensions);
         }
-        depthStencilAttachment = resourceProvider->findOrCreateShareableTexture(
-                dimensions, dsInfo, "DepthStencilAttachment");
+        if (keepDepthForCapture) {
+            // Give each pass's depth attachment a unique label (so the replayer can find it via
+            // GetObjectByLabel) and keep it alive until the capture ends so the cache never
+            // recycles it for a later pass (which would overwrite its depth contents).
+            static std::atomic<uint32_t> sDepthPassCounter{0};
+            std::string label = "SkDrawIdDepth#" + std::to_string(sDepthPassCounter++);
+            depthStencilAttachment = resourceProvider->findOrCreateNonShareableTexture(
+                    dimensions, dsInfo, label, Budgeted::kNo);
+            if (depthStencilAttachment) {
+                resourceProvider->keepAliveForCapture(depthStencilAttachment);
+            }
+            renderPassDesc.fDepthStencilAttachment.fStoreOp = StoreOp::kStore;
+        } else {
+            depthStencilAttachment = resourceProvider->findOrCreateShareableTexture(
+                    dimensions, dsInfo, "DepthStencilAttachment");
+        }
         if (!depthStencilAttachment) {
             SKIA_LOG_W("Could not get DepthStencil attachment for RenderPassTask");
             return Status::kFail;
@@ -275,7 +308,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
     // TODO(b/313629288) we always pass in the render target's dimensions as the viewport here.
     // Using the dimensions of the logical device that we're drawing to could reduce flakiness in
     // rendering.
-    if (commandBuffer->addRenderPass(fRenderPassDesc,
+    if (commandBuffer->addRenderPass(renderPassDesc,
                                      std::move(colorAttachment),
                                      std::move(resolveAttachment),
                                      std::move(depthStencilAttachment),

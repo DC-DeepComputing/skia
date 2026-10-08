@@ -68,7 +68,10 @@ void Caps::finishInitialization(const ContextOptions& options) {
     fAllowMultipleAtlasTextures = options.fAllowMultipleAtlasTextures;
     fSupportBilerpFromGlyphAtlas = options.fSupportBilerpFromGlyphAtlas;
     fRequireOrderedRecordings = options.fRequireOrderedRecordings;
-    fSetBackendLabels = options.fSetBackendLabels;
+    // SkCapture draw id tracking relies on backend labels so that capture replayers can find the
+    // per-pass depth attachments ("SkDrawIdDepth#<n>") by label.
+    fSetBackendLabels = options.fSetBackendLabels ||
+                        (options.fEnableCapture && options.fEnableCaptureDrawIdTracking);
     fAvoidDepthMode = options.fAvoidDepthMode;
 
     // Enable setting this flag from either the private or public context options.
@@ -281,6 +284,11 @@ TextureInfo Caps::getDefaultAttachmentTextureInfo(AttachmentDesc desc,
                                        Mipmapped::kNo,
                                        isProtected,
                                        discardable);
+}
+
+TextureInfo Caps::getDebugReadableDepthAttachmentTextureInfo(AttachmentDesc desc,
+                                                             Protected isProtected) const {
+    return this->getDefaultAttachmentTextureInfo(desc, isProtected, Discardable::kNo);
 }
 
 // Graphite by default requires copy-src and copy-dst for sampled textures.

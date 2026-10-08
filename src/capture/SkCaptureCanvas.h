@@ -12,6 +12,7 @@
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSurface.h"
 #include "include/utils/SkNWayCanvas.h"
+#include "src/capture/SkCaptureDrawId.h"
 
 class SkCaptureManager;
 
@@ -129,10 +130,27 @@ private:
     void attachRecordingCanvas();
     void detachRecordingCanvas();
 
+    // Returns the SkCaptureDrawId to tag the draw being forwarded with (and advances the ordinal),
+    // or an invalid id when not capturing or draw id tracking is disabled.
+    SkCaptureDrawId nextDrawId();
+
+    // Polls the capture status and, for draw calls, tags the forwarded draw with its draw id.
+    class AutoDraw {
+    public:
+        explicit AutoDraw(SkCaptureCanvas* canvas)
+                : fScope((canvas->pollCapturingStatus(), canvas->nextDrawId())) {}
+
+    private:
+        SkAutoCaptureDrawId fScope;
+    };
+
     bool fCapturing = false;
     SkPictureRecorder fRecorder;
     SkCanvas* fBaseCanvas = nullptr;
     SkCaptureManager* fManager = nullptr;
+    // Draw id state of the current recording session (see SkCaptureDrawId.h).
+    uint32_t fCanvasToken = 0;
+    uint32_t fNextDrawOrdinal = 0;
 
     // Hide NWay management functions as clients shouldn't be using these directly.
     void addCanvas(SkCanvas* canvas) override {SkNWayCanvas::addCanvas(canvas);}

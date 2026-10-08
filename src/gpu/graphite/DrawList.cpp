@@ -8,6 +8,8 @@
 
 #include "include/core/SkTypes.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/core/SkString.h"
+#include "src/capture/SkCaptureManager.h"
 #include "src/core/SkSafetyChecks.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/DrawPass.h"
@@ -15,6 +17,7 @@
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 
 namespace skgpu::graphite {
@@ -45,7 +48,9 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
                                            clip,
                                            ordering,
                                            barrierBeforeDraws,
-                                           stroke);
+                                           stroke,
+                                           SkCaptureDrawId::Current(),
+                                           !paintID.isValid());
 
     fRenderStepCount += renderer->numRenderSteps();
     // Create a sort key for every render step in this draw
@@ -167,6 +172,14 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     // Accumulate rough pixel area touched by each pipeline as we iterate the SortKeys
     drawPass->fPipelineDrawAreas.push_back_n(fPipelineCache.count(), 0.f);
 
+    // When SkCapture draw id tracking is enabled, a debug marker is inserted before the draw data
+    // of every (draw, RenderStep) pair. Since DrawWriter defers emitting draw calls, all markers
+    // that precede a draw call in the command list describe the draws batched into that call:
+    //   "sk d=<PaintersDepth> c=<capture canvas token> i=<capture draw ordinal> s=<RenderStep>"
+    // plus a trailing " clip" for depth-only draws. c=0 means the draw was not tracked.
+    SkCaptureManager* captureManager = recorder->priv().captureManager();
+    const bool insertDrawIdMarkers = captureManager && captureManager->drawIdTracking();
+
     TextureTracker textureBindingTracker(&fTextureDataCache);
     for (const DrawList::SortKey& key : fSortKeys) {
         const DrawList::Draw& draw = key.draw();
@@ -233,6 +246,17 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                 drawPass->fCommandList.setScissor(*newScissor);
                 lastScissor = *newScissor;
             }
+        }
+
+        if (insertDrawIdMarkers) {
+            const SkCaptureDrawId id = draw.captureDrawId();
+            SkString marker = SkStringPrintf("sk d=%u c=%u i=%u s=%s%s",
+                                             (unsigned)draw.drawParams().order().depth().bits(),
+                                             id.fCanvasToken,
+                                             id.fOrdinal,
+                                             renderStep.name(),
+                                             draw.isDepthOnly() ? " clip" : "");
+            drawPass->fCommandList.insertDebugMarker(marker.c_str());
         }
 
         uint32_t uniformSsboIndex = useStorageBuffers ? uniformTracker.ssboIndex() : 0;

@@ -769,6 +769,12 @@ bool DawnCommandBuffer::addDrawPass(DrawPass* drawPass) {
                 SKIA_LOG_E("DawnCommandBuffer does not support the addition of barriers.");
                 break;
             }
+            case DrawPassCommands::Type::kInsertDebugMarker: {
+                auto marker = static_cast<DrawPassCommands::InsertDebugMarker*>(cmdPtr);
+                fActiveRenderPassEncoder.InsertDebugMarker(
+                        static_cast<const char*>(marker->fLabel));
+                break;
+            }
         }
     }
 

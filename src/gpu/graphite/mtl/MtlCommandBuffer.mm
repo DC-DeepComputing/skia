@@ -485,6 +485,12 @@ bool MtlCommandBuffer::addDrawPass(DrawPass* drawPass) {
                 SKIA_LOG_E("MtlCommandBuffer does not support the addition of barriers.");
                 break;
             }
+            case DrawPassCommands::Type::kInsertDebugMarker: {
+                auto marker = static_cast<DrawPassCommands::InsertDebugMarker*>(cmdPtr);
+                fActiveRenderCommandEncoder->insertDebugSignpost(
+                        @((const char*)marker->fLabel));
+                break;
+            }
         }
     }
 

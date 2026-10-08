@@ -8,6 +8,7 @@
 #include "src/capture/SkCaptureCanvas.h"
 
 #include "include/core/SkBlender.h"
+#include "include/core/SkData.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkRasterHandleAllocator.h"
 #include "include/core/SkRefCnt.h"
@@ -19,6 +20,8 @@
 #include "src/capture/SkCaptureManager.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/image/SkImage_Base.h"
+
+#include <atomic>
 
 SkCaptureCanvas::SkCaptureCanvas(SkCanvas* canvas, SkCaptureManager* manager)
         : SkNWayCanvas(canvas->imageInfo().width(), canvas->imageInfo().height()) {
@@ -53,8 +56,32 @@ sk_sp<SkPicture> SkCaptureCanvas::snapPicture() {
 
 void SkCaptureCanvas::attachRecordingCanvas() {
     SkASSERT(this->fList.size() == 1);
-    this->addCanvas(fRecorder.beginRecording(fBaseCanvas->imageInfo().width(),
-                                              fBaseCanvas->imageInfo().height()));
+    SkCanvas* recordingCanvas = fRecorder.beginRecording(fBaseCanvas->imageInfo().width(),
+                                                         fBaseCanvas->imageInfo().height());
+    this->addCanvas(recordingCanvas);
+
+    // Start a new draw id session for the new asset. The token is stored in the asset itself (only
+    // the recording canvas sees the annotation) so a viewer can match GPU markers to the asset.
+    fNextDrawOrdinal = 0;
+    if (fManager->drawIdTracking()) {
+        static std::atomic<uint32_t> gNextCanvasToken{1};
+        fCanvasToken = gNextCanvasToken.fetch_add(1, std::memory_order_relaxed);
+        if (fCanvasToken == 0) {  // skip the invalid token on wrap-around
+            fCanvasToken = gNextCanvasToken.fetch_add(1, std::memory_order_relaxed);
+        }
+        sk_sp<SkData> token = SkData::MakeWithCopy(&fCanvasToken, sizeof(fCanvasToken));
+        recordingCanvas->drawAnnotation(
+                SkRect::MakeEmpty(), SkCaptureDrawId::kAnnotationKey, token.get());
+    } else {
+        fCanvasToken = 0;
+    }
+}
+
+SkCaptureDrawId SkCaptureCanvas::nextDrawId() {
+    if (!fCapturing || fCanvasToken == 0) {
+        return {};
+    }
+    return {fCanvasToken, fNextDrawOrdinal++};
 }
 
 void SkCaptureCanvas::detachRecordingCanvas() {
@@ -161,12 +188,12 @@ void SkCaptureCanvas::onResetClip() {
 }
 
 void SkCaptureCanvas::onDrawPaint(const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawPaint(paint);
 }
 
 void SkCaptureCanvas::onDrawBehind(const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawBehind(paint);
 }
 
@@ -174,22 +201,22 @@ void SkCaptureCanvas::onDrawPoints(PointMode mode,
                                    size_t count,
                                    const SkPoint pts[],
                                    const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawPoints(mode, count, pts, paint);
 }
 
 void SkCaptureCanvas::onDrawRect(const SkRect& rect, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawRect(rect, paint);
 }
 
 void SkCaptureCanvas::onDrawRegion(const SkRegion& region, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawRegion(region, paint);
 }
 
 void SkCaptureCanvas::onDrawOval(const SkRect& rect, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawOval(rect, paint);
 }
 
@@ -198,24 +225,24 @@ void SkCaptureCanvas::onDrawArc(const SkRect& rect,
                                 SkScalar sweepAngle,
                                 bool useCenter,
                                 const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawArc(rect, startAngle, sweepAngle, useCenter, paint);
 }
 
 void SkCaptureCanvas::onDrawRRect(const SkRRect& rrect, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawRRect(rrect, paint);
 }
 
 void SkCaptureCanvas::onDrawDRRect(const SkRRect& outer,
                                    const SkRRect& inner,
                                    const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawDRRect(outer, inner, paint);
 }
 
 void SkCaptureCanvas::onDrawPath(const SkPath& path, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawPath(path, paint);
 }
 
@@ -224,7 +251,7 @@ void SkCaptureCanvas::onDrawImage2(const SkImage* image,
                                    SkScalar top,
                                    const SkSamplingOptions& sampling,
                                    const SkPaint* paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawImage2(image, left, top, sampling, paint);
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
@@ -241,7 +268,7 @@ void SkCaptureCanvas::onDrawImageRect2(const SkImage* image,
                                        const SkSamplingOptions& sampling,
                                        const SkPaint* paint,
                                        SrcRectConstraint constraint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawImageRect2(image, src, dst, sampling, paint, constraint);
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
@@ -257,7 +284,7 @@ void SkCaptureCanvas::onDrawImageLattice2(const SkImage* image,
                                           const SkRect& dst,
                                           SkFilterMode filter,
                                           const SkPaint* paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawImageLattice2(image, lattice, dst, filter, paint);
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
@@ -277,7 +304,7 @@ void SkCaptureCanvas::onDrawAtlas2(const SkImage* image,
                                    const SkSamplingOptions& sampling,
                                    const SkRect* cull,
                                    const SkPaint* paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawAtlas2(image, xform, tex, colors, count, bmode, sampling, cull, paint);
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
@@ -289,12 +316,12 @@ void SkCaptureCanvas::onDrawAtlas2(const SkImage* image,
 }
 
 void SkCaptureCanvas::onDrawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawMesh(mesh, blender, paint);
 }
 
 void SkCaptureCanvas::onDrawGlyphRunList(const sktext::GlyphRunList& list, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawGlyphRunList(list, paint);
 }
 
@@ -302,12 +329,12 @@ void SkCaptureCanvas::onDrawTextBlob(const SkTextBlob* blob,
                                      SkScalar x,
                                      SkScalar y,
                                      const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawTextBlob(blob, x, y, paint);
 }
 
 void SkCaptureCanvas::onDrawSlug(const sktext::gpu::Slug* slug, const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawSlug(slug, paint);
 }
 
@@ -315,18 +342,27 @@ void SkCaptureCanvas::onDrawPicture(const SkPicture* picture,
                                     const SkMatrix* matrix,
                                     const SkPaint* paint) {
     this->pollCapturingStatus();
+    if (fCapturing && fCanvasToken != 0) {
+        // With draw id tracking, unroll nested pictures through this canvas so that every draw
+        // inside them becomes its own captured draw command (and gets its own draw id), instead of
+        // attributing all of their GPU work to a single DrawPicture.
+        SkAutoCanvasMatrixPaint acmp(this, matrix, paint, picture->cullRect());
+        picture->playback(this);
+        return;
+    }
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawPicture(picture, matrix, paint);
 }
 
 void SkCaptureCanvas::onDrawDrawable(SkDrawable* drawable, const SkMatrix* matrix) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawDrawable(drawable, matrix);
 }
 
 void SkCaptureCanvas::onDrawVerticesObject(const SkVertices* vertices,
                                            SkBlendMode bmode,
                                            const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawVerticesObject(vertices, bmode, paint);
 }
 
@@ -335,12 +371,12 @@ void SkCaptureCanvas::onDrawPatch(const SkPoint cubics[12],
                                   const SkPoint texCoords[4],
                                   SkBlendMode bmode,
                                   const SkPaint& paint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawPatch(cubics, colors, texCoords, bmode, paint);
 }
 
 void SkCaptureCanvas::onDrawShadowRec(const SkPath& path, const SkDrawShadowRec& rec) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawShadowRec(path, rec);
 }
 
@@ -354,7 +390,7 @@ void SkCaptureCanvas::onDrawEdgeAAQuad(const SkRect& rect,
                                        QuadAAFlags aa,
                                        const SkColor4f& color,
                                        SkBlendMode mode) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawEdgeAAQuad(rect, clip, aa, color, mode);
 }
 
@@ -365,7 +401,7 @@ void SkCaptureCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry set[],
                                             const SkSamplingOptions& sampling,
                                             const SkPaint* paint,
                                             SrcRectConstraint constraint) {
-    this->pollCapturingStatus();
+    AutoDraw autoDraw(this);
     this->SkNWayCanvas::onDrawEdgeAAImageSet2(
             set, count, dstClips, preViewMatrices, sampling, paint, constraint);
 }

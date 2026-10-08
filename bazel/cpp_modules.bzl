@@ -49,6 +49,12 @@ def _cpp_modules_impl(ctx):
                         commit = repo_data.get("commit"),
                         generator_py = "//bazel/external/dawn:generate_dawn_files.py",
                         name = name,
+                        # TEMP: local Dawn fixes: WebGPU-on-WebGPU capture of vertex buffer slots,
+                        # and dawn::replay draw limit / GetObjectById (viewer step-through).
+                        patches = [
+                            "//bazel/external/dawn:webgpu_capture_vertex_slots.patch",
+                            "//bazel/external/dawn:replay_draw_limit.patch",
+                        ],
                         remote = repo_data.get("remote"),
                     )
                 else:

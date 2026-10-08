@@ -1,0 +1,129 @@
+diff --git a/include/dawn/replay/Replay.h b/include/dawn/replay/Replay.h
+index cc3790ab5..67ffdcda1 100644
+--- a/include/dawn/replay/Replay.h
++++ b/include/dawn/replay/Replay.h
+@@ -87,6 +87,16 @@ class DAWN_REPLAY_EXPORT Replay {
+     template <typename T>
+     T GetObjectByLabel(std::string_view label) const;
+ 
++    // TEMP(skia): Returns the replayed object for a capture object id (as seen by Capture::Walk).
++    template <typename T>
++    T GetObjectById(uint64_t id) const;
++
++    // TEMP(skia): Replays only the first `count` draw calls (Draw, DrawIndexed, DrawIndirect and
++    // DrawIndexedIndirect in render passes and render bundles, counted in capture order). Later
++    // draws are skipped; all other commands still execute (passes still begin/end, resolves,
++    // copies and submits still happen). Must be called before Play()/PlayFrame().
++    void SetDrawLimit(uint64_t count);
++
+     // Returns if play is successful.
+     bool Play();
+ 
+diff --git a/src/dawn/replay/Replay.cpp b/src/dawn/replay/Replay.cpp
+index a3dd13e06..79218a74b 100644
+--- a/src/dawn/replay/Replay.cpp
++++ b/src/dawn/replay/Replay.cpp
+@@ -31,6 +31,7 @@
+ 
+ #include <algorithm>
+ #include <iostream>
++#include <limits>
+ #include <memory>
+ #include <ranges>
+ #include <set>
+@@ -286,7 +287,15 @@ class DawnRootCommandVisitor : public RootCommandVisitor {
+ 
+     void SetContentReadHead(ReadHead* readHead) override { mContentReadHead = readHead; }
+ 
++    // TEMP(skia): Draw limit, see Replay::SetDrawLimit.
++    void SetDrawLimit(uint64_t limit) { mDrawLimit = limit; }
++    // Counts a draw call. Returns false if it is past the draw limit and must be skipped.
++    bool CountDraw() const { return mDrawCount++ < mDrawLimit; }
++
+   private:
++    uint64_t mDrawLimit = std::numeric_limits<uint64_t>::max();
++    mutable uint64_t mDrawCount = 0;
++
+     wgpu::Device mDevice;
+     DawnResourceVisitor mResourceVisitor;
+ 
+@@ -868,26 +877,35 @@ struct DawnRenderVisitor : DawnCommandVisitor<Base, Pass> {
+     }
+ 
+     VisitResult operator()(const schema::CommandBufferCommandDrawCmdData& data) override {
+-        pass.Draw(data.vertexCount, data.instanceCount, data.firstVertex, data.firstInstance);
++        if (replay.CountDraw()) {
++            pass.Draw(data.vertexCount, data.instanceCount, data.firstVertex, data.firstInstance);
++        }
+         return VisitStatus::Continue;
+     }
+ 
+     VisitResult operator()(const schema::CommandBufferCommandDrawIndexedCmdData& data) override {
+-        pass.DrawIndexed(data.indexCount, data.instanceCount, data.firstIndex, data.baseVertex,
+-                         data.firstInstance);
++        if (replay.CountDraw()) {
++            pass.DrawIndexed(data.indexCount, data.instanceCount, data.firstIndex, data.baseVertex,
++                             data.firstInstance);
++        }
+         return VisitStatus::Continue;
+     }
+ 
+     VisitResult operator()(const schema::CommandBufferCommandDrawIndirectCmdData& data) override {
+-        pass.DrawIndirect(replay.template GetObjectById<wgpu::Buffer>(data.indirectBufferId),
+-                          data.indirectOffset);
++        if (replay.CountDraw()) {
++            pass.DrawIndirect(replay.template GetObjectById<wgpu::Buffer>(data.indirectBufferId),
++                              data.indirectOffset);
++        }
+         return VisitStatus::Continue;
+     }
+ 
+     VisitResult operator()(
+         const schema::CommandBufferCommandDrawIndexedIndirectCmdData& data) override {
+-        pass.DrawIndexedIndirect(replay.template GetObjectById<wgpu::Buffer>(data.indirectBufferId),
+-                                 data.indirectOffset);
++        if (replay.CountDraw()) {
++            pass.DrawIndexedIndirect(
++                replay.template GetObjectById<wgpu::Buffer>(data.indirectBufferId),
++                data.indirectOffset);
++        }
+         return VisitStatus::Continue;
+     }
+ };
+@@ -1620,4 +1638,23 @@ const std::string& ReplayImpl::GetLabel(schema::ObjectId id) const {
+     return mVisitor->GetLabel(id);
+ }
+ 
++void ReplayImpl::SetDrawLimitImpl(uint64_t count) {
++    mVisitor->SetDrawLimit(count);
++}
++
++// TEMP(skia): inspection controls.
++void Replay::SetDrawLimit(uint64_t count) {
++    static_cast<ReplayImpl*>(this)->SetDrawLimitImpl(count);
++}
++
++template <typename T>
++T Replay::GetObjectById(uint64_t id) const {
++    return static_cast<const ReplayImpl*>(this)->GetObjectById<T>(id);
++}
++
++#define DAWN_REPLAY_GET_OBJECT_BY_ID(NAME) \
++    template wgpu::NAME Replay::GetObjectById<wgpu::NAME>(uint64_t id) const;
++DAWN_REPLAY_OBJECT_TYPES(DAWN_REPLAY_GET_OBJECT_BY_ID)
++#undef DAWN_REPLAY_GET_OBJECT_BY_ID
++
+ }  // namespace dawn::replay
+diff --git a/src/dawn/replay/ReplayImpl.h b/src/dawn/replay/ReplayImpl.h
+index ba9a4c643..a27e9aaaa 100644
+--- a/src/dawn/replay/ReplayImpl.h
++++ b/src/dawn/replay/ReplayImpl.h
+@@ -51,6 +51,8 @@ class ReplayImpl : public Replay {
+     MaybeError PlayImpl();
+ 
+     ResultOrError<ReplayStatus> PlayFrameImpl();
++    // TEMP(skia): See Replay::SetDrawLimit.
++    void SetDrawLimitImpl(uint64_t count);
+ 
+     ~ReplayImpl() override;
+ 

@@ -17,6 +17,8 @@
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#include <vector>
+
 struct AHardwareBuffer;
 struct SkSamplingOptions;
 class SkTraceMemoryDump;
@@ -115,6 +117,12 @@ public:
 
     const Caps* caps() const;
 
+    // SkCapture draw id tracking: keeps per-render-pass depth attachments alive for the duration
+    // of a capture so they are never recycled by the cache. Each one then keeps its own label and
+    // its final depth contents, so a capture replayer can read them back after replay.
+    void keepAliveForCapture(sk_sp<Texture> texture);
+    void releaseCaptureKeepAlive();
+
 #ifdef SK_BUILD_FOR_ANDROID
     virtual BackendTexture createBackendTexture(AHardwareBuffer*,
                                                 bool isRenderable,
@@ -135,6 +143,8 @@ protected:
     sk_sp<ResourceCache> fResourceCache;
 
 private:
+    std::vector<sk_sp<Texture>> fCaptureKeepAlive;
+
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&, std::string_view label) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t,

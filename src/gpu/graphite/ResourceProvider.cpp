@@ -38,8 +38,15 @@ ResourceProvider::ResourceProvider(SharedContext* sharedContext,
         , fResourceCache(ResourceCache::Make(singleOwner, recorderID, resourceBudget)) {}
 
 ResourceProvider::~ResourceProvider() {
+    fCaptureKeepAlive.clear();
     fResourceCache->shutdown();
 }
+
+void ResourceProvider::keepAliveForCapture(sk_sp<Texture> texture) {
+    fCaptureKeepAlive.push_back(std::move(texture));
+}
+
+void ResourceProvider::releaseCaptureKeepAlive() { fCaptureKeepAlive.clear(); }
 
 sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(
         const ComputePipelineDesc& pipelineDesc) {

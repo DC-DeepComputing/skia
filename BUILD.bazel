@@ -115,6 +115,12 @@ alias(
     visibility = ["//visibility:public"],
 )
 
+alias(
+    name = "graphite_native_dawn",
+    actual = "//src/gpu/graphite/dawn:graphite_native_dawn",
+    visibility = ["//visibility:public"],
+)
+
 ###
 
 alias(

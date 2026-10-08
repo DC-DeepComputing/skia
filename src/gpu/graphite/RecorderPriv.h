@@ -113,6 +113,9 @@ public:
 
     size_t getResourceCacheLimit() const;
 
+    // Non-null when the Context was created with ContextOptions::fEnableCapture.
+    SkCaptureManager* captureManager() const { return fRecorder->fSharedContext->captureManager(); }
+
 #if defined(GPU_TEST_UTILS)
     bool deviceIsRegistered(Device*) const;
     ResourceCache* resourceCache() { return fRecorder->fResourceProvider->resourceCache(); }

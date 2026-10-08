@@ -242,6 +242,20 @@ TextureInfo DawnCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage,
     return TextureInfos::MakeDawn(info);
 }
 
+TextureInfo DawnCaps::getDebugReadableDepthAttachmentTextureInfo(AttachmentDesc desc,
+                                                                 Protected isProtected) const {
+    TextureInfo info = this->getDefaultAttachmentTextureInfo(desc, isProtected, Discardable::kNo);
+    if (!info.isValid()) {
+        return info;
+    }
+    // Every WebGPU depth format (and the depth aspect of depth-stencil formats) can be bound with
+    // TextureBinding and read with textureLoad, including multisampled ones, which is how capture
+    // tools read it back (CopySrc is not available for every depth format).
+    DawnTextureInfo dawnInfo = TextureInfoPriv::Get<DawnTextureInfo>(info);
+    dawnInfo.fUsage |= wgpu::TextureUsage::TextureBinding;
+    return TextureInfos::MakeDawn(dawnInfo);
+}
+
 SkISize DawnCaps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
                                                const SkISize colorAttachmentDimensions) const {
 #if !defined(__EMSCRIPTEN__)

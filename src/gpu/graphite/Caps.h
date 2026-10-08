@@ -173,6 +173,12 @@ public:
                                                 Protected,
                                                 Discardable) const;
 
+    // A depth/stencil attachment whose contents can be inspected after the render pass by capture
+    // tools (SkCapture draw id tracking): not transient/memoryless and, where the backend allows,
+    // also bindable for sampling/loading in shaders.
+    virtual TextureInfo getDebugReadableDepthAttachmentTextureInfo(AttachmentDesc,
+                                                                   Protected) const;
+
     TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                              Mipmapped,
                                              Protected,

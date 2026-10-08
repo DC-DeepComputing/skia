@@ -198,6 +198,7 @@ skia_core_sources = [
   "$_src/capture/SkCapture.h",
   "$_src/capture/SkCaptureCanvas.cpp",
   "$_src/capture/SkCaptureCanvas.h",
+  "$_src/capture/SkCaptureDrawId.h",
   "$_src/capture/SkCaptureManager.cpp",
   "$_src/capture/SkCaptureManager.h",
   "$_src/core/RasterContext.cpp",

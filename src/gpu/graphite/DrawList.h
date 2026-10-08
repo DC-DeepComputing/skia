@@ -12,6 +12,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkBlockAllocator.h"
+#include "src/capture/SkCaptureDrawId.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/DrawCommands.h"
@@ -102,16 +103,24 @@ private:
     public:
         Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
              const Clip& clip, DrawOrder order, BarrierType barrierBeforeDraws,
-             const StrokeStyle* stroke)
+             const StrokeStyle* stroke, SkCaptureDrawId captureDrawId, bool isDepthOnly)
                 : fRenderer(renderer)
-                , fDrawParams(transform, geometry, clip, order, stroke, barrierBeforeDraws) {}
+                , fDrawParams(transform, geometry, clip, order, stroke, barrierBeforeDraws)
+                , fCaptureDrawId(captureDrawId)
+                , fIsDepthOnly(isDepthOnly) {}
 
         const Renderer* renderer()              const { return fRenderer;   }
         const DrawParams& drawParams()          const { return fDrawParams; }
+        // The SkCapture draw command that recorded this draw (invalid if not tracked).
+        SkCaptureDrawId captureDrawId()         const { return fCaptureDrawId; }
+        // True for depth-only draws (e.g. clip shapes) that do not modify color.
+        bool isDepthOnly()                      const { return fIsDepthOnly; }
 
     private:
         const Renderer* fRenderer;
         DrawParams fDrawParams;
+        SkCaptureDrawId fCaptureDrawId;
+        bool fIsDepthOnly;
     };
 
     template <uint64_t Bits, uint64_t Offset>

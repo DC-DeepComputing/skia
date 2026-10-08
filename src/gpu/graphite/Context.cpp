@@ -157,7 +157,9 @@ Context::Context(sk_sp<SharedContext> sharedContext,
                                                        options.fPipelineCallback);
 
     if (options.fEnableCapture) {
-        fSharedContext->setCaptureManager(sk_make_sp<SkCaptureManager>());
+        auto captureManager = sk_make_sp<SkCaptureManager>();
+        captureManager->setDrawIdTracking(options.fEnableCaptureDrawIdTracking);
+        fSharedContext->setCaptureManager(std::move(captureManager));
     }
 
     fPersistentPipelineStorage = options.fPersistentPipelineStorage;
@@ -1043,6 +1045,8 @@ void Context::startCapture() {
 sk_sp<SkCapture> Context::endCapture() {
     if (fSharedContext->captureManager()) {
         fSharedContext->captureManager()->toggleCapture(false);
+        // Release the per-pass depth attachments kept alive for draw id tracking.
+        fResourceProvider->releaseCaptureKeepAlive();
         return fSharedContext->captureManager()->getLastCapture();
     }
     return nullptr;
