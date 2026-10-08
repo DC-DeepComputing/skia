@@ -469,70 +469,38 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
     return nullptr;
 }
 
-static sk_app::Window::BackendType get_backend_type(const char* str) {
-    if (0 == strcmp(str, "sw")) {
-        return sk_app::Window::BackendType::kRaster;
+static const char* get_backend_flag_string(sk_app::Window::BackendType type) {
+    switch (type) {
+        case sk_app::Window::BackendType::kNativeGL:
+            return "gl";
+        case sk_app::Window::BackendType::kANGLE:
+            return "angle";
+        case sk_app::Window::BackendType::kGraphiteDawnD3D11:
+            return "grdawn_d3d11";
+        case sk_app::Window::BackendType::kGraphiteDawnD3D12:
+            return "grdawn_d3d12";
+        case sk_app::Window::BackendType::kGraphiteDawnMetal:
+            return "grdawn_metal";
+        case sk_app::Window::BackendType::kGraphiteDawnOpenGLES:
+            return "grdawn_gles";
+        case sk_app::Window::BackendType::kGraphiteDawnVulkan:
+            return "grdawn_vk";
+        case sk_app::Window::BackendType::kVulkan:
+            return "vk";
+        case sk_app::Window::BackendType::kGraphiteVulkan:
+            return "grvk";
+        case sk_app::Window::BackendType::kMetal:
+            return "mtl";
+        case sk_app::Window::BackendType::kGraphiteMetal:
+            return "grmtl";
+        case sk_app::Window::BackendType::kDirect3D:
+            return "d3d";
+        case sk_app::Window::BackendType::kRaster:
+            return "sw";
+        default:
+            SK_ABORT("unsupported backend type");
     }
-#if defined(SK_DAWN) && defined(SK_GRAPHITE)
-    if (0 == strcmp(str, "grdawn_d3d11")) {
-        return sk_app::Window::BackendType::kGraphiteDawnD3D11;
-    } else if (0 == strcmp(str, "grdawn_d3d12")) {
-        return sk_app::Window::BackendType::kGraphiteDawnD3D12;
-    } else if (0 == strcmp(str, "grdawn_metal")) {
-        return sk_app::Window::BackendType::kGraphiteDawnMetal;
-    } else if (0 == strcmp(str, "grdawn_gles")) {
-        return sk_app::Window::BackendType::kGraphiteDawnOpenGLES;
-    } else if (0 == strcmp(str, "grdawn_vk")) {
-        return sk_app::Window::BackendType::kGraphiteDawnVulkan;
-    } else
-#endif
-
-#if defined(SK_VULKAN) && !defined(SK_BUILD_FOR_MAC)
-#   if defined(SK_GANESH)
-    if (0 == strcmp(str, "vk")) {
-        return sk_app::Window::BackendType::kVulkan;
-    } else
-#   endif
-#   if defined(SK_GRAPHITE)
-    if (0 == strcmp(str, "grvk")) {
-        return sk_app::Window::BackendType::kGraphiteVulkan;
-    } else
-#   endif
-#endif
-
-#if defined(SK_METAL)
-#   if defined(SK_GANESH)
-    if (0 == strcmp(str, "mtl")) {
-        return sk_app::Window::BackendType::kMetal;
-    } else
-#   endif
-#   if defined(SK_GRAPHITE)
-    if (0 == strcmp(str, "grmtl")) {
-        return sk_app::Window::BackendType::kGraphiteMetal;
-    } else
-#   endif
-#endif
-
-#if defined(SK_DIRECT3D) && defined(SK_GANESH)
-     if (0 == strcmp(str, "d3d")) {
-        return sk_app::Window::BackendType::kDirect3D;
-    } else
-#endif
-
-#if defined(SK_GL) && defined(SK_GANESH)
-    if (0 == strcmp(str, "gl")) {
-        return sk_app::Window::BackendType::kNativeGL;
-    } else if (0 == strcmp(str, "sw")) {
-        return sk_app::Window::BackendType::kRaster;
-    } else
-    #if defined(SK_ANGLE) && (defined(SK_BUILD_FOR_WIN) || defined(SK_BUILD_FOR_MAC))
-            if (0 == strcmp(str, "angle")) {
-        return sk_app::Window::BackendType::kANGLE;
-    } else
-    #endif
-#endif
-    SkDebugf("Unknown backend type, %s, defaulting to sw.", str);
-    return sk_app::Window::BackendType::kRaster;
+    return nullptr;
 }
 
 static SkColorSpacePrimaries gSrgbPrimaries = {
@@ -646,6 +614,16 @@ static const Window::BackendType kSupportedBackends[] = {
 };
 
 constexpr size_t kSupportedBackendTypeCount = std::size(kSupportedBackends);
+
+static sk_app::Window::BackendType get_backend_type(const char* str) {
+    for (size_t i = 0; i < kSupportedBackendTypeCount; ++i) {
+        if (0 == strcmp(str, get_backend_flag_string(kSupportedBackends[i]))) {
+            return kSupportedBackends[i];
+        }
+    }
+    SkDebugf("Unknown backend type, %s, defaulting to sw.", str);
+    return sk_app::Window::BackendType::kRaster;
+}
 
 static Window::BackendType backend_type_for_window(Window::BackendType backendType) {
     // In raster mode, we still use a GPU-backed window.
@@ -2498,86 +2476,14 @@ void Viewer::drawImGui() {
                          ImGuiWindowFlags_AlwaysVerticalScrollbar)) {
             if (ImGui::CollapsingHeader("Backend")) {
                 int newBackend = static_cast<int>(fBackendType);
-                ImGui::RadioButton("Raster",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kRaster));
-                ImGui::SameLine();
-                ImGui::RadioButton("OpenGL",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kNativeGL));
-#if defined(SK_ANGLE) && (defined(SK_BUILD_FOR_WIN) || defined(SK_BUILD_FOR_MAC))
-                ImGui::SameLine();
-                ImGui::RadioButton("ANGLE",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kANGLE));
-#endif
-
-#if defined(SK_DAWN) && defined(SK_GRAPHITE)
-#if defined(SK_BUILD_FOR_WIN)
-                ImGui::SameLine();
-                ImGui::RadioButton(
-                        "Dawn D3D12 (Graphite)",
-                        &newBackend,
-                        static_cast<int>(sk_app::Window::BackendType::kGraphiteDawnD3D12));
-#endif
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-                ImGui::SameLine();
-                ImGui::RadioButton(
-                        "Dawn Metal (Graphite)",
-                        &newBackend,
-                        static_cast<int>(sk_app::Window::BackendType::kGraphiteDawnMetal));
-#endif
-#if defined(SK_BUILD_FOR_UNIX) || defined(SK_BUILD_FOR_ANDROID)
-                ImGui::SameLine();
-                ImGui::RadioButton(
-                        "Dawn OpenGLES (Graphite)",
-                        &newBackend,
-                        static_cast<int>(sk_app::Window::BackendType::kGraphiteDawnOpenGLES));
-                ImGui::SameLine();
-                ImGui::RadioButton(
-                        "Dawn Vulkan (Graphite)",
-                        &newBackend,
-                        static_cast<int>(sk_app::Window::BackendType::kGraphiteDawnVulkan));
-#endif
-#endif
-
-
-#if defined(SK_VULKAN) && !defined(SK_BUILD_FOR_MAC)
-#   if defined(SK_GANESH)
-                ImGui::SameLine();
-                ImGui::RadioButton("Vulkan",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kVulkan));
-#   endif
-#   if defined(SK_GRAPHITE)
-                ImGui::SameLine();
-                ImGui::RadioButton("Vulkan (Graphite)",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kGraphiteVulkan));
-#   endif
-#endif
-
-#if defined(SK_METAL)
-#   if defined(SK_GANESH)
-                ImGui::SameLine();
-                ImGui::RadioButton("Metal",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kMetal));
-#   endif
-#   if defined(SK_GRAPHITE)
-                ImGui::SameLine();
-                ImGui::RadioButton("Metal (Graphite)",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kGraphiteMetal));
-#   endif
-#endif
-
-#if defined(SK_DIRECT3D) && defined(SK_GANESH)
-                ImGui::SameLine();
-                ImGui::RadioButton("Direct3D",
-                                   &newBackend,
-                                   static_cast<int>(sk_app::Window::BackendType::kDirect3D));
-#endif
+                for (size_t i = 0; i < kSupportedBackendTypeCount; i++) {
+                    if (i > 0) {
+                        ImGui::SameLine();
+                    }
+                    ImGui::RadioButton(get_backend_string(kSupportedBackends[i]),
+                                       &newBackend,
+                                       static_cast<int>(kSupportedBackends[i]));
+                }
 
                 if (newBackend != static_cast<int>(fBackendType)) {
                     fDeferredActions.push_back([newBackend, this]() {
