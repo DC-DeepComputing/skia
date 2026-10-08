@@ -25,6 +25,10 @@
 #include "include/codec/SkPngDecoder.h"
 #endif
 
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+#include "include/private/chromium/Slug.h"
+#endif
+
 namespace ToolUtils {
 
 SkDeserialProcs default_deserial_procs() {
@@ -52,6 +56,9 @@ SkDeserialProcs default_deserial_procs() {
     procs.fTypefaceStreamProc = [](SkStream& stream, void*) -> sk_sp<SkTypeface> {
         return SkTypeface::MakeDeserialize(&stream, ToolUtils::TestFontMgr());
     };
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+    sktext::gpu::Slug::AddDeserialProcs(&procs);
+#endif
     return procs;
 }
 
