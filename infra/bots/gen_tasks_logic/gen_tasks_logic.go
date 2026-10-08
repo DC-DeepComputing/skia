@@ -1995,6 +1995,7 @@ func (b *jobBuilder) dmStandaloneWasm() {
 		b.cmd(
 			b.taskDriver("run_wasm_dm", false),
 			"--local=false",
+			"--chrome_cache", CACHES_WORKDIR[0].Path,
 			"--work_path", "tmp",
 			"--project_id", "skia-swarming-bots",
 			"--task_id", specs.PLACEHOLDER_TASK_ID,
