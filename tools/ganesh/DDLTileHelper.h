@@ -15,16 +15,17 @@
 #include "include/private/chromium/GrDeferredDisplayList.h"
 #include "include/private/chromium/GrSurfaceCharacterization.h"
 
+#include "src/core/SkTaskGroup.h"
+
 class DDLPromiseImageHelper;
+class GrDeferredDisplayListRecorder;
+class GrSurfaceCharacterization;
 class PromiseImageCallbackContext;
 class SkCanvas;
 class SkData;
-class GrDeferredDisplayListRecorder;
 class SkImage;
 class SkPicture;
 class SkSurface;
-class GrSurfaceCharacterization;
-class SkTaskGroup;
 
 class DDLTileHelper {
 public:

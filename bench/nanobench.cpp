@@ -1428,7 +1428,7 @@ int main(int argc, char** argv) {
     SkCodecs::Register(SkJpegDecoder::Decoder());
 #endif
 
-    SkExecutors::Enabler enabled(FLAGS_threads);
+    SkStdFunctionExecutors::Enabler enabled(FLAGS_threads);
 
     CommonFlags::SetCtxOptions(&grContextOpts);
 

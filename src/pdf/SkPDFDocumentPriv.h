@@ -38,12 +38,13 @@
 #include <vector>
 #include <memory>
 
+#include "include/core/SkExecutor.h"
+
 class SkDescriptor;
-class SkExecutor;
+class SkMatrix;
 class SkPDFDevice;
 struct SkAdvancedTypefaceMetrics;
 struct SkBitmapKey;
-class SkMatrix;
 
 namespace SkPDFGradientShader {
 struct Key;
@@ -162,7 +163,7 @@ public:
     // Returns a tag to prepend to a PostScript name of a subset font. Includes the '+'.
     SkString nextFontSubsetTag();
 
-    SkExecutor* executor() const { return fExecutor; }
+    SkStdFunctionExecutor* executor1() const { return fExecutor1; }
     void incrementJobCount();
     void signalJobComplete();
     size_t currentPageIndex() { return fPages.size(); }
@@ -215,7 +216,7 @@ private:
     const SkPDF::Metadata fMetadata;
     const SkScalar fRasterScale;
     const SkScalar fInverseRasterScale;
-    SkExecutor *const fExecutor;
+    SkStdFunctionExecutor *const fExecutor1;
 
     // For tagged PDFs.
     SkPDFStructTree fStructTree;

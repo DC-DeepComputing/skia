@@ -361,7 +361,8 @@ void DDLTileHelper::resetAllTiles() {
     fComposeDDL.reset();
 }
 
-void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup,
+                                          GrDirectContext* direct) {
 
     if (taskGroup) {
         for (int i = 0; i < this->numTiles(); ++i) {
@@ -379,7 +380,8 @@ void DDLTileHelper::createBackendTextures(SkTaskGroup* taskGroup, GrDirectContex
     }
 }
 
-void DDLTileHelper::deleteBackendTextures(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLTileHelper::deleteBackendTextures(SkTaskGroup* taskGroup,
+                                          GrDirectContext* direct) {
     if (taskGroup) {
         for (int i = 0; i < this->numTiles(); ++i) {
             TileData* tile = &fTiles[i];

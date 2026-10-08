@@ -19,7 +19,7 @@
 #include <optional>
 #include <vector>
 
-class SkExecutor;
+#include "include/core/SkExecutor.h"
 
 struct SK_API GrContextOptions {
     enum class Enable {
@@ -90,7 +90,7 @@ struct SK_API GrContextOptions {
      * to a valid SkExecutor instance. Currently, used for software path rendering, but may be used
      * for other tasks.
      */
-    SkExecutor* fExecutor = nullptr;
+    SkStdFunctionExecutor* fExecutor = nullptr;
 
     /**
      * Cache in which to store compiled shader binaries between runs.
