@@ -22,6 +22,30 @@
       },
       "revId": "3137db6a19f457f03f60cdcb814654112a4a7db6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c346b134_47c76ab9",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-10-08T16:04:24Z",
+      "side": 1,
+      "message": "\"always\" is a misnomer we\u0027ve inherited from before Perfetto integration, which really just means \"this slice ignores `SkAndroidFrameworkTraceUtils::GetEnableDetailedTracing()`\".\n\nSo if `!force_always_trace \u0026\u0026 !usePerfettoAndCategoryEnabled`, then we should go to atrace iff `SkAndroidFrameworkTraceUtils::GetEnableDetailedTracing() \u003d\u003d true`.",
+      "parentUuid": "168318d5_eb8d7f57",
+      "range": {
+        "startLine": 397,
+        "startChar": 0,
+        "endLine": 397,
+        "endChar": 100
+      },
+      "revId": "3137db6a19f457f03f60cdcb814654112a4a7db6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
