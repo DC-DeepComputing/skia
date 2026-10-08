@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95b5f1df_f0b2d729",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 2155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:57:29Z",
+      "side": 1,
+      "message": "Do we have a corresponding bazel build file to update?",
+      "range": {
+        "startLine": 2155,
+        "startChar": 0,
+        "endLine": 2155,
+        "endChar": 51
+      },
+      "revId": "7d84aa6a99c5f30d58fdb2f5859aeb37a060d79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9ac4295_5a45028d",
+        "filename": "include/android/SkAndroidFrameworkTraceUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:57:29Z",
+      "side": 1,
+      "message": "does Android still call this function? or does it call getEnableDetailedTracing() instead?\n\nIf it\u0027s not updated to getEnabledDetailedTracing, can we fix the static function casing on those functions?",
+      "range": {
+        "startLine": 54,
+        "startChar": 16,
+        "endLine": 54,
+        "endChar": 32
+      },
+      "revId": "7d84aa6a99c5f30d58fdb2f5859aeb37a060d79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd54d89e_6cea4951",
+        "filename": "include/android/SkAndroidFrameworkTraceUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:57:29Z",
+      "side": 1,
+      "message": "Can we make these atomic so that they are thread-safe?",
+      "range": {
+        "startLine": 63,
+        "startChar": 11,
+        "endLine": 63,
+        "endChar": 15
+      },
+      "revId": "7d84aa6a99c5f30d58fdb2f5859aeb37a060d79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce1ddec7_1de9a0d4",
+        "filename": "include/android/SkAndroidFrameworkTraceUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:57:29Z",
+      "side": 1,
+      "message": "Should be `InitPerfetto()`.",
+      "range": {
+        "startLine": 70,
+        "startChar": 16,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "7d84aa6a99c5f30d58fdb2f5859aeb37a060d79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
