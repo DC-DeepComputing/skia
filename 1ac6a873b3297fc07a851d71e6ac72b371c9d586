@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edb3a436_e164ff8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:40:02Z",
+      "side": 1,
+      "message": "Fixes UTF8/UTF16 problem from the code review for the previous CL.",
+      "revId": "1ac6a873b3297fc07a851d71e6ac72b371c9d586",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
