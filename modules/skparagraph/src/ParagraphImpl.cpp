@@ -50,16 +50,6 @@ SkScalar littleRound(SkScalar a) {
         return SkScalarFloorToScalar(a);
     }
 }
-
-bool is_zero_width_codepoint(SkUnichar u) {
-    return (u >= 0x200B && u <= 0x200F)
-        || (u >= 0x202A && u <= 0x202E)
-        || (u >= 0x2060 && u <= 0x2069)
-        || u == 0xFEFF
-        || u == 0x00AD
-        || u == 0x034F
-        || u == 0x061C;
-}
 }  // namespace
 
 TextRange operator*(const TextRange& a, const TextRange& b) {
