@@ -1,0 +1,91 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d25a1600_9cddda52",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:01:07Z",
+      "side": 1,
+      "message": "Is this going to cause issues with something like 1010102?  E.g. I think `SkAndroidCodec::computeOutputColorType()` would allow that through, but then `SkJpegxlCodec::conversionSupported()` would reject it.  Might be sufficient to allow it in `conversionSupported`.\n\nWould be good to add some tests for this if we don\u0027t have them already.",
+      "range": {
+        "startLine": 192,
+        "startChar": 79,
+        "endLine": 192,
+        "endChar": 99
+      },
+      "revId": "a9f47f6df272704fdada708f798188bb9a94e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2028f2b7_054bf699",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:01:07Z",
+      "side": 1,
+      "message": "Can this overflow?  Since we\u0027ve already checked `x`, it\u0027d be safer to do something like\n\n`if (num_pixels \u003e (size_t)instance-\u003edimensions().width() - x)`",
+      "range": {
+        "startLine": 337,
+        "startChar": 8,
+        "endLine": 337,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "69364a68_a7294433",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkJpegxlCodec.cpp",
+              "range": {
+                "startLine": 337,
+                "startChar": 0,
+                "endLine": 338,
+                "endChar": 0
+              },
+              "replacement": "    if (num_pixels \u003e (size_t)instance-\u003edimensions().width() - x) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a9f47f6df272704fdada708f798188bb9a94e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf972e2_9fe7a9c1",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:01:07Z",
+      "side": 1,
+      "message": "Not new to this CL, but it seems odd to premultiply BGRA and not premultiply RGBA too.  I suspect we have some bugs in handling non-opaque images, as src premultiplication also depends on whether we use a color transform or get the pixels directly from libjxl.",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 352,
+        "endChar": 19
+      },
+      "revId": "a9f47f6df272704fdada708f798188bb9a94e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
