@@ -115,10 +115,11 @@ private:
     AutoTArray<PromiseImageInfo> fPromiseImages{kPromiseImageCount};
     sk_sp<SkSurface> fSurface;
     GrSurfaceCharacterization fSurfaceCharacterization;
-    std::unique_ptr<SkExecutor> fGpuExecutor =
-        SkExecutors::MakeFIFOThreadPool(1, /* allowBorrowing= */ false);
-    std::unique_ptr<SkExecutor> fRecordingExecutor =
-        SkExecutors::MakeFIFOThreadPool(kRecordingThreadCount, /* allowBorrowing= */ false);
+    std::unique_ptr<StdFunctionExecutor> fGpuExecutor =
+        SkStdFunctionExecutors::MakeFIFOThreadPool(1, /* allowBorrowing= */ false);
+    std::unique_ptr<StdFunctionExecutor> fRecordingExecutor =
+        SkStdFunctionExecutors::MakeFIFOThreadPool(kRecordingThreadCount,
+                                                 /* allowBorrowing= */ false);
     SkTaskGroup fGpuTaskGroup{*fGpuExecutor};
     SkTaskGroup fRecordingTaskGroup{*fRecordingExecutor};
     SkThreadID fGpuThread = kIllegalThreadID;

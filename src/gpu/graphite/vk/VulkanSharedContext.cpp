@@ -95,7 +95,7 @@ VulkanSharedContext::VulkanSharedContext(
                 sk_sp<const skgpu::VulkanInterface> interface,
                 sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator,
                 std::unique_ptr<const VulkanCaps> caps,
-                SkExecutor* executor,
+                CallbackExecutor* executor,
                 PersistentPipelineStorage* persistentPipelineStorage,
                 SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
         : SharedContext(std::move(caps),
