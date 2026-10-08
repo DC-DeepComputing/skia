@@ -36,6 +36,20 @@ public:
     skif::FilterResult filterImage(const skif::Context& context) const;
 
     /**
+     *  Attempt to draw the filtered image directly into 'device', using 'blender' to composite it
+     *  with the device's existing contents. This is equivalent to
+     *  `filterImage(context).draw(context, device, blender)` but lets filters whose root
+     *  operation is itself a composite of several results (e.g. SkImageFilters::Merge) skip the
+     *  intermediate surface and draw their inputs straight into 'device'.
+     *
+     *  Returns false if the filter could not do better than the default path; the caller must
+     *  then fall back to filterImage() + FilterResult::draw(). Nothing is drawn in that case.
+     */
+    bool filterAndDraw(const skif::Context& context,
+                       SkDevice* device,
+                       const SkBlender* blender) const;
+
+    /**
      * Create a filtered version of the 'src' image using this filter. This is basically a wrapper
      * around filterImage that prepares the skif::Context to filter the 'src' image directly,
      * for implementing the SkImages::MakeWithFilter API calls.
@@ -252,6 +266,16 @@ private:
      *  bounds as if its input filtered image were transparent black.
      */
     virtual skif::FilterResult onFilterImage(const skif::Context& context) const = 0;
+
+    /**
+     *  Optional override for filters that can draw their output into 'device' without first
+     *  producing a single FilterResult (see filterAndDraw()). Implementations must produce
+     *  pixels identical to `onFilterImage(context).draw(context, device, blender)` or return
+     *  false without drawing anything. 'device' already has the layer-to-device transform set.
+     */
+    virtual bool onFilterAndDraw(const skif::Context&, SkDevice*, const SkBlender*) const {
+        return false;
+    }
 
     /**
      *  Calculates the necessary input layer size in order for the final output of the filter to
