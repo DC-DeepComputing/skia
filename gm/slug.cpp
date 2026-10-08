@@ -5,12 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/chromium/Slug.h"
+
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -22,7 +26,6 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
-#include "include/private/chromium/Slug.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
@@ -115,10 +118,381 @@ private:
     }
 
     SkTDArray<SkGlyphID> fGlyphs;
-    sk_sp<SkTypeface>   fTypeface;
-    const char*         fText;
+    sk_sp<SkTypeface> fTypeface;
+    const char* fText;
     using INHERITED = skiagm::GM;
 };
 
 DEF_GM(return new SlugGM("hamburgefons");)
+
+// Exercises SDFTSubRun inside a Slug by converting text blobs under conditions where
+// SubRunControl::isSDFT() is true:
+// 1. Large device text size in [kLargeDFFontLimit (162), maxMaskSize (256)), drawn at multiple
+//    scales within its SDFTMatrixRange.
+// 2. Perspective CTM (matrix.hasPerspective() == true).
+class SlugSDFTGM : public skiagm::GM {
+public:
+    SlugSDFTGM() = default;
+
+protected:
+    void onOnceBeforeDraw() override {
+        fTypeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    }
+
+    SkString getName() const override { return SkString("slug_sdft"); }
+
+    SkISize getISize() override { return SkISize::Make(1000, 600); }
+
+    void onDraw(SkCanvas* canvas) override {
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setColor(SK_ColorBLACK);
+
+        // 1. Large text that falls into the SDFT size range [162, 256).
+        // Font size 64 at canvas scale 2.6 -> approximateDeviceTextSize = 166.4 -> SDFTSubRun.
+        {
+            SkFont font(fTypeface, 64);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromString("SDFT", font);
+
+            canvas->save();
+            canvas->translate(30, 180);
+            canvas->scale(2.6f, 2.6f);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                // Draw the SDFT slug at the creation scale on the right.
+                canvas->save();
+                canvas->translate(500, 180);
+                canvas->scale(2.6f, 2.6f);
+                slug->draw(canvas, paint);
+                canvas->restore();
+
+                // Draw again at a slightly different scale within the SDFTMatrixRange to
+                // exercise SDFT distance-field scaling from a single cached Slug.
+                canvas->save();
+                canvas->translate(30, 360);
+                canvas->scale(3.1f, 3.1f);
+                canvas->drawTextBlob(blob, 0, 0, paint);
+                canvas->restore();
+
+                canvas->save();
+                canvas->translate(500, 360);
+                canvas->scale(3.1f, 3.1f);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+
+        // 2. Perspective CTM, which always selects SDFTSubRun for outline glyphs.
+        {
+            SkFont font(fTypeface, 44);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromString("Perspective SDFT", font);
+
+            SkMatrix persp = SkMatrix::I();
+            persp.setPerspX(0.0004f);
+            persp.setPerspY(0.0008f);
+
+            canvas->save();
+            canvas->translate(30, 500);
+            canvas->concat(persp);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 500);
+                canvas->concat(persp);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+    }
+
+private:
+    sk_sp<SkTypeface> fTypeface;
+    using INHERITED = skiagm::GM;
+};
+
+DEF_GM(return new SlugSDFTGM();)
+
+// Exercises DrawableSubRun inside a Slug using COLRv1 color glyphs under conditions where
+// DirectMaskSubRun is bypassed (large device text size >= 256, and perspective CTM), causing
+// SubRunContainer::MakeInAlloc to fall through to DrawableSubRun.
+class SlugDrawableGM : public skiagm::GM {
+public:
+    SlugDrawableGM() = default;
+
+protected:
+    void onOnceBeforeDraw() override {
+        fTypeface = ToolUtils::CreateTypefaceFromResource("fonts/test_glyphs-glyf_colr_1.ttf");
+    }
+
+    SkString getName() const override { return SkString("slug_drawable"); }
+
+    SkISize getISize() override { return SkISize::Make(1000, 650); }
+
+    void onDraw(SkCanvas* canvas) override {
+        if (!fTypeface) {
+            return;
+        }
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setColor(SK_ColorBLACK);
+
+        // COLRv1 test codepoints (gradient stops & sweep gradients from
+        // test_glyphs-glyf_colr_1.ttf)
+        const uint32_t codepoints[] = {0xf0100, 0xf0101, 0xf0201};
+
+        // 1. Large COLRv1 glyphs (device text size 280 >= maxMaskSize 256) -> DrawableSubRun.
+        {
+            SkFont font(fTypeface, 140);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromText(
+                    codepoints, sizeof(codepoints), font, SkTextEncoding::kUTF32);
+
+            canvas->save();
+            canvas->translate(30, 300);
+            canvas->scale(2.0f, 2.0f);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->scale(0.35f, 0.35f);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 300);
+                canvas->scale(0.7f, 0.7f);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+
+        // 2. Perspective-transformed COLRv1 glyphs -> rejected by SDFTSubRun (not kSDF_Format),
+        // skipped by DirectMaskSubRun (hasPerspective()), accepted by DrawableSubRun.
+        {
+            SkFont font(fTypeface, 90);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromText(
+                    codepoints, sizeof(codepoints), font, SkTextEncoding::kUTF32);
+
+            SkMatrix persp = SkMatrix::I();
+            persp.setPerspX(0.0005f);
+            persp.setPerspY(0.0008f);
+
+            canvas->save();
+            canvas->translate(30, 540);
+            canvas->concat(persp);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 540);
+                canvas->concat(persp);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+    }
+
+private:
+    sk_sp<SkTypeface> fTypeface;
+    using INHERITED = skiagm::GM;
+};
+
+DEF_GM(return new SlugDrawableGM();)
+
+// Exercises color emoji rendering inside a Slug across:
+// 1. Native system color emoji typeface (Noto Color Emoji on Linux, Apple Color Emoji on macOS,
+//    Segoe UI Emoji on Windows) across DirectMaskSubRun and TransformedMaskSubRun.
+// 2. Bundled portable CBDT, SBIX (Apple format), and COLRv0 emoji fonts across DirectMaskSubRun,
+//    TransformedMaskSubRun, and DrawableSubRun.
+class SlugEmojiGM : public skiagm::GM {
+public:
+    SlugEmojiGM() = default;
+
+protected:
+#if defined(SK_GANESH)
+    void modifyGrContextOptions(GrContextOptions* ctxOptions) override {
+        ctxOptions->fSupportBilerpFromGlyphAtlas = true;
+    }
+#endif
+
+#if defined(SK_GRAPHITE)
+    void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions* options) const override {
+        options->fSupportBilerpFromGlyphAtlas = true;
+    }
+#endif
+
+    void onOnceBeforeDraw() override {
+        if (sk_sp<SkFontMgr> fontMgr = ToolUtils::TestFontMgr()) {
+            for (const char* family : {"Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji"}) {
+                fNativeEmojiTypeface = fontMgr->matchFamilyStyle(family, SkFontStyle());
+                if (fNativeEmojiTypeface) {
+                    break;
+                }
+            }
+        }
+        fCbdtSample = ToolUtils::EmojiSample(ToolUtils::EmojiFontFormat::Cbdt);
+        fSbixSample = ToolUtils::EmojiSample(ToolUtils::EmojiFontFormat::Sbix);
+        fColrSample = ToolUtils::EmojiSample(ToolUtils::EmojiFontFormat::ColrV0);
+    }
+
+    SkString getName() const override { return SkString("slug_emoji"); }
+
+    SkISize getISize() override { return SkISize::Make(1000, 750); }
+
+    void onDraw(SkCanvas* canvas) override {
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setColor(SK_ColorBLACK);
+
+        const char* nativeText = "\U0001F600\U0001F680\U0001F389\U0001F525\U0001F44D";
+        sk_sp<SkTypeface> primaryTf =
+                fNativeEmojiTypeface ? fNativeEmojiTypeface : fCbdtSample.typeface;
+        const char* primaryText = fNativeEmojiTypeface ? nativeText : fCbdtSample.sampleText;
+
+        // 1. Normal-sized color emojis -> DirectMaskSubRun (MaskFormat::kARGB).
+        if (primaryTf) {
+            SkFont font(primaryTf, 52);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromString(primaryText, font);
+
+            canvas->save();
+            canvas->translate(30, 90);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 90);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+
+        // 2. Scaled and rotated color emojis -> TransformedMaskSubRun (MaskFormat::kARGB).
+        if (primaryTf) {
+            SkFont font(primaryTf, 36);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromString(primaryText, font);
+
+            canvas->save();
+            canvas->translate(30, 220);
+            canvas->scale(1.4f, 1.4f);
+            canvas->rotate(4.0f);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 220);
+                canvas->scale(1.4f, 1.4f);
+                canvas->rotate(4.0f);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+
+        // 3. Perspective-transformed color emojis -> TransformedMaskSubRun (MaskFormat::kARGB).
+        if (primaryTf) {
+            SkFont font(primaryTf, 48);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromString(primaryText, font);
+
+            SkMatrix persp = SkMatrix::I();
+            persp.setPerspX(0.0004f);
+            persp.setPerspY(0.0006f);
+
+            canvas->save();
+            canvas->translate(30, 380);
+            canvas->concat(persp);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 380);
+                canvas->concat(persp);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+
+        // 4. Bundled Apple SBIX bitmap emoji (normal + perspective) -> DirectMaskSubRun &
+        //    TransformedMaskSubRun.
+        if (fSbixSample.typeface) {
+            SkFont font(fSbixSample.typeface, 56);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromString(fSbixSample.sampleText, font);
+
+            canvas->save();
+            canvas->translate(30, 540);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 540);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+
+        // 5. Perspective-transformed COLRv0 scalable emoji -> DrawableSubRun.
+        if (fColrSample.typeface) {
+            SkFont font(fColrSample.typeface, 56);
+            font.setEdging(SkFont::Edging::kAntiAlias);
+            sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromString(fColrSample.sampleText, font);
+
+            SkMatrix persp = SkMatrix::I();
+            persp.setPerspX(0.0005f);
+            persp.setPerspY(0.0008f);
+
+            canvas->save();
+            canvas->translate(30, 680);
+            canvas->concat(persp);
+            sk_sp<sktext::gpu::Slug> slug =
+                    sktext::gpu::Slug::ConvertBlob(canvas, *blob, {0, 0}, paint);
+            canvas->drawTextBlob(blob, 0, 0, paint);
+            canvas->restore();
+
+            if (slug) {
+                canvas->save();
+                canvas->translate(500, 680);
+                canvas->concat(persp);
+                slug->draw(canvas, paint);
+                canvas->restore();
+            }
+        }
+    }
+
+private:
+    sk_sp<SkTypeface> fNativeEmojiTypeface;
+    ToolUtils::EmojiTestSample fCbdtSample;
+    ToolUtils::EmojiTestSample fSbixSample;
+    ToolUtils::EmojiTestSample fColrSample;
+    using INHERITED = skiagm::GM;
+};
+
+DEF_GM(return new SlugEmojiGM();)
 #endif

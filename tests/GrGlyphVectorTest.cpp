@@ -95,6 +95,7 @@ DEF_TEST(GlyphVector_BadLengths, r) {
         // Make broken stream by hand - zero length
         SkBinaryWriteBuffer wBuffer({});
         promise.flatten(wBuffer);
+        wBuffer.writeBool(false);
         wBuffer.write32(0);  // length
         auto data = wBuffer.snapshotAsData();
         SkReadBuffer rBuffer{data->data(), data->size()};
@@ -107,6 +108,7 @@ DEF_TEST(GlyphVector_BadLengths, r) {
         // Make broken stream by hand - zero length
         SkBinaryWriteBuffer wBuffer({});
         promise.flatten(wBuffer);
+        wBuffer.writeBool(false);
         // Make broken stream by hand - stream is too short
         wBuffer.write32(5);  // length
         wBuffer.writeUInt(12);  // random data
