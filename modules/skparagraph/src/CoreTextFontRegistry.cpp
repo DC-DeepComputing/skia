@@ -199,7 +199,8 @@ bool CoreTextFontRegistry::isAppleSystemFont(const char* familyName) {
            name.startsWith("SFUI") ||
            name.startsWith("System Font") ||
            name.startsWith("-apple-system") ||
-           name.equals("system-ui");
+           name.equals("system-ui") ||
+           name.startsWith("CupertinoSystemText");
 }
 
 void CoreTextFontRegistry::clearCache() {
