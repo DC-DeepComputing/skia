@@ -282,6 +282,30 @@
       },
       "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc26e51a_aeb1f00a",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:32:30Z",
+      "side": 1,
+      "message": "Yes I think that makes sense.",
+      "parentUuid": "e9029ea9_9861debc",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 72
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
