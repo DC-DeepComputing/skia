@@ -12,7 +12,10 @@
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
@@ -22,11 +25,13 @@
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/chromium/Slug.h"
+#include "src/core/SkStrikeCache.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/utils/SkFloatUtils.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
+#include "tools/ProcsUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
@@ -134,13 +139,13 @@ DEF_GANESH_TEST_FOR_CONTEXTS(Slug_b520113415,
     memcpy(writableData.get(), data->data(), size);
 
 
-    // The creationMatrix of VertexFiller inside SDFTSubRun is located 216 bytes in.
+    // The creationMatrix of VertexFiller inside SDFTSubRun is located 220 bytes in.
     // We can overwrite it to have a matrix with perspective.
-    if (size < 216 + 9 * sizeof(float)) {
+    if (size < 220 + 9 * sizeof(float)) {
         ERRORF(reporter, "Serialized Slug is too small to contain creationMatrix!");
         return;
     }
-    float* f = reinterpret_cast<float*>(writableData.get() + 216);
+    float* f = reinterpret_cast<float*>(writableData.get() + 220);
     f[0] = 1.0f; f[1] = 0.0f; f[2] = 0.0f;
     f[3] = 0.0f; f[4] = 1.0f; f[5] = 0.0f;
     f[6] = 0.0078125f; f[7] = 0.0f; f[8] = 1.0f;
@@ -194,15 +199,15 @@ DEF_GANESH_TEST_FOR_CONTEXTS(Slug_b520571816,
     std::unique_ptr<uint8_t[]> writableData(new uint8_t[size]);
     memcpy(writableData.get(), data->data(), size);
 
-    // Corrupt the maskFormat of VertexFiller inside SDFTSubRun at offset 208 from
+    // Corrupt the maskFormat of VertexFiller inside SDFTSubRun at offset 212 from
     // kA8 (0) to kARGB (2).
-    if (size < 212) {
+    if (size < 216) {
         ERRORF(reporter, "Serialized Slug is too small to contain maskFormat!");
         return;
     }
-    int32_t* formatPtr = reinterpret_cast<int32_t*>(writableData.get() + 208);
+    int32_t* formatPtr = reinterpret_cast<int32_t*>(writableData.get() + 212);
     if (*formatPtr != 0) {
-        ERRORF(reporter, "maskFormat is not kA8 at expected offset 208!");
+        ERRORF(reporter, "maskFormat is not kA8 at expected offset 212!");
         return;
     }
     *formatPtr = static_cast<int32_t>(skgpu::MaskFormat::kARGB);
@@ -212,4 +217,101 @@ DEF_GANESH_TEST_FOR_CONTEXTS(Slug_b520571816,
     sk_sp<sktext::gpu::Slug> forgedSlug =
             sktext::gpu::Slug::Deserialize(writableData.get(), size, nullptr);
     REPORTER_ASSERT(reporter, forgedSlug == nullptr);
+}
+
+DEF_GANESH_TEST_FOR_CONTEXTS(Slug_PictureSerialization,
+                             skgpu::IsRenderingContext,
+                             reporter,
+                             ctxInfo,
+                             set_sdf_options,
+                             CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+    auto* canvas = surface->getCanvas();
+
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    SkFont font(typeface, 24);
+    font.setSubpixel(true);
+    font.setEdging(SkFont::Edging::kAntiAlias);
+    auto blob = SkTextBlob::MakeFromString("Hello Slug!", font);
+
+    SkFont bigFont(typeface, 300);
+    bigFont.setEdging(SkFont::Edging::kAntiAlias);
+    auto pathBlob = SkTextBlob::MakeFromString("P", bigFont);
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+    paint.setAntiAlias(true);
+
+    // Create a direct mask slug, an SDFT slug, and a path slug.
+    sk_sp<sktext::gpu::Slug> directSlug =
+            sktext::gpu::Slug::ConvertBlob(canvas, *blob, {10, 40}, paint);
+    REPORTER_ASSERT(reporter, directSlug != nullptr);
+
+    canvas->save();
+    canvas->scale(2.0f, 2.0f);
+    sk_sp<sktext::gpu::Slug> sdfSlug =
+            sktext::gpu::Slug::ConvertBlob(canvas, *blob, {5, 45}, paint);
+    canvas->restore();
+    REPORTER_ASSERT(reporter, sdfSlug != nullptr);
+
+    sk_sp<sktext::gpu::Slug> pathSlug =
+            sktext::gpu::Slug::ConvertBlob(canvas, *pathBlob, {10, 230}, paint);
+    REPORTER_ASSERT(reporter, pathSlug != nullptr);
+
+    // Record into an SkPicture before drawing to surface (or after).
+    SkPictureRecorder recorder;
+    SkCanvas* recCanvas = recorder.beginRecording(256, 256);
+    recCanvas->clear(SK_ColorWHITE);
+    directSlug->draw(recCanvas, paint);
+    recCanvas->save();
+    recCanvas->scale(2.0f, 2.0f);
+    sdfSlug->draw(recCanvas, paint);
+    recCanvas->restore();
+    pathSlug->draw(recCanvas, paint);
+    sk_sp<SkPicture> pic = recorder.finishRecordingAsPicture();
+
+    // Draw the slugs directly to surface to get expected image.
+    canvas->clear(SK_ColorWHITE);
+    directSlug->draw(canvas, paint);
+    canvas->save();
+    canvas->scale(2.0f, 2.0f);
+    sdfSlug->draw(canvas, paint);
+    canvas->restore();
+    pathSlug->draw(canvas, paint);
+
+    SkBitmap expected;
+    expected.allocN32Pixels(256, 256);
+    REPORTER_ASSERT(reporter, surface->readPixels(expected, 0, 0));
+
+    SkSerialProcs sProcs = ToolUtils::default_serial_procs();
+    sk_sp<SkData> skpData = pic->serialize(&sProcs);
+    REPORTER_ASSERT(reporter, skpData && skpData->size() > 0);
+
+    // Purge all strikes from the global strike cache to ensure deserialization reconstructs them
+    // from the embedded strike data.
+    SkStrikeCache::GlobalStrikeCache()->purgeAll();
+
+    SkDeserialProcs dProcs = ToolUtils::default_deserial_procs();
+    sk_sp<SkPicture> deserializedPic = SkPicture::MakeFromData(skpData.get(), &dProcs);
+    REPORTER_ASSERT(reporter, deserializedPic != nullptr);
+
+    canvas->clear(SK_ColorTRANSPARENT);
+    canvas->drawPicture(deserializedPic);
+
+    SkBitmap actual;
+    actual.allocN32Pixels(256, 256);
+    REPORTER_ASSERT(reporter, surface->readPixels(actual, 0, 0));
+
+    for (int y = 0; y < 256; ++y) {
+        for (int x = 0; x < 256; ++x) {
+            if (expected.getColor(x, y) != actual.getColor(x, y)) {
+                ERRORF(reporter, "Pixel mismatch at (%d, %d): expected 0x%08x, got 0x%08x",
+                       x, y, expected.getColor(x, y), actual.getColor(x, y));
+                return;
+            }
+        }
+    }
 }

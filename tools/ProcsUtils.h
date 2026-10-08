@@ -10,11 +10,24 @@
 
 #include "include/core/SkSerialProcs.h"
 
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+#include "include/private/chromium/Slug.h"
+#endif
+
 namespace ToolUtils {
+namespace internal {
+SkDeserialProcs default_deserial_procs();
+}  // namespace internal
 
 // Returns the default SkDeserialProcs used by Skia's tools when Deserializing Skps. This adds
 // default values for the SkDeserialImageProc and SkDeserialTypefaceProc.
-SkDeserialProcs default_deserial_procs();
+inline SkDeserialProcs default_deserial_procs() {
+    SkDeserialProcs procs = internal::default_deserial_procs();
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+    sktext::gpu::Slug::AddDeserialProcs(&procs);
+#endif
+    return procs;
+}
 
 // Returns the default SkSerialProcs used by Skia's tools when serializing Skps. This adds
 // default values for the SkSerialImageProc.

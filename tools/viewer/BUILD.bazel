@@ -118,6 +118,7 @@ skia_cc_binary(
         "//modules/skottie/utils:text_editor",
         "//modules/skresources",
         "//modules/sksg",
+        "//src/core:core_priv",
         "//src/sksl/tracing:player",
         "//tools:codec_utils",
         "//tools:gpu_tool_utils",
