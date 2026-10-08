@@ -71,6 +71,10 @@ public:
         return fSpan.data();
     }
 
+    SkSpan<uint8_t> writeableByteSpan() {
+      return {reinterpret_cast<uint8_t*>(this->writable_data()), this->size()};
+    }
+
     /** Attempt to create a deep copy of the original data, using the default allocator.
      *
      *  If  offset+length > this->size(), then this returns nullptr.
