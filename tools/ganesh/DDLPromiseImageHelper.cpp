@@ -262,7 +262,8 @@ void DDLPromiseImageHelper::createCallbackContexts(GrDirectContext* direct) {
     }
 }
 
-void DDLPromiseImageHelper::uploadAllToGPU(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLPromiseImageHelper::uploadAllToGPU(SkTaskGroup* taskGroup,
+                                           GrDirectContext* direct) {
     if (taskGroup) {
         for (int i = 0; i < fImageInfo.size(); ++i) {
             PromiseImageInfo* info = &fImageInfo[i];
@@ -276,7 +277,8 @@ void DDLPromiseImageHelper::uploadAllToGPU(SkTaskGroup* taskGroup, GrDirectConte
     }
 }
 
-void DDLPromiseImageHelper::deleteAllFromGPU(SkTaskGroup* taskGroup, GrDirectContext* direct) {
+void DDLPromiseImageHelper::deleteAllFromGPU(SkTaskGroup* taskGroup,
+                                             GrDirectContext* direct) {
     if (taskGroup) {
         for (int i = 0; i < fImageInfo.size(); ++i) {
             PromiseImageInfo* info = &fImageInfo[i];
