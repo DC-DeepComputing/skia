@@ -15,6 +15,7 @@
 #include "src/capture/SkCapture.h"
 #include "tools/debugger/DebugCanvas.h"
 #include "tools/viewer/Slide.h"
+#include "tools/viewer/WebGPUCaptureView.h"
 
 class SkCanvas;
 class SkPicture;
@@ -43,6 +44,8 @@ private:
     bool fInvalidate = false;
     SkCapture::Metadata fMetadata;
     std::unique_ptr<DebugCanvas> fDebugCanvas;
+    // Dawn WebGPU capture commands loaded from "<capture path>.dawn_commands", if present.
+    std::unique_ptr<WebGPUCaptureView> fWebGPUView;
 
     void updateActiveAssetIndex();
 };

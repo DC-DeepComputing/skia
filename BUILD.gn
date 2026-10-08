@@ -3664,6 +3664,8 @@ if (skia_enable_tools) {
         "tools/viewer/VariableWidthStrokerSlide.cpp",
         "tools/viewer/Viewer.cpp",
         "tools/viewer/Viewer.h",
+        "tools/viewer/WebGPUCaptureView.cpp",
+        "tools/viewer/WebGPUCaptureView.h",
         "tools/viewer/XferSlide.cpp",
         "tools/viewer/ZoomInSlide.cpp",
         "tools/viewer/ZoomInSlide.h",
@@ -3717,6 +3719,12 @@ if (skia_enable_tools) {
           ":common_flags_graphite",
           ":gpu_tool_utils",
         ]
+      }
+      if (skia_use_dawn) {
+        # WebGPUCaptureView parses Dawn WebGPU capture streams using Dawn's replay library
+        # (linked into libdawn_combined.a, see third_party/dawn/build_dawn.py).
+        defines = [ "SK_VIEWER_WEBGPU_CAPTURE" ]
+        include_dirs = [ "third_party/externals/abseil-cpp" ]
       }
     }
   }

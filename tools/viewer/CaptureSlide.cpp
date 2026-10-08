@@ -52,6 +52,19 @@ CaptureSlide::CaptureSlide(const SkString& name, const SkString& path) {
     } else {
         SKIA_LOG_E("Couldn't load capture %s", path.c_str());
     }
+
+    // A Dawn WebGPU-on-WebGPU capture may have been written next to the SkCapture, e.g.
+    // foo.capt + foo.capt.dawn_commands (see example/external_client/src/graphite_dawn_capture.cpp).
+    fWebGPUView = WebGPUCaptureView::MakeFromFile(std::string(path.c_str()) + ".dawn_commands");
+    if (fWebGPUView) {
+        SKIA_LOG_I("Loaded WebGPU capture commands %s: %zu root commands, %zu GPU objects",
+                   fWebGPUView->path().c_str(),
+                   fWebGPUView->numRootCommands(),
+                   fWebGPUView->numObjects());
+        if (!fWebGPUView->error().empty()) {
+            SKIA_LOG_E("Error parsing WebGPU capture: %s", fWebGPUView->error().c_str());
+        }
+    }
 }
 
 CaptureSlide::~CaptureSlide() {}
@@ -229,6 +242,10 @@ void drawCaptureExplorer(SkCapture* capture,
 }
 
 void CaptureSlide::draw(SkCanvas* canvas) {
+    if (fWebGPUView) {
+        fWebGPUView->draw();
+    }
+
     if (!fCapture) {
         return;
     }

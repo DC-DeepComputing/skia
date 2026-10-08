@@ -74,7 +74,8 @@ def main():
   gen_dir = args.gen_dir
   # The headers are a dependency for all libraries.
   # We want to build the other listed dawn components into one big library.
-  build_targets = ["webgpu_headers_gen", "dawn_proc", "dawn_native"]
+  # "replay" provides the WebGPU capture deserializer used by viewer's WebGPUCaptureView.
+  build_targets = ["webgpu_headers_gen", "dawn_proc", "dawn_native", "replay"]
   depfile_path = args.depfile_path
 
   # On Windows, Debug build has CRT compatibility issues with Skia (MTd vs MT).

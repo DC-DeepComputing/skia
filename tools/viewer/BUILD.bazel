@@ -99,6 +99,8 @@ skia_cc_binary(
         "VariableWidthStrokerSlide.cpp",
         "Viewer.cpp",
         "Viewer.h",
+        "WebGPUCaptureView.cpp",
+        "WebGPUCaptureView.h",
         "//bench:gpu_tools",
         "//gm:gm_subset",
         "//tools/flags:common_flags_config",
