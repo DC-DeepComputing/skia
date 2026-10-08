@@ -1,0 +1,186 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dee119b_194c3154",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "Should we also add `skunicode_apple` to `modules/skunicode/BUILD.bazel`?",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d0ba2f3_14c9762b",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "Is CoreText still needed?",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2316e185_fdf71513",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "overall nit: line wrap @100",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d950b457_7283db64",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "`CFStringTokenizer` operates in utf16 space, right?  I think we need to convert the range back to utf8 byte offsets.",
+      "range": {
+        "startLine": 112,
+        "startChar": 17,
+        "endLine": 112,
+        "endChar": 57
+      },
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed2d7a72_139192cb",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "My understanding is `CFStringCreateWithBytesNoCopy` performs strict utf8 validation, and returns nullptr if there are illegal sequences.  Since we bail in that case, I\u0027m not sure this fallback code is reachable.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 17
+      },
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed67b555_115e4ff1",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "So if `CFStringTokenizer` did not emit a soft break for `pos16`, we\u0027re appending it here - but that means it could be out of order relative to the other breaks.  Shouldn\u0027t we insert it such that the breaks remain sorted?",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afc41543_4077d2e7",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "Not sure about the expected semantics for this entry point: are the resulting break offsets expected to be UTF-16 or UTF-8?  If the former, we may not be able to call into the utf8 version here.",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ca91383_6e4f2679",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "We\u0027re mutating a string that is shared with `CFStringCreateWithBytesNoCopy`, which may be problematic (or not, not sure if documented).  Since we don\u0027t need `str` beyond tokenization, I suggest we `CFRelease(str);` immediately after the `Tokenize` call, to be on the safe side.",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b328ab3_ff8d673f",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c210262_22ad97f6",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-08T21:56:36Z",
+      "side": 1,
+      "message": "Would be good to have some non-ASCII characters in these tests.",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
