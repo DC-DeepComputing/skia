@@ -17,10 +17,11 @@
 #include <memory>
 #include <vector>
 
+#include "include/core/SkExecutor.h"
+
 class SkCanvas;
 class SkCodec;
 class SkData;
-class SkExecutor;
 class SkPDFArray;
 class SkPDFStructTree;
 class SkPixmap;
@@ -186,7 +187,7 @@ struct Metadata {
 
         Experimental.
     */
-    SkExecutor* fExecutor = nullptr;
+    SkStdFunctionExecutor* fExecutor = nullptr;
 
     /** PDF streams may be compressed to save space.
         Use this to specify the desired compression vs time tradeoff.
