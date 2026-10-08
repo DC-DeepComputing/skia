@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23ba9975_59f62e17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-08T14:37:53Z",
+      "side": 1,
+      "message": "LMK if this is too large, happy to split it up. The task is passing and if you click on the result (https://task-driver.skia.org/td/pSi5mky798z3Vhz1MnHj?ifNotFound\u003dhttps%3A%2F%2Fchromium-swarm.appspot.com%2Ftask%3Fid%3D7b34c120f7740a10) you\u0027ll see a step text in the top summary with the js eval result, which is correct.",
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1a9b4ef_09ca2439",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/chrome_driver.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-08T14:37:53Z",
+      "side": 1,
+      "message": "So these logs work locally but I haven\u0027t been able to figure out how to get sklog messages to print to stdout/stderr of the task driver step output.",
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4259ddb_6f0cdcb3",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/fetch_chrome.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-08T14:37:53Z",
+      "side": 1,
+      "message": "This is a convenient way to fetch chrome but we may want another approach such as a CIPD package. Let me know of any preferences.",
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
