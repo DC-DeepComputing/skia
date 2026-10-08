@@ -45,6 +45,7 @@ DEF_TEST(SkStrikePromise_Basic, reporter) {
         SkStrikePromise srcPromise(std::move(strike));
         SkBinaryWriteBuffer writeBuffer({});
         srcPromise.flatten(writeBuffer);
+        writeBuffer.writeBool(false);
         data = writeBuffer.snapshotAsData();
     }
 
