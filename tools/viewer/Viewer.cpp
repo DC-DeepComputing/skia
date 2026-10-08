@@ -35,11 +35,14 @@
 #include "include/private/SkLog.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
+#include "include/private/chromium/Slug.h"
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/capture/SkCapture.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkBase64.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkColorPriv.h"
+#include "src/core/SkDevice.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMD5.h"
 #include "src/core/SkOSFile.h"
@@ -1970,6 +1973,29 @@ public:
     Viewer::SkFontFields* fFontOverrides;
 };
 
+class SlugRecordingCanvas : public SkNWayCanvas {
+public:
+    SlugRecordingCanvas(SkISize size, SkCanvas* recorderCanvas, SkCanvas* baseCanvas)
+            : SkNWayCanvas(size.width(), size.height())
+            , fBaseCanvas(baseCanvas) {
+        this->addCanvas(recorderCanvas);
+    }
+
+protected:
+    sk_sp<sktext::gpu::Slug> onConvertGlyphRunListToSlug(
+            const sktext::GlyphRunList& glyphRunList, const SkPaint& paint) override {
+        SkDevice* dev = SkCanvasPriv::TopDevice(fBaseCanvas);
+        if (!dev) {
+            return nullptr;
+        }
+        SkAutoDeviceTransformRestore adtr(dev, this->getLocalToDevice());
+        return dev->convertGlyphRunListToSlug(glyphRunList, paint);
+    }
+
+private:
+    SkCanvas* fBaseCanvas;
+};
+
 
 void Viewer::checkCaptureAndSerialize() {
     if (!fToggleCapture) {
@@ -2048,7 +2074,8 @@ void Viewer::drawSlide(SkSurface* surface) {
     if (fSaveToSKP) {
         SkPictureRecorder recorder;
         SkCanvas* recorderCanvas = recorder.beginRecording(SkRect::Make(this->currentSlideSize()));
-        fSlides[fCurrentSlide]->draw(recorderCanvas);
+        SlugRecordingCanvas slugRecorderCanvas(this->currentSlideSize(), recorderCanvas, slideCanvas);
+        fSlides[fCurrentSlide]->draw(&slugRecorderCanvas);
         sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
         SkFILEWStream stream("sample_app.skp");
         SkSerialProcs    sProcs = ToolUtils::default_serial_procs();
@@ -2098,9 +2125,12 @@ void Viewer::drawSlide(SkSurface* surface) {
 
     SkPictureRecorder recorder;
     SkCanvas* recorderRestoreCanvas = nullptr;
+    std::optional<SlugRecordingCanvas> viaSerializeSlugCanvas;
     if (fDrawViaSerialize) {
         recorderRestoreCanvas = slideCanvas;
-        slideCanvas = recorder.beginRecording(SkRect::Make(this->currentSlideSize()));
+        SkCanvas* recCanvas = recorder.beginRecording(SkRect::Make(this->currentSlideSize()));
+        viaSerializeSlugCanvas.emplace(this->currentSlideSize(), recCanvas, recorderRestoreCanvas);
+        slideCanvas = &viaSerializeSlugCanvas.value();
     }
 
     int count = slideCanvas->save();
