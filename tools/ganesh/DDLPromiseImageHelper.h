@@ -17,6 +17,8 @@
 #include "src/core/SkCachedData.h"
 #include "src/core/SkTLazy.h"
 
+#include "src/core/SkTaskGroup.h"
+
 #include <array>
 
 class GrContextThreadSafeProxy;

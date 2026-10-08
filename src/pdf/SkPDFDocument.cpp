@@ -240,7 +240,7 @@ SkPDFDocument::SkPDFDocument(SkWStream* stream, SkPDF::Metadata metadata)
     , fMetadata(std::move(metadata))
     , fRasterScale(fMetadata.fRasterDPI / SK_ScalarDefaultRasterDPI)
     , fInverseRasterScale(SK_ScalarDefaultRasterDPI / fMetadata.fRasterDPI)
-    , fExecutor(fMetadata.fExecutor)
+    , fExecutor1(fMetadata.fExecutor)
     , fStructTree(fMetadata.fStructureElementTreeRoot, fMetadata.fOutline)
 {}
 
