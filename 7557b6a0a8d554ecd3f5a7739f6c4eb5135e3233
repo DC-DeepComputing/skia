@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1583a3d5_0855fc30",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-08T15:45:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78e83415_929e6ec8",
+      "range": {
+        "startLine": 1342,
+        "startChar": 8,
+        "endLine": 1345,
+        "endChar": 0
+      },
+      "revId": "7557b6a0a8d554ecd3f5a7739f6c4eb5135e3233",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e3237a3_98e51311",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-08T14:36:11Z",
       "side": 1,
       "message": "These lines don\u0027t need to be modified",
+      "range": {
+        "startLine": 106,
+        "startChar": 29,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "7557b6a0a8d554ecd3f5a7739f6c4eb5135e3233",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca8873b2_9c873310",
+        "filename": "src/gpu/graphite/SharedContext.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-08T15:45:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e3237a3_98e51311",
       "range": {
         "startLine": 106,
         "startChar": 29,
