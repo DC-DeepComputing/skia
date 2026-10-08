@@ -46,6 +46,30 @@
       },
       "revId": "3137db6a19f457f03f60cdcb814654112a4a7db6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb76d05a_c5ea96a4",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T16:06:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c346b134_47c76ab9",
+      "range": {
+        "startLine": 397,
+        "startChar": 0,
+        "endLine": 397,
+        "endChar": 100
+      },
+      "revId": "3137db6a19f457f03f60cdcb814654112a4a7db6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
