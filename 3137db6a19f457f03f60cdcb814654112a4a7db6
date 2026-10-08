@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "168318d5_eb8d7f57",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T15:55:55Z",
+      "side": 1,
+      "message": "If this is not a `force_always_trace`, do we want to still go to atrace when there\u0027s no perfetto?",
+      "range": {
+        "startLine": 397,
+        "startChar": 0,
+        "endLine": 397,
+        "endChar": 100
+      },
+      "revId": "3137db6a19f457f03f60cdcb814654112a4a7db6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
