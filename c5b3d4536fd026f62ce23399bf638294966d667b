@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85928bde_10203691",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:08:49Z",
+      "side": 1,
+      "message": "Hmm, that\u0027s tricky. The options are keep it `TextureInfo` but since it requires it to be a VulkanTextureInfo I feel a little brittle (but from surrounding context obviously it\u0027ll be fine).\n\nAnother option would be to use `VkFormatToTextureFormat` to get the VkFormat into TextureFormat to call `GetVkImageAspectFlags`. Or we update `GetVkImageAspectFlags` to take in a VkFormat and then update the other call sites to convert the TextureFormat to a VkFormat.",
+      "parentUuid": "ca166e8f_d6ed5407",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 240,
+        "endChar": 32
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8239dc81_5aa51d7e",
         "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
         "patchSetId": 11
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "Sure done, though I do think it does add some duplication of calculating the mipmap count at the call sites so IMO it might be better to leave that calculation in `VulkanTexture::CreateImageMemoryBarrier` and keep dimensions. Either is good with me though.",
       "parentUuid": "8239dc81_5aa51d7e",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 27
+      },
+      "revId": "c5b3d4536fd026f62ce23399bf638294966d667b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ec9c68c_ab0f174f",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-08T14:08:49Z",
+      "side": 1,
+      "message": "Actually lets use https://docs.vulkan.org/spec/latest/chapters/resources.html#VK_REMAINING_MIP_LEVELS here and then we don\u0027t have to pass in dimensions or mipmap count.",
+      "parentUuid": "74131f91_0542d0cd",
       "range": {
         "startLine": 241,
         "startChar": 0,
