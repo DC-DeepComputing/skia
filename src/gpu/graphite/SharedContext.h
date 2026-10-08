@@ -9,6 +9,7 @@
 #define skgpu_graphite_SharedContext_DEFINED
 
 #include <memory>
+#include "include/core/SkExecutor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/SingleOwner.h"
@@ -20,7 +21,6 @@
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 class SkCaptureManager;
-class SkExecutor;
 
 namespace skgpu {
 class SingleOwner;
@@ -97,7 +97,7 @@ public:
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
-                  SkExecutor* executor,
+                  SkCallbackExecutor* executor,
                   SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     // All the resources in the ThreadSafeResourceProvider should be 0-sized.
