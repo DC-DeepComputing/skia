@@ -23,11 +23,11 @@
 class SkTaskGroup : SkNoncopyable {
 public:
     // Tasks added to this SkTaskGroup will run on its executor.
-    explicit SkTaskGroup(SkExecutor& executor = SkExecutors::GetDefault());
+    explicit SkTaskGroup(SkStdFunctionExecutor& executor = SkStdFunctionExecutors::GetDefault());
     ~SkTaskGroup() { this->wait(); }
 
     // Add a task to this SkTaskGroup.
-    void add(std::function<void()> fn, int workList = 0);
+    void add(std::function<void(void)> work, int workList = 0);
 
     // Returns true if all Tasks previously add()ed to this SkTaskGroup have run.
     // It is safe to reuse this SkTaskGroup once done().
@@ -37,8 +37,8 @@ public:
     void wait();
 
 private:
-    std::atomic<int32_t> fPending;
-    SkExecutor&          fExecutor;
+    std::atomic<int32_t>   fPending;
+    SkStdFunctionExecutor& fExecutor;
 };
 
 #endif//SkTaskGroup_DEFINED

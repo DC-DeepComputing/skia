@@ -50,7 +50,7 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager(SkExecutor* executor) : fExecutor(executor) {}
+PipelineManager::PipelineManager(SkCallbackExecutor* executor) : fExecutor(executor) {}
 
 PipelineManager::~PipelineManager() {
     // The executor should've been detached in Context's destructor (via shutDown()).
@@ -175,6 +175,15 @@ bool PipelineManager::InlineCompile(const sk_sp<PipelineCreationTask>& task) {
     return true;
 }
 
+namespace {
+void inline_compile_wrapper(void* context) {
+    // Adopt the raw PipelineCreationTask pointer.
+    sk_sp<PipelineCreationTask> task(static_cast<PipelineCreationTask*>(context));
+
+    PipelineManager::InlineCompile(task);
+}
+} // anonymous namespace
+
 void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
                                         sk_sp<PipelineCreationTask> task,
                                         Priority priority) {
@@ -185,7 +194,7 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
                                                       : kHighPriorityWorkList;
 
-            fExecutor->add([task]{ InlineCompile(task); } , workList);
+            fExecutor->add({ inline_compile_wrapper, task.get() } , workList);
             return;
         }
     }
