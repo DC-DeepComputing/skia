@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19311ace_9ab2619b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "Done. Added skunicode_apple target to modules/skunicode/BUILD.bazel.",
+      "parentUuid": "4dee119b_194c3154",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d0ba2f3_14c9762b",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-08T21:56:36Z",
       "side": 1,
       "message": "Is CoreText still needed?",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "290d8212_43ca712b",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "Good catch, CoreText is not needed here (only CoreFoundation is used). Removed.",
+      "parentUuid": "0d0ba2f3_14c9762b",
       "revId": "1aa337c49a1cab965512435835507b9a4105021b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f45814ac_77570479",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "Done. Wrapped all lines exceeding 100 characters.",
+      "parentUuid": "2316e185_fdf71513",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d950b457_7283db64",
@@ -65,6 +119,30 @@
       "writtenOn": "2026-10-08T21:56:36Z",
       "side": 1,
       "message": "`CFStringTokenizer` operates in utf16 space, right?  I think we need to convert the range back to utf8 byte offsets.",
+      "range": {
+        "startLine": 112,
+        "startChar": 17,
+        "endLine": 112,
+        "endChar": 57
+      },
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee733c5_7b363de7",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "You are right. CFStringTokenizer returns UTF-16 offsets, which violates the UTF-8 byte contract of SkBreakIterator. Addressed in follow-up CL 1388876 by building a UTF-16 to UTF-8 offset mapping (u16ToU8).\nThis method is not used by Flutter.",
+      "parentUuid": "d950b457_7283db64",
       "range": {
         "startLine": 112,
         "startChar": 17,
@@ -98,6 +176,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ceadc8_c149f3e1",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "CFStringCreateWithBytesNoCopy strictly validates UTF-8 and bails out earlier if invalid. Removed the dead fallback code.",
+      "parentUuid": "ed2d7a72_139192cb",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 17
+      },
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed67b555_115e4ff1",
@@ -111,6 +213,24 @@
       "writtenOn": "2026-10-08T21:56:36Z",
       "side": 1,
       "message": "So if `CFStringTokenizer` did not emit a soft break for `pos16`, we\u0027re appending it here - but that means it could be out of order relative to the other breaks.  Shouldn\u0027t we insert it such that the breaks remain sorted?",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ee3761_72c561a4",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "Handled in follow-up CL 1388876 using binary-search sorted insertion (std::lower_bound) to guarantee strictly monotonically increasing breaks.",
+      "parentUuid": "ed67b555_115e4ff1",
       "revId": "1aa337c49a1cab965512435835507b9a4105021b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -132,6 +252,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c1f57e7_eb0d575e",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "The contract expects UTF-16 offsets for char16_t input. Addressed in follow-up CL 1388876: setText(char16_t) now operates directly in UTF-16 space via CFStringCreateWithCharactersNoCopy without round-tripping to UTF-8.",
+      "parentUuid": "afc41543_4077d2e7",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ca91383_6e4f2679",
@@ -149,6 +287,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa8385ee_9b4be546",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "Moved CFRelease(str) right after Tokenize() before mutating the underlying buffer.",
+      "parentUuid": "9ca91383_6e4f2679",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b328ab3_ff8d673f",
@@ -162,6 +318,24 @@
       "writtenOn": "2026-10-08T21:56:36Z",
       "side": 1,
       "message": "Ditto.",
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9c96886_c9980718",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-08T22:34:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b328ab3_ff8d673f",
       "revId": "1aa337c49a1cab965512435835507b9a4105021b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
