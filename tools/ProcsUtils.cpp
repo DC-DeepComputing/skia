@@ -26,6 +26,7 @@
 #endif
 
 namespace ToolUtils {
+namespace internal {
 
 SkDeserialProcs default_deserial_procs() {
     SkDeserialProcs procs;
@@ -54,6 +55,8 @@ SkDeserialProcs default_deserial_procs() {
     };
     return procs;
 }
+
+}  // namespace internal
 
 SkSerialProcs default_serial_procs() {
     static SkSerialProcs procs;

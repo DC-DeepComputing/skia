@@ -15,6 +15,7 @@ filegroup(
         "fontations_cbdt.cpp",
         "fontations_ebdt.cpp",
         "palette.cpp",
+        "slug.cpp",
     ],
     visibility = ["//tools/viewer:__pkg__"],
 )
