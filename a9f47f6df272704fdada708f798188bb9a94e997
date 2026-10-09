@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e12a826b_1c7fd1d1",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2026-10-09T00:58:27Z",
+      "side": 1,
+      "message": "Done (also fixed that AndroidCodec would push all the way to f16 unnecessarily)",
+      "parentUuid": "d25a1600_9cddda52",
+      "range": {
+        "startLine": 192,
+        "startChar": 79,
+        "endLine": 192,
+        "endChar": 99
+      },
+      "revId": "a9f47f6df272704fdada708f798188bb9a94e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2028f2b7_054bf699",
@@ -67,6 +91,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9eb00701_37c7ccec",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2026-10-09T00:58:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2028f2b7_054bf699",
+      "range": {
+        "startLine": 337,
+        "startChar": 8,
+        "endLine": 337,
+        "endChar": 22
+      },
+      "revId": "a9f47f6df272704fdada708f798188bb9a94e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "acf972e2_9fe7a9c1",
         "filename": "src/codec/SkJpegxlCodec.cpp",
         "patchSetId": 3
@@ -78,6 +126,30 @@
       "writtenOn": "2026-10-08T21:01:07Z",
       "side": 1,
       "message": "Not new to this CL, but it seems odd to premultiply BGRA and not premultiply RGBA too.  I suspect we have some bugs in handling non-opaque images, as src premultiplication also depends on whether we use a color transform or get the pixels directly from libjxl.",
+      "range": {
+        "startLine": 347,
+        "startChar": 0,
+        "endLine": 352,
+        "endChar": 19
+      },
+      "revId": "a9f47f6df272704fdada708f798188bb9a94e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "541b07be_feba31a3",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2026-10-09T00:58:27Z",
+      "side": 1,
+      "message": "Addressed this issue, too",
+      "parentUuid": "acf972e2_9fe7a9c1",
       "range": {
         "startLine": 347,
         "startChar": 0,
