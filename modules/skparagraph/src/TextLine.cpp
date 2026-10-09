@@ -885,11 +885,73 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
                              run->calculateHeight(this->fAscentStyle,this->fDescentStyle));
 
     // Correct the width in case the text edges don't match clusters
-    // TODO: This is where we get smart about selecting a part of a cluster
-    //  by shaping each grapheme separately and then use the result sizes
-    //  to calculate the proportions
     auto leftCorrection = start->sizeToChar(originalTextRange.start);
     auto rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+
+    // When a grapheme cluster contains multiple glyphs (for instance, a base consonant
+    // and one or more combining diacritics/tone marks shaped together), applying a style
+    // (such as a different foreground color, shadow, or decoration) to a sub-range of the
+    // cluster should isolate the specific glyphs belonging to that sub-range.
+    //
+    // Previously, SkParagraph applied a proportional geometric clip across the entire cluster's
+    // bounding box. That caused glyphs to be sliced in half geometrically rather than colored
+    // or decorated individually.
+    //
+    // For example:
+    // 1) Multi-glyph cluster (result.size > 1):
+    //    Text has "e" + combining acute "◌́" (U+0065 U+0301) shaped into 2 glyphs [glyph 0 = 'e',
+    //    glyph 1 = '́'], or a Thai consonant + tone mark. When only the diacritic has a different
+    //    color (e.g. red mark on black base), originalTextRange covers only the combining mark.
+    //    Instead of geometrically clipping the cluster in half, we adjust result.pos and result.size
+    //    to isolate [minGlyph, maxGlyph] belonging to that style range, rendering glyph 0 in black
+    //    and glyph 1 in red without geometric slicing.
+    //
+    // 2) Single ligature / precomposed glyph (result.size == 1):
+    //    When multiple code points form a single indivisible glyph (for example, an "ffi" ligature
+    //    glyph where only the "i" has a different color, or precomposed "é" U+00E9), glyphs cannot
+    //    be isolated individually. In that case, we fall back to proportional geometric clipping
+    //    (leftCorrection / rightCorrection) computed by Cluster::sizeToChar / sizeFromChar based on
+    //    individual character metrics.
+    if (result.size > 1 && (leftCorrection != 0 || rightCorrection != 0)) {
+        size_t minGlyph = result.pos + result.size;
+        size_t maxGlyph = result.pos;
+        bool found = false;
+
+        const char* textStr = fOwner->text().data();
+        size_t numCodePoints = SkUTF::CountUTF8(textStr + textRange.start, textRange.width());
+        bool oneToOne = (result.size == numCodePoints);
+
+        for (size_t i = result.pos; i < result.pos + result.size; ++i) {
+            size_t clusterIndex = run->globalClusterIndex(i);
+            if (oneToOne) {
+                size_t logicalGlyphIndex = run->leftToRight() ? (i - result.pos) : (result.size - 1 - (i - result.pos));
+                const char* ptr = textStr + textRange.start;
+                const char* endPtr = textStr + textRange.end;
+                for (size_t k = 0; k < logicalGlyphIndex && ptr < endPtr; ++k) {
+                    SkUTF::NextUTF8(&ptr, endPtr);
+                }
+                clusterIndex = ptr - textStr;
+            }
+            if (clusterIndex >= originalTextRange.start && clusterIndex < originalTextRange.end) {
+                minGlyph = std::min(minGlyph, i);
+                maxGlyph = std::max(maxGlyph, i);
+                found = true;
+            }
+        }
+        if (found && (maxGlyph - minGlyph + 1) < result.size) {
+            size_t oldPos = result.pos;
+            result.pos = minGlyph;
+            result.size = maxGlyph - minGlyph + 1;
+            leftCorrection = 0;
+            rightCorrection = 0;
+            result.clip = SkRect::MakeXYWH(0,
+                                           sizes().runTop(run, this->fAscentStyle),
+                                           run->calculateWidth(result.pos, result.pos + result.size, false),
+                                           run->calculateHeight(this->fAscentStyle, this->fDescentStyle));
+            textStartInLine += run->positionX(result.pos) - run->positionX(oldPos);
+        }
+    }
+
     /*
     SkDebugf("[%d: %d) => [%d: %d), @%d, %d: [%f:%f) + [%f:%f) = ", // جَآَهُ
              originalTextRange.start, originalTextRange.end, textRange.start, textRange.end,
@@ -922,6 +984,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         }
     }
 
+
     if (result.clip.width() < 0) {
         // Weird situation when glyph offsets move the glyph to the left
         // (happens with zalgo texts, for instance)
@@ -930,6 +993,32 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
 
     // The text must be aligned with the lineOffset
     result.fTextShift = textStartInLine - textStartInRun;
+
+    if (result.size == 1) {
+        int graphemeStarts = 0;
+        for (size_t i = textRange.start; i < textRange.end; ++i) {
+            if (fOwner->codeUnitHasProperty(i, SkUnicode::CodeUnitFlags::kGraphemeStart)) {
+                graphemeStarts++;
+            }
+        }
+
+        // If there's only 1 grapheme start, this is a single character or a base+mark diacritic.
+        // It should not be geometrically sliced.
+        // If there are > 1 grapheme starts, this is a ligature (like 'ffi'), so we allow
+        // the default geometric clipping to slice the glyph proportionally.
+        if (graphemeStarts <= 1) {
+            if (leftCorrection != 0) {
+                // This is a mark part of a precomposed single glyph.
+                // We do not want to draw the glyph again, but we keep the clip.width()
+                // for totalWidth accumulation to avoid layout assertion failures.
+                result.size = 0;
+            } else if (rightCorrection != 0) {
+                // This is the base part of a precomposed single glyph.
+                // We want to draw the whole glyph, so we disable geometric clipping.
+                result.clippingNeeded = false;
+            }
+        }
+    }
 
     return result;
 }
