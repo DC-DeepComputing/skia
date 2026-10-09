@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "225b565d_cfa9e6e8",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-09T18:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "622df3b8_3bf588ec",
+      "range": {
+        "startLine": 199,
+        "startChar": 12,
+        "endLine": 199,
+        "endChar": 28
+      },
+      "revId": "8eba233810b182b05d03551d1b5ce52dd8202e9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "845736fb_e7eb36da",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-08T18:16:07Z",
       "side": 1,
       "message": "We\u0027re starting to shift from const char* to string/string_view in Skia. Let\u0027s have this return a std::string_view instead",
+      "range": {
+        "startLine": 472,
+        "startChar": 7,
+        "endLine": 472,
+        "endChar": 18
+      },
+      "revId": "8eba233810b182b05d03551d1b5ce52dd8202e9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a81456a9_d3f3f44f",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-09T18:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "845736fb_e7eb36da",
       "range": {
         "startLine": 472,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99796c16_62693d1c",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-09T18:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6482ab1_1c415f16",
+      "range": {
+        "startLine": 618,
+        "startChar": 52,
+        "endLine": 618,
+        "endChar": 63
+      },
+      "revId": "8eba233810b182b05d03551d1b5ce52dd8202e9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3efb672_9454664c",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-10-08T18:16:07Z",
       "side": 1,
       "message": "I know some places in this file use SkDebugf, but we\u0027ve added a new printing/logging system for skia that we\u0027re moving new code (and slowly old code) to. So instead use SKIA_LOG_D.",
+      "range": {
+        "startLine": 624,
+        "startChar": 3,
+        "endLine": 624,
+        "endChar": 12
+      },
+      "revId": "8eba233810b182b05d03551d1b5ce52dd8202e9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6f5fc94_7aa0953a",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-09T18:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3efb672_9454664c",
       "range": {
         "startLine": 624,
         "startChar": 3,
