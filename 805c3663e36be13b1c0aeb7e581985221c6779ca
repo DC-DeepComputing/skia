@@ -40,6 +40,31 @@
       ],
       "revId": "805c3663e36be13b1c0aeb7e581985221c6779ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b5426b1_faf3a329",
+        "filename": "modules/skunicode/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:24:23Z",
+      "side": 1,
+      "message": "Done. Removed the Android select since skunicode_apple is already restricted to iOS/macOS via target_compatible_with, and cleaned up unused ICU macros.",
+      "parentUuid": "76d2093b_533ad459",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 7
+      },
+      "isAi": true,
+      "revId": "805c3663e36be13b1c0aeb7e581985221c6779ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
