@@ -204,6 +204,7 @@ void DawnCommandBuffer::onResetCommandBuffer() {
     for (auto& bufferSlot : fBoundUniforms) {
         bufferSlot = {};
     }
+    fBoundStorageFallbackTexture = nullptr;
     fBoundUniformBuffersDirty = true;
     if (fTimestampQueryBuffer && fTimestampQueryBuffer->isUnmappable()) {
         fTimestampQueryBuffer->unmap();
@@ -620,6 +621,7 @@ bool DawnCommandBuffer::endRenderPass() {
     SkASSERT(fActiveRenderPassEncoder);
     fActiveRenderPassEncoder.End();
     fActiveRenderPassEncoder = nullptr;
+    fBoundStorageFallbackTexture = nullptr;
 
     // Return early if no resolve step's emulation is needed.
     if (!fResolveStepEmulationInfo.has_value()) {
@@ -663,14 +665,24 @@ bool DawnCommandBuffer::endRenderPass() {
 }
 
 bool DawnCommandBuffer::addDrawPass(DrawPass* drawPass) {
+    // Add the resource refs to the storage fallback texture proxy if necessary.
+    if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
+        return false;
+    }
+
+    // Reset fallback texture so state from a prior DrawPass in the same RenderPass does not leak.
+    fBoundStorageFallbackTexture = nullptr;
+
     // If there is storage buffer data to bind, it must be done prior to draws.
     if (drawPass->storageBufferInfo().fBuffer != nullptr) {
         this->bindUniformBuffer(drawPass->storageBufferInfo(),
                                 UniformSlot::kStorage);
-    }
-
-    if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
-        return false;
+    } else if (drawPass->storageFallbackTexture() != nullptr) {
+        const Texture* texture = drawPass->storageFallbackTexture()->texture();
+        if (texture) {
+            fBoundStorageFallbackTexture = texture;
+            fBoundUniformBuffersDirty = true;
+        }
     }
 
     for (auto [type, cmdPtr] : drawPass->commands()) {
@@ -968,11 +980,14 @@ void DawnCommandBuffer::syncUniformBuffers() {
     // size of our bound uniform array.
     SkASSERT(kMaxUniformsInGroup == fBoundUniforms.size());
 
-    wgpu::BindGroup bindGroup;
+    const bool useStorageBuffers = fSharedContext->caps()->storageBufferSupport();
+    uint32_t numDynamicOffsets = useStorageBuffers ? 3 : 2;
     std::array<uint32_t, kMaxUniformsInGroup> dynamicOffsets {0};
+    wgpu::BindGroup bindGroup;
     // Check if we can use an optimized route for single-uniform buffer bind groups:
     if (usePushConstants &&
         !fActiveGraphicsPipeline->usesStorageBuffer() &&
+        !fBoundStorageFallbackTexture &&
         fActiveGraphicsPipeline->hasCombinedUniforms()) {
         const BindBufferInfo& bufferInfo =
                 fBoundUniforms[DawnGraphicsPipeline::kCombinedUniformIndex];
@@ -982,7 +997,7 @@ void DawnCommandBuffer::syncUniformBuffers() {
         std::array<bool, kMaxUniformsInGroup> enabled = {
                 !usePushConstants,                              // intrinsic uniforms
                 fActiveGraphicsPipeline->hasCombinedUniforms(), // paint AND renderstep uniforms!
-                fActiveGraphicsPipeline->usesStorageBuffer(),   // storage SSBO
+                useStorageBuffers && fActiveGraphicsPipeline->usesStorageBuffer(),   // storage SSBO
         };
         constexpr uint32_t kBindingIndices[] = {
             DawnGraphicsPipeline::kIntrinsicUniformBufferIndex,
@@ -993,14 +1008,26 @@ void DawnCommandBuffer::syncUniformBuffers() {
         std::array<wgpu::BindGroupEntry, kMaxUniformsInGroup> bindGroupEntries {};
         for (int i = 0; i < kMaxUniformsInGroup; ++i) {
             bindGroupEntries[i].binding = kBindingIndices[i];
-            if (enabled[i] && fBoundUniforms[i]) {
-                bindGroupEntries[i].size = fBoundUniforms[i].fSize;
-                bindGroupEntries[i].buffer =
-                        static_cast<const DawnBuffer*>(fBoundUniforms[i].fBuffer)->dawnBuffer();
-                dynamicOffsets[i] = fBoundUniforms[i].fOffset;
+            if (i == 2 && !useStorageBuffers) {
+                if (fBoundStorageFallbackTexture) {
+                    bindGroupEntries[i].textureView =
+                            static_cast<const DawnTexture*>(fBoundStorageFallbackTexture)
+                                    ->sampleTextureView();
+                } else {
+                    bindGroupEntries[i].textureView =
+                            fResourceProvider->getOrCreateNullTextureView();
+                }
             } else {
-                // Unused or null binding
-                bindGroupEntries[i].buffer = fResourceProvider->getOrCreateNullBuffer();
+                if (enabled[i] && fBoundUniforms[i]) {
+                    bindGroupEntries[i].size = fBoundUniforms[i].fSize;
+                    bindGroupEntries[i].buffer =
+                            static_cast<const DawnBuffer*>(fBoundUniforms[i].fBuffer)->dawnBuffer();
+                    dynamicOffsets[i] = fBoundUniforms[i].fOffset;
+                } else {
+                    // Unused or null binding
+                    bindGroupEntries[i].buffer = fResourceProvider->getOrCreateNullBuffer();
+                    dynamicOffsets[i] = 0;
+                }
             }
         }
 
@@ -1012,7 +1039,7 @@ void DawnCommandBuffer::syncUniformBuffers() {
 
     fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kUniformBufferBindGroupIndex,
                                           bindGroup,
-                                          dynamicOffsets.size(),
+                                          numDynamicOffsets,
                                           dynamicOffsets.data());
 }
 
