@@ -121,6 +121,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c464617_90246aa1",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:48:30Z",
+      "side": 1,
+      "message": "In any case if we decide to go full thead-safe we will be doing it in separate CL",
+      "parentUuid": "c68c3073_9748853d",
+      "range": {
+        "startLine": 549,
+        "startChar": 13,
+        "endLine": 549,
+        "endChar": 27
+      },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5c989a1_75a54a14",
