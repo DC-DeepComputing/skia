@@ -550,6 +550,8 @@ sk_sp<D3D11GraphicsPipeline> D3D11GraphicsPipeline::Make(
                                      std::move(depthStencilState),
                                      depthStencilSettings.fStencilReferenceValue,
                                      topology,
+                                     staticOffset,
+                                     appendOffset,
                                      std::move(immutableSamplers)));
 }
 
@@ -565,6 +567,8 @@ D3D11GraphicsPipeline::D3D11GraphicsPipeline(
         Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState,
         uint32_t stencilRef,
         D3D11_PRIMITIVE_TOPOLOGY topology,
+        uint32_t staticStride,
+        uint32_t appendStride,
         skia_private::TArray<sk_sp<D3D11Sampler>> immutableSamplers)
         : GraphicsPipeline(sharedContext, pipelineInfo, label)
         , fVertexShader(std::move(vs))
@@ -575,6 +579,8 @@ D3D11GraphicsPipeline::D3D11GraphicsPipeline(
         , fDepthStencilState(std::move(depthStencilState))
         , fStencilRef(stencilRef)
         , fPrimitiveTopology(topology)
+        , fStaticStride(staticStride)
+        , fAppendStride(appendStride)
         , fImmutableSamplers(std::move(immutableSamplers)) {}
 
 D3D11GraphicsPipeline::~D3D11GraphicsPipeline() {

@@ -17,7 +17,7 @@ sk_sp<D3D11Buffer> D3D11Buffer::Make(const D3D11SharedContext* sharedContext,
                                      BufferType type,
                                      AccessPattern accessPattern,
                                      std::string_view label) {
-    if (type == BufferType::kXferCpuToGpu) {
+    if (type == BufferType::kXferCpuToGpu || type == BufferType::kXferGpuToCpu) {
         auto cpuData = std::make_unique<uint8_t[]>(std::max(size, static_cast<size_t>(1)));
         return sk_sp<D3D11Buffer>(new D3D11Buffer(sharedContext,
                                                  size,
@@ -26,29 +26,6 @@ sk_sp<D3D11Buffer> D3D11Buffer::Make(const D3D11SharedContext* sharedContext,
                                                  label,
                                                  nullptr,
                                                  std::move(cpuData)));
-    }
-
-    if (type == BufferType::kXferGpuToCpu) {
-        D3D11_BUFFER_DESC desc = {};
-        desc.ByteWidth = static_cast<UINT>(
-                SkAlignTo(std::max(size, static_cast<size_t>(16)), static_cast<size_t>(16)));
-        desc.Usage = D3D11_USAGE_STAGING;
-        desc.BindFlags = 0;
-        desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-
-        Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-        HRESULT hr = sharedContext->device()->CreateBuffer(&desc, nullptr, &buffer);
-        if (FAILED(hr)) {
-            return nullptr;
-        }
-
-        return sk_sp<D3D11Buffer>(new D3D11Buffer(sharedContext,
-                                                 size,
-                                                 type,
-                                                 accessPattern,
-                                                 label,
-                                                 std::move(buffer),
-                                                 nullptr));
     }
 
     D3D11_BUFFER_DESC desc = {};

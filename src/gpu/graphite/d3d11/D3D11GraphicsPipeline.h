@@ -55,6 +55,9 @@ public:
     D3D11_PRIMITIVE_TOPOLOGY primitiveTopology() const { return fPrimitiveTopology; }
     bool hasFragmentShader() const { return fPixelShader != nullptr; }
 
+    uint32_t staticStride() const { return fStaticStride; }
+    uint32_t appendStride() const { return fAppendStride; }
+
     const D3D11Sampler* immutableSampler(int32_t index) const {
         return index < fImmutableSamplers.size() ? fImmutableSamplers[index].get() : nullptr;
     }
@@ -71,6 +74,8 @@ private:
                           Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState,
                           uint32_t stencilRef,
                           D3D11_PRIMITIVE_TOPOLOGY topology,
+                          uint32_t staticStride,
+                          uint32_t appendStride,
                           skia_private::TArray<sk_sp<D3D11Sampler>> immutableSamplers);
 
     void freeGpuData() override;
@@ -83,6 +88,8 @@ private:
     Microsoft::WRL::ComPtr<ID3D11DepthStencilState> fDepthStencilState;
     uint32_t fStencilRef = 0;
     D3D11_PRIMITIVE_TOPOLOGY fPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+    uint32_t fStaticStride = 0;
+    uint32_t fAppendStride = 0;
     skia_private::TArray<sk_sp<D3D11Sampler>> fImmutableSamplers;
 };
 

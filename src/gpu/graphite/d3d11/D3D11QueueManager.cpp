@@ -75,10 +75,7 @@ std::unique_ptr<CommandBuffer> D3D11QueueManager::getNewCommandBuffer(
 QueueManager::OutstandingSubmission D3D11QueueManager::onSubmitToGpu(const SubmitInfo&) {
     SkASSERT(fCurrentCommandBuffer);
     auto* d3d11CmdBuffer = static_cast<D3D11CommandBuffer*>(fCurrentCommandBuffer.get());
-    Microsoft::WRL::ComPtr<ID3D11CommandList> commandList = d3d11CmdBuffer->finishEncoding();
-    if (commandList) {
-        fImmediateDeviceContext->ExecuteCommandList(commandList.Get(), FALSE);
-    }
+    d3d11CmdBuffer->processPendingTextureToBufferCopies();
 
     D3D11_QUERY_DESC queryDesc = {};
     queryDesc.Query = D3D11_QUERY_EVENT;
