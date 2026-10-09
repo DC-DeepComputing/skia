@@ -127,7 +127,7 @@ bool D3D11CommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
 
     if (fCurrentIntrinsicBufferIndex >= fIntrinsicConstantBuffers.size()) {
         D3D11_BUFFER_DESC desc = {};
-        desc.ByteWidth = 64;
+        desc.ByteWidth = 256;
         desc.Usage = D3D11_USAGE_DEFAULT;
         desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         desc.CPUAccessFlags = 0;
@@ -139,7 +139,11 @@ bool D3D11CommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
         fIntrinsicConstantBuffers.push_back(std::move(buf));
     }
     ID3D11Buffer* intrinsicBuf = fIntrinsicConstantBuffers[fCurrentIntrinsicBufferIndex++].Get();
-    fImmediateDeviceContext->UpdateSubresource(intrinsicBuf, 0, nullptr, uniformData.data(), 0, 0);
+    uint8_t paddedUniformData[256] = {};
+    if (uniformData.data() && uniformData.size() > 0) {
+        memcpy(paddedUniformData, uniformData.data(), std::min<size_t>(uniformData.size(), 256));
+    }
+    fImmediateDeviceContext->UpdateSubresource(intrinsicBuf, 0, nullptr, paddedUniformData, 0, 0);
 
     fImmediateDeviceContext->VSSetConstantBuffers(D3D11GraphicsPipeline::kIntrinsicUniformBufferIndex, 1, &intrinsicBuf);
     fImmediateDeviceContext->PSSetConstantBuffers(D3D11GraphicsPipeline::kIntrinsicUniformBufferIndex, 1, &intrinsicBuf);
@@ -481,8 +485,19 @@ void D3D11CommandBuffer::syncUniformBuffers() {
         if (combinedInfo.fBuffer) {
             ID3D11Buffer* cb = static_cast<const D3D11Buffer*>(combinedInfo.fBuffer)->d3d11Buffer();
             if (cb) {
+                // In D3D11.1, both firstConstant and numConstants are measured in 16-byte shader
+                // constants, and both must be multiples of 16 (i.e. 256 bytes).
                 UINT firstConstant = static_cast<UINT>(combinedInfo.fOffset / 16);
-                UINT numConstants = static_cast<UINT>((combinedInfo.fSize + 15) / 16);
+                UINT sizeInConstants = static_cast<UINT>(SkAlignTo(combinedInfo.fSize, 16u) / 16);
+                UINT numConstants = static_cast<UINT>(SkAlignTo(std::max<UINT>(sizeInConstants, 16u), 16u));
+
+                D3D11_BUFFER_DESC bufDesc = {};
+                cb->GetDesc(&bufDesc);
+                UINT maxConstants = bufDesc.ByteWidth / 16;
+                if (firstConstant < maxConstants) {
+                    numConstants = std::min(numConstants, maxConstants - firstConstant);
+                }
+
                 fImmediateDeviceContext->VSSetConstantBuffers1(
                         D3D11GraphicsPipeline::kCombinedUniformIndex, 1, &cb, &firstConstant, &numConstants);
                 if (fActiveGraphicsPipeline->hasFragmentShader()) {
@@ -567,20 +582,43 @@ bool D3D11CommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
                    size);
         }
         if (dstD3D->d3d11Buffer()) {
-            D3D11_BOX box = {
-                    static_cast<UINT>(dstOffset),
-                    0,
-                    0,
-                    static_cast<UINT>(dstOffset + size),
-                    1,
-                    1,
-            };
-            fImmediateDeviceContext->UpdateSubresource(dstD3D->d3d11Buffer(),
-                                                       0,
-                                                       &box,
-                                                       srcD3D->cpuData() + srcOffset,
-                                                       0,
-                                                       0);
+            D3D11_BUFFER_DESC desc = {};
+            dstD3D->d3d11Buffer()->GetDesc(&desc);
+            if (desc.BindFlags & D3D11_BIND_CONSTANT_BUFFER) {
+                if (dstOffset == 0 && size >= desc.ByteWidth) {
+                    fImmediateDeviceContext->UpdateSubresource1(
+                            dstD3D->d3d11Buffer(), 0, nullptr, srcD3D->cpuData() + srcOffset, 0, 0, 0);
+                } else {
+                    UINT alignedStart = static_cast<UINT>(dstOffset);
+                    UINT alignedEnd = static_cast<UINT>(SkAlignTo(dstOffset + size, static_cast<size_t>(16)));
+                    alignedEnd = std::min(alignedEnd, desc.ByteWidth);
+                    D3D11_BOX box = {
+                            alignedStart,
+                            0,
+                            0,
+                            alignedEnd,
+                            1,
+                            1,
+                    };
+                    fImmediateDeviceContext->UpdateSubresource1(
+                            dstD3D->d3d11Buffer(), 0, &box, srcD3D->cpuData() + srcOffset, 0, 0, 0);
+                }
+            } else {
+                D3D11_BOX box = {
+                        static_cast<UINT>(dstOffset),
+                        0,
+                        0,
+                        static_cast<UINT>(dstOffset + size),
+                        1,
+                        1,
+                };
+                fImmediateDeviceContext->UpdateSubresource(dstD3D->d3d11Buffer(),
+                                                           0,
+                                                           &box,
+                                                           srcD3D->cpuData() + srcOffset,
+                                                           0,
+                                                           0);
+            }
         }
         return true;
     }

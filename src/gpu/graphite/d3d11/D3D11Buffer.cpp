@@ -29,8 +29,9 @@ sk_sp<D3D11Buffer> D3D11Buffer::Make(const D3D11SharedContext* sharedContext,
     }
 
     D3D11_BUFFER_DESC desc = {};
+    size_t alignSize = (type == BufferType::kUniform) ? 256 : 16;
     desc.ByteWidth = static_cast<UINT>(
-            SkAlignTo(std::max(size, static_cast<size_t>(16)), static_cast<size_t>(16)));
+            SkAlignTo(std::max(size, alignSize), alignSize));
     desc.Usage = D3D11_USAGE_DEFAULT;
     desc.CPUAccessFlags = 0;
 

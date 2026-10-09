@@ -21,10 +21,7 @@ namespace skiatest::graphite {
 D3D11TestContext::~D3D11TestContext() = default;
 
 std::unique_ptr<GraphiteTestContext> D3D11TestContext::Make() {
-    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#if defined(SK_DEBUG)
-    creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
+    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DEBUG;
 
     D3D_FEATURE_LEVEL featureLevels[] = {
         D3D_FEATURE_LEVEL_11_1,
@@ -48,7 +45,6 @@ std::unique_ptr<GraphiteTestContext> D3D11TestContext::Make() {
         &baseContext
     );
 
-#if defined(SK_DEBUG)
     if (FAILED(hr)) {
         // Fall back to creating without debug flag if debug layer is not installed.
         creationFlags &= ~D3D11_CREATE_DEVICE_DEBUG;
@@ -65,7 +61,6 @@ std::unique_ptr<GraphiteTestContext> D3D11TestContext::Make() {
             &baseContext
         );
     }
-#endif
 
     if (FAILED(hr)) {
         return nullptr;
