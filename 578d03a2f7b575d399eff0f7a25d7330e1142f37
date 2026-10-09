@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59403b57_839fcbab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-09T15:57:13Z",
+      "side": 1,
+      "message": "Thanks for tackling this. We really needed this fix in by end of year. 🙏",
+      "revId": "578d03a2f7b575d399eff0f7a25d7330e1142f37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
