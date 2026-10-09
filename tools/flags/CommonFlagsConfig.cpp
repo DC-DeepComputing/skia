@@ -136,6 +136,9 @@ static const struct {
 #endif
 
 #if defined(SK_GRAPHITE)
+#ifdef SK_D3D11
+    { "grd3d11",                  "graphite", "api=d3d11" },
+#endif
 #ifdef SK_DIRECT3D
     { "grd3d",                    "graphite", "api=direct3d" },
 #endif
@@ -558,6 +561,12 @@ public:
         }
         if (optionValue->equals("dawn_gles")) {
             *outContextType = skgpu::ContextType::kDawn_OpenGLES;
+            return true;
+        }
+#endif
+#ifdef SK_D3D11
+        if (optionValue->equals("d3d11")) {
+            *outContextType = skgpu::ContextType::kD3D11;
             return true;
         }
 #endif

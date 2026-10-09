@@ -216,6 +216,7 @@ extern bool IsVulkanContextType(GpuContextType);
 extern bool IsMetalContextType(GpuContextType);
 extern bool IsDawnContextType(GpuContextType);
 extern bool IsDirect3DContextType(GpuContextType);
+extern bool IsD3D11ContextType(GpuContextType);
 extern bool IsMockContextType(GpuContextType);
 
 namespace graphite {
@@ -398,6 +399,10 @@ using skiatest::Test;
 
 #define DEF_GRAPHITE_TEST_FOR_DAWN_CONTEXT(name, reporter, graphite_context, test_context) \
     DEF_GRAPHITE_TEST_FOR_CONTEXTS(name, skiatest::IsDawnContextType, reporter, graphite_context, \
+                                   test_context, CtsEnforcement::kNever)
+
+#define DEF_GRAPHITE_TEST_FOR_D3D11_CONTEXT(name, reporter, graphite_context, test_context) \
+    DEF_GRAPHITE_TEST_FOR_CONTEXTS(name, skiatest::IsD3D11ContextType, reporter, graphite_context, \
                                    test_context, CtsEnforcement::kNever)
 
 #define DEF_GANESH_TEST(name, reporter, options, ctsEnforcement)            \

@@ -17,6 +17,7 @@
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
+#include "tools/flags/CommonFlagsConfig.h"
 #include "tools/graphite/ContextFactory.h"
 #endif
 
@@ -70,6 +71,14 @@ bool IsDirect3DContextType(skgpu::ContextType type) {
 bool IsDawnContextType(skgpu::ContextType type) {
 #if defined(SK_GRAPHITE)
     return skgpu::graphite::ContextTypeBackend(type) == skgpu::BackendApi::kDawn;
+#else
+    return false;
+#endif
+}
+
+bool IsD3D11ContextType(skgpu::ContextType type) {
+#if defined(SK_GRAPHITE)
+    return skgpu::graphite::ContextTypeBackend(type) == skgpu::BackendApi::kD3D11;
 #else
     return false;
 #endif
@@ -129,9 +138,33 @@ void RunWithGraphiteTestContexts(GraphiteTestFn* test,
                                  ContextTypeFilterFn* filter,
                                  Reporter* reporter,
                                  const skiatest::graphite::TestOptions& options) {
+    SkCommandLineConfigArray configs;
+    ParseConfigs(FLAGS_config, &configs);
+    bool hasGraphiteConfig = false;
+    for (int i = 0; i < configs.size(); ++i) {
+        if (configs[i]->asConfigGraphite()) {
+            hasGraphiteConfig = true;
+            break;
+        }
+    }
+
     ContextFactory factory(options);
     for (int typeInt = 0; typeInt < skgpu::kContextTypeCount; ++typeInt) {
         skgpu::ContextType contextType = static_cast<skgpu::ContextType>(typeInt);
+        if (hasGraphiteConfig) {
+            bool matchesConfig = false;
+            for (int i = 0; i < configs.size(); ++i) {
+                if (const auto* grConfig = configs[i]->asConfigGraphite()) {
+                    if (grConfig->getContextType() == contextType) {
+                        matchesConfig = true;
+                        break;
+                    }
+                }
+            }
+            if (!matchesConfig) {
+                continue;
+            }
+        }
         if (filter && !(*filter)(contextType)) {
             continue;
         }

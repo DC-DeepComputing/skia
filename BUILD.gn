@@ -2708,6 +2708,12 @@ if (skia_enable_tools) {
           "tools/graphite/UniqueKeyUtils.cpp",
           "tools/graphite/UniqueKeyUtils.h",
         ]
+        if (skia_use_d3d11) {
+          sources += [
+            "tools/graphite/d3d11/GraphiteD3D11TestContext.cpp",
+            "tools/graphite/d3d11/GraphiteD3D11TestContext.h",
+          ]
+        }
         if (skia_use_dawn) {
           sources += [
             "tools/graphite/dawn/GraphiteDawnTestContext.cpp",

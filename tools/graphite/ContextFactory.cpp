@@ -14,6 +14,9 @@
 #ifdef SK_DAWN
 #include "tools/graphite/dawn/GraphiteDawnTestContext.h"
 #endif
+#ifdef SK_D3D11
+#include "tools/graphite/d3d11/GraphiteD3D11TestContext.h"
+#endif
 #ifdef SK_METAL
 #include "tools/graphite/mtl/GraphiteMtlTestContext.h"
 #endif
@@ -69,6 +72,11 @@ ContextInfo ContextFactory::getContextInfo(skgpu::ContextType type) {
     std::unique_ptr<GraphiteTestContext> testCtx;
 
     switch (type) {
+        case skgpu::ContextType::kD3D11: {
+#ifdef SK_D3D11
+            testCtx = graphite::D3D11TestContext::Make();
+#endif
+        } break;
         case skgpu::ContextType::kMetal: {
 #ifdef SK_METAL
             testCtx = graphite::MtlTestContext::Make();
