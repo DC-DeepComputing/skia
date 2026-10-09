@@ -16,6 +16,308 @@
       "message": "PTAL",
       "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f12d8cc9_3360a838",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Why not make the ctor do this?\nDo we need to call clear here ?",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b66a37a_fc78c67a",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Should be \"*\" since modifying.",
+      "range": {
+        "startLine": 290,
+        "startChar": 79,
+        "endLine": 290,
+        "endChar": 80
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f5ffc97_db3b0dee",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Shouldn\u0027t these be width and height ?",
+      "range": {
+        "startLine": 298,
+        "startChar": 44,
+        "endLine": 298,
+        "endChar": 49
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44a0e634_b18dbe55",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "overlength here and on line 358",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b9aebe6_1fd6636b",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Add \\n",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21583bbb_1ae43fa1",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Add \\n",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afbf1b9e_b3aeb69c",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Pass by *",
+      "range": {
+        "startLine": 617,
+        "startChar": 53,
+        "endLine": 617,
+        "endChar": 54
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5c93a2f_bbb17e5f",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "\\n",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01a1a6af_d64a4f45",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "\\n",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "893f9538_a38444cc",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Pass by pointer",
+      "range": {
+        "startLine": 694,
+        "startChar": 51,
+        "endLine": 694,
+        "endChar": 52
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03730e88_ee3826ba",
+        "filename": "src/gpu/graphite/sparse_strips/WindingHistogram.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "// Exciting comment ?",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc8517fd_ebdcda1d",
+        "filename": "src/gpu/graphite/sparse_strips/WindingHistogram.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "\u0026\u0026 startRow \u003c\u003d endRow ?",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a7e5afe_0b96d0c7",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Make ctor do this ?",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc47b15d_5485697c",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Should probably add brackets too",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7a6d5db_809570d4",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "Pass by pointer",
+      "range": {
+        "startLine": 203,
+        "startChar": 49,
+        "endLine": 203,
+        "endChar": 50
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27c94537_2fd256be",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T13:19:52Z",
+      "side": 1,
+      "message": "In ctor ?",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
