@@ -149,6 +149,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a454792_b68e6351",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-09T15:57:32Z",
+      "side": 1,
+      "message": "I was asking if clip.right should be clip.width",
+      "parentUuid": "2bd76649_3a076c2b",
+      "range": {
+        "startLine": 298,
+        "startChar": 44,
+        "endLine": 298,
+        "endChar": 49
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44a0e634_b18dbe55",
         "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
         "patchSetId": 10
