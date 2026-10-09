@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "40cdea3a_e0909acf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T18:26:00Z",
+      "side": 1,
+      "message": "Thanks Tyler!",
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f1a9b4ef_09ca2439",
         "filename": "infra/bots/task_drivers/run_wasm_dm/chrome_driver.go",
         "patchSetId": 6
@@ -48,6 +65,46 @@
       "writtenOn": "2026-10-08T14:37:53Z",
       "side": 1,
       "message": "This is a convenient way to fetch chrome but we may want another approach such as a CIPD package. Let me know of any preferences.",
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d2181dc_3798ecb9",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/fetch_chrome.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T18:26:00Z",
+      "side": 1,
+      "message": "Does this mean we\u0027re always downloading the latest available?  I\u0027m not sure how often they push new builds out and whether this would create too much churn on the bots.  Prolly fine to start this way, and we can think of ways to throttle if it turns out to be problematic.",
+      "range": {
+        "startLine": 73,
+        "startChar": 23,
+        "endLine": 73,
+        "endChar": 50
+      },
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94ad47b8_14f93fce",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/fetch_chrome.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T18:26:00Z",
+      "side": 1,
+      "message": "general nit: not sure if also enforced for go, but line wrap \u003e 100 matches the rest of the Skia codebase.",
       "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
