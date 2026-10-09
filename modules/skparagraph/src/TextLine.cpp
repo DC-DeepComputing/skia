@@ -884,12 +884,129 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
                              run->calculateWidth(result.pos, result.pos + result.size, false),
                              run->calculateHeight(this->fAscentStyle,this->fDescentStyle));
 
-    // Correct the width in case the text edges don't match clusters
-    // TODO: This is where we get smart about selecting a part of a cluster
-    //  by shaping each grapheme separately and then use the result sizes
-    //  to calculate the proportions
-    auto leftCorrection = start->sizeToChar(originalTextRange.start);
-    auto rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+    // When a style boundary splits a grapheme cluster (base + combining marks), isolate
+    // the glyphs belonging to originalTextRange instead of geometrically slicing the
+    // cluster's bounding box; proportional clipping is reserved for multi-grapheme ligatures
+    SkScalar leftCorrection = 0;
+    SkScalar rightCorrection = 0;
+    bool startSplit = originalTextRange.start > start->textRange().start;
+    bool endSplit = originalTextRange.end < end->textRange().end;
+    if (startSplit || endSplit) {
+        const char* textStr = fOwner->text().data();
+        auto shouldIsolateCluster = [&](const Cluster* c) {
+            if (c->size() > 1) {
+                return true;
+            }
+            int graphemeStarts = 0;
+            for (size_t i = c->textRange().start; i < c->textRange().end; ++i) {
+                if (fOwner->codeUnitHasProperty(i, SkUnicode::CodeUnitFlags::kGraphemeStart)) {
+                    graphemeStarts++;
+                }
+            }
+            return graphemeStarts <= 1;
+        };
+
+        auto matchClusterGlyphs = [&](const Cluster* c, size_t* minG, size_t* maxG) {
+            size_t numCodePoints = SkUTF::CountUTF8(textStr + c->textRange().start,
+                                                    c->textRange().width());
+            bool oneToOne = (c->size() == numCodePoints);
+            *minG = c->endPos();
+            *maxG = c->startPos();
+            bool found = false;
+            for (size_t i = c->startPos(); i < c->endPos(); ++i) {
+                size_t clusterIndex = run->globalClusterIndex(i);
+                if (oneToOne) {
+                    size_t logicalIdx = run->leftToRight()
+                                                ? (i - c->startPos())
+                                                : (c->size() - 1 - (i - c->startPos()));
+                    const char* ptr = textStr + c->textRange().start;
+                    const char* endPtr = textStr + c->textRange().end;
+                    for (size_t k = 0; k < logicalIdx && ptr < endPtr; ++k) {
+                        SkUTF::NextUTF8(&ptr, endPtr);
+                    }
+                    clusterIndex = ptr - textStr;
+                }
+                if (clusterIndex >= originalTextRange.start &&
+                    clusterIndex < originalTextRange.end) {
+                    *minG = std::min(*minG, i);
+                    *maxG = std::max(*maxG, i);
+                    found = true;
+                }
+            }
+            return found;
+        };
+
+        size_t startG0 = start->startPos();
+        size_t startG1 = start->endPos();
+        size_t endG0 = end->startPos();
+        size_t endG1 = end->isHardBreak() ? end->startPos() : end->endPos();
+        bool isolated = false;
+
+        if (start == end) {
+            if (shouldIsolateCluster(start)) {
+                size_t minG, maxG;
+                if (matchClusterGlyphs(start, &minG, &maxG)) {
+                    startG0 = endG0 = minG;
+                    startG1 = endG1 = maxG + 1;
+                } else {
+                    startG0 = startG1 = endG0 = endG1 =
+                            (startSplit == run->leftToRight()) ? start->endPos()
+                                                               : start->startPos();
+                }
+                isolated = true;
+            } else {
+                if (startSplit) {
+                    leftCorrection = start->sizeToChar(originalTextRange.start);
+                }
+                if (endSplit) {
+                    rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+                }
+            }
+        } else {
+            if (startSplit) {
+                if (shouldIsolateCluster(start)) {
+                    size_t minG, maxG;
+                    if (matchClusterGlyphs(start, &minG, &maxG)) {
+                        startG0 = minG;
+                        startG1 = maxG + 1;
+                    } else {
+                        startG0 = startG1 = run->leftToRight() ? start->endPos() : start->startPos();
+                    }
+                    isolated = true;
+                } else {
+                    leftCorrection = start->sizeToChar(originalTextRange.start);
+                }
+            }
+            if (endSplit) {
+                if (shouldIsolateCluster(end)) {
+                    size_t minG, maxG;
+                    if (matchClusterGlyphs(end, &minG, &maxG)) {
+                        endG0 = minG;
+                        endG1 = maxG + 1;
+                    } else {
+                        endG0 = endG1 = run->leftToRight() ? end->startPos() : end->endPos();
+                    }
+                    isolated = true;
+                } else {
+                    rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+                }
+            }
+        }
+
+        if (isolated) {
+            size_t newPos = run->leftToRight() ? startG0 : endG0;
+            size_t newEndPos = run->leftToRight() ? endG1 : startG1;
+            result.pos = newPos;
+            result.size = newEndPos >= newPos ? (newEndPos - newPos) : 0;
+            result.clip = SkRect::MakeXYWH(
+                    0,
+                    sizes().runTop(run, this->fAscentStyle),
+                    run->calculateWidth(result.pos, result.pos + result.size, false),
+                    run->calculateHeight(this->fAscentStyle, this->fDescentStyle));
+            textStartInRun = run->positionX(result.pos);
+        }
+    }
+
     /*
     SkDebugf("[%d: %d) => [%d: %d), @%d, %d: [%f:%f) + [%f:%f) = ", // جَآَهُ
              originalTextRange.start, originalTextRange.end, textRange.start, textRange.end,

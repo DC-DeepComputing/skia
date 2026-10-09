@@ -4439,6 +4439,122 @@ public:
     }
 };
 
+class ParagraphSlideDiacritics1to1 : public ParagraphSlide_Base {
+public:
+    ParagraphSlideDiacritics1to1() { fName = "ParagraphSlideDiacritics1to1"; }
+
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+
+        TextStyle styleLabel;
+        styleLabel.setFontFamilies({SkString("sans-serif")});
+        styleLabel.setFontSize(24);
+        styleLabel.setColor(SK_ColorBLACK);
+
+        TextStyle styleBase;
+        styleBase.setFontFamilies({SkString("Roboto")});
+        styleBase.setFontSize(80);
+        styleBase.setColor(SK_ColorBLACK);
+
+        TextStyle styleRed;
+        styleRed.setFontFamilies({SkString("Roboto")});
+        styleRed.setFontSize(80);
+        styleRed.setColor(SK_ColorRED);
+
+        TextStyle styleBlue;
+        styleBlue.setFontFamilies({SkString("Roboto")});
+        styleBlue.setFontSize(80);
+        styleBlue.setColor(SK_ColorBLUE);
+
+        ParagraphStyle paraStyle;
+        ParagraphBuilderImpl builder(paraStyle, getFontCollection(), get_unicode());
+
+        builder.pushStyle(styleLabel);
+        builder.addText("Single color for entire text (Black):\n");
+        builder.pop();
+
+        builder.pushStyle(styleBase);
+        builder.addText("\u062C\u064E\u0627\u0653\u0647\u064F"); // جَآهُ
+        builder.pop();
+
+        builder.pushStyle(styleLabel);
+        builder.addText("\n\nSplit colors (Variant 1: Base=Red, Diacritic=Blue):\n");
+        builder.addText("Notice how \u062C\u064E and \u0647\u064F split colors, but \u0627\u0653 is drawn entirely red.\n");
+        builder.pop();
+
+        builder.pushStyle(styleRed);
+        builder.addText("\u062C"); // Jeem
+        builder.pop();
+
+        builder.pushStyle(styleBlue);
+        builder.addText("\u064E"); // Fatha
+        builder.pop();
+
+        builder.pushStyle(styleRed);
+        builder.addText("\u0627"); // Alef
+        builder.pop();
+
+        builder.pushStyle(styleBlue);
+        builder.addText("\u0653"); // Maddah
+        builder.pop();
+
+        builder.pushStyle(styleRed);
+        builder.addText("\u0647"); // Heh
+        builder.pop();
+
+        builder.pushStyle(styleBlue);
+        builder.addText("\u064F"); // Damma
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(this->size().width());
+        paragraph->paint(canvas, 10, 10);
+    }
+};
+
+class ParagraphSlideLigatureFFI : public ParagraphSlide_Base {
+public:
+    ParagraphSlideLigatureFFI() { fName = "ParagraphSlideLigatureFFI"; }
+
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+
+        TextStyle styleLabel;
+        styleLabel.setFontFamilies({SkString("sans-serif")});
+        styleLabel.setFontSize(24);
+        styleLabel.setColor(SK_ColorBLACK);
+
+        TextStyle styleRed;
+        styleRed.setFontFamilies({SkString("Roboto")});
+        styleRed.setFontSize(160);
+        styleRed.setColor(SK_ColorRED);
+
+        TextStyle styleBlue;
+        styleBlue.setFontFamilies({SkString("Roboto")});
+        styleBlue.setFontSize(160);
+        styleBlue.setColor(SK_ColorBLUE);
+
+        ParagraphStyle paraStyle;
+        ParagraphBuilderImpl builder(paraStyle, getFontCollection(), get_unicode());
+
+        builder.pushStyle(styleLabel);
+        builder.addText("Ligature ffi with proportional splitting (ff=Red, i=Blue):\n");
+        builder.pop();
+
+        builder.pushStyle(styleRed);
+        builder.addText("ff");
+        builder.pop();
+
+        builder.pushStyle(styleBlue);
+        builder.addText("i");
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(this->size().width());
+        paragraph->paint(canvas, 50, 50);
+    }
+};
+
 }  // namespace
 
 //////////////////////////////////////////////////////////////////////////////
@@ -4521,3 +4637,5 @@ DEF_SLIDE(return new ParagraphSlideEmojiSequence();)
 DEF_SLIDE(return new ParagraphSlideWordSpacing();)
 DEF_SLIDE(return new ParagraphHangingWhitespaces();)
 DEF_SLIDE(return new ParagraphSlideLast();)
+DEF_SLIDE(return new ParagraphSlideDiacritics1to1();)
+DEF_SLIDE(return new ParagraphSlideLigatureFFI();)
