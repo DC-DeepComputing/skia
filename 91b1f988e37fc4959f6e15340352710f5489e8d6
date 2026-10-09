@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "303111e9_73bf22cc",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-09T16:54:25Z",
+      "side": 1,
+      "message": "I\u0027m not aware of the history behind the clamping to kMinBytes, but I kept it in precisely since we couldn\u0027t really count on `sk_malloc_good_size` effectively doing the same thing. In practice I think we could remove it; it seems better to respect sk_good_size or (if it\u0027s a bad impl.) to actually create a failure scenario that the implementer would notice and need to fix.",
+      "parentUuid": "f7cdb843_1adee24a",
+      "revId": "91b1f988e37fc4959f6e15340352710f5489e8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "070d2854_cf146161",
