@@ -22,6 +22,30 @@
       },
       "revId": "b4c10ce3fa81575ca35d377602a47d5fd09674ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eddaa19_a413dd6f",
+        "filename": "src/core/SkRecordCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-09T18:09:14Z",
+      "side": 1,
+      "message": "Could you explain a little more? \n\nFrom my understanding, I don\u0027t think SkRecordCanvas wraps a canvas, since it \"is\" a canvas (`public SkCanvasVirtualEnforcer\u003cSkNoDrawCanvas\u003e`). And since it inherits from SkNoDrawCanvas, it doesn\u0027t have an SkRecorder field (or a base recorder).\n\nI can start looking into removing the TODO and understanding what Kaylee was trying to do",
+      "parentUuid": "1d0a3abe_f0fcc063",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 29
+      },
+      "revId": "b4c10ce3fa81575ca35d377602a47d5fd09674ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
