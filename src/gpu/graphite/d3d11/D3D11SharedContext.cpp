@@ -10,6 +10,7 @@
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/ThreadSafeResourceProvider.h"
 #include "src/gpu/graphite/d3d11/D3D11GraphicsPipeline.h"
 #include "src/gpu/graphite/d3d11/D3D11QueueManager.h"
@@ -73,6 +74,7 @@ D3D11SharedContext::D3D11SharedContext(
 
 D3D11SharedContext::~D3D11SharedContext() {
     fThreadSafeResourceProvider.reset();
+    this->globalCache()->deleteResources();
 }
 
 std::unique_ptr<ResourceProvider> D3D11SharedContext::makeResourceProvider(
