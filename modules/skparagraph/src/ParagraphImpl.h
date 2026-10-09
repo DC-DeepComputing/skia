@@ -61,6 +61,23 @@ struct StyleBlock {
     TStyle fStyle;
 };
 
+inline bool is_zero_width_codepoint(SkUnichar u) {
+    return (u >= 0x200B && u <= 0x200F)
+        || (u >= 0x202A && u <= 0x202E)
+        || (u >= 0x2060 && u <= 0x2069)
+        || (u >= 0x0300 && u <= 0x036F)
+        || (u >= 0x1AB0 && u <= 0x1AFF)
+        || (u >= 0x1DC0 && u <= 0x1DFF)
+        || (u >= 0x20D0 && u <= 0x20FF)
+        || (u >= 0xFE00 && u <= 0xFE0F)
+        || (u >= 0xFE20 && u <= 0xFE2F)
+        || (u >= 0xE0100 && u <= 0xE01EF)
+        || u == 0xFEFF
+        || u == 0x00AD
+        || u == 0x034F
+        || u == 0x061C;
+}
+
 struct ResolvedFontDescriptor {
     ResolvedFontDescriptor(TextIndex index, SkFont font)
             : fFont(std::move(font)), fTextStart(index) {}
@@ -188,6 +205,7 @@ public:
     int32_t unresolvedGlyphs() override;
     std::unordered_set<SkUnichar> unresolvedCodepoints() override;
     void addUnresolvedCodepoints(TextRange textRange);
+    bool isCoreTextShaped() const { return fCoreTextShaped; }
 
     void setState(InternalState state);
     sk_sp<SkPicture> getPicture() { return fPicture; }
@@ -254,6 +272,7 @@ private:
 
     friend class TextWrapper;
     friend class OneLineShaper;
+    friend class CoreTextLineShaper;
 
     void computeEmptyMetrics();
 
@@ -300,6 +319,7 @@ private:
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
     TextIndex fTrailingSpaces;
+    bool fCoreTextShaped;
 };
 }  // namespace textlayout
 }  // namespace skia

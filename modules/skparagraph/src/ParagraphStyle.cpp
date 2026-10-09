@@ -28,6 +28,7 @@ ParagraphStyle::ParagraphStyle() {
     fHintingIsOn = true;
     fReplaceTabCharacters = false;
     fFakeMissingFontStyles = true;
+    fTextShapingEngine = TextShapingEngine::kDefault;
 }
 
 TextAlign ParagraphStyle::effective_align() const {
