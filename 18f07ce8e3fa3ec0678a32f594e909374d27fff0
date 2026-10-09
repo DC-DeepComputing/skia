@@ -16,6 +16,29 @@
       "message": "This will also need to wait for https://chromium-review.git.corp.google.com/c/chromium/src/+/8550236, without which UBSAN chrome builds would fail.",
       "revId": "18f07ce8e3fa3ec0678a32f594e909374d27fff0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c60df5f1_8fed338f",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T17:26:36Z",
+      "side": 1,
+      "message": "Nit: we should never get a nullptr result from `sk_malloc_throw`, maybe release_assert instead.",
+      "range": {
+        "startLine": 63,
+        "startChar": 48,
+        "endLine": 63,
+        "endChar": 70
+      },
+      "revId": "18f07ce8e3fa3ec0678a32f594e909374d27fff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
