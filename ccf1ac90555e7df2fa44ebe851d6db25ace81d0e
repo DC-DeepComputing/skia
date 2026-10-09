@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b65f60_6cd8ecb8",
+        "filename": "tools/ProcsUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-09T18:17:16Z",
+      "side": 1,
+      "message": "Tools that are dependent on the GPU don\u0027t actually get compiled in Bazel since the tools live in their own \"core\" tools library. You need to make it inline and move it to the header to be compiled in the client using it. (See GpuToolUtils.h for an example)",
+      "revId": "ccf1ac90555e7df2fa44ebe851d6db25ace81d0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae38297_e1b800d5",
+        "filename": "tools/ProcsUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-09T18:17:16Z",
+      "side": 1,
+      "message": "See above.",
+      "revId": "ccf1ac90555e7df2fa44ebe851d6db25ace81d0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
