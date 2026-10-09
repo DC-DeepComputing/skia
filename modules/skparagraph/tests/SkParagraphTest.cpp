@@ -7875,7 +7875,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Logo, reporter) {
             switch (index) {
                 case 0: REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 1);
                         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fLeft, left));
-                        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fRight, 62.6944885f));
+                        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fRight, 63.558979f));
                         break;
                 case 1: REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 2);
                         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fLeft, left));
@@ -7883,7 +7883,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Logo, reporter) {
                         break;
                 case 2: REPORTER_ASSERT(reporter, context.pos == 2 && context.size == 1);
                         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fLeft, left));
-                        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fRight, 123.3926165f));
+                        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fRight, 126.334106f));
                         break;
                 case 3: REPORTER_ASSERT(reporter, context.pos == 2 && context.size == 2);
                         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fLeft, left));
@@ -7891,7 +7891,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Logo, reporter) {
                         break;
                 case 4: REPORTER_ASSERT(reporter, context.pos == 4 && context.size == 1);
                         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fLeft, left));
-                        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fRight, 291.567017f));
+                        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fRight, 288.625549f));
                         break;
                 case 5: REPORTER_ASSERT(reporter, context.pos == 4 && context.size == 1); // No space at the end
                         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(context.clip.fLeft, left));
@@ -7949,20 +7949,20 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_FFI, reporter) {
     REPORTER_ASSERT(reporter, f1.size() == 1);
     REPORTER_ASSERT(reporter, f1[0].direction == TextDirection::kLtr);
     REPORTER_ASSERT(reporter, SkScalarNearlyEqual(f1[0].rect.fLeft, 0.000000f, EPSILON100));
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(f1[0].rect.fRight, 17.070000f, EPSILON100));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(f1[0].rect.fRight, 18.969999f, EPSILON100));
 
     auto f2 = paragraph->getRectsForRange(1, 2, RectHeightStyle::kTight,
                                           RectWidthStyle::kTight);
     REPORTER_ASSERT(reporter, f2.size() == 1);
     REPORTER_ASSERT(reporter, f2[0].direction == TextDirection::kLtr);
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(f2[0].rect.fLeft, 17.070000f, EPSILON100));
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(f2[0].rect.fRight, 34.139999f, EPSILON100));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(f2[0].rect.fLeft, 18.969999f, EPSILON100));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(f2[0].rect.fRight, 37.950001f, EPSILON100));
 
     auto fi = paragraph->getRectsForRange(2, 3, RectHeightStyle::kTight,
                                           RectWidthStyle::kTight);
     REPORTER_ASSERT(reporter, fi.size() == 1);
     REPORTER_ASSERT(reporter, fi[0].direction == TextDirection::kLtr);
-    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(fi[0].rect.fLeft, 34.139999f, EPSILON100));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(fi[0].rect.fLeft, 37.950001f, EPSILON100));
     REPORTER_ASSERT(reporter, SkScalarNearlyEqual(fi[0].rect.fRight, 51.209999f, EPSILON100));
 }
 
@@ -9183,6 +9183,250 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenWordBoundary, reporter) {
         REPORTER_ASSERT(reporter, a == b);
     }
 }
+
+// Regression test for https://github.com/flutter/flutter/issues/141080
+DEF_TEST(SkParagraph_DiacriticWithMultipleStyles, reporter) {
+    sk_sp<TestFontCollection> fontCollection =
+            sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    TestCanvas canvas("SkParagraph_DiacriticWithMultipleStyles.png");
+
+    TextStyle style1;
+    style1.setFontFamilies({SkString("Roboto")});
+    style1.setFontSize(40);
+    style1.setColor(SK_ColorRED);
+
+    TextStyle style2;
+    style2.setFontFamilies({SkString("Roboto")});
+    style2.setFontSize(40);
+    style2.setColor(SK_ColorBLUE);
+
+    {
+        // Precomposed 1-glyph cluster ("A" + U+0301 -> "Á")
+        ParagraphStyle paragraphStyle;
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style1);
+        builder.addText("A", 1);
+        builder.pop();
+        builder.pushStyle(style2);
+        builder.addText("\xCC\x81", 2);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000);
+        paragraph->paint(canvas.get(), 0, 0);
+        REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+        REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+
+        int index = 0;
+        impl->lines()[0].scanStyles(
+                StyleType::kForeground,
+                [&](TextRange, const TextStyle&, const TextLine::ClipContext& context) {
+                    if (index == 0) {
+                        REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 1);
+                        REPORTER_ASSERT(reporter, !context.clippingNeeded);
+                        REPORTER_ASSERT(reporter,
+                                        SkScalarNearlyEqual(context.clip.width(),
+                                                            impl->lines()[0].width()));
+                    } else if (index == 1) {
+                        REPORTER_ASSERT(reporter, context.size == 0);
+                        REPORTER_ASSERT(reporter, !context.clippingNeeded);
+                        REPORTER_ASSERT(reporter, SkScalarNearlyZero(context.clip.width()));
+                    }
+                    ++index;
+                });
+        REPORTER_ASSERT(reporter, index == 2);
+    }
+
+    {
+        // Multi-cluster style spans split across a precomposed cluster ("abA" + U+0301 + "CD")
+        ParagraphStyle paragraphStyle;
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style1);
+        builder.addText("abA", 3);
+        builder.pop();
+        builder.pushStyle(style2);
+        builder.addText("\xCC\x81" "CD", 4);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000);
+        paragraph->paint(canvas.get(), 0, 50);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+
+        int index = 0;
+        SkScalar totalWidth = 0;
+        impl->lines()[0].scanStyles(
+                StyleType::kForeground,
+                [&](TextRange, const TextStyle&, const TextLine::ClipContext& context) {
+                    if (index == 0) {
+                        REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 3);
+                        REPORTER_ASSERT(reporter, !context.clippingNeeded);
+                    } else if (index == 1) {
+                        REPORTER_ASSERT(reporter, context.pos == 3 && context.size == 2);
+                        REPORTER_ASSERT(reporter, !context.clippingNeeded);
+                    }
+                    totalWidth += context.clip.width();
+                    ++index;
+                });
+        REPORTER_ASSERT(reporter, index == 2);
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(totalWidth, impl->lines()[0].width()));
+    }
+
+    {
+        // Multi-glyph 1:1 cluster in LTR ("a" + U+0300 in abc+grave -> 'a' + gravecomb in 1 cluster)
+        REPORTER_ASSERT(reporter, fontCollection->addFontFromFile("abc/abc+grave.ttf", "abc+grave"));
+        TextStyle graveStyle1 = style1;
+        graveStyle1.setFontFamilies({SkString("abc+grave")});
+        TextStyle graveStyle2 = style2;
+        graveStyle2.setFontFamilies({SkString("abc+grave")});
+
+        ParagraphStyle paragraphStyle;
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(graveStyle1);
+        builder.addText("a", 1);
+        builder.pop();
+        builder.pushStyle(graveStyle2);
+        builder.addText("\xCC\x80", 2);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000);
+        paragraph->paint(canvas.get(), 0, 100);
+        REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+        REPORTER_ASSERT(reporter, impl->runs()[0].size() == 2);
+
+        int index = 0;
+        SkScalar baseShift = 0;
+        SkScalar markShift = 0;
+        impl->lines()[0].scanStyles(
+                StyleType::kForeground,
+                [&](TextRange, const TextStyle&, const TextLine::ClipContext& context) {
+                    if (index == 0) {
+                        REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 1);
+                        REPORTER_ASSERT(reporter, !context.clippingNeeded);
+                        REPORTER_ASSERT(reporter,
+                                        SkScalarNearlyEqual(context.clip.width(),
+                                                            impl->lines()[0].width()));
+                        baseShift = context.fTextShift;
+                    } else if (index == 1) {
+                        REPORTER_ASSERT(reporter, context.pos == 1 && context.size == 1);
+                        REPORTER_ASSERT(reporter, !context.clippingNeeded);
+                        REPORTER_ASSERT(reporter, SkScalarNearlyZero(context.clip.width()));
+                        markShift = context.fTextShift;
+                    }
+                    ++index;
+                });
+        REPORTER_ASSERT(reporter, index == 2);
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(baseShift, markShift));
+    }
+}
+
+DEF_TEST(SkParagraph_LigatureWithMultipleStyles, reporter) {
+    sk_sp<TestFontCollection> fontCollection =
+            sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    TestCanvas canvas("SkParagraph_LigatureWithMultipleStyles.png");
+
+    TextStyle style1;
+    style1.setFontFamilies({SkString("Roboto")});
+    style1.setFontSize(60);
+    style1.setColor(SK_ColorRED);
+
+    TextStyle style2;
+    style2.setFontFamilies({SkString("Roboto")});
+    style2.setFontSize(60);
+    style2.setColor(SK_ColorBLUE);
+
+    {
+        ParagraphStyle paragraphStyle;
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style1);
+        builder.addText("ff", 2);
+        builder.pop();
+        builder.pushStyle(style2);
+        builder.addText("i", 1);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000);
+        paragraph->paint(canvas.get(), 0, 0);
+        REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+        REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+
+        int index = 0;
+        SkScalar ffWidth = 0;
+        SkScalar iWidth = 0;
+        impl->lines()[0].scanStyles(
+                StyleType::kForeground,
+                [&](TextRange, const TextStyle&, const TextLine::ClipContext& context) {
+                    REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 1);
+                    REPORTER_ASSERT(reporter, context.clippingNeeded);
+                    if (index == 0) {
+                        ffWidth = context.clip.width();
+                    } else if (index == 1) {
+                        iWidth = context.clip.width();
+                    }
+                    ++index;
+                });
+        REPORTER_ASSERT(reporter, index == 2);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(ffWidth + iWidth, impl->lines()[0].width()));
+        // Proportional split gives "ff" more than 2/3 of the ligature width because 'f' > 'i'
+        REPORTER_ASSERT(reporter, ffWidth > impl->lines()[0].width() * 2.0f / 3.0f + 1.0f);
+    }
+
+    {
+        // Multi-cluster style range starting inside a ligature ("f" + "fiab")
+        ParagraphStyle paragraphStyle;
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style1);
+        builder.addText("f", 1);
+        builder.pop();
+        builder.pushStyle(style2);
+        builder.addText("fiab", 4);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000);
+        paragraph->paint(canvas.get(), 0, 80);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+
+        int index = 0;
+        SkScalar totalWidth = 0;
+        impl->lines()[0].scanStyles(
+                StyleType::kForeground,
+                [&](TextRange, const TextStyle&, const TextLine::ClipContext& context) {
+                    if (index == 0) {
+                        REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 1);
+                        REPORTER_ASSERT(reporter, context.clippingNeeded);
+                    } else if (index == 1) {
+                        REPORTER_ASSERT(reporter, context.pos == 0 && context.size == 3);
+                        REPORTER_ASSERT(reporter, context.clippingNeeded);
+                    }
+                    totalWidth += context.clip.width();
+                    ++index;
+                });
+        REPORTER_ASSERT(reporter, index == 2);
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(totalWidth, impl->lines()[0].width()));
+    }
+}
+
 
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkParagraph_ICU_EmojiRuns, reporter) {
