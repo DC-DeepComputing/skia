@@ -1491,6 +1491,30 @@ func (b *jobBuilder) g3FrameworkCanary() {
 	})
 }
 
+// flutterManualRollCanary creates one dry-run, canary-only Flutter manual-roll
+// request for the supplied external PR and then exits. The task deliberately
+// reuses the canary service account and never enables a committing roll.
+func (b *jobBuilder) flutterManualRollCanary(externalChange string) {
+	b.addTask(b.Name, func(b *TaskBuilder) {
+		b.cas(CAS_EMPTY)
+		b.cmd(
+			b.taskDriver("g3_canary", false),
+			"--local=false",
+			"--project_id", "skia-swarming-bots",
+			"--task_id", specs.PLACEHOLDER_TASK_ID,
+			"--task_name", b.Name,
+			"--manual_roll=true",
+			"--manual_roll_revision", specs.PLACEHOLDER_PATCH_REF,
+			"--manual_roll_external_change", externalChange,
+		)
+		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.usesLUCIAuth()
+		b.serviceAccount(b.cfg.ServiceAccountCanary)
+		b.timeout(3 * time.Hour)
+		b.attempts(1)
+	})
+}
+
 // infra generates an infra_tests task.
 func (b *jobBuilder) infra() {
 	b.addTask(b.Name, func(b *TaskBuilder) {

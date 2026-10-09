@@ -799,7 +799,10 @@
     "name": "Canary-Android"
   },
   {
-    "name": "Canary-Chromium"
+    "name": "Canary-Chromium",
+    "cq_config": {
+      "experimental": true
+    }
   },
   {
     "name": "Canary-Flutter"

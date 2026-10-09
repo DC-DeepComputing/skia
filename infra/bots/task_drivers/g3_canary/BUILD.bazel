@@ -13,8 +13,10 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "@com_google_cloud_go_storage//:storage",
+        "@org_skia_go_infra//autoroll/go/manual",
         "@org_golang_google_api//option",
         "@org_skia_go_infra//go/auth",
+        "@org_skia_go_infra//go/firestore",
         "@org_skia_go_infra//go/gcs",
         "@org_skia_go_infra//go/gcs/gcsclient",
         "@org_skia_go_infra//go/httputils",

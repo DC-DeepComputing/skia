@@ -170,7 +170,7 @@ func (b *jobBuilder) genTasksForJob() {
 			b.canary("android-master-autoroll", "Canary-Android-Topic", "https://googleplex-android-review.googlesource.com/q/topic:")
 			return
 		} else if b.Project("Chromium") {
-			b.canary("skia-autoroll", "Canary-Chromium-CL", "https://chromium-review.googlesource.com/c/")
+			b.flutterManualRollCanary("194081")
 			return
 		} else if b.Project("Flutter") {
 			b.canary("skia-flutter-autoroll", "Canary-Flutter-PR", "https://github.com/flutter/engine/pull/")
