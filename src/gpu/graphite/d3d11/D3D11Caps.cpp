@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/d3d11/D3D11BackendContext.h"
+#include "src/gpu/graphite/d3d11/D3D11GraphicsPipeline.h"
 #include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
@@ -92,8 +93,10 @@ void D3D11Caps::initCaps(const D3D11BackendContext& backendContext, const Contex
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     fResourceBindingReqs.fStorageBufferLayout = Layout::kInvalid;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
-    fResourceBindingReqs.fIntrinsicBufferBinding = 0;
-    fResourceBindingReqs.fCombinedUniformBufferBinding = 1;
+    fResourceBindingReqs.fUniformsSetIdx = D3D11GraphicsPipeline::kUniformBufferBindGroupIndex;
+    fResourceBindingReqs.fTextureSamplerSetIdx = D3D11GraphicsPipeline::kTextureBindGroupIndex;
+    fResourceBindingReqs.fIntrinsicBufferBinding = D3D11GraphicsPipeline::kIntrinsicUniformBufferIndex;
+    fResourceBindingReqs.fCombinedUniformBufferBinding = D3D11GraphicsPipeline::kCombinedUniformIndex;
     fResourceBindingReqs.fStorageBufferBinding = -1;
     fResourceBindingReqs.fMaxFallbackTextureSize = 8192;
     fResourceBindingReqs.fMaxFallbackTextureBytes = 8192 * 8192 * 16;

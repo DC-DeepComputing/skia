@@ -27,6 +27,9 @@ public:
     const D3D11Caps* d3d11Caps() const { return static_cast<const D3D11Caps*>(this->caps()); }
     ID3D11Device1* device() const { return fDevice.Get(); }
     ID3D11DeviceContext1* deviceContext() const { return fDeviceContext.Get(); }
+    ThreadSafeResourceProvider* threadSafeResourceProvider() const {
+        return fThreadSafeResourceProvider.get();
+    }
 
     std::unique_ptr<ResourceProvider> makeResourceProvider(
             SingleOwner*, uint32_t recorderID, size_t resourceBudget) override;

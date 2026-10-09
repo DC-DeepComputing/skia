@@ -9,7 +9,9 @@
 #define skgpu_graphite_D3D11GraphicsPipeline_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkTArray.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
+#include "src/gpu/graphite/d3d11/D3D11Sampler.h"
 #include <d3d11_1.h>
 #include <wrl/client.h>
 
@@ -22,9 +24,16 @@ class RuntimeEffectDictionary;
 
 class D3D11GraphicsPipeline final : public GraphicsPipeline {
 public:
+    inline static constexpr unsigned int kUniformBufferBindGroupIndex = 0;
+    inline static constexpr unsigned int kTextureBindGroupIndex = 1;
+
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
     inline static constexpr unsigned int kCombinedUniformIndex = 1;
     inline static constexpr unsigned int kMaxNumUniformBuffers = 2;
+
+    inline static constexpr unsigned int kStaticDataBufferIndex = 0;
+    inline static constexpr unsigned int kAppendDataBufferIndex = 1;
+    inline static constexpr unsigned int kNumVertexBuffers = 2;
 
     static sk_sp<D3D11GraphicsPipeline> Make(const D3D11SharedContext* sharedContext,
                                              const RuntimeEffectDictionary* runtimeDict,
@@ -44,6 +53,11 @@ public:
     ID3D11DepthStencilState* depthStencilState() const { return fDepthStencilState.Get(); }
     uint32_t stencilRef() const { return fStencilRef; }
     D3D11_PRIMITIVE_TOPOLOGY primitiveTopology() const { return fPrimitiveTopology; }
+    bool hasFragmentShader() const { return fPixelShader != nullptr; }
+
+    const D3D11Sampler* immutableSampler(int32_t index) const {
+        return index < fImmutableSamplers.size() ? fImmutableSamplers[index].get() : nullptr;
+    }
 
 private:
     D3D11GraphicsPipeline(const SharedContext* sharedContext,
@@ -53,10 +67,11 @@ private:
                           Microsoft::WRL::ComPtr<ID3D11PixelShader> ps,
                           Microsoft::WRL::ComPtr<ID3D11InputLayout> layout,
                           Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerState,
-                          Microsoft::WRL::ComPtr<ID3D11BlendState> blendState,
+                          Microsoft::WRL::ComPtr<ID3D11BlendState1> blendState,
                           Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState,
                           uint32_t stencilRef,
-                          D3D11_PRIMITIVE_TOPOLOGY topology);
+                          D3D11_PRIMITIVE_TOPOLOGY topology,
+                          skia_private::TArray<sk_sp<D3D11Sampler>> immutableSamplers);
 
     void freeGpuData() override;
 
@@ -64,10 +79,11 @@ private:
     Microsoft::WRL::ComPtr<ID3D11PixelShader> fPixelShader;
     Microsoft::WRL::ComPtr<ID3D11InputLayout> fInputLayout;
     Microsoft::WRL::ComPtr<ID3D11RasterizerState> fRasterizerState;
-    Microsoft::WRL::ComPtr<ID3D11BlendState> fBlendState;
+    Microsoft::WRL::ComPtr<ID3D11BlendState1> fBlendState;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilState> fDepthStencilState;
     uint32_t fStencilRef = 0;
     D3D11_PRIMITIVE_TOPOLOGY fPrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+    skia_private::TArray<sk_sp<D3D11Sampler>> fImmutableSamplers;
 };
 
 } // namespace skgpu::graphite
