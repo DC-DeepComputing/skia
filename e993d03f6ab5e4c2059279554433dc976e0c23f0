@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6ff7522_4a8c5fa2",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "See comment below.",
+      "parentUuid": "f12d8cc9_3360a838",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b66a37a_fc78c67a",
@@ -48,6 +66,30 @@
       "writtenOn": "2026-10-09T13:19:52Z",
       "side": 1,
       "message": "Should be \"*\" since modifying.",
+      "range": {
+        "startLine": 290,
+        "startChar": 79,
+        "endLine": 290,
+        "endChar": 80
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc426e3b_817d4c7a",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b66a37a_fc78c67a",
       "range": {
         "startLine": 290,
         "startChar": 79,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bd76649_3a076c2b",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "I\u0027ve renamed these, as these variable names were carried over when we were still using the viewport as the region of interest; they\u0027re supposed to be the maxTileX/Y (e.g. the max extents of the clip in tile units).",
+      "parentUuid": "6f5ffc97_db3b0dee",
+      "range": {
+        "startLine": 298,
+        "startChar": 44,
+        "endLine": 298,
+        "endChar": 49
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44a0e634_b18dbe55",
@@ -94,6 +160,24 @@
       "writtenOn": "2026-10-09T13:19:52Z",
       "side": 1,
       "message": "overlength here and on line 358",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d25ab9e_6392cf1c",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44a0e634_b18dbe55",
       "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -115,6 +199,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22393105_30f8600c",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b9aebe6_1fd6636b",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21583bbb_1ae43fa1",
@@ -128,6 +230,24 @@
       "writtenOn": "2026-10-09T13:19:52Z",
       "side": 1,
       "message": "Add \\n",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be6e6c4_48ebfc5a",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21583bbb_1ae43fa1",
       "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -155,6 +275,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3935ccf_68a67bfc",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afbf1b9e_b3aeb69c",
+      "range": {
+        "startLine": 617,
+        "startChar": 53,
+        "endLine": 617,
+        "endChar": 54
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5c93a2f_bbb17e5f",
@@ -172,6 +316,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03f97a86_af16b02d",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5c93a2f_bbb17e5f",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01a1a6af_d64a4f45",
@@ -185,6 +347,24 @@
       "writtenOn": "2026-10-09T13:19:52Z",
       "side": 1,
       "message": "\\n",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dd7196_12d60227",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01a1a6af_d64a4f45",
       "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -212,6 +392,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54e5078f_5b31d8da",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "893f9538_a38444cc",
+      "range": {
+        "startLine": 694,
+        "startChar": 51,
+        "endLine": 694,
+        "endChar": 52
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03730e88_ee3826ba",
@@ -225,6 +429,24 @@
       "writtenOn": "2026-10-09T13:19:52Z",
       "side": 1,
       "message": "// Exciting comment ?",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6df5e395_22abb5bc",
+        "filename": "src/gpu/graphite/sparse_strips/WindingHistogram.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03730e88_ee3826ba",
       "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -246,6 +468,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e6f77f4_cd001f01",
+        "filename": "src/gpu/graphite/sparse_strips/WindingHistogram.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc8517fd_ebdcda1d",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a7e5afe_0b96d0c7",
@@ -263,6 +503,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c17b72_9451e9d1",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "See comment below.",
+      "parentUuid": "5a7e5afe_0b96d0c7",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc47b15d_5485697c",
@@ -276,6 +534,24 @@
       "writtenOn": "2026-10-09T13:19:52Z",
       "side": 1,
       "message": "Should probably add brackets too",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b93f3c0c_a2fb7eb1",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc47b15d_5485697c",
       "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -303,6 +579,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "307a2c09_cf01af0a",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7a6d5db_809570d4",
+      "range": {
+        "startLine": 203,
+        "startChar": 49,
+        "endLine": 203,
+        "endChar": 50
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27c94537_2fd256be",
@@ -316,6 +616,24 @@
       "writtenOn": "2026-10-09T13:19:52Z",
       "side": 1,
       "message": "In ctor ?",
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5821065c_9504058a",
+        "filename": "tests/graphite/sparse_strips/TilerTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T15:00:14Z",
+      "side": 1,
+      "message": "In normal (non-testing) workflow, the WindingHistogram is a member of the StripGenerator which is long lived on Device. Because the Histogram is sized to the width of the Clip, it must be resized per draw, and so we do not resize in the constructor.",
+      "parentUuid": "27c94537_2fd256be",
       "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
