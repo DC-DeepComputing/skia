@@ -226,7 +226,7 @@ void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
     // Can't go through clusters because there are no cluster table yet
     if (leftToRight()) {
         size_t start = 0;
-        size_t cluster = this->clusterIndex(start);
+        size_t cluster = this->fUtf8Range.begin();
         for (size_t glyph = 1; glyph <= this->size(); ++glyph) {
             auto nextCluster = this->clusterIndex(glyph);
             if (nextCluster <= cluster) {
