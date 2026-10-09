@@ -14,7 +14,12 @@
 #include "modules/skparagraph/include/ParagraphPainter.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
 #include "modules/skparagraph/src/OneLineShaper.h"
+#endif
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+#include "modules/skparagraph/src/CoreTextLineShaper.h"
+#endif
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
 #include "modules/skparagraph/src/Run.h"
@@ -90,6 +95,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fUnicode(std::move(unicode))
         , fHasLineBreaks(false)
         , fHasWhitespacesInside(false)
+        , fCoreTextShaped(false)
         , fTrailingSpaces(0)
 {
     SkASSERT(fUnicode);
@@ -425,11 +431,13 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
         fTextStyles[0].fRange.width() == fText.size() && fRuns.size() == 1 &&
         !(this->fHasWhitespacesInside && this->fParagraphStyle.getLetterSpacingByCSSSpec())
         ) {
-        auto& run = fRuns[0];
         auto& style = fTextStyles[0].fStyle;
-        if (!run.isCursiveScript()) {
-            // Do not apply letter spacing for script languages (no exception here)
-            run.addLetterSpacesEvenly(style.getLetterSpacing());
+        if (!fCoreTextShaped) {
+            auto& run = fRuns[0];
+            if (!run.isCursiveScript()) {
+                // Do not apply letter spacing for script languages (no exception here)
+                run.addLetterSpacesEvenly(style.getLetterSpacing());
+            }
         }
 
         this->buildClusterTable();
@@ -498,11 +506,15 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
             // We do not apply letter spacing for script languages
             // except for one case (cluster is whitespace, and we have to follow CSS spec)
             if ((currentStyle->fStyle.getLetterSpacing() != 0)) {
-                if (!run.isCursiveScript() ||
-                    (cluster->isWhitespaceBreak() &&
-                     this->fParagraphStyle.getLetterSpacingByCSSSpec())) {
-                    shift +=
-                        run.addLetterSpacesEvenly(currentStyle->fStyle.getLetterSpacing(), cluster);
+                if (fCoreTextShaped) {
+                    cluster->setHalfLetterSpacing(currentStyle->fStyle.getLetterSpacing() / 2);
+                } else {
+                    if (!run.isCursiveScript() ||
+                        (cluster->isWhitespaceBreak() &&
+                         this->fParagraphStyle.getLetterSpacingByCSSSpec())) {
+                        shift +=
+                            run.addLetterSpacesEvenly(currentStyle->fStyle.getLetterSpacing(), cluster);
+                    }
                 }
             }
 
@@ -515,6 +527,9 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
 
 // Clusters in the order of the input text
 void ParagraphImpl::buildClusterTable() {
+    fClustersIndexFromCodeUnit.clear();
+    fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
+
     // It's possible that one grapheme includes few runs; we cannot handle it
     // so we break graphemes by the runs instead
     // It's not the ideal solution and has to be revisited later
@@ -578,7 +593,26 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
 
     fUnresolvedCodepoints.clear();
     fFontSwitches.clear();
+    fCoreTextShaped = false;
 
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+    if (fParagraphStyle.getTextShapingEngine() == TextShapingEngine::kCoreText) {
+        CoreTextLineShaper shaper(this);
+        if (shaper.shape()) {
+            fUnresolvedGlyphs = shaper.unresolvedGlyphs();
+            fCoreTextShaped = true;
+            this->applySpacingAndBuildClusterTable();
+            return true;
+        }
+        return false;
+    }
+#else
+    if (fParagraphStyle.getTextShapingEngine() == TextShapingEngine::kCoreText) {
+        return false;
+    }
+#endif
+
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
     OneLineShaper oneLineShaper(this);
     auto result = oneLineShaper.shape();
     fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
@@ -586,6 +620,9 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
     this->applySpacingAndBuildClusterTable();
 
     return result;
+#else
+    return false;
+#endif
 }
 
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {

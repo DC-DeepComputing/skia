@@ -23,7 +23,12 @@
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
 #include "modules/skshaper/include/SkShaper.h"
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+#include "modules/skshaper/include/SkShaper_coretext.h"
+#endif
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 
 #include <algorithm>
@@ -710,12 +715,43 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis,
         font.setHinting(textStyle.getFontHinting());
         font.setSubpixel(textStyle.getSubpixel());
 
+        const char* utf8 = ellipsis.c_str();
+        size_t utf8Bytes = ellipsis.size();
+
+        std::unique_ptr<SkShaper::FontRunIterator> fontRuns = SkShaper::MakeFontMgrRunIterator(
+                utf8, utf8Bytes, font, fallback ? fallback : SkFontMgr::RefEmpty());
+        SkASSERT(fontRuns);
+
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+        if (fOwner->isCoreTextShaped()) {
+            std::unique_ptr<SkShaper> shaper = SkShapers::CT::CoreText();
+            if (shaper) {
+                SkShaper::TrivialBiDiRunIterator bidi{0, 0};
+                SkShaper::TrivialScriptRunIterator script{0, 0};
+                SkShaper::TrivialLanguageRunIterator language{nullptr, 0};
+                shaper->shape({utf8, utf8Bytes},
+                              *fontRuns,
+                              bidi,
+                              script,
+                              language,
+                              {},
+                              {},
+                              &handler);
+                auto ellipsisRun = handler.run();
+                if (ellipsisRun) {
+                    ellipsisRun->fTextRange = TextRange(0, ellipsis.size());
+                    ellipsisRun->fOwner = fOwner;
+                }
+                return ellipsisRun;
+            }
+        }
+#endif
+
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
         std::unique_ptr<SkShaper> shaper = SkShapers::HB::ShapeDontWrapOrReorder(
                 fOwner->getUnicode(), fallback ? fallback : SkFontMgr::RefEmpty());
 
         const SkBidiIterator::Level defaultLevel = SkBidiIterator::kLTR;
-        const char* utf8 = ellipsis.c_str();
-        size_t utf8Bytes = ellipsis.size();
 
         std::unique_ptr<SkShaper::BiDiRunIterator> bidi = SkShapers::unicode::BidiRunIterator(
                 fOwner->getUnicode(), utf8, utf8Bytes, defaultLevel);
@@ -729,10 +765,6 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis,
                 SkShapers::HB::ScriptRunIterator(utf8, utf8Bytes);
         SkASSERT(script);
 
-        std::unique_ptr<SkShaper::FontRunIterator> fontRuns = SkShaper::MakeFontMgrRunIterator(
-                utf8, utf8Bytes, font, fallback ? fallback : SkFontMgr::RefEmpty());
-        SkASSERT(fontRuns);
-
         shaper->shape({ utf8, utf8Bytes },
                       *fontRuns,
                       *bidi,
@@ -742,14 +774,19 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis,
                       {},
                       &handler);
         auto ellipsisRun = handler.run();
-        ellipsisRun->fTextRange = TextRange(0, ellipsis.size());
-        ellipsisRun->fOwner = fOwner;
+        if (ellipsisRun) {
+            ellipsisRun->fTextRange = TextRange(0, ellipsis.size());
+            ellipsisRun->fOwner = fOwner;
+        }
         return ellipsisRun;
+#else
+        return nullptr;
+#endif
     };
 
     // Check the current font
     auto ellipsisRun = shaped(run.fFont.refTypeface(), nullptr);
-    if (ellipsisRun->isResolved()) {
+    if (ellipsisRun && ellipsisRun->isResolved()) {
         return ellipsisRun;
     }
 
@@ -758,7 +795,7 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis,
             textStyle.getFontFamilies(), textStyle.getFontStyle(), textStyle.getFontArguments());
     for (const auto& typeface : typefaces) {
         ellipsisRun = shaped(typeface, nullptr);
-        if (ellipsisRun->isResolved()) {
+        if (ellipsisRun && ellipsisRun->isResolved()) {
             return ellipsisRun;
         }
     }
@@ -779,7 +816,7 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis,
                                             textStyle.getFontArguments());
         if (typeface) {
             ellipsisRun = shaped(typeface, fOwner->fontCollection()->getFallbackManager());
-            if (ellipsisRun->isResolved()) {
+            if (ellipsisRun && ellipsisRun->isResolved()) {
                 return ellipsisRun;
             }
         }
