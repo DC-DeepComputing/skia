@@ -24,6 +24,31 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "506da532_6d3ec563",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:33:20Z",
+      "side": 1,
+      "message": "Done. Switched fTokenizer to SkUniqueCFRef\u003cCFStringTokenizerRef\u003e and defaulted the destructor.",
+      "parentUuid": "16490718_cab6a60b",
+      "range": {
+        "startLine": 307,
+        "startChar": 4,
+        "endLine": 307,
+        "endChar": 24
+      },
+      "isAi": true,
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78ec9e28_4d4ce32d",
@@ -43,6 +68,31 @@
         "endLine": 549,
         "endChar": 27
       },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0333152b_639c05ad",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:33:20Z",
+      "side": 1,
+      "message": "Done. Added SkMutex fLineTokenizerMutex and guarded fLineTokenizer with SkAutoMutexExclusive in computeCodeUnitFlags.",
+      "parentUuid": "78ec9e28_4d4ce32d",
+      "range": {
+        "startLine": 549,
+        "startChar": 13,
+        "endLine": 549,
+        "endChar": 27
+      },
+      "isAi": true,
       "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -70,6 +120,31 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83b97ef6_af1b1145",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:33:20Z",
+      "side": 1,
+      "message": "Done. Evaluated character property flags once per unichar and replicated them across [before, after).",
+      "parentUuid": "f5c989a1_75a54a14",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 606,
+        "endChar": 13
+      },
+      "isAi": true,
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b622bb00_3b23c68b",
@@ -93,6 +168,31 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a00dd7_d079e49f",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:33:20Z",
+      "side": 1,
+      "message": "Done. Replicated per-unichar flags in computeCodeUnitFlags(char16_t[], ...) as well.",
+      "parentUuid": "b622bb00_3b23c68b",
+      "range": {
+        "startLine": 665,
+        "startChar": 0,
+        "endLine": 683,
+        "endChar": 17
+      },
+      "isAi": true,
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce730d74_ee0a4eab",
@@ -112,6 +212,31 @@
         "endLine": 691,
         "endChar": 24
       },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c5d6ac0_d0756a7a",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:33:20Z",
+      "side": 1,
+      "message": "Done. Converted fLineTokenizer to SkUniqueCFRef\u003cCFStringTokenizerRef\u003e and defaulted ~SkUnicode_apple().",
+      "parentUuid": "ce730d74_ee0a4eab",
+      "range": {
+        "startLine": 691,
+        "startChar": 4,
+        "endLine": 691,
+        "endChar": 24
+      },
+      "isAi": true,
       "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
