@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16490718_cab6a60b",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T14:41:35Z",
+      "side": 1,
+      "message": "`SkUniqueCFRef\u003cCFStringTokenizerRef\u003e`, then we don\u0027t need to call `CFRelease()` in the destructor.",
+      "range": {
+        "startLine": 307,
+        "startChar": 4,
+        "endLine": 307,
+        "endChar": 24
+      },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78ec9e28_4d4ce32d",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T14:41:35Z",
+      "side": 1,
+      "message": "Unlike the break iterator tokenizer, this one is shared for the whole ICU instance.  Poking around, I think the expectation is that SkICU entry points are thread-safe.  So if we\u0027re going to use this global tokenizer we\u0027ll need to add some synchronization.",
+      "range": {
+        "startLine": 549,
+        "startChar": 13,
+        "endLine": 549,
+        "endChar": 27
+      },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c989a1_75a54a14",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T14:41:35Z",
+      "side": 1,
+      "message": "Not new to this CL, but the flags only depend on `unichar`, which is constant within the loop.  Instead of calling `isFoo` redundantly, we could call them once and replicate the flag across the `[before,after)` range, to minimize the number of CF calls.  Could be a followup CL.",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 606,
+        "endChar": 13
+      },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b622bb00_3b23c68b",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T14:41:35Z",
+      "side": 1,
+      "message": "Ditto.",
+      "range": {
+        "startLine": 665,
+        "startChar": 0,
+        "endLine": 683,
+        "endChar": 17
+      },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce730d74_ee0a4eab",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T14:41:35Z",
+      "side": 1,
+      "message": "`SkUniqueCFRef\u003cCFStringTokenizerRef\u003e`, then we can use the default destructor.",
+      "range": {
+        "startLine": 691,
+        "startChar": 4,
+        "endLine": 691,
+        "endChar": 24
+      },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
