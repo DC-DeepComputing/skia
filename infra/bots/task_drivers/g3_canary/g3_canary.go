@@ -17,7 +17,9 @@ import (
 	"cloud.google.com/go/storage"
 	"google.golang.org/api/option"
 
+	"go.skia.org/infra/autoroll/go/manual"
 	"go.skia.org/infra/go/auth"
+	"go.skia.org/infra/go/firestore"
 	"go.skia.org/infra/go/gcs"
 	"go.skia.org/infra/go/gcs/gcsclient"
 	"go.skia.org/infra/go/httputils"
@@ -64,18 +66,32 @@ type G3CanaryTask struct {
 	CL       int              `json:"cl"`
 }
 
+const (
+	datastoreScope    = "https://www.googleapis.com/auth/datastore"
+	flutterRollerName = "skia-flutter-autoroll"
+)
+
 func main() {
 	var (
-		projectId = flag.String("project_id", "", "ID of the Google Cloud project.")
-		taskId    = flag.String("task_id", "", "ID of this task.")
-		taskName  = flag.String("task_name", "", "Name of the task.")
-		output    = flag.String("o", "", "If provided, dump a JSON blob of step data to the given file. Prints to stdout if '-' is given.")
-		local     = flag.Bool("local", true, "True if running locally (as opposed to on the bots)")
+		projectId            = flag.String("project_id", "", "ID of the Google Cloud project.")
+		taskId               = flag.String("task_id", "", "ID of this task.")
+		taskName             = flag.String("task_name", "", "Name of the task.")
+		output               = flag.String("o", "", "If provided, dump a JSON blob of step data to the given file. Prints to stdout if '-' is given.")
+		local                = flag.Bool("local", true, "True if running locally (as opposed to on the bots)")
+		manualRoll           = flag.Bool("manual_roll", false, "Create one production manual-roll request and exit.")
+		manualRevision       = flag.String("manual_roll_revision", "", "Child revision for --manual_roll.")
+		manualExternalChange = flag.String("manual_roll_external_change", "", "External change ID for --manual_roll.")
 
 		checkoutFlags = checkout.SetupFlags(nil)
 	)
 	ctx := td.StartRun(projectId, taskId, taskName, output, local)
 	defer td.EndRun(ctx)
+	if *manualRoll {
+		if err := createManualRoll(ctx, *local, *manualRevision, *manualExternalChange); err != nil {
+			td.Fatal(ctx, skerr.Wrap(err))
+		}
+		return
+	}
 
 	rs, err := checkout.GetRepoState(checkoutFlags)
 	if err != nil {
@@ -133,6 +149,47 @@ func main() {
 	if err := waitForCanaryRoll(ctx, taskFileName, taskStoragePath, client, gcsClient); err != nil {
 		td.Fatal(ctx, skerr.Wrap(err))
 	}
+}
+
+func createManualRoll(ctx context.Context, local bool, revision, externalChange string) error {
+	if revision == "" || externalChange == "" {
+		return errors.New("manual-roll revision and external change are required")
+	}
+	if pr, err := strconv.ParseUint(externalChange, 10, 64); err != nil || pr == 0 {
+		return fmt.Errorf("manual-roll external change must be a positive decimal PR number")
+	}
+
+	ts, err := auth_steps.Init(ctx, local, auth.ScopeUserinfoEmail, datastoreScope)
+	if err != nil {
+		return skerr.Wrap(err)
+	}
+	db, err := manual.NewDBWithParams(ctx, firestore.FIRESTORE_PROJECT, "production", ts)
+	if err != nil {
+		return skerr.Wrap(err)
+	}
+	defer db.Close()
+
+	req := &manual.ManualRollRequest{
+		Requester:         flutterRollerName,
+		Revision:          revision,
+		RollerName:        flutterRollerName,
+		Status:            manual.STATUS_PENDING,
+		Timestamp:         firestore.FixTimestamp(time.Now()),
+		DryRun:            true,
+		NoEmail:           true,
+		NoResolveRevision: true,
+		Canary:            true,
+		ExternalChangeId:  externalChange,
+	}
+	if err := db.Put(req); err != nil {
+		return skerr.Wrap(err)
+	}
+	requestJSON, err := json.Marshal(req)
+	if err != nil {
+		return skerr.Wrap(err)
+	}
+	fmt.Printf("Created manual roll request: %s\n", requestJSON)
+	return nil
 }
 
 func triggerCanaryRoll(ctx context.Context, issue, patchset, taskFileName, taskStoragePath string, gcsClient gcs.GCSClient) error {
