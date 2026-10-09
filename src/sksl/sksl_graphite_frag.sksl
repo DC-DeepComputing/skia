@@ -537,6 +537,67 @@ $pure half4 sk_yuv_image_shader(float2 coords,
                        yuvToRGBMatrix, yuvToRGBTranslate);
 }
 
+$pure half4 sk_packed_yuv_image_shader(float2 coords,
+                                                   float2 invImgSize,
+                                                   float4 subset,
+                                                   int tileModeX,
+                                                   int tileModeY,
+                                                   half4 channelSelectY,
+                                                   half4 channelSelectU,
+                                                   half4 channelSelectV,
+                                                   half3x3 yuvToRGBMatrix,
+                                                   half3 yuvToRGBTranslate,
+                                                   sampler2D sPlane) {
+    // Packed 4:2:2: the plane stores one 4-channel texel per 2x1 block of
+    // pixels, channels 0..3 hold (Y0, U, Y1, V). The coords and subset arrive in pixel space
+    // (the image's encoded origin has been applied upstream) with the plane at half horizontal
+    // resolution, so the pixel's parity selects its channels and the texel fetch halves the x
+    // coordinate. Sampling is always nearest.
+
+    // Decal has to be resolved here rather than by the sampling helper: this plane carries no
+    // alpha, so a zeroed YUV sample would convert to an opaque color instead of transparency.
+    if (tileModeX == $kTileModeDecal) {
+        float snappedX = floor(coords.x * 0.5) + 0.5;
+        if (snappedX < subset.x * 0.5 || snappedX > subset.z * 0.5) {
+            return half4(0);
+        }
+    }
+    if (tileModeY == $kTileModeDecal) {
+        float snappedY = floor(coords.y) + 0.5;
+        if (snappedY < subset.y || snappedY > subset.w) {
+            return half4(0);
+        }
+    }
+
+    // Tile before deriving the pixel parity: repeat and mirror can map the pixel onto a texel of
+    // the opposite parity, which would swap U and V.
+    float2 tiled = float2($tile(tileModeX, coords.x, subset.x, subset.z),
+                          $tile(tileModeY, coords.y, subset.y, subset.w));
+
+    // Texel centers of the sampled region, so that tiled coords landing exactly on a subset
+    // boundary resolve to the edge texel rather than its neighbor. The plane's x texel centers
+    // span half the pixel range.
+    float4 insetClamp = float4(floor(subset.xy) + $kLinearInset, ceil(subset.zw) - $kLinearInset);
+
+    float pixelIdx = floor(clamp(tiled.x, insetClamp.x, insetClamp.z));
+    bool odd = mod(pixelIdx, 2.0) > 0.5;
+    float2 texelCenter = float2(clamp(floor(tiled.x * 0.5) + 0.5,
+                                      floor(subset.x * 0.5) + $kLinearInset,
+                                      ceil(subset.z * 0.5) - $kLinearInset),
+                                clamp(floor(tiled.y) + 0.5, insetClamp.y, insetClamp.w));
+    half4 sample = $sample_image(texelCenter, invImgSize, sPlane);
+
+    // Even pixels take (Y0, U) from channels (0, 1) and odd pixels take (Y1, V) from channels
+    // (2, 3) of the pair's texel. The swizzle-select for Y's odd channel is two channels over
+    // from its even channel.
+    half4 channelSelectYOdd = half4(channelSelectY.zw, channelSelectY.xy);
+    half Y = odd ? dot(channelSelectYOdd, sample) : dot(channelSelectY, sample);
+    half U = dot(channelSelectU, sample);
+    half V = dot(channelSelectV, sample);
+
+    return $yuv_to_rgb_no_swizzle(Y, U, V, 1, yuvToRGBMatrix, yuvToRGBTranslate);
+}
+
 $pure half4 sk_cubic_yuv_image_shader(float2 coords,
                                       float2 invImgSizeY,
                                       float2 invImgSizeUV,  // Relative to Y's coordinate space

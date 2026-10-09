@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/Image_YUVA_Graphite.h"
 
+#include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -125,7 +126,17 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
         return nullptr;
     }
     // Y channel should match the YUVAInfo dimensions
-    if (planes[locations[kY].fPlane].dimensions() != yuvaInfo.dimensions()) {
+    SkISize yDims = yuvaInfo.dimensions();
+#if defined(SK_ENABLE_YUVA_PACKED_422)
+    if (yuvaInfo.planeConfig() == SkYUVAInfo::PlaneConfig::kYUYV) {
+        // The packed plane has half the image's horizontal texel dimensions.
+        SkISize pairDims[SkYUVAInfo::kMaxPlanes];
+        int numPairDims = yuvaInfo.planeDimensions(pairDims);
+        SkASSERT(numPairDims == 1);
+        yDims = SK_UNSAFE_TODO(pairDims[0]);
+    }
+#endif
+    if (planes[locations[kY].fPlane].dimensions() != yDims) {
         return nullptr;
     }
     // UV channels should have planes with the same dimensions and subsampling factor.
