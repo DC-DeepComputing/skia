@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76d2093b_533ad459",
+        "filename": "modules/skunicode/BUILD.bazel",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-09T14:17:10Z",
+      "side": 1,
+      "message": "Since we have `target_compatible_with`, is the Android select still needed?",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 7
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "79d170e2_319c3e80",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skunicode/BUILD.bazel",
+              "range": {
+                "startLine": 62,
+                "startChar": 0,
+                "endLine": 66,
+                "endChar": 0
+              },
+              "replacement": "        \"@icu\",\n    ],\n"
+            }
+          ]
+        }
+      ],
+      "revId": "805c3663e36be13b1c0aeb7e581985221c6779ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
