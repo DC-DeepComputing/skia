@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d0a3abe_f0fcc063",
+        "filename": "src/core/SkRecordCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-09T13:42:24Z",
+      "side": 1,
+      "message": "This appears to only be needed because SkRecordCanvas overrides baseRecorder() to return TODO(). I don\u0027t understand the rationale behind that, shouldn\u0027t it be implemented to return the base recorder of the canvas that it is wrapping?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 29
+      },
+      "revId": "b4c10ce3fa81575ca35d377602a47d5fd09674ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
