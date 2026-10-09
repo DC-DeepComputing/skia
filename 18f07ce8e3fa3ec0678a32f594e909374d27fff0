@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2e8ddca_09a5be6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-09T16:54:58Z",
+      "side": 1,
+      "message": "This will also need to wait for https://chromium-review.git.corp.google.com/c/chromium/src/+/8550236, without which UBSAN chrome builds would fail.",
+      "revId": "18f07ce8e3fa3ec0678a32f594e909374d27fff0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
