@@ -108,6 +108,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6243df5e_4cca619b",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-09T14:55:04Z",
+      "side": 1,
+      "message": "please format using our .clang-format",
+      "range": {
+        "startLine": 24,
+        "startChar": 17,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c23bf22e_5d9394fb",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-09T14:55:04Z",
+      "side": 1,
+      "message": "replace this with \n\n```\nif (locale !\u003d nullptr \u0026\u0026 locale[0] !\u003d \u0027\\0\u0027) {\n    // ...\n}\n```",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d950b457_7283db64",
         "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
         "patchSetId": 5
