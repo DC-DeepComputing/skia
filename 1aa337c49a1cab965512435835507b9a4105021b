@@ -129,6 +129,31 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2296c0f2_e3b5febe",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:24:25Z",
+      "side": 1,
+      "message": "Done. Formatted the file using bin/clang-format according to Skia\u0027s .clang-format.",
+      "parentUuid": "6243df5e_4cca619b",
+      "range": {
+        "startLine": 24,
+        "startChar": 17,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "isAi": true,
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c23bf22e_5d9394fb",
@@ -148,6 +173,31 @@
         "endLine": 39,
         "endChar": 28
       },
+      "revId": "1aa337c49a1cab965512435835507b9a4105021b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04135077_50ad4dc2",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:24:25Z",
+      "side": 1,
+      "message": "Done. Replaced with  in both Tokenize and toUpper.",
+      "parentUuid": "c23bf22e_5d9394fb",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "isAi": true,
       "revId": "1aa337c49a1cab965512435835507b9a4105021b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
