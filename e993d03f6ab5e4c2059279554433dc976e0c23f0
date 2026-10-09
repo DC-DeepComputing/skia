@@ -171,6 +171,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e007423a_419a1345",
+        "filename": "src/gpu/graphite/sparse_strips/Tiler.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-09T16:51:59Z",
+      "side": 1,
+      "message": "No,it should be clip.right! That\u0027s what I meant by the variable names should be renamed. tileColumns *is* the same as maxTilesX if the clip.left is 0 (e.g. the clip is the viewport), but now that we are using a \"real clip\"(e.g. the left clip may not be 0), we need to change the variable name to correctly reflect the intent. (We want the rightmost tile of the clip).",
+      "parentUuid": "4a454792_b68e6351",
+      "range": {
+        "startLine": 298,
+        "startChar": 44,
+        "endLine": 298,
+        "endChar": 49
+      },
+      "revId": "e993d03f6ab5e4c2059279554433dc976e0c23f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44a0e634_b18dbe55",
