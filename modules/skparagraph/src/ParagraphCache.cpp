@@ -102,8 +102,8 @@ private:
     uint32_t computeHash() const;
 
     SkString fText;
-    TArray<Placeholder> fPlaceholders;
-    TArray<Block> fTextStyles;
+    TArray<Placeholder, true> fPlaceholders;
+    TArray<Block, true> fTextStyles;
     ParagraphStyle fParagraphStyle;
     uint32_t fHash;
 };
@@ -120,7 +120,8 @@ public:
         , fBidiRegions(paragraph->fBidiRegions)
         , fHasLineBreaks(paragraph->fHasLineBreaks)
         , fHasWhitespacesInside(paragraph->fHasWhitespacesInside)
-        , fTrailingSpaces(paragraph->fTrailingSpaces) { }
+        , fTrailingSpaces(paragraph->fTrailingSpaces)
+        , fCoreTextShaped(paragraph->fCoreTextShaped) { }
 
     // Input == key
     ParagraphCacheKey fKey;
@@ -136,6 +137,7 @@ public:
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
     TextIndex fTrailingSpaces;
+    bool fCoreTextShaped;
 };
 
 uint32_t ParagraphCacheKey::mix(uint32_t hash, uint32_t data) {
@@ -186,6 +188,7 @@ uint32_t ParagraphCacheKey::computeHash() const {
     hash = mix(hash, SkGoodHash()(relax(fParagraphStyle.getHeight())));
     hash = mix(hash, SkGoodHash()(fParagraphStyle.getTextDirection()));
     hash = mix(hash, SkGoodHash()(fParagraphStyle.getReplaceTabCharacters() ? 1 : 0));
+    hash = mix(hash, SkGoodHash()(static_cast<uint8_t>(fParagraphStyle.getTextShapingEngine())));
 
     auto& strutStyle = fParagraphStyle.getStrutStyle();
     if (strutStyle.getStrutEnabled()) {
@@ -235,6 +238,10 @@ bool ParagraphCacheKey::operator==(const ParagraphCacheKey& other) const {
     }
 
     if (!(fParagraphStyle.getReplaceTabCharacters() == other.fParagraphStyle.getReplaceTabCharacters())) {
+        return false;
+    }
+
+    if (fParagraphStyle.getTextShapingEngine() != other.fParagraphStyle.getTextShapingEngine()) {
         return false;
     }
 
@@ -302,6 +309,7 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
     paragraph->fHasLineBreaks = entry->fValue->fHasLineBreaks;
     paragraph->fHasWhitespacesInside = entry->fValue->fHasWhitespacesInside;
     paragraph->fTrailingSpaces = entry->fValue->fTrailingSpaces;
+    paragraph->fCoreTextShaped = entry->fValue->fCoreTextShaped;
     for (auto& run : paragraph->fRuns) {
         run.setOwner(paragraph);
     }
