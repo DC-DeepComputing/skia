@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5d9c656_540eec59",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-09T19:49:58Z",
+      "side": 1,
+      "message": "For changes like this it can be nice to include some key results from local `nanobench` results, even if they aren\u0027t exhaustive",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 62
+      },
+      "revId": "2b2302f01cd89cbe7404d70e42cc12e5a452c890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
