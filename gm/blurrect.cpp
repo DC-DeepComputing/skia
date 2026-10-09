@@ -582,3 +582,6 @@ DEF_SIMPLE_GM(blur_matrix_rect, canvas, 650, 685) {
         canvas->translate(bounds.width(), 0);
     }
 }
+
+DEF_GM(return new RepeatLargeBlurRectGM();)
+
