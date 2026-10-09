@@ -57,7 +57,7 @@ public:
     virtual SkRect sourceBounds() const = 0;
     virtual SkRect sourceBoundsWithOrigin () const = 0;
 
-    virtual void doFlatten(SkWriteBuffer&) const = 0;
+    virtual void doFlatten(SkWriteBuffer&, bool embedStrikeData = false) const = 0;
 
     uint32_t uniqueID() const { return fUniqueID; }
 

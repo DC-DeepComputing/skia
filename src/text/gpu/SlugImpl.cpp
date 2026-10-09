@@ -36,11 +36,11 @@ SlugImpl::SlugImpl(SubRunAllocator&& alloc,
         , fSourceBounds{sourceBounds}
         , fOrigin{origin} {}
 
-void SlugImpl::doFlatten(SkWriteBuffer& buffer) const {
+void SlugImpl::doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const {
     buffer.writeRect(fSourceBounds);
     buffer.writePoint(fOrigin);
     fSubRuns->flattenAllocSizeHint(buffer);
-    fSubRuns->flattenRuns(buffer);
+    fSubRuns->flattenRuns(buffer, embedStrikeData);
 }
 
 sk_sp<Slug> SlugImpl::MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client) {

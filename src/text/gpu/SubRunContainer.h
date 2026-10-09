@@ -60,7 +60,7 @@ public:
     virtual void draw(SkCanvas*, SkPoint drawOrigin, const SkPaint&, sk_sp<SkRefCnt> subRunStorage,
                       const AtlasDrawDelegate&) const = 0;
 
-    void flatten(SkWriteBuffer& buffer) const;
+    void flatten(SkWriteBuffer& buffer, bool embedStrikeData = false) const;
     static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
                                       sktext::gpu::SubRunAllocator* alloc,
                                       const SkStrikeClient* client);
@@ -80,7 +80,7 @@ public:
 protected:
     enum SubRunStreamTag : int;
     virtual SubRunStreamTag subRunStreamTag() const = 0;
-    virtual void doFlatten(SkWriteBuffer& buffer) const = 0;
+    virtual void doFlatten(SkWriteBuffer& buffer, bool embedStrikeData) const = 0;
 
 private:
     friend class SubRunList;
@@ -195,7 +195,7 @@ public:
     void flattenAllocSizeHint(SkWriteBuffer& buffer) const;
     static int AllocSizeHintFromBuffer(SkReadBuffer& buffer);
 
-    void flattenRuns(SkWriteBuffer& buffer) const;
+    void flattenRuns(SkWriteBuffer& buffer, bool embedStrikeData = false) const;
     static SubRunContainerOwner MakeFromBufferInAlloc(SkReadBuffer& buffer,
                                                       const SkStrikeClient* client,
                                                       SubRunAllocator* alloc);
