@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7cdb843_1adee24a",
+        "filename": "src/core/SkContainers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-09T15:03:34Z",
+      "side": 1,
+      "message": "Optional: Do we still need `kMinBytes` here (and this function?), or should the minimum alignment/granularity live in `sk_malloc_good_size`\u0027s contract?\n\n`malloc` already guarantees alignment, and clamping to `kMinBytes` beforehand can bump small requests into the next bucket when an allocator\u0027s smallest slot has `\u003c kMinBytes` of usable space (e.g. due to in-slot metadata) unless this is meant as a floor for embedders that implement `sk_malloc_good_size(s)` as `return s;`?\n\nFor example, in PartitionAlloc with BackupRefPtr enabled (4B in-slot metadata), the 16B slot has 12B of usable capacity, so clamping `\u003c\u003d12B` to `16B` beforehand bumps it into the 32B bucket.",
+      "revId": "91b1f988e37fc4959f6e15340352710f5489e8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "070d2854_cf146161",
+        "filename": "src/ports/SkMemory_malloc.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-09T15:03:34Z",
+      "side": 1,
+      "message": "nit: `#include \u003ccstddef\u003e` for `std::max_align_t`",
+      "revId": "91b1f988e37fc4959f6e15340352710f5489e8d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
