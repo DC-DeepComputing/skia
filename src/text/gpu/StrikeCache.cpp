@@ -178,6 +178,12 @@ std::optional<SkStrikePromise> SkStrikePromise::MakeFromBuffer(
         return std::nullopt;
     }
 
+    const bool hasEmbeddedStrike = buffer.readBool();
+    if (hasEmbeddedStrike) {
+        // TODO(viewer): Reconstruct or merge the embedded SkFontMetrics and
+        // SkStrike::FlattenGlyphsByType data into strikeCache here when replaying in Viewer.
+    }
+
     // If there is a client, then this from a different process. Translate the SkTypefaceID from
     // the strike server (Renderer) process to strike client (GPU) process.
     if (client != nullptr) {
