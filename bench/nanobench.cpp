@@ -27,6 +27,7 @@
 #include "include/codec/SkJpegDecoder.h"
 #endif
 #include "include/core/SkBBHFactory.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkGraphics.h"
