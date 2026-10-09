@@ -4,7 +4,9 @@
 #include "include/core/SkTypeface.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
 #include "src/core/SkTHash.h"
 
 namespace {
@@ -198,6 +200,28 @@ sk_sp<SkTypeface> FontCollection::matchTypeface(const SkString& familyName, SkFo
     return nullptr;
 }
 
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+sk_sp<SkTypeface> FontCollection::matchUserTypeface(const SkString& familyName,
+                                                    SkFontStyle fontStyle) {
+    // Same precedence as getFontManagerOrder minus the default (system) manager, without
+    // building the vector on every lookup
+    for (SkFontMgr* manager :
+         {fDynamicFontManager.get(), fAssetFontManager.get(), fTestFontManager.get()}) {
+        if (!manager) {
+            continue;
+        }
+        sk_sp<SkFontStyleSet> set(manager->matchFamily(familyName.c_str()));
+        if (!set || set->count() == 0) {
+            continue;
+        }
+        if (sk_sp<SkTypeface> match = set->matchStyle(fontStyle)) {
+            return match;
+        }
+    }
+    return nullptr;
+}
+#endif
+
 // Find ANY font in available font managers that resolves the unicode codepoint
 sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
                                                   const std::vector<SkString>& families,
@@ -289,7 +313,10 @@ void FontCollection::clearCaches() {
     fParagraphCache.reset();
     fFaceCache->fTypefaces.reset();
     fVariationCache->fTypefaces.reset();
+    // CoreText-only builds link no HarfBuzz and hold no HarfBuzz face cache to purge
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
     SkShapers::HB::PurgeCaches();
+#endif
 }
 
 }  // namespace textlayout
