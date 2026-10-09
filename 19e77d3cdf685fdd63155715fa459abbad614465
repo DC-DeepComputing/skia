@@ -99,6 +99,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c68c3073_9748853d",
+        "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-09T15:37:40Z",
+      "side": 1,
+      "message": "I don\u0027t think we ever signed up for SkUnicode/SkParagraph to be thread-safe. In fact, I know that the paragraph is not. Also, Gemini analyzed all Flutter usages of SkParagraph/SkUnicode and they never act on assumption that this is thread-safe.\nIn general I am not against it but it comes with a price and I don\u0027t think that we should pay it with an ask.",
+      "parentUuid": "78ec9e28_4d4ce32d",
+      "range": {
+        "startLine": 549,
+        "startChar": 13,
+        "endLine": 549,
+        "endChar": 27
+      },
+      "revId": "19e77d3cdf685fdd63155715fa459abbad614465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5c989a1_75a54a14",
         "filename": "modules/skunicode/src/SkUnicode_apple.cpp",
         "patchSetId": 3
