@@ -920,7 +920,7 @@ optional("gpu_shared") {
     public_deps += [ "//third_party/dawn" ]
   }
 
-  if (skia_use_direct3d) {
+  if (skia_use_direct3d || skia_use_d3d11) {
     sources += skia_sksl_hlsl_sources
     deps += [ "//third_party/spirv-cross:spirv_cross" ]
   }
@@ -1205,6 +1205,16 @@ optional("graphite") {
   if (skia_use_dawn) {
     public += skia_graphite_dawn_public
     sources += skia_graphite_dawn_sources
+  }
+  if (skia_use_d3d11) {
+    public_defines += [ "SK_D3D11" ]
+    public += skia_graphite_d3d11_public
+    sources += skia_graphite_d3d11_sources
+    libs += [
+      "d3d11.lib",
+      "dxgi.lib",
+      "d3dcompiler.lib",
+    ]
   }
   if (skia_use_metal) {
     public_defines += [ "SK_METAL" ]

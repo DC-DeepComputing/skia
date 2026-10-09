@@ -15,7 +15,7 @@
 
 namespace SkSL {
 
-void SPIRVtoHLSL(SkSpan<const uint32_t> spirv, std::string* hlsl);
+void SPIRVtoHLSL(SkSpan<const uint32_t> spirv, std::string* hlsl, uint32_t shaderModel = 51);
 
 }  // namespace SkSL
 

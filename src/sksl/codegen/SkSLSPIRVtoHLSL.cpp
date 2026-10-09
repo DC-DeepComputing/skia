@@ -17,7 +17,7 @@
 
 namespace SkSL {
 
-void SPIRVtoHLSL(SkSpan<const uint32_t> spirv, std::string* hlsl) {
+void SPIRVtoHLSL(SkSpan<const uint32_t> spirv, std::string* hlsl, uint32_t shaderModel) {
     spirv_cross::CompilerHLSL hlslCompiler(spirv.data(), spirv.size());
 
     spirv_cross::CompilerGLSL::Options optionsGLSL;
@@ -26,7 +26,7 @@ void SPIRVtoHLSL(SkSpan<const uint32_t> spirv, std::string* hlsl) {
     optionsGLSL.force_zero_initialized_variables = true;
 
     spirv_cross::CompilerHLSL::Options optionsHLSL;
-    optionsHLSL.shader_model = 51;
+    optionsHLSL.shader_model = shaderModel;
     // PointCoord and PointSize are not supported in HLSL
     optionsHLSL.point_coord_compat = true;
     optionsHLSL.point_size_compat = true;

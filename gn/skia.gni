@@ -51,6 +51,7 @@ declare_args() {
   skia_use_crabbyavif = false
   skia_use_dawn = false
   skia_use_direct3d = false
+  skia_use_d3d11 = false
   skia_use_egl = false
   skia_use_epoxy_egl = false
   skia_use_expat = !is_canvaskit
@@ -193,6 +194,7 @@ declare_args() {
 }
 
 assert(!skia_use_dawn || skia_enable_graphite)  # Dawn is Graphite-only
+assert(!skia_use_d3d11 || skia_enable_graphite)  # D3D11 is Graphite-only
 
 #  We only have a GL backend for Ganesh. We make it so we can assume that if skia_use_gl is true
 # then skia_enable_ganesh is true.

@@ -61,6 +61,7 @@ static constexpr const char* BackendApiToStr(BackendApi backend) {
         case BackendApi::kMetal:       return "kMetal";
         case BackendApi::kVulkan:      return "kVulkan";
         case BackendApi::kMock:        return "kMock";
+        case BackendApi::kD3D11:       return "kD3D11";
         case BackendApi::kUnsupported: return "kUnsupported";
     }
     SkUNREACHABLE;

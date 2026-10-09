@@ -30,6 +30,7 @@ private:
     friend class MtlTextureInfo;
     friend class DawnTextureInfo;
     friend class VulkanTextureInfo;
+    friend class D3D11TextureInfo;
 
     // Size is the largest of the Data subclasses assuming a 64-bit compiler.
     inline constexpr static size_t kMaxSubclassSize = 112;

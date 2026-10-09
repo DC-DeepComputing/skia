@@ -27,10 +27,11 @@ namespace SkSL {
 bool ToHLSL(Program& program,
             const ShaderCaps* caps,
             OutputStream& out,
-            ValidateSPIRVProc validateSPIRV) {
+            ValidateSPIRVProc validateSPIRV,
+            uint32_t shaderModel) {
     TRACE_EVENT0("skia.shaders", "SkSL::ToHLSL");
     std::string hlsl;
-    if (!ToHLSL(program, caps, &hlsl, validateSPIRV)) {
+    if (!ToHLSL(program, caps, &hlsl, validateSPIRV, shaderModel)) {
         return false;
     }
     out.writeString(hlsl);
@@ -40,12 +41,13 @@ bool ToHLSL(Program& program,
 bool ToHLSL(Program& program,
             const ShaderCaps* caps,
             std::string* out,
-            ValidateSPIRVProc validateSPIRV) {
+            ValidateSPIRVProc validateSPIRV,
+            uint32_t shaderModel) {
     std::vector<uint32_t> spirv;
     if (!ToSPIRV(program, caps, &spirv, validateSPIRV)) {
         return false;
     }
-    SPIRVtoHLSL(spirv, out);
+    SPIRVtoHLSL(spirv, out, shaderModel);
     return true;
 }
 

@@ -24,7 +24,8 @@ BackendTexture::BackendTexture(const BackendTexture& that) {
 static inline void assert_is_supported_backend(const BackendApi& backend) {
     SkASSERT(backend == BackendApi::kDawn ||
              backend == BackendApi::kMetal ||
-             backend == BackendApi::kVulkan);
+             backend == BackendApi::kVulkan ||
+             backend == BackendApi::kD3D11);
 }
 
 BackendTexture& BackendTexture::operator=(const BackendTexture& that) {

@@ -27,12 +27,22 @@ using ValidateSPIRVProc = bool (*)(ErrorReporter&, SkSpan<const uint32_t>);
 bool ToHLSL(Program& program,
             const ShaderCaps* caps,
             OutputStream& out,
-            ValidateSPIRVProc = nullptr);
-bool ToHLSL(Program& program, const ShaderCaps* caps, std::string* out, ValidateSPIRVProc);
+            ValidateSPIRVProc = nullptr,
+            uint32_t shaderModel = 51);
+bool ToHLSL(Program& program,
+            const ShaderCaps* caps,
+            std::string* out,
+            ValidateSPIRVProc,
+            uint32_t shaderModel = 51);
 
-// This explicit overload is used by SkSLToBackend.
+// This explicit overload is used by SkSLToBackend (defaults to SM 5.1).
 inline bool ToHLSL(Program& program, const ShaderCaps* caps, NativeShader* out) {
-    return ToHLSL(program, caps, &out->fText, (ValidateSPIRVProc) nullptr);
+    return ToHLSL(program, caps, &out->fText, (ValidateSPIRVProc)nullptr, /*shaderModel=*/51);
+}
+
+// Explicit overload for Shader Model 5.0 (used by D3D11).
+inline bool ToHLSL50(Program& program, const ShaderCaps* caps, NativeShader* out) {
+    return ToHLSL(program, caps, &out->fText, (ValidateSPIRVProc)nullptr, /*shaderModel=*/50);
 }
 
 }  // namespace SkSL
