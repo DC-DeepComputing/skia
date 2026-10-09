@@ -178,7 +178,7 @@ void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) c
     if (!textBlobsOnly) {
         write_tag_size(buffer, SK_PICT_SLUG_BUFFER_TAG, fSlugs.size());
         for (const auto& slug : fSlugs) {
-            slug->doFlatten(buffer);
+            slug->doFlatten(buffer, /*embedStrikeData=*/true);
         }
     }
 

@@ -27,8 +27,8 @@ enum class MaskFormat : int;
 }
 
 namespace sktext::gpu {
-class SubRunAllocator;
 class StrikeCache;
+class SubRunAllocator;
 
 /**
  * Concepts used to describe backend-specific (Ganesh v. Graphite) data stored in GlyphVector.
@@ -151,7 +151,7 @@ public:
     static std::optional<GlyphVector> MakeFromBuffer(SkReadBuffer& buffer,
                                                      const SkStrikeClient* strikeClient,
                                                      SubRunAllocator* alloc);
-    void flatten(SkWriteBuffer& buffer) const;
+    void flatten(SkWriteBuffer& buffer, bool embedStrikeData = false) const;
 
     // This doesn't need to include sizeof(GlyphVector) because this is embedded in each of
     // the sub runs.
@@ -220,7 +220,6 @@ public:
         };
 
         strike->verifyPinnedStrike();
-        fStrikePromise.resetStrike();
     }
 
 private:

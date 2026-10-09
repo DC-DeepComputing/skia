@@ -46,7 +46,7 @@ public:
                                 sktext::StrikeForGPUCacheInterface* strikeCache);
     static sk_sp<Slug> MakeFromBuffer(SkReadBuffer& buffer,
                                       const SkStrikeClient* client);
-    void doFlatten(SkWriteBuffer& buffer) const override;
+    void doFlatten(SkWriteBuffer& buffer, bool embedStrikeData = false) const override;
 
     SkRect sourceBounds() const override { return fSourceBounds; }
     SkRect sourceBoundsWithOrigin() const override { return fSourceBounds.makeOffset(fOrigin); }

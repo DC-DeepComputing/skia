@@ -9,6 +9,7 @@
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkTo.h"
+#include "src/core/SkFontMetricsPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrike.h"
@@ -20,6 +21,7 @@
 #include <climits>
 #include <optional>
 #include <utility>
+#include <vector>
 
 class SkStrikeClient;
 
@@ -92,10 +94,33 @@ std::optional<GlyphVector> GlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
     return GlyphVector{std::move(promise.value()), SkSpan{glyphs, glyphCount}};
 }
 
-void GlyphVector::flatten(SkWriteBuffer& buffer) const {
+void GlyphVector::flatten(SkWriteBuffer& buffer, bool embedStrikeData) const {
     // There should never be a glyph vector with zero glyphs.
     SkASSERT(!fGlyphs.empty());
     fStrikePromise.flatten(buffer);
+
+    SkStrike* strike = embedStrikeData ? fStrikePromise.strikeOrNull() : nullptr;
+    buffer.writeBool(strike != nullptr);
+    if (strike != nullptr) {
+        SkFontMetricsPriv::Flatten(buffer, strike->getFontMetrics());
+        std::vector<SkPackedGlyphID> packedIDs;
+        packedIDs.reserve(fGlyphs.size());
+        for (const auto& g : fGlyphs) {
+            if (this->hasBackendData()) {
+                packedIDs.push_back(fGetGlyphID(g.data()));
+            } else {
+                packedIDs.push_back(*reinterpret_cast<const SkPackedGlyphID*>(g.data()));
+            }
+        }
+        std::vector<const SkGlyph*> glyphPtrs(packedIDs.size());
+        strike->prepareImages(packedIDs, glyphPtrs.data());
+        std::vector<SkGlyph> images;
+        images.reserve(glyphPtrs.size());
+        for (const SkGlyph* glyph : glyphPtrs) {
+            images.push_back(*glyph);
+        }
+        SkStrike::FlattenGlyphsByType(buffer, images, {}, {});
+    }
 
     // Write out the span of packedGlyphIDs.
     buffer.write32(SkTo<int32_t>(fGlyphs.size()));
