@@ -71,23 +71,27 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
 #endif
     SkMatrix packedPlaneMatrix = SkMatrix::I();
     SkRect packedPlaneSubset = SkRect::MakeEmpty();
-    float packedFirstTexelCenter = 0.f;
-    float packedLastTexelCenter = 0.f;
     if (packedYUYV) {
-        // Packed 4:2:2 requires a single full-resolution plane with one
-        // 2-channel texel per pixel; the effect samples the pixel's own texel
-        // plus the adjacent texel that carries the pair's other chroma sample.
+        // Packed 4:2:2 has a single half-resolution plane with one 4-channel
+        // texel per 2x1 block of pixels: (Y0, U, Y1, V). The effect samples
+        // the pixel pair's texel and selects the pixel's channels by parity;
+        // no adjacent texel is needed.
         SkASSERT(numPlanes == 1);
         SkASSERT(yuvaProxies.yuvaInfo().subsampling() == SkYUVAInfo::Subsampling::k422);
-        SkASSERT(yuvaProxies.makeView(0).dimensions().width() % 2 == 0);
+        SkISize planeDims[SkYUVAInfo::kMaxPlanes];
+        int numPlaneDims = yuvaProxies.yuvaInfo().planeDimensions(planeDims);
+        SkASSERT(numPlaneDims == 1);
+        SkASSERT(yuvaProxies.makeView(0).dimensions() == planeDims[0]);
+        // The matrix maps image space to plane space at full resolution; the
+        // shader halves the x coordinate to index the plane's texels.
         packedPlaneMatrix = yuvaProxies.yuvaInfo().inverseOriginMatrix();
         if (subset) {
             packedPlaneSubset = packedPlaneMatrix.mapRect(*subset);
+            packedPlaneSubset.fLeft *= 0.5f;
+            packedPlaneSubset.fRight *= 0.5f;
         } else {
             packedPlaneSubset = SkRect::Make(yuvaProxies.makeView(0).dimensions());
         }
-        packedFirstTexelCenter = packedPlaneSubset.fLeft + 0.5f;
-        packedLastTexelCenter = packedPlaneSubset.fRight - 0.5f;
     }
     GrSamplerState planeSamplerState = packedYUYV
             ? GrSamplerState(samplerState.wrapModeX(), samplerState.wrapModeY(),
@@ -122,7 +126,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
         SkASSERT(ssy > 0 && ssy <= 2);
         float scaleX = 1.f;
         float scaleY = 1.f;
-        if (ssx > 1 || ssy > 1) {
+        if ((ssx > 1 || ssy > 1) && !packedYUYV) {
             scaleX = 1.f/ssx;
             scaleY = 1.f/ssy;
             // We would want to add a translation to this matrix to handle other sitings.
@@ -184,7 +188,9 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
         } else {
             if (subset) {
                 // The packed plane child is sampled in plane space (identity
-                // matrix), so its subset must be mapped to plane space too.
+                // matrix), so its subset must be mapped to plane space too
+                // (halving the x coordinate, done when building
+                // packedPlaneSubset).
                 planeSubset = packedYUYV ? packedPlaneSubset : *subset;
             }
             if (domain) {
@@ -254,8 +260,6 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                                  snap,
                                  packedYUYV,
                                  packedPlaneMatrix,
-                                 packedFirstTexelCenter,
-                                 packedLastTexelCenter,
                                  yuvaProxies.yuvaInfo().yuvColorSpace()));
     return GrMatrixEffect::Make(localMatrix, std::move(fp));
 }
@@ -271,17 +275,13 @@ GrYUVtoRGBEffect::GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs
                                    const bool snap[2],
                                    bool packedYUYV,
                                    const SkMatrix& packedPlaneMatrix,
-                                   float packedFirstTexelCenter,
-                                   float packedLastTexelCenter,
                                    SkYUVColorSpace yuvColorSpace)
         : GrFragmentProcessor(kGrYUVtoRGBEffect_ClassID,
                               ModulateForClampedSamplerOptFlags(alpha_type(locations)))
         , fLocations(locations)
         , fYUVColorSpace(yuvColorSpace)
         , fPackedYUYV(packedYUYV)
-        , fPackedPlaneMatrix(packedPlaneMatrix)
-        , fPackedFirstTexelCenter(packedFirstTexelCenter)
-        , fPackedLastTexelCenter(packedLastTexelCenter) {
+        , fPackedPlaneMatrix(packedPlaneMatrix) {
     std::copy_n(snap, 2, fSnap);
 
     if (fSnap[0] || fSnap[1] || fPackedYUYV) {
@@ -336,28 +336,14 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
             const bool hasAlpha = yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kA].fPlane >= 0;
 
             if (yuvEffect.fPackedYUYV) {
-                // See PlaneConfig::kYUYV: the single plane is a 2-channel texture
-                // with one texel per pixel. Channel 0 (R) holds the pixel's own
-                // luma and channel 1 (G) holds the chroma sample shared by the
-                // pixel's horizontal pair: U in even texels and V in odd texels.
-                // The locations for this config are fixed: Y is channel 0 (R)
-                // and U/V are channel 1 (G) of the plane.
-                SkASSERT(numPlanes == 1);
-                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kY].fChannel ==
-                                 SkColorChannel::kR);
-                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kU].fChannel ==
-                                 SkColorChannel::kG);
-                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kV].fChannel ==
-                                 SkColorChannel::kG);
                 // Sample coordinates are in image space with pixel centers at
                 // half-integers. The packed plane's texel parity runs along
                 // the plane's memory x-axis, which is the image space
                 // transformed by the encoded origin (a 90° origin rotation
-                // maps image x to plane y, so the parity and the
-                // adjacent-texel offset would be computed on the wrong axis
-                // in image space). The plane child has an identity matrix, so
-                // apply the inverse-origin transform here before computing
-                // the pixel-parity sampling.
+                // maps image x to plane y, so the parity would be computed on
+                // the wrong axis in image space). The plane child has an
+                // identity matrix, so apply the inverse-origin transform here
+                // before computing the pixel-parity sampling.
                 fPackedPlaneMatrixVar = args.fUniformHandler->addUniform(
                         &yuvEffect, kFragment_GrShaderFlag, SkSLType::kFloat3x3,
                         "packedPlaneMatrix");
@@ -366,32 +352,35 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
                         args.fSampleCoord, args.fSampleCoord,
                         args.fUniformHandler->getUniformCStr(fPackedPlaneMatrixVar));
                 // Sample coords arrive at pixel centers, so floor() gives the
-                // pixel's texel index and snapping to that texel's center
-                // selects the pixel's own texel with nearest filtering.
+                // pixel's index along the plane's memory x-axis.
                 fragBuilder->codeAppendf(
                         "float pixelIdx = floor(planeCoord.x);");
                 fragBuilder->codeAppendf(
-                        "float2 texelCenter = float2(pixelIdx + 0.5, floor(planeCoord.y) + 0.5);");
-                fragBuilder->codeAppendf(
                         "bool odd = mod(pixelIdx, 2.0) > 0.5;");
+                // See PlaneConfig::kYUYV: the single plane is a 4-channel
+                // texture with one texel per 2x1 block of pixels, channels
+                // 0..3 hold (Y0, U, Y1, V). The locations for this config are
+                // fixed: Y is channel 0 (R) of the pair's texel, U is channel
+                // 1 (G) and V is channel 3 (A); odd pixels take their luma
+                // from channel 2 (B) instead.
+                SkASSERT(numPlanes == 1);
+                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kY].fChannel ==
+                                 SkColorChannel::kR);
+                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kU].fChannel ==
+                                 SkColorChannel::kG);
+                SkASSERT(yuvEffect.fLocations[SkYUVAInfo::YUVAChannels::kV].fChannel ==
+                                 SkColorChannel::kA);
+                // Halve the x coordinate to index the plane's texels, then
+                // snap to the pair's texel center for nearest filtering.
+                fragBuilder->codeAppendf(
+                        "float2 texelCenter = float2(floor(planeCoord.x * 0.5) + 0.5, "
+                                                    "floor(planeCoord.y) + 0.5);");
                 fragBuilder->codeAppendf(
                         "half4 s0 = %s;",
                         this->invokeChild(0, args, "texelCenter").c_str());
-                fPackedTexelCenterClampVar = args.fUniformHandler->addUniform(
-                        &yuvEffect, kFragment_GrShaderFlag, SkSLType::kFloat2,
-                        "packedTexelCenterClamp");
-                fragBuilder->codeAppendf(
-                        "float2 s1Coord = texelCenter + float2(odd ? -1.0 : 1.0, 0.0);");
-                fragBuilder->codeAppendf(
-                        "s1Coord.x = clamp(s1Coord.x, %s.x, %s.y);",
-                        args.fUniformHandler->getUniformCStr(fPackedTexelCenterClampVar),
-                        args.fUniformHandler->getUniformCStr(fPackedTexelCenterClampVar));
-                fragBuilder->codeAppendf(
-                        "half4 s1 = %s;",
-                        this->invokeChild(0, args, "s1Coord").c_str());
-                fragBuilder->codeAppendf("color.r = s0.r;");  // Y
-                fragBuilder->codeAppendf("color.g = odd ? s1.g : s0.g;");  // U
-                fragBuilder->codeAppendf("color.b = odd ? s0.g : s1.g;");  // V
+                fragBuilder->codeAppendf("color.r = odd ? s0.b : s0.r;");  // Y
+                fragBuilder->codeAppendf("color.g = s0.g;");  // U
+                fragBuilder->codeAppendf("color.b = s0.a;");  // V
                 fragBuilder->codeAppendf("color.a = 1.0;");
             } else {
                 for (int planeIdx = 0; planeIdx < numPlanes; ++planeIdx) {
@@ -472,16 +461,11 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
                 };
                 pdman.setMatrix3f(fPackedPlaneMatrixVar, mtx);
             }
-            if (fPackedTexelCenterClampVar.isValid()) {
-                pdman.set2f(fPackedTexelCenterClampVar, yuvEffect.fPackedFirstTexelCenter,
-                            yuvEffect.fPackedLastTexelCenter);
-            }
         }
 
         UniformHandle fColorSpaceMatrixVar;
         UniformHandle fColorSpaceTranslateVar;
         UniformHandle fPackedPlaneMatrixVar;
-        UniformHandle fPackedTexelCenterClampVar;
     };
 
     return std::make_unique<Impl>();
@@ -523,9 +507,7 @@ bool GrYUVtoRGBEffect::onIsEqual(const GrFragmentProcessor& other) const {
            std::equal(fSnap, fSnap + 2, that.fSnap) &&
            fYUVColorSpace == that.fYUVColorSpace    &&
            fPackedYUYV == that.fPackedYUYV          &&
-           fPackedPlaneMatrix == that.fPackedPlaneMatrix &&
-           fPackedFirstTexelCenter == that.fPackedFirstTexelCenter &&
-           fPackedLastTexelCenter == that.fPackedLastTexelCenter;
+           fPackedPlaneMatrix == that.fPackedPlaneMatrix;
 }
 
 GrYUVtoRGBEffect::GrYUVtoRGBEffect(const GrYUVtoRGBEffect& src)
@@ -533,9 +515,7 @@ GrYUVtoRGBEffect::GrYUVtoRGBEffect(const GrYUVtoRGBEffect& src)
         , fLocations((src.fLocations))
         , fYUVColorSpace(src.fYUVColorSpace)
         , fPackedYUYV(src.fPackedYUYV)
-        , fPackedPlaneMatrix(src.fPackedPlaneMatrix)
-        , fPackedFirstTexelCenter(src.fPackedFirstTexelCenter)
-        , fPackedLastTexelCenter(src.fPackedLastTexelCenter) {
+        , fPackedPlaneMatrix(src.fPackedPlaneMatrix) {
     std::copy_n(src.fSnap, 2, fSnap);
 }
 

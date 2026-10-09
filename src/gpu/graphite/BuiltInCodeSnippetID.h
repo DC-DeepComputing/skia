@@ -49,7 +49,6 @@ enum class BuiltInCodeSnippetID : uint32_t {
     kCubicImageShader,
     kHWImageShader,
     kYUVImageShader,
-    kPackedYUVImageShader,
     kCubicYUVImageShader,
     kHWYUVImageShader,
     kHWYUVNoSwizzleImageShader,
