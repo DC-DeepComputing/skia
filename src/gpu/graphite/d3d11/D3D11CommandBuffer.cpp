@@ -183,17 +183,64 @@ bool D3D11CommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
         }
     }
 
-    // 4. Set Viewport
-    this->setViewport(viewport);
+    // 4. Load MSAA from resolve texture if needed
+    const bool loadMSAAFromResolve = (colorTexture != nullptr &&
+                                      resolveTexture != nullptr &&
+                                      renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad);
+    if (loadMSAAFromResolve) {
+        auto loadPipeline = fResourceProvider->findOrCreateLoadMSAAPipeline(renderPassDesc);
+        if (!loadPipeline) {
+            SKIA_LOG_E("Unable to create pipeline to load resolve texture into MSAA attachment");
+            return false;
+        }
 
-    // 5. Execute Draw Passes
+        D3D11_VIEWPORT fullVP = {
+            0.0f,
+            0.0f,
+            static_cast<FLOAT>(colorTexture->dimensions().width()),
+            static_cast<FLOAT>(colorTexture->dimensions().height()),
+            0.0f,
+            1.0f
+        };
+        fImmediateDeviceContext->RSSetViewports(1, &fullVP);
+
+        this->bindGraphicsPipeline(loadPipeline.get());
+
+        ID3D11Buffer* nullBuffers[2] = {nullptr, nullptr};
+        UINT zeroStrides[2] = {0, 0};
+        UINT zeroOffsets[2] = {0, 0};
+        fImmediateDeviceContext->IASetVertexBuffers(0, 2, nullBuffers, zeroStrides, zeroOffsets);
+
+        ID3D11ShaderResourceView* srv =
+                static_cast<const D3D11Texture*>(resolveTexture)->shaderResourceView();
+        fImmediateDeviceContext->PSSetShaderResources(0, 1, &srv);
+
+        fImmediateDeviceContext->Draw(4, 0);
+
+        ID3D11ShaderResourceView* nullSRV = nullptr;
+        fImmediateDeviceContext->PSSetShaderResources(0, 1, &nullSRV);
+
+        fActiveGraphicsPipeline = nullptr;
+    }
+
+    // 5. Set Viewport and Scissor
+    this->setViewport(viewport);
+    D3D11_RECT d3dScissor = {
+        std::max<LONG>(0, viewport.fLeft),
+        std::max<LONG>(0, viewport.fTop),
+        std::max<LONG>(0, viewport.fRight),
+        std::max<LONG>(0, viewport.fBottom),
+    };
+    fImmediateDeviceContext->RSSetScissorRects(1, &d3dScissor);
+
+    // 6. Execute Draw Passes
     for (const auto& drawPass : drawPasses) {
         if (!this->addDrawPass(drawPass.get())) SK_UNLIKELY {
             return false;
         }
     }
 
-    // 6. MSAA Resolve if needed
+    // 7. MSAA Resolve if needed
     if (resolveTexture && colorTexture) {
         const auto* srcTex = static_cast<const D3D11Texture*>(colorTexture);
         const auto* dstTex = static_cast<const D3D11Texture*>(resolveTexture);
@@ -203,7 +250,7 @@ bool D3D11CommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                 dstTex->d3d11Texture(), 0, srcTex->d3d11Texture(), 0, desc.Format);
     }
 
-    // 7. Unbind render target to prevent hazards
+    // 8. Unbind render target to prevent hazards
     ID3D11RenderTargetView* nullRTV = nullptr;
     fImmediateDeviceContext->OMSetRenderTargets(0, &nullRTV, nullptr);
 

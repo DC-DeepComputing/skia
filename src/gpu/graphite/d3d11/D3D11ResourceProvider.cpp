@@ -30,6 +30,21 @@ const D3D11SharedContext* D3D11ResourceProvider::d3d11SharedContext() const {
     return static_cast<const D3D11SharedContext*>(fSharedContext);
 }
 
+sk_sp<D3D11GraphicsPipeline> D3D11ResourceProvider::findOrCreateLoadMSAAPipeline(
+        const RenderPassDesc& renderPassDesc) {
+    uint32_t renderPassKey =
+            this->d3d11SharedContext()->d3d11Caps()->getRenderPassDescKeyForPipeline(renderPassDesc);
+    sk_sp<D3D11GraphicsPipeline> pipeline = fLoadMSAAPipelines[renderPassKey];
+    if (!pipeline) {
+        pipeline = D3D11GraphicsPipeline::MakeLoadMSAAPipeline(this->d3d11SharedContext(),
+                                                               renderPassDesc);
+        if (pipeline) {
+            fLoadMSAAPipelines.set(renderPassKey, pipeline);
+        }
+    }
+    return pipeline;
+}
+
 sk_sp<ComputePipeline> D3D11ResourceProvider::createComputePipeline(
         const ComputePipelineDesc&) {
     return nullptr;

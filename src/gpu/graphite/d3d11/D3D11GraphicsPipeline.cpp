@@ -555,6 +555,162 @@ sk_sp<D3D11GraphicsPipeline> D3D11GraphicsPipeline::Make(
                                      std::move(immutableSamplers)));
 }
 
+sk_sp<D3D11GraphicsPipeline> D3D11GraphicsPipeline::MakeLoadMSAAPipeline(
+        const D3D11SharedContext* sharedContext,
+        const RenderPassDesc& renderPassDesc) {
+    static const char* kLoadMSAA_HLSL =
+        "struct VSOutput {\n"
+        "    float4 position : SV_Position;\n"
+        "};\n"
+        "VSOutput vs_main(uint vertexID : SV_VertexID) {\n"
+        "    VSOutput output;\n"
+        "    float2 position = float2(float(vertexID >> 1), float(vertexID & 1));\n"
+        "    output.position = float4(2.0f * position - 1.0f, 0.0f, 1.0f);\n"
+        "    return output;\n"
+        "}\n"
+        "Texture2D<float4> uInput : register(t0);\n"
+        "float4 ps_main(VSOutput input) : SV_Target {\n"
+        "    int3 coords = int3((int2)input.position.xy, 0);\n"
+        "    return uInput.Load(coords);\n"
+        "}\n";
+
+    UINT compileFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined(SK_DEBUG)
+    compileFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+#else
+    compileFlags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
+#endif
+
+    Microsoft::WRL::ComPtr<ID3DBlob> vsBytecode;
+    Microsoft::WRL::ComPtr<ID3DBlob> vsErrorBlob;
+    HRESULT hr = D3DCompile(kLoadMSAA_HLSL,
+                            strlen(kLoadMSAA_HLSL),
+                            "LoadMSAA_VS",
+                            nullptr,
+                            D3D_COMPILE_STANDARD_FILE_INCLUDE,
+                            "vs_main",
+                            "vs_5_0",
+                            compileFlags,
+                            0,
+                            &vsBytecode,
+                            &vsErrorBlob);
+    if (FAILED(hr)) {
+        if (vsErrorBlob) {
+            SkDebugf("D3DCompile LoadMSAA VS error: %s\n",
+                     static_cast<const char*>(vsErrorBlob->GetBufferPointer()));
+        }
+        return nullptr;
+    }
+
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> vs;
+    hr = sharedContext->device()->CreateVertexShader(
+            vsBytecode->GetBufferPointer(),
+            vsBytecode->GetBufferSize(),
+            nullptr,
+            &vs);
+    if (FAILED(hr)) {
+        return nullptr;
+    }
+
+    Microsoft::WRL::ComPtr<ID3DBlob> psBytecode;
+    Microsoft::WRL::ComPtr<ID3DBlob> psErrorBlob;
+    hr = D3DCompile(kLoadMSAA_HLSL,
+                    strlen(kLoadMSAA_HLSL),
+                    "LoadMSAA_PS",
+                    nullptr,
+                    D3D_COMPILE_STANDARD_FILE_INCLUDE,
+                    "ps_main",
+                    "ps_5_0",
+                    compileFlags,
+                    0,
+                    &psBytecode,
+                    &psErrorBlob);
+    if (FAILED(hr)) {
+        if (psErrorBlob) {
+            SkDebugf("D3DCompile LoadMSAA PS error: %s\n",
+                     static_cast<const char*>(psErrorBlob->GetBufferPointer()));
+        }
+        return nullptr;
+    }
+
+    Microsoft::WRL::ComPtr<ID3D11PixelShader> ps;
+    hr = sharedContext->device()->CreatePixelShader(
+            psBytecode->GetBufferPointer(),
+            psBytecode->GetBufferSize(),
+            nullptr,
+            &ps);
+    if (FAILED(hr)) {
+        return nullptr;
+    }
+
+    // Rasterizer state: no cull, solid, scissor disabled
+    D3D11_RASTERIZER_DESC rasterizerDesc = {};
+    rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+    rasterizerDesc.CullMode = D3D11_CULL_NONE;
+    rasterizerDesc.FrontCounterClockwise = FALSE;
+    rasterizerDesc.DepthClipEnable = FALSE;
+    rasterizerDesc.ScissorEnable = FALSE;
+    rasterizerDesc.MultisampleEnable = renderPassDesc.fSampleCount > SampleCount::k1;
+
+    Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerState;
+    hr = sharedContext->device()->CreateRasterizerState(&rasterizerDesc, &rasterizerState);
+    if (FAILED(hr)) {
+        return nullptr;
+    }
+
+    // Blend state: replace (no blend)
+    D3D11_BLEND_DESC1 blendDesc = {};
+    blendDesc.AlphaToCoverageEnable = FALSE;
+    blendDesc.IndependentBlendEnable = FALSE;
+    auto& rtDesc = blendDesc.RenderTarget[0];
+    rtDesc.BlendEnable = FALSE;
+    rtDesc.LogicOpEnable = FALSE;
+    rtDesc.SrcBlend = D3D11_BLEND_ONE;
+    rtDesc.DestBlend = D3D11_BLEND_ZERO;
+    rtDesc.BlendOp = D3D11_BLEND_OP_ADD;
+    rtDesc.SrcBlendAlpha = D3D11_BLEND_ONE;
+    rtDesc.DestBlendAlpha = D3D11_BLEND_ZERO;
+    rtDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    rtDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    Microsoft::WRL::ComPtr<ID3D11BlendState1> blendState;
+    hr = sharedContext->device()->CreateBlendState1(&blendDesc, &blendState);
+    if (FAILED(hr)) {
+        return nullptr;
+    }
+
+    // Depth-stencil state: disabled
+    D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {};
+    depthStencilDesc.DepthEnable = FALSE;
+    depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+    depthStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+    depthStencilDesc.StencilEnable = FALSE;
+
+    Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilState;
+    hr = sharedContext->device()->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
+    if (FAILED(hr)) {
+        return nullptr;
+    }
+
+    PipelineInfo pipelineInfo{};
+    pipelineInfo.fNumFragTexturesAndSamplers = 1;
+    return sk_sp<D3D11GraphicsPipeline>(
+            new D3D11GraphicsPipeline(sharedContext,
+                                      pipelineInfo,
+                                      "LoadMSAAFromResolve",
+                                      std::move(vs),
+                                      std::move(ps),
+                                      /*inputLayout=*/nullptr,
+                                      std::move(rasterizerState),
+                                      std::move(blendState),
+                                      std::move(depthStencilState),
+                                      /*stencilRef=*/0,
+                                      D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP,
+                                      /*staticStride=*/0,
+                                      /*appendStride=*/0,
+                                      /*immutableSamplers=*/{}));
+}
+
 D3D11GraphicsPipeline::D3D11GraphicsPipeline(
         const SharedContext* sharedContext,
         const PipelineInfo& pipelineInfo,

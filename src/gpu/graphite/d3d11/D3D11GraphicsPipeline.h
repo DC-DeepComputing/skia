@@ -43,6 +43,10 @@ public:
                                              SkEnumBitMask<PipelineCreationFlags>,
                                              uint32_t compilationID);
 
+    static sk_sp<D3D11GraphicsPipeline> MakeLoadMSAAPipeline(
+            const D3D11SharedContext* sharedContext,
+            const RenderPassDesc& renderPassDesc);
+
     ~D3D11GraphicsPipeline() override;
 
     ID3D11VertexShader* vertexShader() const { return fVertexShader.Get(); }

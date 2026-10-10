@@ -8,7 +8,9 @@
 #ifndef skgpu_graphite_D3D11ResourceProvider_DEFINED
 #define skgpu_graphite_D3D11ResourceProvider_DEFINED
 
+#include "src/core/SkTHash.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/d3d11/D3D11GraphicsPipeline.h"
 
 namespace skgpu::graphite {
 
@@ -24,6 +26,8 @@ public:
 
     const D3D11SharedContext* d3d11SharedContext() const;
 
+    sk_sp<D3D11GraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&);
+
 private:
     sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) override;
     sk_sp<Texture> createTexture(SkISize, const TextureInfo&, std::string_view label) override;
@@ -33,6 +37,8 @@ private:
     sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&, std::string_view label) override;
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(const BackendTexture&) override;
+
+    skia_private::THashMap<uint32_t, sk_sp<D3D11GraphicsPipeline>> fLoadMSAAPipelines;
 };
 
 } // namespace skgpu::graphite
