@@ -17,7 +17,16 @@
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkSwizzlePriv.h"
+#include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
+
+#ifndef SK_DISCARDABLEMEMORY_SCALEDIMAGECACHE_COUNT_LIMIT
+#define SK_DISCARDABLEMEMORY_SCALEDIMAGECACHE_COUNT_LIMIT 1024
+#endif
+
+#ifndef SK_DEFAULT_IMAGE_CACHE_LIMIT
+#define SK_DEFAULT_IMAGE_CACHE_LIMIT (32 * 1024 * 1024)
+#endif
 
 void SkGraphics::Init() {
     // SkGraphics::Init() must be thread-safe and idempotent.
@@ -44,6 +53,17 @@ void SkGraphics::PurgeAllCaches() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+static SkSynchronizedResourceCache* get_cache() {
+#if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
+    static SkSynchronizedResourceCache* gResourceCache =
+            new SkSynchronizedResourceCache(SkDiscardableMemory::Create);
+#else
+    static SkSynchronizedResourceCache* gResourceCache =
+            new SkSynchronizedResourceCache(SK_DEFAULT_IMAGE_CACHE_LIMIT);
+#endif
+    return gResourceCache;
+}
 
 size_t SkGraphics::GetFontCacheLimit() {
     return SkStrikeCache::GlobalStrikeCache()->getCacheSizeLimit();

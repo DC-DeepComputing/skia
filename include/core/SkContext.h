@@ -22,6 +22,10 @@ class SkSharedContext;
 class SkStrikeCache;
 class SkTraceMemoryDump;
 class SkTypefaceCache;
+namespace skgpu::graphite {
+class Context;
+}
+class GrDirectContext;
 struct SkContextOptions;
 
 /**
@@ -37,6 +41,8 @@ public:
     SkContext& operator=(SkContext&&) = delete;
 
     ~SkContext();
+
+    static void Make();
 
     SkContextPriv priv();
     SkContextPrivConst priv() const;
@@ -77,6 +83,10 @@ private:
 
     sk_sp<SkCaptureManager> fCaptureManager;
     sk_sp<SkSharedContext> fSharedContext;
+
+    std::unique_ptr<skgpu::graphite::Context, void (*)(skgpu::graphite::Context*)> fGraphiteContext{
+            nullptr, [](skgpu::graphite::Context*) {}};
+    sk_sp<SkRefCnt> fGaneshContext;
 };
 
 #endif  // SkContext_DEFINED

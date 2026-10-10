@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 
-#include "include/core/SkGraphics.h"
+#include "include/core/SkContext.h"
 #include "tools/flags/CommandLineFlags.h"
 
 static DEFINE_int_2(option, o, 0, "An option");
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         exitf("Invalid option\n");
     }
 
-    SkGraphics::Init();
+    SkContext::Make();
 
     return 0;
 }

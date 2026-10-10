@@ -19,6 +19,7 @@
 #include "src/core/SkCachedData.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkMessageBus.h"
+#include "src/core/SkSharedContext.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTHash.h"
 
