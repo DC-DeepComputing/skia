@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6ce0906_834e3be5",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-10T00:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25376961_c29854fa",
+      "range": {
+        "startLine": 61,
+        "startChar": 7,
+        "endLine": 61,
+        "endChar": 22
+      },
+      "revId": "21b7edb5294df49b62ab18fc73b99726fea76dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a88906cb_aecdd56d",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-10T00:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1c0979e_f5724b26",
+      "range": {
+        "startLine": 61,
+        "startChar": 58,
+        "endLine": 61,
+        "endChar": 87
+      },
+      "revId": "21b7edb5294df49b62ab18fc73b99726fea76dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe4786a6_ac96e5aa",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-10-07T20:21:01Z",
       "side": 1,
       "message": "unique_ptr default initializes to nullptr, so we typically don\u0027t explicitly set it here. We use the same pattern for things like sk_sp.",
+      "range": {
+        "startLine": 73,
+        "startChar": 41,
+        "endLine": 73,
+        "endChar": 51
+      },
+      "revId": "21b7edb5294df49b62ab18fc73b99726fea76dfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65af8983_100ae96d",
+        "filename": "include/core/SkContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-10T00:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe4786a6_ac96e5aa",
       "range": {
         "startLine": 73,
         "startChar": 41,
