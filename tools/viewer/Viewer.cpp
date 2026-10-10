@@ -771,7 +771,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     gto.fContextOptions.fEnableCapture = FLAGS_enable_capture;
     gto.fOptionsPriv.fPathRendererStrategy = get_path_renderer_strategy_type(FLAGS_pathstrategy[0]);
     if (FLAGS_msaa <= 0) {
-        gto.fContextOptions.fInternalMultisampleCount = skgpu::graphite::SampleCount::k1;
+        gto.fContextOptions.fInternalMultisampleCount = 1;
     }
     paramsBuilder.graphiteTestOptions(gto);
 #endif

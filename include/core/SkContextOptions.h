@@ -70,29 +70,29 @@ struct SK_API SkContextOptions {
      * asynchronous pipeline compilation or software path rendering). If
      * nullptr, all work is performed serially on the calling thread.
      */
-    SkExecutor* fExecutor;
+    SkExecutor* fExecutor = nullptr;
 
     /**
      * Custom log handler for receiving Skia diagnostic and error messages
      * scoped to this context.
      */
-    SkLogHandler* fLogHandler;
+    SkLogHandler* fLogHandler = nullptr;
 
     /**
      * Custom event tracer for routing Skia TRACE_EVENT instrumentation to an
      * external tracing system (e.g., Chrome trace_event or Perfetto).
      */
-    SkEventTracer* fEventTracer;
+    SkEventTracer* fEventTracer = nullptr;
 
     /**
      * Runtime factory for decoding and drawing OpenType SVG glyph data.
      */
-    SkGraphics::OpenTypeSVGDecoderFactory fSVGDecoderFactory;
+    SkGraphics::OpenTypeSVGDecoderFactory fSVGDecoderFactory = nullptr;
 
     /**
      * Runtime factory for instantiating SkImageGenerators from encoded SkData.
      */
-    SkGraphics::ImageGeneratorFromEncodedDataFactory fImageGeneratorFactory;
+    SkGraphics::ImageGeneratorFromEncodedDataFactory fImageGeneratorFactory = nullptr;
 
     /**
      * This enables support for capturing SkCaptures. The client still must call startCapture and

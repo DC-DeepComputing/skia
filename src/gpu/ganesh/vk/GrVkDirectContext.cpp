@@ -39,8 +39,9 @@ sk_sp<GrDirectContext> MakeVulkan(const skgpu::VulkanBackendContext& backendCont
 
 namespace SkContexts {
 
-std::unique_ptr<SkContext> MakeGanesh(const skgpu::VulkanBackendContext& vkContext,
-                            const SkContextOptions& options) {
+std::unique_ptr<SkContext> MakeGanesh(
+        const skgpu::VulkanBackendContext& vkContext,
+        const SkContextOptions& options) {
     return nullptr;
 }
 

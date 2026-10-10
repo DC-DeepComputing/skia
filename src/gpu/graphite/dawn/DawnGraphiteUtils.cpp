@@ -20,8 +20,9 @@
 using namespace skia_private;
 
 namespace SkContexts {
-std::unique_ptr<SkContext> MakeGraphite(const skgpu::graphite::DawnBackendContext& dawnContext,
-                              const SkContextOptions& options) {
+std::unique_ptr<SkContext> MakeGraphite(
+        const skgpu::graphite::DawnBackendContext& dawnContext,
+        const SkContextOptions& options) {
     return nullptr;
 }
 }  // namespace SkContexts

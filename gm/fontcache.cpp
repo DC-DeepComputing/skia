@@ -49,9 +49,7 @@ public:
 #if defined(SK_GANESH)
     void modifyGrContextOptions(GrContextOptions* options) override {
         options->fGlyphCacheTextureMaximumBytes = 0;
-        using Enable = GrContextOptions::Enable;
-        options->fAllowMultipleGlyphCacheTextures = fAllowMultipleTextures ? Enable::kYes
-                                                                           : Enable::kNo;
+        options->fAllowMultipleAtlasTextures = fAllowMultipleTextures;
     }
 #endif
 

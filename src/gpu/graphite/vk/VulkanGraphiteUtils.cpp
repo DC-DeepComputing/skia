@@ -26,8 +26,9 @@
 namespace SkContexts {
 
 // Creates a context wrapping a Graphite GPU backend with Vulkan
-std::unique_ptr<SkContext> MakeGraphite(const skgpu::VulkanBackendContext& vkContext,
-                              const SkContextOptions& options) {
+std::unique_ptr<SkContext> MakeGraphite(
+        const skgpu::VulkanBackendContext& vkContext,
+        const SkContextOptions& options) {
     return nullptr;
 }
 

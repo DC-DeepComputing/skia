@@ -62,7 +62,7 @@ class FontRegenGM : public skiagm::GM {
 #if defined(SK_GANESH)
     void modifyGrContextOptions(GrContextOptions* options) override {
         options->fGlyphCacheTextureMaximumBytes = 0;
-        options->fAllowMultipleGlyphCacheTextures = GrContextOptions::Enable::kNo;
+        options->fAllowMultipleAtlasTextures = false;
     }
 #endif
 

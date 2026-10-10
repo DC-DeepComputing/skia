@@ -37,8 +37,9 @@ SK_API sk_sp<GrDirectContext> MakeVulkan(const skgpu::VulkanBackendContext&);
 namespace SkContexts {
 
 // Creates a context wrapping a Ganesh GPU backend with Vulkan
-std::unique_ptr<SkContext> MakeGanesh(const skgpu::VulkanBackendContext& vkContext,
-                            const SkContextOptions& options);
+std::unique_ptr<SkContext> MakeGanesh(
+        const skgpu::VulkanBackendContext& vkContext,
+        const SkContextOptions& options);
 
 }  // namespace SkContexts
 

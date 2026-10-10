@@ -281,7 +281,7 @@ bool GrDirectContext::init() {
     fPersistentCache = this->options().fPersistentCache;
 
     GrDrawOpAtlas::AllowMultitexturing allowMultitexturing;
-    if (GrContextOptions::Enable::kNo == this->options().fAllowMultipleGlyphCacheTextures ||
+    if (!this->options().fAllowMultipleAtlasTextures ||
         // multitexturing supported only if range can represent the index + texcoords fully
         !(this->caps()->shaderCaps()->fFloatIs32Bits ||
         this->caps()->shaderCaps()->fIntegerSupport)) {

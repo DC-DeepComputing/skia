@@ -34,7 +34,8 @@ SK_API sk_sp<GrDirectContext> MakeGL();
 namespace SkContexts {
 
 // Creates a context wrapping a Ganesh GPU backend with OpenGL
-std::unique_ptr<SkContext> MakeGanesh(sk_sp<const GrGLInterface>, const SkContextOptions& options);
+std::unique_ptr<SkContext> MakeGanesh(sk_sp<const GrGLInterface>,
+                                      const SkContextOptions& options);
 
 }  // namespace SkContexts
 

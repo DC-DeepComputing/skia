@@ -40,7 +40,7 @@ namespace SkContexts {
 
 // Creates a context wrapping a Ganesh GPU backend with Metal
 std::unique_ptr<SkContext> MakeGanesh(const GrMtlBackendContext& mtlContext,
-                            const SkContextOptions& options) {
+                                      const SkContextOptions& options) {
     return nullptr;
 }
 

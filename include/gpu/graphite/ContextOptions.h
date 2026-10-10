@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_ContextOptions_DEFINED
 #define skgpu_graphite_ContextOptions_DEFINED
 
+#include "include/core/SkGPUContextOptions.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
@@ -19,39 +20,15 @@
 #include <string>
 
 class SkData;
-class SkExecutor;
 class SkRuntimeEffect;
-namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
 
-struct ContextOptionsPriv;
 class PersistentPipelineStorage;
+struct ContextOptionsPriv;
 
-struct SK_API ContextOptions {
+struct SK_API ContextOptions : public SkGPUContextOptions {
     ContextOptions() {}
-
-    /**
-     * Disables correctness workarounds that are enabled for particular GPUs, OSes, or drivers.
-     * This does not affect code path choices that are made for perfomance reasons nor does it
-     * override other ContextOption settings.
-     */
-    bool fDisableDriverCorrectnessWorkarounds = false;
-
-    /**
-     * If present, use this object to report shader compilation failures. If not, report failures
-     * via SkDebugf and assert.
-     */
-    skgpu::ShaderErrorHandler* fShaderErrorHandler = nullptr;
-
-    /**
-     * Specifies the number of samples Graphite should use when performing internal draws with MSAA
-     * (hardware capabilities permitting). This represents the maximum that will be used; if a
-     * a specific format supports only lower values, those may be used instead.
-     *
-     * If <= 1, Graphite will disable internal code paths that use multisampling.
-     */
-    SampleCount fInternalMultisampleCount = SampleCount::k4;
 
     /**
      * If set, this specifies the max width/height of MSAA textures that Graphite should use for
@@ -71,38 +48,9 @@ struct SK_API ContextOptions {
     float fMinimumPathSizeForMSAA = 0;
 
     /**
-     * The maximum size of cache textures used for Skia's Glyph cache.
-     */
-    size_t fGlyphCacheTextureMaximumBytes = 2048 * 1024 * 4;
-
-    /**
-     * Below this threshold size in device space distance field fonts won't be used. Distance field
-     * fonts don't support hinting which is more important at smaller sizes.
-     */
-    float fMinDistanceFieldFontSize = 18;
-
-    /**
-     * Above this threshold size in device space glyphs are drawn as individual paths.
-     */
-#if defined(SK_BUILD_FOR_ANDROID)
-    float fGlyphsAsPathsFontSize = 384;
-#elif defined(SK_BUILD_FOR_MAC)
-    float fGlyphsAsPathsFontSize = 256;
-#else
-    float fGlyphsAsPathsFontSize = 324;
-#endif
-
-    /**
      * The maximum size of textures used for Skia's PathAtlas caches.
      */
     int fMaxPathAtlasTextureSize = 8192;  // oversized, PathAtlas will likely be smaller
-
-    /**
-     * Can the glyph and path atlases use multiple textures. If allowed, each texture's size is
-     * bound by fGlyphCacheTextureMaximumBytes and fMaxPathAtlasTextureSize, respectively.
-     */
-    bool fAllowMultipleAtlasTextures = true;
-    bool fSupportBilerpFromGlyphAtlas = false;
 
     /**
      * For the moment, if Recordings from the same Recorder are replayed in the order they are
@@ -205,15 +153,6 @@ struct SK_API ContextOptions {
     SkSpan<sk_sp<SkRuntimeEffect>> fUserDefinedKnownRuntimeEffects;
 
     /**
-     * Executor to handle threaded work within Graphite. If this is nullptr, then all work will be
-     * done serially on the main thread. To have worker threads assist with various tasks, set this
-     * to a valid SkExecutor instance. Currently, used for Pipeline compilation, but may be used
-     * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
-     * the lifetime of the Context.
-     */
-    SkExecutor* fExecutor = nullptr;
-
-    /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the
      * client to ensure the PersistentPipelineStorage object remains valid throughout the lifetime
      * of the Context(s).
@@ -221,18 +160,10 @@ struct SK_API ContextOptions {
     PersistentPipelineStorage* fPersistentPipelineStorage = nullptr;
 
     /**
-     * An experimental flag in development. Behavior and performance is subject to change.
-     *
-     * Enables the use of startCapture and endCapture functions. Calling these APIs will capture all
-     * draw calls and surface creation from Recorders spawned from the Context.
+     * Avoid using depth/stencil buffers. This will disable depth-occlusion-culling (more GPU work)
+     * and fall back to analytic path algorithm instead of MSAA (more CPU work).
      */
-     bool fEnableCapture = false;
-
-     /**
-      * Avoid using depth/stencil buffers. This will disable depth-occlusion-culling (more GPU work)
-      * and fall back to analytic path algorithm instead of MSAA (more CPU work).
-      */
-     bool fAvoidDepthMode = false;
+    bool fAvoidDepthMode = false;
 
     /**
      * Private options that are only meant for testing within Skia's tools.

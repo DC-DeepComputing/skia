@@ -45,7 +45,7 @@ void Caps::setDefaultShaderCaps() {
 void Caps::finishInitialization(const ContextOptions& options) {
     fCapabilities->initSkCaps(fShaderCaps.get());
 
-    fMaxInternalSampleCount = options.fInternalMultisampleCount;
+    fMaxInternalSampleCount = ToSampleCount(options.fInternalMultisampleCount);
 
     if (options.fShaderErrorHandler) {
         fShaderErrorHandler = options.fShaderErrorHandler;

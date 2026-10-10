@@ -39,8 +39,7 @@ void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
     testOptions->fContextOptions.fExecutor = gGpuExecutor.get();
 
     if (FLAGS_internalSamples >= 0) {
-        testOptions->fContextOptions.fInternalMultisampleCount =
-                skgpu::graphite::ToSampleCount(FLAGS_internalSamples);
+        testOptions->fContextOptions.fInternalMultisampleCount = FLAGS_internalSamples;
     }
     if (FLAGS_internalMSAATileSize > 0) {
         testOptions->fContextOptions.fInternalMSAATileSize = {FLAGS_internalMSAATileSize,

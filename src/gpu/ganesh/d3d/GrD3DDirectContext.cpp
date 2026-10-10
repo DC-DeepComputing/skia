@@ -40,7 +40,7 @@ sk_sp<GrDirectContext> MakeD3D(const GrD3DBackendContext& backendContext,
 namespace SkContexts {
 
 std::unique_ptr<SkContext> MakeGanesh(const GrD3DBackendContext& backendContext,
-                            const SkContextOptions& options) {
+                                      const SkContextOptions& options) {
     return nullptr;
 }
 

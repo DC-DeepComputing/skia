@@ -114,7 +114,8 @@ sk_sp<GrDirectContext> MakeGL(sk_sp<const GrGLInterface> glInterface,
 
 namespace SkContexts {
 
-std::unique_ptr<SkContext> MakeGanesh(sk_sp<const GrGLInterface>, const SkContextOptions& options) {
+std::unique_ptr<SkContext> MakeGanesh(sk_sp<const GrGLInterface>,
+                                      const SkContextOptions& options) {
     return nullptr;
 }
 

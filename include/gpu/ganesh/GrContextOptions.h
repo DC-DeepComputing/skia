@@ -9,6 +9,7 @@
 #define GrContextOptions_DEFINED
 
 #include "include/core/SkData.h"
+#include "include/core/SkGPUContextOptions.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/ShaderErrorHandler.h"
@@ -19,9 +20,9 @@
 #include <optional>
 #include <vector>
 
-class SkExecutor;
+struct SK_API GrContextOptions : public SkGPUContextOptions {
+    GrContextOptions() {}
 
-struct SK_API GrContextOptions {
     enum class Enable {
         /** Forces an option to be disabled. */
         kNo,
@@ -73,8 +74,6 @@ struct SK_API GrContextOptions {
 
     using ShaderErrorHandler = skgpu::ShaderErrorHandler;
 
-    GrContextOptions() {}
-
     /**
      * Optional callback that can be passed into the GrDirectContext which will be called when the
      * GrDirectContext is about to be destroyed. When this call is made, it will be safe for the
@@ -85,23 +84,9 @@ struct SK_API GrContextOptions {
     GrDirectContextDestroyedProc fContextDeleteProc = nullptr;
 
     /**
-     * Executor to handle threaded work within Ganesh. If this is nullptr, then all work will be
-     * done serially on the main thread. To have worker threads assist with various tasks, set this
-     * to a valid SkExecutor instance. Currently, used for software path rendering, but may be used
-     * for other tasks.
-     */
-    SkExecutor* fExecutor = nullptr;
-
-    /**
      * Cache in which to store compiled shader binaries between runs.
      */
     PersistentCache* fPersistentCache = nullptr;
-
-    /**
-     * If present, use this object to report shader compilation failures. If not, report failures
-     * via SkDebugf and assert.
-     */
-    ShaderErrorHandler* fShaderErrorHandler = nullptr;
 
     /** Default minimum size to use when allocating buffers for uploading data to textures. The
         larger the value the more uploads can be packed into one buffer, but at the cost of
@@ -110,23 +95,12 @@ struct SK_API GrContextOptions {
     size_t fMinimumStagingBufferSize = 64 * 1024;
 
     /**
-     * The maximum size of cache textures used for Skia's Glyph cache.
-     */
-    size_t fGlyphCacheTextureMaximumBytes = 2048 * 1024 * 4;
-
-    /**
      * Controls whether we check for GL errors after functions that allocate resources (e.g.
      * glTexImage2D), at the end of a GPU submission, or checking framebuffer completeness. The
      * results of shader compilation and program linking are always checked, regardless of this
      * option. Ignored on backends other than GL.
      */
     Enable fSkipGLErrorChecks = Enable::kDefault;
-
-    /**
-     * Can the glyph atlas use multiple textures. If allowed, the each texture's size is bound by
-     * fGlypheCacheTextureMaximumBytes.
-     */
-    Enable fAllowMultipleGlyphCacheTextures = Enable::kDefault;
 
     /**
      * Enables driver workaround to use draws instead of HW clears, e.g. glClear on the GL backend.
@@ -166,14 +140,6 @@ struct SK_API GrContextOptions {
     int fRuntimeProgramCacheSize = 256;
 
     /**
-     * Specifies the number of samples Ganesh should use when performing internal draws with MSAA
-     * (hardware capabilities permitting).
-     *
-     * If 0, Ganesh will disable internal code paths that use multisampling.
-     */
-    int  fInternalMultisampleCount = 4;
-
-    /**
      * In Skia's vulkan backend a single GrContext submit equates to the submission of a single
      * primary command buffer to the VkQueue. This value specifies how many vulkan secondary command
      * buffers we will cache for reuse on a given primary command buffer. A single submit may use
@@ -183,23 +149,6 @@ struct SK_API GrContextOptions {
      * A value of -1 means we will pick a limit value internally.
      */
     int fMaxCachedVulkanSecondaryCommandBuffers = -1;
-
-    /**
-     * Below this threshold size in device space distance field fonts won't be used. Distance field
-     * fonts don't support hinting which is more important at smaller sizes.
-     */
-    float fMinDistanceFieldFontSize = 18;
-
-    /**
-     * Above this threshold size in device space glyphs are drawn as individual paths.
-     */
-#if defined(SK_BUILD_FOR_ANDROID)
-    float fGlyphsAsPathsFontSize = 384;
-#elif defined(SK_BUILD_FOR_MAC)
-    float fGlyphsAsPathsFontSize = 256;
-#else
-    float fGlyphsAsPathsFontSize = 324;
-#endif
 
     GrDriverBugWorkarounds fDriverBugWorkarounds;
 
@@ -255,13 +204,6 @@ struct SK_API GrContextOptions {
     bool fPreferExternalImagesOverES3 = false;
 
     /**
-     * Disables correctness workarounds that are enabled for particular GPUs, OSes, or drivers.
-     * This does not affect code path choices that are made for perfomance reasons nor does it
-     * override other GrContextOption settings.
-     */
-    bool fDisableDriverCorrectnessWorkarounds = false;
-
-    /**
      * If true, the caps will never support mipmaps.
      */
     bool fSuppressMipmapSupport = false;
@@ -277,12 +219,6 @@ struct SK_API GrContextOptions {
      * DEPRECATED: This value is ignored; experimental hardware tessellation is always disabled.
      */
     bool fEnableExperimentalHardwareTessellation = false;
-
-    /**
-     * If true, then add 1 pixel padding to all glyph masks in the atlas to support bi-lerp
-     * rendering of all glyphs. This must be set to true to use Slugs.
-     */
-    bool fSupportBilerpFromGlyphAtlas = false;
 
     /**
      * Uses a reduced variety of shaders. May perform less optimally in steady state but can reduce
@@ -381,7 +317,6 @@ struct SK_API GrContextOptions {
     bool fDisallowWriteAndTransferPixelRowBytes = false;
 
 #endif
-
 };
 
 #endif

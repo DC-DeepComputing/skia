@@ -113,6 +113,7 @@ void SkContext::dumpMemoryStatistics(SkTraceMemoryDump* dump) {
     SkStrikeCache::DumpMemoryStatistics(dump);
 }
 
-std::unique_ptr<SkContext> SkContextCtorAccessor::MakeContext(const SkContextOptions& options) {
+std::unique_ptr<SkContext> SkContextCtorAccessor::MakeContext(
+        const SkContextOptions& options) {
     return std::unique_ptr<SkContext>(new SkContext(options));
 }

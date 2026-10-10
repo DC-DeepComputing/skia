@@ -34,7 +34,8 @@ SK_API sk_sp<GrDirectContext> MakeMetal(const GrMtlBackendContext&);
 namespace SkContexts {
 
 // Creates a context wrapping a Ganesh GPU backend with Metal
-std::unique_ptr<SkContext> MakeGanesh(const GrMtlBackendContext& mtlContext, const SkContextOptions& options);
+std::unique_ptr<SkContext> MakeGanesh(const GrMtlBackendContext& mtlContext,
+                                      const SkContextOptions& options);
 
 }  // namespace SkContexts
 

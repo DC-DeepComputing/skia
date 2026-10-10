@@ -46,6 +46,7 @@ PUBLIC_HEADERS = [
     "SkFontStyle.h",
     "SkFontTypes.h",
     "SkFourByteTag.h",
+    "SkGPUContextOptions.h",
     "SkGraphics.h",
     "SkImage.h",
     "SkImageFilter.h",

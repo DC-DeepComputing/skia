@@ -62,7 +62,8 @@ private:
 // functions in SkContext.h
 class SkContextCtorAccessor {
 public:
-    static std::unique_ptr<SkContext> MakeContext(const SkContextOptions& options);
+    static std::unique_ptr<SkContext> MakeContext(
+            const SkContextOptions& options);
 };
 
 #endif  // SkContextPriv_DEFINED
