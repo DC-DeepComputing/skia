@@ -146,7 +146,8 @@ void D3D11Caps::initFormatTable(ID3D11Device* device) {
             supportedUsage |= TextureUsage::kRender;
         }
 
-        if (formatSupport & D3D11_FORMAT_SUPPORT_MULTISAMPLE_RENDERTARGET) {
+        if (formatSupport & (D3D11_FORMAT_SUPPORT_MULTISAMPLE_RENDERTARGET |
+                             D3D11_FORMAT_SUPPORT_DEPTH_STENCIL)) {
             UINT quality = 0;
             if (SUCCEEDED(device->CheckMultisampleQualityLevels(format, 2, &quality)) && quality > 0) {
                 supportedSampleCounts |= SampleCount::k2;

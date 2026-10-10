@@ -171,9 +171,28 @@ inline D3D11_BLEND blend_coeff_to_d3d11(skgpu::BlendCoeff coeff) {
         case skgpu::BlendCoeff::kIS2A:
             return D3D11_BLEND_INV_SRC1_ALPHA;
         case skgpu::BlendCoeff::kIllegal:
-            return D3D11_BLEND_ONE;
+            return D3D11_BLEND_ZERO;
     }
     SkUNREACHABLE;
+}
+
+inline D3D11_BLEND blend_coeff_to_d3d11_for_alpha(skgpu::BlendCoeff coeff) {
+    switch (coeff) {
+        case skgpu::BlendCoeff::kSC:
+            return D3D11_BLEND_SRC_ALPHA;
+        case skgpu::BlendCoeff::kISC:
+            return D3D11_BLEND_INV_SRC_ALPHA;
+        case skgpu::BlendCoeff::kDC:
+            return D3D11_BLEND_DEST_ALPHA;
+        case skgpu::BlendCoeff::kIDC:
+            return D3D11_BLEND_INV_DEST_ALPHA;
+        case skgpu::BlendCoeff::kS2C:
+            return D3D11_BLEND_SRC1_ALPHA;
+        case skgpu::BlendCoeff::kIS2C:
+            return D3D11_BLEND_INV_SRC1_ALPHA;
+        default:
+            return blend_coeff_to_d3d11(coeff);
+    }
 }
 
 inline D3D11_BLEND_OP blend_equation_to_d3d11(skgpu::BlendEquation eq) {
@@ -434,8 +453,8 @@ sk_sp<D3D11GraphicsPipeline> D3D11GraphicsPipeline::Make(
         rtDesc.SrcBlend = blend_coeff_to_d3d11(blendInfo.fSrcBlend);
         rtDesc.DestBlend = blend_coeff_to_d3d11(blendInfo.fDstBlend);
         rtDesc.BlendOp = blend_equation_to_d3d11(blendInfo.fEquation);
-        rtDesc.SrcBlendAlpha = blend_coeff_to_d3d11(blendInfo.fSrcBlend);
-        rtDesc.DestBlendAlpha = blend_coeff_to_d3d11(blendInfo.fDstBlend);
+        rtDesc.SrcBlendAlpha = blend_coeff_to_d3d11_for_alpha(blendInfo.fSrcBlend);
+        rtDesc.DestBlendAlpha = blend_coeff_to_d3d11_for_alpha(blendInfo.fDstBlend);
         rtDesc.BlendOpAlpha = blend_equation_to_d3d11(blendInfo.fEquation);
     } else {
         rtDesc.SrcBlend = D3D11_BLEND_ONE;
