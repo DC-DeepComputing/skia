@@ -377,14 +377,17 @@ bool D3D11CommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPi
     fImmediateDeviceContext->OMSetBlendState(d3dPipeline->blendState(), fBlendConstants.data(), 0xffffffff);
     fImmediateDeviceContext->OMSetDepthStencilState(d3dPipeline->depthStencilState(), d3dPipeline->stencilRef());
 
-    if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy &&
-        fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 2) {
-        const auto* texture = static_cast<const D3D11Texture*>(fDstCopy.first);
-        const auto* sampler = static_cast<const D3D11Sampler*>(fDstCopy.second);
-        ID3D11ShaderResourceView* srv = texture ? texture->shaderResourceView() : nullptr;
-        ID3D11SamplerState* samp = sampler ? sampler->d3d11SamplerState() : nullptr;
-        fImmediateDeviceContext->PSSetShaderResources(0, 1, &srv);
-        fImmediateDeviceContext->PSSetSamplers(0, 1, &samp);
+    if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
+        SkASSERT(fDstCopy.first && fDstCopy.second);
+        const int textureIndex = fActiveGraphicsPipeline->numFragTexturesAndSamplers() - 1;
+        if (textureIndex >= 0 && textureIndex < 16) {
+            const auto* texture = static_cast<const D3D11Texture*>(fDstCopy.first);
+            const auto* sampler = static_cast<const D3D11Sampler*>(fDstCopy.second);
+            ID3D11ShaderResourceView* srv = texture ? texture->shaderResourceView() : nullptr;
+            ID3D11SamplerState* samp = sampler ? sampler->d3d11SamplerState() : nullptr;
+            fImmediateDeviceContext->PSSetShaderResources(textureIndex, 1, &srv);
+            fImmediateDeviceContext->PSSetSamplers(textureIndex, 1, &samp);
+        }
     }
 
     fBoundUniformBuffersDirty = true;
@@ -472,13 +475,13 @@ void D3D11CommandBuffer::bindTextureAndSamplers(
     }
 
     if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
-        int idx = command.fNumTexSamplers;
-        if (idx < 16) {
+        int idx = fActiveGraphicsPipeline->numFragTexturesAndSamplers() - 1;
+        if (idx >= 0 && idx < 16) {
             const auto* dstTex = static_cast<const D3D11Texture*>(fDstCopy.first);
             const auto* dstSamp = static_cast<const D3D11Sampler*>(fDstCopy.second);
             srvs[idx] = dstTex ? dstTex->shaderResourceView() : nullptr;
             samplers[idx] = dstSamp ? dstSamp->d3d11SamplerState() : nullptr;
-            numTexturesAndSamplers++;
+            numTexturesAndSamplers = std::max(numTexturesAndSamplers, idx + 1);
         }
     }
 
@@ -812,7 +815,7 @@ bool D3D11CommandBuffer::onCopyTextureToTexture(const Texture* src,
         dstPoint.fY,
         0,
         srcTex->d3d11Texture(),
-        mipLevel,
+        0,
         &box);
     return true;
 }

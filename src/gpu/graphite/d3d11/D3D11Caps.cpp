@@ -174,7 +174,7 @@ TextureInfo D3D11Caps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usage
     }
 
     UINT bindFlags = 0;
-    if (usage & TextureUsage::kSample) {
+    if (usage & (TextureUsage::kSample | TextureUsage::kRead)) {
         bindFlags |= D3D11_BIND_SHADER_RESOURCE;
     }
     if (usage & TextureUsage::kRender) {
