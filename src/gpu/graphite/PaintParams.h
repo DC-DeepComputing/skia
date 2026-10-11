@@ -97,6 +97,7 @@ public:
 
     const SkMeshSpecification* meshSpec() const { return fMeshSpec; }
     SkSpan<const SkRuntimeEffect::ChildPtr> meshChildren() const { return fMeshChildren; }
+    const SkPathEffect* pathEffect() const { return fPathEffect; }
 
     const SkBlender* finalBlender() const { return fFinalBlend.first; }
     // Must also check finalBlender() to see if that overrides finalBlendMode() behavior.
@@ -146,8 +147,9 @@ private:
     const SkMeshSpecification* fMeshSpec = nullptr;
     SkSpan<const SkRuntimeEffect::ChildPtr> fMeshChildren;
 
-    bool fSkipColorXform;
-    bool fDither;
+    bool                fSkipColorXform;
+    bool                fDither;
+    const SkPathEffect* fPathEffect;
 };
 
 // ShadingParams wraps a PaintParams with the additional per-pixel state to handle clipping and

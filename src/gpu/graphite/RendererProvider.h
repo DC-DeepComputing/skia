@@ -106,6 +106,7 @@ public:
     const Renderer* tessellatedStrokes(bool inverseFill) const {
         return &fTessellatedStrokes[static_cast<size_t>(inverseFill)];
     }
+    const Renderer* arcLengthStrokes() const { return &fTessellatedStrokes[0]; }
 
     // Coverage mask rendering. Used by the atlas path rendering strategies and rendering mask
     // filter results.

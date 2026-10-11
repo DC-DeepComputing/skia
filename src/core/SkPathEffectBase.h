@@ -122,6 +122,8 @@ public:
         return {};
     }
 
+    virtual bool isArcLengthParameterized() const { return false; }
+
 
     // Compute a conservative bounds for its effect, given the bounds of the path. 'bounds' is
     // both the input and output; if false is returned, fast bounds could not be calculated and
