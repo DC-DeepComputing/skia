@@ -13,6 +13,8 @@ CORE_FILES = [
     "AnalyticRRectBlurRenderStep.h",
     "AnalyticRRectRenderStep.cpp",
     "AnalyticRRectRenderStep.h",
+    "ArcLengthStrokeRenderStep.cpp",
+    "ArcLengthStrokeRenderStep.h",
     "BitmapTextRenderStep.cpp",
     "BitmapTextRenderStep.h",
     "CircularArcRenderStep.cpp",

@@ -88,6 +88,7 @@ public:
     const SimpleImage* imageShader() const { return fImageShader; }
     const SkColorFilter* colorFilter() const { return fColorFilter; }
     const SkBlender* primitiveBlender() const { return fPrimitiveBlender; }
+    void setPrimitiveBlender(const SkBlender* blender) { fPrimitiveBlender = blender; }
     const std::optional<SkColor4f>& primitiveColorOverride() const {
         return fPrimitiveColorOverride;
     }

@@ -109,11 +109,10 @@ void StorageContext::recordAlignment(size_t stride, size_t align) {
     fRunningLCM = BufferAligner::LcmAlignment(fRunningLCM, align32);
 }
 
-uint32_t StorageContext::appendVertices(const void* data,
-                                        size_t count,
-                                        size_t stride,
-                                        size_t align) {
-    SkASSERT(data && count > 0 && stride > 0 && align > 0);
+std::pair<void*, uint32_t> StorageContext::allocateVertices(size_t count,
+                                                            size_t stride,
+                                                            size_t align) {
+    SkASSERT(count > 0 && stride > 0 && align > 0);
 
     size_t paddedStride = stride;
     size_t paddedAlign  = align;
@@ -129,7 +128,7 @@ uint32_t StorageContext::appendVertices(const void* data,
     uint32_t requiredBytes =
             BufferAligner::ValidateCountAndStride(count, paddedStride, /*headroom=*/0, align32);
     if (requiredBytes == 0) {
-        return 0;
+        return {nullptr, 0};
     }
 
     uint32_t alignedVertOffset = SkAlignNonPow2(static_cast<uint32_t>(fVertexData.size()), align32);
@@ -139,24 +138,39 @@ uint32_t StorageContext::appendVertices(const void* data,
     }
 
     char* dst = fVertexData.append(requiredBytes);
+    SK_UNSAFE_TODO(memset(dst, 0, requiredBytes));
+
+    return {dst, SkTo<uint32_t>(fGradientCache.fGradientDataSize) + alignedVertOffset};
+}
+
+uint32_t StorageContext::appendVertices(const void* data,
+                                        size_t count,
+                                        size_t stride,
+                                        size_t align) {
+    SkASSERT(data && count > 0 && stride > 0 && align > 0);
+
+    size_t paddedStride = fStorageBufferSupport ? stride : SkAlignTo<size_t>(stride, kTexelBytes);
+    auto [dstVoid, totalOffset] = this->allocateVertices(count, stride, align);
+    if (!dstVoid) {
+        return 0;
+    }
+    char* dst = static_cast<char*>(dstVoid);
 
     // Because the fallback texture format is kRGBA32F (16 bytes per texel), the unpack shader
     // addresses instances by whole texels (index * nTexels). Pad each instance's stride to a
     // 16-byte texel boundary so subsequent instances align with the shader's texel indexing.
     if (stride == paddedStride) {
-        SK_UNSAFE_TODO(memcpy(dst, data, requiredBytes));
+        SK_UNSAFE_TODO(memcpy(dst, data, count * stride));
     } else {
         const char* src = static_cast<const char*>(data);
-        size_t diff = paddedStride - stride;
         for (size_t i = 0; i < count; ++i) {
             SK_UNSAFE_TODO(memcpy(dst, src, stride));
-            SK_UNSAFE_TODO(memset(dst + stride, 0, diff));
             SK_UNSAFE_TODO(dst += paddedStride);
             SK_UNSAFE_TODO(src += stride);
         }
     }
 
-    return SkTo<uint32_t>(fGradientCache.fGradientDataSize) + alignedVertOffset;
+    return totalOffset;
 }
 
 void StorageContext::finalizePrecachedStorageData() {
