@@ -85,6 +85,7 @@ enum class PatchAttribs {
     kExplicitCurveType = 1 << 5,  // [float] Used when GPU can't infer curve type based on infinity.
     kSsboIndex = 1 << 7,  // [int] Used to index into a shared storage buffer for this patch's
                           //       uniform values.
+    kVertexStorageIndex = 1 << 8, // [int] Used to index into the vertex storage buffer.
 
     // Extra flags.
     kWideColorIfEnabled = 1 << 6,  // If kColor is set, specifies it to be float4 wide color.
@@ -109,7 +110,8 @@ constexpr size_t PatchAttribsStride(PatchAttribs attribs) {
                                                                    : sizeof(uint8_t)) * 4 : 0) +
            (attribs & PatchAttribs::kPaintDepth ? sizeof(float) : 0) +
            (attribs & PatchAttribs::kExplicitCurveType ? sizeof(float) : 0) +
-           (attribs & PatchAttribs::kSsboIndex ? sizeof(uint32_t) : 0);
+           (attribs & PatchAttribs::kSsboIndex ? sizeof(uint32_t) : 0) +
+           (attribs & PatchAttribs::kVertexStorageIndex ? sizeof(uint32_t) : 0);
 }
 constexpr size_t PatchStride(PatchAttribs attribs) {
     return 4*sizeof(SkPoint) + PatchAttribsStride(attribs);
