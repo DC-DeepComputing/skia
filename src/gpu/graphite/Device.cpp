@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/graphite/Device.h"
 
 #include "include/core/SkAlphaType.h"
@@ -334,6 +335,8 @@ bool is_simple_shape(const Shape& shape, const Transform& localToDevice, SkStrok
 
 class ScopedDrawBuilder {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     explicit ScopedDrawBuilder(Recorder* recorder)
             : fRecorder(recorder),
               fKeyAndDataBuilder(fRecorder->priv().popOrCreateKeyAndDataBuilder()) {

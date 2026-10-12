@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 
 #include "include/core/SkColorFilter.h"
@@ -93,6 +94,8 @@ namespace {
 // Automatically registers uniform expectations in debug builds.
 class ScopedUniformWriter {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     ScopedUniformWriter(const KeyContext& keyContext, BuiltInCodeSnippetID codeSnippetID)
             : ScopedUniformWriter(keyContext.pipelineDataGatherer(),
                                   keyContext.dict()->getEntry(codeSnippetID)) {}
