@@ -38,6 +38,8 @@ public:
 
     ~SkContext();
 
+    static void Make();
+
     SkContextPriv priv();
     SkContextPrivConst priv() const;
 

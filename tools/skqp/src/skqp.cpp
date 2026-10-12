@@ -8,7 +8,7 @@
 #include "tools/skqp/src/skqp.h"
 
 #include "gm/gm.h"
-#include "include/core/SkGraphics.h"
+#include "include/core/SkContext.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
@@ -122,7 +122,7 @@ void SkQP::init(SkQPAssetManager* assetManager, const char* reportDirectory) {
     SkASSERT_RELEASE(assetManager);
     fReportDirectory = reportDirectory;
 
-    SkGraphics::Init();
+    SkContext::Make();
     ToolUtils::UsePortableFontMgr();
 
 #ifdef SK_BUILD_FOR_ANDROID

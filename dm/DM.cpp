@@ -11,6 +11,7 @@
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkContext.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
 #include "include/core/SkGraphics.h"
@@ -1688,7 +1689,7 @@ int main(int argc, char** argv) {
 
     dump_json();  // It's handy for the bots to assume this is ~never missing.
 
-    SkGraphics::Init();
+    SkContext::Make();
 #if defined(SK_ENABLE_SVG)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
