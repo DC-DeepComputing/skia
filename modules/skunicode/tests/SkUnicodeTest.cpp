@@ -290,12 +290,22 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf8_Hostile, reporter) {
     }
 
     {
-        SkString text("Привет\nмир");
+        SkString text("Привет\nмир\u2029конец");
         auto lineIter = apple->makeBreakIterator(SkUnicode::BreakType::kLines);
         REPORTER_ASSERT(reporter, lineIter);
         REPORTER_ASSERT(reporter, lineIter->setText(text.data(), text.size()));
-        std::vector<SkBreakIterator::Position> expectedLines = {0, 13, 19};
-        REPORTER_ASSERT(reporter, collectBreaks(lineIter.get()) == expectedLines);
+        std::vector<SkBreakIterator::Position> breaks;
+        std::vector<SkBreakIterator::Status> statuses;
+        for (auto pos = lineIter->first(); !lineIter->isDone(); pos = lineIter->next()) {
+            breaks.push_back(pos);
+            statuses.push_back(lineIter->status());
+        }
+        std::vector<SkBreakIterator::Position> expectedLines = {0, 13, 22, 32};
+        REPORTER_ASSERT(reporter, breaks == expectedLines);
+        REPORTER_ASSERT(reporter, !(statuses[0] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore));
+        REPORTER_ASSERT(reporter, statuses[1] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore);
+        REPORTER_ASSERT(reporter, statuses[2] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore);
+        REPORTER_ASSERT(reporter, !(statuses[3] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore));
     }
 }
 
@@ -339,6 +349,25 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf16_Hostile, reporter) {
         std::vector<SkBreakIterator::Position> expectedGraphemes = {0, 2, 4, 6};
         REPORTER_ASSERT(reporter, collectBreaks(graphemeIter.get()) == expectedGraphemes);
     }
+
+    {
+        std::u16string u16Text = u"Привет\nмир\u2029конец";
+        auto lineIter = apple->makeBreakIterator(SkUnicode::BreakType::kLines);
+        REPORTER_ASSERT(reporter, lineIter);
+        REPORTER_ASSERT(reporter, lineIter->setText(u16Text.data(), u16Text.size()));
+        std::vector<SkBreakIterator::Position> breaks;
+        std::vector<SkBreakIterator::Status> statuses;
+        for (auto pos = lineIter->first(); !lineIter->isDone(); pos = lineIter->next()) {
+            breaks.push_back(pos);
+            statuses.push_back(lineIter->status());
+        }
+        std::vector<SkBreakIterator::Position> expectedLines = {0, 7, 11, 16};
+        REPORTER_ASSERT(reporter, breaks == expectedLines);
+        REPORTER_ASSERT(reporter, !(statuses[0] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore));
+        REPORTER_ASSERT(reporter, statuses[1] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore);
+        REPORTER_ASSERT(reporter, statuses[2] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore);
+        REPORTER_ASSERT(reporter, !(statuses[3] & SkUnicode::CodeUnitFlags::kHardLineBreakBefore));
+    }
 }
 
 DEF_TEST(SkUnicode_Apple_CharProperties, reporter) {
@@ -373,6 +402,16 @@ DEF_TEST(SkUnicode_Apple_CharProperties, reporter) {
     REPORTER_ASSERT(reporter, !apple->isWhitespace(0x202F));
     REPORTER_ASSERT(reporter, !apple->isWhitespace(0x0085));
     REPORTER_ASSERT(reporter, !apple->isWhitespace('A'));
+
+    REPORTER_ASSERT(reporter, apple->isHardBreak('\n'));
+    REPORTER_ASSERT(reporter, apple->isHardBreak('\v'));
+    REPORTER_ASSERT(reporter, apple->isHardBreak('\f'));
+    REPORTER_ASSERT(reporter, apple->isHardBreak(0x2028));
+    REPORTER_ASSERT(reporter, apple->isHardBreak(0x2029));
+    REPORTER_ASSERT(reporter, !apple->isHardBreak('\r'));
+    REPORTER_ASSERT(reporter, !apple->isHardBreak(0x0085));
+    REPORTER_ASSERT(reporter, !apple->isHardBreak(' '));
+    REPORTER_ASSERT(reporter, !apple->isHardBreak('A'));
 }
 #endif
 

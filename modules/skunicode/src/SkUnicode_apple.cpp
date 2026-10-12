@@ -31,6 +31,16 @@ using namespace skia_private;
 
 namespace {
 
+// Exclude CR and NEL from kCFCharacterSetNewline to match UAX #14 LF/BK mandatory breaks
+// and prevent splitting CRLF pairs during codepoint iteration
+bool is_hard_break(SkUnichar unichar) {
+    if (unichar == '\r' || unichar == 0x0085) {
+        return false;
+    }
+    return CFCharacterSetIsLongCharacterMember(
+            CFCharacterSetGetPredefined(kCFCharacterSetNewline), unichar);
+}
+
 template <typename Callback>
 bool Tokenize(CFStringRef str,
               CFIndex len16,
@@ -133,7 +143,7 @@ public:
             const char* end = utftext8 + utf8Units;
             while (current < end) {
                 SkUnichar unichar = SkUTF::NextUTF8(&current, end);
-                if (unichar == '\n' || unichar == u'\u2028') {
+                if (is_hard_break(unichar)) {
                     Position after = SkTo<Position>(current - utftext8);
                     auto it = std::lower_bound(fBreaks.begin(), fBreaks.end(), after);
                     if (it != fBreaks.end() && *it == after) {
@@ -212,7 +222,7 @@ public:
                 if (unichar < 0) {
                     unichar = 0xFFFD;
                 }
-                if (unichar == '\n' || unichar == u'\u2028') {
+                if (is_hard_break(unichar)) {
                     Position after = SkTo<Position>(current - u16);
                     auto it = std::lower_bound(fBreaks.begin(), fBreaks.end(), after);
                     if (it != fBreaks.end() && *it == after) {
@@ -331,6 +341,10 @@ public:
     bool isSpace(SkUnichar unichar) override {
         return CFCharacterSetIsLongCharacterMember(
                 CFCharacterSetGetPredefined(kCFCharacterSetWhitespaceAndNewline), unichar);
+    }
+
+    bool isHardBreak(SkUnichar unichar) override {
+        return is_hard_break(unichar);
     }
 
     std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t text[],
