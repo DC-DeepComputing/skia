@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/gpu/ganesh/GrContext_Base.h"
 
 #include <cstdint>
@@ -23,6 +24,8 @@ class GrRecordingContext;
     This class is purely a privileged window into GrContext_Base. It should never have
     additional data members or virtual methods. */
 class GrBaseContextPriv {
+    SK_STACK_ALLOCATED();
+
 public:
     GrContext_Base* context() { return fContext; }
     const GrContext_Base* context() const { return fContext; }

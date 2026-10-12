@@ -9,6 +9,7 @@
 #define GrStagingBufferManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 
 #include <cstddef>
@@ -22,6 +23,7 @@ public:
     GrStagingBufferManager(GrGpu* gpu) : fGpu(gpu) {}
 
     struct Slice {
+        SK_STACK_ALLOCATED();
         Slice() {}
         Slice(GrGpuBuffer* buffer, size_t offset, void* offsetMapPtr)
                 : fBuffer(buffer), fOffset(offset), fOffsetMapPtr(offsetMapPtr) {}

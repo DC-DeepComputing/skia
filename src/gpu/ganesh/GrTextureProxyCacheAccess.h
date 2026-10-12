@@ -8,6 +8,7 @@
 #ifndef GrTextureProxyCacheAccess_DEFINED
 #define GrTextureProxyCacheAccess_DEFINED
 
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
 
 class GrProxyProvider;
@@ -20,6 +21,8 @@ class UniqueKey;
  * This class allows GrResourceCache increased privileged access to GrTextureProxy objects.
  */
 class GrTextureProxy::CacheAccess {
+    SK_STACK_ALLOCATED();
+
 private:
     void setUniqueKey(sk_sp<GrUniquelyKeyedProxyRegistry> uniquelyKeyedProxyRegistry,
                       const skgpu::UniqueKey& key);

@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkMacros.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/Swizzle.h"
@@ -284,6 +285,7 @@ public:
     using SamplerHandle = GrGLSLUniformHandler::SamplerHandle;
 
     struct EmitArgs {
+        SK_STACK_ALLOCATED();
         EmitArgs(GrGLSLXPFragmentBuilder* fragBuilder,
                  GrGLSLUniformHandler* uniformHandler,
                  const GrShaderCaps* caps,

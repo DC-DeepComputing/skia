@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/GrResourceCache.h"
 
 #include "include/core/SkString.h"
@@ -55,6 +56,8 @@ static skgpu::Budgeted resource_budgeted(const GrGpuResource* resource) {
 //////////////////////////////////////////////////////////////////////////////
 
 class GrResourceCache::AutoValidate : ::SkNoncopyable {
+    SK_STACK_ALLOCATED();
+
 public:
     AutoValidate(GrResourceCache* cache) : fCache(cache) { cache->validate(); }
     ~AutoValidate() { fCache->validate(); }
@@ -813,6 +816,7 @@ void GrResourceCache::validate() const {
     }
 
     struct Stats {
+        SK_STACK_ALLOCATED();
         size_t fBytes;
         int fBudgetedCount;
         size_t fBudgetedBytes;

@@ -14,6 +14,7 @@
 #include "include/private/SkAlign.h"
 #include "include/private/SkAlignedStorage.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 
@@ -57,6 +58,8 @@ public:
 
     /** Used to initialize a key. */
     class Builder {
+        SK_STACK_ALLOCATED();
+
     public:
         ~Builder() { this->finish(); }
 

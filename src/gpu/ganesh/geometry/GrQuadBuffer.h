@@ -10,6 +10,7 @@
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 
@@ -63,6 +64,8 @@ public:
     // Provides a read-only iterator over a quad buffer, giving access to the device quad, metadata
     // and optional local quad.
     class Iter {
+        SK_STACK_ALLOCATED();
+
     public:
         Iter(const GrQuadBuffer<T>* buffer)
                 : fDeviceQuad(SkRect::MakeEmpty())
@@ -119,6 +122,8 @@ public:
     // unpacking the device and local quads into GrQuads and is intended for use during op
     // finalization, which may require rewriting state such as color.
     class MetadataIter {
+        SK_STACK_ALLOCATED();
+
     public:
         MetadataIter(GrQuadBuffer<T>* list)
                 : fBuffer(list)

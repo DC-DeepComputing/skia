@@ -9,6 +9,7 @@
 #define GrGpuResourceCacheAccess_DEFINED
 
 #include "include/private/SkAssert.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
@@ -25,6 +26,8 @@ class Reporter;
  * This class allows GrResourceCache increased privileged access to GrGpuResource objects.
  */
 class GrGpuResource::CacheAccess {
+    SK_STACK_ALLOCATED();
+
 private:
     /** The cache is allowed to go from no refs to 1 ref. */
     void ref() { fResource->addInitialRef(); }

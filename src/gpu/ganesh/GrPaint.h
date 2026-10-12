@@ -11,6 +11,7 @@
 #include "include/core/SkRegion.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkColorData.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
@@ -39,6 +40,8 @@ enum class SkBlendMode;
  * the application of fractional coverage from the coverage pipeline.
  */
 class GrPaint {
+    SK_STACK_ALLOCATED();
+
 public:
     GrPaint() = default;
     ~GrPaint() = default;
