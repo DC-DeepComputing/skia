@@ -70,6 +70,30 @@
       },
       "revId": "b4c10ce3fa81575ca35d377602a47d5fd09674ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "675ad7aa_0e04eb00",
+        "filename": "src/core/SkRecordCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-12T15:28:01Z",
+      "side": 1,
+      "message": "sounds good, I\u0027ll mark this as resolved for now but add a link to this conversation to our SkRecorder doc",
+      "parentUuid": "e4dd30d7_e8e0be8a",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 29
+      },
+      "revId": "b4c10ce3fa81575ca35d377602a47d5fd09674ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
