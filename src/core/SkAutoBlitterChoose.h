@@ -9,6 +9,7 @@
 #define SkAutoBlitterChoose_DEFINED
 
 #include "include/private/SkMacros.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkDraw.h"
@@ -28,6 +29,8 @@ class SkPixmap;
 using SkBlitterSizedArena = SkSTArenaAlloc<2736>;
 
 class [[nodiscard]] SkAutoBlitterChoose : SkNoncopyable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkAutoBlitterChoose() {}
     SkAutoBlitterChoose(const skcpu::Draw& draw,
