@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c03e097_0d3a26f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T19:14:21Z",
+      "side": 1,
+      "message": "The 9 patch textures should be cached so between loops and even samples so the actually nanobench results would be biased towards the cached performance and not the first-frame performance. Regardless, these numbers look like we should move forward with consolidating on the new algorithm!",
+      "parentUuid": "b59f1d9d_40ffd853",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 61
+      },
+      "revId": "4996f4018e1039296b4177e4b7c8945f64bcf226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7c2a510_1aa7193c",
