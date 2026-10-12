@@ -71,8 +71,11 @@ GrVkResourceProvider::PipelineStateCache::~PipelineStateCache() {
 #endif
 }
 
+void GrVkResourceProvider::PipelineStateCache::reset() { fMap.reset(); }
+
 void GrVkResourceProvider::PipelineStateCache::release() {
-    fMap.reset();
+    this->reset();
+    fGpu = nullptr;
 }
 
 GrVkPipelineState* GrVkResourceProvider::PipelineStateCache::findOrCreatePipelineState(

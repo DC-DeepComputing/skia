@@ -223,7 +223,7 @@ public:
     void releaseUnlockedBackendObjects();
 
 #if defined(GPU_TEST_UTILS)
-    void resetShaderCacheForTesting() const { fPipelineStateCache->release(); }
+    void resetShaderCacheForTesting() const { fPipelineStateCache->reset(); }
 #endif
 
 private:
@@ -232,6 +232,7 @@ private:
         PipelineStateCache(GrVkGpu* gpu);
         ~PipelineStateCache() override;
 
+        void reset();
         void release();
         GrVkPipelineState* findOrCreatePipelineState(GrRenderTarget*,
                                                      const GrProgramInfo&,
