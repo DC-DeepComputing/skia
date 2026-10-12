@@ -497,12 +497,15 @@ struct SkCubicCoeff {
 
 }  // namespace
 
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTemplates.h"
 
 /**
  *  Help class to allocate storage for approximating a conic with N quads.
  */
 class [[nodiscard]] SkAutoConicToQuads {
+    SK_STACK_ALLOCATED();
+
 public:
     SkAutoConicToQuads() : fQuadCount(0) {}
 

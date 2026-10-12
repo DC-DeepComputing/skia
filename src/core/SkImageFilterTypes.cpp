@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkStackAllocated.h"
 #include "src/core/SkImageFilterTypes.h"
 
 #include "include/core/SkAlphaType.h"
@@ -526,6 +527,8 @@ bool LayerSpace<SkMatrix>::inverseMapRect(const LayerSpace<SkIRect>& rect,
 //     }
 //     return surface.snap(); // Automatically handles failed allocations
 class FilterResult::AutoSurface {
+    SK_STACK_ALLOCATED();
+
 public:
     AutoSurface(const Context& ctx,
                 const LayerSpace<SkIRect>& dstBounds,

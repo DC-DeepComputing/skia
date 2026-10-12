@@ -10,6 +10,7 @@
 
 #include "include/core/SkVertices.h"
 
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTo.h"
 
 class SkReadBuffer;
@@ -21,6 +22,8 @@ struct SkVertices_DeprecatedBone { float values[6]; };
     This class is purely a privileged window into SkVertices. It should never have additional
     data members or virtual methods. */
 class SkVerticesPriv {
+    SK_STACK_ALLOCATED();
+
 public:
     SkVertices::VertexMode mode() const { return fVertices->fMode; }
 

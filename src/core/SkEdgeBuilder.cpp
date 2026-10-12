@@ -273,6 +273,7 @@ int SkEdgeBuilder::build(const SkPathRaw& raw, const SkIRect* iclip, bool canCul
     if (iclip) {
         SkRect clip = this->recoverClip(*iclip);
         struct Rec {
+            SK_STACK_ALLOCATED();
             SkEdgeBuilder* fBuilder;
             bool           fIsFinite;
         } rec = { this, true };

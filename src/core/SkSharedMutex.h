@@ -10,6 +10,7 @@
 
 #include "include/private/SkDebug.h"
 #include "include/private/SkSemaphore.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkThreadAnnotations.h"
 
 #ifdef SK_DEBUG
@@ -76,6 +77,8 @@ inline void SkSharedMutex::assertHeldShared() const {}
 #endif  // SK_DEBUG
 
 class SK_SCOPED_CAPABILITY SkAutoSharedMutexExclusive {
+    SK_STACK_ALLOCATED();
+
 public:
     explicit SkAutoSharedMutexExclusive(SkSharedMutex& lock) SK_ACQUIRE(lock)
             : fLock(lock) {
@@ -88,6 +91,8 @@ private:
 };
 
 class SK_SCOPED_CAPABILITY SkAutoSharedMutexShared {
+    SK_STACK_ALLOCATED();
+
 public:
     explicit SkAutoSharedMutexShared(SkSharedMutex& lock) SK_ACQUIRE_SHARED(lock)
             : fLock(lock)  {

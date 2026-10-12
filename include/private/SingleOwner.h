@@ -9,6 +9,7 @@
 #define skgpu_SingleOwner_DEFINED
 
 #include "include/private/SkDebug.h" // IWYU pragma: keep
+#include "include/private/SkStackAllocated.h"
 
 #if defined(SK_DEBUG)
 #include "include/private/SkAssert.h"
@@ -31,6 +32,7 @@ public:
      SingleOwner() : fOwner(kIllegalThreadID), fReentranceCount(0) {}
 
      struct AutoEnforce {
+         SK_STACK_ALLOCATED();
          AutoEnforce(SingleOwner* so, const char* file, int line)
                 : fFile(file), fLine(line), fSO(so) {
              fSO->enter(file, line);

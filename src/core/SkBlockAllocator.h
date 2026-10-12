@@ -15,6 +15,7 @@
 #include "include/private/SkMacros.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkStackAllocated.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -691,6 +692,8 @@ bool SkBlockAllocator::Block::release(int start, int end) {
 ///////// Block iteration
 template <bool Forward, bool Const>
 class SkBlockAllocator::BlockIter {
+    SK_STACK_ALLOCATED();
+
 private:
     using BlockT = typename std::conditional<Const, const Block, Block>::type;
     using AllocatorT =
@@ -700,6 +703,8 @@ public:
     BlockIter(AllocatorT* allocator) : fAllocator(allocator) {}
 
     class Item {
+        SK_STACK_ALLOCATED();
+
     public:
         bool operator!=(const Item& other) const { return fBlock != other.fBlock; }
 
