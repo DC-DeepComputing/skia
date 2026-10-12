@@ -264,6 +264,8 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
             while (current < end) {
                 auto before = current - utf16;
                 SkUnichar unichar = SkUTF::NextUTF16((const uint16_t**)&current, (const uint16_t*)end);
+                // Replace unpaired surrogates with U+FFFD to match the UTF-8 overload contract
+                if (unichar < 0) unichar = 0xFFFD;
                 auto after = current - utf16;
                 callback(unichar, before, after);
             }
