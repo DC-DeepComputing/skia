@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "439c9ede_73403711",
+        "filename": "tools/ProcsUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-12T17:39:58Z",
+      "side": 1,
+      "message": "We want to avoid moving as much as we can here as possible. Since we are just doing this shift for text slug deserialization, we can probably separate that code so that only the SK_GRAPHITE guarded code is inline. We can move other files here if our tools need it, but lets avoid header bloat until we know for sure.\n\nSo keep default_deserial_procs inline, have it call a different helper function called base_procs that looks like how default_deserial_procs looks now, then add the Slug proc with the guards here.",
+      "revId": "2b3dd66959b6facc3f5532ef5e0a2da89727efb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
