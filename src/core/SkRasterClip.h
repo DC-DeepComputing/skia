@@ -15,6 +15,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkAAClip.h"
 
 class SkBlitter;
@@ -132,6 +133,8 @@ private:
 };
 
 class [[nodiscard]] SkAutoRasterClipValidate : SkNoncopyable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkAutoRasterClipValidate(const SkRasterClip& rc) : fRC(rc) {
         fRC.validate();
@@ -161,6 +164,8 @@ private:
  *  we're really BW anyways.
  */
 class SkAAClipBlitterWrapper {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkAAClipBlitterWrapper();
     SkAAClipBlitterWrapper(const SkRasterClip&, SkBlitter*);

@@ -10,6 +10,7 @@
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkSemaphore.h"
 #include "include/private/SkThreadAnnotations.h"
 #include "include/private/SkThreadID.h"
@@ -55,6 +56,8 @@ private:
 };
 
 class SK_SCOPED_CAPABILITY SkAutoMutexExclusive {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkAutoMutexExclusive(SkMutex& mutex) SK_ACQUIRE(mutex) : fMutex(mutex) { fMutex.acquire(); }
     ~SkAutoMutexExclusive() SK_RELEASE_CAPABILITY() { fMutex.release(); }

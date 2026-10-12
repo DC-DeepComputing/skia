@@ -26,6 +26,7 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/shaders/SkShaderBase.h"
@@ -637,6 +638,8 @@ private:
 };
 
 class [[nodiscard]] SkAutoDeviceTransformRestore : SkNoncopyable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkAutoDeviceTransformRestore(SkDevice* device, const SkM44& localToDevice)
         : fDevice(device)
