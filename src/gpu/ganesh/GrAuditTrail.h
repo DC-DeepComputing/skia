@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/ganesh/GrRenderTargetProxy.h"
@@ -53,6 +54,8 @@ public:
     };
 
     class AutoManageOpsTask {
+        SK_ONLY_STACK_ALLOCATABLE;
+
     public:
         AutoManageOpsTask(GrAuditTrail* auditTrail)
                 : fAutoEnable(auditTrail), fAuditTrail(auditTrail) {}

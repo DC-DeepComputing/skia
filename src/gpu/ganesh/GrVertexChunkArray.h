@@ -12,6 +12,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTypeTraits.h"
 #include "src/gpu/BufferWriter.h"
@@ -45,6 +46,8 @@ using GrVertexChunkArray = skia_private::STArray<1, GrVertexChunk>;
 // Builds a GrVertexChunkArray. The provided Target must not be used externally throughout the
 // entire lifetime of this object.
 class GrVertexChunkBuilder : SkNoncopyable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     GrVertexChunkBuilder(GrMeshDrawTarget* target, GrVertexChunkArray* chunks,
                          size_t stride, int minVerticesPerChunk)
