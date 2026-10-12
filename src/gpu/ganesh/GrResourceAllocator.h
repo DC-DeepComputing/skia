@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkTHash.h"
@@ -83,6 +84,8 @@ class GrResourceProvider;
  * The drawing manager will drop the flush if any proxies fail to instantiate.
  */
 class GrResourceAllocator {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     explicit GrResourceAllocator(GrDirectContext* dContext) : fDContext(dContext) {}
 
@@ -272,6 +275,8 @@ private:
     };
 
     class IntervalList {
+        SK_ONLY_STACK_ALLOCATABLE;
+
     public:
         IntervalList() = default;
         // N.B. No need for a destructor – the arena allocator will clean up for us.

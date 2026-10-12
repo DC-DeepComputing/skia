@@ -67,6 +67,8 @@ GrColor RandomColor(SkRandom* random);
 uint8_t RandomCoverage(SkRandom* random);
 
 class TestAsFPArgs {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     TestAsFPArgs(GrProcessorTestData*);
     ~TestAsFPArgs();
