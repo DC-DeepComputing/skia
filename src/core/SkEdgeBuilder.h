@@ -10,6 +10,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkArenaAlloc.h"
 
@@ -17,10 +18,12 @@
 
 class SkEdge;
 class SkPath;
-struct SkPathRaw;
 struct SkAnalyticEdge;
+struct SkPathRaw;
 
 class SkEdgeBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     int buildEdges(const SkPathRaw&, const SkIRect* shiftedClip);
     int buildEdges(const SkPath&, const SkIRect* shiftedClip);

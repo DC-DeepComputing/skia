@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkCachedData.h"
 
 #include "include/private/SkMalloc.h"
@@ -27,6 +28,8 @@ SkDiscardableMemory* SkCachedData::diagnostic_only_getDiscardable() const {
 }
 
 class SkCachedData::AutoMutexWritable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     AutoMutexWritable(const SkCachedData* cd) : fCD(const_cast<SkCachedData*>(cd)) {
         fCD->fMutex.acquire();

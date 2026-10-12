@@ -13,6 +13,7 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkPicture.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 
 class SkDrawable;
 class SkRecord;
@@ -31,6 +32,8 @@ namespace SkRecords {
 
 // This is an SkRecord visitor that will draw that SkRecord to an SkCanvas.
 class Draw : SkNoncopyable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     explicit Draw(SkCanvas* canvas, SkPicture const* const drawablePicts[],
                   SkDrawable* const drawables[], int drawableCount,

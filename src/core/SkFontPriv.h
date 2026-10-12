@@ -12,6 +12,7 @@
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkTypeface.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 
 class SkReadBuffer;
@@ -91,6 +92,8 @@ public:
 };
 
 class [[nodiscard]] SkAutoToGlyphs {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkAutoToGlyphs(const SkFont& font, const void* text, size_t length, SkTextEncoding encoding) {
         if (encoding == SkTextEncoding::kGlyphID || length == 0) {
