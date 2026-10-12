@@ -81,8 +81,10 @@ bool SkUnicodeHardCodedCharProperties::isTabulation(SkUnichar utf8) {
     return utf8 == '\t';
 }
 
+// Match UAX #14 LF (U+000A) and BK (U+000B, U+000C, U+2028, U+2029) mandatory line breaks
 bool SkUnicodeHardCodedCharProperties::isHardBreak(SkUnichar utf8) {
-    return utf8 == '\n' || utf8 == u'\u2028';
+    return utf8 == '\n' || utf8 == '\v' || utf8 == '\f' ||
+           utf8 == u'\u2028' || utf8 == u'\u2029';
 }
 
 bool SkUnicodeHardCodedCharProperties::isEmoji(SkUnichar unichar) {
