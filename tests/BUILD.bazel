@@ -562,6 +562,7 @@ filegroup(
     testonly = True,
     srcs = [
         "graphite/AHardwareBufferTest.cpp",
+        "graphite/ArcLengthTest.cpp",
         # TODO(b/480952153): BackendTextureTest.cpp requires Vulkan headers which aren't configured under Bazel.
         # "graphite/BackendTextureTest.cpp",
         "graphite/BoundsManagerTest.cpp",

@@ -1928,6 +1928,40 @@ $pure half4 blur_coverage_fn(float2 coords,
     return half4(0);
 }
 
+// Returns the arc length at local position 'q' in and around a join of a stroke whose arc length
+// is parameterized by skgpu::tess::ArcLengthAccumulator. The join's frame comes from the
+// vertex shader's tessellate_arclength_stroked_curve(): cornerA = {C, a} and
+// cornerB = {b, boundary, radius}. C is the join's inner corner, a and b are the unit tangents
+// arriving at and leaving the join, and 'boundary' is the arc length where the curve drawing this
+// fragment meets the join: the end of the join's sweep if 'isStartJoin', otherwise its start.
+$pure float arclength_join_fn(float2 q, float4 cornerA, float4 cornerB, bool isStartJoin) {
+    float2 C = cornerA.xy;
+    float2 a = cornerA.zw;
+    float2 b = cornerB.xy;
+    float radius = cornerB.w;
+    float sinAngle = cross_length_2d(a, b);
+    float angle = atan(abs(sinAngle), dot(a, b));
+    float sweepStart = isStartJoin ? cornerB.z - angle * radius : cornerB.z;
+    float2 v = q - C;
+    float alongA = dot(v, a);
+    if (alongA <= 0.0) {
+        // Before the arriving curve's cross-section through C.
+        return sweepStart + alongA;
+    }
+    float alongB = dot(v, b);
+    if (alongB >= 0.0) {
+        // Past the leaving curve's cross-section through C.
+        return (sweepStart + angle * radius) + alongB;
+    }
+    // Between the two cross-sections, the arc length sweeps around C. The angle is measured from
+    // the cross-sections' bisector, which points from C towards the path vertex, so it stays within
+    // +/-90 degrees, away from atan's discontinuity.
+    float2 bisector = normalize(a - b);
+    float fromBisector = atan(cross_length_2d(bisector, v), dot(bisector, v));
+    float swept = 0.5 * angle + (sinAngle >= 0.0 ? fromBisector : -fromBisector);
+    return sweepStart + radius * clamp(swept, 0.0, angle);
+}
+
 // This function indexes into the alphas stored in a texture during SparseStrips rasterization.
 // The rect coords are given in local pixel coordinates relative to the top-left corner of the
 // endcap rectangle ([0, width) x [0, height)). These are converted to tile-relative byte offsets to

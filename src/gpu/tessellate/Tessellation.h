@@ -86,6 +86,10 @@ enum class PatchAttribs {
     kSsboIndex = 1 << 7,  // [int] Used to index into a shared storage buffer for this patch's
                           //       uniform values.
     kVertexStorageIndex = 1 << 8, // [int] Used to index into the vertex storage buffer.
+    kArcLength = 1 << 9,          // [float4 x 3] Used for arc length parameterized path effects:
+                                  //   {start, join length, curve length, total length},
+                                  //   {next tangent point, start join radius, end join radius},
+                                  //   {fold partner's corner, angle, radius}.
 
     // Extra flags.
     kWideColorIfEnabled = 1 << 6,  // If kColor is set, specifies it to be float4 wide color.
@@ -111,7 +115,8 @@ constexpr size_t PatchAttribsStride(PatchAttribs attribs) {
            (attribs & PatchAttribs::kPaintDepth ? sizeof(float) : 0) +
            (attribs & PatchAttribs::kExplicitCurveType ? sizeof(float) : 0) +
            (attribs & PatchAttribs::kSsboIndex ? sizeof(uint32_t) : 0) +
-           (attribs & PatchAttribs::kVertexStorageIndex ? sizeof(uint32_t) : 0);
+           (attribs & PatchAttribs::kVertexStorageIndex ? sizeof(uint32_t) : 0) +
+           (attribs & PatchAttribs::kArcLength ? sizeof(float) * 12 : 0);
 }
 constexpr size_t PatchStride(PatchAttribs attribs) {
     return 4*sizeof(SkPoint) + PatchAttribsStride(attribs);

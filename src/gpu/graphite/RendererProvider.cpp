@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/render/AnalyticBlurRenderStep.h"
 #include "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.h"
 #include "src/gpu/graphite/render/AnalyticRRectRenderStep.h"
+#include "src/gpu/graphite/render/ArcLengthStrokeRenderStep.h"
 #include "src/gpu/graphite/render/BitmapTextRenderStep.h"
 #include "src/gpu/graphite/render/CircularArcRenderStep.h"
 #include "src/gpu/graphite/render/CommonDepthStencilSettings.h"
@@ -109,6 +110,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         SkASSERT(IsSupported(fStrategy, caps));
     }
 
+    const bool computeSupport = caps->computeSupport();
     const bool infinitySupport = caps->shaderCaps()->fInfinitySupport;
     const bool useStorageBuffers = caps->storageBufferSupport();
     const auto& bindingReq = caps->resourceBindingRequirements();
@@ -131,6 +133,10 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     // strategy wouldn't use it to sample an atlas.
     initFromStep(&fConvexTessellatedWedges,
                  TessellateWedgesRenderStep::ConvexFill(layout, infinitySupport, bufferManager),
+                 DrawTypeFlags::kNonSimpleShape);
+    initFromStep(&fArcLengthStrokes,
+                 std::make_unique<ArcLengthStrokeRenderStep>(layout, computeSupport,
+                                                             infinitySupport, useStorageBuffers),
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fCoverageMask,
                  std::make_unique<CoverageMaskRenderStep>(layout),

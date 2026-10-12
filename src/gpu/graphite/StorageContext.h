@@ -59,6 +59,11 @@ public:
     // the incoming appendVertices() stream. Should only be called prior to snapDrawPass().
     void recordAlignment(size_t stride, size_t align);
 
+    // Allocates `count * stride` bytes of vertex data in the CPU-side copy, aligned according to
+    // `stride` and `align`. Returns a pointer to the allocated memory and the byte offset within
+    // the eventual storage buffer.
+    std::pair<void*, uint32_t> allocateVertices(size_t count, size_t stride, size_t align = 1);
+
     // Appends `count * stride` bytes of vertex data into the CPU-side copy, aligned according to
     // `stride` and `align`. Returns the byte offset within the eventual storage buffer.
     uint32_t appendVertices(const void* data, size_t count, size_t stride, size_t align = 1);

@@ -57,6 +57,7 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
         M1(AnalyticRRect)                       \
         M1(AnalyticBlur)                        \
         M1(AnalyticRRectBlur)                   \
+        M1(ArcLengthStroke)                     \
         M1(PerEdgeAAQuad)                       \
         M2(CoverBounds,      NonAAFill)         \
         M2(CoverBounds,      RegularCover)      \
