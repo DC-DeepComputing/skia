@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77f297ad_d62742f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T19:07:40Z",
+      "side": 1,
+      "message": "It is a good idea in these types of CLs to include key portions of the design doc to ground the CL and help the reviewer. In particular, for this one, it would be good to reiterate the has-a design decisions where `SkContext` holds on to the Ganesh or Graphite context objects instead of the subclass alternative that was discussed in the past.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 41
+      },
+      "revId": "7b5da26da120b5ae793bf4558090d2ca11c50c30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "199c1817_4e7f840c",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T19:07:40Z",
+      "side": 1,
+      "message": "This is not healthy code and needs to be redone:\n1. Why is the constructor for Ganesh taking a sk_sp\u003cSkRefCnt\u003e and not a GrDirectContext directly? If it was to avoid referencing a Ganesh-specific type (reasonable, which I\u0027ll talk about more below), it\u0027s not consistent with then directly referencing Graphite\u0027s context in the next constructor.\n2. Why do you override the unique_ptr\u0027s destroyer parameter here and then require `MakeContext` to go through release/delete hoops. This should be a plain `std::unique_ptr`. \n3. A challenge to the has-a model (but one we can address easily enough) is how to define `SkContext` in a way that lets it get built regardless of whether or not ganesh and graphite are enabled in the build.\n\nIn the unified architecture doc, it was specified that `SkContext` would delegate to the GPU contexts for certain operations by default. But we haven\u0027t yet outlined what that looks like (or if we have, pointing to it for the CL description would help me a lot). One way would be to have an internal GpuContext base interface that is always defined and is what is passed into SkContext.  The other (which I think is where we are headed for factory APIs) is that the GPU operations would be free static functions that take in an SkContext and be defined in the ganesh/graphite modules.  This is important to hammer out now so we know what the SkContext needs to store.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 39
+      },
+      "revId": "7b5da26da120b5ae793bf4558090d2ca11c50c30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d74ab64b_f1eb03fc",
         "filename": "include/core/SkContext.h",
         "patchSetId": 2
