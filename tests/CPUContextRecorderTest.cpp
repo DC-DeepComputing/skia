@@ -24,10 +24,40 @@
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureCanvas.h"
 #include "src/capture/SkCaptureManager.h"
+#include "src/core/SkMemset.h"
+#include "src/core/SkOpts.h"
 #include "src/core/SkResourceCache.h"
 #include "tests/Test.h"
 
+#include <cstdint>
 #include <memory>
+#include <thread>
+#include <vector>
+
+DEF_TEST(SkContextMake_ThreadSafe_Indempotence, reporter) {
+    constexpr int kNumThreads = 16;
+    std::vector<std::thread> threads;
+    threads.reserve(kNumThreads);
+
+    for (int i = 0; i < kNumThreads; i++) {
+        threads.emplace_back([]() {
+            for (int j = 0; j < 10; j++) {
+                SkContext::Make();
+            }
+        });
+    }
+
+    for (auto& thread : threads) {
+        thread.join();
+    }
+
+    // Verify SkOpts functions initialized by SkContext::Make() work properly afterwards
+    uint32_t buf[16] = {};
+    SkOpts::memset32(buf, 0xFACEB004, 16);
+    for (uint32_t val : buf) {
+        REPORTER_ASSERT(reporter, val == 0xFACEB004);
+    }
+}
 
 DEF_TEST(SkContext_CaptureDisabledByDefault, reporter) {
     SkContextOptions opts;
