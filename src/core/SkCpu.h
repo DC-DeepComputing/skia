@@ -49,14 +49,15 @@ struct SkLoongArch {
 };
 
 struct SkCpu {
-    static void CacheRuntimeFeatures();
-    static bool Supports(uint32_t);
+    void cacheRuntimeFeatures();
+    bool supports(uint32_t);
+
 private:
-    static uint32_t gCachedFeatures;
+    uint32_t fCachedFeatures;
 };
 
-inline bool SkCpu::Supports(uint32_t mask) {
-    uint32_t features = gCachedFeatures;
+inline bool SkCpu::supports(uint32_t mask) {
+    uint32_t features = fCachedFeatures;
 
     // If we mask in compile-time known lower limits, the compiler can
     // often compile away this entire function.

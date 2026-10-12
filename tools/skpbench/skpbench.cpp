@@ -9,7 +9,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkJpegDecoder.h"
 #include "include/core/SkCanvas.h"
-#include "include/core/SkGraphics.h"
+#include "include/core/SkContext.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
@@ -20,6 +20,7 @@
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/chromium/GrDeferredDisplayList.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -530,7 +531,7 @@ int main(int argc, char** argv) {
               join(FLAGS_src).c_str());
     }
 
-    SkGraphics::Init();
+    SkContexts::GetGlobalSkContext();
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
     SkCodecs::Register(SkPngRustDecoder::Decoder());
 #else

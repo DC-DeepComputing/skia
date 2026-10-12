@@ -228,9 +228,7 @@ namespace {
 #endif
 }  // anonymous namespace
 
-uint32_t SkCpu::gCachedFeatures = 0;
-
-void SkCpu::CacheRuntimeFeatures() {
-    static SkOnce once;
-    once([] { gCachedFeatures = read_cpu_features(); });
+void SkCpu::cacheRuntimeFeatures() {
+    static uint32_t features = read_cpu_features();
+    fCachedFeatures = features;
 }

@@ -16,6 +16,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkContext.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkGraphics.h"
@@ -40,6 +41,7 @@
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkBase64.h"
 #include "src/core/SkColorPriv.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMD5.h"
 #include "src/core/SkOSFile.h"
@@ -710,7 +712,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         , fDrawTileBoundaries(false)
         , fTileScale{0.25f, 0.25f}
         , fPerspectiveMode(kPerspective_Off) {
-    SkGraphics::Init();
+    SkContexts::GetGlobalSkContext();
 #if defined(SK_ENABLE_SVG)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
