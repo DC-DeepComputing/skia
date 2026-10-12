@@ -347,6 +347,8 @@ private:
 // Clip element iteration
 class ClipStack::ElementIter {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     bool operator!=(const ElementIter& o) const {
         return o.fItem != fItem && o.fRemaining != fRemaining;
     }

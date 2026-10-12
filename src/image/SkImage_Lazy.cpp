@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/image/SkImage_Lazy.h"
 
 #include "include/core/SkBitmap.h"
@@ -81,6 +82,8 @@ SkImage_Lazy::Validator::Validator(sk_sp<SharedGenerator> gen, const SkColorType
 // Helper for exclusive access to a shared generator.
 class SkImage_Lazy::ScopedGenerator {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     ScopedGenerator(const sk_sp<SharedGenerator>& gen)
       : fSharedGenerator(gen)
       , fAutoAcquire(gen->fMutex) {}

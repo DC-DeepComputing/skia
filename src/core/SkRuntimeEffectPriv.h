@@ -221,6 +221,8 @@ inline SkRuntimeEffect* SkMakeRuntimeEffect(
 
 class RuntimeEffectRPCallbacks : public SkSL::RP::Callbacks {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     // SkStageRec::fPaintColor is used (strictly) to tint alpha-only image shaders with the paint
     // color. We want to suppress that behavior when they're sampled from runtime effects, so we
     // just override the paint color here. See also: SkImageShader::appendStages.

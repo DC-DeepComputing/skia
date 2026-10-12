@@ -497,6 +497,7 @@ struct SkCubicCoeff {
 
 }  // namespace
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 
 /**
@@ -504,6 +505,8 @@ struct SkCubicCoeff {
  */
 class [[nodiscard]] SkAutoConicToQuads {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     SkAutoConicToQuads() : fQuadCount(0) {}
 
     /**

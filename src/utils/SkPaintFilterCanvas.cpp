@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/utils/SkPaintFilterCanvas.h"
 
 #include "include/core/SkBlendMode.h"
@@ -32,6 +33,8 @@ struct SkDrawShadowRec;
 
 class SkPaintFilterCanvas::AutoPaintFilter {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     AutoPaintFilter(const SkPaintFilterCanvas* canvas, const SkPaint* paint)
         : fPaint(paint ? *paint : SkPaint()) {
         fShouldDraw = canvas->onFilter(fPaint);

@@ -92,6 +92,7 @@ static SkPaint make_paint_with_image(const SkPaint& origPaint,
 Draw::Draw() { fBlitterChooser = SkBlitter::Choose; }
 
 struct PtProcRec {
+    SK_ONLY_STACK_ALLOCATABLE;
     SkCanvas::PointMode fMode;
     const SkPaint*  fPaint;
     const SkRegion* fClip;
