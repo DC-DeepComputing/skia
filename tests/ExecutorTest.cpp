@@ -77,7 +77,13 @@ private:
 };
 
 // Make sure all high priority work is started before the low priority work is begun
-void priority_test(skiatest::Reporter* reporter, std::unique_ptr<SkExecutor> executor) {
+template <typename ExecutorType>
+void priority_test(skiatest::Reporter* reporter, std::unique_ptr<ExecutorType> executor) {
+}
+
+template <>
+void priority_test<SkStdFunctionExecutor>(skiatest::Reporter* reporter,
+                                          std::unique_ptr<SkStdFunctionExecutor> executor) {
     SkTaskGroup taskGroup(*executor);
     Collector collector;
 
@@ -89,8 +95,8 @@ void priority_test(skiatest::Reporter* reporter, std::unique_ptr<SkExecutor> exe
     }
     for (int i = 100; i < 200; ++i) {
         taskGroup.add([&collector, i]() {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
             collector.insert(i);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }, kLowPriority);
     }
 
@@ -100,25 +106,89 @@ void priority_test(skiatest::Reporter* reporter, std::unique_ptr<SkExecutor> exe
     REPORTER_ASSERT(reporter, collector.dataIsInOrder());
 }
 
-std::unique_ptr<SkExecutor> make_2x_FIFO() {
-    return SkExecutors::MakeMultiListFIFOThreadPool(
-        kNumWorkLists, kNumThreads, /* allowBorrowing= */ false);
+struct CallbackContext {
+    Collector* fCollector;
+    std::atomic<int32_t>* fPending;
+    int fCount;
+    int fWaitMicroS;
+};
+
+void callback(void* contextIn) {
+    CallbackContext* context = static_cast<CallbackContext*>(contextIn);
+
+    context->fCollector->insert(context->fCount);
+    std::this_thread::sleep_for(std::chrono::microseconds(context->fWaitMicroS));
+    context->fPending->fetch_add(-1, std::memory_order_release);
 }
 
-std::unique_ptr<SkExecutor> make_2x_LIFO() {
-    return SkExecutors::MakeMultiListLIFOThreadPool(
-        kNumWorkLists, kNumThreads, /* allowBorrowing= */ false);
+template <>
+void priority_test<SkCallbackExecutor>(skiatest::Reporter* reporter,
+                                       std::unique_ptr<SkCallbackExecutor> executor) {
+    Collector collector;
+    std::atomic<int32_t> pending;
+
+    std::array<CallbackContext, 200> contexts;
+
+    for (int i = 0; i < 100; ++i) {
+        contexts[i].fCollector = &collector;
+        contexts[i].fPending = &pending;
+        contexts[i].fCount = i;
+        contexts[i].fWaitMicroS = 50;
+
+        pending.fetch_add(+1, std::memory_order_relaxed);
+        executor->add({ callback, &contexts[i] }, kHighPriority);
+    }
+    for (int i = 100; i < 200; ++i) {
+        contexts[i].fCollector = &collector;
+        contexts[i].fPending = &pending;
+        contexts[i].fCount = i;
+        contexts[i].fWaitMicroS = 1000; // 1 millisecond
+
+        pending.fetch_add(+1, std::memory_order_relaxed);
+        executor->add({ callback, &contexts[i] }, kLowPriority);
+    }
+
+    while (pending.load(std::memory_order_acquire) > 0) {
+        executor->borrow();
+    }
+
+    REPORTER_ASSERT(reporter, collector.count() == Collector::kMaxCount);
+    REPORTER_ASSERT(reporter, collector.dataIsInOrder());
 }
 
-std::unique_ptr<SkExecutor> make_1x_FIFO() {
-    return SkExecutors::MakeFIFOThreadPool(kNumThreads, /* allowBorrowing= */ false);
+template <typename ExecutorType>
+std::unique_ptr<ExecutorType> make_2x_FIFO() {
+    return SkExecutors<ExecutorType>::MakeMultiListFIFOThreadPool(
+        kNumWorkLists, kNumThreads, /* allowBorrowing= */ true);
+}
+
+template <typename ExecutorType>
+std::unique_ptr<ExecutorType> make_2x_LIFO() {
+    return SkExecutors<ExecutorType>::MakeMultiListLIFOThreadPool(
+        kNumWorkLists, kNumThreads, /* allowBorrowing= */ true);
+}
+
+template <typename ExecutorType>
+std::unique_ptr<ExecutorType> make_1x_FIFO() {
+    return SkExecutors<ExecutorType>::MakeFIFOThreadPool(kNumThreads, /* allowBorrowing= */ true);
+}
+
+template <typename ExecutorType>
+void run_test(skiatest::Reporter* reporter) {
+    // 1x_LIFO is incompatible w/ how this test is structured
+    for (auto makeExecutor : { make_2x_FIFO<ExecutorType>,
+                               make_2x_LIFO<ExecutorType>,
+                               make_1x_FIFO<ExecutorType> }) {
+        priority_test<ExecutorType>(reporter, makeExecutor());
+    }
 }
 
 } // anonymous namespace
 
-DEF_TEST(ExecutorTest, reporter) {
-    // 1x_LIFO is incompatible w/ how this test is structured
-    for (auto makeExecutor : { make_2x_FIFO, make_2x_LIFO, make_1x_FIFO }) {
-        priority_test(reporter, makeExecutor());
-    }
+DEF_TEST(ExecutorTest_StdFunction, reporter) {
+    run_test<SkStdFunctionExecutor>(reporter);
+}
+
+DEF_TEST(ExecutorTest_Callback, reporter) {
+    run_test<SkCallbackExecutor>(reporter);
 }

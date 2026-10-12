@@ -7,4 +7,11 @@
 
 #include "include/core/SkExecutor.h"
 
-SkExecutor::~SkExecutor() {}
+/*
+ * For Skia to use an SkExecutor it needs to explicitly know about its templated
+ * structure beforehand. There is no case in which a client can create some new templated
+ * flavor of SkExecutor and expect Skia to make use of it. Thus, we can force instantiation
+ * here.
+ */
+template class SK_API SkExecutorBase<SkExecutorStdFunction, SkExecutorStdFunctionTraits>;
+template class SK_API SkExecutorBase<SkExecutorCallbackPair, SkExecutorCallbackTraits>;
