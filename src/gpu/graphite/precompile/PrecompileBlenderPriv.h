@@ -9,6 +9,7 @@
 #define skgpu_graphite_PrecompileBlenderPriv_DEFINED
 
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
+#include "include/private/SkStackAllocated.h"
 
 #include <vector>
 
@@ -18,6 +19,8 @@ namespace skgpu::graphite {
     This class is purely a privileged window into PrecompileBlender. It should never have additional
     data members or virtual methods. */
 class PrecompileBlenderPriv {
+    SK_STACK_ALLOCATED();
+
 public:
     std::optional<SkBlendMode> asBlendMode() const { return fPrecompileBlender->asBlendMode(); }
 

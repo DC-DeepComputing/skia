@@ -12,6 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"  // IWYU pragma: keep
 #include "include/gpu/graphite/Recording.h"
+#include "include/private/SkStackAllocated.h"
 
 #include <cstdint>
 #include <memory>
@@ -32,6 +33,8 @@ class Texture;
 class TextureProxy;
 
 class RecordingPriv {
+    SK_STACK_ALLOCATED();
+
 public:
     TextureProxy* deferredTargetProxy();
     const Texture* setupDeferredTarget(ResourceProvider*,

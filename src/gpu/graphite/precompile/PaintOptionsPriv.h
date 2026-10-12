@@ -9,6 +9,7 @@
 #define skgpu_graphite_PaintOptionsPriv_DEFINED
 
 #include "include/gpu/graphite/precompile/PaintOptions.h"
+#include "include/private/SkStackAllocated.h"
 
 namespace skgpu::graphite {
 
@@ -18,6 +19,8 @@ class ShaderCodeDictionary;
     This class is purely a privileged window into PaintOptions. It should never have additional
     data members or virtual methods. */
 class PaintOptionsPriv {
+    SK_STACK_ALLOCATED();
+
 public:
     using ProcessCombination = PaintOptions::ProcessCombination;
 

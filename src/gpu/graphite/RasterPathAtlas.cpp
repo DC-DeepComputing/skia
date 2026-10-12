@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/graphite/RasterPathAtlas.h"
 
 #include "include/core/SkBitmap.h"
@@ -101,6 +102,7 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
     skgpu::UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
                                                    maskOrigin, maskSize);
     struct PathDrawContext {
+        SK_STACK_ALLOCATED();
         const Shape& fShape;
         const Transform& fLocalToDevice;
         const SkStrokeRec& fStrokeRec;

@@ -13,6 +13,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/gpu/graphite/DrawContext.h"
@@ -56,6 +57,8 @@ SK_MAKE_BITMASK_OPS(KeyGenFlags)
 // SkRuntimeEffectDictionary. Depending on the calling context it can also supply a
 // backend-specific resource providing object (e.g., a Recorder).
 class KeyContext {
+    SK_STACK_ALLOCATED();
+
 public:
     // Constructor for the pre-compile code path (i.e., no Recorder)
     KeyContext(const Caps*,

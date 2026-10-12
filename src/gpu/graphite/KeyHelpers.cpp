@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 
 #include "include/core/SkColorFilter.h"
@@ -91,6 +92,8 @@ namespace {
 // Automatically calls beginStruct() with the required alignment and endStruct() when it is deleted.
 // Automatically registers uniform expectations in debug builds.
 class ScopedUniformWriter {
+    SK_STACK_ALLOCATED();
+
 public:
     ScopedUniformWriter(const KeyContext& keyContext, BuiltInCodeSnippetID codeSnippetID)
             : ScopedUniformWriter(keyContext.pipelineDataGatherer(),
