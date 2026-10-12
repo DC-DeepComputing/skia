@@ -8,6 +8,7 @@
 #ifndef GrDeferredDisplayListPriv_DEFINED
 #define GrDeferredDisplayListPriv_DEFINED
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/chromium/GrDeferredDisplayList.h"
 
 /*************************************************************************************************/
@@ -15,6 +16,8 @@
     Skia. This class is purely a privileged window into GrDeferredDisplayList. It should never have
     additional data members or virtual methods. */
 class GrDeferredDisplayListPriv {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     int numRenderTasks() const {
         return fDDL->fRenderTasks.size();

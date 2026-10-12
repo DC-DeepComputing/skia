@@ -21,6 +21,8 @@ namespace skgpu::ganesh {
 // An adapter around GrVertexChunkBuilder that fits the API requirements of
 // skgpu::tess::PatchWriter's PatchAllocator template parameter.
 class VertexChunkPatchAllocator {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     // 'stride' is provided by PatchWriter.
     // 'worstCaseTolerances' is used to accumulate the LinearTolerances from each append().
