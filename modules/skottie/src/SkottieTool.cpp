@@ -10,9 +10,9 @@
 #include "include/codec/SkWebpDecoder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkContext.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
-#include "include/core/SkGraphics.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -473,7 +473,7 @@ private:
 
 int main(int argc, char** argv) {
     CommandLineFlags::Parse(argc, argv);
-    SkGraphics::Init();
+    SkContext::Make();
 
     if (FLAGS_input.isEmpty() || FLAGS_writePath.isEmpty()) {
         SkDebugf("Missing required 'input' and 'writePath' args.\n");

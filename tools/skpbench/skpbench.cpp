@@ -9,7 +9,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkJpegDecoder.h"
 #include "include/core/SkCanvas.h"
-#include "include/core/SkGraphics.h"
+#include "include/core/SkContext.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
@@ -530,7 +530,7 @@ int main(int argc, char** argv) {
               join(FLAGS_src).c_str());
     }
 
-    SkGraphics::Init();
+    SkContext::Make();
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
     SkCodecs::Register(SkPngRustDecoder::Decoder());
 #else

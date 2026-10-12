@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkContext.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"  // IWYU pragma: keep
-#include "include/core/SkGraphics.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkDebug.h"
@@ -34,7 +34,7 @@ static DEFINE_string2(output, o, nullptr, "Output .json file.");
 
  int main(int argc, char** argv) {
     CommandLineFlags::Parse(argc, argv);
-    SkGraphics::Init();
+    SkContext::Make();
 
     if (FLAGS_input.isEmpty() || FLAGS_output.isEmpty()) {
         SkDebugf("Missing required 'input' and 'output' args.\n");
