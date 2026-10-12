@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d74ab64b_f1eb03fc",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-12T18:07:50Z",
+      "side": 1,
+      "message": "Looking for feedback if this seems like a \"proper\" way to have composition\n\nThe issue I\u0027m facing is I can\u0027t have clean `unique_ptr` and `sk_sp` because that requires adding includes to the gpu contexts, which breaks the build isolation.\n\nI also know that a ganesh context is designed to be held by an  `sk_sp` while a skgpu::graphite::context is managed by a `unique_ptr`",
+      "range": {
+        "startLine": 89,
+        "startChar": 3,
+        "endLine": 91,
+        "endChar": 35
+      },
+      "revId": "7b5da26da120b5ae793bf4558090d2ca11c50c30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
