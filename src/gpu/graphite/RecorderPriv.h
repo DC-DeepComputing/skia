@@ -12,6 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/graphite/DebugUtils.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -52,6 +53,8 @@ class UploadBufferManager;
 class UploadList;
 
 class RecorderPriv {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     void add(sk_sp<Task>);
     // Flush *all* tracked devices created by this Recorder
