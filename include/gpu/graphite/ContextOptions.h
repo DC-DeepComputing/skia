@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_ContextOptions_DEFINED
 #define skgpu_graphite_ContextOptions_DEFINED
 
+#include "include/core/SkExecutor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
@@ -19,14 +20,13 @@
 #include <string>
 
 class SkData;
-class SkExecutor;
 class SkRuntimeEffect;
 namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
 
-struct ContextOptionsPriv;
 class PersistentPipelineStorage;
+struct ContextOptionsPriv;
 
 struct SK_API ContextOptions {
     ContextOptions() {}
@@ -211,7 +211,7 @@ struct SK_API ContextOptions {
      * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
      * the lifetime of the Context.
      */
-    SkExecutor* fExecutor = nullptr;
+    SkCallbackExecutor* fExecutor = nullptr;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the
