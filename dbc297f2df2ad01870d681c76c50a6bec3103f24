@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aab2b84_1b84b184",
+        "filename": "tests/SlugTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T20:22:18Z",
+      "side": 1,
+      "message": "Would this crash previously? If not, would we do better drawing to two canvases and ensuring that their pixels are the same after readback?",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 53
+      },
+      "revId": "dbc297f2df2ad01870d681c76c50a6bec3103f24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
