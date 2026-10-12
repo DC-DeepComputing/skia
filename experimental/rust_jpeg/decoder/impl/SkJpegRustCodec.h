@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <optional>
+#include <vector>
 
 #include "experimental/rust_jpeg/ffi/FFI.rs.h"
 #include "include/codec/SkCodec.h"
@@ -19,6 +20,7 @@
 
 class SkStream;
 class SkSwizzler;
+class SkJpegRustCodecTestPriv;
 struct SkEncodedInfo;
 
 // This class provides the Skia image decoding API (`SkCodec`) on top of:
@@ -60,6 +62,17 @@ protected:
     Result onGetYUVAPlanes(const SkYUVAPixmaps&) override;
 
 private:
+    friend class SkJpegRustCodecTestPriv;
+
+    bool supportsStreamingFullDecodeForTesting() const {
+        return fReader->supports_streaming_full_decode();
+    }
+    uint64_t fullImageBufferCapacityForTesting() const {
+        return fReader->full_image_buffer_capacity_for_testing();
+    }
+    size_t scanlineBufferSizeForTesting() const { return fScanlineBuffer.size(); }
+    int lastFullDecodeRowsForTesting() const { return fLastFullDecodeRows; }
+
     sk_sp<const SkData> getEncodedData() const override;
 
     Result onGetPixels(const SkImageInfo& info,
@@ -77,11 +90,23 @@ private:
 
     Result onIncrementalDecode(int* rowsDecoded) override;
 
+    Result onStartScanlineDecode(const SkImageInfo& dstInfo, const Options& options) override;
+    int onGetScanlines(void* dst, int countLines, size_t rowBytes) override;
+    bool onSkipScanlines(int countLines) override;
+
     // Helper methods
     Result performFullDecode(const SkImageInfo& dstInfo, void* dst, size_t dstRowStride,
                              int* rowsDecoded = nullptr);
     Result initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
     void swizzleRow(const uint8_t* srcRow, void* dstRow);
+
+    struct ScanlineDecodeResult {
+        Result fResult;
+        int fRowsDecoded;
+    };
+
+    Result startScanlineSession();
+    ScanlineDecodeResult decodeScanlines(void* dst, int countLines, size_t dstRowBytes);
 
     struct DecodingState {
         SkSpan<uint8_t> fDst;
@@ -92,6 +117,8 @@ private:
     Result incrementalDecode(DecodingState& state, int* rowsDecoded);
 
     std::optional<DecodingState> fIncrementalDecodingState;
+    std::vector<uint8_t> fScanlineBuffer;
+    int fLastFullDecodeRows = -1;
 
     // Stored separately; SkCodec base gets nullptr. Keep this before fReader so
     // the stream outlives the Rust reader's stream adapter.
