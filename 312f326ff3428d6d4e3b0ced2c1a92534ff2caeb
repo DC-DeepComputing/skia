@@ -70,6 +70,30 @@
       },
       "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e807c16_61876ac1",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-12T18:05:11Z",
+      "side": 1,
+      "message": "I think, for now, we can keep the initialization logic within SkGraphics::Init(). I don\u0027t see anywhere else it could go. \n\nI\u0027ll update this CL that adds the factory methods so that it calls SkGraphics::Init() at first.\n\nhttps://skia-review.git.corp.google.com/c/skia/+/1391637",
+      "parentUuid": "93b93ffe_d6f50059",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 23
+      },
+      "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
