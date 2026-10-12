@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/SharedContext.h"
 
@@ -34,6 +35,8 @@ struct ContextOptions;
     This class is purely a privileged window into Context. It should never have additional
     data members or virtual methods. */
 class ContextPriv {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     const Caps* caps() const { return fContext->fSharedContext->caps(); }
 

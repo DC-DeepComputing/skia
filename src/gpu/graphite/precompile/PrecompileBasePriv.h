@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_precompile_PrecompileBasePriv_DEFINED
 #define skgpu_graphite_precompile_PrecompileBasePriv_DEFINED
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/graphite/PrecompileInternal.h"
 
 namespace skgpu::graphite {
@@ -16,6 +17,8 @@ namespace skgpu::graphite {
     This class is purely a privileged window into PrecompileBase. It should never have additional
     data members or virtual methods. */
 class PrecompileBasePriv {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     int numChildCombinations() const {
         return fPrecompileBase->numChildCombinations();
