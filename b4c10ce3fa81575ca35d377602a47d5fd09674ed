@@ -46,6 +46,30 @@
       },
       "revId": "b4c10ce3fa81575ca35d377602a47d5fd09674ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4dd30d7_e8e0be8a",
+        "filename": "src/core/SkRecordCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T15:20:05Z",
+      "side": 1,
+      "message": "My mistake, I was thinking this was the NWay capture canvas, there isn\u0027t an underlying canvas for this to delegate to.\n\nI think we leave this as-is for now, but it exposes a question about how to mix picture recording with regular CPU work. At some point the CPU recorder may also allow producing SkRecordCanvases, or that the SkPictureRecorder class becomes an SkRecorder at which point SkRecordCanvas would point to that.",
+      "parentUuid": "1eddaa19_a413dd6f",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 29
+      },
+      "revId": "b4c10ce3fa81575ca35d377602a47d5fd09674ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
