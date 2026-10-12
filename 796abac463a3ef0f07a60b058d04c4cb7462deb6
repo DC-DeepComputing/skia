@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b31571_e767fea5",
+        "filename": "include/private/SkStackAllocated.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-12T10:06:31Z",
+      "side": 1,
+      "message": "What\u0027s your opinion on this patch?\n\nI also considered adding a `SkStackAllocated` base class. The issues would be this forces aggregate initialization to initialize the empty base class. E.g: `x \u003d {arg1, arg2}`, becomes `x \u003d {{}, arg1, arg2}`, which I disliked.\n\nFollow-up patches using it:\n- Graphite: https://skia-review.googlesource.com/c/skia/+/1391096\n- Ganesh: https://skia-review.googlesource.com/c/skia/+/1391116\n- Core: https://skia-review.googlesource.com/c/skia/+/1391136",
+      "revId": "796abac463a3ef0f07a60b058d04c4cb7462deb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
