@@ -19,9 +19,11 @@
 namespace skiatest::graphite {
 
 D3D11TestContext::~D3D11TestContext() = default;
-
 std::unique_ptr<GraphiteTestContext> D3D11TestContext::Make() {
-    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DEBUG;
+    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+#if defined(SK_DEBUG)
+    creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
 
     D3D_FEATURE_LEVEL featureLevels[] = {
         D3D_FEATURE_LEVEL_11_1,
