@@ -9,7 +9,9 @@
 #include "include/core/SkContext.h"
 #include "tools/ganesh/mock/MockTestContext.h"
 
+#include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
+#include "src/core/SkContextPriv.h"
 
 namespace {
 
@@ -46,9 +48,14 @@ TestContext* CreateMockTestContext(TestContext*) { return new MockTestContext();
 
 namespace SkContexts {
 
-std::unique_ptr<SkContext> MakeGanesh(const SkContextOptions& options,
-                                      sk_gpu_test::TestContext* shareContext) {
-    return nullptr;
+std::unique_ptr<SkContext> MakeGanesh(const SkContextOptions& contextOptions,
+                                      const GrContextOptions& grOptions,
+                                      sk_gpu_test::TestContext*) {
+    auto direct = GrDirectContext::MakeMock(nullptr, grOptions);
+    if (!direct) {
+        return nullptr;
+    }
+    return SkContextCtorAccessor::MakeContext(contextOptions, std::move(direct));
 }
 
 }  // namespace SkContexts

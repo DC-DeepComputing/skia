@@ -10,8 +10,10 @@
 #include "include/core/SkContext.h"
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/dawn/DawnBackendContext.h"
 #include "include/private/SkTArray.h"
+#include "src/core/SkContextPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/dawn/DawnQueueManager.h"
@@ -20,9 +22,15 @@
 using namespace skia_private;
 
 namespace SkContexts {
-std::unique_ptr<SkContext> MakeGraphite(const skgpu::graphite::DawnBackendContext& dawnContext,
-                              const SkContextOptions& options) {
-    return nullptr;
+std::unique_ptr<SkContext> MakeGraphite(
+        const skgpu::graphite::DawnBackendContext& dawnContext,
+        const SkContextOptions& contextOptions,
+        const skgpu::graphite::ContextOptions& graphiteOptions) {
+    auto context = skgpu::graphite::ContextFactory::MakeDawn(dawnContext, graphiteOptions);
+    if (!context) {
+        return nullptr;
+    }
+    return SkContextCtorAccessor::MakeContext(contextOptions, std::move(context));
 }
 }  // namespace SkContexts
 

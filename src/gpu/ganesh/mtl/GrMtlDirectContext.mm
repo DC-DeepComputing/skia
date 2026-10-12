@@ -7,8 +7,10 @@
 #include "include/core/SkContext.h"
 #include "include/gpu/ganesh/mtl/GrMtlDirectContext.h"
 
+#include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/mtl/GrMtlBackendContext.h"
+#include "src/core/SkContextPriv.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/mtl/GrMtlTrampoline.h"
@@ -40,8 +42,13 @@ namespace SkContexts {
 
 // Creates a context wrapping a Ganesh GPU backend with Metal
 std::unique_ptr<SkContext> MakeGanesh(const GrMtlBackendContext& mtlContext,
-                            const SkContextOptions& options) {
-    return nullptr;
+                                      const SkContextOptions& contextOptions,
+                                      const GrContextOptions& grOptions) {
+    auto direct = GrDirectContexts::MakeMetal(mtlContext, grOptions);
+    if (!direct) {
+        return nullptr;
+    }
+    return SkContextCtorAccessor::MakeContext(contextOptions, std::move(direct));
 }
 
 }  // namespace SkContexts
