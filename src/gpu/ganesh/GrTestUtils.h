@@ -68,6 +68,8 @@ uint8_t RandomCoverage(SkRandom* random);
 
 class TestAsFPArgs {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     TestAsFPArgs(GrProcessorTestData*);
     ~TestAsFPArgs();
     const GrFPArgs& args() const { return fArgs; }

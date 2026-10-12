@@ -55,6 +55,8 @@ public:
 
         class FPCallbacks : public SkSL::PipelineStage::Callbacks {
         public:
+            SK_ONLY_STACK_ALLOCATABLE;
+
             FPCallbacks(Impl* self,
                         EmitArgs& args,
                         const char* inputColor,

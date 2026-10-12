@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 
 #include "include/core/SkArc.h"
@@ -520,6 +521,8 @@ bool GrStyledShape::asNestedRects(SkRect rects[2]) const {
 
 class AutoRestoreInverseness {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     AutoRestoreInverseness(GrShape* shape, const GrStyle& style)
             // Dashing ignores inverseness skbug.com/40036591.
             : fShape(shape), fInverted(!style.isDashed() && fShape->inverted()) {}
