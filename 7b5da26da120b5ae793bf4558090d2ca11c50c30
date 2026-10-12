@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad0c19d_e75d70a2",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T19:56:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "199c1817_4e7f840c",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 39
+      },
+      "revId": "7b5da26da120b5ae793bf4558090d2ca11c50c30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d74ab64b_f1eb03fc",
@@ -60,6 +84,30 @@
       "writtenOn": "2026-10-12T18:07:50Z",
       "side": 1,
       "message": "Looking for feedback if this seems like a \"proper\" way to have composition\n\nThe issue I\u0027m facing is I can\u0027t have clean `unique_ptr` and `sk_sp` because that requires adding includes to the gpu contexts, which breaks the build isolation.\n\nI also know that a ganesh context is designed to be held by an  `sk_sp` while a skgpu::graphite::context is managed by a `unique_ptr`",
+      "range": {
+        "startLine": 89,
+        "startChar": 3,
+        "endLine": 91,
+        "endChar": 35
+      },
+      "revId": "7b5da26da120b5ae793bf4558090d2ca11c50c30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "412476e3_1cb442d2",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T19:56:45Z",
+      "side": 1,
+      "message": "Sorry, my comments crossed paths with this comment, so I\u0027ll respond here and close my other one.\n\nThe challenge here is that `SkContext` is specifically a has-a API to point to the GPU context. For other APIs and functions in Skia, they will operate on an `SkRecorder` (is-a model) or be defined on objects that have already been made specific to a backend. In either case, dispatch is handled automatically.\n\nIf we didn\u0027t have to deal with modular builds where Ganesh or Graphite can be compiled away entirely, then the direction you\u0027re going could be viable. However, the way you\u0027d deal with the types and getting sk_sp and std::unique_ptr to compile is to:\n1. Forward declare Context and GrDirectContext in this header.\n2. SkContext would store a std::unique_ptr\u003cContext\u003e and an sk_sp\u003cGrDirectContext\u003e and we\u0027d just document that only one should be non-null.\n3. So long as all constructors and destructors of `SkContext` are declared but not defined in the header, it will compile. Then you just have to define them in the `SkContext.cpp` file where you can also include the full types for `Context` and `GrDirectContext`.\n\nThis avoids the SkRefCnt and destructor function games you added to avoid needing their type definitions.\n\nHowever, this won\u0027t work because of Skia\u0027s goals of having modular builds where core files need to be able to be compiled without Ganesh and/or Graphite, and also not rely on build defines to just comment things out. There is limited generic functionality that GrDirectContext and Graphite\u0027s context need to expose to SkContext.\n\nThe simplest way to address the build is to have a virtual class in src/core called GPUContext that has functions to submit, insert an SkRecording, and do other common gpu operations like query the budget or abandon status. This lightweight type would always be defined, but there won\u0027t be any implementation that could instantiate it unless Graphite or Ganesh were included in the build. SkContext would just store an std::unique_ptr\u003cGPUContext\u003e. Graphite\u0027s context could extend it (privately should be fine too), and Ganesh could provide an adapter that let its GPUContext be uniquely owned while holding an `sk_sp\u003cGrDirectContext\u003e`.\n\nSince the GPUContext type is internal, you would still forward declare it and move SkContext\u0027s constructors and destructors into SkContext.cpp, but it would always be able to compile. In the event that there\u0027s no ganesh and graphite, it\u0027s always valid to pass in nullptr for the CPU-only SkContext.",
+      "parentUuid": "d74ab64b_f1eb03fc",
       "range": {
         "startLine": 89,
         "startChar": 3,
