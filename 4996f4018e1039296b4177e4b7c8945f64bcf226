@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e8a1a42_3b20c9f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T17:25:39Z",
+      "side": 1,
+      "message": "This result is very encouraging and seems like we\u0027re on track to fold the rectangle case into the new algorithm. Off hand, how did `AnalyticBlurMask` handle the other GMs you measured?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 61
+      },
+      "revId": "4996f4018e1039296b4177e4b7c8945f64bcf226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7c2a510_1aa7193c",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T17:25:39Z",
+      "side": 1,
+      "message": "This can be fit into the layout alignment padding without increasing total size if you put it after `drawPad`.",
+      "range": {
+        "startLine": 237,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 56
+      },
+      "revId": "4996f4018e1039296b4177e4b7c8945f64bcf226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab158961_f5639387",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T17:25:39Z",
+      "side": 1,
+      "message": "We can remove these local variables and just modify the `cornerSafe` variables, right?",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 35
+      },
+      "revId": "4996f4018e1039296b4177e4b7c8945f64bcf226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e065f070_29a6c93e",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T17:25:39Z",
+      "side": 1,
+      "message": "I didn\u0027t notice this earlier, but you should use `centerX()` here. In particular, it is set up to divide left and right *before* the addition so it\u0027s more robust to overflow.",
+      "range": {
+        "startLine": 319,
+        "startChar": 28,
+        "endLine": 319,
+        "endChar": 62
+      },
+      "revId": "4996f4018e1039296b4177e4b7c8945f64bcf226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b558b5e3_5a03b493",
+        "filename": "src/gpu/graphite/render/AnalyticRRectBlurRenderStep.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T17:25:39Z",
+      "side": 1,
+      "message": "Well maybe not since we pass in the un-clamped to the middle values here. Maybe we should be sending `insFoo` here if they crossed over?",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 362,
+        "endChar": 92
+      },
+      "revId": "4996f4018e1039296b4177e4b7c8945f64bcf226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
