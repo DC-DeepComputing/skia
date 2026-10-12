@@ -16,6 +16,24 @@
       "message": "Thank you for sharing, I am fairly at capacity so haven\u0027t had the chance to fully internalize all of the magic that happens during the upsampling but I hope to have the bandwidth to do so soon.\n\nA couple of very high-level thoughts on this:\n1. If at all possible, it would be nice to integrate this more directly into the existing SkBlurImageFilter or otherwise extend/reuse SkBlurEngine and skif::FilterResult::rescale().  There are a lot of subtleties when rescaling in order to get the boundary pixels to remain accurate for a given tile mode that is handled by rescale().  This may involve changes to rescale() or to the SkBlurEngine to accomodate the flexibility needed by this kind of effect. (Semi-related, I\u0027ve been interested in implementing a uniform dual Kawase blur algorithim for SkBlurEngine but it would benefit from working with rescale()`.\n\n2. In terms of controlling the blur, I think it would make sense for the image filter to take in a min and max blur sigma and then either an SkShader or an SkImageFilter that produce the alpha values used to interpolate the blur sigmas.  An SkShader would work well for handling the different gradient cases without needing to rewrite details of those effects inside the blur shaders. An image filter would be the most general and dynamic way, but would introduce an additional temporary image that has to be sampled.",
       "revId": "160a8b28c569d431be0b66e9538a1d7322c1dfc8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49e4ee8a_bce4cdd5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5068964
+      },
+      "writtenOn": "2026-10-12T11:09:05Z",
+      "side": 1,
+      "message": "Thank you for the feedback — it was very helpful, and we\u0027ve reworked our design along the lines you suggested.\n\nBlur control API. We\u0027re dropping the shape-specific factories (gradient/circle with percent/pivot parameters) entirely. The filter will instead take a min and max blur sigma plus an SkShader whose alpha channel interpolates between them per pixel, exactly as you described. Shape logic (linear, radial, or anything else) moves out of the filter and into the mask shader supplied by the caller. We\u0027re deferring the SkImageFilter-mask variant for now, given the extra intermediate image it requires.\n\nReusing rescale(). We\u0027re rebuilding the downsample chain on skif::FilterResult::rescale(), invoking it once per level with a 0.5 scale factor so each mip level inherits the tile-mode boundary handling (we previously decimated with decal everywhere, which darkened clamp/repeat edges). The upsample side stays custom: since the retained mip levels are the blur and get blended per pixel by LOD, we walk back up 2x at a time with an 8-tap Kawase kernel to suppress grid artifacts — there\u0027s no analog for that in rescale()\u0027s single deferred upscale.\n\nOne follow-up thought: rescale()\u0027s per-step filtering is bilinear, while our chain previously used a small tent kernel. If rescale() ever grew an option for the per-step sampling kernel, it would serve both this filter and the uniform dual-Kawase SkBlurEngine algorithm you mentioned — we\u0027d be happy to align on that, since our downsample/upsample passes are essentially the dual-Kawase structure with levels retained.\n\nWe\u0027ll start with an internal refactor (mask-driven single pyramid-blend path), then switch the decimation to rescale() as a second step, and share results.",
+      "parentUuid": "9d1e47fe_7d303fcf",
+      "revId": "160a8b28c569d431be0b66e9538a1d7322c1dfc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
