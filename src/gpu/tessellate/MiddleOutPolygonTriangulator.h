@@ -13,6 +13,7 @@
 #include "include/core/SkPoint.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkPathPriv.h"
@@ -76,6 +77,8 @@ public:
     // The above code iterates over the triangles being popped, and then once iteration is finished,
     // the PoppedTriangleStack is destroyed, triggering the pending stack update.
     class PoppedTriangleStack {
+        SK_ONLY_STACK_ALLOCATABLE;
+
     public:
         PoppedTriangleStack(MiddleOutPolygonTriangulator* middleOut,
                             SkPoint lastPoint,
@@ -106,6 +109,7 @@ public:
         }
 
         struct Iter {
+            SK_ONLY_STACK_ALLOCATABLE;
             bool operator!=(const Iter& iter) const { return fVertex != iter.fVertex; }
             void operator++() { --fVertex; }
             std::tuple<SkPoint, SkPoint, SkPoint> operator*() {
@@ -209,6 +213,8 @@ private:
 //   }
 //
 class PathMiddleOutFanIter {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     PathMiddleOutFanIter(const SkPath& path) : fMiddleOut(path.countVerbs()) {
         SkPathPriv::Iterate it(path);

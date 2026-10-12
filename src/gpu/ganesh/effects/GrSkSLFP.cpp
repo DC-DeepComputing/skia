@@ -54,6 +54,8 @@ public:
         const SkSL::Program& program  = *fp.fEffect->fBaseProgram;
 
         class FPCallbacks : public SkSL::PipelineStage::Callbacks {
+            SK_ONLY_STACK_ALLOCATABLE;
+
         public:
             FPCallbacks(Impl* self,
                         EmitArgs& args,
