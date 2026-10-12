@@ -9,8 +9,10 @@
 
 #include "src/core/SkExecutors.h"
 
-SkExecutor::~SkExecutor() {}
-
-void SkExecutor::SetDefault(SkExecutor* executor) {
-    SkExecutors::SetDefault(executor);
+template <typename WorkT>
+void SkExecutorBase<WorkT>::SetDefault(SkExecutorBase<WorkT>* executor) {
+    SkExecutors<SkExecutorBase<WorkT>>::SetDefault(executor);
 }
+
+template class SK_API SkExecutorBase<SkExecutorStdFunction>;
+template class SK_API SkExecutorBase<SkExecutorCallbackWork>;

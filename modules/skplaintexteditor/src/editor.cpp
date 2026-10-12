@@ -472,7 +472,8 @@ void Editor::reshapeAll() {
         float shape_width = (float)(fWidth);
         #ifdef SK_EDITOR_GO_FAST
         SkSemaphore semaphore;
-        std::unique_ptr<SkExecutor> executor = SkExecutor::MakeFIFOThreadPool(100);
+        std::unique_ptr<SkStdFunctionExecutor> executor =
+                SkStdFunctionExecutor::MakeFIFOThreadPool(100);
         int jobCount = 0;
         for (TextLine& line : fLines) {
             if (!line.fShaped) {
