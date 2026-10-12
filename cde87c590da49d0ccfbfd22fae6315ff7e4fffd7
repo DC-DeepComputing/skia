@@ -16,6 +16,23 @@
       "message": "LGTM (I don\u0027t have permission to vote)",
       "revId": "cde87c590da49d0ccfbfd22fae6315ff7e4fffd7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41d5494d_876ddade",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T16:18:06Z",
+      "side": 1,
+      "message": "Canary failed for unrelated reasons, and enough jobs finished successfully that this shouldn\u0027t be a problem to roll into chrome.",
+      "revId": "cde87c590da49d0ccfbfd22fae6315ff7e4fffd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
