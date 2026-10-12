@@ -22,6 +22,30 @@
       },
       "revId": "2b2302f01cd89cbe7404d70e42cc12e5a452c890",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df205aa8_fae499a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-12T15:26:35Z",
+      "side": 1,
+      "message": "Done, added to CL description.",
+      "parentUuid": "b5d9c656_540eec59",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 62
+      },
+      "revId": "2b2302f01cd89cbe7404d70e42cc12e5a452c890",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
