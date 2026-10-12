@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkStackAllocated.h"
 #include "src/core/SkAAClip.h"
 
 #include "include/core/SkClipOp.h"
@@ -31,6 +32,8 @@
 namespace {
 
 class AutoAAClipValidate {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     AutoAAClipValidate(const SkAAClip& clip) : fClip(clip) {
         fClip.validate();
@@ -77,6 +80,8 @@ struct YOffset {
 };
 
 class RowIter {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     RowIter(const uint8_t* row, const SkIRect& bounds) {
         fRow = row;

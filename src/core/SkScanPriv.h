@@ -9,6 +9,7 @@
 #define SkScanPriv_DEFINED
 
 #include "include/core/SkPath.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkScan.h"
 
@@ -16,6 +17,8 @@
 #define SK_SUPERSAMPLE_SHIFT    2
 
 class SkScanClipper {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkScanClipper(SkBlitter* blitter, const SkRegion* clip, const SkIRect& bounds,
                   bool skipRejectTest = false, bool boundsPreClipped = false);
