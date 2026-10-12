@@ -47,6 +47,12 @@ std::unique_ptr<WindowContext> MakeGraphiteDawnForWin(HWND,
 #endif
 #endif
 
+#ifdef SK_D3D11
+#if defined(SK_GRAPHITE)
+std::unique_ptr<WindowContext> MakeGraphiteD3D11ForWin(HWND, std::unique_ptr<const DisplayParams>);
+#endif
+#endif
+
 std::unique_ptr<WindowContext> MakeRasterForWin(HWND, std::unique_ptr<const DisplayParams>);
 
 }  // namespace skwindow

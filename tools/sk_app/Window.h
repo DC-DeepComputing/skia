@@ -66,6 +66,7 @@ public:
         kGraphiteDawnMetal,
         kGraphiteDawnOpenGLES,
         kGraphiteDawnVulkan,
+        kGraphiteD3D11,
         kVulkan,
         kGraphiteVulkan,
         kMetal,

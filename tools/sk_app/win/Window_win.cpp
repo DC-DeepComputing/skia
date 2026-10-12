@@ -372,6 +372,14 @@ bool Window_win::attach(BackendType attachType) {
             break;
 #endif
 #endif
+#if defined(SK_D3D11)
+#if defined(SK_GRAPHITE)
+        case BackendType::kGraphiteD3D11:
+            fWindowContext = skwindow::MakeGraphiteD3D11ForWin(
+                    fHWnd, fRequestedDisplayParams->clone());
+            break;
+#endif
+#endif
         case BackendType::kRaster:
             fWindowContext = skwindow::MakeRasterForWin(fHWnd, fRequestedDisplayParams->clone());
             break;

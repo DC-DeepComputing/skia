@@ -242,6 +242,11 @@ static DEFINE_bool(list, false, "List samples?");
 #   else
 #       define GRAPHITE_MTL_STR
 #   endif
+#   if defined(SK_D3D11)
+#       define GRAPHITE_D3D11_STR ", \"grd3d11\""
+#   else
+#       define GRAPHITE_D3D11_STR
+#   endif
 #   if defined(SK_DAWN)
 #       if defined(SK_BUILD_FOR_WIN)
 #           define GRAPHITE_DAWN_D3D_STR ", \"grdawn_d3d11\", \"grdawn_d3d12\""
@@ -266,6 +271,7 @@ static DEFINE_bool(list, false, "List samples?");
 #else
 #   define GRAPHITE_VK_STR
 #   define GRAPHITE_MTL_STR
+#   define GRAPHITE_D3D11_STR
 #   define GRAPHITE_DAWN_D3D_STR
 #   define GRAPHITE_DAWN_MTL_STR
 #   define GRAPHITE_DAWN_GLES_VK_STR
@@ -278,7 +284,7 @@ static DEFINE_bool(list, false, "List samples?");
     GANESH_GL_STR GANESH_VK_STR GANESH_MTL_STR GANESH_D3D_STR GANESH_ANGLE_STR
 
 #define GRAPHITE_BACKENDS \
-    GRAPHITE_VK_STR GRAPHITE_MTL_STR GRAPHITE_DAWN_D3D_STR GRAPHITE_DAWN_MTL_STR GRAPHITE_DAWN_GLES_VK_STR
+    GRAPHITE_VK_STR GRAPHITE_MTL_STR GRAPHITE_D3D11_STR GRAPHITE_DAWN_D3D_STR GRAPHITE_DAWN_MTL_STR GRAPHITE_DAWN_GLES_VK_STR
 
 #define BACKENDS_STR BACKENDS_STR_EVALUATOR( \
     "\"sw\"", \
@@ -371,6 +377,9 @@ static bool is_graphite_backend_type(sk_app::Window::BackendType type) {
 #if defined(SK_VULKAN)
         case sk_app::Window::BackendType::kGraphiteVulkan:
 #endif
+#if defined(SK_D3D11)
+        case sk_app::Window::BackendType::kGraphiteD3D11:
+#endif
             return true;
         default:
             break;
@@ -443,6 +452,8 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
             return "ANGLE";
         case sk_app::Window::BackendType::kGraphiteDawnD3D11:
             return "Dawn D3D11 (Graphite)";
+        case sk_app::Window::BackendType::kGraphiteD3D11:
+            return "D3D11 (Graphite)";
         case sk_app::Window::BackendType::kGraphiteDawnD3D12:
             return "Dawn D3D12 (Graphite)";
         case sk_app::Window::BackendType::kGraphiteDawnMetal:
@@ -473,6 +484,11 @@ static sk_app::Window::BackendType get_backend_type(const char* str) {
     if (0 == strcmp(str, "sw")) {
         return sk_app::Window::BackendType::kRaster;
     }
+#if defined(SK_D3D11) && defined(SK_GRAPHITE)
+    if (0 == strcmp(str, "grd3d11")) {
+        return sk_app::Window::BackendType::kGraphiteD3D11;
+    }
+#endif
 #if defined(SK_DAWN) && defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grdawn_d3d11")) {
         return sk_app::Window::BackendType::kGraphiteDawnD3D11;
@@ -600,6 +616,10 @@ static const Window::BackendType kSupportedBackends[] = {
     #if defined(SK_ANGLE) && (defined(SK_BUILD_FOR_WIN) || defined(SK_BUILD_FOR_MAC))
         sk_app::Window::BackendType::kANGLE,
     #endif
+#endif
+
+#if defined(SK_D3D11) && defined(SK_GRAPHITE)
+        sk_app::Window::BackendType::kGraphiteD3D11,
 #endif
 
 #if defined(SK_DAWN) && defined(SK_GRAPHITE)

@@ -182,6 +182,12 @@ skia_component("window") {
     sources += [ "win/D3D12WindowContext_win.cpp" ]
   }
 
+  if (skia_use_d3d11) {
+    if (skia_enable_graphite && is_win) {
+      sources += [ "win/GraphiteD3D11WindowContext_win.cpp" ]
+    }
+  }
+
   if (skia_use_dawn) {
     if (skia_enable_graphite) {
       sources += [
