@@ -22,6 +22,30 @@
       },
       "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "455a401a_f3ceb217",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-12T17:21:20Z",
+      "side": 1,
+      "message": "I think there\u0027s a misunderstanding. This make is the one mentioned in the design doc (in the Composition vs Inheritance for SkContext section at the bottom). \n\nIt\u0027s meant to replace the SkGraphics::Init function.",
+      "parentUuid": "71a35d33_488ef20d",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 23
+      },
+      "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
