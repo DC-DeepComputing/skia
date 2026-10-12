@@ -25,6 +25,7 @@
 #include "include/private/SkGainmapInfo.h"
 #include "include/private/SkJpegMetadataDecoder.h"
 #include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
 #include "rust/common/SkStreamAdapter.h"
 #include "rust/common/SpanUtils.h"
 #include "src/codec/SkSwizzler.h"
@@ -63,6 +64,15 @@ namespace {
 
 // JPEG sampling factors are at most 4, so an iMCU row is at most 4 * 8 rows high.
 constexpr int kMaxScanlineBatchRows = 32;
+
+constexpr rust_jpeg::PackedOutputFormat NativeN32OutputFormat() {
+#if SK_PMCOLOR_BYTE_ORDER(B, G, R, A)
+    return rust_jpeg::PackedOutputFormat::BGRA;
+#else
+    static_assert(SK_PMCOLOR_BYTE_ORDER(R, G, B, A), "Unexpected SK_PMCOLOR_BYTE_ORDER");
+    return rust_jpeg::PackedOutputFormat::RGBA;
+#endif
+}
 
 uint64_t StreamLengthOrZero(const SkStream& stream) {
     if (!stream.hasLength()) {
@@ -653,6 +663,7 @@ SkCodec::Result SkJpegRustCodec::initializeSwizzler(const SkImageInfo& dstInfo,
 }
 
 void SkJpegRustCodec::swizzleRow(const uint8_t* srcRow, void* dstRow) {
+    ++fSwizzleRowCount;
     if (this->xformOnDecode()) {
         const int32_t width = fSwizzler->swizzleWidth();
         fSwizzler->swizzle(fXformBuffer.get(), srcRow);
@@ -668,8 +679,10 @@ SkCodec::Result SkJpegRustCodec::onGetPixels(const SkImageInfo& info,
                                              const Options& options,
                                              int* rowsDecoded) {
     fReader->reset_decode_state();
+    fSwizzleRowCount = 0;
+    fDirectPackedOutput = this->shouldUseDirectPackedOutput(info, options);
 
-    Result result = this->initializeSwizzler(info, options);
+    Result result = fDirectPackedOutput ? kSuccess : this->initializeSwizzler(info, options);
     if (result != kSuccess) {
         return result;
     }
@@ -681,6 +694,18 @@ SkCodec::Result SkJpegRustCodec::onGetPixels(const SkImageInfo& info,
         *rowsDecoded = decodedRows;
     }
     return result;
+}
+
+bool SkJpegRustCodec::shouldUseDirectPackedOutput(const SkImageInfo& dstInfo,
+                                                  const Options& options) const {
+#if defined(SK_CPU_X86)
+    return !fDisableDirectPackedOutputForTesting && !options.fSubset &&
+           dstInfo.dimensions() == this->dimensions() && dstInfo.colorType() == kN32_SkColorType &&
+           dstInfo.alphaType() != kUnknown_SkAlphaType && !this->xformOnDecode() &&
+           fReader->supports_streaming_full_decode() && fReader->supports_direct_packed_output();
+#else
+    return false;
+#endif
 }
 
 SkCodec::Result SkJpegRustCodec::performFullDecode(const SkImageInfo& dstInfo,
@@ -880,7 +905,9 @@ SkCodec::Result SkJpegRustCodec::onStartScanlineDecode(const SkImageInfo& dstInf
         return kUnimplemented;
     }
 
-    Result result = this->initializeSwizzler(dstInfo, options);
+    fSwizzleRowCount = 0;
+    fDirectPackedOutput = this->shouldUseDirectPackedOutput(dstInfo, options);
+    Result result = fDirectPackedOutput ? kSuccess : this->initializeSwizzler(dstInfo, options);
     if (result != kSuccess) {
         return result;
     }
@@ -891,8 +918,9 @@ SkCodec::Result SkJpegRustCodec::onStartScanlineDecode(const SkImageInfo& dstInf
 }
 
 SkCodec::Result SkJpegRustCodec::startScanlineSession() {
-    rust_jpeg::ScanlineOutputResult start =
-        fReader->start_scanline_output(rust_jpeg::PackedOutputFormat::Source);
+    const rust_jpeg::PackedOutputFormat format =
+            fDirectPackedOutput ? NativeN32OutputFormat() : rust_jpeg::PackedOutputFormat::Source;
+    rust_jpeg::ScanlineOutputResult start = fReader->start_scanline_output(format);
     switch (start.status) {
         case rust_jpeg::OutputStatus::Ready:
         case rust_jpeg::OutputStatus::Complete:
@@ -911,6 +939,9 @@ SkJpegRustCodec::ScanlineDecodeResult SkJpegRustCodec::decodeScanlines(void* dst
                                                                        size_t dstRowBytes) {
     if (!dst || countLines <= 0 || dstRowBytes < this->dstInfo().minRowBytes()) {
         return {kInvalidParameters, 0};
+    }
+    if (fDirectPackedOutput) {
+        return this->decodeDirectScanlines(dst, countLines, dstRowBytes);
     }
     const size_t srcRowBytes = fReader->row_bytes();
     SkSafeMath safe;
@@ -957,6 +988,62 @@ SkJpegRustCodec::ScanlineDecodeResult SkJpegRustCodec::decodeScanlines(void* dst
             this->swizzleRow(fScanlineBuffer.data() + srcOffset, dstBytes + dstOffset);
         }
         totalRows += static_cast<int>(result.rows);
+    }
+    return {kSuccess, totalRows};
+}
+
+SkJpegRustCodec::ScanlineDecodeResult SkJpegRustCodec::decodeDirectScanlines(void* dst,
+                                                                             int countLines,
+                                                                             size_t dstRowBytes) {
+    SkSafeMath safe;
+    const size_t logicalRowBytes = safe.mul(safe.castTo<size_t>(this->dimensions().width()), 4);
+    if (!safe.ok() || dstRowBytes < logicalRowBytes) {
+        return {kInvalidParameters, 0};
+    }
+    fScanlineBuffer.clear();
+
+    int totalRows = 0;
+    auto* dstBytes = static_cast<uint8_t*>(dst);
+    while (totalRows < countLines) {
+        const int remainingRows = countLines - totalRows;
+        int requestedRows = std::min(remainingRows, kMaxScanlineBatchRows);
+        size_t outputStride = dstRowBytes;
+        if (requestedRows == remainingRows && dstRowBytes != logicalRowBytes) {
+            // A caller may allocate no trailing padding after the final row. Keep the last row out
+            // of a padded batch so the Rust slice never extends beyond the caller's allocation.
+            if (requestedRows > 1) {
+                --requestedRows;
+            } else {
+                outputStride = logicalRowBytes;
+            }
+        }
+
+        SkSafeMath batchSafe;
+        const size_t dstOffset = batchSafe.mul(batchSafe.castTo<size_t>(totalRows), dstRowBytes);
+        const size_t requestedBytes =
+                batchSafe.mul(batchSafe.castTo<size_t>(requestedRows), outputStride);
+        const uint32_t rustOutputStride = batchSafe.castTo<uint32_t>(outputStride);
+        if (!batchSafe.ok()) {
+            return {kInternalError, totalRows};
+        }
+        rust_jpeg::ScanlineOutputResult result = fReader->read_scanlines(
+                rust::Slice<uint8_t>(dstBytes + dstOffset, requestedBytes), rustOutputStride);
+        switch (result.status) {
+            case rust_jpeg::OutputStatus::Ready:
+                if (result.rows == 0 || result.rows > SkToU32(requestedRows)) {
+                    return {kErrorInInput, totalRows};
+                }
+                totalRows += SkToInt(result.rows);
+                break;
+            case rust_jpeg::OutputStatus::NeedMoreInput:
+                return {kIncompleteInput, totalRows};
+            case rust_jpeg::OutputStatus::Complete:
+                return {totalRows == countLines ? kSuccess : kIncompleteInput, totalRows};
+            case rust_jpeg::OutputStatus::Error:
+                return {MapDecodingResult(result.result), totalRows};
+            default:
+                return {kInternalError, totalRows};
+        }
     }
     return {kSuccess, totalRows};
 }
