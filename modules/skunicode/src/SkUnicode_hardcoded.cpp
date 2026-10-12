@@ -12,18 +12,24 @@
 #include <utility>
 
 bool SkUnicodeHardCodedCharProperties::isControl(SkUnichar utf8) {
+    // Include U+2028..U+2029 (Zl/Zp) to match u_iscntrl and prevent fallback on zero-glyph separators
     return (utf8 < ' ') || (utf8 >= 0x7f && utf8 <= 0x9f) ||
            (utf8 >= 0x200D && utf8 <= 0x200F) ||
-           (utf8 >= 0x202A && utf8 <= 0x202E);
+           (utf8 >= 0x2028 && utf8 <= 0x202E);
 }
 
 bool SkUnicodeHardCodedCharProperties::isWhitespace(SkUnichar unichar) {
-    static constexpr std::array<SkUnichar, 21> whitespaces {
+    // Include ASCII information separators U+001C..U+001F (FS..US) to match u_isWhitespace
+    static constexpr std::array<SkUnichar, 25> whitespaces {
             0x0009, // character tabulation
             0x000A, // line feed
             0x000B, // line tabulation
             0x000C, // form feed
             0x000D, // carriage return
+            0x001C, // file separator
+            0x001D, // group separator
+            0x001E, // record separator
+            0x001F, // unit separator
             0x0020, // space
           //0x0085, // next line
           //0x00A0, // no-break space
@@ -48,12 +54,17 @@ bool SkUnicodeHardCodedCharProperties::isWhitespace(SkUnichar unichar) {
 }
 
 bool SkUnicodeHardCodedCharProperties::isSpace(SkUnichar unichar) {
-    static constexpr std::array<SkUnichar, 25> spaces {
+    // Include ASCII information separators U+001C..U+001F (FS..US) to match u_isspace
+    static constexpr std::array<SkUnichar, 29> spaces {
             0x0009, // character tabulation
             0x000A, // line feed
             0x000B, // line tabulation
             0x000C, // form feed
             0x000D, // carriage return
+            0x001C, // file separator
+            0x001D, // group separator
+            0x001E, // record separator
+            0x001F, // unit separator
             0x0020, // space
             0x0085, // next line
             0x00A0, // no-break space
@@ -82,7 +93,9 @@ bool SkUnicodeHardCodedCharProperties::isTabulation(SkUnichar utf8) {
 }
 
 bool SkUnicodeHardCodedCharProperties::isHardBreak(SkUnichar utf8) {
-    return utf8 == '\n' || utf8 == u'\u2028';
+    // Match UAX #14 LF (U+000A) and BK (U+000B, U+000C, U+2028, U+2029) mandatory line breaks
+    return utf8 == '\n' || utf8 == '\v' || utf8 == '\f' ||
+           utf8 == u'\u2028' || utf8 == u'\u2029';
 }
 
 bool SkUnicodeHardCodedCharProperties::isEmoji(SkUnichar unichar) {
@@ -137,7 +150,8 @@ bool SkUnicodeHardCodedCharProperties::isIdeographic(SkUnichar unichar) {
           {131072, 196607}// Supplementary_Ideographic_Plane
     }};
     for (auto range : ranges) {
-        if (range.first <= unichar && range.second > unichar) {
+        // Block upper bounds in ranges are inclusive codepoints (e.g. U+11FF, U+D7AF)
+        if (range.first <= unichar && range.second >= unichar) {
             return true;
         }
     }
