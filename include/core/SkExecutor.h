@@ -8,31 +8,65 @@
 #ifndef SkExecutor_DEFINED
 #define SkExecutor_DEFINED
 
-#include <functional>
-#include <memory>
 #include "include/core/SkTypes.h"
 
-class SK_API SkExecutor {
+#include <functional>
+#include <utility>
+
+template <typename WorkT, typename TraitsT>
+class SK_API SkExecutorBase {
 public:
-    virtual ~SkExecutor();
+    using WorkType = WorkT;
+    using WorkTraits = TraitsT;
+
+    virtual ~SkExecutorBase() = default;
 
     // Add work to execute.
-    virtual void add(std::function<void(void)> fn, int /* workList */) { this->add(std::move(fn)); }
+    virtual void add(WorkT work, int /* workList */) { this->add(std::move(work)); }
 
     // deprecated
-    virtual void add(std::function<void(void)>) = 0;
+    virtual void add(WorkT work) = 0;
 
     // If it makes sense for this executor, use this thread to execute work for a little while.
     virtual void borrow() {}
 
     // Does not take ownership.  Not thread safe.
     // deprecated
-    static void SetDefault(SkExecutor*);
+    static void SetDefault(SkExecutorBase<WorkT, TraitsT>*);
 
 protected:
-    SkExecutor() = default;
-    SkExecutor(const SkExecutor&) = delete;
-    SkExecutor& operator=(const SkExecutor&) = delete;
+    SkExecutorBase() = default;
+    SkExecutorBase(const SkExecutorBase&) = delete;
+    SkExecutorBase& operator=(const SkExecutorBase&) = delete;
 };
+
+//--------------------------------------------------------------------------------------------------
+using SkExecutorStdFunction = std::function<void(void)>;
+
+struct SkExecutorStdFunctionTraits {
+    static void Execute(const SkExecutorStdFunction& fn) { fn(); }
+    static bool IsValid(const SkExecutorStdFunction& fn) { return static_cast<bool>(fn); }
+    static SkExecutorStdFunction Null() { return nullptr; }
+};
+
+using SkStdFunctionExecutor = SkExecutorBase<SkExecutorStdFunction, SkExecutorStdFunctionTraits>;
+using SkExecutor = SkStdFunctionExecutor;
+
+//--------------------------------------------------------------------------------------------------
+using SkExecutorCallbackContext = void*;
+using SkExecutorCallbackFunction = void(*)(SkExecutorCallbackContext);
+
+struct SkExecutorCallbackWork {
+    SkExecutorCallbackFunction fCallback;
+    SkExecutorCallbackContext  fContext;
+};
+
+struct SkExecutorCallbackTraits {
+    static void Execute(SkExecutorCallbackWork w) { w.fCallback(w.fContext); }
+    static bool IsValid(SkExecutorCallbackWork w) { return w.fCallback != nullptr; }
+    static SkExecutorCallbackWork Null() { return {nullptr, nullptr}; }
+};
+
+using SkCallbackExecutor = SkExecutorBase<SkExecutorCallbackWork, SkExecutorCallbackTraits>;
 
 #endif // SkExecutor_DEFINED

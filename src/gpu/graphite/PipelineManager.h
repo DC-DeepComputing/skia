@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_PipelineManager_DEFINED
 #define skgpu_graphite_PipelineManager_DEFINED
 
+#include "include/core/SkExecutor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSpinlock.h"
@@ -16,8 +17,6 @@
 namespace skgpu {
 class UniqueKey;
 }
-
-class SkExecutor;
 
 namespace skgpu::graphite {
 
@@ -32,7 +31,7 @@ struct RenderPassDesc;
 
 class PipelineManager {
 public:
-    PipelineManager(SkExecutor* executor);
+    PipelineManager(SkCallbackExecutor* executor);
     ~PipelineManager();
 
     // If an existing Pipeline is found, it is just wrapped in a Handle and returned.
@@ -89,6 +88,9 @@ private:
     // All callers must hold a ref on the PipelineCreationTask.
     static bool InlineCompile(const sk_sp<PipelineCreationTask>&) SK_EXCLUDES(fSpinLock);
 
+    // An adapter for the callback-style executor
+    static void InlineCompileWrapper(void* context) SK_EXCLUDES(fSpinLock);
+
     struct Traits {
         static const UniqueKey& GetKey(const sk_sp<PipelineCreationTask>&);
         static uint32_t Hash(const UniqueKey& pipelineKey);
@@ -106,7 +108,7 @@ private:
     // The executor is obtained from ContextOptions. It is up to the client to ensure it
     // exists past the Context's destruction. The Context does call PipelineManager::shutDown
     // from its destructor to end its use.
-    SkExecutor* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
+    SkCallbackExecutor* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
 };
 
 } // namespace skgpu::graphite
