@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71a35d33_488ef20d",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-12T15:46:08Z",
+      "side": 1,
+      "message": "There shouldn\u0027t be any factories in the base class. The factories should all be declared/defined in the backend specific classes. Also the factory needs to return an SkContext object.\n\nso we would have things like:\n```\nstd::unique_ptr\u003cSkContext\u003e skcpu::SkContexts::Make(SkContextOptions\u0026);\nstd::unique_ptr\u003cSkContext\u003e skgpu::graphite::SkContexts::Make(SkContextOptions\u0026, GraphiteContextOptions\u0026);\nstd::unique_ptr\u003cSkContext\u003e skgpu::ganesh::SkContexts::Make(SkContextOptions\u0026, GrContextOptions\u0026);\n\n```",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 23
+      },
+      "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
