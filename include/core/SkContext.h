@@ -23,6 +23,7 @@ class SkStrikeCache;
 class SkTraceMemoryDump;
 class SkTypefaceCache;
 struct SkContextOptions;
+struct SkCpu;
 
 /**
  * @brief SkContext is a central context object that serves as the mandatory first point of
@@ -58,6 +59,8 @@ private:
     friend class SkContextPriv;
     friend class SkContextCtorAccessor;
 
+    void init();
+
     SkResourceCache* resourceCache() const;
     SkStrikeCache* fontCache() const;
     SkTypefaceCache* typefaceCache() const;
@@ -77,6 +80,8 @@ private:
 
     sk_sp<SkCaptureManager> fCaptureManager;
     sk_sp<SkSharedContext> fSharedContext;
+
+    std::unique_ptr<SkCpu> fCpu;
 };
 
 #endif  // SkContext_DEFINED

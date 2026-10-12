@@ -21,6 +21,7 @@
 #include "bench/SkSLBench.h"
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
+#include "include/core/SkContext.h"
 #if defined(SK_CODEC_DECODES_JPEG_WITH_RUST)
 #include "experimental/rust_jpeg/decoder/SkJpegRustDecoder.h"
 #else
@@ -40,6 +41,7 @@
 #include "include/private/SkMacros.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkExecutors.h"
 #include "src/core/SkLeanWindows.h"
 #include "src/core/SkOSFile.h"
@@ -1413,7 +1415,7 @@ int main(int argc, char** argv) {
 #endif
     SetupCrashHandler();
     if (FLAGS_runtimeCPUDetection) {
-        SkGraphics::Init();
+        SkContexts::GetGlobalSkContext();
     }
 
     // Our benchmarks only currently decode .png or .jpg files
