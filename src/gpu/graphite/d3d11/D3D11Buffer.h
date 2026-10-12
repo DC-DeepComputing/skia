@@ -27,6 +27,7 @@ public:
                                    std::string_view label);
 
     ID3D11Buffer* d3d11Buffer() const { return fD3D11Buffer.Get(); }
+    ID3D11ShaderResourceView* srv() const { return fSRV.Get(); }
     const uint8_t* cpuData() const { return fCpuData.get(); }
     uint8_t* cpuData() { return fCpuData.get(); }
     BufferType bufferType() const { return fBufferType; }
@@ -43,6 +44,7 @@ private:
                 AccessPattern,
                 std::string_view label,
                 Microsoft::WRL::ComPtr<ID3D11Buffer> buffer,
+                Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv,
                 std::unique_ptr<uint8_t[]> cpuData);
 
     void onMap() override;
@@ -53,6 +55,7 @@ private:
 
     BufferType fBufferType;
     Microsoft::WRL::ComPtr<ID3D11Buffer> fD3D11Buffer;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> fSRV;
     Microsoft::WRL::ComPtr<ID3D11Texture2D> fStagingTexture;
     std::unique_ptr<uint8_t[]> fCpuData;
 };

@@ -91,19 +91,19 @@ D3D11Caps::~D3D11Caps() = default;
 void D3D11Caps::initCaps(const D3D11BackendContext& backendContext, const ContextOptions& options) {
     fResourceBindingReqs.fBackendApi = BackendApi::kD3D11;
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
-    fResourceBindingReqs.fStorageBufferLayout = Layout::kInvalid;
+    fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fUniformsSetIdx = D3D11GraphicsPipeline::kUniformBufferBindGroupIndex;
     fResourceBindingReqs.fTextureSamplerSetIdx = D3D11GraphicsPipeline::kTextureBindGroupIndex;
     fResourceBindingReqs.fIntrinsicBufferBinding = D3D11GraphicsPipeline::kIntrinsicUniformBufferIndex;
     fResourceBindingReqs.fCombinedUniformBufferBinding = D3D11GraphicsPipeline::kCombinedUniformIndex;
-    fResourceBindingReqs.fStorageBufferBinding = -1;
+    fResourceBindingReqs.fStorageBufferBinding = D3D11GraphicsPipeline::kStorageBufferIndex;
     fResourceBindingReqs.fMaxFallbackTextureSize = 8192;
     fResourceBindingReqs.fMaxFallbackTextureBytes = 8192 * 8192 * 16;
 
     fDrawBufferCanBeMapped = false;
     fBufferMapsAreAsync = false;
-    fStorageBufferSupport = false;
+    fStorageBufferSupport = true;
     fComputeSupport = false;
 
     fRequiredUniformBufferAlignment = 256;

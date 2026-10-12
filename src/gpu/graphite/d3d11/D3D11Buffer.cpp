@@ -25,6 +25,7 @@ sk_sp<D3D11Buffer> D3D11Buffer::Make(const D3D11SharedContext* sharedContext,
                                                  accessPattern,
                                                  label,
                                                  nullptr,
+                                                 nullptr,
                                                  std::move(cpuData)));
     }
 
@@ -37,18 +38,24 @@ sk_sp<D3D11Buffer> D3D11Buffer::Make(const D3D11SharedContext* sharedContext,
 
     switch (type) {
         case BufferType::kVertex:
-        case BufferType::kVertexStorage:
             desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
             break;
+        case BufferType::kVertexStorage:
+            desc.BindFlags = D3D11_BIND_VERTEX_BUFFER | D3D11_BIND_SHADER_RESOURCE;
+            desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
+            break;
         case BufferType::kIndex:
-        case BufferType::kIndexStorage:
             desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+            break;
+        case BufferType::kIndexStorage:
+            desc.BindFlags = D3D11_BIND_INDEX_BUFFER | D3D11_BIND_SHADER_RESOURCE;
+            desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
             break;
         case BufferType::kUniform:
             desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
             break;
         case BufferType::kStorage:
-            desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+            desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
             desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
             break;
         case BufferType::kIndirect:
@@ -68,12 +75,29 @@ sk_sp<D3D11Buffer> D3D11Buffer::Make(const D3D11SharedContext* sharedContext,
         return nullptr;
     }
 
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv;
+    if (desc.BindFlags & D3D11_BIND_SHADER_RESOURCE) {
+        D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+        srvDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFEREX;
+        srvDesc.BufferEx.FirstElement = 0;
+        srvDesc.BufferEx.NumElements = desc.ByteWidth / 4;
+        srvDesc.BufferEx.Flags = D3D11_BUFFEREX_SRV_FLAG_RAW;
+        hr = sharedContext->device()->CreateShaderResourceView(buffer.Get(), &srvDesc, &srv);
+        if (FAILED(hr)) {
+            SkDebugf("D3D11 CreateShaderResourceView failed for storage buffer: hr=0x%08x\n",
+                     static_cast<unsigned int>(hr));
+            return nullptr;
+        }
+    }
+
     return sk_sp<D3D11Buffer>(new D3D11Buffer(sharedContext,
                                              size,
                                              type,
                                              accessPattern,
                                              label,
                                              std::move(buffer),
+                                             std::move(srv),
                                              nullptr));
 }
 
@@ -83,10 +107,12 @@ D3D11Buffer::D3D11Buffer(const D3D11SharedContext* sharedContext,
                          AccessPattern accessPattern,
                          std::string_view label,
                          Microsoft::WRL::ComPtr<ID3D11Buffer> buffer,
+                         Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> srv,
                          std::unique_ptr<uint8_t[]> cpuData)
         : Buffer(sharedContext, size, Protected::kNo, label)
         , fBufferType(type)
         , fD3D11Buffer(std::move(buffer))
+        , fSRV(std::move(srv))
         , fCpuData(std::move(cpuData)) {}
 
 const D3D11SharedContext* D3D11Buffer::d3d11SharedContext() const {
@@ -138,6 +164,7 @@ void D3D11Buffer::onUnmap() {
 }
 
 void D3D11Buffer::freeGpuData() {
+    fSRV.Reset();
     fD3D11Buffer.Reset();
     fStagingTexture.Reset();
     fCpuData.reset();

@@ -4913,6 +4913,9 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
         layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;
     }
     this->writeLayout(layout, result, intfVar.fPosition);
+    if (intfVar.modifierFlags().isReadOnly()) {
+        this->writeInstruction(SpvOpDecorate, result, SpvDecorationNonWritable, fDecorationBuffer);
+    }
     fVariableMap.set(&intfVar, result);
     return result;
 }

@@ -29,7 +29,11 @@ public:
 
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
     inline static constexpr unsigned int kCombinedUniformIndex = 1;
-    inline static constexpr unsigned int kMaxNumUniformBuffers = 2;
+    inline static constexpr unsigned int kStorageBufferIndex = 2;
+    inline static constexpr unsigned int kMaxNumUniformBuffers = 3;
+
+    inline static constexpr unsigned int kCombinedUniformStorageSRVSlot = 16;
+    inline static constexpr unsigned int kStorageBufferSRVSlot = 17;
 
     inline static constexpr unsigned int kStaticDataBufferIndex = 0;
     inline static constexpr unsigned int kAppendDataBufferIndex = 1;

@@ -1,0 +1,63 @@
+diff --git a/spirv_hlsl.cpp b/spirv_hlsl.cpp
+index 9b83493..5912f5c 100644
+--- a/spirv_hlsl.cpp
++++ b/spirv_hlsl.cpp
+@@ -4456,7 +4456,7 @@ void CompilerHLSL::emit_glsl_op(uint32_t result_type, uint32_t id, uint32_t eop,
+ 
+ void CompilerHLSL::read_access_chain_array(const string &lhs, const SPIRAccessChain &chain)
+ {
+-	auto &type = get<SPIRType>(chain.basetype);
++	auto &type = get_pointee_type(chain.basetype);
+ 
+ 	// Need to use a reserved identifier here since it might shadow an identifier in the access chain input or other loops.
+ 	auto ident = get_unique_identifier();
+@@ -4476,7 +4476,7 @@ void CompilerHLSL::read_access_chain_array(const string &lhs, const SPIRAccessCh
+ 
+ void CompilerHLSL::read_access_chain_struct(const string &lhs, const SPIRAccessChain &chain)
+ {
+-	auto &type = get<SPIRType>(chain.basetype);
++	auto &type = get_pointee_type(chain.basetype);
+ 	auto subchain = chain;
+ 	uint32_t member_count = uint32_t(type.member_types.size());
+ 
+@@ -4506,7 +4506,7 @@ void CompilerHLSL::read_access_chain_struct(const string &lhs, const SPIRAccessC
+ 
+ void CompilerHLSL::read_access_chain(string *expr, const string &lhs, const SPIRAccessChain &chain)
+ {
+-	auto &type = get<SPIRType>(chain.basetype);
++	auto &type = get_pointee_type(chain.basetype);
+ 
+ 	SPIRType target_type { is_scalar(type) ? OpTypeInt : type.op };
+ 	target_type.basetype = SPIRType::UInt;
+@@ -4743,12 +4743,7 @@ void CompilerHLSL::emit_load(const Instruction &instruction)
+ void CompilerHLSL::write_access_chain_array(const SPIRAccessChain &chain, uint32_t value,
+                                             const SmallVector<uint32_t> &composite_chain)
+ {
+-	auto *ptype = &get<SPIRType>(chain.basetype);
+-	while (ptype->pointer)
+-	{
+-		ptype = &get<SPIRType>(ptype->basetype);
+-	}
+-	auto &type = *ptype;
++	auto &type = get_pointee_type(chain.basetype);
+ 
+ 	// Need to use a reserved identifier here since it might shadow an identifier in the access chain input or other loops.
+ 	auto ident = get_unique_identifier();
+@@ -4785,7 +4780,7 @@ void CompilerHLSL::write_access_chain_array(const SPIRAccessChain &chain, uint32
+ void CompilerHLSL::write_access_chain_struct(const SPIRAccessChain &chain, uint32_t value,
+                                              const SmallVector<uint32_t> &composite_chain)
+ {
+-	auto &type = get<SPIRType>(chain.basetype);
++	auto &type = get_pointee_type(chain.basetype);
+ 	uint32_t member_count = uint32_t(type.member_types.size());
+ 	auto subchain = chain;
+ 
+@@ -4838,7 +4833,7 @@ string CompilerHLSL::write_access_chain_value(uint32_t value, const SmallVector<
+ void CompilerHLSL::write_access_chain(const SPIRAccessChain &chain, uint32_t value,
+                                       const SmallVector<uint32_t> &composite_chain)
+ {
+-	auto &type = get<SPIRType>(chain.basetype);
++	auto &type = get_pointee_type(chain.basetype);
+ 
+ 	// Make sure we trigger a read of the constituents in the access chain.
+ 	track_expression_read(chain.self);

@@ -258,6 +258,11 @@ bool D3D11CommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
 }
 
 bool D3D11CommandBuffer::addDrawPass(DrawPass* drawPass) {
+    if (drawPass->storageBufferInfo().fBuffer != nullptr) {
+        this->bindUniformBuffer(drawPass->storageBufferInfo(),
+                                UniformSlot::kStorage);
+    }
+
     if (!drawPass->addResourceRefs(fResourceProvider, this)) SK_UNLIKELY {
         return false;
     }
@@ -409,7 +414,8 @@ void D3D11CommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSl
             bufferIndex = D3D11GraphicsPipeline::kCombinedUniformIndex;
             break;
         case UniformSlot::kStorage:
-            return;
+            bufferIndex = D3D11GraphicsPipeline::kStorageBufferIndex;
+            break;
     }
     fBoundUniforms[bufferIndex] = info;
     fBoundUniformBuffersDirty = true;
@@ -533,27 +539,55 @@ void D3D11CommandBuffer::syncUniformBuffers() {
         const BindBufferInfo& combinedInfo =
                 fBoundUniforms[D3D11GraphicsPipeline::kCombinedUniformIndex];
         if (combinedInfo.fBuffer) {
-            ID3D11Buffer* cb = static_cast<const D3D11Buffer*>(combinedInfo.fBuffer)->d3d11Buffer();
-            if (cb) {
-                // In D3D11.1, both firstConstant and numConstants are measured in 16-byte shader
-                // constants, and both must be multiples of 16 (i.e. 256 bytes).
-                UINT firstConstant = static_cast<UINT>(combinedInfo.fOffset / 16);
-                UINT sizeInConstants = static_cast<UINT>(SkAlignTo(combinedInfo.fSize, 16u) / 16);
-                UINT numConstants = static_cast<UINT>(SkAlignTo(std::max<UINT>(sizeInConstants, 16u), 16u));
-
-                D3D11_BUFFER_DESC bufDesc = {};
-                cb->GetDesc(&bufDesc);
-                UINT maxConstants = bufDesc.ByteWidth / 16;
-                if (firstConstant < maxConstants) {
-                    numConstants = std::min(numConstants, maxConstants - firstConstant);
-                }
-
-                fImmediateDeviceContext->VSSetConstantBuffers1(
-                        D3D11GraphicsPipeline::kCombinedUniformIndex, 1, &cb, &firstConstant, &numConstants);
+            const auto* d3d11Buf = static_cast<const D3D11Buffer*>(combinedInfo.fBuffer);
+            if (d3d11Buf->bufferType() == BufferType::kStorage) {
+                ID3D11ShaderResourceView* srv = d3d11Buf->srv();
+                fImmediateDeviceContext->VSSetShaderResources(
+                        D3D11GraphicsPipeline::kCombinedUniformStorageSRVSlot, 1, &srv);
                 if (fActiveGraphicsPipeline->hasFragmentShader()) {
-                    fImmediateDeviceContext->PSSetConstantBuffers1(
-                            D3D11GraphicsPipeline::kCombinedUniformIndex, 1, &cb, &firstConstant, &numConstants);
+                    fImmediateDeviceContext->PSSetShaderResources(
+                            D3D11GraphicsPipeline::kCombinedUniformStorageSRVSlot, 1, &srv);
                 }
+            } else {
+                ID3D11Buffer* cb = d3d11Buf->d3d11Buffer();
+                if (cb) {
+                    // In D3D11.1, both firstConstant and numConstants are measured in 16-byte shader
+                    // constants, and both must be multiples of 16 (i.e. 256 bytes).
+                    UINT firstConstant = static_cast<UINT>(combinedInfo.fOffset / 16);
+                    UINT sizeInConstants = static_cast<UINT>(SkAlignTo(combinedInfo.fSize, 16u) / 16);
+                    UINT numConstants = static_cast<UINT>(SkAlignTo(std::max<UINT>(sizeInConstants, 16u), 16u));
+
+                    D3D11_BUFFER_DESC bufDesc = {};
+                    cb->GetDesc(&bufDesc);
+                    UINT maxConstants = bufDesc.ByteWidth / 16;
+                    if (firstConstant < maxConstants) {
+                        numConstants = std::min(numConstants, maxConstants - firstConstant);
+                    }
+
+                    fImmediateDeviceContext->VSSetConstantBuffers1(
+                            D3D11GraphicsPipeline::kCombinedUniformIndex, 1, &cb, &firstConstant, &numConstants);
+                    if (fActiveGraphicsPipeline->hasFragmentShader()) {
+                        fImmediateDeviceContext->PSSetConstantBuffers1(
+                                D3D11GraphicsPipeline::kCombinedUniformIndex, 1, &cb, &firstConstant, &numConstants);
+                    }
+                }
+            }
+        }
+    }
+
+    if (fActiveGraphicsPipeline->usesStorageBuffer()) {
+        const BindBufferInfo& storageInfo =
+                fBoundUniforms[D3D11GraphicsPipeline::kStorageBufferIndex];
+        if (storageInfo.fBuffer) {
+            ID3D11ShaderResourceView* srv =
+                    static_cast<const D3D11Buffer*>(storageInfo.fBuffer)->srv();
+            if (fActiveGraphicsPipeline->vsUsesStorage()) {
+                fImmediateDeviceContext->VSSetShaderResources(
+                        D3D11GraphicsPipeline::kStorageBufferSRVSlot, 1, &srv);
+            }
+            if (fActiveGraphicsPipeline->fsUsesStorage()) {
+                fImmediateDeviceContext->PSSetShaderResources(
+                        D3D11GraphicsPipeline::kStorageBufferSRVSlot, 1, &srv);
             }
         }
     }

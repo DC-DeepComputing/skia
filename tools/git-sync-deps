@@ -235,6 +235,59 @@ def git_sync_deps(deps_file_path, command_line_os_requests, shallow, verbose):
       (git, repo, commithash, relative_directory, shallow, verbose))
 
   multithread(git_checkout_to_directory, list_of_arg_lists)
+  apply_patches(git, deps_file_directory, verbose)
+
+
+def apply_patches(git, deps_file_directory, verbose):
+  """Apply patches from third_party/<dep>/patches/ to third_party/externals/<dep>/."""
+  third_party_dir = os.path.join(deps_file_directory, 'third_party')
+  externals_dir = os.path.join(third_party_dir, 'externals')
+  if not os.path.isdir(externals_dir):
+    return
+
+  for dep_name in sorted(os.listdir(third_party_dir)):
+    patch_dir = os.path.join(third_party_dir, dep_name, 'patches')
+    target_repo = os.path.join(externals_dir, dep_name)
+
+    if not os.path.isdir(patch_dir) or not os.path.isdir(target_repo):
+      continue
+
+    patch_files = sorted([
+      os.path.join(patch_dir, f)
+      for f in os.listdir(patch_dir)
+      if f.endswith('.patch')
+    ])
+
+    for patch_file in patch_files:
+      patch_name = os.path.basename(patch_file)
+      # Check if patch is already applied
+      already_applied = (0 == subprocess.call(
+        [git, 'apply', '--reverse', '--check', patch_file],
+        cwd=target_repo,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL))
+
+      if already_applied:
+        if verbose:
+          sys.stdout.write('Patch %s already applied to %s.\n' % (patch_name, dep_name))
+        continue
+
+      # Check if patch can be applied cleanly
+      can_apply = (0 == subprocess.call(
+        [git, 'apply', '--check', patch_file],
+        cwd=target_repo,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL))
+
+      if can_apply:
+        subprocess.check_call(
+          [git, 'apply', patch_file],
+          cwd=target_repo)
+        if verbose:
+          sys.stdout.write('Applied patch %s to %s.\n' % (patch_name, dep_name))
+      else:
+        sys.stderr.write(
+          'Warning: Failed to apply patch %s to %s.\n' % (patch_name, dep_name))
 
 
 def multithread(function, list_of_arg_lists):
