@@ -34,6 +34,24 @@
       "parentUuid": "63b31571_e767fea5",
       "revId": "796abac463a3ef0f07a60b058d04c4cb7462deb6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3608c2f4_7f232f60",
+        "filename": "include/private/SkStackAllocated.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-12T15:18:03Z",
+      "side": 1,
+      "message": "Done. Renamed to `SK_ONLY_STACK_ALLOCATABLE` (without parentheses) and `SkOnlyStackAllocatable.h` here and in the follow-up CLs.",
+      "parentUuid": "c100aa11_c21a7afc",
+      "revId": "796abac463a3ef0f07a60b058d04c4cb7462deb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
