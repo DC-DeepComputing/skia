@@ -10,6 +10,7 @@
 
 #include "include/core/SkRegion.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/StencilClip.h"
 
 #include <cstdint>
@@ -41,6 +42,8 @@ class SurfaceDrawContext;
  * The result of this process will be the mask stored in the clip bits of the stencil buffer.
  */
 class StencilMaskHelper : SkNoncopyable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     // Configure the helper to update the stencil mask within the given rectangle, respecting the
     // set window rectangles. It will use the provided context and render target to draw into, both

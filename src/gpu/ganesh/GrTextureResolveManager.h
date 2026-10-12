@@ -9,6 +9,7 @@
 #define GrTextureResolveManager_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/GrDrawingManager.h"
 
 class GrCaps;
@@ -21,6 +22,8 @@ class GrRenderTask;
  * regenerate mipmaps and/or resolve MSAA.
  */
 class GrTextureResolveManager {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     explicit GrTextureResolveManager(GrDrawingManager* drawingManager)
             : fDrawingManager(drawingManager) {}

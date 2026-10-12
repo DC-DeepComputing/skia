@@ -12,6 +12,7 @@
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTArray.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
@@ -29,6 +30,7 @@ struct ProgramSettings;
 namespace GrPersistentCacheUtils {
 
 struct ShaderMetadata {
+    SK_ONLY_STACK_ALLOCATABLE;
     SkSL::ProgramSettings* fSettings = nullptr;
     skia_private::TArray<std::string> fAttributeNames;
     bool fHasSecondaryColorOutput = false;

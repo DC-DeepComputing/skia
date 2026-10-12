@@ -9,6 +9,7 @@
 #define GrContextThreadSafeProxyPriv_DEFINED
 
 #include "include/gpu/ganesh/GrContextThreadSafeProxy.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/gpu/ganesh/GrContext_Base.h"
 
 #include "src/gpu/ganesh/GrCaps.h"
@@ -20,6 +21,8 @@
  * have additional data members or virtual methods.
  */
 class GrContextThreadSafeProxyPriv {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     void init(sk_sp<const GrCaps>, sk_sp<GrThreadSafePipelineBuilder>) const;
 

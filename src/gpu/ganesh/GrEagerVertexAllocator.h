@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrThreadSafeCache.h"
 
@@ -45,6 +46,8 @@ public:
 // GrEagerVertexAllocator implementation that uses GrMeshDrawTarget::makeVertexSpace and
 // GrMeshDrawTarget::putBackVertices.
 class GrEagerDynamicVertexAllocator : public GrEagerVertexAllocator {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     GrEagerDynamicVertexAllocator(GrMeshDrawTarget* target,
                                   sk_sp<const GrBuffer>* vertexBuffer,
@@ -76,6 +79,8 @@ private:
 };
 
 class GrCpuVertexAllocator : public GrEagerVertexAllocator {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     GrCpuVertexAllocator() = default;
 

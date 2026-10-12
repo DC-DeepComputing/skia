@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <utility>
+#include "include/private/SkStackAllocated.h"
 
 struct GrDrawIndirectCommand {
     uint32_t fVertexCount;
@@ -37,6 +38,8 @@ static_assert(sizeof(GrDrawIndexedIndirectCommand) == 20,
 //    indirectWriter.write(...);
 //    indirectWriter.write(...);
 struct GrDrawIndirectWriter {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     GrDrawIndirectWriter() = default;
     GrDrawIndirectWriter(void* data) : fData(static_cast<GrDrawIndirectCommand*>(data)) {}
@@ -71,6 +74,8 @@ private:
 //    indirectWriter.writeIndexed(...);
 //    indirectWriter.writeIndexed(...);
 struct GrDrawIndexedIndirectWriter {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     GrDrawIndexedIndirectWriter() = default;
     GrDrawIndexedIndirectWriter(void* data)

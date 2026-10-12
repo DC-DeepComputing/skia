@@ -8,6 +8,7 @@
 #ifndef GrOnFlushResourceProvider_DEFINED
 #define GrOnFlushResourceProvider_DEFINED
 
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/ganesh/GrAtlasTypes.h"
 
 class GrCaps;
@@ -49,6 +50,8 @@ public:
  * It should never have additional data members or virtual methods.
  */
 class GrOnFlushResourceProvider {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     explicit GrOnFlushResourceProvider(GrDrawingManager* drawingMgr) : fDrawingMgr(drawingMgr) {}
 

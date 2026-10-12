@@ -12,6 +12,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkStackAllocated.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTo.h"
@@ -409,6 +410,8 @@ private:
 };
 
 class GrResourceCache::ResourceAccess {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 private:
     ResourceAccess(GrResourceCache* cache) : fCache(cache) { }
     ResourceAccess(const ResourceAccess& that) : fCache(that.fCache) { }
