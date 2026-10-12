@@ -28,6 +28,18 @@ SkContext::SkContext(const SkContextOptions& options) {
     fSharedContext = sk_make_sp<SkSharedContext>(options);
 }
 
+SkContext::SkContext(const SkContextOptions& options, sk_sp<SkRefCnt> directContext)
+        : SkContext(options) {
+    fGaneshContext = std::move(directContext);
+}
+
+SkContext::SkContext(const SkContextOptions& options,
+                     std::unique_ptr<skgpu::graphite::Context, void (*)(skgpu::graphite::Context*)>
+                             graphiteContext)
+        : SkContext(options) {
+    fGraphiteContext = std::move(graphiteContext);
+}
+
 SkContext::~SkContext() = default;
 
 SkContextPriv SkContext::priv() { return SkContextPriv(this); }

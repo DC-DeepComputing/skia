@@ -62,7 +62,23 @@ private:
 // functions in SkContext.h
 class SkContextCtorAccessor {
 public:
+    // Raster
     static std::unique_ptr<SkContext> MakeContext(const SkContextOptions& options);
+
+    // Ganesh (used by OpenGL, Vulkan, D3D, and Metal)
+    template <typename T = GrDirectContext>
+    static std::unique_ptr<SkContext> MakeContext(const SkContextOptions& options,
+                                                  sk_sp<T> directContext) {
+        return std::unique_ptr<SkContext>(new SkContext(options, std::move(directContext)));
+    }
+
+    // Graphite (used by Vulkan, Metal, and Dawn)
+    template <typename T = skgpu::graphite::Context>
+    static std::unique_ptr<SkContext> MakeContext(const SkContextOptions& options,
+                                                  std::unique_ptr<T> graphiteContext) {
+        return std::unique_ptr<SkContext>(
+                new SkContext(options, {graphiteContext.release(), [](T* ctx) { delete ctx; }}));
+    }
 };
 
 #endif  // SkContextPriv_DEFINED
