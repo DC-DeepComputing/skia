@@ -9,8 +9,12 @@
 
 #include "src/core/SkExecutors.h"
 
-SkExecutor::~SkExecutor() {}
+template<>
+void SkStdFunctionExecutor::SetDefault(SkStdFunctionExecutor* executor) {
+    SkStdFunctionExecutors::SetDefault(executor);
+}
 
-void SkExecutor::SetDefault(SkExecutor* executor) {
-    SkExecutors::SetDefault(executor);
+template<>
+void SkCallbackExecutor::SetDefault(SkCallbackExecutor* executor) {
+    SkCallbackExecutors::SetDefault(executor);
 }
