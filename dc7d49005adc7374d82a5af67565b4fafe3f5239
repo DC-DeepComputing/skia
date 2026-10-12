@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1db4ff8_a125a73e",
+        "filename": "include/private/SkPixelStorage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-12T18:13:39Z",
+      "side": 1,
+      "message": "Source, Provenance, Root?\nProvenance might be an SAT word but also the most descriptive (and least used in the rest of Skia.)",
+      "parentUuid": "c6e0f719_2c2a28d0",
+      "range": {
+        "startLine": 27,
+        "startChar": 23,
+        "endLine": 27,
+        "endChar": 29
+      },
+      "revId": "dc7d49005adc7374d82a5af67565b4fafe3f5239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "969a5b73_6d1491e9",
         "filename": "include/private/SkPixelStorage.h",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-30T19:20:28Z",
       "side": 1,
       "message": "I\u0027m not sure Request is the right work here. Like is this covering when a client gives us an SkImage/Surface that already has data in it? Then I would just say kClient or kClientProvided.\n\nAdditionally do we need some kUnknown source as well? Like what happens when you start capturing and the client had already made an SkImage from a snapshot before starting capture? And then uses that SkImage during the capture.",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 26
+      },
+      "revId": "dc7d49005adc7374d82a5af67565b4fafe3f5239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97cb14df_f8db5d0b",
+        "filename": "include/private/SkPixelStorage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-12T18:13:39Z",
+      "side": 1,
+      "message": "We might need kUnknown, but not for that. When capture is enabled at SkContext creation, even before we capture, we a re always making PixelStorages and tracking where their provenance. We will probably want kUnknown just in case we need a default while we round out the type.\n\nkClientRequest is when the client explicitly asks for an SkSurface to be created from a Recorder (they call a Make function).\n\nI added kUnknown, let me know if you can think of a better name for kClientRequest or if that works given the context.",
+      "parentUuid": "969a5b73_6d1491e9",
       "range": {
         "startLine": 29,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e2e2a30_9b34692f",
+        "filename": "include/private/SkPixelStorage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-12T18:13:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76527650_39aedd7f",
+      "range": {
+        "startLine": 29,
+        "startChar": 11,
+        "endLine": 30,
+        "endChar": 22
+      },
+      "revId": "dc7d49005adc7374d82a5af67565b4fafe3f5239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fad2e8b_f3ffae49",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f87d04_b2f18405",
+        "filename": "include/private/SkPixelStorage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-12T18:13:39Z",
+      "side": 1,
+      "message": "I went for PixelStorage::Key. Let me know what you think.",
+      "parentUuid": "3fad2e8b_f3ffae49",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 38
+      },
+      "revId": "dc7d49005adc7374d82a5af67565b4fafe3f5239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33ca0f2c_0bf671a8",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-09-30T19:20:28Z",
       "side": 1,
       "message": "Is this really necessary? Then again I would just name the enum Type since it will already be referenced by SkCaptureAsset::Type.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 27
+      },
+      "revId": "dc7d49005adc7374d82a5af67565b4fafe3f5239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf11f69_2b647295",
+        "filename": "src/capture/SkCaptureAsset.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-12T18:13:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33ca0f2c_0bf671a8",
       "range": {
         "startLine": 23,
         "startChar": 0,
