@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2642cb32_a4832ca3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done. I split converted scanline decoding into a separate stacked CL:\nhttps://skia-review.googlesource.com/c/skia/+/1392056",
+      "parentUuid": "7e90ffdf_5637bbc5",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 67
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dd890b7_fa64c90b",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-12T16:04:26Z",
       "side": 1,
       "message": "Same, could this be a separate CL?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "842eccd9_a3ec2873",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Marked as resolved.Done. I split the x86 direct N32 optimization into a third CL, stacked on the scanline change:\nhttps://skia-review.googlesource.com/c/skia/+/1392057",
+      "parentUuid": "4dd890b7_fa64c90b",
       "range": {
         "startLine": 25,
         "startChar": 0,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc10075e_51927216",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51668f1c_1b66fcfb",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19a0b74e_014be03b",
@@ -77,6 +143,24 @@
       "writtenOn": "2026-10-12T16:04:26Z",
       "side": 1,
       "message": "`SK_PMCOLOR_BYTE_ORDER` is strictly RGBA or BGRA, so this else branch is unreachable.  Let\u0027s do something along these lines:\n\n```\n#if SK_PMCOLOR_BYTE_ORDER(B, G, R, A)\n    return rust_jpeg::PackedOutputFormat::BGRA;\n#else\n    static_assert(SK_PMCOLOR_BYTE_ORDER(R, G, B, A), \"Unexpected SK_PMCOLOR_BYTE_ORDER\");\n    return rust_jpeg::PackedOutputFormat::RGBA;\n#endif\n\n```",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e394ed9b_2f3ce210",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19a0b74e_014be03b",
       "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -116,6 +200,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12496dca_2119f4bf",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6102a9fe_fb8acf41",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd3c733c_29406450",
@@ -129,6 +231,30 @@
       "writtenOn": "2026-10-12T16:04:26Z",
       "side": 1,
       "message": "This is always true, we should be able to drop.",
+      "range": {
+        "startLine": 704,
+        "startChar": 11,
+        "endLine": 704,
+        "endChar": 75
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e30490d_701a1d17",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd3c733c_29406450",
       "range": {
         "startLine": 704,
         "startChar": 11,
@@ -156,6 +282,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2edb5122_2fb635fa",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done. When all destination rows were produced, `getPixels()` now succeeds even if finishing the scanline session reports missing input due to an absent EOI marker. I also added regression coverage.",
+      "parentUuid": "9a1f5ebc_cc2026d4",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3393d6c7_527b3cd9",
@@ -173,6 +317,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b45dd57d_3aaeae83",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3393d6c7_527b3cd9",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2693f13c_35e9f6cd",
@@ -186,6 +348,30 @@
       "writtenOn": "2026-10-12T16:04:26Z",
       "side": 1,
       "message": "I think we can also skip this when dst it tightly packed (`dstRowBytes \u003d\u003d logicalRowBytes`).",
+      "range": {
+        "startLine": 1011,
+        "startChar": 12,
+        "endLine": 1011,
+        "endChar": 42
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b00c1367_f7aeea5a",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2693f13c_35e9f6cd",
       "range": {
         "startLine": 1011,
         "startChar": 12,
@@ -219,6 +405,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b7d983f_b39ca74d",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Yes, this prevents the Rust slice from extending beyond an exact-size allocation where the final row has no trailing padding. The Rust implementation does not clear row padding; it writes only the logical row bytes at each stride. I added a comment explaining this, and the tests verify that padding remains untouched.",
+      "parentUuid": "fbb673e3_173c8a79",
+      "range": {
+        "startLine": 1011,
+        "startChar": 0,
+        "endLine": 1017,
+        "endChar": 9
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afb13463_a4159611",
@@ -232,6 +442,30 @@
       "writtenOn": "2026-10-12T16:04:26Z",
       "side": 1,
       "message": "Is this guaranteed to fit u32?  If not, we should use SkSafeMath casting.",
+      "range": {
+        "startLine": 1028,
+        "startChar": 40,
+        "endLine": 1028,
+        "endChar": 75
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72c1632e_25138693",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done. `outputStride` is now converted with `SkSafeMath::castTo\u003cuint32_t\u003e()`, and the operation returns an error if the value does not fit.",
+      "parentUuid": "afb13463_a4159611",
       "range": {
         "startLine": 1028,
         "startChar": 40,
@@ -265,6 +499,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82fb2e4d_03b10634",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1034,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done. I replaced the direct-path casts with `SkToU32(requestedRows)` and `SkToInt(result.rows)`. `requestedRows` is positive and bounded by the 32-row batch size, and `result.rows` is validated against it before conversion.",
+      "parentUuid": "85e19fea_6153f3ae",
+      "range": {
+        "startLine": 1034,
+        "startChar": 29,
+        "endLine": 1034,
+        "endChar": 58
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0a2e066_d35a8259",
@@ -288,6 +546,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56a878a7_c24d7b55",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0a2e066_d35a8259",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 95
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63fb42ea_8a729c57",
@@ -301,6 +583,24 @@
       "writtenOn": "2026-10-12T16:04:26Z",
       "side": 1,
       "message": "Should we also check for `self.image_data_loaded` similar to e.g. `read_image_data`?",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de56ed41_3bad7d71",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 19
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-12T20:26:42Z",
+      "side": 1,
+      "message": "A separate check is redundant here. `image_data_loaded` can only become true while the output sequence is `Incremental` or `FullImage`, and both states are rejected by the existing sequence check. `reset_decode_state()` clears both `image_data_loaded` and the sequence together. I added a comment documenting this invariant.",
+      "parentUuid": "63fb42ea_8a729c57",
       "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
