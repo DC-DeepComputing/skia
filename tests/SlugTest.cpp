@@ -213,3 +213,50 @@ DEF_GANESH_TEST_FOR_CONTEXTS(Slug_b520571816,
             sktext::gpu::Slug::Deserialize(writableData.get(), size, nullptr);
     REPORTER_ASSERT(reporter, forgedSlug == nullptr);
 }
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+    auto canvas = surface->getCanvas();
+
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    SkFont font(typeface);
+    font.setSize(16);
+
+    static const char* kText = "Hello World";
+    size_t textLen = strlen(kText);
+    SkTextBlobBuilder builder;
+    const SkTextBlobBuilder::RunBuffer& runBuf = builder.allocRun(font, textLen, 0, 0);
+    font.textToGlyphs(kText, textLen, SkTextEncoding::kUTF8, SkSpan(runBuf.glyphs, textLen));
+    auto blob = builder.make();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug = sktext::gpu::Slug::ConvertBlob(canvas, *blob, {10, 10}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // Draw the slug. In the past, drawing the slug nulled out the strike in fStrikePromise, making
+    // the slug unusable.
+    slug->draw(canvas, paint);
+
+    // Redraw the slug to ensure drawing again works.
+    slug->draw(canvas, paint);
+
+    // Serialize the slug post-draw. In the past, this would crash because descriptor()
+    // dereferenced the nulled-out strike pointer.
+    sk_sp<SkData> data = slug->serialize();
+    REPORTER_ASSERT(reporter, data != nullptr && data->size() > 0);
+
+    // Ensure it can be deserialized and drawn again.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(data->data(), data->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    deserializedSlug->draw(canvas, paint);
+}
+
