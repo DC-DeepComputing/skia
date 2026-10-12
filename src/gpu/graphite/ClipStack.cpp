@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/private/SkStackAllocated.h"
 #include "src/gpu/graphite/ClipStack.h"
 
 #include "include/core/SkBlendMode.h"
@@ -327,6 +328,7 @@ Rect snap_scissor(const Rect& a, const Rect& deviceBounds) {
 // interact with each other, without needing to share a base class, friend each other, or have a
 // template for each combination of two types.
 struct ClipStack::TransformedShape {
+    SK_ONLY_STACK_ALLOCATABLE;
     const Transform& fLocalToDevice;
     const Shape&     fShape;
     const Rect&      fOuterBounds;
