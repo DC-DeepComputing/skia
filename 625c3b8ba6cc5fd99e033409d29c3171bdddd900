@@ -1,0 +1,308 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e90ffdf_5637bbc5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Is this intertwined with YUVA decoding?  If not, let\u0027s split it into a separate CL for easier review.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 67
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dd890b7_fa64c90b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Same, could this be a separate CL?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51668f1c_1b66fcfb",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Can you document where this is coming from?",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19a0b74e_014be03b",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "`SK_PMCOLOR_BYTE_ORDER` is strictly RGBA or BGRA, so this else branch is unreachable.  Let\u0027s do something along these lines:\n\n```\n#if SK_PMCOLOR_BYTE_ORDER(B, G, R, A)\n    return rust_jpeg::PackedOutputFormat::BGRA;\n#else\n    static_assert(SK_PMCOLOR_BYTE_ORDER(R, G, B, A), \"Unexpected SK_PMCOLOR_BYTE_ORDER\");\n    return rust_jpeg::PackedOutputFormat::RGBA;\n#endif\n\n```",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6102a9fe_fb8acf41",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "We should also check `planes[index].writable_addr()`.",
+      "fixSuggestions": [
+        {
+          "fixId": "e88fb242_17e35ecf",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+              "range": {
+                "startLine": 569,
+                "startChar": 0,
+                "endLine": 570,
+                "endChar": 0
+              },
+              "replacement": "            planes[index].rowBytes() \u003e std::numeric_limits\u003cuint32_t\u003e::max() ||\n            !planes[index].writable_addr()) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd3c733c_29406450",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "This is always true, we should be able to drop.",
+      "range": {
+        "startLine": 704,
+        "startChar": 11,
+        "endLine": 704,
+        "endChar": 75
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a1f5ebc_cc2026d4",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "I think we hit this path even if we decoded all the rows (`decodeResult.fRowsDecoded \u003d\u003d dstInfo.height()`) when the EOI marker is missing.  Should we return `kSuccess` in that case (which I suspect is what `getScanlines` does)?",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3393d6c7_527b3cd9",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "`|| dstRowBytes \u003c this-\u003edstInfo().minRowBytes()` ?",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2693f13c_35e9f6cd",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "I think we can also skip this when dst it tightly packed (`dstRowBytes \u003d\u003d logicalRowBytes`).",
+      "range": {
+        "startLine": 1011,
+        "startChar": 12,
+        "endLine": 1011,
+        "endChar": 42
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb673e3_173c8a79",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Is this to avoid overshooting on the last row?  Maybe add a comment for why this is necessary.\n\n(Is the rust impl always clearing the row padding?)",
+      "range": {
+        "startLine": 1011,
+        "startChar": 0,
+        "endLine": 1017,
+        "endChar": 9
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb13463_a4159611",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Is this guaranteed to fit u32?  If not, we should use SkSafeMath casting.",
+      "range": {
+        "startLine": 1028,
+        "startChar": 40,
+        "endLine": 1028,
+        "endChar": 75
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85e19fea_6153f3ae",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1034,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Is this safe?  Also, in general let\u0027s use `SkTo*` over `static_cast`, to at least get debug asserts.",
+      "range": {
+        "startLine": 1034,
+        "startChar": 29,
+        "endLine": 1034,
+        "endChar": 58
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a2e066_d35a8259",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Nit: I would prefer to hide these under `private`, and then add a friend decl for a test class (`SkJpegRustCodecTestPriv` or something).",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 95
+      },
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63fb42ea_8a729c57",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 19
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-12T16:04:26Z",
+      "side": 1,
+      "message": "Should we also check for `self.image_data_loaded` similar to e.g. `read_image_data`?",
+      "revId": "625c3b8ba6cc5fd99e033409d29c3171bdddd900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
