@@ -10,6 +10,7 @@
 
 #include "include/core/SkContext.h"
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkCpu.h"
 #include "src/core/SkSharedContext.h"
 
 #include <memory>
@@ -44,6 +45,8 @@ class SkContextPriv : public SkContextPrivConst {
 public:
     SkSharedContext* sharedContext() { return fContext->fSharedContext.get(); }
 
+    void cacheRuntimeFeatures() { fContext->fCpu->cacheRuntimeFeatures(); }
+
 private:
     friend class SkContext;
 
@@ -64,5 +67,10 @@ class SkContextCtorAccessor {
 public:
     static std::unique_ptr<SkContext> MakeContext(const SkContextOptions& options);
 };
+
+namespace SkContexts {
+// Returns the global SkContext. If the global SkContext does not exist yet, it will be created.
+SkContext* GetGlobalSkContext();
+}
 
 #endif  // SkContextPriv_DEFINED

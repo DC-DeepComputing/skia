@@ -48,15 +48,22 @@ struct SkLoongArch {
     constexpr static uint32_t ASX = 1 << 1;
 };
 
+// SkCpu is owned as an instance member of SkContext rather than using process-wide static state.
+// The invariant is that only a single SkContext instance exists per process
 struct SkCpu {
-    static void CacheRuntimeFeatures();
-    static bool Supports(uint32_t);
+    // Queries and caches the CPU's supported runtime instruction-set features into fCachedFeatures.
+    void cacheRuntimeFeatures();
+
+    // Returns true if the CPU supports all instruction-set features specified in the bitmask.
+    bool supports(uint32_t);
+
 private:
-    static uint32_t gCachedFeatures;
+    // Bitmask of runtime-detected CPU instruction-set features (e.g., SkX64 or SkLoongArch flags).
+    uint32_t fCachedFeatures;
 };
 
-inline bool SkCpu::Supports(uint32_t mask) {
-    uint32_t features = gCachedFeatures;
+inline bool SkCpu::supports(uint32_t mask) {
+    uint32_t features = fCachedFeatures;
 
     // If we mask in compile-time known lower limits, the compiler can
     // often compile away this entire function.
