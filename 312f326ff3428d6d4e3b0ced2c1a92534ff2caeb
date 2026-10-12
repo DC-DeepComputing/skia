@@ -46,6 +46,30 @@
       },
       "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93b93ffe_d6f50059",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-12T17:33:25Z",
+      "side": 1,
+      "message": "Maybe there is a point to have a temporary static function to initialize a global SkContext while migrating to this new API, but then I\u0027d argue that logic should just be inside `SkGraphics::Init()` with the goal that the global SkContext it creates is removed when `SkGraphics::Init()` can be deleted.\n\nLong term, there should not be a static function that initializes globals for `SkContext`. The point of `SkContext` is that it owns everything inside (or inside of the backend subclasses) and does not reach out to globals. Where Chrome or other clients currently initialize Skia globals should go away and they would create and own a `std::unique_ptr\u003cContext\u003e`.  That would be their initialization in the new world (or possible a shared pointer to Context).",
+      "parentUuid": "455a401a_f3ceb217",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 23
+      },
+      "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
