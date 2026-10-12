@@ -21,7 +21,7 @@ struct MemoryCtxPatch;
 /**
  * SkOpts (short for SkOptimizations) is a mechanism where we can ship with multiple implementations
  * of a set of functions and dynamically choose the best one at runtime (e.g. the call to
- * SkGraphics::Init(), which calls SkOpts::Init()) depending on the detected CPU features. This is
+ * SkContext::init(), which calls SkOpts::Init()) depending on the detected CPU features. This is
  * also referred to as having "specializations" of a given function.
  *
  * For example, Skia might be compiled to support CPUs that only have the sse2 instruction set
@@ -67,7 +67,7 @@ struct SkRasterPipelineStage;
 namespace SkOpts {
     // Call to replace pointers to portable functions with pointers to CPU-specific functions.
     // Thread-safe and idempotent.
-    // Called by SkGraphics::Init().
+    // Called by SkContext::init().
     void Init();
 
     // We can't necessarily express the type of SkRasterPipeline stage functions here,

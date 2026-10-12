@@ -7,9 +7,12 @@
 
 #include "include/core/SkGraphics.h"
 
+#include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
 #include "src/core/SkBitmapProcState.h"
 #include "src/core/SkBlitMask.h"
 #include "src/core/SkBlitRow.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkCpu.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkMemset.h"
@@ -21,13 +24,7 @@
 
 void SkGraphics::Init() {
     // SkGraphics::Init() must be thread-safe and idempotent.
-    SkCpu::CacheRuntimeFeatures();
-    SkOpts::Init();
-    SkOpts::Init_BitmapProcState();
-    SkOpts::Init_BlitMask();
-    SkOpts::Init_BlitRow();
-    SkOpts::Init_Memset();
-    SkOpts::Init_Swizzler();
+    SkContexts::GetGlobalSkContext();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -123,3 +120,13 @@ SkGraphics::SetOpenTypeSVGDecoderFactory(OpenTypeSVGDecoderFactory svgDecoderFac
 SkGraphics::OpenTypeSVGDecoderFactory SkGraphics::GetOpenTypeSVGDecoderFactory() {
     return gSVGDecoderFactory;
 }
+
+namespace SkContexts {
+
+// GetGlobalSkContext creates a global SkContext object with only Raster settings. GPU settings can be configured later
+// This is an intermediary step in the SkContext project, whereby we use this global SkContext object to remove or take away functionality from SkGraphics
+SkContext* GetGlobalSkContext() {
+    static std::unique_ptr<SkContext> gSkContext = SkContextCtorAccessor::MakeContext({});
+    return gSkContext.get();
+}
+}  // namespace SkContexts

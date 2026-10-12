@@ -14,18 +14,38 @@
 #include "include/core/SkTypes.h"
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureManager.h"
+#include "src/core/SkBitmapProcState.h"
+#include "src/core/SkBlitMask.h"
+#include "src/core/SkBlitRow.h"
 #include "src/core/SkContextPriv.h"
+#include "src/core/SkCpu.h"
+#include "src/core/SkMemset.h"
+#include "src/core/SkOpts.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedContext.h"
 #include "src/core/SkStrikeCache.h"
+#include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
 
 SkContext::SkContext(const SkContextOptions& options) {
+    SkContext::init();
     if (options.fEnableCapture) {
         fCaptureManager = sk_make_sp<SkCaptureManager>();
     }
     fSharedContext = sk_make_sp<SkSharedContext>(options);
+}
+
+void SkContext::init() {
+    // SkContext::Make() must be thread-safe and idempotent.
+    fCpu = std::make_unique<SkCpu>();
+    fCpu->cacheRuntimeFeatures();
+    SkOpts::Init();
+    SkOpts::Init_BitmapProcState();
+    SkOpts::Init_BlitMask();
+    SkOpts::Init_BlitRow();
+    SkOpts::Init_Memset();
+    SkOpts::Init_Swizzler();
 }
 
 SkContext::~SkContext() = default;
