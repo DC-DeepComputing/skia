@@ -94,6 +94,30 @@
       },
       "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54a6c2ae_db9d0a0a",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-12T18:10:00Z",
+      "side": 1,
+      "message": "So I think during the transition, SkGraphics::Init will end up making the global SkContext object. And then at least all the CPU related calls will be forwarded from our global functions to setting/querying the global SkContext. So in that world the work done today in Init will be move the ctor of SkContext. There are some open questions in this transition phase about how to the gpu contexts will be handled since we can\u0027t easily put them on the global SkContext.",
+      "parentUuid": "3e807c16_61876ac1",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 23
+      },
+      "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
