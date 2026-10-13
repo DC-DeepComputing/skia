@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fda1a8d_a173aa88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-13T07:58:55Z",
+      "side": 1,
+      "message": "I had to reorder:\nsrc/core/SkMaskFilterBase.h\n\nSee diff:\nhttps://skia-review.git.corp.google.com/c/skia/+/1340458/7..9\n\nI lost CR:+1",
+      "revId": "a773987ce1e4759d3d7a20742e1125db172e7625",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
