@@ -39,6 +39,30 @@
       },
       "revId": "f0efe1db348f0ddbee88e938a043364ea0c1284c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c1b7a6a_170a4c4d",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-13T22:07:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad35d1db_fbd20384",
+      "range": {
+        "startLine": 590,
+        "startChar": 65,
+        "endLine": 590,
+        "endChar": 85
+      },
+      "revId": "f0efe1db348f0ddbee88e938a043364ea0c1284c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
