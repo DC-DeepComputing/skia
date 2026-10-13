@@ -20,7 +20,6 @@
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
 class SkCaptureManager;
-class SkExecutor;
 
 namespace skgpu {
 class SingleOwner;
@@ -97,7 +96,7 @@ public:
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
-                  SkExecutor* executor,
+                  SkCallbackExecutor* executor,
                   SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     // All the resources in the ThreadSafeResourceProvider should be 0-sized.
