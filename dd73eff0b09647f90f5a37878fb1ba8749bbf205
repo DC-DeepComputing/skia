@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "299f2eb1_b62c1d1d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-13T09:46:38Z",
+      "side": 1,
+      "message": "Hi @michaelludwig@google.com,\n\nThis list was generated semi-automatically. For MiraclePtr, I mainly care about the structs holding raw pointers (and any outer structs embedding them by value), as this lets the clang rewriter skip them without needing per-field `RAW_PTR_EXCLUSION`.\n\nIf there are any classes here you would rather not restrict to the stack, happy to drop them now or anytime in the future.",
+      "revId": "dd73eff0b09647f90f5a37878fb1ba8749bbf205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
