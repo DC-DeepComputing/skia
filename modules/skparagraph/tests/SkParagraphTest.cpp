@@ -9248,3 +9248,32 @@ DEF_TEST(SkParagraph_InlineCapacityGrowthRelocation, reporter) {
     REPORTER_ASSERT(reporter, impl->styles()[2].fStyle.getShadowNumber() == 1);
 }
 
+// Regression test for b/301804265: hit-testing justified lines with multi-grapheme clusters
+DEF_TEST(SkParagraph_JustificationHitTest, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.setTextDirection(TextDirection::kLtr);
+    paragraphStyle.setTextAlign(TextAlign::kJustify);
+    TextStyle style;
+    style.setFontSize(10.0f);
+    paragraphStyle.setTextStyle(style);
+
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(style);
+    builder.addText("A ");
+    builder.addText("B\u200B");
+    builder.addText("CCCCCCCCCC");
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(100.0f);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    Paragraph::GlyphInfo glyphInfo;
+    for (SkScalar x = 0.0f; x <= 100.0f; x += 5.0f) {
+        REPORTER_ASSERT(reporter, impl->getClosestUTF16GlyphInfoAt(x, 5.0f, &glyphInfo));
+    }
+}
+
