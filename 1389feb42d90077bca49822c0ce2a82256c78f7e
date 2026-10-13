@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "429906c2_f783ebe0",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1418,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-13T19:54:48Z",
+      "side": 1,
+      "message": "I\u0027m not sure I would update these calls yet. Our tools should \"roughly\" be examples of how to use skia publicly. For testing we of course abuse that ideal and access src things, but where we can we should stick with public usages.\n\nSo in this case, the public guides are to still call SkGraphics::Init(). When we get to a point where we are ready for clients to create SkContexts and pass them to us then we can update these tool calls. But even then we\u0027ll never have them directly grabbing our hidden global context and they would make their own.",
+      "range": {
+        "startLine": 1418,
+        "startChar": 8,
+        "endLine": 1418,
+        "endChar": 41
+      },
+      "revId": "1389feb42d90077bca49822c0ce2a82256c78f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db3c85ed_219e92b3",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-13T19:54:48Z",
+      "side": 1,
+      "message": "Why does this need to be declared in the header? In general if you ever find yourself declaring a private static function in the class, it is a sign something is wrong. Almost always that function can instead just be declared in the cpp file as a help function",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 10
+      },
+      "revId": "1389feb42d90077bca49822c0ce2a82256c78f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
