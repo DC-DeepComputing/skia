@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7690cdde_cd503690",
+        "filename": "tests/ExecutorTest.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-13T15:24:48Z",
+      "side": 1,
+      "message": "gcc couldn\u0027t figure this out on its own",
+      "revId": "abd3b670aeed26be6a3771a215c926a9ddcfe69b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
