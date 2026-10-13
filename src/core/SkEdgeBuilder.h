@@ -17,8 +17,8 @@
 
 class SkEdge;
 class SkPath;
-struct SkPathRaw;
 struct SkAnalyticEdge;
+struct SkPathRaw;
 
 class SkEdgeBuilder {
 public:
@@ -34,6 +34,7 @@ protected:
     void**              fEdgeList = nullptr;
     SkTDArray<void*>    fList;
     SkSTArenaAlloc<512> fAlloc;
+    bool                fCanCullToTheRight = true;
 
     enum Combine {
         kNo_Combine,
