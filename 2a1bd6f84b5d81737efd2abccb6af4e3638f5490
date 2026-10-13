@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "466c8ce2_81ef5690",
+        "filename": "src/text/StrikeForGPU.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-13T19:10:45Z",
+      "side": 1,
+      "message": "I would not worry too much about keeping an `SkPathEffect` or `SkMaskFilter` alive, these are small objects typically. Keeping an `SkTypeface` alive is more problematic. However, we need a way to reconstruct the actual `SkGlyph` for a given packed glyph ID if it\u0027s ever lost from the texture atlas so that we can put the mask back into it.",
+      "parentUuid": "f9e930bd_ab7d087a",
+      "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "aa9fe6e6_b99f6217",
