@@ -33,6 +33,29 @@
       "message": "Looks like I need two +1s as an external contributer - @Eric please take a look when you get a chance - happy to make any changes.",
       "revId": "86d624dfddf167331a0b0a5d2ed676045725abca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f51eaba_ce0eb6c4",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 1998,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-13T18:23:33Z",
+      "side": 1,
+      "message": "Can we use a separate cache for this?  I\u0027m concerned about large Chrome binaries bloating the existing cache. Keeping it separate makes this easier to measure.",
+      "range": {
+        "startLine": 1998,
+        "startChar": 0,
+        "endLine": 1998,
+        "endChar": 44
+      },
+      "revId": "86d624dfddf167331a0b0a5d2ed676045725abca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
