@@ -22,6 +22,8 @@
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 
+#include <cstring>
+
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -1516,6 +1518,15 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     fFragmentSkSL += mainBody;
 }
 
+// EXPERIMENT (DO NOT SUBMIT)
+bool ShaderInfo::OmitsSsboIndexAttribute(const Caps* caps) {
+    // Without storage buffers, uniforms come from uniform buffers and neither the vertex shader
+    // nor the fragment shader (via a varying) needs the ssboIndex. This depends only on the Caps,
+    // so every pipeline of a RenderStep shares the same vertex input layout.
+    return caps->resourceBindingRequirements().fBackendApi == BackendApi::kVulkan &&
+           !caps->storageBufferSupport();
+}
+
 void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                     const RenderStep* step,
                                     const SharedGeneratorData& sharedData) {
@@ -1545,10 +1556,18 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
     SkSpan<const Attribute> appendAttrs = this->appendAttributes().empty()
                                                 ? step->appendAttributes()
                                                 : this->appendAttributes();
+    // EXPERIMENT (DO NOT SUBMIT): see ShaderInfo::OmitsSsboIndexAttribute(). The skipped attribute
+    // does not consume a location, which must match the backend's vertex input state.
+    const bool omitSsboIndex = OmitsSsboIndexAttribute(caps);
+    SkASSERT(!omitSsboIndex ||
+             (!sharedData.fUseUniformStorageBufferVS && !sharedData.fHasSsboIndexVarying));
     if (!staticAttrs.empty() || !appendAttrs.empty()) {
         int attr = 0;
-        auto add_attrs = [&vsPreamble, &attr](SkSpan<const Attribute> attrs) {
+        auto add_attrs = [&vsPreamble, &attr, omitSsboIndex](SkSpan<const Attribute> attrs) {
             for (auto a : attrs) {
+                if (omitSsboIndex && strcmp(a.name(), RenderStep::ssboIndexAttribute()) == 0) {
+                    continue;
+                }
                 SkSL::String::appendf(&vsPreamble, "layout(location=%d) in ", attr++);
                 vsPreamble.append(SkSLTypeString(a.gpuType()));
                 SkSL::String::appendf(&vsPreamble, " %s;\n", a.name());

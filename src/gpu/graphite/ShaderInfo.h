@@ -89,6 +89,14 @@ public:
 
     SkSpan<const Attribute> appendAttributes() const { return fAppendAttrs; }
 
+    // EXPERIMENT (DO NOT SUBMIT): When storage buffers are unsupported (always the case on Vulkan
+    // today), no vertex shader reads the RenderStep's ssboIndex attribute. Rather than declaring it
+    // as an unused input (or stripping it and leaving a hole in the input locations), it is left out
+    // of the vertex shader entirely and the remaining attribute locations stay contiguous. Backends
+    // that honor this must also omit it from their vertex input state, while keeping the attribute
+    // offsets/stride unchanged since the vertex data still contains it. Only Vulkan does so for now.
+    static bool OmitsSsboIndexAttribute(const Caps*);
+
     // Name used in-shader for storage buffer uniform.
     static constexpr char kStorageBufferName[] = "fsStorageBuffer";
 

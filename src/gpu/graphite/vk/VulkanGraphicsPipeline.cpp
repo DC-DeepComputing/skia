@@ -10,6 +10,7 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkLog.h"
+#include "include/private/SkMutex.h"  // DEBUG (DO NOT SUBMIT)
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/SkSLToBackend.h"
@@ -32,6 +33,8 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/utils/SkShaderUtils.h"
+
+#include <cstring>
 
 namespace skgpu::graphite {
 
@@ -101,13 +104,25 @@ static void get_vertex_input_state(
         VkVertexInputRate appendVertexRate,
         const SkSpan<const Attribute>& staticAttrs,
         const SkSpan<const Attribute>& appendAttrs,
+        bool omitSsboIndex,
         skia_private::STArray<2, VertexInputBindingDescription>& bindingDescs,
         skia_private::STArray<16, VertexInputAttributeDescription>& attributeDescs,
         const VertexInputBindingDescription& defaultBindingDesc,
         const VertexInputAttributeDescription& defaultAttributeDesc) {
+    // EXPERIMENT (DO NOT SUBMIT): see ShaderInfo::OmitsSsboIndexAttribute(). An omitted attribute
+    // is still present in the vertex data (so it still advances the offset/stride), but it gets no
+    // description and does not consume a location, matching ShaderInfo::generateVertexSkSL().
+    auto isOmitted = [omitSsboIndex](const Attribute& attrib) {
+        return omitSsboIndex && strcmp(attrib.name(), RenderStep::ssboIndexAttribute()) == 0;
+    };
+
     int attribIndex = 0;
     size_t staticAttributeOffset = 0;
     for (auto attrib : staticAttrs) {
+        if (isOmitted(attrib)) {
+            staticAttributeOffset += attrib.sizeAlign4();
+            continue;
+        }
         VertexInputAttributeDescription vkAttrib = defaultAttributeDesc;
         vkAttrib.location = attribIndex++;
         vkAttrib.binding = VulkanGraphicsPipeline::kStaticDataBufferIndex;
@@ -119,6 +134,10 @@ static void get_vertex_input_state(
 
     size_t appendAttributeOffset = 0;
     for (auto attrib : appendAttrs) {
+        if (isOmitted(attrib)) {
+            appendAttributeOffset += attrib.sizeAlign4();
+            continue;
+        }
         VertexInputAttributeDescription vkAttrib = defaultAttributeDesc;
         vkAttrib.location = attribIndex++;
         vkAttrib.binding = VulkanGraphicsPipeline::kAppendDataBufferIndex;
@@ -148,6 +167,7 @@ static void setup_vertex_input_state(
         VkVertexInputRate appendVertexRate,
         const SkSpan<const Attribute>& staticAttrs,
         const SkSpan<const Attribute>& appendAttrs,
+        bool omitSsboIndex,
         VkPipelineVertexInputStateCreateInfo* vertexInputInfo,
         skia_private::STArray<2, VkVertexInputBindingDescription>& bindingDescs,
         skia_private::STArray<16, VkVertexInputAttributeDescription>& attributeDescs) {
@@ -155,6 +175,7 @@ static void setup_vertex_input_state(
     get_vertex_input_state(appendVertexRate,
                            staticAttrs,
                            appendAttrs,
+                           omitSsboIndex,
                            bindingDescs,
                            attributeDescs,
                            /*defaultBindingDesc=*/{},
@@ -683,14 +704,24 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
 
             pipelineCreateInfo->flags &=
                     ~VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
-            VULKAN_CALL_RESULT(sharedContext,
-                               result,
-                               CreateGraphicsPipelines(sharedContext->device(),
-                                                       sharedContext->getPipelineCache(),
-                                                       /*createInfoCount=*/1,
-                                                       pipelineCreateInfo,
-                                                       /*pAllocator=*/nullptr,
-                                                       &vkPipeline));
+            // DEBUG (DO NOT SUBMIT): Don't assert on failure, so DM keeps running and every
+            // failing pipeline gets reported by debug_dump_failed_pipeline().
+            VULKAN_CALL_RESULT_NOCHECK(sharedContext->interface(),
+                                       result,
+                                       CreateGraphicsPipelines(sharedContext->device(),
+                                                               sharedContext->getPipelineCache(),
+                                                               /*createInfoCount=*/1,
+                                                               pipelineCreateInfo,
+                                                               /*pAllocator=*/nullptr,
+                                                               &vkPipeline));
+            if (result != VK_SUCCESS) {
+                SkDebugf("[VkPipelineDebug] vkCreateGraphicsPipelines failed (%s): VkResult %d\n",
+                         (pipelineCreateInfo->flags & VK_PIPELINE_CREATE_LIBRARY_BIT_KHR)
+                                 ? "shaders library"
+                                 : "complete pipeline",
+                         result);
+            }
+            sharedContext->checkVkResult(result);
             if (result == VK_SUCCESS) {
                 sharedContext->pipelineCompileWasRequired();
             }
@@ -851,6 +882,66 @@ const DescriptorData& VulkanGraphicsPipeline::GetInputAttachmentDescriptor() {
     return descriptor;
 }
 
+// DEBUG (DO NOT SUBMIT): Dumps everything needed to reproduce a pipeline that the driver failed to
+// create. Failures are non-fatal in create_graphics_pipeline() so one DM run reports all of them.
+static void debug_dump_failed_pipeline(const VulkanSharedContext* sharedContext,
+                                       const ShaderInfo& shaderInfo,
+                                       SkSpan<const Attribute> staticAttrs,
+                                       SkSpan<const Attribute> appendAttrs,
+                                       bool omitSsboIndexAttribute,
+                                       const SkSL::NativeShader& vsSPIRV,
+                                       const SkSL::NativeShader& fsSPIRV) {
+    static SkMutex gDumpMutex;
+    static int gNumFailures = 0;
+    // SPIR-V hex is large; only include it for the first few failures. The SkSL is always dumped.
+    constexpr int kMaxSpirvDumps = 3;
+
+    SkAutoMutexExclusive lock(gDumpMutex);
+    const int failureIndex = ++gNumFailures;
+
+    SkDebugf("===== [VkPipelineDebug] FAILED PIPELINE #%d BEGIN =====\n", failureIndex);
+    SkDebugf("[VkPipelineDebug] pipeline: %s\n", shaderInfo.pipelineLabel().c_str());
+    SkDebugf("[VkPipelineDebug] VS: %s\n", shaderInfo.vsLabel().c_str());
+    SkDebugf("[VkPipelineDebug] FS: %s\n", shaderInfo.fsLabel().c_str());
+    SkDebugf("[VkPipelineDebug] SPIR-V version 0x%08x, pipeline libraries %d, "
+             "dynamic vertex input %d, ssboIndex omitted %d\n",
+             SkSL::kSPIRVVersion,
+             sharedContext->caps()->usePipelineLibraries(),
+             sharedContext->caps()->useVertexInputDynamicState(),
+             omitSsboIndexAttribute);
+    // Locations are assigned in the same order as ShaderInfo::generateVertexSkSL(); an omitted
+    // attribute doesn't consume a location.
+    int location = 0;
+    auto dumpAttrs = [&](SkSpan<const Attribute> attrs, const char* kind) {
+        for (const Attribute& a : attrs) {
+            if (omitSsboIndexAttribute && strcmp(a.name(), RenderStep::ssboIndexAttribute()) == 0) {
+                SkDebugf("[VkPipelineDebug] attribute (omitted) %s %s (%s)\n",
+                         SkSLTypeString(a.gpuType()), a.name(), kind);
+                continue;
+            }
+            SkDebugf("[VkPipelineDebug] attribute location=%d %s %s (%s)\n",
+                     location++, SkSLTypeString(a.gpuType()), a.name(), kind);
+        }
+    };
+    dumpAttrs(staticAttrs, "static");
+    dumpAttrs(appendAttrs, "append");
+    SkDebugf("----- [VkPipelineDebug] VS SkSL BEGIN -----\n%s\n"
+             "----- [VkPipelineDebug] VS SkSL END -----\n",
+             shaderInfo.vertexSkSL().c_str());
+    SkDebugf("----- [VkPipelineDebug] FS SkSL BEGIN -----\n%s\n"
+             "----- [VkPipelineDebug] FS SkSL END -----\n",
+             shaderInfo.fragmentSkSL().c_str());
+    if (failureIndex <= kMaxSpirvDumps) {
+        SkDebugf("----- [VkPipelineDebug] VS SPIR-V BEGIN -----\n%s\n"
+                 "----- [VkPipelineDebug] VS SPIR-V END -----\n",
+                 SkShaderUtils::SpirvAsHexStream(vsSPIRV.fBinary).c_str());
+        SkDebugf("----- [VkPipelineDebug] FS SPIR-V BEGIN -----\n%s\n"
+                 "----- [VkPipelineDebug] FS SPIR-V END -----\n",
+                 SkShaderUtils::SpirvAsHexStream(fsSPIRV.fBinary).c_str());
+    }
+    SkDebugf("===== [VkPipelineDebug] FAILED PIPELINE #%d END =====\n", failureIndex);
+}
+
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         VulkanSharedContext* sharedContext,
         const RuntimeEffectDictionary* runtimeDict,
@@ -985,6 +1076,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VertexInputBindingDescriptions vertexBindingDescriptions;
     VertexInputAttributeDescriptions vertexAttributeDescriptions;
     VkPipeline shadersPipeline = VK_NULL_HANDLE;
+    // EXPERIMENT (DO NOT SUBMIT): must match the attribute declarations in the vertex SkSL.
+    const bool omitSsboIndexAttribute = ShaderInfo::OmitsSsboIndexAttribute(sharedContext->caps());
     VkPipeline vkPipeline = MakePipeline(
             sharedContext,
             *program,
@@ -993,12 +1086,24 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
             step->appendsVertices() ? VK_VERTEX_INPUT_RATE_VERTEX : VK_VERTEX_INPUT_RATE_INSTANCE,
             step->staticAttributes(),
             shaderInfo->appendAttributes(),
+            omitSsboIndexAttribute,
             vertexBindingDescriptions,
             vertexAttributeDescriptions,
             shaderInfo->depthStencilSettings(),
             shaderInfo->blendInfo(),
             renderPassDesc,
             &shadersPipeline);
+
+    if (vkPipeline == VK_NULL_HANDLE) {
+        // DEBUG (DO NOT SUBMIT)
+        debug_dump_failed_pipeline(sharedContext,
+                                   *shaderInfo,
+                                   step->staticAttributes(),
+                                   shaderInfo->appendAttributes(),
+                                   omitSsboIndexAttribute,
+                                   vsSPIRV,
+                                   fsSPIRV);
+    }
 
     sk_sp<VulkanGraphicsPipeline> pipeline;
     if (vkPipeline) {
@@ -1038,6 +1143,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         VkVertexInputRate appendInputRate,
         SkSpan<const Attribute> staticAttrs,
         SkSpan<const Attribute> appendAttrs,
+        bool omitSsboIndexAttribute,
         VertexInputBindingDescriptions& vertexBindingDescriptions,
         VertexInputAttributeDescriptions& vertexAttributeDescriptions,
         const DepthStencilSettings& depthStencilSettings,
@@ -1063,6 +1169,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         get_vertex_input_state(appendInputRate,
                                staticAttrs,
                                appendAttrs,
+                               omitSsboIndexAttribute,
                                vertexBindingDescriptions,
                                vertexAttributeDescriptions,
                                defaultBindingDesc,
@@ -1071,6 +1178,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
         setup_vertex_input_state(appendInputRate,
                                  staticAttrs,
                                  appendAttrs,
+                                 omitSsboIndexAttribute,
                                  &vertexInputInfo,
                                  bindingDescs,
                                  attributeDescs);
@@ -1273,6 +1381,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
                                          /*appendInputRate=*/{},
                                          /*staticAttrs=*/{},
                                          /*appendAttrs=*/{},
+                                         /*omitSsboIndexAttribute=*/false,
                                          vertexBindingDescriptions,
                                          vertexAttributeDescriptions,
                                          /*depthStencilSettings=*/{},
