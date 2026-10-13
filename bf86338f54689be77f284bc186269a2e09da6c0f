@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72df1581_80b72624",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-13T15:34:25Z",
+      "side": 1,
+      "message": "For the large gold diffs in BlurDrawImage (can check PS 1 if jobs are still running), this seems like an interpolation difference due to using a 5x5 grid which simplifies to a 3x3 vertex cell grid in the rect case, compared to AnalyticBlurRenderStep which just draws a single quad. And since the image is drawn with kNearest sampling, the diff is noticeable mainly on the P400 and M1.\n\nI think this is fine? I could reduce the geometry to a single quad to match the previous interpolation, however we would lose the per-edge and fully inside optimizations which reduce sample calls.",
+      "revId": "bf86338f54689be77f284bc186269a2e09da6c0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
