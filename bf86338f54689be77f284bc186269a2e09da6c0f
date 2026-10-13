@@ -51,6 +51,24 @@
       "message": "Great! Next up let\u0027s see how the circles go 😊",
       "revId": "bf86338f54689be77f284bc186269a2e09da6c0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca16996f_25061306",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-13T16:57:17Z",
+      "side": 1,
+      "message": "I think those diffs are fine. Nearest neighbor is very noisy in this way.",
+      "parentUuid": "53acf974_cf3ec65b",
+      "revId": "bf86338f54689be77f284bc186269a2e09da6c0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
