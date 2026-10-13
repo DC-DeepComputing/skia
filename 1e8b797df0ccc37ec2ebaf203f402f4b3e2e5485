@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ba4c8e8_6d86b2f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-13T18:26:04Z",
+      "side": 1,
+      "message": "PTAL; this is the last patch before geometry spawner!",
+      "revId": "1e8b797df0ccc37ec2ebaf203f402f4b3e2e5485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
