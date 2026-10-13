@@ -404,3 +404,44 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_DrawableSubRun,
 }
 
 
+
+// KEEPER-DEBT: This test deliberately fails on CL 1391378 PS 5 because resetStrike() drops the internal SkStrike,
+// and MakeFromBuffer fails to recreate/pin the strike when the global SkStrikeCache is empty.
+// When the real bug is fixed, deserialization should succeed or properly recreate the SkStrike.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_purge_strike_cache_then_serialize,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+
+    auto blob = make_blob(make_path_typeface(), /*size=*/16);
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {0, 64}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    SkBitmap expectedPixels = render_slug(surface.get(), *slug, paint);
+    REPORTER_ASSERT(reporter, expectedPixels.getColor(32, 32) == SK_ColorBLACK);
+
+    // Evict the strike from cache. PS 5 resetStrike() dropped our local SkStrike
+    // reference, so the strike is now completely dead.
+    SkStrikeCache::GlobalStrikeCache()->purgeAll();
+
+    // Serialize the slug without its SkStrike.
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+
+    // Deserialize and attempt to draw. Fails on PS 5 because MakeFromBuffer
+    // uses findStrike instead of pinning the strike from the descriptor,
+    // crashing on SkASSERT(strike != nullptr).
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    SkBitmap actualPixels = render_slug(surface.get(), *deserializedSlug, paint);
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(expectedPixels, actualPixels));
+}

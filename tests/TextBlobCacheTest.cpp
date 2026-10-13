@@ -1,3 +1,5 @@
+#include "include/core/SkMaskFilter.h"
+#include "include/effects/SkDashPathEffect.h"
 /*
  * Copyright 2015 Google Inc.
  *
@@ -492,3 +494,43 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextBlob_draw_releases_strike_from_cache,
     REPORTER_ASSERT(reporter, maskStrike->unique());
 }
 
+
+// KEEPER-DEBT: This test deliberately fails on CL 1391378 PS 5 because resetStrike() allocates a new SkStrikeSpec,
+// which erroneously retains SkTypeface and SkPathEffect for the lifetime of the TextBlobRedrawCoordinator entry.
+// When the real bug is fixed (zero-allocation flush, and removing SkStrikeSpec duplication), this test will pass.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextBlob_draw_releases_typeface_and_effects,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+    auto canvas = surface->getCanvas();
+
+    sk_sp<SkTypeface> customTypeface = make_path_typeface();
+    SkScalar intervals[] = {10.f, 10.f};
+    sk_sp<SkPathEffect> pathEffect = SkDashPathEffect::Make(intervals, 2, 0);
+    sk_sp<SkMaskFilter> maskFilter = SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 2.0f);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setPathEffect(pathEffect);
+    paint.setMaskFilter(maskFilter);
+
+    // 400pt exercises PathSubRun (PathOpSubmitter)
+    auto pathBlob = make_single_glyph_blob(customTypeface, /*size=*/400);
+
+    canvas->drawTextBlob(pathBlob, 0, 64, paint);
+    dContext->flushAndSubmit();
+
+    // After drawing and flushing, TextBlobRedrawCoordinator converts to paths/atlas.
+    // Purging the cache should drop all references to the strike.
+    SkStrikeCache::GlobalStrikeCache()->purgeAll();
+
+    // The RedrawCoordinator must not retain the Typeface, PathEffect, or MaskFilter
+    // merely because it called resetStrike() or stored an SkStrikeSpec.
+    REPORTER_ASSERT(reporter, customTypeface->unique());
+    REPORTER_ASSERT(reporter, pathEffect->unique());
+    REPORTER_ASSERT(reporter, maskFilter->unique());
+}
