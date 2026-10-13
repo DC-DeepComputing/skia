@@ -296,7 +296,9 @@ void GrResourceCache::changeUniqueKey(GrGpuResource* resource, const skgpu::Uniq
                 old->cacheAccess().release();
             } else {
                 // removeUniqueKey expects an external owner of the resource.
-                this->removeUniqueKey(sk_ref_sp(old).get());
+                this->refResource(old);
+                this->removeUniqueKey(old);
+                old->unref();
             }
         }
         SkASSERT(nullptr == fUniqueHash.find(newKey));
