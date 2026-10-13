@@ -45,6 +45,29 @@
       },
       "revId": "1389feb42d90077bca49822c0ce2a82256c78f7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2784b381_89b60ad3",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-13T20:05:42Z",
+      "side": 1,
+      "message": "Given that these are all thread-safe and idempotent, it is okay to be calling `Init()` every time an `SkContext` is called, and there are unlikely to be so many of them that it\u0027s a bottleneck, but it might be nice to have the whole thing wrapped in an SkOnce, and then be named `init_globals_if_needed`.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 1
+      },
+      "revId": "1389feb42d90077bca49822c0ce2a82256c78f7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
