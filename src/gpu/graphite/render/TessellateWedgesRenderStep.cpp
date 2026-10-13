@@ -12,6 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSLTypeShared.h"
@@ -88,7 +89,7 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(Layout layout,
                                                        RenderStepID renderStepID,
                                                        bool infinitySupport,
                                                        SkEnumBitMask<Flags> xtraFlags,
-                                                       DepthStencilSettings depthStencilSettings,
+                                                       StencilSettings stencilSettings,
                                                        StaticBufferManager* bufferManager)
         : RenderStep(layout,
                      renderStepID,
@@ -97,10 +98,10 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(Layout layout,
                                           | xtraFlags,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
-                     depthStencilSettings,
+                     stencilSettings,
                      /*staticAttrs=*/{{{"resolveLevel_and_idx",
-                                       VertexAttribType::kFloat2, SkSLType::kFloat2}}},
-                     /*appendAttrs=*/kAttributes[infinitySupport],
+                                        VertexAttribType::kFloat2, SkSLType::kFloat2}}},
+                     /*appendAttrs=*/SK_UNSAFE_TODO(kAttributes[infinitySupport]),
                      /*storageUniforms=*/{})
         , fInfinitySupport(infinitySupport) {
     // Initialize the static buffers we'll use when recording draw calls.
@@ -132,9 +133,9 @@ std::unique_ptr<TessellateWedgesRenderStep> TessellateWedgesRenderStep::StencilF
 
     RenderStepID id = evenOdd ? RenderStepID::kTessellateWedges_EvenOdd
                               : RenderStepID::kTessellateWedges_Winding;
-    auto dss = evenOdd ? kEvenOddStencilPass : kWindingStencilPass;
+    auto stencil = evenOdd ? kEvenOddStencilPass : kWindingStencilPass;
     return std::unique_ptr<TessellateWedgesRenderStep>(new TessellateWedgesRenderStep(
-            layout, id, infinitySupport, kStencilFlags, dss, bufferManager));
+            layout, id, infinitySupport, kStencilFlags, stencil, bufferManager));
 }
 
 std::unique_ptr<TessellateWedgesRenderStep> TessellateWedgesRenderStep::ConvexFill(
@@ -146,7 +147,7 @@ std::unique_ptr<TessellateWedgesRenderStep> TessellateWedgesRenderStep::ConvexFi
 
     return std::unique_ptr<TessellateWedgesRenderStep>(new TessellateWedgesRenderStep(
             layout, RenderStepID::kTessellateWedges_Convex, infinitySupport,
-            kConvexFlags, kDirectDepthLEqualPass, bufferManager));
+            kConvexFlags, /*stencilSettings=*/{}, bufferManager));
 }
 
 std::string TessellateWedgesRenderStep::vertexSkSL(const RootNodesInfo&) const {
@@ -212,20 +213,20 @@ void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw,
                 case SkPathVerb::kLine:
                     // Unlike curve tessellation, wedges have to handle lines as part of the patch,
                     // effectively forming a single triangle with the fan point.
-                    writer.writeLine(pts[0], pts[1]);
-                    lastPoint = pts[1];
+                    writer.writeLine(pts[0], SK_UNSAFE_TODO(pts[1]));
+                    lastPoint = SK_UNSAFE_TODO(pts[1]);
                     break;
                 case SkPathVerb::kQuad:
                     writer.writeQuadratic(pts);
-                    lastPoint = pts[2];
+                    lastPoint = SK_UNSAFE_TODO(pts[2]);
                     break;
                 case SkPathVerb::kConic:
                     writer.writeConic(pts, *w);
-                    lastPoint = pts[2];
+                    lastPoint = SK_UNSAFE_TODO(pts[2]);
                     break;
                 case SkPathVerb::kCubic:
                     writer.writeCubic(pts);
-                    lastPoint = pts[3];
+                    lastPoint = SK_UNSAFE_TODO(pts[3]);
                     break;
                 default: break;
             }

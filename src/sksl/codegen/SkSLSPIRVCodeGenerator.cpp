@@ -31,7 +31,6 @@
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
-#include "src/sksl/analysis/SkSLProgramUsage.h"
 #include "src/sksl/analysis/SkSLSpecialization.h"
 #include "src/sksl/codegen/SkSLCodeGenTypes.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
@@ -132,11 +131,10 @@ static SpvStorageClass get_storage_class_spv_id(StorageClass storageClass) {
         case StorageClass::kUniform: return SpvStorageClassUniform;
         // Note: In SPIR-V 1.3, a storage buffer can be declared with the "StorageBuffer"
         // storage class and the "Block" decoration and the <1.3 approach we use here ("Uniform"
-        // storage class and the "BufferBlock" decoration) is deprecated. The deprecated approach
-        // is still valid in SPIR-V 1.3 (which we target), is well supported in Vulkan, and
+        // storage class and the "BufferBlock" decoration) is deprecated. Since we target SPIR-V
+        // 1.0, we have to use the deprecated approach which is well supported in Vulkan and
         // addresses SkSL use cases (notably SkSL currently doesn't support pointer features that
-        // would benefit from SPV_KHR_variable_pointers capabilities). BufferBlock is removed in
-        // SPIR-V 1.4, so targeting 1.4+ will require switching to the StorageBuffer approach.
+        // would benefit from SPV_KHR_variable_pointers capabilities).
         case StorageClass::kStorageBuffer: return SpvStorageClassUniform;
         case StorageClass::kOutput: return SpvStorageClassOutput;
         case StorageClass::kWorkgroup: return SpvStorageClassWorkgroup;
@@ -5707,30 +5705,6 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, SPIRVBlob& ou
     for (const ProgramElement* e : program.elements()) {
         if (e->is<GlobalVarDeclaration>()) {
             const VarDeclaration& decl = e->as<GlobalVarDeclaration>().varDeclaration();
-            const Variable& var = *decl.var();
-
-            // Skip non-builtin `in`/`out` globals that the program never reads or writes, so they
-            // aren't declared or listed in OpEntryPoint.
-            //
-            // This works around what seems to be an issue with NVIDIA Vulkan drivers (GTX1660,
-            // windows) where the shader fails to compile on SPIR-V 1.3 modules with unused vertex
-            // inputs, e.g. Graphite's VerticesRenderStep `texCoords` when the paint doesn't need
-            // local coords.
-            //
-            // The spec *allows* unused Input/Output variables in OpEntryPoint's interface list (and
-            // this issue does not reproduce on other devices). Skipping is safe because locations
-            // are explicit (e.g. location = 0: pos, location = 1: colr), and Vulkan allows vertex
-            // attributes and outputs that go unconsumed.
-            //
-            // Note: never-written outputs are dropped too. A later stage reading one already got
-            // undefined values; now its input also lacks a matching declaration in this stage.
-            if ((var.modifierFlags() & (ModifierFlag::kIn | ModifierFlag::kOut)) &&
-                !var.isBuiltin()) {
-                ProgramUsage::VariableCounts counts = program.usage()->get(var);
-                if (counts.fRead == 0 && counts.fWrite == 0) {
-                    continue;
-                }
-            }
             if (!this->writeGlobalVarDeclaration(program.fConfig->fKind, decl)) {
                 return;
             }

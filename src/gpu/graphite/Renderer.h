@@ -239,14 +239,11 @@ public:
     //
     // RenderSteps cannot control depth settings as the depth attachment is used more fluidly to
     // ensure rendering correctness. Instead, the render step's flags are the source of truth for
-    // its depth behavior. These depth settings must be consistent with those flags under the
-    // assumption that they are used by a renderpass that has depth and is combined with a paint
-    // that is opaque. ShaderInfo inspects the flags to relax the settings and the renderpass
+    // its depth behavior. ShaderInfo inspects the flags to relax the settings and the renderpass
     // when possible.
-    const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
+    const StencilSettings& stencilSettings() const { return fStencilSettings; }
 
-    bool usesStencil() const { return fDepthStencilSettings.stencilEnabled(); }
-    bool usesDepth() const { return fDepthStencilSettings.depthEnabled(); }
+    bool usesStencil() const { return fStencilSettings.enabled(); }
 
     // This is true if the RenderStep forces a renderpass to have a depth attachment, which is
     // stricter than the depthWrite and depthTest provided in `depthStencilSettings()`, as those
@@ -260,8 +257,8 @@ public:
     }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const {
-        return (this->usesStencil() ? DepthStencilFlags::kStencil : DepthStencilFlags::kNone) |
-               (this->usesDepth()   ? DepthStencilFlags::kDepth   : DepthStencilFlags::kNone);
+        return (this->usesStencil()   ? DepthStencilFlags::kStencil : DepthStencilFlags::kNone) |
+               (this->requiresDepth() ? DepthStencilFlags::kDepth   : DepthStencilFlags::kNone);
     }
 
     static const int kRenderStepIDVersion = 2;
@@ -329,7 +326,7 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
                SkEnumBitMask<Flags> flags,
                std::initializer_list<Uniform> uniforms,
                PrimitiveType primitiveType,
-               DepthStencilSettings depthStencilSettings,
+               StencilSettings stencilSettings,
                SkSpan<const Attribute> staticAttrs,
                SkSpan<const Attribute> appendAttrs,
                SkSpan<const Uniform> storageUniforms = {},
@@ -348,7 +345,7 @@ private:
     SkEnumBitMask<Flags>              fFlags;
     SkEnumBitMask<PipelineStageFlags> fStorageBufferStages;
     PrimitiveType                     fPrimitiveType;
-    DepthStencilSettings              fDepthStencilSettings;
+    StencilSettings                   fStencilSettings;
 
     // TODO: When we always use C++17 for builds, we should be able to just let subclasses declare
     // constexpr arrays and point to those, but we need explicit storage for C++14.
@@ -404,15 +401,8 @@ public:
     bool usesStencil() const {
         return SkToBool(fDepthStencilFlags & DepthStencilFlags::kStencil);
     }
-    // TODO(michaelludwig): Once ShaderInfo controls basic depth settings,
-    // fDepthStencilFlags::kDepth will match requiresDepth() and this can be simplified.
     bool requiresDepth() const {
-        for (int i = 0; i < fStepCount; ++i) {
-            if (fSteps[i]->requiresDepth()) {
-                return true;
-            }
-        }
-        return false;
+        return SkToBool(fDepthStencilFlags & DepthStencilFlags::kDepth);
     }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
