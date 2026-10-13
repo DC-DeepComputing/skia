@@ -1248,7 +1248,7 @@ float4 analytic_rrect_blur_vertex_fn(int4 gridAndBevel,
     float2 rad = (cellIndex == 0) ? rrectRadii[0].xy :
                      (cellIndex == 4) ? rrectRadii[0].zw :
                          (cellIndex == 24) ? rrectRadii[1].xy : rrectRadii[1].zw;
-    float2 b = (rad + drawPad) * kBevelFrac;
+    float2 b = (rad.x > 0.0 && rad.y > 0.0) ? (rad + drawPad) * kBevelFrac : float2(0.0);
 
     // The amount which we should bevel along the axis, in the case of a very small sigma but large
     // corner radius, our edge inset bounds will be very small. Bevel could then exceed the current
