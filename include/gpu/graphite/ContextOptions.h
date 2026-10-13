@@ -18,15 +18,18 @@
 #include <optional>
 #include <string>
 
+template <typename WorkT> class SK_API SkExecutorBase;
+struct SkExecutorCallbackWork;
+using SkCallbackExecutor = SkExecutorBase<SkExecutorCallbackWork>;
+
 class SkData;
-class SkExecutor;
 class SkRuntimeEffect;
 namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
 
-struct ContextOptionsPriv;
 class PersistentPipelineStorage;
+struct ContextOptionsPriv;
 
 struct SK_API ContextOptions {
     ContextOptions() {}
@@ -207,11 +210,11 @@ struct SK_API ContextOptions {
     /**
      * Executor to handle threaded work within Graphite. If this is nullptr, then all work will be
      * done serially on the main thread. To have worker threads assist with various tasks, set this
-     * to a valid SkExecutor instance. Currently, used for Pipeline compilation, but may be used
-     * for other tasks. It is up to the client to ensure the SkExecutor remains valid throughout
-     * the lifetime of the Context.
+     * to a valid SkCallbackExecutor instance. Currently, used for Pipeline compilation, but may be
+     * used for other tasks. It is up to the client to ensure the SkCallbackExecutor remains valid
+     * throughout the lifetime of the Context.
      */
-    SkExecutor* fExecutor = nullptr;
+    SkCallbackExecutor* fExecutor = nullptr;
 
     /**
      * Allows Graphite to store Pipeline data across Context lifetimes. It is up to the
