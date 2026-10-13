@@ -118,6 +118,30 @@
       },
       "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "353c0477_b25c7676",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-13T18:02:38Z",
+      "side": 1,
+      "message": "Updated the CL to have a global SkContext object and move the SkGraphics init",
+      "parentUuid": "54a6c2ae_db9d0a0a",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 23
+      },
+      "revId": "312f326ff3428d6d4e3b0ced2c1a92534ff2caeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
