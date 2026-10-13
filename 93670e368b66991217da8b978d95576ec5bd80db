@@ -16,6 +16,24 @@
       "message": "CL https://skia-review.git.corp.google.com/c/skia/+/1392916 contains few tests that breaks your change. Could you please take a look?",
       "revId": "93670e368b66991217da8b978d95576ec5bd80db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87551d1d_89c65053",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-13T18:09:51Z",
+      "side": 1,
+      "message": "Thanks for the thorough review! I didn\u0027t realize subruns were also used by gpu::TextBlob. It was ambitious to assume no one was relying on subruns dereferencing its held strikes automatically.\n\nI updated it to get rid of the strike but to keep the descriptor for serialization. And I\u0027m not sure how much memory is actually saved in practice by having glyphIDs and Paths/Drawables live in the same union. I replaced it with a struct so we don\u0027t lose the ability to serialize after drawing.",
+      "parentUuid": "653ddac4_38976a74",
+      "revId": "93670e368b66991217da8b978d95576ec5bd80db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
