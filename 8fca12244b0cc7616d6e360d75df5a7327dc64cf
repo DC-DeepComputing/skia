@@ -22,6 +22,30 @@
       },
       "revId": "8fca12244b0cc7616d6e360d75df5a7327dc64cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "821a928a_ca0c4190",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-13T19:16:17Z",
+      "side": 1,
+      "message": "Yes I did repo the bug and confirm this fixes it.\n\nThis is the case where the `old` resource has zero refs so we must call it with `this-\u003erefResource()` first since the GrResourceCache must make the first ref on the resource, which also transfers the resource to the non-purgeable queue since when `unref()` is called, it calls `GrResourceCache::notifyARefCntReachedZero` which attempts to remove the resource from the non-purgeable queue. \n\nYour proposed solution doesn\u0027t work since calling `sk_ref_sp()` on `old` hits the assert in GrGpuResource checking that `this-\u003egetRefCnt() \u003e 0`.",
+      "parentUuid": "6a5c5868_7b7a9648",
+      "range": {
+        "startLine": 299,
+        "startChar": 15,
+        "endLine": 301,
+        "endChar": 29
+      },
+      "revId": "8fca12244b0cc7616d6e360d75df5a7327dc64cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
