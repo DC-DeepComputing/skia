@@ -71,6 +71,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d118a9f6_d4b2541d",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/fetch_chrome.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-13T15:19:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c4259ddb_6f0cdcb3",
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2d2181dc_3798ecb9",
         "filename": "infra/bots/task_drivers/run_wasm_dm/fetch_chrome.go",
         "patchSetId": 6
