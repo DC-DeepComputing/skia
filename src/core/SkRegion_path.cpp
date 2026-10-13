@@ -21,6 +21,7 @@
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkBlitter.h"
+#include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRegionPriv.h"
 #include "src/core/SkSafeMath.h"
@@ -281,7 +282,9 @@ static unsigned verb_to_max_edges(SkPathVerb verb) {
         0,  //  kMove_Verb
         1,  //  kLine_Verb
         2,  //  kQuad_VerbB
-        2,  //  kConic_VerbB
+        // SkEdgeBuilder/SkEdgeClipper approximate each conic with up to
+        // 2^kMaxConicToQuadPOW2 quads, each of which can produce up to 2 edges.
+        2 << SkConic::kMaxConicToQuadPOW2,  //  kConic_VerbB
         3,  //  kCubic_Verb
         0,  //  kClose_Verb
     });
@@ -290,8 +293,9 @@ static unsigned verb_to_max_edges(SkPathVerb verb) {
     return gPathVerbToMaxEdges[index];
 }
 
-// If returns 0, ignore itop and ibot
+// If returns <= 0, ignore itop and ibot
 static int count_path_runtype_values(const SkPath& path, int* itop, int* ibot) {
+    SkSafeMath safe;
     int maxEdges = 0;
     SkScalar    top = SkIntToScalar(SK_MaxS16);
     SkScalar    bot = SkIntToScalar(SK_MinS16);
@@ -301,7 +305,7 @@ static int count_path_runtype_values(const SkPath& path, int* itop, int* ibot) {
         const SkPathVerb verb = rec->fVerb;
         const SkSpan<const SkPoint> pts = rec->fPoints;
 
-        maxEdges += verb_to_max_edges(verb);
+        maxEdges = safe.addInt(maxEdges, verb_to_max_edges(verb));
 
         int lastIndex = verb_to_initial_last_index(verb);
         if (lastIndex > 0) {
@@ -319,6 +323,9 @@ static int count_path_runtype_values(const SkPath& path, int* itop, int* ibot) {
                 bot = pts[0].fY;
             }
         }
+    }
+    if (!safe) {
+        return -1;
     }
     if (0 == maxEdges) {
         return 0;   // we have only moves+closes
@@ -422,6 +429,9 @@ bool SkRegion::setPath(const SkPath& path, const SkRegion& clip) {
     //  compute worst-case rgn-size for the path
     int pathTop, pathBot;
     int pathTransitions = count_path_runtype_values(path, &pathTop, &pathBot);
+    if (pathTransitions < 0) {
+        return this->setEmpty();
+    }
     if (0 == pathTransitions) {
         return check_inverse_on_empty_return(this, path, clip);
     }
