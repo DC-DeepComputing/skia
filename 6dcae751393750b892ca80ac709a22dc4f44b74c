@@ -22,6 +22,30 @@
       },
       "revId": "6dcae751393750b892ca80ac709a22dc4f44b74c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0197aefe_bef634e3",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-13T22:05:21Z",
+      "side": 1,
+      "message": "You\u0027re right — this check is not needed.\n\nFor single-grapheme clusters (both precomposed 1-glyph and decomposed multi-glyph like `abc+grave`), combining marks lack `kGraphemeStart`, so `graphemes \u003c\u003d 1` already evaluates to true.\n\nThe early return was an artifact from testing decomposed multi-glyph clusters before the grapheme count loop was in place. Keeping it only affects multi-grapheme clusters with multiple glyphs, where we actually want to fall through to proportional clipping (`sizeToChar` / `sizeFromChar`) rather than isolate glyphs.\n\nRemoved in PS 18.",
+      "parentUuid": "ad2bc378_1d2e7c2e",
+      "range": {
+        "startLine": 897,
+        "startChar": 0,
+        "endLine": 899,
+        "endChar": 13
+      },
+      "revId": "6dcae751393750b892ca80ac709a22dc4f44b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
