@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15243ca4_ded7999e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-13T20:21:03Z",
+      "side": 1,
+      "message": "LGTM % one comment.",
+      "revId": "f0efe1db348f0ddbee88e938a043364ea0c1284c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad35d1db_fbd20384",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-13T20:21:03Z",
+      "side": 1,
+      "message": "`rowBytes()` is `size_t`, we should validate these conversions.",
+      "range": {
+        "startLine": 590,
+        "startChar": 65,
+        "endLine": 590,
+        "endChar": 85
+      },
+      "revId": "f0efe1db348f0ddbee88e938a043364ea0c1284c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
