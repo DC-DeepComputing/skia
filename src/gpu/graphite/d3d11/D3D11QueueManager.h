@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/QueueManager.h"
 
 #include <d3d11_1.h>
+#include <vector>
 #include <wrl/client.h>
 
 namespace skgpu::graphite {
@@ -24,11 +25,15 @@ public:
 
     const D3D11SharedContext* d3d11SharedContext() const;
 
+    Microsoft::WRL::ComPtr<ID3D11Query> getQuery();
+    void returnQuery(Microsoft::WRL::ComPtr<ID3D11Query> query);
+
 private:
     std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) override;
     OutstandingSubmission onSubmitToGpu(const SubmitInfo&) override;
 
     Microsoft::WRL::ComPtr<ID3D11DeviceContext1> fImmediateDeviceContext;
+    std::vector<Microsoft::WRL::ComPtr<ID3D11Query>> fAvailableQueries;
 };
 
 } // namespace skgpu::graphite

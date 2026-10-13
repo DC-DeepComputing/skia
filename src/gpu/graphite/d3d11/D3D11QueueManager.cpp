@@ -21,36 +21,64 @@ namespace {
 class D3D11WorkSubmission final : public GpuWorkSubmission {
 public:
     D3D11WorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
-                        QueueManager* queueManager,
+                        D3D11QueueManager* queueManager,
                         Microsoft::WRL::ComPtr<ID3D11DeviceContext1> immediateContext,
                         Microsoft::WRL::ComPtr<ID3D11Query> query)
             : GpuWorkSubmission(std::move(cmdBuffer), queueManager)
+            , fD3D11QueueManager(queueManager)
             , fImmediateContext(std::move(immediateContext))
-            , fQuery(std::move(query)) {}
+            , fQuery(std::move(query))
+            , fCompleted(false) {}
+
+    ~D3D11WorkSubmission() override {
+        this->recycleQuery();
+    }
 
 private:
+    void recycleQuery() {
+        if (fQuery) {
+            fD3D11QueueManager->returnQuery(std::move(fQuery));
+            fQuery = nullptr;
+        }
+    }
+
     bool onIsFinished(const SharedContext*) override {
+        if (fCompleted) {
+            return true;
+        }
         if (!fQuery) {
+            fCompleted = true;
             return true;
         }
         BOOL result = FALSE;
         HRESULT hr = fImmediateContext->GetData(
                 fQuery.Get(), &result, sizeof(BOOL), D3D11_ASYNC_GETDATA_DONOTFLUSH);
-        return hr == S_OK;
+        if (hr == S_OK) {
+            fCompleted = true;
+            this->recycleQuery();
+            return true;
+        }
+        return false;
     }
 
     void onWaitUntilFinished(const SharedContext*) override {
-        if (!fQuery) {
+        if (fCompleted) {
             return;
         }
-        BOOL result = FALSE;
-        while (fImmediateContext->GetData(fQuery.Get(), &result, sizeof(BOOL), 0) == S_FALSE) {
-            Sleep(0);
+        if (fQuery) {
+            BOOL result = FALSE;
+            while (fImmediateContext->GetData(fQuery.Get(), &result, sizeof(BOOL), 0) == S_FALSE) {
+                Sleep(0);
+            }
+            this->recycleQuery();
         }
+        fCompleted = true;
     }
 
+    D3D11QueueManager* fD3D11QueueManager;
     Microsoft::WRL::ComPtr<ID3D11DeviceContext1> fImmediateContext;
     Microsoft::WRL::ComPtr<ID3D11Query> fQuery;
+    bool fCompleted = false;
 };
 
 } // anonymous namespace
@@ -72,16 +100,35 @@ std::unique_ptr<CommandBuffer> D3D11QueueManager::getNewCommandBuffer(
                                     static_cast<D3D11ResourceProvider*>(resourceProvider));
 }
 
+Microsoft::WRL::ComPtr<ID3D11Query> D3D11QueueManager::getQuery() {
+    if (!fAvailableQueries.empty()) {
+        auto query = std::move(fAvailableQueries.back());
+        fAvailableQueries.pop_back();
+        return query;
+    }
+    D3D11_QUERY_DESC queryDesc = {};
+    queryDesc.Query = D3D11_QUERY_EVENT;
+    Microsoft::WRL::ComPtr<ID3D11Query> query;
+    HRESULT hr = d3d11SharedContext()->device()->CreateQuery(&queryDesc, &query);
+    if (FAILED(hr)) {
+        return nullptr;
+    }
+    return query;
+}
+
+void D3D11QueueManager::returnQuery(Microsoft::WRL::ComPtr<ID3D11Query> query) {
+    if (query) {
+        fAvailableQueries.push_back(std::move(query));
+    }
+}
+
 QueueManager::OutstandingSubmission D3D11QueueManager::onSubmitToGpu(const SubmitInfo&) {
     SkASSERT(fCurrentCommandBuffer);
     auto* d3d11CmdBuffer = static_cast<D3D11CommandBuffer*>(fCurrentCommandBuffer.get());
     d3d11CmdBuffer->processPendingTextureToBufferCopies();
 
-    D3D11_QUERY_DESC queryDesc = {};
-    queryDesc.Query = D3D11_QUERY_EVENT;
-    Microsoft::WRL::ComPtr<ID3D11Query> query;
-    HRESULT hr = d3d11SharedContext()->device()->CreateQuery(&queryDesc, &query);
-    if (SUCCEEDED(hr) && query) {
+    Microsoft::WRL::ComPtr<ID3D11Query> query = this->getQuery();
+    if (query) {
         fImmediateDeviceContext->End(query.Get());
     }
     fImmediateDeviceContext->Flush();
