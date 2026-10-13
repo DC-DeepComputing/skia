@@ -9421,3 +9421,42 @@ UNIX_ONLY_TEST(SkParagraph_ReproNoSpaceBidiCrash, reporter) {
     checkParagraph("\u200e", true, true);
     checkParagraph("\u200e\u2068", false, true);
 }
+
+// Ensure BiDi control characters and dropped glyphs do not leave gaps in code unit cluster mapping
+DEF_TEST(SkParagraph_BidiControlGaps, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    auto checkGaps = [&](const char* text) {
+        ParagraphStyle paragraphStyle;
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        TextStyle style;
+        style.setFontSize(14.0f);
+        builder.pushStyle(style);
+        builder.addText(text);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        paragraph->layout(1000.0f);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        for (size_t i = 0; i <= impl->text().size(); ++i) {
+            REPORTER_ASSERT(reporter, impl->clusterIndex(i) != EMPTY_INDEX);
+        }
+
+        SkBitmap bitmap;
+        bitmap.allocN32Pixels(1000, 100);
+        SkCanvas canvas(bitmap);
+        paragraph->paint(&canvas, 0, 0);
+    };
+
+    checkGaps("hello world\u202B\u202E BOY HOW DO\u202C you \u202E DO SIR\u202C\u202C good bye");
+    checkGaps("\u200e");
+    checkGaps("A\u200e");
+    checkGaps("A\u202c");
+    checkGaps("\u202a\u202c");
+    checkGaps("\u200Ehello");
+    checkGaps("\u202Dhello\u202C");
+    checkGaps("\u2066hello\u2069");
+}
+
