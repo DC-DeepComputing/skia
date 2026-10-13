@@ -8,31 +8,58 @@
 #ifndef SkExecutor_DEFINED
 #define SkExecutor_DEFINED
 
-#include <functional>
-#include <memory>
 #include "include/core/SkTypes.h"
 
-class SK_API SkExecutor {
+#include <functional>
+#include <utility>
+
+template <typename WorkT>
+class SK_API SkExecutorBase {
 public:
-    virtual ~SkExecutor();
+    using WorkType = WorkT;
+
+    virtual ~SkExecutorBase();
 
     // Add work to execute.
-    virtual void add(std::function<void(void)> fn, int /* workList */) { this->add(std::move(fn)); }
+    virtual void add(WorkT work, int /* workList */) { this->add(std::move(work)); }
 
     // deprecated
-    virtual void add(std::function<void(void)>) = 0;
+    virtual void add(WorkT work) = 0;
 
     // If it makes sense for this executor, use this thread to execute work for a little while.
     virtual void borrow() {}
 
     // Does not take ownership.  Not thread safe.
     // deprecated
-    static void SetDefault(SkExecutor*);
+    static void SetDefault(SkExecutorBase<WorkT>*);
 
 protected:
-    SkExecutor() = default;
-    SkExecutor(const SkExecutor&) = delete;
-    SkExecutor& operator=(const SkExecutor&) = delete;
+    SkExecutorBase() = default;
+    SkExecutorBase(const SkExecutorBase&) = delete;
+    SkExecutorBase& operator=(const SkExecutorBase&) = delete;
 };
+
+//--------------------------------------------------------------------------------------------------
+using SkExecutorStdFunction = std::function<void(void)>;
+
+extern template class SK_API SkExecutorBase<SkExecutorStdFunction>;
+
+// deprecated. A class (vs. a using declaration) to keep pre-existing client functionality working.
+class SK_API SkExecutor : public SkExecutorBase<SkExecutorStdFunction> {};
+
+using SkStdFunctionExecutor = SkExecutor;
+
+//--------------------------------------------------------------------------------------------------
+using SkExecutorCallbackContext = void*;
+using SkExecutorCallbackFunction = void(*)(SkExecutorCallbackContext);
+
+struct SkExecutorCallbackWork {
+    SkExecutorCallbackFunction fCallback = nullptr;
+    SkExecutorCallbackContext  fContext  = nullptr;
+};
+
+extern template class SK_API SkExecutorBase<SkExecutorCallbackWork>;
+
+using SkCallbackExecutor = SkExecutorBase<SkExecutorCallbackWork>;
 
 #endif // SkExecutor_DEFINED
