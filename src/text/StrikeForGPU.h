@@ -57,7 +57,8 @@ public:
     // Do what is needed to return a strike.
     SkStrike* strike();
 
-    // Reset the sk_sp<SkStrike> to nullptr.
+    // Release the strong reference to SkStrike so SkStrikeCache can evict it, while keeping
+    // the strike specification intact for serialization or later re-resolution.
     void resetStrike();
 
     // Return a descriptor used to look up the SkStrike.
@@ -94,21 +95,21 @@ public:
     virtual SkStrikePromise strikePromise() = 0;
 };
 
-// prepareForPathDrawing uses this union to convert glyph ids to paths.
-union IDOrPath {
-    IDOrPath() {}
+// prepareForPathDrawing uses this struct to convert glyph ids to paths without clobbering glyph IDs
+struct IDOrPath {
+    IDOrPath() = default;
     IDOrPath(SkGlyphID glyphID) : fGlyphID{glyphID} {}
+    ~IDOrPath() = default;
 
-    // PathOpSubmitter takes care of destroying the paths.
-    ~IDOrPath() {}
-    SkGlyphID fGlyphID;
+    SkGlyphID fGlyphID{0};
     SkPath fPath;
 };
 
-// prepareForDrawableDrawing uses this union to convert glyph ids to drawables.
-union IDOrDrawable {
-    SkGlyphID fGlyphID;
-    RAW_PTR_EXCLUSION SkDrawable* fDrawable;  // RAW_PTR_EXCLUSION: union.
+// prepareForDrawableDrawing uses this struct to convert glyph ids to drawables without clobbering
+// glyph IDs.
+struct IDOrDrawable {
+    SkGlyphID fGlyphID{0};
+    RAW_PTR_EXCLUSION SkDrawable* fDrawable{nullptr};
 };
 
 // -- StrikeMutationMonitor ------------------------------------------------------------------------

@@ -35,7 +35,11 @@ SkStrike* SkStrikePromise::strike() {
 }
 
 void SkStrikePromise::resetStrike() {
-    fStrikeOrSpec = sk_sp<SkStrike>();
+    if (std::holds_alternative<sk_sp<SkStrike>>(fStrikeOrSpec)) {
+        if (sk_sp<SkStrike>& strike = std::get<sk_sp<SkStrike>>(fStrikeOrSpec); strike != nullptr) {
+            fStrikeOrSpec = std::make_unique<SkStrikeSpec>(strike->strikeSpec());
+        }
+    }
 }
 
 const SkDescriptor& SkStrikePromise::descriptor() const {
