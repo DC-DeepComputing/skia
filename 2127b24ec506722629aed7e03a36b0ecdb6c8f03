@@ -16,6 +16,29 @@
       "message": "My only nitpick here is that most of the text is spent on teaching the agent how to obtain the diff, rather than on the style checking itself.  I guess there\u0027s not really much to say about the latter other than \"check the code against the style guide\", so maybe that makes sense.",
       "revId": "2127b24ec506722629aed7e03a36b0ecdb6c8f03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e75655b_7a01e61f",
+        "filename": "agents/skills/skia-style-check/SKILL.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-13T22:33:22Z",
+      "side": 1,
+      "message": "nit: format this doc to 100 chars per line",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 2
+      },
+      "revId": "2127b24ec506722629aed7e03a36b0ecdb6c8f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
