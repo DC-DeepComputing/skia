@@ -22,6 +22,30 @@
       },
       "revId": "dbc297f2df2ad01870d681c76c50a6bec3103f24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6111effb_0006943c",
+        "filename": "tests/SlugTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-13T15:28:21Z",
+      "side": 1,
+      "message": "Sorry, did a bit more digging, it would not crash previously on redraw. I was conflating redrawing after the first draw with serializing after the first draw.\n\nOn redraw, the subrun sees `hasBackendData \u003d true` and uses caches backend data and the GPU strike generated from the first pass.\nOn serialization (for either IPC or SKPs), we call flatten on the StrikePromise directly (which is currently nulled after first draw), then we hit the segfault.",
+      "parentUuid": "7aab2b84_1b84b184",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 53
+      },
+      "revId": "dbc297f2df2ad01870d681c76c50a6bec3103f24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
