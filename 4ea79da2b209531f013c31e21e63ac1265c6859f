@@ -160,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6244dbca_ba22f299",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-13T14:59:50Z",
+      "side": 1,
+      "message": "Oh I see, I didn\u0027t realize you could unconditionally set null uniform buffer, which also prevents the uniform from leaking.",
+      "parentUuid": "fb27ccc5_c2f453a4",
+      "range": {
+        "startLine": 674,
+        "startChar": 0,
+        "endLine": 674,
+        "endChar": 43
+      },
+      "revId": "4ea79da2b209531f013c31e21e63ac1265c6859f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "862ea984_8fbbd5eb",

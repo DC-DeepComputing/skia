@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c87cfae_669d5eb6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-13T14:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75f5ccd9_704f1f81",
+      "range": {
+        "startLine": 125,
+        "startChar": 97,
+        "endLine": 126,
+        "endChar": 27
+      },
+      "revId": "78118bb24f79e3175b99ded0d924a71ba22b382f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c910f06_12330a87",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9aa014d_7b0a0635",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-13T14:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c910f06_12330a87",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 76
+      },
+      "revId": "78118bb24f79e3175b99ded0d924a71ba22b382f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b9bfd61_68cba4c9",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-10-08T15:49:30Z",
       "side": 1,
       "message": "This comment shouldn\u0027t be specific to the storage fallback texture proxy, it\u0027s tracking anything the drawpass might need.",
+      "range": {
+        "startLine": 668,
+        "startChar": 0,
+        "endLine": 668,
+        "endChar": 80
+      },
+      "revId": "78118bb24f79e3175b99ded0d924a71ba22b382f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e78bed9_55593078",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-13T14:59:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b9bfd61_68cba4c9",
       "range": {
         "startLine": 668,
         "startChar": 0,
