@@ -33,6 +33,24 @@
       "message": "Why don\u0027t we also need to change fRight and fBottom ?",
       "revId": "2c69febf6a94ba92ad6c44c01bc0b3fbd18c5414",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab976a09_1e68b506",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-13T15:48:04Z",
+      "side": 1,
+      "message": "Tiler aligns the `clip.fRight` and `clip.fBottom` to the nearest tile boundary. We align the `clip.fLeft` and `clip.fTop` here because this value essentially anchors the EndCap (the endcap is defined by its top left coordinate). The right and bottom, for the purpose of MakeStrips, is free to be unaligned.",
+      "parentUuid": "dd70050b_80785c7d",
+      "revId": "2c69febf6a94ba92ad6c44c01bc0b3fbd18c5414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
