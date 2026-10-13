@@ -295,8 +295,10 @@ void GrResourceCache::changeUniqueKey(GrGpuResource* resource, const skgpu::Uniq
                 old->resourcePriv().isPurgeable()) {
                 old->cacheAccess().release();
             } else {
-                // removeUniqueKey expects an external owner of the resource.
-                this->removeUniqueKey(sk_ref_sp(old).get());
+                // removeUniqueKey expects a non-zero refcount.
+                this->refResource(old);
+                this->removeUniqueKey(old);
+                old->unref();
             }
         }
         SkASSERT(nullptr == fUniqueHash.find(newKey));
