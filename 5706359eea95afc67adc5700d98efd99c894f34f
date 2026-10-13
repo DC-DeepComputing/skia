@@ -16,6 +16,29 @@
       "message": "Hi Michael! Could you please take a look. Thanks",
       "revId": "5706359eea95afc67adc5700d98efd99c894f34f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e82abff7_956bf782",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-13T13:46:06Z",
+      "side": 1,
+      "message": "Can you outline in this file what the conditions are before we can remove this function?",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 82
+      },
+      "revId": "5706359eea95afc67adc5700d98efd99c894f34f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
