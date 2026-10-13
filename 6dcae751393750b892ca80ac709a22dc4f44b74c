@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad2bc378_1d2e7c2e",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-13T21:19:22Z",
+      "side": 1,
+      "message": "Can you explain why this is needed? For single grapheme clusters the following block already returns true, so I guess this only makes a difference for multi-grapheme clusters shaped to multiple glyphs.",
+      "range": {
+        "startLine": 897,
+        "startChar": 0,
+        "endLine": 899,
+        "endChar": 13
+      },
+      "revId": "6dcae751393750b892ca80ac709a22dc4f44b74c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
