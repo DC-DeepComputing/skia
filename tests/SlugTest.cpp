@@ -7,13 +7,20 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkData.h"
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -22,6 +29,11 @@
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/chromium/Slug.h"
+#include "include/utils/SkCustomTypeface.h"
+#include "src/core/SkScalerContext.h"
+#include "src/core/SkStrike.h"
+#include "src/core/SkStrikeCache.h"
+#include "src/core/SkStrikeSpec.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/utils/SkFloatUtils.h"
@@ -260,3 +272,193 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize,
     deserializedSlug->draw(canvas, paint);
 }
 
+namespace {
+constexpr SkRect kGlyphRect = SkRect::MakeLTRB(0, -1, 1, 0);
+
+class RectGlyphDrawable final : public SkDrawable {
+protected:
+    SkRect onGetBounds() override { return kGlyphRect; }
+    void onDraw(SkCanvas* canvas) override {
+        canvas->drawRect(kGlyphRect, SkPaint());
+    }
+};
+
+sk_sp<SkTypeface> make_path_typeface() {
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 1.0f, SkPath::Rect(kGlyphRect));
+    return builder.detach();
+}
+
+sk_sp<SkTypeface> make_drawable_typeface() {
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 1.0f, sk_make_sp<RectGlyphDrawable>(), kGlyphRect);
+    return builder.detach();
+}
+
+sk_sp<SkTextBlob> make_blob(sk_sp<SkTypeface> tf, SkScalar size) {
+    SkTextBlobBuilder builder;
+    builder.allocRun(SkFont(std::move(tf), size), 1, 0, 0).glyphs[0] = 1;
+    return builder.make();
+}
+
+SkBitmap render_slug(SkSurface* surface, const sktext::gpu::Slug& slug, const SkPaint& paint) {
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorWHITE);
+    slug.draw(canvas, paint);
+    SkBitmap bm;
+    bm.allocPixels(surface->imageInfo());
+    SkAssertResult(surface->readPixels(bm, 0, 0));
+    return bm;
+}
+}  // namespace
+
+// PathOpSubmitter stores each glyph's initial SkGlyphID and its lazily resolved SkPath in the same
+// union (IDOrPath). Converting glyph IDs to SkPaths in-place during submitDraws must not corrupt
+// the glyph IDs written by subsequent Slug::serialize() calls
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_PathSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(512, 420));
+    REPORTER_ASSERT(reporter, surface);
+
+    // 400pt exceeds fGlyphsAsPathsFontSize (324 on desktop, 384 on Android), forcing PathSubRun
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    auto blob = SkTextBlob::MakeFromString("AB", SkFont(typeface, 400));
+    REPORTER_ASSERT(reporter, blob != nullptr);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {10, 360}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // Before the first draw, PathOpSubmitter::fIDsOrPaths holds the original SkGlyphIDs
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    // Drawing the Slug triggers PathOpSubmitter::submitDraws, which overwrites each IDOrPath union
+    // entry in-place with an SkPath
+    SkBitmap expectedPixels = render_slug(surface.get(), *slug, paint);
+
+    // PathOpSubmitter::flatten() reads idOrPath.fGlyphID from the union, so serializing after a
+    // draw writes the low 16 bits of SkPath instead of the original SkGlyphID
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    // Deserializing postDrawData with corrupted glyph IDs produces a Slug that draws the wrong
+    // glyphs, so its rendered output no longer matches the initial draw
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    SkBitmap actualPixels = render_slug(surface.get(), *deserializedSlug, paint);
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(expectedPixels, actualPixels));
+}
+
+// DrawableOpSubmitter stores each glyph's initial SkGlyphID and its resolved SkDrawable* in the
+// same union (IDOrDrawable). Converting glyph IDs to drawables in-place during submitDraws must
+// not corrupt the glyph IDs written by subsequent Slug::serialize() calls
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_DrawableSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+
+    // 400pt exceeds fGlyphsAsPathsFontSize, forcing a drawable glyph through DrawableSubRun
+    auto blob = make_blob(make_drawable_typeface(), /*size=*/400);
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {0, 64}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // Before the first draw, DrawableOpSubmitter::fIDsOrDrawables holds the original SkGlyphID (1)
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    // Drawing the Slug triggers DrawableOpSubmitter::submitDraws, which overwrites each
+    // IDOrDrawable union entry in-place with an SkDrawable* pointer
+    SkBitmap expectedPixels = render_slug(surface.get(), *slug, paint);
+    REPORTER_ASSERT(reporter, expectedPixels.getColor(32, 32) == SK_ColorBLACK);
+
+    // DrawableOpSubmitter::flatten() reads idOrDrawable.fGlyphID from the union, so serializing
+    // after a draw writes the low 16 bits of SkDrawable* instead of the original SkGlyphID
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    // Guard the post-deserialization draw because a corrupted glyph ID indexes out of bounds in
+    // SkUserScalerContext::generateDrawable
+    if (preDrawData->equals(postDrawData.get())) {
+        sk_sp<sktext::gpu::Slug> deserializedSlug =
+                sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+        REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+        SkBitmap actualPixels = render_slug(surface.get(), *deserializedSlug, paint);
+        REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(expectedPixels, actualPixels));
+    }
+}
+
+// SkCanvas::drawTextBlob caches sktext::gpu::TextBlob instances in TextBlobRedrawCoordinator,
+// which shares SubRunContainer (PathOpSubmitter and GlyphVector) with Slug. Unlike Slug, cached
+// TextBlobs are never serialized after drawing and must release their SkStrike references once the
+// initial draw is flushed so SkStrikeCache::purgeAll() can evict the strikes
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_TextBlob_draw_releases_strike_from_cache,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+    auto canvas = surface->getCanvas();
+
+    // Use a dedicated typeface so no other cache entry shares its strikes
+    sk_sp<SkTypeface> customTypeface = make_path_typeface();
+
+    // 400pt exercises PathSubRun (PathOpSubmitter); 16pt exercises DirectMaskSubRun (GlyphVector)
+    auto pathBlob = make_blob(customTypeface, /*size=*/400);
+    auto maskBlob = make_blob(customTypeface, /*size=*/16);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    // Drawing and flushing populates TextBlobRedrawCoordinator and converts glyph IDs to SkPaths
+    // (in PathOpSubmitter::submitDraws) and atlas Glyph* pointers (in GlyphVector::regenAtlas)
+    canvas->drawTextBlob(pathBlob, 0, 64, paint);
+    canvas->drawTextBlob(maskBlob, 0, 32, paint);
+    dContext->flushAndSubmit();
+
+    // Grab external references to both strikes while they are still in SkStrikeCache
+    auto [pathSpec, _] = SkStrikeSpec::MakePath(
+            SkFont(customTypeface, 400),
+            paint,
+            surface->props(),
+            SkScalerContextFlags::kFakeGammaAndBoostContrast);
+    sk_sp<SkStrike> pathStrike =
+            SkStrikeCache::GlobalStrikeCache()->findStrike(pathSpec.descriptor());
+    REPORTER_ASSERT(reporter, pathStrike != nullptr);
+
+    SkStrikeSpec maskSpec = SkStrikeSpec::MakeMask(
+            SkFont(customTypeface, 16),
+            paint,
+            surface->props(),
+            SkScalerContextFlags::kFakeGammaAndBoostContrast,
+            SkMatrix::I());
+    sk_sp<SkStrike> maskStrike =
+            SkStrikeCache::GlobalStrikeCache()->findStrike(maskSpec.descriptor());
+    REPORTER_ASSERT(reporter, maskStrike != nullptr);
+
+    // Purging SkStrikeCache drops its references; if TextBlobRedrawCoordinator also released its
+    // fStrikePromise references after the flushed draw, pathStrike and maskStrike are now unique()
+    SkStrikeCache::GlobalStrikeCache()->purgeAll();
+    REPORTER_ASSERT(reporter, pathStrike->unique());
+    REPORTER_ASSERT(reporter, maskStrike->unique());
+}
