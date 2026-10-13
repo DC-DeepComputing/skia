@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e930bd_ab7d087a",
+        "filename": "src/text/StrikeForGPU.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-13T18:54:50Z",
+      "side": 1,
+      "message": "(Marking as unresolved)",
+      "parentUuid": "63399615_a0a28bb5",
+      "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "aa9fe6e6_b99f6217",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c6eeaa3_4bf3c886",
+        "filename": "src/text/StrikeForGPU.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-13T18:54:50Z",
+      "side": 1,
+      "message": "(Marking as unresolved)",
+      "parentUuid": "aa9fe6e6_b99f6217",
+      "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "04b8c05d_39322b3d",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-13T18:48:46Z",
       "side": 1,
       "message": "The comments here (and below at lines 340, 360, 385) still describe `IDOrPath` and `IDOrDrawable` as unions that clobber glyph IDs. Also, unused `#include`s in this file can be cleaned up.",
+      "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9a334c9_227a3a65",
+        "filename": "tests/SlugTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-13T18:54:50Z",
+      "side": 1,
+      "message": "(Marking as unresolved)",
+      "parentUuid": "04b8c05d_39322b3d",
       "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
