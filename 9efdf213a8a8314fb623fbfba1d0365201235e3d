@@ -92,6 +92,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cf04495_3a708b21",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/fetch_chrome.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-13T15:18:31Z",
+      "side": 1,
+      "message": "Yeah, this right now ensures that the latest point release is what\u0027s being used, although I did set up the task to cache the extracted binary. So, a bot will download the latest version if the cache is cleared/unavailable, or if a new release is made. Anecdotally they do seem to release frequently (1+ times in a day).\n\nMy thought was the same: for now, having the test task keep up with Chrome seems beneficial so that nobody has to remember to bump it.",
+      "parentUuid": "2d2181dc_3798ecb9",
+      "range": {
+        "startLine": 73,
+        "startChar": 23,
+        "endLine": 73,
+        "endChar": 50
+      },
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94ad47b8_14f93fce",
@@ -105,6 +129,24 @@
       "writtenOn": "2026-10-09T18:26:00Z",
       "side": 1,
       "message": "general nit: not sure if also enforced for go, but line wrap \u003e 100 matches the rest of the Skia codebase.",
+      "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b14de7_15bd7758",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/fetch_chrome.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-13T15:18:31Z",
+      "side": 1,
+      "message": "Doesn\u0027t appear to be enforced for go code, but I went ahead and wrapped these files at 100 anyway.",
+      "parentUuid": "94ad47b8_14f93fce",
       "revId": "9efdf213a8a8314fb623fbfba1d0365201235e3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
