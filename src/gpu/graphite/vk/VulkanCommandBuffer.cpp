@@ -726,6 +726,10 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
                                       VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
     }
 
+    SkDebugf("begin render pass %s\n", rpDesc.toString().c_str());
+    SkDebugf("  has DS texture: %d, format = %d\n", SkToBool(depthStencilTexture),
+            depthStencilTexture ? (int) TextureInfoPriv::ViewFormat(depthStencilTexture->textureInfo())
+                                : (int) TextureFormat::kUnsupported);
     if (!this->beginRenderPass(
                 rpDesc, viewport, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
@@ -1279,6 +1283,9 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
     // setting dynamic states should move to a separate VulkanCommandBuffer call.
     const auto* previousGraphicsPipeline = fActiveGraphicsPipeline;
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
+    SkDebugf("bindGraphicsPipeline: %s\n", fActiveGraphicsPipeline->getLabel().c_str());
+    SkDebugf("dss, depth-enabled %d, stencil-enabled %d\n", fActiveGraphicsPipeline->dss().first.enabled(),
+        fActiveGraphicsPipeline->dss().second.enabled());
     VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
                                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
                                                              fActiveGraphicsPipeline->pipeline()));

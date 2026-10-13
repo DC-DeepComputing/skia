@@ -131,6 +131,8 @@ public:
         return fPipelineLayout;
     }
 
+    const DepthStencilSettings& dss() const { return fDepthStencilSettings; }
+
     VkPipeline pipeline() const {
         SkASSERT(fPipeline != VK_NULL_HANDLE);
         return fPipeline;
