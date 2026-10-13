@@ -57,9 +57,6 @@ public:
     // Do what is needed to return a strike.
     SkStrike* strike();
 
-    // Reset the sk_sp<SkStrike> to nullptr.
-    void resetStrike();
-
     // Return a descriptor used to look up the SkStrike.
     const SkDescriptor& descriptor() const;
 

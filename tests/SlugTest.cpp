@@ -213,3 +213,53 @@ DEF_GANESH_TEST_FOR_CONTEXTS(Slug_b520571816,
             sktext::gpu::Slug::Deserialize(writableData.get(), size, nullptr);
     REPORTER_ASSERT(reporter, forgedSlug == nullptr);
 }
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+    auto canvas = surface->getCanvas();
+
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    SkFont font(typeface);
+    font.setSize(16);
+
+    static const char* kText = "Hello World";
+    size_t textLen = strlen(kText);
+    SkTextBlobBuilder builder;
+    const SkTextBlobBuilder::RunBuffer& runBuf = builder.allocRun(font, textLen, 0, 0);
+    font.textToGlyphs(kText, textLen, SkTextEncoding::kUTF8, SkSpan(runBuf.glyphs, textLen));
+    auto blob = builder.make();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug = sktext::gpu::Slug::ConvertBlob(canvas, *blob, {10, 10}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // First draw and flush initializes backend data.
+    slug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+
+    // Verify the slug can be redrawn safely. Note: This does not test whether the Slug
+    // works when the atlas is full and evicted glyphs need to be re-fetched from the strike.
+    // That will be covered in a separate test.
+    slug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+
+    // Verify the slug can be serialized post-draw without losing strike descriptor info.
+    sk_sp<SkData> data = slug->serialize();
+    REPORTER_ASSERT(reporter, data != nullptr && data->size() > 0);
+
+    // Verify the serialized slug can be deserialized and drawn.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(data->data(), data->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    deserializedSlug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+}
+

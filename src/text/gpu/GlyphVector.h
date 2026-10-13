@@ -27,8 +27,8 @@ enum class MaskFormat : int;
 }
 
 namespace sktext::gpu {
-class SubRunAllocator;
 class StrikeCache;
+class SubRunAllocator;
 
 /**
  * Concepts used to describe backend-specific (Ganesh v. Graphite) data stored in GlyphVector.
@@ -220,7 +220,6 @@ public:
         };
 
         strike->verifyPinnedStrike();
-        fStrikePromise.resetStrike();
     }
 
 private:
