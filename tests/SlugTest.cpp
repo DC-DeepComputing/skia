@@ -7,13 +7,20 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkData.h"
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -22,6 +29,11 @@
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/chromium/Slug.h"
+#include "include/utils/SkCustomTypeface.h"
+#include "src/core/SkScalerContext.h"
+#include "src/core/SkStrike.h"
+#include "src/core/SkStrikeCache.h"
+#include "src/core/SkStrikeSpec.h"
 #include "src/gpu/MaskFormat.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/utils/SkFloatUtils.h"
@@ -260,3 +272,274 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize,
     deserializedSlug->draw(canvas, paint);
 }
 
+namespace {
+bool has_non_white_pixels(const SkBitmap& bm) {
+    const int width = bm.width();
+    const int height = bm.height();
+    for (int y = 0; y < height && y < 1024; ++y) {
+        for (int x = 0; x < width && x < 1024; ++x) {
+            if (bm.getColor(x, y) != SK_ColorWHITE) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+class RectGlyphDrawable final : public SkDrawable {
+public:
+    explicit RectGlyphDrawable(const SkRect& rect) : fRect(rect) {}
+
+protected:
+    SkRect onGetBounds() override { return fRect; }
+    void onDraw(SkCanvas* canvas) override {
+        SkPaint paint;
+        paint.setColor(SK_ColorBLACK);
+        canvas->drawRect(fRect, paint);
+    }
+
+private:
+    const SkRect fRect;
+};
+}  // namespace
+
+// In Ganesh, GlyphVector::initBackendData only runs during AtlasTextOp::onPrepareDraws on flush,
+// so flushing before serialize() is required to exercise post-draw serialization of AtlasSubRuns
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_flush_then_serialize_DirectMask,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 64);
+    auto surface1 = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    auto surface2 = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface1 && surface2);
+
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    SkFont font(typeface, 16);
+    auto blob = SkTextBlob::MakeFromString("Hello World", font);
+    REPORTER_ASSERT(reporter, blob != nullptr);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setColor(SK_ColorBLACK);
+
+    surface1->getCanvas()->clear(SK_ColorWHITE);
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface1->getCanvas(), *blob, {10, 32}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    slug->draw(surface1->getCanvas(), paint);
+    dContext->flushAndSubmit();
+
+    SkBitmap bm1;
+    bm1.allocPixels(info);
+    REPORTER_ASSERT(reporter, surface1->readPixels(bm1, 0, 0));
+    REPORTER_ASSERT(reporter, has_non_white_pixels(bm1));
+
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+
+    surface2->getCanvas()->clear(SK_ColorWHITE);
+    deserializedSlug->draw(surface2->getCanvas(), paint);
+
+    SkBitmap bm2;
+    bm2.allocPixels(info);
+    REPORTER_ASSERT(reporter, surface2->readPixels(bm2, 0, 0));
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(bm1, bm2));
+}
+
+// PathOpSubmitter stores glyph IDs and SkPaths in a union (IDOrPath). Converting glyph IDs to
+// SkPaths in-place during submitDraws must not corrupt subsequent Slug serialization
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_PathSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(512, 420);
+    auto surface1 = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    auto surface2 = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface1 && surface2);
+
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    // Must exceed fGlyphsAsPathsFontSize (324 on Linux, 384 on Android) to route to PathSubRun
+    SkFont font(typeface, 400);
+    auto blob = SkTextBlob::MakeFromString("AB", font);
+    REPORTER_ASSERT(reporter, blob != nullptr);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setColor(SK_ColorBLACK);
+
+    surface1->getCanvas()->clear(SK_ColorWHITE);
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface1->getCanvas(), *blob, {10, 360}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    slug->draw(surface1->getCanvas(), paint);
+    dContext->flushAndSubmit();
+
+    SkBitmap bm1;
+    bm1.allocPixels(info);
+    REPORTER_ASSERT(reporter, surface1->readPixels(bm1, 0, 0));
+    REPORTER_ASSERT(reporter, has_non_white_pixels(bm1));
+
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+
+    surface2->getCanvas()->clear(SK_ColorWHITE);
+    deserializedSlug->draw(surface2->getCanvas(), paint);
+
+    SkBitmap bm2;
+    bm2.allocPixels(info);
+    REPORTER_ASSERT(reporter, surface2->readPixels(bm2, 0, 0));
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(bm1, bm2));
+}
+
+// DrawableOpSubmitter stores glyph IDs and SkDrawable* in a union (IDOrDrawable). Converting
+// glyph IDs to drawables during submitDraws must not corrupt subsequent Slug serialization
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_DrawableSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(512, 420);
+    auto surface1 = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    auto surface2 = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface1 && surface2);
+
+    SkCustomTypefaceBuilder tfBuilder;
+    SkFontMetrics metrics{};
+    metrics.fAscent = -1.0f;
+    metrics.fDescent = 0.2f;
+    tfBuilder.setMetrics(metrics);
+    const SkRect glyphBounds = SkRect::MakeLTRB(0.1f, -0.8f, 0.9f, 0.0f);
+    tfBuilder.setGlyph(1, 1.0f, sk_make_sp<RectGlyphDrawable>(glyphBounds), glyphBounds);
+    sk_sp<SkTypeface> drawableTypeface = tfBuilder.detach();
+    REPORTER_ASSERT(reporter, drawableTypeface != nullptr);
+
+    // Must exceed fGlyphsAsPathsFontSize (324 on Linux, 384 on Android) to route to DrawableSubRun
+    SkFont font(drawableTypeface, 400);
+    SkTextBlobBuilder blobBuilder;
+    const SkTextBlobBuilder::RunBuffer& runBuf = blobBuilder.allocRun(font, 1, 0, 0);
+    runBuf.glyphs[0] = 1;
+    auto blob = blobBuilder.make();
+    REPORTER_ASSERT(reporter, blob != nullptr);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setColor(SK_ColorBLACK);
+
+    surface1->getCanvas()->clear(SK_ColorWHITE);
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface1->getCanvas(), *blob, {10, 360}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    slug->draw(surface1->getCanvas(), paint);
+    dContext->flushAndSubmit();
+
+    SkBitmap bm1;
+    bm1.allocPixels(info);
+    REPORTER_ASSERT(reporter, surface1->readPixels(bm1, 0, 0));
+    REPORTER_ASSERT(reporter, has_non_white_pixels(bm1));
+
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    // Drawing a deserialized DrawableSubRun when postDrawData has corrupted glyph IDs triggers an
+    // out-of-bounds assertion in SkUserScalerContext::generateDrawable
+    if (preDrawData->equals(postDrawData.get())) {
+        sk_sp<sktext::gpu::Slug> deserializedSlug =
+                sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+        REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+
+        surface2->getCanvas()->clear(SK_ColorWHITE);
+        deserializedSlug->draw(surface2->getCanvas(), paint);
+
+        SkBitmap bm2;
+        bm2.allocPixels(info);
+        REPORTER_ASSERT(reporter, surface2->readPixels(bm2, 0, 0));
+        REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(bm1, bm2));
+    }
+}
+
+// Cached sktext::gpu::TextBlob instances in TextBlobRedrawCoordinator are never serialized and
+// must drop their SkStrike references after the first flushed draw so SkStrikeCache can evict them
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_TextBlob_draw_releases_strike_from_cache,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(512, 420);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+    auto canvas = surface->getCanvas();
+
+    SkCustomTypefaceBuilder tfBuilder;
+    SkFontMetrics metrics{};
+    metrics.fAscent = -1.0f;
+    metrics.fDescent = 0.2f;
+    tfBuilder.setMetrics(metrics);
+    tfBuilder.setGlyph(1, 1.0f, SkPath::Rect(SkRect::MakeLTRB(0.1f, -0.8f, 0.9f, 0.0f)));
+    sk_sp<SkTypeface> customTypeface = tfBuilder.detach();
+    REPORTER_ASSERT(reporter, customTypeface != nullptr);
+
+    // 400pt (> fGlyphsAsPathsFontSize) exercises PathSubRun; 16pt exercises DirectMaskSubRun
+    SkFont pathFont(customTypeface, 400);
+    SkTextBlobBuilder pathBlobBuilder;
+    pathBlobBuilder.allocRun(pathFont, 1, 0, 0).glyphs[0] = 1;
+    auto pathBlob = pathBlobBuilder.make();
+
+    SkFont maskFont(customTypeface, 16);
+    SkTextBlobBuilder maskBlobBuilder;
+    maskBlobBuilder.allocRun(maskFont, 1, 0, 0).glyphs[0] = 1;
+    auto maskBlob = maskBlobBuilder.make();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    canvas->drawTextBlob(pathBlob, 10, 360, paint);
+    canvas->drawTextBlob(maskBlob, 10, 32, paint);
+    dContext->flushAndSubmit();
+
+    auto [pathSpec, _] = SkStrikeSpec::MakePath(
+            pathFont, paint, surface->props(), SkScalerContextFlags::kFakeGammaAndBoostContrast);
+    sk_sp<SkStrike> pathStrike =
+            SkStrikeCache::GlobalStrikeCache()->findStrike(pathSpec.descriptor());
+    REPORTER_ASSERT(reporter, pathStrike != nullptr);
+
+    SkStrikeSpec maskSpec = SkStrikeSpec::MakeMask(
+            maskFont,
+            paint,
+            surface->props(),
+            SkScalerContextFlags::kFakeGammaAndBoostContrast,
+            SkMatrix::I());
+    sk_sp<SkStrike> maskStrike =
+            SkStrikeCache::GlobalStrikeCache()->findStrike(maskSpec.descriptor());
+    REPORTER_ASSERT(reporter, maskStrike != nullptr);
+
+    SkStrikeCache::GlobalStrikeCache()->purgeAll();
+
+    REPORTER_ASSERT(reporter, pathStrike->unique());
+    REPORTER_ASSERT(reporter, maskStrike->unique());
+}
