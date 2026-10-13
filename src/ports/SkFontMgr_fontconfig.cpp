@@ -563,7 +563,7 @@ class SkFontMgr_fontconfig : public SkFontMgr {
                 for (int id = 0; ; ++id) {
                     FcChar8* fcFamilyName;
                     FcResult result = FcPatternGetString(current, FC_FAMILY, id, &fcFamilyName);
-                    if (FcResultNoId == result) {
+                    if (FcResultNoId == result || FcResultNoMatch == result) {
                         break;
                     }
                     if (FcResultMatch != result) {
@@ -658,7 +658,7 @@ protected:
             for (int patternId = 0; patternId < maxId; ++patternId) {
                 FcChar8* patternString;
                 FcResult result = FcPatternGetString(p, object, patternId, &patternString);
-                if (result == FcResultNoId) {
+                if (result == FcResultNoId || result == FcResultNoMatch) {
                     break;
                 }
                 if (result == FcResultMatch) {
@@ -734,7 +734,7 @@ protected:
         FcCharSet* matchCharSet;
         for (int charSetId = 0; ; ++charSetId) {
             result = FcPatternGetCharSet(font, FC_CHARSET, charSetId, &matchCharSet);
-            if (FcResultNoId == result) {
+            if (FcResultNoId == result || FcResultNoMatch == result) {
                 break;
             }
             if (FcResultMatch != result) {
