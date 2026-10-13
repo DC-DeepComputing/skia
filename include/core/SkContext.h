@@ -58,6 +58,8 @@ private:
     friend class SkContextPriv;
     friend class SkContextCtorAccessor;
 
+    static void Init();
+
     SkResourceCache* resourceCache() const;
     SkStrikeCache* fontCache() const;
     SkTypefaceCache* typefaceCache() const;
