@@ -46,6 +46,30 @@
       },
       "revId": "dbc297f2df2ad01870d681c76c50a6bec3103f24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1298c957_f6757f96",
+        "filename": "tests/SlugTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-13T16:03:41Z",
+      "side": 1,
+      "message": "Updated the test a bit to reflect what we talked about offline.",
+      "parentUuid": "6111effb_0006943c",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 53
+      },
+      "revId": "dbc297f2df2ad01870d681c76c50a6bec3103f24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
