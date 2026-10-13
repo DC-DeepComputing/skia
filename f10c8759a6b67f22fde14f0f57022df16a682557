@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df4ed1ba_1237956c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-13T13:25:35Z",
+      "side": 1,
+      "message": "`python3 tools/rewrite_includes.py src/gpu/graphite/text/TextAtlasManager.h` should fix the presubmit job failure.",
+      "revId": "f10c8759a6b67f22fde14f0f57022df16a682557",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
