@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc9263c6_8c26acce",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e2c6976_4e0f7c7d",
+      "range": {
+        "startLine": 894,
+        "startChar": 4,
+        "endLine": 904,
+        "endChar": 10
+      },
+      "revId": "24483736bc9ea2cc2ddebe1c7589dd68afacc6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b837fe69_16730bd6",
@@ -95,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a98c230f_b7213257",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "493e772a_3e21225d",
+      "range": {
+        "startLine": 940,
+        "startChar": 9,
+        "endLine": 959,
+        "endChar": 0
+      },
+      "revId": "24483736bc9ea2cc2ddebe1c7589dd68afacc6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51dac9fd_e041368f",
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "51dac9fd_e041368f",
+      "range": {
+        "startLine": 7878,
+        "startChar": 38,
+        "endLine": 7889,
+        "endChar": 46
+      },
+      "revId": "24483736bc9ea2cc2ddebe1c7589dd68afacc6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d906911f_3a491b36",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 7889,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "065627b4_69073873",
       "range": {
         "startLine": 7878,
         "startChar": 38,
