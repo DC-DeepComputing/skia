@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "617718b6_630bdda3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-14T15:59:46Z",
+      "side": 1,
+      "message": "How does an agent know what the style guide is? Don\u0027t you need to tell it? Or are you saying we have some generic Skia \"context\" the agent loads at start that would explicitly tell it what to use for our style guide?\n\nGoing to land this as-is just to allow others to start playing with it to see if it is giving them useful information. But 100% up for iterating on how all this should live and be structured in Skia.",
+      "parentUuid": "f86636fb_06139d4b",
+      "revId": "2127b24ec506722629aed7e03a36b0ecdb6c8f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e75655b_7a01e61f",
