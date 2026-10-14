@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2bd26e8_034cff48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3467061
+      },
+      "writtenOn": "2026-10-14T08:35:26Z",
+      "side": 1,
+      "message": "I don\u0027t have voting permissions, LGTM.",
+      "revId": "564e5c8ca06fc34faf7b496cfcd3b0a0480ee883",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
