@@ -7,7 +7,6 @@
 
 #include "src/gpu/graphite/PipelineManager.h"
 
-#include "include/core/SkExecutor.h"
 #include "include/private/SkLog.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphicsPipelineHandle.h"
@@ -15,6 +14,8 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/SharedContext.h"
+
+#include <type_traits>
 
 // The threaded PipelineManager is set up to work with a executor with two worklists.
 // All work from the first work list must be completed before work from the second list
@@ -50,7 +51,7 @@ GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<PipelineCreationTask> task)
 GraphicsPipelineHandle::GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
     : fTaskOrPipeline(std::move(pipeline)) {}
 
-PipelineManager::PipelineManager(SkExecutor* executor) : fExecutor(executor) {}
+PipelineManager::PipelineManager(ExecutorType* executor) : fExecutor(executor) {}
 
 PipelineManager::~PipelineManager() {
     // The executor should've been detached in Context's destructor (via shutDown()).
@@ -175,6 +176,26 @@ bool PipelineManager::InlineCompile(const sk_sp<PipelineCreationTask>& task) {
     return true;
 }
 
+void PipelineManager::InlineCompileWrapper(void* context) {
+    // Adopt the raw PipelineCreationTask pointer.
+    sk_sp<PipelineCreationTask> task(static_cast<PipelineCreationTask*>(context));
+
+    InlineCompile(task);
+}
+
+template <typename ExecutorType>
+void PipelineManager::AddWork(ExecutorType* executor,
+                              int workList,
+                              sk_sp<PipelineCreationTask> task) {
+    if constexpr (std::is_same_v<ExecutorType, SkCallbackExecutor>) {
+        // Note: Although the task is being passed as a raw PipelineCreationTask* it
+        // still has an extra ref which is adopted in InlineCompileWrapper.
+        executor->add({ InlineCompileWrapper, task.release() } , workList);
+    } else {
+        executor->add([task]{ InlineCompile(task); } , workList);
+    }
+}
+
 void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
                                         sk_sp<PipelineCreationTask> task,
                                         Priority priority) {
@@ -185,7 +206,7 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
                                                       : kHighPriorityWorkList;
 
-            fExecutor->add([task]{ InlineCompile(task); } , workList);
+            AddWork(fExecutor, workList, std::move(task));
             return;
         }
     }

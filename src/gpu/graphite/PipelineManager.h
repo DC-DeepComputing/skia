@@ -8,7 +8,9 @@
 #ifndef skgpu_graphite_PipelineManager_DEFINED
 #define skgpu_graphite_PipelineManager_DEFINED
 
+#include "include/core/SkExecutor.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSpinlock.h"
 #include "src/core/SkTHash.h"
@@ -16,8 +18,6 @@
 namespace skgpu {
 class UniqueKey;
 }
-
-class SkExecutor;
 
 namespace skgpu::graphite {
 
@@ -31,8 +31,14 @@ class SharedContext;
 struct RenderPassDesc;
 
 class PipelineManager {
+#if defined(SK_GRAPHITE_USE_CALLBACK_EXECUTOR)
+    using ExecutorType = SkCallbackExecutor;
+#else
+    using ExecutorType = SkStdFunctionExecutor;
+#endif
+
 public:
-    PipelineManager(SkExecutor* executor);
+    PipelineManager(ExecutorType*);
     ~PipelineManager();
 
     // If an existing Pipeline is found, it is just wrapped in a Handle and returned.
@@ -74,6 +80,11 @@ private:
             const RenderPassDesc&,
             Priority) SK_EXCLUDES(fSpinLock);
 
+    template <typename ExecutorType>
+    static void AddWork(ExecutorType*,
+                        int workList,
+                        sk_sp<PipelineCreationTask>) SK_EXCLUDES(fSpinLock);
+
     void addTaskToWorkList(SharedContext*,
                            sk_sp<PipelineCreationTask>,
                            Priority) SK_EXCLUDES(fSpinLock);
@@ -88,6 +99,9 @@ private:
     // Returns true if compilation occurred; false otherwise.
     // All callers must hold a ref on the PipelineCreationTask.
     static bool InlineCompile(const sk_sp<PipelineCreationTask>&) SK_EXCLUDES(fSpinLock);
+
+    // An adapter for the callback-style executor
+    static void InlineCompileWrapper(void* context) SK_EXCLUDES(fSpinLock);
 
     struct Traits {
         static const UniqueKey& GetKey(const sk_sp<PipelineCreationTask>&);
@@ -106,7 +120,7 @@ private:
     // The executor is obtained from ContextOptions. It is up to the client to ensure it
     // exists past the Context's destruction. The Context does call PipelineManager::shutDown
     // from its destructor to end its use.
-    SkExecutor* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
+    ExecutorType* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
 };
 
 } // namespace skgpu::graphite
