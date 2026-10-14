@@ -38,6 +38,10 @@ class ContextPriv {
 public:
     SK_ONLY_STACK_ALLOCATABLE;
 
+    static std::unique_ptr<SkGPUContext> AsGPUContext(std::unique_ptr<Context> context) {
+        return std::unique_ptr<SkGPUContext>(context.release());
+    }
+
     const Caps* caps() const { return fContext->fSharedContext->caps(); }
 
     const ShaderCodeDictionary* shaderCodeDictionary() const {
@@ -46,40 +50,32 @@ public:
     ShaderCodeDictionary* shaderCodeDictionary() {
         return fContext->fSharedContext->shaderCodeDictionary();
     }
+
+    static std::unique_ptr<SkGPUContext> AsGPUContext(
+            std::unique_ptr<skgpu::graphite::Context> ctx) {
+        return std::unique_ptr<SkGPUContext>(ctx.release());
+    }
 #if defined(GPU_TEST_UTILS)
-    const GlobalCache* globalCache() const {
-        return fContext->fSharedContext->globalCache();
-    }
-    GlobalCache* globalCache() {
-        return fContext->fSharedContext->globalCache();
-    }
+    const GlobalCache* globalCache() const { return fContext->fSharedContext->globalCache(); }
+    GlobalCache* globalCache() { return fContext->fSharedContext->globalCache(); }
 #endif
     const RendererProvider* rendererProvider() const {
         return fContext->fSharedContext->rendererProvider();
     }
-    ResourceProvider* resourceProvider() const {
-        return fContext->fResourceProvider.get();
-    }
-    SharedContext* sharedContext() {
-        return fContext->fSharedContext.get();
-    }
+    ResourceProvider* resourceProvider() const { return fContext->fResourceProvider.get(); }
+    SharedContext* sharedContext() { return fContext->fSharedContext.get(); }
 
 #if defined(GPU_TEST_UTILS)
-    void startCapture() {
-        fContext->fQueueManager->startCapture();
-    }
-    void stopCapture() {
-        fContext->fQueueManager->stopCapture();
-    }
+    void startCapture() { fContext->fQueueManager->startCapture(); }
+    void stopCapture() { fContext->fQueueManager->stopCapture(); }
 
-    void deregisterRecorder(const Recorder* recorder) {
-        fContext->deregisterRecorder(recorder);
-    }
+    void deregisterRecorder(const Recorder* recorder) { fContext->deregisterRecorder(recorder); }
 
     bool readPixels(const SkPixmap&,
                     const TextureProxyView&,
                     const SkImageInfo& srcImageInfo,
-                    int srcX, int srcY);
+                    int srcX,
+                    int srcY);
 
     static void disableSmallSizeReadCPUFallback_ForTesting(bool disable);
 #endif
