@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73a4fbe5_e648ed92",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-14T15:53:46Z",
+      "side": 1,
+      "message": "Yes it should just be a SkContext* here",
+      "parentUuid": "038e7c61_cd3baf08",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 78
+      },
+      "revId": "d6eaebafc8606cc2a45e44b38e06621a9c4d8545",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8de4e04f_3709d653",
         "filename": "src/core/SkContextPriv.h",
         "patchSetId": 21
