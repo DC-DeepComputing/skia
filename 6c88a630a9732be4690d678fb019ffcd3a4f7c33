@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5748db51_45653a86",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8292550a_4ea27e7d",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 1
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7146b9b_22585cef",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Done — added comment explaining that empty cluster text ranges produce no code units or glyphs and are ignored.",
       "parentUuid": "b7146b9b_22585cef",
+      "range": {
+        "startLine": 566,
+        "startChar": 16,
+        "endLine": 569,
+        "endChar": 17
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "872b1487_0fcf6a5c",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "514059af_2c92ac73",
       "range": {
         "startLine": 566,
         "startChar": 16,
@@ -142,6 +190,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8523e25b_26d78901",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a64ca24_3e9c3f13",
+      "range": {
+        "startLine": 597,
+        "startChar": 43,
+        "endLine": 597,
+        "endChar": 59
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8c7c9c6_2fed7318",
@@ -179,6 +251,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "e8c7c9c6_2fed7318",
+      "range": {
+        "startLine": 662,
+        "startChar": 32,
+        "endLine": 662,
+        "endChar": 49
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c032e4d8_5fdac409",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2f5c2f3_96b375a4",
       "range": {
         "startLine": 662,
         "startChar": 32,
