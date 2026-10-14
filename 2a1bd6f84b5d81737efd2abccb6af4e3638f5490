@@ -56,6 +56,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1d5c45d8_2a63bceb",
+        "filename": "src/text/StrikeForGPU.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-14T19:09:27Z",
+      "side": 1,
+      "message": "Ok, since both the Strike itself and the StrikeSpec are heavy and StrikeForGPU can\u0027t realistically hold either, I settled with holding only the descriptor. This means that if the strike is purged before serializing, it will not be able to recreate the strike.\n\nThere are plans to have the Slug internally cache whatever it draws, so the Slug can be truly reused independently of the state of the StrikeCache, but that is out of scope for this.\n\nFirst test is acknowledged and fixed so we don\u0027t keep Typefaces alive, second one will be addressed in followup work.",
+      "parentUuid": "f9e930bd_ab7d087a",
+      "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "aa9fe6e6_b99f6217",
         "filename": "src/text/StrikeForGPU.h",
         "patchSetId": 5
@@ -91,6 +109,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e7c84399_5f80a95e",
+        "filename": "src/text/StrikeForGPU.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-14T19:09:27Z",
+      "side": 1,
+      "message": "Done. I\u0027ll address renaming in an immediate followup to keep this CL lean.",
+      "parentUuid": "7c6eeaa3_4bf3c886",
+      "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "04b8c05d_39322b3d",
         "filename": "tests/SlugTest.cpp",
         "patchSetId": 5
@@ -120,6 +156,24 @@
       "side": 1,
       "message": "(Marking as unresolved)",
       "parentUuid": "04b8c05d_39322b3d",
+      "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0154c62e_9f7f903f",
+        "filename": "tests/SlugTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-14T19:09:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9a334c9_227a3a65",
       "revId": "2a1bd6f84b5d81737efd2abccb6af4e3638f5490",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
