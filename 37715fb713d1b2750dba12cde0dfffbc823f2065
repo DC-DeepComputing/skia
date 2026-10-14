@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3d268ab_775547b1",
+        "filename": "modules/skunicode/src/SkUnicode_hardcoded.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-14T15:00:19Z",
+      "side": 1,
+      "message": "Nit: can we use STL for more idiomatic search?\n\n```\n  auto it \u003d std::ranges::lower_bound(ranges, c, {}, \u0026std::pair\u003cSkUnichar, SkUnichar\u003e::second);\n  return it !\u003d ranges.end() \u0026\u0026 c \u003e\u003d it-\u003efirst;\n\n```",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 5
+      },
+      "revId": "37715fb713d1b2750dba12cde0dfffbc823f2065",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
