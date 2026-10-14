@@ -16,6 +16,23 @@
       "message": "Adding Michael for owners approval.",
       "revId": "c35bf9dac5517583f4025b3031ecfe65e017626d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8de2a059_23c9b3bc",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-14T14:35:43Z",
+      "side": 1,
+      "message": "Can you copy the code comment for `writable_data()` to this function as well?",
+      "revId": "c35bf9dac5517583f4025b3031ecfe65e017626d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
