@@ -123,3 +123,25 @@ selects.config_setting_group(
     ],
     visibility = ["//:__subpackages__"],
 )
+
+# Skia's hermetic Mac and Windows toolchains. Their Clang (20+) supports
+# --warning-suppression-mappings, so //include/config/copts.bzl enforces -Wunsafe-buffer-usage
+# with them.
+# TODO(b/532990050): Add Linux once its hermetic Clang is upgraded to 20+.
+config_setting(
+    name = "hermetic_mac",
+    constraint_values = [
+        "@platforms//os:macos",
+        "//bazel/platform:use_hermetic_toolchain",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+config_setting(
+    name = "hermetic_windows",
+    constraint_values = [
+        "@platforms//os:windows",
+        "//bazel/platform:use_hermetic_toolchain",
+    ],
+    visibility = ["//:__subpackages__"],
+)
