@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b353d89_c348bcee",
+        "filename": "tests/SlugTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-14T18:21:10Z",
+      "side": 1,
+      "message": "Like I mentioned in the other CL, I don\u0027t think we need to cover this in this CL, but I updated the documentation to clarify that we can\u0027t redraw a slug if the strike cache has been purged after drawing (for now).",
+      "revId": "232b327cee612742866404e029c8802e767b1931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ece117a_39697625",
+        "filename": "tests/TextBlobCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-14T18:21:10Z",
+      "side": 1,
+      "message": "The customTypeface will never be unique here not because we\u0027re holding it in the pathBlob, no?",
+      "revId": "232b327cee612742866404e029c8802e767b1931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c90ea03c_d0b9ba17",
+        "filename": "tests/TextBlobCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-14T18:21:10Z",
+      "side": 1,
+      "message": "Doesn\u0027t SkPaint itself hold a reference to the path effect and mask filter?",
+      "revId": "232b327cee612742866404e029c8802e767b1931",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
