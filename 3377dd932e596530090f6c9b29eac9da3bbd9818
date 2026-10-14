@@ -1,0 +1,349 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edfeabbb_7fb6881a",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Do not use #if/#ifdef before including \"SkTypes.h\" (directly or indirectly).",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6165f03f_b691f8d6",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Enum values should be prefixed with k. Unscoped enum values are postfixed with an underscore and singular name of the enum name.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be7eaa58_b3206455",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Externed functions or static class functions are camel-capped with an initial cap.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49a8ae8f_b519acce",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Externed functions or static class functions are camel-capped with an initial cap.",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3acb645f_31dc2741",
+        "filename": "include/core/SkCubicMapPriv.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Header guards in namespaced directories or headers should follow naming conventions; include/core/ header guard does not match convention.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "842210dc_0dfca021",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Open braces don\u0027t get a newline. else and else if appear on the same line as opening and closing braces.",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "565d3598_9569b32f",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Braces are always used with if, else, while, for, and do.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68ba6400_582ddd06",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Header guards should follow naming conventions.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8dab414_6479e405",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Header guards should follow naming conventions with namespaced directories.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4934daa_6de9e7e5",
+        "filename": "tools/milestone.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Python code follows the Google Python Style Guide (imports should be on separate lines).",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d45e25f6_1f7ef1fb",
+        "filename": "tools/milestone.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Python code follows the Google Python Style Guide (avoid semicolons at the end of statements).",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be90a19a_18aeddf1",
+        "filename": "tools/milestone.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Python code follows the Google Python Style Guide (use 4 spaces for indentation, not 2).",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60098df7_c92c89f8",
+        "filename": "tools/milestone.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Python code follows the Google Python Style Guide (avoid bare except: clauses).",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152a4001_73d6c24b",
+        "filename": "tools/milestone.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Python code follows the Google Python Style Guide (use 4 spaces for indentation, not 2).",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ead8e34_8d65b0f3",
+        "filename": "tools/milestone.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T18:53:53Z",
+      "side": 1,
+      "message": "Python code follows the Google Python Style Guide (use spaces instead of tabs for indentation).",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "3377dd932e596530090f6c9b29eac9da3bbd9818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
