@@ -672,10 +672,9 @@ private:
         SkASSERT(this->numChildCombinations() == 1);
         SkASSERT(desiredCombination < this->numIntrinsicCombinations());
 
-        bool gradUsesStorage = keyContext.caps()->storageBufferSupport();
         const int desiredStopCombination = desiredCombination % fNumStopVariants;
         GradientShaderBlocks::GradientData gradData(
-                fType, SK_UNSAFE_TODO(fStopVariants[desiredStopCombination]), gradUsesStorage);
+                fType, SK_UNSAFE_TODO(fStopVariants[desiredStopCombination]));
 
         // The logic for setting up color spaces here should match that in the "add_gradient_to_key"
         // functions from src/gpu/graphite/KeyHelpers.cpp.
