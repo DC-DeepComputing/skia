@@ -45,6 +45,52 @@
       },
       "revId": "d6eaebafc8606cc2a45e44b38e06621a9c4d8545",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd52909_965faa02",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-14T15:43:21Z",
+      "side": 1,
+      "message": "don\u0027t think this is needed",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 30
+      },
+      "revId": "d6eaebafc8606cc2a45e44b38e06621a9c4d8545",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbebeff5_c9521612",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-14T15:43:21Z",
+      "side": 1,
+      "message": "This check and the comment above are a little misleading. Like there is a default SkOpts::memset32 if we don\u0027t call init. So this isn\u0027t really checking that Init_Memset was called just because this works. I don\u0027t think from a test pov we have a good way to really know what memset was called, but maybe update the comment to describe this",
+      "range": {
+        "startLine": 57,
+        "startChar": 12,
+        "endLine": 57,
+        "endChar": 20
+      },
+      "revId": "d6eaebafc8606cc2a45e44b38e06621a9c4d8545",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
