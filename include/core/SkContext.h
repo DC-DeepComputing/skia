@@ -22,6 +22,11 @@ class SkSharedContext;
 class SkStrikeCache;
 class SkTraceMemoryDump;
 class SkTypefaceCache;
+namespace skgpu::graphite {
+class Context;
+}
+class GPUContext;
+class GrDirectContext;
 struct SkContextOptions;
 
 /**
@@ -53,6 +58,10 @@ public:
 
 private:
     SkContext(const SkContextOptions&);
+    SkContext(const SkContextOptions&, sk_sp<SkRefCnt> directContext);
+    SkContext(const SkContextOptions&,
+              std::unique_ptr<skgpu::graphite::Context, void (*)(skgpu::graphite::Context*)>
+                      graphiteContext);
 
     friend class SkContextPrivConst;
     friend class SkContextPriv;
@@ -79,6 +88,8 @@ private:
 
     sk_sp<SkCaptureManager> fCaptureManager;
     sk_sp<SkSharedContext> fSharedContext;
+
+    std::unique_ptr<GPUContext> fGPUContext;
 };
 
 #endif  // SkContext_DEFINED
