@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a721d96d_e83b5888",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T17:36:46Z",
+      "side": 1,
+      "message": "Note for the future, `bazelisk mod deps` does this more thoroughly, in case you chose a target which didn\u0027t depend on all of the updated dependencies.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 31
+      },
+      "revId": "42d472bccc07aa72fdc2ed2e785e5b83fdf2e533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
