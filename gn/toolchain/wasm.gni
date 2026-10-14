@@ -42,10 +42,20 @@ template("skia_wasm_lib") {
   }
 }
 
-wasm_defines = [
-  "SKVX_DISABLE_SIMD",
-  "SK_FORCE_8_BYTE_ALIGNMENT",
-]
+declare_args() {
+  # Compile for WebAssembly SIMD128 (-msimd128): SkVx and the raster pipeline
+  # then use 128-bit vectors instead of scalars. The module needs wasm SIMD in
+  # the browser (Chrome 91, Firefox 89, Safari 16.4); link with -msimd128 too.
+  skia_wasm_simd = false
+}
+
+wasm_defines = [ "SK_FORCE_8_BYTE_ALIGNMENT" ]
+wasm_cflags = []
+if (skia_wasm_simd) {
+  wasm_cflags += [ "-msimd128" ]
+} else {
+  wasm_defines += [ "SKVX_DISABLE_SIMD" ]
+}
 
 if (is_canvaskit) {
   if (!is_debug && !skia_canvaskit_force_tracing) {
