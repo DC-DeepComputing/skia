@@ -8,6 +8,8 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
+	"io"
 
 	"github.com/chromedp/chromedp"
 	"go.skia.org/infra/go/skerr"
@@ -20,7 +22,11 @@ type chromeDriver struct {
 	shutdown context.CancelFunc
 }
 
-func newChromeDriver(ctx context.Context, cacheDir string) (*chromeDriver, error) {
+func newChromeDriver(
+	ctx context.Context,
+	cacheDir string,
+	verboseLogs bool,
+) (*chromeDriver, error) {
 	ctx = td.StartStep(ctx, td.Props("set up chrome").Infra())
 	defer td.EndStep(ctx)
 
@@ -29,7 +35,7 @@ func newChromeDriver(ctx context.Context, cacheDir string) (*chromeDriver, error
 		return nil, skerr.Wrapf(err, "failed to install chrome")
 	}
 
-	ctx, shutdown := newChromeContext(ctx, chromeBin)
+	ctx, shutdown := newChromeContext(ctx, chromeBin, verboseLogs)
 	return &chromeDriver{
 		ctx:      ctx,
 		shutdown: shutdown,
@@ -40,7 +46,25 @@ func (cd *chromeDriver) Shutdown() {
 	cd.shutdown()
 }
 
-func newChromeContext(ctx context.Context, chromeBin string) (context.Context, context.CancelFunc) {
+func (cd *chromeDriver) AttachConsole(w io.Writer) context.CancelFunc {
+	loggingCtx, cancel := context.WithCancel(cd.ctx)
+	messages := chromedp.Console(loggingCtx)
+	go func() {
+		for m, err := range messages {
+			if err != nil {
+				return
+			}
+			fmt.Fprintf(w, "[console] %s", m)
+		}
+	}()
+	return cancel
+}
+
+func newChromeContext(
+	ctx context.Context,
+	chromeBin string,
+	verboseLogs bool,
+) (context.Context, context.CancelFunc) {
 	stepCtx := td.StartStep(ctx, td.Props("create chrome devtools context").Infra())
 	defer td.EndStep(stepCtx)
 
@@ -60,7 +84,10 @@ func newChromeContext(ctx context.Context, chromeBin string) (context.Context, c
 		td.Fatal(stepCtx, skerr.Wrapf(err, "failed to start chrome"))
 	}
 
-	cancelEcho := echoBrowserConsole(tabCtx)
+	cancelEcho := func() {}
+	if verboseLogs {
+		cancelEcho = echoBrowserConsole(tabCtx)
+	}
 
 	return tabCtx, func() {
 		if err := chromedp.Cancel(tabCtx); err != nil {
