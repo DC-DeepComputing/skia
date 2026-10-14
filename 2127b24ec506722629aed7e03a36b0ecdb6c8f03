@@ -90,6 +90,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "747d3baa_8ec2a8d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-14T16:06:14Z",
+      "side": 1,
+      "message": "from my experience, I think it\u0027s better to link the file you are referencing within the prompt so the agent doesn\u0027t use tokens to find it.",
+      "parentUuid": "8d6b6025_8451fb5d",
+      "revId": "2127b24ec506722629aed7e03a36b0ecdb6c8f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e75655b_7a01e61f",
