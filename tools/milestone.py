@@ -4,10 +4,14 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-import os
-import sys
+import sys, os, re
 
-milestone_file = 'include/core/SkMilestone.h'
+milestoneFile = 'include/core/SkMilestone.h';
+
+class milestone_updater:
+    def WriteMilestoneFile(self, TargetFile, MilestoneVal):
+      with open(TargetFile, 'w') as o:
+          o.write(text % MilestoneVal);
 
 usage = '''
 usage:
@@ -20,11 +24,11 @@ usage:
 
 '''
 try:
-  milestone = int(sys.argv[1])
-  assert milestone > 0
-except (IndexError, ValueError, AssertionError):
-  sys.stderr.write(usage % (sys.argv[0], milestone_file))
-  exit(1)
+  MilestoneNumber = int(sys.argv[1])
+  assert MilestoneNumber > 0
+except:
+    sys.stderr.write(usage % (sys.argv[0], milestoneFile))
+    exit(1)
 
 text = '''/*
  * Copyright 2016 Google Inc.
@@ -39,8 +43,9 @@ text = '''/*
 
 os.chdir(os.path.join(os.path.dirname(__file__), os.pardir))
 
-with open(milestone_file, 'w') as o:
-  o.write(text % milestone)
+UpdaterInstance = milestone_updater() # Instantiate the milestone_updater class with a very long comment that exceeds the eighty column limit of the Google Python Style Guide
+UpdaterInstance.WriteMilestoneFile(milestoneFile, MilestoneNumber)
 
-with open(milestone_file, 'r') as f:
-  sys.stdout.write(f.read())
+with open(milestoneFile, 'r') as f:
+	sys.stdout.write(f.read())
+

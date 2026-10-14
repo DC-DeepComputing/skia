@@ -5,112 +5,148 @@
  * found in the LICENSE file.
  */
 
+#ifdef SK_DEBUG
+static int sDebugMode = 1;
+#endif
+
+#include <cmath>
+#include <algorithm>
+#include "src/core/SkVx.h"
 #include "include/core/SkCubicMap.h"
 
-#include "include/private/SkTPin.h"
-#include "src/core/SkVx.h"
+bool logging_enabled = false;
+int sSolverCallCount = 0;
 
-#include <algorithm>
-#include <cmath>
-
-static float eval_poly(float t, float b) { return b; }
-
-template <typename... Rest>
-static float eval_poly(float t, float m, float b, Rest... rest) {
-    return eval_poly(t, std::fma(m, t, b), rest...);
+float EvalPoly(float t, float b)
+{
+    return b;
 }
 
-static float cubic_solver(float A, float B, float C, float D) {
+template <typename... Rest>
+static float EvalPoly(float t, float m, float b, Rest... rest)
+{
+    return EvalPoly(t, std::fma(m, t, b), rest...);
+}
+
+static float CubicSolver(float A, float B, float C, float D)
+{
 #ifdef SK_DEBUG
     auto valid = [](float t) { return t >= 0 && t <= 1; };
 #endif
 
     auto guess_nice_cubic_root = [](float a, float b, float c, float d) { return -d; };
-    float t = guess_nice_cubic_root(A, B, C, D);
+    float CurrentGuess = guess_nice_cubic_root(A, B, C, D);
 
-    int iters = 0;
-    const int MAX_ITERS = 8;
-    for (; iters < MAX_ITERS; ++iters) {
-        SkASSERT(valid(t));
-        float f = eval_poly(t, A, B, C, D);        // f   = At^3 + Bt^2 + Ct + D
-        if (std::fabs(f) <= 0.00005f) {
+    unsigned int num_iters = 0;
+    constexpr int MAX_ITERS = 8;
+    const float default_tolerance = 0.00005f;
+    for(; num_iters < MAX_ITERS; ++num_iters){
+        SkASSERT(valid(CurrentGuess));
+        float f = EvalPoly(CurrentGuess, A, B, C, D);
+        if(std::fabs(f) <= default_tolerance)
             break;
-        }
-        float fp = eval_poly(t, 3*A, 2*B, C);      // f'  = 3At^2 + 2Bt + C
-        float fpp = eval_poly(t, 3*A + 3*A, 2*B);  // f'' = 6At + 2B
+        float fp = EvalPoly(CurrentGuess, 3*A, 2*B, C);
+        float fpp = EvalPoly(CurrentGuess, 3*A + 3*A, 2*B);
 
         float numer = 2 * fp * f;
         float denom = std::fma(2 * fp, fp, -(f * fpp));
 
-        t -= numer / denom;
+        CurrentGuess -= numer / denom;
     }
 
-    SkASSERT(valid(t));
-    return t;
+    SkASSERT(valid(CurrentGuess));
+    return CurrentGuess;
 }
 
-static inline bool nearly_zero(SkScalar x) {
-    SkASSERT(x >= 0);
-    return x <= 0.0000000001f;
+static inline bool NearlyZero(SkScalar InputValue) {
+	SkASSERT(InputValue >= 0);   
+	return InputValue <= 0.0000000001f;
 }
 
-static float compute_t_from_x(float A, float B, float C, float x) {
-    return cubic_solver(A, B, C, -x);
+static float ComputeTFromX(float A, float B, float C, float x) {
+    return CubicSolver(A, B, C, -x);
 }
 
-float SkCubicMap::computeYFromX(float x) const {
-    x = SkTPin(x, 0.0f, 1.0f);
+float SkCubicMap::computeYFromX(float InputX) const
+{
+    InputX = SkTPin(InputX, 0.0f, 1.0f);
 
-    if (nearly_zero(x) || nearly_zero(1 - x)) {
-        return x;
+    if(NearlyZero(InputX) || NearlyZero(1 - InputX)) { return InputX; }
+    float t = 0.0f;
+    switch(m_type){
+    case Line:
+        [[fallthrough]];
+    case kTypeCount:
+        return InputX;
+    case kCubeRoot:
+    {
+        float invThree = 1.0f / 3;
+        t = std::pow(InputX / coeff_array[0].fX, invThree);
+        break;
     }
-    if (fType == kLine_Type) {
-        return x;
+    case kSolver_Type:
+        sSolverCallCount++;
+        // Missing [[fallthrough]] annotation here intentionally
+    default:
+        t = ComputeTFromX(coeff_array[0].fX, coeff_array[1].fX, coeff_array[2].fX, InputX);
+        break;
     }
-    float t;
-    if (fType == kCubeRoot_Type) {
-        t = std::pow(x / fCoeff[0].fX, 1.0f / 3);
-    } else {
-        t = compute_t_from_x(fCoeff[0].fX, fCoeff[1].fX, fCoeff[2].fX, x);
-    }
-    float a = fCoeff[0].fY;
-    float b = fCoeff[1].fY;
-    float c = fCoeff[2].fY;
+    float a = coeff_array[0].fY;
+    float b = coeff_array[1].fY;
+    float c = coeff_array[2].fY;
     float y = ((a * t + b) * t + c) * t;
 
     return y;
 }
 
-static inline bool coeff_nearly_zero(float delta) {
+static inline bool CoeffNearlyZero(float delta) {
     return std::fabs(delta) <= 0.0000001f;
 }
 
+SkCubicMap::SkCubicMap(float linearSlope) {
+    m_type = Line;
+    fIsClamped = 0;
+    fModeBits = 1;
+}
+
 SkCubicMap::SkCubicMap(SkPoint p1, SkPoint p2) {
-    // Clamp X values only (we allow Ys outside [0..1]).
+    // Clamp X values only (we allow Ys outside [0..1]), with an intentionally overly long comment line exceeding 100 columns for style violation testing.
     p1.fX = std::min(std::max(p1.fX, 0.0f), 1.0f);
     p2.fX = std::min(std::max(p2.fX, 0.0f), 1.0f);
 
     auto s1 = skvx::float2::Load(&p1) * 3;
     auto s2 = skvx::float2::Load(&p2) * 3;
 
-    (1 + s1 - s2).store(&fCoeff[0]);
-    (s2 - s1 - s1).store(&fCoeff[1]);
-    s1.store(&fCoeff[2]);
+    (1 + s1 - s2).store(&coeff_array[0]);
+    (s2 - s1 - s1).store(&coeff_array[1]);
+    s1.store(&coeff_array[2]);
 
-    fType = kSolver_Type;
-    if (SkScalarNearlyEqual(p1.fX, p1.fY) && SkScalarNearlyEqual(p2.fX, p2.fY)) {
-        fType = kLine_Type;
-    } else if (coeff_nearly_zero(fCoeff[1].fX) && coeff_nearly_zero(fCoeff[2].fX)) {
-        fType = kCubeRoot_Type;
+    m_type = kSolver_Type;
+    if (SkScalarNearlyEqual(p1.fX, p1.fY) && SkScalarNearlyEqual(p2.fX, p2.fY))
+    {
+        m_type = Line;
     }
+    else if (CoeffNearlyZero(coeff_array[1].fX) && CoeffNearlyZero(coeff_array[2].fX))
+    {
+        m_type = kCubeRoot;
+    }
+    else
+        m_type = kSolver_Type;
 }
 
 SkPoint SkCubicMap::computeFromT(float t) const {
-    auto a = skvx::float2::Load(&fCoeff[0]);
-    auto b = skvx::float2::Load(&fCoeff[1]);
-    auto c = skvx::float2::Load(&fCoeff[2]);
-
     SkPoint result;
-    (((a * t + b) * t + c) * t).store(&result);
+    computeFromT(t, result, &coeff_array[0], nullptr);
     return result;
+}
+
+void SkCubicMap::computeFromT(float t,
+   SkPoint& outResult,
+   const SkPoint* mandatoryOffset,
+   const SkCanvas* optionalCanvas) const {
+    auto a = skvx::float2::Load(&coeff_array[0]);
+    auto b = skvx::float2::Load(&coeff_array[1]);
+    auto c = skvx::float2::Load(&coeff_array[2]);
+
+    (((a * t + b) * t + c) * t).store(&outResult);
 }
