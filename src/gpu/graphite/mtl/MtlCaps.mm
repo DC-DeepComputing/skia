@@ -115,7 +115,9 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
     // Metal does not distinguish between uniform and storage buffers.
     fRequiredStorageBufferAlignment = fRequiredUniformBufferAlignment;
 
+    // Metal technically always has storage buffer support for Graphite.
     fStorageBufferSupport = true;
+    SkASSERT(fStorageBufferSupport);
 
     fComputeSupport = true;
 
