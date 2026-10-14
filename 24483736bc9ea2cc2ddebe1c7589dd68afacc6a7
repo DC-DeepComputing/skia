@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e2c6976_4e0f7c7d",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:28:20Z",
+      "side": 1,
+      "message": "Done — extracted to anonymous namespace helper to flatten indentation.",
+      "parentUuid": "c3b0ec52_7c5fd20b",
+      "range": {
+        "startLine": 894,
+        "startChar": 4,
+        "endLine": 904,
+        "endChar": 10
+      },
+      "revId": "24483736bc9ea2cc2ddebe1c7589dd68afacc6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b837fe69_16730bd6",
         "filename": "modules/skparagraph/src/TextLine.cpp",
         "patchSetId": 18
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "493e772a_3e21225d",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:28:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b837fe69_16730bd6",
+      "range": {
+        "startLine": 940,
+        "startChar": 9,
+        "endLine": 959,
+        "endChar": 0
+      },
+      "revId": "24483736bc9ea2cc2ddebe1c7589dd68afacc6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51dac9fd_e041368f",
         "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
         "patchSetId": 18
@@ -60,6 +108,30 @@
       "writtenOn": "2026-10-14T13:57:22Z",
       "side": 1,
       "message": "please format",
+      "range": {
+        "startLine": 7878,
+        "startChar": 38,
+        "endLine": 7889,
+        "endChar": 46
+      },
+      "revId": "24483736bc9ea2cc2ddebe1c7589dd68afacc6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "065627b4_69073873",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 7889,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T14:28:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51dac9fd_e041368f",
       "range": {
         "startLine": 7878,
         "startChar": 38,
