@@ -16,6 +16,24 @@
       "message": "Regarding the empty string question: disabling rendering (the early return when hyphenStr.isEmpty()) is definitely the right approach. Shaping an empty string with HarfBuzz would yield 0 glyphs and allocating/tracking a degenerate 0-glyph Run in the line\u0027s visual runs introduces unnecessary overhead and edge cases in line metrics. Furthermore, it cleanly matches the existing ellipsis behavior where an empty ellipsis produces no affix run.One minor ergonomics note: ParagraphStyle::setEllipsis has an overload for std::u16string alongside SkString. If you want full symmetry for Flutter Engine bindings (which internally hold std::u16string), you could optionally add a std::u16string overload for setSoftHyphenString as well, though converting to UTF-8 on the engine side is also straightforward.",
       "revId": "e2db0c5b8a47d3dd989ef9f4576b9f8f823a0d09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9274754c_4fa6c9ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-10-14T16:07:09Z",
+      "side": 1,
+      "message": "Thanks! Done in PS10: added a std::u16string overload of setSoftHyphenString. It converts to UTF-8 when set, so there\u0027s still a single stored string, and the test checks it with U+2010.",
+      "parentUuid": "9f5be105_8332e539",
+      "revId": "e2db0c5b8a47d3dd989ef9f4576b9f8f823a0d09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
