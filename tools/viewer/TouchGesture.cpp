@@ -196,6 +196,8 @@ static SkScalar center(float pos0, float pos1) {
 }
 
 void TouchGesture::startZoom() {
+    this->flushLocalM();
+    fFlinger.stop();
     fState = kZoom_State;
 }
 
@@ -208,7 +210,7 @@ void TouchGesture::updateZoom(float scale, float startX, float startY, float las
 void TouchGesture::endZoom() {
     this->flushLocalM();
     SkASSERT(kZoom_State == fState);
-    fState = kEmpty_State;
+    fState = fTouches.size() == 1 ? kTranslate_State : kEmpty_State;
 }
 
 void TouchGesture::touchMoved(void* owner, float x, float y) {
@@ -273,21 +275,10 @@ void TouchGesture::touchEnd(void* owner) {
         return;
     }
 
-    const Rec& rec = fTouches[index];
-    if (this->handleDblTap(rec.fLastX, rec.fLastY)) {
-        return;
-    }
-
     // count() reflects the number before we removed the owner
     switch (fTouches.size()) {
         case 1: {
             this->flushLocalM();
-            float dx = rec.fLastX - rec.fPrevX;
-            float dy = rec.fLastY - rec.fPrevY;
-            float dur = rec.fLastT - rec.fPrevT;
-            if (dur > 0) {
-                fFlinger.reset(dx / dur, dy / dur);
-            }
             fState = kEmpty_State;
         } break;
         case 2:
@@ -299,8 +290,6 @@ void TouchGesture::touchEnd(void* owner) {
     }
 
     fTouches.removeShuffle(index);
-
-    limitTrans();
 }
 
 bool TouchGesture::isFling(SkPoint* dir) {

@@ -2268,6 +2268,9 @@ bool Viewer::onMouse(int x, int y, skui::InputState state, skui::ModifierKey mod
 }
 
 bool Viewer::onMouseWheel(float delta, int x, int y, skui::ModifierKey) {
+    if (fGesture.isBeingTouched()) {
+        return true;
+    }
     // Rather than updating the fixed zoom level, treat a mouse wheel event as a gesture, which
     // applies a pre- and post-translation to the transform, resulting in a zoom effect centered at
     // the mouse cursor position.
@@ -3457,8 +3460,8 @@ void Viewer::onIdle() {
     // not be visible, though. So we need to redraw if there is at least one visible window, or
     // more than one active window. Newly created windows are active but not visible for one frame
     // while they determine their layout and sizing.
-    if (animateWantsInval || fStatsLayer.getActive() || fRefresh ||
-        io.MetricsActiveWindows > 1 || io.MetricsRenderWindows > 0) {
+    if (animateWantsInval || fStatsLayer.getActive() || fRefresh || fGesture.isActive() ||
+        io.WantCaptureMouse || io.MetricsActiveWindows > 1 || io.MetricsRenderWindows > 0) {
         fWindow->inval();
     }
 }
