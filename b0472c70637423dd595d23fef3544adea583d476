@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c39822d3_1ddc3df1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-14T18:17:11Z",
+      "side": 1,
+      "message": "PTAL; because this test is behind the SparseStrips gn argument, it doesn\u0027t break the tree, but it should be fixed (and breaks my local build).\n\nWhat happened is that I forgot to upload the patch with rebase fixes on it.",
+      "revId": "b0472c70637423dd595d23fef3544adea583d476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
