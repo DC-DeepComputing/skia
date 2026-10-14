@@ -34,6 +34,23 @@
       "parentUuid": "79baf92a_a9c8d448",
       "revId": "fcf3a185b5c4f09f3db8fd0c78f1d8e8a457ed93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afad19bb_f1449438",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-14T19:04:13Z",
+      "side": 1,
+      "message": "Testing-wise, I think you\u0027ll be fine if you just trigger one of the NativeFonts jobs e.g., Test-Mac14-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts.",
+      "revId": "fcf3a185b5c4f09f3db8fd0c78f1d8e8a457ed93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
