@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f86636fb_06139d4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-14T15:37:22Z",
+      "side": 1,
+      "message": "For that matter, maybe \"getting the diff\" IS the skill here.  The prompt could simply be \"check this CL against the style guide\", as long as the agent knows how to extract the relevant diff lines.  No need to change this CL, just riffing.",
+      "parentUuid": "7a8b7d28_f2f2e73e",
+      "revId": "2127b24ec506722629aed7e03a36b0ecdb6c8f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e75655b_7a01e61f",
