@@ -22,6 +22,30 @@
       },
       "revId": "384d4efba8b3d951f45b16a9e51b3e35d66e97c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d03f8ad_7508a28d",
+        "filename": "src/gpu/ganesh/SkGaneshGPUContextAdapter.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-14T20:09:30Z",
+      "side": 1,
+      "message": "Added a comment!",
+      "parentUuid": "dc10c228_ee7b2c74",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 61
+      },
+      "revId": "384d4efba8b3d951f45b16a9e51b3e35d66e97c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
