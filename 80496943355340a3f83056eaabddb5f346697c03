@@ -16,6 +16,103 @@
       "message": "Ok, ready now - I wasn\u0027t checking the return code for dm. Now it does, and here\u0027s an example of a dm failure: https://task-scheduler.skia.org/job/hdFUc7K39Mzi3c9jCyqi\n\n...then also fixed that failure by defining tmpdir to /tmp for wasm.",
       "revId": "80496943355340a3f83056eaabddb5f346697c03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0fb2b9a_1cd24030",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/chrome_driver.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-14T16:32:12Z",
+      "side": 1,
+      "message": "`echoBrowserConsole` uses `m.Text`, would that provide more useful info (I\u0027m assuming this is a form of struct dump)?",
+      "range": {
+        "startLine": 57,
+        "startChar": 34,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "80496943355340a3f83056eaabddb5f346697c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a48454a_15631c76",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/chrome_driver.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-14T16:32:12Z",
+      "side": 1,
+      "message": "Do we need \\n to separate lines here?",
+      "range": {
+        "startLine": 57,
+        "startChar": 31,
+        "endLine": 57,
+        "endChar": 32
+      },
+      "revId": "80496943355340a3f83056eaabddb5f346697c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48ec5262_1e59ae95",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/chrome_driver.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-14T16:32:12Z",
+      "side": 1,
+      "message": "Looking at `echoBrowserConsole`, it seems to have some drain logic for the last messages, do we need something similar?",
+      "revId": "80496943355340a3f83056eaabddb5f346697c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19f464aa_5ef8a154",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/run_wasm_dm.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-14T16:32:12Z",
+      "side": 1,
+      "message": "What happens if there is a harness error - do we get an immediate signal or is it polling until timeout?  If the latter, it would be nice to have a tighter timeout around the operation (I believe the task timeout is something like 60min).",
+      "revId": "80496943355340a3f83056eaabddb5f346697c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ac5da9a_c5224add",
+        "filename": "infra/bots/task_drivers/run_wasm_dm/run_wasm_dm.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-14T16:32:12Z",
+      "side": 1,
+      "message": "Would it make sense to attach the console logs before loading the harness, to possibly capture harness-related errors?",
+      "revId": "80496943355340a3f83056eaabddb5f346697c03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
