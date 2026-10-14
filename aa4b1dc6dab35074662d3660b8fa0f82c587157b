@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e42d1e52_242bc76f",
+        "filename": "src/text/StrikeForGPU.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T20:16:37Z",
+      "side": 1,
+      "message": "Nit: `resetStrike()` is only called inside `std::call_once` right after the single call to `strike()`, so `strike()` is never called again in the `SkAutoDescriptor` state.\nAlso, if `findStrike()` misses, this overwrites `fStrikeInfo` with a null `sk_sp\u003cSkStrike\u003e` and breaks subsequent `descriptor()` / `flatten()` calls. Consider either `SkASSERT(false); return nullptr;` or keeping the `SkAutoDescriptor` on a cache miss.\nBut then again, this is an unreachable code so it will never break.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 0
+      },
+      "revId": "aa4b1dc6dab35074662d3660b8fa0f82c587157b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
