@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4897552_5f821585",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-14T19:10:42Z",
+      "side": 1,
+      "message": "I merged these tests with my CL. Sorry for the confusion, this can be safely abandoned.",
+      "revId": "9c2296712f935b435c54dc07ca2549ec7d79bd8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
