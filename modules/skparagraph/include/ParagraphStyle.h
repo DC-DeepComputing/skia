@@ -85,7 +85,8 @@ struct ParagraphStyle {
                this->fDefaultTextStyle == rhs.fDefaultTextStyle &&
                this->fReplaceTabCharacters == rhs.fReplaceTabCharacters &&
                this->fFakeMissingFontStyles == rhs.fFakeMissingFontStyles &&
-               this->fRenderSoftHyphens == rhs.fRenderSoftHyphens;
+               this->fRenderSoftHyphens == rhs.fRenderSoftHyphens &&
+               this->fSoftHyphenString == rhs.fSoftHyphenString;
     }
 
     const StrutStyle& getStrutStyle() const { return fStrutStyle; }
@@ -137,6 +138,12 @@ struct ParagraphStyle {
     bool getRenderSoftHyphens() const { return fRenderSoftHyphens; }
     void setRenderSoftHyphens(bool value) { fRenderSoftHyphens = value; }
 
+    // The string rendered at line breaks that occur at a U+00AD soft hyphen
+    // when setRenderSoftHyphens(true). Defaults to "-". Has no effect when
+    // soft hyphen rendering is disabled.
+    const SkString& getSoftHyphenString() const { return fSoftHyphenString; }
+    void setSoftHyphenString(const SkString& value) { fSoftHyphenString = value; }
+
 private:
     StrutStyle fStrutStyle;
     TextStyle fDefaultTextStyle;
@@ -153,6 +160,7 @@ private:
     bool fApplyRoundingHack = true;
     bool fLetterSpacingByCSSSpec = false;
     bool fRenderSoftHyphens = false;
+    SkString fSoftHyphenString = SkString("-");
 };
 }  // namespace textlayout
 }  // namespace skia
