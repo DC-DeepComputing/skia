@@ -65,4 +65,9 @@ public:
     static std::unique_ptr<SkContext> MakeContext(const SkContextOptions& options);
 };
 
+namespace SkContexts {
+// Returns the global SkContext. If the global SkContext does not exist yet, it will be created.
+SkContext* GetGlobalSkContext();
+}
+
 #endif  // SkContextPriv_DEFINED
