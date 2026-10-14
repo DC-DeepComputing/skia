@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d43a394e_26decd5c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-14T20:09:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95918b1c_d901c9d1",
+      "range": {
+        "startLine": 15,
+        "startChar": 24,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "142331504b6c38cbb113183f66cc8f2af44d39a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5c9ae3e_4013eabc",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-14T20:00:01Z",
       "side": 1,
       "message": "nit: accidental character?",
+      "range": {
+        "startLine": 114,
+        "startChar": 44,
+        "endLine": 114,
+        "endChar": 45
+      },
+      "revId": "142331504b6c38cbb113183f66cc8f2af44d39a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09714775_4e77e029",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-14T20:09:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5c9ae3e_4013eabc",
       "range": {
         "startLine": 114,
         "startChar": 44,
