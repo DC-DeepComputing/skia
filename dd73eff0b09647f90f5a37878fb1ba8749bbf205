@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7be72676_c70fbe8f",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-14T12:55:20Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "406374b0_5993db66",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 34
+      },
+      "revId": "dd73eff0b09647f90f5a37878fb1ba8749bbf205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1ab0ec7_3d169401",
@@ -72,6 +96,30 @@
       "writtenOn": "2026-10-13T15:22:50Z",
       "side": 1,
       "message": "nit: newline",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 34
+      },
+      "revId": "dd73eff0b09647f90f5a37878fb1ba8749bbf205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9835de7_af149028",
+        "filename": "src/gpu/graphite/RasterPathAtlas.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-14T12:55:20Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "c1ab0ec7_3d169401",
       "range": {
         "startLine": 105,
         "startChar": 0,
