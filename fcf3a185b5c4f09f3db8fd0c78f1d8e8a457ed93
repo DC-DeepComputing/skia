@@ -16,6 +16,24 @@
       "message": "If this CL does turn out to be the culprit, the error message was:\n\n[skia] ** ERROR ** ../../../../../skia/modules/skparagraph/src/TextLine.cpp:720: fatal error: \"check(!fRun)\"",
       "revId": "fcf3a185b5c4f09f3db8fd0c78f1d8e8a457ed93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d03c57e4_35f61011",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-10-14T18:55:17Z",
+      "side": 1,
+      "message": "Thanks for reverting, it was this CL. With it, an LTR custom ellipsis that ends in punctuation (e.g. \"Read more…\") in RTL text gets split into two bidi runs and hits that SkASSERT. I\u0027ve reproduced it locally and will reland with a fix and a regression test. Which bot was it, so I can make sure the reland covers it?",
+      "parentUuid": "79baf92a_a9c8d448",
+      "revId": "fcf3a185b5c4f09f3db8fd0c78f1d8e8a457ed93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
