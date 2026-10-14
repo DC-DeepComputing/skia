@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "456ee176_8c2c02c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-14T16:30:06Z",
+      "side": 1,
+      "message": "I defer to @fmalita for reviewing this CL.",
+      "revId": "6e00aa9d22679056d314be68dbf09642209e6a10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
