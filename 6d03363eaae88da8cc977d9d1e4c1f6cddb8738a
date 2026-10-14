@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec74b6f7_813bdbf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-14T15:53:44Z",
+      "side": 1,
+      "message": "PTAL; the commit message is AI generated, but the reproduction is. . . convoluted.",
+      "revId": "6d03363eaae88da8cc977d9d1e4c1f6cddb8738a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
