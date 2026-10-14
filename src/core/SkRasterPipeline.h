@@ -27,7 +27,13 @@ enum SkColorType : int;
 struct SkImageInfo;
 struct skcms_TransferFunction;
 
-#if __has_cpp_attribute(clang::musttail) && !defined(__EMSCRIPTEN__) && !defined(SK_CPU_ARM32) && \
+// Emscripten: older clang reports musttail even without the wasm tail-call
+// feature (llvm/llvm-project#163256), so only use it when built with -mtail-call.
+// That needs emscripten 6.0.12+: older LLVM tail-calls functions that pass a
+// byval copy from their own, already released, stack frame and corrupts it
+// (llvm/llvm-project#66216, fixed by #227491).
+#if __has_cpp_attribute(clang::musttail) && \
+        (!defined(__EMSCRIPTEN__) || defined(__wasm_tail_call__)) && !defined(SK_CPU_ARM32) && \
         !defined(SK_CPU_LOONGARCH) && !defined(SK_CPU_PPC) && \
         !(defined(_WIN32) && defined(SK_BUILD_FOR_ANDROID_FRAMEWORK))
     // [[clang::musttail]] is disabled for the Android version of Skia running on Windows as it
