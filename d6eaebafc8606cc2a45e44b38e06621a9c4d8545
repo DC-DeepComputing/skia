@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "038e7c61_cd3baf08",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-14T15:38:19Z",
+      "side": 1,
+      "message": "Greg, do you know if for static singletons we have a preference for releasing it instead like:\n```\nstatic SkContext* gSkContext \u003d SkContexts::MakeRaster().release();\n```\n\nthat is what we do in cpu\u0027s Recorder and our SkCOlorSpace singletons use a different way to only have to hold on to a bare pointer (but the end result is that they never get destroyed). That suggests to me a preference to have these singletons be intentionally leaked.\n\nPlausibly there could be some race condition on process exit where it\u0027s run the destructor for this static variable while some other thread is still using Skia and that accesses the global context.",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 78
+      },
+      "revId": "d6eaebafc8606cc2a45e44b38e06621a9c4d8545",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8de4e04f_3709d653",
+        "filename": "src/core/SkContextPriv.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-14T15:38:19Z",
+      "side": 1,
+      "message": "nit: We should add a note here that says this is temporary while migrating to Skia\u0027s new context management.",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 96
+      },
+      "revId": "d6eaebafc8606cc2a45e44b38e06621a9c4d8545",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
