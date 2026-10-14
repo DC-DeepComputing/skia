@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79baf92a_a9c8d448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-14T18:28:15Z",
+      "side": 1,
+      "message": "If this CL does turn out to be the culprit, the error message was:\n\n[skia] ** ERROR ** ../../../../../skia/modules/skparagraph/src/TextLine.cpp:720: fatal error: \"check(!fRun)\"",
+      "revId": "fcf3a185b5c4f09f3db8fd0c78f1d8e8a457ed93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
