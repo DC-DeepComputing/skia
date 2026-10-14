@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaac18c4_3876e26e",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 9188,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T20:19:37Z",
+      "side": 1,
+      "message": "Line is longer than 100 symbols. I think it breaks one of our rules.",
+      "fixSuggestions": [
+        {
+          "fixId": "2aea9aa8_7847e2eb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/tests/SkParagraphTest.cpp",
+              "range": {
+                "startLine": 9188,
+                "startChar": 0,
+                "endLine": 9189,
+                "endChar": 0
+              },
+              "replacement": "    builder.addText(u\"\\u062A\\u0638\\u0627\\u0647\\u0631\\u0627\\u062A \\u0648 \"\n                    u\"\\u062A\\u062C\\u0645\\u0639\\u0627\\u062A\");\n"
+            }
+          ]
+        }
+      ],
+      "revId": "437931838bdb3ec87e85226d8df98eac2e918e8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4ce52ee_82f6d294",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 9261,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-14T20:19:37Z",
+      "side": 1,
+      "message": "Long line.",
+      "revId": "437931838bdb3ec87e85226d8df98eac2e918e8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
