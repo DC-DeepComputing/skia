@@ -50,6 +50,24 @@
       "message": "Typo in the method name: `writableByteSpan()` (without the `e` in `writable`), to match the commit description, `this-\u003ewritable_data()`, and `skia::as_writable_byte_span()`.\n\nAlso nit: please use 4-space indentation to match the rest of `SkData.h` (or format it on a single line like `byteSpan()` above).",
       "revId": "d798655c238a7c7c59aeb5287978755f9e7fcdec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef868992_5ce3b3bc",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4107972
+      },
+      "writtenOn": "2026-10-14T08:27:30Z",
+      "side": 1,
+      "message": "Dahhh, sorry, I keep forgetting how to make `git cl format` work inside submodules (I\u0027m working out of a Chromium checkout `cd`\u0027d into `third_party/skia/`). Fixed in patchset 2.",
+      "parentUuid": "f7dee29b_98ed9a79",
+      "revId": "d798655c238a7c7c59aeb5287978755f9e7fcdec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
