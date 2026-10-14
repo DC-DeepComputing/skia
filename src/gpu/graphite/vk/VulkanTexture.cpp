@@ -106,7 +106,9 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     }
 
     auto allocator = sharedContext->memoryAllocator();
-    bool forceDedicatedMemory = caps.shouldAlwaysUseDedicatedImageMemory();
+    bool forceDedicatedMemory = info.isProtected() == Protected::kYes
+                                    ? caps.shouldAlwaysUseDedicatedImageMemoryForProtected()
+                                    : caps.shouldAlwaysUseDedicatedImageMemory();
     bool useLazyAllocation =
             SkToBool(vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT);
 
