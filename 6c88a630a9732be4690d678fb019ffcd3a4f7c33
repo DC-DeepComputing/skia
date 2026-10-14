@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9606cea_6e849b38",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-14T13:16:47Z",
+      "side": 1,
+      "message": "is there any way we can do \n\n```\n    if (sk_u_hasBinaryProperty(unichar, UCHAR_DEFAULT_IGNORABLE_CODE_POINT)) {\n        return true;\n    }\n```\n\nor something similar in Unicode_icu so that we don\u0027t have to use hardcoded values",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 1
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7146b9b_22585cef",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-14T13:16:47Z",
+      "side": 1,
+      "message": "nit: should we have an skassert if the default behavior is to return when `charStart \u003e\u003d charEnd`? I kind of understand that it might help users debug the program by seeing whether `charStart \u003e\u003d charEnd` is true.\n\nmaybe we could add a comment mentioning how this is the default behavior to expect.",
+      "range": {
+        "startLine": 566,
+        "startChar": 16,
+        "endLine": 569,
+        "endChar": 17
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b151e09_efe09fe0",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-14T13:16:47Z",
+      "side": 1,
+      "message": "nit: please format to 100 chars per line",
+      "range": {
+        "startLine": 597,
+        "startChar": 43,
+        "endLine": 597,
+        "endChar": 59
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c7c9c6_2fed7318",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-14T13:16:47Z",
+      "side": 1,
+      "message": "nit: format",
+      "range": {
+        "startLine": 662,
+        "startChar": 32,
+        "endLine": 662,
+        "endChar": 49
+      },
+      "revId": "6c88a630a9732be4690d678fb019ffcd3a4f7c33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
