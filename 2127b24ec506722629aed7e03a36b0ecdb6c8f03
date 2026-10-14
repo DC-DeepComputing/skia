@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8b7d28_f2f2e73e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-14T14:26:50Z",
+      "side": 1,
+      "message": "I agree and as we look to add more of these \"presubmit\" type skills I can see us factoring out the getting a diff thing into its own skill.\n\nBut yeah outside of the getting the diff the main other parts of this skill are the pointing it to the style guide and the reporting of issues it finds",
+      "parentUuid": "a02a2ffa_029e352a",
+      "revId": "2127b24ec506722629aed7e03a36b0ecdb6c8f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e75655b_7a01e61f",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-10-13T22:33:22Z",
       "side": 1,
       "message": "nit: format this doc to 100 chars per line",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 2
+      },
+      "revId": "2127b24ec506722629aed7e03a36b0ecdb6c8f03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aea3dfe9_78625286",
+        "filename": "agents/skills/skia-style-check/SKILL.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-14T14:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e75655b_7a01e61f",
       "range": {
         "startLine": 12,
         "startChar": 0,
