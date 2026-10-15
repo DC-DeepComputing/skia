@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f3a4ec9_9c7cdb8a",
+        "filename": "src/gpu/ganesh/GrEagerVertexAllocator.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-15T10:13:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bf9ddf0_2c2db174",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 30
+      },
+      "revId": "060cea96a5e738b251ea6297511d427d3a3edbcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de3f4631_e1623866",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-14T14:31:38Z",
       "side": 1,
       "message": "I\u0027d remove this one",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 30
+      },
+      "revId": "060cea96a5e738b251ea6297511d427d3a3edbcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b5587c9_096ef0d4",
+        "filename": "src/gpu/ganesh/GrPersistentCacheUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-15T10:13:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de3f4631_e1623866",
       "range": {
         "startLine": 33,
         "startChar": 0,
