@@ -85,7 +85,9 @@ SkResourceCache* SkContext::resourceCache() const {
     return fSharedContext->synchronizedResourceCache();
 }
 
-SkStrikeCache* SkContext::fontCache() const { return fSharedContext->fontCache(); }
+SkStrikeCache* SkContext::fontCache() const {
+    return fSharedContext->strikeCache();
+}
 
 SkTypefaceCache* SkContext::typefaceCache() const { return fSharedContext->typefaceCache(); }
 
@@ -150,4 +152,9 @@ SkContext* GetGlobalSkContext() {
     static SkContext* gSkContext = SkContexts::MakeRaster({}).release();
     return gSkContext;
 }
+
+SkSharedContext* GetGlobalSkSharedContext() {
+    return GetGlobalSkContext()->priv().sharedContext();
+}
+
 }  // namespace SkContexts
