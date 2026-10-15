@@ -46,6 +46,30 @@
       },
       "revId": "f7cc43322370dcd87af6508c8b7d43fa3b9a2edc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03c27d7c_5b732a00",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2026-10-15T14:37:57Z",
+      "side": 1,
+      "message": "Took an initial stab at this - will ask in our meeting today about how we want to handle rolling flags into the label versus (if we want this to differ) just generating a full label for reporting.",
+      "parentUuid": "4cc8c318_ff0063ca",
+      "range": {
+        "startLine": 97,
+        "startChar": 3,
+        "endLine": 116,
+        "endChar": 2
+      },
+      "revId": "f7cc43322370dcd87af6508c8b7d43fa3b9a2edc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
