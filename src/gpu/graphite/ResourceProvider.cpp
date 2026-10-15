@@ -102,8 +102,9 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
     GraphiteResourceKey key;
     fSharedContext->caps()->buildKeyForTexture(dimensions, info, kType, &key);
 
-    if (Resource* resource =
-                fResourceCache->findAndRefResource(key, budgeted, shareable, label, unavailable)) {
+    // TODO(b/431796811): Define and utilize flags for anticipated texture usages.
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, budgeted, shareable, UsageLabelFlag::kNotPredefined, label, unavailable)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
@@ -157,28 +158,33 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
 sk_sp<Buffer> ResourceProvider::findOrCreateNonShareableBuffer(size_t size,
                                                                BufferType type,
                                                                AccessPattern accessPattern,
+                                                               LabelUsageBitMask labelUsageFlags,
                                                                std::string_view label) {
-    return this->findOrCreateBuffer(size, type, accessPattern, label, Shareable::kNo);
+    return this->findOrCreateBuffer(
+            size, type, accessPattern, Shareable::kNo, labelUsageFlags, label);
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateScratchBuffer(
         size_t size,
         BufferType type,
         AccessPattern access,
-        std::string_view label,
-        const ResourceCache::ScratchResourceSet& unvailable) {
+        const ResourceCache::ScratchResourceSet& unvailable,
+        LabelUsageBitMask labelUsageFlags,
+        std::string_view label) {
     // Scratch buffers must be GPU only, mapped access makes it too difficult to scope their
     // reads and writes within the actual command buffer execution.
     SkASSERT(access != AccessPattern::kHostVisible);
-    return this->findOrCreateBuffer(size, type, access, label, Shareable::kScratch, &unvailable);
+    return this->findOrCreateBuffer(
+            size, type, access, Shareable::kScratch, labelUsageFlags, label, &unvailable);
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         size_t size,
         BufferType type,
         AccessPattern accessPattern,
-        std::string_view label,
         Shareable shareable,
+        LabelUsageBitMask labelUsageFlags,
+        std::string_view label,
         const ResourceCache::ScratchResourceSet* unavailable) {
     static constexpr Budgeted kBudgeted = Budgeted::kYes;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
@@ -209,12 +215,12 @@ sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(
         }
     }
 
-    if (Resource* resource =
-            fResourceCache->findAndRefResource(key, kBudgeted, shareable, label, unavailable)) {
+    if (Resource* resource = fResourceCache->findAndRefResource(
+                key, kBudgeted, shareable, labelUsageFlags, label, unavailable)) {
         return sk_sp<Buffer>(static_cast<Buffer*>(resource));
     }
 
-    if (auto buffer = this->createBuffer(size, type, accessPattern, label)) {
+    if (auto buffer = this->createBuffer(size, type, accessPattern, labelUsageFlags, label)) {
         fResourceCache->insertResource(buffer.get(), key, kBudgeted, shareable);
         return buffer;
     }

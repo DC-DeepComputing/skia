@@ -261,6 +261,7 @@ VulkanYcbcrConversion::VulkanYcbcrConversion(const VulkanSharedContext* context,
         : Resource(context,
                    Ownership::kOwned,
                    /*gpuMemorySize=*/0,
+                   UsageLabelFlag::kNotPredefined,
                    /*label=*/"",
                    /*reusableRequiresPurgeable=*/false)
         , fYcbcrConversion(ycbcrConversion)

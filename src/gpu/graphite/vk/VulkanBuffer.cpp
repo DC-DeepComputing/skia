@@ -19,6 +19,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
                                  size_t size,
                                  BufferType type,
                                  AccessPattern accessPattern,
+                                 LabelUsageBitMask labelUsageFlags,
                                  std::string_view label) {
     if (size <= 0) {
         return nullptr;
@@ -182,6 +183,7 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
                                           alloc,
                                           bufInfo.usage,
                                           Protected(isProtected),
+                                          labelUsageFlags,
                                           label));
 }
 
@@ -193,10 +195,12 @@ VulkanBuffer::VulkanBuffer(const VulkanSharedContext* sharedContext,
                            const skgpu::VulkanAlloc& alloc,
                            const VkBufferUsageFlags usageFlags,
                            Protected isProtected,
+                           LabelUsageBitMask labelUsageFlags,
                            std::string_view label)
         : Buffer(sharedContext,
                  size,
                  isProtected,
+                 labelUsageFlags,
                  label,
                  /*reusableRequiresPurgeable=*/alloc.fFlags & skgpu::VulkanAlloc::kMappable_Flag)
         , fBuffer(std::move(buffer))

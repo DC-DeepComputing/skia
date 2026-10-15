@@ -17,9 +17,9 @@
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+class SkTraceMemoryDump;
 struct AHardwareBuffer;
 struct SkSamplingOptions;
-class SkTraceMemoryDump;
 
 namespace skgpu {
 class SingleOwner;
@@ -42,8 +42,8 @@ class GraphicsPipelineHandle;
 class GraphiteResourceKey;
 class ResourceCache;
 class RuntimeEffectDictionary;
-class ShaderCodeDictionary;
 class Sampler;
+class ShaderCodeDictionary;
 class SharedContext;
 class Texture;
 class TextureInfo;
@@ -72,12 +72,14 @@ public:
     sk_sp<Buffer> findOrCreateNonShareableBuffer(size_t,
                                                  BufferType,
                                                  AccessPattern,
-                                                 std::string_view label);
+                                                 LabelUsageBitMask,
+                                                 std::string_view label = {});
     sk_sp<Buffer> findOrCreateScratchBuffer(size_t,
                                             BufferType,
                                             AccessPattern,
-                                            std::string_view label,
-                                            const ResourceCache::ScratchResourceSet& unavailable);
+                                            const ResourceCache::ScratchResourceSet& unavailable,
+                                            LabelUsageBitMask,
+                                            std::string_view label = {});
 
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SamplerDesc&);
@@ -140,7 +142,8 @@ private:
     virtual sk_sp<Buffer> createBuffer(size_t,
                                        BufferType,
                                        AccessPattern,
-                                       std::string_view label) = 0;
+                                       LabelUsageBitMask,
+                                       std::string_view label = {}) = 0;
     virtual sk_sp<Sampler> createSampler(const SamplerDesc&) = 0;
 
     sk_sp<Texture> findOrCreateTexture(SkISize dimensions,
@@ -153,8 +156,9 @@ private:
     sk_sp<Buffer> findOrCreateBuffer(size_t,
                                      BufferType,
                                      AccessPattern,
-                                     std::string_view label,
                                      Shareable,
+                                     LabelUsageBitMask,
+                                     std::string_view label = {},
                                      const ResourceCache::ScratchResourceSet* = nullptr);
 
     virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&,
