@@ -628,10 +628,7 @@ void ClipStack::RawElement::drawClip(Device* device) {
 
     SkASSERT(!fUsageBounds.isEmptyNegativeOrNaN());
     // For clip draws, the usage bounds is the scissor.
-    const Rect deviceBounds = Rect::XYWH(device->atlasOffset().fX,
-                                         device->atlasOffset().fY,
-                                         device->width(),
-                                         device->height());
+    const Rect deviceBounds = Rect::WH(device->width(), device->height());
     Rect scissor = fUsageBounds; // all joined usage bounds are pre-snapped
 
     // snappedOuterBounds was the rectangle used in updateForDraw() to query the Z order the clip's
@@ -1550,10 +1547,7 @@ void ClipStack::restore() {
 }
 
 Rect ClipStack::deviceBounds() const {
-    return Rect::XYWH(fDevice->atlasOffset().fX,
-                      fDevice->atlasOffset().fY,
-                      fDevice->width(),
-                      fDevice->height());
+    return Rect::WH(fDevice->width(), fDevice->height());
 }
 
 Rect ClipStack::conservativeBounds() const {

@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/ScratchDeviceAtlas.h"
 #include "src/gpu/graphite/StorageContext.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
@@ -48,6 +49,10 @@ public:
     static UniformDataBlock Make(UniformDataBlock toClone, SkArenaAlloc* arena) {
         const char* copy = arena->makeArrayCopy<char>(toClone.fData);
         return UniformDataBlock(SkSpan(copy, toClone.size()));
+    }
+
+    static UniformDataBlock Make(SkSpan<const char> data) {
+        return UniformDataBlock(data);
     }
 
     // Wraps the finished accumulated uniform data within the manager's underlying storage.
@@ -171,8 +176,8 @@ template <typename K,                  // Initial type inserted into the map fro
 class DenseBiMap {
 public:
     using Index = uint32_t;
-    // 1 << SkNextLog2_portable(DrawList::kMaxRenderSteps);
-    static constexpr Index kInvalidIndex = 4096;
+    // 2 * (1 << SkNextLog2_portable(DrawList::kMaxRenderSteps));
+    static constexpr Index kInvalidIndex = 8192;
 
     Index insert(K data) {
         Index* index = fDataToIndex.find(data);
@@ -350,6 +355,17 @@ public:
 #endif
 };
 
+class AtlasPage;
+
+struct AtlasCoordPatch {
+    static constexpr uint16_t kInvalidOffset = 0xFFFF;
+    sk_sp<AtlasPage> fPage;
+    int fSlotIndex = -1;
+    uint16_t fLMTranslateOffset = kInvalidOffset; // SkV2 {tx, ty}
+    uint16_t fInvSizeOffset = kInvalidOffset;     // SkSize {1/w, 1/h}
+    uint16_t fSubsetOffset = kInvalidOffset;      // SkRect {L, T, R, B}
+};
+
 class PipelineDataGatherer {
 public:
     PipelineDataGatherer(Layout layout) : fUniformManager(layout) {}
@@ -359,7 +375,34 @@ public:
         fUniformManager.reset();
         fTextures.clear();
         fPaintTextureCount = 0;
+        fLastLMTranslateOffset = AtlasCoordPatch::kInvalidOffset;
+        fProducerClipRectOffset = AtlasCoordPatch::kInvalidOffset;
+        fAtlasCoordPatches.clear();
     }
+
+    int currentUniformOffset() const { return fUniformManager.size(); }
+    int currentRequiredAlignment() const { return fUniformManager.requiredAlignment(); }
+    Layout layout() const { return fUniformManager.layout(); }
+
+    void setPaintPrefix(SkSpan<const char> paintBytes, int paintReqAlignment) {
+        fUniformManager.setPaintPrefix(paintBytes, paintReqAlignment);
+        fTextures.clear();
+        fPaintTextureCount = 0;
+    }
+
+    void setLastLMTranslateOffset(uint16_t offset) { fLastLMTranslateOffset = offset; }
+    uint16_t takeLastLMTranslateOffset() {
+        uint16_t r = fLastLMTranslateOffset;
+        fLastLMTranslateOffset = AtlasCoordPatch::kInvalidOffset;
+        return r;
+    }
+    void addAtlasCoordPatch(const AtlasCoordPatch& patch) { fAtlasCoordPatches.push_back(patch); }
+    const skia_private::TArray<AtlasCoordPatch>& atlasCoordPatches() const {
+        return fAtlasCoordPatches;
+    }
+
+    void setProducerClipRectOffset(uint16_t offset) { fProducerClipRectOffset = offset; }
+    uint16_t producerClipRectOffset() const { return fProducerClipRectOffset; }
 
 #if defined(SK_DEBUG)
     // Check that the gatherer has been reset to its initial state prior to collecting new data.
@@ -452,6 +495,9 @@ private:
 
     UniformManager fUniformManager;
     skia_private::TArray<TextureDataBlock::SampledTexture> fTextures;
+    skia_private::TArray<AtlasCoordPatch> fAtlasCoordPatches;
+    uint16_t fLastLMTranslateOffset = AtlasCoordPatch::kInvalidOffset;
+    uint16_t fProducerClipRectOffset = AtlasCoordPatch::kInvalidOffset;
 
     int fPaintTextureCount = 0;
 };

@@ -44,6 +44,9 @@ public:
     // Returns true if this image is linked to a device that may render their shared texture(s).
     bool isDynamic() const;
 
+    // Returns the linked atlased Device if this image wraps a ScratchDeviceAtlas slot.
+    Device* linkedAtlasedDevice() const;
+
     // Switches the image's proxies to be non-budgeted and instantiates them as non-shareable.
     // Records any linked tasks (e.g. isDynamic() returned true) into the root task list of the
     // recorder, and breaks the link between the scratch Device(s) and the returned image.

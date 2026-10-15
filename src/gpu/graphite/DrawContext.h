@@ -78,6 +78,14 @@ public:
     void clear(const SkColor4f& clearColor);
     void discard();
 
+    void setDimensions(SkISize dimensions) {
+        fImageInfo = fImageInfo.makeWH(dimensions.width(), dimensions.height());
+    }
+
+    void setCurrentAtlasSlot(sk_sp<class AtlasPage> page, int slotIndex) {
+        fPendingDraws->setCurrentAtlasSlot(std::move(page), slotIndex);
+    }
+
     std::pair<DrawParams*, Layer*> recordDraw(
             const Renderer* renderer,
             const Transform& localToDevice,

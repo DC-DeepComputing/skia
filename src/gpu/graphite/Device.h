@@ -87,6 +87,7 @@ class Shape;
 class Task;
 class TextureProxy;
 class TextureProxyView;
+class AtlasPage;
 class ScratchDeviceAtlas;
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
@@ -121,15 +122,18 @@ public:
                               bool allowUnpremul=false);
 
     static sk_sp<Device> MakeAtlased(Recorder* recorder,
-                                     sk_sp<DrawContext> atlasDC,
-                                     SkIPoint atlasOffset,
+                                     sk_sp<AtlasPage> atlasPage,
+                                     int atlasSlotIndex,
                                      SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props,
                                      ScratchDeviceAtlas* atlas);
 
-    bool isAtlased() const { return fAtlas != nullptr; }
-    SkIPoint atlasOffset() const { return fAtlasOffset; }
+    bool isAtlased() const { return fAtlasPage != nullptr; }
+    AtlasPage* atlasPage() const { return fAtlasPage.get(); }
+    sk_sp<AtlasPage> refAtlasPage() const { return fAtlasPage; }
+    int atlasSlotIndex() const { return fAtlasSlotIndex; }
+    SkIPoint atlasOffset() const;
 
     Device* asGraphiteDevice() override { return this; }
 
@@ -341,8 +345,8 @@ private:
 
     Device(Recorder*, sk_sp<DrawContext>);
     Device(Recorder*,
-           sk_sp<DrawContext>,
-           SkIPoint atlasOffset,
+           sk_sp<AtlasPage> atlasPage,
+           int atlasSlotIndex,
            SkISize deviceSize,
            const SkColorInfo&,
            const SkSurfaceProps&,
@@ -440,7 +444,8 @@ private:
     // some other task chain that makes it to the root list.
     sk_sp<Task> fLastTask;
 
-    SkIPoint fAtlasOffset = {0, 0};
+    sk_sp<AtlasPage> fAtlasPage;
+    int fAtlasSlotIndex = -1;
     ScratchDeviceAtlas* fAtlas = nullptr;
     bool fRegisteredInAtlas = false;
 

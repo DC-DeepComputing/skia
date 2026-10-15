@@ -84,6 +84,7 @@ public:
     // The transform from the mask's texture coordinate space to device coordinates, which may be
     // different from the local-to-device transform used for shading coordinates.
     const SkM44& maskToDevice() const { return fMaskToDevice; }
+    void offsetMaskToDevice(float dx, float dy) { fMaskToDevice.postTranslate(dx, dy); }
 
     // The texture-relative integer UV coordinates of the top-left corner of this shape's
     // coverage mask bounds.

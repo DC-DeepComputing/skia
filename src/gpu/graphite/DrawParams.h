@@ -148,7 +148,7 @@ public:
                DrawOrder drawOrder,
                const StrokeStyle* stroke,
                BarrierType barrierBeforeDraws)
-            : fTransform(transform)
+            : fTransform(&transform)
             , fGeometry(geometry)
             , fDrawBounds(clip.drawBounds())
             , fTransformedShapeBounds(clip.transformedShapeBounds())
@@ -157,9 +157,20 @@ public:
             , fBarrierBeforeDraws(barrierBeforeDraws)
             , fStroke(stroke ? std::optional<StrokeStyle>(*stroke) : std::nullopt) {}
 
-    const Transform& transform() const { return fTransform; }
+    const Transform& transform() const { return *fTransform; }
     const Geometry&  geometry()  const { return fGeometry;  }
     DrawOrder        order()     const { return fOrder;     }
+
+    void applyAtlasOffset(const Transform& translatedTransform, int ox, int oy) {
+        fTransform = &translatedTransform;
+        skvx::float2 offset((float)ox, (float)oy);
+        fDrawBounds = fDrawBounds.makeOffset(offset);
+        fTransformedShapeBounds = fTransformedShapeBounds.makeOffset(offset);
+        fScissor.offset(ox, oy);
+        if (fGeometry.isCoverageMaskShape()) {
+            fGeometry.coverageMaskShape().offsetMaskToDevice((float)ox, (float)oy);
+        }
+    }
 
     // The subset of a Clip's state that is preserved in a DrawList, whereas the other properties
     // of a clip get consumed into the paint's key and uniform data.
@@ -190,7 +201,7 @@ public:
 private:
     friend class ClipStack; // For updating clip and order components on depth only draws
 
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
+    const Transform* fTransform; // Lifetime of the transform must be held longer than the geometry
     Geometry         fGeometry;
     Rect             fDrawBounds;
     Rect             fTransformedShapeBounds;

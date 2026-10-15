@@ -185,6 +185,9 @@ public:
     const CoverageMaskShape& coverageMaskShape() const {
         SkASSERT(this->isCoverageMaskShape()); return fCoverageMaskShape;
     }
+    CoverageMaskShape& coverageMaskShape() {
+        SkASSERT(this->isCoverageMaskShape()); return fCoverageMaskShape;
+    }
     const AnalyticBlurMask& analyticBlurMask() const {
         SkASSERT(this->isAnalyticBlur()); return fAnalyticBlurMask;
     }

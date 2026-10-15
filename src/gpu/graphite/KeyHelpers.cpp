@@ -41,6 +41,7 @@
 #include "src/gpu/GradientBitmap.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Base_Graphite.h"
 #include "src/gpu/graphite/Image_Graphite.h"
@@ -53,6 +54,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
+#include "src/gpu/graphite/ScratchDeviceAtlas.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
@@ -490,6 +492,10 @@ void LocalMatrixShaderBlock::BeginBlock(const KeyContext& keyContext,
         keyContext.pipelineDataGatherer()->write(SkV4{m.getScaleX(), m.getSkewY(),
                              m.getSkewX(),  m.getScaleY()});
         keyContext.pipelineDataGatherer()->write(SkV2{m.getTranslateX(), m.getTranslateY()});
+        if (auto* gatherer = keyContext.pipelineDataGatherer()) {
+            gatherer->setLastLMTranslateOffset(
+                    SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkV2)));
+        }
     }
 }
 
@@ -502,12 +508,22 @@ void add_image_uniform_data(const KeyContext& keyContext,
     SkASSERT(!imgData.fSampling.useCubic);
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
-                                             1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.first));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.second));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fSampling.filter));
+    auto* gatherer = keyContext.pipelineDataGatherer();
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+                                 1.f/imgData.fImgSize.height()));
+    uint16_t invSizeOffset = SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkSize));
+    gatherer->write(imgData.fSubset);
+    uint16_t subsetOffset = SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkRect));
+    gatherer->write(SkTo<int>(imgData.fTileModes.first));
+    gatherer->write(SkTo<int>(imgData.fTileModes.second));
+    gatherer->write(SkTo<int>(imgData.fSampling.filter));
+    if (imgData.fAtlasPage) {
+        gatherer->addAtlasCoordPatch({imgData.fAtlasPage,
+                                      imgData.fAtlasSlotIndex,
+                                      gatherer->takeLastLMTranslateOffset(),
+                                      invSizeOffset,
+                                      subsetOffset});
+    }
 }
 
 void add_clamp_image_uniform_data(const KeyContext& keyContext,
@@ -515,8 +531,10 @@ void add_clamp_image_uniform_data(const KeyContext& keyContext,
     SkASSERT(!imgData.fSampling.useCubic);
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kImageShaderClamp)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
-                                                          1.f/imgData.fImgSize.height()));
+    auto* gatherer = keyContext.pipelineDataGatherer();
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+                                 1.f/imgData.fImgSize.height()));
+    uint16_t invSizeOffset = SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkSize));
 
     // Matches GrTextureEffect::kLinearInset, to make sure we don't touch an outer row or column
     // with a weight of 0 when linear filtering.
@@ -529,7 +547,15 @@ void add_clamp_image_uniform_data(const KeyContext& keyContext,
         subsetInsetClamp.roundOut(&subsetInsetClamp);
     }
     subsetInsetClamp.inset(kLinearInset, kLinearInset);
-    keyContext.pipelineDataGatherer()->write(subsetInsetClamp);
+    gatherer->write(subsetInsetClamp);
+    uint16_t subsetOffset = SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkRect));
+    if (imgData.fAtlasPage) {
+        gatherer->addAtlasCoordPatch({imgData.fAtlasPage,
+                                      imgData.fAtlasSlotIndex,
+                                      gatherer->takeLastLMTranslateOffset(),
+                                      invSizeOffset,
+                                      subsetOffset});
+    }
 }
 
 void add_cubic_image_uniform_data(const KeyContext& keyContext,
@@ -537,14 +563,24 @@ void add_cubic_image_uniform_data(const KeyContext& keyContext,
     SkASSERT(imgData.fSampling.useCubic);
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kCubicImageShader)
 
-    keyContext.pipelineDataGatherer()->write(SkSize::Make(1.f/imgData.fImgSize.width(),
-                                                          1.f/imgData.fImgSize.height()));
-    keyContext.pipelineDataGatherer()->write(imgData.fSubset);
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.first));
-    keyContext.pipelineDataGatherer()->write(SkTo<int>(imgData.fTileModes.second));
+    auto* gatherer = keyContext.pipelineDataGatherer();
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(),
+                                 1.f/imgData.fImgSize.height()));
+    uint16_t invSizeOffset = SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkSize));
+    gatherer->write(imgData.fSubset);
+    uint16_t subsetOffset = SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkRect));
+    gatherer->write(SkTo<int>(imgData.fTileModes.first));
+    gatherer->write(SkTo<int>(imgData.fTileModes.second));
     const SkCubicResampler& cubic = imgData.fSampling.cubic;
-    keyContext.pipelineDataGatherer()->writeHalf(
+    gatherer->writeHalf(
             SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
+    if (imgData.fAtlasPage) {
+        gatherer->addAtlasCoordPatch({imgData.fAtlasPage,
+                                      imgData.fAtlasSlotIndex,
+                                      gatherer->takeLastLMTranslateOffset(),
+                                      invSizeOffset,
+                                      subsetOffset});
+    }
 }
 
 // If clampToBorderSupport is unavailable, kDecal will be substituted to clamp in most cases.
@@ -591,7 +627,9 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext, const ImageData& i
     }
 
     const Caps* caps = keyContext.caps();
-    const bool doTilingInHw = !imgData.fSampling.useCubic && can_do_tiling_in_hw(imgData, caps);
+    const bool doTilingInHw = !imgData.fAtlasPage &&
+                              !imgData.fSampling.useCubic &&
+                              can_do_tiling_in_hw(imgData, caps);
 
     if (doTilingInHw) {
         CoordNormalizeShaderBlock::CoordNormalizeData data(SkSize::Make(imgData.fImgSize));
@@ -1364,6 +1402,11 @@ void add_analytic_clip_data(const KeyContext& keyContext,
                             const NonMSAAClipBlock::NonMSAAClipData& data) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticClip)
     keyContext.pipelineDataGatherer()->write(data.fRect);
+    if (auto* gatherer = keyContext.pipelineDataGatherer();
+        gatherer && data.fRadiusPlusHalf.x() >= 0.f) {
+        gatherer->setProducerClipRectOffset(
+                SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkRect)));
+    }
     keyContext.pipelineDataGatherer()->write(data.fRadiusPlusHalf);
     keyContext.pipelineDataGatherer()->writeHalf(data.fEdgeSelect);
 }
@@ -1372,6 +1415,11 @@ void add_analytic_and_atlas_clip_data(const KeyContext& keyContext,
                                       const NonMSAAClipBlock::NonMSAAClipData& data) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kAnalyticAndAtlasClip)
     keyContext.pipelineDataGatherer()->write(data.fRect);
+    if (auto* gatherer = keyContext.pipelineDataGatherer();
+        gatherer && data.fRadiusPlusHalf.x() >= 0.f) {
+        gatherer->setProducerClipRectOffset(
+                SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkRect)));
+    }
     keyContext.pipelineDataGatherer()->write(data.fRadiusPlusHalf);
     keyContext.pipelineDataGatherer()->writeHalf(data.fEdgeSelect);
     keyContext.pipelineDataGatherer()->write(data.fTexCoordOffset);
@@ -1414,6 +1462,11 @@ namespace {
 void add_analytic_clip_data(const KeyContext& keyContext, const AnalyticClip& clip) {
     keyContext.pipelineDataGatherer()->write(clip.fXform);
     keyContext.pipelineDataGatherer()->write(clip.fBounds);
+    if (auto* gatherer = keyContext.pipelineDataGatherer();
+        gatherer && !clip.isEmpty()) {
+        gatherer->setProducerClipRectOffset(
+                SkTo<uint16_t>(gatherer->currentUniformOffset() - sizeof(SkRect)));
+    }
 
     SkV4 radiiWithInverse= clip.fRadii + SkV4{1.0f, 1.0f, 1.0f, 1.0f};
 
@@ -2252,6 +2305,14 @@ static void add_image_to_key(const KeyContext& keyContext,
                                         subset);
 
     imgData.fTextureProxy = view.refProxy();
+    if (Device* atlasedDev =
+                static_cast<const Image_Base*>(imageToDraw.get())->linkedAtlasedDevice()) {
+        imgData.fAtlasPage = atlasedDev->refAtlasPage();
+        imgData.fAtlasSlotIndex = atlasedDev->atlasSlotIndex();
+        if (!imgData.fSubset.intersect(SkRect::Make(atlasedDev->size()))) {
+            imgData.fSubset = SkRect::Make(atlasedDev->size());
+        }
+    }
     skgpu::Swizzle readSwizzle = view.swizzle();
     ColorSpaceTransformBlock::ColorSpaceTransformData colorXformData(readSwizzle);
     colorXformData.fIsAlphaOnly = imageToDraw->isAlphaOnly();
@@ -2298,8 +2359,27 @@ static void add_image_to_key(const KeyContext& keyContext,
             });
 }
 
+static SkMatrix get_image_origin_matrix(const SkImage* image);
+
 static void add_to_key(const KeyContext& keyContext, const SkImageShader* shader) {
     SkASSERT(shader);
+    if (shader->image() && as_IB(shader->image())->isGraphiteBacked() &&
+        static_cast<const Image_Base*>(shader->image().get())->linkedAtlasedDevice()) {
+        add_local_matrix_to_key(
+                keyContext,
+                SkMatrix::I(),
+                /*postInverseMatrix=*/get_image_origin_matrix(shader->image().get()),
+                [&](const KeyContext& childCtx) {
+                    add_image_to_key(childCtx,
+                                     shader->image().get(),
+                                     shader->subset(),
+                                     shader->sampling(),
+                                     shader->tileModeX(),
+                                     shader->tileModeY(),
+                                     shader->isRaw());
+                });
+        return;
+    }
     add_image_to_key(keyContext, shader->image().get(), shader->subset(), shader->sampling(),
                      shader->tileModeX(), shader->tileModeY(), shader->isRaw());
 }
@@ -2367,7 +2447,19 @@ static void add_to_key(const KeyContext& keyContext, const SkLocalMatrixShader* 
                             shader->localMatrix(),
                             /*postInverseMatrix=*/xtraMatrix,
                             [&](const KeyContext& childCtx) {
+                                if (wrappedShaderBase->type() == SkShaderBase::ShaderType::kImage) {
+                                    auto imgShader =
+                                            static_cast<const SkImageShader*>(wrappedShaderBase);
+                                    add_image_to_key(childCtx,
+                                                     imgShader->image().get(),
+                                                     imgShader->subset(),
+                                                     imgShader->sampling(),
+                                                     imgShader->tileModeX(),
+                                                     imgShader->tileModeY(),
+                                                     imgShader->isRaw());
+                                } else {
                                     AddToKey(childCtx, wrappedShaderBase);
+                                }
                             });
 }
 
