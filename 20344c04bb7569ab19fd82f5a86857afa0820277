@@ -22,6 +22,30 @@
       },
       "revId": "20344c04bb7569ab19fd82f5a86857afa0820277",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0461371_643a06af",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-10-15T20:31:10Z",
+      "side": 1,
+      "message": "Yes! moved all fields to the base class keeping standard layout and also the static extent storage optimization. Thanks!",
+      "parentUuid": "0e53c8f0_e8ca0df9",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 2
+      },
+      "revId": "20344c04bb7569ab19fd82f5a86857afa0820277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
