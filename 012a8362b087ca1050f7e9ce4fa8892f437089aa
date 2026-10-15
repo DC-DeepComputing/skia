@@ -16,6 +16,57 @@
       "message": "PTAL",
       "revId": "012a8362b087ca1050f7e9ce4fa8892f437089aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15ab05da_a7cc097f",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-15T12:12:56Z",
+      "side": 1,
+      "message": "Let\u0027s split this into:\n   a CL that adds the callback\n   a CL that mucks w/ Viewer\u0027s event processing\n   and then the new slide",
+      "revId": "012a8362b087ca1050f7e9ce4fa8892f437089aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43b8bde7_db99cc4b",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-15T12:12:56Z",
+      "side": 1,
+      "message": "I think we should just have a matching GetDebugCaptureCallback() call",
+      "revId": "012a8362b087ca1050f7e9ce4fa8892f437089aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "777d9c32_479280f3",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-15T12:12:56Z",
+      "side": 1,
+      "message": "Why the extra level of indirection here ?",
+      "revId": "012a8362b087ca1050f7e9ce4fa8892f437089aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
