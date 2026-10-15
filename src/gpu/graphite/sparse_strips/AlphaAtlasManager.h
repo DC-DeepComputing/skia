@@ -8,9 +8,11 @@
 #define skgpu_graphite_AlphaAtlasManager_DEFINED
 
 #include "include/core/SkColorType.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/geom/EndCaps.h"
+#include "src/gpu/graphite/sparse_strips/PodArray.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 
 #include <cstdint>
@@ -36,7 +38,20 @@ public:
     // TODO(thomsmit): bitpack the texture page into the alpha index?
     // Returns a pointer to memory on the active texture page for writing `numBytes` alphas.
     // Overallocates the active page's buffer if the write exceeds fCapacityBytes.
-    uint8_t* requestAlphaSpace(int32_t numBytes);
+    uint8_t* requestAlphaSpace(int32_t numBytes) {
+        // Inline fast path: the active page exists and isn't full yet. Creating or flipping pages,
+        // and the null buffer, are handled out of line.
+        if (numBytes > 0 && numBytes <= SparseStripConfig::kMaxAtlasBytes &&
+            fActiveSlot != kNullSlot) {
+            SkASSERT(fActiveSlot >= 0 && fActiveSlot < SparseStripConfig::kMaxTexturePages);
+            TexturePage& activePage = fPages[fActiveSlot];
+            if (activePage.isValid() && activePage.fUsedBytes < activePage.fCapacityBytes) {
+                fLastGpuSlot = fActiveSlot;
+                return activePage.fAlphaBuffer.append(numBytes);
+            }
+        }
+        return this->requestAlphaSpaceSlow(numBytes);
+    }
 
     // Finalizes the current boundary run.
     // If the run straddled pages, allocates the next page and copies the overrun data. Returns a
@@ -90,7 +105,7 @@ private:
         int32_t fCapacityBytes = 0;
         int32_t fUsedBytes = 0;
         int32_t fUploadedRows = 0;
-        SkTDArray<uint8_t> fAlphaBuffer;
+        PodArray<uint8_t> fAlphaBuffer;
 
         bool isValid() const { return fTexture != nullptr; }
         void reset() {
@@ -104,6 +119,8 @@ private:
     };
 
     bool createPageInSlot(int slot, int32_t minRequiredBytes = 0);
+    // The complete requestAlphaSpace(), for when its fast path doesn't apply.
+    uint8_t* requestAlphaSpaceSlow(int32_t numBytes);
 
     Recorder* fRecorder;
     TexturePage fPages[SparseStripConfig::kMaxTexturePages];

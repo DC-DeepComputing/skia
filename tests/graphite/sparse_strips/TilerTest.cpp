@@ -62,7 +62,7 @@ void check_tiles_match(skiatest::Reporter* reporter,
 
     Tiles<kTileWidth, kTileHeight> tiles;
     tiles.makeTilesMSAA(polyline, clip, &culled);
-    const SkTDArray<Tile>& actual = tiles.getTiles();
+    const auto& actual = tiles.getTiles();
 
     bool hasFailure = (actual.size() != expected.size());
     int32_t limit = std::min(actual.size(), expected.size());
@@ -97,7 +97,7 @@ void check_tiles_match(skiatest::Reporter* reporter,
         }
         dump.append("}\n\n");
 
-        auto dumpTiles = [&](const SkTDArray<Tile>& tileArray, const char* label, bool isActual) {
+        auto dumpTiles = [&](const auto& tileArray, const char* label, bool isActual) {
             dump.appendf("%s:\n", label);
             for (int32_t i = 0; i < tileArray.size(); ++i) {
                 const auto& tile = tileArray[i];
@@ -175,7 +175,7 @@ void check_tiles_match(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, !hasFailure, "%s", testName);
 }
 
-void check_sorted(skiatest::Reporter* reporter, const SkTDArray<Tile>& buf) {
+void check_sorted(skiatest::Reporter* reporter, const PodArray<Tile>& buf) {
     if (buf.empty()) {
         return;
     }

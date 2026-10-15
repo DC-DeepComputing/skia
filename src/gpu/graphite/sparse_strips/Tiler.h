@@ -10,7 +10,7 @@
 
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkTDArray.h"
+#include "src/gpu/graphite/sparse_strips/PodArray.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
@@ -237,7 +237,7 @@ public:
         sortTiles(0);
     }
 
-    const SkTDArray<Tile>& getTiles() const { return fTileBuf; }
+    const PodArray<Tile>& getTiles() const { return fTileBuf; }
 
     // This function has two purposes:
     //     1) The viewport is divided into tiles, whose dimensions are given by the template
@@ -513,7 +513,7 @@ private:
         uint16_t minTileX;
     };
 
-    SkTDArray<Tile> fTileBuf;
+    PodArray<Tile> fTileBuf;
 
     static SK_ALWAYS_INLINE uint16_t DivCeil(uint16_t a, uint16_t b) {
         return (a + b - 1) / b;

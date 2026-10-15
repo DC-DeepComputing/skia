@@ -1761,16 +1761,51 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (renderer && renderer->step(0).renderStepID() == RenderStep::RenderStepID::kEndCap) {
         SkASSERT(localToDevice.valid());
         SkASSERT(fStripGenerator);
-        SkASSERT(style.isFillStyle());
+        SkASSERT(style.isFillStyle() || styleType == SkStrokeRec::kStroke_Style);
 
-        const SkPath& finalPath = geometry.shape().asPath();
         SkMatrix ctm = localToDevice.matrix().asM33();
-
         SkIRect clipBounds = clip.drawBounds().makeRoundOut().asSkIRect();
+
+// TEMP(thomsmit): 1 = StrokeFlatten (single pass), 0 = old SkStroke + Flatten.
+#if 1
+        const SkPath& finalPath = geometry.shape().asPath();
+        // Strokes are stroked and flattened in a single pass by StrokeFlatten.
+        const SkStrokeRec* stroke = style.isFillStyle() ? nullptr : &style;
+        if (!fStripGenerator->processGeometry(finalPath, ctm, clipBounds, stroke)) {
+            SKIA_LOG_E("Failed to process geometry for sparse strips!");
+            return;
+        }
+#else
+        SkPath finalPath;
+        if (style.getStyle() == SkStrokeRec::kHairline_Style) {
+            // Hairlines are defined to always be 1px wide in device space regardless of transform.
+            // Under anisotropic scaling (non-uniform scale) or shear, stroking in local space with
+            // an inverse scale (e.g. 1.0f / maxScale) causes the stroke width to distort
+            // anisotropically when transformed by CTM (sub-pixel widths along one axis, and
+            // stretched elliptical caps/joins). Transforming the path to device space first
+            // guarantees the stroke is isotropic with uniform 1px width, at the expense of
+            // pre-transforming the path rather than fusing the transform into
+            // Flatten::processPaths.
+            SkPath devPath = geometry.shape().asPath().makeTransform(ctm);
+            SkStrokeRec hairlineRec(style);
+            hairlineRec.setStrokeStyle(1.0f, /*strokeAndFill=*/false);
+
+            SkPathBuilder strokePath;
+            hairlineRec.applyToPath(&strokePath, devPath);
+            finalPath = strokePath.detach();
+            ctm = SkMatrix::I();
+        } else if (style.needToApply()) {
+            SkPathBuilder strokePath;
+            style.applyToPath(&strokePath, geometry.shape().asPath());
+            finalPath = strokePath.detach();
+        } else {
+            finalPath = geometry.shape().asPath();
+        }
         if (!fStripGenerator->processGeometry(finalPath, ctm, clipBounds)) {
             SKIA_LOG_E("Failed to process geometry for sparse strips!");
             return;
         }
+#endif
         if (fStripGenerator->ends().empty() && fStripGenerator->wides().empty()) {
             SKIA_LOG_W("Skipping draw with empty sparse strips geometry.");
             return;
@@ -2273,7 +2308,11 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
 
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
 #if defined(SK_ENABLE_SPARSE_STRIPS)
-            if (style.isFillStyle()) {
+            // Fills are flattened by Flatten, and strokes are stroked and flattened in a single
+            // pass by StrokeFlatten. Hairlines and stroke-and-fill fall back to tessellation.
+            if (style.isFillStyle() ||
+                (type == SkStrokeRec::kStroke_Style &&
+                 localToDevice.type() != Transform::Type::kPerspective)) {
                 return {renderers->sparseStripsEndCap(), nullptr};
             }
             break;

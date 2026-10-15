@@ -11,8 +11,8 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSpan.h"
-#include "include/private/SkTDArray.h"
 #include "src/core/SkGeometry.h"
+#include "src/gpu/graphite/sparse_strips/PodArray.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 
 #include <algorithm>
@@ -65,7 +65,9 @@ class Polyline;
  * 4. Lowering Conics:
  *    Conics (rational quadratics) are degree-reduced to standard quadratics using
  *    SkAutoConicToQuads. The curve is recursively chopped in half until the error between the
- *    weighted conic segment and a standard quadratic falls below the tolerance.
+ *    weighted conic segment and a standard quadratic falls below the tolerance. Conics that are
+ *    circular arcs (circles, round rects, arcTo) are flattened exactly instead, at uniform angles
+ *    (see CircularArc.h).
  *
  * 5. Lowering Cubics:
  *    Cubics are approximated by a series of quadratics. We estimate the required number of segments
@@ -180,7 +182,7 @@ private:
 
         // The final dynamic array where the flattened points of the cubic are gathered before being
         // appended to the main polyline.
-        SkTDArray<SkPoint> fFlattenedCubics;
+        PodArray<SkPoint> fFlattenedCubics;
     };
 
     void processPathsSimd(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip,

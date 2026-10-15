@@ -11,12 +11,15 @@
 #include "src/gpu/graphite/geom/EndCaps.h"
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
+#include "src/gpu/graphite/sparse_strips/StrokeFlatten.h"
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <cstdint>
+#include <memory>
 
 class SkMatrix;
 class SkPath;
+class SkStrokeRec;
 
 namespace skgpu::graphite {
 
@@ -32,6 +35,12 @@ public:
 
     bool processGeometry(const SkPath& path, const SkMatrix& ctm);
     bool processGeometry(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip);
+    // If 'stroke' is not null, 'path' is stroked with it by StrokeFlatten (non-hairline strokes
+    // without fill, and no perspective), otherwise it is filled.
+    bool processGeometry(const SkPath& path,
+                         const SkMatrix& ctm,
+                         const SkIRect& clip,
+                         const SkStrokeRec* stroke);
 
     const EndCaps& ends() const { return fEnds; }
     const WideTiles& wides() const { return fWides; }
@@ -40,6 +49,14 @@ public:
     bool cleanupNullCaps();
 
 private:
+    // The Polyline, Flatten and Tiles used by processGeometry().
+    struct Scratch;
+
+    bool processGeometryImpl(const SkPath& path,
+                             const SkMatrix& ctm,
+                             const SkIRect& clip,
+                             const SkStrokeRec* stroke);
+
     int fWidth;
     int fHeight;
     const SparseStripConfig::LUTArray& fMaskLUT;
@@ -47,6 +64,9 @@ private:
     EndCaps fEnds;
     WideTiles fWides;
     WindingHistogram fWindingHistogram;
+    StrokeFlatten fStrokeFlatten;  // retains its scratch buffers across draws
+    // Retained across draws, so that steady state draws don't allocate.
+    std::unique_ptr<Scratch> fScratch;
     bool fCulled;
 };
 

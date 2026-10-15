@@ -65,14 +65,16 @@ bool AlphaAtlasManager::createPageInSlot(int32_t slot, int32_t minRequiredBytes)
     page.fUsedBytes = 0;
     page.fUploadedRows = 0;
     page.fAlphaBuffer.clear();
-    page.fAlphaBuffer.reserve(page.fCapacityBytes);
+    // Leave headroom for a run that straddles the end of the page (moved to the next page by
+    // finalizeRun()), so that the buffer rarely needs to grow.
+    page.fAlphaBuffer.reserveExact(page.fCapacityBytes + page.fCapacityBytes / 4);
 
     // Double row count for the next created page, clamped to max atlas rows
     fNextPageRowCount = std::min(SparseStripConfig::kMaxAtlasRows, rows * 2);
     return true;
 }
 
-uint8_t* AlphaAtlasManager::requestAlphaSpace(int32_t numBytes) {
+uint8_t* AlphaAtlasManager::requestAlphaSpaceSlow(int32_t numBytes) {
     if (numBytes <= 0 || numBytes > SparseStripConfig::kMaxAtlasBytes) {
         return nullptr;
     }

@@ -9,10 +9,13 @@
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
-#include "include/private/SkTDArray.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
+#include "src/gpu/graphite/sparse_strips/PodArray.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 
 #include <cmath>
+#include <limits>
 #include <utility>
 
 namespace skgpu::graphite {
@@ -46,21 +49,66 @@ public:
         if (pts.empty()) {
             return;
         }
-
-        fPoints.reserve(fPoints.size() + pts.size());
-
-        // Cache the last point in a local register.
-        // Note: If fPoints.back() is a NaN sentinel, pt != lastPt correctly evaluates to true.
-        SkPoint lastPt = fPoints.empty() ? SkPoint{SK_ScalarNaN, SK_ScalarNaN} : fPoints.back();
-
+        BulkWriter writer(this, static_cast<int>(pts.size()));
         for (SkPoint pt : pts) {
+            writer.append(pt);
+        }
+        writer.commit();
+    }
+
+    // Bulk writing for producers of many points: beginBulk() returns room for up to 'maxCount'
+    // points past the end, and endBulk() commits the first 'count' of them. Unlike appendPoint(),
+    // nothing is de-duplicated; the producer is responsible for that, and for sentinels.
+    SkPoint* beginBulk(int maxCount) {
+        // Checked in release builds too: a negative or overflowing count would under-reserve.
+        SkASSERT_RELEASE(maxCount >= 0 &&
+                         maxCount <= std::numeric_limits<int>::max() - fPoints.size());
+        fPoints.reserve(fPoints.size() + maxCount);
+        return fPoints.end();
+    }
+
+    void endBulk(int count) {
+        SkASSERT(count >= 0 && count <= fPoints.capacity() - fPoints.size());
+        fPoints.resize(fPoints.size() + count);
+    }
+
+    // Bulk writes (see beginBulk()) up to 'maxCount' points through a cursor held in registers
+    // and, like appendPoint(), skips consecutive duplicates. Call commit() after the last append().
+    class BulkWriter {
+    public:
+        BulkWriter(Polyline* polyline, int maxCount)
+                : fPolyline(polyline)
+                , fLast(polyline->lastPoint())
+                , fStart(polyline->beginBulk(maxCount))
+                , fDst(fStart) {
+#if defined(SK_DEBUG)
+            fEnd = fStart + maxCount;
+#endif
+        }
+
+        SK_ALWAYS_INLINE void append(SkPoint pt) {
             SkASSERT(!std::isnan(pt.fX) && !std::isnan(pt.fY));
-            if (pt != lastPt) {
-                fPoints.push_back(pt);
-                lastPt = pt;
+#if defined(SK_DEBUG)
+            SkASSERT(fDst < fEnd);
+#endif
+            // A NaN sentinel compares unequal to every point.
+            if (pt != fLast) {
+                *fDst++ = pt;
+                fLast = pt;
             }
         }
-    }
+
+        void commit() { fPolyline->endBulk(static_cast<int>(fDst - fStart)); }
+
+    private:
+        Polyline* fPolyline;
+        SkPoint fLast;
+        SkPoint* fStart;
+        SkPoint* fDst;
+#if defined(SK_DEBUG)
+        SkPoint* fEnd;
+#endif
+    };
 
     void appendSentinel() {
         if (!fPoints.empty() && !std::isnan(fPoints.back().fX)) {
@@ -137,10 +185,15 @@ public:
     bool empty() const { return fPoints.empty(); }
     size_t count() const { return fPoints.size(); }
 
-    const SkTDArray<SkPoint>& points() const { return fPoints; }
+    const PodArray<SkPoint>& points() const { return fPoints; }
 
 private:
-    SkTDArray<SkPoint> fPoints;
+    // The last point, or a NaN sentinel if there are none.
+    SkPoint lastPoint() const {
+        return fPoints.empty() ? SkPoint{SK_ScalarNaN, SK_ScalarNaN} : fPoints.back();
+    }
+
+    PodArray<SkPoint> fPoints;
 };
 
 }  // namespace skgpu::graphite

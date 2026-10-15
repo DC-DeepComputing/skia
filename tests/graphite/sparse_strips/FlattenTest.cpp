@@ -245,7 +245,7 @@ template <FlattenMode kMode> class FlattenTestRunner {
             return;
         }
 
-        const SkTDArray<SkPoint>& rawPts = polyline.points();
+        const auto& rawPts = polyline.points();
 
         // =========================================================================================
         // Watertightness Check
