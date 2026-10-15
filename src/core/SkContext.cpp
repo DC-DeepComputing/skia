@@ -150,4 +150,9 @@ SkContext* GetGlobalSkContext() {
     static SkContext* gSkContext = SkContexts::MakeRaster({}).release();
     return gSkContext;
 }
+
+SkSharedContext* GetGlobalSkSharedContext() {
+    return GetGlobalSkContext()->priv().sharedContext();
+}
+
 }  // namespace SkContexts

@@ -44,11 +44,13 @@ public:
         return prev;
     }
 
-    int setSVGDecoderFactory(OpenTypeSVGDecoderFactory factory) {
-        const int prev = fSVGDecoderFactory != nullptr;
+    OpenTypeSVGDecoderFactory setSVGDecoderFactory(OpenTypeSVGDecoderFactory factory) {
+        const OpenTypeSVGDecoderFactory prev = fSVGDecoderFactory;
         fSVGDecoderFactory = std::move(factory);
         return prev;
     }
+
+    OpenTypeSVGDecoderFactory SVGDecoderFactory() { return fSVGDecoderFactory; }
 
 private:
     int fTypefaceCacheCountLimit = 1024;  // historical default value
