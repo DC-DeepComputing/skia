@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c08632e4_e4461d05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4107972
+      },
+      "writtenOn": "2026-10-15T02:26:11Z",
+      "side": 1,
+      "message": "(new patchset discards Code-Review vote)",
+      "revId": "43ffe3d6658a79a3a5689de2691078244814a1fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
