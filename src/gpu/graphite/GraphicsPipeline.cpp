@@ -25,6 +25,7 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
         : Resource(sharedContext,
                    Ownership::kOwned,
                    /*gpuMemorySize=*/0,
+                   UsageLabelFlag::kNotPredefined,
                    label)
         , fPipelineInfo(pipelineInfo) {}
 
