@@ -1,0 +1,1177 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e634cad_b48f96ff",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Do not use #if/#ifdef before including \"SkTypes.h\" (directly or indirectly).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l34",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ced9e41_ac095f10",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Use full path relative to repository root for includes (e.g. \"include/core/SkPoint.h\").\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l19",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec1b94b3_9450d509",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Includes should be in alphabetical order with Skia headers (\"...\") preceding system/library headers (\u003c...\u003e).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l25",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e353df0c_2bd674ac",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Public headers in include/ should not depend on files in src/ or tools/.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l538",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad9c5401_f36c32f0",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Enum values must be prefixed with \u0027k\u0027. Scoped enums (enum class) should not have suffixes on their enumerators.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l154",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9481f49_c61447d5",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Unscoped enum values should be prefixed with \u0027k\u0027 and suffixed with an underscore and the singular enum name (e.g., kClampX_CubicFlag).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l154",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2bfd2de_294f18c5",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Externally visible Core Skia types must use the \u0027Sk\u0027 prefix (e.g., SkCubicMapEvaluator).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l67",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bed5ae2_b7a857a7",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Mutable parameters should be passed as pointers rather than non-const references.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l489",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8955abd0_9713591f",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Data fields in classes with methods must begin with \u0027f\u0027 and be camel-capped (e.g., fCoeffArray, fType).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l103",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15afc789_9bbec1e5",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Class declarations should be ordered public, protected, private.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l359",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1372c88_65c233b0",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Use 4 spaces for indentation instead of tabs.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l37",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9bfeed8_b6988ed6",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Constructors that take one argument should almost always be marked explicit.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l416",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90d73cca_6de4f141",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Non-static class methods should be camel-capped with no initial capital letter (e.g., computeYFromX).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l223",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c0f3e82_737198ba",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Mutable parameters should be passed as pointers, mandatory const parameters should be passed as const references, and line indentation should be 4 or 8 spaces.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l489",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b431ddb_2c24e23b",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Externed functions should be camel-capped with an initial cap and use the \u0027Sk\u0027 prefix (e.g., SkCubicIsMonotonic).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l217",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6693d40d_4e6a8cae",
+        "filename": "include/core/SkCubicMapPriv.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Headers not meant for public consumption should be placed in src/ or include/private/.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l14",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc2b5b1_ddd7bfab",
+        "filename": "include/core/SkCubicMapPriv.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "We use .cpp and .h as extensions for C++ source and header files, not .hpp.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l12",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a66530_1ebbd051",
+        "filename": "include/core/SkCubicMapPriv.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "No header in include/ should depend on files in other directories such as src/.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l538",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01564a67_db72cff2",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Global variables should be prefixed with \u0027g\u0027 and camel-capped (e.g., gDebugMode).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l126",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0233ad82_e2b53eb7",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "In .cpp files, the corresponding header must come first, followed by Skia headers, then system/standard library headers.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l27",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9588c29_e972c096",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Global variables should be prefixed with \u0027g\u0027 and camel-capped (e.g., gLoggingEnabled, gSolverCallCount).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l126",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d951a355_334286ea",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "File-local helper functions in .cpp files should be lower-case with underscores separating words and declared static or placed in an anonymous namespace. Open braces do not get a newline.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l204",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e61514f8_de2ef431",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "File-local helper functions should be lower-case with underscores (e.g., cubic_solver), and open braces do not get a newline.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l204",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a8c962e_034209fd",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Local variables should be camel-capped with no initial cap (e.g., currentGuess).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l134",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf127598_afb0a017",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Variables declared const whose value is fixed for the duration of the program should be named with a leading \u0027k\u0027 and camel-capped (e.g., kDefaultTolerance).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l144",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddead8b4_fb917bd3",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Add a space between flow control keywords and parentheses, and between parentheses and braces.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l291",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1d1317c_e4d6153f",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Braces are always used with if, else, while, for, and do.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l258",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d0b821_2754f964",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "File-local helper functions must be lower-case with underscores, arguments camel-capped with no initial cap, and indentation must use 4 spaces instead of tabs.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l204",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcc69322_0b4c9f81",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Arguments should be camel-capped with no initial cap (inputX), and open braces should not get a newline.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l134",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29576e55_983c8495",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Prefer multi-line if statements over single-line if statements, and ensure spaces between flow control words and parentheses.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l258",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa9b0074_3c9a8690",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "There should be a space between flow control words and parentheses, and between parentheses and braces.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l291",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75c73ef6_7bd45bdd",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Cases and default in switch statements must be indented from the switch.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l303",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80b6a55f_49ffc7e9",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "When a block is needed to declare variables within a case, place the closing brace and break on the same line: \u0027} break;\u0027.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l344",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9364fab9_b4625401",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Fallthrough from one case to the next must be annotated with [[fallthrough]].\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l320",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a30e1d_8af3cbc9",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "File-local helper functions should be lower-case with underscores (e.g., coeff_nearly_zero).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l204",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3845ce6_f300145b",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Lines should be wrapped at 100 columns.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l43",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a43b0f3_e0b1c93f",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Open braces don\u0027t get a newline, \u0027else\u0027 and \u0027else if\u0027 must appear on the same line as closing and opening braces, and braces must always be used with else.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l256",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db66f6ae_42363933",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Method calls within method calls on the current object should be prefixed with \u0027this-\u003e\u0027.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l426",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8136bd94_7ea3c073",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Constructor initializers should be placed on the same line as the constructor if they fit, and open braces do not get a newline.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l402",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f2856d_d6f3c71f",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Ganesh prefers that macros are always defined and the use of \u0027#if MACRO\u0027 rather than \u0027#ifdef MACRO\u0027.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l239",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc2f4ab4_f4030598",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Ganesh macros that are GL-specific should be prefixed with GR_GL_.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l233",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1580dde_23fe5cce",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Ganesh types should use the \u0027Gr\u0027- prefix, and data fields in classes with methods must start with lower-case \u0027f\u0027 and be camel-capped (fCount).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l69",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2560e2ee_0cad78c0",
+        "filename": "src/gpu/graphite/Buffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "When checking whether a macro is defined, prefer \u0027#if defined(SK_MACRO)\u0027 over \u0027#ifdef SK_MACRO\u0027.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l250",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74279a30_a66e58f7",
+        "filename": "src/gpu/graphite/Buffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Method calls within method calls should be prefixed with dereference of the \u0027this-\u003e\u0027 pointer.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l426",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00c09185_ceae918d",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Header guards in namespaced directories such as Graphite should include the namespace prefix (e.g. skgpu_graphite_Buffer_DEFINED).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l200",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1df2c80e_461605bb",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Graphite and shared GPU macros should use the SKGPU_ prefix.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l249",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03bcd0ee_06b96afc",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Types inside namespaced subsystems omit \u0027Sk\u0027/\u0027Gr\u0027 prefixes, and data fields in classes with methods must start with \u0027f\u0027 (fBufferPtr).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l70",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "638f702c_0e4bec2b",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Prefer a public non-virtual method paired with a private virtual method named \u0027onMethodName\u0027 rather than public virtual methods.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l435",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9d3d762_070e7177",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Virtual functions that are overridden in derived classes should use override, and the virtual keyword should be omitted.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l375",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39fd61bf_4312e74c",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Each constructor initializer should be on its own line, indented, with punctuation placed before the initializer.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l403",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29587b25_d71c9f78",
+        "filename": "tools/milestone.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T15:29:10Z",
+      "side": 1,
+      "message": "Python code must follow the Google Python Style Guide (e.g. 4-space indentation, no tabs, no semicolons, no bare except, proper class and variable naming).\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l527",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
