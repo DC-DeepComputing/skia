@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b57c8386_94884d03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "Use the imperative mood in the subject line (\"If applied, this commit will...\")\n\nSo \"Adding\" -\u003e \"Add\"",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55bbd85d_190518d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "List what platforms you\u0027ve tested this on. Ideally, Mac and Linux are covered. Windows is the second priority. ios, and Android will eventually be required, but are def okay to not be covered yet.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c88ff85f_d7a4ee53",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "Some of these `bench_sources` should maybe be moved to the actual `nanobench` binary, with bench_sources just being the actual benches (things with Bench in the name/things that extend `Benchmark`).\n\nThings like BenchLogger, Benchmark.cpp and .h and things that facilitate nanobench should be moved to the binary.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3cc2042_015f3871",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "I don\u0027t think we need skottie_utils. Delete this if we can.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a3738b2_7bb20ee8",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "I don\u0027t think you need fontmgr_empty_fontations if we pull in coretext. See if we can delete this.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2b018aa_a69999c2",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "This probably doesn\u0027t work on Windows, we should add a select for @platforms//os:sindows and add \"//:fontmgr_win_dw\".\n\nBut tbh I haven\u0027t tested it, this is just looking at our existing GN build for DM and Viewer. If you want to save this for a separate CL \"Add bazel support for nanobench for Windows\" that\u0027s fine (but clarify in commit msg).",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98fe7abb_9d4dafe0",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "Does this need to be included in this CL? If not, get rid of it so the commit history is clean.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "012f1f85_eb601d1e",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "Driveby: Because we don\u0027t currently support tooling for ios, we should guard this with `#if defined(SK_BUILD_FOR_IOS)`. See DM.cpp for reference.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0784359f_197374ff",
+        "filename": "modules/skottie/utils/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "See other Skottie utils related comment, and if we can safely delete this and still bench everything, delete it.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc1d6bb_ccce858b",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-15T18:24:10Z",
+      "side": 1,
+      "message": "We don\u0027t want to add files to this, I believe this is legacy stuff from when we were moving off of `:legacy_tool_utils`.\n\nSee other inclusion of ToolUtils.h and Registry.h below for how we want to get those headers, the skia_cc_library approach is preferred if possible. So make a skia_cc_library for the crash handler files. As for ios_utils, I don\u0027t think Bazel supports ios tooling *yet*, so lets ignore it for now (see the other ios_utils comment)\n\nBonus points if we can delete exports_files safely in a separate CL.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
