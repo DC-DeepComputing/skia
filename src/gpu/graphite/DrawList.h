@@ -97,21 +97,50 @@ public:
     // color).
     void reset(LoadOp op, SkColor4f clearColor = {0.f, 0.f, 0.f, 0.f}) override;
 
+    void setCurrentAtlasSlot(sk_sp<class AtlasPage> page, int slotIndex) override {
+        fCurrentAtlasPage = std::move(page);
+        fCurrentAtlasSlot = slotIndex;
+    }
+
 private:
     struct Draw {
     public:
         Draw(const Renderer* renderer, const Transform& transform, const Geometry& geometry,
              const Clip& clip, DrawOrder order, BarrierType barrierBeforeDraws,
-             const StrokeStyle* stroke)
+             const StrokeStyle* stroke,
+             sk_sp<class AtlasPage> atlasPage,
+             int atlasSlotIndex,
+             uint16_t paintUniformSize,
+             uint16_t paintReqAlignment,
+             uint16_t producerClipRectOffset,
+             const skia_private::TArray<AtlasCoordPatch>& coordPatches)
                 : fRenderer(renderer)
-                , fDrawParams(transform, geometry, clip, order, stroke, barrierBeforeDraws) {}
+                , fDrawParams(transform, geometry, clip, order, stroke, barrierBeforeDraws)
+                , fAtlasPage(std::move(atlasPage))
+                , fAtlasSlotIndex(atlasSlotIndex)
+                , fPaintUniformSize(paintUniformSize)
+                , fPaintReqAlignment(paintReqAlignment)
+                , fProducerClipRectOffset(producerClipRectOffset) {
+            for (const auto& p : coordPatches) {
+                fAtlasCoordPatches.push_back(p);
+            }
+        }
 
         const Renderer* renderer()              const { return fRenderer;   }
         const DrawParams& drawParams()          const { return fDrawParams; }
+        DrawParams& writableDrawParams()              { return fDrawParams; }
 
     private:
         const Renderer* fRenderer;
         DrawParams fDrawParams;
+
+    public:
+        sk_sp<class AtlasPage> fAtlasPage;
+        int fAtlasSlotIndex = -1;
+        uint16_t fPaintUniformSize = 0;
+        uint16_t fPaintReqAlignment = 1;
+        uint16_t fProducerClipRectOffset = AtlasCoordPatch::kInvalidOffset;
+        skia_private::STArray<1, AtlasCoordPatch> fAtlasCoordPatches;
     };
 
     template <uint64_t Bits, uint64_t Offset>
@@ -184,6 +213,10 @@ private:
         UniformDataCache::Index uniformIndex() const {
             return UniformField::get(fUniformKey);
         }
+        void setUniformIndex(UniformDataCache::Index uniformIndex) {
+            fUniformKey = UniformField::set(uniformIndex) |
+                          TextureBindingsField::set(this->textureBindingIndex());
+        }
         TextureDataCache::Index textureBindingIndex() const {
             return TextureBindingsField::get(fUniformKey);
         }
@@ -227,6 +260,8 @@ private:
     SkTBlockList<Draw, 4> fDraws{SkBlockAllocator::GrowthPolicy::kFibonacci};
 
     std::vector<SortKey> fSortKeys;
+    sk_sp<class AtlasPage> fCurrentAtlasPage;
+    int fCurrentAtlasSlot = -1;
 };
 
 } // namespace skgpu::graphite

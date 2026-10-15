@@ -9,23 +9,78 @@
 #define skgpu_graphite_ScratchDeviceAtlas_DEFINED
 
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurfaceProps.h"
 #include "src/gpu/RectanizerSkyline.h"
-#include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawOrder.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
 #include <memory>
+#include <vector>
 
 struct SkImageInfo;
 
 namespace skgpu::graphite {
 
 class BoundsManager;
+class Device;
 class DrawContext;
 class Recorder;
 class TextureProxy;
+
+/**
+ * AtlasPage represents a single backing texture page of a ScratchDeviceAtlas.
+ * During recording, slots are registered with their dimensions while their coordinates remain
+ * local [0, 0, w, h]. When the page is flushed or sampled (ensurePlotted()), all slots on the
+ * page are sorted by decreasing height and packed into a tightly sized approx-fit texture.
+ */
+class AtlasPage : public SkRefCnt {
+public:
+    AtlasPage(sk_sp<TextureProxy> proxy,
+              sk_sp<DrawContext> dc,
+              SkISize maxDimensions);
+    ~AtlasPage() override;
+
+    bool canFit(SkISize slotSize, int padding) const;
+    int addSlot(SkISize slotSize, int padding);
+
+    void ensurePlotted();
+
+    SkIPoint getSlotOffset(int slotIndex) {
+        this->ensurePlotted();
+        SkASSERT(slotIndex >= 0 && slotIndex < static_cast<int>(fSlots.size()));
+        return fSlots[slotIndex].fOffset;
+    }
+
+    SkISize plottedDimensions() {
+        this->ensurePlotted();
+        return fPlottedDimensions;
+    }
+
+    bool isPlotted() const { return fIsPlotted; }
+    int numSlots() const { return static_cast<int>(fSlots.size()); }
+
+    TextureProxy* target() const { return fAtlasProxy.get(); }
+    DrawContext* drawContext() const { return fAtlasDC.get(); }
+    sk_sp<DrawContext> refDrawContext() const;
+
+private:
+    struct Slot {
+        SkISize fSize;
+        SkIPoint fOffset = {0, 0};
+    };
+
+    sk_sp<TextureProxy> fAtlasProxy;
+    sk_sp<DrawContext> fAtlasDC;
+    SkISize fMaxDimensions;
+    SkISize fPlottedDimensions;
+    std::vector<Slot> fSlots;
+    int64_t fTotalPaddedArea = 0;
+    int fPadding = 2;
+    bool fIsPlotted = false;
+};
 
 /**
  * ScratchDeviceAtlas manages plotting small scratch devices into a shared texture atlas.
@@ -62,11 +117,10 @@ public:
     void reset();
 
     TextureProxy* target() const;
-    DrawContext* drawContext() const { return fAtlasDC.get(); }
+    DrawContext* drawContext() const;
+    AtlasPage* currentPage() const { return fCurrentPage.get(); }
     bool hasPendingWork() const;
 
-    BoundsManager* boundsManager() const { return fColorDepthBoundsManager.get(); }
-    Device::IntersectionTreeSet* disjointStencilSet() const { return fDisjointStencilSet.get(); }
     PaintersDepth& currentDepth() { return fCurrentDepth; }
 
     static constexpr int kMaxSlotDim = 512;
@@ -79,14 +133,8 @@ private:
     const SkColorInfo fColorInfo;
     const SkSurfaceProps fSurfaceProps;
     Device* fParentDevice;
-    SkISize fDimensions;
 
-    sk_sp<TextureProxy> fAtlasProxy;
-    sk_sp<DrawContext> fAtlasDC;
-    std::unique_ptr<skgpu::RectanizerSkyline> fRectanizer;
-
-    std::unique_ptr<BoundsManager> fColorDepthBoundsManager;
-    std::unique_ptr<Device::IntersectionTreeSet> fDisjointStencilSet;
+    sk_sp<AtlasPage> fCurrentPage;
     PaintersDepth fCurrentDepth;
 };
 

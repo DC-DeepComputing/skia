@@ -42,6 +42,11 @@ public:
 
     const char* label() const { return fLabel.c_str(); }
 
+    void setDimensions(SkISize dimensions) {
+        SkASSERT(!this->isInstantiated());
+        fDimensions = dimensions;
+    }
+
     bool isLazy() const;
     bool isFullyLazy() const;
     bool isVolatile() const;

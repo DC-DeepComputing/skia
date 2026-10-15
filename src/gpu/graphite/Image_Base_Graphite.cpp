@@ -99,6 +99,16 @@ bool Image_Base::isDynamic() const {
     return emptyCount > 0;
 }
 
+Device* Image_Base::linkedAtlasedDevice() const {
+    SkAutoSpinlock lock{fDeviceLinkLock};
+    for (const sk_sp<Device>& device : fLinkedDevices) {
+        if (device && device->isAtlased()) {
+            return device.get();
+        }
+    }
+    return nullptr;
+}
+
 namespace {
 
 // Uses the label of the first proxy, since cases where we chain to make a new image will flatten

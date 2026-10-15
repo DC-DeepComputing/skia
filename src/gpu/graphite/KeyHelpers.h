@@ -150,6 +150,8 @@ struct ImageShaderBlock {
         // non-null. Otherwise, fImmutableSamplerInfo will be filled in.
         sk_sp<TextureProxy> fTextureProxy;
         ImmutableSamplerInfo fImmutableSamplerInfo;
+        sk_sp<class AtlasPage> fAtlasPage;
+        int fAtlasSlotIndex = -1;
     };
 
     static void AddBlock(const KeyContext&, const ImageData&);

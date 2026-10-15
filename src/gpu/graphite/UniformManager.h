@@ -261,6 +261,23 @@ public:
 
     Layout layout() const { return fLayout; }
     int size() const { return fStorage.size(); }
+    int requiredAlignment() const { return fReqAlignment; }
+
+    void setPaintPrefix(SkSpan<const char> paintBytes, int paintReqAlignment) {
+        this->reset();
+        if (!paintBytes.empty()) {
+            char* dst = fStorage.push_back_n(static_cast<int>(paintBytes.size()));
+            memcpy(dst, paintBytes.data(), paintBytes.size());
+        }
+        fReqAlignment = paintReqAlignment;
+        fEndPaintOffset = static_cast<int>(paintBytes.size());
+        fEndPaintAlignment = paintReqAlignment;
+#ifdef SK_DEBUG
+        fOffsetCalculator =
+                UniformOffsetCalculator::ForTopLevel(fLayout, fEndPaintOffset);
+        fMarkedOffsetCalculator = fOffsetCalculator;
+#endif
+    }
 
     void tryShrinkCapacity() {
         int halfCapacity = fStorage.capacity() / 2;
