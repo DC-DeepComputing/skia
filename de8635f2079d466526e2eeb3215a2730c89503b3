@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f844e34e_3687349a",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-15T20:35:51Z",
+      "side": 1,
+      "message": "WDYT about just removing this using and using `std::function\u003cvoid()\u003e` directly?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 52
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78632f20_c4355259",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-15T20:35:51Z",
+      "side": 1,
+      "message": "let\u0027s do `SkFunctionalExecutor`",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 27
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56c4f1e8_422197b2",
+        "filename": "src/core/SkExecutors.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-15T20:35:51Z",
+      "side": 1,
+      "message": "And `SkFunctionalExecutors` here",
+      "range": {
+        "startLine": 55,
+        "startChar": 6,
+        "endLine": 55,
+        "endChar": 28
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f84b78d7_a2d24f07",
+        "filename": "src/core/SkTaskGroup.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-15T20:35:51Z",
+      "side": 1,
+      "message": "SkStdFunctionExecutor",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 40
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf43ce2_bcd9591e",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-15T20:35:51Z",
+      "side": 1,
+      "message": "We\u0027ll be able to go back to just PipelineManager once we\u0027re just the callback executor, right?",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 28
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334c41c0_4ba05558",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-15T20:35:51Z",
+      "side": 1,
+      "message": "I think this is meant to be included first if it is included",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
