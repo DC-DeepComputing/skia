@@ -232,7 +232,8 @@ void InvokeDeviceLostCallback(const skgpu::VulkanInterface* vulkanInterface,
                               VkDevice vkDevice,
                               skgpu::VulkanDeviceLostContext deviceLostContext,
                               skgpu::VulkanDeviceLostProc deviceLostProc,
-                              bool supportsDeviceFaultInfoExtension) {
+                              bool supportsDeviceFaultInfoExtension,
+                              bool isUnknownError) {
     if (!deviceLostProc) {
         return;
     }
