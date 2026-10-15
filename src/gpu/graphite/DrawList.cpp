@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/ScratchDeviceAtlas.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 
 namespace skgpu::graphite {
@@ -38,6 +39,9 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
     SkASSERT(!(renderer->depthStencilFlags() & DepthStencilFlags::kStencil) ||
              ordering.stencilIndex() != DrawOrder::kUnassigned);
 
+    uint16_t paintUniformSize = SkTo<uint16_t>(gatherer->currentUniformOffset());
+    uint16_t paintReqAlignment = SkTo<uint16_t>(gatherer->currentRequiredAlignment());
+
     // TODO: Add validation that the renderer's expected shape type and stroke params match provided
     const Draw& draw = fDraws.emplace_back(renderer,
                                            this->deduplicateTransform(localToDevice),
@@ -45,7 +49,13 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
                                            clip,
                                            ordering,
                                            barrierBeforeDraws,
-                                           stroke);
+                                           stroke,
+                                           fCurrentAtlasPage,
+                                           fCurrentAtlasSlot,
+                                           paintUniformSize,
+                                           paintReqAlignment,
+                                           gatherer->producerClipRectOffset(),
+                                           gatherer->atlasCoordPatches());
 
     fRenderStepCount += renderer->numRenderSteps();
     // Create a sort key for every render step in this draw
@@ -118,6 +128,152 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     // than an 8 byte key and unmodified pointer.
     static_assert(sizeof(SortKey) == SkAlignTo(16 + sizeof(void*), alignof(SortKey)));
 
+    // Apply Phase 2 deferred atlas plotting offsets to producer draws recorded in an AtlasPage
+    // and consumer draws sampling from an AtlasPage.
+    bool needsUniformPatching = false;
+    bool hasAtlasedProducerDraws = false;
+    for (Draw& draw : fDraws.items()) {
+        if (draw.fAtlasPage) {
+            hasAtlasedProducerDraws = true;
+            needsUniformPatching = true;
+            SkIPoint offset = draw.fAtlasPage->getSlotOffset(draw.fAtlasSlotIndex);
+            if (offset.fX != 0 || offset.fY != 0) {
+                SkM44 m = draw.drawParams().transform().matrix();
+                m.postTranslate(offset.fX, offset.fY);
+                const Transform& translated = this->deduplicateTransform(Transform(m));
+                draw.writableDrawParams().applyAtlasOffset(translated, offset.fX, offset.fY);
+            }
+        } else if (!draw.fAtlasCoordPatches.empty()) {
+            needsUniformPatching = true;
+        }
+    }
+
+    if (hasAtlasedProducerDraws) {
+        fPassBounds = Rect::InfiniteInverted();
+        bool hadDstRead = !fDstReadBounds.isEmptyNegativeOrNaN();
+        if (hadDstRead) {
+            fDstReadBounds = Rect::InfiniteInverted();
+        }
+        for (const Draw& draw : fDraws.items()) {
+            fPassBounds.join(draw.drawParams().drawBounds());
+            if (hadDstRead) {
+                fDstReadBounds.join(draw.drawParams().drawBounds());
+            }
+        }
+    }
+
+    if (needsUniformPatching) {
+        auto keyAndDataBuilder = recorder->priv().popOrCreateKeyAndDataBuilder();
+        PipelineDataGatherer* tempGatherer = &keyAndDataBuilder->first;
+
+        for (SortKey& key : fSortKeys) {
+            if (key.uniformIndex() == UniformDataCache::kInvalidIndex) {
+                continue;
+            }
+            const Draw& draw = key.draw();
+            const RenderStep& step = key.renderStep();
+            const bool hasProducerPatch = draw.fAtlasPage != nullptr;
+            const bool hasConsumerPatch = step.performsShading() && !draw.fAtlasCoordPatches.empty();
+            if (!hasProducerPatch && !hasConsumerPatch) {
+                continue;
+            }
+
+            UniformDataBlock origBlock = fUniformDataCache.lookup(key.uniformIndex()).fCpuData;
+            skia_private::STArray<128, char> patchedBytes;
+            if (origBlock.size() > 0) {
+                patchedBytes.push_back_n(static_cast<int>(origBlock.size()), origBlock.data());
+            }
+
+            if (step.performsShading()) {
+                if (hasProducerPatch &&
+                    draw.fProducerClipRectOffset != AtlasCoordPatch::kInvalidOffset &&
+                    draw.fProducerClipRectOffset + sizeof(SkRect) <= (size_t)patchedBytes.size()) {
+                    SkIPoint offset = draw.fAtlasPage->getSlotOffset(draw.fAtlasSlotIndex);
+                    SkRect clipRect;
+                    memcpy(&clipRect,
+                           patchedBytes.data() + draw.fProducerClipRectOffset,
+                           sizeof(SkRect));
+#if defined(SK_GRAPHITE_USE_LEGACY_RRECT_CLIP_SHADER)
+                    clipRect.offset((float)offset.fX, (float)offset.fY);
+#else
+                    SkV4 xform = {1.f, 0.f, 0.f, 1.f};
+                    if (draw.fProducerClipRectOffset >= sizeof(SkV4)) {
+                        memcpy(&xform,
+                               patchedBytes.data() + draw.fProducerClipRectOffset - sizeof(SkV4),
+                               sizeof(SkV4));
+                    }
+                    float dx = xform.x * offset.fX + xform.z * offset.fY;
+                    float dy = xform.y * offset.fX + xform.w * offset.fY;
+                    clipRect.offset(dx, dy);
+#endif
+                    memcpy(patchedBytes.data() + draw.fProducerClipRectOffset,
+                           &clipRect,
+                           sizeof(SkRect));
+                }
+
+                for (const AtlasCoordPatch& patch : draw.fAtlasCoordPatches) {
+                    if (!patch.fPage) {
+                        continue;
+                    }
+                    SkIPoint offset = patch.fPage->getSlotOffset(patch.fSlotIndex);
+                    SkISize atlasDims = patch.fPage->plottedDimensions();
+                    if (patch.fLMTranslateOffset != AtlasCoordPatch::kInvalidOffset &&
+                        patch.fLMTranslateOffset + sizeof(SkV2) <= (size_t)patchedBytes.size()) {
+                        SkV2 trans;
+                        memcpy(&trans,
+                               patchedBytes.data() + patch.fLMTranslateOffset,
+                               sizeof(SkV2));
+                        trans.x += (float)offset.fX;
+                        trans.y += (float)offset.fY;
+                        memcpy(patchedBytes.data() + patch.fLMTranslateOffset,
+                               &trans,
+                               sizeof(SkV2));
+                    }
+                    if (patch.fInvSizeOffset != AtlasCoordPatch::kInvalidOffset &&
+                        patch.fInvSizeOffset + sizeof(SkSize) <= (size_t)patchedBytes.size()) {
+                        SkSize invSize = SkSize::Make(1.f / atlasDims.width(),
+                                                      1.f / atlasDims.height());
+                        memcpy(patchedBytes.data() + patch.fInvSizeOffset,
+                               &invSize,
+                               sizeof(SkSize));
+                    }
+                    if (patch.fSubsetOffset != AtlasCoordPatch::kInvalidOffset &&
+                        patch.fSubsetOffset + sizeof(SkRect) <= (size_t)patchedBytes.size()) {
+                        SkRect sub;
+                        memcpy(&sub,
+                               patchedBytes.data() + patch.fSubsetOffset,
+                               sizeof(SkRect));
+                        sub.offset((float)offset.fX, (float)offset.fY);
+                        memcpy(patchedBytes.data() + patch.fSubsetOffset,
+                               &sub,
+                               sizeof(SkRect));
+                    }
+                }
+            }
+
+            if (hasProducerPatch && !step.uniforms().empty()) {
+                SkSpan<const char> paintPrefix = step.performsShading()
+                        ? SkSpan<const char>(patchedBytes.data(), draw.fPaintUniformSize)
+                        : SkSpan<const char>();
+                tempGatherer->setPaintPrefix(paintPrefix, draw.fPaintReqAlignment);
+                tempGatherer->markOffsetAndAlign(step.performsShading(), step.uniformAlignment());
+                step.writeUniformsAndTextures(draw.drawParams(), tempGatherer);
+                auto [newUniforms, _] = tempGatherer->endCombinedData(step.performsShading());
+                if (newUniforms) {
+                    key.setUniformIndex(fUniformDataCache.insert(newUniforms));
+                }
+                tempGatherer->resetForDraw();
+            } else {
+                UniformDataBlock patchedBlock = UniformDataBlock::Make(
+                        SkSpan<const char>(patchedBytes.data(), patchedBytes.size()));
+                key.setUniformIndex(fUniformDataCache.insert(patchedBlock));
+            }
+        }
+
+        tempGatherer->resetForDraw();
+        recorder->priv().pushKeyAndDataBuilder(std::move(keyAndDataBuilder));
+    }
+
     // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already, so
     // algorithms that approach O(n) in that condition may be favorable. Alternatively, could
     // explore radix sort that is always O(n). Brief testing suggested std::sort was faster than
@@ -140,7 +296,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
     GraphicsPipelineCache::Index lastPipeline = GraphicsPipelineCache::kInvalidIndex;
-    const SkIRect targetBounds = SkIRect::MakeSize(targetInfo.dimensions());
+    const SkISize targetDims = target->isFullyLazy() ? targetInfo.dimensions() : target->dimensions();
+    const SkIRect targetBounds = SkIRect::MakeSize(targetDims);
     SkIRect lastScissor = targetBounds;
 
     SkASSERT(drawPass->fTarget->isFullyLazy() ||
@@ -288,6 +445,8 @@ void DrawList::reset(LoadOp op, SkColor4f clearColor) {
     SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     fDraws.reset();
     fSortKeys.clear();
+    fCurrentAtlasPage.reset();
+    fCurrentAtlasSlot = -1;
     DrawListBase::reset(op, clearColor);
 }
 

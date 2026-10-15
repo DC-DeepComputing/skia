@@ -465,16 +465,16 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 }
 
 sk_sp<Device> Device::MakeAtlased(Recorder* recorder,
-                                 sk_sp<DrawContext> atlasDC,
-                                 SkIPoint atlasOffset,
+                                 sk_sp<AtlasPage> atlasPage,
+                                 int atlasSlotIndex,
                                  SkISize deviceSize,
                                  const SkColorInfo& colorInfo,
                                  const SkSurfaceProps& props,
                                  ScratchDeviceAtlas* atlas) {
-    if (!recorder || !atlasDC) {
+    if (!recorder || !atlasPage || !atlasPage->drawContext()) {
         return nullptr;
     }
-    sk_sp<Device> device{new Device(recorder, std::move(atlasDC), atlasOffset, deviceSize,
+    sk_sp<Device> device{new Device(recorder, std::move(atlasPage), atlasSlotIndex, deviceSize,
                                     colorInfo, props, atlas)};
     recorder->priv().getOrCreateAtlasProvider()->notifyAtlasedDeviceCreated();
     device->fRegisteredInAtlas = true;
@@ -499,7 +499,8 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         : SkDevice(dc->imageInfo(), dc->surfaceProps())
         , fRecorder(recorder)
         , fDC(std::move(dc))
-        , fAtlasOffset({0, 0})
+        , fAtlasPage(nullptr)
+        , fAtlasSlotIndex(-1)
         , fAtlas(nullptr)
         , fClip(this)
         , fColorDepthBoundsManager(std::make_unique<HybridBoundsManager>(
@@ -523,18 +524,22 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
 }
 
 Device::Device(Recorder* recorder,
-               sk_sp<DrawContext> dc,
-               SkIPoint atlasOffset,
+               sk_sp<AtlasPage> atlasPage,
+               int atlasSlotIndex,
                SkISize deviceSize,
                const SkColorInfo& colorInfo,
                const SkSurfaceProps& props,
                ScratchDeviceAtlas* atlas)
         : SkDevice(SkImageInfo::Make(deviceSize, colorInfo), props)
         , fRecorder(recorder)
-        , fDC(std::move(dc))
-        , fAtlasOffset(atlasOffset)
+        , fDC(atlasPage->refDrawContext())
+        , fAtlasPage(std::move(atlasPage))
+        , fAtlasSlotIndex(atlasSlotIndex)
         , fAtlas(atlas)
         , fClip(this)
+        , fColorDepthBoundsManager(std::make_unique<HybridBoundsManager>(
+                  deviceSize, kGridCellSize, kMaxBruteForceN, kMaxGridSize))
+        , fDisjointStencilSet(std::make_unique<IntersectionTreeSet>())
         , fCachedLocalToDevice(SkM44())
         , fCurrentDepth(DrawOrder::kClearDepth)
         , fSubRunControl(recorder->priv().caps()->getSubRunControl(
@@ -659,23 +664,23 @@ bool Device::hasPendingReads(const TextureProxy* texture) const {
     return fRecorder && fDC->readsTexture(texture);
 }
 
+SkIPoint Device::atlasOffset() const {
+    return fAtlasPage ? fAtlasPage->getSlotOffset(fAtlasSlotIndex) : SkIPoint::Make(0, 0);
+}
+
 const Transform& Device::localToDeviceTransform() {
     if (this->checkLocalToDeviceDirty()) {
-        SkM44 m = this->localToDevice44();
-        if (this->isAtlased()) {
-            m.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
-        }
-        fCachedLocalToDevice = Transform{m};
+        fCachedLocalToDevice = Transform{this->localToDevice44()};
     }
     return fCachedLocalToDevice;
 }
 
 BoundsManager* Device::boundsManager() const {
-    return fAtlas ? fAtlas->boundsManager() : fColorDepthBoundsManager.get();
+    return fColorDepthBoundsManager.get();
 }
 
 Device::IntersectionTreeSet* Device::disjointStencilSet() const {
-    return fAtlas ? fAtlas->disjointStencilSet() : fDisjointStencilSet.get();
+    return fDisjointStencilSet.get();
 }
 
 PaintersDepth& Device::currentDepth() {
@@ -735,11 +740,12 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
 
     SkIRect actualSubset = subset;
     if (this->isAtlased()) {
-        actualSubset.offset(fAtlasOffset.fX, fAtlasOffset.fY);
         fRecorder->priv().flushScratchDeviceAtlases();
         if (fAtlas) {
             fAtlas->flush(fRecorder);
         }
+        SkIPoint offset = this->atlasOffset();
+        actualSubset.offset(offset.fX, offset.fY);
     }
 
     std::string label = fDC->target().proxy()->label();
@@ -767,12 +773,13 @@ bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
     ASSERT_SINGLE_OWNER
     if (Context* context = fRecorder->priv().context()) {
         if (this->isAtlased()) {
-            srcX += fAtlasOffset.fX;
-            srcY += fAtlasOffset.fY;
             fRecorder->priv().flushScratchDeviceAtlases();
             if (fAtlas) {
                 fAtlas->flush(fRecorder);
             }
+            SkIPoint offset = this->atlasOffset();
+            srcX += offset.fX;
+            srcY += offset.fY;
         }
         // Add all previous commands generated to the command buffer.
         // If the client snaps later they'll only get post-read commands in their Recording,
@@ -821,13 +828,15 @@ bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
 
     // Determine rect to copy
     if (this->isAtlased()) {
-        x += fAtlasOffset.fX;
-        y += fAtlasOffset.fY;
+        SkIPoint offset = this->atlasOffset();
+        x += offset.fX;
+        y += offset.fY;
     }
     SkIRect dstRect = SkIRect::MakePtSize({x, y}, src.dimensions());
     if (this->isAtlased()) {
+        SkIPoint offset = this->atlasOffset();
         SkIRect slotBounds = SkIRect::MakeXYWH(
-                fAtlasOffset.fX, fAtlasOffset.fY, this->width(), this->height());
+                offset.fX, offset.fY, this->width(), this->height());
         if (!dstRect.intersect(slotBounds)) {
             return false;
         }
@@ -872,11 +881,7 @@ bool Device::isClipAntiAliased() const {
 }
 
 SkIRect Device::devClipBounds() const {
-    SkIRect bounds = rect_to_pixelbounds(fClip.conservativeBounds());
-    if (this->isAtlased()) {
-        bounds.offset(-fAtlasOffset.fX, -fAtlasOffset.fY);
-    }
-    return bounds;
+    return rect_to_pixelbounds(fClip.conservativeBounds());
 }
 
 // TODO: This is easy enough to support, but do we still need this API in Skia at all?
@@ -926,11 +931,7 @@ void Device::onClipShader(sk_sp<SkShader> shader) {
 void Device::clipRegion(const SkRegion& globalRgn, SkClipOp op) {
     SkASSERT(op == SkClipOp::kIntersect || op == SkClipOp::kDifference);
 
-    SkM44 globalToDeviceM44(this->globalToDevice());
-    if (this->isAtlased()) {
-        globalToDeviceM44.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
-    }
-    Transform globalToDevice{globalToDeviceM44};
+    Transform globalToDevice{this->globalToDevice()};
 
     if (globalRgn.isEmpty()) {
         fClip.clipShape(globalToDevice, Shape{}, op);
@@ -1883,6 +1884,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (geometry.isMesh()) {
         keyGenFlags |= KeyGenFlags::kDisableSamplingOptimization;
     }
+    fDC->setCurrentAtlasSlot(fAtlasPage, fAtlasSlotIndex);
     KeyContext keyContext{fRecorder,
                           fDC.get(),
                           scopedDrawBuilder.builder(),
@@ -1899,16 +1901,17 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
     auto [paintID, dstUsage] = *keyResult;
+    fDC->setCurrentAtlasSlot(fAtlasPage, fAtlasSlotIndex);
 
     // If we are unclipped, do not depend on the dst, and cover the target, then we can adjust
     // load ops of the renderpass to more optimally handle the draw (and avoid redundant clears).
-    // NOTE: We skip this for fully-lazy render targets because the load ops may impact a larger
-    // area than the Device's theoretical bounds.
-    const bool overwritesAllPixels = dstUsage == DstUsage::kNone &&
+    // NOTE: We skip this for fully-lazy render targets or atlased slots because the load ops would
+    // impact a larger area than the Device's bounds.
+    const bool overwritesAllPixels = !this->isAtlased() &&
+                                     dstUsage == DstUsage::kNone &&
                                      geometry.isShape() &&
                                      geometry.shape().isFloodFill() &&
                                      !fDC->target().proxy()->isFullyLazy() &&
-                                     !this->isAtlased() &&
                                      clipElements.empty() &&
                                      clip.scissor().contains(this->bounds());
     if (overwritesAllPixels) {
@@ -2111,6 +2114,7 @@ void Device::drawClipShape(const Transform& localToDevice,
     // analytic coverage renderers cannot be used.
     SkASSERT(renderer->coverage() == Coverage::kNone && renderer->requiresMSAA());
 
+    fDC->setCurrentAtlasSlot(fAtlasPage, fAtlasSlotIndex);
     // Clips draws are depth-only (invalid UniquePaintParamsID), and filled (null StrokeStyle).
     // The data gatherer must be reset so that the DrawList can use it for any RenderStep data.
     if (localToDevice.type() == Transform::Type::kPerspective) {
@@ -2144,6 +2148,7 @@ std::pair<DrawParams*, Layer*> Device::drawClipShapeImmediate(const Transform& l
         return {nullptr, {}};
     }
 
+    fDC->setCurrentAtlasSlot(fAtlasPage, fAtlasSlotIndex);
     if (localToDevice.type() == Transform::Type::kPerspective) {
         SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());
         return fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip,
@@ -2498,11 +2503,7 @@ void Device::drawSpecial(SkSpecialImage* special,
     // whose flags match the paint's AA request.
     EdgeAAQuad::Flags aaFlags = paint.isAntiAlias() ? EdgeAAQuad::Flags::kAll
                                                     : EdgeAAQuad::Flags::kNone;
-    SkM44 m(localToDevice);
-    if (this->isAtlased()) {
-        m.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
-    }
-    this->drawGeometry(Transform(m),
+    this->drawGeometry(Transform(SkM44(localToDevice)),
                        Geometry(EdgeAAQuad(dst, aaFlags)),
                        PaintParams(paint, imageShader),
                        DefaultFillStyle());
@@ -2512,11 +2513,6 @@ void Device::drawCoverageMask(const SkSpecialImage* mask,
                               const SkMatrix& maskToDevice,
                               const SkSamplingOptions& sampling,
                               const SkPaint& paint) {
-    CoverageMaskShape::MaskInfo maskInfo{/*fTextureOrigin=*/{SkTo<uint16_t>(mask->subset().fLeft),
-                                                             SkTo<uint16_t>(mask->subset().fTop)},
-                                         /*fMaskSize=*/{SkTo<uint16_t>(mask->width()),
-                                                        SkTo<uint16_t>(mask->height())}};
-
     auto maskProxyView = AsView(mask->asImage());
     if (!maskProxyView) {
         SKIA_LOG_W("Couldn't get Graphite-backed special image as texture proxy view");
@@ -2528,20 +2524,27 @@ void Device::drawCoverageMask(const SkSpecialImage* mask,
     // from a scratch device to the current draw context. In this case, 'mask' is very likely to
     // be linked to a scratch device, but we must perform the same notifyInUse manually here because
     // the texture is consumed by the RenderStep and not part of the PaintParams.
-    static_cast<Image_Base*>(mask->asImage().get())->notifyInUse(fRecorder, fDC.get());
+    Image_Base* maskImage = static_cast<Image_Base*>(mask->asImage().get());
+    maskImage->notifyInUse(fRecorder, fDC.get());
+
+    SkIPoint maskOriginOffset = {0, 0};
+    if (Device* maskDev = maskImage->linkedAtlasedDevice()) {
+        maskOriginOffset = maskDev->atlasOffset();
+    }
+    CoverageMaskShape::MaskInfo maskInfo{
+            /*fTextureOrigin=*/{SkTo<uint16_t>(mask->subset().fLeft + maskOriginOffset.fX),
+                                SkTo<uint16_t>(mask->subset().fTop + maskOriginOffset.fY)},
+            /*fMaskSize=*/{SkTo<uint16_t>(mask->width()),
+                           SkTo<uint16_t>(mask->height())}};
 
     // CoverageMaskShape() wraps a Shape when it's used as a PathAtlas, but in this case the
     // original shape has been long lost, so just use a Rect that bounds the image.
     // The provided `maskToDevice` places the mask in device space. The Device's local-to-device
     // transform is used for shading.
-    SkM44 maskToAtlasDevice(maskToDevice);
-    if (this->isAtlased()) {
-        maskToAtlasDevice.postTranslate(fAtlasOffset.fX, fAtlasOffset.fY);
-    }
     CoverageMaskShape maskShape{Shape{Rect::WH((float)mask->width(), (float)mask->height())},
                                 // We store a ref to the textureProxy to keep it alive.
                                 maskProxyView.refProxy(),
-                                maskToAtlasDevice,
+                                SkM44(maskToDevice),
                                 maskInfo};
 
     this->drawGeometry(this->localToDeviceTransform(),
@@ -2570,9 +2573,6 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
         }
         deviceImage = Image::WrapDevice(sk_ref_sp(this));
         finalSubset = subset;
-        if (this->isAtlased()) {
-            finalSubset.offset(fAtlasOffset.fX, fAtlasOffset.fY);
-        }
     }
 
     if (!deviceImage) {

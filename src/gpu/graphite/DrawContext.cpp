@@ -286,6 +286,9 @@ void DrawContext::flush(Recorder* recorder) {
         sk_sp<TextureProxy> dstCopy;
         if (!dstReadPixelBounds.isEmpty() &&
             drawPassDstReadStrategy == DstReadStrategy::kTextureCopy) {
+            dstReadPixelBounds.join(pass->bounds());
+            SkAssertResult(dstReadPixelBounds.intersect(
+                    SkIRect::MakeSize(this->imageInfo().dimensions())));
             TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
                                  TRACE_EVENT_SCOPE_THREAD);
             sk_sp<Image> imageCopy = Image::Copy(

@@ -76,6 +76,8 @@ public:
                                                    const SkImageInfo& targetInfo,
                                                    const DstReadStrategy dstReadStrategy) = 0;
 
+    virtual void setCurrentAtlasSlot(sk_sp<class AtlasPage>, int /*slotIndex*/) {}
+
     int renderStepCount() const { return fRenderStepCount; }
 
     bool modifiesTarget() const {
