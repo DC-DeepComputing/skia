@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "efd9ca1f_8c5cba72",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-15T18:36:07Z",
+      "side": 1,
+      "message": "I wouldn\u0027t add a warning. It will be very obvious to a reviewer that someone added to the mapping file, so hopefully there is a good/agreed upon reason.",
+      "parentUuid": "045bb15a_dc510600",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "629efd9e08416ff1560c472a09ac93d49e42f033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b8b1d38_9313e594",
         "filename": "PRESUBMIT.py",
         "patchSetId": 3

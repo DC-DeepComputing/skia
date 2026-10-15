@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "218b44d6_1ff6d193",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-15T18:36:07Z",
+      "side": 1,
+      "message": "Not sure if this is worth it or not, but you may want to split the line at a `//` in case the line ends in a comment (and thus not in `;` or `{`). I\u0027m not sure how often that would come up in practice though when someone is adding an unsafe buffer.",
+      "range": {
+        "startLine": 693,
+        "startChar": 25,
+        "endLine": 693,
+        "endChar": 33
+      },
+      "revId": "f201972b0d9436778abd2d745bf2cff504e968b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
