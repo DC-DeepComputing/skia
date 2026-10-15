@@ -35,3 +35,13 @@ SkSharedContext::SkSharedContext(const SkContextOptions& options) {
 }
 
 SkSharedContext::~SkSharedContext() = default;
+
+SkStrikeCache* SkSharedContext::GlobalStrikeCache() {
+#if defined(SK_ENABLE_THREADLOCAL_STRIKECACHE)
+    static thread_local auto* cache = new SkStrikeCache;
+    return cache;
+#else
+    static auto* cache = new SkStrikeCache;
+    return cache;
+#endif
+}

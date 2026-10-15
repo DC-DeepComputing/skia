@@ -15,6 +15,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkMutex.h"
 #include "src/core/SkDescriptor.h"
+#include "src/core/SkSharedContext.h"
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeSpec.h"
 
@@ -25,16 +26,6 @@ class SkScalerContext;
 struct SkFontMetrics;
 
 using namespace sktext;
-
-SkStrikeCache* SkStrikeCache::GlobalStrikeCache() {
-#if defined(SK_ENABLE_THREADLOCAL_STRIKECACHE)
-    static thread_local auto* cache = new SkStrikeCache;
-    return cache;
-#else
-    static auto* cache = new SkStrikeCache;
-    return cache;
-#endif
-}
 
 auto SkStrikeCache::findOrCreateStrike(const SkStrikeSpec& strikeSpec) -> sk_sp<SkStrike> {
     SkAutoMutexExclusive ac(fLock);
@@ -50,9 +41,7 @@ sk_sp<StrikeForGPU> SkStrikeCache::findOrCreateScopedStrike(const SkStrikeSpec& 
     return this->findOrCreateStrike(strikeSpec);
 }
 
-void SkStrikeCache::PurgeAll() {
-    GlobalStrikeCache()->purgeAll();
-}
+void SkStrikeCache::PurgeAll() { SkSharedContext::GlobalStrikeCache()->purgeAll(); }
 
 void SkStrikeCache::Dump() {
     SkDebugf("GlyphCache [     used    budget ]\n");
@@ -65,7 +54,7 @@ void SkStrikeCache::Dump() {
         strike.dump();
     };
 
-    GlobalStrikeCache()->forEachStrike(visitor);
+    SkSharedContext::GlobalStrikeCache()->forEachStrike(visitor);
 }
 
 void SkStrikeCache::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
@@ -86,7 +75,7 @@ void SkStrikeCache::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
         strike.dumpMemoryStatistics(dump);
     };
 
-    GlobalStrikeCache()->forEachStrike(visitor);
+    SkSharedContext::GlobalStrikeCache()->forEachStrike(visitor);
 }
 
 sk_sp<SkStrike> SkStrikeCache::findStrike(const SkDescriptor& desc) {

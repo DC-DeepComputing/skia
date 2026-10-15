@@ -34,6 +34,8 @@ public:
     const SkStrikeCache* fontCache() const { return fFontCache.get(); }
     SkStrikeCache* fontCache() { return fFontCache.get(); }
 
+    static SkStrikeCache* GlobalStrikeCache();
+
     const SkTypefaceCache* typefaceCache() const { return fTypefaceCache.get(); }
     SkTypefaceCache* typefaceCache() { return fTypefaceCache.get(); }
 

@@ -42,8 +42,6 @@ class SkStrikeCache final : public sktext::StrikeForGPUCacheInterface {
 public:
     SkStrikeCache() = default;
 
-    static SkStrikeCache* GlobalStrikeCache();
-
     sk_sp<SkStrike> findStrike(const SkDescriptor& desc) SK_EXCLUDES(fLock);
 
     sk_sp<SkStrike> createStrike(
