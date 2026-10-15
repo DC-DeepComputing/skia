@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e53c8f0_e8ca0df9",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-15T13:32:22Z",
+      "side": 1,
+      "message": "The empty base class trick works fine, but it changes the dynamic extent layout `{fPtr, fSize} -\u003e {fSize, fPtr}`.  Not sure how much we care about that.\n\nI also think the type is no longer standard-layout (fields defined at different inheritance levels).  We might care about this part.\n\nIf we move all fields to the same base class, would that keep standard layout while preserving the static extent storage optimization?  E.g.\n\n```\ntemplate \u003ctypename T, size_t E\u003e struct SpanStorage {\n    constexpr SpanStorage(T* p, size_t n) : fPtr(p) { if (n !\u003d E) SkUNREACHABLE; }\n    constexpr size_t size() const { return E; }\n    T* fPtr;\n};\ntemplate \u003ctypename T\u003e struct SpanStorage\u003cT, SkDynamicExtent\u003e {\n    constexpr SpanStorage(T* p, size_t n) : fPtr(p), fSize(n) {}\n    constexpr size_t size() const { return fSize; }\n    T* fPtr;\n    size_t fSize;\n};\ntemplate \u003ctypename T, size_t E\u003e class SkSpan : private SpanStorage\u003cT, E\u003e;\n\nstatic_assert(sizeof(Span\u003cint\u003e) \u003d\u003d 2 * sizeof(void*));\nstatic_assert(sizeof(Span\u003cint, 4\u003e) \u003d\u003d sizeof(void*));\nstatic_assert(std::is_standard_layout_v\u003cSpan\u003cint\u003e\u003e \u0026\u0026 std::is_standard_layout_v\u003cSpan\u003cint, 4\u003e\u003e);\nstatic_assert(std::is_trivially_copyable_v\u003cSpan\u003cint\u003e\u003e \u0026\u0026 std::is_trivially_copyable_v\u003cSpan\u003cint, 4\u003e\u003e);\n\n```",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 2
+      },
+      "revId": "20344c04bb7569ab19fd82f5a86857afa0820277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
