@@ -22,6 +22,30 @@
       },
       "revId": "f201972b0d9436778abd2d745bf2cff504e968b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0823cb50_14be33fd",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 4764846
+      },
+      "writtenOn": "2026-10-15T22:26:43Z",
+      "side": 1,
+      "message": "Done\n\nYes, there are many weird cases that can happen, and this presubmit aims to cover most of them. If there is a common pattern that isn\u0027t being covered, we can adjust it in future CLs.",
+      "parentUuid": "218b44d6_1ff6d193",
+      "range": {
+        "startLine": 693,
+        "startChar": 25,
+        "endLine": 693,
+        "endChar": 33
+      },
+      "revId": "f201972b0d9436778abd2d745bf2cff504e968b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
