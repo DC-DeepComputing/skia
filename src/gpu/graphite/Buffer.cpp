@@ -14,30 +14,32 @@
 namespace skgpu::graphite {
 
 void* Buffer::map() {
-    SkASSERT(this->isUnmappable() || !this->sharedContext()->caps()->bufferMapsAreAsync());
-    SkASSERT(this->isProtected() == Protected::kNo);
-    if (!this->isMapped()) {
-        this->onMap();
+#ifdef SK_DEBUG
+    SkASSERT(isUnmappable() || !this->Resource::sharedContext()->caps()->bufferMapsAreAsync());
+    SkASSERT(isProtected() == Protected::kNo);
+#endif
+    if (!isMapped()) {
+        onMap();
     }
     return fMapPtr;
 }
 
 void Buffer::asyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
-    SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
-    SkASSERT(this->isProtected() == Protected::kNo);
-    this->onAsyncMap(proc, ctx);
+    SkASSERT(this->Resource::sharedContext()->caps()->bufferMapsAreAsync());
+    SkASSERT(isProtected() == Protected::kNo);
+    onAsyncMap(proc, ctx);
 }
 
 void Buffer::unmap() {
-    SkASSERT(this->isUnmappable());
-    this->onUnmap();
+    SkASSERT(isUnmappable());
+    onUnmap();
     fMapPtr = nullptr;
 }
 
 bool Buffer::isUnmappable() const { return isMapped(); }
 
 void Buffer::onAsyncMap(skgpu::graphite::GpuFinishedProc, skgpu::graphite::GpuFinishedContext) {
-    SkASSERT(!this->sharedContext()->caps()->bufferMapsAreAsync());
+    SkASSERT(!sharedContext()->caps()->bufferMapsAreAsync());
     SK_ABORT("Async buffer mapping not supported");
 }
 

@@ -21,6 +21,7 @@ adhere to Skia's coding standards.
 - **Ignore Unchanged Code**: Do **not** review or flag pre-existing style inconsistencies in
   unchanged code or outside the diff.
 - **Obtaining Changes**:
+  If you have not been given an explicit diff:
   - Determine the tracked upstream branch (falls back to `origin/main` if not set):
     ```bash
     UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || \
@@ -43,7 +44,8 @@ the modified files.
 ## Review Workflow
 
 1. **Extract Changed Files and Lines**:
-   - Determine the tracked upstream branch and its merge base with `HEAD`.
+   - If you have not been given a diff, obtain the diff using git between the tracked upstream
+     branch and its merge base with `HEAD`.
    - Inspect the diff to identify modified files and line numbers.
 2. **Consult Style Guidelines**:
    - Read the relevant sections of `site/docs/dev/contrib/style.md` for the types of changes

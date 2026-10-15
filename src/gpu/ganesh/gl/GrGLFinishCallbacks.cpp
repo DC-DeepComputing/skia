@@ -13,10 +13,17 @@
 
 #include <utility>
 
-GrGLFinishCallbacks::GrGLFinishCallbacks(GrGLGpu* gpu) : fGpu(gpu) {}
+GrGLFinishCallbacks::GrGLFinishCallbacks(GrGLGpu* gpu)
+    : fGpu(gpu)
+{
+}
 
 GrGLFinishCallbacks::~GrGLFinishCallbacks() {
-    this->callAll(true);
+#ifdef GR_GL_LOG_FINISH_CALLBACKS
+    callAll(true);
+#else
+    callAll(false);
+#endif
 }
 
 void GrGLFinishCallbacks::add(skgpu::AutoCallback callback, GrGLint timerQuery) {
@@ -24,7 +31,7 @@ void GrGLFinishCallbacks::add(skgpu::AutoCallback callback, GrGLint timerQuery) 
     FinishCallback finishCallback;
     finishCallback.fCallback   = std::move(callback);
     finishCallback.fSync       = fGpu->insertSync();
-    finishCallback.fTimerQuery = timerQuery;
+    finishCallback.fTimerQuery = timerQuery ? timerQuery : GL_INVALID_TIMER_QUERY_ID;
     fCallbacks.push_back(std::move(finishCallback));
 }
 

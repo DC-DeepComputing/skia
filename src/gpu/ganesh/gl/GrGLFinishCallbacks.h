@@ -8,12 +8,20 @@
 #ifndef GrGLFinishCallbacks_DEFINED
 #define GrGLFinishCallbacks_DEFINED
 
+#include <list>
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
+#include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/RefCntedCallback.h"
 
-#include <list>
+#define GL_INVALID_TIMER_QUERY_ID 0
+#define GR_SYNC_WAIT_FOREVER 0xdeadbeef
+#define GR_GL_LOG_FINISH_CALLBACKS
 
-class GrGLGpu;
+class SkGLCallbackTracker {
+public:
+    int count;
+    int getCount() const { return count; }
+};
 
 /**
  * Maintains a list of callbacks to be called when work on the GPU is complete.
