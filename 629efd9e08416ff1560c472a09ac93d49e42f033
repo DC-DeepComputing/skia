@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd604c4e_9f29b2d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-15T17:18:52Z",
+      "side": 1,
+      "message": "Update the description here to not use SKIA instead of ANGLE",
+      "range": {
+        "startLine": 12,
+        "startChar": 33,
+        "endLine": 12,
+        "endChar": 50
+      },
+      "revId": "629efd9e08416ff1560c472a09ac93d49e42f033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "183edb6c_92a1a9c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-15T17:18:52Z",
+      "side": 1,
+      "message": "is this actually done in this CL?",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "629efd9e08416ff1560c472a09ac93d49e42f033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b8b1d38_9313e594",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-15T17:18:52Z",
+      "side": 1,
+      "message": "Should this be ChangedContents() instead of NewContents()? IIRC NewContents will read the entire file and ChangedContents just the lines that changed",
+      "range": {
+        "startLine": 663,
+        "startChar": 14,
+        "endLine": 663,
+        "endChar": 25
+      },
+      "revId": "629efd9e08416ff1560c472a09ac93d49e42f033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0304a4c0_59c61f36",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-15T17:18:52Z",
+      "side": 1,
+      "message": "Instead of having this list duplicated in multiple spots can we put it in some shared constant?",
+      "range": {
+        "startLine": 782,
+        "startChar": 6,
+        "endLine": 782,
+        "endChar": 40
+      },
+      "revId": "629efd9e08416ff1560c472a09ac93d49e42f033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0af81f5_b6d1abdf",
+        "filename": "PRESUBMIT_test_mocks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-15T17:18:52Z",
+      "side": 1,
+      "message": "What is this used for?",
+      "range": {
+        "startLine": 241,
+        "startChar": 8,
+        "endLine": 241,
+        "endChar": 21
+      },
+      "revId": "629efd9e08416ff1560c472a09ac93d49e42f033",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
