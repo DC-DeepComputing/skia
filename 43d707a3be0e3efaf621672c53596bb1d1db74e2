@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c64e646_ee01bc89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2026-10-15T11:58:47Z",
+      "side": 1,
+      "message": "Post-submit drive-by.",
+      "revId": "43d707a3be0e3efaf621672c53596bb1d1db74e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1024fb30_ac0f9953",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2026-10-15T11:58:47Z",
+      "side": 1,
+      "message": "This is an unconditional dereference of `activeCmdBuffer`...",
+      "revId": "43d707a3be0e3efaf621672c53596bb1d1db74e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f363ed75_e0031720",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2026-10-15T11:58:47Z",
+      "side": 1,
+      "message": "...so if `activeCmdBuffer` can potentially be null as this check suggests, we\u0027ll have already crashed when it\u0027s null.\n\nWe should move/duplicate this check to earlier in this function (including for line 204 as well) if it\u0027s needed.",
+      "revId": "43d707a3be0e3efaf621672c53596bb1d1db74e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
