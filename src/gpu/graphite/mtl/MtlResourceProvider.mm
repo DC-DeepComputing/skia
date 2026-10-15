@@ -85,8 +85,10 @@ sk_sp<Texture> MtlResourceProvider::onCreateWrappedTexture(const BackendTexture&
 sk_sp<Buffer> MtlResourceProvider::createBuffer(size_t size,
                                                 BufferType type,
                                                 AccessPattern accessPattern,
+                                                LabelUsageBitMask labelUsageFlags,
                                                 std::string_view label) {
-    return MtlBuffer::Make(this->mtlSharedContext(), size, type, accessPattern, label);
+    return MtlBuffer::Make(
+            this->mtlSharedContext(), size, type, accessPattern, labelUsageFlags, label);
 }
 
 sk_sp<Sampler> MtlResourceProvider::createSampler(const SamplerDesc& samplerDesc) {

@@ -68,6 +68,7 @@ sk_sp<Buffer> sync_buffer_to_cpu(Recorder* recorder, const Buffer* buffer) {
             buffer->size(),
             BufferType::kXferGpuToCpu,
             AccessPattern::kHostVisible,
+            UsageLabelFlag::kNotPredefined,
             "ComputeTest_TransferToCpu");
     SkASSERT(xferBuffer);
 
