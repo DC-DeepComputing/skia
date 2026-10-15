@@ -72,6 +72,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f25e052_06933917",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Do not use #if/#ifdef before including \"SkTypes.h\". Also prefer \u0027#if defined(...)\u0027 over \u0027#ifdef\u0027, and macro names must be uppercase with an SK_ prefix (e.g. SK_CUBIC_CLAMP_UNIT).",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fba6e2bb_80b2b04a",
         "filename": "include/core/SkCubicMap.h",
         "patchSetId": 2
@@ -83,6 +106,29 @@
       "writtenOn": "2026-10-15T17:34:52Z",
       "side": 1,
       "message": "In header files, Skia includes (\"...\") must come before system/standard library includes (\u003c...\u003e), and includes should be in alphabetical order.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f4f765a_08964f9d",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Skia headers (\"...\") must come before system and standard library headers (\u003c...\u003e), and all includes must be in alphabetical order.",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -154,6 +200,29 @@
       "message": "Include directives must place Skia headers (\"...\") first in alphabetical order, followed by system/C++ standard library headers (\u003c...\u003e). In addition, full paths relative to the repository root must be used (e.g., \"include/core/SkPoint.h\").",
       "range": {
         "startLine": 14,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f0c92d0_8ed152f2",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "#include directives must use full paths relative to the repository root (e.g. #include \"include/core/SkPoint.h\").",
+      "range": {
+        "startLine": 19,
         "startChar": 0,
         "endLine": 19,
         "endChar": 0
@@ -256,6 +325,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ad88da7_9dc9310c",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Public headers in include/ must not depend on files in other directories (e.g. src/ or tools/). Also, Skia uses .h (not .hpp) for C++ headers.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0ccbbedb_56f87a05",
         "filename": "include/core/SkCubicMap.h",
         "patchSetId": 2
@@ -294,6 +386,52 @@
         "startLine": 27,
         "startChar": 0,
         "endLine": 27,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac24249d_3b4abae6",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Macros that have greater than file scope should be prefixed with SK_, SKGPU_, or GR_.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e1f069_0342f668",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Structs predominantly meant for direct field access without methods should not use \u0027f\u0027 prefix on their fields.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 34,
         "endChar": 0
       },
       "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
@@ -371,6 +509,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fc3e3e1_1da4e7d6",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Enum name should be singular for exclusive values (SkCubicEvalMode). Scoped enum values must start with \u0027k\u0027 and do not need suffixes (e.g. kLinear, kFast). Enum count should be defined outside the enum as k\u003csingular enum name\u003eCount derived from kLast.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a90a92e_b0850ed2",
         "filename": "include/core/SkCubicMap.h",
         "patchSetId": 2
@@ -428,6 +589,29 @@
       "writtenOn": "2026-10-15T17:34:52Z",
       "side": 1,
       "message": "Bitfield enums should have plural names (SkCubicFlags). Unscoped enumerators must be prefixed with \u0027k\u0027 and suffixed with the singular enum name (e.g. kClampX_CubicFlag).",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83ea5293_09da42de",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Bitfield enum names should be plural (SkCubicFlags). Unscoped enum values must start with \u0027k\u0027 and end with an underscore and singular enum name (e.g. kClampX_CubicFlag, kClampY_CubicFlag).",
       "range": {
         "startLine": 43,
         "startChar": 0,
@@ -532,6 +716,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1cdd1351_7e91ebf9",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Core Skia types must use the \u0027Sk\u0027 prefix (SkCubicMapEvaluator). Mutable parameters should be passed by pointer (float* outY) rather than non-const reference.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f51e3c4_637ebdee",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Class declarations should be ordered public, protected, private unless forward declaration requires otherwise.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8eb16ac_db840ae6",
         "filename": "include/core/SkCubicMap.h",
         "patchSetId": 2
@@ -570,6 +800,29 @@
         "startLine": 67,
         "startChar": 0,
         "endLine": 69,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "333b3327_416754ec",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Unscoped enum enumerators should start with \u0027k\u0027 and end with _Type. Fields should not be intermixed with methods, member variables must be camel-capped with an \u0027f\u0027 prefix (e.g. fCoeffArray, fType), and bitfields should use uint32_t instead of unsigned short.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 70,
         "endChar": 0
       },
       "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
@@ -670,6 +923,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e2c9c4f_dba68d14",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Use 4 spaces instead of tabs, remove trailing whitespace, do not prefix nested types with \u0027Sk\u0027, and prefer \u0027int\u0027 over \u0027unsigned int\u0027.",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3dd0fff7_9cce685c",
         "filename": "include/core/SkCubicMap.h",
         "patchSetId": 2
@@ -716,6 +992,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d66322b_c7dca444",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Single-argument constructors should almost always be marked explicit.",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e60f1813_abba8751",
         "filename": "include/core/SkCubicMap.h",
         "patchSetId": 2
@@ -731,6 +1030,52 @@
         "startLine": 81,
         "startChar": 0,
         "endLine": 81,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b1c762_6a1a37c4",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Lines should be wrapped at 100 columns.",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d03f2c1a_3b309dbc",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Non-static class methods should be camel-capped with no initial capital letter (computeYFromX).",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 86,
         "endChar": 0
       },
       "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
@@ -831,6 +1176,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d52e443f_e7d15a0e",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Mutable parameters should be pointers rather than non-const references (SkPoint* outResult), mandatory const object parameters should be passed by const reference (const SkPoint\u0026 mandatoryOffset), and continuation lines should be indented eight spaces or aligned with the first parameter.",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c0f3e82_737198ba",
         "filename": "include/core/SkCubicMap.h",
         "patchSetId": 2
@@ -867,6 +1235,29 @@
       "message": "Line up overflowing parameters or indent by 8 spaces. Mutable parameters must be passed by pointer (SkPoint* outResult), and mandatory const parameters must be passed by const reference (const SkPoint\u0026 mandatoryOffset).",
       "range": {
         "startLine": 93,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c897b4c_b7e8b80e",
+        "filename": "include/core/SkCubicMap.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Extern functions should use CamelCase with an initial capital and \u0027Sk\u0027 prefix (e.g. SkCubicIsMonotonic).",
+      "range": {
+        "startLine": 96,
         "startChar": 0,
         "endLine": 96,
         "endChar": 0
@@ -1084,6 +1475,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "767e21ca_821c4924",
+        "filename": "include/core/SkCubicMapPriv.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Private headers should live in src/ or include/private/ rather than include/, must use the .h extension instead of .hpp, and headers in include/ must not include files from src/.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01564a67_db72cff2",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -1118,6 +1532,29 @@
       "writtenOn": "2026-10-15T17:42:45Z",
       "side": 1,
       "message": "Do not use #if/#ifdef before including \"SkTypes.h\" (or the primary Skia header). Global variables should be prefixed with \u0027g\u0027 and camel-capped (gDebugMode), and prefer \u0027#if defined(SK_DEBUG)\u0027 over \u0027#ifdef SK_DEBUG\u0027.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e1dada_2b34dcee",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Prefer \u0027#if defined(SK_MACRO)\u0027 over \u0027#ifdef SK_MACRO\u0027, and global variables must be prefixed with \u0027g\u0027 and camel-capped (gDebugMode).",
       "range": {
         "startLine": 8,
         "startChar": 0,
@@ -1199,6 +1636,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5847e89e_4748ffa4",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "In .cpp files, the corresponding header for the implementation file must come first before all other includes, and Skia headers come before system headers.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f9588c29_e972c096",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -1268,6 +1728,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3babc694_baeba8b5",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Global variables should be prefixed with \u0027g\u0027 and camel-capped (e.g. gLoggingEnabled, gSolverCallCount).",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d951a355_334286ea",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -1306,6 +1789,29 @@
         "startLine": 20,
         "startChar": 0,
         "endLine": 29,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7f22ce1_77b30816",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "File-local helper functions in .cpp files should be static/anonymous namespace and use lower_case_with_underscores (eval_poly). Open braces do not get a newline.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 30,
         "endChar": 0
       },
       "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
@@ -1383,6 +1889,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85c4e167_0e6272ca",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "File-local helper functions must be lower_case_with_underscores (cubic_solver). Open braces should be on the same line. Prefer \u0027#if defined(SK_DEBUG)\u0027 over \u0027#ifdef\u0027.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a8c962e_034209fd",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -1417,6 +1946,29 @@
       "writtenOn": "2026-10-15T17:42:45Z",
       "side": 1,
       "message": "Local variables and arguments must be camel-capped with no initial cap (currentGuess).",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c247d44_6081a3d2",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Local variables must be camel-capped with no initial capital letter (currentGuess).",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -1498,6 +2050,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f96cc37_29e54453",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Use \u0027int\u0027 instead of \u0027unsigned int\u0027, and name constants with \u0027k\u0027 prefix and camel-capping (constexpr float kDefaultTolerance \u003d 0.00005f). Include a space after \u0027for\u0027 and before the brace: \u0027for (; ...; ...) {\u0027.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1d1317c_e4d6153f",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -1536,6 +2111,29 @@
         "startLine": 41,
         "startChar": 0,
         "endLine": 47,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a49c1358_b37fd6e5",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Flow control keywords require a space before parentheses, and braces are always required with \u0027if\u0027 statements.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
         "endChar": 0
       },
       "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
@@ -1659,6 +2257,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "742b0732_49b507eb",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "File-local functions should be lower_case_with_underscores (nearly_zero), parameters must be camel-capped with no initial capital (inputValue), use 4 spaces instead of tabs, and avoid trailing whitespace.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fcc69322_0b4c9f81",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -1672,6 +2293,29 @@
       "message": "Arguments should be camel-capped with no initial cap (inputX), and open braces should not get a newline.\n\nhttps://skia.googlesource.com/skia.git/+/main/site/docs/dev/contrib/style.md#l134",
       "range": {
         "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "847abc7c_2c052b06",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "File-local helper functions should be lower_case_with_underscores (compute_t_from_x).",
+      "range": {
+        "startLine": 69,
         "startChar": 0,
         "endLine": 71,
         "endChar": 0
@@ -1797,6 +2441,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64299528_2fdb059d",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Parameters must start with a lower-case letter (inputX), open braces should be on the same line, flow control keywords need a space before parentheses, and prefer multi-line \u0027if\u0027 blocks.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80b6a55f_49ffc7e9",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -1879,6 +2546,29 @@
       "message": "Switch cases must be indented from the switch statement. Consecutive case statements do not need [[fallthrough]], but fallthrough between cases with statements requires [[fallthrough]].",
       "range": {
         "startLine": 79,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5391450_43d2d700",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Add a space between \u0027switch\u0027 and parentheses and before the brace. Consecutive case statements do not need [[fallthrough]]. Follow the pattern \u0027case ...: { ... } break;\u0027 when a block is needed within a case. Fallthrough to default requires \u0027[[fallthrough]];\u0027.",
+      "range": {
+        "startLine": 78,
         "startChar": 0,
         "endLine": 95,
         "endChar": 0
@@ -1973,6 +2663,29 @@
         "startLine": 111,
         "startChar": 0,
         "endLine": 111,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5518dd6e_7caf1da4",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Lines should be wrapped at 100 columns.",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
         "endChar": 0
       },
       "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
@@ -2119,6 +2832,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9495084f_3a307b88",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Open braces do not get a newline. \u0027else\u0027 and \u0027else if\u0027 must appear on the same line as closing and opening braces, and braces are always required with \u0027else\u0027.",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9a9ae148_1947a7b7",
         "filename": "src/core/SkCubicMap.cpp",
         "patchSetId": 2
@@ -2134,6 +2870,52 @@
         "startLine": 137,
         "startChar": 0,
         "endLine": 140,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a75ed6e_39ffcf66",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Method calls on the current object must be prefixed with \u0027this-\u003e\u0027 (this-\u003ecomputeFromT(...)).",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03429bcd_88ae3a64",
+        "filename": "src/core/SkCubicMap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Multi-line parameter declarations should have parameters indented eight spaces.",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 150,
         "endChar": 0
       },
       "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
@@ -2199,6 +2981,29 @@
       "writtenOn": "2026-10-15T17:34:52Z",
       "side": 1,
       "message": "Constructor initializers should be on the same line if they fit. Open braces don\u0027t get a newline.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53da6975_b4b74cb2",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Constructor initializers should be on the same line if they fit, and opening braces should not be on a newline.",
       "range": {
         "startLine": 17,
         "startChar": 0,
@@ -2280,6 +3085,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46cdc38c_c2757339",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Ganesh prefers macros to always be defined and checked with \u0027#if MACRO\u0027 rather than \u0027#ifdef MACRO\u0027. Method calls on the current object must be prefixed with \u0027this-\u003e\u0027 (this-\u003ecallAll(...)).",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c1cdfed_82d46039",
         "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
         "patchSetId": 2
@@ -2314,6 +3142,29 @@
       "writtenOn": "2026-10-15T17:42:45Z",
       "side": 1,
       "message": "Skia headers (\"...\") must come before C/C++ standard library headers (\u003c...\u003e).",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6194706b_4a98f204",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Skia headers (\"...\") must come before standard library headers (\u003clist\u003e). Prefer forward-declaring GrGLGpu rather than including GrGLGpu.h in header files.",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -2395,6 +3246,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8cd05502_a731f0c4",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Ganesh GL-specific macros should be prefixed with \u0027GR_GL_\u0027. Ganesh also prefers macros to be defined to 0 or 1 and evaluated with \u0027#if\u0027.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1580dde_23fe5cce",
         "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
         "patchSetId": 2
@@ -2452,6 +3326,29 @@
       "writtenOn": "2026-10-15T17:42:45Z",
       "side": 1,
       "message": "Ganesh types must use a \u0027Gr\u0027- prefix (e.g. GrGLCallbackTracker). Member fields in classes with methods must be prefixed with \u0027f\u0027 (fCount).",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb0b3d5_7bc10a93",
+        "filename": "src/gpu/ganesh/gl/GrGLFinishCallbacks.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Ganesh classes must use the \u0027Gr\u0027 prefix (GrGLCallbackTracker), and member variables in types with methods must have an \u0027f\u0027 prefix (fCount).",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -2556,6 +3453,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd34caaf_2a29e406",
+        "filename": "src/gpu/graphite/Buffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Prefer \u0027#if defined(SK_DEBUG)\u0027 over \u0027#ifdef SK_DEBUG\u0027. Method calls on the current object must be prefixed with \u0027this-\u003e\u0027 (this-\u003eisUnmappable(), this-\u003eisProtected(), this-\u003eisMapped(), this-\u003eonMap()).",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "882dc194_8ed3679c",
+        "filename": "src/gpu/graphite/Buffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Method calls on the current object must be prefixed with \u0027this-\u003e\u0027 (this-\u003eonAsyncMap(...), this-\u003eunmap(), this-\u003esharedContext()).",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0ca15a7_018ab04d",
         "filename": "src/gpu/graphite/Buffer.cpp",
         "patchSetId": 2
@@ -2648,6 +3591,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b4f9b83_1cc64eb2",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Header guards in namespaced directories must include the namespace prefix (skgpu_graphite_Buffer_DEFINED).",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1df2c80e_461605bb",
         "filename": "src/gpu/graphite/Buffer.h",
         "patchSetId": 2
@@ -2717,6 +3683,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a17141ee_12138507",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Graphite and shared GPU macros must use the \u0027SKGPU_\u0027 prefix (e.g. SKGPU_GRAPHITE_DEFAULT_BUFFER_ALIGNMENT).",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "03bcd0ee_06b96afc",
         "filename": "src/gpu/graphite/Buffer.h",
         "patchSetId": 2
@@ -2774,6 +3763,29 @@
       "writtenOn": "2026-10-15T17:42:45Z",
       "side": 1,
       "message": "Types inside namespaced subsystems should omit \u0027Sk\u0027/\u0027Gr\u0027 prefixes (BufferHelper). Member fields in types with methods must be prefixed with \u0027f\u0027 (fBufferPtr).",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c14b8c10_652aa977",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Types inside namespaced subsystems omit \u0027Sk\u0027/\u0027Gr\u0027 prefixes (e.g. BufferHelper). Member variables in classes with methods must be prefixed with \u0027f\u0027 (fBufferPtr).",
       "range": {
         "startLine": 26,
         "startChar": 0,
@@ -2924,6 +3936,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbf2c1ed_b61b0a9b",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Skia virtual methods should follow the pattern of public non-virtual methods calling private virtual \u0027onMethodName\u0027 methods. When \u0027override\u0027 is specified, the \u0027virtual\u0027 keyword should be omitted.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39fd61bf_4312e74c",
         "filename": "src/gpu/graphite/Buffer.h",
         "patchSetId": 2
@@ -2981,6 +4016,29 @@
       "writtenOn": "2026-10-15T17:42:45Z",
       "side": 1,
       "message": "Constructor initializers that do not fit on one line should have punctuation placed before each initializer on its own line (e.g., \u0027: Resource(...)\u0027 followed by \u0027, fSize(size)\u0027).",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08466d63_fe66e6b2",
+        "filename": "src/gpu/graphite/Buffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "In multi-line constructor initializers, each initializer should be on its own line, indented, with punctuation (colon and commas) placed before the initializer.",
       "range": {
         "startLine": 62,
         "startChar": 0,
@@ -3062,6 +4120,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb15df33_8d88dfcc",
+        "filename": "tools/milestone.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Per Google Python Style Guide, imports should be on separate lines, module-level variables should be lower_with_under (milestone_file), and do not use semicolons.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eeae9818_4274305f",
         "filename": "tools/milestone.py",
         "patchSetId": 2
@@ -3108,6 +4189,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed53fcfc_6e4f0c5d",
+        "filename": "tools/milestone.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Per Google Python Style Guide, class names must be CapWords (MilestoneUpdater), methods and arguments must be lowercase_with_underscores, indentation must be 4 spaces consistently, and do not use semicolons.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ecc964d_edd49c53",
         "filename": "tools/milestone.py",
         "patchSetId": 2
@@ -3142,6 +4246,29 @@
       "writtenOn": "2026-10-15T17:42:45Z",
       "side": 1,
       "message": "Local variables in Python should use lowercase_with_underscores (milestone_number). Catching exceptions with bare \u0027except:\u0027 is disallowed by the Google Python Style Guide; specify the expected exceptions.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8907086_6c63782f",
+        "filename": "tools/milestone.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Per Google Python Style Guide, do not use a bare \u0027except:\u0027, and local variables should be lowercase_with_underscores (milestone_number).",
       "range": {
         "startLine": 27,
         "startChar": 0,
@@ -3236,6 +4363,29 @@
       "message": "Use 4 spaces for indentation, not tabs.",
       "range": {
         "startLine": 50,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 0
+      },
+      "revId": "b6e6907cc5046188aa5dacf354fb7c9bec064f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37b4aee_7b994250",
+        "filename": "tools/milestone.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-15T17:48:10Z",
+      "side": 1,
+      "message": "Lines should not exceed 80 columns in Python, local variables must be lowercase_with_underscores (updater_instance), and indentation must use 4 spaces rather than tabs.",
+      "range": {
+        "startLine": 46,
         "startChar": 0,
         "endLine": 50,
         "endChar": 0
