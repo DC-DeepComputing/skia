@@ -33,6 +33,24 @@
       "message": "Can you copy the code comment for `writable_data()` to this function as well?",
       "revId": "c35bf9dac5517583f4025b3031ecfe65e017626d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "717a25d2_8246d4e3",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4107972
+      },
+      "writtenOn": "2026-10-15T02:21:43Z",
+      "side": 1,
+      "message": "Thanks, fixed in patchset 3.",
+      "parentUuid": "8de2a059_23c9b3bc",
+      "revId": "c35bf9dac5517583f4025b3031ecfe65e017626d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
