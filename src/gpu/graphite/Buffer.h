@@ -47,12 +47,14 @@ protected:
     Buffer(const SharedContext* sharedContext,
            size_t size,
            Protected isProtected,
-           std::string_view label,
+           LabelUsageBitMask labelUsageFlags,
+           std::string_view label = {},
            bool reusableRequiresPurgeable = false,
            bool requiresPrepareForReturnToCache = false)
             : Resource(sharedContext,
                        Ownership::kOwned,
                        size,
+                       labelUsageFlags,
                        label,
                        reusableRequiresPurgeable,
                        requiresPrepareForReturnToCache)

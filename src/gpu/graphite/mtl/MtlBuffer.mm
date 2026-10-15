@@ -16,6 +16,7 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
                               size_t size,
                               BufferType type,
                               AccessPattern accessPattern,
+                              LabelUsageBitMask labelUsageFlags,
                               std::string_view label) {
     if (size <= 0) {
         return nullptr;
@@ -41,18 +42,21 @@ sk_sp<Buffer> MtlBuffer::Make(const MtlSharedContext* sharedContext,
     sk_cfp<id<MTLBuffer>> buffer([sharedContext->device() newBufferWithLength:size
                                                                       options:options]);
 
-    return sk_sp<Buffer>(new MtlBuffer(sharedContext, size, std::move(buffer), label));
+    return sk_sp<Buffer>(new MtlBuffer(
+            sharedContext, size, std::move(buffer), labelUsageFlags, label));
 }
 
 MtlBuffer::MtlBuffer(const MtlSharedContext* sharedContext,
                      size_t size,
                      sk_cfp<id<MTLBuffer>> buffer,
+                     LabelUsageBitMask labelUsageFlags,
                      std::string_view label)
         : Buffer(sharedContext,
                  size,
                  Protected::kNo,  // Metal doesn't support protected memory
-                 label,
-                 /*reusableRequiresPurgeable=*/(*buffer).storageMode != MTLStorageModePrivate)
+                 /*reusableRequiresPurgeable=*/(*buffer).storageMode != MTLStorageModePrivate,
+                 labelUsageFlags,
+                 label)
         , fBuffer(std::move(buffer)) {
     // Update the newly-created underlying GPU object's label to match the Resource's
     this->synchronizeBackendLabel();

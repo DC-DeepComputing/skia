@@ -26,7 +26,8 @@ public:
                                   size_t,
                                   BufferType,
                                   AccessPattern,
-                                  std::string_view label);
+                                  LabelUsageBitMask,
+                                  std::string_view label = {});
 
     bool isUnmappable() const override;
 
@@ -40,6 +41,7 @@ private:
                size_t,
                wgpu::Buffer,
                void* mapAtCreationPtr,
+               LabelUsageBitMask,
                std::string_view label);
 
     bool prepareForReturnToCache(Resource::TakeRefFunc takeRef, void* takeRefCtx) override;
