@@ -426,7 +426,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            SkBackingFit backingFit,
                            const SkSurfaceProps& props,
                            LoadOp initialLoadOp,
-                           std::string_view label,
+                        //    std::string_view label,
+                           UsageLabelFlag usage,
                            bool registerWithRecorder,
                            bool allowUnpremul) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
@@ -443,8 +444,8 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                           Renderable::kYes);
 
     return Make(recorder,
-                TextureProxy::Make(caps, recorder->priv().resourceProvider(),
-                                   backingDimensions, textureInfo, budgeted, label),
+                TextureProxy::Make(caps, recorder->priv().resourceProvider(), backingDimensions,
+                                   textureInfo, budgeted, usage),
                 ii.dimensions(),
                 ii.colorInfo(),
                 props,
@@ -679,12 +680,12 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     LoadOp initialLoadOp = info.fInfo.isOpaque() ? LoadOp::kDiscard : LoadOp::kClear;
 
-    std::string label = fDC->target().proxy()->label();
-    if (label.empty()) {
-        label = "ChildDevice";
-    } else {
-        label += "_ChildDevice";
-    }
+    // std::string label = fDC->target().proxy()->label();
+    // if (label.empty()) {
+    //     label = "ChildDevice";
+    // } else {
+    //     label += "_ChildDevice";
+    // }
 
     return Make(fRecorder,
                 info.fInfo,
@@ -693,7 +694,7 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
                 SkBackingFit::kApprox,
                 props,
                 initialLoadOp,
-                label);
+                UsageLabelFlag::kChildDevice); // what about the proxy's usage?
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {

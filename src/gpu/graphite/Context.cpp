@@ -643,13 +643,13 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
 
     // copyPlane renders the source image into an A8 image and sets up a transfer stored in 'result'
     auto copyPlane = [&](SkImageInfo planeInfo,
-                         std::string_view label,
+                         UsageLabelFlag usage,
                          float rgb2yuv[20],
                          const SkMatrix& texMatrix,
                          PixelTransferResult* result) {
         sk_sp<Surface> dstSurface = Surface::MakeScratch(recorder.get(),
                                                          planeInfo,
-                                                         label,
+                                                         usage,
                                                          Budgeted::kYes,
                                                          Mipmapped::kNo,
                                                          SkBackingFit::kApprox);

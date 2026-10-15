@@ -27,6 +27,8 @@ class ResourceProvider;
 class ScratchResourceManager;
 class Texture;
 enum class TextureFormat : uint8_t;
+enum class UsageLabelFlag : uint64_t;
+using LabelUsageBitMask = SkEnumBitMask<UsageLabelFlag>;
 
 class TextureProxy : public SkPixelStorage {
 public:
@@ -95,13 +97,16 @@ public:
         fBudgeted = budgeted;
     }
 
+    LabelUsageBitMask usage() const { return fUsage; }
+
     // Make() will immediately instantiate non-budgeted proxies.
     static sk_sp<TextureProxy> Make(const Caps*,
                                     ResourceProvider*,
                                     SkISize dimensions,
                                     const TextureInfo&,
                                     skgpu::Budgeted,
-                                    std::string_view label);
+                                    UsageLabelFlag,
+                                    std::string_view label = {});
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 
@@ -122,13 +127,14 @@ private:
     TextureProxy(SkISize dimensions,
                  const TextureInfo& info,
                  Budgeted budgeted,
+                 UsageLabelFlag usage,
                  std::string_view label);
     TextureProxy(SkISize dimensions,
                  const TextureInfo&,
                  Budgeted,
                  Volatile,
                  LazyInstantiateCallback&&);
-    TextureProxy(sk_sp<Texture>);
+    // TextureProxy(sk_sp<Texture>);
 
 #ifdef SK_DEBUG
     void validateTexture(const Texture*);
@@ -142,6 +148,8 @@ private:
     Budgeted fBudgeted;
     const Volatile fVolatile;
 
+    // A TextureProxy should only have one usage, and can only be set upon creation.
+    const LabelUsageBitMask fUsage;
     // String used to describe the current use of this TextureProxy. It will be set on its
     // Texture object when the proxy gets instantiated.
     std::string fLabel;

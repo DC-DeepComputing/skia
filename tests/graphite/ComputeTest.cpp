@@ -966,6 +966,7 @@ DEF_GRAPHITE_TEST_FOR_COMPUTE_CONTEXTS(Compute_StorageTextureReadAndWrite,
                                                       {kDim, kDim},
                                                       texInfo,
                                                       skgpu::Budgeted::kNo,
+                                                      UsageLabelFlag::kNotPredefined,
                                                       "ComputeTestSrcProxy");
     MipLevel mipLevel;
     mipLevel.fPixels = srcPixels.addr();

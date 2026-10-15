@@ -246,9 +246,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
                 SkASSERT(shareable == Shareable::kYes &&
                          resource->labelAndFlagsAreIdentical(labelUsageFlags, label));
             }
-
-            resource->setShareable(shareable);
-        }
+          }
         this->refAndMakeResourceMRU(resource);
         this->validate();
     }

@@ -309,7 +309,7 @@ SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
                                       fTargetProxyData->refLazyProxy(),
                                       imageInfo.dimensions(),
                                       imageInfo.colorInfo(),
-                                      {},
+                                      /*props=*/{},
                                       LoadOp::kLoad);
     fTargetProxyCanvas = std::make_unique<SkCanvas>(fTargetProxyDevice);
     return fTargetProxyCanvas.get();
@@ -419,7 +419,8 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex, "");
+    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(
+            backendTex, UsageLabelFlag::kNotPredefined);
     if (!texture) {
         return false;
     }
@@ -485,7 +486,8 @@ bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex, "");
+    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(
+            backendTex, UsageLabelFlag::kNotPredefined);
     if (!texture) {
         return false;
     }

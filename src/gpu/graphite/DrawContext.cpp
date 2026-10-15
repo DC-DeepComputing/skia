@@ -297,7 +297,7 @@ void DrawContext::flush(Recorder* recorder) {
                     Budgeted::kYes,
                     Mipmapped::kNo,
                     SkBackingFit::kApprox,
-                    "DstCopy");
+                    "DstCopy"); // nicolettep: replace w/ flag
             if (!imageCopy) {
                 SKIA_LOG_W("DrawContext::flush Image::Copy failed, draw pass dropped!");
                 return;

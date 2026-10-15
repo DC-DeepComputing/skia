@@ -25,7 +25,7 @@ class CommandBuffer;
 class Recorder;
 class Recording;
 class ResourceProvider;
-enum class UsageLabelFlag : uint32_t;
+enum class UsageLabelFlag : uint64_t;
 using LabelUsageBitMask = SkEnumBitMask<UsageLabelFlag>;
 
 class UploadBufferManager {

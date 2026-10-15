@@ -142,7 +142,7 @@ void Surface::flushToDrawContext(DrawContext* drawContext) {
 
 sk_sp<Surface> Surface::Make(Recorder* recorder,
                              const SkImageInfo& info,
-                             std::string_view label,
+                             UsageLabelFlag usage,
                              Budgeted budgeted,
                              Mipmapped mipmapped,
                              SkBackingFit backingFit,
@@ -157,7 +157,7 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
                                         backingFit,
                                         SkSurfacePropsCopyOrDefault(props),
                                         initialLoadOp,
-                                        label,
+                                        usage,
                                         registerWithRecorder,
                                         allowUnpremul);
     if (!device) {
@@ -306,12 +306,11 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
         return nullptr;
     }
 
-    if (label.empty()) {
-        label = "SkSurfaceWrappedTexture";
-    }
-
-    sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
+            backendTex,
+            label.empty() ? UsageLabelFlag::kSkSurface | UsageLabelFlag::kWrapped
+                          : UsageLabelFlag::kNotPredefined,
+            label);
     if (!texture) {
         return nullptr;
     }

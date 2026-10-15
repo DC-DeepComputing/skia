@@ -111,7 +111,7 @@ public:
                               SkBackingFit,
                               const SkSurfaceProps&,
                               LoadOp initialLoadOp,
-                              std::string_view label,
+                              UsageLabelFlag usage,
                               bool registerWithRecorder=true,
                               bool allowUnpremul=false);
 

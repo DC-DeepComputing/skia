@@ -242,7 +242,7 @@ sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(SkRecorder* recorder,
                       Budgeted::kNo,
                       requiredProps.fMipmapped ? Mipmapped::kYes : Mipmapped::kNo,
                       SkBackingFit::kExact,
-                      get_chained_label(this, "ImageMakeCTandCSTexture", "_CTandCSConversion"));
+                      get_chained_label(this, "ImageMakeCTandCSTexture", "_CTandCSConversion")); // nicolettep replace
 }
 
 // Ganesh APIs are no-ops

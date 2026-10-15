@@ -30,12 +30,12 @@ public:
     // Convenience factory to create a Device, instantiate its target proxy and return as a Surface.
     static sk_sp<Surface> Make(Recorder* recorder,
                                const SkImageInfo& info,
-                               std::string_view label,
+                               UsageLabelFlag usage,
                                Budgeted budgeted,
                                Mipmapped mipmapped = Mipmapped::kNo,
                                SkBackingFit backingFit = SkBackingFit::kExact,
                                const SkSurfaceProps* props = nullptr) {
-        return Make(recorder, info, label, budgeted, mipmapped, backingFit, props,
+        return Make(recorder, info, usage, budgeted, mipmapped, backingFit, props,
                     LoadOp::kClear, /*registerWithRecorder=*/true, /*allowUnpremul=*/false);
     }
     // Make a surface that is not registered with the provided recorder. This surface should be
@@ -48,12 +48,12 @@ public:
     // avoid anti-aliasing.
     static sk_sp<Surface> MakeScratch(Recorder* recorder,
                                       const SkImageInfo& info,
-                                      std::string_view label,
+                                      UsageLabelFlag usage,
                                       Budgeted budgeted = Budgeted::kYes,
                                       Mipmapped mipmapped = Mipmapped::kNo,
                                       SkBackingFit backingFit = SkBackingFit::kApprox,
                                       bool allowUnpremul = false) {
-        return Make(recorder, info, label, budgeted, mipmapped, backingFit,
+        return Make(recorder, info, usage, budgeted, mipmapped, backingFit,
                     /*props=*/nullptr, LoadOp::kDiscard, /*registerWithRecorder=*/false,
                     allowUnpremul);
     }
@@ -116,7 +116,7 @@ private:
     // avoid anti-aliasing.
     static sk_sp<Surface> Make(Recorder* recorder,
                                const SkImageInfo&,
-                               std::string_view label,
+                               UsageLabelFlag usage,
                                Budgeted,
                                Mipmapped,
                                SkBackingFit,

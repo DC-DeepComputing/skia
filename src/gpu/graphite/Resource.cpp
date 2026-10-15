@@ -148,22 +148,46 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
 namespace {
 const char* usage_flag_to_str(UsageLabelFlag usage) {
     switch (usage) {
-        case UsageLabelFlag::kNotPredefined:           return "";
-        case UsageLabelFlag::kVertex:                  return "Vertex";
-        case UsageLabelFlag::kIndex:                   return "Index";
-        case UsageLabelFlag::kXferCpuToGpu:            return "XferCpuToGpu";
-        case UsageLabelFlag::kXferGpuToCpu:            return "XferGpuToCpu";
-        case UsageLabelFlag::kUniform:                 return "Uniform";
-        case UsageLabelFlag::kStorage:                 return "Storage";
-        case UsageLabelFlag::kQuery:                   return "Query";
-        case UsageLabelFlag::kIndirect:                return "Indirect";
-        case UsageLabelFlag::kStatic:                  return "Static";
-        case UsageLabelFlag::kIntrinsicConstant:       return "IntrinsicConstant";
-        case UsageLabelFlag::kTransferForDataBuffer:   return "DataBufferTransfer";
-        case UsageLabelFlag::kTransferForStaticBuffer: return "StaticBufferTransfer";
-        case UsageLabelFlag::kTextureUpload:           return "TextureUpload";
-        case UsageLabelFlag::kTimerQuery:              return "TimerQuery";
-        case UsageLabelFlag::kTransferForTimerQuery:   return "TimerQueryBufferTransfer";
+        case UsageLabelFlag::kNotPredefined:            return "";
+
+        // Buffer usages
+        case UsageLabelFlag::kVertex:                   return "Vertex";
+        case UsageLabelFlag::kIndex:                    return "Index";
+        case UsageLabelFlag::kXferCpuToGpu:             return "XferCpuToGpu";
+        case UsageLabelFlag::kXferGpuToCpu:             return "XferGpuToCpu";
+        case UsageLabelFlag::kUniform:                  return "Uniform";
+        case UsageLabelFlag::kStorage:                  return "Storage";
+        case UsageLabelFlag::kQuery:                    return "Query";
+        case UsageLabelFlag::kIndirect:                 return "Indirect";
+        case UsageLabelFlag::kStatic:                   return "Static";
+        case UsageLabelFlag::kIntrinsicConstant:        return "IntrinsicConstant";
+        case UsageLabelFlag::kTransferForDataBuffer:    return "DataBufferTransfer";
+        case UsageLabelFlag::kTransferForStaticBuffer:  return "StaticBufferTransfer";
+        case UsageLabelFlag::kTextureUpload:            return "TextureUpload";
+        case UsageLabelFlag::kTimerQuery:               return "TimerQuery";
+        case UsageLabelFlag::kTransferForTimerQuery:    return "TimerQueryBufferTransfer";
+
+        // Texture usages
+        case UsageLabelFlag::kPictureShader:            return "PictureShader";
+        case UsageLabelFlag::kAtlasProvider:            return "AtlasProvider";
+        case UsageLabelFlag::kChildDevice:              return "ChildDevice";
+        case UsageLabelFlag::kCopyDevice:               return "DeviceCopy";
+        case UsageLabelFlag::kGenerateMipmapsScratch:   return "GenerateMipmaps";
+        case UsageLabelFlag::kWrapped:                  return "Wrapped";
+        case UsageLabelFlag::kDiscardableLoadMSAA:      return "DiscardableLoadMSAA";
+        case UsageLabelFlag::kDispatchWriteOnlyStorage: return "DispatchWriteOnlyStorage";
+        case UsageLabelFlag::kDstCopy:                  return "DstCopy";
+        case UsageLabelFlag::kEvalBlur:                 return "EvalBlur";
+        case UsageLabelFlag::kImageMakeCTandCS:         return "CTandCSConversion";
+        case UsageLabelFlag::kImageSubset:              return "Subset";
+        case UsageLabelFlag::kLazySkImageBitmap:        return "LazySkImageBitmap";
+        case UsageLabelFlag::kPrecompileTarget:         return "PrecompileTarget";
+        case UsageLabelFlag::kYUVRasterBitmapPlane:     return "YUVRasterBitmapPlane";
+        case UsageLabelFlag::kRescaleDst:               return "RescaleDst";
+        case UsageLabelFlag::kRescaleImageTemp:         return "RescaleImageTemp";
+        case UsageLabelFlag::kRescaleLinearGamma:       return "RescaleLinearGamma";
+
+        default: SkUNREACHABLE;                         return "";
     }
     return "";
 }

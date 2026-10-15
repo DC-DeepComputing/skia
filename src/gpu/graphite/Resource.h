@@ -200,31 +200,48 @@ class Texture;
  * and comparison until its usages are finalized, at which point they can be mapped to string
  * representations and included on the label.
  */
-enum class UsageLabelFlag : uint32_t {
+enum class UsageLabelFlag : uint64_t {
     kNotPredefined = 0, //  no predefined flags represent a Resource's usage
 
     // Buffer types and usages
-    kVertex                  = 1 <<  0,
-    kIndex                   = 1 <<  1,
-    kXferCpuToGpu            = 1 <<  2,
-    kXferGpuToCpu            = 1 <<  3,
-    kUniform                 = 1 <<  4,
-    kStorage                 = 1 <<  5,
-    kQuery                   = 1 <<  6,
-    kIndirect                = 1 <<  7,
-    kStatic                  = 1 <<  8,
-    kIntrinsicConstant       = 1 <<  9,
-    kTransferForDataBuffer   = 1 << 10,
-    kTransferForStaticBuffer = 1 << 11,
-    kTextureUpload           = 1 << 12,
-    kTimerQuery              = 1 << 13,
-    kTransferForTimerQuery   = 1 << 14,
+    kVertex                    = 1ULL <<  0,
+    kIndex                     = 1ULL <<  1,
+    kXferCpuToGpu              = 1ULL <<  2,
+    kXferGpuToCpu              = 1ULL <<  3,
+    kUniform                   = 1ULL <<  4,
+    kStorage                   = 1ULL <<  5,
+    kQuery                     = 1ULL <<  6,
+    kIndirect                  = 1ULL <<  7,
+    kStatic                    = 1ULL <<  8,
+    kIntrinsicConstant         = 1ULL <<  9,
+    kTransferForDataBuffer     = 1ULL << 10,
+    kTransferForStaticBuffer   = 1ULL << 11,
+    kTextureUpload             = 1ULL << 12,
+    kTimerQuery                = 1ULL << 13,
+    kTransferForTimerQuery     = 1ULL << 14,
 
-    // TODO(b/431796811): Define and utilize flags for anticipated texture usages.
+    // Texture types and usages
+    kPictureShader             = 1ULL << 15,
+    kAtlasProvider             = 1ULL << 16,
+    kChildDevice               = 1ULL << 17,
+    kCopyDevice                = 1ULL << 18,
+    kWrapped                   = 1ULL << 19,
+    kDiscardableLoadMSAA       = 1ULL << 20,
+    kDispatchWriteOnlyStorage  = 1ULL << 21,
+    kDstCopy                   = 1ULL << 22,
+    kEvalBlur                  = 1ULL << 23,
+    kGenerateMipmapsScratch    = 1ULL << 24,
+    kImageMakeCTandCS          = 1ULL << 25,
+    kImageSubset               = 1ULL << 26,
+    kLazySkImageBitmap         = 1ULL << 27,
+    kPrecompileTarget          = 1ULL << 28,
+    kYUVRasterBitmapPlane      = 1ULL << 29,
+    kRescaleDst                = 1ULL << 30,
+    kRescaleImageTemp          = 1ULL << 31,
+    kRescaleLinearGamma        = 1ULL << 32,
 
-    kLastUsageLabelFlag               = kTransferForTimerQuery,
+    kLastUsageLabelFlag        = kRescaleLinearGamma,
 };
-
 SK_MAKE_BITMASK_OPS(UsageLabelFlag)
 using LabelUsageBitMask = SkEnumBitMask<UsageLabelFlag>;
 

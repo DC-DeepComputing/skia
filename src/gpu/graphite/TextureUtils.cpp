@@ -232,8 +232,8 @@ public:
         sk_sp<RefCntedCallback> textureReleaseCB = RefCntedCallback::Make(fTextureReleaseProc,
                                                                           textureReleaseCtx);
 
-        sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture,
-                                                                        std::move(fLabel));
+        sk_sp<Texture> texture = resourceProvider->createWrappedTexture(
+                backendTexture, UsageLabelFlag::kNotPredefined, std::move(fLabel));
         if (!texture) {
             SKIA_LOG_W("Failed to wrap BackendTexture returned by fulfill proc");
             return nullptr;
@@ -302,6 +302,7 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
                                                    bitmap.dimensions(),
                                                    textureInfo,
                                                    budgeted,
+                                                   UsageLabelFlag::kNotPredefined,
                                                    label);
     if (!proxy) {
         return {};
@@ -485,7 +486,7 @@ sk_sp<Image> RescaleImage(Recorder* recorder,
                                                      stepInfo.makeColorSpace(linearGamma));
         tempOutput = Surface::MakeScratch(recorder,
                                           gammaDstInfo,
-                                          "RescaleLinearGammaTexture");
+                                          "RescaleLinearGammaTexture"); // nicolettep here
 
         if (!tempOutput) {
             return nullptr;
@@ -527,7 +528,7 @@ sk_sp<Image> RescaleImage(Recorder* recorder,
         } else {
             tempOutput = Surface::MakeScratch(recorder,
                                               SkImageInfo::Make(nextDims, stepInfo),
-                                              "RescaleImageTempTexture");
+                                              "RescaleImageTempTexture"); // nicolettep here
             if (!tempOutput) {
                 return nullptr;
             }
@@ -596,7 +597,7 @@ bool GenerateMipmaps(Recorder* recorder, DrawContext* drawContext, sk_sp<Texture
                 SkImageInfo::Make(SkISize::Make(std::max(1, srcSize.width() >> (i + 1)),
                                                 std::max(1, srcSize.height() >> (i + 1))),
                                   colorInfo),
-                "GenerateMipmapsScratchTexture",
+                "GenerateMipmapsScratchTexture", // nicolettep flag
                 Budgeted::kYes,
                 Mipmapped::kNo,
                 SkBackingFit::kApprox);
@@ -770,7 +771,7 @@ public:
 
     sk_sp<SkImage> getCachedBitmap(const SkBitmap& data) const override {
         auto proxy = skgpu::graphite::RecorderPriv::CreateCachedProxy(fRecorder, data,
-                                                                      "ImageFilterCachedBitmap");
+                                                                      "ImageFilterCachedBitmap"); // nicolettep here
         if (!proxy) {
             return nullptr;
         }
@@ -801,7 +802,7 @@ public:
                                              SkBackingFit::kApprox,
                                              this->surfaceProps(),
                                              skgpu::graphite::LoadOp::kDiscard,
-                                             "EvalBlurTexture");
+                                             "EvalBlurTexture"); // nicolettep flag here
     }
 
 private:

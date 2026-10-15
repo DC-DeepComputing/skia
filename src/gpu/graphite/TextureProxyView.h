@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/private/SkEnumBitMask.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
@@ -19,6 +20,7 @@ enum class SkBackingFit;
 namespace skgpu::graphite {
 
 class Recorder;
+enum class UsageLabelFlag : uint64_t;
 
 class TextureProxyView {
 public:
@@ -31,7 +33,12 @@ public:
             : fProxy(std::move(proxy)), fSwizzle(swizzle), fOrigin(origin) {}
 
     // This entry point is used when we don't care about the swizzle and assume TopLeft origin.
-    explicit TextureProxyView(sk_sp<TextureProxy> proxy)
+    // Note that texture proxies should be limited to having one resource usage flag, but scratch
+    // texture resources are allowed to have multiple. Therefore, when creating a proxy view from
+    // a proxy, pass in usage flags and a label which may differ from that of fProxy.
+    explicit TextureProxyView(sk_sp<TextureProxy> proxy,
+                              LabelUsageBitMask usageFlags,
+                              std::string_view label = {})
             : fProxy(std::move(proxy)) {}
 
     TextureProxyView(TextureProxyView&& view) = default;

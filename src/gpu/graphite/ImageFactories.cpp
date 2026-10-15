@@ -94,12 +94,8 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
         return nullptr;
     }
 
-    if (label.empty()) {
-        label = "WrappedImage";
-    }
-
-    sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
+            backendTex, UsageLabelFlag::kWrapped, label);
     if (!texture) {
         SKIA_LOG_W("Texture creation failed");
         return nullptr;
@@ -189,8 +185,8 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
         label = "WrappedImage";
     }
 
-    sk_sp<Texture> texture =
-            recorder->priv().resourceProvider()->createWrappedTexture(backendTex, label);
+    sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
+            backendTex, UsageLabelFlag::kNotPredefined, label);
     if (!texture) {
         SKIA_LOG_W("Texture creation failed");
         return nullptr;
@@ -351,11 +347,10 @@ sk_sp<SkImage> PromiseTextureFromYUVA(Recorder* recorder,
         return nullptr;
     }
 
-    std::string labelStr(label);
-    if (labelStr.empty()) {
-        labelStr = "Wrapped_PromiseYUVPlane";
-    } else {
-        labelStr += "_PromiseYUVPlane";
+    LabelUsageBitMask proxyViewUsageFlags =
+            UsageLabelFlag::kPromise | UsageLabelFlag::kYUVPlane;
+    if (label.empty()) {
+        proxyViewUsageFlags |= UsageLabelFlag::kWrapped;
     }
 
     TextureProxyView planes[SkYUVAInfo::kMaxPlanes];
@@ -499,7 +494,7 @@ static sk_sp<SkImage> make_texture_image_from_lazy(Recorder* recorder,
                                     nullptr,
                                     skgpu::Budgeted::kNo,
                                     requiredProps,
-                                    "LazySkImageBitmapTexture");
+                                    "LazySkImageBitmapTexture"); // nicolettep here
         }
     }
 
@@ -608,17 +603,15 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
         return nullptr;
     }
 
-    std::string labelStr(label);
-    if (labelStr.empty()) {
-        labelStr = "Wrapped_YUVPlane";
-    } else {
-        labelStr += "_YUVPlane";
+    LabelUsageBitMask proxyViewUsageFlags = UsageLabelFlag::kYUVPlane;
+    if (label.empty()) {
+        proxyViewUsageFlags |= UsageLabelFlag::kWrapped;
     }
 
     TextureProxyView planes[SkYUVAInfo::kMaxPlanes];
     for (int i = 0; i < yuvaTextures.yuvaInfo().numPlanes(); ++i) {
         sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(
-                yuvaTextures.planeTexture(i), labelStr);
+                yuvaTextures.planeTexture(i), UsageLabelFlag::kNotPredefined, label);
         if (!texture) {
             SKIA_LOG_W("Failed to wrap backend texture for YUVA plane %d", i);
             return nullptr;
