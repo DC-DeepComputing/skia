@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef931efe_9a9d1d7e",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:28:51Z",
+      "side": 1,
+      "message": "This is hard to read with such a long line and a very small wrapped parameter (unbalanced lines). It would be better to format it like:\n```\nreturn SkContexts::GetGlobalSkSharedContext()\n                 -\u003esynchronizedResourceCache()\n                 -\u003esetTotalByteLimit(newLimit);\n```",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 22
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf094acc_342df7ab",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:28:51Z",
+      "side": 1,
+      "message": "For these two calls, line the `-\u003e` directly underneat the `::`.",
+      "range": {
+        "startLine": 84,
+        "startChar": 5,
+        "endLine": 93,
+        "endChar": 1
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27b21d07_6420d74d",
+        "filename": "src/core/SkSharedContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:28:51Z",
+      "side": 1,
+      "message": "`getSVGDecoderFactory()` or `svgDecoderFactory()`, it shouldn\u0027t start with a capital letter.",
+      "range": {
+        "startLine": 53,
+        "startChar": 30,
+        "endLine": 53,
+        "endChar": 47
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
