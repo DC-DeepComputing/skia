@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a09fc39_3376957d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-16T17:18:39Z",
+      "side": 1,
+      "message": "Delete this since the CL no longer has the QueueManager changes.",
+      "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "be81fe6e_aba118b3",
@@ -49,6 +66,23 @@
       "side": 1,
       "message": "pushed `AUTHORS` update and I believe I\u0027ve signed the CLA already :)",
       "parentUuid": "dab89691_aae0c22e",
+      "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f0608b8_29f483f2",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-16T17:18:39Z",
+      "side": 1,
+      "message": "Ideally we\u0027re not allocating an std::string for every local variable. Lets change this to a `std::string_view name \u003d variable-\u003ename();` then",
       "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
