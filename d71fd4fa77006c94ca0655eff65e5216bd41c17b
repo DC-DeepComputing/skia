@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "d71fd4fa77006c94ca0655eff65e5216bd41c17b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e767d71e_bc918405",
+        "filename": "src/gpu/graphite/StorageContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:36:41Z",
+      "side": 1,
+      "message": "Syntactically you can do:\n```\nStorageContext::StorageContext(const ResourceBindingRequirements7 bindingReqs, bool storageBufferSupport)\n        : StorageContext(bindingReqs.fMaxFallbackTextureSize, storageBufferSupport, bindingReqs.fMaxStorageBufferBytes) {}\n```",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 35
+      },
+      "revId": "d71fd4fa77006c94ca0655eff65e5216bd41c17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
