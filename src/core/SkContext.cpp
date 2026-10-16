@@ -85,29 +85,78 @@ SkResourceCache* SkContext::resourceCache() const {
     return fSharedContext->synchronizedResourceCache();
 }
 
-SkStrikeCache* SkContext::fontCache() const { return fSharedContext->fontCache(); }
+SkStrikeCache* SkContext::strikeCache() const { return fSharedContext->strikeCache(); }
 
 SkTypefaceCache* SkContext::typefaceCache() const { return fSharedContext->typefaceCache(); }
 
-size_t SkContext::fontCacheLimit() const { return this->fontCache()->getCacheSizeLimit(); }
+size_t SkContext::fontCacheLimit() const {
+    return fSharedContext->strikeCache()->getCacheSizeLimit();
+}
 
 size_t SkContext::setFontCacheLimit(size_t bytes) {
-    return this->fontCache()->setCacheSizeLimit(bytes);
+    return fSharedContext->strikeCache()->setCacheSizeLimit(bytes);
 }
 
-size_t SkContext::fontCacheUsed() const { return this->fontCache()->getTotalMemoryUsed(); }
+size_t SkContext::fontCacheUsed() const {
+    return fSharedContext->strikeCache()->getTotalMemoryUsed();
+}
 
-int SkContext::fontCacheCountLimit() const { return this->fontCache()->getCacheCountLimit(); }
+int SkContext::fontCacheCountLimit() const {
+    return fSharedContext->strikeCache()->getCacheCountLimit();
+}
 
 int SkContext::setFontCacheCountLimit(int count) {
-    return this->fontCache()->setCacheCountLimit(count);
+    return fSharedContext->strikeCache()->setCacheCountLimit(count);
 }
 
-int SkContext::fontCacheCountUsed() const { return this->fontCache()->getCacheCountUsed(); }
+int SkContext::fontCacheCountUsed() const {
+    return fSharedContext->strikeCache()->getCacheCountUsed();
+}
 
-void SkContext::purgeFontCache() { this->fontCache()->purgeAll(); }
+void SkContext::purgeFontCache() { fSharedContext->strikeCache()->purgeAll(); }
 
-void SkContext::purgePinnedFontCache() { this->fontCache()->purgePinned(); }
+void SkContext::purgePinnedFontCache() { fSharedContext->strikeCache()->purgePinned(); }
+
+size_t SkContext::resourceCacheTotalBytesUsed() const {
+    return fSharedContext->synchronizedResourceCache()->getTotalBytesUsed();
+}
+
+size_t SkContext::resourceCacheTotalByteLimit() const {
+    return fSharedContext->synchronizedResourceCache()->getTotalByteLimit();
+}
+
+size_t SkContext::setResourceCacheTotalByteLimit(size_t newLimit) {
+    return fSharedContext->synchronizedResourceCache()->setTotalByteLimit(newLimit);
+}
+
+size_t SkContext::resourceCacheSingleAllocationByteLimit() const {
+    return fSharedContext->synchronizedResourceCache()->getSingleAllocationByteLimit();
+}
+
+size_t SkContext::setResourceCacheSingleAllocationByteLimit(size_t newLimit) {
+    return fSharedContext->synchronizedResourceCache()->setSingleAllocationByteLimit(newLimit);
+}
+
+void SkContext::purgeResourceCache() {
+    fSharedContext->synchronizedResourceCache()->purgeAll();
+}
+
+int SkContext::typefaceCacheCountLimit() const {
+    return fSharedContext->typefaceCacheCountLimit();
+}
+
+int SkContext::setTypefaceCacheCountLimit(int count) {
+    return fSharedContext->setTypefaceCacheCountLimit(count);
+}
+
+SkContext::OpenTypeSVGDecoderFactory SkContext::setOpenTypeSVGDecoderFactory(
+        OpenTypeSVGDecoderFactory svgDecoderFactory) {
+    return fSharedContext->setSVGDecoderFactory(svgDecoderFactory);
+}
+
+SkContext::OpenTypeSVGDecoderFactory SkContext::openTypeSVGDecoderFactory() const {
+    return fSharedContext->svgDecoderFactory();
+}
 
 namespace {
 void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
@@ -150,4 +199,5 @@ SkContext* GetGlobalSkContext() {
     static SkContext* gSkContext = SkContexts::MakeRaster({}).release();
     return gSkContext;
 }
+
 }  // namespace SkContexts
