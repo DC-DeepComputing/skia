@@ -57,6 +57,11 @@ public:
                                     const RenderStep* step) {
         return ShaderInfo::EmitStorageFallbackTexture(reqs, step);
     }
+    static std::string emitBuffer(const ResourceBindingRequirements& reqs,
+                                  const RenderStep* step,
+                                  bool hasGradStorage = false) {
+        return ShaderInfo::EmitStepStorageBuffer(reqs, step, hasGradStorage);
+    }
 };
 
 // 1. Primitive Scalar & Integer Bitcast Tests
@@ -564,6 +569,64 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(TextureFallbackMultiStopGradientsDrawTest,
     insertInfo.fRecording = recording.get();
     context->insertRecording(insertInfo);
     context->submit(SyncToCpu::kYes);
+}
+
+// 9. Storage Buffer Declaration and Emission Tests
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(TextureFallbackStepStorageBufferEmissionTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kApiLevel_202404) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ResourceBindingRequirements reqs = recorder->priv().caps()->resourceBindingRequirements();
+    reqs.fUniformsSetIdx = 1;
+    reqs.fStorageBufferBinding = 2;
+
+    // 1. Gradients only (empty or nullptr step)
+    {
+        std::string sksl = TextureFallbackTest::emitBuffer(reqs, nullptr);
+        REPORTER_ASSERT(reporter,
+                        sksl.find("layout (set=1, binding=2) readonly buffer StepStorageBuffer {\n"
+                                  "    float fsStorageBuffer[];\n"
+                                  "};\n") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("readStepStorageData") == std::string::npos);
+    }
+
+    // 2. Step storage only (hasGradStorage = false)
+    TestStep step({
+            {"m4", SkSLType::kFloat4x4},
+            {"v2", SkSLType::kFloat2},
+            {"i", SkSLType::kInt},
+    });
+    {
+        std::string sksl = TextureFallbackTest::emitBuffer(reqs, &step, /*hasGradStorage=*/false);
+        REPORTER_ASSERT(reporter,
+                        sksl.find("layout (set=1, binding=2) readonly buffer StepStorageBuffer {\n"
+                                  "    StepStorageData stepStorageData[];\n"
+                                  "};\n") != std::string::npos);
+        REPORTER_ASSERT(reporter,
+                        sksl.find("inline StepStorageData readStepStorageData(int idx) {\n"
+                                  "    return stepStorageData[idx];\n"
+                                  "}") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("float fsStorageBuffer[]") == std::string::npos);
+    }
+
+    // 3. Both coexist (hasGradStorage = true)
+    {
+        std::string sksl = TextureFallbackTest::emitBuffer(reqs, &step, /*hasGradStorage=*/true);
+        // Only one buffer declaration
+        REPORTER_ASSERT(reporter,
+                        sksl.find("layout (set=1, binding=2) readonly buffer StepStorageBuffer {\n"
+                                  "    float fsStorageBuffer[];\n"
+                                  "};\n") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("StepStorageData stepStorageData[]") == std::string::npos);
+        // Struct & unpack function generated
+        REPORTER_ASSERT(reporter, sksl.find("struct StepStorageData") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("StepStorageData readStepStorageData(int index)") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("data.m4 = float4x4(t0, t1, t2, t3);") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("data.v2 = t4.xy;") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("data.i = floatBitsToInt(t4.z);") != std::string::npos);
+        REPORTER_ASSERT(reporter, sksl.find("float4 t0 = float4(fsStorageBuffer[baseIdx + 0]") != std::string::npos);
+    }
 }
 
 }  // namespace skgpu::graphite
