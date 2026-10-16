@@ -22,12 +22,12 @@ class SkContext;
     data members or virtual methods.*/
 class SkContextPrivConst {
 public:
+    SkResourceCache* resourceCache() const { return fConstContext->resourceCache(); }
     SkStrikeCache* strikeCache() const { return fConstContext->strikeCache(); }
+    SkTypefaceCache* typefaceCache() const { return fConstContext->typefaceCache(); }
 
 protected:
     explicit SkContextPrivConst(const SkContext* context) : fConstContext(context) {}
-
-    size_t fontCacheLimit() const { return fConstContext->fontCacheLimit(); }
 
 private:
     // No taking addresses of this type.

@@ -89,25 +89,64 @@ SkStrikeCache* SkContext::strikeCache() const { return fSharedContext->strikeCac
 
 SkTypefaceCache* SkContext::typefaceCache() const { return fSharedContext->typefaceCache(); }
 
-size_t SkContext::fontCacheLimit() const { return this->strikeCache()->getCacheSizeLimit(); }
+size_t SkContext::fontCacheLimit() const { return fSharedContext->fontCacheLimit(); }
 
 size_t SkContext::setFontCacheLimit(size_t bytes) {
-    return this->strikeCache()->setCacheSizeLimit(bytes);
+    return fSharedContext->setFontCacheLimit(bytes);
 }
 
-size_t SkContext::fontCacheUsed() const { return this->strikeCache()->getTotalMemoryUsed(); }
+size_t SkContext::fontCacheUsed() const { return fSharedContext->fontCacheUsed(); }
 
-int SkContext::fontCacheCountLimit() const { return this->strikeCache()->getCacheCountLimit(); }
+int SkContext::fontCacheCountLimit() const { return fSharedContext->fontCacheCountLimit(); }
 
 int SkContext::setFontCacheCountLimit(int count) {
-    return this->strikeCache()->setCacheCountLimit(count);
+    return fSharedContext->setFontCacheCountLimit(count);
 }
 
-int SkContext::fontCacheCountUsed() const { return this->strikeCache()->getCacheCountUsed(); }
+int SkContext::fontCacheCountUsed() const { return fSharedContext->fontCacheCountUsed(); }
 
-void SkContext::purgeFontCache() { this->strikeCache()->purgeAll(); }
+void SkContext::purgeFontCache() { fSharedContext->purgeFontCache(); }
 
-void SkContext::purgePinnedFontCache() { this->strikeCache()->purgePinned(); }
+void SkContext::purgePinnedFontCache() { fSharedContext->purgePinnedFontCache(); }
+
+size_t SkContext::resourceCacheTotalBytesUsed() const {
+    return fSharedContext->resourceCacheTotalBytesUsed();
+}
+
+size_t SkContext::resourceCacheTotalByteLimit() const {
+    return fSharedContext->resourceCacheTotalByteLimit();
+}
+
+size_t SkContext::setResourceCacheTotalByteLimit(size_t newLimit) {
+    return fSharedContext->setResourceCacheTotalByteLimit(newLimit);
+}
+
+size_t SkContext::resourceCacheSingleAllocationByteLimit() const {
+    return fSharedContext->resourceCacheSingleAllocationByteLimit();
+}
+
+size_t SkContext::setResourceCacheSingleAllocationByteLimit(size_t newLimit) {
+    return fSharedContext->setResourceCacheSingleAllocationByteLimit(newLimit);
+}
+
+void SkContext::purgeResourceCache() { fSharedContext->purgeResourceCache(); }
+
+int SkContext::typefaceCacheCountLimit() const {
+    return fSharedContext->typefaceCacheCountLimit();
+}
+
+int SkContext::setTypefaceCacheCountLimit(int count) {
+    return fSharedContext->setTypefaceCacheCountLimit(count);
+}
+
+SkContext::OpenTypeSVGDecoderFactory SkContext::setOpenTypeSVGDecoderFactory(
+        OpenTypeSVGDecoderFactory svgDecoderFactory) {
+    return fSharedContext->setSVGDecoderFactory(svgDecoderFactory);
+}
+
+SkContext::OpenTypeSVGDecoderFactory SkContext::openTypeSVGDecoderFactory() const {
+    return fSharedContext->svgDecoderFactory();
+}
 
 namespace {
 void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context) {
@@ -150,4 +189,5 @@ SkContext* GetGlobalSkContext() {
     static SkContext* gSkContext = SkContexts::MakeRaster({}).release();
     return gSkContext;
 }
+
 }  // namespace SkContexts
