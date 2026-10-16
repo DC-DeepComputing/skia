@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77bee84d_f1cb3558",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4599678
+      },
+      "writtenOn": "2026-10-16T02:06:04Z",
+      "side": 1,
+      "message": "Additional details and screenshots attached to the chromium bug.\n\nAssociated Chromium change: https://chromium-review.googlesource.com/c/chromium/src/+/7686597",
+      "revId": "9d2e951dcae0740ec0c6846dd7da5124d0d65642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
