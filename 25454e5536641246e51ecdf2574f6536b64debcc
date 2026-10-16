@@ -16,6 +16,24 @@
       "message": "Add a `Bug: \u003cnum\u003e` line here",
       "revId": "25454e5536641246e51ecdf2574f6536b64debcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ba918d4_4e067e68",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-16T14:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47968a21_86f1799c",
+      "revId": "25454e5536641246e51ecdf2574f6536b64debcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
