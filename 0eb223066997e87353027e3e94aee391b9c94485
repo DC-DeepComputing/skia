@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e6daf01_1c080747",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:17:23Z",
+      "side": 1,
+      "message": "Thanks for pointing out this issue and providing a fix!",
+      "revId": "0eb223066997e87353027e3e94aee391b9c94485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b8485df_3584d53a",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:17:23Z",
+      "side": 1,
+      "message": "Can you remove this change? Fixing the pipeline visiting for failed pipeline handles should be a separate CL and this async compilation reporting will need to be adjusted to work with the threaded compilation that @robertphillips@google.com is wrapping up now.",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 21
+      },
+      "revId": "0eb223066997e87353027e3e94aee391b9c94485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0ac5882_a1c891dd",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:17:23Z",
+      "side": 1,
+      "message": "nit: Can this be named `isMainParameter()`?",
+      "range": {
+        "startLine": 106,
+        "startChar": 9,
+        "endLine": 106,
+        "endChar": 21
+      },
+      "revId": "0eb223066997e87353027e3e94aee391b9c94485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
