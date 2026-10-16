@@ -2564,27 +2564,24 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint,
                                              rrect.radii().data());
     }
 
+#if defined(SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR)
     std::optional<AnalyticBlurMask> analyticBlur = AnalyticBlurMask::Make(
             this->recorder(), this->localToDeviceTransform(), deviceSigma, rrectToBlur);
     if (!analyticBlur) {
-#if !defined(SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR)
-        // Try using the analytic rrect blur specific mask.
-        std::optional<AnalyticRRectBlurMask> analyticRRectBlur = AnalyticRRectBlurMask::Make(
-                this->recorder(), this->localToDeviceTransform(), localSigma, rrectToBlur);
-        if (analyticRRectBlur) {
-            this->drawGeometry(this->localToDeviceTransform(),
-                               Geometry(*analyticRRectBlur),
-                               PaintParams(paint),
-                               SkStrokeRec(paint));
-            return true;
-        }
-#endif
-
         return false;
     }
+    Geometry geometry = Geometry(*analyticBlur);
+#else
+    std::optional<AnalyticRRectBlurMask> analyticRRectBlur = AnalyticRRectBlurMask::Make(
+            this->recorder(), this->localToDeviceTransform(), localSigma, rrectToBlur);
+    if (!analyticRRectBlur) {
+        return false;
+    }
+    Geometry geometry = Geometry(*analyticRRectBlur);
+#endif
 
     this->drawGeometry(this->localToDeviceTransform(),
-                       Geometry(*analyticBlur),
+                       std::move(geometry),
                        PaintParams(paint),
                        SkStrokeRec(paint));
     return true;

@@ -84,7 +84,6 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::Make(Recorder* recorder,
     if (srcRRect.isRect() && localToDevice.preservesRightAngles()) {
         return MakeRect(recorder, localToDevice, deviceSigma, srcRRect.rect());
     }
-#endif
 
     const auto devRRect = srcRRect.transform(localToDevice);
     if (devRRect.has_value() && SkRRectPriv::IsCircle(*devRRect)) {
@@ -104,7 +103,6 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::Make(Recorder* recorder,
         return MakeCircle(recorder, localToDevice, deviceSigma, srcRect, devRect);
     }
 
-#if defined(SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR)
     if (devRRect.has_value() && SkRRectPriv::IsSimpleCircular(*devRRect) &&
         localToDevice.isScaleTranslate()) {
         return MakeRRect(recorder, localToDevice, deviceSigma, srcRRect, *devRRect);
