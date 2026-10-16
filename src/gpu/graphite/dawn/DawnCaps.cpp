@@ -328,7 +328,8 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     }
 #endif
 
-    fSupportsHalfPrecision = backendContext.fDevice.HasFeature(wgpu::FeatureName::ShaderF16);
+    //fSupportsHalfPrecision = backendContext.fDevice.HasFeature(wgpu::FeatureName::ShaderF16);
+    fSupportsHalfPrecision = false; // TESTING PURPOSE: force-disable half precision support for now
     fResourceBindingReqs.fBackendApi = BackendApi::kDawn;
     // The WGSL generator assumes tightly packed std430 layout for SSBOs which is also the default
     // for all types outside the uniform address space in WGSL (which is emulated to 140 by SkSL's
