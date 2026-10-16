@@ -9342,9 +9342,28 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenDefaultOff, reporter) {
     REPORTER_ASSERT(reporter, firstLine.width() == firstLine.widthWithoutEllipsis());
 }
 
-// Verifies that the rendered soft hyphen does not produce a spurious selection
-// rect: getRectsForRange over the entire source text must not include the hyphen's
-// pixel area, since the hyphen is not part of the source text.
+// Returns the horizontal extent {left, right} of the rects that getRectsForRange returns on
+// `line` for the UTF-16 range [start, end), or {0, 0} if none of them are on that line.
+static std::pair<SkScalar, SkScalar> lineRectExtent(Paragraph* paragraph,
+                                                    const TextLine& line,
+                                                    size_t start,
+                                                    size_t end) {
+    auto boxes = paragraph->getRectsForRange(
+            start, end, RectHeightStyle::kTight, RectWidthStyle::kTight);
+    SkScalar lineY = line.offset().fY + line.height() / 2;
+    SkScalar left = SK_ScalarMax, right = 0;
+    for (const auto& box : boxes) {
+        if (box.rect.fTop <= lineY && box.rect.fBottom >= lineY) {
+            left = std::min(left, box.rect.fLeft);
+            right = std::max(right, box.rect.fRight);
+        }
+    }
+    return right == 0 ? std::make_pair(0.0f, 0.0f) : std::make_pair(left, right);
+}
+
+// The rendered soft hyphen is selected together with the soft hyphen it stands for:
+// getRectsForRange covers the hyphen's pixels exactly when the range includes the
+// soft hyphen.
 UNIX_ONLY_TEST(SkParagraph_SoftHyphenGetRectsForRange, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
@@ -9353,14 +9372,92 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenGetRectsForRange, reporter) {
             "inter\xC2\xAD"
             "national";
     const size_t textLen = strlen(text);
+    // getRectsForRange takes UTF-16 offsets: "inter" is 0-4, the soft hyphen 5, "national" 6-13.
+    const size_t softHyphen = 5;
+    const size_t textLen16 = 14;
+
+    // A custom hyphen string longer than the soft hyphen (U+2010 is 3 bytes) must not make
+    // ranges on the second line select the first line's hyphen.
+    for (const char* hyphenString : {"-", "\xE2\x80\x90"}) {
+        ParagraphStyle paragraph_style;
+        paragraph_style.turnHintingOff();
+        paragraph_style.setRenderSoftHyphens(true);
+        paragraph_style.setSoftHyphenString(SkString(hyphenString));
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(20);
+        text_style.setColor(SK_ColorBLACK);
+        builder.pushStyle(text_style);
+        builder.addText(text, textLen);
+        builder.pop();
+
+        auto paragraph = builder.Build();
+        // Narrow width forces a break at the soft hyphen. Verify via structural
+        // checks (hyphen run on first line) rather than exact line counts, since
+        // those depend on font metrics that vary across platforms.
+        paragraph->layout(80);
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, !impl->lines().empty());
+        auto& firstLine = impl->lines()[0];
+        REPORTER_ASSERT(reporter, firstLine.hyphen() != nullptr);
+        if (firstLine.hyphen() == nullptr)
+            return;
+        SkScalar textOnlyWidth = firstLine.widthWithoutEllipsis();
+        SkScalar lineWidth = firstLine.width();
+        REPORTER_ASSERT(reporter, lineWidth > textOnlyWidth);  // hyphen contributes width
+        SkScalar lineLeft = firstLine.offset().fX;
+
+        // Ranges that include the soft hyphen cover the rendered hyphen too.
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(lineRectExtent(paragraph.get(), firstLine, 0, textLen16).second,
+                                    lineLeft + lineWidth,
+                                    EPSILON100));
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(
+                        lineRectExtent(paragraph.get(), firstLine, softHyphen, softHyphen + 1)
+                                .second,
+                        lineLeft + lineWidth,
+                        EPSILON100));
+        // A range that stops before the soft hyphen doesn't.
+        REPORTER_ASSERT(reporter,
+                        lineRectExtent(paragraph.get(), firstLine, 0, softHyphen).second <=
+                                lineLeft + textOnlyWidth + EPSILON100);
+        // Nor does a range on the second line only.
+        REPORTER_ASSERT(
+                reporter,
+                lineRectExtent(paragraph.get(), firstLine, softHyphen + 1, textLen16).second == 0);
+    }
+}
+
+// In RTL text the rendered hyphen is at the left edge of its line. It is selected with its
+// soft hyphen, and the text after it in visual order is placed after it.
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenGetRectsForRangeRtl, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text =
+            "\xD9\x83\xD9\x84\xD9\x85\xD8\xA9"
+            "\xC2\xAD"
+            "\xD8\xB7\xD9\x88\xD9\x8A\xD9\x84\xD8\xA9";
+    const size_t textLen = strlen(text);
+    // getRectsForRange takes UTF-16 offsets: the first word is 0-3, the soft hyphen 4, the
+    // second word 5-9.
+    const size_t softHyphen = 4;
+    const size_t textLen16 = 10;
 
     ParagraphStyle paragraph_style;
     paragraph_style.turnHintingOff();
     paragraph_style.setRenderSoftHyphens(true);
+    paragraph_style.setTextDirection(TextDirection::kRtl);
     ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
 
     TextStyle text_style;
-    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontFamilies({SkString("Noto Naskh Arabic")});
     text_style.setFontSize(20);
     text_style.setColor(SK_ColorBLACK);
     builder.pushStyle(text_style);
@@ -9368,39 +9465,27 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenGetRectsForRange, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    // Narrow width forces a break at the soft hyphen. Verify via structural
-    // checks (hyphen run on first line) rather than exact line counts, since
-    // those depend on font metrics that vary across platforms.
-    paragraph->layout(80);
+    paragraph->layout(60);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, !impl->lines().empty());
-
     auto& firstLine = impl->lines()[0];
     REPORTER_ASSERT(reporter, firstLine.hyphen() != nullptr);
     if (firstLine.hyphen() == nullptr) return;
-    SkScalar textOnlyWidth = firstLine.widthWithoutEllipsis();
-    SkScalar lineWidth = firstLine.width();
-    REPORTER_ASSERT(reporter, lineWidth > textOnlyWidth);  // hyphen contributes width
+    SkScalar hyphenWidth = firstLine.width() - firstLine.widthWithoutEllipsis();
+    REPORTER_ASSERT(reporter, hyphenWidth > 0);
+    SkScalar lineLeft = firstLine.offset().fX;
 
-    // Request rects for the entire source text. None of the returned rects on the
-    // first line should extend past the bare-text advance into the hyphen pixels.
-    auto boxes = paragraph->getRectsForRange(
-            0, textLen, RectHeightStyle::kTight, RectWidthStyle::kTight);
-    REPORTER_ASSERT(reporter, !boxes.empty());
-
-    SkScalar firstLineMaxRight = 0;
-    SkScalar firstLineY = firstLine.offset().fY + firstLine.height() / 2;
-    for (const auto& box : boxes) {
-        if (box.rect.fTop <= firstLineY && box.rect.fBottom >= firstLineY) {
-            firstLineMaxRight = std::max(firstLineMaxRight, box.rect.fRight);
-        }
-    }
-    // The right edge of any rect on the first line must not exceed the bare-text
-    // advance (with a small epsilon). If the hyphen were producing a spurious rect,
-    // this would equal firstLine.width(), not widthWithoutEllipsis().
-    SkScalar firstLineLeft = firstLine.offset().fX;
-    REPORTER_ASSERT(reporter, firstLineMaxRight <= firstLineLeft + textOnlyWidth + EPSILON100);
+    // The whole text covers the first line from the hyphen at its left edge.
+    auto all = lineRectExtent(paragraph.get(), firstLine, 0, textLen16);
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(all.first, lineLeft, EPSILON100));
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(all.second, lineLeft + firstLine.width(), EPSILON100));
+    // The first word alone starts after the hyphen.
+    auto word = lineRectExtent(paragraph.get(), firstLine, 0, softHyphen);
+    REPORTER_ASSERT(reporter, word.first >= lineLeft + hyphenWidth - EPSILON100);
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(word.second, lineLeft + firstLine.width(), EPSILON100));
 }
 
 // Verifies that clicking inside the rendered hyphen's pixel region maps to the

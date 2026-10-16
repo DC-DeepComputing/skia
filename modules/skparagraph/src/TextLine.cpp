@@ -1342,12 +1342,17 @@ void TextLine::getRectsForRange(TextRange textRange0,
     this->iterateThroughVisualRuns(true,
         [textRange0, rectHeightStyle, rectWidthStyle, &boxes, &lastRun, startBox, this]
         (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
-        // The rendered soft hyphen is a synthetic glyph run that does not correspond
-        // to any source text. Its synthetic textRange (offsets into the "-" string)
-        // would falsely intersect caller-supplied source ranges and produce a
-        // spurious selection rect at the line-end hyphen position. Skip it.
+        // The rendered hyphen stands for the soft hyphen that ends this line, so give it
+        // a rect exactly when the range includes that soft hyphen. Its own textRange
+        // indexes into the hyphen string, not the source text, so check the soft
+        // hyphen's cluster instead. Either way, report its width so the runs after it
+        // in visual order (RTL) are placed correctly.
         if (run->isHyphen()) {
-            return true;
+            const TextRange softHyphen = fOwner->cluster(fClusterRange.end - 1).textRange();
+            if ((softHyphen * textRange0).empty()) {
+                *runWidthInLine = run->advance().fX;
+                return true;
+            }
         }
         *runWidthInLine = this->iterateThroughSingleRunByStyles(
         TextAdjustment::GraphemeGluster, run, runOffsetInLine, textRange, StyleType::kNone,
