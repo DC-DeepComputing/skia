@@ -4839,7 +4839,6 @@ UNIX_ONLY_TEST(SkParagraph_BaselineParagraph, reporter) {
     paragraph_style.turnHintingOff();
     paragraph_style.setMaxLines(14);
     paragraph_style.setTextAlign(TextAlign::kJustify);
-    paragraph_style.setHeight(1.5);
     ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
 
     TextStyle text_style;
@@ -6161,6 +6160,38 @@ DEF_TEST(SkParagraph_CacheKeyCoversUnicode, reporter) {
     REPORTER_ASSERT(reporter, !layoutHits(anonymous));
     REPORTER_ASSERT(reporter, layoutHits(anonymous));
     REPORTER_ASSERT(reporter, !layoutHits(sk_make_sp<AnonymousUnicode>(get_unicode())));
+}
+
+// ParagraphStyle::setHeight() is ignored by layout, so it must not split ParagraphCache entries
+DEF_TEST(SkParagraph_ParagraphStyleHeightIgnored, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    bool found = false;
+    auto layout = [&](SkScalar height) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setHeight(height);
+        TextStyle textStyle;
+        textStyle.setFontSize(30.0f);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText("Hello world");
+        builder.pop();
+        auto paragraph = builder.Build();
+        found = false;
+        fontCollection->getParagraphCache()->setChecker(
+                [&found](ParagraphImpl*, const char* event, bool) {
+                    found |= strcmp(event, "foundParagraph") == 0;
+                });
+        paragraph->layout(1000.0f);
+        fontCollection->getParagraphCache()->setChecker([](ParagraphImpl*, const char*, bool) {});
+        return paragraph;
+    };
+
+    auto single = layout(1.0f);
+    auto triple = layout(3.0f);
+    REPORTER_ASSERT(reporter, found);
+    REPORTER_ASSERT(reporter, triple->getHeight() == single->getHeight());
 }
 
 UNIX_ONLY_TEST(SkParagraph_ParagraphWithLineBreak, reporter) {
