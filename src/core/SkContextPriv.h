@@ -78,6 +78,11 @@ namespace SkContexts {
 // This is an intermediary step in the SkContext project, whereby we use this
 // global SkContext object to remove or take away functionality from SkGraphics.
 SkContext* GetGlobalSkContext();
+
+// Returns the global SkSharedContext. If the global SkSharedContext does not exist yet, it will be
+// created. This is an intermediary step in the SkContext project, whereby we use this global
+// SkContext object to remove or take away functionality from SkGraphics.
+SkSharedContext* GetGlobalSkSharedContext();
 }
 
 #endif  // SkContextPriv_DEFINED
