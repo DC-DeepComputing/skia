@@ -33,6 +33,24 @@
       "message": "Sorry, can you add your email and name to `AUTHORS` and sign the CLA: https://developers.google.com/open-source/cla/individual",
       "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f366ca_f8c6e7c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5235490
+      },
+      "writtenOn": "2026-10-16T15:45:51Z",
+      "side": 1,
+      "message": "pushed `AUTHORS` update and I believe I\u0027ve signed the CLA already :)",
+      "parentUuid": "dab89691_aae0c22e",
+      "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
