@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0de6e0cc_ec989ee2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5220919
+      },
+      "writtenOn": "2026-10-16T21:27:00Z",
+      "side": 1,
+      "message": "So far just an empty commit to run a tryjob on the specific configuration that failed (OptiPlex7010 / IntelUHDGraphics770 / Graphite_Dawn_D3D11)",
+      "revId": "154bf2a6df833324a26a60fb1166bdceb98590e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
