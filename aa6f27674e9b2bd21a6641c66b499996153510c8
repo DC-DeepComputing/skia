@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "56920f13_51aef2d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5235490
+      },
+      "writtenOn": "2026-10-16T17:32:34Z",
+      "side": 1,
+      "message": "Deleted",
+      "parentUuid": "1a09fc39_3376957d",
+      "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "be81fe6e_aba118b3",
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "(oops, sent before finishing)...move the actual std::string generation inside the conditional only if we need it.",
       "parentUuid": "1f0608b8_29f483f2",
+      "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37849e3c_752a1ce3",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 5235490
+      },
+      "writtenOn": "2026-10-16T17:32:34Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "7566cf25_79f0a8ec",
       "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
