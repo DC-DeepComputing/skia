@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "560d3889_9adb9076",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-10-16T20:48:51Z",
+      "side": 1,
+      "message": "No worries, and thanks for trimming the description! PS4 is uploaded by me, so your +1 on it should count for owners now.",
+      "parentUuid": "ac89d5e8_32e27f23",
+      "revId": "33cf7e17574dbbac11b7b2ea884edd6a16a10d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "37982f12_dd512dbf",
         "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2026-10-16T19:21:29Z",
       "side": 1,
       "message": "Nit: since these 4 tests are now part of cl/1396916 itself, please drop the \"Fails on cl/1396916 because\" prefix from their comments (here and on lines 9576, 9626, 9670) so they just describe the invariant being tested.",
+      "revId": "33cf7e17574dbbac11b7b2ea884edd6a16a10d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d70af8e_58eb7698",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 9537,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-10-16T20:48:51Z",
+      "side": 1,
+      "message": "Done in PS4: the four comments now just describe what each test checks.",
+      "parentUuid": "37982f12_dd512dbf",
       "revId": "33cf7e17574dbbac11b7b2ea884edd6a16a10d82",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
