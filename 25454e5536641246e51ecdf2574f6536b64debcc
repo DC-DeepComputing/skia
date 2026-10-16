@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47968a21_86f1799c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T14:38:02Z",
+      "side": 1,
+      "message": "Add a `Bug: \u003cnum\u003e` line here",
+      "revId": "25454e5536641246e51ecdf2574f6536b64debcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
