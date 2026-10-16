@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29f95a63_d1d3e361",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T14:35:16Z",
+      "side": 1,
+      "message": "I wouldn\u0027t actually say this as its more an implementation detail of how SkContext works. But its not like we\u0027re explicitly making a global SkSharedContext object. We are just making a global SkContext and one of its data members happens to be an SkSharedContext",
+      "range": {
+        "startLine": 9,
+        "startChar": 117,
+        "endLine": 9,
+        "endChar": 154
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8c5c0db_5c6cdf0f",
+        "filename": "src/core/SkContextPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T14:35:16Z",
+      "side": 1,
+      "message": "I don\u0027t think we want this function. All callers should be using an SkContext object. They can set and change state through that which will forward it to the SkSharedContext.\n\nLike for example we will eventually want clients to call SkContext::getFontCacheLimit() so we need to make sure that function works anyways. Clients won\u0027t know about or have access to an SkSharedContext",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 44
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef931efe_9a9d1d7e",
         "filename": "src/core/SkGraphics.cpp",
         "patchSetId": 9
