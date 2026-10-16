@@ -6423,6 +6423,57 @@ UNIX_ONLY_TEST(SkParagraph_Fallbacks, reporter) {
     }
 }
 
+namespace {
+std::unique_ptr<Paragraph> layoutWith(sk_sp<FontCollection> fontCollection, const char* text) {
+    ParagraphStyle paragraphStyle;
+    TextStyle textStyle;
+    textStyle.setFontSize(30.0f);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(textStyle);
+    builder.addText(text);
+    builder.pop();
+    auto paragraph = builder.Build();
+    paragraph->layout(1000.0f);
+    return paragraph;
+}
+}  // namespace
+
+// Changing how fonts are resolved must not leave typefaces or paragraphs cached from before
+DEF_TEST(SkParagraph_FontCollectionSettersResetCaches, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(SkFontMgr::RefEmpty());
+    REPORTER_ASSERT(reporter, layoutWith(fontCollection, "Hello")->getMaxIntrinsicWidth() == 0);
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    REPORTER_ASSERT(reporter, layoutWith(fontCollection, "Hello")->getMaxIntrinsicWidth() > 0);
+
+    auto reference = sk_make_sp<FontCollection>();
+    reference->setDefaultFontManager(ToolUtils::TestFontMgr());
+    reference->disableFontFallback();
+    const SkScalar widthWithoutFallback = layoutWith(reference, "Hello")->getMaxIntrinsicWidth();
+
+    auto toggled = sk_make_sp<FontCollection>();
+    toggled->setDefaultFontManager(ToolUtils::TestFontMgr());
+    const SkScalar widthWithFallback = layoutWith(toggled, "Hello")->getMaxIntrinsicWidth();
+    REPORTER_ASSERT(reporter, widthWithoutFallback != widthWithFallback);
+    toggled->disableFontFallback();
+    REPORTER_ASSERT(reporter,
+                    layoutWith(toggled, "Hello")->getMaxIntrinsicWidth() == widthWithoutFallback);
+}
+
+// Repeating the current font settings must keep the cached paragraphs
+DEF_TEST(SkParagraph_FontCollectionSameSettingsKeepCaches, reporter) {
+    auto fontMgr = ToolUtils::TestFontMgr();
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(fontMgr);
+    layoutWith(fontCollection, "Hello");
+    REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
+
+    fontCollection->setDefaultFontManager(fontMgr);
+    fontCollection->setAssetFontManager(nullptr);
+    fontCollection->enableFontFallback();
+    REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
+}
+
 UNIX_ONLY_TEST(SkParagraph_Bidi1, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)

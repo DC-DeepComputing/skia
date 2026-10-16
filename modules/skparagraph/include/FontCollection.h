@@ -15,8 +15,8 @@
 namespace skia {
 namespace textlayout {
 
-class TextStyle;
 class Paragraph;
+class TextStyle;
 class FontCollection : public SkRefCnt {
 public:
     FontCollection();
@@ -51,6 +51,8 @@ public:
     void clearCaches();
 
 private:
+    void resetResolutionCaches();
+
     std::vector<sk_sp<SkFontMgr>> getFontManagerOrder() const;
 
     sk_sp<SkTypeface> matchTypeface(const SkString& familyName, SkFontStyle fontStyle);
