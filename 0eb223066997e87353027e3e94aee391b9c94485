@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62e3221a_71f1fc37",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5235490
+      },
+      "writtenOn": "2026-10-16T14:37:02Z",
+      "side": 1,
+      "message": "Okay no problem, done",
+      "parentUuid": "3b8485df_3584d53a",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 21
+      },
+      "revId": "0eb223066997e87353027e3e94aee391b9c94485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b0ac5882_a1c891dd",
         "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-16T14:17:23Z",
       "side": 1,
       "message": "nit: Can this be named `isMainParameter()`?",
+      "range": {
+        "startLine": 106,
+        "startChar": 9,
+        "endLine": 106,
+        "endChar": 21
+      },
+      "revId": "0eb223066997e87353027e3e94aee391b9c94485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c10ac9a0_5f212015",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5235490
+      },
+      "writtenOn": "2026-10-16T14:37:02Z",
+      "side": 1,
+      "message": "yup!",
+      "parentUuid": "b0ac5882_a1c891dd",
       "range": {
         "startLine": 106,
         "startChar": 9,
