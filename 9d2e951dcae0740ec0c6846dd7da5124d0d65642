@@ -16,6 +16,29 @@
       "message": "Additional details and screenshots attached to the chromium bug.\n\nAssociated Chromium change: https://chromium-review.googlesource.com/c/chromium/src/+/7686597",
       "revId": "9d2e951dcae0740ec0c6846dd7da5124d0d65642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "169e8110_7bc431e6",
+        "filename": "tests/ScalerContextTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:03:27Z",
+      "side": 1,
+      "message": "Can this be simplified to:\n```\nSkMaskGamma::PreBlend identityBlend{identity.data(), identity.data(), identity.data()};\nSkMaskGamma::PreBlend colorBlend{red.data(), green.data(), blue.data()};\n```",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 32
+      },
+      "revId": "9d2e951dcae0740ec0c6846dd7da5124d0d65642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
