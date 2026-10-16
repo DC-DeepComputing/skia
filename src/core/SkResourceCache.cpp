@@ -18,7 +18,9 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkChecksum.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkMessageBus.h"
+#include "src/core/SkSharedContext.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTHash.h"
 
@@ -463,14 +465,7 @@ void SkResourceCache::checkMessages() {
 ///////////////////////////////////////////////////////////////////////////////
 
 static SkSynchronizedResourceCache* get_cache() {
-#if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
-    static SkSynchronizedResourceCache* gResourceCache =
-            new SkSynchronizedResourceCache(SkDiscardableMemory::Create);
-#else
-    static SkSynchronizedResourceCache* gResourceCache =
-            new SkSynchronizedResourceCache(SK_DEFAULT_IMAGE_CACHE_LIMIT);
-#endif
-    return gResourceCache;
+    return SkContexts::GetGlobalSkSharedContext()->synchronizedResourceCache();
 }
 
 size_t SkResourceCache::GetTotalBytesUsed() {
@@ -562,8 +557,12 @@ static void sk_trace_dump_visitor(const SkResourceCache::Rec& rec, void* context
     }
 }
 
-void SkResourceCache::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
+void SkResourceCache::dumpMemoryStatistics(SkTraceMemoryDump* dump) {
     // Since resource could be backed by malloc or discardable, the cache always dumps detailed
     // stats to be accurate.
-    VisitAll(sk_trace_dump_visitor, dump);
+    this->visitAll(sk_trace_dump_visitor, dump);
+}
+
+void SkResourceCache::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
+    get_cache()->dumpMemoryStatistics(dump);
 }

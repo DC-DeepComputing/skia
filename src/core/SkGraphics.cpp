@@ -11,6 +11,7 @@
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkStrikeCache.h"
+#include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTypefaceCache.h"
 
 void SkGraphics::Init() {
@@ -21,8 +22,8 @@ void SkGraphics::Init() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SkGraphics::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
-  SkResourceCache::DumpMemoryStatistics(dump);
-  SkStrikeCache::DumpMemoryStatistics(dump);
+    SkContexts::GetGlobalSkSharedContext()->synchronizedResourceCache()->dumpMemoryStatistics(dump);
+    SkContexts::GetGlobalSkSharedContext()->strikeCache()->dumpMemoryStatistics(dump);
 }
 
 void SkGraphics::PurgeAllCaches() {
@@ -34,80 +35,83 @@ void SkGraphics::PurgeAllCaches() {
 ///////////////////////////////////////////////////////////////////////////////
 
 size_t SkGraphics::GetFontCacheLimit() {
-    return SkStrikeCache::GlobalStrikeCache()->getCacheSizeLimit();
+    return SkContexts::GetGlobalSkSharedContext()->strikeCache()->getCacheSizeLimit();
 }
 
 size_t SkGraphics::SetFontCacheLimit(size_t bytes) {
-    return SkStrikeCache::GlobalStrikeCache()->setCacheSizeLimit(bytes);
+    return SkContexts::GetGlobalSkSharedContext()->strikeCache()->setCacheSizeLimit(bytes);
 }
 
 size_t SkGraphics::GetFontCacheUsed() {
-    return SkStrikeCache::GlobalStrikeCache()->getTotalMemoryUsed();
+    return SkContexts::GetGlobalSkSharedContext()->strikeCache()->getTotalMemoryUsed();
 }
 
 int SkGraphics::GetFontCacheCountLimit() {
-    return SkStrikeCache::GlobalStrikeCache()->getCacheCountLimit();
+    return SkContexts::GetGlobalSkSharedContext()->strikeCache()->getCacheCountLimit();
 }
 
 int SkGraphics::SetFontCacheCountLimit(int count) {
-    return SkStrikeCache::GlobalStrikeCache()->setCacheCountLimit(count);
+    return SkContexts::GetGlobalSkSharedContext()->strikeCache()->setCacheCountLimit(count);
 }
 
 int SkGraphics::GetFontCacheCountUsed() {
-    return SkStrikeCache::GlobalStrikeCache()->getCacheCountUsed();
+    return SkContexts::GetGlobalSkSharedContext()->strikeCache()->getCacheCountUsed();
 }
 
 void SkGraphics::PurgeFontCache() {
-    SkStrikeCache::GlobalStrikeCache()->purgeAll();
+    SkContexts::GetGlobalSkSharedContext()->strikeCache()->purgeAll();
     SkTypefaceCache::PurgeAll();
 }
 
 void SkGraphics::PurgePinnedFontCache() {
-    SkStrikeCache::GlobalStrikeCache()->purgePinned();
+    SkContexts::GetGlobalSkSharedContext()->strikeCache()->purgePinned();
 }
 
-size_t SkGraphics::GetResourceCacheTotalBytesUsed() { return SkResourceCache::GetTotalBytesUsed(); }
+size_t SkGraphics::GetResourceCacheTotalBytesUsed() {
+    return SkContexts::GetGlobalSkSharedContext()->synchronizedResourceCache()->getTotalBytesUsed();
+}
 
-size_t SkGraphics::GetResourceCacheTotalByteLimit() { return SkResourceCache::GetTotalByteLimit(); }
+size_t SkGraphics::GetResourceCacheTotalByteLimit() {
+    return SkContexts::GetGlobalSkSharedContext()->synchronizedResourceCache()->getTotalByteLimit();
+}
 
 size_t SkGraphics::SetResourceCacheTotalByteLimit(size_t newLimit) {
-    return SkResourceCache::SetTotalByteLimit(newLimit);
+    return SkContexts::GetGlobalSkSharedContext()->synchronizedResourceCache()->setTotalByteLimit(
+            newLimit);
 }
 
 size_t SkGraphics::GetResourceCacheSingleAllocationByteLimit() {
-    return SkResourceCache::GetSingleAllocationByteLimit();
+    return SkContexts::GetGlobalSkSharedContext()
+            ->synchronizedResourceCache()
+            ->getSingleAllocationByteLimit();
 }
 
 size_t SkGraphics::SetResourceCacheSingleAllocationByteLimit(size_t newLimit) {
-    return SkResourceCache::SetSingleAllocationByteLimit(newLimit);
+    return SkContexts::GetGlobalSkSharedContext()
+            ->synchronizedResourceCache()
+            ->setSingleAllocationByteLimit(newLimit);
 }
 
 void SkGraphics::PurgeResourceCache() {
     SkImageFilter_Base::PurgeCache();
-    return SkResourceCache::PurgeAll();
+    return SkContexts::GetGlobalSkSharedContext()->synchronizedResourceCache()->purgeAll();
 }
 
-static int gTypefaceCacheCountLimit = 1024; // historical default value
-
 int SkGraphics::GetTypefaceCacheCountLimit() {
-    return gTypefaceCacheCountLimit;
+    return SkContexts::GetGlobalSkSharedContext()->typefaceCacheCountLimit();
 }
 
 int SkGraphics::SetTypefaceCacheCountLimit(int count) {
-    const int prev = gTypefaceCacheCountLimit;
-    gTypefaceCacheCountLimit = count;
+    const int prev = SkContexts::GetGlobalSkSharedContext()->typefaceCacheCountLimit();
+    SkContexts::GetGlobalSkSharedContext()->setTypefaceCacheCountLimit(count);
     return prev;
 }
 
-static SkGraphics::OpenTypeSVGDecoderFactory gSVGDecoderFactory = nullptr;
-
-SkGraphics::OpenTypeSVGDecoderFactory
-SkGraphics::SetOpenTypeSVGDecoderFactory(OpenTypeSVGDecoderFactory svgDecoderFactory) {
-    OpenTypeSVGDecoderFactory old(gSVGDecoderFactory);
-    gSVGDecoderFactory = svgDecoderFactory;
-    return old;
+SkGraphics::OpenTypeSVGDecoderFactory SkGraphics::SetOpenTypeSVGDecoderFactory(
+        OpenTypeSVGDecoderFactory svgDecoderFactory) {
+    return SkContexts::GetGlobalSkSharedContext()->setSVGDecoderFactory(svgDecoderFactory);
 }
 
 SkGraphics::OpenTypeSVGDecoderFactory SkGraphics::GetOpenTypeSVGDecoderFactory() {
-    return gSVGDecoderFactory;
+    return SkContexts::GetGlobalSkSharedContext()->SVGDecoderFactory();
 }

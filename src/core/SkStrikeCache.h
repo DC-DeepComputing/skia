@@ -63,6 +63,8 @@ public:
     // SkTraceMemoryDump interface.
     static void DumpMemoryStatistics(SkTraceMemoryDump* dump);
 
+    void dumpMemoryStatistics(SkTraceMemoryDump* dump) const SK_EXCLUDES(fLock);
+
     void purgeAll() SK_EXCLUDES(fLock); // does not change budget
     void purgePinned(size_t minBytesNeeded = 0) SK_EXCLUDES(fLock);
 

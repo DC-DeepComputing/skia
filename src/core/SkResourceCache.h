@@ -262,6 +262,8 @@ public:
      */
     virtual void dump() const;
 
+    void dumpMemoryStatistics(SkTraceMemoryDump* dump);
+
 private:
     Rec*    fHead;
     Rec*    fTail;
