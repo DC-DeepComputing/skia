@@ -122,6 +122,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e9f891b_acc0b798",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-16T12:51:48Z",
+      "side": 1,
+      "message": "Yes, it won\u0027t compile via Bazel without it. Somehow gn doesn\u0027t need it and I\u0027m not sure why.",
+      "parentUuid": "98fe7abb_9d4dafe0",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "012f1f85_eb601d1e",
         "filename": "bench/nanobench.cpp",
         "patchSetId": 2
