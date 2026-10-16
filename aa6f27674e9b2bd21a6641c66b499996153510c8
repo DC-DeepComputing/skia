@@ -85,6 +85,24 @@
       "message": "Ideally we\u0027re not allocating an std::string for every local variable. Lets change this to a `std::string_view name \u003d variable-\u003ename();` then",
       "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7566cf25_79f0a8ec",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-16T17:19:44Z",
+      "side": 1,
+      "message": "(oops, sent before finishing)...move the actual std::string generation inside the conditional only if we need it.",
+      "parentUuid": "1f0608b8_29f483f2",
+      "revId": "aa6f27674e9b2bd21a6641c66b499996153510c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
