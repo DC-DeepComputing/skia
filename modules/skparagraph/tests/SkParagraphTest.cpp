@@ -6056,6 +6056,113 @@ DEF_TEST(SkParagraph_ShapingKeepsFontSettingsPerStyle, reporter) {
     }
 }
 
+namespace {
+// Forwards everything to another SkUnicode but does not identify its implementation
+class AnonymousUnicode final : public SkUnicode {
+public:
+    explicit AnonymousUnicode(sk_sp<SkUnicode> unicode) : fUnicode(std::move(unicode)) {}
+
+    SkString toUpper(const SkString& s) override { return fUnicode->toUpper(s); }
+    SkString toUpper(const SkString& s, const char* locale) override {
+        return fUnicode->toUpper(s, locale);
+    }
+    bool isControl(SkUnichar c) override { return fUnicode->isControl(c); }
+    bool isWhitespace(SkUnichar c) override { return fUnicode->isWhitespace(c); }
+    bool isSpace(SkUnichar c) override { return fUnicode->isSpace(c); }
+    bool isTabulation(SkUnichar c) override { return fUnicode->isTabulation(c); }
+    bool isHardBreak(SkUnichar c) override { return fUnicode->isHardBreak(c); }
+    bool isDefaultIgnorable(SkUnichar c) override { return fUnicode->isDefaultIgnorable(c); }
+    bool isEmoji(SkUnichar c) override { return fUnicode->isEmoji(c); }
+    bool isEmojiComponent(SkUnichar c) override { return fUnicode->isEmojiComponent(c); }
+    bool isEmojiModifierBase(SkUnichar c) override { return fUnicode->isEmojiModifierBase(c); }
+    bool isEmojiModifier(SkUnichar c) override { return fUnicode->isEmojiModifier(c); }
+    bool isRegionalIndicator(SkUnichar c) override { return fUnicode->isRegionalIndicator(c); }
+    bool isIdeographic(SkUnichar c) override { return fUnicode->isIdeographic(c); }
+    std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t text[], int count,
+                                                     SkBidiIterator::Direction dir) override {
+        return fUnicode->makeBidiIterator(text, count, dir);
+    }
+    std::unique_ptr<SkBidiIterator> makeBidiIterator(const char text[], int count,
+                                                     SkBidiIterator::Direction dir) override {
+        return fUnicode->makeBidiIterator(text, count, dir);
+    }
+    std::unique_ptr<SkBreakIterator> makeBreakIterator(const char locale[],
+                                                       BreakType type) override {
+        return fUnicode->makeBreakIterator(locale, type);
+    }
+    std::unique_ptr<SkBreakIterator> makeBreakIterator(BreakType type) override {
+        return fUnicode->makeBreakIterator(type);
+    }
+    bool getBidiRegions(const char utf8[], int utf8Units, TextDirection dir,
+                        std::vector<BidiRegion>* results) override {
+        return fUnicode->getBidiRegions(utf8, utf8Units, dir, results);
+    }
+    bool getWords(const char utf8[], int utf8Units, const char* locale,
+                  std::vector<Position>* results) override {
+        return fUnicode->getWords(utf8, utf8Units, locale, results);
+    }
+    bool getUtf8Words(const char utf8[], int utf8Units, const char* locale,
+                      std::vector<Position>* results) override {
+        return fUnicode->getUtf8Words(utf8, utf8Units, locale, results);
+    }
+    bool getSentences(const char utf8[], int utf8Units, const char* locale,
+                      std::vector<Position>* results) override {
+        return fUnicode->getSentences(utf8, utf8Units, locale, results);
+    }
+    bool computeCodeUnitFlags(char utf8[], int utf8Units, bool replaceTabs,
+                              TArray<SkUnicode::CodeUnitFlags, true>* results) override {
+        return fUnicode->computeCodeUnitFlags(utf8, utf8Units, replaceTabs, results);
+    }
+    bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
+                              TArray<SkUnicode::CodeUnitFlags, true>* results) override {
+        return fUnicode->computeCodeUnitFlags(utf16, utf16Units, replaceTabs, results);
+    }
+    void reorderVisual(const BidiLevel runLevels[], int levelsCount,
+                       int32_t logicalFromVisual[]) override {
+        fUnicode->reorderVisual(runLevels, levelsCount, logicalFromVisual);
+    }
+
+private:
+    sk_sp<SkUnicode> fUnicode;
+};
+}  // namespace
+
+// Cached code unit flags, words and bidi regions may be reused only for the same SkUnicode results
+DEF_TEST(SkParagraph_CacheKeyCoversUnicode, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    auto layoutHits = [&](sk_sp<SkUnicode> unicode) {
+        ParagraphStyle paragraphStyle;
+        TextStyle textStyle;
+        textStyle.setFontSize(30.0f);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, std::move(unicode));
+        builder.pushStyle(textStyle);
+        builder.addText("Hello world");
+        builder.pop();
+        auto paragraph = builder.Build();
+        bool found = false;
+        fontCollection->getParagraphCache()->setChecker(
+                [&found](ParagraphImpl*, const char* event, bool) {
+                    found |= strcmp(event, "foundParagraph") == 0;
+                });
+        paragraph->layout(1000.0f);
+        fontCollection->getParagraphCache()->setChecker([](ParagraphImpl*, const char*, bool) {});
+        return found;
+    };
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    // Clients such as Flutter create a new SkUnicode for every paragraph
+    REPORTER_ASSERT(reporter, !layoutHits(SkUnicodes::ICU::Make()));
+    REPORTER_ASSERT(reporter, layoutHits(SkUnicodes::ICU::Make()));
+#endif
+
+    auto anonymous = sk_make_sp<AnonymousUnicode>(get_unicode());
+    REPORTER_ASSERT(reporter, !layoutHits(anonymous));
+    REPORTER_ASSERT(reporter, layoutHits(anonymous));
+    REPORTER_ASSERT(reporter, !layoutHits(sk_make_sp<AnonymousUnicode>(get_unicode())));
+}
+
 UNIX_ONLY_TEST(SkParagraph_ParagraphWithLineBreak, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)

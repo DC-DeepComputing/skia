@@ -380,6 +380,8 @@ public:
         return result;
     }
 
+    Implementation implementation() const override { return Implementation::kApple; }
+
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {

@@ -76,7 +76,13 @@ public:
         : fText(paragraph->fText.c_str(), paragraph->fText.size())
         , fPlaceholders(paragraph->fPlaceholders)
         , fTextStyles(paragraph->fTextStyles)
-        , fParagraphStyle(paragraph->paragraphStyle()) {
+        , fParagraphStyle(paragraph->paragraphStyle())
+        , fUnicodeImplementation(paragraph->fUnicode ? paragraph->fUnicode->implementation()
+                                                     : SkUnicode::Implementation::kUnknown)
+        // Unknown implementations may differ per instance, so only the same one is reused
+        , fUnknownUnicode(fUnicodeImplementation == SkUnicode::Implementation::kUnknown
+                                  ? paragraph->fUnicode
+                                  : nullptr) {
         fHash = computeHash();
     }
 
@@ -87,6 +93,8 @@ public:
         , fPlaceholders(std::move(other.fPlaceholders))
         , fTextStyles(std::move(other.fTextStyles))
         , fParagraphStyle(std::move(other.fParagraphStyle))
+        , fUnicodeImplementation(other.fUnicodeImplementation)
+        , fUnknownUnicode(std::move(other.fUnknownUnicode))
         , fHash(other.fHash) {
         other.fHash = 0;
     }
@@ -106,6 +114,9 @@ private:
     TArray<Placeholder> fPlaceholders;
     TArray<Block> fTextStyles;
     ParagraphStyle fParagraphStyle;
+    // Code unit flags, words and bidi regions in the cached value come from SkUnicode
+    SkUnicode::Implementation fUnicodeImplementation;
+    sk_sp<SkUnicode> fUnknownUnicode;
     uint32_t fHash;
 };
 
@@ -222,6 +233,8 @@ uint32_t ParagraphCacheKey::computeHash() const {
         }
     }
 
+    hash = mix(hash, SkGoodHash()(static_cast<int>(fUnicodeImplementation)));
+    hash = mix(hash, SkGoodHash()(fUnknownUnicode.get()));
     hash = mix(hash, SkGoodHash()(fText));
     return hash;
 }
@@ -249,6 +262,11 @@ bool ParagraphCacheKey::operator==(const ParagraphCacheKey& other) const {
         return false;
     }
     if (fParagraphStyle.getTextDirection() != other.fParagraphStyle.getTextDirection()) {
+        return false;
+    }
+
+    if (fUnicodeImplementation != other.fUnicodeImplementation ||
+        fUnknownUnicode != other.fUnknownUnicode) {
         return false;
     }
 

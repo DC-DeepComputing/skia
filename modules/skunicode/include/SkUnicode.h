@@ -318,6 +318,11 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
         }
 
         virtual void reorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]) = 0;
+
+        // Instances of the same implementation produce the same results for the same input,
+        // which lets caches share them; kUnknown results are reused only by the same instance
+        enum class Implementation { kUnknown, kICU, kICU4X, kLibgrapheme, kClient, kBidi, kApple };
+        virtual Implementation implementation() const { return Implementation::kUnknown; }
 };
 
 namespace sknonstd {

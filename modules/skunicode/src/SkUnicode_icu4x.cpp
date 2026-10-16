@@ -175,6 +175,8 @@ public:
         return SkString(result.data(), result.size());
     }
 
+    Implementation implementation() const override { return Implementation::kICU4X; }
+
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {

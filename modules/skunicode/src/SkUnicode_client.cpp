@@ -199,6 +199,8 @@ public:
         return SkString(fData->fText8.data(), fData->fText8.size());
     }
 
+    Implementation implementation() const override { return Implementation::kClient; }
+
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {

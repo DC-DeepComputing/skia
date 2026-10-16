@@ -129,6 +129,8 @@ public:
         return SkString();
     }
 
+    Implementation implementation() const override { return Implementation::kBidi; }
+
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {

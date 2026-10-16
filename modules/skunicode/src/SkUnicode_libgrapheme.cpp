@@ -224,6 +224,8 @@ public:
         return res;
     }
 
+    Implementation implementation() const override { return Implementation::kLibgrapheme; }
+
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {

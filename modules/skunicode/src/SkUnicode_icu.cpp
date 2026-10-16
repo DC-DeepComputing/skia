@@ -678,6 +678,8 @@ public:
         return true;
     }
 
+    Implementation implementation() const override { return Implementation::kICU; }
+
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
