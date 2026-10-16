@@ -129,7 +129,9 @@ void Decorations::calculateGaps(const TextLine::ClipContext& context, const SkRe
             path.lineTo(end, rect.fTop).moveTo(start, rect.fTop);
         }
     }
-    if (!intersections.empty() && (rect.fRight - start > halo)) {
+    // Without intersections nothing interrupts the decoration, so it spans the whole rect;
+    // otherwise the tail is dropped when it would be shorter than the halo
+    if (intersections.empty() || rect.fRight - start > halo) {
         path.lineTo(rect.fRight, rect.fTop);
     }
     fPath = path.detach();
