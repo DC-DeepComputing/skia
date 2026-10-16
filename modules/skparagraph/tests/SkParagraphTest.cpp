@@ -9534,6 +9534,198 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenGlyphPositionAtCoordinate, reporter) {
     REPORTER_ASSERT(reporter, inHyphen.position >= 5);
 }
 
+// Fails on cl/1396916 because the unrendered U+00AD cluster is not excluded from the text run:
+// when the rendered hyphen uses a fallback font, merge() cannot combine the text run's 0-width
+// U+00AD box with the hyphen box, leaving boxes[0] and getGlyphInfoAtUTF16Offset with width 0
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenFallbackFontRect, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text = "inter\xC2\xADnational";
+    const size_t softHyphen = 5;
+
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.turnHintingOff();
+    paragraphStyle.setRenderSoftHyphens(true);
+    // U+0640 is absent from Roboto and falls back to Noto Naskh Arabic, preventing box merging
+    paragraphStyle.setSoftHyphenString(SkString("\xD9\x80"));
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Roboto"), SkString("Noto Naskh Arabic")});
+    textStyle.setFontSize(20);
+    builder.pushStyle(textStyle);
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(80);
+
+    auto boxes = paragraph->getRectsForRange(
+            softHyphen, softHyphen + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+    REPORTER_ASSERT(reporter, boxes.size() == 1);
+    if (!boxes.empty()) {
+        REPORTER_ASSERT(reporter, boxes[0].rect.width() > 0);
+    }
+
+    Paragraph::GlyphInfo glyphInfo;
+    REPORTER_ASSERT(reporter, paragraph->getGlyphInfoAtUTF16Offset(softHyphen, &glyphInfo));
+    REPORTER_ASSERT(reporter, glyphInfo.fGraphemeLayoutBounds.width() > 0);
+}
+
+// Fails on cl/1396916 because addLetterSpacesEvenly() adds letterSpacing to the invisible U+00AD
+// cluster in the text run, and getRectsForRange merges that spaced invisible cluster with the
+// synthetic hyphen run, shifting hyphenExtent.first left by letterSpacing (89.79 vs 99.79)
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenLetterSpacingRect, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text = "inter\xC2\xADnational";
+    const size_t softHyphen = 5;
+    const size_t textLen16 = 14;
+
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.turnHintingOff();
+    paragraphStyle.setRenderSoftHyphens(true);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Roboto")});
+    textStyle.setFontSize(20);
+    textStyle.setLetterSpacing(10);
+    builder.pushStyle(textStyle);
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(140);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    REPORTER_ASSERT(reporter, !impl->lines().empty());
+    auto& firstLine = impl->lines()[0];
+    REPORTER_ASSERT(reporter, firstLine.hyphen() != nullptr);
+    if (firstLine.hyphen() == nullptr) {
+        return;
+    }
+
+    SkScalar lineLeft = firstLine.offset().fX;
+    SkScalar textOnlyWidth = firstLine.widthWithoutEllipsis();
+    SkScalar lineWidth = firstLine.width();
+
+    auto allExtent = lineRectExtent(paragraph.get(), firstLine, 0, textLen16);
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(allExtent.second, lineLeft + lineWidth, EPSILON100));
+
+    auto hyphenExtent = lineRectExtent(paragraph.get(), firstLine, softHyphen, softHyphen + 1);
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(hyphenExtent.first, lineLeft + textOnlyWidth, EPSILON100));
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(hyphenExtent.second, lineLeft + lineWidth, EPSILON100));
+}
+
+// Fails on cl/1396916 because in an RTL paragraph with an LTR word, the synthetic hyphen is placed
+// at the left edge of the line while the unexcluded U+00AD cluster in the LTR text run emits a
+// 0-width box at the right edge, making the soft-hyphen extent span the entire line width
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenBidiRect, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text = "inter\xC2\xADnational";
+    const size_t softHyphen = 5;
+
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.turnHintingOff();
+    paragraphStyle.setRenderSoftHyphens(true);
+    paragraphStyle.setTextDirection(TextDirection::kRtl);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Roboto")});
+    textStyle.setFontSize(20);
+    builder.pushStyle(textStyle);
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(80);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    REPORTER_ASSERT(reporter, !impl->lines().empty());
+    auto& firstLine = impl->lines()[0];
+    REPORTER_ASSERT(reporter, firstLine.hyphen() != nullptr);
+    if (firstLine.hyphen() == nullptr) {
+        return;
+    }
+
+    SkScalar hyphenWidth = firstLine.width() - firstLine.widthWithoutEllipsis();
+    auto boxes = paragraph->getRectsForRange(
+            softHyphen, softHyphen + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+    REPORTER_ASSERT(reporter, boxes.size() == 1);
+
+    auto extent = lineRectExtent(paragraph.get(), firstLine, softHyphen, softHyphen + 1);
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(extent.second - extent.first, hyphenWidth, EPSILON100));
+}
+
+// Fails on cl/1396916 because getGlyphPositionAtCoordinate returns early on run->isEllipsis()
+// without setting *runWidthInLine = run->advance().fX, and iterateThroughVisualRuns ignores its
+// false return in RTL, shifting all subsequent RTL run hit-test offsets left by hyphenWidth
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenGlyphPositionAtCoordinateRtl, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text =
+            "\xD9\x83\xD9\x84\xD9\x85\xD8\xA9"
+            "\xC2\xAD"
+            "\xD8\xB7\xD9\x88\xD9\x8A\xD9\x84\xD8\xA9";
+
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.turnHintingOff();
+    paragraphStyle.setRenderSoftHyphens(true);
+    paragraphStyle.setTextDirection(TextDirection::kRtl);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Noto Naskh Arabic")});
+    textStyle.setFontSize(20);
+    builder.pushStyle(textStyle);
+    builder.addText(text, strlen(text));
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(60);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    REPORTER_ASSERT(reporter, !impl->lines().empty());
+    auto& firstLine = impl->lines()[0];
+    REPORTER_ASSERT(reporter, firstLine.hyphen() != nullptr);
+    if (firstLine.hyphen() == nullptr) {
+        return;
+    }
+
+    SkScalar lineY = firstLine.offset().fY + firstLine.height() / 2;
+    // The first RTL letter 'ك' (index 0) is at the right edge of the line [51.70, 60.00];
+    // clicking near the right edge (x = 59) must map to the start of the word (0, kDownstream)
+    SkScalar rightEdge = firstLine.offset().fX + firstLine.width();
+    auto posAtRight = paragraph->getGlyphPositionAtCoordinate(rightEdge - 1.0f, lineY);
+    REPORTER_ASSERT(reporter, posAtRight.position == 0);
+    REPORTER_ASSERT(reporter, posAtRight.affinity == Affinity::kDownstream);
+
+    // Every character's center from getRectsForRange must hit-test back to that same character
+    for (size_t i = 0; i < 4; ++i) {
+        auto charBoxes = paragraph->getRectsForRange(
+                i, i + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        REPORTER_ASSERT(reporter, !charBoxes.empty());
+        if (!charBoxes.empty()) {
+            SkScalar centerX = charBoxes[0].rect.centerX();
+            Paragraph::GlyphInfo glyphInfo;
+            REPORTER_ASSERT(reporter,
+                            paragraph->getClosestUTF16GlyphInfoAt(centerX, lineY, &glyphInfo));
+            REPORTER_ASSERT(reporter, glyphInfo.fGraphemeClusterTextRange.start == i);
+        }
+    }
+}
+
 // Verifies that getWordBoundary is unaffected by soft hyphen rendering: word
 // boundaries are computed from source text only.
 UNIX_ONLY_TEST(SkParagraph_SoftHyphenWordBoundary, reporter) {
