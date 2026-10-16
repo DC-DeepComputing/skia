@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4977975e_ba7cf89c",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "Do we still need this include?",
+      "range": {
+        "startLine": 10,
+        "startChar": 23,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9c759a6_12ffc0e0",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "100 chars",
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a60ff30_ecc2f9b6",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "nit: I know this was kind of like this before, but I personally am not a fan of using auto when the type isn\u0027t 100% obvious. Like I don\u0027t know if this surface is an SkSurface*, sk_sp\u003cSkSurface\u003e or something else. So when it is used later (like in asSB) I\u0027d have to go look up getBaseCanvasSurface to see what it returns. Same for storage below this.",
+      "range": {
+        "startLine": 58,
+        "startChar": 12,
+        "endLine": 58,
+        "endChar": 16
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "804cefa7_fa433593",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "same auto comment as above and else where in change",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 16
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e781608_9a4edb41",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "100 chars",
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "910aefc0_c16c89bc",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "100 chars",
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24f2fa9c_8be4e866",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "Why are these needed now? Can they not be forward declared?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a78e98_cfb9afb5",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-16T18:20:59Z",
+      "side": 1,
+      "message": "auto again. How would anyway know what type this is?",
+      "range": {
+        "startLine": 225,
+        "startChar": 8,
+        "endLine": 225,
+        "endChar": 12
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
