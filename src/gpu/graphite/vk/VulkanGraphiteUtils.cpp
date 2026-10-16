@@ -23,6 +23,11 @@
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 
+// DO NOT LAND: for ScopedDriverCompileLock.
+#include "include/private/SkMutex.h"
+
+#include <atomic>
+
 namespace SkContexts {
 
 // Creates a context wrapping a Graphite GPU backend with Vulkan
@@ -57,6 +62,55 @@ std::unique_ptr<Context> MakeVulkan(const VulkanBackendContext& backendContext,
 
 namespace skgpu::graphite {
 
+// ============ DO NOT LAND: SPIR-V 1.3 / NVIDIA driver compile serialization experiment ============
+namespace {
+
+SkMutex& driver_compile_mutex() {
+    static SkMutex* sMutex = new SkMutex;  // Intentionally leaked; never destroyed.
+    return *sMutex;
+}
+
+// Calls that have entered a ScopedDriverCompileLock and not yet left it, i.e. that are either
+// inside the driver or blocked waiting for the lock.
+std::atomic<int> gDriverCompileCallsInFlight{0};
+std::atomic<int> gDriverCompileCalls{0};
+std::atomic<int> gDriverCompileCallsContended{0};
+constexpr int kMaxLoggedContendedCalls = 10;
+
+}  // anonymous namespace
+
+ScopedDriverCompileLock::ScopedDriverCompileLock(const char* entryPoint) {
+    // If any other call is in flight, then without the lock the two driver calls would have run
+    // concurrently (or very nearly so).
+    const int othersInFlight = gDriverCompileCallsInFlight.fetch_add(1);
+    const int callIndex = ++gDriverCompileCalls;
+    const int contendedCount = othersInFlight > 0 ? ++gDriverCompileCallsContended
+                                                  : gDriverCompileCallsContended.load();
+    if (callIndex == 1) {
+        SkDebugf("[spirv-debug] compile-lock: ENABLED (DO NOT LAND experiment). All "
+                 "vkCreateShaderModule / vkCreateGraphicsPipelines / vkCreateComputePipelines "
+                 "calls are serialized across threads and devices.\n");
+    }
+    if (othersInFlight > 0 && contendedCount <= kMaxLoggedContendedCalls) {
+        SkDebugf("[spirv-debug] compile-lock: call #%d (%s) had to wait for %d other in-flight "
+                 "driver compile call(s)\n",
+                 callIndex, entryPoint, othersInFlight);
+    }
+    // Running totals at powers of two and then every 2000 calls (bounded log volume).
+    if ((callIndex & (callIndex - 1)) == 0 || callIndex % 2000 == 0) {
+        SkDebugf("[spirv-debug] compile-lock: stats after %d driver compile calls: %d would have "
+                 "overlapped another call without the lock\n",
+                 callIndex, contendedCount);
+    }
+    driver_compile_mutex().acquire();
+}
+
+ScopedDriverCompileLock::~ScopedDriverCompileLock() {
+    driver_compile_mutex().release();
+    gDriverCompileCallsInFlight.fetch_sub(1);
+}
+// ===================== end of DO NOT LAND driver compile serialization experiment ==================
+
 VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext* context,
                                         const SkSL::NativeShader& spirv,
                                         VkShaderStageFlagBits stage) {
@@ -68,12 +122,16 @@ VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext* context,
 
     VkShaderModule shaderModule;
     VkResult result;
-    VULKAN_CALL_RESULT(context,
-                       result,
-                       CreateShaderModule(context->device(),
-                                          &moduleCreateInfo,
-                                          /*const VkAllocationCallbacks*=*/nullptr,
-                                          &shaderModule));
+    {
+        // DO NOT LAND: serialize driver compile calls (see ScopedDriverCompileLock).
+        ScopedDriverCompileLock compileLock("vkCreateShaderModule");
+        VULKAN_CALL_RESULT(context,
+                           result,
+                           CreateShaderModule(context->device(),
+                                              &moduleCreateInfo,
+                                              /*const VkAllocationCallbacks*=*/nullptr,
+                                              &shaderModule));
+    }
     if (result != VK_SUCCESS) {
         SKIA_LOG_E("Failed to create VkShaderModule");
         return VK_NULL_HANDLE;
