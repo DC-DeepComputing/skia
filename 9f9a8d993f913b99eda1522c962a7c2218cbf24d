@@ -1,0 +1,320 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f94025b5_91321377",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Great progress, just some naming nits on the buffer usages and then a thought on how we store the label on Resource to avoid always regenerating it when we call getLabel().",
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21788f2e_3a0c7d00",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Can this one include `kUniform` too? It\u0027s used to hold the \"uniforms\" in a storage buffer, whereas the GPU-only storage buffer is meant for more flexible storage buffers in a compute shader.",
+      "range": {
+        "startLine": 321,
+        "startChar": 79,
+        "endLine": 321,
+        "endChar": 87
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18a701b_79636873",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "nit: Let\u0027s keep these lined up with `fLabelUsageFlags`.",
+      "range": {
+        "startLine": 370,
+        "startChar": 29,
+        "endLine": 372,
+        "endChar": 30
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a447e9f4_b87866f2",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Can this one be more explicit like `kTransferForTextureRead`?",
+      "range": {
+        "startLine": 862,
+        "startChar": 28,
+        "endLine": 862,
+        "endChar": 41
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "747e9dd7_6542548a",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Can we add another paragraph to this doc that clarifies that these usages do not determine the `BufferType`/backend-usage flags or the texture usages that affect the actual resource\u0027s capabalities.  While some cases may have a 1:1 mapping from real usage to label usage, there are other scenarios where Graphite\u0027s higher-level usages map to the same GPU usages (e.g. GPU-\u003eCPU transfers).",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 201,
+        "endChar": 45
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f4baa68_f83bc283",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Can this be defined in `ResourceTypes.h`?",
+      "range": {
+        "startLine": 203,
+        "startChar": 11,
+        "endLine": 203,
+        "endChar": 25
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1924cd08_6cf7d080",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "What do you think about having `UsageLabelFlag` be renamed to `PredefinedLabelFlag` and then this 0-value is `kNone`?",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 76
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9162f84_dd06c7f6",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Similarly, can we have label usages for the different types of uploads (I think that is covered by texture upload and transferForData/Static?)",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 39
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f51e36e3_4c75f1a3",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Can we get rid of this generic one so that our specific transfers are defined.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 39
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31a8bae2_91e98f0e",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Can you add a comment above this one to say that it means the data within the buffer is meant to store Graphite\u0027s concept of a uniform, but the actual storage mechanism is not necessarily a UBO (e.g. SSBO is also possible).",
+      "range": {
+        "startLine": 211,
+        "startChar": 4,
+        "endLine": 211,
+        "endChar": 12
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf83cdfe_577fca0d",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Can we add a `kAppend` usage that\u0027ll be used in `DrawBufferManager`? Once Nathan finishes SkMesh integration, we\u0027ll have kVertex and kIndex buffers that are neither static nor appended on the fly.",
+      "range": {
+        "startLine": 215,
+        "startChar": 4,
+        "endLine": 215,
+        "endChar": 11
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef323a73_7d675c99",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "Is this only used by DrawBufferManager\u0027s appended vertex data? If so, it could be kTransferForAppendData to match the new kAppend usage.",
+      "range": {
+        "startLine": 217,
+        "startChar": 4,
+        "endLine": 217,
+        "endChar": 26
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae7d1a73_a325e025",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "WDYT about keeping `getLabel()` return the base label w/o the flags and adding a getter for the flags? My concern here is that we are returning a newly constructed `std::string` each time instead of a `const\u0026`.\n\nEventually I believe the only callers of `getLabel()` besides when updating the labels in `ResourceCache` or on the backend synchronization are going to be wrapping textures and pipelines.  We changed to returning a const std::string\u0026 for the pipeline labels so that tracing would have lower CPU time.\n\nAlternatively, we can switch `fLabel` to hold the full label including flags, which we build once in `setLabelInfo()`. When building the full label, we can remember the length of the base label (or infer the length of the appended flag strings from the flag mask later on) to be able to extract a string_view from the full label that is the base label.\n\nThat\u0027s my preference over a simpler implementation that just holds two std::strings (base and full, since they\u0027d overlap so much in content).",
+      "range": {
+        "startLine": 304,
+        "startChar": 0,
+        "endLine": 309,
+        "endChar": 75
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0189aaa6_05d14e8b",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-16T15:32:14Z",
+      "side": 1,
+      "message": "nit: TODO",
+      "range": {
+        "startLine": 191,
+        "startChar": 7,
+        "endLine": 191,
+        "endChar": 11
+      },
+      "revId": "9f9a8d993f913b99eda1522c962a7c2218cbf24d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
