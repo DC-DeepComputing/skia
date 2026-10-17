@@ -35,6 +35,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8b453f7_77323238",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-17T01:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55bbd85d_190518d7",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b762f4_855acb16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-17T01:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b57c8386_94884d03",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c88ff85f_d7a4ee53",
@@ -276,6 +312,24 @@
       "writtenOn": "2026-10-15T18:24:10Z",
       "side": 1,
       "message": "See other Skottie utils related comment, and if we can safely delete this and still bench everything, delete it.",
+      "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74aa69ce_7a46bf54",
+        "filename": "modules/skottie/utils/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-10-17T01:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0784359f_197374ff",
       "revId": "8c10558734e29ae465e9dfacf73d3d60b06d91f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
