@@ -135,14 +135,18 @@ sk_sp<VulkanComputePipeline> VulkanComputePipeline::Make(VulkanSharedContext* sh
     pipelineInfo.layout = pipelineLayout;
 
     VkPipeline pipeline = VK_NULL_HANDLE;
-    VULKAN_CALL_RESULT(sharedContext,
-                       result,
-                       CreateComputePipelines(sharedContext->device(),
-                                              sharedContext->getPipelineCache(),
-                                              1,
-                                              &pipelineInfo,
-                                              nullptr,
-                                              &pipeline));
+    {
+        // DO NOT LAND: serialize driver compile calls (see ScopedDriverCompileLock).
+        ScopedDriverCompileLock compileLock("vkCreateComputePipelines");
+        VULKAN_CALL_RESULT(sharedContext,
+                           result,
+                           CreateComputePipelines(sharedContext->device(),
+                                                  sharedContext->getPipelineCache(),
+                                                  1,
+                                                  &pipelineInfo,
+                                                  nullptr,
+                                                  &pipeline));
+    }
 
     VULKAN_CALL(sharedContext->interface(),
                 DestroyShaderModule(sharedContext->device(), shaderModule, nullptr));

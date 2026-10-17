@@ -82,6 +82,21 @@ VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext*,
                                         const SkSL::NativeShader& spirv,
                                         VkShaderStageFlagBits);
 
+// DO NOT LAND (SPIR-V 1.3 / NVIDIA experiment): holds one process-wide lock (shared by all threads
+// and all devices) for its lifetime. Scoped tightly around every vkCreateShaderModule,
+// vkCreateGraphicsPipelines and vkCreateComputePipelines call so that the driver never compiles
+// two things at once. This tests whether the intermittent, non-reproducible pipeline creation
+// failures on NVIDIA with SPIR-V 1.3 are a driver race between concurrent compiles. It also logs
+// how many of the calls would otherwise have overlapped another one.
+class ScopedDriverCompileLock {
+public:
+    explicit ScopedDriverCompileLock(const char* entryPoint);
+    ~ScopedDriverCompileLock();
+
+    ScopedDriverCompileLock(const ScopedDriverCompileLock&) = delete;
+    ScopedDriverCompileLock& operator=(const ScopedDriverCompileLock&) = delete;
+};
+
 std::optional<VkImageMemoryBarrier> CreateVulkanImageMemoryBarrier(
         const VulkanSharedContext& sharedContext,
         VkImage image,

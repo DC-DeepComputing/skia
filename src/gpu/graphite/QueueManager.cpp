@@ -218,6 +218,12 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
         std::string failureMsg;
         const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
                 [&failureMsg](const GraphicsPipeline* pipeline) {
+                    // A handle resolves to null when pipeline creation failed (e.g. the driver
+                    // rejected the shaders), so there is no GraphicsPipeline to query.
+                    if (!pipeline) {
+                        failureMsg = "Graphics pipeline creation failed";
+                        return false;
+                    }
                     if (auto failure = pipeline->didAsyncCompilationFail()) {
                         failureMsg = *failure;
                         return false;

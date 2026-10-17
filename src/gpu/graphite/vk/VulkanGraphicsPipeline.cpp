@@ -34,6 +34,23 @@
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/utils/SkShaderUtils.h"
 
+// DO NOT LAND: includes for the SPIR-V 1.3 / NVIDIA tryjob diagnostics ("spirv_debug") below.
+#include "include/core/SkString.h"
+
+#include <algorithm>
+#include <atomic>
+#include <string>
+#include <vector>
+
+// Debug builds of Graphite-Vulkan link SPIRV-Tools (see BUILD.gn), so the diagnostics can
+// validate and disassemble modules directly in the log. Release builds only get hex dumps.
+#if defined(SK_DEBUG) && defined(__has_include)
+#if __has_include("spirv-tools/libspirv.hpp")
+#include "spirv-tools/libspirv.hpp"
+#define SK_SPIRV_DEBUG_HAS_SPVTOOLS 1
+#endif
+#endif
+
 namespace skgpu::graphite {
 
 static inline VkFormat attrib_type_to_vkformat(VertexAttribType type) {
@@ -669,15 +686,19 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
 
             pipelineCreateInfo->flags |=
                     VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
-            VULKAN_CALL_RESULT_NOCHECK(
-                    sharedContext->interface(),
-                    result,
-                    CreateGraphicsPipelines(sharedContext->device(),
-                                            sharedContext->getPipelineCache(),
-                                            /*createInfoCount=*/ 1,
-                                            pipelineCreateInfo,
-                                            /*pAllocator=*/nullptr,
-                                            &vkPipeline));
+            {
+                // DO NOT LAND: serialize driver compile calls (see ScopedDriverCompileLock).
+                ScopedDriverCompileLock compileLock("vkCreateGraphicsPipelines (cache lookup)");
+                VULKAN_CALL_RESULT_NOCHECK(
+                        sharedContext->interface(),
+                        result,
+                        CreateGraphicsPipelines(sharedContext->device(),
+                                                sharedContext->getPipelineCache(),
+                                                /*createInfoCount=*/ 1,
+                                                pipelineCreateInfo,
+                                                /*pAllocator=*/nullptr,
+                                                &vkPipeline));
+            }
             sharedContext->checkVkResult(result);
         }
 
@@ -690,14 +711,22 @@ static VkPipeline create_graphics_pipeline(VulkanSharedContext* sharedContext,
 
             pipelineCreateInfo->flags &=
                     ~VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
-            VULKAN_CALL_RESULT(sharedContext,
-                               result,
-                               CreateGraphicsPipelines(sharedContext->device(),
-                                                       sharedContext->getPipelineCache(),
-                                                       /*createInfoCount=*/1,
-                                                       pipelineCreateInfo,
-                                                       /*pAllocator=*/nullptr,
-                                                       &vkPipeline));
+            // DO NOT LAND: NOCHECK so that a driver compile failure doesn't trip
+            // VULKAN_CALL_RESULT's SkASSERT in Debug builds before the spirv_debug diagnostics run.
+            {
+                // DO NOT LAND: serialize driver compile calls (see ScopedDriverCompileLock).
+                ScopedDriverCompileLock compileLock("vkCreateGraphicsPipelines");
+                VULKAN_CALL_RESULT_NOCHECK(sharedContext->interface(),
+                                           result,
+                                           CreateGraphicsPipelines(
+                                                   sharedContext->device(),
+                                                   sharedContext->getPipelineCache(),
+                                                   /*createInfoCount=*/1,
+                                                   pipelineCreateInfo,
+                                                   /*pAllocator=*/nullptr,
+                                                   &vkPipeline));
+            }
+            sharedContext->checkVkResult(result);
             if (result == VK_SUCCESS) {
                 sharedContext->pipelineCompileWasRequired();
             }
@@ -858,6 +887,409 @@ const DescriptorData& VulkanGraphicsPipeline::GetInputAttachmentDescriptor() {
     return descriptor;
 }
 
+// =================================================================================================
+// DO NOT LAND: diagnostics for the NVIDIA (GTX1660 / Windows) "unexpected failure compiling SPIR-V
+// shader" seen when SkSL emits SPIR-V 1.3 (first hit by gm/vertices.cpp:vertices_batching).
+//
+// When vkCreateGraphicsPipelines fails, VulkanGraphicsPipeline::Make() below:
+//   1. logs the pipeline label and every Input variable of both stages (and whether it's used),
+//   2. re-creates the pipeline with modified SPIR-V to bisect what the driver rejects
+//      (per-stage version word, no pipeline library, unused inputs removed, ...), and
+//   3. dumps the SkSL and the SPIR-V as hex (decode offline; spvtools isn't linked in Release).
+// Grep the dm log for "[spirv-debug]".
+//
+// The SPIR-V helpers only depend on the standard library; they were tested standalone (validated
+// with spirv-val and cross-checked against spirv-opt's RemoveUnusedInterfaceVariables pass).
+// =================================================================================================
+namespace spirv_debug {
+namespace {
+
+// Every failure gets a one-line SUMMARY; full experiments + dumps are budgeted per category.
+constexpr int kMaxSummarizedFailures = 500;
+constexpr int kMaxDetailedNotReproducible = 2;
+constexpr int kMaxDetailedCategoryA = 2;          // fixed by removing unused VS inputs
+constexpr int kMaxDetailedOldWorkaroundRegressions = 4;
+constexpr int kMaxDetailedCategoryB = 6;          // NOT fixed by removing unused VS inputs
+constexpr uint32_t kSPIRV_1_0 = 0x00010000;
+
+constexpr size_t kHeaderWordCount = 5;
+
+constexpr uint32_t kOpSource = 3;
+constexpr uint32_t kOpSourceExtension = 4;
+constexpr uint32_t kOpName = 5;
+constexpr uint32_t kOpMemberName = 6;
+constexpr uint32_t kOpString = 7;
+constexpr uint32_t kOpLine = 8;
+constexpr uint32_t kOpExtension = 10;
+constexpr uint32_t kOpExtInstImport = 11;
+constexpr uint32_t kOpExtInst = 12;
+constexpr uint32_t kOpMemoryModel = 14;
+constexpr uint32_t kOpEntryPoint = 15;
+constexpr uint32_t kOpExecutionMode = 16;
+constexpr uint32_t kOpCapability = 17;
+constexpr uint32_t kOpTypeFirst = 19;  // OpTypeVoid
+constexpr uint32_t kOpTypeLast = 39;   // OpTypeForwardPointer
+constexpr uint32_t kOpConstant = 43;
+constexpr uint32_t kOpSpecConstant = 50;
+constexpr uint32_t kOpVariable = 59;
+constexpr uint32_t kOpLoad = 61;
+constexpr uint32_t kOpDecorate = 71;
+constexpr uint32_t kOpMemberDecorate = 72;
+constexpr uint32_t kOpVectorShuffle = 79;
+constexpr uint32_t kOpCompositeExtract = 81;
+constexpr uint32_t kOpCompositeInsert = 82;
+
+constexpr uint32_t kStorageClassInput = 1;
+constexpr uint32_t kDecorationRelaxedPrecision = 0;
+constexpr uint32_t kDecorationBuiltIn = 11;
+constexpr uint32_t kDecorationLocation = 30;
+
+struct Instruction {
+    size_t offset;  // index of the first word (opcode/word-count) in the module
+    uint32_t opcode;
+    uint32_t wordCount;
+};
+
+struct InputVariable {
+    uint32_t id = 0;
+    std::string name;
+    int location = -1;
+    bool builtin = false;
+    // True if anything other than debug info, annotations, or OpEntryPoint refers to the variable.
+    bool referenced = false;
+};
+
+// Splits a module into instructions. Returns false if the module is malformed.
+bool parse(const std::vector<uint32_t>& words, std::vector<Instruction>* out) {
+    if (words.size() < kHeaderWordCount) {
+        return false;
+    }
+    size_t i = kHeaderWordCount;
+    while (i < words.size()) {
+        const uint32_t wordCount = words[i] >> 16;
+        const uint32_t opcode = words[i] & 0xFFFF;
+        if (wordCount == 0 || i + wordCount > words.size()) {
+            return false;
+        }
+        out->push_back({i, opcode, wordCount});
+        i += wordCount;
+    }
+    return true;
+}
+
+// Decodes a nul-terminated SPIR-V literal string starting at words[start]. If `next` is non-null
+// it receives the index of the first word after the string.
+std::string decode_string(const std::vector<uint32_t>& words,
+                          size_t start,
+                          size_t end,
+                          size_t* next = nullptr) {
+    std::string result;
+    size_t i = start;
+    bool terminated = false;
+    for (; i < end && !terminated; ++i) {
+        const uint32_t word = words[i];
+        for (int byte = 0; byte < 4; ++byte) {
+            const char c = static_cast<char>((word >> (8 * byte)) & 0xFF);
+            if (c == '\0') {
+                terminated = true;
+                break;
+            }
+            result.push_back(c);
+        }
+    }
+    if (next) {
+        *next = i;
+    }
+    return result;
+}
+
+// Conservatively determines whether `inst` refers to `id` as an operand. Literal operands are
+// skipped for the instructions where they are common; a literal that happens to equal `id`
+// elsewhere would only cause a variable to be reported as referenced (i.e. not stripped).
+bool references_id(const std::vector<uint32_t>& words, const Instruction& inst, uint32_t id) {
+    const size_t end = inst.offset + inst.wordCount;
+    auto anyOf = [&](size_t first, size_t last) {
+        for (size_t w = first; w < last && w < end; ++w) {
+            if (words[w] == id) {
+                return true;
+            }
+        }
+        return false;
+    };
+    switch (inst.opcode) {
+        case kOpSource:
+        case kOpSourceExtension:
+        case kOpName:
+        case kOpMemberName:
+        case kOpString:
+        case kOpLine:
+        case kOpExtension:
+        case kOpExtInstImport:
+        case kOpMemoryModel:
+        case kOpEntryPoint:
+        case kOpExecutionMode:
+        case kOpCapability:
+        case kOpDecorate:
+        case kOpMemberDecorate:
+        case kOpConstant:
+        case kOpSpecConstant:
+            return false;
+        case kOpVariable:
+            // <result type> <result id> <storage class> [<initializer>]
+            return anyOf(inst.offset + 4, inst.offset + 5);
+        case kOpExtInst:
+            // <result type> <result id> <set> <instruction literal> <operands...>
+            return anyOf(inst.offset + 5, end);
+        case kOpLoad:
+            // <result type> <result id> <pointer> [<memory operands>]
+            return anyOf(inst.offset + 3, inst.offset + 4);
+        case kOpVectorShuffle:
+        case kOpCompositeInsert:
+            // <result type> <result id> <id> <id> <literals...>
+            return anyOf(inst.offset + 3, inst.offset + 5);
+        case kOpCompositeExtract:
+            // <result type> <result id> <composite> <literals...>
+            return anyOf(inst.offset + 3, inst.offset + 4);
+        default:
+            if (inst.opcode >= kOpTypeFirst && inst.opcode <= kOpTypeLast) {
+                return false;
+            }
+            return anyOf(inst.offset + 1, end);
+    }
+}
+
+// Returns every OpVariable with the Input storage class along with its name, location, and
+// whether the shader body actually refers to it.
+std::vector<InputVariable> collect_inputs(const std::vector<uint32_t>& words) {
+    std::vector<InputVariable> vars;
+    std::vector<Instruction> insts;
+    if (!parse(words, &insts)) {
+        return vars;
+    }
+    for (const Instruction& inst : insts) {
+        if (inst.opcode == kOpVariable && inst.wordCount >= 4 &&
+            words[inst.offset + 3] == kStorageClassInput) {
+            InputVariable var;
+            var.id = words[inst.offset + 2];
+            vars.push_back(var);
+        }
+    }
+    for (InputVariable& var : vars) {
+        for (const Instruction& inst : insts) {
+            const size_t end = inst.offset + inst.wordCount;
+            if (inst.opcode == kOpName && inst.wordCount >= 3 && words[inst.offset + 1] == var.id) {
+                var.name = decode_string(words, inst.offset + 2, end);
+            } else if (inst.opcode == kOpDecorate && inst.wordCount >= 3 &&
+                       words[inst.offset + 1] == var.id) {
+                const uint32_t decoration = words[inst.offset + 2];
+                if (decoration == kDecorationLocation && inst.wordCount >= 4) {
+                    var.location = static_cast<int>(words[inst.offset + 3]);
+                } else if (decoration == kDecorationBuiltIn) {
+                    var.builtin = true;
+                }
+            } else if (references_id(words, inst, var.id)) {
+                var.referenced = true;
+            }
+        }
+    }
+    return vars;
+}
+
+// Ids of user-defined (non-builtin) Input variables that the shader never refers to.
+std::vector<uint32_t> unreferenced_input_ids(const std::vector<InputVariable>& vars) {
+    std::vector<uint32_t> ids;
+    for (const InputVariable& var : vars) {
+        if (!var.builtin && !var.referenced) {
+            ids.push_back(var.id);
+        }
+    }
+    return ids;
+}
+
+std::vector<uint32_t> with_version(const std::vector<uint32_t>& words, uint32_t version) {
+    std::vector<uint32_t> result = words;
+    if (result.size() > 1) {
+        result[1] = version;
+    }
+    return result;
+}
+
+// Returns a copy of `words` with `ids` dropped from every OpEntryPoint interface list. If
+// `removeDeclarations` is true, the variables' OpVariable, OpName, and OpDecorate instructions are
+// dropped too. The id bound in the header is left as-is (it remains a valid upper bound).
+std::vector<uint32_t> strip_variables(const std::vector<uint32_t>& words,
+                                      const std::vector<uint32_t>& ids,
+                                      bool removeDeclarations) {
+    std::vector<Instruction> insts;
+    if (!parse(words, &insts)) {
+        return words;
+    }
+    auto shouldStrip = [&](uint32_t id) {
+        return std::find(ids.begin(), ids.end(), id) != ids.end();
+    };
+    std::vector<uint32_t> result;
+    result.reserve(words.size());
+    for (size_t w = 0; w < kHeaderWordCount; ++w) {
+        result.push_back(words[w]);
+    }
+    for (const Instruction& inst : insts) {
+        const size_t end = inst.offset + inst.wordCount;
+        if (inst.opcode == kOpEntryPoint && inst.wordCount >= 3) {
+            // <execution model> <entry point id> <name literal...> <interface ids...>
+            size_t interfaceStart = end;
+            decode_string(words, inst.offset + 3, end, &interfaceStart);
+            const size_t headerIndex = result.size();
+            for (size_t w = inst.offset; w < interfaceStart; ++w) {
+                result.push_back(words[w]);
+            }
+            for (size_t w = interfaceStart; w < end; ++w) {
+                if (!shouldStrip(words[w])) {
+                    result.push_back(words[w]);
+                }
+            }
+            const uint32_t newWordCount = static_cast<uint32_t>(result.size() - headerIndex);
+            result[headerIndex] = (newWordCount << 16) | kOpEntryPoint;
+            continue;
+        }
+        if (removeDeclarations) {
+            if (inst.opcode == kOpVariable && inst.wordCount >= 3 &&
+                shouldStrip(words[inst.offset + 2])) {
+                continue;
+            }
+            if ((inst.opcode == kOpName || inst.opcode == kOpDecorate) && inst.wordCount >= 2 &&
+                shouldStrip(words[inst.offset + 1])) {
+                continue;
+            }
+        }
+        for (size_t w = inst.offset; w < end; ++w) {
+            result.push_back(words[w]);
+        }
+    }
+    return result;
+}
+
+// Returns a copy of `words` without the instructions for which `shouldDrop` returns true.
+template <typename ShouldDrop>
+std::vector<uint32_t> drop_instructions(const std::vector<uint32_t>& words,
+                                        ShouldDrop shouldDrop) {
+    std::vector<Instruction> insts;
+    if (!parse(words, &insts)) {
+        return words;
+    }
+    std::vector<uint32_t> result;
+    result.reserve(words.size());
+    for (size_t w = 0; w < kHeaderWordCount; ++w) {
+        result.push_back(words[w]);
+    }
+    for (const Instruction& inst : insts) {
+        if (shouldDrop(inst)) {
+            continue;
+        }
+        for (size_t w = inst.offset; w < inst.offset + inst.wordCount; ++w) {
+            result.push_back(words[w]);
+        }
+    }
+    return result;
+}
+
+// Drops every RelaxedPrecision decoration (OpDecorate and OpMemberDecorate).
+std::vector<uint32_t> strip_relaxed_precision(const std::vector<uint32_t>& words) {
+    return drop_instructions(words, [&](const Instruction& inst) {
+        return (inst.opcode == kOpDecorate && inst.wordCount >= 3 &&
+                words[inst.offset + 2] == kDecorationRelaxedPrecision) ||
+               (inst.opcode == kOpMemberDecorate && inst.wordCount >= 4 &&
+                words[inst.offset + 3] == kDecorationRelaxedPrecision);
+    });
+}
+
+// Drops OpName/OpMemberName debug instructions.
+std::vector<uint32_t> strip_debug_names(const std::vector<uint32_t>& words) {
+    return drop_instructions(words, [](const Instruction& inst) {
+        return inst.opcode == kOpName || inst.opcode == kOpMemberName;
+    });
+}
+
+// "name@location,name@location" for the given (unreferenced) variable ids.
+std::string describe(const std::vector<InputVariable>& vars, const std::vector<uint32_t>& ids) {
+    std::string result;
+    for (const InputVariable& var : vars) {
+        if (std::find(ids.begin(), ids.end(), var.id) == ids.end()) {
+            continue;
+        }
+        if (!result.empty()) {
+            result += ",";
+        }
+        result += var.name + "@" + std::to_string(var.location);
+    }
+    return result;
+}
+
+void log_inputs(int index, const char* stage, const std::vector<InputVariable>& vars) {
+    for (const InputVariable& var : vars) {
+        SkDebugf("[spirv-debug] #%d %s input %%%u '%s' location=%d builtin=%d referenced=%d\n",
+                 index, stage, var.id, var.name.c_str(), var.location,
+                 var.builtin ? 1 : 0, var.referenced ? 1 : 0);
+    }
+}
+
+void log_text(int index, const char* tag, const std::string& text) {
+    size_t start = 0;
+    while (start < text.size()) {
+        size_t end = text.find('\n', start);
+        if (end == std::string::npos) {
+            end = text.size();
+        }
+        SkDebugf("[spirv-debug] #%d %s| %s\n", index, tag, text.substr(start, end - start).c_str());
+        start = end + 1;
+    }
+}
+
+// Decode offline with: spirv_debug_tool <log> "[spirv-debug] #<index> <tag>:"
+void log_hex(int index, const char* tag, const std::vector<uint32_t>& words) {
+    SkDebugf("[spirv-debug] #%d %s (%zu words)\n", index, tag, words.size());
+    SkString line;
+    for (size_t i = 0; i < words.size(); ++i) {
+        line.appendf(" %08x", words[i]);
+        if (i % 8 == 7 || i + 1 == words.size()) {
+            SkDebugf("[spirv-debug] #%d %s:%s\n", index, tag, line.c_str());
+            line.reset();
+        }
+    }
+}
+
+// Debug builds only (SPIRV-Tools is linked there): spirv-val result + disassembly in the log.
+void log_spirv_tools(int index, const char* tag, const std::vector<uint32_t>& words) {
+#if defined(SK_SPIRV_DEBUG_HAS_SPVTOOLS)
+    spvtools::SpirvTools tools(SPV_ENV_VULKAN_1_1);
+    std::string messages;
+    tools.SetMessageConsumer(
+            [&messages](spv_message_level_t, const char*, const spv_position_t&, const char* m) {
+                messages += m;
+                messages += '\n';
+            });
+    const bool valid = tools.Validate(words.data(), words.size());
+    SkDebugf("[spirv-debug] #%d %s spirv-val (vulkan1.1): %s\n",
+             index, tag, valid ? "VALID" : "INVALID");
+    if (!messages.empty()) {
+        log_text(index, tag, messages);
+    }
+    std::string text;
+    uint32_t options = spvtools::SpirvTools::kDefaultDisassembleOption;
+    options |= SPV_BINARY_TO_TEXT_OPTION_FRIENDLY_NAMES | SPV_BINARY_TO_TEXT_OPTION_INDENT;
+    if (tools.Disassemble(words.data(), words.size(), &text, options)) {
+        log_text(index, (std::string(tag) + " asm").c_str(), text);
+    }
+#else
+    (void)index;
+    (void)tag;
+    (void)words;
+#endif
+}
+
+}  // anonymous namespace
+}  // namespace spirv_debug
+// ======================== end of DO NOT LAND spirv_debug helpers ================================
+
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         VulkanSharedContext* sharedContext,
         const RuntimeEffectDictionary* runtimeDict,
@@ -1006,6 +1438,232 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
             shaderInfo->blendInfo(),
             renderPassDesc,
             &shadersPipeline);
+
+    // DO NOT LAND: SPIR-V 1.3 / NVIDIA diagnostics (see the spirv_debug block above Make()).
+    //
+    // Every failing pipeline gets a greppable "SUMMARY cat=..." line:
+    //   NOT-REPRODUCIBLE : rebuilding the identical pipeline right away succeeds (state/threading)
+    //   A                : fixed by removing the unreferenced vertex-shader inputs
+    //   A+OLDWA-REGRESS  : as A, but additionally stripping unused FS inputs (what the reverted
+    //                      workaround also did) makes it fail again
+    //   B                : NOT fixed by removing unreferenced VS inputs, i.e. a different trigger
+    // The first few of each category also get the full experiment set and SkSL/SPIR-V dumps.
+    static std::atomic<int> sDiagFailures{0};
+    static std::atomic<int> sDiagDetailedNotReproducible{0};
+    static std::atomic<int> sDiagDetailedA{0};
+    static std::atomic<int> sDiagDetailedOldWorkaround{0};
+    static std::atomic<int> sDiagDetailedB{0};
+    if (!vkPipeline) {
+        const int diagIndex = ++sDiagFailures;
+        if (diagIndex <= spirv_debug::kMaxSummarizedFailures) {
+            using namespace spirv_debug;
+            const Caps* caps = sharedContext->caps();
+            const std::vector<uint32_t>& vs = vsSPIRV.fBinary;
+            const std::vector<uint32_t>* fs = hasFragmentSkSL ? &fsSPIRV.fBinary : nullptr;
+            const char* label = shaderInfo->pipelineLabel().c_str();
+
+            // Re-creates the pipeline from scratch with the given modules and reports whether it
+            // succeeded. `fsWords` may be null (no fragment shader). allowShadersLibrary=false
+            // forces a monolithic pipeline even when VK_EXT_graphics_pipeline_library is in use.
+            auto tryPipeline = [&](const std::string& name,
+                                   const std::vector<uint32_t>& vsWords,
+                                   const std::vector<uint32_t>* fsWords,
+                                   bool allowShadersLibrary) -> bool {
+                std::unique_ptr<VulkanProgramInfo> expProgram =
+                        VulkanProgramInfo::Make(sharedContext);
+                bool setupOk = true;
+                if (fsWords) {
+                    SkSL::NativeShader fsModule;
+                    fsModule.fBinary = *fsWords;
+                    setupOk = expProgram->setFragmentShader(CreateVulkanShaderModule(
+                            sharedContext, fsModule, VK_SHADER_STAGE_FRAGMENT_BIT));
+                }
+                if (setupOk) {
+                    SkSL::NativeShader vsModule;
+                    vsModule.fBinary = vsWords;
+                    setupOk = expProgram->setVertexShader(CreateVulkanShaderModule(
+                            sharedContext, vsModule, VK_SHADER_STAGE_VERTEX_BIT));
+                }
+                if (setupOk) {
+                    setupOk = expProgram->setLayout(setup_pipeline_layout(
+                            sharedContext,
+                            VulkanResourceProvider::kIntrinsicConstantSize,
+                            VulkanResourceProvider::kIntrinsicConstantStageFlags,
+                            shaderInfo->hasCombinedUniforms(),
+                            shaderInfo->storageBufferStages(),
+                            shaderInfo->numFragmentTexturesAndSamplers(),
+                            /*loadMsaaFromResolve=*/false,
+                            SkSpan<sk_sp<VulkanSampler>>(immutableSamplers)));
+                }
+                VkPipeline expShadersPipeline = VK_NULL_HANDLE;
+                VkPipeline expPipeline = VK_NULL_HANDLE;
+                if (setupOk) {
+                    VertexInputBindingDescriptions expBindings;
+                    VertexInputAttributeDescriptions expAttributes;
+                    expPipeline = MakePipeline(
+                            sharedContext,
+                            *expProgram,
+                            subpassIndex,
+                            step->primitiveType(),
+                            step->appendsVertices() ? VK_VERTEX_INPUT_RATE_VERTEX
+                                                    : VK_VERTEX_INPUT_RATE_INSTANCE,
+                            step->staticAttributes(),
+                            shaderInfo->appendAttributes(),
+                            expBindings,
+                            expAttributes,
+                            shaderInfo->depthStencilSettings(),
+                            shaderInfo->blendInfo(),
+                            renderPassDesc,
+                            allowShadersLibrary ? &expShadersPipeline : nullptr);
+                }
+                const bool passed = expPipeline != VK_NULL_HANDLE;
+                SkDebugf("[spirv-debug] #%d EXPERIMENT %-66s -> %s\n", diagIndex, name.c_str(),
+                         !setupOk ? "SETUP FAILED" : (passed ? "PASS" : "FAIL"));
+                for (VkPipeline p : {expPipeline, expShadersPipeline}) {
+                    if (p != VK_NULL_HANDLE) {
+                        VULKAN_CALL(sharedContext->interface(),
+                                    DestroyPipeline(sharedContext->device(), p, nullptr));
+                    }
+                }
+                return passed;
+            };
+
+            const std::vector<InputVariable> vsInputs = collect_inputs(vs);
+            const std::vector<InputVariable> fsInputs =
+                    fs ? collect_inputs(*fs) : std::vector<InputVariable>();
+            const std::vector<uint32_t> vsUnused = unreferenced_input_ids(vsInputs);
+            const std::vector<uint32_t> fsUnused = unreferenced_input_ids(fsInputs);
+            const std::vector<uint32_t> vsStripped =
+                    strip_variables(vs, vsUnused, /*removeDeclarations=*/true);
+            const std::vector<uint32_t> fsStripped =
+                    fs ? strip_variables(*fs, fsUnused, /*removeDeclarations=*/true)
+                       : std::vector<uint32_t>();
+            const std::vector<uint32_t>* fsStrippedPtr = fs ? &fsStripped : nullptr;
+
+            SkDebugf("[spirv-debug] #%d ===== vkCreateGraphicsPipelines failed: %s\n",
+                     diagIndex, label);
+
+            // Classification (always).
+            const bool baselinePassed =
+                    tryPipeline("classify: baseline (identical VS + FS)", vs, fs, true);
+            const bool vsFixPassed =
+                    !vsUnused.empty() &&
+                    tryPipeline("classify: VS unused inputs fully removed", vsStripped, fs, true);
+            const bool bothFixPassed =
+                    (!vsUnused.empty() || !fsUnused.empty()) &&
+                    tryPipeline("classify: VS+FS unused inputs removed (reverted workaround)",
+                                vsStripped, fsStrippedPtr, true);
+
+            const char* category;
+            bool detailed;
+            if (baselinePassed) {
+                category = "NOT-REPRODUCIBLE";
+                detailed = ++sDiagDetailedNotReproducible <= kMaxDetailedNotReproducible;
+            } else if (vsFixPassed && !bothFixPassed) {
+                category = "A+OLDWA-REGRESS";
+                detailed = ++sDiagDetailedOldWorkaround <= kMaxDetailedOldWorkaroundRegressions;
+            } else if (vsFixPassed) {
+                category = "A";
+                detailed = ++sDiagDetailedA <= kMaxDetailedCategoryA;
+            } else {
+                category = "B";
+                detailed = ++sDiagDetailedB <= kMaxDetailedCategoryB;
+            }
+            SkDebugf("[spirv-debug] #%d SUMMARY cat=%s unusedVS=[%s] unusedFS=[%s] baseline=%s "
+                     "vsUnusedRemoved=%s bothRemoved=%s | %s\n",
+                     diagIndex, category,
+                     describe(vsInputs, vsUnused).c_str(),
+                     describe(fsInputs, fsUnused).c_str(),
+                     baselinePassed ? "PASS" : "FAIL",
+                     vsUnused.empty() ? "n/a" : (vsFixPassed ? "PASS" : "FAIL"),
+                     (vsUnused.empty() && fsUnused.empty()) ? "n/a"
+                                                            : (bothFixPassed ? "PASS" : "FAIL"),
+                     label);
+
+            if (detailed) {
+                SkDebugf("[spirv-debug] #%d VS label: %s\n",
+                         diagIndex, shaderInfo->vsLabel().c_str());
+                SkDebugf("[spirv-debug] #%d FS label: %s\n",
+                         diagIndex, shaderInfo->fsLabel().c_str());
+                SkDebugf("[spirv-debug] #%d VS version=0x%08x, FS version=0x%08x, "
+                         "usePipelineLibraries=%d, useVertexInputDynamicState=%d, "
+                         "useBasicDynamicState=%d, subpass=%d\n",
+                         diagIndex, vs.size() > 1 ? vs[1] : 0u,
+                         (fs && fs->size() > 1) ? (*fs)[1] : 0u,
+                         caps->usePipelineLibraries() ? 1 : 0,
+                         caps->useVertexInputDynamicState() ? 1 : 0,
+                         caps->useBasicDynamicState() ? 1 : 0, subpassIndex);
+                log_inputs(diagIndex, "VS", vsInputs);
+                log_inputs(diagIndex, "FS", fsInputs);
+
+                // Which stage's module trips the 1.3 path?
+                const std::vector<uint32_t> vs10 = with_version(vs, kSPIRV_1_0);
+                const std::vector<uint32_t> fs10 =
+                        fs ? with_version(*fs, kSPIRV_1_0) : std::vector<uint32_t>();
+                const std::vector<uint32_t>* fs10Ptr = fs ? &fs10 : nullptr;
+                tryPipeline("version: VS 1.0 + FS as-is", vs10, fs, true);
+                if (fs) {
+                    tryPipeline("version: VS as-is + FS 1.0", vs, fs10Ptr, true);
+                    tryPipeline("version: VS 1.0 + FS 1.0", vs10, fs10Ptr, true);
+                }
+                // Specific to the VK_EXT_graphics_pipeline_library path?
+                if (caps->usePipelineLibraries()) {
+                    tryPipeline("no pipeline library (monolithic)", vs, fs, false);
+                }
+                // Unused VS inputs: interface listing vs declaration, and which variable(s).
+                if (!vsUnused.empty()) {
+                    tryPipeline("VS unused inputs: dropped from OpEntryPoint only",
+                                strip_variables(vs, vsUnused, /*removeDeclarations=*/false),
+                                fs, true);
+                    for (const InputVariable& var : vsInputs) {
+                        if (var.builtin || var.referenced) {
+                            continue;
+                        }
+                        const std::string what = "'" + var.name + "' (location " +
+                                                 std::to_string(var.location) + ")";
+                        tryPipeline("VS only " + what + ": dropped from OpEntryPoint only",
+                                    strip_variables(vs, {var.id}, /*removeDeclarations=*/false),
+                                    fs, true);
+                        tryPipeline("VS only " + what + ": fully removed",
+                                    strip_variables(vs, {var.id}, /*removeDeclarations=*/true),
+                                    fs, true);
+                    }
+                }
+                if (fs && !fsUnused.empty()) {
+                    tryPipeline("FS unused inputs: fully removed", vs, fsStrippedPtr, true);
+                }
+                // Other candidate triggers (mainly for category B).
+                const std::vector<uint32_t> vsNoRP = strip_relaxed_precision(vs);
+                const std::vector<uint32_t> fsNoRP =
+                        fs ? strip_relaxed_precision(*fs) : std::vector<uint32_t>();
+                tryPipeline("RelaxedPrecision stripped: VS only", vsNoRP, fs, true);
+                if (fs) {
+                    tryPipeline("RelaxedPrecision stripped: FS only", vs, &fsNoRP, true);
+                    tryPipeline("RelaxedPrecision stripped: VS + FS", vsNoRP, &fsNoRP, true);
+                }
+                const std::vector<uint32_t> vsNoNames = strip_debug_names(vs);
+                const std::vector<uint32_t> fsNoNames =
+                        fs ? strip_debug_names(*fs) : std::vector<uint32_t>();
+                tryPipeline("debug names stripped: VS + FS",
+                            vsNoNames, fs ? &fsNoNames : nullptr, true);
+
+                log_text(diagIndex, "VS sksl", shaderInfo->vertexSkSL());
+                if (fs) {
+                    log_text(diagIndex, "FS sksl", shaderInfo->fragmentSkSL());
+                }
+                log_spirv_tools(diagIndex, "VS", vs);
+                if (fs) {
+                    log_spirv_tools(diagIndex, "FS", *fs);
+                }
+                log_hex(diagIndex, "VS hex", vs);
+                if (fs) {
+                    log_hex(diagIndex, "FS hex", *fs);
+                }
+                SkDebugf("[spirv-debug] #%d ===== end of details =====\n", diagIndex);
+            }
+        }
+    }
+    // ======================== end of DO NOT LAND diagnostics ====================================
 
     sk_sp<VulkanGraphicsPipeline> pipeline;
     if (vkPipeline) {
