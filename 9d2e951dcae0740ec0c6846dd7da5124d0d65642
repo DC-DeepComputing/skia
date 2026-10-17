@@ -39,6 +39,30 @@
       },
       "revId": "9d2e951dcae0740ec0c6846dd7da5124d0d65642",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63f68be2_b1b87fe3",
+        "filename": "tests/ScalerContextTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 4599678
+      },
+      "writtenOn": "2026-10-17T00:17:16Z",
+      "side": 1,
+      "message": "We\u0027d have to add such a constructor to PreBlend, I can do so, but I\u0027m not sure it\u0027d be worthwhile just for the test.",
+      "parentUuid": "169e8110_7bc431e6",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 32
+      },
+      "revId": "9d2e951dcae0740ec0c6846dd7da5124d0d65642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
