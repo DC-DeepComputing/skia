@@ -283,6 +283,7 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/task/ComputeTask.h",
   "$_src/gpu/graphite/task/CopyTask.cpp",
   "$_src/gpu/graphite/task/CopyTask.h",
+  "$_src/gpu/graphite/task/DependencySink.h",
   "$_src/gpu/graphite/task/DrawTask.cpp",
   "$_src/gpu/graphite/task/DrawTask.h",
   "$_src/gpu/graphite/task/RenderPassTask.cpp",

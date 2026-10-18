@@ -24,8 +24,8 @@ enum class SkBackingFit;
 namespace skgpu::graphite {
 
 class Context;
+class DependencySink;
 class Device;
-class DrawContext;
 class Image;
 class Recorder;
 class TextureProxy;
@@ -36,9 +36,11 @@ public:
     ~Image_Base() override;
 
     // Must be called at the time of recording an action that reads from the image, be it a draw
-    // or a copy operation. `drawContext` can be null if the "use" is scoped by a draw.
-    void notifyInUse(Recorder* recorder, DrawContext* drawContext) const {
-        this->notifyInUse(recorder, drawContext, /*unlinkDevices=*/false);
+    // or a copy operation. `sink` receives the tasks that must execute before the read, and is
+    // typically the DrawContext that records the draw. It's null if the read is a copy (or other
+    // operation) that's recorded directly to the Recorder's root task list.
+    void notifyInUse(Recorder* recorder, DependencySink* sink) const {
+        this->notifyInUse(recorder, sink, /*unlinkDevices=*/false);
     }
 
     // Returns true if this image is linked to a device that may render their shared texture(s).
@@ -133,7 +135,7 @@ protected:
     }
 
 private:
-    void notifyInUse(Recorder*, DrawContext* drawContext, bool unlinkDevices) const;
+    void notifyInUse(Recorder*, DependencySink* sink, bool unlinkDevices) const;
 
     // Devices are flushed in notifyImageInUse(). If a linked device is uniquely held by the image
     // or if it's marked as immutable, it will be unlinked (allowing it to be destroyed eventually).
