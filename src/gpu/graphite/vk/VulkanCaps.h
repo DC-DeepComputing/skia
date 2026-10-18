@@ -157,6 +157,7 @@ private:
         bool fPipelineProtectedAccess = false;
         // From VkPhysicalDeviceSubgroupSizeControlFeatures or VkPhysicalDeviceVulkan13Features
         bool fSubgroupSizeControl = false;
+        bool fComputeFullSubgroups = false;
         // From VkPhysicalDeviceShaderMaximalReconvergenceFeaturesKHR
         bool fShaderMaximalReconvergence = false;
         // From VkPhysicalDeviceRGBA10X6FormatsFeaturesEXT
@@ -171,6 +172,8 @@ private:
         VkPhysicalDeviceGraphicsPipelineLibraryPropertiesEXT fGpl;
         VkPhysicalDeviceHostImageCopyPropertiesEXT fHic;
         VkPhysicalDeviceSubgroupProperties fSubgroup;
+        // Only queried when EnabledFeatures::fSubgroupSizeControl is set.
+        VkPhysicalDeviceSubgroupSizeControlProperties fSubgroupSizeControl;
         bool fHicHasShaderReadOnlyDstLayout = false;
     };
     void getProperties(const skgpu::VulkanInterface*,

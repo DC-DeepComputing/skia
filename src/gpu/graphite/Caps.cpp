@@ -10,6 +10,7 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/SkMath.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
@@ -52,6 +53,11 @@ void Caps::finishInitialization(const ContextOptions& options) {
                       fMaxComputeWorkgroupStorageSize >= kMinComputeWorkgroupStorageSize;
     // Subgroups are only exposed in compute shaders.
     fShaderCaps->fSubgroupSupport = fShaderCaps->fSubgroupSupport && fComputeSupport;
+    fSubgroupSizeControlSupport = fSubgroupSizeControlSupport && fComputeSupport;
+    fComputeFullSubgroupsSupport = fComputeFullSubgroupsSupport && fSubgroupSizeControlSupport;
+    SkASSERT(!fSubgroupSizeControlSupport ||
+             (fMinSubgroupSize > 0 && SkIsPow2(fMinSubgroupSize) && SkIsPow2(fMaxSubgroupSize) &&
+              fMinSubgroupSize <= fMaxSubgroupSize && fMaxComputeWorkgroupSubgroups > 0));
 
     fCapabilities->initSkCaps(fShaderCaps.get());
 
@@ -96,6 +102,35 @@ void Caps::finishInitialization(const ContextOptions& options) {
 }
 
 sk_sp<SkCapabilities> Caps::capabilities() const { return fCapabilities; }
+
+uint32_t Caps::resolveSubgroupSize(std::optional<uint32_t> preferred,
+                                   WorkgroupSize localSize) const {
+    if (!preferred || !fSubgroupSizeControlSupport) {
+        return 0;
+    }
+    const bool isPow2 = *preferred != 0 && SkIsPow2(*preferred);
+    SkASSERTF(isPow2, "preferred subgroup size %u isn't a power of two", *preferred);
+    if (!isPow2) {
+        return 0;
+    }
+    // The limits are powers of two, so the clamped size is too.
+    uint32_t size = std::clamp(*preferred, fMinSubgroupSize, fMaxSubgroupSize);
+    // Vulkan requires a workgroup to fit in maxComputeWorkgroupSubgroups subgroups of the required
+    // size, so grow the size until it does.
+    const uint64_t invocations = uint64_t{localSize.fWidth} * localSize.fHeight * localSize.fDepth;
+    while (uint64_t{size} * fMaxComputeWorkgroupSubgroups < invocations) {
+        if (size >= fMaxSubgroupSize) {
+            return 0;
+        }
+        size *= 2;
+    }
+    return size;
+}
+
+bool Caps::hasFullSubgroups(uint32_t subgroupSize, WorkgroupSize localSize) const {
+    return fComputeFullSubgroupsSupport && subgroupSize != 0 &&
+           localSize.fWidth % subgroupSize == 0;
+}
 
 bool Caps::isSampleCountSupported(TextureFormat format, SampleCount sampleCount) const {
     // Assume optimal tiling
