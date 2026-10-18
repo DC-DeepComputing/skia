@@ -61,6 +61,7 @@
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ClientMappedBufferManager.h"
+#include "src/gpu/graphite/ComputeProvider.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Image_Graphite.h"
@@ -196,6 +197,7 @@ Context::PixelTransferResult::~PixelTransferResult() = default;
 
 bool Context::finishInitialization() {
     SkASSERT(!fSharedContext->rendererProvider()); // Can only initialize once
+    SkASSERT(!fSharedContext->computeProvider());
 
     if (!fSharedContext->globalCache()->initializeDynamicSamplers(fResourceProvider.get(),
                                                                   fSharedContext->caps())) {
@@ -205,6 +207,8 @@ bool Context::finishInitialization() {
     StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};
+    std::unique_ptr<ComputeProvider> compute{
+            new ComputeProvider(fSharedContext->caps())};
 
     auto result = bufferManager.finalize(this, fQueueManager.get(), fSharedContext->globalCache());
     if (result == StaticBufferManager::FinishResult::kFailure) {
@@ -218,6 +222,7 @@ bool Context::finishInitialization() {
         return false;
     } // else result was kNoWork so skip submitting to the GPU
     fSharedContext->setRendererProvider(std::move(renderers));
+    fSharedContext->setComputeProvider(std::move(compute));
     return true;
 }
 

@@ -31,6 +31,7 @@ namespace skgpu::graphite {
 class BackendTexture;
 class Caps;
 class CommandBuffer;
+class ComputeProvider;
 class Context;
 class PersistentPipelineStorage;
 class RendererProvider;
@@ -56,6 +57,7 @@ public:
     PipelineManager* pipelineManager() { return &fPipelineManager; }
 
     const RendererProvider* rendererProvider() const { return fRendererProvider.get(); }
+    const ComputeProvider* computeProvider() const { return fComputeProvider.get(); }
 
     ShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionary; }
     const ShaderCodeDictionary* shaderCodeDictionary() const { return &fShaderDictionary; }
@@ -122,6 +124,7 @@ private:
 
     // Must be created out-of-band to allow RenderSteps to use a QueueManager.
     void setRendererProvider(std::unique_ptr<RendererProvider> rendererProvider);
+    void setComputeProvider(std::unique_ptr<ComputeProvider> computeProvider);
 
     void setCaptureManager(sk_sp<SkCaptureManager> captureManager);
 
@@ -130,6 +133,7 @@ private:
     BackendApi fBackend;
     GlobalCache fGlobalCache;
     std::unique_ptr<RendererProvider> fRendererProvider;
+    std::unique_ptr<ComputeProvider> fComputeProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
     // Last because we want the threads shutdown before the rest of the SharedContext gets shutdown

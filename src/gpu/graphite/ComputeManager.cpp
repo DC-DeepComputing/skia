@@ -8,6 +8,10 @@
 #include "src/gpu/graphite/ComputeManager.h"
 
 #include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/graphite/BufferManager.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ComputeProvider.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 
 namespace skgpu::graphite {
 

@@ -116,6 +116,8 @@ GRAPHITE_FILES = [
     "Renderer.h",
     "RendererProvider.cpp",
     "RendererProvider.h",
+    "ComputeProvider.cpp",
+    "ComputeProvider.h",
     "Resource.cpp",
     "Resource.h",
     "ResourceCache.cpp",

@@ -22,6 +22,7 @@ struct SkImageInfo;
 namespace skgpu::graphite {
 
 class Caps;
+class ComputeProvider;
 class GlobalCache;
 class Recorder;
 class RendererProvider;
@@ -56,6 +57,9 @@ public:
 #endif
     const RendererProvider* rendererProvider() const {
         return fContext->fSharedContext->rendererProvider();
+    }
+    const ComputeProvider* computeProvider() const {
+        return fContext->fSharedContext->computeProvider();
     }
     ResourceProvider* resourceProvider() const {
         return fContext->fResourceProvider.get();

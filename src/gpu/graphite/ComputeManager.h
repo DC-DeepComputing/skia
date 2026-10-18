@@ -8,6 +8,8 @@
 #ifndef skgpu_graphite_ComputeManager_DEFINED
 #define skgpu_graphite_ComputeManager_DEFINED
 
+#include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/task/ComputeTask.h"
 
 #include <memory>
