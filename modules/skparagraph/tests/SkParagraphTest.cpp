@@ -7,6 +7,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkPaint.h"
@@ -14,6 +15,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
@@ -10099,4 +10101,49 @@ DEF_TEST(SkParagraph_BidiIsolateStyledBlockNoSpaceFont, reporter) {
                                              RectHeightStyle::kTight,
                                              RectWidthStyle::kTight);
     REPORTER_ASSERT(reporter, !rects.empty());
+}
+
+// Run's positioned drawing data must retain original Unicode for PDF consumers.
+UNIX_ONLY_TEST(SkParagraph_TextBlobRetainsOriginalClusterText, reporter) {
+    sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
+    for (const char* source : {"ABCD", "office ffi", "مرحبا بالعالم", "cafe\xCC\x81"}) {
+        ParagraphStyle style;
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setFontSize(16);
+        style.setTextStyle(textStyle);
+        ParagraphBuilderImpl builder(style, fonts, get_unicode());
+        builder.addText(source, strlen(source));
+        auto paragraph = builder.Build();
+        paragraph->layout(500);
+        auto* implementation = static_cast<ParagraphImpl*>(paragraph.get());
+        size_t checked = 0;
+        for (const auto& run : implementation->runs()) {
+            if (run.size() == 0 || run.isPlaceholder()) { continue; }
+            SkTextBlobBuilder blobBuilder;
+            run.copyTo(blobBuilder, 0, run.size());
+            auto blob = blobBuilder.make();
+            REPORTER_ASSERT(reporter, blob != nullptr);
+            auto serialized = blob->serialize(SkSerialProcs{});
+            const auto range = run.textRange();
+            const auto* bytes = static_cast<const char*>(serialized->data());
+            auto found = std::search(bytes, bytes + serialized->size(),
+                                     source + range.start, source + range.end);
+            REPORTER_ASSERT(reporter, found != bytes + serialized->size());
+            ++checked;
+            if (strcmp(source, "ABCD") == 0) {
+                REPORTER_ASSERT(reporter, run.size() == 4);
+                SkTextBlobBuilder partialBuilder;
+                run.copyTo(partialBuilder, 1, 2);
+                auto partial = partialBuilder.make()->serialize(SkSerialProcs{});
+                const auto* data = static_cast<const char*>(partial->data());
+                REPORTER_ASSERT(reporter, std::search(data, data + partial->size(),
+                                                     source + 1, source + 3) != data + partial->size());
+                REPORTER_ASSERT(reporter, std::search(data, data + partial->size(),
+                                                     source, source + 4) == data + partial->size());
+            }
+        }
+        REPORTER_ASSERT(reporter, checked > 0);
+    }
 }

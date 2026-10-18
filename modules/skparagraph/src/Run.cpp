@@ -90,7 +90,45 @@ SkShaper::RunHandler::Buffer Run::newRunBuffer() {
 
 void Run::copyTo(SkTextBlobBuilder& builder, size_t pos, size_t size) const {
     SkASSERT(pos + size <= this->size());
-    const auto& blobBuffer = builder.allocRunPos(fFont, SkToInt(size));
+    // Preserve the original cluster text alongside positioned glyphs. PDF
+    // cannot recover contextual forms or ligatures from glyph IDs alone.
+    size_t textStart = 0;
+    size_t textEnd = 0;
+    if (size > 0 && fOwner != nullptr && !fEllipsis) {
+        const auto first = this->globalClusterIndex(pos);
+        const auto last = this->globalClusterIndex(pos + size - 1);
+        textStart = std::min(first, last);
+        const auto lastCluster = std::max(first, last);
+        textEnd = fTextRange.end;
+        if (this->leftToRight()) {
+            size_t next = pos + size;
+            while (next < this->size() && this->globalClusterIndex(next) == lastCluster) {
+                ++next;
+            }
+            if (next < this->size()) {
+                textEnd = this->globalClusterIndex(next);
+            }
+        } else {
+            size_t next = pos;
+            while (next > 0 && this->globalClusterIndex(next - 1) == lastCluster) {
+                --next;
+            }
+            if (next > 0) {
+                textEnd = this->globalClusterIndex(next - 1);
+            }
+        }
+    }
+    const bool hasText = fOwner != nullptr && textStart < textEnd && textEnd <= fOwner->text().size();
+    const auto& blobBuffer = hasText
+        ? builder.allocRunTextPos(fFont, SkToInt(size), SkToInt(textEnd - textStart))
+        : builder.allocRunPos(fFont, SkToInt(size));
+    if (hasText) {
+        sk_careful_memcpy(blobBuffer.utf8text, fOwner->text().data() + textStart,
+                         textEnd - textStart);
+        for (size_t i = 0; i < size; ++i) {
+            blobBuffer.clusters[i] = SkToU32(this->globalClusterIndex(pos + i) - textStart);
+        }
+    }
     sk_careful_memcpy(blobBuffer.glyphs, fGlyphs.data() + pos, size * sizeof(SkGlyphID));
 
     for (size_t i = 0; i < size; ++i) {
