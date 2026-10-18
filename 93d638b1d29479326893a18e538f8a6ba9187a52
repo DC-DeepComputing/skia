@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd876bcd_b6a9b61a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5250830
+      },
+      "writtenOn": "2026-10-18T10:46:24Z",
+      "side": 1,
+      "message": "PTAL - Verified locally in dm: the test fails on main and passes with the fix. It seems that I am unable to run tryjob, could CQ be run?",
+      "revId": "93d638b1d29479326893a18e538f8a6ba9187a52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
