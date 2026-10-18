@@ -9,6 +9,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/ComputeManager.h"
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -325,7 +326,8 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
                                                       DrawContext* drawContext,
                                                       sk_sp<TextureProxy> target,
                                                       const SkImageInfo& targetInfo,
-                                                      const DstReadStrategy dstReadStrategy) {
+                                                      const DstReadStrategy dstReadStrategy,
+                                                      ComputeManager* computeManager) {
     TRACE_EVENT1_ALWAYS("skia.gpu", "Snap DrawPass", "draw count", fDrawCount);
 
     std::unique_ptr<DrawPass> drawPass(new DrawPass(target,
@@ -415,10 +417,17 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
         }
 
         uint32_t uniformSsboIndex = fStorageBufferSupport ? uniformTracker.ssboIndex() : 0;
-        renderStep->writeVertices(&drawWriter, storageContext, drawParams, uniformSsboIndex);
+        renderStep->writeVertices(
+                &drawWriter, storageContext, computeManager, drawParams, uniformSsboIndex);
 
         // Either stop early on failure, or advance to the next Draw
-        return bufferMgr->hasMappingFailed() ? nullptr : draw->fNext;
+        if (bufferMgr->hasMappingFailed()) {
+            return nullptr;
+        }
+        if (computeManager && renderStep->hasCompute()) {
+            renderStep->recordComputeSteps(computeManager, drawParams, &drawWriter);
+        }
+        return draw->fNext;
     };
 
     for (Layer* layer : fLayers) {

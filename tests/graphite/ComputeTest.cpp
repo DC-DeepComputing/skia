@@ -20,6 +20,9 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/ScratchResourceManager.h"
+#include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/UniformManager.h"
@@ -31,6 +34,8 @@
 #include "src/gpu/graphite/task/UploadTask.h"
 
 #include "tools/graphite/GraphiteTestContext.h"
+
+#include <optional>
 
 using namespace skgpu::graphite;
 using namespace skiatest::graphite;
@@ -2832,5 +2837,112 @@ DEF_GRAPHITE_TEST_FOR_COMPUTE_CONTEXTS(Compute_WorkgroupUniformLoadTest,
         const float found = outData[i];
         REPORTER_ASSERT(reporter, expected == found, "expected '%f', found '%f'", expected, found);
     }
+}
+
+namespace {
+
+class CountingUseListener final : public ScratchResourceManager::PendingUseListener {
+public:
+    void onUseCompleted(ScratchResourceManager*) override { fCount++; }
+
+    int fCount = 0;
+};
+
+// Marks `listener` in the scope that prepares this task, like a second reference to a scratch
+// DrawTask does.
+class MarkInUseTask final : public Task {
+public:
+    explicit MarkInUseTask(ScratchResourceManager::PendingUseListener* listener)
+            : fListener(listener) {}
+
+    Status prepareResources(ResourceProvider*,
+                            ScratchResourceManager* scratchManager,
+                            sk_sp<const RuntimeEffectDictionary>) override {
+        scratchManager->markResourceInUse(fListener);
+        return Status::kDiscard;
+    }
+
+    Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override {
+        return Status::kSuccess;
+    }
+
+private:
+    ScratchResourceManager::PendingUseListener* fListener;
+};
+
+}  // namespace
+
+// A ComputeTask consumes the reads marked by its dependencies in its own scope. An output that has
+// pending reads gets a scratch texture, which is returned once every read is consumed.
+DEF_GRAPHITE_TEST_FOR_COMPUTE_CONTEXTS(Compute_TaskScratchResources,
+                                       reporter,
+                                       context,
+                                       testContext) {
+    if (context->supportsProtectedContent()) {
+        return;
+    }
+
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
+    const Caps* caps = recorder->priv().caps();
+
+    constexpr SkISize kSize = {16, 16};
+    const TextureInfo info = caps->getDefaultStorageTextureInfo(kRGBA_8888_SkColorType);
+    auto makeOutput = [&](std::string_view label) {
+        return TextureProxy::Make(caps, resourceProvider, kSize, info, skgpu::Budgeted::kYes, label);
+    };
+    sk_sp<TextureProxy> scratchOutput = makeOutput("ScratchOutput");
+    sk_sp<TextureProxy> pinnedOutput = makeOutput("PinnedOutput");
+    // Has no pending reads, so it may be read by a later Recording.
+    sk_sp<TextureProxy> unreadOutput = makeOutput("UnreadOutput");
+
+    auto readCounts = std::make_unique<ProxyReadCountMap>();
+    readCounts->increment(scratchOutput.get());
+    readCounts->increment(pinnedOutput.get());
+
+    CountingUseListener dependencyListener;
+    skia_private::TArray<sk_sp<Task>> dependencies;
+    dependencies.push_back(sk_make_sp<MarkInUseTask>(&dependencyListener));
+    skia_private::TArray<sk_sp<TextureProxy>> outputs = {scratchOutput, pinnedOutput, unreadOutput};
+    sk_sp<ComputeTask> task =
+            ComputeTask::Make(/*dispatchGroups=*/{}, std::move(dependencies), std::move(outputs));
+    task->disableScratchOutput(1);
+
+    ScratchResourceManager scratchManager{resourceProvider, std::move(readCounts)};
+    CountingUseListener outerListener;
+    scratchManager.pushScope();
+    scratchManager.markResourceInUse(&outerListener);
+
+    Task::Status status = task->prepareResources(resourceProvider, &scratchManager, nullptr);
+    REPORTER_ASSERT(reporter, status == Task::Status::kSuccess);
+    // The dependency's read is consumed by the ComputeTask, unlike reads marked in outer scopes.
+    REPORTER_ASSERT(reporter, dependencyListener.fCount == 1);
+    REPORTER_ASSERT(reporter, outerListener.fCount == 0);
+
+    auto shareable = [](const TextureProxy* proxy) {
+        return proxy->isInstantiated() ? std::make_optional(proxy->texture()->shareable())
+                                       : std::nullopt;
+    };
+    REPORTER_ASSERT(reporter, shareable(scratchOutput.get()) == Shareable::kScratch);
+    REPORTER_ASSERT(reporter, shareable(pinnedOutput.get()) == Shareable::kNo);
+    REPORTER_ASSERT(reporter, shareable(unreadOutput.get()) == Shareable::kNo);
+
+    // A consumer that's prepared later marks and consumes its reads of the outputs.
+    scratchManager.pushScope();
+    task->markOutputInUse(&scratchManager, 0);
+    task->markOutputInUse(&scratchManager, 1);
+    scratchManager.notifyResourcesConsumed();
+    scratchManager.popScope();
+
+    // Only the scratch output was returned for reuse.
+    sk_sp<Texture> reused = scratchManager.getScratchTexture(kSize, info, "ReusedOutput");
+    REPORTER_ASSERT(reporter, reused && reused.get() == scratchOutput->texture());
+    if (reused) {
+        scratchManager.returnTexture(std::move(reused));
+    }
+
+    // Drops `outerListener` without invoking it. ~ScratchResourceManager then asserts that every
+    // pending read was consumed and every scratch texture was returned.
+    scratchManager.popScope();
 }
 

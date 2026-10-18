@@ -32,6 +32,7 @@
 
 namespace skgpu::graphite {
 
+class ComputeManager;
 class DrawContext;
 class DrawPass;
 class Geometry;
@@ -74,7 +75,8 @@ public:
                                                    DrawContext* drawContext,
                                                    sk_sp<TextureProxy> target,
                                                    const SkImageInfo& targetInfo,
-                                                   const DstReadStrategy dstReadStrategy) = 0;
+                                                   const DstReadStrategy dstReadStrategy,
+                                                   ComputeManager* computeManager) = 0;
 
     int renderStepCount() const { return fRenderStepCount; }
 

@@ -45,7 +45,11 @@ public:
         return "stepLocalCoords = float2(0.0);";
     }
     const char* fragmentCoverageSkSL() const override { return ""; }
-    void writeVertices(DrawWriter*, StorageContext*, const DrawParams&, uint32_t) const override {}
+    void writeVertices(DrawWriter*,
+                       StorageContext*,
+                       ComputeManager*,
+                       const DrawParams&,
+                       uint32_t) const override {}
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override {}
 };
 

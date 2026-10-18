@@ -17,8 +17,8 @@ namespace skgpu::graphite {
 
 class DrawParams;
 class DrawWriter;
-struct RootNodesInfo;
 class PipelineDataGatherer;
+struct RootNodesInfo;
 
 class MeshRenderStep final : public RenderStep {
 public:
@@ -35,6 +35,7 @@ public:
 
     void writeVertices(DrawWriter*,
                        StorageContext*,
+                       ComputeManager*,
                        const DrawParams&,
                        uint32_t ssboIndex) const override;
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;

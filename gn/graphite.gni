@@ -83,6 +83,8 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/CommandBuffer.cpp",
   "$_src/gpu/graphite/CommandBuffer.h",
   "$_src/gpu/graphite/CommandTypes.h",
+  "$_src/gpu/graphite/ComputeManager.cpp",
+  "$_src/gpu/graphite/ComputeManager.h",
   "$_src/gpu/graphite/ComputePathAtlas.cpp",
   "$_src/gpu/graphite/ComputePathAtlas.h",
   "$_src/gpu/graphite/ComputePipeline.cpp",

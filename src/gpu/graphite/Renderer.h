@@ -32,6 +32,7 @@ namespace skgpu { enum class MaskFormat; }
 
 namespace skgpu::graphite {
 
+class ComputeManager;
 class DrawParams;
 class DrawWriter;
 class PipelineDataGatherer;
@@ -129,6 +130,7 @@ public:
     // this RenderStep.
     virtual void writeVertices(DrawWriter*,
                                StorageContext*,
+                               ComputeManager*,
                                const DrawParams&,
                                uint32_t ssboIndex) const = 0;
 
@@ -155,6 +157,9 @@ public:
                                                 int* nextBindingIndex) const {
         return "";
     }
+
+    // If this step requires compute, appends dispatches using the draw parameters
+    virtual void recordComputeSteps(ComputeManager*, const DrawParams&, const DrawWriter*) const {}
 
     // Emits code to set up coverage value. Should only be defined if overridesCoverage is true.
     // When implemented the returned SkSL fragment should write its coverage into a
@@ -192,6 +197,7 @@ public:
     bool appendsVertices()     const { return SkToBool(fFlags & Flags::kAppendVertices);      }
     bool vsUsesStorage()       const { return SkToBool(fFlags & Flags::kVsUsesStorage);       }
     bool fsUsesStorage()       const { return SkToBool(fFlags & Flags::kFsUsesStorage);       }
+    bool hasCompute()          const { return SkToBool(fFlags & Flags::kHasCompute);          }
 
     SkEnumBitMask<PipelineStageFlags> storageBufferStages() const { return fStorageBufferStages; }
     SkEnumBitMask<RenderStateFlags>   getRenderStateFlags() const {
@@ -315,6 +321,9 @@ enum class Flags : unsigned {
     kUseNonAAInnerFill      = 1 << 15, // Opt into Device recording extra inner fill draws
     kIgnoreInverseFill      = 1 << 16, // Rasterization treats all shapes as noninverted for scissor
     kInverseFillsScissor    = 1 << 17, // Rasterization of inverse fills scissor geometrically
+
+    // Compute
+    kHasCompute             = 1 << 18, // This step relies on a compute shader
 };
 SK_DECL_BITMASK_OPS_FRIENDS(Flags)
 

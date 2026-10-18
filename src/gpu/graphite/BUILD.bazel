@@ -30,6 +30,8 @@ GRAPHITE_FILES = [
     "CommandBuffer.cpp",
     "CommandBuffer.h",
     "CommandTypes.h",
+    "ComputeManager.cpp",
+    "ComputeManager.h",
     "ComputePathAtlas.cpp",
     "ComputePathAtlas.h",
     "ComputePipeline.cpp",

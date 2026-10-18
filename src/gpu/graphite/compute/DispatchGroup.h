@@ -9,6 +9,7 @@
 #define skgpu_graphite_compute_DispatchGroup_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
@@ -81,6 +82,9 @@ public:
     const ComputePipeline* getPipeline(size_t index) const { return fPipelines[index].get(); }
     const Texture* getTexture(size_t index) const;
     const Sampler* getSampler(size_t index) const;
+
+    // Every texture bound by the dispatches, whether it's read or written.
+    SkSpan<const sk_sp<TextureProxy>> textureProxies() const { return fTextures; }
 
     bool prepareResources(ResourceProvider*);
     void addResourceRefs(CommandBuffer*) const;
