@@ -234,6 +234,10 @@ public:
     // If true, uses experimental drawListLayer ordering.
     bool useDrawListLayer() const { return fDrawListLayer; }
 
+    // If true, blurs that GaussianBlurStep supports are run with compute when the device supports
+    // it. Only set by ContextOptionsPriv for now.
+    bool useComputeBlur() const { return fUseComputeBlur; }
+
     int maxTextureSize() const { return fMaxTextureSize; }
 
     virtual void buildKeyForTexture(SkISize dimensions,
@@ -540,6 +544,7 @@ protected:
     bool fMSAARenderToSingleSampledSupport = false;
     bool fAvoidMSAA = false;
     bool fDrawListLayer = false;
+    bool fUseComputeBlur = false;
     bool fAvoidDepthMode = false;
 
     bool fComputeSupport = false;

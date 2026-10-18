@@ -11,6 +11,9 @@ CORE_FILES = [
     "ComputeStep.h",
     "DispatchGroup.cpp",
     "DispatchGroup.h",
+    "GaussianBlurStep.cpp",
+    "GaussianBlurStep.h",
+    "SharedBlurSksl.h",
 ]
 
 split_srcs_and_hdrs(

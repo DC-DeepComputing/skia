@@ -74,6 +74,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
         fMaxTextureSize = std::min(fMaxTextureSize, options.fOptionsPriv->fMaxTextureSizeOverride);
         fRequestedPathRendererStrategy = options.fOptionsPriv->fPathRendererStrategy;
         fDrawListLayer = options.fOptionsPriv->fDrawListLayer;
+        fUseComputeBlur = true;
     }
 #endif
     fGlyphCacheTextureMaximumBytes = options.fGlyphCacheTextureMaximumBytes;

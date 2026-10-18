@@ -35,6 +35,12 @@ struct ContextOptionsPriv {
     bool fDrawListLayer = false;
 
     /**
+     * If true, blurs that GaussianBlurStep supports are run with compute instead of the shader
+     * blur, on devices that support it.
+     */
+    bool fUseComputeBlur = false;
+
+    /**
      * Override Caps' default strategy heuristics to prioritize this one if set *and* is supported.
      */
     std::optional<PathRendererStrategy> fPathRendererStrategy;

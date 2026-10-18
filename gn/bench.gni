@@ -67,6 +67,7 @@ bench_sources = [
   "$_bench/GrQuadBench.cpp",
   "$_bench/GrResourceCacheBench.cpp",
   "$_bench/GradientBench.cpp",
+  "$_bench/GraphiteBlurLayersBench.cpp",
   "$_bench/HairlinePathBench.cpp",
   "$_bench/HardStopGradientBench_ScaleNumColors.cpp",
   "$_bench/HardStopGradientBench_ScaleNumHardStops.cpp",

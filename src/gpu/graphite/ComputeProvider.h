@@ -13,10 +13,15 @@
 namespace skgpu::graphite {
 
 class Caps;
+class GaussianBlurStep;
 
 class ComputeProvider {
 public:
     ~ComputeProvider();
+
+    // The step that blurs with compute, or null if blurs should use the shader blur. This is null
+    // unless Caps::useComputeBlur() is set and the device supports the step.
+    const GaussianBlurStep* gaussianBlur() const { return fGaussianBlur.get(); }
 
 private:
     friend class Context; // for constructor access
@@ -25,6 +30,8 @@ private:
 
     ComputeProvider(const ComputeProvider&) = delete;
     ComputeProvider(ComputeProvider&&) = delete;
+
+    std::unique_ptr<GaussianBlurStep> fGaussianBlur;
 };
 
 } // namespace skgpu::graphite
