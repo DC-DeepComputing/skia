@@ -2,6 +2,7 @@ diagnostic(off, derivative_uniformity);
 diagnostic(off, chromium.unreachable_code);
 enable f16;
 enable subgroups;
+diagnostic(off, subgroup_uniformity);
 struct CSIn {
   @builtin(global_invocation_id) sk_GlobalInvocationID: vec3<u32>,
   @builtin(subgroup_id) sk_SubgroupID: u32,

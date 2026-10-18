@@ -3264,7 +3264,23 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
     // in appendExpression()'s AutoConstEvalWorkaround before this was reached.
 
     const ExpressionArray& arguments = call.arguments();
+    if (IsSubgroupIntrinsic(kind) && !fCaps.fSubgroupSupport) {
+        fContext.fErrors->error(call.fPosition,
+                                "'" + std::string(call.function().name()) + "' not supported");
+        return {};
+    }
     switch (kind) {
+        // The other subgroup intrinsics have the same names in WGSL and use the default case.
+        case k_subgroupBroadcast_IntrinsicKind: {
+            // WGSL requires a const-expression id. The frontend guarantees a constant, so emit it
+            // as a literal; a reference to an SkSL `const` variable might not be a WGSL `const`.
+            SKSL_INT id;
+            [[maybe_unused]] bool isConstant = ConstantFolder::GetConstantInt(*arguments[1], &id);
+            SkASSERT(isConstant);
+            return "subgroupBroadcast(" +
+                   this->assembleExpression(*arguments[0], Precedence::kSequence) + ", " +
+                   std::to_string(id) + "u)";
+        }
         case k_workgroupUniformLoad_IntrinsicKind: {
             // WGSL 17.11.4: workgroupUniformLoad(p : ptr<workgroup, T>) -> T
             // The argument must be a pointer-addressable reference expression (variable reference,
@@ -4709,6 +4725,11 @@ void WGSLCodeGenerator::writeEnables() {
         // `subgroup_id` additionally needs the `subgroup_id` language feature. Language features
         // need no directive; DawnCaps only reports subgroup support when it is available.
         this->writeLine("enable subgroups;");
+        // WGSL rejects subgroup operations in non-uniform control flow by default. SkSL doesn't
+        // perform uniformity analysis and accepts these calls anywhere, as SPIR-V and Metal do.
+        // Results under divergence are implementation-defined on every backend (no maximal
+        // reconvergence); sksl_compute.sksl documents this risk.
+        this->writeLine("diagnostic(off, subgroup_uniformity);");
     }
 }
 
