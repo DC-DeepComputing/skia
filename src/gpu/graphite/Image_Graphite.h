@@ -20,6 +20,7 @@ namespace skgpu {
 
 namespace skgpu::graphite {
 
+class ComputeOutput;
 class Context;
 class Device;
 class DrawContext;
@@ -34,6 +35,13 @@ public:
     // pending tasks when the Image is used in a draw to another canvas.
     static sk_sp<Image> WrapDevice(sk_sp<Device> device,
                                    std::optional<SkColorInfo> overrideInfo = std::nullopt);
+
+    // Create an Image of the texture that's written by a queued compute dispatch (see
+    // ComputeScheduler). Every read of the Image is ordered after the dispatch. `view` must be a
+    // view of `output`'s texture proxy.
+    static sk_sp<Image> WrapComputeOutput(sk_sp<ComputeOutput> output,
+                                          TextureProxyView view,
+                                          const SkColorInfo&);
 
     // Create an Image by copying the provided texture proxy view into a new texturable proxy.
     // The source texture does not have to be texturable if it is blittable.

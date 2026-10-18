@@ -74,6 +74,11 @@ public:
 
     bool modifiesTarget() const { return fPendingDraws->modifiesTarget(); }
 
+    // Returns true if snapDrawTask() would return a task, once flush() has been called. Unlike
+    // modifiesTarget(), this includes pending uploads (e.g. from writePixels()) and tasks that were
+    // already flushed into the current DrawTask.
+    bool hasPendingWork() const;
+
     bool readsTexture(const TextureProxy*) const;
 
     void clear(const SkColor4f& clearColor);

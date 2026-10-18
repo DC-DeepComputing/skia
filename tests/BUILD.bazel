@@ -568,6 +568,7 @@ filegroup(
         "graphite/BufferManagerTest.cpp",
         "graphite/CacheBudgetTest.cpp",
         "graphite/CacheKeyTest.cpp",
+        "graphite/ComputeSchedulerTest.cpp",
         "graphite/ComputeTest.cpp",
         "graphite/crbug_513836996.cpp",
         "graphite/DeviceTest.cpp",

@@ -23,6 +23,7 @@ enum class SkBackingFit;
 
 namespace skgpu::graphite {
 
+class ComputeOutput;
 class Context;
 class DependencySink;
 class Device;
@@ -44,6 +45,8 @@ public:
     }
 
     // Returns true if this image is linked to a device that may render their shared texture(s).
+    // A linked ComputeOutput doesn't make the image dynamic: its dispatch writes the texture once,
+    // and every read of the image is ordered after it (see linkComputeOutput()).
     bool isDynamic() const;
 
     // Switches the image's proxies to be non-budgeted and instantiates them as non-shareable.
@@ -118,17 +121,22 @@ public:
 protected:
     Image_Base(const SkImageInfo& info, uint32_t uniqueID, sk_sp<SkPixelStorage> backingStorage);
 
-    // If the passed-in image is linked with Devices that modify its texture, copy the links to
-    // this Image. This is used when a new Image is created that shares the same texture proxy as
-    // a dynamic image. This can only be called before the Image has been returned from a factory.
+    // If the passed-in image is linked with Devices that modify its texture, or with queued compute
+    // dispatches that write it, copy the links to this Image. This is used when a new Image is
+    // created that shares the same texture proxy as a dynamic image. This can only be called before
+    // the Image has been returned from a factory.
     void linkDevices(const Image_Base*);
     // Link this image to the Device that can write to their shared texture proxy, so that when the
     // image is sampled in a draw, any pending work from the Device is automatically flushed. This
     // can only be called before the Image has been returned from a factory function.
     void linkDevice(sk_sp<Device>);
+    // Link this image to the queued compute dispatch that writes its texture proxy (see
+    // ComputeScheduler), so that every read of the image is ordered after the dispatch. This can
+    // only be called before the Image has been returned from a factory function.
+    void linkComputeOutput(sk_sp<ComputeOutput>);
 
-    // Notifies any linked devices as in-use w/o a DrawContext to push tasks to the root task list
-    // and then removes all links so the image is no longer dynamic.
+    // Notifies any linked devices and compute outputs as in-use w/o a DependencySink to push tasks
+    // to the root task list and then removes all links so the image is no longer dynamic.
     void unlinkDevices(Recorder* recorder) {
         this->notifyInUse(recorder, /*drawContext=*/nullptr, /*unlinkDevices=*/true);
         SkASSERT(!this->isDynamic());
@@ -143,6 +151,11 @@ private:
     // this array cannot transition from an empty state to having linked devices, so while it's
     // empty no locking is required.
     mutable skia_private::STArray<1, sk_sp<Device>> fLinkedDevices SK_GUARDED_BY(fDeviceLinkLock);
+    // Compute outputs are notified in notifyInUse() too, and are unlinked once their reads no longer
+    // need to be tracked (see ComputeOutput::notifyInUse()). Like fLinkedDevices, this array never
+    // transitions from empty to non-empty after initialization.
+    mutable skia_private::STArray<1, sk_sp<ComputeOutput>> fComputeOutputs
+            SK_GUARDED_BY(fDeviceLinkLock);
     mutable SkSpinlock fDeviceLinkLock;
 };
 

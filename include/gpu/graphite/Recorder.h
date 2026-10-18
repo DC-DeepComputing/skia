@@ -50,6 +50,7 @@ namespace skgpu::graphite {
 
 class AtlasProvider;
 class BackendTexture;
+class ComputeScheduler;
 class Context;
 class Device;
 class DrawBufferManager;
@@ -301,6 +302,8 @@ private:
     // Depends on fUploadBufferManager (holds a pointer to it). Must be destroyed first.
     std::unique_ptr<DrawBufferManager> fDrawBufferManager;
     std::unique_ptr<ProxyReadCountMap> fProxyReadCounts;
+    // Batches compute dispatches that aren't tied to a DrawContext, such as compute image filters.
+    std::unique_ptr<ComputeScheduler> fComputeScheduler;
 
     skia_private::STArray<kMaxKeyAndDataBuilders, std::unique_ptr<KeyAndDataBuilder>>
         fKeyAndDataBuilders;
