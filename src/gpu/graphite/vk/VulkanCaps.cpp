@@ -114,6 +114,16 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     const VkPhysicalDeviceLimits& deviceLimits = deviceProperties.fBase.properties.limits;
     const uint32_t vendorID = deviceProperties.fBase.properties.vendorID;
 
+    // The architecture selects the compute tuning (see ComputeTuning). Mali device IDs encode the
+    // architecture in their top 4 bits, which Valhall GPUs (e.g. 0xa8620000 for the Mali-G710)
+    // set to 0x9 through 0xb. These match Dawn's gpu_info.json.
+    if (vendorID == kARM_VkVendor) {
+        const uint32_t maliArchitecture = deviceProperties.fBase.properties.deviceID >> 28;
+        if (maliArchitecture >= 0x9 && maliArchitecture <= 0xb) {
+            fGpuArchitecture = GpuArchitecture::kMaliValhall;
+        }
+    }
+
 #if defined(GPU_TEST_UTILS)
     this->setDeviceName(deviceProperties.fBase.properties.deviceName);
 #endif

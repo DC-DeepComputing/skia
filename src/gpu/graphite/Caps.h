@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/ComputeTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/compute/ComputeTuning/ComputeTuning.h"
 #include "src/text/gpu/SubRunControl.h"
 
 #include <cstddef>
@@ -237,6 +238,10 @@ public:
     // If true, blurs that GaussianBlurStep supports are run with compute when the device supports
     // it. Only set by ContextOptionsPriv for now.
     bool useComputeBlur() const { return fUseComputeBlur; }
+
+    // The tuning of the compute steps, which ComputeProvider composes into their SkSL: the defaults
+    // with the changes for the device's GPU architecture, unless ContextOptionsPriv overrides it.
+    const ComputeTuning& computeTuning() const { return fComputeTuning; }
 
     int maxTextureSize() const { return fMaxTextureSize; }
 
@@ -559,6 +564,10 @@ protected:
     uint32_t fMinSubgroupSize = 0;
     uint32_t fMaxSubgroupSize = 0;
     uint32_t fMaxComputeWorkgroupSubgroups = 0;
+    // Set by backends that can identify an architecture with a compute tuning of its own.
+    // finishInitialization() selects fComputeTuning for it.
+    GpuArchitecture fGpuArchitecture = GpuArchitecture::kOther;
+    ComputeTuning fComputeTuning;
     bool fSupportsAHardwareBufferImages = false;
     bool fFullCompressedUploadSizeMustAlignToBlockDims = false;
 

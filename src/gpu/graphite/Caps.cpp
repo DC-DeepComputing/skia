@@ -69,12 +69,17 @@ void Caps::finishInitialization(const ContextOptions& options) {
         fShaderErrorHandler = DefaultShaderErrorHandler();
     }
 
+    fComputeTuning = ComputeTuning::For(fGpuArchitecture);
+
 #if defined(GPU_TEST_UTILS)
     if (options.fOptionsPriv) {
         fMaxTextureSize = std::min(fMaxTextureSize, options.fOptionsPriv->fMaxTextureSizeOverride);
         fRequestedPathRendererStrategy = options.fOptionsPriv->fPathRendererStrategy;
         fDrawListLayer = options.fOptionsPriv->fDrawListLayer;
-        fUseComputeBlur = true;
+        fUseComputeBlur = options.fOptionsPriv->fUseComputeBlur;
+        if (options.fOptionsPriv->fOverrideComputeTuning) {
+            options.fOptionsPriv->fOverrideComputeTuning(&fComputeTuning);
+        }
     }
 #endif
     fGlyphCacheTextureMaximumBytes = options.fGlyphCacheTextureMaximumBytes;

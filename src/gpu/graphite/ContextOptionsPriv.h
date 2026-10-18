@@ -9,7 +9,9 @@
 #define skgpu_graphite_ContextOptionsPriv_DEFINED
 
 #include "include/private/SkMath.h"
+#include "src/gpu/graphite/compute/ComputeTuning/ComputeTuning.h"
 
+#include <functional>
 #include <optional>
 
 namespace skgpu::graphite {
@@ -39,6 +41,14 @@ struct ContextOptionsPriv {
      * blur, on devices that support it.
      */
     bool fUseComputeBlur = false;
+
+    /**
+     * If set, this is called with the device's compute tuning (the defaults, with the changes for
+     * its GPU architecture) to override it. The tuning is composed into the compute steps' SkSL
+     * when the Context is created. A step whose tuning is invalid or exceeds the device's compute
+     * limits isn't created, and the reason is logged.
+     */
+    std::function<void(ComputeTuning*)> fOverrideComputeTuning;
 
     /**
      * Override Caps' default strategy heuristics to prioritize this one if set *and* is supported.

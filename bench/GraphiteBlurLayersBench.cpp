@@ -33,9 +33,10 @@ void draw_content(SkCanvas* canvas, const SkRect& bounds, const SkPaint& paint) 
     canvas->drawRect(bounds.makeInset(0.4f * bounds.width(), 0.1f * bounds.height()), paint);
 }
 
-// Exercises Graphite's layer blurs, to compare the compute blur (GaussianBlurStep) against the
-// shader blur by toggling Caps::useComputeBlur(). Each loop draws `count` sibling layers laid out
-// in rows across the canvas.
+// Exercises Graphite's layer blurs, to compare the compute blur (GaussianBlurStep and
+// DownsampleStep) against the shader blur by toggling Caps::useComputeBlur(). Each loop draws
+// `count` sibling layers laid out in rows across the canvas, which is 1024x1024, or larger along an
+// axis to fit a larger layer.
 //
 // By default each layer blurs its own content through its paint's image filter, and the compute
 // blur batches those until the canvas is flushed (or the batch budget is hit). Backdrop layers
@@ -76,16 +77,22 @@ public:
     }
 
 private:
-    static constexpr int kCanvasSize = 1024;
+    static constexpr int kMinCanvasSize = 1024;
 
     const char* onGetName() override { return fName.c_str(); }
     bool isSuitableFor(Backend backend) override { return backend == Backend::kGraphite; }
-    SkISize onGetSize() override { return {kCanvasSize, kCanvasSize}; }
+    SkISize onGetSize() override { return this->canvasSize(); }
+
+    SkISize canvasSize() const {
+        return {std::max(kMinCanvasSize, fLayerSize.width()),
+                std::max(kMinCanvasSize, fLayerSize.height())};
+    }
 
     // Layers fill the canvas in rows, wrapping back to the top if they don't fit.
     SkRect layerBounds(int index) const {
-        const int columns = std::max(1, kCanvasSize / fLayerSize.width());
-        const int rows = std::max(1, kCanvasSize / fLayerSize.height());
+        const SkISize canvasSize = this->canvasSize();
+        const int columns = canvasSize.width() / fLayerSize.width();
+        const int rows = canvasSize.height() / fLayerSize.height();
         return SkRect::Make(SkIRect::MakeXYWH((index % columns) * fLayerSize.width(),
                                               (index / columns % rows) * fLayerSize.height(),
                                               fLayerSize.width(),
@@ -207,13 +214,23 @@ DEF_BENCH(return layer_blurs(1, {1024, 1024}, {4, 0});)
 DEF_BENCH(return layer_blurs(1, {1024, 1024}, {0, 4});)
 DEF_BENCH(return layer_blurs(1, {1024, 1024}, {4, 1});)
 
-// Sigmas above 4, which both blurs handle by downscaling and then blurring at sigma <= 4.
+// Sigmas above 4. The shader blur downscales with render passes and then blurs at sigma <= 4, while
+// the compute blur downscales with DownsampleStep in the same batch as its blur.
 DEF_BENCH(return layer_blurs(16, {128, 128}, {8, 8});)
 DEF_BENCH(return layer_blurs(16, {128, 128}, {16, 16});)
 DEF_BENCH(return layer_blurs(4, {512, 512}, {8, 8});)
 DEF_BENCH(return layer_blurs(4, {512, 512}, {16, 16});)
 DEF_BENCH(return layer_blurs(1, {1024, 1024}, {8, 8});)
 DEF_BENCH(return layer_blurs(1, {1024, 1024}, {16, 16});)
+
+// More sigmas above 4: sigma 6 downscales by 2, 16x2 downscales x by 4 and leaves y, and sigma 32
+// downscales by 8.
+DEF_BENCH(return layer_blurs(16, {128, 128}, {6, 6});)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {6, 6});)
+DEF_BENCH(return layer_blurs(16, {128, 128}, {16, 2});)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {16, 2});)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {32, 32});)
+DEF_BENCH(return layer_blurs(1, {1024, 1024}, {32, 32});)
 
 // Small and odd sizes, which leave the compute blur's 64x16 tiles partly empty.
 DEF_BENCH(return layer_blurs(64, {32, 32}, {0.5f, 0.5f});)
@@ -228,6 +245,24 @@ DEF_BENCH(return layer_blurs(16, {128, 128}, {4, 4}, SkTileMode::kClamp);)
 DEF_BENCH(return layer_blurs(4, {512, 512}, {4, 4}, SkTileMode::kClamp);)
 DEF_BENCH(return layer_blurs(1, {1024, 1024}, {4, 4}, SkTileMode::kClamp);)
 
+// Each tile mode with a downscale.
+DEF_BENCH(return layer_blurs(4, {512, 512}, {16, 16}, SkTileMode::kClamp);)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {16, 16}, SkTileMode::kRepeat);)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {16, 16}, SkTileMode::kMirror);)
+
+// Downscales by more than 4: by 8 (sigma 32), 16 (sigma 64) and 32 (sigma 128), and by 8 along x
+// only (sigma 32x2).
+DEF_BENCH(return layer_blurs(16, {128, 128}, {32, 32});)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {64, 64});)
+DEF_BENCH(return layer_blurs(1, {1024, 1024}, {64, 64});)
+DEF_BENCH(return layer_blurs(1, {1024, 1024}, {128, 128});)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {32, 2});)
+
+// Each tile mode with a downscale by 8. Unlike at sigma 16, the blur reaches the crop's edges.
+DEF_BENCH(return layer_blurs(4, {512, 512}, {32, 32}, SkTileMode::kClamp);)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {32, 32}, SkTileMode::kRepeat);)
+DEF_BENCH(return layer_blurs(4, {512, 512}, {32, 32}, SkTileMode::kMirror);)
+
 // Backdrop blurs (frosted glass), including a heavy blur that downscales.
 DEF_BENCH(return backdrop_blurs(16, {128, 128}, {4, 4});)
 DEF_BENCH(return backdrop_blurs(16, {128, 128}, {16, 16});)
@@ -235,3 +270,21 @@ DEF_BENCH(return backdrop_blurs(4, {512, 512}, {4, 4});)
 DEF_BENCH(return backdrop_blurs(4, {512, 512}, {16, 16});)
 DEF_BENCH(return backdrop_blurs(1, {1024, 1024}, {4, 4});)
 DEF_BENCH(return backdrop_blurs(1, {1024, 1024}, {16, 16});)
+
+// Stress tests, with layers larger than the default canvas and very large sigmas. A 2048x2048
+// layer fills the compute blur's default batch budget on its own, and a 2048x4096 layer is twice
+// that. Sigma 256 downscales by 64 (DownsampleStep::kMaxFactor). Sigma 512 would need 128, so the
+// compute blur leaves that downscale to render passes, like the shader blur, before blurring.
+DEF_BENCH(return layer_blurs(1, {2048, 2048}, {4, 4});)
+DEF_BENCH(return layer_blurs(1, {2048, 4096}, {4, 4});)
+DEF_BENCH(return layer_blurs(1, {2048, 2048}, {64, 64});)
+DEF_BENCH(return layer_blurs(1, {2048, 4096}, {64, 64});)
+DEF_BENCH(return layer_blurs(1, {1024, 1024}, {256, 256});)
+DEF_BENCH(return layer_blurs(1, {2048, 2048}, {256, 256});)
+DEF_BENCH(return layer_blurs(1, {2048, 4096}, {256, 256});)
+DEF_BENCH(return layer_blurs(1, {1024, 1024}, {512, 512});)
+DEF_BENCH(return layer_blurs(1, {2048, 2048}, {512, 512});)
+DEF_BENCH(return layer_blurs(1, {2048, 4096}, {512, 512});)
+DEF_BENCH(return layer_blurs(1, {2048, 4096}, {256, 256}, SkTileMode::kClamp);)
+DEF_BENCH(return backdrop_blurs(1, {2048, 4096}, {4, 4});)
+DEF_BENCH(return backdrop_blurs(1, {2048, 4096}, {256, 256});)

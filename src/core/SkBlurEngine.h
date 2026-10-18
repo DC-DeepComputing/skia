@@ -124,6 +124,25 @@ public:
                                        const SkIRect& srcRect,
                                        SkTileMode tileMode,
                                        const SkIRect& dstRect) const = 0;
+
+    // Blurs a downscaled 'src', which lets an algorithm do the downscale that sigmas above
+    // maxSigma() require itself, rather than the caller rendering a downscaled copy of 'src' first.
+    // Returns null if the algorithm doesn't support the blur, in which case the caller should
+    // downscale 'src' itself and call blur(). By default, no blurs are supported.
+    //
+    // Pixel (i, j) of the downscaled image is the average of the 'src' pixels in
+    // [i*dx, (i+1)*dx) x [j*dy, (j+1)*dy), where {dx, dy} is 'downscale' (powers of two), and
+    // 'tileMode' applies to each of those pixels against 'srcRect', which is relative to 'src' and
+    // within its dimensions like in blur(). 'sigma' and 'dstRect' are in the downscaled image's
+    // pixels and otherwise have the semantics of blur(), so the returned image fills 'dstRect'.
+    virtual sk_sp<SkSpecialImage> downscaleAndBlur(SkSize sigma,
+                                                   SkISize downscale,
+                                                   sk_sp<SkSpecialImage> src,
+                                                   const SkIRect& srcRect,
+                                                   SkTileMode tileMode,
+                                                   const SkIRect& dstRect) const {
+        return nullptr;
+    }
 };
 
 /**

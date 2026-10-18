@@ -1,0 +1,18 @@
+load("//bazel:skia_rules.bzl", "skia_filegroup")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_filegroup(
+    name = "compute_tuning_hdrs",
+    srcs = [
+        "ComputeTuning.h",
+        "DownsampleTuning.h",
+        "GaussianBlurTuning.h",
+        "GpuArchitecture.h",
+    ],
+    visibility = ["//src/gpu/graphite/compute:__pkg__"],
+)

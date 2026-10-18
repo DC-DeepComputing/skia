@@ -11,6 +11,7 @@
 #   //include/gpu/graphite/vk/precompile/BUILD.bazel
 #   //src/gpu/graphite/BUILD.bazel
 #   //src/gpu/graphite/compute/BUILD.bazel
+#   //src/gpu/graphite/compute/ComputeTuning/BUILD.bazel
 #   //src/gpu/graphite/dawn/BUILD.bazel
 #   //src/gpu/graphite/geom/BUILD.bazel
 #   //src/gpu/graphite/mtl/BUILD.bazel
@@ -226,8 +227,14 @@ skia_graphite_sources = [
   "$_src/gpu/graphite/YUVABackendTextures.cpp",
   "$_src/gpu/graphite/compute/ComputeStep.cpp",
   "$_src/gpu/graphite/compute/ComputeStep.h",
+  "$_src/gpu/graphite/compute/ComputeTuning/ComputeTuning.h",
+  "$_src/gpu/graphite/compute/ComputeTuning/DownsampleTuning.h",
+  "$_src/gpu/graphite/compute/ComputeTuning/GaussianBlurTuning.h",
+  "$_src/gpu/graphite/compute/ComputeTuning/GpuArchitecture.h",
   "$_src/gpu/graphite/compute/DispatchGroup.cpp",
   "$_src/gpu/graphite/compute/DispatchGroup.h",
+  "$_src/gpu/graphite/compute/DownsampleStep.cpp",
+  "$_src/gpu/graphite/compute/DownsampleStep.h",
   "$_src/gpu/graphite/compute/GaussianBlurStep.cpp",
   "$_src/gpu/graphite/compute/GaussianBlurStep.h",
   "$_src/gpu/graphite/compute/SharedBlurSksl.h",

@@ -9,8 +9,10 @@
 #define skgpu_graphite_compute_GaussianBlurStep_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkBlurEngine.h"
 #include "src/gpu/graphite/compute/ComputeStep.h"
+#include "src/gpu/graphite/compute/ComputeTuning/GaussianBlurTuning.h"
 
 #include <string>
 #include <tuple>
@@ -28,11 +30,15 @@ class Recorder;
 
 /**
  * GaussianBlurStep performs a separable Gaussian blur in a single dispatch. Each workgroup blurs one
- * kTileWidth x kTileHeight tile of the output. It runs the vertical pass first, streaming the
- * columns of the tile and its horizontal halo from the source into sums held in registers, and
- * stores those to workgroup memory. After one barrier, it runs the horizontal pass from workgroup
- * memory into the output. Unlike the shader blur, it needs no intermediate texture or render
- * passes, and its dispatches are batched through the Recorder's ComputeScheduler.
+ * tile of the output, whose size is set by the step's GaussianBlurTuning. It runs the vertical pass
+ * first, streaming the columns of the tile and its horizontal halo from the source into sums held
+ * in registers, and stores those to workgroup memory. After one barrier, it runs the horizontal
+ * pass from workgroup memory into the output. Unlike the shader blur, it needs no intermediate
+ * texture or render passes, and its dispatches are batched through the Recorder's
+ * ComputeScheduler.
+ *
+ * The tuning is composed into the SkSL when the step is created, so that it can differ per GPU
+ * architecture without changing the results.
  *
  * It implements SkBlurEngine::Algorithm::blur() (see ComputeBlurAlgorithm in TextureUtils.cpp)
  * under these assumptions:
@@ -48,18 +54,22 @@ class Recorder;
  */
 class GaussianBlurStep final : public ComputeStep {
 public:
-    // The output tile of each workgroup is kTileWidth x kTileHeight.
-    static constexpr int kTileWidth = 64;
-    static constexpr int kTileHeight = 16;
     static constexpr float kMaxSigma = SkShaderBlurAlgorithm::kMaxLinearSigma;
     // SkBlurEngine::SigmaToRadius(kMaxSigma), which isn't constexpr.
     static constexpr int kMaxRadius = 12;
 
-    // Returns whether the step can run on a device with `caps`.
-    static bool IsSupported(const Caps*);
+    // Returns whether the step can run with `tuning` on a device with `caps`. If it can't because
+    // `tuning` is invalid or exceeds the device's compute limits (rather than because the device
+    // can't run the step at all), `error` (if not null) is set to the reason.
+    static bool IsSupported(const Caps*,
+                            const GaussianBlurTuning& tuning = {},
+                            std::string* error = nullptr);
 
-    GaussianBlurStep();
+    // `tuning` must be valid, which IsSupported() checks.
+    explicit GaussianBlurStep(const GaussianBlurTuning& tuning = {});
     ~GaussianBlurStep() override;
+
+    const GaussianBlurTuning& tuning() const { return fTuning; }
 
     // Queues a blur on `recorder`'s ComputeScheduler, with the semantics of
     // SkBlurEngine::Algorithm::blur(), except that `srcRect` and `dstRect` are relative to the
@@ -78,6 +88,32 @@ public:
     // Only called for the output, which is always assigned by ComputeScheduler.
     std::tuple<SkISize, SkColorType> calculateTextureParameters(int resourceIndex,
                                                                 const ResourceDesc&) const override;
+
+private:
+    // Returns the radius of the smallest bucket that covers `radius`.
+    int bucketRadius(int radius) const;
+    // Returns the index of entry `i` of a row of vertical sums, with the tuning's padding.
+    int paddedIndex(int i) const;
+
+    void appendBlurVertical(std::string* sksl, int radius) const;
+    void appendBlurHorizontal(std::string* sksl, int radius) const;
+    void appendBucketCalls(std::string* sksl,
+                           const char* radius,
+                           const char* function,
+                           const char* args) const;
+
+    const GaussianBlurTuning fTuning;
+    // Derived from fTuning.
+    const int fTileWidth;
+    const int fTileHeight;
+    // The number of blocks of rows that the vertical pass splits the tile into.
+    const int fVerticalBlocks;
+    // The number of invocations that blur each row in the horizontal pass.
+    const int fHorizontalStrips;
+    const int fWorkgroupSize;
+    // The entries between consecutive rows of vertical sums in workgroup memory.
+    const int fRowStride;
+    skia_private::STArray<kMaxRadius + 1, int> fBucketRadii;
 };
 
 }  // namespace skgpu::graphite

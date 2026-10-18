@@ -11,6 +11,8 @@ CORE_FILES = [
     "ComputeStep.h",
     "DispatchGroup.cpp",
     "DispatchGroup.h",
+    "DownsampleStep.cpp",
+    "DownsampleStep.h",
     "GaussianBlurStep.cpp",
     "GaussianBlurStep.h",
     "SharedBlurSksl.h",
@@ -35,7 +37,10 @@ split_srcs_and_hdrs(
 
 skia_filegroup(
     name = "compute_hdrs",
-    srcs = [":core_hdrs"],
+    srcs = [
+        ":core_hdrs",
+        "//src/gpu/graphite/compute/ComputeTuning:compute_tuning_hdrs",
+    ],
     visibility = ["//src/gpu/graphite:__pkg__"],
 )
 

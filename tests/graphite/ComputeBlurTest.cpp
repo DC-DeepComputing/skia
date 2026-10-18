@@ -19,6 +19,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
+#include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTileMode.h"
@@ -32,6 +33,7 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkRandom.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ComputeProvider.h"
 #include "src/gpu/graphite/ComputeScheduler.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
@@ -40,6 +42,9 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/SpecialImage_Graphite.h"
 #include "src/gpu/graphite/TextureUtils.h"
+#include "src/gpu/graphite/compute/ComputeTuning/ComputeTuning.h"
+#include "src/gpu/graphite/compute/DownsampleStep.h"
+#include "src/gpu/graphite/compute/GaussianBlurStep.h"
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteTestContext.h"
 #include "tools/graphite/TestOptions.h"
@@ -49,6 +54,9 @@
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
+#include <functional>
+#include <memory>
+#include <string>
 #include <vector>
 
 using namespace skgpu::graphite;
@@ -131,12 +139,12 @@ const uint8_t* rgba_at(const SkBitmap& bitmap, int x, int y) {
 constexpr SkISize kSourceSize = {45, 37};
 constexpr SkIRect kSourceSubset = SkIRect::MakeXYWH(3, 2, 36, 30);
 
-SkBitmap make_source_bitmap() {
+SkBitmap make_source_bitmap(SkISize size = kSourceSize) {
     SkBitmap bitmap;
-    bitmap.allocPixels(SkImageInfo::Make(kSourceSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bitmap.allocPixels(SkImageInfo::Make(size, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
     SkRandom random(1234);
-    for (int y = 0; y < kSourceSize.height(); ++y) {
-        for (int x = 0; x < kSourceSize.width(); ++x) {
+    for (int y = 0; y < size.height(); ++y) {
+        for (int x = 0; x < size.width(); ++x) {
             uint8_t* rgba = reinterpret_cast<uint8_t*>(bitmap.getAddr32(x, y));
             rgba[3] = static_cast<uint8_t>(random.nextULessThan(256));
             for (int c = 0; c < 3; ++c) {
@@ -371,7 +379,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(ComputeBlur_MatchesReference,
                             static_cast<int>(tileMode), maxDifference);
         }
     }
-    SkASSERT(index == kBlurCount);
+    REPORTER_ASSERT(reporter, index == kBlurCount);
 }
 
 // Batching doesn't change the results: sibling layers with blur filters, which batch until their
@@ -506,4 +514,452 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(ComputeBlur_FallsBackToShaderBlur,
 
     REPORTER_ASSERT(reporter, scheduler->queuedDispatchCount() == 0);
     REPORTER_ASSERT(reporter, scheduler->drainedBatchCount() == 0);
+}
+
+namespace {
+
+// Returns the Context of `testContext`'s type that `factory` is set to create, which has the compute
+// blur and the device's compute tuning, after `override` (if set) changes it. Returns null if the
+// Context can't be created.
+Context* make_tuned_context(std::unique_ptr<ContextFactory>* factory,
+                            const TestOptions& options,
+                            GraphiteTestContext* testContext,
+                            std::function<void(ComputeTuning*)> override) {
+    TestOptions tunedOptions(options);
+    tunedOptions.fOptionsPriv.fUseComputeBlur = true;
+    tunedOptions.fOptionsPriv.fOverrideComputeTuning = std::move(override);
+    *factory = std::make_unique<ContextFactory>(tunedOptions);
+    return (*factory)->getContextInfo(testContext->contextType()).fContext;
+}
+
+SkString describe(const GaussianBlurTuning& tuning) {
+    return SkStringPrintf("GaussianBlurTuning{%d, %d, %d, %d, %d, %s}",
+                          tuning.fTileWidthLog,
+                          tuning.fTileHeightLog,
+                          tuning.fVerticalSumsPerThread,
+                          tuning.fHorizontalSumsPerThread,
+                          tuning.fBucketStep,
+                          tuning.fPadSums ? "true" : "false");
+}
+
+SkString describe(const DownsampleTuning& tuning) {
+    return SkStringPrintf("DownsampleTuning{%d, %d, %d}",
+                          tuning.fWorkgroupSizeLog,
+                          tuning.fMinSamplesPerLaneLog,
+                          tuning.fMaxClusterSizeLog);
+}
+
+// Tunings of GaussianBlurStep that cover the code paths of its SkSL: one, two and more blocks of
+// rows in the vertical pass, whose invocations blur one item or loop over several, padded and
+// unpadded sums, 1 to 8 sums per invocation in the horizontal pass, and every bucket step. The
+// workgroup of 512 invocations exceeds the limits of some devices.
+constexpr GaussianBlurTuning kBlurTunings[] = {
+        // Tile logs, V, H, bucket step, pad      Tile   Blocks  Workgroup  Vertical pass
+        {5, 4, 16, 4, 3, true},                // 32x16       1        128  One item
+        {3, 3, 4, 1, 1, false},                // 8x8         2         64  One item
+        {4, 4, 4, 1, 4, false},                // 16x16       4        256  One item
+        {6, 4, 2, 2, 6, false},                // 64x16       8        512  Loop
+        {7, 3, 8, 8, 12, true},                // 128x8       1        128  Loop
+        {2, 1, 1, 4, 2, true},                 // 4x2         2          2  Loop
+};
+
+// Tunings of DownsampleStep that cover the code paths of its SkSL: clusters of one lane, of lanes
+// that shuffle within their subgroup, and of more lanes than a subgroup has, whose first lane takes
+// every sample. The workgroup of 1024 invocations exceeds the limits of some devices.
+constexpr DownsampleTuning kDownsampleTunings[] = {
+        // Workgroup log, min samples log, max cluster log
+        DownsampleTuning{},  // The defaults.
+        {7, 0, 0},           // Clusters of one lane.
+        {10, 1, 2},          // Clusters of up to 4 lanes.
+        {9, 3, 5},           // Clusters of up to 32 lanes, more than some subgroups have.
+        {8, 0, 8},           // Clusters of up to 256 lanes, more than any subgroup has.
+};
+
+// The source of the downscale cases, which is large enough for their largest factors. Like the
+// blurs, they read a subset of it.
+constexpr SkISize kDownscaleSourceSize = {203, 171};
+constexpr SkIRect kDownscaleSubset = SkIRect::MakeXYWH(5, 3, 196, 164);
+
+struct DownscaleCase {
+    SkISize fFactors;
+    // In the downscaled image's pixels, like fDstRect.
+    SkSize fSigma;
+    // Relative to kDownscaleSubset, in its pixels.
+    SkIRect fSrcRect;
+    // Relative to the downscale of kDownscaleSubset.
+    SkIRect fDstRect;
+};
+
+constexpr DownscaleCase kDownscaleCases[] = {
+        // Just the downscale, since a sigma of 0 copies, of the whole subset into a dstRect that's
+        // past its edges.
+        {{2, 2}, {0.f, 0.f}, SkIRect::MakeWH(196, 164), SkIRect::MakeLTRB(-3, -2, 101, 85)},
+        // A downscale along x only, of part of the subset.
+        {{4, 1}, {0.f, 0.f}, SkIRect::MakeLTRB(6, 4, 150, 118), SkIRect::MakeLTRB(-2, -3, 42, 125)},
+        // Different factors and sigmas along each axis.
+        {{8, 2}, {1.5f, 2.f}, SkIRect::MakeLTRB(10, 8, 170, 140), SkIRect::MakeLTRB(-3, 0, 25, 75)},
+        {{1, 32}, {3.f, 1.f}, SkIRect::MakeLTRB(0, 2, 196, 160), SkIRect::MakeLTRB(-10, -6, 205, 8)},
+        // Blocks of 256 pixels, which most tunings split across the lanes of a cluster.
+        {{16, 16},
+         {2.5f, 2.5f},
+         SkIRect::MakeLTRB(2, 6, 180, 150),
+         SkIRect::MakeLTRB(-4, -4, 16, 14)},
+        // The largest factor, whose blocks are larger than the srcRect, so the periodic tile modes
+        // wrap within each block.
+        {{64, 64}, {0.f, 0.f}, SkIRect::MakeLTRB(20, 30, 60, 62), SkIRect::MakeLTRB(-2, -2, 3, 3)},
+        // A srcRect with odd edges, which the downscale can't repeat.
+        {{2, 2}, {1.f, 1.f}, SkIRect::MakeLTRB(3, 5, 99, 81), SkIRect::MakeLTRB(-2, -2, 51, 43)},
+};
+
+// Returns whether downscaleAndBlur() supports `downscaleCase` with `tileMode`. The downscale
+// averages pairs of pixels, which mustn't straddle the edges of the srcRect under repeat tiling,
+// so the edges must be at even offsets along each axis that's downscaled.
+bool supports_downscale(const DownscaleCase& downscaleCase, SkTileMode tileMode) {
+    auto evenEdges = [](int factor, int lo, int hi) {
+        return factor == 1 || ((lo | hi) & 1) == 0;
+    };
+    const SkIRect& srcRect = downscaleCase.fSrcRect;
+    return tileMode != SkTileMode::kRepeat ||
+           (evenEdges(downscaleCase.fFactors.width(), srcRect.fLeft, srcRect.fRight) &&
+            evenEdges(downscaleCase.fFactors.height(), srcRect.fTop, srcRect.fBottom));
+}
+
+// Checks `actual`, which is downscaleAndBlur() of the kDownscaleSubset of `source` with
+// `downscaleCase` and `tileMode`, against the blur computed in double precision on the CPU of the
+// downscaled image, each pixel of which averages a block of source pixels with the tile mode
+// applied to them.
+void check_downscale_against_reference(skiatest::Reporter* reporter,
+                                       const SkBitmap& source,
+                                       const DownscaleCase& downscaleCase,
+                                       SkTileMode tileMode,
+                                       const SkBitmap& actual,
+                                       const char* label) {
+    const SkISize factors = downscaleCase.fFactors;
+    const SkIRect& srcRect = downscaleCase.fSrcRect;
+    const SkIRect& dstRect = downscaleCase.fDstRect;
+    const int radiusX = SkBlurEngine::SigmaToRadius(downscaleCase.fSigma.width());
+    const int radiusY = SkBlurEngine::SigmaToRadius(downscaleCase.fSigma.height());
+    std::array<float, SkShaderBlurAlgorithm::kMaxSamples> weightsX, weightsY;
+    SkShaderBlurAlgorithm::Compute1DBlurKernel(
+            downscaleCase.fSigma.width(), radiusX, SkSpan<float>(weightsX));
+    SkShaderBlurAlgorithm::Compute1DBlurKernel(
+            downscaleCase.fSigma.height(), radiusY, SkSpan<float>(weightsY));
+    // The downscale's output is RGBA8, whose rounding adds to the blur's.
+    const int tolerance = radiusX > 0 || radiusY > 0 ? 2 : 1;
+
+    // The downscaled pixels that the blur reads.
+    const SkIRect lowRes = dstRect.makeOutset(radiusX, radiusY);
+    std::vector<std::array<double, 4>> downscaled;
+    downscaled.reserve(lowRes.width() * lowRes.height());
+    for (int j = lowRes.fTop; j < lowRes.fBottom; ++j) {
+        for (int i = lowRes.fLeft; i < lowRes.fRight; ++i) {
+            std::array<double, 4> sum = {};
+            for (int v = j * factors.height(); v < (j + 1) * factors.height(); ++v) {
+                const int sy = tile_coord(v, srcRect.fTop, srcRect.height(), tileMode);
+                for (int u = i * factors.width(); u < (i + 1) * factors.width() && sy >= 0; ++u) {
+                    const int sx = tile_coord(u, srcRect.fLeft, srcRect.width(), tileMode);
+                    if (sx < 0) {
+                        continue;
+                    }
+                    const uint8_t* texel = rgba_at(
+                            source, kDownscaleSubset.fLeft + sx, kDownscaleSubset.fTop + sy);
+                    for (int c = 0; c < 4; ++c) {
+                        sum[c] += texel[c];
+                    }
+                }
+            }
+            for (double& channel : sum) {
+                channel /= factors.width() * factors.height();
+            }
+            downscaled.push_back(sum);
+        }
+    }
+
+    for (int y = 0; y < dstRect.height(); ++y) {
+        for (int x = 0; x < dstRect.width(); ++x) {
+            double sum[4] = {};
+            for (int ky = 0; ky <= 2 * radiusY; ++ky) {
+                for (int kx = 0; kx <= 2 * radiusX; ++kx) {
+                    const std::array<double, 4>& pixel =
+                            downscaled[(y + ky) * lowRes.width() + x + kx];
+                    const double weight = double(weightsX[kx]) * double(weightsY[ky]);
+                    for (int c = 0; c < 4; ++c) {
+                        sum[c] += weight * pixel[c];
+                    }
+                }
+            }
+            const uint8_t* found = rgba_at(actual, x, y);
+            for (int c = 0; c < 4; ++c) {
+                const int expected = std::clamp(static_cast<int>(std::lround(sum[c])), 0, 255);
+                if (std::abs(found[c] - expected) > tolerance) {
+                    ERRORF(reporter,
+                           "%s: factors (%d, %d), sigma (%g, %g), tile mode %d: channel %d at "
+                           "(%d, %d) is %d, expected %d",
+                           label, factors.width(), factors.height(),
+                           downscaleCase.fSigma.width(), downscaleCase.fSigma.height(),
+                           static_cast<int>(tileMode), c, x, y, found[c], expected);
+                    return;
+                }
+            }
+        }
+    }
+}
+
+}  // namespace
+
+// Every tuning of GaussianBlurStep that the device supports matches the reference blur, since the
+// tuning only changes how the work is split.
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(ComputeBlur_TuningsMatchReference,
+                                           is_compute_supported_context_type,
+                                           reporter,
+                                           context,
+                                           testContext,
+                                           options,
+                                           enable_compute_blur,
+                                           /*condition=*/true,
+                                           CtsEnforcement::kNever) {
+    if (!uses_compute_blur(context)) {
+        INFOF(reporter, "Skipped, since the compute blur isn't supported");
+        return;
+    }
+    const SkBitmap source = make_source_bitmap();
+    for (const GaussianBlurTuning& tuning : kBlurTunings) {
+        const SkString label = describe(tuning);
+        std::unique_ptr<ContextFactory> factory;
+        Context* tunedContext = make_tuned_context(
+                &factory, options, testContext, [tuning](ComputeTuning* computeTuning) {
+                    computeTuning->fGaussianBlur = tuning;
+                });
+        if (!tunedContext) {
+            ERRORF(reporter, "%s: failed to create a Context", label.c_str());
+            return;
+        }
+        std::string error;
+        if (!GaussianBlurStep::IsSupported(tunedContext->priv().caps(), tuning, &error)) {
+            INFOF(reporter, "%s: skipped, since %s", label.c_str(), error.c_str());
+            continue;
+        }
+        if (!uses_compute_blur(tunedContext)) {
+            ERRORF(reporter, "%s: the compute blur isn't enabled", label.c_str());
+            continue;
+        }
+
+        std::unique_ptr<Recorder> recorder = tunedContext->makeRecorder();
+        std::vector<SkBitmap> blurs = run_blur_cases(reporter, recorder.get(), source);
+        if (blurs.empty()) {
+            return;
+        }
+        REPORTER_ASSERT(reporter,
+                        recorder->priv().computeScheduler()->drainedBatchCount() == 1,
+                        "%s", label.c_str());
+        int index = 0;
+        for (const BlurCase& blurCase : kBlurCases) {
+            for (SkTileMode tileMode : kTileModes) {
+                check_against_reference(
+                        reporter, source, blurCase, tileMode, blurs[index++], label.c_str());
+            }
+        }
+    }
+}
+
+// downscaleAndBlur() matches a reference with every tuning of DownsampleStep that the device
+// supports and every tile mode, including factors that differ per axis and blocks that are larger
+// than the srcRect. It returns null for the srcRects that the downscale can't repeat.
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(ComputeBlur_DownscaleMatchesReference,
+                                           is_compute_supported_context_type,
+                                           reporter,
+                                           context,
+                                           testContext,
+                                           options,
+                                           enable_compute_blur,
+                                           /*condition=*/true,
+                                           CtsEnforcement::kNever) {
+    if (!uses_compute_blur(context)) {
+        INFOF(reporter, "Skipped, since the compute blur isn't supported");
+        return;
+    }
+    const SkBitmap source = make_source_bitmap(kDownscaleSourceSize);
+    for (const DownsampleTuning& tuning : kDownsampleTunings) {
+        const SkString label = describe(tuning);
+        std::unique_ptr<ContextFactory> factory;
+        Context* tunedContext = make_tuned_context(
+                &factory, options, testContext, [tuning](ComputeTuning* computeTuning) {
+                    computeTuning->fDownsample = tuning;
+                });
+        if (!tunedContext) {
+            ERRORF(reporter, "%s: failed to create a Context", label.c_str());
+            return;
+        }
+        std::string error;
+        if (!DownsampleStep::IsSupported(tunedContext->priv().caps(), tuning, &error)) {
+            INFOF(reporter, "%s: skipped, since %s", label.c_str(), error.c_str());
+            continue;
+        }
+        if (!uses_compute_blur(tunedContext) ||
+            !tunedContext->priv().computeProvider()->downsample()) {
+            ERRORF(reporter, "%s: the compute downscale isn't enabled", label.c_str());
+            continue;
+        }
+
+        std::unique_ptr<Recorder> recorder = tunedContext->makeRecorder();
+        sk_sp<SkSpecialImage> src = make_source(recorder.get(), source, kDownscaleSubset);
+        if (!src) {
+            ERRORF(reporter, "Failed to upload the source");
+            return;
+        }
+        sk_sp<skif::Backend> backend =
+                skif::MakeGraphiteBackend(recorder.get(), SkSurfaceProps(), kRGBA_8888_SkColorType);
+
+        // The downscales are all recorded before any is read back, so they're batched together.
+        std::vector<sk_sp<SkSpecialImage>> results;
+        for (const DownscaleCase& downscaleCase : kDownscaleCases) {
+            for (SkTileMode tileMode : kTileModes) {
+                const SkBlurEngine::Algorithm* algorithm =
+                        find_algorithm(backend.get(), downscaleCase.fSigma);
+                sk_sp<SkSpecialImage> result = algorithm->downscaleAndBlur(downscaleCase.fSigma,
+                                                                           downscaleCase.fFactors,
+                                                                           src,
+                                                                           downscaleCase.fSrcRect,
+                                                                           tileMode,
+                                                                           downscaleCase.fDstRect);
+                const bool supported = supports_downscale(downscaleCase, tileMode);
+                if (!result != !supported ||
+                    (result && result->dimensions() != downscaleCase.fDstRect.size())) {
+                    ERRORF(reporter,
+                           "%s: factors (%d, %d), tile mode %d: the downscale %s",
+                           label.c_str(),
+                           downscaleCase.fFactors.width(),
+                           downscaleCase.fFactors.height(),
+                           static_cast<int>(tileMode),
+                           !supported ? "should have failed"
+                           : result   ? "has the wrong size"
+                                      : "failed");
+                    return;
+                }
+                results.push_back(std::move(result));
+            }
+        }
+        std::vector<sk_sp<SkSurface>> surfaces;
+        for (const sk_sp<SkSpecialImage>& result : results) {
+            surfaces.push_back(result ? draw_into_surface(recorder.get(), result.get()) : nullptr);
+        }
+
+        int index = 0;
+        for (const DownscaleCase& downscaleCase : kDownscaleCases) {
+            for (SkTileMode tileMode : kTileModes) {
+                const bool hasResult = results[index] != nullptr;
+                SkSurface* surface = surfaces[index].get();
+                ++index;
+                if (!hasResult) {
+                    continue;
+                }
+                const SkBitmap bitmap = surface ? read_back(surface) : SkBitmap();
+                if (bitmap.drawsNothing()) {
+                    ERRORF(reporter, "%s: failed to read back a downscale", label.c_str());
+                    return;
+                }
+                check_downscale_against_reference(
+                        reporter, source, downscaleCase, tileMode, bitmap, label.c_str());
+            }
+        }
+    }
+}
+
+// Tunings that are invalid, or that exceed the device's compute limits, are rejected with a reason.
+// A Context with one doesn't create its step, so blurs use the shader blur.
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(ComputeBlur_RejectsBadTunings,
+                                           is_compute_supported_context_type,
+                                           reporter,
+                                           context,
+                                           testContext,
+                                           options,
+                                           enable_compute_blur,
+                                           /*condition=*/true,
+                                           CtsEnforcement::kNever) {
+    if (!uses_compute_blur(context)) {
+        INFOF(reporter, "Skipped, since the compute blur isn't supported");
+        return;
+    }
+    const Caps* caps = context->priv().caps();
+
+    // The last two are valid, but exceed the workgroup invocations and storage of every device.
+    constexpr GaussianBlurTuning kBadBlurTunings[] = {
+            {.fTileWidthLog = 1},
+            {.fTileHeightLog = 11},
+            {.fVerticalSumsPerThread = 3},    // Not a power of two.
+            {.fVerticalSumsPerThread = 32},   // More than the tile height.
+            {.fHorizontalSumsPerThread = 2},  // Less than 4, with padded sums.
+            {.fBucketStep = 5},               // Doesn't divide kMaxRadius.
+            {.fTileWidthLog = 10, .fTileHeightLog = 6},              // 16384 invocations.
+            {.fTileWidthLog = 10, .fHorizontalSumsPerThread = 64},   // Over 160KB of storage.
+    };
+    for (const GaussianBlurTuning& tuning : kBadBlurTunings) {
+        std::string error;
+        REPORTER_ASSERT(reporter,
+                        !GaussianBlurStep::IsSupported(caps, tuning, &error) && !error.empty(),
+                        "%s", describe(tuning).c_str());
+    }
+
+    constexpr DownsampleTuning kBadDownsampleTunings[] = {
+            {.fWorkgroupSizeLog = 11},
+            {.fMinSamplesPerLaneLog = 13},
+            {.fMaxClusterSizeLog = 9},  // More than the workgroup.
+            // One invocation, which is fewer than a subgroup has, so the subgroup isn't full.
+            {.fWorkgroupSizeLog = 0, .fMaxClusterSizeLog = 0},
+    };
+    for (const DownsampleTuning& tuning : kBadDownsampleTunings) {
+        std::string error;
+        REPORTER_ASSERT(reporter,
+                        !DownsampleStep::IsSupported(caps, tuning, &error) && !error.empty(),
+                        "%s", describe(tuning).c_str());
+    }
+
+    std::unique_ptr<ContextFactory> factory;
+    Context* badContext =
+            make_tuned_context(&factory, options, testContext, [](ComputeTuning* computeTuning) {
+                computeTuning->fGaussianBlur.fVerticalSumsPerThread = 3;
+                computeTuning->fDownsample.fWorkgroupSizeLog = 11;
+            });
+    if (!badContext) {
+        ERRORF(reporter, "Failed to create a Context");
+        return;
+    }
+    const ComputeProvider* provider = badContext->priv().computeProvider();
+    REPORTER_ASSERT(reporter, !provider || (!provider->gaussianBlur() && !provider->downsample()));
+    std::unique_ptr<Recorder> recorder = badContext->makeRecorder();
+    REPORTER_ASSERT(reporter, !run_blur_cases(reporter, recorder.get(), make_source_bitmap()).empty());
+    REPORTER_ASSERT(reporter, recorder->priv().computeScheduler()->drainedBatchCount() == 0);
+}
+
+// The tuning that Caps selects for the device's GPU architecture is supported wherever the defaults
+// are, so that the compute blur doesn't turn off on the devices that the tuning is for.
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(ComputeBlur_ArchitectureTuningIsSupported,
+                                           is_compute_supported_context_type,
+                                           reporter,
+                                           context,
+                                           testContext,
+                                           options,
+                                           enable_compute_blur,
+                                           /*condition=*/true,
+                                           CtsEnforcement::kNever) {
+    // Without any override of the tuning from the command line.
+    std::unique_ptr<ContextFactory> factory;
+    Context* archContext = make_tuned_context(&factory, options, testContext, /*override=*/nullptr);
+    if (!archContext) {
+        ERRORF(reporter, "Failed to create a Context");
+        return;
+    }
+    const Caps* caps = archContext->priv().caps();
+    const ComputeTuning& tuning = caps->computeTuning();
+    std::string error;
+    if (GaussianBlurStep::IsSupported(caps)) {
+        REPORTER_ASSERT(reporter,
+                        GaussianBlurStep::IsSupported(caps, tuning.fGaussianBlur, &error),
+                        "%s: %s", describe(tuning.fGaussianBlur).c_str(), error.c_str());
+    }
+    if (DownsampleStep::IsSupported(caps)) {
+        REPORTER_ASSERT(reporter,
+                        DownsampleStep::IsSupported(caps, tuning.fDownsample, &error),
+                        "%s: %s", describe(tuning.fDownsample).c_str(), error.c_str());
+    }
 }
