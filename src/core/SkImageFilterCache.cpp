@@ -52,11 +52,15 @@ public:
         SK_DECLARE_INTERNAL_LLIST_INTERFACE(Value);
     };
 
-    bool get(const Key& key, skif::FilterResult* result) const override {
+    bool get(const Key& key, const SkImageFilter* filter,
+             skif::FilterResult* result) const override {
         SkASSERT(result);
 
         SkAutoMutexExclusive mutex(fMutex);
         if (Value* v = fLookup.find(key)) {
+            if (v->fFilter != filter) {
+                return false;
+            }
             if (v != fLRU.head()) {
                 fLRU.remove(v);
                 fLRU.addToHead(v);

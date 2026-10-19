@@ -89,12 +89,17 @@ static void test_find_existing(skiatest::Reporter* reporter,
     cache->set(key1, filter.get(), skif::FilterResult(image, skif::LayerSpace<SkIPoint>(offset)));
 
     skif::FilterResult foundImage;
-    REPORTER_ASSERT(reporter, cache->get(key1, &foundImage));
+    REPORTER_ASSERT(reporter, cache->get(key1, filter.get(), &foundImage));
     REPORTER_ASSERT(reporter,
             SkIRect::MakeXYWH(offset.fX, offset.fY, image->width(), image->height()) ==
             SkIRect(foundImage.layerBounds()));
 
-    REPORTER_ASSERT(reporter, !cache->get(key2, &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key2, filter.get(), &foundImage));
+
+    // A different live filter instance with a colliding key (e.g. after 32-bit uniqueID wraparound)
+    // must be treated as a cache miss.
+    auto collidingFilter = make_filter();
+    REPORTER_ASSERT(reporter, !cache->get(key1, collidingFilter.get(), &foundImage));
 }
 
 // If either id is different or the clip or the matrix are different the
@@ -116,13 +121,15 @@ static void test_dont_find_if_diff_key(skiatest::Reporter* reporter,
 
     SkIPoint offset = SkIPoint::Make(3, 4);
     auto filter = make_filter();
+    auto otherFilter = make_filter();
     cache->set(key0, filter.get(), skif::FilterResult(image, skif::LayerSpace<SkIPoint>(offset)));
 
     skif::FilterResult foundImage;
-    REPORTER_ASSERT(reporter, !cache->get(key1, &foundImage));
-    REPORTER_ASSERT(reporter, !cache->get(key2, &foundImage));
-    REPORTER_ASSERT(reporter, !cache->get(key3, &foundImage));
-    REPORTER_ASSERT(reporter, !cache->get(key4, &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key0, otherFilter.get(), &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key1, filter.get(), &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key2, filter.get(), &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key3, filter.get(), &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key4, filter.get(), &foundImage));
 }
 
 // Test purging when the max cache size is exceeded
@@ -140,15 +147,15 @@ static void test_internal_purge(skiatest::Reporter* reporter, const sk_sp<SkSpec
     cache->set(key1, filter1.get(), skif::FilterResult(image, skif::LayerSpace<SkIPoint>(offset)));
 
     skif::FilterResult foundImage;
-    REPORTER_ASSERT(reporter, cache->get(key1, &foundImage));
+    REPORTER_ASSERT(reporter, cache->get(key1, filter1.get(), &foundImage));
 
     // This should knock the first one out of the cache
     auto filter2 = make_filter();
     cache->set(key2, filter2.get(),
                skif::FilterResult(image, skif::LayerSpace<SkIPoint>(offset)));
 
-    REPORTER_ASSERT(reporter, cache->get(key2, &foundImage));
-    REPORTER_ASSERT(reporter, !cache->get(key1, &foundImage));
+    REPORTER_ASSERT(reporter, cache->get(key2, filter2.get(), &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key1, filter1.get(), &foundImage));
 }
 
 // Exercise the purgeByKey and purge methods
@@ -172,20 +179,20 @@ static void test_explicit_purging(skiatest::Reporter* reporter,
     SkDEBUGCODE(REPORTER_ASSERT(reporter, 2 == cache->count());)
 
     skif::FilterResult foundImage;
-    REPORTER_ASSERT(reporter, cache->get(key1, &foundImage));
-    REPORTER_ASSERT(reporter, cache->get(key2, &foundImage));
+    REPORTER_ASSERT(reporter, cache->get(key1, filter1.get(), &foundImage));
+    REPORTER_ASSERT(reporter, cache->get(key2, filter2.get(), &foundImage));
 
     cache->purgeByImageFilter(filter1.get());
     SkDEBUGCODE(REPORTER_ASSERT(reporter, 1 == cache->count());)
 
-    REPORTER_ASSERT(reporter, !cache->get(key1, &foundImage));
-    REPORTER_ASSERT(reporter, cache->get(key2, &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key1, filter1.get(), &foundImage));
+    REPORTER_ASSERT(reporter, cache->get(key2, filter2.get(), &foundImage));
 
     cache->purge();
     SkDEBUGCODE(REPORTER_ASSERT(reporter, 0 == cache->count());)
 
-    REPORTER_ASSERT(reporter, !cache->get(key1, &foundImage));
-    REPORTER_ASSERT(reporter, !cache->get(key2, &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key1, filter1.get(), &foundImage));
+    REPORTER_ASSERT(reporter, !cache->get(key2, filter2.get(), &foundImage));
 }
 
 DEF_TEST(ImageFilterCache_RasterBacked, reporter) {
@@ -361,4 +368,55 @@ DEF_SERIAL_TEST(PurgeImageFilterCache, r) {
         cache = SkImageFilterCache::Get(SkImageFilterCache::CreateIfNecessary::kYes);
         REPORTER_ASSERT(r, cache);
     }
+}
+
+DEF_TEST(ImageFilterCache_OwnerMismatchOnIDCollision, reporter) {
+    static const size_t kCacheSize = 1000000;
+    sk_sp<SkImageFilterCache> cache(SkImageFilterCache::Create(kCacheSize));
+
+    SkBitmap bm1 = create_bm();
+    SkBitmap bm2 = create_bm();
+    const SkIRect full = SkIRect::MakeWH(kFullSize, kFullSize);
+    sk_sp<SkSpecialImage> img1(SkSpecialImages::MakeFromRaster(full, bm1, SkSurfaceProps()));
+    sk_sp<SkSpecialImage> img2(SkSpecialImages::MakeFromRaster(full, bm2, SkSurfaceProps()));
+
+    // Simulate two live filters whose 32-bit uniqueIDs collided after wraparound.
+    SkIRect clip = SkIRect::MakeWH(100, 100);
+    SkImageFilterCacheKey collidingKey(42, SkMatrix::I(), clip, SK_InvalidUniqueID,
+                                       SkIRect::MakeWH(0, 0));
+
+    auto filter1 = make_filter();
+    auto filter2 = make_filter();
+    SkIPoint offset1 = SkIPoint::Make(1, 2);
+    SkIPoint offset2 = SkIPoint::Make(5, 6);
+
+    cache->set(collidingKey, filter1.get(),
+               skif::FilterResult(img1, skif::LayerSpace<SkIPoint>(offset1)));
+
+    skif::FilterResult found;
+    // Colliding filter2 must miss rather than reading filter1's cached result.
+    REPORTER_ASSERT(reporter, !cache->get(collidingKey, filter2.get(), &found));
+    REPORTER_ASSERT(reporter, !found.image());
+
+    // Owning filter1 still hits.
+    REPORTER_ASSERT(reporter, cache->get(collidingKey, filter1.get(), &found));
+    REPORTER_ASSERT(reporter, found.image() == img1.get());
+
+    // If filter2 subsequently evaluates and overwrites the colliding key, filter1 must miss
+    // rather than receiving filter2's result (preventing cache poisoning).
+    cache->set(collidingKey, filter2.get(),
+               skif::FilterResult(img2, skif::LayerSpace<SkIPoint>(offset2)));
+
+    found = {};
+    REPORTER_ASSERT(reporter, !cache->get(collidingKey, filter1.get(), &found));
+    REPORTER_ASSERT(reporter, !found.image());
+    REPORTER_ASSERT(reporter, cache->get(collidingKey, filter2.get(), &found));
+    REPORTER_ASSERT(reporter, found.image() == img2.get());
+
+    cache->purgeByImageFilter(filter1.get());
+    REPORTER_ASSERT(reporter, cache->get(collidingKey, filter2.get(), &found));
+
+    cache->purgeByImageFilter(filter2.get());
+    REPORTER_ASSERT(reporter, !cache->get(collidingKey, filter2.get(), &found));
+    SkDEBUGCODE(REPORTER_ASSERT(reporter, 0 == cache->count());)
 }

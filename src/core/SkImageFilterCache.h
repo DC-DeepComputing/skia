@@ -67,7 +67,7 @@ public:
 
     // Returns true on cache hit and updates 'result' to be the cached result. Returns false when
     // not in the cache, in which case 'result' is not modified.
-    virtual bool get(const SkImageFilterCacheKey& key,
+    virtual bool get(const SkImageFilterCacheKey& key, const SkImageFilter* filter,
                      skif::FilterResult* result) const = 0;
     // 'filter' is included in the caching to allow the purging of all of an image filter's cached
     // results when it is destroyed.

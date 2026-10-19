@@ -248,7 +248,7 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
                               context.mapping().layerMatrix().asM33(),
                               SkIRect(context.desiredOutput()),
                               srcGenID, srcSubset);
-    if (context.backend()->cache() && context.backend()->cache()->get(key, &result)) {
+    if (context.backend()->cache() && context.backend()->cache()->get(key, this, &result)) {
         context.markCacheHit();
         return result;
     }
