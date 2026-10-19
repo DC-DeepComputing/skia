@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b43d7e7_94557c2a",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-19T16:43:55Z",
+      "side": 1,
+      "message": "I think zune-jpeg batching can exceed that: `max_scanline_stripe_rows()` uses something like `(DCT_BLOCK_SIZE + 1) * max_v` which IIUC can yield 36.  Should be bump the value to 36 to avoid triggering zune\u0027s buffered mode?",
+      "revId": "1ebfd7c27c812a61f52bb31c2364be17ec75420f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
