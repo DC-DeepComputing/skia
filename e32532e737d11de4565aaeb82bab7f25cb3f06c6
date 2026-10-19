@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa53bad3_feda3be4",
+        "filename": "modules/canvaskit/bidi_c_api.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-19T19:51:24Z",
+      "side": 1,
+      "message": "Done. Extracted the shared implementation (getBidiRegions, reorderVisual, and computeCodeUnitFlags) into modules/canvaskit/bidi_c_api.h and updated both bidi_c_api.cpp and bidi_bindings.cpp to use it.",
+      "parentUuid": "21c8817a_822ed579",
+      "revId": "e32532e737d11de4565aaeb82bab7f25cb3f06c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "921e4267_7215c68d",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90f47e9c_8727a323",
+        "filename": "modules/canvaskit/bidi_c_api.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-19T19:51:24Z",
+      "side": 1,
+      "message": "Good catch! Changed start and end to SkBidiIterator::Position (int32_t) and added a test case for strings longer than 65535 code units.",
+      "parentUuid": "921e4267_7215c68d",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 40
+      },
+      "revId": "e32532e737d11de4565aaeb82bab7f25cb3f06c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eea43113_70656e7e",
@@ -54,6 +96,24 @@
       "writtenOn": "2026-10-19T17:18:15Z",
       "side": 1,
       "message": "I think this can fail silently for certain inputs (e.g. `ubidi_reorderVisual` seems to bail if any level is \u003e 126), and we end up with uninitialized values from `malloc`.  We need a way to detect `reorderVisual` failures, or at least zero-initialize the allocated memory.",
+      "revId": "e32532e737d11de4565aaeb82bab7f25cb3f06c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "321d3b26_1c7ed047",
+        "filename": "modules/canvaskit/skbidi_bidi.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-19T19:51:24Z",
+      "side": 1,
+      "message": "Yes, ubidi_reorderVisual returns early without writing to indexMap if any level is out of [0, UBIDI_MAX_EXPLICIT_LEVEL] (126). Updated reorderVisual to sentinel-initialize the output buffer, zero-fill and return 0 on failure, and return [] in JS when reorderVisual fails (with a unit test for level 127).",
+      "parentUuid": "eea43113_70656e7e",
       "revId": "e32532e737d11de4565aaeb82bab7f25cb3f06c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
