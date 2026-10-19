@@ -4350,6 +4350,128 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeStrutFallback, reporter) {
     }
 }
 
+UNIX_ONLY_TEST(SkParagraph_ForceStrutHeightWhenStrutDisabledOrUnresolved, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Ahem")});
+    textStyle.setFontSize(20.0f);
+    textStyle.setHeightOverride(true);
+    textStyle.setHeight(2.0f);
+
+    auto buildAndLayout = [&](const sk_sp<FontCollection>& fc,
+                              const TextStyle& ts,
+                              const StrutStyle& strutStyle,
+                              const char* text) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(ts);
+        paragraphStyle.setStrutStyle(strutStyle);
+        ParagraphBuilderImpl builder(paragraphStyle, fc, get_unicode());
+        builder.pushStyle(ts);
+        builder.addText(text);
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(500.0f);
+        return paragraph;
+    };
+
+    StrutStyle noStrut;
+    noStrut.setStrutEnabled(false);
+    SkScalar expectedSingle = buildAndLayout(fontCollection, textStyle, noStrut, "Hello")->getHeight();
+    SkScalar expectedMulti =
+            buildAndLayout(fontCollection, textStyle, noStrut, "Hello\nWorld")->getHeight();
+    SkScalar expectedEmpty = buildAndLayout(fontCollection, textStyle, noStrut, "")->getHeight();
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(expectedSingle, 40.0f));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(expectedMulti, 80.0f));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(expectedEmpty, 40.0f));
+
+    StrutStyle disabledWithForce;
+    disabledWithForce.setStrutEnabled(false);
+    disabledWithForce.setForceStrutHeight(true);
+    REPORTER_ASSERT(
+            reporter,
+            SkScalarNearlyEqual(
+                    buildAndLayout(fontCollection, textStyle, disabledWithForce, "Hello")->getHeight(),
+                    expectedSingle));
+    REPORTER_ASSERT(
+            reporter,
+            SkScalarNearlyEqual(buildAndLayout(fontCollection,
+                                               textStyle,
+                                               disabledWithForce,
+                                               "Hello\nWorld")->getHeight(),
+                                expectedMulti));
+    REPORTER_ASSERT(
+            reporter,
+            SkScalarNearlyEqual(
+                    buildAndLayout(fontCollection, textStyle, disabledWithForce, "")->getHeight(),
+                    expectedEmpty));
+
+    auto emptyCollection = sk_make_sp<FontCollection>();
+    emptyCollection->setDefaultFontManager(sk_make_sp<TypefaceFontProvider>());
+    emptyCollection->disableFontFallback();
+
+    StrutStyle unresolvedStrut;
+    unresolvedStrut.setStrutEnabled(true);
+    unresolvedStrut.setForceStrutHeight(true);
+    unresolvedStrut.setFontFamilies({SkString("NonExistentStrutFont")});
+    unresolvedStrut.setFontSize(30.0f);
+
+    auto paragraph = buildAndLayout(emptyCollection, textStyle, unresolvedStrut, "");
+    REPORTER_ASSERT(reporter, SkIsFinite(paragraph->getHeight()));
+    REPORTER_ASSERT(reporter, SkIsFinite(paragraph->getAlphabeticBaseline()));
+    REPORTER_ASSERT(reporter, SkIsFinite(paragraph->getIdeographicBaseline()));
+
+    TextStyle zeroSizeStyle = textStyle;
+    zeroSizeStyle.setFontSize(0.0f);
+    zeroSizeStyle.setHalfLeading(false);
+    for (const char* text : {"", "Hello"}) {
+        auto zeroPara = buildAndLayout(fontCollection, zeroSizeStyle, noStrut, text);
+        REPORTER_ASSERT(reporter, SkIsFinite(zeroPara->getHeight()));
+    }
+}
+
+UNIX_ONLY_TEST(SkParagraph_StrutFallbackWithHeightOverrideAndNegativeHeight, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    auto buildWithHeight = [&](SkScalar height) {
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Ahem")});
+        textStyle.setFontSize(20.0f);
+        textStyle.setHeightOverride(true);
+        textStyle.setHeight(height);
+
+        StrutStyle strutStyle;
+        strutStyle.setStrutEnabled(false);
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setStrutStyle(strutStyle);
+
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText("A");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(500.0f);
+        return paragraph;
+    };
+
+    auto paragraph = buildWithHeight(3.0f);
+    auto tightBoxes =
+            paragraph->getRectsForRange(0, 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+    auto strutBoxes =
+            paragraph->getRectsForRange(0, 1, RectHeightStyle::kStrut, RectWidthStyle::kTight);
+    REPORTER_ASSERT(reporter, tightBoxes.size() == 1 && strutBoxes.size() == 1);
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(tightBoxes[0].rect.height(), 20.0f));
+    REPORTER_ASSERT(reporter, strutBoxes[0].rect == tightBoxes[0].rect);
+
+    auto negParagraph = buildWithHeight(-1.0f);
+    auto negTight =
+            negParagraph->getRectsForRange(0, 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+    REPORTER_ASSERT(reporter, negTight.size() == 1);
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(negTight[0].rect.height(), 20.0f));
+}
+
 // Checked: DIFF (small in numbers)
 UNIX_ONLY_TEST(SkParagraph_GetWordBoundaryParagraph, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();

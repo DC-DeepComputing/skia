@@ -181,8 +181,7 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
                 // Set the important values that are not zero
                 fWidth = floorWidth;
                 fHeight = fEmptyMetrics.height();
-                if (fParagraphStyle.getStrutStyle().getStrutEnabled() &&
-                    fParagraphStyle.getStrutStyle().getForceStrutHeight()) {
+                if (this->strutForceHeight()) {
                     fHeight = fStrutMetrics.height();
                 }
                 fAlphabeticBaseline = fEmptyMetrics.alphabeticBaseline();
@@ -1155,9 +1154,9 @@ void ParagraphImpl::computeEmptyMetrics() {
     auto typeface = typefaces.empty() ? nullptr : typefaces.front();
 
     SkFont font(typeface, textStyle.getFontSize());
-    fEmptyMetrics = InternalLineMetrics(font, paragraphStyle().getStrutStyle().getForceStrutHeight());
+    fEmptyMetrics = InternalLineMetrics(font, this->strutForceHeight());
 
-    if (!paragraphStyle().getStrutStyle().getForceStrutHeight() &&
+    if (!this->strutForceHeight() &&
         textStyle.getHeightOverride()) {
         const auto intrinsicHeight = fEmptyMetrics.height();
         const auto strutHeight = textStyle.getHeight() * textStyle.getFontSize();
@@ -1168,7 +1167,8 @@ void ParagraphImpl::computeEmptyMetrics() {
                 fEmptyMetrics.ascent(),
                 fEmptyMetrics.descent(),
                 fEmptyMetrics.leading() + strutHeight - intrinsicHeight);
-        } else {
+        // Guard against 0/0 NaN when fontSize is 0 or the typeface has zero intrinsic height
+        } else if (!SkScalarNearlyZero(intrinsicHeight)) {
             const auto multiplier = strutHeight / intrinsicHeight;
             fEmptyMetrics.update(
                 fEmptyMetrics.ascent() * multiplier,
@@ -1189,7 +1189,7 @@ void ParagraphImpl::computeEmptyMetrics() {
             fEmptyMetrics.leading());
     }
 
-    if (fParagraphStyle.getStrutStyle().getStrutEnabled()) {
+    if (this->strutEnabled()) {
         fStrutMetrics.updateLineMetrics(fEmptyMetrics);
     }
 }
