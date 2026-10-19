@@ -10671,3 +10671,102 @@ DEF_TEST(SkParagraph_CrLfDoesNotRequestFallback, reporter) {
     auto crLfCrLfHeight = check("CR LF CR LF", "a\r\n\r\nb", 3);
     REPORTER_ASSERT(reporter, crLfCrLfHeight == lfLfHeight);
 }
+
+UNIX_ONLY_TEST(SkParagraph_ExtendedVisitAndGetPathBaselineAndRuns, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraphStyle;
+    TextStyle baseStyle;
+    baseStyle.setFontFamilies({SkString("Ahem")});
+    baseStyle.setFontSize(20.0f);
+    paragraphStyle.setTextStyle(baseStyle);
+
+    TextStyle shiftedStyle = baseStyle;
+    shiftedStyle.setBaselineShift(10.0f);
+
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(baseStyle);
+    builder.addText("AB\nCD");
+    builder.pushStyle(shiftedStyle);
+    builder.addText("EF");
+    builder.pop();
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(40.0f);
+    REPORTER_ASSERT(reporter, paragraph->lineNumber() == 3);
+
+    struct VisitRecord {
+        int lineNumber;
+        SkPoint origin;
+        int count;
+        uint32_t firstUtf8;
+        uint32_t lastUtf8End;
+    };
+    std::vector<VisitRecord> visits;
+    paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo* info) {
+        if (!info) {
+            return;
+        }
+        visits.push_back({lineNumber,
+                          info->origin,
+                          info->count,
+                          info->utf8Starts[0],
+                          info->utf8Starts[info->count]});
+    });
+
+    std::vector<VisitRecord> extVisits;
+    paragraph->extendedVisit([&](int lineNumber, const Paragraph::ExtendedVisitorInfo* info) {
+        if (!info) {
+            return;
+        }
+        extVisits.push_back({lineNumber,
+                             info->origin,
+                             info->count,
+                             info->utf8Starts[0],
+                             info->utf8Starts[info->count]});
+    });
+
+    REPORTER_ASSERT(reporter, visits.size() == 3);
+    REPORTER_ASSERT(reporter, extVisits.size() == visits.size());
+    for (size_t i = 0; i < std::min(visits.size(), extVisits.size()); ++i) {
+        REPORTER_ASSERT(reporter, extVisits[i].lineNumber == visits[i].lineNumber);
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(extVisits[i].origin.fX, visits[i].origin.fX));
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(extVisits[i].origin.fY, visits[i].origin.fY));
+        REPORTER_ASSERT(reporter, extVisits[i].count == visits[i].count);
+        REPORTER_ASSERT(reporter, extVisits[i].firstUtf8 == visits[i].firstUtf8);
+        REPORTER_ASSERT(reporter, extVisits[i].lastUtf8End == visits[i].lastUtf8End);
+    }
+
+    // Line 1 ("CD") and line 2 ("EF" with baselineShift = 10) wrap a single multi-style run
+    if (extVisits.size() == 3) {
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(extVisits[2].origin.fY - extVisits[0].origin.fY,
+                                            40.0f));
+        REPORTER_ASSERT(reporter, extVisits[1].firstUtf8 == 3);
+        REPORTER_ASSERT(reporter, extVisits[1].lastUtf8End == 5);
+        REPORTER_ASSERT(reporter, extVisits[2].firstUtf8 == 5);
+        REPORTER_ASSERT(reporter, extVisits[2].lastUtf8End == 7);
+    }
+
+    // Paragraph with two visual runs on the same line: "CD" at y=[0, 20], "EF" shifted by +10
+    ParagraphBuilderImpl singleLineBuilder(paragraphStyle, fontCollection, get_unicode());
+    singleLineBuilder.pushStyle(baseStyle);
+    singleLineBuilder.addText("CD");
+    singleLineBuilder.pushStyle(shiftedStyle);
+    singleLineBuilder.addText("EF");
+    singleLineBuilder.pop();
+    singleLineBuilder.pop();
+
+    auto singleLine = singleLineBuilder.Build();
+    singleLine->layout(200.0f);
+    SkPath linePath;
+    REPORTER_ASSERT(reporter, singleLine->getPath(0, &linePath) == 0);
+    const SkRect pathBounds = linePath.getBounds();
+    // Both runs ("CD" in [0, 40] x [0, 20] and "EF" in [40, 80] x [10, 30]) must be in the path
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(pathBounds.fLeft, 0.0f, 0.01f));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(pathBounds.fTop, 0.0f, 0.01f));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(pathBounds.fRight, 80.0f, 0.01f));
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(pathBounds.fBottom, 30.0f, 0.01f));
+}
