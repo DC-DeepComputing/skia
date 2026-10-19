@@ -16,6 +16,24 @@
       "message": "Computing `isControl8` (normalizing the text range and querying `codeUnitHasProperty` for each code unit) runs unconditionally for every glyph in the run. On normal text where almost all glyphs are resolved (`glyph !\u003d 0`), this adds unnecessary work on the hot shaping path.\n\nCould we short-circuit this to check `isControl8` only when `glyph \u003d\u003d 0`?\n```cpp\nbool glyphResolved \u003d glyph !\u003d 0;\nif (!glyphResolved) {\n    TextRange textRange \u003d normalizeTextRange(GlyphRange(i, i + 1));\n    bool isControl8 \u003d true;\n    for (TextIndex ch \u003d textRange.start; ch \u003c textRange.end; ++ch) {\n        if (!fParagraph-\u003ecodeUnitHasProperty(ch, SkUnicode::CodeUnitFlags::kControl)) {\n            isControl8 \u003d false;\n            break;\n        }\n    }\n    glyphResolved \u003d isControl8;\n}\n```",
       "revId": "bf04710611f21b81a808c63c685cc4b676f3c215",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72e2f1d2_38b42133",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-19T16:01:37Z",
+      "side": 1,
+      "message": "Why it appeared twice I have no idea.",
+      "parentUuid": "8c97a5f4_f7fed4eb",
+      "revId": "bf04710611f21b81a808c63c685cc4b676f3c215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
