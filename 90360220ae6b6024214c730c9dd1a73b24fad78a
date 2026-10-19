@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17f0d13b_8e325c74",
+        "filename": "src/core/SkContextPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-19T16:56:42Z",
+      "side": 1,
+      "message": "That seems fine to me. We already expose sharedContext on the non const SkContexPriv so can expose a const version as well. And assuming by internal APIs you\u0027re specifically referring to resourceCache(), strikeCache(), and typefaceCache() thats on SkContext and SkContextPrivConst that could be removed.",
+      "parentUuid": "2d2d3717_f342e05b",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 44
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef931efe_9a9d1d7e",
         "filename": "src/core/SkGraphics.cpp",
         "patchSetId": 9
