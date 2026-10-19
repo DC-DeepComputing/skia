@@ -16,6 +16,24 @@
       "message": "I think zune-jpeg batching can exceed that: `max_scanline_stripe_rows()` uses something like `(DCT_BLOCK_SIZE + 1) * max_v` which IIUC can yield 36.  Should be bump the value to 36 to avoid triggering zune\u0027s buffered mode?",
       "revId": "1ebfd7c27c812a61f52bb31c2364be17ec75420f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57c56474_dcc234df",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-19T18:40:13Z",
+      "side": 1,
+      "message": "Good catch, it was wrong interpretation on my side: 32 is the maximum raw iMCU height, but converted output can include one deferred interpolation group in addition to the regular eight groups. With the maximum vertical sampling factor of 4, zune-jpeg’s direct stripe threshold is `(8 + 1) * 4 \u003d 36 rows`.\n\nUsing 32 is correct but would force zune-jpeg through its internal staging path for `maxV\u003d4` images. I’ll increase the C++ batch size to 36, update the comment, and adjust the buffer-size test bound accordingly.",
+      "parentUuid": "6b43d7e7_94557c2a",
+      "revId": "1ebfd7c27c812a61f52bb31c2364be17ec75420f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
