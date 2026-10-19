@@ -34,6 +34,24 @@
       "parentUuid": "8c97a5f4_f7fed4eb",
       "revId": "bf04710611f21b81a808c63c685cc4b676f3c215",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8392b2cc_81590bb6",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-19T16:50:43Z",
+      "side": 1,
+      "message": "Done in patch set 3.",
+      "parentUuid": "8c97a5f4_f7fed4eb",
+      "revId": "bf04710611f21b81a808c63c685cc4b676f3c215",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
