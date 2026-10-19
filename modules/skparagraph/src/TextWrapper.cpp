@@ -408,7 +408,11 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         if (disableFirstAscent && firstLine) {
             fEndLine.metrics().fAscent = fEndLine.metrics().fRawAscent;
         }
-        if (disableLastDescent && (lastLine || (startLine == end && !fHardLineBreak ))) {
+        // When ellipsis is set without maxLines, a hard line break continues onto the next line,
+        // so only the actual final line should have its descent trimmed
+        if (disableLastDescent &&
+            (fLineNumber >= maxLines ||
+             ((startLine == end || (hasEllipsis && unlimitedLines)) && !fHardLineBreak))) {
             fEndLine.metrics().fDescent = fEndLine.metrics().fRawDescent;
         }
 
@@ -516,6 +520,11 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
     }
 
     if (fHardLineBreak) {
+        // When the first line ended with a hard break and had disableFirstAscent applied, restore
+        // its pre-trim ascent (saved in maxRunMetrics) before creating the trailing empty line
+        if (parent->lines().size() == 1 && disableFirstAscent) {
+            fEndLine.metrics().fAscent = maxRunMetrics.fAscent;
+        }
         if (disableLastDescent) {
             fEndLine.metrics().fDescent = fEndLine.metrics().fRawDescent;
         }

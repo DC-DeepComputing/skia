@@ -2135,20 +2135,24 @@ DEF_TEST(SkParagraph_EmptyMetricsHalfLeadingFromTextStyle, reporter) {
     auto basePara = buildEmpty(false, false, false);
     auto* baseImpl = static_cast<ParagraphImpl*>(basePara.get());
     const auto baseMetrics = baseImpl->getEmptyMetrics();
-    const SkScalar intrinsicHeight = baseMetrics.height();
+    const SkScalar intrinsicHeight =
+            baseMetrics.descent() - baseMetrics.ascent() + baseMetrics.leading();
     const SkScalar targetHeight = 100.0f;
+    const SkScalar extraLeading = (targetHeight - intrinsicHeight) / 2.0f;
 
     auto halfLeadingPara = buildEmpty(true, false, true);
     auto* halfLeadingImpl = static_cast<ParagraphImpl*>(halfLeadingPara.get());
     const auto halfMetrics = halfLeadingImpl->getEmptyMetrics();
     REPORTER_ASSERT(reporter,
-                    SkScalarNearlyEqual(halfMetrics.ascent(), baseMetrics.ascent(), EPSILON100));
-    REPORTER_ASSERT(reporter,
-                    SkScalarNearlyEqual(halfMetrics.descent(), baseMetrics.descent(), EPSILON100));
-    REPORTER_ASSERT(reporter,
-                    SkScalarNearlyEqual(halfMetrics.leading(),
-                                        baseMetrics.leading() + targetHeight - intrinsicHeight,
+                    SkScalarNearlyEqual(halfMetrics.ascent(),
+                                        baseMetrics.ascent() - extraLeading,
                                         EPSILON100));
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(halfMetrics.descent(),
+                                        baseMetrics.descent() + extraLeading,
+                                        EPSILON100));
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(halfMetrics.leading(), baseMetrics.leading(), EPSILON100));
 
     auto scaledPara = buildEmpty(false, true, true);
     auto* scaledImpl = static_cast<ParagraphImpl*>(scaledPara.get());
@@ -2162,6 +2166,168 @@ DEF_TEST(SkParagraph_EmptyMetricsHalfLeadingFromTextStyle, reporter) {
                     SkScalarNearlyEqual(scaledMetrics.descent(),
                                         baseMetrics.descent() * multiplier,
                                         EPSILON100));
+}
+
+UNIX_ONLY_TEST(SkParagraph_TextHeightBehaviorAndEmptyMetrics, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    TextStyle baseAhemStyle;
+    baseAhemStyle.setFontFamilies({SkString("Ahem")});
+    baseAhemStyle.setFontSize(20.0f);
+    baseAhemStyle.setHeight(2.0f);
+    baseAhemStyle.setHeightOverride(true);
+
+    // Empty paragraph "" and empty lines "\n" must fold half-leading into ascent/descent so
+    // kDisableFirstAscent, kDisableLastDescent, and LineMetrics::fBaseline match a single-run line
+    {
+        auto buildWithText = [&](const char* text, TextHeightBehavior behavior) {
+            ParagraphStyle paragraphStyle;
+            paragraphStyle.setTextHeightBehavior(behavior);
+            TextStyle textStyle = baseAhemStyle;
+            textStyle.setHalfLeading(true);
+            paragraphStyle.setTextStyle(textStyle);
+            ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+            builder.pushStyle(textStyle);
+            builder.addText(text);
+            builder.pop();
+            auto p = builder.Build();
+            p->layout(500.0f);
+            return p;
+        };
+
+        auto emptyAll = buildWithText("", TextHeightBehavior::kAll);
+        auto nonEmptyAll = buildWithText("A", TextHeightBehavior::kAll);
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(emptyAll->getHeight(), 40.0f));
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(emptyAll->getAlphabeticBaseline(),
+                                            nonEmptyAll->getAlphabeticBaseline()));
+
+        auto emptyNoFirst = buildWithText("", TextHeightBehavior::kDisableFirstAscent);
+        auto nonEmptyNoFirst = buildWithText("A", TextHeightBehavior::kDisableFirstAscent);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(emptyNoFirst->getHeight(),
+                                            nonEmptyNoFirst->getHeight()));
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(emptyNoFirst->getHeight(), 30.0f));
+
+        auto emptyNoBoth = buildWithText("", TextHeightBehavior::kDisableAll);
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(emptyNoBoth->getHeight(), 20.0f));
+
+        auto newlineNoAll = buildWithText("\n", TextHeightBehavior::kDisableAll);
+        std::vector<LineMetrics> lineMetrics;
+        newlineNoAll->getLineMetrics(lineMetrics);
+        REPORTER_ASSERT(reporter, lineMetrics.size() == 2);
+        if (lineMetrics.size() == 2) {
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(lineMetrics[0].fHeight, 30.0f));
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(lineMetrics[1].fHeight, 30.0f));
+            // On line 1 (y=30..60), kDisableLastDescent trims bottom half-leading (10px), so
+            // baseline is at y = 30 + (16 + 10) = 56, matching a non-empty second line
+            auto nonEmptyTwoLines = buildWithText("A\nA", TextHeightBehavior::kDisableAll);
+            std::vector<LineMetrics> nonEmptyMetrics;
+            nonEmptyTwoLines->getLineMetrics(nonEmptyMetrics);
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(lineMetrics[0].fBaseline,
+                                                nonEmptyMetrics[0].fBaseline));
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(lineMetrics[1].fBaseline,
+                                                nonEmptyMetrics[1].fBaseline));
+        }
+    }
+
+    // Single-run fast-path vs multi-run path consistency for LineMetrics::fAscent/fDescent
+    // with forceStrutHeight and for background painting with TextHeightBehavior::kDisableAll
+    {
+        auto buildSingleVsMulti = [&](bool multiRun) {
+            ParagraphStyle paragraphStyle;
+            paragraphStyle.setTextHeightBehavior(TextHeightBehavior::kDisableAll);
+            StrutStyle strutStyle;
+            strutStyle.setStrutEnabled(true);
+            strutStyle.setFontFamilies({SkString("Ahem")});
+            strutStyle.setFontSize(40.0f);
+            strutStyle.setForceStrutHeight(true);
+            paragraphStyle.setStrutStyle(strutStyle);
+
+            TextStyle textStyle = baseAhemStyle;
+            SkPaint bg;
+            bg.setColor(SK_ColorRED);
+            textStyle.setBackgroundColor(bg);
+
+            ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+            builder.pushStyle(textStyle);
+            if (multiRun) {
+                builder.addText("AB");
+                TextStyle secondStyle = textStyle;
+                secondStyle.setLocale(SkString("en_US"));
+                builder.pushStyle(secondStyle);
+                builder.addText("CD");
+                builder.pop();
+            } else {
+                builder.addText("ABCD");
+            }
+            builder.pop();
+            auto p = builder.Build();
+            p->layout(500.0f);
+            return p;
+        };
+
+        auto single = buildSingleVsMulti(false);
+        auto multi = buildSingleVsMulti(true);
+        std::vector<LineMetrics> singleMetrics, multiMetrics;
+        single->getLineMetrics(singleMetrics);
+        multi->getLineMetrics(multiMetrics);
+        REPORTER_ASSERT(reporter, singleMetrics.size() == 1 && multiMetrics.size() == 1);
+        if (singleMetrics.size() == 1 && multiMetrics.size() == 1) {
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(singleMetrics[0].fAscent, 32.0f));
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(singleMetrics[0].fDescent, 8.0f));
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(singleMetrics[0].fAscent, multiMetrics[0].fAscent));
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(singleMetrics[0].fDescent,
+                                                multiMetrics[0].fDescent));
+        }
+
+        auto* singleImpl = static_cast<ParagraphImpl*>(single.get());
+        auto* multiImpl = static_cast<ParagraphImpl*>(multi.get());
+        SkRect singleBg = SkRect::MakeEmpty();
+        SkRect multiBg = SkRect::MakeEmpty();
+        singleImpl->lines().front().scanStyles(
+                StyleType::kBackground,
+                [&](TextRange, const TextStyle&, const TextLine::ClipContext& ctx) {
+                    singleBg = ctx.clip;
+                });
+        multiImpl->lines().front().scanStyles(
+                StyleType::kBackground,
+                [&](TextRange, const TextStyle&, const TextLine::ClipContext& ctx) {
+                    if (multiBg.isEmpty()) {
+                        multiBg = ctx.clip;
+                    }
+                });
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(singleBg.height(), multiBg.height()));
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(singleBg.height(), 20.0f));
+    }
+
+    // Ellipsis without maxLines must not disable descent on intermediate hard-break lines
+    {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextHeightBehavior(TextHeightBehavior::kDisableLastDescent);
+        paragraphStyle.setEllipsis(u"\u2026");
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(baseAhemStyle);
+        builder.addText("Line1\nLine2");
+        builder.pop();
+
+        auto p = builder.Build();
+        p->layout(500.0f);
+        std::vector<LineMetrics> metrics;
+        p->getLineMetrics(metrics);
+        REPORTER_ASSERT(reporter, metrics.size() == 2);
+        if (metrics.size() == 2) {
+            // Line 0 is followed by Line 1, so it keeps its full 40px height; only Line 1 trims
+            // its bottom leading (36px height with Ahem 2x multiplier)
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(metrics[0].fHeight, 40.0f));
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(metrics[1].fHeight, 36.0f));
+        }
+    }
 }
 
 // TextStyle::getFontMetrics must report the same ascent and descent the layout gives the run
