@@ -20,6 +20,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9dd98027_0ec4ff6b",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T15:27:09Z",
+      "side": 1,
+      "message": "I don\u0027t think tests should be making capture canvases directly, isn\u0027t the intended model that you have a canvas from the SkSurface and that it automatically sends things to a capture canvas when capturing is enabled?",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 62
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23f6e0cc_d275962d",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T15:27:09Z",
+      "side": 1,
+      "message": "This comment doesn\u0027t seem correct, capturing shouldn\u0027t stop until it\u0027s toggled off.",
+      "range": {
+        "startLine": 59,
+        "startChar": 64,
+        "endLine": 59,
+        "endChar": 89
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79fd36b6_bf24927e",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T15:27:09Z",
+      "side": 1,
+      "message": "Again, why would we need to re-attach after snapPicture?",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 98
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "19809452_9d0a48e5",
         "filename": "tests/CPUContextRecorderTest.cpp",
         "patchSetId": 12
