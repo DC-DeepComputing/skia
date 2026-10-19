@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a93fd81b_71644417",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-19T16:50:57Z",
+      "side": 1,
+      "message": "if we do end up supporting the ability to destroy the GPUContext and recreate it on the same SkContext we will need that function. But as long as there is no immediate issue I\u0027m fine with leaving as is for now",
+      "parentUuid": "a8b57e1c_256d125a",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 40
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "feee02d0_99a5aa91",
         "filename": "src/core/SkGraphics.cpp",
         "patchSetId": 13
