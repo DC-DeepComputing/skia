@@ -110,6 +110,30 @@
       },
       "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d21c5bcb_a51b225f",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-19T14:27:44Z",
+      "side": 1,
+      "message": "Yeah we definitely want an kAutomatic for clients that want generic code that can run with any backend. I was just trying to muse what\u0027s a better API: having a default or requiring explicitly passing in kAutomatic. For now I\u0027m fine staying with the default.\n\nThough we will want tests added to check recorder types with different combinations of contexts and BackendSelection enums.",
+      "parentUuid": "df75918d_4fc64eaa",
+      "range": {
+        "startLine": 109,
+        "startChar": 48,
+        "endLine": 109,
+        "endChar": 60
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
