@@ -623,12 +623,13 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
             1,
             SkShaper::RunHandler::Range(0, placeholder.fRange.width())
         };
+        // Pass useHalfLeading (bool) before baselineShift (SkScalar) to match Run's constructor
         auto& run = fParagraph->fRuns.emplace_back(this->fParagraph,
                                        runInfo,
                                        placeholder.fRange.start,
                                        0.0f,
-                                       0.0f,
                                        false,
+                                       0.0f,
                                        fParagraph->fRuns.size(),
                                        advanceX);
 
