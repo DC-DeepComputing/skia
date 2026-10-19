@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24650dc9_288e1849",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-19T17:22:38Z",
+      "side": 1,
+      "message": "I@YeungKC.com please also complete the CLA per https://skia.org/docs/dev/contrib/#contribute-code.",
+      "revId": "ae4456f3c0cfe4c4524ebb0e2629bf5923742138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
