@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d2d3717_f342e05b",
+        "filename": "src/core/SkContextPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T15:53:55Z",
+      "side": 1,
+      "message": "WDYT about just having SkContextPriv expose a `sharedContext()` getter, so we don\u0027t have to always clone every internal API into functions on SkContext?",
+      "parentUuid": "91148181_f7e34a71",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 44
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ef931efe_9a9d1d7e",
         "filename": "src/core/SkGraphics.cpp",
         "patchSetId": 9
