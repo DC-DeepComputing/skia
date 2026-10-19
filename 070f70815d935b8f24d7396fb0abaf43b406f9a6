@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ad8bf226_428eaf27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-19T16:57:58Z",
+      "side": 1,
+      "message": "Cool! LGTM. I worked through some of the vectorized computations but not fully.\n\nThis seems like a good candidate (IMO) for another test task so that the images between wasm-cpu \u003c-\u003e wasm-cpu-simd are comparable on gold. I also think this is good motivation for getting nanobench running in wasm, since that would enable some more specific benchmarking.",
+      "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ace50bd5_4feaa8ce",
         "filename": "BUILD.gn",
         "patchSetId": 1
@@ -48,6 +65,23 @@
       "writtenOn": "2026-10-19T15:22:26Z",
       "side": 1,
       "message": "Don\u0027t we need this in the linker flags too?",
+      "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d80f247_bc473398",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-19T16:57:58Z",
+      "side": 1,
+      "message": "nits: I believe the canonical (in terms of Skia\u0027s GN) place for the cflag would be in `config(\"wasm\")` in gn/skia/BUILD.gn, and the new arg in gn/skia.gni.",
       "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
