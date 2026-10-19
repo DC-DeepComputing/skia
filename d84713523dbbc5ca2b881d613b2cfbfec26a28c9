@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f6590cb_9e9421aa",
+        "filename": "include/encode/SkPngEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-19T22:21:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "62fb7f68_bcd8624e",
+      "revId": "d84713523dbbc5ca2b881d613b2cfbfec26a28c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a0dc7a0_50d1ce62",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d35952a7_32eac6a8",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-19T22:21:42Z",
+      "side": 1,
+      "message": "Good catch, no! (It wouldn\u0027t break anything, but it\u0027s a waste)",
+      "parentUuid": "7a0dc7a0_50d1ce62",
+      "revId": "d84713523dbbc5ca2b881d613b2cfbfec26a28c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e014b667_0815d823",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-19T20:57:49Z",
       "side": 1,
       "message": "It\u0027s so nice that gemini decided to fix commented-out code, as well.",
+      "revId": "d84713523dbbc5ca2b881d613b2cfbfec26a28c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cd34ac4_0fb849cf",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2568,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-19T22:21:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e014b667_0815d823",
       "revId": "d84713523dbbc5ca2b881d613b2cfbfec26a28c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
