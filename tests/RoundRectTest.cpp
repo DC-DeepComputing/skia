@@ -1816,3 +1816,35 @@ DEF_TEST(RRect_b561770646_part2, r) {
     SkRRect out;
     REPORTER_ASSERT(r, !transformedPath.isRRect(&out));
 }
+
+DEF_TEST(RRect_b573245889, r) {
+    // When minCoord < 0 < maxCoord with nearly equal magnitudes (e.g. fLeft = -(2^E - ulp),
+    // fRight = 2^E), HalfWidth rounds up to fRight. The tangent points ptFromMin (fLeft + rad)
+    // and ptFromMax (fRight - rad = 0) suffer catastrophic cancellation near zero, so
+    // ptFromMin > ptFromMax by 1 ULP of fRight rather than 1 ULP of ptFromMin.
+    for (int exp : {13, 20, 60, 100}) {
+        const float right = std::scalbn(1.0f, exp);
+        const float left = -std::nextafter(right, 0.0f);
+        const SkRect rect = SkRect::MakeLTRB(left, 0.0f, right, 100.0f);
+
+        SkRRect oval = SkRRect::MakeOval(rect);
+        REPORTER_ASSERT(r, oval.isValid());
+        REPORTER_ASSERT(r, oval.isOval());
+
+        const float halfW = rect.width() / 2.0f;
+        SkRRect simple = SkRRect::MakeRectXY(rect, halfW, 10.0f);
+        REPORTER_ASSERT(r, simple.isValid());
+
+        SkRRect ninePatch;
+        ninePatch.setNinePatch(rect, halfW, 10.0f, halfW, 20.0f);
+        REPORTER_ASSERT(r, ninePatch.isValid());
+
+        SkPath ovalPath = SkPath::RRect(oval);
+        REPORTER_ASSERT(r, ovalPath.isOval(nullptr));
+
+        SkPath simplePath = SkPath::RRect(simple);
+        SkRRect deduced;
+        REPORTER_ASSERT(r, simplePath.isRRect(&deduced));
+        REPORTER_ASSERT(r, deduced.isValid());
+    }
+}
