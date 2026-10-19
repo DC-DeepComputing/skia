@@ -86,6 +86,30 @@
       },
       "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df75918d_4fc64eaa",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-19T14:20:43Z",
+      "side": 1,
+      "message": "Yep this function doesn\u0027t exist just yet. I have a cl locally that works on getting it implemented. \n\nFrom the docs, I saw that kAutomatic was the default argument, so for these tests that use a `MakeRaster` SkContext, using kAutomatic should mean that it defaults to CPU (since there\u0027s no GPU). \n\nI think in terms of whether a client should need to specify the SkBackendSelection, \n* ergonomically, it makes sense that makeRecorder should default to automatically choosing which kind of recorder to return, if we support kAutomatic.\n* it might be good to require clients to pass in the SkBackendSelection to make sure it is an intentional request.\n\nI think I\u0027m in favor of allowing kAutomatic to be the default behavior (at least for now).",
+      "parentUuid": "d2b01206_1d45eae3",
+      "range": {
+        "startLine": 109,
+        "startChar": 48,
+        "endLine": 109,
+        "endChar": 60
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
