@@ -481,6 +481,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
             break;
 
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
+        case PathRendererStrategy::kGPUSparseStripsMSAA8:
         case PathRendererStrategy::kRasterAtlas:
         case PathRendererStrategy::kComputeAnalyticAA:
         case PathRendererStrategy::kComputeMSAA16:
@@ -542,8 +543,10 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
                 fDC->surfaceProps().isUseDeviceIndependentFonts())) {
     SkASSERT(SkToBool(fDC) && SkToBool(fRecorder));
 #if defined(SK_ENABLE_SPARSE_STRIPS)
-    if (recorder->priv().rendererProvider()->pathRendererStrategy() ==
-        PathRendererStrategy::kCPUSparseStripsMSAA8) {
+    const PathRendererStrategy strategy =
+            recorder->priv().rendererProvider()->pathRendererStrategy();
+    if (strategy == PathRendererStrategy::kCPUSparseStripsMSAA8 ||
+        strategy == PathRendererStrategy::kGPUSparseStripsMSAA8) {
         fStripGenerator = std::make_unique<StripGenerator>(
                 this->width(),
                 this->height(),
@@ -2251,6 +2254,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
             break;
 
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
+        case PathRendererStrategy::kGPUSparseStripsMSAA8:
 #if defined(SK_ENABLE_SPARSE_STRIPS)
             if (style.isFillStyle()) {
                 return {renderers->sparseStripsEndCap(), nullptr};

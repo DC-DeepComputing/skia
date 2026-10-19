@@ -9,6 +9,7 @@
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkVertices.h"
+#include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkAttributes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/InternalDrawTypeFlags.h"
@@ -39,6 +40,7 @@
 #if defined(SK_ENABLE_SPARSE_STRIPS)
 #include "src/gpu/graphite/render/EndCapRenderStep.h"
 #include "src/gpu/graphite/render/WideTileRenderStep.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #endif
 
 namespace skgpu::graphite {
@@ -72,6 +74,18 @@ bool RendererProvider::IsSupported(PathRendererStrategy strategy, const Caps* ca
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
 #if defined(SK_ENABLE_SPARSE_STRIPS)
             return true;
+#else
+            return false;
+#endif
+        case PathRendererStrategy::kGPUSparseStripsMSAA8:
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+            // The coverage compute shader writes the alpha atlas pages as storage textures.
+            // Protected contexts are excluded, since their protected command buffers can't write
+            // the unprotected atlas.
+            return caps->computeSupport() &&
+                   !caps->protectedSupport() &&
+                   caps->isStorage(
+                           caps->getDefaultStorageTextureInfo(SparseStripConfig::kColorType));
 #else
             return false;
 #endif

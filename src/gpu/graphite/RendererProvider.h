@@ -72,6 +72,13 @@ enum class PathRendererStrategy {
     // Runs the SparseStrips pipeline with SW-emulated MSAA with rasterization on the CPU. Clipping
     // paths are rendered using kTessellation.
     kCPUSparseStripsMSAA8,
+
+    // Like kCPUSparseStripsMSAA8, but only the tiling and the EndCap and WideTile generation run on
+    // the CPU, while the EndCaps' coverage is rasterized into the alpha atlas by a compute shader.
+    // Clipping paths are rendered using kTessellation.
+    // TODO (thomsmit): The coverage compute shader has not landed yet, so the coverage is still
+    // rasterized on the CPU, exactly like kCPUSparseStripsMSAA8.
+    kGPUSparseStripsMSAA8,
 };
 
 /**
