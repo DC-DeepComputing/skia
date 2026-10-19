@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0484f475_b67dc377",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-19T14:11:05Z",
+      "side": 1,
+      "message": "Thanks for the contribution.\nSkParagraph is designed as a text layout engine for interactive UI rendering, and the text blobs created in `Run::copyTo` are an internal drawing cache for raster/GPU backends where text and cluster metadata are not needed. We cannot populate these blobs with UTF-8 source text.\nIf your use case requires extracting positioned glyphs alongside their original Unicode text and cluster indices (for example, to construct text blobs for PDF export), please use `Paragraph::visit` or `Paragraph::extendedVisit` instead, which are designed specifically for this purpose.",
+      "revId": "8547afcf54918fb0de15e39b35e663b610c86926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
