@@ -16,6 +16,46 @@
       "message": "michaelludwig@ could you PTAL? We may want to move these out of agents/ into the corresponding area DIRs at some point, but that can be a move operation. Thanks",
       "revId": "7c0897198715812de7020a4c0b68634a7d5e0a26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e20d315_1a8162f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T16:51:37Z",
+      "side": 1,
+      "message": "In general, this is a really big CL and I would prefer to be able to review chunks of rules that are organized by topic or impacted directory. I think it would also be good to have an understanding of a) the directory and structure that these tools require and b) agree on how that will map to Skia\u0027s own agents/ directory as well as other AI-motivated files that we are working to add.\n\nAdding Greg as he has been organizing how we might otherwise add readmes and agent files throughout our code base, and has been focused on agentic code style enforcement.\n\nLastly, do these need to be so verbose? Where can we find the allowed values for `rubric` and `severity`?",
+      "revId": "7c0897198715812de7020a4c0b68634a7d5e0a26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81a1ef46_d4821d8b",
+        "filename": "agents/knowledge_base/COMMON_METADATA",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T16:51:37Z",
+      "side": 1,
+      "message": "This file does not seem very maintainable and I\u0027d prefer not to land it. I would expect that it is unnecessary when these rules get to live in the specific directories they apply to, right? If so, I think it\u0027s better that we just agree on what our review rule storage looks like and land it like that.\n\nI am not familiar with the requirements of the AI review tooling, but I feel strongly that these rule files need to be self-discoverable without requiring a growing map file that needs to be maintained any time we add new rules.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 21
+      },
+      "revId": "7c0897198715812de7020a4c0b68634a7d5e0a26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
