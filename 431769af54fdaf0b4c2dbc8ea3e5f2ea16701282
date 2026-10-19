@@ -16,6 +16,75 @@
       "message": "bumping on this as well, thank you",
       "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14d948ee_e736318c",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-19T13:51:30Z",
+      "side": 1,
+      "message": "Is this something that public clients need access to? Or can we keep the getter internal?",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 61
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f099126c_2c7a7b8d",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-19T13:51:30Z",
+      "side": 1,
+      "message": "sorry drive by suggestions that was missed in previous CL, but this should be in the initializer list",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 40
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feee02d0_99a5aa91",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-19T13:51:30Z",
+      "side": 1,
+      "message": "If the need for the function is requiring us to make the SkContext version public, then if the only users of this are internal, lets remove this call now since the internal uses should be able to access the context priv",
+      "range": {
+        "startLine": 107,
+        "startChar": 50,
+        "endLine": 107,
+        "endChar": 78
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
