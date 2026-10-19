@@ -90,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8b57e1c_256d125a",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T15:30:49Z",
+      "side": 1,
+      "message": "Not that I can think of; if need to change it, we can always do a installGPUContext() function that is private on SkContext that the GPU factories use after creating the SkContext, then make the GPUContext, attach, and then finally return.",
+      "parentUuid": "54117eb0_1c5efe3a",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 40
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "feee02d0_99a5aa91",
         "filename": "src/core/SkGraphics.cpp",
         "patchSetId": 13
