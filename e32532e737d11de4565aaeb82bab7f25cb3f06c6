@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21c8817a_822ed579",
+        "filename": "modules/canvaskit/bidi_c_api.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-19T17:18:15Z",
+      "side": 1,
+      "message": "In general: is there a way to share code with CK\u0027s `bidi_bindings.cpp`?",
+      "revId": "e32532e737d11de4565aaeb82bab7f25cb3f06c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921e4267_7215c68d",
+        "filename": "modules/canvaskit/bidi_c_api.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-19T17:18:15Z",
+      "side": 1,
+      "message": "While the var names hint at 16bit, `forEachBidiRegion` really uses `SkBidiIterator::Position` for `start`/`end`.  To avoid truncation, the lambda should also take the same type.",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 40
+      },
+      "revId": "e32532e737d11de4565aaeb82bab7f25cb3f06c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea43113_70656e7e",
+        "filename": "modules/canvaskit/skbidi_bidi.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-19T17:18:15Z",
+      "side": 1,
+      "message": "I think this can fail silently for certain inputs (e.g. `ubidi_reorderVisual` seems to bail if any level is \u003e 126), and we end up with uninitialized values from `malloc`.  We need a way to detect `reorderVisual` failures, or at least zero-initialize the allocated memory.",
+      "revId": "e32532e737d11de4565aaeb82bab7f25cb3f06c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
