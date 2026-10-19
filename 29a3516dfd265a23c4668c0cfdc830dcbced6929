@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61d1eab4_391cd715",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-19T21:49:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80c575a9_375f89f4",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 10
+      },
+      "revId": "29a3516dfd265a23c4668c0cfdc830dcbced6929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b63fa814_02392be6",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-19T16:23:32Z",
       "side": 1,
       "message": "Could we add a unit test in `tests/ImageFilterCacheTest.cpp` (or `ImageFilterTest.cpp`) verifying that `SkImageFilterCacheKey` distinguishes two IDs that only differ in their upper 32 bits (e.g. `kBaseId` vs `kBaseId + (1ULL \u003c\u003c 32)`)? This would regression-test both the equality and hashing logic for 64-bit IDs.",
+      "revId": "29a3516dfd265a23c4668c0cfdc830dcbced6929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5545b950_87e8f81a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-19T21:49:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b63fa814_02392be6",
       "revId": "29a3516dfd265a23c4668c0cfdc830dcbced6929",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
