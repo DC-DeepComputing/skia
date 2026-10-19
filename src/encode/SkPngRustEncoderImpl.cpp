@@ -280,8 +280,9 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
 
     sk_sp<SkData> encodedProfile;
     rust::Slice<const uint8_t> encodedProfileSlice;
-    if (const SkColorSpace* colorSpace = src.colorSpace(); colorSpace && !colorSpace->isSRGB()) {
-        encodedProfile = SkWriteICCProfile(colorSpace);
+    if (const SkColorSpace* colorSpace = src.colorSpace();
+        colorSpace && (!colorSpace->isSRGB() || options.fHdrMetadata)) {
+        encodedProfile = SkWriteICCProfile(colorSpace, options.fHdrMetadata);
         if (encodedProfile) {
             encodedProfileSlice =
                     rust::Slice<const uint8_t>(encodedProfile->bytes(), encodedProfile->size());
