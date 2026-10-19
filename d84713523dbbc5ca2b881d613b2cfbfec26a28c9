@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a0dc7a0_50d1ce62",
+        "filename": "src/encode/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-19T21:56:43Z",
+      "side": 1,
+      "message": "Not sure (here and in SkPngEncoderImpl.cpp): do we need to clear the metadata pointer for the nested gainmap options?",
+      "revId": "d84713523dbbc5ca2b881d613b2cfbfec26a28c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e014b667_0815d823",
         "filename": "tests/CodecTest.cpp",
         "patchSetId": 1
