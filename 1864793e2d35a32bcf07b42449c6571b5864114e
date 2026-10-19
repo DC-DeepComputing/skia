@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "012b2b77_d9b8f9e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-10-19T19:40:57Z",
+      "side": 1,
+      "message": "Thanks for the CL!  I defer to @fmalita - RS LGTM based on their review.",
+      "revId": "1864793e2d35a32bcf07b42449c6571b5864114e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
