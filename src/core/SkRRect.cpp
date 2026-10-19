@@ -778,11 +778,7 @@ static bool are_radii_predicates_valid(SkScalar radiusFromMin,
     const bool sumValid =
             sum <= limit || SkScalarNearlyEqual(sum, limit) ||
             SkFloatingPoint<float, 4>(sum).AlmostEquals(SkFloatingPoint<float, 4>(limit));
-    const bool ptsValid =
-            ptFromMin <= ptFromMax || SkScalarNearlyEqual(ptFromMin, ptFromMax) ||
-            SkFloatingPoint<float, 4>(ptFromMin).AlmostEquals(SkFloatingPoint<float, 4>(ptFromMax));
-
-    if (!sumValid || !ptsValid) {
+    if (!sumValid) {
         return false;
     }
 
