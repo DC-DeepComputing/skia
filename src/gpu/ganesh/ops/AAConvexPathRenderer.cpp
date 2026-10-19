@@ -60,6 +60,7 @@
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
 #include "src/gpu/ganesh/GrTestUtils.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #endif
 
 #include <cstddef>
@@ -937,7 +938,9 @@ private:
     bool fWideColor;
 
     struct MeshDraw {
-        GrSimpleMesh* fMeshes;
+        // RAW_PTR_EXCLUSION: Stored in an SkTDArray, which does not run
+        // constructors or destructors.
+        RAW_PTR_EXCLUSION GrSimpleMesh* fMeshes;
         int fMeshCount;
     };
 
