@@ -208,7 +208,10 @@ bool Context::finishInitialization() {
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};
     std::unique_ptr<ComputeProvider> compute{
-            new ComputeProvider(fSharedContext->caps())};
+            new ComputeProvider(fSharedContext->caps(),
+                                &bufferManager,
+                                fSharedContext->globalCache(),
+                                renderers->pathRendererStrategy())};
 
     auto result = bufferManager.finalize(this, fQueueManager.get(), fSharedContext->globalCache());
     if (result == StaticBufferManager::FinishResult::kFailure) {

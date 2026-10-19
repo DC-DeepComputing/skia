@@ -522,6 +522,9 @@ public:
     // TODO: Update the tessellation index buffer generation functions to use an IndexWriter so this
     // can return an IndexWriter vs. a VertexWriter that happens to just write uint16s...
     VertexWriter getIndexWriter(size_t size, BindBufferInfo* binding);
+    // For static data that compute shaders read through a storage buffer binding, e.g. lookup
+    // tables. Each binding is aligned to the storage buffer offset alignment.
+    BufferWriter getStorageWriter(size_t size, BindBufferInfo* binding);
 
     enum class FinishResult : int {
         kFailure, // Unable to create or copy static buffers
@@ -573,6 +576,7 @@ private:
     // The source data that's copied into a final GPU-private buffer
     BufferState fVertexBufferState;
     BufferState fIndexBufferState;
+    BufferState fStorageBufferState;
 
     // If mapping failed on Buffers created/managed by this StaticBufferManager or by the mapped
     // transfer buffers from the UploadManager, remember so that finalize() will fail.

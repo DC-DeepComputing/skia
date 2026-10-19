@@ -41,10 +41,12 @@ namespace {
 // The limit for all data created by the StaticBufferManager. This data remains alive for
 // the entire SharedContext so we want to keep it small and give a concrete upper bound to
 // clients for our steady-state memory usage.
-// FIXME The current usage is 6308 bytes across static vertex and index buffers, but that includes
+// FIXME The current usage is 6564 bytes across static vertex and index buffers, but that includes
 // multiple copies of tessellation data, and an unoptimized AnalyticRRect mesh. Once those issues
 // are addressed, we can tighten this and decide on the transfer buffer sizing as well.
-[[maybe_unused]] static constexpr uint32_t kMaxStaticDataSize = 7 << 10;
+// Static storage buffers add 4096 bytes for the sparse strips MSAA mask LUT, which is only uploaded
+// for PathRendererStrategy::kGPUSparseStripsMSAA8.
+[[maybe_unused]] static constexpr uint32_t kMaxStaticDataSize = 12 << 10;
 
 // Helpers for creating a BufferState based on type, options, and caps
 
@@ -516,7 +518,8 @@ StaticBufferManager::StaticBufferManager(ResourceProvider* resourceProvider,
         , fUploadManager(resourceProvider, caps)
         , fRequiredTransferAlignment(SkTo<uint32_t>(caps->requiredTransferBufferAlignment()))
         , fVertexBufferState(BufferType::kVertex, caps)
-        , fIndexBufferState(BufferType::kIndex, caps) {}
+        , fIndexBufferState(BufferType::kIndex, caps)
+        , fStorageBufferState(BufferType::kStorage, caps) {}
 StaticBufferManager::~StaticBufferManager() = default;
 
 StaticBufferManager::BufferState::BufferState(BufferType type, const Caps* caps)
@@ -548,6 +551,16 @@ VertexWriter StaticBufferManager::getIndexWriter(size_t size, BindBufferInfo* bi
                                          fIndexBufferState.fMinimumAlignment,
                                          binding);
     return VertexWriter{data, size};
+}
+
+BufferWriter StaticBufferManager::getStorageWriter(size_t size, BindBufferInfo* binding) {
+    // Each storage range is bound on its own, so its offset only has to meet the storage buffer
+    // offset alignment, which is already part of the minimum alignment.
+    void* data = this->prepareStaticData(&fStorageBufferState,
+                                         size,
+                                         fStorageBufferState.fMinimumAlignment,
+                                         binding);
+    return BufferWriter{data, size};
 }
 
 void* StaticBufferManager::prepareStaticData(BufferState* state,
@@ -668,7 +681,8 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
     }
 
     const size_t totalRequiredBytes = fVertexBufferState.fTotalRequiredBytes +
-                                      fIndexBufferState.fTotalRequiredBytes;
+                                      fIndexBufferState.fTotalRequiredBytes +
+                                      fStorageBufferState.fTotalRequiredBytes;
     SkASSERT(totalRequiredBytes <= kMaxStaticDataSize);
     if (!totalRequiredBytes) {
         return FinishResult::kNoWork;
@@ -705,10 +719,19 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
         return FinishResult::kFailure;
     }
 
+    if (!fStorageBufferState.createAndUpdateBindings(fResourceProvider,
+                                                     context,
+                                                     queueManager,
+                                                     globalCache,
+                                                     "StaticStorageBuffer")) {
+        return FinishResult::kFailure;
+    }
+
     // Reset the static buffer manager since the Recording's copy tasks now manage ownership of
     // the transfer buffers and the GlobalCache owns the final static buffers.
     fVertexBufferState.reset();
     fIndexBufferState.reset();
+    fStorageBufferState.reset();
 
     return FinishResult::kSuccess;
 }
