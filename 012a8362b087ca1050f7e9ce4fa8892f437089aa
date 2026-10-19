@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f16afe3b_4834ceab",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-19T20:52:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15ab05da_a7cc097f",
+      "revId": "012a8362b087ca1050f7e9ce4fa8892f437089aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43b8bde7_db99cc4b",
