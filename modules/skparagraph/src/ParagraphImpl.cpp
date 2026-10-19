@@ -1540,22 +1540,27 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                     if (context.size == 0) {
                         return;
                     }
+                    // StyleType::kNone passes a default TextStyle to the visitor, so read
+                    // baselineShift from the Run directly
                     SkScalar correctedBaseline = SkScalarFloorToScalar(
-                        line.baseline() + style.getBaselineShift() + 0.5);
+                        line.baseline() + run->baselineShift() + 0.5);
                     SkPoint offset =
                         SkPoint::Make(line.offset().fX + context.fTextShift,
                                       line.offset().fY + correctedBaseline);
                     SkRect rect = context.clip.makeOffset(line.offset());
-                    AutoSTArray<16, SkRect> glyphBounds;
-                    glyphBounds.reset(SkToInt(run->size()));
-                    run->font().getBounds(run->glyphs(), glyphBounds, nullptr);
+                    AutoSTArray<16, SkRect> glyphBounds(SkToInt(context.size));
+                    run->font().getBounds({&run->glyphs()[context.pos], context.size},
+                                          glyphBounds,
+                                          nullptr);
+                    // ExtendedVisitorInfo::utf8Starts has count + 1 entries for the sub-run
+                    // slice starting at context.pos
                     STArray<128, uint32_t> clusterStorage;
-                    const uint32_t* clusterPtr = run->clusterIndexes().data();
+                    const uint32_t* clusterPtr = &run->clusterIndexes()[context.pos];
                     if (run->fClusterStart > 0) {
-                        clusterStorage.reset(context.size);
-                        for (size_t i = 0; i < context.size; ++i) {
+                        clusterStorage.reset(context.size + 1);
+                        for (size_t i = 0; i <= context.size; ++i) {
                           clusterStorage[i] =
-                              run->fClusterStart + run->fClusterIndexes[i];
+                              run->fClusterStart + run->fClusterIndexes[context.pos + i];
                         }
                         clusterPtr = &clusterStorage[0];
                     }
@@ -1566,7 +1571,7 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                         SkToS16(context.size),
                         &run->glyphs()[context.pos],
                         &run->fPositions[context.pos],
-                        &glyphBounds[context.pos],
+                        glyphBounds.get(),
                         clusterPtr,
                         0,  // flags
                     };
@@ -1603,19 +1608,22 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
                   return;
               }
               const SkFont& font = run->font();
+              // StyleType::kNone passes a default TextStyle to the visitor, so read
+              // baselineShift from the Run directly
               SkScalar correctedBaseline = SkScalarFloorToScalar(
-                line.baseline() + style.getBaselineShift() + 0.5);
+                line.baseline() + run->baselineShift() + 0.5);
               SkPoint offset =
                   SkPoint::Make(line.offset().fX + context.fTextShift,
                                 line.offset().fY + correctedBaseline);
-              SkRect rect = context.clip.makeOffset(offset);
+              // Glyph positions in Run::positions() are relative to the run start on the
+              // baseline, so translate by offset without adding context.clip a second time
               struct Rec {
                   SkPathBuilder* fBuilder;
                   SkPoint fOffset;
                   const SkPoint* fPos;
                   int fNotConverted;
               } rec =
-                  {&builder, SkPoint::Make(rect.left(), rect.top()), &run->positions()[context.pos], 0};
+                  {&builder, offset, &run->positions()[context.pos], 0};
               font.getPaths({&run->glyphs()[context.pos], context.size},
                     [](const SkPath* path, const SkMatrix& mx, void* ctx) {
                         Rec* rec = reinterpret_cast<Rec*>(ctx);
@@ -1631,10 +1639,10 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
                     }, &rec);
               notConverted += rec.fNotConverted;
           });
-        *dest = builder.detach();
         return true;
     });
-
+    // Detach once after all visual runs on the line have been accumulated into the builder
+    *dest = builder.detach();
     return notConverted;
 }
 
