@@ -16,6 +16,23 @@
       "message": "I@YeungKC.com please also complete the CLA per https://skia.org/docs/dev/contrib/#contribute-code.",
       "revId": "ae4456f3c0cfe4c4524ebb0e2629bf5923742138",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "826dbb88_6a8e546c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-19T18:07:59Z",
+      "side": 1,
+      "message": "Ah, not sure about the internal-vs-external CLA requirements, I just assumed the latter :) Thanks for updating.",
+      "revId": "ae4456f3c0cfe4c4524ebb0e2629bf5923742138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
