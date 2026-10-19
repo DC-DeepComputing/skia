@@ -10,12 +10,21 @@ declare_args() {
   paragraph_gms_enabled = true
   paragraph_tests_enabled = true
   paragraph_bench_enabled = false
+  skia_use_coretext_paragraph = is_mac || is_ios
 }
 
 if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
-    skia_use_harfbuzz) {
+    (skia_use_harfbuzz || skia_use_coretext_paragraph)) {
   config("public_config") {
     defines = [ "SK_ENABLE_PARAGRAPH" ]
+    if (skia_use_coretext_paragraph) {
+      defines += [ "SK_PARAGRAPH_NATIVE_CORETEXT" ]
+    } else {
+      defines += [ "SK_PARAGRAPH_DISABLE_CORETEXT" ]
+    }
+    if (!skia_use_harfbuzz) {
+      defines += [ "SK_PARAGRAPH_DISABLE_HARFBUZZ" ]
+    }
     include_dirs = [
       "include",
       "utils",

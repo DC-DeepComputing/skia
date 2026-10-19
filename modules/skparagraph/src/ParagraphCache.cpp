@@ -64,6 +64,11 @@ namespace {
         }
     }
 
+    // Default and HarfBuzz engines produce identical output in HarfBuzz-backed builds
+    TextShapingEngine normalizeEngine(TextShapingEngine e) {
+        return (e == TextShapingEngine::kCoreText) ? TextShapingEngine::kCoreText
+                                                   : TextShapingEngine::kDefault;
+    }
 }  // namespace
 
 class ParagraphCacheKey {
@@ -98,8 +103,8 @@ private:
     uint32_t computeHash() const;
 
     SkString fText;
-    TArray<Placeholder> fPlaceholders;
-    TArray<Block> fTextStyles;
+    TArray<Placeholder, true> fPlaceholders;
+    TArray<Block, true> fTextStyles;
     ParagraphStyle fParagraphStyle;
     uint32_t fHash;
 };
@@ -116,6 +121,7 @@ public:
         , fBidiRegions(paragraph->fBidiRegions)
         , fHasLineBreaks(paragraph->fHasLineBreaks)
         , fHasWhitespacesInside(paragraph->fHasWhitespacesInside)
+        , fCoreTextShaped(paragraph->fCoreTextShaped)
         , fTrailingSpaces(paragraph->fTrailingSpaces) { }
 
     // Input == key
@@ -131,6 +137,7 @@ public:
     std::vector<SkUnicode::BidiRegion> fBidiRegions;
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
+    bool fCoreTextShaped;
     TextIndex fTrailingSpaces;
 };
 
@@ -181,6 +188,8 @@ uint32_t ParagraphCacheKey::computeHash() const {
 
     hash = mix(hash, SkGoodHash()(fParagraphStyle.getTextDirection()));
     hash = mix(hash, SkGoodHash()(fParagraphStyle.getReplaceTabCharacters() ? 1 : 0));
+    hash = mix(hash, SkGoodHash()(static_cast<uint8_t>(
+            normalizeEngine(fParagraphStyle.getTextShapingEngine()))));
 
     auto& strutStyle = fParagraphStyle.getStrutStyle();
     if (strutStyle.getStrutEnabled()) {
@@ -227,6 +236,11 @@ bool ParagraphCacheKey::operator==(const ParagraphCacheKey& other) const {
     }
 
     if (!(fParagraphStyle.getReplaceTabCharacters() == other.fParagraphStyle.getReplaceTabCharacters())) {
+        return false;
+    }
+
+    if (normalizeEngine(fParagraphStyle.getTextShapingEngine()) !=
+        normalizeEngine(other.fParagraphStyle.getTextShapingEngine())) {
         return false;
     }
 
@@ -294,6 +308,7 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
     paragraph->fHasLineBreaks = entry->fValue->fHasLineBreaks;
     paragraph->fHasWhitespacesInside = entry->fValue->fHasWhitespacesInside;
     paragraph->fTrailingSpaces = entry->fValue->fTrailingSpaces;
+    paragraph->fCoreTextShaped = entry->fValue->fCoreTextShaped;
     for (auto& run : paragraph->fRuns) {
         run.setOwner(paragraph);
     }
