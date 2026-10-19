@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af593106_a51f3f30",
+        "filename": "src/utils/SkParseColor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-19T21:47:39Z",
+      "side": 1,
+      "message": "could we also change gColorNames to a string_view",
+      "revId": "c60b55332e342bb70ebb0b34bbda60f97e64d306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
