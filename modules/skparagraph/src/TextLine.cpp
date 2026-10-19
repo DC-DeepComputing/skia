@@ -1412,19 +1412,20 @@ void TextLine::getRectsForRange(TextRange textRange0,
                 }
                 case RectHeightStyle::kStrut: {
                     const auto& strutStyle = paragraphStyle.getStrutStyle();
-                    if (strutStyle.getStrutEnabled()
-                        && strutStyle.getFontSize() > 0) {
+                    if (fOwner->strutEnabled() && strutStyle.getFontSize() > 0) {
                         auto strutMetrics = fOwner->strutMetrics();
                         auto top = this->baseline();
                         clip.fTop = top + strutMetrics.ascent();
                         clip.fBottom = top + strutMetrics.descent();
-                    }
-                }
-                break;
-                case RectHeightStyle::kTight: {
-                    if (run->fHeightMultiplier <= 0) {
                         break;
                     }
+                    // When strut is disabled or unresolved, fall back to kTight raw run bounds
+                    // rather than leaving the height-scaled clip from measureTextInsideOneRun
+                    [[fallthrough]];
+                }
+                case RectHeightStyle::kTight: {
+                    // Use unscaled font ascent/descent regardless of fHeightMultiplier so neither
+                    // height overrides nor font fLeading leak into tight bounds
                     const auto effectiveBaseline = this->baseline() + this->sizes().delta();
                     clip.fTop = effectiveBaseline + run->ascent();
                     clip.fBottom = effectiveBaseline + run->descent();

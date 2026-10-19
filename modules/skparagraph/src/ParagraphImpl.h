@@ -150,9 +150,12 @@ public:
         return fUTF16IndexForUTF8Index[index];
     }
 
-    bool strutEnabled() const { return paragraphStyle().getStrutStyle().getStrutEnabled(); }
+    // Strut only takes effect when enabled and resolved to valid font metrics
+    bool strutEnabled() const {
+        return paragraphStyle().getStrutStyle().getStrutEnabled() && !fStrutMetrics.isClean();
+    }
     bool strutForceHeight() const {
-        return paragraphStyle().getStrutStyle().getForceStrutHeight();
+        return this->strutEnabled() && paragraphStyle().getStrutStyle().getForceStrutHeight();
     }
     bool strutHeightOverride() const {
         return paragraphStyle().getStrutStyle().getHeightOverride();

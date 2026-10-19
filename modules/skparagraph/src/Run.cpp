@@ -73,7 +73,8 @@ void Run::calculateMetrics() {
         const auto extraLeading = (runHeight - fontIntrinsicHeight) / 2;
         fCorrectAscent -= extraLeading;
         fCorrectDescent += extraLeading;
-    } else {
+    // Guard against 0/0 NaN when fontSize is 0 or the typeface has zero intrinsic height
+    } else if (!SkScalarNearlyZero(fontIntrinsicHeight)) {
         const auto multiplier = runHeight / fontIntrinsicHeight;
         fCorrectAscent *= multiplier;
         fCorrectDescent *= multiplier;
