@@ -744,10 +744,18 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
         advance.fY = metrics.height();
         auto clusterRange = ClusterRange(0, trailingSpaces);
         auto clusterRangeWithGhosts = ClusterRange(0, this->clusters().size() - 1);
-        this->addLine(SkPoint::Make(0, 0), advance,
-                      textExcludingSpaces, textRange, textRange,
-                      clusterRange, clusterRangeWithGhosts, run.advance().x(),
-                      metrics);
+        auto& line = this->addLine(SkPoint::Make(0, 0), advance,
+                                   textExcludingSpaces, textRange, textRange,
+                                   clusterRange, clusterRangeWithGhosts, run.advance().x(),
+                                   metrics);
+        // Match TextWrapper::breakTextIntoLines so single-run fast-path lines expose
+        // typographic edge styles when first ascent or last descent is disabled
+        if (disableFirstAscent) {
+            line.setAscentStyle(LineMetricStyle::Typographic);
+        }
+        if (disableLastDescent) {
+            line.setDescentStyle(LineMetricStyle::Typographic);
+        }
 
         fLongestLine = nearlyZero(advance.fX) ? run.advance().fX : advance.fX;
         fHeight = advance.fY;
@@ -1159,15 +1167,18 @@ void ParagraphImpl::computeEmptyMetrics() {
 
     if (!paragraphStyle().getStrutStyle().getForceStrutHeight() &&
         textStyle.getHeightOverride()) {
-        const auto intrinsicHeight = fEmptyMetrics.height();
+        // Fold leading into ascent and descent just like Run::calculateMetrics so
+        // kDisableFirstAscent, kDisableLastDescent, and LineMetrics::fBaseline treat empty lines
+        // and non-empty runs identically
+        const auto intrinsicHeight =
+                fEmptyMetrics.descent() - fEmptyMetrics.ascent() + fEmptyMetrics.leading();
         const auto strutHeight = textStyle.getHeight() * textStyle.getFontSize();
-        // The override comes from textStyle, so its own half-leading flag decides the split;
-        // the strut style is applied to empty lines separately below
         if (textStyle.getHalfLeading()) {
+            const auto extraLeading = (strutHeight - intrinsicHeight) / 2;
             fEmptyMetrics.update(
-                fEmptyMetrics.ascent(),
-                fEmptyMetrics.descent(),
-                fEmptyMetrics.leading() + strutHeight - intrinsicHeight);
+                fEmptyMetrics.ascent() - extraLeading,
+                fEmptyMetrics.descent() + extraLeading,
+                fEmptyMetrics.leading());
         } else {
             const auto multiplier = strutHeight / intrinsicHeight;
             fEmptyMetrics.update(
