@@ -251,6 +251,9 @@ void Run::updateMetrics(InternalLineMetrics* endlineMetrics) {
     auto height = placeholderStyle->fHeight;
     auto offset = placeholderStyle->fBaselineOffset;
 
+    // Reset from the placeholder's font metrics before applying alignment so repeated
+    // layout() calls at different widths do not accumulate alignment offsets
+    fFont.getMetrics(&fFontMetrics);
     fFontMetrics.fLeading = 0;
     switch (placeholderStyle->fAlignment) {
         case PlaceholderAlignment::kBaseline:
