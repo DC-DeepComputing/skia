@@ -460,7 +460,7 @@ public:
         fRawLeading = 0;
     }
 
-    bool isClean() {
+    bool isClean() const {
         return (fAscent == SK_ScalarMax &&
                 fDescent == SK_ScalarMin &&
                 fLeading == 0 &&
