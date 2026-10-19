@@ -305,14 +305,13 @@ struct ColorRec {
 });
 
 const char* SkParse::FindNamedColor(const char* name, size_t len, SkColor* color) {
-    const auto rec = std::lower_bound(std::begin(gColorNames),
-                                      std::end  (gColorNames),
-                                      name, // key
-                                      [](const char* name, const char* key) {
-                                          return strcmp(name, key) < 0;
-                                      });
+    const auto rec = std::lower_bound(
+            std::begin(gColorNames),
+            std::end(gColorNames),
+            name,  // key
+            [len](const char* name, const char* key) { return strncmp(name, key, len) < 0; });
 
-    if (rec == std::end(gColorNames) || 0 != strcmp(name, *rec)) {
+    if (rec == std::end(gColorNames) || 0 != strncmp(name, *rec, len) || strlen(*rec) != len) {
         return nullptr;
     }
 
