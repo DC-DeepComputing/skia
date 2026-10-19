@@ -16,6 +16,24 @@
       "message": "LGTM. Clean handling of consecutive overflowing soft hyphens and the ellipsis/first-break edge cases without adding heap allocations to `lookAhead`.",
       "revId": "c4795037bc47a443d7cdbdcd2f40cb51a9f41d07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b454d19_744231eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-10-19T21:23:39Z",
+      "side": 1,
+      "message": "Thanks Julia! I\u0027ll follow up separately on including the hyphen in fMinIntrinsicWidth (to match Chrome\u0027s min-content), if you think it\u0027s worth doing.",
+      "parentUuid": "370d76b1_708cd6fd",
+      "revId": "c4795037bc47a443d7cdbdcd2f40cb51a9f41d07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
