@@ -22,6 +22,30 @@
       },
       "revId": "3035c03b59181a2cf76ac186bc6de857904e1fee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2688c3b8_05f4663e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5107806
+      },
+      "writtenOn": "2026-10-19T15:27:13Z",
+      "side": 1,
+      "message": "Reformatted with the Gerrit format button.",
+      "parentUuid": "cae501a4_921eb595",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 130
+      },
+      "revId": "3035c03b59181a2cf76ac186bc6de857904e1fee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
