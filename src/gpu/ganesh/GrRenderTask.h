@@ -19,6 +19,7 @@
 #include "src/core/SkTInternalLList.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 
@@ -314,7 +315,8 @@ private:
     // each render task, then add it as a dependency during makeClosed().
     GrTextureResolveRenderTask* fTextureResolveTask = nullptr;
 
-    SkDEBUGCODE(GrDrawingManager *fDrawingMgr = nullptr;)
+    // RAW_PTR_EXCLUSION: Debug-only field.
+    SkDEBUGCODE(RAW_PTR_EXCLUSION GrDrawingManager* fDrawingMgr = nullptr;)
 };
 
 #endif

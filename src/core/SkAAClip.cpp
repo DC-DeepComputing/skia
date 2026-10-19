@@ -23,6 +23,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkScan.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <atomic>
@@ -251,7 +252,9 @@ class SkAAClip::Builder {
     struct Row {
         int fY;
         int fWidth;
-        SkTDArray<uint8_t>* fData;
+        // RAW_PTR_EXCLUSION: Stored in an SkTDArray, which does not run
+        // constructors or destructors.
+        RAW_PTR_EXCLUSION SkTDArray<uint8_t>* fData;
     };
     SkTDArray<Row>  fRows;
     Row* fCurrRow;

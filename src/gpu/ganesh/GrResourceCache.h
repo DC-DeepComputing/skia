@@ -26,6 +26,7 @@
 #include "src/gpu/ganesh/GrGpuResource.h"
 #include "src/gpu/ganesh/GrGpuResourceCacheAccess.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -406,7 +407,8 @@ private:
 
     // This resource is allowed to be in the nonpurgeable array for the sake of validate() because
     // we're in the midst of converting it to purgeable status.
-    SkDEBUGCODE(GrGpuResource*          fNewlyPurgeableResourceForValidation = nullptr;)
+    // RAW_PTR_EXCLUSION: Debug-only field.
+    SkDEBUGCODE(RAW_PTR_EXCLUSION GrGpuResource* fNewlyPurgeableResourceForValidation = nullptr;)
 };
 
 class GrResourceCache::ResourceAccess {

@@ -19,6 +19,7 @@
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
 #include "src/gpu/ganesh/GrResourceCache.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -40,8 +41,8 @@ class SkData;
 
 enum class SkBackingFit;
 struct GrVkDrawableInfo;
-struct SkImageInfo;
 struct SkISize;
+struct SkImageInfo;
 
 namespace skgpu {
 class ScratchKey;
@@ -445,7 +446,8 @@ private:
     sk_sp<const GrGpuBuffer> fAAQuadIndexBuffer;
 
     // In debug builds we guard against improper thread handling
-    SkDEBUGCODE(mutable skgpu::SingleOwner* fSingleOwner;)
+    // RAW_PTR_EXCLUSION: Debug-only field.
+    SkDEBUGCODE(mutable RAW_PTR_EXCLUSION skgpu::SingleOwner* fSingleOwner;)
 };
 
 #endif

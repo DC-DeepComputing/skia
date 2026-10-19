@@ -20,6 +20,7 @@
 #include "src/gpu/ganesh/GrClip.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/geometry/GrShape.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <memory>
@@ -221,7 +222,8 @@ private:
         SkIRect     fBounds;
         uint32_t    fGenID;
 
-        SkDEBUGCODE(const SaveRecord* fOwner;)
+        // RAW_PTR_EXCLUSION: Debug-only field.
+        SkDEBUGCODE(RAW_PTR_EXCLUSION const SaveRecord* fOwner;)
     };
 
     // Represents a saved point in the clip stack, and manages the life time of elements added to
