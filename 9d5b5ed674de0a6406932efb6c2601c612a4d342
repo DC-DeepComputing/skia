@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29121e87_63d21322",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-19T17:50:10Z",
+      "side": 1,
+      "message": "Moving the fallback cache into `FontCollection` is the right direction. `OneLineShaper` already has `OneLineShaper::fFallbackFonts` (even commented as \"We have the global cache for all already found typefaces for SkUnichar\"), but because `OneLineShaper` is instantiated on the stack per paragraph, that cache only survives for a single `shape()` call, misses `families[0]` in its key, and does not cover emoji or `nullptr` misses.\n\nTo make this change solid, a few things need to be addressed:\n\n1. **Remove the duplicate cache in `OneLineShaper` (`OneLineShaper.h` / `OneLineShaper.cpp`):**\n   With `FontCollection::defaultFallback` caching results (and `VariationCache` caching clones), `OneLineShaper::fFallbackFonts` and `OneLineShaper::FontKey` should be removed so `OneLineShaper::matchResolvedFonts` calls `defaultFallback` directly. Keeping `fFallbackFonts` in front of `FontCollection` not only hashes and looks up twice on misses, but also shadows `FontCollection::defaultFallback` within the same paragraph using a key that omits `families[0]`.\n\n2. **Bound the size of `FallbackCache`:**\n   Unlike `FaceCache`, which is keyed by explicit font family lists declared in styles (typically a handful of combinations per app), `FallbackCache` is keyed by `SkUnichar` (plus style, locale, and `families[0]`) and also caches `nullptr` misses. In a long-lived `FontCollection` (for example in Flutter, where it lives for the lifetime of the engine) rendering feeds, logs, CJK text, or arbitrary user input with unassigned/PUA codepoints, an unbounded map can grow across the entire Unicode range. Please add a size cap (even a simple max-entries limit that resets or evicts).\n\n3. **Avoid allocations in `Hasher` and hash the full `SkFontStyle`:**\n   - `std::hash\u003cstd::string\u003e()(key.fLocale.c_str())` and `std::hash\u003cstd::string\u003e()(key.fFamily-\u003ec_str())` construct temporary `std::string` instances on every hash lookup. Please use `SkGoodHash()(const SkString\u0026)` instead.\n   - `Hasher` only hashes `fFontStyle.weight()` and `slant()`, omitting `width()`, whereas `operator\u003d\u003d` compares the full `SkFontStyle`. `SkGoodHash()(key.fFontStyle)` handles the packed `SkFontStyle` value directly.\n\nAlso, a heads-up on the Gerrit dependency: CL 1396956 is part of a larger local stack that is still being rebased and updated before review, so stacking directly on top of its patchset will repeatedly break your Gerrit relation chain whenever we push updates. It would be easier to either base this on `main` for now or wait until 1396956 lands.",
+      "revId": "9d5b5ed674de0a6406932efb6c2601c612a4d342",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
