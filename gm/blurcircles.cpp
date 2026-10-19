@@ -10,6 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMaskFilter.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -74,3 +75,41 @@ private:
 };
 
 DEF_GM(return new BlurCirclesGM();)
+
+// Similar to the old "circles" GM: blurred circles drawn under similarity transforms (uniform
+// scales and rotations) and non-similarity transforms (non-uniform scales, rotated non-uniform
+// scales and skews). The blurs respect the CTM, so the blur is transformed along with the circle.
+// Each row uses a different sigma and each column a different transform.
+DEF_SIMPLE_GM(blurcircles_xform, canvas, 1280, 480) {
+    static constexpr float kRadius = 10.f;
+    static constexpr float kCellSize = 160.f;
+    static constexpr std::array<float, 3> kSigmas = {1.f, 2.5f, 5.f};
+
+    const SkMatrix matrices[] = {
+        SkMatrix(),
+        SkMatrix::Scale(2.f, 2.f),
+        SkMatrix::RotateDeg(30.f),
+        SkMatrix::Scale(3.f, 1.f),
+        SkMatrix::Scale(0.5f, 3.f),
+        SkMatrix::RotateDeg(30.f) * SkMatrix::Scale(3.f, 1.f),  // Non-uniform scale, then rotate.
+        // Rotate, then non-uniform scale. A circle is unchanged by the rotation, so this should
+        // look the same as Scale(3, 1).
+        SkMatrix::Scale(3.f, 1.f) * SkMatrix::RotateDeg(30.f),
+        SkMatrix::Skew(1.f, 0.f),
+    };
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setColor(SK_ColorBLACK);
+
+    for (size_t row = 0; row < kSigmas.size(); ++row) {
+        paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, kSigmas[row]));
+        for (size_t col = 0; col < std::size(matrices); ++col) {
+            SkAutoCanvasRestore autoRestore(canvas, true);
+            // Center the circle in its cell at an off-integer position.
+            canvas->translate(kCellSize * (col + 0.5f) + 0.25f, kCellSize * (row + 0.5f) + 0.75f);
+            canvas->concat(matrices[col]);
+            canvas->drawCircle(0.f, 0.f, kRadius, paint);
+        }
+    }
+}
