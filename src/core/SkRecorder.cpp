@@ -5,9 +5,12 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkRecorder.h"
-
 #include "include/cpu/Recorder.h"
+#include "src/capture/SkCaptureAsset.h"
 
 SkRecorder* SkRecorder::TODO() {
     return skcpu::Recorder::TODO();
 }
+
+SkRecorder::SkRecorder() = default;
+SkRecorder::~SkRecorder() = default;
