@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90f7e0c8_8e191ee2",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4977975e_ba7cf89c",
+      "range": {
+        "startLine": 10,
+        "startChar": 23,
+        "endLine": 10,
+        "endChar": 32
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9c759a6_12ffc0e0",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c3c928a_41658e9c",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9c759a6_12ffc0e0",
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a60ff30_ecc2f9b6",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-10-16T18:20:59Z",
       "side": 1,
       "message": "nit: I know this was kind of like this before, but I personally am not a fan of using auto when the type isn\u0027t 100% obvious. Like I don\u0027t know if this surface is an SkSurface*, sk_sp\u003cSkSurface\u003e or something else. So when it is used later (like in asSB) I\u0027d have to go look up getBaseCanvasSurface to see what it returns. Same for storage below this.",
+      "range": {
+        "startLine": 58,
+        "startChar": 12,
+        "endLine": 58,
+        "endChar": 16
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "108cf6ce_3ecf0461",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a60ff30_ecc2f9b6",
       "range": {
         "startLine": 58,
         "startChar": 12,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9025bdbc_e92a7c47",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "804cefa7_fa433593",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 16
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e781608_9a4edb41",
@@ -104,6 +194,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "239bba85_f7827267",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e781608_9a4edb41",
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "910aefc0_c16c89bc",
@@ -117,6 +225,24 @@
       "writtenOn": "2026-10-16T18:20:59Z",
       "side": 1,
       "message": "100 chars",
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e5bae6_6799a7d6",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "910aefc0_c16c89bc",
       "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -144,6 +270,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd808a08_2be73d59",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24f2fa9c_8be4e866",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9a78e98_cfb9afb5",
@@ -157,6 +307,30 @@
       "writtenOn": "2026-10-16T18:20:59Z",
       "side": 1,
       "message": "auto again. How would anyway know what type this is?",
+      "range": {
+        "startLine": 225,
+        "startChar": 8,
+        "endLine": 225,
+        "endChar": 12
+      },
+      "revId": "1853ff05aac43d87e674a7c61eba8ec0777693ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9189d74_2fa85938",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9a78e98_cfb9afb5",
       "range": {
         "startLine": 225,
         "startChar": 8,

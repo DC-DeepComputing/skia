@@ -34,6 +34,24 @@
       "parentUuid": "34cb11c5_498b51b7",
       "revId": "9dbdc7e40f117dea0e4cd4e017f0a160c19788c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95672b1_ce8d95ed",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T20:36:00Z",
+      "side": 1,
+      "message": "Client code sees SkCaptureAsset as an incomplete type, and wrapping it in a templated SkTArray feels like a code smell.\n\nI saw that `TaskList` and `UploadList` in `graphite::Recorder`\u0027s header wrapped the TArray in an object, but then I also see that we have `skia_private::TArray\u003csk_sp\u003cDevice\u003e\u003e fTrackedDevices;` where we have the raw TArray. I was just a bit confused as to the difference.",
+      "parentUuid": "23b60de6_36de9aef",
+      "revId": "9dbdc7e40f117dea0e4cd4e017f0a160c19788c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
