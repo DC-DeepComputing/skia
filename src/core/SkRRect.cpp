@@ -22,7 +22,6 @@
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkScaleToSides.h"
 #include "src/core/SkStringUtils.h"
-#include "src/utils/SkFloatUtils.h"
 
 #include <algorithm>
 #include <cstring>
@@ -68,6 +67,8 @@ void SkRRect::setRectXY(const SkRect& rect, SkScalar xRad, SkScalar yRad) {
         SkASSERT(scale < SK_Scalar1);
         xRad *= scale;
         yRad *= scale;
+        xRad = std::min(xRad, SkRectPriv::HalfWidth(fRect));
+        yRad = std::min(yRad, SkRectPriv::HalfHeight(fRect));
     }
 
     if (xRad <= 0 || yRad <= 0) {
@@ -567,8 +568,8 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
     }
     if (kOval_Type == fType) {
         for (int i = 0; i < 4; ++i) {
-            dst->fRadii[i].fX = newRect.width() / 2.f;
-            dst->fRadii[i].fY = newRect.height() / 2.f;
+            dst->fRadii[i].fX = SkRectPriv::HalfWidth(newRect);
+            dst->fRadii[i].fY = SkRectPriv::HalfHeight(newRect);
         }
         SkASSERT(dst->isValid());
         return true;
@@ -699,6 +700,26 @@ void SkRRect::inset(SkScalar dx, SkScalar dy, SkRRect* dst) const {
     dst->setRectRadii(r, radii);
 }
 
+void SkRRect::offset(SkScalar dx, SkScalar dy) {
+    fRect.offset(dx, dy);
+    if (!fRect.isFinite()) {
+        *this = SkRRect();
+        return;
+    }
+    if (fRect.isEmpty()) {
+        memset(fRadii, 0, sizeof(fRadii));
+        fType = kEmpty_Type;
+        return;
+    }
+    if (fType == kOval_Type) {
+        this->setOval(fRect);
+        return;
+    }
+    if (!SkRRectPriv::AreRectAndRadiiValid(fRect, fRadii)) {
+        this->setRectRadii(fRect, fRadii);
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 size_t SkRRect::writeToMemory(void* buffer) const {
@@ -770,23 +791,7 @@ static bool are_radii_predicates_valid(SkScalar radiusFromMin,
     const SkScalar ptFromMin = minCoord + radiusFromMin;
     const SkScalar ptFromMax = maxCoord - radiusFromMax;
 
-    // Accept either floats that are within an absolute tolerance of each other
-    // (for small numbers) or within a few ULPs (Units in the Last Place, i.e.
-    // the step between adjacent representable floats, for large numbers) to be
-    // robust against floating-point imprecision when translated. See
-    // https://skia-review.git.corp.google.com/c/skia/+/1279236.
-    const bool sumValid =
-            sum <= limit || SkScalarNearlyEqual(sum, limit) ||
-            SkFloatingPoint<float, 4>(sum).AlmostEquals(SkFloatingPoint<float, 4>(limit));
-    const bool ptsValid =
-            ptFromMin <= ptFromMax || SkScalarNearlyEqual(ptFromMin, ptFromMax) ||
-            SkFloatingPoint<float, 4>(ptFromMin).AlmostEquals(SkFloatingPoint<float, 4>(ptFromMax));
-
-    if (!sumValid || !ptsValid) {
-        return false;
-    }
-
-    return minCoord <= ptFromMax && ptFromMin <= maxCoord;
+    return sum <= limit && minCoord <= ptFromMax && ptFromMin <= maxCoord;
 }
 
 bool SkRRect::isValid() const {
@@ -828,25 +833,15 @@ bool SkRRect::isValid() const {
                 return false;
             }
             break;
-        case kOval_Type: {
-                if (fRect.isEmpty() || allRadiiZero || !allRadiiSame || allCornersSquare) {
+        case kOval_Type:
+            if (fRect.isEmpty() || allRadiiZero || !allRadiiSame || allCornersSquare) {
+                return false;
+            }
+
+            for (int i = 0; i < 4; ++i) {
+                if (fRadii[i].fX != SkRectPriv::HalfWidth(fRect) ||
+                    fRadii[i].fY != SkRectPriv::HalfHeight(fRect)) {
                     return false;
-                }
-
-                float desiredWidthVal = SkRectPriv::HalfWidth(fRect);
-                float desiredHeightVal = SkRectPriv::HalfHeight(fRect);
-                const SkFloatingPoint<float, 4> desiredWidth(desiredWidthVal);
-                const SkFloatingPoint<float, 4> desiredHeight(desiredHeightVal);
-
-                for (int i = 0; i < 4; ++i) {
-                    const SkFloatingPoint<float, 4> x(fRadii[i].fX), y(fRadii[i].fY);
-                    bool xMatches = SkScalarNearlyEqual(fRadii[i].fX, desiredWidthVal) ||
-                                    x.AlmostEquals(desiredWidth);
-                    bool yMatches = SkScalarNearlyEqual(fRadii[i].fY, desiredHeightVal) ||
-                                    y.AlmostEquals(desiredHeight);
-                    if (!xMatches || !yMatches) {
-                        return false;
-                    }
                 }
             }
             break;
