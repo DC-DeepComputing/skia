@@ -1,0 +1,126 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8672d363_83507579",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-19T19:51:28Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "b6d041f4f1be4a381fc71cc7395313249841cb18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d99af32c_79ced65f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-19T19:51:28Z",
+      "side": 1,
+      "message": "nit: draws\u0027",
+      "range": {
+        "startLine": 1918,
+        "startChar": 73,
+        "endLine": 1918,
+        "endChar": 79
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "409f468b_a43441a0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 1918,
+                "startChar": 0,
+                "endLine": 1919,
+                "endChar": 0
+              },
+              "replacement": "    // before visiting the clip stack so that any clips account for both draws\u0027 Z values.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6d041f4f1be4a381fc71cc7395313249841cb18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbd5966d_520cbd5f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1941,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-19T19:51:28Z",
+      "side": 1,
+      "message": "nit: fill\u0027s",
+      "range": {
+        "startLine": 1941,
+        "startChar": 13,
+        "endLine": 1941,
+        "endChar": 18
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5509df8a_0bbd3e5f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 1941,
+                "startChar": 0,
+                "endLine": 1942,
+                "endChar": 0
+              },
+              "replacement": "    // inner fill\u0027s +1 depth, ensuring that both are clipped if necessary.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b6d041f4f1be4a381fc71cc7395313249841cb18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79a1b345_3bbfa00a",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-19T19:51:28Z",
+      "side": 1,
+      "message": "nit: duplicate",
+      "range": {
+        "startLine": 1128,
+        "startChar": 52,
+        "endLine": 1128,
+        "endChar": 59
+      },
+      "revId": "b6d041f4f1be4a381fc71cc7395313249841cb18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
