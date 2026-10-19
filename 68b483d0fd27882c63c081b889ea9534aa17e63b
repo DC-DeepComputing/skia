@@ -22,6 +22,30 @@
       },
       "revId": "68b483d0fd27882c63c081b889ea9534aa17e63b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "582c0e68_9f1d8109",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-19T15:46:17Z",
+      "side": 1,
+      "message": "I can almost guarantee that these were constructed to be trivially destructible for performance reasons, so we wouldn\u0027t want to switch to TArray just to be able to mark them as raw_ptr and lose the trivial destructibility.",
+      "parentUuid": "4e2d74ff_65af6e71",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 54
+      },
+      "revId": "68b483d0fd27882c63c081b889ea9534aa17e63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
