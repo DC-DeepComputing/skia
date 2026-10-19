@@ -14,6 +14,7 @@
 #include "include/private/SkPixelStorage.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <functional>
 
@@ -163,7 +164,7 @@ public:
     }
 
 private:
-    TextureProxy* const fTextureProxy;
+    const raw_ptr<TextureProxy> fTextureProxy;
 };
 
 }  // namespace skgpu::graphite
