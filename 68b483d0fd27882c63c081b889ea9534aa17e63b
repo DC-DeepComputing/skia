@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e2d74ff_65af6e71",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-19T09:57:06Z",
+      "side": 1,
+      "message": "Opinions?\nI can try to turn some to TArray and/or run the constructor/destructor if you feel this is worth it. \n\nFor now, I assumed they would be excluded, so I don\u0027t have performance measurement. I would have to do it.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 54
+      },
+      "revId": "68b483d0fd27882c63c081b889ea9534aa17e63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
