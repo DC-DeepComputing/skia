@@ -16,6 +16,24 @@
       "message": "Hi @cam9810@gmail.com, this patch is failing the tests below. I am creating a revert of this patch; can you reland it?\n\n[1573/1587] unit test  SkRuntimeShader_TransformedCoords_Graphite done\n\tstart unit test  SkRuntimeEffect_Blender_Graphite\n\n\nFAILURE: ../../../../../skia/tests/SkRuntimeEffectTest.cpp:433\t\nExpected: [ ff0000ff ff00ff00 ffff0000 ffffffff ]\nGot     : [ ff888888 ff888888 ff888888 ff888888 ]\nSkSL:\nhalf4 main(half4 s, half4 d) { return d; }\n [SkRuntimeEffect_Blender_Graphite, Vulkan]: Runtime effect didn\u0027t match expectations\n\n\n\nFAILURE: ../../../../../skia/tests/SkRuntimeEffectTest.cpp:433\t\nExpected: [ ff0000ff ff00ff00 ffff0000 ffffffff ]\nGot     : [ ff888888 ff888888 ff888888 ff888888 ]\nSkSL:\nhalf4 main(half4 s, half4 d) {    half4 inColor \u003d d; half4 destColor \u003d s; return half4(inColor.rgb, destColor.a);}\n [SkRuntimeEffect_Blender_Graphite, Vulkan]: Runtime effect didn\u0027t match expectations\n\n\n\nFAILURE: ../../../../../skia/tests/SkRuntimeEffectTest.cpp:433\t\nExpected: [ 00ffff00 00ff00ff 0000ffff 00000000 ]\nGot     : [ 00777777 00777777 00777777 00777777 ]\nSkSL:\nhalf4 main(half4 s, half4 d) { return half4(1) - d; }\n [SkRuntimeEffect_Blender_Graphite, Vulkan]: Runtime effect didn\u0027t match expectations\n\n\n\nFAILURE: ../../../../../skia/tests/SkRuntimeEffectTest.cpp:433\t\nExpected: [ ff000080 ff008000 ff800000 ff808080 ]\nGot     : [ ff008080 ff008080 ff008080 ff008080 ]\nSkSL:\nuniform blender child;half4 main(half4 s, half4 d) { return child.eval(s, d); }\n [SkRuntimeEffect_Blender_Graphite, Vulkan]: Runtime effect didn\u0027t match expectations\n\n\n\nFAILURE: ../../../../../skia/tests/SkRuntimeEffectTest.cpp:433\t\nExpected: [ ff4523ff ff45ff01 ffff2301 ffffffff ]\nGot     : [ ff8a4602 ff8a4602 ff8a4602 ff8a4602 ]\nSkSL:\nuniform blender child;half4 main(half4 s, half4 d) { return child.eval(s, d); }\n [SkRuntimeEffect_Blender_Graphite, Vulkan]: Runtime effect didn\u0027t match expectations\n\n\n\nFAILURE: ../../../../../skia/tests/SkRuntimeEffectTest.cpp:433\t\nExpected: [ ff4523ff ff45ff01 ffff2301 ffffffff ]\nGot     : [ ffcf6903 ffcf6903 ffcf6903 ffcf6903 ]\nSkSL:\nuniform blender child;half4 main(half4 s, half4 d) { return child.eval(s, d); }\n [SkRuntimeEffect_Blender_Graphite, Vulkan]: Runtime effect didn\u0027t match expectations",
       "revId": "6fe61137607ef7f90e98121ac0df1c79114a1514",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6176be79_54c80df2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5235490
+      },
+      "writtenOn": "2026-10-19T19:07:41Z",
+      "side": 1,
+      "message": "sure,will open when the revert lands",
+      "parentUuid": "03f87738_20b967c2",
+      "revId": "6fe61137607ef7f90e98121ac0df1c79114a1514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
