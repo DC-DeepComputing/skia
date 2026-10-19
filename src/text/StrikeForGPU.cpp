@@ -20,40 +20,30 @@ namespace sktext {
 SkStrikePromise::SkStrikePromise(sktext::SkStrikePromise&&) = default;
 SkStrikePromise& SkStrikePromise::operator=(sktext::SkStrikePromise&&) = default;
 SkStrikePromise::SkStrikePromise(sk_sp<SkStrike>&& strike)
-        : fStrikeInfo{std::move(strike)} {}
+        : fStrikeOrSpec{std::move(strike)} {}
 SkStrikePromise::SkStrikePromise(const SkStrikeSpec& spec)
-        : fStrikeInfo{std::make_unique<SkStrikeSpec>(spec)} {}
+        : fStrikeOrSpec{std::make_unique<SkStrikeSpec>(spec)} {}
 
 SkStrike* SkStrikePromise::strike() {
-    if (std::holds_alternative<std::unique_ptr<SkAutoDescriptor>>(fStrikeInfo)) {
-        std::unique_ptr<SkAutoDescriptor> desc =
-                std::exchange(std::get<std::unique_ptr<SkAutoDescriptor>>(fStrikeInfo), nullptr);
-        fStrikeInfo = SkStrikeCache::GlobalStrikeCache()->findStrike(*desc->getDesc());
-    } else if (std::holds_alternative<std::unique_ptr<SkStrikeSpec>>(fStrikeInfo)) {
+    if (std::holds_alternative<std::unique_ptr<SkStrikeSpec>>(fStrikeOrSpec)) {
         // Turn the strike spec into a strike.
         std::unique_ptr<SkStrikeSpec> spec =
-                std::exchange(std::get<std::unique_ptr<SkStrikeSpec>>(fStrikeInfo), nullptr);
-        fStrikeInfo = SkStrikeCache::GlobalStrikeCache()->findOrCreateStrike(*spec);
+            std::exchange(std::get<std::unique_ptr<SkStrikeSpec>>(fStrikeOrSpec), nullptr);
+        fStrikeOrSpec = SkStrikeCache::GlobalStrikeCache()->findOrCreateStrike(*spec);
     }
-    return std::get<sk_sp<SkStrike>>(fStrikeInfo).get();
+    return std::get<sk_sp<SkStrike>>(fStrikeOrSpec).get();
 }
 
 void SkStrikePromise::resetStrike() {
-    if (std::holds_alternative<sk_sp<SkStrike>>(fStrikeInfo)) {
-        if (sk_sp<SkStrike>& strike = std::get<sk_sp<SkStrike>>(fStrikeInfo); strike != nullptr) {
-            fStrikeInfo = std::make_unique<SkAutoDescriptor>(strike->getDescriptor());
-        }
-    }
+    fStrikeOrSpec = sk_sp<SkStrike>();
 }
 
 const SkDescriptor& SkStrikePromise::descriptor() const {
-    if (std::holds_alternative<std::unique_ptr<SkAutoDescriptor>>(fStrikeInfo)) {
-        return *std::get<std::unique_ptr<SkAutoDescriptor>>(fStrikeInfo)->getDesc();
+    if (std::holds_alternative<std::unique_ptr<SkStrikeSpec>>(fStrikeOrSpec)) {
+        return std::get<std::unique_ptr<SkStrikeSpec>>(fStrikeOrSpec)->descriptor();
     }
-    if (std::holds_alternative<std::unique_ptr<SkStrikeSpec>>(fStrikeInfo)) {
-        return std::get<std::unique_ptr<SkStrikeSpec>>(fStrikeInfo)->descriptor();
-    }
-    return std::get<sk_sp<SkStrike>>(fStrikeInfo)->getDescriptor();
+
+    return std::get<sk_sp<SkStrike>>(fStrikeOrSpec)->getDescriptor();
 }
 
 void SkStrikePromise::flatten(SkWriteBuffer& buffer) const {

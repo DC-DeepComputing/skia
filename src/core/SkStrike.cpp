@@ -278,7 +278,7 @@ void SkStrike::glyphIDsToPaths(SkSpan<sktext::IDOrPath> idsOrPaths) {
     for (sktext::IDOrPath& idOrPath : idsOrPaths) {
         SkGlyph* glyph = this->glyph(SkPackedGlyphID{idOrPath.fGlyphID});
         this->prepareForPath(glyph);
-        idOrPath.fPath = *glyph->path();
+        new (&idOrPath.fPath) SkPath{*glyph->path()};
     }
 }
 
