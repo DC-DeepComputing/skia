@@ -7967,6 +7967,56 @@ UNIX_ONLY_TEST(SkParagraph_SimpleParagraphReset, reporter) {
     }
 }
 
+UNIX_ONLY_TEST(SkParagraph_PlaceholderMetricsIdempotence, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    // Repeated layout() idempotence for kTop, kBottom, and kMiddle
+    for (auto alignment : {PlaceholderAlignment::kTop,
+                           PlaceholderAlignment::kBottom,
+                           PlaceholderAlignment::kMiddle}) {
+        ParagraphStyle paragraphStyle;
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Ahem")});
+        textStyle.setFontSize(20.0f);
+        paragraphStyle.setTextStyle(textStyle);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText("AB");
+        PlaceholderStyle placeholder(30.0f, 30.4f, alignment, TextBaseline::kAlphabetic, 0.0f);
+        builder.addPlaceholder(placeholder);
+        builder.addText("CD");
+        builder.pop();
+
+        auto p1 = builder.Build();
+        p1->layout(500.0f);
+        const SkScalar height1 = p1->getHeight();
+        const auto boxes1 = p1->getRectsForPlaceholders();
+        std::vector<LineMetrics> metrics1;
+        p1->getLineMetrics(metrics1);
+        REPORTER_ASSERT(reporter, boxes1.size() == 1);
+        REPORTER_ASSERT(reporter, metrics1.size() == 1);
+
+        // Re-layout at a different width and back: placeholder metrics must not drift
+        p1->layout(300.0f);
+        p1->layout(500.0f);
+        const SkScalar height2 = p1->getHeight();
+        const auto boxes2 = p1->getRectsForPlaceholders();
+        std::vector<LineMetrics> metrics2;
+        p1->getLineMetrics(metrics2);
+        REPORTER_ASSERT(reporter, height1 == height2);
+        REPORTER_ASSERT(reporter, boxes2.size() == 1);
+        REPORTER_ASSERT(reporter, metrics2.size() == 1);
+        if (boxes1.size() == 1 && boxes2.size() == 1) {
+            REPORTER_ASSERT(reporter, boxes1[0].rect == boxes2[0].rect);
+        }
+        if (metrics1.size() == 1 && metrics2.size() == 1) {
+            REPORTER_ASSERT(reporter, metrics1[0].fAscent == metrics2[0].fAscent);
+            REPORTER_ASSERT(reporter, metrics1[0].fDescent == metrics2[0].fDescent);
+        }
+    }
+}
+
 UNIX_ONLY_TEST(SkParagraph_EllipsisGetRectForRange, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
