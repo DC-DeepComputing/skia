@@ -19,6 +19,10 @@ class GlobalCache;
 class StaticBufferManager;
 enum class PathRendererStrategy;
 
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+class SparseStripsCoverageStep;
+#endif
+
 class ComputeProvider {
 public:
     ~ComputeProvider();
@@ -28,6 +32,12 @@ public:
     // strips coverage pass reads. Only uploaded for PathRendererStrategy::kGPUSparseStripsMSAA8,
     // and empty otherwise.
     BindBufferInfo sparseStripsMaskLUT() const { return fSparseStripsMaskLUT; }
+
+    // The GPU sparse strips coverage pass. Only created for
+    // PathRendererStrategy::kGPUSparseStripsMSAA8, and null otherwise.
+    const SparseStripsCoverageStep* sparseStripsCoverageStep() const {
+        return fSparseStripsCoverageStep.get();
+    }
 #endif
 
 private:
@@ -44,6 +54,7 @@ private:
 #if defined(SK_ENABLE_SPARSE_STRIPS)
     // Assigned by StaticBufferManager::finalize().
     BindBufferInfo fSparseStripsMaskLUT;
+    std::unique_ptr<SparseStripsCoverageStep> fSparseStripsCoverageStep;
 #endif
 };
 

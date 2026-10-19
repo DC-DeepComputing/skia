@@ -20,6 +20,8 @@ class SkPath;
 
 namespace skgpu::graphite {
 
+class AlphaAtlasManager;
+class GpuAlphaAtlasManager;
 class Recorder;
 
 class StripGenerator {
@@ -40,6 +42,15 @@ public:
     bool cleanupNullCaps();
 
 private:
+    // Flattens, tiles, and generates the strips of `path` against the atlas matching the path
+    // renderer strategy: AlphaAtlasManager for CPU coverage, or GpuAlphaAtlasManager for GPU
+    // coverage.
+    template <typename AtlasManager>
+    bool makeStrips(const SkPath& path,
+                    const SkMatrix& ctm,
+                    const SkIRect& tileClip,
+                    AtlasManager* atlasManager);
+
     int fWidth;
     int fHeight;
     const SparseStripConfig::LUTArray& fMaskLUT;
@@ -48,6 +59,9 @@ private:
     WideTiles fWides;
     WindingHistogram fWindingHistogram;
     bool fCulled;
+    // Whether the EndCaps' coverage is rasterized by the coverage compute shader
+    // (kGPUSparseStripsMSAA8), rather than on the CPU. CPU and GPU coverage are never mixed.
+    bool fUseGpuCoverage;
 };
 
 } // namespace skgpu::graphite

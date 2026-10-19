@@ -12,10 +12,12 @@
 #include "src/gpu/graphite/geom/EndCaps.h"
 #include "src/gpu/graphite/geom/WideTiles.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
+#include "src/gpu/graphite/sparse_strips/GpuAlphaAtlasManager.h"
 #include "src/gpu/graphite/sparse_strips/MSAA_LUT.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
+#include "src/gpu/graphite/sparse_strips/StripProcessorGpu.h"
 #include "src/gpu/graphite/sparse_strips/StripProcessorScalar.h"
 #include "src/gpu/graphite/sparse_strips/StripProcessorSimd.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
@@ -23,6 +25,7 @@
 
 #include <bit>
 #include <cstring>
+#include <optional>
 #include <utility>
 
 namespace skgpu::graphite {
@@ -199,6 +202,43 @@ public:
         return success;
     }
 
+    // Generates the same WideTiles and EndCaps as MsaaScalar and MsaaSimd, but leaves the EndCaps'
+    // coverage to be rasterized on the GPU. Each tile is packaged into a PreMergeTile, which the
+    // GpuAlphaAtlasManager hands to the coverage compute shader, which stores the merged coverage
+    // directly into the atlas pages that the EndCaps reference.
+    template <uint16_t kTileWidth, uint16_t kTileHeight>
+    static bool MsaaGpu(const Tiles<kTileWidth, kTileHeight>& tileContainer,
+                        WideTiles* wides,
+                        EndCaps* ends,
+                        GpuAlphaAtlasManager* atlasManager,
+                        SkPathFillType fillType,
+                        const Polyline& polyline,
+                        bool isCulled,
+                        const WindingHistogram& windingHistogram,
+                        const SkIRect& clipRect) {
+        bool success = true;
+        Dispatch(fillType, [&](auto isWindingTag, bool isInverse) {
+            constexpr bool kIsWinding = decltype(isWindingTag)::value;
+            StripProcessorGpu<kTileWidth, kTileHeight, kIsWinding> processor(
+                    isInverse, polyline, atlasManager);
+
+            success = TraverseCPU<kTileWidth, kTileHeight>(tileContainer,
+                                                           wides,
+                                                           ends,
+                                                           atlasManager,
+                                                           isCulled,
+                                                           windingHistogram,
+                                                           clipRect,
+                                                           isInverse,
+                                                           &processor);
+        });
+        if (!success) {
+            // Don't let the PreMergeTiles of an unfinished run leak into the next draw's first run.
+            atlasManager->abandonRun();
+        }
+        return success;
+    }
+
 private:
     template <typename F> static SK_ALWAYS_INLINE void Dispatch(SkPathFillType fillType, F&& f) {
         switch (fillType) {
@@ -218,10 +258,10 @@ private:
         SkUNREACHABLE;
     }
 
-    template <uint16_t kTileWidth, uint16_t kTileHeight>
+    template <uint16_t kTileWidth, uint16_t kTileHeight, typename AtlasManager>
     SK_ALWAYS_INLINE static bool FinalizeRun(uint16_t runStartX,
                                              Tile prevTile,
-                                             AlphaAtlasManager* atlasManager,
+                                             AtlasManager* atlasManager,
                                              EndCaps* ends) {
         uint16_t endCapX = runStartX * kTileWidth;
         uint16_t endCapWidth = (prevTile.x - runStartX + 1) * kTileWidth;
@@ -231,7 +271,7 @@ private:
             return false;
         }
         auto [alphaIndex, texPage] = *alloc;
-        if (texPage == AlphaAtlasManager::kNullSlot) {
+        if (texPage == AtlasManager::kNullSlot) {
             ends->markFirstNullCap();
         }
         ends->addCap(endCapX,
@@ -239,6 +279,37 @@ private:
                      endCapWidth,
                      alphaIndex,
                      texPage);
+        return true;
+    }
+
+    // Once all segments at a spatial tile have been combined, the tile is resolved into its slot in
+    // the alpha atlas. This is the only step of the traversal that depends on where coverage is
+    // rasterized, so it is selected by the type of the atlas manager:
+    //  - AlphaAtlasManager: The processor has rasterized the tile on the CPU, and resolves its
+    //    subsample winding to alpha directly into the CPU-side copy of the atlas page.
+    //  - GpuAlphaAtlasManager: The tile's slot is only reserved, and the processor records it on
+    //    the tile's last PreMergeTile, so that the coverage compute shader knows where to store
+    //    the tile's merged coverage.
+    template <uint16_t kTileWidth, uint16_t kTileHeight, typename Processor>
+    static SK_ALWAYS_INLINE bool ResolveTile(AlphaAtlasManager* atlasManager,
+                                             Processor* processor) {
+        uint8_t* dst = atlasManager->requestAlphaSpace(kTileWidth * kTileHeight);
+        if (!dst) {
+            return false;
+        }
+        processor->resolveWindingToAlpha(dst);
+        return true;
+    }
+
+    template <uint16_t kTileWidth, uint16_t kTileHeight, typename Processor>
+    static SK_ALWAYS_INLINE bool ResolveTile(GpuAlphaAtlasManager* atlasManager,
+                                             Processor* processor) {
+        std::optional<int32_t> runOffset =
+                atlasManager->reserveAlphaSpace(kTileWidth * kTileHeight);
+        if (!runOffset) {
+            return false;
+        }
+        processor->endTile(*runOffset);
         return true;
     }
 
@@ -266,10 +337,16 @@ private:
         }
     }
 
-    // While the underlying implementation may be scalar or SIMD, the core traversal across
+    // While the underlying implementation may be scalar, SIMD, or GPU, the core traversal across
     // the tiles is identical. To reiterate, the goal of MakeStrips is twofold:
     // 1) Combine polyline segments at the same spatial tile to produce the final coverage.
     // 2) Generate EndCaps for antialiased boundary runs and WideTiles for solid interior fills.
+    //
+    // The Processor and AtlasManager pair determines where 1) happens. CPU processors rasterize
+    // each segment as it is visited, and resolve the combined coverage into an AlphaAtlasManager.
+    // StripProcessorGpu instead emits a PreMergeTile per segment into a GpuAlphaAtlasManager, and
+    // the combination and resolve are performed by the coverage compute shader. 2) always happens
+    // here, so the generated WideTiles and EndCaps are identical.
     //
     // To do this in a single pass, the traversal treats the sorted tile stream as a state machine
     // governed by three transition events:
@@ -292,18 +369,16 @@ private:
     //       if needed), processes any intervening empty tile rows via the winding histogram,
     //       seeds the coarse winding from the winding histogram for the new row, emits any
     //       leading WideTile from clip left, and begins the new row.
-    template <uint16_t kTileWidth, uint16_t kTileHeight, typename Processor>
+    template <uint16_t kTileWidth, uint16_t kTileHeight, typename AtlasManager, typename Processor>
     static SK_ALWAYS_INLINE bool TraverseCPU(const Tiles<kTileWidth, kTileHeight>& tileContainer,
                                              WideTiles* wides,
                                              EndCaps* ends,
-                                             AlphaAtlasManager* atlasManager,
+                                             AtlasManager* atlasManager,
                                              bool isCulled,
                                              const WindingHistogram& windingHistogram,
                                              const SkIRect& clipRect,
                                              bool isInverse,
                                              Processor* processor) {
-        constexpr size_t kTilePixelCount = kTileWidth * kTileHeight;
-
         if (clipRect.isEmpty() || clipRect.right() <= 0 || clipRect.bottom() <= 0) {
             return true;
         }
@@ -373,11 +448,9 @@ private:
             if (tileStart) {
                 // Moving to a new tile implies that all previous tile's coverage has been combined,
                 // resolve the coverage mask winding to alpha, then clear it.
-                uint8_t* dst = atlasManager->requestAlphaSpace(kTilePixelCount);
-                if (!dst) {
+                if (!ResolveTile<kTileWidth, kTileHeight>(atlasManager, processor)) {
                     return false;
                 }
-                processor->resolveWindingToAlpha(dst);
                 if (!rowStart) {
                     // If we're not a row start, carry the scanline winding by seeding the coverage
                     // mask with the coarse winding.
@@ -458,11 +531,9 @@ private:
         }
 
         // Process the last tile and finalize
-        uint8_t* dst = atlasManager->requestAlphaSpace(kTilePixelCount);
-        if (!dst) {
+        if (!ResolveTile<kTileWidth, kTileHeight>(atlasManager, processor)) {
             return false;
         }
-        processor->resolveWindingToAlpha(dst);
         if (!FinalizeRun<kTileWidth, kTileHeight>(runStartX,
                                                   prevTile,
                                                   atlasManager,

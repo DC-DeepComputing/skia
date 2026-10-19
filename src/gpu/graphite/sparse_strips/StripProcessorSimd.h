@@ -119,12 +119,7 @@ public:
                                                   const Line& line) {
         bool canonicalXDir = line.p1.fX >= line.p0.fX;
 
-        uint32_t windingBit = tile.coarseWinding() ? 1 : 0;
-        if constexpr (kIsWinding) {
-            fCoarseWinding += (kCanonicalYDir ? 1 : -1) * static_cast<int32_t>(windingBit);
-        } else {
-            fCoarseWinding ^= static_cast<int32_t>(windingBit);
-        }
+        tile.accumulateCoarseWinding<kIsWinding>(kCanonicalYDir, &fCoarseWinding);
 
         float dx = line.p1.fX - line.p0.fX;
         float dy = line.p1.fY - line.p0.fY;

@@ -80,6 +80,19 @@ struct Tile : public IntersectionBits {
         return (fPackedLineIdxIntersectionMask & IntersectionBits::L) != 0;
     }
 
+    // Accumulates this tile's contribution to the coarse winding carried to the spatial tiles to its
+    // right (see StripProcessorScalar::rasterizeLineToTile). Shared by every strip processor, so
+    // that the backdrops and WideTiles derived from the coarse winding cannot diverge between them.
+    template <bool kIsWinding>
+    SK_ALWAYS_INLINE void accumulateCoarseWinding(bool canonicalYDir, int32_t* coarseWinding) const {
+        const int32_t windingBit = this->coarseWinding() ? 1 : 0;
+        if constexpr (kIsWinding) {
+            *coarseWinding += canonicalYDir ? windingBit : -windingBit;
+        } else {
+            *coarseWinding ^= windingBit;
+        }
+    }
+
     // Responsible for consuming the tile coordinates and intersection mask produced by the Tiler
     // and producing the exact points at which the parent line intersects the edges of the tile.
     // It also safely handles when there is only one edge intersection, either from the line ending
@@ -396,7 +409,11 @@ public:
                 uint16_t yStart = isStartCulled ? yTopTiles : (yTopTiles + 1);
                 float lineBottomFloor = std::floor(lineBottomY);
                 uint16_t yEndIdx = std::min(f32ToU16Sat(lineBottomFloor), maxTileY);
-                histogram->addWindingRange(yStart, yEndIdx, windingDir);
+                // A line that starts and ends within the same tile row fully crosses no rows, in
+                // which case yStart can be yEndIdx + 1.
+                if (yStart < yEndIdx) {
+                    histogram->addWindingRange(yStart, yEndIdx, windingDir);
+                }
 
                 if ((p0TileY != p1TileY) && lineBottomY != lineBottomFloor && yEndIdx < maxTileY) {
                     histogram->addWinding(yEndIdx, windingDir);

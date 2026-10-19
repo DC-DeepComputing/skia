@@ -22,6 +22,7 @@
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
+#include "src/gpu/graphite/sparse_strips/GpuAlphaAtlasManager.h"
 #endif
 
 #include <utility>
@@ -34,13 +35,26 @@ static bool use_clip_atlas(const Recorder* recorder) {
            PathRendererStrategy::kRasterAtlas;
 }
 
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+static bool use_gpu_sparse_strips_coverage(const Recorder* recorder) {
+    // CPU and GPU sparse strips coverage are never mixed, so only the matching atlas is created.
+    return recorder->priv().rendererProvider()->pathRendererStrategy() ==
+           PathRendererStrategy::kGPUSparseStripsMSAA8;
+}
+#endif
+
 AtlasProvider::AtlasProvider(Recorder* recorder)
         : fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder))
         , fRasterPathAtlas(std::make_unique<RasterPathAtlas>(recorder))
         , fClipAtlasManager(use_clip_atlas(recorder) ? std::make_unique<ClipAtlasManager>(recorder)
                                                      : nullptr)
 #if defined(SK_ENABLE_SPARSE_STRIPS)
-        , fAlphaAtlasManager(std::make_unique<AlphaAtlasManager>(recorder))
+        , fAlphaAtlasManager(use_gpu_sparse_strips_coverage(recorder)
+                                     ? nullptr
+                                     : std::make_unique<AlphaAtlasManager>(recorder))
+        , fGpuAlphaAtlasManager(use_gpu_sparse_strips_coverage(recorder)
+                                        ? std::make_unique<GpuAlphaAtlasManager>(recorder)
+                                        : nullptr)
 #endif
 {}
 
@@ -111,6 +125,9 @@ void AtlasProvider::freeGpuResources() {
     if (fAlphaAtlasManager) {
         fAlphaAtlasManager->freeGpuResources();
     }
+    if (fGpuAlphaAtlasManager) {
+        fGpuAlphaAtlasManager->freeGpuResources();
+    }
 #endif
     // Release any textures held directly by the provider. These textures are used by transient
     // ComputePathAtlases that are reset every time a DrawContext snaps a DrawTask so there is no
@@ -134,6 +151,9 @@ void AtlasProvider::recordUploads(DrawContext* dc) {
 #if defined(SK_ENABLE_SPARSE_STRIPS)
     if (fAlphaAtlasManager) {
         fAlphaAtlasManager->recordUploads(dc);
+    }
+    if (fGpuAlphaAtlasManager) {
+        fGpuAlphaAtlasManager->recordDispatches(dc);
     }
 #endif
 }

@@ -15,6 +15,7 @@
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
+#include "src/gpu/graphite/sparse_strips/SparseStripsCoverageStep.h"
 #endif
 
 namespace skgpu::graphite {
@@ -34,6 +35,7 @@ ComputeProvider::ComputeProvider(const Caps* caps,
         if (writer) {
             writer.write(lut.data(), sizeof(lut));
         }
+        fSparseStripsCoverageStep = std::make_unique<SparseStripsCoverageStep>();
     }
 #endif
 }

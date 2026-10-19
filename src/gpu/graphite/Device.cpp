@@ -1784,6 +1784,10 @@ void Device::drawGeometry(const Transform& localToDevice,
             fRecorder->priv().flushTrackedDevices(
                     SK_DUMP_TASKS_CODE("Device::drawGeometry Flush Before Draw"));
             // TODO (thomsmit): implement scratch textures as a fallback of last resort.
+            // TODO (thomsmit): After cleanup, only the caps from the first null cap onwards are
+            // drawn (see EndCaps::drawStartIndex()), so this draw's caps finalized before the
+            // overflow are never recorded, and some may reference the page retired by the flush
+            // above. Investigate.
             if (!fStripGenerator->cleanupNullCaps()) {
                 SKIA_LOG_E("Failed to cleanup null endcaps after flush!");
                 return;

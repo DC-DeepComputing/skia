@@ -11,12 +11,16 @@
 #include "include/core/SkPath.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
+#include "src/gpu/graphite/sparse_strips/GpuAlphaAtlasManager.h"
 #include "src/gpu/graphite/sparse_strips/MakeStrips.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
+
+#include <type_traits>
 
 namespace skgpu::graphite {
 
@@ -30,7 +34,9 @@ StripGenerator::StripGenerator(int width,
         , fRecorder(recorder)
         , fWindingHistogram((height + SparseStripConfig::kTileHeight - 1) /
                             SparseStripConfig::kTileHeight)
-        , fCulled(true) {}
+        , fCulled(true)
+        , fUseGpuCoverage(recorder->priv().rendererProvider()->pathRendererStrategy() ==
+                          PathRendererStrategy::kGPUSparseStripsMSAA8) {}
 
 StripGenerator::~StripGenerator() = default;
 
@@ -38,21 +44,11 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm) {
     return this->processGeometry(path, ctm, SkIRect::MakeWH(fWidth, fHeight));
 }
 
-bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
-    fEnds.clear();
-    fWides.clear();
-
-    SkIRect tileClip = clip;
-    if (!tileClip.intersect(SkIRect::MakeWH(fWidth, fHeight))) {
-        return true;
-    }
-    tileClip.fLeft =
-            (tileClip.fLeft / SparseStripConfig::kTileWidth) * SparseStripConfig::kTileWidth;
-    tileClip.fTop =
-            (tileClip.fTop / SparseStripConfig::kTileHeight) * SparseStripConfig::kTileHeight;
-
-    AlphaAtlasManager* atlasManager =
-            fRecorder->priv().getOrCreateAtlasProvider()->alphaAtlasManager();
+template <typename AtlasManager>
+bool StripGenerator::makeStrips(const SkPath& path,
+                                const SkMatrix& ctm,
+                                const SkIRect& tileClip,
+                                AtlasManager* atlasManager) {
     if (!atlasManager) {
         return false;
     }
@@ -82,18 +78,34 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, co
     fCulled = tiler.makeTilesMSAA(polyline, tileClip, &fWindingHistogram);
     tiler.sortTiles();
 
-    bool success =
-            MakeStrips::MsaaSimd<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight>(
-                    tiler,
-                    &fWides,
-                    &fEnds,
-                    atlasManager,
-                    path.getFillType(),
-                    polyline,
-                    fMaskLUT,
-                    fCulled,
-                    fWindingHistogram,
-                    tileClip);
+    bool success;
+    if constexpr (std::is_same_v<AtlasManager, GpuAlphaAtlasManager>) {
+        success =
+                MakeStrips::MsaaGpu<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight>(
+                        tiler,
+                        &fWides,
+                        &fEnds,
+                        atlasManager,
+                        path.getFillType(),
+                        polyline,
+                        fCulled,
+                        fWindingHistogram,
+                        tileClip);
+    } else {
+        static_assert(std::is_same_v<AtlasManager, AlphaAtlasManager>);
+        success =
+                MakeStrips::MsaaSimd<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight>(
+                        tiler,
+                        &fWides,
+                        &fEnds,
+                        atlasManager,
+                        path.getFillType(),
+                        polyline,
+                        fMaskLUT,
+                        fCulled,
+                        fWindingHistogram,
+                        tileClip);
+    }
 
     if (!success) {
         return false;
@@ -105,9 +117,34 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, co
     return true;
 }
 
+bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+    fEnds.clear();
+    fWides.clear();
+
+    SkIRect tileClip = clip;
+    if (!tileClip.intersect(SkIRect::MakeWH(fWidth, fHeight))) {
+        return true;
+    }
+    tileClip.fLeft =
+            (tileClip.fLeft / SparseStripConfig::kTileWidth) * SparseStripConfig::kTileWidth;
+    tileClip.fTop =
+            (tileClip.fTop / SparseStripConfig::kTileHeight) * SparseStripConfig::kTileHeight;
+
+    AtlasProvider* atlasProvider = fRecorder->priv().getOrCreateAtlasProvider();
+    if (fUseGpuCoverage) {
+        return this->makeStrips(path, ctm, tileClip, atlasProvider->gpuAlphaAtlasManager());
+    }
+    return this->makeStrips(path, ctm, tileClip, atlasProvider->alphaAtlasManager());
+}
+
 bool StripGenerator::cleanupNullCaps() {
-    AlphaAtlasManager* atlasManager =
-            fRecorder->priv().getOrCreateAtlasProvider()->alphaAtlasManager();
+    AtlasProvider* atlasProvider = fRecorder->priv().getOrCreateAtlasProvider();
+    if (fUseGpuCoverage) {
+        GpuAlphaAtlasManager* atlasManager = atlasProvider->gpuAlphaAtlasManager();
+        SkASSERT(atlasManager);
+        return atlasManager->resolveNullCaps(&fEnds);
+    }
+    AlphaAtlasManager* atlasManager = atlasProvider->alphaAtlasManager();
     SkASSERT(atlasManager);
     return atlasManager->resolveNullCaps(&fEnds);
 }
