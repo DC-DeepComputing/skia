@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4c3b591_35217d6d",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T16:18:59Z",
+      "side": 1,
+      "message": "Agreed, further supporting this, making changes to our internal SkCapture API means that we break tests if we change the return value of something. This test 1) should be written by generating an SkCapture, then checking the metadata afterwards and 2) should probably live somewhere else since it is not CPUContext related.",
+      "parentUuid": "9dd98027_0ec4ff6b",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 62
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "23f6e0cc_d275962d",
         "filename": "tests/CPUContextRecorderTest.cpp",
         "patchSetId": 12
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-19T15:27:09Z",
       "side": 1,
       "message": "This comment doesn\u0027t seem correct, capturing shouldn\u0027t stop until it\u0027s toggled off.",
+      "range": {
+        "startLine": 59,
+        "startChar": 64,
+        "endLine": 59,
+        "endChar": 89
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d9b3af3_65eb83cd",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-19T16:18:59Z",
+      "side": 1,
+      "message": "This is fCapturing at the SkCaptureCanvas level, not the overall SkCapture level. fCapturing turns off and will turn back on on the next draw command, when it polls the manager.",
+      "parentUuid": "23f6e0cc_d275962d",
       "range": {
         "startLine": 59,
         "startChar": 64,
