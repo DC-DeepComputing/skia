@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e63676_4cac3d84",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-19T15:52:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f844e34e_3687349a",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 52
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78632f20_c4355259",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-15T20:35:51Z",
       "side": 1,
       "message": "let\u0027s do `SkFunctionalExecutor`",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 27
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b551007c_5f718e63",
+        "filename": "include/core/SkExecutor.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-19T15:52:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78632f20_c4355259",
       "range": {
         "startLine": 51,
         "startChar": 6,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d76ef4d_cf3ea047",
+        "filename": "src/core/SkExecutors.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-19T15:52:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56c4f1e8_422197b2",
+      "range": {
+        "startLine": 55,
+        "startChar": 6,
+        "endLine": 55,
+        "endChar": 28
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f84b78d7_a2d24f07",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-10-15T20:35:51Z",
       "side": 1,
       "message": "SkStdFunctionExecutor",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 40
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b65e11c_10f5cf76",
+        "filename": "src/core/SkTaskGroup.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-19T15:52:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f84b78d7_a2d24f07",
       "range": {
         "startLine": 21,
         "startChar": 30,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16984926_1367236d",
+        "filename": "src/gpu/graphite/PipelineManager.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-19T15:52:34Z",
+      "side": 1,
+      "message": "Yes - getting AddWork to actually elide the unselected code path forced this rather byzantine approach.",
+      "parentUuid": "faf43ce2_bcd9591e",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 28
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "334c41c0_4ba05558",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-10-15T20:35:51Z",
       "side": 1,
       "message": "I think this is meant to be included first if it is included",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "de8635f2079d466526e2eeb3215a2730c89503b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "151a6b80_2fca2b26",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-19T15:52:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "334c41c0_4ba05558",
       "range": {
         "startLine": 15,
         "startChar": 0,
