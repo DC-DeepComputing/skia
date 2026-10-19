@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/ShaderInfo.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/render/MeshRenderStep.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
@@ -670,9 +671,9 @@ public:
 
 private:
     const ShaderInfo& fShaderInfo;
-    const ShaderNode* fNode;
-    std::string* fPreamble;
-    SkDEBUGCODE(const SkRuntimeEffect* fEffect;)
+    raw_ptr<const ShaderNode> fNode;
+    raw_ptr<std::string> fPreamble;
+    SkDEBUGCODE(raw_ptr<const SkRuntimeEffect> fEffect;)
 };
 
 class MeshProgramCallbacks : public SkSL::PipelineStage::Callbacks {

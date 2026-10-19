@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkGlyph;
 
@@ -148,7 +149,7 @@ private:
         return SK_UNSAFE_TODO(fAtlases[atlasIndex].get());
     }
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     DrawAtlas::AllowMultitexturing fAllowMultitexturing;
     std::unique_ptr<DrawAtlas> fAtlases[kMaskFormatCount];
     static_assert(kMaskFormatCount == 3);

@@ -14,6 +14,7 @@
 
 #include <atomic>
 #include <functional>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -45,7 +46,7 @@ public:
     void reset() { fSignaled = false; }
 
 private:
-    const DawnSharedContext* fSharedContext;
+    raw_ptr<const DawnSharedContext> fSharedContext;
     std::atomic_bool fSignaled;
 };
 
