@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+#include <string_view>
 
 static constexpr const char* gColorNames[] = {
     "aliceblue",
@@ -305,14 +306,15 @@ struct ColorRec {
 });
 
 const char* SkParse::FindNamedColor(const char* name, size_t len, SkColor* color) {
+    std::string_view key(name, len);
     const auto rec = std::lower_bound(std::begin(gColorNames),
-                                      std::end  (gColorNames),
-                                      name, // key
-                                      [](const char* name, const char* key) {
-                                          return strcmp(name, key) < 0;
+                                      std::end(gColorNames),
+                                      key,
+                                      [](const char* color_name, std::string_view search_key) {
+                                          return color_name < search_key;
                                       });
 
-    if (rec == std::end(gColorNames) || 0 != strcmp(name, *rec)) {
+    if (rec == std::end(gColorNames) || *rec != key) {
         return nullptr;
     }
 
@@ -321,7 +323,7 @@ const char* SkParse::FindNamedColor(const char* name, size_t len, SkColor* color
         *color = SkColorSetRGB(gColors[index].r, gColors[index].g, gColors[index].b);
     }
 
-    return name + strlen(*rec);
+    return name + len;
 }
 
 // !!! move to char utilities
