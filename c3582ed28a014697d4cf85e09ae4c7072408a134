@@ -63,6 +63,29 @@
       },
       "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2b01206_1d45eae3",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-19T14:02:31Z",
+      "side": 1,
+      "message": "Just to confirm this function doesn\u0027t exist yet right? I\u0027m trying to think about for these various tests where it makes sense to pass in an SkBackendSelection enum or not. I think we want the default (i.e. no enum passed in) to be kAutomatic (though is there a good enough argument to not support a default and require clients to pass in kAutomatic)? Regardless I just want to make sure these test are trying to test the kAutomatic code path when checking Recorder type vs explicitly wanting to for cpu via kCpu",
+      "range": {
+        "startLine": 109,
+        "startChar": 48,
+        "endLine": 109,
+        "endChar": 60
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
