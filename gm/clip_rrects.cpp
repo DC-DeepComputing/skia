@@ -15,7 +15,7 @@
 #include "include/core/SkRect.h"
 
 // Tests clipRRect cases that Graphite should handle with an analytic shader.
-DEF_SIMPLE_GM(clip_rrects_analytic, canvas, 360, 325) {
+DEF_SIMPLE_GM(clip_rrects_analytic, canvas, 760, 720) {
     const SkRect baseRect = {0, 0, 32, 32};
 
     auto makeRRect = [&](bool tl, bool tr, bool br, bool bl) {
@@ -54,14 +54,14 @@ DEF_SIMPLE_GM(clip_rrects_analytic, canvas, 360, 325) {
     };
 
     std::pair<SkPoint, SkMatrix> transforms[] = {
-        // Identity (top-left grid)
+        // Identity (first row)
         {{0.f, 0.f},    SkMatrix()},
-        // Non-uniform scale (top-right grid)
-        {{160.f, 0.f},  SkMatrix::Scale(1.2f, 0.8f)},
-        // Orthgonal (bot-left grid)
-        {{20.f, 160.f}, SkMatrix::RotateDeg(10.f, {2 * baseRect.width(), 2 * baseRect.height()})},
-        // Fully affine (bot-right grid)
-        {{180.f, 140.f}, SkMatrix::Skew(0.2f, 0.1f)}
+        // Non-uniform scale (second row)
+        {{0.f, 160.f},  SkMatrix::Scale(1.2f, 0.8f)},
+        // Orthgonal (third row))
+        {{20.f, 310.f}, SkMatrix::RotateDeg(10.f, {2 * baseRect.width(), 2 * baseRect.height()})},
+        // Fully affine (fourth row)
+        {{10.f, 500.f}, SkMatrix::Skew(0.2f, 0.1f)}
     };
 
     // Make this a complicated enough shape that Graphite doesn't just apply the clip geometrically.
@@ -79,21 +79,25 @@ DEF_SIMPLE_GM(clip_rrects_analytic, canvas, 360, 325) {
         canvas->save();
         canvas->translate(origin.fX, origin.fY);
 
-        int x = 0;
-        int y = 0;
-        for (const SkRRect& clip : rrects) {
-            canvas->save();
-            canvas->concat(xform);
-            canvas->translate(5.f * (x + 1) + baseRect.width() * x,
-                              5.f * (y + 1) + baseRect.height() * y);
-            canvas->clipRRect(clip, true);
-            canvas->drawPath(p, fillPaint);
-            canvas->restore();
+        for (int col = 0; col < 4; col++) {
+            int x = 0;
+            int y = 0;
+            const float colWidth = 160.f;
 
-            x++;
-            if (x >= 4) {
-                x = 0;
-                y++;
+            for (const SkRRect& clip : rrects) {
+                canvas->save();
+                canvas->concat(xform);
+                canvas->translate(5.f * (x + 1) + baseRect.width() * x + colWidth * col,
+                                  5.f * (y + 1) + baseRect.height() * y);
+                canvas->clipRRect(clip, true);
+                canvas->drawPath(p, fillPaint);
+                canvas->restore();
+
+                x++;
+                if (x >= 4) {
+                    x = 0;
+                    y++;
+                }
             }
         }
 
