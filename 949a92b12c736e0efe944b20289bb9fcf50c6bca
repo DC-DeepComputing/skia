@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "909e366a_28d49946",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-20T19:32:35Z",
+      "side": 1,
+      "message": "Is this a zune-jpeg limitation, and isn\u0027t there a way to detect at run time?  E.g. `fReader-\u003esupports_direct_packed_output()` below reads like it would be sufficient.\n\nIf the macro conditional is needed, please add some comments.",
+      "revId": "949a92b12c736e0efe944b20289bb9fcf50c6bca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89df844c_867fb996",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-20T19:32:35Z",
+      "side": 1,
+      "message": "Do we need to reset this state in `onStartIncrementalDecode`, `onRewind` as well?",
+      "range": {
+        "startLine": 911,
+        "startChar": 0,
+        "endLine": 912,
+        "endChar": 78
+      },
+      "revId": "949a92b12c736e0efe944b20289bb9fcf50c6bca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3156a516_2a264ea2",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-20T19:32:35Z",
+      "side": 1,
+      "message": "I guess this holds for now, as the code path is predicated on kN32.  But I think it makes sense to avoid hardcoding and use something more future proof - e.g. \n\n```\n    const size_t logicalRowBytes \u003d this-\u003edstInfo().minRowBytes();\n```\n\nMaybe also add some additional checks to make sure the value agrees with the rust size?\n\n```\n    if (logicalRowBytes \u003d\u003d 0 || logicalRowBytes !\u003d fReader-\u003erow_bytes() ||\n        dstRowBytes \u003c logicalRowBytes) {\n        return {kInvalidParameters, 0};\n    }\n```",
+      "range": {
+        "startLine": 1002,
+        "startChar": 93,
+        "endLine": 1002,
+        "endChar": 94
+      },
+      "revId": "949a92b12c736e0efe944b20289bb9fcf50c6bca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
