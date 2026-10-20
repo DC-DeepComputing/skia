@@ -10,6 +10,8 @@
 
 #include "include/core/SkTypes.h"
 #include "include/private/SkOnlyStackAllocatable.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLLexer.h"
 #include "src/sksl/SkSLOperator.h"
@@ -319,9 +321,9 @@ private:
 
     SymbolTable* symbolTable();
 
-    Compiler& fCompiler;
+    const raw_ref<Compiler> fCompiler;
     ProgramSettings fSettings;
-    ErrorReporter* fErrorReporter;
+    raw_ptr<ErrorReporter> fErrorReporter;
     bool fEncounteredFatalError;
     ProgramKind fKind;
     std::unique_ptr<std::string> fText;
