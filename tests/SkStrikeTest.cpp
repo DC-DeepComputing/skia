@@ -11,7 +11,6 @@
 #include "include/core/SkDrawable.h"
 #include "include/core/SkExecutor.h"
 #include "include/core/SkFont.h"
-#include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
@@ -183,8 +182,6 @@ DEF_TEST(SkStrikeMultiThread, Reporter) {
 
 class SkGlyphTestPeer {
 public:
-    static constexpr uint16_t kMaxGlyphWidth = SkGlyph::kMaxGlyphWidth;
-
     static void SetGlyph(SkGlyph* glyph) {
         // Tweak the bounds to make them unique based on glyph id.
         const SkGlyphID uniquify = glyph->getGlyphID();
@@ -303,88 +300,62 @@ DEF_TEST(SkStrike_FlattenByType, reporter) {
     REPORTER_ASSERT(reporter, dstDrawableGlyph->drawable() != nullptr);
 }
 
-namespace {
-class NonDeterministicTypeface final : public TestEmptyTypeface {
-public:
-    enum class Mode {
-        kTooLargeOnSecondLoad,
-        kEmptyOnSecondLoad,
-        kDisjointOnSecondLoad,
+DEF_TEST(SkScalerContext_GetImageNonDeterministicBounds, reporter) {
+    class NonDeterministicTypeface final : public TestEmptyTypeface {
+    public:
+        explicit NonDeterministicTypeface(SkRect secondBounds) : fSecondBounds(secondBounds) {}
+
+    protected:
+        std::unique_ptr<SkScalerContext> onCreateScalerContext(
+                const SkScalerContextEffects& effects, const SkDescriptor* desc) const override {
+            class ScalerContext final : public SkScalerContext {
+            public:
+                ScalerContext(NonDeterministicTypeface& tf,
+                              const SkScalerContextEffects& effects,
+                              const SkDescriptor* desc,
+                              SkRect secondBounds)
+                        : SkScalerContext(tf, effects, desc), fSecondBounds(secondBounds) {}
+
+            protected:
+                GlyphMetrics generateMetrics(const SkGlyph& glyph, SkArenaAlloc*) override {
+                    GlyphMetrics mx(glyph.maskFormat());
+                    mx.neverRequestPath = true;
+                    mx.bounds =
+                            (fMetricsCallCount++ == 0) ? SkRect::MakeWH(10, 10) : fSecondBounds;
+                    return mx;
+                }
+
+                void generateImage(const SkGlyph& glyph, void* imageBuffer) override {
+                    // Intentionally use rowBytes() * height() like SkScalerContextFTUtils does;
+                    // if getImage() fails to reject an imageTooLarge() or empty unfiltered glyph,
+                    // this would overflow the small origGlyph buffer or dereference nullptr
+                    memset(imageBuffer, 0xAA, glyph.rowBytes() * glyph.height());
+                }
+
+                std::optional<GeneratedPath> generatePath(const SkGlyph&) override {
+                    return std::nullopt;
+                }
+
+                void generateFontMetrics(SkFontMetrics*) override {}
+
+            private:
+                const SkRect fSecondBounds;
+                int fMetricsCallCount = 0;
+            };
+
+            return std::make_unique<ScalerContext>(
+                    *const_cast<NonDeterministicTypeface*>(this), effects, desc, fSecondBounds);
+        }
+
+    private:
+        const SkRect fSecondBounds;
     };
 
-    explicit NonDeterministicTypeface(Mode mode) : fMode(mode) {}
-
-protected:
-    std::unique_ptr<SkScalerContext> onCreateScalerContext(
-            const SkScalerContextEffects& effects, const SkDescriptor* desc) const override {
-        class ScalerContext final : public SkScalerContext {
-        public:
-            ScalerContext(NonDeterministicTypeface& tf,
-                          const SkScalerContextEffects& effects,
-                          const SkDescriptor* desc,
-                          Mode mode)
-                    : SkScalerContext(tf, effects, desc), fMode(mode) {}
-
-        protected:
-            GlyphMetrics generateMetrics(const SkGlyph& glyph, SkArenaAlloc*) override {
-                GlyphMetrics mx(glyph.maskFormat());
-                mx.neverRequestPath = true;
-                if (fMetricsCallCount++ == 0) {
-                    mx.bounds = SkRect::MakeXYWH(0, 0, 10, 10);
-                } else {
-                    switch (fMode) {
-                        case Mode::kTooLargeOnSecondLoad:
-                            mx.bounds = SkRect::MakeXYWH(
-                                    0, 0, SkGlyphTestPeer::kMaxGlyphWidth + 10, 10);
-                            break;
-                        case Mode::kEmptyOnSecondLoad:
-                            mx.bounds = SkRect::MakeEmpty();
-                            break;
-                        case Mode::kDisjointOnSecondLoad:
-                            mx.bounds = SkRect::MakeXYWH(500, 500, 10, 10);
-                            break;
-                    }
-                }
-                return mx;
-            }
-
-            void generateImage(const SkGlyph& glyph, void* imageBuffer) override {
-                // Intentionally use rowBytes() * height() like SkScalerContextFTUtils does;
-                // if getImage() fails to reject an imageTooLarge() or empty unfiltered glyph,
-                // this would overflow the small origGlyph buffer or dereference nullptr.
-                memset(imageBuffer, 0xAA, glyph.rowBytes() * glyph.height());
-            }
-
-            std::optional<GeneratedPath> generatePath(const SkGlyph&) override {
-                return std::nullopt;
-            }
-
-            void generateFontMetrics(SkFontMetrics* metrics) override {
-                if (metrics) {
-                    sk_bzero(metrics, sizeof(*metrics));
-                }
-            }
-
-        private:
-            const Mode fMode;
-            int fMetricsCallCount = 0;
-        };
-
-        return std::make_unique<ScalerContext>(
-                *const_cast<NonDeterministicTypeface*>(this), effects, desc, fMode);
-    }
-
-private:
-    const Mode fMode;
-};
-}  // namespace
-
-DEF_TEST(SkScalerContext_GetImageNonDeterministicBounds, reporter) {
-    using Mode = NonDeterministicTypeface::Mode;
-    for (Mode mode : {Mode::kTooLargeOnSecondLoad,
-                      Mode::kEmptyOnSecondLoad,
-                      Mode::kDisjointOnSecondLoad}) {
-        sk_sp<SkTypeface> tf = sk_make_sp<NonDeterministicTypeface>(mode);
+    for (const SkRect& secondBounds : {SkRect::MakeWH(1 << 14, 10),
+                                       SkRect::MakeEmpty(),
+                                       SkRect::MakeXYWH(500, 0, 10, 10),
+                                       SkRect::MakeXYWH(0, 500, 10, 10)}) {
+        sk_sp<SkTypeface> tf = sk_make_sp<NonDeterministicTypeface>(secondBounds);
         SkFont font(tf, 16.0f);
         SkPaint paint;
         paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0f));
@@ -399,8 +370,7 @@ DEF_TEST(SkScalerContext_GetImageNonDeterministicBounds, reporter) {
         REPORTER_ASSERT(reporter, !glyph.isEmpty());
         REPORTER_ASSERT(reporter, !glyph.imageTooLarge());
 
-        bool set = glyph.setImage(&alloc, context.get());
-        REPORTER_ASSERT(reporter, set);
+        REPORTER_ASSERT(reporter, glyph.setImage(&alloc, context.get()));
         REPORTER_ASSERT(reporter, glyph.image() != nullptr);
 
         const uint8_t* bytes = static_cast<const uint8_t*>(glyph.image());
