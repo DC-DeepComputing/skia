@@ -34,6 +34,11 @@ public:
 
     ~SkJpegRustCodec() override;
 
+    void setRawInputComplete() {
+        fRawInputComplete = true;
+        fReader->set_raw_input_complete();
+    }
+
 protected:
     SkJpegRustCodec(SkEncodedInfo&&,
                     std::unique_ptr<SkStream>,
@@ -118,6 +123,7 @@ private:
     std::optional<DecodingState> fIncrementalDecodingState;
     std::vector<uint8_t> fScanlineBuffer;
     int fLastFullDecodeRows = -1;
+    bool fRawInputComplete = false;
 
     // Stored separately; SkCodec base gets nullptr. Keep this before fReader so
     // the stream outlives the Rust reader's stream adapter.

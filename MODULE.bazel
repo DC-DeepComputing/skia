@@ -170,6 +170,11 @@ crate.spec(
     package = "zune-jpeg",
     rev = "a1010cf1faa91980f011c32585b4f582caf10745",
 )
+crate.annotation(
+    crate = "zune-jpeg",
+    patch_args = ["-p1"],
+    patches = ["//bazel/external/zune-jpeg:raw-output-parity.patch"],
+)
 crate.spec(
     features = ["std"],
     package = "zune-core",
