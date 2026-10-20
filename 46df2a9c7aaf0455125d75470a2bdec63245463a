@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26a8617b_a7e2ff5a",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-20T13:27:49Z",
+      "side": 1,
+      "message": "100",
+      "range": {
+        "startLine": 43,
+        "startChar": 92,
+        "endLine": 43,
+        "endChar": 102
+      },
+      "revId": "46df2a9c7aaf0455125d75470a2bdec63245463a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

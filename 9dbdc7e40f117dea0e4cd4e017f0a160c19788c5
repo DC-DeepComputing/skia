@@ -52,6 +52,24 @@
       "parentUuid": "23b60de6_36de9aef",
       "revId": "9dbdc7e40f117dea0e4cd4e017f0a160c19788c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2577e11_8f666673",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-20T13:27:49Z",
+      "side": 1,
+      "message": "You\u0027re say that TaskList and UploadList are objects that internally are wrapping a TArary of Tasks right? The reason these lists are there own classes are because we have custom functions that we call on the lists that aren\u0027t part of the standard TArrayAPI (e.g. prepareResources). It has nothing to do with forward declaring an object.\n\nWe forward declare private objects in our public headers all the time and its fine (and intentional) that a client doesn\u0027t have the complete type for them.",
+      "parentUuid": "f95672b1_ce8d95ed",
+      "revId": "9dbdc7e40f117dea0e4cd4e017f0a160c19788c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
