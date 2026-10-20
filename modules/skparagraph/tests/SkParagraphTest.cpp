@@ -8188,6 +8188,58 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeConcurrently, reporter) {
     }
 }
 
+// Concurrent layout, findTypefaces, and defaultFallback on a shared FontCollection must not race
+// when FaceCache and VariationCache grow and rehash across threads
+UNIX_ONLY_TEST(SkParagraph_FontCollectionConcurrently, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    constexpr int kThreadCount = 100;
+    SkTypefaceID sharedTypefaceIDs[kThreadCount] = {};
+    std::thread threads[kThreadCount];
+    FontArguments sharedArgs(SkFontArguments().setCollectionIndex(0));
+
+    for (int i = 0; i < kThreadCount; ++i) {
+        threads[i] = std::thread([&, i] {
+            auto sharedFaces =
+                    fontCollection->findTypefaces({SkString("Roboto")}, SkFontStyle(), sharedArgs);
+            if (!sharedFaces.empty() && sharedFaces[0]) {
+                sharedTypefaceIDs[i] = sharedFaces[0]->uniqueID();
+            }
+
+            SkFontArguments skFontArgs = SkFontArguments().setCollectionIndex(i + 1);
+            FontArguments fontArgs(skFontArgs);
+
+            ParagraphStyle paragraphStyle;
+            TextStyle textStyle;
+            textStyle.setFontFamilies({SkString("Roboto")});
+            textStyle.setFontSize(14);
+            textStyle.setColor(SK_ColorBLACK);
+            textStyle.setFontArguments(skFontArgs);
+
+            ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+            builder.pushStyle(textStyle);
+            builder.addText(u"Concurrent layout text");
+            builder.pop();
+
+            auto paragraph = builder.Build();
+            paragraph->layout(300);
+            REPORTER_ASSERT(reporter, paragraph->getHeight() > 0);
+
+            fontCollection->findTypefaces({SkString("Roboto")}, SkFontStyle::Bold(), fontArgs);
+            fontCollection->defaultFallback(
+                    0x276F, {SkString("Roboto")}, SkFontStyle(), SkString("en"), fontArgs);
+        });
+    }
+    for (auto& thread : threads) {
+        thread.join();
+    }
+    REPORTER_ASSERT(reporter, sharedTypefaceIDs[0] != 0);
+    for (SkTypefaceID id : sharedTypefaceIDs) {
+        REPORTER_ASSERT(reporter, id == sharedTypefaceIDs[0]);
+    }
+}
+
 UNIX_ONLY_TEST(SkParagraph_TabSubstitution, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
