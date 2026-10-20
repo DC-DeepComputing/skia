@@ -135,7 +135,8 @@ config("skia_private") {
   defines += [ "SK_ENABLE_AVX512_OPTS" ]
 }
 
-# Any code that's linked into Skia-the-library should use this config via += skia_library_configs.
+# Any code that's linked into Skia-the-library should use this config via +=
+# skia_library_configs.
 config("skia_library") {
   visibility = [ "./*" ]
   defines = [ "SKIA_IMPLEMENTATION=1" ]
@@ -160,7 +161,8 @@ template("opts") {
       }
     }
   } else {
-    # If not enabled, a phony empty target that swallows all otherwise unused variables.
+    # If not enabled, a phony empty target that swallows all otherwise unused
+    # variables.
     skia_source_set(target_name) {
       visibility = [ ":*" ]
       check_includes = false
@@ -210,7 +212,8 @@ opts("lasx") {
   cflags = [ "-mlasx" ]
 }
 
-# Any feature of Skia that requires third-party code should be optional and use this template.
+# Any feature of Skia that requires third-party code should be optional and use
+# this template.
 template("optional") {
   if (invoker.enabled) {
     config(target_name + "_public") {
@@ -221,6 +224,7 @@ template("optional") {
         configs = invoker.public_configs
       }
     }
+
     skia_source_set(target_name) {
       visibility = [ ":*" ]
       check_includes = false
@@ -541,12 +545,14 @@ if (skia_lex) {
     deps = [ ":sksllex(//gn/toolchain:$host_toolchain)" ]
     sources = [ "src/sksl/lex/sksl.lex" ]
 
-    # GN insists its outputs should go somewhere underneath target_out_dir, so we trick it with a
-    # path that starts with target_out_dir and then uses ".." to back up into the src dir.
+    # GN insists its outputs should go somewhere underneath target_out_dir, so
+    # we trick it with a path that starts with target_out_dir and then uses ".."
+    # to back up into the src dir.
     outputs = [
       "$target_out_dir/" + rebase_path("src/sksl/SkSLLexer.h", target_out_dir),
-      # the script also modifies the corresponding .cpp file, but if we tell GN that it gets
-      # confused due to the same file being named by two different paths
+      # the script also modifies the corresponding .cpp file, but if we tell GN
+      # that it gets confused due to the same file being named by two different
+      # paths
     ]
     sksllex_path = "$root_out_dir/"
     if (host_toolchain != default_toolchain_name) {
@@ -642,8 +648,9 @@ if (skia_compile_modules) {
   foreach(src, minify_sksl_sources) {
     name = get_path_info(src, "name")
 
-    # GN insists its outputs should go somewhere underneath target_out_dir, so we trick it with a
-    # path that starts with target_out_dir and then uses ".." to back up into the src dir.
+    # GN insists its outputs should go somewhere underneath target_out_dir, so
+    # we trick it with a path that starts with target_out_dir and then uses ".."
+    # to back up into the src dir.
     minify_sksl_outputs += [ "$target_out_dir/" + rebase_path(
                                  "src/sksl/generated/$name.minified.sksl",
                                  target_out_dir) ]
@@ -714,6 +721,7 @@ if (skia_compile_modules) {
 } else {
   group("minify_sksl") {
   }
+
   group("minify_sksl_tests") {
   }
 }
@@ -777,7 +785,8 @@ if (skia_compile_sksl_tests) {
   # Build the test files using skslc.
   import("gn/sksl_tests.gni")
   template("compile_sksl") {
-    # Compile the passed-in `sources` into `outputs` using skslc, with the given language/settings.
+    # Compile the passed-in `sources` into `outputs` using skslc, with the given
+    # language/settings.
     action("compile_sksl_${target_name}") {
       script = "gn/compile_sksl_tests.py"
       deps = [
@@ -824,48 +833,56 @@ if (skia_compile_sksl_tests) {
       }
     }
   }
+
   compile_sksl("glsl_tests") {
     sources = sksl_glsl_tests_sources + sksl_glsl_settings_tests_sources
     outExtensions = [ ".glsl" ]
     lang = "--glsl"
     settings = "--settings"
   }
+
   compile_sksl("glsl_nosettings_tests") {
     sources = sksl_glsl_settings_tests_sources
     outExtensions = [ "StandaloneSettings.glsl" ]
     lang = "--glsl"
     settings = "--nosettings"
   }
+
   compile_sksl("metal_tests") {
     sources = sksl_metal_tests_sources
     outExtensions = [ ".metal" ]
     lang = "--metal"
     settings = "--settings"
   }
+
   compile_sksl("hlsl_tests") {
     sources = sksl_hlsl_tests_sources
     outExtensions = [ ".hlsl" ]
     lang = "--hlsl"
     settings = "--settings"
   }
+
   compile_sksl("skrp_tests") {
     sources = sksl_skrp_tests_sources
     outExtensions = [ ".skrp" ]
     lang = "--skrp"
     settings = "--settings"
   }
+
   compile_sksl("stage_tests") {
     sources = sksl_stage_tests_sources
     outExtensions = [ ".stage" ]
     lang = "--stage"
     settings = "--settings"
   }
+
   compile_sksl("spirv_tests") {
     sources = sksl_spirv_tests_sources
     outExtensions = [ ".asm.frag" ]
     lang = "--spirv"
     settings = "--settings"
   }
+
   compile_sksl("wgsl_tests") {
     sources = sksl_wgsl_tests_sources
     outExtensions = [ ".wgsl" ]
@@ -875,16 +892,22 @@ if (skia_compile_sksl_tests) {
 } else {
   group("compile_sksl_glsl_tests") {
   }
+
   group("compile_sksl_glsl_nosettings_tests") {
   }
+
   group("compile_sksl_metal_tests") {
   }
+
   group("compile_sksl_hlsl_tests") {
   }
+
   group("compile_sksl_skrp_tests") {
   }
+
   group("compile_sksl_spirv_tests") {
   }
+
   group("compile_sksl_wgsl_tests") {
   }
 }
@@ -1125,8 +1148,8 @@ optional("jpeg_decode") {
     "src/codec/SkJpegUtility.cpp",
   ]
   if (skia_use_jpeg_gainmaps) {
-    # Theoretically this doesn't need to be public, but this allows gn_to_bp.py to see it, and seems
-    # to align with other codec support. See b/265939413
+    # Theoretically this doesn't need to be public, but this allows gn_to_bp.py
+    # to see it, and seems to align with other codec support. See b/265939413
     public_defines += [ "SK_CODEC_DECODES_JPEG_GAINMAPS" ]
     deps += [
       ":jpeg_mpf",
@@ -1580,6 +1603,8 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
   if (skia_use_rust_jpeg_decode || skia_use_rust_jpeg_encode) {
     _rust_targets += [ "//experimental/rust_jpeg/ffi:ffi_rs" ]
     _rust_sources += [
+      "bazel/external/zune-jpeg/BUILD.bazel",
+      "bazel/external/zune-jpeg/raw-output-parity.patch",
       "experimental/rust_jpeg/ffi/BUILD.bazel",
       "experimental/rust_jpeg/ffi/FFI.rs",
     ]
@@ -1606,7 +1631,8 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
     args = _rust_targets + _rust_output_mappings + bazel_args
   }
 
-  # This group collects all Rust static libraries that should be linked together.
+  # This group collects all Rust static libraries that should be linked
+  # together.
   group("rust_ffi_libs") {
     deps = [ ":rust_all_ffi_bazel_build" ]
 
@@ -1685,6 +1711,7 @@ if (skia_use_fontations) {
       "$root_out_dir",
     ]
   }
+
   config("fontations_ffi_private_config") {
     include_dirs = [
       # This entry is needed so that `ffi.rs.cc` can resolve
@@ -1692,6 +1719,7 @@ if (skia_use_fontations) {
       ".",
     ]
   }
+
   skia_source_set("fontations_ffi") {
     deps = [
       ":rust_all_ffi_bazel_build",
@@ -1733,6 +1761,7 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
       ".",
     ]
   }
+
   skia_source_set("rust_png_cxx_bridge") {
     deps = [ ":rust_all_ffi_bazel_build" ]
     public = [ "${root_out_dir}/rust/png/FFI.rs.h" ]
@@ -1750,6 +1779,7 @@ if (skia_use_rust_icc) {
       ".",
     ]
   }
+
   skia_source_set("rust_icc_cxx_bridge") {
     deps = [ ":rust_all_ffi_bazel_build" ]
     public = [ "${root_out_dir}/rust/icc/FFI.rs.h" ]
@@ -1803,6 +1833,7 @@ if (skia_use_rust_exif) {
       ".",
     ]
   }
+
   skia_source_set("rust_exif_cxx_bridge") {
     deps = [ ":rust_all_ffi_bazel_build" ]
     public = [ "${root_out_dir}/rust/exif/FFI.rs.h" ]
@@ -1863,6 +1894,7 @@ if (skia_use_rust_bmp_decode) {
   config("rust_bmp_cxx_bridge_private_config") {
     include_dirs = [ "." ]
   }
+
   skia_source_set("rust_bmp_cxx_bridge") {
     deps = [ ":rust_all_ffi_bazel_build" ]
     public = [ "${root_out_dir}/rust/bmp/FFI.rs.h" ]
@@ -1890,9 +1922,11 @@ if (skia_use_rust_ico_decode) {
   config("rust_ico_cxx_bridge_public_config") {
     include_dirs = [ "$root_out_dir" ]
   }
+
   config("rust_ico_cxx_bridge_private_config") {
     include_dirs = [ "." ]
   }
+
   skia_source_set("rust_ico_cxx_bridge") {
     deps = [ ":rust_all_ffi_bazel_build" ]
     public = [ "${root_out_dir}/experimental/rust_ico/ffi/FFI.rs.h" ]
@@ -1926,9 +1960,11 @@ if (skia_use_rust_jpeg_decode || skia_use_rust_jpeg_encode) {
   config("rust_jpeg_cxx_bridge_public_config") {
     include_dirs = [ "$root_out_dir" ]
   }
+
   config("rust_jpeg_cxx_bridge_private_config") {
     include_dirs = [ "." ]
   }
+
   skia_source_set("rust_jpeg_cxx_bridge") {
     deps = [ ":rust_all_ffi_bazel_build" ]
     public = [ "${root_out_dir}/experimental/rust_jpeg/ffi/FFI.rs.h" ]
@@ -2034,8 +2070,9 @@ if (skia_enable_ganesh && skia_generate_workarounds) {
 
     inputs = [ "src/gpu/gpu_workaround_list.txt" ]
 
-    # GN insists its outputs should go somewhere underneath root_out_dir, so we trick it with a
-    # path that starts with root_out_dir and then uses ".." to back up into the src dir.
+    # GN insists its outputs should go somewhere underneath root_out_dir, so we
+    # trick it with a path that starts with root_out_dir and then uses ".." to
+    # back up into the src dir.
     output_file =
         rebase_path("include/gpu/ganesh/GrDriverBugWorkaroundsAutogen.h",
                     root_out_dir)
@@ -2062,7 +2099,8 @@ skia_source_set("core") {
 
   public_deps = [ "//src/partition_alloc:raw_ptr" ]
 
-  # These deps don't belong to :core, but they are currently needed to support (de)serialization.
+  # These deps don't belong to :core, but they are currently needed to support
+  # (de)serialization.
   deps = [
     ":fontmgr_mac_ct",
     ":fontmgr_win",
@@ -2345,6 +2383,7 @@ skia_source_set("public") {
 config("skia.h_config") {
   include_dirs = [ "$target_gen_dir" ]
 }
+
 action("skia.h") {
   public_configs = [ ":skia.h_config" ]
   skia_h = "$target_gen_dir/skia.h"
@@ -2440,6 +2479,7 @@ if (skia_enable_tools) {
         defines = invoker.public_defines
       }
     }
+
     skia_source_set(target_name) {
       forward_variables_from(invoker, "*", [])
       check_includes = false
@@ -2503,6 +2543,7 @@ if (skia_enable_tools) {
         }
       } else {
         _executable = target_name
+
         skia_executable(_executable) {
           check_includes = false
           output_dir = root_build_dir
@@ -2757,6 +2798,7 @@ if (skia_enable_tools) {
       public_deps = [ ":gpu_tool_utils" ]
     }
   }
+
   test_lib("common_flags_images") {
     sources = [ "tools/flags/CommonFlagsImages.cpp" ]
     deps = [ ":flags" ]
@@ -2888,6 +2930,7 @@ if (skia_enable_tools) {
   }
 
   import("gn/gm.gni")
+
   test_lib("gm") {
     sources = gm_sources
     if (skia_use_gl) {
@@ -2961,6 +3004,7 @@ if (skia_enable_tools) {
 
   if (skia_enable_graphite || skia_enable_ganesh) {
     import("gn/tests.gni")
+
     test_lib("tests") {
       sources = tests_sources + pathops_tests_sources
       frameworks = []
@@ -3050,6 +3094,7 @@ if (skia_enable_tools) {
 
   if (skia_enable_ganesh) {
     import("gn/bench.gni")
+
     test_lib("bench") {
       sources = bench_sources
       if (skia_enable_graphite) {
@@ -3079,12 +3124,15 @@ if (skia_enable_tools) {
       test_app("skottie_tool") {
         deps = [ "modules/skottie:tool" ]
       }
+
       test_app("skottie_tool_cpu") {
         deps = [ "modules/skottie:tool_cpu" ]
       }
+
       test_app("skottie_tool_gpu") {
         deps = [ "modules/skottie:tool_gpu" ]
       }
+
       test_app("skottie_preshape_tool") {
         deps = [ "modules/skottie:preshape_tool" ]
       }
@@ -3113,6 +3161,7 @@ if (skia_enable_tools) {
         sources = [ "tools/convert-to-nia.cpp" ]
         deps = [ ":skia" ]
       }
+
       test_app("imgcvt") {
         sources = [ "tools/imgcvt.cpp" ]
         configs = [ ":use_skia_vulkan_headers" ]
@@ -3163,6 +3212,7 @@ if (skia_enable_tools) {
         }
       }
     }
+
     test_app("filterfuzz") {
       sources = [ "experimental/filterfuzz/filterfuzz.cpp" ]
       deps = [
@@ -3578,8 +3628,8 @@ if (skia_enable_tools) {
     }
   }
 
-  # viewer requires at least one of Ganesh or Graphite. Raster is presented via Ganesh and
-  # therefore cannot stand alone.
+  # viewer requires at least one of Ganesh or Graphite. Raster is presented via
+  # Ganesh and therefore cannot stand alone.
   if (skia_enable_ganesh || skia_enable_graphite) {
     test_app("viewer") {
       is_shared_library = is_android
@@ -3790,6 +3840,7 @@ if (skia_enable_tools) {
 
 if (skia_build_fuzzers) {
   assert(is_clang)
+
   template("libfuzzer_app") {
     skia_executable(target_name) {
       output_dir = root_build_dir
