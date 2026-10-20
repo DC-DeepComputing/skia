@@ -9,6 +9,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkScopeExit.h"
@@ -3163,6 +3164,8 @@ void MetalCodeGenerator::writeHeader() {
 void MetalCodeGenerator::writeSampler2DPolyfill() {
     class : public GlobalStructVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         void visitSampler(const Type&, std::string_view) override {
             if (fWrotePolyfill) {
                 return;
@@ -3370,6 +3373,8 @@ void MetalCodeGenerator::writeStructDefinitions() {
 void MetalCodeGenerator::writeConstantVariables() {
     class : public GlobalStructVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         void visitConstantVariable(const VarDeclaration& decl) override {
             fCodeGen->write("constant ");
             fCodeGen->writeVarDeclaration(decl);
@@ -3422,6 +3427,8 @@ void MetalCodeGenerator::visitGlobalStruct(GlobalStructVisitor* visitor) {
 void MetalCodeGenerator::writeGlobalStruct() {
     class : public GlobalStructVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         void visitInterfaceBlock(const InterfaceBlock& block,
                                  std::string_view blockName) override {
             this->addElement();
@@ -3486,6 +3493,8 @@ void MetalCodeGenerator::writeGlobalStruct() {
 void MetalCodeGenerator::writeGlobalInit() {
     class : public GlobalStructVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         void visitInterfaceBlock(const InterfaceBlock& blockType,
                                  std::string_view blockName) override {
             this->addElement();
@@ -3559,6 +3568,8 @@ void MetalCodeGenerator::visitThreadgroupStruct(ThreadgroupStructVisitor* visito
 void MetalCodeGenerator::writeThreadgroupStruct() {
     class : public ThreadgroupStructVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         void visitNonconstantVariable(const Variable& var) override {
             this->addElement();
             fCodeGen->write("    ");
@@ -3593,6 +3604,8 @@ void MetalCodeGenerator::writeThreadgroupStruct() {
 void MetalCodeGenerator::writeThreadgroupInit() {
     class : public ThreadgroupStructVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         void visitNonconstantVariable(const Variable& var) override {
             this->addElement();
             fCodeGen->write("{}");
