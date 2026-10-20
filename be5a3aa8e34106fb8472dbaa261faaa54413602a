@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b3e6393_e994e267",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-20T16:21:43Z",
+      "side": 1,
+      "message": "Thanks! Yes, I think that the file broken in that build needs to include SkData directly now (I removed some #includes in SkPngEncoder).",
+      "revId": "be5a3aa8e34106fb8472dbaa261faaa54413602a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
