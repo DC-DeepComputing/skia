@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d0e04a_72ee2d7d",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-20T20:05:41Z",
+      "side": 1,
+      "message": "Should we add the thread safe cache and the GrProxyCache as flushCBObjects and consolidate this?",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 86
+      },
+      "revId": "24dc0634add7a502c1e54733b839f1cf6126ab39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
