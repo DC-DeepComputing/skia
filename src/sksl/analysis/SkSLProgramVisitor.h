@@ -8,6 +8,8 @@
 #ifndef SkSLProgramVisitor_DEFINED
 #define SkSLProgramVisitor_DEFINED
 
+#include "include/private/SkOnlyStackAllocatable.h"
+
 #include <memory>
 
 namespace SkSL {
@@ -34,6 +36,8 @@ class ProgramElement;
 template <typename T>
 class TProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     virtual ~TProgramVisitor() = default;
 
 protected:

@@ -9,6 +9,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkSafeMath.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -47,6 +48,8 @@ static void append_rtadjust_fixup_to_vertex_main(const Context& context,
     if (const SkSL::Symbol* rtAdjust = context.fSymbolTable->find(Compiler::RTADJUST_NAME)) {
         // ...append a line to the end of the function body which fixes up sk_Position.
         struct AppendRTAdjustFixupHelper : public IRHelpers {
+            SK_ONLY_STACK_ALLOCATABLE;
+
             AppendRTAdjustFixupHelper(const Context& ctx, const SkSL::Symbol* rtAdjust)
                     : IRHelpers(ctx)
                     , fRTAdjust(rtAdjust) {
