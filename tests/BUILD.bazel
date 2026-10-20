@@ -148,6 +148,7 @@ filegroup(
         # SK_DEBUG is not defined but assert() is still enabled, causing to_half(NaN) to crash.
         # "Float16Test.cpp",
         "FloatingPointTest.cpp",
+        "FontDescriptorTest.cpp",
         "FontHostStreamTest.cpp",
         "FontHostTest.cpp",
         "FontMgrFlags.cpp",

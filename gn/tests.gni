@@ -86,6 +86,7 @@ tests_sources = [
   "$_tests/FlattenableNameToFactory.cpp",
   "$_tests/Float16Test.cpp",
   "$_tests/FloatingPointTest.cpp",
+  "$_tests/FontDescriptorTest.cpp",
   "$_tests/FontHostStreamTest.cpp",
   "$_tests/FontHostTest.cpp",
   "$_tests/FontMgrFlags.cpp",

@@ -292,7 +292,7 @@ bool SkFontDescriptor::serialize(SkWStream* stream) const {
         std::unique_ptr<SkStreamAsset> fontStream = fStream->duplicate();
         size_t length = fontStream->getLength();
         if (!stream->writePackedUInt(length)) { return false; }
-        if (!stream->writeStream(fontStream.get(), length)) { return false; }
+        if (!SkStreamPriv::Copy(stream, fontStream.get())) { return false; }
     } else {
         if (!stream->writePackedUInt(0)) { return false; }
     }
