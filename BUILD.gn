@@ -1580,6 +1580,8 @@ if (skia_use_fontations || skia_use_rust_png_decode ||
   if (skia_use_rust_jpeg_decode || skia_use_rust_jpeg_encode) {
     _rust_targets += [ "//experimental/rust_jpeg/ffi:ffi_rs" ]
     _rust_sources += [
+      "bazel/external/zune-jpeg/BUILD.bazel",
+      "bazel/external/zune-jpeg/raw-output-parity.patch",
       "experimental/rust_jpeg/ffi/BUILD.bazel",
       "experimental/rust_jpeg/ffi/FFI.rs",
     ]
