@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9969dc0_df29e680",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-20T17:55:52Z",
+      "side": 1,
+      "message": "Thanks for the updates in PS 2! `SkLRUCache` with 4096 entries and removing `OneLineShaper::fFallbackFonts` looks great.\n\nOne small addition for thread safety: we are currently landing https://skia-review.googlesource.com/c/skia/+/1400636 (`[skparagraph] Make FontCollection thread-safe`), which guards `FaceCache` and `VariationCache` with an internal `SkMutex` inside each pimpl struct (since engine embedders like Flutter\u0027s `ImpellerTypographyContext` share a single `FontCollection` across worker threads).\n\nBecause `SkLRUCache::find()` relinks the entry to the front of its doubly-linked list even on a cache hit, could you add an `SkMutex fMutex;` inside `FontCollection::FallbackCache` with small `find` / `insert` / `reset` helpers (similar to `ParagraphCache`)? That way we keep the `SkLRUCache` eviction behavior and make `FallbackCache` thread-safe out of the box.",
+      "revId": "3d97e6d08f0f4f4f8b6f84efb33760e79201467d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
