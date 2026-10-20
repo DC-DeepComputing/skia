@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef4cbae5_75f8f4d4",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-20T17:08:10Z",
+      "side": 1,
+      "message": "I think if you drop the inner whitespace, alignment, we should be able to keep the comments on the same line?",
+      "parentUuid": "ac979442_549e297c",
+      "range": {
+        "startLine": 539,
+        "startChar": 8,
+        "endLine": 547,
+        "endChar": 32
+      },
+      "revId": "42c6ea2baa4ff3e41fb3a28909b4a44ffa25d978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2db56d03_194d9654",
