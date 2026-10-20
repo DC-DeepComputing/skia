@@ -16,6 +16,24 @@
       "message": "Note: `raw_ptr` are always initialized.\n\nSo here, there are no real need to differentiate the two. I chose to keep it as it could be an hint around whether we are expecting an initialization in the constructor or not.\n\n---\n\nIf needed for performance outside of Chrome, we can import `kAllowUninitialized` trait to Skia if we want to explicitely support non initialized pointers outside of Chrome.\nhttps://source.chromium.org/chromium/chromium/src/+/main:base/allocator/partition_allocator/src/partition_alloc/pointers/raw_ptr.h;l\u003d1142-1153?q\u003dkAllowUninitialized\u0026ss\u003dchromium",
       "revId": "1e1ea82531a13f946800fdf2129dcd22e34e2269",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d6e52ba_940e9165",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-20T14:44:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "312e692a_3f212c69",
+      "revId": "1e1ea82531a13f946800fdf2129dcd22e34e2269",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
