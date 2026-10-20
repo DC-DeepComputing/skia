@@ -5,6 +5,7 @@
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#include "src/core/SkLRUCache.h"
 #include "src/core/SkTHash.h"
 
 namespace {
@@ -75,9 +76,54 @@ struct FontCollection::VariationCache {
     skia_private::THashMap<Key, sk_sp<SkTypeface>, Key::Hasher> fTypefaces;
 };
 
+// System fallback results for a codepoint (or an emoji start), shared by all paragraphs.
+// Each miss is a full system query (CoreText, fontconfig), so misses are cached too.
+struct FontCollection::FallbackCache {
+    // Keeps the hit rate for chat-like text with 2000 different ideographs and emoji.
+    // An entry uses about 100 bytes, so a full cache uses about 400 KB.
+    static constexpr int kMaxEntries = 4096;
+
+    struct Key {
+        Key(SkUnichar unicode,
+            bool emoji,
+            const std::vector<SkString>& families,
+            SkFontStyle style,
+            const SkString& locale)
+                : fUnicode(unicode), fEmoji(emoji), fFontStyle(style), fLocale(locale) {
+            if (!families.empty()) {
+                fFamily = families[0];
+            }
+        }
+
+        SkUnichar fUnicode;
+        bool fEmoji;
+        // Only the first family is passed to the font manager as a hint
+        std::optional<SkString> fFamily;
+        SkFontStyle fFontStyle;
+        SkString fLocale;
+
+        bool operator==(const Key& other) const {
+            return fUnicode == other.fUnicode && fEmoji == other.fEmoji &&
+                   fFamily == other.fFamily && fFontStyle == other.fFontStyle &&
+                   fLocale == other.fLocale;
+        }
+
+        struct Hasher {
+            uint32_t operator()(const Key& key) const {
+                return SkGoodHash()(key.fUnicode) ^ SkGoodHash()(key.fEmoji) ^
+                       (key.fFamily ? SkGoodHash()(*key.fFamily) : 0) ^
+                       SkGoodHash()(key.fFontStyle) ^ SkGoodHash()(key.fLocale);
+            }
+        };
+    };
+
+    SkLRUCache<Key, sk_sp<SkTypeface>, Key::Hasher> fTypefaces{kMaxEntries};
+};
+
 FontCollection::FontCollection()
         : fFaceCache(std::make_unique<FaceCache>())
         , fVariationCache(std::make_unique<VariationCache>())
+        , fFallbackCache(std::make_unique<FallbackCache>())
         , fEnableFontFallback(true)
         , fDefaultFamilyNames({SkString(DEFAULT_FONT_FAMILY)}) { }
 
@@ -87,30 +133,36 @@ size_t FontCollection::getFontManagersCount() const { return this->getFontManage
 
 void FontCollection::setAssetFontManager(sk_sp<SkFontMgr> font_manager) {
     fAssetFontManager = std::move(font_manager);
+    fFallbackCache->fTypefaces.reset();
 }
 
 void FontCollection::setDynamicFontManager(sk_sp<SkFontMgr> font_manager) {
     fDynamicFontManager = std::move(font_manager);
+    fFallbackCache->fTypefaces.reset();
 }
 
 void FontCollection::setTestFontManager(sk_sp<SkFontMgr> font_manager) {
     fTestFontManager = std::move(font_manager);
+    fFallbackCache->fTypefaces.reset();
 }
 
 void FontCollection::setDefaultFontManager(sk_sp<SkFontMgr> fontManager,
                                            const char defaultFamilyName[]) {
     fDefaultFontManager = std::move(fontManager);
+    fFallbackCache->fTypefaces.reset();
     fDefaultFamilyNames.emplace_back(defaultFamilyName);
 }
 
 void FontCollection::setDefaultFontManager(sk_sp<SkFontMgr> fontManager,
                                            const std::vector<SkString>& defaultFamilyNames) {
     fDefaultFontManager = std::move(fontManager);
+    fFallbackCache->fTypefaces.reset();
     fDefaultFamilyNames = defaultFamilyNames;
 }
 
 void FontCollection::setDefaultFontManager(sk_sp<SkFontMgr> fontManager) {
     fDefaultFontManager = std::move(fontManager);
+    fFallbackCache->fTypefaces.reset();
 }
 
 // Return the available font managers in the order they should be queried.
@@ -204,38 +256,48 @@ sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
                                                   SkFontStyle fontStyle,
                                                   const SkString& locale,
                                                   const std::optional<FontArguments>& fontArgs) {
-
-    for (const auto& manager : this->getFontManagerOrder()) {
-        std::vector<const char*> bcp47;
-        if (!locale.isEmpty()) {
-            bcp47.push_back(locale.c_str());
-        }
-        const char* familyName = families.empty() ? nullptr : families[0].c_str();
-        sk_sp<SkTypeface> typeface(manager->matchFamilyStyleCharacter(
-            familyName, fontStyle, bcp47.data(), bcp47.size(), unicode));
-
-        if (typeface != nullptr) {
-            if (fontArgs) {
-                typeface = cloneTypeface(typeface, fontArgs.value());
+    FallbackCache::Key key(unicode, false, families, fontStyle, locale);
+    sk_sp<SkTypeface> typeface;
+    if (auto found = fFallbackCache->fTypefaces.find(key)) {
+        typeface = *found;
+    } else {
+        for (const auto& manager : this->getFontManagerOrder()) {
+            std::vector<const char*> bcp47;
+            if (!locale.isEmpty()) {
+                bcp47.push_back(locale.c_str());
             }
-            return typeface;
+            const char* familyName = families.empty() ? nullptr : families[0].c_str();
+            typeface = manager->matchFamilyStyleCharacter(
+                    familyName, fontStyle, bcp47.data(), bcp47.size(), unicode);
+            if (typeface != nullptr) {
+                break;
+            }
         }
+        fFallbackCache->fTypefaces.insert(std::move(key), typeface);
     }
-    return nullptr;
+
+    if (typeface != nullptr && fontArgs) {
+        typeface = cloneTypeface(typeface, fontArgs.value());
+    }
+    return typeface;
 }
 
 // Find ANY font in available font managers that resolves this emojiStart
 sk_sp<SkTypeface> FontCollection::defaultEmojiFallback(SkUnichar emojiStart,
                                                        SkFontStyle fontStyle,
                                                        const SkString& locale) {
+    FallbackCache::Key key(emojiStart, true, {}, fontStyle, locale);
+    if (auto found = fFallbackCache->fTypefaces.find(key)) {
+        return *found;
+    }
 
+    sk_sp<SkTypeface> typeface;
     for (const auto& manager : this->getFontManagerOrder()) {
         std::vector<const char*> bcp47;
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-        sk_sp<SkTypeface> emojiTypeface =
-            fDefaultFontManager->matchFamilyStyle(kColorEmojiFontMac, SkFontStyle());
-        if (emojiTypeface != nullptr) {
-            return emojiTypeface;
+        typeface = fDefaultFontManager->matchFamilyStyle(kColorEmojiFontMac, SkFontStyle());
+        if (typeface != nullptr) {
+            break;
         }
 #else
           bcp47.push_back(kColorEmojiLocale);
@@ -246,14 +308,15 @@ sk_sp<SkTypeface> FontCollection::defaultEmojiFallback(SkUnichar emojiStart,
 
         // Not really ideal since the first codepoint may not be the best one
         // but we start from a good colored emoji at least
-        sk_sp<SkTypeface> typeface(manager->matchFamilyStyleCharacter(
-            nullptr, fontStyle, bcp47.data(), bcp47.size(), emojiStart));
+        typeface = manager->matchFamilyStyleCharacter(
+                nullptr, fontStyle, bcp47.data(), bcp47.size(), emojiStart);
         if (typeface != nullptr) {
             // ... and stop as soon as we find something in hope it will work for all of them
-            return typeface;
+            break;
         }
     }
-    return nullptr;
+    fFallbackCache->fTypefaces.insert(std::move(key), typeface);
+    return typeface;
 }
 
 sk_sp<SkTypeface> FontCollection::defaultFallback() {
@@ -282,13 +345,21 @@ sk_sp<SkTypeface> FontCollection::cloneTypeface(const sk_sp<SkTypeface>& typefac
     return clone;
 }
 
-void FontCollection::disableFontFallback() { fEnableFontFallback = false; }
-void FontCollection::enableFontFallback() { fEnableFontFallback = true; }
+void FontCollection::disableFontFallback() {
+    fEnableFontFallback = false;
+    fFallbackCache->fTypefaces.reset();
+}
+
+void FontCollection::enableFontFallback() {
+    fEnableFontFallback = true;
+    fFallbackCache->fTypefaces.reset();
+}
 
 void FontCollection::clearCaches() {
     fParagraphCache.reset();
     fFaceCache->fTypefaces.reset();
     fVariationCache->fTypefaces.reset();
+    fFallbackCache->fTypefaces.reset();
     SkShapers::HB::PurgeCaches();
 }
 
