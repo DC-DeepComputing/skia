@@ -961,6 +961,45 @@ DEF_TEST(RustJpegCodec_ProgressiveRawYUVRetry, r) {
     }
 }
 
+DEF_TEST(RustJpegCodec_FinalRawInputWithoutEOI, r) {
+    sk_sp<SkData> data = GetResourceAsData("images/four-colors-limited-range-420-8bpc.jpg");
+    REPORTER_ASSERT(r, data && data->size() > 2);
+    if (!data || data->size() <= 2) {
+        return;
+    }
+    const auto* bytes = static_cast<const uint8_t*>(data->data());
+    REPORTER_ASSERT(r, bytes[data->size() - 2] == 0xFF &&
+                       bytes[data->size() - 1] == 0xD9);
+    sk_sp<SkData> truncated = SkData::MakeSubset(data.get(), 0, data->size() - 2);
+    auto codec = SkJpegRustDecoder::Decode(truncated, nullptr);
+    auto reference = SkJpegRustDecoder::Decode(data, nullptr);
+    REPORTER_ASSERT(r, codec && reference);
+    if (!codec || !reference) {
+        return;
+    }
+    SkYUVAPixmapInfo info;
+    REPORTER_ASSERT(
+            r, codec->queryYUVAInfo(SkYUVAPixmapInfo::SupportedDataTypes::All(), &info));
+    SkYUVAPixmaps actual = SkYUVAPixmaps::Allocate(info);
+    SkYUVAPixmaps expected = SkYUVAPixmaps::Allocate(info);
+    REPORTER_ASSERT(r, actual.isValid() && expected.isValid());
+    if (!actual.isValid() || !expected.isValid()) {
+        return;
+    }
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, reference->getYUVAPlanes(expected));
+    for (int attempt = 0; attempt < 2; ++attempt) {
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, codec->getYUVAPlanes(actual));
+        for (int plane = 0; plane < actual.numPlanes(); ++plane) {
+            for (int row = 0; row < actual.plane(plane).height(); ++row) {
+                REPORTER_ASSERT(
+                        r, !memcmp(actual.plane(plane).addr(0, row),
+                                   expected.plane(plane).addr(0, row),
+                                   static_cast<size_t>(actual.plane(plane).width())));
+            }
+        }
+    }
+}
+
 DEF_TEST(RustJpegCodec_RawDirectPlaneContracts, r) {
     constexpr uint8_t kSentinel = 0xCD;
     sk_sp<SkData> data = GetResourceAsData("images/color_wheel.jpg");

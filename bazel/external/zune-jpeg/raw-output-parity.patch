@@ -1,0 +1,894 @@
+diff --git a/src/decoder.rs b/src/decoder.rs
+index ef92530..43cdd7d 100644
+--- a/src/decoder.rs
++++ b/src/decoder.rs
+@@ -597,6 +597,7 @@ struct RawPullState {
+     entropy_tables:           Option<Box<EntropyTables>>,
+     layout:                   Option<[PlaneInfo; MAX_COMPONENTS]>,
+     rows_per_stripe:          [usize; MAX_COMPONENTS],
++    input_complete:          bool,
+     buffered_source_complete: bool
+ }
+ 
+@@ -652,6 +653,7 @@ impl Default for RawPullState {
+             entropy_tables:           None,
+             layout:                   None,
+             rows_per_stripe:          [0; MAX_COMPONENTS],
++            input_complete:          false,
+             buffered_source_complete: false
+         }
+     }
+@@ -1112,6 +1114,16 @@ impl<T> RawDecodeSession<'_, T>
+ where
+     T: ZByteReaderTrait
+ {
++    /// Signal that no more compressed bytes will be provided for this sequence.
++    ///
++    /// Non-strict decoding may then render best-effort output at the final EOF,
++    /// including available progressive coefficients. Strict decoding continues
++    /// to reject truncated input. Without this signal, EOF remains resumable
++    /// and does not commit an incomplete raw stripe.
++    pub fn set_input_complete(&mut self) {
++        self.decoder.raw_pull_state.input_complete = true;
++    }
++
+     /// Number of components in SOF declaration order.
+     ///
+     /// Returns `None` when headers have not been decoded yet.
+@@ -1283,7 +1295,7 @@ where
+         let mut output = McuDecodeOutput::RawPlanes(raw_planes);
+ 
+         if let Err(error) = self.decode_pull_phase(&mut output, &layout, n) {
+-            if error.is_recoverable_eof() {
++            if error.is_recoverable_eof() && !self.decoder.raw_pull_state.input_complete {
+                 return Ok(RawImcuRowStatus::NeedMoreInput);
+             }
+             return Err(error);
+@@ -2251,7 +2263,8 @@ where
+     /// Strict mode rejects truncated scans, while incremental mode uses the
+     /// error to signal that the caller should provide more input.
+     pub(crate) fn scan_eof_is_error(&self) -> bool {
+-        self.options.strict_mode() || self.incremental_mode
++        self.options.strict_mode()
++            || (self.incremental_mode && !self.raw_pull_state.input_complete)
+     }
+ 
+     /// Return the number of output scanlines known to be stable after the
+@@ -3551,7 +3564,9 @@ where
+     }
+ 
+     fn abort_raw_pull_sequence(&mut self) {
+-        if self.raw_pull_state.owner == RawPullOwner::None {
++        if self.raw_pull_state.owner == RawPullOwner::None
++            && !self.raw_pull_state.input_complete
++        {
+             return;
+         }
+         self.raw_pull_state = RawPullState::default();
+@@ -3894,6 +3909,96 @@ mod planar_layout_helpers {
+     use super::{round_up_pow2, JpegDecoder, RawImcuRowStatus, ScanlineReadStatus, ScanlineStatus};
+     use crate::idct::{choose_idct_1x1_func, choose_idct_4x4_func, choose_idct_func};
+ 
++    fn dc_only_progressive_jpeg(with_eoi: bool) -> Vec<u8> {
++        let mut data = vec![0xFF, 0xD8, 0xFF, 0xDB, 0, 67, 0];
++        data.extend_from_slice(&[1; 64]);
++        data.extend_from_slice(&[
++            0xFF, 0xC2, 0, 17, 8, 0, 8, 0, 8, 3,
++            1, 0x11, 0, 2, 0x11, 0, 3, 0x11, 0,
++            0xFF, 0xC4, 0, 20, 0,
++        ]);
++        data.extend_from_slice(&[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
++        data.push(0);
++        for component in 1..=3 {
++            data.extend_from_slice(&[
++                0xFF, 0xDA, 0, 8, 1, component, 0, 0, 0, 0, 0x7F,
++            ]);
++        }
++        if with_eoi {
++            data.extend_from_slice(&[0xFF, 0xD9]);
++        }
++        data
++    }
++
++    #[test]
++    fn final_raw_input_renders_truncated_progressive_planes() {
++        let data = dc_only_progressive_jpeg(false);
++        let mut decoder = JpegDecoder::new_with_options(
++            ZCursor::new(&data),
++            DecoderOptions::default().set_strict_mode(false),
++        );
++        decoder.decode_headers().unwrap();
++        let mut raw = decoder.raw_output();
++        let mut y = [0xA5; 8 * 11];
++        let mut u = [0xA5; 8 * 11];
++        let mut v = [0xA5; 8 * 11];
++        assert_eq!(
++            raw.decode_next_imcu_row(&mut [&mut y, &mut u, &mut v], &[11; 3]).unwrap(),
++            RawImcuRowStatus::NeedMoreInput,
++        );
++        assert!(y.iter().chain(u.iter()).chain(v.iter()).all(|&value| value == 0xA5));
++
++        raw.set_input_complete();
++        assert!(matches!(
++            raw.decode_next_imcu_row(&mut [&mut y, &mut u, &mut v], &[11; 3]).unwrap(),
++            RawImcuRowStatus::RowReady { rows_written: [8, 8, 8, 0] },
++        ));
++        for plane in [&y, &u, &v] {
++            for row in plane.chunks_exact(11) {
++                assert_eq!(&row[..8], &[128; 8]);
++                assert_eq!(&row[8..], &[0xA5; 3]);
++            }
++        }
++        assert_eq!(
++            raw.decode_next_imcu_row(&mut [&mut [], &mut [], &mut []], &[11; 3]).unwrap(),
++            RawImcuRowStatus::Complete,
++        );
++    }
++
++    #[test]
++    fn final_raw_input_keeps_strict_eof_an_error() {
++        let data = dc_only_progressive_jpeg(false);
++        let mut decoder = JpegDecoder::new_with_options(
++            ZCursor::new(&data),
++            DecoderOptions::default().set_strict_mode(true),
++        );
++        decoder.decode_headers().unwrap();
++        let mut raw = decoder.raw_output();
++        raw.set_input_complete();
++        let mut y = [0xA5; 64];
++        let mut u = [0xA5; 64];
++        let mut v = [0xA5; 64];
++        assert!(raw
++            .decode_next_imcu_row(&mut [&mut y, &mut u, &mut v], &[8; 3])
++            .unwrap_err()
++            .is_recoverable_eof());
++        assert!(y.iter().chain(u.iter()).chain(v.iter()).all(|&value| value == 0xA5));
++    }
++
++    #[test]
++    fn final_raw_input_does_not_leak_to_pixel_output() {
++        let data = dc_only_progressive_jpeg(false);
++        let mut decoder = JpegDecoder::new_with_options(
++            ZCursor::new(&data),
++            DecoderOptions::default().set_strict_mode(false),
++        );
++        decoder.decode_headers().unwrap();
++        decoder.set_incremental_mode(true);
++        decoder.raw_output().set_input_complete();
++        let mut output = vec![0; decoder.output_buffer_size().unwrap()];
++        assert!(decoder.decode_into(&mut output).unwrap_err().is_recoverable_eof());
++    }
++
+     #[test]
+     fn div_ceil_basic() {
+         assert_eq!(0usize.div_ceil(8), 0);
+diff --git a/src/idct.rs b/src/idct.rs
+index 7cdfff6..7cfe2f6 100644
+--- a/src/idct.rs
++++ b/src/idct.rs
+@@ -39,6 +39,14 @@ use zune_core::options::DecoderOptions;
+ use crate::decoder::IDCTPtr;
+ use crate::idct::scalar::{idct_int, idct_int_1x1};
+ 
++// Match libjpeg's JDCT_ISLOW: 13-bit constants and two fractional bits
++// between passes. Round once per pass; the final bias also level-shifts by 128.
++const CONST_BITS: i32 = 13;
++const PASS1_SHIFT: i32 = CONST_BITS - 2;
++const PASS1_ROUND: i32 = 1 << (PASS1_SHIFT - 1);
++const OUTPUT_SHIFT: i32 = CONST_BITS + 2 + 3;
++const SCALE_BITS: i32 = (1 << (OUTPUT_SHIFT - 1)) + (128 << OUTPUT_SHIFT);
++
+ #[cfg(feature = "x86")]
+ pub mod avx2;
+ #[cfg(feature = "neon")]
+@@ -109,6 +117,145 @@ pub fn choose_idct_1x1_func(_: &DecoderOptions) -> IDCTPtr {
+ mod tests {
+     use super::*;
+ 
++    fn check_idct(input: [i32; 64], expected: [i16; 64], reduced: bool) {
++        const STRIDE: usize = 13;
++        let mut functions: Vec<(&str, IDCTPtr)> = vec![
++            ("scalar", idct_int),
++            ("native", choose_idct_func(&DecoderOptions::new_fast())),
++        ];
++        if reduced {
++            functions.push(("scalar 4x4", scalar::idct4x4));
++            functions.push(("native 4x4", choose_idct_4x4_func(&DecoderOptions::new_fast())));
++        }
++        if input[1..].iter().all(|&coefficient| coefficient == 0) {
++            functions.push(("DC only", idct_int_1x1));
++        }
++        for (name, function) in functions {
++            let mut coefficients = input;
++            let mut output = [-1; 8 * STRIDE];
++            function(&mut coefficients, &mut output, STRIDE);
++            for (row, expected) in output.chunks_exact(STRIDE).zip(expected.chunks_exact(8)) {
++                assert_eq!(&row[..8], expected, "{name}");
++                assert_eq!(&row[8..], &[-1; STRIDE - 8], "{name} overwrote padding");
++            }
++            if name.ends_with("4x4") {
++                for (index, coefficient) in coefficients.iter().enumerate() {
++                    if index / 8 >= 4 || index % 8 >= 4 {
++                        assert_eq!(*coefficient, 0, "{name} violated the 4x4 contract");
++                    }
++                }
++            }
++        }
++    }
++
++    #[test]
++    fn islow_rounding() {
++        // Golden samples from libjpeg's jidctint.c, with unit quantization.
++        let mut coefficients = [0; 64];
++        coefficients[9] = -255;
++        #[rustfmt::skip]
++        let expected = [
++            67, 76, 93, 116, 140, 163, 180, 189,
++            76, 84, 99, 118, 138, 157, 172, 180,
++            93, 99, 108, 121, 135, 148, 157, 163,
++            116, 118, 121, 126, 130, 135, 138, 140,
++            140, 138, 135, 130, 126, 121, 118, 116,
++            163, 157, 148, 135, 121, 108, 99, 93,
++            180, 172, 157, 138, 118, 99, 84, 76,
++            189, 180, 163, 140, 116, 93, 76, 67,
++        ];
++        check_idct(coefficients, expected, true);
++
++        coefficients[9] = 0;
++        coefficients[0] = 255;
++        coefficients[63] = -256;
++        #[rustfmt::skip]
++        let expected = [
++            157, 167, 150, 172, 148, 170, 153, 162,
++            167, 140, 189, 125, 195, 130, 180, 153,
++            149, 189, 116, 212, 108, 204, 130, 170,
++            172, 125, 212, 98, 221, 108, 195, 148,
++            148, 195, 108, 221, 98, 212, 125, 172,
++            170, 130, 204, 108, 212, 116, 189, 149,
++            153, 180, 130, 195, 125, 189, 140, 167,
++            162, 153, 170, 148, 172, 149, 167, 157,
++        ];
++        check_idct(coefficients, expected, false);
++    }
++
++    #[test]
++    fn islow_4x4_rounding() {
++        #[rustfmt::skip]
++        let coefficients = [
++            -254, -7, 0, 0, 0, 0, 0, 0,
++            7, 0, -30, 32, 0, 0, 0, 0,
++            7, 0, -30, 32, 0, 0, 0, 0,
++            7, 0, -30, 32, 0, 0, 0, 0,
++            0, 0, 0, 0, 0, 0, 0, 0,
++            0, 0, 0, 0, 0, 0, 0, 0,
++            0, 0, 0, 0, 0, 0, 0, 0,
++            0, 0, 0, 0, 0, 0, 0, 0,
++        ];
++        #[rustfmt::skip]
++        let expected = [
++            98, 86, 85, 106, 131, 130, 97, 64,
++            96, 92, 92, 100, 109, 109, 97, 85,
++            94, 98, 99, 93, 86, 87, 97, 107,
++            94, 99, 100, 91, 80, 82, 97, 113,
++            95, 97, 98, 94, 89, 90, 97, 104,
++            95, 95, 95, 96, 97, 97, 97, 97,
++            95, 96, 97, 95, 93, 94, 97, 101,
++            94, 98, 99, 93, 85, 86, 97, 108,
++        ];
++        check_idct(coefficients, expected, true);
++    }
++
++    #[test]
++    fn islow_final_rounding_and_clipping() {
++        // An extra first-pass rounding bias in the final pass changes 227 to 228.
++        let mut row = [0, 0, 29, 93, 163, 227, 255, 255];
++        for coefficient in [-1013, 1013] {
++            let mut coefficients = [0; 64];
++            coefficients[1] = coefficient;
++            let mut expected = [0; 64];
++            for output_row in expected.chunks_exact_mut(8) {
++                output_row.copy_from_slice(&row);
++            }
++            check_idct(coefficients, expected, true);
++            row.reverse();
++        }
++    }
++
++    #[test]
++    fn dc_rounding_and_extremes() {
++        for dc in [-2048, -1024, -1023, -4, -1, 0, 3, 4, 1015, 1016, 1023, 2047] {
++            let mut coefficients = [0; 64];
++            coefficients[0] = dc;
++            let sample = (((dc + 4) >> 3) + 128).clamp(0, 255) as i16;
++            check_idct(coefficients, [sample; 64], true);
++        }
++    }
++
++    #[test]
++    fn scalar_simd_consistency() {
++        let mut state = 0x12345678_u32;
++        for reduced in [false, true] {
++            for _ in 0..256 {
++                let mut coefficients = [0; 64];
++                for (index, coefficient) in coefficients.iter_mut().enumerate() {
++                    state = state.wrapping_mul(1664525).wrapping_add(1013904223);
++                    if !reduced || (index / 8 < 4 && index % 8 < 4) {
++                        *coefficient = (state >> 16) as i32 - 32768;
++                    }
++                }
++                let mut expected = [0; 64];
++                let mut reference_coefficients = coefficients;
++                idct_int(&mut reference_coefficients, &mut expected, 8);
++                check_idct(coefficients, expected, reduced);
++            }
++        }
++    }
++
+     #[test]
+     fn idct_test0() {
+         let stride = 8;
+diff --git a/src/idct/avx2.rs b/src/idct/avx2.rs
+index 7388f11..70abbe4 100644
+--- a/src/idct/avx2.rs
++++ b/src/idct/avx2.rs
+@@ -38,7 +38,7 @@ use core::arch::x86_64::*;
+ 
+ use crate::unsafe_utils::{transpose, YmmRegister};
+ 
+-const SCALE_BITS: i32 = 512 + 65536 + (128 << 17);
++use super::{CONST_BITS, OUTPUT_SHIFT, PASS1_ROUND, PASS1_SHIFT, SCALE_BITS};
+ 
+ // Pack i32 to i16's,
+ // clamp them to be between 0-255
+@@ -178,16 +178,16 @@ pub unsafe fn idct_avx2(
+             // avx one should produce identical code.)
+ 
+             // even part
+-            let p1 = (row2 + row6) * 2217;
++            let p1 = (row2 + row6) * 4433;
+ 
+-            let mut t2 = p1 + row6 * -7567;
+-            let mut t3 = p1 + row2 * 3135;
++            let mut t2 = p1 + row6 * -15137;
++            let mut t3 = p1 + row2 * 6270;
+ 
+             let mut t0 = YmmRegister {
+-                mm256: _mm256_slli_epi32((row0 + row4).mm256, 12),
++                mm256: _mm256_slli_epi32((row0 + row4).mm256, CONST_BITS),
+             };
+             let mut t1 = YmmRegister {
+-                mm256: _mm256_slli_epi32((row0 - row4).mm256, 12),
++                mm256: _mm256_slli_epi32((row0 - row4).mm256, CONST_BITS),
+             };
+ 
+             let x0 = t0 + t3 + $SCALE_BITS;
+@@ -199,17 +199,17 @@ pub unsafe fn idct_avx2(
+             let p4 = row5 + row1;
+             let p1 = row7 + row1;
+             let p2 = row5 + row3;
+-            let p5 = (p3 + p4) * 4816;
++            let p5 = (p3 + p4) * 9633;
+ 
+-            t0 = row7 * 1223;
+-            t1 = row5 * 8410;
+-            t2 = row3 * 12586;
+-            t3 = row1 * 6149;
++            t0 = row7 * 2446;
++            t1 = row5 * 16819;
++            t2 = row3 * 25172;
++            t3 = row1 * 12299;
+ 
+-            let p1 = p5 + p1 * -3685;
+-            let p2 = p5 + (p2 * -10497);
+-            let p3 = p3 * -8034;
+-            let p4 = p4 * -1597;
++            let p1 = p5 + p1 * -7373;
++            let p2 = p5 + (p2 * -20995);
++            let p3 = p3 * -16069;
++            let p4 = p4 * -3196;
+ 
+             t3 += p1 + p4;
+             t2 += p2 + p3;
+@@ -229,13 +229,13 @@ pub unsafe fn idct_avx2(
+     }
+ 
+     // Process rows
+-    dct_pass!(512, 10);
++    dct_pass!(PASS1_ROUND, PASS1_SHIFT);
+     transpose(
+         &mut row0, &mut row1, &mut row2, &mut row3, &mut row4, &mut row5, &mut row6, &mut row7,
+     );
+ 
+     // process columns
+-    dct_pass!(SCALE_BITS, 17);
++    dct_pass!(SCALE_BITS, OUTPUT_SHIFT);
+     transpose(
+         &mut row0, &mut row1, &mut row2, &mut row3, &mut row4, &mut row5, &mut row6, &mut row7,
+     );
+@@ -275,13 +275,13 @@ pub unsafe fn idct_avx2_4x4(
+     let mut row7 = YmmRegister { mm256: rw0 };
+ 
+     {
+-        row0.mm256 = _mm256_slli_epi32(row0.mm256, 12);
+-        row0 += 512;
++        row0.mm256 = _mm256_slli_epi32(row0.mm256, CONST_BITS);
++        row0 += PASS1_ROUND;
+ 
+         let i2 = row2;
+ 
+-        let p1 = i2 * 2217;
+-        let p3 = i2 * 5352;
++        let p1 = i2 * 4433;
++        let p3 = i2 * 10703;
+ 
+         let x0 = row0 + p3;
+         let x1 = row0 + p1;
+@@ -292,26 +292,26 @@ pub unsafe fn idct_avx2_4x4(
+         let i4 = row3;
+         let i3 = row1;
+ 
+-        let p5 = (i4 + i3) * 4816;
++        let p5 = (i4 + i3) * 9633;
+ 
+-        let p1 = p5 + i3 * -3685;
+-        let p2 = p5 + i4 * -10497;
++        let p1 = p5 + i3 * -7373;
++        let p2 = p5 + i4 * -20995;
+ 
+-        let t3 = p5 + i3 * 867;
+-        let t2 = p5 + i4 * -5945;
++        let t3 = p5 + i3 * 1730;
++        let t2 = p5 + i4 * -11892;
+ 
+-        let t1 = p2 + i3 * -1597;
+-        let t0 = p1 + i4 * -8034;
++        let t1 = p2 + i3 * -3196;
++        let t0 = p1 + i4 * -16069;
+ 
+-        row0.mm256 = _mm256_srai_epi32((x0 + t3).mm256, 10);
+-        row1.mm256 = _mm256_srai_epi32((x1 + t2).mm256, 10);
+-        row2.mm256 = _mm256_srai_epi32((x2 + t1).mm256, 10);
+-        row3.mm256 = _mm256_srai_epi32((x3 + t0).mm256, 10);
++        row0.mm256 = _mm256_srai_epi32((x0 + t3).mm256, PASS1_SHIFT);
++        row1.mm256 = _mm256_srai_epi32((x1 + t2).mm256, PASS1_SHIFT);
++        row2.mm256 = _mm256_srai_epi32((x2 + t1).mm256, PASS1_SHIFT);
++        row3.mm256 = _mm256_srai_epi32((x3 + t0).mm256, PASS1_SHIFT);
+ 
+-        row4.mm256 = _mm256_srai_epi32((x3 - t0).mm256, 10);
+-        row5.mm256 = _mm256_srai_epi32((x2 - t1).mm256, 10);
+-        row6.mm256 = _mm256_srai_epi32((x1 - t2).mm256, 10);
+-        row7.mm256 = _mm256_srai_epi32((x0 - t3).mm256, 10);
++        row4.mm256 = _mm256_srai_epi32((x3 - t0).mm256, PASS1_SHIFT);
++        row5.mm256 = _mm256_srai_epi32((x2 - t1).mm256, PASS1_SHIFT);
++        row6.mm256 = _mm256_srai_epi32((x1 - t2).mm256, PASS1_SHIFT);
++        row7.mm256 = _mm256_srai_epi32((x0 - t3).mm256, PASS1_SHIFT);
+     }
+ 
+     transpose(
+@@ -322,19 +322,13 @@ pub unsafe fn idct_avx2_4x4(
+         let i2 = row2;
+         let i0 = row0;
+ 
+-        row0.mm256 = _mm256_slli_epi32(i0.mm256, 12);
++        row0.mm256 = _mm256_slli_epi32(i0.mm256, CONST_BITS);
+         let t0 = row0 + SCALE_BITS;
+ 
+-        let t2 = i2 * 2217;
+-        let t3 = i2 * 5352;
++        let t2 = i2 * 4433;
++        let t3 = i2 * 10703;
+ 
+-        // constants scaled things up by 1<<12, plus we had 1<<2 from first
+-        // loop, plus horizontal and vertical each scale by sqrt(8) so together
+-        // we've got an extra 1<<3, so 1<<17 total we need to remove.
+-        // so we want to round that, which means adding 0.5 * 1<<17,
+-        // aka 65536. Also, we'll end up with -128 to 127 that we want
+-        // to encode as 0..255 by adding 128, so we'll add that before the shift
+-        // Rounding constant is already added into `t0`
++        // SCALE_BITS rounds the final pass and level-shifts the samples.
+         let x0 = t0 + t3;
+         let x3 = t0 - t3;
+         let x1 = t0 + t2;
+@@ -344,25 +338,25 @@ pub unsafe fn idct_avx2_4x4(
+         let i3 = row3;
+         let i1 = row1;
+ 
+-        let p5 = (i3 + i1) * 4816;
++        let p5 = (i3 + i1) * 9633;
+ 
+-        let p1 = p5 + i1 * -3685;
+-        let p2 = p5 + i3 * -10497;
++        let p1 = p5 + i1 * -7373;
++        let p2 = p5 + i3 * -20995;
+ 
+-        let t3 = p5 + i1 * 867;
+-        let t2 = p5 + i3 * -5945;
++        let t3 = p5 + i1 * 1730;
++        let t2 = p5 + i3 * -11892;
+ 
+-        let t1 = p2 + i1 * -1597;
+-        let t0 = p1 + i3 * -8034;
++        let t1 = p2 + i1 * -3196;
++        let t0 = p1 + i3 * -16069;
+ 
+-        row0.mm256 = _mm256_srai_epi32((x0 + t3).mm256, 17);
+-        row1.mm256 = _mm256_srai_epi32((x1 + t2).mm256, 17);
+-        row2.mm256 = _mm256_srai_epi32((x2 + t1).mm256, 17);
+-        row3.mm256 = _mm256_srai_epi32((x3 + t0).mm256, 17);
+-        row4.mm256 = _mm256_srai_epi32((x3 - t0).mm256, 17);
+-        row5.mm256 = _mm256_srai_epi32((x2 - t1).mm256, 17);
+-        row6.mm256 = _mm256_srai_epi32((x1 - t2).mm256, 17);
+-        row7.mm256 = _mm256_srai_epi32((x0 - t3).mm256, 17);
++        row0.mm256 = _mm256_srai_epi32((x0 + t3).mm256, OUTPUT_SHIFT);
++        row1.mm256 = _mm256_srai_epi32((x1 + t2).mm256, OUTPUT_SHIFT);
++        row2.mm256 = _mm256_srai_epi32((x2 + t1).mm256, OUTPUT_SHIFT);
++        row3.mm256 = _mm256_srai_epi32((x3 + t0).mm256, OUTPUT_SHIFT);
++        row4.mm256 = _mm256_srai_epi32((x3 - t0).mm256, OUTPUT_SHIFT);
++        row5.mm256 = _mm256_srai_epi32((x2 - t1).mm256, OUTPUT_SHIFT);
++        row6.mm256 = _mm256_srai_epi32((x1 - t2).mm256, OUTPUT_SHIFT);
++        row7.mm256 = _mm256_srai_epi32((x0 - t3).mm256, OUTPUT_SHIFT);
+     }
+ 
+     transpose(
+diff --git a/src/idct/neon.rs b/src/idct/neon.rs
+index 3912a61..8113685 100644
+--- a/src/idct/neon.rs
++++ b/src/idct/neon.rs
+@@ -34,7 +34,7 @@ use core::arch::aarch64::*;
+ 
+ use crate::unsafe_utils::{transpose, YmmRegister};
+ 
+-const SCALE_BITS: i32 = 512 + 65536 + (128 << 17);
++use super::{CONST_BITS, OUTPUT_SHIFT, PASS1_ROUND, PASS1_SHIFT, SCALE_BITS};
+ 
+ #[inline]
+ #[target_feature(enable = "neon")]
+@@ -141,13 +141,13 @@ pub unsafe fn idct_neon(in_vector: &mut [i32; 64], out_vector: &mut [i16], strid
+                 // into multiply-acumulate pairs
+ 
+                 // even part
+-                let p1 = (row2 + row6) * 2217;
++                let p1 = (row2 + row6) * 4433;
+ 
+-                let mut t2 = p1 + row6 * -7567;
+-                let mut t3 = p1 + row2 * 3135;
++                let mut t2 = p1 + row6 * -15137;
++                let mut t3 = p1 + row2 * 6270;
+ 
+-                let mut t0 = (row0 + row4).const_shl::<12>();
+-                let mut t1 = (row0 - row4).const_shl::<12>();
++                let mut t0 = (row0 + row4).const_shl::<CONST_BITS>();
++                let mut t1 = (row0 - row4).const_shl::<CONST_BITS>();
+ 
+                 let x0 = t0 + t3 + $SCALE_BITS;
+                 let x3 = t0 - t3 + $SCALE_BITS;
+@@ -158,17 +158,17 @@ pub unsafe fn idct_neon(in_vector: &mut [i32; 64], out_vector: &mut [i16], strid
+                 let p4 = row5 + row1;
+                 let p1 = row7 + row1;
+                 let p2 = row5 + row3;
+-                let p5 = (p3 + p4) * 4816;
++                let p5 = (p3 + p4) * 9633;
+ 
+-                t0 = row7 * 1223;
+-                t1 = row5 * 8410;
+-                t2 = row3 * 12586;
+-                t3 = row1 * 6149;
++                t0 = row7 * 2446;
++                t1 = row5 * 16819;
++                t2 = row3 * 25172;
++                t3 = row1 * 12299;
+ 
+-                let p1 = p5 + p1 * -3685;
+-                let p2 = p5 + (p2 * -10497);
+-                let p3 = p3 * -8034;
+-                let p4 = p4 * -1597;
++                let p1 = p5 + p1 * -7373;
++                let p2 = p5 + (p2 * -20995);
++                let p3 = p3 * -16069;
++                let p4 = p4 * -3196;
+ 
+                 t3 += p1 + p4;
+                 t2 += p2 + p3;
+@@ -188,13 +188,13 @@ pub unsafe fn idct_neon(in_vector: &mut [i32; 64], out_vector: &mut [i16], strid
+         }
+ 
+         // Process rows
+-        dct_pass!(512, 10);
++        dct_pass!(PASS1_ROUND, PASS1_SHIFT);
+         transpose(
+             &mut row0, &mut row1, &mut row2, &mut row3, &mut row4, &mut row5, &mut row6, &mut row7,
+         );
+ 
+         // process columns
+-        dct_pass!(SCALE_BITS, 17);
++        dct_pass!(SCALE_BITS, OUTPUT_SHIFT);
+         transpose(
+             &mut row0, &mut row1, &mut row2, &mut row3, &mut row4, &mut row5, &mut row6, &mut row7,
+         );
+diff --git a/src/idct/scalar.rs b/src/idct/scalar.rs
+index 624e2c8..49ad440 100644
+--- a/src/idct/scalar.rs
++++ b/src/idct/scalar.rs
+@@ -10,7 +10,7 @@
+ //!
+ //! Not as fast as AVX one.
+ 
+-const SCALE_BITS: i32 = 512 + 65536 + (128 << 17);
++use super::{CONST_BITS, OUTPUT_SHIFT, PASS1_ROUND, PASS1_SHIFT, SCALE_BITS};
+ 
+ #[inline(always)]
+ fn wa(a: i32, b: i32) -> i32 {
+@@ -58,10 +58,10 @@ pub fn idct_int(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize
+         let p2 = in_vector[ptr + 16];
+         let p3 = in_vector[ptr + 48];
+ 
+-        let p1 = wm(wa(p2, p3), 2217);
++        let p1 = wm(wa(p2, p3), 4433);
+ 
+-        let t2 = wa(p1, wm(p3, -7567));
+-        let t3 = wa(p1, wm(p2, 3135));
++        let t2 = wa(p1, wm(p3, -15137));
++        let t3 = wa(p1, wm(p2, 6270));
+ 
+         let p2 = in_vector[ptr];
+         let p3 = in_vector[32 + ptr];
+@@ -69,10 +69,10 @@ pub fn idct_int(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize
+         let t0 = fsh(wa(p2, p3));
+         let t1 = fsh(ws(p2, p3));
+ 
+-        let x0 = wa(wa(t0, t3), 512);
+-        let x3 = wa(ws(t0, t3), 512);
+-        let x1 = wa(wa(t1, t2), 512);
+-        let x2 = wa(ws(t1, t2), 512);
++        let x0 = wa(wa(t0, t3), PASS1_ROUND);
++        let x3 = wa(ws(t0, t3), PASS1_ROUND);
++        let x1 = wa(wa(t1, t2), PASS1_ROUND);
++        let x2 = wa(ws(t1, t2), PASS1_ROUND);
+ 
+         let mut t0 = in_vector[ptr + 56];
+         let mut t1 = in_vector[ptr + 40];
+@@ -83,31 +83,31 @@ pub fn idct_int(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize
+         let p4 = wa(t1, t3);
+         let p1 = wa(t0, t3);
+         let p2 = wa(t1, t2);
+-        let p5 = wm(wa(p3, p4), 4816);
++        let p5 = wm(wa(p3, p4), 9633);
+ 
+-        t0 = wm(t0, 1223);
+-        t1 = wm(t1, 8410);
+-        t2 = wm(t2, 12586);
+-        t3 = wm(t3, 6149);
++        t0 = wm(t0, 2446);
++        t1 = wm(t1, 16819);
++        t2 = wm(t2, 25172);
++        t3 = wm(t3, 12299);
+ 
+-        let p1 = wa(p5, wm(p1, -3685));
+-        let p2 = wa(p5, wm(p2, -10497));
+-        let p3 = wm(p3, -8034);
+-        let p4 = wm(p4, -1597);
++        let p1 = wa(p5, wm(p1, -7373));
++        let p2 = wa(p5, wm(p2, -20995));
++        let p3 = wm(p3, -16069);
++        let p4 = wm(p4, -3196);
+ 
+         t3 = wa(t3, wa(p1, p4));
+         t2 = wa(t2, wa(p2, p3));
+         t1 = wa(t1, wa(p2, p4));
+         t0 = wa(t0, wa(p1, p3));
+ 
+-        in_vector[ptr] = ws(wa(x0, t3), 0) >> 10;
+-        in_vector[ptr + 8] = ws(wa(x1, t2), 0) >> 10;
+-        in_vector[ptr + 16] = ws(wa(x2, t1), 0) >> 10;
+-        in_vector[ptr + 24] = ws(wa(x3, t0), 0) >> 10;
+-        in_vector[ptr + 32] = ws(ws(x3, t0), 0) >> 10;
+-        in_vector[ptr + 40] = ws(ws(x2, t1), 0) >> 10;
+-        in_vector[ptr + 48] = ws(ws(x1, t2), 0) >> 10;
+-        in_vector[ptr + 56] = ws(ws(x0, t3), 0) >> 10;
++        in_vector[ptr] = wa(x0, t3) >> PASS1_SHIFT;
++        in_vector[ptr + 8] = wa(x1, t2) >> PASS1_SHIFT;
++        in_vector[ptr + 16] = wa(x2, t1) >> PASS1_SHIFT;
++        in_vector[ptr + 24] = wa(x3, t0) >> PASS1_SHIFT;
++        in_vector[ptr + 32] = ws(x3, t0) >> PASS1_SHIFT;
++        in_vector[ptr + 40] = ws(x2, t1) >> PASS1_SHIFT;
++        in_vector[ptr + 48] = ws(x1, t2) >> PASS1_SHIFT;
++        in_vector[ptr + 56] = ws(x0, t3) >> PASS1_SHIFT;
+     }
+ 
+     // horizontal pass
+@@ -115,9 +115,9 @@ pub fn idct_int(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize
+         let p2 = in_vector[i + 2];
+         let p3 = in_vector[i + 6];
+ 
+-        let p1 = wm(wa(p2, p3), 2217);
+-        let t2 = wa(p1, wm(p3, -7567));
+-        let t3 = wa(p1, wm(p2, 3135));
++        let p1 = wm(wa(p2, p3), 4433);
++        let t2 = wa(p1, wm(p3, -15137));
++        let t3 = wa(p1, wm(p2, 6270));
+ 
+         let p2 = in_vector[i];
+         let p3 = in_vector[i + 4];
+@@ -139,17 +139,17 @@ pub fn idct_int(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize
+         let p4 = wa(t1, t3);
+         let p1 = wa(t0, t3);
+         let p2 = wa(t1, t2);
+-        let p5 = wm(wa(p3, p4), f2f(1.175875602));
++        let p5 = wm(wa(p3, p4), 9633);
+ 
+-        t0 = wm(t0, 1223);
+-        t1 = wm(t1, 8410);
+-        t2 = wm(t2, 12586);
+-        t3 = wm(t3, 6149);
++        t0 = wm(t0, 2446);
++        t1 = wm(t1, 16819);
++        t2 = wm(t2, 25172);
++        t3 = wm(t3, 12299);
+ 
+-        let p1 = wa(p5, wm(p1, -3685));
+-        let p2 = wa(p5, wm(p2, -10497));
+-        let p3 = wm(p3, -8034);
+-        let p4 = wm(p4, -1597);
++        let p1 = wa(p5, wm(p1, -7373));
++        let p2 = wa(p5, wm(p2, -20995));
++        let p3 = wm(p3, -16069);
++        let p4 = wm(p4, -3196);
+ 
+         t3 = wa(t3, wa(p1, p4));
+         t2 = wa(t2, wa(p2, p3));
+@@ -165,14 +165,14 @@ pub fn idct_int(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize
+             .try_into()
+             .unwrap();
+ 
+-        out[0] = clamp(wa(x0, t3) >> 17);
+-        out[1] = clamp(wa(x1, t2) >> 17);
+-        out[2] = clamp(wa(x2, t1) >> 17);
+-        out[3] = clamp(wa(x3, t0) >> 17);
+-        out[4] = clamp(ws(x3, t0) >> 17);
+-        out[5] = clamp(ws(x2, t1) >> 17);
+-        out[6] = clamp(ws(x1, t2) >> 17);
+-        out[7] = clamp(ws(x0, t3) >> 17);
++        out[0] = clamp(wa(x0, t3) >> OUTPUT_SHIFT);
++        out[1] = clamp(wa(x1, t2) >> OUTPUT_SHIFT);
++        out[2] = clamp(wa(x2, t1) >> OUTPUT_SHIFT);
++        out[3] = clamp(wa(x3, t0) >> OUTPUT_SHIFT);
++        out[4] = clamp(ws(x3, t0) >> OUTPUT_SHIFT);
++        out[5] = clamp(ws(x2, t1) >> OUTPUT_SHIFT);
++        out[6] = clamp(ws(x1, t2) >> OUTPUT_SHIFT);
++        out[7] = clamp(ws(x0, t3) >> OUTPUT_SHIFT);
+ 
+         i += 8;
+         pos += stride;
+@@ -180,16 +180,9 @@ pub fn idct_int(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize
+ }
+ 
+ #[inline]
+-#[allow(clippy::cast_possible_truncation)]
+-/// Multiply a number by 4096
+-fn f2f(x: f32) -> i32 {
+-    (x * 4096.0 + 0.5) as i32
+-}
+-
+-#[inline]
+-/// Multiply a number by 4096
++/// Scale a number to the IDCT constant precision.
+ fn fsh(x: i32) -> i32 {
+-    x << 12
++    x << CONST_BITS
+ }
+ 
+ /// Clamp values between 0 and 255
+@@ -205,11 +198,11 @@ pub fn idct4x4(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize)
+ 
+     // vertical pass
+     for ptr in 0..4 {
+-        let i0 = wa(fsh(in_vector[ptr]), 512);
++        let i0 = wa(fsh(in_vector[ptr]), PASS1_ROUND);
+         let i2 = in_vector[ptr + 16];
+ 
+-        let p1 = wm(i2, 2217);
+-        let p3 = wm(i2, 5352);
++        let p1 = wm(i2, 4433);
++        let p3 = wm(i2, 10703);
+ 
+         let x0 = wa(i0, p3);
+         let x1 = wa(i0, p1);
+@@ -220,25 +213,25 @@ pub fn idct4x4(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize)
+         let i4 = in_vector[ptr + 24];
+         let i3 = in_vector[ptr + 8];
+ 
+-        let p5 = wm(wa(i4, i3), 4816);
++        let p5 = wm(wa(i4, i3), 9633);
+ 
+-        let p1 = wa(p5, wm(i3, -3685));
+-        let p2 = wa(p5, wm(i4, -10497));
++        let p1 = wa(p5, wm(i3, -7373));
++        let p2 = wa(p5, wm(i4, -20995));
+ 
+-        let t3 = wa(p5, wm(i3, 867));
+-        let t2 = wa(p5, wm(i4, -5945));
++        let t3 = wa(p5, wm(i3, 1730));
++        let t2 = wa(p5, wm(i4, -11892));
+ 
+-        let t1 = wa(p2, wm(i3, -1597));
+-        let t0 = wa(p1, wm(i4, -8034));
++        let t1 = wa(p2, wm(i3, -3196));
++        let t0 = wa(p1, wm(i4, -16069));
+ 
+-        in_vector[ptr] = wa(x0, t3) >> 10;
+-        in_vector[ptr + 8] = wa(x1, t2) >> 10;
+-        in_vector[ptr + 16] = wa(x2, t1) >> 10;
+-        in_vector[ptr + 24] = wa(x3, t0) >> 10;
+-        in_vector[ptr + 32] = ws(x3, t0) >> 10;
+-        in_vector[ptr + 40] = ws(x2, t1) >> 10;
+-        in_vector[ptr + 48] = ws(x1, t2) >> 10;
+-        in_vector[ptr + 56] = ws(x0, t3) >> 10;
++        in_vector[ptr] = wa(x0, t3) >> PASS1_SHIFT;
++        in_vector[ptr + 8] = wa(x1, t2) >> PASS1_SHIFT;
++        in_vector[ptr + 16] = wa(x2, t1) >> PASS1_SHIFT;
++        in_vector[ptr + 24] = wa(x3, t0) >> PASS1_SHIFT;
++        in_vector[ptr + 32] = ws(x3, t0) >> PASS1_SHIFT;
++        in_vector[ptr + 40] = ws(x2, t1) >> PASS1_SHIFT;
++        in_vector[ptr + 48] = ws(x1, t2) >> PASS1_SHIFT;
++        in_vector[ptr + 56] = ws(x0, t3) >> PASS1_SHIFT;
+     }
+ 
+     // horizontal pass
+@@ -247,8 +240,8 @@ pub fn idct4x4(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize)
+         let i0 = in_vector[i];
+ 
+         let t0 = wa(fsh(i0), SCALE_BITS);
+-        let t2 = wm(i2, 2217);
+-        let t3 = wm(i2, 5352);
++        let t2 = wm(i2, 4433);
++        let t3 = wm(i2, 10703);
+ 
+         let x0 = wa(t0, t3);
+         let x3 = ws(t0, t3);
+@@ -259,16 +252,16 @@ pub fn idct4x4(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize)
+         let i3 = in_vector[i + 3];
+         let i1 = in_vector[i + 1];
+ 
+-        let p5 = wm(wa(i3, i1), f2f(1.175875602));
++        let p5 = wm(wa(i3, i1), 9633);
+ 
+-        let p1 = wa(p5, wm(i1, -3685));
+-        let p2 = wa(p5, wm(i3, -10497));
++        let p1 = wa(p5, wm(i1, -7373));
++        let p2 = wa(p5, wm(i3, -20995));
+ 
+-        let t3 = wa(p5, wm(i1, 867));
+-        let t2 = wa(p5, wm(i3, -5945));
++        let t3 = wa(p5, wm(i1, 1730));
++        let t2 = wa(p5, wm(i3, -11892));
+ 
+-        let t1 = wa(p2, wm(i1, -1597));
+-        let t0 = wa(p1, wm(i3, -8034));
++        let t1 = wa(p2, wm(i1, -3196));
++        let t0 = wa(p1, wm(i3, -16069));
+ 
+         // to prevent some bad images from crashing
+         let mut tmp = [0; 8];
+@@ -280,14 +273,14 @@ pub fn idct4x4(in_vector: &mut [i32; 64], out_vector: &mut [i16], stride: usize)
+             .unwrap();
+ 
+         out.copy_from_slice(&[
+-            clamp(wa(x0, t3) >> 17),
+-            clamp(wa(x1, t2) >> 17),
+-            clamp(wa(x2, t1) >> 17),
+-            clamp(wa(x3, t0) >> 17),
+-            clamp(ws(x3, t0) >> 17),
+-            clamp(ws(x2, t1) >> 17),
+-            clamp(ws(x1, t2) >> 17),
+-            clamp(ws(x0, t3) >> 17)
++            clamp(wa(x0, t3) >> OUTPUT_SHIFT),
++            clamp(wa(x1, t2) >> OUTPUT_SHIFT),
++            clamp(wa(x2, t1) >> OUTPUT_SHIFT),
++            clamp(wa(x3, t0) >> OUTPUT_SHIFT),
++            clamp(ws(x3, t0) >> OUTPUT_SHIFT),
++            clamp(ws(x2, t1) >> OUTPUT_SHIFT),
++            clamp(ws(x1, t2) >> OUTPUT_SHIFT),
++            clamp(ws(x0, t3) >> OUTPUT_SHIFT)
+         ]);
+ 
+         pos += stride;
