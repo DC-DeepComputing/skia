@@ -23,10 +23,6 @@ class SkWStream;
 
 struct SkGainmapInfo;
 
-namespace skhdr {
-class Metadata;
-}
-
 namespace SkPngRustEncoder {
 
 /*
@@ -69,11 +65,6 @@ struct Options {
      *  79 characters and it can't contain a non-breaking space character.
      */
     sk_sp<SkDataTable> fComments;
-
-    /**
-     * Container for any HDR metadata to include in the encoded image.
-     */
-    const skhdr::Metadata* fHdrMetadata = nullptr;
 
     /**
      * If non-null, then a gainmap and its metadata will be encoded as png chunks.

@@ -2566,20 +2566,18 @@ DEF_TEST(LibpngCodec_f16_trc_tables, r) {
 //     SkBitmap bm;
 //     bm.allocPixels(SkImageInfo::MakeN32Premul(10, 10));
 
-//     skhdr::Metadata hdrMetadata;
-//     hdrMetadata.setMasteringDisplayColorVolume(
-//         skhdr::MasteringDisplayColorVolume({SkNamedPrimaries::kRec2020, 500.f, 0.0005f}));
-//     hdrMetadata.setContentLightLevelInformation(
-//         skhdr::ContentLightLevelInformation({1000.f, 150.f}));
 //     SkPngEncoder::Options options;
-//     options.fHdrMetadata = &hdrMetadata;
+//     options.fHdrMetadata.setMasteringDisplayColorVolume(
+//         skhdr::MasteringDisplayColorVolume({SkNamedPrimaries::kRec2020, 500.f, 0.0005f}));
+//     options.fHdrMetadata.setContentLightLevelInformation(
+//         skhdr::ContentLightLevelInformation({1000.f, 150.f}));
 
 //     sk_sp<SkData> data = SkPngEncoder::Encode(bm.pixmap(), options);
 
 //     SkCodec::Result result;
 //     auto codec = SkPngDecoder::Decode(data, &result);
 
-//     REPORTER_ASSERT(r, hdrMetadata == codec->getHdrMetadata());
+//     REPORTER_ASSERT(r, options.fHdrMetadata == codec->getHdrMetadata());
 // }
 // #endif
 
@@ -2591,13 +2589,11 @@ DEF_TEST(PngRustHdrMetadataRoundTrip, r) {
     bm.allocPixels(SkImageInfo::MakeN32Premul(10, 10));
 
     // The SkPngRustEncoder doesn't support writing HDR metadata, so this uses the libpng encoder.
-    skhdr::Metadata hdrMetadata;
-    hdrMetadata.setMasteringDisplayColorVolume(
-        skhdr::MasteringDisplayColorVolume({SkNamedPrimaries::kRec2020, 500.f, 0.0005f}));
-    hdrMetadata.setContentLightLevelInformation(
-        skhdr::ContentLightLevelInformation({1000.f, 150.f}));
     SkPngEncoder::Options options;
-    options.fHdrMetadata = &hdrMetadata;
+    options.fHdrMetadata.setMasteringDisplayColorVolume(
+        skhdr::MasteringDisplayColorVolume({SkNamedPrimaries::kRec2020, 500.f, 0.0005f}));
+    options.fHdrMetadata.setContentLightLevelInformation(
+        skhdr::ContentLightLevelInformation({1000.f, 150.f}));
 
     SkDynamicMemoryWStream wstream;
     SkPngEncoder::Encode(&wstream, bm.pixmap(), options);
@@ -2606,7 +2602,7 @@ DEF_TEST(PngRustHdrMetadataRoundTrip, r) {
     auto codec = SkPngRustDecoder::Decode(
         std::make_unique<SkMemoryStream>(wstream.detachAsData()), &result);
 
-    REPORTER_ASSERT(r, hdrMetadata == codec->getHdrMetadata());
+    REPORTER_ASSERT(r, options.fHdrMetadata == codec->getHdrMetadata());
 }
 #endif
 
