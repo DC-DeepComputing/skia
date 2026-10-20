@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5eee477_119d2fd7",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-20T17:55:27Z",
+      "side": 1,
+      "message": "Optional / performance note on the `\"17 requests in round robin\"` cliff (570k -\u003e 1,584 calls / 300 ms on Linux):\n\nWhen a `FallbackSet` is evicted from `fFallbackSets(16)` and later recreated, every coverage class match re-runs `FontAccessible(font)` on line 931 before checking `fTFCache` in `createTypefaceFromFcPattern`. Because `FontAccessible` calls `SkData::MakeFromFileName`, an LRU miss reads the entire font file (10–25 MB for CJK/emoji `.ttc`s) from disk into memory even when the `SkTypeface` is already cached in `fTFCache`.\n\nIncreasing the `fFallbackSets` capacity (e.g. to 64, since each `FallbackSet` only holds a pattern and a small `classId -\u003e sk_sp\u003cSkTypeface\u003e` map) or checking `fTFCache` before calling `FontAccessible` would avoid re-reading font files on LRU turnover.",
+      "revId": "a3c538167ac78e36df668472863faef4ed2ff778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f6ded7a_31c52ed6",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-20T17:55:27Z",
+      "side": 1,
+      "message": "`if (page \u003e 0x10FF) { return 0; }` should be checked right after computing `page` on line 958 rather than only guarding `fCoverage.fEmptyPages.add(page)` on line 982:\n\n1. For `0x1100 \u003c\u003d page \u003c\u003d 0xFFFF`, skipping `fEmptyPages` causes every call to allocate `maps` and scan all `fCoverage.fCharSets` from scratch.\n2. For `page \u003e\u003d 0x10000` (e.g. `character \u003e\u003d 0x1000000` or negative `SkUnichar`), FontConfig\u0027s `FcCharSetFindLeafPos` truncates `ucs4 \u003e\u003e 8` to `FcChar16` (`uint16_t`). When the truncated 16-bit page exists in a font (such as `0x0000`), `FcCharSetIterSet` leaves `ai.ucs4` untouched at `page \u003c\u003c 8`, so `FcCharSetNextPage(...) \u003d\u003d page \u003c\u003c 8` evaluates to `true` and populates `fCoverage.fPageClasses` with unbounded out-of-Unicode keys.",
+      "revId": "a3c538167ac78e36df668472863faef4ed2ff778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
