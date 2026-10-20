@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac979442_549e297c",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-20T16:01:53Z",
+      "side": 1,
+      "message": "My issue was fitting the comment without exceed the maximum number of column. So I had to wrap the comment:\n```\n        BindBufferInfo          fSource;            // The CPU-to-GPU buffer and offset for the\n                                                    // source of the copy\n```",
+      "parentUuid": "bab50023_34ee6e24",
+      "range": {
+        "startLine": 539,
+        "startChar": 8,
+        "endLine": 547,
+        "endChar": 32
+      },
+      "revId": "42c6ea2baa4ff3e41fb3a28909b4a44ffa25d978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2db56d03_194d9654",
@@ -60,6 +84,30 @@
       "writtenOn": "2026-10-20T14:44:14Z",
       "side": 1,
       "message": "Can we instead mark this struct as stack-only? This src-image should just be pointing to a parameter or a stack variable in a parent frame.",
+      "range": {
+        "startLine": 295,
+        "startChar": 0,
+        "endLine": 295,
+        "endChar": 39
+      },
+      "revId": "42c6ea2baa4ff3e41fb3a28909b4a44ffa25d978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c164ae6_207f3a3d",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-20T16:01:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2db56d03_194d9654",
       "range": {
         "startLine": 295,
         "startChar": 0,
