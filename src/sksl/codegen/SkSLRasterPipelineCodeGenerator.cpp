@@ -16,6 +16,8 @@
 #include "src/core/SkStringView.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkUtils.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -143,7 +145,7 @@ public:
 private:
     THashMap<const IRNode*, SlotRange> fSlotMap;
     int fSlotCount = 0;
-    std::vector<SlotDebugInfo>* fSlotDebugInfo;
+    raw_ptr<std::vector<SlotDebugInfo>> fSlotDebugInfo;
 };
 
 class AutoStack {
@@ -183,14 +185,14 @@ class Generator {
 public:
     Generator(const SkSL::Program& program, DebugTracePriv* debugTrace, bool writeTraceOps)
             : fProgram(program)
-            , fContext(fProgram.fContext->fTypes, *fProgram.fContext->fErrors)
+            , fContext(fProgram->fContext->fTypes, *fProgram->fContext->fErrors)
             , fDebugTrace(debugTrace)
             , fWriteTraceOps(writeTraceOps)
             , fProgramSlots(debugTrace ? &debugTrace->fSlotInfo : nullptr)
             , fUniformSlots(debugTrace ? &debugTrace->fUniformInfo : nullptr)
             , fImmutableSlots(nullptr) {
-        fContext.fConfig = fProgram.fConfig.get();
-        fContext.fModule = fProgram.fContext->fModule;
+        fContext.fConfig = fProgram->fConfig.get();
+        fContext.fModule = fProgram->fContext->fModule;
     }
 
     ~Generator() {
@@ -474,10 +476,10 @@ public:
     }
 
 private:
-    const SkSL::Program& fProgram;
+    const raw_ref<const SkSL::Program> fProgram;
     SkSL::Context fContext;
     Builder fBuilder;
-    DebugTracePriv* fDebugTrace = nullptr;
+    raw_ptr<DebugTracePriv> fDebugTrace = nullptr;
     bool fWriteTraceOps = false;
     THashMap<const Variable*, int> fChildEffectMap;
 
@@ -486,9 +488,9 @@ private:
     SlotManager fImmutableSlots;
 
     std::optional<AutoStack> fTraceMask;
-    const FunctionDefinition* fCurrentFunction = nullptr;
+    raw_ptr<const FunctionDefinition> fCurrentFunction = nullptr;
     SlotRange fCurrentFunctionResult;
-    AutoContinueMask* fCurrentContinueMask = nullptr;
+    raw_ptr<AutoContinueMask> fCurrentContinueMask = nullptr;
     int fCurrentBreakTarget = -1;
     int fCurrentStack = 0;
     int fNextStackID = 0;
@@ -773,8 +775,8 @@ public:
     }
 
 private:
-    Generator* fGenerator = nullptr;
-    const Expression* fExpression = nullptr;
+    raw_ptr<Generator> fGenerator = nullptr;
+    raw_ptr<const Expression> fExpression = nullptr;
     std::optional<AutoStack> fDedicatedStack;
     int fNumSlots = 0;
 };
@@ -859,7 +861,7 @@ public:
     }
 
 private:
-    const Variable* fVariable;
+    raw_ptr<const Variable> fVariable;
 };
 
 class ImmutableLValue final : public LValue {
@@ -903,7 +905,7 @@ public:
     }
 
 private:
-    const Variable* fVariable;
+    raw_ptr<const Variable> fVariable;
 };
 
 class SwizzleLValue final : public LValue {
@@ -911,7 +913,7 @@ public:
     explicit SwizzleLValue(std::unique_ptr<LValue> p, const ComponentArray& c)
             : fParent(std::move(p))
             , fComponents(c) {
-        SkASSERT(!fComponents.empty() && fComponents.size() <= 4);
+        SkASSERT(!fComponents->empty() && fComponents->size() <= 4);
     }
 
     bool isWritable() const override {
@@ -927,7 +929,7 @@ public:
     }
 
     SkSpan<const int8_t> swizzle() override {
-        return fComponents;
+        return *fComponents;
     }
 
     [[nodiscard]] bool push(Generator* gen,
@@ -938,7 +940,7 @@ public:
             SkDEBUGFAIL("swizzle-of-a-swizzle should have been folded out in front end");
             return unsupported();
         }
-        return fParent->push(gen, fixedOffset, dynamicOffset, fComponents);
+        return fParent->push(gen, fixedOffset, dynamicOffset, *fComponents);
     }
 
     [[nodiscard]] bool store(Generator* gen,
@@ -949,12 +951,12 @@ public:
             SkDEBUGFAIL("swizzle-of-a-swizzle should have been folded out in front end");
             return unsupported();
         }
-        return fParent->store(gen, fixedOffset, dynamicOffset, fComponents);
+        return fParent->store(gen, fixedOffset, dynamicOffset, *fComponents);
     }
 
 private:
     std::unique_ptr<LValue> fParent;
-    const ComponentArray& fComponents;
+    const raw_ref<const ComponentArray> fComponents;
 };
 
 class UnownedLValueSlice : public LValue {
@@ -999,7 +1001,7 @@ public:
     }
 
 protected:
-    LValue* fParent;
+    raw_ptr<LValue, DanglingUntriaged> fParent;
 
 private:
     int fInitialSlot = 0;
@@ -1103,10 +1105,10 @@ public:
     }
 
 private:
-    Generator* fGenerator = nullptr;
+    raw_ptr<Generator> fGenerator = nullptr;
     std::unique_ptr<LValue> fParent;
     std::optional<AutoStack> fDedicatedStack;
-    const IndexExpression* fIndexExpr = nullptr;
+    raw_ptr<const IndexExpression> fIndexExpr = nullptr;
 };
 
 void SlotManager::addSlotDebugInfoForGroup(const std::string& varName,
@@ -1394,7 +1396,7 @@ std::optional<SlotRange> Generator::writeFunction(
 
     // Handle parameter lvalues.
     struct RemappedSlotRange {
-        const Variable* fVariable;
+        raw_ptr<const Variable> fVariable;
         std::optional<SlotRange> fSlotRange;
     };
     SkSpan<Variable* const> parameters = function.declaration().parameters();
@@ -1455,7 +1457,7 @@ std::optional<SlotRange> Generator::writeFunction(
             }
 
             // If a parameter is never read by the function, we don't need to populate its slots.
-            ProgramUsage::VariableCounts paramCounts = fProgram.fUsage->get(param);
+            ProgramUsage::VariableCounts paramCounts = fProgram->fUsage->get(param);
             if (paramCounts.fRead == 0) {
                 // Honor the expression's side effects, if any.
                 if (Analysis::HasSideEffects(arg)) {
@@ -1562,7 +1564,7 @@ void Generator::emitTraceLine(Position pos) {
         // Binary search within fLineOffets to convert the position into a line number.
         SkASSERT(fLineOffsets.size() >= 2);
         SkASSERT(fLineOffsets[0] == 0);
-        SkASSERT(fLineOffsets.back() == (int)fProgram.fSource->length());
+        SkASSERT(fLineOffsets.back() == (int)fProgram->fSource->length());
         int lineNumber = std::distance(
                 fLineOffsets.begin(),
                 std::upper_bound(fLineOffsets.begin(), fLineOffsets.end(), pos.startOffset()));
@@ -1597,16 +1599,16 @@ void Generator::emitTraceScope(int delta) {
 void Generator::calculateLineOffsets() {
     SkASSERT(fLineOffsets.empty());
     fLineOffsets.push_back(0);
-    for (size_t i = 0; i < fProgram.fSource->length(); ++i) {
-        if ((*fProgram.fSource)[i] == '\n') {
+    for (size_t i = 0; i < fProgram->fSource->length(); ++i) {
+        if ((*fProgram->fSource)[i] == '\n') {
             fLineOffsets.push_back(i);
         }
     }
-    fLineOffsets.push_back(fProgram.fSource->length());
+    fLineOffsets.push_back(fProgram->fSource->length());
 }
 
 bool Generator::writeGlobals() {
-    for (const ProgramElement* e : fProgram.elements()) {
+    for (const ProgramElement* e : fProgram->elements()) {
         if (e->is<GlobalVarDeclaration>()) {
             const GlobalVarDeclaration& gvd = e->as<GlobalVarDeclaration>();
             const VarDeclaration& decl = gvd.varDeclaration();
@@ -2160,7 +2162,7 @@ bool Generator::writeImmutableVarDeclaration(const VarDeclaration& d) {
     SkASSERT(initialValue);
 
     // For a variable to be immutable, it cannot be written-to besides its initial declaration.
-    ProgramUsage::VariableCounts counts = fProgram.fUsage->get(*d.var());
+    ProgramUsage::VariableCounts counts = fProgram->fUsage->get(*d.var());
     if (counts.fWrite != 1) {
         return false;
     }
@@ -4003,7 +4005,7 @@ bool Generator::writeProgram(const FunctionDefinition& function) {
 
     if (fDebugTrace) {
         // Copy the program source into the debug info so that it will be written in the trace file.
-        fDebugTrace->setSource(*fProgram.fSource);
+        fDebugTrace->setSource(*fProgram->fSource);
 
         if (fWriteTraceOps) {
             // The Raster Pipeline blitter generates centered pixel coordinates. (0.5, 1.5, 2.5,
