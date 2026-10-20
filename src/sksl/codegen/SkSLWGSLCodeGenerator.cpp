@@ -15,6 +15,8 @@
 #include "src/core/SkStringView.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -427,7 +429,7 @@ private:
     // of matrices combine both wrappers. These wrapper structs are unpacked into natively-typed
     // globals at the shader entrypoint.
     struct FieldPolyfillInfo {
-        const InterfaceBlock* fInterfaceBlock;
+        raw_ptr<const InterfaceBlock> fInterfaceBlock;
         std::string fReplacementName;
         bool fIsArray = false;
         bool fIsMatrix = false;
@@ -1255,7 +1257,7 @@ public:
         // By convention, we always put the new value first and the original values second; it might
         // be possible to find better arrangements which simplify the assignment overall, but we
         // don't attempt this.
-        int fullSlotCount = fType.slotCount();
+        int fullSlotCount = fType->slotCount();
         SkASSERT(fullSlotCount <= 4);
 
         // First, see which components are used.
@@ -1323,7 +1325,7 @@ public:
             result += ")";
         } else if (fReintegrateNewValueFirst) {
             // `vec4<f32>((new_value), `
-            result += to_wgsl_type(fContext, fType);
+            result += to_wgsl_type(*fContext, *fType);
             result += "((";
             result += value;
             result += "), ";
@@ -1335,7 +1337,7 @@ public:
             result += ')';
         } else {
             // `vec4<f32>(variable.yz`
-            result += to_wgsl_type(fContext, fType);
+            result += to_wgsl_type(*fContext, *fType);
             result += '(';
             result += fName;
             result += '.';
@@ -1357,9 +1359,9 @@ public:
     }
 
 private:
-    const Context& fContext;
+    const raw_ref<const Context> fContext;
     std::string fName;
-    const Type& fType;
+    const raw_ref<const Type> fType;
     ComponentArray fComponents;
     ComponentArray fUntouchedComponents;
     ComponentArray fReintegrationSwizzle;
@@ -1410,7 +1412,7 @@ private:
         }
     }
 
-    WGSLCodeGenerator* fGenerator;
+    raw_ptr<WGSLCodeGenerator> fGenerator;
     bool fOriginalValue;
 };
 
@@ -1434,7 +1436,7 @@ bool WGSLCodeGenerator::generateCode() {
         // Emit the program body.
         AutoOutputStream outputToBody(this, &body, &fIndentation);
         const FunctionDefinition* mainFunc = nullptr;
-        for (const ProgramElement* e : fProgram.elements()) {
+        for (const ProgramElement* e : fProgram->elements()) {
             this->writeProgramElement(*e);
 
             if (e->is<FunctionDefinition>()) {
@@ -1678,9 +1680,9 @@ void WGSLCodeGenerator::writeUniformPolyfills() {
 
 
 void WGSLCodeGenerator::preprocessProgram() {
-    fRequirements = resolve_program_requirements(&fProgram);
-    collect_pipeline_io_vars(&fProgram, &fPipelineInputs, ModifierFlag::kIn);
-    collect_pipeline_io_vars(&fProgram, &fPipelineOutputs, ModifierFlag::kOut);
+    fRequirements = resolve_program_requirements(&*fProgram);
+    collect_pipeline_io_vars(&*fProgram, &fPipelineInputs, ModifierFlag::kIn);
+    collect_pipeline_io_vars(&*fProgram, &fPipelineOutputs, ModifierFlag::kOut);
 }
 
 void WGSLCodeGenerator::write(std::string_view s) {
@@ -1777,7 +1779,7 @@ void WGSLCodeGenerator::writeUserDefinedIODecl(const Layout& layout,
     this->write("@location(" + std::to_string(layout.fLocation) + ") ");
 
     // @blend_src is only allowed when doing dual-source blending, and only on color attachment 0.
-    if (layout.fLocation == 0 && layout.fIndex >= 0 && fProgram.fInterface.fOutputSecondaryColor) {
+    if (layout.fLocation == 0 && layout.fIndex >= 0 && fProgram->fInterface.fOutputSecondaryColor) {
         this->write("@blend_src(" + std::to_string(layout.fIndex) + ") ");
     }
 
@@ -1833,7 +1835,7 @@ void WGSLCodeGenerator::writeFunction(const FunctionDefinition& f) {
             continue;
         }
 
-        const ProgramUsage::VariableCounts counts = fProgram.fUsage->get(param);
+        const ProgramUsage::VariableCounts counts = fProgram->fUsage->get(param);
         if ((param.modifierFlags() & ModifierFlag::kOut) || counts.fWrite == 0) {
             // Variables which are never written-to don't need dedicated storage.
             // Out-parameters are passed as pointers; the pointer itself is never modified, so
@@ -1946,7 +1948,7 @@ void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& decl
 
 void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
     SkASSERT(main.declaration().isMain());
-    const ProgramKind programKind = fProgram.fConfig->fKind;
+    const ProgramKind programKind = fProgram->fConfig->fKind;
 
     bool initPolyfill = false;
     for (const auto& [field, info] : fFieldPolyfillMap) {
@@ -2582,7 +2584,7 @@ void WGSLCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
                             : std::string();
 
     if (varDecl.var()->modifierFlags().isConst() ||
-        (fProgram.fUsage->get(*varDecl.var()).fWrite == 1 && varDecl.value())) {
+        (fProgram->fUsage->get(*varDecl.var()).fWrite == 1 && varDecl.value())) {
         // Use `const` at global scope, or if the value is a compile-time constant.
         SkASSERTF(varDecl.value(), "an immutable variable must specify a value");
         const bool useConst =
@@ -2715,7 +2717,7 @@ std::string WGSLCodeGenerator::assembleExpression(const Expression& e,
             return this->assemblePostfixExpression(e.as<PostfixExpression>(), parentPrecedence);
 
         case Expression::Kind::kSetting:
-            return this->assembleExpression(*e.as<Setting>().toLiteral(fCaps), parentPrecedence);
+            return this->assembleExpression(*e.as<Setting>().toLiteral(*fCaps), parentPrecedence);
 
         case Expression::Kind::kSwizzle:
             return this->assembleSwizzle(e.as<Swizzle>());
@@ -3463,7 +3465,7 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             bool callIncludesBias = (arguments.size() == 3);
             std::string expr;
             const char* close;
-            if (fProgram.fConfig->fSettings.fSharpenTextures || callIncludesBias) {
+            if (fProgram->fConfig->fSettings.fSharpenTextures || callIncludesBias) {
                 // We need to supply a bias argument; this is a separate intrinsic in WGSL.
                 std::tie(expr, close) = this->assemblePartialSampleCall("textureSampleBias",
                                                                         call.type(),
@@ -3474,7 +3476,7 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
                     expr += this->assembleExpression(*arguments[2], Precedence::kAdditive) +
                             " + ";
                 }
-                expr += skstd::to_string(fProgram.fConfig->fSettings.fSharpenTextures
+                expr += skstd::to_string(fProgram->fConfig->fSettings.fSharpenTextures
                                                  ? kSharpenTexturesBias
                                                  : 0.0f);
             } else {
@@ -4673,10 +4675,10 @@ void WGSLCodeGenerator::writeEnables() {
     if (fRequirements.fPixelLocalExtension) {
         this->writeLine("enable chromium_experimental_pixel_local;");
     }
-    if (fProgram.fInterface.fUseLastFragColor) {
+    if (fProgram->fInterface.fUseLastFragColor) {
         this->writeLine("enable chromium_experimental_framebuffer_fetch;");
     }
-    if (fProgram.fInterface.fOutputSecondaryColor) {
+    if (fProgram->fInterface.fOutputSecondaryColor) {
         this->writeLine("enable dual_source_blending;");
     }
 }
@@ -4692,7 +4694,7 @@ void WGSLCodeGenerator::writeStageInputStruct() {
         return;
     }
 
-    std::string_view structNamePrefix = pipeline_struct_prefix(fProgram.fConfig->fKind);
+    std::string_view structNamePrefix = pipeline_struct_prefix(fProgram->fConfig->fKind);
     SkASSERT(!structNamePrefix.empty());
 
     this->write("struct ");
@@ -4720,7 +4722,7 @@ bool WGSLCodeGenerator::needsStageOutputStruct() const {
     // It is illegal to declare a struct with no members. However, vertex programs will _always_
     // have an output stage in WGSL, because the spec requires them to emit `@builtin(position)`.
     // So we always synthesize a reference to `sk_Position` even if the program doesn't need it.
-    return !fPipelineOutputs.empty() || ProgramConfig::IsVertex(fProgram.fConfig->fKind);
+    return !fPipelineOutputs.empty() || ProgramConfig::IsVertex(fProgram->fConfig->fKind);
 }
 
 void WGSLCodeGenerator::writeStageOutputStruct() {
@@ -4728,7 +4730,7 @@ void WGSLCodeGenerator::writeStageOutputStruct() {
         return;
     }
 
-    std::string_view structNamePrefix = pipeline_struct_prefix(fProgram.fConfig->fKind);
+    std::string_view structNamePrefix = pipeline_struct_prefix(fProgram->fConfig->fKind);
     SkASSERT(!structNamePrefix.empty());
 
     this->write("struct ");
@@ -4759,7 +4761,7 @@ void WGSLCodeGenerator::writeStageOutputStruct() {
     }
 
     // A vertex program must include the `position` builtin in its entrypoint's return type.
-    const bool positionBuiltinRequired = ProgramConfig::IsVertex(fProgram.fConfig->fKind);
+    const bool positionBuiltinRequired = ProgramConfig::IsVertex(fProgram->fConfig->fKind);
     if (positionBuiltinRequired && !declaredPositionBuiltin) {
         this->writeLine("@builtin(position) sk_Position: vec4<f32>,");
     }
@@ -4773,7 +4775,7 @@ void WGSLCodeGenerator::writeStageOutputStruct() {
     // There isn't anything we can do to emulate this correctly at this stage so we synthesize a
     // placeholder global variable that has no effect. Programs should not rely on sk_PointSize when
     // using the Dawn backend.
-    if (ProgramConfig::IsVertex(fProgram.fConfig->fKind) && requiresPointSizeBuiltin) {
+    if (ProgramConfig::IsVertex(fProgram->fConfig->fKind) && requiresPointSizeBuiltin) {
         this->writeLine("/* unsupported */ var<private> sk_PointSize: f32;");
     }
 }
@@ -4827,7 +4829,7 @@ void WGSLCodeGenerator::prepareUniformPolyfillsForInterfaceBlock(
 }
 
 void WGSLCodeGenerator::writeUniformsAndBuffers() {
-    for (const ProgramElement* e : fProgram.elements()) {
+    for (const ProgramElement* e : fProgram->elements()) {
         // Iterate through the interface blocks.
         if (!e->is<InterfaceBlock>()) {
             continue;
@@ -4909,7 +4911,7 @@ void WGSLCodeGenerator::writeInterfaceBlock(const InterfaceBlock& ib) {
 void WGSLCodeGenerator::writeNonBlockUniformsForTests() {
     TArray<Field> globalVarFields;
     Position globalVarPos;
-    for (const ProgramElement* e : fProgram.elements()) {
+    for (const ProgramElement* e : fProgram->elements()) {
         if (e->is<GlobalVarDeclaration>()) {
             const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
             const Variable& var = *decls.varDeclaration().var();
@@ -4925,8 +4927,9 @@ void WGSLCodeGenerator::writeNonBlockUniformsForTests() {
     }
 
     if (!globalVarFields.empty()) {
-        Layout layout{LayoutFlag::kNone, 0, 0, fProgram.fConfig->fSettings.fDefaultUniformBinding, 0,
-                fProgram.fConfig->fSettings.fDefaultUniformSet, 0, 0};
+        Layout layout{LayoutFlag::kNone, 0, 0,
+                      fProgram->fConfig->fSettings.fDefaultUniformBinding, 0,
+                      fProgram->fConfig->fSettings.fDefaultUniformSet, 0, 0};
         Modifiers modifiers{globalVarPos, layout, ModifierFlag::kUniform};
 
         // Interface blocks (for SkSL) are normally only allowed in fragment, vertex, or compute
@@ -4969,7 +4972,7 @@ bool WGSLCodeGenerator::writeFunctionDependencyParams(const FunctionDeclaration&
         return false;
     }
 
-    std::string_view structNamePrefix = pipeline_struct_prefix(fProgram.fConfig->fKind);
+    std::string_view structNamePrefix = pipeline_struct_prefix(fProgram->fConfig->fKind);
     if (structNamePrefix.empty()) {
         return false;
     }

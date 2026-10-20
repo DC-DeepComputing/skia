@@ -17,6 +17,8 @@
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include <memory>
 #include <vector>
 
@@ -114,7 +116,7 @@ private:
 
     bool overInlineStatementLimit() const;
 
-    const Context* fContext = nullptr;
+    raw_ptr<const Context> fContext = nullptr;
     Mangler fMangler;
     int fInlinedStatementCounter = 0;
 };

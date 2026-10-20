@@ -9,6 +9,8 @@
 #define SKSL_VARDECLARATIONS
 
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLModifierFlags.h"
@@ -24,10 +26,10 @@
 namespace SkSL {
 
 class Context;
-struct Layout;
-struct Modifiers;
 class Position;
 class Type;
+struct Layout;
+struct Modifiers;
 
 /**
  * A single variable declaration statement. Multiple variables declared together are expanded to
@@ -88,7 +90,7 @@ public:
                                                 int arraySize,
                                                 std::unique_ptr<Expression> value);
     const Type& baseType() const {
-        return fBaseType;
+        return *fBaseType;
     }
 
     Variable* var() const {
@@ -119,8 +121,8 @@ private:
                                     const Type* baseType,
                                     std::unique_ptr<Expression>& value);
 
-    Variable* fVar;
-    const Type& fBaseType;
+    raw_ptr<Variable> fVar;
+    const raw_ref<const Type> fBaseType;
     int fArraySize;  // zero means "not an array"
     std::unique_ptr<Expression> fValue;
 
