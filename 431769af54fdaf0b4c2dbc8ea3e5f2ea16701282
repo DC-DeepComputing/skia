@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "402f6fe6_e27b3990",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-20T19:57:00Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like clients access this as of now (from quick searching in chromium search and code search).\n\nIn a follow up CL we can look to remove this.",
+      "parentUuid": "14d948ee_e736318c",
+      "range": {
+        "startLine": 84,
+        "startChar": 4,
+        "endLine": 84,
+        "endChar": 61
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f099126c_2c7a7b8d",
@@ -136,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d46199d_8439bd0f",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-20T19:57:00Z",
+      "side": 1,
+      "message": "Moved to initializer list. I also removed the first constructor ( SkContext(options)) and set gpuContext to default nullptr instead. \n\nWill look into having a installGPUContext() in a follow up CL.",
+      "parentUuid": "a93fd81b_71644417",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 40
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feee02d0_99a5aa91",
@@ -149,6 +197,30 @@
       "writtenOn": "2026-10-19T13:51:30Z",
       "side": 1,
       "message": "If the need for the function is requiring us to make the SkContext version public, then if the only users of this are internal, lets remove this call now since the internal uses should be able to access the context priv",
+      "range": {
+        "startLine": 107,
+        "startChar": 50,
+        "endLine": 107,
+        "endChar": 78
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a372107_aea45903",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-20T19:57:00Z",
+      "side": 1,
+      "message": "I couldn\u0027t find clients referencing this function, but I think it would be safer to remove it in a follow up CL, since we might fall into the issue of rolling back and forth like with the SkCPURecorder CL\n\nSo far, all of the SkGraphics functions are public, meaning that any client could potentially be using any of these functions.",
+      "parentUuid": "feee02d0_99a5aa91",
       "range": {
         "startLine": 107,
         "startChar": 50,

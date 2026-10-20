@@ -143,6 +143,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "daa0eba6_b8087dc4",
+        "filename": "src/core/SkContextPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-20T19:57:00Z",
+      "side": 1,
+      "message": "I added the sharedContext() method to SkContextPriv so that we wouldn\u0027t need to declare the individual cache getters.",
+      "parentUuid": "17f0d13b_8e325c74",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 44
+      },
+      "revId": "90360220ae6b6024214c730c9dd1a73b24fad78a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef931efe_9a9d1d7e",
