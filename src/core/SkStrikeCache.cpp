@@ -14,7 +14,9 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMutex.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkDescriptor.h"
+#include "src/core/SkSharedContext.h"
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeSpec.h"
 
@@ -31,8 +33,7 @@ SkStrikeCache* SkStrikeCache::GlobalStrikeCache() {
     static thread_local auto* cache = new SkStrikeCache;
     return cache;
 #else
-    static auto* cache = new SkStrikeCache;
-    return cache;
+    return SkContexts::GetGlobalSkContext()->priv().sharedContext()->strikeCache();
 #endif
 }
 
@@ -50,9 +51,7 @@ sk_sp<StrikeForGPU> SkStrikeCache::findOrCreateScopedStrike(const SkStrikeSpec& 
     return this->findOrCreateStrike(strikeSpec);
 }
 
-void SkStrikeCache::PurgeAll() {
-    GlobalStrikeCache()->purgeAll();
-}
+void SkStrikeCache::PurgeAll() { GlobalStrikeCache()->purgeAll(); }
 
 void SkStrikeCache::Dump() {
     SkDebugf("GlyphCache [     used    budget ]\n");
