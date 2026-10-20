@@ -118,7 +118,9 @@ $pure half4 sk_csxform_postalpha(half4 color, half mode) {
 
 // Transfer function stages
 $pure half4 sk_csxform_srgb(half4 color, float4 gabc, float3 def) {
-    if (gabc.x > 0.0) {
+    // Transparent colors are premultiplied to transparent black after the conversion, so it is
+    // skipped for them.
+    if (gabc.x > 0.0 && color.a > 0.0) {
         color.rgb = half3($apply_srgb_xfer_fn(color.rgb, gabc, def));
     }
     return color;

@@ -16,7 +16,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 " half4 sk_csxform_alphaonly(half4 a,half b){half c=mix(a.w,a.x,b);return half4"
 "(0.,0.,0.,c);}$pure half4 sk_csxform_postalpha(half4 a,half b){a.xyz*=max(a"
 ".w,b);return a;}$pure half4 sk_csxform_srgb(half4 a,float4 b,float3 c){if(b"
-".x>0.)a.xyz=half3($k(float3(a.xyz),b,c));return a;}$pure half4 sk_csxform_pq"
+".x>0.&&a.w>0.)a.xyz=half3($k(float3(a.xyz),b,c));return a;}$pure half4 sk_csxform_pq"
 "(half4 a,float3 b,float3 c){a.xyz=half3($l(float3(a.xyz),b,c));return a;}$pure"
 " half4 sk_csxform_hlg(half4 a,float4 b,float3 c,float3 d){float3 e=$m(float3"
 "(a.xyz),c,d);a.xyz=half3($o(e,b));return a;}$pure half4 sk_csxform_hlginv(half4"
