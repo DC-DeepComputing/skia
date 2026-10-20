@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82cb3848_5325ce27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-20T16:33:46Z",
+      "side": 1,
+      "message": "Just adding a note about behavior in conjunction with the other sk_csxform nodes:\n\nopaque -\u003e [opaque, unpremul, premul] \u003d\u003e it\u0027s UB if source pixels have A !\u003d 1, so we shouldn\u0027t ever be skipping the transfer function, so output will always be converted correctly.\n\nunpremul -\u003e opaque \u003d\u003e this scenario comes up in force-opaque situation, and the final output of the fragment shader will use a .rgb1 swizzle. This means that if the source data had A\u003d0, we\u0027ll end up writing the untransformed source RGB.\n\nunpremul -\u003e unpremul \u003d\u003e normally we don\u0027t allow rendering to unpremul but it can occur as part of specific copy/mipmap workflows. While it does preserve the same inaccurate RGB channels as unpremul -\u003e opaque, it doesn\u0027t change the A value. As long as it\u0027s downstream rendered into a premul target, it\u0027ll be fine; if it\u0027s rendered into a force-opaque target it\u0027ll have the same issue as unpremul -\u003e opaque.\n\nunpremul -\u003e premul \u003d\u003e This includes a Premul snippet after the transfer function, so the A\u003d0 multiply correctly hides the skipped transfer function\n\npremul -\u003e [opaque, unpremul, premul] \u003d\u003e A valid premul RGBA value with A\u003d0 should also have RGB\u003d0, so skipping the transfer function should be fine.\n\n---\n\nGiven that (admittedly low probability) risk of writing incorrect data into the output texture, I think we need to adjust the condition. It seems highly likely that the unpremul pixels that have A\u003d0 also probably have RGB\u003d0. If we skip the transfer function when equal to half4(0), then we don\u0027t need to worry about what happens if the output is force-opaque or unpremul.\n\nThe comparison is also hopefully not so much more expensive than just color.a \u003e 0, that we\u0027ll get similar performance improvements.\n\nLastly, I think we\u0027ll want to explore the same optimization for HLG and PQ transfer functions. Even if we assume that it\u0027ll be SDR content with dominant transparent colors (vs. HDR), rendering that transparent texture to an HDR output would trigger the HLG or PQ functions.",
+      "revId": "7b2ceb03e41620ad6e94e4cb5f800d98bc517583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
