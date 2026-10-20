@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "246bc10f_f2dce48b",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-20T21:43:04Z",
+      "side": 1,
+      "message": "This is a conservative rollout restriction, not a zune-jpeg API limitation. `supports_direct_packed_output()` currently checks the JPEG color space; it does not establish performance on other targets. I’ve added a comment explaining the distinction. Enabling other targets should follow target-specific validation.",
+      "parentUuid": "909e366a_28d49946",
+      "revId": "949a92b12c736e0efe944b20289bb9fcf50c6bca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89df844c_867fb996",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab7f4300_77860db0",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 912,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-20T21:43:04Z",
+      "side": 1,
+      "message": "Yes, both should be reset there. I’ve added resets in `onStartIncrementalDecode()` and `onRewind()`, with regression coverage for full → incremental → rewind → scanline transitions. The test reproduced stale state before the fix.",
+      "parentUuid": "89df844c_867fb996",
+      "range": {
+        "startLine": 911,
+        "startChar": 0,
+        "endLine": 912,
+        "endChar": 78
+      },
+      "revId": "949a92b12c736e0efe944b20289bb9fcf50c6bca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3156a516_2a264ea2",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-10-20T19:32:35Z",
       "side": 1,
       "message": "I guess this holds for now, as the code path is predicated on kN32.  But I think it makes sense to avoid hardcoding and use something more future proof - e.g. \n\n```\n    const size_t logicalRowBytes \u003d this-\u003edstInfo().minRowBytes();\n```\n\nMaybe also add some additional checks to make sure the value agrees with the rust size?\n\n```\n    if (logicalRowBytes \u003d\u003d 0 || logicalRowBytes !\u003d fReader-\u003erow_bytes() ||\n        dstRowBytes \u003c logicalRowBytes) {\n        return {kInvalidParameters, 0};\n    }\n```",
+      "range": {
+        "startLine": 1002,
+        "startChar": 93,
+        "endLine": 1002,
+        "endChar": 94
+      },
+      "revId": "949a92b12c736e0efe944b20289bb9fcf50c6bca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5891fcb_ae458a58",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-20T21:43:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3156a516_2a264ea2",
       "range": {
         "startLine": 1002,
         "startChar": 93,
