@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -27,6 +28,8 @@ class Context;
 void Transform::ReplaceSplatCastsWithSwizzles(const Context& context, Module& module) {
     class SwizzleWriter : public ProgramWriter {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         SwizzleWriter(const Context& ctx) : fContext(ctx) {}
 
         bool visitExpressionPtr(std::unique_ptr<Expression>& expr) override {

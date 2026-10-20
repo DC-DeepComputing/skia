@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
@@ -35,6 +36,8 @@ void Analysis::CheckSymbolTableCorrectness(const Program& program) {
 
     class SymbolTableCorrectnessVisitor : public ProgramVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         SymbolTableCorrectnessVisitor(const Context& c, SymbolTable* sym)
                 : fContext(c)
                 , fSymbolTableStack({sym}) {}

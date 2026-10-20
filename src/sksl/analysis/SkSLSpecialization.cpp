@@ -9,6 +9,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
@@ -51,6 +52,8 @@ void FindFunctionsToSpecialize(const Program& program,
                                const ParameterMatchesFn& parameterMatchesFn) {
     class Searcher : public ProgramVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         using ProgramVisitor::visitProgramElement;
         using INHERITED = ProgramVisitor;
 

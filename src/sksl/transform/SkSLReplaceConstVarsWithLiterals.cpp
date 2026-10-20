@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLModule.h"
@@ -32,6 +33,8 @@ namespace SkSL {
 void Transform::ReplaceConstVarsWithLiterals(Module& module, ProgramUsage* usage) {
     class ConstVarReplacer : public ProgramWriter {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         ConstVarReplacer(ProgramUsage* usage) : fUsage(usage) {}
 
         using ProgramWriter::visitProgramElement;

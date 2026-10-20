@@ -8,6 +8,7 @@
 #include "src/sksl/ir/SkSLForStatement.h"
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
@@ -73,6 +74,8 @@ static void hoist_vardecl_symbols_into_outer_scope(const Context& context,
                                                    SymbolTable* hoistedSymbols) {
     class SymbolHoister : public ProgramVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         SymbolHoister(const Context& ctx, SymbolTable* innerSym, SymbolTable* hoistSym)
                 : fContext(ctx)
                 , fInnerSymbols(innerSym)

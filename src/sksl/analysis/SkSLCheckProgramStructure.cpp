@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
@@ -33,6 +34,8 @@ bool Analysis::CheckProgramStructure(const Program& program) {
 
     class ProgramStructureVisitor : public ProgramVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         ProgramStructureVisitor(const Context& c) : fContext(c) {}
 
         using ProgramVisitor::visitProgramElement;

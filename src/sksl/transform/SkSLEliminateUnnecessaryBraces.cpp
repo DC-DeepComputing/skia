@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLModule.h"
 #include "src/sksl/SkSLPosition.h"
@@ -99,6 +100,8 @@ void Transform::EliminateUnnecessaryBraces(const Context& context, Module& modul
 
     class RequiredBraceWriter : public ProgramWriter {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         RequiredBraceWriter(const Context& ctx) : fContext(ctx) {}
 
         bool visitExpressionPtr(std::unique_ptr<Expression>& expr) override {

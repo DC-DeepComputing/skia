@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLErrorReporter.h"
@@ -36,6 +37,8 @@ namespace {
 // (if loopIndices is non-nullptr)
 class ConstantExpressionVisitor : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     ConstantExpressionVisitor(const THashSet<const Variable*>* loopIndices)
             : fLoopIndices(loopIndices) {}
 
@@ -117,6 +120,8 @@ private:
 // function qualifies as a constant-index-expression.
 class ES2IndexingVisitor : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     ES2IndexingVisitor(ErrorReporter& errors) : fErrors(errors) {}
 
     bool visitStatement(const Statement& s) override {

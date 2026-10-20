@@ -6,6 +6,7 @@
  */
 
 #include "include/private/SkAssert.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLDefines.h"
@@ -37,6 +38,8 @@ std::unique_ptr<Block> Transform::HoistSwitchVarDeclarationsAtTopLevel(const Con
                                                                        SymbolTable& switchSymbols,
                                                                        Position pos) {
     struct HoistSwitchVarDeclsVisitor : public ProgramWriter {
+        SK_ONLY_STACK_ALLOCATABLE;
+
         HoistSwitchVarDeclsVisitor(const Context& c) : fContext(c) {}
 
         bool visitExpressionPtr(std::unique_ptr<Expression>& expr) override {

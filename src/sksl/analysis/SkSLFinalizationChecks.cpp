@@ -8,6 +8,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -47,6 +48,8 @@ namespace {
 
 class FinalizationVisitor : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     FinalizationVisitor(const Context& c, const ProgramUsage& u) : fContext(c), fUsage(u) {}
 
     bool visitProgramElement(const ProgramElement& pe) override {
