@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51deb138_3fc0a7b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-20T20:09:09Z",
+      "side": 1,
+      "message": "As noted on b/575506671, since this slowdown only occurs with `SK_DEBUG` enabled (`SkDynamicMemoryWStream::validate()`) and release builds take 27–61 ms, we don\u0027t plan to add `SK_DEBUG` workarounds in `SkFontDescriptor::serialize`.\nAlso note that replacing `stream-\u003ewriteStream(fontStream.get(), length)` with `SkStreamPriv::Copy(stream, fontStream.get())` drops `length` after `writePackedUInt(length)` has already been written, so an early EOF on a non-memory-backed stream would return `true` after writing fewer than `length` bytes.",
+      "revId": "cb26cbe9633d8292cf166cf6638d437161b81be1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
