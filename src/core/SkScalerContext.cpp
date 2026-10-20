@@ -711,6 +711,18 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
         tmpGlyph = this->makeGlyph(origGlyph.getPackedID(), &tmpGlyphPathDataStorage);
         fMaskFilter = std::move(mf);
 
+        // The unfiltered glyph is generated a second time here and may differ from
+        // the glyph that produced origGlyph: font backends are not required to be
+        // deterministic across loads (e.g. the CFF `random` operator, or TrueType
+        // bytecode keeping state in FreeType's twilight zone). imageSize() is 0 for
+        // both empty and too-large glyphs, which would pass the storage check below
+        // and alias an oversized image onto origGlyph's small storage. Refuse to
+        // rasterize such a glyph and leave origGlyph's image cleared.
+        if (tmpGlyph.isEmpty() || tmpGlyph.imageTooLarge()) {
+            sk_bzero(origGlyph.fImage, origGlyph.imageSize());
+            return;
+        }
+
         // Use the origGlyph storage for the temporary unfiltered mask if it will fit.
         if (tmpGlyph.fMaskFormat == origGlyph.fMaskFormat &&
             tmpGlyph.imageSize() <= origGlyph.imageSize())
@@ -823,6 +835,13 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
         int height = srcMask.fBounds.height();
         int dstRB = dstMask.fRowBytes;
         int srcRB = srcMask.fRowBytes;
+
+        // If the unfiltered and the filtered bounds diverged so far that they do not
+        // overlap, there is nothing valid to copy; leave origGlyph's image cleared.
+        if (width <= 0 || height <= 0) {
+            sk_bzero(origGlyph.fImage, origGlyph.imageSize());
+            return;
+        }
 
         const uint8_t* src = srcMask.fImage;
         uint8_t* dst = dstMask.image();
