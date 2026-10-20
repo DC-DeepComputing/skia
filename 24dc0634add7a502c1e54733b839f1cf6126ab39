@@ -22,6 +22,30 @@
       },
       "revId": "24dc0634add7a502c1e54733b839f1cf6126ab39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "168f6f3d_7cbf155a",
+        "filename": "src/gpu/ganesh/GrDrawingManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-20T20:20:07Z",
+      "side": 1,
+      "message": "In theory we could, but GrOnFlushCallbackObject we\u0027re really designed for objects that have various tasks to execute throughout the flush. For example before this they all implement a preFlush() callback which the atlases use to create their resources. So adding the objects you suggested into this is kind of shoehorning them in a system to take advantage of one specific part/use of it and ignoring all the rest.",
+      "parentUuid": "c6d0e04a_72ee2d7d",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 86
+      },
+      "revId": "24dc0634add7a502c1e54733b839f1cf6126ab39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
