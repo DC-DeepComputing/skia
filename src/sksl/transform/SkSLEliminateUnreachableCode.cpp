@@ -7,6 +7,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLModule.h"
@@ -36,6 +37,8 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
                                        ProgramUsage* usage) {
     class UnreachableCodeEliminator : public ProgramWriter {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         UnreachableCodeEliminator(ProgramUsage* usage) : fUsage(usage) {
             fFoundFunctionExit.push_back(false);
             fFoundBlockExit.push_back(false);

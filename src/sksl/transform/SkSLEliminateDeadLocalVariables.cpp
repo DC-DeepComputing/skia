@@ -7,6 +7,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLModule.h"
@@ -41,6 +42,8 @@ static bool eliminate_dead_local_variables(const Context& context,
                                            ProgramUsage* usage) {
     class DeadLocalVariableEliminator : public ProgramWriter {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         DeadLocalVariableEliminator(const Context& context, ProgramUsage* usage)
                 : fContext(context)
                 , fUsage(usage) {}

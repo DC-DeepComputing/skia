@@ -9,6 +9,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLModule.h"
@@ -42,6 +43,8 @@ namespace {
 
 class ProgramUsageVisitor : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     ProgramUsageVisitor(ProgramUsage* usage, int delta) : fUsage(usage), fDelta(delta) {}
 
     bool visitProgramElement(const ProgramElement& pe) override {

@@ -10,6 +10,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkStringView.h"
@@ -1058,6 +1059,8 @@ bool is_nontrivial_expression(const Expression& expr) {
 // synthesize arguments when writing out function definitions.
 class FunctionDependencyResolver : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     using Deps = WGSLFunctionDependencies;
     using DepsMap = WGSLCodeGenerator::ProgramRequirements::DepsMap;
 

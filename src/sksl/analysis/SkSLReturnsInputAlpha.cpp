@@ -7,6 +7,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/analysis/SkSLProgramUsage.h"
@@ -36,6 +37,8 @@ namespace {
 
 class ReturnsInputAlphaVisitor : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     ReturnsInputAlphaVisitor(const ProgramUsage& u) : fUsage(u) {}
 
     bool visitProgramElement(const ProgramElement& pe) override {

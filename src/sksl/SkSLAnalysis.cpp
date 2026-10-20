@@ -10,6 +10,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTHash.h"
@@ -69,6 +70,8 @@ namespace {
 // Visitor that determines the merged SampleUsage for a given child in the program.
 class MergeSampleUsageVisitor : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     MergeSampleUsageVisitor(const Context& context,
                             const Variable& child,
                             bool writesToSampleCoords)
@@ -229,6 +232,8 @@ private:
 
 class VariableWriteVisitor : public ProgramVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     VariableWriteVisitor(const Variable* var)
         : fVar(var) {}
 
@@ -260,6 +265,8 @@ private:
 // know if the base (`x`) is assignable; the index expression (`1`) doesn't need to be.
 class IsAssignableVisitor {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     IsAssignableVisitor(ErrorReporter* errors) : fErrors(errors) {}
 
     bool visit(Expression& expr, Analysis::AssignmentInfo* info) {
@@ -429,6 +436,8 @@ bool Analysis::ContainsRTAdjust(const Expression& expr) {
 bool Analysis::ContainsVariable(const Expression& expr, const Variable& var) {
     class ContainsVariableVisitor : public ProgramVisitor {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         ContainsVariableVisitor(const Variable* v) : fVariable(v) {}
 
         bool visitExpression(const Expression& expr) override {

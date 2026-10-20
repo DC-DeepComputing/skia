@@ -8,6 +8,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEnumBitMask.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkStringView.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLModule.h"
@@ -61,6 +62,8 @@ void Transform::RenamePrivateSymbols(Context& context,
                                      ProgramKind kind) {
     class SymbolRenamer : public ProgramWriter {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         SymbolRenamer(Context& context,
                       ProgramUsage* usage,
                       SymbolTable* symbolBase,
