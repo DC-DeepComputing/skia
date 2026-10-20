@@ -22,6 +22,30 @@
       },
       "revId": "46df2a9c7aaf0455125d75470a2bdec63245463a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac0bb890_a98d957b",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-20T17:50:50Z",
+      "side": 1,
+      "message": "Done. I tried using Jetski to apply our style guide to the CL, I think it missed some. Sorry about that.",
+      "parentUuid": "26a8617b_a7e2ff5a",
+      "range": {
+        "startLine": 43,
+        "startChar": 92,
+        "endLine": 43,
+        "endChar": 102
+      },
+      "revId": "46df2a9c7aaf0455125d75470a2bdec63245463a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -70,6 +70,24 @@
       "parentUuid": "f95672b1_ce8d95ed",
       "revId": "9dbdc7e40f117dea0e4cd4e017f0a160c19788c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a64996c5_1bfd3927",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-20T17:50:50Z",
+      "side": 1,
+      "message": "Ok, sounds good.",
+      "parentUuid": "f2577e11_8f666673",
+      "revId": "9dbdc7e40f117dea0e4cd4e017f0a160c19788c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
