@@ -16,6 +16,24 @@
       "message": "Thanks for putting this together! While testing PS3 against a few additional layout scenarios, I found four edge cases where `fMinIntrinsicWidth` or line wrapping with soft hyphens still diverges:\n\n1. **Letter-spaced `U+00AD` cluster in `lookAhead`\u0027s `further` loop (`TextWrapper.cpp:144`)**:\n   When `letterSpacing !\u003d 0`, `addLetterSpacesEvenly()` gives the `U+00AD` cluster a non-zero width (`further-\u003ewidth() \u003d\u003d letterSpacing`). Because the `further` loop stops at `further-\u003eisSoftBreak()` *before* `nextWordLength +\u003d further-\u003ewidth()`, `nextWordLength` omits `U+00AD`\u0027s width whenever a too-long word (or a break landing directly on `U+00AD`) is measured via `lookAhead`.\n\n2. **`nextWordLength \u003c\u003d maxWidth` and the post-`maxLines` remainder loop (`TextWrapper.cpp:175, 514`)**:\n   In `lookAhead`, `fMinIntrinsicWidth \u003d std::max(fMinIntrinsicWidth, nextWordLength + nextWordHyphenWidth)` is only recorded inside `if (nextWordLength \u003e maxWidth)`. When a word overflows the current line (`fWords.width() + ... \u003e maxWidth`) but `nextWordLength \u003c\u003d maxWidth` and the paragraph then hits `maxLines`, the post-`maxLines` remainder loop (`while (cluster !\u003d end ...)`) does not split words at `cluster-\u003eisSoftBreak()` or include `softHyphenWidth(cluster)`—so words after `maxLines` are accumulated across soft hyphens as a single unbreakable word without hyphen width.\n\n3. **`layout(0)` (`maxWidth \u003d\u003d 0`) (`TextWrapper.cpp:153, 175`)**:\n   For `maxWidth \u003d\u003d 0` (which places 1 cluster per line and computes `nextWordLength \u003d std::max(nextWordLength, further-\u003ewidth())`), stopping at `further-\u003eisSoftBreak()` and adding `nextWordHyphenWidth` inflates `fMinIntrinsicWidth` past the single-cluster maximum even though no soft-hyphen break is taken at width 0. Guarding the soft-break stop in the `further` loop with `maxWidth \u003e 0` keeps `nextWordHyphenWidth \u003d\u003d 0` when `maxWidth \u003d\u003d 0`, while recording `nextWordLength + nextWordHyphenWidth` in the `else` branch of `if (nextWordLength \u003e maxWidth)` handles `nextWordLength \u003c\u003d maxWidth` without overwriting `nextShortWordLength` when `nextNonBreakingSpace !\u003d nullptr`.\n\n4. **Fallback-font soft hyphens in `softHyphenWidth` (`TextWrapper.cpp:97`)**:\n   `TextLine::createSoftHyphen()` shapes the visible hyphen via `shapeEllipsis()`, which performs font fallback when the cluster\u0027s primary font does not cover `fSoftHyphenString`. However, `softHyphenWidth` in `TextWrapper.cpp` only queries `cluster-\u003erun().font().textToGlyphs()`, which returns glyph ID `0` (width `0` or `.notdef`) when the primary font lacks the hyphen glyph—causing `lookAhead` and `fMinIntrinsicWidth` to under-measure the hyphen that `TextLine` later draws. Checking that all glyphs from `textToGlyphs` are non-zero (fast path via `font.measureText`) and falling back to a shared `TextLine::ShapeString` helper keeps the fast path allocation-free while matching `createSoftHyphen` on fallback fonts.\n\nI uploaded a companion WIP CL stacked on top of PS3 with reproducer unit tests (in PS1) and the corresponding fix (in PS2) so you can inspect the diff or fold any parts of it directly into this CL:\nhttps://skia-review.googlesource.com/c/skia/+/1401656",
       "revId": "9869e0a7518a95a42fc8ecb394021ba89473c97b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcfd5d11_db456d98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4714569
+      },
+      "writtenOn": "2026-10-21T22:48:56Z",
+      "side": 1,
+      "message": "Thanks Julia, great catches! I ran your tests against PS3: all four fail, and with your PS2 the full SkParagraph suite passes (209/209) and the paragraph GMs are pixel-identical. PS4 folds in your PS2 unchanged, so 1401656 can be abandoned.\n\nOne side effect worth noting: the scan after maxLines now splits at every soft break, not only at soft hyphens, so truncated text without spaces (like CJK) also gets a smaller, correct min intrinsic width. I described it in the commit message.",
+      "parentUuid": "5177f66e_9ca8d673",
+      "revId": "9869e0a7518a95a42fc8ecb394021ba89473c97b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
