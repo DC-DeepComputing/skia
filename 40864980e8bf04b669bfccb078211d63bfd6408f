@@ -16,6 +16,230 @@
       "message": "hi Michael, pls have a scan when you have time",
       "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd641e65_eff6bea1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "Here are some thoughts, I think this is a good start but it\u0027s a complicated problem, so we\u0027ll need to iterate on it for a bit.",
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81dd99f5_19c35c4a",
+        "filename": "bench/SvgBench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "Defining a persistent benchmark for this option seems unnecessary to me. As noted in another comment, we should instead convert the SVG into an SKP based on Chrome\u0027s own SVG rendering algorithm (if possible, otherwise you can export an SKP from any slide in viewer). The SKP can then be bundled with our other SKP benchmarks that are processed on perf.skia.org automatically and we can rely on the regression detection to show improvements or worsening performance over time.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 35
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f43c53e4_398c8a9d",
+        "filename": "gm/SvgGM.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to create an SvgGM. `viewer` and `dm` can already render SVGs by passing in the `--svgs [path]` command line argument.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 25
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29386b82_215a448e",
+        "filename": "modules/svg/include/SkSVGRenderContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "Can you lift the SkSVGRenderContext change to a prior CL (or follow-up)? It\u0027s independent from implementing atlas\u0027ed layers in Graphite.",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 67
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d272d3d0_40474fdf",
+        "filename": "modules/svg/tests/SvgRenderPassCountTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "I do not think we should have these be unit tests. If we want to track the performance of this sort of SVG, we should include the crbug svg in a CIPD package as an SKP that we benchmark and monitor on perf.skia.org. My preference would be for this to an SKP produced by Chrome\u0027s SVG rendering to more accurately match in-browser behavior compared to what Skia\u0027s SVG module produces as an SKP.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 2
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "555f930e_a9a0bf35",
+        "filename": "resources/images/test_both.svg",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "We don\u0027t include SVGs in resources/images. These should just be simple GMs written directly against the SkCanvas API inside a cpp file in `gm/`.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 79
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a9fe3ef_43fa9d53",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "This is difficult to reason about without more comments explaining when to call begin and end filterPasses(), and when or why we need to flushScratchDeviceAtlases().\n\nI would like to have a system where we only need 2 devices that we alternate back and forth between, but that would require keeping track of the atlas packing in a way that knows what needs to be flushed and sampled at a specific time.\n\nAn alternative that could be worth exploring is if we don\u0027t try and put it into an atlas immediately, but inside the ScratchResourceManager at the time we are snapping a Recording, we position small scratch textures into a larger backing texture and use the \"replay\" offset to control positioning it into the texture.",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 5
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5714da3_3d12d595",
+        "filename": "src/gpu/graphite/ContextOptionsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "We don\u0027t need to also add this in ContextOptionsPriv; fDrawListLayer existed first in Priv and migrated to the public options and was never cleaned up here.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 37
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "151e50ba_3f2bc5f3",
+        "filename": "src/gpu/graphite/ScratchDeviceAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "We should be able to get the atlas proxy from the `fAtlasDC` instead.",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 36
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "036819cb_b0200127",
+        "filename": "src/gpu/graphite/ScratchDeviceAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 1,
+      "message": "I don\u0027t think we need these to be stored here and shared by each atlas\u0027ed `Device`. a) this won\u0027t extend to when we remove BoundsManager or IntersectionTreeSet as we move over to the DrawListLayer system. b) the atlas\u0027 Rectanizer should ensure that each child is put in a disjoint region of the texture, so as long as we set the scissor correctly for each child, the this tracking can be managed by each device internally.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 32
+      },
+      "revId": "40864980e8bf04b669bfccb078211d63bfd6408f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

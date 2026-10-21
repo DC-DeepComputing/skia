@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d649f9c_48d64366",
+        "filename": "tools/SvgPathExtractor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T18:16:38Z",
+      "side": 0,
+      "message": "This is a good find, but can also be a separate small CL so it\u0027s not held up by reviewing the larger change.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 85
+      },
+      "revId": "79a00d7c489848260028fbb787417da3e8d8deaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
