@@ -1381,7 +1381,12 @@ Program::StackDepths Program::tempStackMaxDepths() const {
 
     for (const Instruction& inst : fInstructions) {
         int stackID = inst.fStackID;
-        current[stackID] += stack_usage(inst);
+        int usage = stack_usage(inst);
+        if (usage > 0 && current[stackID] > INT_MAX - usage) {
+            largest[stackID] = -1;
+            return largest;
+        }
+        current[stackID] += usage;
         largest[stackID] = std::max(current[stackID], largest[stackID]);
         // If we assert here, the generated program has popped off the top of the stack.
         SkASSERTF_RELEASE(current[stackID] >= 0, "unbalanced temp stack push/pop on stack");
@@ -1410,9 +1415,19 @@ Program::Program(TArray<Instruction> instrs,
         , fDebugTrace(debugTrace) {
     fTempStackMaxDepths = this->tempStackMaxDepths();
 
+    SkSafeMath safe;
     fNumTempStackSlots = 0;
     for (const int depth : fTempStackMaxDepths) {
-        fNumTempStackSlots += depth;
+        if (depth < 0) {
+            fNumTempStackSlots = -1;
+            break;
+        }
+        size_t total = safe.add(fNumTempStackSlots, depth);
+        if (!safe || !SkTFitsIn<int>(total)) {
+            fNumTempStackSlots = -1;
+            break;
+        }
+        fNumTempStackSlots = SkToInt(total);
     }
 
     if (fDebugTrace) {
@@ -1673,6 +1688,9 @@ static void* context_bit_pun(intptr_t val) {
 }
 
 std::optional<Program::SlotData> Program::allocateSlotData(SkArenaAlloc* alloc) const {
+    if (fNumValueSlots < 0 || fNumTempStackSlots < 0 || fNumImmutableSlots < 0) {
+        return std::nullopt;
+    }
     // Allocate a contiguous slab of slot data for immutables, values, and stack entries.
     const size_t N = SkOpts::raster_pipeline_highp_stride;
     const int scalarWidth = 1 * sizeof(float);

@@ -380,3 +380,48 @@ DEF_TEST(SkSLRasterPipeline_ConvertProgram_b540157141, r) {
             SkSL::MakeRasterPipelineProgram(*program, *main->definition());
     REPORTER_ASSERT(r, rasterProg);
 }
+
+DEF_TEST(SkSLRasterPipelineSlotCountWraparound, r) {
+    auto names = [](const char* prefix, int n) {
+        std::stringstream s;
+        for (int i = 0; i < n; ++i) {
+            if (i > 0) {
+                s << ",";
+            }
+            s << prefix << i;
+        }
+        return s.str();
+    };
+
+    constexpr int kCalls = 43663;
+    std::stringstream str;
+    str << "struct A{float4x4 " << names("a", 64) << ";};";
+    str << "struct E{A " << names("b", 96) << ";float " << names("c", 60) << ";};";
+    str << "struct G{E e;float4x4 " << names("y", 102) << ";};";
+    str << "const int k=2147483647+1;";
+    str << "G gg[1];";
+    str << "noinline E f(){return gg[k].e;}";
+    str << "half4 main(float2 p){if(k>0){";
+    for (int i = 0; i < kCalls; ++i) {
+        str << "f();";
+    }
+    str << "}return half4(0);}";
+    std::string src = str.str();
+
+    SkSL::Compiler compiler;
+    std::unique_ptr<SkSL::Program> program =
+            compiler.convertProgram(SkSL::ProgramKind::kRuntimeShader, src, {});
+    if (!program) {
+        ERRORF(r, "Unexpected error compiling program:\n%s", compiler.errorText().c_str());
+        return;
+    }
+    const SkSL::FunctionDeclaration* main = program->getFunction("main");
+    if (!main) {
+        ERRORF(r, "Program must have a 'main' function");
+        return;
+    }
+    std::unique_ptr<SkSL::RP::Program> rasterProg =
+            SkSL::MakeRasterPipelineProgram(*program, *main->definition());
+    REPORTER_ASSERT(r, !rasterProg);
+}
+
