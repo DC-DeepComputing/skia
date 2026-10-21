@@ -16,6 +16,24 @@
       "message": "Two small things needed to pass CQ after rebasing onto ToT `main`:\n1. `modules/skparagraph/tests/SkParagraphTest.cpp`: `123ec1997d` (`Reland \"Templatize SkExecutor\"`) turned `SkExecutors` into a class template, so `SkExecutors::MakeFIFOThreadPool(kThreadCount, false)` in `SkParagraph_FallbackCacheConcurrently` now needs to be `SkFunctionalExecutors::MakeFIFOThreadPool(kThreadCount, false)`.\n2. `modules/skparagraph/include/FontCollection.h`: `tools/rewrite_includes.py` in presubmit requires the forward declarations at the top (`class Paragraph;` and `class TextStyle;`) to be sorted alphabetically.",
       "revId": "d7605e0df8fc3893fb6deaf44bf9fae521ce18e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fc6d316_6022e5ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T15:57:01Z",
+      "side": 1,
+      "message": "Done. I rebased onto `main` (f935159214) and made both changes: the test now uses `SkFunctionalExecutors::MakeFIFOThreadPool`, and the forward declarations in `FontCollection.h` are sorted. The SkParagraph tests pass, and I ran `SkParagraph_FallbackCacheConcurrently` 5 more times with no failures.",
+      "parentUuid": "ec083f0d_60bfce09",
+      "revId": "d7605e0df8fc3893fb6deaf44bf9fae521ce18e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
