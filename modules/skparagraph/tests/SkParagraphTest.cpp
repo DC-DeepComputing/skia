@@ -10647,6 +10647,68 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenBreakNotTakenNeedsNoRoom, reporter) {
     checkLines(reporter, paragraph.get(), "xy abcdi|jklm");
 }
 
+// Laid out at its min intrinsic width, text with soft hyphens doesn't overflow: as in CSS
+// min-content, the min intrinsic width includes the hyphen drawn at a soft hyphen break.
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenMinIntrinsicWidthIncludesHyphen, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text = "xy abcd~ef";
+    SkScalar minWidth = layoutWithSoftHyphens(fontCollection, text, 1000)->getMinIntrinsicWidth();
+    auto paragraph = layoutWithSoftHyphens(fontCollection, text, minWidth);
+    checkLines(reporter, paragraph.get(), "xy|abcd-|ef");
+    REPORTER_ASSERT(reporter,
+                    paragraph->getLongestLine() <= minWidth + EPSILON100,
+                    "%g > %g",
+                    paragraph->getLongestLine(),
+                    minWidth);
+}
+
+// The hyphen counts with the width of the string that's drawn, and only where one is drawn.
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenMinIntrinsicWidthCountsDrawnHyphen, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    auto minWidth = [&](const char* text, bool render, const char* hyphen) {
+        auto configure = [&](ParagraphStyle& style) {
+            style.setRenderSoftHyphens(render);
+            style.setSoftHyphenString(SkString(hyphen));
+        };
+        return layoutWithSoftHyphens(fontCollection, text, 1000, configure)->getMinIntrinsicWidth();
+    };
+    // "abcd" is the widest word, so the hidden case is its width.
+    SkScalar hidden = minWidth("xy abcd~ef", false, "-");
+    for (const char* hyphen : {"-", "--"}) {
+        SkScalar extra = minWidth("xy abcd~ef", true, hyphen) - hidden;
+        SkScalar hyphenWidth = singleLineWidth(fontCollection, hyphen);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(extra, hyphenWidth, EPSILON100),
+                        "%s: %g vs %g",
+                        hyphen,
+                        extra,
+                        hyphenWidth);
+    }
+    // A soft hyphen at the end of the text never breaks a line, so no hyphen is drawn for it.
+    SkScalar atEnd = minWidth("xy abcd~", true, "-");
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(atEnd, minWidth("xy abcd~", false, "-")));
+}
+
+// The min intrinsic width doesn't depend on the layout width: a word too long for the line still
+// counts with its hyphen.
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenMinIntrinsicWidthOfTooLongWord, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    const char* text = "xy abcdefghij~k";
+    SkScalar wide = layoutWithSoftHyphens(fontCollection, text, 1000)->getMinIntrinsicWidth();
+    SkScalar narrow = layoutWithSoftHyphens(fontCollection, text, 30)->getMinIntrinsicWidth();
+    auto hide = [](ParagraphStyle& style) { style.setRenderSoftHyphens(false); };
+    SkScalar hidden = layoutWithSoftHyphens(fontCollection, text, 30, hide)->getMinIntrinsicWidth();
+    REPORTER_ASSERT(
+            reporter, SkScalarNearlyEqual(narrow, wide, EPSILON100), "%g vs %g", narrow, wide);
+    REPORTER_ASSERT(reporter, narrow > hidden + 1, "%g vs %g", narrow, hidden);
+}
+
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 UNIX_ONLY_TEST(SkParagraph_ICU_EmojiRuns, reporter) {
     SkUnicode_Emoji(SkUnicodes::ICU::Make(), reporter);
