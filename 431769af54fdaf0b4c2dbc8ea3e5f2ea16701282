@@ -229,6 +229,30 @@
       },
       "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45483113_18f5daf3",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-21T15:33:11Z",
+      "side": 1,
+      "message": "Even if we don\u0027t remove `GetOpenTypeSVGDecoderFactory()` in this CL (which is a reasonable thing), we do not want to add the new public function on `SkContext`. That should be accessed through `SkContextPriv` inside the `SkGraphcis` function.",
+      "parentUuid": "2a372107_aea45903",
+      "range": {
+        "startLine": 107,
+        "startChar": 50,
+        "endLine": 107,
+        "endChar": 78
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
