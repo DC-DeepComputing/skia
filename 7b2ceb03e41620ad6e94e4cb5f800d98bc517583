@@ -39,6 +39,30 @@
       },
       "revId": "7b2ceb03e41620ad6e94e4cb5f800d98bc517583",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bbcfb72_d1f62789",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 3399406
+      },
+      "writtenOn": "2026-10-21T07:19:06Z",
+      "side": 1,
+      "message": "Done in PS3: the check is now `color !\u003d half4(0)` in `sk_csxform_srgb`, and the same skip is in the PQ, HLG and inverse-HLG stages. All four use `sign(x) * f(|x|)`, so transparent black maps to 0 for any parameters; the only behavior change is that the HLG OOTF no longer produces NaN from `pow(0, negative)` for these pixels.",
+      "parentUuid": "87f70454_6e9e7e76",
+      "range": {
+        "startLine": 123,
+        "startChar": 24,
+        "endLine": 123,
+        "endChar": 37
+      },
+      "revId": "7b2ceb03e41620ad6e94e4cb5f800d98bc517583",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
