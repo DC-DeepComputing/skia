@@ -354,20 +354,28 @@ DEF_TEST(SkScalerContext_GetImageNonDeterministicBounds, reporter) {
         const SkRect fSecondBounds;
     };
 
-    for (const SkRect& secondBounds : {
+    struct Case {
+        SkRect secondBounds;
+        SkFont::Edging edging;
+        SkScalar sigma;
+    };
+    for (const Case& c : {
                  // Exceeds kMaxGlyphWidth so imageTooLarge() is true and imageSize() returns 0
-                 SkRect::MakeWH(1 << 14, 10),
+                 Case{SkRect::MakeWH(1 << 14, 10), SkFont::Edging::kAntiAlias, 1.0f},
                  // Zero-area unfiltered glyph on the second load
-                 SkRect::MakeEmpty(),
+                 Case{SkRect::MakeEmpty(), SkFont::Edging::kAntiAlias, 1.0f},
                  // Unfiltered bounds disjoint horizontally and vertically from the 10x10 dstMask
-                 SkRect::MakeXYWH(500, 0, 10, 10),
-                 SkRect::MakeXYWH(0, 500, 10, 10),
+                 Case{SkRect::MakeXYWH(500, 0, 10, 10), SkFont::Edging::kAntiAlias, 1.0f},
+                 Case{SkRect::MakeXYWH(0, 500, 10, 10), SkFont::Edging::kAntiAlias, 1.0f},
+                 // Partially overlapping kBW_Format bounds when filterMask() is a no-op (sigma 0.1)
+                 Case{SkRect::MakeWH(9, 10), SkFont::Edging::kAlias, 0.1f},
          }) {
-        sk_sp<SkTypeface> tf = sk_make_sp<NonDeterministicTypeface>(secondBounds);
+        sk_sp<SkTypeface> tf = sk_make_sp<NonDeterministicTypeface>(c.secondBounds);
         SkFont font(tf, 16.0f);
+        font.setEdging(c.edging);
         SkPaint paint;
         // A mask filter triggers the second makeGlyph() call inside SkScalerContext::getImage
-        paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0f));
+        paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, c.sigma));
 
         SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(
                 font, paint, SkSurfaceProps(0, kUnknown_SkPixelGeometry),

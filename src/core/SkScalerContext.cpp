@@ -783,15 +783,16 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
             memcpy(srcMask.image(), unfilteredGlyph->fImage, imageSize);
         }
 
-        SkASSERT_RELEASE(srcMask.fFormat == origGlyph.fMaskFormat);
         SkMaskBuilder dstMask = SkMaskBuilder(static_cast<uint8_t*>(origGlyph.fImage),
                                               origGlyph.iRect(), origGlyph.rowBytes(),
                                               origGlyph.maskFormat());
         SkIRect origBounds = dstMask.fBounds;
 
-        // If the unfiltered and the filtered bounds diverged so far that they do not
-        // overlap, there is nothing valid to copy; leave origGlyph's image cleared
-        if (!SkIRect::Intersects(srcMask.fBounds, dstMask.fBounds)) {
+        // The byte-wise intersection and copy below require matching 1-byte-per-pixel masks
+        // (kA8 or k3D) whose bounds overlap; otherwise clear origGlyph's image and bail out
+        if (srcMask.fFormat != origGlyph.fMaskFormat ||
+            (srcMask.fFormat != SkMask::kA8_Format && srcMask.fFormat != SkMask::k3D_Format) ||
+            !SkIRect::Intersects(srcMask.fBounds, dstMask.fBounds)) {
             sk_bzero(origGlyph.fImage, origGlyph.imageSize());
             return;
         }
@@ -849,7 +850,8 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
 
         // If not filling the full original glyph, clear it out first.
         if (dstMask.fBounds != origBounds) {
-            sk_bzero(origGlyph.fImage, origGlyph.fHeight * origGlyph.rowBytes());
+            // Use imageSize() so all 3 planes are cleared for k3D_Format
+            sk_bzero(origGlyph.fImage, origGlyph.imageSize());
         }
 
         while (--height >= 0) {
