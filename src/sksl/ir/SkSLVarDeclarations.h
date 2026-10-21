@@ -10,6 +10,7 @@
 
 #include "include/core/SkTypes.h"
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLModifierFlags.h"
@@ -89,7 +90,7 @@ public:
                                                 int arraySize,
                                                 std::unique_ptr<Expression> value);
     const Type& baseType() const {
-        return fBaseType;
+        return *fBaseType;
     }
 
     Variable* var() const {
@@ -121,7 +122,7 @@ private:
                                     std::unique_ptr<Expression>& value);
 
     raw_ptr<Variable> fVar;
-    const Type& fBaseType;
+    const raw_ref<const Type> fBaseType;
     int fArraySize;  // zero means "not an array"
     std::unique_ptr<Expression> fValue;
 
