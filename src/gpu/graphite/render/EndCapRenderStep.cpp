@@ -7,6 +7,8 @@
 
 #include "src/gpu/graphite/render/EndCapRenderStep.h"
 
+#include "include/core/SkM44.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkDebug.h"
@@ -40,19 +42,19 @@ EndCapRenderStep::EndCapRenderStep(Layout layout)
                                              | Flags::kPerformsShading
                                              | Flags::kHasTextures
                                              | Flags::kNoSelfIntersections,
-                     /*uniforms=*/{},
+                     // The local coordinates are derived from device positions. The transform is
+                     // shared by all of a draw's caps, so it isn't repeated in every instance.
+                     /*uniforms=*/{{"deviceToLocal", SkSLType::kFloat3x3}},
                      PrimitiveType::kTriangleStrip,
                      /*stencilSettings=*/{},
                      /*vertexAttrs=*/{},
+                     // The caps' coordinates are written as the uint16 values that EndCaps stores.
                      /*instanceAttrs=*/
-                     {{"tileBounds", VertexAttribType::kFloat4, SkSLType::kFloat4},
-                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt},
+                     {{"xy", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"widthAndPage", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"mask", VertexAttribType::kUInt, SkSLType::kUInt},
-                      {"texPage", VertexAttribType::kUInt, SkSLType::kUInt},
-                      {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
-                      {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
-                      {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}},
+                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                      {"ssboIndex", VertexAttribType::kUInt, SkSLType::kUInt}},
                      /*storageUniforms=*/{},
                      /*varyings=*/
                      {{{"rectCoord", SkSLType::kFloat2},
@@ -62,16 +64,18 @@ EndCapRenderStep::EndCapRenderStep(Layout layout)
 EndCapRenderStep::~EndCapRenderStep() {}
 
 std::string EndCapRenderStep::vertexSkSL(const RootNodesInfo&) const {
-    return "float2 position = float2(sk_VertexID < 2 ? tileBounds.x : tileBounds.z,"
-                                    "(sk_VertexID % 2) == 0 ? tileBounds.y : tileBounds.w);"
-           "float2 rectCoordAttr = float2(sk_VertexID < 2 ? 0.0 : (tileBounds.z - tileBounds.x),"
-                                        "(sk_VertexID % 2) == 0 ? 0.0 : (tileBounds.w - "
-                                        "tileBounds.y));"
-           "float4 devPosition = endcap_vertex_fn(position, rectCoordAttr, depth, mask, texPage, "
-                                                 "maskIndex, texPageVarying, rectCoord);"
-           "float3x3 invM = float3x3(mat0, mat1, mat2);"
-           "float3 localCoords = invM * float3(position, 1.0);"
-           "stepLocalCoords = localCoords.xy / localCoords.z;";
+    return SkSL::String::printf(
+            "float2 capOrigin = float2(xy);"
+            "float2 capSize = float2(float(widthAndPage.x), %d.0);"
+            "float2 rectCoordAttr = float2(sk_VertexID < 2 ? 0.0 : capSize.x,"
+                                          "(sk_VertexID %% 2) == 0 ? 0.0 : capSize.y);"
+            "float2 position = capOrigin + rectCoordAttr;"
+            "float4 devPosition = endcap_vertex_fn(position, rectCoordAttr, depth, mask, "
+                                                  "uint(widthAndPage.y), maskIndex, "
+                                                  "texPageVarying, rectCoord);"
+            "float3 localCoords = deviceToLocal * float3(position, 1.0);"
+            "stepLocalCoords = localCoords.xy / localCoords.z;",
+            SparseStripConfig::kTileHeight);
 }
 
 std::string EndCapRenderStep::texturesAndSamplersSkSL(
@@ -93,6 +97,8 @@ const char* EndCapRenderStep::fragmentCoverageSkSL() const {
                                                "texPageVarying);";
 }
 
+bool EndCapRenderStep::usesUniformsInFragmentSkSL() const { return false; }
+
 void EndCapRenderStep::writeVertices(DrawWriter* writer,
                                      StorageContext* /*storageContext*/,
                                      const DrawParams& params,
@@ -107,30 +113,13 @@ void EndCapRenderStep::writeVertices(DrawWriter* writer,
         return;
     }
 
-    SkM44 invM;
-    if (!params.transform().matrix().invert(&invM)) {
-        return;
-    }
-
     DrawWriter::Instances instances{*writer, {}, {}, 4};
     instances.reserve(caps.size());
 
-    float depth = params.order().depthAsFloat();
-    float height = static_cast<float>(SparseStripConfig::kTileHeight);
-
+    const float depth = params.order().depthAsFloat();
     for (const auto& cap : caps) {
-        float l = static_cast<float>(cap.fX);
-        float t = static_cast<float>(cap.fY);
-        float width = static_cast<float>(cap.fWidth);
-
-        float r = l + width;
-        float b = t + height;
-
-        instances.append(1) << l << t << r << b << depth << ssboIndex << cap.fAlphaIndex
-                            << static_cast<uint32_t>(cap.fTexPage)
-                            << invM.rc(0, 0) << invM.rc(1, 0) << invM.rc(3, 0)  // mat0
-                            << invM.rc(0, 1) << invM.rc(1, 1) << invM.rc(3, 1)  // mat1
-                            << invM.rc(0, 3) << invM.rc(1, 3) << invM.rc(3, 3); // mat2
+        instances.append(1) << cap.fX << cap.fY << cap.fWidth << cap.fTexPage << cap.fAlphaIndex
+                            << depth << ssboIndex;
     }
 }
 
@@ -141,6 +130,10 @@ void EndCapRenderStep::writeUniformsAndTextures(const DrawParams& params,
 
     SkASSERT(params.geometry().isEndCaps());
     const auto& proxies = params.geometry().endCaps().proxies();
+
+    SkM44 deviceToLocal;
+    SkAssertResult(params.transform().matrix().invert(&deviceToLocal));
+    gatherer->write(deviceToLocal.asM33());
 
     for (int i = 0; i < SparseStripConfig::kNumAlphaBindings; ++i) {
         SkASSERT(proxies[i] != nullptr);
