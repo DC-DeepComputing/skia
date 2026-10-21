@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0158b01d_cf8b6898",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-21T21:55:07Z",
+      "side": 1,
+      "message": "Thanks for working on this! Two small follow-ups (I uploaded a companion WIP CL on top of PS 5 to illustrate both the tests and the fix: https://skia-review.googlesource.com/c/skia/+/1401776):\n1. In `FontCollection::defaultEmojiFallback`, on macOS/iOS `matchFamilyStyle(kColorEmojiFontMac, SkFontStyle())` does not depend on `emojiStart`, `fontStyle`, or `locale`. Caching it under `Key(emojiStart, true, {}, fontStyle, locale)` causes every distinct emoji codepoint (or style/locale) to miss the cache, re-query `matchFamilyStyle(\"Apple Color Emoji\", ...)`, and insert duplicate entries into `SkLRUCache` (which is why your benchmark table shows `10` `matchFamilyStyle` calls for a pool of 10 emoji instead of `1`). Also, calling `fDefaultFontManager-\u003ematchFamilyStyle(...)` directly inside `for (const auto\u0026 manager : this-\u003egetFontManagerOrder())` bypasses higher-priority managers and dereferences `nullptr` if only `setTestFontManager` / `setAssetFontManager` is configured. Caching the `kColorEmojiFontMac` lookup under a single key via `getFontManagerOrder()` fixes both.\n2. Since the commit message notes that including `families[0]` in the key fixes the style-order dependency when a paragraph has two styles with different `families[0]`, could you also include a check for two styles with different `families[0]` in `SkParagraph_FallbackCacheAcrossParagraphs` (and rebase onto main now that https://skia-review.googlesource.com/c/skia/+/1400636 has landed)? Feel free to fold the changes from https://skia-review.googlesource.com/c/skia/+/1401776 directly into your CL.",
+      "revId": "cc2a90161dc157a01069df106d9b332d95305e20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
