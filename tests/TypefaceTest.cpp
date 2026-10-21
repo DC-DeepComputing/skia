@@ -452,15 +452,78 @@ DEF_TEST(TypefaceAxes, reporter) {
         };
         SkFontArguments params;
         params.setVariationDesignPosition({position, std::size(position)});
+        params.setSyntheticBold(true);
+        params.setSyntheticOblique(true);
         sk_sp<SkTypeface> typeface = fm->makeFromStream(std::move(distortable), params);
         test(typeface.get(), Variation{&position[1], 1}, -1);
 
         if (typeface) {
+            if (std::unique_ptr<SkStreamAsset> em = GetResourceAsStream("fonts/Em.ttf")) {
+                SkFontArguments synArgs;
+                synArgs.setSyntheticBold(true);
+                synArgs.setSyntheticOblique(true);
+                if (sk_sp<SkTypeface> emSyn = fm->makeFromStream(std::move(em), synArgs)) {
+                    REPORTER_ASSERT(reporter,
+                                    typeface->isSyntheticBold() == emSyn->isSyntheticBold());
+                    REPORTER_ASSERT(reporter,
+                                    typeface->isSyntheticOblique() == emSyn->isSyntheticOblique());
+                }
+            }
             // Cloning without specifying any parameters should produce an equivalent variation.
             sk_sp<SkTypeface> clone = typeface->makeClone(SkFontArguments());
             test(clone.get(), Variation{&position[1], 1}, -1);
+            if (clone) {
+                REPORTER_ASSERT(reporter, clone->isSyntheticBold() == typeface->isSyntheticBold());
+                REPORTER_ASSERT(reporter,
+                                clone->isSyntheticOblique() == typeface->isSyntheticOblique());
+            }
         }
     }
+}
+
+DEF_TEST(TypefaceCollectionIndex, reporter) {
+    std::unique_ptr<SkStreamAsset> stream(GetResourceAsStream("fonts/test.ttc"));
+    if (!stream) {
+        REPORT_FAILURE(reporter, "fonts/test.ttc", SkString("Cannot load resource"));
+        return;
+    }
+
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
+    sk_sp<SkTypeface> face0 = fm->makeFromStream(stream->duplicate(), 0);
+    if (!face0) {
+        // Not all SkFontMgr can MakeFromStream().
+        return;
+    }
+    int index0 = -1;
+    std::unique_ptr<SkStreamAsset> open0 = face0->openStream(&index0);
+    REPORTER_ASSERT(reporter, open0);
+    REPORTER_ASSERT(reporter, index0 == 0, "index0: %d", index0);
+
+    sk_sp<SkTypeface> face1 = fm->makeFromStream(stream->duplicate(), 1);
+    if (face1) {
+        int index1 = -1;
+        std::unique_ptr<SkStreamAsset> open1 = face1->openStream(&index1);
+        REPORTER_ASSERT(reporter, open1);
+        REPORTER_ASSERT(reporter, index1 == 1, "index1: %d", index1);
+        REPORTER_ASSERT(reporter, face0->fontStyle() != face1->fontStyle());
+
+        SkFontArguments args;
+        args.setCollectionIndex(1);
+        args.setSyntheticBold(true);
+        args.setSyntheticOblique(true);
+        sk_sp<SkTypeface> face1Syn = fm->makeFromStream(stream->duplicate(), args);
+        REPORTER_ASSERT(reporter, face1Syn);
+        if (face1Syn) {
+            int index1Syn = -1;
+            std::unique_ptr<SkStreamAsset> open1Syn = face1Syn->openStream(&index1Syn);
+            REPORTER_ASSERT(reporter, open1Syn);
+            REPORTER_ASSERT(reporter, index1Syn == 1, "index1Syn: %d", index1Syn);
+        }
+    }
+
+    // test.ttc only has 2 faces (indices 0 and 1); out-of-range indices should fail.
+    sk_sp<SkTypeface> faceOutOfBounds = fm->makeFromStream(stream->duplicate(), 2);
+    REPORTER_ASSERT(reporter, !faceOutOfBounds);
 }
 
 DEF_TEST(TypefaceVariationIndex, reporter) {
