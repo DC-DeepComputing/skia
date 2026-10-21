@@ -148,7 +148,7 @@ public:
     }
 
 private:
-    SymbolTable*& contextSymbolTable() { return fParser->fCompiler.context().fSymbolTable; }
+    SymbolTable*& contextSymbolTable() { return fParser->fCompiler->context().fSymbolTable; }
 
     Parser* fParser = nullptr;
 };
@@ -158,7 +158,7 @@ public:
     SK_ONLY_STACK_ALLOCATABLE;
 
     Checkpoint(Parser* p) : fParser(p) {
-        Context& context = fParser->fCompiler.context();
+        Context& context = fParser->fCompiler->context();
         fPushbackCheckpoint = fParser->fPushback;
         fLexerCheckpoint = fParser->fLexer.getCheckpoint();
         fOldErrorReporter = context.fErrors;
@@ -210,7 +210,7 @@ private:
 
     void restoreErrorReporter() {
         SkASSERT(fOldErrorReporter);
-        fParser->fCompiler.context().setErrorReporter(fOldErrorReporter);
+        fParser->fCompiler->context().setErrorReporter(fOldErrorReporter);
         fOldErrorReporter = nullptr;
     }
 
@@ -237,7 +237,7 @@ Parser::Parser(Compiler* compiler,
 Parser::~Parser() = default;
 
 SymbolTable* Parser::symbolTable() {
-    return fCompiler.symbolTable();
+    return fCompiler->symbolTable();
 }
 
 Token Parser::nextRawToken() {
@@ -397,7 +397,7 @@ void Parser::error(Token token, std::string_view msg) {
 }
 
 void Parser::error(Position position, std::string_view msg) {
-    fCompiler.context().fErrors->error(position, msg);
+    fCompiler->context().fErrors->error(position, msg);
 }
 
 Position Parser::rangeFrom(Position start) {
@@ -414,8 +414,8 @@ Position Parser::rangeFrom(Token start) {
 std::unique_ptr<Program> Parser::programInheritingFrom(const SkSL::Module* module) {
     this->declarations();
     std::unique_ptr<Program> result;
-    if (fCompiler.errorReporter().errorCount() == 0) {
-        result = fCompiler.releaseProgram(std::move(fText), std::move(fProgramElements));
+    if (fCompiler->errorReporter().errorCount() == 0) {
+        result = fCompiler->releaseProgram(std::move(fText), std::move(fProgramElements));
     } else {
         fProgramElements.clear();
     }
@@ -427,9 +427,9 @@ std::unique_ptr<SkSL::Module> Parser::moduleInheritingFrom(const SkSL::Module* p
     this->symbolTable()->takeOwnershipOfString(std::move(*fText));
     auto result = std::make_unique<SkSL::Module>();
     result->fParent = parentModule;
-    result->fSymbols = std::move(fCompiler.fGlobalSymbols);
+    result->fSymbols = std::move(fCompiler->fGlobalSymbols);
     result->fElements = std::move(fProgramElements);
-    result->fModuleType = fCompiler.context().fConfig->fModuleType;
+    result->fModuleType = fCompiler->context().fConfig->fModuleType;
     return result;
 }
 
@@ -450,7 +450,7 @@ void Parser::declarations() {
 
     while (!fEncounteredFatalError) {
         // We should always be at global scope when processing top-level declarations.
-        SkASSERT(fCompiler.context().fSymbolTable == fCompiler.globalSymbols());
+        SkASSERT(fCompiler->context().fSymbolTable == fCompiler->globalSymbols());
 
         switch (this->peek().fKind) {
             case Token::Kind::TK_END_OF_FILE:
@@ -486,7 +486,7 @@ void Parser::extensionDirective(Position start) {
     }
     // We expect a newline immediately after `#extension name : behavior`.
     if (this->expectNewline()) {
-        std::unique_ptr<SkSL::Extension> ext = Extension::Convert(fCompiler.context(),
+        std::unique_ptr<SkSL::Extension> ext = Extension::Convert(fCompiler->context(),
                                                                   this->rangeFrom(start),
                                                                   this->text(name),
                                                                   this->text(behavior));
@@ -510,10 +510,10 @@ void Parser::versionDirective(Position start, bool allowVersion) {
     }
     switch (version) {
         case 100:
-            fCompiler.context().fConfig->fRequiredSkSLVersion = Version::k100;
+            fCompiler->context().fConfig->fRequiredSkSLVersion = Version::k100;
             break;
         case 300:
-            fCompiler.context().fConfig->fRequiredSkSLVersion = Version::k300;
+            fCompiler->context().fConfig->fRequiredSkSLVersion = Version::k300;
             break;
         default:
             this->error(start, "unsupported version number");
@@ -543,7 +543,7 @@ void Parser::directive(bool allowVersion) {
 }
 
 bool Parser::modifiersDeclarationEnd(const SkSL::Modifiers& mods) {
-    std::unique_ptr<ModifiersDeclaration> decl = ModifiersDeclaration::Convert(fCompiler.context(),
+    std::unique_ptr<ModifiersDeclaration> decl = ModifiersDeclaration::Convert(fCompiler->context(),
                                                                                mods);
     if (!decl) {
         return false;
@@ -624,7 +624,7 @@ bool Parser::functionDeclarationEnd(Position start,
 
     SkSL::FunctionDeclaration* decl = nullptr;
     if (validParams) {
-        decl = SkSL::FunctionDeclaration::Convert(fCompiler.context(),
+        decl = SkSL::FunctionDeclaration::Convert(fCompiler->context(),
                                                   this->rangeFrom(start),
                                                   modifiers,
                                                   this->text(name),
@@ -649,7 +649,7 @@ bool Parser::prototypeFunction(SkSL::FunctionDeclaration* decl) {
 }
 
 bool Parser::defineFunction(SkSL::FunctionDeclaration* decl) {
-    const Context& context = fCompiler.context();
+    const Context& context = fCompiler->context();
     Token bodyStart = this->peek();
 
     std::unique_ptr<SymbolTable> symbolTable;
@@ -659,7 +659,7 @@ bool Parser::defineFunction(SkSL::FunctionDeclaration* decl) {
         AutoSymbolTable symbols(this, &symbolTable);
         if (decl) {
             for (Variable* param : decl->parameters()) {
-                symbolTable->addWithoutOwnership(fCompiler.context(), param);
+                symbolTable->addWithoutOwnership(fCompiler->context(), param);
             }
         }
 
@@ -722,20 +722,20 @@ bool Parser::arraySize(SKSL_INT* outResult) {
 }
 
 const Type* Parser::arrayType(const Type* base, int count, Position pos) {
-    const Context& context = fCompiler.context();
+    const Context& context = fCompiler->context();
     count = base->convertArraySize(context, pos, pos, count);
     if (!count) {
         return context.fTypes.fPoison.get();
     }
-    return this->symbolTable()->addArrayDimension(fCompiler.context(), base, count);
+    return this->symbolTable()->addArrayDimension(fCompiler->context(), base, count);
 }
 
 const Type* Parser::unsizedArrayType(const Type* base, Position pos) {
-    const Context& context = fCompiler.context();
+    const Context& context = fCompiler->context();
     if (!base->checkIfUsableInArray(context, pos)) {
         return context.fTypes.fPoison.get();
     }
-    return this->symbolTable()->addArrayDimension(fCompiler.context(), base,
+    return this->symbolTable()->addArrayDimension(fCompiler->context(), base,
                                                   SkSL::Type::kUnsizedArray);
 }
 
@@ -790,7 +790,7 @@ void Parser::globalVarDeclarationEnd(Position pos,
     if (!this->parseInitializer(pos, &initializer)) {
         return;
     }
-    this->addGlobalVarDeclaration(VarDeclaration::Convert(fCompiler.context(),
+    this->addGlobalVarDeclaration(VarDeclaration::Convert(fCompiler->context(),
                                                           this->rangeFrom(pos),
                                                           mods,
                                                           *type,
@@ -811,7 +811,7 @@ void Parser::globalVarDeclarationEnd(Position pos,
         if (!this->parseInitializer(pos, &anotherInitializer)) {
             return;
         }
-        this->addGlobalVarDeclaration(VarDeclaration::Convert(fCompiler.context(),
+        this->addGlobalVarDeclaration(VarDeclaration::Convert(fCompiler->context(),
                                                               this->rangeFrom(identifierName),
                                                               mods,
                                                               *type,
@@ -837,7 +837,7 @@ std::unique_ptr<Statement> Parser::localVarDeclarationEnd(Position pos,
     if (!this->parseInitializer(pos, &initializer)) {
         return nullptr;
     }
-    std::unique_ptr<Statement> result = VarDeclaration::Convert(fCompiler.context(),
+    std::unique_ptr<Statement> result = VarDeclaration::Convert(fCompiler->context(),
                                                                 this->rangeFrom(pos),
                                                                 mods,
                                                                 *type,
@@ -862,7 +862,7 @@ std::unique_ptr<Statement> Parser::localVarDeclarationEnd(Position pos,
         if (!this->parseInitializer(pos, &anotherInitializer)) {
             break;
         }
-        std::unique_ptr<Statement> next = VarDeclaration::Convert(fCompiler.context(),
+        std::unique_ptr<Statement> next = VarDeclaration::Convert(fCompiler->context(),
                                                                   this->rangeFrom(identifierName),
                                                                   mods,
                                                                   *type,
@@ -986,7 +986,7 @@ const Type* Parser::structDeclaration() {
             return nullptr;
         }
     }
-    std::unique_ptr<SkSL::StructDefinition> def = StructDefinition::Convert(fCompiler.context(),
+    std::unique_ptr<SkSL::StructDefinition> def = StructDefinition::Convert(fCompiler->context(),
                                                                             this->rangeFrom(start),
                                                                             this->text(name),
                                                                             std::move(fields));
@@ -1033,7 +1033,7 @@ bool Parser::parameter(std::unique_ptr<SkSL::Variable>* outParam) {
     if (!this->parseArrayDimensions(pos, &type)) {
         return false;
     }
-    *outParam = SkSL::Variable::Convert(fCompiler.context(),
+    *outParam = SkSL::Variable::Convert(fCompiler->context(),
                                         this->rangeFrom(pos),
                                         modifiers.fPosition,
                                         modifiers.fLayout,
@@ -1256,7 +1256,7 @@ std::unique_ptr<Statement> Parser::statement(bool bracesIntroduceNewScope) {
 const Type* Parser::findType(Position pos,
                              Modifiers* modifiers,
                              std::string_view name) {
-    const Context& context = fCompiler.context();
+    const Context& context = fCompiler->context();
     const Symbol* symbol = this->symbolTable()->find(name);
     if (!symbol) {
         this->error(pos, "no symbol named '" + std::string(name) + "'");
@@ -1288,16 +1288,16 @@ const Type* Parser::type(Modifiers* modifiers) {
     }
     if (!this->symbolTable()->isType(this->text(type))) {
         this->error(type, "no type named '" + std::string(this->text(type)) + "'");
-        return fCompiler.context().fTypes.fInvalid.get();
+        return fCompiler->context().fTypes.fInvalid.get();
     }
     const Type* result = this->findType(this->position(type), modifiers, this->text(type));
     if (result->isInterfaceBlock()) {
         // SkSL puts interface blocks into the symbol table, but they aren't general-purpose types;
         // you can't use them to declare a variable type or a function return type.
         this->error(type, "expected a type, found '" + std::string(this->text(type)) + "'");
-        return fCompiler.context().fTypes.fInvalid.get();
+        return fCompiler->context().fTypes.fInvalid.get();
     }
-    if (result->matches(*fCompiler.context().fTypes.fInvalid)) {
+    if (result->matches(*fCompiler->context().fTypes.fInvalid)) {
         // In runtime effects, reserved type names (e.g. sampler2D and texture2D) are aliases of the
         // invalid type. Reject the type whenever it is used.
         this->error(type, "invalid type");
@@ -1394,7 +1394,7 @@ bool Parser::interfaceBlock(const Modifiers& modifiers) {
     }
     this->expect(Token::Kind::TK_SEMICOLON, "';'");
 
-    if (std::unique_ptr<SkSL::InterfaceBlock> ib = InterfaceBlock::Convert(fCompiler.context(),
+    if (std::unique_ptr<SkSL::InterfaceBlock> ib = InterfaceBlock::Convert(fCompiler->context(),
                                                                            this->position(typeName),
                                                                            modifiers,
                                                                            this->text(typeName),
@@ -1435,7 +1435,7 @@ std::unique_ptr<Statement> Parser::ifStatement() {
         }
     }
     Position pos = this->rangeFrom(start);
-    return this->statementOrNop(pos, IfStatement::Convert(fCompiler.context(),
+    return this->statementOrNop(pos, IfStatement::Convert(fCompiler->context(),
                                                           pos,
                                                           std::move(test),
                                                           std::move(ifTrue),
@@ -1469,7 +1469,7 @@ std::unique_ptr<Statement> Parser::doStatement() {
         return nullptr;
     }
     Position pos = this->rangeFrom(start);
-    return this->statementOrNop(pos, DoStatement::Convert(fCompiler.context(), pos,
+    return this->statementOrNop(pos, DoStatement::Convert(fCompiler->context(), pos,
                                                           std::move(statement), std::move(test)));
 }
 
@@ -1494,7 +1494,7 @@ std::unique_ptr<Statement> Parser::whileStatement() {
         return nullptr;
     }
     Position pos = this->rangeFrom(start);
-    return this->statementOrNop(pos, ForStatement::ConvertWhile(fCompiler.context(), pos,
+    return this->statementOrNop(pos, ForStatement::ConvertWhile(fCompiler->context(), pos,
                                                                 std::move(test),
                                                                 std::move(statement)));
 }
@@ -1583,7 +1583,7 @@ std::unique_ptr<Statement> Parser::switchStatement() {
     }
 
     Position pos = this->rangeFrom(start);
-    return this->statementOrNop(pos, SwitchStatement::Convert(fCompiler.context(), pos,
+    return this->statementOrNop(pos, SwitchStatement::Convert(fCompiler->context(), pos,
                                                               std::move(value),
                                                               std::move(values),
                                                               std::move(caseBlocks),
@@ -1657,7 +1657,7 @@ std::unique_ptr<Statement> Parser::forStatement() {
             range_of_at_least_one_char(firstSemicolonOffset + 1, secondSemicolon.fOffset),
             range_of_at_least_one_char(secondSemicolon.fOffset + 1, rparen.fOffset),
     };
-    return this->statementOrNop(pos, ForStatement::Convert(fCompiler.context(), pos, loopPositions,
+    return this->statementOrNop(pos, ForStatement::Convert(fCompiler->context(), pos, loopPositions,
                                                            std::move(initializer),
                                                            std::move(test),
                                                            std::move(next),
@@ -1720,7 +1720,7 @@ std::unique_ptr<Statement> Parser::discardStatement() {
         return nullptr;
     }
     Position pos = this->position(start);
-    return this->statementOrNop(pos, SkSL::DiscardStatement::Convert(fCompiler.context(), pos));
+    return this->statementOrNop(pos, SkSL::DiscardStatement::Convert(fCompiler->context(), pos));
 }
 
 /* LBRACE statement* RBRACE */
@@ -1781,12 +1781,12 @@ std::unique_ptr<Statement> Parser::expressionStatement() {
         return nullptr;
     }
     Position pos = expr->position();
-    return this->statementOrNop(pos, SkSL::ExpressionStatement::Convert(fCompiler.context(),
+    return this->statementOrNop(pos, SkSL::ExpressionStatement::Convert(fCompiler->context(),
                                                                         std::move(expr)));
 }
 
 std::unique_ptr<Expression> Parser::poison(Position pos) {
-    return Poison::Make(pos, fCompiler.context());
+    return Poison::Make(pos, fCompiler->context());
 }
 
 std::unique_ptr<Expression> Parser::expressionOrPoison(Position pos,
@@ -1818,7 +1818,7 @@ bool Parser::operatorRight(Parser::AutoDepth& depth,
         return false;
     }
     Position pos = expr->position().rangeThrough(right->position());
-    expr = this->expressionOrPoison(pos, BinaryExpression::Convert(fCompiler.context(), pos,
+    expr = this->expressionOrPoison(pos, BinaryExpression::Convert(fCompiler->context(), pos,
                                                                    std::move(expr), op,
                                                                    std::move(right)));
     return true;
@@ -1905,7 +1905,7 @@ std::unique_ptr<Expression> Parser::ternaryExpression() {
         return nullptr;
     }
     Position pos = base->position().rangeThrough(falseExpr->position());
-    return this->expressionOrPoison(pos, TernaryExpression::Convert(fCompiler.context(),
+    return this->expressionOrPoison(pos, TernaryExpression::Convert(fCompiler->context(),
                                                                     pos, std::move(base),
                                                                     std::move(trueExpr),
                                                                     std::move(falseExpr)));
@@ -2133,7 +2133,7 @@ std::unique_ptr<Expression> Parser::unaryExpression() {
         return nullptr;
     }
     Position pos = Position::Range(start.fOffset, expr->position().endOffset());
-    return this->expressionOrPoison(pos, PrefixExpression::Convert(fCompiler.context(),
+    return this->expressionOrPoison(pos, PrefixExpression::Convert(fCompiler->context(),
                                                                    pos, op, std::move(expr)));
 }
 
@@ -2178,18 +2178,18 @@ std::unique_ptr<Expression> Parser::swizzle(Position pos,
                                             Position maskPos) {
     SkASSERT(!swizzleMask.empty());
     if (!base->type().isVector() && !base->type().isScalar()) {
-        return this->expressionOrPoison(pos, FieldAccess::Convert(fCompiler.context(), pos,
+        return this->expressionOrPoison(pos, FieldAccess::Convert(fCompiler->context(), pos,
                                                                   std::move(base), swizzleMask));
 
     }
-    return this->expressionOrPoison(pos, Swizzle::Convert(fCompiler.context(), pos, maskPos,
+    return this->expressionOrPoison(pos, Swizzle::Convert(fCompiler->context(), pos, maskPos,
                                                           std::move(base), swizzleMask));
 }
 
 std::unique_ptr<Expression> Parser::call(Position pos,
                                          std::unique_ptr<Expression> base,
                                          ExpressionArray args) {
-    return this->expressionOrPoison(pos, SkSL::FunctionCall::Convert(fCompiler.context(), pos,
+    return this->expressionOrPoison(pos, SkSL::FunctionCall::Convert(fCompiler->context(), pos,
                                                                      std::move(base),
                                                                      std::move(args)));
 }
@@ -2215,7 +2215,7 @@ std::unique_ptr<Expression> Parser::suffix(std::unique_ptr<Expression> base) {
             this->expect(Token::Kind::TK_RBRACKET, "']' to complete array access expression");
 
             Position pos = this->rangeFrom(base->position());
-            return this->expressionOrPoison(pos, IndexExpression::Convert(fCompiler.context(), pos,
+            return this->expressionOrPoison(pos, IndexExpression::Convert(fCompiler->context(), pos,
                                                                           std::move(base),
                                                                           std::move(index)));
         }
@@ -2281,7 +2281,7 @@ std::unique_ptr<Expression> Parser::suffix(std::unique_ptr<Expression> base) {
                                         ? Operator::Kind::PLUSPLUS
                                         : Operator::Kind::MINUSMINUS;
             Position pos = this->rangeFrom(base->position());
-            return this->expressionOrPoison(pos, PostfixExpression::Convert(fCompiler.context(),
+            return this->expressionOrPoison(pos, PostfixExpression::Convert(fCompiler->context(),
                                                                             pos, std::move(base),
                                                                             op));
         }
@@ -2304,7 +2304,7 @@ std::unique_ptr<Expression> Parser::term() {
                 Position pos = this->position(t);
                 return this->expressionOrPoison(
                         pos,
-                        this->symbolTable()->instantiateSymbolRef(fCompiler.context(), text, pos));
+                        this->symbolTable()->instantiateSymbolRef(fCompiler->context(), text, pos));
             }
             break;
         }
@@ -2314,7 +2314,7 @@ std::unique_ptr<Expression> Parser::term() {
                 i = 0;
             }
             Position pos = this->position(t);
-            return this->expressionOrPoison(pos, SkSL::Literal::MakeInt(fCompiler.context(),
+            return this->expressionOrPoison(pos, SkSL::Literal::MakeInt(fCompiler->context(),
                                                                         pos, i));
         }
         case Token::Kind::TK_FLOAT_LITERAL: {
@@ -2323,7 +2323,7 @@ std::unique_ptr<Expression> Parser::term() {
                 f = 0.0f;
             }
             Position pos = this->position(t);
-            return this->expressionOrPoison(pos, SkSL::Literal::MakeFloat(fCompiler.context(),
+            return this->expressionOrPoison(pos, SkSL::Literal::MakeFloat(fCompiler->context(),
                                                                           pos, f));
         }
         case Token::Kind::TK_TRUE_LITERAL: // fall through
@@ -2331,7 +2331,7 @@ std::unique_ptr<Expression> Parser::term() {
             bool b;
             SkAssertResult(this->boolLiteral(&b));
             Position pos = this->position(t);
-            return this->expressionOrPoison(pos, SkSL::Literal::MakeBool(fCompiler.context(),
+            return this->expressionOrPoison(pos, SkSL::Literal::MakeBool(fCompiler->context(),
                                                                          pos, b));
         }
         case Token::Kind::TK_LPAREN: {

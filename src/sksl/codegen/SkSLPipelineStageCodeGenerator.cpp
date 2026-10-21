@@ -13,6 +13,7 @@
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"  // IWYU pragma: keep
 #include "src/sksl/SkSLDefines.h"
@@ -151,11 +152,11 @@ private:
         StringStream                fBuffer;
     };
 
-    const Program& fProgram;
-    const char*    fSampleCoords;
-    const char*    fInputColor;
-    const char*    fDestColor;
-    Callbacks*     fCallbacks;
+    const raw_ref<const Program> fProgram;
+    const char*                  fSampleCoords;
+    const char*                  fInputColor;
+    const char*                  fDestColor;
+    Callbacks*                   fCallbacks;
 
     Analysis::SpecializationInfo fSpecializationInfo;
     Analysis::SpecializationIndex fActiveSpecializationIndex = Analysis::kUnspecialized;
@@ -196,7 +197,7 @@ void PipelineStageCodeGenerator::writeChildCall(const ChildCall& c) {
     SkASSERT(!arguments.empty());
     int index = 0;
     bool found = false;
-    for (const ProgramElement* p : fProgram.elements()) {
+    for (const ProgramElement* p : fProgram->elements()) {
         if (p->is<GlobalVarDeclaration>()) {
             const GlobalVarDeclaration& global = p->as<GlobalVarDeclaration>();
             const VarDeclaration& decl = global.varDeclaration();
@@ -222,23 +223,23 @@ void PipelineStageCodeGenerator::writeChildCall(const ChildCall& c) {
         switch (c.child().type().typeKind()) {
             case Type::TypeKind::kShader: {
                 SkASSERT(arguments.size() == 1);
-                SkASSERT(arguments[0]->type().matches(*fProgram.fContext->fTypes.fFloat2));
+                SkASSERT(arguments[0]->type().matches(*fProgram->fContext->fTypes.fFloat2));
                 sampleOutput = fCallbacks->sampleShader(index, exprBuffer.fBuffer.str());
                 break;
             }
             case Type::TypeKind::kColorFilter: {
                 SkASSERT(arguments.size() == 1);
-                SkASSERT(arguments[0]->type().matches(*fProgram.fContext->fTypes.fHalf4) ||
-                         arguments[0]->type().matches(*fProgram.fContext->fTypes.fFloat4));
+                SkASSERT(arguments[0]->type().matches(*fProgram->fContext->fTypes.fHalf4) ||
+                         arguments[0]->type().matches(*fProgram->fContext->fTypes.fFloat4));
                 sampleOutput = fCallbacks->sampleColorFilter(index, exprBuffer.fBuffer.str());
                 break;
             }
             case Type::TypeKind::kBlender: {
                 SkASSERT(arguments.size() == 2);
-                SkASSERT(arguments[0]->type().matches(*fProgram.fContext->fTypes.fHalf4) ||
-                         arguments[0]->type().matches(*fProgram.fContext->fTypes.fFloat4));
-                SkASSERT(arguments[1]->type().matches(*fProgram.fContext->fTypes.fHalf4) ||
-                         arguments[1]->type().matches(*fProgram.fContext->fTypes.fFloat4));
+                SkASSERT(arguments[0]->type().matches(*fProgram->fContext->fTypes.fHalf4) ||
+                         arguments[0]->type().matches(*fProgram->fContext->fTypes.fFloat4));
+                SkASSERT(arguments[1]->type().matches(*fProgram->fContext->fTypes.fHalf4) ||
+                         arguments[1]->type().matches(*fProgram->fContext->fTypes.fFloat4));
 
                 AutoOutputBuffer exprBuffer2(this);
                 this->writeExpression(*arguments[1], Precedence::kSequence);
@@ -418,7 +419,7 @@ void PipelineStageCodeGenerator::writeFunction(const FunctionDefinition& f) {
     // returns (from main) to half4. This is only strictly necessary if the return type is float4,
     // but we inject it unconditionally as a defensive measure, since it is free and harmless.
     const FunctionDeclaration& decl = f.declaration();
-    if (decl.isMain() && !ProgramConfig::IsMesh(fProgram.fConfig->fKind)) {
+    if (decl.isMain() && !ProgramConfig::IsMesh(fProgram->fConfig->fKind)) {
         fCastReturnsToHalf = true;
     }
 
@@ -892,19 +893,19 @@ void PipelineStageCodeGenerator::writeForStatement(const ForStatement& f) {
 
 void PipelineStageCodeGenerator::generateCode() {
     // Search for functions which require specialization due to passing child effects as parameters.
-    Analysis::FindFunctionsToSpecialize(fProgram, &fSpecializationInfo, [](const Variable& param) {
+    Analysis::FindFunctionsToSpecialize(*fProgram, &fSpecializationInfo, [](const Variable& param) {
         return param.type().isEffectChild();
     });
 
     // Write all the program elements except for functions; prototype all the functions.
-    for (const ProgramElement* e : fProgram.elements()) {
+    for (const ProgramElement* e : fProgram->elements()) {
         this->writeProgramElementFirstPass(*e);
     }
 
     // We always place FunctionDefinition elements last, because the inliner likes to move function
     // bodies around. After inlining, code can inadvertently move upwards, above ProgramElements
     // that the code relies on.
-    for (const ProgramElement* e : fProgram.elements()) {
+    for (const ProgramElement* e : fProgram->elements()) {
         this->writeProgramElementSecondPass(*e);
     }
 }
