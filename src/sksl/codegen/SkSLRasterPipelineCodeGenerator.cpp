@@ -11,7 +11,9 @@
 #include "include/core/SkSpan.h"
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkTArray.h"
+#include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
+#include "src/core/SkSafeMath.h"
 #include "src/core/SkStringView.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkUtils.h"
@@ -139,9 +141,14 @@ public:
     /** Returns the total number of slots consumed. */
     int slotCount() const { return fSlotCount; }
 
+    /** Returns true if the slot count overflowed. */
+    bool overflowed() const { return !fSafe || fOverflowed; }
+
 private:
     THashMap<const IRNode*, SlotRange> fSlotMap;
     int fSlotCount = 0;
+    SkSafeMath fSafe;
+    bool fOverflowed = false;
     std::vector<SlotDebugInfo>* fSlotDebugInfo;
 };
 
@@ -217,6 +224,13 @@ public:
      * The FunctionDebugInfo slot will be created if it doesn't already exist.
      */
     int getFunctionDebugInfo(const FunctionDeclaration& decl);
+
+    /** Returns true if any slot table overflowed. */
+    bool hasOverflowed() const {
+        return fProgramSlots.overflowed() ||
+               fUniformSlots.overflowed() ||
+               fImmutableSlots.overflowed();
+    }
 
     /** Returns true for variables with slots in fProgramSlots; immutables or uniforms are false. */
     bool hasVariableSlots(const Variable& v) {
@@ -1174,20 +1188,25 @@ SlotRange SlotManager::createSlots(std::string name,
     if (nslots == 0) {
         return {};
     }
+    size_t newSlotCount = fSafe.add(fSlotCount, nslots);
+    if (!fSafe || !SkTFitsIn<int>(newSlotCount)) {
+        fOverflowed = true;
+        return {0, SkToInt(std::min<size_t>(nslots, INT_MAX))};
+    }
     if (fSlotDebugInfo) {
         // Our debug slot-info table should have the same length as the actual slot table.
         SkASSERT(fSlotDebugInfo->size() == (size_t)fSlotCount);
 
         // Append slot names and types to our debug slot-info table.
-        fSlotDebugInfo->reserve(fSlotCount + nslots);
+        fSlotDebugInfo->reserve(newSlotCount);
         this->addSlotDebugInfo(name, type, pos, isFunctionReturnValue);
 
         // Confirm that we added the expected number of slots.
-        SkASSERT(fSlotDebugInfo->size() == (size_t)(fSlotCount + nslots));
+        SkASSERT(fSlotDebugInfo->size() == newSlotCount);
     }
 
     SlotRange result = {fSlotCount, (int)nslots};
-    fSlotCount += nslots;
+    fSlotCount = SkToInt(newSlotCount);
     return result;
 }
 
@@ -1487,6 +1506,9 @@ std::optional<SlotRange> Generator::writeFunction(
     // Set up a slot range dedicated to this function's return value.
     SlotRange lastFunctionResult = fCurrentFunctionResult;
     fCurrentFunctionResult = this->getFunctionSlots(callSite, function.declaration());
+    if (this->hasOverflowed()) {
+        return std::nullopt;
+    }
 
     // Save off the return mask.
     if (this->needsReturnMask(&function)) {
@@ -4078,10 +4100,17 @@ bool Generator::writeProgram(const FunctionDefinition& function) {
         fTraceMask->exit();
     }
 
+    if (this->hasOverflowed()) {
+        return unsupported();
+    }
+
     return true;
 }
 
 std::unique_ptr<RP::Program> Generator::finish() {
+    if (this->hasOverflowed()) {
+        return nullptr;
+    }
     return fBuilder.finish(fProgramSlots.slotCount(),
                            fUniformSlots.slotCount(),
                            fImmutableSlots.slotCount(),
