@@ -15,6 +15,7 @@
 #include "src/core/SkStringView.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
@@ -427,7 +428,7 @@ private:
     // of matrices combine both wrappers. These wrapper structs are unpacked into natively-typed
     // globals at the shader entrypoint.
     struct FieldPolyfillInfo {
-        const InterfaceBlock* fInterfaceBlock;
+        raw_ptr<const InterfaceBlock> fInterfaceBlock;
         std::string fReplacementName;
         bool fIsArray = false;
         bool fIsMatrix = false;
@@ -1410,7 +1411,7 @@ private:
         }
     }
 
-    WGSLCodeGenerator* fGenerator;
+    raw_ptr<WGSLCodeGenerator> fGenerator;
     bool fOriginalValue;
 };
 
