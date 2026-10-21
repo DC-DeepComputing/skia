@@ -52,6 +52,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a029277_9f5e10e5",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-21T16:47:43Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "e9939165_e9f1cda7",
+      "range": {
+        "startLine": 53,
+        "startChar": 89,
+        "endLine": 53,
+        "endChar": 99
+      },
+      "revId": "bb24fab9ff525366bda5dea9f2e14e1fb5eb22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab043105_be00fe00",
@@ -65,6 +89,24 @@
       "writtenOn": "2026-10-21T16:17:57Z",
       "side": 1,
       "message": "nit: `SK_GUARDED_BY(fMutex)`",
+      "revId": "bb24fab9ff525366bda5dea9f2e14e1fb5eb22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a1a4599_789618ed",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-21T16:47:43Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ab043105_be00fe00",
       "revId": "bb24fab9ff525366bda5dea9f2e14e1fb5eb22d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
