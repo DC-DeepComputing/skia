@@ -16,6 +16,24 @@
       "message": "Thanks for the updates in PS 2! `SkLRUCache` with 4096 entries and removing `OneLineShaper::fFallbackFonts` looks great.\n\nOne small addition for thread safety: we are currently landing https://skia-review.googlesource.com/c/skia/+/1400636 (`[skparagraph] Make FontCollection thread-safe`), which guards `FaceCache` and `VariationCache` with an internal `SkMutex` inside each pimpl struct (since engine embedders like Flutter\u0027s `ImpellerTypographyContext` share a single `FontCollection` across worker threads).\n\nBecause `SkLRUCache::find()` relinks the entry to the front of its doubly-linked list even on a cache hit, could you add an `SkMutex fMutex;` inside `FontCollection::FallbackCache` with small `find` / `insert` / `reset` helpers (similar to `ParagraphCache`)? That way we keep the `SkLRUCache` eviction behavior and make `FallbackCache` thread-safe out of the box.",
       "revId": "3d97e6d08f0f4f4f8b6f84efb33760e79201467d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4042f131_92f50f68",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T01:31:16Z",
+      "side": 1,
+      "message": "Done in PS3. FallbackCache now has an SkMutex fMutex and find() / insert() / reset() helpers, the same pattern as ParagraphCache. fMutex and fTypefaces are private, so all access goes through the helpers. The SkLRUCache eviction behavior does not change.\n\n- find() locks also on a hit, because SkLRUCache::find() relinks the entry. It returns a copy of the sk_sp, because another thread can remove the entry after the unlock.\n- defaultFallback() and defaultEmojiFallback() do not hold the lock while they query the font managers (lookup, unlock, query, lock, insert), the same as findTypefaces() in 1400636. If two threads miss the same key, insert() keeps the first result and both threads return it, so callers see one typeface per key.\n- Lock order: fMutex is a leaf lock. While the code holds it, the code only changes the cache and can release typefaces (on Linux, ~SkTypeface_fontconfig() takes FCLocker, which is also a leaf lock and does not call back). It does not call into the font managers or into other FontCollection code. defaultFallback() calls cloneTypeface() after the lock is released. Thus there is no lock order with the FaceCache and VariationCache locks of 1400636.\n\nNew test: SkParagraph_FallbackCacheConcurrently calls defaultFallback() and defaultEmojiFallback() from 8 threads on one FontCollection and compares each result with the result of one thread. It calls them directly and does not lay out paragraphs, because without 1400636 FaceCache is not locked yet. It passes no FontArguments, because without 1400636 cloneTypeface() and VariationCache are not locked yet. With the lock removed, the test crashed in 28 of 30 runs (24 of 30 with --nativeFonts). With the lock, it passed 30 of 30 runs both ways.\n\nThe single-thread cost of the lock is in the noise (CoreText, release dm, same test as before, median of 7 interleaved rounds, paragraphs laid out per 300 ms): first 500 paragraphs 6575 -\u003e 6569 (0.999x), next 500 paragraphs 16456 -\u003e 16420 (0.998x).\n\nAll SkParagraph tests pass on macOS with and without --nativeFonts, also with UNIX_ONLY_TEST enabled. I did not run TSAN. 1400636 has not landed yet, so PS3 stays on the same base. When it lands, there is one small conflict in clearCaches(): keep the two locked blocks from 1400636 and add fFallbackCache-\u003ereset() after them.",
+      "parentUuid": "d9969dc0_df29e680",
+      "revId": "3d97e6d08f0f4f4f8b6f84efb33760e79201467d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
