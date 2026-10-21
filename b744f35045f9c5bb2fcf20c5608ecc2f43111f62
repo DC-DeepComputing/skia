@@ -33,6 +33,23 @@
       "message": "Hi. May I ask for a review of this please? Since Ben Wagner\u0027s departure I don\u0027t know who I should ask for font code reviews, hence using the suggest feature. Thanks.",
       "revId": "b744f35045f9c5bb2fcf20c5608ecc2f43111f62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68346579_174e9a48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5095
+      },
+      "writtenOn": "2026-10-21T17:57:21Z",
+      "side": 1,
+      "message": "We have been discussing these potential changes and are generally in favor of adding this capability. Would be interested in some A/B testing on memory/perf impact as we move forward. Adding relevant TLs.",
+      "revId": "b744f35045f9c5bb2fcf20c5608ecc2f43111f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
