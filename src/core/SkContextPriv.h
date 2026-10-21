@@ -22,12 +22,10 @@ class SkContext;
     data members or virtual methods.*/
 class SkContextPrivConst {
 public:
-    SkStrikeCache* strikeCache() const { return fConstContext->strikeCache(); }
+    const SkSharedContext* sharedContext() const { return fConstContext->fSharedContext.get(); }
 
 protected:
     explicit SkContextPrivConst(const SkContext* context) : fConstContext(context) {}
-
-    size_t fontCacheLimit() const { return fConstContext->fontCacheLimit(); }
 
 private:
     // No taking addresses of this type.
@@ -70,14 +68,13 @@ public:
     // Ganesh and Graphite
     static std::unique_ptr<SkContext> MakeContext(const SkContextOptions& options,
                                                   std::unique_ptr<SkGPUContext> gpuContext);
-
 };
 
 namespace SkContexts {
 // Returns the global SkContext. If the global SkContext does not exist yet, it will be created.
 // This is an intermediary step in the SkContext project, whereby we use this
 // global SkContext object to remove or take away functionality from SkGraphics.
-SkContext* GetGlobalSkContext();
+SkContext* GetGlobalSkContext(bool initGlobals = false);
 }
 
 #endif  // SkContextPriv_DEFINED
