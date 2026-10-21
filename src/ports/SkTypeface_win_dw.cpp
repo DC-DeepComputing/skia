@@ -240,9 +240,11 @@ DWriteFontTypeface::Loaders::~Loaders() {
     // Don't return if any fail, just keep going to free up as much as possible.
     HRESULT hr;
 
-    hr = fFactory->UnregisterFontCollectionLoader(fDWriteFontCollectionLoader.get());
-    if (FAILED(hr)) {
-        SK_TRACEHR(hr, "FontCollectionLoader");
+    if (fDWriteFontCollectionLoader) {
+        hr = fFactory->UnregisterFontCollectionLoader(fDWriteFontCollectionLoader.get());
+        if (FAILED(hr)) {
+            SK_TRACEHR(hr, "FontCollectionLoader");
+        }
     }
 
     hr = fFactory->UnregisterFontFileLoader(fDWriteFontFileLoader.get());
@@ -1194,7 +1196,7 @@ static HRESULT apply_fontargument_variation(SkTScopedComPtr<IDWriteFontFace>& fo
     }
 
     SkTScopedComPtr<IDWriteFontFace5> fontFace5_Out;
-    HR(fontResource->CreateFontFace(DWRITE_FONT_SIMULATIONS_NONE,
+    HR(fontResource->CreateFontFace(fontFace->GetSimulations(),
                                     variation.get(), fontAxisCount,
                                     &fontFace5_Out));
     fontFace.reset();
@@ -1211,11 +1213,74 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
         return nullptr;
     }
 
+    int ttcIndex = args.getCollectionIndex();
+    if (ttcIndex < 0) {
+        return nullptr;
+    }
+
     SkTScopedComPtr<StreamFontFileLoader> fontFileLoader;
     HRN(StreamFontFileLoader::Create(std::move(stream), &fontFileLoader));
     HRN(factory->RegisterFontFileLoader(fontFileLoader.get()));
     SkAutoIDWriteUnregister<StreamFontFileLoader> autoUnregisterFontFileLoader(
         factory, fontFileLoader.get());
+
+    SkTScopedComPtr<IDWriteFactory3> factory3;
+    if (SUCCEEDED(factory->QueryInterface(&factory3)) && factory3) {
+        UINT32 fontFileReferenceKey = 0;
+        SkTScopedComPtr<IDWriteFontFile> fontFile;
+        HRN(factory3->CreateCustomFontFileReference(&fontFileReferenceKey,
+                                                    sizeof(fontFileReferenceKey),
+                                                    fontFileLoader.get(),
+                                                    &fontFile));
+
+        DWRITE_FONT_SIMULATIONS simulations = DWRITE_FONT_SIMULATIONS_NONE;
+        if (args.getSyntheticBold().value_or(false)) {
+            simulations |= DWRITE_FONT_SIMULATIONS_BOLD;
+        }
+        if (args.getSyntheticOblique().value_or(false)) {
+            simulations |= DWRITE_FONT_SIMULATIONS_OBLIQUE;
+        }
+
+        SkTScopedComPtr<IDWriteFontFaceReference> fontFaceReference;
+        HRN(factory3->CreateFontFaceReference(fontFile.get(),
+                                              SkTo<UINT32>(ttcIndex),
+                                              simulations,
+                                              &fontFaceReference));
+
+        SkTScopedComPtr<IDWriteFontFace3> fontFace3;
+        if (FAILED(fontFaceReference->CreateFontFace(&fontFace3))) {
+            // If the requested simulations cannot be applied to this face (for example,
+            // DWRITE_FONT_SIMULATIONS_BOLD on a face that is already bold), fall back to
+            // the closest supported simulations. As with CSS3, oblique matches tighter
+            // than weight.
+            if (simulations == (DWRITE_FONT_SIMULATIONS_BOLD | DWRITE_FONT_SIMULATIONS_OBLIQUE)) {
+                if (FAILED(fontFaceReference->CreateFontFaceWithSimulations(
+                            DWRITE_FONT_SIMULATIONS_OBLIQUE, &fontFace3))) {
+                    fontFaceReference->CreateFontFaceWithSimulations(
+                            DWRITE_FONT_SIMULATIONS_BOLD, &fontFace3);
+                }
+            }
+            if (!fontFace3 && simulations != DWRITE_FONT_SIMULATIONS_NONE) {
+                fontFaceReference->CreateFontFaceWithSimulations(
+                        DWRITE_FONT_SIMULATIONS_NONE, &fontFace3);
+            }
+        }
+        if (!fontFace3 || fontFace3->GetIndex() != SkTo<UINT32>(ttcIndex)) {
+            return nullptr;
+        }
+
+        SkTScopedComPtr<IDWriteFontFace> fontFace;
+        HRN(fontFace3->QueryInterface(&fontFace));
+
+        apply_fontargument_variation(fontFace, args);
+
+        return DWriteFontTypeface::Make(
+            factory, fontFace.get(), nullptr, nullptr,
+            sk_make_sp<DWriteFontTypeface::Loaders>(
+                factory,
+                autoUnregisterFontFileLoader.release()),
+            args.getPalette());
+    }
 
     SkTScopedComPtr<StreamFontCollectionLoader> fontCollectionLoader;
     HRN(StreamFontCollectionLoader::Create(fontFileLoader.get(), &fontCollectionLoader));
@@ -1228,9 +1293,10 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
                                             &fontCollection));
 
     struct BestMatch {
-        UINT32 familyIndex = 0;
-        UINT32 fontIndex = 0;
-        int distance = 0;
+        SkTScopedComPtr<IDWriteFontFamily> fontFamily;
+        SkTScopedComPtr<IDWriteFont> font;
+        SkTScopedComPtr<IDWriteFontFace> fontFace;
+        uint8_t distance = 0;
     };
     std::optional<BestMatch> bestMatch;
 
@@ -1259,7 +1325,7 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
     }
     const uint8_t (&actualSimulationDistances)[4] = simulationDistances[simulationRequestIndex];
 
-    // Find the first non-simulated font which has the given ttc index.
+    // Find the best matching font which has the given ttc index.
     UINT32 familyCount = fontCollection->GetFontFamilyCount();
     for (UINT32 familyIndex = 0; familyIndex < familyCount; ++familyIndex) {
         SkTScopedComPtr<IDWriteFontFamily> fontFamily;
@@ -1270,41 +1336,38 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
             SkTScopedComPtr<IDWriteFont> font;
             HRN(fontFamily->GetFont(fontIndex, &font));
 
+            // Find match with the lowest distance from the request.
+            const uint8_t distance = actualSimulationDistances[font->GetSimulations() & 0x3];
+            if (bestMatch.has_value() && distance >= bestMatch->distance) {
+                continue;
+            }
+
             SkTScopedComPtr<IDWriteFontFace> fontFace;
             HRN(font->CreateFontFace(&fontFace));
             int faceIndex = fontFace->GetIndex();
-            int ttcIndex = args.getCollectionIndex();
 
             // Skip if the current face index does not match the ttcIndex
             if (faceIndex != ttcIndex) {
                 continue;
             }
 
-            // Find match the lowest distance from the request.
-            const uint8_t distance = actualSimulationDistances[font->GetSimulations() & 0x3];
-            if (bestMatch.has_value()) {
-                if (distance < bestMatch->distance) {
-                    bestMatch = {familyIndex, fontIndex, distance};
-                }
-            } else {
-                bestMatch = {familyIndex, fontIndex, distance};
+            bestMatch = BestMatch{SkTScopedComPtr<IDWriteFontFamily>(SkRefComPtr(fontFamily.get())),
+                                  std::move(font),
+                                  std::move(fontFace),
+                                  distance};
+            if (distance == 0) {
+                break;
             }
+        }
+        if (bestMatch.has_value() && bestMatch->distance == 0) {
+            break;
         }
     }
     if (bestMatch.has_value()) {
-        SkTScopedComPtr<IDWriteFontFamily> fontFamily;
-        HRN(fontCollection->GetFontFamily(bestMatch->familyIndex, &fontFamily));
-
-        SkTScopedComPtr<IDWriteFont> font;
-        HRN(fontFamily->GetFont(bestMatch->fontIndex, &font));
-
-        SkTScopedComPtr<IDWriteFontFace> fontFace;
-        HRN(font->CreateFontFace(&fontFace));
-
-        apply_fontargument_variation(fontFace, args);
+        apply_fontargument_variation(bestMatch->fontFace, args);
 
         return DWriteFontTypeface::Make(
-            factory, fontFace.get(), font.get(), fontFamily.get(),
+            factory, bestMatch->fontFace.get(), bestMatch->font.get(), bestMatch->fontFamily.get(),
             sk_make_sp<DWriteFontTypeface::Loaders>(
                 factory,
                 autoUnregisterFontFileLoader.release(),
