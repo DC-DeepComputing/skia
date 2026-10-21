@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e826c4b_5d3ad30c",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T17:04:42Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "5c7a1352_9fe8e393",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 9
+      },
+      "revId": "df6368d771237be3aa7366cb8ece8fcf552cc9d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c62d26fc_8f9be0c2",
@@ -75,6 +99,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f07f6c5_6a6f0341",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T17:04:42Z",
+      "side": 1,
+      "message": "Done. `find()` now returns `std::optional\u003csk_sp\u003cSkTypeface\u003e\u003e`, and both callers use `if (auto cached \u003d ...)`.",
+      "parentUuid": "c62d26fc_8f9be0c2",
+      "revId": "df6368d771237be3aa7366cb8ece8fcf552cc9d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf6e584e_d9f6762f",
@@ -88,6 +130,24 @@
       "writtenOn": "2026-10-21T16:44:35Z",
       "side": 1,
       "message": "nit: `SK_GUARDED_BY(fMutex)`",
+      "revId": "df6368d771237be3aa7366cb8ece8fcf552cc9d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5c9c2e2_4c092e99",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T17:04:42Z",
+      "side": 1,
+      "message": "Done. The file still compiles with no warnings with `-Weverything`, which includes the thread safety analysis.",
+      "parentUuid": "bf6e584e_d9f6762f",
       "revId": "df6368d771237be3aa7366cb8ece8fcf552cc9d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -129,6 +189,30 @@
           ]
         }
       ],
+      "revId": "df6368d771237be3aa7366cb8ece8fcf552cc9d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24b830e2_dba8ff73",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T17:04:42Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "b9671859_83dd5318",
+      "range": {
+        "startLine": 306,
+        "startChar": 8,
+        "endLine": 306,
+        "endChar": 27
+      },
       "revId": "df6368d771237be3aa7366cb8ece8fcf552cc9d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
