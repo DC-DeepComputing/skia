@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdf82797_22b5e92a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-21T15:34:36Z",
+      "side": 1,
+      "message": "This isn\u0027t actually happening in this CL right?",
+      "range": {
+        "startLine": 7,
+        "startChar": 12,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "2f10463d08abb743d17ac08233f4aee7ada60484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "278ec4a9_da86267e",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-21T15:34:36Z",
+      "side": 1,
+      "message": "Don\u0027t need this-\u003e when using member variables.",
+      "range": {
+        "startLine": 158,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 10
+      },
+      "revId": "2f10463d08abb743d17ac08233f4aee7ada60484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86b5c430_5581ca20",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-21T15:34:36Z",
+      "side": 1,
+      "message": "This sort of global call here is now a little weird. Like you can have two different SkContexts with completely different strikeCaches, but calling SkContext::dumpMemoryStatistics will only ever return the global one. So this should really be calling a member function like strikeCache-\u003edumpMemoryStatistics(dump).\n\nI think ideally we should either update this here in this CL or add the member function in a pre-CL and then this CL can be updated to use it.",
+      "range": {
+        "startLine": 159,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 39
+      },
+      "revId": "2f10463d08abb743d17ac08233f4aee7ada60484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
