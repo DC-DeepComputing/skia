@@ -215,6 +215,7 @@ DEF_TEST(YUVMath, reporter) {
         kJPEG_SkYUVColorSpace,
         kRec601_SkYUVColorSpace,
         kRec709_SkYUVColorSpace,
+        kRec709_16bit_Limited_SkYUVColorSpace,
         kBT2020_SkYUVColorSpace,
         kIdentity_SkYUVColorSpace,
     };
@@ -238,4 +239,22 @@ DEF_TEST(YUVMath, reporter) {
             REPORTER_ASSERT(reporter, SkScalarNearlyEqual(tmp[i], expected, tolerance));
         }
     }
+}
+
+// P010/P210 store 10-bit limited-range samples in the high bits of normalized
+// 16-bit textures. An 8-bit Rec709 matrix gives white a green cast.
+DEF_TEST(YUVMath_Rec709Unorm16NeutralLevels, reporter) {
+    std::array<float, 20> matrix;
+    SkColorMatrix::YUVtoRGB(kRec709_16bit_Limited_SkYUVColorSpace).getRowMajor(matrix.data());
+    const float uv = 32768.f / 65535.f;
+    for (int step = 0; step <= 2; ++step) {
+        const float y = (4096.f + step * 28032.f) / 65535.f;
+        for (int channel = 0; channel < 3; ++channel) {
+            const int offset = channel * 5;
+            const float rgb = matrix[offset] * y + matrix[offset + 1] * uv +
+                              matrix[offset + 2] * uv + matrix[offset + 4];
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(rgb, step * .5f, 0.000002f));
+        }
+    }
+    REPORTER_ASSERT(reporter, SkYUVColorSpaceIsLimitedRange(kRec709_16bit_Limited_SkYUVColorSpace));
 }

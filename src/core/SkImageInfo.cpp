@@ -58,6 +58,7 @@ bool SkYUVColorSpaceIsLimitedRange(SkYUVColorSpace cs) {
     switch (cs) {
         case kRec601_Limited_SkYUVColorSpace:
         case kRec709_Limited_SkYUVColorSpace:
+        case kRec709_16bit_Limited_SkYUVColorSpace:
         case kBT2020_8bit_Limited_SkYUVColorSpace:
         case kBT2020_10bit_Limited_SkYUVColorSpace:
         case kBT2020_12bit_Limited_SkYUVColorSpace:

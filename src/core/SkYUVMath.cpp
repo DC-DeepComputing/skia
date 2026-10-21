@@ -121,6 +121,32 @@ constexpr float Rec709_limited_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
+constexpr float Rec709_16bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.747b1ap-3f,  0x1.39432cp-1f,  0x1.f9fc3ep-5f,         0x0p+0f,    0x1.0001p-4f,
+    -0x1.9aa1f8p-4f, -0x1.595942p-2f,   0x1.c001cp-2f,         0x0p+0f,    0x1.0001p-1f,
+     0x1.c001bep-2f, -0x1.96ed5cp-2f,  -0x1.48a31p-5f,         0x0p+0f,    0x1.0001p-1f,
+            0x0p+0f,         0x0p+0f,         0x0p+0f,         0x1p+0f,         0x0p+0f,
+#else
+          0.181875f,       0.611841f,       0.061766f,       0.000000f,       0.062501f,
+         -0.100252f,      -0.337255f,       0.437507f,       0.000000f,       0.500008f,
+          0.437507f,      -0.397390f,      -0.040117f,       0.000000f,       0.500008f,
+          0.000000f,       0.000000f,       0.000000f,       1.000000f,       0.000000f,
+#endif
+};
+constexpr float Rec709_16bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.2b3f2p+0f, 0x1.db0326p-27f,  0x1.ccbc08p+0f,         0x0p+0f, -0x1.f225dep-1f,
+      0x1.2b3f2p+0f, -0x1.b6706cp-3f, -0x1.11ea58p-1f,         0x0p+0f,   0x1.34b7ep-2f,
+      0x1.2b3f2p+0f,  0x1.0f7192p+1f, 0x1.cf24bap-26f,         0x0p+0f, -0x1.2226a6p+0f,
+            0x0p+0f,         0x0p+0f,         0x0p+0f,         0x1p+0f,         0x0p+0f,
+#else
+          1.168932f,       0.000000f,       1.799744f,       0.000000f,      -0.972945f,
+          1.168932f,      -0.214082f,      -0.534991f,       0.000000f,       0.301483f,
+          1.168932f,       2.120653f,       0.000000f,       0.000000f,      -1.133402f,
+          0.000000f,       0.000000f,       0.000000f,       1.000000f,       0.000000f,
+#endif
+};
 constexpr float BT2020_8bit_full_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.0d013ap-2f,    0x1.5b22d2p-1f,    0x1.e5c91ep-5f,           0x0p+0f,           0x0p+0f,
@@ -774,6 +800,7 @@ static_assert(kYCgCo_12bit_Full_SkYUVColorSpace     == 24, "");
 static_assert(kYCgCo_12bit_Limited_SkYUVColorSpace  == 25, "");
 static_assert(kYCgCo_16bit_Full_SkYUVColorSpace     == 26, "");
 static_assert(kYCgCo_16bit_Limited_SkYUVColorSpace  == 27, "");
+static_assert(kRec709_16bit_Limited_SkYUVColorSpace == 28, "");
 
 static constexpr auto yuv_to_rgb_array = std::to_array<const float *>({
     JPEG_full_yuv_to_rgb,
@@ -804,6 +831,7 @@ static constexpr auto yuv_to_rgb_array = std::to_array<const float *>({
     YCgCo_12bit_limited_yuv_to_rgb,
     YCgCo_16bit_full_yuv_to_rgb,
     YCgCo_16bit_limited_yuv_to_rgb,
+    Rec709_16bit_limited_yuv_to_rgb,
 });
 
 static constexpr auto rgb_to_yuv_array = std::to_array<const float *>({
@@ -835,6 +863,7 @@ static constexpr auto rgb_to_yuv_array = std::to_array<const float *>({
     YCgCo_12bit_limited_rgb_to_yuv,
     YCgCo_16bit_full_rgb_to_yuv,
     YCgCo_16bit_limited_rgb_to_yuv,
+    Rec709_16bit_limited_rgb_to_yuv,
 });
 
 constexpr size_t kSizeOfColorMatrix = 20 * sizeof(float);
@@ -1060,6 +1089,8 @@ static void make_rgb_to_yuv_matrix(float mx[20], SkYUVColorSpace cs) {
         case kSMPTE240_Limited_SkYUVColorSpace:
         case kIdentity_SkYUVColorSpace:
             return make_rgb_to_yuv_matrix_ycbcr(mx, gCoeff[(unsigned)cs]);
+        case kRec709_16bit_Limited_SkYUVColorSpace:
+            return make_rgb_to_yuv_matrix_ycbcr(mx, {0.2126f, 0.0722f, 16, kLimited});
         case kYDZDX_Full_SkYUVColorSpace:
             return make_rgb_to_yuv_matrix_ydzdx(mx, Range::kFull);
         case kYDZDX_Limited_SkYUVColorSpace:
@@ -1117,6 +1148,7 @@ static void dump(const float m[20], SkYUVColorSpace cs, bool rgb2yuv) {
         "YCgCo_12bit_limited",
         "YCgCo_16bit_full",
         "YCgCo_16bit_limited",
+        "Rec709_16bit_limited",
     });
     static constexpr auto dirnames = std::to_array<const char *>({
         "yuv_to_rgb", "rgb_to_yuv",

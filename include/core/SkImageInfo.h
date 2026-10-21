@@ -94,6 +94,7 @@ enum SkYUVColorSpace : int {
     kYCgCo_12bit_Limited_SkYUVColorSpace,
     kYCgCo_16bit_Full_SkYUVColorSpace,
     kYCgCo_16bit_Limited_SkYUVColorSpace,
+    kRec709_16bit_Limited_SkYUVColorSpace,        //!< HDTV limited range in 16-bit UNORM
     kIdentity_SkYUVColorSpace,                  //!< maps Y->R, U->G, V->B
 
     kLastEnum_SkYUVColorSpace = kIdentity_SkYUVColorSpace, //!< last valid value
