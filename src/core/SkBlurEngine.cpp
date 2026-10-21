@@ -163,6 +163,16 @@ static sk_sp<SkSpecialImage> eval_blur_passes(PassMaker* makerX, PassMaker* make
     static constexpr int N = sizeof(T) / sizeof(uint8_t);
     static_assert(N*sizeof(uint8_t) == sizeof(T), "N must be the the size of T in bytes.");
 
+    // The passes average channels, which is only right for premultiplied colors.
+    if (src.alphaType() == kUnpremul_SkAlphaType) {
+        SkBitmap premulSrc;
+        if (!premulSrc.tryAllocPixels(src.info().makeAlphaType(kPremul_SkAlphaType)) ||
+            !src.readPixels(premulSrc.pixmap())) {
+            return nullptr;
+        }
+        src = std::move(premulSrc);
+    }
+
     SkIRect srcBounds = originalSrcBounds;
     SkIRect dstBounds = originalDstBounds;
     if (makerX->window() > 1) {
@@ -177,7 +187,10 @@ static sk_sp<SkSpecialImage> eval_blur_passes(PassMaker* makerX, PassMaker* make
 
     SkBitmap dst;
     const SkIPoint dstOrigin = dstBounds.topLeft();
-    if (!dst.tryAllocPixels(src.info().makeWH(dstBounds.width(), dstBounds.height()))) {
+    // A kDecal blur's edges are transparent, so even an opaque input's output is premultiplied.
+    if (!dst.tryAllocPixels(src.info()
+                                    .makeWH(dstBounds.width(), dstBounds.height())
+                                    .makeAlphaType(kPremul_SkAlphaType))) {
         return nullptr;
     }
     dst.eraseColor(SK_ColorTRANSPARENT);

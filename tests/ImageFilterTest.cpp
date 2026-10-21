@@ -779,6 +779,83 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterZeroBlurSigma_Gpu,
 }
 #endif
 
+static SkBitmap draw_decal_blur_over_blue(skiatest::Reporter* reporter,
+                                          SkSurface* surface,
+                                          SkAlphaType alphaType,
+                                          SkColor color) {
+    SkBitmap bitmap;
+    bitmap.allocPixels(SkImageInfo::MakeN32(32, 32, alphaType));
+    bitmap.eraseColor(color);
+
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorBLUE);
+    SkPaint paint;
+    paint.setImageFilter(SkImageFilters::Blur(
+            3.f, 3.f, SkTileMode::kDecal, SkImageFilters::Image(bitmap.asImage(), {})));
+    canvas->drawRect(SkRect::Make(surface->imageInfo().bounds()), paint);
+
+    SkBitmap result;
+    result.allocPixels(surface->imageInfo());
+    REPORTER_ASSERT(reporter, surface->readPixels(result, 0, 0));
+    return result;
+}
+
+// A kDecal blur makes an opaque image's edges transparent; drawing its result must blend them.
+static void test_decal_blur_of_opaque_image(skiatest::Reporter* reporter, SkSurface* surface) {
+    const SkBitmap result =
+            draw_decal_blur_over_blue(reporter, surface, kOpaque_SkAlphaType, SK_ColorRED);
+    for (int y = 0; y < result.height(); ++y) {
+        for (int x = 0; x < result.width(); ++x) {
+            const U8CPU alpha = SkColorGetA(result.getColor(x, y));
+            if (alpha != 0xFF) {
+                ERRORF(reporter, "pixel (%d, %d) has alpha %u, expected 255", x, y, alpha);
+                return;
+            }
+        }
+    }
+}
+
+DEF_TEST(ImageFilterDecalBlurOfOpaqueImage, reporter) {
+    sk_sp<SkSurface> surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(16, 16));
+    test_decal_blur_of_opaque_image(reporter, surface.get());
+}
+
+#if defined(SK_GANESH)
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterDecalBlurOfOpaqueImage_Gpu,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
+            ctxInfo.directContext(), skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(16, 16));
+    test_decal_blur_of_opaque_image(reporter, surface.get());
+}
+#endif
+
+// A blur averages premultiplied colors, so an unpremul image must blur as its premultiplied copy.
+DEF_TEST(ImageFilterDecalBlurOfUnpremulImage, reporter) {
+    sk_sp<SkSurface> surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(16, 16));
+    constexpr SkColor kTranslucentRed = SkColorSetARGB(0x80, 0xFF, 0, 0);
+    const SkBitmap unpremulResult = draw_decal_blur_over_blue(
+            reporter, surface.get(), kUnpremul_SkAlphaType, kTranslucentRed);
+    const SkBitmap premulResult = draw_decal_blur_over_blue(
+            reporter, surface.get(), kPremul_SkAlphaType, kTranslucentRed);
+    for (int y = 0; y < unpremulResult.height(); ++y) {
+        for (int x = 0; x < unpremulResult.width(); ++x) {
+            const SkColor unpremul = unpremulResult.getColor(x, y);
+            const SkColor premul = premulResult.getColor(x, y);
+            if (unpremul != premul) {
+                ERRORF(reporter,
+                       "pixel (%d, %d) is 0x%08x, its premultiplied copy's 0x%08x",
+                       x,
+                       y,
+                       unpremul,
+                       premul);
+                return;
+            }
+        }
+    }
+}
+
 // Tests that, even when an upstream filter has returned null (due to failure or clipping), a
 // downstream filter that affects transparent black still does so even with a nullptr input.
 static void test_fail_affects_transparent_black(skiatest::Reporter* reporter,
