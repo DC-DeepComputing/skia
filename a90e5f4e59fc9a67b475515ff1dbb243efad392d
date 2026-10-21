@@ -16,6 +16,24 @@
       "message": "Not new to this CL, but I suspect there are other cases where this falls apart: we\u0027re copying `width` bytes per row, which assumes 8 bits/pixel.  But that\u0027s not true for all formats, e.g. `kBW_Format`.  So if we can reach this with a non-8bpp format, we\u0027re blown.\n\nI think it\u0027s reachable when 1) `filterMask` returns false, and 2) we\u0027re dealing with a non-deterministic font which changes the reported bounds between loads.\n\n(Historically, this seems to have been introduced in https://skia-review.git.corp.google.com/c/skia/+/392156: previously, the memcpy loop was guarded by filtermask succeeding, which guarantees an 8bpp format.)\n\nMight be interesting to sick Gemini on producing a repro for something like that.  I\u0027ll leave it up to you if you want to pursue here or in a follow up.",
       "revId": "a90e5f4e59fc9a67b475515ff1dbb243efad392d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b56d536_6223b16e",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T15:13:59Z",
+      "side": 0,
+      "message": "will pursue in follow up. Thanks for the suggestion!",
+      "parentUuid": "93528821_80f40ddd",
+      "revId": "a90e5f4e59fc9a67b475515ff1dbb243efad392d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
