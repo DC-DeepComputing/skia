@@ -33,6 +33,24 @@
       "message": "nit: rather that overwriting at the end, let\u0027s compute the final method value upfront here (and the branch below):\n\n```\n    webp_config-\u003emethod \u003d opts.fMethod \u003e\u003d 0 ? opts.fMethod : 3;\n\n    ...\n    webp_config-\u003emethod \u003d opts.fMethod \u003e\u003d 0 ? opts.fMethod : 0;\n```",
       "revId": "24c1a5959106798a32428c44131d44e1e088d896",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07a9a9b0_722e8cef",
+        "filename": "src/encode/SkWebpEncoderImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-21T13:24:58Z",
+      "side": 1,
+      "message": "Ah, there\u0027s also the macro conditional, never mind.",
+      "parentUuid": "78747877_736158fa",
+      "revId": "24c1a5959106798a32428c44131d44e1e088d896",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
