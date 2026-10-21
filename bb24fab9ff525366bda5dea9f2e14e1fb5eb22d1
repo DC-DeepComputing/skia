@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9939165_e9f1cda7",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-21T16:17:57Z",
+      "side": 1,
+      "message": "nit: let\u0027s annotate this with `SK_GUARDED_BY(fMutex)`.",
+      "range": {
+        "startLine": 53,
+        "startChar": 89,
+        "endLine": 53,
+        "endChar": 99
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a9ffea8d_d6fae7ab",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/src/FontCollection.cpp",
+              "range": {
+                "startLine": 53,
+                "startChar": 0,
+                "endLine": 54,
+                "endChar": 0
+              },
+              "replacement": "    skia_private::THashMap\u003cFamilyKey, std::vector\u003csk_sp\u003cSkTypeface\u003e\u003e, FamilyKey::Hasher\u003e fTypefaces SK_GUARDED_BY(fMutex);\n"
+            },
+            {
+              "path": "modules/skparagraph/src/FontCollection.cpp",
+              "range": {
+                "startLine": 80,
+                "startChar": 0,
+                "endLine": 81,
+                "endChar": 0
+              },
+              "replacement": "    skia_private::THashMap\u003cKey, sk_sp\u003cSkTypeface\u003e, Key::Hasher\u003e fTypefaces SK_GUARDED_BY(fMutex);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bb24fab9ff525366bda5dea9f2e14e1fb5eb22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab043105_be00fe00",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-21T16:17:57Z",
+      "side": 1,
+      "message": "nit: `SK_GUARDED_BY(fMutex)`",
+      "revId": "bb24fab9ff525366bda5dea9f2e14e1fb5eb22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e7e6265_30ddfe86",
+        "filename": "modules/skparagraph/src/FontCollection.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-21T16:17:57Z",
+      "side": 1,
+      "message": "Note to self: kind of annoying that `THashMap` doesn\u0027t have something like `try_emplace()`, to avoid the double hash/lookup.  We should consider adding.",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 53
+      },
+      "revId": "bb24fab9ff525366bda5dea9f2e14e1fb5eb22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
