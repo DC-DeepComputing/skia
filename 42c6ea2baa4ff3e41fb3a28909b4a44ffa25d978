@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f2de4c6_7a5827b7",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-21T15:07:18Z",
+      "side": 1,
+      "message": "Yes, if we drop the alignment, then clang-format isn\u0027t going to try to bring it back if it conflict with the max-width 100 columns.\n\n\nDone.",
+      "parentUuid": "ef4cbae5_75f8f4d4",
+      "range": {
+        "startLine": 539,
+        "startChar": 8,
+        "endLine": 547,
+        "endChar": 32
+      },
+      "revId": "42c6ea2baa4ff3e41fb3a28909b4a44ffa25d978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2db56d03_194d9654",
