@@ -541,6 +541,9 @@ bool SkJpegRustCodec::onRewind() {
     if (fReader->initialization_result() != rust_jpeg::DecodingResult::Success) {
         return false;
     }
+    if (fRawInputComplete) {
+        fReader->set_raw_input_complete();
+    }
 
     if (!fReader->metadata_loaded()) {
         rust_jpeg::DecodingResult metadataResult = fReader->read_metadata();
