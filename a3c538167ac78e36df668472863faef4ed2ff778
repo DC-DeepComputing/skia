@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d161c237_019ba3da",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T01:31:21Z",
+      "side": 1,
+      "message": "Done in the next patch set, with both options. Measured on Linux (fontconfig 2.18.3, 738 fonts) in one session, 9 interleaved rounds (median), N requests in round robin, CJK characters, calls per 300 ms:\n- PS1: about 1570 to 1580 for N \u003d 17, 32, 64 and 65. In each call, FontAccessible opens one font file (1.0 opens per call).\n- fTFCache check first, alone: about 1840 for all N (1.17x), 0 opens. In two other sessions, it was about 1650 and 1760 (1.07x and 1.14x).\n- Capacity 64, alone: about 1.0 million for N \u003d 17 to 64 (998385 to 1046127), but 1573 for N \u003d 65.\n- Both (this patch set): N \u003d 17: 1050769. N \u003d 65: 1829 (1.16x; 1.08x to 1.15x in three other sessions). 0 opens per call for N \u003d 17, 64, 65 and 128.\n\nSkData::MakeFromFileName maps the file with mmap and does not read all of it. With the file in the page cache, there was 1 minor page fault per call and no major fault. Most of the cost of an LRU miss is FcConfigSubstitute, FcDefaultSubstitute and FcFontSetMatch for each class, not the file check. For this reason, the capacity has the larger effect.\n\nMemory: about 6 to 7 KB for each FallbackSet (RSS, 64 CJK characters for each request). Thus 64 entries use about 0.3 MB more than 16.\n\nThe typeface cache key is FcPatternEqual on the full pattern from FcFontRenderPrepare. A cached typeface was made by SkTypeface_fontconfig::Make, which opens the file. One difference from the code before this change: that code runs FontAccessible on each call. If a font file becomes unreadable after its first use, that code returns nullptr, and this patch set returns the cached typeface. PS1 already had this difference for repeated calls in one FallbackSet.\n\nThere is one small loss against PS1. New CJK characters were 0.90x to 0.98x of PS1 in four sessions (in the session above, 551646 against 575301, 0.96x). In that session, the fTFCache check alone has the same loss (0.96x), and capacity 64 alone does not (1.00x). I do not know the cause, because I did not profile it. This patch set is still 875x the code before this change for new CJK characters.\n\nIn a different session, new Latin Extended-A characters went from 73330 (PS1) to 90206 calls per 300 ms. This is probably because classes with the same font do not check the file again. I did not measure the fTFCache check alone for this case.",
+      "parentUuid": "f5eee477_119d2fd7",
+      "revId": "a3c538167ac78e36df668472863faef4ed2ff778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f6ded7a_31c52ed6",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-20T17:55:27Z",
       "side": 1,
       "message": "`if (page \u003e 0x10FF) { return 0; }` should be checked right after computing `page` on line 958 rather than only guarding `fCoverage.fEmptyPages.add(page)` on line 982:\n\n1. For `0x1100 \u003c\u003d page \u003c\u003d 0xFFFF`, skipping `fEmptyPages` causes every call to allocate `maps` and scan all `fCoverage.fCharSets` from scratch.\n2. For `page \u003e\u003d 0x10000` (e.g. `character \u003e\u003d 0x1000000` or negative `SkUnichar`), FontConfig\u0027s `FcCharSetFindLeafPos` truncates `ucs4 \u003e\u003e 8` to `FcChar16` (`uint16_t`). When the truncated 16-bit page exists in a font (such as `0x0000`), `FcCharSetIterSet` leaves `ai.ucs4` untouched at `page \u003c\u003c 8`, so `FcCharSetNextPage(...) \u003d\u003d page \u003c\u003c 8` evaluates to `true` and populates `fCoverage.fPageClasses` with unbounded out-of-Unicode keys.",
+      "revId": "a3c538167ac78e36df668472863faef4ed2ff778",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2a70d23_58490cb0",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-21T01:31:21Z",
+      "side": 1,
+      "message": "Done. Your analysis is correct. In fontconfig 2.18.3, FcCharSetFindLeafForward takes the page as FcChar16. When the leaf exists, FcCharSetIterSet keeps iter-\u003eucs4, so FcCharSetNextPage returns page \u003c\u003c 8. With PS1, 65536 calls with pages 0x10000 to 0x1FFFF added about 11 MB to RSS. U+110000 again and again scanned all charsets in each call: 33115 calls per 300 ms.\n\nNow coverageClass returns class 0 (nullptr) immediately after it calculates the page, if page \u003e 0x10FF. The bound check on fEmptyPages is removed. The same 65536 calls add 64 KB (the code before this change: 72 KB), and U+110000 gives 1100294 calls per 300 ms.\n\nAbout the result of the code before this change: for -1, 0x110000, 0x1000000, 0xFFFFFF and 0x7FFFFFFF, it returns nullptr, the same as now. But FcCharSetHasChar in FontContainsCharacter has the same 16-bit truncation. Thus for 0x1000041, 0x80000041 and 0xFF000041, that code returns the font of \u0027A\u0027 (Noto Sans for \"en\"). PS1 also returned fonts for these characters. Now all characters out of Unicode return nullptr. Unicode has no character above U+10FFFF, so the result is nullptr. The new test checks -1, 0x110000 and 0x1000000 (the same result as before) and 0x1000041 (nullptr; before this change and with PS1, Roboto).",
+      "parentUuid": "4f6ded7a_31c52ed6",
       "revId": "a3c538167ac78e36df668472863faef4ed2ff778",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
