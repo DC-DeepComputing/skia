@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "375c5b0a_71e8fdd2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T17:30:04Z",
+      "side": 1,
+      "message": "Updated the commit message to reflect what is actually happening in the CL",
+      "parentUuid": "bdf82797_22b5e92a",
+      "range": {
+        "startLine": 7,
+        "startChar": 12,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "2f10463d08abb743d17ac08233f4aee7ada60484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "278ec4a9_da86267e",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17891e33_bc8c3f86",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T17:30:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "278ec4a9_da86267e",
+      "range": {
+        "startLine": 158,
+        "startChar": 4,
+        "endLine": 158,
+        "endChar": 10
+      },
+      "revId": "2f10463d08abb743d17ac08233f4aee7ada60484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86b5c430_5581ca20",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-10-21T15:34:36Z",
       "side": 1,
       "message": "This sort of global call here is now a little weird. Like you can have two different SkContexts with completely different strikeCaches, but calling SkContext::dumpMemoryStatistics will only ever return the global one. So this should really be calling a member function like strikeCache-\u003edumpMemoryStatistics(dump).\n\nI think ideally we should either update this here in this CL or add the member function in a pre-CL and then this CL can be updated to use it.",
+      "range": {
+        "startLine": 159,
+        "startChar": 4,
+        "endLine": 159,
+        "endChar": 39
+      },
+      "revId": "2f10463d08abb743d17ac08233f4aee7ada60484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35731de3_276a489d",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T17:30:04Z",
+      "side": 1,
+      "message": "I added a member function to SkStrikeCAche for dumpMemoryStatistics, but implemented it as a public call. \n\nLet me know if that\u0027s wrong.",
+      "parentUuid": "86b5c430_5581ca20",
       "range": {
         "startLine": 159,
         "startChar": 4,

@@ -253,6 +253,30 @@
       },
       "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b5b195d_876e5487",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T17:30:04Z",
+      "side": 1,
+      "message": "Removed the getSVGDecoderFactory method from SkContext and used priv().sharedContext() instead within the SkGRaphics function.\n\nI also did this\n\n```\n    SkSharedContext* shrdCtx \u003d SkContexts::GetGlobalSkContext()-\u003epriv().sharedContext();\n```\n\nLet me know if that\u0027s in good form, I didn\u0027t want it all to live on one line with too many -\u003e and .",
+      "parentUuid": "45483113_18f5daf3",
+      "range": {
+        "startLine": 107,
+        "startChar": 50,
+        "endLine": 107,
+        "endChar": 78
+      },
+      "revId": "431769af54fdaf0b4c2dbc8ea3e5f2ea16701282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
