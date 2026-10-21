@@ -23,7 +23,12 @@
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
 #include "modules/skshaper/include/SkShaper.h"
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#endif
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+#include "modules/skparagraph/src/CoreTextLineShaper.h"
+#endif
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 #include "modules/skunicode/include/SkUnicode.h"
 
@@ -777,6 +782,27 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
         }
     }
 
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+    // The CoreText cascade performs the fallback the attempts below emulate, and the default
+    // font manager they consult must stay out of CoreText paragraphs
+    if (fOwner->isCoreTextShaped()) {
+        ShapeHandler handler(
+                run.heightMultiplier(), run.useHalfLeading(), run.baselineShift(), ellipsis);
+        CoreTextLineShaper::ShapeAffix(
+                ellipsis, textStyle, bidiLevel, fOwner->fontCollection(), &handler);
+        auto ellipsisRun = handler.run();
+        if (ellipsisRun) {
+            ellipsisRun->fTextRange = TextRange(0, ellipsis.size());
+            ellipsisRun->fOwner = fOwner;
+        }
+        return ellipsisRun;
+    }
+#endif
+
+#if defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
+    // Every paragraph that reaches line breaking without HarfBuzz was shaped by CoreText
+    SK_ABORT("Ellipsis shaping of a non-CoreText paragraph needs HarfBuzz");
+#else
     auto shaped = [&](sk_sp<SkTypeface> typeface, sk_sp<SkFontMgr> fallback) -> std::unique_ptr<Run> {
         ShapeHandler handler(
                 run.heightMultiplier(), run.useHalfLeading(), run.baselineShift(), ellipsis);
@@ -859,6 +885,7 @@ std::unique_ptr<Run> TextLine::shapeEllipsis(const SkString& ellipsis, const Clu
         }
     }
     return ellipsisRun;
+#endif
 }
 
 TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
