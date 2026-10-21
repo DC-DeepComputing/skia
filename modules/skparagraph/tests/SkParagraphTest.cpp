@@ -11451,6 +11451,41 @@ DEF_TEST(SkParagraph_FallbackCacheAcrossParagraphs, reporter) {
     REPORTER_ASSERT(
             reporter,
             otherFontMgr->fCharacterMatches + otherFontMgr->fFamilyStyleMatches == firstQueries);
+
+    // Distinct emoji codepoints must not re-query family-based Apple Color Emoji fallback
+    layoutWith(fontCollection, "e 一 ❯ \U0001F602");
+    REPORTER_ASSERT(reporter, otherFontMgr->fFamilyStyleMatches <= 1);
+
+    // Emoji fallback must work when only a non-default font manager is configured
+    auto testFontMgr = sk_make_sp<CountingFontMgr>(ToolUtils::TestFontMgr());
+    auto testCollection = sk_make_sp<FontCollection>();
+    testCollection->setTestFontManager(testFontMgr);
+    testCollection->defaultEmojiFallback(0x1F600, SkFontStyle(), SkString());
+    testCollection->defaultEmojiFallback(0x1F602, SkFontStyle(), SkString());
+    REPORTER_ASSERT(reporter, testFontMgr->fFamilyStyleMatches <= 1);
+
+    // Styles with different families[0] in one paragraph must not share fallback entries
+    auto layoutTwoFamilies = [&](const char* firstFamily, const char* secondFamily) {
+        ParagraphStyle paragraphStyle;
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        TextStyle firstStyle;
+        firstStyle.setFontFamilies({SkString(firstFamily)});
+        builder.pushStyle(firstStyle);
+        builder.addText("一");
+        builder.pop();
+        TextStyle secondStyle;
+        secondStyle.setFontFamilies({SkString(secondFamily)});
+        builder.pushStyle(secondStyle);
+        builder.addText("一");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(1000.0f);
+    };
+    const int beforeFamilies = otherFontMgr->fCharacterMatches;
+    layoutTwoFamilies("FamilyA", "FamilyB");
+    REPORTER_ASSERT(reporter, otherFontMgr->fCharacterMatches == beforeFamilies + 2);
+    layoutTwoFamilies("FamilyB", "FamilyA");
+    REPORTER_ASSERT(reporter, otherFontMgr->fCharacterMatches == beforeFamilies + 2);
 }
 
 // The fallback cache must not grow with each new codepoint

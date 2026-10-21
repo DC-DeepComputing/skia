@@ -310,6 +310,27 @@ sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
 sk_sp<SkTypeface> FontCollection::defaultEmojiFallback(SkUnichar emojiStart,
                                                        SkFontStyle fontStyle,
                                                        const SkString& locale) {
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+    // Apple Color Emoji is matched by family name independent of codepoint, style, or locale
+    FallbackCache::Key macKey(-1, true, {}, SkFontStyle(), SkString());
+    sk_sp<SkTypeface> emojiTypeface;
+    if (auto cached = fFallbackCache->find(macKey)) {
+        emojiTypeface = *cached;
+    } else {
+        // Query active font managers in priority order rather than assuming fDefaultFontManager
+        for (const auto& manager : this->getFontManagerOrder()) {
+            if ((emojiTypeface = manager->matchFamilyStyle(kColorEmojiFontMac, SkFontStyle()))) {
+                break;
+            }
+        }
+        emojiTypeface = fFallbackCache->insert(std::move(macKey), std::move(emojiTypeface));
+    }
+    // Fall back to per-codepoint character matching only when Apple Color Emoji is unavailable
+    if (emojiTypeface != nullptr) {
+        return emojiTypeface;
+    }
+#endif
+
     FallbackCache::Key key(emojiStart, true, {}, fontStyle, locale);
     if (auto cached = fFallbackCache->find(key)) {
         return *cached;
@@ -318,13 +339,9 @@ sk_sp<SkTypeface> FontCollection::defaultEmojiFallback(SkUnichar emojiStart,
     sk_sp<SkTypeface> typeface;
     for (const auto& manager : this->getFontManagerOrder()) {
         std::vector<const char*> bcp47;
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
-        typeface = fDefaultFontManager->matchFamilyStyle(kColorEmojiFontMac, SkFontStyle());
-        if (typeface != nullptr) {
-            break;
-        }
-#else
-          bcp47.push_back(kColorEmojiLocale);
+#if !defined(SK_BUILD_FOR_MAC) && !defined(SK_BUILD_FOR_IOS)
+        // Non-Apple platforms select color emoji fonts via the und-Zsye BCP47 locale tag
+        bcp47.push_back(kColorEmojiLocale);
 #endif
         if (!locale.isEmpty()) {
             bcp47.push_back(locale.c_str());
