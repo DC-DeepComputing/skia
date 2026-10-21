@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83f6967f_15640da5",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T16:40:21Z",
+      "side": 1,
+      "message": "Moved to new file (`tests/CaptureTest.cpp`), and rewrote test by following an actual client path similar to `/graphite_metal_capture.cpp`",
+      "parentUuid": "e4c3b591_35217d6d",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 62
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23f6e0cc_d275962d",
@@ -112,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c87ab9d6_79d8f809",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T16:40:21Z",
+      "side": 1,
+      "message": "I updated the test to reflect what clients would see / use for SkCapture, instead of working with the SkCaptureManager internals. This comment isn\u0027t applicable anymore.",
+      "parentUuid": "5d9b3af3_65eb83cd",
+      "range": {
+        "startLine": 59,
+        "startChar": 64,
+        "endLine": 59,
+        "endChar": 89
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79fd36b6_bf24927e",
@@ -125,6 +173,30 @@
       "writtenOn": "2026-10-19T15:27:09Z",
       "side": 1,
       "message": "Again, why would we need to re-attach after snapPicture?",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 98
+      },
+      "revId": "c3582ed28a014697d4cf85e09ae4c7072408a134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "595f36ba_126c261a",
+        "filename": "tests/CPUContextRecorderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-21T16:40:21Z",
+      "side": 1,
+      "message": "We want to reattach an SkRecordCanvas  (through `SkCaptureCanvas::attachRecordingCanvas()`) after we snap a picture because we detach it (through `SkCaptureCanvas::detachRecordingCanvas()`) once we snap a picture.\n\n\nThe flow is that when we snap a picture, we want to detach the SkRecordCanvas, set fCapturing to false, and call `fRecorder.finishRecordingAsPicture()` (all within `SkCaptureCanvas::snapPicture()`).\n\nPreviously, we were reattaching the SkRecordCanvas within `SkCaptureCanvas::snapPicture()` but that led to issues of creating empty pictures that didn\u0027t actually record anything.\n\n\nThis is why this test was made to test the new functionality of \"lazily reattaching\" the SkRecordCanvas when we are about to draw again.\n\nI was testing this framework from an SkCaptureManager perspective, but I\u0027ve adapted it to follow a more client focused perspective.\n\nLet me know if you have any questions about this, I can also swing by your desk to catch up on this",
+      "parentUuid": "79fd36b6_bf24927e",
       "range": {
         "startLine": 84,
         "startChar": 0,
