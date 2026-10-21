@@ -16,6 +16,70 @@
       "message": "PTAL",
       "revId": "d23dee11039b5573e0edf140cac5f27756761544",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef52cef3_fc2c291e",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-21T17:17:19Z",
+      "side": 1,
+      "message": "This check doesn\u0027t seem necessary since if we are querying the device we can assume the instance is also valid.",
+      "range": {
+        "startLine": 499,
+        "startChar": 56,
+        "endLine": 499,
+        "endChar": 68
+      },
+      "revId": "d23dee11039b5573e0edf140cac5f27756761544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf5d6f3_9865fa34",
+        "filename": "src/sksl/codegen/SkSLWGSLValidator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-21T17:17:19Z",
+      "side": 1,
+      "message": "Would it make sense to enable `kSubgroupUniformity` if we can\u0027t assume maximal reconvergence to ensure our outputted shaders will error if it diverges?",
+      "range": {
+        "startLine": 33,
+        "startChar": 25,
+        "endLine": 33,
+        "endChar": 66
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8cc9e0b0_4ba66cfb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/sksl/codegen/SkSLWGSLValidator.cpp",
+              "range": {
+                "startLine": 33,
+                "startChar": 0,
+                "endLine": 34,
+                "endChar": 0
+              },
+              "replacement": "                         tint::wgsl::LanguageFeature::kSubgroupId,\n                         tint::wgsl::LanguageFeature::kSubgroupUniformity}) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d23dee11039b5573e0edf140cac5f27756761544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
