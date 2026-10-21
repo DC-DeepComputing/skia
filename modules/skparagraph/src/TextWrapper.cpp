@@ -3,11 +3,41 @@
 #include "modules/skparagraph/src/TextWrapper.h"
 
 #include "include/core/SkFont.h"
+#include "include/private/SkTemplates.h"
 
 namespace skia {
 namespace textlayout {
 
 namespace {
+// The width of the hyphen drawn when the line breaks after cluster, or 0 if none is drawn.
+// A soft hyphen that ends the text never breaks a line
+SkScalar softHyphenWidth(const SkString* softHyphen, const Cluster* cluster) {
+    if (softHyphen == nullptr || !cluster->isSoftHyphen() ||
+        cluster->textRange().end >= cluster->owner()->text().size()) {
+        return 0;
+    }
+    const SkFont& font = cluster->run().font();
+    skia_private::AutoSTArray<8, SkGlyphID> glyphs(softHyphen->size());
+    size_t glyphCount = font.textToGlyphs(
+            softHyphen->c_str(), softHyphen->size(), SkTextEncoding::kUTF8, glyphs);
+    bool resolved = glyphCount > 0;
+    for (size_t i = 0; i < glyphCount; ++i) {
+        if (glyphs[i] == 0) {
+            resolved = false;
+            break;
+        }
+    }
+    if (resolved) {
+        return font.measureText(softHyphen->c_str(), softHyphen->size(), SkTextEncoding::kUTF8);
+    }
+    // When the cluster's font lacks a glyph for the hyphen string, shape with font fallback
+    // matching TextLine::createSoftHyphen so reserved and intrinsic widths match the drawn hyphen
+    ParagraphImpl* owner = cluster->owner();
+    auto hyphenRun = TextLine::ShapeString(
+            owner, owner->findAllBlocks(cluster->textRange()), *softHyphen, cluster);
+    return hyphenRun ? hyphenRun->advance().fX : 0;
+}
+
 struct LineBreakerWithLittleRounding {
     LineBreakerWithLittleRounding(SkScalar maxWidth, bool applyRoundingHack)
         : fLower(maxWidth - 0.25f)
@@ -65,16 +95,6 @@ void TextWrapper::lookAhead(SkScalar maxWidth,
 
     LineBreakerWithLittleRounding breaker(maxWidth, applyRoundingHack);
     Cluster* nextNonBreakingSpace = nullptr;
-    // The width of the hyphen drawn when the line breaks after `cluster`, or 0 if none is drawn.
-    // A soft hyphen that ends the text never breaks a line
-    auto softHyphenWidth = [softHyphen](const Cluster* cluster) -> SkScalar {
-        if (softHyphen == nullptr || !cluster->isSoftHyphen() ||
-            cluster->textRange().end >= cluster->owner()->text().size()) {
-            return 0;
-        }
-        return cluster->run().font().measureText(
-                softHyphen->c_str(), softHyphen->size(), SkTextEncoding::kUTF8);
-    };
     // A line that breaks at a soft hyphen also draws the hyphen, so that break only fits if the
     // hyphen does too. When the last break opportunity is a soft hyphen that doesn't fit with its
     // hyphen, remember the words before it: if the line has to end there, end it before instead.
@@ -121,8 +141,7 @@ void TextWrapper::lookAhead(SkScalar maxWidth,
             SkScalar nextShortWordLength = nextWordLength;
             SkScalar nextWordHyphenWidth = 0;
             for (auto further = cluster; further != endOfClusters; ++further) {
-                if (further->isSoftBreak() || further->isHardBreak() || further->isWhitespaceBreak()) {
-                    nextWordHyphenWidth = softHyphenWidth(further);
+                if (further->isHardBreak() || further->isWhitespaceBreak()) {
                     break;
                 }
                 if (further->run().isPlaceholder()) {
@@ -141,6 +160,11 @@ void TextWrapper::lookAhead(SkScalar maxWidth,
                     nextWordLength = std::max(nextWordLength, further->width());
                 } else {
                     nextWordLength += further->width();
+                }
+                if (maxWidth > 0 && further->isSoftBreak()) {
+                    // Include further->width() before stopping so letter-spaced soft hyphens count
+                    nextWordHyphenWidth = softHyphenWidth(softHyphen, further);
+                    break;
                 }
             }
             if (nextWordLength > maxWidth) {
@@ -172,6 +196,11 @@ void TextWrapper::lookAhead(SkScalar maxWidth,
                     // Even if the word is too long there is a very little space on this line.
                     // let's deal with it on the next line.
                 }
+            } else {
+                // Record the hyphenated word width even when nextWordLength <= maxWidth so a word
+                // pushed to the next line or cut off by maxLines still counts in fMinIntrinsicWidth
+                fMinIntrinsicWidth =
+                        std::max(fMinIntrinsicWidth, nextWordLength + nextWordHyphenWidth);
             }
 
             if (cluster->width() > maxWidth) {
@@ -201,7 +230,7 @@ void TextWrapper::lookAhead(SkScalar maxWidth,
             if (fClusters.endOfWord()) {
                 // A word that ends at a soft hyphen is drawn with a hyphen when the line breaks
                 // there, so the hyphen counts in its width (as in CSS min-content)
-                SkScalar hyphenWidth = softHyphenWidth(cluster);
+                SkScalar hyphenWidth = softHyphenWidth(softHyphen, cluster);
                 fMinIntrinsicWidth =
                         std::max(fMinIntrinsicWidth, getClustersTrimmedWidth() + hyphenWidth);
                 bool tooWide = hyphenWidth > 0 && !lineMayEllipsize && !fWords.empty() &&
@@ -509,6 +538,13 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
                 // Nothing out of ordinary - just add this cluster to the word and to the line
                 softLineMaxIntrinsicWidth += cluster->width();
                 lastWordLength += cluster->width();
+                if (cluster->isSoftBreak()) {
+                    // Words after maxLines also split at soft breaks and include any drawn hyphen
+                    fMinIntrinsicWidth =
+                            std::max(fMinIntrinsicWidth,
+                                     lastWordLength + softHyphenWidth(softHyphen, cluster));
+                    lastWordLength = 0;
+                }
             }
             ++cluster;
         }
