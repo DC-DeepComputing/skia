@@ -25,11 +25,14 @@ static bool validate_wgsl(ErrorReporter& reporter,
     for (auto extension : {tint::wgsl::Extension::kChromiumExperimentalPixelLocal,
                            tint::wgsl::Extension::kChromiumExperimentalFramebufferFetch,
                            tint::wgsl::Extension::kDualSourceBlending,
-                           tint::wgsl::Extension::kF16}) {
+                           tint::wgsl::Extension::kF16,
+                           tint::wgsl::Extension::kSubgroups}) {
         options.allowed_features.extensions.insert(extension);
     }
-    options.allowed_features.features.insert(
-            tint::wgsl::LanguageFeature::kUnrestrictedPointerParameters);
+    for (auto feature : {tint::wgsl::LanguageFeature::kUnrestrictedPointerParameters,
+                         tint::wgsl::LanguageFeature::kSubgroupId}) {
+        options.allowed_features.features.insert(feature);
+    }
 
     // Verify that the WGSL we produced is valid.
     tint::Source::File srcFile("", wgsl);
