@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df1300dc_928f7e6b",
+        "filename": "src/gpu/graphite/sparse_strips/StripGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-21T15:46:21Z",
+      "side": 1,
+      "message": "Updated the comment; all this is saying is that calling outsetBoundsToGrid() does not guarantee that the clip is tile aligned. (Which is why we still align the clip here)",
+      "parentUuid": "6b254c73_a2159f1e",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 94
+      },
+      "revId": "1e8b797df0ccc37ec2ebaf203f402f4b3e2e5485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b90feecc_6fd16b06",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-14T12:15:01Z",
       "side": 1,
       "message": "This isn\u0027t clear to me either",
+      "range": {
+        "startLine": 711,
+        "startChar": 0,
+        "endLine": 712,
+        "endChar": 94
+      },
+      "revId": "1e8b797df0ccc37ec2ebaf203f402f4b3e2e5485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75f9efdc_11d8d915",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-21T15:46:21Z",
+      "side": 1,
+      "message": "This is saying that we should expect the final clip to contain the scissor-intersected-pixels of the endcaps and wides, regardless of their coverage. (I.e.  we don\u0027t play games and attempt to tighten the clip based on the coverage).",
+      "parentUuid": "b90feecc_6fd16b06",
       "range": {
         "startLine": 711,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f5788a_e5a22c85",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-21T15:46:21Z",
+      "side": 1,
+      "message": "No, the scissor is distinct from the clip.",
+      "parentUuid": "296dee7a_769c7656",
+      "range": {
+        "startLine": 732,
+        "startChar": 16,
+        "endLine": 732,
+        "endChar": 24
+      },
+      "revId": "1e8b797df0ccc37ec2ebaf203f402f4b3e2e5485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "373d07cd_037fa639",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-10-14T12:15:01Z",
       "side": 1,
       "message": "Clipped ?",
+      "range": {
+        "startLine": 738,
+        "startChar": 14,
+        "endLine": 738,
+        "endChar": 23
+      },
+      "revId": "1e8b797df0ccc37ec2ebaf203f402f4b3e2e5485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05b152bc_a2d00cbd",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-21T15:46:21Z",
+      "side": 1,
+      "message": "No, this is the case where the clip is intersected with the scissor.",
+      "parentUuid": "373d07cd_037fa639",
       "range": {
         "startLine": 738,
         "startChar": 14,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf4d3e8_2bf1347d",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-21T15:46:21Z",
+      "side": 1,
+      "message": "No, this is correct.",
+      "parentUuid": "6bc841b6_c759fdf9",
+      "range": {
+        "startLine": 744,
+        "startChar": 61,
+        "endLine": 744,
+        "endChar": 68
+      },
+      "revId": "1e8b797df0ccc37ec2ebaf203f402f4b3e2e5485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dde44d8f_6c9894b9",
@@ -146,6 +266,30 @@
       "writtenOn": "2026-10-14T12:15:01Z",
       "side": 1,
       "message": "isInverse ?",
+      "range": {
+        "startLine": 750,
+        "startChar": 19,
+        "endLine": 750,
+        "endChar": 26
+      },
+      "revId": "1e8b797df0ccc37ec2ebaf203f402f4b3e2e5485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c1a9d3_c6802ea7",
+        "filename": "tests/graphite/sparse_strips/CoverageTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-21T15:46:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dde44d8f_6c9894b9",
       "range": {
         "startLine": 750,
         "startChar": 19,
