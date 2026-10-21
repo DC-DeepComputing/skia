@@ -43,6 +43,30 @@ struct SparseStripConfig {
     // The AlphaAtlasManager uses a flipflopping allocation system that will break if the page count
     // is increased beyond 2.
     static_assert(kMaxTexturePages == 2);
+
+    // When both regular pages are exhausted between flushes, alphas spill into an overflow page
+    // that is bound as an additional texture after the regular pages.
+    static constexpr int32_t kOverflowSlot        = kMaxTexturePages;
+    static constexpr int32_t kNumAlphaBindings    = kMaxTexturePages + 1;
+    // The EndCap fragment shader (endcap_coverage_fn) selects between exactly this many samplers.
+    static_assert(kNumAlphaBindings == 3);
+
+    // Soft cap on the bytes of replacement overflow pages allocated while the current overflow page
+    // is still in use (i.e. before a flush allows it to be overwritten in place). Once exceeded, a
+    // draw flushes instead of allocating another page.
+    static constexpr int64_t kOverflowSoftCapBytes = 64 * 1024 * 1024;
+
+    // These control the StripCache, which lets shapes drawn again with the same transform up to an
+    // integer translation reuse their strips and atlas alphas instead of regenerating them. Frames
+    // tend to draw the same shapes in the same order, and an LRU cycled through more entries than
+    // it holds misses on every lookup, so the entry count is generous; memory is bounded by bytes.
+    // Entries used within the latest kStripCacheRecentFlushes flushes (so including those used by
+    // the previous frame) are also kept in favor of new entries (see StripCache).
+    static constexpr int    kStripCacheMaxEntries    = 2048;
+    static constexpr size_t kStripCacheMaxEntryBytes = 64 * 1024;
+    static constexpr size_t kStripCacheMaxBytes      = 2 * 1024 * 1024;
+    static constexpr int    kStripCacheRecentFlushes = 2;
+
     // To avoid uploading the texture width, and to avoid a costly divide and mod in the shader, we
     // assume that the atlas width is always fixed.
     static_assert(kAtlasWidth == 8192);

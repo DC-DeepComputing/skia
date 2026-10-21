@@ -674,6 +674,13 @@ bool FastValidator<kTileWidth, kTileHeight>::ValidatePath(
                        observer);
     }
 
+    // Overflow caps reference the atlas' staging buffer until they're committed to its overflow
+    // page, so commit them like Device does before validating against the page data.
+    if (!atlasManager.commitOverflow(&ends)) {
+        REPORTER_ASSERT(reporter, false, "[%s] Failed to commit overflow alphas.", testName);
+        return false;
+    }
+
     return ValidateStripOutput(reporter,
                                path,
                                testPolyline,

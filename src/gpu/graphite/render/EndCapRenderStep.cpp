@@ -77,7 +77,7 @@ std::string EndCapRenderStep::vertexSkSL(const RootNodesInfo&) const {
 std::string EndCapRenderStep::texturesAndSamplersSkSL(
         const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
     std::string result;
-    for (int i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
+    for (int i = 0; i < SparseStripConfig::kNumAlphaBindings; ++i) {
         result += EmitSamplerLayout(bindingReqs, nextBindingIndex);
         SkSL::String::appendf(&result, " sampler2D alpha_text_%d;", i);
     }
@@ -88,6 +88,7 @@ const char* EndCapRenderStep::fragmentCoverageSkSL() const {
     return "outputCoverage = endcap_coverage_fn(rectCoord,"
                                                "alpha_text_0,"
                                                "alpha_text_1,"
+                                               "alpha_text_2,"
                                                "maskIndex,"
                                                "texPageVarying);";
 }
@@ -98,10 +99,11 @@ void EndCapRenderStep::writeVertices(DrawWriter* writer,
                                      uint32_t ssboIndex) const {
     SkASSERT(params.geometry().isEndCaps());
     const auto& endCaps = params.geometry().endCaps();
+    // Overflow caps must have been committed to the atlas' overflow page before being recorded.
+    SkASSERT(!endCaps.hasPendingOverflow());
 
-    int32_t start = endCaps.drawStartIndex();
-    int32_t end = endCaps.drawEndIndex();
-    if (start >= end) {
+    const auto& caps = endCaps.caps();
+    if (caps.empty()) {
         return;
     }
 
@@ -111,14 +113,12 @@ void EndCapRenderStep::writeVertices(DrawWriter* writer,
     }
 
     DrawWriter::Instances instances{*writer, {}, {}, 4};
-    instances.reserve(end - start);
+    instances.reserve(caps.size());
 
     float depth = params.order().depthAsFloat();
     float height = static_cast<float>(SparseStripConfig::kTileHeight);
 
-    const auto& caps = endCaps.caps();
-    for (int32_t i = start; i < end; ++i) {
-        const auto& cap = caps[i];
+    for (const auto& cap : caps) {
         float l = static_cast<float>(cap.fX);
         float t = static_cast<float>(cap.fY);
         float width = static_cast<float>(cap.fWidth);
@@ -142,7 +142,7 @@ void EndCapRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkASSERT(params.geometry().isEndCaps());
     const auto& proxies = params.geometry().endCaps().proxies();
 
-    for (int i = 0; i < SparseStripConfig::kMaxTexturePages; ++i) {
+    for (int i = 0; i < SparseStripConfig::kNumAlphaBindings; ++i) {
         SkASSERT(proxies[i] != nullptr);
         gatherer->add(proxies[i], {SkFilterMode::kNearest, SkTileMode::kClamp});
     }

@@ -16,6 +16,8 @@ SPARSE_STRIPS_FILES = [
     "Polyline.h",
     "SparseStripsConfig.h",
     "SparseStripsTypes.h",
+    "StripCache.cpp",
+    "StripCache.h",
     "StripGenerator.cpp",
     "StripGenerator.h",
     "StripProcessorScalar.h",

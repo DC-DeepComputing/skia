@@ -1935,6 +1935,7 @@ $pure half4 blur_coverage_fn(float2 coords,
 $pure half4 endcap_coverage_fn(float2 rectCoord,
                                sampler2D alpha_text_0,
                                sampler2D alpha_text_1,
+                               sampler2D alpha_text_2,
                                uint maskIndex,
                                int texPageVarying) {
     // Must exactly match the values set in the SparseStripsConfig.h
@@ -1960,11 +1961,15 @@ $pure half4 endcap_coverage_fn(float2 rectCoord,
 
     uint2 uv = uint2(trueLinearIdx & atlasMask, trueLinearIdx >> atlasShift);
 
+    // Pages 0 and 1 are the atlas' regular pages, and page 2 is its overflow page. Must match
+    // SparseStripConfig::kNumAlphaBindings.
     half4 texColor;
     if (texPageVarying == 0) {
         texColor = textureRead(alpha_text_0, uv);
-    } else {
+    } else if (texPageVarying == 1) {
         texColor = textureRead(alpha_text_1, uv);
+    } else {
+        texColor = textureRead(alpha_text_2, uv);
     }
 
     return texColor[channelIdx].rrrr;

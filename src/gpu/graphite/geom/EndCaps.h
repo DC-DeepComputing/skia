@@ -19,9 +19,13 @@
 
 namespace skgpu::graphite {
 
-// TODO (thomsmit): Rename "NullCaps" to "Overflow" caps for clarity
 // Container holding the "EndCaps" produced by SparseStrips rendering. An EndCap stores the
 // antialiased portion of the path rendering, and spans a variable non-zero number of tiles.
+//
+// Each EndCap's fTexPage indexes this container's per-draw binding table (proxies()), where slots
+// [0, kMaxTexturePages) hold the alpha atlas' regular pages and kOverflowSlot holds its overflow
+// page. Caps that spilled into the overflow page ("overflow caps") always form a contiguous suffix.
+// Until the atlas commits them, their alpha indices refer to the atlas' CPU staging buffer.
 class EndCaps {
 public:
     struct EndCap {
@@ -39,6 +43,8 @@ public:
     static_assert(sizeof(EndCap) == 16);
     static_assert(std::is_trivially_copyable_v<EndCap>);
 
+    using ProxyArray = std::array<sk_sp<TextureProxy>, SparseStripConfig::kNumAlphaBindings>;
+
     EndCaps() = default;
 
     void addCap(uint16_t x,
@@ -49,52 +55,52 @@ public:
         fCaps.push_back(EndCap(x, y, width, alphaIndex, texPage));
     }
 
-    void markFirstNullCap() {
-        if (fFirstNullCapIndex == kInvalidIndex) {
-            fFirstNullCapIndex = static_cast<int32_t>(fCaps.size());
+    // Marks the next added cap as the first overflow cap, if no overflow cap has been added yet.
+    void markFirstOverflowCap() {
+        if (fFirstOverflowCapIndex == kInvalidIndex) {
+            fFirstOverflowCapIndex = static_cast<int32_t>(fCaps.size());
         }
     }
 
     void setProxy(int slot, sk_sp<TextureProxy> proxy) {
-        SkASSERT(slot >= 0 && slot < SparseStripConfig::kMaxTexturePages);
+        SkASSERT(slot >= 0 && slot < SparseStripConfig::kNumAlphaBindings);
         fProxies[slot] = std::move(proxy);
     }
 
     const skia_private::TArray<EndCap>& caps() const { return fCaps; }
     skia_private::TArray<EndCap>& caps() { return fCaps; }
-    const std::array<sk_sp<TextureProxy>, SparseStripConfig::kMaxTexturePages>& proxies() const {
-        return fProxies;
-    }
+    const ProxyArray& proxies() const { return fProxies; }
 
     bool empty() const { return fCaps.empty(); }
     size_t size() const { return fCaps.size(); }
-    bool hasNullCaps() const { return fFirstNullCapIndex != kInvalidIndex; }
-    int32_t firstNullCapIndex() const { return fFirstNullCapIndex; }
-    void setFirstNullCapIndex(int32_t index) { fFirstNullCapIndex = index; }
-    void clearNullCaps() { fFirstNullCapIndex = kInvalidIndex; }
 
-    int32_t drawStartIndex() const { return fDrawStartIndex; }
-    int32_t drawEndIndex() const {
-        return this->hasNullCaps() ? fFirstNullCapIndex : static_cast<int32_t>(fCaps.size());
+    bool hasOverflowCaps() const { return fFirstOverflowCapIndex != kInvalidIndex; }
+    int32_t firstOverflowCapIndex() const { return fFirstOverflowCapIndex; }
+
+    // True while overflow caps still reference the atlas' CPU staging buffer rather than its
+    // overflow page. Such caps must be committed before the EndCaps can be drawn.
+    bool hasPendingOverflow() const { return this->hasOverflowCaps() && !fOverflowCommitted; }
+    void markOverflowCommitted() {
+        SkASSERT(this->hasOverflowCaps());
+        fOverflowCommitted = true;
     }
-    void setDrawStartIndex(int32_t index) { fDrawStartIndex = index; }
 
     void clear() {
         fCaps.clear();
         for (auto& proxy : fProxies) {
             proxy.reset();
         }
-        fDrawStartIndex = 0;
-        fFirstNullCapIndex = kInvalidIndex;
+        fFirstOverflowCapIndex = kInvalidIndex;
+        fOverflowCommitted = false;
     }
 
 private:
     static constexpr int32_t kInvalidIndex = -1;
 
     skia_private::TArray<EndCap> fCaps;
-    std::array<sk_sp<TextureProxy>, SparseStripConfig::kMaxTexturePages> fProxies;
-    int32_t fDrawStartIndex = 0;
-    int32_t fFirstNullCapIndex = kInvalidIndex;
+    ProxyArray fProxies;
+    int32_t fFirstOverflowCapIndex = kInvalidIndex;
+    bool fOverflowCommitted = false;
 };
 
 }  // namespace skgpu::graphite

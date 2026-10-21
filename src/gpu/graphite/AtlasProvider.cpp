@@ -160,6 +160,11 @@ void AtlasProvider::invalidateAtlases() {
     if (fClipAtlasManager) {
         fClipAtlasManager->evictAtlases();
     }
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+    if (fAlphaAtlasManager) {
+        fAlphaAtlasManager->evictAtlases();
+    }
+#endif
 }
 
 }  // namespace skgpu::graphite

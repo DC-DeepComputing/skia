@@ -1757,19 +1757,27 @@ void Device::drawGeometry(const Transform& localToDevice,
         }
     }
 
+    // Sparse strips geometry is generated before the flush decision below. Alphas that don't fit in
+    // the alpha atlas' regular pages are staged and committed to its overflow page after that
+    // decision, which only needs to flush if the overflow page would exceed its soft memory cap.
+    bool stripsNeedFlush = false;
 #if defined(SK_ENABLE_SPARSE_STRIPS)
-    // If the textures backing the sparse strips renderers run out of space, we may need to trigger
-    // a flush here.
+    std::optional<StripGenerator::DrawScope> stripsDrawScope;
     if (renderer && renderer->step(0).renderStepID() == RenderStep::RenderStepID::kEndCap) {
         SkASSERT(localToDevice.valid());
         SkASSERT(fStripGenerator);
         SkASSERT(style.isFillStyle());
 
-        const SkPath& finalPath = geometry.shape().asPath();
-        SkMatrix ctm = localToDevice.matrix().asM33();
+        // Keeps the atlas pages bound by this draw from being overwritten until it is recorded,
+        // even if a nested draw (e.g. from shading.toKey()) triggers a flush in the meantime.
+        stripsDrawScope.emplace(fStripGenerator.get());
 
+        SkMatrix ctm = localToDevice.matrix().asM33();
         SkIRect clipBounds = clip.drawBounds().asSkIRect(); // Grid-snapped, so integral.
-        if (!fStripGenerator->processGeometry(finalPath, ctm, clipBounds)) {
+        // Reuses the strips (and atlas alphas) of an earlier draw of the same shape, if they are
+        // still resident: one with the same transform up to an integer translation or, for strips
+        // that depend on the clip, one with the same transform and clip.
+        if (!fStripGenerator->processGeometry(geometry.shape(), ctm, clipBounds)) {
             SKIA_LOG_E("Failed to process geometry for sparse strips!");
             return;
         }
@@ -1778,33 +1786,26 @@ void Device::drawGeometry(const Transform& localToDevice,
             return;
         }
 
-        // To avoid #define mess, the sparse strips can trigger a flush here
-        // TODO (thomsmit): unify this with the existing flush system
-        if (fStripGenerator->hasNullCaps()) {
-            fRecorder->priv().flushTrackedDevices(
-                    SK_DUMP_TASKS_CODE("Device::drawGeometry Flush Before Draw"));
-            // TODO (thomsmit): implement scratch textures as a fallback of last resort.
-            if (!fStripGenerator->cleanupNullCaps()) {
-                SKIA_LOG_E("Failed to cleanup null endcaps after flush!");
-                return;
-            }
-        }
+        stripsNeedFlush = fStripGenerator->overflowNeedsFlush();
     }
 #endif
 
-    // Decide if we have any reason to flush pending work. A flush may be necessary for two reasons:
+    // Decide if we have any reason to flush pending work. A flush may be necessary because:
     //      1) A flush is required before updating the clip state or making any permanent changes to
     //         a path atlas, since otherwise clip operations and/or atlas entries for the current
     //         draw will be flushed.
     //      2) A flush is required before shading.toKey() is called so that child tasks required by
     //         this draw are associated with the DrawContext after any instead of being added as a
     //         child of the current draw. See "Layer" tests in NotifyInUseTest.cpp.
+    //      3) Committing a sparse strips draw's overflow alphas would otherwise exceed the alpha
+    //         atlas' soft memory cap; a flush lets the overflow page be overwritten instead.
     DstReadStrategy dstReadStrategy = shading.dstReadRequired() ?
                                       fDC->dstReadStrategy() : DstReadStrategy::kNoneRequired;
     // TODO (thomsmit): Adjust this when the draw limit is removed.
-    const bool needsFlush = this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy);
+    const bool needsFlush =
+            this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy) || stripsNeedFlush;
     if (needsFlush) {
-        if (pathAtlas != nullptr) {
+        if (pathAtlas != nullptr || stripsNeedFlush) {
             // We need to flush work for all devices associated with the current Recorder.
             // Otherwise we may end up with outstanding draws that depend on past atlas state.
             fRecorder->priv().flushTrackedDevices(
@@ -1813,6 +1814,15 @@ void Device::drawGeometry(const Transform& localToDevice,
             this->flushPendingWork(/*drawContext=*/nullptr);
         }
     }
+
+#if defined(SK_ENABLE_SPARSE_STRIPS)
+    // Commit the alphas that spilled into the alpha atlas' overflow page. This must happen before
+    // shading.toKey(), which may record nested draws that also generate sparse strips.
+    if (stripsDrawScope && !fStripGenerator->commitOverflow()) {
+        SKIA_LOG_E("Failed to commit sparse strips overflow alphas!");
+        return;
+    }
+#endif
 
     // Determine the paint ID and collect the paint uniforms now before anything has been recorded.
     // The paint may reference an SkPicture or a Graphite-backed dynamic SkImage that can trigger

@@ -231,8 +231,8 @@ private:
             return false;
         }
         auto [alphaIndex, texPage] = *alloc;
-        if (texPage == AlphaAtlasManager::kNullSlot) {
-            ends->markFirstNullCap();
+        if (texPage == AlphaAtlasManager::kOverflowSlot) {
+            ends->markFirstOverflowCap();
         }
         ends->addCap(endCapX,
                      prevTile.y * kTileHeight,
