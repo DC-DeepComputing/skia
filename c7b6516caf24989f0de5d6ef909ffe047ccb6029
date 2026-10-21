@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ce0c36e_dcd7bde8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-21T22:58:52Z",
+      "side": 1,
+      "message": "Thanks, David! I verified PS4 is tree-identical to the companion PS2, and the side effect on the post-maxLines scan matches how lookAhead already ends words at soft breaks (TextStretch::endOfWord), so CJK getting per-word min intrinsic width there is the consistent behavior. I\u0027ll abandon 1401656. LGTM.",
+      "revId": "c7b6516caf24989f0de5d6ef909ffe047ccb6029",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
