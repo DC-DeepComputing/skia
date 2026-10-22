@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "377ceb03e540f35e065fec994212a202ee85d748",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f09f811d_9bf5b200",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-22T12:48:45Z",
+      "side": 1,
+      "message": "It seems like here (and at the following add_into call sites) we should bubble the failure up.",
+      "revId": "377ceb03e540f35e065fec994212a202ee85d748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7721c204_129c21f2",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-22T12:48:45Z",
+      "side": 1,
+      "message": "Pass by pointer since modifying",
+      "range": {
+        "startLine": 1300,
+        "startChar": 48,
+        "endLine": 1300,
+        "endChar": 59
+      },
+      "revId": "377ceb03e540f35e065fec994212a202ee85d748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
