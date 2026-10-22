@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d83d7901_af12032f",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-22T11:07:24Z",
+      "side": 0,
+      "message": "Inherited from \"Iter\"",
+      "range": {
+        "startLine": 441,
+        "startChar": 0,
+        "endLine": 444,
+        "endChar": 0
+      },
+      "revId": "9754994555ab434b7486ddff6f338a0506203289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
