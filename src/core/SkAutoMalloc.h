@@ -12,6 +12,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkNoncopyable.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -114,7 +115,7 @@ public:
      */
     ~SkAutoSMalloc() {
         if (fPtr != (void*)fStorage) {
-            sk_free(fPtr);
+            sk_free(fPtr.ExtractAsDangling());
         }
     }
 
@@ -140,7 +141,7 @@ public:
         }
         if (alloc) {
             if (fPtr != (void*)fStorage) {
-                sk_free(fPtr);
+                sk_free(fPtr.ExtractAsDangling());
             }
 
             if (size == kSize) {
@@ -169,9 +170,9 @@ private:
     static const size_t kSize = kSizeAlign4;
 #endif
 
-    void*       fPtr;
-    size_t      fSize;  // can be larger than the requested size (see kReuse)
-    uint32_t    fStorage[kSize >> 2];
+    raw_ptr<void> fPtr;
+    size_t fSize;  // can be larger than the requested size (see kReuse)
+    uint32_t fStorage[kSize >> 2];
 };
 // Can't guard the constructor because it's a template class.
 
