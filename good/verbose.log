@@ -1,0 +1,16 @@
+Skipping config nonrendering: Don't understand 'nonrendering'.
+1085 srcs * 2 sinks + 2933 tests == 5103 tasks
+	start unit test  JSON_ParseNumber
+[1/5103] unit test  JSON_ParseNumber done
+	start unit test  PurgeImageFilterCache
+[2/5103] unit test  PurgeImageFilterCache done
+	start unit test  Ico_fallbackWhenPngNotRegistered
+[3/5103] unit test  Ico_fallbackWhenPngNotRegistered done
+	start unit test  Ico_usesRegisteredPngDecoder
+[4/5103] unit test  Ico_usesRegisteredPngDecoder done
+	start unit test  Ico_malformedPngWithLibpngNoRedundantFallback
+[5/5103] unit test  Ico_malformedPngWithLibpngNoRedundantFallback done
+	start 8888 gm  paragraph__underline
+	start 8888 gm  paragraph_ellipsis_bidi
+	start 8888 gm  paragraph_layout_
+	start 8888 gm  paragraph_
