@@ -11,6 +11,7 @@
 #include "include/core/SkContextOptions.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -304,5 +305,37 @@ DEF_TEST(SkStrikeCache_ClientDrawTextPopulatesContextCache, reporter) {
     surfaceA->getCanvas()->drawString("After purge", 10.0f, 30.0f, font16, paint);
     REPORTER_ASSERT(reporter, contextA->fontCacheUsed() > 0);
     REPORTER_ASSERT(reporter, contextA->fontCacheCountUsed() == 1);
+}
+#endif
+
+// Clients size the process-wide font cache through the SK_DEFAULT_FONT_CACHE_* build macros
+// (e.g. Chrome and Android), so the global cache must start from those values
+DEF_TEST(SkGraphics_FontCacheHonorsBuildDefaults, reporter) {
+    REPORTER_ASSERT(reporter, SkGraphics::GetFontCacheLimit() == SK_DEFAULT_FONT_CACHE_LIMIT);
+    REPORTER_ASSERT(reporter,
+                    SkGraphics::GetFontCacheCountLimit() == SK_DEFAULT_FONT_CACHE_COUNT_LIMIT);
+}
+
+#if defined(SK_ENABLE_THREADLOCAL_STRIKECACHE)
+// With a per-thread strike cache, SkGraphics font cache controls must act on the calling thread's
+// cache, since that is where glyph lookups store strikes
+DEF_TEST(SkGraphics_FontCacheControlsTargetThreadLocalStrikeCache, reporter) {
+    SkStrikeCache* threadCache = SkStrikeCache::GlobalStrikeCache();
+
+    const size_t prevLimit = SkGraphics::GetFontCacheLimit();
+    SkGraphics::SetFontCacheLimit(prevLimit + 1);
+    REPORTER_ASSERT(reporter, threadCache->getCacheSizeLimit() == prevLimit + 1);
+    SkGraphics::SetFontCacheLimit(prevLimit);
+
+    SkFont font = make_test_font();
+    SkStrikeSpec strikeSpec = make_test_strike_spec(font);
+    {
+        sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike(threadCache);
+    }
+    REPORTER_ASSERT(reporter, threadCache->getTotalMemoryUsed() > 0);
+    REPORTER_ASSERT(reporter, SkGraphics::GetFontCacheUsed() == threadCache->getTotalMemoryUsed());
+
+    SkGraphics::PurgeFontCache();
+    REPORTER_ASSERT(reporter, threadCache->getTotalMemoryUsed() == 0);
 }
 #endif
