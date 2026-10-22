@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7a57c2b_9647a4f0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:23:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d99af32c_79ced65f",
+      "range": {
+        "startLine": 1918,
+        "startChar": 73,
+        "endLine": 1918,
+        "endChar": 79
+      },
+      "revId": "b6d041f4f1be4a381fc71cc7395313249841cb18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbd5966d_520cbd5f",
@@ -100,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "547b7fc0_468a06dd",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1941,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:23:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbd5966d_520cbd5f",
+      "range": {
+        "startLine": 1941,
+        "startChar": 13,
+        "endLine": 1941,
+        "endChar": 18
+      },
+      "revId": "b6d041f4f1be4a381fc71cc7395313249841cb18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79a1b345_3bbfa00a",
@@ -113,6 +161,30 @@
       "writtenOn": "2026-10-19T19:51:28Z",
       "side": 1,
       "message": "nit: duplicate",
+      "range": {
+        "startLine": 1128,
+        "startChar": 52,
+        "endLine": 1128,
+        "endChar": 59
+      },
+      "revId": "b6d041f4f1be4a381fc71cc7395313249841cb18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6283b8ff_fcd0c133",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:23:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79a1b345_3bbfa00a",
       "range": {
         "startLine": 1128,
         "startChar": 52,
