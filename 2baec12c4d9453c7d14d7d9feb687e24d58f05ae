@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32a34167_bdfde2fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-22T21:27:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fc96a96_2953fc35",
+      "range": {
+        "startLine": 7,
+        "startChar": 7,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "2baec12c4d9453c7d14d7d9feb687e24d58f05ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40174f74_99c91458",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb849b3d_ac90bfc3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-22T21:27:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40174f74_99c91458",
+      "revId": "2baec12c4d9453c7d14d7d9feb687e24d58f05ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c111186e_92d21da2",
@@ -54,6 +96,24 @@
       "writtenOn": "2026-10-22T16:46:09Z",
       "side": 1,
       "message": "Make sure to add a test within `tests/SkRuntimeEffectTest.cpp` to reproduce the bug.\n\nTypically when we have a fuzzer bug, we want to add it to our tests so that\n* we can verify it continues to work\n* document why we made a change / what the change was fixing",
+      "revId": "2baec12c4d9453c7d14d7d9feb687e24d58f05ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0d18fdc_67892f30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-22T21:27:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c111186e_92d21da2",
       "revId": "2baec12c4d9453c7d14d7d9feb687e24d58f05ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
