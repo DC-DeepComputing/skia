@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff4d1f6b_d4d2d888",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-22T14:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef52cef3_fc2c291e",
+      "range": {
+        "startLine": 499,
+        "startChar": 56,
+        "endLine": 499,
+        "endChar": 68
+      },
+      "revId": "d23dee11039b5573e0edf140cac5f27756761544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bf5d6f3_9865fa34",
@@ -78,6 +102,30 @@
           ]
         }
       ],
+      "revId": "d23dee11039b5573e0edf140cac5f27756761544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c505b0d_2f7e6507",
+        "filename": "src/sksl/codegen/SkSLWGSLValidator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-22T14:46:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bf5d6f3_9865fa34",
+      "range": {
+        "startLine": 33,
+        "startChar": 25,
+        "endLine": 33,
+        "endChar": 66
+      },
       "revId": "d23dee11039b5573e0edf140cac5f27756761544",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
