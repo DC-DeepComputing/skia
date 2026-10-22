@@ -90,13 +90,18 @@ public:
 
     SkSpan<const Attribute> appendAttributes() const { return fAppendAttrs; }
 
-    // Name used in-shader for storage buffer uniform.
+    // Name used in-shader for storage buffer uniform and texture fallback.
     static constexpr char kStorageBufferName[] = "fsStorageBuffer";
+    static constexpr char kStorageFallbackTextureName[] = "storageFallbackTexture";
+
+    const Caps* caps() const { return fCaps; }
+    bool storageBufferSupport() const { return fCaps->storageBufferSupport(); }
 
 private:
     struct SharedGeneratorData;
 
-    ShaderInfo(const ShaderCodeDictionary*,
+    ShaderInfo(const Caps*,
+               const ShaderCodeDictionary*,
                const RuntimeEffectDictionary*,
                const char* uniformSsboIndex,
                DstReadStrategy);
@@ -118,12 +123,7 @@ private:
                             const RenderStep*,
                             const SharedGeneratorData&);
 
-#if defined(GPU_TEST_UTILS)
-    friend class TextureFallbackTest;
-    static std::string EmitStorageFallbackTexture(const ResourceBindingRequirements&,
-                                                  const RenderStep*);
-#endif
-
+    const Caps* fCaps;
     raw_ptr<const ShaderCodeDictionary> fShaderCodeDictionary;
     raw_ptr<const RuntimeEffectDictionary> fRuntimeEffectDictionary;
     const char* fUniformSsboIndex;
@@ -146,6 +146,15 @@ private:
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasCombinedUniforms = false;
     SkEnumBitMask<PipelineStageFlags> fStorageBufferStages = {};
+
+#if defined(GPU_TEST_UTILS)
+    friend class TextureFallbackTest;
+    static std::string EmitStorageFallbackTexture(const ResourceBindingRequirements&,
+                                                  const RenderStep*);
+    static std::string EmitStepStorageBuffer(const ResourceBindingRequirements&,
+                                             const RenderStep*,
+                                             bool hasGradStorage = false);
+#endif
 
     // Append attributes defined by the render step and any attributes within the paint key via
     // a mesh shader snippet.
