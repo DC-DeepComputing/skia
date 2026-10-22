@@ -28,6 +28,7 @@
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <optional>
@@ -1265,7 +1266,7 @@ private:
     // The color space the filters are evaluated in
     sk_sp<SkColorSpace> fColorSpace;
 
-    Stats* fStats;
+    raw_ptr<Stats> fStats;
 };
 
 } // end namespace skif
