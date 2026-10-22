@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82f76255_c5c5961a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-22T21:39:23Z",
+      "side": 1,
+      "message": "LGTM! Thanks for tracking this down and putting together the fix so quickly.\nI verified this locally against a Flutter engine build:\n- Confirmed that 1398738 reproduces the failure in `packages/flutter/test/material/dropdown_menu_test.dart` (\"DropdownMenuEntries do not overflow when width is specified\": 280.0 vs expected 300.0).\n- Confirmed that with 1403136 applied, all 196 tests in `dropdown_menu_test.dart` as well as the full Flutter text/paragraph test suite (~2,200 tests) and Skia\u0027s SkParagraph suite pass with zero regressions.",
+      "revId": "ac84514670932834b95daccdc78352851aa5eb9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
