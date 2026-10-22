@@ -11,10 +11,10 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkTArray.h"
-#include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnSampler.h"
+#include "src/gpu/graphite/draw/DrawTypes.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 

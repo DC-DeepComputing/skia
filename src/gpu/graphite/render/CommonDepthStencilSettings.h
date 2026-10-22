@@ -8,7 +8,7 @@
 #ifndef skgpu_graphite_render_CommonDepthStencilSettings_DEFINED
 #define skgpu_graphite_render_CommonDepthStencilSettings_DEFINED
 
-#include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/draw/DrawTypes.h"
 
 namespace skgpu::graphite {
 

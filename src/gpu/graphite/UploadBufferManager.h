@@ -10,8 +10,8 @@
 
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/BufferWriter.h"
-#include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/draw/DrawTypes.h"
 #include "src/partition_alloc/raw_ptr.h"
 
 #include <string_view>

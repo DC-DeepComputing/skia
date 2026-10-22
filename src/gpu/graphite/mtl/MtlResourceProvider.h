@@ -9,8 +9,8 @@
 #define skgpu_graphite_MtlResourceProvider_DEFINED
 
 #include "src/core/SkTHash.h"
-#include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/draw/DrawTypes.h"
 #include "src/gpu/graphite/mtl/MtlGraphicsPipeline.h"
 
 #import <Metal/Metal.h>

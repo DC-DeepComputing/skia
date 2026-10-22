@@ -11,7 +11,7 @@
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkSLTypeShared.h"
-#include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/draw/DrawTypes.h"
 
 #include <cstddef>
 
