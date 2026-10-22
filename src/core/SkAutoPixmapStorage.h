@@ -11,6 +11,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkMalloc.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 
@@ -84,7 +85,7 @@ public:
     }
 
 private:
-    void*   fStorage;
+    raw_ptr<void, DanglingUntriaged> fStorage;
 
     void freeStorage() {
         sk_free(fStorage);
