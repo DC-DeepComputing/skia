@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d6d1033_14d1f5c2",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-22T22:13:02Z",
+      "side": 1,
+      "message": "Done. Final-input state is now supplied during construction rather than set afterward. The immutable-data overload opts in, while generic streams retain the default resumable behavior. Removed the codec setter.",
+      "parentUuid": "384c2200_3cd19867",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 5
+      },
+      "revId": "9fb94a0445b3bf416229bddbf63bc1cf852d6c1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c23e612_dda896aa",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-22T21:26:04Z",
       "side": 1,
       "message": "If this is the only use of `fRawInputComplete`, could we read it from the original stream instead and get rid of the field?  Also, same idea as for `SkJpegRustCodec`: we could pass to the stream constructor instead of using a setter.\n\n```\n    auto raw_input_complete \u003d fReader-\u003eraw_input_complete();\n    ...\n    fReader \u003d rust_jpeg::new_reader(std::move(inputAdapter),\n                                    StreamLengthOrZero(*fPrivStream),\n                                    raw_input_complete);\n```",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 5
+      },
+      "revId": "9fb94a0445b3bf416229bddbf63bc1cf852d6c1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bc77849_602eac79",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-10-22T22:13:02Z",
+      "side": 1,
+      "message": "Done. Rewind now reads finality from the existing Rust reader and passes it into the replacement reader’s constructor, following your example. Removed the duplicate C++ field and the Rust setter as well.",
+      "parentUuid": "5c23e612_dda896aa",
       "range": {
         "startLine": 544,
         "startChar": 0,
