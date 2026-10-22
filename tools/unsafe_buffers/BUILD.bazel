@@ -5,7 +5,7 @@ package(
 licenses(["notice"])
 
 # Passed to Clang via --warning-suppression-mappings by //include/config/copts.bzl, and staged
-# into compile actions by the Windows toolchain's compiler_files (//toolchain/BUILD.bazel).
+# into compile actions by the Mac and Windows toolchains' compiler_files (//toolchain/BUILD.bazel).
 exports_files(
     ["unsafe_buffers_mappings.txt"],
     visibility = ["//visibility:public"],
