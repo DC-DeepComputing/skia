@@ -396,7 +396,11 @@ public:
                 uint16_t yStart = isStartCulled ? yTopTiles : (yTopTiles + 1);
                 float lineBottomFloor = std::floor(lineBottomY);
                 uint16_t yEndIdx = std::min(f32ToU16Sat(lineBottomFloor), maxTileY);
-                histogram->addWindingRange(yStart, yEndIdx, windingDir);
+                // A line that starts and ends within the same tile row fully crosses no rows, in
+                // which case yStart can be yEndIdx + 1.
+                if (yStart < yEndIdx) {
+                    histogram->addWindingRange(yStart, yEndIdx, windingDir);
+                }
 
                 if ((p0TileY != p1TileY) && lineBottomY != lineBottomFloor && yEndIdx < maxTileY) {
                     histogram->addWinding(yEndIdx, windingDir);
