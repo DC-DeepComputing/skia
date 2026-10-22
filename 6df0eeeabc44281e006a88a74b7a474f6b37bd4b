@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9e69b14_7ac9e3cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:45:26Z",
+      "side": 1,
+      "message": "I will keep an eye on perf for this one; it\u0027s unlikely to make regressions visible for our rendering benchmarks because all sksl compiling happens during the warmup loops. However, we have explicit sksl compilation benchmarks that we\u0027ll want to make sure do not regress.",
+      "revId": "6df0eeeabc44281e006a88a74b7a474f6b37bd4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
