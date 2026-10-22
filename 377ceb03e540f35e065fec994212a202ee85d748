@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa4afea8_5768fc8f",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-22T15:27:11Z",
+      "side": 1,
+      "message": "In this case, all the add_into call sites guard peephole optimizations, so if we fail the add_into, fInstructions now contains the two consecutive instructions, and its count exceeds INT_MAX and is caught downstream.\n\nI think this is fine as is, otherwise we would have to pipe alot of state around.",
+      "parentUuid": "f09f811d_9bf5b200",
+      "revId": "377ceb03e540f35e065fec994212a202ee85d748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7721c204_129c21f2",
         "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
         "patchSetId": 4
@@ -48,6 +66,30 @@
       "writtenOn": "2026-10-22T12:48:45Z",
       "side": 1,
       "message": "Pass by pointer since modifying",
+      "range": {
+        "startLine": 1300,
+        "startChar": 48,
+        "endLine": 1300,
+        "endChar": 59
+      },
+      "revId": "377ceb03e540f35e065fec994212a202ee85d748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd7209c2_ba071dbc",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-22T15:27:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7721c204_129c21f2",
       "range": {
         "startLine": 1300,
         "startChar": 48,
