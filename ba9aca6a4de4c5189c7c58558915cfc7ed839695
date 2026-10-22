@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20992edb_2bdff721",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:18:05Z",
+      "side": 1,
+      "message": "This should be (Y0, U, V) for even pixels from channels 0, 1, and 3; odd pixels use (Y1, U, V) from channels 2, 1, and 3.",
+      "range": {
+        "startLine": 283,
+        "startChar": 32,
+        "endLine": 283,
+        "endChar": 38
+      },
+      "revId": "ba9aca6a4de4c5189c7c58558915cfc7ed839695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ac75053_1b28006b",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:18:05Z",
+      "side": 1,
+      "message": "nit: update comment wrapping to 100 characters here and in the other comment lines below.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 39
+      },
+      "revId": "ba9aca6a4de4c5189c7c58558915cfc7ed839695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93d8c869_eea5f1f1",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:18:05Z",
+      "side": 1,
+      "message": "nit: update comment wrapping to 100 characters",
+      "range": {
+        "startLine": 348,
+        "startChar": 9,
+        "endLine": 354,
+        "endChar": 73
+      },
+      "revId": "ba9aca6a4de4c5189c7c58558915cfc7ed839695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

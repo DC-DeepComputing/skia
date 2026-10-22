@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d736079_5dfe20a3",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-22T15:18:05Z",
+      "side": 0,
+      "message": "I think it would be better to keep all of the old Graphite code for 422 present in the codebase, and just return nullptr with a // TODO comment saying that it doesn\u0027t handle the single-plane 4-channel approach yet so we prevent creating SkImages that would take those codepaths.\n\nThen the TODO can go away in your next CL, and we\u0027ll see the diffs against the old graphite implementation.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 38
+      },
+      "revId": "b667731938d8a0921e543a04bfa01a5ecb7950f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
