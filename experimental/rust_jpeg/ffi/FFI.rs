@@ -167,6 +167,7 @@ mod ffi {
 
         fn raw_component_count(self: &Reader) -> u32;
         fn raw_plane_info(self: &Reader, index: u32) -> RawPlaneInfo;
+        fn set_raw_input_complete(self: &mut Reader);
         fn read_raw_imcu_row(
             self: &mut Reader,
             y: &mut [u8],
@@ -520,6 +521,7 @@ pub struct Reader {
     incremental_decoder: Option<IncrementalJpegDecoder>,
     raw_component_count: u32,
     raw_plane_info: [RawPlaneInfo; 4],
+    raw_input_complete: bool,
     output_sequence: OutputSequence,
 
     scanner: SegmentScanner,
@@ -586,6 +588,7 @@ impl Reader {
             incremental_decoder: None,
             raw_component_count: 0,
             raw_plane_info: [RawPlaneInfo::default(); 4],
+            raw_input_complete: false,
             output_sequence: OutputSequence::Idle,
             // Stop at SOS — we only need header segments for metadata.
             scanner: SegmentScanner::new(jpeg_marker::SOS),
@@ -1087,6 +1090,10 @@ impl Reader {
             .unwrap_or_default()
     }
 
+    pub fn set_raw_input_complete(&mut self) {
+        self.raw_input_complete = true;
+    }
+
     pub fn read_raw_imcu_row(
         &mut self,
         y: &mut [u8],
@@ -1147,6 +1154,9 @@ impl Reader {
         let mut planes = [y, u, v];
         let status = {
             let mut raw = decoder.raw_output();
+            if self.raw_input_complete {
+                raw.set_input_complete();
+            }
             raw.decode_next_imcu_row(&mut planes, &strides)
         };
         let rows_written = match status {
@@ -1171,6 +1181,9 @@ impl Reader {
                 };
             }
             Ok(_) => return error(DecodingResult::OtherError),
+            Err(ref decode_error) if decode_error.is_recoverable_eof() => {
+                return error(DecodingResult::IncompleteInput)
+            }
             Err(ref decode_error) => return error(map_zune_error(decode_error)),
         };
         RawOutputResult {
