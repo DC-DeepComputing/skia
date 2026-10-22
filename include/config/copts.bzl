@@ -61,7 +61,7 @@ OPT_LEVEL = select({
 })
 
 # Execroot-relative path of the -Wunsafe-buffer-usage suppression mappings file. Only used with
-# Skia's hermetic Windows toolchain, i.e. when Skia is the main repository.
+# Skia's hermetic Mac and Windows toolchains, i.e. when Skia is the main repository.
 _UNSAFE_BUFFERS_MAPPINGS = "tools/unsafe_buffers/unsafe_buffers_mappings.txt"
 
 WARNINGS = [
@@ -179,7 +179,7 @@ WARNINGS = [
 }) + select({
     # -Wunsafe-buffer-usage (part of -Weverything) flags pointer arithmetic that cannot be bounds
     # checked. It is enforced, except in the paths listed in the suppression mappings file, only
-    # with the hermetic Windows toolchain, whose Clang (23) supports
+    # with the hermetic Mac and Windows toolchains, whose Clang (22 and 23) supports
     # --warning-suppression-mappings. Everywhere else it stays off (b/532990050).
     #
     # These are copts rather than toolchain flags so that they only apply to Skia's own code: a
@@ -195,6 +195,14 @@ WARNINGS = [
         # every call site whose %s arguments aren't provably null-terminated, and it cannot be
         # suppressed from within the function or a wrapping macro.
         "-Wno-unsafe-buffer-usage-in-format-attr-call",
+        "--warning-suppression-mappings=" + _UNSAFE_BUFFERS_MAPPINGS,
+    ],
+    # Same as Windows, but without -Wno-unsafe-buffer-usage-in-format-attr-call: the Mac
+    # toolchain's Clang (llvmorg-22-init-14273) predates that warning group and has no
+    # format-attr-call check, so there is nothing to suppress.
+    # TODO(b/532990050): Use the Windows flags once the Mac Clang knows that warning group.
+    "//bazel/common_config_settings:hermetic_mac": [
+        "-Wunsafe-buffer-usage",
         "--warning-suppression-mappings=" + _UNSAFE_BUFFERS_MAPPINGS,
     ],
     "//conditions:default": [

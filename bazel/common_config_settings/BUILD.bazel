@@ -133,3 +133,14 @@ config_setting(
     ],
     visibility = ["//:__subpackages__"],
 )
+
+# Skia's hermetic Mac toolchain. Its Clang (22) also supports --warning-suppression-mappings, so
+# //include/config/copts.bzl enforces -Wunsafe-buffer-usage with it too.
+config_setting(
+    name = "hermetic_mac",
+    constraint_values = [
+        "@platforms//os:macos",
+        "//bazel/platform:use_hermetic_toolchain",
+    ],
+    visibility = ["//:__subpackages__"],
+)
