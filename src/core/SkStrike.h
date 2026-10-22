@@ -19,6 +19,8 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cstddef>
@@ -172,10 +174,10 @@ private:
             const SkGlyph** results) SK_REQUIRES(fStrikeLock);
 
     // The following are const and need no mutex protection.
-    const SkFontMetrics               fFontMetrics;
+    const SkFontMetrics fFontMetrics;
     const SkGlyphPositionRoundingSpec fRoundingSpec;
-    const SkStrikeSpec                fStrikeSpec;
-    SkStrikeCache* const              fStrikeCache;
+    const SkStrikeSpec fStrikeSpec;
+    const raw_ptr<SkStrikeCache> fStrikeCache;
 
     // This mutex provides protection for this specific SkStrike.
     mutable SkMutex fStrikeLock;
@@ -205,11 +207,13 @@ private:
     SkArenaAlloc            fAlloc SK_GUARDED_BY(fStrikeLock) {kMinAllocAmount};
 
     // The following are protected by the SkStrikeCache's mutex.
-    SkStrike*                       fNext{nullptr};
-    SkStrike*                       fPrev{nullptr};
+    // RAW_PTR_EXCLUSION: Performance: +20% on GlyphRunRSXform_cached.
+    RAW_PTR_EXCLUSION SkStrike* fNext{nullptr};
+    // RAW_PTR_EXCLUSION: Performance: +20% on GlyphRunRSXform_cached.
+    RAW_PTR_EXCLUSION SkStrike* fPrev{nullptr};
     std::unique_ptr<SkStrikePinner> fPinner;
-    size_t                          fMemoryUsed{sizeof(SkStrike)};
-    bool                            fRemoved{false};
+    size_t fMemoryUsed{sizeof(SkStrike)};
+    bool fRemoved{false};
 };
 
 #endif  // SkStrike_DEFINED
