@@ -14,9 +14,9 @@
 #include "include/private/SkTArray.h"
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/Attribute.h"
-#include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/draw/DrawTypes.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 
@@ -29,11 +29,11 @@ namespace skgpu::graphite {
 class Attribute;
 class GraphicsPipelineDesc;
 class RuntimeEffectDictionary;
+class TextureInfo;
+class VulkanRenderPass;
 class VulkanResourceProvider;
 class VulkanSharedContext;
 struct RenderPassDesc;
-class TextureInfo;
-class VulkanRenderPass;
 
 // VulkanProgramInfo owns the underlying vulkan objects and are deleted automatically.
 class VulkanProgramInfo {
