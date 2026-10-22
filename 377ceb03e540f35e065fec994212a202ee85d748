@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18ca0c05_7401f4c5",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-22T16:03:15Z",
+      "side": 1,
+      "message": "Okay - I\u0027ll buy that.",
+      "parentUuid": "fa4afea8_5768fc8f",
+      "revId": "377ceb03e540f35e065fec994212a202ee85d748",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7721c204_129c21f2",
