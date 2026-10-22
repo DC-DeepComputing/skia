@@ -16,6 +16,24 @@
       "message": "Thanks for working on this! Two small follow-ups (I uploaded a companion WIP CL on top of PS 5 to illustrate both the tests and the fix: https://skia-review.googlesource.com/c/skia/+/1401776):\n1. In `FontCollection::defaultEmojiFallback`, on macOS/iOS `matchFamilyStyle(kColorEmojiFontMac, SkFontStyle())` does not depend on `emojiStart`, `fontStyle`, or `locale`. Caching it under `Key(emojiStart, true, {}, fontStyle, locale)` causes every distinct emoji codepoint (or style/locale) to miss the cache, re-query `matchFamilyStyle(\"Apple Color Emoji\", ...)`, and insert duplicate entries into `SkLRUCache` (which is why your benchmark table shows `10` `matchFamilyStyle` calls for a pool of 10 emoji instead of `1`). Also, calling `fDefaultFontManager-\u003ematchFamilyStyle(...)` directly inside `for (const auto\u0026 manager : this-\u003egetFontManagerOrder())` bypasses higher-priority managers and dereferences `nullptr` if only `setTestFontManager` / `setAssetFontManager` is configured. Caching the `kColorEmojiFontMac` lookup under a single key via `getFontManagerOrder()` fixes both.\n2. Since the commit message notes that including `families[0]` in the key fixes the style-order dependency when a paragraph has two styles with different `families[0]`, could you also include a check for two styles with different `families[0]` in `SkParagraph_FallbackCacheAcrossParagraphs` (and rebase onto main now that https://skia-review.googlesource.com/c/skia/+/1400636 has landed)? Feel free to fold the changes from https://skia-review.googlesource.com/c/skia/+/1401776 directly into your CL.",
       "revId": "cc2a90161dc157a01069df106d9b332d95305e20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54dcdc75_ff9add25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-22T02:47:18Z",
+      "side": 1,
+      "message": "Thanks, Julia. I folded the changes from 1401776 into this CL, and I rebased it onto main after \"[skparagraph] Make FontCollection thread-safe\". The only conflict was in clearCaches(). I kept the new locks and added fFallbackCache-\u003ereset() after them.\n\nI did not change your code. I checked these items on macOS:\n- Without the defaultEmojiFallback() change, the new emoji check fails, and the test-font-manager check crashes on the null fDefaultFontManager.\n- Without families[0] in the key, the families check fails.\n- On other platforms, the two emoji checks do not test much, but they do no harm.\n\nOne behavior change to note: getFontManagerOrder() does not include the default font manager when font fallback is disabled. Thus, on macOS, defaultEmojiFallback() does not use the system Apple Color Emoji in that case. Before, it used fDefaultFontManager directly. I think that this is correct, and I added it to the commit message. In Flutter, only the test-font mode disables font fallback, and its TestFontManager returns the test font for all family names. Thus, in Flutter tests on macOS, emoji now use the test font, the same as on Linux.\n\nBecause the thread-safe CL landed, SkParagraph_FallbackCacheConcurrently now also passes FontArguments to defaultFallback(). Thus it also runs cloneTypeface() from 8 threads. It is clean under TSAN.\n\nNew numbers (CoreText, release dm, median of 7 interleaved rounds):\n\n```\n                    matchFamilyStyleCharacter  matchFamilyStyle  per 300 ms\n  first 500, base   1000                       500                5235\n  first 500, CL      284                         1                9191\n  next 500, base    1000                       500                7047\n  next 500, CL        68                         0               25808\n```\n\nmatchFamilyStyle for the first 500 paragraphs goes from 10 to 1.",
+      "parentUuid": "0158b01d_cf8b6898",
+      "revId": "cc2a90161dc157a01069df106d9b332d95305e20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
