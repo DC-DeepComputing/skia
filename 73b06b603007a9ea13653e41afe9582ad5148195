@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b594334_6270cbe9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-22T18:39:17Z",
+      "side": 1,
+      "message": "PTAL; note, I discussed with Gemini, the problem is not limited to the legacy chopper, it just so happens that we have the magic numbers that produce the issue on the legacy path.",
+      "revId": "73b06b603007a9ea13653e41afe9582ad5148195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
