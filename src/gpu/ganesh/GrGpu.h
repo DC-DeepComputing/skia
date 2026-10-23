@@ -453,6 +453,32 @@ public:
      */
     bool checkAndResetOOMed();
 
+    void beginVerifyOps() {
+        if (fVerifyErrorDepth++ == 0) {
+            this->onBeginVerifyOps();
+            fVerifiedOpFailed = false;
+            fVerifiedOpExecuted = false;
+        }
+    }
+
+    void endVerifyOps() {
+        SkASSERT(fVerifyErrorDepth > 0);
+        if (--fVerifyErrorDepth == 0) {
+            this->onEndVerifyOps();
+            fVerifiedOpFailed = false;
+            fVerifiedOpExecuted = false;
+        }
+    }
+
+    bool isVerifyingOps() const { return fVerifyErrorDepth > 0; }
+    bool hasVerifiedOpFailed() const { return fVerifiedOpFailed; }
+    bool hasVerifiedOpExecuted() const { return fVerifiedOpExecuted; }
+    void setVerifiedOpExecuted() {
+        if (fVerifyErrorDepth > 0) {
+            fVerifiedOpExecuted = true;
+        }
+    }
+
     /**
      *  Put this texture in a safe and known state for use across multiple contexts. Depending on
      *  the backend, this may return a GrSemaphore. If so, other contexts should wait on that
@@ -717,6 +743,13 @@ protected:
                            uint32_t mipLevels = 1) const;
 
     void setOOMed() { fOOMed = true; }
+    void setVerifiedOpFailed() {
+        if (fVerifyErrorDepth > 0) {
+            fVerifiedOpFailed = true;
+        }
+    }
+    virtual void onBeginVerifyOps() {}
+    virtual void onEndVerifyOps() {}
 
     Stats                            fStats;
 
@@ -909,6 +942,9 @@ private:
     skia_private::STArray<4, SubmittedProc> fSubmittedProcs;
 
     bool fOOMed = false;
+    int fVerifyErrorDepth = 0;
+    bool fVerifiedOpFailed = false;
+    bool fVerifiedOpExecuted = false;
 
     int fCurrentSubmitRenderPassCount = 0;
 

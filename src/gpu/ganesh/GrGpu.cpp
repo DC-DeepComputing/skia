@@ -421,7 +421,11 @@ bool GrGpu::copySurface(GrSurface* dst, const SkIRect& dstRect,
 
     this->handleDirtyContext();
 
-    return this->onCopySurface(dst, dstRect, src, srcRect, filter);
+    if (!this->onCopySurface(dst, dstRect, src, srcRect, filter)) {
+        return false;
+    }
+    this->setVerifiedOpExecuted();
+    return true;
 }
 
 bool GrGpu::readPixels(GrSurface* surface,
@@ -505,6 +509,7 @@ bool GrGpu::writePixels(GrSurface* surface,
     }
 
     this->didWriteToSurface(surface, kTopLeft_GrSurfaceOrigin, &rect, mipLevelCount);
+    this->setVerifiedOpExecuted();
     fStats.incTextureUploads();
 
     return true;
@@ -586,6 +591,7 @@ bool GrGpu::transferPixelsTo(GrTexture* texture,
     }
 
     this->didWriteToSurface(texture, kTopLeft_GrSurfaceOrigin, &rect);
+    this->setVerifiedOpExecuted();
     fStats.incTransfersToTexture();
 
     return true;
@@ -745,7 +751,7 @@ GrDirectContext::FlushResult GrGpu::executeFlushInfo(SkSpan<GrSurfaceProxy*> pro
 
     // If there were semaphores to flush but no support for it, we have failed.
     bool semaphoreFailure = !this->caps()->backendSemaphoreSupport() && info.fNumSemaphores;
-    return { !semaphoreFailure, submitted };
+    return { !semaphoreFailure && !this->hasVerifiedOpFailed(), submitted };
 }
 
 GrOpsRenderPass* GrGpu::getOpsRenderPass(
@@ -932,7 +938,11 @@ bool GrGpu::clearBackendTexture(const GrBackendTexture& backendTexture,
         return false;
     }
 
-    return this->onClearBackendTexture(backendTexture, std::move(finishedCallback), color);
+    if (!this->onClearBackendTexture(backendTexture, std::move(finishedCallback), color)) {
+        return false;
+    }
+    this->setVerifiedOpExecuted();
+    return true;
 }
 
 GrBackendTexture GrGpu::createCompressedBackendTexture(SkISize dimensions,

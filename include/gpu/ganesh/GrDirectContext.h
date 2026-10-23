@@ -142,6 +142,11 @@ public:
      */
     bool oomed();
 
+    void beginVerifyOps();
+    void endVerifyOps();
+    bool hasVerifiedOpFailed() const;
+    bool hasVerifiedOpExecuted() const;
+
     /**
      * This is similar to abandonContext() however the underlying 3D context is not yet lost and
      * the context will cleanup all allocated resources before returning. After returning it will

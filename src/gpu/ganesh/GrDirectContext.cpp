@@ -187,6 +187,26 @@ bool GrDirectContext::isDeviceLost() {
 
 bool GrDirectContext::oomed() { return fGpu ? fGpu->checkAndResetOOMed() : false; }
 
+void GrDirectContext::beginVerifyOps() {
+    if (fGpu) {
+        fGpu->beginVerifyOps();
+    }
+}
+
+void GrDirectContext::endVerifyOps() {
+    if (fGpu) {
+        fGpu->endVerifyOps();
+    }
+}
+
+bool GrDirectContext::hasVerifiedOpFailed() const {
+    return fGpu ? fGpu->hasVerifiedOpFailed() : false;
+}
+
+bool GrDirectContext::hasVerifiedOpExecuted() const {
+    return fGpu ? fGpu->hasVerifiedOpExecuted() : false;
+}
+
 void GrDirectContext::releaseResourcesAndAbandonContext() {
     if (GrRecordingContext::abandoned()) {
         return;
