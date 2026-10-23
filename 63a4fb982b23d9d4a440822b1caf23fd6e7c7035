@@ -16,6 +16,23 @@
       "message": "+Alexis for code review",
       "revId": "63a4fb982b23d9d4a440822b1caf23fd6e7c7035",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a32fb7ab_3db451c4",
+        "filename": "modules/skunicode/tests/SkUnicodeTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-23T21:40:01Z",
+      "side": 1,
+      "message": "These three new tests fail on Test-Win11-Clang-GCE-CPU-AVX2-x86_64-Release-All (lines 730, 768 and 789), which is why CQ dropped the CL.\n\nSkUnicodes::ICU::Make() returns nullptr on Windows test bots: SkLoadICU() looks for icudtl.dat next to dm.exe, but icudtl.dat is not in DEFAULT_BUILD_PRODUCTS (infra/bots/recipe_modules/build/util.py), so it is never shipped to the test machines. The other ICU tests in this file pass there only because they return early on a null unicode.\n\nA plain early return would also hide a broken ICU on platforms where the data is embedded, so please keep the assert everywhere except Windows, in all three tests:\n\n```\nauto icu \u003d SkUnicodes::ICU::Make();\n// Windows test bots do not ship icudtl.dat, so ICU cannot load there\n#if !defined(SK_BUILD_FOR_WIN)\nREPORTER_ASSERT(reporter, icu);\n#endif\nif (!icu) {\n    return;\n}\n```",
+      "revId": "63a4fb982b23d9d4a440822b1caf23fd6e7c7035",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
