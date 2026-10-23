@@ -39,6 +39,30 @@
       },
       "revId": "750f7581bd2bc261cb60a9f7db42d5e9eb224702",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5394308_60e3c89f",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5248811
+      },
+      "writtenOn": "2026-10-23T14:33:50Z",
+      "side": 1,
+      "message": "This does happen: imagemakewithfilter blurs a kUnpremul mandrill, and keeping kUnpremul leaves the passes averaging its unpremultiplied channels, which darkens the decal edges. So rather than keep the alpha type, patch set 3 premultiplies an unpremul input before the passes, which makes the output premultiplied for every input, as in renderBlur(). ImageFilterDecalBlurOfUnpremulImage checks that an unpremul image blurs exactly as its premultiplied copy does.",
+      "parentUuid": "e7205fe3_e836cc0d",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 75
+      },
+      "revId": "750f7581bd2bc261cb60a9f7db42d5e9eb224702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
