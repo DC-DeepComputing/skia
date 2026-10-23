@@ -489,3 +489,73 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
 
     REPORTER_ASSERT(reporter, typeface->fontStyle() == SkFontStyle::Bold());
 }
+
+#include "include/ports/SkFontScanner_FreeType.h"
+static void check_lazy_matches_eager(skiatest::Reporter* reporter,
+                                     std::unique_ptr<SkFontScanner> (*makeScanner)()) {
+    // Host builds have no /system/etc/fonts.xml, so a null config would compare two empty managers
+    SkString basePath = GetResourcePath("fonts/");
+    SkString fontsXml = GetResourcePath("fonts/fonts.xml");
+    SkFontMgr_Android_CustomFonts custom;
+    custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+    custom.fBasePath = basePath.c_str();
+    custom.fFontsXml = fontsXml.c_str();
+    custom.fFallbackFontsXml = nullptr;
+    custom.fIsolated = false;
+    sk_sp<SkFontMgr> eager =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kEager);
+    sk_sp<SkFontMgr> lazy =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kLazy);
+    REPORTER_ASSERT(reporter, eager->countFamilies() > 0);
+    REPORTER_ASSERT(reporter, eager->countFamilies() == lazy->countFamilies());
+    for (int i = 0; i < eager->countFamilies(); ++i) {
+        SkString eagerName, lazyName;
+        eager->getFamilyName(i, &eagerName);
+        lazy->getFamilyName(i, &lazyName);
+        REPORTER_ASSERT(reporter, eagerName == lazyName);
+        sk_sp<SkFontStyleSet> e = eager->createStyleSet(i);
+        sk_sp<SkFontStyleSet> l = lazy->createStyleSet(i);
+        REPORTER_ASSERT(reporter, e->count() == l->count(), "%s", eagerName.c_str());
+        for (int j = 0; j < std::min(e->count(), l->count()); ++j) {
+            SkFontStyle es, ls;
+            e->getStyle(j, &es, nullptr);
+            l->getStyle(j, &ls, nullptr);
+            REPORTER_ASSERT(reporter, es == ls, "%s[%d]", eagerName.c_str(), j);
+            sk_sp<SkTypeface> et = e->createTypeface(j);
+            sk_sp<SkTypeface> lt = l->createTypeface(j);
+            REPORTER_ASSERT(reporter, lt && et->fontStyle() == lt->fontStyle());
+            REPORTER_ASSERT(reporter, et->isFixedPitch() == lt->isFixedPitch());
+        }
+    }
+    // Same resource name means the same file and index were picked
+    static constexpr SkUnichar kChars[] = {'A',
+                                           0x0905 /* Devanagari A */,
+                                           0x4E2D /* CJK */,
+                                           0x1F600 /* emoji */,
+                                           0x0627 /* Arabic */,
+                                           0x10FFFD /* not covered by any font */};
+    const char* families[] = {nullptr, "sans-serif", "serif", "monospace"};
+    const char* locales[] = {"en-US", "hi-IN", "ja-JP", "zh-Hans", "zh-Hant", "ko-KR"};
+    for (const char* family : families) {
+        for (const char* locale : locales) {
+            for (SkUnichar c : kChars) {
+                sk_sp<SkTypeface> et =
+                        eager->matchFamilyStyleCharacter(family, SkFontStyle(), &locale, 1, c);
+                sk_sp<SkTypeface> lt =
+                        lazy->matchFamilyStyleCharacter(family, SkFontStyle(), &locale, 1, c);
+                if (et && lt) {
+                    SkString en, ln;
+                    et->getFamilyName(&en);
+                    lt->getFamilyName(&ln);
+                    REPORTER_ASSERT(reporter, en == ln);
+                } else {
+                    REPORTER_ASSERT(reporter, !et && !lt);
+                }
+            }
+        }
+    }
+}
+
+DEF_TEST(FontMgrAndroid_LazyParity_FreeType, reporter) {
+    check_lazy_matches_eager(reporter, SkFontScanner_Make_FreeType);
+}

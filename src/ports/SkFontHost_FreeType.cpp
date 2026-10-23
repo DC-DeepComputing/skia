@@ -38,6 +38,8 @@
 #include "src/ports/SkFontHost_FreeType_common.h"
 #include "src/ports/SkFontScanner_FreeType_priv.h"
 #include "src/ports/SkTypeface_FreeType.h"
+#include "src/sfnt/SkOTTable_OS_2_V0.h"
+#include "src/sfnt/SkOTTable_fvar.h"
 #include "src/sfnt/SkOTUtils.h"
 #include "src/sfnt/SkSFNTHeader.h"
 #include "src/sfnt/SkTTCFHeader.h"
@@ -2477,6 +2479,171 @@ SkTypeface::FactoryId SkFontScanner_FreeType::getFactoryId() const {
             }
         }
     )
+}
+
+namespace {
+
+template <typename T> const T* sfnt_at(const uint8_t* base, size_t size, size_t offset) {
+    if (offset > size || size - offset < sizeof(T)) {
+        return nullptr;
+    }
+    return reinterpret_cast<const T*>(base + offset);
+}
+
+struct SfntTable {
+    size_t fOffset = 0;
+    size_t fLength = 0;
+    bool exists() const { return fLength != 0; }
+};
+
+}  // namespace
+
+bool SkFontScanner_FreeType::scanStyle(SkStreamAsset* stream,
+                                       const SkFontArguments& args,
+                                       SkFontStyle* style) const {
+    SkASSERT(stream && style);
+    const uint8_t* base = static_cast<const uint8_t*>(stream->getMemoryBase());
+    const size_t size = stream->getLength();
+    const int ttcIndex = args.getCollectionIndex();
+    const SkFontArguments::VariationPosition requestedPosition = args.getVariationDesignPosition();
+    // The upper 16 bits select a named instance, which would need fvar instance records
+    if (!base || ttcIndex < 0 || (ttcIndex >> 16) != 0) {
+        return false;
+    }
+
+    size_t sfntOffset = 0;
+    const SkTTCFHeader* ttcf = sfnt_at<SkTTCFHeader>(base, size, 0);
+    if (!ttcf) {
+        return false;
+    }
+    if (ttcf->ttcTag == SkTTCFHeader::TAG) {
+        if (SkEndian_SwapBE32(ttcf->numOffsets) <= SkToU32(ttcIndex)) {
+            return false;
+        }
+        const SK_OT_ULONG* offset = sfnt_at<SK_OT_ULONG>(
+                base, size, sizeof(SkTTCFHeader) + SkToSizeT(ttcIndex) * sizeof(SK_OT_ULONG));
+        if (!offset) {
+            return false;
+        }
+        sfntOffset = SkEndian_SwapBE32(*offset);
+    } else if (ttcIndex != 0) {
+        return false;
+    }
+
+    const SkSFNTHeader* header = sfnt_at<SkSFNTHeader>(base, size, sfntOffset);
+    if (!header) {
+        return false;
+    }
+    const int numTables = SkEndian_SwapBE16(header->numTables);
+    SfntTable os2, fvar;
+    bool hasOutline = false;
+    bool hasVariations = false;
+    for (int i = 0; i < numTables; ++i) {
+        using Entry = SkSFNTHeader::TableDirectoryEntry;
+        const Entry* entry =
+                sfnt_at<Entry>(base, size, sfntOffset + sizeof(SkSFNTHeader) + i * sizeof(Entry));
+        if (!entry) {
+            return false;
+        }
+        // Table offsets are from the start of the file, also inside a collection
+        const SfntTable table = {SkEndian_SwapBE32(entry->offset),
+                                 SkEndian_SwapBE32(entry->logicalLength)};
+        if (table.fOffset > size || size - table.fOffset < table.fLength) {
+            return false;
+        }
+        switch (SkEndian_SwapBE32(entry->tag)) {
+            case SkSetFourByteTag('O', 'S', '/', '2'):
+                os2 = table;
+                break;
+            case SkSetFourByteTag('f', 'v', 'a', 'r'):
+                fvar = table;
+                break;
+            case SkSetFourByteTag('g', 'l', 'y', 'f'):
+            case SkSetFourByteTag('C', 'F', 'F', ' '):
+                hasOutline = true;
+                break;
+            case SkSetFourByteTag('C', 'F', 'F', '2'):
+                hasOutline = hasVariations = true;
+                break;
+            case SkSetFourByteTag('g', 'v', 'a', 'r'):
+                hasVariations = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Without outlines FreeType takes the italic bit from head.macStyle, and without a full
+    // OS/2 it falls back to PS font info; neither is mirrored here
+    if (!hasOutline || os2.fLength < sizeof(SkOTTableOS2_V0)) {
+        return false;
+    }
+    const auto* os2Table = reinterpret_cast<const SkOTTableOS2_V0*>(base + os2.fOffset);
+    int weight = SkEndian_SwapBE16(os2Table->usWeightClass.value);
+    int width = SkEndian_SwapBE16(os2Table->usWidthClass.value);
+    const uint16_t fsSelection = SkEndian_SwapBE16(os2Table->fsSelection.raw.value);
+    // Same precedence as sfobjs.c style flags followed by scanInstance's oblique bit 9
+    SkFontStyle::Slant slant = (fsSelection & ((1u << 0) | (1u << 9)))
+                                       ? SkFontStyle::kItalic_Slant
+                                       : SkFontStyle::kUpright_Slant;
+    if (fsSelection & (1u << 9)) {
+        slant = SkFontStyle::kOblique_Slant;
+    }
+
+    AxisDefinitions axes;
+    if (fvar.exists()) {
+        const auto* fvarTable =
+                sfnt_at<SkOTTableFontVariations>(base + fvar.fOffset, fvar.fLength, 0);
+        // Bail on anything FreeType might reject or sanitize differently
+        if (!hasVariations || !fvarTable || SkEndian_SwapBE16(fvarTable->majorVersion) != 1 ||
+            SkEndian_SwapBE16(fvarTable->axisSize) !=
+                    sizeof(SkOTTableFontVariations::VariationAxisRecord)) {
+            return false;
+        }
+        const size_t axesOffset = SkEndian_SwapBE16(fvarTable->offsetToAxesArray);
+        const int axisCount = SkEndian_SwapBE16(fvarTable->axisCount);
+        for (int i = 0; i < axisCount; ++i) {
+            const auto* record = sfnt_at<SkOTTableFontVariations::VariationAxisRecord>(
+                    base + fvar.fOffset,
+                    fvar.fLength,
+                    axesOffset + i * sizeof(SkOTTableFontVariations::VariationAxisRecord));
+            if (!record) {
+                return false;
+            }
+            const float min = SkFixedToFloat(SkEndian_SwapBE32(record->minValue));
+            const float def = SkFixedToFloat(SkEndian_SwapBE32(record->defaultValue));
+            const float max = SkFixedToFloat(SkEndian_SwapBE32(record->maxValue));
+            if (min > def || def > max) {
+                return false;
+            }
+            axes.emplace_back(SkEndian_SwapBE32(record->axisTag),
+                              min,
+                              def,
+                              max,
+                              SkEndian_SwapBE16(record->flags) & 0x0001);
+        }
+        // Same default-instance override as scanInstance, which differs from computeAxisValues
+        // (no 'ital', only negative 'slnt'); keep the two in sync
+        for (const SkFontParameters::Variation::Axis& axis : axes) {
+            const float range = axis.max - axis.min;
+            if (axis.tag == SkSetFourByteTag('w', 'g', 'h', 't') && range > 5 && range <= 1000 &&
+                axis.max <= 1000) {
+                weight = SkFixedRoundToInt(SkFloatToFixed(axis.def));
+            }
+            if (axis.tag == SkSetFourByteTag('w', 'd', 't', 'h') && range > 0 && range <= 500 &&
+                axis.max <= 500) {
+                width = SkFontDescriptor::SkFontStyleWidthForWidthAxisValue(axis.def);
+            }
+            if (axis.tag == SkSetFourByteTag('s', 'l', 'n', 't') && axis.def < 0) {
+                slant = SkFontStyle::kOblique_Slant;
+            }
+        }
+    }
+
+    *style = SkFontStyle(weight, width, slant);
+    AutoSTMalloc<4, SkFixed> axisValues(axes.size());
+    computeAxisValues(axes, {}, requestedPosition, axisValues, SkString(), style);
+    return true;
 }
 
 std::unique_ptr<SkFontScanner> SkFontScanner_Make_FreeType() {
