@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "041bfcc7_7d72b275",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-23T08:22:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20992edb_2bdff721",
+      "range": {
+        "startLine": 283,
+        "startChar": 32,
+        "endLine": 283,
+        "endChar": 38
+      },
+      "revId": "ba9aca6a4de4c5189c7c58558915cfc7ed839695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ac75053_1b28006b",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b0f733_071c0148",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-23T08:22:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ac75053_1b28006b",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 39
+      },
+      "revId": "ba9aca6a4de4c5189c7c58558915cfc7ed839695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93d8c869_eea5f1f1",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-10-22T15:18:05Z",
       "side": 1,
       "message": "nit: update comment wrapping to 100 characters",
+      "range": {
+        "startLine": 348,
+        "startChar": 9,
+        "endLine": 354,
+        "endChar": 73
+      },
+      "revId": "ba9aca6a4de4c5189c7c58558915cfc7ed839695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2b9efc0_440b8e0c",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-23T08:22:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93d8c869_eea5f1f1",
       "range": {
         "startLine": 348,
         "startChar": 9,
