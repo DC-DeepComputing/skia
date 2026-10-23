@@ -1,0 +1,127 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26a4360f_f4cebd58",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-23T19:24:20Z",
+      "side": 1,
+      "message": "The entry guard on line 52 checks `planeIdx \u003e NumPlanes(planeConfig)` rather than `planeIdx \u003e\u003d NumPlanes(planeConfig)`. For 1-plane configs `(NumPlanes \u003d\u003d 1)`, `planeIdx \u003d 1` passes the guard. Previously, `kYUYV` fell through with `isSubsampledPlane \u003d false`, but now case `PlaneConfig::kYUYV`: sets `isSubsampledPlane \u003d true` unconditionally. Calling `PlaneSubsamplingFactors(PlaneConfig::kYUYV, Subsampling::k422, 1)` will therefore return {2, 1} instead of {0, 0} for a non-existent plane.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "07780fb1_d4ab8676",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkYUVAInfo.cpp",
+              "range": {
+                "startLine": 52,
+                "startChar": 0,
+                "endLine": 53,
+                "endChar": 0
+              },
+              "replacement": "        planeIdx \u003e\u003d NumPlanes(planeConfig)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8ed3c3c1fd9f9d06f73caf2a98bdb182d730c716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7365de1_aa7d0c14",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-23T19:24:20Z",
+      "side": 1,
+      "message": "When a caller draws a `kYUYV` `SkImage` with `SkTileMode::kDecal`, `SkImage_GaneshYUVA::asFragmentProcessor` maps `kDecal` to `GrSamplerState::WrapMode::kClampToBorder` and passes it to `GrYUVtoRGBEffect::Make`. Hitting `SkASSERT(false)` crashes debug builds on reachable public API usage.\n\nSo either support `kClampToBorder` directly in `GrYUVtoRGBEffect`\u0027s shader (by returning `half4(0)` when the snapped image-space coordinate falls outside packedSubset, matching Graphite\u0027s former decal handling) or remove `SkASSERT(false)` so `Make()` cleanly returns nullptr without crashing debug builds, and update the comment.",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "924de1b3_50a37bfd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+              "range": {
+                "startLine": 109,
+                "startChar": 0,
+                "endLine": 111,
+                "endChar": 0
+              },
+              "replacement": "        // packed plane, so clamp-to-border is unsupported for packed YUV.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8ed3c3c1fd9f9d06f73caf2a98bdb182d730c716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caf4683f_ac1d3a3d",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-23T19:24:20Z",
+      "side": 1,
+      "message": "Compute texelCenter.x directly from pixelIdx so parity and texel index are guaranteed to derive from the same quantized integer:\n```\n fragBuilder-\u003ecodeAppendf(\n        \"float2 texelCenter \u003d float2(floor(pixelIdx * 0.5) + 0.5, \"\n                                    \"floor(planeCoord.y) + 0.5);\");\n```",
+      "range": {
+        "startLine": 422,
+        "startChar": 16,
+        "endLine": 424,
+        "endChar": 83
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "cfcd8238_1b4d7267",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+              "range": {
+                "startLine": 423,
+                "startChar": 0,
+                "endLine": 424,
+                "endChar": 0
+              },
+              "replacement": "                        \"float2 texelCenter \u003d float2(floor(pixelIdx * 0.5) + 0.5, \"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8ed3c3c1fd9f9d06f73caf2a98bdb182d730c716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
