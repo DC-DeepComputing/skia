@@ -220,13 +220,24 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
                                            newQueueFamilyIndex);
     if (!imageMemoryBarrier) {
         // If we don't get a barrier, that means a barrier doesn't need to be issued so we can skip
-        // it. It does not mean creating the barrier failed.
+        // it. It does not mean creating the barrier failed. If the image is staying in the shader
+        // read-only layout, still record the stages that will now read from it so that the
+        // eventual transition out of that layout waits on them.
+        if (currentLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+            // TODO: If dstStageMask includes stages that aren't in fShaderReadStages (e.g. a
+            // compute shader sampling an image that was transitioned for fragment shader
+            // reads), no barrier orders those reads after the write that preceded the
+            // transition into this layout or makes that write visible to them. A barrier
+            // from fShaderReadStages to the new stages (keeping the same layout) is needed
+            // in that case. Note that this could also add barriers to graphics-only usage
+            // (e.g. vertex reads of an image transitioned for fragment shader reads).
+            fShaderReadStages |= dstStageMask;
+        }
         return;
     }
 
     VkPipelineStageFlags srcStageMask =
-            VkImageLayoutToPipelineSrcStageFlags(currentLayout,
-                                                 sharedContext->vulkanCaps());
+            VkImageLayoutToPipelineSrcStageFlags(currentLayout, fShaderReadStages);
     cmdBuffer->addImageMemoryBarrier(srcStageMask, dstStageMask, /*byRegion=*/false,
                                      &imageMemoryBarrier.value());
 
@@ -234,6 +245,10 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
                                                   imageMemoryBarrier->newLayout);
     skgpu::MutableTextureStates::SetVkQueueFamilyIndex(this->mutableState(),
                                                        imageMemoryBarrier->dstQueueFamilyIndex);
+
+    // The barrier waits on all prior reads, so only the stages it was issued for remain to be
+    // tracked (if the image is now in the shader read-only layout).
+    fShaderReadStages = newLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL ? dstStageMask : 0;
 }
 
 namespace {
@@ -290,6 +305,9 @@ void VulkanTexture::freeGpuData() {
 
 void VulkanTexture::updateImageLayout(VkImageLayout newLayout) {
     skgpu::MutableTextureStates::SetVkImageLayout(this->mutableState(), newLayout);
+    // The layout was changed outside of setImageLayoutAndQueueIndex() (e.g. by a host image copy or
+    // a subpass transition), so no shader reads have been recorded for the new layout yet.
+    fShaderReadStages = 0;
 }
 
 VkImageLayout VulkanTexture::currentLayout() const {

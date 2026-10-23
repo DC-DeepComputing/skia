@@ -73,7 +73,6 @@ class SkWStream;
     } while (false)
 namespace skgpu::graphite {
 
-class VulkanCaps;
 class VulkanSharedContext;
 struct RenderPassDesc;
 enum class TextureFormat : uint8_t;
@@ -92,8 +91,15 @@ std::optional<VkImageMemoryBarrier> CreateVulkanImageMemoryBarrier(
         VkAccessFlags dstAccessMask,
         uint32_t newQueueFamilyIndex);
 
-VkPipelineStageFlags VkImageLayoutToPipelineSrcStageFlags(const VkImageLayout layout,
-                                                          const VulkanCaps& caps);
+// Returns the pipeline stages that may access an image in the given layout, for use as the source
+// stage mask of a barrier that transitions the image out of that layout.
+//
+// An image in VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL can be read by multiple shader stages
+// without any intervening barriers, so the stages can't be derived from the layout alone. For that
+// layout, `shaderReadStages` should hold the shader stages that have read from the image since it
+// entered the layout. If they are unknown (0), only fragment shader reads are assumed.
+VkPipelineStageFlags VkImageLayoutToPipelineSrcStageFlags(
+        const VkImageLayout layout, VkPipelineStageFlags shaderReadStages = 0);
 VkAccessFlags VkImageLayoutToSrcAccessMask(const VkImageLayout layout,
                                            VkImageUsageFlags usageFlags);
 

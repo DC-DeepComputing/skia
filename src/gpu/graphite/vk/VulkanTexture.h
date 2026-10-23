@@ -130,6 +130,20 @@ private:
     mutable skia_private::STArray<3, CachedTextureDescSet> fCachedSingleTextureDescSets;
 
     skia_private::STArray<3, sk_sp<VulkanFramebuffer>> fCachedFramebuffers;
+
+    // The shader stages that have read from this image since it was last transitioned into
+    // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL. No barrier is issued when an image that is already
+    // in that layout is requested for reading again (possibly by a different stage), so the stages
+    // are accumulated until the image leaves the layout, at which point they determine the source
+    // stage mask of that transition. This avoids conservatively waiting on every stage that could
+    // have read the image (notably the compute stage).
+    //
+    // TODO: This is tracked per VulkanTexture rather than per VkImage. Other VulkanTextures that
+    // wrap the same VkImage don't see these reads, and state updates done directly on a
+    // BackendTexture (VulkanCommandBuffer::prepareBackendTextureForStateUpdate()) assume only
+    // fragment shader reads. Storing this in the image's MutableTextureState would fix that, but
+    // requires increasing MutableTextureState::kMaxSubclassSize in the public header.
+    mutable VkPipelineStageFlags fShaderReadStages = 0;
 };
 
 } // namespace skgpu::graphite
