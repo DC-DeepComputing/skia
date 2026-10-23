@@ -402,8 +402,7 @@ struct ImageStateUpdateInfo {
     uint32_t fNewQueueFamilyIndex;
 };
 
-std::optional<ImageStateUpdateInfo> get_state_update_info(const VulkanCaps& caps,
-                                                          VkImageLayout currentLayout,
+std::optional<ImageStateUpdateInfo> get_state_update_info(VkImageLayout currentLayout,
                                                           uint32_t currentQueueFamilyIndex,
                                                           VkImageUsageFlags usageFlags,
                                                           const MutableTextureState* newState) {
@@ -428,7 +427,7 @@ std::optional<ImageStateUpdateInfo> get_state_update_info(const VulkanCaps& caps
     return ImageStateUpdateInfo{
             newLayout,
             VkImageLayoutToSrcAccessMask(newLayout, usageFlags),
-            VkImageLayoutToPipelineSrcStageFlags(newLayout, caps),
+            VkImageLayoutToPipelineSrcStageFlags(newLayout),
             newQueueFamilyIndex};
 }
 
@@ -440,8 +439,7 @@ void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
     VulkanTexture* texture = static_cast<VulkanTexture*>(textureProxy->texture());
 
     std::optional<ImageStateUpdateInfo> update =
-            get_state_update_info(fSharedContext->vulkanCaps(),
-                                  texture->currentLayout(),
+            get_state_update_info(texture->currentLayout(),
                                   texture->currentQueueFamilyIndex(),
                                   texture->vulkanTextureInfo().fImageUsageFlags,
                                   newState);
@@ -465,8 +463,7 @@ void VulkanCommandBuffer::prepareBackendTextureForStateUpdate(
     uint32_t currentQueueIndex = BackendTextures::GetVkQueueFamilyIndex(texture);
 
     std::optional<ImageStateUpdateInfo> update =
-            get_state_update_info(fSharedContext->vulkanCaps(),
-                                  currentLayout,
+            get_state_update_info(currentLayout,
                                   currentQueueIndex,
                                   vulkanTextureInfo.fImageUsageFlags,
                                   newState);
@@ -487,9 +484,9 @@ void VulkanCommandBuffer::prepareBackendTextureForStateUpdate(
         return;
     }
 
-    VkPipelineStageFlags srcStageMask =
-            VkImageLayoutToPipelineSrcStageFlags(currentLayout,
-                                                 fSharedContext->vulkanCaps());
+    // BackendTextures don't track which shader stages have read from them, so the default source
+    // stages are used for VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+    VkPipelineStageFlags srcStageMask = VkImageLayoutToPipelineSrcStageFlags(currentLayout);
     this->addImageMemoryBarrier(srcStageMask, update->fDstStage,
                                 /*byRegion=*/false, &imageMemoryBarrier.value());
 
