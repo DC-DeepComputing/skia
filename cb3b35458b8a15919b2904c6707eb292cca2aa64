@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afcb4db7_69c28be3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-23T18:50:12Z",
+      "side": 1,
+      "message": "PTAL; Just removed DrawTypes from the folder as noted.",
+      "revId": "cb3b35458b8a15919b2904c6707eb292cca2aa64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
