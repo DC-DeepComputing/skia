@@ -33,6 +33,24 @@
       "message": "To keep `dcheck_always_on` builds fast without dropping `length` in `SkFontDescriptor::serialize`, please leave `src/core/SkFontDescriptor.cpp` unchanged and add the `getMemoryBase()` fast path directly inside `SkWStream::writeStream` in `src/core/SkStream.cpp` (also checking `stream-\u003eread(scratch, n) \u003d\u003d n` in the fallback loop):\n```cpp\nbool SkWStream::writeStream(SkStream* stream, size_t length) {\n    if (const char* base \u003d static_cast\u003cconst char*\u003e(stream-\u003egetMemoryBase());\n        base \u0026\u0026 stream-\u003ehasPosition() \u0026\u0026 stream-\u003ehasLength()) {\n        const size_t position \u003d stream-\u003egetPosition();\n        const size_t streamLength \u003d stream-\u003egetLength();\n        SkASSERT(streamLength \u003e\u003d position);\n        if (streamLength - position \u003c length) {\n            return false;\n        }\n        return stream-\u003eskip(length) \u003d\u003d length \u0026\u0026 this-\u003ewrite(base + position, length);\n    }\n    char scratch[1024];\n    const size_t MAX \u003d sizeof(scratch);\n    while (length !\u003d 0) {\n        size_t n \u003d std::min(length, MAX);\n        if (stream-\u003eread(scratch, n) !\u003d n || !this-\u003ewrite(scratch, n)) {\n            return false;\n        }\n        length -\u003d n;\n    }\n    return true;\n}\n```",
       "revId": "cb26cbe9633d8292cf166cf6638d437161b81be1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c388c120_99e03168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-23T20:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4e3b62f_cb245e70",
+      "revId": "cb26cbe9633d8292cf166cf6638d437161b81be1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
