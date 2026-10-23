@@ -5,24 +5,35 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkEndian.h"
+#include "src/sfnt/SkOTTable_head.h"
 #include "src/sfnt/SkOTTable_name.h"
+#include "src/sfnt/SkOTUtils.h"
+#include "src/sfnt/SkSFNTHeader.h"
 #include "tests/Test.h"
+#include "tools/Resources.h"
 #include "tools/flags/CommandLineFlags.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_BUILD_FOR_WIN) && defined(SK_FONTMGR_GDI_AVAILABLE)
+#include "include/ports/SkTypeface_win.h"
+#endif
 
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <vector>
 
 using namespace skia_private;
 
@@ -236,11 +247,226 @@ static void test_systemfonts(skiatest::Reporter* reporter, bool verbose) {
     }
 }
 
+static void test_rename_font(skiatest::Reporter* reporter) {
+    struct EntrySpec {
+        SkFourByteTag tag;
+        uint32_t offset;
+        uint32_t logicalLength;
+    };
+    auto makeSfnt = [](uint16_t headerNumTables,
+                       std::initializer_list<EntrySpec> entries,
+                       size_t totalSize) {
+        std::vector<uint8_t> bytes(totalSize, 0);
+        if (totalSize >= sizeof(SkSFNTHeader)) {
+            SkSFNTHeader header = {};
+            header.fontType = SkSFNTHeader::fontType_WindowsTrueType::TAG;
+            header.numTables = SkEndian_SwapBE16(headerNumTables);
+            memcpy(bytes.data(), &header, sizeof(header));
+        }
+        size_t pos = sizeof(SkSFNTHeader);
+        for (const auto& spec : entries) {
+            if (pos + sizeof(SkSFNTHeader::TableDirectoryEntry) > totalSize) {
+                break;
+            }
+            SkSFNTHeader::TableDirectoryEntry entry = {};
+            entry.tag = spec.tag;
+            entry.offset = SkEndian_SwapBE32(spec.offset);
+            entry.logicalLength = SkEndian_SwapBE32(spec.logicalLength);
+            memcpy(bytes.data() + pos, &entry, sizeof(entry));
+            pos += sizeof(entry);
+        }
+        return bytes;
+    };
+
+    const uint32_t dirEnd =
+            sizeof(SkSFNTHeader) + 2 * sizeof(SkSFNTHeader::TableDirectoryEntry);
+    const uint32_t oldNameLen = sizeof(simpleFormat0NameTable);
+    const uint32_t oldNamePadded = (oldNameLen + 3u) & ~3u;
+    const uint32_t headOffset = dirEnd + oldNamePadded;
+    const size_t validFontSize = headOffset + sizeof(SkOTTableHead);
+    std::vector<uint8_t> validFont = makeSfnt(
+            2,
+            {{SkOTTableName::TAG, dirEnd, oldNameLen},
+             {SkOTTableHead::TAG, headOffset, sizeof(SkOTTableHead)}},
+            validFontSize);
+    memcpy(validFont.data() + dirEnd, &simpleFormat0NameTable, sizeof(simpleFormat0NameTable));
+    {
+        SkMemoryStream stream(validFont.data(), validFont.size(), false);
+        sk_sp<SkData> renamed(SkOTUtils::RenameFont(&stream, "Renamed", 7));
+        REPORTER_ASSERT(reporter, renamed != nullptr);
+        if (renamed) {
+            const uint8_t* out = renamed->bytes();
+            SkSFNTHeader::TableDirectoryEntry nameEntry;
+            SkSFNTHeader::TableDirectoryEntry headEntry;
+            memcpy(&nameEntry, out + sizeof(SkSFNTHeader), sizeof(nameEntry));
+            memcpy(&headEntry,
+                   out + sizeof(SkSFNTHeader) + sizeof(nameEntry),
+                   sizeof(headEntry));
+            uint32_t newNameOffset = SkEndian_SwapBE32(nameEntry.offset);
+            uint32_t newNameLen = SkEndian_SwapBE32(nameEntry.logicalLength);
+            uint32_t newHeadOffset = SkEndian_SwapBE32(headEntry.offset);
+            REPORTER_ASSERT(reporter, (newNameOffset & 3u) == 0);
+            REPORTER_ASSERT(reporter, newNameOffset + newNameLen <= renamed->size());
+            REPORTER_ASSERT(reporter, newHeadOffset == dirEnd);
+
+            SkOTTableName::Iterator iter(
+                    out + newNameOffset,
+                    newNameLen,
+                    SkOTTableName::Record::NameID::Predefined::FontFamilyName);
+            SkOTTableName::Iterator::Record record;
+            REPORTER_ASSERT(reporter, iter.next(record));
+            REPORTER_ASSERT(reporter, record.name.equals("Renamed"));
+
+            // Verify that the rewritten head table checksum matches the required font checksum
+            uint32_t validChecksum = SkOTUtils::CalcTableChecksum(
+                    reinterpret_cast<SK_OT_ULONG*>(const_cast<void*>(renamed->data())),
+                    renamed->size());
+            REPORTER_ASSERT(reporter, validChecksum == SkOTTableHead::fontChecksum);
+        }
+    }
+
+    // Offset + physical length exceeds stream length and offset exceeds newDataSize (b/557269199)
+    {
+        std::vector<uint8_t> oobFont = makeSfnt(1, {{SkOTTableName::TAG, 800, 900}}, 1024);
+        SkMemoryStream stream(oobFont.data(), oobFont.size(), false);
+        sk_sp<SkData> renamed(SkOTUtils::RenameFont(&stream, "A", 1));
+        REPORTER_ASSERT(reporter, renamed == nullptr);
+    }
+
+    // 32-bit wrap-around when rounding logicalLength up to a multiple of 4
+    {
+        std::vector<uint8_t> wrapFont =
+                makeSfnt(1, {{SkOTTableName::TAG, 28, 0xFFFFFFFFu}}, 128);
+        SkMemoryStream stream(wrapFont.data(), wrapFont.size(), false);
+        sk_sp<SkData> renamed(SkOTUtils::RenameFont(&stream, "A", 1));
+        REPORTER_ASSERT(reporter, renamed == nullptr);
+    }
+
+    // Declared numTables extends past oldNameTableOffset and allocated buffer
+    {
+        std::vector<uint8_t> hugeDirFont = makeSfnt(100, {{SkOTTableName::TAG, 28, 32}}, 128);
+        SkMemoryStream stream(hugeDirFont.data(), hugeDirFont.size(), false);
+        sk_sp<SkData> renamed(SkOTUtils::RenameFont(&stream, "A", 1));
+        REPORTER_ASSERT(reporter, renamed == nullptr);
+    }
+
+    // Sibling table offset points inside the old 'name' table region
+    {
+        std::vector<uint8_t> overlapFont = makeSfnt(
+                2,
+                {{SkOTTableName::TAG, 44, 40}, {SkOTTableHead::TAG, 60, sizeof(SkOTTableHead)}},
+                128);
+        SkMemoryStream stream(overlapFont.data(), overlapFont.size(), false);
+        sk_sp<SkData> renamed(SkOTUtils::RenameFont(&stream, "A", 1));
+        REPORTER_ASSERT(reporter, renamed == nullptr);
+    }
+
+    // Round-trip real SFNT fonts through RenameFont and SkFontMgr::makeFromData
+    static constexpr const char* kResourceFonts[] = {
+            "fonts/Distortable.ttf",
+            "fonts/Roboto-Regular.ttf",
+            "fonts/HangingS.ttf",
+            "fonts/7630.otf",
+            "fonts/Stroking.otf",
+            "fonts/Variable.ttf",
+            "fonts/colr.ttf",
+    };
+    static constexpr char kRenamedFamily[] = "SkiaRenamedFont";
+    constexpr int kRenamedFamilyLen = sizeof(kRenamedFamily) - 1;
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
+    for (const char* res : kResourceFonts) {
+        std::unique_ptr<SkStreamAsset> resStream = GetResourceAsStream(res);
+        if (!resStream) {
+            continue;
+        }
+        sk_sp<SkData> renamed(
+                SkOTUtils::RenameFont(resStream.get(), kRenamedFamily, kRenamedFamilyLen));
+        REPORTER_ASSERT(reporter, renamed != nullptr, "Failed to rename %s", res);
+        if (!renamed) {
+            continue;
+        }
+        REPORTER_ASSERT(reporter, (renamed->size() & 3u) == 0);
+        uint32_t checksum = SkOTUtils::CalcTableChecksum(
+                reinterpret_cast<SK_OT_ULONG*>(const_cast<void*>(renamed->data())),
+                renamed->size());
+        REPORTER_ASSERT(
+                reporter, checksum == SkOTTableHead::fontChecksum, "Checksum mismatch for %s", res);
+
+        if (sk_sp<SkTypeface> origFace = fm->makeFromStream(resStream->duplicate())) {
+            sk_sp<SkTypeface> renamedFace = fm->makeFromData(renamed);
+            REPORTER_ASSERT(reporter, renamedFace != nullptr, "Failed to reload %s", res);
+            if (renamedFace) {
+                SkString familyName;
+                renamedFace->getFamilyName(&familyName);
+                REPORTER_ASSERT(reporter, familyName.equals(kRenamedFamily));
+                REPORTER_ASSERT(reporter, renamedFace->countGlyphs() == origFace->countGlyphs());
+            }
+        }
+    }
+
+    int familyCount = std::min(fm->countFamilies(), 16);
+    for (int i = 0; i < familyCount; ++i) {
+        sk_sp<SkFontStyleSet> set(fm->createStyleSet(i));
+        if (!set || set->count() == 0) {
+            continue;
+        }
+        sk_sp<SkTypeface> face(set->createTypeface(0));
+        if (!face || face->getTableSize(SkOTTableName::TAG) == 0) {
+            continue;
+        }
+        int ttcIndex = 0;
+        std::unique_ptr<SkStreamAsset> faceStream = face->openStream(&ttcIndex);
+        if (!faceStream || ttcIndex != 0) {
+            continue;
+        }
+        sk_sp<SkData> renamed(
+                SkOTUtils::RenameFont(faceStream.get(), kRenamedFamily, kRenamedFamilyLen));
+        if (!renamed) {
+            continue;
+        }
+        REPORTER_ASSERT(reporter, (renamed->size() & 3u) == 0);
+        if (face->getTableSize(SkOTTableHead::TAG) >= sizeof(SkOTTableHead)) {
+            uint32_t checksum = SkOTUtils::CalcTableChecksum(
+                    reinterpret_cast<SK_OT_ULONG*>(const_cast<void*>(renamed->data())),
+                    renamed->size());
+            REPORTER_ASSERT(reporter, checksum == SkOTTableHead::fontChecksum);
+        }
+        if (sk_sp<SkTypeface> origReloaded = fm->makeFromStream(faceStream->duplicate())) {
+            sk_sp<SkTypeface> renamedFace = fm->makeFromData(renamed);
+            REPORTER_ASSERT(reporter, renamedFace != nullptr);
+            if (renamedFace) {
+                SkString familyName;
+                renamedFace->getFamilyName(&familyName);
+                REPORTER_ASSERT(reporter, familyName.equals(kRenamedFamily));
+                REPORTER_ASSERT(reporter,
+                                renamedFace->countGlyphs() == origReloaded->countGlyphs());
+            }
+        }
+    }
+
+#if defined(SK_BUILD_FOR_WIN) && defined(SK_FONTMGR_GDI_AVAILABLE)
+    if (sk_sp<SkFontMgr> gdiFm = SkFontMgr_New_GDI()) {
+        if (std::unique_ptr<SkStreamAsset> ttfStream =
+                    GetResourceAsStream("fonts/Roboto-Regular.ttf")) {
+            sk_sp<SkTypeface> gdiFace = gdiFm->makeFromStream(std::move(ttfStream));
+            REPORTER_ASSERT(reporter, gdiFace != nullptr);
+            if (gdiFace) {
+                REPORTER_ASSERT(reporter, gdiFace->countGlyphs() > 0);
+            }
+        }
+        std::vector<uint8_t> oobFont = makeSfnt(1, {{SkOTTableName::TAG, 800, 900}}, 1024);
+        sk_sp<SkData> oobData = SkData::MakeWithoutCopy(oobFont.data(), oobFont.size());
+        REPORTER_ASSERT(reporter, gdiFm->makeFromData(oobData) == nullptr);
+    }
+#endif
+}
+
 } // namespace
 
 static DEFINE_bool(verboseFontNames, false, "verbose FontNames test.");
 
 DEF_TEST(FontNames, reporter) {
     test_synthetic(reporter, FLAGS_verboseFontNames);
+    test_rename_font(reporter);
     test_systemfonts(reporter, FLAGS_verboseFontNames);
 }
