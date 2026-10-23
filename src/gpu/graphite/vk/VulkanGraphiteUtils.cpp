@@ -19,7 +19,6 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/TextureFormat.h"
-#include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanQueueManager.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
@@ -165,7 +164,7 @@ std::optional<VkImageMemoryBarrier> CreateVulkanImageMemoryBarrier(
 }
 
 VkPipelineStageFlags VkImageLayoutToPipelineSrcStageFlags(const VkImageLayout layout,
-                                                          const VulkanCaps& caps) {
+                                                          VkPipelineStageFlags shaderReadStages) {
     if (VK_IMAGE_LAYOUT_GENERAL == layout) {
         return VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
     } else if (VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == layout ||
@@ -177,7 +176,22 @@ VkPipelineStageFlags VkImageLayoutToPipelineSrcStageFlags(const VkImageLayout la
                VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL == layout) {
         return VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
     } else if (VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == layout) {
-        return caps.shaderReadOnlySrcStageMask();
+        const bool readByCompute = (shaderReadStages & VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT) != 0;
+        const bool readByGraphics = (shaderReadStages & ~VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT) != 0;
+        VkPipelineStageFlags stageMask = 0;
+        // A source stage mask implicitly includes all logically earlier stages of the graphics
+        // pipeline, so the fragment stage covers reads from any graphics shader stage. It is also
+        // used when the reading stages are unknown.
+        if (readByGraphics || !readByCompute) {
+            stageMask |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+        }
+        // The compute stage is not part of that ordering, so it must be added explicitly. Only do
+        // so if a compute shader actually read the image, since needlessly waiting on the compute
+        // stage can be expensive on some drivers.
+        if (readByCompute) {
+            stageMask |= VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
+        }
+        return stageMask;
     } else if (VK_IMAGE_LAYOUT_PREINITIALIZED == layout) {
         return VK_PIPELINE_STAGE_HOST_BIT;
     } else if (VK_IMAGE_LAYOUT_PRESENT_SRC_KHR == layout) {
