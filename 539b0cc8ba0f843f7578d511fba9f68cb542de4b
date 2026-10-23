@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e187cdc3_afa4bdeb",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-23T16:09:40Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s a bit of a halfway file, since it is either the generic GPU commands or a key output of the draws/ component. Leaving it in the root for now is fine.\n\nI also was wondering about a backend/ directory that would hold the generic GPU types directly in it, and then have sub-sub directories for the actual GPU backends.  We could also have that be `hal/`.",
+      "parentUuid": "bb66d978_9b380868",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 38
+      },
+      "revId": "539b0cc8ba0f843f7578d511fba9f68cb542de4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d0ae828_c9902f2d",
