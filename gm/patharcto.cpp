@@ -80,6 +80,10 @@ DEF_SIMPLE_GM(path_append_extend, canvas, 400, 400) {
     paint.setStrokeWidth(9);
     paint.setAntiAlias(true);
 
+    #if defined(SK_BUILD_FOR_WASM)
+    paint.setColor(SK_ColorBLUE);
+    #endif
+
     // addPath() sometimes checks for perspective, so we want to test that
     const SkScalar x = 0.0001f; // tiny amount of perspective
     const SkMatrix perspective = SkMatrix::MakeAll(1, 0, 0,
