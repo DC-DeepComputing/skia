@@ -1098,6 +1098,9 @@ bool GrGLGpu::onTransferPixelsTo(GrTexture* texture,
         GL_CALL(PixelStorei(GR_GL_UNPACK_ROW_LENGTH, 0));
     }
 
+    if (this->isVerifyingOps()) {
+        return !this->clearErrorsAndCheckForOOM();
+    }
     return true;
 }
 
@@ -1160,9 +1163,8 @@ bool GrGLGpu::uploadColorTypeTexData(GrGLFormat textureFormat,
     if (!externalFormat || !externalType) {
         return false;
     }
-    this->uploadTexData(texDims, target, dstRect, externalFormat, externalType, bpp, texels,
-                        mipLevelCount);
-    return true;
+    return this->uploadTexData(texDims, target, dstRect, externalFormat, externalType, bpp, texels,
+                               mipLevelCount);
 }
 
 bool GrGLGpu::uploadColorToTex(GrGLFormat textureFormat,
@@ -1200,12 +1202,11 @@ bool GrGLGpu::uploadColorToTex(GrGLFormat textureFormat,
             levels[i] = {pixelStorage.get(), levelDims.width()*bpp, nullptr};
         }
     }
-    this->uploadTexData(texDims, target, SkIRect::MakeSize(texDims), externalFormat, externalType,
-                        bpp, levels.begin(), levels.size());
-    return true;
+    return this->uploadTexData(texDims, target, SkIRect::MakeSize(texDims), externalFormat,
+                               externalType, bpp, levels.begin(), levels.size());
 }
 
-void GrGLGpu::uploadTexData(SkISize texDims,
+bool GrGLGpu::uploadTexData(SkISize texDims,
                             GrGLenum target,
                             SkIRect dstRect,
                             GrGLenum externalFormat,
@@ -1250,6 +1251,10 @@ void GrGLGpu::uploadTexData(SkISize texDims,
         SkASSERT(caps.writePixelsRowBytesSupport());
         GL_CALL(PixelStorei(GR_GL_UNPACK_ROW_LENGTH, 0));
     }
+    if (this->isVerifyingOps()) {
+        return !this->clearErrorsAndCheckForOOM();
+    }
+    return true;
 }
 
 bool GrGLGpu::uploadCompressedTexData(SkTextureCompressionType compressionType,
@@ -4406,6 +4411,9 @@ void GrGLGpu::prepareSurfacesForBackendAccessAndStateUpdates(
         this->glCaps().bindDefaultFramebufferOnPresent()) {
         this->bindFramebuffer(GR_GL_DRAW_FRAMEBUFFER, 0);
     }
+    if (this->isVerifyingOps()) {
+        this->clearErrorsAndCheckForOOM();
+    }
 }
 
 bool GrGLGpu::onSubmitToGpu(const GrSubmitInfo& info) {
@@ -4625,19 +4633,38 @@ void GrGLGpu::finishOutstandingGpuWork() {
     GL_CALL(Finish());
 }
 
-void GrGLGpu::clearErrorsAndCheckForOOM() {
-    while (this->getErrorAndCheckForOOM() != GR_GL_NO_ERROR) {}
+void GrGLGpu::onBeginVerifyOps() {
+    this->clearErrorsAndCheckForOOM();
+}
+
+void GrGLGpu::onEndVerifyOps() {
+    this->clearErrorsAndCheckForOOM();
+}
+
+bool GrGLGpu::clearErrorsAndCheckForOOM() {
+    bool hadError = false;
+    while (this->getErrorAndCheckForOOM() != GR_GL_NO_ERROR) {
+        hadError = true;
+    }
+    return hadError;
 }
 
 GrGLenum GrGLGpu::getErrorAndCheckForOOM() {
-#if GR_GL_CHECK_ERROR
-    if (this->glInterface()->checkAndResetOOMed()) {
-        this->setOOMed();
-    }
-#endif
     GrGLenum error = this->fGLContext->glInterface()->fFunctions.fGetError();
     if (error == GR_GL_OUT_OF_MEMORY) {
         this->setOOMed();
+    }
+#if GR_GL_CHECK_ERROR
+    if (this->glInterface()->checkAndResetOOMed()) {
+        this->setOOMed();
+        error = GR_GL_OUT_OF_MEMORY;
+    }
+    if (this->glInterface()->checkAndResetError() && error == GR_GL_NO_ERROR) {
+        error = GR_GL_INVALID_OPERATION;
+    }
+#endif
+    if (error != GR_GL_NO_ERROR) {
+        this->setVerifiedOpFailed();
     }
     return error;
 }

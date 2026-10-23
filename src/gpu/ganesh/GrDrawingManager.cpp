@@ -127,9 +127,13 @@ GrDirectContext::FlushResult GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> pro
             if (info.fSubmittedProc) {
                 info.fSubmittedProc(info.fSubmittedContext, true);
             }
+            auto dContext = fContext->asDirectContext();
+            SkASSERT(dContext);
+            GrGpu* gpu = dContext->priv().getGpu();
+            SkASSERT(gpu);
             // Nothing to flush is a success (fSubmittedProc is already called with `true`
-            // above).
-            return {true, GrSemaphoresSubmitted::kNo};
+            // above), unless a verified op already failed in this scope.
+            return {!gpu->hasVerifiedOpFailed(), GrSemaphoresSubmitted::kNo};
         }
     }
 
@@ -211,6 +215,9 @@ GrDirectContext::FlushResult GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> pro
 
         if (!resourceAllocator.failedInstantiation()) {
             executionResult = this->executeRenderTasks(&flushState);
+            if (executionResult.fAnyTaskExecuted) {
+                gpu->setVerifiedOpExecuted();
+            }
         }
     }
     this->removeRenderTasks();
@@ -248,7 +255,9 @@ GrDirectContext::FlushResult GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> pro
         resourceCache->purgeAsNeeded();
     }
     fFlushing = false;
-    return {executionResult.fAllTasksSuccessful && flushResult.fSuccess, flushResult.fSubmitted};
+    return {executionResult.fAllTasksSuccessful && flushResult.fSuccess &&
+                    !gpu->hasVerifiedOpFailed(),
+            flushResult.fSubmitted};
 }
 
 bool GrDrawingManager::submitToGpu() {

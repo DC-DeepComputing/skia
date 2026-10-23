@@ -23,10 +23,10 @@
 #include <string_view>
 
 class GrAtlasManager;
-class GrBackendSemaphore;
 class GrBackendFormat;
-class GrBackendTexture;
 class GrBackendRenderTarget;
+class GrBackendSemaphore;
+class GrBackendTexture;
 class GrClientMappedBufferManager;
 class GrContextThreadSafeProxy;
 class GrDirectContextPriv;
@@ -141,6 +141,11 @@ public:
      * occurred.
      */
     bool oomed();
+
+    void beginVerifyOps();
+    void endVerifyOps();
+    bool hasVerifiedOpFailed() const;
+    bool hasVerifiedOpExecuted() const;
 
     /**
      * This is similar to abandonContext() however the underlying 3D context is not yet lost and
