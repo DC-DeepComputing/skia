@@ -633,7 +633,8 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
             KeyToSamples((rpDescBits >> kDepthStencilNumSamplesOffset) & kNumSamplesMask);
 
     if ((colorSamples > SampleCount::k1 && this->avoidMSAA()) ||
-        (depthStencilFormat != TextureFormat::kUnsupported && this->avoidDepthMode())) {
+        (TextureFormatHasDepth(depthStencilFormat) &&
+                this->depthUsageMode() == DepthUsageMode::kNever)) {
         return false;
     }
 
@@ -650,12 +651,11 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
                                         LoadOp::kClear,
                                         StoreOp::kStore,
                                         colorSamples};
-    if (!this->avoidDepthMode()) {
-        renderPassDesc->fDepthStencilAttachment = {depthStencilFormat,
-                                                   LoadOp::kClear,
-                                                   StoreOp::kDiscard,
-                                                   depthStencilSamples};
-    }
+    renderPassDesc->fDepthStencilAttachment = {depthStencilFormat,
+                                                LoadOp::kClear,
+                                                StoreOp::kDiscard,
+                                                depthStencilSamples};
+
     if (colorSamples > SampleCount::k1) {
         renderPassDesc->fColorResolveAttachment = {colorFormat,
                                                    loadFromResolve ? LoadOp::kLoad : LoadOp::kClear,

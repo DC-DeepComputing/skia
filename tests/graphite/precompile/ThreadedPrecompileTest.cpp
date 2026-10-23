@@ -155,7 +155,8 @@ void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
         std::shuffle(combos.begin(), combos.end(), g);
     }
 
-    bool avoidDepthMode = precompileContext->priv().caps()->avoidDepthMode();
+    const bool avoidDepthMode =
+            precompileContext->priv().caps()->depthUsageMode() == DepthUsageMode::kNever;
     const RenderPassProperties kProps = {
             avoidDepthMode ? DepthStencilFlags::kNone : DepthStencilFlags::kDepth,
             kBGRA_8888_SkColorType,

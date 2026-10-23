@@ -53,6 +53,49 @@ class PaintParams;
 class Renderer;
 enum class DepthStencilFlags : int;
 
+namespace {
+
+// TODO(michaelludwig): Allow DrawContexts to be flagged as internal or external, and turn on
+// avoidDepthMode if it's an internal surface and DepthUsageMode::kAvoidForInternal is set.
+bool avoid_depth(const Caps* caps) {
+    return caps->depthUsageMode() == DepthUsageMode::kNever;
+}
+
+// Adjust the DrawList's depth-stencil flags to match DepthUsageMode and consolidate on certain
+// configurations to avoid too many renderpass variations.
+SkEnumBitMask<DepthStencilFlags> canonical_depth_stencil_flags(const Caps* caps,
+                                                               const DrawListBase* dll) {
+    SkEnumBitMask<DepthStencilFlags> dsFlags = dll->depthStencilFlags();
+    switch (caps->depthUsageMode()) {
+        case DepthUsageMode::kAlways:
+            SkASSERT(!dll->avoidDepth());
+            // TODO(michaelludwig): If the original depthStencilFlags didn't require depth but we
+            // pick a format with the depth aspect, we should use kNone for load/store ops to help
+            // reduce memory bandwidth even if we have to allocate the attachment.
+            // TODO(michaelludwig): Track whether or not draws within fPendingDraw require the depth
+            // for occlusion or clipping (per-draw depth is already accumulated into `dsFlags`). For
+            // now, always add kDepth if there are draws; otherwise we'd create a depth attachment
+            // for must a clear.
+            if (dll->renderStepCount() > 0) {
+                dsFlags |= DepthStencilFlags::kDepth;
+            }
+            // To reduce pipeline compiles and attachment creations, if we need multisampling and
+            // need a depth or stencil attachment, we always choose a depth-AND-stencil format.
+            if (dll->drawsRequireMSAA()) {
+                dsFlags = DepthStencilFlags::kDepthStencil;
+            }
+            break;
+        case DepthUsageMode::kNever:
+            SkASSERT(dll->avoidDepth());
+            SkASSERT(!SkToBool(dsFlags & DepthStencilFlags::kDepth));
+            break;
+    }
+
+    return dsFlags;
+}
+
+} // anonymous namespace
+
 sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      sk_sp<TextureProxy> target,
                                      SkISize deviceSize,
@@ -99,9 +142,9 @@ DrawContext::DrawContext(const Caps* caps,
         , fPendingDraws(
                   caps->useDrawListLayer()
                           ? std::unique_ptr<DrawListBase>(std::make_unique<DrawListLayer>(
-                                   caps->avoidDepthMode(), caps->storageBufferSupport()))
+                                   avoid_depth(caps), caps->storageBufferSupport()))
                           : std::unique_ptr<DrawListBase>(std::make_unique<DrawList>(
-                                   caps->avoidDepthMode())))
+                                   avoid_depth(caps))))
         , fPendingUploads(std::make_unique<UploadList>())
         , fStorageContext(caps->resourceBindingRequirements(),
                           caps->storageBufferSupport()) {
@@ -252,15 +295,9 @@ void DrawContext::flush(Recorder* recorder) {
     // relinquishing the pending draw list to the DrawPass constructor.
     SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
     const bool drawsRequireMSAA = fPendingDraws->drawsRequireMSAA();
-    SkEnumBitMask<DepthStencilFlags> dsFlags = fPendingDraws->depthStencilFlags();
-    SkASSERT(!SkToBool(dsFlags & DepthStencilFlags::kDepth) || !fPendingDraws->avoidDepth());
-    // TODO(michaelludwig): Track whether or not draws within fPendingDraw require the depth for
-    // occlusion or clipping (per-draw depth is already accumulated into `dsFlags`). For now,
-    // always add kDepth if not avoiding it entirely, and if there are draws; otherwise we'd create
-    // a depth attachment for must a clear.
-    if (fPendingDraws->renderStepCount() > 0 && !fPendingDraws->avoidDepth()) {
-        dsFlags |= DepthStencilFlags::kDepth;
-    }
+    const SkEnumBitMask<DepthStencilFlags> dsFlags = canonical_depth_stencil_flags(
+            recorder->priv().caps(), fPendingDraws.get());
+
     // Determine the optimal dst read strategy for the drawpass given pending draw characteristics
     const DstReadStrategy drawPassDstReadStrategy = fPendingDraws->drawsReadDst()
                                                             ? this->dstReadStrategy()
