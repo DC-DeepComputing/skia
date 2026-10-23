@@ -29,9 +29,10 @@
 namespace skgpu::graphite {
 
 static bool use_clip_atlas(const Recorder* recorder) {
-    // Currently only the raster atlas strategy utilizes the clip atlas.
-    return recorder->priv().rendererProvider()->pathRendererStrategy() ==
-           PathRendererStrategy::kRasterAtlas;
+    // Depth-based clipping requires MSAA for its anti-aliasing, and requires the depth buffer for
+    // blocking pixels with the depth test.
+    const Caps* caps = recorder->priv().caps();
+    return caps->avoidMSAA() || caps->avoidDepthMode();
 }
 
 AtlasProvider::AtlasProvider(Recorder* recorder)

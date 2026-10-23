@@ -54,7 +54,10 @@ bool RendererProvider::IsSupported(PathRendererStrategy strategy, const Caps* ca
             // This strategy requires MSAA, which will use a supported MSAA count returned by
             // Caps::getDefaultMSAASampleCount(target). When avoidMSAA() returns false, this should
             // always be at least 4x on Graphite's supported devices.
-            return !caps->avoidMSAA();
+            //
+            // The stroke tessellation renderer also requires depth, so fall back to SW atlas if
+            // avoiding depth buffers entirely.
+            return !caps->avoidMSAA() && !caps->avoidDepthMode();
 
         case PathRendererStrategy::kRasterAtlas:
             // The raster path atlas is currently always supported
@@ -98,7 +101,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
         // By default, prefer vello > tessellation [w/ atlas] > raster atlas
         if (IsSupported(PathRendererStrategy::kComputeMSAA8, caps)) {
             fStrategy = PathRendererStrategy::kComputeMSAA8;
-        } else if (caps->avoidMSAA()) {
+        } else if (caps->avoidMSAA() || caps->avoidDepthMode()) {
             fStrategy = PathRendererStrategy::kRasterAtlas;
         } else if (caps->minPathSizeForMSAA() > 0) {
             fStrategy = PathRendererStrategy::kTessellationAndSmallAtlas;

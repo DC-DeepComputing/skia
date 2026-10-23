@@ -1949,6 +1949,8 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     if (!outEffectiveElements->empty()) {
         clipAtlas = fDevice->recorder()->priv().getOrCreateAtlasProvider()
                             ->getClipAtlasManager();
+        // If there are complex clip elements, there should either be depth or the atlas available.
+        SkASSERT(clipAtlas || fDevice->recorder()->priv().caps()->avoidDepthMode());
     }
     if (clipAtlas) {
         AtlasClip* atlasClip = &nonMSAAClip.fAtlasClip;
