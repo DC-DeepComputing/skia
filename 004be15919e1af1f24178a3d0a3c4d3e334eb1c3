@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d69a5940_e05aa8fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-23T19:50:53Z",
+      "side": 1,
+      "message": "I don\u0027t feel strongly about this 👍",
+      "revId": "004be15919e1af1f24178a3d0a3c4d3e334eb1c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cce0147f_c3e6cd63",
