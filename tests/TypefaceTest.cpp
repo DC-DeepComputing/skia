@@ -526,6 +526,67 @@ DEF_TEST(TypefaceCollectionIndex, reporter) {
     REPORTER_ASSERT(reporter, !faceOutOfBounds);
 }
 
+// Serialization recreates typefaces via makeFromStream with the recorded synthetic flags, so a
+// stream typeface and a clone of the plain face must agree on which simulations were applied
+DEF_TEST(TypefaceSyntheticFromStreamMatchesClone, reporter) {
+    struct Case {
+        const char* resource;
+        int index;
+        bool bold;
+        bool oblique;
+    };
+    // test.ttc: index 0 is Regular (400) and index 1 is Bold (700) of one family;
+    // cond-bold-italic.ttf is a single Bold Italic face
+    static constexpr Case kCases[] = {
+        {"fonts/test.ttc", 0, true, false},
+        {"fonts/test.ttc", 1, true, false},
+        {"fonts/test.ttc", 1, true, true},
+        {"fonts/cond-bold-italic.ttf", 0, true, false},
+        {"fonts/cond-bold-italic.ttf", 0, false, true},
+    };
+
+    sk_sp<SkFontMgr> fm = ToolUtils::TestFontMgr();
+    for (const Case& c : kCases) {
+        std::unique_ptr<SkStreamAsset> stream(GetResourceAsStream(c.resource));
+        if (!stream) {
+            REPORT_FAILURE(reporter, c.resource, SkString("Cannot load resource"));
+            continue;
+        }
+        sk_sp<SkTypeface> plain = fm->makeFromStream(stream->duplicate(), c.index);
+        if (!plain) {
+            // Not all SkFontMgr can MakeFromStream()
+            continue;
+        }
+
+        SkFontArguments args;
+        args.setCollectionIndex(c.index);
+        args.setSyntheticBold(c.bold);
+        args.setSyntheticOblique(c.oblique);
+        sk_sp<SkTypeface> fromStream = fm->makeFromStream(stream->duplicate(), args);
+        sk_sp<SkTypeface> clone = plain->makeClone(args);
+        REPORTER_ASSERT(reporter, fromStream, "%s[%d] b=%d o=%d: makeFromStream failed",
+                        c.resource, c.index, c.bold, c.oblique);
+        REPORTER_ASSERT(reporter, clone, "%s[%d] b=%d o=%d: makeClone failed",
+                        c.resource, c.index, c.bold, c.oblique);
+        if (!fromStream || !clone) {
+            continue;
+        }
+        SkDebugf("SYNTHETIC_PROBE %s[%d] req b=%d o=%d stream b=%d o=%d clone b=%d o=%d\n",
+                 c.resource, c.index, c.bold, c.oblique,
+                 fromStream->isSyntheticBold(), fromStream->isSyntheticOblique(),
+                 clone->isSyntheticBold(), clone->isSyntheticOblique());
+        REPORTER_ASSERT(reporter, fromStream->isSyntheticBold() == clone->isSyntheticBold(),
+                        "%s[%d] b=%d o=%d: stream bold %d != clone bold %d",
+                        c.resource, c.index, c.bold, c.oblique,
+                        fromStream->isSyntheticBold(), clone->isSyntheticBold());
+        REPORTER_ASSERT(reporter,
+                        fromStream->isSyntheticOblique() == clone->isSyntheticOblique(),
+                        "%s[%d] b=%d o=%d: stream oblique %d != clone oblique %d",
+                        c.resource, c.index, c.bold, c.oblique,
+                        fromStream->isSyntheticOblique(), clone->isSyntheticOblique());
+    }
+}
+
 DEF_TEST(TypefaceVariationIndex, reporter) {
     std::unique_ptr<SkStreamAsset> distortable(GetResourceAsStream("fonts/Distortable.ttf"));
     if (!distortable) {
