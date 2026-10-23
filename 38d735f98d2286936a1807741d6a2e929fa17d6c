@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1349456b_bed200ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-23T23:56:52Z",
+      "side": 1,
+      "message": "Thanks for this, building the face directly through CreateFontFaceReference is a nice\nwin for large TTCs. I tested PS4 on the Win11 NativeFonts bots\n(Test-Win11-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts and ..._DWriteCore), which\nuse the real DirectWrite font manager, and found a few things worth addressing.\n\n1. Commit message: this CL also fixes a pre-existing inconsistency. On the parent,\n   makeFromStream(args) with syntheticBold/syntheticOblique applied no simulations in\n   any of the five cases I tested (test.ttc indices 0 and 1, cond-bold-italic.ttf),\n   while makeClone(args) on the same face did apply them. Since serialization recreates\n   typefaces via makeFromStream, a synthetic clone lost its flags on round-trip. With\n   PS4 the two paths agree. Please mention this in the description; the companion CL\n   below adds a test for it that fails on the parent and passes on PS4.\n\n2. SkTypeface_win_dw.cpp:1230-1247: the simulation fallback never ran in my tests.\n   DirectWrite applied BOLD to the weight-700 face in test.ttc and OBLIQUE to the italic\n   face in cond-bold-italic.ttf on the first CreateFontFace call. That includes the\n   example given in the comment, and onMakeClone (L659-663) already relies on this\n   behavior. I\u0027d remove the fallback and its comment and check the HRESULT directly:\n     HRN(fontFaceReference-\u003eCreateFontFace(\u0026fontFace3));\n   An out-of-range index (2 for test.ttc) makes this call fail with E_INVALIDARG, so\n   that case is still handled.\n\n3. SkTypeface_win_dw.cpp:1248: please keep the GetIndex() !\u003d ttcIndex check and add a\n   comment explaining why it is needed. I tried replacing it with an SkASSERT and the\n   assert fired on the Debug NativeFonts bots, so CreateFontFace can succeed and return\n   a face whose index differs from the requested one. The likely trigger is\n   TypefaceVariationIndex, which passes 0x00010000 (a named instance in the upper 16\n   bits).\n\nI uploaded a companion WIP CL stacked on PS4:\nhttps://skia-review.googlesource.com/c/skia/+/1403881\n- Base -\u003e PS1: the TypefaceSyntheticFromStreamMatchesClone test (with temporary probe\n  logging).\n- PS2: the failed SkASSERT attempt from point 3, kept for reference.\n- PS1 -\u003e PS3: the changes from points 2 and 3, with the probe logging removed.\n- Base -\u003e PS3: the complete diff, green on both NativeFonts bots.\nFeel free to fold in whatever you find useful.\n\nNit: on Windows 10+ IDWriteFactory3 is always available, so the legacy branch isn\u0027t\nexercised on our bots. I\u0027d keep its changes minimal.",
+      "revId": "38d735f98d2286936a1807741d6a2e929fa17d6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
