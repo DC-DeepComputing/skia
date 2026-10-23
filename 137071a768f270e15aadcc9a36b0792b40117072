@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "674becbd_63a413e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-23T14:06:30Z",
+      "side": 1,
+      "message": "LGTM; \nOptional nit: since `results` is zero-initialized to `kNoCodeUnitFlag`, testing `U+1F600` (`[9, 13)`) with expected `kNoCodeUnitFlag` wouldn\u0027t catch a bug where bytes 10..12 weren\u0027t written. Using a 4-byte ideograph (e.g. U+20000 `\\xF0\\xA0\\x80\\x80` -\u003e `kIdeographic`) or a supplementary format control (e.g. U+1D173 `\\xF0\\x9D\\x85\\xB3` -\u003e `kControl`, which could also test the UTF-16 surrogate pair path `u\"\\uD834\\uDD73\"`) would assert non-zero flags across all 4 UTF-8 bytes / both UTF-16 surrogates.",
+      "revId": "137071a768f270e15aadcc9a36b0792b40117072",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
