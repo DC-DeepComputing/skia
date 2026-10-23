@@ -18,8 +18,8 @@
 .vs/
 .win_toolchain/
 TAGS
-agents/internal/
-agents/shared/
+_agents/internal/
+_agents/shared/
 bower_components
 imgui.ini
 infra/bots/gen_tasks_aux.go
