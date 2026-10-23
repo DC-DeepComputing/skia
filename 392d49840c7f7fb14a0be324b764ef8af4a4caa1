@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e3f26bd_86bc3798",
+        "filename": "dm_output/dm.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-23T17:18:45Z",
+      "side": 1,
+      "message": "please remove the log files",
+      "revId": "392d49840c7f7fb14a0be324b764ef8af4a4caa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53190c4d_12226a82",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1994,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-23T17:18:45Z",
+      "side": 1,
+      "message": "nit: please format using the skia/.clang-format \n\n\ndefintion of nit: \nhttps://moma.corp.google.com/glossary?entity\u003d/g/11fzf33w27\u0026q\u003dnit",
+      "range": {
+        "startLine": 1994,
+        "startChar": 32,
+        "endLine": 1994,
+        "endChar": 109
+      },
+      "revId": "392d49840c7f7fb14a0be324b764ef8af4a4caa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
