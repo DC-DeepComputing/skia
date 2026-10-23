@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "529b2680_22303c75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-10-23T16:17:35Z",
+      "side": 1,
+      "message": "I tested this by changing a single gm to draw differently (blue paint) when built for wasm. That was PS12 which you can see here: https://public-gold.skia.org/search?crs\u003dgerrit\u0026issue\u003d1394296\u0026left_filter\u003dname%3Dpath_append_extend\u0026master\u003dtrue\u0026patchsets\u003d12\n\nThen PS13 reverts that gm and you can see it no longer appears: https://public-gold.skia.org/search?crs\u003dgerrit\u0026issue\u003d1394296\u0026left_filter\u003dname%3Dpath_append_extend\u0026master\u003dtrue\u0026patchsets\u003d13\n\nI am not completely sure yet why the blue-paint image in PS12 does not show up in the untriaged list - you have to set \u0027show all results\u0027 and then filter by name.",
+      "revId": "00b915468f16dc27fd351f1571715009a1f754ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
