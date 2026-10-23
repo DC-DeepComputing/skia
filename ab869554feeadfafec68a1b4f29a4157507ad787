@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed2f58a2_5ce69c0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-23T08:31:39Z",
+      "side": 1,
+      "message": "I lost +2 during rebase.\n\nNo changes:\n https://skia-review.git.corp.google.com/c/skia/+/1399257/13..15\n\nGit refuses to merge automatically when both sides edit adjacent lines, so it flagged a conflict even though the two edits don\u0027t overlap.\n\n\nFeel free to +2",
+      "revId": "ab869554feeadfafec68a1b4f29a4157507ad787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
