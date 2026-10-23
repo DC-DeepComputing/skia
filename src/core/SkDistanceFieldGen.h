@@ -13,6 +13,8 @@
 
 #if !defined(SK_DISABLE_SDF_TEXT)
 
+#include "src/core/SkSafeMath.h"
+
 // the max magnitude for the distance field
 // distance values are limited to the range (-SK_DistanceFieldMagnitude, SK_DistanceFieldMagnitude]
 #define SK_DistanceFieldMagnitude   4
@@ -73,7 +75,18 @@ bool SkGenerateDistanceFieldFromBWImage(unsigned char* distanceField,
  *  @param h                 Height of the original image.
  */
 inline size_t SkComputeDistanceFieldSize(int w, int h) {
-    return (w + 2*SK_DistanceFieldPad) * (h + 2*SK_DistanceFieldPad) * sizeof(unsigned char);
+    // Reject non-positive dimensions or padded sizes that overflow signed 32-bit indexing
+    if (w <= 0 || h <= 0) {
+        return 0;
+    }
+    SkSafeMath safe;
+    int padW = safe.addInt(w, 2 * SK_DistanceFieldPad);
+    int padH = safe.addInt(h, 2 * SK_DistanceFieldPad);
+    size_t size = safe.mul(padW, padH);
+    if (!safe || !SkTFitsIn<int>(size)) {
+        return 0;
+    }
+    return size;
 }
 
 #endif // !defined(SK_DISABLE_SDF_TEXT)

@@ -15,6 +15,7 @@
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkPointPriv.h"
+#include "src/core/SkSafeMath.h"
 
 #include <cstdint>
 #include <cstring>
@@ -349,13 +350,44 @@ static unsigned char pack_distance_field_val(float dist) {
 }
 #endif
 
+// Reject non-positive dimensions or padded DFData + edge buffer sizes that overflow int
+static bool compute_df_storage_size(int width,
+                                    int height,
+                                    size_t* dataBytesOut,
+                                    size_t* storageBytesOut) {
+    if (width <= 0 || height <= 0) {
+        return false;
+    }
+    constexpr int kPad = SK_DistanceFieldPad + 1;
+    SkSafeMath safe;
+    int dataWidth = safe.addInt(width, 2 * kPad);
+    int dataHeight = safe.addInt(height, 2 * kPad);
+    size_t dataCount = safe.mul(dataWidth, dataHeight);
+    size_t dataBytes = safe.mul(dataCount, sizeof(DFData));
+    size_t storageBytes = safe.add(dataBytes, dataCount);
+    if (!safe || !SkTFitsIn<int>(storageBytes)) {
+        return false;
+    }
+    if (dataBytesOut) {
+        *dataBytesOut = dataBytes;
+    }
+    if (storageBytesOut) {
+        *storageBytesOut = storageBytes;
+    }
+    return true;
+}
+
 // assumes a padded 8-bit image and distance field
 // width and height are the original width and height of the image
 static bool generate_distance_field_from_image(unsigned char* distanceField,
                                                const unsigned char* copyPtr,
-                                               int width, int height) {
+                                               int width,
+                                               int height,
+                                               size_t dataBytes,
+                                               size_t storageBytes) {
     SkASSERT(distanceField);
     SkASSERT(copyPtr);
+    SkASSERT(dataBytes > 0 && storageBytes > 0);
 
     // we expand our temp data by one more on each side to simplify
     // the scanning code -- will always be treated as infinitely far away
@@ -365,10 +397,13 @@ static bool generate_distance_field_from_image(unsigned char* distanceField,
     int dataWidth = width + 2*pad;
     int dataHeight = height + 2*pad;
 
-    // create zeroed temp DFData+edge storage
-    UniqueVoidPtr storage(sk_calloc_throw(dataWidth*dataHeight*(sizeof(DFData) + 1)));
+    // Use canfail allocation so oversized distance field requests fail gracefully
+    UniqueVoidPtr storage(sk_calloc_canfail(storageBytes));
+    if (!storage) {
+        return false;
+    }
     DFData*        dataPtr = (DFData*)storage.get();
-    unsigned char* edgePtr = (unsigned char*)storage.get() + dataWidth*dataHeight*sizeof(DFData);
+    unsigned char* edgePtr = (unsigned char*)storage.get() + dataBytes;
 
     // copy glyph into distance field storage
     init_glyph_data(dataPtr, edgePtr, copyPtr,
@@ -482,9 +517,25 @@ bool SkGenerateDistanceFieldFromA8Image(unsigned char* distanceField,
     SkASSERT(distanceField);
     SkASSERT(image);
 
-    // create temp data
-    SkAutoSMalloc<1024> copyStorage((width+2)*(height+2)*sizeof(char));
-    unsigned char* copyPtr = (unsigned char*) copyStorage.get();
+    // Validate dimensions and total distance field buffer size before allocating the padded copy
+    size_t dataBytes = 0;
+    size_t storageBytes = 0;
+    if (!compute_df_storage_size(width, height, &dataBytes, &storageBytes)) {
+        return false;
+    }
+
+    size_t copySize = static_cast<size_t>(width + 2) * static_cast<size_t>(height + 2);
+    char stackStorage[1024];
+    UniqueVoidPtr heapStorage;
+    unsigned char* copyPtr = (unsigned char*)stackStorage;
+    // Fall back to canfail heap storage when the padded copy exceeds the stack buffer
+    if (copySize > sizeof(stackStorage)) {
+        copyPtr = (unsigned char*)sk_malloc_canfail(copySize);
+        if (!copyPtr) {
+            return false;
+        }
+        heapStorage.reset(copyPtr);
+    }
 
     // we copy our source image into a padded copy to ensure we catch edge transitions
     // around the outside
@@ -500,7 +551,8 @@ bool SkGenerateDistanceFieldFromA8Image(unsigned char* distanceField,
     }
     sk_bzero(currDestPtr, (width+2)*sizeof(char));
 
-    return generate_distance_field_from_image(distanceField, copyPtr, width, height);
+    return generate_distance_field_from_image(
+            distanceField, copyPtr, width, height, dataBytes, storageBytes);
 }
 
 // assumes a 16-bit lcd mask and 8-bit distance field
@@ -510,9 +562,25 @@ bool SkGenerateDistanceFieldFromLCD16Mask(unsigned char* distanceField,
     SkASSERT(distanceField);
     SkASSERT(image);
 
-    // create temp data
-    SkAutoSMalloc<1024> copyStorage((w+2)*(h+2)*sizeof(char));
-    unsigned char* copyPtr = (unsigned char*) copyStorage.get();
+    // Validate dimensions and total distance field buffer size before allocating the padded copy
+    size_t dataBytes = 0;
+    size_t storageBytes = 0;
+    if (!compute_df_storage_size(w, h, &dataBytes, &storageBytes)) {
+        return false;
+    }
+
+    size_t copySize = static_cast<size_t>(w + 2) * static_cast<size_t>(h + 2);
+    char stackStorage[1024];
+    UniqueVoidPtr heapStorage;
+    unsigned char* copyPtr = (unsigned char*)stackStorage;
+    // Fall back to canfail heap storage when the padded copy exceeds the stack buffer
+    if (copySize > sizeof(stackStorage)) {
+        copyPtr = (unsigned char*)sk_malloc_canfail(copySize);
+        if (!copyPtr) {
+            return false;
+        }
+        heapStorage.reset(copyPtr);
+    }
 
     // we copy our source image into a padded copy to ensure we catch edge transitions
     // around the outside
@@ -530,7 +598,8 @@ bool SkGenerateDistanceFieldFromLCD16Mask(unsigned char* distanceField,
     }
     sk_bzero(currDestPtr, (w+2)*sizeof(char));
 
-    return generate_distance_field_from_image(distanceField, copyPtr, w, h);
+    return generate_distance_field_from_image(
+            distanceField, copyPtr, w, h, dataBytes, storageBytes);
 }
 
 // assumes a 1-bit image and 8-bit distance field
@@ -540,9 +609,25 @@ bool SkGenerateDistanceFieldFromBWImage(unsigned char* distanceField,
     SkASSERT(distanceField);
     SkASSERT(image);
 
-    // create temp data
-    SkAutoSMalloc<1024> copyStorage((width+2)*(height+2)*sizeof(char));
-    unsigned char* copyPtr = (unsigned char*) copyStorage.get();
+    // Validate dimensions and total distance field buffer size before allocating the padded copy
+    size_t dataBytes = 0;
+    size_t storageBytes = 0;
+    if (!compute_df_storage_size(width, height, &dataBytes, &storageBytes)) {
+        return false;
+    }
+
+    size_t copySize = static_cast<size_t>(width + 2) * static_cast<size_t>(height + 2);
+    char stackStorage[1024];
+    UniqueVoidPtr heapStorage;
+    unsigned char* copyPtr = (unsigned char*)stackStorage;
+    // Fall back to canfail heap storage when the padded copy exceeds the stack buffer
+    if (copySize > sizeof(stackStorage)) {
+        copyPtr = (unsigned char*)sk_malloc_canfail(copySize);
+        if (!copyPtr) {
+            return false;
+        }
+        heapStorage.reset(copyPtr);
+    }
 
     // we copy our source image into a padded copy to ensure we catch edge transitions
     // around the outside
@@ -566,7 +651,8 @@ bool SkGenerateDistanceFieldFromBWImage(unsigned char* distanceField,
     }
     sk_bzero(currDestPtr, (width+2)*sizeof(char));
 
-    return generate_distance_field_from_image(distanceField, copyPtr, width, height);
+    return generate_distance_field_from_image(
+            distanceField, copyPtr, width, height, dataBytes, storageBytes);
 }
 
 #endif // !defined(SK_DISABLE_SDF_TEXT)

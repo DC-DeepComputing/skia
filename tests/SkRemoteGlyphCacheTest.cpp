@@ -1492,3 +1492,86 @@ DEF_TEST(SkRemoteGlyphCache_b513780208, reporter) {
     // now validates that path glyphs have an expected mask format.
     REPORTER_ASSERT(reporter, !client.readStrikeData(blob->data(), blob->size()));
 }
+
+DEF_TEST(SkRemoteGlyphCache_b576664769, reporter) {
+    class OversizedGlyphTypeface : public TestEmptyTypeface {
+    public:
+        explicit OversizedGlyphTypeface(int* generateImageCount)
+                : fGenerateImageCount(generateImageCount) {}
+
+    protected:
+        std::unique_ptr<SkScalerContext> onCreateScalerContext(
+                const SkScalerContextEffects& effects, const SkDescriptor* desc) const override {
+            class ScalerContext : public SkScalerContext {
+            public:
+                ScalerContext(SkTypeface& tf,
+                              const SkScalerContextEffects& effects,
+                              const SkDescriptor* desc,
+                              int* generateImageCount)
+                        : SkScalerContext(tf, effects, desc)
+                        , fGenerateImageCount(generateImageCount) {}
+
+            protected:
+                GlyphMetrics generateMetrics(const SkGlyph& glyph, SkArenaAlloc*) override {
+                    GlyphMetrics mx(glyph.maskFormat());
+                    mx.advance = {10, 0};
+                    mx.bounds = SkRect::MakeWH(4071, 65527);
+                    return mx;
+                }
+                void generateImage(const SkGlyph&, void*) override { ++(*fGenerateImageCount); }
+                std::optional<GeneratedPath> generatePath(const SkGlyph&) override {
+                    return {{SkPath::Rect(SkRect::MakeWH(4071, 65527)), false}};
+                }
+                void generateFontMetrics(SkFontMetrics* metrics) override {
+                    if (metrics) {
+                        sk_bzero(metrics, sizeof(*metrics));
+                    }
+                }
+
+            private:
+                int* const fGenerateImageCount;
+            };
+            return std::make_unique<ScalerContext>(
+                    *const_cast<OversizedGlyphTypeface*>(this), effects, desc, fGenerateImageCount);
+        }
+
+    private:
+        int* const fGenerateImageCount;
+    };
+
+    // Oversized glyphs exceeding atlas dimensions must be rejected from atlas and
+    // sent as path/metrics only without calling prepareForImage or asserting in flattenImage
+    for (bool dftSupport : {false, true}) {
+        int generateImageCount = 0;
+        sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
+        SkStrikeServer server(discardableManager.get());
+        SkStrikeClient client(discardableManager, /*isLogging=*/false);
+
+        auto serverTypeface = sk_make_sp<OversizedGlyphTypeface>(&generateImageCount);
+        const SkTypefaceID serverTypefaceID = serverTypeface->uniqueID();
+
+        SkFont font(serverTypeface, 32.f);
+        SkGlyphID glyphID = 1;
+        SkPoint pos = {0.f, 0.f};
+        SkPaint paint;
+
+        SkSurfaceProps props(SkSurfaceProps::kUseDeviceIndependentFonts_Flag,
+                             kUnknown_SkPixelGeometry);
+        std::unique_ptr<SkCanvas> analysisCanvas = server.makeAnalysisCanvas(
+                100, 100, props, nullptr, dftSupport, /*DFTPerspSupport=*/false);
+        analysisCanvas->drawGlyphs({&glyphID, 1}, {&pos, 1}, {0, 0}, font, paint);
+
+        std::vector<uint8_t> serverStrikeData;
+        server.writeStrikeData(&serverStrikeData);
+
+        REPORTER_ASSERT(reporter, generateImageCount == 0);
+        REPORTER_ASSERT(reporter, !serverStrikeData.empty());
+        REPORTER_ASSERT(reporter,
+                        client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
+
+        auto clientTypeface = client.retrieveTypefaceUsingServerIDForTest(serverTypefaceID);
+        REPORTER_ASSERT(reporter, clientTypeface != nullptr);
+
+        discardableManager->unlockAndDeleteAll();
+    }
+}
