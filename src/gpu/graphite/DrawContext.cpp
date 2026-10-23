@@ -69,13 +69,13 @@ SkEnumBitMask<DepthStencilFlags> canonical_depth_stencil_flags(const Caps* caps,
     switch (caps->depthUsageMode()) {
         case DepthUsageMode::kAlways:
             SkASSERT(!dll->avoidDepth());
+            // Regardless of whether or not the recorded draws would require depth, we include depth
+            // when the mode is kAlways (unless there are no draws, since that's just a clear).
+            // Including depth reduces the number renderpass variations required for pipelines.
+            //
             // TODO(michaelludwig): If the original depthStencilFlags didn't require depth but we
             // pick a format with the depth aspect, we should use kNone for load/store ops to help
             // reduce memory bandwidth even if we have to allocate the attachment.
-            // TODO(michaelludwig): Track whether or not draws within fPendingDraw require the depth
-            // for occlusion or clipping (per-draw depth is already accumulated into `dsFlags`). For
-            // now, always add kDepth if there are draws; otherwise we'd create a depth attachment
-            // for must a clear.
             if (dll->renderStepCount() > 0) {
                 dsFlags |= DepthStencilFlags::kDepth;
             }
@@ -293,7 +293,7 @@ void DrawContext::flush(Recorder* recorder) {
 
     // Extract certain properties from DrawList relevant for DrawTask construction before
     // relinquishing the pending draw list to the DrawPass constructor.
-    SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
+    const SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
     const bool drawsRequireMSAA = fPendingDraws->drawsRequireMSAA();
     const SkEnumBitMask<DepthStencilFlags> dsFlags = canonical_depth_stencil_flags(
             recorder->priv().caps(), fPendingDraws.get());
