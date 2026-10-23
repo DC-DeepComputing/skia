@@ -1227,27 +1227,11 @@ static SkTScopedComPtr<IDWriteFontFace> create_font_face_from_stream(
     HRN(factory3->CreateFontFaceReference(
             fontFile.get(), ttcIndex, simulations, &fontFaceReference));
 
-    // If the requested simulations cannot be applied to this face (for example,
-    // DWRITE_FONT_SIMULATIONS_BOLD on a face that is already bold), fall back to
-    // the closest supported simulations. As with CSS3, oblique matches tighter
-    // than weight.
+    // DirectWrite applies simulations even to faces that are already bold or italic, as
+    // onMakeClone relies on, so failure here means a bad file or an out-of-range index
     SkTScopedComPtr<IDWriteFontFace3> fontFace3;
-    fontFaceReference->CreateFontFace(&fontFace3);
-    if (!fontFace3 &&
-        simulations == (DWRITE_FONT_SIMULATIONS_BOLD | DWRITE_FONT_SIMULATIONS_OBLIQUE)) {
-        fontFaceReference->CreateFontFaceWithSimulations(DWRITE_FONT_SIMULATIONS_OBLIQUE,
-                                                         &fontFace3);
-    }
-    if (!fontFace3 &&
-        simulations == (DWRITE_FONT_SIMULATIONS_BOLD | DWRITE_FONT_SIMULATIONS_OBLIQUE)) {
-        fontFaceReference->CreateFontFaceWithSimulations(DWRITE_FONT_SIMULATIONS_BOLD, &fontFace3);
-    }
-    if (!fontFace3 && simulations != DWRITE_FONT_SIMULATIONS_NONE) {
-        fontFaceReference->CreateFontFaceWithSimulations(DWRITE_FONT_SIMULATIONS_NONE, &fontFace3);
-    }
-    if (!fontFace3 || fontFace3->GetIndex() != ttcIndex) {
-        return nullptr;
-    }
+    HRN(fontFaceReference->CreateFontFace(&fontFace3));
+    SkASSERT(fontFace3->GetIndex() == ttcIndex);
 
     SkTScopedComPtr<IDWriteFontFace> fontFace;
     HRN(fontFace3->QueryInterface(&fontFace));
