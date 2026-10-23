@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb66d978_9b380868",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-23T16:03:34Z",
+      "side": 1,
+      "message": "I thought about this (and the LLM suggested it), but in my mind DrawCommand doesn\u0027t really handle the preparation of draws, it just acts as a wrapper around the backend commands.\n\nI had been thinking that there should be a \"BackendGeneric\" folder which holds this  and GraphicsPipeline?",
+      "parentUuid": "d5194dc7_e31d2ef5",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 38
+      },
+      "revId": "539b0cc8ba0f843f7578d511fba9f68cb542de4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d0ae828_c9902f2d",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-23T15:56:12Z",
       "side": 1,
       "message": "Looking at the enums and types in this header, I wonder if it\u0027d be better renamed to `RenderTypes.h` and then moved into `render/` or whatever \"core-ish\" directory ends up holding things like Attribute.h and Uniform.h (maybe they go into render/ too?)",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 40
+      },
+      "revId": "539b0cc8ba0f843f7578d511fba9f68cb542de4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8da6da33_9c71f937",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-23T16:03:34Z",
+      "side": 1,
+      "message": "Ok, in that case, for this patch, I\u0027ll simply leave DrawTypes.h inside the general directory.",
+      "parentUuid": "7d0ae828_c9902f2d",
       "range": {
         "startLine": 225,
         "startChar": 0,
