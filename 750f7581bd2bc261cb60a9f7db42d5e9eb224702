@@ -63,6 +63,30 @@
       },
       "revId": "750f7581bd2bc261cb60a9f7db42d5e9eb224702",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5712b9e_612a8896",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-23T14:51:46Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to do that; blurring an unpremul or premul image is not expected to be identical to each other. It\u0027s essentially the same expected differences for interpolating a gradient in premul or unpremul colors. They will give different answers and that\u0027s ok, particularly around how they blend against transparent black.",
+      "parentUuid": "e5394308_60e3c89f",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 75
+      },
+      "revId": "750f7581bd2bc261cb60a9f7db42d5e9eb224702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
