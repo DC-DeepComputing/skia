@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af5cadec_7c5158ef",
+        "filename": "dm_output/dm.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-23T17:19:04Z",
+      "side": 1,
+      "message": "this was fixed. My mistake",
+      "parentUuid": "2e3f26bd_86bc3798",
+      "revId": "392d49840c7f7fb14a0be324b764ef8af4a4caa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53190c4d_12226a82",
