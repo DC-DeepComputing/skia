@@ -11519,6 +11519,92 @@ DEF_TEST(SkParagraph_ZeroWidthClusterSplit, reporter) {
     }
 }
 
+// Fonts with a space glyph shape default-ignorable codepoints into zero-advance glyphs, which must
+// not receive letter spacing (flutter#160251)
+DEF_TEST(SkParagraph_LetterSpacingSkipsDefaultIgnorables, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto robotoTypeface = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    if (!robotoTypeface) {
+        return;
+    }
+    auto fontCollection = sk_make_sp<FontCollection>();
+    auto fontProvider = sk_make_sp<TypefaceFontProvider>();
+    fontProvider->registerTypeface(robotoTypeface, SkString("Roboto"));
+    fontCollection->setAssetFontManager(fontProvider);
+    fontCollection->disableFontFallback();
+
+    // A differently colored last character forces the per-cluster spacing path
+    auto layout = [&](const std::string& text, bool twoStyles, SkScalar letterSpacing = 3.0f) {
+        ParagraphStyle paragraphStyle;
+        TextStyle style;
+        style.setFontFamilies({SkString("Roboto")});
+        style.setFontSize(20.0f);
+        style.setColor(SK_ColorBLACK);
+        style.setLetterSpacing(letterSpacing);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        const size_t split = twoStyles ? text.size() - 1 : text.size();
+        builder.addText(text.c_str(), split);
+        if (twoStyles) {
+            style.setColor(SK_ColorRED);
+            builder.pushStyle(style);
+            builder.addText(text.c_str() + split, text.size() - split);
+            builder.pop();
+        }
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(1000.0f);
+        return paragraph;
+    };
+
+    const char* ignorables[] = {"\u200B", "\u200C", "\u200D", "\u2060", "\uFEFF"};
+    for (bool twoStyles : {false, true}) {
+        const SkScalar expected = layout("OneTwo", twoStyles)->getLongestLine();
+        for (const char* ignorable : ignorables) {
+            const std::string once = std::string("One") + ignorable + "Two";
+            const std::string many = std::string("One") + ignorable + ignorable + ignorable + "Two";
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            layout(once, twoStyles)->getLongestLine(), expected, EPSILON100));
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            layout(many, twoStyles)->getLongestLine(), expected, EPSILON100));
+        }
+
+        // A leading ignorable must not take the line's half letter spacing from the first letter
+        auto plain = layout("One", twoStyles);
+        auto leading = layout("\u200BOne", twoStyles);
+        auto plainRects =
+                plain->getRectsForRange(0, 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        auto leadingRects =
+                leading->getRectsForRange(1, 2, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        REPORTER_ASSERT(reporter, plainRects.size() == 1 && leadingRects.size() == 1);
+        if (plainRects.size() == 1 && leadingRects.size() == 1) {
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            plainRects[0].rect.fLeft, leadingRects[0].rect.fLeft, EPSILON100));
+        }
+        auto impl = static_cast<ParagraphImpl*>(leading.get());
+        REPORTER_ASSERT(reporter, impl->cluster(impl->clusterIndex(0)).isDefaultIgnorable());
+        REPORTER_ASSERT(reporter, !impl->cluster(impl->clusterIndex(3)).isDefaultIgnorable());
+
+        // Negative spacing must disable ligatures too: an "fi" ligature formed across U+200B
+        // would leave the glyphs shared by the split "f" and "i" clusters and spaced twice
+        for (const char* tail : {"", "x"}) {
+            const std::string withLigature = std::string("fi") + tail;
+            const std::string acrossIgnorable = std::string("f\u200Bi") + tail;
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(layout(acrossIgnorable, twoStyles, -1.0f)->getLongestLine(),
+                                        layout(withLigature, twoStyles, -1.0f)->getLongestLine(),
+                                        EPSILON100));
+        }
+    }
+}
+
 // Verify that a BiDi isolate starting a styled block with a space-less primary font
 // preserves a 0-width cluster for the isolate and does not trap during style measurement
 DEF_TEST(SkParagraph_BidiIsolateStyledBlockNoSpaceFont, reporter) {

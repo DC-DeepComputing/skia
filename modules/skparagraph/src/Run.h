@@ -297,7 +297,8 @@ public:
             , fEnd()
             , fWidth()
             , fHeight()
-            , fHalfLetterSpacing(0.0) {}
+            , fHalfLetterSpacing(0.0)
+            , fIsDefaultIgnorable(false) {}
 
     Cluster(ParagraphImpl* owner,
             RunIndex runIndex,
@@ -307,7 +308,8 @@ public:
             SkScalar width,
             SkScalar height);
 
-    explicit Cluster(TextRange textRange) : fTextRange(textRange), fGraphemeRange(EMPTY_RANGE) {}
+    explicit Cluster(TextRange textRange)
+            : fTextRange(textRange), fGraphemeRange(EMPTY_RANGE), fIsDefaultIgnorable(false) {}
 
     Cluster(const Cluster&) = default;
     ~Cluster() = default;
@@ -328,6 +330,7 @@ public:
     bool isIntraWordBreak() const { return fIsIntraWordBreak; }
     bool isHardBreak() const { return fIsHardBreak; }
     bool isIdeographic() const { return fIsIdeographic; }
+    bool isDefaultIgnorable() const { return fIsDefaultIgnorable; }
 
     bool isSoftBreak() const;
     bool isSoftHyphen() const;
@@ -378,10 +381,13 @@ private:
     SkScalar fHeight;
     SkScalar fHalfLetterSpacing;
 
-    bool fIsWhiteSpaceBreak;
-    bool fIsIntraWordBreak;
-    bool fIsHardBreak;
-    bool fIsIdeographic;
+    // Bit-fields keep sizeof(Cluster) unchanged after adding fIsDefaultIgnorable
+    bool fIsWhiteSpaceBreak : 1;
+    bool fIsIntraWordBreak : 1;
+    bool fIsHardBreak : 1;
+    bool fIsIdeographic : 1;
+    // Cluster text consists solely of Default_Ignorable_Code_Point codepoints (U+200B, U+FEFF...)
+    bool fIsDefaultIgnorable : 1;
 };
 
 class InternalLineMetrics {
