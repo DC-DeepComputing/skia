@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9beb2543_6e61696d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-23T20:59:09Z",
+      "side": 1,
+      "message": "Done in PS3 — thanks! LGTM.\nVerified on PS3 (`9b0a21fea8`):\n- `StreamWriteStream` and `StreamWriteStreamShortRead`, plus additional edge cases (`SkMemoryStream`, single-block `\u003c 4 KiB` `SkBlockMemoryStream` where `getMemoryBase() !\u003d nullptr`, and multi-block `SkBlockMemoryStream` at non-zero offsets; `position + length` `size_t` overflow with `SIZE_MAX`; mid-loop chunk write failure; and end-to-end `SkFontDescriptor::serialize` / `Deserialize` framing and truncated-stream rejection).\n- Clean under ASan + UBSan (`-fsanitize\u003daddress,undefined -DSK_DEBUG`).\n- `SkFontDescriptor::serialize` latency under `-O2 -DSK_DEBUG` (matching `dcheck_always_on`): `59 ms -\u003e 1 ms` (16 MiB), `1051 ms -\u003e 30 ms` (64 MiB), `3972 ms -\u003e 60 ms` (128 MiB).",
+      "revId": "9b0a21fea8b27eb134acba67b49ee0778fe37ccb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
