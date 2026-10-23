@@ -742,7 +742,10 @@ protected:
                            const SkIRect* bounds,
                            uint32_t mipLevels = 1) const;
 
-    void setOOMed() { fOOMed = true; }
+    void setOOMed() {
+        fOOMed = true;
+        this->setVerifiedOpFailed();
+    }
     void setVerifiedOpFailed() {
         if (fVerifyErrorDepth > 0) {
             fVerifiedOpFailed = true;
