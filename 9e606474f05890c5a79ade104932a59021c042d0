@@ -16,6 +16,24 @@
       "message": "The `Build-Win-Clang-*` tryjobs failed here (and at line 790) with `-Werror,-Wformat-signedness`: under the Windows ABI, unscoped `enum CodeUnitFlags` has underlying type `int` rather than `unsigned int`, so `%x` rejects `results[i] \u0026 kMask` and `e.flags`. Casting them to `unsigned` (on lines 758 and 790) will make `clang-cl` happy.",
       "revId": "9e606474f05890c5a79ade104932a59021c042d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bae49184_649c5e81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-23T14:54:29Z",
+      "side": 1,
+      "message": "Thanks. Done in PS4: the three `%x` arguments are now cast to `unsigned`, including the same one in the new surrogate pair test. I cannot build with clang-cl here, so the Windows tryjobs will confirm it.",
+      "parentUuid": "4d7e3e63_dad945dc",
+      "revId": "9e606474f05890c5a79ade104932a59021c042d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
