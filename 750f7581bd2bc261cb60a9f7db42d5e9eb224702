@@ -87,6 +87,30 @@
       },
       "revId": "750f7581bd2bc261cb60a9f7db42d5e9eb224702",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "badb1207_6e000ab3",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5248811
+      },
+      "writtenOn": "2026-10-23T14:59:38Z",
+      "side": 1,
+      "message": "Makes sense. Patch set 4 is back to your suggestion: only an opaque input\u0027s output becomes premultiplied, and any other alpha type is kept.",
+      "parentUuid": "f5712b9e_612a8896",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 75
+      },
+      "revId": "750f7581bd2bc261cb60a9f7db42d5e9eb224702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
