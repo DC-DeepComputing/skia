@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "539b0cc8ba0f843f7578d511fba9f68cb542de4b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5194dc7_e31d2ef5",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-23T15:56:12Z",
+      "side": 1,
+      "message": "WDYT about moving this into `draw/` as well?",
+      "range": {
+        "startLine": 106,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 38
+      },
+      "revId": "539b0cc8ba0f843f7578d511fba9f68cb542de4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d0ae828_c9902f2d",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-23T15:56:12Z",
+      "side": 1,
+      "message": "Looking at the enums and types in this header, I wonder if it\u0027d be better renamed to `RenderTypes.h` and then moved into `render/` or whatever \"core-ish\" directory ends up holding things like Attribute.h and Uniform.h (maybe they go into render/ too?)",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 40
+      },
+      "revId": "539b0cc8ba0f843f7578d511fba9f68cb542de4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
