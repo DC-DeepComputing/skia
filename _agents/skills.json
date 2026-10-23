@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "path": "_agents/shared/skills",
+      "include_only": [
+        "skill-creation",
+        "cl-description",
+        "git-cl-helper",
+        "gerrit-cli"
+      ]
+    }
+  ]
+}
