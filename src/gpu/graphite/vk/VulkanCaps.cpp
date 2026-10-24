@@ -1267,13 +1267,10 @@ bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
             renderPassDesc);
 
     if ((renderPassDesc->fColorAttachment.fSampleCount > SampleCount::k1 && this->avoidMSAA()) ||
-        (renderPassDesc->fDepthStencilAttachment.fFormat != TextureFormat::kUnsupported &&
-         this->avoidDepthMode())) {
+        (TextureFormatHasDepth(renderPassDesc->fDepthStencilAttachment.fFormat) &&
+                this->depthUsageMode() == DepthUsageMode::kNever)) {
         *renderPassDesc = {};
         return false;
-    }
-    if (this->avoidDepthMode()) {
-        renderPassDesc->fDepthStencilAttachment = {};
     }
 
     return true;

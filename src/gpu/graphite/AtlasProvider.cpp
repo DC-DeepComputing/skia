@@ -32,7 +32,7 @@ static bool use_clip_atlas(const Recorder* recorder) {
     // Depth-based clipping requires MSAA for its anti-aliasing, and requires the depth buffer for
     // blocking pixels with the depth test.
     const Caps* caps = recorder->priv().caps();
-    return caps->avoidMSAA() || caps->avoidDepthMode();
+    return caps->avoidMSAA() || caps->depthUsageMode() == DepthUsageMode::kNever;
 }
 
 AtlasProvider::AtlasProvider(Recorder* recorder)

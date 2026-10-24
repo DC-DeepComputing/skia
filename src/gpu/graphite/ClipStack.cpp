@@ -1950,7 +1950,10 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         clipAtlas = fDevice->recorder()->priv().getOrCreateAtlasProvider()
                             ->getClipAtlasManager();
         // If there are complex clip elements, there should either be depth or the atlas available.
-        SkASSERT(clipAtlas || fDevice->recorder()->priv().caps()->avoidDepthMode());
+        // NOTE: this assert only requires the usage-mode is not kNever. For the more relaxed depth
+        // avoidance modes it is okay for clipping to trigger the use of a depth attachment.
+        SkASSERT(clipAtlas ||
+                 fDevice->recorder()->priv().caps()->depthUsageMode() != DepthUsageMode::kNever);
     }
     if (clipAtlas) {
         AtlasClip* atlasClip = &nonMSAAClip.fAtlasClip;
