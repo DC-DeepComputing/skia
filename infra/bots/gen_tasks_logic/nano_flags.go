@@ -332,6 +332,10 @@ func (b *TaskBuilder) nanobenchFlags(doUpload bool) {
 		args = append(args, "--useDrawListLayer")
 		match = append(match, "skp")
 	}
+	// TODO (michaelludwig): Remove this when we've consolidated on a single depth mode
+	if b.ExtraConfig("Graphite") {
+		args = append(args, "--depthMode", "when-required")
+	}
 	// We do not need or want to benchmark the decodes of incomplete images.
 	// In fact, in nanobench we assert that the full image decode succeeds.
 	match = append(match, "~inc0.gif")
