@@ -98,4 +98,26 @@ private:
     size_t          fLimit;
     SkMemoryStream  fStream;
 };
+
+// Stream that reports more bytes than it can deliver, so that reading its reported length comes up
+// short. It has no memory base, which makes codecs that need a contiguous buffer copy it.
+class OverstatedLengthStream : public SkStream {
+public:
+    OverstatedLengthStream(sk_sp<SkData> data, size_t extraLength)
+            : fStream(std::move(data)), fExtraLength(extraLength) {}
+
+    bool hasPosition() const override { return true; }
+    size_t getPosition() const override { return fStream.getPosition(); }
+    bool hasLength() const override { return true; }
+    size_t getLength() const override { return fStream.getLength() + fExtraLength; }
+    size_t peek(void* buf, size_t bytes) const override { return fStream.peek(buf, bytes); }
+    size_t read(void* buf, size_t bytes) override { return fStream.read(buf, bytes); }
+    bool rewind() override { return fStream.rewind(); }
+    bool isAtEnd() const override { return fStream.isAtEnd(); }
+
+private:
+    SkMemoryStream fStream;
+    const size_t fExtraLength;
+};
+
 #endif // FakeStreams_DEFINED

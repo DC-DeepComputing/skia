@@ -57,6 +57,7 @@ static constexpr char g_type_message[] = "How to interpret --bytes, one of:\n"
                                          "hdr_agtm\n"
                                          "image_decode\n"
                                          "image_decode_incremental\n"
+                                         "image_decode_stream\n"
                                          "image_mode\n"
                                          "image_scale\n"
                                          "json\n"
@@ -98,6 +99,7 @@ static void fuzz_filter_fuzz(const sk_sp<SkData>&);
 static void fuzz_hdr_agtm(const sk_sp<SkData>& data);
 static void fuzz_image_decode(const sk_sp<SkData>&);
 static void fuzz_image_decode_incremental(const sk_sp<SkData>&);
+static void fuzz_image_decode_stream(const sk_sp<SkData>&);
 static void fuzz_img(const sk_sp<SkData>&, uint8_t, uint8_t);
 static void fuzz_json(const sk_sp<SkData>&);
 static void fuzz_parse_path(const sk_sp<SkData>&);
@@ -218,6 +220,10 @@ static int fuzz_file(const SkString& path, SkString type) {
     }
     if (type.equals("image_decode_incremental")) {
         fuzz_image_decode_incremental(std::move(bytes));
+        return 0;
+    }
+    if (type.equals("image_decode_stream")) {
+        fuzz_image_decode_stream(std::move(bytes));
         return 0;
     }
     if (type.equals("image_scale")) {
@@ -533,6 +539,16 @@ static void fuzz_image_decode_incremental(const sk_sp<SkData>& data) {
         return;
     }
     SkDebugf("[terminated] Could not incrementally decode and image.\n");
+}
+
+bool FuzzImageDecodeStream(const uint8_t *data, size_t size);
+
+static void fuzz_image_decode_stream(const sk_sp<SkData>& data) {
+    if (FuzzImageDecodeStream(data->bytes(), data->size())) {
+        SkDebugf("[terminated] Success decoding from a non-memory stream!\n");
+        return;
+    }
+    SkDebugf("[terminated] Could not decode from a non-memory stream.\n");
 }
 
 bool FuzzAndroidCodec(const uint8_t *fuzzData, size_t fuzzSize, uint8_t sampleSize);

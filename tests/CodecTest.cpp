@@ -1116,6 +1116,22 @@ DEF_TEST(Codec_webp_peek, r) {
     test_info(r, codec.get(), codec->getInfo(), SkCodec::kSuccess, nullptr);
 }
 
+#if defined(SK_CODEC_DECODES_ICO)
+// The ICO codec copies the whole stream, which fails if the stream is shorter than it claims.
+// This used to dereference the null SkData.
+DEF_TEST(Codec_ico_incomplete_stream, r) {
+    // An ICO directory header that declares a single image, but nothing more.
+    constexpr uint8_t kIcoHeader[] = {0x00, 0x00, 0x01, 0x00, 0x01, 0x00};
+    auto stream = std::make_unique<OverstatedLengthStream>(
+            SkData::MakeWithCopy(kIcoHeader, sizeof(kIcoHeader)), 16);
+
+    SkCodec::Result result = SkCodec::kSuccess;
+    auto codec = SkIcoDecoder::Decode(std::move(stream), &result);
+    REPORTER_ASSERT(r, !codec);
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput, "result: %d", (int)result);
+}
+#endif
+
 // SkCodec's wbmp decoder was initially unnecessarily restrictive.
 // It required the second byte to be zero. The wbmp specification allows
 // a couple of bits to be 1 (so long as they do not overlap with 0x9F).
