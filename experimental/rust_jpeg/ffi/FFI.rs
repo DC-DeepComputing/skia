@@ -164,6 +164,10 @@ mod ffi {
             -> DecodedRowsInfo;
 
         fn row_bytes(self: &Reader) -> u32;
+        /// Select full-size (1) or reduced-IDCT output (2, 4, 8) after resetting
+        /// decode state. Coded width/height and raw plane geometry stay unchanged.
+        fn set_output_scale(self: &mut Reader, denominator: u8) -> DecodingResult;
+        fn output_height(self: &Reader) -> u32;
         fn supports_streaming_full_decode(self: &Reader) -> bool;
         fn supports_direct_packed_output(self: &Reader) -> bool;
         fn full_image_buffer_capacity_for_testing(self: &Reader) -> u64;
@@ -523,6 +527,8 @@ pub struct Reader {
     // This decoder owns their pull/checkpoint state across FFI calls; no caller
     // slice or pointer is retained after a bridge method returns.
     incremental_decoder: Option<IncrementalJpegDecoder>,
+    output_scale: Option<zune_jpeg::JpegScale>,
+    scaled_decoder: Option<zune_jpeg::ScaledJpegDecoder<GrowingJpegCursor>>,
     raw_component_count: u32,
     raw_plane_info: [RawPlaneInfo; 4],
     raw_input_complete: bool,
@@ -594,6 +600,8 @@ impl Reader {
             preview_scan_count: 0,
             last_consumed_preview_scan_count: 0,
             incremental_decoder: None,
+            output_scale: None,
+            scaled_decoder: None,
             raw_component_count: 0,
             raw_plane_info: [RawPlaneInfo::default(); 4],
             raw_input_complete,
@@ -801,6 +809,10 @@ impl Reader {
 
         self.try_read_more();
 
+        if self.output_scale.is_some() {
+            return self.read_scaled_image_data(false);
+        }
+
         let target_cs = match self.orig_color_space {
             ZuneColorSpace::Luma | ZuneColorSpace::LumaA => ZuneColorSpace::Luma,
             // Output raw CMYK so C++ can swizzle with ICC profile support.
@@ -885,6 +897,10 @@ impl Reader {
         // more bytes visible and call us again.
         self.stream_exhausted = false;
         self.try_read_more();
+
+        if self.output_scale.is_some() {
+            return self.read_scaled_image_data(true);
+        }
 
         let total_bytes = match (self.width as usize)
             .checked_mul(self.height as usize)
@@ -1020,17 +1036,93 @@ impl Reader {
         }
     }
 
+    fn read_scaled_image_data(&mut self, incremental: bool) -> DecodingResult {
+        let Some(scale) = self.output_scale else {
+            return DecodingResult::ParameterError;
+        };
+        if self.scaled_decoder.is_none() {
+            let decoder = zune_jpeg::JpegDecoder::new_with_options(
+                GrowingJpegCursor::new(Rc::clone(&self.raw_data)),
+                self.output_decoder_options(),
+            );
+            let mut decoder = match decoder.into_scaled(scale) {
+                Ok(decoder) => decoder,
+                Err(error) if error.is_recoverable_eof() => {
+                    return DecodingResult::IncompleteInput;
+                }
+                Err(error) => return map_zune_error(&error),
+            };
+            decoder.set_incremental_mode(incremental && !self.raw_input_complete);
+            self.scaled_decoder = Some(decoder);
+        }
+        let decoder = self.scaled_decoder.as_mut().unwrap();
+        let Some(length) = decoder.output_buffer_size() else {
+            return DecodingResult::MemoryError;
+        };
+        if length > MAX_DECODE_IMAGE_BYTES {
+            return DecodingResult::MemoryError;
+        }
+        if self.image_data.len() != length {
+            let mut image_data = Vec::new();
+            if image_data.try_reserve_exact(length).is_err() {
+                return DecodingResult::MemoryError;
+            }
+            image_data.resize(length, 0);
+            self.image_data = image_data;
+        }
+        match decoder.decode_into(&mut self.image_data) {
+            Ok(()) => {
+                self.valid_rows = self.output_height();
+                self.image_data_loaded = true;
+                DecodingResult::Success
+            }
+            Err(error) if error.is_recoverable_eof() => DecodingResult::IncompleteInput,
+            Err(error) => map_zune_error(&error),
+        }
+    }
+
+    pub fn set_output_scale(&mut self, denominator: u8) -> DecodingResult {
+        if self.output_sequence != OutputSequence::Idle {
+            return DecodingResult::ParameterError;
+        }
+        self.output_scale = match denominator {
+            1 => None,
+            2 => Some(zune_jpeg::JpegScale::Half),
+            4 => Some(zune_jpeg::JpegScale::Quarter),
+            8 => Some(zune_jpeg::JpegScale::Eighth),
+            _ => return DecodingResult::ParameterError,
+        };
+        self.scaled_decoder = None;
+        DecodingResult::Success
+    }
+
+    pub fn output_height(&self) -> u32 {
+        self.scaled_decoder.as_ref().map_or_else(
+            || self.height.div_ceil(self.output_denominator()),
+            |decoder| decoder.dimensions().1 as u32,
+        )
+    }
+
+    fn output_denominator(&self) -> u32 {
+        self.output_scale
+            .map_or(1, |scale| scale.denominator() as u32)
+    }
+
     pub fn row_bytes(&self) -> u32 {
         let bytes_per_pixel = match self.output_format {
             PackedOutputFormat::RGBA | PackedOutputFormat::BGRA => 4,
             PackedOutputFormat::Source => self.bytes_per_pixel,
             _ => return 0,
         };
-        self.width.checked_mul(bytes_per_pixel).unwrap_or(0)
+        let width = self.scaled_decoder.as_ref().map_or_else(
+            || self.width.div_ceil(self.output_denominator()),
+            |decoder| decoder.dimensions().0 as u32,
+        );
+        width.checked_mul(bytes_per_pixel).unwrap_or(0)
     }
 
     pub fn supports_streaming_full_decode(&self) -> bool {
-        self.supports_streaming_full_decode
+        self.supports_streaming_full_decode && self.output_scale.is_none()
     }
 
     pub fn supports_direct_packed_output(&self) -> bool {
@@ -1042,6 +1134,8 @@ impl Reader {
     }
 
     pub fn reset_decode_state(&mut self) {
+        self.output_scale = None;
+        self.scaled_decoder = None;
         self.image_data.clear();
         self.image_data_loaded = false;
         self.valid_rows = 0;
@@ -1597,6 +1691,125 @@ pub fn encode_jpeg(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_output_scale_keeps_coded_geometry_and_resets() {
+        let mut reader = new_reader(cxx::UniquePtr::null(), 0, true);
+        reader.width = 17;
+        reader.height = 19;
+        reader.supports_streaming_full_decode = true;
+        for denominator in [1_u8, 2, 4, 8] {
+            reader.reset_decode_state();
+            assert!(matches!(
+                reader.set_output_scale(denominator),
+                DecodingResult::Success
+            ));
+            assert_eq!(reader.width(), 17);
+            assert_eq!(reader.height(), 19);
+            assert_eq!(reader.row_bytes(), 17_u32.div_ceil(denominator.into()) * 3);
+            assert_eq!(reader.output_height(), 19_u32.div_ceil(denominator.into()));
+            assert_eq!(reader.supports_streaming_full_decode(), denominator == 1);
+            assert!(reader.raw_input_complete());
+        }
+        reader.reset_decode_state();
+        assert_eq!(reader.row_bytes(), 17 * 3);
+        assert_eq!(reader.output_height(), 19);
+        assert!(reader.supports_streaming_full_decode());
+        assert!(matches!(
+            reader.set_output_scale(3),
+            DecodingResult::ParameterError
+        ));
+        assert_eq!(reader.row_bytes(), 17 * 3);
+        reader.output_sequence = OutputSequence::Incremental;
+        assert!(matches!(
+            reader.set_output_scale(2),
+            DecodingResult::ParameterError
+        ));
+        assert_eq!(reader.row_bytes(), 17 * 3);
+    }
+
+    #[test]
+    fn test_scaled_decode_retries_and_output_sequence() {
+        let width = 65_u32;
+        let height = 67_u32;
+        let pixels: Vec<u8> = (0..width * height * 3).map(|i| (i * 13) as u8).collect();
+        let mut jpeg = Vec::new();
+        assert_eq!(
+            encode_jpeg(
+                &pixels,
+                width,
+                height,
+                width * 3,
+                JpegEncodeColor::RGB,
+                JpegEncodeAlpha::Ignore,
+                90,
+                &mut jpeg,
+            ),
+            EncodingResult::Success
+        );
+        for denominator in [2, 4, 8] {
+            let mut reader = new_reader(cxx::UniquePtr::null(), 0, false);
+            reader.stream = None;
+            let mut decoded = false;
+            let mut suspended = false;
+            for chunk in jpeg.chunks(23) {
+                reader.raw_data.borrow_mut().extend_from_slice(chunk);
+                if !reader.metadata_loaded() {
+                    match reader.read_metadata() {
+                        DecodingResult::Success => {
+                            assert!(matches!(
+                                reader.set_output_scale(denominator),
+                                DecodingResult::Success
+                            ));
+                        }
+                        DecodingResult::IncompleteInput => continue,
+                        result => panic!("metadata failed: {result:?}"),
+                    }
+                }
+                match reader.read_incremental_image_data() {
+                    DecodingResult::Success => {
+                        decoded = true;
+                        break;
+                    }
+                    DecodingResult::IncompleteInput => {
+                        suspended = true;
+                        let mut rows = &[][..];
+                        assert_eq!(reader.get_next_rows(&mut rows).row_count, 0);
+                        assert!(rows.is_empty());
+                        assert!(matches!(
+                            reader.read_incremental_image_data(),
+                            DecodingResult::IncompleteInput
+                        ));
+                        assert!(matches!(
+                            reader.set_output_scale(1),
+                            DecodingResult::ParameterError
+                        ));
+                    }
+                    result => panic!("scaled decode failed: {result:?}"),
+                }
+            }
+            assert!(suspended && decoded);
+            assert_eq!(reader.width(), width);
+            assert_eq!(reader.height(), height);
+            let expected_height = height.div_ceil(denominator.into());
+            let expected_row_bytes = width.div_ceil(denominator.into()) * 3;
+            assert_eq!(reader.output_height(), expected_height);
+            assert_eq!(reader.row_bytes(), expected_row_bytes);
+            assert_eq!(
+                reader.image_data.len(),
+                (expected_height * expected_row_bytes) as usize
+            );
+            let incremental_pixels = reader.image_data.clone();
+            reader.reset_decode_state();
+            *reader.raw_data.borrow_mut() = jpeg.clone();
+            assert!(matches!(
+                reader.set_output_scale(denominator),
+                DecodingResult::Success
+            ));
+            assert!(matches!(reader.read_image_data(), DecodingResult::Success));
+            assert_eq!(reader.image_data, incremental_pixels);
+        }
+    }
 
     #[test]
     fn test_raw_input_finality_is_preserved_on_decode_reset() {
