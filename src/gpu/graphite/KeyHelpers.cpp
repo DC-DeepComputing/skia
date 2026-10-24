@@ -2441,7 +2441,10 @@ static void add_to_key(const KeyContext& keyContext,
 
     // NOTE: While this is intended to be a "scratch" surface, we don't use MakeScratch() because
     // the SkPicture could contain arbitrary operations that rely on the Recorder's atlases, which
-    // means the Surface's device has to participate in flushing when the atlas fills up.
+    // means the Surface's device has to participate in flushing when the atlas fills up. This is
+    // marked as "internal" to have consistent behavior with SkImages::DeferredFromPicture and
+    // FilterResult::MakeFromPicture.
+
     // TODO: Can this be an approx-fit image that's generated?
     // TODO: right now we're explicitly not caching here. We could expand the ImageProvider
     // API to include already Graphite-backed images, add a Recorder-local cache or add
@@ -2452,7 +2455,8 @@ static void add_to_key(const KeyContext& keyContext,
                                            Budgeted::kYes,
                                            Mipmapped::kNo,
                                            SkBackingFit::kExact,
-                                           &info.props);
+                                           &info.props,
+                                           /*internalControl=*/true);
     if (!surface) {
         SKIA_LOG_W("Could not create surface to render PictureShader");
         keyContext.paintParamsKeyBuilder()->addErrorBlock();

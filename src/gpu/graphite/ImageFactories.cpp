@@ -422,14 +422,20 @@ static sk_sp<SkImage> generate_picture_texture(Recorder* recorder,
                                                SkImage::RequiredProperties requiredProps) {
     auto mm = requiredProps.fMipmapped ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
     // Use a non-budgeted surface since the image wrapping the surface's texture will be owned by
-    // the client.
+    // the client. Optimistically assume that the picture is fairly simple and mark the surface as
+    // "internal". If the picture contains paths or clips, the kAvoidForInternal depth mode is still
+    // allowed to add a depth attachment and it will visually match how the picture would be
+    // rendered into a client-owned SkSurface (e.g. with MSAA). However, draw sorting may be
+    // sub-optimal since it'll try to avoid ordering occluders early. If that becomes a problem we
+    // can revisit.
     sk_sp<Surface> surface = Surface::Make(recorder,
                                            info,
                                            "LazySkImagePictureTexture",
                                            skgpu::Budgeted::kNo,
                                            mm,
                                            SkBackingFit::kExact,
-                                           img->props());
+                                           img->props(),
+                                           /*internalControl=*/true);
 
     if (!surface) {
         SKIA_LOG_E("Failed to create Surface");
