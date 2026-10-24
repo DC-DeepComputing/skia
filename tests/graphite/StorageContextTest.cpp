@@ -42,7 +42,7 @@ sk_sp<DrawContext> make_draw_context(Recorder* recorder) {
                                                     Budgeted::kYes,
                                                     "StorageContextTestTarget");
     return DrawContext::Make(caps, std::move(target), {16, 16}, colorInfo, {},
-                             /*allowUnpremul=*/false);
+                             /*internalControl=*/false);
 }
 
 }  // namespace
@@ -745,4 +745,3 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(StorageContextCapacityLimitsTest,
 }
 
 }  // namespace skgpu::graphite
-

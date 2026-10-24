@@ -55,10 +55,9 @@ enum class DepthStencilFlags : int;
 
 namespace {
 
-// TODO(michaelludwig): Allow DrawContexts to be flagged as internal or external, and turn on
-// avoidDepthMode if it's an internal surface and DepthUsageMode::kAvoidForInternal is set.
-bool avoid_depth(const Caps* caps) {
-    return caps->depthUsageMode() == DepthUsageMode::kNever;
+bool avoid_depth(const Caps* caps, bool internalControl) {
+    return caps->depthUsageMode() == DepthUsageMode::kNever ||
+           (internalControl && caps->depthUsageMode() == DepthUsageMode::kAvoidForInternal);
 }
 
 // Adjust the DrawList's depth-stencil flags to match DepthUsageMode and consolidate on certain
@@ -67,6 +66,22 @@ SkEnumBitMask<DepthStencilFlags> canonical_depth_stencil_flags(const Caps* caps,
                                                                const DrawListBase* dll) {
     SkEnumBitMask<DepthStencilFlags> dsFlags = dll->depthStencilFlags();
     switch (caps->depthUsageMode()) {
+        case DepthUsageMode::kNever:
+            SkASSERT(dll->avoidDepth());
+            SkASSERT(!SkToBool(dsFlags & DepthStencilFlags::kDepth));
+            break;
+
+        case DepthUsageMode::kAvoidForInternal:
+            if (dll->avoidDepth()) {
+                // Unlike kNever, do NOT assert that there is no depth bit set in `dsFlags`. While
+                // the drawn content into an internal surface should be unlikely to trigger depth
+                // use or msaa, it is still possible when drawing an SkPicture into a scratch
+                // texture.
+                break;
+            }
+            // else fallthrough since this is not an internal surface, so it should act like kAlways
+            [[fallthrough]];
+
         case DepthUsageMode::kAlways:
             SkASSERT(!dll->avoidDepth());
             // TODO(michaelludwig): If the original depthStencilFlags didn't require depth but we
@@ -79,16 +94,16 @@ SkEnumBitMask<DepthStencilFlags> canonical_depth_stencil_flags(const Caps* caps,
             if (dll->renderStepCount() > 0) {
                 dsFlags |= DepthStencilFlags::kDepth;
             }
-            // To reduce pipeline compiles and attachment creations, if we need multisampling and
-            // need a depth or stencil attachment, we always choose a depth-AND-stencil format.
-            if (dll->drawsRequireMSAA()) {
-                dsFlags = DepthStencilFlags::kDepthStencil;
-            }
             break;
-        case DepthUsageMode::kNever:
-            SkASSERT(dll->avoidDepth());
-            SkASSERT(!SkToBool(dsFlags & DepthStencilFlags::kDepth));
-            break;
+    }
+
+    // To reduce pipeline compiles and attachment creations, if we need multisampling then switch
+    // to a more general set of flags (depending on the depth mode). If depth may ever be used,
+    // then choose depth-AND-stencil. If depth is never to be used, switch to stencil (vs. a pure
+    // color-only MSAA renderpass).
+    if (dll->drawsRequireMSAA()) {
+        dsFlags = caps->depthUsageMode() == DepthUsageMode::kNever
+                ? DepthStencilFlags::kStencil : DepthStencilFlags::kDepthStencil;
     }
 
     return dsFlags;
@@ -101,13 +116,13 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props,
-                                     bool allowUnpremul) {
+                                     bool internalControl) {
     if (!target) {
         return nullptr;
     }
     // We don't render to unknown or unpremul alphatypes unless allowUnpremul is explicitly enabled.
     if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
-        (colorInfo.alphaType() == kUnpremul_SkAlphaType && !allowUnpremul)) {
+        (colorInfo.alphaType() == kUnpremul_SkAlphaType && !internalControl)) {
         return nullptr;
     }
     if (!caps->isRenderable(target->textureInfo())) {
@@ -122,13 +137,15 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
     SkASSERT(target->isFullyLazy() || (target->dimensions().width() >= deviceSize.width() &&
                                        target->dimensions().height() >= deviceSize.height()));
     SkImageInfo imageInfo = SkImageInfo::Make(deviceSize, colorInfo);
-    return sk_sp<DrawContext>(new DrawContext(caps, std::move(target), imageInfo, props));
+    return sk_sp<DrawContext>(new DrawContext(caps, std::move(target), imageInfo, props,
+                                              avoid_depth(caps, internalControl)));
 }
 
 DrawContext::DrawContext(const Caps* caps,
                          sk_sp<TextureProxy> target,
                          const SkImageInfo& ii,
-                         const SkSurfaceProps& props)
+                         const SkSurfaceProps& props,
+                         bool avoidDepth)
         : fTarget{target, ReadSwizzleForColorType(ii.colorType(), target->format())}
         , fImageInfo(ii)
         , fSurfaceProps(props)
@@ -142,9 +159,8 @@ DrawContext::DrawContext(const Caps* caps,
         , fPendingDraws(
                   caps->useDrawListLayer()
                           ? std::unique_ptr<DrawListBase>(std::make_unique<DrawListLayer>(
-                                   avoid_depth(caps), caps->storageBufferSupport()))
-                          : std::unique_ptr<DrawListBase>(std::make_unique<DrawList>(
-                                   avoid_depth(caps))))
+                                   avoidDepth, caps->storageBufferSupport()))
+                          : std::unique_ptr<DrawListBase>(std::make_unique<DrawList>(avoidDepth)))
         , fPendingUploads(std::make_unique<UploadList>())
         , fStorageContext(caps->resourceBindingRequirements(),
                           caps->storageBufferSupport()) {
