@@ -78,14 +78,17 @@ private:
 
     sk_sp<const SkData> getEncodedData() const override;
 
+    SkISize onGetScaledDimensions(float desiredScale) const override;
+    bool onDimensionsSupported(const SkISize&) override;
+
     Result onGetPixels(const SkImageInfo& info,
                        void* dst,
                        size_t dstRowStride,
                        const Options& options,
                        int* rowsDecoded) override;
 
-    // Incremental decoding exposes stable baseline scanlines as they become
-    // available and replaceable full-frame previews after progressive scans.
+    // Unscaled incremental decoding exposes stable baseline scanlines and
+    // replaceable progressive previews. Reduced output is frame-buffered.
     Result onStartIncrementalDecode(const SkImageInfo& dstInfo,
                                     void* dst,
                                     size_t dstRowBytes,
@@ -103,6 +106,8 @@ private:
                              size_t dstRowStride,
                              int* rowsDecoded = nullptr);
     Result initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
+    int scaleDenominator(const SkISize&) const;
+    Result setOutputDimensions(const SkISize&);
     bool shouldUseDirectPackedOutput(const SkImageInfo&, const Options&) const;
     void swizzleRow(const uint8_t* srcRow, void* dstRow);
 
@@ -139,8 +144,6 @@ private:
     // `kXformSrcColorType = kRGBA_8888_SkColorType`.
     std::unique_ptr<uint32_t[]> fXformBuffer;
 
-    // TODO: Add onGetScaledDimensions for 1/2, 1/4, 1/8 IDCT scaling
-    //   (requires zune-jpeg support or post-decode downscale).
     // NOTE: Progressive scan limit (100) is enforced by zune-jpeg's default
     //   DecoderOptions, matching Blink's ProgressMonitor.
     // NOTE: APP11 (C2PA/JUMBF) segments are captured by the Rust segment
