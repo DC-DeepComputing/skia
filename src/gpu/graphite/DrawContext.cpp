@@ -55,10 +55,9 @@ enum class DepthStencilFlags : int;
 
 namespace {
 
-// TODO(michaelludwig): Allow DrawContexts to be flagged as internal or external, and turn on
-// avoidDepthMode if it's an internal surface and DepthUsageMode::kAvoidForInternal is set.
-bool avoid_depth(const Caps* caps) {
-    return caps->depthUsageMode() == DepthUsageMode::kNever;
+bool avoid_depth(const Caps* caps, bool internalControl) {
+    return caps->depthUsageMode() == DepthUsageMode::kNever ||
+           (internalControl && caps->depthUsageMode() == DepthUsageMode::kAvoidForInternal);
 }
 
 // Adjust the DrawList's depth-stencil flags to match DepthUsageMode and consolidate on certain
@@ -71,23 +70,28 @@ SkEnumBitMask<DepthStencilFlags> canonical_depth_stencil_flags(const Caps* caps,
         // kNever should always have set avoidDepth on the DrawList.
         SkASSERT(caps->depthUsageMode() != DepthUsageMode::kNever);
 
-        // TODO(michaelludwig): If the original depthStencilFlags didn't require depth but we
-        // pick a format with the depth aspect, we should use kNone for load/store ops to help
-        // reduce memory bandwidth even if we have to allocate the attachment.
         // TODO(michaelludwig): Track whether or not draws within fPendingDraw require the depth
-        // for occlusion or clipping (per-draw depth is already accumulated into `dsFlags`). For
-        // now, always add kDepth if there are draws; otherwise we'd create a depth attachment
-        // for must a clear.
+        // for occlusion or clipping (per-draw depth is already accumulated into `dsFlags`).
+
+        // Since the DrawList isn't avoiding depth, it's not an internal surface, so
+        // kAvoidForInternal behaves the same as kAlways. In that case, whether or not the recorded
+        // draws would require depth, we include depth (unless there are no draws, since that's just
+        // a clear). Including depth reduces the number renderpass variations required for pipelines
         if (dll->renderStepCount() > 0) {
+            // TODO(michaelludwig): If the original depthStencilFlags didn't require depth but we
+            // pick a format with the depth aspect, we should use kNone for load/store ops to help
+            // reduce memory bandwidth even if we have to allocate the attachment.
             dsFlags |= DepthStencilFlags::kDepth;
-        } // else it's a clear, or the mode is kOnlyWhenRequired so respect the original flags
+        } // else it's a clear, so respect the original flags
     } else {
         // kAlways should never have set avoidDepth on the DrawList
         SkASSERT(caps->depthUsageMode() != DepthUsageMode::kAlways);
 
-        // If the mode is kNever, nothing should have triggered depth at all (given configuration
-        // of the path render strategy and clip stack behavior).
-        SkASSERT(!SkToBool(dsFlags & DepthStencilFlags::kDepth));
+        // If the mode is kNever, nothing should have triggered depth at all (given configuration of
+        // the path render strategy and clip stack behavior).kAvoidForInternal is allowed to trigger
+        // depth on internal surfaces if unexpected content is drawn to them.
+        SkASSERT(caps->depthUsageMode() != DepthUsageMode::kNever ||
+                 !SkToBool(dsFlags & DepthStencilFlags::kDepth));
 
         // Regardless, there's no need to adjust the flags.
     }
@@ -111,13 +115,13 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
                                      const SkSurfaceProps& props,
-                                     bool allowUnpremul) {
+                                     bool internalControl) {
     if (!target) {
         return nullptr;
     }
     // We don't render to unknown or unpremul alphatypes unless allowUnpremul is explicitly enabled.
     if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
-        (colorInfo.alphaType() == kUnpremul_SkAlphaType && !allowUnpremul)) {
+        (colorInfo.alphaType() == kUnpremul_SkAlphaType && !internalControl)) {
         return nullptr;
     }
     if (!caps->isRenderable(target->textureInfo())) {
@@ -132,13 +136,15 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
     SkASSERT(target->isFullyLazy() || (target->dimensions().width() >= deviceSize.width() &&
                                        target->dimensions().height() >= deviceSize.height()));
     SkImageInfo imageInfo = SkImageInfo::Make(deviceSize, colorInfo);
-    return sk_sp<DrawContext>(new DrawContext(caps, std::move(target), imageInfo, props));
+    return sk_sp<DrawContext>(new DrawContext(caps, std::move(target), imageInfo, props,
+                                              avoid_depth(caps, internalControl)));
 }
 
 DrawContext::DrawContext(const Caps* caps,
                          sk_sp<TextureProxy> target,
                          const SkImageInfo& ii,
-                         const SkSurfaceProps& props)
+                         const SkSurfaceProps& props,
+                         bool avoidDepth)
         : fTarget{target, ReadSwizzleForColorType(ii.colorType(), target->format())}
         , fImageInfo(ii)
         , fSurfaceProps(props)
@@ -152,9 +158,8 @@ DrawContext::DrawContext(const Caps* caps,
         , fPendingDraws(
                   caps->useDrawListLayer()
                           ? std::unique_ptr<DrawListBase>(std::make_unique<DrawListLayer>(
-                                   avoid_depth(caps), caps->storageBufferSupport()))
-                          : std::unique_ptr<DrawListBase>(std::make_unique<DrawList>(
-                                   avoid_depth(caps))))
+                                   avoidDepth, caps->storageBufferSupport()))
+                          : std::unique_ptr<DrawListBase>(std::make_unique<DrawList>(avoidDepth)))
         , fPendingUploads(std::make_unique<UploadList>())
         , fStorageContext(caps->resourceBindingRequirements(),
                           caps->storageBufferSupport()) {

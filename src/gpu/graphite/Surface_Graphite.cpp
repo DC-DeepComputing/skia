@@ -148,8 +148,8 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
                              SkBackingFit backingFit,
                              const SkSurfaceProps* props,
                              LoadOp initialLoadOp,
-                             bool registerWithRecorder,
-                             bool allowUnpremul) {
+                             bool internalControl,
+                             bool registerWithRecorder) {
     sk_sp<Device> device = Device::Make(recorder,
                                         info,
                                         budgeted,
@@ -158,8 +158,8 @@ sk_sp<Surface> Surface::Make(Recorder* recorder,
                                         SkSurfacePropsCopyOrDefault(props),
                                         initialLoadOp,
                                         label,
-                                        registerWithRecorder,
-                                        allowUnpremul);
+                                        internalControl,
+                                        registerWithRecorder);
     if (!device) {
         return nullptr;
     }
@@ -254,7 +254,8 @@ sk_sp<SkSurface> RenderTarget(Recorder* recorder,
     // The client is getting the ref on this surface so it must be unbudgeted.
     sk_sp<Surface> surface = skgpu::graphite::Surface::Make(recorder, info, label,
                                                             skgpu::Budgeted::kNo,
-                                                            mipmapped, SkBackingFit::kExact,
+                                                            mipmapped,
+                                                            SkBackingFit::kExact,
                                                             props);
     if (surface && surface->target().proxy()) {
         surface->target().proxy()->setProvenance(SkPixelStorage::Provenance::ClientRequest());
