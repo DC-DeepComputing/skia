@@ -213,6 +213,10 @@ sk_sp<SkSurface> Image_Base::onMakeSurface(SkRecorder* recorder, const SkImageIn
     if (!gRecorder) {
         return nullptr;
     }
+    // TODO(b/577362488): This onMakeSurface() is only used for Skia-internal purposes, so we could
+    // mark it internal. However, the whole surrounding code for makeScaled() doesn't work correctly
+    // with Graphite so it would be better redo the whole API and unify makeSubset, and makeCTAndCS
+    // on top of makeScaled() that is a virtual.
     return SkSurfaces::RenderTarget(gRecorder, info);
 }
 
