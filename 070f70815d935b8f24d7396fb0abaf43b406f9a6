@@ -54,6 +54,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f6c58e13_96651dee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5241574
+      },
+      "writtenOn": "2026-10-24T10:31:37Z",
+      "side": 1,
+      "message": "Thanks for the review! Agreed on both. FWIW nanobench already builds for standalone wasm and runs under Node: with skia_wasm_simd the gradient benches (gradient_linear_clamp, gradient_radial1_*) are 6-9x faster than the scalar wasm build. I saw you\u0027re working on run_wasm_dm; once it runs DM, a skia_wasm_simd variant should be a small change to the job definitions. Happy to send that CL then, or leave it to you.",
+      "parentUuid": "ad8bf226_428eaf27",
+      "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ace50bd5_4feaa8ce",
         "filename": "BUILD.gn",
         "patchSetId": 1
@@ -65,6 +83,24 @@
       "writtenOn": "2026-10-19T15:22:26Z",
       "side": 1,
       "message": "Doesn\u0027t have to be in this CL, but I think skcms would also benefit from `-msimd128` (and it doesn\u0027t pull `skia_public`).",
+      "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4ce8495_8d213b50",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5241574
+      },
+      "writtenOn": "2026-10-24T10:31:37Z",
+      "side": 1,
+      "message": "Moving the flag into config(\"wasm\") took care of this: skcms and the rest of third_party now get -msimd128 too, so it\u0027s in this CL.",
+      "parentUuid": "ace50bd5_4feaa8ce",
       "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },

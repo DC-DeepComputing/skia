@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8482da3f_1f282e87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5241574
+      },
+      "writtenOn": "2026-10-24T10:31:37Z",
+      "side": 1,
+      "message": "Thanks for the reviews! PS2 addresses the comments, PTAL.",
+      "revId": "2b1793d589fba05e977c55edcb957683ed6f29fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
