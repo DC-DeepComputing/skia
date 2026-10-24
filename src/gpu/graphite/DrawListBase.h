@@ -147,8 +147,10 @@ protected:
 
     int fRenderStepCount = 0;
 
+    // Accumulated and then moved to the DrawPass
     Rect fDstReadBounds = Rect::InfiniteInverted();
     Rect fPassBounds = Rect::InfiniteInverted();
+    // Accmulated and defines properties of the RenderPassDesc paired with the DrawPass
     bool fRequiresMSAA = false;
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 
