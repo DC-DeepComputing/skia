@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20a6b919_cc7eeee8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4599678
+      },
+      "writtenOn": "2026-10-24T21:13:17Z",
+      "side": 1,
+      "message": "I\u0027m getting a 403 at the endpoint noting a failure, would you be able to pass on any relevant details?",
+      "revId": "9d2e951dcae0740ec0c6846dd7da5124d0d65642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "169e8110_7bc431e6",
