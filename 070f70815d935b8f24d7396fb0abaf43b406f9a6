@@ -103,6 +103,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de2b135f_04b5250b",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5241574
+      },
+      "writtenOn": "2026-10-24T10:20:29Z",
+      "side": 1,
+      "message": "Done. -msimd128 is now in both cflags and ldflags of config(\"wasm\"), so the CanvasKit and standalone links get it too.",
+      "parentUuid": "9522733b_44f82975",
+      "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a555438_7cb2b03e",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5241574
+      },
+      "writtenOn": "2026-10-24T10:20:29Z",
+      "side": 1,
+      "message": "Done: the arg is in gn/skia.gni and the flag is in config(\"wasm\") in gn/skia/BUILD.gn. wasm.gni now only decides whether to define SKVX_DISABLE_SIMD.",
+      "parentUuid": "1d80f247_bc473398",
+      "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2af30ba_c91b9f60",
@@ -116,6 +152,30 @@
       "writtenOn": "2026-10-19T15:22:26Z",
       "side": 1,
       "message": "`__builtin_reduce_*` seem to yield worse codegen than `wasm_v128_any_true`/`wasm_i32x4_all_true`: https://godbolt.org/z/GMbePPTGh",
+      "range": {
+        "startLine": 378,
+        "startChar": 0,
+        "endLine": 379,
+        "endChar": 68
+      },
+      "revId": "070f70815d935b8f24d7396fb0abaf43b406f9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e19bdce_cb7df13e",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 5241574
+      },
+      "writtenOn": "2026-10-24T10:20:29Z",
+      "side": 1,
+      "message": "Done, any()/all() now use wasm_v128_any_true/wasm_i32x4_all_true. Thanks for the godbolt link.",
+      "parentUuid": "c2af30ba_c91b9f60",
       "range": {
         "startLine": 378,
         "startChar": 0,
