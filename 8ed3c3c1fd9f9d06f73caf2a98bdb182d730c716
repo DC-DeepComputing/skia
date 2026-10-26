@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26cb6b4e_96c1d41a",
+        "filename": "src/core/SkYUVAInfo.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-26T06:29:44Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "26a4360f_f4cebd58",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 1
+      },
+      "revId": "8ed3c3c1fd9f9d06f73caf2a98bdb182d730c716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7365de1_aa7d0c14",
@@ -83,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4baeb45a_621f5c2d",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-26T06:29:44Z",
+      "side": 1,
+      "message": "Done. Removed the assertion, kept the nullptr return, and updated the comment.",
+      "parentUuid": "d7365de1_aa7d0c14",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 5
+      },
+      "revId": "8ed3c3c1fd9f9d06f73caf2a98bdb182d730c716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "caf4683f_ac1d3a3d",
@@ -120,6 +168,30 @@
           ]
         }
       ],
+      "revId": "8ed3c3c1fd9f9d06f73caf2a98bdb182d730c716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45cc96d8_071bdc49",
+        "filename": "src/gpu/ganesh/effects/GrYUVtoRGBEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-26T06:29:44Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "caf4683f_ac1d3a3d",
+      "range": {
+        "startLine": 422,
+        "startChar": 16,
+        "endLine": 424,
+        "endChar": 83
+      },
       "revId": "8ed3c3c1fd9f9d06f73caf2a98bdb182d730c716",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
