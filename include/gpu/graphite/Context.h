@@ -48,7 +48,7 @@ namespace skgpu {
 enum class BackendApi : unsigned int;
 enum class GpuStatsFlags : uint32_t;
 class MutableTextureState;
-}
+}  // namespace skgpu
 
 namespace skgpu::graphite {
 
@@ -66,7 +66,12 @@ class TextureProxy;
 class TextureProxyView;
 struct ContextOptions;
 
-class SK_API Context final : private SkGPUContext {
+class ContextGPUContext : public SkGPUContext {
+public:
+    std::unique_ptr<SkRecorder> makeRecorder() override;
+};
+
+class SK_API Context final : private ContextGPUContext {
 public:
     Context(const Context&) = delete;
     Context(Context&&) = delete;
@@ -77,7 +82,14 @@ public:
 
     BackendApi backend() const;
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     std::unique_ptr<skcpu::Recorder> makeCPURecorder();
 
     /** Creates a helper object that can be moved to a different thread and used
@@ -348,6 +360,7 @@ protected:
 private:
     friend class ContextPriv;
     friend class ContextCtorAccessor;
+    friend class ContextGPUContext;
     friend class ::SkContextCtorAccessor;
 
     struct PixelTransferResult {
@@ -445,6 +458,6 @@ private:
     const ContextID fContextID;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_Context_DEFINED
+#endif  // skgpu_graphite_Context_DEFINED

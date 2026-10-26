@@ -12,8 +12,10 @@
 
 #include <chrono>
 #include <cstddef>
+#include <memory>
 #include <optional>
 
+class SkRecorder;
 class SkTraceMemoryDump;
 
 /**
@@ -100,6 +102,11 @@ public:
      * Returns true if this GPU context supports protected content.
      */
     virtual bool supportsProtectedContent() const = 0;
+
+    /**
+     * Creates and returns a recorder for this GPU context.
+     */
+    virtual std::unique_ptr<SkRecorder> makeRecorder() = 0;
 
 protected:
     SkGPUContext() = default;
