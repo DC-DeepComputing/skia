@@ -14,6 +14,7 @@
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLDefines.h"
@@ -703,10 +704,10 @@ bool Inliner::isSafeToInline(const FunctionDefinition* functionDef, const Progra
 // RAW_PTR_EXCLUSION: Performance: +1% to +1.5% each on sksl_* benchmarks.
 struct InlineCandidate {
     RAW_PTR_EXCLUSION SymbolTable* fSymbols;  // the SymbolTable of the candidate
-    std::unique_ptr<Statement>* fParentStmt;  // parent of fEnclosingStmt
+    raw_ptr<std::unique_ptr<Statement>, DanglingUntriaged> fParentStmt;  // parent of fEnclosingStmt
     RAW_PTR_EXCLUSION std::unique_ptr<Statement>* fEnclosingStmt;   // stmt containing the candidate
     RAW_PTR_EXCLUSION std::unique_ptr<Expression>* fCandidateExpr;  // the FunctionCall to inline
-    FunctionDefinition* fEnclosingFunction;  // the Function containing the candidate
+    raw_ptr<FunctionDefinition> fEnclosingFunction;  // the Function containing the candidate
 };
 
 struct InlineCandidateList {
