@@ -11,6 +11,7 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkRRectPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/geom/Rect.h"
 
@@ -41,6 +42,19 @@ public:
     float drawPadX() const { return std::ceil(3.f * fLocalSigma.x); }
     float drawPadY() const { return std::ceil(3.f * fLocalSigma.y); }
     SkV2 drawPad() const { return {this->drawPadX(), this->drawPadY()}; }
+
+    // True when the rrect is a circle blurred by an isotropic local space sigma. Needed so we can
+    // assume radial symmettry of the blur in local space.
+    bool isCircleBlur() const {
+        return SkRRectPriv::IsCircle(fRRect) && SkScalarNearlyEqual(fLocalSigma.x, fLocalSigma.y);
+    }
+
+    // Only valid when isCircleBlur() is true. Returns:
+    //   x: the v texture coordinate of the CDF LUT for this circle's sigma / radius ratio, which
+    //      lies between two rows that the sampler linearly interpolates.
+    //   y: the coverage at the center of the blurred circle, 1 - exp(-radius^2 / (2 * sigma^2)),
+    //      which the normalized circle profile is multiplied by.
+    SkV2 circleParams() const;
 
 private:
     AnalyticRRectBlurMask(const SkRRect& rrect,
