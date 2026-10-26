@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b12f60e7_9d76b711",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-26T20:11:57Z",
+      "side": 0,
+      "message": "Altneratively, we could keep this but add a constraint that the width/height of the fDevice and the fLocal quads are the same? Then we know it\u0027s an identity scale factor so we shouldn\u0027t run into this issue, right?\n\nGraphite has a somewhat similar optimization and its restricted to integer-only translations.",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 43
+      },
+      "revId": "4c7e05a0217590d5f9e97cc055437b3d2700c403",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
