@@ -16,6 +16,29 @@
       "message": "bumping on this",
       "revId": "5befd7e17f7a7d09f821b69c6e8d644e3fbe3e34",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5c8cb6_8e0c292a",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-26T14:24:18Z",
+      "side": 1,
+      "message": "This test now seems independent of this CL? Maybe pull it into its own thing to be reviewed?",
+      "range": {
+        "startLine": 35,
+        "startChar": 43,
+        "endLine": 35,
+        "endChar": 89
+      },
+      "revId": "5befd7e17f7a7d09f821b69c6e8d644e3fbe3e34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
