@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f2f2221_d1508396",
+        "filename": "gn/tests.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-26T14:13:47Z",
+      "side": 1,
+      "message": "It\u0027s complaining about this being out-of-order. it should be above `ScaleToSidesTest.cpp` and below `ScalarTest.cpp`.",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 34
+      },
+      "revId": "f1c8fb20cdf348f15ce0ed1435c457a3e164ecb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
