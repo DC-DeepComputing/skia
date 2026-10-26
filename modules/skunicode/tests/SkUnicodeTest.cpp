@@ -828,3 +828,44 @@ DEF_TEST(SkUnicode_Apple_Ideographic, reporter) {
     SkUnicode_Ideographic(apple.get(), reporter);
 }
 #endif
+
+DEF_TEST(SkUnicode_HardCodedZeroWidthAndScript, reporter) {
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x00AD));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x0300));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x034F));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x036F));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x061C));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x1AB0));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x1DC0));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x200B));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x200D));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x202A));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x2060));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x2069));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0x20D0));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0xFE0F));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0xFE20));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0xFEFF));
+    REPORTER_ASSERT(reporter, SkUnicode::isZeroWidthCodepoint(0xE0100));
+    REPORTER_ASSERT(reporter, !SkUnicode::isZeroWidthCodepoint('A'));
+    REPORTER_ASSERT(reporter, !SkUnicode::isZeroWidthCodepoint(' '));
+    REPORTER_ASSERT(reporter, !SkUnicode::isZeroWidthCodepoint(0x206A));
+    REPORTER_ASSERT(reporter, !SkUnicode::isZeroWidthCodepoint(0x3164));
+
+    REPORTER_ASSERT(reporter,
+                    SkUnicode::resolveCodepointScript('A') == SkSetFourByteTag('L', 'a', 't', 'n'));
+    REPORTER_ASSERT(reporter,
+                    SkUnicode::resolveCodepointScript(0x0410) ==
+                            SkSetFourByteTag('C', 'y', 'r', 'l'));
+    REPORTER_ASSERT(reporter,
+                    SkUnicode::resolveCodepointScript(0x0627) ==
+                            SkSetFourByteTag('A', 'r', 'a', 'b'));
+    REPORTER_ASSERT(reporter,
+                    SkUnicode::resolveCodepointScript(0x0710) ==
+                            SkSetFourByteTag('S', 'y', 'r', 'c'));
+    REPORTER_ASSERT(reporter,
+                    SkUnicode::resolveCodepointScript(0x4E00) ==
+                            SkSetFourByteTag('H', 'a', 'n', 'i'));
+    REPORTER_ASSERT(reporter, SkUnicode::resolveCodepointScript(' ') == 0);
+    REPORTER_ASSERT(reporter, SkUnicode::resolveCodepointScript('1') == 0);
+}
