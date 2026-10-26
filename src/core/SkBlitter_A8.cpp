@@ -319,6 +319,7 @@ SkBlitter* SkA8Blitter_Choose(const SkPixmap& dst,
                               SkDrawCoverage coverage,
                               sk_sp<SkShader> clipShader,
                               const SkSurfaceProps&,
-                              const SkRect&) {
+                              const SkRect&,
+                              SkIPoint) {
     return SkChooseA8Blitter(dst, ctm, paint, alloc, coverage, clipShader);
 }

@@ -38,6 +38,14 @@ struct MemoryCtx {
     int   stride;
 };
 
+struct DitherCtx {
+    float rate;
+    // Added to the device coordinates before indexing the dither matrix, so that
+    // the pattern is anchored to the global pixel grid rather than to the device.
+    int originX;
+    int originY;
+};
+
 // Raster Pipeline typically processes N (4, 8, 16) pixels at a time, in SIMT fashion. If the
 // number of pixels in a row isn't evenly divisible by N, there will be leftover pixels; this is
 // called the "tail". To avoid reading or writing past the end of any source or destination buffers

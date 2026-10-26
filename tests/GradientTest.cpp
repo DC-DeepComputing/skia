@@ -706,6 +706,56 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TestManyStopLinearHardstopsGanesh,
 // }
 // #endif
 
+// Draws a dithered gradient covering `size`, either directly into the surface
+// or into an offset saveLayer, and returns the pixels.
+static SkBitmap draw_dithered_gradient(SkISize size, const SkRect* layerBounds) {
+    const SkColor4f colors[] = {SkColors::kBlack, SkColors::kWhite};
+    const SkPoint pts[] = {{0, 0}, {SkIntToScalar(size.width()), 0}};
+    SkPaint paint;
+    paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
+    paint.setDither(true);
+
+    SkBitmap bm;
+    bm.allocN32Pixels(size.width(), size.height());
+    SkCanvas canvas(bm);
+    canvas.clear(SK_ColorTRANSPARENT);
+    if (layerBounds) {
+        canvas.saveLayer(layerBounds, nullptr);
+    }
+    canvas.drawRect(SkRect::MakeIWH(size.width(), size.height()), paint);
+    if (layerBounds) {
+        canvas.restore();
+    }
+    return bm;
+}
+
+// The dither matrix is indexed by position, so a gradient drawn into a layer
+// that does not start on the dither grid must still dither in the same phase as
+// one drawn straight into the surface.
+static void test_dither_phase_in_offset_layer(skiatest::Reporter* reporter) {
+    constexpr SkISize kSize = {64, 24};
+    // Bounds whose origin is on neither axis of the 8x8 dither grid.
+    const SkRect kLayerBounds = SkRect::MakeXYWH(3, 5, 50, 12);
+
+    const SkBitmap direct = draw_dithered_gradient(kSize, nullptr);
+    const SkBitmap layered = draw_dithered_gradient(kSize, &kLayerBounds);
+
+    SkIRect compare = kLayerBounds.roundIn();
+    for (int y = compare.fTop; y < compare.fBottom; ++y) {
+        for (int x = compare.fLeft; x < compare.fRight; ++x) {
+            if (direct.getColor(x, y) != layered.getColor(x, y)) {
+                ERRORF(reporter,
+                       "dither phase differs at (%d, %d): direct 0x%08x, layer 0x%08x",
+                       x,
+                       y,
+                       direct.getColor(x, y),
+                       layered.getColor(x, y));
+                return;
+            }
+        }
+    }
+}
+
 DEF_TEST(Gradient, reporter) {
     TestGradientShaders(reporter);
     TestConstantGradient(reporter);
@@ -718,6 +768,7 @@ DEF_TEST(Gradient, reporter) {
     test_degenerate_linear(reporter);
     test_linear_fuzzer(reporter);
     test_sweep_fuzzer(reporter);
+    test_dither_phase_in_offset_layer(reporter);
 #if defined(SK_GANESH)
     test_unsorted_degenerate(reporter);
 #endif

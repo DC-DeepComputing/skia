@@ -26,6 +26,7 @@ class SkMatrix;
 class SkRasterPipeline;
 class SkShader;
 class SkSurfaceProps;
+struct SkIPoint;
 struct SkIRect;
 struct SkMask;
 
@@ -122,7 +123,8 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&,
                                          SkArenaAlloc*,
                                          sk_sp<SkShader> clipShader,
                                          const SkSurfaceProps& props,
-                                         const SkRect& devBounds);
+                                         const SkRect& devBounds,
+                                         SkIPoint ditherOrigin);
 // Use this if you've pre-baked a shader pipeline, including modulating with paint alpha.
 SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&, const SkPaint&,
                                          const SkRasterPipeline& shaderPipeline,

@@ -57,7 +57,8 @@ public:
                                         drawCoverage,
                                         draw.fRC->clipShader(),
                                         SkSurfacePropsCopyOrDefault(draw.fProps),
-                                        devBounds);
+                                        devBounds,
+                                        draw.fDitherOrigin);
         return fBlitter;
     }
 
