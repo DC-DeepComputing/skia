@@ -7,6 +7,7 @@
 #ifndef SkUnicode_hardcoded_DEFINED
 #define SkUnicode_hardcoded_DEFINED
 
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkTypes.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/core/SkUTF.h"
@@ -14,6 +15,8 @@
 class SKUNICODE_API SkUnicodeHardCodedCharProperties : public SkUnicode {
 public:
     static bool IsDefaultIgnorable(SkUnichar utf8);
+    static bool IsZeroWidthCodepoint(SkUnichar utf8);
+    static SkFourByteTag ResolveCodepointScript(SkUnichar utf8);
 
     bool isControl(SkUnichar utf8) override;
     bool isWhitespace(SkUnichar utf8) override;

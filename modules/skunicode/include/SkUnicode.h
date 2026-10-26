@@ -6,6 +6,7 @@
  */
 #ifndef SkUnicode_DEFINED
 #define SkUnicode_DEFINED
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
@@ -165,6 +166,8 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
         static bool hasGraphemeStartFlag(SkUnicode::CodeUnitFlags flags);
         static bool hasControlFlag(SkUnicode::CodeUnitFlags flags);
         static bool hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags);
+        static bool isZeroWidthCodepoint(SkUnichar utf8);
+        static SkFourByteTag resolveCodepointScript(SkUnichar utf8);
 
         static bool extractBidi(const char utf8[],
                                 int utf8Units,
