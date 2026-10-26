@@ -17,7 +17,7 @@
 
 // in SkColorMatrix order (row-major)
 // Created by running SkColorMatrix_DumpYUVMatrixTables()
-constexpr float JPEG_full_rgb_to_yuv[] = {
+constexpr float Rec601_8bit_full_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.322d0ep-2f,    0x1.2c8b42p-1f,    0x1.d2f1aap-4f,           0x0p+0f,           0x0p+0f,
     -0x1.599234p-3f,   -0x1.5336e4p-2f,           0x1p-1f,           0x0p+0f,    0x1.010102p-1f,
@@ -30,7 +30,7 @@ constexpr float JPEG_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float JPEG_full_yuv_to_rgb[] = {
+constexpr float Rec601_8bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,  -0x1.d5babap-27f,    0x1.66e978p+0f,           0x0p+0f,   -0x1.6851ccp-1f,
      0x1.000002p+0f,   -0x1.606544p-2f,   -0x1.6da346p-1f,           0x0p+0f,     0x1.0ffafp-1f,
@@ -43,7 +43,7 @@ constexpr float JPEG_full_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float Rec601_limited_rgb_to_yuv[] = {
+constexpr float Rec601_8bit_limited_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.06f37ep-2f,    0x1.021d3ep-1f,    0x1.9105c2p-4f,           0x0p+0f,    0x1.010102p-4f,
     -0x1.2f8f7ep-3f,   -0x1.29fa02p-2f,    0x1.c1c1c2p-2f,           0x0p+0f,    0x1.010102p-1f,
@@ -56,7 +56,7 @@ constexpr float Rec601_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float Rec601_limited_yuv_to_rgb[] = {
+constexpr float Rec601_8bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2a150cp+0f,  -0x1.eeec98p-31f,    0x1.989536p+0f,           0x0p+0f,    -0x1.bf977p-1f,
      0x1.2a150cp+0f,   -0x1.912a24p-2f,   -0x1.a03d4ep-1f,           0x0p+0f,    0x1.1036c6p-1f,
@@ -69,7 +69,163 @@ constexpr float Rec601_limited_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float Rec709_full_rgb_to_yuv[] = {
+constexpr float Rec601_10bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.322d0ep-2f,    0x1.2c8b42p-1f,    0x1.d2f1aap-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.599234p-3f,   -0x1.5336e4p-2f,           0x1p-1f,           0x0p+0f,     0x1.00401p-1f,
+            0x1p-1f,    -0x1.acbc7p-2f,   -0x1.4d0e3ep-4f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.299000f,         0.587000f,         0.114000f,         0.000000f,         0.000000f,
+         -0.168736f,        -0.331264f,         0.500000f,         0.000000f,         0.500489f,
+          0.500000f,        -0.418688f,        -0.081312f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_10bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,  -0x1.d5babap-27f,    0x1.66e978p+0f,           0x0p+0f,   -0x1.67434ap-1f,
+     0x1.000002p+0f,   -0x1.606544p-2f,   -0x1.6da346p-1f,           0x0p+0f,     0x1.0f2ecp-1f,
+            0x1p+0f,    0x1.c5a1cap+0f,    0x1.72004p-27f,           0x0p+0f,    -0x1.c6135p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,        -0.000000f,         1.402000f,         0.000000f,        -0.701685f,
+          1.000000f,        -0.344136f,        -0.714136f,         0.000000f,         0.529654f,
+          1.000000f,         1.772000f,         0.000000f,         0.000000f,        -0.886866f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_10bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.062e16p-2f,    0x1.015b78p-1f,    0x1.8fd8b4p-4f,           0x0p+0f,     0x1.00401p-4f,
+    -0x1.2eab98p-3f,   -0x1.291a4ep-2f,    0x1.c0701cp-2f,           0x0p+0f,     0x1.00401p-1f,
+     0x1.c0701ep-2f,   -0x1.7782c4p-2f,   -0x1.23b566p-4f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.256035f,         0.502651f,         0.097619f,         0.000000f,         0.062561f,
+         -0.147788f,        -0.290139f,         0.437928f,         0.000000f,         0.500489f,
+          0.437928f,        -0.366710f,        -0.071218f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_10bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2af57cp+0f,  -0x1.0d4a26p-26f,    0x1.99c8d8p+0f,           0x0p+0f,   -0x1.bf976cp-1f,
+     0x1.2af57cp+0f,   -0x1.925834p-2f,   -0x1.a176b2p-1f,           0x0p+0f,    0x1.1036c4p-1f,
+     0x1.2af57ap+0f,    0x1.02f714p+1f,   0x1.391742p-27f,           0x0p+0f,   -0x1.15ebe6p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.167808f,        -0.000000f,         1.600721f,         0.000000f,        -0.874202f,
+          1.167808f,        -0.392915f,        -0.815359f,         0.000000f,         0.531668f,
+          1.167808f,         2.023165f,         0.000000f,         0.000000f,        -1.085631f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_12bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.322d0ep-2f,    0x1.2c8b42p-1f,    0x1.d2f1aap-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.599234p-3f,   -0x1.5336e4p-2f,           0x1p-1f,           0x0p+0f,    0x1.001002p-1f,
+            0x1p-1f,    -0x1.acbc7p-2f,   -0x1.4d0e3ep-4f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.299000f,         0.587000f,         0.114000f,         0.000000f,         0.000000f,
+         -0.168736f,        -0.331264f,         0.500000f,         0.000000f,         0.500122f,
+          0.500000f,        -0.418688f,        -0.081312f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_12bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,  -0x1.d5babap-27f,    0x1.66e978p+0f,           0x0p+0f,   -0x1.66ffeap-1f,
+     0x1.000002p+0f,   -0x1.606544p-2f,   -0x1.6da346p-1f,           0x0p+0f,    0x1.0efbe6p-1f,
+            0x1p+0f,    0x1.c5a1cap+0f,    0x1.72004p-27f,           0x0p+0f,   -0x1.c5be28p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,        -0.000000f,         1.402000f,         0.000000f,        -0.701171f,
+          1.000000f,        -0.344136f,        -0.714136f,         0.000000f,         0.529266f,
+          1.000000f,         1.772000f,         0.000000f,         0.000000f,        -0.886216f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_12bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.05fceap-2f,    0x1.012b34p-1f,    0x1.8f8db6p-4f,           0x0p+0f,    0x1.001002p-4f,
+    -0x1.2e72d6p-3f,   -0x1.28e296p-2f,    0x1.c01c02p-2f,           0x0p+0f,    0x1.001002p-1f,
+     0x1.c01c02p-2f,   -0x1.773c54p-2f,   -0x1.237eaep-4f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.255848f,         0.502283f,         0.097547f,         0.000000f,         0.062515f,
+         -0.147680f,        -0.289927f,         0.437607f,         0.000000f,         0.500122f,
+          0.437607f,        -0.366441f,        -0.071166f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_12bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2b2d96p+0f,  -0x1.4714d8p-27f,    0x1.9a15c2p+0f,           0x0p+0f,    -0x1.bf977p-1f,
+     0x1.2b2d98p+0f,   -0x1.92a3b6p-2f,   -0x1.a1c50ep-1f,           0x0p+0f,    0x1.1036c6p-1f,
+     0x1.2b2d98p+0f,    0x1.0327aep+1f,     0x1.c93ep-25f,           0x0p+0f,   -0x1.15ebe8p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168664f,        -0.000000f,         1.601894f,         0.000000f,        -0.874202f,
+          1.168664f,        -0.393203f,        -0.815957f,         0.000000f,         0.531668f,
+          1.168664f,         2.024648f,         0.000000f,         0.000000f,        -1.085631f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_16bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.322d0ep-2f,    0x1.2c8b42p-1f,    0x1.d2f1aap-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.599234p-3f,   -0x1.5336e4p-2f,           0x1p-1f,           0x0p+0f,      0x1.0001p-1f,
+            0x1p-1f,    -0x1.acbc7p-2f,   -0x1.4d0e3ep-4f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.299000f,         0.587000f,         0.114000f,         0.000000f,         0.000000f,
+         -0.168736f,        -0.331264f,         0.500000f,         0.000000f,         0.500008f,
+          0.500000f,        -0.418688f,        -0.081312f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_16bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,  -0x1.d5babap-27f,    0x1.66e978p+0f,           0x0p+0f,    -0x1.66eaep-1f,
+     0x1.000002p+0f,   -0x1.606544p-2f,   -0x1.6da346p-1f,           0x0p+0f,    0x1.0eec04p-1f,
+            0x1p+0f,    0x1.c5a1cap+0f,    0x1.72004p-27f,           0x0p+0f,    -0x1.c5a39p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,        -0.000000f,         1.402000f,         0.000000f,        -0.701011f,
+          1.000000f,        -0.344136f,        -0.714136f,         0.000000f,         0.529144f,
+          1.000000f,         1.772000f,         0.000000f,         0.000000f,        -0.886014f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_16bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.05ed9p-2f,    0x1.011c22p-1f,    0x1.8f764cp-4f,           0x0p+0f,      0x1.0001p-4f,
+    -0x1.2e611cp-3f,    -0x1.28d13p-2f,     0x1.c001cp-2f,           0x0p+0f,      0x1.0001p-1f,
+      0x1.c001cp-2f,   -0x1.772658p-2f,   -0x1.236d9ap-4f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.255789f,         0.502168f,         0.097525f,         0.000000f,         0.062501f,
+         -0.147646f,        -0.289860f,         0.437507f,         0.000000f,         0.500008f,
+          0.437507f,        -0.366357f,        -0.071149f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec601_16bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.2b3f2p+0f,  -0x1.4db148p-27f,    0x1.9a2dccp+0f,           0x0p+0f,   -0x1.bf976ep-1f,
+     0x1.2b3f22p+0f,    -0x1.92bb5p-2f,   -0x1.a1dd8ap-1f,           0x0p+0f,    0x1.1036c6p-1f,
+      0x1.2b3f2p+0f,    0x1.0336dep+1f,   0x1.134dcep-25f,           0x0p+0f,   -0x1.15ebe6p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168932f,        -0.000000f,         1.602261f,         0.000000f,        -0.874202f,
+          1.168932f,        -0.393293f,        -0.816143f,         0.000000f,         0.531668f,
+          1.168932f,         2.025112f,         0.000000f,         0.000000f,        -1.085631f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_8bit_full_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
       0x1.b367ap-3f,    0x1.6e2eb2p-1f,     0x1.27bb3p-4f,           0x0p+0f,           0x0p+0f,
     -0x1.d5498ep-4f,   -0x1.8aad9cp-2f,           0x1p-1f,           0x0p+0f,    0x1.010102p-1f,
@@ -82,7 +238,7 @@ constexpr float Rec709_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float Rec709_full_yuv_to_rgb[] = {
+constexpr float Rec709_8bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,   -0x1.134d1p-29f,    0x1.93261ap+0f,           0x0p+0f,   -0x1.94bad6p-1f,
             0x1p+0f,   -0x1.7fa3dep-3f,   -0x1.df5bf8p-2f,           0x0p+0f,    0x1.50e7dep-2f,
@@ -95,7 +251,7 @@ constexpr float Rec709_full_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float Rec709_limited_rgb_to_yuv[] = {
+constexpr float Rec709_8bit_limited_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.75ef96p-3f,    0x1.3a7c6ep-1f,    0x1.fbf63ap-5f,           0x0p+0f,    0x1.010102p-4f,
     -0x1.9c3c9ap-4f,   -0x1.5ab29cp-2f,    0x1.c1c1c4p-2f,           0x0p+0f,    0x1.010102p-1f,
@@ -108,7 +264,7 @@ constexpr float Rec709_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float Rec709_limited_yuv_to_rgb[] = {
+constexpr float Rec709_8bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2a150cp+0f,  -0x1.532b74p-28f,    0x1.caf116p+0f,           0x0p+0f,   -0x1.f225dep-1f,
      0x1.2a150ap+0f,   -0x1.b4bbaep-3f,   -0x1.10d97ep-1f,           0x0p+0f,     0x1.34b7ep-2f,
@@ -118,6 +274,162 @@ constexpr float Rec709_limited_yuv_to_rgb[] = {
           1.164384f,        -0.000000f,         1.792741f,         0.000000f,        -0.972945f,
           1.164384f,        -0.213249f,        -0.532909f,         0.000000f,         0.301483f,
           1.164384f,         2.112402f,        -0.000000f,         0.000000f,        -1.133402f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_10bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.b367ap-3f,    0x1.6e2eb2p-1f,     0x1.27bb3p-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.d5498ep-4f,   -0x1.8aad9cp-2f,           0x1p-1f,           0x0p+0f,     0x1.00401p-1f,
+     0x1.fffffep-2f,   -0x1.d10d74p-2f,    -0x1.77945p-5f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.212600f,         0.715200f,         0.072200f,         0.000000f,         0.000000f,
+         -0.114572f,        -0.385428f,         0.500000f,         0.000000f,         0.500489f,
+          0.500000f,        -0.454153f,        -0.045847f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_10bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   -0x1.134d1p-29f,    0x1.93261ap+0f,           0x0p+0f,   -0x1.938afcp-1f,
+            0x1p+0f,   -0x1.7fa3dep-3f,   -0x1.df5bf8p-2f,           0x0p+0f,    0x1.4feaeep-2f,
+            0x1p+0f,    0x1.db089ap+0f,  -0x1.1fd88ap-31f,           0x0p+0f,   -0x1.db7f7ap-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,        -0.000000f,         1.574800f,         0.000000f,        -0.788170f,
+          1.000000f,        -0.187324f,        -0.468124f,         0.000000f,         0.328045f,
+          1.000000f,         1.855600f,        -0.000000f,         0.000000f,        -0.928707f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_10bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.74d6dcp-3f,    0x1.399056p-1f,    0x1.fa78e4p-5f,           0x0p+0f,     0x1.00401p-4f,
+    -0x1.9b071ep-4f,   -0x1.59ae54p-2f,    0x1.c0701cp-2f,           0x0p+0f,     0x1.00401p-1f,
+     0x1.c0701ap-2f,   -0x1.97519ap-2f,   -0x1.48f404p-5f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.182050f,         0.612429f,         0.061825f,         0.000000f,         0.062561f,
+         -0.100349f,        -0.337579f,         0.437928f,         0.000000f,         0.500489f,
+          0.437928f,        -0.397772f,        -0.040155f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_10bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2af57cp+0f,  -0x1.a10fe6p-28f,    0x1.cc4aa4p+0f,           0x0p+0f,   -0x1.f225dep-1f,
+     0x1.2af57ap+0f,   -0x1.b60488p-3f,    -0x1.11a6fp-1f,           0x0p+0f,     0x1.34b7ep-2f,
+     0x1.2af57ap+0f,    0x1.0f2ec4p+1f,  -0x1.b49704p-27f,           0x0p+0f,   -0x1.2226a6p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.167808f,        -0.000000f,         1.798014f,         0.000000f,        -0.972945f,
+          1.167808f,        -0.213876f,        -0.534477f,         0.000000f,         0.301483f,
+          1.167808f,         2.118615f,        -0.000000f,         0.000000f,        -1.133402f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_12bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.b367ap-3f,    0x1.6e2eb2p-1f,     0x1.27bb3p-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.d5498ep-4f,   -0x1.8aad9cp-2f,           0x1p-1f,           0x0p+0f,    0x1.001002p-1f,
+     0x1.fffffep-2f,   -0x1.d10d74p-2f,    -0x1.77945p-5f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.212600f,         0.715200f,         0.072200f,         0.000000f,         0.000000f,
+         -0.114572f,        -0.385428f,         0.500000f,         0.000000f,         0.500122f,
+          0.500000f,        -0.454153f,        -0.045847f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_12bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   -0x1.134d1p-29f,    0x1.93261ap+0f,           0x0p+0f,    -0x1.933f5p-1f,
+            0x1p+0f,   -0x1.7fa3dep-3f,   -0x1.df5bf8p-2f,           0x0p+0f,     0x1.4fabfp-2f,
+            0x1p+0f,    0x1.db089ap+0f,  -0x1.1fd88ap-31f,           0x0p+0f,   -0x1.db264ep-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,        -0.000000f,         1.574800f,         0.000000f,        -0.787592f,
+          1.000000f,        -0.187324f,        -0.468124f,         0.000000f,         0.327804f,
+          1.000000f,         1.855600f,        -0.000000f,         0.000000f,        -0.928027f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_12bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.7490fp-3f,    0x1.395588p-1f,    0x1.fa19e6p-5f,           0x0p+0f,    0x1.001002p-4f,
+    -0x1.9aba0ap-4f,    -0x1.596d8p-2f,    0x1.c01c02p-2f,           0x0p+0f,    0x1.001002p-1f,
+       0x1.c01cp-2f,   -0x1.970536p-2f,   -0x1.48b652p-5f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.181917f,         0.611981f,         0.061780f,         0.000000f,         0.062515f,
+         -0.100275f,        -0.337332f,         0.437607f,         0.000000f,         0.500122f,
+          0.437607f,        -0.397481f,        -0.040126f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_12bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2b2d96p+0f,   0x1.6e8f86p-29f,    0x1.cca108p+0f,           0x0p+0f,    -0x1.f225ep-1f,
+     0x1.2b2d96p+0f,   -0x1.b656bap-3f,   -0x1.11da4cp-1f,           0x0p+0f,    0x1.34b7e2p-2f,
+     0x1.2b2d96p+0f,    0x1.0f61aap+1f,    0x1.30aaap-27f,           0x0p+0f,   -0x1.2226a6p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168664f,         0.000000f,         1.799332f,         0.000000f,        -0.972945f,
+          1.168664f,        -0.214033f,        -0.534869f,         0.000000f,         0.301483f,
+          1.168664f,         2.120168f,         0.000000f,         0.000000f,        -1.133402f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_16bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.b367ap-3f,    0x1.6e2eb2p-1f,     0x1.27bb3p-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.d5498ep-4f,   -0x1.8aad9cp-2f,           0x1p-1f,           0x0p+0f,      0x1.0001p-1f,
+     0x1.fffffep-2f,   -0x1.d10d74p-2f,    -0x1.77945p-5f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.212600f,         0.715200f,         0.072200f,         0.000000f,         0.000000f,
+         -0.114572f,        -0.385428f,         0.500000f,         0.000000f,         0.500008f,
+          0.500000f,        -0.454153f,        -0.045847f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_16bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   -0x1.134d1p-29f,    0x1.93261ap+0f,           0x0p+0f,   -0x1.9327acp-1f,
+            0x1p+0f,   -0x1.7fa3dep-3f,   -0x1.df5bf8p-2f,           0x0p+0f,    0x1.4f9844p-2f,
+            0x1p+0f,    0x1.db089ap+0f,  -0x1.1fd88ap-31f,           0x0p+0f,   -0x1.db0a76p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,        -0.000000f,         1.574800f,         0.000000f,        -0.787412f,
+          1.000000f,        -0.187324f,        -0.468124f,         0.000000f,         0.327729f,
+          1.000000f,         1.855600f,        -0.000000f,         0.000000f,        -0.927814f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_16bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.747b1ap-3f,    0x1.39432cp-1f,    0x1.f9fc3ep-5f,           0x0p+0f,      0x1.0001p-4f,
+    -0x1.9aa1f8p-4f,   -0x1.595942p-2f,     0x1.c001cp-2f,           0x0p+0f,      0x1.0001p-1f,
+     0x1.c001bep-2f,   -0x1.96ed5cp-2f,    -0x1.48a31p-5f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.181875f,         0.611841f,         0.061766f,         0.000000f,         0.062501f,
+         -0.100252f,        -0.337255f,         0.437507f,         0.000000f,         0.500008f,
+          0.437507f,        -0.397390f,        -0.040117f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float Rec709_16bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.2b3f2p+0f,   0x1.db0326p-27f,    0x1.ccbc08p+0f,           0x0p+0f,   -0x1.f225dep-1f,
+      0x1.2b3f2p+0f,   -0x1.b6706cp-3f,   -0x1.11ea58p-1f,           0x0p+0f,     0x1.34b7ep-2f,
+      0x1.2b3f2p+0f,    0x1.0f7192p+1f,   0x1.cf24bap-26f,           0x0p+0f,   -0x1.2226a6p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168932f,         0.000000f,         1.799744f,         0.000000f,        -0.972945f,
+          1.168932f,        -0.214082f,        -0.534991f,         0.000000f,         0.301483f,
+          1.168932f,         2.120653f,         0.000000f,         0.000000f,        -1.133402f,
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
@@ -329,7 +641,7 @@ constexpr float BT2020_16bit_limited_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float FCC_full_rgb_to_yuv[] = {
+constexpr float FCC_8bit_full_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.333334p-2f,    0x1.2e147ap-1f,    0x1.c28f5cp-4f,           0x0p+0f,           0x0p+0f,
     -0x1.592b26p-3f,   -0x1.536a6cp-2f,    0x1.fffffep-2f,           0x0p+0f,    0x1.010102p-1f,
@@ -342,7 +654,7 @@ constexpr float FCC_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float FCC_full_yuv_to_rgb[] = {
+constexpr float FCC_8bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,   0x1.12f3e2p-28f,    0x1.666666p+0f,           0x0p+0f,   -0x1.67ce36p-1f,
             0x1p+0f,   -0x1.53d446p-2f,    -0x1.6c798p-1f,           0x0p+0f,     0x1.0c3e1p-1f,
@@ -355,7 +667,7 @@ constexpr float FCC_full_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float FCC_limited_rgb_to_yuv[] = {
+constexpr float FCC_8bit_limited_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.07d4a2p-2f,    0x1.036ef4p-1f,    0x1.82f398p-4f,           0x0p+0f,    0x1.010102p-4f,
     -0x1.2f34f6p-3f,   -0x1.2a2746p-2f,    0x1.c1c1c2p-2f,           0x0p+0f,    0x1.010102p-1f,
@@ -368,7 +680,7 @@ constexpr float FCC_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float FCC_limited_yuv_to_rgb[] = {
+constexpr float FCC_8bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2a150ap+0f,   -0x1.3a8c8p-29f,        0x1.98p+0f,           0x0p+0f,   -0x1.bf01a4p-1f,
      0x1.2a150ap+0f,   -0x1.82dbeep-2f,   -0x1.9eea4ep-1f,           0x0p+0f,    0x1.0bf578p-1f,
@@ -381,7 +693,163 @@ constexpr float FCC_limited_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float SMPTE240_full_rgb_to_yuv[] = {
+constexpr float FCC_10bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.333334p-2f,    0x1.2e147ap-1f,    0x1.c28f5cp-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.592b26p-3f,   -0x1.536a6cp-2f,    0x1.fffffep-2f,           0x0p+0f,     0x1.00401p-1f,
+            0x1p-1f,   -0x1.af8af8p-2f,   -0x1.41d41ep-4f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.300000f,         0.590000f,         0.110000f,         0.000000f,         0.000000f,
+         -0.168539f,        -0.331461f,         0.500000f,         0.000000f,         0.500489f,
+          0.500000f,        -0.421429f,        -0.078571f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_10bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   0x1.12f3e2p-28f,    0x1.666666p+0f,           0x0p+0f,   -0x1.66c016p-1f,
+            0x1p+0f,   -0x1.53d446p-2f,    -0x1.6c798p-1f,           0x0p+0f,    0x1.0b74aep-1f,
+            0x1p+0f,    0x1.c7ae16p+0f,   0x1.1bcdf2p-31f,           0x0p+0f,   -0x1.c8201ep-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,         0.000000f,         1.400000f,         0.000000f,        -0.700684f,
+          1.000000f,        -0.331864f,        -0.711864f,         0.000000f,         0.522375f,
+          1.000000f,         1.780000f,         0.000000f,         0.000000f,        -0.890870f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_10bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.070e92p-2f,     0x1.02ac3p-1f,    0x1.81d118p-4f,           0x0p+0f,     0x1.00401p-4f,
+    -0x1.2e5156p-3f,    -0x1.29477p-2f,    0x1.c0701ap-2f,           0x0p+0f,     0x1.00401p-1f,
+     0x1.c0701cp-2f,   -0x1.79f816p-2f,   -0x1.19e012p-4f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.256892f,         0.505220f,         0.094194f,         0.000000f,         0.062561f,
+         -0.147616f,        -0.290312f,         0.437928f,         0.000000f,         0.500489f,
+          0.437928f,        -0.369110f,        -0.068817f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_10bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2af57ap+0f,   0x1.36a438p-26f,    0x1.993332p+0f,           0x0p+0f,   -0x1.bf01a2p-1f,
+     0x1.2af57ap+0f,   -0x1.83ff38p-2f,   -0x1.a022b8p-1f,           0x0p+0f,    0x1.0bf578p-1f,
+     0x1.2af57ap+0f,    0x1.042262p+1f,   0x1.959ceep-27f,           0x0p+0f,    -0x1.17178p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.167808f,         0.000000f,         1.598437f,         0.000000f,        -0.873059f,
+          1.167808f,        -0.378903f,        -0.812765f,         0.000000f,         0.523357f,
+          1.167808f,         2.032299f,         0.000000f,         0.000000f,        -1.090202f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_12bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.333334p-2f,    0x1.2e147ap-1f,    0x1.c28f5cp-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.592b26p-3f,   -0x1.536a6cp-2f,    0x1.fffffep-2f,           0x0p+0f,    0x1.001002p-1f,
+            0x1p-1f,   -0x1.af8af8p-2f,   -0x1.41d41ep-4f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.300000f,         0.590000f,         0.110000f,         0.000000f,         0.000000f,
+         -0.168539f,        -0.331461f,         0.500000f,         0.000000f,         0.500122f,
+          0.500000f,        -0.421429f,        -0.078571f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_12bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   0x1.12f3e2p-28f,    0x1.666666p+0f,           0x0p+0f,    -0x1.667cdp-1f,
+            0x1p+0f,   -0x1.53d446p-2f,    -0x1.6c798p-1f,           0x0p+0f,    0x1.0b4286p-1f,
+            0x1p+0f,    0x1.c7ae16p+0f,   0x1.1bcdf2p-31f,           0x0p+0f,   -0x1.c7ca94p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,         0.000000f,         1.400000f,         0.000000f,        -0.700171f,
+          1.000000f,        -0.331864f,        -0.711864f,         0.000000f,         0.521992f,
+          1.000000f,         1.780000f,         0.000000f,         0.000000f,        -0.890217f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_12bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.06dd3cp-2f,    0x1.027bacp-1f,    0x1.8188bcp-4f,           0x0p+0f,    0x1.001002p-4f,
+    -0x1.2e18a4p-3f,    -0x1.290fbp-2f,    0x1.c01c02p-2f,           0x0p+0f,    0x1.001002p-1f,
+     0x1.c01c02p-2f,   -0x1.79b134p-2f,   -0x1.19ab34p-4f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.256703f,         0.504850f,         0.094125f,         0.000000f,         0.062515f,
+         -0.147508f,        -0.290099f,         0.437607f,         0.000000f,         0.500122f,
+          0.437607f,        -0.368840f,        -0.068767f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_12bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2b2d96p+0f,  -0x1.6ee244p-28f,       0x1.998p+0f,           0x0p+0f,   -0x1.bf01a4p-1f,
+     0x1.2b2d98p+0f,   -0x1.844808p-2f,   -0x1.a070d2p-1f,           0x0p+0f,    0x1.0bf578p-1f,
+     0x1.2b2d96p+0f,    0x1.045334p+1f,  -0x1.4a556ep-28f,           0x0p+0f,    -0x1.17178p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168664f,        -0.000000f,         1.599609f,         0.000000f,        -0.873059f,
+          1.168664f,        -0.379181f,        -0.813361f,         0.000000f,         0.523357f,
+          1.168664f,         2.033789f,        -0.000000f,         0.000000f,        -1.090202f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_16bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.333334p-2f,    0x1.2e147ap-1f,    0x1.c28f5cp-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.592b26p-3f,   -0x1.536a6cp-2f,    0x1.fffffep-2f,           0x0p+0f,      0x1.0001p-1f,
+            0x1p-1f,   -0x1.af8af8p-2f,   -0x1.41d41ep-4f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.300000f,         0.590000f,         0.110000f,         0.000000f,         0.000000f,
+         -0.168539f,        -0.331461f,         0.500000f,         0.000000f,         0.500008f,
+          0.500000f,        -0.421429f,        -0.078571f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_16bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   0x1.12f3e2p-28f,    0x1.666666p+0f,           0x0p+0f,   -0x1.6667ccp-1f,
+            0x1p+0f,   -0x1.53d446p-2f,    -0x1.6c798p-1f,           0x0p+0f,    0x1.0b32dcp-1f,
+            0x1p+0f,    0x1.c7ae16p+0f,   0x1.1bcdf2p-31f,           0x0p+0f,   -0x1.c7afdep-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,         0.000000f,         1.400000f,         0.000000f,        -0.700011f,
+          1.000000f,        -0.331864f,        -0.711864f,         0.000000f,         0.521872f,
+          1.000000f,         1.780000f,         0.000000f,         0.000000f,        -0.890014f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_16bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.06cdd4p-2f,    0x1.026c86p-1f,    0x1.817226p-4f,           0x0p+0f,      0x1.0001p-4f,
+    -0x1.2e06eep-3f,   -0x1.28fe48p-2f,    0x1.c001bep-2f,           0x0p+0f,      0x1.0001p-1f,
+      0x1.c001cp-2f,   -0x1.799b12p-2f,   -0x1.199ab4p-4f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.256645f,         0.504734f,         0.094103f,         0.000000f,         0.062501f,
+         -0.147474f,        -0.290033f,         0.437507f,         0.000000f,         0.500008f,
+          0.437507f,        -0.368756f,        -0.068751f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float FCC_16bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+      0x1.2b3f2p+0f,  -0x1.a850acp-28f,      0x1.9998p+0f,           0x0p+0f,   -0x1.bf01a2p-1f,
+      0x1.2b3f2p+0f,   -0x1.845eccp-2f,   -0x1.a0893ap-1f,           0x0p+0f,    0x1.0bf578p-1f,
+     0x1.2b3f22p+0f,    0x1.046276p+1f,  -0x1.ebdb12p-25f,           0x0p+0f,   -0x1.17177ep+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168932f,        -0.000000f,         1.599976f,         0.000000f,        -0.873059f,
+          1.168932f,        -0.379268f,        -0.813547f,         0.000000f,         0.523357f,
+          1.168932f,         2.034255f,        -0.000000f,         0.000000f,        -1.090202f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_8bit_full_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.b22d0ep-3f,    0x1.66e978p-1f,    0x1.645a1cp-4f,           0x0p+0f,           0x0p+0f,
     -0x1.db8c7cp-4f,   -0x1.891ce2p-2f,           0x1p-1f,           0x0p+0f,    0x1.010102p-1f,
@@ -394,7 +862,7 @@ constexpr float SMPTE240_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float SMPTE240_full_yuv_to_rgb[] = {
+constexpr float SMPTE240_8bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x1p+0f,   0x1.d39c56p-29f,    0x1.9374bcp+0f,           0x0p+0f,   -0x1.9509c8p-1f,
             0x1p+0f,   -0x1.d01f2ep-3f,   -0x1.e80f98p-2f,           0x0p+0f,    0x1.697912p-2f,
@@ -407,7 +875,7 @@ constexpr float SMPTE240_full_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float SMPTE240_limited_rgb_to_yuv[] = {
+constexpr float SMPTE240_8bit_limited_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.74e16cp-3f,    0x1.343df8p-1f,    0x1.320b22p-4f,           0x0p+0f,    0x1.010102p-4f,
     -0x1.a1bcaap-4f,   -0x1.595298p-2f,    0x1.c1c1c4p-2f,           0x0p+0f,    0x1.010102p-1f,
@@ -420,7 +888,7 @@ constexpr float SMPTE240_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float SMPTE240_limited_yuv_to_rgb[] = {
+constexpr float SMPTE240_8bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.2a150ap+0f,   -0x1.03331p-27f,    0x1.cb4a9cp+0f,           0x0p+0f,   -0x1.f27fbep-1f,
      0x1.2a150cp+0f,   -0x1.082d2cp-2f,   -0x1.15cd72p-1f,           0x0p+0f,    0x1.50af76p-2f,
@@ -433,7 +901,163 @@ constexpr float SMPTE240_limited_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float YDZDX_full_rgb_to_yuv[] = {
+constexpr float SMPTE240_10bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.b22d0ep-3f,    0x1.66e978p-1f,    0x1.645a1cp-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.db8c7cp-4f,   -0x1.891ce2p-2f,           0x1p-1f,           0x0p+0f,     0x1.00401p-1f,
+            0x1p-1f,   -0x1.c778dap-2f,   -0x1.c4392ep-5f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.212000f,         0.701000f,         0.087000f,         0.000000f,         0.000000f,
+         -0.116101f,        -0.383899f,         0.500000f,         0.000000f,         0.500489f,
+          0.500000f,        -0.444797f,        -0.055203f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_10bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   0x1.d39c56p-29f,    0x1.9374bcp+0f,           0x0p+0f,   -0x1.93d9b2p-1f,
+            0x1p+0f,   -0x1.d01f2ep-3f,   -0x1.e80f98p-2f,           0x0p+0f,    0x1.6869b2p-2f,
+            0x1p+0f,    0x1.d374bcp+0f,   0x1.ea3024p-29f,           0x0p+0f,   -0x1.d3e9b6p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,         0.000000f,         1.576000f,         0.000000f,        -0.788770f,
+          1.000000f,        -0.226622f,        -0.476622f,         0.000000f,         0.351966f,
+          1.000000f,         1.826000f,         0.000000f,         0.000000f,        -0.913892f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_10bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.73c97ep-3f,     0x1.33569p-1f,     0x1.31256p-4f,           0x0p+0f,     0x1.00401p-4f,
+    -0x1.a0830cp-4f,   -0x1.584f5ap-2f,    0x1.c0701cp-2f,           0x0p+0f,     0x1.00401p-1f,
+     0x1.c0701cp-2f,   -0x1.8eed7ap-2f,   -0x1.8c150cp-5f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.181537f,         0.600270f,         0.074499f,         0.000000f,         0.062561f,
+         -0.101687f,        -0.336240f,         0.437928f,         0.000000f,         0.500489f,
+          0.437928f,        -0.389578f,        -0.048350f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_10bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2af57ap+0f,  -0x1.95ee5cp-28f,    0x1.cca46cp+0f,           0x0p+0f,   -0x1.f27fbcp-1f,
+     0x1.2af57ap+0f,   -0x1.08f416p-2f,   -0x1.169e9ep-1f,           0x0p+0f,    0x1.50af76p-2f,
+     0x1.2af57cp+0f,    0x1.0adb5ap+1f,  -0x1.2b2ceap-26f,           0x0p+0f,   -0x1.1dd228p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.167808f,        -0.000000f,         1.799384f,         0.000000f,        -0.973631f,
+          1.167808f,        -0.258744f,        -0.544179f,         0.000000f,         0.328794f,
+          1.167808f,         2.084819f,        -0.000000f,         0.000000f,        -1.116488f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_12bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.b22d0ep-3f,    0x1.66e978p-1f,    0x1.645a1cp-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.db8c7cp-4f,   -0x1.891ce2p-2f,           0x1p-1f,           0x0p+0f,    0x1.001002p-1f,
+            0x1p-1f,   -0x1.c778dap-2f,   -0x1.c4392ep-5f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.212000f,         0.701000f,         0.087000f,         0.000000f,         0.000000f,
+         -0.116101f,        -0.383899f,         0.500000f,         0.000000f,         0.500122f,
+          0.500000f,        -0.444797f,        -0.055203f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_12bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   0x1.d39c56p-29f,    0x1.9374bcp+0f,           0x0p+0f,   -0x1.938df6p-1f,
+            0x1p+0f,   -0x1.d01f2ep-3f,   -0x1.e80f98p-2f,           0x0p+0f,    0x1.68261cp-2f,
+            0x1p+0f,    0x1.d374bcp+0f,   0x1.ea3024p-29f,           0x0p+0f,   -0x1.d391f8p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,         0.000000f,         1.576000f,         0.000000f,        -0.788192f,
+          1.000000f,        -0.226622f,        -0.476622f,         0.000000f,         0.351708f,
+          1.000000f,         1.826000f,         0.000000f,         0.000000f,        -0.913223f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_12bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.7383c4p-3f,    0x1.331cecp-1f,    0x1.30ec24p-4f,           0x0p+0f,    0x1.001002p-4f,
+    -0x1.a034eep-4f,   -0x1.580ec6p-2f,    0x1.c01c02p-2f,           0x0p+0f,    0x1.001002p-1f,
+     0x1.c01c02p-2f,   -0x1.8ea2a8p-2f,   -0x1.8bcac4p-5f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.181404f,         0.599830f,         0.074444f,         0.000000f,         0.062515f,
+         -0.101613f,        -0.335994f,         0.437607f,         0.000000f,         0.500122f,
+          0.437607f,        -0.389292f,        -0.048314f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_12bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2b2d96p+0f,   0x1.0361f4p-26f,    0x1.ccfae2p+0f,           0x0p+0f,   -0x1.f27fbep-1f,
+     0x1.2b2d98p+0f,    -0x1.0925dp-2f,   -0x1.16d2e8p-1f,           0x0p+0f,    0x1.50af76p-2f,
+     0x1.2b2d96p+0f,     0x1.0b0d7p+1f,  -0x1.9d1214p-27f,           0x0p+0f,   -0x1.1dd228p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168664f,         0.000000f,         1.800703f,         0.000000f,        -0.973631f,
+          1.168664f,        -0.258933f,        -0.544578f,         0.000000f,         0.328794f,
+          1.168664f,         2.086348f,        -0.000000f,         0.000000f,        -1.116488f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_16bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.b22d0ep-3f,    0x1.66e978p-1f,    0x1.645a1cp-4f,           0x0p+0f,           0x0p+0f,
+    -0x1.db8c7cp-4f,   -0x1.891ce2p-2f,           0x1p-1f,           0x0p+0f,      0x1.0001p-1f,
+            0x1p-1f,   -0x1.c778dap-2f,   -0x1.c4392ep-5f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.212000f,         0.701000f,         0.087000f,         0.000000f,         0.000000f,
+         -0.116101f,        -0.383899f,         0.500000f,         0.000000f,         0.500008f,
+          0.500000f,        -0.444797f,        -0.055203f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_16bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x1p+0f,   0x1.d39c56p-29f,    0x1.9374bcp+0f,           0x0p+0f,    -0x1.93765p-1f,
+            0x1p+0f,   -0x1.d01f2ep-3f,   -0x1.e80f98p-2f,           0x0p+0f,      0x1.6811p-2f,
+            0x1p+0f,    0x1.d374bcp+0f,   0x1.ea3024p-29f,           0x0p+0f,    -0x1.d3769p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.000000f,         0.000000f,         1.576000f,         0.000000f,        -0.788012f,
+          1.000000f,        -0.226622f,        -0.476622f,         0.000000f,         0.351627f,
+          1.000000f,         1.826000f,         0.000000f,         0.000000f,        -0.913014f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_16bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.736dfep-3f,    0x1.330aecp-1f,    0x1.30da46p-4f,           0x0p+0f,      0x1.0001p-4f,
+    -0x1.a01c8cp-4f,   -0x1.57fa9ep-2f,     0x1.c001cp-2f,           0x0p+0f,      0x1.0001p-1f,
+      0x1.c001cp-2f,   -0x1.8e8b4ep-2f,   -0x1.8bb394p-5f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.181362f,         0.599693f,         0.074427f,         0.000000f,         0.062501f,
+         -0.101590f,        -0.335917f,         0.437507f,         0.000000f,         0.500008f,
+          0.437507f,        -0.389203f,        -0.048303f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float SMPTE240_16bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2b3f22p+0f,   0x1.73763cp-32f,    0x1.cd15e6p+0f,           0x0p+0f,   -0x1.f27fbcp-1f,
+      0x1.2b3f2p+0f,   -0x1.09355ap-2f,    -0x1.16e34p-1f,           0x0p+0f,    0x1.50af76p-2f,
+     0x1.2b3f22p+0f,    0x1.0b1d18p+1f,  -0x1.125244p-26f,           0x0p+0f,   -0x1.1dd228p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.168932f,         0.000000f,         1.801115f,         0.000000f,        -0.973631f,
+          1.168932f,        -0.258993f,        -0.544703f,         0.000000f,         0.328794f,
+          1.168932f,         2.086825f,        -0.000000f,         0.000000f,        -1.116488f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_8bit_full_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
             0x0p+0f,          -0x1p-1f,    0x1.f91f2ep-2f,           0x0p+0f,    0x1.010102p-1f,
@@ -446,7 +1070,7 @@ constexpr float YDZDX_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float YDZDX_full_yuv_to_rgb[] = {
+constexpr float YDZDX_8bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.fbda94p-1f,          -0x0p+0f,           0x1p+1f,           0x0p+0f,   -0x1.010102p+0f,
             0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
@@ -459,7 +1083,7 @@ constexpr float YDZDX_full_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float YDZDX_limited_rgb_to_yuv[] = {
+constexpr float YDZDX_8bit_limited_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x0p+0f,    0x1.b7b7b8p-1f,           0x0p+0f,           0x0p+0f,    0x1.010102p-4f,
             0x0p+0f,   -0x1.c1c1c2p-2f,      0x1.bbb7p-2f,           0x0p+0f,    0x1.010102p-1f,
@@ -472,7 +1096,7 @@ constexpr float YDZDX_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float YDZDX_limited_yuv_to_rgb[] = {
+constexpr float YDZDX_8bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
      0x1.27ab18p+0f,          -0x0p+0f,    0x1.236db6p+1f,           0x0p+0f,   -0x1.371f88p+0f,
      0x1.2a150ap+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404cp-4f,
@@ -485,7 +1109,163 @@ constexpr float YDZDX_limited_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float GBR_full_rgb_to_yuv[] = {
+constexpr float YDZDX_10bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,          -0x1p-1f,    0x1.f91f2ep-2f,           0x0p+0f,     0x1.00401p-1f,
+            0x1p-1f,   -0x1.fbda94p-2f,           0x0p+0f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,        -0.500000f,         0.493283f,         0.000000f,         0.500489f,
+          0.500000f,        -0.495951f,         0.000000f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_10bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.fbda94p-1f,          -0x0p+0f,           0x1p+1f,           0x0p+0f,    -0x1.00401p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+     0x1.037c66p+0f,    0x1.037c66p+1f,           0x0p+0f,           0x0p+0f,   -0x1.03bd56p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.991902f,        -0.000000f,         2.000000f,         0.000000f,        -1.000978f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          1.013617f,         2.027234f,         0.000000f,         0.000000f,        -1.014608f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_10bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,    0x1.b66d9cp-1f,           0x0p+0f,           0x0p+0f,     0x1.00401p-4f,
+            0x0p+0f,   -0x1.c0701cp-2f,    0x1.ba69e2p-2f,           0x0p+0f,     0x1.00401p-1f,
+     0x1.c0701cp-2f,   -0x1.bcce76p-2f,           0x0p+0f,           0x0p+0f,     0x1.00401p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.856305f,         0.000000f,         0.000000f,         0.062561f,
+          0.000000f,        -0.437928f,         0.432045f,         0.000000f,         0.500489f,
+          0.437928f,        -0.434381f,         0.000000f,         0.000000f,         0.500489f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_10bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.2889b6p+0f,          -0x0p+0f,    0x1.244924p+1f,           0x0p+0f,   -0x1.371f88p+0f,
+     0x1.2af57ap+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+     0x1.2f07a2p+0f,    0x1.284408p+1f,           0x0p+0f,           0x0p+0f,   -0x1.3b8364p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.158351f,        -0.000000f,         2.283482f,         0.000000f,        -1.215325f,
+          1.167808f,         0.000000f,         0.000000f,         0.000000f,        -0.073059f,
+          1.183710f,         2.314576f,         0.000000f,         0.000000f,        -1.232474f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_12bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,          -0x1p-1f,    0x1.f91f2ep-2f,           0x0p+0f,    0x1.001002p-1f,
+            0x1p-1f,   -0x1.fbda94p-2f,           0x0p+0f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,        -0.500000f,         0.493283f,         0.000000f,         0.500122f,
+          0.500000f,        -0.495951f,         0.000000f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_12bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.fbda94p-1f,          -0x0p+0f,           0x1p+1f,           0x0p+0f,   -0x1.001002p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+     0x1.037c66p+0f,    0x1.037c66p+1f,           0x0p+0f,           0x0p+0f,    -0x1.038cap+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.991902f,        -0.000000f,         2.000000f,         0.000000f,        -1.000244f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          1.013617f,         2.027234f,         0.000000f,         0.000000f,        -1.013865f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_12bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,    0x1.b61b62p-1f,           0x0p+0f,           0x0p+0f,    0x1.001002p-4f,
+            0x0p+0f,   -0x1.c01c02p-2f,    0x1.ba16eap-2f,           0x0p+0f,    0x1.001002p-1f,
+     0x1.c01c02p-2f,   -0x1.bc7b0ap-2f,           0x0p+0f,           0x0p+0f,    0x1.001002p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.855678f,         0.000000f,         0.000000f,         0.062515f,
+          0.000000f,        -0.437607f,         0.431728f,         0.000000f,         0.500122f,
+          0.437607f,        -0.434063f,         0.000000f,         0.000000f,         0.500122f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_12bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.28c15ep+0f,          -0x0p+0f,       0x1.248p+1f,           0x0p+0f,   -0x1.371f88p+0f,
+     0x1.2b2d96p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404cp-4f,
+      0x1.2f408p+0f,    0x1.287ba2p+1f,           0x0p+0f,           0x0p+0f,   -0x1.3b8364p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.159201f,        -0.000000f,         2.285156f,         0.000000f,        -1.215325f,
+          1.168664f,         0.000000f,         0.000000f,         0.000000f,        -0.073059f,
+          1.184578f,         2.316273f,         0.000000f,         0.000000f,        -1.232474f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_16bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,          -0x1p-1f,    0x1.f91f2ep-2f,           0x0p+0f,      0x1.0001p-1f,
+            0x1p-1f,   -0x1.fbda94p-2f,           0x0p+0f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,        -0.500000f,         0.493283f,         0.000000f,         0.500008f,
+          0.500000f,        -0.495951f,         0.000000f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_16bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.fbda94p-1f,          -0x0p+0f,           0x1p+1f,           0x0p+0f,     -0x1.0001p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+     0x1.037c66p+0f,    0x1.037c66p+1f,           0x0p+0f,           0x0p+0f,   -0x1.037d6ap+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.991902f,        -0.000000f,         2.000000f,         0.000000f,        -1.000015f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          1.013617f,         2.027234f,         0.000000f,         0.000000f,        -1.013632f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_16bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,    0x1.b601b6p-1f,           0x0p+0f,           0x0p+0f,      0x1.0001p-4f,
+            0x0p+0f,    -0x1.c001cp-2f,    0x1.b9fd02p-2f,           0x0p+0f,      0x1.0001p-1f,
+      0x1.c001cp-2f,   -0x1.bc60fep-2f,           0x0p+0f,           0x0p+0f,      0x1.0001p-1f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.855482f,         0.000000f,         0.000000f,         0.062501f,
+          0.000000f,        -0.437507f,         0.431629f,         0.000000f,         0.500008f,
+          0.437507f,        -0.433964f,         0.000000f,         0.000000f,         0.500008f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float YDZDX_16bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+     0x1.28d2c2p+0f,          -0x0p+0f,    0x1.249124p+1f,           0x0p+0f,   -0x1.371f88p+0f,
+      0x1.2b3f2p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+     0x1.2f5246p+0f,    0x1.288d04p+1f,           0x0p+0f,           0x0p+0f,   -0x1.3b8364p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          1.159466f,        -0.000000f,         2.285679f,         0.000000f,        -1.215325f,
+          1.168932f,         0.000000f,         0.000000f,         0.000000f,        -0.073059f,
+          1.184849f,         2.316803f,         0.000000f,         0.000000f,        -1.232474f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_8bit_full_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
             0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
@@ -498,7 +1278,7 @@ constexpr float GBR_full_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float GBR_full_yuv_to_rgb[] = {
+constexpr float GBR_8bit_full_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
             0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
@@ -511,7 +1291,7 @@ constexpr float GBR_full_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float GBR_limited_rgb_to_yuv[] = {
+constexpr float GBR_8bit_limited_rgb_to_yuv[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x0p+0f,    0x1.b7b7b8p-1f,           0x0p+0f,           0x0p+0f,    0x1.010102p-4f,
             0x0p+0f,           0x0p+0f,    0x1.b7b7b8p-1f,           0x0p+0f,    0x1.010102p-4f,
@@ -524,7 +1304,7 @@ constexpr float GBR_limited_rgb_to_yuv[] = {
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
-constexpr float GBR_limited_yuv_to_rgb[] = {
+constexpr float GBR_8bit_limited_yuv_to_rgb[] = {
 #if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
             0x0p+0f,           0x0p+0f,    0x1.2a150ap+0f,           0x0p+0f,   -0x1.2b404cp-4f,
      0x1.2a150ap+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404cp-4f,
@@ -534,6 +1314,162 @@ constexpr float GBR_limited_yuv_to_rgb[] = {
           0.000000f,         0.000000f,         1.164384f,         0.000000f,        -0.073059f,
           1.164384f,         0.000000f,         0.000000f,         0.000000f,        -0.073059f,
           0.000000f,         1.164384f,         0.000000f,         0.000000f,        -0.073059f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_10bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         0.000000f,         1.000000f,         0.000000f,         0.000000f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_10bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,          -0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.000000f,         1.000000f,         0.000000f,         0.000000f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,        -0.000000f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_10bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,    0x1.b66d9cp-1f,           0x0p+0f,           0x0p+0f,     0x1.00401p-4f,
+            0x0p+0f,           0x0p+0f,    0x1.b66d9cp-1f,           0x0p+0f,     0x1.00401p-4f,
+     0x1.b66d9cp-1f,           0x0p+0f,           0x0p+0f,           0x0p+0f,     0x1.00401p-4f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.856305f,         0.000000f,         0.000000f,         0.062561f,
+          0.000000f,         0.000000f,         0.856305f,         0.000000f,         0.062561f,
+          0.856305f,         0.000000f,         0.000000f,         0.000000f,         0.062561f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_10bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x0p+0f,    0x1.2af57ap+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+     0x1.2af57ap+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+            0x0p+0f,    0x1.2af57ap+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.000000f,         1.167808f,         0.000000f,        -0.073059f,
+          1.167808f,         0.000000f,         0.000000f,         0.000000f,        -0.073059f,
+          0.000000f,         1.167808f,         0.000000f,         0.000000f,        -0.073059f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_12bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         0.000000f,         1.000000f,         0.000000f,         0.000000f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_12bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,          -0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.000000f,         1.000000f,         0.000000f,         0.000000f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,        -0.000000f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_12bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,    0x1.b61b62p-1f,           0x0p+0f,           0x0p+0f,    0x1.001002p-4f,
+            0x0p+0f,           0x0p+0f,    0x1.b61b62p-1f,           0x0p+0f,    0x1.001002p-4f,
+     0x1.b61b62p-1f,           0x0p+0f,           0x0p+0f,           0x0p+0f,    0x1.001002p-4f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.855678f,         0.000000f,         0.000000f,         0.062515f,
+          0.000000f,         0.000000f,         0.855678f,         0.000000f,         0.062515f,
+          0.855678f,         0.000000f,         0.000000f,         0.000000f,         0.062515f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_12bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x0p+0f,    0x1.2b2d96p+0f,           0x0p+0f,   -0x1.2b404cp-4f,
+     0x1.2b2d96p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404cp-4f,
+            0x0p+0f,    0x1.2b2d96p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404cp-4f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.000000f,         1.168664f,         0.000000f,        -0.073059f,
+          1.168664f,         0.000000f,         0.000000f,         0.000000f,        -0.073059f,
+          0.000000f,         1.168664f,         0.000000f,         0.000000f,        -0.073059f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_16bit_full_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         0.000000f,         1.000000f,         0.000000f,         0.000000f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_16bit_full_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,
+            0x1p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,
+            0x0p+0f,           0x1p+0f,           0x0p+0f,           0x0p+0f,          -0x0p+0f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.000000f,         1.000000f,         0.000000f,         0.000000f,
+          1.000000f,         0.000000f,         0.000000f,         0.000000f,         0.000000f,
+          0.000000f,         1.000000f,         0.000000f,         0.000000f,        -0.000000f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_16bit_limited_rgb_to_yuv[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,    0x1.b601b6p-1f,           0x0p+0f,           0x0p+0f,      0x1.0001p-4f,
+            0x0p+0f,           0x0p+0f,    0x1.b601b6p-1f,           0x0p+0f,      0x1.0001p-4f,
+     0x1.b601b6p-1f,           0x0p+0f,           0x0p+0f,           0x0p+0f,      0x1.0001p-4f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.855482f,         0.000000f,         0.000000f,         0.062501f,
+          0.000000f,         0.000000f,         0.855482f,         0.000000f,         0.062501f,
+          0.855482f,         0.000000f,         0.000000f,         0.000000f,         0.062501f,
+          0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
+#endif
+};
+constexpr float GBR_16bit_limited_yuv_to_rgb[] = {
+#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)
+            0x0p+0f,           0x0p+0f,     0x1.2b3f2p+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+      0x1.2b3f2p+0f,           0x0p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+            0x0p+0f,     0x1.2b3f2p+0f,           0x0p+0f,           0x0p+0f,   -0x1.2b404ap-4f,
+            0x0p+0f,           0x0p+0f,           0x0p+0f,           0x1p+0f,           0x0p+0f,
+#else
+          0.000000f,         0.000000f,         1.168932f,         0.000000f,        -0.073059f,
+          1.168932f,         0.000000f,         0.000000f,         0.000000f,        -0.073059f,
+          0.000000f,         1.168932f,         0.000000f,         0.000000f,        -0.073059f,
           0.000000f,         0.000000f,         0.000000f,         1.000000f,         0.000000f,
 #endif
 };
@@ -746,40 +1682,23 @@ constexpr float YCgCo_16bit_limited_yuv_to_rgb[] = {
 #endif
 };
 
-static_assert(kJPEG_Full_SkYUVColorSpace            == 0, "");
-static_assert(kRec601_Limited_SkYUVColorSpace       == 1, "");
-static_assert(kRec709_Full_SkYUVColorSpace          == 2, "");
-static_assert(kRec709_Limited_SkYUVColorSpace       == 3, "");
-static_assert(kBT2020_8bit_Full_SkYUVColorSpace     == 4, "");
-static_assert(kBT2020_8bit_Limited_SkYUVColorSpace  == 5, "");
-static_assert(kBT2020_10bit_Full_SkYUVColorSpace    == 6, "");
-static_assert(kBT2020_10bit_Limited_SkYUVColorSpace == 7, "");
-static_assert(kBT2020_12bit_Full_SkYUVColorSpace    == 8, "");
-static_assert(kBT2020_12bit_Limited_SkYUVColorSpace == 9, "");
-static_assert(kBT2020_16bit_Full_SkYUVColorSpace    == 10, "");
-static_assert(kBT2020_16bit_Limited_SkYUVColorSpace == 11, "");
-static_assert(kFCC_Full_SkYUVColorSpace             == 12, "");
-static_assert(kFCC_Limited_SkYUVColorSpace          == 13, "");
-static_assert(kSMPTE240_Full_SkYUVColorSpace        == 14, "");
-static_assert(kSMPTE240_Limited_SkYUVColorSpace     == 15, "");
-static_assert(kYDZDX_Full_SkYUVColorSpace           == 16, "");
-static_assert(kYDZDX_Limited_SkYUVColorSpace        == 17, "");
-static_assert(kGBR_Full_SkYUVColorSpace             == 18, "");
-static_assert(kGBR_Limited_SkYUVColorSpace          == 19, "");
-static_assert(kYCgCo_8bit_Full_SkYUVColorSpace      == 20, "");
-static_assert(kYCgCo_8bit_Limited_SkYUVColorSpace   == 21, "");
-static_assert(kYCgCo_10bit_Full_SkYUVColorSpace     == 22, "");
-static_assert(kYCgCo_10bit_Limited_SkYUVColorSpace  == 23, "");
-static_assert(kYCgCo_12bit_Full_SkYUVColorSpace     == 24, "");
-static_assert(kYCgCo_12bit_Limited_SkYUVColorSpace  == 25, "");
-static_assert(kYCgCo_16bit_Full_SkYUVColorSpace     == 26, "");
-static_assert(kYCgCo_16bit_Limited_SkYUVColorSpace  == 27, "");
-
 static constexpr auto yuv_to_rgb_array = std::to_array<const float *>({
-    JPEG_full_yuv_to_rgb,
-    Rec601_limited_yuv_to_rgb,
-    Rec709_full_yuv_to_rgb,
-    Rec709_limited_yuv_to_rgb,
+    Rec601_8bit_full_yuv_to_rgb,
+    Rec601_8bit_limited_yuv_to_rgb,
+    Rec601_10bit_full_yuv_to_rgb,
+    Rec601_10bit_limited_yuv_to_rgb,
+    Rec601_12bit_full_yuv_to_rgb,
+    Rec601_12bit_limited_yuv_to_rgb,
+    Rec601_16bit_full_yuv_to_rgb,
+    Rec601_16bit_limited_yuv_to_rgb,
+    Rec709_8bit_full_yuv_to_rgb,
+    Rec709_8bit_limited_yuv_to_rgb,
+    Rec709_10bit_full_yuv_to_rgb,
+    Rec709_10bit_limited_yuv_to_rgb,
+    Rec709_12bit_full_yuv_to_rgb,
+    Rec709_12bit_limited_yuv_to_rgb,
+    Rec709_16bit_full_yuv_to_rgb,
+    Rec709_16bit_limited_yuv_to_rgb,
     BT2020_8bit_full_yuv_to_rgb,
     BT2020_8bit_limited_yuv_to_rgb,
     BT2020_10bit_full_yuv_to_rgb,
@@ -788,14 +1707,38 @@ static constexpr auto yuv_to_rgb_array = std::to_array<const float *>({
     BT2020_12bit_limited_yuv_to_rgb,
     BT2020_16bit_full_yuv_to_rgb,
     BT2020_16bit_limited_yuv_to_rgb,
-    FCC_full_yuv_to_rgb,
-    FCC_limited_yuv_to_rgb,
-    SMPTE240_full_yuv_to_rgb,
-    SMPTE240_limited_yuv_to_rgb,
-    YDZDX_full_yuv_to_rgb,
-    YDZDX_limited_yuv_to_rgb,
-    GBR_full_yuv_to_rgb,
-    GBR_limited_yuv_to_rgb,
+    FCC_8bit_full_yuv_to_rgb,
+    FCC_8bit_limited_yuv_to_rgb,
+    FCC_10bit_full_yuv_to_rgb,
+    FCC_10bit_limited_yuv_to_rgb,
+    FCC_12bit_full_yuv_to_rgb,
+    FCC_12bit_limited_yuv_to_rgb,
+    FCC_16bit_full_yuv_to_rgb,
+    FCC_16bit_limited_yuv_to_rgb,
+    SMPTE240_8bit_full_yuv_to_rgb,
+    SMPTE240_8bit_limited_yuv_to_rgb,
+    SMPTE240_10bit_full_yuv_to_rgb,
+    SMPTE240_10bit_limited_yuv_to_rgb,
+    SMPTE240_12bit_full_yuv_to_rgb,
+    SMPTE240_12bit_limited_yuv_to_rgb,
+    SMPTE240_16bit_full_yuv_to_rgb,
+    SMPTE240_16bit_limited_yuv_to_rgb,
+    YDZDX_8bit_full_yuv_to_rgb,
+    YDZDX_8bit_limited_yuv_to_rgb,
+    YDZDX_10bit_full_yuv_to_rgb,
+    YDZDX_10bit_limited_yuv_to_rgb,
+    YDZDX_12bit_full_yuv_to_rgb,
+    YDZDX_12bit_limited_yuv_to_rgb,
+    YDZDX_16bit_full_yuv_to_rgb,
+    YDZDX_16bit_limited_yuv_to_rgb,
+    GBR_8bit_full_yuv_to_rgb,
+    GBR_8bit_limited_yuv_to_rgb,
+    GBR_10bit_full_yuv_to_rgb,
+    GBR_10bit_limited_yuv_to_rgb,
+    GBR_12bit_full_yuv_to_rgb,
+    GBR_12bit_limited_yuv_to_rgb,
+    GBR_16bit_full_yuv_to_rgb,
+    GBR_16bit_limited_yuv_to_rgb,
     YCgCo_8bit_full_yuv_to_rgb,
     YCgCo_8bit_limited_yuv_to_rgb,
     YCgCo_10bit_full_yuv_to_rgb,
@@ -807,10 +1750,22 @@ static constexpr auto yuv_to_rgb_array = std::to_array<const float *>({
 });
 
 static constexpr auto rgb_to_yuv_array = std::to_array<const float *>({
-    JPEG_full_rgb_to_yuv,
-    Rec601_limited_rgb_to_yuv,
-    Rec709_full_rgb_to_yuv,
-    Rec709_limited_rgb_to_yuv,
+    Rec601_8bit_full_rgb_to_yuv,
+    Rec601_8bit_limited_rgb_to_yuv,
+    Rec601_10bit_full_rgb_to_yuv,
+    Rec601_10bit_limited_rgb_to_yuv,
+    Rec601_12bit_full_rgb_to_yuv,
+    Rec601_12bit_limited_rgb_to_yuv,
+    Rec601_16bit_full_rgb_to_yuv,
+    Rec601_16bit_limited_rgb_to_yuv,
+    Rec709_8bit_full_rgb_to_yuv,
+    Rec709_8bit_limited_rgb_to_yuv,
+    Rec709_10bit_full_rgb_to_yuv,
+    Rec709_10bit_limited_rgb_to_yuv,
+    Rec709_12bit_full_rgb_to_yuv,
+    Rec709_12bit_limited_rgb_to_yuv,
+    Rec709_16bit_full_rgb_to_yuv,
+    Rec709_16bit_limited_rgb_to_yuv,
     BT2020_8bit_full_rgb_to_yuv,
     BT2020_8bit_limited_rgb_to_yuv,
     BT2020_10bit_full_rgb_to_yuv,
@@ -819,14 +1774,38 @@ static constexpr auto rgb_to_yuv_array = std::to_array<const float *>({
     BT2020_12bit_limited_rgb_to_yuv,
     BT2020_16bit_full_rgb_to_yuv,
     BT2020_16bit_limited_rgb_to_yuv,
-    FCC_full_rgb_to_yuv,
-    FCC_limited_rgb_to_yuv,
-    SMPTE240_full_rgb_to_yuv,
-    SMPTE240_limited_rgb_to_yuv,
-    YDZDX_full_rgb_to_yuv,
-    YDZDX_limited_rgb_to_yuv,
-    GBR_full_rgb_to_yuv,
-    GBR_limited_rgb_to_yuv,
+    FCC_8bit_full_rgb_to_yuv,
+    FCC_8bit_limited_rgb_to_yuv,
+    FCC_10bit_full_rgb_to_yuv,
+    FCC_10bit_limited_rgb_to_yuv,
+    FCC_12bit_full_rgb_to_yuv,
+    FCC_12bit_limited_rgb_to_yuv,
+    FCC_16bit_full_rgb_to_yuv,
+    FCC_16bit_limited_rgb_to_yuv,
+    SMPTE240_8bit_full_rgb_to_yuv,
+    SMPTE240_8bit_limited_rgb_to_yuv,
+    SMPTE240_10bit_full_rgb_to_yuv,
+    SMPTE240_10bit_limited_rgb_to_yuv,
+    SMPTE240_12bit_full_rgb_to_yuv,
+    SMPTE240_12bit_limited_rgb_to_yuv,
+    SMPTE240_16bit_full_rgb_to_yuv,
+    SMPTE240_16bit_limited_rgb_to_yuv,
+    YDZDX_8bit_full_rgb_to_yuv,
+    YDZDX_8bit_limited_rgb_to_yuv,
+    YDZDX_10bit_full_rgb_to_yuv,
+    YDZDX_10bit_limited_rgb_to_yuv,
+    YDZDX_12bit_full_rgb_to_yuv,
+    YDZDX_12bit_limited_rgb_to_yuv,
+    YDZDX_16bit_full_rgb_to_yuv,
+    YDZDX_16bit_limited_rgb_to_yuv,
+    GBR_8bit_full_rgb_to_yuv,
+    GBR_8bit_limited_rgb_to_yuv,
+    GBR_10bit_full_rgb_to_yuv,
+    GBR_10bit_limited_rgb_to_yuv,
+    GBR_12bit_full_rgb_to_yuv,
+    GBR_12bit_limited_rgb_to_yuv,
+    GBR_16bit_full_rgb_to_yuv,
+    GBR_16bit_limited_rgb_to_yuv,
     YCgCo_8bit_full_rgb_to_yuv,
     YCgCo_8bit_limited_rgb_to_yuv,
     YCgCo_10bit_full_rgb_to_yuv,
@@ -903,50 +1882,61 @@ static void scale3(float m[], float s) {
 }
 
 namespace {
-enum Range { kFull, kLimited };
-struct YUVCoeff {
-    float   Kr, Kb;
-    int     bits;
-    Range   range;
+enum class Range { kFull, kLimited };
+
+enum class FormatType {
+    kYCbCr,
+    kYDZDX,
+    kGBR,
+    kYCgCo,
 };
 
-static constexpr auto gCoeff = std::to_array<YUVCoeff>({
-    YUVCoeff{ 0.2990f, 0.1140f,  8, kFull    }, // kJPEG_Full_SkYUVColorSpace
-    YUVCoeff{ 0.2990f, 0.1140f,  8, kLimited }, // kRec601_Limited_SkYUVColorSpace
-    YUVCoeff{ 0.2126f, 0.0722f,  8, kFull    }, // kRec709_Full_SkYUVColorSpace
-    YUVCoeff{ 0.2126f, 0.0722f,  8, kLimited }, // kRec709_Limited_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f,  8, kFull    }, // kBT2020_8bit_Full_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f,  8, kLimited }, // kBT2020_8bit_Limited_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f, 10, kFull    }, // kBT2020_10bit_Full_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f, 10, kLimited }, // kBT2020_10bit_Limited_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f, 12, kFull    }, // kBT2020_12bit_Full_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f, 12, kLimited }, // kBT2020_12bit_Limited_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f, 16, kFull    }, // kBT2020_16bit_Full_SkYUVColorSpace
-    YUVCoeff{ 0.2627f, 0.0593f, 16, kLimited }, // kBT2020_16bit_Limited_SkYUVColorSpace
-    YUVCoeff{ 0.3000f, 0.1100f,  8, kFull    }, // kFCC_Full_SkYUVColorSpace
-    YUVCoeff{ 0.3000f, 0.1100f,  8, kLimited }, // kFCC_Limited_SkYUVColorSpace
-    YUVCoeff{ 0.2120f, 0.0870f,  8, kFull    }, // kSMPTE240_Full_SkYUVColorSpace
-    YUVCoeff{ 0.2120f, 0.0870f,  8, kLimited }, // kSMPTE240_Limited_SkYUVColorSpace
+struct FormatInfo {
+    const char* name;
+    FormatType type;
+    float Kr = 0.0f;
+    float Kb = 0.0f;
+};
+
+static constexpr auto kFormats = std::to_array<FormatInfo>({
+    {"Rec601",   FormatType::kYCbCr, 0.2990f, 0.1140f},
+    {"Rec709",   FormatType::kYCbCr, 0.2126f, 0.0722f},
+    {"BT2020",   FormatType::kYCbCr, 0.2627f, 0.0593f},
+    {"FCC",      FormatType::kYCbCr, 0.3000f, 0.1100f},
+    {"SMPTE240", FormatType::kYCbCr, 0.2120f, 0.0870f},
+    {"YDZDX",    FormatType::kYDZDX},
+    {"GBR",      FormatType::kGBR},
+    {"YCgCo",    FormatType::kYCgCo},
+});
+
+static constexpr auto kBitDepths = std::to_array<int>({8, 10, 12, 16});
+
+struct RangeInfo {
+    Range range;
+    const char* name;
+};
+
+static constexpr auto kRanges = std::to_array<RangeInfo>({
+    {Range::kFull, "full"},
+    {Range::kLimited, "limited"},
 });
 }  // namespace
 
-static void make_rgb_to_yuv_matrix_ycbcr(float mx[20], const YUVCoeff& c) {
-    SkASSERT(c.bits >= 8);
-    const float Kr = c.Kr;
-    const float Kb = c.Kb;
+static void make_rgb_to_yuv_matrix_ycbcr(float mx[20], float Kr, float Kb, int bits, Range range) {
+    SkASSERT(bits >= 8);
     const float Kg = 1.0f - Kr - Kb;
     const float Cr = 0.5f / (1.0f - Kb);
     const float Cb = 0.5f / (1.0f - Kr);
 
-    const int shift = c.bits - 8;
+    const int shift = bits - 8;
 
-    const float denom = static_cast<float>((1 << c.bits) - 1);
+    const float denom = (1 << bits) - 1;
     float scaleY  = 1.0f,
           addY    = 0.0f,
           scaleUV = 1.0f,
           addUV   = (128 << shift) / denom;
 
-    if (c.range == kLimited) {
+    if (range == Range::kLimited) {
         scaleY  = (219 << shift) / denom;
         addY    = ( 16 << shift) / denom;
         scaleUV = (224 << shift) / denom;
@@ -964,18 +1954,19 @@ static void make_rgb_to_yuv_matrix_ycbcr(float mx[20], const YUVCoeff& c) {
     scale3(mx + 10, Cb * scaleUV);
 }
 
-static void make_rgb_to_yuv_matrix_ydzdx(float mx[20], Range range) {
-    const int bits = 8;
-    const float denom = static_cast<float>((1 << bits) - 1);
+static void make_rgb_to_yuv_matrix_ydzdx(float mx[20], int bits, Range range) {
+    SkASSERT(bits >= 8);
+    const int shift = bits - 8;
+    const float denom = (1 << bits) - 1;
     float scaleY  = 1.0f,
           addY    = 0.0f,
           scaleUV = 1.0f,
-          addUV   = 128 / denom;
+          addUV   = (128 << shift) / denom;
 
-    if (range == kLimited) {
-        scaleY  = 219 / denom;
-        addY    =  16 / denom;
-        scaleUV = 224 / denom;
+    if (range == Range::kLimited) {
+        scaleY  = (219 << shift) / denom;
+        addY    = ( 16 << shift) / denom;
+        scaleUV = (224 << shift) / denom;
     }
 
     // YDZDX applies range correction to YUV values similar to YCbCr.
@@ -991,15 +1982,16 @@ static void make_rgb_to_yuv_matrix_ydzdx(float mx[20], Range range) {
     scale3(mx + 10, scaleUV);
 }
 
-static void make_rgb_to_yuv_matrix_gbr(float mx[20], Range range) {
-    const int bits = 8;
-    const float denom = static_cast<float>((1 << bits) - 1);
+static void make_rgb_to_yuv_matrix_gbr(float mx[20], int bits, Range range) {
+    SkASSERT(bits >= 8);
+    const int shift = bits - 8;
+    const float denom = (1 << bits) - 1;
     float scaleY   = 1.0f,
           addY     = 0.0f;
 
-    if (range == kLimited) {
-        scaleY  = 219 / denom;
-        addY    =  16 / denom;
+    if (range == Range::kLimited) {
+        scaleY  = (219 << shift) / denom;
+        addY    = ( 16 << shift) / denom;
     }
 
     // GBR applies range correction to RGB values similar to YCgCo.
@@ -1018,12 +2010,12 @@ static void make_rgb_to_yuv_matrix_gbr(float mx[20], Range range) {
 static void make_rgb_to_yuv_matrix_ycgco(float mx[20], int bits, Range range) {
     SkASSERT(bits >= 8);
     const int shift = bits - 8;
-    const float denom = static_cast<float>((1 << bits) - 1);
+    const float denom = (1 << bits) - 1;
     float scaleY   = 1.0f,
           addY     = 0.0f,
-          chroma05 = static_cast<float>(1 << (bits - 1)) / denom;
+          chroma05 = (1 << (bits - 1)) / denom;
 
-    if (range == kLimited) {
+    if (range == Range::kLimited) {
         scaleY  = (219 << shift) / denom;
         addY    = ( 16 << shift) / denom;
     }
@@ -1040,88 +2032,22 @@ static void make_rgb_to_yuv_matrix_ycgco(float mx[20], int bits, Range range) {
     scale3(mx + 10, scaleY);
 }
 
-static void make_rgb_to_yuv_matrix(float mx[20], SkYUVColorSpace cs) {
-    switch (cs) {
-        case kJPEG_Full_SkYUVColorSpace:
-        case kRec601_Limited_SkYUVColorSpace:
-        case kRec709_Full_SkYUVColorSpace:
-        case kRec709_Limited_SkYUVColorSpace:
-        case kBT2020_8bit_Full_SkYUVColorSpace:
-        case kBT2020_8bit_Limited_SkYUVColorSpace:
-        case kBT2020_10bit_Full_SkYUVColorSpace:
-        case kBT2020_10bit_Limited_SkYUVColorSpace:
-        case kBT2020_12bit_Full_SkYUVColorSpace:
-        case kBT2020_12bit_Limited_SkYUVColorSpace:
-        case kBT2020_16bit_Full_SkYUVColorSpace:
-        case kBT2020_16bit_Limited_SkYUVColorSpace:
-        case kFCC_Full_SkYUVColorSpace:
-        case kFCC_Limited_SkYUVColorSpace:
-        case kSMPTE240_Full_SkYUVColorSpace:
-        case kSMPTE240_Limited_SkYUVColorSpace:
-        case kIdentity_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycbcr(mx, gCoeff[(unsigned)cs]);
-        case kYDZDX_Full_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ydzdx(mx, Range::kFull);
-        case kYDZDX_Limited_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ydzdx(mx, Range::kLimited);
-        case kGBR_Full_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_gbr(mx, Range::kFull);
-        case kGBR_Limited_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_gbr(mx, Range::kLimited);
-        case kYCgCo_8bit_Full_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/8, Range::kFull);
-        case kYCgCo_8bit_Limited_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/8, Range::kLimited);
-        case kYCgCo_10bit_Full_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/10, Range::kFull);
-        case kYCgCo_10bit_Limited_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/10, Range::kLimited);
-        case kYCgCo_12bit_Full_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/12, Range::kFull);
-        case kYCgCo_12bit_Limited_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/12, Range::kLimited);
-        case kYCgCo_16bit_Full_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/16, Range::kFull);
-        case kYCgCo_16bit_Limited_SkYUVColorSpace:
-            return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/16, Range::kLimited);
+static void make_rgb_to_yuv_matrix(float mx[20], const FormatInfo& format, int bits, Range range) {
+    switch (format.type) {
+        case FormatType::kYCbCr:
+            return make_rgb_to_yuv_matrix_ycbcr(mx, format.Kr, format.Kb, bits, range);
+        case FormatType::kYDZDX:
+            return make_rgb_to_yuv_matrix_ydzdx(mx, bits, range);
+        case FormatType::kGBR:
+            return make_rgb_to_yuv_matrix_gbr(mx, bits, range);
+        case FormatType::kYCgCo:
+            return make_rgb_to_yuv_matrix_ycgco(mx, bits, range);
     }
 }
 
-static void dump(const float m[20], SkYUVColorSpace cs, bool rgb2yuv) {
-    static constexpr auto names = std::to_array<const char *>({
-        "JPEG_full",
-        "Rec601_limited",
-        "Rec709_full",
-        "Rec709_limited",
-        "BT2020_8bit_full",
-        "BT2020_8bit_limited",
-        "BT2020_10bit_full",
-        "BT2020_10bit_limited",
-        "BT2020_12bit_full",
-        "BT2020_12bit_limited",
-        "BT2020_16bit_full",
-        "BT2020_16bit_limited",
-        "FCC_full",
-        "FCC_limited",
-        "SMPTE240_full",
-        "SMPTE240_limited",
-        "YDZDX_full",
-        "YDZDX_limited",
-        "GBR_full",
-        "GBR_limited",
-        "YCgCo_8bit_full",
-        "YCgCo_8bit_limited",
-        "YCgCo_10bit_full",
-        "YCgCo_10bit_limited",
-        "YCgCo_12bit_full",
-        "YCgCo_12bit_limited",
-        "YCgCo_16bit_full",
-        "YCgCo_16bit_limited",
-    });
-    static constexpr auto dirnames = std::to_array<const char *>({
-        "yuv_to_rgb", "rgb_to_yuv",
-    });
-    SkDebugf("constexpr float %s_%s[] = {\n", names[cs], dirnames[rgb2yuv]);
+static void dump(const float m[20], const char* name, int bits, const char* range_name, bool rgb2yuv) {
+    const char* dirname = rgb2yuv ? "rgb_to_yuv" : "yuv_to_rgb";
+    SkDebugf("constexpr float %s_%dbit_%s_%s[] = {\n", name, bits, range_name, dirname);
     SkDebugf("#if defined(SK_YUV_COLOR_SPACE_HIGH_PRECISION)\n");
     for (int i = 0; i < 4; ++i) {
         SkDebugf(" ");
@@ -1146,21 +2072,24 @@ static void dump(const float m[20], SkYUVColorSpace cs, bool rgb2yuv) {
 // Used to create the prebuilt tables for each colorspace.
 // Don't remove this function, in case we want to recompute those tables in the future.
 void SkColorMatrix_DumpYUVMatrixTables() {
-    for (int i = 0; i < kLastEnum_SkYUVColorSpace; ++i) {
-        SkYUVColorSpace cs = static_cast<SkYUVColorSpace>(i);
-        float m[20];
-        make_rgb_to_yuv_matrix(m, cs);
-        dump(m, cs, true);
-        SkM44 m44, im44;
-        colormatrix_to_matrix44(m, &m44);
-        float im[20];
+    for (const auto& format : kFormats) {
+        for (int bits : kBitDepths) {
+            for (const auto& r : kRanges) {
+                float m[20];
+                make_rgb_to_yuv_matrix(m, format, bits, r.range);
+                dump(m, format.name, bits, r.name, /*rgb2yuv=*/true);
+                SkM44 m44, im44;
+                colormatrix_to_matrix44(m, &m44);
+                float im[20];
 #ifdef SK_DEBUG
-        // be sure our coversion between matrix44 and colormatrix is perfect
-        matrix44_to_colormatrix(m44, im);
-        SkASSERT(memcmp(m, im, sizeof(im)) == 0);
+                // be sure our conversion between matrix44 and colormatrix is perfect
+                matrix44_to_colormatrix(m44, im);
+                SkASSERT(memcmp(m, im, sizeof(im)) == 0);
 #endif
-        SkAssertResult(m44.invert(&im44));
-        matrix44_to_colormatrix(im44, im);
-        dump(im, cs, false);
+                SkAssertResult(m44.invert(&im44));
+                matrix44_to_colormatrix(im44, im);
+                dump(im, format.name, bits, r.name, /*rgb2yuv=*/false);
+            }
+        }
     }
 }
