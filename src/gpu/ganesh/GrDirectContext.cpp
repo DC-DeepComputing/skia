@@ -6,6 +6,8 @@
  */
 #include "include/gpu/ganesh/GrDirectContext.h"
 
+#include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSize.h"
@@ -22,6 +24,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkCompressedDataUtils.h"
+#include "src/core/SkContextPriv.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTraceEvent.h"
@@ -50,6 +53,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/GrThreadSafePipelineBuilder.h" // IWYU pragma: keep
+#include "src/gpu/ganesh/SkGaneshGPUContextAdapter.h"
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 #include "src/gpu/ganesh/mock/GrMockGpu.h"
@@ -1198,3 +1202,20 @@ sk_sp<GrDirectContext> GrDirectContext::MakeMock(const GrMockOptions* mockOption
 
     return direct;
 }
+
+namespace SkContexts {
+
+std::unique_ptr<SkContext> MakeGanesh(sk_sp<GrDirectContext> directContext,
+                                      const SkContextOptions& options) {
+    if (!directContext) {
+        return nullptr;
+    }
+    return SkContextCtorAccessor::MakeContext(
+            options, std::make_unique<SkGaneshGPUContextAdapter>(std::move(directContext)));
+}
+
+std::unique_ptr<SkContext> MakeGanesh(sk_sp<GrDirectContext> directContext) {
+    return MakeGanesh(std::move(directContext), {});
+}
+
+}  // namespace SkContexts
