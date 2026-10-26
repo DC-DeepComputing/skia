@@ -86,8 +86,15 @@ private:
      * @param stream This may be a pointer to the stream owned by the parent SkCodec
      *               or a sub-stream of the stream owned by the parent SkCodec.
      *               Either way, this stream is unowned.
+     * @param opts   The options of the decode. If they hold a subset, the mask is applied
+     *               only to the subset's columns, which the swizzler wrote at the start of
+     *               each row.
      */
-    void decodeIcoMask(SkStream* stream, const SkImageInfo& dstInfo, void* dst, size_t dstRowBytes);
+    void decodeIcoMask(SkStream* stream,
+                       const SkImageInfo& dstInfo,
+                       void* dst,
+                       size_t dstRowBytes,
+                       const Options& opts);
 
     sk_sp<SkColorPalette>       fColorTable;
     // fNumColors is the number specified in the header, or 0 if not present in the header.
