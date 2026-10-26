@@ -33,9 +33,11 @@
 #include "include/private/SkTo.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <initializer_list>
 #include <iterator>
 #include <limits>
+#include <memory>
 #include <utility>
 
 // Having this be an export works around IWYU churn related to
@@ -148,11 +150,29 @@ SkSpan(Container&&) ->
 
 #else
 
+#include <cstddef>
+#include <cstdint>
+#include <memory>
 #include <span>
+#include <utility>
 
 template <typename T> using SkSpan = std::span<T>;
 
 #endif  // legacy
+
+template <typename T> constexpr SkSpan<T> SkSpanFromRef(T& t) {
+    return SkSpan<T>{std::addressof(t), 1u};
+}
+
+template <typename T> constexpr SkSpan<const uint8_t> SkAsByteSpan(const T& t) {
+    SkSpan s(t);
+    return SkSpan<const uint8_t>{reinterpret_cast<const uint8_t*>(s.data()), s.size_bytes()};
+}
+
+template <typename T> constexpr SkSpan<uint8_t> SkAsWritableByteSpan(T&& t) {
+    SkSpan s(std::forward<T>(t));
+    return SkSpan<uint8_t>{reinterpret_cast<uint8_t*>(s.data()), s.size_bytes()};
+}
 
 // These helper functions are temporary and only meant to be used during the Spanify process
 // to ease the transition from pointers to spans (e.g. replacing `ptr++`).
