@@ -20,13 +20,13 @@
 
 namespace skgpu::graphite {
 
-class TextureProxy;
 class CommandBuffer;
 class Context;
 class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
 class ScratchResourceManager;
+class TextureProxy;
 
 /**
  * RenderPassTask handles preparing and recording DrawLists into a single render pass within a
