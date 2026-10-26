@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54a7badb_eaebedf3",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-10-26T20:47:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ce82ac3_7ab31030",
+      "range": {
+        "startLine": 108,
+        "startChar": 11,
+        "endLine": 109,
+        "endChar": 26
+      },
+      "revId": "21120b0cc0d18530626919866480f85ab6e70fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30053dd6_51e1e967",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-16T14:49:17Z",
       "side": 1,
       "message": "If `Count \u003d\u003d SkDynamicExtent` we\u0027ll always fail the `sk_collection_check_length` check. Would it better to use a strict `\u003c` in the requires so that callers are required to specify a non-dynamic extent?\n\nOr should the behavior be that if Count \u003d\u003d SkDynamicExtent that it returns the whole span?",
+      "range": {
+        "startLine": 221,
+        "startChar": 18,
+        "endLine": 221,
+        "endChar": 23
+      },
+      "revId": "21120b0cc0d18530626919866480f85ab6e70fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da2b2a29_665366fc",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-10-26T20:47:02Z",
+      "side": 1,
+      "message": "Added Count !\u003d SkDynamicExtent to first\u003cCount\u003e() and last\u003cCount\u003e(). Rejecting it at compile time ensures callers don\u0027t use them to request a dynamic-extent span \n(which would just convert the span to a dynamic one, and there are already direct ways to do that)",
+      "parentUuid": "30053dd6_51e1e967",
       "range": {
         "startLine": 221,
         "startChar": 18,
