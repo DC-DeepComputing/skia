@@ -16,6 +16,24 @@
       "message": "Move comment too",
       "revId": "fd8edd3ef1ea7bcca699edf7577dc08d59fb5308",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0bda340_d6073f8b",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1485,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-26T16:02:04Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "5ede4070_49ed448b",
+      "revId": "fd8edd3ef1ea7bcca699edf7577dc08d59fb5308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
