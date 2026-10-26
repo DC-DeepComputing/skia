@@ -19,6 +19,14 @@ namespace skcpu {
 class Recorder;
 }
 
+enum class SkBackendSelection {
+    kAutomatic,  //!< Selects the optimal backend, preferring the attached GPU backend if available.
+    kCPU,        //!< Explicitly forces the creation of a CPU-backed recorder.
+    kGPU,        //!< Forces the use of the attached GPU backend (returns nullptr if none present).
+    kRaster = kCPU,
+    kGpu = kGPU,
+};
+
 class SK_API SkRecorder {
 public:
     SkRecorder();
@@ -46,7 +54,6 @@ protected:
     skia_private::TArray<sk_sp<SkCaptureAsset>> fCapturedPictures;
 
 private:
-
     /**
     * Attempts to create and return an SkCaptureCanvas that wraps the provided base canvas.
     * Returns nullptr if capture is not enabled.
@@ -58,7 +65,7 @@ private:
     virtual void createCaptureBreakpoint(SkSurface*) = 0;
     virtual void deregisterCaptureCanvas(SkCanvas*) = 0;
 
-    friend class SkSurface_Base; // for capture functionality
+    friend class SkSurface_Base;  // for capture functionality
 };
 
 #endif

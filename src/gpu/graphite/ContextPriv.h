@@ -48,49 +48,36 @@ public:
     }
 
     static std::unique_ptr<SkGPUContext> AsGPUContext(std::unique_ptr<Context> context) {
-        return std::unique_ptr<SkGPUContext>(context.release());
+        return std::unique_ptr<SkGPUContext>(static_cast<SkGPUContext*>(context.release()));
     }
 
 #if defined(GPU_TEST_UTILS)
-    const GlobalCache* globalCache() const {
-        return fContext->fSharedContext->globalCache();
-    }
-    GlobalCache* globalCache() {
-        return fContext->fSharedContext->globalCache();
-    }
+    const GlobalCache* globalCache() const { return fContext->fSharedContext->globalCache(); }
+    GlobalCache* globalCache() { return fContext->fSharedContext->globalCache(); }
 #endif
     const RendererProvider* rendererProvider() const {
         return fContext->fSharedContext->rendererProvider();
     }
-    ResourceProvider* resourceProvider() const {
-        return fContext->fResourceProvider.get();
-    }
-    SharedContext* sharedContext() {
-        return fContext->fSharedContext.get();
-    }
+    ResourceProvider* resourceProvider() const { return fContext->fResourceProvider.get(); }
+    SharedContext* sharedContext() { return fContext->fSharedContext.get(); }
 
 #if defined(GPU_TEST_UTILS)
-    void startCapture() {
-        fContext->fQueueManager->startCapture();
-    }
-    void stopCapture() {
-        fContext->fQueueManager->stopCapture();
-    }
+    void startCapture() { fContext->fQueueManager->startCapture(); }
+    void stopCapture() { fContext->fQueueManager->stopCapture(); }
 
-    void deregisterRecorder(const Recorder* recorder) {
-        fContext->deregisterRecorder(recorder);
-    }
+    void deregisterRecorder(const Recorder* recorder) { fContext->deregisterRecorder(recorder); }
 
     bool readPixels(const SkPixmap&,
                     const TextureProxyView&,
                     const SkImageInfo& srcImageInfo,
-                    int srcX, int srcY);
+                    int srcX,
+                    int srcY);
 
     static void disableSmallSizeReadCPUFallback_ForTesting(bool disable);
 #endif
 
 private:
-    friend class Context; // to construct/copy this type.
+    friend class Context;  // to construct/copy this type.
 
     explicit ContextPriv(Context* context) : fContext(context) {}
 
@@ -98,7 +85,7 @@ private:
 
     // No taking addresses of this type.
     const ContextPriv* operator&() const;
-    ContextPriv *operator&();
+    ContextPriv* operator&();
 
     Context* fContext;
 };
@@ -106,9 +93,7 @@ private:
 inline ContextPriv Context::priv() { return ContextPriv(this); }
 
 // NOLINTNEXTLINE(readability-const-return-type)
-inline const ContextPriv Context::priv() const {
-    return ContextPriv(const_cast<Context *>(this));
-}
+inline const ContextPriv Context::priv() const { return ContextPriv(const_cast<Context*>(this)); }
 
 // This class is friended by the Context and allows the backend ContextFactory functions to
 // trampoline through this to call the private Context ctor. We can't directly friend the factory
@@ -121,6 +106,6 @@ public:
                                                 const ContextOptions&);
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_ContextPriv_DEFINED
+#endif  // skgpu_graphite_ContextPriv_DEFINED
