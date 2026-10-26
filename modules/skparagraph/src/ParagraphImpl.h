@@ -188,6 +188,7 @@ public:
     int32_t unresolvedGlyphs() override;
     std::unordered_set<SkUnichar> unresolvedCodepoints() override;
     void addUnresolvedCodepoints(TextRange textRange);
+    bool isCoreTextShaped() const { return fCoreTextShaped; }
 
     void setState(InternalState state);
     sk_sp<SkPicture> getPicture() { return fPicture; }
@@ -254,8 +255,15 @@ private:
 
     friend class TextWrapper;
     friend class OneLineShaper;
+    friend class CoreTextLineShaper;
 
     void computeEmptyMetrics();
+
+    // kCoreText paragraphs resolve families without FontCollection's default manager, so strut
+    // and empty-line metrics come from the faces the CoreText runs are shaped with
+    std::vector<sk_sp<SkTypeface>> findTypefaces(const std::vector<SkString>& familyNames,
+                                                 SkFontStyle fontStyle,
+                                                 const std::optional<FontArguments>& fontArgs);
 
     // Input
     skia_private::TArray<StyleBlock<SkScalar>> fLetterSpaceStyles;
@@ -299,6 +307,7 @@ private:
     sk_sp<SkUnicode> fUnicode;
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
+    bool fCoreTextShaped;
     TextIndex fTrailingSpaces;
 };
 }  // namespace textlayout
