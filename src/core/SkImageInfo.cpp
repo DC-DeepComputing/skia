@@ -56,32 +56,68 @@ bool SkColorTypeIsAlwaysOpaque(SkColorType ct) {
 
 bool SkYUVColorSpaceIsLimitedRange(SkYUVColorSpace cs) {
     switch (cs) {
-        case kRec601_Limited_SkYUVColorSpace:
-        case kRec709_Limited_SkYUVColorSpace:
+        case kRec601_8bit_Limited_SkYUVColorSpace:
+        case kRec601_10bit_Limited_SkYUVColorSpace:
+        case kRec601_12bit_Limited_SkYUVColorSpace:
+        case kRec601_16bit_Limited_SkYUVColorSpace:
+        case kRec709_8bit_Limited_SkYUVColorSpace:
+        case kRec709_10bit_Limited_SkYUVColorSpace:
+        case kRec709_12bit_Limited_SkYUVColorSpace:
+        case kRec709_16bit_Limited_SkYUVColorSpace:
         case kBT2020_8bit_Limited_SkYUVColorSpace:
         case kBT2020_10bit_Limited_SkYUVColorSpace:
         case kBT2020_12bit_Limited_SkYUVColorSpace:
         case kBT2020_16bit_Limited_SkYUVColorSpace:
-        case kFCC_Limited_SkYUVColorSpace:
-        case kSMPTE240_Limited_SkYUVColorSpace:
-        case kYDZDX_Limited_SkYUVColorSpace:
-        case kGBR_Limited_SkYUVColorSpace:
+        case kFCC_8bit_Limited_SkYUVColorSpace:
+        case kFCC_10bit_Limited_SkYUVColorSpace:
+        case kFCC_12bit_Limited_SkYUVColorSpace:
+        case kFCC_16bit_Limited_SkYUVColorSpace:
+        case kSMPTE240_8bit_Limited_SkYUVColorSpace:
+        case kSMPTE240_10bit_Limited_SkYUVColorSpace:
+        case kSMPTE240_12bit_Limited_SkYUVColorSpace:
+        case kSMPTE240_16bit_Limited_SkYUVColorSpace:
+        case kYDZDX_8bit_Limited_SkYUVColorSpace:
+        case kYDZDX_10bit_Limited_SkYUVColorSpace:
+        case kYDZDX_12bit_Limited_SkYUVColorSpace:
+        case kYDZDX_16bit_Limited_SkYUVColorSpace:
+        case kGBR_8bit_Limited_SkYUVColorSpace:
+        case kGBR_10bit_Limited_SkYUVColorSpace:
+        case kGBR_12bit_Limited_SkYUVColorSpace:
+        case kGBR_16bit_Limited_SkYUVColorSpace:
         case kYCgCo_8bit_Limited_SkYUVColorSpace:
         case kYCgCo_10bit_Limited_SkYUVColorSpace:
         case kYCgCo_12bit_Limited_SkYUVColorSpace:
         case kYCgCo_16bit_Limited_SkYUVColorSpace:
             return true;
 
-        case kJPEG_Full_SkYUVColorSpace:
-        case kRec709_Full_SkYUVColorSpace:
+        case kRec601_8bit_Full_SkYUVColorSpace:
+        case kRec601_10bit_Full_SkYUVColorSpace:
+        case kRec601_12bit_Full_SkYUVColorSpace:
+        case kRec601_16bit_Full_SkYUVColorSpace:
+        case kRec709_8bit_Full_SkYUVColorSpace:
+        case kRec709_10bit_Full_SkYUVColorSpace:
+        case kRec709_12bit_Full_SkYUVColorSpace:
+        case kRec709_16bit_Full_SkYUVColorSpace:
         case kBT2020_8bit_Full_SkYUVColorSpace:
         case kBT2020_10bit_Full_SkYUVColorSpace:
         case kBT2020_12bit_Full_SkYUVColorSpace:
         case kBT2020_16bit_Full_SkYUVColorSpace:
-        case kFCC_Full_SkYUVColorSpace:
-        case kSMPTE240_Full_SkYUVColorSpace:
-        case kYDZDX_Full_SkYUVColorSpace:
-        case kGBR_Full_SkYUVColorSpace:
+        case kFCC_8bit_Full_SkYUVColorSpace:
+        case kFCC_10bit_Full_SkYUVColorSpace:
+        case kFCC_12bit_Full_SkYUVColorSpace:
+        case kFCC_16bit_Full_SkYUVColorSpace:
+        case kSMPTE240_8bit_Full_SkYUVColorSpace:
+        case kSMPTE240_10bit_Full_SkYUVColorSpace:
+        case kSMPTE240_12bit_Full_SkYUVColorSpace:
+        case kSMPTE240_16bit_Full_SkYUVColorSpace:
+        case kYDZDX_8bit_Full_SkYUVColorSpace:
+        case kYDZDX_10bit_Full_SkYUVColorSpace:
+        case kYDZDX_12bit_Full_SkYUVColorSpace:
+        case kYDZDX_16bit_Full_SkYUVColorSpace:
+        case kGBR_8bit_Full_SkYUVColorSpace:
+        case kGBR_10bit_Full_SkYUVColorSpace:
+        case kGBR_12bit_Full_SkYUVColorSpace:
+        case kGBR_16bit_Full_SkYUVColorSpace:
         case kYCgCo_8bit_Full_SkYUVColorSpace:
         case kYCgCo_10bit_Full_SkYUVColorSpace:
         case kYCgCo_12bit_Full_SkYUVColorSpace:
