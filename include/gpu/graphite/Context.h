@@ -48,7 +48,7 @@ namespace skgpu {
 enum class BackendApi : unsigned int;
 enum class GpuStatsFlags : uint32_t;
 class MutableTextureState;
-}
+}  // namespace skgpu
 
 namespace skgpu::graphite {
 
@@ -285,6 +285,8 @@ public:
      */
     bool supportsProtectedContent() const override;
 
+    std::unique_ptr<SkRecorder> makeSkRecorder() override;
+
     /*
      * Gets the types of GPU stats supported by this Context.
      */
@@ -445,6 +447,6 @@ private:
     const ContextID fContextID;
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_Context_DEFINED
+#endif  // skgpu_graphite_Context_DEFINED
