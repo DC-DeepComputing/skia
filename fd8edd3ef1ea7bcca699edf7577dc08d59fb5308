@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ede4070_49ed448b",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1485,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-26T16:01:33Z",
+      "side": 0,
+      "message": "Move comment too",
+      "revId": "fd8edd3ef1ea7bcca699edf7577dc08d59fb5308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
