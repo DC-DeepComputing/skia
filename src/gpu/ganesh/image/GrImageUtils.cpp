@@ -817,7 +817,7 @@ public:
                                              GrProtected::kNo,
                                              fOrigin,
                                              this->surfaceProps(),
-                                             skgpu::ganesh::Device::InitContents::kUninit);
+                                             skgpu::ganesh::Device::InitContents::kClear);
     }
 
 private:

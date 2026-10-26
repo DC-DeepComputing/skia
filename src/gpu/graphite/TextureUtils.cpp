@@ -800,7 +800,7 @@ public:
                                              skgpu::Mipmapped::kNo,
                                              SkBackingFit::kApprox,
                                              this->surfaceProps(),
-                                             skgpu::graphite::LoadOp::kDiscard,
+                                             skgpu::graphite::LoadOp::kClear,
                                              "EvalBlurTexture");
     }
 
