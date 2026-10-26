@@ -16,6 +16,40 @@
       "message": "Michael: could you review the matrix/API approach, or redirect this to the appropriate YUV/color owner? The companion Chromium change is https://chromium-review.googlesource.com/c/chromium/src/+/8647669.\n\nMoving this out of WIP for initial feedback. The validation limitations in the description still apply: the fresh-main patch has not run through the Skia YUVMath/DM harness, and the older combined Chromium/browser measurements are not validation of this rebased patch. Could a maintainer start the appropriate tryjobs? Landing remains blocked on that validation and author self-review.",
       "revId": "bcd5d71a35631c20cc5bcd0030eca27aab378c66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "794766ed_8cd5a09f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-26T16:32:07Z",
+      "side": 1,
+      "message": "If we\u0027re going to go this route, we should fill this out for all MatrixCoefficients that we support.",
+      "revId": "bcd5d71a35631c20cc5bcd0030eca27aab378c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f44fdd2_bba2d6cc",
+        "filename": "include/core/SkImageInfo.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-26T16:32:07Z",
+      "side": 1,
+      "message": "This should do the full complement of 8/10/12/16 for all of the MatrixCoefficientx x Range listings.\n\n(This is getting slightly unwieldy ... I guess in the end H.273 only has 17 entries, of which only a handful are usable or unique, so this table won\u0027t get tooooooo crazy...).",
+      "revId": "bcd5d71a35631c20cc5bcd0030eca27aab378c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
