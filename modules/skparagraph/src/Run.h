@@ -95,6 +95,7 @@ public:
     const SkFont& font() const { return fFont; }
     bool leftToRight() const { return fBidiLevel % 2 == 0; }
     uint8_t bidiLevel() const { return fBidiLevel; }
+    SkFourByteTag script() const { return fScript; }
     TextDirection getTextDirection() const { return leftToRight() ? TextDirection::kLtr : TextDirection::kRtl; }
     size_t index() const { return fIndex; }
     SkScalar heightMultiplier() const { return fHeightMultiplier; }
@@ -121,7 +122,9 @@ public:
         return SkRect::MakeXYWH(fOffset.fX, fOffset.fY, fAdvance.fX, fAdvance.fY);
     }
 
-    bool isCursiveScript() const;
+    bool isCursiveScript() const { return IsCursiveScript(fScript); }
+    // Joining scripts that letter spacing would break apart, shared by both shaping engines
+    static bool IsCursiveScript(SkFourByteTag script);
 
     void addSpacesAtTheEnd(SkScalar space, Cluster* cluster);
     SkScalar addLetterSpacesEvenly(SkScalar space, Cluster* cluster);
@@ -175,6 +178,7 @@ private:
     friend class InternalLineMetrics;
     friend class ParagraphCache;
     friend class OneLineShaper;
+    friend class CoreTextLineShaper;
 
     ParagraphImpl* fOwner;
     TextRange fTextRange;
