@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b5525be_418eed2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-26T14:22:16Z",
+      "side": 1,
+      "message": "Thanks for addressing both points in PS6! I re-ran the tests from the companion CL against PS6:\nSkGraphics_FontCacheHonorsBuildDefaults now passes with both SK_DEFAULT_FONT_CACHE_LIMIT and\nSK_DEFAULT_FONT_CACHE_COUNT_LIMIT overridden, and\nSkGraphics_FontCacheControlsTargetThreadLocalStrikeCache passes with\nskia_enable_threadlocal_strikecache \u003d true; the full CPU test suite is green as well.\n\nThe tests aren\u0027t exercised by any default bot config, so it\u0027s your call whether to fold them in;\notherwise I\u0027ll abandon https://skia-review.googlesource.com/c/skia/+/1402716.\n\nNit (optional): the `SkOpenTypeSVGDecoder` forward declaration in include/core/SkContext.h is\nstill unused.",
+      "revId": "a90d60fa69172bbd9c60ff30c692f40bb012c9a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
