@@ -12,6 +12,7 @@
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkGPUContext.h"
+#include "src/gpu/ganesh/SkGaneshRecorder.h"
 
 #include <chrono>
 #include <cstddef>
@@ -72,6 +73,10 @@ public:
 
     bool supportsProtectedContent() const override {
         return fDirectContext->supportsProtectedContent();
+    }
+
+    std::unique_ptr<SkRecorder> makeSkRecorder() override {
+        return std::make_unique<SkGaneshRecorder>(fDirectContext.get());
     }
 
 private:

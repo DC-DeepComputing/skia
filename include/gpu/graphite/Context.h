@@ -285,6 +285,8 @@ public:
      */
     bool supportsProtectedContent() const override;
 
+    std::unique_ptr<SkRecorder> makeSkRecorder() override;
+
     /*
      * Gets the types of GPU stats supported by this Context.
      */

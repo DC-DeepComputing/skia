@@ -13,6 +13,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "include/cpu/Recorder.h"
 #include "include/private/SkGPUContext.h"
 #include "include/private/SkOnce.h"
 #include "src/capture/SkCapture.h"
@@ -79,6 +80,24 @@ sk_sp<SkCapture> SkContext::endCapture() {
 
     fCaptureManager->toggleCapture(false);
     return fCaptureManager->getLastCapture();
+}
+
+std::unique_ptr<SkRecorder> SkContext::makeRecorder(SkBackendSelection backend) {
+    switch (backend) {
+        case SkBackendSelection::kAutomatic:
+            if (fGPUContext) {
+                return fGPUContext->makeSkRecorder();
+            }
+            return std::make_unique<skcpu::Recorder>();
+        case SkBackendSelection::kCPU:
+            return std::make_unique<skcpu::Recorder>();
+        case SkBackendSelection::kGPU:
+            if (fGPUContext) {
+                return fGPUContext->makeSkRecorder();
+            }
+            return nullptr;
+    }
+    SkUNREACHABLE;
 }
 
 SkResourceCache* SkContext::resourceCache() const {
