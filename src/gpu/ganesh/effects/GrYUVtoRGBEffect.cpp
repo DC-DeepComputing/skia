@@ -105,9 +105,8 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
     bool usesBorder = samplerState.wrapModeX() == GrSamplerState::WrapMode::kClampToBorder ||
                       samplerState.wrapModeY() == GrSamplerState::WrapMode::kClampToBorder;
     if (packedYUYV && usesBorder) {
-        // A single border color per plane cannot represent the alternating U/V chroma lanes of the
-        // packed plane.
-        SkASSERT(false);
+        // Clamp-to-border is not supported by the packed YUV shader. Reject it without asserting,
+        // since callers can request it through SkTileMode::kDecal.
         return nullptr;
     }
     float planeBorders[4][4] = {};
@@ -420,7 +419,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
                 // Halve the x coordinate to index the plane's texels, then snap to the pair's texel
                 // center for nearest filtering.
                 fragBuilder->codeAppendf(
-                        "float2 texelCenter = float2(floor(planeCoord.x * 0.5) + 0.5, "
+                        "float2 texelCenter = float2(floor(pixelIdx * 0.5) + 0.5, "
                                                     "floor(planeCoord.y) + 0.5);");
                 fragBuilder->codeAppendf(
                         "half4 s0 = %s;",

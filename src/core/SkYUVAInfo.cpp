@@ -49,7 +49,7 @@ std::tuple<int, int> SkYUVAInfo::PlaneSubsamplingFactors(PlaneConfig planeConfig
                                                          int planeIdx) {
     if (!is_plane_config_compatible_with_subsampling(planeConfig, subsampling) ||
         planeIdx < 0                                                           ||
-        planeIdx > NumPlanes(planeConfig)) {
+        planeIdx >= NumPlanes(planeConfig)) {
         return {0, 0};
     }
     bool isSubsampledPlane = false;

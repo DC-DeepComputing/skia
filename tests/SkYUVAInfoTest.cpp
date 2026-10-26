@@ -45,6 +45,11 @@ DEF_TEST(SkYUVAInfoPackedYUYV, reporter) {
     auto [ssx, ssy] = info.planeSubsamplingFactors(0);
     REPORTER_ASSERT(reporter, ssx == 2 && ssy == 1);
 
+    for (int planeIdx : {-1, info.numPlanes(), info.numPlanes() + 1}) {
+        auto [invalidX, invalidY] = info.planeSubsamplingFactors(planeIdx);
+        REPORTER_ASSERT(reporter, invalidX == 0 && invalidY == 0);
+    }
+
     // Odd image widths are not representable (the last pixel would be
     // unpaired) and are rejected by the constructor.
     SkYUVAInfo odd({1919, 1080}, PlaneConfig::kYUYV, Subsampling::k422,
@@ -90,6 +95,11 @@ DEF_TEST(SkYUVAInfoSinglePlaneConfigs, reporter) {
     REPORTER_ASSERT(reporter, y410.numPlanes() == 1);
     REPORTER_ASSERT(reporter, y410.hasAlpha());
     REPORTER_ASSERT(reporter, y410.numChannelsInPlane(0) == 4);
+
+    for (int planeIdx : {-1, y410.numPlanes(), y410.numPlanes() + 1}) {
+        auto [invalidX, invalidY] = y410.planeSubsamplingFactors(planeIdx);
+        REPORTER_ASSERT(reporter, invalidX == 0 && invalidY == 0);
+    }
 
     const uint32_t rgbaFlags = kRGBA_SkColorChannelFlags;
     auto locations = y410.toYUVALocations(&rgbaFlags);
