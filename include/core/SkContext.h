@@ -8,6 +8,7 @@
 #ifndef SkContext_DEFINED
 #define SkContext_DEFINED
 
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
@@ -51,6 +52,13 @@ public:
      * Ends the SkCapture and returns the collected draws and surface creation.
      */
     sk_sp<SkCapture> endCapture();
+
+    /**
+     * Creates and returns a new SkRecorder for this context based on the requested backend.
+     * Defaults to SkBackendSelection::kAutomatic.
+     */
+    std::unique_ptr<SkRecorder> makeRecorder(
+            SkBackendSelection backend = SkBackendSelection::kAutomatic);
 
 private:
     SkContext(const SkContextOptions&);
