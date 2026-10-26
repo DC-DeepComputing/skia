@@ -14,6 +14,7 @@
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLDefines.h"
@@ -705,13 +706,13 @@ struct InlineCandidate {
     // The SymbolTable of the candidate.
     RAW_PTR_EXCLUSION SymbolTable* fSymbols;
     // The parent Statement of the enclosing statement.
-    std::unique_ptr<Statement>* fParentStmt;
+    raw_ptr<std::unique_ptr<Statement>, DanglingUntriaged> fParentStmt;
     // The Statement containing the candidate.
     RAW_PTR_EXCLUSION std::unique_ptr<Statement>* fEnclosingStmt;
     // The candidate FunctionCall to be inlined.
     RAW_PTR_EXCLUSION std::unique_ptr<Expression>* fCandidateExpr;
     // The Function containing the candidate.
-    FunctionDefinition* fEnclosingFunction;
+    raw_ptr<FunctionDefinition> fEnclosingFunction;
 };
 
 struct InlineCandidateList {
