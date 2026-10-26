@@ -2654,9 +2654,11 @@ void GrVkGpu::endRenderPass(GrRenderTarget* target, GrSurfaceOrigin origin,
 }
 
 bool GrVkGpu::checkVkResult(VkResult result) {
+    if (result == VK_SUCCESS) {
+        return true;
+    }
+    this->setVerifiedOpFailed();
     switch (result) {
-        case VK_SUCCESS:
-            return true;
         case VK_ERROR_DEVICE_LOST:
         case VK_ERROR_UNKNOWN:
             if (!fDeviceIsLost) {
