@@ -194,19 +194,14 @@ int proxy_run_count(const GrTextureSetEntry set[], int count) {
 
 bool safe_to_ignore_subset_rect(GrAAType aaType, GrSamplerState::Filter filter,
                                 const DrawQuad& quad, const SkRect& subsetRect) {
-    // If both the device and local quad are both axis-aligned, and filtering is off, the local quad
-    // can push all the way up to the edges of the the subset rect and the sampler shouldn't
-    // overshoot. Unfortunately, antialiasing adds enough jitter that we can only rely on this in
-    // the non-antialiased case.
+    // NOTE: a local quad that merely touches the subset edges is NOT safe even for non-AA nearest
+    // sampling: texture units convert the scaled coordinate to fixed point with limited sub-texel
+    // precision (D3D11: >= 8 fractional bits, round-to-nearest; Vulkan: subTexelPrecisionBits >= 4),
+    // so for magnifications above 2^precision the last pixel centre snaps onto the texel just
+    // outside the subset (e.g. never-written approx-fit padding). Only the 0.5-texel inset below
+    // guarantees the sampler cannot leave the subset; otherwise keep the subset and let
+    // normalize_and_inset_subset() clamp sampling to texel centres.
     SkRect localBounds = quad.fLocal.bounds();
-    if (aaType == GrAAType::kNone &&
-        filter == GrSamplerState::Filter::kNearest &&
-        quad.fDevice.quadType() == GrQuad::Type::kAxisAligned &&
-        quad.fLocal.quadType() == GrQuad::Type::kAxisAligned &&
-        subsetRect.contains(localBounds)) {
-
-        return true;
-    }
 
     // If the local quad is inset by at least 0.5 pixels into the subset rect's bounds, the
     // sampler shouldn't overshoot, even when antialiasing and filtering is taken into account.

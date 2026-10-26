@@ -6,18 +6,26 @@
  */
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/gpu/SkBackingFit.h"
@@ -168,3 +176,61 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureOpTest, reporter, ctxInfo, CtsEnfo
 
     chain1.deleteOps();
 }
+
+// Test that TextureOp does not overshoot a strict subset edge during nearest-neighbor
+// magnification sampling (crbug.com/576937680). Due to limited sub-texel precision
+// in hardware texture units (8-bit for D3D11, 4-bit for Vulkan), round-to-nearest snaps
+// coordinates close to the boundary to the adjacent texel unless clamped in the shader.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureOpNearestSubsetOvershootTest,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    GrDirectContext* dContext = ctxInfo.directContext();
+
+    // Create a source surface where the left half [0, 0, 4, 4] is BLUE and the right
+    // half [4, 0, 8, 4] is RED.
+    SkImageInfo srcInfo = SkImageInfo::MakeN32Premul(8, 4);
+    auto srcSurface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, srcInfo);
+    if (!srcSurface) {
+        return;
+    }
+    srcSurface->getCanvas()->clear(SK_ColorRED);
+    SkPaint bluePaint;
+    bluePaint.setColor(SK_ColorBLUE);
+    bluePaint.setBlendMode(SkBlendMode::kSrc);
+    srcSurface->getCanvas()->drawRect(SkRect::MakeWH(4, 4), bluePaint);
+
+    sk_sp<SkImage> srcImage = srcSurface->makeImageSnapshot();
+
+    // Create a destination surface with width 2048 (512x magnification of width 4,
+    // which exceeds 8-bit precision: 2048 / 4 = 512 > 256).
+    const int dstW = 2048;
+    const int dstH = 4;
+    SkImageInfo dstInfo = SkImageInfo::MakeN32Premul(dstW, dstH);
+    auto dstSurface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, dstInfo);
+    if (!dstSurface) {
+        return;
+    }
+    dstSurface->getCanvas()->clear(SK_ColorTRANSPARENT);
+
+    // Draw the subset [0, 0, 4, 4] with strict constraint, nearest filtering, and no AA.
+    SkPaint paint;
+    paint.setAntiAlias(false);
+    dstSurface->getCanvas()->drawImageRect(
+            srcImage,
+            SkRect::MakeWH(4, 4),
+            SkRect::MakeWH(dstW, dstH),
+            SkSamplingOptions(SkFilterMode::kNearest),
+            &paint,
+            SkCanvas::kStrict_SrcRectConstraint);
+
+    // Read back the rightmost column (x = dstW - 1).
+    // If the subset clamp was improperly ignored, the sampler snaps to texel 4 (RED).
+    // With proper clamping, it samples texel 3 (BLUE).
+    SkBitmap bm;
+    bm.allocN32Pixels(1, 1);
+    REPORTER_ASSERT(reporter, dstSurface->readPixels(bm, dstW - 1, 0));
+    REPORTER_ASSERT(reporter, bm.getColor(0, 0) == SK_ColorBLUE);
+}
+
+
