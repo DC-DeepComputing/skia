@@ -10,6 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkImageFilter.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -18,6 +19,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkImageFilters.h"
 #include "src/core/SkBlurMask.h"
 #include "tools/fonts/FontToolUtils.h"
 
@@ -34,13 +36,21 @@ protected:
 
     SkISize getISize() override { return SkISize::Make(950, 950); }
 
+    bool onChar(SkUnichar uni) override {
+        if (uni == 'b') {
+            fUseImageFilter = !fUseImageFilter;
+            return true;
+        }
+        return false;
+    }
+
     void onOnceBeforeDraw() override {
         static constexpr std::array<float, kNumBlurs> blurRadii = {1.f, 5.f, 10.f, 20.f};
 
         for (int i = 0; i < kNumBlurs; ++i) {
-            fBlurFilters[i] = SkMaskFilter::MakeBlur(
-                                    kNormal_SkBlurStyle,
-                                    SkBlurMask::ConvertRadiusToSigma(blurRadii[i]));
+            const float sigma = SkBlurMask::ConvertRadiusToSigma(blurRadii[i]);
+            fMaskFilters[i] = SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma);
+            fImageFilters[i] = SkImageFilters::Blur(sigma, sigma, nullptr);
         }
     }
 
@@ -56,7 +66,11 @@ protected:
             for (size_t j = 0; j < std::size(circleRadii); ++j) {
                 SkPaint paint;
                 paint.setColor(SK_ColorBLACK);
-                paint.setMaskFilter(fBlurFilters[i]);
+                if (fUseImageFilter) {
+                    paint.setImageFilter(fImageFilters[i]);
+                } else {
+                    paint.setMaskFilter(fMaskFilters[i]);
+                }
 
                 static constexpr SkPoint kCenter = {50.f, 50.f};
                 // Throw a rotation in the mix to make sure GPU fast path handles it correctly.
@@ -71,7 +85,9 @@ protected:
 private:
     inline static constexpr int kNumBlurs = 4;
 
-    std::array<sk_sp<SkMaskFilter>, kNumBlurs> fBlurFilters;
+    std::array<sk_sp<SkMaskFilter>, kNumBlurs> fMaskFilters;
+    std::array<sk_sp<SkImageFilter>, kNumBlurs> fImageFilters;
+    bool fUseImageFilter = false;
 
     using INHERITED =         skiagm::GM;
 };
