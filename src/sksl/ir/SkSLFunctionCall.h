@@ -8,6 +8,7 @@
 #ifndef SKSL_FUNCTIONCALL
 #define SKSL_FUNCTIONCALL
 
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -66,7 +67,7 @@ public:
                                                               const ExpressionArray& arguments);
 
     const FunctionDeclaration& function() const {
-        return fFunction;
+        return *fFunction;
     }
 
     ExpressionArray& arguments() {
@@ -86,7 +87,7 @@ public:
     std::string description(OperatorPrecedence) const override;
 
 private:
-    const FunctionDeclaration& fFunction;
+    const raw_ref<const FunctionDeclaration> fFunction;
     ExpressionArray fArguments;
 
     // The stable pointer uniquely identifies this FunctionCall across an entire SkSL program.

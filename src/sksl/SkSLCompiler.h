@@ -10,6 +10,7 @@
 
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/SkSLContext.h"  // IWYU pragma: keep
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLPosition.h"
@@ -183,11 +184,11 @@ private:
         explicit CompilerErrorReporter(Compiler* compiler) : fCompiler(*compiler) {}
 
         void handleError(std::string_view msg, Position pos) override {
-            fCompiler.handleError(msg, pos);
+            fCompiler->handleError(msg, pos);
         }
 
     private:
-        Compiler& fCompiler;
+        const raw_ref<Compiler> fCompiler;
     };
 
     /** Updates ProgramSettings to eliminate contradictions and to honor the ProgramKind. */
