@@ -33,6 +33,7 @@ class GrDirectContextPriv;
 class GrGpu;
 class GrResourceCache;
 class GrResourceProvider;
+class SkContext;
 class SkData;
 class SkImage;
 class SkPixmap;
@@ -42,6 +43,7 @@ class SkTraceMemoryDump;
 enum SkColorType : int;
 enum class SkTextureCompressionType;
 struct GrMockOptions;
+struct SkContextOptions;
 
 namespace skgpu {
     class MutableTextureState;
@@ -1049,5 +1051,15 @@ private:
     friend class GrDirectContextPriv;
 };
 
+namespace SkContexts {
+
+/**
+ * Creates an SkContext wrapping an existing GrDirectContext.
+ */
+SK_API std::unique_ptr<SkContext> MakeGanesh(sk_sp<GrDirectContext> directContext,
+                                             const SkContextOptions& options);
+SK_API std::unique_ptr<SkContext> MakeGanesh(sk_sp<GrDirectContext> directContext);
+
+}  // namespace SkContexts
 
 #endif
