@@ -22,6 +22,30 @@
       },
       "revId": "4c7e05a0217590d5f9e97cc055437b3d2700c403",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeddc718_681b818c",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-26T21:03:53Z",
+      "side": 0,
+      "message": "If we did that I think we\u0027d also need to require integer translation here as well. I don\u0027t think width height matching is fully sufficient to avoid errors. I\u0027m happy to go with that approach if you desire.",
+      "parentUuid": "b12f60e7_9d76b711",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 43
+      },
+      "revId": "4c7e05a0217590d5f9e97cc055437b3d2700c403",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
