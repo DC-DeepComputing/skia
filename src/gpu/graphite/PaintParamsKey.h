@@ -141,7 +141,13 @@ public:
 
     bool operator==(const PaintParamsKey& that) const {
         return fData.size() == that.fData.size() &&
+<<<<<<< HEAD   (961c7e83d9434470c588f210a1bb5375f2970d73 [M156] [SkSL] Reject invalid types when parsing)
                !memcmp(fData.data(), that.fData.data(), fData.size());
+||||||| BASE   (6cfa510947b383694c08d9183dc22887d5349112 Reject fractional Slug replay for direct masks when atlas bi)
+               SK_UNSAFE_TODO(!memcmp(fData.data(), that.fData.data(), fData.size()));
+=======
+               SK_UNSAFE_TODO(!memcmp(fData.data(), that.fData.data(), fData.size_bytes()));
+>>>>>>> CHANGE (1c2b83b5af8f53181742af1505edd18c2418c777 [graphite] Fix PaintParamsKey comparison operator)
     }
     bool operator!=(const PaintParamsKey& that) const { return !(*this == that); }
 
