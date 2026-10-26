@@ -29,8 +29,8 @@ enum class MaskFormat : int;
 }
 
 namespace sktext::gpu {
-class SubRunAllocator;
 class AtlasSubRun;
+class SubRunAllocator;
 
 enum FillerType {
     kIsDirect,
