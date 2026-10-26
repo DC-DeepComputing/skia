@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30e1bb75_1a23880a",
+        "filename": "src/core/SkScan_AAAPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1249,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-26T16:56:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff46d1f9_f67097be",
+      "revId": "3245b1f716daa5a3259b285a701e0ad7a6b8f4d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d688ee1_bc253b68",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-26T13:34:56Z",
       "side": 1,
       "message": "It seems like this isn\u0027t the right file for this test. Maybe a new file like RasterizationTests.cpp ?",
+      "revId": "3245b1f716daa5a3259b285a701e0ad7a6b8f4d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18c55bf8_ff2705cd",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5970,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-26T16:56:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d688ee1_bc253b68",
       "revId": "3245b1f716daa5a3259b285a701e0ad7a6b8f4d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
