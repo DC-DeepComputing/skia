@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb9199c7_baf23263",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-26T18:47:19Z",
+      "side": 0,
+      "message": "These build tasks are no longer depended on by anything else.",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 311,
+        "endChar": 3
+      },
+      "revId": "77134dabf84855d57d5bf9f50ee41b61858a48fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb5dc5e_a6521aab",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 1121,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2026-10-26T18:47:19Z",
+      "side": 0,
+      "message": "Test and Perf tasks were renamed Ubuntu22.04 -\u003e Ubuntu24.04, and sorted.",
+      "range": {
+        "startLine": 1121,
+        "startChar": 18,
+        "endLine": 1121,
+        "endChar": 29
+      },
+      "revId": "77134dabf84855d57d5bf9f50ee41b61858a48fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
