@@ -23,12 +23,24 @@
 #include "include/private/SkTDArray.h"
 #include "include/private/chromium/Slug.h"
 #include "src/gpu/MaskFormat.h"
+<<<<<<< HEAD   (c2609d43d1efb837b13fe5e9f355083104e637ce [M157] [Graphite] Only allow clip path key bounds within int)
 #include "src/text/gpu/SlugImpl.h"
 #include "src/utils/SkFloatUtils.h"
+||||||| BASE   (509595bb972f8738dd46b10c930538d8eba11680 [png] Remove unneeded SkData.h include)
+=======
+#include "src/text/gpu/VertexFiller.h"
+>>>>>>> CHANGE (6cfa510947b383694c08d9183dc22887d5349112 Reject fractional Slug replay for direct masks when atlas bi)
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Recording.h"
+#include "include/gpu/graphite/Surface.h"
+#endif
 
 #include <cstdint>
 #include <cstring>
@@ -213,3 +225,526 @@ DEF_GANESH_TEST_FOR_CONTEXTS(Slug_b520571816,
             sktext::gpu::Slug::Deserialize(writableData.get(), size, nullptr);
     REPORTER_ASSERT(reporter, forgedSlug == nullptr);
 }
+<<<<<<< HEAD   (c2609d43d1efb837b13fe5e9f355083104e637ce [M157] [Graphite] Only allow clip path key bounds within int)
+||||||| BASE   (509595bb972f8738dd46b10c930538d8eba11680 [png] Remove unneeded SkData.h include)
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+    auto canvas = surface->getCanvas();
+
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    SkFont font(typeface);
+    font.setSize(16);
+
+    static const char* kText = "Hello World";
+    size_t textLen = strlen(kText);
+    SkTextBlobBuilder builder;
+    const SkTextBlobBuilder::RunBuffer& runBuf = builder.allocRun(font, textLen, 0, 0);
+    font.textToGlyphs(kText, textLen, SkTextEncoding::kUTF8, SkSpan(runBuf.glyphs, textLen));
+    auto blob = builder.make();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug = sktext::gpu::Slug::ConvertBlob(canvas, *blob, {10, 10}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // First draw and flush initializes backend data.
+    slug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+
+    // Verify the slug can be redrawn safely. Note: This does not test whether the Slug
+    // works when the atlas is full and evicted glyphs need to be re-fetched from the strike.
+    // That will be covered in a separate test.
+    slug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+
+    // Verify the slug can be serialized post-draw without losing strike descriptor info.
+    sk_sp<SkData> data = slug->serialize();
+    REPORTER_ASSERT(reporter, data != nullptr && data->size() > 0);
+
+    // Verify the serialized slug can be deserialized and drawn.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(data->data(), data->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    deserializedSlug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+}
+
+namespace {
+constexpr SkRect kGlyphRect = SkRect::MakeLTRB(0, -1, 1, 0);
+
+class RectGlyphDrawable final : public SkDrawable {
+protected:
+    SkRect onGetBounds() override { return kGlyphRect; }
+    void onDraw(SkCanvas* canvas) override {
+        canvas->drawRect(kGlyphRect, SkPaint());
+    }
+};
+
+sk_sp<SkTypeface> make_path_typeface() {
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 1.0f, SkPath::Rect(kGlyphRect));
+    return builder.detach();
+}
+
+sk_sp<SkTypeface> make_drawable_typeface() {
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 1.0f, sk_make_sp<RectGlyphDrawable>(), kGlyphRect);
+    return builder.detach();
+}
+
+sk_sp<SkTextBlob> make_blob(sk_sp<SkTypeface> tf, SkScalar size) {
+    SkTextBlobBuilder builder;
+    builder.allocRun(SkFont(std::move(tf), size), 1, 0, 0).glyphs[0] = 1;
+    return builder.make();
+}
+
+SkBitmap render_slug(SkSurface* surface, const sktext::gpu::Slug& slug, const SkPaint& paint) {
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorWHITE);
+    slug.draw(canvas, paint);
+    SkBitmap bm;
+    bm.allocPixels(surface->imageInfo());
+    SkAssertResult(surface->readPixels(bm, 0, 0));
+    return bm;
+}
+}  // namespace
+
+// PathOpSubmitter stores each glyph's SkGlyphID and its lazily resolved SkPath in IDOrPath.
+// Converting glyph IDs to SkPaths during submitDraws must not corrupt the glyph IDs written by
+// subsequent Slug::serialize() calls.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_PathSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+
+    // 400pt exceeds fGlyphsAsPathsFontSize (324 on desktop, 384 on Android), forcing PathSubRun
+    auto blob = make_blob(make_path_typeface(), /*size=*/400);
+    REPORTER_ASSERT(reporter, blob != nullptr);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {0, 64}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // Before the first draw, PathOpSubmitter::fIDsOrPaths holds the original SkGlyphIDs
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    // Drawing the Slug triggers PathOpSubmitter::submitDraws, which resolves each glyph's SkPath.
+    SkBitmap expectedPixels = render_slug(surface.get(), *slug, paint);
+    REPORTER_ASSERT(reporter, expectedPixels.getColor(32, 32) == SK_ColorBLACK);
+
+    // Verify that serializing after a draw still preserves the original SkGlyphIDs and data.
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    // Verify that deserializing postDrawData produces a Slug that renders matching pixels.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    SkBitmap actualPixels = render_slug(surface.get(), *deserializedSlug, paint);
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(expectedPixels, actualPixels));
+}
+
+// DrawableOpSubmitter stores each glyph's SkGlyphID and its resolved SkDrawable* in IDOrDrawable.
+// Converting glyph IDs to drawables during submitDraws must not corrupt the glyph IDs written by
+// subsequent Slug::serialize() calls.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_DrawableSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+
+    // 400pt exceeds fGlyphsAsPathsFontSize, forcing a drawable glyph through DrawableSubRun
+    auto blob = make_blob(make_drawable_typeface(), /*size=*/400);
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {0, 64}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // Before the first draw, DrawableOpSubmitter::fIDsOrDrawables holds the original SkGlyphID (1)
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    // Drawing the Slug triggers DrawableOpSubmitter::submitDraws, which resolves each glyph's
+    // SkDrawable* pointer.
+    SkBitmap expectedPixels = render_slug(surface.get(), *slug, paint);
+    REPORTER_ASSERT(reporter, expectedPixels.getColor(32, 32) == SK_ColorBLACK);
+
+    // Verify that serializing after a draw preserves the original SkGlyphID and data.
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    // Verify that deserializing postDrawData produces a Slug that renders matching pixels.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    SkBitmap actualPixels = render_slug(surface.get(), *deserializedSlug, paint);
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(expectedPixels, actualPixels));
+}
+
+
+=======
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+    auto canvas = surface->getCanvas();
+
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    SkFont font(typeface);
+    font.setSize(16);
+
+    static const char* kText = "Hello World";
+    size_t textLen = strlen(kText);
+    SkTextBlobBuilder builder;
+    const SkTextBlobBuilder::RunBuffer& runBuf = builder.allocRun(font, textLen, 0, 0);
+    font.textToGlyphs(kText, textLen, SkTextEncoding::kUTF8, SkSpan(runBuf.glyphs, textLen));
+    auto blob = builder.make();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug = sktext::gpu::Slug::ConvertBlob(canvas, *blob, {10, 10}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // First draw and flush initializes backend data.
+    slug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+
+    // Verify the slug can be redrawn safely. Note: This does not test whether the Slug
+    // works when the atlas is full and evicted glyphs need to be re-fetched from the strike.
+    // That will be covered in a separate test.
+    slug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+
+    // Verify the slug can be serialized post-draw without losing strike descriptor info.
+    sk_sp<SkData> data = slug->serialize();
+    REPORTER_ASSERT(reporter, data != nullptr && data->size() > 0);
+
+    // Verify the serialized slug can be deserialized and drawn.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(data->data(), data->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    deserializedSlug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+}
+
+namespace {
+constexpr SkRect kGlyphRect = SkRect::MakeLTRB(0, -1, 1, 0);
+
+class RectGlyphDrawable final : public SkDrawable {
+protected:
+    SkRect onGetBounds() override { return kGlyphRect; }
+    void onDraw(SkCanvas* canvas) override {
+        canvas->drawRect(kGlyphRect, SkPaint());
+    }
+};
+
+sk_sp<SkTypeface> make_path_typeface() {
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 1.0f, SkPath::Rect(kGlyphRect));
+    return builder.detach();
+}
+
+sk_sp<SkTypeface> make_drawable_typeface() {
+    SkCustomTypefaceBuilder builder;
+    builder.setGlyph(1, 1.0f, sk_make_sp<RectGlyphDrawable>(), kGlyphRect);
+    return builder.detach();
+}
+
+sk_sp<SkTextBlob> make_blob(sk_sp<SkTypeface> tf, SkScalar size) {
+    SkTextBlobBuilder builder;
+    builder.allocRun(SkFont(std::move(tf), size), 1, 0, 0).glyphs[0] = 1;
+    return builder.make();
+}
+
+SkBitmap render_slug(SkSurface* surface, const sktext::gpu::Slug& slug, const SkPaint& paint) {
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorWHITE);
+    slug.draw(canvas, paint);
+    SkBitmap bm;
+    bm.allocPixels(surface->imageInfo());
+    SkAssertResult(surface->readPixels(bm, 0, 0));
+    return bm;
+}
+}  // namespace
+
+// PathOpSubmitter stores each glyph's SkGlyphID and its lazily resolved SkPath in IDOrPath.
+// Converting glyph IDs to SkPaths during submitDraws must not corrupt the glyph IDs written by
+// subsequent Slug::serialize() calls.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_PathSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+
+    // 400pt exceeds fGlyphsAsPathsFontSize (324 on desktop, 384 on Android), forcing PathSubRun
+    auto blob = make_blob(make_path_typeface(), /*size=*/400);
+    REPORTER_ASSERT(reporter, blob != nullptr);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {0, 64}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // Before the first draw, PathOpSubmitter::fIDsOrPaths holds the original SkGlyphIDs
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    // Drawing the Slug triggers PathOpSubmitter::submitDraws, which resolves each glyph's SkPath.
+    SkBitmap expectedPixels = render_slug(surface.get(), *slug, paint);
+    REPORTER_ASSERT(reporter, expectedPixels.getColor(32, 32) == SK_ColorBLACK);
+
+    // Verify that serializing after a draw still preserves the original SkGlyphIDs and data.
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    // Verify that deserializing postDrawData produces a Slug that renders matching pixels.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    SkBitmap actualPixels = render_slug(surface.get(), *deserializedSlug, paint);
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(expectedPixels, actualPixels));
+}
+
+// DrawableOpSubmitter stores each glyph's SkGlyphID and its resolved SkDrawable* in IDOrDrawable.
+// Converting glyph IDs to drawables during submitDraws must not corrupt the glyph IDs written by
+// subsequent Slug::serialize() calls.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_draw_then_serialize_DrawableSubRun,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    auto surface = SkSurfaces::RenderTarget(
+            dContext, skgpu::Budgeted::kNo, SkImageInfo::MakeN32Premul(64, 64));
+    REPORTER_ASSERT(reporter, surface);
+
+    // 400pt exceeds fGlyphsAsPathsFontSize, forcing a drawable glyph through DrawableSubRun
+    auto blob = make_blob(make_drawable_typeface(), /*size=*/400);
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {0, 64}, paint);
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    // Before the first draw, DrawableOpSubmitter::fIDsOrDrawables holds the original SkGlyphID (1)
+    sk_sp<SkData> preDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, preDrawData != nullptr && preDrawData->size() > 0);
+
+    // Drawing the Slug triggers DrawableOpSubmitter::submitDraws, which resolves each glyph's
+    // SkDrawable* pointer.
+    SkBitmap expectedPixels = render_slug(surface.get(), *slug, paint);
+    REPORTER_ASSERT(reporter, expectedPixels.getColor(32, 32) == SK_ColorBLACK);
+
+    // Verify that serializing after a draw preserves the original SkGlyphID and data.
+    sk_sp<SkData> postDrawData = slug->serialize();
+    REPORTER_ASSERT(reporter, postDrawData != nullptr && postDrawData->size() > 0);
+    REPORTER_ASSERT(reporter, preDrawData->equals(postDrawData.get()));
+
+    // Verify that deserializing postDrawData produces a Slug that renders matching pixels.
+    sk_sp<sktext::gpu::Slug> deserializedSlug =
+            sktext::gpu::Slug::Deserialize(postDrawData->data(), postDrawData->size(), nullptr);
+    REPORTER_ASSERT(reporter, deserializedSlug != nullptr);
+    SkBitmap actualPixels = render_slug(surface.get(), *deserializedSlug, paint);
+    REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(expectedPixels, actualPixels));
+}
+
+DEF_TEST(VertexFiller_boundsAndDeviceMatrix, reporter) {
+    const SkRect bounds = SkRect::MakeXYWH(10, 10, 20, 20);
+    const SkPoint positions[] = {{10, 10}};
+    sktext::gpu::VertexFiller directFiller(skgpu::MaskFormat::kA8,
+                                           SkMatrix::I(),
+                                           bounds,
+                                           SkSpan(positions, 1),
+                                           /*canDrawDirect=*/true);
+
+    // 1. Integer translation with supportBilerpAtlas = false: succeeds.
+    {
+        auto [b, m] = directFiller.boundsAndDeviceMatrix(SkMatrix::I(), {5.0f, 5.0f},
+                                                         /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, !b.isEmpty());
+        REPORTER_ASSERT(reporter, m == SkMatrix::Translate(5.0f, 5.0f));
+    }
+
+    // 2. Fractional translation with supportBilerpAtlas = false: dropped.
+    {
+        auto [b, m] = directFiller.boundsAndDeviceMatrix(SkMatrix::I(), {0.5f, 0.0f},
+                                                         /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, b.isEmpty());
+    }
+
+    // 3. Matrix scale with supportBilerpAtlas = false: dropped.
+    {
+        auto [b, m] = directFiller.boundsAndDeviceMatrix(SkMatrix::Scale(2.0f, 2.0f), {0.0f, 0.0f},
+                                                         /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, b.isEmpty());
+    }
+
+    // 4. Fractional translation with supportBilerpAtlas = true: allowed.
+    {
+        auto [b, m] = directFiller.boundsAndDeviceMatrix(SkMatrix::I(), {0.5f, 0.0f},
+                                                         /*supportBilerpAtlas=*/true);
+        REPORTER_ASSERT(reporter, !b.isEmpty());
+        REPORTER_ASSERT(reporter, m == SkMatrix::Translate(0.5f, 0.0f));
+    }
+
+    // 5. Non-direct filler (e.g. transformed/SDFT) with supportBilerpAtlas = false: allowed.
+    sktext::gpu::VertexFiller transformedFiller(skgpu::MaskFormat::kA8,
+                                                SkMatrix::I(),
+                                                bounds,
+                                                SkSpan(positions, 1),
+                                                /*canDrawDirect=*/false);
+    {
+        auto [b, m] = transformedFiller.boundsAndDeviceMatrix(SkMatrix::I(), {0.5f, 0.0f},
+                                                              /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, !b.isEmpty());
+        REPORTER_ASSERT(reporter, m == SkMatrix::Translate(0.5f, 0.0f));
+    }
+}
+
+namespace {
+sk_sp<SkTextBlob> make_test_blob() {
+    auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+    SkFont font(typeface);
+    font.setSize(16);
+
+    static const char* kText = "A";
+    SkTextBlobBuilder builder;
+    const SkTextBlobBuilder::RunBuffer& runBuf = builder.allocRun(font, 1, 0, 0);
+    font.textToGlyphs(kText, 1, SkTextEncoding::kUTF8, SkSpan(runBuf.glyphs, 1));
+    return builder.make();
+}
+
+bool surface_has_non_white_pixels(SkSurface* surface) {
+    SkBitmap bm;
+    bm.allocPixels(surface->imageInfo());
+    if (!surface->readPixels(bm, 0, 0)) {
+        return false;
+    }
+    for (int y = 0; y < bm.height(); ++y) {
+        for (int x = 0; x < bm.width(); ++x) {
+            if (bm.getColor(x, y) != SK_ColorWHITE) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+template <typename FlushFn>
+void run_slug_fractional_replay_test(SkSurface* surface,
+                                     const sktext::gpu::Slug* slug,
+                                     FlushFn flushFn,
+                                     skiatest::Reporter* reporter) {
+    SkCanvas* canvas = surface->getCanvas();
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+
+    // 1. Integer translation: should draw.
+    canvas->clear(SK_ColorWHITE);
+    canvas->save();
+    canvas->translate(5.0f, 5.0f);
+    slug->draw(canvas, paint);
+    canvas->restore();
+    flushFn();
+    REPORTER_ASSERT(reporter, surface_has_non_white_pixels(surface));
+
+    // 2. Fractional translation: must be dropped.
+    canvas->clear(SK_ColorWHITE);
+    canvas->save();
+    canvas->translate(0.5f, 0.0f);
+    slug->draw(canvas, paint);
+    canvas->restore();
+    flushFn();
+    REPORTER_ASSERT(reporter, !surface_has_non_white_pixels(surface));
+
+    // 3. Matrix scale: must be dropped.
+    canvas->clear(SK_ColorWHITE);
+    canvas->save();
+    canvas->scale(1.5f, 1.5f);
+    slug->draw(canvas, paint);
+    canvas->restore();
+    flushFn();
+    REPORTER_ASSERT(reporter, !surface_has_non_white_pixels(surface));
+}
+}  // namespace
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_fractional_replay_ganesh,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(64, 64);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+
+    sk_sp<SkTextBlob> blob = make_test_blob();
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {10, 30}, SkPaint());
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    run_slug_fractional_replay_test(surface.get(), slug.get(), [&]() {
+        dContext->flushAndSubmit();
+    }, reporter);
+}
+
+#if defined(SK_GRAPHITE)
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Slug_fractional_replay_graphite,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNever) {
+    using namespace skgpu::graphite;
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(64, 64);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info);
+    REPORTER_ASSERT(reporter, surface);
+
+    sk_sp<SkTextBlob> blob = make_test_blob();
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {10, 30}, SkPaint());
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    run_slug_fractional_replay_test(surface.get(), slug.get(), [&]() {
+        std::unique_ptr<Recording> recording = recorder->snap();
+        context->insertRecording({recording.get()});
+        context->submit(SyncToCpu::kYes);
+    }, reporter);
+}
+#endif
+
+
+>>>>>>> CHANGE (6cfa510947b383694c08d9183dc22887d5349112 Reject fractional Slug replay for direct masks when atlas bi)
