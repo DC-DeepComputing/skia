@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a51e1b7_1aa7383e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-26T16:39:03Z",
+      "side": 1,
+      "message": "I appreciate fixing this hole where we just ignore the possibility of \u003e8-bit 709 content (and yeah, the API around it is ... less than ideal).\n\nBut this is not ready.",
+      "revId": "bcd5d71a35631c20cc5bcd0030eca27aab378c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f44fdd2_bba2d6cc",
