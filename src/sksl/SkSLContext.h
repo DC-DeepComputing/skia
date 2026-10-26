@@ -9,14 +9,15 @@
 #define SKSL_CONTEXT
 
 #include "include/private/SkAssert.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 namespace SkSL {
 
 class BuiltinTypes;
 class ErrorReporter;
+class SymbolTable;
 struct Module;
 struct ProgramConfig;
-class SymbolTable;
 
 /**
  * Contains compiler-wide objects and state.
@@ -33,7 +34,8 @@ public:
     ProgramConfig* fConfig = nullptr;
 
     // The Context holds a pointer to our error reporter.
-    ErrorReporter* fErrors;
+    // RAW_PTR_EXCLUSION: Performance: +2.5% on sksl_skrp_large.
+    RAW_PTR_EXCLUSION ErrorReporter* fErrors;
 
     void setErrorReporter(ErrorReporter* e) {
         SkASSERT(e);
@@ -45,7 +47,8 @@ public:
 
     // This is the current symbol table of the code we are processing, and therefore changes during
     // compilation.
-    SymbolTable* fSymbolTable = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: <0.5% alone, ~3% on sksl_* with 8 similar fields.
+    RAW_PTR_EXCLUSION SymbolTable* fSymbolTable = nullptr;
 };
 
 }  // namespace SkSL

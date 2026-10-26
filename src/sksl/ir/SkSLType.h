@@ -11,6 +11,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/sksl/SkSLDefines.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLIRNode.h"
@@ -91,7 +92,8 @@ struct Field {
     Layout fLayout;
     ModifierFlags fModifierFlags;
     std::string_view fName;
-    const Type* fType;
+    // RAW_PTR_EXCLUSION: Performance: <0.5% alone, ~3% on sksl_* with 8 similar fields.
+    RAW_PTR_EXCLUSION const Type* fType;
 };
 
 /**

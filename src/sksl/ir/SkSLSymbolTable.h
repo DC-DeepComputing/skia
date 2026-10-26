@@ -11,6 +11,7 @@
 #include "include/core/SkTypes.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/sksl/ir/SkSLSymbol.h"
 
 #include <cstddef>
@@ -198,7 +199,8 @@ public:
         fAtModuleBoundary = true;
     }
 
-    SymbolTable* fParent = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: <0.5% alone, ~3% on sksl_* with 8 similar fields.
+    RAW_PTR_EXCLUSION SymbolTable* fParent = nullptr;
 
     std::vector<std::unique_ptr<Symbol>> fOwnedSymbols;
 

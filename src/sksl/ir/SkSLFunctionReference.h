@@ -8,6 +8,7 @@
 #ifndef SKSL_FUNCTIONREFERENCE
 #define SKSL_FUNCTIONREFERENCE
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -46,7 +47,8 @@ private:
             : INHERITED(pos, kIRNodeKind, type)
             , fOverloadChain(overloadChain) {}
 
-    const FunctionDeclaration* fOverloadChain;
+    // RAW_PTR_EXCLUSION: Performance: <0.5% alone, ~3% on sksl_* with 8 similar fields.
+    RAW_PTR_EXCLUSION const FunctionDeclaration* fOverloadChain;
 
     using INHERITED = Expression;
 };

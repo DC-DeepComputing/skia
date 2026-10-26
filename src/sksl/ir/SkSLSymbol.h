@@ -9,6 +9,7 @@
 #define SKSL_SYMBOL
 
 #include "include/private/SkAssert.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLIRNode.h"
 
@@ -61,7 +62,8 @@ public:
 
 private:
     std::string_view fName;
-    const Type* fType;
+    // RAW_PTR_EXCLUSION: Performance: <0.5% alone, ~3% on sksl_* with 8 similar fields.
+    RAW_PTR_EXCLUSION const Type* fType;
 
     using INHERITED = IRNode;
 };
