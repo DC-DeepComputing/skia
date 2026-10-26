@@ -749,11 +749,15 @@ static int create_YUV(const PlaneData& planes,
 
 static void draw_col_label(SkCanvas* canvas, int x, int yuvColorSpace, bool opaque) {
     static constexpr auto kYUVColorSpaceNames = std::to_array<const char*>({
-            "JPEG",      "601",       "709F",      "709L",      "2020_8F",   "2020_8L",
-            "2020_10F",  "2020_10L",  "2020_12F",  "2020_12L",  "2020_16F",  "2020_16L",
-            "FCCF",      "FCCL",      "SMPTE240F", "SMPTE240L", "YDZDXF",    "YDZDXL",
-            "GBRF",      "GBRL",      "YCGCO_8F",  "YCGCO_8L",  "YCGCO_10F", "YCGCO_10L",
-            "YCGCO_12F", "YCGCO_12L", "YCGCO_16F", "YCGCO_16L", "Identity",
+            "601_8F",      "601_8L",      "601_10F",     "601_10L",     "601_12F",     "601_12L",     "601_16F",     "601_16L",
+            "709_8F",      "709_8L",      "709_10F",     "709_10L",     "709_12F",     "709_12L",     "709_16F",     "709_16L",
+            "2020_8F",     "2020_8L",     "2020_10F",    "2020_10L",    "2020_12F",    "2020_12L",    "2020_16F",    "2020_16L",
+            "FCC_8F",      "FCC_8L",      "FCC_10F",     "FCC_10L",     "FCC_12F",     "FCC_12L",     "FCC_16F",     "FCC_16L",
+            "SMPTE240_8F", "SMPTE240_8L", "SMPTE240_10F", "SMPTE240_10L", "SMPTE240_12F", "SMPTE240_12L", "SMPTE240_16F", "SMPTE240_16L",
+            "YDZDX_8F",    "YDZDX_8L",    "YDZDX_10F",    "YDZDX_10L",    "YDZDX_12F",    "YDZDX_12L",    "YDZDX_16F",    "YDZDX_16L",
+            "GBR_8F",      "GBR_8L",      "GBR_10F",      "GBR_10L",      "GBR_12F",      "GBR_12L",      "GBR_16F",      "GBR_16L",
+            "YCGCO_8F",    "YCGCO_8L",    "YCGCO_10F",    "YCGCO_10L",    "YCGCO_12F",    "YCGCO_12L",    "YCGCO_16F",    "YCGCO_16L",
+            "Identity",
     });
     static_assert(std::size(kYUVColorSpaceNames) == kLastEnum_SkYUVColorSpace + 1);
 
