@@ -453,6 +453,13 @@ public:
      */
     bool checkAndResetOOMed();
 
+    /**
+     * Drains all pending errors from the underlying 3D API, latching any OOM (see
+     * checkAndResetOOMed()) and failing any active verify ops scope. Returns true if any error was
+     * found. Backends without a client-visible error queue return false.
+     */
+    virtual bool checkAndClearBackendErrors() { return false; }
+
     void beginVerifyOps() {
         if (fVerifyErrorDepth++ == 0) {
             this->onBeginVerifyOps();

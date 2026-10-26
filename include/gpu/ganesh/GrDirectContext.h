@@ -142,6 +142,21 @@ public:
      */
     bool oomed();
 
+    /**
+     * Drains all pending errors from the underlying 3D API and returns true if any were found.
+     * Any out-of-memory error found is latched so that it is subsequently reported by oomed(), and
+     * if called within a beginVerifyOps()/endVerifyOps() scope any error marks the scope as failed.
+     *
+     * Clients that issue their own commands on the 3D API context used by this GrDirectContext
+     * (e.g. raw GL calls on Skia's GL context) should use this rather than querying the 3D API's
+     * errors directly (e.g. via glGetError()), which would otherwise swallow errors, including
+     * GL_OUT_OF_MEMORY, that Skia needs to observe.
+     *
+     * Currently this is implemented for OpenGL [ES]. Other backends, and abandoned contexts,
+     * return false.
+     */
+    bool checkAndClearBackendErrors();
+
     void beginVerifyOps();
     void endVerifyOps();
     bool hasVerifiedOpFailed() const;
