@@ -16,6 +16,24 @@
       "message": "Thanks for the reland! The PS1-\u003ePS2 change (splitting the constructor so callers no longer\ninstantiate unique_ptr\u003cSkGPUContext\u003e\u0027s deleter with an incomplete type) matches the\nRasterContext.o failure in the Chrome roll, so that part LGTM.\n\nWhile testing PS2 in a couple of client configurations I ran into two behavior changes I\u0027d like\nto check with you:\n\n1. Build-time cache budgets (src/core/SkContext.cpp, GetGlobalSkContext()): the global context is\n   created from `SkContextOptions{}`, whose defaults are hardcoded (2 MB / 2048 / 32 MB). Before\n   this CL the process-wide strike and resource caches honored SK_DEFAULT_FONT_CACHE_LIMIT,\n   SK_DEFAULT_FONT_CACHE_COUNT_LIMIT and SK_DEFAULT_IMAGE_CACHE_LIMIT. Chrome\u0027s skia/BUILD.gn sets\n   SK_DEFAULT_FONT_CACHE_LIMIT to 20 MB (1 MB on Android) and, on Windows,\n   SK_DEFAULT_FONT_CACHE_COUNT_LIMIT\u003d256 to bound GDI handle usage (crbug.com/314387); the Android\n   framework sets SK_DEFAULT_FONT_CACHE_LIMIT to 768 KB. With PS2 these defaults would silently\n   become 2 MB / 2048 unless the client also sets them at runtime. Is that expected, or should\n   the global context keep picking up these macros?\n\n2. skia_enable_threadlocal_strikecache (src/core/SkGraphics.cpp): with that flag,\n   SkStrikeCache::GlobalStrikeCache() returns a per-thread cache, and glyph lookups use it. Before\n   this CL the SkGraphics font cache controls went through GlobalStrikeCache(), so they acted on\n   the calling thread\u0027s cache. With PS2 they act on the global SkContext\u0027s strike cache instead,\n   so SetFontCacheLimit doesn\u0027t affect the cache in use, GetFontCacheUsed doesn\u0027t reflect it, and\n   PurgeFontCache doesn\u0027t free it. SkStrikeCache::PurgeAll() and DumpMemoryStatistics() still use\n   GlobalStrikeCache(), so in that mode SkGraphics::DumpMemoryStatistics() and\n   SkGraphics::GetFontCacheUsed() also report different caches. Is that an accepted limitation of\n   the thread-local mode during the SkContext migration, or should SkGraphics keep targeting the\n   thread\u0027s cache there?\n\nTo make both easy to reproduce, I uploaded a WIP CL with tests only, stacked on top of PS2:\nhttps://skia-review.googlesource.com/c/skia/+/1402716\nBoth tests pass in the default build (the second one is not even compiled there), so they need\none of these args.gn settings to show the difference:\n- SkGraphics_FontCacheHonorsBuildDefaults:\n  extra_cflags \u003d [ \"-DSK_DEFAULT_FONT_CACHE_LIMIT\u003d1048576\" ]\n  On PS2 SkGraphics::GetFontCacheLimit() returns 2 MB instead of the 1 MB macro value.\n  The same test covers the Windows count limit with\n  extra_cflags \u003d [ \"-DSK_DEFAULT_FONT_CACHE_COUNT_LIMIT\u003d256\" ]: on PS2\n  SkGraphics::GetFontCacheCountLimit() returns 2048 instead of 256.\n- SkGraphics_FontCacheControlsTargetThreadLocalStrikeCache:\n  skia_enable_threadlocal_strikecache \u003d true\n  On PS2 SetFontCacheLimit doesn\u0027t change the thread\u0027s cache limit, GetFontCacheUsed doesn\u0027t\n  match the thread\u0027s cache usage, and PurgeFontCache leaves the thread\u0027s cache non-empty.\nRun with: dm --src tests --match SkGraphics_ --threads 0\nBoth pass on the parent revision. Feel free to cherry-pick the tests if they\u0027re useful; once\nthey\u0027re no longer needed I\u0027ll abandon the WIP CL.\n\nA few smaller things:\n- include/core/SkContext.h: the new `SkOpenTypeSVGDecoder` forward declaration and `\u003ccstdint\u003e`\n  include look unused.\n- Could the reland description mention what changed vs. the original (the constructor split\n  that fixes the Chrome roll)?",
       "revId": "d4be260a868d1e924d122ecd76ea8ecbe12f543a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff7504e8_5ca18f1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-26T14:26:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5c2180a_76a56884",
+      "revId": "d4be260a868d1e924d122ecd76ea8ecbe12f543a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
