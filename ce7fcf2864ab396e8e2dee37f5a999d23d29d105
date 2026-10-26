@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3be54012_4e5c3411",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-26T15:19:09Z",
+      "side": 1,
+      "message": "FYI we also have `SkASSERT_RELEASE` which would work here.",
+      "range": {
+        "startLine": 180,
+        "startChar": 8,
+        "endLine": 181,
+        "endChar": 24
+      },
+      "revId": "ce7fcf2864ab396e8e2dee37f5a999d23d29d105",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
