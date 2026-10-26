@@ -786,7 +786,7 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 			task_os = DEFAULT_OS_LINUX_GCE
 		} else if b.Os("ChromeOS") {
 			ec = append([]string{"Chromebook", "GLES"}, ec...)
-			task_os = UBUNTU_22_04_OS
+			task_os = UBUNTU_24_04_OS
 		} else if b.MatchOs("iOS") {
 			ec = append([]string{task_os}, ec...)
 			task_os = "Mac"

@@ -285,29 +285,14 @@
     "name": "Build-Mac-Clang-x86_64-Release-TSAN_Metal"
   },
   {
-    "name": "Build-Ubuntu22.04-Clang-arm-Debug-Chromebook_GLES"
-  },
-  {
-    "name": "Build-Ubuntu22.04-Clang-arm-Release-Chromebook_GLES"
-  },
-  {
-    "name": "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES"
-  },
-  {
-    "name": "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES"
-  },
-  {
-    "name": "Build-Ubuntu22.04-Clang-x86_64-Debug-Chromebook_GLES"
-  },
-  {
-    "name": "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES"
-  },
-  {
     "name": "Build-Ubuntu24.04-Clang-arm-Debug-Android",
     "cq_config": {}
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm-Debug-Android_Vulkan"
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-arm-Debug-Chromebook_GLES"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm-OptimizeForSize-Android"
@@ -324,6 +309,9 @@
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm-Release-Android_Vulkan"
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-arm-Release-Chromebook_GLES"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Android",
@@ -354,6 +342,9 @@
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Android_Vulkan"
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm64-Release-Android"
@@ -389,6 +380,9 @@
   },
   {
     "name": "Build-Ubuntu24.04-Clang-arm64-Release-Android_Wuffs"
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-x64-Debug-Android"
@@ -439,6 +433,9 @@
   },
   {
     "name": "Build-Ubuntu24.04-Clang-x86_64-Debug-AVIF"
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-x86_64-Debug-Chromebook_GLES"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-x86_64-Debug-Fontations"
@@ -532,6 +529,9 @@
   },
   {
     "name": "Build-Ubuntu24.04-Clang-x86_64-Release-CMake"
+  },
+  {
+    "name": "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES"
   },
   {
     "name": "Build-Ubuntu24.04-Clang-x86_64-Release-Fast"

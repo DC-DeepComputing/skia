@@ -420,36 +420,6 @@
         "Build-Mac-Clang-x86_64-Release-TSAN_Metal"
       ]
     },
-    "Build-Ubuntu22.04-Clang-arm-Debug-Chromebook_GLES": {
-      "tasks": [
-        "Build-Ubuntu22.04-Clang-arm-Debug-Chromebook_GLES"
-      ]
-    },
-    "Build-Ubuntu22.04-Clang-arm-Release-Chromebook_GLES": {
-      "tasks": [
-        "Build-Ubuntu22.04-Clang-arm-Release-Chromebook_GLES"
-      ]
-    },
-    "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES": {
-      "tasks": [
-        "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES"
-      ]
-    },
-    "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES": {
-      "tasks": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES"
-      ]
-    },
-    "Build-Ubuntu22.04-Clang-x86_64-Debug-Chromebook_GLES": {
-      "tasks": [
-        "Build-Ubuntu22.04-Clang-x86_64-Debug-Chromebook_GLES"
-      ]
-    },
-    "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES": {
-      "tasks": [
-        "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES"
-      ]
-    },
     "Build-Ubuntu24.04-Clang-arm-Debug-Android": {
       "tasks": [
         "Build-Ubuntu24.04-Clang-arm-Debug-Android"
@@ -458,6 +428,11 @@
     "Build-Ubuntu24.04-Clang-arm-Debug-Android_Vulkan": {
       "tasks": [
         "Build-Ubuntu24.04-Clang-arm-Debug-Android_Vulkan"
+      ]
+    },
+    "Build-Ubuntu24.04-Clang-arm-Debug-Chromebook_GLES": {
+      "tasks": [
+        "Build-Ubuntu24.04-Clang-arm-Debug-Chromebook_GLES"
       ]
     },
     "Build-Ubuntu24.04-Clang-arm-OptimizeForSize-Android": {
@@ -483,6 +458,11 @@
     "Build-Ubuntu24.04-Clang-arm-Release-Android_Vulkan": {
       "tasks": [
         "Build-Ubuntu24.04-Clang-arm-Release-Android_Vulkan"
+      ]
+    },
+    "Build-Ubuntu24.04-Clang-arm-Release-Chromebook_GLES": {
+      "tasks": [
+        "Build-Ubuntu24.04-Clang-arm-Release-Chromebook_GLES"
       ]
     },
     "Build-Ubuntu24.04-Clang-arm64-Debug-Android": {
@@ -530,6 +510,11 @@
         "Build-Ubuntu24.04-Clang-arm64-Debug-Android_Vulkan"
       ]
     },
+    "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES": {
+      "tasks": [
+        "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES"
+      ]
+    },
     "Build-Ubuntu24.04-Clang-arm64-Release-Android": {
       "tasks": [
         "Build-Ubuntu24.04-Clang-arm64-Release-Android"
@@ -573,6 +558,11 @@
     "Build-Ubuntu24.04-Clang-arm64-Release-Android_Wuffs": {
       "tasks": [
         "Build-Ubuntu24.04-Clang-arm64-Release-Android_Wuffs"
+      ]
+    },
+    "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES": {
+      "tasks": [
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES"
       ]
     },
     "Build-Ubuntu24.04-Clang-x64-Debug-Android": {
@@ -653,6 +643,11 @@
     "Build-Ubuntu24.04-Clang-x86_64-Debug-AVIF": {
       "tasks": [
         "Build-Ubuntu24.04-Clang-x86_64-Debug-AVIF"
+      ]
+    },
+    "Build-Ubuntu24.04-Clang-x86_64-Debug-Chromebook_GLES": {
+      "tasks": [
+        "Build-Ubuntu24.04-Clang-x86_64-Debug-Chromebook_GLES"
       ]
     },
     "Build-Ubuntu24.04-Clang-x86_64-Debug-Fontations": {
@@ -793,6 +788,11 @@
     "Build-Ubuntu24.04-Clang-x86_64-Release-CMake": {
       "tasks": [
         "Build-Ubuntu24.04-Clang-x86_64-Release-CMake"
+      ]
+    },
+    "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES": {
+      "tasks": [
+        "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES"
       ]
     },
     "Build-Ubuntu24.04-Clang-x86_64-Release-Fast": {
@@ -10977,530 +10977,6 @@
       ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "Build-Ubuntu22.04-Clang-arm-Debug-Chromebook_GLES": {
-      "caches": [
-        {
-          "name": "vpython3",
-          "path": "cache/vpython3"
-        }
-      ],
-      "casSpec": "compile",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython3/${platform}",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:3@3.14.9.chromium.1"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
-        },
-        {
-          "name": "infra/tools/luci/vpython3/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
-        },
-        {
-          "name": "skia/bots/armhf_sysroot",
-          "path": "armhf_sysroot",
-          "version": "version:10"
-        },
-        {
-          "name": "skia/bots/chromebook_arm_gles",
-          "path": "chromebook_arm_gles",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/bots/clang_linux",
-          "path": "clang_linux",
-          "version": "version:36"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "compile",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu22.04-Clang-arm-Debug-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "gpu:none",
-        "os:Ubuntu-22.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "RECIPES_USE_PY3": "true",
-        "VPYTHON_LOG_TRACE": "1"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython3"
-        ]
-      },
-      "execution_timeout_ns": 3600000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
-      "idempotent": true,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "build"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "Build-Ubuntu22.04-Clang-arm-Release-Chromebook_GLES": {
-      "caches": [
-        {
-          "name": "vpython3",
-          "path": "cache/vpython3"
-        }
-      ],
-      "casSpec": "compile",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython3/${platform}",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:3@3.14.9.chromium.1"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
-        },
-        {
-          "name": "infra/tools/luci/vpython3/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
-        },
-        {
-          "name": "skia/bots/armhf_sysroot",
-          "path": "armhf_sysroot",
-          "version": "version:10"
-        },
-        {
-          "name": "skia/bots/chromebook_arm_gles",
-          "path": "chromebook_arm_gles",
-          "version": "version:0"
-        },
-        {
-          "name": "skia/bots/clang_linux",
-          "path": "clang_linux",
-          "version": "version:36"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "compile",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu22.04-Clang-arm-Release-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "gpu:none",
-        "os:Ubuntu-22.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "RECIPES_USE_PY3": "true",
-        "VPYTHON_LOG_TRACE": "1"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython3"
-        ]
-      },
-      "execution_timeout_ns": 3600000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
-      "idempotent": true,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "build"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES": {
-      "caches": [
-        {
-          "name": "vpython3",
-          "path": "cache/vpython3"
-        }
-      ],
-      "casSpec": "compile",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython3/${platform}",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:3@3.14.9.chromium.1"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
-        },
-        {
-          "name": "infra/tools/luci/vpython3/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
-        },
-        {
-          "name": "skia/bots/arm64_sysroot",
-          "path": "arm64_sysroot",
-          "version": "version:4"
-        },
-        {
-          "name": "skia/bots/chromebook_arm64_gles",
-          "path": "chromebook_arm64_gles",
-          "version": "version:3"
-        },
-        {
-          "name": "skia/bots/clang_linux",
-          "path": "clang_linux",
-          "version": "version:36"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "compile",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "gpu:none",
-        "os:Ubuntu-22.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "RECIPES_USE_PY3": "true",
-        "VPYTHON_LOG_TRACE": "1"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython3"
-        ]
-      },
-      "execution_timeout_ns": 3600000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
-      "idempotent": true,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "build"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES": {
-      "caches": [
-        {
-          "name": "vpython3",
-          "path": "cache/vpython3"
-        }
-      ],
-      "casSpec": "compile",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython3/${platform}",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:3@3.14.9.chromium.1"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
-        },
-        {
-          "name": "infra/tools/luci/vpython3/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
-        },
-        {
-          "name": "skia/bots/arm64_sysroot",
-          "path": "arm64_sysroot",
-          "version": "version:4"
-        },
-        {
-          "name": "skia/bots/chromebook_arm64_gles",
-          "path": "chromebook_arm64_gles",
-          "version": "version:3"
-        },
-        {
-          "name": "skia/bots/clang_linux",
-          "path": "clang_linux",
-          "version": "version:36"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "compile",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "gpu:none",
-        "os:Ubuntu-22.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "RECIPES_USE_PY3": "true",
-        "VPYTHON_LOG_TRACE": "1"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython3"
-        ]
-      },
-      "execution_timeout_ns": 3600000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
-      "idempotent": true,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "build"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "Build-Ubuntu22.04-Clang-x86_64-Debug-Chromebook_GLES": {
-      "caches": [
-        {
-          "name": "vpython3",
-          "path": "cache/vpython3"
-        }
-      ],
-      "casSpec": "compile",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython3/${platform}",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:3@3.14.9.chromium.1"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
-        },
-        {
-          "name": "infra/tools/luci/vpython3/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
-        },
-        {
-          "name": "skia/bots/chromebook_x86_64_gles",
-          "path": "chromebook_x86_64_gles",
-          "version": "version:2"
-        },
-        {
-          "name": "skia/bots/clang_linux",
-          "path": "clang_linux",
-          "version": "version:36"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "compile",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu22.04-Clang-x86_64-Debug-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "gpu:none",
-        "os:Ubuntu-22.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "RECIPES_USE_PY3": "true",
-        "VPYTHON_LOG_TRACE": "1"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython3"
-        ]
-      },
-      "execution_timeout_ns": 3600000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
-      "idempotent": true,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "build"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
-    "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES": {
-      "caches": [
-        {
-          "name": "vpython3",
-          "path": "cache/vpython3"
-        }
-      ],
-      "casSpec": "compile",
-      "cipd_packages": [
-        {
-          "name": "infra/3pp/tools/cpython3/${platform}",
-          "path": "cipd_bin_packages/cpython3",
-          "version": "version:3@3.14.9.chromium.1"
-        },
-        {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
-        },
-        {
-          "name": "infra/tools/luci/kitchen/${platform}",
-          "path": ".",
-          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
-        },
-        {
-          "name": "infra/tools/luci/vpython3/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
-        },
-        {
-          "name": "skia/bots/chromebook_x86_64_gles",
-          "path": "chromebook_x86_64_gles",
-          "version": "version:2"
-        },
-        {
-          "name": "skia/bots/clang_linux",
-          "path": "clang_linux",
-          "version": "version:36"
-        }
-      ],
-      "command": [
-        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
-        "-u",
-        "skia/infra/bots/run_recipe.py",
-        "${ISOLATED_OUTDIR}",
-        "compile",
-        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
-        "skia"
-      ],
-      "dependencies": [
-        "Housekeeper-PerCommit-BundleRecipes"
-      ],
-      "dimensions": [
-        "gpu:none",
-        "os:Ubuntu-22.04",
-        "pool:Skia"
-      ],
-      "environment": {
-        "RECIPES_USE_PY3": "true",
-        "VPYTHON_LOG_TRACE": "1"
-      },
-      "env_prefixes": {
-        "PATH": [
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin",
-          "cipd_bin_packages/cpython3",
-          "cipd_bin_packages/cpython3/bin"
-        ],
-        "VPYTHON_VIRTUALENV_ROOT": [
-          "cache/vpython3"
-        ]
-      },
-      "execution_timeout_ns": 3600000000000,
-      "extra_tags": {
-        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
-      },
-      "idempotent": true,
-      "io_timeout_ns": 3600000000000,
-      "max_attempts": 2,
-      "outputs": [
-        "build"
-      ],
-      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
-    },
     "Build-Ubuntu24.04-Clang-arm-Debug-Android": {
       "caches": [
         {
@@ -11624,6 +11100,97 @@
         "${ISOLATED_OUTDIR}",
         "compile",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-arm-Debug-Android_Vulkan\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Ubuntu-24.04",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Ubuntu24.04-Clang-arm-Debug-Chromebook_GLES": {
+      "caches": [
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/${platform}",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.14.9.chromium.1"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
+        },
+        {
+          "name": "skia/bots/armhf_sysroot",
+          "path": "armhf_sysroot",
+          "version": "version:10"
+        },
+        {
+          "name": "skia/bots/chromebook_arm_gles",
+          "path": "chromebook_arm_gles",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/clang_linux",
+          "path": "clang_linux",
+          "version": "version:36"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-arm-Debug-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
         "skia"
       ],
       "dependencies": [
@@ -12055,6 +11622,97 @@
         "${ISOLATED_OUTDIR}",
         "compile",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-arm-Release-Android_Vulkan\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Ubuntu-24.04",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Ubuntu24.04-Clang-arm-Release-Chromebook_GLES": {
+      "caches": [
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/${platform}",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.14.9.chromium.1"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
+        },
+        {
+          "name": "skia/bots/armhf_sysroot",
+          "path": "armhf_sysroot",
+          "version": "version:10"
+        },
+        {
+          "name": "skia/bots/chromebook_arm_gles",
+          "path": "chromebook_arm_gles",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/clang_linux",
+          "path": "clang_linux",
+          "version": "version:36"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-arm-Release-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
         "skia"
       ],
       "dependencies": [
@@ -12881,6 +12539,97 @@
       ],
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+    "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES": {
+      "caches": [
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/${platform}",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.14.9.chromium.1"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
+        },
+        {
+          "name": "skia/bots/arm64_sysroot",
+          "path": "arm64_sysroot",
+          "version": "version:4"
+        },
+        {
+          "name": "skia/bots/chromebook_arm64_gles",
+          "path": "chromebook_arm64_gles",
+          "version": "version:3"
+        },
+        {
+          "name": "skia/bots/clang_linux",
+          "path": "clang_linux",
+          "version": "version:36"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Ubuntu-24.04",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
     "Build-Ubuntu24.04-Clang-arm64-Release-Android": {
       "caches": [
         {
@@ -13658,6 +13407,97 @@
         "${ISOLATED_OUTDIR}",
         "compile",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-arm64-Release-Android_Wuffs\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Ubuntu-24.04",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES": {
+      "caches": [
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/${platform}",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.14.9.chromium.1"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
+        },
+        {
+          "name": "skia/bots/arm64_sysroot",
+          "path": "arm64_sysroot",
+          "version": "version:4"
+        },
+        {
+          "name": "skia/bots/chromebook_arm64_gles",
+          "path": "chromebook_arm64_gles",
+          "version": "version:3"
+        },
+        {
+          "name": "skia/bots/clang_linux",
+          "path": "clang_linux",
+          "version": "version:36"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
         "skia"
       ],
       "dependencies": [
@@ -15104,6 +14944,92 @@
         "${ISOLATED_OUTDIR}",
         "compile",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-x86_64-Debug-AVIF\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Ubuntu-24.04",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Ubuntu24.04-Clang-x86_64-Debug-Chromebook_GLES": {
+      "caches": [
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/${platform}",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.14.9.chromium.1"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
+        },
+        {
+          "name": "skia/bots/chromebook_x86_64_gles",
+          "path": "chromebook_x86_64_gles",
+          "version": "version:2"
+        },
+        {
+          "name": "skia/bots/clang_linux",
+          "path": "clang_linux",
+          "version": "version:36"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-x86_64-Debug-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
         "skia"
       ],
       "dependencies": [
@@ -17956,6 +17882,92 @@
       "extra_tags": {
         "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
       },
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES": {
+      "caches": [
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/${platform}",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.14.9.chromium.1"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:abe8fd1550c6fdfaf67533efe2bf58d7972191f6"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:b2324e42f77961aa31b1edf840216ed56f590c0a"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:84ee2a7cc6a1e40eb0754bd768bd36c81fe8b68b"
+        },
+        {
+          "name": "skia/bots/chromebook_x86_64_gles",
+          "path": "chromebook_x86_64_gles",
+          "version": "version:2"
+        },
+        {
+          "name": "skia/bots/clang_linux",
+          "path": "clang_linux",
+          "version": "version:36"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highcpu-64",
+        "os:Ubuntu-24.04",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
       "outputs": [
@@ -31303,7 +31315,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -31385,7 +31397,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -31467,7 +31479,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -31549,7 +31561,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -31631,7 +31643,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -31713,7 +31725,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -46698,7 +46710,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -46780,7 +46792,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -46862,7 +46874,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -46944,7 +46956,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47026,7 +47038,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-x86_64-Debug-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-x86_64-Debug-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47108,7 +47120,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47190,7 +47202,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-x86_64-Debug-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-x86_64-Debug-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47272,7 +47284,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-x86_64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-x86_64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47354,7 +47366,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47436,7 +47448,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47518,7 +47530,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Debug-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Debug-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
@@ -47600,7 +47612,7 @@
         "skia"
       ],
       "dependencies": [
-        "Build-Ubuntu22.04-Clang-arm64-Release-Chromebook_GLES",
+        "Build-Ubuntu24.04-Clang-arm64-Release-Chromebook_GLES",
         "Housekeeper-PerCommit-BundleRecipes",
         "Housekeeper-PerCommit-IsolateSKP",
         "Housekeeper-PerCommit-IsolateSVG",
