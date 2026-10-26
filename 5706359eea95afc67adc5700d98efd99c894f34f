@@ -39,6 +39,30 @@
       },
       "revId": "5706359eea95afc67adc5700d98efd99c894f34f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d105d4b_26da9c7c",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-10-26T19:50:40Z",
+      "side": 1,
+      "message": "Actually, speaking with @nuskos@chromium.org and @arthursonzogni@chromium.org, this will be removed and we\u0027ll update `spanify` plugin to use other ways to determine the size.\nThanks!",
+      "parentUuid": "e82abff7_956bf782",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 82
+      },
+      "revId": "5706359eea95afc67adc5700d98efd99c894f34f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
