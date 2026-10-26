@@ -148,7 +148,9 @@ public:
     }
 
 private:
-    SymbolTable*& contextSymbolTable() { return fParser->fCompiler.context().fSymbolTable; }
+    SymbolTable*& contextSymbolTable() {
+        return fParser->fCompiler.context().fSymbolTable;
+    }
 
     Parser* fParser = nullptr;
 };
