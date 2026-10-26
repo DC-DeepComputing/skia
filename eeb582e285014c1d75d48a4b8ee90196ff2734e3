@@ -16,6 +16,110 @@
       "message": "PTAL",
       "revId": "eeb582e285014c1d75d48a4b8ee90196ff2734e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92b572e3_6dfc1263",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-26T17:30:21Z",
+      "side": 1,
+      "message": "Can you make a tracking bug for the scattered TODOs added.",
+      "revId": "eeb582e285014c1d75d48a4b8ee90196ff2734e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4c98e6d_dc119d9f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-26T17:30:21Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem correct for me, if we ever end up reading from the vertex stage we would also need to specify the vertex stage bit to ensure that stage does a visibility operation on the image data. Though we don\u0027t do that currently so it\u0027s fine, can reword the comment saying we don\u0027t read from any other graphics stages so this is okay.",
+      "range": {
+        "startLine": 182,
+        "startChar": 10,
+        "endLine": 183,
+        "endChar": 87
+      },
+      "revId": "eeb582e285014c1d75d48a4b8ee90196ff2734e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b17d5af7_73e37871",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-26T17:30:21Z",
+      "side": 1,
+      "message": "If you remove the default argument or make the default specify a stage(s) instead of 0, we can just return shaderReadStages here.",
+      "range": {
+        "startLine": 194,
+        "startChar": 15,
+        "endLine": 194,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7ff1001b_7b4a68af",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+              "range": {
+                "startLine": 194,
+                "startChar": 0,
+                "endLine": 195,
+                "endChar": 0
+              },
+              "replacement": "        return stageMask ? stageMask : VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "eeb582e285014c1d75d48a4b8ee90196ff2734e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e485906_2ef52177",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-26T17:30:21Z",
+      "side": 1,
+      "message": "IMO I think the default case should be conservative and consider both fragment and compute stages, since its possible an image was transitioned to the read only layout without updating the stage usages. \n\nIt would probably be better though to remove the default argument and update the callsites since there are just a few usages for this function. Then I think we could have the BackendTexture default just be the fragment shader which I think is the intended behavior so far for the bug.\n\nI think would be simplest to just move this stage tracking into VulkanMutableTextureState now so we don\u0027t have to refactor this for BackendTextureSupport but is probably worth having a conversation with others if that is a good idea.",
+      "range": {
+        "startLine": 100,
+        "startChar": 23,
+        "endLine": 100,
+        "endChar": 87
+      },
+      "revId": "eeb582e285014c1d75d48a4b8ee90196ff2734e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
