@@ -16,6 +16,23 @@
       "message": "@michaelludwig@google.com could you run CQ for me, and maybe have a rough look at it?",
       "revId": "5999b0d377bde625a510c0cfe99532c1f3d17a79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "346ee371_3a3fead8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-10-26T16:52:29Z",
+      "side": 1,
+      "message": "sampler at: https://static.januschka.com/i-356913465/",
+      "revId": "5999b0d377bde625a510c0cfe99532c1f3d17a79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
