@@ -33,6 +33,23 @@
       "message": "```[SubmittedTogetherVerifier]: Submitted together change https://skia-review.googlesource.com/c/1394096 has failed the verifiers:\n\n[WIPVerifier]: SkCQ cannot submit a WIP change\n[SubmittableVerifier]: CL is not submittable\n[AuthorsVerifier]: The author \"luring.uliksir@gmail.com\" was not found in the AUTHORS file```\n\nLooks like CQ tries to validate the whole topic even when submitting just one of the CLs?  I think the easiest workaround would be to drop this CL from the `wasm-simd` topic and land.",
       "revId": "2b1793d589fba05e977c55edcb957683ed6f29fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "364f9b30_39e659bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-26T16:23:48Z",
+      "side": 1,
+      "message": "@luring.uliksir@gmail.com looks like Gerrit topics force all CLs to be submitted together.  To unblock this CL for landing, please remove the topic (if only intended for logical grouping I think you can use hashtags instead).  Or we can also review the other one if ready.",
+      "revId": "2b1793d589fba05e977c55edcb957683ed6f29fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
