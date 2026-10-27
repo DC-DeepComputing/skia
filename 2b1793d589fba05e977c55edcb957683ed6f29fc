@@ -50,6 +50,24 @@
       "message": "@luring.uliksir@gmail.com looks like Gerrit topics force all CLs to be submitted together.  To unblock this CL for landing, please remove the topic (if only intended for logical grouping I think you can use hashtags instead).  Or we can also review the other one if ready.",
       "revId": "2b1793d589fba05e977c55edcb957683ed6f29fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4007692_7c4a7dd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5241574
+      },
+      "writtenOn": "2026-10-27T08:09:49Z",
+      "side": 1,
+      "message": "Done, removed the topic from both CLs (kept a wasm-simd hashtag for grouping). Sorry for the noise. Could you CQ it again?",
+      "parentUuid": "364f9b30_39e659bc",
+      "revId": "2b1793d589fba05e977c55edcb957683ed6f29fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
