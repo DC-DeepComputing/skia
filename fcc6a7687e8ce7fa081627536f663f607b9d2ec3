@@ -16,6 +16,24 @@
       "message": "Several that you marked as excluded only increase by up to 0.5%; that feels within noise of a nanobench run in my experience. If you remove all of those exclusions, do you detect a net ~2-3% regression, however?",
       "revId": "fcc6a7687e8ce7fa081627536f663f607b9d2ec3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee6c6db3_415bae15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-27T14:16:33Z",
+      "side": 1,
+      "message": "Agreed, each of those 4 alone is within noise (+0.2-0.5% each). But removing all 4 together regresses sksl_* by ~2.5%. I decided to also omit a few others that had similar cost (but slighly lower), so that the overall raw_ptr rewrite of sksl would stay around the noise level.\n\nThat said, maybe it isn\u0027t worth it? E.G. In Chrome it runs once per unique shader and the persistent shader cache skips most compiles afterwards. A ~2.5% slowdown there seems unlikely to be perceived. If you you believe we can drop those noise-level exclusion, I would be happy to.",
+      "parentUuid": "23a54e64_014272dd",
+      "revId": "fcc6a7687e8ce7fa081627536f663f607b9d2ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
