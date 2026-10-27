@@ -844,12 +844,10 @@ void SkTypeface_FreeType::onFilterRec(SkScalerContextRec* rec) const {
     }
     rec->setHinting(h);
 
-#ifndef SK_GAMMA_APPLY_TO_A8
-    if (!isLCD(*rec)) {
+    if (!isLCD(*rec) && !SkGraphics::ApplyGammaToA8()) {
         // SRGBTODO: Is this correct? Do we want contrast boost?
         rec->ignorePreBlend();
     }
-#endif
 }
 
 int SkTypeface_FreeType::GetUnitsPerEm(FT_Face face) {

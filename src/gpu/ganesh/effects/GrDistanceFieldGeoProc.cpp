@@ -43,13 +43,11 @@ public:
                  const GrGeometryProcessor& geomProc) override {
         const GrDistanceFieldA8TextGeoProc& dfa8gp = geomProc.cast<GrDistanceFieldA8TextGeoProc>();
 
-#ifdef SK_GAMMA_APPLY_TO_A8
         float distanceAdjust = dfa8gp.fDistanceAdjust;
         if (distanceAdjust != fDistanceAdjust) {
             fDistanceAdjust = distanceAdjust;
             pdman.set1f(fDistanceAdjustUni, distanceAdjust);
         }
-#endif
 
         const SkISize& atlasDimensions = dfa8gp.fAtlasDimensions;
         SkASSERT(SkIsPow2(atlasDimensions.fWidth) && SkIsPow2(atlasDimensions.fHeight));
@@ -82,14 +80,12 @@ private:
                                                                 SkSLType::kFloat2,
                                                                 "AtlasDimensionsInv",
                                                                 &atlasDimensionsInvName);
-#ifdef SK_GAMMA_APPLY_TO_A8
         // adjust based on gamma
         const char* distanceAdjustUniName = nullptr;
         // width, height, 1/(3*width)
         fDistanceAdjustUni = uniformHandler->addUniform(nullptr, kFragment_GrShaderFlag,
                                                         SkSLType::kHalf, "DistanceAdjust",
                                                         &distanceAdjustUniName);
-#endif
 
         // Setup pass through color
         fragBuilder->codeAppendf("half4 %s;\n", args.fOutputColor);
@@ -130,10 +126,8 @@ private:
 
         fragBuilder->codeAppend("half distance = "
                       SK_DistanceFieldMultiplier "*(texColor.r - " SK_DistanceFieldThreshold ");");
-#ifdef SK_GAMMA_APPLY_TO_A8
         // adjust width based on gamma
         fragBuilder->codeAppendf("distance -= %s;", distanceAdjustUniName);
-#endif
 
         fragBuilder->codeAppend("half afwidth;");
         if (isUniformScale) {
@@ -200,9 +194,7 @@ private:
     }
 
 private:
-#ifdef SK_GAMMA_APPLY_TO_A8
     float    fDistanceAdjust  = -1.f;
-#endif
     SkISize  fAtlasDimensions = {-1, -1};
     SkMatrix fLocalMatrix     = SkMatrix::InvalidMatrix();
 
@@ -219,17 +211,13 @@ GrDistanceFieldA8TextGeoProc::GrDistanceFieldA8TextGeoProc(const GrShaderCaps& c
                                                            const GrSurfaceProxyView* views,
                                                            int numViews,
                                                            GrSamplerState params,
-#ifdef SK_GAMMA_APPLY_TO_A8
                                                            float distanceAdjust,
-#endif
                                                            uint32_t flags,
                                                            const SkMatrix& localMatrix)
         : INHERITED(kGrDistanceFieldA8TextGeoProc_ClassID)
         , fLocalMatrix(localMatrix)
         , fFlags(flags & kNonLCD_DistanceFieldEffectMask)
-#ifdef SK_GAMMA_APPLY_TO_A8
         , fDistanceAdjust(distanceAdjust)
-#endif
 {
     SkASSERT(numViews <= kMaxTextures);
     SkASSERT(!(flags & ~kNonLCD_DistanceFieldEffectMask));
@@ -312,15 +300,11 @@ GrGeometryProcessor* GrDistanceFieldA8TextGeoProc::TestCreate(GrProcessorTestDat
         flags |= d->fRandom->nextBool() ? kScaleOnly_DistanceFieldEffectFlag : 0;
     }
     SkMatrix localMatrix = GrTest::TestMatrix(d->fRandom);
-#ifdef SK_GAMMA_APPLY_TO_A8
     float lum = d->fRandom->nextF();
-#endif
     return GrDistanceFieldA8TextGeoProc::Make(d->allocator(), *d->caps()->shaderCaps(),
                                               &view, 1,
                                               samplerState,
-#ifdef SK_GAMMA_APPLY_TO_A8
                                               lum,
-#endif
                                               flags, localMatrix);
 }
 #endif

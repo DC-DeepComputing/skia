@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/render/SDFTextRenderStep.h"
 
+#include "include/core/SkGraphics.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
@@ -15,8 +16,10 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkAttributes.h"
+#include "include/private/SkCPUTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
+#include "src/core/SkMaskGamma.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/Attribute.h"
@@ -34,14 +37,9 @@
 #include "src/gpu/graphite/text/GlyphData.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 #include "src/sksl/SkSLString.h"
+#include "src/text/gpu/DistanceFieldAdjustTable.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/VertexFiller.h"
-
-#if defined(SK_GAMMA_APPLY_TO_A8)
-#include "include/private/SkCPUTypes.h"
-#include "src/core/SkMaskGamma.h"
-#include "src/text/gpu/DistanceFieldAdjustTable.h"
-#endif
 
 namespace skgpu::graphite {
 
@@ -181,13 +179,14 @@ void SDFTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
 
     float gammaAdjustment = 0;
     // TODO: generate LCD adjustment
-#if defined(SK_GAMMA_APPLY_TO_A8)
-    auto dfAdjustTable = sktext::gpu::DistanceFieldAdjustTable::Get();
-    // TODO: don't do this for aliased text
-    U8CPU lum = SkColorSpaceLuminance::computeLuminance(SK_GAMMA_EXPONENT,
-                                                        subRunData.luminanceColor());
-    gammaAdjustment = dfAdjustTable->getAdjustment(lum, subRunData.useGammaCorrectDistanceTable());
-#endif
+    if (SkGraphics::ApplyGammaToA8()) {
+        auto dfAdjustTable = sktext::gpu::DistanceFieldAdjustTable::Get();
+        // TODO: don't do this for aliased text
+        U8CPU lum = SkColorSpaceLuminance::computeLuminance(
+                SkGraphics::GetTextRenderingParams().fGamma, subRunData.luminanceColor());
+        gammaAdjustment = dfAdjustTable->getAdjustment(
+                lum, subRunData.useGammaCorrectDistanceTable());
+    }
     SkV2 gammaParams = {gammaAdjustment, subRunData.useGammaCorrectDistanceTable() ? 1.f : 0.f};
     gatherer->writeHalf(gammaParams);
 

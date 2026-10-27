@@ -7,15 +7,18 @@
 
 #include "src/gpu/ganesh/ops/AtlasTextOp.h"
 
+#include "include/core/SkGraphics.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkCPUTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkDistanceFieldGen.h"
+#include "src/core/SkMaskGamma.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkTraceEvent.h"
@@ -46,11 +49,6 @@
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 #include "src/text/gpu/DistanceFieldAdjustTable.h"
 #include "src/text/gpu/SubRunContainer.h"
-
-#if defined(SK_GAMMA_APPLY_TO_A8)
-#include "include/private/SkCPUTypes.h"
-#include "src/core/SkMaskGamma.h"
-#endif
 
 #include <algorithm>
 #include <functional>
@@ -773,20 +771,16 @@ GrGeometryProcessor* AtlasTextOp::setupDfProcessor(SkArenaAlloc* arena,
                                                    GrSamplerState::Filter::kLinear, widthAdjust,
                                                    fDFGPFlags, localMatrix);
     } else {
-#if defined(SK_GAMMA_APPLY_TO_A8)
         float correction = 0;
-        if (this->maskType() != MaskType::kAliasedDistanceField) {
-            U8CPU lum = SkColorSpaceLuminance::computeLuminance(SK_GAMMA_EXPONENT, fLuminanceColor);
+        if (this->maskType() != MaskType::kAliasedDistanceField &&
+            SkGraphics::ApplyGammaToA8()) {
+            U8CPU lum = SkColorSpaceLuminance::computeLuminance(
+                    SkGraphics::GetTextRenderingParams().fGamma, fLuminanceColor);
             correction = dfAdjustTable->getAdjustment(lum, fUseGammaCorrectDistanceTable);
         }
         return GrDistanceFieldA8TextGeoProc::Make(arena, caps, views, numActiveViews,
                                                   GrSamplerState::Filter::kLinear, correction,
                                                   fDFGPFlags, localMatrix);
-#else
-        return GrDistanceFieldA8TextGeoProc::Make(arena, caps, views, numActiveViews,
-                                                  GrSamplerState::Filter::kLinear, fDFGPFlags,
-                                                  localMatrix);
-#endif
     }
 }
 #endif // !defined(SK_DISABLE_SDF_TEXT)

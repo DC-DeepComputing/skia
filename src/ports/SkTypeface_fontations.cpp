@@ -11,6 +11,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
@@ -309,6 +310,9 @@ void SkTypeface_Fontations::getGlyphToUnicodeMap(SkSpan<SkUnichar> codepointForG
 
 void SkTypeface_Fontations::onFilterRec(SkScalerContextRec* rec) const {
     rec->useStrokeForFakeBold();
+    if (!isLCD(*rec) && !SkGraphics::ApplyGammaToA8(true)) {
+        rec->ignorePreBlend();
+    }
 
     // See https://issues.skia.org/issues/396360753
     // We would like Fontations anti-aliasing on a surface with unknown pixel geometry to

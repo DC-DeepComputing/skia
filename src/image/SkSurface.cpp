@@ -11,6 +11,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkCapabilities.h" // IWYU pragma: keep
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
@@ -35,16 +36,13 @@ class SkPaint;
 namespace skgpu { namespace graphite { class Recorder; } }
 
 SkSurfaceProps::SkSurfaceProps()
-    : fFlags(0)
-    , fPixelGeometry(kUnknown_SkPixelGeometry)
-    , fTextContrast(SK_GAMMA_CONTRAST)
-    , fTextGamma(SK_GAMMA_EXPONENT) {}
+    : SkSurfaceProps(0, kUnknown_SkPixelGeometry) {}
 
 SkSurfaceProps::SkSurfaceProps(uint32_t flags, SkPixelGeometry pg)
     : fFlags(flags)
     , fPixelGeometry(pg)
-    , fTextContrast(SK_GAMMA_CONTRAST)
-    , fTextGamma(SK_GAMMA_EXPONENT) {}
+    , fTextContrast(SkGraphics::GetTextRenderingParams().fContrast)
+    , fTextGamma(SkGraphics::GetTextRenderingParams().fGamma) {}
 
 SkSurfaceProps::SkSurfaceProps(uint32_t flags,
                                SkPixelGeometry pg,

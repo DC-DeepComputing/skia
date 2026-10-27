@@ -11,6 +11,7 @@
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
@@ -446,7 +447,6 @@ static void pack4xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
     }
 }
 
-#if defined(SK_USE_LCD_TEXT_3X_FILTER)
 static void pack3xHToMask(const SkPixmap& src,
                           SkMaskBuilder& dst,
                           const SkMaskGamma::PreBlend& maskPreBlend,
@@ -529,8 +529,6 @@ static void pack3xHToMask(const SkPixmap& src,
         }
     }
 }
-#endif
-
 static inline int convert_8_to_1(unsigned byte) {
     SkASSERT(byte <= 0xFF);
     return byte >> 7;
@@ -617,13 +615,24 @@ void SkScalerContext::GenerateImageFromPath(
 
     const bool fromLCD = (dstMask.fFormat == SkMask::kLCD16_Format) ||
                          (dstMask.fFormat == SkMask::kA8_Format && a8FromLCD);
+    bool useFreeTypeFilter = false;
+    if (dstMask.fFormat == SkMask::kLCD16_Format) {
+        switch (SkGraphics::GetTextRenderingParams().fPathLCDFilter) {
+            case SkGraphics::PathLCDFilter::kDefault:
+#if defined(SK_USE_LCD_TEXT_3X_FILTER)
+                useFreeTypeFilter = true;
+#endif
+                break;
+            case SkGraphics::PathLCDFilter::kLegacy:
+                break;
+            case SkGraphics::PathLCDFilter::kFreeType:
+                useFreeTypeFilter = true;
+                break;
+        }
+    }
     const bool intermediateDst = fromLCD || dstMask.fFormat == SkMask::kBW_Format;
     if (fromLCD) {
-#if defined(SK_USE_LCD_TEXT_3X_FILTER)
-        const int samplesPerPixel = dstMask.fFormat == SkMask::kLCD16_Format ? 3 : 4;
-#else
-        constexpr int samplesPerPixel = 4;
-#endif
+        const int samplesPerPixel = useFreeTypeFilter ? 3 : 4;
         if (verticalLCD) {
             dstW = samplesPerPixel * dstH - 2 * samplesPerPixel;
             dstH = srcW;
@@ -692,11 +701,11 @@ void SkScalerContext::GenerateImageFromPath(
             }
             break;
         case SkMask::kLCD16_Format:
-#if defined(SK_USE_LCD_TEXT_3X_FILTER)
-            pack3xHToMask(dst, dstMask, maskPreBlend, doBGR, verticalLCD);
-#else
-            pack4xHToMask(dst, dstMask, maskPreBlend, doBGR, verticalLCD);
-#endif
+            if (useFreeTypeFilter) {
+                pack3xHToMask(dst, dstMask, maskPreBlend, doBGR, verticalLCD);
+            } else {
+                pack4xHToMask(dst, dstMask, maskPreBlend, doBGR, verticalLCD);
+            }
             break;
         default:
             SkUNREACHABLE;
