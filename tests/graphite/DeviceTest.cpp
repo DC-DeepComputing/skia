@@ -15,6 +15,10 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
 
+#include "include/core/SkPathBuilder.h"
+#include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/draw/DrawListBase.h"
+
 namespace skgpu::graphite {
 
 // Tests that vertex transparency will affect draw order.
@@ -79,6 +83,59 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestVertexTransparency, reporter, conte
     SkColor expected = 0xFF807F00;
     REPORTER_ASSERT(
             reporter, color == expected, "Wrong color, expected %08x, found %08x", expected, color);
+}
+
+// Tests that large clip stacks flush appropriately when handleable and safely skip draws when a
+// single draw's effective clip elements exceed DrawListBase::kMaxRenderSteps.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestClipRenderStepLimits, reporter, context,
+                                   CtsEnforcement::kNextRelease) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    SkImageInfo ii = SkImageInfo::Make(SkISize::Make(64, 64),
+                                       SkColorType::kRGBA_8888_SkColorType,
+                                       SkAlphaType::kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+    SkCanvas* canvas = surface->getCanvas();
+
+    SkPaint paint;
+    paint.setColor(SK_ColorGREEN);
+
+    auto makeClipTriangle = [](int index) {
+        float shift = (index % 50) * 0.25f;
+        SkPathBuilder builder;
+        builder.moveTo(shift, 0.f);
+        builder.lineTo(64.f, 8.f + shift * 0.5f);
+        builder.lineTo(8.f, 64.f - shift);
+        builder.close();
+        return builder.detach();
+    };
+
+    // 1. Handleable case: accumulate clips and draws that fit within a single pass individually
+    //    but require flushing across multiple draws.
+    canvas->save();
+    for (int i = 0; i < 600; ++i) {
+        canvas->clipPath(makeClipTriangle(i), SkClipOp::kIntersect, /*doAA=*/true);
+    }
+    for (int i = 0; i < 10; ++i) {
+        canvas->drawRect(SkRect::MakeWH(64, 64), paint);
+    }
+    canvas->restore();
+
+    // 2. Pathological case: a single draw with more effective clip elements than can fit in one
+    //    DrawList even after flushing. This should be skipped without asserting or overflowing.
+    constexpr int kPathologicalClipCount =
+            DrawListBase::kMaxRenderSteps / Renderer::kMaxRenderSteps + 10;
+    canvas->save();
+    for (int i = 0; i < kPathologicalClipCount; ++i) {
+        canvas->clipPath(makeClipTriangle(i), SkClipOp::kIntersect, /*doAA=*/true);
+    }
+    canvas->drawRect(SkRect::MakeWH(64, 64), paint);
+    canvas->restore();
+
+    // 3. Subsequent normal draw after restoring the pathological clip stack should still succeed.
+    canvas->drawRect(SkRect::MakeWH(64, 64), paint);
+
+    std::unique_ptr<Recording> recording = recorder->snap();
+    REPORTER_ASSERT(reporter, recording != nullptr);
 }
 
 }  // namespace skgpu::graphite
