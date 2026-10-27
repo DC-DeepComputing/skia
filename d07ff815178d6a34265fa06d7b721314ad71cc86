@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72a4cbed_de3b1268",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:36:47Z",
+      "side": 1,
+      "message": "Thanks for taking care of this Arthur! This will be nice for everyone",
+      "revId": "d07ff815178d6a34265fa06d7b721314ad71cc86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
