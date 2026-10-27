@@ -10922,6 +10922,58 @@ UNIX_ONLY_TEST(SkParagraph_SoftHyphenBreakNotTakenNeedsNoRoom, reporter) {
     checkLines(reporter, paragraph.get(), "xy abcdi|jklm");
 }
 
+// A justified line that breaks at a soft hyphen spreads its text so that the text and the drawn
+// hyphen together fill the line, in either paragraph direction.
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenJustifiedLineFitsHyphen, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    SkScalar width = singleLineWidth(fontCollection, "xy abcd-") + 15;
+    for (TextDirection direction : {TextDirection::kLtr, TextDirection::kRtl}) {
+        auto paragraph = layoutWithSoftHyphens(
+                fontCollection, "xy abcd~efgh", width, [direction](ParagraphStyle& style) {
+                    style.setTextAlign(TextAlign::kJustify);
+                    style.setTextDirection(direction);
+                });
+        checkLines(reporter, paragraph.get(), "xy abcd-|efgh");
+        auto& line = static_cast<ParagraphImpl*>(paragraph.get())->lines()[0];
+        auto extent = lineRectExtent(paragraph.get(), line, 0, 12);
+        REPORTER_ASSERT(
+                reporter, SkScalarNearlyEqual(extent.first, 0, EPSILON100), "%g", extent.first);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(extent.second, width, EPSILON100),
+                        "%g vs %g",
+                        extent.second,
+                        width);
+    }
+}
+
+// A justified RTL line with no spaces to spread is right aligned, and its hyphen stays in the line.
+UNIX_ONLY_TEST(SkParagraph_SoftHyphenJustifiedRtlLineWithoutSpacesFitsHyphen, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    SkScalar width = singleLineWidth(fontCollection, "abcd-") + 15;
+    auto paragraph =
+            layoutWithSoftHyphens(fontCollection, "abcd~efgh", width, [](ParagraphStyle& style) {
+                style.setTextAlign(TextAlign::kJustify);
+                style.setTextDirection(TextDirection::kRtl);
+            });
+    checkLines(reporter, paragraph.get(), "abcd-|efgh");
+    auto& line = static_cast<ParagraphImpl*>(paragraph.get())->lines()[0];
+    auto extent = lineRectExtent(paragraph.get(), line, 0, 9);
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(extent.first, width - line.width(), EPSILON100),
+                    "%g vs %g",
+                    extent.first,
+                    width - line.width());
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(extent.second, width, EPSILON100),
+                    "%g vs %g",
+                    extent.second,
+                    width);
+}
+
 // Laid out at its min intrinsic width, text with soft hyphens doesn't overflow: as in CSS
 // min-content, the min intrinsic width includes the hyphen drawn at a soft hyphen break.
 UNIX_ONLY_TEST(SkParagraph_SoftHyphenMinIntrinsicWidthIncludesHyphen, reporter) {

@@ -490,6 +490,10 @@ void TextLine::paintDecorations(ParagraphPainter* painter, SkScalar x, SkScalar 
 }
 
 void TextLine::justify(SkScalar maxWidth) {
+    if (fHyphen != nullptr) {
+        // The rendered soft hyphen follows the text, so the text fills the rest of the line
+        maxWidth -= fHyphen->advance().fX;
+    }
     int whitespacePatches = 0;
     SkScalar textLen = 0;
     SkScalar whitespaceLen = 0;
