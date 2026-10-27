@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc32eb0f_1a0d532f",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:42:23Z",
+      "side": 1,
+      "message": "Does this get a little clearer if we use if-defs to remove the the `fProtectedQueue` field when `SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS` is not defined?\n\nOur references to that field are already guarded by that define, right?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 85
+      },
+      "revId": "b49d84aea23f502883d780bdcab7d64885d733f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d36935b_4ae11e29",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:42:23Z",
+      "side": 1,
+      "message": "Will this need to be in Caps or just VulkanCaps? Will the core graphite be using this to make choices about Protected values for Resources or how to split up tasks?",
+      "range": {
+        "startLine": 306,
+        "startChar": 0,
+        "endLine": 306,
+        "endChar": 83
+      },
+      "revId": "b49d84aea23f502883d780bdcab7d64885d733f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
