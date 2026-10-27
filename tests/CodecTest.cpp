@@ -1116,6 +1116,60 @@ DEF_TEST(Codec_webp_peek, r) {
     test_info(r, codec.get(), codec->getInfo(), SkCodec::kSuccess, nullptr);
 }
 
+// When a VP8X header declares EXIF data, the WebP codec reads to the end of the stream to find
+// the trailing EXIF chunk. If the stream ends before isAtEnd() becomes true, reading must stop
+// when read() returns 0 rather than looping forever, and truncated non-image chunks must not
+// assert isAtEnd().
+DEF_TEST(Codec_webp_incomplete_stream, r) {
+    // A RIFF/WEBP header with a 10-byte VP8X chunk that sets EXIF_FLAG (0x08 at byte 20) for a
+    // 1x1 canvas, and nothing more.
+    constexpr uint8_t kWebpExifHeader[] = {
+            'R', 'I',  'F',  'F',  0x26, 0x00, 0x00, 0x00, 'W',  'E',  'B',  'P',  'V',  'P',  '8',
+            'X', 0x0a, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    };
+    {
+        auto stream = std::make_unique<OverstatedLengthStream>(
+                SkData::MakeWithCopy(kWebpExifHeader, sizeof(kWebpExifHeader)), 16);
+
+        SkCodec::Result result = SkCodec::kSuccess;
+        auto codec = SkCodec::MakeFromStream(std::move(stream), &result);
+        REPORTER_ASSERT(r, !codec);
+        REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput, "result: %d", (int)result);
+    }
+
+    // A RIFF/WEBP header with a VP8X chunk (ICCP_FLAG = 0x20) followed by a truncated ICCP chunk.
+    constexpr uint8_t kWebpTruncatedChunk[] = {
+            'R',  'I',  'F',  'F',  0x2e, 0x00, 0x00, 0x00, 'W',  'E',  'B',  'P',  'V',
+            'P',  '8',  'X',  0x0a, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 'I',  'C',  'C',  'P',  0x10, 0x00, 0x00, 0x00,
+    };
+    {
+        auto stream = std::make_unique<OverstatedLengthStream>(
+                SkData::MakeWithCopy(kWebpTruncatedChunk, sizeof(kWebpTruncatedChunk)), 16);
+
+        SkCodec::Result result = SkCodec::kSuccess;
+        auto codec = SkCodec::MakeFromStream(std::move(stream), &result);
+        REPORTER_ASSERT(r, !codec);
+        REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput, "result: %d", (int)result);
+    }
+}
+
+#if defined(SK_CODEC_DECODES_ICO)
+// The ICO codec copies the whole stream, which fails if the stream is shorter than it claims.
+// This used to dereference the null SkData.
+DEF_TEST(Codec_ico_incomplete_stream, r) {
+    // An ICO directory header that declares a single image, but nothing more.
+    constexpr uint8_t kIcoHeader[] = {0x00, 0x00, 0x01, 0x00, 0x01, 0x00};
+    auto stream = std::make_unique<OverstatedLengthStream>(
+            SkData::MakeWithCopy(kIcoHeader, sizeof(kIcoHeader)), 16);
+
+    SkCodec::Result result = SkCodec::kSuccess;
+    auto codec = SkIcoDecoder::Decode(std::move(stream), &result);
+    REPORTER_ASSERT(r, !codec);
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput, "result: %d", (int)result);
+}
+#endif
+
 // SkCodec's wbmp decoder was initially unnecessarily restrictive.
 // It required the second byte to be zero. The wbmp specification allows
 // a couple of bits to be 1 (so long as they do not overlap with 0x9F).

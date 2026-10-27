@@ -19,6 +19,8 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkStream.h"
+#include "tests/FakeStreams.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
@@ -203,6 +205,20 @@ DEF_TEST(Jpegxl_AlphaPremulAndUnpremul, r) {
             REPORTER_ASSERT(r, px[0] == 76 && px[1] == 251 && px[2] == 117 && px[3] == 127);
         }
     }
+}
+
+// The JPEG XL codec copies a stream that is not backed by memory, which fails if the stream is
+// shorter than it claims. This used to dereference the null SkData.
+DEF_TEST(Jpegxl_IncompleteStream, r) {
+    // A bare JPEG XL codestream signature, and nothing more.
+    constexpr uint8_t kJxlHeader[] = {0xff, 0x0a};
+    auto stream = std::make_unique<OverstatedLengthStream>(
+            SkData::MakeWithCopy(kJxlHeader, sizeof(kJxlHeader)), 16);
+
+    SkCodec::Result result = SkCodec::kSuccess;
+    auto codec = SkJpegxlDecoder::Decode(std::move(stream), &result);
+    REPORTER_ASSERT(r, !codec);
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput, "result: %d", (int)result);
 }
 
 #endif  // defined(SK_CODEC_DECODES_JPEGXL)

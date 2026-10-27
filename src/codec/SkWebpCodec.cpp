@@ -144,8 +144,11 @@ static std::pair<bool, sk_sp<SkData>> get_header_from_stream(SkStream* stream) {
                 // is at the end of the file and we want that in order to create
                 // the SkCodec
                 do {
-                  bytes_read = stream->read(buffer, kBufferSize);
-                  tempStream.write(buffer, bytes_read);
+                    bytes_read = stream->read(buffer, kBufferSize);
+                    if (!bytes_read) {
+                        break;
+                    }
+                    tempStream.write(buffer, bytes_read);
                 } while (!stream->isAtEnd());
                 return {false, tempStream.detachAsData()};
             }
@@ -174,7 +177,6 @@ static std::pair<bool, sk_sp<SkData>> get_header_from_stream(SkStream* stream) {
                 payloadSize -= bytes_read;
             }
             if (payloadSize) {
-                SkASSERT(stream->isAtEnd());
                 // Invalid webp
                 return {false, nullptr};
             }

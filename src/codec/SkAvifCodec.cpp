@@ -76,6 +76,12 @@ std::unique_ptr<SkCodec> SkAvifCodec::MakeFromStream(std::unique_ptr<SkStream> s
         stream.reset(nullptr);
     }
 
+    // CopyStreamToData() returns null if the stream delivers fewer bytes than it reported.
+    if (!data) {
+        *result = SkCodec::kIncompleteInput;
+        return nullptr;
+    }
+
     avifResult res = avifDecoderSetIOMemory(avifDecoder.get(), data->bytes(), data->size());
     if (res != AVIF_RESULT_OK) {
         *result = SkCodec::kInternalError;
