@@ -6,6 +6,7 @@
  */
 #include "include/private/SkDebug.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/src/SkUnicode_hardcoded.h"
 #include "src/core/SkBitmaskEnum.h"
 
 using namespace skia_private;
@@ -66,4 +67,12 @@ bool SkUnicode::hasControlFlag(SkUnicode::CodeUnitFlags flags) {
 
 bool SkUnicode::hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
+}
+
+bool SkUnicode::isZeroWidthCodepoint(SkUnichar utf8) {
+    return SkUnicodeHardCodedCharProperties::IsZeroWidthCodepoint(utf8);
+}
+
+SkFourByteTag SkUnicode::resolveCodepointScript(SkUnichar utf8) {
+    return SkUnicodeHardCodedCharProperties::ResolveCodepointScript(utf8);
 }
