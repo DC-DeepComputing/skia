@@ -25,7 +25,7 @@ public:
      *
      * On failure, return nullptr.
      */
-    static SkCachedData* FindAndRef(uint32_t genID,
+    static SkCachedData* FindAndRef(uint64_t genID,
                                     SkYUVAPixmaps* pixmaps,
                                     SkResourceCache* localCache = nullptr);
 
@@ -33,7 +33,7 @@ public:
      * Add a pixelRef ID and its YUV planes data to the cache. The SkYUVAPixmaps should contain
      * SkPixmaps that store their pixel data in the SkCachedData.
      */
-    static void Add(uint32_t genID, SkCachedData* data, const SkYUVAPixmaps& pixmaps,
+    static void Add(uint64_t genID, SkCachedData* data, const SkYUVAPixmaps& pixmaps,
                     SkResourceCache* localCache = nullptr);
 };
 

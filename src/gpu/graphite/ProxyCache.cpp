@@ -30,14 +30,16 @@ void make_bitmap_key(skgpu::UniqueKey* key, const SkBitmap& bm) {
 
     SkIPoint origin = bm.pixelRefOrigin();
     SkIRect subset = SkIRect::MakePtSize(origin, bm.dimensions());
+    uint64_t genID = bm.pixelRef()->getGenerationID();
 
     static const skgpu::UniqueKey::Domain kProxyCacheDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey::Builder builder(key, kProxyCacheDomain, 5, "ProxyCache");
-    builder[0] = bm.pixelRef()->getGenerationID();
-    builder[1] = subset.fLeft;
-    builder[2] = subset.fTop;
-    builder[3] = subset.fRight;
-    builder[4] = subset.fBottom;
+    skgpu::UniqueKey::Builder builder(key, kProxyCacheDomain, 6, "ProxyCache");
+    builder[0] = static_cast<uint32_t>(genID & 0xFFFFFFFFULL);
+    builder[1] = static_cast<uint32_t>(genID >> 32);
+    builder[2] = subset.fLeft;
+    builder[3] = subset.fTop;
+    builder[4] = subset.fRight;
+    builder[5] = subset.fBottom;
 }
 
 sk_sp<SkIDChangeListener> make_unique_key_invalidation_listener(const skgpu::UniqueKey& key,

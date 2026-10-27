@@ -102,7 +102,7 @@ inline void DrawImage(SkCanvas* canvas,
     DrawImage(canvas, image.get(), x, y, sampling, paint, constraint);
 }
 
-static constexpr int kNumImageKeyValues = 6;
+static constexpr int kNumImageKeyValues = 7;
 
 /** Retrieves a set of values that can be used as part of a cache key for the provided image.
 

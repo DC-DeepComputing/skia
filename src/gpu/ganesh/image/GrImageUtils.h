@@ -132,7 +132,7 @@ std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(GrRecordingCo
  */
 GrSurfaceProxyView FindOrMakeCachedMipmappedView(GrRecordingContext*,
                                                  GrSurfaceProxyView,
-                                                 uint32_t imageUniqueID);
+                                                 uint64_t imageUniqueID);
 
 /** Init based on texture formats supported by the context. */
 SkYUVAPixmapInfo::SupportedDataTypes SupportedTextureFormats(const GrImageContext&);

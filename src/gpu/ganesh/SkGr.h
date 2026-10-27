@@ -27,9 +27,9 @@
 #include <string_view>
 #include <tuple>
 
-class GrMippedBitmap;
 class GrColorInfo;
 class GrFragmentProcessor;
+class GrMippedBitmap;
 class GrPaint;
 class GrRecordingContext;
 class GrSurfaceProxy;
@@ -193,7 +193,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> GrMakeUncachedBitmapProxyView(
  *      - SkImage
  *      - SkImageGenerator
  */
-void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint32_t imageID, const SkIRect& imageBounds);
+void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint64_t imageID, const SkIRect& imageBounds);
 
 /**
  * Makes a SkIDChangeListener from a skgpu::UniqueKey. The key will be invalidated in the resource

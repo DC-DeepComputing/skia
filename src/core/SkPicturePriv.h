@@ -18,12 +18,12 @@
 #include <atomic>
 #include <cstdint>
 
+class SkBBoxHierarchy;
 class SkReadBuffer;
+class SkRecord;
 class SkStream;
 class SkWriteBuffer;
 struct SkPictInfo;
-class SkRecord;
-class SkBBoxHierarchy;
 
 class SkPicturePriv {
 public:
@@ -60,7 +60,7 @@ public:
 
     static uint64_t MakeSharedID(uint32_t pictureID) {
         uint64_t sharedID = SkSetFourByteTag('p', 'i', 'c', 't');
-        return (sharedID << 32) | pictureID;
+        return (sharedID << 32) | (uint64_t(pictureID) << 1);
     }
 
     static void AddedToCache(const SkPicture* pic) {
