@@ -27,6 +27,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
+#include "include/core/SkVertices.h"
 #include "include/effects/SkBlenders.h"
 #include "include/effects/SkGradient.h"
 #include "include/effects/SkRuntimeEffect.h"
@@ -1989,3 +1990,118 @@ DEF_TEST(SkRuntimeColorFilter_b520831887, r) {
         REPORTER_ASSERT(r, cf != nullptr);
     }
 }
+<<<<<<< HEAD   (28e2362fdfc2f3ac8989f2b649b438f1ef05b3d2 [M156] [Ganesh] Do not drop subset clamp for nearest filteri)
+||||||| BASE   (65b6719d2ff0329775471a91f68c25e21af6222b [infra] RadeonVega8 machines have updated to Ubuntu24)
+
+DEF_TEST(SkRuntimeBlender_b562761166, r) {
+    // b/562761166: Under fuzzer builds, kLoopTerminationLimit is 257 so loops with <= 256
+    // iterations succeed while loops with > 256 iterations are rejected at compile time
+    auto make_loop = [](int limit) {
+        return SkRuntimeEffect::MakeForBlender(SkStringPrintf(
+                "half4 main(half4 src, half4 dst) {"
+                "    half y = 1.0;"
+                "    for (int c = 0; c < %d; ++c) {"
+                "        y += 1.0;"
+                "    }"
+                "    return half4(y);"
+                "}",
+                limit));
+    };
+
+    // 256 iterations should succeed in all builds.
+    {
+        auto [effect, err] = make_loop(256);
+        REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+    }
+
+    // 257 iterations (> 256) should be rejected in fuzzer builds.
+    {
+        auto [effect, err] = make_loop(257);
+#if defined(SK_BUILD_FOR_FUZZER)
+        REPORTER_ASSERT(r, !effect);
+        REPORTER_ASSERT(r, err.contains("loop must guarantee termination in fewer iterations"));
+#else
+        REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+#endif
+    }
+}
+=======
+
+DEF_TEST(SkRuntimeBlender_b562761166, r) {
+    // b/562761166: Under fuzzer builds, kLoopTerminationLimit is 257 so loops with <= 256
+    // iterations succeed while loops with > 256 iterations are rejected at compile time
+    auto make_loop = [](int limit) {
+        return SkRuntimeEffect::MakeForBlender(SkStringPrintf(
+                "half4 main(half4 src, half4 dst) {"
+                "    half y = 1.0;"
+                "    for (int c = 0; c < %d; ++c) {"
+                "        y += 1.0;"
+                "    }"
+                "    return half4(y);"
+                "}",
+                limit));
+    };
+
+    // 256 iterations should succeed in all builds.
+    {
+        auto [effect, err] = make_loop(256);
+        REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+    }
+
+    // 257 iterations (> 256) should be rejected in fuzzer builds.
+    {
+        auto [effect, err] = make_loop(257);
+#if defined(SK_BUILD_FOR_FUZZER)
+        REPORTER_ASSERT(r, !effect);
+        REPORTER_ASSERT(r, err.contains("loop must guarantee termination in fewer iterations"));
+#else
+        REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+#endif
+    }
+}
+
+DEF_TEST(SkRuntimeShader_TransformShaderPropagatesChildFailure, r) {
+    // Compile a runtime shader with a conditional branch whose body invokes a child shader.
+    // When the child shader fails appendStages() (e.g. due to a non-invertible local matrix),
+    // SkSL::RP::Program::appendStages() exits early before reaching its branch fix-up loop,
+    // and SkTransformShader::appendStages() (inserted by drawVertices when texCoords != positions)
+    // must propagate that failure rather than compiling and running the partial pipeline.
+    auto [effect, err] = SkRuntimeEffect::MakeForShader(SkString(
+            "uniform shader child;"
+            "uniform half cond;"
+            "half4 main(float2 p) {"
+            "    if (cond > 0) {"
+            "        return child.eval(p);"
+            "    }"
+            "    return half4(0, 1, 0, 1);"
+            "}"));
+    REPORTER_ASSERT(r, effect != nullptr, "%s", err.c_str());
+
+    // SkShaders::Empty() always returns false from appendStages().
+    SkRuntimeShaderBuilder builder(effect);
+    builder.child("child") = SkShaders::Empty();
+    builder.uniform("cond") = 1.0f;
+    sk_sp<SkShader> runtimeShader = builder.makeShader();
+    REPORTER_ASSERT(r, runtimeShader != nullptr);
+
+    sk_sp<SkSurface> surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(16, 16));
+    surface->getCanvas()->clear(SK_ColorBLUE);
+
+    constexpr SkPoint positions[] = {{0, 0}, {16, 0}, {0, 16}};
+    constexpr SkPoint texCoords[] = {{0, 0}, {8, 0}, {0, 8}};
+    sk_sp<SkVertices> vertices = SkVertices::MakeCopy(
+            SkVertices::kTriangles_VertexMode, 3, positions, texCoords, /*colors=*/nullptr);
+
+    SkPaint paint;
+    paint.setShader(runtimeShader);
+    surface->getCanvas()->drawVertices(vertices, SkBlendMode::kSrcOver, paint);
+
+    // Because the shader failed to append stages, drawVertices should draw nothing, leaving the
+    // canvas cleared to blue.
+    SkBitmap bm;
+    bm.allocN32Pixels(16, 16);
+    REPORTER_ASSERT(r, surface->readPixels(bm, 0, 0));
+    REPORTER_ASSERT(r, bm.getColor(2, 2) == SK_ColorBLUE);
+}
+
+>>>>>>> CHANGE (9bed3ec0d4080a49618f1df279aefe0783ab3761 [graphite] Neutralize pending SkSL RP branches on failure an)
