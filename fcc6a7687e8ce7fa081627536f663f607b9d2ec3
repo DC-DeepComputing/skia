@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23a54e64_014272dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:56:03Z",
+      "side": 1,
+      "message": "Several that you marked as excluded only increase by up to 0.5%; that feels within noise of a nanobench run in my experience. If you remove all of those exclusions, do you detect a net ~2-3% regression, however?",
+      "revId": "fcc6a7687e8ce7fa081627536f663f607b9d2ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
