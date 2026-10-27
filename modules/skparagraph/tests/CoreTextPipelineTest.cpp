@@ -1817,9 +1817,14 @@ DEF_TEST(CoreTextPipeline_EngineSwitchLetterSpacing, reporter) {
     };
 
     testEngine(TextShapingEngine::kCoreText, true);
+    // A HarfBuzz-free build aborts on kDefault, so only the CoreText half can run there
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
     testEngine(TextShapingEngine::kDefault, false);
+#endif
 }
 
+// Keeping the two engines apart in the cache needs both engines, and kDefault needs HarfBuzz
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 // ParagraphCache keys include the shaping engine, so a HarfBuzz layout never replays CoreText
 // runs of the same text and style, or the other way round
 DEF_TEST(CoreTextPipeline_CacheKeyEngineSeparation, reporter) {
@@ -1883,6 +1888,7 @@ DEF_TEST(CoreTextPipeline_CacheKeyEngineSeparation, reporter) {
     REPORTER_ASSERT(reporter, cache.findParagraph(implHBQuery));
     REPORTER_ASSERT(reporter, !implHBQuery->isCoreTextShaped());
 }
+#endif  // !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 
 namespace {
 using Coordinate = SkFontArguments::VariationPosition::Coordinate;
@@ -1980,11 +1986,13 @@ DEF_TEST(CoreTextPipeline_FontArguments_VariableFontAxes, reporter) {
                     axis_value(narrowTypeface, Coordinate::wdth).value_or(-1.0f));
 
     // Both engines take advances from CoreText for the same varied face, so they must agree
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
     auto hbNarrow = layout(TextShapingEngine::kDefault, Coordinate{Coordinate::wdth, 50.0f});
     const SkScalar hbNarrowWidth = hbNarrow->getMaxIntrinsicWidth();
     REPORTER_ASSERT(reporter, !static_cast<ParagraphImpl*>(hbNarrow.get())->isCoreTextShaped());
     REPORTER_ASSERT(reporter, SkScalarNearlyEqual(hbNarrowWidth, narrowWidth, 1.0f),
                     "HarfBuzz wdth=50 width %g vs CoreText %g", hbNarrowWidth, narrowWidth);
+#endif
 }
 
 // A wght axis on the system font changes its weight while opsz keeps following the point size,
@@ -2154,7 +2162,11 @@ const SkFont* first_run_font(Paragraph* paragraph) {
     SkSpan<Run> runs = static_cast<ParagraphImpl*>(paragraph)->runs();
     return runs.empty() ? nullptr : &runs[0].font();
 }
+}  // namespace
 
+// The synthetic style contract is parity with OneLineShaper, which needs HarfBuzz
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
+namespace {
 // Lays out "Synthetic" in one span so the first run carries the whole style request
 std::unique_ptr<Paragraph> layout_styled_sample(const sk_sp<FontCollection>& fontCollection,
                                                 TextShapingEngine engine,
@@ -2180,6 +2192,7 @@ std::unique_ptr<Paragraph> layout_styled_sample(const sk_sp<FontCollection>& fon
 
 // A bold italic request on a Regular-only face gets the same fake bold and skew as on the
 // HarfBuzz path (fakeMissingFontStyles), so synthetic styles look the same on both engines
+// HarfBuzz is the oracle every assertion below compares CoreText against
 DEF_TEST(CoreTextPipeline_SyntheticStyles_ParityWithHarfBuzz, reporter) {
     sk_sp<SkTypeface> regular = ToolUtils::CreateTypefaceFromResource("fonts/Roboto-Regular.ttf");
     if (!regular) {
@@ -2274,6 +2287,7 @@ DEF_TEST(CoreTextPipeline_SyntheticStyles_ParityWithHarfBuzz, reporter) {
                         "upright request skewed by %g", systemFont->getSkewX());
     }
 }
+#endif  // !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 
 namespace {
 // Records where TextLine hands each glyph blob to the canvas. The canvas places glyph k at
@@ -2418,6 +2432,8 @@ DEF_TEST(CoreTextPipeline_BaselineShift_PaintParityWithHarfBuzz, reporter) {
                 painted_shift_delta(reporter, fontCollection, TextShapingEngine::kCoreText, shift);
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(ctDelta, shift, 0.51f),
                         "CoreText paints a %g baseline shift as %g", shift, ctDelta);
+        // A HarfBuzz-free build aborts on kDefault, so the parity half needs HarfBuzz
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
         const SkScalar hbDelta =
                 painted_shift_delta(reporter, fontCollection, TextShapingEngine::kDefault, shift);
         REPORTER_ASSERT(reporter,
@@ -2427,6 +2443,7 @@ DEF_TEST(CoreTextPipeline_BaselineShift_PaintParityWithHarfBuzz, reporter) {
                         hbDelta);
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(ctDelta, hbDelta, 0.51f),
                         "shift %g: CoreText delta %g vs HarfBuzz %g", shift, ctDelta, hbDelta);
+#endif
     }
 }
 
@@ -2544,8 +2561,11 @@ DEF_TEST(CoreTextPipeline_LetterSpacing_SkipsCursiveScriptsLikeHarfBuzz, reporte
     const char* kLatin = "Latin";
     const SkScalar kSpacing = 4.0f;
     const SkScalar kFullTracking = 5 * kSpacing;
+    // A HarfBuzz-free build aborts on kDefault, so only the CoreText half can run there
     for (TextShapingEngine engine : {
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
                  TextShapingEngine::kDefault,
+#endif
                  TextShapingEngine::kCoreText}) {
         const bool coreText = engine == TextShapingEngine::kCoreText;
         const char* name = coreText ? "CoreText" : "HarfBuzz";
@@ -4641,6 +4661,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_UnwrappedTabEndsAtCoreTextStop, reporter) {
                             family,
                             glyph,
                             width);
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
             auto harfBuzz = layout_marked(TextShapingEngine::kDefault, family, text,
                                           TextDirection::kLtr);
             INFOF(reporter,
@@ -4648,6 +4669,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_UnwrappedTabEndsAtCoreTextStop, reporter) {
                   family,
                   paragraph->getMaxIntrinsicWidth(),
                   harfBuzz->getMaxIntrinsicWidth());
+#endif
         }
     }
 }
@@ -4843,6 +4865,9 @@ std::unique_ptr<Paragraph> layout_ahem(const sk_sp<FontCollection>& fontCollecti
 }
 }  // namespace
 
+// Geometry contracts are parity with OneLineShaper, which needs HarfBuzz
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
+
 // A tap exactly on the right edge of the last glyph before '\n' belongs to that line end
 // (upstream); Flutter's caret movement (editable_text_shortcuts) relies on it
 DEF_TEST(CoreTextPipeline_HitTest_HardBreakLineEndParityWithHarfBuzz, reporter) {
@@ -5012,6 +5037,7 @@ DEF_TEST(CoreTextPipeline_LetterSpacing_ParityWithHarfBuzz, reporter) {
                         impl->runs().size(), impl->runs().empty() ? 0 : impl->runs()[0].size());
     }
 }
+#endif  // !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 
 // SP1: a one-style CoreText line grows by letterSpacing per grapheme over the same line unspaced
 // in either direction, including multi-glyph base+mark graphemes
@@ -5078,6 +5104,8 @@ DEF_TEST(CoreTextPipeline_LetterSpacing_OneStyleWidthGrowsPerGrapheme, reporter)
                     "spaced %g vs unspaced %g", widths[1], widths[0]);
 }
 
+// Keeping a mark on its base is compared with HarfBuzz, which needs HarfBuzz
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 namespace {
 // Lays out text in Roboto with letterSpacing 4; a color-only style change at splitAt sends
 // ParagraphImpl::applySpacingAndBuildClusterTable through its per-cluster path
@@ -5158,6 +5186,7 @@ DEF_TEST(CoreTextPipeline_LetterSpacing_StyleSplitKeepsMarkOnBase, reporter) {
                         hbBoxes[0].rect.fLeft);
     }
 }
+#endif  // !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 
 // A C0/C1 control with Bidi_Class BN draws nothing and takes no width, as in a native CTLine
 // (HarfBuzz shows .notdef instead). A run of only such controls keeps one kCGFontIndexInvalid
@@ -5419,6 +5448,8 @@ DEF_TEST(CoreTextPipeline_Kerning_PairNarrowerThanNominal, reporter) {
     }
 }
 
+// Hard-break line ends are compared with HarfBuzz, which needs HarfBuzz
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 // A primary font without U+000A: HarfBuzz keeps '\n' in it as .notdef, CoreText moves it to a
 // fallback font. Unspaced lines must still match; the letter-spaced widths are only logged, as
 // the split run spaces them in another order
@@ -5501,6 +5532,7 @@ DEF_TEST(CoreTextPipeline_HardBreak_PrimaryFontWithoutNewline, reporter) {
         }
     }
 }
+#endif  // !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
 
 // SP1: CoreText shapes each hard-break segment in its own CTLine, and letterSpacing must still
 // grow each line width by letterSpacing per grapheme over the same line unspaced
