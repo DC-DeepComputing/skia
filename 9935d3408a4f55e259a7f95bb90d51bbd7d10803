@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef709f92_f431bccb",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2560,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-27T17:36:08Z",
+      "side": 1,
+      "message": "Will do.",
+      "parentUuid": "7c13d7ff_4f4903e1",
+      "range": {
+        "startLine": 2560,
+        "startChar": 0,
+        "endLine": 2560,
+        "endChar": 94
+      },
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1db08333_69cf0bc5",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-27T13:53:50Z",
       "side": 1,
       "message": "I think we can avoid using `SkMatrix` here. Using `this-\u003elocalToDeviceTransform()`, if it\u0027s type is `Type::kRectStaysRect` should mostly correspond to `isScaleTranslate()` (although it covers 90 degree rotations, but I think we want to snap that rect to pixels still).\n\nAnd for the else branch, `Transform` has already cached the minimum and maximum scale factors of the matrix, so we should use that instead of `decomposeScale` I think.",
+      "range": {
+        "startLine": 2564,
+        "startChar": 0,
+        "endLine": 2564,
+        "endChar": 55
+      },
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6fd8ac6_edd401f7",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2564,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-27T17:36:08Z",
+      "side": 1,
+      "message": "We do need to know which scale value is the x and which is y, and the minimum and maximum doesn\u0027t tell us that. It also doesn\u0027t seem like that data is stored anywhere in transform, and for decomposing the scale, I would have to add a function in `SkM44` or do that manually here which matches the `SkMatrix` behavior. I could go that route but it seems like it\u0027s simplest to keep it an `SkMatrix` otherwise and it is already cached in SkDevice.",
+      "parentUuid": "1db08333_69cf0bc5",
       "range": {
         "startLine": 2564,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73c0f7d2_eca86718",
+        "filename": "src/gpu/graphite/geom/AnalyticRRectBlurMask.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-27T17:36:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b34e668b_b9d59cca",
+      "range": {
+        "startLine": 47,
+        "startChar": 21,
+        "endLine": 47,
+        "endChar": 30
+      },
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fb10f72_37f3608b",
@@ -83,6 +155,24 @@
       "writtenOn": "2026-10-27T13:53:50Z",
       "side": 1,
       "message": "I think this will behave better if we use `SkRRectPriv::IsNearlySimpleCircular()` and then check that (at this point any radius value) is nearly equal to the half-width and half-height.",
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d275d5_8d98d152",
+        "filename": "src/gpu/graphite/geom/AnalyticRRectBlurMask.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-27T17:36:08Z",
+      "side": 1,
+      "message": "Done, we could probably do more by using a custom tolerance dependent on the localToDevice matrix scaling and the size of the resulting rrect/circle, possibly sigma as well, but I want to land this first so I can see any diffs related to approximating very small edge rrects as circles.",
+      "parentUuid": "6fb10f72_37f3608b",
       "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
