@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "706032f8_d3562f7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-27T00:09:33Z",
+      "side": 1,
+      "message": "ptal -- sorry that this is so massive, but it\u0027s mostly just piles-o-tables. It should have no effects -- that\u0027s for the next patch",
+      "revId": "467c31cfc2232816d4b62ee2272ec00483b65b4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e063a38_818bc4b5",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1024,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-27T00:09:33Z",
+      "side": 1,
+      "message": "My plan is to remove most of these entries in a follow-on CL, since most are rarely used.",
+      "revId": "467c31cfc2232816d4b62ee2272ec00483b65b4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
