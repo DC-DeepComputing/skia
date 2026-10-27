@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93fa7623_cdfeaec5",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T17:56:57Z",
+      "side": 1,
+      "message": "nit: replace with the SkContext tracking bug (or a new bug)\nb/xxxxxxxx is better in case people move between projects.",
+      "range": {
+        "startLine": 41,
+        "startChar": 12,
+        "endLine": 41,
+        "endChar": 24
+      },
+      "revId": "67e588cdd4b877eaa7090bd44116ca9ae303a455",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
