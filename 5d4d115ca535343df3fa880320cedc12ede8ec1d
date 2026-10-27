@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "5d4d115ca535343df3fa880320cedc12ede8ec1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5672f81_6520c719",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-10-27T13:25:13Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "5d4d115ca535343df3fa880320cedc12ede8ec1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
