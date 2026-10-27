@@ -52,6 +52,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5db33d3f_fdbc3270",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-27T05:45:09Z",
+      "side": 1,
+      "message": "Added the full list in:\nhttps://skia-review.git.corp.google.com/c/skia/+/1405378",
+      "revId": "bcd5d71a35631c20cc5bcd0030eca27aab378c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f44fdd2_bba2d6cc",
