@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "214dc30d_a8b16fcd",
+        "filename": "_agents/skills.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:18:08Z",
+      "side": 1,
+      "message": "Yes, I renamed it to follow our convention and added it to the skills.json.",
+      "parentUuid": "cce0147f_c3e6cd63",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 10
+      },
+      "revId": "004be15919e1af1f24178a3d0a3c4d3e334eb1c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "520c65d4_2f6888f9",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-23T18:39:57Z",
       "side": 1,
       "message": "wdyt about having this be named `chromium-shared`? We lose a bit of that context here since it\u0027s not next to the DEPS url that brings it in, and we can\u0027t comment inside json files.",
+      "range": {
+        "startLine": 4,
+        "startChar": 23,
+        "endLine": 4,
+        "endChar": 29
+      },
+      "revId": "004be15919e1af1f24178a3d0a3c4d3e334eb1c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e23563e_ac504038",
+        "filename": "_agents/skills.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:18:08Z",
+      "side": 1,
+      "message": "Good idea. Done.",
+      "parentUuid": "520c65d4_2f6888f9",
       "range": {
         "startLine": 4,
         "startChar": 23,
