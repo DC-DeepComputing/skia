@@ -139,6 +139,40 @@ SkPath Shape::asPath() const {
     return builder.detach();
 }
 
+<<<<<<< HEAD   (bca2c702fc8b5d5ffa1317dd9249e038a189f85c chrome/m157:[M157]Fix potential heap OOB write in SkRgnBuild)
+||||||| BASE   (bf0ef1a64ee944275ddf1845ee4e734522742c57 Mark more stack-only helpers SK_ONLY_STACK_ALLOCATABLE)
+float Shape::getInflationRadius(SkPaint::Join join,
+                                float miterLimit,
+                                SkPaint::Cap cap,
+                                float strokeWidth) const {
+    SkASSERT(miterLimit >= 0.f && strokeWidth >= 0.f);
+    // Rectangles, rounded rectangles, and lines do not produce miters so don't count the
+    // pessimistic limit against their draw bounds.
+    const float effectiveMiterLimit = this->isPath() ? miterLimit : 1.f;
+    // Rectangles and rounded rectangles don't have caps, so don't count that against their
+    // draw bounds (if we could efficiently know a path was a closed contour, it could
+    // be included here too).
+    const SkPaint::Cap effectiveCap = this->isRect() || this->isRRect() ? SkPaint::kButt_Cap : cap;
+    return SkStrokeRec::GetInflationRadius(join, effectiveMiterLimit, effectiveCap, strokeWidth);
+}
+
+=======
+float Shape::getInflationRadius(SkPaint::Join join,
+                                float miterLimit,
+                                SkPaint::Cap cap,
+                                float strokeWidth) const {
+    SkASSERT(miterLimit >= 0.f && strokeWidth > 0.f);
+    // Rectangles, rounded rectangles, and lines do not produce miters so don't count the
+    // pessimistic limit against their draw bounds.
+    const float effectiveMiterLimit = this->isPath() ? miterLimit : 1.f;
+    // Rectangles and rounded rectangles don't have caps, so don't count that against their
+    // draw bounds (if we could efficiently know a path was a closed contour, it could
+    // be included here too).
+    const SkPaint::Cap effectiveCap = this->isRect() || this->isRRect() ? SkPaint::kButt_Cap : cap;
+    return SkStrokeRec::GetInflationRadius(join, effectiveMiterLimit, effectiveCap, strokeWidth);
+}
+
+>>>>>>> CHANGE (0b6488a8123559cb72c03b987c2d717047bcac21 [graphite] Include hairline and subpixel strokes in inflatio)
 namespace {
 int path_key_from_data_size(const SkPath& path) {
     const int verbCnt = path.countVerbs();
