@@ -34,6 +34,24 @@
       "parentUuid": "23a54e64_014272dd",
       "revId": "fcc6a7687e8ce7fa081627536f663f607b9d2ec3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e282b6_064a2aa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T15:32:15Z",
+      "side": 1,
+      "message": "I think 2.5% is small enough to swallow to be able to leave the exceptions for pointers that have larger isolated impacts.",
+      "parentUuid": "ee6c6db3_415bae15",
+      "revId": "fcc6a7687e8ce7fa081627536f663f607b9d2ec3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
