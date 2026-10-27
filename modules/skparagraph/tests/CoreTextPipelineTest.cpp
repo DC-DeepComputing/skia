@@ -24,6 +24,7 @@
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
+#include "modules/skparagraph/src/CoreTextAttrStringBuilder.h"
 #include "modules/skparagraph/src/CoreTextFontRegistry.h"
 #include "modules/skparagraph/src/CoreTextIndexMap.h"
 #include "modules/skparagraph/src/ParagraphBuilderImpl.h"
@@ -38,6 +39,12 @@
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_apple.h"
+#endif
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#endif
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreGraphics/CoreGraphics.h>
@@ -50,6 +57,25 @@
 using namespace skia::textlayout;
 
 namespace {
+sk_sp<FontCollection> test_font_collection() {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    return fontCollection;
+}
+
+// Apple's SkUnicode, which CoreText clients ship with, or ICU, for tests that drive
+// CoreTextAttrStringBuilder directly; never freed, like the SkUnicode a client keeps for all of
+// its paragraphs
+SkUnicode* test_unicode() {
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+    static SkUnicode* unicode = SkUnicodes::Apple::Make().release();
+#else
+    static SkUnicode* unicode = SkUnicodes::ICU::Make().release();
+#endif
+    SkASSERT(unicode);
+    return unicode;
+}
+
 // The expectations name Apple system faces; the portable font manager (--nonativeFonts) has
 // none of them, so such tests skip instead of measuring substitutes
 bool has_font_families(std::initializer_list<const char*> families) {
@@ -223,6 +249,306 @@ DEF_TEST(CoreTextPipeline_FontRegistry_DescriptorCacheAndFallback, reporter) {
         auto desc2 = registry.getDescriptor(tf.get());
         REPORTER_ASSERT(reporter, desc2 != nullptr);
     }
+}
+
+// The paragraph's TextDirection must reach CoreText as the base writing direction, or the
+// BiDi levels of neutral characters would follow CoreText's natural direction instead
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_BaseDirectionBiDi, reporter) {
+    // CoreText paragraph style must encode LTR and RTL base embedding direction
+    const char* ltrText = "Hello world";
+    size_t ltrLen = strlen(ltrText);
+    CoreTextAttrStringBuilder ltrBuilder(
+            ltrText, ltrLen, TextDirection::kLtr, test_font_collection(), test_unicode());
+    TextStyle ltrStyle;
+    ltrBuilder.addStyle(TextRange(0, ltrLen), ltrStyle);
+    auto ltrAttr = ltrBuilder.build();
+    REPORTER_ASSERT(reporter, ltrAttr != nullptr);
+
+    CTParagraphStyleRef ltrPStyle = (CTParagraphStyleRef)CFAttributedStringGetAttribute(
+        ltrAttr.get(), 0, kCTParagraphStyleAttributeName, nullptr);
+    REPORTER_ASSERT(reporter, ltrPStyle != nullptr);
+    CTWritingDirection ltrDir = kCTWritingDirectionNatural;
+    bool ok = CTParagraphStyleGetValueForSpecifier(
+        ltrPStyle, kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(ltrDir), &ltrDir);
+    REPORTER_ASSERT(reporter, ok);
+    REPORTER_ASSERT(reporter, ltrDir == kCTWritingDirectionLeftToRight);
+
+    const char* rtlText = "سلام";
+    size_t rtlLen = strlen(rtlText);
+    CoreTextAttrStringBuilder rtlBuilder(
+            rtlText, rtlLen, TextDirection::kRtl, test_font_collection(), test_unicode());
+    TextStyle rtlStyle;
+    rtlBuilder.addStyle(TextRange(0, rtlLen), rtlStyle);
+    auto rtlAttr = rtlBuilder.build();
+    REPORTER_ASSERT(reporter, rtlAttr != nullptr);
+
+    CTParagraphStyleRef rtlPStyle = (CTParagraphStyleRef)CFAttributedStringGetAttribute(
+        rtlAttr.get(), 0, kCTParagraphStyleAttributeName, nullptr);
+    REPORTER_ASSERT(reporter, rtlPStyle != nullptr);
+    CTWritingDirection rtlDir = kCTWritingDirectionNatural;
+    ok = CTParagraphStyleGetValueForSpecifier(
+        rtlPStyle, kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(rtlDir), &rtlDir);
+    REPORTER_ASSERT(reporter, ok);
+    REPORTER_ASSERT(reporter, rtlDir == kCTWritingDirectionRightToLeft);
+}
+
+// TextStyle font features must reach the bound CTFont as feature settings; CoreText drops
+// settings a font lacks, so the test binds .AppleSystemUIFont, which has smcp and tnum
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_OpenTypeFeatures, reporter) {
+    // OpenType features must be packed into CTFontFeatureSettingsAttribute dictionary array
+    const char* text = "Sample Features 1234";
+    size_t textLen = strlen(text);
+    CoreTextAttrStringBuilder builder(
+            text, textLen, TextDirection::kLtr, test_font_collection(), test_unicode());
+    TextStyle style;
+    // No family binds .AppleSystemUIFont, which has both features; CTFontCopyAttribute drops
+    // settings the bound font does not support
+    style.setFontFamilies({});
+    style.addFontFeature(SkString("smcp"), 1);
+    style.addFontFeature(SkString("tnum"), 1);
+    builder.addStyle(TextRange(0, textLen), style);
+    auto attrStr = builder.build();
+    REPORTER_ASSERT(reporter, attrStr != nullptr);
+
+    CTFontRef font = (CTFontRef)CFAttributedStringGetAttribute(
+        attrStr.get(), 0, kCTFontAttributeName, nullptr);
+    REPORTER_ASSERT(reporter, font != nullptr);
+
+    SkUniqueCFRef<CFTypeRef> featAttr(CTFontCopyAttribute(font, kCTFontFeatureSettingsAttribute));
+    REPORTER_ASSERT(reporter, featAttr != nullptr);
+    CFArrayRef featArray = (CFArrayRef)featAttr.get();
+    REPORTER_ASSERT(reporter, CFGetTypeID(featArray) == CFArrayGetTypeID());
+    REPORTER_ASSERT(reporter, CFArrayGetCount(featArray) >= 2);
+}
+
+// SkParagraph spaces the shaped clusters itself, as on the HarfBuzz path; CTTracking on the
+// string would add a second spacing, place it before the glyph in RTL lines and skip RTL runs
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_LetterSpacingNotTracked, reporter) {
+    const CFStringRef kTrackingKey = CFSTR("CTTracking");
+    for (const char* text :
+         {"ABCDEF", "\xD7\xA9\xD7\x9C\xD7\x95\xD7\x9D", "Hi \xD8\xB3\xD9\x84 Hi"}) {
+        size_t len = strlen(text);
+        CoreTextAttrStringBuilder builder(
+                text, len, TextDirection::kLtr, test_font_collection(), test_unicode());
+        TextStyle style;
+        style.setLetterSpacing(3.5f);
+        builder.addStyle(TextRange(0, len), style);
+        auto attr = builder.build();
+        REPORTER_ASSERT(reporter, attr != nullptr);
+        CFIndex u16Len = CFAttributedStringGetLength(attr.get());
+        for (CFIndex i = 0; i < u16Len; ++i) {
+            REPORTER_ASSERT(reporter,
+                            CFAttributedStringGetAttribute(attr.get(), i, kTrackingKey, nullptr) ==
+                                    nullptr,
+                            "text=%s index=%ld", text, (long)i);
+        }
+    }
+}
+
+// letterSpacing skips cursive runs, so their ligatures stay (Arial's Allah ligature, Flutter
+// #192891), while a Latin run of the same span still loses liga to keep its spacing visible
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_LetterSpacingKeepsCursiveLigatures, reporter) {
+    if (!has_font_families({"Arial"})) {
+        return;
+    }
+    // "office " then Allah (alef, lam, lam, heh): 4 UTF-16 units from index 7
+    const char text[] = "office \xD8\xA7\xD9\x84\xD9\x84\xD9\x87";
+    const CFIndex kArabicStart = 7;
+    CoreTextAttrStringBuilder builder(
+            text, sizeof(text) - 1, TextDirection::kLtr, test_font_collection(), test_unicode());
+    TextStyle style;
+    style.setFontFamilies({SkString("Arial")});
+    style.setLetterSpacing(2.0f);
+    builder.addStyle(TextRange(0, sizeof(text) - 1), style);
+    auto attr = builder.build();
+    REPORTER_ASSERT(reporter, attr != nullptr);
+
+    SkUniqueCFRef<CTLineRef> line(CTLineCreateWithAttributedString(attr.get()));
+    CFArrayRef runs = CTLineGetGlyphRuns(line.get());
+    REPORTER_ASSERT(reporter, CFArrayGetCount(runs) > 0);
+    int arabicGlyphs = 0;
+    for (CFIndex i = 0; i < CFArrayGetCount(runs); ++i) {
+        CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(runs, i);
+        if (CTRunGetStringRange(run).location >= kArabicStart) {
+            arabicGlyphs += CTRunGetGlyphCount(run);
+        }
+    }
+    REPORTER_ASSERT(
+            reporter, arabicGlyphs == 1, "Allah takes %d glyphs, ligature is 1", arabicGlyphs);
+
+    CTFontRef latinFont =
+            (CTFontRef)CFAttributedStringGetAttribute(attr.get(), 0, kCTFontAttributeName, nullptr);
+    REPORTER_ASSERT(reporter, latinFont != nullptr);
+    SkUniqueCFRef<CFArrayRef> features(
+            (CFArrayRef)CTFontCopyAttribute(latinFont, kCTFontFeatureSettingsAttribute));
+    bool ligaOff = false;
+    for (CFIndex i = 0; features && i < CFArrayGetCount(features.get()); ++i) {
+        CFDictionaryRef feature = (CFDictionaryRef)CFArrayGetValueAtIndex(features.get(), i);
+        CFStringRef tag =
+                (CFStringRef)CFDictionaryGetValue(feature, kCTFontOpenTypeFeatureTag);
+        CFNumberRef value =
+                (CFNumberRef)CFDictionaryGetValue(feature, kCTFontOpenTypeFeatureValue);
+        int number = -1;
+        if (tag && value && CFNumberGetValue(value, kCFNumberIntType, &number)) {
+            ligaOff |= CFStringCompare(tag, CFSTR("liga"), 0) == kCFCompareEqualTo && number == 0;
+        }
+    }
+    REPORTER_ASSERT(reporter, ligaOff, "Latin run keeps liga under letterSpacing");
+}
+
+// Without letterSpacing the string carries no CTTracking attribute, so CoreText applies only
+// the font's own trak and widths stay the ones native text gets
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_NoTrackingByDefault, reporter) {
+    // Invariant: without explicit letter spacing, no synthetic tracking is applied
+    const CFStringRef kTrackingKey = CFSTR("CTTracking");
+    const char* text = "No tracking check";
+    size_t textLen = strlen(text);
+    CoreTextAttrStringBuilder builder(
+            text, textLen, TextDirection::kLtr, test_font_collection(), test_unicode());
+    TextStyle style;
+    style.setFontSize(16.0f);
+    builder.addStyle(TextRange(0, textLen), style);
+    auto attrStr = builder.build();
+    REPORTER_ASSERT(reporter, attrStr != nullptr);
+
+    CFNumberRef trackingNum = (CFNumberRef)CFAttributedStringGetAttribute(
+        attrStr.get(), 0, kTrackingKey, nullptr);
+    REPORTER_ASSERT(reporter, trackingNum == nullptr);
+}
+
+// U+FEFF at the start of a segment is text, not a byte order mark: CoreTextIndexMap counts it,
+// so the CFString must keep it or every attribute range lands one unit late
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_LeadingByteOrderMark, reporter) {
+    for (const char* text : {"\xEF\xBB\xBF" "ab", "\xEF\xBB\xBF\xEF\xBB\xBF" "a\xC2\x90"}) {
+        size_t len = strlen(text);
+        CoreTextAttrStringBuilder plain(
+                text, len, TextDirection::kLtr, test_font_collection(), test_unicode());
+        auto plainAttr = plain.build();
+        REPORTER_ASSERT(reporter, plainAttr != nullptr);
+        if (!plainAttr) {
+            continue;
+        }
+        CFIndex u16Len = CFAttributedStringGetLength(plainAttr.get());
+        REPORTER_ASSERT(reporter, SkToSizeT(u16Len) == plain.indexMap().toUtf16Index(len),
+                        "text=%s: CFString %ld, index map %zu", text, (long)u16Len,
+                        plain.indexMap().toUtf16Index(len));
+        REPORTER_ASSERT(reporter, u16Len > 0 &&
+                                  CFStringGetCharacterAtIndex(
+                                          CFAttributedStringGetString(plainAttr.get()), 0) ==
+                                          0xFEFF);
+
+        CoreTextAttrStringBuilder styled(
+                text, len, TextDirection::kLtr, test_font_collection(), test_unicode());
+        styled.addStyle(TextRange(0, len), TextStyle());
+        REPORTER_ASSERT(reporter, styled.build() != nullptr);
+    }
+}
+
+// Script runs take the UAX #24 Script of SkUnicode, so letters of any Unicode version get their
+// own tag on every macOS, and an invalid byte, decoded as U+FFFD (Common), neither splits nor
+// starts a script run, so itemization stays per script
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_ScriptRunsFollowUnicodeScripts, reporter) {
+    auto scriptAt = [](const std::string& text, size_t utf8Index) {
+        CoreTextAttrStringBuilder builder(text.c_str(),
+                                          text.size(),
+                                          TextDirection::kLtr,
+                                          test_font_collection(),
+                                          test_unicode());
+        return builder.scriptAt(utf8Index);
+    };
+    REPORTER_ASSERT(reporter, scriptAt("A", 0) == SkSetFourByteTag('L', 'a', 't', 'n'));
+    REPORTER_ASSERT(reporter, scriptAt("\u00C0", 0) == SkSetFourByteTag('L', 'a', 't', 'n'));
+    REPORTER_ASSERT(reporter, scriptAt("\u0410", 0) == SkSetFourByteTag('C', 'y', 'r', 'l'));
+    REPORTER_ASSERT(reporter, scriptAt("\u0627", 0) == SkSetFourByteTag('A', 'r', 'a', 'b'));
+    REPORTER_ASSERT(reporter, scriptAt("\u0710", 0) == SkSetFourByteTag('S', 'y', 'r', 'c'));
+    REPORTER_ASSERT(reporter, scriptAt("\u10D0", 0) == SkSetFourByteTag('G', 'e', 'o', 'r'));
+    REPORTER_ASSERT(reporter, scriptAt("\u4E00", 0) == SkSetFourByteTag('H', 'a', 'n', 'i'));
+    // CJK Extension I (Unicode 15.1), so script lookup does not depend on the host macOS version
+    REPORTER_ASSERT(reporter, scriptAt("\U0002EBF0", 0) == SkSetFourByteTag('H', 'a', 'n', 'i'));
+    // Text of Common code points only has no script to join, so it gets Latn
+    REPORTER_ASSERT(reporter, scriptAt(" 1\u00BF", 0) == SkSetFourByteTag('L', 'a', 't', 'n'));
+
+    const std::string invalid =
+            "\xD8\xB3"
+            "\xFF"
+            "\xD7\x90";
+    CoreTextAttrStringBuilder builder(invalid.c_str(),
+                                      invalid.size(),
+                                      TextDirection::kLtr,
+                                      test_font_collection(),
+                                      test_unicode());
+    REPORTER_ASSERT(reporter, builder.scriptAt(2) == SkSetFourByteTag('A', 'r', 'a', 'b'));
+    REPORTER_ASSERT(reporter, builder.scriptAt(3) == SkSetFourByteTag('H', 'e', 'b', 'r'));
+    REPORTER_ASSERT(reporter, builder.indexMap().toUtf16Index(3) == 2);
+    REPORTER_ASSERT(reporter, builder.indexMap().toUtf8Index(2) == 3);
+}
+
+// A letter of a non-cursive script after Arabic starts its own run instead of joining the cursive
+// one, so Bengali, Khmer or Ethiopic after Arabic still get letterSpacing; marks join their base
+DEF_TEST(CoreTextPipeline_AttrStringBuilder_NonCursiveScriptsAfterArabic, reporter) {
+    const SkFourByteTag arab = SkSetFourByteTag('A', 'r', 'a', 'b');
+    auto scriptAt = [](const std::string& text, size_t utf8Index) {
+        CoreTextAttrStringBuilder builder(text.c_str(),
+                                          text.size(),
+                                          TextDirection::kLtr,
+                                          test_font_collection(),
+                                          test_unicode());
+        return builder.scriptAt(utf8Index);
+    };
+    const std::string arabic = "\u0633\u0644\u0627\u0645";
+    const std::pair<const char*, SkFourByteTag> scripts[] = {
+            {"\u09AC\u09BE\u0982\u09B2\u09BE", SkSetFourByteTag('B', 'e', 'n', 'g')},
+            {"\u1781\u17D2\u1798\u17C2\u179A", SkSetFourByteTag('K', 'h', 'm', 'r')},
+            {"\u12A0\u121B\u122D\u129B", SkSetFourByteTag('E', 't', 'h', 'i')},
+            // Private use is Unknown, which SkShaper's script iterator does not join either
+            {"\uE000", SkSetFourByteTag('Z', 'z', 'z', 'z')},
+    };
+    for (const auto& [letters, script] : scripts) {
+        const std::string text = arabic + letters;
+        REPORTER_ASSERT(reporter, scriptAt(text, 0) == arab);
+        const SkFourByteTag tag = scriptAt(text, arabic.size());
+        REPORTER_ASSERT(reporter, tag == script, "%s: tag %08x", letters, tag);
+    }
+    REPORTER_ASSERT(reporter, scriptAt("\u0633\u064B", 2) == arab);
+    REPORTER_ASSERT(reporter, scriptAt("e\u0301", 1) == SkSetFourByteTag('L', 'a', 't', 'n'));
+    // Arabic Extended-B is cursive Arabic too
+    REPORTER_ASSERT(reporter, scriptAt("\u0870", 0) == arab);
+    REPORTER_ASSERT(reporter, scriptAt("\u089F", 0) == arab);
+}
+
+// An LTR line with an Arabic word must come back from CTLine as LTR, RTL, LTR runs; run
+// direction is what ParagraphImpl turns into BiDi levels
+DEF_TEST(CoreTextPipeline_LineShapingAndBiDiLevels, reporter) {
+    // CTLine separates runs by direction with correct kCTRunStatusRightToLeft flags
+    const char* bidiText = "Hello سلام World";
+    size_t bidiLen = strlen(bidiText);
+    CoreTextAttrStringBuilder builder(
+            bidiText, bidiLen, TextDirection::kLtr, test_font_collection(), test_unicode());
+    TextStyle style;
+    style.setFontSize(14.0f);
+    builder.addStyle(TextRange(0, bidiLen), style);
+    auto attrStr = builder.build();
+    REPORTER_ASSERT(reporter, attrStr != nullptr);
+
+    SkUniqueCFRef<CTLineRef> line(CTLineCreateWithAttributedString(attrStr.get()));
+    REPORTER_ASSERT(reporter, line != nullptr);
+
+    CFArrayRef runs = CTLineGetGlyphRuns(line.get());
+    REPORTER_ASSERT(reporter, runs != nullptr);
+    CFIndex runCount = CFArrayGetCount(runs);
+    REPORTER_ASSERT(reporter, runCount >= 3);
+
+    CTRunRef run0 = (CTRunRef)CFArrayGetValueAtIndex(runs, 0);
+    CTRunRef run1 = (CTRunRef)CFArrayGetValueAtIndex(runs, 1);
+    CTRunRef run2 = (CTRunRef)CFArrayGetValueAtIndex(runs, 2);
+
+    REPORTER_ASSERT(reporter, (CTRunGetStatus(run0) & kCTRunStatusRightToLeft) == 0);
+    REPORTER_ASSERT(reporter, (CTRunGetStatus(run1) & kCTRunStatusRightToLeft) != 0);
+    REPORTER_ASSERT(reporter, (CTRunGetStatus(run2) & kCTRunStatusRightToLeft) == 0);
+
+    REPORTER_ASSERT(reporter, CTRunGetGlyphCount(run0) > 0);
+    REPORTER_ASSERT(reporter, CTRunGetGlyphCount(run1) > 0);
+    REPORTER_ASSERT(reporter, CTRunGetGlyphCount(run2) > 0);
 }
 
 // CupertinoSystemText and CupertinoSystemDisplay must resolve in matchSystemFamily so that a
