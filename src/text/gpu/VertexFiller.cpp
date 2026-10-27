@@ -24,6 +24,18 @@ using MaskFormat = skgpu::MaskFormat;
 
 namespace sktext::gpu {
 
+bool VertexFiller::ValidDirectPosition(SkPoint pt) {
+    // Single-precision floats have a 24-bit significand. At or below 2^24, floats can represent
+    // all integers exactly (ULP <= 1.0f). Bounding coordinates to 2^23 ensures that glyph
+    // bounds (pt + glyph dimensions) remain well within 2^24 so coordinates and offsets remain
+    // exact integers without precision loss or 32-bit integer overflow.
+    constexpr SkScalar kMaxDirectCoord = (1 << 23);  // 8,388,608.0f
+    return pt.isFinite() &&
+           pt.x() >= -kMaxDirectCoord && pt.x() <= kMaxDirectCoord &&
+           pt.y() >= -kMaxDirectCoord && pt.y() <= kMaxDirectCoord &&
+           SkScalarIsInt(pt.x()) && SkScalarIsInt(pt.y());
+}
+
 VertexFiller::VertexFiller(MaskFormat maskFormat,
                            const SkMatrix& creationMatrix,
                            SkRect creationBounds,
@@ -42,6 +54,13 @@ VertexFiller VertexFiller::Make(MaskFormat maskType,
                                 SubRunAllocator *alloc,
                                 FillerType fillerType) {
     SkSpan<SkPoint> leftTop = alloc->makePODSpan<SkPoint>(positions);
+#if defined(SK_DEBUG)
+    if (fillerType == kIsDirect) {
+        for (const SkPoint& pt : leftTop) {
+            SkASSERT(ValidDirectPosition(pt));
+        }
+    }
+#endif
     return VertexFiller{
             maskType, creationMatrix, creationBounds, leftTop, fillerType == kIsDirect};
 }
