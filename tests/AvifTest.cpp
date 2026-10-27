@@ -10,6 +10,9 @@
 #ifdef SK_CODEC_DECODES_AVIF
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkData.h"
+#include "include/core/SkStream.h"
+#include "tests/FakeStreams.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
@@ -241,6 +244,21 @@ DEF_TEST(AvifDecodeMonochrome, r) {
                       .color_type = kGray_8_SkColorType,
                       .alpha_type = kOpaque_SkAlphaType};
     run_avif_test(r, t);
+}
+
+// The AVIF codec copies a stream that is not backed by memory, which fails if the stream is
+// shorter than it claims. This used to dereference the null SkData.
+DEF_TEST(Avif_IncompleteStream, r) {
+    // An ftyp box that declares the "avif" brand, and nothing more.
+    constexpr uint8_t kAvifHeader[] = {
+            0x00, 0x00, 0x00, 0x10, 'f', 't', 'y', 'p', 'a', 'v', 'i', 'f', 0x00, 0x00, 0x00, 0x00};
+    auto stream = std::make_unique<OverstatedLengthStream>(
+            SkData::MakeWithCopy(kAvifHeader, sizeof(kAvifHeader)), 16);
+
+    SkCodec::Result result = SkCodec::kSuccess;
+    auto codec = SkCodec::MakeFromStream(std::move(stream), &result);
+    REPORTER_ASSERT(r, !codec);
+    REPORTER_ASSERT(r, result == SkCodec::kIncompleteInput, "result: %d", (int)result);
 }
 
 #endif  // SK_CODEC_DECODES_AVIF

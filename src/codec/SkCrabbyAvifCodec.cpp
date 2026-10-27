@@ -167,6 +167,12 @@ std::unique_ptr<SkCodec> SkCrabbyAvifCodec::MakeFromStream(std::unique_ptr<SkStr
         // delete the stream.
         stream.reset(nullptr);
     }
+
+    // CopyStreamToData() returns null if the stream delivers fewer bytes than it reported.
+    if (!data) {
+        *result = SkCodec::kIncompleteInput;
+        return nullptr;
+    }
     return SkCrabbyAvifCodec::MakeFromData(std::move(stream), std::move(data), result, gainmapOnly);
 }
 

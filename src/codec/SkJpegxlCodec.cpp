@@ -103,6 +103,12 @@ std::unique_ptr<SkCodec> SkJpegxlCodec::MakeFromStream(std::unique_ptr<SkStream>
         stream.reset(nullptr);
     }
 
+    // CopyStreamToData() returns null if the stream delivers fewer bytes than it reported.
+    if (!data) {
+        *result = kIncompleteInput;
+        return nullptr;
+    }
+
     auto priv = std::make_unique<SkJpegxlCodecPriv>();
     JxlDecoder* dec = priv->fDecoder.get();
 
