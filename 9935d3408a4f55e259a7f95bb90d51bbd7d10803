@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c13d7ff_4f4903e1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2560,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:53:50Z",
+      "side": 1,
+      "message": "Since we\u0027re changing the snapping for both legacy and new code paths, you should run the chrome canary just in case.",
+      "range": {
+        "startLine": 2560,
+        "startChar": 0,
+        "endLine": 2560,
+        "endChar": 94
+      },
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db08333_69cf0bc5",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2564,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:53:50Z",
+      "side": 1,
+      "message": "I think we can avoid using `SkMatrix` here. Using `this-\u003elocalToDeviceTransform()`, if it\u0027s type is `Type::kRectStaysRect` should mostly correspond to `isScaleTranslate()` (although it covers 90 degree rotations, but I think we want to snap that rect to pixels still).\n\nAnd for the else branch, `Transform` has already cached the minimum and maximum scale factors of the matrix, so we should use that instead of `decomposeScale` I think.",
+      "range": {
+        "startLine": 2564,
+        "startChar": 0,
+        "endLine": 2564,
+        "endChar": 55
+      },
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b34e668b_b9d59cca",
+        "filename": "src/gpu/graphite/geom/AnalyticRRectBlurMask.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:53:50Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 47,
+        "startChar": 21,
+        "endLine": 47,
+        "endChar": 30
+      },
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fb10f72_37f3608b",
+        "filename": "src/gpu/graphite/geom/AnalyticRRectBlurMask.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T13:53:50Z",
+      "side": 1,
+      "message": "I think this will behave better if we use `SkRRectPriv::IsNearlySimpleCircular()` and then check that (at this point any radius value) is nearly equal to the half-width and half-height.",
+      "revId": "9935d3408a4f55e259a7f95bb90d51bbd7d10803",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
