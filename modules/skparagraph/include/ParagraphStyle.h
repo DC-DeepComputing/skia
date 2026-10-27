@@ -22,7 +22,7 @@ namespace textlayout {
 // other builds lay it out with HarfBuzz. A paragraph whose CoreText typesetting fails also falls
 // back to HarfBuzz, or aborts in a build that defines SK_PARAGRAPH_DISABLE_HARFBUZZ
 enum class TextShapingEngine : uint8_t {
-    // HarfBuzz
+    // HarfBuzz; layout aborts on it in a skia_use_harfbuzz=false build
     kDefault = 0,
     kCoreText = 1,
 };
