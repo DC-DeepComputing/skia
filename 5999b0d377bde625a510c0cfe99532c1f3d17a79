@@ -33,6 +33,23 @@
       "message": "sampler at: https://static.januschka.com/i-356913465/",
       "revId": "5999b0d377bde625a510c0cfe99532c1f3d17a79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a20d2297_6a84b228",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-27T17:51:56Z",
+      "side": 1,
+      "message": "Thanks! I will try and get to reviewing this soon. This is helpful for fixing https://g-issues.skia.org/issues/329700315, although we will want this for GPU backends of Skia as well. Would mind looking into that as well?",
+      "revId": "5999b0d377bde625a510c0cfe99532c1f3d17a79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
