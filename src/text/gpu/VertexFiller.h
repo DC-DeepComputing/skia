@@ -90,6 +90,8 @@ public:
     }
     SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
 
+    static bool ValidDirectPosition(SkPoint pt);
+
 private:
     friend class AtlasSubRun;
 

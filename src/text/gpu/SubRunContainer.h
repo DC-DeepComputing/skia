@@ -61,7 +61,8 @@ public:
                       const AtlasDrawDelegate&) const = 0;
 
     void flatten(SkWriteBuffer& buffer) const;
-    static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
+    static SubRunOwner MakeFromBuffer(const SkMatrix& initialPositionMatrix,
+                                      SkReadBuffer& buffer,
                                       sktext::gpu::SubRunAllocator* alloc,
                                       const SkStrikeClient* client);
 
