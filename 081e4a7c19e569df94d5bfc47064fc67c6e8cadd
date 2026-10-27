@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "924b2962_9d3fe07c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-27T15:04:02Z",
+      "side": 1,
+      "message": "LGTM. Verified the ASCII table lookup, tab replacement mutation order, multi-byte UTF-8 flag propagation, and invalid UTF-8 handling in SkUnicode_client::computeCodeUnitFlags.\n\n(Optional/non-blocking: since the underlying tables in SkUnicode_hardcoded.cpp are already constexpr std::array, IsSpace/IsWhitespace/IsControl/IsIdeographic/IsDefaultIgnorable could also be constexpr in the header in the future, which would let kAsciiFlags be static constexpr without a function-local static guard check on each call — though keeping them in SkUnicode_hardcoded.cpp to match IsDefaultIgnorable and SkUnicode_icu.cpp is completely fine as-is.)",
+      "revId": "081e4a7c19e569df94d5bfc47064fc67c6e8cadd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
