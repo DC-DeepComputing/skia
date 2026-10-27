@@ -20,6 +20,8 @@
 #include "src/core/SkCanvasPriv.h"
 #include "src/image/SkImage_Base.h"
 
+#include <cinttypes>
+
 SkCaptureCanvas::SkCaptureCanvas(SkCanvas* canvas, SkCaptureManager* manager)
         : SkNWayCanvas(canvas->imageInfo().width(), canvas->imageInfo().height()) {
     fBaseCanvas = canvas;
@@ -228,7 +230,7 @@ void SkCaptureCanvas::onDrawImage2(const SkImage* image,
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
             // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawImage2: StorageID=%u, ContentID=%u\n",
+            SKIA_LOG_D("SkCaptureCanvas::onDrawImage2: StorageID=%" PRIu64 ", ContentID=%u\n",
                      storage->getPixelStorageId(), storage->getContentId());
         }
     }
@@ -245,7 +247,7 @@ void SkCaptureCanvas::onDrawImageRect2(const SkImage* image,
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
             // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawImageRect2: StorageID=%u, ContentID=%u\n",
+            SKIA_LOG_D("SkCaptureCanvas::onDrawImageRect2: StorageID=%" PRIu64 ", ContentID=%u\n",
                      storage->getPixelStorageId(), storage->getContentId());
         }
     }
@@ -261,7 +263,7 @@ void SkCaptureCanvas::onDrawImageLattice2(const SkImage* image,
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
             // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawImageLattice2: StorageID=%u, ContentID=%u\n",
+            SKIA_LOG_D("SkCaptureCanvas::onDrawImageLattice2: StorageID=%" PRIu64 ", ContentID=%u\n",
                      storage->getPixelStorageId(), storage->getContentId());
         }
     }
@@ -281,7 +283,7 @@ void SkCaptureCanvas::onDrawAtlas2(const SkImage* image,
     for (const auto& storage : as_IB(image)->getPixelStorages()) {
         if (storage) {
             // TODO (b/412351769): Track image metadata in the capture manager.
-            SKIA_LOG_D("SkCaptureCanvas::onDrawAtlas2: StorageID=%u, ContentID=%u\n",
+            SKIA_LOG_D("SkCaptureCanvas::onDrawAtlas2: StorageID=%" PRIu64 ", ContentID=%u\n",
                      storage->getPixelStorageId(), storage->getContentId());
         }
     }

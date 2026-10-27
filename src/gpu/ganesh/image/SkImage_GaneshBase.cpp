@@ -63,7 +63,7 @@ struct SkIPoint;
 
 SkImage_GaneshBase::SkImage_GaneshBase(sk_sp<GrImageContext> context,
                                        SkImageInfo info,
-                                       uint32_t uniqueID)
+                                       uint64_t uniqueID)
         : SkImage_Base(std::move(info), uniqueID, /*backingStorage=*/nullptr),
                        fContext(std::move(context)) {}
 

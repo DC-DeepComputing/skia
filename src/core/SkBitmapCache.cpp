@@ -68,7 +68,7 @@ public:
 
 //////////////////////
 
-void SkBitmapCache_setImmutableWithID(SkPixelRef* pr, uint32_t id) {
+void SkBitmapCache_setImmutableWithID(SkPixelRef* pr, uint64_t id) {
     pr->setImmutableWithID(id);
 }
 
@@ -175,7 +175,7 @@ private:
 
     SkImageInfo fInfo;
     size_t      fRowBytes;
-    uint32_t    fPrUniqueID;
+    uint64_t    fPrUniqueID;
 
     // This field counts the number of external pixelrefs we have created.
     // They notify us when they are destroyed so we can decrement this.

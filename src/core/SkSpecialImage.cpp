@@ -19,7 +19,7 @@
 #include "src/shaders/SkImageShader.h"
 
 SkSpecialImage::SkSpecialImage(const SkIRect& subset,
-                               uint32_t uniqueID,
+                               uint64_t uniqueID,
                                const SkColorInfo& colorInfo,
                                const SkSurfaceProps& props)
     : fSubset(subset)

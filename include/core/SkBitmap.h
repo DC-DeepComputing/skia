@@ -763,7 +763,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Bitmap_getGenerationID
     */
-    uint32_t getGenerationID() const;
+    uint64_t getGenerationID() const;
 
     /** Marks that pixels in SkPixelRef have changed. Subsequent calls to
         getGenerationID() return a different value.

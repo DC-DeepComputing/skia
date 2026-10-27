@@ -25,9 +25,9 @@
 class GrDirectContext;
 class SkColorSpace;
 class SkData;
+class SkImageShader;
 class SkPixmap;
 class SkSurface;
-class SkImageShader;
 enum SkColorType : int;
 struct SkIRect;
 struct SkImageInfo;
@@ -40,7 +40,7 @@ enum class SkCopyPixelsMode {
 
 class SkImage_Raster : public SkImage_Base {
 public:
-    SkImage_Raster(const SkImageInfo&, sk_sp<SkData>, size_t rb, sk_sp<SkMipmap>, uint32_t id);
+    SkImage_Raster(const SkImageInfo&, sk_sp<SkData>, size_t rb, sk_sp<SkMipmap>, uint64_t id);
     ~SkImage_Raster() override;
 
     // From SkImage.h

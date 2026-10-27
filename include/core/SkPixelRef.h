@@ -41,7 +41,7 @@ public:
         pixelref. Each time the pixels are changed (and notifyPixelsChanged is
         called), a different generation ID will be returned.
     */
-    uint32_t getGenerationID() const;
+    uint64_t getGenerationID() const;
 
     /**
      *  Call this if you have changed the contents of the pixels. This will in-
@@ -90,8 +90,8 @@ private:
     size_t              fRowBytes;
 
     // Bottom bit indicates the Gen ID is unique.
-    bool genIDIsUnique() const { return SkToBool(fTaggedGenID.load() & 1); }
-    mutable std::atomic<uint32_t> fTaggedGenID;
+    bool genIDIsUnique() const { return SkToBool(fTaggedGenID.load() & 1ULL); }
+    mutable std::atomic<uint64_t> fTaggedGenID;
 
     SkIDChangeListener::List fGenIDChangeListeners;
 
@@ -111,8 +111,8 @@ private:
     void restoreMutability();
     friend class SkSurface_Raster;  // For temporary immutable methods above.
 
-    void setImmutableWithID(uint32_t genID);
-    friend void SkBitmapCache_setImmutableWithID(SkPixelRef*, uint32_t);
+    void setImmutableWithID(uint64_t genID);
+    friend void SkBitmapCache_setImmutableWithID(SkPixelRef*, uint64_t);
 
     using INHERITED = SkRefCnt;
 };

@@ -34,9 +34,7 @@ struct SkIRect;
 struct SkISize;
 struct SkImageInfo;
 
-enum {
-    kNeedNewImageUniqueID = 0
-};
+static constexpr uint64_t kNeedNewImageUniqueID = 0;
 
 class SkImage_Base : public SkImage {
 public:
@@ -183,7 +181,7 @@ public:
     }
 
 protected:
-    SkImage_Base(const SkImageInfo& info, uint32_t uniqueID, sk_sp<SkPixelStorage> backingStorage);
+    SkImage_Base(const SkImageInfo& info, uint64_t uniqueID, sk_sp<SkPixelStorage> backingStorage);
     // fPixelStorages is protected since SkImage_Raster needs access in ctor
     skia_private::STArray<1, sk_sp<SkPixelStorage>> fPixelStorages;
 private:

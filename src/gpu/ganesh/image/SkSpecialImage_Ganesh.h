@@ -29,7 +29,7 @@ sk_sp<SkSpecialImage> MakeFromTextureImage(GrRecordingContext* rContext,
 
 sk_sp<SkSpecialImage> MakeDeferredFromGpu(GrRecordingContext*,
                                           const SkIRect& subset,
-                                          uint32_t uniqueID,
+                                          uint64_t uniqueID,
                                           GrSurfaceProxyView,
                                           const GrColorInfo&,
                                           const SkSurfaceProps&);

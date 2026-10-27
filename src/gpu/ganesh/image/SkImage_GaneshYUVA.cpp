@@ -49,7 +49,7 @@ enum class SkTileMode;
 struct SkRect;
 
 SkImage_GaneshYUVA::SkImage_GaneshYUVA(sk_sp<GrImageContext> context,
-                                       uint32_t uniqueID,
+                                       uint64_t uniqueID,
                                        GrYUVATextureProxies proxies,
                                        sk_sp<SkColorSpace> imageColorSpace)
         : INHERITED(std::move(context),
