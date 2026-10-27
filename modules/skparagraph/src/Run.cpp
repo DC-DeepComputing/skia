@@ -180,6 +180,29 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space) {
     return shift;
 }
 
+SkScalar Run::addLetterSpacesAfterGraphemes(SkScalar space, SkScalar shift) {
+    SkScalar runStartShift = shift;
+    for (size_t i = 0; i < this->size(); ++i) {
+        fPositions[i].fX += shift;
+        // Glyphs i and i + 1 share a grapheme when no grapheme starts between their text
+        // positions; RTL runs store glyphs in visual order, so the positions may go down
+        bool graphemeEnds = i + 1 == this->size();
+        if (!graphemeEnds) {
+            // Cluster indexes are relative to the run; the grapheme table is paragraph-wide
+            TextIndex from = std::min(globalClusterIndex(i), globalClusterIndex(i + 1));
+            TextIndex to = std::max(globalClusterIndex(i), globalClusterIndex(i + 1));
+            graphemeEnds = fOwner->findPreviousGraphemeBoundary(to) > from;
+        }
+        if (graphemeEnds) {
+            shift += space;
+        }
+    }
+    fPositions[this->size()].fX += shift;
+    // The shift also holds the spacing of earlier runs, which is not part of this run's advance
+    fAdvance.fX += shift - runStartShift;
+    return shift;
+}
+
 SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
     // Offset all the glyphs in the cluster
     SkScalar shift = 0;
@@ -198,6 +221,16 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
     cluster->setHalfLetterSpacing(space / 2);
 
     return shift;
+}
+
+SkScalar Run::addLetterSpaceAfterCluster(SkScalar space, Cluster* cluster) {
+    if (this->size() == cluster->endPos()) {
+        fPositions[cluster->endPos()].fX += space;
+    }
+    fAdvance.fX += space;
+    cluster->space(space);
+    cluster->setHalfLetterSpacing(space / 2);
+    return space;
 }
 
 bool Run::IsCursiveScript(SkFourByteTag script) {
@@ -222,7 +255,9 @@ void Run::shift(const Cluster* cluster, SkScalar offset) {
     for (size_t i = cluster->startPos(); i < cluster->endPos(); ++i) {
         fPositions[i].fX += offset;
     }
-    if (this->size() == cluster->endPos()) {
+    // A cluster without glyphs (CoreText may fold its text into the previous glyph) does not
+    // own the run end; the cluster before it already moved it
+    if (this->size() == cluster->endPos() && cluster->startPos() < cluster->endPos()) {
         // To make calculations easier
         fPositions[cluster->endPos()].fX += offset;
     }
