@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3ba0644_c35d3e31",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-27T19:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08936bbc_089b4f55",
+      "range": {
+        "startLine": 199,
+        "startChar": 8,
+        "endLine": 199,
+        "endChar": 54
+      },
+      "revId": "f2fbdc3e08eaaaf3be0a300e63ac01dc90d3866a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c84a646c_9a8302bd",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-27T15:22:34Z",
       "side": 1,
       "message": "Can use SkAssertResult here instead.",
+      "range": {
+        "startLine": 2696,
+        "startChar": 12,
+        "endLine": 2697,
+        "endChar": 33
+      },
+      "revId": "f2fbdc3e08eaaaf3be0a300e63ac01dc90d3866a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3601b1e1_7404a0cc",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2697,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-27T19:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c84a646c_9a8302bd",
       "range": {
         "startLine": 2696,
         "startChar": 12,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e561c36d_575e76fc",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 3282,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-27T19:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28649b44_3454fcfa",
+      "range": {
+        "startLine": 3281,
+        "startChar": 12,
+        "endLine": 3282,
+        "endChar": 33
+      },
+      "revId": "f2fbdc3e08eaaaf3be0a300e63ac01dc90d3866a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68ae0145_eca271b7",
@@ -100,6 +172,30 @@
       "writtenOn": "2026-10-27T15:22:34Z",
       "side": 1,
       "message": "nit: alignment",
+      "range": {
+        "startLine": 143,
+        "startChar": 21,
+        "endLine": 144,
+        "endChar": 24
+      },
+      "revId": "f2fbdc3e08eaaaf3be0a300e63ac01dc90d3866a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a0031c6_b12cd0f0",
+        "filename": "tests/graphite/SubgroupComputeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-27T19:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68ae0145_eca271b7",
       "range": {
         "startLine": 143,
         "startChar": 21,
