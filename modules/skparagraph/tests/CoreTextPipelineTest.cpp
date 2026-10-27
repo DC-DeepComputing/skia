@@ -1410,9 +1410,16 @@ DEF_TEST(CoreTextPipeline_EngineSwitchLetterSpacing, reporter) {
     };
 
     testEngine(TextShapingEngine::kCoreText, true);
+    // A HarfBuzz-free build aborts on kDefault, so only the CoreText half can run there
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
     testEngine(TextShapingEngine::kDefault, false);
+#endif
 }
 
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+
+// Keeping the two engines apart in the cache needs both engines, and kDefault needs HarfBuzz
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
 DEF_TEST(CoreTextPipeline_CacheKeyEngineSeparation, reporter) {
     auto fontCollection = sk_make_sp<FontCollection>();
     fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
@@ -1474,6 +1481,9 @@ DEF_TEST(CoreTextPipeline_CacheKeyEngineSeparation, reporter) {
     REPORTER_ASSERT(reporter, cache.findParagraph(implHBQuery));
     REPORTER_ASSERT(reporter, !implHBQuery->isCoreTextShaped());
 }
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
+
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 namespace {
 using Coordinate = SkFontArguments::VariationPosition::Coordinate;
@@ -1569,11 +1579,13 @@ DEF_TEST(CoreTextPipeline_FontArguments_VariableFontAxes, reporter) {
                     axis_value(narrowTypeface, Coordinate::wdth).value_or(-1.0f));
 
     // Both engines take advances from CoreText for the same varied face, so they must agree
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
     auto hbNarrow = layout(TextShapingEngine::kDefault, Coordinate{Coordinate::wdth, 50.0f});
     const SkScalar hbNarrowWidth = hbNarrow->getMaxIntrinsicWidth();
     REPORTER_ASSERT(reporter, !static_cast<ParagraphImpl*>(hbNarrow.get())->isCoreTextShaped());
     REPORTER_ASSERT(reporter, SkScalarNearlyEqual(hbNarrowWidth, narrowWidth, 1.0f),
                     "HarfBuzz wdth=50 width %g vs CoreText %g", hbNarrowWidth, narrowWidth);
+#endif
 }
 
 DEF_TEST(CoreTextPipeline_FontArguments_SystemFontWeightAxis, reporter) {
@@ -1739,7 +1751,13 @@ const SkFont* first_run_font(Paragraph* paragraph) {
     SkSpan<Run> runs = static_cast<ParagraphImpl*>(paragraph)->runs();
     return runs.empty() ? nullptr : &runs[0].font();
 }
+}  // namespace
 
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+
+// The synthetic style contract is parity with OneLineShaper, which needs HarfBuzz
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
+namespace {
 // Lays out "Synthetic" in one span so the first run carries the whole style request
 std::unique_ptr<Paragraph> layout_styled_sample(const sk_sp<FontCollection>& fontCollection,
                                                 TextShapingEngine engine,
@@ -1763,6 +1781,7 @@ std::unique_ptr<Paragraph> layout_styled_sample(const sk_sp<FontCollection>& fon
 }
 }  // namespace
 
+// HarfBuzz is the oracle every assertion below compares CoreText against
 DEF_TEST(CoreTextPipeline_SyntheticStyles_ParityWithHarfBuzz, reporter) {
     sk_sp<SkTypeface> regular = ToolUtils::CreateTypefaceFromResource("fonts/Roboto-Regular.ttf");
     if (!regular) {
@@ -1857,6 +1876,9 @@ DEF_TEST(CoreTextPipeline_SyntheticStyles_ParityWithHarfBuzz, reporter) {
                         "upright request skewed by %g", systemFont->getSkewX());
     }
 }
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
+
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 namespace {
 // Records where TextLine hands each glyph blob to the canvas. The canvas places glyph k at
@@ -1999,6 +2021,8 @@ DEF_TEST(CoreTextPipeline_BaselineShift_PaintParityWithHarfBuzz, reporter) {
                 painted_shift_delta(reporter, fontCollection, TextShapingEngine::kCoreText, shift);
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(ctDelta, shift, 0.51f),
                         "CoreText paints a %g baseline shift as %g", shift, ctDelta);
+        // A HarfBuzz-free build aborts on kDefault, so the parity half needs HarfBuzz
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
         const SkScalar hbDelta =
                 painted_shift_delta(reporter, fontCollection, TextShapingEngine::kDefault, shift);
         REPORTER_ASSERT(reporter,
@@ -2008,6 +2032,7 @@ DEF_TEST(CoreTextPipeline_BaselineShift_PaintParityWithHarfBuzz, reporter) {
                         hbDelta);
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(ctDelta, hbDelta, 0.51f),
                         "shift %g: CoreText delta %g vs HarfBuzz %g", shift, ctDelta, hbDelta);
+#endif
     }
 }
 
@@ -2121,8 +2146,11 @@ DEF_TEST(CoreTextPipeline_LetterSpacing_SkipsCursiveScriptsLikeHarfBuzz, reporte
     const char* kLatin = "Latin";
     const SkScalar kSpacing = 4.0f;
     const SkScalar kFullTracking = 5 * kSpacing;
+    // A HarfBuzz-free build aborts on kDefault, so only the CoreText half can run there
     for (TextShapingEngine engine : {
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
                  TextShapingEngine::kDefault,
+#endif
                  TextShapingEngine::kCoreText}) {
         const bool coreText = engine == TextShapingEngine::kCoreText;
         const char* name = coreText ? "CoreText" : "HarfBuzz";
@@ -3161,6 +3189,11 @@ PlainLine plain_coretext_line(const char* family, const char* text) {
     return coretext_line(font.get(), text, 0);
 }
 
+}  // namespace
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
+namespace {
 struct CaretStep {
     SkScalar x;
     int position;
@@ -3182,6 +3215,11 @@ std::vector<CaretStep> caret_steps(Paragraph* paragraph) {
     }
     return steps;
 }
+}  // namespace
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
+
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+namespace {
 
 struct DrawnGlyph {
     SkScalar drawn;
@@ -3784,6 +3822,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_MarksTakeNoAdvance, reporter) {
         }
         REPORTER_ASSERT(reporter, markAdvanced, "%s: CoreText advances no mark", c.family);
 
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
         // SF's optical size makes HarfBuzz advances uniformly wider, so caret x are compared
         // relative to the line width
         auto harfBuzz = layout_marked(TextShapingEngine::kDefault, c.family, c.text, c.direction);
@@ -3814,6 +3853,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_MarksTakeNoAdvance, reporter) {
                             hb.x,
                             hb.x * scale);
         }
+#endif
     }
 }
 
@@ -3842,6 +3882,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_UnwrappedTabEndsAtCoreTextStop, reporter) {
                             family,
                             glyph,
                             width);
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
             auto harfBuzz = layout_marked(TextShapingEngine::kDefault, family, text,
                                           TextDirection::kLtr);
             INFOF(reporter,
@@ -3849,6 +3890,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_UnwrappedTabEndsAtCoreTextStop, reporter) {
                   family,
                   paragraph->getMaxIntrinsicWidth(),
                   harfBuzz->getMaxIntrinsicWidth());
+#endif
         }
     }
 }
@@ -3894,6 +3936,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_CursiveAttachmentAsHarfBuzz, reporter) {
                         glyphs[k].drawn,
                         plain.x[k]);
     }
+#if !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
     auto harfBuzz = layout_marked(TextShapingEngine::kDefault, family, text, TextDirection::kRtl);
     auto* hbImpl = static_cast<ParagraphImpl*>(harfBuzz.get());
     REPORTER_ASSERT(reporter,
@@ -3929,6 +3972,7 @@ DEF_TEST(CoreTextPipeline_LineShaper_CursiveAttachmentAsHarfBuzz, reporter) {
                         glyph_offset(hb, k).fX,
                         glyph_offset(hb, k).fY);
     }
+#endif
 }
 
 // The ellipsis is shaped apart from the text, with the same advances and offsets: a mark keeps
@@ -3994,6 +4038,10 @@ DEF_TEST(CoreTextPipeline_EllipsisMarksTakeNoAdvance, reporter) {
     }
 }
 
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+
+// Geometry contracts are parity with OneLineShaper, which needs HarfBuzz
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
 namespace {
 // Ahem has square glyphs (advance = font size), like the FlutterTest font of the Flutter tests
 sk_sp<FontCollection> make_ahem_collection() {
@@ -4908,5 +4956,4 @@ DEF_TEST(CoreTextPipeline_HardBreak_LetterSpacedLinesExactlyAsHarfBuzz, reporter
         }
     }
 }
-
-#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+#endif  // defined(SK_PARAGRAPH_NATIVE_CORETEXT) && !defined(SK_PARAGRAPH_DISABLE_HARFBUZZ)
