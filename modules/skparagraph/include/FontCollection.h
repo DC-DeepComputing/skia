@@ -57,6 +57,13 @@ private:
 
     sk_sp<SkTypeface> matchTypeface(const SkString& familyName, SkFontStyle fontStyle);
 
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+    // CoreText paragraphs resolve system families and fallback natively, so they reach only
+    // the user registries (dynamic, asset, test) through matchUserTypeface
+    friend class CoreTextFontRegistry;
+    sk_sp<SkTypeface> matchUserTypeface(const SkString& familyName, SkFontStyle fontStyle);
+#endif
+
     sk_sp<SkTypeface> cloneTypeface(const sk_sp<SkTypeface>& typeface, const FontArguments& args);
 
     struct FaceCache;
