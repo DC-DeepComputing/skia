@@ -47,6 +47,8 @@ skia_filegroup(
         "CoreTextFontRegistry.cpp",
         "CoreTextFontRegistry.h",
         "CoreTextIndexMap.h",
+        "CoreTextLineShaper.cpp",
+        "CoreTextLineShaper.h",
     ],
     visibility = ["//modules/skparagraph:__pkg__"],
 )
