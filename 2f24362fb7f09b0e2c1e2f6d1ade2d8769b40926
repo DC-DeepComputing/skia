@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04de9939_60a2805e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-27T16:22:13Z",
+      "side": 1,
+      "message": "Thanks for putting this together! Subtracting `fHyphen-\u003eadvance().fX` from `maxWidth` in `TextLine::justify` cleanly handles whitespace-justified lines that break at a soft hyphen.\n\nWhile testing PS1 against ideographic (`isIdeographic()`) lines with soft hyphens, I found one edge case in `TextLine::justify` (`modules/skparagraph/src/TextLine.cpp:504-592`):\n\n1. **Unrendered soft-hyphen (`U+00AD`) clusters split ideographic justification patches and advance `prevShift`**:\n   - In both `iterateThroughClustersInGlyphsOrder` passes of `TextLine::justify` (https://skia.googlesource.com/skia/+/2f24362fb7f09b0e2c1e2f6d1ade2d8769b40926/modules/skparagraph/src/TextLine.cpp#504), `cluster-\u003eisSoftHyphen()` falls into the `else` branch and resets `whitespacePatch \u003d false`, and in Pass 2 it also executes `prevShift \u003d shift`.\n   - When an ideographic line breaks at a soft hyphen (e.g. `\"漢字\\u00AD語文\"` breaking after `\"漢字\\u00AD\"`), the trailing `\\u00AD` cluster clears `whitespacePatch \u003d false` right after `字` incremented `++whitespacePatches; // after`. Because `whitespacePatch` is now `false` at the end of Pass 1, `if (whitespacePatch) --whitespacePatches;` (line 532) does not subtract the trailing patch, leaving `whitespacePatches \u003d\u003d 2` instead of `1` (or `1` instead of `0` for a single ideograph `\"漢\\u00AD\"`). In Pass 2, `字` is shifted by only half of the available gap, leaving empty space before the rendered hyphen.\n   - Similarly, when an unbroken soft hyphen sits between two ideographs on a justified line (`\"漢\\u00AD字語\\u00AD\"`), clearing `whitespacePatch` on `\\u00AD` causes the next ideograph `字` to count an extra `before` patch (`!whitespacePatch \u0026\u0026 index !\u003d 0`) on top of `漢`\u0027s `after` patch, giving `漢..字` twice the justification step of `字..語`, and `prevShift \u003d shift` on `\\u00AD` shifts `字`\u0027s left edge in `getRectsForRange`.\n   - Keeping `whitespacePatch`, `leadingWhitespaces`, and `prevShift` unchanged across `cluster-\u003eisSoftHyphen()` (while still calling `shiftCluster` so a run-ending soft hyphen populates `run.fJustificationShifts[run.size()]`) resolves all three cases without changing behavior for non-soft-hyphen text.\n\nI uploaded a companion WIP CL stacked on top of PS1 so you can inspect the isolated diffs:\nhttps://skia-review.googlesource.com/c/skia/+/1406377\n- **Patchset 1** adds the `SkParagraph_SoftHyphenJustifiedIdeographicFitsHyphen` unit test that fails on PS1 (4 assertions).\n- **Patchset 3** has the corresponding fix in `TextLine::justify` (all 218 `SkParagraph` tests pass).\n\nFeel free to fold the whole patchset into this CL, cherry-pick just the parts/tests you want, or keep the fix as a separate follow-up CL — whichever you prefer! (Once it\u0027s folded in or no longer needed, I\u0027ll abandon the WIP CL.)",
+      "revId": "2f24362fb7f09b0e2c1e2f6d1ade2d8769b40926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
