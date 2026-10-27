@@ -88,7 +88,20 @@ void CoverBoundsRenderStep::writeVertices(DrawWriter* writer,
         bounds = skvx::shuffle</*R*/2, /*B*/3, /*L*/0, /*T*/1>(
                 skvx::cast<float>(skvx::int4::Load(&params.scissor())));
     } else {
+<<<<<<< HEAD   (e67fbd8c35cda931cb224edc8566304e603a6458 [M157] [Ganesh] Do not drop subset clamp for nearest filteri)
         bounds = params.geometry().bounds().ltrb();
+||||||| BASE   (bf0ef1a64ee944275ddf1845ee4e734522742c57 Mark more stack-only helpers SK_ONLY_STACK_ALLOCATABLE)
+        // If there's a stroke style, the bounding box needs to increase by the stroke radius.
+        // This is not necessary for inverted fills since that maximally covers the clip.
+        bounds = params.styledBounds().ltrb();
+=======
+        // If there's a stroke style, the bounding box needs to increase by the stroke radius.
+        // This is not necessary for inverted fills since that maximally covers the clip.
+        // styledBounds() is sufficient because CoverBoundsRenderStep is used for inverse-strokes
+        // (not this branch) or stroke-and-fills (which don't have hairlines).
+        SkASSERT(!params.isStroke() || params.strokeStyle().halfWidth() > 0.f);
+        bounds = params.styledBounds().ltrb();
+>>>>>>> CHANGE (0b6488a8123559cb72c03b987c2d717047bcac21 [graphite] Include hairline and subpixel strokes in inflatio)
     }
 
     // Since the local coords always have Z=0, we can discard the 3rd row and column of the matrix.
