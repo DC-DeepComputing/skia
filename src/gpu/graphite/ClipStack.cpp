@@ -1823,10 +1823,14 @@ AnalyticClip can_apply_analytic_clip(const Shape& shape, const Transform& localT
 Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                                       Geometry* geometry,
                                       const SkStrokeRec& style,
-                                      ClipStack::ElementList* outEffectiveElements) const {
+                                      ClipStack::ElementList* outEffectiveElements,
+                                      int* outUndrawnCount) const {
     static const Clip kClippedOut = {
             Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty(),
             /* nonMSAAClip= */ {}, /* shader= */ nullptr};
+
+    SkASSERT(outUndrawnCount);
+    *outUndrawnCount = 0;
 
     const SaveRecord& cs = this->currentSaveRecord();
     if (cs.state() == ClipState::kEmpty) {
@@ -1890,6 +1894,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
             case DrawInfluence::kClipsOutDraw:
                 // Per-element check was able to completely reject the draw.
                 outEffectiveElements->clear();
+                *outUndrawnCount = 0;
                 return kClippedOut;
 
             case DrawInfluence::kNone:
@@ -1936,6 +1941,9 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                 // flattened into a clip mask.
                 // Otherwise, accumulate it for later. Depending on how many elements are collected
                 // we may use the scissor, analytic clip, or MSAA/atlas.
+                if (!e.hasPendingDraw()) {
+                    (*outUndrawnCount)++;
+                }
                 outEffectiveElements->push_back(&e);
                 break;
         }
@@ -1965,6 +1973,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
 
             // Elements are represented in the clip atlas, discard.
             outEffectiveElements->clear();
+            *outUndrawnCount = 0;
         }
     }
 
