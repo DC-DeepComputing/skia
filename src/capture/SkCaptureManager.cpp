@@ -38,12 +38,9 @@ void SkCaptureManager::deregisterCaptureCanvas(SkCanvas* canvas) {
         // Make sure we gather any draws that haven't been inserted into a recording
         // before removing the canvas.
         if (fIsCurrentlyCapturing) {
-            auto asset = this->snapAndIncrement(fTrackedCanvases[i].get());
-            if (asset && asset->fPicture && fActiveCapture) {
-                // Temporary staging shim: SkCapture stores assets as a flat list and identifies
-                // DrawTasks by flat asset index. In the followup CL, SkCapture will transition to a
-                // (storageID, contentID) map and DrawTask will store {fPixelStorageID, fContentID}
-                fActiveCapture->addAsset(asset->fPicture);
+            auto picture = this->snapAndIncrement(fTrackedCanvases[i].get());
+            if (picture && fActiveCapture) {
+                fActiveCapture->addAsset(std::move(picture));
             }
         }
         fTrackedCanvases.removeShuffle(i);
@@ -70,10 +67,7 @@ void SkCaptureManager::captureUninsertedDrawTasks() {
         if (canvas) {
             sk_sp<SkCaptureAsset> asset = this->snapAndIncrement(canvas.get());
             if (asset && asset->fPicture && fActiveCapture) {
-                // Temporary staging shim: SkCapture stores assets as a flat list and identifies
-                // DrawTasks by flat asset index. In the followup CL, SkCapture will transition to a
-                // (storageID, contentID) map and DrawTask will store {fPixelStorageID, fContentID}
-                fActiveCapture->addAsset(asset->fPicture);
+                fActiveCapture->addAsset(std::move(asset));
             }
         }
     }
@@ -145,13 +139,9 @@ void SkCaptureManager::onInsertRecording(const skia_private::TArray<sk_sp<SkCapt
 
     skia_private::TArray<SkCapture::DrawTask> drawTasks;
     for (const auto& asset : capturedPictures) {
-        if (!asset || !asset->fPicture) continue;
-        // Temporary staging shim: SkCapture still stores assets as a flat list and identifies
-        // DrawTasks by flat asset index. In the followup CL, SkCapture will transition to a
-        // (storageID, contentID) map and DrawTask will store {fPixelStorageID, fContentID}
-        fActiveCapture->addAsset(asset->fPicture);
-        uint32_t assetIdx = fActiveCapture->getMetadata().numAssets - 1;
-        drawTasks.push_back({assetIdx});
+        if (!asset) continue;
+        fActiveCapture->addAsset(asset);
+        drawTasks.push_back({asset->fPixelStorageID, asset->fContentID});
     }
 
     SkCapture::RecordingCapture rec = {
