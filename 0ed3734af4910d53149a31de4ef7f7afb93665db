@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10e2c566_8a59008e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-27T15:23:01Z",
+      "side": 1,
+      "message": "LGTM. Nice and clean way to keep force-broken long words linear in TextWrapper::lookAhead while preserving exact line breaks and fMinIntrinsicWidth across soft hyphens, intra-word breaks (U+00A0), and width \u003d\u003d 0 layouts.\nVerified locally against the SkParagraph test suite and the Flutter paragraph/text test corpus with zero regressions. Before landing, could you please trigger a Canary-G3 tryjob (`git cl try -i 1407016 -B skia/skia.primary -b Canary-G3` or via the Gerrit UI) since this touches core TextWrapper line-breaking logic?",
+      "revId": "0ed3734af4910d53149a31de4ef7f7afb93665db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
