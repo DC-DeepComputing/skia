@@ -14,7 +14,9 @@
 #include "include/private/SkTArray.h"
 
 #include <optional>
+#include <unordered_map>
 
+class SkCaptureAsset;
 class SkData;
 class SkImage;
 class SkPicture;
@@ -38,15 +40,21 @@ class SkCaptureCanvas;
  * +=============================================================================+
  * |                       ASSETS SECTION (N = numAssets)                        |
  * +-----------------------------------------------------------------------------+
- * | Picture 0 Data Size                        | 4 Bytes (uint32_t)             |
+ * | Asset i PixelStorage ID                    | 4 Bytes (uint32_t)             |
  * +-----------------------------------------------------------------------------+
- * | Picture 0 Bytes                            | [Picture 0 Size] bytes         |
+ * | Asset i Content ID                         | 4 Bytes (uint32_t)             |
  * +-----------------------------------------------------------------------------+
- * | ...                                        |                                |
+ * | Asset i Type (0=kPicture, 1=kDerivedStorage)| 4 Bytes (uint32_t)            |
+ * + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
+ * | If Type == 0 (kPicture):                                                    |
+ * |   Picture i Data Size                      | 4 Bytes (uint32_t)             |
+ * |   Picture i Bytes                          | [Picture i Size] bytes         |
+ * |                                                                             |
+ * | If Type == 1 (kDerivedStorage):                                             |
+ * |   Parent PixelStorage ID                   | 4 Bytes (uint32_t)             |
+ * |   Parent Content ID                        | 4 Bytes (uint32_t)             |
  * +-----------------------------------------------------------------------------+
- * | Picture N Data Size                        | 4 Bytes (uint32_t)             |
- * +-----------------------------------------------------------------------------+
- * | Picture N Bytes                            | [Picture N Size] bytes         |
+ * | ... (Repeated for N assets)                                                 |
  * +=============================================================================+
  * |                     TIMELINE SECTION (K = numRecCaptures)                   |
  * +-----------------------------------------------------------------------------+
@@ -54,18 +62,17 @@ class SkCaptureCanvas;
  * + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
  * | Recording 0 Tasks (fAssetIndex)            | taskCount * sizeof(DrawTask)   |
  * +-----------------------------------------------------------------------------+
- * | ...                                        |                                |
- * +-----------------------------------------------------------------------------+
- * | Recording K Task Count (taskCount)         | 4 Bytes (uint32_t)             |
- * + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
- * | Recording K Tasks (fAssetIndex)            | taskCount * sizeof(DrawTask)   |
+ * | ... (Repeated for K recordings)                                             |
  * +-----------------------------------------------------------------------------+
  */
 
 class SkCapture : public SkRefCnt {
 public:
+    // NOTE: For now, all DrawTasks point to an asset identified by (fPixelStorageID, fContentID).
+    // Eventually, other draw tasks might not point to an asset.
     struct DrawTask {
-        uint32_t fAssetIndex;
+        uint32_t fPixelStorageID = 0;
+        uint32_t fContentID = 0;
     };
 
     struct RecordingCapture {
@@ -81,23 +88,50 @@ public:
     static sk_sp<SkCapture> MakeFromData(sk_sp<const SkData>);
     static sk_sp<SkCapture> MakeEmpty();
 
-    void addAsset(sk_sp<SkPicture>);
+    void addAsset(sk_sp<SkCaptureAsset> asset);
     void addRecordingCapture(RecordingCapture);
 
     sk_sp<SkData> serializeCapture();
 
-    sk_sp<SkPicture> getAsset(int i) const;
+    // Returns the exact asset record stored for (storageID, contentID), or nullptr.
+    const SkCaptureAsset* getAsset(uint32_t storageID, uint32_t contentID) const;
+
+    // Resolves storage origin chains (kDerivedStorage) to return the root containing the SkPicture.
+    const SkCaptureAsset* resolveRootAsset(uint32_t storageID, uint32_t contentID) const;
+    const std::unordered_map<uint64_t, sk_sp<SkCaptureAsset>>& getAssetsMap() const {
+        return fAssets;
+    }
     const RecordingCapture* getRecordingCapture(int i) const;
     Metadata getMetadata() const;
 
 private:
+    // Compact binary payload written into serialized picture streams to point to a captured asset.
+    struct ImageAssetRef {
+        uint32_t fPixelStorageID;
+        uint32_t fContentID;
+    };
+
+    static inline uint64_t MakeAssetKey(uint32_t storageID, uint32_t contentID) {
+        return (static_cast<uint64_t>(storageID) << 32) | contentID;
+    }
+
     static SkSerialReturnType serializeImageProc(SkImage* img, void* ctx);
     static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>,
                                                std::optional<SkAlphaType>, void* ctx);
 
     Metadata fMetadata;
-    skia_private::TArray<sk_sp<SkPicture>> fAssets;
+    // fAssetKeys is used to track insertion order of SkCaptureAssets. This helps deserialization
+    // by ensuring we don't try to deserialize an asset before any other assets it might reference
+    // have been deserialized. This allows us to avoid a two-pass deserialization.
+    // Note: A possible better solution is to implement a lazy capture image proxy that delays
+    // binding until the image it is depending on gets deserialized.
+    skia_private::TArray<uint64_t> fAssetKeys;
+    std::unordered_map<uint64_t, sk_sp<SkCaptureAsset>> fAssets;
     skia_private::TArray<RecordingCapture> fTimeline;
+
+    // fNextSyntheticContentID generates unique content IDs for rare cases where SkPixelStorage has
+    // not been initialized to avoid map collisions at {0, 0}.
+    uint32_t fNextSyntheticContentID = 1;
 
     static const uint32_t kVersion = 0;
 };

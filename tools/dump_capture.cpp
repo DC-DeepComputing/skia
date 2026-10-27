@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkStream.h"
 #include "src/capture/SkCapture.h"
+#include "src/capture/SkCaptureAsset.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecordCanvas.h"
@@ -45,17 +46,35 @@ void dump_assets(SkCapture::Metadata meta, sk_sp<SkCapture> capture, FILE* outpu
     fprintf(output,
             "--------------------------------------------------------------------------------\n");
 
-    for (uint32_t i = 0; i < meta.numAssets; ++i) {
-        sk_sp<SkPicture> picture = capture->getAsset(i);
+    uint32_t index = 0;
+    for (const auto& [key, assetRecord] : capture->getAssetsMap()) {
+        if (!assetRecord) continue;
+        if (assetRecord->fType == SkCaptureAsset::Type::kDerivedStorage) {
+            fprintf(output,
+                    "  Asset [%u]: Derived Storage [StorageID: %u, ContentID: %u] "
+                    "-> Copy of Storage {ID: %u, ContentID: %u}\n",
+                    index++,
+                    assetRecord->fPixelStorageID,
+                    assetRecord->fContentID,
+                    assetRecord->fProvenance.fParentKey.fStorageID,
+                    assetRecord->fProvenance.fParentKey.fContentID);
+            continue;
+        }
+
+        sk_sp<SkPicture> picture = assetRecord->fPicture;
         if (!picture) {
-            fprintf(output, "  Picture [%u]: <null>\n", i);
+            fprintf(output, "  Picture [%u]: <null> [StorageID: %u, ContentID: %u]\n",
+                    index++, assetRecord->fPixelStorageID, assetRecord->fContentID);
             continue;
         }
 
         SkRect cull = picture->cullRect();
         fprintf(output,
-                "  Picture [%u]: Dimensions %dx%d (cull: [%g, %g, %g, %g])\n",
-                i,
+                "  Picture [%u] [StorageID: %u, ContentID: %u]: Dimensions %dx%d "
+                "(cull: [%g, %g, %g, %g])\n",
+                index++,
+                assetRecord->fPixelStorageID,
+                assetRecord->fContentID,
                 SkScalarCeilToInt(cull.width()),
                 SkScalarCeilToInt(cull.height()),
                 cull.left(),
@@ -98,15 +117,18 @@ void dump_timeline(SkCapture::Metadata meta, sk_sp<SkCapture> capture, FILE* out
         }
         fprintf(output, "  Recording [%u]: %d draw task(s)\n", i, rec->fDrawTasks.size());
         for (int j = 0; j < rec->fDrawTasks.size(); ++j) {
-            uint32_t assetIdx = rec->fDrawTasks[j].fAssetIndex;
-            sk_sp<SkPicture> pic = capture->getAsset(assetIdx);
+            uint32_t storageID = rec->fDrawTasks[j].fPixelStorageID;
+            uint32_t contentID = rec->fDrawTasks[j].fContentID;
+            const SkCaptureAsset* asset = capture->getAsset(storageID, contentID);
+            sk_sp<SkPicture> pic = asset ? asset->fPicture : nullptr;
             if (pic) {
                 SkRect cull = pic->cullRect();
                 fprintf(output,
-                        "    [Task %d] -> Asset [%u] (Dimensions: %dx%d, cull: [%g, %g, %g, %g], "
-                        "approxOps: %d)\n",
+                        "    [Task %d] -> Asset Key (StorageID: %u, ContentID: %u) "
+                        "(Dimensions: %dx%d, cull: [%g, %g, %g, %g], approxOps: %d)\n",
                         j,
-                        assetIdx,
+                        storageID,
+                        contentID,
                         SkScalarCeilToInt(cull.width()),
                         SkScalarCeilToInt(cull.height()),
                         cull.left(),
@@ -115,7 +137,8 @@ void dump_timeline(SkCapture::Metadata meta, sk_sp<SkCapture> capture, FILE* out
                         cull.bottom(),
                         pic->approximateOpCount());
             } else {
-                fprintf(output, "    [Task %d] -> Asset [%u] (<null>)\n", j, assetIdx);
+                fprintf(output, "    [Task %d] -> Asset Key (StorageID: %u, ContentID: %u) "
+                                "(<null>)\n", j, storageID, contentID);
             }
         }
         fprintf(output, "\n");
