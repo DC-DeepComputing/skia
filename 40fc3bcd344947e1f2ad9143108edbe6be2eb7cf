@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59d0b7d3_8abd0763",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-10-27T18:27:06Z",
+      "side": 1,
+      "message": "Thanks everyone!\n\nI uploaded another patchset because there was a merge conflict.",
+      "revId": "40fc3bcd344947e1f2ad9143108edbe6be2eb7cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
