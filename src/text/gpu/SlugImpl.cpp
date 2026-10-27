@@ -45,10 +45,13 @@ void SlugImpl::doFlatten(SkWriteBuffer& buffer) const {
 
 sk_sp<Slug> SlugImpl::MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client) {
     SkRect sourceBounds = buffer.readRect();
-    if (!buffer.validate(!sourceBounds.isEmpty())) {
+    if (!buffer.validate(sourceBounds.isFinite() && !sourceBounds.isEmpty())) {
         return nullptr;
     }
     SkPoint origin = buffer.readPoint();
+    if (!buffer.validate(origin.isFinite())) {
+        return nullptr;
+    }
     int allocSizeHint = gpu::SubRunContainer::AllocSizeHintFromBuffer(buffer);
 
     auto [initializer, _, alloc] =
