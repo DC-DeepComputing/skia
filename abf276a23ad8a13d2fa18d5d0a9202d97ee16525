@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0508a0e_d825373b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:01:03Z",
+      "side": 1,
+      "message": "Much appreciated 🙏",
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a057be41_b2804b33",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:01:03Z",
+      "side": 1,
+      "message": "Rename to `SkCapture_DoNotCaptureEmptyAssets`. I think we want to keep tests at the SkCaptureLevel, not so much worried about implementation.\n\nWe don\u0027t necessarily care that the SkCaptureCanvas is lazily reattaching, thats a technical detail. The thing we want to test is that we don\u0027t pollute the final SkCapture. The test name, the comments, and the ASSERTS should reflect that.",
+      "range": {
+        "startLine": 35,
+        "startChar": 43,
+        "endLine": 35,
+        "endChar": 89
+      },
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd8e2fd8_83e56852",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:01:03Z",
+      "side": 1,
+      "message": "Consider std::unique_ptr\u003cSkRecorder\u003e (See below comment about RenderTarget.)",
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6bf1001_0c8afa49",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:01:03Z",
+      "side": 1,
+      "message": "Note: We might want to replace this setup code with the generalized API stuff down the road. I.e. replace the graphite specific recorder with SkRecorder, replace `SkSurfaces::RenderTarget` with `recorder.makeSurface()`. This can be done in a followup CL, but it will be helpful to add a TODO explaining this for when we want to work on these tests later to include non-graphite backends.",
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "476fa712_1dc2ec3b",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:01:03Z",
+      "side": 1,
+      "message": "We\u0027re planning on dropping `getAsset(int)` for a different API. (https://skia-review.git.corp.google.com/c/skia/+/1378596/2)\n\nWe don\u0027t have to check this in this test really, checking `numAssets` is good enough.",
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbdd6fc6_4219fb9c",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-27T15:01:03Z",
+      "side": 1,
+      "message": "No getAssets. Also overall philosophically, we should have tests be tightly bound. If the actual asset itself is null or has a weird approximateOpCount, that should live in a separate test that is more isolated like `SkCaptureCapture_ValidAssetGeneration`.",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 78
+      },
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
