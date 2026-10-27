@@ -183,6 +183,64 @@ Task::Status RenderPassTask::addCommands(Context* context,
     SkASSERT(fTarget && fTarget->isInstantiated());
     SkASSERT(!fDstCopy || fDstCopy->isInstantiated());
 
+    if (fTarget->isProtected() == Protected::kNo) {
+        for (const std::unique_ptr<DrawPass>& pass: fDrawPasses) {
+            for (const sk_sp<TextureProxy>& proxy: pass->sampledTextures()) {
+                if (proxy && proxy->isProtected() == Protected::kYes) {
+                    SKIA_LOG_E("RenderPassTask target %s is unprotected but samples from a "
+                               "protected texture %s.", fTarget->label(), proxy->label());
+                    return Status::kFail;
+                }
+            }
+        }
+        if (fDstCopy && fDstCopy->isProtected() == Protected::kYes) {
+            SKIA_LOG_E("RenderPassTask target %s is unprotected but dstCopy %s is protected.",
+                       fTarget->label(), fDstCopy->label());
+            return Status::kFail;
+        }
+    }
+    if (fDstCopy && fDstCopy->isProtected() == Protected::kNo
+                 && fTarget->isProtected() == Protected::kYes) {
+        SKIA_LOG_E("RenderPassTask target %s is protected but dstCopy %s is unprotected.",
+                   fTarget->label(), fDstCopy->label());
+        return Status::kFail;
+    }
+    for (const std::unique_ptr<DrawPass>& drawPass: fDrawPasses) {
+        for (const auto [type, cmdPtr]: drawPass->commands()) {
+            switch (type) {
+                case DrawPassCommands::Type::kBindStaticDataBuffer: {
+                    auto bdb = static_cast<DrawPassCommands::BindStaticDataBuffer*>(cmdPtr);
+                    if (bdb->fStaticData.fBuffer->isProtected() != Protected::kNo) {
+                        SKIA_LOG_E("Tried binding a protected static vertex buffer, vertex buffers "
+                                   "must always be unprotected.");
+                        return Status::kFail;
+                    }
+                    break;
+                }
+                case DrawPassCommands::Type::kBindAppendDataBuffer: {
+                    auto bdb = static_cast<DrawPassCommands::BindAppendDataBuffer*>(cmdPtr);
+                    if (bdb->fAppendData.fBuffer->isProtected() != Protected::kNo) {
+                        SKIA_LOG_E("Tried binding a protected append vertex buffer, vertex buffers "
+                                   "must always be unprotected.");
+                        return Status::kFail;
+                    }
+                    break;
+                }
+                case DrawPassCommands::Type::kBindIndexBuffer: {
+                    auto bdb = static_cast<DrawPassCommands::BindIndexBuffer*>(cmdPtr);
+                    if (bdb->fIndices.fBuffer->isProtected() != Protected::kNo) {
+                        SKIA_LOG_E("Tried binding a protected index buffer, index buffers "
+                                   "must always be unprotected.");
+                        return Status::kFail;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
+
     // Assuming one draw pass per renderpasstask for now
     SkASSERT(fDrawPasses.size() == 1);
     const auto& drawBounds = fDrawPasses[0]->bounds();
@@ -326,6 +384,23 @@ bool RenderPassTask::visitProxies(const std::function<bool(const TextureProxy*)>
     }
 
     return true;
+}
+
+Protected RenderPassTask::isProtected() const {
+    if (fTarget && fTarget->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    if (fDstCopy && fDstCopy->isProtected() == Protected::kYes) {
+        return Protected::kYes;
+    }
+    for (const std::unique_ptr<DrawPass>& pass: fDrawPasses) {
+        for (const sk_sp<TextureProxy>& proxy: pass->sampledTextures()) {
+            if (proxy && proxy->isProtected() == Protected::kYes) {
+                return Protected::kYes;
+            }
+        }
+    }
+    return Protected::kNo;
 }
 
 } // namespace skgpu::graphite

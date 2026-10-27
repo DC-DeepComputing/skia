@@ -20,13 +20,13 @@
 
 namespace skgpu::graphite {
 
-class TextureProxy;
 class CommandBuffer;
 class Context;
 class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
 class ScratchResourceManager;
+class TextureProxy;
 
 /**
  * RenderPassTask handles preparing and recording DrawLists into a single render pass within a
@@ -56,6 +56,8 @@ public:
                             sk_sp<const RuntimeEffectDictionary>) override;
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
+
+    Protected isProtected() const override;
 
     bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override;
 

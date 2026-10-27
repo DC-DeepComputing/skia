@@ -45,6 +45,8 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    Protected isProtected() const override;
+
 #if defined(SK_DUMP_TASKS)
     void dump(int index, const char* prefix) const override {
         if (index >= 0) {
@@ -85,6 +87,8 @@ public:
                             sk_sp<const RuntimeEffectDictionary>) override;
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
+
+    Protected isProtected() const override;
 
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor,
                       bool readsOnly) override {
@@ -133,6 +137,8 @@ public:
                             sk_sp<const RuntimeEffectDictionary>) override;
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
+
+    Protected isProtected() const override;
 
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor,
                       bool readsOnly) override {

@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/task/Task.h"
 
 #include <functional>
+#include <optional>
 #include <utility>
 
 namespace skgpu::graphite {
@@ -35,6 +36,7 @@ public:
 
     int size() const { return fTasks.size(); }
     bool hasTasks() const { return !fTasks.empty(); }
+    bool hasTasks(Protected isProtected) const;
 
     // Returns kSuccess if no child task failed and at least one child didn't return kDiscard.
     // Returns kDiscard if all children were discarded.
@@ -53,7 +55,7 @@ public:
             void visit(const std::function<void(const Task* task, bool isLast)>& visitor) const;)
 private:
     template <typename Fn> // (Task*)->Status
-    Task::Status visitTasks(Fn);
+    Task::Status visitTasks(Fn, std::optional<Protected> targetProtectedness = std::nullopt);
 
     skia_private::TArray<sk_sp<Task>> fTasks;
 };

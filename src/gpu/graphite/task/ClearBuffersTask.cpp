@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/task/ClearBuffersTask.h"
 
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 
 namespace skgpu::graphite {
@@ -21,10 +22,19 @@ Task::Status ClearBuffersTask::addCommands(Context*,
                                            CommandBuffer* commandBuffer,
                                            ReplayTargetData) {
     bool result = true;
-    for (const auto& c : fClearList) {
+    for (const BindBufferInfo& c: fClearList) {
         result &= commandBuffer->clearBuffer(c.fBuffer, c.fOffset, c.fSize);
     }
     return result ? Status::kSuccess : Status::kFail;
+}
+
+Protected ClearBuffersTask::isProtected() const {
+    for (const BindBufferInfo& c: fClearList) {
+        if (c.fBuffer && c.fBuffer->isProtected() == Protected::kYes) {
+            return Protected::kYes;
+        }
+    }
+    return Protected::kNo;
 }
 
 }  // namespace skgpu::graphite

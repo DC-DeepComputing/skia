@@ -40,6 +40,7 @@ public:
                             ScratchResourceManager*,
                             sk_sp<const RuntimeEffectDictionary>) override;
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
+    Protected isProtected() const override;
 
     // TODO: Traverse child tasks too!
     SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Compute Task"; })

@@ -83,6 +83,7 @@ public:
 
     bool prepareResources(ResourceProvider*);
     void addResourceRefs(CommandBuffer*) const;
+    Protected isProtected() const;
 
     // Returns a single tasks that must execute before this DispatchGroup or nullptr if the group
     // has no task dependencies.
