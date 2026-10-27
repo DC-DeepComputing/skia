@@ -33,6 +33,24 @@
       "message": "Needed to move init_globals_if_needed() back to SkGraphics::Init() because calling it in GetGlobalSkContext() initializes SkOpts even when a client intentionally skips SkGraphics::Init() (e.g. Chrome\u0027s --disable-skia-runtime-opts).",
       "revId": "a90d60fa69172bbd9c60ff30c692f40bb012c9a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81ab88d7_724fb55d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-27T17:28:35Z",
+      "side": 1,
+      "message": "closing to submit change",
+      "parentUuid": "1113bcd7_04f3e1b8",
+      "revId": "a90d60fa69172bbd9c60ff30c692f40bb012c9a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
