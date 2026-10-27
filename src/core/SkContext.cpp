@@ -13,6 +13,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "include/cpu/Recorder.h"
 #include "include/private/SkGPUContext.h"
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureManager.h"
@@ -56,6 +57,34 @@ sk_sp<SkCapture> SkContext::endCapture() {
 }
 
 size_t SkContext::fontCacheLimit() const { return fSharedContext->fontCacheLimit(); }
+
+std::unique_ptr<SkRecorder> SkContext::makeRecorder(SkBackendSelection backend) {
+    switch (backend) {
+        case SkBackendSelection::kAutomatic:
+            if (fGPUContext) {
+                return fGPUContext->makeSkRecorder();
+            }
+            return std::make_unique<skcpu::Recorder>();
+        case SkBackendSelection::kCPU:
+            return std::make_unique<skcpu::Recorder>();
+        case SkBackendSelection::kGPU:
+            if (fGPUContext) {
+                return fGPUContext->makeSkRecorder();
+            }
+            return nullptr;
+    }
+    SkUNREACHABLE;
+}
+
+SkResourceCache* SkContext::resourceCache() const {
+    return fSharedContext->synchronizedResourceCache();
+}
+
+SkStrikeCache* SkContext::strikeCache() const { return fSharedContext->strikeCache(); }
+
+SkTypefaceCache* SkContext::typefaceCache() const { return fSharedContext->typefaceCache(); }
+
+size_t SkContext::fontCacheLimit() const { return this->strikeCache()->getCacheSizeLimit(); }
 
 size_t SkContext::setFontCacheLimit(size_t bytes) {
     return fSharedContext->setFontCacheLimit(bytes);
