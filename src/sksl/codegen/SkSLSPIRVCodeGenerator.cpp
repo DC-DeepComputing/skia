@@ -16,6 +16,7 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/sksl/GLSL.std.450.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
@@ -1678,7 +1679,7 @@ SpvId SPIRVCodeGenerator::nextId(const Type* type) {
 }
 
 SpvId SPIRVCodeGenerator::nextId(Precision precision) {
-    if (precision == Precision::kRelaxed && !fProgram.fConfig->fSettings.fForceHighPrecision) {
+    if (precision == Precision::kRelaxed && !fProgram->fConfig->fSettings.fForceHighPrecision) {
         this->writeInstruction(SpvOpDecorate, fIdCount, SpvDecorationRelaxedPrecision,
                                fDecorationBuffer);
     }
@@ -1869,7 +1870,7 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType,
         }
         case Type::TypeKind::kArray: {
             const MemoryLayout arrayMemoryLayout =
-                                    fCaps.fForceStd430ArrayLayout
+                                    fCaps->fForceStd430ArrayLayout
                                         ? MemoryLayout(MemoryLayout::Standard::k430)
                                         : memoryLayout;
 
@@ -2105,7 +2106,7 @@ SpvId SPIRVCodeGenerator::writeExpression(const Expression& expr, SPIRVBlob& out
         case Expression::Kind::kIndex:
             return this->writeIndexExpression(expr.as<IndexExpression>(), out);
         case Expression::Kind::kSetting:
-            return this->writeExpression(*expr.as<Setting>().toLiteral(fCaps), out);
+            return this->writeExpression(*expr.as<Setting>().toLiteral(*fCaps), out);
         default:
             SkDEBUGFAILF("unsupported expression: %s", expr.description().c_str());
             break;
@@ -2115,7 +2116,7 @@ SpvId SPIRVCodeGenerator::writeExpression(const Expression& expr, SPIRVBlob& out
 
 SpvId SPIRVCodeGenerator::writeIntrinsicCall(const FunctionCall& c, SPIRVBlob& out) {
     const FunctionDeclaration& function = c.function();
-    if (IsSubgroupIntrinsic(function.intrinsicKind()) && !fCaps.fSubgroupSupport) {
+    if (IsSubgroupIntrinsic(function.intrinsicKind()) && !fCaps->fSubgroupSupport) {
         fContext.fErrors->error(c.fPosition,
                                 "'" + std::string(function.name()) + "' not supported");
         return NA;
@@ -2348,7 +2349,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             // Work around Nvidia bug when RelaxedPrecision is applied to
             // YCbCr texture sampling op. (skbug.com/421927604)
             const bool avoidRelaxedPrecision = op == SpvOpImageSampleImplicitLod &&
-                                               fCaps.fCannotUseRelaxedPrecisionOnImageSample;
+                                               fCaps->fCannotUseRelaxedPrecisionOnImageSample;
             result = this->nextId(avoidRelaxedPrecision ? nullptr : &callType);
 
             SpvId type = this->getType(callType);
@@ -2361,7 +2362,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                                        out);
             } else {
                 SkASSERT(arguments.size() == 2);
-                if (fProgram.fConfig->fSettings.fSharpenTextures) {
+                if (fProgram->fConfig->fSettings.fSharpenTextures) {
                     SpvId lodBias = this->writeLiteral(kSharpenTexturesBias,
                                                        *fContext.fTypes.fFloat);
                     this->writeInstruction(op, type, result, sampler, uv,
@@ -2515,7 +2516,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             this->writeWord(this->getType(callType), out);
             this->writeWord(result, out);
             this->writeWord(fn, out);
-            if (!fProgram.fConfig->fSettings.fForceNoRTFlip) {
+            if (!fProgram->fConfig->fSettings.fForceNoRTFlip) {
                 this->addRTFlipUniform(c.fPosition);
                 ComponentArray componentArray;
                 for (int index = 0; index < callType.columns(); ++index) {
@@ -3740,14 +3741,14 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
 
 std::unique_ptr<Expression> SPIRVCodeGenerator::identifier(std::string_view name) {
     std::unique_ptr<Expression> expr =
-            fProgram.fSymbols->instantiateSymbolRef(fContext, name, Position());
+            fProgram->fSymbols->instantiateSymbolRef(fContext, name, Position());
     return expr ? std::move(expr)
                 : Poison::Make(Position(), fContext);
 }
 
 SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, SPIRVBlob& out) {
     const Variable* variable = ref.variable();
-    if (IsSubgroupBuiltin(variable->layout().fBuiltin) && !fCaps.fSubgroupSupport) {
+    if (IsSubgroupBuiltin(variable->layout().fBuiltin) && !fCaps->fSubgroupSupport) {
         fContext.fErrors->error(ref.position(),
                                 "'" + std::string(variable->name()) + "' not supported");
         return NA;
@@ -3766,7 +3767,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, S
             return this->getLValue(*this->identifier("sk_Clockwise"), out)->load(out);
         }
         case SK_SECONDARYFRAGCOLOR_BUILTIN: {
-            if (fCaps.fDualSourceBlendingSupport) {
+            if (fCaps->fDualSourceBlendingSupport) {
                 return this->getLValue(*this->identifier("sk_SecondaryFragColor"), out)->load(out);
             } else {
                 fContext.fErrors->error(ref.position(), "'sk_SecondaryFragColor' not supported");
@@ -3774,7 +3775,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, S
             }
         }
         case SK_FRAGCOORD_BUILTIN: {
-            if (fProgram.fConfig->fSettings.fForceNoRTFlip) {
+            if (fProgram->fConfig->fSettings.fForceNoRTFlip) {
                 return this->getLValue(*this->identifier("sk_FragCoord"), out)->load(out);
             }
 
@@ -3785,8 +3786,8 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, S
             // terms of $device_FragCoords, which is a fake variable that means "access the
             // underlying fragcoords directly without flipping it".
             static constexpr char DEVICE_COORDS_NAME[] = "$device_FragCoords";
-            if (!fProgram.fSymbols->find(DEVICE_COORDS_NAME)) {
-                AutoAttachPoolToThread attach(fProgram.fPool.get());
+            if (!fProgram->fSymbols->find(DEVICE_COORDS_NAME)) {
+                AutoAttachPoolToThread attach(fProgram->fPool.get());
                 Layout layout;
                 layout.fBuiltin = DEVICE_FRAGCOORDS_BUILTIN;
                 auto coordsVar = Variable::Make(/*pos=*/Position(),
@@ -3798,7 +3799,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, S
                                                 /*mangledName=*/"",
                                                 /*builtin=*/true,
                                                 Variable::Storage::kGlobal);
-                fProgram.fSymbols->add(fContext, std::move(coordsVar));
+                fProgram->fSymbols->add(fContext, std::move(coordsVar));
             }
             std::unique_ptr<Expression> deviceCoord = this->identifier(DEVICE_COORDS_NAME);
             std::unique_ptr<Expression> rtFlip = this->identifier(SKSL_RTFLIP_NAME);
@@ -3826,7 +3827,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, S
                                                    out);
         }
         case SK_CLOCKWISE_BUILTIN: {
-            if (fProgram.fConfig->fSettings.fForceNoRTFlip) {
+            if (fProgram->fConfig->fSettings.fForceNoRTFlip) {
                 return this->getLValue(*this->identifier("sk_Clockwise"), out)->load(out);
             }
 
@@ -3836,8 +3837,8 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, S
             // terms of $device_Clockwise, which is a fake variable that means "access the
             // underlying FrontFacing directly".
             static constexpr char DEVICE_CLOCKWISE_NAME[] = "$device_Clockwise";
-            if (!fProgram.fSymbols->find(DEVICE_CLOCKWISE_NAME)) {
-                AutoAttachPoolToThread attach(fProgram.fPool.get());
+            if (!fProgram->fSymbols->find(DEVICE_CLOCKWISE_NAME)) {
+                AutoAttachPoolToThread attach(fProgram->fPool.get());
                 Layout layout;
                 layout.fBuiltin = DEVICE_CLOCKWISE_BUILTIN;
                 auto clockwiseVar = Variable::Make(/*pos=*/Position(),
@@ -3849,7 +3850,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, S
                                                    /*mangledName=*/"",
                                                    /*builtin=*/true,
                                                    Variable::Storage::kGlobal);
-                fProgram.fSymbols->add(fContext, std::move(clockwiseVar));
+                fProgram->fSymbols->add(fContext, std::move(clockwiseVar));
             }
             // FrontFacing in Vulkan is defined in terms of a top-down render target. In Skia,
             // we use the default convention of "counter-clockwise face is front".
@@ -4202,7 +4203,7 @@ SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs,
             if (op.kind() == Operator::Kind::STAR) {
                 // When the rewriteMatrixVectorMultiply bit is set, we rewrite medium-precision
                 // matrix * vector multiplication as (mat[0]*vec[0] + ... + mat[N]*vec[N]).
-                if (fCaps.fRewriteMatrixVectorMultiply &&
+                if (fCaps->fRewriteMatrixVectorMultiply &&
                     rightType.isVector() &&
                     !resultType.highPrecision()) {
                     return this->writeDecomposedMatrixVectorMultiply(leftType, lhs, rightType, rhs,
@@ -4937,7 +4938,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
     }
     StorageClass storageClass =
             get_storage_class_for_global_variable(intfVar, StorageClass::kFunction);
-    if (fProgram.fInterface.fRTFlipUniform != Program::Interface::kRTFlip_None && appendRTFlip &&
+    if (fProgram->fInterface.fRTFlipUniform != Program::Interface::kRTFlip_None && appendRTFlip &&
         !fWroteRTFlip && type.isStruct()) {
         // We can only have one interface block (because we use push_constant and that is limited
         // to one per program), so we need to append rtflip to this one rather than synthesize an
@@ -4948,7 +4949,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
         fields.emplace_back(Position(),
                             Layout(LayoutFlag::kNone,
                                    /*location=*/-1,
-                                   fProgram.fConfig->fSettings.fRTFlipOffset,
+                                   fProgram->fConfig->fSettings.fRTFlipOffset,
                                    /*binding=*/-1,
                                    /*index=*/-1,
                                    /*set=*/-1,
@@ -4958,14 +4959,14 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
                             SKSL_RTFLIP_NAME,
                             fContext.fTypes.fFloat2.get());
         {
-            AutoAttachPoolToThread attach(fProgram.fPool.get());
-            const Type* rtFlipStructType = fProgram.fSymbols->takeOwnershipOfSymbol(
+            AutoAttachPoolToThread attach(fProgram->fPool.get());
+            const Type* rtFlipStructType = fProgram->fSymbols->takeOwnershipOfSymbol(
                     Type::MakeStructType(fContext,
                                          type.fPosition,
                                          type.name(),
                                          std::move(fields),
                                          /*interfaceBlock=*/true));
-            Variable* modifiedVar = fProgram.fSymbols->takeOwnershipOfSymbol(
+            Variable* modifiedVar = fProgram->fSymbols->takeOwnershipOfSymbol(
                     Variable::Make(intfVar.fPosition,
                                    intfVar.modifiersPosition(),
                                    intfVar.layout(),
@@ -4977,7 +4978,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
                                    intfVar.storage()));
             InterfaceBlock modifiedCopy(intf.fPosition, modifiedVar);
             result = this->writeInterfaceBlock(modifiedCopy, /*appendRTFlip=*/false);
-            fProgram.fSymbols->add(fContext, std::make_unique<FieldSymbol>(
+            fProgram->fSymbols->add(fContext, std::make_unique<FieldSymbol>(
                     Position(), modifiedVar, rtFlipStructType->fields().size() - 1));
         }
         fVariableMap.set(&intfVar, result);
@@ -5006,7 +5007,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
     Layout layout = intfVar.layout();
     if ((storageClass == StorageClass::kUniform ||
                 storageClass == StorageClass::kStorageBuffer) && layout.fSet < 0) {
-        layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;
+        layout.fSet = fProgram->fConfig->fSettings.fDefaultUniformSet;
     }
     this->writeLayout(layout, result, intfVar.fPosition);
     fVariableMap.set(&intfVar, result);
@@ -5091,7 +5092,7 @@ SpvId SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind,
         case SK_FRAGCOLOR_BUILTIN:
         case SK_SECONDARYFRAGCOLOR_BUILTIN:
             if (!ProgramConfig::IsFragment(kind)) {
-                SkASSERT(!fProgram.fConfig->fSettings.fFragColorIsInOut);
+                SkASSERT(!fProgram->fConfig->fSettings.fFragColorIsInOut);
                 return NA;
             }
             break;
@@ -5114,7 +5115,7 @@ SpvId SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind,
     fVariableMap.set(&var, id);
 
     if (layout.fSet < 0 && storageClass == StorageClass::kUniformConstant) {
-        layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;
+        layout.fSet = fProgram->fConfig->fSettings.fDefaultUniformSet;
     }
 
     // Input int pointers have a reserved ID
@@ -5535,8 +5536,8 @@ void SPIRVCodeGenerator::writeUniformBuffer(SymbolTable* topLevelSymbolTable) {
 
     // Create a global variable to contain this struct.
     Layout layout;
-    layout.fBinding = fProgram.fConfig->fSettings.fDefaultUniformBinding;
-    layout.fSet     = fProgram.fConfig->fSettings.fDefaultUniformSet;
+    layout.fBinding = fProgram->fConfig->fSettings.fDefaultUniformBinding;
+    layout.fSet     = fProgram->fConfig->fSettings.fDefaultUniformSet;
 
     fUniformBuffer.fInnerVariable = Variable::Make(/*pos=*/Position(),
                                                    /*modifiersPosition=*/Position(),
@@ -5557,7 +5558,7 @@ void SPIRVCodeGenerator::writeUniformBuffer(SymbolTable* topLevelSymbolTable) {
 }
 
 void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
-    SkASSERT(!fProgram.fConfig->fSettings.fForceNoRTFlip);
+    SkASSERT(!fProgram->fConfig->fSettings.fForceNoRTFlip);
 
     if (fWroteRTFlip) {
         return;
@@ -5566,13 +5567,13 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
     // interface block, so we're free to just synthesize one.
     fWroteRTFlip = true;
     TArray<Field> fields;
-    if (fProgram.fConfig->fSettings.fRTFlipOffset < 0) {
+    if (fProgram->fConfig->fSettings.fRTFlipOffset < 0) {
         fContext.fErrors->error(pos, "RTFlipOffset is negative");
     }
     fields.emplace_back(pos,
                         Layout(LayoutFlag::kNone,
                                /*location=*/-1,
-                               fProgram.fConfig->fSettings.fRTFlipOffset,
+                               fProgram->fConfig->fSettings.fRTFlipOffset,
                                /*binding=*/-1,
                                /*index=*/-1,
                                /*set=*/-1,
@@ -5584,14 +5585,14 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
     std::string_view name = "sksl_synthetic_uniforms";
     const Type* intfStruct = fSynthetics.takeOwnershipOfSymbol(Type::MakeStructType(
             fContext, Position(), name, std::move(fields), /*interfaceBlock=*/true));
-    bool usePushConstants = fProgram.fConfig->fSettings.fUseVulkanPushConstantsForGaneshRTAdjust;
+    bool usePushConstants = fProgram->fConfig->fSettings.fUseVulkanPushConstantsForGaneshRTAdjust;
     int binding = -1, set = -1;
     if (!usePushConstants) {
-        binding = fProgram.fConfig->fSettings.fRTFlipBinding;
+        binding = fProgram->fConfig->fSettings.fRTFlipBinding;
         if (binding == -1) {
             fContext.fErrors->error(pos, "layout(binding=...) is required in SPIR-V");
         }
-        set = fProgram.fConfig->fSettings.fRTFlipSet;
+        set = fProgram->fConfig->fSettings.fRTFlipSet;
         if (set == -1) {
             fContext.fErrors->error(pos, "layout(set=...) is required in SPIR-V");
         }
@@ -5615,8 +5616,8 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
                                                              /*builtin=*/false,
                                                              Variable::Storage::kGlobal));
     {
-        AutoAttachPoolToThread attach(fProgram.fPool.get());
-        fProgram.fSymbols->add(fContext,
+        AutoAttachPoolToThread attach(fProgram->fPool.get());
+        fProgram->fSymbols->add(fContext,
                                std::make_unique<FieldSymbol>(Position(), intfVar, /*field=*/0));
     }
     InterfaceBlock intf(Position(), intfVar);
@@ -5792,7 +5793,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, SPIRVBlob& ou
     // However, if the program naturally declares it, we don't want to include it a second time;
     // we keep track of the real global variable declarations to see if sk_Clockwise is emitted.
     const VarDeclaration* missingClockwiseDecl = nullptr;
-    if (fCaps.fMustDeclareFragmentFrontFacing) {
+    if (fCaps->fMustDeclareFragmentFrontFacing) {
         if (const Symbol* clockwise = program.fSymbols->findBuiltinSymbol("sk_Clockwise")) {
             missingClockwiseDecl = clockwise->as<Variable>().varDeclaration();
         }
@@ -5851,7 +5852,7 @@ void SPIRVCodeGenerator::writeInstructions(const Program& program, SPIRVBlob& ou
     // On Vulkan, maximal reconvergence only applies to entry points that opt in, so this is what
     // makes ShaderCaps::fSubgroupMaximalReconvergence hold. Subgroups are only exposed in compute.
     const bool maximallyReconverges = ProgramConfig::IsCompute(program.fConfig->fKind) &&
-                                      fCaps.fSubgroupMaximalReconvergence;
+                                      fCaps->fSubgroupMaximalReconvergence;
     if (maximallyReconverges) {
         this->writeInstruction(SpvOpExtension, "SPV_KHR_maximal_reconvergence", out);
     }
@@ -5915,7 +5916,7 @@ bool SPIRVCodeGenerator::generateCode() {
     this->writeWord(0, *fOutBuffer);
     // reserved, always zero
     this->writeWord(0, *fOutBuffer);
-    this->writeInstructions(fProgram, *fOutBuffer);
+    this->writeInstructions(*fProgram, *fOutBuffer);
     // Set the id count now that it's determined.
     (*fOutBuffer)[3] = fIdCount;
     return fContext.fErrors->errorCount() == 0;
