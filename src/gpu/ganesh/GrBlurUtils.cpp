@@ -1588,13 +1588,14 @@ void DrawShapeWithMaskFilter(GrRecordingContext* rContext,
                              const GrClip* clip,
                              const SkPaint& paint,
                              const SkMatrix& ctm,
-                             const GrStyledShape& shape) {
+                             const GrStyledShape& shape,
+                             SkIPoint ditherOrigin) {
     if (rContext->abandoned()) {
         return;
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaint(sdc, paint, ctm, &grPaint)) {
+    if (!SkPaintToGrPaint(sdc, paint, ctm, ditherOrigin, &grPaint)) {
         return;
     }
 

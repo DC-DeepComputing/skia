@@ -79,7 +79,8 @@ public:
                              const SkRasterPipeline& shaderPipeline,
                              bool is_opaque,
                              bool is_constant,
-                             const SkShader* clipShader);
+                             const SkShader* clipShader,
+                             SkIPoint ditherOrigin);
 
     SkRasterPipelineBlitter(SkPixmap dst,
                             const SkPaint& paint,
@@ -141,7 +142,7 @@ private:
     // These values are pointed to by the blit pipelines above,
     // which allows us to adjust them from call to call.
     float fCurrentCoverage = 0.0f;
-    float fDitherRate      = 0.0f;
+    SkRasterPipelineContexts::DitherCtx fDitherCtx = {0.0f, 0, 0};
 
     using INHERITED = SkBlitter;
 };
@@ -198,7 +199,8 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap& dst,
                                          SkArenaAlloc* alloc,
                                          sk_sp<SkShader> clipShader,
                                          const SkSurfaceProps& props,
-                                         const SkRect& devBounds) {
+                                         const SkRect& devBounds,
+                                         SkIPoint ditherOrigin) {
     SkRasterPipeline_<256> shaderPipeline;
     SkColor4f dstPaintColor;
     bool is_opaque, is_constant;
@@ -222,7 +224,8 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap& dst,
                                            shaderPipeline,
                                            is_opaque,
                                            is_constant,
-                                           clipShader.get());
+                                           clipShader.get(),
+                                           ditherOrigin);
 }
 
 namespace SkRasterPipelineVisualizer {
@@ -281,7 +284,8 @@ SkBlitter* CreateBlitter(const SkPixmap& dst,
                                            shaderPipeline2,
                                            is_opaque,
                                            is_constant,
-                                           clipShader.get());
+                                           clipShader.get(),
+                                           SkIPoint::Make(0, 0));
 }
 
 }  // namespace SkRasterPipelineVisualizer
@@ -293,9 +297,15 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap& dst,
                                          SkArenaAlloc* alloc,
                                          sk_sp<SkShader> clipShader) {
     bool is_constant = false;  // If this were the case, it'd be better to just set a paint color.
-    return SkRasterPipelineBlitter::Create(dst, paint, paint_color_to_dst(paint, dst), alloc,
-                                           shaderPipeline, is_opaque, is_constant,
-                                           clipShader.get());
+    return SkRasterPipelineBlitter::Create(dst,
+                                           paint,
+                                           paint_color_to_dst(paint, dst),
+                                           alloc,
+                                           shaderPipeline,
+                                           is_opaque,
+                                           is_constant,
+                                           clipShader.get(),
+                                           SkIPoint::Make(0, 0));
 }
 
 SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
@@ -305,8 +315,11 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
                                            const SkRasterPipeline& shaderPipeline,
                                            bool is_opaque,
                                            bool is_constant,
-                                           const SkShader* clipShader) {
+                                           const SkShader* clipShader,
+                                           SkIPoint ditherOrigin) {
     auto blitter = alloc->make<SkRasterPipelineBlitter>(dst, paint, alloc);
+    blitter->fDitherCtx.originX = ditherOrigin.x();
+    blitter->fDitherCtx.originY = ditherOrigin.y();
 
     // Our job in this factory is to fill out the blitter's color and blend pipelines.
     // The color pipeline is the common front of the full blit pipeline. The blend pipeline is just
@@ -364,10 +377,10 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
     if (paint.isDither() && !is_constant) {
         switch (dst.info().colorType()) {
             case kARGB_4444_SkColorType:
-                blitter->fDitherRate = 1 / 15.0f;
+                blitter->fDitherCtx.rate = 1 / 15.0f;
                 break;
             case kRGB_565_SkColorType:
-                blitter->fDitherRate = 1 / 63.0f;
+                blitter->fDitherCtx.rate = 1 / 63.0f;
                 break;
             case kGray_8_SkColorType:
             case kRGB_888x_SkColorType:
@@ -375,7 +388,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
             case kBGRA_8888_SkColorType:
             case kSRGBA_8888_SkColorType:
             case kR8_unorm_SkColorType:
-                blitter->fDitherRate = 1 / 255.0f;
+                blitter->fDitherCtx.rate = 1 / 255.0f;
                 break;
             case kRGB_101010x_SkColorType:
             case kRGBA_1010102_SkColorType:
@@ -383,7 +396,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
             case kBGRA_1010102_SkColorType:
             case kBGRA_10101010_XR_SkColorType:
             case kRGBA_10x6_SkColorType:
-                blitter->fDitherRate = 1 / 1023.0f;
+                blitter->fDitherCtx.rate = 1 / 1023.0f;
                 break;
 
             case kUnknown_SkColorType:
@@ -401,11 +414,11 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
             case kR16_float_SkColorType:
             case kR16G16_unorm_SkColorType:
             case kR16G16B16A16_unorm_SkColorType:
-                blitter->fDitherRate = 0.0f;
+                blitter->fDitherCtx.rate = 0.0f;
                 break;
         }
-        if (blitter->fDitherRate > 0.0f) {
-            colorPipeline->append(SkRasterPipelineOp::dither, &blitter->fDitherRate);
+        if (blitter->fDitherCtx.rate > 0.0f) {
+            colorPipeline->append(SkRasterPipelineOp::dither, &blitter->fDitherCtx);
         }
     }
 
@@ -543,7 +556,7 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
                     fDst.info().colorType() == kBGRA_8888_SkColorType)
                 && !fDst.colorSpace()
                 && fDst.info().alphaType() != kUnpremul_SkAlphaType
-                && fDitherRate == 0.0f) {
+                && fDitherCtx.rate == 0.0f) {
             if (fDst.info().colorType() == kBGRA_8888_SkColorType) {
                 p.append(SkRasterPipelineOp::swap_rb);
             }

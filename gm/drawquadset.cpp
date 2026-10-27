@@ -86,7 +86,7 @@ static void draw_gradient_tiles(SkCanvas* canvas, bool alignGradients) {
                 const SkMatrix& view = canvas->getTotalMatrix();
                 SkSurfaceProps props;
                 GrPaint grPaint;
-                SkPaintToGrPaint(sdc, paint, view, &grPaint);
+                SkPaintToGrPaint(sdc, paint, view, /*ditherOrigin=*/{0, 0}, &grPaint);
                 sdc->fillRectWithEdgeAA(nullptr, std::move(grPaint),
                                         static_cast<GrQuadAAFlags>(aa), view, tile);
             } else {

@@ -60,7 +60,8 @@ void Draw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& pa
                                            SkDrawCoverage::kNo,
                                            fRC->clipShader(),
                                            SkSurfacePropsCopyOrDefault(fProps),
-                                           SkRect::MakeEmpty());
+                                           SkRect::MakeEmpty(),
+                                           fDitherOrigin);
 
     SkAAClipBlitterWrapper wrapper{*fRC, blitter};
     blitter = wrapper.getBlitter();

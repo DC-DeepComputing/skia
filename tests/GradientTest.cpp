@@ -706,6 +706,64 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TestManyStopLinearHardstopsGanesh,
 // }
 // #endif
 
+// Draws a dithered gradient covering `size` into `surface`, either directly or into an
+// offset saveLayer, and reads back the pixels.
+static void draw_dithered_gradient_to(SkSurface* surface,
+                                      SkISize size,
+                                      const SkRect* layerBounds,
+                                      SkBitmap* result) {
+    const SkColor4f colors[] = {SkColors::kBlack, SkColors::kWhite};
+    const SkPoint pts[] = {{0, 0}, {SkIntToScalar(size.width()), 0}};
+    SkPaint paint;
+    paint.setShader(SkShaders::LinearGradient(pts, {{colors, {}, SkTileMode::kClamp}, {}}));
+    paint.setDither(true);
+
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorTRANSPARENT);
+    if (layerBounds) {
+        canvas->saveLayer(layerBounds, nullptr);
+    }
+    canvas->drawRect(SkRect::MakeIWH(size.width(), size.height()), paint);
+    if (layerBounds) {
+        canvas->restore();
+    }
+    result->allocN32Pixels(size.width(), size.height());
+    SkAssertResult(surface->readPixels(*result, 0, 0));
+}
+
+// Shared by the raster and Ganesh variants: a gradient drawn into a layer whose origin is on
+// neither axis of the 8x8 dither grid must dither in the same phase as a direct draw.
+static void check_dither_phase_in_offset_layer(skiatest::Reporter* reporter,
+                                               SkSurface* direct,
+                                               SkSurface* layered) {
+    constexpr SkISize kSize = {64, 24};
+    // Bounds whose origin is on neither axis of the 8x8 dither grid.
+    const SkRect kLayerBounds = SkRect::MakeXYWH(3, 5, 50, 12);
+
+    SkBitmap directPixels, layeredPixels;
+    draw_dithered_gradient_to(direct, kSize, nullptr, &directPixels);
+    draw_dithered_gradient_to(layered, kSize, &kLayerBounds, &layeredPixels);
+
+    SkIRect compare = kLayerBounds.roundIn();
+    for (int y = compare.fTop; y < compare.fBottom; ++y) {
+        for (int x = compare.fLeft; x < compare.fRight; ++x) {
+            if (directPixels.getColor(x, y) != layeredPixels.getColor(x, y)) {
+                ERRORF(reporter,
+                       "dither phase differs at (%d, %d): direct 0x%08x, layer 0x%08x",
+                       x, y, directPixels.getColor(x, y), layeredPixels.getColor(x, y));
+                return;
+            }
+        }
+    }
+}
+
+static void test_dither_phase_in_offset_layer(skiatest::Reporter* reporter) {
+    const SkImageInfo info = SkImageInfo::MakeN32Premul(64, 24);
+    sk_sp<SkSurface> direct = SkSurfaces::Raster(info);
+    sk_sp<SkSurface> layered = SkSurfaces::Raster(info);
+    check_dither_phase_in_offset_layer(reporter, direct.get(), layered.get());
+}
+
 DEF_TEST(Gradient, reporter) {
     TestGradientShaders(reporter);
     TestConstantGradient(reporter);
@@ -718,7 +776,25 @@ DEF_TEST(Gradient, reporter) {
     test_degenerate_linear(reporter);
     test_linear_fuzzer(reporter);
     test_sweep_fuzzer(reporter);
+    test_dither_phase_in_offset_layer(reporter);
 #if defined(SK_GANESH)
     test_unsorted_degenerate(reporter);
 #endif
 }
+
+#if defined(SK_GANESH)
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GradientDitherPhaseInOffsetLayer,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    auto context = ctxInfo.directContext();
+    const SkImageInfo info = SkImageInfo::MakeN32Premul(64, 24);
+    sk_sp<SkSurface> direct = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, info);
+    sk_sp<SkSurface> layered = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, info);
+    if (!direct || !layered) {
+        ERRORF(reporter, "Could not create render targets");
+        return;
+    }
+    check_dither_phase_in_offset_layer(reporter, direct.get(), layered.get());
+}
+#endif

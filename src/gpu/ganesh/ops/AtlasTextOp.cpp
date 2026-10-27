@@ -97,12 +97,15 @@ SkPMColor4f calculate_colors(skgpu::ganesh::SurfaceDrawContext* sdc,
                              const SkMatrix& matrix,
                              MaskFormat maskFormat,
                              GrPaint* grPaint) {
+    // TODO: plumb the device's dither origin here so dithered shaders on text stay in phase
+    // inside a layer, matching the raster path.
+    const SkIPoint kNoDitherOrigin = {0, 0};
     if (maskFormat == MaskFormat::kARGB) {
-        SkPaintToGrPaintReplaceShader(sdc, paint, matrix, nullptr, grPaint);
+        SkPaintToGrPaintReplaceShader(sdc, paint, matrix, nullptr, kNoDitherOrigin, grPaint);
         float a = grPaint->getColor4f().fA;
         return {a, a, a, a};
     }
-    SkPaintToGrPaint(sdc, paint, matrix, grPaint);
+    SkPaintToGrPaint(sdc, paint, matrix, kNoDitherOrigin, grPaint);
     return grPaint->getColor4f();
 }
 

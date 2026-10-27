@@ -308,7 +308,8 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
         GrRecordingContext* rContext,
         std::unique_ptr<GrFragmentProcessor> inputFP,
         float range,
-        const GrCaps* caps) {
+        const GrCaps* caps,
+        SkIPoint ditherOrigin) {
     if (range == 0 || inputFP == nullptr) {
         return inputFP;
     }
@@ -348,11 +349,14 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
             std::move(tex), kPremul_SkAlphaType, SkMatrix::I(), sampler, *caps);
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "uniform half range;"
+        // Offset from this render target's pixels to the global pixel grid, so that a layer
+        // dithers in the same phase as the surface it is composited into.
+        "uniform float2 ditherOrigin;"
         "uniform shader inputFP;"
         "uniform shader table;"
         "half4 main(float2 xy) {"
             "half4 color = inputFP.eval(xy);"
-            "half value = table.eval(sk_FragCoord.xy).a - 0.5;" // undo the bias in the table
+            "half value = table.eval(sk_FragCoord.xy + ditherOrigin).a - 0.5;" // undo the bias
             // For each color channel, add the random offset to the channel value and then clamp
             // between 0 and alpha to keep the color premultiplied.
             "return half4(clamp(color.rgb + value * range, 0.0, color.a), color.a);"
@@ -361,6 +365,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
     return GrSkSLFP::Make(effect, "Dither", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kPreservesOpaqueInput,
                           "range", range,
+                          "ditherOrigin", SkV2{(float)ditherOrigin.x(), (float)ditherOrigin.y()},
                           "inputFP", std::move(inputFP),
                           "table", GrSkSLFP::IgnoreOptFlags(std::move(te)));
 }
@@ -372,6 +377,7 @@ static inline bool skpaint_to_grpaint_impl(
         const SkMatrix& ctm,
         std::optional<std::unique_ptr<GrFragmentProcessor>> shaderFP,
         SkBlender* primColorBlender,
+        SkIPoint ditherOrigin,
         GrPaint* grPaint) {
     const GrColorInfo& dstColorInfo = sdc->colorInfo();
     const SkSurfaceProps& surfaceProps = sdc->surfaceProps();
@@ -512,7 +518,7 @@ static inline bool skpaint_to_grpaint_impl(
         float ditherRange = skgpu::DitherRangeForConfig(ct);
         GrRecordingContext* context = sdc->recordingContext();
         paintFP = make_dither_effect(
-                context, std::move(paintFP), ditherRange, context->priv().caps());
+                context, std::move(paintFP), ditherRange, context->priv().caps(), ditherOrigin);
     }
 #endif
 
@@ -561,12 +567,14 @@ static inline bool skpaint_to_grpaint_impl(
 bool SkPaintToGrPaint(skgpu::ganesh::SurfaceDrawContext* sdc,
                       const SkPaint& skPaint,
                       const SkMatrix& ctm,
+                      SkIPoint ditherOrigin,
                       GrPaint* grPaint) {
     return skpaint_to_grpaint_impl(sdc,
                                    skPaint,
                                    ctm,
                                    /*shaderFP=*/std::nullopt,
                                    /*primColorBlender=*/nullptr,
+                                   ditherOrigin,
                                    grPaint);
 }
 
@@ -575,12 +583,14 @@ bool SkPaintToGrPaintReplaceShader(skgpu::ganesh::SurfaceDrawContext* sdc,
                                    const SkPaint& skPaint,
                                    const SkMatrix& ctm,
                                    std::unique_ptr<GrFragmentProcessor> shaderFP,
+                                   SkIPoint ditherOrigin,
                                    GrPaint* grPaint) {
     return skpaint_to_grpaint_impl(sdc,
                                    skPaint,
                                    ctm,
                                    std::move(shaderFP),
                                    /*primColorBlender=*/nullptr,
+                                   ditherOrigin,
                                    grPaint);
 }
 
@@ -590,11 +600,13 @@ bool SkPaintToGrPaintWithBlend(skgpu::ganesh::SurfaceDrawContext* sdc,
                                const SkPaint& skPaint,
                                const SkMatrix& ctm,
                                SkBlender* primColorBlender,
+                               SkIPoint ditherOrigin,
                                GrPaint* grPaint) {
     return skpaint_to_grpaint_impl(sdc,
                                    skPaint,
                                    ctm,
                                    /*shaderFP=*/std::nullopt,
                                    primColorBlender,
+                                   ditherOrigin,
                                    grPaint);
 }

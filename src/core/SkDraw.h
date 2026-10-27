@@ -11,6 +11,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSpan.h"
@@ -31,14 +32,14 @@ class SkMaskFilter;
 class SkMatrix;
 class SkMipmap;
 class SkPath;
-struct SkPathRaw;
 class SkRRect;
 class SkRasterClip;
 class SkShader;
 class SkVertices;
 struct SkIRect;
-struct SkPoint;
+struct SkPathRaw;
 struct SkPoint3;
+struct SkPoint;
 struct SkRSXform;
 struct SkRect;
 
@@ -180,7 +181,8 @@ public:
                                       SkDrawCoverage drawCoverage,
                                       sk_sp<SkShader> clipShader,
                                       const SkSurfaceProps&,
-                                      const SkRect& devBounds);
+                                      const SkRect& devBounds,
+                                      SkIPoint ditherOrigin);
 
     /* If dstOrNull is null, computes a dst by mapping the bitmap's bounds through the matrix. */
     void drawBitmap(const SkBitmap&,
@@ -249,6 +251,10 @@ public:
     const SkMatrix* fCTM{nullptr};             // required
     const SkRasterClip* fRC{nullptr};          // required
     const SkSurfaceProps* fProps{nullptr};     // optional
+    // Offset from fDst's pixels to the global pixel grid. Dithering is indexed by
+    // global position so that a layer dithers in the same phase as the surface it
+    // is composited into. Zero when the device is not pixel-aligned to global.
+    SkIPoint fDitherOrigin = SkIPoint::Make(0, 0);
 
 #ifdef SK_DEBUG
     void validate() const;

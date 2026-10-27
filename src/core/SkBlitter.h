@@ -154,7 +154,8 @@ public:
                              SkDrawCoverage,
                              sk_sp<SkShader> clipShader,
                              const SkSurfaceProps& props,
-                             const SkRect& devBounds);
+                             const SkRect& devBounds,
+                             SkIPoint ditherOrigin);
 
     static SkBlitter* ChooseSprite(const SkPixmap& dst,
                                    const SkPaint&,

@@ -10,6 +10,7 @@
 
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTileMode.h"
@@ -27,9 +28,9 @@
 #include <string_view>
 #include <tuple>
 
-class GrMippedBitmap;
 class GrColorInfo;
 class GrFragmentProcessor;
+class GrMippedBitmap;
 class GrPaint;
 class GrRecordingContext;
 class GrSurfaceProxy;
@@ -94,6 +95,7 @@ static constexpr GrSamplerState::WrapMode SkTileModeToWrapMode(SkTileMode tileMo
 bool SkPaintToGrPaint(skgpu::ganesh::SurfaceDrawContext*,
                       const SkPaint& skPaint,
                       const SkMatrix& ctm,
+                      SkIPoint ditherOrigin,
                       GrPaint* grPaint);
 
 /** Replaces the SkShader (if any) on skPaint with the passed in GrFragmentProcessor, if not null.
@@ -103,6 +105,7 @@ bool SkPaintToGrPaintReplaceShader(skgpu::ganesh::SurfaceDrawContext*,
                                    const SkPaint& skPaint,
                                    const SkMatrix& ctm,
                                    std::unique_ptr<GrFragmentProcessor> shaderFP,
+                                   SkIPoint ditherOrigin,
                                    GrPaint* grPaint);
 
 /** Blends the SkPaint's shader (or color if no shader) with the color which specified via a
@@ -111,6 +114,7 @@ bool SkPaintToGrPaintWithBlend(skgpu::ganesh::SurfaceDrawContext* context,
                                const SkPaint& skPaint,
                                const SkMatrix& ctm,
                                SkBlender* primColorBlender,
+                               SkIPoint ditherOrigin,
                                GrPaint* grPaint);
 
 ////////////////////////////////////////////////////////////////////////////////

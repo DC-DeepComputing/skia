@@ -8,6 +8,7 @@
 #ifndef GrBlurUtils_DEFINED
 #define GrBlurUtils_DEFINED
 
+#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "src/gpu/SkBackingFit.h"
@@ -70,7 +71,8 @@ void DrawShapeWithMaskFilter(GrRecordingContext*,
                              const GrClip*,
                              const SkPaint&,
                              const SkMatrix&,
-                             const GrStyledShape&);
+                             const GrStyledShape&,
+                             SkIPoint ditherOrigin);
 
 /**
  * Draw a shape handling the mask filter. The mask filter is not optional.

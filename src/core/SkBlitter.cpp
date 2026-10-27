@@ -16,6 +16,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkDebug.h"
@@ -658,7 +659,8 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
                              SkDrawCoverage drawCoverage,
                              sk_sp<SkShader> clipShader,
                              const SkSurfaceProps& props,
-                             const SkRect& devBounds) {
+                             const SkRect& devBounds,
+                             SkIPoint ditherOrigin) {
     SkASSERT(alloc);
 
     if (kUnknown_SkColorType == device.colorType()) {
@@ -712,7 +714,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
 
     auto CreateSkRPBlitter = [&]() -> SkBlitter* {
         auto blitter = SkCreateRasterPipelineBlitter(
-                device, *paint, ctm, alloc, clipShader, props, devBounds);
+                device, *paint, ctm, alloc, clipShader, props, devBounds, ditherOrigin);
         return blitter ? blitter
                        : alloc->make<SkNullBlitter>();
     };

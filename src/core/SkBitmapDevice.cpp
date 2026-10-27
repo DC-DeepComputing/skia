@@ -134,6 +134,9 @@ public:
         }
 
         fDraw.fProps = &fDevice->surfaceProps();
+        if (fDevice->isPixelAlignedToGlobal()) {
+            fDraw.fDitherOrigin = fDevice->getOrigin();
+        }
     }
 
     bool needsTiling() const { return fNeedsTiling; }
@@ -181,6 +184,10 @@ private:
         // now don't use bounds, since fDst has the clipped dimensions.
 
         fTileMatrix = fDevice->localToDevice();
+        fDraw.fDitherOrigin = fOrigin;
+        if (fDevice->isPixelAlignedToGlobal()) {
+            fDraw.fDitherOrigin += fDevice->getOrigin();
+        }
         fTileMatrix->postTranslate(-fOrigin.x(), -fOrigin.y());
         fDraw.fCTM = &fTileMatrix.value();
         fDevice->fRCStack.rc().translate(-fOrigin.x(), -fOrigin.y(), &fTileRC);
@@ -209,6 +216,9 @@ public:
         }
         fCTM = &dev->localToDevice();
         fRC = &dev->fRCStack.rc();
+        if (dev->isPixelAlignedToGlobal()) {
+            fDitherOrigin = dev->getOrigin();
+        }
     }
 };
 
