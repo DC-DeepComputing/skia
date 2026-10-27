@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/graphite/UniformManager.h"
+#include "src/gpu/graphite/buffer/UniformManager.h"
 
 #include "src/gpu/graphite/PipelineData.h"
 

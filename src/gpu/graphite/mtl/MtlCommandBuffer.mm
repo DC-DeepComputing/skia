@@ -15,7 +15,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/TextureProxy.h"
-#include "src/gpu/graphite/UniformManager.h"
+#include "src/gpu/graphite/buffer/UniformManager.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/mtl/MtlBlitCommandEncoder.h"
 #include "src/gpu/graphite/mtl/MtlBuffer.h"

@@ -306,6 +306,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_graphite_sources",
 			Rules: []string{
+				"//src/gpu/graphite/buffer:core_hdrs",
+				"//src/gpu/graphite/buffer:core_srcs",
 				"//src/gpu/graphite/compute:core_hdrs",
 				"//src/gpu/graphite/compute:core_srcs",
 				"//src/gpu/graphite/draw:core_hdrs",

@@ -59,7 +59,7 @@
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/Uniform.h"
-#include "src/gpu/graphite/UniformManager.h"
+#include "src/gpu/graphite/buffer/UniformManager.h"
 #include "src/gpu/graphite/draw/DrawContext.h"
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkBlendShader.h"
