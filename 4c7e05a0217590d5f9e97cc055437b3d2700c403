@@ -46,6 +46,30 @@
       },
       "revId": "4c7e05a0217590d5f9e97cc055437b3d2700c403",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5f22daf_21a7dc2e",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-27T04:08:24Z",
+      "side": 0,
+      "message": "Okay I ended up down a rabbit hole of improving/optimizing this even more to handle more cases. Let me know what you think of this version.",
+      "parentUuid": "aeddc718_681b818c",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 43
+      },
+      "revId": "4c7e05a0217590d5f9e97cc055437b3d2700c403",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

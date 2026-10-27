@@ -22,6 +22,30 @@
       },
       "revId": "5fe083da62df539631fc691963190d093e1d1783",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94b70267_0aadd91c",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-27T04:08:24Z",
+      "side": 1,
+      "message": "no longer applicable.",
+      "parentUuid": "85be6589_2baa0e7e",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 101
+      },
+      "revId": "5fe083da62df539631fc691963190d093e1d1783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
