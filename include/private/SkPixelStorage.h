@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <atomic>
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkWeakRefCnt.h"
 
 /**
  * SkPixelStorage is the class representing the storage block for pixel data. It serves as the
@@ -65,7 +66,7 @@ public:
     };
 
     SkPixelStorage(Type type);
-    ~SkPixelStorage() override = default;
+    ~SkPixelStorage() override;
 
     uint64_t getPixelStorageId() const { return fID; }
     Type type() const { return fType; }
@@ -75,6 +76,8 @@ public:
 
     void setProvenance(Provenance provenance) { fProvenance = provenance; }
     Provenance provenance() const { return fProvenance; }
+
+    const SkWeakRefCnt* weakToken() const;
 
 private:
     Type fType;
@@ -90,6 +93,8 @@ private:
     std::atomic<uint32_t> fContentID = 0;
 
     Provenance fProvenance;
+
+    mutable std::atomic<SkWeakRefCnt*> fWeakToken = nullptr;
 
     static uint64_t NextId();
 };

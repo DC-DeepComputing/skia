@@ -10,10 +10,14 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPicture.h"  // IWYU pragma: keep
 #include "include/core/SkPictureRecorder.h"
+#include "include/core/SkPixelRef.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
@@ -25,6 +29,7 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkResourceCache.h"
 #include "src/image/SkImage_Base.h"
+#include "src/image/SkImage_Raster.h"
 #include "src/lazy/SkDiscardableMemoryPool.h"
 #include "tests/Test.h"
 
@@ -304,5 +309,200 @@ DEF_TEST(ResourceCache_purge, reporter) {
             SkResourceCache cache(SkDiscardableMemory::Create);
             test_duplicate_add(&cache, reporter, purgable);
         }
+    }
+}
+
+namespace {
+
+class SolidColorGenerator final : public SkImageGenerator {
+public:
+    SolidColorGenerator(const SkImageInfo& info, SkColor color, uint64_t forcedUniqueID)
+            : SkImageGenerator(info, forcedUniqueID), fColor(color) {}
+
+protected:
+    bool onGetPixels(const SkImageInfo& info,
+                     void* pixels,
+                     size_t rowBytes,
+                     const Options&) override {
+        SkPixmap pm(info, pixels, rowBytes);
+        pm.erase(fColor);
+        return true;
+    }
+
+private:
+    SkColor fColor;
+};
+
+}  // namespace
+
+DEF_TEST(MipmapCache_ForcedIDCollision, reporter) {
+    constexpr int kSrcSize = 64;
+    constexpr int kDstSize = 16;
+    const SkImageInfo srcInfo = SkImageInfo::MakeN32Premul(kSrcSize, kSrcSize);
+    const SkImageInfo dstInfo = SkImageInfo::MakeN32Premul(kDstSize, kDstSize);
+
+    // 1. Two live same-sized raster images forced to share the exact same generation/unique ID.
+    SkBitmap bm1;
+    bm1.allocPixels(srcInfo);
+    bm1.eraseColor(SK_ColorRED);
+    bm1.setImmutable();
+    const uint64_t collidingID = bm1.getGenerationID();
+
+    SkBitmap bm2;
+    bm2.allocPixels(srcInfo);
+    bm2.eraseColor(SK_ColorBLUE);
+    // Force bm2's PixelRef to collide with bm1's generation ID while both remain live.
+    SkBitmapCache_setImmutableWithID(bm2.pixelRef(), collidingID);
+
+    sk_sp<SkImage> img1 = bm1.asImage();
+    sk_sp<SkImage> img2 = bm2.asImage();
+    REPORTER_ASSERT(reporter, img1 && img2);
+    REPORTER_ASSERT(reporter, bm1.getGenerationID() == bm2.getGenerationID());
+    REPORTER_ASSERT(reporter, img1->uniqueID() == img2->uniqueID());
+    REPORTER_ASSERT(reporter, img1->dimensions() == img2->dimensions());
+
+    // 1a. Verify direct SkMipmapCache lookup rejects key hits whose provenance does not match.
+    {
+        SkResourceCache localCache(1024 * 1024);
+        const auto desc1 = SkBitmapCacheDesc::Make(img1.get());
+        const auto desc2 = SkBitmapCacheDesc::Make(img2.get());
+        REPORTER_ASSERT(reporter, desc1.fImageID == desc2.fImageID);
+        REPORTER_ASSERT(reporter, desc1.fSubset == desc2.fSubset);
+
+        const SkMipmap* mm1Added = SkMipmapCache::AddAndRef(as_IB(img1.get()), &localCache);
+        REPORTER_ASSERT(reporter, mm1Added != nullptr);
+
+        // Lookup for img1 must succeed and return img1's mip levels.
+        const SkMipmap* mm1Found = SkMipmapCache::FindAndRef(desc1, &localCache);
+        REPORTER_ASSERT(reporter, mm1Found == mm1Added);
+        SkSafeUnref(mm1Found);
+
+        // Lookup for img2 (same key, different live provenance) must be rejected!
+        const SkMipmap* mm2Found = SkMipmapCache::FindAndRef(desc2, &localCache);
+        REPORTER_ASSERT(reporter, mm2Found == nullptr);
+
+        // Rejecting img2 must not evict img1's live mipmap from the cache.
+        const SkMipmap* mm1StillThere = SkMipmapCache::FindAndRef(desc1, &localCache);
+        REPORTER_ASSERT(reporter, mm1StillThere == mm1Added);
+        SkSafeUnref(mm1StillThere);
+
+        SkSafeUnref(mm1Added);
+    }
+
+    // 1b. Verify end-to-end downscaled mipmapped rendering never cross-contaminates mip levels.
+    for (SkMipmapMode mmMode : {SkMipmapMode::kLinear, SkMipmapMode::kNearest}) {
+        const SkSamplingOptions sampling(SkFilterMode::kLinear, mmMode);
+        auto surf = SkSurfaces::Raster(dstInfo);
+        SkCanvas* canvas = surf->getCanvas();
+
+        // Draw img1 downscaled to populate the global SkMipmapCache with red mip levels.
+        canvas->clear(SK_ColorTRANSPARENT);
+        canvas->drawImageRect(img1, SkRect::MakeIWH(kDstSize, kDstSize), sampling);
+
+        SkBitmap readback1;
+        readback1.allocPixels(dstInfo);
+        REPORTER_ASSERT(reporter, surf->readPixels(readback1, 0, 0));
+        for (int y = 0; y < kDstSize; ++y) {
+            for (int x = 0; x < kDstSize; ++x) {
+                REPORTER_ASSERT(reporter, readback1.getColor(x, y) == SK_ColorRED);
+            }
+        }
+
+        // Now draw img2 downscaled while img1 and its cached mip levels are still live.
+        // img2 must never receive img1's red mip levels.
+        canvas->clear(SK_ColorTRANSPARENT);
+        canvas->drawImageRect(img2, SkRect::MakeIWH(kDstSize, kDstSize), sampling);
+
+        SkBitmap readback2;
+        readback2.allocPixels(dstInfo);
+        REPORTER_ASSERT(reporter, surf->readPixels(readback2, 0, 0));
+        for (int y = 0; y < kDstSize; ++y) {
+            for (int x = 0; x < kDstSize; ++x) {
+                REPORTER_ASSERT(reporter, readback2.getColor(x, y) == SK_ColorBLUE);
+            }
+        }
+    }
+
+    // 2. Two live same-sized lazy images forced to share the exact same generator uniqueID.
+    sk_sp<SkImage> lazy1 = SkImages::DeferredFromGenerator(
+            std::make_unique<SolidColorGenerator>(srcInfo, SK_ColorGREEN, collidingID));
+    sk_sp<SkImage> lazy2 = SkImages::DeferredFromGenerator(
+            std::make_unique<SolidColorGenerator>(srcInfo, SK_ColorYELLOW, collidingID));
+    REPORTER_ASSERT(reporter, lazy1 && lazy2);
+    REPORTER_ASSERT(reporter, lazy1->uniqueID() == lazy2->uniqueID());
+    REPORTER_ASSERT(reporter, lazy1->dimensions() == lazy2->dimensions());
+
+    {
+        SkResourceCache localCache(1024 * 1024);
+        const auto desc1 = SkBitmapCacheDesc::Make(lazy1.get());
+        const auto desc2 = SkBitmapCacheDesc::Make(lazy2.get());
+        REPORTER_ASSERT(reporter, desc1.fImageID == desc2.fImageID);
+        REPORTER_ASSERT(reporter, desc1.fSubset == desc2.fSubset);
+
+        const SkMipmap* mm1Added = SkMipmapCache::AddAndRef(as_IB(lazy1.get()), &localCache);
+        REPORTER_ASSERT(reporter, mm1Added != nullptr);
+
+        const SkMipmap* mm2Found = SkMipmapCache::FindAndRef(desc2, &localCache);
+        REPORTER_ASSERT(reporter, mm2Found == nullptr);
+
+        SkSafeUnref(mm1Added);
+    }
+
+    {
+        const SkSamplingOptions sampling(SkFilterMode::kLinear, SkMipmapMode::kLinear);
+        auto surf = SkSurfaces::Raster(dstInfo);
+        SkCanvas* canvas = surf->getCanvas();
+
+        canvas->clear(SK_ColorTRANSPARENT);
+        canvas->drawImageRect(lazy1, SkRect::MakeIWH(kDstSize, kDstSize), sampling);
+
+        SkBitmap readback1;
+        readback1.allocPixels(dstInfo);
+        REPORTER_ASSERT(reporter, surf->readPixels(readback1, 0, 0));
+        for (int y = 0; y < kDstSize; ++y) {
+            for (int x = 0; x < kDstSize; ++x) {
+                REPORTER_ASSERT(reporter, readback1.getColor(x, y) == SK_ColorGREEN);
+            }
+        }
+
+        canvas->clear(SK_ColorTRANSPARENT);
+        canvas->drawImageRect(lazy2, SkRect::MakeIWH(kDstSize, kDstSize), sampling);
+
+        SkBitmap readback2;
+        readback2.allocPixels(dstInfo);
+        REPORTER_ASSERT(reporter, surf->readPixels(readback2, 0, 0));
+        for (int y = 0; y < kDstSize; ++y) {
+            for (int x = 0; x < kDstSize; ++x) {
+                REPORTER_ASSERT(reporter, readback2.getColor(x, y) == SK_ColorYELLOW);
+            }
+        }
+    }
+
+    // 3. Same SkPixelRef mutated in place and forced back to the same generation ID:
+    // contentId provenance must still reject the stale mip levels.
+    {
+        SkResourceCache localCache(1024 * 1024);
+        SkBitmap mutableBm;
+        mutableBm.allocPixels(srcInfo);
+        mutableBm.eraseColor(SK_ColorRED);
+        const uint64_t origGenID = mutableBm.getGenerationID();
+
+        sk_sp<SkImage> tempImg = SkImage_Raster::MakeFromBitmap(mutableBm, SkCopyPixelsMode::kNever);
+        const auto descBefore = SkBitmapCacheDesc::Make(tempImg.get());
+        const SkMipmap* mmBefore = SkMipmapCache::AddAndRef(as_IB(tempImg.get()), &localCache);
+        REPORTER_ASSERT(reporter, mmBefore != nullptr);
+
+        // Mutate pixels (increments SkPixelStorage::contentId) and force the same genID back.
+        mutableBm.eraseColor(SK_ColorBLUE);
+        SkBitmapCache_setImmutableWithID(mutableBm.pixelRef(), origGenID);
+        REPORTER_ASSERT(reporter, mutableBm.getGenerationID() == origGenID);
+
+        sk_sp<SkImage> mutatedImg = mutableBm.asImage();
+        const auto descAfter = SkBitmapCacheDesc::Make(mutatedImg.get());
+        REPORTER_ASSERT(reporter, descAfter.fImageID == descBefore.fImageID);
+        const SkMipmap* mmAfter = SkMipmapCache::FindAndRef(descAfter, &localCache);
+        REPORTER_ASSERT(reporter, mmAfter == nullptr);
+
+        SkSafeUnref(mmBefore);
     }
 }

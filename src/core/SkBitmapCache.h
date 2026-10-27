@@ -8,11 +8,14 @@
 #ifndef SkBitmapCache_DEFINED
 #define SkBitmapCache_DEFINED
 
+#include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkWeakRefCnt.h"
 
 #include <cstdint>
 #include <memory>
+#include <utility>
 
 class SkBitmap;
 class SkImage;
@@ -26,9 +29,22 @@ uint64_t SkMakeResourceCacheSharedIDForBitmap(uint64_t bitmapGenID);
 
 void SkNotifyBitmapGenIDIsStale(uint64_t bitmapGenID);
 
+struct SkMipmapProvenance {
+    const SkWeakRefCnt* fWeakToken = nullptr;
+    uint64_t            fStorageID = 0;
+    uint32_t            fContentID = 0;
+    uint64_t            fGenID     = 0;
+    SkIPoint            fOrigin    = {0, 0};
+
+    bool isValid() const { return fWeakToken != nullptr && fStorageID != 0 && fGenID != 0; }
+
+    static SkMipmapProvenance Make(const SkImage* image);
+};
+
 struct SkBitmapCacheDesc {
-    uint64_t fImageID;          // != 0
-    SkIRect  fSubset;           // always set to a valid rect (entire or subset)
+    uint64_t           fImageID = 0;          // != 0
+    SkIRect            fSubset  = {0, 0, 0, 0}; // always set to a valid rect (entire or subset)
+    SkMipmapProvenance fProvenance;
 
     void validate() const {
         SkASSERT(fImageID);

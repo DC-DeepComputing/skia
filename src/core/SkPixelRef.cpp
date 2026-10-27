@@ -107,6 +107,7 @@ void SkPixelRef::notifyPixelsChanged() {
 #endif
     this->callGenIDChangeListeners();
     this->needsNewGenID();
+    this->incrementContentId();
 }
 
 void SkPixelRef::setImmutable() {

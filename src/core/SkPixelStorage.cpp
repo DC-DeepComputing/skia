@@ -16,4 +16,27 @@ uint64_t SkPixelStorage::NextId() {
     return id;
 }
 
-SkPixelStorage::SkPixelStorage(Type type) : fType(type), fID(NextId()) {}
+SkPixelStorage::SkPixelStorage(Type type)
+        : fType(type)
+        , fID(NextId()) {}
+
+SkPixelStorage::~SkPixelStorage() {
+    if (SkWeakRefCnt* token = fWeakToken.load(std::memory_order_acquire)) {
+        token->unref();
+    }
+}
+
+const SkWeakRefCnt* SkPixelStorage::weakToken() const {
+    SkWeakRefCnt* token = fWeakToken.load(std::memory_order_acquire);
+    if (!token) {
+        SkWeakRefCnt* created = new SkWeakRefCnt();
+        if (fWeakToken.compare_exchange_strong(token, created,
+                                               std::memory_order_acq_rel,
+                                               std::memory_order_acquire)) {
+            token = created;
+        } else {
+            created->unref();
+        }
+    }
+    return token;
+}

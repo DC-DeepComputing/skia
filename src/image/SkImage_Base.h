@@ -180,6 +180,9 @@ public:
         return fPixelStorages;
     }
 
+    const SkWeakRefCnt* weakToken() const;
+    uint64_t imageInstanceID() const { return fImageInstanceID; }
+
 protected:
     SkImage_Base(const SkImageInfo& info, uint64_t uniqueID, sk_sp<SkPixelStorage> backingStorage);
     // fPixelStorages is protected since SkImage_Raster needs access in ctor
@@ -188,6 +191,8 @@ private:
     // Set true by caches when they cache content that's derived from the current pixels.
 
     mutable std::atomic<bool> fAddedToRasterCache;
+    mutable std::atomic<SkWeakRefCnt*> fWeakToken = nullptr;
+    uint64_t fImageInstanceID;
 };
 
 static inline SkImage_Base* as_IB(SkImage* image) {

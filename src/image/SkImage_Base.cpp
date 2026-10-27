@@ -23,9 +23,18 @@
 #include <atomic>
 #include <utility>
 
+static uint64_t next_image_instance_id() {
+    static std::atomic<uint64_t> gNextID{1};
+    uint64_t id = gNextID.fetch_add(1, std::memory_order_relaxed);
+    SkASSERT_RELEASE(id != 0);
+    return id;
+}
+
 SkImage_Base::SkImage_Base(const SkImageInfo& info, uint64_t uniqueID,
                            sk_sp<SkPixelStorage> storage)
-        : SkImage(info, uniqueID), fAddedToRasterCache(false) {
+        : SkImage(info, uniqueID)
+        , fAddedToRasterCache(false)
+        , fImageInstanceID(next_image_instance_id()) {
     if (storage) {
         fPixelStorages.push_back(std::move(storage));
     }
@@ -35,6 +44,24 @@ SkImage_Base::~SkImage_Base() {
     if (fAddedToRasterCache.load()) {
         SkNotifyBitmapGenIDIsStale(this->uniqueID());
     }
+    if (SkWeakRefCnt* token = fWeakToken.load(std::memory_order_acquire)) {
+        token->unref();
+    }
+}
+
+const SkWeakRefCnt* SkImage_Base::weakToken() const {
+    SkWeakRefCnt* token = fWeakToken.load(std::memory_order_acquire);
+    if (!token) {
+        SkWeakRefCnt* created = new SkWeakRefCnt();
+        if (fWeakToken.compare_exchange_strong(token, created,
+                                               std::memory_order_acq_rel,
+                                               std::memory_order_acquire)) {
+            token = created;
+        } else {
+            created->unref();
+        }
+    }
+    return token;
 }
 
 void SkImage_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,

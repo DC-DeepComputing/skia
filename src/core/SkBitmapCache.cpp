@@ -45,18 +45,82 @@ void SkNotifyBitmapGenIDIsStale(uint64_t bitmapGenID) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+SkMipmapProvenance SkMipmapProvenance::Make(const SkImage* image) {
+    if (!image) {
+        return {};
+    }
+    const SkImage_Base* ib = as_IB(image);
+    if (const SkBitmap* bm = ib->onPeekBitmap(); bm && bm->pixelRef()) {
+        SkPixelRef* pr = bm->pixelRef();
+        return {pr->weakToken(),
+                pr->getPixelStorageId(),
+                pr->getContentId(),
+                pr->getGenerationID(),
+                bm->pixelRefOrigin()};
+    }
+    if (!ib->getPixelStorages().empty() && ib->getPixelStorages()[0]) {
+        SkPixelStorage* storage = ib->getPixelStorages()[0].get();
+        return {storage->weakToken(),
+                storage->getPixelStorageId(),
+                storage->getContentId(),
+                ib->uniqueID(),
+                {0, 0}};
+    }
+    return {ib->weakToken(),
+            ib->imageInstanceID(),
+            /*fContentID=*/0,
+            ib->uniqueID(),
+            {0, 0}};
+}
+
 SkBitmapCacheDesc SkBitmapCacheDesc::Make(uint64_t imageID, const SkIRect& subset) {
     SkASSERT(imageID);
     SkASSERT(subset.width() > 0 && subset.height() > 0);
-    return { imageID, subset };
+    return { imageID, subset, {} };
 }
 
 SkBitmapCacheDesc SkBitmapCacheDesc::Make(const SkImage* image) {
     SkIRect bounds = SkIRect::MakeWH(image->width(), image->height());
-    return { image->uniqueID(), bounds };
+    return { image->uniqueID(), bounds, SkMipmapProvenance::Make(image) };
 }
 
 namespace {
+class RetainedProvenance {
+public:
+    explicit RetainedProvenance(const SkMipmapProvenance& provenance)
+            : fProvenance(provenance) {
+        if (fProvenance.fWeakToken) {
+            fProvenance.fWeakToken->weak_ref();
+        }
+    }
+    RetainedProvenance(const RetainedProvenance&) = delete;
+    RetainedProvenance& operator=(const RetainedProvenance&) = delete;
+    ~RetainedProvenance() {
+        if (fProvenance.fWeakToken) {
+            fProvenance.fWeakToken->weak_unref();
+        }
+    }
+
+    bool isValid() const { return fProvenance.isValid(); }
+    bool isExpired() const {
+        return !fProvenance.fWeakToken || fProvenance.fWeakToken->weak_expired();
+    }
+
+    bool matches(const SkMipmapProvenance& expected) const {
+        if (!this->isValid() || !expected.isValid() || this->isExpired()) {
+            return false;
+        }
+        return fProvenance.fWeakToken == expected.fWeakToken &&
+               fProvenance.fStorageID == expected.fStorageID &&
+               fProvenance.fContentID == expected.fContentID &&
+               fProvenance.fGenID     == expected.fGenID &&
+               fProvenance.fOrigin    == expected.fOrigin;
+    }
+
+private:
+    SkMipmapProvenance fProvenance;
+};
+
 static unsigned gBitmapKeyNamespaceLabel;
 
 struct CacheKeyData {
@@ -90,11 +154,18 @@ void SkBitmapCache_setImmutableWithID(SkPixelRef* pr, uint64_t id) {
     pr->setImmutableWithID(id);
 }
 
+struct BitmapFinderContext {
+    const SkMipmapProvenance* fExpectedProvenance = nullptr;
+    SkBitmap*                 fResult             = nullptr;
+    bool                      fFound              = false;
+};
+
 class SkBitmapCache::Rec : public SkResourceCache::Rec {
 public:
     Rec(const SkBitmapCacheDesc& desc, const SkImageInfo& info, size_t rowBytes,
         std::unique_ptr<SkDiscardableMemory> dm, void* block)
         : fKey(desc)
+        , fProvenance(desc.fProvenance)
         , fDM(std::move(dm))
         , fMalloc(block)
         , fInfo(info)
@@ -176,14 +247,33 @@ public:
         return true;
     }
 
-    static bool Finder(const SkResourceCache::Rec& baseRec, void* contextBitmap) {
+    static bool Finder(const SkResourceCache::Rec& baseRec, void* contextPtr) {
         Rec* rec = const_cast<Rec*>(static_cast<const Rec*>(&baseRec));
-        SkBitmap* result = (SkBitmap*)contextBitmap;
-        return rec->install(result);
+        BitmapFinderContext* ctx = static_cast<BitmapFinderContext*>(contextPtr);
+
+        if (rec->fProvenance.isValid()) {
+            if (rec->fProvenance.isExpired()) {
+                if (rec->canBePurged()) {
+                    return false;
+                }
+                ctx->fFound = false;
+                return true;
+            }
+            if (!ctx->fExpectedProvenance || !rec->fProvenance.matches(*ctx->fExpectedProvenance)) {
+                ctx->fFound = false;
+                return true;
+            }
+        }
+        if (!rec->install(ctx->fResult)) {
+            return false;
+        }
+        ctx->fFound = true;
+        return true;
     }
 
 private:
-    BitmapKey   fKey;
+    BitmapKey          fKey;
+    RetainedProvenance fProvenance;
 
     SkMutex     fMutex;
 
@@ -237,7 +327,11 @@ void SkBitmapCache::Add(RecPtr rec, SkBitmap* bitmap) {
 
 bool SkBitmapCache::Find(const SkBitmapCacheDesc& desc, SkBitmap* result) {
     desc.validate();
-    return SkResourceCache::Find(BitmapKey(desc), SkBitmapCache::Rec::Finder, result);
+    BitmapFinderContext ctx{&desc.fProvenance, result, false};
+    if (!SkResourceCache::Find(BitmapKey(desc), SkBitmapCache::Rec::Finder, &ctx)) {
+        return false;
+    }
+    return ctx.fFound;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -260,11 +354,18 @@ public:
 };
 static_assert(sizeof(MipMapKey) == sizeof(SkResourceCache::Key) + sizeof(CacheKeyData));
 
+struct MipMapFinderContext {
+    const SkMipmapProvenance* fExpectedProvenance = nullptr;
+    const SkMipmap*           fResult             = nullptr;
+};
+
 struct MipMapRec : public SkResourceCache::Rec {
     MipMapRec(const SkBitmapCacheDesc& desc, const SkMipmap* result)
         : fKey(desc)
+        , fProvenance(desc.fProvenance)
         , fMipMap(result)
     {
+        SkASSERT(fProvenance.isValid());
         fMipMap->attachToCacheAndRef();
     }
 
@@ -279,8 +380,22 @@ struct MipMapRec : public SkResourceCache::Rec {
         return fMipMap->diagnostic_only_getDiscardable();
     }
 
-    static bool Finder(const SkResourceCache::Rec& baseRec, void* contextMip) {
+    static bool Finder(const SkResourceCache::Rec& baseRec, void* contextPtr) {
         const MipMapRec& rec = static_cast<const MipMapRec&>(baseRec);
+        MipMapFinderContext* ctx = static_cast<MipMapFinderContext*>(contextPtr);
+
+        if (rec.fProvenance.isExpired()) {
+            // The source object that produced this mipmap is dead; tell SkResourceCache to purge.
+            return false;
+        }
+
+        if (!ctx->fExpectedProvenance || !rec.fProvenance.matches(*ctx->fExpectedProvenance)) {
+            // Key collision with a different live source or mutated generation.
+            // Reject the hit for this caller without marking the live entry stale.
+            ctx->fResult = nullptr;
+            return true;
+        }
+
         const SkMipmap* mm = SkRef(rec.fMipMap);
         // the call to ref() above triggers a "lock" in the case of discardable memory,
         // which means we can now check for null (in case the lock failed).
@@ -289,25 +404,27 @@ struct MipMapRec : public SkResourceCache::Rec {
             return false;
         }
         // the caller must call unref() when they are done.
-        *(const SkMipmap**)contextMip = mm;
+        ctx->fResult = mm;
         return true;
     }
 
 private:
-    MipMapKey       fKey;
-    const SkMipmap* fMipMap;
+    MipMapKey          fKey;
+    RetainedProvenance fProvenance;
+    const SkMipmap*    fMipMap;
 };
 }  // namespace
 
 const SkMipmap* SkMipmapCache::FindAndRef(const SkBitmapCacheDesc& desc,
                                           SkResourceCache* localCache) {
+    desc.validate();
     MipMapKey key(desc);
-    const SkMipmap* result;
+    MipMapFinderContext ctx{&desc.fProvenance, nullptr};
 
-    if (!CHECK_LOCAL(localCache, find, Find, key, MipMapRec::Finder, &result)) {
-        result = nullptr;
+    if (!CHECK_LOCAL(localCache, find, Find, key, MipMapRec::Finder, &ctx)) {
+        return nullptr;
     }
-    return result;
+    return ctx.fResult;
 }
 
 static SkResourceCache::DiscardableFactory get_fact(SkResourceCache* localCache) {
