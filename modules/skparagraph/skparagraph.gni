@@ -64,6 +64,8 @@ skparagraph_coretext_sources = [
   "$_modules/skparagraph/src/CoreTextFontRegistry.h",
   "$_modules/skparagraph/src/CoreTextIndexMap.cpp",
   "$_modules/skparagraph/src/CoreTextIndexMap.h",
+  "$_modules/skparagraph/src/CoreTextLineShaper.cpp",
+  "$_modules/skparagraph/src/CoreTextLineShaper.h",
   "$_modules/skparagraph/src/FontCollection_coretext.cpp",
 ]
 
