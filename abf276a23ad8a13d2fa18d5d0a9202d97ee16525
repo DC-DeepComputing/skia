@@ -41,6 +41,31 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2aad055_091e7e9b",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-27T17:48:56Z",
+      "side": 1,
+      "message": "Makes sense. Renamed to SkCapture_DoNotCaptureEmptyAssets and updated the inline comments to focus on preventing empty asset pollution rather than canvas re-attachment details.",
+      "parentUuid": "a057be41_b2804b33",
+      "range": {
+        "startLine": 35,
+        "startChar": 43,
+        "endLine": 35,
+        "endChar": 89
+      },
+      "isAi": true,
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd8e2fd8_83e56852",
@@ -54,6 +79,25 @@
       "writtenOn": "2026-10-27T15:01:03Z",
       "side": 1,
       "message": "Consider std::unique_ptr\u003cSkRecorder\u003e (See below comment about RenderTarget.)",
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "028b8a7e_9af383b1",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-27T17:48:56Z",
+      "side": 1,
+      "message": "Acknowledged, addressed in the comment below with a TODO.",
+      "parentUuid": "dd8e2fd8_83e56852",
+      "isAi": true,
       "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +119,25 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f09ff289_34df9e9d",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-27T17:48:56Z",
+      "side": 1,
+      "message": "Added a TODO to update this setup with generalized APIs (SkRecorder and recorder.makeSurface()) down the road to support non-graphite backends.",
+      "parentUuid": "a6bf1001_0c8afa49",
+      "isAi": true,
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "476fa712_1dc2ec3b",
@@ -88,6 +151,25 @@
       "writtenOn": "2026-10-27T15:01:03Z",
       "side": 1,
       "message": "We\u0027re planning on dropping `getAsset(int)` for a different API. (https://skia-review.git.corp.google.com/c/skia/+/1378596/2)\n\nWe don\u0027t have to check this in this test really, checking `numAssets` is good enough.",
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad563ce_547f33cd",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-27T17:48:56Z",
+      "side": 1,
+      "message": "Done, removed getAsset() and relying on numAssets / numRecordingCaptures here.",
+      "parentUuid": "476fa712_1dc2ec3b",
+      "isAi": true,
       "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -111,6 +193,31 @@
         "endLine": 100,
         "endChar": 78
       },
+      "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d541fd5_c377964d",
+        "filename": "tests/CaptureTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-27T17:48:56Z",
+      "side": 1,
+      "message": "Done, removed the getAsset() and op count checks here as well. Agreed on keeping this test focused on asset counts.",
+      "parentUuid": "cbdd6fc6_4219fb9c",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 78
+      },
+      "isAi": true,
       "revId": "abf276a23ad8a13d2fa18d5d0a9202d97ee16525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
