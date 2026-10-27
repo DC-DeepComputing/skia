@@ -116,6 +116,26 @@ public:
     // Convert the shape into a path that describes the same geometry.
     SkPath asPath() const;
 
+<<<<<<< HEAD   (bca2c702fc8b5d5ffa1317dd9249e038a189f85c chrome/m157:[M157]Fix potential heap OOB write in SkRgnBuild)
+||||||| BASE   (bf0ef1a64ee944275ddf1845ee4e734522742c57 Mark more stack-only helpers SK_ONLY_STACK_ALLOCATABLE)
+    // Calculate the conservative amount of outset that stroking adds to the Shape's bounds,
+    // taking advantage of the shape's type
+    float getInflationRadius(SkPaint::Join join,
+                             float miterLimit,
+                             SkPaint::Cap cap,
+                             float strokeWidth) const;
+
+=======
+    // Calculate the conservative amount of outset that stroking adds to the Shape's bounds,
+    // taking advantage of the shape's type. This should only be called for local stroking, since
+    // it returns a value based on the vector concept of a stroke, and does not handle hairlines or
+    // anti-aliasing inflation logic.
+    float getInflationRadius(SkPaint::Join join,
+                             float miterLimit,
+                             SkPaint::Cap cap,
+                             float strokeWidth) const;
+
+>>>>>>> CHANGE (0b6488a8123559cb72c03b987c2d717047bcac21 [graphite] Include hairline and subpixel strokes in inflatio)
     // Access the actual geometric description of the shape. May only access the appropriate type
     // based on what was last set.
     skvx::float2   p0()    const { SkASSERT(this->isLine());  return fRect.topLeft();  }
