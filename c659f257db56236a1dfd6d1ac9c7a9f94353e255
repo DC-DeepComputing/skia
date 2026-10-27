@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db8bfa4d_9092c530",
+        "filename": "src/core/SkYUVMath.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 749,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-10-27T05:42:13Z",
+      "side": 0,
+      "message": "It seems that this was just for the internal indexed-by-enum-value things, which is now only `kColorSpaceInfo`.\n\nIn a follow-on, I may just do (x%2) for range, (x/2)%4 for bit depth, and x/8 for matrix, instead of the big pile of `ColorSpaceInfo` in an array.\n\nBut for now, just burn the asserts.",
+      "revId": "c659f257db56236a1dfd6d1ac9c7a9f94353e255",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
