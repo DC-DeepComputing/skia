@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5c4648b_0f688421",
+        "filename": "infra/bots/deps/deps_gen.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5069412
+      },
+      "writtenOn": "2026-10-27T00:05:04Z",
+      "side": 1,
+      "message": "[BLOCKING] `autoroll-be` overwrote the entire `infra/bots/deps/deps_gen.go` Go file with the raw revision hash `e2af388a840c95959617a9d3e6bda280e71fada6`, breaking Go compilation. Root cause: `skia-infra-public/agents-skia.cfg` (and `skia-infra-corp/agents-internal-skia.cfg`, added in https://skia-review.googlesource.com/c/skia-autoroll-internal-config/+/1254819) specifies `file: { path: \"infra/bots/deps/deps_gen.go\" }` without a `regex` field, causing `autoroll` to treat the file as a plain-text version file instead of updating the `Version` field in-place. `agents-skia.cfg` needs `regex: \"\\\"chromium.googlesource.com/chromium/agents\\\":[^{]*\\\\{\\\\s*Id:\\\\s*\\\"[^\\\"]+\\\",\\\\s*Version:\\\\s*\\\"([a-f0-9]+)\\\"\"` (and `agents-internal-skia.cfg` needs the corresponding `chrome-internal.googlesource.com/chrome/agents-internal` regex, matching `dawn-skia.cfg`).",
+      "isAi": true,
+      "revId": "d8f4b79843d18716ebdce3c711627e471f00e81e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
