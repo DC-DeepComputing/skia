@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ab85c85_52570782",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-27T20:12:41Z",
+      "side": 1,
+      "message": "It seems that this CL broke the bot\nTest-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload\n\nFAILURE: ../../../../../skia/modules/skparagraph/tests/SkParagraphTest.cpp:4912\t72894.408122 ms [SkParagraph_VeryLongWordParagraph]: ms.count() \u003c 1000\n../../../../../skia/modules/skparagraph/tests/SkParagraphTest.cpp:4912\t72894.408122 ms [SkParagraph_VeryLongWordParagraph]: ms.count() \u003c 1000\n\n// File: modules/skparagraph/src/TextWrapper.cpp\n-            for (auto further \u003d cluster; further !\u003d endOfClusters; ++further) {\n+            auto addWidth \u003d [maxWidth](SkScalar length, const Cluster* c) {\n+                return maxWidth \u003d\u003d 0 ? std::max(length, c-\u003ewidth()) : length + c-\u003ewidth();\n+            };\n+            bool sameWord \u003d\n+                    fWordEnd \u0026\u0026 fWords.empty() \u0026\u0026 cluster \u003e\u003d fWordFrom \u0026\u0026 cluster \u003c fWordEnd;\n+            if (sameWord) {\n+                for (; fWordFrom \u003c cluster; ++fWordFrom) {\n+                    fWordFromLength \u003d addWidth(fWordFromLength, fWordFrom);\n+                }\n+                sameWord \u003d nextWordLength \u003c\u003d fWordFromLength \u0026\u0026\n+                           addWidth(nextWordLength, cluster) \u003e maxWidth;\n+            }",
+      "revId": "f49060a27ff1fb50f41bbe19085d165f05cf2aaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
