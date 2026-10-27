@@ -29,6 +29,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -113,7 +114,8 @@ public:
                               LoadOp initialLoadOp,
                               std::string_view label,
                               bool registerWithRecorder=true,
-                              bool allowUnpremul=false);
+                              bool allowUnpremul=false,
+                              std::optional<Protected> isProtected = std::nullopt);
 
     Device* asGraphiteDevice() override { return this; }
 

@@ -48,8 +48,9 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
         return false;
     }
 
-    if ((info.isProtected() == Protected::kYes) != caps.protectedSupport()) {
-        SKIA_LOG_E("Tried to create %s VkImage in %s Context.",
+    if ((info.isProtected() == Protected::kYes) != caps.protectedSupport()
+                && !caps.protectedMultiQueueSupport()) {
+        SKIA_LOG_E("Tried to create %s VkImage in %s Context (without multiqueue support).",
                     info.isProtected() == Protected::kYes ? "protected" : "unprotected",
                     caps.protectedSupport() ? "protected" : "unprotected");
         return false;
@@ -65,8 +66,9 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     VkSampleCountFlagBits vkSamples = SampleCountToVkSampleCount(info.sampleCount());
 
     SkASSERT(!isLinear || vkSamples == VK_SAMPLE_COUNT_1_BIT);
-    SkASSERT(info.isProtected() == Protected::kNo ||
-             (caps.protectedSupport() && SkToBool(VK_IMAGE_CREATE_PROTECTED_BIT & vkInfo.fFlags)));
+    SkASSERT(info.isProtected() == Protected::kNo
+                || ((caps.protectedSupport())
+                        && SkToBool(VK_IMAGE_CREATE_PROTECTED_BIT & vkInfo.fFlags)));
 
     uint32_t numMipLevels = 1;
     if (vkInfo.fMipmapped == Mipmapped::kYes) {

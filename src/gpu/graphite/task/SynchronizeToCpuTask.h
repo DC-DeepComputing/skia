@@ -46,7 +46,9 @@ public:
     SK_DUMP_TASKS_CODE(const char* getTaskName() const override { return "Sync to CPU Task"; })
 
 private:
-    explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {}
+    explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {
+        SkASSERT(fBuffer->isProtected() == Protected::kNo);
+    }
 
     sk_sp<Buffer> fBuffer;
 };

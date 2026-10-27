@@ -19,11 +19,12 @@ class VulkanSharedContext;
 class VulkanQueueManager final : public QueueManager {
 public:
     VulkanQueueManager(VkQueue queue, VkQueue protectedQueue, const SharedContext*);
-    ~VulkanQueueManager() override {}
+    ~VulkanQueueManager() override;
 
 private:
     const VulkanSharedContext* vkSharedContext() const;
 
+    BackendSemaphore initProtectedTransitionSemaphore() override;
     std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*, Protected) override;
     OutstandingSubmission onSubmitToGpu(const SubmitInfo& submitInfo) override;
 

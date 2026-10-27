@@ -7,8 +7,10 @@
 
 #include "src/gpu/graphite/vk/VulkanQueueManager.h"
 
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
@@ -19,6 +21,35 @@ VulkanQueueManager::VulkanQueueManager(VkQueue queue, VkQueue protectedQueue,
         : QueueManager(sharedContext)
         , fQueue(queue)
         , fProtectedQueue(protectedQueue) {
+    fProtectedTransitionSemaphore = this->initProtectedTransitionSemaphore();
+}
+
+VulkanQueueManager::~VulkanQueueManager() {
+    VkSemaphore sem = BackendSemaphores::GetVkSemaphore(fProtectedTransitionSemaphore);
+    if (sem != VK_NULL_HANDLE) {
+        VULKAN_CALL(this->vkSharedContext()->interface(),
+                    DestroySemaphore(this->vkSharedContext()->device(), sem, nullptr));
+    }
+}
+
+BackendSemaphore VulkanQueueManager::initProtectedTransitionSemaphore() {
+    const VkSemaphoreCreateInfo createInfo = {
+        .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+        .pNext = nullptr,
+        .flags = 0,
+    };
+    VkSemaphore semaphore = VK_NULL_HANDLE;
+    VkResult result;
+    VULKAN_CALL_RESULT(this->vkSharedContext(),
+                       result,
+                       CreateSemaphore(this->vkSharedContext()->device(),
+                                       &createInfo,
+                                       nullptr,
+                                       &semaphore));
+    if (result != VK_SUCCESS) {
+        return {};
+    }
+    return BackendSemaphores::MakeVulkan(semaphore);
 }
 
 const VulkanSharedContext* VulkanQueueManager::vkSharedContext() const {

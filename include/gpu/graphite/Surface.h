@@ -12,6 +12,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GpuTypes.h"
 
+#include <optional>
 #include <string_view>
 
 class SkImage;
@@ -62,7 +63,8 @@ SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
                                      const SkImageInfo& imageInfo,
                                      skgpu::Mipmapped = skgpu::Mipmapped::kNo,
                                      const SkSurfaceProps* surfaceProps = nullptr,
-                                     std::string_view label = {});
+                                     std::string_view label = {},
+                                     std::optional<skgpu::Protected> isProtected = std::nullopt);
 
 /**
  * Wraps a GPU-backed texture in an SkSurface. Depending on the backend gpu API, the caller may
