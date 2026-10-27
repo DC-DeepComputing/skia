@@ -42,8 +42,24 @@ std::unique_ptr<Context> MakeVulkan(const VulkanBackendContext& backendContext,
         return nullptr;
     }
 
-    std::unique_ptr<QueueManager> queueManager(new VulkanQueueManager(backendContext.fQueue,
-                                                                      sharedContext.get()));
+#if defined(SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS)
+    VkQueue unprotectedQueue = backendContext.fQueue;
+    VkQueue protectedQueue = backendContext.fProtectedQueue;
+
+    if (!backendContext.fProtectedMultiQueueSupport
+            && backendContext.fProtectedContext == Protected::kYes
+            && unprotectedQueue == VK_NULL_HANDLE) {
+        // Use the protected queue for any unprotected work that may need to be submitted on the
+        // protected context.
+        unprotectedQueue = protectedQueue;
+    }
+#else
+    VkQueue unprotectedQueue = backendContext.fQueue;
+    VkQueue protectedQueue = backendContext.fQueue;
+#endif
+
+    std::unique_ptr<QueueManager> queueManager(
+            new VulkanQueueManager(unprotectedQueue, protectedQueue, sharedContext.get()));
     if (!queueManager) {
         return nullptr;
     }

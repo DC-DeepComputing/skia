@@ -30,10 +30,11 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
     if (context.fInstance == VK_NULL_HANDLE ||
         context.fPhysicalDevice == VK_NULL_HANDLE ||
         context.fDevice == VK_NULL_HANDLE ||
-        context.fQueue == VK_NULL_HANDLE) {
-        SKIA_LOG_E("Failed to create VulkanSharedContext because either fInstance,"
-                    "fPhysicalDevice, fDevice, or fQueue in the VulkanBackendContext is"
-                    "VK_NULL_HANDLE.");
+        (context.fQueue == VK_NULL_HANDLE &&
+         context.fProtectedQueue == VK_NULL_HANDLE)) {
+        SKIA_LOG_E("Failed to create VulkanSharedContext because either fInstance, "
+                    "fPhysicalDevice, fDevice, or fQueue and fProtectedQueue in the "
+                    "VulkanBackendContext is VK_NULL_HANDLE.");
         return nullptr;
     }
     if (!context.fGetProc) {
@@ -68,13 +69,21 @@ sk_sp<SharedContext> VulkanSharedContext::Make(const VulkanBackendContext& conte
         featuresPtr = context.fDeviceFeatures2;
     }
 
+#if defined(SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS)
+    // Only supported if we can have the unprotected and protected queues explicity defined.
+    bool protectedMultiQueueSupport = context.fProtectedMultiQueueSupport;
+#else
+    bool protectedMultiQueueSupport = false;
+#endif
+
     std::unique_ptr<const VulkanCaps> caps(new VulkanCaps(options,
                                                           interface.get(),
                                                           context.fPhysicalDevice,
                                                           physDevVersion,
                                                           featuresPtr,
                                                           extensions,
-                                                          context.fProtectedContext));
+                                                          context.fProtectedContext,
+                                                          protectedMultiQueueSupport));
 
     sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator = context.fMemoryAllocator;
     if (!memoryAllocator) {

@@ -26,7 +26,8 @@ public:
                uint32_t physicalDeviceVersion,
                const VkPhysicalDeviceFeatures2*,
                const skgpu::VulkanExtensions*,
-               Protected);
+               Protected,
+               bool protectedMultiQueueSupport);
     ~VulkanCaps() override;
 
     // Override Caps's implementation in order to consult Vulkan-specific texture properties.
@@ -50,6 +51,9 @@ public:
 
     bool shouldAlwaysUseDedicatedImageMemory() const {
         return fShouldAlwaysUseDedicatedImageMemory;
+    }
+    bool shouldAlwaysUseDedicatedImageMemoryForProtected() const {
+        return fShouldAlwaysUseDedicatedImageMemoryForProtected;
     }
 
     // Returns whether a pure GPU accessible buffer is more performant to read than a buffer that is
@@ -117,7 +121,8 @@ private:
               uint32_t physicalDeviceVersion,
               const VkPhysicalDeviceFeatures2*,
               const skgpu::VulkanExtensions*,
-              Protected);
+              Protected,
+              bool protectedMultiQueueSupport);
 
     struct EnabledFeatures {
         // VkPhysicalDeviceFeatures
@@ -218,6 +223,7 @@ private:
     bool fSupportsMemorylessAttachments = false;
     bool fSupportsYcbcrConversion = false;
     bool fShouldAlwaysUseDedicatedImageMemory = false;
+    bool fShouldAlwaysUseDedicatedImageMemoryForProtected = false;
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;

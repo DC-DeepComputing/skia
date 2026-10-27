@@ -14,9 +14,11 @@
 
 namespace skgpu::graphite {
 
-VulkanQueueManager::VulkanQueueManager(VkQueue queue, const SharedContext* sharedContext)
+VulkanQueueManager::VulkanQueueManager(VkQueue queue, VkQueue protectedQueue,
+                                       const SharedContext* sharedContext)
         : QueueManager(sharedContext)
-        , fQueue(queue) {
+        , fQueue(queue)
+        , fProtectedQueue(protectedQueue) {
 }
 
 const VulkanSharedContext* VulkanQueueManager::vkSharedContext() const {
@@ -92,7 +94,7 @@ QueueManager::OutstandingSubmission VulkanQueueManager::onSubmitToGpu(
     if (fCurrentProtectedCommandBuffer) {
         VulkanCommandBuffer* vkCmdBuffer =
                 static_cast<VulkanCommandBuffer*>(fCurrentProtectedCommandBuffer.get());
-        if (!vkCmdBuffer->submit(fQueue, submitInfo, /*includeFence=*/true)) {
+        if (!vkCmdBuffer->submit(fProtectedQueue, submitInfo, /*includeFence=*/true)) {
             SKIA_LOG_E("VulkanQueueManager::onSubmitToGpu - protected submission failed!");
             onFailure();
             return nullptr;
