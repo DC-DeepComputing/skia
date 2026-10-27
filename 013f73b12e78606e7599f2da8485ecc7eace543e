@@ -16,6 +16,23 @@
       "message": "Let me know how this looks!",
       "revId": "013f73b12e78606e7599f2da8485ecc7eace543e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41d3c879_64925269",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-27T13:59:34Z",
+      "side": 1,
+      "message": "LGTM, but wait for michael",
+      "revId": "013f73b12e78606e7599f2da8485ecc7eace543e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
