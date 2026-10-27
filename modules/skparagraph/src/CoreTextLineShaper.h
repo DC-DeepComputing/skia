@@ -7,6 +7,7 @@
 #include "include/core/SkTypes.h"
 #include "modules/skparagraph/include/DartTypes.h"
 #include "modules/skparagraph/include/TextStyle.h"
+#include "modules/skparagraph/src/TextLine.h"
 #include "modules/skshaper/include/SkShaper.h"
 
 #include <CoreText/CoreText.h>
@@ -48,6 +49,16 @@ public:
                            uint8_t bidiLevel,
                            sk_sp<FontCollection> fontCollection,
                            SkShaper::RunHandler* handler);
+
+    // Hit-tests dx against context's glyph slice on a CoreText-shaped line, snapping carets to
+    // grapheme boundaries in visual order and dropping folded Default_Ignorable code points;
+    // updates result and sets keepLooking to false once the containing or leftmost slice is hit
+    static void HitTestRunSlice(const ParagraphImpl& owner,
+                                const TextLine::ClipContext& context,
+                                SkScalar offsetX,
+                                SkScalar dx,
+                                PositionWithAffinity* result,
+                                bool* keepLooking);
 
 private:
     // Empties the paragraph's runs, font switches and unresolved code points, so a failed
