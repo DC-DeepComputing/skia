@@ -9,6 +9,7 @@
 #define SkGraphics_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "include/private/SkAPI.h"
 
 #include <cstddef>
@@ -28,6 +29,31 @@ public:
      *  Init() is thread-safe and idempotent.
      */
     static void Init();
+
+    enum class A8GammaCorrection { kDefault, kDisabled, kEnabled };
+    // Applies only to path-generated LCD masks, not native font backend bitmaps.
+    // kDefault follows SK_USE_LCD_TEXT_3X_FILTER; the explicit choices select
+    // 4x sampling with the legacy filter or 3x sampling with FreeType's five taps.
+    enum class PathLCDFilter { kDefault, kLegacy, kFreeType };
+
+    struct TextRenderingParams {
+        SkScalar fGamma;
+        SkScalar fContrast;
+        A8GammaCorrection fApplyToA8;
+        PathLCDFilter fPathLCDFilter = PathLCDFilter::kDefault;
+    };
+
+    /** Process defaults for text pre-blending, distance fields, and path LCD filtering.
+     *  Set once during startup, before creating surfaces, strikes, or GPU contexts.
+     *  The setter must not run concurrently with any Skia calls. Existing surfaces
+     *  and cached distance-field tables are not updated.
+     */
+    static void SetTextRenderingParams(TextRenderingParams);
+    static TextRenderingParams GetTextRenderingParams();
+
+    // Resolve the process override against a backend's historical A8 behavior.
+    static bool ApplyGammaToA8();
+    static bool ApplyGammaToA8(bool backendDefault);
 
     /**
      *  Return the max number of bytes that should be used by the font cache.

@@ -7,6 +7,7 @@
 
 #include "src/text/gpu/DistanceFieldAdjustTable.h"
 
+#include "include/core/SkGraphics.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkTemplates.h"
@@ -60,7 +61,7 @@ SkScalar* build_distance_adjust_table(SkScalar deviceGamma) {
 
     int width, height;
     size_t size;
-    SkScalar contrast = SK_GAMMA_CONTRAST;
+    SkScalar contrast = SkGraphics::GetTextRenderingParams().fContrast;
 
     size = SkScalerContext::GetGammaLUTSize(contrast, deviceGamma,
         &width, &height);
@@ -110,7 +111,7 @@ const DistanceFieldAdjustTable* DistanceFieldAdjustTable::Get() {
 }
 
 DistanceFieldAdjustTable::DistanceFieldAdjustTable() {
-    fTable = build_distance_adjust_table(SK_GAMMA_EXPONENT);
+    fTable = build_distance_adjust_table(SkGraphics::GetTextRenderingParams().fGamma);
     fGammaCorrectTable = build_distance_adjust_table(SK_Scalar1);
 }
 

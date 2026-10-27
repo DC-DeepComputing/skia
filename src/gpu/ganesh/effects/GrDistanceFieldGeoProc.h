@@ -75,7 +75,6 @@ public:
     inline static constexpr int kMaxTextures = 4;
 
     /** The local matrix should be identity if local coords are not required by the GrPipeline. */
-#ifdef SK_GAMMA_APPLY_TO_A8
     static GrGeometryProcessor* Make(SkArenaAlloc* arena,
                                      const GrShaderCaps& caps,
                                      const GrSurfaceProxyView* views,
@@ -89,20 +88,6 @@ public:
                     caps, views, numActiveViews, params, lum, flags, localMatrixIfUsesLocalCoords);
         });
     }
-#else
-    static GrGeometryProcessor* Make(SkArenaAlloc* arena,
-                                     const GrShaderCaps& caps,
-                                     const GrSurfaceProxyView* views,
-                                     int numActiveViews,
-                                     GrSamplerState params,
-                                     uint32_t flags,
-                                     const SkMatrix& localMatrixIfUsesLocalCoords) {
-        return arena->make([&](void* ptr) {
-            return new (ptr) GrDistanceFieldA8TextGeoProc(
-                    caps, views, numActiveViews, params, flags, localMatrixIfUsesLocalCoords);
-        });
-    }
-#endif
 
     ~GrDistanceFieldA8TextGeoProc() override {}
 
@@ -121,9 +106,7 @@ private:
                                  const GrSurfaceProxyView* views,
                                  int numActiveViews,
                                  GrSamplerState params,
-#ifdef SK_GAMMA_APPLY_TO_A8
                                  float distanceAdjust,
-#endif
                                  uint32_t flags,
                                  const SkMatrix& localMatrix);
 
@@ -136,9 +119,7 @@ private:
     Attribute        fInColor;
     Attribute        fInTextureCoords;
     uint32_t         fFlags;
-#ifdef SK_GAMMA_APPLY_TO_A8
     float            fDistanceAdjust;
-#endif
 
     GR_DECLARE_GEOMETRY_PROCESSOR_TEST
 

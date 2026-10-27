@@ -13,6 +13,38 @@
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkTypefaceCache.h"
 
+namespace {
+SkGraphics::TextRenderingParams gTextRenderingParams = {
+        SK_GAMMA_EXPONENT, SK_GAMMA_CONTRAST, SkGraphics::A8GammaCorrection::kDefault};
+}
+
+void SkGraphics::SetTextRenderingParams(TextRenderingParams params) {
+    SkASSERT(params.fGamma >= 0 && params.fGamma < 4);
+    SkASSERT(params.fContrast >= 0 && params.fContrast <= 1);
+    gTextRenderingParams = params;
+}
+
+SkGraphics::TextRenderingParams SkGraphics::GetTextRenderingParams() {
+    return gTextRenderingParams;
+}
+
+bool SkGraphics::ApplyGammaToA8(bool backendDefault) {
+    switch (gTextRenderingParams.fApplyToA8) {
+        case A8GammaCorrection::kDefault:  return backendDefault;
+        case A8GammaCorrection::kDisabled: return false;
+        case A8GammaCorrection::kEnabled:  return true;
+    }
+    SkUNREACHABLE;
+}
+
+bool SkGraphics::ApplyGammaToA8() {
+#ifdef SK_GAMMA_APPLY_TO_A8
+    return ApplyGammaToA8(true);
+#else
+    return ApplyGammaToA8(false);
+#endif
+}
+
 void SkGraphics::Init() {
     // SkGraphics::Init() must be thread-safe and idempotent.
     SkContexts::GetGlobalSkContext();

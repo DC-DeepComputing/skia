@@ -1882,7 +1882,6 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
 
 // We used to always do this pre-USE_COLOR_LUMINANCE, but with colorlum,
 // it is optional
-#if defined(SK_GAMMA_APPLY_TO_A8)
     if (SkMask::kA8_Format == glyph.maskFormat() && preBlend.isApplicable()) {
         uint8_t* SK_RESTRICT dst = (uint8_t*)imageBuffer;
         unsigned rowBytes = glyph.rowBytes();
@@ -1894,7 +1893,6 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
             dst += rowBytes;
         }
     }
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
