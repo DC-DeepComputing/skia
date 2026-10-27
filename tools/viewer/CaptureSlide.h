@@ -37,14 +37,15 @@ public:
 
 private:
     sk_sp<SkCapture> fCapture;
-    int fCurrentAssetIndex = 0;
+    uint32_t fCurrentStorageID = 0;
+    uint32_t fCurrentContentID = 0;
     int fCurrentRecordingCaptureIndex = 0;
     int fCurrentDrawTaskIndex = 0;
     bool fInvalidate = false;
     SkCapture::Metadata fMetadata;
     std::unique_ptr<DebugCanvas> fDebugCanvas;
 
-    void updateActiveAssetIndex();
+    void updateActiveAsset();
 };
 
 #endif
