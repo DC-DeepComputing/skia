@@ -12,11 +12,13 @@
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkRectMemcpy.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <array>
 #include <cstddef>
@@ -141,7 +143,8 @@ protected:
         SkASSERT(!fEnd || Mark(fPtr, bytesToWrite) <= fEnd);
     }
 
-    void* fPtr = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +275% on rrects_1_aa (mock).
+    RAW_PTR_EXCLUSION void* fPtr = nullptr;
     SkDEBUGCODE(mutable Mark fEnd = {};)
 };
 
@@ -202,6 +205,7 @@ struct VertexWriter : private BufferWriter {
 
     template<typename T>
     struct ArrayDesc {
+        SK_ONLY_STACK_ALLOCATABLE;
         const T* fArray;
         int fCount;
     };
@@ -213,6 +217,7 @@ struct VertexWriter : private BufferWriter {
 
     template<int kCount, typename T>
     struct RepeatDesc {
+        SK_ONLY_STACK_ALLOCATABLE;
         const T& fVal;
     };
 

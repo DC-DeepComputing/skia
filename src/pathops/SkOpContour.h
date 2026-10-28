@@ -13,7 +13,10 @@
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsBounds.h"
@@ -380,10 +383,11 @@ public:
     SkOpSpan* undoneSpan();
 
 protected:
-    SkOpGlobalState* fState;
+    raw_ptr<SkOpGlobalState> fState;
     SkOpSegment fHead;
-    SkOpSegment* fTail;
-    SkOpContour* fNext;
+    // RAW_PTR_EXCLUSION: Performance: +107% on pathops_simplify_rects.
+    RAW_PTR_EXCLUSION SkOpSegment* fTail;
+    RAW_PTR_EXCLUSION SkOpContour* fNext;
     SkPathOpsBounds fBounds;
     int fCcw;
     int fCount;
@@ -439,6 +443,8 @@ public:
 };
 
 class SkOpContourBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkOpContourBuilder(SkOpContour* contour)
         : fContour(contour)

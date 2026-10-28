@@ -11,6 +11,7 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 
 class SkOpPtT;
@@ -20,6 +21,8 @@ class SkOpPtT;
 // Otherwise, keep the partial contour for later assembly.
 
 class SkPathWriter {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkPathWriter(SkPathFillType);
     void assemble();
