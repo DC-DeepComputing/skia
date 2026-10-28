@@ -9,6 +9,7 @@
 #define GrGLSLProgramBuilder_DEFINED
 
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/Swizzle.h"
@@ -37,6 +38,8 @@ enum GrSurfaceOrigin : int;
 struct GrShaderCaps;
 
 class GrGLSLProgramBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     using UniformHandle      = GrGLSLUniformHandler::UniformHandle;
     using SamplerHandle      = GrGLSLUniformHandler::SamplerHandle;

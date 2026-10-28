@@ -12,6 +12,7 @@
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
 #include "include/private/SkAssert.h"
 #include "src/gpu/ganesh/GrSemaphore.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 
@@ -39,7 +40,7 @@ private:
         fIsOwned = true;
     }
 
-    GrGLGpu* fGpu;
+    raw_ptr<GrGLGpu> fGpu;
     GrGLsync fSync;
     bool     fIsOwned;
 
