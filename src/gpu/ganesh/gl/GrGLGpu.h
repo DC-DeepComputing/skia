@@ -263,7 +263,8 @@ public:
     void finishOutstandingGpuWork() override;
 
     // Calls glGetError() until no errors are reported. Also looks for OOMs.
-    void clearErrorsAndCheckForOOM();
+    // Returns true if any GL error was reported.
+    bool clearErrorsAndCheckForOOM();
     // Calls glGetError() once and returns the result. Also looks for an OOM.
     GrGLenum getErrorAndCheckForOOM();
 
@@ -574,7 +575,7 @@ private:
 
     // Pushes data to the currently bound texture to the currently active unit. 'dstRect' must be
     // the texture bounds if mipLevelCount is greater than 1.
-    void uploadTexData(SkISize dimensions,
+    bool uploadTexData(SkISize dimensions,
                        GrGLenum target,
                        SkIRect dstRect,
                        GrGLenum externalFormat,

@@ -1,0 +1,1 @@
+`GrContextOptions` has new `fSkipGLResourceErrorChecks` and `fSkipGLCommandErrorChecks` options that control GL error checks after resource allocations and texture uploads, and at the end of each submit, independently. `fSkipGLErrorChecks` still sets both. `GrDirectContext::checkAndResetBackendError()` reports (and resets) non-OOM backend errors that Skia observed.
