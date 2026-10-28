@@ -339,9 +339,6 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
     for (auto& run : paragraph->fRuns) {
         run.setOwner(paragraph);
     }
-    for (auto& cluster : paragraph->fClusters) {
-        cluster.setOwner(paragraph);
-    }
 }
 
 void ParagraphCache::printStatistics() {
