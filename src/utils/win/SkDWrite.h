@@ -9,6 +9,7 @@
 #define SkDWrite_DEFINED
 
 #include "include/core/SkFontStyle.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 
 #include <dwrite.h>
@@ -48,6 +49,8 @@ HRESULT SkGetGetUserDefaultLocaleNameProc(SkGetUserDefaultLocaleNameProc* proc);
 // Table handling
 
 class AutoDWriteTable {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     AutoDWriteTable(IDWriteFontFace* fontFace, UINT32 beTag) : fExists(FALSE), fFontFace(fontFace) {
         // Any errors are ignored, user must check fExists anyway.
