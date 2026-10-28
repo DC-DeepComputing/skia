@@ -1,0 +1,25 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.gn"
+    path_expression: "gn/.*"
+    rules: "agents/knowledge_base/rules/gn/avoid-duplicate-sources-in-filegroups.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.gn"
+    path_expression: "bazel/exporter_tool/.*"
+    path_expression: "gn/.*"
+    rules: "agents/knowledge_base/rules/gn/build-gn-omit-public-headers-from-source-lists.md"
+  }
+  capability_groups {
+    path_expression: "bazel/.*"
+    path_expression: "gn/.*"
+    rules: "agents/knowledge_base/rules/gn/stage-exported-file-list-refactorings.md"
+  }
+}

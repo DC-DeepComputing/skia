@@ -1,0 +1,64 @@
+---
+name: skia/general-document-read-only-semantics-for-non-const-c-apis
+description: When casting away constness via const_cast or writable_data for unavoidable container lookups or non-const APIs, document why it is necessary and const-safe
+rubric: readability
+severity: nit
+---
+
+**Rule.** When casting away constness via const_cast or writable_data()—such as
+when passing read-only buffers to third-party C APIs (e.g., libpng, zlib) or
+querying containers storing non-const pointers due to sk_sp or template
+constraints—add an explanatory comment detailing why the cast is unavoidable.
+Confirm that the operation is const-safe by noting that the callee only borrows
+or copies the data without mutation, or that the lookup only inspects the
+pointer's address. Avoid unannotated casts that obscure const correctness or
+imply in-place mutation.
+
+**Why.** Casting away const undermines compile-time const correctness and
+signals potential mutation hazards, thread-safety risks, or API misuse. Adding
+clear explanatory comments distinguishes benign, unavoidable casts (such as
+address-only container lookups or third-party C APIs lacking const qualifiers)
+from accidental const-correctness bugs, reassuring reviewers that the data is
+not mutated.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Casting away constness without documenting safety or necessity.
+bool hasTexture(const TextureProxy* texture) const {
+    return fTextures.storage().fUniqueTextures.contains(
+            const_cast<TextureProxy*>(texture));
+}
+
+png_unknown_chunk chunk = {
+    .name = {'c', 'L', 'L', 'I', 0},
+    .data = reinterpret_cast<png_byte*>(data->writable_data()),
+    .size = data->size(),
+    .location = PNG_HAVE_IHDR,
+};
+png_set_unknown_chunks(fPngPtr, fInfoPtr, &chunk, 1);
+```
+
+Good:
+
+```cpp
+// Good: Document why const_cast or writable_data is required and why it is safe.
+bool hasTexture(const TextureProxy* texture) const {
+    // TextureProxyCache stores TextureProxy* because sk_sp does not take a const
+    // pointer; this contains() check only inspects the address and does not mutate.
+    return fTextures.storage().fUniqueTextures.contains(
+            const_cast<TextureProxy*>(texture));
+}
+
+// In png_unknown_chunk, data is a non-const pointer even though png_set_unknown_chunks
+// only reads and copies it without mutating the underlying buffer.
+png_unknown_chunk chunk = {
+    .name = {'c', 'L', 'L', 'I', 0},
+    .data = reinterpret_cast<png_byte*>(data->writable_data()),
+    .size = data->size(),
+    .location = PNG_HAVE_IHDR,
+};
+png_set_unknown_chunks(fPngPtr, fInfoPtr, &chunk, 1);
+```

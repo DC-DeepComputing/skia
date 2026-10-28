@@ -1,0 +1,67 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/build-depend-on-core-interfaces-for-modular-deps.md"
+    rules: "agents/knowledge_base/rules/build-gn/omit-unused-target-deps.md"
+    rules: "agents/knowledge_base/rules/build-gn/sync-dependency-comments.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.gn"
+    path_expression: "BUILD\\.gn"
+    path_expression: "gn/tests\\.gni"
+    rules: "agents/knowledge_base/rules/build-gn/compile-optional-tests-via-sources-for-tests.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/declare-deps-for-generated-headers.md"
+    rules: "agents/knowledge_base/rules/build-gn/export-embedder-sources-to-gni.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.bazel"
+    path_expression: "BUILD\\.gn"
+    path_expression: "gn/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/build-gn/enable-staged-features-in-build-files.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    path_expression: "gn/.*"
+    rules: "agents/knowledge_base/rules/build-gn/keep-feature-sources-out-of-core-lists.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:bazel|bzl|gn|gni)"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    path_expression: "gm/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/build-gn/match-preprocessor-defines-to-source-guards.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/separate-codec-helpers-from-document-targets.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/use-canonical-codec-defines.md"
+  }
+}

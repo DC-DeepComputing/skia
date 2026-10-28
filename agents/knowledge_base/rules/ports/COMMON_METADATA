@@ -1,0 +1,23 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/ports/.*"
+    rules: "agents/knowledge_base/rules/ports/check-proxy-typeface-onmakeclone.md"
+    rules: "agents/knowledge_base/rules/ports/pass-variation-position-to-font-arguments.md"
+    rules: "agents/knowledge_base/rules/ports/subclass-proxy-for-platform-typefaces.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/ports/.*"
+    path_expression: "src/utils/.*"
+    rules: "agents/knowledge_base/rules/ports/ensure-scalercontext-drawable-thread-safety.md"
+  }
+  capability_groups {
+    path_expression: "gn/ports\\.gni"
+    path_expression: "src/ports/.*"
+    rules: "agents/knowledge_base/rules/ports/match-port-filenames-to-interface.md"
+  }
+}

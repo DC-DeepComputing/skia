@@ -1,0 +1,48 @@
+---
+name: skia/general-prefix-optional-conversions-with-as
+description: When declaring methods returning std::optional, use canonical getter or as* conversion names rather than conditional prefixes like getIf* or predicate is*
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When naming methods that return std::optional<T>, use canonical getter
+names (e.g., getPath()) or the as* prefix for queries extracting specialized
+representations (e.g., asOval(), asBlendMode()). Do not invent conditional
+prefixes like getIf* (such as getIfPath()), and reserve the is* prefix
+exclusively for boolean predicates that return bool (e.g., isConvex(),
+isEmpty()).
+
+**Why.** In Skia conventions, returning std::optional<T> already communicates
+that the requested object or representation may not be present, so inventing
+conditional prefixes like getIf* is redundant and unidiomatic. Similarly, method
+names starting with is* conventionally denote boolean predicates returning bool;
+using is* for optional returns misleads callers into expecting a boolean check
+rather than an extracted representation.
+
+## Examples
+
+Bad:
+
+```cpp
+// Returns optional representation but uses boolean predicate prefix 'is'
+std::optional<SkPathOvalInfo> isOval() const;
+std::optional<SkBlendMode> isBlendMode() const;
+
+// Returns std::optional but uses redundant conditional prefix 'getIf'
+std::optional<SkPath> getIfPath(SkGlyphID glyphID) const;
+```
+
+Good:
+
+```cpp
+// Uses 'as*' prefix for optional conversion/representation extraction
+std::optional<SkPathOvalInfo> asOval() const;
+std::optional<SkBlendMode> asBlendMode() const;
+
+// Uses canonical getter name; std::optional expresses potential absence
+std::optional<SkPath> getPath(SkGlyphID glyphID) const;
+
+// Uses 'is*' prefix exclusively for boolean predicates returning bool
+bool isOval() const;
+bool isConvex() const;
+```

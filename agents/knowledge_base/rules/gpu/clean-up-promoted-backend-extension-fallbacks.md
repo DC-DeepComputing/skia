@@ -1,0 +1,74 @@
+---
+name: skia/gpu/clean-up-promoted-backend-extension-fallbacks
+description: When initializing backend interfaces or querying Vulkan capabilities against minimum API baselines, validate version requirements upfront before proc loading, acquire promoted entry points directly, and guard post-baseline features with fal
+rubric: safety
+severity: should_fix
+---
+
+**Rule.** When initializing backend interfaces or querying capabilities against
+a minimum API baseline (such as Vulkan 1.1), validate version requirements
+upfront before allocating interface objects or resolving dynamic function
+pointers, and log an informative debug message upon early bailout. For features
+guaranteed by the baseline, eliminate legacy extension fallbacks and acquire
+core entry points directly. Conversely, do not assume post-baseline features
+(such as Vulkan 1.2 VK_KHR_driver_properties) are in core; guard them with
+version or extension checks before populating structs, and provide fallback
+handling.
+
+**Why.** Checking minimum API versions upfront avoids allocating interface
+objects and resolving dozens of dynamic function pointers via loader lookups
+only to fail later in generic validation, while logging clear diagnostics.
+Features guaranteed by the baseline need no extension fallbacks, whereas
+querying post-baseline features without version guards causes crashes on older
+conforming devices.
+
+## Examples
+
+Bad:
+
+```cpp
+// 1. Allocating interface and resolving dynamic procs before checking baseline version
+sk_sp<skgpu::VulkanInterface> interface(new skgpu::VulkanInterface(
+        context.fGetProc, context.fInstance, context.fDevice,
+        instanceVersion, physDevVersion, extOverride));
+if (!interface->validate(instanceVersion, physDevVersion, extOverride)) {
+    return nullptr;
+}
+
+// 2. Unnecessary extension fallback for feature promoted to Vulkan 1.1 baseline
+if (physicalDeviceVersion >= VK_API_VERSION_1_1) {
+    ACQUIRE_PROC(GetPhysicalDeviceFeatures2, instance, VK_NULL_HANDLE);
+} else if (extensions->hasExtension(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME, 1)) {
+    ACQUIRE_PROC_SUFFIX(GetPhysicalDeviceFeatures2, KHR, instance, VK_NULL_HANDLE);
+}
+
+// 3. Querying post-baseline (Vulkan 1.2) feature without version guard
+AddToPNextChain(&props->base, &props->driver);
+VULKAN_CALL(vkInterface, GetPhysicalDeviceProperties2(physDev, &props->base));
+SkASSERT(props->driver.driverID != 0);
+```
+
+Good:
+
+```cpp
+// 1. Fail fast upfront before allocating interface and resolving dynamic procs
+if (instanceVersion < VK_API_VERSION_1_1 || physDevVersion < VK_API_VERSION_1_1) {
+    SkDebugf("Vulkan 1.1 is required but not available. Instance: %#08X, Device: %#08X",
+             instanceVersion, physDevVersion);
+    return nullptr;
+}
+sk_sp<skgpu::VulkanInterface> interface(new skgpu::VulkanInterface(
+        context.fGetProc, context.fInstance, context.fDevice,
+        instanceVersion, physDevVersion, extOverride));
+
+// 2. Baseline mandates Vulkan 1.1; acquire promoted core entry point directly
+ACQUIRE_PROC(GetPhysicalDeviceFeatures2, instance, VK_NULL_HANDLE);
+
+// 3. Post-baseline features guarded by version or extension check with fallback
+const bool hasDriverProps = physicalDeviceVersion >= VK_API_VERSION_1_2 ||
+                            extensions->hasExtension(VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME, 1);
+if (hasDriverProps) {
+    AddToPNextChain(&props->base, &props->driver);
+}
+VULKAN_CALL(vkInterface, GetPhysicalDeviceProperties2(physDev, &props->base));
+```

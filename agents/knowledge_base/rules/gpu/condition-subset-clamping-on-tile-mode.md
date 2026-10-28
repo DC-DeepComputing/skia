@@ -1,0 +1,54 @@
+---
+name: skia/gpu/condition-subset-clamping-on-tile-mode
+description: When coordinating shader-based and hardware texture tiling, rely on hardware samplers for full textures and configure SamplerDesc with kClamp when tiling in shader
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When generating texture shaders and configuring pipeline sampler
+descriptors, keep shader coordinate clamping and hardware sampler tile modes
+coordinated with whether tiling occurs in hardware or shader. When tiling in
+hardware, rely on native hardware samplers and only enable shader-side
+coordinate clamping for strict subsets under clamp tile modes. Conversely, when
+texture tiling is handled in shader code rather than hardware (such as subrect
+repeat/mirror, cubic sampling, or emulated decal), configure the texture's
+SamplerDesc with SkTileMode::kClamp instead of passing the shader's logical tile
+modes.
+
+**Why.** Emitting shader clamping instructions for full-image clamp draws adds
+redundant ALU overhead when hardware samplers natively clamp at zero cost, while
+unconditionally clamping coordinates overrides hardware repeat and mirror modes.
+Conversely, when shaders perform software tiling, passing logical wrap modes to
+hardware sampler descriptors causes boundary filtering to sample or wrap across
+the entire texture rather than clamping to the border.
+
+## Examples
+
+Bad:
+
+```cpp
+// 1. Emitting shader clamping when hardware sampler clamping suffices:
+if (imgData.fTileModes.first == SkTileMode::kClamp &&
+    imgData.fTileModes.second == SkTileMode::kClamp) {
+    linearFilterUVInset.fY = -linearFilterUVInset.fY;
+}
+
+// 2. Passing logical tile modes to hardware sampler when tiling in shader:
+auto tileMode = willSubstituteDecals ? substitute_decal(imgData.fTileModes)
+                                    : imgData.fTileModes;
+SamplerDesc samplerDesc{imgData.fSampling, tileMode, info};
+```
+
+Good:
+
+```cpp
+// 1. Only enable shader clamping on strict subsets (!subset.contains(imgRect)):
+if (!imgData.fSubset.contains(SkRect::Make(imgData.fImgSize))) {
+    linearFilterUVInset.fY = -linearFilterUVInset.fY;
+}
+
+// 2. Set SamplerDesc to kClamp when tiling in shader:
+auto tileMode = doTilingInHw ? imgData.fTileModes
+                             : std::make_pair(SkTileMode::kClamp, SkTileMode::kClamp);
+SamplerDesc samplerDesc{imgData.fSampling, tileMode, info};
+```

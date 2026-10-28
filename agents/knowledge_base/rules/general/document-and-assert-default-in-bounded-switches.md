@@ -1,0 +1,89 @@
+---
+name: skia/document-and-assert-default-in-bounded-switches
+description: When switching on bounded integers or bitfields assert unexpected defaults, but for exhaustive enums omit default and terminate with SkUNREACHABLE or SK_ABORT
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When switching on bounded integers, bitfields, or flags, document
+external invariants (such as bit-width) and include a default branch asserting
+unexpected states (e.g. via SkDEBUGFAIL, SkASSERT(false), or SkUNREACHABLE)
+rather than omitting default or returning a silent fallback. Conversely, when
+switching over an enum where all enumerators are expected to be handled, do not
+include a catch-all default branch; explicitly enumerate all enum variants
+(using [[fallthrough]]; for shared outcomes) and place SkUNREACHABLE; or
+SK_ABORT(...) immediately after the switch block so the compiler enforces
+exhaustive coverage via -Wswitch.
+
+**Why.** For integer and bitmask switches, the compiler cannot verify
+exhaustiveness, so omitting default or returning silent fallbacks masks
+corrupted data or invalid states. For enum switches, a default label silences
+compiler exhaustiveness warnings (-Wswitch), allowing unhandled or newly added
+enum variants to silently take default behavior instead of being consciously
+evaluated. Terminating with SkUNREACHABLE; or SK_ABORT(...) guarantees runtime
+failure for corrupt values while satisfying non-void return requirements.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Omitting default on exhaustive bitfield switch
+switch (syntax.gain_application_space_chromaticities_flag) {
+    case 0: return handleModeA();
+    case 1: return handleModeB();
+    case 2: return handleModeC();
+    case 3: return handleModeD();
+}
+
+// Bad: Silently swallowing unexpected flags in default fallback
+switch (SkColorTypeChannelFlags(ct)) {
+    case kRed_SkColorChannelFlag   : return 1;
+    case kRGBA_SkColorChannelFlags : return 4;
+    default                        : return 0;
+}
+
+// Bad: Catch-all default in enum switch suppresses compiler -Wswitch warnings
+switch (rustResult) {
+    case rust_bmp::DecodingResult::Success:
+        return SkCodec::kSuccess;
+    case rust_bmp::DecodingResult::OtherError:
+    default:
+        return SkCodec::kErrorInInput;
+}
+```
+
+Good:
+
+```cpp
+// Good: Document invariant and assert in default for bounded bitfield
+switch (syntax.gain_application_space_chromaticities_flag) {
+    case 0: return handleModeA();
+    case 1: return handleModeB();
+    case 2: return handleModeC();
+    case 3: return handleModeD();
+    default:
+        // Unreachable because flag is read as 2 bits.
+        SkASSERT(false);
+        return handleModeA();
+}
+
+// Good: Explicit case 0 and SkDEBUGFAIL on unexpected default
+switch (SkColorTypeChannelFlags(ct)) {
+    case kRed_SkColorChannelFlag   : return 1;
+    case kRGBA_SkColorChannelFlags : return 4;
+    case 0                         : return 0;
+    default:
+        SkDEBUGFAIL("unexpected color channel flags");
+        return 0;
+}
+
+// Good: Enumerate all enum cases and place SK_ABORT or SkUNREACHABLE after switch
+switch (rustResult) {
+    case rust_bmp::DecodingResult::Success:
+        return SkCodec::kSuccess;
+    case rust_bmp::DecodingResult::OtherError:
+        return SkCodec::kErrorInInput;
+}
+SK_ABORT("Unexpected `rust_bmp::DecodingResult`: %d", static_cast<int>(rustResult));
+```

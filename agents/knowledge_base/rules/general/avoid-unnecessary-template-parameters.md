@@ -1,0 +1,53 @@
+---
+name: skia/avoid-unnecessary-template-parameters
+description: When defining helper functions, avoid speculative boolean non-type template parameters without benchmarked performance gains; pass runtime arguments or infer types instead
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Do not add unnecessary template parameters—especially boolean non-type
+template parameters—to helper functions when flags can be inferred from existing
+types (such as via std::is_same_v) or passed as regular function arguments. In
+particular, avoid using boolean template parameters for compile-time branch
+elimination unless micro-benchmarking demonstrates a measurable performance
+improvement; prefer runtime boolean parameters to avoid template code bloat and
+preserve deduction.
+
+**Why.** Speculative non-type template parameters multiply code instantiations,
+increase binary size, and prevent automatic template argument deduction at call
+sites. Unless micro-benchmarks prove that compile-time branch elimination
+provides meaningful speedups, passing runtime boolean arguments simplifies
+signatures and reduces compilation churn.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Speculative boolean template parameters without micro-benchmarking
+template <bool kXDir, bool kCheckStart, bool kCheckEnd>
+SK_ALWAYS_INLINE void pushEdge(LineContext& ctx, uint16_t x, uint16_t y) {
+    if constexpr (kCheckStart) { /* ... */ }
+}
+
+// Bad: Non-type template parameter when condition can be inferred
+template <bool isMultisampled, typename AttachmentDesc>
+void populate_attachments(AttachmentDesc* desc);
+```
+
+Good:
+
+```cpp
+// Good: Pass runtime boolean arguments unless profiling demonstrates gains
+template <bool kXDir>
+SK_ALWAYS_INLINE void pushEdge(LineContext& ctx, uint16_t x, uint16_t y,
+                               bool checkStart, bool checkEnd) {
+    if (checkStart) { /* ... */ }
+}
+
+// Good: Infer condition from existing template types or deduct automatically
+template <typename AttachmentDesc>
+void populate_attachments(AttachmentDesc* desc) {
+    constexpr bool isMultisampled = std::is_same_v<AttachmentDesc, MultisampledDesc>;
+}
+```

@@ -1,0 +1,12 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "RELEASE_NOTES\\.md"
+    path_expression: "relnotes/.*"
+    path_expression_exclusion: "relnotes/README\\.md"
+    rules: "agents/knowledge_base/rules/relnotes/reference-public-apis-not-internal-classes.md"
+  }
+}

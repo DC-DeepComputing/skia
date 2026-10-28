@@ -1,0 +1,49 @@
+---
+name: skia/specify-named-out-subdirectories-in-gn-docs
+description: When documenting GN build or test commands in Markdown docs, configure via 'gn args <out_dir>', use named out/ subdirectories, and match test filters to test names
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When documenting GN build, configuration, or test instructions in
+READMEs or Markdown files, configure build arguments via `gn args out/<Config>`
+rather than editing or displaying `args.gn` directly. Always specify a
+descriptive named output directory under `out/` (such as `out/Debug` or
+`out/<Feature>`) and execute test binaries from that same directory; do not
+point `gn gen`, `gn args`, `autoninja`, or test runner paths at bare `out`.
+Additionally, ensure test runner commands (such as `dm --match` or `-m`) specify
+filter arguments that accurately match the actual test names or prefixes under
+test.
+
+**Why.** GN allows multiple build configurations to coexist as subdirectories
+under `out/`, whereas editing `args.gn` directly or running against bare `out`
+clobbers configurations and pollutes the root build directory. Furthermore, test
+runners like `dm` use substring filtering for `--match`, so outdated or
+mismatched filter names in documentation cause intended unit tests to be
+silently skipped.
+
+## Examples
+
+Bad:
+
+```cpp
+# Direct args.gn editing, bare out directory, and outdated test filter names
+$ cat out/args.gn
+skia_use_rust_png = true
+
+$ gn gen out
+$ autoninja -C out dm
+$ out/dm --src tests --nogpu \
+    --match Codec_apng \
+    --match Codec_png
+```
+
+Good:
+
+```cpp
+# Configure via gn args, use named out subdirectory, and match actual test names
+1. `gn args out/RustPng` and set `skia_use_rust_png = true`
+1. `gn gen out/RustPng`
+1. `autoninja -C out/RustPng dm`
+1. `out/RustPng/dm --src tests --nogpu --match RustPngCodec RustEncodePng`
+```

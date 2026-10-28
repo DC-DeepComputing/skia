@@ -1,0 +1,29 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/codec/avoid-temporary-scanline-decode.md"
+    rules: "agents/knowledge_base/rules/codec/encapsulate-transient-decode-session-state.md"
+    rules: "agents/knowledge_base/rules/codec/hoist-loop-invariant-decode-setup.md"
+    rules: "agents/knowledge_base/rules/codec/maintain-incremental-decode-state.md"
+    rules: "agents/knowledge_base/rules/codec/omit-redundant-result-mapping-checks.md"
+    rules: "agents/knowledge_base/rules/codec/return-invalid-parameters-for-caller-errors.md"
+    rules: "agents/knowledge_base/rules/codec/use-skassert-release-for-codec-invariants.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "src/codec/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/codec/test-progressive-decode-inverted-row-formats.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "src/codec/.*"
+    path_expression: "src/encode/.*"
+    rules: "agents/knowledge_base/rules/codec/validate-codec-buffer-sizes-upfront.md"
+  }
+}

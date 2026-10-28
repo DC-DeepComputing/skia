@@ -1,0 +1,57 @@
+---
+name: skia/gpu/track-pipeline-state-at-transitions
+description: When recording GPU draws across pipeline transitions in Graphite, initialize pipeline-scoped state in DrawWriter::newPipelineState() instead of threading per-draw arguments or exposing separate setters
+rubric: design
+severity: should_fix
+---
+
+**Rule.** When recording GPU draws across pipeline transitions in Graphite, pass
+pipeline-scoped flags and invariant configuration (such as RenderStateFlags and
+BarrierType) directly into DrawWriter::newPipelineState(). Do not thread
+pipeline-invariant state through per-draw or per-template calls (e.g.,
+setTemplate()), nor expose ad-hoc setters on DrawWriter invoked repeatedly
+across draw iterations in pass loops.
+
+**Why.** Pipeline properties (such as whether a pipeline appends vertices or
+instances, or whether draws require execution barriers) remain invariant across
+all draws executed under that pipeline. Initializing them in newPipelineState()
+eliminates redundant parameter passing or setter invocations across individual
+draw iterations, prevents state leaks across pipeline transitions, and ensures
+internal appenders can validate state directly.
+
+## Examples
+
+Bad:
+
+```cpp
+// Variant 1: Omitting pipeline state and threading into per-template/draw calls
+void newPipelineState(PrimitiveType type, size_t vStride, size_t iStride) {
+    this->flush();
+    // RenderStateFlags omitted; callers must pass flags to setTemplate()/draw()
+}
+
+// Variant 2: Exposing ad-hoc setter invoked redundantly per draw
+void assignBarrierType(BarrierType type) { fBarrierToIssueBeforeDraws = type; }
+// In pass loop:
+drawWriter.assignBarrierType(barrierNeededBeforeDraw);
+```
+
+Good:
+
+```cpp
+// Pass pipeline-scoped state and barriers directly into newPipelineState()
+void newPipelineState(PrimitiveType type,
+                      size_t vStride,
+                      size_t iStride,
+                      SkEnumBitMask<RenderStateFlags> renderState,
+                      BarrierType barrierType) {
+    this->flush();
+    fRenderState = renderState;
+    fBarrierToIssueBeforeDraws = barrierType;
+}
+
+// In pass loop, initialize once upon pipeline change:
+if (pipelineChange) {
+    drawWriter.newPipelineState(step.primitiveType(), vStride, iStride, renderState, barrier);
+}
+```

@@ -1,0 +1,97 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    rules: "agents/knowledge_base/rules/gpu/assert-and-document-dst-read-texturability.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-builder-reset-with-check-reset.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-resolve-attachment-when-loading-msaa.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-template-invariants-while-pending.md"
+    rules: "agents/knowledge_base/rules/gpu/call-notify-in-use-on-graphite-image-sampling.md"
+    rules: "agents/knowledge_base/rules/gpu/centralize-resource-metadata-in-cache.md"
+    rules: "agents/knowledge_base/rules/gpu/consolidate-generator-flags-into-shared-struct.md"
+    rules: "agents/knowledge_base/rules/gpu/document-draw-traversal-pointer-ratcheting.md"
+    rules: "agents/knowledge_base/rules/gpu/drop-draw-on-graphite-recording-failure.md"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-gatherer-offset-tracking.md"
+    rules: "agents/knowledge_base/rules/gpu/guard-draw-command-pointer-with-dst-copy.md"
+    rules: "agents/knowledge_base/rules/gpu/mask-unused-varyings-when-lifting.md"
+    rules: "agents/knowledge_base/rules/gpu/parameterize-shared-snippet-uniform-writers.md"
+    rules: "agents/knowledge_base/rules/gpu/record-high-water-mark-at-finalization.md"
+    rules: "agents/knowledge_base/rules/gpu/resolve-draw-barriers-at-record-time.md"
+    rules: "agents/knowledge_base/rules/gpu/set-reusable-requires-purgeable-for-host-mutated-resources.md"
+    rules: "agents/knowledge_base/rules/gpu/track-pipeline-state-at-transitions.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    rules: "agents/knowledge_base/rules/gpu/assert-invariants-in-compressed-keys.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-gpu-test-utils-in-production.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-hardcoding-options-in-caps-init.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-redundant-parent-member-caches.md"
+    rules: "agents/knowledge_base/rules/gpu/check-dirty-flag-before-deferred-sync.md"
+    rules: "agents/knowledge_base/rules/gpu/clean-up-promoted-backend-extension-fallbacks.md"
+    rules: "agents/knowledge_base/rules/gpu/consolidate-shared-backend-feature-flags.md"
+    rules: "agents/knowledge_base/rules/gpu/document-complementary-backend-query-helpers.md"
+    rules: "agents/knowledge_base/rules/gpu/document-protected-kno-overrides.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-document-packed-vector-component-mappings.md"
+    rules: "agents/knowledge_base/rules/gpu/issue-barriers-per-dst-read-draw.md"
+    rules: "agents/knowledge_base/rules/gpu/log-gpu-allocation-and-binding-failures.md"
+    rules: "agents/knowledge_base/rules/gpu/name-intentional-zero-budget-kempty.md"
+    rules: "agents/knowledge_base/rules/gpu/remove-stale-key-sizing-comments.md"
+    rules: "agents/knowledge_base/rules/gpu/sync-graphite-command-buffer-replay-state.md"
+    rules: "agents/knowledge_base/rules/gpu/use-named-constant-for-resource-key-size.md"
+    rules: "agents/knowledge_base/rules/gpu/verify-matching-colortype-in-caps-format-tables.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    path_expression_exclusion: "src/gpu/graphite/dawn/.*"
+    path_expression_exclusion: "src/gpu/graphite/mtl/.*"
+    path_expression_exclusion: "src/gpu/graphite/vk/.*"
+    rules: "agents/knowledge_base/rules/gpu/avoid-backend-includes-in-core-graphite.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/dawn/.*"
+    rules: "agents/knowledge_base/rules/gpu/avoid-emulated-resolve-for-non-load-attachments.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/vk/.*"
+    rules: "agents/knowledge_base/rules/gpu/bind-pass-invariant-vulkan-resources-upfront.md"
+    rules: "agents/knowledge_base/rules/gpu/unify-vulkan-compatible-render-passes.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "src/sksl/.*"
+    rules: "agents/knowledge_base/rules/gpu/condition-subset-clamping-on-tile-mode.md"
+    rules: "agents/knowledge_base/rules/gpu/precompute-matrix-inverses-on-cpu.md"
+    rules: "agents/knowledge_base/rules/gpu/sksl-use-float-precision-for-coordinates-and-bounds.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "tools/gpu/.*"
+    rules: "agents/knowledge_base/rules/gpu/enable-optional-backend-features-in-test-contexts.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/gpu/.*"
+    rules: "agents/knowledge_base/rules/gpu/qualify-property-and-limit-variables.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    path_expression: "src/shaders/.*"
+    rules: "agents/knowledge_base/rules/gpu/scope-key-gen-flags-to-child-context.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/gpu/.*"
+    path_expression: "src/sksl/.*"
+    rules: "agents/knowledge_base/rules/gpu/sign-encode-flags-in-float-uniforms.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/(?:.*/)?vk/.*"
+    rules: "agents/knowledge_base/rules/gpu/use-vulkan-call-nocheck-for-non-success-status.md"
+  }
+}

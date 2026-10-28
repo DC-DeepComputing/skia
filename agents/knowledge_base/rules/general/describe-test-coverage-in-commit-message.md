@@ -1,0 +1,57 @@
+---
+name: skia/describe-test-coverage-in-commit-message
+description: When authoring commit messages for new features or test suppressions, describe how changes are tested, why standard suites cannot run, or why tests are disabled
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** In commit message descriptions, explicitly explain how new features,
+capabilities, or behavioral changes are tested (or why standard test suites
+cannot yet run against them), specifying whether coverage is provided by
+existing regression tests, new dedicated unit tests, or downstream suites.
+Additionally, when skipping or disabling tests on specific configurations or CI
+jobs, provide explanatory context detailing why the test is incompatible or
+failing (such as a permanent platform limitation versus a temporary defect)
+rather than only stating what is being skipped.
+
+**Why.** Reviewers, gardeners, and future maintainers need to know how new code
+paths were verified and why tests are suppressed. Describing test coverage
+distinguishes between fully validated features and partial coverage awaiting
+general test integration, while documenting skip rationale clarifies whether a
+suppression stems from an inherent platform constraint or an active defect
+requiring future remediation.
+
+## Examples
+
+Bad:
+
+```cpp
+// Omitting test coverage explanation for new features:
+[rust png] Implement subsets for SkPngRustCodec
+
+For further feature parity with the libpng codec, implement subsets...
+
+// Stating what is skipped without explaining why:
+Don't run NotifyInUseTestBlend test on Protected jobs
+
+Change-Id: I9f3a47836a8d81ebb32a0e764f40c80b2492f978
+```
+
+Good:
+
+```cpp
+// Explaining test coverage and suite readiness:
+[rust png] Implement subsets for SkPngRustCodec
+
+Adds a test to SkPngRustDecoderTest.cpp covering subsets on interlaced
+and non-interlaced images based on CodecTest.cpp. This progresses
+running all skia/tests through SkPngRustCodec; dedicated tests cover it for now.
+
+// Explaining technical rationale for test skip:
+Don't run NotifyInUseTestBlend test on Protected jobs
+
+The NotifyInUseTestBlend attempts to readback results from a Protected
+canvas/Surface, which will fail due to protected memory read restrictions.
+
+Change-Id: I9f3a47836a8d81ebb32a0e764f40c80b2492f978
+```

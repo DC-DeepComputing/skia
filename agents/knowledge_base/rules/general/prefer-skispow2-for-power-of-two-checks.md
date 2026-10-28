@@ -1,0 +1,59 @@
+---
+name: skia/prefer-skispow2-for-power-of-two-checks
+description: When checking or relying on power-of-two alignments or dimensions, use SkIsPow2(x) instead of bitwise expressions and assert preconditions with SkASSERT(SkIsPow2(...))
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When checking whether an integer, dimension, or alignment requirement
+is a power of two, call SkIsPow2(x) (from include/private/SkMath.h) instead of
+open-coding bitwise checks such as (x & (x - 1)) == 0 or (x - 1 & x) == 0 across
+runtime assertions (SkASSERT), compile-time checks (static_assert), and
+conditional branching. Additionally, when an algorithm, buffer alignment, or
+divisibility check assumes an alignment or dimension parameter is a power of two
+(such as testing divisibility via req & (min - 1) or rounding via SkAlignTo),
+assert that precondition explicitly with SkASSERT(SkIsPow2(...)) rather than
+relying solely on prose comments.
+
+**Why.** Using SkIsPow2 clearly conveys programmer intent, avoids operator
+precedence errors in hand-rolled bitwise checks, and unifies power-of-two
+verification across the codebase. Furthermore, bitwise operations like val &
+(alignment - 1) and SkAlignTo produce incorrect calculations or silent data
+corruption when alignments are not powers of two; asserting SkIsPow2 fails fast
+in debug builds when callers pass invalid alignments.
+
+## Examples
+
+Bad:
+
+```cpp
+// Open-coded bitwise power-of-two check
+SkASSERT((requiredAlignment - 1 & requiredAlignment) == 0);
+
+// Relying on power-of-two divisibility without asserting the precondition
+uint32_t align_to_req_min_lcm(uint32_t bytes, uint32_t req, uint32_t min) {
+    SkASSERT(req);
+    // The minimum alignment is guaranteed to be a power of two
+    if (req & (min - 1)) {
+        return std::lcm(req, min);
+    }
+    return req;
+}
+```
+
+Good:
+
+```cpp
+// Canonical SkIsPow2 helper check
+SkASSERT(SkIsPow2(requiredAlignment));
+
+// Assert power-of-two precondition before bitwise alignment math
+uint32_t align_to_req_min_lcm(uint32_t bytes, uint32_t req, uint32_t min) {
+    SkASSERT(req);
+    SkASSERT(SkIsPow2(min));
+    if (req & (min - 1)) {
+        return std::lcm(req, min);
+    }
+    return req;
+}
+```

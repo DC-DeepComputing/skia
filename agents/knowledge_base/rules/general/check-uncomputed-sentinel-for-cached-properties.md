@@ -1,0 +1,49 @@
+---
+name: skia/check-uncomputed-sentinel-for-cached-properties
+description: When lazily computing and caching properties with sentinel values like kUnknown, check != kUnknown both on early return and before atomic writeback
+rubric: safety
+severity: should_fix
+---
+
+**Rule.** When implementing lazy caching for properties that use an uncomputed
+sentinel value (such as kUnknown or std::nullopt):
+1. On early return, check whether the cached property differs from the uncomputed sentinel (e.g. c != SkPathConvexity::kUnknown or has_value()) rather than testing only a specific resolved subset (such as IsConvex()), ensuring all valid outcomes avoid redundant recomputation.
+2. Before writing the computed result into a mutable atomic field, verify it differs from the sentinel (!= kUnknown) to avoid redundant atomic stores.
+
+**Why.** Checking only a subset of resolved states causes other valid cached
+results to fall through to expensive recomputations. Additionally, atomic stores
+dirty CPU cache lines and trigger cache coherence invalidations across cores, so
+storing back an unresolved sentinel value produces redundant atomic churn on
+shared or const objects.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: only checks convex subset; falls through for concave paths
+if (SkPathConvexity_IsConvex(this->getConvexityOrUnknown())) {
+    return this->getConvexityOrUnknown();
+}
+
+// Bad: unconditionally stores sentinel back into atomic cache
+d = ComputeFirstDirection(raw);
+path.setFirstDirection(d);
+return d;
+```
+
+Good:
+
+```cpp
+// Good: early-returns on any resolved value != kUnknown
+if (auto c = this->getConvexityOrUnknown(); c != SkPathConvexity::kUnknown) {
+    return c;
+}
+
+// Good: skips atomic store if computation unresolved (kUnknown)
+d = ComputeFirstDirection(raw);
+if (d != SkPathFirstDirection::kUnknown) {
+    path.setFirstDirection(d);
+}
+return d;
+```

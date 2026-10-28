@@ -12,6 +12,13 @@ agentic_review {
   }
   capability_groups {
     path_expression: "include/.*"
+    rules: "agents/knowledge_base/rules/api/add-release-note-for-public-api-changes.md"
+    rules: "agents/knowledge_base/rules/api/decouple-encoder-apis-from-consumer-helpers.md"
+    rules: "agents/knowledge_base/rules/api/document-lazy-flag-semantics.md"
+    rules: "agents/knowledge_base/rules/api/document-option-fallback-and-bypass-conditions.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
     path_expression: "modules/.*"
     path_expression: "src/.*"
     rules: "agents/knowledge_base/rules/api/assert-bitflag-enum-fits-underlying-width.md"
@@ -64,7 +71,10 @@ agentic_review {
     rules: "agents/knowledge_base/rules/api/delegate-to-proxy-superclass.md"
     rules: "agents/knowledge_base/rules/api/document-backend-invariants-on-subclasses.md"
     rules: "agents/knowledge_base/rules/api/document-threshold-and-limit-constants.md"
+    rules: "agents/knowledge_base/rules/api/document-uniform-parameter-rationale.md"
     rules: "agents/knowledge_base/rules/api/general-encapsulate-derived-helper-types.md"
+    rules: "agents/knowledge_base/rules/api/prefer-skalign-helpers-for-alignment.md"
+    rules: "agents/knowledge_base/rules/api/specify-concrete-enums-in-doc-comments.md"
   }
   capability_groups {
     path_expression: "(?:.*/)?[^/]*\\.md"
@@ -72,12 +82,6 @@ agentic_review {
     path_expression: "include/.*"
     path_expression: "site/docs/.*"
     rules: "agents/knowledge_base/rules/api/declare-factories-in-plural-namespaces.md"
-  }
-  capability_groups {
-    path_expression: "include/.*"
-    rules: "agents/knowledge_base/rules/api/decouple-encoder-apis-from-consumer-helpers.md"
-    rules: "agents/knowledge_base/rules/api/document-lazy-flag-semantics.md"
-    rules: "agents/knowledge_base/rules/api/document-option-fallback-and-bypass-conditions.md"
   }
   capability_groups {
     path_expression: "include/.*"
@@ -94,6 +98,15 @@ agentic_review {
   capability_groups {
     path_expression: "include/gpu/.*"
     rules: "agents/knowledge_base/rules/api/document-persistent-storage-sync-deduplication.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/api/document-placeholder-stubs-with-todo.md"
+    rules: "agents/knowledge_base/rules/api/prefer-pair-or-struct-over-out-parameters.md"
+    rules: "agents/knowledge_base/rules/api/when-declaring-internal-functions-with-optional-parameters-u.md"
   }
   capability_groups {
     path_expression: "include/.*"
@@ -115,20 +128,17 @@ agentic_review {
     rules: "agents/knowledge_base/rules/api/keep-internal-headers-in-src.md"
   }
   capability_groups {
+    path_expression: "src/base/.*"
+    rules: "agents/knowledge_base/rules/api/omit-duplicate-base-comments-on-overrides.md"
+    rules: "agents/knowledge_base/rules/api/return-base-class-from-interface-factories.md"
+  }
+  capability_groups {
     path_expression: "include/.*"
     path_expression: "modules/.*"
     path_expression: "src/.*"
     path_expression: "tests/.*"
     path_expression: "tools/.*"
     rules: "agents/knowledge_base/rules/api/pass-lightweight-view-types-by-value.md"
-  }
-  capability_groups {
-    path_expression: "include/.*"
-    path_expression: "modules/.*"
-    path_expression: "src/.*"
-    path_expression: "tools/.*"
-    rules: "agents/knowledge_base/rules/api/prefer-pair-or-struct-over-out-parameters.md"
-    rules: "agents/knowledge_base/rules/api/when-declaring-internal-functions-with-optional-parameters-u.md"
   }
   capability_groups {
     path_expression: "bench/.*"
@@ -157,10 +167,6 @@ agentic_review {
     path_expression: "src/.*"
     path_expression: "tests/.*"
     rules: "agents/knowledge_base/rules/api/prefer-static-cast-for-void-pointers.md"
-  }
-  capability_groups {
-    path_expression: "src/base/.*"
-    rules: "agents/knowledge_base/rules/api/return-base-class-from-interface-factories.md"
   }
   capability_groups {
     path_expression: "include/core/.*"

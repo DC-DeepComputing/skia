@@ -1,0 +1,46 @@
+---
+name: skia/gpu/avoid-backend-includes-in-core-graphite
+description: When implementing features in core Graphite files, do not include backend-specific headers or use backend preprocessor guards; delegate backend operations to Caps virtual methods
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Do not include backend-specific headers (such as Vulkan, Dawn, or
+Metal headers) or use backend-specific `#if` guards (like `SK_VULKAN` or
+`SK_DAWN`) in core Graphite source files (`src/gpu/graphite/`). Delegate
+backend-specific capabilities, information formatting, and hardware queries to
+virtual methods on `Caps` or appropriate backend abstractions.
+
+**Why.** Core Graphite files are compiled in modular build targets that must
+remain strictly decoupled from specific GPU backends. Including backend headers
+or compile guards introduces forbidden dependency edges in Bazel, breaks modular
+compilation when individual backends are disabled, and prevents other backends
+from implementing or reusing shared functionality.
+
+## Examples
+
+Bad:
+
+```cpp
+// In src/gpu/graphite/PaintParamsKey.cpp
+#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
+#endif
+
+#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+    skgpu::VulkanYcbcrConversionInfo info =
+            VulkanYcbcrConversion::FromImmutableSamplerInfo(s.immutableSamplerInfo());
+    str->append(info.toString());
+#endif
+```
+
+Good:
+
+```cpp
+// In src/gpu/graphite/PaintParamsKey.cpp
+// Delegate backend-specific descriptor formatting to Caps virtual method:
+std::string tmp = caps->toString(s.immutableSamplerInfo());
+if (!tmp.empty()) {
+    str->append(tmp);
+}
+```

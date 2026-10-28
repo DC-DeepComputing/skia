@@ -1,0 +1,69 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/tests/assert-intended-behavior-over-buggy-output.md"
+    rules: "agents/knowledge_base/rules/tests/concise-reporter-context-labels.md"
+    rules: "agents/knowledge_base/rules/tests/fail-tests-on-missing-resources.md"
+    rules: "agents/knowledge_base/rules/tests/forward-coordinate-parameters-to-pixmap-accessors.md"
+    rules: "agents/knowledge_base/rules/tests/parameterize-multi-backend-tests.md"
+    rules: "agents/knowledge_base/rules/tests/prefer-direct-reporter-assert.md"
+    rules: "agents/knowledge_base/rules/tests/use-cts-enforcement-next-release.md"
+    rules: "agents/knowledge_base/rules/tests/use-reporter-context-for-subtests.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
+    path_expression: "modules/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/tests/avoid-conditional-branching-in-tests.md"
+    rules: "agents/knowledge_base/rules/tests/update-scaffolded-test-comments.md"
+    rules: "agents/knowledge_base/rules/tests/use-distinct-values-for-struct-fields.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "modules/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/tests/avoid-zero-or-default-in-mutation-tests.md"
+  }
+  capability_groups {
+    path_expression: "infra/bots/gen_tasks_logic/dm_flags\\.go"
+    path_expression: "modules/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/tests/consistent-test-name-prefix.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/tests/document-test-vector-intent.md"
+  }
+  capability_groups {
+    path_expression: "bench/.*"
+    path_expression: "gm/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    path_expression_exclusion: "tests/ganesh/.*"
+    path_expression_exclusion: "tests/graphite/.*"
+    path_expression_exclusion: "tools/ganesh/.*"
+    path_expression_exclusion: "tools/graphite/.*"
+    rules: "agents/knowledge_base/rules/tests/guard-backend-tests-in-shared-files.md"
+  }
+  capability_groups {
+    path_expression: "bench/.*"
+    path_expression: "gm/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/tests/prefer-explicit-color-types-in-fixtures.md"
+  }
+  capability_groups {
+    path_expression: "bench/.*"
+    path_expression: "gm/.*"
+    path_expression: "modules/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/tests/use-public-decoder-apis.md"
+  }
+}

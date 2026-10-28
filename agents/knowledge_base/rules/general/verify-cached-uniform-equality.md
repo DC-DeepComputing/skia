@@ -1,0 +1,59 @@
+---
+name: skia/verify-cached-uniform-equality
+description: When caching or deduplicating objects in hash collections, do not use integer hashes as keys; verify payload equality using content-comparing traits
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When caching or deduplicating objects (such as UniformDataBlock or
+SkData), do not use raw 32-bit integer hashes as map keys (e.g.,
+THashMap<uint32_t, ...>). Instead, key collections by the underlying data
+payload or use THashTable/THashSet with traits that hash content bytes and
+verify actual payload equality on lookup (via operator== or equals()). Avoid
+passing raw pointers to SkGoodHash, which hashes the memory address rather than
+the payload.
+
+**Why.** A 32-bit hash cannot guarantee uniqueness; using raw hash integers as
+map keys causes collisions to silently overwrite entries, drop distinct items,
+or map mismatched uniform data to invalid buffer offsets. Hash collections must
+compare full object contents to resolve collisions safely, and hashing raw
+pointer addresses risks false hits or misses when objects are relocated or
+reallocated.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Keying by 32-bit hash collides and loses elements; hashes pointer address
+skia_private::THashMap<uint32_t, sk_sp<SkData>> fMap;
+uint32_t hash = SkGoodHash()(payload.get());
+if (!fMap.find(hash)) {
+    fMap.set(hash, std::move(payload));
+}
+
+// Bad: Matching uniform cache hits solely by 32-bit hash
+uint32_t uHash = hasher(intrinsicValues);
+if (sk_sp<IntrinsicEntry>* existing = fIntrinsicEntries.find(uHash)) {
+    return (*existing)->binding();
+}
+```
+
+Good:
+
+```cpp
+// Good: Key by data object or custom traits that hash bytes and verify equality
+struct SkDataKey {
+    static const SkDataKey GetKey(sk_sp<SkData>& e) { return { e.get() }; }
+    static uint32_t Hash(const SkDataKey& k) { return k.hash(); }
+    bool operator==(const SkDataKey& o) const { return fData->equals(o.fData); }
+    uint32_t hash() const { return SkChecksum::Hash32(fData->data(), fData->size()); }
+    const SkData* fData;
+};
+skia_private::THashTable<sk_sp<SkData>, SkDataKey, SkDataKey> fMap;
+if (!fMap.find({ payload.get() })) { fMap.set(std::move(payload)); }
+
+// Good: Key cache by UniformDataBlock to compare payload equality on lookup
+skia_private::THashMap<UniformDataBlock, uint32_t, UniformDataBlock::Hash> fCachedValues;
+fCachedValues.set(UniformDataBlock::Make(values, &fUniformData), offset);
+```

@@ -1,0 +1,58 @@
+---
+name: skia/document-new-public-apis-in-commit-message
+description: When introducing new public APIs, classes, or abstractions, explain their purpose, motivation, and design goals in the commit message rather than only listing follow-up tasks
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When a commit introduces new public APIs, classes, abstractions, or
+data structures—whether as primary changes or secondary additions—explicitly
+explain in the commit message body what they are and why they are needed (their
+motivation, design goals, and intended benefits). Do not merely list follow-up
+tasks or omit secondary entry points and factory methods.
+
+**Why.** Commit messages serve as a permanent architectural record and changelog
+in git history. When new abstractions, core types, or secondary public APIs lack
+documentation of their motivation and purpose, reviewers and future maintainers
+cannot discover why the change was made, how it fits into the broader
+architecture, or how to use the new interfaces.
+
+## Examples
+
+Bad:
+
+```cpp
+// Omitting secondary public APIs or factories added alongside a primary change:
+SkMatrix::RectToRect can fail, so change API to clarify that
+
+// Listing only follow-up steps without explaining the new abstraction's purpose:
+Introducing SkPathRaw
+
+Next step will be to adapt SkScan to take this, rather than
+path. After that, we can modify Bitmap/GpuDevice to construct a raw
+directly from rect/rrect/oval, rather than build a SkPath.
+```
+
+Good:
+
+```cpp
+// Documenting secondary additions and how they support the primary change:
+SkMatrix::RectToRect can fail, so change API to clarify that
+
+- also added ScaleTranslate() factory, which is called by the
+  new impl for Rect2Rect.
+
+// Explaining the abstraction's motivation, design goals, and usage plan:
+Introducing SkPathRaw
+
+The idea is to factor out the 'content' of a SkPath, but remove
+any/all of the particulars of ownership or allocation.
+
+In this 'raw' form, we should be able to do all of the functional
+operations: iterate, produce edges, vertices, query, stroke, etc.
+
+Plan is to (in future CLs) refactor SkPath and SkPathBuilder to
+return a raw, allowing lower-level code (like scan-converters,
+strokers, path-measuring) to accept a Raw instead of requiring a
+Path.
+```

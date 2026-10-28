@@ -1,0 +1,68 @@
+---
+name: skia/return-directly-from-switch-cases
+description: When computing return values or mapping enums in switch statements, return directly from each case or factor into dedicated helpers
+rubric: design
+severity: nit
+---
+
+**Rule.** In switch statements that determine a return value or map enums to
+names or properties, return directly from each case rather than assigning to a
+local variable and breaking. If the switch is embedded inside a loop or larger
+caller, factor the mapping into a dedicated helper function (terminating with
+SkUNREACHABLE; for exhaustive enums) so each case returns directly.
+
+**Why.** Returning directly from switch cases eliminates unnecessary mutable
+local variables, removes redundant break statements, and avoids accidental
+fallthrough. Factoring inline mapping switches into dedicated helpers declutters
+calling logic and allows the compiler to enforce exhaustive enum coverage via
+-Wswitch.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Assigning to a local return variable instead of returning directly
+bool isDegenerate = false;
+switch (numPts) {
+    case 2:  isDegenerate = SkPath::IsLineDegenerate(pts[0], pts[1], true); break;
+    case 3:  isDegenerate = SkPath::IsQuadDegenerate(pts[0], pts[1], pts[2], true); break;
+}
+return isDegenerate;
+
+// Bad: Inlining enum-to-name switch with temporary assignment inside caller loop
+for (const Channel& c : channels) {
+    const char* typeName;
+    switch (c.fType) {
+        case UNorm:  typeName = "u";    break;
+        case Float:  typeName = "f";    break;
+        case Pad:    typeName = "_";    break;
+    }
+    names.push_back(SkStringPrintf("%c(%s%d)", c.fName, typeName, c.fBits));
+}
+```
+
+Good:
+
+```cpp
+// Good: Return directly from each switch case
+switch (numPts) {
+    case 2:  return SkPath::IsLineDegenerate(pts[0], pts[1], true);
+    case 3:  return SkPath::IsQuadDegenerate(pts[0], pts[1], pts[2], true);
+}
+return false;
+
+// Good: Factor mapping switch into dedicated helper returning directly
+const char* channel_type_name(ChannelDataType type) {
+    switch (type) {
+        case UNorm:  return "u";
+        case Float:  return "f";
+        case Pad:    return "_";
+    }
+    SkUNREACHABLE;
+}
+
+for (const Channel& c : channels) {
+    names.push_back(SkStringPrintf("%c(%s%d)", c.fName, channel_type_name(c.fType), c.fBits));
+}
+```

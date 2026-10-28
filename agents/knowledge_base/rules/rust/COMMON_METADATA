@@ -1,0 +1,29 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "rust/.*"
+    path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/rust/accept-skstreamadapter-in-codec-ffi.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "rust/.*"
+    rules: "agents/knowledge_base/rules/rust/document-ffi-mirror-struct-equivalents.md"
+  }
+  capability_groups {
+    path_expression: "experimental/rust_[^/]*/.*"
+    path_expression: "rust/.*"
+    rules: "agents/knowledge_base/rules/rust/factor-shared-rust-ffi-utilities.md"
+    rules: "agents/knowledge_base/rules/rust/name-rust-library-target-after-crate.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "rust/.*"
+    path_expression: "src/ports/.*"
+    rules: "agents/knowledge_base/rules/rust/panic-on-unexpected-enum-variants.md"
+  }
+}

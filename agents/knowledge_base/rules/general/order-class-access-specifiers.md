@@ -1,0 +1,110 @@
+---
+name: skia/order-class-access-specifiers
+description: 'When declaring C++ classes, order sections public-first, precede access specifiers with a newline, explicitly write private: for top-of-class declarations, and group data members at the end'
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** In C++ class declarations, order visibility sections as `public`,
+`protected`, and `private`, preceding each access specifier with a blank line.
+When private types, forward declarations, or friends must precede `public:`,
+explicitly declare `private:` rather than relying on implicit default
+visibility. Within each section and across the class, avoid intermixing data
+fields with methods, keeping member data fields grouped together at the end of
+the class. Additionally, do not place member variables in `public:` just to
+share conditional compilation blocks (such as `#if defined(GPU_TEST_UTILS)`);
+keep data members under their own preprocessor guard. Finally, do not wrap
+access specifiers in preprocessor directives; relocate declarations to an
+existing unconditional access section instead.
+
+**Why.** Placing the public interface first allows readers and API consumers to
+immediately see how to use the class without parsing internal implementation
+details. Explicitly declaring `private:` for leading declarations eliminates
+ambiguity over whether public visibility was accidentally omitted. Preceding
+access specifiers with a blank line provides visual separation between
+visibility sections. Keeping member fields grouped together at the end maintains
+encapsulation and predictable layout, while avoiding preprocessor-wrapped access
+specifiers prevents confusing scoping and unintended access levels.
+
+## Examples
+
+Bad:
+
+```cpp
+// Omitting explicit 'private:' before top-of-class forward declarations or friends:
+class SK_API TextureInfo {
+    class Data;
+    friend class MtlTextureInfo;
+
+public:
+    TextureInfo();
+};
+
+// Declaring member data before public:, or missing blank line before specifier:
+class Iter {
+    size_t fIndex;
+public:
+    Iter(const SkPathRaw& p);
+    void freeResources();
+private: // Missing preceding blank line
+    static constexpr uint32_t kMaxBuffers = 16;
+};
+
+// Intermixing data fields between public methods and protected overrides:
+class SkTypeface_Custom : public SkTypeface_proxy {
+public:
+    std::unique_ptr<SkStreamAsset> makeStream() const;
+    const SkString fFamilyName;
+    int fIndex;
+protected:
+    void onGetFamilyName(SkString* name) const override;
+};
+
+// Wrapping access specifiers in preprocessor guards:
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+public:
+#endif
+    enum ArcSize { kSmall, kLarge };
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+private:
+#endif
+```
+
+Good:
+
+```cpp
+// Explicitly specifying private: when declarations must precede public:
+class SK_API TextureInfo {
+private:
+    class Data;
+    friend class MtlTextureInfo;
+
+public:
+    TextureInfo();
+};
+
+// Ordering public first, with blank lines and data members at the end:
+class Iter {
+public:
+    Iter(const SkPathRaw& p);
+    void freeResources();
+
+private:
+    static constexpr uint32_t kMaxBuffers = 16;
+    size_t fIndex;
+};
+
+// Keeping methods together and data fields grouped at the end:
+class SkTypeface_Custom : public SkTypeface_proxy {
+public:
+    std::unique_ptr<SkStreamAsset> makeStream() const;
+    void onGetFamilyName(SkString* name) const override;
+
+    const SkString fFamilyName;
+    int fIndex;
+};
+
+// Relocating declarations to existing unconditional sections:
+public:
+    enum ArcSize { kSmall, kLarge };
+```

@@ -1,0 +1,73 @@
+---
+name: skia/gpu/drop-draw-on-graphite-recording-failure
+description: When fallible operations fail during Graphite draw recording, log SKIA_LOG_W or SKIA_LOG_E and return early instead of asserting, bailing silently, or invalidating the Recorder
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When paint conversion, shading key generation, geometry processing,
+pipeline selection, or fallible GPU operations (such as Image::Copy, scratch
+surface/texture allocation, or mipmap generation) fail for an individual draw or
+draw pass during Graphite recording, check for null or failure, emit an
+informative warning or error log (SKIA_LOG_W or SKGPU_LOG_W / SKIA_LOG_E), and
+return early to drop or skip the draw or pass. Do not assert success with
+SkASSERT, do not invalidate the entire Recorder (such as via markBad()), and do
+not bail out silently without logging.
+
+**Why.** GPU copies, allocations, and conversions can fail at runtime due to
+memory limits, unsupported formats, or context loss. Asserting non-null with
+SkASSERT crashes debug builds and causes release null-pointer dereferences,
+while invalidating the entire Recorder destroys the client's drawing session.
+Conversely, returning silently leaves dropped draws completely untraceable;
+logging and dropping the individual draw or pass isolates the failure and
+preserves debugging context.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Asserting success on fallible GPU operations like Image::Copy
+sk_sp<Image> imageCopy = Image::Copy(recorder, this, fReadView, fColorInfo, bounds, ...);
+SkASSERT(imageCopy);
+dstCopy = imageCopy->textureProxyView().refProxy();
+
+// Bad: Invalidating the entire Recorder on an individual draw failure
+auto keyResult = shading.toKey(keyContext);
+if (!keyResult) {
+    fRecorder->priv().markBad();
+    return;
+}
+
+// Bad: Silently bailing out and dropping the draw or pass without logging
+sk_sp<Surface> surface = Surface::MakeScratch(recorder, fImageInfo, "DstCopyFallback");
+if (!surface) {
+    return;
+}
+```
+
+Good:
+
+```cpp
+// Good: Check for null, log a warning, and drop the pass gracefully
+sk_sp<Image> imageCopy = Image::Copy(recorder, this, fReadView, fColorInfo, bounds, ...);
+if (!imageCopy) {
+    SKIA_LOG_W("DrawContext::flush Image::Copy failed, draw pass dropped!");
+    return;
+}
+dstCopy = imageCopy->textureProxyView().refProxy();
+
+// Good: Drop the draw with a warning instead of invalidating the Recorder
+auto keyResult = shading.toKey(keyContext);
+if (!keyResult) {
+    SKIA_LOG_W("Key context creation failed in Device::drawGeometry, draw dropped!");
+    return;
+}
+
+// Good: Log a warning before dropping a draw pass on scratch surface allocation failure
+sk_sp<Surface> surface = Surface::MakeScratch(recorder, fImageInfo, "DstCopyFallback");
+if (!surface) {
+    SKGPU_LOG_W("DrawContext CopyAsDraw surface creation failed; dropping draw pass!");
+    return;
+}
+```
