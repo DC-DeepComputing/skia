@@ -346,7 +346,8 @@ void SurfaceDrawContext::drawGlyphRunList(SkCanvas* canvas,
                                           const SkMatrix& viewMatrix,
                                           const sktext::GlyphRunList& glyphRunList,
                                           SkStrikeDeviceInfo strikeDeviceInfo,
-                                          const SkPaint& paint) {
+                                          const SkPaint& paint,
+                                          SkIPoint ditherOrigin) {
     ASSERT_SINGLE_OWNER
     RETURN_IF_ABANDONED
     SkDEBUGCODE(this->validate();)
@@ -366,8 +367,14 @@ void SurfaceDrawContext::drawGlyphRunList(SkCanvas* canvas,
                              const SkPaint& paint,
                              sk_sp<SkRefCnt> subRunStorage,
                              sktext::gpu::RendererData) {
-        auto [drawingClip, op] = AtlasTextOp::Make(
-                this, subRun, clip, viewMatrix, drawOrigin, paint, std::move(subRunStorage));
+        auto [drawingClip, op] = AtlasTextOp::Make(this,
+                                                   subRun,
+                                                   clip,
+                                                   viewMatrix,
+                                                   drawOrigin,
+                                                   paint,
+                                                   ditherOrigin,
+                                                   std::move(subRunStorage));
         if (op != nullptr) {
             this->addDrawOp(drawingClip, std::move(op));
         }

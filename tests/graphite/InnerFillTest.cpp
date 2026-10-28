@@ -164,6 +164,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(OptimizeForOpacity,
                               SkM44(),
                               SkRect::MakeIWH(16, 16),
                               targetInfo,
+                              /*ditherOrigin=*/SkIPoint{0, 0},
                               KeyGenFlags::kPreferFixedSrcBlend,
                               paint.color()};
 

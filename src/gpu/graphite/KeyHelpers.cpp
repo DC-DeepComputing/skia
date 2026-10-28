@@ -915,7 +915,9 @@ void add_dither_uniform_data(const KeyContext& keyContext,
                              const DitherShaderBlock::DitherData& ditherData) {
     BEGIN_WRITE_UNIFORMS(keyContext, BuiltInCodeSnippetID::kDitherShader)
 
-    keyContext.pipelineDataGatherer()->writeHalf(ditherData.fRange);
+    auto gatherer = keyContext.pipelineDataGatherer();
+    gatherer->writeHalf(ditherData.fRange);
+    gatherer->write(SkPoint::Make(ditherData.fOrigin.x(), ditherData.fOrigin.y()));
 }
 
 } // anonymous namespace
@@ -2805,7 +2807,9 @@ void AddDitherBlock(const KeyContext& keyContext, SkColorType ct) {
         return;
     }
 
-    DitherShaderBlock::DitherData data(skgpu::DitherRangeForConfig(ct), std::move(proxy));
+    DitherShaderBlock::DitherData data(skgpu::DitherRangeForConfig(ct),
+                                       keyContext.ditherOrigin(),
+                                       std::move(proxy));
 
     DitherShaderBlock::AddBlock(keyContext, data);
 }

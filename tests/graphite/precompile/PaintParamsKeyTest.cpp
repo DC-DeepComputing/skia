@@ -312,6 +312,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                               {},
                               SkRect::MakeEmpty(),
                               precompileKeyContext.dstColorInfo(),
+                              /*ditherOrigin=*/SkIPoint{0, 0},
                               KeyGenFlags::kDisableSamplingOptimization,
                               paintParams.color());
         auto keyResult = shadingParams.toKey(keyContext);

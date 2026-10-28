@@ -1541,7 +1541,8 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             /*name=*/"Dither",
             /*staticFn=*/"sk_dither",
             SnippetRequirementFlags::kPriorStageOutput,
-            /*uniforms=*/{{{ "range", SkSLType::kHalf }}},
+            /*uniforms=*/{{{ "range",        SkSLType::kHalf },
+                           { "ditherOrigin", SkSLType::kFloat2 }}},
             /*texturesAndSamplers=*/{ { "ditherLUT" } }
     };
 

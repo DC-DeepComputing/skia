@@ -52,6 +52,7 @@ SkBlitter* SkA8Blitter_Choose(const SkPixmap& dst,
                               SkDrawCoverage coverage,
                               sk_sp<SkShader> clipShader,
                               const SkSurfaceProps& /*ignored*/,
-                              const SkRect& /*ignored*/);
+                              const SkRect& /*ignored*/,
+                              SkIPoint /*ignored*/);
 
 #endif // SkBlitter_A8_DEFINED

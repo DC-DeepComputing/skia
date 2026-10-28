@@ -275,6 +275,12 @@ public:
     int testingOnly_pendingRenderSteps() const;
 #endif
 
+    // Offset from this device's pixels to the global pixel grid, used to keep dithering in
+    // phase across layers. Zero when the device is not pixel-aligned to global.
+    SkIPoint ditherOrigin() const {
+        return this->isPixelAlignedToGlobal() ? this->getOrigin() : SkIPoint{0, 0};
+    }
+
 private:
     class IntersectionTreeSet;
 

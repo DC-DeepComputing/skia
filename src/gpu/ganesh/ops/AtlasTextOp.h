@@ -63,6 +63,7 @@ public:
                                                        const SkMatrix& viewMatrix,
                                                        SkPoint drawOrigin,
                                                        const SkPaint&,
+                                                       SkIPoint ditherOrigin,
                                                        sk_sp<SkRefCnt>&& subRunStorage);
 
     ~AtlasTextOp() override {

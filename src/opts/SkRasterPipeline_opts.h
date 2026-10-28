@@ -2313,13 +2313,13 @@ HIGHP_STAGE(seed_shader, NoCtx) {
     a = F0;
 }
 
-HIGHP_STAGE(dither, const float* rate) {
+HIGHP_STAGE(dither, const SkRasterPipelineContexts::DitherCtx* ctx) {
     // Get [(dx,dy), (dx+1,dy), (dx+2,dy), ...] loaded up in integer vectors.
     uint32_t iota[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
     static_assert(std::size(iota) >= SkRasterPipelineContexts::kMaxStride_highp);
 
-    U32 X = U32_(dx) + sk_unaligned_load<U32>(iota),
-        Y = U32_(dy);
+    U32 X = (U32_(dx) + sk_unaligned_load<U32>(iota)) + U32_(ctx->originX),
+        Y = U32_(dy) + U32_(ctx->originY);
 
     // We're doing 8x8 ordered dithering, see https://en.wikipedia.org/wiki/Ordered_dithering.
     // In this case n=8 and we're using the matrix that looks like 1/64 x [ 0 48 12 60 ... ].
@@ -2338,9 +2338,9 @@ HIGHP_STAGE(dither, const float* rate) {
     // like 0 and 1 unchanged after rounding.
     F dither = mad(cast(M), 2/128.0f, -63/128.0f);
 
-    r = mad(dither, *rate, r);
-    g = mad(dither, *rate, g);
-    b = mad(dither, *rate, b);
+    r = mad(dither, ctx->rate, r);
+    g = mad(dither, ctx->rate, g);
+    b = mad(dither, ctx->rate, b);
 
     r = max(0.0f, min(r, a));
     g = max(0.0f, min(g, a));

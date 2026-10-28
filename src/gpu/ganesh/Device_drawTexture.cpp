@@ -366,7 +366,8 @@ void Device::drawEdgeAAImage(const SkImage* image,
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaintReplaceShader(sdc, paint, localToDevice, std::move(fp), &grPaint)) {
+    if (!SkPaintToGrPaintReplaceShader(sdc, paint, localToDevice, std::move(fp),
+                                       this->ditherOrigin(), &grPaint)) {
         return;
     }
 
@@ -498,7 +499,7 @@ void Device::drawCoverageMask(const SkSpecialImage* mask,
     SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
     GrPaint grPaint;
     // Any shading is done in local space which we want to draw to the device.
-    SkPaintToGrPaint(sdc, paint, localToDevice, &grPaint);
+    SkPaintToGrPaint(sdc, paint, localToDevice, this->ditherOrigin(), &grPaint);
     grPaint.setCoverageFragmentProcessor(std::move(coverageFP));
 
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
@@ -739,7 +740,7 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint,
     SkPaint skPaint = paint;
     skPaint.setMaskFilter(nullptr);
     GrPaint grPaint;
-    SkPaintToGrPaint(sdc, skPaint, localToDevice, &grPaint);
+    SkPaintToGrPaint(sdc, skPaint, localToDevice, this->ditherOrigin(), &grPaint);
 
     if (skgpu::BlurIsEffectivelyIdentity(deviceSigma)) {
         sdc->drawShape(clip, std::move(grPaint), GrAA::kYes, localToDevice, GrStyledShape(rrect));

@@ -83,8 +83,8 @@ namespace gpu {
 namespace skgpu::ganesh {
 
 class SurfaceContext;
-class SurfaceFillContext;
 class SurfaceDrawContext;
+class SurfaceFillContext;
 
 /**
  *  Subclass of SkDevice, which directs all drawing to the GrGpu owned by the canvas.
@@ -98,6 +98,12 @@ public:
 
     GrSurfaceProxyView readSurfaceView();
     GrRenderTargetProxy* targetProxy();
+
+    // Offset from this device's pixels to the global pixel grid, used to keep dithering in
+    // phase across layers. Zero when the device is not pixel-aligned to global.
+    SkIPoint ditherOrigin() const {
+        return this->isPixelAlignedToGlobal() ? this->getOrigin() : SkIPoint{0, 0};
+    }
 
     GrRecordingContext* recordingContext() const override { return fContext.get(); }
     SkRecorder* baseRecorder() const override {

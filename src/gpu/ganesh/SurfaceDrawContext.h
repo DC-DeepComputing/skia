@@ -507,13 +507,16 @@ public:
      *
      * @param viewMatrix      transformation matrix
      * @param glyphRunList    text, text positions, and paint.
+     * @param ditherOrigin    offset from the target's pixels to the global pixel grid, so a
+     *                        dithered shader on the glyphs stays in phase inside a layer.
      */
     void drawGlyphRunList(SkCanvas*,
                           const GrClip*,
                           const SkMatrix& viewMatrix,
                           const sktext::GlyphRunList& glyphRunList,
                           SkStrikeDeviceInfo strikeDeviceInfo,
-                          const SkPaint& paint);
+                          const SkPaint& paint,
+                          SkIPoint ditherOrigin);
 
     /**
      * Adds the necessary signal and wait semaphores and adds the passed in SkDrawable to the

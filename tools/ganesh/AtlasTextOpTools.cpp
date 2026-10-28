@@ -66,7 +66,14 @@ GrOp::Owner AtlasTextOpTools::CreateOp(skgpu::ganesh::SurfaceDrawContext* sdc,
 
     GrOp::Owner op;
     std::tie(std::ignore, op) =
-            AtlasTextOp::Make(sdc, subRun, nullptr, ctm, glyphRunList.origin(), skPaint, blob);
+            AtlasTextOp::Make(sdc,
+                              subRun,
+                              nullptr,
+                              ctm,
+                              glyphRunList.origin(),
+                              skPaint,
+                              /*ditherOrigin=*/SkIPoint{0, 0},
+                              blob);
     return op;
 }
 

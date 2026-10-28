@@ -679,6 +679,7 @@ UniquePaintParamsID ShadingParams::validateOpacityOptimization(const KeyContext&
                              keyContext.local2Dev(),
                              keyContext.clipDrawBounds(),
                              keyContext.dstColorInfo(),
+                             keyContext.ditherOrigin(),
                              keyContext.flags(),
                              opaqueShading.fPaint.color()};
 

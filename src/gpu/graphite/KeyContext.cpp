@@ -37,6 +37,7 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkM44& local2Dev,
                        const SkRect& clipDrawBounds,
                        const SkColorInfo& dstColorInfo,
+                       SkIPoint ditherOrigin,
                        SkEnumBitMask<KeyGenFlags> initialFlags,
                        const SkColor4f& paintColor)
         : fCaps(recorder->priv().caps())
@@ -48,6 +49,7 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fRTEffectDict(recorder->priv().runtimeEffectDictionary())
         , fLocal2Dev(local2Dev)
         , fClipDrawBounds(clipDrawBounds)
+        , fDitherOrigin(ditherOrigin)
         , fLocalMatrix(nullptr)
         , fDstColorInfo(dstColorInfo)
         , fKeyGenFlags(initialFlags) {
@@ -66,6 +68,7 @@ KeyContext::KeyContext(const KeyContext& other,
         , fRTEffectDict(other.fRTEffectDict)
         , fLocal2Dev(other.fLocal2Dev)
         , fClipDrawBounds(other.fClipDrawBounds)
+        , fDitherOrigin(other.fDitherOrigin)
         , fLocalMatrix(other.fLocalMatrix)
         , fDstColorInfo(other.fDstColorInfo)
         , fPaintColor(other.fPaintColor)

@@ -11,6 +11,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkM44.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkShader.h"
@@ -208,11 +209,14 @@ struct CoordClampShaderBlock {
 
 struct DitherShaderBlock {
     struct DitherData {
-        DitherData(float range, sk_sp<TextureProxy> proxy)
+        DitherData(float range, SkIPoint origin, sk_sp<TextureProxy> proxy)
             : fRange(range)
+            , fOrigin(origin)
             , fLUTProxy(std::move(proxy)) {}
 
         float fRange;
+        // Offset from this device's pixels to the global pixel grid the dither is anchored to.
+        SkIPoint fOrigin;
         sk_sp<TextureProxy> fLUTProxy;
     };
 

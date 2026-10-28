@@ -168,11 +168,12 @@ bool init_vertices_paint(skgpu::ganesh::SurfaceDrawContext* sdc,
                          const SkMatrix& ctm,
                          SkBlender* blender,
                          bool hasColors,
+                         SkIPoint ditherOrigin,
                          GrPaint* grPaint) {
     if (hasColors) {
-        return SkPaintToGrPaintWithBlend(sdc, skPaint, ctm, blender, grPaint);
+        return SkPaintToGrPaintWithBlend(sdc, skPaint, ctm, blender, ditherOrigin, grPaint);
     } else {
-        return SkPaintToGrPaint(sdc, skPaint, ctm, grPaint);
+        return SkPaintToGrPaint(sdc, skPaint, ctm, ditherOrigin, grPaint);
     }
 }
 
@@ -434,6 +435,7 @@ void Device::drawPaint(const SkPaint& paint) {
     if (!SkPaintToGrPaint(fSurfaceDrawContext.get(),
                           paint,
                           this->localToDevice(),
+                          this->ditherOrigin(),
                           &grPaint)) {
         return;
     }
@@ -474,6 +476,7 @@ void Device::drawPoints(SkCanvas::PointMode mode, SkSpan<const SkPoint> pts, con
             if (SkPaintToGrPaint(fSurfaceDrawContext.get(),
                                  paint,
                                  this->localToDevice(),
+                                 this->ditherOrigin(),
                                  &grPaint)) {
                 SkPath path = SkPath::Line(pts[0], pts[1]);
                 path.setIsVolatile(true);
@@ -494,6 +497,7 @@ void Device::drawPoints(SkCanvas::PointMode mode, SkSpan<const SkPoint> pts, con
             if (SkPaintToGrPaint(fSurfaceDrawContext.get(),
                                  paint,
                                  this->localToDevice(),
+                                 this->ditherOrigin(),
                                  &grPaint)) {
                 fSurfaceDrawContext->drawStrokedLine(this->clip(),
                                                      std::move(grPaint),
@@ -535,7 +539,7 @@ void Device::drawPoints(SkCanvas::PointMode mode, SkSpan<const SkPoint> pts, con
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), &grPaint)) {
+    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), this->ditherOrigin(), &grPaint)) {
         return;
     }
 
@@ -561,12 +565,13 @@ void Device::drawRect(const SkRect& rect, const SkPaint& paint) {
         GrStyledShape shape(rect, style);
 
         GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
-                                             this->clip(), paint, this->localToDevice(), shape);
+                                             this->clip(), paint, this->localToDevice(), shape,
+                                             this->ditherOrigin());
         return;
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), &grPaint)) {
+    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), this->ditherOrigin(), &grPaint)) {
         return;
     }
 
@@ -629,7 +634,8 @@ void Device::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
         GrStyledShape shape(rrect, style);
 
         GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
-                                             this->clip(), paint, this->localToDevice(), shape);
+                                             this->clip(), paint, this->localToDevice(), shape,
+                                             this->ditherOrigin());
         return;
     }
 
@@ -639,6 +645,7 @@ void Device::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
     if (!SkPaintToGrPaint(fSurfaceDrawContext.get(),
                           paint,
                           this->localToDevice(),
+                          this->ditherOrigin(),
                           &grPaint)) {
         return;
     }
@@ -671,6 +678,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
             if (!SkPaintToGrPaint(fSurfaceDrawContext.get(),
                                   paint,
                                   this->localToDevice(),
+                                  this->ditherOrigin(),
                                   &grPaint)) {
                 return;
             }
@@ -694,7 +702,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
     GrStyledShape shape(path, paint);
 
     GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
-                                         paint, this->localToDevice(), shape);
+                                         paint, this->localToDevice(), shape, this->ditherOrigin());
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -712,6 +720,7 @@ void Device::drawRegion(const SkRegion& region, const SkPaint& paint) {
     if (!SkPaintToGrPaint(fSurfaceDrawContext.get(),
                           paint,
                           this->localToDevice(),
+                          this->ditherOrigin(),
                           &grPaint)) {
         return;
     }
@@ -732,7 +741,7 @@ void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     }
 
     GrPaint grPaint;
-    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), &grPaint)) {
+    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), this->ditherOrigin(), &grPaint)) {
         return;
     }
 
@@ -749,7 +758,7 @@ void Device::drawArc(const SkArc& arc, const SkPaint& paint) {
         return;
     }
     GrPaint grPaint;
-    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), &grPaint)) {
+    if (!SkPaintToGrPaint(fSurfaceDrawContext.get(), paint, this->localToDevice(), this->ditherOrigin(), &grPaint)) {
         return;
     }
 
@@ -777,6 +786,7 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint) {
         if (!SkPaintToGrPaint(fSurfaceDrawContext.get(),
                               paint,
                               this->localToDevice(),
+                              this->ditherOrigin(),
                               &grPaint)) {
             return;
         }
@@ -789,7 +799,7 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint) {
     GrStyledShape shape(origSrcPath, paint);
 
     GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
-                                         paint, this->localToDevice(), shape);
+                                         paint, this->localToDevice(), shape, this->ditherOrigin());
 }
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
@@ -978,6 +988,7 @@ void Device::drawViewLattice(GrSurfaceProxyView view,
                                        *paint,
                                        this->localToDevice(),
                                        /*shaderFP=*/nullptr,
+                                       this->ditherOrigin(),
                                        &grPaint)) {
         return;
     }
@@ -1041,6 +1052,7 @@ void Device::drawVertices(const SkVertices* vertices,
                              this->localToDevice(),
                              blender.get(),
                              info.hasColors(),
+                             this->ditherOrigin(),
                              &grPaint)) {
         return;
     }
@@ -1065,6 +1077,7 @@ void Device::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPain
                              this->localToDevice(),
                              blender.get(),
                              SkMeshSpecificationPriv::HasColors(*mesh.spec()),
+                             this->ditherOrigin(),
                              &grPaint)) {
         return;
     }
@@ -1113,6 +1126,7 @@ void Device::drawAtlas(SkSpan<const SkRSXform> xform,
                                        paint,
                                        this->localToDevice(),
                                        blender.get(),
+                                       this->ditherOrigin(),
                                        &grPaint)) {
             return;
         }
@@ -1120,6 +1134,7 @@ void Device::drawAtlas(SkSpan<const SkRSXform> xform,
         if (!SkPaintToGrPaint(fSurfaceDrawContext.get(),
                               paint,
                               this->localToDevice(),
+                              this->ditherOrigin(),
                               &grPaint)) {
             return;
         }
@@ -1151,7 +1166,8 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                               this->localToDevice(),
                                               glyphRunList,
                                               this->strikeDeviceInfo(),
-                                              paint);
+                                              paint,
+                                              this->ditherOrigin());
     }
 }
 
@@ -1447,10 +1463,14 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkP
                              const SkPaint& paint,
                              sk_sp<SkRefCnt> subRunStorage,
                              sktext::gpu::RendererData) {
-        auto[drawingClip, op] = AtlasTextOp::Make(
-                fSurfaceDrawContext.get(), subRun,
-                this->clip(), this->localToDevice(), drawOrigin, paint,
-                std::move(subRunStorage));
+        auto[drawingClip, op] = AtlasTextOp::Make(fSurfaceDrawContext.get(),
+                                                  subRun,
+                                                  this->clip(),
+                                                  this->localToDevice(),
+                                                  drawOrigin,
+                                                  paint,
+                                                  this->ditherOrigin(),
+                                                  std::move(subRunStorage));
         if (op != nullptr) {
             fSurfaceDrawContext->addDrawOp(drawingClip, std::move(op));
         }

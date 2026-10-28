@@ -1833,6 +1833,7 @@ void Device::drawGeometry(const Transform& localToDevice,
                           localToDevice.matrix(),
                           clip.drawBounds().asSkRect(),
                           fDC->colorInfo(),
+                          this->ditherOrigin(),
                           keyGenFlags,
                           paint.color()};
     auto keyResult = shading.toKey(keyContext);

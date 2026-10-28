@@ -96,13 +96,14 @@ SkPMColor4f calculate_colors(skgpu::ganesh::SurfaceDrawContext* sdc,
                              const SkPaint& paint,
                              const SkMatrix& matrix,
                              MaskFormat maskFormat,
+                             SkIPoint ditherOrigin,
                              GrPaint* grPaint) {
     if (maskFormat == MaskFormat::kARGB) {
-        SkPaintToGrPaintReplaceShader(sdc, paint, matrix, nullptr, grPaint);
+        SkPaintToGrPaintReplaceShader(sdc, paint, matrix, nullptr, ditherOrigin, grPaint);
         float a = grPaint->getColor4f().fA;
         return {a, a, a, a};
     }
-    SkPaintToGrPaint(sdc, paint, matrix, grPaint);
+    SkPaintToGrPaint(sdc, paint, matrix, ditherOrigin, grPaint);
     return grPaint->getColor4f();
 }
 
@@ -213,6 +214,7 @@ std::tuple<const GrClip*, GrOp::Owner> AtlasTextOp::Make(SurfaceDrawContext* sdc
                                                          const SkMatrix& viewMatrix,
                                                          SkPoint drawOrigin,
                                                          const SkPaint& paint,
+                                                         SkIPoint ditherOrigin,
                                                          sk_sp<SkRefCnt>&& subRunStorage) {
     SkASSERT(subrun->glyphCount() != 0);
     const SkMatrix& positionMatrix = position_matrix(viewMatrix, drawOrigin);
@@ -254,6 +256,7 @@ std::tuple<const GrClip*, GrOp::Owner> AtlasTextOp::Make(SurfaceDrawContext* sdc
                                                       paint,
                                                       viewMatrix,
                                                       subrun->maskFormat(),
+                                                      ditherOrigin,
                                                       &grPaint);
 
     auto geometry = AtlasTextOp::Geometry::Make(*subrun,

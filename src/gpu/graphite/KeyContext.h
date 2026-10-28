@@ -11,6 +11,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkOnlyStackAllocatable.h"
@@ -76,6 +77,7 @@ public:
                const SkM44& local2Dev,
                const SkRect& clipDrawBounds,
                const SkColorInfo& dstColorInfo,
+               SkIPoint ditherOrigin,
                SkEnumBitMask<KeyGenFlags> initialFlags,
                const SkColor4f& paintColor);
 
@@ -131,6 +133,9 @@ public:
 
     const SkRect& clipDrawBounds() const { return fClipDrawBounds; }
 
+    // Offset from this device's pixels to the global pixel grid that dithering is anchored to.
+    SkIPoint ditherOrigin() const { return fDitherOrigin; }
+
 private:
     // Fields which will not change over the course of building a paint key
     const Caps* fCaps;
@@ -142,6 +147,7 @@ private:
     sk_sp<RuntimeEffectDictionary> fRTEffectDict;
     SkM44 fLocal2Dev;
     SkRect fClipDrawBounds;
+    SkIPoint fDitherOrigin = {0, 0};
 
 protected:
     // Fields that can be modified while walking a paint's effects for a key
