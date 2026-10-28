@@ -187,6 +187,10 @@ bool GrDirectContext::isDeviceLost() {
 
 bool GrDirectContext::oomed() { return fGpu ? fGpu->checkAndResetOOMed() : false; }
 
+bool GrDirectContext::checkAndResetBackendError() {
+    return fGpu ? fGpu->checkAndResetBackendError() : false;
+}
+
 void GrDirectContext::releaseResourcesAndAbandonContext() {
     if (GrRecordingContext::abandoned()) {
         return;

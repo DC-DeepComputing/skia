@@ -43,17 +43,21 @@ static const char* get_error_string(GrGLenum err) {
 
 GrGLenum GrGLInterface::checkError(const char* location, const char* call) const {
     GrGLenum error = fFunctions.fGetError();
-    if (error != GR_GL_NO_ERROR && !fSuppressErrorLogging) {
-        SkDebugf("---- glGetError 0x%x(%s)", error, get_error_string(error));
-        if (location) {
-            SkDebugf(" at\n\t%s", location);
+    if (error != GR_GL_NO_ERROR) {
+        if (!fSuppressErrorLogging) {
+            SkDebugf("---- glGetError 0x%x(%s)", error, get_error_string(error));
+            if (location) {
+                SkDebugf(" at\n\t%s", location);
+            }
+            if (call) {
+                SkDebugf("\n\t\t%s", call);
+            }
+            SkDebugf("\n");
         }
-        if (call) {
-            SkDebugf("\n\t\t%s", call);
-        }
-        SkDebugf("\n");
         if (error == GR_GL_OUT_OF_MEMORY) {
             fOOMed = true;
+        } else {
+            fHasError = true;
         }
     }
     return error;
@@ -62,6 +66,14 @@ GrGLenum GrGLInterface::checkError(const char* location, const char* call) const
 bool GrGLInterface::checkAndResetOOMed() const {
     if (fOOMed) {
         fOOMed = false;
+        return true;
+    }
+    return false;
+}
+
+bool GrGLInterface::checkAndResetError() const {
+    if (fHasError) {
+        fHasError = false;
         return true;
     }
     return false;
