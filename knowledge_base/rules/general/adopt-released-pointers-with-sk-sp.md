@@ -1,0 +1,45 @@
+---
+name: skia/adopt-released-pointers-with-sk-sp
+description: When converting, casting, or adopting an owned sk_sp, construct sk_sp<T>(ptr) with release() instead of calling sk_ref_sp to avoid leaks or ref-churn
+rubric: safety
+severity: blocking
+---
+
+**Rule.** Do not wrap a pointer obtained from `sk_sp::release()` or an existing
++1 owned reference with `sk_ref_sp()`, and do not re-reference an owned or
+temporary `sk_sp` via `sk_ref_sp(cast(sp.get()))`. Instead, transfer ownership
+by calling `.release()` and adopting the raw pointer directly into
+`sk_sp<T>(ptr)`. Reserve `sk_ref_sp()` strictly for acquiring an additional
+reference to an unowned or borrowed raw pointer.
+
+**Why.** `sk_ref_sp()` calls `SkSafeRef()` to increment the object's reference
+count, whereas `sk_sp<T>(ptr)` adopts the pointer without incrementing. Passing
+an already-owned or released pointer to `sk_ref_sp()` introduces an unintended
+extra reference count that leaks memory; calling `sk_ref_sp()` on a temporary or
+owned `sk_sp.get()` causes unnecessary atomic ref-count churn.
+
+## Examples
+
+Bad:
+
+```cpp
+// Leaks reference count by double-refing an already-owned released pointer:
+return sk_ref_sp<SkImage_Raster>(
+        static_cast<SkImage_Raster*>(SkImages::RasterFromPixmapCopy(pmap).release()));
+
+// Unnecessary atomic ref-count churn when converting or casting an owned sk_sp:
+if (auto data = stream->getData()) {
+    return sk_ref_sp<SkData>(const_cast<SkData*>(data.get()));
+}
+```
+
+Good:
+
+```cpp
+// Adopts the +1 reference count directly without incrementing:
+return sk_sp<SkImage_Raster>(
+        static_cast<SkImage_Raster*>(SkImages::RasterFromPixmapCopy(pmap).release()));
+
+// Transfers ownership via release() without ref-count modifications:
+return sk_sp<SkData>(const_cast<SkData*>(stream->getData().release()));
+```

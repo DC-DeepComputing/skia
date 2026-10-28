@@ -1,0 +1,66 @@
+---
+name: skia/factor-source-set-for-component-dependency-cycles
+description: When defining internal subsystem targets or resolving component dependency cycles in GN build files, use skia_source_set depending on //:core rather than :skia
+rubric: design
+severity: blocking
+---
+
+**Rule.** In GN build configurations, define internal subsystem targets that
+roll up into the main `:skia` component as `skia_source_set` and have them
+depend on `//:core` (or `:core`) rather than `:skia`. When resolving cyclic
+dependencies where intermediate libraries require core Skia primitives, factor
+out those shared primitives into `:core` rather than evicting internal-dependent
+submodules (such as `:pdf` or `:xps`) from the main `skia_component` target.
+
+**Why.** The `:skia` target is a top-level `skia_component` that aggregates core
+functionality with optional modules. In shared library builds
+(`is_component_build = true`), only public APIs annotated with `SK_API` are
+exported; internal modules depending on `:skia` introduce circular build
+dependencies, and evicting internal modules across the component boundary causes
+link failures on unexported symbols. Depending on `//:core` breaks cycles while
+keeping internal modules inside `libskia`.
+
+## Examples
+
+Bad:
+
+```cpp
+# Bad: Defining an internal subsystem as a static library depending on :skia,
+# or evicting internal-dependent modules from :skia to resolve dependency cycles:
+skia_static_library("pathops") {
+  configs = skia_library_configs
+  public = skia_pathops_public
+  sources = skia_pathops_sources
+  deps = [ ":skia" ]
+}
+
+skia_component("skia") {
+  # :pdf removed from public_deps to avoid :skia -> :pdf -> :pathops -> :skia cycle
+}
+```
+
+Good:
+
+```cpp
+# Good: Define internal targets as skia_source_set depending on :core;
+# the top-level :skia component aggregates :core and internal modules:
+skia_source_set("core") {
+  public = skia_core_public
+  sources = skia_core_sources
+}
+
+skia_source_set("pathops") {
+  configs = skia_library_configs
+  public = skia_pathops_public
+  sources = skia_pathops_sources
+  deps = [ ":core" ]
+}
+
+skia_component("skia") {
+  public_deps = [
+    ":core",
+    ":pdf",
+    ":xps",
+  ]
+}
+```
