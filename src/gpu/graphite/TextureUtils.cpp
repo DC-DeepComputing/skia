@@ -306,6 +306,9 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
     if (!proxy) {
         return {};
     }
+    if (budgeted == Budgeted::kNo) {
+        recorder->priv().recordSampledTextureProxy(proxy.get());
+    }
 
     const TextureFormat format = proxy->format();
     SkASSERT(AreColorTypeAndFormatCompatible(ct, format));

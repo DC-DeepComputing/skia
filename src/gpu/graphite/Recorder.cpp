@@ -596,6 +596,53 @@ void Recorder::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     // used bytes here (see Ganesh implementation).
 }
 
+Recorder::EstimatedMemoryStats Recorder::estimatedMemoryStats() const {
+    ASSERT_SINGLE_OWNER
+    EstimatedMemoryStats stats = fEstimatedMemoryStats;
+    stats.fDrawBufferBytes = fDrawBufferManager->drawBufferBytes();
+    stats.fUploadBufferBytes = fUploadBufferManager->uploadBufferBytes();
+    return stats;
+}
+
+void RecorderPriv::recordScratchTextureProxy(const TextureProxy* proxy) {
+    ASSERT_SINGLE_OWNER_PRIV
+    if (proxy && !proxy->isFullyLazy()) {
+        fRecorder->fEstimatedMemoryStats.fScratchTextureBytes +=
+                proxy->uninstantiatedGpuMemorySize();
+    }
+}
+
+void RecorderPriv::recordShareableTextureProxy(const TextureProxy* proxy) {
+    ASSERT_SINGLE_OWNER_PRIV
+    if (proxy && !proxy->isFullyLazy()) {
+        fRecorder->fEstimatedMemoryStats.fShareableTextureBytes +=
+                proxy->uninstantiatedGpuMemorySize();
+    }
+}
+
+void RecorderPriv::promoteTextureProxyToShareable(const TextureProxy* proxy) {
+    ASSERT_SINGLE_OWNER_PRIV
+    if (proxy && !proxy->isFullyLazy()) {
+        const size_t bytes = proxy->uninstantiatedGpuMemorySize();
+        if (!proxy->isInstantiated()) {
+            fRecorder->fEstimatedMemoryStats.fScratchTextureBytes -=
+                    std::min(fRecorder->fEstimatedMemoryStats.fScratchTextureBytes, bytes);
+        } else {
+            fRecorder->fEstimatedMemoryStats.fExternalTextureBytes -=
+                    std::min(fRecorder->fEstimatedMemoryStats.fExternalTextureBytes, bytes);
+        }
+        fRecorder->fEstimatedMemoryStats.fShareableTextureBytes += bytes;
+    }
+}
+
+void RecorderPriv::recordSampledTextureProxy(const TextureProxy* proxy) {
+    ASSERT_SINGLE_OWNER_PRIV
+    if (proxy && !proxy->isFullyLazy()) {
+        fRecorder->fEstimatedMemoryStats.fExternalTextureBytes +=
+                proxy->uninstantiatedGpuMemorySize();
+    }
+}
+
 #if defined(SK_DUMP_TASKS)
 void Recorder::dumpTasks(TaskList* taskList) const {
     ASSERT_SINGLE_OWNER

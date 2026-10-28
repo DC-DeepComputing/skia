@@ -265,6 +265,12 @@ void BufferSubAllocator::reset() {
     } // else nothing to reset
 }
 
+void BufferSubAllocator::recordSubAllocation(uint32_t bytes) {
+    if (fOwner) {
+        fOwner->fDrawBufferBytes += bytes;
+    }
+}
+
 // ------------------------------------------------------------------------------------------------
 // DrawBufferManager::BufferState
 

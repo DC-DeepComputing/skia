@@ -244,6 +244,16 @@ public:
      */
     void dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const;
 
+    struct EstimatedMemoryStats {
+        size_t fScratchTextureBytes = 0;
+        size_t fShareableTextureBytes = 0;
+        size_t fExternalTextureBytes = 0;
+        size_t fDrawBufferBytes = 0;
+        size_t fUploadBufferBytes = 0;
+    };
+
+    EstimatedMemoryStats estimatedMemoryStats() const;
+
     // Provides access to functions that aren't part of the public API.
     RecorderPriv priv();
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -332,6 +342,7 @@ private:
     std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
+    EstimatedMemoryStats fEstimatedMemoryStats;
 
     // Tracks the flushing state to ensure recursive flushing does not occur.
     SkDEBUGCODE(bool fIsFlushingTrackedDevices = false;)

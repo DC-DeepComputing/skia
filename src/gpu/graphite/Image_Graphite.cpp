@@ -126,6 +126,11 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
     if (!dst) {
         return nullptr;
     }
+    if (budgeted == Budgeted::kYes) {
+        recorder->priv().recordScratchTextureProxy(dst.get());
+    } else {
+        recorder->priv().recordSampledTextureProxy(dst.get());
+    }
     if (srcView.proxy()) {
         dst->setProvenance(SkPixelStorage::Provenance::Copy(
                 srcView.proxy()->getPixelStorageId(), srcView.proxy()->getContentId()));

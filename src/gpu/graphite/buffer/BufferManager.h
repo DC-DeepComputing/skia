@@ -190,6 +190,7 @@ private:
     // number of stride units that fit in the rest of the buffer after fOffset. If not, fRemaining
     // is set to 0 and fOffset is unmodified.
     void prepForStride(size_t stride, size_t align, size_t minCount, size_t headroom);
+    void recordSubAllocation(uint32_t bytes);
 
     template <typename T>
     T reserve(size_t count, T (BufferSubAllocator::*create)(uint32_t offset, uint32_t size) const) {
@@ -204,6 +205,7 @@ private:
         uint32_t offset = fOffset;
         fOffset += requiredBytes32;
         fRemaining -= count;
+        this->recordSubAllocation(requiredBytes32);
         return (this->*create)(offset, requiredBytes32);
     }
 
@@ -360,6 +362,8 @@ public:
     // for recording buffer data for the next Recording.
     [[nodiscard]] bool transferToRecording(Recording*);
 
+    size_t drawBufferBytes() const { return fDrawBufferBytes; }
+
 #if defined(GPU_TEST_UTILS)
     void testingOnly_onFailedBuffer() { this->onFailedBuffer(); }
 #endif
@@ -448,6 +452,8 @@ private:
 
     // List of buffer regions that were requested to be cleared at the time of allocation.
     skia_private::TArray<BindBufferInfo> fClearList;
+
+    size_t fDrawBufferBytes = 0;
 
     // If mapping failed on Buffers created/managed by this DrawBufferManager or by the mapped
     // transfer buffers from the UploadManager, remember so that the next Recording will fail.

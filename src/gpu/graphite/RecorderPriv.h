@@ -116,6 +116,11 @@ public:
 
     size_t getResourceCacheLimit() const;
 
+    void recordScratchTextureProxy(const TextureProxy*);
+    void recordShareableTextureProxy(const TextureProxy*);
+    void promoteTextureProxyToShareable(const TextureProxy*);
+    void recordSampledTextureProxy(const TextureProxy*);
+
 #if defined(GPU_TEST_UTILS)
     bool deviceIsRegistered(Device*) const;
     ResourceCache* resourceCache() { return fRecorder->fResourceProvider->resourceCache(); }
