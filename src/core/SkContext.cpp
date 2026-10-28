@@ -13,6 +13,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "include/cpu/Recorder.h"
 #include "include/private/SkGPUContext.h"
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureManager.h"
