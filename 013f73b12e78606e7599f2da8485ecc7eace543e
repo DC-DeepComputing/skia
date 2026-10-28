@@ -33,6 +33,24 @@
       "message": "LGTM, but wait for michael",
       "revId": "013f73b12e78606e7599f2da8485ecc7eace543e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dd0c633_a4cf33bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:20:21Z",
+      "side": 1,
+      "message": "I am torn between saying that we should also include `PipelineData.h` into buffer/ or we should move `UniformManager.h` and `StorageContext.h` out of buffer/ so that they can live in the directory that will hold the uniform/texture extraction component.",
+      "parentUuid": "41d3c879_64925269",
+      "revId": "013f73b12e78606e7599f2da8485ecc7eace543e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
