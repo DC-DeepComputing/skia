@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f30d6888_329b3812",
+        "filename": "include/core/SkRRect.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:16:33Z",
+      "side": 1,
+      "message": "This comment doesn\u0027t add value; we\u0027re calling offset() because makeOffset() is implemented in terms of offset(), which is clear from this code.\n\nThere is an alternate pattern sometimes used where offset() would be implemented in terms of makeOffset(), like `*this \u003d this-\u003emakeOffset(dx, dy);`. It\u0027s arbitrary which way you should go IMO.",
+      "range": {
+        "startLine": 426,
+        "startChar": 0,
+        "endLine": 426,
+        "endChar": 72
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34301fd6_23539d9b",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:16:33Z",
+      "side": 1,
+      "message": "This was always there, but this should use the HalfWidth and HalfHeight functions",
+      "range": {
+        "startLine": 452,
+        "startChar": 0,
+        "endLine": 452,
+        "endChar": 94
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5e795e4_d4baa108",
+        "filename": "src/core/SkScaleToSides.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:16:33Z",
+      "side": 1,
+      "message": "We don\u0027t need to pass in `limit` if we can calculate it from `minCoord` and `maxCoord`. Those parameters shouldn\u0027t have defaults.",
+      "range": {
+        "startLine": 24,
+        "startChar": 28,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2d412cb_13b6e659",
+        "filename": "src/core/SkScaleToSides.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:16:33Z",
+      "side": 1,
+      "message": "Is it not sufficient to just set `*b \u003d maxCoord - minCoord`?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
