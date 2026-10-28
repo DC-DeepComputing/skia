@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f26e9f17_2f61b6df",
+        "filename": "src/core/SkAutoMalloc.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:02:07Z",
+      "side": 1,
+      "message": "Why is this considered dangling? Is it because of the case when it points to `fStorage`, which is declared after it in the field list?",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 42
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84abf614_9d095fad",
+        "filename": "src/core/SkAutoPixmapStorage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:02:07Z",
+      "side": 1,
+      "message": "What\u0027s detected as dangling here? `freeStorage()` is called in the destructor and resets `fStorage` to nullptr.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 46
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63846c6b_fe7994c9",
+        "filename": "src/core/SkCachedData.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:02:07Z",
+      "side": 1,
+      "message": "remove unnecessary initializer?",
+      "range": {
+        "startLine": 56,
+        "startChar": 26,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06e90ee5_a297a504",
+        "filename": "src/core/SkDescriptor.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:02:07Z",
+      "side": 1,
+      "message": "remove unnecessary initializer?",
+      "range": {
+        "startLine": 114,
+        "startChar": 51,
+        "endLine": 114,
+        "endChar": 58
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd4be5d_95a0b87d",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 1141,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T17:02:07Z",
+      "side": 1,
+      "message": "Can this be marked as stack allocated only? Then the raw_ptr in Context can go away, right?",
+      "range": {
+        "startLine": 1141,
+        "startChar": 0,
+        "endLine": 1141,
+        "endChar": 14
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
