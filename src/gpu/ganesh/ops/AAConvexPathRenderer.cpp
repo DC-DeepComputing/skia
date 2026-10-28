@@ -901,7 +901,9 @@ private:
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
         for (int i = 0; i < fDraws.size(); ++i) {
             for (int j = 0; j < fDraws[i].fMeshCount; ++j) {
-                flushState->drawMesh(fDraws[i].fMeshes[j]);
+                if (!flushState->drawMesh2(fDraws[i].fMeshes[j])) {
+                    return;
+                }
             }
         }
     }

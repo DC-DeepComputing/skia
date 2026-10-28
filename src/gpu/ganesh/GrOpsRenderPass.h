@@ -93,15 +93,15 @@ public:
     //   - If the scissor test is enabled, call setScissorRect()
     //   - If the current program uses textures, call bindTextures()
     //   - Call bindBuffers() (even if all buffers are null)
-    void draw(int vertexCount, int baseVertex);
-    void drawIndexed(int indexCount, int baseIndex, uint16_t minIndexValue, uint16_t maxIndexValue,
-                     int baseVertex);
+    [[nodiscard]] bool draw1(int vertexCount, int baseVertex);
+    [[nodiscard]] bool drawIndexed1(int indexCount, int baseIndex, uint16_t minIndexValue, uint16_t maxIndexValue,
+                                    int baseVertex);
 
     // Requires caps.drawInstancedSupport().
-    void drawInstanced(int instanceCount, int baseInstance, int vertexCount, int baseVertex);
+    [[nodiscard]] bool drawInstanced1(int instanceCount, int baseInstance, int vertexCount, int baseVertex);
 
     // Requires caps.drawInstancedSupport().
-    void drawIndexedInstanced(int indexCount, int baseIndex, int instanceCount, int baseInstance,
+    [[nodiscard]] bool drawIndexedInstanced1(int indexCount, int baseIndex, int instanceCount, int baseInstance,
                               int baseVertex);
 
     // Executes multiple draws from an array of GrDrawIndirectCommand in the provided buffer.
@@ -110,7 +110,7 @@ public:
     //
     // If caps.nativeDrawIndirectSupport() is unavailable, then 'drawIndirectBuffer' must be a
     // GrCpuBuffer in order to polyfill. Performance may suffer in this scenario.
-    void drawIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset, int drawCount);
+    [[nodiscard]] bool drawIndirect1(const GrBuffer* drawIndirectBuffer, size_t bufferOffset, int drawCount);
 
     // Executes multiple draws from an array of GrDrawIndexedIndirectCommand in the provided buffer.
     //
@@ -118,13 +118,13 @@ public:
     //
     // If caps.nativeDrawIndirectSupport() is unavailable, then 'drawIndirectBuffer' must be a
     // GrCpuBuffer in order to polyfill. Performance may suffer in this scenario.
-    void drawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t bufferOffset,
+    [[nodiscard]] bool drawIndexedIndirect1(const GrBuffer* drawIndirectBuffer, size_t bufferOffset,
                              int drawCount);
 
     // This is a helper method for drawing a repeating pattern of vertices. The bound index buffer
     // is understood to contain 'maxPatternRepetitionsInIndexBuffer' repetitions of the pattern.
     // If more repetitions are required, then we loop.
-    void drawIndexPattern(int patternIndexCount, int patternRepeatCount,
+    [[nodiscard]] bool drawIndexPattern1(int patternIndexCount, int patternRepeatCount,
                           int maxPatternRepetitionsInIndexBuffer, int patternVertexCount,
                           int baseVertex);
 
@@ -182,7 +182,7 @@ private:
         fActiveVertexBuffer.reset();
     }
 
-    bool prepareToDraw();
+    [[nodiscard]] bool prepareToDraw1();
 
     // overridden by backend-specific derived class to perform the rendering command.
     virtual void onBegin() {}

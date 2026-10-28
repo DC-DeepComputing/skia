@@ -54,10 +54,10 @@
 using namespace skia_private;
 
 class GrAppliedClip;
+class GrCaps;
 class GrDstProxyView;
 class GrGLSLProgramDataManager;
 class GrRecordingContext;
-class GrCaps;
 enum class GrXferBarrierFlags;
 namespace skgpu { class KeyBuilder; }
 struct GrContextOptions;
@@ -212,7 +212,9 @@ private:
             if (fScissorTest == GrScissorTest::kEnabled) {
                 flushState->setScissorRect(kDynamicScissors[i]);
             }
-            flushState->drawMesh(meshes[i]);
+            if (!flushState->drawMesh2(meshes[i])) {
+                return;
+            }
         }
     }
 

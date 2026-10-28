@@ -246,7 +246,7 @@ public:
     }
 
     // Makes the appropriate bindBuffers() and draw*() calls for the provided mesh.
-    void drawMesh(const GrSimpleMesh& mesh);
+    [[nodiscard]] bool drawMesh2(const GrSimpleMesh& mesh);
 
     // Pass-through methods to GrOpsRenderPass.
     void bindPipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {
@@ -266,34 +266,34 @@ public:
         fOpsRenderPass->bindBuffers(std::move(indexBuffer), std::move(instanceBuffer),
                                     std::move(vertexBuffer), primitiveRestart);
     }
-    void draw(int vertexCount, int baseVertex) {
-        fOpsRenderPass->draw(vertexCount, baseVertex);
+    [[nodiscard]] bool draw2(int vertexCount, int baseVertex) {
+        return fOpsRenderPass->draw1(vertexCount, baseVertex);
     }
-    void drawIndexed(int indexCount, int baseIndex, uint16_t minIndexValue, uint16_t maxIndexValue,
+    [[nodiscard]] bool drawIndexed2(int indexCount, int baseIndex, uint16_t minIndexValue, uint16_t maxIndexValue,
                      int baseVertex) {
-        fOpsRenderPass->drawIndexed(indexCount, baseIndex, minIndexValue, maxIndexValue,
-                                    baseVertex);
+        return fOpsRenderPass->drawIndexed1(indexCount, baseIndex, minIndexValue, maxIndexValue,
+                                            baseVertex);
     }
-    void drawInstanced(int instanceCount, int baseInstance, int vertexCount, int baseVertex) {
-        fOpsRenderPass->drawInstanced(instanceCount, baseInstance, vertexCount, baseVertex);
+    [[nodiscard]] bool drawInstanced2(int instanceCount, int baseInstance, int vertexCount, int baseVertex) {
+        return fOpsRenderPass->drawInstanced1(instanceCount, baseInstance, vertexCount, baseVertex);
     }
-    void drawIndexedInstanced(int indexCount, int baseIndex, int instanceCount, int baseInstance,
+    [[nodiscard]] bool drawIndexedInstanced2(int indexCount, int baseIndex, int instanceCount, int baseInstance,
                               int baseVertex) {
-        fOpsRenderPass->drawIndexedInstanced(indexCount, baseIndex, instanceCount, baseInstance,
-                                             baseVertex);
+        return fOpsRenderPass->drawIndexedInstanced1(indexCount, baseIndex, instanceCount, baseInstance,
+                                                     baseVertex);
     }
-    void drawIndirect(const GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
-        fOpsRenderPass->drawIndirect(drawIndirectBuffer, offset, drawCount);
+    [[nodiscard]] bool drawIndirect2(const GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
+        return fOpsRenderPass->drawIndirect1(drawIndirectBuffer, offset, drawCount);
     }
-    void drawIndexedIndirect(const GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
-        fOpsRenderPass->drawIndexedIndirect(drawIndirectBuffer, offset, drawCount);
+    [[nodiscard]] bool drawIndexedIndirect2(const GrBuffer* drawIndirectBuffer, size_t offset, int drawCount) {
+        return fOpsRenderPass->drawIndexedIndirect1(drawIndirectBuffer, offset, drawCount);
     }
-    void drawIndexPattern(int patternIndexCount, int patternRepeatCount,
+    [[nodiscard]] bool drawIndexPattern2(int patternIndexCount, int patternRepeatCount,
                           int maxPatternRepetitionsInIndexBuffer, int patternVertexCount,
                           int baseVertex) {
-        fOpsRenderPass->drawIndexPattern(patternIndexCount, patternRepeatCount,
-                                         maxPatternRepetitionsInIndexBuffer, patternVertexCount,
-                                         baseVertex);
+        return fOpsRenderPass->drawIndexPattern1(patternIndexCount, patternRepeatCount,
+                                                 maxPatternRepetitionsInIndexBuffer,
+                                                 patternVertexCount, baseVertex);
     }
 
 private:

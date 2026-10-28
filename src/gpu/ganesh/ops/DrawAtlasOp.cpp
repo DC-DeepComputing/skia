@@ -296,7 +296,9 @@ void DrawAtlasOpImpl::onExecute(GrOpFlushState* flushState, const SkRect& chainB
 
     flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
     flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-    flushState->drawMesh(*fMesh);
+    if (!flushState->drawMesh2(*fMesh)) {
+        return;
+    }
 }
 
 GrOp::CombineResult DrawAtlasOpImpl::onCombineIfPossible(GrOp* t,

@@ -931,7 +931,9 @@ void FillRRectOpImpl::onExecute(GrOpFlushState* flushState, const SkRect& chainB
     flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
     flushState->bindBuffers(std::move(fIndexBuffer), std::move(fInstanceBuffer),
                             std::move(fVertexBuffer));
-    flushState->drawIndexedInstanced(std::size(kIndexData), 0, fInstanceCount, fBaseInstance, 0);
+    if (!flushState->drawIndexedInstanced2(std::size(kIndexData), 0, fInstanceCount, fBaseInstance, 0)) {
+        return;
+    }
 }
 
 // Will the given corner look good if we use HW derivatives?

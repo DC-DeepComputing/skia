@@ -673,7 +673,9 @@ private:
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), *fFalloffView.proxy(),
                                  fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

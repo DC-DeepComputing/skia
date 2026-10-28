@@ -1210,7 +1210,9 @@ void MeshOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
     flushState->bindTextures(fProgramInfo->geomProc(),
                              geomProcTextures.data(),
                              fProgramInfo->pipeline());
-    flushState->drawMesh(*fMesh);
+    if (!flushState->drawMesh2(*fMesh)) {
+        return;
+    }
 }
 
 GrOp::CombineResult MeshOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) {

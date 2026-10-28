@@ -489,7 +489,9 @@ void PathInnerTriangulateOp::onExecute(GrOpFlushState* flushState, const SkRect&
             flushState->bindPipelineAndScissorClip(*fanProgram, this->bounds());
             flushState->bindTextures(fanProgram->geomProc(), nullptr, fanProgram->pipeline());
             flushState->bindBuffers(nullptr, nullptr, fFanBuffer);
-            flushState->draw(fFanVertexCount, fBaseFanVertex);
+            if (!flushState->draw2(fFanVertexCount, fBaseFanVertex)) {
+                return;
+            }
         }
     }
 

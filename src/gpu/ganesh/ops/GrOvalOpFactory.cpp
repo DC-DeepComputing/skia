@@ -1457,7 +1457,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
@@ -1788,7 +1790,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
@@ -2087,7 +2091,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
@@ -2361,7 +2367,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
@@ -2827,7 +2835,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
@@ -3158,7 +3168,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

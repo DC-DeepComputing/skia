@@ -234,7 +234,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                  for (int y = 0; y < kBoxCountY; ++y) {
                      auto pass = helper->bindPipeline(GrPrimitiveType::kTriangles, false, true);
                      pass->bindBuffers(nullptr, nullptr, helper->fVertBuffer);
-                     pass->draw(kBoxCountX * 6, y * kBoxCountX * 6);
+                     if (!pass->draw1(kBoxCountX * 6, y * kBoxCountX * 6)) {
+                        return;
+                     }
                  }
              });
 
@@ -256,9 +258,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
 
                     auto pass = helper->bindPipeline(GrPrimitiveType::kTriangles, false, true);
                     pass->bindBuffers(helper->fIndexBuffer, nullptr, helper->fVertBuffer);
-                    pass->drawIndexed(repetitionCount * 6, baseRepetition * 6, baseRepetition * 4,
-                                      (baseRepetition + repetitionCount) * 4 - 1,
-                                      (i - baseRepetition) * 4);
+                    if (!pass->drawIndexed1(repetitionCount * 6, baseRepetition * 6, baseRepetition * 4,
+                                            (baseRepetition + repetitionCount) * 4 - 1,
+                                            (i - baseRepetition) * 4)) {
+                                return;
+                    }
 
                     baseRepetition = (baseRepetition + 1) % 3;
                     i += repetitionCount;
@@ -278,8 +282,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                 for (int y = 0; y < kBoxCountY; ++y) {
                     auto pass = helper->bindPipeline(GrPrimitiveType::kTriangles, false, true);
                     pass->bindBuffers(helper->fIndexBuffer, nullptr, helper->fVertBuffer);
-                    pass->drawIndexPattern(6, kBoxCountX, kIndexPatternRepeatCount, 4,
-                                           y * kBoxCountX * 4);
+                    if (!pass->drawIndexPattern1(6, kBoxCountX, kIndexPatternRepeatCount, 4,
+                                                 y * kBoxCountX * 4)) {
+                        return;
+                    }
 
                 }
              });
@@ -341,12 +347,16 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                              int baseIndex = (y % 2);
                              pass->bindBuffers(std::move(indexBuffer), helper->fInstBuffer,
                                                std::move(vertexBuffer));
-                             pass->drawIndexedInstanced(6, baseIndex, kBoxCountX, y * kBoxCountX,
-                                                        baseVertex);
+                             if (!pass->drawIndexedInstanced1(6, baseIndex, kBoxCountX, y * kBoxCountX,
+                                                             baseVertex)) {
+                                return;
+                            }
                          } else {
                              pass->bindBuffers(nullptr, helper->fInstBuffer,
                                                std::move(vertexBuffer));
-                             pass->drawInstanced(kBoxCountX, y * kBoxCountY, 4, baseVertex);
+                             if (!pass->drawInstanced1(kBoxCountX, y * kBoxCountY, 4, baseVertex)) {
+                                return;
+                             }
                          }
                      }
                  });
@@ -424,8 +434,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                              int end = kBoxCountY * (i + 1) / 3;
                              size_t offset = helper->fDrawIndirectBufferOffset + start *
                                              sizeof(GrDrawIndexedIndirectCommand);
-                             pass->drawIndexedIndirect(helper->fDrawIndirectBuffer.get(), offset,
-                                                       end - start);
+                             if (!pass->drawIndexedIndirect1(helper->fDrawIndirectBuffer.get(), offset,
+                                                             end - start)) {
+                                return;
+                            }
                          }
                      } else {
                          pass = helper->bindPipeline(GrPrimitiveType::kTriangleStrip, true, true);
@@ -435,8 +447,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                              int end = kBoxCountY * (i + 1) / 2;
                              size_t offset = helper->fDrawIndirectBufferOffset + start *
                                              sizeof(GrDrawIndirectCommand);
-                             pass->drawIndirect(helper->fDrawIndirectBuffer.get(), offset,
-                                                end - start);
+                             if (!pass->drawIndirect1(helper->fDrawIndirectBuffer.get(), offset,
+                                                end - start)) {
+                                return;
+                            }
                          }
                      }
                  });
