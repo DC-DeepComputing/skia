@@ -32,11 +32,19 @@ std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
     return SkJpegRustCodec::MakeFromStream(std::move(stream), result);
 }
 
+std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
+                                SkCodec::Result* result,
+                                InputState inputState,
+                                Metadata* metadata) {
+    return SkJpegRustCodec::MakeFromStream(
+            std::move(stream), result, inputState == InputState::kComplete, metadata);
+}
+
 std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
                                 SkCodec::Result* result,
                                 SkCodecs::DecodeContext) {
     return SkJpegRustCodec::MakeFromStream(
-            SkMemoryStream::Make(std::move(data)), result, /*rawInputComplete=*/true);
+            SkMemoryStream::Make(std::move(data)), result, /*inputComplete=*/true);
 }
 
 }  // namespace SkJpegRustDecoder
