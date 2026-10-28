@@ -262,6 +262,8 @@ public:
     void checkFinishedCallbacks() override;
     void finishOutstandingGpuWork() override;
 
+    bool checkAndClearBackendErrors() override { return this->clearErrorsAndCheckForOOM(); }
+
     // Calls glGetError() until no errors are reported. Also looks for OOMs.
     // Returns true if any GL error was reported.
     bool clearErrorsAndCheckForOOM();
