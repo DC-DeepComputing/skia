@@ -526,10 +526,17 @@ public:
     bool srgbWriteControl() const { return fSRGBWriteControl; }
 
     /**
-     * Skip checks for GL errors and framebuffer completeness. Note that this does not skip
-     *  checking shader compilation and program linking status.
+     * Skip checks for GL errors after resource allocations and texture uploads/transfers, and
+     * framebuffer completeness checks when creating render targets. Note that this does not skip
+     * checking shader compilation and program linking status.
      */
-    bool skipErrorChecks() const { return fSkipErrorChecks; }
+    bool skipResourceErrorChecks() const { return fSkipResourceErrorChecks; }
+
+    /**
+     * Skip checks for GL errors at the end of each submit and debug framebuffer completeness
+     * checks when binding render targets.
+     */
+    bool skipCommandErrorChecks() const { return fSkipCommandErrorChecks; }
 
     bool clientCanDisableMultisample() const { return fClientCanDisableMultisample; }
 
@@ -648,7 +655,8 @@ private:
     bool fFenceSyncSupport : 1;
     bool fFBFetchRequiresEnablePerSample : 1;
     bool fSRGBWriteControl : 1;
-    bool fSkipErrorChecks : 1;
+    bool fSkipResourceErrorChecks : 1;
+    bool fSkipCommandErrorChecks : 1;
     bool fClientCanDisableMultisample : 1;
 
     // Driver workarounds

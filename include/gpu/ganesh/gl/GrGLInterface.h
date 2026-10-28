@@ -53,6 +53,7 @@ private:
     // This is here to avoid having our debug code that checks for a GL error after most GL calls
     // accidentally swallow an OOM that should be reported.
     mutable bool fOOMed = false;
+    mutable bool fHasError = false;
     bool fSuppressErrorLogging = false;
 #endif
 
@@ -67,6 +68,7 @@ public:
 #if GR_GL_CHECK_ERROR
     GrGLenum checkError(const char* location, const char* call) const;
     bool checkAndResetOOMed() const;
+    bool checkAndResetError() const;
     void suppressErrorLogging();
 #endif
 
