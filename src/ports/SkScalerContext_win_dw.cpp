@@ -34,6 +34,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkScopeExit.h"
 #include "src/core/SkSharedMutex.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/ports/SkScalerContext_win_dw.h"
 #include "src/ports/SkTypeface_win_dw.h"
 #include "src/sfnt/SkOTTable_EBLC.h"
@@ -78,7 +79,7 @@ public:
     }
 
 private:
-    SkSharedMutex* fLock;
+    raw_ptr<SkSharedMutex> fLock;
 };
 class SK_SCOPED_CAPABILITY Shared {
 public:
@@ -99,7 +100,7 @@ public:
     }
 
 private:
-    SkSharedMutex* fLock;
+    raw_ptr<SkSharedMutex> fLock;
 };
 
 static bool isLCD(const SkScalerContextRec& rec) {
@@ -1705,7 +1706,7 @@ bool SkScalerContext_DW::generateSVGMetrics(const SkGlyph& glyph, SkRect* bounds
 namespace {
 struct Context {
     SkTScopedComPtr<IDWriteFontFace4> fontFace4;
-    void* glyphDataContext;
+    raw_ptr<void> glyphDataContext;
     Context(IDWriteFontFace4* face4, void* context)
         : fontFace4(SkRefComPtr(face4))
         , glyphDataContext(context)

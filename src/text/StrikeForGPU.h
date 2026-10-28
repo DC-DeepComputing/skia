@@ -12,6 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkGlyph.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <memory>
@@ -131,7 +132,7 @@ public:
     ~StrikeMutationMonitor();
 
 private:
-    StrikeForGPU* fStrike;
+    raw_ptr<StrikeForGPU> fStrike;
 };
 
 // -- StrikeForGPUCacheInterface -------------------------------------------------------------------

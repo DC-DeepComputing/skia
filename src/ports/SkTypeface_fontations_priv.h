@@ -19,6 +19,8 @@
 #include "include/private/SkTArray.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkScalerContext.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ref.h"
 #include "src/ports/fontations/src/ffi.rs.h"
 #include "src/ports/SkTypeface_fontations_factory.h"
 
@@ -41,7 +43,7 @@ public:
     size_t size() const override;
 
 private:
-    SkFontParameters::Variation::Axis* fAxisArray;
+    raw_ptr<SkFontParameters::Variation::Axis, AllowPtrArithmetic> fAxisArray;
     size_t fAxisCount;
 };
 
@@ -114,8 +116,8 @@ private:
                                uint8_t extend_mode,
                                SkPaint& paint,
                                SkMatrix* = nullptr);
-    SkFontationsScalerContext& fScalerContext;
-    SkCanvas& fCanvas;
+    const raw_ref<SkFontationsScalerContext> fScalerContext;
+    const raw_ref<SkCanvas> fCanvas;
     SkSpan<const SkColor> fPalette;
     SkColor fForegroundColor;
     bool fAntialias;
@@ -175,7 +177,7 @@ public:
                                   uint8_t) override;
 
 private:
-    SkFontationsScalerContext& fScalerContext;
+    const raw_ref<SkFontationsScalerContext> fScalerContext;
     skia_private::STArray<4, SkMatrix> fMatrixStack;
 
     uint16_t fUpem;
