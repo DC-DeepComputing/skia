@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b5d52e5_288c6436",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-28T15:31:24Z",
+      "side": 1,
+      "message": "Thanks for the clear analysis. SkString::insert reallocates whenever the length crosses a 4-byte unit, so the old builder copied the whole text on almost every addText, and std::string is the right fix since SkString has no reserve(). Build() now does one linear copy instead of the old refcount share, and ParagraphImpl\u0027s fText(text) only shares it, so \"copies the text one time\" holds.\n\nI checked PS1 against a few builder edge cases: U+0000 bytes inside the text, text added as UTF-16, and Reset() followed by reuse of the builder while a paragraph built before it is still alive. All of them behave the same as before. The SkParagraph dm tests (219) and the Flutter text/paragraph/editing test set (2409 tests, ICU) show no changes against the parent CL.\n\nI uploaded a companion WIP CL stacked on top of PS1 with that test, in case you want it:\nhttps://skia-review.googlesource.com/c/skia/+/1406080\n- Patchset 1 adds SkParagraph_BuilderResetKeepsBuiltText, which passes on PS1.\n\nFeel free to fold it into this CL, cherry-pick it later, or ignore it. I will abandon the WIP CL once it is folded in or no longer needed.\n\nLGTM from my side.",
+      "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
