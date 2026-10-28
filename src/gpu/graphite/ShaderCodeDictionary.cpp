@@ -151,9 +151,13 @@ void append_uniforms(TArray<std::string>* list,
         list->push_back(get_mangled_sampler_name(entry->fTexturesAndSamplers[i], node->keyIndex()));
     }
 
-    // Append storage buffer.
+    // Append storage buffer or fallback texture.
     if (node->requiredFlags() & SnippetRequirementFlags::kStorageBuffer) {
-        list->push_back(ShaderInfo::kStorageBufferName);
+        if (shaderInfo.storageBufferSupport()) {
+            list->push_back(ShaderInfo::kStorageBufferName);
+        } else {
+            list->push_back(ShaderInfo::kStorageFallbackTextureName);
+        }
     }
 
     // Append child output names.
