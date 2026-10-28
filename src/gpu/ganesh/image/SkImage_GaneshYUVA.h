@@ -51,7 +51,7 @@ public:
     static constexpr auto kAssumedColorType = kRGBA_8888_SkColorType;
 
     SkImage_GaneshYUVA(sk_sp<GrImageContext>,
-                       uint32_t uniqueID,
+                       uint64_t uniqueID,
                        GrYUVATextureProxies proxies,
                        sk_sp<SkColorSpace>);
 

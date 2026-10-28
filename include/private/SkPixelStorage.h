@@ -25,7 +25,7 @@ public:
     };
 
     struct Key {
-        uint32_t fStorageID = 0;
+        uint64_t fStorageID = 0;
         uint32_t fContentID = 0;
 
         bool isValid() const { return fStorageID != 0; }
@@ -55,7 +55,7 @@ public:
             return {Source::kCopy, parentKey};
         }
 
-        static Provenance Copy(uint32_t parentStorageID, uint32_t parentContentID) {
+        static Provenance Copy(uint64_t parentStorageID, uint32_t parentContentID) {
             return {Source::kCopy, {parentStorageID, parentContentID}};
         }
 
@@ -67,7 +67,7 @@ public:
     SkPixelStorage(Type type);
     ~SkPixelStorage() override = default;
 
-    uint32_t getPixelStorageId() const { return fID; }
+    uint64_t getPixelStorageId() const { return fID; }
     Type type() const { return fType; }
 
     uint32_t getContentId() const { return fContentID.load(std::memory_order_relaxed); }
@@ -82,7 +82,7 @@ private:
      * fID is a static identifier that differenciates PixelStorages. This is assigned at
      * construction and does not change.
      */
-    uint32_t fID;
+    uint64_t fID;
     /**
      * fContentID is an identifier that tracks the current state of a PixelStorage. Gets incremented
      * and read from other objects that want to track the state of a PixelStorage at a given time.
@@ -91,7 +91,7 @@ private:
 
     Provenance fProvenance;
 
-    static uint32_t NextId();
+    static uint64_t NextId();
 };
 
 #endif

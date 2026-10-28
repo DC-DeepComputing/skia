@@ -7,6 +7,6 @@ void draw(SkCanvas*) {
     SkIRect r{0, 0, 10, 10};
     auto s1 = image->makeSubset(nullptr, r, {});
     auto s2 = image->makeSubset(nullptr, r, {});
-    SkDebugf("%u\n%u\n", s1->uniqueID(), s2->uniqueID());
+    SkDebugf("%" PRIu64 "\n%" PRIu64 "\n", s1->uniqueID(), s2->uniqueID());
 }
 }  // END FIDDLE

@@ -29,7 +29,7 @@
 
 class SkShader;
 
-SkImage::SkImage(const SkImageInfo& info, uint32_t uniqueID)
+SkImage::SkImage(const SkImageInfo& info, uint64_t uniqueID)
         : fInfo(info)
         , fUniqueID(kNeedNewImageUniqueID == uniqueID ? SkNextID::ImageID() : uniqueID) {
     SkASSERT(info.width() > 0);

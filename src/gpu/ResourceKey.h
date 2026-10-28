@@ -171,9 +171,9 @@ private:
 
     friend class ::TestResource;  // For unit test to access kMetaDataCnt.
 
-    // For Ganesh, bmp textures require 5 uint32_t values. Graphite requires 6 (due to
-    // storing mipmap status as part of the key).
-    skia_private::AutoSTMalloc<kMetaDataCnt + 6, uint32_t> fKey;
+    // For Ganesh and Graphite, bmp textures require 6 uint32_t values (2 for 64-bit ID + 4 for
+    // subset). Derived keys may append an extra domain/status word, requiring up to 7.
+    skia_private::AutoSTMalloc<kMetaDataCnt + 7, uint32_t> fKey;
 };
 
 /**

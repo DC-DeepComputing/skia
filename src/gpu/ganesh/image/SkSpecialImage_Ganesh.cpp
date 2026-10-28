@@ -35,7 +35,7 @@ class SkSpecialImage_Gpu final : public SkSpecialImage {
 public:
     SkSpecialImage_Gpu(GrRecordingContext* context,
                        const SkIRect& subset,
-                       uint32_t uniqueID,
+                       uint64_t uniqueID,
                        GrSurfaceProxyView view,
                        const SkColorInfo& colorInfo,
                        const SkSurfaceProps& props)
@@ -105,7 +105,7 @@ sk_sp<SkSpecialImage> MakeFromTextureImage(GrRecordingContext* rContext,
 
 sk_sp<SkSpecialImage> MakeDeferredFromGpu(GrRecordingContext* context,
                                           const SkIRect& subset,
-                                          uint32_t uniqueID,
+                                          uint64_t uniqueID,
                                           GrSurfaceProxyView view,
                                           const GrColorInfo& colorInfo,
                                           const SkSurfaceProps& props) {

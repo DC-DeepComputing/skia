@@ -52,7 +52,7 @@ SkImage_Raster::SkImage_Raster(const SkImageInfo& info,
                                sk_sp<SkData> data,
                                size_t rowBytes,
                                sk_sp<SkMipmap> mips,
-                               uint32_t id)
+                               uint64_t id)
         : SkImage_Base(info, id, /*backingStorage=*/nullptr), fMips(mips) {
     void* addr = const_cast<void*>(data->data());
 
@@ -63,7 +63,7 @@ SkImage_Raster::SkImage_Raster(const SkImageInfo& info,
 
 SkImage_Raster::SkImage_Raster(const SkBitmap& bm, sk_sp<SkMipmap> mips, bool bitmapMayBeMutable)
         : SkImage_Base(bm.info(),
-                       is_not_subset(bm) ? bm.getGenerationID() : (uint32_t)kNeedNewImageUniqueID,
+                       is_not_subset(bm) ? bm.getGenerationID() : kNeedNewImageUniqueID,
                        sk_ref_sp(bm.pixelRef()))
         , fBitmap(bm)
         , fMips(mips) {

@@ -4,10 +4,10 @@
 REG_FIDDLE(Bitmap_getGenerationID, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
     SkBitmap bitmap;
-    SkDebugf("empty id %u\n", bitmap.getGenerationID());
+    SkDebugf("empty id %" PRIu64 "\n", bitmap.getGenerationID());
     bitmap.allocPixels(SkImageInfo::MakeN32(64, 64, kOpaque_SkAlphaType));
-    SkDebugf("alloc id %u\n", bitmap.getGenerationID());
+    SkDebugf("alloc id %" PRIu64 "\n", bitmap.getGenerationID());
     bitmap.eraseColor(SK_ColorRED);
-    SkDebugf("erase id %u\n", bitmap.getGenerationID());
+    SkDebugf("erase id %" PRIu64 "\n", bitmap.getGenerationID());
 }
 }  // END FIDDLE

@@ -113,7 +113,7 @@ public:
     virtual GrSurfaceOrigin origin() const = 0;
 
 protected:
-    SkImage_GaneshBase(sk_sp<GrImageContext>, SkImageInfo, uint32_t uniqueID);
+    SkImage_GaneshBase(sk_sp<GrImageContext>, SkImageInfo, uint64_t uniqueID);
     sk_sp<SkImage> onMakeSubset(SkRecorder*, const SkIRect& subset, RequiredProperties) const final;
     sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
                                               SkColorType,

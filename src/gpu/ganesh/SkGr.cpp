@@ -59,17 +59,18 @@ class SkBlender;
 class SkColorSpace;
 enum SkColorType : int;
 
-void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint32_t imageID, const SkIRect& imageBounds) {
+void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint64_t imageID, const SkIRect& imageBounds) {
     SkASSERT(key);
     SkASSERT(imageID);
     SkASSERT(!imageBounds.isEmpty());
     static const skgpu::UniqueKey::Domain kImageIDDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey::Builder builder(key, kImageIDDomain, 5, "Image");
-    builder[0] = imageID;
-    builder[1] = imageBounds.fLeft;
-    builder[2] = imageBounds.fTop;
-    builder[3] = imageBounds.fRight;
-    builder[4] = imageBounds.fBottom;
+    skgpu::UniqueKey::Builder builder(key, kImageIDDomain, 6, "Image");
+    builder[0] = static_cast<uint32_t>(imageID & 0xFFFFFFFFULL);
+    builder[1] = static_cast<uint32_t>(imageID >> 32);
+    builder[2] = imageBounds.fLeft;
+    builder[3] = imageBounds.fTop;
+    builder[4] = imageBounds.fRight;
+    builder[5] = imageBounds.fBottom;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

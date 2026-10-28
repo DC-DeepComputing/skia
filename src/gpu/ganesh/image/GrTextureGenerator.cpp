@@ -39,7 +39,7 @@ static void dispose_external_texture(void *context) {
     texture->dispose();
 }
 
-GrTextureGenerator::GrTextureGenerator(const SkImageInfo& info, uint32_t uniqueID)
+GrTextureGenerator::GrTextureGenerator(const SkImageInfo& info, uint64_t uniqueID)
         : SkImageGenerator(info, uniqueID) {}
 
 GrSurfaceProxyView GrTextureGenerator::generateTexture(GrRecordingContext* ctx,

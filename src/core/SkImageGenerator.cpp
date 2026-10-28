@@ -11,7 +11,7 @@
 #include "include/private/SkAssert.h"
 #include "src/core/SkNextID.h"
 
-SkImageGenerator::SkImageGenerator(const SkImageInfo& info, uint32_t uniqueID)
+SkImageGenerator::SkImageGenerator(const SkImageInfo& info, uint64_t uniqueID)
     : fInfo(info)
     , fUniqueID(kNeedNewImageUniqueID == uniqueID ? SkNextID::ImageID() : uniqueID)
 {}
