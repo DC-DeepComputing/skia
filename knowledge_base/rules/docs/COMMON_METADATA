@@ -1,0 +1,26 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "docs/.*"
+    path_expression: "site/docs/.*"
+    rules: "knowledge_base/rules/docs/distinguish-coverage-mask-from-alpha-mask.md"
+    rules: "knowledge_base/rules/docs/distinguish-dataflow-from-call-hierarchy-in-diagrams.md"
+    rules: "knowledge_base/rules/docs/document-bitmap-fonts-and-glyph-caching.md"
+    rules: "knowledge_base/rules/docs/document-conic-curves-in-path-primitives.md"
+  }
+  capability_groups {
+    path_expression: "docs/examples/.*"
+    rules: "knowledge_base/rules/docs/docs-use-public-apis-in-examples.md"
+    rules: "knowledge_base/rules/docs/ensure-raster-image-before-peekpixels.md"
+    rules: "knowledge_base/rules/docs/match-reg-fiddle-to-filename.md"
+  }
+  capability_groups {
+    path_expression: "docs/.*"
+    path_expression: "include/.*"
+    path_expression: "site/docs/.*"
+    rules: "knowledge_base/rules/docs/document-hairlines-by-ctm-invariance.md"
+  }
+}

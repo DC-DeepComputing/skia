@@ -1,0 +1,39 @@
+---
+name: skia/codec/verify-bitstream-conversion-scale-factors
+description: When implementing bitstream or metadata parsing and serialization, verify conversion scale factors and offsets strictly match specification formulas rather than relying on round-trip tests
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When implementing bitstream or metadata parsing and serialization
+against an external specification, verify that numerical conversion constants
+(such as scale factors, divisors, and offset biases) strictly match the
+specification's formulas. Do not rely solely on symmetric
+serialize-and-deserialize round-trip unit tests to validate conversion formulas,
+as identical errors in encode and decode routines will round-trip cleanly while
+producing malformed bitstreams.
+
+**Why.** Round-trip unit tests only verify that deserializing encoded bytes
+recovers the original input. If both serialization and deserialization functions
+share the same incorrect scale factor or offset, round-trip tests pass while the
+emitted bitstream and parsed external data violate the specification standard
+and fail interop.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Serialization and deserialization share an incorrect scale factor (1000.f instead of 4000.f).
+// Round-trip tests pass, but the bitstream violates the 1/4000 specification divisor.
+cubic.fY[c] = uint16_to_float(
+    syntax.gain_curve_control_points_y[a][c], 0u, 48000u, 24000u, 1000.f);
+```
+
+Good:
+
+```cpp
+// Good: Scale factor 4000.f strictly matches the 1/4000 specification divisor.
+cubic.fY[c] = uint16_to_float(
+    syntax.gain_curve_control_points_y[a][c], 0u, 48000u, 24000u, 4000.f);
+```

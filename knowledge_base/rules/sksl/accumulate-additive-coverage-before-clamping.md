@@ -1,0 +1,42 @@
+---
+name: skia/sksl/accumulate-additive-coverage-before-clamping
+description: When computing analytic shape coverage with clipping planes and additive features in fragment shaders, accumulate additive terms before saturate and edge multiplication
+rubric: safety
+severity: should_fix
+---
+
+**Rule.** When computing analytic shape coverage with clipping planes and
+additive features (such as stroke end caps or joins) in fragment shaders,
+accumulate additive coverage directly into the unsaturated clip factor before a
+single saturate() call. Multiply with orthogonal edge coverage only after
+clamping, avoiding redundant intermediate saturations, inverse weighting
+multiplies ((1 - clip)), and extra min() clamps.
+
+**Why.** Weighting additive features by (1 - clip) after edge clipping and
+re-clamping with min() introduces redundant ALU multiplications and clamp
+instructions. Combining additive coverage directly with clipping terms before a
+single saturate() and final multiplication produces identical coverage while
+reducing per-fragment GPU instruction count.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Clamping clip early requires (1 - clip) weighting and an extra min() clamp
+clip = saturate(clip + unionPlaneClip);
+edgeAlpha *= clip;
+half capAlpha = (1.0 - clip) * (max(dcap1, 0.0) + max(dcap2, 0.0));
+edgeAlpha = min(edgeAlpha + capAlpha, 1.0);
+return half4(edgeAlpha);
+```
+
+Good:
+
+```cpp
+// Good: Accumulate additive cap coverage before a single saturate() and edge multiply
+clip = clip + unionPlaneClip;
+half capAlpha = max(dcap1, 0.0) + max(dcap2, 0.0);
+clip = saturate(clip + capAlpha);
+return half4(clip * edgeAlpha);
+```

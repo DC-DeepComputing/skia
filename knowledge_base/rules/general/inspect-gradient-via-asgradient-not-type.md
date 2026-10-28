@@ -1,0 +1,46 @@
+---
+name: skia/inspect-gradient-via-asgradient-not-type
+description: When inspecting whether an SkShader is a gradient, query as_SB(shader)->asGradient() rather than type() and document that wrapper shaders forward query methods
+rubric: readability
+severity: nit
+---
+
+**Rule.** When determining whether an SkShader is a gradient, call
+as_SB(shader)->asGradient() != SkShaderBase::GradientType::kNone rather than
+checking whether as_SB(shader)->type() equals
+SkShaderBase::ShaderType::kGradientBase. Additionally, document in an
+explanatory comment that wrapper shaders (such as SkLocalMatrixShader) conceal
+the underlying shader type but forward query methods, clarifying why direct type
+inspection is avoided.
+
+**Why.** Wrapper shaders such as SkLocalMatrixShader and SkCTMShader report
+their own wrapper ShaderType rather than kGradientBase, causing concrete type
+comparisons to miss wrapped gradients. Query methods like asGradient() forward
+through wrappers while accumulating local matrices, and documenting this
+behavior clarifies why direct type checking cannot be used.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: concrete type check misses gradients wrapped in SkLocalMatrixShader
+if (as_SB(shader)->type() == SkShaderBase::ShaderType::kGradientBase) {
+    this->addGradientShaderResources(shader, paint, resources);
+}
+
+// Bad: using query methods without documenting why direct type check is bypassed
+if (as_SB(shader)->asGradient() != SkShaderBase::GradientType::kNone) {
+    this->addGradientShaderResources(shader, paint, resources);
+}
+```
+
+Good:
+
+```cpp
+// Checking the shader type is too restrictive, as it rejects local matrix wrappers.
+// Wrappers do forward asGradient() though, so we can reach nested gradients this way.
+if (as_SB(shader)->asGradient() != SkShaderBase::GradientType::kNone) {
+    this->addGradientShaderResources(shader, paint, resources);
+}
+```

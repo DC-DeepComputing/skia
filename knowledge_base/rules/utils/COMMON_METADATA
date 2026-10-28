@@ -1,0 +1,20 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/utils/.*"
+    rules: "knowledge_base/rules/utils/avoid-fallback-draw-on-zero-alpha-noop.md"
+  }
+  capability_groups {
+    path_expression: "src/utils/.*"
+    path_expression: "tests/.*"
+    rules: "knowledge_base/rules/utils/clamp-polygon-inset-to-half-bounds.md"
+  }
+  capability_groups {
+    path_expression: "src/utils/.*"
+    rules: "knowledge_base/rules/utils/zero-initialize-scratch-buffers-in-parsing-loops.md"
+  }
+}

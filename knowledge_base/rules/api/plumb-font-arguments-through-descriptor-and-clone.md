@@ -1,0 +1,50 @@
+---
+name: skia/api/plumb-font-arguments-through-descriptor-and-clone
+description: When adding font configuration arguments to SkFontArguments, plumb them through SkFontDescriptor serialization and deserialization as well as SkTypeface::makeClone
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When adding new font configuration arguments or styling options to
+SkFontArguments, plumb them through SkFontDescriptor and
+SkTypeface::makeClone(). Specifically, add corresponding accessors and storage
+on SkFontDescriptor, serialize and deserialize the property tag in
+SkFontDescriptor, reflect the argument in SkFontDescriptor::getFontArguments(),
+and propagate it in typeface onMakeClone() implementations.
+
+**Why.** In Skia, typefaces are serialized, deserialized, and duplicated via
+SkFontDescriptor (such as across IPC boundaries or within SkPicture recordings).
+If a typeface creation argument affects font instantiation but is omitted from
+SkFontDescriptor serialization or makeClone(), the typeface loses its
+configuration when serialized or duplicated.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: adding an argument to SkFontArguments without updating SkFontDescriptor or cloning
+class SkFontArguments {
+public:
+    SkFontArguments& setSyntheticBold(std::optional<bool> bold) {
+        fSyntheticBold = bold;
+        return *this;
+    }
+private:
+    std::optional<bool> fSyntheticBold;
+};
+// SkFontDescriptor and makeClone() omitted, dropping synthetic bold on serialization or clone
+```
+
+Good:
+
+```cpp
+// Good: plumbing the argument through SkFontDescriptor, serialization, and makeClone
+void SkFontDescriptor::setSyntheticBold(std::optional<bool> bold) { fSyntheticBold = bold; }
+SkFontArguments SkFontDescriptor::getFontArguments() const {
+    return SkFontArguments().setSyntheticBold(fSyntheticBold)
+                            .setCollectionIndex(this->getCollectionIndex());
+}
+// SkFontDescriptor serialize / deserialize updated to write and read property tags,
+// and SkTypeface::onMakeClone propagates the argument to the instantiated typeface.
+```

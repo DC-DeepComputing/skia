@@ -4,11 +4,25 @@
 
 agentic_review {
   capability_groups {
+    path_expression: "gn/.*"
+    rules: "knowledge_base/rules/gn/android-bp-declare-cxx-bridge-deps.md"
+    rules: "knowledge_base/rules/gn/compound-platform-prefixes-for-artifact-extensions.md"
+  }
+  capability_groups {
     path_expression: "(?:.*/)?BUILD\\.bazel"
     path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
     path_expression: "BUILD\\.gn"
     path_expression: "gn/.*"
     rules: "knowledge_base/rules/gn/avoid-duplicate-sources-in-filegroups.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    path_expression: "BUILD\\.gn"
+    path_expression: "gn/.*"
+    rules: "knowledge_base/rules/gn/avoid-premature-shared-gni-files.md"
+    rules: "knowledge_base/rules/gn/describe-standard-semantics-in-flag-comments.md"
+    rules: "knowledge_base/rules/gn/guard-clang-only-build-arguments.md"
+    rules: "knowledge_base/rules/gn/separate-product-flags-from-buildconfig.md"
   }
   capability_groups {
     path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"

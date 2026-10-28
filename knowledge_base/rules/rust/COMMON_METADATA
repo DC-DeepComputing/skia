@@ -8,22 +8,65 @@ agentic_review {
     path_expression: "rust/.*"
     path_expression: "src/codec/.*"
     rules: "knowledge_base/rules/rust/accept-skstreamadapter-in-codec-ffi.md"
+    rules: "knowledge_base/rules/rust/codec-zero-initialize-incremental-decode-buffers.md"
   }
   capability_groups {
     path_expression: "experimental/.*"
     path_expression: "rust/.*"
+    rules: "knowledge_base/rules/rust/avoid-copying-input-buffers-in-ffi-results.md"
+    rules: "knowledge_base/rules/rust/deduplicate-unpacking-conversion-helpers.md"
     rules: "knowledge_base/rules/rust/document-ffi-mirror-struct-equivalents.md"
+    rules: "knowledge_base/rules/rust/propagate-conversion-validation-failure.md"
+    rules: "knowledge_base/rules/rust/return-borrowed-slices-via-cxx-out-param.md"
+    rules: "knowledge_base/rules/rust/reuse-upstream-crates-for-format-decoders.md"
+    rules: "knowledge_base/rules/rust/rust-return-bool-with-out-param-in-cxx-ffi.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    path_expression: "experimental/.*"
+    path_expression: "rust/.*"
+    rules: "knowledge_base/rules/rust/consolidate-rust-static-libraries.md"
   }
   capability_groups {
     path_expression: "experimental/rust_[^/]*/.*"
     path_expression: "rust/.*"
+    rules: "knowledge_base/rules/rust/declare-cxx-unique-ptr-shim.md"
+    rules: "knowledge_base/rules/rust/document-reference-parity-checks.md"
+    rules: "knowledge_base/rules/rust/document-unpopulated-ffi-struct-fields.md"
     rules: "knowledge_base/rules/rust/factor-shared-rust-ffi-utilities.md"
     rules: "knowledge_base/rules/rust/name-rust-library-target-after-crate.md"
+    rules: "knowledge_base/rules/rust/unify-shared-cxx-extern-types.md"
+    rules: "knowledge_base/rules/rust/validate-ffi-bounds-and-channels.md"
+  }
+  capability_groups {
+    path_expression: "rust/.*"
+    rules: "knowledge_base/rules/rust/document-unowned-adapter-pointer-migration-todo.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "modules/.*"
+    path_expression: "rust/.*"
+    path_expression: "src/codec/.*"
+    rules: "knowledge_base/rules/rust/omit-redundant-parser-prevalidation.md"
   }
   capability_groups {
     path_expression: "experimental/.*"
     path_expression: "rust/.*"
     path_expression: "src/ports/.*"
     rules: "knowledge_base/rules/rust/panic-on-unexpected-enum-variants.md"
+    rules: "knowledge_base/rules/rust/validate-cxx-enum-discriminants.md"
+  }
+  capability_groups {
+    path_expression: "modules/skcms/.*"
+    path_expression: "rust/icc/.*"
+    rules: "knowledge_base/rules/rust/reject-unsupported-icc-profile-connection-space.md"
+    rules: "knowledge_base/rules/rust/validate-icc-colorant-matrix-columns.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "rust/.*"
+    path_expression: "src/.*"
+    rules: "knowledge_base/rules/rust/reuse-spanutils-for-rust-slice.md"
   }
 }

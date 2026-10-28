@@ -1,0 +1,57 @@
+---
+name: skia/modules/canvaskit-remove-unreferenced-dom-elements
+description: In CanvasKit demo HTML pages, declare static sample text as JavaScript constants rather than using hidden or unreferenced DOM input elements
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** In CanvasKit and web demo HTML pages, do not leave unreferenced DOM
+elements (such as placeholder textareas or unused inputs) and do not use hidden
+DOM elements (styled with `visibility: collapse` or `display: none`) solely to
+store static sample text. Declare static sample text and test strings directly
+as JavaScript constants (`const text = '...'`), and reserve DOM inputs for
+visible, interactive user controls wired to canvas re-rendering.
+
+**Why.** Using hidden or unreferenced DOM elements solely as sample text
+containers adds unnecessary HTML/CSS boilerplate and DOM lookup overhead, while
+dead markup misleads reviewers and users into thinking interactive controls or
+specific tests were wired up. Defining sample text as JavaScript constants keeps
+demos clean and clarifies whether an input element is genuinely interactive.
+
+## Examples
+
+Bad:
+
+```cpp
+<!-- Bad: Unreferenced DOM element left behind -->
+<textarea id="ideographicText">満毎行</textarea>
+
+<!-- Bad: Hidden textarea used solely to hold static sample text -->
+<style>
+  #sampleText { visibility: collapse; }
+</style>
+<textarea id="sampleText">left1 يَهْدِيْكُمُ left2</textarea>
+<script>
+  const sampleText = document.getElementById('sampleText').value;
+</script>
+```
+
+Good:
+
+```cpp
+<!-- Good: Declare static sample text directly as JavaScript constants -->
+<canvas id="demoCanvas" width="400" height="400"></canvas>
+<script>
+  const ideographicText = '満毎行';
+  const sampleText = 'left1 يَهْدِيْكُمُ left2';
+  // Use constants directly in CanvasKit rendering calls
+</script>
+
+<!-- Good: Keep DOM inputs visible and wired to interactive updates -->
+<textarea id="interactiveInput">The quick brown fox</textarea>
+<script>
+  document.getElementById('interactiveInput').addEventListener('input', (e) => {
+    drawText(e.target.value);
+  });
+</script>
+```

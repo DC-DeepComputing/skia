@@ -1,0 +1,49 @@
+---
+name: skia/gpu/document-command-buffer-mutation-ordering
+description: When keeping fallible setup unencapsulated before GPU command recording, document why sequencing precedes command buffer mutation to prevent partial state corruption
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When keeping fallible prerequisite setup (such as lazy proxy
+instantiation or deferred target preparation) unencapsulated at the caller level
+instead of consolidating it into downstream command-recording helpers (such as
+Recording::addCommands), add an explanatory inline comment. Explicitly document
+that setup must succeed before mutating the shared CommandBuffer or
+synchronization state, clarifying why the work cannot be deferred or moved into
+the callee.
+
+**Why.** Downstream command-recording helpers directly mutate shared command
+buffers and synchronization primitives. If fallible initialization steps fail
+after mutation has begun, the command buffer is left in a corrupted or partially
+modified state; documenting this invariant prevents maintainers from prematurely
+consolidating setup into downstream callees.
+
+## Examples
+
+Bad:
+
+```cpp
+// This must happen before instantiating the lazy proxies, because the target for draws in this
+// recording may itself be a lazy proxy whose instantiation must be handled specially here.
+AutoDeinstantiateTextureProxy autoDeinstantiateTargetProxy(
+        info.fRecording->priv().deferredTargetProxy());
+if (!info.fRecording->priv().instantiateCustomProxies(resourceProvider)) {
+    return InsertStatus::kFailed;
+}
+```
+
+Good:
+
+```cpp
+// This must happen before instantiating the lazy proxies, because the target for draws in this
+// recording may itself be a lazy proxy whose instantiation must be handled specially here.
+// We must also make sure the lazy proxies are instantiated successfully before we make any
+// modifications to the current command buffer, so we can't just do all this work in
+// Recording::addCommands below.
+AutoDeinstantiateTextureProxy autoDeinstantiateTargetProxy(
+        info.fRecording->priv().deferredTargetProxy());
+if (!info.fRecording->priv().instantiateCustomProxies(resourceProvider)) {
+    return InsertStatus::kFailed;
+}
+```

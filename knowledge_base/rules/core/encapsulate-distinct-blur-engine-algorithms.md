@@ -1,0 +1,52 @@
+---
+name: skia/core/encapsulate-distinct-blur-engine-algorithms
+description: When implementing distinct blur routines in SkBlurEngine, encapsulate each routine as a separate Algorithm subclass selected by findAlgorithm instead of branching inside blur()
+rubric: design
+severity: should_fix
+---
+
+**Rule.** In SkBlurEngine implementations, separate distinct blur algorithms
+(such as direct convolution for small sigmas vs. multi-pass approximations for
+large sigmas) into dedicated SkBlurEngine::Algorithm subclasses chosen by
+findAlgorithm(). Do not branch internally within an Algorithm::blur() override
+to execute fundamentally different blur routines.
+
+**Why.** SkBlurEngine relies on findAlgorithm() as a strategy dispatcher that
+matches requests to algorithms based on sigma and color type. Encapsulating
+distinct routines as separate Algorithm subclasses enables accurate maxSigma()
+reporting and keeps algorithm selection explicit rather than concealing
+divergent implementations inside blur().
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Branching internally inside an Algorithm to run a different blur routine
+sk_sp<SkSpecialImage> RasterA8BlurAlgorithm::blur(
+        SkSize sigma, sk_sp<SkSpecialImage> input, ...) const {
+    if (sigma.width() <= 2.f && sigma.height() <= 2.f) {
+        return this->directGaussianA8Blur(sigma, std::move(input), ...);
+    }
+    return this->threeBoxApproxA8Blur(sigma, std::move(input), ...);
+}
+```
+
+Good:
+
+```cpp
+// Good: Distinct routines encapsulated as separate Algorithm subclasses selected via findAlgorithm
+class DirectGaussianA8BlurAlgorithm : public SkBlurEngine::Algorithm {
+public:
+    float maxSigma() const override { return 2.f; }
+    sk_sp<SkSpecialImage> blur(SkSize sigma, ...) const override { ... }
+};
+
+const SkBlurEngine::Algorithm* RasterBlurEngine::findAlgorithm(
+        SkSize sigma, SkColorType colorType) const {
+    if (colorType == kAlpha_8_SkColorType && sigma.width() <= 2.f && sigma.height() <= 2.f) {
+        return &fDirectGaussianA8BlurAlgorithm;
+    }
+    return &fBoxApproxA8BlurAlgorithm;
+}
+```

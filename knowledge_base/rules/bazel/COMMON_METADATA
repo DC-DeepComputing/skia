@@ -1,0 +1,26 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "bazel/exporter_tool/.*"
+    path_expression: "gn/.*"
+    rules: "knowledge_base/rules/bazel/export-private-chromium-headers-in-dedicated-gni-lists.md"
+    rules: "knowledge_base/rules/bazel/suffix-export-source-lists-with-srcs.md"
+  }
+  capability_groups {
+    path_expression: "bazel/exporter_tool/.*"
+    rules: "knowledge_base/rules/bazel/export-subsystem-source-lists-to-dedicated-gni-files.md"
+  }
+  capability_groups {
+    path_expression: "bazel/.*"
+    rules: "knowledge_base/rules/bazel/factor-duplicated-macro-argument-transformations.md"
+    rules: "knowledge_base/rules/bazel/forward-macro-target-attributes.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "bazel/.*"
+    rules: "knowledge_base/rules/bazel/retain-standalone-header-compilation-rules.md"
+  }
+}

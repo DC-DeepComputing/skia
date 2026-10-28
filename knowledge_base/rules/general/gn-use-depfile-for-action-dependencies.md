@@ -1,0 +1,47 @@
+---
+name: skia/gn-use-depfile-for-action-dependencies
+description: When defining GN action targets with dynamic or external dependencies, specify a depfile instead of using coarse proxy files in sources
+rubric: safety
+severity: should_fix
+---
+
+**Rule.** Do not use coarse proxy files (such as `//DEPS`) in GN `action()`
+`sources` to track external or dynamic dependencies. Instead, have the generator
+or build script emit a `.d` dependency file listing exact inputs and specify it
+with GN's `depfile` attribute.
+
+**Why.** Using a coarse proxy file like `//DEPS` causes the action to rerun
+whenever any unrelated dependency changes, causing spurious rebuilds.
+Furthermore, it fails to trigger rebuilds when local source files are edited
+without modifying the proxy file; depfiles allow Ninja to track the exact set of
+dynamic input files accurately.
+
+## Examples
+
+Bad:
+
+```cpp
+action("tint_cmake") {
+  script = "build_tint.py"
+  # Using DEPS as a proxy forces rebuilds on unrelated dependency updates
+  # and misses changes to actual source files.
+  sources = [ "//DEPS" ]
+  outputs = [ "$root_out_dir/libtint_combined.a" ]
+  args = [ rebase_path(outputs[0], root_build_dir) ]
+}
+```
+
+Good:
+
+```cpp
+action("tint_cmake") {
+  script = "build_tint.py"
+  sources = [ "build_tint.py" ]
+  outputs = [ "$root_out_dir/libtint_combined.a" ]
+  depfile = "$target_gen_dir/tint_combined.a.d"
+  args = [
+    rebase_path(outputs[0], root_build_dir),
+    rebase_path(depfile, root_build_dir),
+  ]
+}
+```

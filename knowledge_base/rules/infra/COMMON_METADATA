@@ -7,9 +7,23 @@ agentic_review {
     path_expression: "infra/bots/.*"
     rules: "knowledge_base/rules/infra/clean-up-recipe-tokens-when-removing-bot-jobs.md"
     rules: "knowledge_base/rules/infra/document-ci-test-skips-with-tracking-bug.md"
+    rules: "knowledge_base/rules/infra/document-transitional-build-flags-with-todo.md"
+    rules: "knowledge_base/rules/infra/isolate-tool-env-vars-to-tool-helpers.md"
+    rules: "knowledge_base/rules/infra/pair-graphite-dawn-and-native-perf-jobs.md"
+    rules: "knowledge_base/rules/infra/prefer-clang-over-msvc-for-perf-bots.md"
+    rules: "knowledge_base/rules/infra/retain-oldest-supported-os-ci-coverage.md"
+    rules: "knowledge_base/rules/infra/size-ci-task-timeouts-for-all-stages.md"
+    rules: "knowledge_base/rules/infra/specify-macos-11-deployment-target.md"
+    rules: "knowledge_base/rules/infra/verify-build-recipe-compiler-flags.md"
   }
   capability_groups {
     path_expression: "infra/bots/jobs\\.json"
+    rules: "knowledge_base/rules/infra/enable-cq-on-superset-test-jobs.md"
     rules: "knowledge_base/rules/infra/include-directory-paths-in-cq-location-regexes.md"
+  }
+  capability_groups {
+    path_expression: "infra/bots/assets/.*"
+    rules: "knowledge_base/rules/infra/include-target-os-and-arch-in-asset-names.md"
+    rules: "knowledge_base/rules/infra/no-hard-float-for-arm64-sysroots.md"
   }
 }

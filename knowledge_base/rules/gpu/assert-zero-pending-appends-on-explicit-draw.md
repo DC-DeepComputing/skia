@@ -1,0 +1,47 @@
+---
+name: skia/gpu/assert-zero-pending-appends-on-explicit-draw
+description: When issuing explicit pre-computed draws in GPU draw batchers like DrawWriter, assert zero pending appends before overwriting pending draw counts
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** In draw-recording and batching helpers (such as DrawWriter), assert
+that pending append counts are zero (such as SkASSERT(fPendingCount == 0)) when
+executing explicit direct draws or overwriting draw counts (e.g., in
+bindAndFlush()). Never assume prior incremental data was flushed or allow
+explicit draws to clobber unflushed pending appends.
+
+**Why.** Overwriting the pending count without verifying that prior incremental
+appends have completed silently drops unflushed vertex or instance data and
+corrupts GPU draw parameters. Asserting that pending counts are zero prevents
+state corruption and ensures callers explicitly flush incremental draws before
+switching to direct draws.
+
+## Examples
+
+Bad:
+
+```cpp
+void bindAndFlush(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
+                  uint32_t templateCount, unsigned int drawCount) {
+    SkASSERT(drawCount > 0);
+    SkASSERT(!fAppender);
+    this->setTemplate(vertices, indices, instances, templateCount);
+    fPendingCount = drawCount;
+    this->flush();
+}
+```
+
+Good:
+
+```cpp
+void bindAndFlush(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
+                  uint32_t templateCount, unsigned int drawCount) {
+    SkASSERT(drawCount > 0);
+    SkASSERT(!fAppender);
+    SkASSERT(fPendingCount == 0); // Any prior appends must have been flushed by now.
+    this->setTemplate(vertices, indices, instances, templateCount);
+    fPendingCount = drawCount;
+    this->flush();
+}
+```

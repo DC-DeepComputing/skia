@@ -1,0 +1,37 @@
+---
+name: skia/opts/use-hardware-simd-rounding-shifts
+description: When implementing fixed-point rounding right shifts in SIMD routines, use hardware rounding shift instructions instead of manual bias addition and shifting
+rubric: safety
+severity: should_fix
+---
+
+**Rule.** When implementing fixed-point rounding right shifts in SIMD routines,
+use the target architecture's dedicated rounding shift instructions (such as
+`__lsx_vsrari_*`/`__lasx_xvsrari_*` on LoongArch or `vrshrq_*` on ARM NEON)
+instead of manually loading a bias vector and adding it before shifting. Select
+arithmetic vs. logical shift variants based on operand signedness.
+
+**Why.** Architectures with SIMD support often provide hardware instructions
+that fuse rounding bias addition and right shift into a single operation.
+Manually loading a rounding constant vector and performing vector addition
+increases register pressure, instruction count, and latency in hot raster
+pipeline stages and SIMD kernels.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: loading a rounding bias vector and performing vector addition before shifting
+Vec<4, int32_t> roundingTerm = (Vec<4, int32_t>)__lsx_vldi(-0xec0);  // v4i32(0x40 << 8)
+even = (even + roundingTerm) >> 15;
+odd = (odd + roundingTerm) >> 15;
+```
+
+Good:
+
+```cpp
+// Good: using hardware rounding right shift instructions directly
+even = (Vec<4, int32_t>)__lsx_vsrari_w((__m128i)even, 15);
+odd = (Vec<4, int32_t>)__lsx_vsrari_w((__m128i)odd, 15);
+```

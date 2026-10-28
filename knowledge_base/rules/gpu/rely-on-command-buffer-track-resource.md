@@ -1,0 +1,42 @@
+---
+name: skia/gpu/rely-on-command-buffer-track-resource
+description: When tracking GPU resource lifetimes for in-flight command buffers in Graphite, rely on CommandBuffer::trackResource instead of custom refcounts or finished callbacks
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Rely on `CommandBuffer::trackResource()` and the `ResourceCache` to
+keep GPU resources alive during execution rather than implementing custom
+per-suballocation reference counting, in-flight tracking wrappers, or command
+buffer completion callbacks (`addFinishedProc`). Pass the underlying
+`sk_sp<Resource>` directly to `trackResource()` so the command buffer retains it
+until GPU execution completes.
+
+**Why.** In Graphite, an active `CommandBuffer` holds references to all
+resources passed to `trackResource()` until execution finishes and the command
+buffer resets. The `ResourceCache` will not recycle, reuse, or purge a resource
+while any active command buffer or cache holds an `sk_sp` to it, making custom
+completion callbacks and manual usage refcounts redundant complexity.
+
+## Examples
+
+Bad:
+
+```cpp
+// Anti-pattern: manual completion callback and usage refcount to manage GPU lifetime
+class BackendResourceProvider::Suballocation final : public SkRefCnt {
+    void trackCommandBuffer(CommandBuffer* cb) {
+        this->ref();
+        cb->addFinishedProc(RefCntedCallback::Make(FinishedCb, this));
+    }
+};
+```
+
+Good:
+
+```cpp
+// Idiomatic: CommandBuffer keeps the backing resource alive until execution completes
+void BackendResourceProvider::recordUsage(CommandBuffer* cb, Suballocation* suballoc) {
+    cb->trackResource(suballoc->buffer());
+}
+```

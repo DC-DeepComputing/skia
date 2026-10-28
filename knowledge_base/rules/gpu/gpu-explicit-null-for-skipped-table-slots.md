@@ -1,0 +1,63 @@
+---
+name: skia/gpu/gpu-explicit-null-for-skipped-table-slots
+description: When populating containers or lookup tables directly indexed by slot or key, pre-size storage and assign nullptr to skipped slots rather than conditionally appending or continuing
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When populating arrays, containers, or lookup tables intended to be
+directly indexed by slot, binding index, or key, preserve 1:1 index alignment
+and null contracts. Pre-size or value-initialize the container to the full
+capacity and assign at each slot index—explicitly assigning nullptr (or
+sentinel) to inactive or unsupported slots—rather than conditionally appending
+(push_back) only active entries or skipping slots with continue without null
+assignment.
+
+**Why.** Subsequent lookups and accessors index directly by slot index or key,
+expecting valid resources or nullptr for inactive entries. Conditionally
+appending active entries compresses the array and breaks 1:1 slot alignment,
+causing wrong-resource lookups or out-of-bounds assertions. Similarly,
+continuing past unsupported slots in uninitialized storage leaves garbage
+pointers that bypass null checks and trigger segfaults.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad 1: Conditionally pushing only active entries breaks slot alignment
+for (int i = 0; i < numTexturesAndSamplers; ++i) {
+    if (samplerDescs[i].isImmutable()) {
+        immutableSamplers.push_back(createSampler(samplerDescs[i]));
+    }
+}
+
+// Bad 2: Skipping unsupported slots with continue leaves uninitialized garbage
+for (int i = 0; i < kNumDescriptors; ++i) {
+    if (skipDecal && IsDecal(i)) {
+        continue;
+    }
+    fDynamicSamplers[i] = createSampler(i);
+}
+```
+
+Good:
+
+```cpp
+// Good 1: Pre-size container and assign by slot index, keeping inactive slots null
+immutableSamplers.reset(numTexturesAndSamplers);
+for (int i = 0; i < numTexturesAndSamplers; ++i) {
+    if (samplerDescs[i].isImmutable()) {
+        immutableSamplers[i] = createSampler(samplerDescs[i]);
+    }
+}
+
+// Good 2: Value-initialize or explicitly assign nullptr to skipped slots
+for (int i = 0; i < kNumDescriptors; ++i) {
+    if (skipDecal && IsDecal(i)) {
+        fDynamicSamplers[i] = nullptr;
+        continue;
+    }
+    fDynamicSamplers[i] = createSampler(i);
+}
+```

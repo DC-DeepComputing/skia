@@ -1,0 +1,37 @@
+---
+name: skia/bazel/retain-standalone-header-compilation-rules
+description: When modifying or cleaning up Bazel build configurations or tooling, retain standalone header compilation rules like generate_cpp_files_for_headers to verify self-contained headers
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When refactoring build rules, cleaning up build targets, or removing
+tooling (such as IWYU) in Bazel, do not remove standalone header compilation
+rules such as generate_cpp_files_for_headers. Keep standalone header compilation
+targets (headers_to_compile) active so headers are validated as self-contained
+in CI.
+
+**Why.** Compiling generated .cpp wrappers for headers in Bazel validates that
+header files are self-sufficient and compile independently. Catching missing
+includes or declarations in CI prevents compilation breakages in downstream
+embedders and internal repositories (such as Google3).
+
+## Examples
+
+Bad:
+
+```cpp
+# Removing header compilation rule when decommissioning tooling:
+-def generate_cpp_files_for_headers(name, headers):
+-    ...
+```
+
+Good:
+
+```cpp
+# Retaining standalone header compilation in Bazel:
+generate_cpp_files_for_headers(
+    name = "headers_to_compile",
+    headers = PUBLIC_HEADERS,
+)
+```

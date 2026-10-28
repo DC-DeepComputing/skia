@@ -1,0 +1,50 @@
+---
+name: skia/gpu/deduplicate-mask-rasterization-helpers
+description: When rasterizing software masks for both texture atlases and standalone fallback caches, extract the mask drawing loop into a shared helper
+rubric: design
+severity: should_fix
+---
+
+**Rule.** When generating software masks across texture atlas and standalone
+fallback cache paths (such as DrawAtlas entries versus standalone textures),
+extract the shared mask setup and element drawing loop into a common helper
+function. Do not duplicate element traversal, geometry transforms, or mask
+helper invocation across atlas and standalone cache callbacks.
+
+**Why.** Atlas and standalone texture caching paths share identical element
+iteration and geometry rasterization semantics, differing only in destination
+pixmaps and render bounds. Factoring the rasterization loop into a shared helper
+prevents code duplication, avoids logic divergence when updating mask
+algorithms, and keeps geometry handling consistent.
+
+## Examples
+
+Bad:
+
+```cpp
+// In addToAtlas:
+RasterMaskHelper helper(pixmap, translate);
+for (const auto& element : elements) {
+    helper.drawClip(element.fShape, element.fLocalToDevice, alpha);
+}
+// Duplicated in standalone fallback texture callback:
+RasterMaskHelper helper(pixmap, translate);
+for (const auto& element : elements) {
+    helper.drawClip(element.fShape, element.fLocalToDevice, alpha);
+}
+```
+
+Good:
+
+```cpp
+static void render_elements(RasterMaskHelper* helper,
+                            const ClipStack::ElementList& elements) {
+    for (const auto& element : elements) {
+        helper->drawClip(element.fShape, element.fLocalToDevice, alpha);
+    }
+}
+
+// Reused across addToAtlas and standalone fallback texture callbacks:
+RasterMaskHelper helper(pixmap, translate);
+render_elements(&helper, elements);
+```

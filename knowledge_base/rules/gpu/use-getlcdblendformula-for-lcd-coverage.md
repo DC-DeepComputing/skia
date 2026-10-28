@@ -1,0 +1,45 @@
+---
+name: skia/gpu/use-getlcdblendformula-for-lcd-coverage
+description: When determining GPU blend formulas or checking dual-source blending requirements under LCD text coverage, call skgpu::GetLCDBlendFormula instead of skgpu::GetBlendFormula
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When determining GPU blend formulas or querying secondary output
+requirements (such as checking whether dual-source blending is required on
+hardware lacking dual-source support), call skgpu::GetLCDBlendFormula(blendMode)
+when coverage is LCD text coverage (Coverage::kLCD). Do not call
+skgpu::GetBlendFormula unconditionally with a boolean coverage flag.
+
+**Why.** LCD text coverage applies per-component (RGB) coverage rather than
+single-channel alpha coverage. While single-channel coverage for modes like
+kSrcOver can be pre-modulated into source alpha without dual-source blending,
+LCD coverage requires secondary source output; querying GetBlendFormula under
+LCD coverage incorrectly reports that secondary output is not needed, causing
+hardware blending checks to pass on GPUs lacking dual-source blending support.
+
+## Examples
+
+Bad:
+
+```cpp
+bool needsDstRead =
+        (bm <= SkBlendMode::kLastCoeffMode &&
+         skgpu::GetBlendFormula(/*isOpaque=*/false,
+                                /*hasCoverage=*/coverage != Coverage::kNone,
+                                bm).hasSecondaryOutput() &&
+         !caps->shaderCaps()->fDualSourceBlendingSupport);
+```
+
+Good:
+
+```cpp
+bool needsDstRead =
+        (bm <= SkBlendMode::kLastCoeffMode &&
+         (coverage == Coverage::kLCD
+                  ? skgpu::GetLCDBlendFormula(bm).hasSecondaryOutput()
+                  : skgpu::GetBlendFormula(/*isOpaque=*/false,
+                                           coverage != Coverage::kNone,
+                                           bm).hasSecondaryOutput()) &&
+         !caps->shaderCaps()->fDualSourceBlendingSupport);
+```

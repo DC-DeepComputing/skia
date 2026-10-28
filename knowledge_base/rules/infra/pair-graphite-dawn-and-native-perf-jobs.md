@@ -1,0 +1,36 @@
+---
+name: skia/infra/pair-graphite-dawn-and-native-perf-jobs
+description: When adding or modifying Graphite CI test or performance bot jobs (Test-* or Perf-*), configure both Native and Dawn counterpart targets on identical hardware
+rubric: testing
+severity: should_fix
+---
+
+**Rule.** When introducing or modifying Graphite test (Test-*) or performance
+benchmark (Perf-*) jobs in infra/bots/ (such as jobs.json), configure
+counterpart bot targets for both Native (e.g., Graphite_Native_Metal,
+Graphite_Native_Vulkan) and Dawn (e.g., Graphite_Dawn_Metal,
+Graphite_Dawn_Vulkan) backends on identical hardware, OS, and compiler
+configurations.
+
+**Why.** Graphite supports both native platform backends and Dawn translation
+layers. Pairing Native and Dawn configurations on matching test and perf
+hardware ensures complete test coverage across both driver paths and isolates
+Dawn translation overhead from hardware-specific variances on Skia Perf.
+
+## Examples
+
+Bad:
+
+```cpp
+{"name": "Perf-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Native_Metal"}
+{"name": "Test-Mac14-Clang-MacMini8.1-GPU-IntelUHDGraphics630-x86_64-Debug-All-Graphite_Native_Metal"}
+```
+
+Good:
+
+```cpp
+{"name": "Perf-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Dawn_Metal"},
+{"name": "Perf-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Native_Metal"},
+{"name": "Test-Mac14-Clang-MacMini8.1-GPU-IntelUHDGraphics630-x86_64-Debug-All-Graphite_Dawn_Metal"},
+{"name": "Test-Mac14-Clang-MacMini8.1-GPU-IntelUHDGraphics630-x86_64-Debug-All-Graphite_Native_Metal"}
+```

@@ -1,0 +1,59 @@
+---
+name: skia/gpu/bypass-bounds-manager-for-draw-list-layers
+description: When layer-based draw list sorting is enabled in Graphite (useDrawListLayer), bypass BoundsManager spatial indexing and secondary disjoint-stencil or depth-reversal sorting calculations
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When layer-based draw list sorting is enabled in Graphite
+(caps()->useDrawListLayer()), skip updating and querying legacy draw-sorting and
+spatial indexing structures. Do not record to or query the spatial bounds
+manager (fColorDepthBoundsManager), do not store or track disjoint stencil state
+(such as DisjointStencilIndex, fDisjointStencilSet->add(), updateStencilSet(),
+or order.dependsOnStencil()), and do not configure depth-as-stencil reversal
+(order.reverseDepthAsStencil()) when layer sorting manages draw order and
+dependencies independently.
+
+**Why.** Updating the spatial BoundsManager and tracking disjoint stencil sets
+in an IntersectionTreeSet introduce significant CPU recording overhead. When
+layer-based draw list sorting is active, DrawListLayer partitions and orders
+draws directly into disjoint sets within its binding lists, rendering painter's
+order spatial tracking and secondary stencil/depth sorting completely redundant.
+
+## Examples
+
+Bad:
+
+```cpp
+// Storing disjoint stencil flags and querying/updating legacy sorting structures
+fColorDepthBoundsManager->recordDraw(clip.drawBounds(), order.paintOrder());
+
+if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
+    DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
+                                                             clip.drawBounds());
+    order.dependsOnStencil(setIndex);
+}
+
+fIsDisjointStencil = device->drawClipShapeImmediate(...);
+if (fIsDisjointStencil) {
+    device->updateStencilSet(fCaptureParams);
+}
+```
+
+Good:
+
+```cpp
+// Skip spatial bounds indexing and secondary stencil tracking under DrawListLayer
+if (!fRecorder->priv().caps()->useDrawListLayer()) {
+    fColorDepthBoundsManager->recordDraw(clip.drawBounds(), order.paintOrder());
+
+    if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
+        DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
+                                                                 clip.drawBounds());
+        order.dependsOnStencil(setIndex);
+    }
+}
+
+// DrawListLayer inherently tracks disjoint sets; no stencil tracking needed
+device->drawClipShapeImmediate(...);
+```

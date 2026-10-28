@@ -1,0 +1,64 @@
+---
+name: skia/tools/subclass-shared-config-for-backend-options
+description: When adding backend-specific options to shared configuration classes in tools, derive polymorphic subclasses with virtual cloning rather than embedding backend fields or preprocessor guards
+rubric: design
+severity: blocking
+---
+
+**Rule.** When extending shared configuration classes (such as DisplayParams in
+tools) with backend-specific settings, derive concrete backend subclasses
+managed polymorphically (such as via std::unique_ptr with a virtual clone()
+method) rather than embedding backend fields or guarding members with backend
+preprocessor macros like #if defined(SK_GRAPHITE). Provide virtual accessors on
+the base class returning nullptr by default to access backend options safely.
+
+**Why.** Guarding struct members with preprocessor flags in shared headers
+causes ODR violations and layout mismatches between translation units compiled
+with different backend flags. Embedding raw pointers requires awkward external
+lifetime management, whereas polymorphic subclassing cleanly encapsulates
+backend options without leaking preprocessor dependencies into the base class.
+
+## Examples
+
+Bad:
+
+```cpp
+// tools/window/DisplayParams.h
+struct DisplayParams {
+    ...
+#if defined(SK_GRAPHITE)
+    skiatest::graphite::TestOptions* fGraphiteTestOptions;
+#endif
+};
+
+// tools/viewer/Viewer.cpp
+static skiatest::graphite::TestOptions gGraphiteOpts;
+displayParams.fGraphiteTestOptions = &gGraphiteOpts;
+```
+
+Good:
+
+```cpp
+// tools/window/DisplayParams.h
+class DisplayParams {
+public:
+    virtual ~DisplayParams() = default;
+    virtual std::unique_ptr<DisplayParams> clone() const {
+        return std::make_unique<DisplayParams>(*this);
+    }
+    virtual const skiatest::graphite::TestOptions* graphiteTestOptions() const { return nullptr; }
+};
+
+// tools/window/GraphiteDisplayParams.h
+class GraphiteDisplayParams : public DisplayParams {
+public:
+    std::unique_ptr<DisplayParams> clone() const override {
+        return std::make_unique<GraphiteDisplayParams>(*this);
+    }
+    const skiatest::graphite::TestOptions* graphiteTestOptions() const override {
+        return &fGraphiteTestOptions;
+    }
+private:
+    skiatest::graphite::TestOptions fGraphiteTestOptions;
+};
+```

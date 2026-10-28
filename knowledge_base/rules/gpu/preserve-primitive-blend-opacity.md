@@ -1,0 +1,46 @@
+---
+name: skia/gpu/preserve-primitive-blend-opacity
+description: When analyzing pipeline or shader opacity across primitive blending, preserve opacity if the source paint color is opaque and the blender is kSrc or kSrcOver
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When analyzing shader or draw opacity through primitive blending (such
+as in PaintParams::handlePrimitiveColor), check whether the source color is
+opaque and the primitive blend mode preserves source opacity. If the source
+paint or shader output is opaque and the primitive blender is SkBlendMode::kSrc
+or SkBlendMode::kSrcOver, report the result as opaque rather than
+unconditionally returning false.
+
+**Why.** Under Porter-Duff blending, an opaque source with kSrc or kSrcOver
+produces an opaque output regardless of the primitive destination color (1.0 +
+Da * (1 - 1.0) = 1.0). Pessimistically returning false causes shader key
+generation to diverge from device-level destination dependency checks and fails
+debug assertions on destination read requirements.
+
+## Examples
+
+Bad:
+
+```cpp
+Blend(keyContext,
+    /*addBlendToKey=*/[&]() { AddToKey(keyContext, fPrimitiveBlender.get()); },
+    /*addSrcToKey=*/[&]() { this->addPaintColorToKey(keyContext); },
+    /*addDstToKey=*/[&]() { AddPrimitiveColor(keyContext, fSkipColorXform); });
+return false;
+```
+
+Good:
+
+```cpp
+bool srcIsOpaque = false;
+Blend(keyContext,
+    /*addBlendToKey=*/[&]() { AddToKey(keyContext, fPrimitiveBlender.get()); },
+    /*addSrcToKey=*/[&]() { srcIsOpaque = this->addPaintColorToKey(keyContext); },
+    /*addDstToKey=*/[&]() { AddPrimitiveColor(keyContext, fSkipColorXform); });
+std::optional<SkBlendMode> primBlend = as_BB(fPrimitiveBlender.get())->asBlendMode();
+if (primBlend.has_value() && srcIsOpaque) {
+    return *primBlend == SkBlendMode::kSrc || *primBlend == SkBlendMode::kSrcOver;
+}
+return false;
+```

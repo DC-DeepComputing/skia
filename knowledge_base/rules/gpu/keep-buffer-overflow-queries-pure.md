@@ -1,0 +1,65 @@
+---
+name: skia/gpu/keep-buffer-overflow-queries-pure
+description: When implementing GPU buffer capacity and offset-fitting query helpers, keep them side-effect-free and encapsulate complete bounds and underflow checks internally
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Do not mutate buffer state (such as offsets or alignment padding)
+inside capacity query or overflow functions; keep checks side-effect-free by
+computing candidate offsets purely or returning a std::optional<uint32_t>
+applied only upon commit. Additionally, encapsulate complete bounds and
+underflow validation (such as verifying allocatedSize > startOffset before
+subtraction) inside the query helper instead of relying on callers for post-hoc
+defensive checks. When an allocation fails and a buffer is retired, update
+used-size accounting using actual bytes written rather than speculative
+alignment padding.
+
+**Why.** Mutating offsets during speculative overflow checks corrupts buffer
+state when callers probe capacity without committing, and accumulating
+speculative alignment padding falsely inflates used sizes. Furthermore,
+splitting bounds and underflow validation between helper and caller leaves other
+call sites vulnerable to unsigned underflow and buffer overruns.
+
+## Examples
+
+Bad:
+
+```cpp
+// 1. Mutating state during query; incomplete validation requiring caller check:
+std::pair<bool, uint32_t> can_offset_fit(uint32_t reqSize, uint32_t allocatedSize,
+                                         uint32_t startOffset) {
+    // Underflows if startOffset > allocatedSize:
+    return {reqSize <= (allocatedSize - startOffset), startOffset};
+}
+
+bool willBufferOverflow(BufferInfo* info, uint32_t reqSize, uint32_t reqAlign) {
+    info->fOffset = SkAlignTo(info->fOffset, reqAlign); // Mutates query state
+    auto [fits, offset] = can_offset_fit(reqSize, info->fTotalSize, info->fOffset);
+    return !fits || offset >= info->fTotalSize; // Post-hoc caller workaround
+}
+if (willBufferOverflow(info, reqSize, reqAlign)) {
+    info->fUsedSize += info->fOffset; // Erroneously counts speculative padding
+}
+```
+
+Good:
+
+```cpp
+// Pure helper encapsulating underflow and capacity checks:
+std::optional<uint32_t> can_offset_fit(uint32_t reqSize, uint32_t allocatedSize,
+                                       uint32_t currentOffset, uint32_t reqAlign) {
+    uint32_t startOffset = SkAlignTo(currentOffset, reqAlign);
+    if (allocatedSize <= startOffset || reqSize > (allocatedSize - startOffset)) {
+        return std::nullopt;
+    }
+    return startOffset;
+}
+
+auto offset = info->fBuffer ? can_offset_fit(...) : std::optional<uint32_t>(0);
+if (!offset.has_value()) {
+    info->fUsedSize += info->fOffset; // Accurately counts actual bytes written
+} else {
+    info->fOffset = offset.value();
+}
+```

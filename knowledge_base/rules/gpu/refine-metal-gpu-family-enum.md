@@ -1,0 +1,48 @@
+---
+name: skia/gpu/refine-metal-gpu-family-enum
+description: In Metal backend capabilities, represent platform architecture subcategories by refining the GPUFamily enum rather than adding separate boolean flags and initialization helpers
+rubric: design
+severity: should_fix
+---
+
+**Rule.** In Metal backend capabilities (such as GrMtlCaps or MtlCaps),
+represent hardware vendor or architecture subcategories (such as Intel on Mac)
+by refining the GPUFamily enum (e.g., kMacIntel) rather than adding separate
+boolean member variables and dedicated initialization methods. Centralize
+hardware categorization in initGPUFamily or getGPUFamily, and update umbrella
+predicates like isMac() to include the refined variants.
+
+**Why.** Metal runs strictly within the Apple ecosystem where vendor
+architectures like Intel only exist on macOS. Refining the GPUFamily enum
+centralizes device classification in a single initialization path, avoids
+redundant state flags, and ensures platform-level queries (like isMac()) remain
+consistent across hardware variants.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: proliferating ad-hoc boolean flags and separate init methods for hardware subcategories
+enum class GPUFamily {
+    kApple,
+    kMac,
+};
+bool fIntelGPU;
+void initIfIntelGPU(id<MTLDevice> device);
+bool isIntel() const { return fIntelGPU; }
+```
+
+Good:
+
+```cpp
+// Good: refining GPUFamily to represent subcategories centrally
+enum class GPUFamily {
+    kApple,
+    kMac,
+    kMacIntel,
+};
+bool isMac() const   { return fGPUFamily == GPUFamily::kMac ||
+                              fGPUFamily == GPUFamily::kMacIntel; }
+bool isIntel() const { return fGPUFamily == GPUFamily::kMacIntel; }
+```

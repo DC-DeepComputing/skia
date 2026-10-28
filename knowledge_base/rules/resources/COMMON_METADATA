@@ -1,0 +1,15 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "resources/sksl/.*"
+    rules: "knowledge_base/rules/resources/match-compiler-diagnostics-in-sksl-error-tests.md"
+  }
+  capability_groups {
+    path_expression: "resources/sksl/.*"
+    path_expression: "tests/sksl/.*"
+    rules: "knowledge_base/rules/resources/store-intrinsic-results-in-typed-variables.md"
+  }
+}

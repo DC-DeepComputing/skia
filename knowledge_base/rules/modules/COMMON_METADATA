@@ -4,8 +4,106 @@
 
 agentic_review {
   capability_groups {
+    path_expression: "modules/svg/.*"
+    rules: "knowledge_base/rules/modules/accept-element-identifiers-in-document-containers.md"
+    rules: "knowledge_base/rules/modules/defer-svg-css-variables-to-render-time.md"
+    rules: "knowledge_base/rules/modules/keep-canvas-layer-management-in-render-context.md"
+    rules: "knowledge_base/rules/modules/name-active-scope-query-methods.md"
+    rules: "knowledge_base/rules/modules/name-node-rendering-methods-explicitly.md"
+    rules: "knowledge_base/rules/modules/omit-redundant-svg-attr-scalar-constructors.md"
+    rules: "knowledge_base/rules/modules/resolve-non-directional-svg-lengths-with-kother.md"
+    rules: "knowledge_base/rules/modules/return-empty-optional-paint-on-resolution-failure.md"
+    rules: "knowledge_base/rules/modules/support-empty-css-var-fallbacks.md"
+    rules: "knowledge_base/rules/modules/use-drawimagerect-for-svg-image-bounds.md"
+    rules: "knowledge_base/rules/modules/wrap-optional-collections-in-sk-sp.md"
+  }
+  capability_groups {
+    path_expression: "modules/skparagraph/.*"
+    rules: "knowledge_base/rules/modules/advance-utf16-index-to-skip-surrogate-pairs.md"
+    rules: "knowledge_base/rules/modules/avoid-composite-types-for-scalar-callback-data.md"
+    rules: "knowledge_base/rules/modules/avoid-manual-utf8-adjustment-after-grapheme-boundary.md"
+    rules: "knowledge_base/rules/modules/avoid-rounding-layout-bounds-for-precision.md"
+    rules: "knowledge_base/rules/modules/break-early-on-loop-invariant-condition.md"
+    rules: "knowledge_base/rules/modules/gate-skparagraph-layout-changes.md"
+    rules: "knowledge_base/rules/modules/guard-boundary-element-access-with-conjunction.md"
+    rules: "knowledge_base/rules/modules/indicate-non-rendering-runs-in-text-visitors.md"
+    rules: "knowledge_base/rules/modules/mirror-cluster-edge-corrections-for-rtl-runs.md"
+    rules: "knowledge_base/rules/modules/name-directional-boundary-searches-with-previous-next.md"
+    rules: "knowledge_base/rules/modules/omit-redundant-finite-checks-in-float-equality.md"
+    rules: "knowledge_base/rules/modules/preserve-float-tolerance-when-disabling-rounding-hacks.md"
+    rules: "knowledge_base/rules/modules/preserve-linebreaker-rounding-tolerance.md"
+    rules: "knowledge_base/rules/modules/preserve-tolerance-when-toggling-rounding-hacks.md"
+    rules: "knowledge_base/rules/modules/propagate-textstyle-font-properties.md"
+    rules: "knowledge_base/rules/modules/query-non-empty-range-in-half-open-interval.md"
+    rules: "knowledge_base/rules/modules/search-backwards-for-enclosing-grapheme-start.md"
+    rules: "knowledge_base/rules/modules/test-ltr-and-rtl-in-skparagraph.md"
+    rules: "knowledge_base/rules/modules/use-test-fonts-in-skparagraph-tests.md"
+    rules: "knowledge_base/rules/modules/zero-based-offset-directional-range-iteration.md"
+  }
+  capability_groups {
     path_expression: "modules/.*"
     rules: "knowledge_base/rules/modules/allow-deferred-builder-dependencies.md"
+    rules: "knowledge_base/rules/modules/document-fallback-asset-id-todo.md"
+    rules: "knowledge_base/rules/modules/modules-override-specific-resource-provider-loader.md"
+    rules: "knowledge_base/rules/modules/prefer-conversion-operator-on-adapter-structs.md"
+    rules: "knowledge_base/rules/modules/preserve-glyph-metrics-when-getpath-fails.md"
+  }
+  capability_groups {
+    path_expression: "modules/canvaskit/.*"
+    rules: "knowledge_base/rules/modules/apply-canvas2d-fill-rule-to-temporary-path.md"
+    rules: "knowledge_base/rules/modules/avoid-cryptic-suffixes-in-embind-overloads.md"
+    rules: "knowledge_base/rules/modules/avoid-duplicate-property-keys-in-emscripten-val.md"
+    rules: "knowledge_base/rules/modules/avoid-passing-normalized-floats-to-canvaskit-color.md"
+    rules: "knowledge_base/rules/modules/avoid-temporary-clean-targets.md"
+    rules: "knowledge_base/rules/modules/canvaskit-name-contour-direction-isccw.md"
+    rules: "knowledge_base/rules/modules/canvaskit-optional-matrix-defaults-to-identity.md"
+    rules: "knowledge_base/rules/modules/canvaskit-use-skia-cdn-asset-urls.md"
+    rules: "knowledge_base/rules/modules/coerce-optional-booleans-for-embind.md"
+    rules: "knowledge_base/rules/modules/compile-companion-sources-via-gn.md"
+    rules: "knowledge_base/rules/modules/declare-extern-methods-on-prototype-with-function-syntax.md"
+    rules: "knowledge_base/rules/modules/defer-unsupported-binding-types.md"
+    rules: "knowledge_base/rules/modules/do-not-free-js-managed-arrays.md"
+    rules: "knowledge_base/rules/modules/enforce-canvaskit-prerequisites-with-error.md"
+    rules: "knowledge_base/rules/modules/expose-canvaskit-binary-compatibility-checks-statically.md"
+    rules: "knowledge_base/rules/modules/expose-stateless-canvaskit-methods-as-class-functions.md"
+    rules: "knowledge_base/rules/modules/free-temporary-canvaskit-wasm-arrays.md"
+    rules: "knowledge_base/rules/modules/keep-build-script-status-echo-accurate.md"
+    rules: "knowledge_base/rules/modules/modules-avoid-numeric-suffixes-on-canvaskit-parameters.md"
+    rules: "knowledge_base/rules/modules/modules-keep-modular-canvaskit-bindings-out-of-core-interfac.md"
+    rules: "knowledge_base/rules/modules/name-unpacked-canvaskit-buffer-pointers-by-consumed-count.md"
+    rules: "knowledge_base/rules/modules/omit-legacy-options-from-canvaskit-bindings.md"
+    rules: "knowledge_base/rules/modules/populate-defaults-for-embind-value-objects.md"
+    rules: "knowledge_base/rules/modules/prefer-jsarray-over-typedarray-for-generic-arrays.md"
+    rules: "knowledge_base/rules/modules/prefer-standard-arrays-over-canvaskit-malloc.md"
+    rules: "knowledge_base/rules/modules/prefer-typedarray-slice-for-canvaskit-scratch-buffers.md"
+    rules: "knowledge_base/rules/modules/prefix-canvaskit-wasm-factories-with-make.md"
+    rules: "knowledge_base/rules/modules/preserve-established-canvaskit-api-methods.md"
+    rules: "knowledge_base/rules/modules/separate-specialized-canvaskit-build-targets.md"
+    rules: "knowledge_base/rules/modules/specify-dimension-specific-vector-types-in-canvaskit-ts.md"
+    rules: "knowledge_base/rules/modules/sync-canvaskit-types-and-tests-with-bindings.md"
+    rules: "knowledge_base/rules/modules/unpack-structs-to-typedarrays-for-emscripten-val.md"
+    rules: "knowledge_base/rules/modules/use-distinct-canvaskit-scratch-pointers-per-call.md"
+    rules: "knowledge_base/rules/modules/use-empty-font-manager-for-embedded-font-omission.md"
+    rules: "knowledge_base/rules/modules/use-pascalcase-for-canvaskit-enum-members.md"
+  }
+  capability_groups {
+    path_expression: "modules/skottie/.*"
+    rules: "knowledge_base/rules/modules/avoid-child-revalidation-during-animator-sync.md"
+    rules: "knowledge_base/rules/modules/centralize-skottie-slot-tracking.md"
+    rules: "knowledge_base/rules/modules/default-omitted-type-discriminators-in-skottie.md"
+    rules: "knowledge_base/rules/modules/emit-placeholder-fragments-for-empty-lines.md"
+    rules: "knowledge_base/rules/modules/name-encoded-non-text-buffers-explicitly.md"
+    rules: "knowledge_base/rules/modules/preserve-parent-context-for-unnamed-skottie-nodes.md"
+    rules: "knowledge_base/rules/modules/resolve-runtime-effect-children-by-name.md"
+    rules: "knowledge_base/rules/modules/skottie-encapsulate-slot-dispatch.md"
+    rules: "knowledge_base/rules/modules/skottie-encapsulate-slot-tracking-in-dispatch-helpers.md"
+    rules: "knowledge_base/rules/modules/skottie-resolve-assets-via-scoped-ref.md"
+    rules: "knowledge_base/rules/modules/skottie-return-builder-artifacts-in-result-struct.md"
+  }
+  capability_groups {
+    path_expression: "modules/canvaskit/npm_build/types/.*"
+    rules: "knowledge_base/rules/modules/avoid-defensive-copies-in-canvaskit-ts-tests.md"
+    rules: "knowledge_base/rules/modules/supply-typed-variables-via-optional-parameters-in-dtslint.md"
   }
   capability_groups {
     path_expression: "experimental/.*"
@@ -15,30 +113,130 @@ agentic_review {
     rules: "knowledge_base/rules/modules/avoid-legacy-library-includes-in-replacement-backends.md"
   }
   capability_groups {
+    path_expression: "example/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tools/.*"
+    path_expression_exclusion: "(?:.*/)?bench/.*"
+    path_expression_exclusion: "(?:.*/)?fuzz/.*"
+    path_expression_exclusion: "(?:.*/)?gm/.*"
+    path_expression_exclusion: "(?:.*/)?slides/.*"
+    path_expression_exclusion: "(?:.*/)?tests/.*"
+    path_expression_exclusion: "tools/fonts/.*"
+    path_expression_exclusion: "tools/viewer/.*"
+    rules: "knowledge_base/rules/modules/avoid-test-font-mgr-in-standalone-tools.md"
+  }
+  capability_groups {
     path_expression: "modules/canvaskit/tests/.*"
+    rules: "knowledge_base/rules/modules/avoid-tobe-on-arrays-in-canvaskit-tests.md"
     rules: "knowledge_base/rules/modules/canvaskit-no-spaces-in-gm-names.md"
+    rules: "knowledge_base/rules/modules/clear-canvas-for-luma-filter-tests.md"
+    rules: "knowledge_base/rules/modules/exercise-runtime-effect-uniforms-in-canvaskit-tests.md"
+    rules: "knowledge_base/rules/modules/use-drawpaint-for-procedural-shaders.md"
+    rules: "knowledge_base/rules/modules/use-global-canvaskit-over-ck-in-tests.md"
     rules: "knowledge_base/rules/modules/use-it-over-gm-without-canvas-draws.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "knowledge_base/rules/modules/avoid-transient-parse-pointers-in-persistent-objects.md"
+  }
+  capability_groups {
+    path_expression: "modules/bentleyottmann/.*"
+    rules: "knowledge_base/rules/modules/bentleyottmann-reuse-sweep-line-cleanup-helper.md"
+    rules: "knowledge_base/rules/modules/consistent-sweep-line-endpoint-coordinates.md"
+  }
+  capability_groups {
+    path_expression: "demos\\.skia\\.org/.*"
+    path_expression: "modules/canvaskit/.*"
+    rules: "knowledge_base/rules/modules/canvaskit-avoid-typeface-getdefault.md"
+    rules: "knowledge_base/rules/modules/canvaskit-remove-unreferenced-dom-elements.md"
+    rules: "knowledge_base/rules/modules/delete-wasm-canvaskit-objects.md"
+    rules: "knowledge_base/rules/modules/pass-paint-before-font-in-canvaskit-drawtext.md"
+  }
+  capability_groups {
+    path_expression: "dm/.*"
+    path_expression: "modules/skottie/.*"
+    path_expression: "tools/.*"
+    rules: "knowledge_base/rules/modules/consistent-skfontmgr-for-skottie-builder-and-resources.md"
+  }
+  capability_groups {
+    path_expression: "modules/sksg/.*"
+    rules: "knowledge_base/rules/modules/consume-active-builder-before-member-assignment.md"
+  }
+  capability_groups {
+    path_expression: "modules/.*"
+    path_expression: "src/encode/.*"
+    rules: "knowledge_base/rules/modules/default-effort-75-for-lossless-webp.md"
   }
   capability_groups {
     path_expression: "(?:.*/)?[^/]*\\.d\\.ts"
     path_expression: "modules/canvaskit/.*"
+    rules: "knowledge_base/rules/modules/define-dimension-specific-ts-type-aliases.md"
     rules: "knowledge_base/rules/modules/document-domain-concepts-in-ts-declarations.md"
+    rules: "knowledge_base/rules/modules/use-ts-names-in-canvaskit-doc-comments.md"
   }
   capability_groups {
-    path_expression: "modules/canvaskit/.*"
-    rules: "knowledge_base/rules/modules/free-temporary-canvaskit-wasm-arrays.md"
-    rules: "knowledge_base/rules/modules/modules-keep-modular-canvaskit-bindings-out-of-core-interfac.md"
-    rules: "knowledge_base/rules/modules/name-unpacked-canvaskit-buffer-pointers-by-consumed-count.md"
-    rules: "knowledge_base/rules/modules/prefer-standard-arrays-over-canvaskit-malloc.md"
-    rules: "knowledge_base/rules/modules/prefer-typedarray-slice-for-canvaskit-scratch-buffers.md"
-    rules: "knowledge_base/rules/modules/preserve-established-canvaskit-api-methods.md"
-    rules: "knowledge_base/rules/modules/sync-canvaskit-types-and-tests-with-bindings.md"
+    path_expression: "src/base/.*"
+    rules: "knowledge_base/rules/modules/delegate-base-virtual-when-restricting-access.md"
+  }
+  capability_groups {
+    path_expression: "src/text/.*"
+    rules: "knowledge_base/rules/modules/disambiguate-text-shaping-from-geometry.md"
+    rules: "knowledge_base/rules/modules/inject-skfontmgr-for-text-shaping-fallback.md"
+    rules: "knowledge_base/rules/modules/name-glyph-text-mappings-clusters.md"
+    rules: "knowledge_base/rules/modules/qualify-text-shaping-identifiers.md"
   }
   capability_groups {
     path_expression: "modules/skparagraph/.*"
-    rules: "knowledge_base/rules/modules/gate-skparagraph-layout-changes.md"
-    rules: "knowledge_base/rules/modules/mirror-cluster-edge-corrections-for-rtl-runs.md"
-    rules: "knowledge_base/rules/modules/use-test-fonts-in-skparagraph-tests.md"
+    path_expression: "modules/skshaper/.*"
+    rules: "knowledge_base/rules/modules/do-not-break-shaping-runs-on-font-features.md"
+  }
+  capability_groups {
+    path_expression: "modules/skplaintexteditor/.*"
+    path_expression: "modules/skshaper/.*"
+    rules: "knowledge_base/rules/modules/do-not-wrap-skfourbytetag.md"
+  }
+  capability_groups {
+    path_expression: "modules/skunicode/.*"
+    rules: "knowledge_base/rules/modules/forward-locale-to-unicode-segmentation.md"
+    rules: "knowledge_base/rules/modules/separate-unicode-properties-from-glyph-formats.md"
+    rules: "knowledge_base/rules/modules/store-icu4x-property-maps-directly.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    rules: "knowledge_base/rules/modules/guard-size-critical-modules-against-test-utils.md"
+    rules: "knowledge_base/rules/modules/instantiate-supported-backends-explicitly-in-tests.md"
+  }
+  capability_groups {
+    path_expression: "modules/skottie/.*"
+    path_expression: "modules/sksg/.*"
+    rules: "knowledge_base/rules/modules/hoist-scene-graph-revalidation-outside-node-loops.md"
+    rules: "knowledge_base/rules/modules/keep-scene-graph-nodes-generic.md"
+  }
+  capability_groups {
+    path_expression: "modules/skcms/.*"
+    rules: "knowledge_base/rules/modules/implement-both-load-and-store-for-skcms-formats.md"
+  }
+  capability_groups {
+    path_expression: "modules/skshaper/.*"
+    rules: "knowledge_base/rules/modules/match-run-iterator-factory-names.md"
+  }
+  capability_groups {
+    path_expression: "modules/skparagraph/.*"
+    path_expression: "modules/skunicode/.*"
+    rules: "knowledge_base/rules/modules/name-boundary-navigation-helpers-directionally.md"
+    rules: "knowledge_base/rules/modules/name-line-break-flags-by-break-priority.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    rules: "knowledge_base/rules/modules/notify-reset-context-on-external-gpu-state-change.md"
+  }
+  capability_groups {
+    path_expression: "modules/jsonreader/.*"
+    rules: "knowledge_base/rules/modules/place-jsonreader-tests-in-tests-jsontest.md"
   }
   capability_groups {
     path_expression: "modules/skcms/.*"
@@ -49,8 +247,22 @@ agentic_review {
     rules: "knowledge_base/rules/modules/submit-skcms-changes-to-standalone-repo.md"
   }
   capability_groups {
+    path_expression: "modules/skottie/.*"
+    path_expression: "tools/.*"
+    rules: "knowledge_base/rules/modules/take-address-of-skjson-facade-reference.md"
+  }
+  capability_groups {
     path_expression: "modules/canvaskit/(?:.*/)?[^/]*\\.d\\.ts"
     path_expression: "modules/canvaskit/npm_build/types/.*"
     rules: "knowledge_base/rules/modules/use-standard-canvaskit-input-type-aliases.md"
+  }
+  capability_groups {
+    path_expression: "include/core/SkFont.*"
+    path_expression: "src/ports/.*"
+    rules: "knowledge_base/rules/modules/validate-four-byte-font-tag.md"
+  }
+  capability_groups {
+    path_expression: "modules/canvaskit/(?:.*/)?[^/]*\\.js"
+    rules: "knowledge_base/rules/modules/verify-resolved-variable-before-js-fallbacks.md"
   }
 }

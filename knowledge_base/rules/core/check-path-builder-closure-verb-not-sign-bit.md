@@ -1,0 +1,44 @@
+---
+name: skia/core/check-path-builder-closure-verb-not-sign-bit
+description: When querying contour closure or start points in SkPathBuilder, inspect fNeedsMoveVerb or trailing verbs rather than checking fLastMoveIndex sign bits
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When inspecting contour closure or retrieving an active contour's
+start point in SkPathBuilder, do not check fLastMoveIndex >= 0 or use
+~fLastMoveIndex to distinguish open versus closed contours. In SkPathBuilder,
+fLastMoveIndex is always non-negative; inspect closure state directly via
+fNeedsMoveVerb or by checking whether the trailing verb is SkPathVerb::kClose.
+
+**Why.** SkPath encodes contour closure into the sign bit of its move index
+(using bitwise complement ~index when closed), but SkPathBuilder maintains
+fLastMoveIndex as a non-negative point index and tracks closure separately via
+fNeedsMoveVerb or trailing verbs. Testing fLastMoveIndex >= 0 in SkPathBuilder
+always evaluates to true, misidentifying closed contours and causing relative
+operations (such as rMoveTo after close) to offset from the contour's endpoint
+instead of its initial move point.
+
+## Examples
+
+Bad:
+
+```cpp
+// Incorrectly assuming SkPathBuilder encodes closure via sign bit like SkPath
+if (fLastMoveIndex >= 0) {
+    lastPt = fPts.back();
+} else {
+    lastPt = fPts[~fLastMoveIndex];
+}
+```
+
+Good:
+
+```cpp
+// Checking builder closure state directly via fNeedsMoveVerb or trailing verb
+if (!fNeedsMoveVerb) {
+    lastPt = fPts.back();
+} else {
+    lastPt = fPts[fLastMoveIndex];
+}
+```

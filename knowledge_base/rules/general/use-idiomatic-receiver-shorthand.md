@@ -1,0 +1,40 @@
+---
+name: skia/use-idiomatic-receiver-shorthand
+description: When implementing Rust methods outside CXX bridge blocks, use idiomatic receiver shorthand (&self, &mut self, self) instead of explicit receiver types
+rubric: readability
+severity: nit
+---
+
+**Rule.** In Rust method implementations (`impl Type`), use idiomatic receiver
+shorthand (`&self`, `&mut self`, or `self`) rather than explicitly spelling out
+the receiver type (such as `self: &mut Type` or `self: &Type`). Reserve explicit
+receiver typing strictly for `#[cxx::bridge]` interface declarations where the
+macro grammar requires explicit types.
+
+**Why.** Shorthand receivers are standard, idiomatic Rust syntax that keeps
+method signatures concise and readable without redundantly repeating the
+enclosing type name. While CXX bridge definitions require explicit types like
+`self: &mut Type` to generate C++ bindings, standard `impl` blocks outside the
+bridge should use receiver shorthand.
+
+## Examples
+
+Bad:
+
+```cpp
+impl StreamWriter {
+    pub fn write(self: &mut StreamWriter, data: &[u8]) -> ffi::EncodingResult {
+        // ...
+    }
+}
+```
+
+Good:
+
+```cpp
+impl StreamWriter {
+    pub fn write(&mut self, data: &[u8]) -> ffi::EncodingResult {
+        // ...
+    }
+}
+```

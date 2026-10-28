@@ -1,0 +1,52 @@
+---
+name: skia/name-buffer-methods-after-mechanisms
+description: When adding or modifying buffer and data manager methods, name them after underlying mechanisms rather than use cases, and name parameterless rewinds after marks
+rubric: readability
+severity: nit
+---
+
+**Rule.** Name low-level buffer, stream, and data manager methods after their
+underlying abstraction or mechanism (such as marks, checkpoints, or offsets)
+rather than specific caller use cases or render steps. Maintain consistent,
+paired vocabulary across related operations (e.g., markOffset, rewindToMark, and
+finishMarked, or checkpoint and rewindToCheckpoint); when a method restores
+state to a saved position without arguments, name it after the mark or
+checkpoint (e.g., rewindToMark()) rather than a property name like
+rewindToOffset() that misleadingly implies a missing parameter.
+
+**Why.** Hardcoding caller domain concepts (such as render phases or shading
+steps) into generic buffer and memory managers leaks abstractions into
+lower-level utilities and limits reusability. Similarly, naming a parameterless
+restore method after a property like offset suggests an argument was omitted (as
+in rewindToOffset(offset)), whereas naming it after the saved mark or checkpoint
+maintains predictable, paired terminology.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Leaking caller domain concepts and using misleading property names for parameterless rewinds.
+class UniformManager {
+public:
+    void markOffset();
+    void rewindToOffset();  // Misleadingly implies an offset parameter was omitted
+    SkSpan<const char> finishNonShading() {
+        return this->finish(fMarkedOffset);
+    }
+};
+```
+
+Good:
+
+```cpp
+// Good: Using consistent mechanism-based terminology and naming parameterless rewinds after marks.
+class UniformManager {
+public:
+    void markOffset();
+    void rewindToMark();  // Clearly indicates restoration to previously saved mark
+    SkSpan<const char> finishMarked() {
+        return this->finish(fMarkedOffset);
+    }
+};
+```

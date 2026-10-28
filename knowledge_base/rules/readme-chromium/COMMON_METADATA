@@ -1,0 +1,11 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "(?:.*/)?README\\.chromium"
+    path_expression: "README\\.chromium"
+    rules: "knowledge_base/rules/readme-chromium/specify-autoroll-update-mechanism-in-readme-chromium.md"
+  }
+}

@@ -1,0 +1,50 @@
+---
+name: skia/value-initialize-std-array
+description: When declaring or constructing std::array instances of primitive or pointer types, explicitly value-initialize them with {} to avoid uninitialized elements
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** Explicitly value-initialize `std::array` instances and member
+variables of primitive, scalar, or pointer types with `{}` (either using an
+in-class default `{}` or in the constructor initializer list with `({})` or
+`{}`) rather than default-initializing them. Do not rely on default construction
+for `std::array` when storing non-class types, as its elements remain
+uninitialized with indeterminate garbage values.
+
+**Why.** Unlike containers with user-defined constructors (such as `std::vector`
+or `skia_private::TArray`), `std::array` is an aggregate wrapper around a
+C-style array. Default-initialization leaves fundamental and pointer elements
+uninitialized, leading to undefined behavior, indeterminate values, broken null
+checks, or MemorySanitizer (MSan) violations.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: std::array of pointers or scalars left default-initialized with garbage values
+class GlobalCache {
+    std::array<const Sampler*, kNumDynamicSamplers> fDynamicSamplers;
+    std::array<int, 4> fCounts;
+
+    GlobalCache()
+            : fGraphicsPipelineCache(...) {}
+};
+```
+
+Good:
+
+```cpp
+// Good: Value-initialize with `{}` in member declaration or constructor list
+class GlobalCache {
+    std::array<const Sampler*, kNumDynamicSamplers> fDynamicSamplers{};
+    std::array<int, 4> fCounts{};
+
+    // Or in the constructor initializer list:
+    GlobalCache()
+            : fGraphicsPipelineCache(...)
+            , fDynamicSamplers({})
+            , fCounts({}) {}
+};
+```

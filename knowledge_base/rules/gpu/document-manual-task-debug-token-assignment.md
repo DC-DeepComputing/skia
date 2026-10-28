@@ -1,0 +1,46 @@
+---
+name: skia/gpu/document-manual-task-debug-token-assignment
+description: When manually assigning diagnostic tracking metadata to GPU tasks created outside standard registration pipelines, document why the assignment is needed and what state it tracks
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When manually initializing diagnostic or debug tracking metadata (such
+as fFlushToken guarded by SK_DUMP_TASKS_CODE) on tasks or objects created
+outside standard registration pipelines, include an explanatory comment. Clarify
+why the manual assignment is necessary and what subsystem state or flush
+sequence it correlates with.
+
+**Why.** Standard registration helpers typically stamp tasks with tracking
+metadata automatically. When tasks are synthesized directly, manual token
+assignments look like redundant boilerplate or ad-hoc overrides unless
+documented with the state they correlate with for diagnostic dumping.
+
+## Examples
+
+Bad:
+
+```cpp
+if (fRootUploads->size() > 0) {
+    sk_sp<Task> uploadTask = UploadTask::Make(fRootUploads.get());
+
+    SK_DUMP_TASKS_CODE(uploadTask->fFlushToken =
+            this->priv().tokenTracker()->currentFlushToken();)
+
+    recording->priv().taskList()->add(std::move(uploadTask));
+}
+```
+
+Good:
+
+```cpp
+if (fRootUploads->size() > 0) {
+    sk_sp<Task> uploadTask = UploadTask::Make(fRootUploads.get());
+
+    // Associate the root upload task with the current flush count for task dumping.
+    SK_DUMP_TASKS_CODE(uploadTask->fFlushToken =
+            this->priv().tokenTracker()->currentFlushToken();)
+
+    recording->priv().taskList()->add(std::move(uploadTask));
+}
+```

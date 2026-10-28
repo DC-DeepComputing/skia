@@ -1,0 +1,48 @@
+---
+name: skia/gpu/initialize-clip-atlas-padding-with-initial-coverage
+description: When allocating or preparing padded clip mask atlas entries and mask helpers, pass initial coverage to allocators rather than clearing inset helper subsets
+rubric: design
+severity: should_fix
+---
+
+**Rule.** When allocating or preparing padded clip mask atlas entries and mask
+helpers, initialize the entire backing store including border padding to the
+mask's initial coverage (such as 0xFF for difference clips or 0x00 for intersect
+clips). Pass the initial clear value or alpha directly to allocation and
+preparation APIs (such as prepForRender or RasterMaskHelper::Allocate) rather
+than exposing or calling a separate clear() method on helpers that only wrap the
+inset inner subset.
+
+**Why.** Clip atlases store flattened masks directly, and coordinates outside
+active clip geometry clamp to border padding during shader sampling, requiring
+0xFF in padding for difference clips to prevent erroneous masking. Passing the
+initial clear value directly to buffer allocators and preparation helpers
+guarantees the entire backing buffer (including padding) is initialized
+consistently at creation time and avoids error-prone clear() methods that only
+affect the unpadded inner subset.
+
+## Examples
+
+Bad:
+
+```cpp
+// Clearing an inset pixmap or helper leaves surrounding border padding uninitialized:
+SkPixmap pixmap = fDrawAtlas->prepForRender(*locator, kEntryPadding);
+RasterMaskHelper helper(pixmap, -maskDeviceBounds.topLeft());
+helper.clear(isIntersect ? 0x00 : 0xFF); // Only clears inner bounds, leaving padding 0
+
+auto [bm, helper] = RasterMaskHelper::Allocate(bounds.size(), kEntryPadding, -bounds.topLeft());
+helper.clear(isIntersect ? 0x00 : 0xFF);
+```
+
+Good:
+
+```cpp
+// Pass initial clear coverage directly to the allocator or prep API to initialize full storage:
+SkPixmap pixmap = fDrawAtlas->prepForRender(*locator, /*padding=*/0, clearColor);
+RasterMaskHelper helper(pixmap, translate);
+
+auto [bm, helper] = RasterMaskHelper::Allocate(bounds.size(), -bounds.topLeft(),
+                                               kEntryPadding,
+                                               initial_alpha_for_elements(elements));
+```

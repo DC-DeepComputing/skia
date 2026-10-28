@@ -1,0 +1,46 @@
+---
+name: skia/gpu/assert-depth-stencil-sample-count-against-render-pass
+description: When constructing, validating, or reconstructing Graphite render pass depth/stencil attachments, use the render pass sample count directly rather than branching or referencing color attachments
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When constructing, validating, asserting, or reconstructing depth or
+stencil attachments in Graphite render pass setup or backend key extraction
+(such as in RenderPassDesc, RenderPassTask, or VulkanRenderPass), set and assert
+depth/stencil sample counts against the render pass sample count
+(desc.fSampleCount). Do not branch on MSRTSS support or reference the color
+attachment's sample count (fColorAttachment.fSampleCount), and never omit
+depth/stencil sample count validation.
+
+**Why.** Under MSAA render-to-single-sampled (MSRTSS), color attachments are
+single-sampled (1x) while the render pass and depth/stencil attachments run
+multisampled (e.g., 4x). Because desc.fSampleCount always reflects the required
+depth/stencil sample count across single-sampled, MSAA, and MSRTSS
+configurations, using it directly avoids redundant branching, false assertion
+failures, and mismatched attachment keys.
+
+## Examples
+
+Bad:
+
+```cpp
+// In RenderPassDesc construction:
+SampleCount dsSampleCount = useMsaaRenderToSingleSampled
+                                    ? desc.fSampleCount
+                                    : desc.fColorAttachment.fSampleCount;
+desc.fDepthStencilAttachment = {dsFormat, LoadOp::kClear, StoreOp::kDiscard, dsSampleCount};
+
+// In RenderPassTask validation or backend key extraction:
+SkASSERT(desc.fDepthStencilAttachment.fSampleCount == desc.fColorAttachment.fSampleCount);
+```
+
+Good:
+
+```cpp
+// In RenderPassDesc construction:
+desc.fDepthStencilAttachment = {dsFormat, LoadOp::kClear, StoreOp::kDiscard, desc.fSampleCount};
+
+// In RenderPassTask validation or backend key extraction:
+SkASSERT(desc.fDepthStencilAttachment.fSampleCount == desc.fSampleCount);
+```

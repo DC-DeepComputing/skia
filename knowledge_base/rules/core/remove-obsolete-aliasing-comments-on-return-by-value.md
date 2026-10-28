@@ -1,0 +1,47 @@
+---
+name: skia/core/remove-obsolete-aliasing-comments-on-return-by-value
+description: When refactoring methods from output pointer parameters to return-by-value or std::optional, remove obsolete inline comments regarding memory aliasing or in-place overwrite hazards
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When refactoring methods from taking an out-pointer or in-out pointer
+parameter to returning a value (such as std::optional<T> or T), remove or update
+inline comments warning about memory aliasing or in-place overwrite hazards that
+only applied when writing through caller-provided pointers. Ensure retained
+comments accurately reflect that operations modify local variables rather than
+caller-aliased memory.
+
+**Why.** Comments warning about memory aliasing or in-place overwrite hazards
+between an output pointer parameter and 'this' or input arguments become
+inaccurate and misleading when the method is refactored to construct and return
+a local variable.
+
+## Examples
+
+Bad:
+
+```cpp
+// Refactored to return by value, but retained obsolete aliasing warning:
+std::optional<SkMatrix> SkMatrix::invert() const {
+    ...
+    // Must be careful when writing to inv, since it may be the
+    // same memory as this.
+    SkMatrix inv;
+    inv.fMat[kMSkewX] = inv.fMat[kMSkewY] = 0;
+    ...
+    return inv;
+}
+```
+
+Good:
+
+```cpp
+std::optional<SkMatrix> SkMatrix::invert() const {
+    ...
+    SkMatrix inv;
+    inv.fMat[kMSkewX] = inv.fMat[kMSkewY] = 0;
+    ...
+    return inv;
+}
+```

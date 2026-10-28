@@ -1,0 +1,44 @@
+---
+name: skia/gpu/neutralize-eager-draw-commands-on-noop
+description: When placeholder draw commands or captured parameters are recorded eagerly into draw lists, explicitly neutralize no-op draws rather than returning early
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When placeholder draw commands or captured draw parameters (such as
+depth-only clip draws) are recorded eagerly into a draw list to be updated
+later, explicitly neutralize unneeded or no-op draws (such as by setting an
+empty scissor rect) rather than returning early. Do not leave pre-recorded draw
+list entries active with uninitialized or default parameters when an early exit
+condition is met.
+
+**Why.** Unlike deferred recording where skipping a draw simply requires not
+emitting commands, eagerly recorded draws already reside in the draw list.
+Returning early without neutralizing the captured parameters leaves the draw in
+the command stream to execute with uninitialized bounds or state, causing
+redundant rasterization or visual artifacts.
+
+## Examples
+
+Bad:
+
+```cpp
+if (!this->hasPendingDraw()) {
+    SkASSERT(fUsageBounds.isEmptyNegativeOrNaN());
+    // Early exit leaves eagerly recorded draw commands active with uninitialized state
+    return;
+}
+```
+
+Good:
+
+```cpp
+if (!this->hasPendingDraw()) {
+    SkASSERT(fUsageBounds.isEmptyNegativeOrNaN());
+    // Neutralize pre-recorded draw so it rasterizes no pixels
+    if (fCaptureParams) {
+        fCaptureParams->fScissor = SkIRect::MakeEmpty();
+    }
+    return;
+}
+```

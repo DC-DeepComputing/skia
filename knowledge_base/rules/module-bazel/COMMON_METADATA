@@ -1,0 +1,17 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "MODULE\\.bazel[^/]*"
+    path_expression: "WORKSPACE[^/]*"
+    path_expression: "bazel/.*"
+    rules: "knowledge_base/rules/module-bazel/document-third-party-patch-removal-todo.md"
+  }
+  capability_groups {
+    path_expression: "MODULE\\.bazel[^/]*"
+    rules: "knowledge_base/rules/module-bazel/omit-unused-crate-features.md"
+    rules: "knowledge_base/rules/module-bazel/pin-exact-crate-version.md"
+  }
+}

@@ -1,0 +1,53 @@
+---
+name: skia/rust/document-unpopulated-ffi-struct-fields
+description: When FFI functions populate C/C++ structs, document unpopulated fields and caller lifetime requirements for pointers to Rust-owned memory
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When declaring or updating FFI conversion functions that populate
+C/C++ structs (such as skcms_ICCProfile or SkExif::Metadata), document in the
+header comment all fields left unpopulated or set to zero/null with the
+rationale. Additionally, when populating struct fields with raw pointers
+referencing memory owned by Rust, explicitly document the lifetime
+contract—requiring that the output struct not outlive the backing Rust
+object—and add a TODO to enforce lifetime bounds at compile time where feasible.
+
+**Why.** Callers of cross-language FFI conversion functions cannot rely on
+compiler borrow-checking to enforce lifetimes across C++ and Rust. Explicitly
+documenting unpopulated fields prevents callers from assuming full parity or
+dereferencing null pointers, while documenting non-owning pointer lifetimes
+prevents use-after-free bugs when the backing Rust object is destroyed.
+
+## Examples
+
+Bad:
+
+```cpp
+/// Convert rust_icc::IccProfile to skcms_ICCProfile.
+///
+/// Populates all skcms fields from parsed ICC data.
+/// All LUT data is owned by Rust; C++ accesses via pointers.
+bool ToSkcmsIccProfile(const IccProfile& rust_profile, skcms_ICCProfile* out_skcms);
+```
+
+Good:
+
+```cpp
+/// Convert rust_icc::IccProfile to skcms_ICCProfile.
+///
+/// Populates skcms fields from parsed ICC data.
+///
+/// Note: The following skcms_ICCProfile members will NOT be populated:
+///   - buffer: will be set to nullptr (raw ICC bytes not retained)
+///   - size: will be set to 0
+///   - tag_count: will be set to 0
+///
+/// IMPORTANT: The caller must guarantee that the lifetime of `out_skcms` does not
+/// exceed the lifetime of `rust_profile`. Pointers in `out_skcms` (e.g., for curve
+/// table data) reference memory owned by the Rust-side `IccProfile`, which will be
+/// invalidated when `rust_profile` is destroyed.
+///
+/// TODO: Consider propagating 'input lifetime to enforce this at compile time.
+bool ToSkcmsIccProfile(const IccProfile& rust_profile, skcms_ICCProfile* out_skcms);
+```

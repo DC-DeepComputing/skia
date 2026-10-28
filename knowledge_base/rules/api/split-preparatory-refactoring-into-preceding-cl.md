@@ -1,0 +1,45 @@
+---
+name: skia/api/split-preparatory-refactoring-into-preceding-cl
+description: When introducing a new implementation or subclass requiring base class extraction or shared infrastructure refactoring, split the preparatory refactoring into a separate preceding CL
+rubric: change_scope
+severity: should_fix
+---
+
+**Rule.** When adding a new implementation, engine, or subclass that requires
+extracting an abstract base class or restructuring existing code to share
+infrastructure, split the preparatory refactoring into an independent preceding
+CL. Land and verify the refactoring—including existing test pass rates and any
+virtual dispatch overhead—before introducing the new subclass or feature
+implementation in a subsequent CL.
+
+**Why.** Combining preparatory refactoring with a new implementation creates
+bloated CLs that obscure behavioral regressions and complicate code review.
+Landing the refactoring first isolates structural changes, simplifies bisection
+if regressions occur, and allows baseline performance (such as virtual dispatch
+overhead) to be verified independently before new code paths are introduced.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Single monolithic CL extracting an abstract base class and adding a new subclass
+// 1. Extract abstract DrawListBase class and refactor DrawList to inherit from it
+class DrawList : public DrawListBase { ... };
+// 2. Introduce DrawListLayer subclass and new drawing pipeline in the same CL
+class DrawListLayer final : public DrawListBase { ... };
+auto list = std::make_unique<DrawListLayer>(...);
+```
+
+Good:
+
+```cpp
+// Good: Staged across two independent CLs
+// CL 1 (Preceding): Extract DrawListBase and refactor DrawList; benchmark virtual dispatch
+class DrawList : public DrawListBase { ... };
+auto list = std::make_unique<DrawList>(...);
+
+// CL 2 (Subsequent): Introduce DrawListLayer implementing DrawListBase
+class DrawListLayer final : public DrawListBase { ... };
+auto list = std::make_unique<DrawListLayer>(...);
+```

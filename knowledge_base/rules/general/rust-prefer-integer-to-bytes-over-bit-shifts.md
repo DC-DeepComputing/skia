@@ -1,0 +1,45 @@
+---
+name: skia/rust-prefer-integer-to-bytes-over-bit-shifts
+description: When converting integers to byte buffers in Rust, use standard endian methods like to_le_bytes or to_be_bytes instead of manual bit-shifting and casting
+rubric: readability
+severity: nit
+---
+
+**Rule.** When converting integers to byte sequences or populating byte buffers
+in Rust, use standard endian conversion methods (to_le_bytes(), to_be_bytes(),
+or to_ne_bytes()) paired with collection extension (Vec::extend) or slice
+copying (copy_from_slice). Do not manually extract individual bytes using
+bit-shifting and truncation casting (such as (value >> 8) as u8 or value as u8).
+
+**Why.** Standard library byte conversion methods are expressive,
+self-documenting, and free from error-prone manual shift calculations or
+truncation casts. They produce fixed-size byte arrays directly, allowing clean
+integration with slices and collections while clarifying intended endianness.
+
+## Examples
+
+Bad:
+
+```cpp
+let mut data = Vec::with_capacity(table.len() * 2);
+for &value in table {
+    data.push(value as u8);
+    data.push((value >> 8) as u8);
+}
+
+// Or manual byte indexing:
+buffer[offset] = value as u8;
+buffer[offset + 1] = (value >> 8) as u8;
+```
+
+Good:
+
+```cpp
+let mut data = Vec::with_capacity(table.len() * 2);
+for value in table {
+    data.extend(value.to_le_bytes());
+}
+
+// Or slice copying:
+buffer[offset..offset + 2].copy_from_slice(&value.to_le_bytes());
+```

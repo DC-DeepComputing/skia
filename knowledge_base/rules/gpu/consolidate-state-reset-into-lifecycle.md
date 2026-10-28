@@ -1,0 +1,73 @@
+---
+name: skia/gpu/consolidate-state-reset-into-lifecycle
+description: When recording draws across alternative paths in Graphite, factor shared calculations and state resets into a lifecycle helper, grouping all member resets at the end rather than inside conditional branches
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When stateful recording elements that persist across render passes
+(such as ClipStack::RawElement) support alternative draw-recording paths, factor
+shared scissor, bounding box, and draw-order calculations into a common draw
+lifecycle helper rather than duplicating math. Additionally, consolidate the
+reset of all per-pass tracking fields (usage bounds, painter's order, depth, and
+deferred capture parameters) in an unconditional cleanup block at the end of
+that lifecycle helper rather than scattering resets inside conditional branches
+or introducing separate ad-hoc reset methods, even if clearing certain fields is
+redundant on some paths.
+
+**Why.** Duplicating scissor snapping, clip bounds intersection, and ordering
+calculations across alternative draw-recording paths leads to code divergence
+and maintenance overhead. Centralizing pre-draw calculations and placing all
+post-draw state resets in a unified cleanup block ensures per-pass tracking
+fields return to a clean baseline consistently without risking stale or
+desynchronized element state if a branch is bypassed.
+
+## Examples
+
+Bad:
+
+```cpp
+// In drawClip():
+if (useDrawList) {
+    device->updateNextDepthForClipping(fCaptureParams->fOrder.depth());
+    // Resets scattered inside conditional branch:
+    fCaptureParams = nullptr;
+    fDeferredLayer = nullptr;
+} else {
+    device->drawClipShape(...);
+}
+fUsageBounds = Rect::InfiniteInverted();
+fOrder = DrawOrder::kNoIntersection;
+fMaxZ = DrawOrder::kClearDepth;
+
+// In updateDeferredClipDraw():
+// Duplicated scissor, snappedOuterBounds, and drawBounds calculation:
+fCaptureParams->fDrawBounds = drawBounds;
+
+// Ad-hoc reset misses resetting fUsageBounds, fOrder, and fMaxZ:
+void ClipStack::RawElement::resetClipDraw() {
+    fCaptureParams = nullptr;
+    fDeferredLayer = nullptr;
+}
+```
+
+Good:
+
+```cpp
+template <typename Fn>
+void ClipStack::RawElement::handleClipDraw(Device* device, Fn&& onDraw) {
+    Rect snappedOuterBounds = snap_scissor(fOuterBounds, deviceBounds);
+    scissor.intersect(snappedOuterBounds);
+    Rect drawBounds = fOp == SkClipOp::kIntersect ? scissor : fOuterBounds.makeIntersect(scissor);
+    if (!drawBounds.isEmptyNegativeOrNaN()) {
+        DrawOrder order{fMaxZ.next(), fOrder};
+        onDraw(drawBounds, scissor, order);
+    }
+    // Consolidate all per-pass tracking resets in a trailing common cleanup block:
+    fUsageBounds = Rect::InfiniteInverted();
+    fOrder = DrawOrder::kNoIntersection;
+    fMaxZ = DrawOrder::kClearDepth;
+    fCaptureParams = nullptr;
+    fDeferredLayer = nullptr;
+}
+```

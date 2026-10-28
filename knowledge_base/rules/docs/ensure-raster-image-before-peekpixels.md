@@ -1,0 +1,39 @@
+---
+name: skia/docs/ensure-raster-image-before-peekpixels
+description: When extracting pixels from an SkImage via peekPixels in documentation and example code, ensure raster backing via makeRasterImage rather than assuming CPU pixels
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When extracting or inspecting pixels from an SkImage via peekPixels()
+in documentation and example code, explicitly ensure raster backing (such as via
+makeRasterImage()) before accessing pixels. Do not assume SkImage instances are
+implicitly raster-backed or rely on ambient test harness invariants.
+
+**Why.** SkImage::peekPixels() only succeeds when an image is raster-backed and
+fails for GPU-backed or lazy images. Relying on implicit harness guarantees in
+documentation examples teaches fragile patterns that fail when copied into
+real-world applications.
+
+## Examples
+
+Bad:
+
+```cpp
+SkPixmap pm;
+// Fragile: fails if image is GPU-backed or lazy
+if (image->peekPixels(&pm)) {
+    process_pixels(pm);
+}
+```
+
+Good:
+
+```cpp
+SkPixmap pm;
+// Explicitly ensure raster backing before peeking pixels
+sk_sp<SkImage> raster = image->makeRasterImage();
+if (raster && raster->peekPixels(&pm)) {
+    process_pixels(pm);
+}
+```

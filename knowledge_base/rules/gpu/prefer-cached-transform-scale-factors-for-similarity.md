@@ -1,0 +1,46 @@
+---
+name: skia/gpu/prefer-cached-transform-scale-factors-for-similarity
+description: When checking similarity or scaling radii under similarity transforms in Graphite, use cached scaleFactors() or maxScaleFactor() instead of converting to SkMatrix
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When checking whether a Graphite Transform is a similarity transform,
+verify transform.type() <= Transform::Type::kAffine and compare
+transform.scaleFactors({0, 0}) with SkScalarNearlyEqual(). When scaling radii or
+stroke dimensions under known similarity transforms, multiply or divide by
+transform.maxScaleFactor() directly. Do not convert the Transform to an SkMatrix
+(such as via asM33()) to call isSimilarity(), invert(), or mapRadius().
+
+**Why.** Graphite's Transform precomputes and caches scale factors during
+construction for affine matrices. Converting to SkMatrix via asM33() to query
+isSimilarity() or invert the matrix to call mapRadius() incurs unnecessary
+copying, matrix inversion math, and fallback boilerplate when an isotropic
+scalar factor is already cached.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Converting to SkMatrix for similarity check or radius mapping
+SkMatrix m = localToDevice.matrix().asM33();
+if (m.isSimilarity()) {
+    SkMatrix inverse;
+    if (m.invert(&inverse)) {
+        localRadius = inverse.mapRadius(deviceRadius);
+    }
+}
+```
+
+Good:
+
+```cpp
+// Good: Use cached Transform scale factors directly
+if (localToDevice.type() <= Transform::Type::kAffine) {
+    auto [minScale, maxScale] = localToDevice.scaleFactors({0, 0});
+    if (SkScalarNearlyEqual(maxScale, minScale)) {
+        localRadius = deviceRadius / localToDevice.maxScaleFactor();
+    }
+}
+```

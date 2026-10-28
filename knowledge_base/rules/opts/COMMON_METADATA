@@ -4,8 +4,37 @@
 
 agentic_review {
   capability_groups {
+    path_expression: "src/opts/.*"
+    rules: "knowledge_base/rules/opts/combine-simd-mask-subwords-bitwise.md"
+    rules: "knowledge_base/rules/opts/document-raster-pipeline-force-highp-stages.md"
+    rules: "knowledge_base/rules/opts/factor-channel-math-in-raster-pipeline-stages.md"
+    rules: "knowledge_base/rules/opts/opts-name-kernel-parameters-by-dataflow.md"
+    rules: "knowledge_base/rules/opts/respect-skpmcolor-native-channel-layout.md"
+  }
+  capability_groups {
     path_expression: "modules/skcms/.*"
     path_expression: "src/opts/.*"
+    rules: "knowledge_base/rules/opts/explicit-simd-vector-casts.md"
+    rules: "knowledge_base/rules/opts/mark-simd-helpers-with-si.md"
     rules: "knowledge_base/rules/opts/omit-redundant-architecture-preprocessor-branches.md"
+    rules: "knowledge_base/rules/opts/prefer-direct-addition-over-unit-multiplier-mad.md"
+    rules: "knowledge_base/rules/opts/prefer-fmadd-negated-multiplicand-over-fnmadd.md"
+    rules: "knowledge_base/rules/opts/use-hardware-simd-rounding-shifts.md"
+    rules: "knowledge_base/rules/opts/use-portable-vector-alias.md"
+    rules: "knowledge_base/rules/opts/use-si-macro-for-internal-simd-helpers.md"
+  }
+  capability_groups {
+    path_expression: "modules/skcms/.*"
+    path_expression: "src/core/.*"
+    path_expression: "src/opts/.*"
+    rules: "knowledge_base/rules/opts/match-intrinsic-headers-to-cpu-feature-levels.md"
+    rules: "knowledge_base/rules/opts/use-hardware-bit-select-for-simd-select.md"
+    rules: "knowledge_base/rules/opts/use-hardware-simd-bit-select.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/opts/.*"
+    path_expression: "src/shaders/.*"
+    rules: "knowledge_base/rules/opts/name-highp-forcing-pipeline-stages.md"
   }
 }

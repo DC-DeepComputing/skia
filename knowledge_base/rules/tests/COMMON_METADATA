@@ -4,23 +4,64 @@
 
 agentic_review {
   capability_groups {
+    path_expression: "tests/graphite/.*"
+    rules: "knowledge_base/rules/tests/assert-conservation-invariants-on-cache-stats.md"
+    rules: "knowledge_base/rules/tests/assert-expected-test-setup-calculations.md"
+    rules: "knowledge_base/rules/tests/avoid-blur-mask-filters-in-task-graph-tests.md"
+    rules: "knowledge_base/rules/tests/capitalize-compound-proper-name-abbreviations.md"
+    rules: "knowledge_base/rules/tests/destroy-graphite-recorders-on-worker-threads.md"
+    rules: "knowledge_base/rules/tests/test-dedicated-alpha-formats-in-texture-inference.md"
+    rules: "knowledge_base/rules/tests/use-kopaque-for-graphite-kunknown-alpha-reference.md"
+  }
+  capability_groups {
     path_expression: "tests/.*"
+    content_patterns: "\\bREPORTER_ASSERT\\b"
+    rules: "knowledge_base/rules/tests/assert-exact-image-metadata-in-tests.md"
+    rules: "knowledge_base/rules/tests/assert-exact-test-outcomes-over-disjunctions.md"
+    rules: "knowledge_base/rules/tests/assert-harness-setup-with-skassert.md"
+    rules: "knowledge_base/rules/tests/assert-identifying-properties-on-copied-objects.md"
     rules: "knowledge_base/rules/tests/assert-intended-behavior-over-buggy-output.md"
-    rules: "knowledge_base/rules/tests/concise-reporter-context-labels.md"
+    rules: "knowledge_base/rules/tests/assert-test-preconditions-without-retry-loops.md"
+    rules: "knowledge_base/rules/tests/avoid-asserting-exact-anti-aliased-pixel-colors.md"
+    rules: "knowledge_base/rules/tests/do-not-parameterize-invalid-input-failure-stages.md"
+    rules: "knowledge_base/rules/tests/document-fallback-test-expectations.md"
+    rules: "knowledge_base/rules/tests/document-negative-test-failure-reasons.md"
+    rules: "knowledge_base/rules/tests/factor-struct-assertion-helpers.md"
     rules: "knowledge_base/rules/tests/fail-tests-on-missing-resources.md"
-    rules: "knowledge_base/rules/tests/forward-coordinate-parameters-to-pixmap-accessors.md"
-    rules: "knowledge_base/rules/tests/parameterize-multi-backend-tests.md"
+    rules: "knowledge_base/rules/tests/name-test-oracle-values-after-semantic-role.md"
     rules: "knowledge_base/rules/tests/prefer-direct-reporter-assert.md"
-    rules: "knowledge_base/rules/tests/use-cts-enforcement-next-release.md"
+    rules: "knowledge_base/rules/tests/preserve-empty-state-assertions.md"
+    rules: "knowledge_base/rules/tests/separate-test-execution-modes.md"
+    rules: "knowledge_base/rules/tests/split-compound-reporter-assert-conditions.md"
+    rules: "knowledge_base/rules/tests/tests-assert-all-bounding-box-dimensions.md"
+    rules: "knowledge_base/rules/tests/update-or-replace-obsolete-tests.md"
     rules: "knowledge_base/rules/tests/use-reporter-context-for-subtests.md"
+    rules: "knowledge_base/rules/tests/wrap-reporter-assert-for-custom-assertions.md"
   }
   capability_groups {
     path_expression: "gm/.*"
     path_expression: "modules/.*"
     path_expression: "tests/.*"
     rules: "knowledge_base/rules/tests/avoid-conditional-branching-in-tests.md"
+    rules: "knowledge_base/rules/tests/exercise-all-swappable-backend-implementations.md"
+    rules: "knowledge_base/rules/tests/provide-positive-test-fixtures-for-new-features.md"
+    rules: "knowledge_base/rules/tests/reference-tracking-bug-in-regression-tests.md"
     rules: "knowledge_base/rules/tests/update-scaffolded-test-comments.md"
     rules: "knowledge_base/rules/tests/use-distinct-values-for-struct-fields.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "modules/.*"
+    path_expression: "rust/.*"
+    path_expression: "tests/.*"
+    rules: "knowledge_base/rules/tests/avoid-tautological-constant-tests.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    rules: "knowledge_base/rules/tests/avoid-vague-bug-comments.md"
   }
   capability_groups {
     path_expression: "experimental/.*"
@@ -28,6 +69,16 @@ agentic_review {
     path_expression: "tests/.*"
     path_expression: "tools/.*"
     rules: "knowledge_base/rules/tests/avoid-zero-or-default-in-mutation-tests.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bcheck\\b"
+    rules: "knowledge_base/rules/tests/capture-test-context-in-local-lambda.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bskiatest\\b"
+    rules: "knowledge_base/rules/tests/concise-reporter-context-labels.md"
   }
   capability_groups {
     path_expression: "infra/bots/gen_tasks_logic/dm_flags\\.go"
@@ -38,7 +89,61 @@ agentic_review {
   capability_groups {
     path_expression: "gm/.*"
     path_expression: "tests/.*"
+    rules: "knowledge_base/rules/tests/cover-all-enum-variants.md"
+    rules: "knowledge_base/rules/tests/document-approximation-sampling-parameters.md"
     rules: "knowledge_base/rules/tests/document-test-vector-intent.md"
+    rules: "knowledge_base/rules/tests/name-test-helpers-after-salient-properties.md"
+    rules: "knowledge_base/rules/tests/preserve-path-fill-type-with-static-factories.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bGANESH\\b"
+    rules: "knowledge_base/rules/tests/cover-minimal-degenerate-inputs.md"
+    rules: "knowledge_base/rules/tests/distinguish-unit-tests-from-gms-in-comments.md"
+    rules: "knowledge_base/rules/tests/parameterize-multi-backend-tests.md"
+    rules: "knowledge_base/rules/tests/place-def-test-below-helper-functions.md"
+    rules: "knowledge_base/rules/tests/replicate-companion-builder-unit-tests.md"
+    rules: "knowledge_base/rules/tests/test-iterator-copy-safety-reallocate-after-init.md"
+    rules: "knowledge_base/rules/tests/test-multi-parameter-formulas-in-isolation.md"
+    rules: "knowledge_base/rules/tests/use-cts-enforcement-next-release.md"
+    rules: "knowledge_base/rules/tests/wrap-test-definitions-with-preprocessor-guards.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bSK_ABORT\\b"
+    rules: "knowledge_base/rules/tests/disable-test-debug-abort-macros.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bpoints\\b"
+    rules: "knowledge_base/rules/tests/document-test-input-domain-restrictions.md"
+    rules: "knowledge_base/rules/tests/factor-shared-test-utilities.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bRenderTarget\\b"
+    rules: "knowledge_base/rules/tests/document-unusually-large-test-surfaces.md"
+    rules: "knowledge_base/rules/tests/use-sequential-identifiers-in-dependency-chain-tests.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bexpected\\b"
+    rules: "knowledge_base/rules/tests/exhaustively-test-small-math-domains.md"
+  }
+  capability_groups {
+    path_expression: "tests/graphite/precompile/.*"
+    rules: "knowledge_base/rules/tests/factor-precompile-shader-combination-helpers.md"
+    rules: "knowledge_base/rules/tests/omit-edge-extension-tonemapping-in-android-precompile.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\breadPixels\\b"
+    rules: "knowledge_base/rules/tests/forward-coordinate-parameters-to-pixmap-accessors.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\brecorder\\b"
+    rules: "knowledge_base/rules/tests/gate-assertions-on-capabilities-not-backend.md"
   }
   capability_groups {
     path_expression: "bench/.*"
@@ -52,11 +157,51 @@ agentic_review {
     rules: "knowledge_base/rules/tests/guard-backend-tests-in-shared-files.md"
   }
   capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "gm/.*"
+    path_expression: "modules/.*"
+    path_expression: "tests/.*"
+    rules: "knowledge_base/rules/tests/include-delimiters-in-test-sample-data.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bdefined\\b"
+    rules: "knowledge_base/rules/tests/omit-client-migration-guards-in-tests.md"
+  }
+  capability_groups {
     path_expression: "bench/.*"
     path_expression: "gm/.*"
     path_expression: "tests/.*"
     path_expression: "tools/.*"
     rules: "knowledge_base/rules/tests/prefer-explicit-color-types-in-fixtures.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bBackend\\b"
+    rules: "knowledge_base/rules/tests/prefer-generic-test-utilities.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bDEF_TEST\\b"
+    rules: "knowledge_base/rules/tests/test-incremental-decode-uninitialized-memory.md"
+    rules: "knowledge_base/rules/tests/use-def-test-for-compile-time-validations.md"
+    rules: "knowledge_base/rules/tests/verify-codec-dimensions-before-decode.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bnext\\b"
+    rules: "knowledge_base/rules/tests/tests-exercise-nullable-parameters-in-random-generators.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bImageFilterCache\\b"
+    rules: "knowledge_base/rules/tests/use-def-serial-test-for-global-mutations.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
+    path_expression: "modules/(?:.*/)?tests/.*"
+    path_expression: "tests/.*"
+    rules: "knowledge_base/rules/tests/use-default-typeface-for-shaping-tests.md"
   }
   capability_groups {
     path_expression: "bench/.*"
@@ -65,5 +210,10 @@ agentic_review {
     path_expression: "tests/.*"
     path_expression: "tools/.*"
     rules: "knowledge_base/rules/tests/use-public-decoder-apis.md"
+  }
+  capability_groups {
+    path_expression: "tests/.*"
+    content_patterns: "\\bcolor\\b"
+    rules: "knowledge_base/rules/tests/verify-pixel-contents-on-codec-rewind.md"
   }
 }

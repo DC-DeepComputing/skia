@@ -1,0 +1,19 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "site/docs/dev/chrome/.*"
+    rules: "knowledge_base/rules/site/distinguish-blink-reference-tests-in-roll-docs.md"
+  }
+  capability_groups {
+    path_expression: "docs/(?:.*/)?[^/]*\\.md"
+    path_expression: "site/docs/(?:.*/)?[^/]*\\.md"
+    rules: "knowledge_base/rules/site/docs-include-defining-headers-in-code-examples.md"
+  }
+  capability_groups {
+    path_expression: "site/docs/.*"
+    rules: "knowledge_base/rules/site/document-skia-roll-test-suppressions-section.md"
+  }
+}

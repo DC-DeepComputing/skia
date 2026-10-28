@@ -1,0 +1,38 @@
+---
+name: skia/effects/avoid-manual-ctm-transform-for-image-filters
+description: When constructing SkImageFilter graphs (such as in asImageFilter), pass coordinates and directions in parameter space without manually transforming them by the CTM
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When constructing SkImageFilter graphs (such as inside asImageFilter()
+or effect conversion routines), pass coordinates, positions, and light
+directions in parameter (local) space directly to SkImageFilters factories. Do
+not manually pre-transform them by the current transformation matrix (CTM);
+image filter evaluation automatically maps inputs from parameter space to layer
+space via skif::Mapping.
+
+**Why.** Image filter evaluation automatically transforms geometry and vectors
+from parameter space to layer space using the CTM stored in the filter context.
+Pre-transforming vectors or points by the CTM before passing them to filter
+factories causes them to be transformed twice whenever the CTM is not the
+identity matrix.
+
+## Examples
+
+Bad:
+
+```cpp
+// Pre-transforming light direction by CTM double-transforms it during filter evaluation:
+ctm.mapVectors(&lightDir, &fLightDir, 1);
+SkPoint3 dir = SkPoint3::Make(-lightDir.fX, -lightDir.fY, lightDir.fZ);
+sk_sp<SkImageFilter> filter = SkImageFilters::DistantLitDiffuse(dir, ...);
+```
+
+Good:
+
+```cpp
+// Pass parameter-space light direction directly; SkImageFilter maps it via CTM:
+SkPoint3 dir = SkPoint3::Make(-fLightDir.fX, -fLightDir.fY, fLightDir.fZ);
+sk_sp<SkImageFilter> filter = SkImageFilters::DistantLitDiffuse(dir, ...);
+```
