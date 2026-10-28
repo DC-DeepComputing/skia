@@ -217,7 +217,7 @@ TextLine::TextLine(ParagraphImpl* owner,
 
     // TODO: This is the fix for flutter. Must be removed...
     for (auto cluster = &start; cluster <= &end; ++cluster) {
-        if (!cluster->run().isPlaceholder() && !cluster->run().isCursiveScript()) {
+        if (!cluster->run(fOwner).isPlaceholder() && !cluster->run(fOwner).isCursiveScript()) {
             fShift += cluster->getHalfLetterSpacing();
             break;
         }
@@ -503,7 +503,7 @@ void TextLine::justify(SkScalar maxWidth) {
     bool leadingWhitespaces = true;
     this->iterateThroughClustersInGlyphsOrder(false, false,
         [&](const Cluster* cluster, ClusterIndex index, bool ghost) {
-            if (cluster->isSoftHyphen()) {
+            if (cluster->isSoftHyphen(fOwner)) {
                 // Soft-hyphen clusters are unrendered in the text run and must not split an
                 // adjacent ideographic or whitespace justification patch
             } else if (cluster->isWhitespaceBreak()) {
@@ -555,13 +555,13 @@ void TextLine::justify(SkScalar maxWidth) {
     this->iterateThroughClustersInGlyphsOrder(false, true, [&](const Cluster* cluster, ClusterIndex index, bool ghost) {
 
         if (ghost) {
-            if (cluster->run().leftToRight()) {
+            if (cluster->run(fOwner).leftToRight()) {
                 this->shiftCluster(cluster, ghostShift, ghostShift);
             }
             return true;
         }
 
-        if (cluster->isSoftHyphen()) {
+        if (cluster->isSoftHyphen(fOwner)) {
             // Keep whitespacePatch and leadingWhitespaces intact across soft hyphens
         } else if (cluster->isWhitespaceBreak()) {
             if (!whitespacePatch && !leadingWhitespaces) {
@@ -585,7 +585,7 @@ void TextLine::justify(SkScalar maxWidth) {
         this->shiftCluster(cluster, shift, prevShift);
         // shiftCluster still records the run-end shift for a trailing soft hyphen, but an
         // unrendered soft hyphen must not advance prevShift for the following visible cluster
-        if (!cluster->isSoftHyphen()) {
+        if (!cluster->isSoftHyphen(fOwner)) {
             prevShift = shift;
         }
         // We skip ideographic whitespaces
@@ -611,7 +611,7 @@ void TextLine::justify(SkScalar maxWidth) {
 
 void TextLine::shiftCluster(const Cluster* cluster, SkScalar shift, SkScalar prevShift) {
 
-    auto& run = cluster->run();
+    auto& run = cluster->run(fOwner);
     auto start = cluster->startPos();
     auto end = cluster->endPos();
 
@@ -694,7 +694,7 @@ void TextLine::createSoftHyphen() {
     }
 
     auto& lastCluster = fOwner->cluster(fClusterRange.end - 1);
-    if (!lastCluster.isSoftHyphen()) {
+    if (!lastCluster.isSoftHyphen(fOwner)) {
         return;
     }
     // Only draw the hyphen if the line actually broke at the soft hyphen. It
@@ -773,7 +773,7 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
         SkString fEllipsis;
     };
 
-    const Run& run = cluster->run();
+    const Run& run = cluster->run(owner);
     TextStyle textStyle = owner->paragraphStyle().getTextStyle();
     for (auto i = blockRange.start; i < blockRange.end; ++i) {
         auto& block = owner->block(i);
@@ -1002,7 +1002,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
                         isolateClusterGlyphs(fOwner, run, start, originalTextRange, true);
                 isolated = true;
             } else {
-                leftCorrection = start->sizeToChar(originalTextRange.start);
+                leftCorrection = start->sizeToChar(fOwner, originalTextRange.start);
             }
         }
         if (endSplit) {
@@ -1014,7 +1014,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
                         isolateClusterGlyphs(fOwner, run, end, originalTextRange, false);
                 isolated = true;
             } else {
-                rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+                rightCorrection = end->sizeFromChar(fOwner, originalTextRange.end - 1);
             }
         }
 
