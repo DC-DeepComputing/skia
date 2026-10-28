@@ -13,6 +13,7 @@
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/vk/GrVkDescriptorSetManager.h"
 #include "src/gpu/ganesh/vk/GrVkManagedResource.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <stdint.h>
 #include <cinttypes>
@@ -43,7 +44,7 @@ private:
     void onRecycle() const override;
 
     VkDescriptorSet                          fDescSet;
-    SkDEBUGCODE(mutable) GrVkDescriptorPool* fPool;
+    mutable raw_ptr<GrVkDescriptorPool> fPool;
     GrVkDescriptorSetManager::Handle         fHandle;
 
     using INHERITED = GrVkRecycledResource;

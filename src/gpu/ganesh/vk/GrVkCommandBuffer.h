@@ -19,6 +19,7 @@
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/GrSurface.h"
 #include "src/gpu/ganesh/vk/GrVkSemaphore.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <memory>
@@ -188,7 +189,7 @@ protected:
     // Stores a pointer to the current active render pass (i.e. begin has been called but not
     // end). A nullptr means there is no active render pass. The GrVKCommandBuffer does not own
     // the render pass.
-    const GrVkRenderPass*     fActiveRenderPass = nullptr;
+    raw_ptr<const GrVkRenderPass, DanglingUntriaged> fActiveRenderPass = nullptr;
 
     VkCommandBuffer           fCmdBuffer;
 

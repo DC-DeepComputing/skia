@@ -17,6 +17,7 @@
 #include "src/gpu/ganesh/vk/GrVkImage.h"
 #include "src/gpu/ganesh/vk/GrVkRenderPass.h"
 #include "src/gpu/ganesh/vk/GrVkResourceProvider.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <string_view>
@@ -199,7 +200,7 @@ private:
 
     sk_sp<const GrVkFramebuffer> fCachedFramebuffers[kNumCachedFramebuffers];
 
-    const GrVkDescriptorSet* fCachedInputDescriptorSet = nullptr;
+    raw_ptr<const GrVkDescriptorSet> fCachedInputDescriptorSet = nullptr;
 
     sk_sp<GrVkFramebuffer> fExternalFramebuffer;
 };

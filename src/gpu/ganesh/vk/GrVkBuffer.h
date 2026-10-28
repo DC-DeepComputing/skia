@@ -14,6 +14,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <string_view>
@@ -72,7 +73,7 @@ private:
     VkBuffer fBuffer;
     skgpu::VulkanAlloc fAlloc;
 
-    const GrVkDescriptorSet* fUniformDescriptorSet;
+    raw_ptr<const GrVkDescriptorSet> fUniformDescriptorSet;
 
     using INHERITED = GrGpuBuffer;
 };

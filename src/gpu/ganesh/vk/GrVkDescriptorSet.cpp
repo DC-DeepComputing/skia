@@ -23,7 +23,7 @@ GrVkDescriptorSet::GrVkDescriptorSet(GrVkGpu* gpu,
 }
 
 void GrVkDescriptorSet::freeGPUData() const {
-    fPool->unref();
+    fPool.ExtractAsDangling()->unref();
 }
 
 void GrVkDescriptorSet::onRecycle() const {

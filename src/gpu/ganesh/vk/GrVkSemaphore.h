@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/GrSemaphore.h"
 #include "src/gpu/ganesh/vk/GrVkManagedResource.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cinttypes>
 #include <cstdint>
@@ -94,7 +95,7 @@ private:
         fResource->setIsOwned();
     }
 
-    Resource* fResource;
+    raw_ptr<Resource> fResource;
 
     using INHERITED = GrSemaphore;
 };

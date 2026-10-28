@@ -59,7 +59,7 @@ GrVkSemaphore::GrVkSemaphore(GrVkGpu* gpu, VkSemaphore semaphore, bool prohibitS
 
 GrVkSemaphore::~GrVkSemaphore() {
     if (fResource) {
-        fResource->unref();
+        fResource.ExtractAsDangling()->unref();
     }
 }
 

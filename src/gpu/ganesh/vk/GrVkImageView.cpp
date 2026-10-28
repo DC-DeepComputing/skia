@@ -71,7 +71,7 @@ void GrVkImageView::freeGPUData() const {
     GR_VK_CALL(fGpu->vkInterface(), DestroyImageView(fGpu->device(), fImageView, nullptr));
 
     if (fYcbcrConversion) {
-        fYcbcrConversion->unref();
+        fYcbcrConversion.ExtractAsDangling()->unref();
     }
 }
 

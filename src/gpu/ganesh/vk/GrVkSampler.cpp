@@ -136,7 +136,7 @@ void GrVkSampler::freeGPUData() const {
     SkASSERT(fSampler);
     GR_VK_CALL(fGpu->vkInterface(), DestroySampler(fGpu->device(), fSampler, nullptr));
     if (fYcbcrConversion) {
-        fYcbcrConversion->unref();
+        fYcbcrConversion.ExtractAsDangling()->unref();
     }
 }
 
