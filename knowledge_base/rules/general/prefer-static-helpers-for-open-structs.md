@@ -1,0 +1,70 @@
+---
+name: skia/prefer-static-helpers-for-open-structs
+description: When defining open data structs with public fields, avoid adding member methods for trivial getters, validation, internal helpers, or per-field equality checks
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Do not declare internal helper or validation functions as member
+methods in header definitions of open data structs when all data fields are
+public; implement such routines as standalone static functions in the
+corresponding .cpp source file. Additionally, do not add trivial getter
+accessors or granular per-field equality methods (such as fieldNameEqual) to
+public data structs; callers should inspect and compare fields directly, or use
+a canonical operator== for whole-struct comparisons.
+
+**Why.** Passive data structs with public fields represent open data layouts
+that do not encapsulate private state. Adding trivial getters, internal helpers,
+or granular per-field comparison methods bloats the struct definition with
+boilerplate, leaks implementation details, and introduces redundant or
+inconsistent API surface when callers can directly inspect, access, or compare
+fields.
+
+## Examples
+
+Bad:
+
+```cpp
+// 1. Trivial getters and private/member validation on an open struct:
+struct SkPathRaw {
+    SkSpan<const SkPoint> fPoints;
+    SkSpan<const uint8_t> fVerbs;
+
+    SkSpan<const SkPoint> points() const { return fPoints; }
+    SkSpan<const uint8_t> verbs() const { return fVerbs; }
+private:
+    void validate() const;
+};
+
+// 2. Granular per-field equality methods on an open data struct:
+struct DepthStencilSettings {
+    Face fFrontStencil;
+    uint32_t fStencilReferenceValue = 0;
+
+    constexpr bool stencilReferenceEqual(const DepthStencilSettings& that) const {
+        return fStencilReferenceValue == that.fStencilReferenceValue;
+    }
+};
+```
+
+Good:
+
+```cpp
+// 1. Keep struct passive with direct field access; validate via static helper in .cpp:
+struct SkPathRaw {
+    SkSpan<const SkPoint> fPoints;
+    SkSpan<const uint8_t> fVerbs;
+};
+// In SkPathRaw.cpp (if validation is needed internally):
+static void validate(const SkPathRaw& path) { ... }
+
+// 2. Compare fields directly at call sites or define operator==:
+struct DepthStencilSettings {
+    Face fFrontStencil;
+    uint32_t fStencilReferenceValue = 0;
+
+    constexpr bool operator==(const DepthStencilSettings& that) const { ... }
+};
+// At call site:
+bool dirty = prev == nullptr || prev->fStencilReferenceValue != curr.fStencilReferenceValue;
+```

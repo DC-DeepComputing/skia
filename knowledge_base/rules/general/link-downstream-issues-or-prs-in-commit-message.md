@@ -1,0 +1,58 @@
+---
+name: skia/link-downstream-issues-or-prs-in-commit-message
+description: When authoring commit messages motivated by downstream clients or deleting staging code, include direct links to client CLs, pull requests, or issues
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When authoring commit messages for changes motivated by, fixing, or
+unblocking downstream clients (such as Flutter, Chromium, or Android), or when
+deleting staging functions, defines, or deprecated APIs maintained for external
+clients, include direct links to the relevant downstream pull requests, issue
+tickets, or client CLs in the commit message body (e.g., noting prerequisite
+client CLs that must land first, using public URLs or http://ag/<id> shortlinks
+for Android). Place these links in the commit body so reviewers and future
+maintainers have verifiable context tracing downstream requirements and
+coordination.
+
+**Why.** Linking external pull requests, issue tickets, or prerequisite client
+CLs provides essential provenance for API additions and staging cleanups.
+Downstream requirements and multi-step migration timelines are often not
+captured in internal Skia tracking bugs, making external links vital for
+reviewers to verify rollout readiness and for future maintainers performing roll
+debugging and git archaeology.
+
+## Examples
+
+Bad:
+
+```cpp
+// Omitting downstream issue or pull request link:
+Expose backdropFilterTileMode to saveLayer API
+
+Change-Id: I7396dfb4e40a69c96ffd11825841cd1b2910bd64
+
+// Omitting client CL links when removing staging code:
+Delete staging functions for serialization and deserialization
+
+Change-Id: I36ac530014c83df18ac8c5f46de2d92332b27413
+```
+
+Good:
+
+```cpp
+// For changes motivated by downstream issues or PRs:
+Expose backdropFilterTileMode to saveLayer API
+
+Fixes https://github.com/flutter/engine/pull/55640 for Flutter Web
+
+Change-Id: I7396dfb4e40a69c96ffd11825841cd1b2910bd64
+
+// For removing staging functions or legacy paths coordinated with downstream clients:
+Delete staging functions for serialization and deserialization
+
+This can land after the following client CL(s) land:
+http://ag/38920053
+
+Change-Id: I36ac530014c83df18ac8c5f46de2d92332b27413
+```

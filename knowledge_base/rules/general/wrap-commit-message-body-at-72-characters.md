@@ -1,0 +1,43 @@
+---
+name: skia/wrap-commit-message-body-at-72-characters
+description: When authoring Git commit messages, limit the subject line to approximately 72–80 characters and wrap body text to 72 characters per line
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** Limit the Git commit message subject line to approximately 72–80
+characters to prevent truncation in Gerrit change lists and git log --oneline.
+In the commit body, wrap descriptive text to a maximum of 72 characters per
+line, leaving standalone URLs, file paths, or machine-generated metadata
+trailers unwrapped only when breaking them would corrupt the reference.
+
+**Why.** The subject line serves as the change summary in Gerrit, notification
+emails, and git log --oneline; keeping it under 72–80 characters prevents UI
+truncation and keeps lists readable. In the commit body, git log indents lines
+by 4 spaces, so restricting body text to 72 characters prevents awkward line
+wrapping on standard 80-column terminals.
+
+## Examples
+
+Bad:
+
+```cpp
+// Subject line exceeding 72–80 characters (197 chars):
+[graphite] Add RenderStateFlags, which track the type of data that will be used for each render step. Update DrawWriter setTemplate() and flush() logic to use RenderStateFlags to minimize binds and draw calls.
+
+// Unwrapped commit message body lines exceeding 72 characters:
+Add a flag to SkScalerContextRec that indicates whether the scaler context uses SDF. Deletes the SDFMaskFilter. Right now this flag is in parallel to a lot of the maskfilter usage, but eventually mask filter will be deprecated and only this SDF flag will remain.
+```
+
+Good:
+
+```cpp
+// Concise subject line under 72–80 characters:
+[graphite] Update DrawWriter to minimize binds by using pending base offsets.
+
+// Body text wrapped to a maximum of 72 characters:
+Add a flag to SkScalerContextRec that indicates whether the scaler
+context uses SDF. Deletes the SDFMaskFilter. Right now this flag is in
+parallel to a lot of the maskfilter usage, but eventually mask filter
+will be deprecated and only this SDF flag will remain.
+```

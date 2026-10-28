@@ -1,0 +1,47 @@
+---
+name: skia/api/prefer-skalign-helpers-for-alignment
+description: When aligning offsets, sizes, or element counts to power-of-two boundaries, use Skia's SkAlign helpers rather than hand-rolled modulus, division, or bitwise arithmetic
+rubric: readability
+severity: nit
+---
+
+**Rule.** When computing power-of-two alignments, buffer padding, or aligned
+element counts, use Skia's alignment helpers from SkAlign.h (such as SkAlignTo,
+SkAlign4, SkAlign8, or SkAlignPtr) rather than hand-rolling modulus, division,
+or bitwise masking and remainder arithmetic. For variable power-of-two
+alignments (such as alignof(T)), pass the alignment requirement to SkAlignTo(x,
+alignment).
+
+**Why.** Dedicated alignment helpers in SkAlign.h encapsulate power-of-two
+bitwise arithmetic, producing concise, self-documenting, and
+constexpr-compatible code. Hand-rolled calculations using modulus, division, or
+bitmask remainder branches are verbose, introduce error-prone intermediate
+variables, and risk subtle edge-case or operator precedence bugs.
+
+## Examples
+
+Bad:
+
+```cpp
+// Hand-rolling alignment and padding with modulus and division
+static constexpr int kExtraSpace = (kMinCount * sizeof(T) + sizeof(int)) % std::max(alignof(T*), alignof(T));
+static constexpr int kBonusElements = kExtraSpace / sizeof(T);
+static constexpr int kCount = kMinCount + kBonusElements;
+
+// Hand-rolling bitmask remainder arithmetic for element alignment
+const uint32_t start = (fPendingCount + count) & 3;
+const uint32_t countDiff = start ? 4 - start : 0;
+uint32_t alignedCount = count + (appendVerts ? countDiff : 0);
+```
+
+Good:
+
+```cpp
+// Using SkAlignTo for power-of-two alignment
+static constexpr int kCount =
+        SkAlignTo(kMinCount * sizeof(T) + sizeof(int), std::max(alignof(T*), alignof(T))) / sizeof(T);
+
+// Using SkAlign4 to align counts concisely
+uint32_t alignedCount =
+        appendVerts ? (SkAlign4(fPendingCount + count) - fPendingCount) : count;
+```

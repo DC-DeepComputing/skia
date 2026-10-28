@@ -1,0 +1,76 @@
+---
+name: skia/codec/validate-codec-buffer-sizes-upfront
+description: When implementing image codec or encoder factory methods, validate dimensions and buffer sizes upfront with SkSafeMath, returning nullptr rather than deferring checks to operational methods
+rubric: design
+severity: should_fix
+---
+
+**Rule.** When implementing image decoder or encoder factory methods (such as
+Make or MakeFromStream), validate image dimensions, row bytes, and buffer sizes
+for arithmetic overflow upfront using SkSafeMath. Return nullptr (and set
+failure results like kInternalError or kErrorInInput where applicable)
+immediately on failure, rather than deferring failure or overflow checks to
+operational methods (such as onGetScanlines, onGetPixels, or onEncodeRows).
+Allow constructors to take validated parameters and assert invariants with
+SkASSERT.
+
+**Why.** In Skia, constructors cannot throw exceptions or return null. Deferring
+arithmetic overflow or validity checks to operational methods allows invalid or
+broken objects to be constructed and returned from factories, and scanline/pixel
+hooks often lack granular error reporting. Validating calculations upfront in
+static Make factories ensures invalid inputs fail fast by returning nullptr,
+catches malformed data early, and lets constructors assert valid invariants with
+SkASSERT.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Deferring overflow checks to decode hooks where errors are misreported
+int SkExampleCodec::onGetScanlines(void* dst, int count, size_t dstRowBytes) {
+    SkSafeMath safe;
+    size_t offset = safe.mul(fCurrentScanline, fSrcRowBytes);
+    if (!safe.ok()) {
+        fDataIsIncomplete = true; // Misreports arithmetic overflow
+        return 0;
+    }
+    // ...
+}
+
+// Bad: Constructing encoder with unvalidated size and deferring check to encode hook
+SkPngEncoderBase::SkPngEncoderBase(const SkEncodedInfo& dstInfo, const SkPixmap& src)
+        : SkEncoder(src, computeDstRowSize(dstInfo))
+        , fDstRowSize(computeDstRowSize(dstInfo)) {}
+
+bool SkPngEncoderBase::onEncodeRows(int numRows) {
+    if (fDstRowSize == 0) { return false; } // Postponed check from constructor
+    // ...
+}
+```
+
+Good:
+
+```cpp
+// Good: Validate dimensions and buffer sizes upfront in codec factory methods
+std::unique_ptr<SkCodec> SkExampleCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
+                                                        Result* result) {
+    SkSafeMath safe;
+    size_t srcRowBytes = safe.mul(safe.castTo<size_t>(width), bytesPerPixel);
+    (void)safe.mul(safe.castTo<size_t>(height), srcRowBytes);
+    if (!safe.ok()) {
+        *result = kInternalError;
+        return nullptr;
+    }
+    return std::make_unique<SkExampleCodec>(/*...*/);
+}
+
+// Good: Validate fallible parameters in encoder Make() factory and return nullptr
+std::unique_ptr<SkEncoder> SkPngEncoder::Make(SkWStream* dst, const SkPixmap& src) {
+    auto targetInfo = SkPngEncoderBase::getTargetInfo(src.info());
+    if (!targetInfo.has_value()) {
+        return nullptr;
+    }
+    return std::make_unique<SkPngEncoderImpl>(std::move(*targetInfo), dst);
+}
+```

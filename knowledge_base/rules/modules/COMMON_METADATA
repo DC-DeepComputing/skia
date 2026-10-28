@@ -1,0 +1,56 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "modules/.*"
+    rules: "knowledge_base/rules/modules/allow-deferred-builder-dependencies.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/codec/.*"
+    path_expression: "src/ports/.*"
+    rules: "knowledge_base/rules/modules/avoid-legacy-library-includes-in-replacement-backends.md"
+  }
+  capability_groups {
+    path_expression: "modules/canvaskit/tests/.*"
+    rules: "knowledge_base/rules/modules/canvaskit-no-spaces-in-gm-names.md"
+    rules: "knowledge_base/rules/modules/use-it-over-gm-without-canvas-draws.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.d\\.ts"
+    path_expression: "modules/canvaskit/.*"
+    rules: "knowledge_base/rules/modules/document-domain-concepts-in-ts-declarations.md"
+  }
+  capability_groups {
+    path_expression: "modules/canvaskit/.*"
+    rules: "knowledge_base/rules/modules/free-temporary-canvaskit-wasm-arrays.md"
+    rules: "knowledge_base/rules/modules/modules-keep-modular-canvaskit-bindings-out-of-core-interfac.md"
+    rules: "knowledge_base/rules/modules/name-unpacked-canvaskit-buffer-pointers-by-consumed-count.md"
+    rules: "knowledge_base/rules/modules/prefer-standard-arrays-over-canvaskit-malloc.md"
+    rules: "knowledge_base/rules/modules/prefer-typedarray-slice-for-canvaskit-scratch-buffers.md"
+    rules: "knowledge_base/rules/modules/preserve-established-canvaskit-api-methods.md"
+    rules: "knowledge_base/rules/modules/sync-canvaskit-types-and-tests-with-bindings.md"
+  }
+  capability_groups {
+    path_expression: "modules/skparagraph/.*"
+    rules: "knowledge_base/rules/modules/gate-skparagraph-layout-changes.md"
+    rules: "knowledge_base/rules/modules/mirror-cluster-edge-corrections-for-rtl-runs.md"
+    rules: "knowledge_base/rules/modules/use-test-fonts-in-skparagraph-tests.md"
+  }
+  capability_groups {
+    path_expression: "modules/skcms/.*"
+    path_expression_exclusion: "modules/skcms/BUILD\\.bazel"
+    path_expression_exclusion: "modules/skcms/README\\.chromium"
+    path_expression_exclusion: "modules/skcms/[^/]*\\.gni"
+    path_expression_exclusion: "modules/skcms/version\\.sha1"
+    rules: "knowledge_base/rules/modules/submit-skcms-changes-to-standalone-repo.md"
+  }
+  capability_groups {
+    path_expression: "modules/canvaskit/(?:.*/)?[^/]*\\.d\\.ts"
+    path_expression: "modules/canvaskit/npm_build/types/.*"
+    rules: "knowledge_base/rules/modules/use-standard-canvaskit-input-type-aliases.md"
+  }
+}

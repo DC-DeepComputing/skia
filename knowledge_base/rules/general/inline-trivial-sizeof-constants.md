@@ -1,0 +1,48 @@
+---
+name: skia/inline-trivial-sizeof-constants
+description: When sizing buffers or storage, inline trivial single-use sizeof(T) expressions, but define repeated layout padding arithmetic as named static constexpr constants
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** Do not define single-use named constants that merely alias trivial
+expressions like sizeof(T); inline sizeof(T) directly into buffer or array
+sizing calculations instead. Conversely, when buffer layouts require
+multi-element padding or offset calculations (such as aligning to vector
+boundaries) across multiple callsites, define a named static constexpr constant
+(e.g., k<Name>Padding) rather than duplicating raw arithmetic or magic numbers
+inline.
+
+**Why.** A dedicated named constant for a bare sizeof(T) introduces redundant
+indirection without improving clarity. Conversely, duplicating compound layout
+or alignment arithmetic across callsites obscures semantic intent, invites
+copy-paste errors, and makes layout adjustments error-prone compared to a single
+self-documenting constant.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Redundant single-use alias for trivial sizeof(T)
+static constexpr size_t kMCRecSize = sizeof(MCRec);
+static constexpr int kMCRecCount   = 32;
+alignas(MCRec) std::byte fMCRecStorage[kMCRecSize * kMCRecCount];
+
+// Bad: Duplicated raw padding arithmetic across callsites
+writer.write(kFactor1);
+writer.zeroBytes(3 * sizeof(float)); // pad float to float4
+```
+
+Good:
+
+```cpp
+// Good: Inline trivial sizeof(T) directly into sizing calculation
+static constexpr int kMCRecCount = 32;
+alignas(MCRec) std::byte fMCRecStorage[sizeof(MCRec) * kMCRecCount];
+
+// Good: Named static constexpr constant for repeated layout padding
+static constexpr size_t kFloatToFloat4Padding = 3 * sizeof(float);
+writer.write(kFactor1);
+writer.zeroBytes(kFloatToFloat4Padding);
+```

@@ -1,0 +1,15 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "infra/bots/.*"
+    rules: "knowledge_base/rules/infra/clean-up-recipe-tokens-when-removing-bot-jobs.md"
+    rules: "knowledge_base/rules/infra/document-ci-test-skips-with-tracking-bug.md"
+  }
+  capability_groups {
+    path_expression: "infra/bots/jobs\\.json"
+    rules: "knowledge_base/rules/infra/include-directory-paths-in-cq-location-regexes.md"
+  }
+}

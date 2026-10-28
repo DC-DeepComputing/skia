@@ -1,0 +1,24 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "BUILD\\.bazel"
+    rules: "knowledge_base/rules/build-bazel/avoid-intermediate-filegroups-for-gni-export.md"
+    rules: "knowledge_base/rules/build-bazel/declare-companion-config-settings-for-select.md"
+    rules: "knowledge_base/rules/build-bazel/omit-dependency-headers-from-hdrs.md"
+    rules: "knowledge_base/rules/build-bazel/reference-defined-filegroups-in-target-sources.md"
+    rules: "knowledge_base/rules/build-bazel/restrict-bazel-visibility-outside-root.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    path_expression: "gn/.*"
+    rules: "knowledge_base/rules/build-bazel/remove-relocated-files-from-build-file-lists.md"
+  }
+}

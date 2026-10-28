@@ -1,0 +1,75 @@
+---
+name: skia/api/document-uniform-parameter-rationale
+description: When introducing APIs, options structs, parameters, or single-value enums designed for extensibility, document the architectural rationale and future-expansion intent in header comments
+rubric: readability
+severity: nit
+---
+
+**Rule.** When declaring an API parameter where all callers pass the same
+constant argument, introducing an options struct or interface where only a
+single option or pass is currently needed, or introducing an enum that currently
+contains only a single member (such as an extensible key discriminator),
+document the architectural intent and extensibility rationale in the header
+comment rather than relying on CL descriptions. Explain why the abstraction is
+retained instead of hardcoded or omitted, and clarify intended future usage,
+multi-pass extensibility, or anticipated variant types.
+
+**Why.** Exposing parameters that only receive constant arguments, options
+structs supporting a single option, or enums with only a single value prompts
+reviewers and maintainers to question whether they are premature
+over-engineering, redundant indirection, or dead code. CL descriptions and
+commit messages are separated from day-to-day code browsing; documenting the
+extensibility rationale directly in the header preserves design intent for
+future maintainers.
+
+## Examples
+
+Bad:
+
+```cpp
+// 1. Uniform-value API parameter without rationale
+virtual TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
+                                                      uint32_t sampleCount,
+                                                      Protected,
+                                                      Discardable discardable) const = 0;
+
+// 2. Extensible options struct with single initial option without rationale
+struct SPIRVTransformOptions {
+    bool fMultisampleInputLoad = false;
+};
+
+// 3. Single-value enum discriminator without rationale
+enum class PersistentCacheKeyType : uint32_t {
+    kPipelineCache = 1,
+};
+```
+
+Good:
+
+```cpp
+// 1. Document uniform parameter rationale
+// Currently all callers request a discardable depth-stencil attachment. We still pass this
+// parameter because backend caps should not dictate discardability policy, and to preserve
+// extensibility for non-discardable attachments if needed in the future.
+virtual TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
+                                                      uint32_t sampleCount,
+                                                      Protected,
+                                                      Discardable discardable) const = 0;
+
+// 2. Document options struct extensibility intent in header comment
+/*
+ * The SPIR-V transformer is capable of applying multiple transformations in one pass. However,
+ * there is currently only one transformation needed. The SPIRVTransformOptions controls which
+ * transformations to apply, and is provided for extensibility.
+ */
+struct SPIRVTransformOptions {
+    bool fMultisampleInputLoad = false;
+};
+
+// 3. Document single-value enum extensible purpose and anticipated variants
+// This enum is used to key Graphite's uses of the persistent cache. Currently, Graphite only
+// supports a persistent Pipeline cache but other caches are possible.
+enum class PersistentCacheKeyType : uint32_t {
+    kPipelineCache = 1,
+};
+```

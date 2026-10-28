@@ -1,0 +1,44 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "gn/sksl_tests\\.gni"
+    path_expression: "resources/sksl/.*"
+    path_expression: "src/sksl/.*"
+    path_expression: "tests/sksl/.*"
+    rules: "knowledge_base/rules/sksl/add-sksl-tests-for-new-stage-intrinsics.md"
+  }
+  capability_groups {
+    path_expression: "src/sksl/codegen/.*"
+    rules: "knowledge_base/rules/sksl/consolidate-intrinsic-codegen-cases.md"
+    rules: "knowledge_base/rules/sksl/parenthesize-inlined-synthesized-expressions.md"
+  }
+  capability_groups {
+    path_expression: "src/sksl/.*"
+    path_expression_exclusion: "src/sksl/generated/.*"
+    rules: "knowledge_base/rules/sksl/delete-unused-sksl-module-helpers.md"
+    rules: "knowledge_base/rules/sksl/use-matching-plane-sampler-in-multiplane-shaders.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "src/sksl/.*"
+    rules: "knowledge_base/rules/sksl/document-shader-division-guard-threshold-limits.md"
+    rules: "knowledge_base/rules/sksl/pack-mutually-exclusive-shader-uniforms.md"
+  }
+  capability_groups {
+    path_expression: "src/sksl/.*"
+    rules: "knowledge_base/rules/sksl/no-codegen-asserts-on-frontend-valid-constructs.md"
+    rules: "knowledge_base/rules/sksl/quote-identifiers-in-sksl-diagnostics.md"
+    rules: "knowledge_base/rules/sksl/report-compiler-errors-via-error-reporter.md"
+    rules: "knowledge_base/rules/sksl/sksl-prefer-expression-description.md"
+    rules: "knowledge_base/rules/sksl/use-sksl-type-kunsizedarray-sentinel.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "src/sksl/.*"
+    path_expression_exclusion: "src/sksl/generated/.*"
+    rules: "knowledge_base/rules/sksl/sksl-use-ltrb-swizzles-for-rect-bounds.md"
+  }
+}

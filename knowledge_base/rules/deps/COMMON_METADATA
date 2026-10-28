@@ -1,0 +1,16 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "DEPS"
+    path_expression: "bazel/deps\\.bzl"
+    path_expression: "bazel/deps\\.json"
+    path_expression: "bazel/external/.*"
+    path_expression: "infra/bots/deps/.*"
+    path_expression: "third_party/.*"
+    path_expression: "tools/generate_patches\\.py"
+    rules: "knowledge_base/rules/deps/sync-dependency-manifests.md"
+  }
+}

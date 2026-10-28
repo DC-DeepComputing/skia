@@ -1,0 +1,70 @@
+---
+name: skia/avoid-chatty-first-person-in-comments
+description: When writing code comments, avoid conversational phrasing, colloquialisms, and informal or placeholder notes in favor of concise, objective technical documentation
+rubric: readability
+severity: nit
+---
+
+**Rule.** Avoid conversational first-person phrasing (such as 'we will' or
+'we\'ll'), colloquialisms, and informal, humorous, or temporary placeholder
+remarks (such as 'herein lies the rub' or rhetorical questions) in code
+comments. Write concise, objective statements that describe technical
+requirements, invariants, or design rationale declaratively or imperatively, and
+omit scratchpad notes that provide no enduring value. In public API headers,
+ensure options and parameters are fully documented with their semantics,
+constraints, and relevant specification or discussion links rather than
+placeholder comments.
+
+**Why.** Conversational narration, colloquialisms, and informal or placeholder
+notes add clutter without conveying enduring technical value, while leaving
+external consumers unaware of API contracts. Objective, direct comments keep the
+codebase professional, maintainable, and clearly communicate non-obvious
+invariants, parameter constraints, and specification mappings to callers.
+
+## Examples
+
+Bad:
+
+```cpp
+// 1. Conversational first-person narration:
+// As a fast path, if a user has created an SkImage from .jpeg data, we will
+// re-embed the data untouched. However, we need to use a jpeg decoder to pull
+// out some metadata we need to embed in the PDF.
+if (canDirectEmbed(image)) {
+    embedUntouchedJpeg(image);
+}
+
+// 2. Informal colloquialism / leftover debugging comment:
+// Herein lies the rub
+skgpu::InvokeDeviceLostCallback(vkInterface(), device(), fDeviceLostContext,
+                                fDeviceLostProc, vkCaps().supportsDeviceFaultInfo());
+
+// 3. Informal / humorous placeholder comment in public header:
+/** A gainmap????? Without a spec???? */
+const SkPixmap* fGainmap = nullptr;
+const SkGainmapInfo* fGainmapInfo = nullptr;
+```
+
+Good:
+
+```cpp
+// 1. Objective technical comment describing behavior:
+// Fast path: re-embed untouched SkImage JPEG data directly. Decode metadata
+// required for PDF embedding; if unavailable or invalid, re-encode.
+if (canDirectEmbed(image)) {
+    embedUntouchedJpeg(image);
+}
+
+// 2. Omit informal scratchpad comments; code is self-explanatory or documents technical intent:
+skgpu::InvokeDeviceLostCallback(vkInterface(), device(), fDeviceLostContext,
+                                fDeviceLostProc, vkCaps().supportsDeviceFaultInfo());
+
+// 3. Complete documentation of semantics, parameter pairings, and spec links:
+/**
+ * If non-null, encodes a gainmap and its metadata as PNG chunks (following W3C
+ * Option B: https://github.com/w3c/png/issues/380#issuecomment-2325163149).
+ * Note: if fGainmapInfo is null, fGainmap will fail to encode because metadata is required.
+ */
+const SkPixmap* fGainmap = nullptr;
+const SkGainmapInfo* fGainmapInfo = nullptr;
+```

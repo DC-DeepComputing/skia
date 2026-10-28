@@ -1,0 +1,75 @@
+---
+name: skia/gm/scope-gm-dimensions-and-size-surfaces-to-content
+description: When authoring GM tests, scope canvas dimensions or return inline SkISize literals from getISize(), size surfaces to content, and avoid copied dimension constants
+rubric: readability
+severity: nit
+---
+
+**Rule.** In GM test files, avoid defining outer GM canvas dimensions (such as
+WIDTH and HEIGHT) as top-of-file global macros; keep them scoped immediately
+above DEF_GM registrations. For GM test classes where canvas dimensions are
+fixed and unused in drawing calculations, return an inline SkISize literal (such
+as '{w, h}' or 'SkISize::Make(w, h)') directly from 'getISize()' rather than
+defining unused or copied constexpr member variables. In intermediate offscreen
+drawing helpers, size scratch surfaces (such as 'SkSurfaces::Raster') using
+content or grid dimensions rather than outer GM canvas dimensions. Name
+dimension constants after the actual visual entity or structure they configure
+(e.g., 'kGridWH') rather than retaining misleading or copied terminology (such
+as 'kMaskWidth').
+
+**Why.** Defining generic WIDTH and HEIGHT macros at file scope pollutes the
+translation unit and invites helper routines to inadvertently allocate
+intermediate offscreen surfaces using outer GM canvas dimensions. Sizing
+intermediate surfaces to content bounds prevents unnecessary raster allocation,
+while naming dimension constants after the visual elements being rendered avoids
+confusing grid layouts with unrelated mechanisms like masks or clips. In GM
+classes, returning inline SkISize literals eliminates leftover sizing formulas
+and unused member variables from copied templates.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: global dimension macros; copied mask terminology; surface sized to canvas
+#define WIDTH 300
+#define HEIGHT 240
+static constexpr int kMaskWidth = 70;
+
+static void draw_grid(SkCanvas* canvas) {
+    auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(WIDTH, HEIGHT));
+    canvas->drawLine(0, 0, kMaskWidth, 0, SkPaint{});
+}
+
+// Bad: unused copied constexpr member variables for GM dimensions
+class MyGM : public skiagm::GM {
+    SkISize getISize() override { return SkISize::Make(kWidth, kHeight); }
+private:
+    inline static constexpr int kSize = 64;
+    inline static constexpr int kWidth = 5 * kSize;
+    inline static constexpr int kHeight = 2 * kSize;
+};
+```
+
+Good:
+
+```cpp
+// Good: named after visual element; surface sized to content; dimensions scoped to GM
+static constexpr int kGridWH = 70;
+
+static void draw_grid(SkCanvas* canvas) {
+    auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(kGridWH, kGridWH));
+    canvas->drawLine(0, 0, kGridWH, 0, SkPaint{});
+}
+
+#define WIDTH 250
+#define HEIGHT 250
+DEF_SIMPLE_GM(hairlines_buttcap, canvas, WIDTH, HEIGHT) {
+    draw_grid(canvas);
+}
+
+// Good: returns inline SkISize literal directly when not needed in drawing
+class MyGM : public skiagm::GM {
+    SkISize getISize() override { return {112, 112}; }
+};
+```

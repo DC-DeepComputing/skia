@@ -1,0 +1,13 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "include/core/.*"
+    path_expression: "include/private/.*"
+    path_expression: "src/base/.*"
+    path_expression: "src/core/.*"
+    rules: "knowledge_base/rules/base/avoid-core-headers-in-base.md"
+  }
+}
