@@ -1,0 +1,59 @@
+---
+name: skia/codec/delegate-color-transforms-to-skcodec
+description: When implementing image decoders, expose source ICC profiles via SkEncodedInfo and delegate color transformation to SkCodec, or document deferred profile extraction with a TODO
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** In image decoders and format FFI wrappers, do not perform color space
+transformations (such as converting to sRGB) within the format decoder; instead,
+expose the image's source ICC profile or color space via SkEncodedInfo and
+delegate color transformation to SkCodec::applyColorXform. Factor
+format-independent ICC profile parsing into shared modules (such as rust/icc).
+If embedded ICC profile extraction is temporarily omitted or unsupported when
+constructing SkEncodedInfo, add an explicit TODO documenting the missing profile
+handling and how to plumb profile data into SkEncodedInfo::Make.
+
+**Why.** Callers specify destination color spaces through SkImageInfo (such as
+Display P3, calibrated displays, or null to bypass color correction). Hardcoding
+sRGB conversion inside format decoders breaks non-sRGB destinations, bypasses
+Skia's swizzler and skcms color transformation pipeline, and duplicates color
+conversion logic across codecs. Furthermore, SkEncodedInfo defaults to sRGB when
+constructed without an explicit color profile; documenting omitted embedded
+profile extraction with an actionable TODO prevents silent color degradation on
+wide-gamut images and guides future integration.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad 1: Hardcoding sRGB conversion in format decoder / FFI
+pub fn apply_icc_transform(profile: &ColorProfile, pixels: &[u8], width: u32, height: u32) -> Option<Vec<u8>> {
+    let srgb = ColorProfile::new_srgb();
+    let transform = profile.create_transform_8bit(Layout::Rgb, &srgb, Layout::Rgb, TransformOptions::default()).ok()?;
+    transform.apply(pixels, width, height)
+}
+
+// Bad 2: Silently omitting ICC profile extraction when constructing SkEncodedInfo
+SkEncodedInfo encodedInfo = SkEncodedInfo::Make(width, height, color, alpha, bitsPerComponent);
+```
+
+Good:
+
+```cpp
+// Good 1: Expose profile via SkEncodedInfo and delegate transform to SkCodec
+void SkBmpRustCodec::swizzleRow(const uint8_t* srcRow, void* dstRow) {
+    if (this->xformOnDecode()) {
+        fSwizzler->swizzle(fXformBuffer.get(), srcRow);
+        this->applyColorXform(dstRow, fXformBuffer.get(), fSwizzler->swizzleWidth());
+    } else {
+        fSwizzler->swizzle(dstRow, srcRow);
+    }
+}
+
+// Good 2: Document omitted profile extraction with actionable TODO
+// TODO: Support embedded ICC profiles (e.g. from BITMAPV5HEADER).
+// Extract profile bytes via rust_icc::parse_icc_profile and pass to SkEncodedInfo::Make.
+SkEncodedInfo encodedInfo = SkEncodedInfo::Make(width, height, color, alpha, bitsPerComponent);
+```

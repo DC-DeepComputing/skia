@@ -1,0 +1,37 @@
+---
+name: skia/tests/split-compound-reporter-assert-conditions
+description: In unit tests, verify multiple test requirements with distinct REPORTER_ASSERT statements rather than combining conditions with logical OR (||) or AND (&&)
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** In unit tests, verify distinct requirements or postconditions using
+separate REPORTER_ASSERT statements instead of combining multiple checks with
+logical OR (||) or logical AND (&&). Never use logical OR to check correlated
+failure states where all conditions must hold simultaneously.
+
+**Why.** Combining failure conditions with logical OR (||) is a logic bug that
+allows invalid states (such as a null pointer with a success status, or a valid
+object with an error status) to falsely pass. Combining conditions with logical
+AND (&&) obscures which requirement failed in test failure logs, whereas
+separate REPORTER_ASSERT statements pinpoint the exact failed condition and
+source line.
+
+## Examples
+
+Bad:
+
+```cpp
+// Logic bug: passes if codec is null even if result is kSuccess,
+// and hides which condition failed in test output.
+REPORTER_ASSERT(r, !codec || result != SkCodec::kSuccess,
+                "Decoder should reject or fail on zero-width BMP");
+```
+
+Good:
+
+```cpp
+// Separate assertions verify both requirements and pinpoint failures:
+REPORTER_ASSERT(r, !codec, "Decoder should return null on zero-width BMP");
+REPORTER_ASSERT(r, result != SkCodec::kSuccess, "Result should indicate failure");
+```

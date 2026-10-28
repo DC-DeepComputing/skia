@@ -1,0 +1,56 @@
+---
+name: skia/dm/codec-fallback-to-skpngencoder-for-android-ndk
+description: When conditionally selecting image encoders in test harnesses like DM, prioritize reference implementations like libpng over experimental alternatives and preserve platform fallbacks
+rubric: correctness
+severity: blocking
+---
+
+**Rule.** When conditionally selecting an image encoder via preprocessor macros
+in test harnesses or test runners (such as `dm/`), prioritize the established
+reference implementation (`SK_CODEC_ENCODES_PNG_WITH_LIBPNG`) before
+experimental or newer alternatives (`SK_CODEC_ENCODES_PNG_WITH_RUST`) to prevent
+unexpected Golden Master (GM) image diffs. Additionally, in multi-platform
+serialization helpers, do not assume encoding is limited strictly to libpng or
+Rust PNG; provide a fallback to `SkPngEncoder::Encode` (or use
+`ToolUtils::default_serial_procs()`) to support platforms like Android NDK that
+lack `SK_CODEC_ENCODES_PNG_WITH_LIBPNG`.
+
+**Why.** Alternative encoders can produce subtle compression or color
+differences that alter test outputs across CI bots, triggering widespread
+false-positive Skia Gold diffs if enabled by default over the reference encoder.
+Conversely, omitting fallback paths to `SkPngEncoder::Encode` breaks builds on
+platforms like Android API 30+ where PNG encoding is provided via native
+platform encoders (`SkImageEncoder_NDK.cpp`) without defining
+`SK_CODEC_ENCODES_PNG_WITH_LIBPNG`.
+
+## Examples
+
+Bad:
+
+```cpp
+// Anti-pattern 1: Prioritizing experimental encoder over reference in DM causes GM diffs.
+#if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+    return SkPngRustEncoder::Encode(as_IB(img)->directContext(), img, {});
+#else
+    return SkPngEncoder::Encode(as_IB(img)->directContext(), img, {});
+#endif
+
+// Anti-pattern 2: Failing without fallback breaks Android NDK builds.
+#if !defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG) && !defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#error "PNG encoder is required"
+#endif
+```
+
+Good:
+
+```cpp
+// Prioritize reference libpng first to keep GM baselines stable, then alternative encoders.
+#if defined(SK_CODEC_ENCODES_PNG_WITH_LIBPNG)
+    return SkPngEncoder::Encode(dst, src, {});
+#elif defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+    return SkPngRustEncoder::Encode(dst, src, {});
+#else
+    // Fall back to SkPngEncoder::Encode for Android NDK or default procs.
+    return SkPngEncoder::Encode(dst, src, {});
+#endif
+```

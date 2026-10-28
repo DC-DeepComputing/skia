@@ -1,0 +1,11 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/pathops/.*"
+    rules: "agents/knowledge_base/rules/pathops/copy-path-builder-directly-without-snapshot.md"
+    rules: "agents/knowledge_base/rules/pathops/prefer-break-to-trailing-return-in-infinite-loops.md"
+  }
+}

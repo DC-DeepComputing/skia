@@ -1,0 +1,36 @@
+---
+name: skia/gpu/verify-command-buffer-has-work
+description: When checking for pending GPU work before submission, verify the command buffer contains recorded commands via hasWork() rather than checking for a non-null pointer
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When checking whether pending GPU work exists to be submitted (such as
+in hasPendingGPUWork() or submission guards in QueueManager and Gpu), do not
+rely solely on verifying that the active command buffer or command list pointer
+is non-null. Verify that the buffer actually contains recorded commands via
+hasWork() (e.g., cmdBuffer && cmdBuffer->hasWork()).
+
+**Why.** A command buffer can be eagerly allocated when initializing a pass or
+inserting recordings, but transient failures or empty passes can leave the
+buffer allocated with no commands recorded. Relying solely on a non-null pointer
+check falsely reports pending work and triggers redundant GPU submissions or
+invariant violations.
+
+## Examples
+
+Bad:
+
+```cpp
+bool QueueManager::hasPendingGPUWork() const {
+    return fCurrentCommandBuffer != nullptr;
+}
+```
+
+Good:
+
+```cpp
+bool QueueManager::hasPendingGPUWork() const {
+    return fCurrentCommandBuffer && fCurrentCommandBuffer->hasWork();
+}
+```

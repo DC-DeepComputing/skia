@@ -1,0 +1,36 @@
+---
+name: skia/ports/preserve-conversion-helpers-over-inline-boilerplate
+description: When refactoring font managers or port helpers, do not delete and inline existing conversion helpers that encapsulate stream packaging boilerplate into callers
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** Do not delete and inline existing helper functions that encapsulate
+conversion or packaging boilerplate (such as wrapping SkData in SkMemoryStream
+with SkFontArguments) into callers when threading new dependencies. Update the
+existing helper's parameters to accept the new dependency instead of expanding
+boilerplate at call sites.
+
+**Why.** Inlining conversion helpers clutters callers with repetitive stream
+construction and argument boilerplate, increases review churn, and obscures the
+caller's primary orchestration logic. Adapting the helper's signature preserves
+abstraction boundaries and keeps call sites clean.
+
+## Examples
+
+Bad:
+
+```cpp
+// Inlining stream creation and SkFontArguments boilerplate at the call site:
+auto result = CreateTypefaceFromSkStream(scanner,
+                                         std::make_unique<SkMemoryStream>(std::move(data)),
+                                         SkFontArguments().setCollectionIndex(id.ttcIndex),
+                                         id);
+```
+
+Good:
+
+```cpp
+// Retaining and adapting the existing conversion helper function:
+auto result = CreateTypefaceFromSkData(fScanner.get(), std::move(data), id);
+```

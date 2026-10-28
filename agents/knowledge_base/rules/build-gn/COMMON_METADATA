@@ -4,11 +4,35 @@
 
 agentic_review {
   capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/avoid-deps-from-common-to-consumer-targets.md"
+    rules: "agents/knowledge_base/rules/build-gn/avoid-duplicate-public-and-all-dependent-configs.md"
+    rules: "agents/knowledge_base/rules/build-gn/avoid-optional-for-internal-helpers.md"
+    rules: "agents/knowledge_base/rules/build-gn/colocate-conditional-sources-and-deps.md"
+    rules: "agents/knowledge_base/rules/build-gn/declare-deps-for-generated-headers.md"
+    rules: "agents/knowledge_base/rules/build-gn/export-embedder-sources-to-gni.md"
+    rules: "agents/knowledge_base/rules/build-gn/inherit-module-defines-via-dependencies.md"
+    rules: "agents/knowledge_base/rules/build-gn/omit-unused-build-arguments.md"
+    rules: "agents/knowledge_base/rules/build-gn/prefer-specific-target-rules.md"
+    rules: "agents/knowledge_base/rules/build-gn/propagate-feature-configs-consistently.md"
+    rules: "agents/knowledge_base/rules/build-gn/suffix-test-targets-with-tests.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.gn"
+    path_expression: "include/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/build-gn/avoid-redundant-macro-acronym-stuttering.md"
+  }
+  capability_groups {
     path_expression: "(?:.*/)?BUILD\\.bazel"
     path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
     path_expression: "BUILD\\.bazel"
     path_expression: "BUILD\\.gn"
     rules: "agents/knowledge_base/rules/build-gn/build-depend-on-core-interfaces-for-modular-deps.md"
+    rules: "agents/knowledge_base/rules/build-gn/declare-existence-defines-valueless.md"
     rules: "agents/knowledge_base/rules/build-gn/omit-unused-target-deps.md"
     rules: "agents/knowledge_base/rules/build-gn/sync-dependency-comments.md"
   }
@@ -19,10 +43,23 @@ agentic_review {
     rules: "agents/knowledge_base/rules/build-gn/compile-optional-tests-via-sources-for-tests.md"
   }
   capability_groups {
-    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
     path_expression: "BUILD\\.gn"
-    rules: "agents/knowledge_base/rules/build-gn/declare-deps-for-generated-headers.md"
-    rules: "agents/knowledge_base/rules/build-gn/export-embedder-sources-to-gni.md"
+    rules: "agents/knowledge_base/rules/build-gn/condition-metadata-parsers-on-decoder-flags.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.gn"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/depend-unconditionally-on-optional-targets.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    path_expression_exclusion: "third_party/.*"
+    rules: "agents/knowledge_base/rules/build-gn/do-not-suppress-compiler-warnings-in-maintained-targets.md"
   }
   capability_groups {
     path_expression: "(?:.*/)?[^/]*\\.bazel"
@@ -40,6 +77,13 @@ agentic_review {
     path_expression: "BUILD\\.gn"
     path_expression: "gn/.*"
     rules: "agents/knowledge_base/rules/build-gn/keep-feature-sources-out-of-core-lists.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.gn"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/mark-test-targets-testonly.md"
   }
   capability_groups {
     path_expression: "(?:.*/)?[^/]*\\.(?:bazel|bzl|gn|gni)"
@@ -62,6 +106,7 @@ agentic_review {
     path_expression: "(?:.*/)?BUILD\\.bazel"
     path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
     path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-gn/update-dependent-targets-on-subtarget-split.md"
     rules: "agents/knowledge_base/rules/build-gn/use-canonical-codec-defines.md"
   }
 }

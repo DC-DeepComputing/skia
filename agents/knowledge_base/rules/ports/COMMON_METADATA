@@ -5,9 +5,30 @@
 agentic_review {
   capability_groups {
     path_expression: "src/ports/.*"
+    rules: "agents/knowledge_base/rules/ports/avoid-drive-by-method-reordering-and-access-churn.md"
     rules: "agents/knowledge_base/rules/ports/check-proxy-typeface-onmakeclone.md"
+    rules: "agents/knowledge_base/rules/ports/delegate-onopenstream-to-proxy-typeface.md"
+    rules: "agents/knowledge_base/rules/ports/document-font-query-preference-attributes.md"
+    rules: "agents/knowledge_base/rules/ports/fallback-color-for-invalid-palette-stops.md"
+    rules: "agents/knowledge_base/rules/ports/null-check-optional-font-scanner-out-parameters.md"
+    rules: "agents/knowledge_base/rules/ports/omit-postscript-name-in-ongetadvancedmetrics.md"
     rules: "agents/knowledge_base/rules/ports/pass-variation-position-to-font-arguments.md"
+    rules: "agents/knowledge_base/rules/ports/preserve-conversion-helpers-over-inline-boilerplate.md"
+    rules: "agents/knowledge_base/rules/ports/preserve-fontconfig-fclocker-thread-safety.md"
+    rules: "agents/knowledge_base/rules/ports/provide-fallback-macro-definitions-for-external-libraries.md"
+    rules: "agents/knowledge_base/rules/ports/report-truetype-and-cff-outline-formats.md"
+    rules: "agents/knowledge_base/rules/ports/return-zero-for-font-attribute-counts.md"
     rules: "agents/knowledge_base/rules/ports/subclass-proxy-for-platform-typefaces.md"
+    rules: "agents/knowledge_base/rules/ports/validate-font-scanner-instance-index.md"
+  }
+  capability_groups {
+    path_expression: "src/ports/fontations/.*"
+    rules: "agents/knowledge_base/rules/ports/check-font-tables-via-table-provider.md"
+  }
+  capability_groups {
+    path_expression: "src/ports/.*"
+    path_expression_exclusion: "third_party/.*"
+    rules: "agents/knowledge_base/rules/ports/distinguish-real-from-proxy-parameters.md"
   }
   capability_groups {
     path_expression: "src/core/.*"
@@ -19,5 +40,21 @@ agentic_review {
     path_expression: "gn/ports\\.gni"
     path_expression: "src/ports/.*"
     rules: "agents/knowledge_base/rules/ports/match-port-filenames-to-interface.md"
+  }
+  capability_groups {
+    path_expression: "include/ports/.*"
+    path_expression: "src/ports/.*"
+    rules: "agents/knowledge_base/rules/ports/no-legacy-factories-for-new-backends.md"
+  }
+  capability_groups {
+    path_expression: "include/core/.*"
+    path_expression: "src/ports/.*"
+    rules: "agents/knowledge_base/rules/ports/ports-distinguish-real-and-proxy-typefaces.md"
+  }
+  capability_groups {
+    path_expression: "src/ports/SkFontScanner_fontations[^/]*"
+    path_expression: "src/ports/SkTypeface_fontations[^/]*"
+    path_expression: "src/ports/fontations/.*"
+    rules: "agents/knowledge_base/rules/ports/use-num-prefix-for-fontations-ffi-counts.md"
   }
 }

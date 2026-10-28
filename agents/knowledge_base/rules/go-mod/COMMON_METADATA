@@ -1,0 +1,13 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "(?:.*/)?go\\.mod"
+    path_expression: "(?:.*/)?go\\.sum"
+    path_expression: "go\\.mod"
+    path_expression: "go\\.sum"
+    rules: "agents/knowledge_base/rules/go-mod/run-go-mod-tidy-on-dependency-updates.md"
+  }
+}

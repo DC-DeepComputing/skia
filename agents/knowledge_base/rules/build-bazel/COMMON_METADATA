@@ -7,10 +7,32 @@ agentic_review {
     path_expression: "(?:.*/)?BUILD\\.bazel"
     path_expression: "BUILD\\.bazel"
     rules: "agents/knowledge_base/rules/build-bazel/avoid-intermediate-filegroups-for-gni-export.md"
+    rules: "agents/knowledge_base/rules/build-bazel/bazel-introduce-aliases-immediately-on-rename.md"
     rules: "agents/knowledge_base/rules/build-bazel/declare-companion-config-settings-for-select.md"
+    rules: "agents/knowledge_base/rules/build-bazel/declare-concrete-skunicode-deps-for-skshaper.md"
+    rules: "agents/knowledge_base/rules/build-bazel/declare-context-dependent-headers-in-textual-hdrs.md"
+    rules: "agents/knowledge_base/rules/build-bazel/isolate-headers-in-dedicated-opts-filegroups.md"
+    rules: "agents/knowledge_base/rules/build-bazel/keep-harmless-includes-unconditional.md"
+    rules: "agents/knowledge_base/rules/build-bazel/keep-package-scoped-filegroups-minimal.md"
     rules: "agents/knowledge_base/rules/build-bazel/omit-dependency-headers-from-hdrs.md"
+    rules: "agents/knowledge_base/rules/build-bazel/omit-unused-target-defines.md"
+    rules: "agents/knowledge_base/rules/build-bazel/prefix-same-package-targets-with-colon.md"
     rules: "agents/knowledge_base/rules/build-bazel/reference-defined-filegroups-in-target-sources.md"
     rules: "agents/knowledge_base/rules/build-bazel/restrict-bazel-visibility-outside-root.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.gn"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-bazel/build-name-multistage-libraries-by-full-scope.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.bazel"
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    path_expression: "BUILD\\.bazel"
+    path_expression: "BUILD\\.gn"
+    rules: "agents/knowledge_base/rules/build-bazel/do-not-disable-legacy-macros-for-incomplete-types.md"
   }
   capability_groups {
     path_expression: "(?:.*/)?BUILD\\.bazel"

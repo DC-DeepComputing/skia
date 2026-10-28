@@ -1,0 +1,41 @@
+---
+name: skia/capture-owning-smart-pointer-in-async-callbacks
+description: When passing callbacks or lambdas to asynchronous operations that access object state, capture an owning smart pointer like sk_ref_sp(this) rather than raw this
+rubric: safety
+severity: blocking
+---
+
+**Rule.** When passing a callback or lambda to an asynchronous operation that
+accesses object state or invokes member functions, capture an owning smart
+pointer (such as sk_ref_sp(this)) rather than capturing raw this. For C-style
+asynchronous APIs taking a raw pointer and completion callback, pass an
+explicitly retained reference (e.g. sk_ref_sp(this).release()) into user data
+and adopt it back inside the callback.
+
+**Why.** Asynchronous operations execute after the initiating call stack
+unwinds, and external references to the object may be dropped while the
+operation remains in flight. Capturing raw this risks a use-after-free crash if
+the object is destroyed before or during callback execution; retaining an owning
+sk_sp guarantees the object outlives the asynchronous work.
+
+## Examples
+
+Bad:
+
+```cpp
+// Lambda captures raw 'this', risking use-after-free if the buffer is unreferenced before completion
+fBuffer.MapAsync(mode, 0, size, wgpu::CallbackMode::AllowSpontaneous,
+                 [this](wgpu::MapAsyncStatus s, wgpu::StringView) {
+                     this->mapCallback(s, /*message=*/nullptr);
+                 });
+```
+
+Good:
+
+```cpp
+// Capture an owning sk_sp to keep the object alive until callback execution completes
+fBuffer.MapAsync(mode, 0, size, wgpu::CallbackMode::AllowSpontaneous,
+                 [buffer = sk_ref_sp(this)](wgpu::MapAsyncStatus s, wgpu::StringView msg) {
+                     buffer->mapCallback(s, msg);
+                 });
+```

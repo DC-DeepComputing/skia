@@ -1,0 +1,22 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "dm/.*"
+    path_expression: "gm/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/dm/codec-fallback-to-skpngencoder-for-android-ndk.md"
+  }
+  capability_groups {
+    path_expression: "dm/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/dm/document-forced-error-log-workarounds.md"
+  }
+  capability_groups {
+    path_expression: "dm/.*"
+    rules: "agents/knowledge_base/rules/dm/sync-context-options-across-counterpart-test-sinks.md"
+  }
+}

@@ -1,0 +1,51 @@
+---
+name: skia/avoid-path-iterator-from-temporary-snapshot
+description: When iterating or checking completion on an SkPathBuilder, do not initialize iterators or compare against end() from temporary snapshot() calls
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When traversing, inspecting, or testing geometry from an
+SkPathBuilder, do not initialize non-owning iterators or compare against an
+end() iterator obtained from temporary builder.snapshot() calls or distinct
+container instances. Iterators from separate snapshots are not comparable, and
+temporary snapshots destroy underlying storage at statement end. Instead,
+iterate the builder directly using builder.iter() (or SkPathRaw::Iter), verify
+completion with !iter->next().has_value(), or bind the snapshot to a named
+SkPath variable in an enclosing scope so all iterators share the same persistent
+object.
+
+**Why.** Path iterators hold raw pointers into the underlying SkPathRef or path
+storage without extending lifetime or ownership. Temporary snapshot() calls
+create ephemeral instances whose iterators dangle immediately after evaluation
+and cannot be compared against iterators from earlier snapshots, causing
+undefined behavior, use-after-free crashes, or false assertion failures.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Temporary snapshot creates dangling iterators.
+SkPathPriv::RangeIter iter = SkPathPriv::Iterate(builder.snapshot()).begin();
+
+// Bad: Comparing an iterator against end() of a separate temporary snapshot.
+REPORTER_ASSERT(reporter, *iter == SkPathPriv::Iterate(p->snapshot()).end());
+```
+
+Good:
+
+```cpp
+// Good: Iterate builder directly and verify completion using next().
+auto iter = builder.iter();
+while (auto rec = iter.next()) {
+    // Process verb and points safely.
+}
+REPORTER_ASSERT(reporter, !iter->next().has_value());
+
+// Alternatively, bind the snapshot to a named variable to extend its lifetime:
+SkPath path = builder.snapshot();
+for (auto [verb, pts, weights] : SkPathPriv::Iterate(path)) {
+    // Safe: path outlives the iteration loop.
+}
+```

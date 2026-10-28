@@ -1,0 +1,43 @@
+---
+name: skia/infra/include-target-os-and-arch-in-asset-names
+description: When adding bot utility assets in infra/bots/assets, include target OS and architecture suffixes in asset directory names even if initially single-platform
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When adding or organizing platform-specific bot utility assets in
+infra/bots/assets/, include explicit target operating system and CPU
+architecture suffixes in the asset directory name (e.g., '<tool>_<os>_<arch>',
+such as 'patch_linux_amd64' or 'bazelisk_mac_arm64'). Do not name
+platform-dependent asset directories generically (e.g., 'patch/' or
+'bazelisk/'), even when initially targeting only a single platform.
+
+**Why.** Bot utility assets bundle prebuilt platform-dependent binaries or
+toolchains. Naming an asset directory generically without OS and architecture
+qualifiers creates ambiguity and causes naming conflicts or
+backwards-incompatible asset deprecations when support for additional platforms
+is added later.
+
+## Examples
+
+Bad:
+
+```cpp
+# infra/bots/assets/patch/create.py
+# Bad: Generic tool name lacks target OS and architecture qualification
+URL = 'https://ftp.debian.org/debian/pool/main/p/patch/patch_2.7.6-7_amd64.deb'
+
+def create_asset(target_dir):
+  ...
+```
+
+Good:
+
+```cpp
+# infra/bots/assets/patch_linux_amd64/create.py
+# Good: Directory name explicitly specifies target OS and architecture
+URL = 'https://ftp.debian.org/debian/pool/main/p/patch/patch_2.7.6-7_amd64.deb'
+
+def create_asset(target_dir):
+  ...
+```

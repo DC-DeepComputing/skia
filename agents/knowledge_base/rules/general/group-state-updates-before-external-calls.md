@@ -1,0 +1,37 @@
+---
+name: skia/group-state-updates-before-external-calls
+description: When updating internal state tracking fields before external calls or callbacks, group related member assignments together before the call rather than interleaving them
+rubric: readability
+severity: nit
+---
+
+**Rule.** Group updates to related internal state tracking member variables
+(such as sizes, sequence numbers, and dirty flags) together rather than
+interleaving them with external calls, callbacks, or side effects. Perform all
+internal state transitions before transferring control to external handlers or
+client callbacks.
+
+**Why.** Grouping updates to related state tracking variables keeps internal
+transitions cohesive and readable. It also ensures that the object's internal
+tracking state is fully synchronized and consistent before control passes to
+external handlers, callbacks, or listeners that might inspect state or trigger
+re-entrant operations.
+
+## Examples
+
+Bad:
+
+```cpp
+fLastKnownSize = origDataSize;
+externalStorage->store(*SkData::MakeWithoutCopy(data.get(), cappedDataSize));
+
+fHasNewData = false;
+```
+
+Good:
+
+```cpp
+fLastKnownSize = origDataSize;
+fHasNewData = false;
+externalStorage->store(*SkData::MakeWithoutCopy(data.get(), cappedDataSize));
+```

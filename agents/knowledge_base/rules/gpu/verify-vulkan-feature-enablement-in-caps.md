@@ -1,0 +1,46 @@
+---
+name: skia/gpu/verify-vulkan-feature-enablement-in-caps
+description: When initializing Vulkan capabilities in GPU caps, verify that feature flags are enabled in VkPhysicalDeviceFeatures2 rather than relying solely on version or extension presence
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When determining Vulkan capability support in GPU caps (such as
+GrVkCaps or VulkanCaps), do not enable features based solely on Vulkan core API
+version or extension presence if the capability is governed by a Vulkan feature
+flag. Inspect the client's enabled features (e.g., using
+skgpu::GetExtensionFeatureStruct or the EnabledFeatures struct on
+VkPhysicalDeviceFeatures2) and verify that the specific feature flag is true
+before enabling the capability.
+
+**Why.** In Vulkan, extension presence or core API version only indicates device
+availability; optional features must be explicitly requested and enabled by the
+client on the VkDevice at creation time. Assuming capability support without
+checking the enabled feature struct causes Skia to emit unsupported Vulkan
+commands or state, resulting in validation layer errors or driver crashes on
+devices where the client did not enable the feature.
+
+## Examples
+
+Bad:
+
+```cpp
+if (physicalDeviceVersion >= VK_MAKE_VERSION(1, 3, 0) ||
+    extensions.hasExtension(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME, 1)) {
+    fSupportsPipelineCreationCacheControl = true;
+}
+```
+
+Good:
+
+```cpp
+if (physicalDeviceVersion >= VK_MAKE_VERSION(1, 3, 0) ||
+    extensions.hasExtension(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME, 1)) {
+    auto cacheControlFeatures = skgpu::GetExtensionFeatureStruct<
+            VkPhysicalDevicePipelineCreationCacheControlFeatures>(
+            features,
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_CREATION_CACHE_CONTROL_FEATURES);
+    fSupportsPipelineCreationCacheControl =
+            cacheControlFeatures && cacheControlFeatures->pipelineCreationCacheControl;
+}
+```

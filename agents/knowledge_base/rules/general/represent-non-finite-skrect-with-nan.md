@@ -1,0 +1,36 @@
+---
+name: skia/represent-non-finite-skrect-with-nan
+description: When constructing or returning non-finite SkRect bounds, initialize coordinates with SK_FloatNaN rather than SK_ScalarInfinity to match SkRect::setBoundsNoCheck
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When constructing, initializing, or returning a non-finite SkRect
+(such as for invalid geometry or fallback bounds), set all coordinates to
+SK_FloatNaN rather than SK_ScalarInfinity or
+std::numeric_limits<float>::infinity(). Mirror the canonical non-finite
+representation established by SkRect::setBoundsNoCheck ({SK_FloatNaN,
+SK_FloatNaN, SK_FloatNaN, SK_FloatNaN}).
+
+**Why.** SkRect::setBoundsNoCheck standardizes on SK_FloatNaN for non-finite
+geometry bounds. Using SK_FloatNaN avoids choosing arbitrary infinity signs
+(such as all positive infinities) and ensures downstream checks rejecting
+non-finite bounds (such as rect.isFinite()) behave consistently across geometry
+and rendering pipelines.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Using positive infinity as a non-finite bounds sentinel
+SkRect bounds = {SK_ScalarInfinity, SK_ScalarInfinity,
+                 SK_ScalarInfinity, SK_ScalarInfinity};
+```
+
+Good:
+
+```cpp
+// Good: Mirror SkRect::setBoundsNoCheck using SK_FloatNaN
+SkRect bounds = {SK_FloatNaN, SK_FloatNaN, SK_FloatNaN, SK_FloatNaN};
+```

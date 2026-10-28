@@ -5,12 +5,111 @@
 agentic_review {
   capability_groups {
     path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/account-for-operation-order-in-limited-range-ycgco.md"
+    rules: "agents/knowledge_base/rules/core/allow-empty-points-for-point-free-path-verbs.md"
+    rules: "agents/knowledge_base/rules/core/allow-empty-target-rect-in-quad-containment.md"
+    rules: "agents/knowledge_base/rules/core/assert-active-blur-pass-sigma-bounds.md"
+    rules: "agents/knowledge_base/rules/core/avoid-bypass-flags-on-canonical-accessors.md"
+    rules: "agents/knowledge_base/rules/core/avoid-mutating-shared-paint-in-batch-loops.md"
+    rules: "agents/knowledge_base/rules/core/avoid-redundant-pointer-dereference-aliases.md"
+    rules: "agents/knowledge_base/rules/core/avoid-synthetic-draw-for-blitter-selection.md"
+    rules: "agents/knowledge_base/rules/core/bail-out-fallible-fast-paths-when-tiled.md"
+    rules: "agents/knowledge_base/rules/core/check-preconditions-before-constructing-specialized-geometry.md"
+    rules: "agents/knowledge_base/rules/core/condition-shader-local-matrix-on-semantic-flags.md"
+    rules: "agents/knowledge_base/rules/core/deduplicate-contexts-on-composite-extension-instead-of-asser.md"
+    rules: "agents/knowledge_base/rules/core/defer-empty-layer-bounds-until-filter-evaluated.md"
+    rules: "agents/knowledge_base/rules/core/defer-options-for-static-singletons.md"
+    rules: "agents/knowledge_base/rules/core/dispatch-alternative-deserial-procs-exclusively.md"
+    rules: "agents/knowledge_base/rules/core/dispatch-draw-before-paint-adaptation.md"
+    rules: "agents/knowledge_base/rules/core/document-image-subset-origin-local-matrix.md"
+    rules: "agents/knowledge_base/rules/core/extract-shared-blitter-pipeline-setup.md"
+    rules: "agents/knowledge_base/rules/core/factor-complex-multipath-setup-into-helpers.md"
+    rules: "agents/knowledge_base/rules/core/forward-all-variadic-arguments-to-recursive-helper.md"
+    rules: "agents/knowledge_base/rules/core/hardcode-zero-step-rescale-to-one.md"
+    rules: "agents/knowledge_base/rules/core/keep-empty-bounds-bailout-in-filter-union-fallback.md"
+    rules: "agents/knowledge_base/rules/core/match-sizeof-to-packed-element-type.md"
+    rules: "agents/knowledge_base/rules/core/plumb-required-accessor-state-upfront.md"
+    rules: "agents/knowledge_base/rules/core/prefer-skspanpriv-helpers.md"
+    rules: "agents/knowledge_base/rules/core/preserve-degenerate-convexity-on-singular-transform.md"
+    rules: "agents/knowledge_base/rules/core/preserve-src-dst-order-in-blend-procs.md"
+    rules: "agents/knowledge_base/rules/core/query-direct-context-over-nullable-resource.md"
+    rules: "agents/knowledge_base/rules/core/rely-on-axis-aligned-invariant-for-oval-and-rrect.md"
+    rules: "agents/knowledge_base/rules/core/rely-on-path-is-convex-false-for-non-finite.md"
+    rules: "agents/knowledge_base/rules/core/remove-legacy-utility-headers-during-migration.md"
+    rules: "agents/knowledge_base/rules/core/remove-obsolete-aliasing-comments-on-return-by-value.md"
+    rules: "agents/knowledge_base/rules/core/reserve-high-bits-for-path-generation-id.md"
+    rules: "agents/knowledge_base/rules/core/reuse-canonical-shape-point-iterators.md"
+    rules: "agents/knowledge_base/rules/core/scan-ahead-with-copied-path-iterator.md"
+    rules: "agents/knowledge_base/rules/core/share-path-traversal-via-skpathiter.md"
+    rules: "agents/knowledge_base/rules/core/skip-null-filters-calculating-layer-dimensions.md"
+    rules: "agents/knowledge_base/rules/core/specify-reference-value-in-relative-tolerance-comments.md"
+    rules: "agents/knowledge_base/rules/core/use-destination-load-stages-in-raster-pipeline.md"
+    rules: "agents/knowledge_base/rules/core/use-fontmgr-for-deserialization-fallback.md"
+    rules: "agents/knowledge_base/rules/core/use-function-scoped-macros-for-return-boilerplate.md"
+    rules: "agents/knowledge_base/rules/core/use-layer-paint-in-about-to-draw-scope.md"
+    rules: "agents/knowledge_base/rules/core/use-skdraw-mask-drawing-over-dstin-blend.md"
+  }
+  capability_groups {
+    path_expression: "include/core/.*"
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/check-path-builder-closure-verb-not-sign-bit.md"
+    rules: "agents/knowledge_base/rules/core/document-shape-factory-start-index.md"
+    rules: "agents/knowledge_base/rules/core/filter-layers-in-layer-color-space.md"
+    rules: "agents/knowledge_base/rules/core/include-fill-type-in-path-equality.md"
+    rules: "agents/knowledge_base/rules/core/preserve-path-builder-shape-on-empty-append.md"
+    rules: "agents/knowledge_base/rules/core/transform-mutable-builder-in-place.md"
+    rules: "agents/knowledge_base/rules/core/unit-test-shape-generators-against-skpath-primitives.md"
+    rules: "agents/knowledge_base/rules/core/update-shape-recognition-across-builder-methods.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/text/.*"
+    rules: "agents/knowledge_base/rules/core/core-do-not-require-sdf-format-for-standard-glyph-mask-atlas.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
     path_expression: "src/effects/.*"
+    rules: "agents/knowledge_base/rules/core/core-handle-non-invertible-transforms-in-filterresult.md"
+    rules: "agents/knowledge_base/rules/core/factor-separable-filter-traversal.md"
+    rules: "agents/knowledge_base/rules/core/fold-color-filter-into-shader-image-filter.md"
     rules: "agents/knowledge_base/rules/core/pass-dither-to-shader-filter-not-restore-paint.md"
   }
   capability_groups {
     path_expression: "src/core/.*"
-    rules: "agents/knowledge_base/rules/core/prefer-skspanpriv-helpers.md"
-    rules: "agents/knowledge_base/rules/core/use-layer-paint-in-about-to-draw-scope.md"
+    path_expression: "src/pathops/.*"
+    rules: "agents/knowledge_base/rules/core/decode-bitwise-inverted-indices-before-offset.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/gpu/.*"
+    rules: "agents/knowledge_base/rules/core/encapsulate-distinct-blur-engine-algorithms.md"
+    rules: "agents/knowledge_base/rules/core/provide-generous-headroom-for-reserved-key-ranges.md"
+    rules: "agents/knowledge_base/rules/core/support-anisotropic-blur-in-separable-algorithms.md"
+  }
+  capability_groups {
+    path_expression: "include/core/SkFont\\.h"
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/ensure-non-null-typeface-with-empty-fallback.md"
+  }
+  capability_groups {
+    path_expression: "include/private/.*"
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/keep-core-geometry-data-minimal.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/shaders/.*"
+    rules: "agents/knowledge_base/rules/core/preserve-matrixrec-validity-for-runtime-effect-callbacks.md"
+  }
+  capability_groups {
+    path_expression: "include/core/.*"
+    path_expression: "include/private/.*"
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/return-complete-shape-info-for-path-queries.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/utils/.*"
+    rules: "agents/knowledge_base/rules/core/use-canvas-localtodevice-when-drawing-via-canvas.md"
   }
 }

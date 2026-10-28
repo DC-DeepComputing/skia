@@ -1,0 +1,48 @@
+---
+name: skia/gpu/initialize-resource-lifecycle-flags-conditionally
+description: When initializing GPU Resource lifecycle predicate flags, compute the flag from exact resource capabilities or usages rather than relying on dynamic checks in lifecycle hooks
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Initialize Resource lifecycle predicate flags (such as
+requiresPrepareForReturnToCache or reusableRequiresPurgeable) using exact
+resource capabilities or usage flags (e.g. buffer.GetUsage() &
+wgpu::BufferUsage::MapWrite) at construction time. Do not enable lifecycle flags
+unconditionally or broadly and rely on dynamic early-return checks inside the
+lifecycle hook; assert the precondition inside the hook instead.
+
+**Why.** ResourceCache inspects predicate flags on Resource to decide whether to
+invoke lifecycle hooks when returning resources to the cache. Enabling the flag
+broadly causes redundant hook invocations and unnecessary cache overhead for
+resources that will never need preparation. Initializing the flag conditionally
+moves the requirement to construction and ensures hooks only execute when their
+preconditions are met.
+
+## Examples
+
+Bad:
+
+```cpp
+// In constructor:
+: Buffer(sharedContext, size, Protected::kNo,
+         /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
+         /*requiresPrepareForReturnToCache=*/true)
+
+// In prepareForReturnToCache():
+if (!(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite)) {
+    return false;
+}
+```
+
+Good:
+
+```cpp
+// In constructor:
+: Buffer(sharedContext, size, Protected::kNo,
+         /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite,
+         /*requiresPrepareForReturnToCache=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite)
+
+// In prepareForReturnToCache():
+SkASSERT(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite);
+```

@@ -1,0 +1,41 @@
+---
+name: skia/api/name-completed-session-accessors-get-last
+description: When defining accessors returning artifacts from completed sessions or prior steps in stateful managers, name them getLast<Artifact>() rather than generic get<Artifact>()
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** In stateful session, capture, or recording managers, name accessor
+methods that return the artifact or state from the most recently completed
+session or operation getLast<Artifact>() (such as getLastCapture() or
+getLastRenderTask()) rather than a generic get<Artifact>(). Reserve bare
+get<Artifact>() or ref<Artifact>() for querying live state or active instances.
+
+**Why.** A generic get<Artifact>() accessor on a stateful manager is ambiguous:
+callers cannot tell whether it takes a live snapshot of in-flight state,
+destructively resets or finalizes active recording, or retrieves cached output
+from the previous session. Using getLast...() explicitly indicates that the
+method accesses the cached output produced by the most recent completed
+operation without mutating or inspecting active state.
+
+## Examples
+
+Bad:
+
+```cpp
+class SkCaptureManager {
+public:
+    // Ambiguous: does this snapshot in-flight recording or return the completed capture?
+    sk_sp<SkCapture> getCapture() const;
+};
+```
+
+Good:
+
+```cpp
+class SkCaptureManager {
+public:
+    // Clearly signals retrieval of the most recently finished session's artifact.
+    sk_sp<SkCapture> getLastCapture() const;
+};
+```

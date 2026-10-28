@@ -1,0 +1,42 @@
+---
+name: skia/gpu/pad-uniform-buffer-layout-to-base-alignment
+description: When finalizing uniform or storage buffer layouts in GPU buffer managers, ensure trailing padding rounds up total size to the block's base alignment
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When finalizing or sizing uniform or storage buffer layouts (such as
+in finish() or buffer layout calculators), do not omit trailing alignment
+padding (e.g., alignTo(fReqAlignment)). Ensure the block's final byte size is
+rounded up to a multiple of its required base alignment as mandated by GPU
+layout specifications like std140 and std430.
+
+**Why.** GPU layout specifications (such as std140 rule #9 and std430) require
+struct and uniform block sizes to be rounded up to a multiple of their largest
+member's base alignment. Omitting trailing padding results in undersized buffer
+allocations, misalignment when packing consecutive blocks or array elements, and
+GPU layout mismatches with the shader.
+
+## Examples
+
+Bad:
+
+```cpp
+SkSpan<const char> finish(int subspanStart = 0) {
+    // Bad: omitting trailing alignment padding leaves block size unpadded,
+    // violating std140/std430 layout requirements for uniform blocks.
+    fStorageHighWaterMark = std::max(fStorageHighWaterMark, fStorage.size());
+    return fStorage.empty() ? SkSpan<const char>() : SkSpan<const char>(fStorage).subspan(subspanStart);
+}
+```
+
+Good:
+
+```cpp
+SkSpan<const char> finish(int subspanStart = 0) {
+    // Good: pad overall block size to a multiple of required base alignment.
+    this->alignTo(fReqAlignment);
+    fStorageHighWaterMark = std::max(fStorageHighWaterMark, fStorage.size());
+    return fStorage.empty() ? SkSpan<const char>() : SkSpan<const char>(fStorage).subspan(subspanStart);
+}
+```

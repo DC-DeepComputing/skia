@@ -1,0 +1,41 @@
+---
+name: skia/tools/copy-test-options-when-overriding-graphite-context-options
+description: When overriding options in Graphite test contexts, copy the enclosing TestOptions wrapper instead of shallow-copying ContextOptions to avoid aliasing fOptionsPriv
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When customizing or overriding context options in Graphite test
+contexts (such as in makeContext()), copy the enclosing
+skiatest::graphite::TestOptions wrapper rather than copying ContextOptions
+directly. Mutate test flags via the copied TestOptions::fOptionsPriv rather than
+through fContextOptions.fOptionsPriv.
+
+**Why.** ContextOptions holds a non-owning raw pointer (fOptionsPriv) pointing
+to the ContextOptionsPriv instance owned by the caller's TestOptions.
+Shallow-copying ContextOptions retains the pointer to the caller's private
+options, causing subsequent mutations to modify the caller's const configuration
+via pointer aliasing. Copying TestOptions performs a deep copy of fOptionsPriv
+and rebinds fContextOptions.fOptionsPriv to the local copy.
+
+## Examples
+
+Bad:
+
+```cpp
+std::unique_ptr<skgpu::graphite::Context> MtlTestContext::makeContext(const TestOptions& options) {
+    skgpu::graphite::ContextOptions revisedContextOptions(options.fContextOptions);
+    revisedContextOptions.fOptionsPriv->fStoreContextRefInRecorder = true;
+    return skgpu::graphite::ContextFactory::MakeMetal(fMtl, revisedContextOptions);
+}
+```
+
+Good:
+
+```cpp
+std::unique_ptr<skgpu::graphite::Context> MtlTestContext::makeContext(const TestOptions& options) {
+    skiatest::graphite::TestOptions revisedOptions = options;
+    revisedOptions.fOptionsPriv.fStoreContextRefInRecorder = true;
+    return skgpu::graphite::ContextFactory::MakeMetal(fMtl, revisedOptions.fContextOptions);
+}
+```

@@ -1,0 +1,38 @@
+---
+name: skia/core/rely-on-axis-aligned-invariant-for-oval-and-rrect
+description: When inspecting or transforming paths with SkPathIsAType of kOval or kRRect, omit redundant SkPathPriv::IsAxisAligned checks and rely on shape invariants
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** Do not redundantly check SkPathPriv::IsAxisAligned on paths or
+SkPathData whose type (SkPathIsAType) is already known to be kOval or kRRect.
+Rely on the invariant that oval and round-rect representations are axis-aligned
+by definition, asserting the condition with SkASSERT if needed rather than
+redundantly scanning points at runtime.
+
+**Why.** Oval and round-rect path representations are defined and constructed to
+be axis-aligned. Re-evaluating point coordinates with SkPathPriv::IsAxisAligned
+when fType is already kOval or kRRect performs unnecessary point iteration and
+obscures the established type invariant.
+
+## Examples
+
+Bad:
+
+```cpp
+if ((fType == SkPathIsAType::kOval || fType == SkPathIsAType::kRRect) &&
+    mx.rectStaysRect() && SkPathPriv::IsAxisAligned(fPoints)) {
+    // ...
+}
+```
+
+Good:
+
+```cpp
+if ((fType == SkPathIsAType::kOval || fType == SkPathIsAType::kRRect) &&
+    mx.rectStaysRect()) {
+    SkASSERT(SkPathPriv::IsAxisAligned(fPoints));
+    // ...
+}
+```

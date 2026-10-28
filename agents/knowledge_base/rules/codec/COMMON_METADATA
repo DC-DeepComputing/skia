@@ -6,24 +6,129 @@ agentic_review {
   capability_groups {
     path_expression: "experimental/.*"
     path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/codec/assert-codec-private-stream-validity.md"
+    rules: "agents/knowledge_base/rules/codec/assert-monotonic-stream-length-incremental-decode.md"
+    rules: "agents/knowledge_base/rules/codec/assert-platform-type-size-assumptions.md"
     rules: "agents/knowledge_base/rules/codec/avoid-temporary-scanline-decode.md"
+    rules: "agents/knowledge_base/rules/codec/check-swizzler-make-for-unsupported-conversions.md"
+    rules: "agents/knowledge_base/rules/codec/consolidate-variant-stream-factories.md"
+    rules: "agents/knowledge_base/rules/codec/decouple-alternative-backend-entrypoints.md"
+    rules: "agents/knowledge_base/rules/codec/deduplicate-container-codec-selection.md"
+    rules: "agents/knowledge_base/rules/codec/deduplicate-format-property-calculations.md"
+    rules: "agents/knowledge_base/rules/codec/delegate-container-embedded-decoding.md"
+    rules: "agents/knowledge_base/rules/codec/delegate-decoder-format-detection-to-codec.md"
+    rules: "agents/knowledge_base/rules/codec/derive-intermediate-decode-buffer-metrics.md"
+    rules: "agents/knowledge_base/rules/codec/document-intermediate-codec-buffer-types.md"
+    rules: "agents/knowledge_base/rules/codec/encapsulate-swizzler-scratch-buffer-allocation.md"
     rules: "agents/knowledge_base/rules/codec/encapsulate-transient-decode-session-state.md"
+    rules: "agents/knowledge_base/rules/codec/expose-partial-rows-during-incremental-decode.md"
+    rules: "agents/knowledge_base/rules/codec/extract-codec-swizzle-row-helper.md"
+    rules: "agents/knowledge_base/rules/codec/factor-lazy-stream-buffering-helper.md"
     rules: "agents/knowledge_base/rules/codec/hoist-loop-invariant-decode-setup.md"
+    rules: "agents/knowledge_base/rules/codec/hold-shared-ownership-for-incremental-state.md"
+    rules: "agents/knowledge_base/rules/codec/keep-conversionsupported-pure-for-reusability.md"
     rules: "agents/knowledge_base/rules/codec/maintain-incremental-decode-state.md"
     rules: "agents/knowledge_base/rules/codec/omit-redundant-result-mapping-checks.md"
+    rules: "agents/knowledge_base/rules/codec/omit-scanline-decode-fallback-in-container-codecs.md"
+    rules: "agents/knowledge_base/rules/codec/preserve-decoder-dimension-limits.md"
+    rules: "agents/knowledge_base/rules/codec/query-frame-fully-received-in-streaming-codecs.md"
+    rules: "agents/knowledge_base/rules/codec/reset-decoder-state-before-full-decode.md"
     rules: "agents/knowledge_base/rules/codec/return-invalid-parameters-for-caller-errors.md"
+    rules: "agents/knowledge_base/rules/codec/separate-progressive-and-baseline-decoding.md"
+    rules: "agents/knowledge_base/rules/codec/skip-unknown-container-chunks.md"
+    rules: "agents/knowledge_base/rules/codec/use-restore-bgcolor-for-independent-frames.md"
     rules: "agents/knowledge_base/rules/codec/use-skassert-release-for-codec-invariants.md"
+    rules: "agents/knowledge_base/rules/codec/use-skswizzler-for-format-conversions.md"
+    rules: "agents/knowledge_base/rules/codec/validate-direct-decode-alpha-and-color-space.md"
+    rules: "agents/knowledge_base/rules/codec/validate-multi-segment-metadata-chunks.md"
+  }
+  capability_groups {
+    path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/codec/avoid-dead-work-for-skcodecprintf.md"
+    rules: "agents/knowledge_base/rules/codec/avoid-synthetic-stream-markers.md"
+    rules: "agents/knowledge_base/rules/codec/balance-jpeg-start-finish-output.md"
+    rules: "agents/knowledge_base/rules/codec/document-container-chunk-padding-rules.md"
+    rules: "agents/knowledge_base/rules/codec/document-spec-reserved-zero-bits.md"
+    rules: "agents/knowledge_base/rules/codec/invoke-progress-monitor-during-progressive-jpeg-consume.md"
+    rules: "agents/knowledge_base/rules/codec/require-complete-initial-progressive-pass.md"
+    rules: "agents/knowledge_base/rules/codec/simplify-chunked-stream-read-loops.md"
+    rules: "agents/knowledge_base/rules/codec/support-unsigned-numerators-in-rational-helpers.md"
+    rules: "agents/knowledge_base/rules/codec/verify-destination-index-in-shared-parameter-copy.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "include/codec/.*"
+    path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/codec/avoid-recursive-codec-instantiation-on-nested-images.md"
+    rules: "agents/knowledge_base/rules/codec/gate-codec-enablement-at-registration.md"
+  }
+  capability_groups {
+    path_expression: "include/codec/.*"
+    path_expression: "include/private/chromium/.*"
+    path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/codec/avoid-redundant-per-call-flags-with-static-toggle.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "include/codec/.*"
+    path_expression: "src/codec/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/codec/codec-name-chunked-streams-partial-not-progressive.md"
   }
   capability_groups {
     path_expression: "experimental/.*"
     path_expression: "src/codec/.*"
     path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/codec/codec-test-decoder-factory-nullptr-result.md"
+    rules: "agents/knowledge_base/rules/codec/codec-test-experimental-subsystems-with-dedicated-unit-tests.md"
+    rules: "agents/knowledge_base/rules/codec/omit-unused-chromium-codec-dimension-scaling.md"
+    rules: "agents/knowledge_base/rules/codec/test-codec-icc-profile-metadata.md"
     rules: "agents/knowledge_base/rules/codec/test-progressive-decode-inverted-row-formats.md"
+  }
+  capability_groups {
+    path_expression: "include/codec/.*"
+    path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/codec/control-decoder-availability-via-registration.md"
+  }
+  capability_groups {
+    path_expression: "src/codec/.*"
+    path_expression: "src/encode/.*"
+    rules: "agents/knowledge_base/rules/codec/convert-bits-per-pixel-to-bytes.md"
+    rules: "agents/knowledge_base/rules/codec/destroy-libjpeg-struct-on-early-return.md"
+    rules: "agents/knowledge_base/rules/codec/reuse-shared-format-constants.md"
+    rules: "agents/knowledge_base/rules/codec/verify-bitstream-conversion-scale-factors.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "rust/.*"
+    path_expression: "src/codec/.*"
+    rules: "agents/knowledge_base/rules/codec/delegate-color-transforms-to-skcodec.md"
+    rules: "agents/knowledge_base/rules/codec/encapsulate-bottom-up-incremental-row-placement.md"
+  }
+  capability_groups {
+    path_expression: "include/codec/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/codec/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/codec/prefer-explicit-decoder-backend-namespace.md"
+  }
+  capability_groups {
+    path_expression: "src/codec/.*"
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/codec/prefer-stream-getdata-for-readonly-skdata.md"
   }
   capability_groups {
     path_expression: "experimental/.*"
     path_expression: "src/codec/.*"
     path_expression: "src/encode/.*"
     rules: "agents/knowledge_base/rules/codec/validate-codec-buffer-sizes-upfront.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "rust/.*"
+    path_expression: "src/codec/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/codec/validate-codec-format-signatures-with-test-images.md"
   }
 }

@@ -1,0 +1,55 @@
+---
+name: skia/gpu/restrict-shared-object-initialization-to-friend-setters
+description: When configuring one-time state on shared objects, avoid public initialization methods; use constructor injection or private friend-restricted setters with single-initialization assertions
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Do not expose public initialization or configuration methods on shared
+objects. Pass required dependencies directly through constructors, or when
+subclass proliferation across backends makes constructor parameter propagation
+impractical, declare one-time setters private (restricted via friend
+declarations to the coordinating class) and assert in the setter that the target
+field is currently unset.
+
+**Why.** Shared objects accessed across multiple callers or threads require
+strictly controlled initialization lifecycles. Public initialization methods
+permit arbitrary callers to reconfigure or mutate shared state at runtime,
+inviting race conditions and invariant violations. Encapsulating configuration
+in constructors or friend-restricted private setters enforces
+single-initialization invariants at compile and debug time.
+
+## Examples
+
+Bad:
+
+```cpp
+class SharedContext {
+public:
+    // Bad: Public initialization method allows arbitrary external callers
+    // to reinitialize shared state post-construction.
+    void initCaptureManager() {
+        fCaptureManager = sk_make_sp<SkCaptureManager>();
+    }
+private:
+    sk_sp<SkCaptureManager> fCaptureManager;
+};
+```
+
+Good:
+
+```cpp
+class SharedContext {
+private:
+    // Good: Restrict one-time initialization to coordinating owner class
+    friend class Context; // For setCaptureManager()
+    void setCaptureManager(sk_sp<SkCaptureManager> captureManager);
+
+    sk_sp<SkCaptureManager> fCaptureManager;
+};
+
+void SharedContext::setCaptureManager(sk_sp<SkCaptureManager> captureManager) {
+    SkASSERT(captureManager && !fCaptureManager);
+    fCaptureManager = std::move(captureManager);
+}
+```

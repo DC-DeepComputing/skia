@@ -1,0 +1,11 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/partition_alloc/.*"
+    rules: "agents/knowledge_base/rules/partition_alloc/distinct-template-trait-constants-in-stubs.md"
+    rules: "agents/knowledge_base/rules/partition_alloc/mark-pointer-wrapper-operators-always-inline.md"
+  }
+}

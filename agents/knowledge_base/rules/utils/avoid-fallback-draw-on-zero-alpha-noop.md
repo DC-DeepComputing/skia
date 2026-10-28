@@ -1,0 +1,44 @@
+---
+name: skia/utils/avoid-fallback-draw-on-zero-alpha-noop
+description: When evaluating whether a drawing operation was handled to dispatch fallback rendering, guard fallbacks or treat zero-alpha no-op inputs as handled
+rubric: safety
+severity: should_fix
+---
+
+**Rule.** When checking whether a rendering operation was handled to decide if
+fallback passes are needed, treat no-op inputs (such as transparent colors with
+zero alpha) as handled, or ensure fallback rendering logic is guarded by the
+non-zero check. Do not return an unhandled status for no-op inputs that triggers
+expensive fallback paths like canvas layers or blur mask filters.
+
+**Why.** Reporting zero-alpha or no-op operations as unhandled causes callers or
+downstream fallback branches to execute costly fallback pipelines—such as
+allocating offscreen canvas layers or generating blur mask filters—for content
+that produces no visible pixels.
+
+## Examples
+
+Bad:
+
+```cpp
+bool handledAmbient = false;
+bool handledSpot = false;
+
+if (SkColorGetA(rec.fAmbientColor) > 0) {
+    handledAmbient = draw_ambient_fast_path(...);
+}
+// Returns false on zero-alpha color, causing caller to trigger expensive blur fallback
+return {handledAmbient, handledSpot};
+```
+
+Good:
+
+```cpp
+if (SkColorGetA(rec.fAmbientColor) > 0) {
+    bool success = draw_ambient_fast_path(...);
+    if (!success) {
+        draw_ambient_blur_fallback(...);
+    }
+}
+// Zero-alpha ambient color skips both the fast path and blur fallback entirely
+```

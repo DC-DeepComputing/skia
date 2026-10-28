@@ -1,0 +1,48 @@
+---
+name: skia/gpu/return-primitive-integer-from-single-word-key-helpers
+description: When generating GPU cache keys that fit into a single 32-bit word, return uint32_t directly rather than passing a KeyBuilder reference and in-out index
+rubric: design
+severity: should_fix
+---
+
+**Rule.** When generating GPU cache keys or subkeys that fit into a single
+32-bit word, design the helper to return the primitive integer (such as
+`uint32_t`) directly. Do not pass a mutable `KeyBuilder` or
+`ResourceKey::Builder` reference alongside an in-out index parameter when
+building single-word keys.
+
+**Why.** Returning a primitive integer directly makes the single-word size
+explicit in the function signature and decouples the generator from specific
+builder types. It simplifies callers by eliminating in-out index tracking and
+allows assigning the value directly to a key slot or using it in standalone
+lookups.
+
+## Examples
+
+Bad:
+
+```cpp
+// Header:
+static constexpr int KeySize() { return 1; }
+static void AddToKey(const RenderPassDesc& renderPassDesc,
+                     ResourceKey::Builder& builder,
+                     int& builderIdx);
+
+// Caller:
+GraphiteResourceKey::Builder builder(&key, kType, VulkanRenderPass::KeySize());
+int startingIdx = 0;
+VulkanRenderPass::AddToKey(renderPassDesc, builder, startingIdx);
+```
+
+Good:
+
+```cpp
+// Header:
+static uint32_t GetRenderPassKey(const RenderPassDesc& renderPassDesc,
+                                 bool compatibleForPipelineKey);
+
+// Caller:
+static constexpr uint16_t kKeySize = 1;
+GraphiteResourceKey::Builder builder(&key, kType, kKeySize);
+builder[0] = VulkanRenderPass::GetRenderPassKey(renderPassDesc, /*compatibleForPipelineKey=*/false);
+```

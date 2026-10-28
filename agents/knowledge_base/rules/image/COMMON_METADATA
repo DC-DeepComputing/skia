@@ -1,0 +1,16 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "src/image/.*"
+    rules: "agents/knowledge_base/rules/image/document-nullptr-context-when-backend-agnostic.md"
+  }
+  capability_groups {
+    path_expression: "src/image/.*"
+    rules: "agents/knowledge_base/rules/image/guard-capture-breakpoints-to-new-snapshots.md"
+    rules: "agents/knowledge_base/rules/image/ignore-gpu-recorder-in-cpu-image-transforms.md"
+  }
+}

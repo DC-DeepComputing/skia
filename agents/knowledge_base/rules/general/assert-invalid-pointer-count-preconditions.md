@@ -1,0 +1,43 @@
+---
+name: skia/assert-invalid-pointer-count-preconditions
+description: When handling pointer-and-count buffer arguments, early-return on zero count but enforce non-null pointers with SkASSERT instead of silently returning
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When a function accepts an array or buffer pointer alongside an
+element count, handle a zero count with an early return if a zero-length
+operation is valid, but assert non-null pointer preconditions using SkASSERT
+(such as SkASSERT(ptr != nullptr)). Do not silently early-return on null
+pointers when the count is non-zero, as a null buffer with a non-zero count
+represents an invalid caller state that must fail fast in debug builds.
+
+**Why.** A zero count is often a valid no-op edge case that can safely return
+early, whereas passing a null pointer with a non-zero count is a programmer
+error. Silently returning on null masks caller logic bugs and data corruption,
+while asserting ensures invalid pointer-count contracts are caught immediately
+in debug builds.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Silently returning when runLevels is null masks caller bugs when count > 0.
+if (levelsCount == 0 || !runLevels || !logicalFromVisual) {
+    return;
+}
+SkGetICULib()->f_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+```
+
+Good:
+
+```cpp
+// Good: Safely no-op on zero count, but assert caller supplies valid non-null buffers.
+if (levelsCount == 0) {
+    return;
+}
+SkASSERT(runLevels != nullptr);
+SkASSERT(logicalFromVisual != nullptr);
+SkGetICULib()->f_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+```

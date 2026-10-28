@@ -1,0 +1,39 @@
+---
+name: skia/gpu/omit-varying-for-vertex-only-attributes
+description: When generating GPU shader pipelines, do not emit inter-stage varyings for attributes only needed by the vertex shader; condition varyings strictly on downstream stage needs
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When generating GPU shader code, do not declare, allocate, or emit
+inter-stage varyings for vertex or instance attributes that are only consumed by
+the vertex shader. Gate varying emission strictly on whether downstream stages
+(such as the fragment shader) require the attribute, since the vertex shader
+accesses attributes directly.
+
+**Why.** Vertex shaders have direct access to input vertex and instance
+attributes. Declaring or interpolating varyings when only the vertex shader
+consumes an attribute wastes limited hardware varying slots, interpolation
+registers, and GPU memory bandwidth.
+
+## Examples
+
+Bad:
+
+```cpp
+bool fsNeedsSsboIndex = useUniformStorageBuffer && (hasUnliftedPaintUniforms ||
+                         (hasStepUniforms && step->usesUniformsInFragmentSkSL()));
+bool vsNeedsSsboIndex = useUniformStorageBuffer &&
+                        (hasStepUniforms || vsHasLiftedPaintUniforms);
+// Anti-pattern: emitting a varying because the vertex shader needs the attribute
+bool hasSsboIndicesVarying = fsNeedsSsboIndex || vsNeedsSsboIndex;
+```
+
+Good:
+
+```cpp
+// Correct: varyings are only emitted when downstream fragment shader requires the attribute
+bool hasSsboIndexVarying = useUniformStorageBuffer &&
+                           (hasUnliftedPaintUniforms ||
+                            (hasStepUniforms && step->usesUniformsInFragmentSkSL()));
+```

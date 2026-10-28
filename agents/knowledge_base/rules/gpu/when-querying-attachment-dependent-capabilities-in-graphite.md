@@ -1,0 +1,46 @@
+---
+name: skia/gpu/when-querying-attachment-dependent-capabilities-in-graphite
+description: When querying attachment-dependent capabilities in Graphite Caps, declare virtual methods taking const TextureInfo& or document deferred support with a TODO
+rubric: design
+severity: should_fix
+---
+
+**Rule.** When querying execution strategies or attachment-dependent
+capabilities in Graphite Caps (such as destination read strategy), declare the
+query method as virtual and pass `const TextureInfo&` so backend subclasses can
+inspect texture-specific support rather than relying solely on global
+ShaderCaps. When deferring per-texture strategy delegation during targeted
+changes, document the limitation and tracked issue with an attributed
+`TODO(b/...)` comment.
+
+**Why.** Global ShaderCaps only indicate whether the driver supports a feature
+globally (such as framebuffer fetch), whereas specific render targets may
+require dedicated usage flags (such as VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT in
+Vulkan) to support the execution strategy. Passing TextureInfo allows backend
+subclasses to inspect texture usage flags, and tracking incomplete capability
+delegation with a TODO prevents silent capability mismatches.
+
+## Examples
+
+Bad:
+
+```cpp
+// Non-virtual in base Caps without destination texture information or tracked TODO
+DstReadStrategy Caps::getDstReadStrategy() const {
+    if (this->shaderCaps()->fFBFetchSupport) {
+        return DstReadStrategy::kFramebufferFetch;
+    }
+    return DstReadStrategy::kTextureCopy;
+}
+```
+
+Good:
+
+```cpp
+// Declared virtual in Caps taking TextureInfo for backend customization
+virtual DstReadStrategy getDstReadStrategy(const TextureInfo& dstInfo) const;
+
+// Or document deferred per-texture strategy delegation with an attributed TODO
+// TODO(b/238757201): Dst reads currently only check global caps; delegate to backend Caps
+// with TextureInfo to verify attachment usage flags.
+```

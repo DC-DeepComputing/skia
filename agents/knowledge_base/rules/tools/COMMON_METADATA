@@ -1,0 +1,53 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "tools/gpu/.*"
+    rules: "agents/knowledge_base/rules/tools/avoid-intermediate-containers-when-projecting-struct-fields.md"
+  }
+  capability_groups {
+    path_expression: "tools/window/.*"
+    rules: "agents/knowledge_base/rules/tools/avoid-redundant-swapchain-backbuffer.md"
+  }
+  capability_groups {
+    path_expression: "tools/sk_app/.*"
+    rules: "agents/knowledge_base/rules/tools/clone-retained-displayparams-for-window-contexts.md"
+  }
+  capability_groups {
+    path_expression: "tools/graphite/.*"
+    rules: "agents/knowledge_base/rules/tools/copy-test-options-when-overriding-graphite-context-options.md"
+  }
+  capability_groups {
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/tools/document-conditionally-compiled-array-fallback-invariants.md"
+    rules: "agents/knowledge_base/rules/tools/encapsulate-prototype-cloning-in-builder-constructors.md"
+    rules: "agents/knowledge_base/rules/tools/omit-gpu-test-utils-in-tools.md"
+    rules: "agents/knowledge_base/rules/tools/overload-helpers-for-derived-context-types.md"
+    rules: "agents/knowledge_base/rules/tools/preserve-trailing-conditional-elements-in-count-adjusted-arr.md"
+    rules: "agents/knowledge_base/rules/tools/retain-developer-tools-and-slides.md"
+    rules: "agents/knowledge_base/rules/tools/subclass-shared-config-for-backend-options.md"
+    rules: "agents/knowledge_base/rules/tools/sync-test-and-window-context-initialization.md"
+    rules: "agents/knowledge_base/rules/tools/when-writing-or-extending-if-else-if-dispatch-chains-such-as.md"
+  }
+  capability_groups {
+    path_expression: "tools/viewer/.*"
+    rules: "agents/knowledge_base/rules/tools/document-developer-workflow-in-viewer-slides.md"
+    rules: "agents/knowledge_base/rules/tools/rely-on-viewer-animation-controls.md"
+    rules: "agents/knowledge_base/rules/tools/suffix-viewer-slide-filenames.md"
+  }
+  capability_groups {
+    path_expression: "modules/.*"
+    path_expression: "tools/viewer/.*"
+    rules: "agents/knowledge_base/rules/tools/name-viewer-slides-descriptively.md"
+  }
+  capability_groups {
+    path_expression: "bench/.*"
+    path_expression: "gm/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/tools/provide-test-backend-factories-over-flags.md"
+  }
+}

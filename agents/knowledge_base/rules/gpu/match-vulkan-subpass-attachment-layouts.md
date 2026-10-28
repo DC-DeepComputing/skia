@@ -1,0 +1,38 @@
+---
+name: skia/gpu/match-vulkan-subpass-attachment-layouts
+description: When configuring Vulkan render pass subpass attachment references pointing to the same attachment, ensure all references specify matching VkImageLayout values
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When configuring multiple VkAttachmentReference (or
+VkAttachmentReference2) entries within the same Vulkan subpass that point to the
+same underlying attachment (such as an attachment bound as both a color and an
+input attachment), ensure that every reference specifies an identical
+VkImageLayout (such as VK_IMAGE_LAYOUT_GENERAL). Do not configure one reference
+with an optimal layout while another uses a general layout.
+
+**Why.** The Vulkan specification requires that any two attachment references in
+the same subpass referring to the same attachment specify the same layout.
+Mismatched layouts violate Vulkan Valid Usage and trigger validation layer
+errors or driver faults, even if the attachment description's initial or final
+layouts are optimal.
+
+## Examples
+
+Bad:
+
+```cpp
+// Color attachment and input attachment reference the same attachment index in the subpass.
+colorRef.layout = useOptimalLayout ? VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+                                   : VK_IMAGE_LAYOUT_GENERAL;
+inputRef.layout = VK_IMAGE_LAYOUT_GENERAL;
+```
+
+Good:
+
+```cpp
+// Multiple references to the same attachment within a subpass must specify matching layouts.
+colorRef.layout = VK_IMAGE_LAYOUT_GENERAL;
+inputRef.layout = VK_IMAGE_LAYOUT_GENERAL;
+```

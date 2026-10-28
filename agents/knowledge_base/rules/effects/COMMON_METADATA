@@ -1,0 +1,22 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "include/effects/.*"
+    path_expression: "src/effects/.*"
+    rules: "agents/knowledge_base/rules/effects/accurately-document-specular-lighting-models.md"
+  }
+  capability_groups {
+    path_expression: "modules/svg/.*"
+    path_expression: "src/core/.*"
+    path_expression: "src/effects/.*"
+    rules: "agents/knowledge_base/rules/effects/avoid-manual-ctm-transform-for-image-filters.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/effects/.*"
+    rules: "agents/knowledge_base/rules/effects/use-shader-for-constant-color-image-filter.md"
+  }
+}

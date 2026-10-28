@@ -5,6 +5,14 @@
 agentic_review {
   capability_groups {
     path_expression: "bench/.*"
+    rules: "agents/knowledge_base/rules/bench/document-benchmark-purpose-and-api-improvements.md"
+    rules: "agents/knowledge_base/rules/bench/factor-shared-benchmark-datasets.md"
     rules: "agents/knowledge_base/rules/bench/hoist-allocations-outside-benchmark-loops.md"
+  }
+  capability_groups {
+    path_expression: "bench/.*"
+    path_expression: "gm/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/bench/document-embedded-test-asset-provenance.md"
   }
 }

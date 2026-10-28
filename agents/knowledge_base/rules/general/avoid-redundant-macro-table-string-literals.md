@@ -1,0 +1,44 @@
+---
+name: skia/avoid-redundant-macro-table-string-literals
+description: When defining X-macros or tabular macro lists, avoid passing redundant string literal arguments that mirror identifiers; use preprocessor stringification in expansion macros
+rubric: readability
+severity: nit
+---
+
+**Rule.** In X-macros and tabular macro lists, avoid passing redundant string
+literal arguments that duplicate or mirror identifier parameters. Rely on
+preprocessor stringification (`#param`) in consumer expansion macros to generate
+string names or labels instead of adding dedicated string columns to the macro
+table.
+
+**Why.** Passing explicit string literals that duplicate identifiers adds
+unnecessary columns to macro tables and increases maintenance overhead.
+Stringifying the identifier directly with `#` keeps the table definition concise
+and eliminates subtle casing, spelling, or separator inconsistencies across
+macro entries.
+
+## Examples
+
+Bad:
+
+```cpp
+#define SKGPU_RENDERSTEP_TYPES(M1, M3) \
+    M3(CoverBounds, NonAAFill, "non-aa-fill") \
+    M3(MiddleOutFan, EvenOdd,  "even-odd")
+
+#define CASE3(BaseName, VariantName, VariantTag) \
+    case RenderStepID::k##BaseName##_##VariantName: \
+        return #BaseName "RenderStep[" VariantTag "]";
+```
+
+Good:
+
+```cpp
+#define SKGPU_RENDERSTEP_TYPES(M1, M2) \
+    M2(CoverBounds,  NonAAFill) \
+    M2(MiddleOutFan, EvenOdd)
+
+#define CASE2(BaseName, VariantName) \
+    case RenderStepID::k##BaseName##_##VariantName: \
+        return #BaseName "RenderStep[" #VariantName "]";
+```

@@ -1,0 +1,59 @@
+---
+name: skia/gpu/document-vulkan-descriptor-layout-mechanism
+description: When configuring Vulkan image layouts for descriptors or attachments that differ from nominal states or immediate usage, document the VkAttachmentReference layout transition mechanism
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When configuring a Vulkan image layout for descriptor bindings or
+attachment assignments that differs from the texture's nominal layout or
+seemingly contradicts its immediate usage (such as specifying
+VK_IMAGE_LAYOUT_GENERAL for an attachment nominally in
+VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, or using color attachment layout
+despite shader reading), document the concrete mechanism in an explanatory
+comment. Explicitly cite the subpass configuration (e.g.,
+VkAttachmentReference::layout in VkSubpassDescription) and automatic subpass
+transitions rather than omitting an explanation or vaguely claiming implicit
+usage.
+
+**Why.** Image layouts that appear to contradict nominal texture states or
+immediate pass operations look like bugs or state corruption to maintainers.
+Explicitly documenting how subpass attachment references and automatic
+transitions establish the expected layout prevents confusion and clarifies why
+explicit pipeline barriers or transitions were omitted.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Specifying contradictory layout without documenting the Vulkan mechanism:
+// Even though the image is in VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, the subpass
+// implicitly uses it as VK_IMAGE_LAYOUT_GENERAL.
+textureInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
+
+// Bad: Assigning attachment layout that contradicts usage without explaining subpass transitions:
+void assign_resolve_texture_layout(VulkanCommandBuffer* cmdBuf,
+                                   VulkanTexture* resolveTexture,
+                                   bool loadMSAAFromResolve) {
+    VkImageLayout layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+```
+
+Good:
+
+```cpp
+// Good: Citing VkAttachmentReference::layout in VkSubpassDescription:
+// Even though the image is in VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, the subpass
+// is configured to use VK_IMAGE_LAYOUT_GENERAL in VkAttachmentReference::layout as
+// part of VkSubpassDescription.
+textureInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
+
+// Good: Explaining subpass layout management and automatic transitions:
+void assign_resolve_texture_layout(VulkanCommandBuffer* cmdBuf,
+                                   VulkanTexture* resolveTexture,
+                                   bool loadMSAAFromResolve) {
+    // The resolve image uses color attachment layout. If loadMSAAFromResolve is true, the
+    // subpass will set the appropriate layout in VkAttachmentReference::layout, and
+    // layout transitions are performed automatically between subpasses.
+    VkImageLayout layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+```

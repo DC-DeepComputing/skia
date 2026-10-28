@@ -1,0 +1,40 @@
+---
+name: skia/sksl/string-array-for-char-lookup-in-codegen
+description: In SkSL code generators and text emitters accepting std::string_view, define character lookup tables as arrays of single-character string literals rather than contiguous strings
+rubric: readability
+severity: nit
+---
+
+**Rule.** In SkSL backend code generators and text emitters where write()
+accepts std::string_view, define character or component lookup tables as arrays
+of 1-character string literals (e.g., static constexpr std::array<const char*,
+N> or const char* const[]) rather than a single contiguous string literal. Do
+not index into a contiguous string literal and wrap individual characters with
+std::string_view(&chars[i], 1) or pass &chars[i] directly.
+
+**Why.** CodeGenerator::write overloads accept std::string_view, not char.
+Indexing a single string literal produces a char, which cannot be passed
+directly to write() without verbose std::string_view(&str[i], 1) wrappers, and
+passing &str[i] erroneously emits the remainder of the null-terminated string.
+An array of 1-character string literals converts implicitly to std::string_view
+for clean, direct emission.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: contiguous string literal requires awkward string_view wrapping at write() call site
+static constexpr const char* kSwizzleChars = "xyzw";
+...
+this->write(std::string_view(&kSwizzleChars[i], 1));
+```
+
+Good:
+
+```cpp
+// Good: array of 1-character string literals can be passed directly to write()
+static constexpr std::array<const char*, 4> kSwizzleChars = {"x", "y", "z", "w"};
+...
+this->write(kSwizzleChars[i]);
+```

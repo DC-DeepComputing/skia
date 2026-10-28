@@ -1,0 +1,38 @@
+---
+name: skia/avoid-redundant-stream-size-parameter
+description: When passing self-sizing streams like SkMemoryStream or SkStreamAsset to functions, omit redundant length parameters and query stream->getLength() instead
+rubric: design
+severity: should_fix
+---
+
+**Rule.** Do not pass a separate size or length parameter to functions or
+factory methods when passing an SkStream (such as SkMemoryStream or
+SkStreamAsset) that already encapsulates its size. Callee implementations should
+query stream->getLength() or read the stream to completion rather than requiring
+callers to pass an auxiliary length argument.
+
+**Why.** Passing a separate size parameter alongside an SkStream that tracks its
+own length creates redundant arguments at call sites and risks discrepancies
+between the parameter and the stream's true length. Relying on the stream as the
+single source of truth keeps function signatures clean and prevents state drift.
+
+## Examples
+
+Bad:
+
+```cpp
+std::unique_ptr<SkCodec> codec = SkIcoEntryCodec::Make(
+        std::move(entryStream),
+        entry.format,
+        size,
+        &entryResult);
+```
+
+Good:
+
+```cpp
+std::unique_ptr<SkCodec> codec = SkIcoEntryCodec::Make(
+        std::move(entryStream),
+        entry.format,
+        &entryResult);
+```

@@ -1,0 +1,43 @@
+---
+name: skia/gpu/lowercase-fallback-in-enum-string-helpers
+description: When writing enum-to-string helpers for pipeline labels or diagnostic dumps, return lowercase fallback strings like 'unknown' to match lowercase enum tokens
+rubric: readability
+severity: nit
+---
+
+**Rule.** In enum-to-string conversion helpers formatting tokens for diagnostic
+strings, pipeline labels, or key dumps, return lowercase fallback strings (such
+as 'unknown' or 'undefined') for default or unhandled values when the handled
+enum strings are lowercase. Match the casing convention of the valid enumerator
+strings to maintain uniform token formatting in composite labels.
+
+**Why.** Diagnostic dumps, pipeline keys, and labels combine multiple enum
+string tokens into delimited descriptors. Emitting capitalized fallbacks like
+'Unknown' amidst lowercase tokens introduces jarring casing inconsistencies that
+disrupt formatted logs and string parsers.
+
+## Examples
+
+Bad:
+
+```cpp
+const char* range_str(VkSamplerYcbcrRange r) {
+    switch (r) {
+        case VK_SAMPLER_YCBCR_RANGE_ITU_FULL:   return "full";
+        case VK_SAMPLER_YCBCR_RANGE_ITU_NARROW: return "narrow";
+        default:                                return "Unknown";
+    }
+}
+```
+
+Good:
+
+```cpp
+const char* range_str(VkSamplerYcbcrRange r) {
+    switch (r) {
+        case VK_SAMPLER_YCBCR_RANGE_ITU_FULL:   return "full";
+        case VK_SAMPLER_YCBCR_RANGE_ITU_NARROW: return "narrow";
+        default:                                return "unknown";
+    }
+}
+```

@@ -1,0 +1,49 @@
+---
+name: skia/gpu/allow-empty-submit-with-finish-callback
+description: When processing GPU submissions without an active command buffer, do not log warnings if a finish callback is provided for prior work
+rubric: correctness
+severity: should_fix
+---
+
+**Rule.** When processing GPU work submissions without an active command buffer,
+do not emit diagnostic or warning logs (such as SKGPU_LOG_D or SKIA_LOG_W) if a
+completion callback is provided. Check for an attached completion callback and
+forward it to prior outstanding submissions before logging or treating an empty
+command buffer as an unexpected state.
+
+**Why.** Submitting without an active command buffer is a valid usage pattern
+when callers attach completion callbacks to prior asynchronous work. Emitting
+warning or diagnostic logs in that case produces spurious log output during
+legitimate client workflows.
+
+## Examples
+
+Bad:
+
+```cpp
+if (!fCurrentCommandBuffer) {
+    SKGPU_LOG_D("Submit called with no active command buffer!");
+    if (callback && !fOutstandingSubmissions.empty()) {
+        OutstandingSubmission* back = (OutstandingSubmission*)fOutstandingSubmissions.back();
+        (*back)->addFinishedProc(std::move(callback));
+    }
+    return true;
+}
+```
+
+Good:
+
+```cpp
+if (!fCurrentCommandBuffer) {
+    if (callback) {
+        if (!fOutstandingSubmissions.empty()) {
+            OutstandingSubmission* back =
+                    (OutstandingSubmission*)fOutstandingSubmissions.back();
+            (*back)->addFinishedProc(std::move(callback));
+        }
+        return true;
+    }
+    SKGPU_LOG_D("Submit called with no active command buffer!");
+    return true;
+}
+```

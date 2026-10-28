@@ -1,0 +1,12 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "src/capture/.*"
+    rules: "agents/knowledge_base/rules/capture/deduplicate-batch-and-single-item-operations.md"
+    rules: "agents/knowledge_base/rules/capture/document-deferred-surface-metadata-tracking-with-todo.md"
+    rules: "agents/knowledge_base/rules/capture/propagate-capture-helper-result.md"
+  }
+}

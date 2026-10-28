@@ -4,45 +4,233 @@
 
 agentic_review {
   capability_groups {
-    path_expression: "src/gpu/graphite/.*"
-    rules: "agents/knowledge_base/rules/gpu/assert-and-document-dst-read-texturability.md"
-    rules: "agents/knowledge_base/rules/gpu/assert-builder-reset-with-check-reset.md"
-    rules: "agents/knowledge_base/rules/gpu/assert-resolve-attachment-when-loading-msaa.md"
-    rules: "agents/knowledge_base/rules/gpu/assert-template-invariants-while-pending.md"
-    rules: "agents/knowledge_base/rules/gpu/call-notify-in-use-on-graphite-image-sampling.md"
-    rules: "agents/knowledge_base/rules/gpu/centralize-resource-metadata-in-cache.md"
-    rules: "agents/knowledge_base/rules/gpu/consolidate-generator-flags-into-shared-struct.md"
-    rules: "agents/knowledge_base/rules/gpu/document-draw-traversal-pointer-ratcheting.md"
-    rules: "agents/knowledge_base/rules/gpu/drop-draw-on-graphite-recording-failure.md"
-    rules: "agents/knowledge_base/rules/gpu/encapsulate-gatherer-offset-tracking.md"
-    rules: "agents/knowledge_base/rules/gpu/guard-draw-command-pointer-with-dst-copy.md"
-    rules: "agents/knowledge_base/rules/gpu/mask-unused-varyings-when-lifting.md"
-    rules: "agents/knowledge_base/rules/gpu/parameterize-shared-snippet-uniform-writers.md"
-    rules: "agents/knowledge_base/rules/gpu/record-high-water-mark-at-finalization.md"
-    rules: "agents/knowledge_base/rules/gpu/resolve-draw-barriers-at-record-time.md"
-    rules: "agents/knowledge_base/rules/gpu/set-reusable-requires-purgeable-for-host-mutated-resources.md"
-    rules: "agents/knowledge_base/rules/gpu/track-pipeline-state-at-transitions.md"
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bBuffer\\b"
+    rules: "agents/knowledge_base/rules/gpu/accept-resource-directly-over-binding-descriptor.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-altering-member-constness-with-test-macros.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-resource-lookup-by-debug-label.md"
+    rules: "agents/knowledge_base/rules/gpu/consolidate-buffer-binding-methods.md"
+    rules: "agents/knowledge_base/rules/gpu/document-page-locator-semantics.md"
+    rules: "agents/knowledge_base/rules/gpu/document-protected-kno-overrides.md"
+    rules: "agents/knowledge_base/rules/gpu/document-shared-post-processing-after-divergent-paths.md"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-buffer-padding-in-flush.md"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-resource-caching-in-provider.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-defer-buffer-usage-reset-until-allocation.md"
+    rules: "agents/knowledge_base/rules/gpu/log-gpu-allocation-and-binding-failures.md"
+    rules: "agents/knowledge_base/rules/gpu/match-buffer-type-index-in-wrappers.md"
+    rules: "agents/knowledge_base/rules/gpu/name-descriptor-set-indices-set-idx.md"
+    rules: "agents/knowledge_base/rules/gpu/use-existing-state-reset-helper.md"
+    rules: "agents/knowledge_base/rules/gpu/use-unit-stride-reservation-over-offset-mutators.md"
   }
   capability_groups {
     path_expression: "include/gpu/.*"
     path_expression: "src/gpu/.*"
-    rules: "agents/knowledge_base/rules/gpu/assert-invariants-in-compressed-keys.md"
-    rules: "agents/knowledge_base/rules/gpu/avoid-gpu-test-utils-in-production.md"
-    rules: "agents/knowledge_base/rules/gpu/avoid-hardcoding-options-in-caps-init.md"
+    content_patterns: "\\bSkAlignTo\\b"
+    rules: "agents/knowledge_base/rules/gpu/account-for-alignment-padding-when-sizing-buffers.md"
+    rules: "agents/knowledge_base/rules/gpu/compute-sub-range-offsets-relative-to-origin.md"
+    rules: "agents/knowledge_base/rules/gpu/document-hardware-workarounds-in-buffer-allocations.md"
+    rules: "agents/knowledge_base/rules/gpu/document-non-pow2-manual-stride-alignment.md"
+    rules: "agents/knowledge_base/rules/gpu/prefer-skispow2-for-variable-alignment-dispatch.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bstepUniforms\\b"
+    rules: "agents/knowledge_base/rules/gpu/account-for-primitive-color-in-renderstep-uniforms.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bSkBlendMode::k\\b"
+    rules: "agents/knowledge_base/rules/gpu/accurately-document-blend-mode-hardware-limitations.md"
+    rules: "agents/knowledge_base/rules/gpu/include-dstout-in-blend-dst-dependency-checks.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bfallback\\b"
+    rules: "agents/knowledge_base/rules/gpu/accurately-document-format-fallback-blockers.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/dawn/.*"
+    rules: "agents/knowledge_base/rules/gpu/add-texture-binding-for-dawn-resolve-color-attachments.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-command-buffer-tracking-for-queue-write-buffer.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-emulated-resolve-for-non-load-attachments.md"
+    rules: "agents/knowledge_base/rules/gpu/batch-dawn-async-requests-before-wait.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bBufferWriter\\b"
+    rules: "agents/knowledge_base/rules/gpu/advance-buffer-writer-position.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-preemptive-buffer-reservation-zeroing.md"
     rules: "agents/knowledge_base/rules/gpu/avoid-redundant-parent-member-caches.md"
-    rules: "agents/knowledge_base/rules/gpu/check-dirty-flag-before-deferred-sync.md"
-    rules: "agents/knowledge_base/rules/gpu/clean-up-promoted-backend-extension-fallbacks.md"
+    rules: "agents/knowledge_base/rules/gpu/bound-buffer-writer-to-payload-size.md"
+    rules: "agents/knowledge_base/rules/gpu/centralize-alignment-in-buffer-reserve.md"
+    rules: "agents/knowledge_base/rules/gpu/stream-constexpr-generators-to-vertex-writer.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bDrawBufferManager\\b"
+    rules: "agents/knowledge_base/rules/gpu/align-buffer-block-size-to-min-block-size.md"
+    rules: "agents/knowledge_base/rules/gpu/document-buffer-writer-alignment-contracts.md"
+    rules: "agents/knowledge_base/rules/gpu/document-resource-lifecycle-in-class-header.md"
+    rules: "agents/knowledge_base/rules/gpu/keep-buffer-overflow-queries-pure.md"
+    rules: "agents/knowledge_base/rules/gpu/pass-varying-buffer-alignment-as-parameter.md"
+    rules: "agents/knowledge_base/rules/gpu/precalculate-buffer-padding-before-rollover.md"
+    rules: "agents/knowledge_base/rules/gpu/reset-staging-buffers-on-finalization.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bDrawWriter\\b"
+    rules: "agents/knowledge_base/rules/gpu/align-offsets-for-instance-and-vertex-strides.md"
+    rules: "agents/knowledge_base/rules/gpu/align-only-initial-batch-offset.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-template-invariants-while-pending.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-mutating-template-buffers-in-flush.md"
+    rules: "agents/knowledge_base/rules/gpu/compute-final-buffer-binding-before-dirty-check.md"
+    rules: "agents/knowledge_base/rules/gpu/document-aligned-count-recalculation-on-overflow.md"
+    rules: "agents/knowledge_base/rules/gpu/document-scoped-appender-cross-draw-batching.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-document-post-loop-batch-flushes.md"
+    rules: "agents/knowledge_base/rules/gpu/preserve-vertex-padding-across-pipeline-changes.md"
+    rules: "agents/knowledge_base/rules/gpu/track-pipeline-state-at-transitions.md"
+    rules: "agents/knowledge_base/rules/gpu/when-updating-pipeline-state-in-drawwriter-do-not-calculate.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bUniformManager\\b"
+    rules: "agents/knowledge_base/rules/gpu/align-uniforms-only-for-non-shading-steps.md"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-gatherer-offset-tracking.md"
+    rules: "agents/knowledge_base/rules/gpu/group-tracking-member-variables-by-role.md"
+    rules: "agents/knowledge_base/rules/gpu/preserve-unaligned-base-offsets-when-rewinding-uniforms.md"
+    rules: "agents/knowledge_base/rules/gpu/record-high-water-mark-at-finalization.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bsubmitToGpu\\b"
+    rules: "agents/knowledge_base/rules/gpu/allow-empty-submit-with-finish-callback.md"
+    rules: "agents/knowledge_base/rules/gpu/verify-command-buffer-has-work.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bSkASSERT\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-align-stride-multiple-of-data-stride.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-cache-invariants-over-substitutes.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-exclusive-alpha-flags-in-specialized-color-xforms.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-linked-list-traversal-postconditions.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-nested-scopes-closed-at-checkpoints.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-protected-capability-and-strictness.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-slot-invalid-before-allocation.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-unfinalized-before-builder-mutation.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-uninitialized-state-in-one-time-record.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-asserting-late-lifecycle-in-destructor.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-coeff-blend-checks-in-advanced-blends.md"
+    rules: "agents/knowledge_base/rules/gpu/check-gpu-buffer-map-for-null.md"
+    rules: "agents/knowledge_base/rules/gpu/document-prepopulated-cache-concurrency.md"
+    rules: "agents/knowledge_base/rules/gpu/gate-optional-features-at-caller-and-assert-in-callee.md"
+    rules: "agents/knowledge_base/rules/gpu/log-unsupported-backend-features.md"
+    rules: "agents/knowledge_base/rules/gpu/preserve-pending-resources-in-free-gpu-resources.md"
+    rules: "agents/knowledge_base/rules/gpu/scope-ssbo-stride-alignment-assertions.md"
+    rules: "agents/knowledge_base/rules/gpu/track-lifecycle-state-in-staged-helpers.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bisTexturable\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-and-document-dst-read-texturability.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bVulkan\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-backend-invariants-locally.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-caching-low-frequency-command-buffer-state.md"
     rules: "agents/knowledge_base/rules/gpu/consolidate-shared-backend-feature-flags.md"
-    rules: "agents/knowledge_base/rules/gpu/document-complementary-backend-query-helpers.md"
-    rules: "agents/knowledge_base/rules/gpu/document-protected-kno-overrides.md"
-    rules: "agents/knowledge_base/rules/gpu/gpu-document-packed-vector-component-mappings.md"
-    rules: "agents/knowledge_base/rules/gpu/issue-barriers-per-dst-read-draw.md"
-    rules: "agents/knowledge_base/rules/gpu/log-gpu-allocation-and-binding-failures.md"
-    rules: "agents/knowledge_base/rules/gpu/name-intentional-zero-budget-kempty.md"
-    rules: "agents/knowledge_base/rules/gpu/remove-stale-key-sizing-comments.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-promote-shared-capability-queries-to-base-caps.md"
+    rules: "agents/knowledge_base/rules/gpu/reserve-api-prefixes-for-driver-calls-in-error-logs.md"
     rules: "agents/knowledge_base/rules/gpu/sync-graphite-command-buffer-replay-state.md"
-    rules: "agents/knowledge_base/rules/gpu/use-named-constant-for-resource-key-size.md"
-    rules: "agents/knowledge_base/rules/gpu/verify-matching-colortype-in-caps-format-tables.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bPipelineDataGatherer\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-builder-reset-with-check-reset.md"
+    rules: "agents/knowledge_base/rules/gpu/name-gatherer-extractors-by-combined-scope.md"
+    rules: "agents/knowledge_base/rules/gpu/parameterize-shared-snippet-uniform-writers.md"
+    rules: "agents/knowledge_base/rules/gpu/place-paint-key-helpers-in-keyhelpers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bPushConstants\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-compile-time-sizes-against-spec-minimums.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bdesc\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-depth-stencil-sample-count-against-render-pass.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bSkASSERT\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-downstream-geometry-in-choose-renderer.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-graphite-surface-proxy-instantiated.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-matching-draw-traits-in-batching.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-resolve-attachment-when-loading-msaa.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-zero-pending-appends-on-explicit-draw.md"
+    rules: "agents/knowledge_base/rules/gpu/assert-zero-resolve-offset-in-native-render-passes.md"
+    rules: "agents/knowledge_base/rules/gpu/drop-draw-on-graphite-recording-failure.md"
+    rules: "agents/knowledge_base/rules/gpu/remove-obsolete-resets-when-updating-state.md"
+    rules: "agents/knowledge_base/rules/gpu/restrict-shared-object-initialization-to-friend-setters.md"
+    rules: "agents/knowledge_base/rules/gpu/validate-graphite-transform-before-queries.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bOffset\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-invariants-in-compressed-keys.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/(?:.*/)?vk/.*"
+    rules: "agents/knowledge_base/rules/gpu/assert-max-supported-api-version-in-feature-promotion.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-dummy-vulkan-descriptor-sets.md"
+    rules: "agents/knowledge_base/rules/gpu/avoid-general-layout-for-vulkan-resolve-attachment.md"
+    rules: "agents/knowledge_base/rules/gpu/check-separate-reconstruction-for-vulkan-chroma-filter.md"
+    rules: "agents/knowledge_base/rules/gpu/condition-vulkan-input-attachment-self-dependency.md"
+    rules: "agents/knowledge_base/rules/gpu/describe-vulkan-extension-features-as-main-not-mandatory.md"
+    rules: "agents/knowledge_base/rules/gpu/document-promoted-vulkan-feature-extensions.md"
+    rules: "agents/knowledge_base/rules/gpu/document-vulkan-descriptor-layout-mechanism.md"
+    rules: "agents/knowledge_base/rules/gpu/guard-vulkan-extension-flags-in-create-info.md"
+    rules: "agents/knowledge_base/rules/gpu/match-vulkan-subpass-attachment-layouts.md"
+    rules: "agents/knowledge_base/rules/gpu/record-invariant-vulkan-dynamic-state-at-cmd-buffer-start.md"
+    rules: "agents/knowledge_base/rules/gpu/spell-out-vulkan-version-in-comments.md"
+    rules: "agents/knowledge_base/rules/gpu/use-vulkan-call-nocheck-for-non-success-status.md"
+    rules: "agents/knowledge_base/rules/gpu/validate-vulkan-spec-extension-dependencies.md"
+    rules: "agents/knowledge_base/rules/gpu/verify-host-stage-pipeline-barrier-equality.md"
+    rules: "agents/knowledge_base/rules/gpu/verify-vulkan-feature-enablement-in-caps.md"
+    rules: "agents/knowledge_base/rules/gpu/verify-vulkan-timestamp-period-before-enabling-stats.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bContext\\b"
+    rules: "agents/knowledge_base/rules/gpu/assert-single-owner-at-gpu-method-entry.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bBindingList\\b"
+    rules: "agents/knowledge_base/rules/gpu/assign-layer-search-binding-result.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\brecordDraw\\b"
+    rules: "agents/knowledge_base/rules/gpu/assign-shared-draw-out-params-outside-step-loops.md"
+    rules: "agents/knowledge_base/rules/gpu/decouple-draw-updates-from-invariant-bindings.md"
+    rules: "agents/knowledge_base/rules/gpu/enforce-disjoint-layers-for-barrier-draws.md"
+    rules: "agents/knowledge_base/rules/gpu/identify-depth-only-draws-by-paint-id-validity.md"
+    rules: "agents/knowledge_base/rules/gpu/mutate-geometry-in-place-during-draw-recording.md"
+    rules: "agents/knowledge_base/rules/gpu/resolve-draw-barriers-at-record-time.md"
+    rules: "agents/knowledge_base/rules/gpu/update-precondition-comments-when-handled-internally.md"
   }
   capability_groups {
     path_expression: "src/gpu/graphite/.*"
@@ -52,25 +240,786 @@ agentic_review {
     rules: "agents/knowledge_base/rules/gpu/avoid-backend-includes-in-core-graphite.md"
   }
   capability_groups {
-    path_expression: "src/gpu/graphite/dawn/.*"
-    rules: "agents/knowledge_base/rules/gpu/avoid-emulated-resolve-for-non-load-attachments.md"
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bDrawParams\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-by-value-transforms-in-draw-records.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bCompressedPaintersOrder\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-comparing-order-counters-for-prepended-items.md"
+    rules: "agents/knowledge_base/rules/gpu/evaluate-clip-elements-independently.md"
+    rules: "agents/knowledge_base/rules/gpu/traverse-backwards-for-dst-dependent-draws.md"
+    rules: "agents/knowledge_base/rules/gpu/use-compressed-painters-order.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bDrawBufferManager\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-exact-sizing-hooks-on-staging-buffers.md"
+    rules: "agents/knowledge_base/rules/gpu/generalize-table-driven-buffer-sizing.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-consolidate-manager-lifecycle-transitions.md"
+    rules: "agents/knowledge_base/rules/gpu/preserve-gpu-only-copy-src-in-buffer-manager.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bstatic_cast\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-gpu-test-utils-in-production.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bGPU_TEST_UTILS\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-hardcoding-options-in-caps-init.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bFeatures\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-misleading-defaults-for-overwritten-fields.md"
+    rules: "agents/knowledge_base/rules/gpu/qualify-candidate-probe-arrays.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bdrawClipShapeImmediate\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-mutating-invariant-draw-parameters.md"
+    rules: "agents/knowledge_base/rules/gpu/intersect-scissor-before-recording-draw.md"
+    rules: "agents/knowledge_base/rules/gpu/isolate-renderer-workarounds-in-device.md"
+    rules: "agents/knowledge_base/rules/gpu/neutralize-eager-draw-commands-on-noop.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bgraphite\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-nested-utility-namespaces-in-graphite.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bwaitUntilFinished\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-noop-gpu-work-submissions.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bRenderPassTask\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-redundant-context-in-graphite-task-dump.md"
+    rules: "agents/knowledge_base/rules/gpu/call-notify-in-use-on-graphite-image-sampling.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bTexture\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-redundant-entity-parameters.md"
+    rules: "agents/knowledge_base/rules/gpu/decouple-texture-upload-preparation-from-execution.md"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-command-list-binding-in-trackers.md"
+    rules: "agents/knowledge_base/rules/gpu/omit-redundant-post-creation-setters.md"
+    rules: "agents/knowledge_base/rules/gpu/revert-temporary-cq-trybot-dummy-edits.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bcaps\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-runtime-caps-queries-for-spec-minimum-limits.md"
+    rules: "agents/knowledge_base/rules/gpu/distinguish-gpu-backend-from-skia-in-comments.md"
+    rules: "agents/knowledge_base/rules/gpu/distinguish-resource-from-global-capability-queries.md"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-capability-checks-in-decision-helpers.md"
+    rules: "agents/knowledge_base/rules/gpu/extract-optional-pipeline-stages-to-static-helpers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bdrawClip\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-templated-callbacks-for-simple-branches.md"
+    rules: "agents/knowledge_base/rules/gpu/deduplicate-mask-rasterization-helpers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bDrawWriter\\b"
+    rules: "agents/knowledge_base/rules/gpu/avoid-virtual-draw-suppression-for-testing.md"
+    rules: "agents/knowledge_base/rules/gpu/issue-barriers-per-dst-read-draw.md"
   }
   capability_groups {
     path_expression: "src/gpu/graphite/vk/.*"
     rules: "agents/knowledge_base/rules/gpu/bind-pass-invariant-vulkan-resources-upfront.md"
+    rules: "agents/knowledge_base/rules/gpu/unconditionally-create-vulkan-dummy-descriptor-set-layouts.md"
     rules: "agents/knowledge_base/rules/gpu/unify-vulkan-compatible-render-passes.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\buint\\b"
+    rules: "agents/knowledge_base/rules/gpu/bound-linearly-searched-cache-capacity.md"
+    rules: "agents/knowledge_base/rules/gpu/bound-path-complexity-tightly-against-oom.md"
+    rules: "agents/knowledge_base/rules/gpu/document-geometric-bitmask-descriptors.md"
+    rules: "agents/knowledge_base/rules/gpu/emit-shader-loop-over-cpp-unrolling.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-qualify-scope-specific-base-constants.md"
+    rules: "agents/knowledge_base/rules/gpu/name-channel-mask-functions-with-mask-suffix.md"
+    rules: "agents/knowledge_base/rules/gpu/name-intentional-zero-budget-kempty.md"
+    rules: "agents/knowledge_base/rules/gpu/name-trace-correlation-id-after-operation.md"
+    rules: "agents/knowledge_base/rules/gpu/prefer-power-of-two-for-gpu-thresholds.md"
+    rules: "agents/knowledge_base/rules/gpu/remove-stale-key-sizing-comments.md"
+    rules: "agents/knowledge_base/rules/gpu/use-named-constant-for-resource-key-size.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bDisjointStencilIndex\\b"
+    rules: "agents/knowledge_base/rules/gpu/bypass-bounds-manager-for-draw-list-layers.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bstep\\b"
+    rules: "agents/knowledge_base/rules/gpu/calculate-resource-budgets-in-pipeline-coordinator.md"
+    rules: "agents/knowledge_base/rules/gpu/identify-renderer-via-renderstep-id.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bResourceCache\\b"
+    rules: "agents/knowledge_base/rules/gpu/centralize-resource-metadata-in-cache.md"
+    rules: "agents/knowledge_base/rules/gpu/purge-refcounted-cache-entries-without-unique-check.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bSnippetRequirementFlags::kPassthroughLocalCoords\\b"
+    rules: "agents/knowledge_base/rules/gpu/check-child-sample-usage-for-passthrough-coords.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bupdate\\b"
+    rules: "agents/knowledge_base/rules/gpu/check-dirty-flag-before-deferred-sync.md"
+    rules: "agents/knowledge_base/rules/gpu/document-deferred-mutation-properties-on-captured-pointers.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/ganesh/gl/.*"
+    rules: "agents/knowledge_base/rules/gpu/check-native-and-angle-drivers-separately-in-gl-caps.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bDrawAtlas\\b"
+    rules: "agents/knowledge_base/rules/gpu/check-plot-token-interval-not-needs-upload.md"
+    rules: "agents/knowledge_base/rules/gpu/document-empirical-atlas-and-cache-sizing.md"
+    rules: "agents/knowledge_base/rules/gpu/reset-atlas-plots-unconditionally-on-eviction.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bAddToPNextChain\\b"
+    rules: "agents/knowledge_base/rules/gpu/clean-up-promoted-backend-extension-fallbacks.md"
+    rules: "agents/knowledge_base/rules/gpu/use-add-to-pnext-chain-helper.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bAddPrimitiveColor\\b"
+    rules: "agents/knowledge_base/rules/gpu/collapse-dst-primitive-blend.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bwriteUniformsAndTextures\\b"
+    rules: "agents/knowledge_base/rules/gpu/combine-render-step-and-paint-textures.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/(?:.*/)?mtl/.*"
+    rules: "agents/knowledge_base/rules/gpu/compare-gpu-family-variable-not-enum-constant.md"
+    rules: "agents/knowledge_base/rules/gpu/refine-metal-gpu-family-enum.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\brenderStepID\\b"
+    rules: "agents/knowledge_base/rules/gpu/compare-renderstep-id-for-vertex-input-change.md"
   }
   capability_groups {
     path_expression: "src/gpu/.*"
     path_expression: "src/sksl/.*"
     rules: "agents/knowledge_base/rules/gpu/condition-subset-clamping-on-tile-mode.md"
+    rules: "agents/knowledge_base/rules/gpu/omit-subpixel-coverage-varyings-for-quads.md"
+    rules: "agents/knowledge_base/rules/gpu/precompute-draw-invariant-shader-inputs-on-cpu.md"
     rules: "agents/knowledge_base/rules/gpu/precompute-matrix-inverses-on-cpu.md"
     rules: "agents/knowledge_base/rules/gpu/sksl-use-float-precision-for-coordinates-and-bounds.md"
   }
   capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bRect\\b"
+    rules: "agents/knowledge_base/rules/gpu/consistent-coordinate-snapping-terminology.md"
+    rules: "agents/knowledge_base/rules/gpu/document-non-intuitive-coordinate-transform-directions.md"
+    rules: "agents/knowledge_base/rules/gpu/name-dst-read-bounds-after-general-operation.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bstd::move\\b"
+    rules: "agents/knowledge_base/rules/gpu/consolidate-device-flush-methods.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bKeyContext\\b"
+    rules: "agents/knowledge_base/rules/gpu/consolidate-generator-flags-into-shared-struct.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    path_expression: "src/sksl/.*"
+    rules: "agents/knowledge_base/rules/gpu/consolidate-shader-snippets-with-identical-uniforms.md"
+    rules: "agents/knowledge_base/rules/gpu/eliminate-outset-vertex-attributes-without-curved-corners.md"
+    rules: "agents/knowledge_base/rules/gpu/match-shader-snippet-uniform-names-with-sksl.md"
+    rules: "agents/knowledge_base/rules/gpu/request-local-coords-for-clip-snippets.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bfCaptureParams\\b"
+    rules: "agents/knowledge_base/rules/gpu/consolidate-state-reset-into-lifecycle.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    path_expression: "tests/graphite/.*"
+    rules: "agents/knowledge_base/rules/gpu/create-render-targets-with-texture-proxy-make.md"
+    rules: "agents/knowledge_base/rules/gpu/prefer-explicit-invalid-sentinel-factory.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bfindOrCreate\\b"
+    rules: "agents/knowledge_base/rules/gpu/derive-depth-attachment-dimensions-from-color-attachment.md"
+    rules: "agents/knowledge_base/rules/gpu/index-immutable-samplers-by-binding-slot.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bsetup_pipeline_layout\\b"
+    rules: "agents/knowledge_base/rules/gpu/destroy-graphics-handles-on-initialization-failure.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bwgpu::LoadOp::ExpandResolveTexture\\b"
+    rules: "agents/knowledge_base/rules/gpu/disable-unused-load-op-caps-under-emulation.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bDstReadStrategy\\b"
+    rules: "agents/knowledge_base/rules/gpu/distinguish-draw-pass-from-draw-task.md"
+    rules: "agents/knowledge_base/rules/gpu/flush-before-msaa-after-input-attachment-read.md"
+    rules: "agents/knowledge_base/rules/gpu/omit-unused-resource-from-caps-queries.md"
+    rules: "agents/knowledge_base/rules/gpu/pass-precomputed-caps-to-descriptor-factories.md"
+    rules: "agents/knowledge_base/rules/gpu/when-querying-attachment-dependent-capabilities-in-graphite.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/ganesh/.*"
+    rules: "agents/knowledge_base/rules/gpu/distinguish-fragment-processor-and-shader-matrix-conventions.md"
+    rules: "agents/knowledge_base/rules/gpu/negate-low-fragment-precision-for-high-precision-gpu-ops.md"
+    rules: "agents/knowledge_base/rules/gpu/prefer-makefragmentprocessorfromview-over-skimage-ganesh.md"
+    rules: "agents/knowledge_base/rules/gpu/scope-display-presentation-workarounds-to-kpresent.md"
+    rules: "agents/knowledge_base/rules/gpu/serialize-new-caps-in-dumpjson.md"
+    rules: "agents/knowledge_base/rules/gpu/verify-path-triangulation-with-ddl-config.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bbinding\\b"
+    rules: "agents/knowledge_base/rules/gpu/distinguish-index-ranges-from-sampler-pairing-in-comments.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bviewportTranslation\\b"
+    rules: "agents/knowledge_base/rules/gpu/distinguish-resolve-offset-from-viewport-translation.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bPlotLocator\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-atlas-buffer-view-padding-semantics.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bharedContext\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-atypical-non-const-accessors.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bCaps\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-capability-noop-semantics.md"
+    rules: "agents/knowledge_base/rules/gpu/document-caps-limit-units.md"
+    rules: "agents/knowledge_base/rules/gpu/evaluate-orthogonal-resource-flags-independently.md"
+    rules: "agents/knowledge_base/rules/gpu/name-negotiated-configurations-compatible.md"
+    rules: "agents/knowledge_base/rules/gpu/name-serialization-methods-after-target.md"
+    rules: "agents/knowledge_base/rules/gpu/remove-stale-caps-promotion-comments.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bLinear\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-caps-layout-efficiency-assumptions.md"
+    rules: "agents/knowledge_base/rules/gpu/use-none-mipmap-for-dst-read-samplers.md"
+    rules: "agents/knowledge_base/rules/gpu/use-skrect-roundout-and-inset-for-subset-clamp-bounds.md"
+  }
+  capability_groups {
     path_expression: "src/gpu/.*"
     path_expression: "tools/gpu/.*"
+    rules: "agents/knowledge_base/rules/gpu/document-chained-struct-member-lifetimes.md"
     rules: "agents/knowledge_base/rules/gpu/enable-optional-backend-features-in-test-contexts.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bDraw\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-clip-geometry-approximation-invariants.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-name-explicit-draw-state-enum-modes.md"
+    rules: "agents/knowledge_base/rules/gpu/name-internal-state-reset-helpers.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\border\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-combined-uniform-binding-order.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bbuffer\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-command-buffer-mutation-ordering.md"
+    rules: "agents/knowledge_base/rules/gpu/document-static-buffer-step-rate.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\brequires\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-complementary-backend-query-helpers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bstate\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-conditional-strategy-vs-active-state.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bProxy\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-copy-on-write-query-side-effects.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bMask\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-device-id-bitmask-assumptions.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bfIsStencil\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-draw-traversal-pointer-ratcheting.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bVulkanPreferredFeatures\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-feature-negotiation-architecture-and-checklists.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\btoKey\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-flush-before-paint-key-order.md"
+    rules: "agents/knowledge_base/rules/gpu/precompute-dst-usage-in-paint-params.md"
+    rules: "agents/knowledge_base/rules/gpu/sync-paint-option-with-paint-params.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\btransform\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-identity-color-space-transforms.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bSK_DUMP_TASKS_CODE\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-manual-task-debug-token-assignment.md"
+    rules: "agents/knowledge_base/rules/gpu/qualify-graphite-flush-source-labels.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bCommandBuffer\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-modal-resource-pool-invariants.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bsk_sp\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-non-hierarchy-task-classes.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bColorFilter\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-precompile-placeholder-parameters.md"
+    rules: "agents/knowledge_base/rules/gpu/group-snippet-ids-by-category.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\baddFinishedProc\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-raii-scope-exit-callback-execution.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bextractSubset\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-raster-subset-pixelref-cache-workaround.md"
+    rules: "agents/knowledge_base/rules/gpu/prefer-extractsubset-over-makesubset-for-raster-tiles.md"
+    rules: "agents/knowledge_base/rules/gpu/preserve-unpadded-size-for-subset-extraction.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bSamplerDesc\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-renderstep-dynamic-samplers-invariant.md"
+    rules: "agents/knowledge_base/rules/gpu/dynamic-sampler-data-count-is-zero.md"
+    rules: "agents/knowledge_base/rules/gpu/query-samplerdesc-isimmutable.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bShareable::k\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-resource-lifecycle-by-sharing-category.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/precompile/.*"
+    rules: "agents/knowledge_base/rules/gpu/document-retained-precompile-combination-variants.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bVulkan\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-reusable-requires-purgeable.md"
+    rules: "agents/knowledge_base/rules/gpu/handle-feature-gaps-in-pipeline-helpers.md"
+    rules: "agents/knowledge_base/rules/gpu/match-scissor-clamping-to-render-area-bounds.md"
+    rules: "agents/knowledge_base/rules/gpu/rely-on-command-buffer-track-resource.md"
+    rules: "agents/knowledge_base/rules/gpu/use-backend-shared-context-caps-accessors.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bsupportsProtectedContent\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-speculative-capability-checks.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bfHas\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-subpass-scope-for-attachment-flags.md"
+    rules: "agents/knowledge_base/rules/gpu/omit-varying-for-vertex-only-attributes.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/ganesh/vk/.*"
+    path_expression: "src/gpu/graphite/vk/.*"
+    rules: "agents/knowledge_base/rules/gpu/document-vulkan-depth-stencil-clear-invariant.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bOwnership::kWrapped\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-wrapped-resource-budgeting-invariants.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bgetMappedVertexBuffer\\b"
+    rules: "agents/knowledge_base/rules/gpu/document-zero-count-buffer-suballocations.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bshapeIntersectable\\b"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-compound-shape-predicates.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bgetListIndex\\b"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-draw-atlas-index-calculations.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bstride\\b"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-helper-context-configuration.md"
+    rules: "agents/knowledge_base/rules/gpu/gpu-combine-non-pow2-alignments-with-lcm.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bPaintParamsKey\\b"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-key-format-validation.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bScissor\\b"
+    rules: "agents/knowledge_base/rules/gpu/encapsulate-transformed-command-parameters.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\btoString\\b"
+    rules: "agents/knowledge_base/rules/gpu/equal-length-compact-format-abbreviations.md"
+    rules: "agents/knowledge_base/rules/gpu/fallback-generic-key-serialization.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bEndCaps\\b"
+    rules: "agents/knowledge_base/rules/gpu/expand-draw-bounds-to-tile-granularity.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\buseAsyncPipelineCreation\\b"
+    rules: "agents/knowledge_base/rules/gpu/extract-condition-to-consolidate-state-init.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bmake\\b"
+    rules: "agents/knowledge_base/rules/gpu/extract-dummy-setup-to-static-helpers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bUniformManager\\b"
+    rules: "agents/knowledge_base/rules/gpu/factor-buffer-primitives-from-orchestration.md"
+    rules: "agents/knowledge_base/rules/gpu/pad-uniform-buffer-layout-to-base-alignment.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bPoint\\b"
+    rules: "agents/knowledge_base/rules/gpu/factor-symmetric-math-into-helper-methods.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bInfo\\b"
+    rules: "agents/knowledge_base/rules/gpu/format-vulkan-ycbcr-conversion-mutually-exclusive.md"
+    rules: "agents/knowledge_base/rules/gpu/group-ycbcr-model-and-range-in-conversion-strings.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bRefCntedCallback\\b"
+    rules: "agents/knowledge_base/rules/gpu/forward-gpu-stats-to-finish-callbacks.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bTextureFormat\\b"
+    rules: "agents/knowledge_base/rules/gpu/gpu-avoid-unused-backend-format-aliases.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bneeded\\b"
+    rules: "agents/knowledge_base/rules/gpu/gpu-document-packed-vector-component-mappings.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bcreate\\b"
+    rules: "agents/knowledge_base/rules/gpu/gpu-explicit-null-for-skipped-table-slots.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    path_expression: "src/shaders/.*"
+    rules: "agents/knowledge_base/rules/gpu/gpu-fallback-all-unused-texture-proxy-slots.md"
+    rules: "agents/knowledge_base/rules/gpu/scope-key-gen-flags-to-child-context.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bdrawGeometry\\b"
+    rules: "agents/knowledge_base/rules/gpu/gpu-gate-unsupported-strokes-in-choose-renderer.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bVertex\\b"
+    rules: "agents/knowledge_base/rules/gpu/gpu-name-vertex-attribute-helpers-by-granularity.md"
+    rules: "agents/knowledge_base/rules/gpu/pass-read-only-context-by-const-ref.md"
+    rules: "agents/knowledge_base/rules/gpu/prefer-segment-endpoint-helpers.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bSkDEBUGFAIL\\b"
+    rules: "agents/knowledge_base/rules/gpu/gpu-prefer-skgpu-log-over-skdebugf.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "src/text/.*"
+    rules: "agents/knowledge_base/rules/gpu/gpu-qualify-backend-specific-methods-in-shared-headers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bSK_API_AVAILABLE_CA_METAL_LAYER\\b"
+    rules: "agents/knowledge_base/rules/gpu/gpu-remove-stale-apple-availability-annotations.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/graphite/dawn/.*"
+    path_expression: "src/gpu/graphite/dawn/.*"
+    rules: "agents/knowledge_base/rules/gpu/guard-dawn-emscripten-compatibility.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bkTextureCopy\\b"
+    rules: "agents/knowledge_base/rules/gpu/guard-draw-command-pointer-with-dst-copy.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bResource\\b"
+    rules: "agents/knowledge_base/rules/gpu/guard-telemetry-hit-counters-to-first-use.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bSkSL::String::appendf\\b"
+    rules: "agents/knowledge_base/rules/gpu/hoist-shared-shader-variable-declarations.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bdstColorInfo\\b"
+    rules: "agents/knowledge_base/rules/gpu/ignore-dst-properties-in-raw-image-shaders.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bsharedContext\\b"
+    rules: "agents/knowledge_base/rules/gpu/init-cpu-lookup-tables-in-cache-constructor.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bRasterMaskHelper\\b"
+    rules: "agents/knowledge_base/rules/gpu/initialize-clip-atlas-padding-with-initial-coverage.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bSampleCount::k1\\b"
+    rules: "agents/knowledge_base/rules/gpu/initialize-external-format-sample-counts-in-caps.md"
+    rules: "agents/knowledge_base/rules/gpu/omit-redundant-sample-count-guard-before-compatible-msaa.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bBuffer\\b"
+    rules: "agents/knowledge_base/rules/gpu/initialize-resource-lifecycle-flags-conditionally.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bBuilder\\b"
+    rules: "agents/knowledge_base/rules/gpu/lazily-populate-scratch-pools.md"
+    rules: "agents/knowledge_base/rules/gpu/return-primitive-integer-from-single-word-key-helpers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bTexture\\b"
+    rules: "agents/knowledge_base/rules/gpu/log-error-on-incompatible-texture-formats.md"
+    rules: "agents/knowledge_base/rules/gpu/name-descriptor-fields-by-api-construct.md"
+    rules: "agents/knowledge_base/rules/gpu/name-texture-proxy-members-proxy.md"
+    rules: "agents/knowledge_base/rules/gpu/sync-variable-names-with-refactored-types.md"
+    rules: "agents/knowledge_base/rules/gpu/unconditionally-cache-analytic-blur-textures.md"
+    rules: "agents/knowledge_base/rules/gpu/use-distinct-labels-for-resource-instances.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bCapacity\\b"
+    rules: "agents/knowledge_base/rules/gpu/log-warning-on-capacity-fallback.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bToStr\\b"
+    rules: "agents/knowledge_base/rules/gpu/lowercase-fallback-in-enum-string-helpers.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bSnippetRequirementFlags::k\\b"
+    rules: "agents/knowledge_base/rules/gpu/mask-node-local-flags-during-child-propagation.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bunsetLocalCoordsFlag\\b"
+    rules: "agents/knowledge_base/rules/gpu/mask-unused-varyings-when-lifting.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bdraw\\b"
+    rules: "agents/knowledge_base/rules/gpu/match-indexed-instanced-draw-parameter-order.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bBuiltInCodeSnippetID::k\\b"
+    rules: "agents/knowledge_base/rules/gpu/name-snippet-uniforms-to-match-sksl.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bOrder\\b"
+    rules: "agents/knowledge_base/rules/gpu/name-watermark-advancement-methods-explicitly.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bsetReplayTranslationAndClip\\b"
+    rules: "agents/knowledge_base/rules/gpu/offset-draw-bounds-by-replay-translation.md"
+    rules: "agents/knowledge_base/rules/gpu/return-success-on-clipped-task-bounds.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bnumRenderSteps\\b"
+    rules: "agents/knowledge_base/rules/gpu/omit-redundant-stencil-checks-on-single-step-draws.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/gpu/graphite/.*"
+    path_expression: "src/shaders/.*"
+    rules: "agents/knowledge_base/rules/gpu/orchestrate-pipeline-routing-above-leaf-effects.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bbuffer\\b"
+    rules: "agents/knowledge_base/rules/gpu/pass-buffer-byte-size-to-base64.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bRecord\\b"
+    rules: "agents/knowledge_base/rules/gpu/pass-device-to-encoder-methods.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bmakeResourceProvider\\b"
+    rules: "agents/knowledge_base/rules/gpu/pass-invalid-recorder-id-without-recorder.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bAttribute\\b"
+    rules: "agents/knowledge_base/rules/gpu/precompute-driver-dynamic-state-descriptions.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bscaleFactors\\b"
+    rules: "agents/knowledge_base/rules/gpu/prefer-cached-transform-scale-factors-for-similarity.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bstatic_cast\\b"
+    rules: "agents/knowledge_base/rules/gpu/prefer-snippet-requirement-flags-over-id-checks.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bprimitiveBlender\\b"
+    rules: "agents/knowledge_base/rules/gpu/preserve-primitive-blend-opacity.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bparams\\b"
+    rules: "agents/knowledge_base/rules/gpu/preserve-round-caps-on-thick-stroked-arcs.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bSkAlphaType\\b"
+    rules: "agents/knowledge_base/rules/gpu/preserve-skimage-alphatype-contract.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bTextureUsage\\b"
+    rules: "agents/knowledge_base/rules/gpu/probe-gpu-features-before-fallback-emulation.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "src/sksl/.*"
+    path_expression_exclusion: "src/sksl/generated/.*"
+    rules: "agents/knowledge_base/rules/gpu/qualify-plane-specific-yuv-identifiers.md"
   }
   capability_groups {
     path_expression: "include/gpu/.*"
@@ -81,8 +1030,74 @@ agentic_review {
   }
   capability_groups {
     path_expression: "src/gpu/graphite/.*"
-    path_expression: "src/shaders/.*"
-    rules: "agents/knowledge_base/rules/gpu/scope-key-gen-flags-to-child-context.md"
+    content_patterns: "\\bRendererProvider\\b"
+    rules: "agents/knowledge_base/rules/gpu/query-path-renderer-strategy-from-provider.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/mtl/.*"
+    rules: "agents/knowledge_base/rules/gpu/remove-redundant-encoder-buffer-tracking.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bVkSwizzleToStr\\b"
+    rules: "agents/knowledge_base/rules/gpu/resolve-vulkan-component-swizzle-identity.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bsearchBinding\\b"
+    rules: "agents/knowledge_base/rules/gpu/respect-boundary-layers-in-search-fast-paths.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bfMaxInternalSampleCount\\b"
+    rules: "agents/knowledge_base/rules/gpu/restrict-intel-sample-counts-to-single-sample.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bSharedContext\\b"
+    rules: "agents/knowledge_base/rules/gpu/retain-generic-resource-retention-api.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bfUse\\b"
+    rules: "agents/knowledge_base/rules/gpu/reuse-existing-capabilities-over-adhoc-flags.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bSkTInternalLList\\b"
+    rules: "agents/knowledge_base/rules/gpu/reuse-intrusive-list-nodes-for-deferred-cleanup.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bthat\\b"
+    rules: "agents/knowledge_base/rules/gpu/separate-opportunistic-cleanup-from-mandatory-resets.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bInsertStatus::k\\b"
+    rules: "agents/knowledge_base/rules/gpu/separate-simulated-errors-from-genuine-failures.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bWinding\\b"
+    rules: "agents/knowledge_base/rules/gpu/set-default-fill-type-when-converting-grshape-to-path.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\breusableRequiresPurgeable\\b"
+    rules: "agents/knowledge_base/rules/gpu/set-reusable-requires-purgeable-for-host-mutated-resources.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bManager\\b"
+    rules: "agents/knowledge_base/rules/gpu/share-transform-cache-key-helpers.md"
   }
   capability_groups {
     path_expression: "src/core/.*"
@@ -91,7 +1106,95 @@ agentic_review {
     rules: "agents/knowledge_base/rules/gpu/sign-encode-flags-in-float-uniforms.md"
   }
   capability_groups {
-    path_expression: "src/gpu/(?:.*/)?vk/.*"
-    rules: "agents/knowledge_base/rules/gpu/use-vulkan-call-nocheck-for-non-success-status.md"
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bPipelines\\b"
+    rules: "agents/knowledge_base/rules/gpu/skip-invalid-items-in-visitor-traversals.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bTextureFormat::k\\b"
+    rules: "agents/knowledge_base/rules/gpu/specify-alpha-as-unorm-in-srgb-formats.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bAtlas\\b"
+    rules: "agents/knowledge_base/rules/gpu/subtract-integer-translation-for-subpixel-cached-masks.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/vk/.*"
+    path_expression: "src/gpu/vk/.*"
+    rules: "agents/knowledge_base/rules/gpu/test-vk-preferred-features-extensions.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bPipelines\\b"
+    rules: "agents/knowledge_base/rules/gpu/traverse-tasks-to-inspect-resources.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bisDepthOnly\\b"
+    rules: "agents/knowledge_base/rules/gpu/treat-depth-only-draws-as-dst-dependent-in-bounds-test.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bdrawClipShapeImmediate\\b"
+    rules: "agents/knowledge_base/rules/gpu/trigger-first-use-actions-in-state-update.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bDrawListLayer\\b"
+    rules: "agents/knowledge_base/rules/gpu/unify-special-case-draws-under-binding-list.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bskgpu\\b"
+    rules: "agents/knowledge_base/rules/gpu/use-distinct-tags-for-unique-key-variants.md"
+    rules: "agents/knowledge_base/rules/gpu/use-get-approx-size-for-texture-reuse.md"
+    rules: "agents/knowledge_base/rules/gpu/use-getlcdblendformula-for-lcd-coverage.md"
+    rules: "agents/knowledge_base/rules/gpu/validate-inputs-at-point-of-use-in-gpu-callees.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/ganesh/.*"
+    path_expression: "src/gpu/ganesh/.*"
+    rules: "agents/knowledge_base/rules/gpu/use-make-gl-external-for-external-textures.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/.*"
+    path_expression: "tools/gpu/vk/.*"
+    path_expression: "tools/window/.*"
+    rules: "agents/knowledge_base/rules/gpu/use-nullptr-for-vulkan-pointers.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    path_expression_exclusion: "src/gpu/GpuTypesPriv\\.h"
+    rules: "agents/knowledge_base/rules/gpu/use-skgpu-std-steady-clock.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bsampleCount\\b"
+    rules: "agents/knowledge_base/rules/gpu/use-texture-sample-count-in-msaa-shaders.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/vk/.*"
+    rules: "agents/knowledge_base/rules/gpu/use-vendor-suffix-for-device-extensions-flags.md"
+  }
+  capability_groups {
+    path_expression: "src/gpu/graphite/.*"
+    content_patterns: "\\bisRenderable\\b"
+    rules: "agents/knowledge_base/rules/gpu/validate-color-renderability-with-colortype.md"
+    rules: "agents/knowledge_base/rules/gpu/validate-render-target-usage-flags-in-caps.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    content_patterns: "\\bColorType\\b"
+    rules: "agents/knowledge_base/rules/gpu/verify-matching-colortype-in-caps-format-tables.md"
   }
 }

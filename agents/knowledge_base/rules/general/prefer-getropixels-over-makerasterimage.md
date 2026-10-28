@@ -1,0 +1,44 @@
+---
+name: skia/prefer-getropixels-over-makerasterimage
+description: When extracting pixels from an SkImage in internal Skia code, use as_IB(img)->getROPixels instead of allocating an intermediate SkImage with makeRasterImage
+rubric: safety
+severity: should_fix
+---
+
+**Rule.** When extracting pixels from an SkImage for inspection, encoding, or
+exporting in internal Skia code, do not allocate an intermediate SkImage via
+img->makeRasterImage(). Instead, downcast to SkImage_Base via as_IB(img) and
+call getROPixels(ctx, &bitmap) to obtain a read-only pixel copy directly in an
+SkBitmap.
+
+**Why.** Public APIs like makeRasterImage() allocate a temporary intermediate
+SkImage wrapper before pixels can be accessed via peekPixels(). Internal Skia
+callers have direct access to SkImage_Base::getROPixels(), which populates an
+SkBitmap directly without heap-allocating an intermediate SkImage wrapper or
+churning reference counts.
+
+## Examples
+
+Bad:
+
+```cpp
+sk_sp<SkImage> raster_image = img->makeRasterImage(ctx);
+if (!raster_image) {
+    return nullptr;
+}
+SkPixmap pixmap;
+if (!raster_image->peekPixels(&pixmap)) {
+    return nullptr;
+}
+return Encode(pixmap, options);
+```
+
+Good:
+
+```cpp
+SkBitmap bm;
+if (!as_IB(img)->getROPixels(ctx, &bm)) {
+    return nullptr;
+}
+return Encode(bm.pixmap(), options);
+```

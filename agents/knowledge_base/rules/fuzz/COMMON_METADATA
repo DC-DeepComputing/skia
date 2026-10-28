@@ -5,6 +5,10 @@
 agentic_review {
   capability_groups {
     path_expression: "fuzz/.*"
+    rules: "agents/knowledge_base/rules/fuzz/create-distinct-fuzzer-targets-for-alternate-implementations.md"
+    rules: "agents/knowledge_base/rules/fuzz/decode-native-image-info-in-fuzzers.md"
+    rules: "agents/knowledge_base/rules/fuzz/do-not-check-in-seed-corpora.md"
     rules: "agents/knowledge_base/rules/fuzz/register-new-fuzzer-in-fuzz-main.md"
+    rules: "agents/knowledge_base/rules/fuzz/remove-obsolete-fuzz-inputs.md"
   }
 }

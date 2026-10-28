@@ -1,0 +1,39 @@
+---
+name: skia/gpu/unconditionally-cache-analytic-blur-textures
+description: When creating GPU analytic blur or profile textures, cache them unconditionally in backend caches rather than adding parameters to toggle or bypass caching
+rubric: design
+severity: should_fix
+---
+
+**Rule.** When implementing or modifying GPU analytic blur helpers and
+mathematical curve or integral textures (such as Gaussian profiles, integral
+tables, or nine-patch masks), cache them unconditionally in backend caches like
+GrThreadSafeCache or ProxyCache. Do not expose parameters or flags to toggle,
+configure, or bypass backend texture caching.
+
+**Why.** Analytic blur textures represent normalized, shape-agnostic
+mathematical data that can be reused across all geometries sharing the same blur
+parameters. Allowing callers to disable or bypass backend caching introduces
+unnecessary API configurability and risks redundant texture allocation and
+profile re-generation.
+
+## Examples
+
+Bad:
+
+```cpp
+// Bad: Exposing parameters to toggle or bypass backend caching for reusable curve data
+std::unique_ptr<GrFragmentProcessor> MakeCircleBlur(GrRecordingContext* context,
+                                                    const SkRect& circle,
+                                                    float sigma,
+                                                    bool useGrCache);
+```
+
+Good:
+
+```cpp
+// Good: Caching analytic blur curve and profile textures unconditionally in backend caches
+std::unique_ptr<GrFragmentProcessor> MakeCircleBlur(GrRecordingContext* context,
+                                                    const SkRect& circle,
+                                                    float sigma);
+```

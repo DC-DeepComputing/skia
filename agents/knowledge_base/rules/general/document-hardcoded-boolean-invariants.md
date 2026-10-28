@@ -1,0 +1,40 @@
+---
+name: skia/document-hardcoded-boolean-invariants
+description: When passing hardcoded boolean literals or template arguments based on non-obvious subsystem invariants, document why the condition holds and what behavior it guarantees
+rubric: readability
+severity: nit
+---
+
+**Rule.** When invoking a function, method, or template with a hardcoded boolean
+literal based on a non-obvious subsystem invariant, document the invariant in an
+inline comment explaining why that condition holds and what behavior or ordering
+guarantee it enforces. Annotate the literal with a parameter comment (e.g.,
+/*paramName=*/false) to clarify call-site intent.
+
+**Why.** Hardcoded boolean arguments or template parameters like <false> obscure
+why a specific execution mode is assumed. Explaining the underlying invariant
+(such as phase exclusivity or ordering constraints) prevents readers and future
+maintainers from mistaking the invariant for an oversight or introducing
+incorrect dynamic checks.
+
+## Examples
+
+Bad:
+
+```cpp
+Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
+// Hardcoded boolean template and call arguments obscure why depth-only mode is assumed
+BindingList* insertedList = start.fLayer->add<false>(
+        &fStorage, targetMatch, key, draw, step, false);
+```
+
+Good:
+
+```cpp
+Draw* draw = fStorage.make<Draw>(drawParams, uniformIndex);
+// Because depth-only draws exclusively record backwards, it is safe to pass false for
+// kIsDepthOnly. This guarantees new BindingLists append to the end of the layer and draw
+// after their parent.
+BindingList* insertedList = start.fLayer->add</*kIsDepthOnly=*/false>(
+        &fStorage, targetMatch, key, draw, step, /*backwards=*/false);
+```

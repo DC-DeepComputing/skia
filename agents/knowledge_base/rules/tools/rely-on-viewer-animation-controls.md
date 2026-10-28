@@ -1,0 +1,59 @@
+---
+name: skia/tools/rely-on-viewer-animation-controls
+description: When controlling animation playback or pausing in Viewer slides, rely on Viewer's built-in animate() harness and 'a' hotkey instead of custom onChar toggles
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** In Viewer slides, do not implement custom key handlers in onChar() to
+toggle, pause, or resume animations. Rely on Viewer's existing animation harness
+(Slide::animate()) and global 'a' hotkey instead, avoiding custom key handlers
+that duplicate framework controls or shadow global hotkeys like spacebar.
+
+**Why.** Viewer provides built-in global keybindings such as 'a' to toggle
+animation and ' ' (spacebar) to toggle the ImGui debug GUI. Because
+Slide::onChar() executes before Viewer's command processor, handling animation
+toggling inside a slide duplicates framework functionality and risks shadowing
+global Viewer hotkeys.
+
+## Examples
+
+Bad:
+
+```cpp
+bool onChar(SkUnichar uni) override {
+    // Intercepting spacebar or custom keys to pause/resume animation
+    if (' ' == uni) {
+        fPaused = !fPaused;
+        return true;
+    }
+    return false;
+}
+
+bool animate(double ns) override {
+    if (fPaused) {
+        return false;
+    }
+    // update animation state...
+    return true;
+}
+```
+
+Good:
+
+```cpp
+// Viewer automatically pauses and resumes animate() when the user presses 'a'
+bool onChar(SkUnichar uni) override {
+    // Only handle slide-specific parameter adjustments
+    if (',' == uni) {
+        --fSpeed;
+        return true;
+    }
+    return false;
+}
+
+bool animate(double ns) override {
+    // update animation state...
+    return true;
+}
+```

@@ -1,0 +1,39 @@
+---
+name: skia/api/define-target-platform-build-macros
+description: When detecting target compilation environments in platform configuration headers like SkFeatures.h, define standard SK_BUILD_FOR_<PLATFORM> macros rather than leaving platforms undefined
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** When detecting target platforms or compilation environments in
+configuration headers (such as SkFeatures.h or SkTypes.h), define a dedicated
+canonical SK_BUILD_FOR_<PLATFORM> macro (such as SK_BUILD_FOR_WASM) rather than
+leaving the platform undefined. Ensure every recognized compilation target maps
+to a standard platform identifier for consistent downstream gating.
+
+**Why.** Skia standardizes platform-specific preprocessor guards across the
+codebase using the SK_BUILD_FOR_* macro family. Leaving an environment undefined
+forces downstream files to rely directly on compiler/toolchain flags (like
+__EMSCRIPTEN__) or breaks target-specific feature isolation.
+
+## Examples
+
+Bad:
+
+```cpp
+#elif defined(__EMSCRIPTEN__)
+    // WASM toolchains expose a Unix-like compilation environment, but it is
+    // not Unix (e.g. posix signals are not supported). So we do not say we
+    // are compiling for any particular platform.
+#elif defined(linux) || defined(__linux)
+```
+
+Good:
+
+```cpp
+#elif defined(__EMSCRIPTEN__)
+    // WASM toolchains expose a Unix-like compilation environment, but it is
+    // not Unix (e.g. posix signals are not supported).
+    #define SK_BUILD_FOR_WASM
+#elif defined(linux) || defined(__linux)
+```

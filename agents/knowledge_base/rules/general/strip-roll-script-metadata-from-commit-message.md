@@ -1,0 +1,40 @@
+---
+name: skia/strip-roll-script-metadata-from-commit-message
+description: 'When authoring or reviewing dependency roll commit messages, remove temporary roll-script scaffolding metadata such as Disable: treat-URL-as-trailer before landing'
+rubric: readability
+severity: should_fix
+---
+
+**Rule.** Do not leave temporary roll-script metadata lines such as `Disable:
+treat-URL-as-trailer` in commit messages when preparing or reviewing dependency
+roll CLs. Strip all internal roll scaffolding lines and script artifacts from
+the commit description before submitting or approving the change for landing.
+
+**Why.** Roll scripts across the repository (such as roll-freetype.sh,
+roll-expat.sh, and roll-harfbuzz.sh) automatically generate Disable:
+treat-URL-as-trailer to prevent git trailer parsing logic from misinterpreting
+log URLs during commit creation. Leaving these temporary directives clutters git
+commit history with obsolete internal scripting artifacts.
+
+## Examples
+
+Bad:
+
+```cpp
+Roll FreeType from 702e4a1d to d629c8bf (33 commits)
+
+https://chromium.googlesource.com/chromium/src/third_party/freetype2.git/+log/...
+
+Disable: treat-URL-as-trailer
+Change-Id: If101445bff6d56a2b2397dd8c0eaf89fa810cff6
+```
+
+Good:
+
+```cpp
+Roll FreeType from deef6d2a to 1518bc83 (13 commits)
+
+https://chromium.googlesource.com/chromium/src/third_party/freetype2.git/+log/...
+
+Change-Id: If101445bff6d56a2b2397dd8c0eaf89fa810cff6
+```

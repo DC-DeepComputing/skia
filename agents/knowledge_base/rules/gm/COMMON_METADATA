@@ -5,11 +5,32 @@
 agentic_review {
   capability_groups {
     path_expression: "gm/.*"
+    rules: "agents/knowledge_base/rules/gm/break-line-before-terminal-path-offsets.md"
+    rules: "agents/knowledge_base/rules/gm/define-gms-at-file-scope-without-skiagm-namespace.md"
+    rules: "agents/knowledge_base/rules/gm/factor-gm-style-variants-into-separate-gms.md"
+    rules: "agents/knowledge_base/rules/gm/highlight-subtle-features-in-gm-tests.md"
+    rules: "agents/knowledge_base/rules/gm/prefer-def-simple-gm-when-rendering-cannot-fail.md"
+    rules: "agents/knowledge_base/rules/gm/scope-gm-dimensions-and-size-surfaces-to-content.md"
+    rules: "agents/knowledge_base/rules/gm/vary-closing-edge-orientations-in-path-gms.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/gm/document-hairline-cap-extensions-accurately.md"
+    rules: "agents/knowledge_base/rules/gm/include-open-contours-when-testing-stroke-caps.md"
+    rules: "agents/knowledge_base/rules/gm/omit-or-document-test-conics.md"
+    rules: "agents/knowledge_base/rules/gm/test-hairlines-at-pixel-boundaries-and-half-pixel-offsets.md"
+    rules: "agents/knowledge_base/rules/gm/tests-document-artificial-transforms-to-defeat-glyph-caching.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
     path_expression: "modules/.*"
     rules: "agents/knowledge_base/rules/gm/omit-test-from-gm-names.md"
   }
   capability_groups {
     path_expression: "gm/.*"
-    rules: "agents/knowledge_base/rules/gm/scope-gm-dimensions-and-size-surfaces-to-content.md"
+    path_expression: "modules/canvaskit/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/gm/tests-colrv1-address-glyphs-by-codepoint.md"
   }
 }
