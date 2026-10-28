@@ -104,7 +104,8 @@ GrGLCaps::GrGLCaps(const GrContextOptions& contextOptions,
     fFenceSyncSupport = false;
     fFBFetchRequiresEnablePerSample = false;
     fSRGBWriteControl = false;
-    fSkipErrorChecks = false;
+    fSkipResourceErrorChecks = false;
+    fSkipCommandErrorChecks = false;
 
     fShaderCaps = std::make_unique<GrShaderCaps>();
 
@@ -393,11 +394,12 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fSRGBWriteControl = ctxInfo.hasExtension("GL_EXT_sRGB_write_control");
     }  // No WebGL support
 
-    fSkipErrorChecks = ctxInfo.isOverCommandBuffer();
+    fSkipResourceErrorChecks = ctxInfo.isOverCommandBuffer();
     if (GR_IS_GR_WEBGL(standard)) {
         // Error checks are quite costly in webgl, especially in Chrome.
-        fSkipErrorChecks = true;
+        fSkipResourceErrorChecks = true;
     }
+    fSkipCommandErrorChecks = fSkipResourceErrorChecks;
 
     // When we are abandoning the context we cannot call into GL thus we should skip any sync work.
     fMustSyncGpuDuringAbandon = false;
@@ -4951,16 +4953,26 @@ void GrGLCaps::onApplyOptionsOverrides(const GrContextOptions& options) {
         fProgramBinarySupport = false;
     }
 
-    switch (options.fSkipGLErrorChecks) {
-        case GrContextOptions::Enable::kNo:
-            fSkipErrorChecks = false;
-            break;
-        case GrContextOptions::Enable::kYes:
-            fSkipErrorChecks = true;
-            break;
-        case GrContextOptions::Enable::kDefault:
-            break;
-    }
+    auto applyOption = [](GrContextOptions::Enable option, bool* skip) {
+        switch (option) {
+            case GrContextOptions::Enable::kNo:
+                *skip = false;
+                break;
+            case GrContextOptions::Enable::kYes:
+                *skip = true;
+                break;
+            case GrContextOptions::Enable::kDefault:
+                break;
+        }
+    };
+    bool skipResourceErrorChecks = fSkipResourceErrorChecks;
+    bool skipCommandErrorChecks = fSkipCommandErrorChecks;
+    applyOption(options.fSkipGLErrorChecks, &skipResourceErrorChecks);
+    applyOption(options.fSkipGLErrorChecks, &skipCommandErrorChecks);
+    applyOption(options.fSkipGLResourceErrorChecks, &skipResourceErrorChecks);
+    applyOption(options.fSkipGLCommandErrorChecks, &skipCommandErrorChecks);
+    fSkipResourceErrorChecks = skipResourceErrorChecks;
+    fSkipCommandErrorChecks = skipCommandErrorChecks;
 }
 
 bool GrGLCaps::onSurfaceSupportsWritePixels(const GrSurface* surface) const {
