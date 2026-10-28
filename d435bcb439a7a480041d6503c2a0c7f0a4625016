@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22842922_c9a50ab5",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T16:11:58Z",
+      "side": 1,
+      "message": "We can get an SkSpecialImage that wraps a regular SkImage\u0027s content, at which point we should allow mipmapping. Is there a way we can detect when it\u0027s approximate or not (possibly by comparing its subset to its backing dimensions)?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 95
+      },
+      "revId": "d435bcb439a7a480041d6503c2a0c7f0a4625016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
