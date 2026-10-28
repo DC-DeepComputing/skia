@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a02f6da3_56a8903b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T20:49:10Z",
+      "side": 1,
+      "message": "Maybe something like \"Use storesSamplerDescData() in ShaderInfo\"?",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "b2b46c55ba00c284b9de888ca7ba429c4a52ec2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a4acf60_59a6f897",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T20:49:10Z",
+      "side": 1,
+      "message": "This second bug should be on its own `Bug: \u003c\u003e` line so that the auto-linking in Gerrit works correctly.",
+      "range": {
+        "startLine": 14,
+        "startChar": 18,
+        "endLine": 14,
+        "endChar": 29
+      },
+      "revId": "b2b46c55ba00c284b9de888ca7ba429c4a52ec2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c55b7109_36f21c3b",
@@ -14,6 +60,23 @@
       "writtenOn": "2026-10-28T17:31:01Z",
       "side": 1,
       "message": "Ready for review! This addresses the smaller bug fixes and cleanup first. The remaining TODOs look like they\u0027ll need more structural changes, so I\u0027m still digging into the context and plan to handle those in a follow-up CL.",
+      "revId": "b2b46c55ba00c284b9de888ca7ba429c4a52ec2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bdfb698_5bdb1c6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-28T20:49:10Z",
+      "side": 1,
+      "message": "Code changes look good, just some tweaks to the commit message. Thanks!",
       "revId": "b2b46c55ba00c284b9de888ca7ba429c4a52ec2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
