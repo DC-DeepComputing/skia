@@ -16,6 +16,24 @@
       "message": "Note: raw_ref represent a non-null raw_ptr.\n\nIt supports being rebounded elsewhere. So `raw_ref\u003cT\u003e` / `raw_ref\u003cconst T\u003e` are never used in the MiraclePtr rewrite, because in C++, a reference can\u0027t be rebound. They are all `const raw_ref\u003c...\u003e`.",
       "revId": "8a8cec2403da9d0f449d5dfe3f2abd99f1278651",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b3a54e_11b59d17",
+        "filename": "src/sksl/codegen/SkSLCodeGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-28T12:39:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d447b471_e3e61d4f",
+      "revId": "8a8cec2403da9d0f449d5dfe3f2abd99f1278651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
