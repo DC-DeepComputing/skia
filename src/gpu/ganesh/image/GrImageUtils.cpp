@@ -670,7 +670,7 @@ std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(
 
 GrSurfaceProxyView FindOrMakeCachedMipmappedView(GrRecordingContext* rContext,
                                                  GrSurfaceProxyView view,
-                                                 uint32_t imageUniqueID) {
+                                                 uint64_t imageUniqueID) {
     SkASSERT(rContext);
     SkASSERT(imageUniqueID != SK_InvalidUniqueID);
 

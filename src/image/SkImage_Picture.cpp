@@ -117,16 +117,17 @@ bool SkImage_Picture::getImageKeyValues(
     SkASSERT(SkTFitsIn<uint32_t>(height));
     SkASSERT(sizeof(float) == sizeof(uint32_t));
 
-    // The 0th slot usually holds either the SkBitmap's ID or the image's. In those two cases
-    // slot #1 is zero so we can reuse the 0th slot here.
+    // Slots 0 and 1 usually hold either the SkBitmap's 64-bit ID or the image's. In those two cases
+    // slot #2 is zero so we can reuse slots 0 and 1 here and place the non-zero picture ID in #2.
     keyValues[0] = (isU8 ? 0x1 : 0x0) |     // 1 bit
                    (pixelGeometry << 1) |   // 3 bits
                    (surfacePropFlags << 4); // 3 bits
-    keyValues[1] = pictureIG->fPicture->uniqueID();
-    SkASSERT(keyValues[1] != 0);    // Double check we don't collide w/ bitmap or image keys
-    keyValues[2] = width;
-    keyValues[3] = height;
-    memcpy(&keyValues[4], &transX, sizeof(uint32_t));
-    memcpy(&keyValues[5], &transY, sizeof(uint32_t));
+    keyValues[1] = 0;
+    keyValues[2] = pictureIG->fPicture->uniqueID();
+    SkASSERT(keyValues[2] != 0);    // Double check we don't collide w/ bitmap or image keys
+    keyValues[3] = width;
+    keyValues[4] = height;
+    memcpy(&keyValues[5], &transX, sizeof(uint32_t));
+    memcpy(&keyValues[6], &transY, sizeof(uint32_t));
     return true;
 }

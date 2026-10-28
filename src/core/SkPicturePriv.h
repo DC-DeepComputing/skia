@@ -60,7 +60,7 @@ public:
 
     static uint64_t MakeSharedID(uint32_t pictureID) {
         uint64_t sharedID = SkSetFourByteTag('p', 'i', 'c', 't');
-        return (sharedID << 32) | pictureID;
+        return (sharedID << 32) | (uint64_t(pictureID) << 1);
     }
 
     static void AddedToCache(const SkPicture* pic) {
