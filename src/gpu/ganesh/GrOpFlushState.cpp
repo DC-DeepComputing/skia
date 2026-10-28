@@ -86,7 +86,9 @@ void GrOpFlushState::executeDrawsAndUploadsForMeshDrawOp(
             this->bindTextures(programInfo.geomProc(), fCurrDraw->fGeomProcProxies,
                             programInfo.pipeline());
             for (int i = 0; i < fCurrDraw->fMeshCnt; ++i) {
-                this->drawMesh(fCurrDraw->fMeshes[i]);
+                if (!this->drawMesh2(fCurrDraw->fMeshes[i])) {
+                    return;
+                }
             }
         }
 
@@ -267,18 +269,18 @@ skgpu::ganesh::SmallPathAtlasMgr* GrOpFlushState::smallPathAtlasManager() const 
 }
 #endif
 
-void GrOpFlushState::drawMesh(const GrSimpleMesh& mesh) {
+bool GrOpFlushState::drawMesh2(const GrSimpleMesh& mesh) {
     SkASSERT(mesh.fIsInitialized);
     if (!mesh.fIndexBuffer) {
         this->bindBuffers(nullptr, nullptr, mesh.fVertexBuffer);
-        this->draw(mesh.fVertexCount, mesh.fBaseVertex);
+        return this->draw2(mesh.fVertexCount, mesh.fBaseVertex);
     } else {
         this->bindBuffers(mesh.fIndexBuffer, nullptr, mesh.fVertexBuffer, mesh.fPrimitiveRestart);
         if (0 == mesh.fPatternRepeatCount) {
-            this->drawIndexed(mesh.fIndexCount, mesh.fBaseIndex, mesh.fMinIndexValue,
+            return this->drawIndexed2(mesh.fIndexCount, mesh.fBaseIndex, mesh.fMinIndexValue,
                               mesh.fMaxIndexValue, mesh.fBaseVertex);
         } else {
-            this->drawIndexPattern(mesh.fIndexCount, mesh.fPatternRepeatCount,
+            return this->drawIndexPattern2(mesh.fIndexCount, mesh.fPatternRepeatCount,
                                    mesh.fMaxPatternRepetitionsInIndexBuffer, mesh.fVertexCount,
                                    mesh.fBaseVertex);
         }

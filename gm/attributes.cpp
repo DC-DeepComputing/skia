@@ -247,7 +247,9 @@ private:
 
         flushState->bindPipeline(*fProgramInfo, fRect);
         flushState->bindBuffers(nullptr, nullptr, std::move(fVertexBuffer));
-        flushState->draw(4, 0);
+        if (!flushState->draw2(4, 0)) {
+            return;
+        }
     }
 
     sk_sp<GrBuffer> fVertexBuffer;

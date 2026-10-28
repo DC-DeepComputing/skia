@@ -236,7 +236,9 @@ void PathCurveTessellator::draw(GrOpFlushState* flushState) const {
         flushState->bindBuffers(fFixedIndexBuffer, chunk.fBuffer, fFixedVertexBuffer);
         // The max vertex count is the logical number of vertices that the GPU needs to emit, so
         // since we're using drawIndexedInstanced, it's provided as the "index count" parameter.
-        flushState->drawIndexedInstanced(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0);
+        if (!flushState->drawIndexedInstanced2(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0)) {
+            return;
+        }
     }
 }
 
@@ -244,7 +246,9 @@ void PathCurveTessellator::drawHullInstances(GrOpFlushState* flushState,
                                              sk_sp<const GrGpuBuffer> vertexBufferIfNeeded) const {
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(nullptr, chunk.fBuffer, vertexBufferIfNeeded);
-        flushState->drawInstanced(chunk.fCount, chunk.fBase, 4, 0);
+        if (!flushState->drawInstanced2(chunk.fCount, chunk.fBase, 4, 0)) {
+            return;
+        }
     }
 }
 
@@ -286,7 +290,9 @@ void PathWedgeTessellator::draw(GrOpFlushState* flushState) const {
     }
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(fFixedIndexBuffer, chunk.fBuffer, fFixedVertexBuffer);
-        flushState->drawIndexedInstanced(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0);
+        if (!flushState->drawIndexedInstanced2(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0)) {
+            return;
+        }
     }
 }
 

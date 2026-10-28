@@ -652,7 +652,9 @@ private:
 
         flushState->bindPipeline(*fProgramInfo, SkRect::MakeIWH(fWH, fWH));
         flushState->bindBuffers(nullptr, nullptr, fVertexData->refGpuBuffer());
-        flushState->draw(4, 0);
+        if (!flushState->draw2(4, 0)) {
+            return;
+        }
     }
 
     TestHelper::Stats*               fStats;

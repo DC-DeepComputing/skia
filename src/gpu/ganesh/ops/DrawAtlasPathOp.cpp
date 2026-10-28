@@ -252,7 +252,9 @@ void DrawAtlasPathOp::onExecute(GrOpFlushState* flushState, const SkRect& chainB
     flushState->bindPipelineAndScissorClip(*fProgram, this->bounds());
     flushState->bindTextures(fProgram->geomProc(), *fAtlasHelper.proxy(), fProgram->pipeline());
     flushState->bindBuffers(nullptr, std::move(fInstanceBuffer), fVertexBufferIfNoIDSupport);
-    flushState->drawInstanced(fInstanceCount, fBaseInstance, 4, 0);
+    if (!flushState->drawInstanced2(fInstanceCount, fBaseInstance, 4, 0)) {
+        return;
+    }
 }
 
 }  // namespace skgpu::ganesh

@@ -504,7 +504,9 @@ void IssueDraw(const GrCaps& caps, GrOpsRenderPass* renderPass, const VertexSpec
     if (spec.indexBufferOption() == IndexBufferOption::kTriStrips) {
         int offset = absVertBufferOffset +
                                     runningQuadCount * GrResourceProvider::NumVertsPerNonAAQuad();
-        renderPass->draw(4, offset);
+        if (!renderPass->draw1(4, offset)) {
+            return;
+        }
         return;
     }
 
@@ -533,8 +535,10 @@ void IssueDraw(const GrCaps& caps, GrOpsRenderPass* renderPass, const VertexSpec
         // preferred.
         int offset = absVertBufferOffset + runningQuadCount * numVertsPerQuad;
 
-        renderPass->drawIndexPattern(numIndicesPerQuad, quadsInDraw, maxNumQuads, numVertsPerQuad,
-                                     offset);
+        if (!renderPass->drawIndexPattern1(numIndicesPerQuad, quadsInDraw, maxNumQuads, numVertsPerQuad,
+                                           offset)) {
+            return;
+        }
     } else {
         int baseIndex = runningQuadCount * numIndicesPerQuad;
         int numIndicesToDraw = quadsInDraw * numIndicesPerQuad;
@@ -542,8 +546,10 @@ void IssueDraw(const GrCaps& caps, GrOpsRenderPass* renderPass, const VertexSpec
         int minVertex = runningQuadCount * numVertsPerQuad;
         int maxVertex = (runningQuadCount + quadsInDraw) * numVertsPerQuad - 1; // inclusive
 
-        renderPass->drawIndexed(numIndicesToDraw, baseIndex, minVertex, maxVertex,
-                                absVertBufferOffset);
+        if (!renderPass->drawIndexed1(numIndicesToDraw, baseIndex, minVertex, maxVertex,
+                                      absVertBufferOffset)) {
+            return;
+        }
     }
 }
 

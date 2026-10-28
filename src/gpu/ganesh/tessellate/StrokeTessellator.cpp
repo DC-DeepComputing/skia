@@ -201,10 +201,12 @@ void StrokeTessellator::draw(GrOpFlushState* flushState) const {
     }
     for (const auto& instanceChunk : fVertexChunkArray) {
         flushState->bindBuffers(nullptr, instanceChunk.fBuffer, fVertexBufferIfNoIDSupport);
-        flushState->drawInstanced(instanceChunk.fCount,
-                                  instanceChunk.fBase,
-                                  fVertexCount,
-                                  0);
+        if (!flushState->drawInstanced2(instanceChunk.fCount,
+                                        instanceChunk.fBase,
+                                        fVertexCount,
+                                        0)) {
+            return;
+        }
     }
 }
 

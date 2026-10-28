@@ -572,7 +572,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
 #if defined(GPU_TEST_UTILS)

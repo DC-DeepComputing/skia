@@ -1344,7 +1344,9 @@ void AAHairlineOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBoun
             flushState->bindPipelineAndScissorClip(*fProgramInfos[i], chainBounds);
             flushState->bindTextures(fProgramInfos[i]->geomProc(), nullptr,
                                      fProgramInfos[i]->pipeline());
-            flushState->drawMesh(*fMeshes[i]);
+            if (!flushState->drawMesh2(*fMeshes[i])) {
+                return;
+            }
         }
     }
 }

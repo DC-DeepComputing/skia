@@ -271,7 +271,9 @@ private:
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        if (!flushState->drawMesh2(*fMesh)) {
+            return;
+        }
     }
 
     Mode fMode;

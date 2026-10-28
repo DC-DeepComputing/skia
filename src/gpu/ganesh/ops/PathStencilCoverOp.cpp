@@ -376,7 +376,9 @@ void PathStencilCoverOp::onExecute(GrOpFlushState* flushState, const SkRect& cha
         SkASSERT(fFanBuffer);
         flushState->bindPipelineAndScissorClip(*fStencilFanProgram, this->bounds());
         flushState->bindBuffers(nullptr, nullptr, fFanBuffer);
-        flushState->draw(fFanVertexCount, fFanBaseVertex);
+        if (!flushState->draw2(fFanVertexCount, fFanBaseVertex)) {
+            return;
+        }
     }
 
     // Stencil the rest of the path.
@@ -390,7 +392,9 @@ void PathStencilCoverOp::onExecute(GrOpFlushState* flushState, const SkRect& cha
         flushState->bindTextures(fCoverBBoxProgram->geomProc(), nullptr,
                                  fCoverBBoxProgram->pipeline());
         flushState->bindBuffers(nullptr, fBBoxBuffer, fBBoxVertexBufferIfNoIDSupport);
-        flushState->drawInstanced(fPathCount, fBBoxBaseInstance, 4, 0);
+        if (!flushState->drawInstanced2(fPathCount, fBBoxBaseInstance, 4, 0)) {
+            return;
+        }
     }
 }
 
