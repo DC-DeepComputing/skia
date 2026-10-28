@@ -182,6 +182,13 @@ tests_sources = [
   "$_tests/RandomTest.cpp",
   "$_tests/RasterPipelineBuilderTest.cpp",
   "$_tests/RasterPipelineCodeGeneratorTest.cpp",
+<<<<<<< HEAD   (31238c6efe24011a423df82c2816876f700cf58b [M150-LTS][graphite] Neutralize pending SkSL RP branches on )
+||||||| BASE   (3715fe5ff976fecac49fde4cfdc9b372abcf6ad6 miracleptr: Rewrite src/ports and src/text pointers to raw_p)
+  "$_tests/RawPtrTest.cpp",
+=======
+  "$_tests/RasterizationTests.cpp",
+  "$_tests/RawPtrTest.cpp",
+>>>>>>> CHANGE (866b61ca92c9f92c0f0b8de2d050fae11a32c3ec Reland "Fix heap-buffer-overflow in RunBasedAdditiveBlitter )
   "$_tests/ReadPixelsTest.cpp",
   "$_tests/RecordDrawTest.cpp",
   "$_tests/RecordOptsTest.cpp",
