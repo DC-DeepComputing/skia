@@ -16,6 +16,23 @@
       "message": "Yes, that is intended — the old `index !\u003d 0` check only excluded the first cluster of the line, so leading spaces at `index \u003d\u003d 0` kept `whitespacePatch \u003d false` (via `whitespacePatch \u003d !leadingWhitespaces`) and then the first ideograph at `index \u003e 0` still saw `!whitespacePatch \u0026\u0026 index !\u003d 0` and counted a `before` patch right after the leading spaces (unlike non-ideographic words, which already checked `!leadingWhitespaces`). Using `!leadingWhitespaces` makes ideographs consistent with non-ideographic words after leading spaces as well.\n\nPS2 LGTM, thanks!",
       "revId": "762ad05a1f32732adfb25d2475599e6187f260ec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ecaea46_2feedd18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-28T21:17:09Z",
+      "side": 1,
+      "message": "Ready for submit. G3 Canary fail is unrelated.",
+      "revId": "762ad05a1f32732adfb25d2475599e6187f260ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
