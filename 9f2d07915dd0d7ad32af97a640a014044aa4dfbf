@@ -16,6 +16,24 @@
       "message": "@jmbetancourt@google.com, can you please add the buganizer number for the regression report?",
       "revId": "9f2d07915dd0d7ad32af97a640a014044aa4dfbf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3021e89c_ebce51ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-28T14:41:31Z",
+      "side": 1,
+      "message": "Underneath reasoning in commit message:\n```\nFailure Link: b/576625735\n```",
+      "parentUuid": "885da2ed_76b45a54",
+      "revId": "9f2d07915dd0d7ad32af97a640a014044aa4dfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
