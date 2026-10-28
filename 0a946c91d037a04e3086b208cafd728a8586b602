@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67d3f773_7769df40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-28T17:43:30Z",
+      "side": 1,
+      "message": "Folded the test from CL 1406080 into PS2, with the null text cases added.",
+      "revId": "0a946c91d037a04e3086b208cafd728a8586b602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
