@@ -19,10 +19,12 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkFontTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontStream.h"
 #include "src/core/SkScalerContext.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/ports/SkScalerContext_win_dw.h"
 #include "src/ports/SkTypeface_win_dw.h"
 #include "src/sfnt/SkOTTable_OS_2.h"
@@ -589,7 +591,7 @@ sk_sp<SkData> DWriteFontTypeface::onCopyTableData(SkFontTableTag tag) const {
     struct Context {
         Context(void* lock, IDWriteFontFace* face) : fLock(lock), fFontFace(SkRefComPtr(face)) {}
         ~Context() { fFontFace->ReleaseFontTable(fLock); }
-        void* fLock;
+        raw_ptr<void> fLock;
         SkTScopedComPtr<IDWriteFontFace> fFontFace;
     };
     return SkData::MakeWithProc(data, size,
@@ -1121,6 +1123,8 @@ SK_STDMETHODIMP_(ULONG) StreamFontCollectionLoader::Release() {
 }
 
 template <typename T> class [[nodiscard]] SkAutoIDWriteUnregister {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkAutoIDWriteUnregister(IDWriteFactory* factory, T* unregister)
         : fFactory(factory), fUnregister(unregister)

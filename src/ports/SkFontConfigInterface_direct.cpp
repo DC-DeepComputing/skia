@@ -507,7 +507,7 @@ SkFontConfigInterfaceDirect::SkFontConfigInterfaceDirect(FcConfig* fc) : fFC(fc)
 
 SkFontConfigInterfaceDirect::~SkFontConfigInterfaceDirect() {
     if (fFC) {
-        FcConfigDestroy(fFC);
+        FcConfigDestroy(fFC.ExtractAsDangling());
     }
 }
 
