@@ -8,6 +8,7 @@
 #ifndef SkContext_DEFINED
 #define SkContext_DEFINED
 
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
@@ -23,6 +24,10 @@ class SkOpenTypeSVGDecoder;
 class SkSharedContext;
 class SkTraceMemoryDump;
 struct SkContextOptions;
+
+namespace skgpu::graphite {
+struct RecorderOptions;
+}
 
 /**
  * @brief SkContext is a central context object that serves as the mandatory first point of
@@ -50,6 +55,28 @@ public:
      * Ends the SkCapture and returns the collected draws and surface creation.
      */
     sk_sp<SkCapture> endCapture();
+
+    /**
+     * Creates and returns a new SkRecorder for this context.
+     *
+     * @param graphiteOptions  Optional pointer to Graphite-specific recorder options.
+     *                         Defaults to nullptr. Ignored for non-Graphite backends.
+     * @return                 A unique pointer to the created SkRecorder.
+     */
+    std::unique_ptr<SkRecorder> makeRecorder(
+            const skgpu::graphite::RecorderOptions* graphiteOptions = nullptr);
+
+    /**
+     * Creates and returns a new SkRecorder for this context based on the requested backend.
+     *
+     * @param backend          Specifies whether to force CPU, force GPU, or choose automatically.
+     * @param graphiteOptions  Optional pointer to Graphite-specific recorder options.
+     *                         Defaults to nullptr. Ignored for non-Graphite backends.
+     * @return                 A unique pointer to the created SkRecorder, or nullptr if unavailable.
+     */
+    std::unique_ptr<SkRecorder> makeRecorder(
+            SkBackendSelection backend,
+            const skgpu::graphite::RecorderOptions* graphiteOptions = nullptr);
 
     size_t fontCacheLimit() const;
     size_t setFontCacheLimit(size_t bytes);

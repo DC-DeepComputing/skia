@@ -25,6 +25,10 @@
 #include "src/core/SkResourceCache.h"
 #include "tests/Test.h"
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Recorder.h"
+#endif
+
 #include <memory>
 
 DEF_TEST(SkContext_CaptureDisabledByDefault, reporter) {
@@ -43,8 +47,6 @@ DEF_TEST(CpuRecorder_TODO, reporter) {
     REPORTER_ASSERT(reporter, todoRecorder->type() == SkRecorder::Type::kCPU);
 }
 
-// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
-#if 0
 DEF_TEST(CPURecorder_Type_IsCPU, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
@@ -54,6 +56,65 @@ DEF_TEST(CPURecorder_Type_IsCPU, reporter) {
     REPORTER_ASSERT(reporter, recorder->type() == SkRecorder::Type::kCPU);
 }
 
+DEF_TEST(SkContext_MakeRecorder_RasterBackendSelection, reporter) {
+    SkContextOptions opts;
+    std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
+    REPORTER_ASSERT(reporter, ctx != nullptr);
+
+    // Default is kAutomatic, which falls back to CPU when no GPU backend is attached.
+    std::unique_ptr<SkRecorder> defaultRecorder = ctx->makeRecorder();
+    REPORTER_ASSERT(reporter, defaultRecorder != nullptr);
+    REPORTER_ASSERT(reporter, defaultRecorder->type() == SkRecorder::Type::kCPU);
+
+    // Explicit kAutomatic
+    std::unique_ptr<SkRecorder> autoRecorder = ctx->makeRecorder(SkBackendSelection::kAutomatic);
+    REPORTER_ASSERT(reporter, autoRecorder != nullptr);
+    REPORTER_ASSERT(reporter, autoRecorder->type() == SkRecorder::Type::kCPU);
+
+    // Explicit kCPU
+    std::unique_ptr<SkRecorder> cpuRecorder = ctx->makeRecorder(SkBackendSelection::kCPU);
+    REPORTER_ASSERT(reporter, cpuRecorder != nullptr);
+    REPORTER_ASSERT(reporter, cpuRecorder->type() == SkRecorder::Type::kCPU);
+
+    // kGPU must return nullptr when no GPU backend is attached.
+    std::unique_ptr<SkRecorder> gpuRecorder = ctx->makeRecorder(SkBackendSelection::kGPU);
+    REPORTER_ASSERT(reporter, gpuRecorder == nullptr);
+}
+
+DEF_TEST(SkContext_MakeRecorder_RasterGraphiteOptionsIgnored, reporter) {
+    SkContextOptions opts;
+    std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
+    REPORTER_ASSERT(reporter, ctx != nullptr);
+
+    // makeRecorder(nullptr) returns default CPU recorder.
+    std::unique_ptr<SkRecorder> nullRecorder = ctx->makeRecorder(nullptr);
+    REPORTER_ASSERT(reporter, nullRecorder != nullptr);
+    REPORTER_ASSERT(reporter, nullRecorder->type() == SkRecorder::Type::kCPU);
+
+#if defined(SK_GRAPHITE)
+    skgpu::graphite::RecorderOptions options;
+    options.fGpuBudgetInBytes = 64 * (1 << 20);
+
+    // makeRecorder(&options) falls back to CPU when no GPU backend is attached.
+    std::unique_ptr<SkRecorder> defaultRecorder = ctx->makeRecorder(&options);
+    REPORTER_ASSERT(reporter, defaultRecorder != nullptr);
+    REPORTER_ASSERT(reporter, defaultRecorder->type() == SkRecorder::Type::kCPU);
+
+    // Explicit kCPU with options
+    std::unique_ptr<SkRecorder> cpuRecorder =
+            ctx->makeRecorder(SkBackendSelection::kCPU, &options);
+    REPORTER_ASSERT(reporter, cpuRecorder != nullptr);
+    REPORTER_ASSERT(reporter, cpuRecorder->type() == SkRecorder::Type::kCPU);
+
+    // Explicit kGPU with options returns nullptr for raster context
+    std::unique_ptr<SkRecorder> gpuRecorder =
+            ctx->makeRecorder(SkBackendSelection::kGPU, &options);
+    REPORTER_ASSERT(reporter, gpuRecorder == nullptr);
+#endif
+}
+
+// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
+#if 0
 DEF_TEST(CPURecorder_RasterImageOperations_UseCpuRecorder, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);

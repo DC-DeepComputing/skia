@@ -19,6 +19,15 @@ namespace skcpu {
 class Recorder;
 }
 
+enum class SkBackendSelection {
+    // Selects the optimal backend, preferring the attached GPU backend if available.
+    kAutomatic,
+    // Explicitly forces the creation of a CPU-backed recorder.
+    kCPU,
+    // Forces the use of the attached GPU backend (returns nullptr if none present).
+    kGPU,
+};
+
 class SK_API SkRecorder {
 public:
     SkRecorder();

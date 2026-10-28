@@ -13,6 +13,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
+#include "include/cpu/Recorder.h"
 #include "include/private/SkGPUContext.h"
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureManager.h"
@@ -53,6 +54,31 @@ sk_sp<SkCapture> SkContext::endCapture() {
 
     fCaptureManager->toggleCapture(false);
     return fCaptureManager->getLastCapture();
+}
+
+std::unique_ptr<SkRecorder> SkContext::makeRecorder(
+        const skgpu::graphite::RecorderOptions* graphiteOptions) {
+    return this->makeRecorder(SkBackendSelection::kAutomatic, graphiteOptions);
+}
+
+std::unique_ptr<SkRecorder> SkContext::makeRecorder(
+        SkBackendSelection backend,
+        const skgpu::graphite::RecorderOptions* graphiteOptions) {
+    switch (backend) {
+        case SkBackendSelection::kAutomatic:
+            if (fGPUContext) {
+                return fGPUContext->makeSkRecorder(graphiteOptions);
+            }
+            return std::make_unique<skcpu::Recorder>();
+        case SkBackendSelection::kCPU:
+            return std::make_unique<skcpu::Recorder>();
+        case SkBackendSelection::kGPU:
+            if (fGPUContext) {
+                return fGPUContext->makeSkRecorder(graphiteOptions);
+            }
+            return nullptr;
+    }
+    SkUNREACHABLE;
 }
 
 size_t SkContext::fontCacheLimit() const { return fSharedContext->fontCacheLimit(); }

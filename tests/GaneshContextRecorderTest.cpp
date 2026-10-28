@@ -11,14 +11,22 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkContext.h"
+#include "include/core/SkContextOptions.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "src/core/SkContextPriv.h"
+#include "src/gpu/ganesh/SkGaneshGPUContextAdapter.h"
 #include "src/gpu/ganesh/SkGaneshRecorder.h"
 #include "tests/Test.h"
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Recorder.h"
+#endif
 
 #include <memory>
 
@@ -44,6 +52,77 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(CPUSurface_UsesGaneshContextAndRasterRecorderTo
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorRED);
 }
 #endif  // 0
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(SkContext_MakeRecorder_GaneshBackendSelection,
+                                 reporter,
+                                 ctxInfo,
+                                 CtsEnforcement::kApiLevel_202604) {
+    SkContextOptions opts;
+    auto gpuContext =
+            std::make_unique<SkGaneshGPUContextAdapter>(sk_ref_sp(ctxInfo.directContext()));
+    std::unique_ptr<SkContext> ctx =
+            SkContextCtorAccessor::MakeContext(opts, std::move(gpuContext));
+    REPORTER_ASSERT(reporter, ctx != nullptr);
+
+    // Default is kAutomatic, which prefers attached GPU backend (Ganesh).
+    std::unique_ptr<SkRecorder> defaultRecorder = ctx->makeRecorder();
+    REPORTER_ASSERT(reporter, defaultRecorder != nullptr);
+    REPORTER_ASSERT(reporter, defaultRecorder->type() == SkRecorder::Type::kGanesh);
+
+    // Explicit kAutomatic prefers GPU backend.
+    std::unique_ptr<SkRecorder> autoRecorder = ctx->makeRecorder(SkBackendSelection::kAutomatic);
+    REPORTER_ASSERT(reporter, autoRecorder != nullptr);
+    REPORTER_ASSERT(reporter, autoRecorder->type() == SkRecorder::Type::kGanesh);
+
+    // Explicit kGPU forces GPU backend.
+    std::unique_ptr<SkRecorder> gpuRecorder = ctx->makeRecorder(SkBackendSelection::kGPU);
+    REPORTER_ASSERT(reporter, gpuRecorder != nullptr);
+    REPORTER_ASSERT(reporter, gpuRecorder->type() == SkRecorder::Type::kGanesh);
+
+    // Explicit kCPU forces CPU backend even when GPU is available.
+    std::unique_ptr<SkRecorder> cpuRecorder = ctx->makeRecorder(SkBackendSelection::kCPU);
+    REPORTER_ASSERT(reporter, cpuRecorder != nullptr);
+    REPORTER_ASSERT(reporter, cpuRecorder->type() == SkRecorder::Type::kCPU);
+}
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(SkContext_MakeRecorder_GaneshGraphiteOptionsIgnored,
+                                 reporter,
+                                 ctxInfo,
+                                 CtsEnforcement::kApiLevel_202604) {
+    SkContextOptions opts;
+    auto gpuContext =
+            std::make_unique<SkGaneshGPUContextAdapter>(sk_ref_sp(ctxInfo.directContext()));
+    std::unique_ptr<SkContext> ctx =
+            SkContextCtorAccessor::MakeContext(opts, std::move(gpuContext));
+    REPORTER_ASSERT(reporter, ctx != nullptr);
+
+    // makeRecorder(nullptr) returns default Ganesh recorder.
+    std::unique_ptr<SkRecorder> nullRecorder = ctx->makeRecorder(nullptr);
+    REPORTER_ASSERT(reporter, nullRecorder != nullptr);
+    REPORTER_ASSERT(reporter, nullRecorder->type() == SkRecorder::Type::kGanesh);
+
+#if defined(SK_GRAPHITE)
+    skgpu::graphite::RecorderOptions options;
+    options.fGpuBudgetInBytes = 64 * (1 << 20);
+
+    // makeRecorder(&options) on Ganesh context safely ignores options and returns Ganesh recorder.
+    std::unique_ptr<SkRecorder> defaultRecorder = ctx->makeRecorder(&options);
+    REPORTER_ASSERT(reporter, defaultRecorder != nullptr);
+    REPORTER_ASSERT(reporter, defaultRecorder->type() == SkRecorder::Type::kGanesh);
+
+    // Explicit kGPU with options
+    std::unique_ptr<SkRecorder> gpuRecorder =
+            ctx->makeRecorder(SkBackendSelection::kGPU, &options);
+    REPORTER_ASSERT(reporter, gpuRecorder != nullptr);
+    REPORTER_ASSERT(reporter, gpuRecorder->type() == SkRecorder::Type::kGanesh);
+
+    // Explicit kCPU with options returns CPU recorder
+    std::unique_ptr<SkRecorder> cpuRecorder =
+            ctx->makeRecorder(SkBackendSelection::kCPU, &options);
+    REPORTER_ASSERT(reporter, cpuRecorder != nullptr);
+    REPORTER_ASSERT(reporter, cpuRecorder->type() == SkRecorder::Type::kCPU);
+#endif
+}
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageMakeColorSpace_GaneshImageWithContext_Success,
                                  reporter,
