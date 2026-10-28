@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55b7109_36f21c3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-28T17:31:01Z",
+      "side": 1,
+      "message": "Ready for review! This addresses the smaller bug fixes and cleanup first. The remaining TODOs look like they\u0027ll need more structural changes, so I\u0027m still digging into the context and plan to handle those in a follow-up CL.",
+      "revId": "b2b46c55ba00c284b9de888ca7ba429c4a52ec2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
