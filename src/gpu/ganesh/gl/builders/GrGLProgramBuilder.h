@@ -13,6 +13,7 @@
 #include "include/core/SkString.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTDArray.h"  // IWYU pragma: keep
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/gl/GrGLProgram.h"
@@ -47,6 +48,8 @@ struct GrGLPrecompiledProgram {
 };
 
 class GrGLProgramBuilder : public GrGLSLProgramBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     /** Generates a shader program.
      *

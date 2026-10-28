@@ -10,12 +10,14 @@
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrResourceHandle.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <string.h>
 #include <cstdint>
@@ -39,11 +41,13 @@ struct GrGLSLBuiltinUniformHandles {
 };
 
 class GrGLSLUniformHandler {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     struct UniformInfo {
         GrShaderVar        fVariable;
         uint32_t           fVisibility;
-        const GrProcessor* fOwner;
+        raw_ptr<const GrProcessor> fOwner;
         SkString           fRawName;
     };
 

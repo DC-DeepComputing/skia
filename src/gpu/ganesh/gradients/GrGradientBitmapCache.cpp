@@ -18,6 +18,8 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
 #include <cstdint>
@@ -26,10 +28,11 @@
 using namespace skia_private;
 
 struct GrGradientBitmapCache::Entry {
-    Entry*      fPrev;
-    Entry*      fNext;
+    // RAW_PTR_EXCLUSION: Performance: +4% on gradient_linear_clamp_hicolor.
+    RAW_PTR_EXCLUSION Entry* fPrev;
+    RAW_PTR_EXCLUSION Entry* fNext;
 
-    void*       fBuffer;
+    raw_ptr<void> fBuffer;
     size_t      fSize;
     SkBitmap    fBitmap;
 
@@ -42,7 +45,7 @@ struct GrGradientBitmapCache::Entry {
         memcpy(fBuffer, buffer, size);
     }
 
-    ~Entry() { sk_free(fBuffer); }
+    ~Entry() { sk_free(fBuffer.ExtractAsDangling()); }
 
     bool equals(const void* buffer, size_t size) const {
         return (fSize == size) && !memcmp(fBuffer, buffer, size);

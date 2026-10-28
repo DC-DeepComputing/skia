@@ -12,7 +12,9 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkMutex.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkColorData.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
@@ -47,8 +49,9 @@ private:
     const int fResolution;
 
     struct Entry;
-    mutable Entry*  fHead;
-    mutable Entry*  fTail;
+    // RAW_PTR_EXCLUSION: Performance: +4% on gradient_linear_clamp_hicolor.
+    RAW_PTR_EXCLUSION mutable Entry* fHead;
+    RAW_PTR_EXCLUSION mutable Entry* fTail;
 
     inline Entry* release(Entry*) const;
     inline void attachToHead(Entry*) const;
@@ -72,6 +75,8 @@ private:
 #endif
 
     class AutoValidate : SkNoncopyable {
+        SK_ONLY_STACK_ALLOCATABLE;
+
     public:
         AutoValidate(const GrGradientBitmapCache* bc) : fBC(bc) { bc->validate(); }
         ~AutoValidate() { fBC->validate(); }

@@ -11,6 +11,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
@@ -33,6 +34,8 @@ enum class SkSLType : char;
   base class for all shaders builders
 */
 class GrGLSLShaderBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     GrGLSLShaderBuilder(GrGLSLProgramBuilder* program);
     virtual ~GrGLSLShaderBuilder() {}
@@ -169,6 +172,8 @@ public:
      * Helper for beginning and ending a block in the shader code.
      */
     class ShaderBlock {
+        SK_ONLY_STACK_ALLOCATABLE;
+
     public:
         ShaderBlock(GrGLSLShaderBuilder* builder) : fBuilder(builder) {
             SkASSERT(builder);

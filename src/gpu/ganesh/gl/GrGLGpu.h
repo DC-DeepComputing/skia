@@ -49,6 +49,7 @@
 #include "src/gpu/ganesh/gl/GrGLTypesPriv.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "src/gpu/ganesh/gl/GrGLVertexArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <array>
 #include <cstddef>
@@ -714,7 +715,7 @@ private:
     public:
         HWVertexArrayState() : fCoreProfileVertexArray(nullptr) { this->invalidate(); }
 
-        ~HWVertexArrayState() { delete fCoreProfileVertexArray; }
+        ~HWVertexArrayState() { fCoreProfileVertexArray.ClearAndDelete(); }
 
         void invalidate() {
             fBoundVertexArrayIDIsValid = false;
@@ -765,7 +766,7 @@ private:
         GrGLAttribArrayState fDefaultVertexArrayAttribState;
 
         // This is used when we're using a core profile.
-        GrGLVertexArray*     fCoreProfileVertexArray;
+        raw_ptr<GrGLVertexArray> fCoreProfileVertexArray;
     } fHWVertexArrayState;
 
     struct {
