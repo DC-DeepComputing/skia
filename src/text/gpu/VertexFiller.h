@@ -17,6 +17,7 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h"
 
+#include <cmath>
 #include <cstddef>
 #include <optional>
 #include <tuple>
@@ -90,11 +91,19 @@ public:
     }
     SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
 
+    static constexpr SkScalar kMaxDirectCoord = (1 << 21);  // 2,097,152.0f
+    static bool ValidDirectCoordRange(SkPoint pt) {
+        return pt.isFinite() &&
+               std::abs(pt.x()) <= kMaxDirectCoord &&
+               std::abs(pt.y()) <= kMaxDirectCoord;
+    }
+    static bool ValidDirectPosition(SkPoint pt);
+    static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
+                                                   const SkMatrix& drawMatrix,
+                                                   SkPoint drawOrigin = {0, 0});
+
 private:
     friend class AtlasSubRun;
-
-    static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
-                                                   const SkMatrix& positionMatrix);
 
     const skgpu::MaskFormat fMaskFormat;
     const bool fCanDrawDirect;

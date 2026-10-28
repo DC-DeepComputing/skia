@@ -19,6 +19,7 @@
 #include "src/text/GlyphRun.h"
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
+#include "src/text/gpu/VertexFiller.h"
 
 #include <memory>
 #include <utility>
@@ -45,10 +46,13 @@ void SlugImpl::doFlatten(SkWriteBuffer& buffer) const {
 
 sk_sp<Slug> SlugImpl::MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client) {
     SkRect sourceBounds = buffer.readRect();
-    if (!buffer.validate(!sourceBounds.isEmpty())) {
+    if (!buffer.validate(sourceBounds.isFinite() && !sourceBounds.isEmpty())) {
         return nullptr;
     }
     SkPoint origin = buffer.readPoint();
+    if (!buffer.validate(origin.isFinite())) {
+        return nullptr;
+    }
     int allocSizeHint = gpu::SubRunContainer::AllocSizeHintFromBuffer(buffer);
 
     auto [initializer, _, alloc] =
@@ -71,28 +75,15 @@ SkMatrix position_matrix(const SkMatrix& drawMatrix, SkPoint drawOrigin) {
     SkMatrix position_matrix = drawMatrix;
     return position_matrix.preTranslate(drawOrigin.x(), drawOrigin.y());
 }
-
-bool valid_slug_matrices(const SkMatrix& creationMatrix, const SkMatrix& positionMatrix) {
-    if (creationMatrix == positionMatrix) {
-        return true;
-    }
-
-    SkVector translation = positionMatrix.mapOrigin() - creationMatrix.mapOrigin();
-    return creationMatrix.getScaleX() == positionMatrix.getScaleX() &&
-           creationMatrix.getScaleY() == positionMatrix.getScaleY() &&
-           creationMatrix.getSkewX()  == positionMatrix.getSkewX()  &&
-           creationMatrix.getSkewY()  == positionMatrix.getSkewY()  &&
-           !positionMatrix.hasPerspective() && !creationMatrix.hasPerspective() &&
-           SkScalarIsInt(translation.x()) && SkScalarIsInt(translation.y());
-}
 }  // namespace
 
 bool SlugImpl::canDraw(const SkMatrix& drawMatrix, bool supportBilerpAtlas) const {
     if (supportBilerpAtlas) {
         return true;
     }
-    const SkMatrix positionMatrix = position_matrix(drawMatrix, fOrigin);
-    return valid_slug_matrices(this->initialPositionMatrix(), positionMatrix);
+    auto [directOk, _] =
+            VertexFiller::CanUseDirect(this->initialPositionMatrix(), drawMatrix, fOrigin);
+    return directOk;
 }
 
 sk_sp<SlugImpl> SlugImpl::Make(const SkMatrix& viewMatrix,
