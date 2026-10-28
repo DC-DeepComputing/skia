@@ -9,6 +9,8 @@ licenses(["notice"])
 skia_filegroup(
     name = "srcs",
     srcs = [
+        "CoreTextAttrStringBuilder.cpp",
+        "CoreTextAttrStringBuilder.h",
         "CoreTextFontRegistry.cpp",
         "CoreTextFontRegistry.h",
         "CoreTextIndexMap.cpp",
