@@ -9,6 +9,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
+#include "src/core/SkSafeMath.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrOpFlushState.h"
@@ -54,15 +55,15 @@ GrDrawOp::CombineResult PathTessellateOp::onCombineIfPossible(GrOp* grOp,
                                                               SkArenaAlloc*,
                                                               const GrCaps&) {
     auto* op = grOp->cast<PathTessellateOp>();
-    bool verbCountOverflow = std::numeric_limits<int>::max() - fTotalCombinedPathVerbCnt <
-            op->fTotalCombinedPathVerbCnt;
+    SkSafeMath safe;
+    int combinedVerbCnt = safe.addInt(fTotalCombinedPathVerbCnt, op->fTotalCombinedPathVerbCnt);
     bool canMerge = fAAType == op->fAAType &&
                     fStencil == op->fStencil &&
                     fProcessors == op->fProcessors &&
                     fShaderMatrix == op->fShaderMatrix &&
-                    !verbCountOverflow;
+                    safe.ok();
     if (canMerge) {
-        fTotalCombinedPathVerbCnt += op->fTotalCombinedPathVerbCnt;
+        fTotalCombinedPathVerbCnt = combinedVerbCnt;
         fPatchAttribs |= op->fPatchAttribs;
 
         if (!(fPatchAttribs & PatchAttribs::kColor) &&

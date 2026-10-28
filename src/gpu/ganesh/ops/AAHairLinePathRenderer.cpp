@@ -310,7 +310,8 @@ int gather_lines_and_quads(const SkPath& path,
                            PtArray* quads,
                            PtArray* conics,
                            IntArray* quadSubdivCnts,
-                           FloatArray* conicWeights) {
+                           FloatArray* conicWeights,
+                           SkSafeMath* safeMath) {
     int totalQuadCount = 0;
     bool persp = m.hasPerspective();
 
@@ -353,7 +354,7 @@ int gather_lines_and_quads(const SkPath& path,
                 pts[1] = qPts[1];
                 pts[2] = qPts[2];
                 quadSubdivCnts->push_back() = subdiv;
-                totalQuadCount += 1 << subdiv;
+                totalQuadCount = safeMath->addInt(totalQuadCount, 1 << subdiv);
             }
         }
     };
@@ -371,7 +372,7 @@ int gather_lines_and_quads(const SkPath& path,
                 zeroVerbPt = pts[0];
             }
         }
-        verbsInContour++;
+        verbsInContour = safeMath->addInt(verbsInContour, 1);
     };
 
     // Applies the view matrix to quad src points and calls the above helper.
@@ -427,7 +428,7 @@ int gather_lines_and_quads(const SkPath& path,
                         }
                     }
                 }
-                verbsInContour++;
+                verbsInContour = safeMath->addInt(verbsInContour, 1);
                 break;
             case SkPathVerb::kMove:
                 // New contour (and last one was unclosed). If it was just a zero length drawing
@@ -454,7 +455,7 @@ int gather_lines_and_quads(const SkPath& path,
                 for (int i = 0; i < n; ++i) {
                     addSrcChoppedQuad(choppedPts + i * 2, !verbsInContour && 0 == i);
                 }
-                verbsInContour++;
+                verbsInContour = safeMath->addInt(verbsInContour, 1);
                 break;
             }
             case SkPathVerb::kCubic: {
@@ -479,7 +480,7 @@ int gather_lines_and_quads(const SkPath& path,
                         }
                     }
                 }
-                verbsInContour++;
+                verbsInContour = safeMath->addInt(verbsInContour, 1);
                 break;
             }
             case SkPathVerb::kClose:
@@ -851,7 +852,8 @@ public:
             : INHERITED(ClassID())
             , fHelper(processorSet, GrAAType::kCoverage, stencilSettings)
             , fColor(color)
-            , fCoverage(coverage) {
+            , fCoverage(coverage)
+            , fTotalCombinedVerbCnt(path.countVerbs()) {
         fPaths.emplace_back(PathData{viewMatrix, path, devClipBounds, capLength});
 
         this->setTransformedBounds(path.getBounds(), viewMatrix, HasAABloat::kYes,
@@ -976,7 +978,15 @@ private:
             return CombineResult::kCannotCombine;
         }
 
+        SkSafeMath safe;
+        int combinedVerbCnt = safe.addInt(fTotalCombinedVerbCnt, that->fTotalCombinedVerbCnt);
+        static constexpr int kMaxVerbs = SK_MaxS32 / kLineSegNumVertices;
+        if (!safe.ok() || combinedVerbCnt > kMaxVerbs) {
+            return CombineResult::kCannotCombine;
+        }
+
         fPaths.push_back_n(that->fPaths.size(), that->fPaths.begin());
+        fTotalCombinedVerbCnt = combinedVerbCnt;
         return CombineResult::kMerged;
     }
 
@@ -1003,6 +1013,7 @@ private:
     Helper fHelper;
     SkPMColor4f fColor;
     uint8_t fCoverage;
+    int fTotalCombinedVerbCnt = 0;
 
     Program        fCharacterization = Program::kNone;       // holds a mask of required programs
     std::array<GrSimpleMesh*, 3> fMeshes = {};
@@ -1237,7 +1248,8 @@ void AAHairlineOp::onPrepareDraws(GrMeshDrawTarget* target) {
                                                            &quads,
                                                            &conics,
                                                            &qSubdivs,
-                                                           &cWeights));
+                                                           &cWeights,
+                                                           &safeMath));
     }
 
     int lineCount = lines.size() / 2;
@@ -1287,7 +1299,7 @@ void AAHairlineOp::onPrepareDraws(GrMeshDrawTarget* target) {
         void* vertices = target->makeVertexSpace(sizeof(BezierVertex), vertexCount, &vertexBuffer,
                                                  &firstVertex);
 
-        if (!vertices || !quadsIndexBuffer) {
+        if (!vertices || !quadsIndexBuffer || firstVertex > SK_MaxS32 - vertexCount) {
             SkDebugf("Could not allocate vertices\n");
             return;
         }
