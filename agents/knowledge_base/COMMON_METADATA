@@ -1,0 +1,250 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/api/accept-const-skdata-in-decoder-apis.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/api/assert-bitflag-enum-fits-underlying-width.md"
+    rules: "agents/knowledge_base/rules/api/avoid-mutating-state-in-getters.md"
+    rules: "agents/knowledge_base/rules/api/avoid-sk-sp-in-transient-helpers.md"
+    rules: "agents/knowledge_base/rules/api/consistent-getter-setter-nomenclature.md"
+    rules: "agents/knowledge_base/rules/api/default-options-structs-for-compatibility.md"
+    rules: "agents/knowledge_base/rules/api/delegate-const-and-non-const-overloads.md"
+    rules: "agents/knowledge_base/rules/api/delegate-convenience-interface-overloads.md"
+    rules: "agents/knowledge_base/rules/api/delegate-simpler-overloads-to-canonical-implementation.md"
+    rules: "agents/knowledge_base/rules/api/document-mutable-atomic-caching-fields.md"
+    rules: "agents/knowledge_base/rules/api/document-policy-and-strategy-enum-options.md"
+    rules: "agents/knowledge_base/rules/api/implement-internal-helpers-on-priv-classes.md"
+    rules: "agents/knowledge_base/rules/api/inject-interface-instances-directly.md"
+    rules: "agents/knowledge_base/rules/api/name-factory-methods-after-specific-subtype.md"
+    rules: "agents/knowledge_base/rules/api/name-single-value-mutators-with-set-not-add.md"
+    rules: "agents/knowledge_base/rules/api/place-subtype-methods-on-derived-class.md"
+    rules: "agents/knowledge_base/rules/api/prefer-const-skspan-accessors.md"
+    rules: "agents/knowledge_base/rules/api/prefer-optional-over-sentinel-values.md"
+    rules: "agents/knowledge_base/rules/api/prefer-unique-ownership-over-skrefcnt.md"
+    rules: "agents/knowledge_base/rules/api/prefix-boolean-query-methods-with-auxiliary-verbs.md"
+    rules: "agents/knowledge_base/rules/api/prefix-sk-sp-accessors-with-ref.md"
+    rules: "agents/knowledge_base/rules/api/update-doc-comments-for-optional-returns.md"
+    rules: "agents/knowledge_base/rules/api/use-non-virtual-interface-pattern.md"
+    rules: "agents/knowledge_base/rules/api/when-declaring-immutable-member-dependencies-such-as-sk-sp-s.md"
+    rules: "agents/knowledge_base/rules/general/avoid-accessing-moved-constructor-parameters.md"
+    rules: "agents/knowledge_base/rules/general/initialize-all-members-in-constructors.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/(?:.*/)?include/.*"
+    rules: "agents/knowledge_base/rules/api/avoid-compiler-deprecation-attributes.md"
+    rules: "agents/knowledge_base/rules/api/avoid-single-value-public-api-parameters.md"
+    rules: "agents/knowledge_base/rules/api/avoid-speculative-private-type-aliases.md"
+    rules: "agents/knowledge_base/rules/api/avoid-unique-ptr-default-arg-with-forward-decl.md"
+    rules: "agents/knowledge_base/rules/api/dedicated-public-header-for-api-classes.md"
+    rules: "agents/knowledge_base/rules/api/document-options-pointer-lifetime.md"
+    rules: "agents/knowledge_base/rules/api/document-public-api-preconditions-with-doxygen.md"
+    rules: "agents/knowledge_base/rules/api/keep-generic-namespaces-free-of-subclass-details.md"
+    rules: "agents/knowledge_base/rules/api/keep-internal-factories-out-of-public-headers.md"
+    rules: "agents/knowledge_base/rules/api/update-doc-comments-for-span-parameters.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression_exclusion: "include/config/SkUserConfig\\.h"
+    rules: "agents/knowledge_base/rules/api/avoid-hardcoding-build-flags-in-headers.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/api/avoid-redundant-convenience-methods.md"
+    rules: "agents/knowledge_base/rules/api/delegate-to-proxy-superclass.md"
+    rules: "agents/knowledge_base/rules/api/document-backend-invariants-on-subclasses.md"
+    rules: "agents/knowledge_base/rules/api/document-threshold-and-limit-constants.md"
+    rules: "agents/knowledge_base/rules/api/general-encapsulate-derived-helper-types.md"
+    rules: "agents/knowledge_base/rules/general/avoid-dynamic-static-initializers.md"
+    rules: "agents/knowledge_base/rules/general/avoid-redundant-compiler-abstraction-guards.md"
+    rules: "agents/knowledge_base/rules/general/update-conditionally-compiled-call-sites.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.md"
+    path_expression: "docs/.*"
+    path_expression: "include/.*"
+    path_expression: "site/docs/.*"
+    rules: "agents/knowledge_base/rules/api/declare-factories-in-plural-namespaces.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    rules: "agents/knowledge_base/rules/api/decouple-encoder-apis-from-consumer-helpers.md"
+    rules: "agents/knowledge_base/rules/api/document-lazy-flag-semantics.md"
+    rules: "agents/knowledge_base/rules/api/document-option-fallback-and-bypass-conditions.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression_exclusion: "third_party/.*"
+    rules: "agents/knowledge_base/rules/api/define-equality-on-composite-types.md"
+    rules: "agents/knowledge_base/rules/api/match-file-comment-style.md"
+    rules: "agents/knowledge_base/rules/general/guard-conditionally-compiled-symbols.md"
+  }
+  capability_groups {
+    path_expression: "include/core/.*"
+    rules: "agents/knowledge_base/rules/api/document-image-derivation-domain-and-rasterization.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    rules: "agents/knowledge_base/rules/api/document-persistent-storage-sync-deduplication.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/(?:.*/)?include/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/api/export-exposed-types-with-sk-api.md"
+    rules: "agents/knowledge_base/rules/api/keep-implementation-comments-in-source.md"
+  }
+  capability_groups {
+    path_expression: "include/gpu/.*"
+    path_expression: "src/gpu/.*"
+    rules: "agents/knowledge_base/rules/api/gpu-configure-context-callbacks-via-options.md"
+    rules: "agents/knowledge_base/rules/api/query-backend-capabilities-via-caps.md"
+    rules: "agents/knowledge_base/rules/api/use-backend-agnostic-names-in-shared-gpu-classes.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    rules: "agents/knowledge_base/rules/api/keep-internal-headers-in-src.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/api/pass-lightweight-view-types-by-value.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/api/prefer-pair-or-struct-over-out-parameters.md"
+    rules: "agents/knowledge_base/rules/api/when-declaring-internal-functions-with-optional-parameters-u.md"
+  }
+  capability_groups {
+    path_expression: "bench/.*"
+    path_expression: "experimental/.*"
+    path_expression: "gm/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/api/prefer-reinterpret-cast-over-c-style-cast.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/api/prefer-skto-over-static-cast.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/api/prefer-static-cast-for-void-pointers.md"
+  }
+  capability_groups {
+    path_expression: "src/base/.*"
+    rules: "agents/knowledge_base/rules/api/return-base-class-from-interface-factories.md"
+  }
+  capability_groups {
+    path_expression: "include/core/.*"
+    path_expression: "src/core/.*"
+    path_expression: "src/ports/.*"
+    rules: "agents/knowledge_base/rules/api/reuse-font-variation-axis-struct.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "include/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/api/split-speculative-client-apis.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    path_expression: "src/effects/.*"
+    rules: "agents/knowledge_base/rules/core/pass-dither-to-shader-filter-not-restore-paint.md"
+  }
+  capability_groups {
+    path_expression: "src/core/.*"
+    rules: "agents/knowledge_base/rules/core/prefer-skspanpriv-helpers.md"
+    rules: "agents/knowledge_base/rules/core/use-layer-paint-in-about-to-draw-scope.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/general/adopt-released-pointers-with-sk-sp.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/avoid-copying-memory-backed-streams.md"
+    rules: "agents/knowledge_base/rules/general/update-local-staging-variable-before-commit.md"
+  }
+  capability_groups {
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/avoid-raw-pointer-cache-keys-across-lifetimes.md"
+    rules: "agents/knowledge_base/rules/general/do-not-guard-runtime-error-handling-with-sk-debug.md"
+    rules: "agents/knowledge_base/rules/general/initialize-local-singletons-at-declaration.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|cpp|h)"
+    rules: "agents/knowledge_base/rules/general/avoid-unused-includes.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    path_expression: "bazel/.*"
+    rules: "agents/knowledge_base/rules/general/ensure-self-sufficient-headers.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    rules: "agents/knowledge_base/rules/general/factor-source-set-for-component-dependency-cycles.md"
+  }
+  capability_groups {
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/guard-rendering-changes-behind-staging-defines.md"
+    rules: "agents/knowledge_base/rules/general/wrap-static-trace-strings-in-trace-str-static.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/general/omit-redundant-null-check-before-sk-ref-sp.md"
+    rules: "agents/knowledge_base/rules/general/use-optional-value-or.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/use-sksafemath-for-buffer-calculations.md"
+  }
+  capability_groups {
+    rules: "agents/knowledge_base/rules/general/verify-contributor-in-authors.md"
+  }
+}

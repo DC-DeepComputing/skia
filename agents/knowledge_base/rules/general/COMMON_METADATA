@@ -1,0 +1,84 @@
+# Copyright 2026 Google LLC
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+agentic_review {
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    rules: "agents/knowledge_base/rules/general/adopt-released-pointers-with-sk-sp.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/avoid-accessing-moved-constructor-parameters.md"
+    rules: "agents/knowledge_base/rules/general/initialize-all-members-in-constructors.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/avoid-copying-memory-backed-streams.md"
+    rules: "agents/knowledge_base/rules/general/update-local-staging-variable-before-commit.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/avoid-dynamic-static-initializers.md"
+    rules: "agents/knowledge_base/rules/general/avoid-redundant-compiler-abstraction-guards.md"
+    rules: "agents/knowledge_base/rules/general/update-conditionally-compiled-call-sites.md"
+  }
+  capability_groups {
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/avoid-raw-pointer-cache-keys-across-lifetimes.md"
+    rules: "agents/knowledge_base/rules/general/do-not-guard-runtime-error-handling-with-sk-debug.md"
+    rules: "agents/knowledge_base/rules/general/initialize-local-singletons-at-declaration.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|cpp|h)"
+    rules: "agents/knowledge_base/rules/general/avoid-unused-includes.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    path_expression: "bazel/.*"
+    rules: "agents/knowledge_base/rules/general/ensure-self-sufficient-headers.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:gn|gni)"
+    rules: "agents/knowledge_base/rules/general/factor-source-set-for-component-dependency-cycles.md"
+  }
+  capability_groups {
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression_exclusion: "third_party/.*"
+    rules: "agents/knowledge_base/rules/general/guard-conditionally-compiled-symbols.md"
+  }
+  capability_groups {
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/guard-rendering-changes-behind-staging-defines.md"
+    rules: "agents/knowledge_base/rules/general/wrap-static-trace-strings-in-trace-str-static.md"
+  }
+  capability_groups {
+    path_expression: "gm/.*"
+    path_expression: "include/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    path_expression: "tests/.*"
+    path_expression: "tools/.*"
+    rules: "agents/knowledge_base/rules/general/omit-redundant-null-check-before-sk-ref-sp.md"
+    rules: "agents/knowledge_base/rules/general/use-optional-value-or.md"
+  }
+  capability_groups {
+    path_expression: "experimental/.*"
+    path_expression: "modules/.*"
+    path_expression: "src/.*"
+    rules: "agents/knowledge_base/rules/general/use-sksafemath-for-buffer-calculations.md"
+  }
+  capability_groups {
+    rules: "agents/knowledge_base/rules/general/verify-contributor-in-authors.md"
+  }
+}
