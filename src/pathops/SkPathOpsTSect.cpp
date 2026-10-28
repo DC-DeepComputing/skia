@@ -9,8 +9,10 @@
 
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMacros.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCubic.h"
@@ -1114,7 +1116,7 @@ int SkTSect::linesIntersect(SkTSpan* span,
                 ptMatches += oppRayI.pt(oIndex).approximatelyEqual(oppLine.fPts[lIndex]);
             }
         }
-        if (ptMatches == 2|| is_parallel(oppLine, this->fCurve)) {
+        if (ptMatches == 2 || is_parallel(oppLine, this->fCurve)) {
             return 2;
         }
     }
@@ -1635,19 +1637,19 @@ int SkTSect::EndsEqual(const SkTSect* sect1,
             intersections->insert(1, 1, sect1->pointLast());
     }
     // check for zero
-    if (!(zeroOneSet & (kZeroS1Set | kZeroS2Set))
-            && sect1->fCurve[0].approximatelyEqual(sect2->fCurve[0])) {
+    if (!(zeroOneSet & (kZeroS1Set | kZeroS2Set)) &&
+        sect1->fCurve[0].approximatelyEqual(sect2->fCurve[0])) {
         zeroOneSet |= kZeroS1Set | kZeroS2Set;
         intersections->insertNear(0, 0, sect1->fCurve[0], sect2->fCurve[0]);
     }
-    if (!(zeroOneSet & (kZeroS1Set | kOneS2Set))
-            && sect1->fCurve[0].approximatelyEqual(sect2->pointLast())) {
+    if (!(zeroOneSet & (kZeroS1Set | kOneS2Set)) &&
+        sect1->fCurve[0].approximatelyEqual(sect2->pointLast())) {
         zeroOneSet |= kZeroS1Set | kOneS2Set;
         intersections->insertNear(0, 1, sect1->fCurve[0], sect2->pointLast());
     }
     // check for one
-    if (!(zeroOneSet & (kOneS1Set | kZeroS2Set))
-            && sect1->pointLast().approximatelyEqual(sect2->fCurve[0])) {
+    if (!(zeroOneSet & (kOneS1Set | kZeroS2Set)) &&
+        sect1->pointLast().approximatelyEqual(sect2->fCurve[0])) {
         zeroOneSet |= kOneS1Set | kZeroS2Set;
         intersections->insertNear(1, 0, sect1->pointLast(), sect2->fCurve[0]);
     }
@@ -1726,8 +1728,9 @@ struct SkClosestRecord {
         fC2EndT = std::max(fC2EndT, mate.fC2EndT);
     }
 
-    const SkTSpan* fC1Span;
-    const SkTSpan* fC2Span;
+    // RAW_PTR_EXCLUSION: Performance: +4% on pathops_sect.
+    RAW_PTR_EXCLUSION const SkTSpan* fC1Span;
+    RAW_PTR_EXCLUSION const SkTSpan* fC2Span;
     double fC1StartT;
     double fC1EndT;
     double fC2StartT;
@@ -1738,6 +1741,7 @@ struct SkClosestRecord {
 };
 
 struct SkClosestSect {
+    SK_ONLY_STACK_ALLOCATABLE;
     SkClosestSect()
         : fUsed(0) {
         fClosest.push_back().reset();

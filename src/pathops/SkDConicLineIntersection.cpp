@@ -9,6 +9,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCurve.h"
@@ -23,6 +24,8 @@
 #include <cmath>
 
 class LineConicIntersections {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     enum PinTPoint {
         kPointUninitialized,
