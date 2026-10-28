@@ -12,6 +12,7 @@
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <setjmp.h>
 // stdio is needed for jpeglib
@@ -33,7 +34,7 @@ struct skjpeg_error_mgr : public jpeg_error_mgr {
         operator jmp_buf&()                               { return fJmpBuf; }
 
     private:
-        skjpeg_error_mgr* const fMgr;
+        const raw_ptr<skjpeg_error_mgr> fMgr;
         jmp_buf fJmpBuf;
     };
 

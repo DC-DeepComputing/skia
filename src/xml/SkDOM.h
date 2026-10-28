@@ -13,6 +13,7 @@
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkDOMAttr;
 struct SkDOMNode;
@@ -83,13 +84,13 @@ public:
         AttrIter(const SkDOM&, const Node*);
         const char* next(const char** value);
     private:
-        const Attr* fAttr;
-        const Attr* fStop;
+        raw_ptr<const Attr, AllowPtrArithmetic> fAttr;
+        raw_ptr<const Attr, AllowPtrArithmetic> fStop;
     };
 
 private:
     SkArenaAllocWithReset        fAlloc;
-    Node*                        fRoot;
+    raw_ptr<Node, DanglingUntriaged> fRoot;
     std::unique_ptr<SkDOMParser> fParser;
 
     using INHERITED = SkNoncopyable;

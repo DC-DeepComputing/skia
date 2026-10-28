@@ -7,6 +7,8 @@
 #ifndef SkClusterator_DEFINED
 #define SkClusterator_DEFINED
 
+#include "src/partition_alloc/raw_ptr.h"
+
 #include <cstdint>
 
 namespace sktext {
@@ -36,7 +38,7 @@ public:
     Cluster next();
 
 private:
-    uint32_t const * const fClusters;
+    const raw_ptr<const uint32_t, AllowPtrArithmetic> fClusters;
     char const * const fUtf8Text;
     uint32_t const fGlyphCount;
     uint32_t const fTextByteLength;
