@@ -118,8 +118,28 @@ struct SK_API GrContextOptions {
      * glTexImage2D), at the end of a GPU submission, or checking framebuffer completeness. The
      * results of shader compilation and program linking are always checked, regardless of this
      * option. Ignored on backends other than GL.
+     *
+     * This sets both fSkipGLResourceErrorChecks and fSkipGLCommandErrorChecks. Either of those, if
+     * not kDefault, overrides this option for its group of checks.
      */
     Enable fSkipGLErrorChecks = Enable::kDefault;
+
+    /**
+     * Controls whether we check for GL errors after functions that allocate resources (e.g.
+     * glTexStorage2D, glBufferData, glRenderbufferStorage), after texture uploads and transfers
+     * (e.g. glTexSubImage2D), and check framebuffer completeness when creating render targets.
+     * When these checks are enabled, a failed upload causes the write to report failure. An out of
+     * memory error is reported by GrDirectContext::oomed() and any other error is reported by
+     * GrDirectContext::checkAndResetBackendError(). Ignored on backends other than GL.
+     */
+    Enable fSkipGLResourceErrorChecks = Enable::kDefault;
+
+    /**
+     * Controls whether we check for GL errors at the end of each GPU submission and, in debug
+     * builds, check framebuffer completeness when binding render targets. Ignored on backends
+     * other than GL.
+     */
+    Enable fSkipGLCommandErrorChecks = Enable::kDefault;
 
     /**
      * Can the glyph atlas use multiple textures. If allowed, the each texture's size is bound by
