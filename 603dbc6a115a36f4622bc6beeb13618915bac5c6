@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e63c60f2_3b086a26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-28T15:09:11Z",
+      "side": 1,
+      "message": "LGTM. The cleared blocks were already skipped in finish(), and the other readers only compare sizes within one style block, so the output stays the same. Verified locally: SkParagraph dm tests 218/218 (new test included) and the Flutter paragraph corpus 2409/2409 with no regressions vs. the parent.",
+      "revId": "603dbc6a115a36f4622bc6beeb13618915bac5c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
