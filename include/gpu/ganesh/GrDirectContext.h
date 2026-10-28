@@ -158,6 +158,23 @@ public:
     bool checkAndResetBackendError();
 
     /**
+     * Drains all pending errors from the underlying 3D API and returns true if any were found.
+     * Errors found are latched like errors found by Skia itself: an out-of-memory error is
+     * subsequently reported by oomed() and any other error by checkAndResetBackendError().
+     *
+     * Clients that issue their own commands on the 3D API context used by this GrDirectContext
+     * (e.g. raw GL calls on Skia's GL context) should use this rather than querying the 3D API's
+     * errors directly (e.g. via glGetError()), which would otherwise swallow errors, including
+     * GL_OUT_OF_MEMORY, that Skia needs to observe. It can also be used to check for errors at a
+     * specific point, e.g. after a flush, regardless of GrContextOptions'
+     * fSkipGLResourceErrorChecks and fSkipGLCommandErrorChecks.
+     *
+     * Currently this is implemented for OpenGL [ES]. Other backends, and abandoned contexts,
+     * return false.
+     */
+    bool checkAndClearBackendErrors();
+
+    /**
      * This is similar to abandonContext() however the underlying 3D context is not yet lost and
      * the context will cleanup all allocated resources before returning. After returning it will
      * assume that the underlying context may no longer be valid.
