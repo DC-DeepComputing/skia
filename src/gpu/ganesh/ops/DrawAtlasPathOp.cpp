@@ -15,6 +15,7 @@
 #include "include/private/SkOnce.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkSLTypeShared.h"
+#include "src/core/SkSafeMath.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ResourceKey.h"
@@ -165,7 +166,10 @@ GrProcessorSet::Analysis DrawAtlasPathOp::finalize(const GrCaps& caps, const GrA
 GrOp::CombineResult DrawAtlasPathOp::onCombineIfPossible(GrOp* op, SkArenaAlloc*, const GrCaps&) {
     auto that = op->cast<DrawAtlasPathOp>();
 
-    if (!fAtlasHelper.isCompatible(that->fAtlasHelper) ||
+    SkSafeMath safe;
+    int combinedInstanceCnt = safe.addInt(fInstanceCount, that->fInstanceCount);
+    if (!safe.ok() ||
+        !fAtlasHelper.isCompatible(that->fAtlasHelper) ||
         fProcessors != that->fProcessors) {
         return CombineResult::kCannotCombine;
     }
@@ -173,7 +177,7 @@ GrOp::CombineResult DrawAtlasPathOp::onCombineIfPossible(GrOp* op, SkArenaAlloc*
     SkASSERT(fUsesLocalCoords == that->fUsesLocalCoords);
     *fTailInstance = that->fHeadInstance;
     fTailInstance = that->fTailInstance;
-    fInstanceCount += that->fInstanceCount;
+    fInstanceCount = combinedInstanceCnt;
     return CombineResult::kMerged;
 }
 

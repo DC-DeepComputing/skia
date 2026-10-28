@@ -14,6 +14,7 @@
 #include "include/private/SkOnce.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkPathPriv.h"
+#include "src/core/SkSafeMath.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrBuffer.h"
@@ -171,8 +172,12 @@ void PathCurveTessellator::prepareWithTriangles(
         const PathDrawList& pathDrawList,
         int totalCombinedPathVerbCnt) {
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
-    int patchPreallocCount = FixedCountCurves::PreallocCount(totalCombinedPathVerbCnt) +
-                             (extraTriangles ? extraTriangles->count() : 0);
+    SkSafeMath safe;
+    int patchPreallocCount = safe.addInt(FixedCountCurves::PreallocCount(totalCombinedPathVerbCnt),
+                                         extraTriangles ? extraTriangles->count() : 0);
+    if (!safe.ok()) {
+        return;
+    }
 #else
     SkASSERT(!extraTriangles);
     int patchPreallocCount = FixedCountCurves::PreallocCount(totalCombinedPathVerbCnt);

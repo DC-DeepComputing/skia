@@ -66,11 +66,11 @@ public:
     // previous or future calls to appendVertices.
     SK_ALWAYS_INLINE skgpu::VertexWriter appendVertices(int count) {
         SkASSERT(count > 0);
-        if (fCurrChunkVertexCount + count > fCurrChunkVertexCapacity && !this->allocChunk(count)) {
+        if (count > fCurrChunkVertexCapacity - fCurrChunkVertexCount && !this->allocChunk(count)) {
             SkDEBUGCODE(fLastAppendAmount = 0;)
             return {};
         }
-        SkASSERT(fCurrChunkVertexCount + count <= fCurrChunkVertexCapacity);
+        SkASSERT(count <= fCurrChunkVertexCapacity - fCurrChunkVertexCount);
         fCurrChunkVertexCount += count;
         SkDEBUGCODE(fLastAppendAmount = count;)
         return std::exchange(fCurrChunkVertexWriter,

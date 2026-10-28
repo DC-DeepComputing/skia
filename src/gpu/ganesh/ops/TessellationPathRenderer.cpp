@@ -61,7 +61,8 @@ GrOp::Owner make_non_convex_fill_op(GrRecordingContext* rContext,
         SkRect clippedDrawBounds = SkRect::Make(clipBounds);
         if (clippedDrawBounds.intersect(drawBounds)) {
             float gpuFragmentWork = clippedDrawBounds.height() * clippedDrawBounds.width();
-            float cpuTessellationWork = numVerbs * SkNextLog2(numVerbs);  // N log N.
+            float cpuTessellationWork =
+                    static_cast<float>(numVerbs) * SkNextLog2(numVerbs);  // N log N.
             constexpr static float kCpuWeight = 512;
             constexpr static float kMinNumPixelsToTriangulate = 256 * 256;
             if (cpuTessellationWork * kCpuWeight + kMinNumPixelsToTriangulate < gpuFragmentWork) {

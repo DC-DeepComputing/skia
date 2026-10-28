@@ -25,6 +25,14 @@ bool GrVertexChunkBuilder::allocChunk(int minCount) {
         fChunks->back().fCount = fCurrChunkVertexCount;
     }
     fCurrChunkVertexCount = 0;
+
+    int maxVerticesPerChunk = std::numeric_limits<int>::max() / fStride;
+    if (minCount > maxVerticesPerChunk) {
+        fCurrChunkVertexCapacity = 0;
+        return false;
+    }
+    fMinVerticesPerChunk = std::min(fMinVerticesPerChunk, maxVerticesPerChunk);
+
     GrVertexChunk* chunk = &fChunks->push_back();
     int minAllocCount = std::max(minCount, fMinVerticesPerChunk);
     fCurrChunkVertexWriter = fTarget->makeVertexWriterAtLeast(fStride, minAllocCount,
@@ -39,7 +47,6 @@ bool GrVertexChunkBuilder::allocChunk(int minCount) {
         return false;
     }
 
-    int maxVerticesPerChunk = std::numeric_limits<int>::max() / fStride;
     if (maxVerticesPerChunk / 2 > fMinVerticesPerChunk) {
         fMinVerticesPerChunk *= 2;
     } else {

@@ -257,7 +257,12 @@ void* GrBufferAllocPool::makeSpaceAtLeast(size_t minSize,
     size_t usedBytes = (fBlocks.empty()) ? 0 : fBlocks.back().fBuffer->size() -
                                                fBlocks.back().fBytesFree;
     size_t pad = align_up_pad(usedBytes, alignment);
-    if (!fBufferPtr || fBlocks.empty() || (minSize + pad) > fBlocks.back().fBytesFree) {
+    SkSafeMath safeMath;
+    size_t alignedMinSize = safeMath.add(minSize, pad);
+    if (!safeMath.ok()) {
+        return nullptr;
+    }
+    if (!fBufferPtr || fBlocks.empty() || alignedMinSize > fBlocks.back().fBytesFree) {
         // We either don't have a block yet or the current block doesn't have enough free space.
         // Create a new one.
         if (!this->createBlock(fallbackSize)) {
@@ -448,11 +453,22 @@ void* GrVertexBufferAllocPool::makeSpace(size_t vertexSize,
     SkASSERT(buffer);
     SkASSERT(startVertex);
 
+    SkSafeMath safe;
+    size_t totalSize = safe.mul(vertexSize, vertexCount);
+    if (!safe.ok()) {
+        *startVertex = 0;
+        return nullptr;
+    }
+
     size_t offset SK_INIT_TO_AVOID_WARNING;
-    void* ptr = INHERITED::makeSpace(SkSafeMath::Mul(vertexSize, vertexCount),
+    void* ptr = INHERITED::makeSpace(totalSize,
                                      vertexSize,
                                      buffer,
                                      &offset);
+    if (!ptr || !SkTFitsIn<int>(offset / vertexSize)) {
+        *startVertex = 0;
+        return nullptr;
+    }
 
     SkASSERT(0 == offset % vertexSize);
     *startVertex = static_cast<int>(offset / vertexSize);
@@ -469,21 +485,41 @@ void* GrVertexBufferAllocPool::makeSpaceAtLeast(size_t vertexSize, int minVertex
     SkASSERT(startVertex);
     SkASSERT(actualVertexCount);
 
+    SkSafeMath safe;
+    size_t minSize = safe.mul(vertexSize, minVertexCount);
+    size_t fallbackSize = safe.mul(vertexSize, fallbackVertexCount);
+    if (!safe.ok()) {
+        *startVertex = 0;
+        *actualVertexCount = 0;
+        return nullptr;
+    }
+
     size_t offset SK_INIT_TO_AVOID_WARNING;
     size_t actualSize SK_INIT_TO_AVOID_WARNING;
-    void* ptr = INHERITED::makeSpaceAtLeast(SkSafeMath::Mul(vertexSize, minVertexCount),
-                                            SkSafeMath::Mul(vertexSize, fallbackVertexCount),
+    void* ptr = INHERITED::makeSpaceAtLeast(minSize,
+                                            fallbackSize,
                                             vertexSize,
                                             buffer,
                                             &offset,
                                             &actualSize);
+    if (!ptr || !SkTFitsIn<int>(offset / vertexSize)) {
+        *startVertex = 0;
+        *actualVertexCount = 0;
+        return nullptr;
+    }
 
     SkASSERT(0 == offset % vertexSize);
     *startVertex = static_cast<int>(offset / vertexSize);
 
     SkASSERT(0 == actualSize % vertexSize);
-    SkASSERT(actualSize >= vertexSize * minVertexCount);
-    *actualVertexCount = static_cast<int>(actualSize / vertexSize);
+    SkASSERT(actualSize >= minSize);
+    size_t actualVertices = actualSize / vertexSize;
+    if (!SkTFitsIn<int>(actualVertices)) {
+        size_t excessVertices = actualVertices - std::numeric_limits<int>::max();
+        this->putBack(excessVertices * vertexSize);
+        actualVertices = std::numeric_limits<int>::max();
+    }
+    *actualVertexCount = static_cast<int>(actualVertices);
 
     return ptr;
 }
@@ -499,11 +535,22 @@ void* GrIndexBufferAllocPool::makeSpace(int indexCount, sk_sp<const GrBuffer>* b
     SkASSERT(buffer);
     SkASSERT(startIndex);
 
+    SkSafeMath safe;
+    size_t totalSize = safe.mul(indexCount, sizeof(uint16_t));
+    if (!safe.ok()) {
+        *startIndex = 0;
+        return nullptr;
+    }
+
     size_t offset SK_INIT_TO_AVOID_WARNING;
-    void* ptr = INHERITED::makeSpace(SkSafeMath::Mul(indexCount, sizeof(uint16_t)),
+    void* ptr = INHERITED::makeSpace(totalSize,
                                      sizeof(uint16_t),
                                      buffer,
                                      &offset);
+    if (!ptr || !SkTFitsIn<int>(offset / sizeof(uint16_t))) {
+        *startIndex = 0;
+        return nullptr;
+    }
 
     SkASSERT(0 == offset % sizeof(uint16_t));
     *startIndex = static_cast<int>(offset / sizeof(uint16_t));
@@ -519,20 +566,40 @@ void* GrIndexBufferAllocPool::makeSpaceAtLeast(int minIndexCount, int fallbackIn
     SkASSERT(startIndex);
     SkASSERT(actualIndexCount);
 
+    SkSafeMath safe;
+    size_t minSize = safe.mul(minIndexCount, sizeof(uint16_t));
+    size_t fallbackSize = safe.mul(fallbackIndexCount, sizeof(uint16_t));
+    if (!safe.ok()) {
+        *startIndex = 0;
+        *actualIndexCount = 0;
+        return nullptr;
+    }
+
     size_t offset SK_INIT_TO_AVOID_WARNING;
     size_t actualSize SK_INIT_TO_AVOID_WARNING;
-    void* ptr = INHERITED::makeSpaceAtLeast(SkSafeMath::Mul(minIndexCount, sizeof(uint16_t)),
-                                            SkSafeMath::Mul(fallbackIndexCount, sizeof(uint16_t)),
+    void* ptr = INHERITED::makeSpaceAtLeast(minSize,
+                                            fallbackSize,
                                             sizeof(uint16_t),
                                             buffer,
                                             &offset,
                                             &actualSize);
+    if (!ptr || !SkTFitsIn<int>(offset / sizeof(uint16_t))) {
+        *startIndex = 0;
+        *actualIndexCount = 0;
+        return nullptr;
+    }
 
     SkASSERT(0 == offset % sizeof(uint16_t));
     *startIndex = static_cast<int>(offset / sizeof(uint16_t));
 
     SkASSERT(0 == actualSize % sizeof(uint16_t));
-    SkASSERT(actualSize >= minIndexCount * sizeof(uint16_t));
-    *actualIndexCount = static_cast<int>(actualSize / sizeof(uint16_t));
+    SkASSERT(actualSize >= minSize);
+    size_t actualIndices = actualSize / sizeof(uint16_t);
+    if (!SkTFitsIn<int>(actualIndices)) {
+        size_t excessIndices = actualIndices - std::numeric_limits<int>::max();
+        this->putBack(excessIndices * sizeof(uint16_t));
+        actualIndices = std::numeric_limits<int>::max();
+    }
+    *actualIndexCount = static_cast<int>(actualIndices);
     return ptr;
 }
