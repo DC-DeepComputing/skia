@@ -527,6 +527,7 @@ bool DrawAtlas::activateNewPage(Recorder* recorder) {
     if (!fProxies[fNumActivePages]) {
         return false;
     }
+    recorder->priv().recordShareableTextureProxy(fProxies[fNumActivePages].get());
 
     if constexpr (kDumpAtlasData) {
         SkDebugf("activated page#: %u\n", fNumActivePages);

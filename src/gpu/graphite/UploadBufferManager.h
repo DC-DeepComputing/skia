@@ -39,6 +39,8 @@ public:
     void transferToRecording(Recording*);
     void transferToCommandBuffer(CommandBuffer*);
 
+    size_t uploadBufferBytes() const { return fUploadBufferBytes; }
+
 private:
     friend class DrawBufferManager; // to access makeBindInfo
     friend class StaticBufferManager; // to access makeBindInfo
@@ -54,6 +56,7 @@ private:
     uint32_t fReusedBufferOffset = 0;
 
     std::vector<sk_sp<Buffer>> fUsedBuffers;
+    size_t fUploadBufferBytes = 0;
 };
 
 }  // namespace skgpu::graphite

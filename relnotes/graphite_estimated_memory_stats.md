@@ -1,0 +1,1 @@
+`skgpu::graphite::Recorder` now provides `estimatedMemoryStats()` and `Recorder::EstimatedMemoryStats`, returning cumulative byte counters for scratch textures, shareable textures, external textures, draw buffers, and upload buffers recorded on the `Recorder`.

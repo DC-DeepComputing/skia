@@ -70,6 +70,7 @@ std::tuple<void* /*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInf
         bindInfo.fSize = requiredBytes32;
 
         fUsedBuffers.push_back(std::move(buffer));
+        fUploadBufferBytes += requiredBytes32;
         return {bufferMapPtr, bindInfo};
     }
 
@@ -102,6 +103,7 @@ std::tuple<void* /*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInf
     bufferMapPtr = SkTAddOffset<void>(bufferMapPtr, fReusedBufferOffset);
 
     fReusedBufferOffset += requiredBytes32;
+    fUploadBufferBytes += requiredBytes32;
 
     return {bufferMapPtr, bindInfo};
 }

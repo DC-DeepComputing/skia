@@ -122,6 +122,7 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
         if (!view) {
             return CacheEntry{};
         }
+        recorder->priv().recordShareableTextureProxy(view.proxy());
         // Since if the bitmap is held by more than just this function call (e.g. it likely came
         // from findOrCreateCachedProxy() that takes an existing SkBitmap), it's worth adding a
         // listener to remove them from the cache automatically when no one holds on to it anymore.
@@ -150,9 +151,12 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
             return CacheEntry{};
         }
 
+        TextureProxy* proxy = textureImage->textureProxyView().proxy();
+        recorder->priv().promoteTextureProxyToShareable(proxy);
+
         // Force `textureImage`'s TextureProxy to be instantiated so that it's not treated by a
         // Recorder as a scratch image that can have a temporary scratch texture assignment.
-        textureImage->textureProxyView().proxy()->instantiate(recorder->priv().resourceProvider());
+        proxy->instantiate(recorder->priv().resourceProvider());
         // Flush pending work defining the image's content, which also adds these tasks to the root
         // task list.
         // TODO(b/409888039): These added tasks need to be preserved so that later Recordings that

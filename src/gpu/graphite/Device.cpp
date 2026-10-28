@@ -442,9 +442,21 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                                           recorder->priv().isProtected(),
                                                           Renderable::kYes);
 
+    sk_sp<TextureProxy> target = TextureProxy::Make(caps,
+                                                    recorder->priv().resourceProvider(),
+                                                    backingDimensions,
+                                                    textureInfo,
+                                                    budgeted,
+                                                    label);
+    if (target) {
+        if (budgeted == skgpu::Budgeted::kYes) {
+            recorder->priv().recordScratchTextureProxy(target.get());
+        } else {
+            recorder->priv().recordSampledTextureProxy(target.get());
+        }
+    }
     return Make(recorder,
-                TextureProxy::Make(caps, recorder->priv().resourceProvider(),
-                                   backingDimensions, textureInfo, budgeted, label),
+                std::move(target),
                 ii.dimensions(),
                 ii.colorInfo(),
                 props,
