@@ -50,6 +50,24 @@
       "message": "Thanks! I will try and get to reviewing this soon. This is helpful for fixing https://g-issues.skia.org/issues/329700315, although we will want this for GPU backends of Skia as well. Would mind looking into that as well?",
       "revId": "5999b0d377bde625a510c0cfe99532c1f3d17a79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0ca509a_13293665",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4329740
+      },
+      "writtenOn": "2026-10-28T08:30:01Z",
+      "side": 1,
+      "message": "Done. All GPU backends are covered now\n\ndetails at https://static.januschka.com/i-356913465/\ncould you run CQ? locally it passes.",
+      "parentUuid": "a20d2297_6a84b228",
+      "revId": "5999b0d377bde625a510c0cfe99532c1f3d17a79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
