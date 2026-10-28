@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "785dcc05_1302a129",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-28T15:40:03Z",
+      "side": 1,
+      "message": "LGTM. The blocks come from ParagraphBuilderImpl in text order, contiguous and\nnon-overlapping, so the predicate is monotone and the result is the same as the\nlinear scan (I checked empty text, empty ranges at block boundaries and\nplaceholders). The SkParagraph dm tests and the Flutter paragraph test corpus\npass with no changes.\n\nTwo optional notes:\n\n1. findAllBlocks has other callers besides addLine:\n   OneLineShaper::iterateThroughShapingRegions calls it for each bidi region\n   between placeholders, and TextWrapper\u0027s softHyphenWidth calls it too. They\n   get faster as well; you may want to say so in the description.\n\n2. Not for this CL: applySpacingAndBuildClusterTable has the same pattern. For\n   each cluster it restarts the style scan from fTextStyles.begin()\n   (\"Synchronize styles\"), so the letter/word spacing path is\n   O(clusters x blocks). It could keep the current block between clusters.\n   This would be a good follow-up.",
+      "revId": "eaa4dfcfa01705daf1bc2bcac4c8e956bc78e096",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
