@@ -1,0 +1,73 @@
+---
+name: skia/api/default-options-structs-for-compatibility
+description: When declaring functions with default arguments or options structs, prefer default parameters over trivial forwarding overloads, passing structs by value with converting constructors
+rubric: readability
+severity: blocking
+---
+
+**Rule.** When declaring functions that accept default argument values or
+optional configuration structs, prefer a single signature with a default
+parameter in the header declaration (such as `= {}` or `= SIZE_MAX`) over
+separate trivial forwarding overloads. If an implementation normalizes or
+rewrites fields in an options or info struct (such as `SubmitInfo`), take it by
+value rather than `const&` to modify it in place. When refactoring an existing
+method to accept an options struct, provide converting constructors on the
+struct for legacy parameter types to maintain caller compatibility.
+
+**Why.** Using default parameter values eliminates redundant forwarding
+boilerplate and reduces API surface area while keeping default arguments
+explicit to callers. Taking small options structs by value avoids defensive
+local copies when normalizing fields, and converting constructors preserve
+backward compatibility across disparate callers without call-site churn.
+
+## Examples
+
+Bad:
+
+```cpp
+// Context.h: Redundant parameterless overloads
+void storePipelineCacheData();
+void storePipelineCacheData(size_t maxSize);
+
+bool submit();
+bool submit(const SubmitInfo& info); // Const-ref and lacks default '= {}'
+
+// Context.cpp: Trivial forwarding overloads and defensive struct copies
+void Context::storePipelineCacheData() {
+    this->storePipelineCacheData(SIZE_MAX);
+}
+bool Context::submit(const SubmitInfo& submitInfo) {
+    SubmitInfo usedSubmitInfo = submitInfo;
+    if (usedSubmitInfo.fSync == SyncToCpu::kYes && !fSharedContext->caps()->allowCpuSync()) {
+        usedSubmitInfo.fSync = SyncToCpu::kNo;
+    }
+    return fQueueManager->submitToGpu(usedSubmitInfo);
+}
+bool Context::submit() { return submit(SubmitInfo()); }
+```
+
+Good:
+
+```cpp
+// Context.h: Single signatures with default parameter values
+void storePipelineCacheData(size_t maxSize = SIZE_MAX);
+bool submit(SubmitInfo submitInfo = {});
+
+// Context.cpp: Directly implement main logic and mutate by-value struct in place
+void Context::storePipelineCacheData(size_t maxSize) {
+    if (fPersistentCache) { /* ... */ }
+}
+bool Context::submit(SubmitInfo submitInfo) {
+    if (submitInfo.fSync == SyncToCpu::kYes && !fSharedContext->caps()->allowCpuSync()) {
+        submitInfo.fSync = SyncToCpu::kNo;
+    }
+    return fQueueManager->submitToGpu(submitInfo);
+}
+
+// GraphiteTypes.h: Converting constructors maintain caller compatibility
+struct SubmitInfo {
+    SyncToCpu fSync = SyncToCpu::kNo;
+    constexpr SubmitInfo() = default;
+    constexpr SubmitInfo(SyncToCpu sync) : fSync(sync) {}
+};
+```

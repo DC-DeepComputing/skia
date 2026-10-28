@@ -1,0 +1,45 @@
+---
+name: skia/omit-redundant-null-check-before-sk-ref-sp
+description: When wrapping raw pointers with sk_sp or sk_ref_sp, omit explicit template type arguments and avoid redundant null checks before sk_ref_sp
+rubric: readability
+severity: blocking
+---
+
+**Rule.** When wrapping raw pointers in sk_sp or calling sk_ref_sp(), omit
+explicit template type arguments (prefer sk_sp(ptr) and sk_ref_sp(ptr) over
+sk_sp<T>(ptr) and sk_ref_sp<T>(ptr)), relying on Skia's sk_sp deduction guide
+(CTAD) and function template deduction. Additionally, do not write redundant
+null checks (such as if (ptr) guards or ternary ptr ? sk_ref_sp(ptr) : nullptr)
+before calling sk_ref_sp(), since it safely returns an empty sk_sp on nullptr.
+
+**Why.** Skia provides an explicit deduction guide for sk_sp(T*) in
+include/core/SkRefCnt.h and function template deduction for sk_ref_sp(T*),
+making explicit <T> specifications redundant visual noise. Furthermore,
+sk_ref_sp() delegates to SkSafeRef(), which safely checks for nullptr before
+incrementing reference counts and returns an empty sk_sp on null pointers.
+
+## Examples
+
+Bad:
+
+```cpp
+// Redundant null checks and explicit template arguments on sk_ref_sp:
+if (auto data = stream->getData()) {
+    return sk_ref_sp<SkData>(const_cast<SkData*>(data.get()));
+}
+return ptr ? sk_ref_sp<SkData>(ptr) : nullptr;
+
+// Redundant explicit template argument with sk_sp constructor (CTAD):
+return sk_sp<SkTypeface_proxy>(new SkTypeface_fontconfig(std::move(pattern)));
+```
+
+Good:
+
+```cpp
+// Deduced template type without redundant null check:
+return sk_ref_sp(const_cast<SkData*>(stream->getData().get()));
+return sk_ref_sp(ptr);
+
+// Class template argument deduction (CTAD) for sk_sp:
+return sk_sp(new SkTypeface_fontconfig(std::move(pattern)));
+```
