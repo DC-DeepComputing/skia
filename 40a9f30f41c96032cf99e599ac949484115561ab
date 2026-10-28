@@ -33,6 +33,24 @@
       "message": "Add a null/length check in the C-string addText overloads to preserve SkString defensive behavior:\n```\n        void ParagraphBuilderImpl::addText(const char* text) {\n            if (text) {\n                fUtf8.append(text);\n            }\n        }\n        \n        void ParagraphBuilderImpl::addText(const char* text, size_t len) {\n            if (text \u0026\u0026 len \u003e 0) {\n                fUtf8.append(text, len);\n            }\n        }\n        \n        ```",
       "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffb909d3_5c9bbc63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-28T17:43:26Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "4636fc85_9006d0dd",
+      "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
