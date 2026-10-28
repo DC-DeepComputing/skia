@@ -30,6 +30,7 @@
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/ImageProvider.h"
 #include "include/gpu/graphite/PrecompileContext.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
@@ -138,7 +139,8 @@ Context::Context(sk_sp<SharedContext> sharedContext,
                  const ContextOptions& options)
         : fSharedContext(std::move(sharedContext))
         , fQueueManager(std::move(queueManager))
-        , fContextID(ContextID::Next()) {
+        , fContextID(ContextID::Next())
+        , fImageProvider(options.fImageProvider) {
     // We need to move the Graphite SkSL code into the central SkSL data loader at least once
     // (but preferrably only once) before we try to use it. We assume that there's no way to
     // use the SkSL code without making a context, so we initialize it here.
@@ -227,8 +229,14 @@ BackendApi Context::backend() const { return fSharedContext->backend(); }
 std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) {
     ASSERT_SINGLE_OWNER
 
+    RecorderOptions optionsWithDefaults = options;
+    if (!optionsWithDefaults.fImageProvider) {
+        optionsWithDefaults.fImageProvider = fImageProvider;
+    }
+
     // This is a client-owned Recorder so pass a null context so it creates its own ResourceProvider
-    auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, nullptr));
+    auto recorder = std::unique_ptr<Recorder>(
+            new Recorder(fSharedContext, optionsWithDefaults, nullptr));
 #if defined(GPU_TEST_UTILS)
     if (fStoreContextRefInRecorder) {
         recorder->priv().setContext(this);

@@ -12,6 +12,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/ImageProvider.h"
 #include "include/private/SkAPI.h"
 #include "include/private/SkMath.h"
 
@@ -230,6 +231,13 @@ struct SK_API ContextOptions {
      * of the Context(s).
      */
     PersistentPipelineStorage* fPersistentPipelineStorage = nullptr;
+
+    /**
+     * An ImageProvider allows clients to specify how SkImages are converted to Graphite-backed
+     * images and cached. If non-null, this ImageProvider will be used as the default for all
+     * Recorders created by the Context unless explicitly overridden in RecorderOptions.
+     */
+    sk_sp<ImageProvider> fImageProvider = nullptr;
 
     /**
      * An experimental flag in development. Behavior and performance is subject to change.

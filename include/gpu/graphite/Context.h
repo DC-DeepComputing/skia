@@ -56,6 +56,7 @@ class BackendTexture;
 class Buffer;
 class ClientMappedBufferManager;
 class ContextPriv;
+class ImageProvider;
 class PersistentPipelineStorage;
 class PrecompileContext;
 class QueueManager;
@@ -79,6 +80,8 @@ public:
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
     std::unique_ptr<skcpu::Recorder> makeCPURecorder();
+
+    ImageProvider* clientImageProvider() const { return fImageProvider.get(); }
 
     /** Creates a helper object that can be moved to a different thread and used
      *  for precompilation.
@@ -428,6 +431,7 @@ private:
     std::unique_ptr<QueueManager> fQueueManager;
 
     PersistentPipelineStorage* fPersistentPipelineStorage;
+    sk_sp<ImageProvider> fImageProvider;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.

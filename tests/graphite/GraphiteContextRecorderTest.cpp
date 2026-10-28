@@ -15,7 +15,9 @@
 #include "include/core/SkRecorder.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/ImageProvider.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
 #include "src/core/SkContextPriv.h"
@@ -186,4 +188,119 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(
             ctx->makeRecorder(SkBackendSelection::kCPU, &recorderOptions);
     REPORTER_ASSERT(reporter, cpuRecorder != nullptr);
     REPORTER_ASSERT(reporter, cpuRecorder->type() == SkRecorder::Type::kCPU);
+}
+
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(
+        GraphiteContextOptions_ImageProvider,
+        reporter,
+        context,
+        testContext,
+        true,
+        CtsEnforcement::kApiLevel_202604) {
+    if (!testContext) {
+        return;
+    }
+
+    class TestImageProvider : public skgpu::graphite::ImageProvider {
+    public:
+        sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder*,
+                                    const SkImage*,
+                                    SkImage::RequiredProperties) override {
+            return nullptr;
+        }
+    };
+
+    sk_sp<TestImageProvider> contextProvider = sk_make_sp<TestImageProvider>();
+    sk_sp<TestImageProvider> overrideProvider = sk_make_sp<TestImageProvider>();
+
+    skiatest::graphite::TestOptions testOpts;
+    testOpts.fContextOptions.fImageProvider = contextProvider;
+
+    {
+        // 1. Direct Graphite Context: recorders must be destroyed before graphiteContext.
+        std::unique_ptr<skgpu::graphite::Context> graphiteContext =
+                testContext->makeContext(testOpts);
+        if (!graphiteContext) {
+            return;
+        }
+
+        REPORTER_ASSERT(reporter, graphiteContext->clientImageProvider() == contextProvider.get());
+
+        // Direct Context::makeRecorder inherits ContextOptions::fImageProvider
+        std::unique_ptr<skgpu::graphite::Recorder> directRecorder = graphiteContext->makeRecorder();
+        REPORTER_ASSERT(reporter, directRecorder != nullptr);
+        REPORTER_ASSERT(reporter, directRecorder->clientImageProvider() == contextProvider.get());
+
+        // Direct Context::makeRecorder with custom RecorderOptions overriding ImageProvider
+        skgpu::graphite::RecorderOptions overrideOptions;
+        overrideOptions.fImageProvider = overrideProvider;
+        std::unique_ptr<skgpu::graphite::Recorder> overriddenRecorder =
+                graphiteContext->makeRecorder(overrideOptions);
+        REPORTER_ASSERT(reporter, overriddenRecorder != nullptr);
+        REPORTER_ASSERT(reporter, overriddenRecorder->clientImageProvider() == overrideProvider.get());
+
+        // Direct Context::makeRecorder with RecorderOptions without ImageProvider inherits
+        skgpu::graphite::RecorderOptions defaultOptions;
+        std::unique_ptr<skgpu::graphite::Recorder> defaultRecorder =
+                graphiteContext->makeRecorder(defaultOptions);
+        REPORTER_ASSERT(reporter, defaultRecorder != nullptr);
+        REPORTER_ASSERT(reporter, defaultRecorder->clientImageProvider() == contextProvider.get());
+    }
+
+    {
+        // 2. Wrap in SkContext: recorders created from ctx must be destroyed before ctx.
+        std::unique_ptr<skgpu::graphite::Context> graphiteContext =
+                testContext->makeContext(testOpts);
+        if (!graphiteContext) {
+            return;
+        }
+
+        SkContextOptions opts;
+        std::unique_ptr<SkContext> ctx = SkContextCtorAccessor::MakeContext(
+                opts, skgpu::graphite::ContextPriv::AsGPUContext(std::move(graphiteContext)));
+        REPORTER_ASSERT(reporter, ctx != nullptr);
+
+        // SkContext::makeRecorder() automatically inherits ContextOptions::fImageProvider
+        std::unique_ptr<SkRecorder> skRecorder = ctx->makeRecorder();
+        REPORTER_ASSERT(reporter, skRecorder != nullptr);
+        REPORTER_ASSERT(reporter, skRecorder->type() == SkRecorder::Type::kGraphite);
+        auto graphiteRecorder = static_cast<skgpu::graphite::Recorder*>(skRecorder.get());
+        REPORTER_ASSERT(reporter, graphiteRecorder->clientImageProvider() == contextProvider.get());
+
+        // SkContext::makeRecorder(kAutomatic) also inherits ContextOptions::fImageProvider
+        std::unique_ptr<SkRecorder> autoRecorder = ctx->makeRecorder(SkBackendSelection::kAutomatic);
+        REPORTER_ASSERT(reporter, autoRecorder != nullptr);
+        REPORTER_ASSERT(reporter, autoRecorder->type() == SkRecorder::Type::kGraphite);
+        REPORTER_ASSERT(reporter, static_cast<skgpu::graphite::Recorder*>(autoRecorder.get())->clientImageProvider() ==
+                                  contextProvider.get());
+
+        // SkContext::makeRecorder(kGPU) also inherits ContextOptions::fImageProvider
+        std::unique_ptr<SkRecorder> gpuRecorder = ctx->makeRecorder(SkBackendSelection::kGPU);
+        REPORTER_ASSERT(reporter, gpuRecorder != nullptr);
+        REPORTER_ASSERT(reporter, gpuRecorder->type() == SkRecorder::Type::kGraphite);
+        REPORTER_ASSERT(reporter, static_cast<skgpu::graphite::Recorder*>(gpuRecorder.get())->clientImageProvider() ==
+                                  contextProvider.get());
+
+        // SkContext::makeRecorder(&overrideOptions) overrides with the RecorderOptions' ImageProvider
+        skgpu::graphite::RecorderOptions overrideOptions;
+        overrideOptions.fImageProvider = overrideProvider;
+        std::unique_ptr<SkRecorder> customRecorder = ctx->makeRecorder(&overrideOptions);
+        REPORTER_ASSERT(reporter, customRecorder != nullptr);
+        REPORTER_ASSERT(reporter, customRecorder->type() == SkRecorder::Type::kGraphite);
+        REPORTER_ASSERT(reporter, static_cast<skgpu::graphite::Recorder*>(customRecorder.get())->clientImageProvider() ==
+                                  overrideProvider.get());
+
+        // SkContext::makeRecorder(&defaultOptions) inherits ContextOptions::fImageProvider
+        skgpu::graphite::RecorderOptions defaultOptions;
+        std::unique_ptr<SkRecorder> emptyOptionsRecorder = ctx->makeRecorder(&defaultOptions);
+        REPORTER_ASSERT(reporter, emptyOptionsRecorder != nullptr);
+        REPORTER_ASSERT(reporter, emptyOptionsRecorder->type() == SkRecorder::Type::kGraphite);
+        REPORTER_ASSERT(reporter, static_cast<skgpu::graphite::Recorder*>(emptyOptionsRecorder.get())->clientImageProvider() ==
+                                  contextProvider.get());
+
+        // SkContext::makeRecorder(kCPU) safely returns CPU recorder
+        std::unique_ptr<SkRecorder> cpuRecorder = ctx->makeRecorder(SkBackendSelection::kCPU);
+        REPORTER_ASSERT(reporter, cpuRecorder != nullptr);
+        REPORTER_ASSERT(reporter, cpuRecorder->type() == SkRecorder::Type::kCPU);
+    }
 }
