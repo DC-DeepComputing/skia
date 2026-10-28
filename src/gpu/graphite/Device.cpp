@@ -1707,6 +1707,18 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    // If an inverse fill's shape including the AA outset doesn't intersect the scissor, we can
+    // assume it covers every pixel of the draw which effectively is a flood fill.
+    if (geometry.isShape() && geometry.shape().inverted() && !geometry.shape().isFloodFill() &&
+        clip.transformedShapeBounds().makeOutset(1.f)
+                                     .makeIntersect(Rect(clip.scissor()))
+                                     .isEmptyNegativeOrNaN()) {
+        Shape floodFill;
+        floodFill.setInverted(true);
+        geometry.setShape(floodFill);
+        style = SkStrokeRec(SkStrokeRec::kFill_InitStyle);
+    }
+
     // We assume that we will receive a renderer, or a PathAtlas. If it's a PathAtlas, then we
     // assume that the renderer chosen in PathAtlas::addShape() will have single-channel coverage,
     // require AA bounds outsetting, and have a single renderStep. The clip's draw bounds are passed
