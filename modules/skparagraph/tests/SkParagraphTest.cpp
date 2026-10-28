@@ -12160,3 +12160,28 @@ DEF_TEST(SkParagraph_ManyStyleBlocksWithSeveralFonts, reporter) {
         }
     }
 }
+
+// A built paragraph owns its text: resetting and reusing the builder does not change it.
+// U+0000 is text, not a terminator
+DEF_TEST(SkParagraph_BuilderResetKeepsBuiltText, reporter) {
+    ParagraphStyle paragraphStyle;
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+
+    const std::string first("a\0b", 3);
+    builder.addText(first.data(), first.size());
+    builder.addText(u"\u00E9");
+    auto firstParagraph = builder.Build();
+
+    builder.Reset();
+    REPORTER_ASSERT(reporter, builder.getText().empty());
+    builder.addText("xyz");
+    auto secondParagraph = builder.Build();
+
+    SkSpan<const char> firstText = static_cast<ParagraphImpl*>(firstParagraph.get())->text();
+    SkSpan<const char> secondText = static_cast<ParagraphImpl*>(secondParagraph.get())->text();
+    REPORTER_ASSERT(reporter,
+                    std::string(firstText.data(), firstText.size()) == first + "\xC3\xA9");
+    REPORTER_ASSERT(reporter, std::string(secondText.data(), secondText.size()) == "xyz");
+}
