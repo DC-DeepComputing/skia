@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec06fe76_77d5074d",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-28T13:22:30Z",
+      "side": 1,
+      "message": "Is this caps check really that interesting? Maybe I\u0027m misreading where we set the cap, but it seems like any time we\u0027re using protected memory we want to use a dedicated allocation. Is it any cleaner to either have this call here be:\n\n```\nbool forcedDedicatedMemory \u003d info.isProtected() \u003d\u003d Protected::kYes\n                                 ? true : caps.shouldAlwaysUseDedicatedImageMemory();\n```\n\nor do the protected check inside the caps call (drop the always in name)\n\n```\nbool forceDedicatedMemory \u003d caps.shouldUseDedicatedImageMemory(info.isProtected());\n```\n\nI kind of like the 2nd option, but in general I\u0027m just trying to understand the value the extra protected specific caps call gives us.",
+      "range": {
+        "startLine": 110,
+        "startChar": 38,
+        "endLine": 110,
+        "endChar": 92
+      },
+      "revId": "da2174d6c10b512ce431644b1b42252f7df3c51e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
