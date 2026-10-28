@@ -460,6 +460,13 @@ public:
     bool checkAndResetBackendError();
 
     /**
+     * Drains all pending errors from the underlying 3D API, latching any OOM (see
+     * checkAndResetOOMed()) and any other error (see checkAndResetBackendError()). Returns true if
+     * any error was found. Backends without a client-visible error queue return false.
+     */
+    virtual bool checkAndClearBackendErrors() { return false; }
+
+    /**
      *  Put this texture in a safe and known state for use across multiple contexts. Depending on
      *  the backend, this may return a GrSemaphore. If so, other contexts should wait on that
      *  semaphore before using this texture.
