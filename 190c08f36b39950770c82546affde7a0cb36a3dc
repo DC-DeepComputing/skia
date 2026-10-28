@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63e3dec1_a0a4a0fe",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-28T15:13:32Z",
+      "side": 0,
+      "message": "It isn\u0027t dangling in practise (e.g. the dangling pointer detector isn\u0027t blocking this patch).\n\nI checked the 5 callers. All of them are keeping the typeface alive longer than the context. So everything looks good.",
+      "range": {
+        "startLine": 462,
+        "startChar": 71,
+        "endLine": 463,
+        "endChar": 27
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
