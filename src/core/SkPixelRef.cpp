@@ -17,14 +17,12 @@
 #include <atomic>
 #include <utility>
 
-uint32_t SkNextID::ImageID() {
+uint64_t SkNextID::ImageID() {
     // We never set the low bit.... see SkPixelRef::genIDIsUnique().
-    static std::atomic<uint32_t> nextID{2};
+    static std::atomic<uint64_t> nextID{2};
 
-    uint32_t id;
-    do {
-        id = nextID.fetch_add(2, std::memory_order_relaxed);
-    } while (id == 0);
+    uint64_t id = nextID.fetch_add(2, std::memory_order_relaxed);
+    SkASSERT_RELEASE(id != 0);
     return id;
 }
 
@@ -62,10 +60,10 @@ void SkPixelRef::needsNewGenID() {
     SkASSERT(!this->genIDIsUnique()); // This method isn't threadsafe, so the assert should be fine.
 }
 
-uint32_t SkPixelRef::getGenerationID() const {
-    uint32_t id = fTaggedGenID.load();
+uint64_t SkPixelRef::getGenerationID() const {
+    uint64_t id = fTaggedGenID.load();
     if (0 == id) {
-        uint32_t next = SkNextID::ImageID() | 1u;
+        uint64_t next = SkNextID::ImageID() | 1ULL;
         if (fTaggedGenID.compare_exchange_strong(id, next)) {
             id = next;  // There was no race or we won the race.  fTaggedGenID is next now.
         } else {
@@ -74,7 +72,7 @@ uint32_t SkPixelRef::getGenerationID() const {
         // We can't quite SkASSERT(this->genIDIsUnique()). It could be non-unique
         // if we got here via the else path (pretty unlikely, but possible).
     }
-    return id & ~1u;  // Mask off bottom unique bit.
+    return id & ~uint64_t(1);  // Mask off bottom unique bit.
 }
 
 void SkPixelRef::addGenIDChangeListener(sk_sp<SkIDChangeListener> listener) {
@@ -115,13 +113,14 @@ void SkPixelRef::setImmutable() {
     fMutability = kImmutable;
 }
 
-void SkPixelRef::setImmutableWithID(uint32_t genID) {
+void SkPixelRef::setImmutableWithID(uint64_t genID) {
     /*
      *  We are forcing the genID to match an external value. The caller must ensure that this
      *  value does not conflict with other content.
      *
      *  One use is to force this pixelref's id to match an SkImage's id
      */
+    SkASSERT((genID & 1ULL) == 0);
     fMutability = kImmutable;
     fTaggedGenID.store(genID);
 }

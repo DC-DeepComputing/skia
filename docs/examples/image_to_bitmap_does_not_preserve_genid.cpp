@@ -7,6 +7,6 @@ void draw(SkCanvas* canvas) {
     SkBitmap bm1, bm2;
     image->asLegacyBitmap(&bm1, SkImage::kRO_LegacyBitmapMode);
     image->asLegacyBitmap(&bm2, SkImage::kRO_LegacyBitmapMode);
-    SkDebugf("%u\n%u\n", bm1.getGenerationID(), bm2.getGenerationID());
+    SkDebugf("%" PRIu64 "\n%" PRIu64 "\n", bm1.getGenerationID(), bm2.getGenerationID());
 }
 }  // END FIDDLE

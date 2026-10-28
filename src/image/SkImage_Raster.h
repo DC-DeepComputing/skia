@@ -40,7 +40,7 @@ enum class SkCopyPixelsMode {
 
 class SkImage_Raster : public SkImage_Base {
 public:
-    SkImage_Raster(const SkImageInfo&, sk_sp<SkData>, size_t rb, sk_sp<SkMipmap>, uint32_t id);
+    SkImage_Raster(const SkImageInfo&, sk_sp<SkData>, size_t rb, sk_sp<SkMipmap>, uint64_t id);
     ~SkImage_Raster() override;
 
     // From SkImage.h

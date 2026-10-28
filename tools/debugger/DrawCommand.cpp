@@ -1200,7 +1200,7 @@ void DrawImageCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_SAMPLING);
     MakeJsonSampling(writer, fSampling);
 
-    writer.appendU32(DEBUGCANVAS_ATTRIBUTE_UNIQUE_ID, fImage->uniqueID());
+    writer.appendU64(DEBUGCANVAS_ATTRIBUTE_UNIQUE_ID, fImage->uniqueID());
     writer.appendS32(DEBUGCANVAS_ATTRIBUTE_WIDTH, fImage->width());
     writer.appendS32(DEBUGCANVAS_ATTRIBUTE_HEIGHT, fImage->height());
     switch (fImage->alphaType()) {

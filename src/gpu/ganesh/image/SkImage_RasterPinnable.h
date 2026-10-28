@@ -29,7 +29,7 @@ enum class Mipmapped : bool;
 struct PinnedData {
     GrSurfaceProxyView fPinnedView;
     int32_t fPinnedCount = 0;
-    uint32_t fPinnedUniqueID = SK_InvalidUniqueID;
+    uint64_t fPinnedUniqueID = SK_InvalidUniqueID;
     uint32_t fPinnedContextID = SK_InvalidUniqueID;
     GrColorType fPinnedColorType = GrColorType::kUnknown;
 };

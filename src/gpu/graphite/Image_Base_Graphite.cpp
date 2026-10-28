@@ -25,7 +25,7 @@
 
 namespace skgpu::graphite {
 
-Image_Base::Image_Base(const SkImageInfo& info, uint32_t uniqueID, sk_sp<SkPixelStorage> storage)
+Image_Base::Image_Base(const SkImageInfo& info, uint64_t uniqueID, sk_sp<SkPixelStorage> storage)
     : SkImage_Base(info, uniqueID, std::move(storage)) {}
 
 Image_Base::~Image_Base() = default;
