@@ -27,6 +27,7 @@
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/vk/GrVkDescriptorSet.h"  // IWYU pragma: keep
 #include "src/gpu/vk/VulkanMutableTextureStatePriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cinttypes>
 #include <cstdint>
@@ -315,7 +316,7 @@ private:
     private:
         void freeGPUData() const override;
 
-        const GrVkGpu*     fGpu;
+        raw_ptr<const GrVkGpu> fGpu;
         VkImage            fImage;
         skgpu::VulkanAlloc fAlloc;
 
@@ -333,7 +334,7 @@ private:
         void freeGPUData() const override;
     };
 
-    Resource* fResource;
+    raw_ptr<Resource> fResource;
 
     friend class GrVkRenderTarget;
 };

@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 
@@ -61,7 +62,7 @@ public:
         // offsets are only valid if the SkSLType of the fVariable is not a sampler.
         uint32_t                fOffsets[kLayoutCount];
         // fImmutableSampler is used for sampling an image with a ycbcr conversion.
-        const GrVkSampler*      fImmutableSampler = nullptr;
+        raw_ptr<const GrVkSampler> fImmutableSampler = nullptr;
     };
     typedef SkTBlockList<VkUniformInfo> UniformInfoArray;
 

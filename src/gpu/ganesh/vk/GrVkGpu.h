@@ -30,6 +30,7 @@
 #include "src/gpu/ganesh/vk/GrVkMSAALoadManager.h"
 #include "src/gpu/ganesh/vk/GrVkResourceProvider.h"
 #include "src/gpu/ganesh/vk/GrVkSemaphore.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <array>
 #include <cstddef>
@@ -463,9 +464,9 @@ private:
 
     GrVkMSAALoadManager                                   fMSAALoadManager;
 
-    GrVkCommandPool*                                      fMainCmdPool;
+    raw_ptr<GrVkCommandPool> fMainCmdPool;
     // just a raw pointer; object's lifespan is managed by fCmdPool
-    GrVkPrimaryCommandBuffer*                             fMainCmdBuffer;
+    raw_ptr<GrVkPrimaryCommandBuffer> fMainCmdBuffer;
 
     skia_private::STArray<1, GrVkSemaphore::Resource*>    fSemaphoresToWaitOn;
     skia_private::STArray<1, GrVkSemaphore::Resource*>    fSemaphoresToSignal;

@@ -614,8 +614,7 @@ void GrVkImage::prepareForExternal(GrVkGpu* gpu) {
 
 void GrVkImage::releaseImage() {
     if (fResource) {
-        fResource->unref();
-        fResource = nullptr;
+        fResource.ExtractAsDangling()->unref();
     }
     fFramebufferView.reset();
     fTextureView.reset();

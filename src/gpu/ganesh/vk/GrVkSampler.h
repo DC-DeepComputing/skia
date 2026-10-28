@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/vk/GrVkManagedResource.h"
 #include "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cinttypes>
 #include <cstdint>
@@ -82,7 +83,7 @@ private:
     static uint32_t GenID();
 
     VkSampler                   fSampler;
-    GrVkSamplerYcbcrConversion* fYcbcrConversion;
+    mutable raw_ptr<GrVkSamplerYcbcrConversion> fYcbcrConversion;
     Key                         fKey;
     uint32_t                    fUniqueID;
 
