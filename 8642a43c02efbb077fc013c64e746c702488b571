@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fa1ef02_158a4617",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-28T16:25:35Z",
+      "side": 1,
+      "message": "LGTM, thank you! Verified that returning early when `trailedRange.start \u003e\u003d trailedRange.end` avoids `size_t` underflow on runs removed by `createEllipsis`, and clamping `trimmedRange.end` to `trimmedRange.start` produces an empty `trimmed` span at `trimmedRange.start \u003c fClusters.size()` (stays in bounds thanks to the trailing `EMPTY_RUN` sentinel cluster) so all clusters in a trailing-whitespace-only run are classified as `ghost \u003d true`.",
+      "revId": "8642a43c02efbb077fc013c64e746c702488b571",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
