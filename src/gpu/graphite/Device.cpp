@@ -1880,7 +1880,10 @@ void Device::drawGeometry(const Transform& localToDevice,
     // storage context to deduplicate uploads per draw pass.
     if (pathAtlas != nullptr) {
         Rect clippedShapeBounds = clip.transformedShapeBounds().makeIntersect(clip.scissor());
-        if (clippedShapeBounds.area() >= 0.8f * clip.transformedShapeBounds().area()) {
+        // Must check for empty/negative in the case makeIntersect() failed. This can happen for
+        // inverse-fills where transformedShapeBounds() is disjoint from the draw bounds.
+        if (!clippedShapeBounds.isEmptyNegativeOrNaN() &&
+            clippedShapeBounds.area() >= 0.8f * clip.transformedShapeBounds().area()) {
             // The clip isn't excluding very much of the original shape, so store the entire path
             // in the atlas to avoid redundant entries with slightly different clips.
             clippedShapeBounds = clip.transformedShapeBounds();
