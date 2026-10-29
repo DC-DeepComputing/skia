@@ -244,7 +244,6 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
     fAdvance.fX += shift;
     // Increment the cluster width
     cluster->space(shift);
-    cluster->setHalfLetterSpacing(space / 2);
 
     return shift;
 }
