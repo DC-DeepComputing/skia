@@ -39,28 +39,30 @@ void SkSpecialImage::draw(SkCanvas* canvas,
                                                   : SkCanvas::kFast_SrcRectConstraint);
 }
 
+SkSamplingOptions SkSpecialImage::safeSampling(const SkSamplingOptions& sampling) const {
+    if (this->isExactFit()) {
+        return sampling;
+    }
+    if (sampling.isAniso() || (!sampling.useCubic && sampling.mipmap != SkMipmapMode::kNone)) {
+        // if we were "fancier" than just bilerp (and not bicubic), only do bilerp
+        return SkSamplingOptions(SkFilterMode::kLinear);
+    }
+    return sampling;
+}
+
 // TODO(skbug.com/40043877): Once bitmap images work with SkImageShader::MakeSubset(), this does not
 // need to be virtual anymore.
 sk_sp<SkShader> SkSpecialImage::asShader(SkTileMode tileMode,
                                          const SkSamplingOptions& sampling,
                                          const SkMatrix& lm,
                                          bool strict) const {
+    const SkSamplingOptions safeSampling = this->safeSampling(sampling);
+
     // The special image's logical (0,0) is at its subset's topLeft() so we need to account for
     // that in the local matrix used when sampling.
     SkMatrix subsetOrigin = SkMatrix::Translate(-this->subset().topLeft());
     subsetOrigin.postConcat(lm);
 
-    // Special images are intermediate results that are frequently backed by approximate-fit
-    // textures whose backing store beyond subset() was never written, and asImage() below
-    // exposes (and on Ganesh exactifies the proxy to) that whole backing store. Mipmapped or
-    // anisotropic sampling would build the mip chain from the entire backing store and blend
-    // the uninitialized texels into the result even when the base level is clamped to the
-    // subset. Mirror downgrade_to_filter() in Device::drawSpecial() and never sample a special
-    // image with mipmaps: use (at most) bilinear/bicubic filtering of the base level.
-    SkSamplingOptions safeSampling = sampling;
-    if (sampling.isAniso() || (!sampling.useCubic && sampling.mipmap != SkMipmapMode::kNone)) {
-        safeSampling = SkSamplingOptions(SkFilterMode::kLinear);
-    }
     if (strict) {
         // However, we don't need to modify the subset itself since that is defined with respect
         // to the base image, and the local matrix is applied before any tiling/clamping.
