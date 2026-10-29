@@ -12,6 +12,7 @@
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkGPUContext.h"
+#include "src/gpu/ganesh/SkGaneshRecorder.h"
 
 #include <chrono>
 #include <cstddef>
@@ -75,6 +76,10 @@ public:
     }
 
 private:
+    std::unique_ptr<SkRecorder> makeRecorder(const RecorderOptions*) override {
+        return std::make_unique<SkGaneshRecorder>(fDirectContext.get());
+    }
+
     sk_sp<GrDirectContext> fDirectContext;
 };
 
