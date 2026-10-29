@@ -39,6 +39,31 @@
       },
       "revId": "075544cfdc42e5a484e36fa1dd01849d08ff4467",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d223488a_25b8e79d",
+        "filename": "src/codec/SkBmpStandardCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 5277219
+      },
+      "writtenOn": "2026-10-29T13:20:23Z",
+      "side": 1,
+      "message": "Done: added SkSwizzler::srcOffset() and dropped the Options parameter, so decodeIcoMask takes the subset\u0027s left edge from the swizzler.",
+      "parentUuid": "d690a97b_378ff132",
+      "range": {
+        "startLine": 327,
+        "startChar": 50,
+        "endLine": 327,
+        "endChar": 91
+      },
+      "tag": "",
+      "revId": "075544cfdc42e5a484e36fa1dd01849d08ff4467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
