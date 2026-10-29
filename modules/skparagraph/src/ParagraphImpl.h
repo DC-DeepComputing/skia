@@ -115,7 +115,7 @@ public:
     SkScalar firstLineOffset(SkScalar width) const {
         if (fParagraphStyle.getTextDirection() == TextDirection::kLtr) { return fFirstLineIndent; }
         // A positive indent can carry the leading edge beyond the far edge,
-        // even though the available width is clamped to zero.
+        // even though the available width is clamped to zero
         return SkIsFinite(width) ? std::min(0.0f, width - fFirstLineIndent) : 0;
     }
     void paint(SkCanvas* canvas, SkScalar x, SkScalar y) override;

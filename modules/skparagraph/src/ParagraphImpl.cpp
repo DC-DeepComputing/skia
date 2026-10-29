@@ -143,7 +143,7 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
 void ParagraphImpl::layout(SkScalar rawWidth, SkScalar firstLineIndent) {
     firstLineIndent = SkIsFinite(firstLineIndent) ? firstLineIndent : 0;
     if (firstLineIndent != fFirstLineIndent) {
-        // Shaping is independent of indent, but line breaks and positions are not.
+        // Shaping is independent of indent, but line breaks and positions are not
         fFirstLineIndent = firstLineIndent;
         if (fState >= kLineBroken) { fState = kShaped; }
     }
@@ -763,7 +763,9 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
         fHeight = advance.fY;
         fWidth = maxWidth;
         fMaxIntrinsicWidth = std::max(0.0f, run.advance().fX + fFirstLineIndent);
-        fMinIntrinsicWidth = std::max(0.0f, advance.fX + fFirstLineIndent);
+        fMinIntrinsicWidth = advance.fX == 0
+                ? 0.0f
+                : std::max(0.0f, advance.fX + fFirstLineIndent);
         fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
         fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
         fExceededMaxLines = false;
@@ -810,33 +812,50 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
 
 // Minimum width uses the first word's indented advance and ordinary advances
 // for later words. Read the original shaped clusters, including placeholders;
-// never derive this measurement from where the current soft wraps happened.
+// never derive this measurement from where the current soft wraps happened
 void ParagraphImpl::computeMinIntrinsicWidthWithIndent() {
     fMinIntrinsicWidth = 0;
-    SkScalar wordWidth = fFirstLineIndent;
-    SkScalar trimmedWidth = fFirstLineIndent;
-    bool hasWord = false;
+    const SkString* softHyphen = nullptr;
+    if (fParagraphStyle.getRenderSoftHyphens() &&
+        !fParagraphStyle.getSoftHyphenString().isEmpty()) {
+        softHyphen = &fParagraphStyle.getSoftHyphenString();
+    }
+    SkScalar wordWidth = 0;
+    SkScalar trimmedWidth = 0;
+    bool isFirstWord = true;
+    bool hasVisibleContent = false;
     auto finishWord = [&] {
-        fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, trimmedWidth);
+        if (hasVisibleContent) {
+            SkScalar total = trimmedWidth + (isFirstWord ? fFirstLineIndent : 0);
+            fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, std::max(0.0f, total));
+            isFirstWord = false;
+        }
         wordWidth = trimmedWidth = 0;
-        hasWord = false;
+        hasVisibleContent = false;
     };
-    // The last cluster is the terminal sentinel, without an original glyph.
+    // The last cluster is the terminal sentinel, without an original glyph
     for (int i = 0; i + 1 < fClusters.size(); ++i) {
         const auto& cluster = fClusters[i];
         if (cluster.isHardBreak()) {
             finishWord();
+            isFirstWord = false;
         } else if (cluster.run().isPlaceholder()) {
-            if (hasWord) { finishWord(); }
-            trimmedWidth = wordWidth + cluster.width();
             finishWord();
+            SkScalar total = cluster.width() + (isFirstWord ? fFirstLineIndent : 0);
+            fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, std::max(0.0f, total));
+            isFirstWord = false;
         } else {
-            hasWord = true;
             if (!cluster.isWhitespaceBreak()) {
                 trimmedWidth = wordWidth + cluster.trimmedWidth(cluster.endPos());
+                hasVisibleContent = true;
             }
             wordWidth += cluster.width();
-            if (cluster.isSoftBreak()) { finishWord(); }
+            if (cluster.isSoftBreak()) {
+                if (softHyphen && cluster.isSoftHyphen()) {
+                    trimmedWidth += TextLine::SoftHyphenWidth(softHyphen, &cluster);
+                }
+                finishWord();
+            }
         }
     }
     finishWord();
@@ -856,8 +875,7 @@ void ParagraphImpl::formatLines(SkScalar maxWidth) {
 
     bool firstLine = true;
     for (auto& line : fLines) {
-        line.format(effectiveAlign, firstLine ? this->firstLineWidth(maxWidth) : maxWidth,
-                    firstLine && fFirstLineIndent != 0);
+        line.format(effectiveAlign, firstLine ? this->firstLineWidth(maxWidth) : maxWidth);
         firstLine = false;
     }
 }
@@ -1648,6 +1666,9 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
 }
 
 int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
+    if (lineNumber < 0 || lineNumber >= fLines.size()) {
+        return 0;
+    }
     SkPathBuilder builder;
     int notConverted = 0;
     auto& line = fLines[lineNumber];

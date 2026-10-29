@@ -108,7 +108,7 @@ public:
                                              bool includeGhosts,
                                              const ClustersVisitor& visitor) const;
 
-    void format(TextAlign align, SkScalar maxWidth, bool alignOverflow = false);
+    void format(TextAlign align, SkScalar maxWidth);
     void paint(ParagraphPainter* painter, SkScalar x, SkScalar y);
     void visit(SkScalar x, SkScalar y);
     void ensureTextBlobCachePopulated();
@@ -155,6 +155,10 @@ public:
                                             BlockRange blockRange,
                                             const SkString& ellipsis,
                                             const Cluster* cluster);
+
+    // The width of the hyphen drawn when the line breaks after cluster, or 0 if none is drawn.
+    // A soft hyphen that ends the text never breaks a line
+    static SkScalar SoftHyphenWidth(const SkString* softHyphen, const Cluster* cluster);
 
 private:
     std::unique_ptr<Run> shapeEllipsis(const SkString& ellipsis, const Cluster* cluster);

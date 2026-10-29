@@ -276,9 +276,9 @@ public:
      * extend it beyond the paragraph's leading edge. Later lines use width.
      * The paragraph direction determines the leading edge. Alignment,
      * justification, drawing and all geometry queries share this layout.
-     * Non-finite indentation is treated as zero. layout(width) resets it.
+     * Non-finite indentation is treated as zero. layout(width) resets it
      */
-    virtual void layout(SkScalar width, SkScalar firstLineIndent) = 0;
+    virtual void layout(SkScalar width, SkScalar firstLineIndent) { this->layout(width); }
 
 protected:
     sk_sp<FontCollection> fFontCollection;
