@@ -13,6 +13,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkRectPriv.h"
+#include "src/core/SkSafetyChecks.h"
 #include "src/core/SkScopeExit.h"
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkTraceEvent.h"
@@ -202,6 +203,7 @@ void OpsTask::OpChain::visitProxies(const GrVisitProxyFunc& func) const {
 }
 
 void OpsTask::OpChain::deleteOps() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     while (!fList.empty()) {
         // Since the value goes out of scope immediately, the GrOp::Owner deletes the op.
         fList.popHead();
@@ -429,7 +431,11 @@ void OpsTask::deleteOps() {
 }
 
 OpsTask::~OpsTask() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     this->deleteOps();
+
+    // Reset explicitly inside the exclusion scope before member destruction
+    fArenas.reset();
 }
 
 void OpsTask::addOp(GrDrawingManager* drawingMgr, GrOp::Owner op,
