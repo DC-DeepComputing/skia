@@ -10,6 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/Swizzle.h"
@@ -39,6 +40,8 @@ struct GrGLSLBuiltinUniformHandles {
 };
 
 class GrGLSLUniformHandler {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     struct UniformInfo {
         GrShaderVar        fVariable;
