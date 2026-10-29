@@ -24,6 +24,7 @@
 #include "include/core/SkSpan.h"
 #include "include/effects/SkGradient.h"
 #include "include/private/SkMutex.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTo.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/core/SkDraw.h"
@@ -64,6 +65,8 @@ static SkSharedMutex* maybe_dw_mutex(DWriteFontTypeface& typeface) {
 }
 
 class SK_SCOPED_CAPABILITY Exclusive {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     explicit Exclusive(SkSharedMutex* maybe_lock) SK_ACQUIRE(*maybe_lock)
         : fLock(maybe_lock) {
@@ -81,6 +84,8 @@ private:
     SkSharedMutex* fLock;
 };
 class SK_SCOPED_CAPABILITY Shared {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     explicit Shared(SkSharedMutex* maybe_lock) SK_ACQUIRE_SHARED(*maybe_lock)
         : fLock(maybe_lock)  {
@@ -1714,7 +1719,9 @@ struct Context {
 
 static void ReleaseProc(const void* ptr, void* context) {
     Context* ctx = (Context*)context;
-    ctx->fontFace4->ReleaseGlyphImageData(ctx->glyphDataContext);
+    void* glyphDataContext = ctx->glyphDataContext;
+    ctx->glyphDataContext = nullptr;
+    ctx->fontFace4->ReleaseGlyphImageData(glyphDataContext);
     delete ctx;
 }
 }
