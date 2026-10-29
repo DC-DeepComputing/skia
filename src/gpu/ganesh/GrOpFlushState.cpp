@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
+#include "src/core/SkSafetyChecks.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -123,6 +124,7 @@ void GrOpFlushState::abort() {
 }
 
 void GrOpFlushState::reset() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     SkASSERT(fCurrDraw == fDraws.end());
     SkASSERT(fCurrUpload == fInlineUploads.end());
     fVertexPool.reset();

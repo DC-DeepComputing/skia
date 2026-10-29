@@ -10,6 +10,7 @@
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
+#include "src/core/SkSafetyChecks.h"
 
 #include <climits>
 #include <cstddef>
@@ -66,6 +67,7 @@ SkTDStorage& SkTDStorage::operator=(SkTDStorage&& that) {
 }
 
 SkTDStorage::~SkTDStorage() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     sk_free(fStorage);
 }
 
@@ -122,6 +124,7 @@ void SkTDStorage::reserve(int newCapacity) {
 
         fCapacity = expandedReserve;
         size_t newStorageSize = this->safe_bytes(fCapacity);
+        SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
         fStorage = static_cast<std::byte*>(sk_realloc_throw(fStorage, newStorageSize));
     }
 }

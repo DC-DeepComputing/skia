@@ -18,6 +18,7 @@
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPathRawShapes.h"
 #include "src/core/SkSafeMath.h"
+#include "src/core/SkSafetyChecks.h"
 #include "src/core/SkSpanPriv.h"
 
 #include <array>
@@ -185,6 +186,7 @@ SkPathData::~SkPathData() {
 }
 
 void SkPathData::operator delete(void* p) {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     ::operator delete(p);
 }
 
