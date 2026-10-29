@@ -12,6 +12,7 @@
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
@@ -85,7 +86,8 @@ private:
         GrVertexAttribType        fCPUType;
         SkSLType                  fGPUType;
         GrGLsizei                 fStride;
-        const GrGLvoid*           fOffset;
+        // RAW_PTR_EXCLUSION: Also holds integer buffer offsets.
+        RAW_PTR_EXCLUSION const GrGLvoid* fOffset;
         int                       fDivisor;
     };
 
