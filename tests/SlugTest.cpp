@@ -29,6 +29,7 @@
 #include "include/private/chromium/Slug.h"
 #include "include/utils/SkCustomTypeface.h"
 #include "src/gpu/MaskFormat.h"
+#include "src/text/gpu/SlugImpl.h"
 #include "src/text/gpu/VertexFiller.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
@@ -453,6 +454,54 @@ DEF_TEST(VertexFiller_boundsAndDeviceMatrix, reporter) {
         REPORTER_ASSERT(reporter, !b.isEmpty());
         REPORTER_ASSERT(reporter, m == SkMatrix::Translate(0.5f, 0.0f));
     }
+
+    // 6. Infinity translation bypass: must be dropped and canUseDirect returns false.
+    {
+        sktext::gpu::VertexFiller infFiller(skgpu::MaskFormat::kA8,
+                                            SkMatrix::Translate(-2e38f, 0.0f),
+                                            bounds,
+                                            SkSpan(positions, 1),
+                                            /*canDrawDirect=*/true);
+        auto [b, m] = infFiller.boundsAndDeviceMatrix(SkMatrix::I(), {2e38f, 0.0f},
+                                                      /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, b.isEmpty());
+        auto [directOk, vec] = infFiller.canUseDirect(SkMatrix::Translate(2e38f, 0.0f));
+        REPORTER_ASSERT(reporter, !directOk);
+    }
+
+    // 7. Magnitude translation bypass: must be dropped and canUseDirect returns false.
+    {
+        auto [b, m] = directFiller.boundsAndDeviceMatrix(SkMatrix::I(), {1e25f, 0.0f},
+                                                         /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, b.isEmpty());
+        auto [directOk, vec] = directFiller.canUseDirect(SkMatrix::Translate(1e25f, 0.0f));
+        REPORTER_ASSERT(reporter, !directOk);
+    }
+
+    // 8. Float rounding absorption bypass: fractional canvas translate must not be absorbed.
+    {
+        sktext::gpu::VertexFiller largeFiller(skgpu::MaskFormat::kA8,
+                                              SkMatrix::Translate(8388608.0f, 0.0f),
+                                              bounds,
+                                              SkSpan(positions, 1),
+                                              /*canDrawDirect=*/true);
+        auto [b, m] = largeFiller.boundsAndDeviceMatrix(SkMatrix::Translate(0.5f, 0.0f),
+                                                        {8388608.0f, 0.0f},
+                                                        /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, b.isEmpty());
+        auto [directOk, vec] = largeFiller.canUseDirect(SkMatrix::Translate(8388608.5f, 0.0f));
+        REPORTER_ASSERT(reporter, !directOk);
+    }
+
+    // 9. Opposing large translations: drawOrigin = {3e6f, 0} and drawMatrix = Translate(-3e6f, 0)
+    // cancel exactly in double precision to integer offset {0, 0}.
+    {
+        auto [b, m] = directFiller.boundsAndDeviceMatrix(SkMatrix::Translate(-3e6f, 0.0f),
+                                                         {3e6f, 0.0f},
+                                                         /*supportBilerpAtlas=*/false);
+        REPORTER_ASSERT(reporter, !b.isEmpty());
+        REPORTER_ASSERT(reporter, m == SkMatrix::I());
+    }
 }
 
 namespace {
@@ -541,6 +590,53 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_fractional_replay_ganesh,
     }, reporter);
 }
 
+DEF_GANESH_TEST_FOR_CONTEXTS(Slug_fractional_replay_bilerp_ganesh,
+                             skgpu::IsRenderingContext,
+                             reporter,
+                             ctxInfo,
+                             [](GrContextOptions* options) {
+                                 options->fSupportBilerpFromGlyphAtlas = true;
+                             },
+                             CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(64, 64);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+
+    sk_sp<SkTextBlob> blob = make_test_blob();
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {10, 30}, SkPaint());
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    SkCanvas* canvas = surface->getCanvas();
+    SkPaint paint;
+    paint.setColor(SK_ColorBLACK);
+
+    // 1. Identity draw: renders text.
+    canvas->clear(SK_ColorWHITE);
+    slug->draw(canvas, paint);
+    dContext->flushAndSubmit();
+    REPORTER_ASSERT(reporter, surface_has_non_white_pixels(surface.get()));
+
+    // 2. Fractional translation: when fSupportBilerpFromGlyphAtlas is true, text must draw.
+    canvas->clear(SK_ColorWHITE);
+    canvas->save();
+    canvas->translate(0.5f, 0.0f);
+    slug->draw(canvas, paint);
+    canvas->restore();
+    dContext->flushAndSubmit();
+    REPORTER_ASSERT(reporter, surface_has_non_white_pixels(surface.get()));
+
+    // 3. Matrix scale: when fSupportBilerpFromGlyphAtlas is true, text must draw.
+    canvas->clear(SK_ColorWHITE);
+    canvas->save();
+    canvas->scale(1.5f, 1.5f);
+    slug->draw(canvas, paint);
+    canvas->restore();
+    dContext->flushAndSubmit();
+    REPORTER_ASSERT(reporter, surface_has_non_white_pixels(surface.get()));
+}
+
 #if defined(SK_GRAPHITE)
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Slug_fractional_replay_graphite,
                                          reporter,
@@ -567,5 +663,215 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Slug_fractional_replay_graphite,
     }, reporter);
 }
 #endif
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Slug_deserialize_rejects_fractional_direct_positions,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto dContext = ctxInfo.directContext();
+    SkImageInfo info = SkImageInfo::MakeN32Premul(64, 64);
+    auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
+    REPORTER_ASSERT(reporter, surface);
+
+    sk_sp<SkTextBlob> blob = make_test_blob();
+    sk_sp<sktext::gpu::Slug> slug =
+            sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {10, 30}, SkPaint());
+    REPORTER_ASSERT(reporter, slug != nullptr);
+
+    sk_sp<SkData> data = slug->serialize();
+    REPORTER_ASSERT(reporter, data != nullptr && data->size() >= 52);
+    if (!data || data->size() < 52) {
+        return;
+    }
+
+    // 1. Verify that the original untampered Slug deserializes successfully.
+    sk_sp<sktext::gpu::Slug> validSlug =
+            sktext::gpu::Slug::Deserialize(data->data(), data->size(), nullptr);
+    REPORTER_ASSERT(reporter, validSlug != nullptr);
+
+    // In a single-glyph direct mask SubRun, the last 12 bytes of the serialized buffer
+    // are the point array: uint32_t count (1), float x, float y.
+    const size_t countOffset = data->size() - 12;
+    const size_t xOffset = data->size() - 8;
+    const size_t yOffset = data->size() - 4;
+
+    uint32_t count = 0;
+    float origX = 0.0f;
+    float origY = 0.0f;
+    memcpy(&count, (const uint8_t*)data->data() + countOffset, sizeof(count));
+    memcpy(&origX, (const uint8_t*)data->data() + xOffset, sizeof(origX));
+    memcpy(&origY, (const uint8_t*)data->data() + yOffset, sizeof(origY));
+
+    REPORTER_ASSERT(reporter, count == 1);
+    REPORTER_ASSERT(reporter, SkScalarIsInt(origX) && SkScalarIsInt(origY));
+
+    auto try_deserialize_mutated = [](const SkData* src, size_t offset, auto mutatedValue) -> bool {
+        SkTDArray<uint8_t> mutatedData;
+        mutatedData.append(src->size(), (const uint8_t*)src->data());
+        memcpy(mutatedData.data() + offset, &mutatedValue, sizeof(mutatedValue));
+        sk_sp<sktext::gpu::Slug> result =
+                sktext::gpu::Slug::Deserialize(mutatedData.data(), mutatedData.size(), nullptr);
+        return result != nullptr;
+    };
+
+    // 2. Fractional X coordinate must be rejected.
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), xOffset, origX + 0.5f));
+
+    // 3. Fractional Y coordinate must be rejected.
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), yOffset, origY + 0.5f));
+
+    // 4. Non-finite coordinates must be rejected.
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), xOffset, SK_ScalarNaN));
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), yOffset, SK_ScalarInfinity));
+
+    // 5. Extremely large float (out of magnitude bounds) must be rejected.
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), xOffset, 1e25f));
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), yOffset, -1e25f));
+
+    // 6. Flipping canDrawDirect to 0 in a DirectMaskSubRun must be rejected.
+    const size_t canDrawDirectOffset = data->size() - 52;
+    uint32_t origCanDrawDirect = 0;
+    memcpy(&origCanDrawDirect, (const uint8_t*)data->data() + canDrawDirectOffset,
+           sizeof(origCanDrawDirect));
+    REPORTER_ASSERT(reporter, origCanDrawDirect == 1);
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), canDrawDirectOffset, 0u));
+
+    // 7. Non-finite creationMatrix must be rejected.
+    const size_t creationMatrixOffset = data->size() - 48;
+    REPORTER_ASSERT(reporter,
+                    !try_deserialize_mutated(data.get(), creationMatrixOffset, SK_ScalarNaN));
+
+    // 8. creationMatrix mismatch relative to initialPositionMatrix must be rejected.
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), creationMatrixOffset, 2.0f));
+
+    // 9. Slug creation with extreme coordinates must not assert in VertexFiller::Make.
+    {
+        surface->getCanvas()->save();
+        surface->getCanvas()->translate(1e10f, 0);
+        sk_sp<sktext::gpu::Slug> largeSlug =
+                sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {0, 0}, SkPaint());
+        surface->getCanvas()->restore();
+        REPORTER_ASSERT(reporter, largeSlug == nullptr);
+    }
+
+    // 10. Deserialization must reject non-finite origins.
+    const size_t originXOffset = 16;
+    const size_t originYOffset = 20;
+    REPORTER_ASSERT(reporter,
+                    !try_deserialize_mutated(data.get(), originXOffset, SK_ScalarInfinity));
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), originXOffset, SK_ScalarNaN));
+    REPORTER_ASSERT(reporter,
+                    !try_deserialize_mutated(data.get(), originYOffset, SK_ScalarInfinity));
+    REPORTER_ASSERT(reporter, !try_deserialize_mutated(data.get(), originYOffset, SK_ScalarNaN));
+
+    // Deserializing with oversized origin succeeds because origin is finite, but canDraw
+    // without bilerp atlas drops the draw due to translation bounds.
+    {
+        SkTDArray<uint8_t> mutatedData;
+        mutatedData.append(data->size(), (const uint8_t*)data->data());
+        float largeOrigin = 8388608.0f;
+        memcpy(mutatedData.data() + originXOffset, &largeOrigin, sizeof(largeOrigin));
+        sk_sp<sktext::gpu::Slug> result =
+                sktext::gpu::Slug::Deserialize(mutatedData.data(), mutatedData.size(), nullptr);
+        REPORTER_ASSERT(reporter, result != nullptr);
+        auto slugImpl = static_cast<const sktext::gpu::SlugImpl*>(result.get());
+        REPORTER_ASSERT(reporter, !slugImpl->canDraw(SkMatrix::I(), /*supportBilerpAtlas=*/false));
+    }
+
+    // 11. Transformed mask slug deserialization must reject coordinates that overflow safe bounds.
+    {
+        surface->getCanvas()->save();
+        surface->getCanvas()->rotate(45.0f);
+        sk_sp<sktext::gpu::Slug> xformedSlug =
+                sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {10, 30}, SkPaint());
+        surface->getCanvas()->restore();
+        REPORTER_ASSERT(reporter, xformedSlug != nullptr);
+
+        sk_sp<SkData> xformedData = xformedSlug->serialize();
+        REPORTER_ASSERT(reporter, xformedData != nullptr && xformedData->size() >= 12);
+
+        // Mutating leftTop to FLT_MAX causes glyph_bounds_from_left_top to overflow to +Infinity.
+        const size_t xfPointXOffset = xformedData->size() - 8;
+        const size_t xfPointYOffset = xformedData->size() - 4;
+
+        REPORTER_ASSERT(reporter, !try_deserialize_mutated(
+                xformedData.get(), xfPointXOffset, 3.4028234e38f));
+        REPORTER_ASSERT(reporter, !try_deserialize_mutated(
+                xformedData.get(), xfPointYOffset, 3.4028234e38f));
+        REPORTER_ASSERT(reporter, !try_deserialize_mutated(
+                xformedData.get(), xfPointXOffset, -3.4028234e38f));
+        REPORTER_ASSERT(reporter, !try_deserialize_mutated(
+                xformedData.get(), xfPointYOffset, -3.4028234e38f));
+    }
+
+    // 12. ConvertBlob with coordinates near FLT_MAX must not produce slugs with infinite bounds.
+    {
+        surface->getCanvas()->save();
+        surface->getCanvas()->rotate(45.0f);
+        sk_sp<sktext::gpu::Slug> nearMaxSlug =
+                sktext::gpu::Slug::ConvertBlob(
+                        surface->getCanvas(), *blob, {3.402823e38f, 0}, SkPaint());
+        surface->getCanvas()->restore();
+        if (nearMaxSlug != nullptr) {
+            REPORTER_ASSERT(reporter, nearMaxSlug->sourceBounds().isFinite());
+        }
+    }
+
+    // 13. Perspective initialPositionMatrix must deserialize successfully for non-direct runs.
+    {
+        SkMatrix persMatrix;
+        persMatrix.setPerspY(0.001f);
+        surface->getCanvas()->save();
+        surface->getCanvas()->concat(persMatrix);
+        sk_sp<sktext::gpu::Slug> persSlug =
+                sktext::gpu::Slug::ConvertBlob(surface->getCanvas(), *blob, {10, 30}, SkPaint());
+        surface->getCanvas()->restore();
+        REPORTER_ASSERT(reporter, persSlug != nullptr);
+        sk_sp<SkData> persData = persSlug->serialize();
+        REPORTER_ASSERT(reporter, persData != nullptr && persData->size() > 0);
+        sk_sp<sktext::gpu::Slug> deserializedPersSlug =
+                sktext::gpu::Slug::Deserialize(persData->data(), persData->size(), nullptr);
+        REPORTER_ASSERT(reporter, deserializedPersSlug != nullptr);
+        auto persSlugImpl = static_cast<const sktext::gpu::SlugImpl*>(deserializedPersSlug.get());
+        REPORTER_ASSERT(reporter, persSlugImpl->canDraw(persMatrix, /*supportBilerpAtlas=*/false));
+    }
+
+    // 14. Large canvas translation (> kMaxDirectCoord) with a glyph that maps to {0, 0}
+    // is safely dropped by prepare_for_direct_mask_drawing instead of crashing.
+    {
+        auto typeface = ToolUtils::CreatePortableTypeface("serif", SkFontStyle());
+        SkFont testFont(typeface, 16);
+        SkTextBlobBuilder posBuilder;
+        const SkTextBlobBuilder::RunBuffer& runBuf = posBuilder.allocRunPos(testFont, 1);
+        testFont.textToGlyphs("A", 1, SkTextEncoding::kUTF8, SkSpan(runBuf.glyphs, 1));
+        runBuf.points()[0] = {-5e6f, 0};
+        sk_sp<SkTextBlob> posBlob = posBuilder.make();
+        REPORTER_ASSERT(reporter, posBlob != nullptr);
+
+        surface->getCanvas()->save();
+        surface->getCanvas()->translate(5e6f, 0);
+        sk_sp<sktext::gpu::Slug> largeTransSlug =
+                sktext::gpu::Slug::ConvertBlob(
+                        surface->getCanvas(), *posBlob, {0, 0}, SkPaint());
+        surface->getCanvas()->restore();
+        // The extreme translation is rejected for direct mask drawing and cleanly dropped.
+        REPORTER_ASSERT(reporter, largeTransSlug == nullptr);
+    }
+
+    // 15. Opposing large translation Slug can draw when replayed with creation matrix.
+    {
+        surface->getCanvas()->save();
+        surface->getCanvas()->translate(-3e6f, 0);
+        sk_sp<sktext::gpu::Slug> opposingSlug =
+                sktext::gpu::Slug::ConvertBlob(
+                        surface->getCanvas(), *blob, {3e6f, 0}, SkPaint());
+        surface->getCanvas()->restore();
+        REPORTER_ASSERT(reporter, opposingSlug != nullptr);
+        auto oppSlugImpl = static_cast<const sktext::gpu::SlugImpl*>(opposingSlug.get());
+        REPORTER_ASSERT(reporter, oppSlugImpl->canDraw(SkMatrix::Translate(-3e6f, 0),
+                                                       /*supportBilerpAtlas=*/false));
+    }
+}
+
 
 
