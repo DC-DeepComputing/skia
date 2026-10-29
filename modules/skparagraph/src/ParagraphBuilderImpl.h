@@ -97,7 +97,8 @@ protected:
     void addPlaceholder(const PlaceholderStyle& placeholderStyle, bool lastOne);
     void finalize();
 
-    SkString fUtf8;
+    // std::string grows geometrically. SkString copies the text on almost every append.
+    std::string fUtf8;
     // TextStyle, Block, and Placeholder contain std::vector and std::optional, which poison
     // disengaged storage under MSVC STL ASAN and must be relocated via move constructors
     skia_private::STArray<4, TextStyle> fTextStyles;
