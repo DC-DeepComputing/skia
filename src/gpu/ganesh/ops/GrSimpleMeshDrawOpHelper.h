@@ -21,6 +21,7 @@
 #include "src/gpu/ganesh/GrUserStencilSettings.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <new>
@@ -207,7 +208,7 @@ protected:
                                                 GrProcessorAnalysisCoverage geometryCoverage,
                                                 GrProcessorAnalysisColor* geometryColor);
 
-    GrProcessorSet* fProcessors;
+    raw_ptr<GrProcessorSet> fProcessors;
     GrPipeline::InputFlags fPipelineFlags;
     unsigned fAAType : 2;
     unsigned fUsesLocalCoords : 1;

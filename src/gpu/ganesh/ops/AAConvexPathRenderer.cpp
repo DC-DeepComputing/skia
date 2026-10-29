@@ -56,6 +56,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
@@ -945,8 +946,8 @@ private:
         int fMeshCount;
     };
 
-    SkTDArray<MeshDraw> fDraws;
-    GrProgramInfo*      fProgramInfo = nullptr;
+    SkTDArray<MeshDraw>                       fDraws;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
