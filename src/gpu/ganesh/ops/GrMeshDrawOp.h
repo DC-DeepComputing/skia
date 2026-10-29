@@ -9,6 +9,7 @@
 #define GrMeshDrawOp_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
@@ -61,6 +62,8 @@ protected:
     /** Helper for rendering repeating meshes using a patterned index buffer. This class creates the
         space for the vertices and flushes the draws to the GrMeshDrawTarget. */
     class PatternHelper {
+        SK_ONLY_STACK_ALLOCATABLE;
+
     public:
         PatternHelper(GrMeshDrawTarget*, GrPrimitiveType, size_t vertexStride,
                       sk_sp<const GrBuffer> indexBuffer, int verticesPerRepetition,
@@ -90,6 +93,8 @@ protected:
      *  It only draws non-antialiased indexed quads.
      */
     class QuadHelper : private PatternHelper {
+        SK_ONLY_STACK_ALLOCATABLE;
+
     public:
         QuadHelper() = delete;
         QuadHelper(GrMeshDrawTarget*, size_t vertexStride, int quadsToDraw);

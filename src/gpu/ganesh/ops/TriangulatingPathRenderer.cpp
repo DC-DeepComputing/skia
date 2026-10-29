@@ -19,6 +19,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkMalloc.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkMessageBus.h"
@@ -134,6 +135,8 @@ private:
 };
 
 class StaticVertexAllocator : public GrEagerVertexAllocator {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     StaticVertexAllocator(GrResourceProvider* resourceProvider, bool canMapVB)
             : fResourceProvider(resourceProvider)
