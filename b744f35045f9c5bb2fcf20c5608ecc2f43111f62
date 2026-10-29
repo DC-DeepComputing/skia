@@ -50,6 +50,23 @@
       "message": "We have been discussing these potential changes and are generally in favor of adding this capability. Would be interested in some A/B testing on memory/perf impact as we move forward. Adding relevant TLs.",
       "revId": "b744f35045f9c5bb2fcf20c5608ecc2f43111f62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92631391_02731d1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-29T23:47:15Z",
+      "side": 1,
+      "message": "Hi Behdad,\n\nYes, we agree with this direction, behind a flag. Since SkGlyphID is a type, I assume this means a compile-time define, off by default, so that clients like Chrome can build both variants and compare. Before going further, we want to see how much it costs in memory and performance.\n\nWhat I don\u0027t see yet is the next step, and who takes it. Could you propose one?",
+      "revId": "b744f35045f9c5bb2fcf20c5608ecc2f43111f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
