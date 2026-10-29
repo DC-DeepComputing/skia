@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6195319_a0648cb6",
+        "filename": "src/ports/SkOSFile_posix.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-29T14:40:39Z",
+      "side": 1,
+      "message": "Can this not just be `SkAutoTCallVProc\u003cDIR, ::closedir\u003e`?",
+      "range": {
+        "startLine": 136,
+        "startChar": 26,
+        "endLine": 136,
+        "endChar": 35
+      },
+      "revId": "1e74307c83cd9cdb072ebb4ab049a84948f4fbc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
