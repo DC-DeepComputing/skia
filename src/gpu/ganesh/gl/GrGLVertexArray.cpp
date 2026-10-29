@@ -119,7 +119,7 @@ void GrGLAttribArrayState::set(GrGLGpu* gpu,
         array->fCPUType != cpuType ||
         array->fGPUType != gpuType ||
         array->fStride != stride ||
-        array->fOffset != offsetAsPtr) {
+        array->fOffset != reinterpret_cast<uintptr_t>(offsetAsPtr)) {
         // We always have to call this if we're going to change the array pointer. 'array' is
         // tracking the last buffer used to setup attrib pointers, not the last buffer bound.
         // GrGLGpu will avoid redundant binds.
@@ -144,7 +144,7 @@ void GrGLAttribArrayState::set(GrGLGpu* gpu,
         array->fCPUType = cpuType;
         array->fGPUType = gpuType;
         array->fStride = stride;
-        array->fOffset = offsetAsPtr;
+        array->fOffset = reinterpret_cast<uintptr_t>(offsetAsPtr);
     }
     if (gpu->caps()->drawInstancedSupport() && array->fDivisor != divisor) {
         SkASSERT(0 == divisor || 1 == divisor); // not necessarily a requirement but what we expect.
