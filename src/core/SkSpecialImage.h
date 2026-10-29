@@ -31,9 +31,7 @@ enum SkAlphaType : int;
 enum SkColorType : int;
 enum class SkTileMode;
 
-enum {
-    kNeedNewImageUniqueID_SpecialImage = 0
-};
+static constexpr uint64_t kNeedNewImageUniqueID_SpecialImage = 0;
 
 /**
  * This is a restricted form of SkImage solely intended for internal use. It
@@ -58,7 +56,7 @@ public:
     SkISize dimensions() const { return { this->width(), this->height() }; }
     const SkIRect& subset() const { return fSubset; }
 
-    uint32_t uniqueID() const { return fUniqueID; }
+    uint64_t uniqueID() const { return fUniqueID; }
 
     virtual SkISize backingStoreDimensions() const = 0;
 
@@ -139,7 +137,7 @@ public:
 
 protected:
     SkSpecialImage(const SkIRect& subset,
-                   uint32_t uniqueID,
+                   uint64_t uniqueID,
                    const SkColorInfo&,
                    const SkSurfaceProps&);
 
@@ -150,7 +148,7 @@ protected:
 
 private:
     const SkIRect        fSubset;
-    const uint32_t       fUniqueID;
+    const uint64_t fUniqueID;
     const SkColorInfo    fColorInfo;
     const SkSurfaceProps fProps;
 };

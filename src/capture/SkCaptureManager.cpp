@@ -110,7 +110,7 @@ sk_sp<SkCapture> SkCaptureManager::getLastCapture() const {
 }
 
 skia_private::TArray<sk_sp<SkCaptureAsset>> SkCaptureManager::snapDrawTasksForStorageIDs(
-        SkSpan<const uint32_t> storageIds) {
+        SkSpan<const uint64_t> storageIds) {
     skia_private::TArray<sk_sp<SkCaptureAsset>> snapped;
     if (!fIsCurrentlyCapturing || storageIds.empty()) {
         return snapped;
@@ -128,7 +128,7 @@ skia_private::TArray<sk_sp<SkCaptureAsset>> SkCaptureManager::snapDrawTasksForSt
         if (!storage) {
             continue;
         }
-        uint32_t id = storage->getPixelStorageId();
+        uint64_t id = storage->getPixelStorageId();
         if (std::find(storageIds.begin(), storageIds.end(), id) != storageIds.end()) {
             auto asset = this->snapAndIncrement(canvas.get());
             if (asset && asset->fPicture) {

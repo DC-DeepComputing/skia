@@ -29,19 +29,23 @@
 
 /**
  *  Use this for bitmapcache and mipmapcache entries.
+ *  Bitmap generation IDs and image unique IDs never set bit 0 (see SkNextID::ImageID()).
+ *  We set bit 0 here so bitmap shared IDs are always odd and never collide with
+ *  SkPicturePriv::MakeSharedID (which is always even) or 0.
  */
-uint64_t SkMakeResourceCacheSharedIDForBitmap(uint32_t bitmapGenID) {
-    uint64_t sharedID = SkSetFourByteTag('b', 'm', 'a', 'p');
-    return (sharedID << 32) | bitmapGenID;
+uint64_t SkMakeResourceCacheSharedIDForBitmap(uint64_t bitmapGenID) {
+    SkASSERT(bitmapGenID != 0);
+    SkASSERT((bitmapGenID & 1ULL) == 0);
+    return bitmapGenID | 1ULL;
 }
 
-void SkNotifyBitmapGenIDIsStale(uint32_t bitmapGenID) {
+void SkNotifyBitmapGenIDIsStale(uint64_t bitmapGenID) {
     SkResourceCache::PostPurgeSharedID(SkMakeResourceCacheSharedIDForBitmap(bitmapGenID));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-SkBitmapCacheDesc SkBitmapCacheDesc::Make(uint32_t imageID, const SkIRect& subset) {
+SkBitmapCacheDesc SkBitmapCacheDesc::Make(uint64_t imageID, const SkIRect& subset) {
     SkASSERT(imageID);
     SkASSERT(subset.width() > 0 && subset.height() > 0);
     return { imageID, subset };
@@ -55,22 +59,35 @@ SkBitmapCacheDesc SkBitmapCacheDesc::Make(const SkImage* image) {
 namespace {
 static unsigned gBitmapKeyNamespaceLabel;
 
+struct CacheKeyData {
+    uint32_t fImageID_lo;
+    uint32_t fImageID_hi;
+    SkIRect fSubset;
+
+    explicit CacheKeyData(const SkBitmapCacheDesc& desc)
+            : fImageID_lo(static_cast<uint32_t>(desc.fImageID & 0xFFFFFFFFULL))
+            , fImageID_hi(static_cast<uint32_t>(desc.fImageID >> 32))
+            , fSubset(desc.fSubset) {}
+};
+static_assert(sizeof(CacheKeyData) == 2 * sizeof(uint32_t) + sizeof(SkIRect));
+static_assert(alignof(CacheKeyData) == 4);
+
 struct BitmapKey : public SkResourceCache::Key {
 public:
-    BitmapKey(const SkBitmapCacheDesc& desc) : fDesc(desc) {
-        this->init(&gBitmapKeyNamespaceLabel, SkMakeResourceCacheSharedIDForBitmap(fDesc.fImageID),
-                   sizeof(fDesc));
+    BitmapKey(const SkBitmapCacheDesc& desc) : fData(desc) {
+        this->init(&gBitmapKeyNamespaceLabel,
+                   SkMakeResourceCacheSharedIDForBitmap(desc.fImageID),
+                   sizeof(fData));
     }
 
-    const SkBitmapCacheDesc fDesc;
+    const CacheKeyData fData;
 };
+static_assert(sizeof(BitmapKey) == sizeof(SkResourceCache::Key) + sizeof(CacheKeyData));
 }  // namespace
 
 //////////////////////
 
-void SkBitmapCache_setImmutableWithID(SkPixelRef* pr, uint32_t id) {
-    pr->setImmutableWithID(id);
-}
+void SkBitmapCache_setImmutableWithID(SkPixelRef* pr, uint64_t id) { pr->setImmutableWithID(id); }
 
 class SkBitmapCache::Rec : public SkResourceCache::Rec {
 public:
@@ -175,7 +192,7 @@ private:
 
     SkImageInfo fInfo;
     size_t      fRowBytes;
-    uint32_t    fPrUniqueID;
+    uint64_t fPrUniqueID;
 
     // This field counts the number of external pixelrefs we have created.
     // They notify us when they are destroyed so we can decrement this.
@@ -233,13 +250,15 @@ static unsigned gMipMapKeyNamespaceLabel;
 
 struct MipMapKey : public SkResourceCache::Key {
 public:
-    MipMapKey(const SkBitmapCacheDesc& desc) : fDesc(desc) {
-        this->init(&gMipMapKeyNamespaceLabel, SkMakeResourceCacheSharedIDForBitmap(fDesc.fImageID),
-                   sizeof(fDesc));
+    MipMapKey(const SkBitmapCacheDesc& desc) : fData(desc) {
+        this->init(&gMipMapKeyNamespaceLabel,
+                   SkMakeResourceCacheSharedIDForBitmap(desc.fImageID),
+                   sizeof(fData));
     }
 
-    const SkBitmapCacheDesc fDesc;
+    const CacheKeyData fData;
 };
+static_assert(sizeof(MipMapKey) == sizeof(SkResourceCache::Key) + sizeof(CacheKeyData));
 
 struct MipMapRec : public SkResourceCache::Rec {
     MipMapRec(const SkBitmapCacheDesc& desc, const SkMipmap* result)
@@ -269,7 +288,7 @@ struct MipMapRec : public SkResourceCache::Rec {
             mm->unref();    // balance our call to ref()
             return false;
         }
-        // the call must call unref() when they are done.
+        // the caller must call unref() when they are done.
         *(const SkMipmap**)contextMip = mm;
         return true;
     }

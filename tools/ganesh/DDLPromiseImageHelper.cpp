@@ -24,12 +24,9 @@
 #include "src/image/SkImage_Base.h"
 
 DDLPromiseImageHelper::PromiseImageInfo::PromiseImageInfo(int index,
-                                                          uint32_t originalUniqueID,
+                                                          uint64_t originalUniqueID,
                                                           const SkImageInfo& ii)
-        : fIndex(index)
-        , fOriginalUniqueID(originalUniqueID)
-        , fImageInfo(ii) {
-}
+        : fIndex(index), fOriginalUniqueID(originalUniqueID), fImageInfo(ii) {}
 
 DDLPromiseImageHelper::PromiseImageInfo::PromiseImageInfo(PromiseImageInfo&& other)
         : fIndex(other.fIndex)

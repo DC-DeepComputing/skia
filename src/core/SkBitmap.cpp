@@ -338,9 +338,7 @@ bool SkBitmap::installPixels(const SkPixmap& pixmap) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-uint32_t SkBitmap::getGenerationID() const {
-    return fPixelRef ? fPixelRef->getGenerationID() : 0;
-}
+uint64_t SkBitmap::getGenerationID() const { return fPixelRef ? fPixelRef->getGenerationID() : 0; }
 
 void SkBitmap::notifyPixelsChanged() const {
     SkASSERT(!this->isImmutable());

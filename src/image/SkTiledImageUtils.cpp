@@ -54,7 +54,9 @@ void GetImageKeyValues(const SkImage* image, uint32_t keyValues[kNumImageKeyValu
 
     const SkImage_Base* imageBase = as_IB(image);
     if (const SkBitmap* bm = imageBase->onPeekBitmap()) {
-        keyValues[0] = bm->pixelRef()->getGenerationID();
+        uint64_t genID = bm->pixelRef()->getGenerationID();
+        keyValues[0] = static_cast<uint32_t>(genID & 0xFFFFFFFFULL);
+        keyValues[1] = static_cast<uint32_t>(genID >> 32);
         SkIRect subset = image->bounds();
         subset.offset(bm->pixelRefOrigin());
 
@@ -63,11 +65,11 @@ void GetImageKeyValues(const SkImage* image, uint32_t keyValues[kNumImageKeyValu
         SkASSERT(SkTFitsIn<uint32_t>(subset.fRight));
         SkASSERT(SkTFitsIn<uint32_t>(subset.fBottom));
 
-        keyValues[1] = 0;              // This empty slot is to disambiguate picture IDs
-        keyValues[2] = subset.fLeft;
-        keyValues[3] = subset.fTop;
-        keyValues[4] = subset.fRight;
-        keyValues[5] = subset.fBottom;
+        keyValues[2] = 0;  // This empty slot is to disambiguate picture IDs
+        keyValues[3] = subset.fLeft;
+        keyValues[4] = subset.fTop;
+        keyValues[5] = subset.fRight;
+        keyValues[6] = subset.fBottom;
         return;
     }
 
@@ -78,8 +80,10 @@ void GetImageKeyValues(const SkImage* image, uint32_t keyValues[kNumImageKeyValu
         }
     }
 
-    keyValues[0] = image->uniqueID();
-    memset(&keyValues[1], 0, (kNumImageKeyValues-1) * sizeof(uint32_t));
+    uint64_t uniqueID = image->uniqueID();
+    keyValues[0] = static_cast<uint32_t>(uniqueID & 0xFFFFFFFFULL);
+    keyValues[1] = static_cast<uint32_t>(uniqueID >> 32);
+    memset(&keyValues[2], 0, (kNumImageKeyValues - 2) * sizeof(uint32_t));
 }
 
 } // namespace SkTiledImageUtils

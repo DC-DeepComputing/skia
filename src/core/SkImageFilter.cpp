@@ -241,7 +241,7 @@ skif::FilterResult SkImageFilter_Base::filterImage(const skif::Context& context)
     // need to run the filter on it. This means `fUsesSrcInput` is not equivalent to the source
     // being non-null.
     const bool srcInKey = fUsesSrcInput && context.source();
-    uint32_t srcGenID = srcInKey ? context.source().image()->uniqueID() : SK_InvalidUniqueID;
+    uint64_t srcGenID = srcInKey ? context.source().image()->uniqueID() : SK_InvalidUniqueID;
     const SkIRect srcSubset = srcInKey ? context.source().image()->subset() : SkIRect::MakeWH(0, 0);
 
     SkImageFilterCacheKey key(fUniqueID,

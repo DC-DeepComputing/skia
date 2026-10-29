@@ -11,10 +11,11 @@
 #include "include/private/SkAssert.h"
 #include "src/core/SkNextID.h"
 
-SkImageGenerator::SkImageGenerator(const SkImageInfo& info, uint32_t uniqueID)
-    : fInfo(info)
-    , fUniqueID(kNeedNewImageUniqueID == uniqueID ? SkNextID::ImageID() : uniqueID)
-{}
+SkImageGenerator::SkImageGenerator(const SkImageInfo& info, uint64_t uniqueID)
+        : fInfo(info)
+        , fUniqueID(kNeedNewImageUniqueID == uniqueID ? SkNextID::ImageID() : uniqueID) {
+    SkASSERT((fUniqueID & 1ULL) == 0);
+}
 
 bool SkImageGenerator::getPixels(const SkImageInfo& info, void* pixels, size_t rowBytes) {
     if (kUnknown_SkColorType == info.colorType()) {

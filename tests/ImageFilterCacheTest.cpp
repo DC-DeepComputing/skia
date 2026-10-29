@@ -407,4 +407,18 @@ DEF_TEST(ImageFilterCache_64BitUniqueID, reporter) {
     REPORTER_ASSERT(reporter, found.image() == img1.get());
     REPORTER_ASSERT(reporter, cache->get(key2, &found));
     REPORTER_ASSERT(reporter, found.image() == img2.get());
+
+    // Also verify that keys with identical filter uniqueIDs but srcGenIDs differing only in the
+    // upper 32 bits do not collide.
+    constexpr uint64_t kSrcGenId1 = 0x0000000100000200ULL;
+    constexpr uint64_t kSrcGenId2 = 0x0000000200000200ULL;
+    SkImageFilterCacheKey srcKey1(kBaseId, SkMatrix::I(), clip, kSrcGenId1, img1->subset());
+    SkImageFilterCacheKey srcKey2(kBaseId, SkMatrix::I(), clip, kSrcGenId2, img1->subset());
+    REPORTER_ASSERT(reporter, !(srcKey1 == srcKey2));
+
+    cache->set(
+            srcKey1, filter1.get(), skif::FilterResult(img1, skif::LayerSpace<SkIPoint>(offset1)));
+    REPORTER_ASSERT(reporter, cache->get(srcKey1, &found));
+    REPORTER_ASSERT(reporter, found.image() == img1.get());
+    REPORTER_ASSERT(reporter, !cache->get(srcKey2, &found));
 }

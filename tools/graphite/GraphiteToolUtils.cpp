@@ -66,7 +66,8 @@ private:
     public:
         ImageKey(const SkImage* image, bool mipmapped) {
             uint32_t flags = mipmapped ? 0x1 : 0x0;
-            SkTiledImageUtils::GetImageKeyValues(image, &fValues[1]);
+            SkTiledImageUtils::GetImageKeyValues(
+                    image, SkSpan(fValues).subspan<1, SkTiledImageUtils::kNumImageKeyValues>());
             fValues[kNumValues - 1] = flags;
             fValues[0] = SkChecksum::Hash32(&fValues[1], (kNumValues - 1) * sizeof(uint32_t));
         }

@@ -24,7 +24,7 @@ public:
     SkCaptureAsset() {}
     ~SkCaptureAsset() override = default;
 
-    uint32_t fPixelStorageID = 0;
+    uint64_t fPixelStorageID = 0;
     uint32_t fContentID = 0;
     Type fType = Type::kPicture;
     sk_sp<SkPicture> fPicture;

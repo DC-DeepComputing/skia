@@ -78,7 +78,7 @@ static sk_sp<SkImage> make_raster_image(SkImage* img, GrDirectContext* dctx,
 static SkSerialReturnType collect_nontexture_images_proc(SkImage* img, void* ctx) {
     SkASSERT(img);
     SkSharingSerialContext* context = reinterpret_cast<SkSharingSerialContext*>(ctx);
-    uint32_t originalId = img->uniqueID();
+    uint64_t originalId = img->uniqueID();
     sk_sp<SkImage>* imageInMap = context->fNonTexMap.find(originalId);
     if (!imageInMap) {
         context->fNonTexMap[originalId] = make_raster_image(img, context->fDirectContext,
@@ -111,7 +111,7 @@ namespace SkSharingContext {
 
 SkSerialReturnType serializeImage(SkImage* img, void* ctx) {
     SkSharingSerialContext* context = reinterpret_cast<SkSharingSerialContext*>(ctx);
-    uint32_t id = img->uniqueID(); // get this process's id for the image. these are not hashes.
+    uint64_t id = img->uniqueID();  // get this process's id for the image. these are not hashes.
     // find out if we have already serialized this, and if so, what its in-file id is.
     int* fid = context->fImageMap.find(id);
     if (!fid) {

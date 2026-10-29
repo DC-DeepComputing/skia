@@ -136,12 +136,12 @@ private:
     // is all dropped via "reset".
     class PromiseImageInfo {
     public:
-        PromiseImageInfo(int index, uint32_t originalUniqueID, const SkImageInfo& ii);
+        PromiseImageInfo(int index, uint64_t originalUniqueID, const SkImageInfo& ii);
         PromiseImageInfo(PromiseImageInfo&& other);
         ~PromiseImageInfo();
 
         int index() const { return fIndex; }
-        uint32_t originalUniqueID() const { return fOriginalUniqueID; }
+        uint64_t originalUniqueID() const { return fOriginalUniqueID; }
         bool isYUV() const { return fYUVAPixmaps.isValid(); }
 
         SkISize overallDimensions() const { return fImageInfo.dimensions(); }
@@ -200,7 +200,7 @@ private:
 
     private:
         const int                          fIndex;                // index in the 'fImageInfo' array
-        const uint32_t                     fOriginalUniqueID;     // original ID for deduping
+        const uint64_t fOriginalUniqueID;                         // original ID for deduping
 
         const SkImageInfo                  fImageInfo;            // info for the overarching image
 

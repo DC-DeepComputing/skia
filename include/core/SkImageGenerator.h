@@ -28,7 +28,7 @@ public:
      */
     virtual ~SkImageGenerator() { }
 
-    uint32_t uniqueID() const { return fUniqueID; }
+    uint64_t uniqueID() const { return fUniqueID; }
 
     /**
      *  Return a ref to the encoded (i.e. compressed) representation
@@ -112,9 +112,11 @@ public:
     virtual bool isTextureGenerator() const { return false; }
 
 protected:
-    static constexpr int kNeedNewImageUniqueID = 0;
+    static constexpr uint64_t kNeedNewImageUniqueID = 0;
 
-    SkImageGenerator(const SkImageInfo& info, uint32_t uniqueId = kNeedNewImageUniqueID);
+    // If a non-zero uniqueId is provided, it must be an even number (bit 0 clear, matching
+    // SkNextID::ImageID()).
+    SkImageGenerator(const SkImageInfo& info, uint64_t uniqueId = kNeedNewImageUniqueID);
 
     virtual sk_sp<const SkData> onRefEncodedData() { return nullptr; }
 
@@ -129,7 +131,7 @@ protected:
     const SkImageInfo fInfo;
 
 private:
-    const uint32_t fUniqueID;
+    const uint64_t fUniqueID;
 
     SkImageGenerator(SkImageGenerator&&) = delete;
     SkImageGenerator(const SkImageGenerator&) = delete;

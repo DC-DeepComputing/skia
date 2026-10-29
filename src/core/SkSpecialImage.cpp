@@ -19,13 +19,14 @@
 #include "src/shaders/SkImageShader.h"
 
 SkSpecialImage::SkSpecialImage(const SkIRect& subset,
-                               uint32_t uniqueID,
+                               uint64_t uniqueID,
                                const SkColorInfo& colorInfo,
                                const SkSurfaceProps& props)
-    : fSubset(subset)
-    , fUniqueID(kNeedNewImageUniqueID_SpecialImage == uniqueID ? SkNextID::ImageID() : uniqueID)
-    , fColorInfo(colorInfo)
-    , fProps(props) {
+        : fSubset(subset)
+        , fUniqueID(kNeedNewImageUniqueID_SpecialImage == uniqueID ? SkNextID::ImageID() : uniqueID)
+        , fColorInfo(colorInfo)
+        , fProps(props) {
+    SkASSERT((fUniqueID & 1ULL) == 0);
 }
 
 void SkSpecialImage::draw(SkCanvas* canvas,

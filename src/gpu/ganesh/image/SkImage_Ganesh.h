@@ -58,7 +58,7 @@ namespace skgpu::ganesh { class SurfaceDrawContext; }
 class SkImage_Ganesh final : public SkImage_GaneshBase {
 public:
     SkImage_Ganesh(sk_sp<GrImageContext> context,
-                   uint32_t uniqueID,
+                   uint64_t uniqueID,
                    GrSurfaceProxyView view,
                    SkColorInfo info);
 

@@ -44,7 +44,7 @@ public:
         sk_sp<SharedGenerator> fSharedGenerator;
         SkImageInfo            fInfo;
         sk_sp<SkColorSpace>    fColorSpace;
-        uint32_t               fUniqueID;
+        uint64_t fUniqueID;
     };
 
     explicit SkImage_Lazy(Validator* validator);

@@ -13,12 +13,12 @@
 
 struct SkBitmapKey {
     SkIRect fSubset;
-    uint32_t fID;
+    uint64_t fID;
     bool operator==(const SkBitmapKey& rhs) const {
         return fID == rhs.fID && fSubset == rhs.fSubset;
     }
     bool operator!=(const SkBitmapKey& rhs) const { return !(*this == rhs); }
 };
-
+static_assert(sizeof(SkBitmapKey) == sizeof(SkIRect) + sizeof(uint64_t));
 
 #endif  // SkBitmapKey_DEFINED

@@ -7,13 +7,12 @@
 
 #include "include/private/SkPixelStorage.h"
 #include <atomic>
+#include "include/private/SkAssert.h"
 
-uint32_t SkPixelStorage::NextId() {
-    static std::atomic<uint32_t> gNextID{1};
-    uint32_t id;
-    do {
-        id = gNextID.fetch_add(1, std::memory_order_relaxed);
-    } while (id == 0);
+uint64_t SkPixelStorage::NextId() {
+    static std::atomic<uint64_t> gNextID{1};
+    uint64_t id = gNextID.fetch_add(1, std::memory_order_relaxed);
+    SkASSERT_RELEASE(id != 0);
     return id;
 }
 

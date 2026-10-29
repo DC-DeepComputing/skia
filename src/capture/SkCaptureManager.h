@@ -58,7 +58,7 @@ public:
      * @param storageIds The PixelStorage IDs of the surfaces whose pending draws should be snapped.
      */
     skia_private::TArray<sk_sp<SkCaptureAsset>> snapDrawTasksForStorageIDs(
-            SkSpan<const uint32_t> storageIds);
+            SkSpan<const uint64_t> storageIds);
     void onInsertRecording(const skia_private::TArray<sk_sp<SkCaptureAsset>>& capturedPictures);
 
     sk_sp<SkCapture> getLastCapture() const;

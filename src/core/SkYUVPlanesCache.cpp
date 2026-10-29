@@ -28,15 +28,19 @@ struct YUVValue {
 };
 
 struct YUVPlanesKey : public SkResourceCache::Key {
-    YUVPlanesKey(uint32_t genID)
-        : fGenID(genID)
-    {
-        this->init(&gYUVPlanesKeyNamespaceLabel, SkMakeResourceCacheSharedIDForBitmap(genID),
-                   sizeof(genID));
+    YUVPlanesKey(uint64_t genID)
+            : fGenID_lo(static_cast<uint32_t>(genID & 0xFFFFFFFFULL))
+            , fGenID_hi(static_cast<uint32_t>(genID >> 32)) {
+        this->init(&gYUVPlanesKeyNamespaceLabel,
+                   SkMakeResourceCacheSharedIDForBitmap(genID),
+                   2 * sizeof(uint32_t));
     }
 
-    uint32_t fGenID;
+    uint32_t fGenID_lo;
+    uint32_t fGenID_hi;
 };
+static_assert(sizeof(YUVPlanesKey) == sizeof(SkResourceCache::Key) + 2 * sizeof(uint32_t),
+              "YUVPlanesKey must have no padding");
 
 struct YUVPlanesRec : public SkResourceCache::Rec {
     YUVPlanesRec(YUVPlanesKey key, SkCachedData* data, const SkYUVAPixmaps& pixmaps)
@@ -77,7 +81,7 @@ struct YUVPlanesRec : public SkResourceCache::Rec {
 };
 } // namespace
 
-SkCachedData* SkYUVPlanesCache::FindAndRef(uint32_t genID,
+SkCachedData* SkYUVPlanesCache::FindAndRef(uint64_t genID,
                                            SkYUVAPixmaps* pixmaps,
                                            SkResourceCache* localCache) {
     YUVValue result;
@@ -90,7 +94,9 @@ SkCachedData* SkYUVPlanesCache::FindAndRef(uint32_t genID,
     return result.fData;
 }
 
-void SkYUVPlanesCache::Add(uint32_t genID, SkCachedData* data, const SkYUVAPixmaps& pixmaps,
+void SkYUVPlanesCache::Add(uint64_t genID,
+                           SkCachedData* data,
+                           const SkYUVAPixmaps& pixmaps,
                            SkResourceCache* localCache) {
     YUVPlanesKey key(genID);
     return CHECK_LOCAL(localCache, add, Add, new YUVPlanesRec(key, data, pixmaps));

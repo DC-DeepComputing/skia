@@ -59,8 +59,11 @@ public:
     static int ApproximateOpCount(const SkPicture* pic, int depth = 0, bool nested = false);
 
     static uint64_t MakeSharedID(uint32_t pictureID) {
-        uint64_t sharedID = SkSetFourByteTag('p', 'i', 'c', 't');
-        return (sharedID << 32) | pictureID;
+        // Reserve bit 0 (0) to disambiguate from bitmap shared IDs (which set bit 0 to 1).
+        // pictureID occupies bits [1..32] and the 'pict' tag occupies bits [33..63].
+        constexpr uint64_t kPictTag = SkSetFourByteTag('p', 'i', 'c', 't');
+        static_assert((kPictTag >> 31) == 0);
+        return (kPictTag << 33) | (uint64_t(pictureID) << 1);
     }
 
     static void AddedToCache(const SkPicture* pic) {

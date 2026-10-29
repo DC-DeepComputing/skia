@@ -162,7 +162,7 @@ inline const GrBackendFormat& SkImage_Ganesh::ProxyChooser::backendFormat() {
 //////////////////////////////////////////////////////////////////////////////
 
 SkImage_Ganesh::SkImage_Ganesh(sk_sp<GrImageContext> context,
-                               uint32_t uniqueID,
+                               uint64_t uniqueID,
                                GrSurfaceProxyView view,
                                SkColorInfo info)
         : INHERITED(std::move(context),

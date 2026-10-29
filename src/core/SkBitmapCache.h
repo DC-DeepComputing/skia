@@ -22,13 +22,13 @@ class SkPixmap;
 class SkResourceCache;
 struct SkImageInfo;
 
-uint64_t SkMakeResourceCacheSharedIDForBitmap(uint32_t bitmapGenID);
+uint64_t SkMakeResourceCacheSharedIDForBitmap(uint64_t bitmapGenID);
 
-void SkNotifyBitmapGenIDIsStale(uint32_t bitmapGenID);
+void SkNotifyBitmapGenIDIsStale(uint64_t bitmapGenID);
 
 struct SkBitmapCacheDesc {
-    uint32_t    fImageID;       // != 0
-    SkIRect     fSubset;        // always set to a valid rect (entire or subset)
+    uint64_t fImageID;  // != 0
+    SkIRect fSubset;    // always set to a valid rect (entire or subset)
 
     void validate() const {
         SkASSERT(fImageID);
@@ -37,7 +37,7 @@ struct SkBitmapCacheDesc {
     }
 
     static SkBitmapCacheDesc Make(const SkImage*);
-    static SkBitmapCacheDesc Make(uint32_t genID, const SkIRect& subset);
+    static SkBitmapCacheDesc Make(uint64_t genID, const SkIRect& subset);
 };
 
 class SkBitmapCache {

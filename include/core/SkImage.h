@@ -306,7 +306,7 @@ public:
 
         @return  unique identifier
     */
-    uint32_t uniqueID() const { return fUniqueID; }
+    uint64_t uniqueID() const { return fUniqueID; }
 
     /** Returns SkAlphaType.
 
@@ -900,7 +900,7 @@ public:
     sk_sp<SkImage> reinterpretColorSpace(sk_sp<SkColorSpace> newColorSpace) const;
 
 private:
-    SkImage(const SkImageInfo& info, uint32_t uniqueID);
+    SkImage(const SkImageInfo& info, uint64_t uniqueID);
 
     friend class SkBitmap;
     friend class SkImage_Base;   // for private ctor
@@ -908,7 +908,7 @@ private:
     friend class SkMipmapBuilder;
 
     SkImageInfo     fInfo;
-    const uint32_t  fUniqueID;
+    const uint64_t fUniqueID;
 
     sk_sp<SkImage> withMipmaps(sk_sp<SkMipmap>) const;
 

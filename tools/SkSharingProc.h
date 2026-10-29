@@ -43,7 +43,7 @@ struct SkSharingSerialContext {
 
     // A map from uniqueID of images referenced by commands to non-texture images
     // collected at the end of each frame.
-    skia_private::THashMap<uint32_t, sk_sp<SkImage>> fNonTexMap;
+    skia_private::THashMap<uint64_t, sk_sp<SkImage>> fNonTexMap;
     GrDirectContext* fDirectContext = nullptr;
     skgpu::graphite::Context* fGraphiteContext = nullptr;
 
@@ -58,7 +58,7 @@ struct SkSharingSerialContext {
 
     // A map from the ids from SkImage::uniqueID() to ids used within the file
     // The keys are ids of original images, not of non-texture copies
-    skia_private::THashMap<uint32_t, int> fImageMap;
+    skia_private::THashMap<uint64_t, int> fImageMap;
 };
 
 struct SkSharingDeserialContext {

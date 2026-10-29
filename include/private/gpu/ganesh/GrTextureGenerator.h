@@ -60,7 +60,7 @@ public:
     virtual GrSurfaceOrigin origin() const { return kTopLeft_GrSurfaceOrigin; }
 
 protected:
-    GrTextureGenerator(const SkImageInfo& info, uint32_t uniqueId = kNeedNewImageUniqueID);
+    GrTextureGenerator(const SkImageInfo& info, uint64_t uniqueId = kNeedNewImageUniqueID);
 };
 
 #endif  // GrTextureGenerator_DEFINED

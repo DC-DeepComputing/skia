@@ -216,7 +216,7 @@ std::unique_ptr<Recording> Recorder::snap() {
                                                        std::move(fFinishedProcs)));
     if (fSharedContext->captureManager() &&
         fSharedContext->captureManager()->isCurrentlyCapturing()) {
-        skia_private::TArray<uint32_t> activeStorageIDs;
+        skia_private::TArray<uint64_t> activeStorageIDs;
         for (const auto& device : fTrackedDevices) {
             if (device && device->target().proxy()) {
                 activeStorageIDs.push_back(device->target().proxy()->getPixelStorageId());

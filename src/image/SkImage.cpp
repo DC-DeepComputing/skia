@@ -29,11 +29,12 @@
 
 class SkShader;
 
-SkImage::SkImage(const SkImageInfo& info, uint32_t uniqueID)
+SkImage::SkImage(const SkImageInfo& info, uint64_t uniqueID)
         : fInfo(info)
         , fUniqueID(kNeedNewImageUniqueID == uniqueID ? SkNextID::ImageID() : uniqueID) {
     SkASSERT(info.width() > 0);
     SkASSERT(info.height() > 0);
+    SkASSERT((fUniqueID & 1ULL) == 0);
 }
 
 bool SkImage::peekPixels(SkPixmap* pm) const {

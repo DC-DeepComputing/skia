@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkAPI.h"
 
 #include <cstdint>
@@ -102,7 +103,7 @@ inline void DrawImage(SkCanvas* canvas,
     DrawImage(canvas, image.get(), x, y, sampling, paint, constraint);
 }
 
-static constexpr int kNumImageKeyValues = 6;
+static constexpr int kNumImageKeyValues = 7;
 
 /** Retrieves a set of values that can be used as part of a cache key for the provided image.
 
@@ -119,6 +120,11 @@ static constexpr int kNumImageKeyValues = 6;
     @param keyValues The resulting key values
 */
 SK_API void GetImageKeyValues(const SkImage* image, uint32_t keyValues[kNumImageKeyValues]);
+
+inline void GetImageKeyValues(const SkImage* image,
+                              SkSpan<uint32_t, kNumImageKeyValues> keyValues) {
+    GetImageKeyValues(image, keyValues.data());
+}
 
 }  // namespace SkTiledImageUtils
 
