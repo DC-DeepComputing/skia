@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <type_traits>
@@ -153,7 +154,7 @@ private:
         return ptr;
     }
 
-    T* fPtr;
+    RAW_PTR_EXCLUSION T* fPtr;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
