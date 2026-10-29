@@ -237,6 +237,14 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     return recorder;
 }
 
+std::unique_ptr<SkRecorder> Context::makeRecorder(const RecorderOptions* graphiteOptions) {
+    if (graphiteOptions) {
+        return this->makeRecorder(*graphiteOptions);
+    }
+
+    return this->makeRecorder();
+}
+
 std::unique_ptr<skcpu::Recorder> Context::makeCPURecorder() {
     ASSERT_SINGLE_OWNER
 
