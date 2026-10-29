@@ -12161,50 +12161,100 @@ DEF_TEST(SkParagraph_ManyStyleBlocksWithSeveralFonts, reporter) {
     }
 }
 
-// Native source-line drawing must reuse the same glyph programs/coordinates.
+// Native source-line drawing must reuse the same glyph programs/coordinates
 UNIX_ONLY_TEST(SkParagraph_PaintOwnedNativeLines, reporter) {
     class Capture final : public ParagraphPainter {
     public:
-        struct Blob {uint32_t id; SkScalar x,y; bool operator==(const Blob&) const = default;};
+        struct Blob {
+            uint32_t id;
+            SkScalar x, y;
+            bool operator==(const Blob&) const = default;
+        };
         std::vector<Blob> blobs;
         std::vector<SkPoint> stack;
-        SkPoint offset=SkPoint::Make(0,0);
-        void drawTextBlob(const sk_sp<SkTextBlob>& blob,SkScalar x,SkScalar y,const SkPaintOrID&) override {
-            blobs.push_back({blob->uniqueID(),x+offset.x(),y+offset.y()});
+        SkPoint offset = SkPoint::Make(0, 0);
+        void drawTextBlob(const sk_sp<SkTextBlob>& blob,
+                          SkScalar x,
+                          SkScalar y,
+                          const SkPaintOrID&) override {
+            blobs.push_back({blob->uniqueID(), x + offset.x(), y + offset.y()});
         }
-        void drawTextShadow(const sk_sp<SkTextBlob>&,SkScalar,SkScalar,SkColor,SkScalar) override {}
-        void drawRect(const SkRect&,const SkPaintOrID&) override {}
-        void drawFilledRect(const SkRect&,const DecorationStyle&) override {}
-        void drawPath(const SkPath&,const DecorationStyle&) override {}
-        void drawLine(SkScalar,SkScalar,SkScalar,SkScalar,const DecorationStyle&) override {}
+        void drawTextShadow(const sk_sp<SkTextBlob>&,
+                            SkScalar,
+                            SkScalar,
+                            SkColor,
+                            SkScalar) override {}
+        void drawRect(const SkRect&, const SkPaintOrID&) override {}
+        void drawFilledRect(const SkRect&, const DecorationStyle&) override {}
+        void drawPath(const SkPath&, const DecorationStyle&) override {}
+        void drawLine(SkScalar, SkScalar, SkScalar, SkScalar, const DecorationStyle&) override {}
         void clipRect(const SkRect&) override {}
-        void translate(SkScalar x,SkScalar y) override {offset.offset(x,y);}
-        void save() override {stack.push_back(offset);}
-        void restore() override {offset=stack.back();stack.pop_back();}
+        void translate(SkScalar x, SkScalar y) override { offset.offset(x, y); }
+        void save() override { stack.push_back(offset); }
+        void restore() override {
+            offset = stack.back();
+            stack.pop_back();
+        }
     };
-    sk_sp<ResourceFontCollection> fonts=sk_make_sp<ResourceFontCollection>();
-    SKIP_IF_FONTS_NOT_FOUND(reporter,fonts)
-    ParagraphStyle style;TextStyle textStyle;
-    textStyle.setFontFamilies({SkString("Roboto")});textStyle.setFontSize(16);style.setTextStyle(textStyle);
-    ParagraphBuilderImpl builder(style,fonts,get_unicode());
-    builder.addText("FIRST\nSECOND\nTHIRD");auto paragraph=builder.Build();paragraph->layout(300);
-    std::vector<LineMetrics> before,after;paragraph->getLineMetrics(before);
-    REPORTER_ASSERT(reporter,before.size()==3);
-    Capture whole;paragraph->paint(&whole,9,13);
-    REPORTER_ASSERT(reporter,whole.blobs.size()==3&&whole.stack.empty());
-    Capture middle;paragraph->paintLines(&middle,9,13,1,1);
-    REPORTER_ASSERT(reporter,middle.blobs.size()==1&&middle.stack.empty());
-    REPORTER_ASSERT(reporter,middle.blobs[0]==whole.blobs[1]);
-    Capture all;paragraph->paintLines(&all,9,13,0,SIZE_MAX);
-    REPORTER_ASSERT(reporter,all.blobs==whole.blobs);
-    Capture outside;paragraph->paintLines(&outside,9,13,SIZE_MAX,SIZE_MAX);
-    REPORTER_ASSERT(reporter,outside.blobs.empty()&&outside.stack.empty());
+    sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
+
+    ParagraphStyle style;
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Roboto")});
+    textStyle.setFontSize(16);
+    style.setTextStyle(textStyle);
+
+    ParagraphBuilderImpl builder(style, fonts, get_unicode());
+    builder.addText("FIRST\nSECOND\nTHIRD");
+    auto paragraph = builder.Build();
+    paragraph->layout(300);
+
+    std::vector<LineMetrics> before, after;
+    paragraph->getLineMetrics(before);
+    REPORTER_ASSERT(reporter, before.size() == 3);
+
+    Capture whole;
+    paragraph->paint(&whole, 9, 13);
+    REPORTER_ASSERT(reporter, whole.blobs.size() == 3 && whole.stack.empty());
+
+    Capture middle;
+    paragraph->paintLines(&middle, 9, 13, 1, 1);
+    REPORTER_ASSERT(reporter, middle.blobs.size() == 1 && middle.stack.empty());
+    REPORTER_ASSERT(reporter, middle.blobs[0] == whole.blobs[1]);
+
+    Capture all;
+    paragraph->paintLines(&all, 9, 13, 0, SIZE_MAX);
+    REPORTER_ASSERT(reporter, all.blobs == whole.blobs);
+
+    // Overflowing firstLine + lineCount must clamp safely to total lines
+    Capture overflow;
+    paragraph->paintLines(&overflow, 9, 13, 1, SIZE_MAX);
+    REPORTER_ASSERT(reporter, overflow.blobs.size() == 2 && overflow.stack.empty());
+    REPORTER_ASSERT(reporter, overflow.blobs[0] == whole.blobs[1]);
+    REPORTER_ASSERT(reporter, overflow.blobs[1] == whole.blobs[2]);
+
+    // Zero lineCount paints nothing
+    Capture zero;
+    paragraph->paintLines(&zero, 9, 13, 1, 0);
+    REPORTER_ASSERT(reporter, zero.blobs.empty() && zero.stack.empty());
+
+    Capture outside;
+    paragraph->paintLines(&outside, 9, 13, SIZE_MAX, SIZE_MAX);
+    REPORTER_ASSERT(reporter, outside.blobs.empty() && outside.stack.empty());
+
+    // SkCanvas overload must produce identical results without crashing
+    SkBitmap bitmap;
+    bitmap.allocN32Pixels(300, 300);
+    SkCanvas canvas(bitmap);
+    paragraph->paintLines(&canvas, 9, 13, 1, 1);
+
     paragraph->getLineMetrics(after);
-    REPORTER_ASSERT(reporter,after.size()==before.size());
-    for(size_t line=0;line<before.size();++line){
-        REPORTER_ASSERT(reporter,before[line].fStartIndex==after[line].fStartIndex);
-        REPORTER_ASSERT(reporter,before[line].fEndIndex==after[line].fEndIndex);
-        REPORTER_ASSERT(reporter,before[line].fLeft==after[line].fLeft);
-        REPORTER_ASSERT(reporter,before[line].fBaseline==after[line].fBaseline);
+    REPORTER_ASSERT(reporter, after.size() == before.size());
+    for (size_t line = 0; line < before.size(); ++line) {
+        REPORTER_ASSERT(reporter, before[line].fStartIndex == after[line].fStartIndex);
+        REPORTER_ASSERT(reporter, before[line].fEndIndex == after[line].fEndIndex);
+        REPORTER_ASSERT(reporter, before[line].fLeft == after[line].fLeft);
+        REPORTER_ASSERT(reporter, before[line].fBaseline == after[line].fBaseline);
     }
 }
