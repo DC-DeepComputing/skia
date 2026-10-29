@@ -808,6 +808,14 @@ bool GrGpu::checkAndResetOOMed() {
     return false;
 }
 
+bool GrGpu::checkAndResetBackendError() {
+    if (fBackendError) {
+        fBackendError = false;
+        return true;
+    }
+    return false;
+}
+
 void GrGpu::callSubmittedProcs(bool success) {
     for (int i = 0; i < fSubmittedProcs.size(); ++i) {
         fSubmittedProcs[i].fProc(fSubmittedProcs[i].fContext, success);

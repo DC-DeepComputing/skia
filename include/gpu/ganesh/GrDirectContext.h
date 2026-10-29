@@ -23,10 +23,10 @@
 #include <string_view>
 
 class GrAtlasManager;
-class GrBackendSemaphore;
 class GrBackendFormat;
-class GrBackendTexture;
 class GrBackendRenderTarget;
+class GrBackendSemaphore;
+class GrBackendTexture;
 class GrClientMappedBufferManager;
 class GrContextThreadSafeProxy;
 class GrDirectContextPriv;
@@ -134,13 +134,28 @@ public:
      *
      * OpenGL [ES] - Note that client calls to glGetError() may swallow GL_OUT_OF_MEMORY errors and
      * therefore hide the error from Skia. Also, it is not advised to use this in combination with
-     * enabling GrContextOptions::fSkipGLErrorChecks. That option may prevent the context from ever
-     * checking the GL context for OOM.
+     * enabling GrContextOptions::fSkipGLResourceErrorChecks. That option may prevent the context
+     * from ever checking the GL context for OOM.
      *
      * Vulkan - Reports true if VK_ERROR_OUT_OF_HOST_MEMORY or VK_ERROR_OUT_OF_DEVICE_MEMORY has
      * occurred.
      */
     bool oomed();
+
+    /**
+     * Checks if the underlying 3D API reported an error other than out-of-memory (which is
+     * reported by oomed()). If this returns true it is reset and will return false until another
+     * such error is reported. If the context is abandoned then this will report false.
+     *
+     * Currently this is implemented for:
+     *
+     * OpenGL [ES] - Errors are recorded whenever Skia checks for GL errors, i.e. after resource
+     * allocations and texture uploads unless GrContextOptions::fSkipGLResourceErrorChecks is
+     * enabled, and at the end of each submit unless GrContextOptions::fSkipGLCommandErrorChecks is
+     * enabled. As with oomed(), client calls to glGetError() may swallow errors and therefore hide
+     * them from Skia.
+     */
+    bool checkAndResetBackendError();
 
     /**
      * This is similar to abandonContext() however the underlying 3D context is not yet lost and
