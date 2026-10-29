@@ -42,7 +42,21 @@ struct SkFontMgr_Android_CustomFonts {
     bool fIsolated;
 };
 
+/** When SkFontMgr_New_Android creates the typefaces of system font families. */
+enum class SkFontMgr_Android_FontLoading {
+    /** Scan every font file in the constructor. */
+    kEager,
+    /** Read only font headers in the constructor (SkFontScanner::scanStyle); create each
+     *  typeface on first use. Entries the scanner cannot handle, and all entries when
+     *  'custom->fIsolated' is set, are created eagerly.
+     */
+    kLazy,
+};
+
 /** Create a font manager for Android. If 'custom' is NULL, use only system fonts. */
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom,
                                               std::unique_ptr<SkFontScanner> scanner);
+SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom,
+                                              std::unique_ptr<SkFontScanner> scanner,
+                                              SkFontMgr_Android_FontLoading loading);
 #endif // SkFontMgr_android_DEFINED
