@@ -24,6 +24,7 @@
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontStream.h"
 #include "src/core/SkScalerContext.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/ports/SkScalerContext_win_dw.h"
 #include "src/ports/SkTypeface_win_dw.h"
 #include "src/sfnt/SkOTTable_OS_2.h"
@@ -594,7 +595,7 @@ sk_sp<SkData> DWriteFontTypeface::onCopyTableData(SkFontTableTag tag) const {
             fLock = nullptr;
             fFontFace->ReleaseFontTable(lock);
         }
-        void* fLock;
+        raw_ptr<void> fLock;
         SkTScopedComPtr<IDWriteFontFace> fFontFace;
     };
     return SkData::MakeWithProc(data, size,

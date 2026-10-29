@@ -25,6 +25,7 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTSort.h"
 #include "src/core/SkUTF.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
 
@@ -677,7 +678,7 @@ private:
         private:
             sk_sp<SkTypeface_AndroidNDK> fTypeface;
             sk_sp<SkTypeface::LocalizedStrings> fBase;
-            const SkString* fExtraFamilyName;
+            raw_ptr<const SkString, AllowPtrArithmetic> fExtraFamilyName;
 
             bool next(LocalizedString* localizedString) override {
                 if (!fExtraFamilyName) {
@@ -950,7 +951,7 @@ private:
 struct NameToFamily {
     SkString name;
     SkString normalizedName;
-    SkFontStyleSet_AndroidNDK* styleSet;
+    raw_ptr<SkFontStyleSet_AndroidNDK> styleSet;
 
     using sk_is_trivially_relocatable = std::true_type;
     static_assert(::sk_is_trivially_relocatable<decltype(name)>::value);
@@ -1100,7 +1101,7 @@ protected:
         if (index < 0 || fNameToFamilyMap.size() <= index) {
             return nullptr;
         }
-        return sk_ref_sp(fNameToFamilyMap[index].styleSet);
+        return sk_ref_sp(fNameToFamilyMap[index].styleSet.get());
     }
 
     sk_sp<SkFontStyleSet_AndroidNDK> onMatchAFamily(const char familyName[]) const {
@@ -1110,7 +1111,7 @@ protected:
         SkString normalizedFamilyName(fICU.casefold({familyName, strlen(familyName)}));
         for (const NameToFamily& nameToFamily : fNameToFamilyMap) {
             if (nameToFamily.normalizedName == normalizedFamilyName) {
-                return sk_ref_sp(nameToFamily.styleSet);
+                return sk_ref_sp(nameToFamily.styleSet.get());
             }
         }
         return nullptr;
