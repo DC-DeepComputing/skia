@@ -57,6 +57,16 @@ sk_sp<SkImage> DeferredFromEncodedData(sk_sp<const SkData> encoded,
     return DeferredFromGenerator(SkImageGenerators::MakeFromEncoded(std::move(encoded), alphaType));
 }
 
+sk_sp<SkImage> MakeFromData(SkRecorder* recorder,
+                            sk_sp<const SkData> encoded,
+                            std::optional<SkAlphaType> alphaType) {
+    if (!recorder || nullptr == encoded || encoded->empty()) {
+        return nullptr;
+    }
+    return MakeFromGenerator(recorder,
+                             SkImageGenerators::MakeFromEncoded(std::move(encoded), alphaType));
+}
+
 }  // namespace SkImages
 
 namespace SkCodecs {

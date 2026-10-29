@@ -7,8 +7,11 @@
 
 #include "include/core/SkRecorder.h"
 
+#include "include/core/SkImage.h"
 #include "include/cpu/Recorder.h"
 #include "src/capture/SkCaptureAsset.h"
+
+#include <utility>
 
 SkRecorder* SkRecorder::TODO() {
     return skcpu::Recorder::TODO();
@@ -16,3 +19,5 @@ SkRecorder* SkRecorder::TODO() {
 
 SkRecorder::SkRecorder() = default;
 SkRecorder::~SkRecorder() = default;
+
+sk_sp<SkImage> SkRecorder::makeImage(sk_sp<SkImage> image) { return image; }

@@ -13,6 +13,9 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkContext.h"
 #include "include/core/SkContextOptions.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
@@ -21,8 +24,10 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
+#include "include/encode/SkPngEncoder.h"
 #include "src/capture/SkCapture.h"
 #include "src/core/SkResourceCache.h"
+#include "src/image/SkImageGeneratorPriv.h"
 #include "tests/Test.h"
 
 #include <memory>
@@ -64,21 +69,43 @@ DEF_TEST(SkContext_MakeRecorder_RasterBackendSelection, reporter) {
     REPORTER_ASSERT(reporter, gpuRecorder == nullptr);
 }
 
-// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
-#if 0
 DEF_TEST(CPURecorder_RasterImageOperations_UseCpuRecorder, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
-    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder();
+    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder(SkContext::BackendSelection::kCPU);
+
+    SkImageInfo info = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(info);
     bm.allocPixels();
     bm.eraseColor(SK_ColorGREEN);
-    sk_sp<SkImage> img = SkImages::FromBitmap(recorder.get(), bm);
+
+    REPORTER_ASSERT(reporter, SkImages::MakeFromPixmap(nullptr, bm.pixmap()) == nullptr);
+    sk_sp<SkImage> img = SkImages::MakeFromPixmap(recorder.get(), bm.pixmap());
     REPORTER_ASSERT(reporter, img != nullptr);
     REPORTER_ASSERT(reporter, !img->isTextureBacked());
-
     REPORTER_ASSERT(reporter, img->isValid(recorder.get()));
+
+    sk_sp<SkData> rawData = SkData::MakeWithCopy(bm.getPixels(), bm.computeByteSize());
+    sk_sp<SkImage> rawDataImg =
+            SkImages::MakeFromData(recorder.get(), info, std::move(rawData), bm.rowBytes());
+    REPORTER_ASSERT(reporter, rawDataImg != nullptr);
+    REPORTER_ASSERT(reporter, !rawDataImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, rawDataImg->isValid(recorder.get()));
+
+    sk_sp<SkData> pngData = SkPngEncoder::Encode(bm.pixmap(), {});
+    REPORTER_ASSERT(reporter, pngData != nullptr);
+    sk_sp<SkImage> encodedImg = SkImages::MakeFromData(recorder.get(), pngData);
+    REPORTER_ASSERT(reporter, encodedImg != nullptr);
+    REPORTER_ASSERT(reporter, !encodedImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, encodedImg->isValid(recorder.get()));
+
+    std::unique_ptr<SkImageGenerator> gen = SkImageGenerators::MakeFromEncoded(std::move(pngData));
+    REPORTER_ASSERT(reporter, gen != nullptr);
+    sk_sp<SkImage> genImg = SkImages::MakeFromGenerator(recorder.get(), std::move(gen));
+    REPORTER_ASSERT(reporter, genImg != nullptr);
+    REPORTER_ASSERT(reporter, !genImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, genImg->isValid(recorder.get()));
 
     sk_sp<SkImage> scaled =
             img->makeScaled(recorder.get(),
@@ -90,6 +117,8 @@ DEF_TEST(CPURecorder_RasterImageOperations_UseCpuRecorder, reporter) {
     REPORTER_ASSERT(reporter, !scaled->isTextureBacked());
 }
 
+// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
+#if 0
 DEF_TEST(CPURecorder_FromCanvasBaseRecorder_MakesOffscreenSurface, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
