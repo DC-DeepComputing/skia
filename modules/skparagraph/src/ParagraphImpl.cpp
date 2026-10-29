@@ -352,7 +352,6 @@ Cluster::Cluster(ParagraphImpl* owner,
         , fStart(start)
         , fEnd(end)
         , fWidth(width)
-        , fHalfLetterSpacing(0.0)
         , fIsIdeographic(false) {
     size_t whiteSpacesBreakLen = 0;
     size_t intraWordBreakLen = 0;
@@ -413,6 +412,7 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
             }
         }
     }
+    fHasSpacing = letterSpacingStyles != 0 || hasWordSpacing;
 
     if (letterSpacingStyles == 0 && !hasWordSpacing) {
         // We don't have to do anything about spacing (most common case)
@@ -435,12 +435,6 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
         }
 
         this->buildClusterTable();
-
-        // This is something Flutter requires
-        for (auto& cluster : fClusters) {
-            cluster.setHalfLetterSpacing(style.getLetterSpacing() / 2);
-        }
-
         return;
     }
 
@@ -513,6 +507,21 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
             }
         });
     }
+}
+
+SkScalar ParagraphImpl::halfLetterSpacing(const Cluster& cluster) const {
+    // applySpacingAndBuildClusterTable() spaces a cluster that is not a placeholder and not in a
+    // cursive script with its style's letter spacing, if the paragraph has spacing at all
+    if (!fHasSpacing) {
+        return 0;
+    }
+    // The style blocks are in text order: find the first one that ends after the cluster start
+    const Block* style =
+            std::partition_point(fTextStyles.begin(), fTextStyles.end(), [&](const Block& block) {
+                return block.fRange.end <= cluster.textRange().start;
+            });
+    SkASSERT(style != fTextStyles.end() && cluster.startsIn(style->fRange));
+    return style->fStyle.getLetterSpacing() / 2;
 }
 
 // Clusters in the order of the input text

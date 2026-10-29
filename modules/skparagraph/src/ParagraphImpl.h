@@ -169,6 +169,9 @@ public:
         SkASSERT(clusterIndex != EMPTY_INDEX);
         return clusterIndex;
     }
+    // Half of the letter spacing that applySpacingAndBuildClusterTable() gave to the cluster, if
+    // the cluster is not a placeholder and not in a cursive script
+    SkScalar halfLetterSpacing(const Cluster& cluster) const;
     Run& run(RunIndex runIndex) {
         SkASSERT(runIndex < SkToSizeT(fRuns.size()));
         return fRuns[runIndex];
@@ -301,6 +304,8 @@ private:
     sk_sp<SkUnicode> fUnicode;
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
+    // Some text style has letter spacing or word spacing
+    bool fHasSpacing = false;
     TextIndex fTrailingSpaces;
 };
 }  // namespace textlayout
