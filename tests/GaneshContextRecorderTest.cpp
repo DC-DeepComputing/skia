@@ -13,15 +13,20 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkContext.h"
 #include "include/core/SkContextOptions.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/core/SkContextPriv.h"
 #include "src/gpu/ganesh/SkGaneshGPUContextAdapter.h"
 #include "src/gpu/ganesh/SkGaneshRecorder.h"
+#include "src/image/SkImageGeneratorPriv.h"
 #include "tests/Test.h"
 
 #include <memory>
@@ -174,6 +179,51 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(CanvasBaseRecorder_GaneshBasedCanvas_IsLinkedTo
 
     auto ganeshRecorder = AsGaneshRecorder(baseRecorder);
     REPORTER_ASSERT(reporter, ganeshRecorder->directContext() == ctx);
+}
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GaneshRecorder_UnifiedImageFactories_MakeTextureBackedImages,
+                                 reporter,
+                                 ctxInfo,
+                                 CtsEnforcement::kApiLevel_202604) {
+    SkContextOptions opts;
+    auto gpuContext =
+            std::make_unique<SkGaneshGPUContextAdapter>(sk_ref_sp(ctxInfo.directContext()));
+    std::unique_ptr<SkContext> ctx =
+            SkContextCtorAccessor::MakeContext(opts, std::move(gpuContext));
+    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder(SkContext::BackendSelection::kGPU);
+    REPORTER_ASSERT(reporter, recorder != nullptr);
+
+    SkImageInfo info = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkBitmap bm;
+    bm.setInfo(info);
+    bm.allocPixels();
+    bm.eraseColor(SK_ColorBLUE);
+
+    sk_sp<SkImage> pixmapImg = SkImages::MakeFromPixmap(recorder.get(), bm.pixmap());
+    REPORTER_ASSERT(reporter, pixmapImg != nullptr);
+    REPORTER_ASSERT(reporter, pixmapImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, pixmapImg->isValid(recorder.get()));
+
+    sk_sp<SkData> rawData = SkData::MakeWithCopy(bm.getPixels(), bm.computeByteSize());
+    sk_sp<SkImage> rawDataImg =
+            SkImages::MakeFromData(recorder.get(), info, std::move(rawData), bm.rowBytes());
+    REPORTER_ASSERT(reporter, rawDataImg != nullptr);
+    REPORTER_ASSERT(reporter, rawDataImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, rawDataImg->isValid(recorder.get()));
+
+    sk_sp<SkData> pngData = SkPngEncoder::Encode(bm.pixmap(), {});
+    REPORTER_ASSERT(reporter, pngData != nullptr);
+    sk_sp<SkImage> encodedImg = SkImages::MakeFromData(recorder.get(), pngData);
+    REPORTER_ASSERT(reporter, encodedImg != nullptr);
+    REPORTER_ASSERT(reporter, encodedImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, encodedImg->isValid(recorder.get()));
+
+    std::unique_ptr<SkImageGenerator> gen = SkImageGenerators::MakeFromEncoded(std::move(pngData));
+    REPORTER_ASSERT(reporter, gen != nullptr);
+    sk_sp<SkImage> genImg = SkImages::MakeFromGenerator(recorder.get(), std::move(gen));
+    REPORTER_ASSERT(reporter, genImg != nullptr);
+    REPORTER_ASSERT(reporter, genImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, genImg->isValid(recorder.get()));
 }
 
 #endif  // defined(SK_GANESH)

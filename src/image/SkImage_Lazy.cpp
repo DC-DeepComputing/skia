@@ -297,4 +297,12 @@ sk_sp<SkImage> DeferredFromGenerator(std::unique_ptr<SkImageGenerator> generator
     return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
 }
 
+sk_sp<SkImage> MakeFromGenerator(SkRecorder* recorder,
+                                 std::unique_ptr<SkImageGenerator> generator) {
+    if (!recorder) {
+        return nullptr;
+    }
+    return SkImage_Base::MakeBackendImage(recorder, DeferredFromGenerator(std::move(generator)));
+}
+
 }  // namespace SkImages
