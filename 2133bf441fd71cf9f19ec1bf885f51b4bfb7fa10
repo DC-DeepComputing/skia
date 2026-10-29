@@ -16,6 +16,24 @@
       "message": "Thanks for working on this! Adding first-line indentation to SkParagraph is a very welcome feature.\n\nI reviewed the change and authored contract tests along with a companion WIP CL to address several edge cases and build breaks:\nCompanion CL: https://skia-review.googlesource.com/c/skia/+/1410416\n\nKey findings and proposed improvements:\n\n1. CanvasKit Build Break (modules/canvaskit/paragraph_bindings.cpp:554):\nIntroducing an overloaded layout() method causes ambiguation in Embind binding `\u0026para::Paragraph::layout`. Wrapping with `select_overload\u003cvoid(SkScalar)\u003e(\u0026para::Paragraph::layout)` fixes the compilation failure.\n\n2. Pure Virtual ABI / Backward Compatibility (modules/skparagraph/include/Paragraph.h:281):\nMaking `virtual void layout(SkScalar width, SkScalar firstLineIndent) \u003d 0` pure virtual breaks downstream implementations of `Paragraph`. Providing a default inline implementation `{ this-\u003elayout(width); }` preserves binary and source compatibility.\n\n3. Bounds Check in getPath (modules/skparagraph/src/ParagraphImpl.cpp:1667):\n`getPath(lineNumber)` accesses `fLines[lineNumber]` without bounds validation, causing a crash on invalid line indices. Adding `if (lineNumber \u003c 0 || lineNumber \u003e\u003d fLines.size()) return 0;` safely guards against this.\n\n4. Intrinsic Width on Empty / Zero-Advance Paragraphs (modules/skparagraph/src/ParagraphImpl.cpp:766):\nIn the single-line fast path, `fMinIntrinsicWidth` is computed as `std::max(0.0f, advance.fX + fFirstLineIndent)`. For empty paragraphs (`advance.fX \u003d\u003d 0`), this assigns the full indent to `fMinIntrinsicWidth` instead of 0. Adding `advance.fX \u003d\u003d 0 ? 0.0f : ...` preserves zero intrinsic width for empty text.\n\n5. Soft Hyphen Accounting in Min Intrinsic Width (modules/skparagraph/src/ParagraphImpl.cpp:818):\n`computeMinIntrinsicWidthWithIndent` did not account for soft hyphen widths when measuring broken words. We can expose `TextLine::SoftHyphenWidth` as a static helper to share soft-hyphen width calculation between `TextWrapper` and `computeMinIntrinsicWidthWithIndent` without duplicating logic.\n\n6. Cleanup on TextLine::format:\nThe newly added `alignOverflow` parameter on `TextLine::format` is unused and can be omitted.\n\nPlease feel free to cherry-pick or adapt the fixes from companion CL 1410416 PS2.",
       "revId": "2133bf441fd71cf9f19ec1bf885f51b4bfb7fa10",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a722dd92_459e6cd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5250830
+      },
+      "writtenOn": "2026-10-29T23:24:21Z",
+      "side": 1,
+      "message": "I uploaded a patch with the requested changes, let me know if there\u0027s anything else this CL needs.",
+      "parentUuid": "20703835_bcd4ef07",
+      "revId": "2133bf441fd71cf9f19ec1bf885f51b4bfb7fa10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
