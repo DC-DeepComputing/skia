@@ -8,6 +8,7 @@
 #ifndef SkContext_DEFINED
 #define SkContext_DEFINED
 
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
@@ -50,6 +51,21 @@ public:
      * Ends the SkCapture and returns the collected draws and surface creation.
      */
     sk_sp<SkCapture> endCapture();
+
+    enum class BackendSelection {
+        // Selects the optimal backend, preferring the attached GPU backend if available.
+        kAutomatic,
+        // Explicitly forces the creation of a CPU-backed recorder.
+        kCPU,
+        // Forces the use of the attached GPU backend (returns nullptr if none present).
+        kGPU,
+    };
+
+    /**
+     * Creates and returns a new SkRecorder for this context based on the requested backend.
+     * Defaults to SkBackendSelection::kAutomatic.
+     */
+    std::unique_ptr<SkRecorder> makeRecorder(BackendSelection backend);
 
     size_t fontCacheLimit() const;
     size_t setFontCacheLimit(size_t bytes);
