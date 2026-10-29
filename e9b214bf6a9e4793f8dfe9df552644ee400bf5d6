@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a036b8a9_02f3160c",
+        "filename": "src/core/SkDistanceFieldGen.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-29T21:57:42Z",
+      "side": 1,
+      "message": "Done. Consolidated the validation and the DFData, edge, and padded copy allocations into DFScratch with a single sk_calloc_canfail buffer.",
+      "parentUuid": "41e0e20b_4cd2fa0d",
+      "range": {
+        "startLine": 510,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 5
+      },
+      "revId": "e9b214bf6a9e4793f8dfe9df552644ee400bf5d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80607dfa_d0891467",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-29T21:15:56Z",
       "side": 1,
       "message": "If we go with `DFScratch` below, I think this validation should no longer be needed.  Though we should safe-math the actual size computation, probably the tests will have to be updated to exercise a different entry point.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 5
+      },
+      "revId": "e9b214bf6a9e4793f8dfe9df552644ee400bf5d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08b8c108_f9240bc9",
+        "filename": "src/core/SkDistanceFieldGen.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-29T21:57:42Z",
+      "side": 1,
+      "message": "We still need SDFMaskFilterImpl::filterMask (which calls SkComputeDistanceFieldSize upfront) to reject dimensions that fail DFScratch validation before calling SkMaskBuilder::PrepareDestination:\n\n1. For dimensions like 4071x65527 (from the b/576664769 reproducer), the output SDF size (4079 * 65535 \u003d 267 MB) fits in INT_MAX, so PrepareDestination succeeds while DFScratch (4.81 GB) overflows int.\n2. In bounds-only mode (src.fImage \u003d\u003d nullptr, called by SkScalerContext::internalMakeGlyph at SkScalerContext.cpp:303), SDFMaskFilterImpl::filterMask returns before calling SkGenerateDistanceFieldFrom* / DFScratch. If the bounds-only pass returns true (setting origGlyph.fMaskFormat \u003d kSDF_Format) and the subsequent image pass in SkScalerContext::getImage returns false in DFScratch, SkScalerContext::getImage hits SkASSERT_RELEASE(srcMask.fFormat \u003d\u003d origGlyph.fMaskFormat) at SkScalerContext.cpp:786 (and PrepareDestination allocates 267 MB with SK_MALLOC_THROW before DFScratch rejects it).\n3. Checking the valid side of the INT_MAX boundary via SkComputeDistanceFieldSize also avoids allocating 2 GB in the unit test (which fails sk_calloc_canfail on 32-bit x86 bots and runs the 4-pass distance transform over ~119M pixels).\n\nTo avoid duplicating the math or leaking DFData details into the header, I moved SkComputeDistanceFieldSize to SkDistanceFieldGen.cpp and had it share DFScratch\u0027s size check.",
+      "parentUuid": "80607dfa_d0891467",
       "range": {
         "startLine": 82,
         "startChar": 0,
