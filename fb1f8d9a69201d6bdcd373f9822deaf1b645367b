@@ -16,6 +16,24 @@
       "message": "Thanks for putting this together! The implementation in ParagraphImpl is clean and all 2,409 Flutter framework paragraph tests pass with zero regressions.\n\nI noticed a couple of contract/integration details and test edge cases worth noting:\n\n1. Downstream Mocks \u0026 Pure Virtual Contract:\nIn modules/skparagraph/include/Paragraph.h:278-281, paintLines is declared pure virtual (\u003d 0;). Several downstream consumers and test frameworks subclass Paragraph directly (such as MockParagraph in google3 video/youtube/client/modules/composition/runtime/xplat/skia/text/mock_paragraph.h). Because these classes mock virtual methods using GMock (override), adding a pure virtual method makes downstream mock classes abstract and uninstantiable before they can be updated, which will break the google3 Skia autoroller and Canary-G3. Providing default empty implementations virtual void paintLines(...) {} in Paragraph.h keeps downstream mocks building while ParagraphImpl overrides both methods.\n\n2. Docstring Range Clamping:\nIn modules/skparagraph/include/Paragraph.h:276, the comment states \"firstLine + lineCount may not overflow.\" In API specifications, \"may not\" denotes a prohibited caller precondition. However, ParagraphImpl::paintLines intentionally and safely clamps large ranges without overflowing size_t (end \u003d first + std::min(lineCount, total - first)), and the test passes (SIZE_MAX, SIZE_MAX). Suggest clarifying the comment to state that the range is clamped without overflowing firstLine + lineCount.\n\n3. Edge-Case Test Coverage \u0026 Formatting:\nIn modules/skparagraph/tests/SkParagraphTest.cpp:12164-12209:\n- SkParagraph_PaintOwnedNativeLines tests (0, SIZE_MAX) and (SIZE_MAX, SIZE_MAX), but does not verify a non-zero firstLine with overflowing lineCount (e.g. firstLine \u003d 1, lineCount \u003d SIZE_MAX on a 3-line paragraph), nor lineCount \u003d\u003d 0, nor the SkCanvas* overload.\n- Style details: lines 12172 and 12188 exceed Skia 100-column limit, statements are crammed onto single lines without spaces, and line 12164 has a trailing period on the comment.\n\nI uploaded a companion WIP CL stacked on top of PS2 with these tests and interface adjustments so you can inspect the diff:\nhttps://skia-review.googlesource.com/c/skia/+/1410396\n\n- Patchset 1:\n  - Adds default empty implementations for paintLines in Paragraph.h to protect downstream MockParagraph.\n  - Clarifies the clamping comment.\n  - Adds unit test coverage for (1, SIZE_MAX) overflow, lineCount \u003d\u003d 0, and the SkCanvas* overload, formatted cleanly within 100 columns.\n\nFeel free to fold the changes into PS3, cherry-pick what you want, or take whatever parts you find useful! (Once folded or if not needed, I will abandon the WIP CL.)",
       "revId": "fb1f8d9a69201d6bdcd373f9822deaf1b645367b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb0a5bb3_34223549",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5250830
+      },
+      "writtenOn": "2026-10-29T19:27:24Z",
+      "side": 1,
+      "message": "Thank you for getting back to me so fast! I have uploaded a patch to address your comments.",
+      "parentUuid": "aa70cd1c_728651b6",
+      "revId": "fb1f8d9a69201d6bdcd373f9822deaf1b645367b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
