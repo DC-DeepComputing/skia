@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <type_traits>
@@ -158,7 +159,7 @@ private:
         return ptr;
     }
 
-    T* fPtr;
+    raw_ptr<T> fPtr;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
