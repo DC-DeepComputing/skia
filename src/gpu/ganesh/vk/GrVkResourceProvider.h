@@ -24,6 +24,7 @@
 #include "src/gpu/ganesh/vk/GrVkRenderPass.h"
 #include "src/gpu/ganesh/vk/GrVkSampler.h"
 #include "src/gpu/ganesh/vk/GrVkSamplerYcbcrConversion.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -262,7 +263,7 @@ private:
 
         SkLRUCache<const GrProgramDesc, std::unique_ptr<Entry>, DescHash> fMap;
 
-        GrVkGpu*                    fGpu;
+        raw_ptr<GrVkGpu, DanglingUntriaged> fGpu;
     };
 
     class CompatibleRenderPassSet {
@@ -298,14 +299,14 @@ private:
 
     VkPipelineCache pipelineCache();
 
-    GrVkGpu* fGpu;
+    raw_ptr<GrVkGpu> fGpu;
 
     // Central cache for creating pipelines
     VkPipelineCache fPipelineCache;
 
     struct MSAALoadPipeline {
         sk_sp<const GrVkPipeline> fPipeline;
-        const GrVkRenderPass* fRenderPass;
+        raw_ptr<const GrVkRenderPass> fRenderPass;
     };
 
     // Cache of previously created msaa load pipelines
