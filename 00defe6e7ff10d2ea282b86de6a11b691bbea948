@@ -16,6 +16,29 @@
       "message": "Okay ready for another review",
       "revId": "00defe6e7ff10d2ea282b86de6a11b691bbea948",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b3a075b_63c5e2a3",
+        "filename": "src/text/gpu/SlugImpl.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-10-29T20:28:12Z",
+      "side": 1,
+      "message": "```\nif (!fSubRuns-\u003ehasDirectMaskSubRuns() \u0026\u0026\n        this-\u003einitialPositionMatrix() \u003d\u003d positionMatrix) {\n        return true;\n}\n```",
+      "range": {
+        "startLine": 85,
+        "startChar": 4,
+        "endLine": 87,
+        "endChar": 5
+      },
+      "revId": "00defe6e7ff10d2ea282b86de6a11b691bbea948",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
