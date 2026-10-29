@@ -137,13 +137,23 @@ void ParagraphImpl::addUnresolvedCodepoints(TextRange textRange) {
 }
 
 void ParagraphImpl::layout(SkScalar rawWidth) {
+    this->layout(rawWidth, 0);
+}
+
+void ParagraphImpl::layout(SkScalar rawWidth, SkScalar firstLineIndent) {
+    firstLineIndent = SkIsFinite(firstLineIndent) ? firstLineIndent : 0;
+    if (firstLineIndent != fFirstLineIndent) {
+        // Shaping is independent of indent, but line breaks and positions are not
+        fFirstLineIndent = firstLineIndent;
+        if (fState >= kLineBroken) { fState = kShaped; }
+    }
     // TODO: This rounding is done to match Flutter tests. Must be removed...
     auto floorWidth = rawWidth;
     if (getApplyRoundingHack()) {
         floorWidth = SkScalarFloorToScalar(floorWidth);
     }
 
-    if ((!SkIsFinite(rawWidth) || fLongestLine <= floorWidth) &&
+    if ((!SkIsFinite(rawWidth) || fLongestLine <= this->firstLineWidth(floorWidth)) &&
         fState >= kLineBroken &&
          fLines.size() == 1 && fLines.front().ellipsis() == nullptr) {
         // Most common case: one line of text (and one line is never justified, so no cluster shifts)
@@ -701,7 +711,7 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
     if (!fHasLineBreaks &&
         !fHasWhitespacesInside &&
         fPlaceholders.size() == 1 &&
-        fRuns.size() == 1 && fRuns[0].fAdvance.fX <= maxWidth) {
+        fRuns.size() == 1 && fRuns[0].fAdvance.fX <= this->firstLineWidth(maxWidth)) {
         // This is a short version of a line breaking when we know that:
         // 1. We have only one line of text
         // 2. It's shaped into a single run
@@ -744,7 +754,7 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
         advance.fY = metrics.height();
         auto clusterRange = ClusterRange(0, trailingSpaces);
         auto clusterRangeWithGhosts = ClusterRange(0, this->clusters().size() - 1);
-        this->addLine(SkPoint::Make(0, 0), advance,
+        this->addLine(SkPoint::Make(this->firstLineOffset(maxWidth), 0), advance,
                       textExcludingSpaces, textRange, textRange,
                       clusterRange, clusterRangeWithGhosts, run.advance().x(),
                       metrics);
@@ -752,8 +762,10 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
         fLongestLine = nearlyZero(advance.fX) ? run.advance().fX : advance.fX;
         fHeight = advance.fY;
         fWidth = maxWidth;
-        fMaxIntrinsicWidth = run.advance().fX;
-        fMinIntrinsicWidth = advance.fX;
+        fMaxIntrinsicWidth = std::max(0.0f, run.advance().fX + fFirstLineIndent);
+        fMinIntrinsicWidth = advance.fX == 0
+                ? 0.0f
+                : std::max(0.0f, advance.fX + fFirstLineIndent);
         fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
         fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
         fExceededMaxLines = false;
@@ -779,7 +791,8 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
                 // TODO: Take in account clipped edges
                 auto& line = this->addLine(offset, advance, textExcludingSpaces, text, textWithNewlines, clusters, clustersWithGhosts, widthWithSpaces, metrics);
                 if (addEllipsis) {
-                    line.createEllipsis(maxWidth, this->getEllipsis(), true);
+                    line.createEllipsis(fLines.size() == 1 ? this->firstLineWidth(maxWidth) : maxWidth,
+                                        this->getEllipsis(), true);
                 }
                 if (this->paragraphStyle().getRenderSoftHyphens()) {
                     line.createSoftHyphen();
@@ -791,9 +804,61 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
     fWidth = maxWidth;
     fMaxIntrinsicWidth = textWrapper.maxIntrinsicWidth();
     fMinIntrinsicWidth = textWrapper.minIntrinsicWidth();
+    if (fFirstLineIndent != 0) { this->computeMinIntrinsicWidthWithIndent(); }
     fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
     fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
     fExceededMaxLines = textWrapper.exceededMaxLines();
+}
+
+// Minimum width uses the first word's indented advance and ordinary advances
+// for later words. Read the original shaped clusters, including placeholders;
+// never derive this measurement from where the current soft wraps happened
+void ParagraphImpl::computeMinIntrinsicWidthWithIndent() {
+    fMinIntrinsicWidth = 0;
+    const SkString* softHyphen = nullptr;
+    if (fParagraphStyle.getRenderSoftHyphens() &&
+        !fParagraphStyle.getSoftHyphenString().isEmpty()) {
+        softHyphen = &fParagraphStyle.getSoftHyphenString();
+    }
+    SkScalar wordWidth = 0;
+    SkScalar trimmedWidth = 0;
+    bool isFirstWord = true;
+    bool hasVisibleContent = false;
+    auto finishWord = [&] {
+        if (hasVisibleContent) {
+            SkScalar total = trimmedWidth + (isFirstWord ? fFirstLineIndent : 0);
+            fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, std::max(0.0f, total));
+            isFirstWord = false;
+        }
+        wordWidth = trimmedWidth = 0;
+        hasVisibleContent = false;
+    };
+    // The last cluster is the terminal sentinel, without an original glyph
+    for (int i = 0; i + 1 < fClusters.size(); ++i) {
+        const auto& cluster = fClusters[i];
+        if (cluster.isHardBreak()) {
+            finishWord();
+            isFirstWord = false;
+        } else if (cluster.run().isPlaceholder()) {
+            finishWord();
+            SkScalar total = cluster.width() + (isFirstWord ? fFirstLineIndent : 0);
+            fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, std::max(0.0f, total));
+            isFirstWord = false;
+        } else {
+            if (!cluster.isWhitespaceBreak()) {
+                trimmedWidth = wordWidth + cluster.trimmedWidth(cluster.endPos());
+                hasVisibleContent = true;
+            }
+            wordWidth += cluster.width();
+            if (cluster.isSoftBreak()) {
+                if (softHyphen && cluster.isSoftHyphen()) {
+                    trimmedWidth += TextLine::SoftHyphenWidth(softHyphen, &cluster);
+                }
+                finishWord();
+            }
+        }
+    }
+    finishWord();
 }
 
 void ParagraphImpl::formatLines(SkScalar maxWidth) {
@@ -808,8 +873,10 @@ void ParagraphImpl::formatLines(SkScalar maxWidth) {
         return;
     }
 
+    bool firstLine = true;
     for (auto& line : fLines) {
-        line.format(effectiveAlign, maxWidth);
+        line.format(effectiveAlign, firstLine ? this->firstLineWidth(maxWidth) : maxWidth);
+        firstLine = false;
     }
 }
 
@@ -911,7 +978,9 @@ std::vector<TextBox> ParagraphImpl::getRectsForRange(unsigned start,
         if (start == 0 && end > 0) {
             // On account of implied "\n" that is always at the end of the text
             //SkDebugf("getRectsForRange(%d, %d): %f\n", start, end, fHeight);
-            results.emplace_back(SkRect::MakeXYWH(0, 0, 0, fHeight), fParagraphStyle.getTextDirection());
+            LineMetrics empty;
+            const auto x = this->getLineMetricsAt(0, &empty) ? empty.fLeft : 0;
+            results.emplace_back(SkRect::MakeXYWH(x, 0, 0, fHeight), fParagraphStyle.getTextDirection());
         }
         return results;
     }
@@ -1054,6 +1123,11 @@ SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
 
 void ParagraphImpl::getLineMetrics(std::vector<LineMetrics>& metrics) {
     metrics.clear();
+    if (fLines.empty() && fText.isEmpty() && fFirstLineIndent != 0) {
+        LineMetrics empty;
+        if (this->getLineMetricsAt(0, &empty)) { metrics.push_back(empty); }
+        return;
+    }
     for (auto& line : fLines) {
         metrics.emplace_back(line.getMetrics());
     }
@@ -1383,6 +1457,23 @@ int ParagraphImpl::getLineNumberAtUTF16Offset(size_t codeUnitIndex) {
 }
 
 bool ParagraphImpl::getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) const {
+    if (lineNumber == 0 && fLines.empty() && fText.isEmpty() && fFirstLineIndent != 0) {
+        if (lineMetrics) {
+            *lineMetrics = LineMetrics();
+            lineMetrics->fAscent = -fEmptyMetrics.ascent();
+            lineMetrics->fDescent = fEmptyMetrics.descent();
+            lineMetrics->fUnscaledAscent = -fEmptyMetrics.rawAscent();
+            lineMetrics->fHeight = fHeight;
+            lineMetrics->fBaseline = fAlphabeticBaseline;
+            const auto width = SkIsFinite(fWidth) ? this->firstLineWidth(fWidth) : 0;
+            auto align = fParagraphStyle.effective_align();
+            const bool right = align == TextAlign::kRight ||
+                    (align == TextAlign::kJustify && fParagraphStyle.getTextDirection() == TextDirection::kRtl);
+            lineMetrics->fLeft = this->firstLineOffset(fWidth) +
+                    (right ? width : align == TextAlign::kCenter ? width / 2 : 0);
+        }
+        return true;
+    }
     if (lineNumber < 0 || lineNumber >= fLines.size()) {
         return false;
     }
@@ -1575,6 +1666,9 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
 }
 
 int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
+    if (lineNumber < 0 || lineNumber >= fLines.size()) {
+        return 0;
+    }
     SkPathBuilder builder;
     int notConverted = 0;
     auto& line = fLines[lineNumber];

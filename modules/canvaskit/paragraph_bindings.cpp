@@ -551,7 +551,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
         .function("_getRectsForRange", &GetRectsForRange)
         .function("getShapedLines", &GetShapedLines)
         .function("getWordBoundary", &para::Paragraph::getWordBoundary)
-        .function("layout", &para::Paragraph::layout)
+        .function("layout", select_overload<void(SkScalar)>(&para::Paragraph::layout))
         .function("unresolvedCodepoints", &UnresolvedCodepoints);
 
     class_<para::ParagraphBuilderImpl>("ParagraphBuilder")
