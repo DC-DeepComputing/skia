@@ -16,6 +16,23 @@
       "message": "Folded the test from CL 1406080 into PS2, with the null text cases added.",
       "revId": "0a946c91d037a04e3086b208cafd728a8586b602",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa2c221d_3866a15c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-29T16:04:49Z",
+      "side": 1,
+      "message": "Thanks for folding in the test. Could you rebase PS2 onto main and upload it yourself?\n\nPS2 still sits on PS1 of 1408157 (eaa4dfcfa0), but 1408157 landed as PS2 (8a256a9888). The rebase onto main is clean: modules/skparagraph on main is the same as in eaa4dfcfa0, so it should be a trivial rebase.\n\nI would rather not press the Rebase button myself. That would make me the uploader of the new patchset, and then my Code-Review vote would not count, so the CL would need one more reviewer. I will re-check and vote on the rebased patchset.",
+      "revId": "0a946c91d037a04e3086b208cafd728a8586b602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
