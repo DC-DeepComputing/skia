@@ -59,6 +59,7 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
@@ -833,8 +834,9 @@ private:
     sk_sp<const SkData>        fUniforms;
     int                        fVertexCount;
     int                        fIndexCount;
-    GrSimpleMesh*              fMesh = nullptr;
-    GrProgramInfo*             fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +5% on vertexcolorspace_half.
+    RAW_PTR_EXCLUSION GrSimpleMesh* fMesh = nullptr;
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
     TArray<std::unique_ptr<GrFragmentProcessor>> fChildren;
 
     using INHERITED = GrMeshDrawOp;

@@ -21,6 +21,7 @@
 #include "src/gpu/ganesh/GrUserStencilSettings.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <new>
@@ -207,7 +208,8 @@ protected:
                                                 GrProcessorAnalysisCoverage geometryCoverage,
                                                 GrProcessorAnalysisColor* geometryColor);
 
-    GrProcessorSet* fProcessors;
+    // RAW_PTR_EXCLUSION: Performance: +4% on rects_1_bw.
+    RAW_PTR_EXCLUSION GrProcessorSet* fProcessors;
     GrPipeline::InputFlags fPipelineFlags;
     unsigned fAAType : 2;
     unsigned fUsesLocalCoords : 1;

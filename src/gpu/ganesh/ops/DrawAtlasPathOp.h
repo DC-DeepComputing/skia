@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/ops/AtlasInstancedHelper.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <array>
 #include <utility>
@@ -104,7 +105,8 @@ private:
 
     int fInstanceCount = 1;
 
-    GrProgramInfo* fProgram = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgram = nullptr;
 
     sk_sp<const GrBuffer> fInstanceBuffer;
     int fBaseInstance;

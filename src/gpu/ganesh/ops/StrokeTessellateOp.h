@@ -21,6 +21,8 @@
 #include "src/gpu/ganesh/tessellate/GrTessellationShader.h"
 #include "src/gpu/ganesh/tessellate/StrokeTessellator.h"
 #include "src/gpu/tessellate/Tessellation.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class GrAppliedClip;
 class GrDstProxyView;
@@ -89,15 +91,18 @@ private:
     const SkMatrix fViewMatrix;
     PatchAttribs fPatchAttribs = PatchAttribs::kNone;
     PathStrokeList fPathStrokeList;
-    PathStrokeList** fPathStrokeTail = &fPathStrokeList.fNext;
+    raw_ptr<PathStrokeList*> fPathStrokeTail = &fPathStrokeList.fNext;
     int fTotalCombinedVerbCnt = 0;
     GrProcessorSet fProcessors;
     bool fNeedsStencil;
 
-    StrokeTessellator* fTessellator = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION StrokeTessellator* fTessellator = nullptr;
     GrStrokeTessellationShader* fTessellationShader;
-    const GrProgramInfo* fStencilProgram = nullptr;  // Only used if the stroke has transparency.
-    const GrProgramInfo* fFillProgram = nullptr;
+    // Only used if the stroke has transparency.
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION const GrProgramInfo* fStencilProgram = nullptr;
+    RAW_PTR_EXCLUSION const GrProgramInfo* fFillProgram = nullptr;
 };
 
 }  // namespace skgpu::ganesh

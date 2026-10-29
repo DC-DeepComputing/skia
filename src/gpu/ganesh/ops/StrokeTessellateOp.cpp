@@ -139,8 +139,9 @@ GrOp::CombineResult StrokeTessellateOp::onCombineIfPossible(GrOp* grOp, SkArenaA
     // copy it.
     auto* headCopy = alloc->make<PathStrokeList>(std::move(op->fPathStrokeList));
     *fPathStrokeTail = headCopy;
-    fPathStrokeTail = (op->fPathStrokeTail == &op->fPathStrokeList.fNext) ? &headCopy->fNext
-                                                                          : op->fPathStrokeTail;
+    fPathStrokeTail = (op->fPathStrokeTail == &op->fPathStrokeList.fNext)
+                              ? &headCopy->fNext
+                              : op->fPathStrokeTail.get();
 
     fTotalCombinedVerbCnt = combinedVerbCnt;
     return CombineResult::kMerged;

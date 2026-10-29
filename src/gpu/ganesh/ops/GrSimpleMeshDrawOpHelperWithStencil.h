@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <utility>
@@ -104,7 +105,8 @@ public:
     const GrUserStencilSettings* stencilSettings() const { return fStencilSettings; }
 
 private:
-    const GrUserStencilSettings* fStencilSettings;
+    // RAW_PTR_EXCLUSION: Performance: +4% on rects_1_bw.
+    RAW_PTR_EXCLUSION const GrUserStencilSettings* fStencilSettings;
     using INHERITED = GrSimpleMeshDrawOpHelper;
 };
 

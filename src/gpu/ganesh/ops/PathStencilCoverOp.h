@@ -24,6 +24,7 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/tessellate/GrTessellationShader.h"
 #include "src/gpu/ganesh/tessellate/PathTessellator.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <utility>
 
@@ -111,7 +112,8 @@ private:
     void onPrepare(GrOpFlushState*) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
-    const PathDrawList* fPathDrawList;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION const PathDrawList* fPathDrawList;
     const int fTotalCombinedPathVerbCnt;
     const int fPathCount;
     const FillPathFlags fPathFlags;
@@ -121,10 +123,11 @@ private:
     SkDEBUGCODE(SkRect fOriginalDrawBounds;)
 
     // Decided during prePreparePrograms.
-    PathTessellator* fTessellator = nullptr;
-    const GrProgramInfo* fStencilFanProgram = nullptr;
-    const GrProgramInfo* fStencilPathProgram = nullptr;
-    const GrProgramInfo* fCoverBBoxProgram = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION PathTessellator* fTessellator = nullptr;
+    RAW_PTR_EXCLUSION const GrProgramInfo* fStencilFanProgram = nullptr;
+    RAW_PTR_EXCLUSION const GrProgramInfo* fStencilPathProgram = nullptr;
+    RAW_PTR_EXCLUSION const GrProgramInfo* fCoverBBoxProgram = nullptr;
 
     // Filled during onPrepare.
     sk_sp<const GrBuffer> fFanBuffer;
