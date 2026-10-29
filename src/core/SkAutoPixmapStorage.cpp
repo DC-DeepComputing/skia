@@ -9,24 +9,22 @@
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkMalloc.h"
 
 #include <utility>
 
 SkAutoPixmapStorage::SkAutoPixmapStorage() : fStorage(nullptr) {}
 
-SkAutoPixmapStorage::~SkAutoPixmapStorage() {
-    this->freeStorage();
-}
+SkAutoPixmapStorage::~SkAutoPixmapStorage() = default;
 
 SkAutoPixmapStorage::SkAutoPixmapStorage(SkAutoPixmapStorage&& other) : fStorage(nullptr) {
     *this = std::move(other);
 }
 
 SkAutoPixmapStorage& SkAutoPixmapStorage::operator=(SkAutoPixmapStorage&& other) {
-    this->fStorage = other.fStorage;
-    this->INHERITED::reset(other.info(), this->fStorage, other.rowBytes());
+    this->fStorage = std::move(other.fStorage);
+    this->INHERITED::reset(other.info(), this->fStorage.get(), other.rowBytes());
 
-    other.fStorage = nullptr;
     other.INHERITED::reset();
 
     return *this;
@@ -41,7 +39,7 @@ size_t SkAutoPixmapStorage::AllocSize(const SkImageInfo& info, size_t* rowBytes)
 }
 
 bool SkAutoPixmapStorage::tryAlloc(const SkImageInfo& info) {
-    this->freeStorage();
+    fStorage.reset();
 
     size_t rb;
     size_t size = AllocSize(info, &rb);
@@ -53,7 +51,7 @@ bool SkAutoPixmapStorage::tryAlloc(const SkImageInfo& info) {
         return false;
     }
     this->reset(info, pixels, rb);
-    fStorage = pixels;
+    fStorage.reset(pixels);
     return true;
 }
 
@@ -66,8 +64,7 @@ void* SkAutoPixmapStorage::detachPixels() {
         return nullptr;
     }
 
-    void* data = fStorage;
-    fStorage = nullptr;
+    void* data = fStorage.release();
     this->INHERITED::reset();
 
     return data;
@@ -78,8 +75,7 @@ sk_sp<SkData> SkAutoPixmapStorage::detachPixelsAsData() {
         return nullptr;
     }
 
-    sk_sp<SkData> data = SkData::MakeFromMalloc(fStorage, this->computeByteSize());
-    fStorage = nullptr;
+    sk_sp<SkData> data = SkData::MakeFromMalloc(fStorage.release(), this->computeByteSize());
     this->INHERITED::reset();
 
     return data;
