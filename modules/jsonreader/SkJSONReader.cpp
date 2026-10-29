@@ -13,6 +13,7 @@
 #include "include/core/SkString.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "include/utils/SkParse.h"
@@ -329,6 +330,8 @@ static inline float pow10(int32_t exp) {
 }
 
 class DOMParser {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     explicit DOMParser(SkArenaAlloc& alloc) : fAlloc(alloc) {
         fValueStack.reserve(kValueStackReserve);
