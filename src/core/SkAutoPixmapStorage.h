@@ -10,7 +10,7 @@
 
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkMalloc.h"
+#include "include/private/SkTemplates.h"
 
 #include <cstddef>
 
@@ -84,11 +84,10 @@ public:
     }
 
 private:
-    void*   fStorage;
+    skia_private::UniqueVoidPtr fStorage;
 
     void freeStorage() {
-        sk_free(fStorage);
-        fStorage = nullptr;
+        fStorage.reset();
     }
 
     using INHERITED = SkPixmap;
