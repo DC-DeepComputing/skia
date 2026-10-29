@@ -46,6 +46,7 @@
 #include "src/gpu/ganesh/ops/FillRectOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <array>
@@ -309,8 +310,9 @@ private:
     SkMatrix       fViewMatrix;
     SkRect         fRect;
     SkScalar       fStrokeWidth;
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +5% on rects_3_stroke_4_bw.
+    RAW_PTR_EXCLUSION GrSimpleMesh* fMesh = nullptr;
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 
     const static int kVertsPerHairlineRect = 5;
     const static int kVertsPerStrokeRect = 10;
@@ -619,8 +621,9 @@ private:
     Helper         fHelper;
     STArray<1, RectInfo, true> fRects;
     SkMatrix       fViewMatrix;
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +5% on rects_3_stroke_4_bw.
+    RAW_PTR_EXCLUSION GrSimpleMesh* fMesh = nullptr;
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
     bool           fMiterStroke;
     bool           fWideColor;
 

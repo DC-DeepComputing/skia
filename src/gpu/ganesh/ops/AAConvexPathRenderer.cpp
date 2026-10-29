@@ -946,7 +946,8 @@ private:
     };
 
     SkTDArray<MeshDraw> fDraws;
-    GrProgramInfo*      fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

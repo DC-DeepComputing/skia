@@ -53,6 +53,8 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -227,7 +229,8 @@ private:
 
     // If this op is prePrepared the created programInfo will be stored here for use in
     // onExecute. In the prePrepared case it will have been stored in the record-time arena.
-    GrProgramInfo* fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 };
 
 SK_MAKE_BITFIELD_CLASS_OPS(FillRRectOpImpl::ProcessorFlags)
@@ -506,7 +509,7 @@ private:
 
     constexpr static int kMaxInstanceAttribs = 6;
     STArray<kMaxInstanceAttribs, Attribute> fInstanceAttribs;
-    const Attribute* fColorAttrib;
+    raw_ptr<const Attribute> fColorAttrib;
 };
 
 // Our coverage geometry consists of an inset octagon with solid coverage, surrounded by linear
