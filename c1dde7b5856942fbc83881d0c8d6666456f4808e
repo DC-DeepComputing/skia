@@ -16,6 +16,24 @@
       "message": "BTW, https://ci.chromium.org/ui/p/pdfium/builders/try/linux_xfa_skia_cxx23/3405/overview tried in to roll DEPS from Skia into PDFium, and this generated an error:\n\n```\n../../third_party/skia/src/partition_alloc/noop/raw_ptr.h:368:51: error: declaration of \u0027iterator_traits\u0027 must be imported from module \u0027//build/modules:system.std.iterator.iterator_traits\u0027 before it is required\n  368 | template \u003ctypename T, RawPtrTraits Traits\u003e struct iterator_traits\u003craw_ptr\u003cT, Traits\u003e\u003e {\n      |                                                   ^\n../../third_party/libc++/src/include/__iterator/iterator_traits.h:281:8: note: declaration here is not visible\n  281 | struct iterator_traits : __iterator_traits\u003c_Ip\u003e {\n      |        ^\n```\n\nNormally, PDFium builders build with C++20, but there is one that builds with C++23.",
       "revId": "c1dde7b5856942fbc83881d0c8d6666456f4808e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd6e1adf_53156ebe",
+        "filename": "src/partition_alloc/noop/raw_ptr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 6605
+      },
+      "writtenOn": "2026-10-29T19:11:59Z",
+      "side": 1,
+      "message": "Then I noticed this CL is from June. I guess something changed in Skia within the last month or so and now this code is being build.",
+      "parentUuid": "daa6148d_6e614ae0",
+      "revId": "c1dde7b5856942fbc83881d0c8d6666456f4808e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
