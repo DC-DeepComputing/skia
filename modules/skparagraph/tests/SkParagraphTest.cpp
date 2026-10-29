@@ -12612,3 +12612,58 @@ DEF_TEST(SkParagraph_ExtendedVisitPositionsAreWritable, reporter) {
     });
     REPORTER_ASSERT(reporter, firstInkRow(paragraph.get()) == referenceRow + 30);
 }
+
+// A run keeps glyph offsets only if one of them is not zero, and the drawn glyphs use them
+DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+
+    TextStyle latin;
+    latin.setFontFamilies({SkString("Roboto")});
+    latin.setFontSize(20);
+    latin.setColor(SK_ColorBLACK);
+    TextStyle arabic = latin;
+    // U+2605 is not in Noto Naskh Arabic, so the Arabic run is cut into pieces around it
+    arabic.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Noto Sans CJK JP")});
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.setTextStyle(latin);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(latin);
+    builder.addText("Hello ");
+    builder.pop();
+    builder.pushStyle(arabic);
+    builder.addText(
+            u"\u0645\u064E\u0631\u0652\u062D\u064E\u0628\u064B\u0627\u2605"
+            u"\u0634\u064F\u0643\u0652\u0631\u064B\u0627");
+    builder.pop();
+    auto paragraph = builder.Build();
+    paragraph->layout(1000);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    int runsWithOffsets = 0;
+    for (auto& run : impl->runs()) {
+        SkString family;
+        run.font().getTypeface()->getFamilyName(&family);
+        if (family.equals("Roboto")) {
+            REPORTER_ASSERT(reporter, run.offsets().empty());
+        } else if (family.equals("Noto Naskh Arabic")) {
+            bool nonZero = false;
+            for (auto offset : run.offsets()) {
+                nonZero |= offset != SkPoint{0, 0};
+            }
+            REPORTER_ASSERT(reporter, nonZero);
+            runsWithOffsets += nonZero;
+        }
+    }
+    REPORTER_ASSERT(reporter, runsWithOffsets == 2);
+
+    // The marks are drawn above and below the letters
+    bool movedUpOrDown = false;
+    paragraph->visit([&](int, const Paragraph::VisitorInfo* info) {
+        for (int i = 0; info && i < info->count; ++i) {
+            movedUpOrDown |= info->positions[i].fY != 0;
+        }
+    });
+    REPORTER_ASSERT(reporter, movedUpOrDown);
+}
