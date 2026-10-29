@@ -410,7 +410,7 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
     auto disableLastDescent = parent->paragraphStyle().getTextHeightBehavior() & TextHeightBehavior::kDisableLastDescent;
     bool firstLine = true; // We only interested in fist line if we have to disable the first ascent
 
-    SkScalar softLineMaxIntrinsicWidth = 0;
+    SkScalar softLineMaxIntrinsicWidth = parent->fFirstLineIndent;
     fEndLine = TextStretch(span.data(), span.data(), parent->strutForceHeight());
     auto start = span.data();
     auto end = start + span.size() - 1;
@@ -421,7 +421,8 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         auto lastLine = (hasEllipsis && unlimitedLines) || fLineNumber >= maxLines;
         needEllipsis = hasEllipsis && !endlessLine && lastLine;
 
-        this->lookAhead(maxWidth, end, parent->getApplyRoundingHack(), softHyphen, needEllipsis);
+        this->lookAhead(firstLine ? parent->firstLineWidth(maxWidth) : maxWidth, end,
+                        parent->getApplyRoundingHack(), softHyphen, needEllipsis);
 
         this->moveForward(needEllipsis);
         needEllipsis &= fEndLine.endCluster() < end - 1; // Only if we have some text to ellipsize
@@ -491,7 +492,6 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         }
 
         SkScalar lineHeight = fEndLine.metrics().height();
-        firstLine = false;
 
         if (fEndLine.empty()) {
             // Correct text and clusters (make it empty for an empty line)
@@ -507,11 +507,12 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
                 textIncludingNewlines, clusters, clustersWithGhosts, widthWithSpaces,
                 fEndLine.startPos(),
                 fEndLine.endPos(),
-                SkVector::Make(0, fHeight),
+                SkVector::Make(firstLine ? parent->firstLineOffset(maxWidth) : 0, fHeight),
                 SkVector::Make(fEndLine.width(), lineHeight),
                 fEndLine.metrics(),
                 needEllipsis && !fHardLineBreak);
 
+        firstLine = false;
         softLineMaxIntrinsicWidth += widthWithSpaces;
 
         fMaxIntrinsicWidth = std::max(fMaxIntrinsicWidth, softLineMaxIntrinsicWidth);
