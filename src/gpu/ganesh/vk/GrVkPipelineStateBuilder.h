@@ -9,6 +9,7 @@
 #define GrVkPipelineStateBuilder_DEFINED
 
 #include "include/core/SkString.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLShaderBuilder.h"
@@ -33,6 +34,8 @@ struct ProgramSettings;
 }  // namespace SkSL
 
 class GrVkPipelineStateBuilder : public GrGLSLProgramBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     /** Generates a pipeline state.
      *
