@@ -26,6 +26,7 @@
 #include "src/gpu/ganesh/GrAttachment.h"
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/vk/VulkanMutableTextureStatePriv.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cinttypes>
 #include <cstdint>
@@ -315,9 +316,9 @@ private:
     private:
         void freeGPUData() const override;
 
-        const GrVkGpu*     fGpu;
-        VkImage            fImage;
-        skgpu::VulkanAlloc fAlloc;
+        raw_ptr<const GrVkGpu> fGpu;
+        VkImage                fImage;
+        skgpu::VulkanAlloc     fAlloc;
 
         using INHERITED = GrTextureResource;
     };
