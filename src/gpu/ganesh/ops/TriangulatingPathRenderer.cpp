@@ -19,6 +19,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkMalloc.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkMessageBus.h"
@@ -52,6 +53,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -134,6 +136,8 @@ private:
 };
 
 class StaticVertexAllocator : public GrEagerVertexAllocator {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     StaticVertexAllocator(GrResourceProvider* resourceProvider, bool canMapVB)
             : fResourceProvider(resourceProvider)
@@ -589,8 +593,9 @@ private:
     SkIRect        fDevClipBounds;
     bool           fAntiAlias;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION GrSimpleMesh* fMesh = nullptr;
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 
     sk_sp<GrThreadSafeCache::VertexData> fVertexData;
 

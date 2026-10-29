@@ -18,6 +18,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTo.h"
@@ -53,6 +54,7 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrPathStencilSettings.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -97,6 +99,8 @@ inline bool single_pass_shape(const GrStyledShape& shape) {
 }
 
 class PathGeoBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     PathGeoBuilder(GrPrimitiveType primitiveType,
                    GrMeshDrawTarget* target,
@@ -607,7 +611,8 @@ private:
     bool fIsHairline;
 
     SkTDArray<GrSimpleMesh*> fMeshes;
-    GrProgramInfo* fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

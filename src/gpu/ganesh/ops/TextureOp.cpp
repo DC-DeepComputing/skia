@@ -22,6 +22,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
@@ -62,6 +63,8 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -441,9 +444,10 @@ private:
         int fNumTotalQuads = 0;
 
         // This member variable is only used by 'onPrePrepareDraws'.
-        char* fPrePreparedVertices = nullptr;
+        raw_ptr<char> fPrePreparedVertices = nullptr;
 
-        GrProgramInfo* fProgramInfo = nullptr;
+        // RAW_PTR_EXCLUSION: Performance: +12% on bulkrect_1000_grid_sharedimage_batch.
+        RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 
         sk_sp<const GrBuffer> fIndexBuffer;
         sk_sp<const GrBuffer> fVertexBuffer;
@@ -1141,7 +1145,8 @@ private:
     // Most state of TextureOp is packed into these two field to minimize the op's size.
     // Historically, increasing the size of TextureOp has caused surprising perf regressions, so
     // consider/measure changes with care.
-    Desc* fDesc;
+    // RAW_PTR_EXCLUSION: Performance: +12% on bulkrect_1000_grid_sharedimage_batch.
+    RAW_PTR_EXCLUSION Desc* fDesc;
     Metadata fMetadata;
 
     // This field must go last. When allocating this op, we will allocate extra space to hold
@@ -1269,6 +1274,8 @@ GrOp::Owner TextureOp::Make(GrRecordingContext* context,
 
 // A helper class that assists in breaking up bulk API quad draws into manageable chunks.
 class TextureOp::BatchSizeLimiter {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     BatchSizeLimiter(ganesh::SurfaceDrawContext* sdc,
                      const GrClip* clip,

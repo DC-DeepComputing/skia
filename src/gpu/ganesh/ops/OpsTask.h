@@ -23,6 +23,7 @@
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrXferProcessor.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <array>
 #include <cstdint>
@@ -247,7 +248,7 @@ private:
         List fList;
         GrProcessorSet::Analysis fProcessorAnalysis;
         GrDstProxyView fDstProxyView;
-        GrAppliedClip* fAppliedClip;
+        raw_ptr<GrAppliedClip> fAppliedClip;
         SkRect fBounds;
 
         static_assert(::sk_is_trivially_relocatable<decltype(fProcessorAnalysis)>::value);
@@ -275,7 +276,7 @@ private:
     // however, requires that the SDC be able to coordinate with the op list to achieve similar ends
     friend class skgpu::ganesh::SurfaceDrawContext;
 
-    GrAuditTrail* fAuditTrail;
+    raw_ptr<GrAuditTrail, DanglingUntriaged> fAuditTrail;
 
     bool fUsesMSAASurface;
     skgpu::Swizzle fTargetSwizzle;
