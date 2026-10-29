@@ -8,6 +8,7 @@
 #define SoftwarePathRenderer_DEFINED
 
 #include "src/gpu/ganesh/PathRenderer.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 class GrClip;
 class GrPaint;
@@ -81,7 +82,7 @@ private:
     bool onDrawPath(const DrawPathArgs&) override;
 
 private:
-    GrProxyProvider* fProxyProvider;
+    raw_ptr<GrProxyProvider> fProxyProvider;
     bool             fAllowCaching;
 };
 

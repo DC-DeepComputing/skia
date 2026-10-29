@@ -21,6 +21,7 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/OpsTask.h"
 #include "src/gpu/ganesh/tessellate/PathTessellator.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <limits>
 #include <memory>
@@ -114,7 +115,7 @@ private:
         int pathCount() const { return fPathCount; }
 
     private:
-        PathDrawList* fPathDrawList = nullptr;
+        raw_ptr<PathDrawList, DanglingUntriaged> fPathDrawList;
         int fTotalCombinedPathVerbCnt = 0;
         int fPathCount = 0;
     };

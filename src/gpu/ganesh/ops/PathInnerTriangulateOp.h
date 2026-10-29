@@ -28,6 +28,7 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/tessellate/GrTessellationShader.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <utility>
 
@@ -100,25 +101,30 @@ private:
     GrProcessorSet fProcessors;
 
     // Triangulates the inner fan.
-    GrInnerFanTriangulator* fFanTriangulator = nullptr;
-    GrTriangulator::Poly* fFanPolys = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION GrInnerFanTriangulator* fFanTriangulator = nullptr;
+    RAW_PTR_EXCLUSION GrTriangulator::Poly* fFanPolys = nullptr;
     GrInnerFanTriangulator::BreadcrumbTriangleList fFanBreadcrumbs;
 
     // This pipeline is shared by all programs that do filling.
-    const GrPipeline* fPipelineForFills = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION const GrPipeline* fPipelineForFills = nullptr;
 
     // Tessellates the outer curves.
-    PathCurveTessellator* fTessellator = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION PathCurveTessellator* fTessellator = nullptr;
 
     // Pass 1: Tessellate the outer curves into the stencil buffer.
-    const GrProgramInfo* fStencilCurvesProgram = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION const GrProgramInfo* fStencilCurvesProgram = nullptr;
 
     // Pass 2: Fill the path's inner fan with a stencil test against the curves. (In extenuating
     // circumstances this might require two separate draws.)
     skia_private::STArray<2, const GrProgramInfo*> fFanPrograms;
 
     // Pass 3: Draw convex hulls around each curve.
-    const GrProgramInfo* fCoverHullsProgram = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION const GrProgramInfo* fCoverHullsProgram = nullptr;
 
     // This buffer gets created by fFanTriangulator during onPrepare.
     sk_sp<const GrBuffer> fFanBuffer;

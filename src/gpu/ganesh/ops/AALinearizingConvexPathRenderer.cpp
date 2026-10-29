@@ -46,6 +46,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -370,7 +371,8 @@ private:
     bool fWideColor;
 
     SkTDArray<GrSimpleMesh*> fMeshes;
-    GrProgramInfo*           fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };

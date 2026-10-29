@@ -23,6 +23,8 @@
 #include "src/gpu/ganesh/tessellate/GrTessellationShader.h"
 #include "src/gpu/ganesh/tessellate/PathTessellator.h"
 #include "src/gpu/tessellate/Tessellation.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <utility>
 
@@ -85,17 +87,19 @@ private:
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
     const GrAAType fAAType;
-    const GrUserStencilSettings* const fStencil;
+    const raw_ptr<const GrUserStencilSettings> fStencil;
     int fTotalCombinedPathVerbCnt;
     PatchAttribs fPatchAttribs = PatchAttribs::kNone;
-    PathDrawList* const fPathDrawList;
-    PathDrawList** fPathDrawTail;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION PathDrawList* const fPathDrawList;
+    raw_ptr<PathDrawList*> fPathDrawTail;
     GrProcessorSet fProcessors;
     SkMatrix fShaderMatrix;
 
     // Decided during prepareTessellator.
-    PathTessellator* fTessellator = nullptr;
-    const GrProgramInfo* fTessellationProgram = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +11% on readpix_um_rgba_null.
+    RAW_PTR_EXCLUSION PathTessellator* fTessellator = nullptr;
+    RAW_PTR_EXCLUSION const GrProgramInfo* fTessellationProgram = nullptr;
 
     friend class GrOp;  // For ctor.
 };
