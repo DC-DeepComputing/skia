@@ -17,13 +17,13 @@ GrVkDescriptorSet::GrVkDescriptorSet(GrVkGpu* gpu,
                                      GrVkDescriptorSetManager::Handle handle)
     : INHERITED(gpu)
     , fDescSet(descSet)
-    , fPool(pool)
-    , fHandle(handle) {
-    fPool->ref();
-}
+    , fPool(sk_ref_sp(pool))
+    , fHandle(handle) {}
+
+GrVkDescriptorSet::~GrVkDescriptorSet() = default;
 
 void GrVkDescriptorSet::freeGPUData() const {
-    fPool->unref();
+    fPool.reset();
 }
 
 void GrVkDescriptorSet::onRecycle() const {
