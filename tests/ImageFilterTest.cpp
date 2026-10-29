@@ -2648,3 +2648,123 @@ DEF_TEST(ImageFilter_UnboundedInputMagnifier_EdgeLeak, reporter) {
 
     REPORTER_ASSERT(reporter, !leaked, "Edge padding leaked by magnifier");
 }
+
+namespace {
+
+// This test tries to get image filtering to use mipmapping and, combined with scratch
+// texture reuse, allow data from a scratch texture to be absorbed into the filtered result.
+void test_mipmap(skiatest::Reporter* reporter,
+                 const std::function<sk_sp<SkSurface>(const SkImageInfo&)>& createSurface,
+                 const std::function<void()>& flushAndSubmit) {
+
+    const SkImageInfo ii = SkImageInfo::MakeN32Premul(128, 128);
+
+    sk_sp<SkSurface> finalSurface = createSurface(ii);
+
+    // Create a bunch of, appropriately sized, scratch textures that could be reused in
+    // the image filtering process.
+    std::vector<sk_sp<SkSurface>> seeds(8);
+    for (int i = 0; i < 8; ++i) {
+        seeds[i] = createSurface(ii);
+        if (!seeds[i]) {
+            continue;
+        }
+        seeds[i]->getCanvas()->clear(SK_ColorGREEN);
+    }
+
+    flushAndSubmit();  // ensure the green is written to all the textures
+    seeds.clear();     // return the textures to the scratch pool
+    flushAndSubmit();
+
+    // Create the input image filter (solid white). The 73x73 dimensions will be binned
+    // to 128x128.
+    sk_sp<SkImageFilter> input;
+    {
+        const SkImageInfo tmpII = SkImageInfo::MakeN32Premul(73, 73);
+        sk_sp<SkSurface> tmp = createSurface(tmpII);
+        SkCanvas* canvas = tmp->getCanvas();
+        canvas->clear(SK_ColorWHITE);
+        input = SkImageFilters::Image(tmp->makeImageSnapshot(), {});
+    }
+
+    sk_sp<SkImageFilter> innerBlur = SkImageFilters::Blur(2, 2, SkTileMode::kDecal, input);
+
+    sk_sp<SkImageFilter> matrix = SkImageFilters::MatrixTransform(
+            SkMatrix::Scale(0.25, 0.25), {SkFilterMode::kLinear, SkMipmapMode::kLinear}, innerBlur);
+
+    sk_sp<SkImageFilter> outerBlur = SkImageFilters::Blur(2, 2, SkTileMode::kDecal, matrix);
+
+    SkPaint p;
+    p.setImageFilter(outerBlur);
+
+    SkCanvas* finalCanvas = finalSurface->getCanvas();
+    finalCanvas->drawRect(SkRect::MakeWH(128, 128), p);
+
+    SkBitmap readback;
+    readback.allocPixels(finalSurface->imageInfo());
+    if (!finalSurface->readPixels(readback, 0, 0)) {
+        SKIA_LOG_D("Read pixels failed");
+        return;
+    }
+
+    // The source content is white, so every correctly filtered pixel is a shade of gray (r==g==b)
+    // over the black background. Any pixel whose green channel exceeds its red/blue channels has
+    // absorbed green data from a scratch texture.
+    static constexpr int kTolerance = 2;
+    int numCorrupted = 0;
+    int maxExcess = 0;
+    for (int y = 0; y < readback.height(); ++y) {
+        for (int x = 0; x < readback.width(); ++x) {
+            SkColor c = readback.getColor(x, y);
+            int r = SkColorGetR(c), g = SkColorGetG(c), b = SkColorGetB(c);
+            int excess = std::max(g - r, g - b);
+            if (excess > kTolerance) {
+                ++numCorrupted;
+                maxExcess = std::max(maxExcess, excess);
+            }
+        }
+    }
+    REPORTER_ASSERT(reporter, numCorrupted == 0,
+                    "%d pixels corrupted (max excess %d)",
+                    numCorrupted,
+                    maxExcess);
+}
+
+}  // anonymous namespace
+
+#if defined(SK_GANESH)
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMipmap_Ganesh,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    GrDirectContext* dContext = ctxInfo.directContext();
+
+    test_mipmap(reporter,
+                [dContext](const SkImageInfo& ii) -> sk_sp<SkSurface> {
+                    return SkSurfaces::RenderTarget(
+                            dContext, skgpu::Budgeted::kYes, ii, 0, kTestSurfaceOrigin, nullptr);
+                },
+                [dContext]() { dContext->flushAndSubmit(GrSyncCpu::kYes); });
+}
+#endif
+
+#if defined(SK_GRAPHITE)
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMipmap_Graphite,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNextRelease) {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+
+    test_mipmap(reporter,
+                [r = recorder.get()](const SkImageInfo& ii) -> sk_sp<SkSurface> {
+                    return SkSurfaces::RenderTarget(r, ii);
+                },
+                [context, r = recorder.get()]() {
+                    std::unique_ptr<skgpu::graphite::Recording> recording = r->snap();
+
+                    context->insertRecording({ recording.get() });
+                    context->submit({ skgpu::graphite::SyncToCpu::kYes });
+                });
+}
+#endif

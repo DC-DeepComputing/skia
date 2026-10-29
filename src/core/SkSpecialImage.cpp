@@ -50,6 +50,17 @@ sk_sp<SkShader> SkSpecialImage::asShader(SkTileMode tileMode,
     SkMatrix subsetOrigin = SkMatrix::Translate(-this->subset().topLeft());
     subsetOrigin.postConcat(lm);
 
+    // Special images are intermediate results that are frequently backed by approximate-fit
+    // textures whose backing store beyond subset() was never written, and asImage() below
+    // exposes (and on Ganesh exactifies the proxy to) that whole backing store. Mipmapped or
+    // anisotropic sampling would build the mip chain from the entire backing store and blend
+    // the uninitialized texels into the result even when the base level is clamped to the
+    // subset. Mirror downgrade_to_filter() in Device::drawSpecial() and never sample a special
+    // image with mipmaps: use (at most) bilinear/bicubic filtering of the base level.
+    SkSamplingOptions safeSampling = sampling;
+    if (sampling.isAniso() || (!sampling.useCubic && sampling.mipmap != SkMipmapMode::kNone)) {
+        safeSampling = SkSamplingOptions(SkFilterMode::kLinear);
+    }
     if (strict) {
         // However, we don't need to modify the subset itself since that is defined with respect
         // to the base image, and the local matrix is applied before any tiling/clamping.
@@ -58,10 +69,10 @@ sk_sp<SkShader> SkSpecialImage::asShader(SkTileMode tileMode,
         // asImage() w/o a subset makes no copy; create the SkImageShader directly to remember
         // the subset used to access the image.
         return SkImageShader::MakeSubset(
-                this->asImage(), subset, tileMode, tileMode, sampling, &subsetOrigin);
+                this->asImage(), subset, tileMode, tileMode, safeSampling, &subsetOrigin);
     } else {
         // Ignore 'subset' other than its origin translation applied to the local matrix.
-        return this->asImage()->makeShader(tileMode, tileMode, sampling, subsetOrigin);
+        return this->asImage()->makeShader(tileMode, tileMode, safeSampling, subsetOrigin);
     }
 }
 
