@@ -333,15 +333,15 @@ void TextLine::ensureTextBlobCachePopulated() {
     fTextBlobCachePopulated = true;
 }
 
-void TextLine::format(TextAlign align, SkScalar maxWidth) {
+void TextLine::format(TextAlign align, SkScalar maxWidth, bool alignOverflow) {
     SkScalar delta = maxWidth - this->width();
-    if (delta <= 0) {
+    if (delta <= 0 && !alignOverflow) {
         return;
     }
 
     // We do nothing for left align
     if (align == TextAlign::kJustify) {
-        if (!this->endsWithHardLineBreak()) {
+        if (delta > 0 && !this->endsWithHardLineBreak()) {
             this->justify(maxWidth);
         } else if (fOwner->paragraphStyle().getTextDirection() == TextDirection::kRtl) {
             // Justify -> Right align
