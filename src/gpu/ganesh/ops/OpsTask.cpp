@@ -13,6 +13,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkRectPriv.h"
+#include "src/core/SkSafetyChecks.h"
 #include "src/core/SkScopeExit.h"
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkTraceEvent.h"
@@ -202,6 +203,7 @@ void OpsTask::OpChain::visitProxies(const GrVisitProxyFunc& func) const {
 }
 
 void OpsTask::OpChain::deleteOps() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     while (!fList.empty()) {
         // Since the value goes out of scope immediately, the GrOp::Owner deletes the op.
         fList.popHead();
@@ -213,6 +215,7 @@ void OpsTask::OpChain::deleteOps() {
 OpsTask::OpChain::List OpsTask::OpChain::DoConcat(List chainA, List chainB, const GrCaps& caps,
                                                   SkArenaAlloc* opsTaskArena,
                                                   GrAuditTrail* auditTrail) {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     // We process ops in chain b from head to tail. We attempt to merge with nodes in a, starting
     // at chain a's tail and working toward the head. We produce one of the following outcomes:
     // 1) b's head is merged into an op in a.
@@ -292,6 +295,7 @@ bool OpsTask::OpChain::tryConcat(
         List* list, GrProcessorSet::Analysis processorAnalysis, const GrDstProxyView& dstProxyView,
         const GrAppliedClip* appliedClip, const SkRect& bounds, const GrCaps& caps,
         SkArenaAlloc* opsTaskArena, GrAuditTrail* auditTrail) {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     SkASSERT(!fList.empty());
     SkASSERT(!list->empty());
     SkASSERT(fProcessorAnalysis.requiresDstTexture() == SkToBool(fDstProxyView.proxy()));
@@ -429,7 +433,11 @@ void OpsTask::deleteOps() {
 }
 
 OpsTask::~OpsTask() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     this->deleteOps();
+
+    // Reset explicitly inside the exclusion scope before member destruction
+    fArenas.reset();
 }
 
 void OpsTask::addOp(GrDrawingManager* drawingMgr, GrOp::Owner op,

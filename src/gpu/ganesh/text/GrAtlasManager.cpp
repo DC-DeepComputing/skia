@@ -17,6 +17,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMasks.h"
+#include "src/core/SkSafetyChecks.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrDeferredUpload.h"
@@ -227,6 +228,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     size_t size = height * rowBytes;
 
     // Temporary storage for normalizing glyph image.
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     SkAutoSMalloc<1024> storage(size);
     void* dataPtr = storage.get();
     if (padding > 0) {
