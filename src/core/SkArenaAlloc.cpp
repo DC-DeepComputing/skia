@@ -8,6 +8,7 @@
 #include "src/core/SkArenaAlloc.h"
 
 #include "include/private/SkMalloc.h"
+#include "src/core/SkSafetyChecks.h"
 
 #include <algorithm>
 #include <cassert>
@@ -32,6 +33,7 @@ SkArenaAlloc::SkArenaAlloc(char* block, size_t size, size_t firstHeapAllocation)
 }
 
 SkArenaAlloc::~SkArenaAlloc() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
     RunDtorsOnBlock(fDtorCursor);
 }
 
@@ -152,6 +154,8 @@ SkArenaAllocWithReset::SkArenaAllocWithReset(char* block,
         , fFirstHeapAllocationSize{SkToU32(firstHeapAllocation)} {}
 
 void SkArenaAllocWithReset::reset() {
+    SK_SCOPED_DISABLE_PARTITION_ALLOC_SAFETY_CHECKS;
+
     char* const    firstBlock              = fFirstBlock;
     const uint32_t firstSize               = fFirstSize;
     const uint32_t firstHeapAllocationSize = fFirstHeapAllocationSize;
