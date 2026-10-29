@@ -122,6 +122,18 @@ void GrOpFlushState::reset() {
     fInlineUploads.reset();
     fDraws.reset();
     fBaseDrawToken = skgpu::Token::InvalidToken();
+<<<<<<< HEAD   (ad66f18faf62ba57454423eb761ba7316e3d8feb [M156] Fix integer overflow and oversized glyph rasterizatio)
+||||||| BASE   (c0c46ee9f938fa32c086bea666199686ad7cf26e Roll bazel_build from c57327fdbabbe8b9b... to 0789f2ab93b844)
+    fDeferredUploadFailed = false;
+=======
+    fDeferredUploadFailed = false;
+    // Advance the tokens at the end of every flush, even one that executed no draws, so that work
+    // scheduled during this flush is never considered pending by a later flush.
+    if (fTokenTracker) {
+        fTokenTracker->issueDrawToken();
+        fTokenTracker->catchUpFlushToken();
+    }
+>>>>>>> CHANGE (7c733dd2a0bd5673dfd643d4c02b3d5738a7be3d [Ganesh] Ensure flush token is advanced at the end of every )
 }
 
 void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
