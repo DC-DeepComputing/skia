@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41e0e20b_4cd2fa0d",
+        "filename": "src/core/SkDistanceFieldGen.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-29T21:15:56Z",
+      "side": 1,
+      "message": "This snippet is repeated 3 times, and could use a RAII helper to manage the validation and allocation.  We could take it even further consolidate the copy allocation with the `DFData` and edge allocations in `generate_distance_field_from_image`.  Something like\n\n```\n// Owns all temporary storage for one distance field generation:\n// the DFData working grid, its edge flags, and the padded 8-bit source copy.\nclass DFScratch {\npublic:\n    DFScratch(int w, int h) {\n        if (w \u003c\u003d 0 || h \u003c\u003d 0) {\n            return;\n        }\n        constexpr int kPad \u003d SK_DistanceFieldPad + 1;\n        SkSafeMath safe;\n        const size_t gridCount \u003d safe.mul(safe.addInt(w, 2 * kPad), safe.addInt(h, 2 * kPad));\n        const size_t copyCount \u003d safe.mul(safe.addInt(w, 2), safe.addInt(h, 2));\n        const size_t dataBytes \u003d safe.mul(gridCount, sizeof(DFData));\n        const size_t total     \u003d safe.add(safe.add(dataBytes, gridCount), copyCount);\n        // int: the transform does int-based pointer arithmetic over the padded grid\n        if (!safe || !SkTFitsIn\u003cint\u003e(total)) {\n            return;\n        }\n        fStorage.reset(sk_calloc_canfail(total));\n        if (!fStorage) {\n            return;\n        }\n        fData \u003d static_cast\u003cDFData*\u003e(fStorage.get());\n        fEdge \u003d reinterpret_cast\u003cunsigned char*\u003e(fData + gridCount);\n        fCopy \u003d fEdge + gridCount;\n    }\n\n    explicit operator bool() const { return fStorage !\u003d nullptr; }\n\n    DFData*        data() const { return fData; }\n    unsigned char* edge() const { return fEdge; }\n    unsigned char* copy() const { return fCopy; }\n\nprivate:\n    UniqueVoidPtr  fStorage;\n    DFData*        fData \u003d nullptr;\n    unsigned char* fEdge \u003d nullptr;\n    unsigned char* fCopy \u003d nullptr;\n};\n```\n\nThen the call sites become trivial and `generate_distance_field_from_image` can be simplified too:\n\n```\n    DFScratch scratch(width, height);\n    if (!scratch) {\n        return false;\n    }\n    unsigned char* copyPtr \u003d scratch.copy();\n    // ... format-specific padded copy, unchanged ...\n    generate_distance_field_from_image(distanceField, scratch, width, height);\n```",
+      "range": {
+        "startLine": 510,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 5
+      },
+      "revId": "e9b214bf6a9e4793f8dfe9df552644ee400bf5d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80607dfa_d0891467",
+        "filename": "src/core/SkDistanceFieldGen.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-10-29T21:15:56Z",
+      "side": 1,
+      "message": "If we go with `DFScratch` below, I think this validation should no longer be needed.  Though we should safe-math the actual size computation, probably the tests will have to be updated to exercise a different entry point.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 5
+      },
+      "revId": "e9b214bf6a9e4793f8dfe9df552644ee400bf5d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
