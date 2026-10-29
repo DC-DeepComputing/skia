@@ -16,6 +16,23 @@
       "message": "Thanks for folding in the updates!\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
       "revId": "45b7919166cf883a66ea1f71915de5bf17897f68",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e92275ce_2ad6991c",
+        "filename": "modules/skparagraph/include/Paragraph.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-29T22:48:49Z",
+      "side": 1,
+      "message": "My fault in the snippet I suggested earlier: Skia\u0027s `public_headers_warnings_check` target compiles all public headers under `include/` and `modules/*/include/` with `-Wunused-parameter -Werror` on Clang bots (`gn/skia/BUILD.gn:687`, seen on `Build-Ubuntu24.04-Clang-x86_64-Debug-FreeType_ASAN`).\n\nWith an inline `{}` body in `Paragraph.h`, the parameter names need to be commented out (matching `include/core/SkTraceMemoryDump.h:90`):\n\n```cpp\n    virtual void paintLines(SkCanvas* /*canvas*/, SkScalar /*x*/, SkScalar /*y*/,\n                            size_t /*firstLine*/, size_t /*lineCount*/) {}\n    virtual void paintLines(ParagraphPainter* /*painter*/, SkScalar /*x*/, SkScalar /*y*/,\n                            size_t /*firstLine*/, size_t /*lineCount*/) {}\n```",
+      "revId": "45b7919166cf883a66ea1f71915de5bf17897f68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
