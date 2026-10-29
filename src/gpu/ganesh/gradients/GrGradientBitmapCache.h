@@ -14,6 +14,7 @@
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkColorData.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
@@ -48,8 +49,9 @@ private:
     const int fResolution;
 
     struct Entry;
-    mutable Entry*  fHead;
-    mutable Entry*  fTail;
+    // RAW_PTR_EXCLUSION: Performance: +4% on gradient_linear_clamp_hicolor.
+    RAW_PTR_EXCLUSION mutable Entry* fHead;
+    RAW_PTR_EXCLUSION mutable Entry* fTail;
 
     inline Entry* release(Entry*) const;
     inline void attachToHead(Entry*) const;

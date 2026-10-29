@@ -18,6 +18,7 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
 #include <cstdint>
@@ -26,8 +27,9 @@
 using namespace skia_private;
 
 struct GrGradientBitmapCache::Entry {
-    Entry*        fPrev = nullptr;
-    Entry*        fNext = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +4% on gradient_linear_clamp_hicolor.
+    RAW_PTR_EXCLUSION Entry* fPrev = nullptr;
+    RAW_PTR_EXCLUSION Entry* fNext = nullptr;
 
     UniqueVoidPtr fBuffer;
     size_t        fSize;
