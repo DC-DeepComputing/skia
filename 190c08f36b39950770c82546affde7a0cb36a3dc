@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ab67e1f_06d952b0",
+        "filename": "src/core/SkAutoMalloc.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-29T12:16:19Z",
+      "side": 1,
+      "message": "Yes, but also this is a pointer, and it isn\u0027t meant to \"own\" the memory.\n\nIf we called `sk_free(fPtr)`, this would free memory, but immediately trigger the dangling pointer detector because `fPtr` is now dangling.\n\nThere is an escape hatch with:\n```\nsk_free(fPtr.ExtractAsDangling())\n```\n\nthat \"move\" the pointer value out of the raw_ptr and pass it to `sk_free`, while keeping the MiraclePtr protection during the current line scope.\n\nIdeally, we would turn the pointer into smart pointer.\n\nI addressed this in:\nhttps://skia-review.git.corp.google.com/c/skia/+/1408757",
+      "parentUuid": "f26e9f17_2f61b6df",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 42
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84abf614_9d095fad",
         "filename": "src/core/SkAutoPixmapStorage.h",
         "patchSetId": 9
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-28T17:02:07Z",
       "side": 1,
       "message": "What\u0027s detected as dangling here? `freeStorage()` is called in the destructor and resets `fStorage` to nullptr.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 46
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37d912e1_b84a4a96",
+        "filename": "src/core/SkAutoPixmapStorage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-29T12:16:19Z",
+      "side": 1,
+      "message": "Fixed in the prerequisite https://skia-review.googlesource.com/c/skia/+/1408757",
+      "parentUuid": "84abf614_9d095fad",
       "range": {
         "startLine": 88,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d29cb49b_325f9600",
+        "filename": "src/core/SkCachedData.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-29T12:16:19Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "63846c6b_fe7994c9",
+      "range": {
+        "startLine": 56,
+        "startChar": 26,
+        "endLine": 56,
+        "endChar": 33
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06e90ee5_a297a504",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ed86868_b0ce3445",
+        "filename": "src/core/SkDescriptor.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-29T12:16:19Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "06e90ee5_a297a504",
+      "range": {
+        "startLine": 114,
+        "startChar": 51,
+        "endLine": 114,
+        "endChar": 58
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dd4be5d_95a0b87d",
@@ -106,6 +202,30 @@
       "writtenOn": "2026-10-28T17:02:07Z",
       "side": 1,
       "message": "Can this be marked as stack allocated only? Then the raw_ptr in Context can go away, right?",
+      "range": {
+        "startLine": 1141,
+        "startChar": 0,
+        "endLine": 1141,
+        "endChar": 14
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb60b79d_2b3e07c6",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 1141,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-29T12:16:19Z",
+      "side": 1,
+      "message": "Fixed in the prerequisite https://skia-review.googlesource.com/c/skia/+/1408757",
+      "parentUuid": "1dd4be5d_95a0b87d",
       "range": {
         "startLine": 1141,
         "startChar": 0,
