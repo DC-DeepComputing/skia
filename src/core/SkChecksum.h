@@ -10,6 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/private/SkAPI.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -82,6 +83,10 @@ struct SkGoodHash {
     std::enable_if_t<std::has_unique_object_representations<K>::value && sizeof(K) != 4, uint32_t>
     operator()(const K& k) const {
         return SkChecksum::Hash32(&k, sizeof(K));
+    }
+
+    template <typename T, auto Traits> uint32_t operator()(const raw_ptr<T, Traits>& k) const {
+        return (*this)(k.get());
     }
 
     uint32_t operator()(const SkString& k) const {
