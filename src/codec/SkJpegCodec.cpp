@@ -610,6 +610,8 @@ bool SkJpegCodec::allocateStorage(const SkImageInfo& dstInfo) {
         if (!this->allocateFromBudget(totalBytes)) {
             return false;
         }
+        fSwizzleSrcRow = nullptr;
+        fColorXformSrcRow = nullptr;
         if (!fStorage.reset(totalBytes)) {
             return false;
         }
