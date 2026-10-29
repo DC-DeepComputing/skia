@@ -345,9 +345,6 @@ public:
     SkScalar width() const { return fWidth; }
     size_t size() const { return fEnd - fStart; }
 
-    void setHalfLetterSpacing(SkScalar halfLetterSpacing) { fHalfLetterSpacing = halfLetterSpacing; }
-    SkScalar getHalfLetterSpacing() const { return fHalfLetterSpacing; }
-
     TextRange textRange() const { return fTextRange; }
 
     RunIndex runIndex() const { return fRunIndex; }
@@ -379,7 +376,6 @@ private:
     size_t fStart;
     size_t fEnd;
     SkScalar fWidth;
-    SkScalar fHalfLetterSpacing;
 
     bool fIsWhiteSpaceBreak;
     bool fIsIntraWordBreak;
