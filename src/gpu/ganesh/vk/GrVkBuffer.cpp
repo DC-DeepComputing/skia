@@ -318,10 +318,7 @@ void GrVkBuffer::vkRelease() {
         fMapPtr = nullptr;
     }
 
-    if (fUniformDescriptorSet) {
-        fUniformDescriptorSet->recycle();
-        fUniformDescriptorSet = nullptr;
-    }
+    fUniformDescriptorSet.reset();
 
     SkASSERT(fBuffer);
     SkASSERT(fAlloc.fMemory && fAlloc.fBackendMemory);
