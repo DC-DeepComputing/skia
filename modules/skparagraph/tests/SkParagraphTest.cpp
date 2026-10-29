@@ -12667,3 +12667,40 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+DEF_TEST(SkParagraph_LetterSpacingFirstLineOffset, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+
+    // The line starts half of the letter spacing of the style of its first cluster to the right
+    auto firstLineOffset = [&](SkScalar firstSpacing, SkScalar secondSpacing) {
+        TextStyle style;
+        style.setFontFamilies({SkString("Roboto")});
+        style.setFontSize(20);
+        style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(style);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        style.setLetterSpacing(firstSpacing);
+        builder.pushStyle(style);
+        builder.addText("Hello ");
+        builder.pop();
+        style.setLetterSpacing(secondSpacing);
+        builder.pushStyle(style);
+        builder.addText("world");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(SK_ScalarInfinity);
+        auto* impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+        return impl->lines()[0].offset().fX;
+    };
+    REPORTER_ASSERT(reporter, firstLineOffset(10, 20) == 5);
+    REPORTER_ASSERT(reporter, firstLineOffset(20, 10) == 10);
+    REPORTER_ASSERT(reporter, firstLineOffset(0, 10) == 0);
+
+    // A paragraph that gets its clusters from ParagraphCache has the same offset
+    REPORTER_ASSERT(reporter, firstLineOffset(10, 20) == 5);
+    REPORTER_ASSERT(reporter, firstLineOffset(20, 10) == 10);
+}
