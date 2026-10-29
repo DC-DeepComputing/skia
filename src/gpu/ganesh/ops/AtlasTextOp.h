@@ -28,6 +28,7 @@
 #include "src/gpu/ganesh/effects/GrDistanceFieldGeoProc.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -104,7 +105,7 @@ public:
 
         void fillVertexData(void* dst, int offset, int count) const;
 
-        const sktext::gpu::AtlasSubRun& fSubRun;
+        const raw_ref<const sktext::gpu::AtlasSubRun, DanglingUntriaged> fSubRun;
 
         // Keep the TextBlob or Slug alive until the op is deleted.
         sk_sp<SkRefCnt> fSupportDataKeepAlive;

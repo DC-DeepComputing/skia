@@ -53,6 +53,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelperWithStencil.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -592,8 +593,8 @@ private:
     SkIRect        fDevClipBounds;
     bool           fAntiAlias;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged>  fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo = nullptr;
 
     sk_sp<GrThreadSafeCache::VertexData> fVertexData;
 
