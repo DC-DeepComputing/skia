@@ -87,6 +87,24 @@
       "parentUuid": "11429144_7ce29426",
       "revId": "013f73b12e78606e7599f2da8485ecc7eace543e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bd4427a_39e40d07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5220919
+      },
+      "writtenOn": "2026-10-29T13:46:37Z",
+      "side": 1,
+      "message": "I moved `StorageContext`, `UniformManager`, `Attribute`, `PipelineData`, and `Uniform` to `layout/`, the latter 3 of which weren\u0027t included in `buffer/` before. Let me know what you think.",
+      "parentUuid": "0078d9d0_3a9faca4",
+      "revId": "013f73b12e78606e7599f2da8485ecc7eace543e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
