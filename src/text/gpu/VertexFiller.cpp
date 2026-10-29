@@ -18,11 +18,22 @@
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 
+#include <cmath>
 #include <optional>
 
 using MaskFormat = skgpu::MaskFormat;
 
 namespace sktext::gpu {
+
+bool VertexFiller::ValidDirectPosition(SkPoint pt) {
+    // Single-precision floats have a 24-bit significand. At or below 2^21, floats can represent
+    // all 1/4 subpixel increments (ULP <= 0.25f) and exact integers. Bounding direct coordinates
+    // and offsets to 2^21 ensures that glyph bounds and sums remain well within the 2^24 exact
+    // integer range, prevents subpixel rounding absorption (e.g. pt + 0.5f == pt), and avoids
+    // 32-bit integer overflow.
+    return ValidDirectCoordRange(pt) &&
+           SkScalarIsInt(pt.x()) && SkScalarIsInt(pt.y());
+}
 
 VertexFiller::VertexFiller(MaskFormat maskFormat,
                            const SkMatrix& creationMatrix,
@@ -42,6 +53,13 @@ VertexFiller VertexFiller::Make(MaskFormat maskType,
                                 SubRunAllocator *alloc,
                                 FillerType fillerType) {
     SkSpan<SkPoint> leftTop = alloc->makePODSpan<SkPoint>(positions);
+#if defined(SK_DEBUG)
+    if (fillerType == kIsDirect) {
+        for (const SkPoint& pt : leftTop) {
+            SkASSERT(ValidDirectPosition(pt));
+        }
+    }
+#endif
     return VertexFiller{
             maskType, creationMatrix, creationBounds, leftTop, fillerType == kIsDirect};
 }
@@ -57,20 +75,56 @@ SkMatrix VertexFiller::viewDifference(const SkMatrix &positionMatrix) const {
 // Returns the translation, and true if the change from creation matrix to the position matrix
 // supports using direct glyph masks.
 std::tuple<bool, SkVector> VertexFiller::CanUseDirect(
-        const SkMatrix& creationMatrix, const SkMatrix& positionMatrix) {
-    // The existing direct glyph info can be used if the creationMatrix, and the
-    // positionMatrix have the same 2x2, the translation between them is integer, and no
-    // perspective is involved. Calculate the translation in source space to a translation in
-    // device space by mapping (0, 0) through both the creationMatrix and the positionMatrix;
-    // take the difference.
-    SkVector translation = positionMatrix.mapOrigin() - creationMatrix.mapOrigin();
-    return {creationMatrix.getScaleX() == positionMatrix.getScaleX() &&
-            creationMatrix.getScaleY() == positionMatrix.getScaleY() &&
-            creationMatrix.getSkewX()  == positionMatrix.getSkewX()  &&
-            creationMatrix.getSkewY()  == positionMatrix.getSkewY()  &&
-            !positionMatrix.hasPerspective() && !creationMatrix.hasPerspective() &&
-            SkScalarIsInt(translation.x()) && SkScalarIsInt(translation.y()),
-            translation};
+        const SkMatrix& creationMatrix, const SkMatrix& drawMatrix, SkPoint drawOrigin) {
+    // Bound drawMatrix and drawOrigin translations to 1e14 to guarantee double precision
+    // (53 significand bits) maintains exact integer and subpixel precision without absorption.
+    constexpr double kMaxDoubleCoord = 1e14;
+    if (!creationMatrix.isFinite() || !drawMatrix.isFinite() || !drawOrigin.isFinite() ||
+        creationMatrix.hasPerspective() || drawMatrix.hasPerspective() ||
+        !ValidDirectCoordRange({creationMatrix.getTranslateX(),
+                                creationMatrix.getTranslateY()}) ||
+        std::abs(drawMatrix.getTranslateX()) > kMaxDoubleCoord ||
+        std::abs(drawMatrix.getTranslateY()) > kMaxDoubleCoord ||
+        std::abs(drawOrigin.x()) > kMaxDoubleCoord ||
+        std::abs(drawOrigin.y()) > kMaxDoubleCoord) {
+        return {false, {0, 0}};
+    }
+
+    if (creationMatrix.rc(0, 0) != drawMatrix.rc(0, 0) ||
+        creationMatrix.rc(0, 1) != drawMatrix.rc(0, 1) ||
+        creationMatrix.rc(1, 0) != drawMatrix.rc(1, 0) ||
+        creationMatrix.rc(1, 1) != drawMatrix.rc(1, 1)) {
+        return {false, {0, 0}};
+    }
+
+    // Compute the mapped origin and offset in double precision (53-bit mantissa). In single
+    // precision float, coordinates above 2^23 have an ULP >= 1.0f, which causes subpixel fractions
+    // (such as 0.5f) to be absorbed by rounding, and floating-point cancellation between large
+    // opposing translations (e.g. drawOrigin = 3e6 with drawMatrix = -3e6) can corrupt the
+    // offset. Double precision represents integers and subpixel fractions exactly up to 2^52,
+    // ensuring the net offset is calculated with full precision before checking if it is an
+    // exact integer.
+    double drawOriginX = drawOrigin.x();
+    double drawOriginY = drawOrigin.y();
+    double mappedOriginX = (double)drawMatrix.rc(0, 0) * drawOriginX +
+                           (double)drawMatrix.rc(0, 1) * drawOriginY +
+                           (double)drawMatrix.getTranslateX();
+    double mappedOriginY = (double)drawMatrix.rc(1, 0) * drawOriginX +
+                           (double)drawMatrix.rc(1, 1) * drawOriginY +
+                           (double)drawMatrix.getTranslateY();
+
+    double offsetX = mappedOriginX - (double)creationMatrix.getTranslateX();
+    double offsetY = mappedOriginY - (double)creationMatrix.getTranslateY();
+    SkVector offset = {(float)offsetX, (float)offsetY};
+
+    // Check offsetX == (double)offset.x() to catch cases where a fractional double offset
+    // like 10.0 + 1e-9 rounded to 10.0f upon float conversion, ensuring exact integer values.
+    if (!ValidDirectPosition(SkPoint{offset.x(), offset.y()}) ||
+        offsetX != (double)offset.x() || offsetY != (double)offset.y()) {
+        return {false, {0, 0}};
+    }
+
+    return {true, offset};
 }
 
 bool VertexFiller::isLCD() const { return fMaskFormat == MaskFormat::kA565; }
@@ -100,28 +154,13 @@ std::tuple<bool, SkRect> VertexFiller::deviceRectAndCheckTransform(
 std::tuple<SkRect, SkMatrix> VertexFiller::boundsAndDeviceMatrix(const SkMatrix& localToDevice,
                                                                  SkPoint drawOrigin,
                                                                  bool supportBilerpAtlas) const {
-    // The baked-in matrix differs from the current localToDevice by a translation if the
-    // upper 2x2 remains the same, and there's no perspective. Since there's no projection,
-    // Z is irrelevant, so it's okay that fCreationMatrix is an SkMatrix and has
-    // discarded the 3rd row/col, and can ignore those values in localToDevice.
-    const bool compatibleMatrix = localToDevice.rc(0, 0) == fCreationMatrix.rc(0, 0) &&
-                                  localToDevice.rc(0, 1) == fCreationMatrix.rc(0, 1) &&
-                                  localToDevice.rc(1, 0) == fCreationMatrix.rc(1, 0) &&
-                                  localToDevice.rc(1, 1) == fCreationMatrix.rc(1, 1) &&
-                                  !localToDevice.hasPerspective() &&
-                                  !fCreationMatrix.hasPerspective();
-
-    if (compatibleMatrix) {
-        SkPoint mappedOrigin = localToDevice.mapPoint(drawOrigin);
-        auto offset = mappedOrigin -
-                      SkPoint{fCreationMatrix.getTranslateX(), fCreationMatrix.getTranslateY()};
-        if (SkScalarIsInt(offset.fX) && SkScalarIsInt(offset.fY)) {
-            // The offset is an integer (but make sure), which means the generated mask can be
-            // accessed without changing how texels would be sampled.
-            return {fCreationBounds, SkMatrix::Translate(offset)};
-        }
+    if (auto [directDrawCompatible, offset] =
+                CanUseDirect(fCreationMatrix, localToDevice, drawOrigin);
+        directDrawCompatible) {
+        // The offset is an integer (but make sure), which means the generated mask can be
+        // accessed without changing how texels would be sampled.
+        return {fCreationBounds, SkMatrix::Translate(offset)};
     }
-
     if (fCanDrawDirect && !supportBilerpAtlas) {
         // Direct-mask glyphs have no padding in the atlas when atlas bilerp is unsupported.
         // Drawing with a fractional translation or non-identical matrix causes sampling
