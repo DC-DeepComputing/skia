@@ -34,6 +34,24 @@
       "parentUuid": "daa6148d_6e614ae0",
       "revId": "c1dde7b5856942fbc83881d0c8d6666456f4808e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96065bae_ed02c4f3",
+        "filename": "src/partition_alloc/noop/raw_ptr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 6605
+      },
+      "writtenOn": "2026-10-29T20:10:18Z",
+      "side": 1,
+      "message": "Bisected to https://skia-review.googlesource.com/c/skia/+/1399257 in a standalone PDFium build.",
+      "parentUuid": "bd6e1adf_53156ebe",
+      "revId": "c1dde7b5856942fbc83881d0c8d6666456f4808e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
