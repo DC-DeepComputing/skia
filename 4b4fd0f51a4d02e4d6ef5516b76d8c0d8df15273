@@ -22,6 +22,30 @@
       },
       "revId": "4b4fd0f51a4d02e4d6ef5516b76d8c0d8df15273",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "247c7c82_882dcd7e",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-29T17:00:50Z",
+      "side": 1,
+      "message": "I like the idea:\nhttps://skia-review.git.corp.google.com/c/skia/+/1409700\n\nDone!",
+      "parentUuid": "e5b879c0_3355b8e0",
+      "range": {
+        "startLine": 295,
+        "startChar": 33,
+        "endLine": 295,
+        "endChar": 68
+      },
+      "revId": "4b4fd0f51a4d02e4d6ef5516b76d8c0d8df15273",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
