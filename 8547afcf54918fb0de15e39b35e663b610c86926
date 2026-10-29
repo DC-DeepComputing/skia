@@ -33,6 +33,23 @@
       "message": "## Summary\n\nDeriving `textStart`, `lastCluster`, and `textEnd` solely from the endpoint glyphs (`pos` and `pos + size - 1`) and the adjacent glyph (`next`) does not hold in general for\nshaped runs and can produce out-of-bounds values for `allocRunTextPos` and `blobBuffer.clusters`.\n\n## Correctness Issues\n\n* Cluster indices within `[pos, pos + size)` are not guaranteed to be monotonic\n* `fClusterIndexes` comes directly from HarfBuzz output (`hb_glyph_info_t::cluster`). In complex scripts (such as Indic or Southeast Asian shaping) or fonts with `GSUB` glyph\nreordering, an interior glyph `pos + i` (or the `next` glyph) can have a smaller cluster index than `textStart \u003d std::min(first, last)`.\n* When `globalClusterIndex(pos + i) \u003c textStart`, the unsigned subtraction `this-\u003eglobalClusterIndex(pos + i) - textStart` underflows `size_t` (asserting in `SkToU32` in debug\nbuilds or wrapping in release builds).\n* Similarly, if `globalClusterIndex(next) \u003c textStart`, `textEnd - textStart` underflows `size_t`.\n* Multi-glyph clusters split across sub-run slices produce invalid `textEnd` bounds\n* Even in strictly monotonic runs, a single UTF-8 cluster often produces multiple glyphs with the same cluster index (for example, `fClusterIndexes \u003d [0, 2, 2, 3]` for a base\ncharacter + mark or ligature).\n* If a sub-run `[pos, pos + size)` ends mid-cluster (for example, `pos \u003d 0, size \u003d 2`, so `next \u003d 2`), then `textEnd \u003d globalClusterIndex(next)` equals `lastCluster` (`2`).\n* As a result, the bytes for the last cluster are excluded from `textEnd - textStart`, and `blobBuffer.clusters[size - 1]` is set to `lastCluster - textStart \u003d\u003d textEnd -\ntextStart` (or `textEnd - textStart \u003d\u003d 0` for a single-cluster slice), violating the `SkTextBlob` requirement that every cluster offset is strictly less than the run\u0027s text byte\nlength (`clusters[i] \u003c textByteCount`).\n\n## Recommendations\n\n* Prefer `ParagraphImpl::visit` (or `ParagraphImpl::extendedVisit`) over modifying `Run::copyTo`\n* `Run::copyTo` is used to populate `TextLine::fTextBlobCache` for internal rendering. Attaching UTF-8 text and cluster arrays to every cached `SkTextBlob` adds memory and\ncopy overhead to all raster and GPU text draws, while still not preserving full paragraph structure for PDF export. Callers that need glyph-to-text mappings should use the visitor\nAPIs instead.\n* Compute full cluster bounds if `Run::copyTo` must populate clusters\n* Rather than checking only `pos`, `pos + size - 1`, and `next`, scan all glyphs `i` in `[0, size)` to find the true minimum and maximum bounds across each cluster\u0027s full\n`[start, end)` `textRange()` (via `fOwner-\u003ecluster(...)`), ensuring `textStart \u003c\u003d globalClusterIndex(pos + i) \u003c textEnd \u003c\u003d fOwner-\u003etext().size()` for all `i` in `[0, size)`.",
       "revId": "8547afcf54918fb0de15e39b35e663b610c86926",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94ae7ee4_43e5fb23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5250830
+      },
+      "writtenOn": "2026-10-29T17:01:51Z",
+      "side": 1,
+      "message": "Thanks, both — understood, abandoning this change. I verified visit() reproduces paint()\u0027s glyph layer exactly and are building the PDF text from it instead. Along the way I found that extendedVisit drops justification shifts and shaping offsets and mis-indexes utf8Starts for runs not at offset 0; I\u0027ll send a separate fix with tests.",
+      "revId": "8547afcf54918fb0de15e39b35e663b610c86926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
