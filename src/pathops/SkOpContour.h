@@ -13,6 +13,7 @@
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
@@ -439,6 +440,8 @@ public:
 };
 
 class SkOpContourBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     SkOpContourBuilder(SkOpContour* contour)
         : fContour(contour)

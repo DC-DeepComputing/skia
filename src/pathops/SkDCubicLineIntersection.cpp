@@ -8,6 +8,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsCurve.h"
@@ -85,6 +86,8 @@ For horizontal lines:
  */
 
 class LineCubicIntersections {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     enum PinTPoint {
         kPointUninitialized,

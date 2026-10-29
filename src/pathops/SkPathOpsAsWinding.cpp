@@ -13,6 +13,7 @@
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkMacros.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCubic.h"
@@ -179,6 +180,8 @@ static SkPoint left_edge(const SkPoint pts[4], SkPathVerb verb, SkScalar weight)
 }
 
 class OpAsWinding {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     enum class Edge {
         kInitial,

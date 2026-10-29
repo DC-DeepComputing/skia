@@ -9,6 +9,7 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMath.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkTSort.h"
 #include "src/pathops/SkOpSegment.h"
@@ -193,6 +194,8 @@ bool SkPathWriter::changedSlopes(const SkOpPtT* ptT) const {
 }
 
 class DistanceLessThan {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     DistanceLessThan(double* distances) : fDistances(distances) { }
     double* fDistances;
