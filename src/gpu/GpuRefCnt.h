@@ -75,8 +75,9 @@ public:
      * Calls Unref() on the underlying object pointer.
      */
     ~gr_sp() {
-        SafeUnref(fPtr);
-        SkDEBUGCODE(fPtr = nullptr);
+        T* ptr = fPtr;
+        fPtr = nullptr;
+        SafeUnref(ptr);
     }
 
     gr_sp& operator=(std::nullptr_t) {

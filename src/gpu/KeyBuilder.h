@@ -10,6 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 
 #include <cstdint>
@@ -18,6 +19,8 @@
 namespace skgpu {
 
 class KeyBuilder {
+    SK_ONLY_STACK_ALLOCATABLE;
+
 public:
     KeyBuilder(skia_private::TArray<uint32_t, true>* data) : fData(data) {}
 
