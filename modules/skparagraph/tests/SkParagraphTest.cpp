@@ -52,6 +52,7 @@
 #include <algorithm>
 #include <chrono>
 #include <limits>
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -12157,6 +12158,71 @@ DEF_TEST(SkParagraph_ManyStyleBlocksWithSeveralFonts, reporter) {
             REPORTER_ASSERT(reporter, run.text.end == piece.text.end + blockStart);
             REPORTER_ASSERT(reporter, run.glyphs == piece.glyphs);
             REPORTER_ASSERT(reporter, run.typeface == piece.typeface);
+        }
+    }
+}
+
+// extendedVisit must report the same utf8Starts as visit(), including the trailing
+// count+1 entry, for slices that do not start a run: wrapped lines and later style blocks.
+UNIX_ONLY_TEST(SkParagraph_ExtendedVisitUtf8StartsMatchVisit, reporter) {
+    sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
+    for (auto direction : {TextDirection::kLtr, TextDirection::kRtl}) {
+        ParagraphStyle style;
+        style.setTextDirection(direction);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setFontSize(16);
+        style.setTextStyle(textStyle);
+        ParagraphBuilderImpl builder(style, fonts, get_unicode());
+        // The first run wraps over several lines, so later lines start inside it;
+        // the second style block starts a run whose clusters do not begin at 0.
+        builder.addText("alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu ");
+        textStyle.setColor(SK_ColorRED);
+        builder.pushStyle(textStyle);
+        builder.addText("omicron pi rho sigma tau upsilon phi chi psi omega");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(180);
+
+        struct Line {
+            std::vector<SkGlyphID> glyphs;
+            std::vector<uint32_t> starts;
+            std::map<size_t, uint32_t> endAfterGlyph;  // glyph index -> utf8Starts[count]
+        };
+        std::vector<Line> visited, extended;
+        paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo* info) {
+            if (visited.size() <= (size_t)lineNumber) { visited.resize(lineNumber + 1); }
+            if (!info) { return; }
+            Line& line = visited[lineNumber];
+            line.glyphs.insert(line.glyphs.end(), info->glyphs, info->glyphs + info->count);
+            line.starts.insert(line.starts.end(), info->utf8Starts, info->utf8Starts + info->count);
+            line.endAfterGlyph[line.glyphs.size()] = info->utf8Starts[info->count];
+        });
+        paragraph->extendedVisit([&](int lineNumber, const Paragraph::ExtendedVisitorInfo* info) {
+            if (extended.size() <= (size_t)lineNumber) { extended.resize(lineNumber + 1); }
+            if (!info) { return; }
+            Line& line = extended[lineNumber];
+            line.glyphs.insert(line.glyphs.end(), info->glyphs, info->glyphs + info->count);
+            line.starts.insert(line.starts.end(), info->utf8Starts, info->utf8Starts + info->count);
+            line.endAfterGlyph[line.glyphs.size()] = info->utf8Starts[info->count];
+        });
+        REPORTER_ASSERT(reporter, visited.size() > 2);
+        REPORTER_ASSERT(reporter, visited.size() == extended.size());
+        for (size_t i = 0; i < visited.size() && i < extended.size(); ++i) {
+            REPORTER_ASSERT(reporter, visited[i].glyphs == extended[i].glyphs, "line %zu", i);
+            REPORTER_ASSERT(reporter, visited[i].starts == extended[i].starts, "line %zu", i);
+            // Every extendedVisit callback ends on a run boundary that visit() also
+            // reports; the trailing entry must agree there.
+            for (const auto& [glyphIndex, end] : extended[i].endAfterGlyph) {
+                auto found = visited[i].endAfterGlyph.find(glyphIndex);
+                REPORTER_ASSERT(reporter, found != visited[i].endAfterGlyph.end(),
+                                "line %zu: no visit() boundary after glyph %zu", i, glyphIndex);
+                if (found != visited[i].endAfterGlyph.end()) {
+                    REPORTER_ASSERT(reporter, found->second == end,
+                                    "line %zu glyph %zu: %u vs %u", i, glyphIndex, found->second, end);
+                }
+            }
         }
     }
 }
