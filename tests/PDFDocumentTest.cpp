@@ -31,6 +31,7 @@
 #include <cstdio>
 #include <cstring>
 #include <memory>
+#include <string>
 
 static void test_empty(skiatest::Reporter* reporter) {
     SkDynamicMemoryWStream stream;
@@ -276,6 +277,33 @@ DEF_TEST(SkPDF_abort_jobs, rep) {
     auto doc = SkPDF::MakeDocument(&dst, metadata);
     doc->beginPage(612, 792)->drawImage(b.asImage(), 0, 0);
     doc->abort();
+}
+
+// The MediaBox is the requested page size, not the whole-pixel raster backing.
+DEF_TEST(SkPDF_MediaBoxKeepsRequestedPageSize, reporter) {
+    const float width = 595.276f, height = 841.89f;  // ISO A4 in points
+    for (float dpi : {72.0f, 300.0f}) {
+        SkDynamicMemoryWStream stream;
+        SkPDF::Metadata metadata = SkPDF::JPEG::MetadataWithCallbacks();
+        metadata.fRasterDPI = dpi;
+        auto doc = SkPDF::MakeDocument(&stream, metadata);
+        doc->beginPage(width, height)->drawColor(SK_ColorRED);
+        doc->endPage();
+        doc->close();
+        sk_sp<SkData> data = stream.detachAsData();
+        std::string pdf(static_cast<const char*>(data->data()), data->size());
+        size_t pos = pdf.find("/MediaBox [");
+        REPORTER_ASSERT(reporter, pos != std::string::npos);
+        if (pos == std::string::npos) {
+            continue;
+        }
+        float left = 0, top = 0, right = 0, bottom = 0;
+        int parsed = sscanf(pdf.c_str() + pos, "/MediaBox [%f %f %f %f]",
+                            &left, &top, &right, &bottom);
+        REPORTER_ASSERT(reporter, parsed == 4);
+        REPORTER_ASSERT(reporter, left == 0 && top == 0 && right == width && bottom == height,
+                        "%g dpi: MediaBox [%g %g %g %g]", dpi, left, top, right, bottom);
+    }
 }
 
 #endif // SK_SUPPORT_PDF

@@ -206,6 +206,7 @@ private:
     std::vector<SkPDFIndirectReference> fPageRefs;
 
     sk_sp<SkPDFDevice> fPageDevice;
+    SkSize fPageSize;  // the requested page size in points; the MediaBox
     std::atomic<int> fNextObjectNumber = {1};
     std::atomic<int> fJobCount = {0};
     uint32_t fNextFontSubsetTag = {0};

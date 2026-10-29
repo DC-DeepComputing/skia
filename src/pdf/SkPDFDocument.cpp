@@ -265,7 +265,6 @@ void SkPDFDocument::endObject() SK_REQUIRES(fMutex) {
     end_indirect_object(this->getStream());
 }
 
-static SkSize operator*(SkISize u, SkScalar s) { return SkSize{u.width() * s, u.height() * s}; }
 static SkSize operator*(SkSize u, SkScalar s) { return SkSize{u.width() * s, u.height() * s}; }
 
 SkCanvas* SkPDFDocument::onBeginPage(SkScalar width, SkScalar height) {
@@ -293,15 +292,22 @@ SkCanvas* SkPDFDocument::onBeginPage(SkScalar width, SkScalar height) {
     // devices at the rasterized scale, not the 72dpi scale.  Bitmap layer
     // devices are created when saveLayer is called with an ImageFilter;  see
     // SkPDFDevice::createDevice().
-    SkISize pageSize = (SkSize{width, height} * fRasterScale).toRound();
+    // The raster backing is whole pixels and must cover the page, but the page
+    // itself (the MediaBox and the top-left origin) keeps the requested size.
+    fPageSize = SkSize{width, height};
+    SkSize scaledPageSize = fPageSize * fRasterScale;
+    SkISize pageSize = scaledPageSize.toCeil();
     SkMatrix initialTransform;
     // Skia uses the top left as the origin but PDF natively has the origin at the
     // bottom left. This matrix corrects for that, as well as the raster scale.
-    initialTransform.setScaleTranslate(fInverseRasterScale, -fInverseRasterScale,
-                                       0, fInverseRasterScale * pageSize.height());
+    initialTransform.setScaleTranslate(fInverseRasterScale, -fInverseRasterScale, 0, height);
     fPageDevice = sk_make_sp<SkPDFDevice>(pageSize, this, initialTransform);
     reset_object(&fCanvas, fPageDevice);
     fCanvas.scale(fRasterScale, fRasterScale);
+    if (SkSize::Make(pageSize) != scaledPageSize) {
+        // A fractional page: keep content inside the MediaBox, not the backing.
+        fCanvas.clipRect(SkRect::MakeSize(fPageSize));
+    }
     fPageRefs.push_back(this->reserveRef());
     return &fCanvas;
 }
@@ -379,7 +385,7 @@ void SkPDFDocument::onEndPage() {
 
     auto page = SkPDFMakeDict("Page");
 
-    SkSize mediaSize = fPageDevice->imageInfo().dimensions() * fInverseRasterScale;
+    SkSize mediaSize = fPageSize;
     std::unique_ptr<SkStreamAsset> pageContent = fPageDevice->content();
     auto resourceDict = fPageDevice->makeResourceDict();
     SkASSERT(!fPageRefs.empty());
