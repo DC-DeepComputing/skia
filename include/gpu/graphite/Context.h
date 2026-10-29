@@ -381,6 +381,8 @@ private:
 
     std::unique_ptr<Recorder> makeInternalRecorder() const;
 
+    std::unique_ptr<SkRecorder> makeRecorder(const RecorderOptions* graphiteOptions) override;
+
     template <typename SrcPixels> struct AsyncParams;
 
     template <typename ReadFn, typename... ExtraArgs>
