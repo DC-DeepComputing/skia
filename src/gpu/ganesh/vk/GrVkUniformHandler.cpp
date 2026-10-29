@@ -207,14 +207,7 @@ static uint32_t get_aligned_offset(uint32_t* currentOffset,
     return uniformOffset;
 }
 
-GrVkUniformHandler::~GrVkUniformHandler() {
-    for (VkUniformInfo& sampler : fSamplers.items()) {
-        if (sampler.fImmutableSampler) {
-            sampler.fImmutableSampler->unref();
-            sampler.fImmutableSampler = nullptr;
-        }
-    }
-}
+GrVkUniformHandler::~GrVkUniformHandler() = default;
 
 GrGLSLUniformHandler::UniformHandle GrVkUniformHandler::internalAddUniformArray(
                                                                    const GrProcessor* owner,
@@ -302,7 +295,7 @@ GrGLSLUniformHandler::SamplerHandle GrVkUniformHandler::addSampler(
         GrVkGpu* gpu = static_cast<GrVkPipelineStateBuilder*>(fProgramBuilder)->gpu();
         GrVkSampler* sampler = gpu->resourceProvider().findOrCreateCompatibleSampler(state,
                                                                                      *ycbcrInfo);
-        fSamplers.back().fImmutableSampler = sampler;
+        fSamplers.back().fImmutableSampler.reset(sampler);
         if (!sampler) {
             return {};
         }

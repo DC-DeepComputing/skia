@@ -53,15 +53,10 @@ std::unique_ptr<GrVkSemaphore> GrVkSemaphore::MakeWrapped(GrVkGpu* gpu,
 }
 
 GrVkSemaphore::GrVkSemaphore(GrVkGpu* gpu, VkSemaphore semaphore, bool prohibitSignal,
-                             bool prohibitWait, bool isOwned) {
-    fResource = new Resource(gpu, semaphore, prohibitSignal, prohibitWait, isOwned);
-}
+                             bool prohibitWait, bool isOwned)
+        : fResource(new Resource(gpu, semaphore, prohibitSignal, prohibitWait, isOwned)) {}
 
-GrVkSemaphore::~GrVkSemaphore() {
-    if (fResource) {
-        fResource->unref();
-    }
-}
+GrVkSemaphore::~GrVkSemaphore() = default;
 
 void GrVkSemaphore::Resource::freeGPUData() const {
     if (fIsOwned) {
