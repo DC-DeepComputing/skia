@@ -10,8 +10,10 @@
 #define SKFONTCONFIGINTERFACE_DIRECT_H_
 
 #include "include/ports/SkFontConfigInterface.h"
+#include "include/private/SkTemplates.h"
 
 #include <fontconfig/fontconfig.h>
+#include <memory>
 
 class SkFontConfigInterfaceDirect : public SkFontConfigInterface {
 public:
@@ -34,7 +36,7 @@ protected:
     virtual bool isAccessible(const char* filename);
 
 private:
-    FcConfig * const fFC;
+    const std::unique_ptr<FcConfig, SkFunctionObject<FcConfigDestroy>> fFC;
     bool isValidPattern(FcPattern* pattern);
 
     /**
