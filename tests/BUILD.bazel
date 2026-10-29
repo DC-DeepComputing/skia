@@ -154,6 +154,7 @@ filegroup(
         "FontMgrFlags.cpp",
         "FontMgrTest.cpp",
         "FontNamesTest.cpp",
+        "FontScannerStyleTest.cpp",
         "FontTest.cpp",
         "FrontBufferedStreamTest.cpp",
         "GainmapShaderTest.cpp",
