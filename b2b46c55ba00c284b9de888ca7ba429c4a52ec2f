@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "332c63db_7182524d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-29T14:35:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a02f6da3_56a8903b",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "b2b46c55ba00c284b9de888ca7ba429c4a52ec2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a4acf60_59a6f897",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-28T20:49:10Z",
       "side": 1,
       "message": "This second bug should be on its own `Bug: \u003c\u003e` line so that the auto-linking in Gerrit works correctly.",
+      "range": {
+        "startLine": 14,
+        "startChar": 18,
+        "endLine": 14,
+        "endChar": 29
+      },
+      "revId": "b2b46c55ba00c284b9de888ca7ba429c4a52ec2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a280c72_274e93f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-10-29T14:35:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a4acf60_59a6f897",
       "range": {
         "startLine": 14,
         "startChar": 18,
