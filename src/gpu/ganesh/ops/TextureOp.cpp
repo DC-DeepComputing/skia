@@ -63,6 +63,7 @@
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -465,9 +466,9 @@ private:
         int fNumTotalQuads = 0;
 
         // This member variable is only used by 'onPrePrepareDraws'.
-        char* fPrePreparedVertices = nullptr;
+        raw_ptr<char> fPrePreparedVertices;
 
-        GrProgramInfo* fProgramInfo = nullptr;
+        raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo;
 
         sk_sp<const GrBuffer> fIndexBuffer;
         sk_sp<const GrBuffer> fVertexBuffer;
@@ -499,7 +500,6 @@ private:
             : INHERITED(ClassID())
             , fQuads(1, true /* includes locals */)
             , fTextureColorSpaceXform(std::move(textureColorSpaceXform))
-            , fDesc(nullptr)
             , fMetadata(proxyView.swizzle(), filter, mm, Subset(!!subsetRect), saturate) {
         // Clean up disparities between the overall aa type and edge configuration and apply
         // optimizations based on the rect and matrix when appropriate
@@ -541,7 +541,6 @@ private:
             : INHERITED(ClassID())
             , fQuads(cnt, true /* includes locals */)
             , fTextureColorSpaceXform(std::move(textureColorSpaceXform))
-            , fDesc(nullptr)
             , fMetadata(set[0].fProxyView.swizzle(),
                         GrSamplerState::Filter::kNearest,
                         GrSamplerState::MipmapMode::kNone,
@@ -1171,7 +1170,7 @@ private:
     // Most state of TextureOp is packed into these two field to minimize the op's size.
     // Historically, increasing the size of TextureOp has caused surprising perf regressions, so
     // consider/measure changes with care.
-    Desc* fDesc;
+    raw_ptr<Desc, DanglingUntriaged> fDesc;
     Metadata fMetadata;
 
     // This field must go last. When allocating this op, we will allocate extra space to hold

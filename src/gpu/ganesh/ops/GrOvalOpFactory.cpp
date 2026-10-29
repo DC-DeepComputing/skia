@@ -53,6 +53,8 @@
 #include "src/gpu/ganesh/glsl/GrGLSLVertexGeoBuilder.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -1534,8 +1536,8 @@ private:
     bool fRoundCaps;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged>  fMesh;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -1853,8 +1855,8 @@ private:
     int fIndexCount;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged>  fMesh;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2144,8 +2146,9 @@ private:
     bool fUseScale;
     STArray<1, Ellipse, true> fEllipses;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +8.0% on path_stroke_small_oval.
+    RAW_PTR_EXCLUSION GrSimpleMesh*           fMesh = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2422,8 +2425,9 @@ private:
     bool fUseScale;
     STArray<1, Ellipse, true> fEllipses;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    // RAW_PTR_EXCLUSION: Performance: +12.3%, +12.1% on shapes_oval_10000_32x33 respectively.
+    RAW_PTR_EXCLUSION GrSimpleMesh*  fMesh = nullptr;
+    RAW_PTR_EXCLUSION GrProgramInfo* fProgramInfo = nullptr;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -2892,8 +2896,8 @@ private:
     bool fWideColor;
     STArray<1, RRect, true> fRRects;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged>  fMesh;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo;
 
     using INHERITED = GrMeshDrawOp;
 };
@@ -3215,8 +3219,8 @@ private:
     bool fUseScale;
     STArray<1, RRect, true> fRRects;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged>  fMesh;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo;
 
     using INHERITED = GrMeshDrawOp;
 };

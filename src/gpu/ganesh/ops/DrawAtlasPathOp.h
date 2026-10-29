@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/ops/AtlasInstancedHelper.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <array>
 #include <utility>
@@ -104,7 +105,7 @@ private:
 
     int fInstanceCount = 1;
 
-    GrProgramInfo* fProgram = nullptr;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgram;
 
     sk_sp<const GrBuffer> fInstanceBuffer;
     int fBaseInstance;

@@ -52,6 +52,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
 #include "src/gpu/ganesh/ops/GrMeshDrawOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #if defined(GPU_TEST_UTILS)
 #include "src/core/SkRandom.h"
@@ -441,8 +442,8 @@ private:
     GrSamplerState::Filter fFilter;
     bool fWideColor;
 
-    GrSimpleMesh*  fMesh = nullptr;
-    GrProgramInfo* fProgramInfo = nullptr;
+    raw_ptr<GrSimpleMesh, DanglingUntriaged>  fMesh;
+    raw_ptr<GrProgramInfo, DanglingUntriaged> fProgramInfo;
 
     using INHERITED = GrMeshDrawOp;
 };

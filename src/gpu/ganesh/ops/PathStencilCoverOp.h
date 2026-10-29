@@ -24,6 +24,7 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/tessellate/GrTessellationShader.h"
 #include "src/gpu/ganesh/tessellate/PathTessellator.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <utility>
 
@@ -111,7 +112,7 @@ private:
     void onPrepare(GrOpFlushState*) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
-    const PathDrawList* fPathDrawList;
+    raw_ptr<const PathDrawList, DanglingUntriaged> fPathDrawList;
     const int fTotalCombinedPathVerbCnt;
     const int fPathCount;
     const FillPathFlags fPathFlags;
@@ -121,10 +122,10 @@ private:
     SkDEBUGCODE(SkRect fOriginalDrawBounds;)
 
     // Decided during prePreparePrograms.
-    PathTessellator* fTessellator = nullptr;
-    const GrProgramInfo* fStencilFanProgram = nullptr;
-    const GrProgramInfo* fStencilPathProgram = nullptr;
-    const GrProgramInfo* fCoverBBoxProgram = nullptr;
+    raw_ptr<PathTessellator, DanglingUntriaged> fTessellator;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilFanProgram;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fStencilPathProgram;
+    raw_ptr<const GrProgramInfo, DanglingUntriaged> fCoverBBoxProgram;
 
     // Filled during onPrepare.
     sk_sp<const GrBuffer> fFanBuffer;

@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <utility>
@@ -104,7 +105,7 @@ public:
     const GrUserStencilSettings* stencilSettings() const { return fStencilSettings; }
 
 private:
-    const GrUserStencilSettings* fStencilSettings;
+    raw_ptr<const GrUserStencilSettings> fStencilSettings;
     using INHERITED = GrSimpleMeshDrawOpHelper;
 };
 
