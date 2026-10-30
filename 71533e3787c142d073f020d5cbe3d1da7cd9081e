@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef98cae4_2303906e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-10-30T04:38:50Z",
+      "side": 1,
+      "message": "The biggest hotspot a month ago was in DrawList.cpp which had an exclusion added here\n\nhttps://skia-review.git.corp.google.com/c/skia/+/1302536\n\nSince then, Skia switched to using DrawListLayer and so the hotspot moved 😞\n\nHere\u0027s the top hotspots from 2026-10-30\nhttps://paste.googleplex.com/6755399436501592",
+      "revId": "71533e3787c142d073f020d5cbe3d1da7cd9081e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
