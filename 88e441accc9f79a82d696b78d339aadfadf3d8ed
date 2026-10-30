@@ -50,6 +50,24 @@
       "message": "Try job results for PS1:\n\n- ASAN (NativeFonts_FreeType_ASAN_Upload) and Canary-Android are green.\n- Canary-G3: the Skia part passed. CheckTestsSkia and CheckSkiaDependents are green. Two dependent tests failed, and neither is related to this change: one is already broken at HEAD, and the other aborts on a missing data file, with no Skia frames in the stack.\n- Canary-Chromium is red, but its failure does not mention the files in this CL. This canary failed in 50 of its last 60 runs.\n\nSo Canary-G3 is clean for this change, and I am lifting the submit hold.",
       "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30dfc2d8_f142e4a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T17:01:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "391ab51c_56783c5d",
+      "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
