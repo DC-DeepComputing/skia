@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c19b14ef_16140225",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-30T19:09:18Z",
+      "side": 1,
+      "message": "Alphabetize to pass housekeeper test.",
+      "revId": "6589726ea07bde563477460dd41766fa2699c063",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
