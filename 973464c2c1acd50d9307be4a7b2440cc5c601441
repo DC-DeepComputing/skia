@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "546bb740_e4e22f08",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-30T15:13:58Z",
+      "side": 1,
+      "message": "It seems weird to me that all of these `raw_ref` usages require the `*` operator. Is this another instance of templates not allowing for finding the implicit operator? Or does `raw_ref` not have an implicit operator back to `T\u0026`?",
+      "range": {
+        "startLine": 954,
+        "startChar": 40,
+        "endLine": 954,
+        "endChar": 54
+      },
+      "revId": "973464c2c1acd50d9307be4a7b2440cc5c601441",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
