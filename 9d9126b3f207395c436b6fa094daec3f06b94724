@@ -16,6 +16,24 @@
       "message": "The dry run fails on Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All (and -BonusConfigs) in SkParagraph_BuilderResetKeepsBuiltText:\n\n  ParagraphBuilderImpl.cpp:96: fatal error: \"check(!fTextIsFinalized)\"\n\nThis is my fault, it comes from the test I wrote in the companion CL, not from your change. On builds with skia_use_client_icu\u003dtrue (SK_UNICODE_CLIENT_IMPLEMENTATION), getText() calls finalize(), which sets fTextIsFinalized, and then the next addText() hits SkASSERT(!fTextIsFinalized). The test calls getText() right after Reset() and then adds \"xyz\". My local build did not use client ICU, so I missed it.\n\nCould you delete this line from the test?\n\n  REPORTER_ASSERT(reporter, builder.getText().empty());\n\nThe test still checks that Reset() clears the text, because the second paragraph must be exactly \"xyz\". With the line removed, all 219 SkParagraph tests pass locally with skia_use_client_icu\u003dtrue.",
       "revId": "9d9126b3f207395c436b6fa094daec3f06b94724",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22d5707c_6f798df4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T14:05:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51a7837e_208caee3",
+      "revId": "9d9126b3f207395c436b6fa094daec3f06b94724",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
