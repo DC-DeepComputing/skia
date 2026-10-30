@@ -153,6 +153,9 @@ void SDFTMatrixRange::flatten(SkWriteBuffer& buffer) const {
 SDFTMatrixRange SDFTMatrixRange::MakeFromBuffer(SkReadBuffer& buffer) {
     SkScalar min = buffer.readScalar();
     SkScalar max = buffer.readScalar();
+    if (!buffer.validate(SkIsFinite(min) && SkIsFinite(max) && 0 <= min && 0 <= max)) {
+        return SDFTMatrixRange{0, 0};
+    }
     return SDFTMatrixRange{min, max};
 }
 #endif // !defined(SK_DISABLE_SDF_TEXT)

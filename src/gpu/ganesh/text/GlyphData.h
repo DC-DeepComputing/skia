@@ -99,9 +99,22 @@ public:
                         int offset,
                         int count,
                         const SkPMColor4f& pmColor,
-                        const SkMatrix& positionMatrix,
+                        const SkMatrix& drawMatrix,
+                        SkPoint drawOrigin,
                         SkIRect clip,
                         void* vertexBuffer);
+
+    void fillVertexData(const sktext::gpu::VertexFiller& vf,
+                        SkSpan<const Glyph> glyphs,
+                        int offset,
+                        int count,
+                        const SkPMColor4f& pmColor,
+                        const SkMatrix& positionMatrix,
+                        SkIRect clip,
+                        void* vertexBuffer) {
+        this->fillVertexData(vf, glyphs, offset, count, pmColor, positionMatrix, {0, 0},
+                             clip, vertexBuffer);
+    }
 
 private:
     GlyphData(const GlyphData&) = delete;
