@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9275340_f2a99b9f",
+        "filename": "src/gpu/ganesh/vk/GrVkPipelineStateBuilder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-30T13:11:17Z",
+      "side": 1,
+      "message": "For context: I am adding that, because this is a short lived object allocated on the stack.\n\nThe MiraclePtr rewrite only target pointers on the heap. Mostly because protecting pointers from the stack would be very costly, as they are prone to be part loops where the pointer are assigned/released frequently.\n\nIf the class has this attribute, it will be ignored from the rewrite and ignored from the clang plugin, even without `RAW_PTR_EXCLUSION`.",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 29
+      },
+      "revId": "692e883d57d6c417f885aa856bc8391a978c7416",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
