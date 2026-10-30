@@ -10,6 +10,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkTArray.h"
+#include "include/private/SkTemplates.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "modules/skunicode/include/SkUnicode_apple.h"
 #include "modules/skunicode/src/SkBidiFactory_icu_subset.h"
@@ -22,8 +23,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 
 #include <algorithm>
+#include <cstring>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -31,8 +34,52 @@ using namespace skia_private;
 
 namespace {
 
+void cf_default_deallocate(UniChar* ptr) { CFAllocatorDeallocate(kCFAllocatorDefault, ptr); }
+
+// CoreFoundation UTF-8 decoding always drops a leading EF BB BF as a byte order mark, but here
+// U+FEFF is a real ZWNBSP that owns code units. CFStringCreateWithCharactersNoCopy never strips it,
+// and CF would allocate a UTF-16 buffer for this non-ASCII text anyway, so it adopts ours instead
+SkUniqueCFRef<CFStringRef> MakeCFStringKeepingLeadingZwnbsp(std::string_view utf8) {
+    SkASSERT(utf8.starts_with("\xEF\xBB\xBF"));
+    // SkUTF accepts overlongs and encoded surrogates, CF does not. Let CF reject ill-formed text
+    // after the BOM, so the result does not depend on whether the text starts with U+FEFF
+    std::string_view afterBom = utf8.substr(3);
+    if (!SkUniqueCFRef<CFStringRef>(CFStringCreateWithBytesNoCopy(kCFAllocatorDefault,
+                                                                  (const UInt8*)afterBom.data(),
+                                                                  SkToInt(afterBom.size()),
+                                                                  kCFStringEncodingUTF8,
+                                                                  false,
+                                                                  kCFAllocatorNull))) {
+        return nullptr;
+    }
+    // UTF-8 never needs more UTF-16 code units than it has bytes
+    const int utf8Units = SkToInt(utf8.size());
+    std::unique_ptr<UniChar, SkFunctionObject<cf_default_deallocate>> utf16(
+            static_cast<UniChar*>(CFAllocatorAllocate(
+                    kCFAllocatorDefault, utf8Units * CFIndex{sizeof(UniChar)}, 0)));
+    if (!utf16) {
+        return nullptr;
+    }
+    int utf16Units = SkUTF::UTF8ToUTF16(utf16.get(), utf8Units, utf8.data(), utf8.size());
+    if (utf16Units < 0) {
+        return nullptr;
+    }
+    // kCFAllocatorDefault as contentsDeallocator hands the buffer to the string, which frees it
+    SkUniqueCFRef<CFStringRef> string(CFStringCreateWithCharactersNoCopy(
+            kCFAllocatorDefault, utf16.get(), utf16Units, kCFAllocatorDefault));
+    // CF adopts the buffer only on success
+    if (string) {
+        utf16.release();
+    }
+    return string;
+}
+
 // Wrap caller-owned buffers with kCFAllocatorNull to avoid copying text when the encoding is valid
 SkUniqueCFRef<CFStringRef> MakeCFStringNoCopy(const char utf8[], int utf8Units) {
+    // Only text that starts with U+FEFF pays for the UTF-16 copy
+    if (utf8Units >= 3 && memcmp(utf8, "\xEF\xBB\xBF", 3) == 0) {
+        return MakeCFStringKeepingLeadingZwnbsp({utf8, SkToSizeT(utf8Units)});
+    }
     return SkUniqueCFRef<CFStringRef>(CFStringCreateWithBytesNoCopy(kCFAllocatorDefault,
                                                                     (const UInt8*)utf8,
                                                                     utf8Units,
