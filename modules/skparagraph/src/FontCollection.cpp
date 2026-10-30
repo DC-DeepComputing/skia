@@ -3,11 +3,18 @@
 
 #include "include/core/SkTypeface.h"
 #include "include/private/SkMutex.h"
+#include "include/private/SkTPin.h"
+#include "include/private/SkTemplates.h"
+#include "include/private/SkTo.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#include "src/core/SkChecksum.h"
+#include "src/core/SkFloatBits.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkTHash.h"
+
+#include <algorithm>
 
 namespace {
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
@@ -15,6 +22,47 @@ namespace {
 #else
     const char* kColorEmojiLocale = "und-Zsye";
 #endif
+
+    constexpr SkFourByteTag kOpszTag = SkSetFourByteTag('o', 'p', 's', 'z');
+
+    // Returns the 'opsz' value for fontSize pinned to the axis range, or nothing when the typeface
+    // has no 'opsz' axis, is already at that value or must not be cloned
+    std::optional<SkScalar> opticalSizeToSet(const SkTypeface& typeface, SkScalar fontSize) {
+        // KEEPER-DEBT: makeClone resets the palette to the default one on FreeType, Fontations and
+        // DirectWrite, and SkTypeface cannot report the current palette, so color fonts keep their
+        // opsz. Remove when SkTypeface exposes its palette or makeClone keeps it
+        if (typeface.getTableSize(SkSetFourByteTag('C', 'P', 'A', 'L')) > 0) {
+            return std::nullopt;
+        }
+        int axisCount = typeface.getVariationDesignParameters({});
+        if (axisCount <= 0) {
+            return std::nullopt;
+        }
+        skia_private::AutoSTArray<8, SkFontParameters::Variation::Axis> axisStorage(axisCount);
+        SkSpan<SkFontParameters::Variation::Axis> axes(axisStorage.data(), SkToSizeT(axisCount));
+        if (typeface.getVariationDesignParameters(axes) != axisCount) {
+            return std::nullopt;
+        }
+        auto opszAxis = std::find_if(
+                axes.begin(), axes.end(), [](const auto& axis) { return axis.tag == kOpszTag; });
+        if (opszAxis == axes.end()) {
+            return std::nullopt;
+        }
+        SkScalar opsz = SkTPin(fontSize, opszAxis->min, opszAxis->max);
+
+        // A clone at the same opsz only adds a typeface id, strikes and HarfBuzz fonts
+        skia_private::AutoSTArray<8, SkFontArguments::VariationPosition::Coordinate>
+                positionStorage(axisCount);
+        SkSpan<SkFontArguments::VariationPosition::Coordinate> position(positionStorage.data(),
+                                                                        SkToSizeT(axisCount));
+        if (typeface.getVariationDesignPosition(position) == axisCount &&
+            std::any_of(position.begin(), position.end(), [opsz](const auto& coordinate) {
+                return coordinate.axis == kOpszTag && coordinate.value == opsz;
+            })) {
+            return std::nullopt;
+        }
+        return opsz;
+    }
 }
 namespace skia {
 namespace textlayout {
@@ -80,6 +128,20 @@ struct FontCollection::VariationCache {
     // Synchronize fTypefaces inside the pimpl struct to preserve FontCollection's ABI layout
     mutable SkMutex fMutex;
     skia_private::THashMap<Key, sk_sp<SkTypeface>, Key::Hasher> fTypefaces SK_GUARDED_BY(fMutex);
+
+    // Plain ids and float bits, so a lookup per shaped run does not allocate
+    struct OpticalSizeKey {
+        SkTypefaceID fTypefaceID;
+        uint32_t fFontSizeBits;
+
+        bool operator==(const OpticalSizeKey&) const = default;
+    };
+    // Animated font sizes give a new size every frame, so the cache is bounded. An entry uses
+    // about 64 bytes plus the clone, so a full cache uses about 16 KB without the clones
+    static constexpr int kMaxOpticalSizes = 256;
+    // The value is the typeface itself when it has no 'opsz' axis or already has this opsz
+    SkLRUCache<OpticalSizeKey, sk_sp<SkTypeface>, SkGoodHash> fOpticalSizes SK_GUARDED_BY(fMutex){
+            kMaxOpticalSizes};
 };
 
 // System fallback results for a codepoint (or an emoji start), shared by all paragraphs.
@@ -433,6 +495,47 @@ sk_sp<SkTypeface> FontCollection::cloneTypeface(const sk_sp<SkTypeface>& typefac
     return clone;
 }
 
+// The result depends only on typeface and fontSize: fontArgs can only turn the clone off
+sk_sp<SkTypeface> FontCollection::matchOpticalSize(const sk_sp<SkTypeface>& typeface,
+                                                   SkScalar fontSize,
+                                                   const std::optional<FontArguments>& fontArgs) {
+    SkASSERT(typeface);
+    // An explicit 'opsz' wins over the font size, as font-variation-settings does in CSS
+    if (fontArgs &&
+        std::any_of(fontArgs->fCoordinates.begin(),
+                    fontArgs->fCoordinates.end(),
+                    [](const auto& coordinate) { return coordinate.axis == kOpszTag; })) {
+        return typeface;
+    }
+    VariationCache::OpticalSizeKey key{typeface->uniqueID(), SkFloat2Bits(fontSize)};
+    {
+        // Clone outside the lock, as cloneTypeface does
+        SkAutoMutexExclusive lock(fVariationCache->fMutex);
+        if (auto* found = fVariationCache->fOpticalSizes.find(key)) {
+            return *found;
+        }
+    }
+
+    sk_sp<SkTypeface> result = typeface;
+    if (std::optional<SkScalar> opsz = opticalSizeToSet(*typeface, fontSize)) {
+        // makeClone keeps the current values of the other axes on every backend. Fontations and
+        // DirectWrite return the typeface itself for a face at a collection index other than 0
+        SkFontArguments::VariationPosition::Coordinate coordinate{kOpszTag, *opsz};
+        SkFontArguments args;
+        args.setVariationDesignPosition({&coordinate, 1});
+        // Keep the typeface if the backend cannot clone it
+        if (sk_sp<SkTypeface> clone = typeface->makeClone(args)) {
+            result = std::move(clone);
+        }
+    }
+
+    SkAutoMutexExclusive lock(fVariationCache->fMutex);
+    if (auto* found = fVariationCache->fOpticalSizes.find(key)) {
+        return *found;
+    }
+    return *fVariationCache->fOpticalSizes.insert(key, std::move(result));
+}
+
 void FontCollection::disableFontFallback() {
     if (fEnableFontFallback) {
         fEnableFontFallback = false;
@@ -458,6 +561,7 @@ void FontCollection::clearCaches() {
         // Reset variation clones after face cache entries that reference them
         SkAutoMutexExclusive lock(fVariationCache->fMutex);
         fVariationCache->fTypefaces.reset();
+        fVariationCache->fOpticalSizes.reset();
     }
     fFallbackCache->reset();
     SkShapers::HB::PurgeCaches();

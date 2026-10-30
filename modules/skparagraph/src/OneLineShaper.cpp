@@ -595,6 +595,13 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
             placeholder.fTextStyle.getFontStyle(),
             placeholder.fTextStyle.getFontArguments());
         sk_sp<SkTypeface> typeface = typefaces.empty() ? nullptr : typefaces.front();
+        // Same optical size as a text run in this style, since 'MVAR' can vary metrics with opsz
+        if (typeface) {
+            typeface = fParagraph->fFontCollection->matchOpticalSize(
+                    typeface,
+                    placeholder.fTextStyle.getFontSize(),
+                    placeholder.fTextStyle.getFontArguments());
+        }
         SkFont font(typeface, placeholder.fTextStyle.getFontSize());
 
         font.setEdging(placeholder.fTextStyle.getFontEdging());
@@ -666,7 +673,12 @@ bool OneLineShaper::shape() {
             this->matchResolvedFonts(block.fStyle, [&](sk_sp<SkTypeface> typeface) {
 
                 // Create one more font to try
-                SkFont font(std::move(typeface), block.fStyle.getFontSize());
+                // Shape at the optical size of the font size (CSS font-optical-sizing: auto)
+                SkFont font(fParagraph->fFontCollection->matchOpticalSize(
+                                    typeface,
+                                    block.fStyle.getFontSize(),
+                                    block.fStyle.getFontArguments()),
+                            block.fStyle.getFontSize());
                 font.setEdging(block.fStyle.getFontEdging());
                 font.setHinting(block.fStyle.getFontHinting());
                 font.setSubpixel(block.fStyle.getSubpixel());

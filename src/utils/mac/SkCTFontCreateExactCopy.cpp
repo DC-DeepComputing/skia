@@ -55,6 +55,10 @@ SkUniqueCFRef<CTFontRef> SkCTFontCreateExactCopy(CTFontRef baseFont, CGFloat tex
         // On at least 10.11 the glyph ids in these fonts became non-interchangable.
         // To keep glyph ids stable over size changes, preserve the optical size.
         // In 10.15 this was replaced with use of variable fonts with an opsz axis.
+        // These keep the same glyph ids for every opsz (checked for .SFNS on macOS 26), but the
+        // opsz stays frozen: glyphs are also made at sizes other than the text size (PDF Type3
+        // at units per em, paths at 64) and have to scale linearly. Clients that want opsz to
+        // follow the font size make a clone per size (as SkParagraph does).
         // A CTFont backed by multiple fonts picked by opsz where the multiple backing fonts are
         // variable fonts with opsz axis and non-interchangeable glyph ids would break the
         // opsz.isSet branch above, but hopefully that never happens.

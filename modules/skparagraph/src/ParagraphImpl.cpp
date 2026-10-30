@@ -825,7 +825,10 @@ void ParagraphImpl::resolveStrut() {
         return;
     }
 
-    SkFont font(typefaces.front(), strutStyle.getFontSize());
+    // Same optical size as a text run, since 'MVAR' can vary ascent, descent and gap with opsz
+    SkFont font(fFontCollection->matchOpticalSize(
+                        typefaces.front(), strutStyle.getFontSize(), std::nullopt),
+                strutStyle.getFontSize());
     SkFontMetrics metrics;
     font.getMetrics(&metrics);
     const SkScalar strutLeading = strutStyle.getLeading() < 0 ? 0 : strutStyle.getLeading() * strutStyle.getFontSize();
@@ -1148,6 +1151,11 @@ void ParagraphImpl::computeEmptyMetrics() {
     auto typefaces = fontCollection()->findTypefaces(
       textStyle.getFontFamilies(), textStyle.getFontStyle(), textStyle.getFontArguments());
     auto typeface = typefaces.empty() ? nullptr : typefaces.front();
+    // An empty line has the height of a text line in the same style, opsz included
+    if (typeface) {
+        typeface = fontCollection()->matchOpticalSize(
+                typeface, textStyle.getFontSize(), textStyle.getFontArguments());
+    }
 
     SkFont font(typeface, textStyle.getFontSize());
     fEmptyMetrics = InternalLineMetrics(font, paragraphStyle().getStrutStyle().getForceStrutHeight());

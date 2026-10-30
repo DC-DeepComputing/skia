@@ -42,6 +42,12 @@ public:
     sk_sp<SkTypeface> defaultEmojiFallback(SkUnichar emojiStart, SkFontStyle fontStyle, const SkString& locale);
     sk_sp<SkTypeface> defaultFallback();
 
+    // Returns typeface with its 'opsz' axis at fontSize (CSS font-optical-sizing: auto), or
+    // typeface itself when fontArgs set 'opsz' or the typeface has no 'opsz' axis
+    sk_sp<SkTypeface> matchOpticalSize(const sk_sp<SkTypeface>& typeface,
+                                       SkScalar fontSize,
+                                       const std::optional<FontArguments>& fontArgs);
+
     void disableFontFallback();
     void enableFontFallback();
     bool fontFallbackEnabled() { return fEnableFontFallback; }

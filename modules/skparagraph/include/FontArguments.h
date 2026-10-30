@@ -24,6 +24,8 @@ public:
     friend bool operator==(const FontArguments& a, const FontArguments& b);
     friend bool operator!=(const FontArguments& a, const FontArguments& b);
     friend struct std::hash<FontArguments>;
+    // Reads the coordinates to find an explicit 'opsz'
+    friend class FontCollection;
 
 private:
     FontArguments() = delete;

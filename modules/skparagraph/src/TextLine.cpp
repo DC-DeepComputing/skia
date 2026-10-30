@@ -853,7 +853,11 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
     std::vector<sk_sp<SkTypeface>> typefaces = owner->fontCollection()->findTypefaces(
             textStyle.getFontFamilies(), textStyle.getFontStyle(), textStyle.getFontArguments());
     for (const auto& typeface : typefaces) {
-        ellipsisRun = shaped(typeface, nullptr);
+        // Unlike the run font, found typefaces do not have the optical size of the font size yet
+        ellipsisRun =
+                shaped(owner->fontCollection()->matchOpticalSize(
+                               typeface, textStyle.getFontSize(), textStyle.getFontArguments()),
+                       nullptr);
         if (ellipsisRun->isResolved()) {
             return ellipsisRun;
         }
@@ -873,6 +877,9 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
                                                                textStyle.getLocale(),
                                                                textStyle.getFontArguments());
       if (typeface) {
+          // A fallback typeface comes without the optical size too
+          typeface = owner->fontCollection()->matchOpticalSize(
+                  typeface, textStyle.getFontSize(), textStyle.getFontArguments());
           ellipsisRun = shaped(typeface, owner->fontCollection()->getFallbackManager());
           if (ellipsisRun->isResolved()) {
               return ellipsisRun;

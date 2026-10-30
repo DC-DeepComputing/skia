@@ -12443,3 +12443,91 @@ DEF_TEST(SkParagraph_JustifyEllipsisRemovesRuns, reporter) {
     REPORTER_ASSERT(reporter, impl->lines().size() == 1);
     REPORTER_ASSERT(reporter, paragraph->didExceedMaxLines());
 }
+
+// A face with an 'opsz' axis is laid out at opsz == font size in text runs, empty paragraphs, the
+// strut and placeholders. OpticalSizeTest.ttf varies the advances (HVAR) and the ascent and
+// descent (MVAR) along 'opsz' 8..72
+DEF_TEST(SkParagraph_AutoOpticalSizeEverywhere, reporter) {
+    constexpr SkFourByteTag kOpsz = SkSetFourByteTag('o', 'p', 's', 'z');
+    constexpr SkScalar kFontSize = 40;
+    sk_sp<SkTypeface> typeface =
+            ToolUtils::TestFontMgr()->makeFromData(GetResourceAsData("fonts/OpticalSizeTest.ttf"));
+    // The portable test font manager cannot read font data
+    if (!typeface) {
+        return;
+    }
+    auto fontProvider = sk_make_sp<TypefaceFontProvider>();
+    fontProvider->registerTypeface(typeface, SkString("OpticalSizeTest"));
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setAssetFontManager(fontProvider);
+    fontCollection->disableFontFallback();
+
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("OpticalSizeTest")});
+    textStyle.setFontSize(kFontSize);
+    auto layout = [&](const ParagraphStyle& paragraphStyle,
+                      const TextStyle& style,
+                      const char* text,
+                      const PlaceholderStyle* placeholder = nullptr) {
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        builder.addText(text);
+        if (placeholder) {
+            builder.addPlaceholder(*placeholder);
+        }
+        auto paragraph = builder.Build();
+        paragraph->layout(SK_ScalarInfinity);
+        return paragraph;
+    };
+    auto explicitWidth = [&](SkScalar opsz) {
+        SkFontArguments::VariationPosition::Coordinate coordinate{kOpsz, opsz};
+        SkFontArguments args;
+        args.setVariationDesignPosition({&coordinate, 1});
+        TextStyle style = textStyle;
+        style.setFontArguments(args);
+        return layout(ParagraphStyle(), style, "aaaa")->getMaxIntrinsicWidth();
+    };
+
+    SkScalar automatic = layout(ParagraphStyle(), textStyle, "aaaa")->getMaxIntrinsicWidth();
+    SkScalar atMin = explicitWidth(8);
+    SkScalar atSize = explicitWidth(kFontSize);
+    REPORTER_ASSERT(reporter, !SkScalarNearlyEqual(atMin, atSize), "%f %f", atMin, atSize);
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(automatic, atSize),
+                    "auto %f explicit %f",
+                    automatic,
+                    atSize);
+
+    SkScalar lineHeight = layout(ParagraphStyle(), textStyle, "a")->getHeight();
+    SkScalar emptyHeight = layout(ParagraphStyle(), textStyle, "")->getHeight();
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(emptyHeight, lineHeight),
+                    "empty paragraph %f text line %f",
+                    emptyHeight,
+                    lineHeight);
+
+    ParagraphStyle strutParagraph;
+    StrutStyle strut;
+    strut.setStrutEnabled(true);
+    strut.setForceStrutHeight(true);
+    strut.setFontFamilies({SkString("OpticalSizeTest")});
+    strut.setFontSize(kFontSize);
+    strutParagraph.setStrutStyle(strut);
+    SkScalar strutHeight = layout(strutParagraph, textStyle, "a")->getHeight();
+    REPORTER_ASSERT(reporter,
+                    SkScalarNearlyEqual(strutHeight, lineHeight),
+                    "strut %f text line %f",
+                    strutHeight,
+                    lineHeight);
+
+    // kTop puts the placeholder top at the ascent of its style, here the ascent of the line
+    PlaceholderStyle placeholder(10, 10, PlaceholderAlignment::kTop, TextBaseline::kAlphabetic, 0);
+    auto rects = layout(ParagraphStyle(), textStyle, "a", &placeholder)->getRectsForPlaceholders();
+    REPORTER_ASSERT(reporter, rects.size() == 1);
+    if (rects.size() == 1) {
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyZero(rects[0].rect.top()),
+                        "placeholder top %f",
+                        rects[0].rect.top());
+    }
+}
