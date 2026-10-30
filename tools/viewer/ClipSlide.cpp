@@ -11,6 +11,7 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRandom.h"
@@ -151,7 +152,7 @@ struct SkHalfPlane {
     }
     SkScalar operator()(SkScalar x, SkScalar y) const { return this->eval(x, y); }
 
-    bool twoPts(SkPoint pts[2]) const {
+    bool twoPts(SkSpan<SkPoint, 2> pts) const {
         // normalize plane to help with the perpendicular step, below
         SkScalar len = SkScalarSqrt(fA*fA + fB*fB);
         if (!len) {
@@ -349,7 +350,7 @@ static void draw_halfplane(SkCanvas* canvas, const SkHalfPlane& p, SkColor c) {
 }
 
 static void compute_half_planes(const SkMatrix& mx, SkScalar width, SkScalar height,
-                                SkHalfPlane planes[4]) {
+                                SkSpan<SkHalfPlane, 4> planes) {
     SkScalar a = mx[0], b = mx[1], c = mx[2],
              d = mx[3], e = mx[4], f = mx[5],
              g = mx[6], h = mx[7], i = mx[8];

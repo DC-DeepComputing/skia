@@ -6,6 +6,7 @@
  */
 #include "src/core/SkChecksum.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 
 #include <cstring>
@@ -57,7 +58,7 @@ static inline uint64_t _wyr3(const uint8_t* p, size_t k) {
 }
 
 // wyhash main function
-static inline uint64_t wyhash(const void* key, size_t len, uint64_t seed, const uint64_t* secret) {
+static inline uint64_t wyhash(const void* key, size_t len, uint64_t seed, SkSpan<const uint64_t>secret) {
     const uint8_t* p = (const uint8_t*)key;
     seed ^= _wymix(seed ^ secret[0], secret[1]);
     uint64_t a, b;

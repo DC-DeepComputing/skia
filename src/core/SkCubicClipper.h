@@ -7,6 +7,8 @@
 
 
 #ifndef SkCubicClipper_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkCubicClipper_DEFINED
 
 #include "include/core/SkRect.h"
@@ -27,7 +29,7 @@ public:
 
     void setClip(const SkIRect& clip);
 
-    [[nodiscard]] bool clipCubic(const SkPoint src[4], SkPoint dst[4]);
+    [[nodiscard]] bool clipCubic(SkSpan<const SkPoint, 4> src, SkPoint dst[4]);
 
     [[nodiscard]] static bool ChopMonoAtY(const SkPoint pts[4], SkScalar y, SkScalar* t);
 private:

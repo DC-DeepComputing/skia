@@ -10,6 +10,7 @@
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/gpu/GpuTypes.h"
@@ -107,7 +108,7 @@ bool SkImage_GaneshYUVA::setupMipmapsForPlanes(GrRecordingContext* context) cons
             newProxies[i] = fYUVAProxies.refProxy(i);
         }
     }
-    fYUVAProxies = GrYUVATextureProxies(fYUVAProxies.yuvaInfo(), newProxies.data(),
+    fYUVAProxies = GrYUVATextureProxies(fYUVAProxies.yuvaInfo(), newProxies,
                                         fYUVAProxies.textureOrigin());
     SkASSERT(fYUVAProxies.isValid());
     return true;
@@ -236,7 +237,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_GaneshYUVA::flattenToView(
 std::unique_ptr<GrFragmentProcessor> SkImage_GaneshYUVA::asFragmentProcessor(
         skgpu::ganesh::SurfaceDrawContext* sdc,
         SkSamplingOptions sampling,
-        const SkTileMode tileModes[2],
+        SkSpan<const SkTileMode, 2> tileModes,
         const SkMatrix& m,
         const SkRect* subset,
         const SkRect* domain) const {

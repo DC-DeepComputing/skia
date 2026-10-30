@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTFitsIn.h"
@@ -175,12 +176,12 @@ void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
 }
 
 // returns true if suffix is empty, or if str ends with suffix
-static bool issuffixfor(const SkString& suffix, const char str[]) {
+static bool issuffixfor(const SkString& suffix, SkSpan<const char> str) {
     size_t  suffixLen = suffix.size();
-    size_t  strLen = strlen(str);
+    size_t  strLen = strlen(str.data());
 
     return  strLen >= suffixLen &&
-            memcmp(suffix.c_str(), str + strLen - suffixLen, suffixLen) == 0;
+            memcmp(suffix.c_str(), SkSpan<const char>(str ).subspan( strLen - suffixLen).data(), suffixLen) == 0;
 }
 
 bool SkOSFile::Iter::next(SkString* name, bool getDir) {

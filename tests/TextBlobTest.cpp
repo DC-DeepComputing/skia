@@ -25,6 +25,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSerialProcs.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
@@ -57,7 +58,7 @@ public:
         SkTextBlobBuilder builder;
 
         // empty run set
-        RunBuilderTest(reporter, builder, nullptr, 0, nullptr, 0);
+        RunBuilderTest(reporter, builder, {}, 0, {}, 0);
 
         RunDef set1[] = {
             { 128, SkTextBlobRunIterator::kDefault_Positioning, 100, 100 },
@@ -257,8 +258,8 @@ private:
     };
 
     static void RunBuilderTest(skiatest::Reporter* reporter, SkTextBlobBuilder& builder,
-                               const RunDef in[], unsigned inCount,
-                               const RunDef out[], unsigned outCount) {
+                               SkSpan<const RunDef> in, unsigned inCount,
+                               SkSpan<const RunDef> out, unsigned outCount) {
         SkFont font = ToolUtils::DefaultFont();
 
         for (unsigned i = 0; i < inCount; ++i) {

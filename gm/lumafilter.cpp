@@ -128,15 +128,15 @@ protected:
                 SkBlendMode::kSrcIn,
                 SkBlendMode::kDstIn,
         });
-        struct {
+        struct Shaders{
             const sk_sp<SkShader>& fShader1;
             const sk_sp<SkShader>& fShader2;
-        } shaders[] = {
-            { nullptr, nullptr },
-            { nullptr, fGr2 },
-            { fGr1, nullptr },
-            { fGr1, fGr2 },
-        };
+        }; auto shaders = std::to_array<Shaders>({
+            Shaders{ nullptr, nullptr },
+            Shaders{ nullptr, fGr2 },
+            Shaders{ fGr1, nullptr },
+            Shaders{ fGr1, fGr2 },
+        });
 
         SkScalar gridStep = kSize + 2 * kInset;
         for (size_t i = 0; i < std::size(modes); ++i) {

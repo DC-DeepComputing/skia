@@ -63,7 +63,7 @@ DEF_TEST(LRUCacheRandom, r) {
     };
     int instances = 0;
     {
-        int seq[] = { 0, 1, 2, 3, 4, 1, 6, 2, 7, 5, 3, 2, 2, 3, 1, 7 };
+        auto seq = std::to_array<int>({ 0, 1, 2, 3, 4, 1, 6, 2, 7, 5, 3, 2, 2, 3, 1, 7 ,});
         auto expected = std::to_array<int>({7, 1, 3, 2, 5});
         static const int kSize = 5;
         SkLRUCache<MoveOnlyKey, std::unique_ptr<Value>> test(kSize);

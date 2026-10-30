@@ -73,7 +73,7 @@ public:
         @param paint      specifies stroking, SkPathEffect that affects the result; may be nullptr
         @return           number of intersections; may be zero
      */
-    int getIntercepts(const SkScalar bounds[2], SkScalar intervals[],
+    int getIntercepts(SkSpan<const SkScalar, 2> bounds, SkScalar intervals[],
                       const SkPaint* paint = nullptr) const;
 
     /** Creates SkTextBlob with a single run.

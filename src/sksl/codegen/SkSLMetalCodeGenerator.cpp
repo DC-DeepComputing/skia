@@ -1543,7 +1543,7 @@ void MetalCodeGenerator::assembleMatrixFromExpressions(const AnyConstructor& cto
     int argPosition = 0;
     auto args = ctor.argumentSpan();
 
-    static constexpr char kSwizzle[] = "xyzw";
+    static constexpr std::string_view kSwizzle = "xyzw";
     const char* separator = "";
     for (int c = 0; c < columns; ++c) {
         fExtraFunctions.printf("%s%s%d(", separator, matrixType.c_str(), rows);

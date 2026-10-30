@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkConvertPixels.h"
@@ -25,7 +26,7 @@
 static bool compare_colors(int x, int y,
                            const float rgbaA[],
                            const float rgbaB[],
-                           const float tolRGBA[4],
+                           SkSpan<const float, 4> tolRGBA,
                            std::function<ComparePixmapsErrorReporter>& error) {
     std::array<float, 4> diffs;
     bool bad = false;
@@ -44,7 +45,7 @@ static bool compare_colors(int x, int y,
 
 bool ComparePixels(const SkPixmap& a,
                    const SkPixmap& b,
-                   const float tolRGBA[4],
+                   SkSpan<const float, 4> tolRGBA,
                    std::function<ComparePixmapsErrorReporter>& error) {
     if (a.dimensions() != b.dimensions()) {
         static constexpr float kEmptyDiffs[4] = {};
@@ -95,7 +96,7 @@ bool ComparePixels(const SkPixmap& a,
 
 bool CheckSolidPixels(const SkColor4f& col,
                       const SkPixmap& pixmap,
-                      const float tolRGBA[4],
+                      SkSpan<const float, 4> tolRGBA,
                       std::function<ComparePixmapsErrorReporter>& error) {
     size_t floatBpp = SkColorTypeBytesPerPixel(kRGBA_F32_SkColorType);
 

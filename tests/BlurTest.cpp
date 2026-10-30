@@ -23,6 +23,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkImageFilters.h"
@@ -237,7 +238,7 @@ static float gaussian(int x, SkScalar sigma) {
 // Return the right half in 'result'
 static void brute_force_1d(SkScalar stepMin, SkScalar stepMax,
                            SkScalar gaussianSigma,
-                           int* result, int resultCount) {
+                           SkSpan<int>result, int resultCount) {
 
     int gaussianRange = SkScalarCeilToInt(10 * gaussianSigma);
 
@@ -305,7 +306,7 @@ static void write_as_csv(const char* label, SkScalar scale, int* data, int count
 }
 #endif
 
-static bool match(int* first, int* second, int count, int tol) {
+static bool match(int* first, SkSpan<int>second, int count, int tol) {
     int delta;
     for (int i = 0; i < count; ++i) {
         delta = first[i] - second[i];

@@ -407,7 +407,7 @@ int build_intervals(int inputLength,
                     int outputLength,
                     SkPMColor4f* outScales,
                     SkPMColor4f* outBiases,
-                    SkScalar* outThresholds) {
+                    SkSpan<SkScalar>outThresholds) {
     // Depending on how the positions resolve into hard stops or regular stops, the number of
     // intervals specified by the number of colors/positions can change. For instance, a plain
     // 3 color gradient is two intervals, but a 4 color gradient with a hard stop is also
@@ -478,7 +478,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_binary_colorizer(const 
     SkPMColor4f biases[kMaxLoopingIntervalCount];
     std::array<SkScalar, kMaxLoopingIntervalCount> thresholds = {};
     int intervalCount = build_intervals(
-            count, colors, positions, kMaxLoopingIntervalCount, scales, biases, thresholds.data());
+            count, colors, positions, kMaxLoopingIntervalCount, scales, biases, thresholds);
     if (intervalCount <= 0) {
         return nullptr;
     }
@@ -1126,7 +1126,7 @@ RandomParams::RandomParams(SkRandom* random) {
 
     // if one color, omit stops, otherwise randomly decide whether or not to
     if (fColorCount == 1 || (fColorCount >= 2 && random->nextBool())) {
-        fStops = nullptr;
+        fStops = {};
     } else {
         fStops = fStopStorage;
     }
@@ -1146,7 +1146,7 @@ RandomParams::RandomParams(SkRandom* random) {
         } else {
             fColors[i] = random->nextU();
         }
-        if (fStops) {
+        if (!fStops.empty()) {
             fStops[i] = stop;
             stop = i < fColorCount - 1 ? stop + random->nextUScalar1() * (1.f - stop) : 1.f;
         }

@@ -22,6 +22,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
@@ -169,7 +170,7 @@ private:
     }
 
     void drawProcs(SkCanvas* canvas, const SkRect& r, const SkPaint& paint,
-                   bool doClip, const Proc procs[], size_t procsCount) {
+                   bool doClip, SkSpan<const Proc> procs, size_t procsCount) {
         SkAutoCanvasRestore acr(canvas, true);
         for (size_t i = 0; i < procsCount; ++i) {
             if (doClip) {
