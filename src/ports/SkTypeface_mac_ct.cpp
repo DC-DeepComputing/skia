@@ -176,8 +176,8 @@ sk_sp<SkTypeface> SkTypeface_Mac::Make(SkUniqueCFRef<CTFontRef> font,
 
     auto makeTypeface = [&]() {
         SkUniqueCFRef<CTFontDescriptorRef> desc(CTFontCopyFontDescriptor(font.get()));
-        SkFontStyle style = SkCTFontDescriptorGetSkFontStyle(desc.get(), isFromStream);
         CTFontSymbolicTraits traits = CTFontGetSymbolicTraits(font.get());
+        SkFontStyle style = SkCTFontDescriptorGetSkFontStyle(desc.get(), isFromStream, traits);
         bool isFixedPitch = SkToBool(traits & kCTFontMonoSpaceTrait);
 
         return sk_sp<SkTypeface>(new SkTypeface_Mac(std::move(font), style, isFixedPitch,
@@ -348,30 +348,35 @@ static int ct_width_to_fontstyle(CGFloat cgWidth) {
     return interpolator.map(cgWidth);
 }
 
-SkFontStyle SkCTFontDescriptorGetSkFontStyle(CTFontDescriptorRef desc, bool fromDataProvider) {
+SkFontStyle SkCTFontDescriptorGetSkFontStyle(CTFontDescriptorRef desc, bool fromDataProvider,
+                                             CTFontSymbolicTraits fontTraits) {
+    // The descriptor copied from a system italic face holds only kCTFontSymbolicTrait (and that
+    // copy loses the bold bit), so without the CTFont's own traits the real .SFNS-BoldItalic
+    // reads as regular upright and clients synthesize an embolden and a skew on top of it
+    int skWeight = (fontTraits & kCTFontBoldTrait) ? SkFontStyle::kBold_Weight
+                                                   : SkFontStyle::kNormal_Weight;
+    SkFontStyle::Slant skSlant = (fontTraits & kCTFontItalicTrait) ? SkFontStyle::kItalic_Slant
+                                                                   : SkFontStyle::kUpright_Slant;
+
     SkUniqueCFRef<CFTypeRef> traits(CTFontDescriptorCopyAttribute(desc, kCTFontTraitsAttribute));
     CFDictionaryRef fontTraitsDict;
     if (!SkCFDynamicCast(traits.get(), &fontTraitsDict, "Font traits")) {
-        return SkFontStyle();
+        return SkFontStyle(skWeight, SkFontStyle::kNormal_Width, skSlant);
     }
 
     CGFloat weight, width, slant;
-    if (!find_dict_CGFloat(fontTraitsDict, kCTFontWeightTrait, &weight)) {
-        weight = 0;
+    if (find_dict_CGFloat(fontTraitsDict, kCTFontWeightTrait, &weight)) {
+        skWeight = ct_weight_to_fontstyle(weight, fromDataProvider);
     }
     if (!find_dict_CGFloat(fontTraitsDict, kCTFontWidthTrait, &width)) {
         width = 0;
     }
-    if (!find_dict_CGFloat(fontTraitsDict, kCTFontSlantTrait, &slant)) {
-        slant = 0;
+    if (find_dict_CGFloat(fontTraitsDict, kCTFontSlantTrait, &slant)) {
+        skSlant = slant ? SkFontStyle::kItalic_Slant : SkFontStyle::kUpright_Slant;
     }
 
-    return SkFontStyle(ct_weight_to_fontstyle(weight, fromDataProvider),
-                       ct_width_to_fontstyle(width),
-                       slant ? SkFontStyle::kItalic_Slant
-                             : SkFontStyle::kUpright_Slant);
+    return SkFontStyle(skWeight, ct_width_to_fontstyle(width), skSlant);
 }
-
 
 // Web fonts added to the CTFont registry do not return their character set.
 // Iterate through the font in this case. The existing caller caches the result,

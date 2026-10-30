@@ -223,7 +223,7 @@ public:
         SkASSERT((unsigned)index < (unsigned)fCount);
         CTFontDescriptorRef desc = (CTFontDescriptorRef)CFArrayGetValueAtIndex(fArray.get(), index);
         if (style) {
-            *style = SkCTFontDescriptorGetSkFontStyle(desc, false);
+            *style = SkCTFontDescriptorGetSkFontStyle(desc, false, 0);
         }
         if (name) {
             if (!find_desc_str(desc, kCTFontStyleNameAttribute, name)) {
@@ -256,7 +256,7 @@ private:
 
         for (int i = 0; i < fCount; ++i) {
             CTFontDescriptorRef desc = (CTFontDescriptorRef)CFArrayGetValueAtIndex(fArray.get(), i);
-            int metric = compute_metric(pattern, SkCTFontDescriptorGetSkFontStyle(desc, false));
+            int metric = compute_metric(pattern, SkCTFontDescriptorGetSkFontStyle(desc, false, 0));
             if (0 == metric) {
                 return desc;
             }

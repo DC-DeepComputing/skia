@@ -56,7 +56,12 @@ struct CTFontVariation {
     OpszVariation opsz;
 };
 
-SkFontStyle SkCTFontDescriptorGetSkFontStyle(CTFontDescriptorRef desc, bool fromDataProvider);
+/** fontTraits are the symbolic traits of the CTFont the descriptor was copied from; they supply
+ *  the weight and the slant when the descriptor itself does not report them. Pass 0 for a
+ *  descriptor which does not come from a CTFont, such as a font collection entry
+ */
+SkFontStyle SkCTFontDescriptorGetSkFontStyle(CTFontDescriptorRef desc, bool fromDataProvider,
+                                             CTFontSymbolicTraits fontTraits);
 
 CGFloat SkCTFontCTWeightForCSSWeight(int fontstyleWeight);
 CGFloat SkCTFontCTWidthForCSSWidth(int fontstyleWidth);
