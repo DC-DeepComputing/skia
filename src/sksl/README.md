@@ -1,11 +1,77 @@
-# Overview
+# SkSL ("Skia Shading Language") & Compiler (`src/sksl/`)
+
+## Overview & Scope
+
+`src/sksl/` contains the compiler, intermediate representation (IR), optimizer, built-in module library, and multi-target code generators for **SkSL ("Skia Shading Language")**.
+
+SkSL serves two primary roles in Skia:
+1. **Internal GPU & CPU Shading**: All Skia GPU backends ([Ganesh](../gpu/ganesh/README.md) and [Graphite](../gpu/graphite/README.md)) author their built-in geometry, fragment, and compute shader stages in SkSL. The SkSL compiler translates these programs into target-specific shading languages (**SPIR-V**, **Metal Shading Language (MSL)**, **WGSL**, **GLSL / GLSL ES**, and **HLSL**) before handing them to graphics drivers.
+2. **Public Runtime Effects (`SkRuntimeEffect`)**: Client applications write custom shaders, color filters, and blenders in SkSL via `include/effects/SkRuntimeEffect.h`. SkSL compiles and validates these programs for both GPU execution and CPU execution on **Skia's Raster Pipeline** (`SkRasterPipeline`).
+
+Public SkSL headers live in `include/sksl/` (`SkSLVersion.h`, `SkSLDebugTrace.h`) and `include/effects/SkRuntimeEffect.h`.
+
+## Compiler Architecture & Key Abstractions
+
+Compilation flows through four main phases: **Module Loading & Parsing**, **IR Construction & Intrinsics**, **Analysis & Optimization Transforms**, and **Backend Code Generation**:
+
+1. **Modules & Built-ins (`SkSLModuleLoader.h`, `SkSLModule.h`, `sksl_*.sksl`)**:
+   - Standard library declarations, intrinsics, and Graphite shader snippets are authored in `.sksl` module files (`sksl_shared.sksl`, `sksl_public.sksl`, `sksl_gpu.sksl`, `sksl_frag.sksl`, `sksl_vert.sksl`, `sksl_compute.sksl`, `sksl_rt_shader.sksl`, `sksl_graphite_frag.sksl`, `sksl_graphite_vert.sksl`).
+   - At build time, `tools/sksl-minify` pre-processes these into `generated/*.minified.sksl` (and `.unoptimized.sksl`), which `ModuleLoader` loads on demand into a hierarchical `SymbolTable` parent chain.
+2. **Frontend Lexer & Parser (`SkSLLexer.h`, `SkSLParser.h`, `SkSLCompiler.h`)**:
+   - `SkSL::Compiler::convertProgram` is the main entry point, configured by `ProgramKind` (`SkSLProgramKind.h`) and `ProgramSettings` (`SkSLProgramSettings.h`).
+   - `Lexer` (generated from `lex/sksl.lex`) tokenizes source text, and the recursive-descent `Parser` lowers tokens directly into typed `IRNode` trees using `Context` (`SkSLContext.h`), `BuiltinTypes` (`SkSLBuiltinTypes.h`), and `ErrorReporter` (`SkSLErrorReporter.h`).
+3. **Intermediate Representation (`ir/`) & Analysis (`analysis/`, `SkSLAnalysis.h`)**:
+   - Programs are represented as a `Program` (`ir/SkSLProgram.h`) containing `ProgramElement`s (`FunctionDefinition`, `GlobalVarDeclaration`, `StructDefinition`, `InterfaceBlock`), `Statement`s (`Block`, `IfStatement`, `ForStatement`, `SwitchStatement`), `Expression`s (`BinaryExpression`, `FunctionCall`, `ChildCall`, `Swizzle`, `Constructor*`, `VariableReference`), and `Symbol`s (`Variable`, `Type`, `FunctionDeclaration`) stored in scoped `SymbolTable`s.
+   - `analysis/` provides AST visitor passes (`ProgramVisitor`) that compute variable read/write counts (`ProgramUsage`), verify program structure, check `SkRuntimeEffect` restrictions (e.g., loop unrollability in ES2 via `GetLoopUnrollInfo`), and track specialization needs.
+4. **Transform & Optimization Passes (`transform/SkSLTransform.h`, `SkSLInliner.h`, `SkSLConstantFolder.h`)**:
+   - During IR construction and post-parse optimization (`Compiler::optimize`), `ConstantFolder` simplifies constant expressions and statically known `sk_Caps` branches, `Inliner` flattens small or `inline`-annotated functions, and `Transform` passes eliminate dead functions, dead global/local variables, and unreachable code, or rewrite constructs (such as indexed swizzles) unsupported by target backends.
+5. **Backend Code Generation (`codegen/`)**:
+   - **GPU Targets** (invoked via `src/gpu/SkSLToBackend.h` or `codegen/SkSLCodeGenerator.h`):
+     - `SkSLSPIRVCodeGenerator.h`: Emits Vulkan/OpenGL SPIR-V binary bytecode (`spirv.h`, `GLSL.std.450.h`), optionally validated with `SkSLSPIRVValidator.h`.
+     - `SkSLMetalCodeGenerator.h`: Emits Metal Shading Language (MSL) source.
+     - `SkSLWGSLCodeGenerator.h`: Emits WebGPU Shading Language (WGSL) source for Dawn, optionally validated with `SkSLWGSLValidator.h`.
+     - `SkSLGLSLCodeGenerator.h`: Emits desktop GLSL and OpenGL ES shading language source.
+     - `SkSLHLSLCodeGenerator.h` / `SkSLSPIRVtoHLSL.h`: Translates SkSL to Direct3D HLSL via SPIRV-Cross.
+   - **Ganesh Modular Stage Target**:
+     - `SkSLPipelineStageCodeGenerator.h`: Translates `SkRuntimeEffect` programs into callback-driven SkSL fragments that splice into Ganesh's `GrFragmentProcessor` hierarchy (`GrSkSLFP`).
+   - **CPU Raster Pipeline Target**:
+     - `SkSLRasterPipelineCodeGenerator.h` & `SkSLRasterPipelineBuilder.h`: Compiles `SkRuntimeEffect` shaders, color filters, and blenders into `SkRasterPipeline` stage instructions for SIMD CPU execution and step-by-step debugger tracing (`tracing/`).
+
+## Subdirectories
+
+| Directory | Purpose |
+| :--- | :--- |
+| `ir/` | Typed AST/IR node definitions (`IRNode`, `Program`, `Statement`, `Expression`, `Symbol`, `Type`, `SymbolTable`, `Layout`, `Modifiers`). |
+| `analysis/` | Static analysis passes (`ProgramVisitor`, `ProgramUsage`, loop unrolling validation, return complexity, side-effect and constant-expression checks, uniform specialization). |
+| `transform/` | IR-to-IR optimization and lowering passes (`Transform`: dead code/function/variable elimination, built-in declaration injection, private symbol renaming, swizzle rewriting). |
+| `codegen/` | Target code generators for SPIR-V, MSL, WGSL, GLSL, HLSL, Ganesh Pipeline Stage, and CPU `SkRasterPipeline`. |
+| `tracing/` | SkSL debugger trace recording and playback (`SkSLDebugTracePriv`, `SkSLTraceHook`, `SkSLDebugTracePlayer`). |
+| `generated/` | Pre-minified (`*.minified.sksl`) and unoptimized (`*.unoptimized.sksl`) built-in module C++ string headers produced by `tools/sksl-minify`. |
+| `lex/` | Standalone regular-expression NFA-to-DFA lexer generator (`sksl.lex` -> `SkSLLexer.h` / `SkSLLexer.cpp`). |
+
+## Build & Test
+
+### Build Files & Offline Tools
+- **Bazel & GN**: `src/sksl/BUILD.bazel`, `src/sksl/codegen/BUILD.bazel`, and `gn/sksl.gni` (`skia_sksl_core_sources`, `skia_sksl_codegen_sources`, `skia_sksl_pipeline_sources`, `skslc_deps`).
+- **Minifying Built-in Modules (`tools/sksl-minify`)**: Whenever you edit a `src/sksl/sksl_*.sksl` module file, regenerate the embedded headers in `src/sksl/generated/` by running `tools/sksl-minify` (or via GN arg `skia_compile_sksl_tests = true` / `./bin/fetch-sksl-minify`).
+- **Standalone Compiler (`tools/skslc`)**: Compiles `.sksl`, `.rts`, `.rtcf`, `.rtb`, `.frag`, `.vert`, and `.compute` test files in `resources/sksl/` into golden outputs in `tests/sksl/` (`.glsl`, `.asm.frag`, `.metal`, `.wgsl`, `.hlsl`, `.skrp`, `.stage`). Trigger golden regeneration by building with GN arg `skia_compile_sksl_tests = true` or running `tools/skslc`.
+
+### Testing
+- **Golden Compiler Tests**: Add or update test inputs in `resources/sksl/` (listed in `gn/sksl_tests.gni`) and verify the generated outputs under `tests/sksl/`.
+- **Runtime & Execution Tests**: `tests/SkSLTest.cpp` executes shared SkSL test programs (`resources/sksl/shared/`, `folding/`, `inliner/`, `intrinsics/`, `runtime/`) across CPU (`SkRasterPipeline`), Ganesh (`DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS`), and Graphite (`DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS`) to verify numerical equivalence. Other unit tests include `tests/SkSLMemoryLayoutTest.cpp`, `tests/SkSLTypeTest.cpp`, `tests/SkSLCross.cpp`, and `tests/SkRuntimeEffectTest.cpp`.
+
+---
+
+# Language Reference
+
+## Overview
 
 SkSL ("Skia Shading Language") is a variant of GLSL which is used as Skia's
 internal shading language. SkSL is, at its heart, a single standardized version
 of GLSL which avoids all of the various version and dialect differences found
 in GLSL "in the wild", but it does bring a few of its own changes to the table.
 
-Skia uses the SkSL compiler to convert SkSL code to GLSL, GLSL ES, SPIR-V, or
+Skia uses the SkSL compiler to convert SkSL code to GLSL, GLSL ES, SPIR-V, WGSL, or
 MSL before handing it over to the graphics driver.
 
 
