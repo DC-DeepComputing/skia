@@ -244,6 +244,59 @@ SK_API sk_sp<SkImage> MakeWithFilter(sk_sp<SkImage> src,
                                      SkIRect* outSubset,
                                      SkIPoint* offset);
 
+/** Creates an SkImage from pixmap for the target backend associated with recorder.
+    Providing a GPU-based recorder prepares the image as a GPU texture, while a CPU
+    recorder maintains the image in software.
+
+    On a CPU recorder, pixmap pixels are copied unless rasterReleaseProc is provided,
+    in which case pixels must remain valid and unchanged until rasterReleaseProc is called.
+
+    @param recorder           recorder determining the target backend
+    @param pixmap             SkImageInfo, pixel address, and row bytes
+    @param rasterReleaseProc  function called when pixels can be released
+    @param releaseContext     state passed to rasterReleaseProc
+    @return                   created SkImage
+*/
+SK_API sk_sp<SkImage> FromPixmap(SkRecorder* recorder,
+                                 const SkPixmap& pixmap,
+                                 RasterReleaseProc rasterReleaseProc = nullptr,
+                                 ReleaseContext releaseContext = nullptr);
+
+/** Creates an SkImage from pixel data described by info for the target backend associated
+    with recorder.
+
+    @param recorder  recorder determining the target backend
+    @param info      width, height, SkAlphaType, SkColorType, SkColorSpace
+    @param pixels    address or pixel storage
+    @param rowBytes  size of pixel row or larger
+    @return          created SkImage
+*/
+SK_API sk_sp<SkImage> FromData(SkRecorder* recorder,
+                               const SkImageInfo& info,
+                               sk_sp<SkData> pixels,
+                               size_t rowBytes);
+
+/** Creates an SkImage from encoded data for the target backend associated with recorder.
+
+    @param recorder   recorder determining the target backend
+    @param encoded    encoded data
+    @param alphaType  alpha type override (kPremul_SkAlphaType or kUnpremul_SkAlphaType)
+    @return           created SkImage
+*/
+SK_API sk_sp<SkImage> FromData(SkRecorder* recorder,
+                               sk_sp<const SkData> encoded,
+                               std::optional<SkAlphaType> alphaType = std::nullopt);
+
+/** Creates an SkImage from data returned by imageGenerator for the target backend associated
+    with recorder.
+
+    @param recorder        recorder determining the target backend
+    @param imageGenerator  stock or custom routines to retrieve SkImage
+    @return                created SkImage
+*/
+SK_API sk_sp<SkImage> FromGenerator(SkRecorder* recorder,
+                                    std::unique_ptr<SkImageGenerator> imageGenerator);
+
 }  // namespace SkImages
 
 /** \class SkImage

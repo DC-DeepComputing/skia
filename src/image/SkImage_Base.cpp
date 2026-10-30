@@ -13,6 +13,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
@@ -115,4 +116,11 @@ sk_sp<SkImage> SkImage_Base::makeColorSpace(SkRecorder* recorder,
                                             sk_sp<SkColorSpace> target,
                                             RequiredProperties props) const {
     return this->makeColorTypeAndColorSpace(recorder, this->colorType(), std::move(target), props);
+}
+
+sk_sp<SkImage> SkImage_Base::MakeRecorderBackedImage(SkRecorder* recorder, sk_sp<SkImage> image) {
+    if (!recorder || !image) {
+        return nullptr;
+    }
+    return recorder->makeImage(std::move(image));
 }
