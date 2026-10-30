@@ -1,0 +1,429 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e69fb8a_525faf90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Hi Jorge, thanks for starting this. A map of the tree is useful for people and for agents. I checked all 26 files and checked the paths, symbols, targets and flags against the code at PS2. The problem is that a README for agents has to be exact: an agent trusts what it reads and builds on it. Right now about twenty claims do not match the code. I left them as inline comments.\n\nA few general suggestions:\n\n1. Skia already has docs for agents in agents/ (core_skills.json, skills/skia-gn-workflow, skills/skia-add-test). The new READMEs do not mention them and sometimes say the opposite (see the ninja --quiet comments). Please link to the skills and to site/docs for build and test steps instead of copying them. With three copies, they will drift apart within weeks.\n\n2. Keep only what changes rarely: what the directory is for, where its boundaries are, the main types and entry points, and how it relates to other directories. Line anchors (SkShaper.h#L197-L248), full lists of files, classes and tests, and counts like \"14 modular libraries\" go stale with every unrelated change, and nothing will catch it.\n\n3. Please split the CL by area (core, gpu, sksl, pdf, modules, build/test) and add each area\u0027s OWNERS as reviewers. About 1350 lines of docs across the whole tree in one CL is too much to review well, and the people who can catch errors in src/gpu/ are not the same people who can catch them in src/pdf/.\n\n4. Before upload, run a simple check that every path, symbol and target in the .md files exists in the tree (a git grep per identifier is enough). It would have caught most of the inline comments.\n\nThe text-related parts (skparagraph, skshaper, src/text) are mostly right, so the approach works when each file gets a careful check against the code. I\u0027m happy to review those directories once they are split out.\n\nAssisted-by: AI",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e07c4fa8_ccd94dd5",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "agents/skills/skia-gn-workflow/SKILL.md (line 75) tells agents to build with `ninja --quiet -C ...` and to add --quiet when a ninja command lacks it. This line uses plain `ninja -C`, so agents get two different instructions. Could you link to that skill here instead of repeating the build steps?",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91812aba_d2d47a95",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "There is no //tests:core_unit_tests target. tests/BUILD.bazel does not define it, and git grep finds it only in this README.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92e5677c_9ff1f195",
+        "filename": "dm/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "There is no plain `grdawn` config, only grdawn_vk, grdawn_mtl, grdawn_d3d11 and so on (tools/flags/CommonFlagsConfig.cpp). Same on line 56.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c42368ec_aa2c9746",
+        "filename": "gn/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Same as in the root README: agents/skills/skia-gn-workflow requires `ninja --quiet`. Please link to the skill instead of keeping a second copy of the build steps.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa7093f8_17c4635a",
+        "filename": "modules/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "This is not true for most modules. Only skottie and skparagraph have gm/. modules/pathops has only pathops.gni, and jsonreader, audioplayer and skcms do not follow the include/src/tests layout.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b10481a_66dff4e4",
+        "filename": "modules/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "All links in this file point to file:///Users/jmbetancourt/skia/... They only work on your machine. Please use relative paths. Same in modules/skottie/README.md, modules/skparagraph/README.md and modules/skshaper/README.md.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c31b9af_98f76dd1",
+        "filename": "modules/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "There is no bentleyottmann::find_intersections. The public function is bentleyottmann::bentley_ottmann_1 (modules/bentleyottmann/include/BentleyOttmann1.h).",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8814be89_a7b77a96",
+        "filename": "modules/skottie/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Same as in modules/README.md: the file:///Users/jmbetancourt/... links need to be relative paths.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac03ecc_9e8e09a4",
+        "filename": "modules/skparagraph/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Same as in modules/README.md: the file:///Users/jmbetancourt/... links need to be relative paths.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84e801bb_dac5e92a",
+        "filename": "modules/skparagraph/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "The order is dynamic, asset, test, default, and the default font manager is used only when font fallback is enabled (FontCollection::getFontManagerOrder, FontCollection.cpp:200-210). This matters for anyone who debugs font fallback.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ec5f6b1_84973bce",
+        "filename": "modules/skshaper/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Same as in modules/README.md: the file:///Users/jmbetancourt/... links need to be relative paths.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe808d6_d5554a10",
+        "filename": "modules/skshaper/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Line anchors like #L197-L248 break with the first edit to SkShaper.h. I\u0027d link to the header without line numbers.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d52a3757_3b01d667",
+        "filename": "modules/skshaper/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "$\\rightarrow$ renders only where the Markdown viewer supports math: GitHub does, skia.googlesource.com does not, and agents read it as raw text. A plain -\u003e works everywhere.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "260d4c02_40cd3939",
+        "filename": "src/core/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "The class is skcpu::Draw (SkDraw.h:49, 106), and it holds state: fDst, fCTM, fRC (SkDraw.h:247-250). So \"stateless\" is not right.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb551f30_72516bbe",
+        "filename": "src/core/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "There is no //src/sksl/codegen:rasterpipeline target. src/sksl/codegen/BUILD.bazel has rasterpipeline_hdrs and rasterpipeline_srcs filegroups.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "336a0e34_11dd10cb",
+        "filename": "src/gpu/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "BufferWriter.h has VertexWriter and IndexWriter but no UniformWriter.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "599a11c8_8a9355ab",
+        "filename": "src/gpu/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "There is no plain `grdawn` config. Only the API-specific ones exist (grdawn_vk, grdawn_mtl, ...), see tools/flags/CommonFlagsConfig.cpp.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47feb422_c2041732",
+        "filename": "src/gpu/graphite/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS takes 4 arguments: (name, reporter, graphite_context, ctsEnforcement), see tests/Test.h:387. There is no testContext argument.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cc0688a_fb8ad84a",
+        "filename": "src/pdf/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Skia writes a %PDF-1.4 header (SkPDFDocument.cpp:126), not %PDF-1.7. There is also no SkPDFObjectSerializer class anywhere in the tree.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a84865b_7d4bc6a6",
+        "filename": "src/pdf/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "SkPDFIndirectPtr does not exist. The type is SkPDFIndirectReference.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7809eebd_d76d9095",
+        "filename": "src/sksl/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "There is no ./bin/fetch-sksl-minify. The GN arg that builds sksl-minify and regenerates src/sksl/generated/ is skia_compile_modules (BUILD.gn:593, gn/skia.gni:19). skia_compile_sksl_tests builds skslc and the golden test outputs in tests/sksl/.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a172cd2c_6cb93095",
+        "filename": "tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "Ganesh has no Dawn backend: there is no src/gpu/ganesh/dawn/, and skgpu::ganesh::ContextTypeBackend() maps every kDawn_* type to GrBackendApi::kUnsupported (tools/gpu/ContextType.cpp). Dawn is Graphite-only, so this macro never runs on Dawn.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c37e5f_40eef665",
+        "filename": "tools/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "tools/ganesh/ has gl/, vk/, mtl/, d3d/ and mock/, but no dawn/. Dawn lives under tools/graphite/.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7823e019_4a33f870",
+        "filename": "tools/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T20:17:14Z",
+      "side": 1,
+      "message": "SkVM was removed from Skia. skslc emits SkRP (SkRasterPipeline) and GPU shader code, not SkVM.",
+      "revId": "ef98ddaac9aa835569dd6f1961a20ad349a7087f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
