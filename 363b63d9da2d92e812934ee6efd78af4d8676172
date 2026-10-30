@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0a220ef_062b7899",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-30T20:22:51Z",
+      "side": 1,
+      "message": "Thomas and/or Nathan can review the implementation details\n\nGreg and/or Michael can review the public API\u0027s",
+      "revId": "363b63d9da2d92e812934ee6efd78af4d8676172",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
