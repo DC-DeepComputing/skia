@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e894e10_b467cbc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-10-30T18:24:11Z",
+      "side": 1,
+      "message": "Okay I ended up reworking parts of the general design from the original versions. I think with this new approach I\u0027ve gotten most ai reviews to agree this works (outside of minor nit things I don\u0027t care about)",
+      "revId": "6b7c930c791bf43e7a271e4c2090328ed9f9e95b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
