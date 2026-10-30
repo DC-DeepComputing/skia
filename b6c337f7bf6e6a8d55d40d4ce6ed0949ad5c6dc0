@@ -16,6 +16,23 @@
       "message": "Not looking for a full review, but this might have to be split up? There\u0027s a lot of surface here. There will also need to be commensurate widening in Chrome",
       "revId": "b6c337f7bf6e6a8d55d40d4ce6ed0949ad5c6dc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "351f72df_e2a56e6a",
+        "filename": "src/core/SkPixelRef.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-30T15:24:18Z",
+      "side": 1,
+      "message": "I think these release asserts when we overflow the id deserve a padding in a message parameter to clarify why we are falling over in the log (it would either indicate an exceptionally long process up time, or bad app behavior).\n\nI think with 2^63 values for `id`, if we assume 1000 bitmaps generated per frame at 120fps, we\u0027d overflow after 2^63/(1000*120*60*60*24*365) years (~2.4 million). That same scenario with just `uint32_t` would take 5 hours. Given that, I\u0027m certainly okay with crashing in order to guarantee the uniqueness of the IDs.",
+      "revId": "b6c337f7bf6e6a8d55d40d4ce6ed0949ad5c6dc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
