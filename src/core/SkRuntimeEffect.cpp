@@ -13,6 +13,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
@@ -882,7 +883,7 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
 }
 
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> uniforms,
-                                                      sk_sp<SkColorFilter> childColorFilters[],
+                                                      SkSpan<sk_sp<SkColorFilter>> childColorFilters,
                                                       size_t childCount) const {
     STArray<4, ChildPtr> children(childCount);
     for (size_t i = 0; i < childCount; ++i) {

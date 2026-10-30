@@ -6,6 +6,8 @@
  */
 
 #ifndef GrBlurUtils_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrBlurUtils_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -57,10 +59,10 @@ bool ComputeBlurredRRectParams(const SkRRect& srcRRect,
                                SkScalar xformedSigma,
                                SkRRect* rrectToDraw,
                                SkISize* widthHeight,
-                               SkScalar rectXs[kBlurRRectMaxDivisions],
-                               SkScalar rectYs[kBlurRRectMaxDivisions],
-                               SkScalar texXs[kBlurRRectMaxDivisions],
-                               SkScalar texYs[kBlurRRectMaxDivisions]);
+                               SkSpan<SkScalar, kBlurRRectMaxDivisions> rectXs,
+                               SkSpan<SkScalar, kBlurRRectMaxDivisions> rectYs,
+                               SkSpan<SkScalar, kBlurRRectMaxDivisions> texXs,
+                               SkSpan<SkScalar, kBlurRRectMaxDivisions> texYs);
 
 /**
  * Draw a shape handling the mask filter if present.

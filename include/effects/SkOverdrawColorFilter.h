@@ -7,6 +7,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 
 class SkColorFilter;
@@ -27,7 +28,7 @@ class SK_API SkOverdrawColorFilter {
 public:
     static constexpr int kNumColors = 6;
 
-    static sk_sp<SkColorFilter> MakeWithSkColors(const SkColor[kNumColors]);
+    static sk_sp<SkColorFilter> MakeWithSkColors(SkSpan<const SkColor, kNumColors>);
 };
 
 #endif // SkOverdrawColorFilter_DEFINED

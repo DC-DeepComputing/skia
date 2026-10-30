@@ -16,6 +16,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
@@ -29,7 +30,7 @@ int dash3[] = { 1, 1, 3, 3 };
 int dash4[] = { 1, 3, 2, 4 };
 
 struct DashExample {
-    int* pattern;
+    SkSpan<int>pattern;
     int length;
 } dashExamples[] = {
     { dash1, std::size(dash1) },

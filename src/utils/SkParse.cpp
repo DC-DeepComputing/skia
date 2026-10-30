@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTo.h"
 #include "include/utils/SkParse.h"
@@ -210,7 +211,7 @@ const char* SkParse::FindScalars(const char str[], SkScalar value[], int count)
     return str;
 }
 
-static bool lookup_str(const char str[], const char** table, int count)
+static bool lookup_str(const char str[], SkSpan<const char *>table, int count)
 {
     while (--count >= 0)
         if (!strcmp(str, table[count]))

@@ -11,6 +11,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkSLSampleUsage.h"
@@ -253,7 +254,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
         }
     }
     std::unique_ptr<GrFragmentProcessor> fp(
-            new GrYUVtoRGBEffect(planeFPs.data(),
+            new GrYUVtoRGBEffect(planeFPs,
                                  numPlanes,
                                  yuvaProxies.yuvaLocations(),
                                  snap,
@@ -270,7 +271,7 @@ static SkAlphaType alpha_type(const SkYUVAInfo::YUVALocations locations) {
                                                                : kOpaque_SkAlphaType;
 }
 
-GrYUVtoRGBEffect::GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs[4],
+GrYUVtoRGBEffect::GrYUVtoRGBEffect(SkSpan<std::unique_ptr<GrFragmentProcessor>, 4> planeFPs,
                                    int numPlanes,
                                    const SkYUVAInfo::YUVALocations& locations,
                                    const bool snap[2],

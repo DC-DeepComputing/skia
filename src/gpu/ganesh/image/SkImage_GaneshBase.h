@@ -6,6 +6,8 @@
  */
 
 #ifndef SkImage_GaneshBase_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkImage_GaneshBase_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -105,7 +107,7 @@ public:
     virtual std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
             skgpu::ganesh::SurfaceDrawContext*,
             SkSamplingOptions,
-            const SkTileMode[2],
+            SkSpan<const SkTileMode, 2>,
             const SkMatrix&,
             const SkRect*,
             const SkRect*) const = 0;

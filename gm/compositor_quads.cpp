@@ -27,6 +27,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
@@ -212,7 +213,7 @@ public:
     // The edgeAA order matches that of clip, so it refers to top, right, bottom, left.
     // Return draw count
     virtual int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4],
-                          const bool edgeAA[4], int tileID, int quadID) = 0;
+                          SkSpan<const bool, 4> edgeAA, int tileID, int quadID) = 0;
 
     virtual void drawBanner(SkCanvas* canvas) = 0;
 
@@ -251,7 +252,7 @@ public:
     }
 
 protected:
-    SkCanvas::QuadAAFlags maskToFlags(const bool edgeAA[4]) const {
+    SkCanvas::QuadAAFlags maskToFlags(SkSpan<const bool, 4> edgeAA) const {
         unsigned flags = (edgeAA[0] * SkCanvas::kTop_QuadAAFlag) |
                          (edgeAA[1] * SkCanvas::kRight_QuadAAFlag) |
                          (edgeAA[2] * SkCanvas::kBottom_QuadAAFlag) |
@@ -263,7 +264,7 @@ protected:
     // 2 * lineCount long. Increments 'quadCount' for each split quadrilateral, and invokes the
     // drawTile at leaves.
     int clipTile(SkCanvas* canvas, int tileID, const SkRect& baseRect, const SkPoint quad[4],
-                  const bool edgeAA[4], const SkPoint lines[], int lineCount, int* quadCount) {
+                  SkSpan<const bool, 4> edgeAA, const SkPoint lines[], int lineCount, int* quadCount) {
         if (lineCount == 0) {
             // No lines, so end recursion by drawing the tile. If the tile was never split then
             // 'quad' remains null so that drawTile() can differentiate how it should draw.
@@ -414,7 +415,7 @@ protected:
                                     tileID,
                                     baseRect,
                                     sub,
-                                    subAA.data(),
+                                    subAA,
                                     lines + 2,
                                     lineCount - 1,
                                     quadCount);
@@ -573,7 +574,7 @@ public:
         return sk_sp<ClipTileRenderer>(new DebugTileRenderer(SkCanvas::kNone_QuadAAFlags, true));
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
+    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], SkSpan<const bool, 4> edgeAA,
                   int tileID, int quadID) override {
         // Colorize the tile based on its grid position and quad ID
         int i = tileID / kColCount;
@@ -631,7 +632,7 @@ public:
         return sk_sp<ClipTileRenderer>(new SolidColorRenderer(color));
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
+    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], SkSpan<const bool, 4> edgeAA,
                   int tileID, int quadID) override {
         canvas->experimental_DrawEdgeAAQuad(rect, clip, this->maskToFlags(edgeAA),
                                             fColor.toSkColor(), SkBlendMode::kSrcOver);
@@ -712,7 +713,7 @@ public:
         return draws;
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
+    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], SkSpan<const bool, 4> edgeAA,
                   int tileID, int quadID) override {
         // Now don't actually draw the tile, accumulate it in the growing entry set
         bool hasClip = false;
@@ -922,7 +923,7 @@ public:
         return draws;
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
+    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], SkSpan<const bool, 4> edgeAA,
                   int tileID, int quadID) override {
         SkASSERT(fImage);
         // Now don't actually draw the tile, accumulate it in the growing entry set

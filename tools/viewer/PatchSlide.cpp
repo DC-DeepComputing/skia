@@ -15,6 +15,7 @@
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkVertices.h"
@@ -54,8 +55,8 @@ public:
     Patch() { sk_bzero(fPts, sizeof(fPts)); }
     ~Patch() {}
 
-    void setPatch(const SkPoint pts[12]) {
-        memcpy(fPts, pts, 12 * sizeof(SkPoint));
+    void setPatch(SkSpan<const SkPoint, 12> pts) {
+        memcpy(fPts, pts.data(), 12 * sizeof(SkPoint));
         fPts[12] = pts[0];  // the last shall be first
     }
     void setBounds(int w, int h) { fW = w; fH = h; }
@@ -262,7 +263,7 @@ public:
         }
         patch.setBounds(fSize0.fX, fSize0.fY);
 
-        patch.setPatch(fPts.data());
+        patch.setPatch(fPts);
         drawpatches(canvas, paint, nu, nv, &patch);
 
         paint.setShader(nullptr);
