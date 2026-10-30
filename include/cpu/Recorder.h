@@ -62,6 +62,8 @@ private:
     SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
     void createCaptureBreakpoint(SkSurface*) final;
     void deregisterCaptureCanvas(SkCanvas*) final {}
+
+    sk_sp<SkImage> makeImage(sk_sp<SkImage> image) override;
 };
 
 inline Recorder* AsRecorder(SkRecorder* recorder) {
