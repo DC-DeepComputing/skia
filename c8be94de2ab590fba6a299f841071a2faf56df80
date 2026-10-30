@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18aff97e_a74dd972",
+        "filename": "include/core/SkPixelRef.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-30T17:40:45Z",
+      "side": 1,
+      "message": "https://en.wikipedia.org/wiki/Ditto_mark",
+      "parentUuid": "6bdfdcf6_45555ce1",
+      "range": {
+        "startLine": 116,
+        "startChar": 46,
+        "endLine": 116,
+        "endChar": 48
+      },
+      "revId": "c8be94de2ab590fba6a299f841071a2faf56df80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ff9b8ff_0d32cbe8",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-30T16:59:18Z",
       "side": 1,
       "message": "nit: If `avoidCopy` is what the block is doing, the conditional should describe why. So maybe `canSharePixelRef` will work better.",
+      "revId": "c8be94de2ab590fba6a299f841071a2faf56df80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6751a7c7_b739932a",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-10-30T17:40:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ff9b8ff_0d32cbe8",
       "revId": "c8be94de2ab590fba6a299f841071a2faf56df80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
