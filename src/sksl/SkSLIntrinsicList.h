@@ -114,7 +114,6 @@
     SKSL_INTRINSIC(subgroupInclusiveAdd)   \
     SKSL_INTRINSIC(subgroupMax)            \
     SKSL_INTRINSIC(subgroupMin)            \
-    SKSL_INTRINSIC(subgroupShuffle)        \
     SKSL_INTRINSIC(subpassLoad)            \
     SKSL_INTRINSIC(tanh)                   \
     SKSL_INTRINSIC(tan)                    \
@@ -159,7 +158,6 @@ constexpr bool IsSubgroupIntrinsic(IntrinsicKind kind) {
         case k_subgroupInclusiveAdd_IntrinsicKind:
         case k_subgroupMax_IntrinsicKind:
         case k_subgroupMin_IntrinsicKind:
-        case k_subgroupShuffle_IntrinsicKind:
             return true;
         default:
             return false;
