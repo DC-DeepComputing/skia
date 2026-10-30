@@ -312,6 +312,28 @@ sk_sp<SkTypeface> FontCollection::matchTypeface(const SkString& familyName, SkFo
     return nullptr;
 }
 
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+sk_sp<SkTypeface> FontCollection::matchUserTypeface(const SkString& familyName,
+                                                    SkFontStyle fontStyle) {
+    // Same precedence as getFontManagerOrder minus the default (system) manager, without
+    // building the vector on every lookup
+    for (SkFontMgr* manager :
+         {fDynamicFontManager.get(), fAssetFontManager.get(), fTestFontManager.get()}) {
+        if (!manager) {
+            continue;
+        }
+        sk_sp<SkFontStyleSet> set(manager->matchFamily(familyName.c_str()));
+        if (!set || set->count() == 0) {
+            continue;
+        }
+        if (sk_sp<SkTypeface> match = set->matchStyle(fontStyle)) {
+            return match;
+        }
+    }
+    return nullptr;
+}
+#endif
+
 // Find ANY font in available font managers that resolves the unicode codepoint
 sk_sp<SkTypeface> FontCollection::defaultFallback(SkUnichar unicode,
                                                   const std::vector<SkString>& families,

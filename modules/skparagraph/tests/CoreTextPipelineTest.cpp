@@ -28,12 +28,26 @@
 
 using namespace skia::textlayout;
 
+namespace {
+// The expectations name Apple system faces; the portable font manager (--nonativeFonts) has
+// none of them, so such tests skip instead of measuring substitutes
+bool has_font_families(std::initializer_list<const char*> families) {
+    for (const char* family : families) {
+        if (!ToolUtils::TestFontMgr()->matchFamilyStyle(family, SkFontStyle())) {
+            return false;
+        }
+    }
+    return true;
+}
+}  // namespace
+
 #if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
 
 #include "include/core/SkFontArguments.h"
 #include "modules/skparagraph/include/ParagraphCache.h"
 #include "modules/skparagraph/include/ParagraphPainter.h"
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
+#include "modules/skparagraph/src/CoreTextFontRegistry.h"
 #include "modules/skparagraph/src/CoreTextIndexMap.h"
 #include "modules/skparagraph/src/Run.h"
 #include "src/core/SkTextBlobPriv.h"
@@ -146,6 +160,127 @@ DEF_TEST(CoreTextPipeline_IndexMap_EmojiAndSurrogatePairs, reporter) {
     for (int i = 0; i < kEmojiCount; ++i) {
         REPORTER_ASSERT(reporter, heapMap.toUtf16Index(i * 4) == static_cast<size_t>(i * 2));
         REPORTER_ASSERT(reporter, heapMap.toUtf8Index(i * 2) == static_cast<size_t>(i * 4));
+    }
+}
+
+DEF_TEST(CoreTextPipeline_FontRegistry_DescriptorCacheAndFallback, reporter) {
+    // Apple system font detection and descriptor caching
+    CoreTextFontRegistry& registry = CoreTextFontRegistry::Instance();
+
+    REPORTER_ASSERT(
+            reporter,
+            CoreTextFontRegistry::isAppleSystemFont(static_cast<const SkTypeface*>(nullptr)));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFont"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFontRounded"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFontSerif"));
+    REPORTER_ASSERT(
+            reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFontMonospaced"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont("CupertinoSystemText"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont("CupertinoSystemDisplay"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".SF NS"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("SF Pro"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("system-ui"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("-apple-system"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("CourierNewCustom"));
+
+    auto sysFont = registry.createFont(nullptr, SkFontStyle(), 18.0f);
+    REPORTER_ASSERT(reporter, sysFont != nullptr);
+    REPORTER_ASSERT(reporter, CTFontGetSize(sysFont.get()) == 18.0f);
+
+    auto tf = ToolUtils::DefaultPortableTypeface();
+    if (tf) {
+        auto desc1 = registry.getDescriptor(tf.get());
+        REPORTER_ASSERT(reporter, desc1 != nullptr);
+        auto desc2 = registry.getDescriptor(tf.get());
+        REPORTER_ASSERT(reporter, desc2 != nullptr);
+    }
+}
+
+// CupertinoSystemText and CupertinoSystemDisplay must resolve in matchSystemFamily so that a
+// non-empty fontFamilyFallback list does not skip them and land on the first fallback family
+DEF_TEST(CoreTextPipeline_AppleSystemFonts_CupertinoAliases, reporter) {
+    if (!has_font_families({"Helvetica"})) {
+        return;
+    }
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    fontCollection->enableFontFallback();
+
+    CoreTextFontRegistry& registry = CoreTextFontRegistry::Instance();
+    for (const char* alias : {"CupertinoSystemText", "CupertinoSystemDisplay"}) {
+        std::vector<SkString> families = {SkString(alias), SkString("Helvetica")};
+        auto faces = registry.findTypefaces(
+                *fontCollection, families, SkFontStyle::Normal(), std::nullopt);
+        REPORTER_ASSERT(reporter, faces.size() == 2, "alias=%s size=%zu", alias, faces.size());
+        if (faces.size() == 2) {
+            SkString firstPs;
+            faces[0]->getPostScriptName(&firstPs);
+            REPORTER_ASSERT(reporter,
+                            firstPs.startsWith(".AppleSystemUIFont") || firstPs.startsWith(".SF"),
+                            "alias=%s resolved to %s",
+                            alias,
+                            firstPs.c_str());
+            SkString secondPs;
+            faces[1]->getPostScriptName(&secondPs);
+            REPORTER_ASSERT(reporter, secondPs.equals("Helvetica"));
+        }
+    }
+}
+
+// .AppleSystemUIFont{Rounded,Serif,Monospaced} select their UI design variants across both
+// typeface matching and size-dependent CTFont instantiation (including bold weight traits)
+DEF_TEST(CoreTextPipeline_AppleSystemFonts_DesignSuffixes, reporter) {
+    if (!has_font_families({"Helvetica"})) {
+        return;
+    }
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    fontCollection->enableFontFallback();
+
+    CoreTextFontRegistry& registry = CoreTextFontRegistry::Instance();
+    const struct {
+        const char* fFamily;
+        const char* fExpectedRegularPs;
+        const char* fExpectedBoldPs;
+    } cases[] = {
+            {".AppleSystemUIFontRounded", "Rounded-Regular", "Rounded-Bold"},
+            {".AppleSystemUIFontSerif", "NewYork-Regular", "NewYork-Bold"},
+            {".AppleSystemUIFontMonospaced", "Monospaced-Regular", "Monospaced-Bold"},
+    };
+
+    for (const auto& c : cases) {
+        std::vector<SkString> families = {SkString(c.fFamily), SkString("Helvetica")};
+        auto regFaces = registry.findTypefaces(
+                *fontCollection, families, SkFontStyle::Normal(), std::nullopt);
+        auto boldFaces = registry.findTypefaces(
+                *fontCollection, families, SkFontStyle::Bold(), std::nullopt);
+        REPORTER_ASSERT(reporter, regFaces.size() == 2 && boldFaces.size() == 2);
+        if (regFaces.size() != 2 || boldFaces.size() != 2) {
+            continue;
+        }
+        SkString regPs;
+        regFaces[0]->getPostScriptName(&regPs);
+        REPORTER_ASSERT(reporter,
+                        regPs.contains(c.fExpectedRegularPs),
+                        "family=%s got=%s",
+                        c.fFamily,
+                        regPs.c_str());
+
+        SkUniqueCFRef<CTFontRef> ctBold =
+                registry.createFont(boldFaces[0].get(), SkFontStyle::Bold(), 24.0f);
+        REPORTER_ASSERT(reporter, ctBold != nullptr);
+        if (ctBold) {
+            SkUniqueCFRef<CFStringRef> cfPs(CTFontCopyPostScriptName(ctBold.get()));
+            char buf[256] = {};
+            if (cfPs) {
+                CFStringGetCString(cfPs.get(), buf, sizeof(buf), kCFStringEncodingUTF8);
+            }
+            REPORTER_ASSERT(reporter,
+                            strstr(buf, c.fExpectedBoldPs) != nullptr,
+                            "family=%s ctBold=%s",
+                            c.fFamily,
+                            buf);
+        }
     }
 }
 
