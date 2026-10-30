@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0776af61_552673ca",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 17789
+      },
+      "writtenOn": "2026-10-30T14:09:48Z",
+      "side": 1,
+      "message": "Question for reviewers: should this pre-allocation drain only record OOM?\n\nAs written, any non-OOM error found here sets the sticky backend error flag (see getErrorAndCheckForOOM()). But an error drained *before* the allocation can\u0027t have come from the allocation. It is left over from an earlier GL call: either a client\u0027s raw GL on this context, or a Skia draw whose error we didn\u0027t check because command checks are off.\n\nOptions:\n1. Keep as is: record everything. Fails closed, but a stale error can fail an unrelated write.\n2. Record only OOM here (OOM still sets oomed()); only the post-call check records non-OOM errors. Errors are attributed to the operation that caused them. Non-OOM errors from earlier unchecked draws get dropped, which matches clients having turned command checks off.\n\nI lean toward 2. Thoughts?",
+      "revId": "31b8992e98aa92a8fa22e9170b72d7a707dcf6f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
