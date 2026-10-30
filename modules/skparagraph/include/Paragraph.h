@@ -271,6 +271,15 @@ public:
      */
     virtual std::vector<FontInfo> getFonts() const = 0;
 
+    /** Paints only the given range of laid-out lines, at the coordinates
+     *  they have within the whole paragraph. The range is clamped to the
+     *  existing lines without overflowing firstLine + lineCount.
+     */
+    virtual void paintLines(SkCanvas* /*canvas*/, SkScalar /*x*/, SkScalar /*y*/,
+                            size_t /*firstLine*/, size_t /*lineCount*/) {}
+    virtual void paintLines(ParagraphPainter* /*painter*/, SkScalar /*x*/, SkScalar /*y*/,
+                            size_t /*firstLine*/, size_t /*lineCount*/) {}
+
 protected:
     sk_sp<FontCollection> fFontCollection;
     ParagraphStyle fParagraphStyle;
