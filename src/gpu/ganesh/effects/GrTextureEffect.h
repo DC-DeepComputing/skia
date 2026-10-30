@@ -6,6 +6,8 @@
  */
 
 #ifndef GrTextureEffect_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrTextureEffect_DEFINED
 
 #include "include/core/SkMatrix.h"
@@ -66,7 +68,7 @@ public:
     static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView, SkAlphaType,
                                                      const SkMatrix&, GrSamplerState,
                                                      const GrCaps& caps,
-                                                     const float border[4] = kDefaultBorder);
+                                                     SkSpan<const float, 4> border = kDefaultBorder);
 
     /**
      * Makes a texture effect that samples a subset of a texture. The wrap modes of the
@@ -86,7 +88,7 @@ public:
                                                            GrSamplerState,
                                                            const SkRect& subset,
                                                            const GrCaps& caps,
-                                                           const float border[4] = kDefaultBorder,
+                                                           SkSpan<const float, 4> border = kDefaultBorder,
                                                            bool alwaysUseShaderTileMode = false);
 
     /**
@@ -102,7 +104,7 @@ public:
                                                            const SkRect& subset,
                                                            const SkRect& domain,
                                                            const GrCaps& caps,
-                                                           const float border[4] = kDefaultBorder);
+                                                           SkSpan<const float, 4> border = kDefaultBorder);
 
     /**
      * Like MakeSubset() but always uses kLinear filtering. MakeSubset() uses the subset rect
@@ -124,7 +126,7 @@ public:
             const SkRect* domain,
             SkVector inset,
             const GrCaps& caps,
-            const float border[4] = kDefaultBorder);
+            SkSpan<const float, 4> border = kDefaultBorder);
 
     std::unique_ptr<GrFragmentProcessor> clone() const override;
 

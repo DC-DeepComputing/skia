@@ -85,7 +85,7 @@ DEF_SIMPLE_GM(blurcircles_xform, canvas, 1280, 1020) {
     static constexpr std::array<float, 3> kSigmas = {1.f, 2.5f, 5.f};
     static constexpr float kSectionHeight = kLabelHeight + kSigmas.size() * kCellSize;
 
-    const SkMatrix matrices[] = {
+    const auto matrices = std::to_array<SkMatrix>({
         SkMatrix(),
         SkMatrix::Scale(2.f, 2.f),
         SkMatrix::RotateDeg(30.f),
@@ -96,15 +96,15 @@ DEF_SIMPLE_GM(blurcircles_xform, canvas, 1280, 1020) {
         // look the same as Scale(3, 1).
         SkMatrix::Scale(3.f, 1.f) * SkMatrix::RotateDeg(30.f),
         SkMatrix::Skew(1.f, 0.f),
-    };
+    });
 
-    static constexpr struct {
+    struct Sections{
         bool fRespectCTM;
         const char* fLabel;
-    } kSections[] = {
+    }; static constexpr auto kSections = std::to_array<Sections>({
         {true,  "respectCTM = true"},
         {false, "respectCTM = false"},
-    };
+    });
 
     SkFont font = ToolUtils::DefaultPortableFont();
     font.setSize(16.f);

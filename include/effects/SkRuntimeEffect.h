@@ -222,7 +222,7 @@ public:
 
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<const SkData> uniforms) const;
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<const SkData> uniforms,
-                                         sk_sp<SkColorFilter> children[],
+                                         SkSpan<sk_sp<SkColorFilter>> children,
                                          size_t childCount) const;
     sk_sp<SkColorFilter> makeColorFilter(sk_sp<const SkData> uniforms,
                                          SkSpan<const ChildPtr> children) const;

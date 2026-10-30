@@ -8,6 +8,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
 #include "src/core/SkRandom.h"
@@ -103,7 +104,7 @@ public:
     }
 
     // Construct a random kWordLength character 'word' drawing from the full Chinese set
-    void createRandomWord(SkUnichar glyphs[kWordLength]) {
+    void createRandomWord(SkSpan<SkUnichar, kWordLength> glyphs) {
         for (int i = 0; i < kWordLength; ++i) {
             glyphs[i] = fRand.nextRangeU(0x4F00, 0x9FA0);
         }
@@ -219,7 +220,7 @@ public:
     }
 
     // Construct a random kWordLength character 'word' drawing from the full Chinese set
-    void createRandomLine(SkUnichar glyphs[45], int lineLength) {
+    void createRandomLine(SkSpan<SkUnichar, 45> glyphs, int lineLength) {
         for (auto i = 0; i < lineLength; ++i) {
             glyphs[i] = fRand.nextRangeU(0x4F00, 0x9FA0);
         }
@@ -337,7 +338,7 @@ public:
 
     // Construct a random lineLength character 'word' drawing from the full Chinese set
     // but not using glyphs in usedGlyphs.
-    void createRandomLine(SkUnichar glyphs[], int lineLength, auto& usedGlyphs) {
+    void createRandomLine(SkSpan<SkUnichar> glyphs, int lineLength, auto& usedGlyphs) {
         for (auto i = 0; i < lineLength; ++i) {
             do {
                 glyphs[i] = fRand.nextRangeU(0x4F00, 0x9FA0);

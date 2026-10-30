@@ -9,6 +9,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkYUVAInfoLocation.h"
 
@@ -84,7 +85,7 @@ SkYUVAInfo::YUVALocations GrYUVABackendTextureInfo::toYUVALocations() const {
 
 GrYUVABackendTextures::GrYUVABackendTextures(
         const SkYUVAInfo& yuvaInfo,
-        const GrBackendTexture textures[SkYUVAInfo::kMaxPlanes],
+        SkSpan<const GrBackendTexture, SkYUVAInfo::kMaxPlanes> textures,
         GrSurfaceOrigin textureOrigin)
         : fYUVAInfo(yuvaInfo), fTextureOrigin(textureOrigin) {
     if (!fYUVAInfo.isValid()) {

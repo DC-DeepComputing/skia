@@ -218,7 +218,7 @@ private:
     SkDiscardableHandleId fNextHandleId = 0u;
     SkDiscardableHandleId fLastDeletedHandleId = 0u;
     THashSet<SkDiscardableHandleId> fLockedHandles;
-    int fCacheMissCount[SkStrikeClient::CacheMissType::kLast + 1u];
+    std::array<int, SkStrikeClient::CacheMissType::kLast + 1u> fCacheMissCount;
 };
 
 class DiffCanvasBench : public Benchmark {

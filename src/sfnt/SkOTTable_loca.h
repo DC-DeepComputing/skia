@@ -6,6 +6,8 @@
  */
 
 #ifndef SkOTTable_loca_DEFINED
+#include <array>
+
 #define SkOTTable_loca_DEFINED
 
 #include "src/core/SkEndian.h"
@@ -21,8 +23,8 @@ struct SkOTTableIndexToLocation {
     static const SK_OT_ULONG TAG = SkOTTableTAG<SkOTTableIndexToLocation>::value;
 
     union Offsets {
-        SK_OT_USHORT shortOffset[1];
-        SK_OT_ULONG longOffset[1];
+        std::array<SK_OT_USHORT, 1> shortOffset;
+        std::array<SK_OT_ULONG, 1> longOffset;
     } offsets;
 };
 

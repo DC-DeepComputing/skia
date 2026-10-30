@@ -1,4 +1,6 @@
 /*
+#include "include/core/SkSpan.h"
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -32,7 +34,7 @@ static constexpr auto gPathIterNames = std::to_array<const char*>({
         "pathiter",
 });
 
-static int rand_pts(SkRandom& rand, SkPoint pts[4]) {
+static int rand_pts(SkRandom& rand, SkSpan<SkPoint, 4> pts) {
     int n = rand.nextU() & 3;
     n += 1;
 

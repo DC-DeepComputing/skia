@@ -13,6 +13,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
@@ -73,18 +74,18 @@ protected:
         }
 
         struct Polygons {
-            const SkPoint* fPoints;
+            SkSpan<const SkPoint>fPoints;
             size_t fPointNum;
         };
         auto pgs = std::to_array<Polygons>({
-                Polygons{p0.data(), std::size(p0)},
-                Polygons{p1.data(), std::size(p1)},
-                Polygons{p2.data(), std::size(p2)},
-                Polygons{p3.data(), std::size(p3)},
-                Polygons{p4.data(), std::size(p4)},
-                Polygons{p5.data(), std::size(p5)},
-                Polygons{p6.data(), std::size(p6)},
-                Polygons{p7.data(), std::size(p7)}
+                Polygons{p0, std::size(p0)},
+                Polygons{p1, std::size(p1)},
+                Polygons{p2, std::size(p2)},
+                Polygons{p3, std::size(p3)},
+                Polygons{p4, std::size(p4)},
+                Polygons{p5, std::size(p5)},
+                Polygons{p6, std::size(p6)},
+                Polygons{p7, std::size(p7)}
         });
 
         SkASSERT(std::size(pgs) == kNumPolygons);

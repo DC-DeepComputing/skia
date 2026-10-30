@@ -7,6 +7,8 @@
 
 
 #ifndef SkQuadClipper_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkQuadClipper_DEFINED
 
 #include "include/core/SkPath.h"
@@ -27,7 +29,7 @@ public:
 
     void setClip(const SkIRect& clip);
 
-    bool clipQuad(const SkPoint src[3], SkPoint dst[3]);
+    bool clipQuad(SkSpan<const SkPoint, 3> src, SkPoint dst[3]);
 
 private:
     SkRect      fClip;

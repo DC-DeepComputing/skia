@@ -11,6 +11,7 @@
 #include <iterator>
 #include <memory>
 
+#include <array>
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkStream.h"
@@ -527,17 +528,17 @@ DEF_TEST(Skottie_Shaper_ZeroGlyphRuns, r) {
         return;
     }
 
-    static constexpr struct {
+    struct Tests{
         size_t      glyphs,
                     missing;
         const char* text;
-    } kTests[] = {
+    }; static constexpr auto kTests = std::to_array<Tests>({
         {  0,  0, "\u200e"                          },
         {  0,  0, "\u200e\u2068"                    },
         {  3,  0, "\u2068abc"                       },
         { 13, 13, "أنت \u200e\u2068@wren\u2069 هنا" },
         {  5,  1, "\u200e\u2068abc\u2069 a"         },
-    };
+    });
 
     for (const auto flags : {Shaper::kNone, Shaper::kFragmentGlyphs}) {
         const Shaper::TextDesc desc = {

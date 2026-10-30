@@ -19,6 +19,7 @@
  * See crbug.com/589769 skbug.com/40036571 skbug.com/40036572
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -226,10 +227,10 @@ void draw_stroked_oval(SkCanvas *canvas) {
 
 ////////// gm
 
-void (*examples[])(SkCanvas *canvas) = {
+auto examples = std::to_array<void (*)(SkCanvas *)>({
     draw_small_quad,    draw_stroked_quad, draw_small_cubic,
     draw_stroked_cubic, draw_small_oval,   draw_stroked_oval,
-};
+});
 
 DEF_SIMPLE_GM(OverStroke, canvas, 500, 500) {
     const size_t length = sizeof(examples) / sizeof(examples[0]);

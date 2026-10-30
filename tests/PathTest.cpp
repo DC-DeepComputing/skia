@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <utility>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -24,6 +25,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkSurface.h"
@@ -1180,7 +1182,7 @@ static void test_bounds(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, path0.getBounds() == path1.getBounds());
 }
 
-static void stroke_cubic(const SkPoint pts[4]) {
+static void stroke_cubic(SkSpan<const SkPoint, 4> pts) {
     SkPath path = SkPathBuilder()
                   .moveTo(pts[0])
                   .cubicTo(pts[1], pts[2], pts[3])
@@ -1637,12 +1639,12 @@ static void test_convexity(skiatest::Reporter* reporter) {
         check_direction(reporter, path, gRec[i].fExpectedDirection);
     }
 
-    static const SkPoint axisAlignedPts[] = {
+    static const auto axisAlignedPts = std::to_array<SkPoint>({
         { SK_ScalarMax, 0 },
         { 0, SK_ScalarMax },
         { SK_ScalarMin, 0 },
         { 0, SK_ScalarMin },
-    };
+    });
 
     const size_t axisAlignedPtsCount = sizeof(axisAlignedPts) / sizeof(axisAlignedPts[0]);
 
@@ -1675,10 +1677,10 @@ static void test_convexity(skiatest::Reporter* reporter) {
         }
     }
 
-    static const SkPoint diagonalPts[] = {
+    static const auto diagonalPts = std::to_array<SkPoint>({
         { SK_ScalarMax, SK_ScalarMax },
         { SK_ScalarMin, SK_ScalarMin },
-    };
+    });
 
     const size_t diagonalPtsCount = sizeof(diagonalPts) / sizeof(diagonalPts[0]);
 
@@ -2888,7 +2890,7 @@ static void test_zero_length_paths(skiatest::Reporter* reporter) {
         const char* testPath;
         const size_t numResultPts;
         const SkRect resultBound;
-        const SkPath::Verb* resultVerbs;
+        SkSpan<const SkPath::Verb>resultVerbs;
         const size_t numResultVerbs;
     };
 
@@ -3087,9 +3089,9 @@ static void test_iter(skiatest::Reporter* reporter) {
     struct iterTestData {
         const char* testPath;
         const bool forceClose;
-        const size_t* numResultPtsPerVerb;
-        const SkPoint* resultPts;
-        const SkPath::Verb* resultVerbs;
+        SkSpan<const size_t>numResultPtsPerVerb;
+        SkSpan<const SkPoint>resultPts;
+        SkSpan<const SkPath::Verb>resultVerbs;
         const size_t numResultVerbs;
     };
 
@@ -3103,7 +3105,7 @@ static void test_iter(skiatest::Reporter* reporter) {
     static const size_t resultPtsSizes1[] = { 0 };
     static const size_t resultPtsSizes2[] = { 1, 2, 1, 1, 0 };
     static const size_t resultPtsSizes3[] = { 1, 2, 1, 1, 1, 0 };
-    static const SkPoint* resultPts1 = nullptr;
+    SkSpan<const SkPoint>resultPts1 = {};
     static const SkPoint resultPts2[] = {
         { SK_Scalar1, 0 }, { SK_Scalar1, 0 }, { SK_Scalar1, 0 }, { 0, 0 }, { 0, 0 }
     };
@@ -5006,7 +5008,7 @@ DEF_TEST(ClipPath_nonfinite, reporter) {
 
 // skbug.com/40039046
 DEF_TEST(Path_isRect, reporter) {
-    auto makePath = [](const SkPoint* points, size_t count, bool close) -> SkPath {
+    auto makePath = [](SkSpan<const SkPoint>points, size_t count, bool close) -> SkPath {
         SkPathBuilder builder;
         for (size_t index = 0; index < count; ++index) {
             index < 2 ? builder.moveTo(points[index]) : builder.lineTo(points[index]);
@@ -5016,15 +5018,15 @@ DEF_TEST(Path_isRect, reporter) {
         }
         return builder.detach();
     };
-    auto makePath2 = [](const SkPoint* points, const SkPath::Verb* verbs, size_t count) -> SkPath {
+    auto makePath2 = [](SkSpan<const SkPoint>points, SkSpan<const SkPath::Verb>verbs, size_t count) -> SkPath {
         SkPathBuilder builder;
         for (size_t index = 0; index < count; ++index) {
             switch (verbs[index]) {
                 case SkPath::kMove_Verb:
-                    builder.moveTo(*points++);
+                    builder.moveTo(std::exchange(points, points.subspan(1u))[0]);
                     break;
                 case SkPath::kLine_Verb:
-                    builder.lineTo(*points++);
+                    builder.lineTo(std::exchange(points, points.subspan(1u))[0]);
                     break;
                 case SkPath::kClose_Verb:
                     builder.close();

@@ -18,6 +18,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/utils/SkTextUtils.h"
@@ -35,8 +36,8 @@ protected:
 
     SkISize getISize() override { return SkISize::Make(835, 840); }
 
-    static void doDraw(SkCanvas* canvas, const SkFont& font, SkPaint* paint, const int isrc[],
-                       const int idst[], size_t count) {
+    static void doDraw(SkCanvas* canvas, const SkFont& font, SkPaint* paint, SkSpan<const int> isrc,
+                       SkSpan<const int> idst, size_t count) {
         SkPoint src[4], dst[4];
 
         for (size_t i = 0; i < count; i++) {

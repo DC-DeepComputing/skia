@@ -1,10 +1,12 @@
+#include "include/core/SkSpan.h"
+
 // Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(SmoothBezierSplineInterpolation, 1024, 1024, false, 0) {
 // Smooth Bézier Spline Interpolation
 
-SkPath MakeCubicSplineInterpolation(const SkPoint* pts, size_t N) {
+SkPath MakeCubicSplineInterpolation(SkSpan<const SkPoint>pts, size_t N) {
     // Code borrowed from https://www.particleincell.com/2012/bezier-splines/
 
     SkPathBuilder path;

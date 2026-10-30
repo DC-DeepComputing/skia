@@ -7,6 +7,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 #include "src/gpu/ganesh/geometry/GrQuadBuffer.h"
@@ -44,7 +45,7 @@ static void assert_metadata_eq(skiatest::Reporter* r, const TestData& expected,
             expected.fItem1, expected.fItem2, actual.fItem1, actual.fItem2);
 }
 
-static std::vector<GrQuad> generate_quads(float seed, int cnt, const GrQuad::Type types[]) {
+static std::vector<GrQuad> generate_quads(float seed, int cnt, SkSpan<const GrQuad::Type> types) {
     // For convenience use matrix to derive each quad type, rely on different seed values to
     // differentiate between quads of the same type
     SkMatrix rotate;

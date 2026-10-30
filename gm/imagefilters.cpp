@@ -20,6 +20,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkColorMatrix.h"
@@ -130,7 +131,7 @@ DEF_SIMPLE_GM(fast_slow_blurimagefilter, canvas, 620, 260) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void draw_set(SkCanvas* canvas, sk_sp<SkImageFilter> filters[], int count) {
+static void draw_set(SkCanvas* canvas, SkSpan<sk_sp<SkImageFilter>> filters, int count) {
     const SkRect r = SkRect::MakeXYWH(30, 30, 200, 200);
     const SkScalar offset = 250;
     SkScalar dx = 0, dy = 0;

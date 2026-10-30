@@ -28,6 +28,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -216,7 +217,7 @@ public:
 
     SkYUVAPixmaps makeYUVAPixmaps(SkISize dimensions,
                                   SkYUVColorSpace yuvColorSpace,
-                                  const SkBitmap bitmaps[],
+                                  SkSpan<const SkBitmap> bitmaps,
                                   int numBitmaps) const;
 
 private:
@@ -227,7 +228,7 @@ private:
 
 SkYUVAPixmaps YUVAPlanarConfig::makeYUVAPixmaps(SkISize dimensions,
                                                 SkYUVColorSpace yuvColorSpace,
-                                                const SkBitmap bitmaps[],
+                                                SkSpan<const SkBitmap> bitmaps,
                                                 int numBitmaps) const {
     SkYUVAInfo info(dimensions, fPlaneConfig, fSubsampling, yuvColorSpace, fOrigin);
     SkPixmap pmaps[SkYUVAInfo::kMaxPlanes];
@@ -404,7 +405,7 @@ static SkBitmap make_bitmap(SkColorType colorType, const SkPath& path,
     return bm;
 }
 
-static void convert_rgba_to_yuva(const float mtx[20], SkColor col, uint8_t yuv[4]) {
+static void convert_rgba_to_yuva(const float mtx[20], SkColor col, SkSpan<uint8_t, 4> yuv) {
     const uint8_t r = SkColorGetR(col);
     const uint8_t g = SkColorGetG(col);
     const uint8_t b = SkColorGetB(col);
@@ -574,7 +575,7 @@ static uint16_t flt_2_uint16(float flt) { return SkScalarRoundToInt(flt * 65535.
 // Recombine the separate planes into some YUV format. Returns the number of planes.
 static int create_YUV(const PlaneData& planes,
                       YUVFormat yuvFormat,
-                      SkBitmap resultBMs[],
+                      SkSpan<SkBitmap> resultBMs,
                       bool opaque) {
     int nextLayer = 0;
 

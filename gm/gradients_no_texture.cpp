@@ -15,6 +15,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
@@ -163,12 +164,12 @@ struct ColorPos {
         delete[] fPos;
     }
 
-    void construct(const SkColor colors[], const float pos[], int count) {
+    void construct(SkSpan<const SkColor> colors, SkSpan<const float> pos, int count) {
         fColors = new SkColor4f[count];
-        std::transform(colors, colors + count, fColors, SkColor4f::FromColor);
-        if (pos) {
+        std::transform(colors.data(), SkSpan<const SkColor>(colors ).subspan(SkTo<size_t>( count)).data(), fColors, SkColor4f::FromColor);
+        if (!pos.empty()) {
             fPos = new float[count];
-            std::copy(pos, pos + count, fPos);
+            std::copy(pos.data(), SkSpan<const float>(pos ).subspan(SkTo<size_t>( count)).data(), fPos);
             fPos[0] = 0;
             fPos[count - 1] = 1;
         }
@@ -210,7 +211,7 @@ height: 30px;
     for (int i = 0; i < N; ++i) {
         pos[i] = SkDoubleToScalar(percent[i] / 100);
     }
-    rec->construct(colors, pos.data(), N);
+    rec->construct(colors, pos, N);
 }
 
 static void make1(ColorPos* rec) {
@@ -219,7 +220,7 @@ static void make1(ColorPos* rec) {
         SK_ColorBLACK, SK_ColorWHITE, SK_ColorBLACK, SK_ColorWHITE,
         SK_ColorBLACK,
     };
-    rec->construct(colors, nullptr, std::size(colors));
+    rec->construct(colors, {}, std::size(colors));
 }
 
 static void make2(ColorPos* rec) {
@@ -233,7 +234,7 @@ static void make2(ColorPos* rec) {
     for (int i = 0; i < N; ++i) {
         pos[i] = SK_Scalar1 * i / (N - 1);
     }
-    rec->construct(colors, pos.data(), N);
+    rec->construct(colors, pos, N);
 }
 
 static void make3(ColorPos* rec) {

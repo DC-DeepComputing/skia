@@ -1,9 +1,11 @@
+#include "include/core/SkSpan.h"
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(IPoint_addto_operator, 256, 64, false, 0) {
 void draw(SkCanvas* canvas) {
-    auto draw_lines = [=](const SkIPoint pts[], size_t count, SkPaint& paint) -> void {
+    auto draw_lines = [=](SkSpan<const SkIPoint> pts, size_t count, SkPaint& paint) -> void {
         for (size_t i = 0; i < count - 1; ++i) {
             SkPoint p0, p1;
             p0.iset(pts[i]);

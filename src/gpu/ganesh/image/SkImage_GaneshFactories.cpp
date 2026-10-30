@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 
 #include "include/core/SkAlphaType.h"
@@ -508,7 +509,7 @@ sk_sp<SkImage> TextureFromYUVATextures(GrRecordingContext* context,
         }
     }
     GrYUVATextureProxies yuvaProxies(
-            yuvaTextures.yuvaInfo(), proxies.data(), yuvaTextures.textureOrigin());
+            yuvaTextures.yuvaInfo(), proxies, yuvaTextures.textureOrigin());
 
     if (!yuvaProxies.isValid()) {
         return nullptr;
@@ -590,8 +591,8 @@ sk_sp<SkImage> TextureFromYUVAPixmaps(GrRecordingContext* context,
         }
     }
 
-    GrYUVATextureProxies yuvaProxies(pixmapsToUpload->yuvaInfo(), views.data(),
-                                     pixmapColorTypes.data());
+    GrYUVATextureProxies yuvaProxies(pixmapsToUpload->yuvaInfo(), views,
+                                     pixmapColorTypes);
     SkASSERT(yuvaProxies.isValid());
     return sk_make_sp<SkImage_GaneshYUVA>(sk_ref_sp(context),
                                           kNeedNewImageUniqueID,
@@ -604,7 +605,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
                                       sk_sp<SkColorSpace> imageColorSpace,
                                       PromiseImageTextureFulfillProc textureFulfillProc,
                                       PromiseImageTextureReleaseProc textureReleaseProc,
-                                      PromiseImageTextureContext textureContexts[]) {
+                                      SkSpan<PromiseImageTextureContext> textureContexts) {
     if (!backendTextureInfo.isValid()) {
         return nullptr;
     }
@@ -648,7 +649,7 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
         }
     }
     GrYUVATextureProxies yuvaTextureProxies(
-            backendTextureInfo.yuvaInfo(), proxies.data(), backendTextureInfo.textureOrigin());
+            backendTextureInfo.yuvaInfo(), proxies, backendTextureInfo.textureOrigin());
     SkASSERT(yuvaTextureProxies.isValid());
     sk_sp<GrImageContext> ctx(GrImageContextPriv::MakeForPromiseImage(std::move(threadSafeProxy)));
     return sk_make_sp<SkImage_GaneshYUVA>(std::move(ctx),

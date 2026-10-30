@@ -7,7 +7,9 @@
 
 /* migrated from chrome/src/skia/ext/SkFontHost_fontconfig_direct.cpp */
 
+#include <array>
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
@@ -213,7 +215,7 @@ FontEquivClass GetFontEquivClass(const char* fontname)
         const char name[40];
     };
 
-    static const FontEquivMap kFontEquivMap[] = {
+    static const auto kFontEquivMap = std::to_array<FontEquivMap>({
         { SANS, "Arial" },
         { SANS, "Arimo" },
         { SANS, "Liberation Sans" },
@@ -312,7 +314,7 @@ FontEquivClass GetFontEquivClass(const char* fontname)
         // Calibri
         { CALIBRI, "Calibri" },
         { CALIBRI, "Carlito" },
-    };
+    });
 
     static const size_t kFontCount =
         sizeof(kFontEquivMap)/sizeof(kFontEquivMap[0]);
@@ -372,7 +374,7 @@ struct MapRanges {
     SkScalar new_val;
 };
 
-static SkScalar map_ranges(SkScalar val, MapRanges const ranges[], int rangesCount) {
+static SkScalar map_ranges(SkScalar val, SkSpan<const MapRanges> ranges, int rangesCount) {
     // -Inf to [0]
     if (val < ranges[0].old_val) {
         return ranges[0].new_val;

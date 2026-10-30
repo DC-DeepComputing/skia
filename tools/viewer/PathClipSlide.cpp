@@ -11,6 +11,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/effects/SkGradient.h"
 #include "include/private/SkTo.h"
@@ -168,7 +169,7 @@ public:
     static SkPoint snap(const SkPoint& pt) {
         return SkPoint::Make(snap(pt.x()), snap(pt.y()));
     }
-    static void snap(SkPoint dst[], const SkPoint src[], int count) {
+    static void snap(SkSpan<SkPoint> dst, SkSpan<const SkPoint> src, int count) {
         for (int i = 0; i < count; ++i) {
             dst[i] = snap(src[i]);
         }
@@ -241,13 +242,13 @@ public:
 
     class DragPolyClick : public MyClick {
         std::array<SkPoint, 100> fSrc;
-        SkPoint* fPoly;
+        SkSpan<SkPoint>fPoly;
         int fCount;
     public:
-        DragPolyClick(SkPoint poly[], int count) : fPoly(poly), fCount(count)
+        DragPolyClick(SkSpan<SkPoint> poly, int count) : fPoly(poly), fCount(count)
         {
             SkASSERT((size_t)count <= std::size(fSrc));
-            memcpy(fSrc.data(), poly, count * sizeof(SkPoint));
+            memcpy(fSrc.data(), poly.data(), count * sizeof(SkPoint));
         }
         void handleMove() override {
             const SkScalar dx = fCurr.x() - fOrig.x();
@@ -281,7 +282,7 @@ protected:
 
         SkPath path = SkPath::Polygon(fPoly, true);
         if (path.contains(x, y)) {
-            return new DragPolyClick(fPoly.data(), N);
+            return new DragPolyClick(fPoly, N);
         }
 
         if (fClip.intersects(SkRect::MakeLTRB(x - 1, y - 1, x + 1, y + 1))) {

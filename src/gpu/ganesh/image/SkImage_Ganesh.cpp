@@ -12,6 +12,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -445,7 +446,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::asView(
 std::unique_ptr<GrFragmentProcessor> SkImage_Ganesh::asFragmentProcessor(
         skgpu::ganesh::SurfaceDrawContext* sdc,
         SkSamplingOptions sampling,
-        const SkTileMode tileModes[2],
+        SkSpan<const SkTileMode, 2> tileModes,
         const SkMatrix& m,
         const SkRect* subset,
         const SkRect* domain) const {

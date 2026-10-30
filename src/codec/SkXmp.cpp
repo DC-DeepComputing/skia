@@ -10,6 +10,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkGainmapInfo.h"
 #include "include/utils/SkParse.h"
@@ -302,7 +303,7 @@ static void find_uri_namespaces(const SkDOM& dom,
 static const SkDOM::Node* find_uri_namespaces(const SkDOM& dom,
                                               size_t count,
                                               const char* uris[],
-                                              const char* outNamespaces[]) {
+                                              SkSpan<const char *> outNamespaces) {
     const SkDOM::Node* root = dom.getRootNode();
     if (!root) {
         return nullptr;
@@ -365,7 +366,7 @@ public:
 private:
     bool findUriNamespaces(size_t count,
                            const char* uris[],
-                           const char* outNamespaces[],
+                           SkSpan<const char *> outNamespaces,
                            const SkDOM** outDom,
                            const SkDOM::Node** outNode) const;
 
@@ -387,7 +388,7 @@ const char* SkXmpImpl::getExtendedXmpGuid() const {
 
 bool SkXmpImpl::findUriNamespaces(size_t count,
                                   const char* uris[],
-                                  const char* outNamespaces[],
+                                  SkSpan<const char *> outNamespaces,
                                   const SkDOM** outDom,
                                   const SkDOM::Node** outNode) const {
     // See XMP Specification Part 3: Storage in files, Section 1.1.3.1: Extended XMP in JPEG:
