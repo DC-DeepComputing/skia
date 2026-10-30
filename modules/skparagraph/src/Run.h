@@ -121,7 +121,9 @@ public:
         return SkRect::MakeXYWH(fOffset.fX, fOffset.fY, fAdvance.fX, fAdvance.fY);
     }
 
-    bool isCursiveScript() const;
+    bool isCursiveScript() const { return IsCursiveScript(fScript); }
+    // Joining scripts that letter spacing would break apart, shared by both shaping engines
+    static bool IsCursiveScript(SkFourByteTag script);
 
     void addSpacesAtTheEnd(SkScalar space, Cluster* cluster);
     SkScalar addLetterSpacesEvenly(SkScalar space, Cluster* cluster);
