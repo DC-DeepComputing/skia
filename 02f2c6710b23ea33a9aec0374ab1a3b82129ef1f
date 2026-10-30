@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3d41496_88daa153",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-30T07:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5175cf35_a72dcad9",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 6
+      },
+      "revId": "02f2c6710b23ea33a9aec0374ab1a3b82129ef1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05d596b3_81706b60",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-29T14:47:21Z",
       "side": 1,
       "message": "Can we use pixelIdx here instead?\n\n```\nfloat pixelIdx \u003d floor(clamp(tiled.x, insetClamp.x, insetClamp.z));\nbool odd \u003d mod(pixelIdx, 2.0) \u003e 0.5;\nfloat2 texelCenter \u003d float2(floor(pixelIdx * 0.5) + 0.5,\n                            clamp(floor(tiled.y) + 0.5, insetClamp.y, insetClamp.w));\n```",
+      "range": {
+        "startLine": 582,
+        "startChar": 4,
+        "endLine": 586,
+        "endChar": 76
+      },
+      "revId": "02f2c6710b23ea33a9aec0374ab1a3b82129ef1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b69b4e19_8f3bd0e3",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 5227296
+      },
+      "writtenOn": "2026-10-30T07:23:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05d596b3_81706b60",
       "range": {
         "startLine": 582,
         "startChar": 4,
