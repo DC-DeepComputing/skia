@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e905d3b4_7c30f0c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5250830
+      },
+      "writtenOn": "2026-10-30T09:03:24Z",
+      "side": 1,
+      "message": "It should be now fixed, I uploaded a patch",
+      "revId": "11d7fba59d8c98bf13b3dcc22da7497866fe530a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
