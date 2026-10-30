@@ -6,6 +6,8 @@
  */
 
 #ifndef GrSamplerState_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrSamplerState_DEFINED
 
 #include "include/core/SkSamplingOptions.h"
@@ -47,7 +49,7 @@ public:
                              MipmapMode mm = MipmapMode::kNone)
             : fWrapModes{wrapX, wrapY}, fFilter(filter), fMipmapMode(mm) {}
 
-    constexpr GrSamplerState(const WrapMode wrapModes[2],
+    constexpr GrSamplerState(SkSpan<const WrapMode, 2> wrapModes,
                              Filter filter,
                              MipmapMode mm = MipmapMode::kNone)
             : fWrapModes{wrapModes[0], wrapModes[1]}, fFilter(filter), fMipmapMode(mm) {}

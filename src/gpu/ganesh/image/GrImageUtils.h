@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef GrImageUtils_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrImageUtils_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -99,7 +101,7 @@ GrColorType ColorTypeOfLockTextureProxy(const GrCaps*, SkColorType);
 std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(SurfaceDrawContext*,
                                                          const SkImage*,
                                                          SkSamplingOptions,
-                                                         const SkTileMode[2],
+                                                         SkSpan<const SkTileMode, 2>,
                                                          const SkMatrix&,
                                                          const SkRect* subset = nullptr,
                                                          const SkRect* domain = nullptr);
@@ -107,7 +109,7 @@ std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(SurfaceDrawContext*,
 inline std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(SurfaceDrawContext* sdc,
                                                                 const sk_sp<const SkImage>& img,
                                                                 SkSamplingOptions opt,
-                                                                const SkTileMode tm[2],
+                                                                SkSpan<const SkTileMode, 2> tm,
                                                                 const SkMatrix& m,
                                                                 const SkRect* subset = nullptr,
                                                                 const SkRect* domain = nullptr) {
@@ -118,7 +120,7 @@ std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(GrRecordingCo
                                                                    GrSurfaceProxyView,
                                                                    SkAlphaType,
                                                                    SkSamplingOptions,
-                                                                   const SkTileMode[2],
+                                                                   SkSpan<const SkTileMode, 2>,
                                                                    const SkMatrix&,
                                                                    const SkRect* subset,
                                                                    const SkRect* domain);

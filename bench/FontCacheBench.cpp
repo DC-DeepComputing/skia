@@ -10,6 +10,7 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkChecksum.h"
@@ -95,7 +96,7 @@ static int count_collisions(const uint16_t array[], int count, HasherProc proc,
     return collisions;
 }
 
-static void dump_array(const uint16_t array[], int count) {
+static void dump_array(SkSpan<const uint16_t> array, int count) {
     for (int i = 0; i < count; ++i) {
         SkDebugf(" %d,", array[i]);
     }
@@ -105,7 +106,7 @@ static void dump_array(const uint16_t array[], int count) {
 class FontCacheEfficiency : public Benchmark {
 public:
     FontCacheEfficiency()  {
-        if ((false)) dump_array(nullptr, 0);
+        if ((false)) dump_array({}, 0);
         if ((false)) rotr(0, 0);
     }
 

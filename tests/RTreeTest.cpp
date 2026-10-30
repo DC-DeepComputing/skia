@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkRect.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkRTree.h"
@@ -34,7 +35,7 @@ static SkRect random_rect(SkRandom& rand) {
     return rect;
 }
 
-static bool verify_query(SkRect query, SkRect rects[], const std::vector<int>& found) {
+static bool verify_query(SkRect query, SkSpan<SkRect> rects, const std::vector<int>& found) {
     std::vector<int> expected;
     // manually intersect with every rectangle
     for (int i = 0; i < NUM_RECTS; ++i) {
@@ -52,7 +53,7 @@ static bool verify_query(SkRect query, SkRect rects[], const std::vector<int>& f
     return found == expected;
 }
 
-static void run_queries(skiatest::Reporter* reporter, SkRandom& rand, SkRect rects[],
+static void run_queries(skiatest::Reporter* reporter, SkRandom& rand, SkSpan<SkRect> rects,
                         const SkRTree& tree) {
     for (size_t i = 0; i < NUM_QUERIES; ++i) {
         std::vector<int> hits;
@@ -91,7 +92,7 @@ DEF_TEST(RTree, reporter) {
 
         rtree.insert(rects.data(), NUM_RECTS);
 
-        run_queries(reporter, rand, rects.data(), rtree);
+        run_queries(reporter, rand, rects, rtree);
         REPORTER_ASSERT(reporter, NUM_RECTS == rtree.getCount());
         REPORTER_ASSERT(reporter, expectedDepthMin <= rtree.getDepth() &&
                                   expectedDepthMax >= rtree.getDepth());

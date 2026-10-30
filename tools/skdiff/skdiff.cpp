@@ -7,6 +7,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkColorPriv.h"
 #include "tools/skdiff/skdiff.h"
@@ -97,7 +98,7 @@ bool DiffResource::isStatusFailed(DiffResource::Status status) {
            DiffResource::kUnknown_Status == status;
 }
 
-bool DiffResource::getMatchingStatuses(char* selector, bool statuses[kStatusCount]) {
+bool DiffResource::getMatchingStatuses(char* selector, SkSpan<bool, kStatusCount> statuses) {
     if (!strcmp(selector, "any")) {
         for (int statusIndex = 0; statusIndex < kStatusCount; ++statusIndex) {
             statuses[statusIndex] = true;

@@ -1,3 +1,5 @@
+#include "include/core/SkSpan.h"
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -10,7 +12,7 @@ void draw(SkCanvas* canvas) {
                       {3, 7, 1}, {8, 6, 2}, {5, 4, 4}, {0, 5, 3}};
     static constexpr auto lines = std::to_array<int>(
             {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7});
-    auto debugster = [=](SkPoint3 src[]) -> void {
+    auto debugster = [=](SkSpan<SkPoint3> src) -> void {
     for (size_t i = 0; i < std::size(lines); i += 2) {
         const SkPoint3& s = src[lines[i]];
         const SkPoint3& e = src[lines[i + 1]];

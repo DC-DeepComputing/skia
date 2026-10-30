@@ -9,6 +9,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkEncoder.h"
 #include "include/encode/SkJpegEncoder.h"
@@ -347,7 +348,7 @@ static size_t mp_segment_offset(const SkData* image) {
     return segments.back().offset;
 }
 
-bool SkJpegGainmapEncoder::MakeMPF(SkWStream* dst, const SkData** images, size_t imageCount) {
+bool SkJpegGainmapEncoder::MakeMPF(SkWStream* dst, SkSpan<const SkData *>images, size_t imageCount) {
     if (imageCount < 1) {
         return true;
     }

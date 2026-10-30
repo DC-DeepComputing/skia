@@ -8,6 +8,7 @@
 #include "include/core/SkStrikeRef.h"
 
 #include "include/core/SkRect.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkGlyph.h"
@@ -72,9 +73,9 @@ void SkStrikeRef::getWidthsBounds(SkSpan<const SkGlyphID> glyphs,
 }
 
 void SkStrikeRef::getWidthsStrided(unsigned count,
-                                   const uint32_t* first_glyph,
+                                   SkSpan<const uint32_t>first_glyph,
                                    unsigned glyph_stride_32,
-                                   SkScalar* first_advance,
+                                   SkSpan<SkScalar>first_advance,
                                    unsigned advance_stride_32) const {
     SkASSERT(fStrike);
     fStrike->getWidthsStrided(count, first_glyph, glyph_stride_32, first_advance,

@@ -19,10 +19,10 @@ void draw(SkCanvas* canvas) {
     path.offset(100, 0);
     static constexpr auto conicWeights =
             std::to_array<SkScalar>({0.707107f, 0.819152f, 0.906308f, 0.965926f});
-    SkPoint conicPts[][3] = { { {40, 20}, {100, 20}, {100, 80} },
+    auto conicPts = std::to_array<std::array<SkPoint, 3>>({ { {40, 20}, {100, 20}, {100, 80} },
                               { {40, 35}, {71.509f, 35}, {82.286f, 64.6091f} },
                               { {40, 50}, {53.9892f, 50}, {62.981f, 60.7164f} },
-                              { {40, 65}, {44.0192f, 65}, {47.5f, 67.0096f} } };
+                              { {40, 65}, {44.0192f, 65}, {47.5f, 67.0096f} } ,});
     for (int i = 0; i < 4; ++i) {
          path.moveTo(conicPts[i][0]);
          path.conicTo(conicPts[i][1], conicPts[i][2], conicWeights[i]);

@@ -41,12 +41,12 @@ static void test4(SkCanvas* canvas) {
         {10, 160}, {10, 160},
         {10, 199}, {10, 199}
     };
-    char verbs[] = {
+    auto verbs = std::to_array<char>({
         0, 1, 1, 1, 4,
         0, 1, 1, 1, 4,
         0, 1, 1, 1, 4,
         0, 1, 1, 1, 4
-    };
+    ,});
     SkPathBuilder path;
     SkPoint* ptPtr = pts;
     for (size_t i = 0; i < sizeof(verbs); ++i) {

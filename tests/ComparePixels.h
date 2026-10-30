@@ -6,6 +6,8 @@
  */
 
 #ifndef ComparePixels_DEFINED
+#include "include/core/SkSpan.h"
+
 #define ComparePixels_DEFINED
 
 #include "include/core/SkColor.h"
@@ -18,12 +20,12 @@ using ComparePixmapsErrorReporter = void(int x, int y, const float diffs[4]);
 
 bool ComparePixels(const SkPixmap& a,
                    const SkPixmap& b,
-                   const float tolRGBA[4],
+                   SkSpan<const float, 4> tolRGBA,
                    std::function<ComparePixmapsErrorReporter>& error);
 
 bool CheckSolidPixels(const SkColor4f& col,
                       const SkPixmap& pixmap,
-                      const float tolRGBA[4],
+                      SkSpan<const float, 4> tolRGBA,
                       std::function<ComparePixmapsErrorReporter>& error);
 
 #endif

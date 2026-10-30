@@ -6,6 +6,8 @@
  */
 
 #ifndef GrYUVABackendTextures_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrYUVABackendTextures_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -95,7 +97,7 @@ public:
     GrYUVABackendTextures& operator=(GrYUVABackendTextures&&) = default;
 
     GrYUVABackendTextures(const SkYUVAInfo&,
-                          const GrBackendTexture[SkYUVAInfo::kMaxPlanes],
+                          SkSpan<const GrBackendTexture, SkYUVAInfo::kMaxPlanes>,
                           GrSurfaceOrigin textureOrigin);
 
     const std::array<GrBackendTexture, SkYUVAInfo::kMaxPlanes>& textures() const {

@@ -8,6 +8,7 @@
 #include "src/core/SkCubicClipper.h"
 
 #include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
 #include "src/core/SkGeometry.h"
 
 #include <cstring>
@@ -106,7 +107,7 @@ bool SkCubicClipper::ChopMonoAtY(const SkPoint pts[4], SkScalar y, SkScalar* t) 
 }
 
 
-bool SkCubicClipper::clipCubic(const SkPoint srcPts[4], SkPoint dst[4]) {
+bool SkCubicClipper::clipCubic(SkSpan<const SkPoint, 4> srcPts, SkPoint dst[4]) {
     bool reverse;
 
     // we need the data to be monotonically descending in Y
@@ -117,7 +118,7 @@ bool SkCubicClipper::clipCubic(const SkPoint srcPts[4], SkPoint dst[4]) {
         dst[3] = srcPts[0];
         reverse = true;
     } else {
-        memcpy(dst, srcPts, 4 * sizeof(SkPoint));
+        memcpy(dst, srcPts.data(), 4 * sizeof(SkPoint));
         reverse = false;
     }
 

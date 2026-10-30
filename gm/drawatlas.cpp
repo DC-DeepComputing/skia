@@ -25,6 +25,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
@@ -132,7 +133,7 @@ DEF_GM( return new DrawAtlasGM; )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void draw_text_on_path(SkCanvas* canvas, const void* text, size_t length,
-                              const SkPoint xy[], const SkPath& path, const SkFont& font, const SkPaint& paint,
+                              SkSpan<const SkPoint> xy, const SkPath& path, const SkFont& font, const SkPaint& paint,
                               float baseline_offset) {
     SkPathMeasure meas(path, false);
 
@@ -216,7 +217,7 @@ static void drawTextPath(SkCanvas* canvas, bool doStroke) {
     };
     for (auto d : dirs) {
         path = SkPath::Oval(SkRect::MakeXYWH(160, 160, 540, 540), d);
-        draw_text_on_path(canvas, text0, N, pos.data(), path, font, paint, baseline_offset);
+        draw_text_on_path(canvas, text0, N, pos, path, font, paint, baseline_offset);
     }
 
     paint.reset();

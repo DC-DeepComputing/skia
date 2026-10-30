@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkPDFMakeToUnicodeCmap_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkPDFMakeToUnicodeCmap_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -18,7 +20,7 @@ class SkStreamAsset;
 class SkString;
 
 std::unique_ptr<SkStreamAsset> SkPDFMakeToUnicodeCmap(
-        const SkUnichar* glyphToUnicode,
+        SkSpan<const SkUnichar>glyphToUnicode,
         const skia_private::THashMap<SkGlyphID, SkString>& glyphToUnicodeEx,
         const SkPDFGlyphUse* subset,
         bool multiByteGlyphs,
@@ -26,7 +28,7 @@ std::unique_ptr<SkStreamAsset> SkPDFMakeToUnicodeCmap(
         SkGlyphID lastGlyphID);
 
 // Exposed for unit testing.
-void SkPDFAppendCmapSections(const SkUnichar* glyphToUnicode,
+void SkPDFAppendCmapSections(SkSpan<const SkUnichar>glyphToUnicode,
                              const skia_private::THashMap<SkGlyphID, SkString>& glyphToUnicodeEx,
                              const SkPDFGlyphUse* subset,
                              SkDynamicMemoryWStream* cmap,

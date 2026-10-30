@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef PathOpsExtendedTest_DEFINED
+#include "include/core/SkSpan.h"
+
 #define PathOpsExtendedTest_DEFINED
 
 #include "include/core/SkBitmap.h"
@@ -53,7 +55,7 @@ extern bool testSimplifyFuzz(skiatest::Reporter* reporter, const SkPath& path,
 
 void initializeTests(skiatest::Reporter* reporter, const char* testName);
 
-void RunTestSet(skiatest::Reporter* reporter, TestDesc tests[], size_t count,
+void RunTestSet(skiatest::Reporter* reporter, SkSpan<TestDesc> tests, size_t count,
                 void (*firstTest)(skiatest::Reporter* , const char* filename),
                 void (*skipTest)(skiatest::Reporter* , const char* filename),
                 void (*stopTest)(skiatest::Reporter* , const char* filename), bool reverse);

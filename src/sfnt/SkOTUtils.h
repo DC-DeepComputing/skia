@@ -6,6 +6,8 @@
  */
 
 #ifndef SkOTUtils_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkOTUtils_DEFINED
 
 #include "include/core/SkTypeface.h"
@@ -45,7 +47,7 @@ struct SkOTUtils {
     public:
         /** Takes ownership of the nameTableData and will free it with SK_DELETE. */
         LocalizedStrings_NameTable(std::unique_ptr<uint8_t[]> nameTableData, size_t size,
-                                   SK_OT_USHORT types[],
+                                   SkSpan<SK_OT_USHORT> types,
                                    int typesCount)
             : fTypes(types), fTypesCount(typesCount), fTypesIndex(0)
             , fNameTableData(std::move(nameTableData))
@@ -57,7 +59,7 @@ struct SkOTUtils {
          */
         static sk_sp<LocalizedStrings_NameTable> Make(
             const SkTypeface& typeface,
-            SK_OT_USHORT types[],
+            SkSpan<SK_OT_USHORT> types,
             int typesCount);
 
         /** Creates an iterator over all the family names in the 'name' table of a typeface.
@@ -69,7 +71,7 @@ struct SkOTUtils {
     private:
         static SK_OT_USHORT familyNameTypes[3];
 
-        SK_OT_USHORT* fTypes;
+        SkSpan<SK_OT_USHORT>fTypes;
         int fTypesCount;
         int fTypesIndex;
         std::unique_ptr<uint8_t[]> fNameTableData;

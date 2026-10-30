@@ -21,6 +21,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTileMode.h"
@@ -88,7 +89,7 @@ struct GradRec {
     const SkColor4f* fColors;
     const float* fPos;
     const SkPoint* fPoint;   // 2
-    const float* fRadius; // 2
+    SkSpan<const float>fRadius; // 2
     SkTileMode fTileMode;
 
     SkGradient grad() const {
@@ -172,7 +173,7 @@ static void conical_gradproc(skiatest::Reporter* reporter, const GradRec& buildR
     SkShaderBase::GradientInfo info;
     checkRec.gradCheck(reporter, s, &info, SkShaderBase::GradientType::kConical);
     REPORTER_ASSERT(reporter, !memcmp(info.fPoint, checkRec.fPoint, 2 * sizeof(SkPoint)));
-    REPORTER_ASSERT(reporter, !memcmp(info.fRadius, checkRec.fRadius, 2 * sizeof(SkScalar)));
+    REPORTER_ASSERT(reporter, !memcmp(info.fRadius, checkRec.fRadius.data(), 2 * sizeof(SkScalar)));
 }
 
 static void linear_gradproc_matrix(skiatest::Reporter* reporter, const GradRec& buildRec,

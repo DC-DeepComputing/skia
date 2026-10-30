@@ -10,6 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkImageFilter.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradient.h"
 #include "include/effects/SkImageFilters.h"
@@ -25,7 +26,7 @@ public:
     BaseImageFilterCollapseBench() {}
 
 protected:
-    void doPreDraw(sk_sp<SkColorFilter> colorFilters[], int nFilters) {
+    void doPreDraw(SkSpan<sk_sp<SkColorFilter>> colorFilters, int nFilters) {
         SkASSERT(!fImageFilter);
 
         // Create a chain of ImageFilters from colorFilters

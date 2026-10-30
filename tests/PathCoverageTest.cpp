@@ -7,6 +7,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkSafe32.h"
 #include "src/core/SkMathPriv.h"
@@ -43,12 +44,12 @@ static inline int cheap_distance(SkScalar dx, SkScalar dy) {
     return idx;
 }
 
-static inline int estimate_distance(const SkPoint points[]) {
+static inline int estimate_distance(SkSpan<const SkPoint> points) {
     return cheap_distance(points[1].fX * 2 - points[2].fX - points[0].fX,
                           points[1].fY * 2 - points[2].fY - points[0].fY);
 }
 
-static inline SkScalar compute_distance(const SkPoint points[]) {
+static inline SkScalar compute_distance(SkSpan<const SkPoint> points) {
     return SkPointPriv::DistanceToLineSegmentBetween(points[1], points[0], points[2]);
 }
 
@@ -73,22 +74,22 @@ static inline uint32_t compute_pointCount(SkScalar d, SkScalar tol) {
     }
 }
 
-static uint32_t quadraticPointCount_EE(const SkPoint points[]) {
+static uint32_t quadraticPointCount_EE(SkSpan<const SkPoint> points) {
     int distance = estimate_distance(points);
     return estimate_pointCount(distance);
 }
 
-static uint32_t quadraticPointCount_EC(const SkPoint points[], SkScalar tol) {
+static uint32_t quadraticPointCount_EC(SkSpan<const SkPoint> points, SkScalar tol) {
     int distance = estimate_distance(points);
     return compute_pointCount(SkIntToScalar(distance), tol);
 }
 
-static uint32_t quadraticPointCount_CE(const SkPoint points[]) {
+static uint32_t quadraticPointCount_CE(SkSpan<const SkPoint> points) {
     SkScalar distance = compute_distance(points);
     return estimate_pointCount(SkScalarRoundToInt(distance));
 }
 
-static uint32_t quadraticPointCount_CC(const SkPoint points[], SkScalar tol) {
+static uint32_t quadraticPointCount_CC(SkSpan<const SkPoint> points, SkScalar tol) {
     SkScalar distance = compute_distance(points);
     return compute_pointCount(distance, tol);
 }
@@ -115,7 +116,7 @@ static const int gRibbon[] = {
    -4, 0, 4, 20, 0, 25, -4, 20, 4, 0
 };
 
-static bool one_d_pe(const int* array, const unsigned int count,
+static bool one_d_pe(SkSpan<const int>array, const unsigned int count,
                      skiatest::Reporter* reporter) {
     SkPoint path [3];
     path[1] = SkPoint::Make(SkIntToScalar(array[0]), SkIntToScalar(array[1]));

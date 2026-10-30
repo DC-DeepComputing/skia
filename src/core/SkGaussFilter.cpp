@@ -7,6 +7,7 @@
 
 #include "src/core/SkGaussFilter.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 
 #include <array>
@@ -18,7 +19,7 @@ static constexpr double kGoodEnough = 1.0 / 100.0;
 
 // Normalize the values of gauss to 1.0, and make sure they add to one.
 // NB if n == 1, then this will force gauss[0] == 1.
-static void normalize(int n, double* gauss) {
+static void normalize(int n, SkSpan<double>gauss) {
     // Carefully add from smallest to largest to calculate the normalizing sum.
     double sum = 0;
     for (int i = n-1; i >= 1; i--) {
@@ -41,7 +42,7 @@ static void normalize(int n, double* gauss) {
     gauss[0] = 1 - sum;
 }
 
-static int calculate_bessel_factors(double sigma, double *gauss) {
+static int calculate_bessel_factors(double sigma, SkSpan<double>gauss) {
     auto var = sigma * sigma;
 
     // The two functions below come from the equations in "Handbook of Mathematical Functions"
@@ -106,5 +107,5 @@ static int calculate_bessel_factors(double sigma, double *gauss) {
 SkGaussFilter::SkGaussFilter(double sigma) {
     SkASSERT(0 <= sigma && sigma < 2);
 
-    fN = calculate_bessel_factors(sigma, fBasis.data());
+    fN = calculate_bessel_factors(sigma, fBasis);
 }

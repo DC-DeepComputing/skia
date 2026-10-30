@@ -18,7 +18,7 @@ SkColorMatrix SkColorMatrix::RGBtoYUV(SkYUVColorSpace cs) {
 
 SkColorMatrix SkColorMatrix::YUVtoRGB(SkYUVColorSpace cs) {
     SkColorMatrix m;
-    SkColorMatrix_YUV2RGB(cs, m.fMat.data());
+    SkColorMatrix_YUV2RGB(cs, m.fMat);
     return m;
 }
 

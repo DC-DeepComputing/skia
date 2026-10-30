@@ -6,6 +6,7 @@
  */
 #include "src/pathops/SkPathOpsConic.h"
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
 #include "src/pathops/SkIntersections.h"
@@ -21,7 +22,7 @@ struct SkDLine;
 // cribbed from the float version in SkGeometry.cpp
 static void conic_deriv_coeff(const double src[],
                               SkScalar w,
-                              double coeff[3]) {
+                              SkSpan<double, 3> coeff) {
     const double P20 = src[4] - src[0];
     const double P10 = src[2] - src[0];
     const double wP10 = w * P10;

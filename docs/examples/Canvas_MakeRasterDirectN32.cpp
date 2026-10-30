@@ -1,3 +1,5 @@
+#include <array>
+
 // Copyright 2019 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
@@ -5,7 +7,7 @@ REG_FIDDLE(Canvas_MakeRasterDirectN32, 256, 256, true, 0) {
 void draw(SkCanvas* ) {
     const int width = 3;
     const int height = 3;
-    SkPMColor pixels[height][width];  // allocate a 3 by 3 Premultiplied bitmap on the stack
+    std::array<std::array<SkPMColor, width>, height> pixels;  // allocate a 3 by 3 Premultiplied bitmap on the stack
     // create a SkCanvas backed by a raster device, and delete it when the
     // function goes out of scope.
     std::unique_ptr<SkCanvas> canvas = SkCanvas::MakeRasterDirectN32(

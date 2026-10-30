@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkImage.h"
@@ -44,7 +45,7 @@ public:
     }
 
 private:
-    int fHistogram[kRecordTypes];
+    std::array<int, kRecordTypes> fHistogram;
 };
 
 DEF_TEST(Recorder, r) {

@@ -7,6 +7,7 @@
 
 #include "src/pdf/SkPDFMakeToUnicodeCmap.h"
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/private/SkTo.h"
@@ -204,7 +205,7 @@ static void append_bfrange_section(const std::vector<BFRange>& bfrange,
 // For the worst case (having 65536 continuous unicode and we use every other
 // one of them), the possible savings by aggressive optimization is 416KB
 // pre-compressed and does not provide enough motivation for implementation.
-void SkPDFAppendCmapSections(const SkUnichar* glyphToUnicode,
+void SkPDFAppendCmapSections(SkSpan<const SkUnichar>glyphToUnicode,
                              const THashMap<SkGlyphID, SkString>& glyphToUnicodeEx,
                              const SkPDFGlyphUse* subset,
                              SkDynamicMemoryWStream* cmap,
@@ -264,7 +265,7 @@ void SkPDFAppendCmapSections(const SkUnichar* glyphToUnicode,
 }
 
 std::unique_ptr<SkStreamAsset> SkPDFMakeToUnicodeCmap(
-        const SkUnichar* glyphToUnicode,
+        SkSpan<const SkUnichar>glyphToUnicode,
         const THashMap<SkGlyphID, SkString>& glyphToUnicodeEx,
         const SkPDFGlyphUse* subset,
         bool multiByteGlyphs,

@@ -16,6 +16,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAInfo.h"
@@ -213,7 +214,7 @@ static GrSurfaceProxyView texture_proxy_view_from_planes(GrRecordingContext* ctx
         return {};
     }
 
-    GrYUVATextureProxies yuvaProxies(yuvaPixmaps.yuvaInfo(), views.data(), pixmapColorTypes.data());
+    GrYUVATextureProxies yuvaProxies(yuvaPixmaps.yuvaInfo(), views, pixmapColorTypes);
     SkAssertResult(yuvaProxies.isValid());
 
     std::unique_ptr<GrFragmentProcessor> fp = GrYUVtoRGBEffect::Make(
@@ -444,7 +445,7 @@ static std::unique_ptr<GrFragmentProcessor> make_fp_from_view(GrRecordingContext
                                                               GrSurfaceProxyView view,
                                                               SkAlphaType at,
                                                               SkSamplingOptions sampling,
-                                                              const SkTileMode tileModes[2],
+                                                              SkSpan<const SkTileMode, 2> tileModes,
                                                               const SkMatrix& m,
                                                               const SkRect* subset,
                                                               const SkRect* domain) {
@@ -515,7 +516,7 @@ static std::unique_ptr<GrFragmentProcessor> make_fp_from_view(GrRecordingContext
 std::unique_ptr<GrFragmentProcessor> raster_as_fp(GrRecordingContext* rContext,
                                                   const SkImage_Raster* img,
                                                   SkSamplingOptions sampling,
-                                                  const SkTileMode tileModes[2],
+                                                  SkSpan<const SkTileMode, 2> tileModes,
                                                   const SkMatrix& m,
                                                   const SkRect* subset,
                                                   const SkRect* domain) {
@@ -534,7 +535,7 @@ std::unique_ptr<GrFragmentProcessor> raster_as_fp(GrRecordingContext* rContext,
 std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(SurfaceDrawContext* sdc,
                                                          const SkImage* img,
                                                          SkSamplingOptions sampling,
-                                                         const SkTileMode tileModes[2],
+                                                         SkSpan<const SkTileMode, 2> tileModes,
                                                          const SkMatrix& m,
                                                          const SkRect* subset,
                                                          const SkRect* domain) {
@@ -590,7 +591,7 @@ std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(
         GrSurfaceProxyView view,
         SkAlphaType at,
         SkSamplingOptions sampling,
-        const SkTileMode tileModes[2],
+        SkSpan<const SkTileMode, 2> tileModes,
         const SkMatrix& m,
         const SkRect* subset,
         const SkRect* domain) {

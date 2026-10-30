@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/pdf/SkDeflate.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
@@ -70,7 +72,7 @@ static void do_deflate(int flush,
 // Hide all zlib impl details.
 struct SkDeflateWStream::Impl {
     SkWStream* fOut;
-    unsigned char fInBuffer[SKDEFLATEWSTREAM_INPUT_BUFFER_SIZE];
+    std::array<unsigned char, SKDEFLATEWSTREAM_INPUT_BUFFER_SIZE> fInBuffer;
     size_t fInBufferIndex;
     z_stream fZStream;
 };
@@ -109,7 +111,7 @@ void SkDeflateWStream::finalize() {
     if (!fImpl->fOut) {
         return;
     }
-    do_deflate(Z_FINISH, &fImpl->fZStream, fImpl->fOut, fImpl->fInBuffer,
+    do_deflate(Z_FINISH, &fImpl->fZStream, fImpl->fOut, fImpl->fInBuffer.data(),
                fImpl->fInBufferIndex);
     (void)deflateEnd(&fImpl->fZStream);
     fImpl->fOut = nullptr;
@@ -124,7 +126,7 @@ bool SkDeflateWStream::write(const void* void_buffer, size_t len) {
     while (len > 0) {
         size_t tocopy =
                 std::min(len, sizeof(fImpl->fInBuffer) - fImpl->fInBufferIndex);
-        memcpy(fImpl->fInBuffer + fImpl->fInBufferIndex, buffer, tocopy);
+        memcpy(SkSpan<unsigned char>(fImpl->fInBuffer ).subspan( fImpl->fInBufferIndex).data(), buffer, tocopy);
         len -= tocopy;
         buffer += tocopy;
         fImpl->fInBufferIndex += tocopy;
@@ -133,7 +135,7 @@ bool SkDeflateWStream::write(const void* void_buffer, size_t len) {
         // if the buffer isn't filled, don't call into zlib yet.
         if (sizeof(fImpl->fInBuffer) == fImpl->fInBufferIndex) {
             do_deflate(Z_NO_FLUSH, &fImpl->fZStream, fImpl->fOut,
-                       fImpl->fInBuffer, fImpl->fInBufferIndex);
+                       fImpl->fInBuffer.data(), fImpl->fInBufferIndex);
             fImpl->fInBufferIndex = 0;
         }
     }

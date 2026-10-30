@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2013 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -16,7 +18,7 @@
 
 #include <cstddef>
 
-static const SkPoint finitePts[] = {
+static const auto finitePts = std::to_array<SkPoint>({
     { 0, 0 },
     { SK_ScalarMax, 0 },
     { 0, SK_ScalarMax },
@@ -24,7 +26,7 @@ static const SkPoint finitePts[] = {
     { SK_ScalarMin, 0 },
     { 0, SK_ScalarMin },
     { SK_ScalarMin, SK_ScalarMin },
-};
+});
 
 const size_t finitePtsCount = sizeof(finitePts) / sizeof(finitePts[0]);
 

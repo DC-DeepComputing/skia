@@ -20,6 +20,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "tools/DecodeUtils.h"
@@ -108,7 +109,7 @@ static void color_wheel_native(SkCanvas* canvas) {
 }
 
 template <typename T>
-int find(T* array, int N, T item) {
+int find(SkSpan<T>array, int N, T item) {
     for (int i = 0; i < N; ++i) {
         if (array[i] == item) {
             return i;

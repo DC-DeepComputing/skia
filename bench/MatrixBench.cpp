@@ -1,4 +1,6 @@
 /*
+#include "include/core/SkSpan.h"
+
  * Copyright 2011 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -66,7 +68,7 @@ private:
 // having unknown values in our arrays can throw off the timing a lot, perhaps
 // handling NaN values is a lot slower. Anyway, this is just meant to put
 // reasonable values in our arrays.
-template <typename T> void init9(T array[9]) {
+template <typename T> void init9(SkSpan<T, 9> array) {
     SkRandom rand;
     for (int i = 0; i < 9; i++) {
         array[i] = rand.nextSScalar1();

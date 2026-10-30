@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTSort.h"
 #include "tools/flags/CommandLineFlags.h"
@@ -58,7 +59,7 @@ void SkFlagInfo::SetDefaultStrings(CommandLineFlags::StringArray* pStrings,
     }
 }
 
-static bool string_is_in(const char* target, const char* set[], size_t len) {
+static bool string_is_in(const char* target, SkSpan<const char *> set, size_t len) {
     for (size_t i = 0; i < len; i++) {
         if (0 == strcmp(target, set[i])) {
             return true;

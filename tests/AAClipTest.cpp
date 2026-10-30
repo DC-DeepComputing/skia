@@ -19,6 +19,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
@@ -360,7 +361,7 @@ DEF_TEST(AAClip_RRectIsReallyARect_ClipIsRect, reporter) {
     REPORTER_ASSERT(reporter, clip.isRect());
 }
 
-static void did_dx_affect(skiatest::Reporter* reporter, const SkScalar dx[],
+static void did_dx_affect(skiatest::Reporter* reporter, SkSpan<const SkScalar> dx,
                           size_t count, bool changed) {
     SkIRect ir = { 0, 0, 10, 10 };
 

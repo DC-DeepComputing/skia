@@ -7,6 +7,7 @@
 
 #include "src/xml/SkXMLWriter.h"
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkTo.h"
 
@@ -85,7 +86,7 @@ void SkXMLWriter::startElement(const char name[]) {
     this->startElementLen(name, strlen(name));
 }
 
-static const char* escape_char(char c, char storage[2]) {
+static const char* escape_char(char c, SkSpan<char, 2> storage) {
     static const char* gEscapeChars[] = {
         "<&lt;",
         ">&gt;",
@@ -94,7 +95,7 @@ static const char* escape_char(char c, char storage[2]) {
         "&&amp;"
     };
 
-    const char** array = gEscapeChars;
+    SkSpan<const char *>array = gEscapeChars;
     for (unsigned i = 0; i < std::size(gEscapeChars); i++) {
         if (array[i][0] == c) {
             return &array[i][1];
@@ -102,10 +103,10 @@ static const char* escape_char(char c, char storage[2]) {
     }
     storage[0] = c;
     storage[1] = 0;
-    return storage;
+    return storage.data();
 }
 
-static size_t escape_markup(char dst[], const char src[], size_t length) {
+static size_t escape_markup(SkSpan<char> dst, const char src[], size_t length) {
     size_t      extra = 0;
     const char* stop = src + length;
 
@@ -114,9 +115,9 @@ static size_t escape_markup(char dst[], const char src[], size_t length) {
         const char* seq = escape_char(*src, orig);
         size_t      seqSize = strlen(seq);
 
-        if (dst) {
-            memcpy(dst, seq, seqSize);
-            dst += seqSize;
+        if (!dst.empty()) {
+            memcpy(dst.data(), seq, seqSize);
+            dst= dst.subspan(seqSize);
         }
 
         // now record the extra size needed
@@ -132,10 +133,10 @@ void SkXMLWriter::addAttributeLen(const char name[], const char value[], size_t 
     SkString valueStr;
 
     if (fDoEscapeMarkup) {
-        size_t   extra = escape_markup(nullptr, value, length);
+        size_t   extra = escape_markup({}, value, length);
         if (extra) {
             valueStr.resize(length + extra);
-            (void)escape_markup(valueStr.data(), value, length);
+            (void)escape_markup(valueStr, value, length);
             value = valueStr.c_str();
             length += extra;
         }

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "tests/Test.h"
 
 #include "include/core/SkTypes.h"
@@ -37,7 +38,7 @@ DEF_TEST(MatrixProcs_pack_clamp, r) {
     };
     // The input values are somewhat arbitrary, inspired by real-world values
     // with some edge cases added as well.
-    TestCase tests[] = {
+    auto tests = std::to_array<TestCase>({
         // Negative values keep the fractional part out of convenience, but it is effectively
         // ignored later.
         {"-2.100 => {0x00, 0xe, 0x00}", SkFloatToFixed(-2.100f), 63, 0x38000},
@@ -63,7 +64,7 @@ DEF_TEST(MatrixProcs_pack_clamp, r) {
         {"127.21 => {0x7f,  0x3, 0x80}",  SkFloatToFixed(127.21f), 256, 0x1fcc080},
         {"256.77 => {0x100, 0xc, 0x100}", SkFloatToFixed(256.77f), 256, 0x4030100},
         {"10000. => {0x100, 0x0, 0x100}", SkFloatToFixed(10000.f), 256, 0x4000100},
-    };
+    });
 
     constexpr size_t NUM_TESTS = sizeof(tests) / sizeof(TestCase);
 
@@ -92,7 +93,7 @@ DEF_TEST(MatrixProcs_pack_clamp_out_of_range, r) {
     // None of these should crash or cause UBSAN errors, although if they were used in drawing,
     // they might be incorrect due to packing 16 bits of SkFixed into 14 bits of space.
     static constexpr unsigned MAX_PACKED_VALUE = (1 << 14) - 1;
-    TestCase tests[] = {
+    auto tests = std::to_array<TestCase>({
         {"16000.42=>{0xff, 6, 0xff}", SkFloatToFixed(16000.42f), 255, 0x3fd80ff},
         {"17000.42=>{0xff, 6, 0xff}", SkFloatToFixed(17000.42f), 255, 0x3fd80ff},
         {"18000.42=>{0xff, 6, 0xff}", SkFloatToFixed(18000.42f), 255, 0x3fd80ff},
@@ -105,7 +106,7 @@ DEF_TEST(MatrixProcs_pack_clamp_out_of_range, r) {
         // Adding 1 to this would overflow and cause an UBSAN issue, if it were not suppressed.
         // We suppress the warning and it wraps around.
         {"32767.90=>{0x3fff, e, 0x0}", SkFloatToFixed(32767.90f), MAX_PACKED_VALUE, 0xffff8000},
-    };
+    });
 
     constexpr size_t NUM_TESTS = sizeof(tests) / sizeof(TestCase);
 
@@ -130,7 +131,7 @@ DEF_TEST(MatrixProcs_pack_repeat, r) {
         uint32_t expectedOutput;
         size_t width;
     };
-    TestCase tests[] = {
+    auto tests = std::to_array<TestCase>({
         // negative values wrap back around
         {"-0.300 => {0x2c, 0xc, 0x2d}", SkFloatToFixed(-0.300f), 63, 0xb3002d, 63},
         {"-0.200 => {0x33, 0x3, 0x34}", SkFloatToFixed(-0.200f), 63, 0xccc034, 63},
@@ -165,7 +166,7 @@ DEF_TEST(MatrixProcs_pack_repeat, r) {
         {"0.1111 [64,512] => {0x07, 0x3, 0x07}", SkFloatToFixed(0.1111f), 64, 0x1cc007, 512},
         {"0.1111 [64, 32] => {0x07, 0x3, 0x09}", SkFloatToFixed(0.1111f), 64, 0x1cc009, 32},
         {"0.1111 [64,  8] => {0x07, 0x3, 0x0f}", SkFloatToFixed(0.1111f), 64, 0x1cc00f, 8},
-    };
+    });
 
     constexpr size_t NUM_TESTS = sizeof(tests) / sizeof(TestCase);
 
@@ -190,7 +191,7 @@ DEF_TEST(MatrixProcs_pack_mirror, r) {
         uint32_t expectedOutput;
         size_t width;
     };
-    TestCase tests[] = {
+    auto tests = std::to_array<TestCase>({
         // negative values are treated similarly to absolute values, except
         // the first integer is bigger than the last integer.
         {"-0.300 => {0x13, 0xc, 0x12}", SkFloatToFixed(-0.300f), 63, 0x4f0012, 63},
@@ -226,7 +227,7 @@ DEF_TEST(MatrixProcs_pack_mirror, r) {
         {"0.1111 [64,512] => {0x07, 0x3, 0x07}", SkFloatToFixed(0.1111f), 64, 0x1cc007, 512},
         {"0.1111 [64, 32] => {0x07, 0x3, 0x09}", SkFloatToFixed(0.1111f), 64, 0x1cc009, 32},
         {"0.1111 [64,  8] => {0x07, 0x3, 0x0f}", SkFloatToFixed(0.1111f), 64, 0x1cc00f, 8},
-    };
+    });
 
     constexpr size_t NUM_TESTS = sizeof(tests) / sizeof(TestCase);
 
@@ -252,7 +253,7 @@ DEF_TEST(MatrixProcs_unpack_int, r) {
         uint32_t expectedUpperBound;
     };
     // These are selected from earlier tests to make sure the packed values unpack correctly.
-    TestCase tests[] = {
+    auto tests = std::to_array<TestCase>({
         {"0x000000  => {0x00, 0x0, 0x00}",   0x000000,  0x00,  0x0, 0x00},
         {"0x074002  => {0x01, 0xd, 0x02}",   0x074002,  0x01,  0xd, 0x02},
         {"0x15c006  => {0x05, 0x7, 0x06}",   0x15c006,  0x05,  0x7, 0x06},
@@ -260,7 +261,7 @@ DEF_TEST(MatrixProcs_unpack_int, r) {
         {"0x24000a  => {0x09, 0x0, 0x0a}",   0x24000a,  0x09,  0x0, 0x0a},
         {"0xfc003f  => {0x3f, 0x0, 0x3f}",   0xfc003f,  0x3f,  0x0, 0x3f},
         {"0x4000100 => {0x100, 0x0, 0x100}", 0x4000100, 0x100, 0x0, 0x100},
-    };
+    });
 
     constexpr size_t NUM_TESTS = sizeof(tests) / sizeof(TestCase);
 

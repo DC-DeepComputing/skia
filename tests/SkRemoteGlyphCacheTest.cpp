@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -167,7 +168,7 @@ private:
     SkDiscardableHandleId fNextHandleId = 0u;
     SkDiscardableHandleId fLastDeletedHandleId = 0u;
     THashSet<SkDiscardableHandleId> fLockedHandles;
-    int fCacheMissCount[SkStrikeClient::CacheMissType::kLast + 1u];
+    std::array<int, SkStrikeClient::CacheMissType::kLast + 1u> fCacheMissCount;
 };
 
 sk_sp<SkTextBlob> buildTextBlob(sk_sp<SkTypeface> tf, int glyphCount, int textSize = 1) {

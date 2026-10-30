@@ -68,9 +68,9 @@ public:
         @param advance_stride_32  stride in 32-bit words between output advances
     */
     void getWidthsStrided(unsigned count,
-                          const uint32_t* first_glyph,
+                          SkSpan<const uint32_t>first_glyph,
                           unsigned glyph_stride_32,
-                          SkScalar* first_advance,
+                          SkSpan<SkScalar>first_advance,
                           unsigned advance_stride_32) const;
 
     /** Retrieves the advance widths and bounds for each glyph.

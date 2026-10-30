@@ -295,7 +295,7 @@ private:
                           SkVector* normalBC, SkVector* unitNormalBC);
     void setRayPts(const SkPoint& tPt, SkVector* dxy, SkPoint* onPt, SkVector* tangent) const;
     static bool SlightAngle(SkQuadConstruct* );
-    ResultType strokeCloseEnough(const SkPoint stroke[3], const SkPoint ray[2],
+    ResultType strokeCloseEnough(const SkPoint stroke[3], SkSpan<const SkPoint, 2> ray,
                                  SkQuadConstruct*  STROKER_DEBUG_PARAMS(int depth) ) const;
     ResultType tangentsMeet(const SkPoint cubic[4], SkQuadConstruct* );
 
@@ -996,7 +996,7 @@ SkPathStroker::ResultType SkPathStroker::tangentsMeet(const SkPoint cubic[4],
 }
 
 // Intersect the line with the quad and return the t values on the quad where the line crosses.
-static int intersect_quad_ray(const SkPoint line[2], const SkPoint quad[3], SkScalar roots[2]) {
+static int intersect_quad_ray(SkSpan<const SkPoint, 2> line, const SkPoint quad[3], SkScalar roots[2]) {
     SkVector vec = line[1] - line[0];
     std::array<SkScalar, 3> r;
     for (int n = 0; n < 3; ++n) {
@@ -1053,7 +1053,7 @@ static bool sharp_angle(const SkPoint quad[3]) {
 }
 
 SkPathStroker::ResultType SkPathStroker::strokeCloseEnough(const SkPoint stroke[3],
-        const SkPoint ray[2], SkQuadConstruct* quadPts  STROKER_DEBUG_PARAMS(int depth)) const {
+        SkSpan<const SkPoint, 2> ray, SkQuadConstruct* quadPts  STROKER_DEBUG_PARAMS(int depth)) const {
     SkPoint strokeMid = SkEvalQuadAt(stroke, SK_ScalarHalf);
     // measure the distance from the curve to the quad-stroke midpoint, compare to radius
     if (points_within_dist(ray[0], strokeMid, fInvResScale)) {  // if the difference is small

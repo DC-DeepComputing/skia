@@ -36,6 +36,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSerialProcs.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
@@ -205,7 +206,7 @@ template<typename T, bool testInvalid> struct SerializationTestUtils {
 };
 
 template<> struct SerializationTestUtils<SkString, true> {
-    static void InvalidateData(unsigned char* data) {
+    static void InvalidateData(SkSpan<unsigned char>data) {
         data[3] |= 0x80; // Reverse sign of 1st integer
     }
 };
@@ -1071,12 +1072,12 @@ struct AnnotationRec {
 
 class TestAnnotationCanvas : public SkCanvas {
     skiatest::Reporter*     fReporter;
-    const AnnotationRec*    fRec;
+    SkSpan<const AnnotationRec>fRec;
     int                     fCount;
     int                     fCurrIndex;
 
 public:
-    TestAnnotationCanvas(skiatest::Reporter* reporter, const AnnotationRec rec[], int count)
+    TestAnnotationCanvas(skiatest::Reporter* reporter, SkSpan<const AnnotationRec> rec, int count)
         : SkCanvas(100, 100)
         , fReporter(reporter)
         , fRec(rec)
