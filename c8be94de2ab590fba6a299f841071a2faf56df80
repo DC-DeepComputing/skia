@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bdfdcf6_45555ce1",
+        "filename": "include/core/SkPixelRef.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-30T16:59:18Z",
+      "side": 1,
+      "message": "What\u0027s this?",
+      "range": {
+        "startLine": 116,
+        "startChar": 46,
+        "endLine": 116,
+        "endChar": 48
+      },
+      "revId": "c8be94de2ab590fba6a299f841071a2faf56df80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ff9b8ff_0d32cbe8",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-10-30T16:59:18Z",
+      "side": 1,
+      "message": "nit: If `avoidCopy` is what the block is doing, the conditional should describe why. So maybe `canSharePixelRef` will work better.",
+      "revId": "c8be94de2ab590fba6a299f841071a2faf56df80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
