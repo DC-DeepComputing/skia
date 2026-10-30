@@ -34,6 +34,24 @@
       "parentUuid": "ef98cae4_2303906e",
       "revId": "71533e3787c142d073f020d5cbe3d1da7cd9081e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7bdb2ee_85928e14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18514
+      },
+      "writtenOn": "2026-10-30T04:49:57Z",
+      "side": 1,
+      "message": "We can probably remove it. We have a moving target though. It was the hotspot in September. Skia changed impl and the hotspot moved. I will add a CL to remove it",
+      "parentUuid": "06da3f58_41ce8df9",
+      "revId": "71533e3787c142d073f020d5cbe3d1da7cd9081e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
