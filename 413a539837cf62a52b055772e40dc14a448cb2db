@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "115420eb_82073fd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T02:29:37Z",
+      "side": 1,
+      "message": "The ASAN build fails on this line: tools/public_headers_warnings_check.cpp compiles public headers with -Wunused-parameter -Werror under clang, and the default implementation does not use firstLineIndent. My suggestion in the companion CL caused this, sorry. Please drop the parameter name: SkScalar /*firstLineIndent*/. The other Clang Build bots fail on the same line too.",
+      "revId": "413a539837cf62a52b055772e40dc14a448cb2db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
