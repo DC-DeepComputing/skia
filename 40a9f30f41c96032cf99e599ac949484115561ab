@@ -51,6 +51,30 @@
       "parentUuid": "4636fc85_9006d0dd",
       "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a16c65bd_79de480b",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-10-30T17:20:37Z",
+      "side": 1,
+      "message": "Unlike `SkString::append` (which safely no-ops on `nullptr` or `len \u003d\u003d 0`), `std::string::append(const char*)` and `std::string::append(const char*, size_t)` have undefined behavior when passed `nullptr`. Consider guarding `text` and `len` here to preserve the defensive behavior:\n\n```cpp\nvoid ParagraphBuilderImpl::addText(const char* text) {\n    if (text) {\n        fUtf8.append(text);\n    }\n}\n\nvoid ParagraphBuilderImpl::addText(const char* text, size_t len) {\n    if (text \u0026\u0026 len \u003e 0) {\n        fUtf8.append(text, len);\n    }\n}\n```",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 9999
+      },
+      "isAi": true,
+      "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
