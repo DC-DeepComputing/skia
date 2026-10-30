@@ -16,6 +16,23 @@
       "message": "See comment in previous CL (which I will add right after I pick send here 😄)",
       "revId": "0a9b014309552951d45a9d71e2c3b4ec76f6bf03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef3f6d1_fe19b393",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-30T10:43:31Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "0a9b014309552951d45a9d71e2c3b4ec76f6bf03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
