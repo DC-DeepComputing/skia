@@ -11,6 +11,7 @@
 #include "include/ports/SkTypeface_mac.h"
 #include "src/core/SkZip.h"
 #include "src/utils/SkFloatUtils.h"
+#include "src/utils/mac/SkUniqueCFRef.h"
 #include "tests/Test.h"
 
 #include <stdarg.h>
@@ -26,6 +27,66 @@ static void SkMaybeDebugf(const char* format, ...) {
         vprintf(format, args);
         va_end(args);
     }
+}
+
+// The descriptor copied from a system italic CTFont (iOS 16.4+, macOS 13+) carries only
+// kCTFontSymbolicTrait, so a style read from that descriptor alone loses both the slant and
+// the weight and clients synthesize a skew and an embolden on top of the real italic face
+DEF_TEST(TypefaceMacSystemStyleFromSymbolicTraits, reporter) {
+    auto systemFont = [](CTFontSymbolicTraits traits) -> SkUniqueCFRef<CTFontRef> {
+        SkUniqueCFRef<CTFontRef> system(
+                CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, 17, nullptr));
+        if (!system || !traits) {
+            return system;
+        }
+        // A size of 0 keeps the size of the original font
+        return SkUniqueCFRef<CTFontRef>(
+                CTFontCreateCopyWithSymbolicTraits(system.get(), 0, nullptr, traits, traits));
+    };
+
+    const struct {
+        CTFontSymbolicTraits fRequested;
+        SkFontStyle::Slant fSlant;
+    } testCases[] = {
+        { kCTFontItalicTrait, SkFontStyle::kItalic_Slant },
+        { kCTFontBoldTrait, SkFontStyle::kUpright_Slant },
+        { kCTFontBoldTrait | kCTFontItalicTrait, SkFontStyle::kItalic_Slant },
+    };
+
+    int tested = 0;
+    for (const auto& testCase : testCases) {
+        SkUniqueCFRef<CTFontRef> ctFont = systemFont(testCase.fRequested);
+        if (!ctFont) {
+            REPORTER_ASSERT(reporter, ctFont, "no system font for traits 0x%x",
+                            testCase.fRequested);
+            continue;
+        }
+        // Without the real face CoreText cannot report the traits and there is nothing to read
+        CTFontSymbolicTraits bound = CTFontGetSymbolicTraits(ctFont.get());
+        if ((bound & testCase.fRequested) != testCase.fRequested) {
+            continue;
+        }
+
+        sk_sp<SkTypeface> typeface(SkMakeTypefaceFromCTFont(ctFont.get()));
+        if (!typeface) {
+            REPORTER_ASSERT(reporter, typeface);
+            continue;
+        }
+        ++tested;
+        SkFontStyle style = typeface->fontStyle();
+        REPORTER_ASSERT(reporter, style.slant() == testCase.fSlant,
+                        "traits 0x%x: slant %d, expected %d",
+                        testCase.fRequested, style.slant(), testCase.fSlant);
+        if (testCase.fRequested & kCTFontBoldTrait) {
+            REPORTER_ASSERT(reporter, style.weight() >= SkFontStyle::kSemiBold_Weight,
+                            "traits 0x%x: weight %d, expected at least %d",
+                            testCase.fRequested, style.weight(),
+                            SkFontStyle::kSemiBold_Weight);
+        }
+    }
+    // A system without an italic or a bold system face would leave every case skipped
+    REPORTER_ASSERT(reporter, tested == (int)std::size(testCases), "only %d of %d cases ran",
+                    tested, (int)std::size(testCases));
 }
 
 DEF_TEST(TypefaceMacVariation, reporter) {
