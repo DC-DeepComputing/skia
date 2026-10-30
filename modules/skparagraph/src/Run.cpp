@@ -180,6 +180,26 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space) {
     return shift;
 }
 
+void Run::addLetterSpacesAfterGraphemes(SkScalar space) {
+    SkScalar shift = 0;
+    for (size_t i = 0; i < this->size(); ++i) {
+        fPositions[i].fX += shift;
+        // Glyphs i and i + 1 share a grapheme when no grapheme starts between their text
+        // positions; RTL runs store glyphs in visual order, so the positions may go down
+        bool graphemeEnds = i + 1 == this->size();
+        if (!graphemeEnds) {
+            TextIndex from = std::min(fClusterIndexes[i], fClusterIndexes[i + 1]);
+            TextIndex to = std::max(fClusterIndexes[i], fClusterIndexes[i + 1]);
+            graphemeEnds = fOwner->findPreviousGraphemeBoundary(to) > from;
+        }
+        if (graphemeEnds) {
+            shift += space;
+        }
+    }
+    fPositions[this->size()].fX += shift;
+    fAdvance.fX += shift;
+}
+
 SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
     // Offset all the glyphs in the cluster
     SkScalar shift = 0;
@@ -198,6 +218,16 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
     cluster->setHalfLetterSpacing(space / 2);
 
     return shift;
+}
+
+SkScalar Run::addLetterSpaceAfterCluster(SkScalar space, Cluster* cluster) {
+    if (this->size() == cluster->endPos()) {
+        fPositions[cluster->endPos()].fX += space;
+    }
+    fAdvance.fX += space;
+    cluster->space(space);
+    cluster->setHalfLetterSpacing(space / 2);
+    return space;
 }
 
 bool Run::IsCursiveScript(SkFourByteTag script) {
