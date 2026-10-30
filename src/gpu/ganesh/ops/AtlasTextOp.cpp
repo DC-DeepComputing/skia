@@ -218,7 +218,7 @@ std::tuple<const GrClip*, GrOp::Owner> AtlasTextOp::Make(SurfaceDrawContext* sdc
     const SkMatrix& positionMatrix = position_matrix(viewMatrix, drawOrigin);
 
     auto [needsTransform, subRunDeviceBounds] =
-            subrun->deviceRectAndNeedsTransform(positionMatrix);
+            subrun->deviceRectAndNeedsTransform(viewMatrix, drawOrigin);
     if (subRunDeviceBounds.isEmpty()) {
         return {nullptr, nullptr};
     }
@@ -378,16 +378,13 @@ void AtlasTextOp::Geometry::fillVertexData(void *dst, int offset, int count) con
 
     auto glyphSpan = fSubRun.glyphVector().accessBackendGlyphs<Glyph>();
 
-    // Apply the draw origin translation to the matrix
-    SkMatrix positionMatrix = fDrawMatrix;
-    positionMatrix.preTranslate(fDrawOrigin.x(), fDrawOrigin.y());
-
     glyphData.fillVertexData(fSubRun.vertexFiller(),
                              glyphSpan,
                              offset,
                              count,
                              fColor,
-                             positionMatrix,
+                             fDrawMatrix,
+                             fDrawOrigin,
                              fClipRect,
                              dst);
 }

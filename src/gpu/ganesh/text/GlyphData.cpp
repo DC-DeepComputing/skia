@@ -273,7 +273,8 @@ void GlyphData::fillVertexData(const sktext::gpu::VertexFiller& vf,
                                int offset,
                                int count,
                                const SkPMColor4f& pmColor,
-                               const SkMatrix& positionMatrix,
+                               const SkMatrix& drawMatrix,
+                               SkPoint drawOrigin,
                                SkIRect clip,
                                void* vertexBuffer) {
     GrColor color = pmColor.toBytes_RGBA();
@@ -283,7 +284,7 @@ void GlyphData::fillVertexData(const sktext::gpu::VertexFiller& vf,
 
     // Handle direct mask drawing specifically.
     if (vf.canDrawDirect()) {
-        auto [noTransformNeeded, originOffset] = vf.canUseDirect(positionMatrix);
+        auto [noTransformNeeded, originOffset] = vf.canUseDirect(drawMatrix, drawOrigin);
 
         if (noTransformNeeded) {
             if (clip.isEmpty()) {
@@ -316,6 +317,8 @@ void GlyphData::fillVertexData(const sktext::gpu::VertexFiller& vf,
     }
 
     // Handle the general transformed case.
+    SkMatrix positionMatrix = drawMatrix;
+    positionMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
     SkMatrix viewDifference = vf.viewDifference(positionMatrix);
     if (!positionMatrix.hasPerspective()) {
         if (vf.maskFormat() == MaskFormat::kARGB) {

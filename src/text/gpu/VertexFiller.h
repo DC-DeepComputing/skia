@@ -17,6 +17,7 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h"
 
+#include <cmath>
 #include <cstddef>
 #include <optional>
 #include <tuple>
@@ -71,7 +72,8 @@ public:
     // Return true if the positionMatrix represents an integer translation. Return the device
     // bounding box of all the glyphs. If the bounding box is empty, then something went singular
     // and this operation should be dropped.
-    std::tuple<bool, SkRect> deviceRectAndCheckTransform(const SkMatrix &positionMatrix) const;
+    std::tuple<bool, SkRect> deviceRectAndCheckTransform(const SkMatrix& drawMatrix,
+                                                         SkPoint drawOrigin = {0, 0}) const;
 
     skgpu::MaskFormat maskFormat() const { return fMaskFormat; }
 
@@ -85,16 +87,25 @@ public:
 
     const SkMatrix& creationMatrix() const { return fCreationMatrix; }
 
-    std::tuple<bool, SkVector> canUseDirect(const SkMatrix& positionMatrix) const {
-        return CanUseDirect(fCreationMatrix, positionMatrix);
+    std::tuple<bool, SkVector> canUseDirect(const SkMatrix& drawMatrix,
+                                            SkPoint drawOrigin = {0, 0}) const {
+        return CanUseDirect(fCreationMatrix, drawMatrix, drawOrigin);
     }
     SkMatrix viewDifference(const SkMatrix& positionMatrix) const;
 
+    static constexpr SkScalar kMaxDirectCoord = (1 << 21);  // 2,097,152.0f
+    static bool ValidDirectCoordRange(SkPoint pt) {
+        return pt.isFinite() &&
+               std::abs(pt.x()) <= kMaxDirectCoord &&
+               std::abs(pt.y()) <= kMaxDirectCoord;
+    }
+    static bool ValidDirectPosition(SkPoint pt);
+    static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
+                                                   const SkMatrix& drawMatrix,
+                                                   SkPoint drawOrigin = {0, 0});
+
 private:
     friend class AtlasSubRun;
-
-    static std::tuple<bool, SkVector> CanUseDirect(const SkMatrix& creationMatrix,
-                                                   const SkMatrix& positionMatrix);
 
     const skgpu::MaskFormat fMaskFormat;
     const bool fCanDrawDirect;
