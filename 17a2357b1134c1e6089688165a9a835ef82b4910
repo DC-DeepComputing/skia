@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08a98c2d_413964f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-10-30T19:51:49Z",
+      "side": 1,
+      "message": "LGTM. Didn\u0027t trigger autosubmit since I\u0027ll wait on Thomas\u0027s review.",
+      "revId": "17a2357b1134c1e6089688165a9a835ef82b4910",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
