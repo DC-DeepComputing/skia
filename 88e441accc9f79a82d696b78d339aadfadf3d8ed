@@ -33,6 +33,23 @@
       "message": "Thanks! The version gates match upstream: XML_SetHashSalt16Bytes() first appears in R_2_8_0, and the *64() getters in R_2_9_0. Dropping the non-zero loop on the 16-byte path is also correct: XML_SetHashSalt16Bytes() marks the salt as set for any value, while XML_SetHashSalt() treats 0 as \"not set\".\n\nOne non-blocking question: Skia\u0027s DEPS pins third_party/externals/expat at R_2_7_4+38, so Skia\u0027s own bots only compile the old branches. Do you plan to roll expat to R_2_9_0 in a follow-up, so the new branches get build coverage here too?\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
       "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02ee109f_49d528e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-10-30T17:00:50Z",
+      "side": 1,
+      "message": "Try job results for PS1:\n\n- ASAN (NativeFonts_FreeType_ASAN_Upload) and Canary-Android are green.\n- Canary-G3: the Skia part passed. CheckTestsSkia and CheckSkiaDependents are green. Two dependent tests failed, and neither is related to this change: one is already broken at HEAD, and the other aborts on a missing data file, with no Skia frames in the stack.\n- Canary-Chromium is red, but its failure does not mention the files in this CL. This canary failed in 50 of its last 60 runs.\n\nSo Canary-G3 is clean for this change, and I am lifting the submit hold.",
+      "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
