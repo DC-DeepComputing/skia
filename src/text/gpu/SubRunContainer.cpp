@@ -53,6 +53,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cmath>
 #include <cstdint>
 #include <new>
 #include <optional>
@@ -117,6 +118,17 @@ SkGlyphRect glyph_bounds_from_left_top(SkGlyphDigest digest, int inset, SkPoint 
     return glyph_bounds(digest, inset, offset);
 }
 
+// Bound glyph coordinates to 1e14f (~2^46). This accommodates arbitrarily large page
+// layouts while rejecting extreme float values (such as near FLT_MAX) where precision loss
+// collapses glyph bounds (e.g. left + width == left) and downstream double-precision
+// calculations (53-bit mantissa) would risk losing subpixel precision.
+constexpr SkScalar kMaxGlyphPositionCoord = 1e14f;
+bool valid_glyph_position(SkPoint pt) {
+    return pt.isFinite() &&
+           std::abs(pt.x()) <= kMaxGlyphPositionCoord &&
+           std::abs(pt.y()) <= kMaxGlyphPositionCoord;
+}
+
 // Returns the empty span if there is a problem reading the positions.
 SkSpan<SkPoint> make_points_from_buffer(SkReadBuffer& buffer, SubRunAllocator* alloc) {
     uint32_t glyphCount = buffer.getArrayCount();
@@ -129,14 +141,21 @@ SkSpan<SkPoint> make_points_from_buffer(SkReadBuffer& buffer, SubRunAllocator* a
                          BagOfBytes::WillCountFit<SkPoint>(glyphCount))) { return {}; }
 
     SkPoint* positionsData = alloc->makePODArray<SkPoint>(glyphCount);
-    if (!buffer.readPointArray({positionsData, glyphCount})) { return {}; }
-    return {positionsData, glyphCount};
+    SkSpan<SkPoint> positions{positionsData, glyphCount};
+    if (!buffer.readPointArray(positions)) { return {}; }
+
+    for (const SkPoint& pt : positions) {
+        if (!buffer.validate(valid_glyph_position(pt))) {
+            return {};
+        }
+    }
+    return positions;
 }
 
-SkRect reconstruct_safe_bounds(SkSpan<const SkPoint> leftTop,
-                               GlyphVector* glyphVector,
-                               skglyph::ActionType actionType,
-                               int inset) {
+std::optional<SkRect> reconstruct_safe_bounds(SkSpan<const SkPoint> leftTop,
+                                              GlyphVector* glyphVector,
+                                              skglyph::ActionType actionType,
+                                              int inset) {
     int count = leftTop.size();
 
     StrikeForGPU* strike = glyphVector->strikePromise().strike();
@@ -146,10 +165,15 @@ SkRect reconstruct_safe_bounds(SkSpan<const SkPoint> leftTop,
     for (int i = 0; i < count; ++i) {
         SkPackedGlyphID packedID = glyphVector->getPackedGlyphID(i);
         SkGlyphDigest digest = strike->digestFor(actionType, packedID);
-        boundingRect = skglyph::rect_union(
-                boundingRect, glyph_bounds_from_left_top(digest, inset, leftTop[i]));
+        const SkGlyphRect glyphBounds =
+                glyph_bounds_from_left_top(digest, inset, leftTop[i]);
+        if (!glyphBounds.rect().isFinite()) {
+            return std::nullopt;
+        }
+        boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
     }
-    return boundingRect.empty() ? SkRect::MakeEmpty() : boundingRect.rect();
+    SkRect rect = boundingRect.empty() ? SkRect::MakeEmpty() : boundingRect.rect();
+    return rect.isFinite() ? std::optional<SkRect>{rect} : std::nullopt;
 }
 
 void flatten_vertex_filler(SkWriteBuffer &buffer, const VertexFiller& vf) {
@@ -167,12 +191,17 @@ std::optional<VertexFiller> make_vertex_filler_from_buffer(SkReadBuffer& buffer,
     MaskFormat maskFormat = buffer.read32LE(MaskFormat::kLast);
 
     const bool canDrawDirect = buffer.readBool();
+    if (!buffer.validate(canDrawDirect == (actionType == skglyph::kDirectMask))) {
+        return std::nullopt;
+    }
 
     SkMatrix creationMatrix;
     buffer.readMatrix(&creationMatrix);
     // The only valid creationMatrices do not have perspective and many rendering parts assume
     // they are non-affine, so reject any malformed matrices here.
-    if (!buffer.validate(!creationMatrix.hasPerspective())) {
+    if (!buffer.validate(creationMatrix.isFinite() &&
+                         !creationMatrix.hasPerspective() &&
+                         creationMatrix.invert().has_value())) {
         return std::nullopt;
     }
 
@@ -185,9 +214,25 @@ std::optional<VertexFiller> make_vertex_filler_from_buffer(SkReadBuffer& buffer,
         return std::nullopt;
     }
 
-    SkRect safeBounds = reconstruct_safe_bounds(leftTop, glyphVector, actionType, inset);
+    if (canDrawDirect) {
+        if (!buffer.validate(valid_glyph_position(
+                    {creationMatrix.getTranslateX(), creationMatrix.getTranslateY()}))) {
+            return std::nullopt;
+        }
+        for (const SkPoint& pt : leftTop) {
+            if (!buffer.validate(VertexFiller::ValidDirectPosition(pt))) {
+                return std::nullopt;
+            }
+        }
+    }
 
-    return VertexFiller{maskFormat, creationMatrix, safeBounds, leftTop, canDrawDirect};
+    std::optional<SkRect> safeBounds =
+            reconstruct_safe_bounds(leftTop, glyphVector, actionType, inset);
+    if (!buffer.validate(safeBounds.has_value())) {
+        return std::nullopt;
+    }
+
+    return VertexFiller{maskFormat, creationMatrix, *safeBounds, leftTop, canDrawDirect};
 }
 
 // -- PathOpSubmitter ------------------------------------------------------------------------------
@@ -273,7 +318,9 @@ std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buf
     bool isAntiAlias = buffer.readInt();
 
     SkScalar strikeToSourceScale = buffer.readScalar();
-    if (!buffer.validate(0 < strikeToSourceScale)) { return std::nullopt; }
+    if (!buffer.validate(SkIsFinite(strikeToSourceScale) && 0 < strikeToSourceScale)) {
+        return std::nullopt;
+    }
 
     SkSpan<SkPoint> positions = make_points_from_buffer(buffer, alloc);
     if (positions.empty()) { return std::nullopt; }
@@ -424,6 +471,7 @@ public:
     }
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return nullptr; }
     static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
+                                      const SkMatrix& initialPositionMatrix,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client);
 
@@ -444,6 +492,7 @@ void PathSubRun::doFlatten(SkWriteBuffer& buffer) const {
 }
 
 SubRunOwner PathSubRun::MakeFromBuffer(SkReadBuffer& buffer,
+                                       const SkMatrix& /*initialPositionMatrix*/,
                                        SubRunAllocator* alloc,
                                        const SkStrikeClient* client) {
     auto pathOpSubmitter = PathOpSubmitter::MakeFromBuffer(buffer, alloc, client);
@@ -526,7 +575,9 @@ std::optional<DrawableOpSubmitter> DrawableOpSubmitter::MakeFromBuffer(
     }
 
     SkScalar strikeToSourceScale = buffer.readScalar();
-    if (!buffer.validate(0 < strikeToSourceScale)) { return std::nullopt; }
+    if (!buffer.validate(SkIsFinite(strikeToSourceScale) && 0 < strikeToSourceScale)) {
+        return std::nullopt;
+    }
 
     SkSpan<SkPoint> positions = make_points_from_buffer(buffer, alloc);
     if (positions.empty()) { return std::nullopt; }
@@ -617,6 +668,7 @@ public:
     }
 
     static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
+                                      const SkMatrix& initialPositionMatrix,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client);
 
@@ -651,6 +703,7 @@ void DrawableSubRun::doFlatten(SkWriteBuffer& buffer) const {
 }
 
 SubRunOwner DrawableSubRun::MakeFromBuffer(SkReadBuffer& buffer,
+                                           const SkMatrix& /*initialPositionMatrix*/,
                                            SubRunAllocator* alloc,
                                            const SkStrikeClient* client) {
     auto drawableOpSubmitter = DrawableOpSubmitter::MakeFromBuffer(buffer, alloc, client);
@@ -694,6 +747,7 @@ public:
     }
 
     static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
+                                      const SkMatrix& initialPositionMatrix,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client) {
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
@@ -702,6 +756,10 @@ public:
         auto vertexFiller = make_vertex_filler_from_buffer(buffer, alloc, &glyphVector.value(),
                                                            skglyph::kDirectMask, kGlyphInsetting);
         if (!buffer.validate(vertexFiller.has_value())) { return nullptr; }
+
+        if (!buffer.validate(vertexFiller->creationMatrix() == initialPositionMatrix)) {
+            return nullptr;
+        }
 
         SkASSERT(buffer.isValid());
         return alloc->makeUnique<DirectMaskSubRun>(std::move(*vertexFiller),
@@ -796,6 +854,7 @@ public:
     }
 
     static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
+                                      const SkMatrix& /*initialPositionMatrix*/,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client) {
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
@@ -928,11 +987,17 @@ public:
     }
 
     static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
+                                      const SkMatrix& /*initialPositionMatrix*/,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client) {
         int useLCD = buffer.readInt();
         int isAntiAliased = buffer.readInt();
+        if (!buffer.validate((useLCD == 0 || useLCD == 1) &&
+                             (isAntiAliased == 0 || isAntiAliased == 1))) {
+            return nullptr;
+        }
         SDFTMatrixRange matrixRange = SDFTMatrixRange::MakeFromBuffer(buffer);
+        if (!buffer.isValid()) { return nullptr; }
 
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
         if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
@@ -1042,9 +1107,11 @@ void SubRun::flatten(SkWriteBuffer& buffer) const {
 }
 
 SubRunOwner SubRun::MakeFromBuffer(SkReadBuffer& buffer,
+                                   const SkMatrix& initialPositionMatrix,
                                    SubRunAllocator* alloc,
                                    const SkStrikeClient* client) {
     using Maker = SubRunOwner (*)(SkReadBuffer&,
+                                  const SkMatrix&,
                                   SubRunAllocator*,
                                   const SkStrikeClient*);
 
@@ -1064,7 +1131,7 @@ SubRunOwner SubRun::MakeFromBuffer(SkReadBuffer& buffer,
     }
     auto maker = makers[subRunTypeInt];
     if (!buffer.validate(maker != nullptr)) { return nullptr; }
-    return maker(buffer, alloc, client);
+    return maker(buffer, initialPositionMatrix, alloc, client);
 }
 
 // -- SubRunContainer ------------------------------------------------------------------------------
@@ -1107,13 +1174,15 @@ SubRunContainerOwner SubRunContainer::MakeFromBufferInAlloc(SkReadBuffer& buffer
                                                             SubRunAllocator* alloc) {
     SkMatrix positionMatrix;
     buffer.readMatrix(&positionMatrix);
-    if (!buffer.isValid()) { return nullptr; }
+    if (!buffer.validate(positionMatrix.isFinite())) {
+        return nullptr;
+    }
     SubRunContainerOwner container = alloc->makeUnique<SubRunContainer>(positionMatrix);
 
     int subRunCount = buffer.readInt();
     if (!buffer.validate(subRunCount > 0)) { return nullptr; }
     for (int i = 0; i < subRunCount; ++i) {
-        auto subRunOwner = SubRun::MakeFromBuffer(buffer, alloc, client);
+        auto subRunOwner = SubRun::MakeFromBuffer(buffer, positionMatrix, alloc, client);
         if (!buffer.validate(subRunOwner != nullptr)) { return nullptr; }
         if (subRunOwner != nullptr) {
             container->fSubRuns.append(std::move(subRunOwner));
@@ -1165,9 +1234,20 @@ prepare_for_SDFT_drawing(StrikeForGPU* strike,
         switch (const SkGlyphDigest digest = strike->digestFor(skglyph::kSDFT, packedID);
                 digest.actionFor(skglyph::kSDFT)) {
             case GlyphAction::kAccept: {
+                // Glyphs whose creation-space position or bounds are unusable (non-finite or
+                // beyond kMaxGlyphPositionCoord) are rejected so a later stage can draw them.
                 SkPoint mappedPos = creationMatrix.mapPoint(pos);
+                if (!mappedPos.isFinite()) {
+                    rejectedBuffer[rejectedSize++] = std::make_tuple(glyphID, pos);
+                    break;
+                }
                 const SkGlyphRect glyphBounds =
                         glyph_bounds(digest, SDFTSubRun::kGlyphInsetting, mappedPos);
+                if (!glyphBounds.rect().isFinite() ||
+                    !valid_glyph_position(glyphBounds.leftTop())) {
+                    rejectedBuffer[rejectedSize++] = std::make_tuple(glyphID, pos);
+                    break;
+                }
                 boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
                 acceptedBuffer[acceptedSize++] = std::make_tuple(packedID, glyphBounds.leftTop());
                 break;
@@ -1195,6 +1275,23 @@ prepare_for_direct_mask_drawing(StrikeForGPU* strike,
                                 SkZip<SkPackedGlyphID, SkPoint, SkMask::Format> acceptedBuffer,
                                 SkZip<SkGlyphID, SkPoint> rejectedBuffer,
                                 skglyph::ActionType actionType) {
+    // The positionMatrix becomes the creationMatrix of any DirectMaskSubRun, and deserialization
+    // rejects direct-mask creation matrices whose translation is not a valid glyph position, so
+    // send every glyph to the fallback stages instead. Like the main loop below, drop glyphs with
+    // non-finite positions.
+    if (!valid_glyph_position(
+                {positionMatrix.getTranslateX(), positionMatrix.getTranslateY()})) {
+        int rejectedSize = 0;
+        for (auto [glyphID, pos] : source) {
+            if (SkIsFinite(pos.x(), pos.y())) {
+                rejectedBuffer[rejectedSize++] = std::make_tuple(glyphID, pos);
+            }
+        }
+        return {acceptedBuffer.first(0),
+                rejectedBuffer.first(rejectedSize),
+                SkRect::MakeEmpty()};
+    }
+
     const SkIPoint mask = strike->roundingSpec().ignorePositionFieldMask;
     const SkPoint halfSampleFreq = strike->roundingSpec().halfAxisSampleFreq;
 
@@ -1213,6 +1310,9 @@ prepare_for_direct_mask_drawing(StrikeForGPU* strike,
         }
 
         const SkPoint mappedPos = positionMatrixWithRounding.mapPoint(pos);
+        if (!mappedPos.isFinite()) {
+            continue;
+        }
         const SkPackedGlyphID packedID{glyphID, mappedPos, mask};
         switch (const SkGlyphDigest digest = strike->digestFor(actionType, packedID);
                 digest.actionFor(actionType)) {
@@ -1222,6 +1322,11 @@ prepare_for_direct_mask_drawing(StrikeForGPU* strike,
                 const SkGlyphRect glyphBounds = glyph_bounds(digest,
                                                              DirectMaskSubRun::kGlyphInsetting,
                                                              roundedPos);
+                if (!VertexFiller::ValidDirectPosition(glyphBounds.leftTop()) ||
+                    !glyphBounds.rect().isFinite()) {
+                    rejectedBuffer[rejectedSize++] = std::make_tuple(glyphID, pos);
+                    break;
+                }
                 boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
                 acceptedBuffer[acceptedSize++] =
                         std::make_tuple(packedID, glyphBounds.leftTop(), digest.maskFormat());
@@ -1261,9 +1366,20 @@ prepare_for_mask_drawing(StrikeForGPU* strike,
         switch (const SkGlyphDigest digest = strike->digestFor(kMask, packedID);
                 digest.actionFor(kMask)) {
             case GlyphAction::kAccept: {
+                // Report glyphs whose creation-space position or bounds are unusable (non-finite
+                // or beyond kMaxGlyphPositionCoord) as rejected, consistent with the other stages.
                 const SkPoint mappedPos = creationMatrix.mapPoint(pos);
+                if (!mappedPos.isFinite()) {
+                    rejectedBuffer[rejectedSize++] = std::make_tuple(glyphID, pos);
+                    break;
+                }
                 const SkGlyphRect glyphBounds =
                         glyph_bounds(digest, TransformedMaskSubRun::kGlyphInsetting, mappedPos);
+                if (!glyphBounds.rect().isFinite() ||
+                    !valid_glyph_position(glyphBounds.leftTop())) {
+                    rejectedBuffer[rejectedSize++] = std::make_tuple(glyphID, pos);
+                    break;
+                }
                 boundingRect = skglyph::rect_union(boundingRect, glyphBounds);
                 acceptedBuffer[acceptedSize++] =
                         std::make_tuple(packedID, glyphBounds.leftTop(), digest.maskFormat());
@@ -1291,7 +1407,7 @@ prepare_for_path_drawing(StrikeForGPU* strike,
     int rejectedSize = 0;
     StrikeMutationMonitor m{strike};
     for (const auto [glyphID, pos] : source) {
-        if (!SkIsFinite(pos.x(), pos.y())) {
+        if (!valid_glyph_position(pos)) {
             continue;
         }
 
@@ -1319,7 +1435,7 @@ prepare_for_drawable_drawing(StrikeForGPU* strike,
     int rejectedSize = 0;
     StrikeMutationMonitor m{strike};
     for (const auto [glyphID, pos] : source) {
-        if (!SkIsFinite(pos.x(), pos.y())) {
+        if (!valid_glyph_position(pos)) {
             continue;
         }
 
@@ -1708,6 +1824,15 @@ bool SubRunContainer::canReuse(const SkPaint& paint, const SkMatrix& positionMat
         }
     }
     return true;
+}
+
+bool SubRunContainer::hasDirectMaskSubRuns() const {
+    for (const SubRun& subRun : fSubRuns) {
+        if (subRun.canDrawDirect()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 }  // namespace sktext::gpu
