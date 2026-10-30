@@ -1,0 +1,39 @@
+# Skottie (`modules/skottie/`)
+
+## Overview & Scope
+`skottie` (`namespace skottie`) is Skia's native C++ player for **Lottie** (Bodymovin) JSON vector animations exported from Adobe After Effects. It lives in `modules/skottie/` because it orchestrates several specialized Skia modules—[`jsonreader`](file:///Users/jmbetancourt/skia/modules/jsonreader) for fast JSON parsing, [`sksg`](file:///Users/jmbetancourt/skia/modules/sksg) for retained-mode scene graph construction and dirty-region invalidation, [`skresources`](file:///Users/jmbetancourt/skia/modules/skresources) for external image/audio/video asset loading, and [`skshaper`](file:///Users/jmbetancourt/skia/modules/skshaper/README.md) + [`skunicode`](file:///Users/jmbetancourt/skia/modules/skunicode) for dynamic text layer shaping—on top of core `libskia`.
+
+## Key Abstractions & Entrypoints
+Public headers reside in [`include/`](file:///Users/jmbetancourt/skia/modules/skottie/include) under `namespace skottie`:
+
+- **[`Animation`](file:///Users/jmbetancourt/skia/modules/skottie/include/Skottie.h#L101-L320)**: Reference-counted animation instance holding the compiled `sksg::RenderNode` scene tree and `Animator` list.
+  - `seekFrame(double t, sksg::InvalidationController*)` / `seekFrameTime(double t, ...)`: Evaluates keyframe animators at frame `t` (or seconds `t`), mutating scene graph nodes and optionally recording dirty bounding boxes in `InvalidationController`.
+  - `render(SkCanvas*, const SkRect* dst, RenderFlags)`: Renders the current frame of the `sksg` scene graph into `canvas`.
+- **[`Animation::Builder`](file:///Users/jmbetancourt/skia/modules/skottie/include/Skottie.h#L103-L208)**: Configurable factory (`make(SkStream*)`, `make(data, len)`, `makeFromFile(path)`). Supports flags (`kDeferImageLoading`, `kPreferEmbeddedFonts`), build `Stats`, and dependency injection:
+  - [`ResourceProvider`](file:///Users/jmbetancourt/skia/modules/skresources/include/SkResources.h) (`setResourceProvider`): Resolves external images, multi-frame assets, audio tracks, and typefaces.
+  - [`PropertyObserver`](file:///Users/jmbetancourt/skia/modules/skottie/include/SkottieProperty.h#L171-L188) (`setPropertyObserver`): Receives callbacks during parsing for named Lottie nodes, yielding [`PropertyHandle`](file:///Users/jmbetancourt/skia/modules/skottie/include/SkottieProperty.h#L128-L161)s (`ColorPropertyHandle`, `OpacityPropertyHandle`, `TextPropertyHandle`, `TransformPropertyHandle`) for runtime inspection and mutation.
+  - [`SlotManager`](file:///Users/jmbetancourt/skia/modules/skottie/include/SlotManager.h) (`getSlotManager`): High-level dynamic property binding API (`setColorSlot`, `setImageSlot`, `setScalarSlot`, `setVec2Slot`, `setTextSlot`) keyed by Lottie `SlotID`.
+  - [`Logger`](file:///Users/jmbetancourt/skia/modules/skottie/include/Skottie.h#L59-L67) & [`MarkerObserver`](file:///Users/jmbetancourt/skia/modules/skottie/include/Skottie.h#L95-L99): Reports JSON parsing warnings/errors and AE composition timeline markers.
+  - [`PrecompInterceptor`](file:///Users/jmbetancourt/skia/modules/skottie/include/ExternalLayer.h) & [`ExpressionManager`](file:///Users/jmbetancourt/skia/modules/skottie/include/Skottie.h#L80-L90): Substitutes precomp layers with custom `ExternalLayer`s and evaluates JavaScript/AE expressions.
+- **[`skottie::Shaper`](file:///Users/jmbetancourt/skia/modules/skottie/include/TextShaper.h)**: Implements After Effects text layout semantics (box auto-scaling `ResizePolicy`, vertical alignment `VAlign`, per-glyph fragmenting) on top of `SkShaper`.
+
+### Internal Architecture & Scene Graph (`modules/sksg`)
+At build time (`AnimationBuilder` in [`SkottiePriv.h`](file:///Users/jmbetancourt/skia/modules/skottie/src/SkottiePriv.h)), `skottie` parses the JSON DOM (`skjson::DOM`) and translates After Effects constructs into a retained [`modules/sksg`](file:///Users/jmbetancourt/skia/modules/sksg) scene graph:
+1. **Compositions & Layers ([`src/Composition.cpp`](file:///Users/jmbetancourt/skia/modules/skottie/src/Composition.cpp), [`src/Layer.cpp`](file:///Users/jmbetancourt/skia/modules/skottie/src/Layer.cpp), [`src/layers/`](file:///Users/jmbetancourt/skia/modules/skottie/src/layers))**: Builds `sksg::RenderNode` subtrees for shape layers (`src/layers/shapelayer/`), text layers (`TextLayer.cpp`), precomps (`PrecompLayer.cpp`), footage/image layers (`FootageLayer.cpp`), solids (`SolidLayer.cpp`), nulls, and audio layers, wrapping them with matte/clip masks, blend modes, and 2D/3D camera transforms ([`Camera.cpp`](file:///Users/jmbetancourt/skia/modules/skottie/src/Camera.cpp), [`Transform.cpp`](file:///Users/jmbetancourt/skia/modules/skottie/src/Transform.cpp)).
+2. **Effects ([`src/effects/`](file:///Users/jmbetancourt/skia/modules/skottie/src/effects))**: Translates ~30 AE layer effects and styles (Gaussian/Directional blur, Drop Shadow, Displacement Map, Fill, Gradient, Hue/Saturation, Levels, Linear/Radial Wipe, Tint, Tritone, Fractal Noise, Bulge, Sphere, and custom `SkSLEffect` shaders) into `sksg::RenderNode` and `SkRuntimeEffect` wrappers.
+3. **Animators & Adapters ([`src/animator/`](file:///Users/jmbetancourt/skia/modules/skottie/src/animator), [`src/Adapter.h`](file:///Users/jmbetancourt/skia/modules/skottie/src/Adapter.h), [`src/text/`](file:///Users/jmbetancourt/skia/modules/skottie/src/text))**: Animated JSON properties create `KeyframeAnimator` subclasses (Scalar, Vec2, Vector, Shape, Text). Static properties bind directly to `sksg` nodes; complex properties bind to `AnimatablePropertyContainer` / `DiscardableAdapterBase` adapters (e.g., `TransformAdapter2D`, `TextAdapter`, `RangeSelector`). On `seekFrameTime(t)`, animators interpolate values, trigger `onSync()` on modified adapters, update underlying `sksg::Node`s, and propagate dirty bounds through `sksg`'s invalidation hierarchy.
+
+## Subdirectories & Dependencies
+- [`include/`](file:///Users/jmbetancourt/skia/modules/skottie/include): `Skottie.h`, `SkottieProperty.h`, `SlotManager.h`, `ExternalLayer.h`, `TextShaper.h`.
+- [`src/`](file:///Users/jmbetancourt/skia/modules/skottie/src): Core engine, plus [`animator/`](file:///Users/jmbetancourt/skia/modules/skottie/src/animator), [`layers/`](file:///Users/jmbetancourt/skia/modules/skottie/src/layers) (`shapelayer/`), [`effects/`](file:///Users/jmbetancourt/skia/modules/skottie/src/effects), [`text/`](file:///Users/jmbetancourt/skia/modules/skottie/src/text), and CLI renderer [`SkottieTool.cpp`](file:///Users/jmbetancourt/skia/modules/skottie/src/SkottieTool.cpp).
+- [`utils/`](file:///Users/jmbetancourt/skia/modules/skottie/utils), [`gm/`](file:///Users/jmbetancourt/skia/modules/skottie/gm), [`tests/`](file:///Users/jmbetancourt/skia/modules/skottie/tests), [`fuzz/`](file:///Users/jmbetancourt/skia/modules/skottie/fuzz): `SkottieUtils`, `TextEditor`, `TextPreshape`, GMs, unit tests, and `FuzzSkottieJSON.cpp`.
+- **Dependencies**: `//:core`, `//:pathops`, [`modules/sksg`](file:///Users/jmbetancourt/skia/modules/sksg), [`modules/skresources`](file:///Users/jmbetancourt/skia/modules/skresources), [`modules/jsonreader`](file:///Users/jmbetancourt/skia/modules/jsonreader), [`modules/skshaper`](file:///Users/jmbetancourt/skia/modules/skshaper/README.md), and [`modules/skunicode`](file:///Users/jmbetancourt/skia/modules/skunicode).
+
+## Build & Test
+- **GN**: Target `//modules/skottie:skottie` (enabled via `skia_enable_skottie = true`, defines `SK_ENABLE_SKOTTIE` and `SK_ENABLE_SKOTTIE_SKSLEFFECT`). Standalone targets include `:tests`, `:gm`, `:tool`, `:tool_cpu`, `:tool_gpu`, `:preshape_tool`, and `:utils`.
+- **Bazel**: Libraries `//modules/skottie:skottie` and `:textshaper`; CLI binaries `:skottie_tool_cpu`, `:skottie_tool_gpu`, and `:skottie_preshape_tool`.
+- **Running Tests & GMs**:
+  ```bash
+  ninja -C out/Release dm skottie_tool
+  ./out/Release/dm --match skottie
+  ```
