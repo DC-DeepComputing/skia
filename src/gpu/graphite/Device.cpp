@@ -1698,10 +1698,12 @@ void Device::drawGeometry(const Transform& localToDevice,
     // Calculate the clipped bounds of the draw and determine the clip elements that affect the
     // draw without updating the clip stack.
     ClipStack::ElementList clipElements;
+    int undrawnClipElements = 0;
     Clip clip = fClip.visitClipStackForDraw(localToDevice,
                                             &geometry,
                                             &style,
-                                            &clipElements);
+                                            &clipElements,
+                                            &undrawnClipElements);
     if (clip.isClippedOut()) {
         // Clipped out, so don't record anything.
         return;
@@ -1763,6 +1765,14 @@ void Device::drawGeometry(const Transform& localToDevice,
         }
     }
 
+    // If the draw and its effective clip elements require more render steps than a single DrawList
+    // can hold even after a flush, skip the draw to avoid overflowing fixed-capacity structures.
+    if (numNewRenderSteps + clipElements.size() * Renderer::kMaxRenderSteps >
+        DrawList::kMaxRenderSteps) {
+        SKIA_LOG_W("Skipping draw: clip stack requires too many render steps for a single pass.");
+        return;
+    }
+
 #if defined(SK_ENABLE_SPARSE_STRIPS)
     // If the textures backing the sparse strips renderers run out of space, we may need to trigger
     // a flush here.
@@ -1808,7 +1818,8 @@ void Device::drawGeometry(const Transform& localToDevice,
     DstReadStrategy dstReadStrategy = shading.dstReadRequired() ?
                                       fDC->dstReadStrategy() : DstReadStrategy::kNoneRequired;
     // TODO (thomsmit): Adjust this when the draw limit is removed.
-    const bool needsFlush = this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy);
+    const bool needsFlush = this->needsFlushBeforeDraw(
+            numNewRenderSteps, undrawnClipElements, dstReadStrategy);
     if (needsFlush) {
         if (pathAtlas != nullptr) {
             // We need to flush work for all devices associated with the current Recorder.
@@ -2062,7 +2073,7 @@ void Device::drawClipShape(const Transform& localToDevice,
 
     // This call represents one of the deferred clip shapes that's already pessimistically counted
     // in needsFlushBeforeDraw(), so the DrawContext should have room to add it.
-    SkASSERT(fDC->pendingRenderSteps() + renderer->numRenderSteps() < DrawList::kMaxRenderSteps);
+    SkASSERT(fDC->pendingRenderSteps() + renderer->numRenderSteps() <= DrawList::kMaxRenderSteps);
 
     // Anti-aliased clipping requires the renderer to use MSAA to modify the depth per sample, so
     // analytic coverage renderers cannot be used.
@@ -2100,6 +2111,8 @@ std::pair<DrawParams*, Layer*> Device::drawClipShapeImmediate(const Transform& l
         SKIA_LOG_W("Skipping clip with no supported path renderer.");
         return {nullptr, {}};
     }
+
+    SkASSERT(fDC->pendingRenderSteps() + renderer->numRenderSteps() <= DrawList::kMaxRenderSteps);
 
     if (localToDevice.type() == Transform::Type::kPerspective) {
         SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());
@@ -2410,9 +2423,16 @@ void Device::internalFlush() {
     fRecorder->priv().compactAtlasProvider();
 }
 
-bool Device::needsFlushBeforeDraw(int numNewRenderSteps, DstReadStrategy dstReadStrategy) {
+bool Device::needsFlushBeforeDraw(int numNewRenderSteps,
+                                  int numUndrawnClipElements,
+                                  DstReadStrategy dstReadStrategy) {
     // Must also account for the elements in the clip stack that might need to be recorded.
-    numNewRenderSteps += fClip.maxDeferredClipDraws() * Renderer::kMaxRenderSteps;
+    // When using DrawListLayer, clip elements are recorded immediately on first use so already-
+    // drawn clip elements are already accounted for in fDC->pendingRenderSteps().
+    int clipElementsToRecord = fRecorder->priv().caps()->useDrawListLayer()
+                                       ? numUndrawnClipElements
+                                       : fClip.maxDeferredClipDraws();
+    numNewRenderSteps += clipElementsToRecord * Renderer::kMaxRenderSteps;
     bool needsFlush =
             // Need flush if we don't have room to record into the current list.
             (DrawList::kMaxRenderSteps - fDC->pendingRenderSteps()) < numNewRenderSteps ||
