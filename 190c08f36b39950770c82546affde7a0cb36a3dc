@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09dc529d_46cd34d5",
+        "filename": "src/core/SkAutoMalloc.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-30T15:33:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ab67e1f_06d952b0",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 42
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84abf614_9d095fad",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Fixed in the prerequisite https://skia-review.googlesource.com/c/skia/+/1408757",
       "parentUuid": "84abf614_9d095fad",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 46
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a75235e_7bbed9b4",
+        "filename": "src/core/SkAutoPixmapStorage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-30T15:33:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37d912e1_b84a4a96",
       "range": {
         "startLine": 88,
         "startChar": 0,
@@ -226,6 +274,30 @@
       "side": 1,
       "message": "Fixed in the prerequisite https://skia-review.googlesource.com/c/skia/+/1408757",
       "parentUuid": "1dd4be5d_95a0b87d",
+      "range": {
+        "startLine": 1141,
+        "startChar": 0,
+        "endLine": 1141,
+        "endChar": 14
+      },
+      "revId": "190c08f36b39950770c82546affde7a0cb36a3dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61a7d798_3fd52360",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 1141,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-10-30T15:33:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb60b79d_2b3e07c6",
       "range": {
         "startLine": 1141,
         "startChar": 0,
