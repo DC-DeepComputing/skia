@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac76908a_4bc683d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5250830
+      },
+      "writtenOn": "2026-10-30T22:31:07Z",
+      "side": 1,
+      "message": "PTAL: This is the recommended door from:\n\nhttps://skia-review.googlesource.com/c/skia/+/1397897\n\nWhen implementing extendedVisit, I encountered an offset bug, which is what this CL is about.",
+      "revId": "69ba3f397d60826068ff3547c2d9f3f9a366f97a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
