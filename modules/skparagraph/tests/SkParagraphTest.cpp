@@ -12160,3 +12160,187 @@ DEF_TEST(SkParagraph_ManyStyleBlocksWithSeveralFonts, reporter) {
         }
     }
 }
+
+// First-line indentation belongs to line breaking/formatting, not to the text
+UNIX_ONLY_TEST(SkParagraph_FirstLineIndent, reporter) {
+    sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
+    const char* text = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda";
+    for (auto direction : {TextDirection::kLtr, TextDirection::kRtl}) {
+        ParagraphStyle style;
+        style.setTextDirection(direction);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setFontSize(16);
+        style.setTextStyle(textStyle);
+        for (auto align : {TextAlign::kStart, TextAlign::kEnd,
+                           TextAlign::kCenter, TextAlign::kJustify}) {
+            style.setTextAlign(align);
+            auto make = [&]() {
+                ParagraphBuilderImpl builder(style, fonts, get_unicode());
+                builder.addText(text, strlen(text));
+                return builder.Build();
+            };
+            for (SkScalar indent : {-40.0f, 40.0f, 160.0f}) {
+                auto paragraph = make();
+                auto reference = make();
+                paragraph->layout(180, indent);
+                reference->layout(180 - indent);
+                REPORTER_ASSERT(reporter, paragraph->getActualTextRange(0, true) ==
+                                          reference->getActualTextRange(0, true));
+                std::vector<LineMetrics> actual, expected;
+                paragraph->getLineMetrics(actual);
+                reference->getLineMetrics(expected);
+                REPORTER_ASSERT(reporter, actual.size() > 1 && !expected.empty());
+                const auto x = expected[0].fLeft + (direction == TextDirection::kLtr ? indent : 0);
+                REPORTER_ASSERT(reporter, SkScalarNearlyEqual(actual[0].fLeft, x, 0.02f));
+                // Content and its UTF indices are unchanged: no prefix placeholder
+                REPORTER_ASSERT(reporter, paragraph->getRectsForPlaceholders().empty());
+                paragraph->layout(180); // Must reset both indent and cached line breaks
+                reference->layout(180);
+                REPORTER_ASSERT(reporter, paragraph->getActualTextRange(0, true) ==
+                                          reference->getActualTextRange(0, true));
+                paragraph->getLineMetrics(actual);
+                reference->getLineMetrics(expected);
+                REPORTER_ASSERT(reporter, SkScalarNearlyEqual(actual[0].fLeft, expected[0].fLeft));
+            }
+        }
+    }
+}
+
+UNIX_ONLY_TEST(SkParagraph_FirstLineIndentLaterLinesAndObjects, reporter) {
+    sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
+    for (auto direction : {TextDirection::kLtr, TextDirection::kRtl}) {
+        ParagraphStyle style;
+        style.setTextDirection(direction);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setFontSize(16);
+        style.setTextStyle(textStyle);
+        auto make = [&]() {
+            ParagraphBuilderImpl builder(style, fonts, get_unicode());
+            builder.addPlaceholder(PlaceholderStyle(24, 20, PlaceholderAlignment::kBaseline,
+                                                    TextBaseline::kAlphabetic, 20));
+            const char* tail="\nalpha beta gamma delta epsilon zeta eta theta iota kappa";
+            builder.addText(tail, strlen(tail));
+            return builder.Build();
+        };
+        auto ordinary = make();
+        ordinary->layout(180);
+        std::vector<LineMetrics> expected;
+        ordinary->getLineMetrics(expected);
+        for (SkScalar indent : {-40.0f, 40.0f}) {
+            auto paragraph = make();
+            paragraph->layout(180, indent);
+            auto boxes = paragraph->getRectsForPlaceholders();
+            REPORTER_ASSERT(reporter, boxes.size() == 1);
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(boxes[0].rect.width(), 24));
+            const auto edge = direction == TextDirection::kLtr ? boxes[0].rect.left()
+                                                              : boxes[0].rect.right();
+            const auto leading = direction == TextDirection::kLtr ? indent : 180 - indent;
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(edge, leading, 0.02f));
+            std::vector<LineMetrics> actual;
+            paragraph->getLineMetrics(actual);
+            REPORTER_ASSERT(reporter, actual.size() == expected.size());
+            for (size_t row = 1; row < actual.size(); ++row) {
+                REPORTER_ASSERT(reporter, actual[row].fStartIndex == expected[row].fStartIndex);
+                REPORTER_ASSERT(reporter, actual[row].fEndIndex == expected[row].fEndIndex);
+                REPORTER_ASSERT(reporter,
+                                SkScalarNearlyEqual(actual[row].fLeft, expected[row].fLeft));
+                REPORTER_ASSERT(reporter,
+                                SkScalarNearlyEqual(actual[row].fWidth, expected[row].fWidth));
+            }
+        }
+    }
+}
+
+UNIX_ONLY_TEST(SkParagraph_FirstLineIndentEmptyAndIntrinsicWidths, reporter) {
+    sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
+    for (auto direction : {TextDirection::kLtr, TextDirection::kRtl}) {
+        ParagraphStyle style;
+        style.setTextDirection(direction);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setFontSize(16);
+        style.setTextStyle(textStyle);
+        ParagraphBuilderImpl builder(style, fonts, get_unicode());
+        auto empty = builder.Build();
+        empty->layout(180);
+        const auto height = empty->getHeight();
+        for (SkScalar indent : {-40.0f, 40.0f, 200.0f}) {
+            empty->layout(180, indent);
+            LineMetrics line;
+            REPORTER_ASSERT(reporter, empty->getLineMetricsAt(0, &line));
+            const auto expected = direction == TextDirection::kLtr ? indent : 180 - indent;
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(line.fLeft, expected));
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(empty->getHeight(), height));
+            const auto boxes = empty->getRectsForRange(0, 1, RectHeightStyle::kTight,
+                                                      RectWidthStyle::kTight);
+            REPORTER_ASSERT(reporter, boxes.size() == 1 &&
+                                      SkScalarNearlyEqual(boxes[0].rect.left(), expected));
+            SkPath path;
+            for (size_t i = 0; i < empty->lineNumber(); ++i) {
+                empty->getPath((int)i, &path);
+            }
+        }
+        const char* word = "alpha";
+        ParagraphBuilderImpl wordBuilder(style, fonts, get_unicode());
+        wordBuilder.addText(word, strlen(word));
+        auto paragraph = wordBuilder.Build();
+        paragraph->layout(180);
+        const auto width = paragraph->getMaxIntrinsicWidth();
+        for (SkScalar indent : {-60.0f, -20.0f, 20.0f, 60.0f}) {
+            paragraph->layout(180, indent);
+            const auto expected = std::max(0.0f, width + indent);
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(paragraph->getMaxIntrinsicWidth(),
+                                                         expected, 0.02f));
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(paragraph->getMinIntrinsicWidth(),
+                                                         expected, 0.02f));
+        }
+
+        const char* spaces = "   ";
+        ParagraphBuilderImpl spacesBuilder(style, fonts, get_unicode());
+        spacesBuilder.addText(spaces, strlen(spaces));
+        auto spacesParagraph = spacesBuilder.Build();
+        spacesParagraph->layout(180, 40.0f);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(spacesParagraph->getMinIntrinsicWidth(), 0.0f));
+
+        const char* leadingSpace = " alpha";
+        ParagraphBuilderImpl leadingSpaceBuilder(style, fonts, get_unicode());
+        leadingSpaceBuilder.addText(leadingSpace, strlen(leadingSpace));
+        auto leadingSpaceParagraph = leadingSpaceBuilder.Build();
+        leadingSpaceParagraph->layout(180);
+        const auto unindentedLeadingSpaceWidth = leadingSpaceParagraph->getMinIntrinsicWidth();
+        leadingSpaceParagraph->layout(180, 40.0f);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(leadingSpaceParagraph->getMinIntrinsicWidth(),
+                                            unindentedLeadingSpaceWidth + 40.0f, 0.02f));
+
+        const char* leadingNewline = "\nalpha";
+        ParagraphBuilderImpl leadingNewlineBuilder(style, fonts, get_unicode());
+        leadingNewlineBuilder.addText(leadingNewline, strlen(leadingNewline));
+        auto leadingNewlineParagraph = leadingNewlineBuilder.Build();
+        leadingNewlineParagraph->layout(180);
+        const auto unindentedNewlineWordWidth = leadingNewlineParagraph->getMinIntrinsicWidth();
+        leadingNewlineParagraph->layout(180, 200.0f);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(leadingNewlineParagraph->getMinIntrinsicWidth(),
+                                            unindentedNewlineWordWidth, 0.02f));
+
+        ParagraphStyle hyphenStyle = style;
+        hyphenStyle.setRenderSoftHyphens(true);
+        const char* hyphenText = "alpha\xC2\xAD" "beta";
+        ParagraphBuilderImpl hyphenBuilder(hyphenStyle, fonts, get_unicode());
+        hyphenBuilder.addText(hyphenText, strlen(hyphenText));
+        auto hyphenParagraph = hyphenBuilder.Build();
+        hyphenParagraph->layout(180);
+        const auto unindentedHyphenWidth = hyphenParagraph->getMinIntrinsicWidth();
+        hyphenParagraph->layout(180, 40.0f);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(hyphenParagraph->getMinIntrinsicWidth(),
+                                            unindentedHyphenWidth + 40.0f, 0.02f));
+    }
+}

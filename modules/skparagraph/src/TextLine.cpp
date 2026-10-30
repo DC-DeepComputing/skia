@@ -871,6 +871,33 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
     return ellipsisRun;
 }
 
+SkScalar TextLine::SoftHyphenWidth(const SkString* softHyphen, const Cluster* cluster) {
+    if (softHyphen == nullptr || !cluster->isSoftHyphen() ||
+        cluster->textRange().end >= cluster->owner()->text().size()) {
+        return 0;
+    }
+    const SkFont& font = cluster->run().font();
+    skia_private::AutoSTArray<8, SkGlyphID> glyphs(softHyphen->size());
+    size_t glyphCount = font.textToGlyphs(
+            softHyphen->c_str(), softHyphen->size(), SkTextEncoding::kUTF8, glyphs);
+    bool resolved = glyphCount > 0;
+    for (size_t i = 0; i < glyphCount; ++i) {
+        if (glyphs[i] == 0) {
+            resolved = false;
+            break;
+        }
+    }
+    if (resolved) {
+        return font.measureText(softHyphen->c_str(), softHyphen->size(), SkTextEncoding::kUTF8);
+    }
+    // When the cluster's font lacks a glyph for the hyphen string, shape with font fallback
+    // matching TextLine::createSoftHyphen so reserved and intrinsic widths match the drawn hyphen
+    ParagraphImpl* owner = cluster->owner();
+    auto hyphenRun = TextLine::ShapeString(
+            owner, owner->findAllBlocks(cluster->textRange()), *softHyphen, cluster);
+    return hyphenRun ? hyphenRun->advance().fX : 0;
+}
+
 TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
                                                         const Run* run,
                                                         SkScalar runOffsetInLine,
