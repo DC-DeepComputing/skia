@@ -277,6 +277,12 @@ enum class DepthUsageMode : uint8_t {
     // MSAA (more CPU work), but has the least attachment overhead and fewest render pass
     // possibilities.
     kNever,
+    // Render passes for client-created SkSurfaces will use depth (matching kAlways), but internal
+    // surfaces for color conversion, rescaling, or image filtering won't use depth. These
+    // operations typically don't benefit from occlusion and aren't clipping anything, and often
+    // have unique shaders already (avoiding the majority of extra pipeline combinations). This may
+    // still trigger some extra variations for basic image draws.
+    kAvoidForInternal,
 };
 
 /**

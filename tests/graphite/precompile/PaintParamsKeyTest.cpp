@@ -76,7 +76,7 @@ sk_sp<DrawContext> get_precompile_draw_context(const skgpu::graphite::Caps* caps
                              drawSize,
                              colorInfo,
                              {},
-                             /*allowUnpremul=*/false);
+                             /*internalControl=*/false);
 }
 
 void log_run(const char* label,

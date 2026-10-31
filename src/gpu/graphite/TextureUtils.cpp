@@ -410,8 +410,7 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
     // The surface goes out of scope when we return, so it can be scratch, but it may or may
     // not be budgeted depending on how the copied image is used (or returned to the client).
     sk_sp<Surface> surface =
-            Surface::MakeScratch(recorder, dstInfo, label, budgeted, mipmapped, backingFit,
-                                 /*allowUnpremul=*/true);
+            Surface::MakeScratch(recorder, dstInfo, label, budgeted, mipmapped, backingFit);
     if (!surface) {
         return nullptr;
     }
@@ -454,8 +453,7 @@ sk_sp<Image> RescaleImage(Recorder* recorder,
             "RescaleDstTexture",
             Budgeted::kYes,
             Mipmapped::kNo,
-            SkBackingFit::kExact,
-            /*allowUnpremul=*/true);
+            SkBackingFit::kExact);
     if (!dst) {
         return nullptr;
     }
@@ -596,10 +594,7 @@ bool GenerateMipmaps(Recorder* recorder, DrawContext* drawContext, sk_sp<Texture
                 SkImageInfo::Make(SkISize::Make(std::max(1, srcSize.width() >> (i + 1)),
                                                 std::max(1, srcSize.height() >> (i + 1))),
                                   colorInfo),
-                "GenerateMipmapsScratchTexture",
-                Budgeted::kYes,
-                Mipmapped::kNo,
-                SkBackingFit::kApprox);
+                "GenerateMipmapsScratchTexture");
         if (SK_UNSAFE_TODO(!scratchSurfaces[i])) {
             return false;
         }

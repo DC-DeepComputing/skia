@@ -49,15 +49,19 @@ class Transform;
  */
 class DrawContext final : public SkRefCnt {
 public:
-    // allowUnpremul=true should only be used if the target is only going to be rendered
-    // into with src-blending with calls to drawPaint or pixel-aligned drawRect calls to
-    // avoid anti-aliasing.
+    // `internalControl` is a signal that Graphite is in full control of the drawing operations into
+    // this DrawContext. Draw sorting and attachment behavior may then change depending on the
+    // DepthUsageMode that was configured in Caps.
+    //
+    // `internalControl` also allows the DrawContext to be created with kUnpremul alpha, although
+    // doing so requires the owner to only render via src-blending with calls to drawPaint or
+    // pixel-aligned drawRect calls to avoid anti-aliasing.
     static sk_sp<DrawContext> Make(const Caps* caps,
                                    sk_sp<TextureProxy> target,
                                    SkISize deviceSize,
                                    const SkColorInfo&,
                                    const SkSurfaceProps&,
-                                   bool allowUnpremul);
+                                   bool internalControl);
 
     ~DrawContext() override;
 
@@ -121,7 +125,11 @@ public:
     }
 
 private:
-    DrawContext(const Caps*, sk_sp<TextureProxy>, const SkImageInfo&, const SkSurfaceProps&);
+    DrawContext(const Caps*,
+                sk_sp<TextureProxy>,
+                const SkImageInfo&,
+                const SkSurfaceProps&,
+                bool avoidDepth);
 
     void resetForClearOrDiscard();
 

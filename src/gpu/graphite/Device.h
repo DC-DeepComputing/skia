@@ -93,6 +93,12 @@ class Device final : public SkDevice {
 public:
     ~Device() override;
 
+    // If 'internalControl' is true, it means the Device's recorded content is controlled by
+    // Graphite which unlocks the ability to skip registering it with the Recorder (if the lifetime
+    // and content is sufficiently simple) and use unpremul alpha (even more content restrictions).
+    // Draw sorting and attachment choices may change for internal Devices when DepthUsageMode is
+    // kAvoidForInternal.
+    //
     // If 'registerWithRecorder' is false, it is meant to be a short-lived Device that is managed
     // by the caller within a limited scope (such that it is guaranteed to go out of scope before
     // the Recorder can be snapped).
@@ -102,8 +108,8 @@ public:
                               const SkColorInfo&,
                               const SkSurfaceProps&,
                               LoadOp initialLoadOp,
-                              bool registerWithRecorder=true,
-                              bool allowUnpremul=false);
+                              bool internalControl=false,
+                              bool registerWithRecorder=true);
     // Convenience factory to create the underlying TextureProxy based on the configuration provided
     static sk_sp<Device> Make(Recorder*,
                               const SkImageInfo&,
@@ -113,8 +119,8 @@ public:
                               const SkSurfaceProps&,
                               LoadOp initialLoadOp,
                               std::string_view label,
-                              bool registerWithRecorder=true,
-                              bool allowUnpremul=false);
+                              bool internalControl=false,
+                              bool registerWithRecorder=true);
 
     Device* asGraphiteDevice() override { return this; }
 

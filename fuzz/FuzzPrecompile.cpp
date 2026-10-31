@@ -324,6 +324,7 @@ sk_sp<DrawContext> get_precompile_draw_context(
                                                                  drawSize,
                                                                  colorInfo,
                                                                  {},
+                                                                 /*internalControl=*/false,
                                                                  /*allowUnpremul=*/false);
     return precompileDrawContext;
 }
