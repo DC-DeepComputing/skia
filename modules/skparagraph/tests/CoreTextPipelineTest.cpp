@@ -4586,8 +4586,7 @@ DEF_TEST(CoreTextPipeline_Kerning_PositionsExactlyAsHarfBuzz, reporter) {
 
 // HarfBuzz scales each kerning value by a 16.16 multiplier made from the font size rounded to
 // 16.16 and the upem (Helvetica Neue 1000, Gill Sans 2048), not by the exact size CoreText
-// uses. Fonts that kern one pair in several lookups (e.g. Avenir) round each lookup apart and
-// are not covered
+// uses. A pair kerned in several lookups rounds each lookup apart and is not covered
 DEF_TEST(CoreTextPipeline_Kerning_FontUnitsScaledAsHarfBuzz, reporter) {
     auto fontCollection = test_font_collection();
     for (const char* family : {"Helvetica Neue", "Gill Sans"}) {
@@ -4630,25 +4629,216 @@ DEF_TEST(CoreTextPipeline_Kerning_FontUnitsScaledAsHarfBuzz, reporter) {
                                     subpixel,
                                     ct->getMaxIntrinsicWidth(),
                                     hb->getMaxIntrinsicWidth());
-                    // A legacy 'kern' table pair moves half the kerning to the second glyph's
-                    // pen in HarfBuzz, so only where the glyphs are drawn is compared
                     for (size_t i = 0; i < ctRuns[0].size(); ++i) {
-                        const SkScalar ctX =
-                                ctRuns[0].positions()[i].fX + ctRuns[0].offsets()[i].fX;
-                        const SkScalar hbX =
-                                hbRuns[0].positions()[i].fX + hbRuns[0].offsets()[i].fX;
+                        const SkPoint ctPos = ctRuns[0].positions()[i];
+                        const SkPoint hbPos = hbRuns[0].positions()[i];
+                        const SkPoint ctOffset = ctRuns[0].offsets()[i];
+                        const SkPoint hbOffset = hbRuns[0].offsets()[i];
                         REPORTER_ASSERT(reporter,
-                                        ctX == hbX,
-                                        "%s '%s' size=%g subpixel=%d glyph %zu: CoreText %.9g vs "
-                                        "HarfBuzz %.9g",
+                                        ctPos.fX == hbPos.fX && ctOffset.fX == hbOffset.fX,
+                                        "%s '%s' size=%g subpixel=%d glyph %zu: CoreText "
+                                        "x=%.9g offset=%.9g vs HarfBuzz x=%.9g offset=%.9g",
                                         family,
                                         text,
                                         fontSize,
                                         subpixel,
                                         i,
-                                        ctX,
-                                        hbX);
+                                        ctPos.fX,
+                                        ctOffset.fX,
+                                        hbPos.fX,
+                                        hbOffset.fX);
                     }
+                }
+            }
+        }
+    }
+}
+
+// hb_kern_machine_t gives a legacy kern or kerx pair to both glyphs: half of it on the first
+// advance, the rest on the second advance and offset. Cluster widths and hit-testing read
+// fPositions, so they must split the same way; HarfBuzz also scales kerning with a float
+// quotient of the scale and upem, which moves some values (Optima at 21.26) by one 16.16 unit
+DEF_TEST(CoreTextPipeline_PairKerning_SplitAsHarfBuzz, reporter) {
+    struct Face {
+        const char* family;
+        int weight;
+        bool italic;
+        bool splits;
+    };
+    // Kern tables in macOS 26 system fonts: AAT kern with morx (Helvetica), OpenType kern
+    // (Helvetica Neue), kerx over kern (Helvetica Neue Bold), GPOS without a kern feature next to
+    // kern (Times New Roman), two disjoint kern subtables (Hoefler Text Italic), GPOS kerning
+    // that is not split (Avenir)
+    const Face faces[] = {{"Helvetica", 400, false, true},
+                          {"Helvetica Neue", 400, false, true},
+                          {"Helvetica Neue", 700, false, true},
+                          {"Times New Roman", 400, false, true},
+                          {"Hoefler Text", 400, true, true},
+                          {"Optima", 400, false, true},
+                          {"Avenir", 400, false, false}};
+    auto fontCollection = test_font_collection();
+    for (const Face& face : faces) {
+        if (!has_font_families({face.family})) {
+            continue;
+        }
+        // Spacing glyphs only get an x offset from a split, so this shows the split ran
+        int splitGlyphs = 0;
+        for (bool subpixel : {true, false}) {
+            for (int tenths = 100; tenths <= 300; tenths += 7) {
+                const SkScalar fontSize = tenths / 10.0f + 0.03f * (tenths % 3);
+                // A combining diaeresis composes to one glyph on both paths. Marks, ZWJ, soft
+                // hyphen and tabs are left out: HarfBuzz kerns across them and CoreText does
+                // not, with or without the split
+                const char* diaeresisText = "A\xCC\x88VA To";
+                for (const char* text :
+                     {"AVATAR Wave To", "Yo, We'll Try P.J. Fay", diaeresisText}) {
+                    auto layout = [&](TextShapingEngine engine) {
+                        ParagraphStyle paragraphStyle;
+                        paragraphStyle.setTextShapingEngine(engine);
+                        paragraphStyle.setApplyRoundingHack(false);
+                        TextStyle style;
+                        style.setFontFamilies({SkString(face.family)});
+                        style.setFontSize(fontSize);
+                        style.setSubpixel(subpixel);
+                        style.setFontStyle(SkFontStyle(face.weight,
+                                                       SkFontStyle::kNormal_Width,
+                                                       face.italic ? SkFontStyle::kItalic_Slant
+                                                                   : SkFontStyle::kUpright_Slant));
+                        ParagraphBuilderImpl builder(
+                                paragraphStyle, fontCollection, get_unicode(paragraphStyle));
+                        builder.pushStyle(style);
+                        builder.addText(text);
+                        auto paragraph = builder.Build();
+                        paragraph->layout(10000);
+                        return paragraph;
+                    };
+                    auto ct = layout(TextShapingEngine::kCoreText);
+                    auto hb = layout(TextShapingEngine::kDefault);
+                    auto ctRuns = static_cast<ParagraphImpl*>(ct.get())->runs();
+                    auto hbRuns = static_cast<ParagraphImpl*>(hb.get())->runs();
+                    // CoreText moves a base and a mark the font lacks (Avenir has no U+0308)
+                    // to a fallback run, where HarfBuzz composes them in the font
+                    if (text == diaeresisText && hbRuns[0].font().unicharToGlyph(0x0308) == 0) {
+                        continue;
+                    }
+                    REPORTER_ASSERT(reporter,
+                                    ct->getMaxIntrinsicWidth() == hb->getMaxIntrinsicWidth(),
+                                    "%s %d '%s' size=%g subpixel=%d: CoreText max=%.9g vs "
+                                    "HarfBuzz max=%.9g",
+                                    face.family,
+                                    face.weight,
+                                    text,
+                                    fontSize,
+                                    subpixel,
+                                    ct->getMaxIntrinsicWidth(),
+                                    hb->getMaxIntrinsicWidth());
+                    REPORTER_ASSERT(reporter,
+                                    ctRuns.size() == 1 && hbRuns.size() == 1 &&
+                                            ctRuns[0].size() == hbRuns[0].size(),
+                                    "%s %d '%s': %zu CoreText runs vs %zu HarfBuzz runs",
+                                    face.family,
+                                    face.weight,
+                                    text,
+                                    ctRuns.size(),
+                                    hbRuns.size());
+                    if (ctRuns.size() != 1 || hbRuns.size() != 1 ||
+                        ctRuns[0].size() != hbRuns[0].size()) {
+                        continue;
+                    }
+                    for (size_t i = 0; i <= ctRuns[0].size(); ++i) {
+                        const SkPoint ctPos = ctRuns[0].positions()[i];
+                        const SkPoint hbPos = hbRuns[0].positions()[i];
+                        const SkPoint ctOffset = ctRuns[0].offsets()[i];
+                        const SkPoint hbOffset = hbRuns[0].offsets()[i];
+                        splitGlyphs += ctOffset.fX != 0;
+                        REPORTER_ASSERT(reporter,
+                                        ctPos.fX == hbPos.fX && ctOffset.fX == hbOffset.fX,
+                                        "%s %d '%s' size=%g subpixel=%d glyph %zu: CoreText "
+                                        "x=%.9g offset=%.9g vs HarfBuzz x=%.9g offset=%.9g",
+                                        face.family,
+                                        face.weight,
+                                        text,
+                                        fontSize,
+                                        subpixel,
+                                        i,
+                                        ctPos.fX,
+                                        ctOffset.fX,
+                                        hbPos.fX,
+                                        hbOffset.fX);
+                    }
+                }
+            }
+        }
+        REPORTER_ASSERT(reporter,
+                        face.splits == (splitGlyphs > 0),
+                        "%s %d: %d glyphs with a split offset",
+                        face.family,
+                        face.weight,
+                        splitGlyphs);
+    }
+}
+
+// An ellipsis is shaped apart from the line (ShapeAffix) but must split its kerning pairs as
+// the line does, so its positions and offsets match HarfBuzz too
+DEF_TEST(CoreTextPipeline_PairKerning_EllipsisSplitAsHarfBuzz, reporter) {
+    auto fontCollection = test_font_collection();
+    for (const char* family : {"Helvetica Neue", "Times New Roman"}) {
+        if (!has_font_families({family})) {
+            continue;
+        }
+        for (const char* ellipsis : {"AV\xE2\x80\xA6", "To."}) {
+            for (SkScalar fontSize : {12.0f, 17.3f, 24.0f}) {
+                auto layout = [&](TextShapingEngine engine) {
+                    ParagraphStyle paragraphStyle;
+                    paragraphStyle.setTextShapingEngine(engine);
+                    paragraphStyle.setApplyRoundingHack(false);
+                    paragraphStyle.setEllipsis(SkString(ellipsis));
+                    paragraphStyle.setMaxLines(1);
+                    TextStyle style;
+                    style.setFontFamilies({SkString(family)});
+                    style.setFontSize(fontSize);
+                    ParagraphBuilderImpl builder(
+                            paragraphStyle, fontCollection, get_unicode(paragraphStyle));
+                    builder.pushStyle(style);
+                    builder.addText("AVATAR Wave To Yo, We'll Try P.J. Fay");
+                    auto paragraph = builder.Build();
+                    paragraph->layout(fontSize * 6);
+                    return paragraph;
+                };
+                auto ct = layout(TextShapingEngine::kCoreText);
+                auto hb = layout(TextShapingEngine::kDefault);
+                auto ctLines = static_cast<ParagraphImpl*>(ct.get())->lines();
+                auto hbLines = static_cast<ParagraphImpl*>(hb.get())->lines();
+                const Run* ctEllipsis = ctLines.empty() ? nullptr : ctLines[0].ellipsis();
+                const Run* hbEllipsis = hbLines.empty() ? nullptr : hbLines[0].ellipsis();
+                REPORTER_ASSERT(
+                        reporter,
+                        ctEllipsis && hbEllipsis && ctEllipsis->size() == hbEllipsis->size(),
+                        "%s '%s' size=%g: no matching ellipsis runs",
+                        family,
+                        ellipsis,
+                        fontSize);
+                if (!ctEllipsis || !hbEllipsis || ctEllipsis->size() != hbEllipsis->size()) {
+                    continue;
+                }
+                REPORTER_ASSERT(reporter, ctEllipsis->advance().fX == hbEllipsis->advance().fX);
+                for (size_t i = 0; i < ctEllipsis->size(); ++i) {
+                    const SkPoint ctPos = ctEllipsis->positions()[i];
+                    const SkPoint hbPos = hbEllipsis->positions()[i];
+                    const SkPoint ctOffset = ctEllipsis->offsets()[i];
+                    const SkPoint hbOffset = hbEllipsis->offsets()[i];
+                    REPORTER_ASSERT(reporter,
+                                    ctPos.fX == hbPos.fX && ctOffset.fX == hbOffset.fX,
+                                    "%s '%s' size=%g glyph %zu: CoreText x=%.9g offset=%.9g vs "
+                                    "HarfBuzz x=%.9g offset=%.9g",
+                                    family,
+                                    ellipsis,
+                                    fontSize,
+                                    i,
+                                    ctPos.fX,
+                                    ctOffset.fX,
+                                    hbPos.fX,
+                                    hbOffset.fX);
                 }
             }
         }
