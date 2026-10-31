@@ -129,7 +129,7 @@ public:
 
     bool avoidMSAA() const {
         // Publicly, treat avoiding MSAA due to device issues or due to client option equivalently.
-        return fAvoidMSAA || fMaxInternalSampleCount == SampleCount::k1 || fAvoidDepthMode;
+        return fAvoidMSAA || fMaxInternalSampleCount == SampleCount::k1;
     }
 
     bool avoidDepthMode() const {
