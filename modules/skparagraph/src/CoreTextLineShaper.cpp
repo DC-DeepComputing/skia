@@ -10,6 +10,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_mac.h"
 #include "include/private/SkFloatingPoint.h"
+#include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -17,6 +18,8 @@
 #include "modules/skparagraph/src/CoreTextAttrStringBuilder.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/Run.h"
+#include "src/core/SkLRUCache.h"
+#include "src/core/SkNoDestructor.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkUTF.h"
 #include "src/utils/mac/SkCGBase.h"
@@ -41,13 +44,20 @@ static SkScalar round_like_harfbuzz(SkScalar value) {
 }
 
 // HarfBuzz scales v font units of kerning to 16.16 as (v * mult + 32768) >> 16, with mult =
-// (size in 16.16 << 16) / upem (hb_font_t::em_mult); CoreText gives v * size / upem. This only
-// matches one whole-unit adjustment: a pair kerned by several lookups, trak or variation deltas
-// is rounded as is and can stay one 16.16 unit off
-static int64_t harfbuzz_kerning16(double kerning, double unitsPerPixel, int64_t mult) {
+// em_mult from harfbuzz_advances; CoreText gives v * size / upem. This only matches one
+// whole-unit adjustment: a pair kerned by several lookups, trak or variation deltas is rounded as
+// is and can stay one 16.16 unit off
+static int64_t harfbuzz_kerning16(double kerning,
+                                  double unitsPerPixel,
+                                  int64_t mult,
+                                  // Set for whole font units, the only kerning HarfBuzz splits
+                                  bool* fontUnits) {
     const double units = kerning * unitsPerPixel;
     const double wholeUnits = std::round(units);
-    if (std::abs(units - wholeUnits) <= 1e-3 && std::abs(wholeUnits) <= INT16_MAX) {
+    // Kerning values are FWords, so any int16 value counts
+    *fontUnits = std::abs(units - wholeUnits) <= 1e-3 && wholeUnits >= INT16_MIN &&
+                 wholeUnits <= INT16_MAX;
+    if (*fontUnits) {
         return (static_cast<int64_t>(wholeUnits) * mult + 32768) >> 16;
     }
     return sk_double_saturate2int(std::floor(kerning * 65536 + 0.5));
@@ -62,14 +72,33 @@ static void harfbuzz_advances(CTFontRef ctFont,
                               const CGSize* nominal,
                               const CGSize* advances,
                               SkScalar* out,
+                              // When set, pair kerning is split as in HarfBuzz and each glyph
+                              // gets the 16.16 offset that keeps its drawn x where CoreText puts it
+                              int64_t* splitOffsets16,
                               CFIndex count) {
     const SkScalar size = SkScalarFromCGFloat(CTFontGetSize(ctFont));
     const unsigned upem = CTFontGetUnitsPerEm(ctFont);
     SkASSERT(size > 0 && upem > 0);
     // The scale OneLineShaper gives hb_font_set_scale (skhb_position of the font size)
-    const int64_t mult = (static_cast<int64_t>(SkScalarRoundToInt(size * (1 << 16))) << 16) / upem;
+    const int64_t scale16 = static_cast<int64_t>(SkScalarRoundToInt(size * (1 << 16))) << 16;
+    // hb_font_t::changed divides by upem as a float, so mult is a float quotient truncated,
+    // which can be a few units above the exact one and move a kerning value across .5
+    const int64_t mult =
+            static_cast<int64_t>(static_cast<float>(scale16) / static_cast<float>(upem));
     const double unitsPerPixel = static_cast<double>(upem) / size;
+    // The part of the previous glyph's pair kerning HarfBuzz puts on this glyph
+    int64_t carry16 = 0;
     for (CFIndex k = 0; k < count; ++k) {
+        // ZWJ, soft hyphen and zeroed marks keep a nominal advance, but HarfBuzz zeroes them
+        // after rounding, so a zero CoreText advance stays zero
+        if (advances[k].width == 0) {
+            out[k] = 0;
+            // No kerning is carried over them: a split only goes to the glyph right after
+            if (splitOffsets16) {
+                splitOffsets16[k] = 0;
+            }
+            continue;
+        }
         SkScalar nominalWidth = SkScalarFromCGFloat(nominal[k].width);
         if (!subpixel) {
             nominalWidth = static_cast<SkScalar>(SkScalarRoundToInt(nominalWidth));
@@ -77,13 +106,250 @@ static void harfbuzz_advances(CTFontRef ctFont,
         // SkScalarRoundToInt saturates as skhb_position does, so an advance of 32768 px or more
         // comes out as INT_MAX in 16.16 on both paths; the sum is clamped to the same range
         const int64_t nominal16 = SkScalarRoundToInt(nominalWidth * (1 << 16));
-        const int64_t kerning16 =
-                harfbuzz_kerning16(advances[k].width - nominal[k].width, unitsPerPixel, mult);
-        const int64_t advance16 = std::clamp<int64_t>(nominal16 + kerning16, INT32_MIN, INT32_MAX);
-        // ZWJ, soft hyphen and zeroed marks keep a nominal advance, but HarfBuzz zeroes them
-        // after rounding, so a zero CoreText advance stays zero
-        out[k] = advances[k].width == 0 ? 0 : static_cast<SkScalar>(advance16 * 1.52587890625e-5);
+        bool fontUnits = false;
+        int64_t kerning16 = harfbuzz_kerning16(
+                advances[k].width - nominal[k].width, unitsPerPixel, mult, &fontUnits);
+        int64_t advance16 = nominal16 + carry16;
+        if (splitOffsets16) {
+            splitOffsets16[k] = carry16;
+        }
+        carry16 = 0;
+        // hb_kern_machine_t (hb-kern.hh) keeps kerning >> 1 on the glyph and puts the rest on
+        // the next glyph, as advance and offset. Only whole font units are pair kerning (trak
+        // and variations are not). CoreText kerns no pair across a zero-advance glyph, so
+        // kerning before one, or on the run's last glyph, stays whole
+        if (splitOffsets16 && fontUnits && k + 1 < count && advances[k + 1].width != 0) {
+            carry16 = kerning16 - (kerning16 >> 1);
+            kerning16 >>= 1;
+        }
+        advance16 = std::clamp<int64_t>(advance16 + kerning16, INT32_MIN, INT32_MAX);
+        out[k] = static_cast<SkScalar>(advance16 * 1.52587890625e-5);
     }
+}
+
+static uint32_t read_u16(const uint8_t* p) { return (static_cast<uint32_t>(p[0]) << 8) | p[1]; }
+
+static uint32_t read_u32(const uint8_t* p) { return (read_u16(p) << 16) | read_u16(p + 2); }
+
+// True when the subtables of the kern or kerx table HarfBuzz applies to horizontal text
+// (AAT::KerxTable::apply) kern each pair with one plain pair subtable run by hb_kern_machine_t.
+// CoreText reports only the sum of all subtables per glyph, which cannot be split per subtable
+static bool kerns_each_pair_once(CFDataRef table, bool kerx) {
+    const uint8_t* data = CFDataGetBytePtr(table);
+    const size_t size = SkToSizeT(CFDataGetLength(table));
+    if (size < 8) {
+        return false;
+    }
+    // kern version 0 (OpenType) has 16-bit counts and lengths, version 1 (Apple) 32-bit ones;
+    // kerx keeps the Apple layout with 32-bit coverage and a tuple count
+    const bool otKern = !kerx && read_u16(data) == 0;
+    if (!kerx && !otKern && read_u16(data) != 1) {
+        return false;
+    }
+    const uint32_t tableCount = otKern ? read_u16(data + 2) : read_u32(data + 4);
+    const size_t headerSize = otKern ? 6 : kerx ? 12 : 8;
+    size_t offset = otKern ? 4 : 8;
+    int applicable = 0;
+    bool pairOnly = true;
+    // Format 0 pair lists of the applicable subtables, as (first pair, pair count)
+    skia_private::STArray<4, std::pair<const uint8_t*, uint32_t>> pairLists;
+    for (uint32_t i = 0; i < tableCount; ++i) {
+        if (offset + headerSize > size) {
+            return false;
+        }
+        const uint8_t* header = data + offset;
+        uint32_t format = 0;
+        bool horizontal = false;
+        bool pair = false;
+        if (otKern) {
+            const uint32_t coverage = header[5];
+            format = header[4];
+            horizontal = (coverage & 0x01) != 0;
+            pair = (format == 0 || format == 2 || format == 3) && (coverage & 0x04) == 0;
+        } else if (kerx) {
+            const uint32_t coverage = read_u32(header + 4);
+            format = coverage & 0xFF;
+            horizontal = (coverage & 0x80000000) == 0;
+            pair = (format == 0 || format == 2 || format == 6) &&
+                   (coverage & (0x40000000 | 0x10000000)) == 0;
+        } else {
+            const uint32_t coverage = header[4];
+            format = header[5];
+            // HarfBuzz skips variation subtables of the Apple kern table
+            horizontal = (coverage & (0x80 | 0x20)) == 0;
+            pair = (format == 0 || format == 2 || format == 3) && (coverage & 0x40) == 0;
+        }
+        if (horizontal) {
+            ++applicable;
+            pairOnly = pairOnly && pair;
+            if (pair && format == 0) {
+                // nPairs, then three binary search fields of the same width, then the pairs
+                const size_t fieldSize = kerx ? 4 : 2;
+                const size_t pairsAt = offset + headerSize + 4 * fieldSize;
+                if (pairsAt > size) {
+                    return false;
+                }
+                const uint8_t* fields = header + headerSize;
+                const uint32_t pairCount = kerx ? read_u32(fields) : read_u16(fields);
+                if (pairCount > (size - pairsAt) / 6) {
+                    return false;
+                }
+                pairLists.push_back({data + pairsAt, pairCount});
+            }
+        }
+        // HarfBuzz lets the last subtable run past its length (large format 0 subtables), so
+        // only lengths that lead to another subtable are checked
+        if (i + 1 < tableCount) {
+            const size_t length = otKern ? read_u16(header + 2) : read_u32(header);
+            if (length < headerSize || length > size - offset) {
+                return false;
+            }
+            offset += length;
+        }
+    }
+    if (applicable == 1) {
+        return pairOnly;
+    }
+    // HarfBuzz runs the machine once per subtable and splits each value apart, so the split of
+    // CoreText's sum is exact only while no pair sits in two subtables. Pair lists are sorted
+    // by (left, right) for HarfBuzz's binary search, so a merge walk finds a shared pair
+    if (applicable == 0 || pairLists.size() != applicable) {
+        return false;
+    }
+    for (const auto& [pairs, count] : pairLists) {
+        for (uint32_t k = 1; k < count; ++k) {
+            if (read_u32(pairs + 6 * (k - 1)) >= read_u32(pairs + 6 * k)) {
+                return false;
+            }
+        }
+    }
+    for (int a = 0; a < pairLists.size(); ++a) {
+        for (int b = a + 1; b < pairLists.size(); ++b) {
+            uint32_t i = 0;
+            uint32_t j = 0;
+            while (i < pairLists[a].second && j < pairLists[b].second) {
+                const uint32_t left = read_u32(pairLists[a].first + 6 * i);
+                const uint32_t right = read_u32(pairLists[b].first + 6 * j);
+                if (left == right) {
+                    return false;
+                }
+                if (left < right) {
+                    ++i;
+                } else {
+                    ++j;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+// True when HarfBuzz positions this font's default-shaper text (Latin, Greek, Cyrillic) with
+// one pair subtable of kerx or legacy kern, which hb_kern_machine_t splits per pair. Follows
+// hb_ot_shape_planner_t::compile (hb-ot-shape.cc): kerx wins unless GSUB and GPOS are both
+// there, and legacy kern applies only when GPOS has no kern feature for the chosen script
+static bool splits_pair_kerning(CTFontRef ctFont) {
+    auto copyTable = [ctFont](char a, char b, char c, char d) {
+        return SkUniqueCFRef<CFDataRef>(
+                CTFontCopyTable(ctFont, SkSetFourByteTag(a, b, c, d), kCTFontTableOptionNoOptions));
+    };
+    // HarfBuzz reads a table as absent when its version is zero or it fails to sanitize
+    auto version = [](const SkUniqueCFRef<CFDataRef>& table, bool wide) -> uint32_t {
+        if (!table || CFDataGetLength(table.get()) < 4) {
+            return 0;
+        }
+        const uint8_t* data = CFDataGetBytePtr(table.get());
+        return wide ? read_u32(data) : read_u16(data);
+    };
+    SkUniqueCFRef<CFDataRef> kerx = copyTable('k', 'e', 'r', 'x');
+    SkUniqueCFRef<CFDataRef> gpos = copyTable('G', 'P', 'O', 'S');
+    const bool hasMorx = version(copyTable('m', 'o', 'r', 'x'), false) != 0 ||
+                         version(copyTable('m', 'o', 'r', 't'), false) != 0;
+    const bool hasKerx = version(kerx, false) != 0;
+    // GSUB and GPOS sanitize only with major version 1
+    const bool hasGsub = !hasMorx && version(copyTable('G', 'S', 'U', 'B'), true) >> 16 == 1;
+    const bool hasGpos = version(gpos, true) >> 16 == 1;
+    const bool applyKerx = hasKerx && !(hasGsub && hasGpos);
+    if (!applyKerx && hasGpos) {
+        // Which LangSys HarfBuzz picks depends on script and language, so a GPOS kern feature
+        // anywhere in the font leaves the choice unknown
+        const uint8_t* data = CFDataGetBytePtr(gpos.get());
+        const size_t size = SkToSizeT(CFDataGetLength(gpos.get()));
+        if (size < 10) {
+            return false;
+        }
+        const size_t featureList = read_u16(data + 6);
+        if (featureList + 2 > size) {
+            return false;
+        }
+        // A zero offset is HarfBuzz's empty Null table
+        const uint32_t featureCount = featureList ? read_u16(data + featureList) : 0;
+        if (featureList + 2 + 6 * static_cast<size_t>(featureCount) > size) {
+            return false;
+        }
+        for (uint32_t i = 0; i < featureCount; ++i) {
+            if (read_u32(data + featureList + 2 + 6 * i) == SkSetFourByteTag('k', 'e', 'r', 'n')) {
+                return false;
+            }
+        }
+    }
+    // Without GPOS kerning HarfBuzz takes kerx, then legacy kern
+    if (hasKerx) {
+        return kerns_each_pair_once(kerx.get(), true);
+    }
+    SkUniqueCFRef<CFDataRef> kern = copyTable('k', 'e', 'r', 'n');
+    return version(kern, true) != 0 && kerns_each_pair_once(kern.get(), false);
+}
+
+// CoreText shares one CGFont across all sizes and attribute copies of a face, so a size change
+// still hits; a font with several kern subtables takes about 25 us to check. Each entry holds
+// its CGFont, so no other font can take that address while it lives. A hit takes the lock but
+// does not allocate
+static bool splits_pair_kerning_cached(CTFontRef ctFont) {
+    struct Entry {
+        SkUniqueCFRef<CGFontRef> fFont;
+        bool fSplits;
+    };
+    struct Cache {
+        SkMutex fMutex;
+        SkLRUCache<CGFontRef, Entry> fEntries SK_GUARDED_BY(fMutex){64};
+    };
+    static SkNoDestructor<Cache> cache;
+    SkUniqueCFRef<CGFontRef> cgFont(CTFontCopyGraphicsFont(ctFont, nullptr));
+    SkASSERT(cgFont);
+    {
+        SkAutoMutexExclusive lock(cache->fMutex);
+        if (const Entry* entry = cache->fEntries.find(cgFont.get())) {
+            return entry->fSplits;
+        }
+    }
+    // Parsed outside the lock so other paragraphs do not wait on it
+    const bool splits = splits_pair_kerning(ctFont);
+    CGFontRef key = cgFont.get();
+    SkAutoMutexExclusive lock(cache->fMutex);
+    cache->fEntries.insert_or_update(key, Entry{std::move(cgFont), splits});
+    return splits;
+}
+
+// HarfBuzz applies legacy kern only with a shaper that has fallback_position. These blocks hold
+// only Latin, Greek, Cyrillic, Armenian, Common and Inherited code points, which all get the
+// default shaper, and it has fallback_position
+static bool has_only_split_kerning_text(const char* utf8, const char* end) {
+    while (utf8 < end) {
+        const SkUnichar c = SkUTF::NextUTF8(&utf8, end);
+        // A tab keeps CoreText's advance to the tab stop (KEEPER-DEBT in shapeTextRegion), which
+        // can be whole font units over its hmtx advance and would be split as pair kerning
+        if (c == '\t') {
+            return false;
+        }
+        const bool defaultShaper = (c >= 0 && c <= 0x058F) || (c >= 0x1D00 && c <= 0x1FFF) ||
+                                   (c >= 0x2000 && c <= 0x2BFF) || (c >= 0x2C60 && c <= 0x2C7F) ||
+                                   (c >= 0xA720 && c <= 0xA7FF) || (c >= 0xFB00 && c <= 0xFB06);
+        if (!defaultShaper) {
+            return false;
+        }
+    }
+    return true;
 }
 
 static bool cfstring_equals_skstring(CFStringRef cfStr, const SkString& skStr) {
@@ -346,6 +612,11 @@ void CoreTextLineShaper::ShapeAffix(const SkString& text,
     skia_private::AutoSTArray<16, CGSize> advances(totalGlyphs);
     skia_private::AutoSTArray<16, CGPoint> origins(totalGlyphs);
     skia_private::AutoSTArray<16, SkScalar> hbAdvances(totalGlyphs);
+    // The part of a kerning pair HarfBuzz moves into each glyph's offset, as in shapeTextRegion
+    skia_private::AutoSTArray<16, int64_t> splitOffsets16(totalGlyphs);
+    std::fill_n(splitOffsets16.data(), totalGlyphs, 0);
+    const bool splittableText =
+            has_only_split_kerning_text(text.c_str(), text.c_str() + text.size());
     SkScalar totalAdvance = 0;
     CFIndex runStart = 0;
     for (CFIndex i = 0; i < runCount; ++i) {
@@ -369,12 +640,17 @@ void CoreTextLineShaper::ShapeAffix(const SkString& text,
                                        glyphs.data() + runStart,
                                        nominal.data(),
                                        gc);
+            // The gate of shapeTextRegion, with the whole affix as the run text
+            const bool splitKerning = splittableText &&
+                                      (CTRunGetStatus(ctRun) & kCTRunStatusRightToLeft) == 0 &&
+                                      splits_pair_kerning_cached(ctFont);
             // Rounded as in shapeTextRegion, so an ellipsis is exactly as wide as on HarfBuzz
             harfbuzz_advances(ctFont,
                               font.isSubpixel(),
                               nominal.data(),
                               advances.data() + runStart,
                               hbAdvances.data() + runStart,
+                              splitKerning ? splitOffsets16.data() + runStart : nullptr,
                               gc);
             for (CFIndex k = 0; k < gc; ++k) {
                 totalAdvance += hbAdvances[runStart + k];
@@ -423,9 +699,13 @@ void CoreTextLineShaper::ShapeAffix(const SkString& text,
             buffer.glyphs[g] = unresolvedRun ? 0 : glyphs[g];
             // CoreText is y-up, Skia y-down
             const CGPoint origin = zeroSize ? CGPointZero : origins[g];
-            const SkPoint offset = SkPoint::Make(
-                    round_like_harfbuzz(SkScalarFromCGFloat(origin.x)),
-                    round_like_harfbuzz(-SkScalarFromCGFloat(origin.y)));
+            // Same 16.16 rounding as round_like_harfbuzz, plus the split share of a kerning pair
+            const int64_t offsetX16 =
+                    SkScalarRoundToInt(SkScalarFromCGFloat(origin.x) * (1 << 16)) +
+                    splitOffsets16[g];
+            const SkPoint offset =
+                    SkPoint::Make(static_cast<SkScalar>(offsetX16 * 1.52587890625e-5),
+                                  round_like_harfbuzz(-SkScalarFromCGFloat(origin.y)));
             if (buffer.offsets) {
                 buffer.positions[g] = buffer.point + SkPoint::Make(penX, 0);
                 buffer.offsets[g] = offset;
@@ -819,6 +1099,16 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
         skia_private::AutoSTArray<64, CGSize> advances(isFallback ? 0 : glyphCount);
         skia_private::AutoSTArray<64, CGPoint> origins(isFallback ? 0 : glyphCount);
         skia_private::AutoSTArray<64, CGGlyph> glyphBuffer(isFallback ? 0 : glyphCount);
+        // Splitting follows the HarfBuzz plan only as far as it was checked: left-to-right runs
+        // of default-shaper text
+        bool splitKerning = false;
+        if (!isFallback && !zeroSize && runIsLtr) {
+            splitKerning =
+                    splits_pair_kerning_cached(ctFont) &&
+                    has_only_split_kerning_text(fParagraph->text().data() + runUtf8Range.start,
+                                                fParagraph->text().data() + runUtf8Range.end);
+        }
+        skia_private::AutoSTArray<64, int64_t> splitOffsets16(splitKerning ? glyphCount : 0);
         SkScalar runAdvanceX = 0;
 
         if (isFallback) {
@@ -876,6 +1166,7 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
                                   nominal.data(),
                                   advances.data(),
                                   glyphAdvances.data(),
+                                  splitKerning ? splitOffsets16.data() : nullptr,
                                   glyphCount);
             }
             for (CFIndex k = 0; k < glyphCount; ++k) {
@@ -965,9 +1256,14 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange, SkScalar& advanc
                 positions[k] = SkPoint::Make(advanceX + penX, 0);
                 penX += glyphAdvances[k];
                 // CoreText is y-up, Skia y-down
-                offsets[k] = SkPoint::Make(
-                        round_like_harfbuzz(SkScalarFromCGFloat(origin.x)),
-                        round_like_harfbuzz(-SkScalarFromCGFloat(origin.y)));
+                // Same 16.16 rounding as round_like_harfbuzz, plus the part of a kerning pair
+                // HarfBuzz moves from the advance before into this glyph's offset
+                const int64_t offsetX16 =
+                        SkScalarRoundToInt(SkScalarFromCGFloat(origin.x) * (1 << 16)) +
+                        (splitKerning ? splitOffsets16[k] : 0);
+                offsets[k] =
+                        SkPoint::Make(static_cast<SkScalar>(offsetX16 * 1.52587890625e-5),
+                                      round_like_harfbuzz(-SkScalarFromCGFloat(origin.y)));
                 clusterIndexes[k] = clusterBuffer[k];
                 if (glyphs[k] == 0) {
                     recordUnresolvedGlyph(glyphTextRange(k));
