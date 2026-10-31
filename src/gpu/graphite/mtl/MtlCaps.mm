@@ -396,7 +396,8 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     keyData.fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[3]);
 
     if ((keyData.fColorSampleCount > SampleCount::k1 && this->avoidMSAA()) ||
-        (keyData.fDSFormat != TextureFormat::kUnsupported && this->avoidDepthMode())) {
+        (TextureFormatHasDepth(keyData.fDSFormat) &&
+                this->depthUsageMode() != DepthUsageMode::kNever)) {
         return false;
     }
 
@@ -410,12 +411,10 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
                                         LoadOp::kClear,
                                         StoreOp::kStore,
                                         keyData.fColorSampleCount};
-    if (!this->avoidDepthMode()) {
-        renderPassDesc->fDepthStencilAttachment = {keyData.fDSFormat,
-                                                   LoadOp::kClear,
-                                                   StoreOp::kDiscard,
-                                                   keyData.fDSSampleCount};
-    }
+    renderPassDesc->fDepthStencilAttachment = {keyData.fDSFormat,
+                                               LoadOp::kClear,
+                                               StoreOp::kDiscard,
+                                               keyData.fDSSampleCount};
     if (keyData.fColorSampleCount > SampleCount::k1) {
         renderPassDesc->fColorResolveAttachment = {keyData.fColorFormat,
                                                    LoadOp::kClear,

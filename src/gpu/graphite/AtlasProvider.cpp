@@ -37,7 +37,9 @@ static bool use_clip_atlas(const Recorder* recorder) {
     const Caps* caps = recorder->priv().caps();
     const bool useRasterPathAtlas = recorder->priv().rendererProvider()->pathRendererStrategy() ==
             PathRendererStrategy::kRasterAtlas;
-    return caps->avoidMSAA() || caps->avoidDepthMode() || useRasterPathAtlas;
+    return useRasterPathAtlas ||
+           caps->avoidMSAA() ||
+           caps->depthUsageMode() == DepthUsageMode::kNever;
 }
 
 AtlasProvider::AtlasProvider(Recorder* recorder)

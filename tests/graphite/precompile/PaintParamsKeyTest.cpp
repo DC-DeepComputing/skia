@@ -391,7 +391,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
 
     const SkColorType kColorType = kBGRA_8888_SkColorType;
 
-    bool avoidDepthMode = context->priv().caps()->avoidDepthMode();
+    bool avoidDepthMode = context->priv().caps()->depthUsageMode() == DepthUsageMode::kNever;
     static const RenderPassProperties kDepth_Stencil_4{
             avoidDepthMode ? DepthStencilFlags::kNone : DepthStencilFlags::kDepthStencil,
             kColorType,

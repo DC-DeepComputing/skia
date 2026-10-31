@@ -69,7 +69,6 @@ void Caps::finishInitialization(const ContextOptions& options) {
     fSupportBilerpFromGlyphAtlas = options.fSupportBilerpFromGlyphAtlas;
     fRequireOrderedRecordings = options.fRequireOrderedRecordings;
     fSetBackendLabels = options.fSetBackendLabels;
-    fAvoidDepthMode = options.fAvoidDepthMode;
 
     // Enable setting this flag from either the private or public context options.
     fDrawListLayer |= options.fUseDrawListLayer;
@@ -84,6 +83,21 @@ void Caps::finishInitialization(const ContextOptions& options) {
             fResourceBindingReqs.fMaxFallbackTextureSize *
             fResourceBindingReqs.fMaxFallbackTextureSize *
             kBytesPerTexel;
+
+    if (options.fAvoidDepthMode) {
+        // Respect deprecated flag if it's set to true
+        fDepthUsageMode = DepthUsageMode::kNever;
+    } else if (options.fDepthUsageMode.has_value()) {
+        // Follow policy as requested
+        fDepthUsageMode = *options.fDepthUsageMode;
+    } else {
+        // Default is either kAlways or kOnlyWhenRequired depending on dynamic rendering.
+        // TODO(michaelludwig): Actually implement support for dynamic rendering so that choice
+        // is meaningful.
+        // TODO(michaelludwig): If kAvoidForInternal has no real downsides, then it should be the
+        // default when dynamic rendering isn't available.
+        fDepthUsageMode = DepthUsageMode::kAlways;
+    }
 }
 
 sk_sp<SkCapabilities> Caps::capabilities() const { return fCapabilities; }

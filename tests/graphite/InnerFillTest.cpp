@@ -27,7 +27,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(InnerFillTest,
                                    reporter,
                                    context,
                                    CtsEnforcement::kApiLevel_202604) {
-    if (context->priv().caps()->avoidDepthMode()) {
+    if (context->priv().caps()->depthUsageMode() == DepthUsageMode::kNever) {
         SkDebugf("Skipping InnerFillTest under avoidDepthMode\n");
         return;
     }

@@ -237,7 +237,6 @@ Task::Status RenderPassTask::addCommands(Context* context,
 
     sk_sp<Texture> depthStencilAttachment;
     if (fRenderPassDesc.fDepthStencilAttachment.fFormat != TextureFormat::kUnsupported) {
-        SkASSERT(!caps->avoidDepthMode());
         // We always make depth and stencil attachments shareable. Between any render pass the
         // values are reset. Thus it is safe to be used by multiple different render passes without
         // worry of stomping on each other's data.

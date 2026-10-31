@@ -2048,7 +2048,6 @@ void Device::drawClipShape(const Transform& localToDevice,
         return;
     } else if (!fRecorder->priv().caps()->useDrawListLayer() &&
                (renderer->depthStencilFlags() & DepthStencilFlags::kStencil)) {
-        SkASSERT(!fRecorder->priv().caps()->avoidDepthMode());
         DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
                                                                  clip.drawBounds());
         order.dependsOnStencil(setIndex);
@@ -2061,6 +2060,10 @@ void Device::drawClipShape(const Transform& localToDevice,
     // Anti-aliased clipping requires the renderer to use MSAA to modify the depth per sample, so
     // analytic coverage renderers cannot be used.
     SkASSERT(renderer->coverage() == Coverage::kNone && renderer->requiresMSAA());
+
+    // Clip shapes rely on depth, so this should only be called when not completely avoiding depth.
+    // The more relaxed depth-avoidance modes may still be forced to trigger depth.
+    SkASSERT(fRecorder->priv().caps()->depthUsageMode() != DepthUsageMode::kNever);
 
     // Clips draws are depth-only (invalid UniquePaintParamsID), and filled (null StrokeStyle).
     // The data gatherer must be reset so that the DrawList can use it for any RenderStep data.
@@ -2094,6 +2097,14 @@ std::pair<DrawParams*, Layer*> Device::drawClipShapeImmediate(const Transform& l
         SKIA_LOG_W("Skipping clip with no supported path renderer.");
         return {nullptr, {}};
     }
+
+    // Anti-aliased clipping requires the renderer to use MSAA to modify the depth per sample, so
+    // analytic coverage renderers cannot be used.
+    SkASSERT(renderer->coverage() == Coverage::kNone && renderer->requiresMSAA());
+
+    // Clip shapes rely on depth, so this should only be called when not completely avoiding depth.
+    // The more relaxed depth-avoidance modes may still be forced to trigger depth.
+    SkASSERT(fRecorder->priv().caps()->depthUsageMode() != DepthUsageMode::kNever);
 
     if (localToDevice.type() == Transform::Type::kPerspective) {
         SkPath devicePath = shape.asPath().makeTransform(localToDevice.matrix().asM33());

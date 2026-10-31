@@ -132,8 +132,8 @@ public:
         return fAvoidMSAA || fMaxInternalSampleCount == SampleCount::k1;
     }
 
-    bool avoidDepthMode() const {
-        return fAvoidDepthMode;
+    DepthUsageMode depthUsageMode() const {
+        return fDepthUsageMode;
     }
 
     /* Returns whether multisampled render to single sampled is supported. */
@@ -491,7 +491,6 @@ protected:
     bool fMSAARenderToSingleSampledSupport = false;
     bool fAvoidMSAA = false;
     bool fDrawListLayer = false;
-    bool fAvoidDepthMode = false;
 
     bool fComputeSupport = false;
     bool fStorageBufferSupportForCompute = false;
@@ -518,6 +517,7 @@ protected:
     ResourceBindingRequirements fResourceBindingReqs;
     BlendEquationSupport fBlendEqSupport = BlendEquationSupport::kBasic;
     AttachmentSizePolicy fAttachmentSizePolicy = AttachmentSizePolicy::kExact;
+    DepthUsageMode fDepthUsageMode = DepthUsageMode::kAlways;
 
     GpuStatsFlags fSupportedGpuStats = GpuStatsFlags::kNone;
 

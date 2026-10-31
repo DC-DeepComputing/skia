@@ -242,8 +242,19 @@ struct SK_API ContextOptions {
      /**
       * Avoid using depth/stencil buffers. This will disable depth-occlusion-culling (more GPU work)
       * and fall back to analytic path algorithm instead of MSAA (more CPU work).
+      *
+      * DEPRECATED: Use DepthUsageMode directly; if this is set to true, DepthUsageMode is
+      * overridden to be kNever. If this is set to false, DepthUsageMode determines how Graphite
+      * uses depth.
       */
      bool fAvoidDepthMode = false;
+
+     /**
+      * Controls how Graphite uses depth attachments to optimize rendering. If not set, the default
+      * behavior maps to kAlways when the device does not support dynamic rendering and switches to
+      * kOnlyWhenRequired when the device supports dynamic rendering attachments.
+      */
+     std::optional<DepthUsageMode> fDepthUsageMode;
 
     /**
      * Private options that are only meant for testing within Skia's tools.

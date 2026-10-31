@@ -267,6 +267,18 @@ enum class SampleCount : uint8_t {
     k16 = 16
 };
 
+// Controls how Graphite uses depth attachments.
+enum class DepthUsageMode : uint8_t {
+    // Every render pass uses a depth attachment, reducing pipeline compiles due to changes in the
+    // render pass description.
+    kAlways,
+    // Render passes will never include a depth attachment. This will disable
+    // depth-occlusion-culling (more GPU work) and fall back to analytic path algorithms instead of
+    // MSAA (more CPU work), but has the least attachment overhead and fewest render pass
+    // possibilities.
+    kNever,
+};
+
 /**
  * Convert an integer value to a strictly typed SampleCount value, rounding down to the lowest
  * valid sample count if needed if `sampleCount` is not already equivalent.
