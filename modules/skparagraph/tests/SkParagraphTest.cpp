@@ -12445,8 +12445,83 @@ DEF_TEST(SkParagraph_JustifyEllipsisRemovesRuns, reporter) {
     REPORTER_ASSERT(reporter, paragraph->didExceedMaxLines());
 }
 
+namespace {
+
+struct VisitedLine {
+    std::vector<SkGlyphID> glyphs;
+    std::vector<uint32_t> starts;
+    std::map<size_t, uint32_t> endAfterGlyph;  // glyph index -> utf8Starts[count]
+};
+
+template <typename Info>
+void add_visited_run(std::vector<VisitedLine>& lines, int lineNumber, const Info* info) {
+    if (lines.size() <= (size_t)lineNumber) {
+        lines.resize(lineNumber + 1);
+    }
+    if (!info) {
+        return;
+    }
+    VisitedLine& line = lines[lineNumber];
+    line.glyphs.insert(line.glyphs.end(), info->glyphs, info->glyphs + info->count);
+    line.starts.insert(line.starts.end(), info->utf8Starts, info->utf8Starts + info->count);
+    line.endAfterGlyph[line.glyphs.size()] = info->utf8Starts[info->count];
+}
+
+// extendedVisit must report the same utf8Starts as visit(), including the trailing count+1
+// entry, and every cluster start must belong to the text of the line it is visited on
+void check_extended_visit_utf8_starts(skiatest::Reporter* reporter, ParagraphImpl* paragraph) {
+    std::vector<VisitedLine> visited, extended;
+    paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo* info) {
+        add_visited_run(visited, lineNumber, info);
+    });
+    paragraph->extendedVisit([&](int lineNumber, const Paragraph::ExtendedVisitorInfo* info) {
+        add_visited_run(extended, lineNumber, info);
+    });
+    REPORTER_ASSERT(reporter, visited.size() > 2);
+    REPORTER_ASSERT(reporter, visited.size() == extended.size());
+    REPORTER_ASSERT(reporter, extended.size() == paragraph->lines().size());
+    for (size_t i = 0; i < visited.size() && i < extended.size(); ++i) {
+        REPORTER_ASSERT(reporter, visited[i].glyphs == extended[i].glyphs, "line %zu", i);
+        REPORTER_ASSERT(reporter, visited[i].starts == extended[i].starts, "line %zu", i);
+        // Every extendedVisit callback ends on a run boundary that visit() also
+        // reports; the trailing entry must agree there
+        for (const auto& [glyphIndex, end] : extended[i].endAfterGlyph) {
+            auto found = visited[i].endAfterGlyph.find(glyphIndex);
+            REPORTER_ASSERT(reporter, found != visited[i].endAfterGlyph.end(),
+                            "line %zu: no visit() boundary after glyph %zu", i, glyphIndex);
+            if (found != visited[i].endAfterGlyph.end()) {
+                REPORTER_ASSERT(reporter, found->second == end,
+                                "line %zu glyph %zu: %u vs %u", i, glyphIndex, found->second,
+                                end);
+            }
+        }
+        // Checked against the line itself, so a bug shared by visit() still shows up
+        if (i < paragraph->lines().size()) {
+            TextRange text = paragraph->lines()[i].textWithNewlines();
+            for (uint32_t start : extended[i].starts) {
+                REPORTER_ASSERT(reporter, start >= text.start && start < text.end,
+                                "line %zu: utf8Start %u outside [%zu, %zu)", i, start,
+                                text.start, text.end);
+            }
+        }
+    }
+}
+
+// Cluster indexes of such a run are relative to its shaping block, so extendedVisit has to
+// rebase them into its own storage
+bool has_run_with_nonzero_cluster_start(ParagraphImpl* paragraph) {
+    for (const Run& run : paragraph->runs()) {
+        if (run.globalClusterIndex(0) != run.clusterIndex(0)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+}  // namespace
+
 // extendedVisit must report the same utf8Starts as visit(), including the trailing
-// count+1 entry, for slices that do not start a run: wrapped lines and later style blocks.
+// count+1 entry, for slices that do not start a run
 UNIX_ONLY_TEST(SkParagraph_ExtendedVisitUtf8StartsMatchVisit, reporter) {
     sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
@@ -12458,8 +12533,8 @@ UNIX_ONLY_TEST(SkParagraph_ExtendedVisitUtf8StartsMatchVisit, reporter) {
         textStyle.setFontSize(16);
         style.setTextStyle(textStyle);
         ParagraphBuilderImpl builder(style, fonts, get_unicode());
-        // The first run wraps over several lines, so later lines start inside it;
-        // the second style block starts a run whose clusters do not begin at 0.
+        // The run wraps over several lines, so later lines start inside it. A color-only
+        // style change does not split the run, see ExtendedVisitUtf8StartsShiftedRuns
         builder.addText("alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu ");
         textStyle.setColor(SK_ColorRED);
         builder.pushStyle(textStyle);
@@ -12467,45 +12542,46 @@ UNIX_ONLY_TEST(SkParagraph_ExtendedVisitUtf8StartsMatchVisit, reporter) {
         builder.pop();
         auto paragraph = builder.Build();
         paragraph->layout(180);
+        check_extended_visit_utf8_starts(reporter, static_cast<ParagraphImpl*>(paragraph.get()));
+    }
+}
 
-        struct Line {
-            std::vector<SkGlyphID> glyphs;
-            std::vector<uint32_t> starts;
-            std::map<size_t, uint32_t> endAfterGlyph;  // glyph index -> utf8Starts[count]
-        };
-        std::vector<Line> visited, extended;
-        paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo* info) {
-            if (visited.size() <= (size_t)lineNumber) { visited.resize(lineNumber + 1); }
-            if (!info) { return; }
-            Line& line = visited[lineNumber];
-            line.glyphs.insert(line.glyphs.end(), info->glyphs, info->glyphs + info->count);
-            line.starts.insert(line.starts.end(), info->utf8Starts, info->utf8Starts + info->count);
-            line.endAfterGlyph[line.glyphs.size()] = info->utf8Starts[info->count];
-        });
-        paragraph->extendedVisit([&](int lineNumber, const Paragraph::ExtendedVisitorInfo* info) {
-            if (extended.size() <= (size_t)lineNumber) { extended.resize(lineNumber + 1); }
-            if (!info) { return; }
-            Line& line = extended[lineNumber];
-            line.glyphs.insert(line.glyphs.end(), info->glyphs, info->glyphs + info->count);
-            line.starts.insert(line.starts.end(), info->utf8Starts, info->utf8Starts + info->count);
-            line.endAfterGlyph[line.glyphs.size()] = info->utf8Starts[info->count];
-        });
-        REPORTER_ASSERT(reporter, visited.size() > 2);
-        REPORTER_ASSERT(reporter, visited.size() == extended.size());
-        for (size_t i = 0; i < visited.size() && i < extended.size(); ++i) {
-            REPORTER_ASSERT(reporter, visited[i].glyphs == extended[i].glyphs, "line %zu", i);
-            REPORTER_ASSERT(reporter, visited[i].starts == extended[i].starts, "line %zu", i);
-            // Every extendedVisit callback ends on a run boundary that visit() also
-            // reports; the trailing entry must agree there.
-            for (const auto& [glyphIndex, end] : extended[i].endAfterGlyph) {
-                auto found = visited[i].endAfterGlyph.find(glyphIndex);
-                REPORTER_ASSERT(reporter, found != visited[i].endAfterGlyph.end(),
-                                "line %zu: no visit() boundary after glyph %zu", i, glyphIndex);
-                if (found != visited[i].endAfterGlyph.end()) {
-                    REPORTER_ASSERT(reporter, found->second == end,
-                                    "line %zu glyph %zu: %u vs %u", i, glyphIndex, found->second, end);
-                }
-            }
-        }
+// The same contract for runs whose cluster indexes start past text index 0: a style block
+// with another font size, an RTL script, and a bidi run boundary inside one paragraph
+UNIX_ONLY_TEST(SkParagraph_ExtendedVisitUtf8StartsShiftedRuns, reporter) {
+    sk_sp<ResourceFontCollection> fonts = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fonts)
+    const char* latin = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu ";
+    const char* arabic = "من أسر وإعلان الخاصّة وهولندا، عل قائمة الضغوط بالمطالبة تلك. ";
+    struct Case {
+        TextDirection direction;
+        const char* first;
+        const char* second;
+        SkScalar secondFontSize;
+    };
+    const Case cases[] = {
+            {TextDirection::kLtr, latin, latin, 20},
+            {TextDirection::kRtl, arabic, arabic, 20},
+            {TextDirection::kLtr, latin, arabic, 16},
+            {TextDirection::kRtl, arabic, latin, 16},
+    };
+    for (const Case& c : cases) {
+        ParagraphStyle style;
+        style.setTextDirection(c.direction);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto"), SkString("Noto Naskh Arabic")});
+        textStyle.setFontSize(16);
+        style.setTextStyle(textStyle);
+        ParagraphBuilderImpl builder(style, fonts, get_unicode());
+        builder.addText(c.first);
+        textStyle.setFontSize(c.secondFontSize);
+        builder.pushStyle(textStyle);
+        builder.addText(c.second);
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(180);
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, has_run_with_nonzero_cluster_start(impl));
+        check_extended_visit_utf8_starts(reporter, impl);
     }
 }
