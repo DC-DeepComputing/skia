@@ -1128,10 +1128,22 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
             // blending (at which point LEQUAL will expose any violation of kNoSelfIntersection).
             // They do not mandate depth writes being enabled.
             //
-            // TODO(michaelludwig): But for now set depthWrite=true when we perform shading since
-            // there is no render pass detection logic yet. This can be relaxed to only write depth
-            // when this is a depth-only draw or an occluder (no blending).
-            depthSettings = {CompareOp::kLEqual, /*write=*/step->performsShading()};
+            // Depth writes are enabled when the step declares itself as performaing shading AND
+            // it is combined with an occluder. There are two sources of occluders in Graphite:
+            //  1. Depth-only clip draws, which are marked by an invalid paintID.
+            //  2. Draws with no HW or shader-based blending.
+            //
+            // A regular draw that blends still needs to test against the depth but there is no
+            // need to write its depth value if step->requiresDepth() is false.
+            const bool noBlending =
+                    // No HW blending (which is also the case for in-shader blending)
+                    BlendShouldDisable(result->fBlendInfo.fEquation,
+                                       result->fBlendInfo.fSrcBlend,
+                                       result->fBlendInfo.fDstBlend) &&
+                    // No in-shader blending either
+                    result->fDstReadStrategy == DstReadStrategy::kNoneRequired;
+            const bool isOccluder = paintID == UniquePaintParamsID::Invalid() || noBlending;
+            depthSettings = {CompareOp::kLEqual, /*write=*/step->performsShading() && isOccluder};
         }
     } else {
         // With no depth aspect (or no depth/stencil attachment at all), the RenderStep should not
@@ -1140,6 +1152,10 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
         SkASSERT(!depthSettings.enabled());
     }
 
+    // The stencil settings are determined solely by the RenderStep, but the renderpass should have
+    // been adjusted to accomodate it.
+    SkASSERT(!step->usesStencil() ||
+             TextureFormatHasStencil(rpDesc.fDepthStencilAttachment.fFormat));
     result->fDepthStencilSettings = {depthSettings, step->stencilSettings()};
 
     result->generateVertexSkSL(caps, step, sharedData);
