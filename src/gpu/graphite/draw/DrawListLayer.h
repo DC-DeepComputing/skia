@@ -87,6 +87,7 @@ private:
 
     int fDrawCount = 0;
     CompressedPaintersOrder fOrderCounter = CompressedPaintersOrder::First();
+    PaintersDepth fLastRecordedDepth = PaintersDepth::First();
 
     const bool fStorageBufferSupport;
 };

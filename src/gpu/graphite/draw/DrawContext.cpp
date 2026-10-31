@@ -56,8 +56,11 @@ enum class DepthStencilFlags : int;
 namespace {
 
 bool avoid_depth(const Caps* caps, bool internalControl) {
+    // kOnlyWhenRequired acts like kAvoidForInternal when `internalControl` is true.
+    const bool avoidForInternal = caps->depthUsageMode() == DepthUsageMode::kAvoidForInternal ||
+                                  caps->depthUsageMode() == DepthUsageMode::kOnlyWhenRequired;
     return caps->depthUsageMode() == DepthUsageMode::kNever ||
-           (internalControl && caps->depthUsageMode() == DepthUsageMode::kAvoidForInternal);
+           (internalControl && avoidForInternal);
 }
 
 // Adjust the DrawList's depth-stencil flags to match DepthUsageMode and consolidate on certain
@@ -70,26 +73,25 @@ SkEnumBitMask<DepthStencilFlags> canonical_depth_stencil_flags(const Caps* caps,
         // kNever should always have set avoidDepth on the DrawList.
         SkASSERT(caps->depthUsageMode() != DepthUsageMode::kNever);
 
-        // TODO(michaelludwig): Track whether or not draws within fPendingDraw require the depth
-        // for occlusion or clipping (per-draw depth is already accumulated into `dsFlags`).
-
         // Since the DrawList isn't avoiding depth, it's not an internal surface, so
         // kAvoidForInternal behaves the same as kAlways. In that case, whether or not the recorded
         // draws would require depth, we include depth (unless there are no draws, since that's just
         // a clear). Including depth reduces the number renderpass variations required for pipelines
-        if (dll->renderStepCount() > 0) {
+        const bool addDepth = caps->depthUsageMode() == DepthUsageMode::kAlways ||
+                              caps->depthUsageMode() == DepthUsageMode::kAvoidForInternal;
+        if (dll->renderStepCount() > 0 && addDepth) {
             // TODO(michaelludwig): If the original depthStencilFlags didn't require depth but we
             // pick a format with the depth aspect, we should use kNone for load/store ops to help
             // reduce memory bandwidth even if we have to allocate the attachment.
             dsFlags |= DepthStencilFlags::kDepth;
-        } // else it's a clear, so respect the original flags
+        } // else it's a clear, or the mode is kOnlyWhenRequired so respect the original flags
     } else {
         // kAlways should never have set avoidDepth on the DrawList
         SkASSERT(caps->depthUsageMode() != DepthUsageMode::kAlways);
 
-        // If the mode is kNever, nothing should have triggered depth at all (given configuration of
-        // the path render strategy and clip stack behavior).kAvoidForInternal is allowed to trigger
-        // depth on internal surfaces if unexpected content is drawn to them.
+        // If the mode is kNever, nothing should have triggered depth at all (given configuration
+        // of the path render strategy and clip stack behavior). kAvoidForInternal/kOnlyWhenRequired
+        // are allowed to trigger depth on internal surfaces if unexpected content is drawn to them.
         SkASSERT(caps->depthUsageMode() != DepthUsageMode::kNever ||
                  !SkToBool(dsFlags & DepthStencilFlags::kDepth));
 
@@ -308,7 +310,7 @@ void DrawContext::flush(Recorder* recorder) {
 
     // Extract certain properties from DrawList relevant for DrawTask construction before
     // relinquishing the pending draw list to the DrawPass constructor.
-    SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
+    const SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
     const bool drawsRequireMSAA = fPendingDraws->drawsRequireMSAA();
     const SkEnumBitMask<DepthStencilFlags> dsFlags = canonical_depth_stencil_flags(
             recorder->priv().caps(), fPendingDraws.get());

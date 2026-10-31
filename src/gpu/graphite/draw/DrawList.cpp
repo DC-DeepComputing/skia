@@ -44,6 +44,8 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
     SkASSERT(paintID.isValid() || !fAvoidDepth);
 
     // TODO: Add validation that the renderer's expected shape type and stroke params match provided
+    const PaintersDepth lastDepth = fDraws.empty() ? DrawOrder::kClearDepth
+                                                   : fDraws.back().drawParams().order().depth();
     const Draw& draw = fDraws.emplace_back(renderer,
                                            this->deduplicateTransform(localToDevice),
                                            geometry,
@@ -85,7 +87,32 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
 
     fPassBounds.join(clip.drawBounds());
     fRequiresMSAA |= renderer->requiresMSAA();
+
     fDepthStencilFlags |= renderer->depthStencilFlags();
+
+    // Account for the paint's behavior on the renderpass's depth usage
+    if (!paintID.isValid()) {
+        // This is a depth-only draw used for clipping, so add kDepth to the required
+        // depth-stencil flags for the eventual render pass.
+        fDepthStencilFlags |= DepthStencilFlags::kDepth;
+    } else if (fDraws.count() > 1) {
+        if (dstUsage == DstUsage::kNone && !fAvoidDepth) {
+            // This is an occluder and it will be sorted earlier than the draws already recorded.
+            // TODO(michaelludwig): This is a bit disconnected from the avoidDepthMode() check in
+            // Device::drawGeometry() that disables the front-to-back ordering. However, right now
+            // avoidDepthMode() just masks off the depth aspect for the renderpass anyways, so
+            // conservatively adding it here is safe. When the basic DrawList goes away in favor of
+            // DrawListLayer, these ordering decisions and tracking will be in the same place.
+            fDepthStencilFlags |= DepthStencilFlags::kDepth;
+        } else if (lastDepth >= ordering.depth()) {
+            // This is a draw with a Z value not matching the recordDraw() call order, so assume
+            // that depth testing is needed to reorder behavior correctly.
+            fDepthStencilFlags |= DepthStencilFlags::kDepth;
+        }
+        // NOTE: The pair of these checks detects inner-fill draws regardless of whether or not the
+        // inner fill or the main draw is recorded first.
+    } // even if this could have been an occluder, as a first draw, it won't require depth
+
     if (dstUsage & DstUsage::kDstReadRequired) {
         // For paints that read from the dst, update the bounds. It may later be determined that the
         // DstReadStrategy does not require them, but they are inexpensive to track.

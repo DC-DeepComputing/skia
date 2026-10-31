@@ -283,6 +283,12 @@ enum class DepthUsageMode : uint8_t {
     // have unique shaders already (avoiding the majority of extra pipeline combinations). This may
     // still trigger some extra variations for basic image draws.
     kAvoidForInternal,
+    // Extends kAvoidForInternal to analyze whether or not client-created SkSurfaces would benefit
+    // from occlusion culling, require depth-based clipping, or otherwise use render techniques that
+    // require depth. If they do not, then client-created SkSurfaces will skip adding an unnecessary
+    // depth attachment. When the device does not support dynamic rendering, this can result in
+    // additional pipeline compiles.
+    kOnlyWhenRequired,
 };
 
 /**
