@@ -10,12 +10,16 @@ declare_args() {
   paragraph_gms_enabled = true
   paragraph_tests_enabled = true
   paragraph_bench_enabled = false
+  skia_use_coretext_paragraph = is_mac || is_ios
 }
 
 if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     skia_use_harfbuzz) {
   config("public_config") {
     defines = [ "SK_ENABLE_PARAGRAPH" ]
+    if (skia_use_coretext_paragraph) {
+      defines += [ "SK_PARAGRAPH_NATIVE_CORETEXT" ]
+    }
     include_dirs = [
       "include",
       "utils",
