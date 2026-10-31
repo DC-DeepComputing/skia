@@ -34,11 +34,10 @@ public:
                                Budgeted budgeted,
                                Mipmapped mipmapped = Mipmapped::kNo,
                                SkBackingFit backingFit = SkBackingFit::kExact,
-                               const SkSurfaceProps* props = nullptr) {
+                               const SkSurfaceProps* props = nullptr,
+                               bool internalControl=false) {
         return Make(recorder, info, label, budgeted, mipmapped, backingFit, props,
-                    LoadOp::kClear,
-                    /*internalControl=*/false,
-                    /*registerWithRecorder=*/true);
+                    LoadOp::kClear, internalControl, /*registerWithRecorder=*/true);
     }
     // Make a Graphite-internal surface that is not registered with the provided recorder. This
     // surface should be short-lived and it must be flushed manually for its draw commands to be

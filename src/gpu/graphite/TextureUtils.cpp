@@ -745,6 +745,15 @@ public:
     sk_sp<SkDevice> makeDevice(SkISize size,
                                sk_sp<SkColorSpace> colorSpace,
                                const SkSurfaceProps* props) const override {
+        // When this is used for an SkPicture image filter, it'll still be considered an "internal".
+        // If the picture contains paths or clips, the kAvoidForInternal depth mode is still allowed
+        // to add a depth attachment and it will visually match how the picture would be rendered
+        // into a client-owned SkSurface (e.g. with MSAA). However, draw sorting may be sub-optimal
+        // since it'll try to avoid ordering occluders early. If that becomes a problem we can
+        // revisit.
+        //
+        // When it's not an SkPicture image filter, FilterResult only ever draws images with basic
+        // clipping, so internalControl=true is ideal.
         SkImageInfo imageInfo = SkImageInfo::Make(size,
                                                   this->colorType(),
                                                   kPremul_SkAlphaType,
@@ -756,7 +765,8 @@ public:
                                              SkBackingFit::kApprox,
                                              props ? *props : this->surfaceProps(),
                                              skgpu::graphite::LoadOp::kDiscard,
-                                             "ImageFilterResult");
+                                             "ImageFilterResult",
+                                             /*internalControl=*/true);
     }
 
     sk_sp<SkSpecialImage> makeImage(const SkIRect& subset, sk_sp<SkImage> image) const override {
@@ -789,6 +799,9 @@ public:
 
     // SkShaderBlurAlgorithm
     sk_sp<SkDevice> makeDevice(const SkImageInfo& imageInfo) const override {
+        // This Device can count as internal, since the SkShaderBlurAlgorithm only performs
+        // pixel-aligned draws. We still register it with the recorder because we aren't in control
+        // of its lifetime scope.
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,
                                              skgpu::Budgeted::kYes,
@@ -796,7 +809,8 @@ public:
                                              SkBackingFit::kApprox,
                                              this->surfaceProps(),
                                              skgpu::graphite::LoadOp::kDiscard,
-                                             "EvalBlurTexture");
+                                             "EvalBlurTexture",
+                                             /*internalControl=*/true);
     }
 
 private:
