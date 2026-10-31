@@ -124,7 +124,6 @@ static DEFINE_string(mskps, "", "Directory to read mskps from, or a single mskp 
 static DEFINE_bool(forceRasterPipeline, false, "sets gSkForceRasterPipelineBlitter");
 static DEFINE_bool(forceRasterPipelineHP, false, "sets gSkForceRasterPipelineBlitter and gForceHighPrecisionRasterPipeline");
 static DEFINE_bool(createProtected, false, "attempts to create a protected backend context");
-static DEFINE_bool(avoidDepth, false, "Disable depth/stencil buffer usage");
 
 static DEFINE_string(bisect, "",
         "Pair of: SKP file to bisect, followed by an l/r bisect trail string (e.g., 'lrll'). The "

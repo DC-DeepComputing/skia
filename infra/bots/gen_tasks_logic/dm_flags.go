@@ -435,7 +435,12 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		}
 
 		if b.ExtraConfig("AvoidDepth") {
-			args = append(args, "--avoidDepth")
+			args = append(args, "--depthMode", "never")
+		} else if b.ExtraConfig("Graphite") {
+			// Testing "when-required" will also cover cases for "avoid-internal" and "always",
+			// so it is a good default to ensure all approaches are covered. The flag is only
+			// used by Graphite so skip setting it otherwise.
+			args = append(args, "--depthMode", "when-required")
 		}
 
 		// The Tegra3 doesn't support MSAA

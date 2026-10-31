@@ -57,7 +57,6 @@ void Caps::finishInitialization(const ContextOptions& options) {
     if (options.fOptionsPriv) {
         fMaxTextureSize = std::min(fMaxTextureSize, options.fOptionsPriv->fMaxTextureSizeOverride);
         fRequestedPathRendererStrategy = options.fOptionsPriv->fPathRendererStrategy;
-        fDrawListLayer = options.fOptionsPriv->fDrawListLayer;
     }
 #endif
     fGlyphCacheTextureMaximumBytes = options.fGlyphCacheTextureMaximumBytes;
@@ -69,9 +68,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
     fSupportBilerpFromGlyphAtlas = options.fSupportBilerpFromGlyphAtlas;
     fRequireOrderedRecordings = options.fRequireOrderedRecordings;
     fSetBackendLabels = options.fSetBackendLabels;
-
-    // Enable setting this flag from either the private or public context options.
-    fDrawListLayer |= options.fUseDrawListLayer;
+    fDrawListLayer = options.fUseDrawListLayer;
 
     fResourceBindingReqs.fMaxFallbackTextureSize =
             std::max(std::min(ResourceBindingRequirements::kDefaultMaxFallbackTextureSize,

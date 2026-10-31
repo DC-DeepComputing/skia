@@ -28,6 +28,8 @@ DEFINE_int(internalMSAATileSize, 0, "Run Graphite w/ limited MSAA texture's size
 DEFINE_int(minMSAAPathSize, -1,
            "Graphite uses raster atlas for paths smaller than this, or default value if negative");
 DEFINE_bool(useDrawListLayer, false, "Enable experimental layer-based draw ordering.");
+DEFINE_string(depthMode, "default", "Set the depth usage mode option: "
+              "default, always, never, avoid-internal, when-required");
 
 void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
 #if defined(SK_GRAPHITE_USE_CALLBACK_EXECUTOR)
@@ -58,7 +60,24 @@ void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
         testOptions->fContextOptions.fMinimumPathSizeForMSAA = FLAGS_minMSAAPathSize;
     }
     if (FLAGS_useDrawListLayer) {
-        testOptions->fOptionsPriv.fDrawListLayer = FLAGS_useDrawListLayer;
+        testOptions->fContextOptions.fUseDrawListLayer = FLAGS_useDrawListLayer;
+    }
+
+    if (strcmp(FLAGS_depthMode[0], "default") == 0) {
+        testOptions->fContextOptions.fDepthUsageMode = std::nullopt;
+    } else if (strcmp(FLAGS_depthMode[0], "always") == 0) {
+        testOptions->fContextOptions.fDepthUsageMode = skgpu::graphite::DepthUsageMode::kAlways;
+    } else if (strcmp(FLAGS_depthMode[0], "never") == 0) {
+        testOptions->fContextOptions.fDepthUsageMode = skgpu::graphite::DepthUsageMode::kNever;
+    } else if (strcmp(FLAGS_depthMode[0], "avoid-internal") == 0) {
+        testOptions->fContextOptions.fDepthUsageMode =
+                skgpu::graphite::DepthUsageMode::kAvoidForInternal;
+    } else if (strcmp(FLAGS_depthMode[0], "when-required") == 0) {
+        testOptions->fContextOptions.fDepthUsageMode =
+                skgpu::graphite::DepthUsageMode::kOnlyWhenRequired;
+    } else {
+        SkDebugf("Unknown value for --depthMode: %s\n", FLAGS_depthMode[0]);
+        exit(-1);
     }
 
 #if defined(SK_DAWN)
