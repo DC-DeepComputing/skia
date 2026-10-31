@@ -75,6 +75,30 @@
       "isAi": true,
       "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59be34ea_2a221780",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-10-31T03:07:38Z",
+      "side": 1,
+      "message": "Done in PS2 and later. Both overloads already check for nullptr, and the length overload also skips len \u003d\u003d 0.",
+      "parentUuid": "a16c65bd_79de480b",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 9999
+      },
+      "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
