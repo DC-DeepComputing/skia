@@ -16,6 +16,24 @@
       "message": "Thanks! The test is useful: it guards the pointer into the run glyph data, which the later CLs in this chain change. I ran it on PS1 (Linux Debug, --paragraph_fonts extra_fonts), and it passes.\n\nOne request about the contract in the commit message and in the test comment: \"the next paint() draws the glyphs at the changed positions\" holds only if the paragraph was not painted before the change. TextLine::paint() builds the text blobs once in TextLine::ensureTextBlobCachePopulated() (Run::copyTo() copies fPositions into the blob), and nothing resets fTextBlobCachePopulated. So a change made after the first paint() does not show until layout() builds the lines again. A quick check: paint(), then extendedVisit() with fY +\u003d 30, then paint() again; the first ink row stays at 4 instead of 34. The \"Sticky notes with glyphs changing position\" case in ParagraphSlide.cpp uses this order.\n\nThis CL does not need to fix that. Could you narrow the wording in the commit message and in the test comment, for example \"...and if the paragraph was not painted yet, paint() draws the glyphs at the changed positions\"? Then the test states what it really checks.",
       "revId": "7935b6d95cd8e7dba1de2ff70e5824c837801434",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b19f915f_f4732856",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-11-01T07:16:49Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "80724b7e_d6ac8d82",
+      "revId": "7935b6d95cd8e7dba1de2ff70e5824c837801434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
