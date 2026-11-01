@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07a8d09b_74de0e95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-01T02:48:03Z",
+      "side": 1,
+      "message": "LGTM. I checked the parts that could break:\n\n- Nothing in Skia reads Cluster::height() or fHeight, and no code outside Skia includes modules/skparagraph/src/Run.h or ParagraphImpl.h, so the removal cannot break a client.\n- Run::calculateHeight() is a const getter with no side effects, so dropping its call for each cluster in iterateThroughClustersInTextOrder changes no state. It only saves work in buildClusterTable.\n- The removed Cluster() and Cluster(TextRange) constructors have no callers. fClusters only uses emplace_back, so Cluster does not need a default constructor. Cluster(TextRange) also left most members uninitialized, so it is good to see it go.\n- The size math in the description holds: 48 bytes for fOwner, fRunIndex, fTextRange, fStart and fEnd, then fWidth, fHalfLetterSpacing and four bools take 12 bytes, and padding keeps the struct at 64.\n\nTests on the parent (1412381 PS2) and on this patchset: SkParagraph dm tests 229/229 on both. The full Flutter framework corpus (921 test files, about 20k tests, plus txt/ui unittests) gives the same results on both. ASAN bot is green.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
+      "revId": "3aa8814836007f632e9c4bebec477fe348fd57c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
