@@ -12704,3 +12704,64 @@ DEF_TEST(SkParagraph_LetterSpacingFirstLineOffset, reporter) {
     REPORTER_ASSERT(reporter, firstLineOffset(10, 20) == 5);
     REPORTER_ASSERT(reporter, firstLineOffset(20, 10) == 10);
 }
+
+DEF_TEST(SkParagraph_LetterSpacingFirstLineOffsetEdgeCases, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+
+    struct Piece {
+        const char* text;  // nullptr adds a placeholder
+        SkScalar letterSpacing;
+        SkScalar wordSpacing;
+    };
+    // Lines start half of the letter spacing of the style of their first cluster that is not a
+    // placeholder and not in a cursive script to the right
+    auto lineOffsets = [&](std::initializer_list<Piece> pieces, SkScalar width) {
+        TextStyle style;
+        style.setFontFamilies({SkString("Roboto"), SkString("Noto Naskh Arabic")});
+        style.setFontSize(20);
+        style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(style);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        for (const Piece& piece : pieces) {
+            style.setLetterSpacing(piece.letterSpacing);
+            style.setWordSpacing(piece.wordSpacing);
+            builder.pushStyle(style);
+            if (piece.text) {
+                builder.addText(piece.text);
+            } else {
+                builder.addPlaceholder(PlaceholderStyle(
+                        30, 30, PlaceholderAlignment::kBaseline, TextBaseline::kAlphabetic, 0));
+            }
+            builder.pop();
+        }
+        auto paragraph = builder.Build();
+        paragraph->layout(width);
+        auto* impl = static_cast<ParagraphImpl*>(paragraph.get());
+        std::vector<SkScalar> offsets;
+        for (auto& line : impl->lines()) {
+            offsets.push_back(line.offset().fX);
+        }
+        return offsets;
+    };
+    using V = std::vector<SkScalar>;
+    for (int pass = 0; pass < 2; ++pass) {
+        REPORTER_ASSERT(reporter, lineOffsets({{nullptr, 10, 0}, {"Hello", 20, 0}},
+                                              SK_ScalarInfinity) == V({10}));
+        REPORTER_ASSERT(reporter, lineOffsets({{"\xd9\x85\xd8\xb1\xd8\xad\xd8\xa8\xd8\xa7", 10, 0},
+                                               {" world", 20, 0}},
+                                              SK_ScalarInfinity) == V({10}));
+        REPORTER_ASSERT(reporter, lineOffsets({{"Hello world", 0, 5}}, SK_ScalarInfinity) ==
+                                          V({0}));
+        REPORTER_ASSERT(reporter, lineOffsets({{"e", 10, 0}, {"\xcc\x81x", 20, 0}},
+                                              SK_ScalarInfinity) == V({5}));
+        REPORTER_ASSERT(reporter, lineOffsets({{"Hello", 12, 0}}, SK_ScalarInfinity) == V({6}));
+        REPORTER_ASSERT(reporter, lineOffsets({{" ", 10, 0}, {"Hello", 20, 0}},
+                                              SK_ScalarInfinity) == V({5}));
+        // Width 1 puts every grapheme on its own line
+        REPORTER_ASSERT(reporter, lineOffsets({{"Hello ", 10, 3}, {"world", 20, 0}}, 1) ==
+                                          V({5, 5, 5, 5, 5, 10, 10, 10, 10, 10}));
+    }
+}
