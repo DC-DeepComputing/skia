@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f5e998_4c9efc99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-01T00:09:14Z",
+      "side": 1,
+      "message": "Thanks, this looks good to me. I checked the layout math in GlyphData::Make (descending alignment, no padding, exact size, n \u003d\u003d 0 gives one end entry and an empty glyph span), the SkNVRefCnt -\u003e operator delete -\u003e sk_free path, and that the Run copy/move constructors keep the reference members pointing into the shared block. The arrays were default-initialized before too (SkPoint has no member initializers), so uninitialized memory is not new here.\n\nTests I ran on PS2 against its parent:\n- SkParagraph dm tests on a local Release ASAN build: no ASAN reports, no regressions. I also tried an extra case locally: a paragraph that keeps its cached runs after the cache is reset and the first paragraph is gone, with \u003e64-glyph runs, several runs, letter/word spacing, justify and ellipsis. Glyphs and positions match an uncached reference. It passes, so I see no need to add it.\n- Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload: green.\n- The full Flutter framework test corpus (about 20k tests) with a local engine build: no regressions.\n\nOne optional nit inline.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
+      "revId": "6dcef0df89f2355075200d620c038112ec59c70b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8292f763_f5290e3c",
+        "filename": "modules/skparagraph/src/Run.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-01T00:09:14Z",
+      "side": 1,
+      "message": "nit: SkTextBlob, which has the same sk_malloc + placement new + sk_free pattern, also blocks the plain heap new (include/core/SkTextBlob.h:274-278). Without it, a later `new GlyphData` anywhere in Run or its friends still compiles and is then freed with sk_free. Something like\n\n    static void* operator new(size_t) \u003d delete;\n    static void* operator new(size_t, void* p) { return p; }\n\nkeeps `new (mem) GlyphData` in Make() working (I built it and ran the SkParagraph tests with it). Up to you.",
+      "revId": "6dcef0df89f2355075200d620c038112ec59c70b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
