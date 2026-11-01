@@ -351,6 +351,9 @@ HBFont create_sub_hb_font(const SkFont& font, const HBFont& typefaceFont) {
                       [](void* user_data){ delete reinterpret_cast<SkFont*>(user_data); });
     int scale = skhb_position(font.getSize());
     hb_font_set_scale(skFont.get(), scale, scale);
+    // AAT 'trak' is defined per point size and HarfBuzz uses 12pt when ptem is unset. The SkFont
+    // size is the CoreText point size: SkScalerContext_Mac makes its CTFont with this size
+    hb_font_set_ptem(skFont.get(), font.getSize());
 
     return skFont;
 }

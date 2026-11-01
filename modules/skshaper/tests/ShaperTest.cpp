@@ -28,6 +28,11 @@
 #include <set>
 #include <vector>
 
+#if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+#include "include/ports/SkTypeface_mac.h"
+#include "src/utils/mac/SkUniqueCFRef.h"
+#endif
+
 #if defined(SK_UNICODE_ICU_IMPLEMENTATION)
 #include "modules/skunicode/include/SkUnicode_icu.h"
 #endif
@@ -533,5 +538,106 @@ DEF_TEST(Shaper_ZeroGlyphRuns, r) {
         REPORTER_ASSERT(r, glyphs == test.glyphs, "%d glyphs instead of %d", glyphs, test.glyphs);
     }
 }
+
+#if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
+
+namespace {
+
+struct AdvanceRunHandler final : public SkShaper::RunHandler {
+    std::vector<SkGlyphID> fGlyphs;
+    std::vector<SkPoint> fPositions;
+    SkScalar fAdvance = 0;
+
+    void beginLine() override {}
+    void runInfo(const RunInfo&) override {}
+    void commitRunInfo() override {}
+    Buffer runBuffer(const RunInfo& info) override {
+        fGlyphs.resize(info.glyphCount);
+        fPositions.resize(info.glyphCount);
+        return {fGlyphs.data(), fPositions.data(), nullptr, nullptr, {0, 0}};
+    }
+    void commitRunBuffer(const RunInfo& info) override { fAdvance += info.fAdvance.fX; }
+    void commitLine() override {}
+};
+
+SkScalar hb_advance(const sk_sp<SkUnicode>& unicode, const SkFont& font, const char* utf8) {
+    const size_t utf8Bytes = strlen(utf8);
+    std::unique_ptr<SkShaper> shaper = SkShapers::HB::ShapeDontWrapOrReorder(unicode, nullptr);
+    SkShaper::TrivialFontRunIterator fontRuns(font, utf8Bytes);
+    SkShaper::TrivialBiDiRunIterator bidi(0, utf8Bytes);
+    SkShaper::TrivialScriptRunIterator script(SkSetFourByteTag('l', 'a', 't', 'n'), utf8Bytes);
+    SkShaper::TrivialLanguageRunIterator language("en-US", utf8Bytes);
+    AdvanceRunHandler handler;
+    shaper->shape(
+            utf8, utf8Bytes, fontRuns, bidi, script, language, nullptr, 0, SK_ScalarMax, &handler);
+    return handler.fAdvance;
+}
+
+// CTLine applies 'trak' for the CTFont point size, so its width is the native reference
+SkScalar native_advance(CTFontRef ctFont, const char* utf8) {
+    SkUniqueCFRef<CFStringRef> string(
+            CFStringCreateWithCString(nullptr, utf8, kCFStringEncodingUTF8));
+    const void* keys[] = {kCTFontAttributeName};
+    const void* values[] = {ctFont};
+    SkUniqueCFRef<CFDictionaryRef> attributes(CFDictionaryCreate(nullptr,
+                                                                 keys,
+                                                                 values,
+                                                                 1,
+                                                                 &kCFTypeDictionaryKeyCallBacks,
+                                                                 &kCFTypeDictionaryValueCallBacks));
+    SkUniqueCFRef<CFAttributedStringRef> attributed(
+            CFAttributedStringCreate(nullptr, string.get(), attributes.get()));
+    SkUniqueCFRef<CTLineRef> line(CTLineCreateWithAttributedString(attributed.get()));
+    return static_cast<SkScalar>(CTLineGetTypographicBounds(line.get(), nullptr, nullptr, nullptr));
+}
+
+void check_advances_match_native(skiatest::Reporter* r, CTFontRef (*makeFont)(CGFloat)) {
+    auto unicode = get_unicode();
+    if (!unicode) {
+        ERRORF(r, "Could not create unicode.");
+        return;
+    }
+    static constexpr char kText[] = "Hamburgefonstiv";
+    static constexpr int kGlyphs = std::size(kText) - 1;
+    for (CGFloat size : {11, 13, 17, 28, 48}) {
+        SkUniqueCFRef<CTFontRef> ctFont(makeFont(size));
+        sk_sp<SkTypeface> typeface = SkMakeTypefaceFromCTFont(ctFont.get());
+        if (!typeface) {
+            ERRORF(r, "Could not create typeface at size %g.", size);
+            return;
+        }
+        SkFont font(typeface, static_cast<SkScalar>(size));
+        // CTLine uses unhinted fractional advances
+        font.setSubpixel(true);
+        font.setHinting(SkFontHinting::kNone);
+        const SkScalar hb = hb_advance(unicode, font, kText);
+        const SkScalar native = native_advance(ctFont.get(), kText);
+        // HarfBuzz positions are 16.16 fixed point, allow two units of rounding per glyph
+        const SkScalar tolerance = kGlyphs * 2.f / 65536;
+        REPORTER_ASSERT(r,
+                        SkScalarAbs(hb - native) <= tolerance,
+                        "size %g: HarfBuzz %f, CoreText %f",
+                        size,
+                        hb,
+                        native);
+    }
+}
+
+}  // namespace
+
+// Apple system fonts have 'trak' and STAT, so HarfBuzz must track them for the real size
+DEF_TEST(Shaper_harfbuzz_trak_follows_font_size, r) {
+    check_advances_match_native(r, [](CGFloat size) {
+        return CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, size, nullptr);
+    });
+}
+
+DEF_TEST(Shaper_harfbuzz_no_trak_font, r) {
+    check_advances_match_native(r, [](CGFloat size) {
+        return CTFontCreateWithName(CFSTR("Helvetica"), size, nullptr);
+    });
+}
+
+#endif  // defined(SK_FONTMGR_CORETEXT_AVAILABLE)
 
 #endif  // #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_SHAPER_UNICODE_AVAILABLE)
