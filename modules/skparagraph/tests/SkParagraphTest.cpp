@@ -12667,3 +12667,113 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+namespace {
+// Vocalized Arabic: every harakah is a mark that HarfBuzz places with a non-zero glyph offset
+constexpr char16_t kVocalizedArabic[] =
+        u"\u0645\u064E\u0631\u0652\u062D\u064E\u0628\u064B\u0627 "
+        u"\u0634\u064F\u0643\u0652\u0631\u064B\u0627 "
+        u"\u0645\u064E\u0631\u0652\u062D\u064E\u0628\u064B\u0627";
+
+std::unique_ptr<Paragraph> buildVocalizedArabic(sk_sp<FontCollection> fontCollection,
+                                                const ParagraphStyle& paragraphStyle,
+                                                SkScalar letterSpacing,
+                                                SkScalar width) {
+    TextStyle arabic;
+    arabic.setFontFamilies({SkString("Noto Naskh Arabic")});
+    arabic.setFontSize(20);
+    arabic.setColor(SK_ColorBLACK);
+    arabic.setLetterSpacing(letterSpacing);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(arabic);
+    builder.addText(kVocalizedArabic);
+    builder.pop();
+    auto paragraph = builder.Build();
+    paragraph->layout(width);
+    return paragraph;
+}
+
+std::vector<SkPoint> drawnPositions(Paragraph* paragraph) {
+    std::vector<SkPoint> positions;
+    paragraph->visit([&](int, const Paragraph::VisitorInfo* info) {
+        for (int i = 0; info && i < info->count; ++i) {
+            positions.push_back(info->positions[i]);
+        }
+    });
+    return positions;
+}
+
+bool hasNonZeroOffset(const Run& run) {
+    bool nonZero = false;
+    for (auto offset : run.offsets()) {
+        nonZero |= offset != SkPoint{0, 0};
+    }
+    return nonZero;
+}
+}  // namespace
+
+// The ellipsis is shaped outside OneLineShaper, and its marks still need their offsets
+DEF_TEST(SkParagraph_EllipsisKeepsGlyphOffsets, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.setMaxLines(1);
+    paragraphStyle.setEllipsis(std::u16string(u"\u0628\u064E\u0628\u064E"));
+    paragraphStyle.setTextDirection(TextDirection::kRtl);
+    auto paragraph = buildVocalizedArabic(fontCollection, paragraphStyle, 0, 120);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+    const Run* ellipsis = impl->lines()[0].ellipsis();
+    REPORTER_ASSERT(reporter, ellipsis != nullptr);
+    if (ellipsis) {
+        REPORTER_ASSERT(reporter, hasNonZeroOffset(*ellipsis));
+    }
+}
+
+// A paragraph built from the cache shares the glyph data, offsets included, with the
+// paragraph that filled the cache, so both draw the same glyph positions
+DEF_TEST(SkParagraph_CachedRunsKeepGlyphOffsets, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+    fontCollection->getParagraphCache()->reset();
+    fontCollection->getParagraphCache()->turnOn(true);
+
+    ParagraphStyle paragraphStyle;
+    auto cold = buildVocalizedArabic(fontCollection, paragraphStyle, 0, 1000);
+    REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
+    auto cached = buildVocalizedArabic(fontCollection, paragraphStyle, 0, 1000);
+
+    auto cachedImpl = static_cast<ParagraphImpl*>(cached.get());
+    bool anyOffsets = false;
+    for (auto& run : cachedImpl->runs()) {
+        anyOffsets |= hasNonZeroOffset(run);
+    }
+    REPORTER_ASSERT(reporter, anyOffsets);
+    REPORTER_ASSERT(reporter, drawnPositions(cold.get()) == drawnPositions(cached.get()));
+    fontCollection->getParagraphCache()->turnOn(false);
+}
+
+// Letter spacing moves glyphs along the line only: the vertical mark offsets stay the same
+DEF_TEST(SkParagraph_LetterSpacingKeepsGlyphOffsets, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+    fontCollection->getParagraphCache()->turnOn(false);
+
+    ParagraphStyle paragraphStyle;
+    auto plain = drawnPositions(
+            buildVocalizedArabic(fontCollection, paragraphStyle, 0, 1000).get());
+    auto spaced = drawnPositions(
+            buildVocalizedArabic(fontCollection, paragraphStyle, 3, 1000).get());
+    REPORTER_ASSERT(reporter, plain.size() == spaced.size());
+    bool anyVertical = false;
+    for (size_t i = 0; i < plain.size() && i < spaced.size(); ++i) {
+        anyVertical |= plain[i].fY != 0;
+        REPORTER_ASSERT(reporter, plain[i].fY == spaced[i].fY);
+    }
+    REPORTER_ASSERT(reporter, anyVertical);
+}
