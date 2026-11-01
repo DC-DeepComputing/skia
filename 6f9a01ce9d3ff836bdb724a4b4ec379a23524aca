@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed81ea80_5d86b8b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-01T03:15:52Z",
+      "side": 1,
+      "message": "Thanks, this looks good. I checked these points against PS2:\n\n- Run is safe to relocate with memcpy. The four SkSpan references point into the heap GlyphData block, not into the Run. fJustificationShifts is a plain TArray, and the static_assert keeps it that way. SkFont, sk_sp and SkString are already marked relocatable.\n- Nothing holds a Run pointer across the new shrink_to_fit(). OneLineShaper keeps its runs in shared_ptr\u003cRun\u003e, `piece` in finish() lives for one loop iteration, and the TextLines are built later in breakShapedTextIntoLines().\n- When reserve_exact() gets the count wrong (a placeholder before the first text block, skipped blocks, several style blocks), only the capacity changes. emplace_back() never takes its arguments from fRuns, so growth is still safe.\n- The SkParagraph tests give the same results before and after this change in an ASAN build. The full Flutter framework test corpus (20198 tests) passes on this patchset except cupertino/popup_surface_test.dart \"Saturation is applied before blur\", which also fails without this change.\n\nOne non-blocking note on the new comment in OneLineShaper::finish() (\"shrink_to_fit() after shaping does not move the runs again\"). TArray takes its capacity from the rounded allocation size (sk_malloc_good_size(), then setDataFromBytes()). On Apple, malloc_good_size() rounds requests above 1008 bytes up to a multiple of 512 bytes, and sizeof(Run) is 280 on 64-bit. So reserve_exact(4) gives capacity 5, reserve_exact(22) gives capacity 23, and so on. In these cases shrink_to_fit() allocates a block of the same size class, copies the runs and frees the old block, and gives back no memory. On Linux this only happens above 32 KB. Your measurement shows that the instructions change by less than 1%, so I am fine with the code as it is. Maybe the comment could say that shrink_to_fit() usually has little or nothing to do, rather than that it does not move the runs.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
+      "revId": "6f9a01ce9d3ff836bdb724a4b4ec379a23524aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
