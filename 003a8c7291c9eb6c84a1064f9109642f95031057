@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09bb88e4_4e2f6aa3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-01T00:19:04Z",
+      "side": 1,
+      "message": "Verified: nothing reads fGraphemeRange anywhere in the tree, and the only writes were the three\ninitializers removed here. The size math matches the description: on 64-bit, fOwner (8) +\nfRunIndex (8) + fTextRange (16) + fStart/fEnd (16) + three SkScalar (12) + four bools (4) \u003d 64\nbytes, versus 80 with the 16-byte GraphemeRange. I also ran the Flutter framework test corpus\n(921 test files, about 20k tests) with this change against its parent: no differences.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose:\nit blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the\ngoogle3 clients of Skia with this change. Skia starts it for an external author only after a\nGoogler votes Code-Review+1, so I vote first and hold the submit with this comment. I will\nresolve it when Canary-G3 is green, or report the failure here. Please do not resolve or\noverride it before that.",
+      "revId": "003a8c7291c9eb6c84a1064f9109642f95031057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
