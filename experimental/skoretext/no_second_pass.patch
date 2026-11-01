@@ -1,0 +1,24 @@
+diff --git a/modules/skparagraph/src/CoreTextLineShaper.cpp b/modules/skparagraph/src/CoreTextLineShaper.cpp
+index 2f8f920e73..762b9b3edd 100644
+--- a/modules/skparagraph/src/CoreTextLineShaper.cpp
++++ b/modules/skparagraph/src/CoreTextLineShaper.cpp
+@@ -26,6 +26,7 @@
+ #include <array>
+ #include <cmath>
+ #include <cstdint>
++#include <cstdlib>
+ #include <utility>
+ 
+ namespace skia {
+@@ -194,6 +195,11 @@ static void normalize_cluster_indices(uint32_t* clusters, CFIndex glyphCount, bo
+ // when no run needs that
+ static SkUniqueCFRef<CFAttributedStringRef> untrack_fallback_runs(CFAttributedStringRef attrStr,
+                                                                   CTLineRef line) {
++    // R49 EXPERIMENT (local only): measure the line without the second pass
++    static const bool kSkip = getenv("R49_NO_SECOND_PASS") != nullptr;
++    if (kSkip) {
++        return nullptr;
++    }
+     SkUniqueCFRef<CFMutableAttributedStringRef> untrackedStr;
+     // A line has few fallback faces, and their runs need not share one CTFont object
+     skia_private::STArray<2, std::pair<CTFontRef, SkUniqueCFRef<CTFontRef>>> untrackedFonts;
