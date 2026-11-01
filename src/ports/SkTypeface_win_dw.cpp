@@ -1206,14 +1206,23 @@ static HRESULT apply_fontargument_variation(SkTScopedComPtr<IDWriteFontFace>& fo
 }
 
 static SkTScopedComPtr<IDWriteFontFace> create_font_face_from_stream(
-        IDWriteFactory3* factory3,
+        IDWriteFactory* factory,
         IDWriteFontFileLoader* fontFileLoader,
         UINT32 ttcIndex,
         const SkFontArguments& args) {
     UINT32 fontFileReferenceKey = 0;
     SkTScopedComPtr<IDWriteFontFile> fontFile;
-    HRN(factory3->CreateCustomFontFileReference(
+    HRN(factory->CreateCustomFontFileReference(
             &fontFileReferenceKey, sizeof(fontFileReferenceKey), fontFileLoader, &fontFile));
+
+    BOOL isSupported;
+    DWRITE_FONT_FILE_TYPE fontFileType;
+    DWRITE_FONT_FACE_TYPE fontFaceType;
+    UINT32 numberOfFaces;
+    HRN(fontFile->Analyze(&isSupported, &fontFileType, &fontFaceType, &numberOfFaces));
+    if (!isSupported) {
+        return nullptr;
+    }
 
     DWRITE_FONT_SIMULATIONS simulations = DWRITE_FONT_SIMULATIONS_NONE;
     if (args.getSyntheticBold().value_or(false)) {
@@ -1223,22 +1232,12 @@ static SkTScopedComPtr<IDWriteFontFace> create_font_face_from_stream(
         simulations |= DWRITE_FONT_SIMULATIONS_OBLIQUE;
     }
 
-    SkTScopedComPtr<IDWriteFontFaceReference> fontFaceReference;
-    HRN(factory3->CreateFontFaceReference(
-            fontFile.get(), ttcIndex, simulations, &fontFaceReference));
-
-    // DirectWrite applies simulations even to faces that are already bold or italic, as
-    // onMakeClone relies on, so failure here means a bad file or an out-of-range index.
-    SkTScopedComPtr<IDWriteFontFace3> fontFace3;
-    HRN(fontFaceReference->CreateFontFace(&fontFace3));
-    // CreateFontFace accepts an index with a named instance in its upper 16 bits (FreeType
-    // style, e.g. 0x00010000) but returns a face with a different index.
-    if (fontFace3->GetIndex() != ttcIndex) {
+    SkTScopedComPtr<IDWriteFontFace> fontFace;
+    HRN(factory->CreateFontFace(
+            fontFaceType, 1, &fontFile.get(), ttcIndex, simulations, &fontFace));
+    if (fontFace->GetIndex() != ttcIndex) {
         return nullptr;
     }
-
-    SkTScopedComPtr<IDWriteFontFace> fontFace;
-    HRN(fontFace3->QueryInterface(&fontFace));
     return fontFace;
 }
 
@@ -1264,7 +1263,7 @@ sk_sp<SkTypeface> DWriteFontTypeface::MakeFromStream(std::unique_ptr<SkStreamAss
     SkTScopedComPtr<IDWriteFactory3> factory3;
     if (SUCCEEDED(factory->QueryInterface(&factory3)) && factory3) {
         SkTScopedComPtr<IDWriteFontFace> fontFace = create_font_face_from_stream(
-                factory3.get(), fontFileLoader.get(), SkTo<UINT32>(ttcIndex), args);
+                factory, fontFileLoader.get(), SkTo<UINT32>(ttcIndex), args);
         if (!fontFace) {
             return nullptr;
         }
