@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "482a5ddd_07361cef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-01T02:47:09Z",
+      "side": 1,
+      "message": "Thanks, this looks good. I checked PS2 against its parent:\n\n- Run::resetJustificationShifts() calls TArray::clear(), which keeps the capacity, so on the next layout the reserve_exact() in TextLine::shiftCluster does nothing. A justified run allocates its shifts once per paragraph, not once per layout.\n- Run::calculateWidth, Run::copyTo and Run::positionX read at most index run.size(), and the array has run.size() + 1 entries. A run with 0 glyphs reserves 1 entry.\n- The SkParagraph dm tests pass (227/227, the 226 old ones plus SkParagraph_JustifyFillsLines). The NativeFonts_FreeType_ASAN try job is green. The Flutter framework tests with this change give the same results as with the parent (20098 passed, 1 failure that is also there without the change).\n\nOne optional note on the commit message, not blocking. ParagraphImpl::fRuns grows with emplace_back, and TArray rounds the capacity up to a multiple of 8, so a paragraph with 1 run keeps 8 Run slots. Thus about 4 KB of the 4.6 KB per Latin paragraph comes from the 7 empty slots (8 x 512 B), not from the one live run. After https://skia-review.googlesource.com/c/skia/+/1412379 removes the growth capacity, this change saves 512 B per run. Maybe say this in one sentence, so the table is not read as the saving per run.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
+      "revId": "5f92736b61524b8865f07c16e84cf2fc940fb3a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
