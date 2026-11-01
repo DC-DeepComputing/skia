@@ -1,0 +1,48 @@
+diff --git a/modules/skunicode/src/SkUnicode_apple.cpp b/modules/skunicode/src/SkUnicode_apple.cpp
+index aac700387c..cb3fd5f364 100644
+--- a/modules/skunicode/src/SkUnicode_apple.cpp
++++ b/modules/skunicode/src/SkUnicode_apple.cpp
+@@ -22,6 +22,7 @@
+ #include <CoreFoundation/CoreFoundation.h>
+ 
+ #include <algorithm>
++#include <cstdlib>
+ #include <cstring>
+ #include <memory>
+ #include <string>
+@@ -151,8 +152,22 @@ bool Tokenize(CFStringRef str,
+ // zero-length ranges from malformed surrogates
+ template <typename Callback>
+ void ForEachGraphemeBoundary(CFStringRef str, CFIndex len16, Callback&& callback) {
++    // R49 EXPERIMENT (local only): printable ASCII followed by ASCII always ends a grapheme
++    // cluster (no UAX #29 rule joins them), so skip the per-cluster CoreFoundation call there
++    static const bool kFast = getenv("R49_UNI_FAST") != nullptr;
++    CFStringInlineBuffer buf;
++    CFStringInitInlineBuffer(str, &buf, CFRangeMake(0, len16));
+     CFIndex idx = 0;
+     while (idx < len16) {
++        if (kFast) {
++            UniChar c = CFStringGetCharacterFromInlineBuffer(&buf, idx);
++            if (c >= 0x20 && c < 0x7F &&
++                (idx + 1 >= len16 || CFStringGetCharacterFromInlineBuffer(&buf, idx + 1) < 0x80)) {
++                callback(idx);
++                ++idx;
++                continue;
++            }
++        }
+         CFRange r = CFStringGetRangeOfComposedCharactersAtIndex(str, idx);
+         callback(r.location);
+         CFIndex next = std::max(idx + 1, r.location + std::max<CFIndex>(r.length, 1));
+@@ -636,6 +651,12 @@ private:
+             text[start] = ' ';
+         }
+         CodeUnitFlags flags = CodeUnitFlags::kNoCodeUnitFlag;
++        // R49 EXPERIMENT (local only): printable ASCII other than space has none of the four
++        // class flags below, so skip the four table lookups for it
++        static const bool kFast = getenv("R49_UNI_FAST") != nullptr;
++        if (kFast && unichar > 0x20 && unichar < 0x7F) {
++            return;
++        }
+         if (this->isSpace(unichar)) {
+             flags |= CodeUnitFlags::kPartOfIntraWordBreak;
+         }
