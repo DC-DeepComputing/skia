@@ -96,14 +96,17 @@ public:
     //  - The draw's Geometry may be intersected geometrically with clip elements, potentially
     //    impacting the final choice of Renderer.
     //
-    // All remaining clip elements that affect the draw will be returned in `outEffectiveElements`.
+    // All remaining clip elements that affect the draw will be returned in `outEffectiveElements`,
+    // and the count of those elements that have not yet been drawn will be returned in
+    // `outUndrawnCount`.
     // The per-clip element state has to be explicitly updated by calling `updateClipStateForDraw()`
     // which prepares the clip stack for later rendering.
     using ElementList = skia_private::STArray<4, const Element*>;
     Clip visitClipStackForDraw(const Transform&,
                                Geometry*,
                                SkStrokeRec* style,
-                               ElementList* outEffectiveElements) const;
+                               ElementList* outEffectiveElements,
+                               int* outUndrawnCount) const;
 
     // Update the per-clip element state for later rendering using pre-computed clip state data for
     // a particular draw. The provided 'z' value is the depth value that the draw will use if it's
