@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "457024ca_e606c949",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T15:47:38Z",
+      "side": 1,
+      "message": "Thanks for folding them in. PS3 has the same tree as the companion, so the earlier runs still apply: all SkParagraph dm tests pass, the new tests fail without the fix, the ASAN try job passed, and a local run of the Flutter framework text tests shows no regressions.\n\nOne nit in the commit message, which still describes PS2:\n- \"a wrapped line continuing a run or a later style block\": a later style block with only a color change stays in the same run, so the slice offset comes from wrapped lines. Maybe \"for example a wrapped line that continues a run\".\n- The test paragraph only lists SkParagraph_ExtendedVisitUtf8StartsMatchVisit. Please also mention SkParagraph_ExtendedVisitUtf8StartsShiftedRuns, which covers runs with a nonzero cluster start (the count+1 storage part of the fix).\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
+      "revId": "4b5f81e8c22d196e1483861a0079b622b0949aba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
