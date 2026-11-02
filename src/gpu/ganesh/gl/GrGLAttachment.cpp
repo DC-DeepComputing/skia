@@ -23,7 +23,7 @@
 
 #define GL_ALLOC_CALL(call)                                   \
     [&] {                                                     \
-        if (gpu->glCaps().skipErrorChecks()) {               \
+        if (gpu->glCaps().skipResourceErrorChecks()) {       \
             GR_GL_CALL(gpu->glInterface(), call);            \
             return static_cast<GrGLenum>(GR_GL_NO_ERROR);     \
         } else {                                              \

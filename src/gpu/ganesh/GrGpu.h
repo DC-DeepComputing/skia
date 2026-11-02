@@ -454,6 +454,12 @@ public:
     bool checkAndResetOOMed();
 
     /**
+     * Checks if we detected an error other than OOM from the underlying 3D API and if so returns
+     * true and resets the internal error state to false. Otherwise, returns false.
+     */
+    bool checkAndResetBackendError();
+
+    /**
      *  Put this texture in a safe and known state for use across multiple contexts. Depending on
      *  the backend, this may return a GrSemaphore. If so, other contexts should wait on that
      *  semaphore before using this texture.
@@ -717,6 +723,7 @@ protected:
                            uint32_t mipLevels = 1) const;
 
     void setOOMed() { fOOMed = true; }
+    void setBackendError() { fBackendError = true; }
 
     Stats                            fStats;
 
@@ -909,6 +916,7 @@ private:
     skia_private::STArray<4, SubmittedProc> fSubmittedProcs;
 
     bool fOOMed = false;
+    bool fBackendError = false;
 
     int fCurrentSubmitRenderPassCount = 0;
 

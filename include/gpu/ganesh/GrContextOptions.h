@@ -114,12 +114,47 @@ struct SK_API GrContextOptions {
     size_t fGlyphCacheTextureMaximumBytes = 2048 * 1024 * 4;
 
     /**
-     * Controls whether we check for GL errors after functions that allocate resources (e.g.
-     * glTexImage2D), at the end of a GPU submission, or checking framebuffer completeness. The
-     * results of shader compilation and program linking are always checked, regardless of this
-     * option. Ignored on backends other than GL.
+     * DEPRECATED: Use fGLErrorChecks instead. This option will be removed once existing clients
+     * have migrated.
+     *
+     * kYes behaves like GLErrorChecks::kDisabled. kNo enables the allocation and per-submit
+     * checks, but not texture upload checks. A non-kDefault fGLErrorChecks overrides this option.
+     * The results of shader compilation and program linking are always checked, regardless of
+     * this option. Ignored on backends other than GL.
      */
     Enable fSkipGLErrorChecks = Enable::kDefault;
+
+    /**
+     * Which GL errors Skia checks for. An out of memory error is reported by
+     * GrDirectContext::oomed() and any other error by GrDirectContext::checkAndResetBackendError().
+     * The results of shader compilation and program linking are always checked. Ignored on
+     * backends other than GL.
+     */
+    enum class GLErrorChecks {
+        /**
+         * Skia chooses: no checks over a command buffer or on WebGL; otherwise the same checks as
+         * kAll, except that texture uploads and transfers are not checked.
+         */
+        kDefault,
+        /** No GL error checks. */
+        kDisabled,
+        /**
+         * Check for GL errors after resource allocations (e.g. glTexStorage2D, glBufferData,
+         * glRenderbufferStorage), after texture uploads and transfers (e.g. glTexSubImage2D), and
+         * check framebuffer completeness when creating render targets. A failed upload makes the
+         * write (and the flush that performs it) report failure. There are no per-submit checks.
+         */
+        kResources,
+        /**
+         * kResources plus a check at the end of each GPU submission and, in debug builds,
+         * framebuffer completeness checks when binding render targets.
+         */
+        kAll,
+    };
+    /**
+     * Texture uploads and transfers are only checked when this is explicitly kResources or kAll.
+     */
+    GLErrorChecks fGLErrorChecks = GLErrorChecks::kDefault;
 
     /**
      * Can the glyph atlas use multiple textures. If allowed, the each texture's size is bound by

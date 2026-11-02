@@ -104,7 +104,9 @@ GrGLCaps::GrGLCaps(const GrContextOptions& contextOptions,
     fFenceSyncSupport = false;
     fFBFetchRequiresEnablePerSample = false;
     fSRGBWriteControl = false;
-    fSkipErrorChecks = false;
+    fSkipResourceErrorChecks = false;
+    fSkipCommandErrorChecks = false;
+    fCheckUploadErrors = false;
 
     fShaderCaps = std::make_unique<GrShaderCaps>();
 
@@ -393,11 +395,12 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fSRGBWriteControl = ctxInfo.hasExtension("GL_EXT_sRGB_write_control");
     }  // No WebGL support
 
-    fSkipErrorChecks = ctxInfo.isOverCommandBuffer();
+    fSkipResourceErrorChecks = ctxInfo.isOverCommandBuffer();
     if (GR_IS_GR_WEBGL(standard)) {
         // Error checks are quite costly in webgl, especially in Chrome.
-        fSkipErrorChecks = true;
+        fSkipResourceErrorChecks = true;
     }
+    fSkipCommandErrorChecks = fSkipResourceErrorChecks;
 
     // When we are abandoning the context we cannot call into GL thus we should skip any sync work.
     fMustSyncGpuDuringAbandon = false;
@@ -4951,14 +4954,38 @@ void GrGLCaps::onApplyOptionsOverrides(const GrContextOptions& options) {
         fProgramBinarySupport = false;
     }
 
+    // The deprecated fSkipGLErrorChecks is applied first; a non-default fGLErrorChecks overrides
+    // it. Upload error checks are newer than the other checks and change the result of writes, so
+    // they only run when fGLErrorChecks explicitly asks for them.
     switch (options.fSkipGLErrorChecks) {
         case GrContextOptions::Enable::kNo:
-            fSkipErrorChecks = false;
+            fSkipResourceErrorChecks = false;
+            fSkipCommandErrorChecks = false;
             break;
         case GrContextOptions::Enable::kYes:
-            fSkipErrorChecks = true;
+            fSkipResourceErrorChecks = true;
+            fSkipCommandErrorChecks = true;
             break;
         case GrContextOptions::Enable::kDefault:
+            break;
+    }
+    fCheckUploadErrors = false;
+    switch (options.fGLErrorChecks) {
+        case GrContextOptions::GLErrorChecks::kDefault:
+            break;
+        case GrContextOptions::GLErrorChecks::kDisabled:
+            fSkipResourceErrorChecks = true;
+            fSkipCommandErrorChecks = true;
+            break;
+        case GrContextOptions::GLErrorChecks::kResources:
+            fSkipResourceErrorChecks = false;
+            fSkipCommandErrorChecks = true;
+            fCheckUploadErrors = true;
+            break;
+        case GrContextOptions::GLErrorChecks::kAll:
+            fSkipResourceErrorChecks = false;
+            fSkipCommandErrorChecks = false;
+            fCheckUploadErrors = true;
             break;
     }
 }
