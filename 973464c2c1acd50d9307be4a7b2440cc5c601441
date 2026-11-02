@@ -46,6 +46,30 @@
       },
       "revId": "973464c2c1acd50d9307be4a7b2440cc5c601441",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d0fbcbe_0be752a8",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-02T14:43:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8301cb4a_331a11ff",
+      "range": {
+        "startLine": 954,
+        "startChar": 40,
+        "endLine": 954,
+        "endChar": 54
+      },
+      "revId": "973464c2c1acd50d9307be4a7b2440cc5c601441",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
