@@ -16,6 +16,24 @@
       "message": "Thanks for this, the change looks good to me.\n\nI checked that the derived value is the same as the stored one in every path of\napplySpacingAndBuildClusterTable(): no spacing (fHasSpacing is false, 0 as before), the single style\nfast path (the one block gives the same value that the old loop wrote to every cluster), and the\ncomplex path, where clusters with zero letter spacing, placeholders and cursive runs got 0 or were\nnever read by TextLine. partition_point() over fTextStyles is valid because ParagraphBuilderImpl\nemits contiguous blocks in text order, and it skips zero-width blocks the same way the old\nstartsIn() scan did. The binary search runs once per line and only when the paragraph has spacing.\n\nI also confirmed that SkParagraph_LetterSpacingFirstLineOffset guards the cache path: without the\nfHasSpacing copy in ParagraphCache::updateTo() its two cache assertions fail.\n\nI wrote a few more edge cases for the first line offset: a leading placeholder, a leading Arabic\nrun, word spacing without letter spacing, a grapheme that spans two styles, a single style, a\nleading space, and every line of a paragraph broken at each grapheme, each twice to go through\nParagraphCache. They pass on PS2 and on its parent. If they are useful, they are in a companion\nWIP CL stacked on PS2:\nhttps://skia-review.googlesource.com/c/skia/+/1411683\nIt has one patchset with the test only. Feel free to fold it in, take a part of it, or ignore it.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks\nthe submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of\nSkia with this change. Skia starts it for an external author only after a Googler votes\nCode-Review+1, so I vote first and hold the submit with this comment. I will resolve it when\nCanary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
       "revId": "f384d0db425a0ed6a9a869c4e73cc258b26c1471",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f52007bc_a3a67cba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T03:00:10Z",
+      "side": 1,
+      "message": "Canary-G3 passed; resolving submit hold.",
+      "parentUuid": "78d88859_39059bd3",
+      "revId": "f384d0db425a0ed6a9a869c4e73cc258b26c1471",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
