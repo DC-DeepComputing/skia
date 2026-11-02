@@ -16,6 +16,75 @@
       "message": "PTAL",
       "revId": "a0ab381e3ed38b30824ca021085be8f1592a24ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab0862fb_1bacba8f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1826,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-02T18:55:17Z",
+      "side": 1,
+      "message": "I think that this is a reasonable first policy, and we very well may never need to improve it. If this were to happen, it would mean over 4000 clip elements have been pushed on the stack at a given time and I can\u0027t imagine that happening outside of a pathologic scenario. It\u0027s not going to be running in real time, and past histogram surveys have shown the clip stack barely reaching double digits.\n\nYou could naively trigger this if you were rendering a difference clip mask of many small shapes in a grid, for a sufficiently large grid (e.g. 300 x 300). The workaround would be to merge the shapes into a single SkPath, but this could still be a surprise gotcha for a developer.\n\nIf we need to handle this without dropping the draw, we have a bit more flexibility with DrawListLayer compared to the SortKey system:\n1. There isn\u0027t a real max renderstep limit anymore, the only limiter is how many depth bits we have (although that is still reachable). I\u0027d argue that the 32-bit limits on uniform/texture index tracking in DrawListLayer would reach OOMs before they became a problem.\n2. It\u0027s not going to win prizes, but if we had over 65k clip shapes, we could force them to have the same Z value; basically only applying to the single draw we\u0027re going to record.\n\nThis actually makes me think we could add a guarantee to Device/ClipStack\u0027s behavior. When are in `drawGeometry()`, we know all pre-recorded clip elements from DLL will have a max Z that is less than or equal to the new draw\u0027s Z.  Any undrawn clip elements that affect the new draw can all be assigned the same Z value (new draw + 1).  This means we don\u0027t need `undrawnClipElements` head room, we just need 2*maxRenderStepCount. \n\nHowever, if we don\u0027t flush the clip stack\u0027s pending draws right away, those pending drawn elements (both older and the newly recorded clip draws) can diverge as additional draws come in.  So if `undrawnClipElements` causes us to overflow (this might be the same as maxPendingDraws() after we\u0027ve updated the clip stack at the end of drawGeometry()), we just have to call `recordDeferredClipDraws()` after recording the latest draw.\n\nI think this would work for both DLL and the old sorting system if we do this manually recording based on the drawlist max step count.",
+      "range": {
+        "startLine": 1826,
+        "startChar": 0,
+        "endLine": 1826,
+        "endChar": 81
+      },
+      "revId": "a0ab381e3ed38b30824ca021085be8f1592a24ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33c37dfc_321502ee",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1829,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-02T18:55:17Z",
+      "side": 1,
+      "message": "nit: White space is weird here; I\u0027d just move the first string up to after SKIA_LOG_W, and then align any left over under the `\"`.",
+      "range": {
+        "startLine": 1829,
+        "startChar": 0,
+        "endLine": 1829,
+        "endChar": 92
+      },
+      "revId": "a0ab381e3ed38b30824ca021085be8f1592a24ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca41b096_3c905fca",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2437,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-02T18:55:17Z",
+      "side": 1,
+      "message": "It involves a second iteration, but I don\u0027t think it\u0027d be a performance issue, and leads to a cleaner API if instead of having the numUndrawnClipElements be an out parameter to `visitClipStackForDraw`, we pass in the span of clip elements to `needsFlushBeforeDraw`.\n\nThen we have a separate function on ClipStack that returns the number of pending draws, which just iterates and sums `!hasPendingDraw()`?\n\nWDYT?",
+      "range": {
+        "startLine": 2437,
+        "startChar": 0,
+        "endLine": 2437,
+        "endChar": 61
+      },
+      "revId": "a0ab381e3ed38b30824ca021085be8f1592a24ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
