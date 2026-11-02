@@ -20,9 +20,9 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkContextPriv.h"
 #include "src/core/SkMessageBus.h"
-#include "src/core/SkSharedContext.h"
 #include "src/core/SkSynchronizedResourceCache.h"
 #include "src/core/SkTHash.h"
+#include "src/cpu/SharedState.h"
 
 #if defined(SK_USE_DISCARDABLE_SCALEDIMAGECACHE)
 #include "include/private/chromium/SkDiscardableMemory.h"
@@ -465,7 +465,7 @@ void SkResourceCache::checkMessages() {
 ///////////////////////////////////////////////////////////////////////////////
 
 static SkResourceCache* get_cache() {
-    return SkContexts::GetGlobalSkContext()->priv().sharedContext()->synchronizedResourceCache();
+    return SkContexts::GetGlobalSkContext()->priv().sharedState()->synchronizedResourceCache();
 }
 
 size_t SkResourceCache::GetTotalBytesUsed() {

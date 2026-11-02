@@ -139,6 +139,7 @@ skia_core_public = [
 #  //src/core:core_priv_srcs
 #  //src/core:core_srcs
 #  //src/core:textual_hdrs
+#  //src/cpu:cpu_hdrs
 #  //src/cpu:cpu_srcs
 #  //src/image:image_hdrs
 #  //src/image:image_srcs
@@ -560,8 +561,6 @@ skia_core_sources = [
   "$_src/core/SkScan_Path.cpp",
   "$_src/core/SkScopeExit.h",
   "$_src/core/SkSemaphore.cpp",
-  "$_src/core/SkSharedContext.cpp",
-  "$_src/core/SkSharedContext.h",
   "$_src/core/SkSharedMutex.cpp",
   "$_src/core/SkSharedMutex.h",
   "$_src/core/SkSpanPriv.h",
@@ -650,6 +649,8 @@ skia_core_sources = [
   "$_src/core/SkYUVPlanesCache.h",
   "$_src/core/SkZip.h",
   "$_src/cpu/Recorder.cpp",
+  "$_src/cpu/SharedState.cpp",
+  "$_src/cpu/SharedState.h",
   "$_src/image/SkImage.cpp",
   "$_src/image/SkImageGeneratorPriv.h",
   "$_src/image/SkImage_Base.cpp",

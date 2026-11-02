@@ -10,6 +10,15 @@ skia_filegroup(
     name = "cpu_srcs",
     srcs = [
         "Recorder.cpp",
+        "SharedState.cpp",
+    ],
+    visibility = ["//src/core:__pkg__"],
+)
+
+skia_filegroup(
+    name = "cpu_hdrs",
+    srcs = [
+        "SharedState.h",
     ],
     visibility = ["//src/core:__pkg__"],
 )
