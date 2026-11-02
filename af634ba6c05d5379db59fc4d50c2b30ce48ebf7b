@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6022f5a4_f0fe9e2a",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-02T17:36:04Z",
+      "side": 1,
+      "message": "This could also be an std::optional if you prefer to avoid a heap allocation for this.",
+      "range": {
+        "startLine": 766,
+        "startChar": 13,
+        "endLine": 766,
+        "endChar": 23
+      },
+      "revId": "af634ba6c05d5379db59fc4d50c2b30ce48ebf7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
