@@ -22,6 +22,30 @@
       },
       "revId": "973464c2c1acd50d9307be4a7b2440cc5c601441",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8301cb4a_331a11ff",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-02T14:18:33Z",
+      "side": 1,
+      "message": "I believe this was done on purpose: `raw_ref\u003cT\u003e` intentionally has no implicit `operator T\u0026()` (unlike `std::reference_wrapper\u003cT\u003e`), only `*`, `-\u003e`, and `.get()`.\n\n\u003e History from Chromium when `raw_ref\u003cT\u003e` was designed:\n\u003e1. The initial prototype actually had `operator T\u0026() const` (https://chromium-review.googlesource.com/c/chromium/src/+/3477358/1/base/memory/raw_ptr.h#1013).\n\u003e2. In review on that CL, `danakj@` pushed back on modeling it as a transparent reference:\n\u003e   - Line 956: *\"I don\u0027t think this should be the same as a raw reference, it\u0027s a smart pointer type and I think it should look and behave like a smart pointer.\"*\n\u003e   - Line 1013: *\"Why `operator T\u0026` instead of `operator*`?\"*\n\u003e3. When `danakj@` landed the production implementation (https://chromium-review.googlesource.com/c/chromium/src/+/3721480), `operator T\u0026()` was intentionally omitted in favor of `operator*()`, `operator-\u003e()`, and `.get()`.\n\u003e4. `operator*()` (`GetForDereference`) and `.get()` (`GetForExtraction`) also have distinct BackupRefPtr semantics depending on whether the pointee is immediately dereferenced or just extracted (https://source.chromium.org/chromium/chromium/src/+/main:base/allocator/partition_allocator/src/partition_alloc/pointers/raw_ref.h;l\u003d184-196).\n\nAlso note: unlike `sk_ref_sp(raw_ptr\u003cT\u003e)`, even if we wanted to allow this in Skia only, we can\u0027t add `operator T\u0026()` locally for Skia only.",
+      "parentUuid": "546bb740_e4e22f08",
+      "range": {
+        "startLine": 954,
+        "startChar": 40,
+        "endLine": 954,
+        "endChar": 54
+      },
+      "revId": "973464c2c1acd50d9307be4a7b2440cc5c601441",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
