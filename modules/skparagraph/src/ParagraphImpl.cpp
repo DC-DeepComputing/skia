@@ -1544,13 +1544,15 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                     AutoSTArray<16, SkRect> glyphBounds;
                     glyphBounds.reset(SkToInt(run->size()));
                     run->font().getBounds(run->glyphs(), glyphBounds, nullptr);
+                    // utf8Starts covers the visited glyphs plus one trailing entry, the
+                    // same count+1 values visit() reports, starting at the slice.
                     STArray<128, uint32_t> clusterStorage;
-                    const uint32_t* clusterPtr = run->clusterIndexes().data();
+                    const uint32_t* clusterPtr = run->clusterIndexes().data() + context.pos;
                     if (run->fClusterStart > 0) {
-                        clusterStorage.reset(context.size);
-                        for (size_t i = 0; i < context.size; ++i) {
-                          clusterStorage[i] =
-                              run->fClusterStart + run->fClusterIndexes[i];
+                        clusterStorage.reset(context.size + 1);
+                        for (size_t i = 0; i <= context.size; ++i) {
+                            clusterStorage[i] =
+                                run->fClusterStart + run->fClusterIndexes[context.pos + i];
                         }
                         clusterPtr = &clusterStorage[0];
                     }
