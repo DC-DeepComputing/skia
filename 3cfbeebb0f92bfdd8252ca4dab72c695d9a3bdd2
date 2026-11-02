@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b32a091d_9b5adc41",
+        "filename": "src/gpu/ganesh/vk/GrVkBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-02T16:57:04Z",
+      "side": 1,
+      "message": "Because `gr_rp\u003cT\u003e` currently passes `\u0026T::ref` and `\u0026T::recycle` as non-type template arguments (`src/gpu/GpuRefCnt.h:185`), that\u0027s not possible as-is.\n\nI have an idea, but this would require a separate patch:\nhttps://skia-review.googlesource.com/c/skia/+/1413876\n\nI removed this change from this patch.",
+      "parentUuid": "1c2519fd_1b33a8b7",
+      "range": {
+        "startLine": 18,
+        "startChar": 28,
+        "endLine": 18,
+        "endChar": 45
+      },
+      "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec23b0b5_89807a86",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9079ea29_4158bb0b",
+        "filename": "src/gpu/ganesh/vk/GrVkDescriptorSetManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-02T16:57:04Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ec23b0b5_89807a86",
+      "range": {
+        "startLine": 66,
+        "startChar": 31,
+        "endLine": 66,
+        "endChar": 32
+      },
+      "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "316019bf_2f2370a6",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-11-02T14:45:26Z",
       "side": 1,
       "message": "nit: align",
+      "range": {
+        "startLine": 88,
+        "startChar": 32,
+        "endLine": 88,
+        "endChar": 33
+      },
+      "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9fa2834_1b27489b",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-02T16:57:04Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "316019bf_2f2370a6",
       "range": {
         "startLine": 88,
         "startChar": 32,
