@@ -16,6 +16,121 @@
       "message": "bumping on this cl",
       "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ba523d6_8665b070",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T15:11:57Z",
+      "side": 1,
+      "message": "This function needs both a comment and possibly a more descriptive name. makeImage that takes an another SkImage is pretty vague at what it does",
+      "range": {
+        "startLine": 63,
+        "startChar": 27,
+        "endLine": 63,
+        "endChar": 36
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ba92f76_9bfbe9bd",
+        "filename": "src/core/Recorder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T15:11:57Z",
+      "side": 1,
+      "message": "nit: what is the header in include/cpu and the cpp is in src/core? Shouldn\u0027t this be in src/cpu?",
+      "range": {
+        "startLine": 7,
+        "startChar": 18,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "869a7d0a_08bb9d54",
+        "filename": "src/core/Recorder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T15:11:57Z",
+      "side": 1,
+      "message": "I\u0027m confused what is the purpose of this function?",
+      "range": {
+        "startLine": 26,
+        "startChar": 66,
+        "endLine": 26,
+        "endChar": 71
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20fad09a_fc9a920b",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T15:11:57Z",
+      "side": 1,
+      "message": "why put this here and not in Recoder.cpp? Everything else in this file is just static factories",
+      "range": {
+        "startLine": 647,
+        "startChar": 25,
+        "endLine": 647,
+        "endChar": 34
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ac2b71c_c37c77d9",
+        "filename": "src/image/SkImage_Lazy.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T15:11:57Z",
+      "side": 1,
+      "message": "I don\u0027t think this is correct. I\u0027m assuming you\u0027re trying to make a Recorder version of DeferredFromGenerator? IMO FromGenerator should be making an SkImage_Lazy directly and not a Recorder specific one. In fact, I would argue we may not even need to be passing a Recorder into such a factory at all.\n\nAnd if we don\u0027t need this function, then I don\u0027t think we need any of the makeImage stuff you added.",
+      "range": {
+        "startLine": 304,
+        "startChar": 25,
+        "endLine": 304,
+        "endChar": 48
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
