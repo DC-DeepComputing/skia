@@ -16,6 +16,24 @@
       "message": "Thanks for this change. I checked PS2 against a few more cases and found no problems:\n\n- The GlyphData layout keeps 4-byte alignment for the offsets array, and Run::commit() copies the same prefix into the second block.\n- HarfBuzz writes an offset for every glyph, so a reused ShapingBuffer never gives stale offsets to Run::commit().\n- No reader indexes offsets()[n] now that the array has n entries, not n + 1.\n- Every place that constructs a Run now allocates the glyph data itself, including TextLine::ShapeString.\n\nTests: all 232 SkParagraph dm tests pass. The ASAN bot (Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload) passes. I also ran the Flutter framework text corpus (20198 tests, 921 files) against the parent CL 1412379, with and without this change: no regressions.\n\nThe new fRun-\u003ecommit(fBuffer) call in TextLine::ShapeString is not covered by a test: with the call removed, SkParagraph_GlyphOffsetsOnlyWhenNeeded still passes. I uploaded a companion WIP CL stacked on top of PS2 with three extra tests:\nhttps://skia-review.googlesource.com/c/skia/+/1412417\n\n- SkParagraph_EllipsisKeepsGlyphOffsets: a vocalized Arabic ellipsis keeps its mark offsets. It fails if the commit() call in ShapeString is removed.\n- SkParagraph_CachedRunsKeepGlyphOffsets: a paragraph built from ParagraphCache keeps the offsets and draws the same glyph positions.\n- SkParagraph_LetterSpacingKeepsGlyphOffsets: letter spacing leaves the vertical mark offsets unchanged.\n\nAll three pass on PS2. Feel free to fold them into this CL, take only some of them, or skip them. I will abandon the WIP CL once it is no longer needed.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
       "revId": "38920bfba9f3575abb654b5acc81a78985d29b6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a6a383_a6567ac5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T03:02:02Z",
+      "side": 1,
+      "message": "Canary-G3 passed; resolving submit hold.",
+      "parentUuid": "55aea8f7_444af772",
+      "revId": "38920bfba9f3575abb654b5acc81a78985d29b6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
