@@ -99,6 +99,30 @@
       },
       "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f7b1f2_755e174c",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-11-02T16:26:03Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "59be34ea_2a221780",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 9999
+      },
+      "revId": "40a9f30f41c96032cf99e599ac949484115561ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
