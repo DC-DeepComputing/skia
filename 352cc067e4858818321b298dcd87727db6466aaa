@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334fe2e5_8d5253c5",
+        "filename": "src/gpu/ganesh/ops/SoftwarePathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-02T13:26:14Z",
+      "side": 1,
+      "message": "// To combat this, manually pass in the subset and domain to enable subset clamping.\n\n?",
+      "revId": "352cc067e4858818321b298dcd87727db6466aaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
