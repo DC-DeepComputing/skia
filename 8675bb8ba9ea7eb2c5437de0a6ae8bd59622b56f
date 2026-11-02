@@ -34,6 +34,23 @@
       "parentUuid": "df6f7d4c_a27fd283",
       "revId": "8675bb8ba9ea7eb2c5437de0a6ae8bd59622b56f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77640dee_0908b885",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T21:55:52Z",
+      "side": 1,
+      "message": "The try jobs on PS1 are green: the ASAN bot (Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload) and Canary-G3 both pass, so the google3 clients of Skia build and pass their tests with this change. The submit hold is released, and from my side the CL is ready to land once it has the second approval.",
+      "revId": "8675bb8ba9ea7eb2c5437de0a6ae8bd59622b56f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
