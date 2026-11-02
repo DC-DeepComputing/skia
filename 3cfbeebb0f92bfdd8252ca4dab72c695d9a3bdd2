@@ -16,6 +16,75 @@
       "message": "Michael FYI ;-)",
       "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c2519fd_1b33a8b7",
+        "filename": "src/gpu/ganesh/vk/GrVkBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T14:45:26Z",
+      "side": 1,
+      "message": "why can\u0027t this stay forward declared? If it just requires that we define the dtor in the cpp file I would prefer that",
+      "range": {
+        "startLine": 18,
+        "startChar": 28,
+        "endLine": 18,
+        "endChar": 45
+      },
+      "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec23b0b5_89807a86",
+        "filename": "src/gpu/ganesh/vk/GrVkDescriptorSetManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T14:45:26Z",
+      "side": 1,
+      "message": "nit: either align all these with fPool or don\u0027t align at all",
+      "range": {
+        "startLine": 66,
+        "startChar": 31,
+        "endLine": 66,
+        "endChar": 32
+      },
+      "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "316019bf_2f2370a6",
+        "filename": "src/gpu/ganesh/vk/GrVkSampler.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T14:45:26Z",
+      "side": 1,
+      "message": "nit: align",
+      "range": {
+        "startLine": 88,
+        "startChar": 32,
+        "endLine": 88,
+        "endChar": 33
+      },
+      "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
