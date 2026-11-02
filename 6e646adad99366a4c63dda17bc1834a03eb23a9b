@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8e3c551_36f94085",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T01:49:07Z",
+      "side": 1,
+      "message": "Good catch on SkParagraph_LetterSpacingKeepsGlyphOffsets: ParagraphImpl::applySpacingAndBuildClusterTable() skips letter spacing on cursive runs when fLetterSpacingByCSSSpec is false, so dropping that test makes sense. I will abandon https://skia-review.googlesource.com/c/skia/+/1412417.\n\nOn Build-Debian11-GCC-x86_64-Debug-Docker, your guess was exact: PS2 failed at Run.cpp:98 with `error: \u0027bit_cast\u0027 is not a member of \u0027std\u0027`. PS3 passes Build-Debian11-GCC-x86_64-Debug-Docker, the ASAN bot, and the SkCQ dry run.\n\nOn Canary-G3: the google3 try service cherry-picks every unmerged parent in the stack and requires a Googler Code-Review+1 on each of them. When Canary-G3 ran on PS2 (and on the CLs stacked above it), earlier CLs in the stack did not have Code-Review+1 yet, so the service stopped with MissingApproval. Now that the parent CLs have Code-Review+1, I am voting Code-Review+1 on PS3 to start Canary-G3. I leave the PS2 hold comment unresolved until Canary-G3 passes.",
+      "revId": "6e646adad99366a4c63dda17bc1834a03eb23a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
