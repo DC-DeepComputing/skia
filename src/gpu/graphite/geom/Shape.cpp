@@ -139,6 +139,42 @@ SkPath Shape::asPath() const {
     return builder.detach();
 }
 
+<<<<<<< HEAD   (94c8cd229539fd7f581733763275e9a9fe921cbe [M156] [Graphite] Only allow clip path key bounds within int)
+||||||| BASE   (16303522067b8e0ffe4a82893762af503cce83ff [RRect] Remove FP tolerances in RRect)
+float Shape::getInflationRadius(SkPaint::Join join,
+                                float miterLimit,
+                                SkPaint::Cap cap,
+                                float strokeWidth) const {
+    SkASSERT(miterLimit >= 0.f && strokeWidth > 0.f);
+    // Rectangles, rounded rectangles, and lines do not produce miters so don't count the
+    // pessimistic limit against their draw bounds.
+    const float effectiveMiterLimit = this->isPath() ? miterLimit : 1.f;
+    // Rectangles and rounded rectangles don't have caps, so don't count that against their
+    // draw bounds (if we could efficiently know a path was a closed contour, it could
+    // be included here too).
+    const SkPaint::Cap effectiveCap = this->isRect() || this->isRRect() ? SkPaint::kButt_Cap : cap;
+    return SkStrokeRec::GetInflationRadius(join, effectiveMiterLimit, effectiveCap, strokeWidth);
+}
+
+=======
+float Shape::getInflationRadius(SkPaint::Join join,
+                                float miterLimit,
+                                SkPaint::Cap cap,
+                                float strokeWidth) const {
+    SkASSERT(miterLimit >= 0.f && strokeWidth > 0.f);
+    // Rectangles, rounded rectangles, and lines do not produce miters so don't count the
+    // pessimistic limit against their draw bounds. Arcs that don't fill the center do not
+    // form miters (but wedges can).
+    const float effectiveMiterLimit =
+            (this->isPath() || (this->isArc() && this->arc().isWedge())) ? miterLimit : 1.f;
+    // Rectangles and rounded rectangles don't have caps, so don't count that against their
+    // draw bounds (if we could efficiently know a path was a closed contour, it could
+    // be included here too).
+    const SkPaint::Cap effectiveCap = this->isRect() || this->isRRect() ? SkPaint::kButt_Cap : cap;
+    return SkStrokeRec::GetInflationRadius(join, effectiveMiterLimit, effectiveCap, strokeWidth);
+}
+
+>>>>>>> CHANGE (d80db8f8f856edfdef362d6160f7d3b10cbfae25 [graphite] Fix miter inflation for wedges)
 namespace {
 int path_key_from_data_size(const SkPath& path) {
     const int verbCnt = path.countVerbs();
