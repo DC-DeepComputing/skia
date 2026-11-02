@@ -12755,3 +12755,126 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+static std::unique_ptr<Paragraph> layoutMixedDirections(
+        sk_sp<ResourceFontCollection> fontCollection, TextDirection direction, SkScalar width) {
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.setTextDirection(direction);
+    paragraphStyle.turnHintingOff();
+    paragraphStyle.setApplyRoundingHack(false);
+    TextStyle textStyle;
+    // Noto Naskh Arabic first, so the spaces and the Arabic letters shape into one run
+    textStyle.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+    textStyle.setFontSize(15);
+    textStyle.setColor(SK_ColorBLACK);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(textStyle);
+    builder.addText("Hello world دار ورد زاد and more english words دور رواد here ok");
+    auto paragraph = builder.Build();
+    paragraph->layout(width);
+    return paragraph;
+}
+
+// Checks that every painted glyph starts inside the box of its code unit, and that the
+// trailing whitespace of every line sits at the visual end of the line in the paragraph
+// direction (UAX#9 L1), where a hit inside its box returns it
+static void checkTrailingSpacesAtLineEnd(skiatest::Reporter* reporter, Paragraph* paragraph) {
+    auto impl = static_cast<ParagraphImpl*>(paragraph);
+    impl->ensureUTF16Mapping();
+    auto boxOf = [&](size_t utf16Index) {
+        auto boxes = paragraph->getRectsForRange(
+                utf16Index, utf16Index + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        return boxes.size() == 1 ? boxes[0] : TextBox(SkRect::MakeEmpty(), TextDirection::kLtr);
+    };
+
+    paragraph->visit([&](int, const Paragraph::VisitorInfo* info) {
+        if (info == nullptr) {
+            return;
+        }
+        for (int g = 0; g < info->count; ++g) {
+            auto utf16Index = impl->getUTF16Index(info->utf8Starts[g]);
+            auto x = info->origin.fX + info->positions[g].fX;
+            auto box = boxOf(utf16Index).rect;
+            REPORTER_ASSERT(reporter,
+                            box.fLeft - EPSILON100 <= x && x <= box.fRight + EPSILON100,
+                            "glyph of %zu at %f, box [%f, %f)",
+                            utf16Index,
+                            x,
+                            box.fLeft,
+                            box.fRight);
+        }
+    });
+
+    bool ltr = impl->paragraphStyle().getTextDirection() == TextDirection::kLtr;
+    for (auto& line : impl->lines()) {
+        SkScalar lineStart = line.offset().fX;
+        SkScalar lineEnd = lineStart + line.width();
+        for (auto i = impl->getUTF16Index(line.trimmedText().end);
+             i < impl->getUTF16Index(line.textWithNewlines().end);
+             ++i) {
+            auto box = boxOf(i);
+            if (box.rect.width() < 1) {
+                REPORTER_ASSERT(reporter, false, "no box for the trailing space %zu", i);
+                continue;
+            }
+            if (ltr) {
+                REPORTER_ASSERT(reporter,
+                                box.rect.fLeft >= lineEnd - EPSILON100,
+                                "trailing space %zu at [%f, %f), line ends at %f",
+                                i,
+                                box.rect.fLeft,
+                                box.rect.fRight,
+                                lineEnd);
+            } else {
+                REPORTER_ASSERT(reporter,
+                                box.rect.fRight <= lineStart + EPSILON100,
+                                "trailing space %zu at [%f, %f), line starts at %f",
+                                i,
+                                box.rect.fLeft,
+                                box.rect.fRight,
+                                lineStart);
+            }
+
+            auto y = box.rect.centerY();
+            auto left = paragraph->getGlyphPositionAtCoordinate(
+                    box.rect.fLeft + box.rect.width() / 4, y);
+            auto right = paragraph->getGlyphPositionAtCoordinate(
+                    box.rect.fRight - box.rect.width() / 4, y);
+            bool boxLtr = box.direction == TextDirection::kLtr;
+            auto start = boxLtr ? left : right;
+            auto end = boxLtr ? right : left;
+            REPORTER_ASSERT(reporter,
+                            start.position == SkToS32(i) && start.affinity == kDownstream,
+                            "hit at the start of %zu returns %d",
+                            i,
+                            start.position);
+            REPORTER_ASSERT(reporter,
+                            end.position == SkToS32(i + 1) && end.affinity == kUpstream,
+                            "hit at the end of %zu returns %d",
+                            i,
+                            end.position);
+        }
+    }
+}
+
+// The trailing space of a line that ends with an RTL run got the box of the space before
+// that run, inside the line
+DEF_TEST(SkParagraph_TrailingSpaceOfRtlRunInLtrParagraph, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    for (SkScalar width : {110, 140, 180}) {
+        auto paragraph = layoutMixedDirections(fontCollection, TextDirection::kLtr, width);
+        checkTrailingSpacesAtLineEnd(reporter, paragraph.get());
+    }
+}
+
+// The trailing space of a line that ends with an LTR run got a box in the middle of the
+// line, which moved the boxes of all the runs drawn after it
+DEF_TEST(SkParagraph_TrailingSpaceOfLtrRunInRtlParagraph, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    for (SkScalar width : {110, 140, 180}) {
+        auto paragraph = layoutMixedDirections(fontCollection, TextDirection::kRtl, width);
+        checkTrailingSpacesAtLineEnd(reporter, paragraph.get());
+    }
+}

@@ -1247,15 +1247,70 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
         }
     }
 
+    // The trailing whitespace of the line goes to its visual end in the paragraph direction
+    // (UAX#9 L1). A run of the other direction would draw it next to its other clusters,
+    // inside the line, so its whitespace is visited on its own at the line end
+    const bool ltrParagraph = fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr;
+    const bool moveSpaces = includingGhostSpaces && this->ellipsis() == nullptr &&
+                            this->hyphen() == nullptr &&
+                            fTextExcludingSpaces.end < fTextIncludingNewlines.end;
+    auto spacesToMove = [&](const Run* run) {
+        if (!moveSpaces || run->isPlaceholder() || run->leftToRight() == ltrParagraph) {
+            return EMPTY_RANGE;
+        }
+        auto spaces = intersected(TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end),
+                                  run->textRange());
+        return spaces.width() > 0 ? spaces : EMPTY_RANGE;
+    };
+    auto visitSpacesAtLineEnd = [&](SkScalar offset) {
+        for (auto& runIndex : fRunsInVisualOrder) {
+            const auto run = &this->fOwner->run(runIndex);
+            auto spaces = spacesToMove(run);
+            if (spaces == EMPTY_RANGE) {
+                continue;
+            }
+            SkScalar spacesWidth = 0;
+            if (!visitor(run, offset, spaces, &spacesWidth)) {
+                return false;
+            }
+            offset += spacesWidth;
+        }
+        return true;
+    };
+
+    if (moveSpaces && !ltrParagraph) {
+        SkScalar movedWidth = 0;
+        for (auto& runIndex : fRunsInVisualOrder) {
+            const auto run = &this->fOwner->run(runIndex);
+            auto spaces = spacesToMove(run);
+            if (spaces != EMPTY_RANGE) {
+                movedWidth += measureTextInsideOneRun(
+                                      spaces, run, 0, 0, true, TextAdjustment::GlyphCluster)
+                                      .clip.width();
+            }
+        }
+        if (!visitSpacesAtLineEnd(-movedWidth)) {
+            return;
+        }
+    }
+
     for (auto& runIndex : fRunsInVisualOrder) {
 
         const auto run = &this->fOwner->run(runIndex);
         auto lineIntersection = intersected(run->textRange(), textRange);
+        auto spaces = spacesToMove(run);
+        if (spaces != EMPTY_RANGE) {
+            lineIntersection.end = spaces.start;
+            if (lineIntersection.width() == 0) {
+                continue;
+            }
+        }
         if (lineIntersection.width() == 0 && this->width() != 0) {
             // TODO: deal with empty runs in a better way
             continue;
         }
-        if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces) {
+        if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces &&
+            spaces == EMPTY_RANGE) {
             // runOffset does not take in account a possibility
             // that RTL run could start before the line (trailing spaces)
             // so we need to do runOffset -= "trailing whitespaces length"
@@ -1275,6 +1330,10 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
 
     runOffset += width;
     totalWidth += width;
+
+    if (moveSpaces && ltrParagraph && !visitSpacesAtLineEnd(runOffset)) {
+        return;
+    }
 
     if (this->ellipsis() != nullptr && fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr) {
         if (visitor(ellipsis(), runOffset, ellipsis()->textRange(), &width)) {
@@ -1616,12 +1675,10 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                 SkScalar offsetX = this->offset().fX;
                 ClipContext context = context0;
 
-                // Correct the clip size because libtxt counts trailing spaces
-                if (run->leftToRight()) {
-                    context.clip.fRight += context.fExcludedTrailingSpaces; // extending clip to the right
-                } else {
-                    // Clip starts from 0; we cannot extend it to the left from that
-                }
+                // Correct the clip size because libtxt counts trailing spaces. They are only
+                // excluded in LTR paragraphs, where they sit at the right end of the line, also
+                // when they belong to an RTL run, so the clip is extended to the right
+                context.clip.fRight += context.fExcludedTrailingSpaces;
                 // However, we need to offset the clip
                 context.clip.offset(offsetX, 0.0f);
 
