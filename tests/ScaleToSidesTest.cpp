@@ -60,14 +60,17 @@ DEF_TEST(ScaleToSides, reporter) {
                     }
                     float radius1 = (float)interestingValues[i];
                     float radius2 = (float)interestingValues[j];
-                    double width = interestingValues[k];
+                    float minCoord = -(float)(interestingValues[k] * 0.5);
+                    float maxCoord = (float)(interestingValues[k] * 0.5);
+                    double width = (double)maxCoord - (double)minCoord;
                     double scale = sk_ieee_double_divide(width, (double)radius1 + (double)radius2);
                     if (width > 0.0) {
                         if (s != 0) {
                             scale = std::min(scale, interestingValues[s-1]);
                         }
                         if (scale < 1.0 && scale > 0.0) {
-                            SkScaleToSides::AdjustRadii(width, scale, &radius1, &radius2);
+                            SkScaleToSides::AdjustRadii(
+                                    scale, &radius1, &radius2, minCoord, maxCoord);
                         }
                     }
                 }
