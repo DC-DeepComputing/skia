@@ -16,6 +16,24 @@
       "message": "LGTM. I checked these points on PS2:\n\n- Cluster had only one constructor, and it always got a non-null owner, so the removed\n  `fOwner !\u003d nullptr` checks in Cluster::sizeToChar() and TextStretch::trim() never failed.\n  Removing them does not change behavior.\n- Every caller now gives the paragraph that keeps the cluster: TextLine gives fOwner,\n  ParagraphImpl gives this, and TextWrapper sets fParent at the start of breakTextIntoLines().\n  The TextWrapper is a local in ParagraphImpl::breakShapedTextIntoLines(), so fParent cannot\n  point to an old paragraph.\n- ParagraphCache::updateTo() copies the clusters into another paragraph. Before this change it\n  had to fix up each owner. Now a cluster keeps no pointer, so a copy cannot point to the\n  paragraph that filled the cache.\n- The removed Cluster::font(), isGraphemeBreak(), canBreakLineAfter() and getOwner() had no\n  callers in Skia. Run.h is in src/, so no client can use them.\n\nLocal runs: all SkParagraph dm tests pass (Debug, with and without --nativeFonts). The Flutter\nparagraph corpus (2409 tests) passes on this commit with ICU. I also ran a local test that\ncompares a paragraph restored from ParagraphCache, after the paragraph that filled the cache is\ndeleted, with the same paragraph laid out without the cache (justify, word spacing, soft hyphen,\nligature splits in getRectsForRange, getGlyphInfoAtUTF16Offset). The results are the same.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it\nblocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3\nclients of Skia with this change. Skia starts it for an external author only after a Googler\nvotes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it\nwhen Canary-G3 is green, or report the failure here. Please do not resolve or override it before\nthat.",
       "revId": "268361ea75527103d99eb88cfa5ebc469e58f949",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b9c8f94_05864773",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T03:00:09Z",
+      "side": 1,
+      "message": "Canary-G3 passed on https://skia-review.googlesource.com/c/skia/+/1412384/3 (including PS3 of this CL); resolving submit hold.",
+      "parentUuid": "98fd001a_f9fde6a2",
+      "revId": "268361ea75527103d99eb88cfa5ebc469e58f949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
