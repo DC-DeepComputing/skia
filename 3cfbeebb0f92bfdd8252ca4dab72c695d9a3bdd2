@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7031451e_5e3fb90e",
+        "filename": "src/gpu/ganesh/vk/GrVkBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-02T17:00:53Z",
+      "side": 1,
+      "message": "ah that\u0027s annoying.",
+      "parentUuid": "b32a091d_9b5adc41",
+      "range": {
+        "startLine": 18,
+        "startChar": 28,
+        "endLine": 18,
+        "endChar": 45
+      },
+      "revId": "3cfbeebb0f92bfdd8252ca4dab72c695d9a3bdd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec23b0b5_89807a86",
