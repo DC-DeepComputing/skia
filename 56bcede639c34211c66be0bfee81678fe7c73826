@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc7d26a_bdc59295",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T01:05:06Z",
+      "side": 1,
+      "message": "Thanks for updating the comment and commit message in PS3. Verified PS3 against the parent (1412378 PS3) on ASAN and the full Flutter framework test corpus (20,198 tests, 0 regressions). Re-applying Code-Review+1; keeping the earlier hold comment open until Canary-G3 finishes.",
+      "revId": "56bcede639c34211c66be0bfee81678fe7c73826",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
