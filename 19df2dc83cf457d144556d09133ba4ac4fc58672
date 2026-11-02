@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bbc71d3_50c21a1c",
+        "filename": "include/core/SkRRect.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-02T15:30:55Z",
+      "side": 1,
+      "message": "sounds good, removed the comment",
+      "parentUuid": "f30d6888_329b3812",
+      "range": {
+        "startLine": 426,
+        "startChar": 0,
+        "endLine": 426,
+        "endChar": 72
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34301fd6_23539d9b",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-28T17:16:33Z",
       "side": 1,
       "message": "This was always there, but this should use the HalfWidth and HalfHeight functions",
+      "range": {
+        "startLine": 452,
+        "startChar": 0,
+        "endLine": 452,
+        "endChar": 94
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a1d5c7d_d61e944d",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-02T15:30:55Z",
+      "side": 1,
+      "message": "sounds good, updated",
+      "parentUuid": "34301fd6_23539d9b",
       "range": {
         "startLine": 452,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcc0f91c_a900cf4b",
+        "filename": "src/core/SkScaleToSides.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-02T15:30:55Z",
+      "side": 1,
+      "message": "sounds good. Since we\u0027re removing `limit`, which was in `AdjustRadii` previously, do we want to remove `scale` as well? \n\nwe currently handle both the `limit` calculations and `scale` calculations within `scaleRadii`, so not sure if we want to move it here",
+      "parentUuid": "d5e795e4_d4baa108",
+      "range": {
+        "startLine": 24,
+        "startChar": 28,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2d412cb_13b6e659",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-10-28T17:16:33Z",
       "side": 1,
       "message": "Is it not sufficient to just set `*b \u003d maxCoord - minCoord`?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 0
+      },
+      "revId": "19df2dc83cf457d144556d09133ba4ac4fc58672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6adbd476_f83b28bb",
+        "filename": "src/core/SkScaleToSides.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-02T15:30:55Z",
+      "side": 1,
+      "message": "Setting `*b \u003d maxCoord - minCoord` is not sufficient because floating-point subtraction is not exact when minCoord is much smaller than maxCoord or when `maxCoord - minCoord` rounds up.\n\n\n------\nfor example, `minCoord \u003d 1e-30f` and `maxCoord \u003d 100.0f`, `minCoord` is smaller than half an ULP of `maxCoord` (`ulp(100.0f) \u003d 7.63e-6`). \n\nAs a result, `maxCoord - minCoord` loses precision and evaluates to `100.0f`.\n\nBecause `100.0f - 1e-30f \u003d\u003d 100.0f`, setting `*b \u003d maxCoord - minCoord` leaves `*b \u003d 100.0f`.\n\nIn `are_radii_predicates_valid`, `ptFromMax \u003d maxCoord - *b \u003d 100.0f - 100.0f \u003d 0.0f`, so the validity check `minCoord \u003c\u003d ptFromMax` evaluates to `false` (`1e-30f \u003c\u003d 0.0f`)\n\nFor `maxCoord - *b \u003e\u003d minCoord` to be true, `*b` must be stepped down by 1 ULP to `nextafterf(100.0f, 0.0f)`\n\n----\n\n\nI repaced the while loop with a simpler `if (maxCoord - *b \u003c minCoord)` block. This does the same thing to guanrantee that `*b \u003c (maxCoord - minCoord)` and passes all the tests as well\n\n\nif `*b` is much greater than `(maxCoord - minCoord)`, we can just step it down to one ULP below `(maxCoord - minCoord)`",
+      "parentUuid": "c2d412cb_13b6e659",
       "range": {
         "startLine": 40,
         "startChar": 0,
