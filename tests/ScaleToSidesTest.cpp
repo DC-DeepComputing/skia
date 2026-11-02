@@ -52,22 +52,28 @@ DEF_TEST(ScaleToSides, reporter) {
         for (int i = 0; i < numInterestingValues; i++) {
             for (int j = 0; j < numInterestingValues; j++) {
                 for (int k = 0; k < numInterestingValues; k++) {
-                    // We're about to cast values i and j to float, don't bother if they won't fit.
-                    // (Is there a more robust way to test this, like SkTFitsIn but double->float?)
-                    if (interestingValues[i] > FLT_MAX ||
-                        interestingValues[j] > FLT_MAX) {
-                        continue;
-                    }
-                    float radius1 = (float)interestingValues[i];
-                    float radius2 = (float)interestingValues[j];
-                    double width = interestingValues[k];
-                    double scale = sk_ieee_double_divide(width, (double)radius1 + (double)radius2);
-                    if (width > 0.0) {
-                        if (s != 0) {
-                            scale = std::min(scale, interestingValues[s-1]);
+                    for (int m = 0; m <= k; m++) {
+                        // We're about to cast values i, j, k, m to float, don't bother if they
+                        // won't fit.
+                        if (interestingValues[i] > FLT_MAX || interestingValues[j] > FLT_MAX ||
+                            interestingValues[k] > FLT_MAX || interestingValues[m] > FLT_MAX) {
+                            continue;
                         }
-                        if (scale < 1.0 && scale > 0.0) {
-                            SkScaleToSides::AdjustRadii(width, scale, &radius1, &radius2);
+                        float radius1 = (float)interestingValues[i];
+                        float radius2 = (float)interestingValues[j];
+                        float minCoord = -(float)interestingValues[m];
+                        float maxCoord = (float)interestingValues[k];
+                        double width = (double)maxCoord - (double)minCoord;
+                        double scale =
+                                sk_ieee_double_divide(width, (double)radius1 + (double)radius2);
+                        if (width > 0.0) {
+                            if (s != 0) {
+                                scale = std::min(scale, interestingValues[s - 1]);
+                            }
+                            if (scale < 1.0 && scale > 0.0) {
+                                SkScaleToSides::AdjustRadii(
+                                        scale, &radius1, &radius2, minCoord, maxCoord);
+                            }
                         }
                     }
                 }
