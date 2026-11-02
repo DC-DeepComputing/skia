@@ -12755,3 +12755,298 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+namespace {
+// Records the x of every painted glyph by the paint ID of its style, so a paragraph built with
+// one style per code point tells which code unit each painted glyph belongs to
+class GlyphOwnerPainter final : public ParagraphPainter {
+public:
+    struct Glyph {
+        int fOwner;
+        SkScalar fX;
+        SkScalar fY;
+    };
+    std::vector<Glyph> fGlyphs;
+
+    void drawTextBlob(const sk_sp<SkTextBlob>& blob,
+                      SkScalar x,
+                      SkScalar y,
+                      const SkPaintOrID& paint) override {
+        const PaintID* owner = std::get_if<PaintID>(&paint);
+        SkTextBlob::Iter it(*blob);
+        SkTextBlob::Iter::ExperimentalRun run;
+        while (it.experimentalNext(&run)) {
+            for (int g = 0; g < run.count; ++g) {
+                fGlyphs.push_back({owner ? *owner : -1,
+                                   fOrigin.fX + x + run.positions[g].fX,
+                                   fOrigin.fY + y + run.positions[g].fY});
+            }
+        }
+    }
+    void drawTextShadow(const sk_sp<SkTextBlob>&, SkScalar, SkScalar, SkColor, SkScalar) override {}
+    void drawRect(const SkRect&, const SkPaintOrID&) override {}
+    void drawFilledRect(const SkRect&, const DecorationStyle&) override {}
+    void drawPath(const SkPath&, const DecorationStyle&) override {}
+    void drawLine(SkScalar, SkScalar, SkScalar, SkScalar, const DecorationStyle&) override {}
+    void clipRect(const SkRect&) override {}
+    void translate(SkScalar dx, SkScalar dy) override { fOrigin += SkPoint::Make(dx, dy); }
+    void save() override { fStack.push_back(fOrigin); }
+    void restore() override {
+        fOrigin = fStack.back();
+        fStack.pop_back();
+    }
+
+private:
+    SkPoint fOrigin = {0, 0};
+    std::vector<SkPoint> fStack;
+};
+
+struct RoundTripCase {
+    const char* fName;
+    const char* fText;
+    std::vector<SkString> fFamilies;
+    SkScalar fFontSize;
+    TextDirection fDirection;
+};
+
+// Builds the paragraph either with one plain style, or with one style per code point whose
+// foreground paint ID is the UTF-16 index of that code point
+std::unique_ptr<Paragraph> buildRoundTripParagraph(const RoundTripCase& c,
+                                                   TextAlign align,
+                                                   sk_sp<FontCollection> fonts,
+                                                   bool ownerIds,
+                                                   std::vector<size_t>* codePointStarts) {
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.setTextAlign(align);
+    paragraphStyle.setTextDirection(c.fDirection);
+    TextStyle textStyle;
+    textStyle.setFontFamilies(c.fFamilies);
+    textStyle.setFontSize(c.fFontSize);
+    textStyle.setColor(SK_ColorBLACK);
+    ParagraphBuilderImpl builder(paragraphStyle, fonts, get_unicode());
+    const char* ptr = c.fText;
+    const char* end = c.fText + strlen(c.fText);
+    size_t utf16 = 0;
+    if (!ownerIds) {
+        builder.pushStyle(textStyle);
+        builder.addText(c.fText, end - ptr);
+    }
+    while (ptr < end) {
+        const char* start = ptr;
+        SkUnichar unichar = SkUTF::NextUTF8(&ptr, end);
+        if (codePointStarts) {
+            codePointStarts->push_back(utf16);
+        }
+        if (ownerIds) {
+            TextStyle owned = textStyle;
+            owned.setForegroundPaintID(SkToInt(utf16));
+            builder.pushStyle(owned);
+            builder.addText(start, ptr - start);
+            builder.pop();
+        }
+        utf16 += SkUTF::ToUTF16(unichar);
+    }
+    if (codePointStarts) {
+        codePointStarts->push_back(utf16);
+    }
+    return builder.Build();
+}
+}  // namespace
+
+// Probe, not a regression test: for every code point it checks that the box from
+// getRectsForRange contains the painted glyph, stays inside the line, does not overlap other
+// boxes, and that a hit in each half of the box returns the edge on that side
+DEF_TEST(SkParagraph_RoundTripProbe, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    const std::vector<SkString> latin = {SkString("Roboto")};
+    const std::vector<SkString> arabic = {SkString("Noto Naskh Arabic"), SkString("Roboto")};
+    const std::vector<SkString> cjk = {SkString("Source Han Serif CN")};
+    const RoundTripCase cases[] = {
+            {"latin",
+             "The quick brown fox jumps over the lazy dog and keeps running far away",
+             latin,
+             15,
+             TextDirection::kLtr},
+            {"cjk_155062",
+             "等一下我先下去，你跟在我后面，二伢子你带个土耗子殿后，三伢子你就别下去了，"
+             "四个人都下去，想退都来不及退，你就拉着土耗子的尾巴，"
+             "我们在里面一吆喝你就把东西拉出来。”",
+             cjk,
+             15,
+             TextDirection::kLtr},
+            {"arabic_rtl",
+             "العربية لغة رسمية في كل دول الوطن العربي إضافة إلى كونها لغة رسمية في تشاد",
+             arabic,
+             15,
+             TextDirection::kRtl},
+            {"mixed_ltr",
+             "Hello world دار ورد زاد and more english words دور رواد here ok",
+             arabic,
+             15,
+             TextDirection::kLtr},
+            {"mixed_rtl",
+             "Hello world دار ورد زاد and more english words دور رواد here ok",
+             arabic,
+             15,
+             TextDirection::kRtl},
+    };
+    const TextAlign aligns[] = {TextAlign::kLeft, TextAlign::kRight, TextAlign::kJustify};
+    const SkScalar widths[] = {110, 140, 180, 300};
+    constexpr SkScalar kTolerance = 0.5f;
+    constexpr int kMaxReportsPerLayout = 5;
+
+    for (const RoundTripCase& c : cases) {
+        for (TextAlign align : aligns) {
+            for (SkScalar width : widths) {
+                std::vector<size_t> starts;
+                auto plain = buildRoundTripParagraph(c, align, fontCollection, false, &starts);
+                auto owned = buildRoundTripParagraph(c, align, fontCollection, true, nullptr);
+                plain->layout(width);
+                owned->layout(width);
+                GlyphOwnerPainter painter;
+                owned->paint(&painter, 0, 0);
+
+                // One style per code point must not move any glyph, or the probe checks
+                // another layout
+                GlyphOwnerPainter plainPainter;
+                plain->paint(&plainPainter, 0, 0);
+                auto byPosition = [](std::vector<GlyphOwnerPainter::Glyph> glyphs) {
+                    std::sort(glyphs.begin(), glyphs.end(), [](const auto& a, const auto& b) {
+                        return a.fY != b.fY ? a.fY < b.fY : a.fX < b.fX;
+                    });
+                    return glyphs;
+                };
+                auto ownedSorted = byPosition(painter.fGlyphs);
+                auto plainSorted = byPosition(plainPainter.fGlyphs);
+                bool sameGlyphs = ownedSorted.size() == plainSorted.size();
+                for (size_t k = 0; sameGlyphs && k < ownedSorted.size(); ++k) {
+                    sameGlyphs = SkScalarNearlyEqual(ownedSorted[k].fX, plainSorted[k].fX, 0.01f) &&
+                                 SkScalarNearlyEqual(ownedSorted[k].fY, plainSorted[k].fY, 0.01f);
+                }
+                REPORTER_ASSERT(reporter,
+                                sameGlyphs,
+                                "%s align=%d width=%g: styles moved glyphs",
+                                c.fName,
+                                (int)align,
+                                width);
+                if (!sameGlyphs) {
+                    continue;
+                }
+
+                std::vector<LineMetrics> lines;
+                plain->getLineMetrics(lines);
+                int reports = 0;
+                auto report = [&](const char* what,
+                                  size_t index,
+                                  const SkRect& box,
+                                  SkScalar value) {
+                    if (reports++ < kMaxReportsPerLayout) {
+                        ERRORF(reporter,
+                               "%s align=%d width=%g: %s at index %zu, box [%.2f, %.2f), %.2f",
+                               c.fName,
+                               (int)align,
+                               width,
+                               what,
+                               index,
+                               box.fLeft,
+                               box.fRight,
+                               value);
+                    }
+                };
+
+                for (const LineMetrics& line : lines) {
+                    struct Box {
+                        size_t fStart;
+                        size_t fEnd;
+                        SkRect fRect;
+                        TextDirection fDirection;
+                    };
+                    std::vector<Box> boxes;
+                    for (size_t k = 0; k + 1 < starts.size(); ++k) {
+                        size_t start = starts[k];
+                        size_t end = starts[k + 1];
+                        if (start < line.fStartIndex) {
+                            continue;
+                        }
+                        if (start >= line.fEndIncludingNewline) {
+                            break;
+                        }
+                        auto rects = plain->getRectsForRange(
+                                start, end, RectHeightStyle::kTight, RectWidthStyle::kTight);
+                        if (rects.empty() || rects[0].rect.width() <= 0) {
+                            continue;
+                        }
+                        // Code points of one grapheme cluster share a box and hit-test as one
+                        if (!boxes.empty() && boxes.back().fEnd == start &&
+                            boxes.back().fRect == rects[0].rect) {
+                            boxes.back().fEnd = end;
+                            continue;
+                        }
+                        boxes.push_back({start, end, rects[0].rect, rects[0].direction});
+                    }
+
+                    for (const Box& cluster : boxes) {
+                        const SkRect& box = cluster.fRect;
+                        // Trailing whitespace may hang past the line, everything else must not
+                        bool ghost = cluster.fStart >= line.fEndExcludingWhitespaces;
+                        if (!ghost &&
+                            (box.fLeft < -kTolerance || box.fRight > width + kTolerance)) {
+                            report("box outside the paragraph", cluster.fStart, box, width);
+                        }
+
+                        for (const auto& glyph : painter.fGlyphs) {
+                            if (glyph.fOwner < SkToInt(cluster.fStart) ||
+                                glyph.fOwner >= SkToInt(cluster.fEnd) ||
+                                std::abs(glyph.fY - line.fBaseline) > line.fAscent) {
+                                continue;
+                            }
+                            if (glyph.fX < box.fLeft - kTolerance || glyph.fX >= box.fRight) {
+                                report("painted glyph outside its box",
+                                       cluster.fStart,
+                                       box,
+                                       glyph.fX);
+                            }
+                        }
+
+                        // The near half of a box hits its leading edge, the far half its
+                        // trailing edge
+                        bool ltr = cluster.fDirection == TextDirection::kLtr;
+                        for (SkScalar fraction : {0.25f, 0.75f}) {
+                            SkScalar x = box.fLeft + box.width() * fraction;
+                            auto hit = plain->getGlyphPositionAtCoordinate(x, box.centerY());
+                            size_t expected = (fraction < 0.5f) == ltr ? cluster.fStart
+                                                                       : cluster.fEnd;
+                            if (hit.position != SkToInt(expected)) {
+                                report("hit inside the box returns another index",
+                                       cluster.fStart,
+                                       box,
+                                       hit.position);
+                            }
+                        }
+                    }
+                    std::sort(boxes.begin(), boxes.end(), [](const Box& a, const Box& b) {
+                        return a.fRect.fLeft < b.fRect.fLeft;
+                    });
+                    for (size_t k = 1; k < boxes.size(); ++k) {
+                        SkScalar overlap = boxes[k - 1].fRect.fRight - boxes[k].fRect.fLeft;
+                        if (overlap > kTolerance) {
+                            report("box overlaps the box on its left",
+                                   boxes[k].fStart,
+                                   boxes[k].fRect,
+                                   overlap);
+                        }
+                    }
+                }
+                if (reports > kMaxReportsPerLayout) {
+                    SkDebugf(
+                           "%s align=%d width=%g: %d more",
+                           c.fName,
+                           (int)align,
+                           width,
+                           reports - kMaxReportsPerLayout);
+                }
+            }
+        }
+    }
+}
