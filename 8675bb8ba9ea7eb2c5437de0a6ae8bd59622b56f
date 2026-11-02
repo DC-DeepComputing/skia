@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df6f7d4c_a27fd283",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-02T20:16:22Z",
+      "side": 1,
+      "message": "Thanks for the fix, it looks right to me. calculateWidth(found, found + 1, false) takes the right edge from fJustificationShifts[found].fX, so the width of the hit glyph now matches the box edges that getRectsForRange and painting use. Without justification fJustificationShifts is empty, and the width is the same as before.\n\nTesting (PS1, local Linux Debug build, dm with --nativeFonts --paragraph_fonts extra_fonts):\n- The three new tests fail without the TextLine.cpp change (15 failing assertions: 1 in JustifiedIdeographicHitsInsideBoxes, 3 in JustifiedSpacesHitsInsideBoxes, 11 in JustifiedRtlMixedHitsInsideBoxes) and pass with it.\n- I ran checkHitsInsideBoxes on a few more justified layouts: applyRoundingHack(true), letterSpacing 2, a placeholder in the middle of a line, and mixed CJK and ASCII text at widths 120, 200 and 300. Each of them fails without the change and passes with it.\n- All the other SkParagraph tests in dm pass with the change.\n- I built the Flutter engine with this change and ran the full Flutter framework test corpus (packages/flutter, 921 test files, 20198 tests, plus txt_unittests and ui_unittests). There are no new failures compared to the same build without the change.\n\nTwo cases in this area still fail, but they fail the same way without your change, so I don\u0027t think they belong in this CL:\n1. A justified LTR line that ends with an RTL run and a space (\"Hello world دار ورد ...\" at width 110): the boxes of the RTL glyphs go past the line width (for example [111.2, 117.4) on a 110 line), and hits on them return the edge of the run.\n2. A cluster of two glyphs (中 followed by U+0301): a hit in the right half of the cluster returns the index between the base and the mark. This also happens without justification.\nI will look at them separately.\n\nThe change looks good to me (Code-Review+1). I leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
+      "revId": "8675bb8ba9ea7eb2c5437de0a6ae8bd59622b56f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
