@@ -191,6 +191,13 @@ bool GrDirectContext::checkAndResetBackendError() {
     return fGpu ? fGpu->checkAndResetBackendError() : false;
 }
 
+bool GrDirectContext::checkAndClearBackendErrors() {
+    if (!fGpu || this->abandoned()) {
+        return false;
+    }
+    return fGpu->checkAndClearBackendErrors();
+}
+
 void GrDirectContext::releaseResourcesAndAbandonContext() {
     if (GrRecordingContext::abandoned()) {
         return;
