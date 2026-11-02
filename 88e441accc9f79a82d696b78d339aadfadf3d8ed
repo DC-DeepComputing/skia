@@ -68,6 +68,24 @@
       "parentUuid": "391ab51c_56783c5d",
       "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b19ada1_b0bcc909",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5283275
+      },
+      "writtenOn": "2026-11-02T09:56:33Z",
+      "side": 1,
+      "message": "\u003e One non-blocking question: Skia\u0027s DEPS pins third_party/externals/expat at R_2_7_4+38, so Skia\u0027s own bots only compile the old branches. Do you plan to roll expat to R_2_9_0 in a follow-up, so the new branches get build coverage here too?\n\nYes, I plan to roll third_party/externals/expat to R_2_9_0 in a follow-up once this lands. That\u0027s the same revision Chromium is moving to in https://crrev.com/c/8683200. The roll also needs the new xcs.c/xcs.h sources in the GN and Bazel builds and an updated expat_config.h, so I\u0027d rather keep it separate. In the meantime, the new branches get build coverage in Chromium\u0027s Android, Windows and Mac builds, which use the in-tree expat, once both changes reach Chromium.",
+      "parentUuid": "30dfc2d8_f142e4a7",
+      "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
