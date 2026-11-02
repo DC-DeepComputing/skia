@@ -13,6 +13,8 @@
 
 class SkCanvas;
 class SkCaptureAsset;
+class SkImage;
+class SkImage_Base;
 class SkSurface;
 
 namespace skcpu {
@@ -58,6 +60,14 @@ private:
     virtual void createCaptureBreakpoint(SkSurface*) = 0;
     virtual void deregisterCaptureCanvas(SkCanvas*) = 0;
 
+    /**
+     * Converts a CPU or lazy SkImage into an SkImage backed by this recorder's backend.
+     * For GPU recorders (Ganesh and Graphite), this uploads the image to a GPU texture.
+     * For a CPU recorder, this returns the provided CPU / lazy image as-is.
+     */
+    virtual sk_sp<SkImage> makeRecorderBackedImage(sk_sp<SkImage> image) = 0;
+
+    friend class SkImage_Base;
     friend class SkSurface_Base; // for capture functionality
 };
 
