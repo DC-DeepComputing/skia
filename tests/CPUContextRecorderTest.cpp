@@ -163,8 +163,6 @@ DEF_TEST(ImageMakeScaled_UsesCPURecorderToMakeImage_Success, reporter) {
     REPORTER_ASSERT(reporter, !legacyAPI->isTextureBacked());
 }
 
-// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
-#if 0
 DEF_TEST(CPURecorder_FromCanvasBaseRecorder_MakesOffscreenSurface, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
@@ -190,6 +188,8 @@ DEF_TEST(CPURecorder_FromCanvasBaseRecorder_MakesOffscreenSurface, reporter) {
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorBLUE);
 }
 
+// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
+#if 0
 DEF_TEST(CPUSurface_UsesCPUContextAndRecorderToDraw_DrawsPixels, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
