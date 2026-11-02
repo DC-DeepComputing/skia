@@ -33,6 +33,24 @@
       "message": "Thanks, the fix looks right to me. fClusterIndexes holds size()+1 entries (Run.cpp), so reading index context.pos + context.size is in bounds, and the result now matches what visit() reports for the same glyphs. Without the production change, the new test fails on every wrapped line, as expected.\n\nOne gap in the test: the paragraph in SkParagraph_ExtendedVisitUtf8StartsMatchVisit lays out as a single run in both directions. A color-only style change does not split the run, so fClusterStart stays 0 and the count+1 storage branch (the out-of-bounds half of the fix) never runs. I checked this locally: runs().size() \u003d\u003d 1 for both directions. So the test comment \"the second style block starts a run whose clusters do not begin at 0\" and the \"or a later style block\" part of the commit message do not hold for this input.\n\nI uploaded a companion WIP CL stacked on top of PS2: https://skia-review.googlesource.com/c/skia/+/1412576\nIt is test only. It adds SkParagraph_ExtendedVisitUtf8StartsShiftedRuns, which asserts that a run with a nonzero cluster start exists (font size change, Arabic RTL, and two bidi mixes), and both tests also check that every utf8Start lies inside the text of its line. Both tests fail without your fix and pass with it.\n\nFeel free to fold the tests into this CL, take only the parts you want, or skip them. Once it is folded in or no longer needed, I will abandon the WIP CL.",
       "revId": "69ba3f397d60826068ff3547c2d9f3f9a366f97a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65341288_c7b49529",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5250830
+      },
+      "writtenOn": "2026-11-02T15:41:50Z",
+      "side": 1,
+      "message": "Folded the tests in patch set 3. Thank you for writing the tests",
+      "parentUuid": "444859f5_d12c9741",
+      "revId": "69ba3f397d60826068ff3547c2d9f3f9a366f97a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
