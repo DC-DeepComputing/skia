@@ -127,8 +127,8 @@ private:
                              GrXferBarrierFlags renderPassXferBarriers,
                              GrLoadOp colorLoadOp) override;
 
-    void onPrepareDraws(GrMeshDrawTarget*) override;
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onPrepareDraws1(GrMeshDrawTarget*) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 
     SkRect         fDrawRect;
     SkRect         fLocalRect;
@@ -200,7 +200,7 @@ void TestRectOp::onCreateProgramInfo(const GrCaps* caps,
                                                                GrPipeline::InputFlags::kNone);
 }
 
-void TestRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
+bool TestRectOp::onPrepareDraws1(GrMeshDrawTarget* target) {
     QuadHelper helper(target, fGP.vertexStride(), 1);
     skgpu::VertexWriter writer{helper.vertices()};
     auto pos = skgpu::VertexWriter::TriStripFromRect(fDrawRect);
@@ -209,16 +209,17 @@ void TestRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
     writer.writeQuad(pos, local, color);
 
     fMesh = helper.mesh();
+    return true;
 }
 
-void TestRectOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool TestRectOp::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (!fProgramInfo) {
         this->createProgramInfo(flushState);
     }
 
     flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
     flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-    flushState->drawMesh(*fMesh);
+    return flushState->drawMesh2(*fMesh);
 }
 
 }  // anonymous namespace

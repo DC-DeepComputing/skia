@@ -167,7 +167,7 @@ private:
                                                                    GrPipeline::InputFlags::kNone);
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         if (!fProgramInfo) {
             this->createProgramInfo(target);
         }
@@ -177,16 +177,17 @@ private:
         SkPoint* vertices = reinterpret_cast<SkPoint*>(helper.vertices());
         SkPointPriv::SetRectTriStrip(vertices, 0.f, 0.f, 1.f, 1.f, vertexStride);
         fMesh = helper.mesh();
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo || !fMesh) {
-            return;
+            return false;
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        return flushState->drawMesh2(*fMesh);
     }
 
     int            fNumAttribs;

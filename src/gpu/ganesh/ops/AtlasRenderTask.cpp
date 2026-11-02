@@ -204,8 +204,8 @@ void AtlasRenderTask::addAtlasDrawOp(GrOp::Owner op, const GrCaps& caps) {
     this->recordOp(std::move(op), true/*usesMSAA*/, processorAnalysis, nullptr, nullptr, caps);
 }
 
-GrRenderTask::ExecutionResult AtlasRenderTask::onExecute(GrOpFlushState* flushState) {
-    ExecutionResult result = this->OpsTask::onExecute(flushState);
+GrRenderTask::ExecutionResult AtlasRenderTask::onExecute2(GrOpFlushState* flushState) {
+    ExecutionResult result = this->OpsTask::onExecute2(flushState);
     if (!result.fAllTasksSuccessful) {
         return result;
     }

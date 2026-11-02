@@ -239,7 +239,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAtlasTextOpPreparation,
     GrAtlasManagerTools::SetMaxPages(atlasManager, 0);
 
     flushState.setOpArgs(&opArgs);
-    op->prepare(&flushState);
+    SkAssertResult(op->prepare1(&flushState));
     flushState.setOpArgs(nullptr);
 }
 

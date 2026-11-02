@@ -135,9 +135,9 @@ private:
         this->onPrePrepareDraws(context, writeView, clip, dstProxyView, renderPassXferBarriers,
                                 colorLoadOp);
     }
-    void onPrepare(GrOpFlushState* state) final;
+    [[nodiscard]] bool onPrepare1(GrOpFlushState* state) final;
 
-    virtual void onPrepareDraws(GrMeshDrawTarget*) = 0;
+    virtual bool onPrepareDraws1(GrMeshDrawTarget*) = 0;
     using INHERITED = GrDrawOp;
 };
 

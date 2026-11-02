@@ -242,11 +242,11 @@ private:
         fMeshes.push_back(mesh);
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    [[nodiscard]] bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         if (!fProgramInfo) {
             this->createProgramInfo(target);
             if (!fProgramInfo) {
-                return;
+                return true;
             }
         }
 
@@ -281,7 +281,7 @@ private:
                 if (maxVertices * vertexStride > SK_MaxS32) {
                     sk_free(vertices);
                     sk_free(indices);
-                    return;
+                    return false;
                 }
                 vertices = (uint8_t*) sk_realloc_throw(vertices, maxVertices * vertexStride);
             }
@@ -291,7 +291,7 @@ private:
                 if (maxIndices * sizeof(uint16_t) > SK_MaxS32) {
                     sk_free(vertices);
                     sk_free(indices);
-                    return;
+                    return false;
                 }
                 indices = (uint16_t*) sk_realloc_throw(indices, maxIndices * sizeof(uint16_t));
             }
@@ -315,18 +315,22 @@ private:
         }
         sk_free(vertices);
         sk_free(indices);
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    [[nodiscard]] bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo || fMeshes.empty()) {
-            return;
+            return true;
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
         for (int i = 0; i < fMeshes.size(); ++i) {
-            flushState->drawMesh(*fMeshes[i]);
+            if (!flushState->drawMesh2(*fMeshes[i])) {
+                return false;
+            }
         }
+        return true;
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
