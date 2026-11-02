@@ -697,8 +697,8 @@ private:
                              GrXferBarrierFlags renderPassXferBarriers,
                              GrLoadOp colorLoadOp) override;
 
-    void onPrepareDraws(GrMeshDrawTarget*) override;
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onPrepareDraws1(GrMeshDrawTarget*) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 #if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override;
 #endif
@@ -1116,7 +1116,7 @@ void MeshOp::onCreateProgramInfo(const GrCaps* caps,
                                              colorLoadOp);
 }
 
-void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
+bool MeshOp::onPrepareDraws1(GrMeshDrawTarget* target) {
     size_t vertexStride = fSpecification->stride();
     sk_sp<const GrBuffer> vertexBuffer;
     int firstVertex;
@@ -1129,7 +1129,7 @@ void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
                                                              &firstVertex);
         if (!verts) SK_UNLIKELY {
             SkDebugf("Could not allocate vertices.\n");
-            return;
+            return false;
         }
 
         bool transform = fViewMatrix == SkMatrix::InvalidMatrix();
@@ -1151,7 +1151,7 @@ void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
         indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
         if (!indices) SK_UNLIKELY {
             SkDebugf("Could not allocate indices.\n");
-            return;
+            return false;
         }
         // We can just copy the first mesh's indices. Subsequent meshes need their indices adjusted.
         std::copy_n(fMeshes[0].indices(), fMeshes[0].indexCount(), indices);
@@ -1186,15 +1186,16 @@ void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
     } else {
         fMesh->set(std::move(vertexBuffer), fVertexCount, firstVertex);
     }
+    return true;
 }
 
-void MeshOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool MeshOp::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (!fProgramInfo) {
         this->createProgramInfo(flushState);
     }
 
     if (!fProgramInfo || !fMesh) {
-        return;
+        return true;
     }
 
     TArray<GrSurfaceProxy*> geomProcTextures;
@@ -1210,7 +1211,10 @@ void MeshOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
     flushState->bindTextures(fProgramInfo->geomProc(),
                              geomProcTextures.data(),
                              fProgramInfo->pipeline());
-    flushState->drawMesh(*fMesh);
+    if (!flushState->drawMesh2(*fMesh)) {
+        return false;
+    }
+    return true;
 }
 
 GrOp::CombineResult MeshOp::onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) {

@@ -544,12 +544,13 @@ private:
         }
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         if (fAntiAlias) {
             this->createAAMesh(target);
         } else {
             this->createNonAAMesh(target);
         }
+        return true;
     }
 
     static GrSimpleMesh* CreateMesh(GrMeshDrawTarget* target,
@@ -561,18 +562,18 @@ private:
         return mesh;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo) {
             this->createProgramInfo(flushState);
         }
 
         if (!fProgramInfo || !fMesh) {
-            return;
+            return false;
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        return flushState->drawMesh2(*fMesh);
     }
 
 #if defined(GPU_TEST_UTILS)

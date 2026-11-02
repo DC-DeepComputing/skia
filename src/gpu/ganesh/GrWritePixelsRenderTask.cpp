@@ -63,7 +63,7 @@ GrRenderTask::ExpectedOutcome GrWritePixelsTask::onMakeClosed(GrRecordingContext
     return ExpectedOutcome::kTargetDirty;
 }
 
-GrRenderTask::ExecutionResult GrWritePixelsTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrWritePixelsTask::onExecute2(GrOpFlushState* flushState) {
     GrSurfaceProxy* dstProxy = this->target(0);
     if (!dstProxy->isInstantiated()) {
         return ExecutionResult::RanButFailed();

@@ -44,7 +44,7 @@ private:
     ExpectedOutcome onMakeClosed(GrRecordingContext*, SkIRect* targetUpdateBounds) override {
         return ExpectedOutcome::kTargetUnchanged;  // no target
     }
-    ExecutionResult onExecute(GrOpFlushState*) override;
+    [[nodiscard]] ExecutionResult onExecute2(GrOpFlushState*) override;
 
 #if defined(GPU_TEST_UTILS)
     const char* name() const final { return "BufferTransfer"; }

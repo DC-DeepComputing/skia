@@ -188,10 +188,10 @@ public:
      * Called prior to executing. The op should perform any resource creation or data transfers
      * necessary before execute() is called.
      */
-    void prepare(GrOpFlushState* state);
+    [[nodiscard]] bool prepare1(GrOpFlushState* state);
 
     /** Issues the op's commands to GrGpu. */
-    void execute(GrOpFlushState* state, const SkRect& chainBounds);
+    [[nodiscard]] bool execute1(GrOpFlushState* state, const SkRect& chainBounds);
 
     /** Used for spewing information about ops when debugging. */
 #if defined(GPU_TEST_UTILS)
@@ -317,10 +317,10 @@ private:
                               const GrDstProxyView&,
                               GrXferBarrierFlags renderPassXferBarriers,
                               GrLoadOp colorLoadOp) = 0;
-    virtual void onPrepare(GrOpFlushState*) = 0;
+    [[nodicard]] virtual bool onPrepare1(GrOpFlushState*) = 0;
     // If this op is chained then chainBounds is the union of the bounds of all ops in the chain.
     // Otherwise, this op's bounds.
-    virtual void onExecute(GrOpFlushState*, const SkRect& chainBounds) = 0;
+    [[nodicard]] virtual bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) = 0;
 #if defined(GPU_TEST_UTILS)
     virtual SkString onDumpInfo() const { return SkString(); }
 #endif
