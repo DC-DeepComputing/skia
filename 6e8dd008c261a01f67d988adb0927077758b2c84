@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a80ef6a_f44bd041",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T18:14:21Z",
+      "side": 1,
+      "message": "Thanks for the rebase! PS6 is the same change as PS5 on top of current main, and the conflict resolution looks right.\n\nI also checked that the first-line indent works together with the soft hyphen justification fix that landed meanwhile (https://skia-review.googlesource.com/c/skia/+/1406297): a justified, indented first line that breaks at a soft hyphen fits the text and the hyphen into the indented width, in both LTR and RTL.\n\nThe SkParagraph tests, the ASAN bot, the Flutter framework test corpus and our google3 tests all pass on PS6. LGTM.",
+      "revId": "6e8dd008c261a01f67d988adb0927077758b2c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
