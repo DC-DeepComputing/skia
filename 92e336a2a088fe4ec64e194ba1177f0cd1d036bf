@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc450b54_30903b0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T03:29:03Z",
+      "side": 1,
+      "message": "Thank you for pinning this down! I’ve reviewed the logic and the UAX#9 L1 root cause. \nI verified it against the test corpus, and it correctly fixes the ghost shift.\n\nHowever, during testing I found 4 additional edge cases around trailing spaces that break when multiple trailing spaces or multiple runs are involved at the end of the line:\n1. Multiple trailing spaces in an opposite-direction run (e.g. `\"Hello دار  ورد...\"` in LTR): UAX#9 L1 requires them to progress in paragraph direction, but they keep the run\u0027s internal cluster order, reversing box order and intra-space hit-testing (`getGlyphPositionAtCoordinate` [TextLine.cpp:1767-1775](https://skia.googlesource.com/skia/+/92e336a2a088fe4ec64e194ba1177f0cd1d036bf/modules/skparagraph/src/TextLine.cpp#1767)).\n2. Multi-run and `\\t` (segment-separator) trailing whitespace: `measureTextInsideOneRun` clamped `clip.fRight \u003d fAdvance.fX` even for 2nd+ trailing-space slices, collapsing `offset` across trailing-space slices in LTR. In RTL, same-direction runs like `\\t` were left in the main loop instead of moved, scrambling visual order and overlapping at `0`.\n3. `getRectsForRange` `boxDirection` and `merge`: The slice visitor tags moved trailing spaces with `context.run-\u003egetTextDirection()` instead of `paragraphStyle.getTextDirection()`, checks `context.run-\u003eleftToRight() \u003d\u003d lastRun-\u003eleftToRight()`, and runs `RectWidthStyle::kMax` per-slice (which emits duplicate `kMax` boxes).\n4. `getGlyphPositionAtCoordinate` margin hit-testing (`dx \u003c\u003d context.clip.fLeft` / `dx \u003e\u003d context.clip.fRight` [TextLine.cpp:1690-1715](https://skia.googlesource.com/skia/+/92e336a2a088fe4ec64e194ba1177f0cd1d036bf/modules/skparagraph/src/TextLine.cpp#1690)): uses `run-\u003eleftToRight()` on moved opposite-direction trailing spaces, returning the pre-space boundary `{trimEnd, kDownstream}` instead of `{fullEnd, kUpstream}`.\n\nExplicit side-effect disclosure: Moving all line-end whitespace via `forEachSpaceSlice` when `fTextExcludingSpaces.end \u003c fText.end` also orders multi-run trailing whitespace on hard-break / last lines in RTL, deletes the now-unreachable RTL `runOffset \u003d\u003d 0` whitespace shift, and moves `RectWidthStyle::kMax` alignment to run once per line after merging slices.\n\nTo help demonstrate these and verify the fixes, I\u0027ve stacked a companion WIP CL with tests and the required fixes:\nCompanion WIP CL: https://skia-review.googlesource.com/c/skia/+/1414456\n- PS1 contains the 2 failing tests (47 failing assertions total).\n- PS2 contains the fix on top of your change (all SkParagraph \u0026 full Flutter corpus tests pass).\n\nFeel free to squash the PS2 fix into your CL if you\u0027d like, or we can land it separately afterwards.",
+      "revId": "92e336a2a088fe4ec64e194ba1177f0cd1d036bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
