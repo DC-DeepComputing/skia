@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0329af27_df5e0d42",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-11-03T19:33:54Z",
+      "side": 1,
+      "message": "I think we want to start moving away from `SK_UNSAFE_TODO` now so since you\u0027re touching this, it might be good to create an `SkSpan` over the array and the `copyDstLayoutCount` reported by the device instead, and then you can use `begin()` and `end()` of the span.",
+      "range": {
+        "startLine": 561,
+        "startChar": 35,
+        "endLine": 561,
+        "endChar": 49
+      },
+      "revId": "0354c9b3aa7d6e9732bdc3837d696a02b22368de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
