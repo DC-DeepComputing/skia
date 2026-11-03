@@ -404,6 +404,13 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
     TArray<SkShaper::Feature> features;
 
     auto addFeatures = [&features](const Block& block) {
+        // Disable ligatures if letter spacing is enabled. HarfBuzz lets the later of two features
+        // on the same range win, so this default goes first and an explicit liga overrides it
+        if (block.fStyle.getLetterSpacing() > 0) {
+            features.emplace_back(SkShaper::Feature{
+                SkSetFourByteTag('l', 'i', 'g', 'a'), 0, block.fRange.start, block.fRange.end
+            });
+        }
         for (auto& ff : block.fStyle.getFontFeatures()) {
             if (ff.fName.size() != 4) {
                 SkDEBUGF("Incorrect font feature: %s=%d\n", ff.fName.c_str(), ff.fValue);
@@ -416,12 +423,6 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
                 block.fRange.end
             };
             features.emplace_back(feature);
-        }
-        // Disable ligatures if letter spacing is enabled.
-        if (block.fStyle.getLetterSpacing() > 0) {
-            features.emplace_back(SkShaper::Feature{
-                SkSetFourByteTag('l', 'i', 'g', 'a'), 0, block.fRange.start, block.fRange.end
-            });
         }
     };
 
