@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e744b5_9c57d57c",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-03T17:17:40Z",
+      "side": 1,
+      "message": "Let\u0027s also document the implied `InputState` for this version.  Or possibly inline with a call to the fully-parameterized version.",
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "809c0688_1480354f",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-03T17:17:40Z",
+      "side": 1,
+      "message": "So the supported scales are 1, 1/2, 1/4, and 1/8.  IIRC libjpeg-turbo supports more ratios, is this a zune-jpeg limitation, and what are the implications for chromium\u0027s scaling?",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 60
+      },
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928d759a_a3eae6d3",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-03T17:17:40Z",
+      "side": 1,
+      "message": "No scaled scanline decoding - is this a zune limitation?\n\n`SkCodec::startScanlineDecode` calls `dimensionsSupported()` which would accept one of the fractional sizes, but then `onStartScanlineDecode()` rejects them and the scanline decode fails.  The same holds if the client tries to query a suitable size, and AFAICT there is no way to query a guaranteed size for scanline decoding.",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 968,
+        "endChar": 5
+      },
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1955f90_1f29715a",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-03T17:17:40Z",
+      "side": 1,
+      "message": "What are the side effects here for default-initialized decoders (`input_complete` \u003d\u003d false)?\n\nIt seems they are being switched to incremental mode, where EOF is recoverable and truncated (or partially downloaded) packed jpeg decoding can fail with kIncompleteInput instead of producing best-effort output?\n\nIs there a way to preserve the legacy best-effort behavior?",
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
