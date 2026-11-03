@@ -1056,10 +1056,11 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         // The most important one: we measure the text with spaces at the end (or at the beginning in RTL)
         // and we should ignore these spaces
         if (fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr) {
-            // We only use this member for LTR
-            result.fExcludedTrailingSpaces = std::max(result.clip.fRight - fAdvance.fX, 0.0f);
+            // Clamp only down to clip.fLeft when the entire slice starts at or past fAdvance.fX
+            SkScalar clampedRight = std::max(fAdvance.fX, result.clip.fLeft);
+            result.fExcludedTrailingSpaces = std::max(result.clip.fRight - clampedRight, 0.0f);
             result.clippingNeeded = true;
-            result.clip.fRight = fAdvance.fX;
+            result.clip.fRight = clampedRight;
         }
     }
 
@@ -1147,10 +1148,15 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(TextAdjustment textAdjustment
 
     if (styleType == StyleType::kNone) {
         ClipContext clipContext = correctContext(textRange, 0.0f);
+        // Include fExcludedTrailingSpaces when advancing across trailing-space slices in LTR
+        SkScalar fullWidth =
+                clipContext.clip.width() + (textRange.end > fTextExcludingSpaces.end
+                                                    ? clipContext.fExcludedTrailingSpaces
+                                                    : 0.0f);
         // The placehoder can have height=0 or (exclusively) width=0 and still be a thing
-        if (clipContext.clip.height() > 0.0f || clipContext.clip.width() > 0.0f) {
+        if (clipContext.clip.height() > 0.0f || fullWidth > 0.0f) {
             visitor(textRange, TextStyle(), clipContext);
-            return clipContext.clip.width();
+            return fullWidth;
         } else {
             return 0;
         }
@@ -1248,78 +1254,74 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
     }
 
     // The trailing whitespace of the line goes to its visual end in the paragraph direction
-    // (UAX#9 L1). A run of the other direction would draw it next to its other clusters,
-    // inside the line, so its whitespace is visited on its own at the line end
+    // (UAX#9 L1). Strip it from all runs during the main pass and visit it at the visual line
+    // end in paragraph progression order so multi-run and opposite-direction spaces stay ordered
     const bool ltrParagraph = fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr;
     const bool moveSpaces = includingGhostSpaces && this->ellipsis() == nullptr &&
-                            this->hyphen() == nullptr &&
-                            fTextExcludingSpaces.end < fTextIncludingNewlines.end;
-    auto spacesToMove = [&](const Run* run) {
-        if (!moveSpaces || run->isPlaceholder() || run->leftToRight() == ltrParagraph) {
-            return EMPTY_RANGE;
+                            this->hyphen() == nullptr && fTextExcludingSpaces.end < fText.end &&
+                            fGhostClusterRange.end > fClusterRange.end;
+    auto forEachSpaceSlice = [&](auto&& cb) {
+        ClusterIndex c = ltrParagraph ? fClusterRange.end : fGhostClusterRange.end;
+        while (ltrParagraph ? (c < fGhostClusterRange.end) : (c > fClusterRange.end)) {
+            ClusterIndex idx = ltrParagraph ? c : (c - 1);
+            const Cluster& cluster = fOwner->cluster(idx);
+            const Run* run = &cluster.run();
+            TextRange slice = cluster.textRange();
+            if (ltrParagraph) {
+                ++c;
+                if (run->leftToRight() == ltrParagraph) {
+                    while (c < fGhostClusterRange.end && &fOwner->cluster(c).run() == run) {
+                        slice.end = fOwner->cluster(c).textRange().end;
+                        ++c;
+                    }
+                }
+            } else {
+                --c;
+                if (run->leftToRight() == ltrParagraph) {
+                    while (c > fClusterRange.end && &fOwner->cluster(c - 1).run() == run) {
+                        slice.start = fOwner->cluster(c - 1).textRange().start;
+                        --c;
+                    }
+                }
+            }
+            if (!run->isPlaceholder() && slice.width() > 0 && !cb(run, slice)) {
+                return false;
+            }
         }
-        auto spaces = intersected(TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end),
-                                  run->textRange());
-        return spaces.width() > 0 ? spaces : EMPTY_RANGE;
+        return true;
     };
     auto visitSpacesAtLineEnd = [&](SkScalar offset) {
-        for (auto& runIndex : fRunsInVisualOrder) {
-            const auto run = &this->fOwner->run(runIndex);
-            auto spaces = spacesToMove(run);
-            if (spaces == EMPTY_RANGE) {
-                continue;
-            }
+        return forEachSpaceSlice([&](const Run* run, TextRange spaces) {
             SkScalar spacesWidth = 0;
             if (!visitor(run, offset, spaces, &spacesWidth)) {
                 return false;
             }
             offset += spacesWidth;
-        }
-        return true;
+            return true;
+        });
     };
 
     if (moveSpaces && !ltrParagraph) {
         SkScalar movedWidth = 0;
-        for (auto& runIndex : fRunsInVisualOrder) {
-            const auto run = &this->fOwner->run(runIndex);
-            auto spaces = spacesToMove(run);
-            if (spaces != EMPTY_RANGE) {
-                movedWidth += measureTextInsideOneRun(
-                                      spaces, run, 0, 0, true, TextAdjustment::GlyphCluster)
-                                      .clip.width();
-            }
-        }
+        forEachSpaceSlice([&](const Run* run, TextRange spaces) {
+            movedWidth += measureTextInsideOneRun(
+                                  spaces, run, 0, 0, true, TextAdjustment::GraphemeGluster)
+                                  .clip.width();
+            return true;
+        });
         if (!visitSpacesAtLineEnd(-movedWidth)) {
             return;
         }
     }
 
+    const TextRange mainTextRange = moveSpaces ? fTextExcludingSpaces : textRange;
     for (auto& runIndex : fRunsInVisualOrder) {
 
         const auto run = &this->fOwner->run(runIndex);
-        auto lineIntersection = intersected(run->textRange(), textRange);
-        auto spaces = spacesToMove(run);
-        if (spaces != EMPTY_RANGE) {
-            lineIntersection.end = spaces.start;
-            if (lineIntersection.width() == 0) {
-                continue;
-            }
-        }
-        if (lineIntersection.width() == 0 && this->width() != 0) {
+        auto lineIntersection = intersected(run->textRange(), mainTextRange);
+        if (lineIntersection.width() == 0 && (moveSpaces || this->width() != 0)) {
             // TODO: deal with empty runs in a better way
             continue;
-        }
-        if (!run->leftToRight() && runOffset == 0 && includingGhostSpaces &&
-            spaces == EMPTY_RANGE) {
-            // runOffset does not take in account a possibility
-            // that RTL run could start before the line (trailing spaces)
-            // so we need to do runOffset -= "trailing whitespaces length"
-            TextRange whitespaces = intersected(
-                    TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end), run->fTextRange);
-            if (whitespaces.width() > 0) {
-                auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
-                runOffset -= whitespacesLen;
-            }
         }
         runOffset += width;
         totalWidth += width;
@@ -1437,7 +1439,7 @@ void TextLine::getRectsForRange(TextRange textRange0,
         // cluster's source range as textRange to the visitor below
         *runWidthInLine = this->iterateThroughSingleRunByStyles(
         TextAdjustment::GraphemeGluster, run, runOffsetInLine, textRange, StyleType::kNone,
-        [run, runOffsetInLine, textRange0, rectHeightStyle, rectWidthStyle, &boxes, &lastRun, startBox, this]
+        [run, runOffsetInLine, textRange0, rectHeightStyle, &boxes, &lastRun, this]
         (TextRange textRange, const TextStyle& style, const TextLine::ClipContext& lineContext) {
             if (fHyphen != nullptr && !run->isEllipsis()) {
                 // Exclude the line-final U+00AD cluster from normal text runs: its visual
@@ -1569,18 +1571,20 @@ void TextLine::getRectsForRange(TextRange textRange0,
                 trailingSpaces.offset(this->offset());
             }
 
+            // UAX#9 L1 resets line-final whitespace to the paragraph embedding direction
+            const bool isTrailingSpace = this->ellipsis() == nullptr && this->hyphen() == nullptr &&
+                                         intersect.start >= fTextExcludingSpaces.end;
+            const TextDirection boxDirection = isTrailingSpace ? paragraphStyle.getTextDirection()
+                                                               : context.run->getTextDirection();
+
             // Check if we can merge two boxes instead of adding a new one
-            auto merge = [&lastRun, &context, &boxes](SkRect clip) {
+            auto merge = [&lastRun, &context, &boxes](SkRect clip, TextDirection direction) {
                 bool mergedBoxes = false;
-                if (!boxes.empty() &&
-                    lastRun != nullptr &&
-                    context.run->leftToRight() == lastRun->leftToRight() &&
+                if (!boxes.empty() && lastRun != nullptr && boxes.back().direction == direction &&
                     lastRun->placeholderStyle() == nullptr &&
                     context.run->placeholderStyle() == nullptr &&
-                    nearlyEqual(lastRun->heightMultiplier(),
-                                context.run->heightMultiplier()) &&
-                    lastRun->font() == context.run->font())
-                {
+                    nearlyEqual(lastRun->heightMultiplier(), context.run->heightMultiplier()) &&
+                    lastRun->font() == context.run->font()) {
                     auto& lastBox = boxes.back();
                     if (nearlyEqual(lastBox.rect.fTop, clip.fTop) &&
                         nearlyEqual(lastBox.rect.fBottom, clip.fBottom) &&
@@ -1596,37 +1600,36 @@ void TextLine::getRectsForRange(TextRange textRange0,
                 return mergedBoxes;
             };
 
-            if (!merge(clip)) {
-                boxes.emplace_back(clip, context.run->getTextDirection());
+            if (!merge(clip, boxDirection)) {
+                boxes.emplace_back(clip, boxDirection);
             }
-            if (!nearlyZero(trailingSpaces.width()) && !merge(trailingSpaces)) {
+            if (!nearlyZero(trailingSpaces.width()) &&
+                !merge(trailingSpaces, paragraphStyle.getTextDirection())) {
                 boxes.emplace_back(trailingSpaces, paragraphStyle.getTextDirection());
-            }
-
-            if (rectWidthStyle == RectWidthStyle::kMax && !isLastLine()) {
-                // Align the very left/right box horizontally
-                auto lineStart = this->offset().fX;
-                auto lineEnd = this->offset().fX + this->width();
-                auto left = boxes[startBox];
-                auto right = boxes.back();
-                if (left.rect.fLeft > lineStart && left.direction == TextDirection::kRtl) {
-                    left.rect.fRight = left.rect.fLeft;
-                    left.rect.fLeft = 0;
-                    boxes.insert(boxes.begin() + startBox + 1, left);
-                }
-                if (right.direction == TextDirection::kLtr &&
-                    right.rect.fRight >= lineEnd &&
-                    right.rect.fRight < fOwner->widthWithTrailingSpaces()) {
-                    right.rect.fLeft = right.rect.fRight;
-                    right.rect.fRight = fOwner->widthWithTrailingSpaces();
-                    boxes.emplace_back(right);
-                }
             }
 
             return true;
         });
         return true;
     });
+    if (rectWidthStyle == RectWidthStyle::kMax && !isLastLine() && boxes.size() > startBox) {
+        // Align the very left/right box horizontally after all slices on the line are merged
+        auto lineStart = this->offset().fX;
+        auto lineEnd = this->offset().fX + this->width();
+        auto left = boxes[startBox];
+        auto right = boxes.back();
+        if (left.rect.fLeft > lineStart && left.direction == TextDirection::kRtl) {
+            left.rect.fRight = left.rect.fLeft;
+            left.rect.fLeft = 0;
+            boxes.insert(boxes.begin() + startBox + 1, left);
+        }
+        if (right.direction == TextDirection::kLtr && right.rect.fRight >= lineEnd &&
+            right.rect.fRight < fOwner->widthWithTrailingSpaces()) {
+            right.rect.fLeft = right.rect.fRight;
+            right.rect.fRight = fOwner->widthWithTrailingSpaces();
+            boxes.emplace_back(right);
+        }
+    }
     if (fOwner->getApplyRoundingHack()) {
         for (auto& r : boxes) {
             r.rect.fLeft = littleRound(r.rect.fLeft);
@@ -1687,7 +1690,26 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                     context.clip.fRight = dx;
                 }
 
+                const bool ltrParagraph =
+                        fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr;
+                const bool isTrailingSpace = this->ellipsis() == nullptr &&
+                                             this->hyphen() == nullptr &&
+                                             textRange.start >= fTextExcludingSpaces.end &&
+                                             fTextExcludingSpaces.end < fText.end;
+                const bool effectiveLtr = isTrailingSpace ? ltrParagraph : run->leftToRight();
+                TextRange hitRange = isTrailingSpace ? intersected(textRange, fText) : textRange;
+                if (isTrailingSpace && hitRange.empty()) {
+                    return true;
+                }
+
                 if (dx <= context.clip.fLeft) {
+                    if (isTrailingSpace) {
+                        auto utf16Index =
+                                fOwner->getUTF16Index(effectiveLtr ? hitRange.start : hitRange.end);
+                        result = {SkToS32(utf16Index), effectiveLtr ? kDownstream : kUpstream};
+                        keepLooking = false;
+                        return false;
+                    }
                     // All the other runs are placed right of this one
                     auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos));
                     if (run->leftToRight()) {
@@ -1703,6 +1725,12 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                 }
 
                 if (dx >= context.clip.fRight) {
+                    if (isTrailingSpace) {
+                        auto utf16Index =
+                                fOwner->getUTF16Index(effectiveLtr ? hitRange.end : hitRange.start);
+                        result = {SkToS32(utf16Index), effectiveLtr ? kUpstream : kDownstream};
+                        return true;
+                    }
                     // We have to keep looking ; just in case keep the last one as the closest
                     auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos + context.size));
                     if (run->leftToRight()) {
@@ -1712,6 +1740,19 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                     }
                     // For RTL we go another way
                     return run->leftToRight();
+                }
+
+                if (isTrailingSpace && effectiveLtr != context.run->leftToRight()) {
+                    // Opposite-direction trailing spaces are visited one cluster at a time and
+                    // progress in paragraph direction rather than in their run's glyph order
+                    if ((dx < context.clip.centerX()) == effectiveLtr) {
+                        auto utf16Index = fOwner->getUTF16Index(hitRange.start);
+                        result = {SkToS32(utf16Index), kDownstream};
+                    } else {
+                        auto utf16Index = fOwner->getUTF16Index(hitRange.end);
+                        result = {SkToS32(utf16Index), kUpstream};
+                    }
+                    return keepLooking = false;
                 }
 
                 // So we found the run that contains our coordinates
