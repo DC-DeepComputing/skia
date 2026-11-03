@@ -7,6 +7,7 @@
 
 #include "src/core/SkCubics.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
@@ -156,7 +157,7 @@ static bool approximately_zero(double x) {
 }
 
 static int find_extrema_valid_t(double A, double B, double C,
-                                double t[2]) {
+                                SkSpan<double, 2> t) {
     // To find the local min and max of a cubic, we take the derivative and
     // solve when that is equal to 0.
     // d/dt (A*t^3 + B*t^2 + C*t + D) = 3A*t^2 + 2B*t + C
@@ -205,7 +206,7 @@ static double binary_search(double A, double B, double C, double D, double start
 }
 
 int SkCubics::BinarySearchRootsValidT(double A, double B, double C, double D,
-                                      double solution[3]) {
+                                      SkSpan<double, 3> solution) {
     if (!SkIsFinite(A, B, C, D)) {
         return 0;
     }

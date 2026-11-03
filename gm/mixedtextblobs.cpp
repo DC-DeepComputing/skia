@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -136,7 +137,7 @@ protected:
         SkRect interiorClip = bounds;
         interiorClip.inset(boundsQuarterWidth, boundsQuarterHeight);
 
-        const SkRect clipRects[] = { bounds, upperLeftClip, lowerRightClip, interiorClip};
+        const auto clipRects = std::to_array<SkRect>({ bounds, upperLeftClip, lowerRightClip, interiorClip,});
 
         size_t count = sizeof(clipRects) / sizeof(SkRect);
         for (size_t x = 0; x < count; ++x) {

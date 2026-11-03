@@ -9,6 +9,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkSpan.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/RefCntedCallback.h"
 #ifdef SK_GANESH
@@ -59,7 +60,7 @@ void* ManagedBackendTexture::releaseContext(GrGpuFinishedProc wrappedProc,
 }
 
 void* ManagedBackendTexture::MakeYUVAReleaseContext(
-        const sk_sp<ManagedBackendTexture> mbets[SkYUVAInfo::kMaxPlanes]) {
+        SkSpan<const sk_sp<ManagedBackendTexture>, SkYUVAInfo::kMaxPlanes> mbets) {
     auto context = new Context;
     for (int i = 0; i < SkYUVAInfo::kMaxPlanes; ++i) {
         context->fMBETs[i] = mbets[i];

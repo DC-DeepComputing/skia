@@ -53,20 +53,20 @@ static void test_string_null(skiatest::Reporter* reporter) {
 
 static void test_rewind(skiatest::Reporter* reporter) {
     SkSWriter32<32> swriter;
-    int32_t array[3] = { 1, 2, 4 };
+    std::array<int32_t, 3> array ={ 1, 2, 4 };
 
     REPORTER_ASSERT(reporter, 0 == swriter.bytesWritten());
     for (size_t i = 0; i < std::size(array); ++i) {
         swriter.writeInt(array[i]);
     }
-    check_contents(reporter, swriter, array, sizeof(array));
+    check_contents(reporter, swriter, array.data(), sizeof(array));
 
     swriter.rewindToOffset(2*sizeof(int32_t));
     REPORTER_ASSERT(reporter, sizeof(array) - 4 == swriter.bytesWritten());
     swriter.writeInt(3);
     REPORTER_ASSERT(reporter, sizeof(array) == swriter.bytesWritten());
     array[2] = 3;
-    check_contents(reporter, swriter, array, sizeof(array));
+    check_contents(reporter, swriter, array.data(), sizeof(array));
 
     // test rewinding past allocated chunks. This used to crash because we
     // didn't truncate our link-list after freeing trailing blocks
@@ -82,7 +82,7 @@ static void test_rewind(skiatest::Reporter* reporter) {
 }
 
 static void test1(skiatest::Reporter* reporter, SkWriter32* writer) {
-    const uint32_t data[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    const auto data = std::to_array<uint32_t>({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
     for (size_t i = 0; i < std::size(data); ++i) {
         REPORTER_ASSERT(reporter, i*4 == writer->bytesWritten());
         writer->write32(data[i]);
@@ -92,7 +92,7 @@ static void test1(skiatest::Reporter* reporter, SkWriter32* writer) {
     char buffer[sizeof(data)];
     REPORTER_ASSERT(reporter, sizeof(buffer) == writer->bytesWritten());
     writer->flatten(buffer);
-    REPORTER_ASSERT(reporter, !memcmp(data, buffer, sizeof(buffer)));
+    REPORTER_ASSERT(reporter, !memcmp(data.data(), buffer, sizeof(buffer)));
 }
 
 static void testWritePad(skiatest::Reporter* reporter, SkWriter32* writer) {

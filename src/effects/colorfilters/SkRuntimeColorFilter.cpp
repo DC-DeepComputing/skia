@@ -11,6 +11,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkLumaColorFilter.h"
 #include "include/effects/SkOverdrawColorFilter.h"
@@ -167,7 +168,7 @@ sk_sp<SkColorFilter> SkLumaColorFilter::Make() {
     return lumaEffect->makeColorFilter(SkData::MakeEmpty());
 }
 
-sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(const SkColor colors[kNumColors]) {
+sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(SkSpan<const SkColor, kNumColors> colors) {
     using namespace SkKnownRuntimeEffects;
 
     const SkRuntimeEffect* overdrawEffect = GetKnownRuntimeEffect(StableKey::kOverdraw);

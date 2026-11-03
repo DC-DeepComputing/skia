@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2013 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -16,15 +18,15 @@
 
 #include <cstddef>
 
-static const SkPoint finitePts[] = {
-    { 0, 0 },
-    { SK_ScalarMax, 0 },
-    { 0, SK_ScalarMax },
-    { SK_ScalarMax, SK_ScalarMax },
-    { SK_ScalarMin, 0 },
-    { 0, SK_ScalarMin },
-    { SK_ScalarMin, SK_ScalarMin },
-};
+static const auto finitePts = std::to_array<SkPoint>({
+    SkPoint{ 0, 0 },
+    SkPoint{ SK_ScalarMax, 0 },
+    SkPoint{ 0, SK_ScalarMax },
+    SkPoint{ SK_ScalarMax, SK_ScalarMax },
+    SkPoint{ SK_ScalarMin, 0 },
+    SkPoint{ 0, SK_ScalarMin },
+    SkPoint{ SK_ScalarMin, SK_ScalarMin },
+});
 
 const size_t finitePtsCount = sizeof(finitePts) / sizeof(finitePts[0]);
 

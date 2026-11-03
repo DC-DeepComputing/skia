@@ -6,6 +6,8 @@
 */
 
 #ifndef StatsLayer_DEFINED
+#include <array>
+
 #define StatsLayer_DEFINED
 
 #include "include/core/SkColor.h"
@@ -39,13 +41,13 @@ public:
 private:
     static const int kMeasurementCount = 1 << 6;  // should be power of 2 for fast mod
     struct TimerData {
-        double fTimes[kMeasurementCount];
+        std::array<double, kMeasurementCount> fTimes;
         SkString fLabel;
         SkColor fColor;
         SkColor fLabelColor;
     };
     skia_private::TArray<TimerData> fTimers;
-    double fTotalTimes[kMeasurementCount];
+    std::array<double, kMeasurementCount> fTotalTimes;
 
     TimerData fGpuTimer;
     bool fGpuTimerEnabled = false;

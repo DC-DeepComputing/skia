@@ -6,6 +6,8 @@
  */
 
 #ifndef TestTypeface_DEFINED
+#include "include/core/SkSpan.h"
+
 #define TestTypeface_DEFINED
 
 #include "include/core/SkFontArguments.h"
@@ -38,7 +40,7 @@ struct SkTestFontData {
     const unsigned char* fVerbs;
     const SkUnichar*     fCharCodes;
     const size_t         fCharCodesCount;
-    const SkFixed*       fWidths;
+    SkSpan<const SkFixed>fWidths;
     const SkFontMetrics& fMetrics;
     const char*          fName;
     SkFontStyle          fStyle;
@@ -54,7 +56,7 @@ public:
 private:
     const SkUnichar*     fCharCodes;
     const size_t         fCharCodesCount;
-    const SkFixed*       fWidths;
+    SkSpan<const SkFixed>fWidths;
     const SkFontMetrics& fMetrics;
     const char*          fName;
     SkPath*              fPaths;

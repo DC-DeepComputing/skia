@@ -6,6 +6,8 @@
  */
 
 #ifndef skgpu_ResourceKey_DEFINED
+#include <array>
+
 #define skgpu_ResourceKey_DEFINED
 
 #include "include/core/SkData.h"
@@ -438,7 +440,7 @@ public:
 
 private:
     uint32_t fHash = 0;
-    uint32_t fPackedData[SizeInUInt32] = {};
+    std::array<uint32_t, SizeInUInt32> fPackedData ={};
 };
 
 } // namespace skgpu

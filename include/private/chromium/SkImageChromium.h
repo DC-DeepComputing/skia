@@ -6,6 +6,8 @@
  */
 
 #ifndef SkImageChromium_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkImageChromium_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -101,7 +103,7 @@ SK_API sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> gpu
                                              sk_sp<SkColorSpace> imageColorSpace,
                                              PromiseImageTextureFulfillProc textureFulfillProc,
                                              PromiseImageTextureReleaseProc textureReleaseProc,
-                                             PromiseImageTextureContext textureContexts[]);
+                                             SkSpan<PromiseImageTextureContext> textureContexts);
 
 /** Returns the GPU context associated with this image or nullptr if the image is not Ganesh-backed.
     We expose this only to help transition certain API calls and do not intend for this to stick

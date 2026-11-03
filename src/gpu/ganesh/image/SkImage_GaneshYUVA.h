@@ -6,6 +6,8 @@
  */
 
 #ifndef SkImage_GaneshYUVA_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkImage_GaneshYUVA_DEFINED
 
 #include "include/core/SkColorSpace.h"
@@ -86,7 +88,7 @@ public:
 
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(skgpu::ganesh::SurfaceDrawContext*,
                                                              SkSamplingOptions,
-                                                             const SkTileMode[2],
+                                                             SkSpan<const SkTileMode, 2>,
                                                              const SkMatrix&,
                                                              const SkRect*,
                                                              const SkRect*) const override;

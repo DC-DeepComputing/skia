@@ -12,6 +12,7 @@
 #include "src/sfnt/SkOTUtils.h"
 
 #include "include/core/SkData.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
@@ -217,7 +218,7 @@ SkData* SkOTUtils::RenameFont(SkStreamAsset* fontData, const char* fontName, int
 
 sk_sp<SkOTUtils::LocalizedStrings_NameTable>
 SkOTUtils::LocalizedStrings_NameTable::Make(const SkTypeface& typeface,
-                                            SK_OT_USHORT types[],
+                                            SkSpan<SK_OT_USHORT> types,
                                             int typesCount)
 {
     static const SkFontTableTag nameTag = SkSetFourByteTag('n','a','m','e');
