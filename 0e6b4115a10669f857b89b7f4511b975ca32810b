@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77fdb70c_21e1391a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-03T20:38:49Z",
+      "side": 1,
+      "message": "I honestly have no idea what this means, but it doesn\u0027t really matter here. The real reason we\u0027re making this change is simply to make it less confusing with graphite::SharedContext. Which alone is a fine justification here.",
+      "range": {
+        "startLine": 9,
+        "startChar": 66,
+        "endLine": 9,
+        "endChar": 90
+      },
+      "revId": "0e6b4115a10669f857b89b7f4511b975ca32810b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
