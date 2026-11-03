@@ -12755,3 +12755,83 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+// Positive letter-spacing turns standard ligatures off by default, and an explicit liga font
+// feature overrides that default
+DEF_TEST(SkParagraph_LetterSpacingLigatures, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+
+    auto countGlyphs = [&](Paragraph* paragraph) {
+        auto* impl = static_cast<ParagraphImpl*>(paragraph);
+        REPORTER_ASSERT(reporter, !impl->runs().empty());
+        size_t total = 0;
+        for (const auto& run : impl->runs()) {
+            total += run.size();
+        }
+        return total;
+    };
+
+    auto buildSingle = [&](const char* family,
+                           const char* text,
+                           SkScalar letterSpacing,
+                           int ligaFeature = -1) {
+        TextStyle style;
+        style.setFontFamilies({SkString(family)});
+        style.setFontSize(20);
+        style.setColor(SK_ColorBLACK);
+        style.setLetterSpacing(letterSpacing);
+        if (ligaFeature >= 0) {
+            style.addFontFeature(SkString("liga"), ligaFeature);
+        }
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(style);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        builder.addText(text);
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        return paragraph;
+    };
+
+    // U+FEDF U+FEE0 U+FEEA forms a 1-glyph standard 'liga' ligature in Noto Naskh Arabic
+    const char* arabic = "\xEF\xBB\x9F\xEF\xBB\xA0\xEF\xBB\xAA";
+    REPORTER_ASSERT(reporter,
+                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 0.0f).get()) == 1);
+    REPORTER_ASSERT(reporter,
+                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 0.0f, 0).get()) == 3);
+    REPORTER_ASSERT(reporter,
+                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 2.0f, 1).get()) == 1);
+    REPORTER_ASSERT(reporter,
+                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 2.0f, 0).get()) == 3);
+
+    REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 0.0f).get()) == 1);
+    REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 2.0f).get()) == 2);
+    REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 2.0f, 1).get()) == 1);
+
+    // Merged font-compatible blocks disable liga only on the sub-block with positive letter-spacing
+    {
+        TextStyle spaced;
+        spaced.setFontFamilies({SkString("Roboto")});
+        spaced.setFontSize(20);
+        spaced.setColor(SK_ColorBLACK);
+        spaced.setLetterSpacing(2.0f);
+        TextStyle unspaced = spaced;
+        unspaced.setLetterSpacing(0.0f);
+
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(spaced);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(spaced);
+        builder.addText("fi");
+        builder.pop();
+        builder.pushStyle(unspaced);
+        builder.addText("fi");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, countGlyphs(paragraph.get()) == 3);
+    }
+}
