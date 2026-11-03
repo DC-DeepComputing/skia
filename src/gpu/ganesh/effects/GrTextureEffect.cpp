@@ -149,9 +149,9 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
             // This inset prevents sampling neighboring texels that could occur when
             // texture coords fall exactly at texel boundaries (depending on precision
             // and GPU-specific snapping at the boundary).
-            r.fShaderClamp = isubset.makeInset(0.5f + kInsetEpsilon);
+            r.fShaderClamp = isubset.makeInset(0.5f + GrTextureEffect::kInsetEpsilon);
         } else {
-            r.fShaderClamp = subset.makeInset(linearFilterInset + kInsetEpsilon);
+            r.fShaderClamp = subset.makeInset(linearFilterInset + GrTextureEffect::kInsetEpsilon);
         }
         if (r.fShaderClamp.contains(domain)) {
             domainIsSafe = true;
