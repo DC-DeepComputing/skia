@@ -249,8 +249,8 @@ SkScalar Run::addLetterSpacesEvenly(SkScalar space, Cluster* cluster) {
     return shift;
 }
 
-bool Run::isCursiveScript() const {
-    switch (this->fScript) {
+bool Run::IsCursiveScript(SkFourByteTag script) {
+    switch (script) {
         case SkSetFourByteTag('A', 'r', 'a', 'b'): // ARABIC
         case SkSetFourByteTag('R', 'o', 'h', 'g'): // HANIFI_ROHINGYA
         case SkSetFourByteTag('M', 'a', 'n', 'd'): // MANDAIC
@@ -263,6 +263,8 @@ bool Run::isCursiveScript() const {
             return false;
     }
 }
+
+bool Run::isCursiveScript() const { return IsCursiveScript(this->fScript); }
 
 void Run::shift(const Cluster* cluster, SkScalar offset) {
     if (offset == 0) {

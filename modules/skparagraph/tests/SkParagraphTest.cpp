@@ -12755,3 +12755,140 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+// Cursive scripts skip letter-spacing so their standard ligatures stay intact, and an explicit
+// liga font feature overrides the default liga=0 added for positive letter-spacing
+DEF_TEST(SkParagraph_LetterSpacingLigatures, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+
+    auto countGlyphs = [&](Paragraph* paragraph) {
+        auto* impl = static_cast<ParagraphImpl*>(paragraph);
+        REPORTER_ASSERT(reporter, !impl->runs().empty());
+        size_t total = 0;
+        for (const auto& run : impl->runs()) {
+            total += run.size();
+        }
+        return total;
+    };
+
+    auto buildSingle = [&](const char* family,
+                           const char* text,
+                           SkScalar letterSpacing,
+                           int ligaFeature = -1) {
+        TextStyle style;
+        style.setFontFamilies({SkString(family)});
+        style.setFontSize(20);
+        style.setColor(SK_ColorBLACK);
+        style.setLetterSpacing(letterSpacing);
+        if (ligaFeature >= 0) {
+            style.addFontFeature(SkString("liga"), ligaFeature);
+        }
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(style);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        builder.addText(text);
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        return paragraph;
+    };
+
+    // U+FEDF U+FEE0 U+FEEA forms a 1-glyph standard 'liga' ligature in Noto Naskh Arabic
+    const char* arabic = "\xEF\xBB\x9F\xEF\xBB\xA0\xEF\xBB\xAA";
+    auto arabicUnspaced = buildSingle("Noto Naskh Arabic", arabic, 0.0f);
+    auto arabicLigaOff = buildSingle("Noto Naskh Arabic", arabic, 0.0f, 0);
+    REPORTER_ASSERT(reporter, countGlyphs(arabicUnspaced.get()) == 1);
+    REPORTER_ASSERT(reporter, countGlyphs(arabicLigaOff.get()) == 3);
+
+    auto arabicSpaced = buildSingle("Noto Naskh Arabic", arabic, 2.0f);
+    REPORTER_ASSERT(reporter, countGlyphs(arabicSpaced.get()) == 1);
+    REPORTER_ASSERT(
+            reporter,
+            SkScalarNearlyEqual(
+                    arabicSpaced->getLongestLine(), arabicUnspaced->getLongestLine(), EPSILON100));
+    REPORTER_ASSERT(reporter,
+                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 2.0f, 1).get()) == 1);
+    REPORTER_ASSERT(reporter,
+                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 2.0f, 0).get()) == 3);
+
+    // A colored combining mark in its own style block inherits Arabic script across combinedBlock
+    {
+        TextStyle baseStyle;
+        baseStyle.setFontFamilies({SkString("Noto Naskh Arabic")});
+        baseStyle.setFontSize(20);
+        baseStyle.setColor(SK_ColorBLACK);
+        baseStyle.setLetterSpacing(2.0f);
+        TextStyle markStyle = baseStyle;
+        markStyle.setColor(SK_ColorRED);
+
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(baseStyle);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(baseStyle);
+        builder.addText("\xEF\xBB\x9F");
+        builder.pop();
+        builder.pushStyle(markStyle);
+        builder.addText("\xD9\x8E");
+        builder.pop();
+        builder.pushStyle(baseStyle);
+        builder.addText("\xEF\xBB\xA0\xEF\xBB\xAA");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, countGlyphs(paragraph.get()) == 2);
+    }
+
+    REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 0.0f).get()) == 1);
+    REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 2.0f).get()) == 2);
+    REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 2.0f, 1).get()) == 1);
+
+    // Mixed non-cursive and cursive scripts in one style block disable liga only on non-cursive
+    {
+        TextStyle mixed;
+        mixed.setFontFamilies({SkString("Roboto"), SkString("Noto Naskh Arabic")});
+        mixed.setFontSize(20);
+        mixed.setColor(SK_ColorBLACK);
+        mixed.setLetterSpacing(2.0f);
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(mixed);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(mixed);
+        builder.addText("fi \xEF\xBB\x9F\xEF\xBB\xA0\xEF\xBB\xAA");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        auto* impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->runs().size() == 2);
+        if (impl->runs().size() == 2) {
+            REPORTER_ASSERT(reporter, impl->runs()[0].size() == 3);
+            REPORTER_ASSERT(reporter, impl->runs()[1].size() == 1);
+        }
+    }
+
+    // Merged font-compatible blocks disable liga only on the sub-block with positive letter-spacing
+    {
+        TextStyle spaced;
+        spaced.setFontFamilies({SkString("Roboto")});
+        spaced.setFontSize(20);
+        spaced.setColor(SK_ColorBLACK);
+        spaced.setLetterSpacing(2.0f);
+        TextStyle unspaced = spaced;
+        unspaced.setLetterSpacing(0.0f);
+
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(spaced);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(spaced);
+        builder.addText("fi");
+        builder.pop();
+        builder.pushStyle(unspaced);
+        builder.addText("fi");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, countGlyphs(paragraph.get()) == 3);
+    }
+}

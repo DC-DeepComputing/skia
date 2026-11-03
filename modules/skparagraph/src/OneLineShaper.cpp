@@ -402,53 +402,102 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
                                              const ShapeSingleFontVisitor& visitor) {
     Block combinedBlock;
     TArray<SkShaper::Feature> features;
+    size_t groupStart = 0;
 
-    auto addFeatures = [&features](const Block& block) {
-        for (auto& ff : block.fStyle.getFontFeatures()) {
-            if (ff.fName.size() != 4) {
-                SkDEBUGF("Incorrect font feature: %s=%d\n", ff.fName.c_str(), ff.fValue);
+    auto flushCombinedBlock = [&](size_t groupEnd) {
+        features.clear();
+
+        // Prepend default liga=0 before explicit fontFeatures so author liga=1 overrides it, and
+        // run ScriptRunIterator across combinedBlock so Inherited combining marks in separate
+        // colored blocks resolve against surrounding letters rather than HB_SCRIPT_COMMON
+        bool hasPositiveLetterSpacing = false;
+        for (size_t j = groupStart; j < groupEnd; ++j) {
+            if (styleSpan[j].fStyle.getLetterSpacing() > 0) {
+                hasPositiveLetterSpacing = true;
+                break;
+            }
+        }
+        if (hasPositiveLetterSpacing && combinedBlock.fRange.width() > 0) {
+            auto combinedText = fParagraph->text(combinedBlock.fRange);
+            auto scriptIter =
+                    SkShapers::HB::ScriptRunIterator(combinedText.data(), combinedText.size());
+            size_t runStart = combinedBlock.fRange.start;
+            while (!scriptIter->atEnd()) {
+                scriptIter->consume();
+                const size_t runEnd = combinedBlock.fRange.start + scriptIter->endOfCurrentRun();
+                // Cursive scripts skip letter-spacing in ParagraphImpl, so keep their ligatures
+                if (!Run::IsCursiveScript(scriptIter->currentScript())) {
+                    for (size_t j = groupStart; j < groupEnd; ++j) {
+                        const Block& sub = styleSpan[j];
+                        if (sub.fStyle.getLetterSpacing() <= 0) {
+                            continue;
+                        }
+                        const size_t start = std::max(runStart, sub.fRange.start);
+                        const size_t end = std::min(runEnd, sub.fRange.end);
+                        if (start < end) {
+                            features.push_back(
+                                    {SkSetFourByteTag('l', 'i', 'g', 'a'), 0, start, end});
+                        }
+                    }
+                }
+                runStart = runEnd;
+            }
+        }
+
+        for (size_t j = groupStart; j < groupEnd; ++j) {
+            const Block& sub = styleSpan[j];
+            if (sub.fStyle.getFontFeatureNumber() == 0) {
                 continue;
             }
-            SkShaper::Feature feature = {
-                SkSetFourByteTag(ff.fName[0], ff.fName[1], ff.fName[2], ff.fName[3]),
-                SkToU32(ff.fValue),
-                block.fRange.start,
-                block.fRange.end
-            };
-            features.emplace_back(feature);
+            const size_t subStart = std::max(sub.fRange.start, textRange.start);
+            const size_t subEnd = std::min(sub.fRange.end, textRange.end);
+            if (subStart >= subEnd) {
+                continue;
+            }
+            for (const auto& ff : sub.fStyle.getFontFeatures()) {
+                if (ff.fName.size() != 4) {
+                    SkDEBUGF("Incorrect font feature: %s=%d\n", ff.fName.c_str(), ff.fValue);
+                    continue;
+                }
+                features.push_back({
+                        SkSetFourByteTag(ff.fName[0], ff.fName[1], ff.fName[2], ff.fName[3]),
+                        SkToU32(ff.fValue),
+                        subStart,
+                        subEnd,
+                });
+            }
         }
-        // Disable ligatures if letter spacing is enabled.
-        if (block.fStyle.getLetterSpacing() > 0) {
-            features.emplace_back(SkShaper::Feature{
-                SkSetFourByteTag('l', 'i', 'g', 'a'), 0, block.fRange.start, block.fRange.end
-            });
-        }
+
+        visitor(combinedBlock, features);
     };
 
-    for (auto& block : styleSpan) {
-        BlockRange blockRange(std::max(block.fRange.start, textRange.start), std::min(block.fRange.end, textRange.end));
+    for (size_t i = 0; i < styleSpan.size(); ++i) {
+        const Block& block = styleSpan[i];
+        BlockRange blockRange(std::max(block.fRange.start, textRange.start),
+                              std::min(block.fRange.end, textRange.end));
         if (blockRange.empty()) {
             continue;
         }
-        SkASSERT(combinedBlock.fRange.width() == 0 || combinedBlock.fRange.end == block.fRange.start);
+        SkASSERT(combinedBlock.fRange.width() == 0 ||
+                 combinedBlock.fRange.end == block.fRange.start);
 
         if (!combinedBlock.fRange.empty()) {
             if (block.fStyle.matchOneAttribute(StyleType::kFont, combinedBlock.fStyle)) {
                 combinedBlock.add(blockRange);
-                addFeatures(block);
                 continue;
             }
             // Resolve all characters in the block for this style
-            visitor(combinedBlock, features);
+            flushCombinedBlock(i);
         }
 
         combinedBlock.fRange = blockRange;
         combinedBlock.fStyle = block.fStyle;
-        features.clear();
-        addFeatures(block);
+        groupStart = i;
     }
 
-    visitor(combinedBlock, features);
+    if (!combinedBlock.fRange.empty()) {
+        flushCombinedBlock(styleSpan.size());
+    }
 #ifdef SK_DEBUG
     //printState();
 #endif
