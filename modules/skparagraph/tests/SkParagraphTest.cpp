@@ -12878,3 +12878,265 @@ DEF_TEST(SkParagraph_TrailingSpaceOfLtrRunInRtlParagraph, reporter) {
         checkTrailingSpacesAtLineEnd(reporter, paragraph.get());
     }
 }
+
+static SkScalar measureLineWidth(sk_sp<ResourceFontCollection> fontCollection,
+                                 TextDirection direction,
+                                 const char* text) {
+    ParagraphStyle paragraphStyle;
+    paragraphStyle.setTextDirection(direction);
+    paragraphStyle.turnHintingOff();
+    paragraphStyle.setApplyRoundingHack(false);
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+    textStyle.setFontSize(15);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(textStyle);
+    builder.addText(text);
+    auto paragraph = builder.Build();
+    paragraph->layout(1000);
+    return paragraph->getLongestLine();
+}
+
+static void checkOrderedLineEndSpaces(skiatest::Reporter* reporter, Paragraph* paragraph) {
+    auto impl = static_cast<ParagraphImpl*>(paragraph);
+    impl->ensureUTF16Mapping();
+    const TextDirection dir = impl->paragraphStyle().getTextDirection();
+    const bool ltr = dir == TextDirection::kLtr;
+
+    paragraph->visit([&](int, const Paragraph::VisitorInfo* info) {
+        if (info == nullptr) {
+            return;
+        }
+        for (int g = 0; g < info->count; ++g) {
+            auto utf16Index = impl->getUTF16Index(info->utf8Starts[g]);
+            auto x = info->origin.fX + info->positions[g].fX;
+            auto boxes = paragraph->getRectsForRange(
+                    utf16Index, utf16Index + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+            REPORTER_ASSERT(reporter, boxes.size() == 1);
+            if (boxes.size() == 1) {
+                REPORTER_ASSERT(reporter,
+                                boxes[0].rect.fLeft - EPSILON100 <= x &&
+                                        x <= boxes[0].rect.fRight + EPSILON100,
+                                "glyph of %zu at %f outside [%f, %f)",
+                                utf16Index,
+                                x,
+                                boxes[0].rect.fLeft,
+                                boxes[0].rect.fRight);
+            }
+        }
+    });
+
+    REPORTER_ASSERT(reporter, !impl->lines().empty());
+    {
+        auto& line = impl->lines().front();
+        const size_t trimEnd = impl->getUTF16Index(line.trimmedText().end);
+        const size_t fullEnd = impl->getUTF16Index(line.textWithNewlines().end);
+        REPORTER_ASSERT(reporter, trimEnd < fullEnd && !line.isLastLine());
+        if (trimEnd < fullEnd && !line.isLastLine()) {
+            SkScalar edge = ltr ? (line.offset().fX + line.width()) : line.offset().fX;
+            SkScalar y = 0;
+            for (size_t i = trimEnd; i < fullEnd; ++i) {
+                auto boxes = paragraph->getRectsForRange(
+                        i, i + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+                REPORTER_ASSERT(reporter, boxes.size() == 1, "missing box for %zu", i);
+                if (boxes.size() != 1) {
+                    continue;
+                }
+                const auto& box = boxes[0];
+                y = box.rect.centerY();
+                REPORTER_ASSERT(reporter,
+                                box.direction == dir,
+                                "space %zu direction %d != paragraph direction %d",
+                                i,
+                                static_cast<int>(box.direction),
+                                static_cast<int>(dir));
+                REPORTER_ASSERT(reporter, box.rect.width() > 0, "empty box for %zu", i);
+                if (ltr) {
+                    REPORTER_ASSERT(reporter,
+                                    box.rect.fLeft >= edge - EPSILON100,
+                                    "space %zu at [%f, %f) overlaps before %f",
+                                    i,
+                                    box.rect.fLeft,
+                                    box.rect.fRight,
+                                    edge);
+                    edge = box.rect.fRight;
+                } else {
+                    REPORTER_ASSERT(reporter,
+                                    box.rect.fRight <= edge + EPSILON100,
+                                    "space %zu at [%f, %f) overlaps after %f",
+                                    i,
+                                    box.rect.fLeft,
+                                    box.rect.fRight,
+                                    edge);
+                    edge = box.rect.fLeft;
+                }
+
+                auto leftHit = paragraph->getGlyphPositionAtCoordinate(
+                        box.rect.fLeft + box.rect.width() / 4, y);
+                auto rightHit = paragraph->getGlyphPositionAtCoordinate(
+                        box.rect.fRight - box.rect.width() / 4, y);
+                auto startHit = ltr ? leftHit : rightHit;
+                auto endHit = ltr ? rightHit : leftHit;
+                REPORTER_ASSERT(reporter,
+                                startHit.position == SkToS32(i) && startHit.affinity == kDownstream,
+                                "start hit of %zu returned {%d, %d}",
+                                i,
+                                startHit.position,
+                                static_cast<int>(startHit.affinity));
+                REPORTER_ASSERT(reporter,
+                                endHit.position == SkToS32(i + 1) && endHit.affinity == kUpstream,
+                                "end hit of %zu returned {%d, %d}",
+                                i,
+                                endHit.position,
+                                static_cast<int>(endHit.affinity));
+            }
+
+            // Clicking past the visual end of a soft-wrapped line lands after its last space
+            auto marginHit = paragraph->getGlyphPositionAtCoordinate(ltr ? 1000.0f : -1000.0f, y);
+            REPORTER_ASSERT(
+                    reporter,
+                    marginHit.position == SkToS32(fullEnd) && marginHit.affinity == kUpstream,
+                    "margin hit past line end returned {%d, %d}, expected {%zu, kUpstream}",
+                    marginHit.position,
+                    static_cast<int>(marginHit.affinity),
+                    fullEnd);
+        }
+    }
+}
+
+// UAX#9 L1 resets all trailing whitespace at a soft line break to the paragraph direction,
+// preserving logical progression across multiple spaces, RectWidthStyle::kMax, and margin hits
+DEF_TEST(SkParagraph_TrailingSpacesDirectionAndOrder, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    {
+        SkScalar width =
+                measureLineWidth(fontCollection, TextDirection::kLtr, "وردزادروادوردزادرواد") +
+                1.0f;
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextDirection(TextDirection::kLtr);
+        paragraphStyle.turnHintingOff();
+        paragraphStyle.setApplyRoundingHack(false);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+        textStyle.setFontSize(15);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText("Hello دار  وردزادروادوردزادرواد");
+        auto paragraph = builder.Build();
+        paragraph->layout(width);
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lines().size() >= 2);
+        checkOrderedLineEndSpaces(reporter, paragraph.get());
+
+        size_t line0End = impl->getUTF16Index(impl->lines().front().textWithNewlines().end);
+        auto maxBoxes = paragraph->getRectsForRange(
+                0, line0End, RectHeightStyle::kTight, RectWidthStyle::kMax);
+        REPORTER_ASSERT(reporter, !maxBoxes.empty());
+        if (!maxBoxes.empty()) {
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(maxBoxes.back().rect.fRight,
+                                                impl->widthWithTrailingSpaces(),
+                                                EPSILON100),
+                            "RectWidthStyle::kMax right %f != widthWithTrailingSpaces %f",
+                            maxBoxes.back().rect.fRight,
+                            impl->widthWithTrailingSpaces());
+        }
+    }
+
+    {
+        SkScalar width = measureLineWidth(fontCollection, TextDirection::kRtl, "دار Hello") + 1.0f;
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextDirection(TextDirection::kRtl);
+        paragraphStyle.turnHintingOff();
+        paragraphStyle.setApplyRoundingHack(false);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+        textStyle.setFontSize(15);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText("دار Hello  supercalifragilistic");
+        auto paragraph = builder.Build();
+        paragraph->layout(width);
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->lines().size() >= 2);
+        checkOrderedLineEndSpaces(reporter, paragraph.get());
+    }
+}
+
+// Trailing whitespace spanning multiple styled runs or segment separators (\t) must advance
+// monotonically at the visual line end without clamping to zero width or double-shifting runs
+DEF_TEST(SkParagraph_TrailingSpacesAcrossMultipleRuns, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    for (TextDirection dir : {TextDirection::kLtr, TextDirection::kRtl}) {
+        const bool ltr = dir == TextDirection::kLtr;
+        SkScalar width =
+                measureLineWidth(fontCollection, dir, ltr ? "Hello دار" : "دار Hello") + 1.0f;
+
+        // Two opposite-direction runs with different font sizes in trailing whitespace
+        {
+            ParagraphStyle paragraphStyle;
+            paragraphStyle.setTextDirection(dir);
+            paragraphStyle.turnHintingOff();
+            paragraphStyle.setApplyRoundingHack(false);
+            TextStyle style15;
+            style15.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+            style15.setFontSize(15);
+            TextStyle style25 = style15;
+            style25.setFontSize(25);
+
+            ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+            builder.pushStyle(style15);
+            builder.addText(ltr ? "Hello دار " : "دار Hello ");
+            builder.pushStyle(style25);
+            builder.addText(ltr ? " ورد" : " world");
+            auto paragraph = builder.Build();
+            paragraph->layout(width);
+            auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+            REPORTER_ASSERT(reporter, impl->lines().size() >= 2);
+            checkOrderedLineEndSpaces(reporter, paragraph.get());
+        }
+
+        // Segment separator (\t) resets preceding spaces to paragraph level while trailing space
+        // after \t keeps opposite-direction level before line breaking
+        {
+            ParagraphStyle paragraphStyle;
+            paragraphStyle.setTextDirection(dir);
+            paragraphStyle.turnHintingOff();
+            paragraphStyle.setApplyRoundingHack(false);
+            TextStyle style15;
+            style15.setFontFamilies({SkString("Noto Naskh Arabic"), SkString("Roboto")});
+            style15.setFontSize(15);
+
+            ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+            builder.pushStyle(style15);
+            builder.addText(ltr ? "Hello دار \t ورد" : "دار Hello \t world");
+            auto paragraph = builder.Build();
+            paragraph->layout(width);
+            auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+            REPORTER_ASSERT(reporter, impl->lines().size() >= 2);
+            checkOrderedLineEndSpaces(reporter, paragraph.get());
+
+            const auto& line0 = impl->lines().front();
+            size_t line0End = impl->getUTF16Index(line0.textWithNewlines().end);
+            auto rangeBoxes = paragraph->getRectsForRange(
+                    0, line0End, RectHeightStyle::kTight, RectWidthStyle::kTight);
+            REPORTER_ASSERT(reporter, !rangeBoxes.empty());
+            SkScalar lineEnd = line0.offset().fX + line0.width();
+            SkScalar lineStart = line0.offset().fX;
+            bool sawTrailingBox = false;
+            for (const auto& box : rangeBoxes) {
+                REPORTER_ASSERT(reporter, box.rect.width() > 0);
+                if (ltr && box.rect.fLeft >= lineEnd - EPSILON100) {
+                    sawTrailingBox = true;
+                } else if (!ltr && box.rect.fRight <= lineStart + EPSILON100) {
+                    sawTrailingBox = true;
+                }
+            }
+            REPORTER_ASSERT(reporter, sawTrailingBox);
+        }
+    }
+}
