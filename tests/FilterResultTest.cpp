@@ -165,8 +165,13 @@ public:
             }
         }
         // If we got here, it will be drawn directly but a clamp can be needed if the data outside
-        // the image is unknown and sampling might pull those values in accidentally.
-        if (image.fBoundary == FilterResult::PixelBoundary::kUnknown) {
+        // the image is unknown or if AA outsetting under minification/skew could sample beyond the
+        // 1px boundary.
+        auto directAnalysis = image.analyzeBounds(
+                SkMatrix::I(), SkIRect(ctx.desiredOutput()),
+                FilterResult::BoundsScope::kCanDrawDirectly);
+        if (image.fBoundary == FilterResult::PixelBoundary::kUnknown ||
+            (directAnalysis & BoundsAnalysis::kRequiresShaderTiling)) {
             return ShaderSampleMode::kShaderClamp;
         } else {
             return ShaderSampleMode::kFast;
@@ -2782,6 +2787,115 @@ DEF_TEST_SUITE(MakeFromImage,
                 "Overlapping src rect is clipped and dst is scaled on clipped axis");
     testSuccess(kContainingSrc, kIdentitySrc, {32,32,96,96},
                 "Containing src rect is clipped and dst is scaled on both axes");
+}
+
+DEF_TEST_SUITE(BlurTransformSubsetClamp,
+               r,
+               CtsEnforcement::kNever,
+               CtsEnforcement::kNever) {
+    sk_sp<SkColorSpace> colorSpace = SkColorSpace::MakeSRGB();
+
+    auto populateScratchWithRed = [&]() {
+        for (SkISize sz : {SkISize{128, 128}, SkISize{256, 128}, SkISize{128, 128}}) {
+            sk_sp<SkDevice> dev = r.backend()->makeDevice(sz, colorSpace);
+            if (dev) {
+                SkCanvas canvas(dev);
+                canvas.clear(SK_ColorRED);
+                dev->setImmutable();
+                (void)dev->snapSpecial(SkIRect::MakeSize(sz));
+            }
+        }
+    };
+
+    auto makeBlueFilterResult = [&](SkISize size) {
+        sk_sp<SkDevice> srcDev = r.backend()->makeDevice(size, colorSpace);
+        SkCanvas srcCanvas(srcDev);
+        srcCanvas.clear(SK_ColorBLUE);
+        srcDev->setImmutable();
+        return FilterResult(srcDev->snapSpecial(SkIRect::MakeSize(size)),
+                            LayerSpace<SkIPoint>({0, 0}));
+    };
+
+    // Case 1: AA-clipped minified blur (testing both clip outside and clip inside pixel centers).
+    for (const auto& [dstRect, clipRect] : {
+            std::make_pair(SkRect::MakeLTRB(2.58f, 0.f, 4.32f, 95.f),
+                           SkRect::MakeLTRB(2.6f, 1.f, 4.3f, 94.f)),
+            std::make_pair(SkRect::MakeLTRB(1.2f, 0.f, 4.82f, 95.f),
+                           SkRect::MakeLTRB(1.3f, 1.f, 4.8f, 94.f))}) {
+        populateScratchWithRed();
+
+        Context blurCtx{r.refBackend(),
+                        Mapping(),
+                        LayerSpace<SkIRect>(SkIRect::MakeLTRB(-8, -8, 98, 58)),
+                        /*source=*/{},
+                        colorSpace.get(),
+                        /*stats=*/nullptr};
+        FilterResult blueSrc = makeBlueFilterResult({90, 50});
+        FilterResult::Builder builder(blurCtx);
+        builder.add(blueSrc);
+        FilterResult blurred = builder.blur(LayerSpace<SkSize>({2.5f, 2.5f}));
+
+        Context xformCtx = blurCtx.withNewDesiredOutput(
+                LayerSpace<SkIRect>(SkIRect::MakeWH(64, 128)));
+        SkMatrix minMatrix = SkMatrix::RectToRect(SkRect::MakeLTRB(-8.f, -8.f, 98.f, 58.f),
+                                                  dstRect);
+        FilterResult minified = blurred.applyTransform(
+                xformCtx, LayerSpace<SkMatrix>(minMatrix), FilterResult::kDefaultSampling);
+
+        sk_sp<SkDevice> dstDev = r.backend()->makeDevice({64, 128}, colorSpace);
+        SkCanvas dstCanvas(dstDev);
+        dstCanvas.clear(SK_ColorBLACK);
+        dstCanvas.save();
+        dstCanvas.clipRect(clipRect, SkClipOp::kIntersect, /*doAntiAlias=*/true);
+        FilterResultTestAccess::Draw(xformCtx, dstDev.get(), minified, /*preserveDeviceState=*/true);
+        dstCanvas.restore();
+
+        SkBitmap bm;
+        bm.allocPixels(SkImageInfo::Make(64, 128, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+        REPORTER_ASSERT(r, dstCanvas.readPixels(bm, 0, 0));
+        for (int y = 0; y < bm.height(); ++y) {
+            for (int x = 0; x < bm.width(); ++x) {
+                REPORTER_ASSERT(r, SkColorGetR(bm.getColor(x, y)) == 0);
+            }
+        }
+    }
+
+    // Case 2: Blur drawn under a strong skew transform on the destination device.
+    {
+        populateScratchWithRed();
+
+        Context blurCtx{r.refBackend(),
+                        Mapping(),
+                        LayerSpace<SkIRect>(SkIRect::MakeLTRB(-12, -12, 122, 57)),
+                        /*source=*/{},
+                        colorSpace.get(),
+                        /*stats=*/nullptr};
+        FilterResult blueSrc = makeBlueFilterResult({110, 45});
+        FilterResult::Builder builder(blurCtx);
+        builder.add(blueSrc);
+        FilterResult blurred = builder.blur(LayerSpace<SkSize>({4.f, 4.f}));
+
+        sk_sp<SkDevice> dstDev = r.backend()->makeDevice({256, 256}, colorSpace);
+        SkCanvas dstCanvas(dstDev);
+        dstCanvas.clear(SK_ColorBLACK);
+        dstCanvas.save();
+        const float kSkewX = std::tan(88.f * 3.14159265f / 180.f);
+        SkMatrix m;
+        m.setTranslate(128.f - 55.f - kSkewX * 22.5f, 128.f - 22.5f);
+        m.preSkew(kSkewX, 0.f);
+        dstCanvas.concat(m);
+        FilterResultTestAccess::Draw(blurCtx, dstDev.get(), blurred, /*preserveDeviceState=*/true);
+        dstCanvas.restore();
+
+        SkBitmap bm;
+        bm.allocPixels(SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+        REPORTER_ASSERT(r, dstCanvas.readPixels(bm, 0, 0));
+        for (int y = 0; y < bm.height(); ++y) {
+            for (int x = 0; x < bm.width(); ++x) {
+                REPORTER_ASSERT(r, SkColorGetR(bm.getColor(x, y)) == 0);
+            }
+        }
+    }
 }
 
 } // anonymous namespace

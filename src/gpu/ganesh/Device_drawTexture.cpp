@@ -187,14 +187,15 @@ void draw_texture(skgpu::ganesh::SurfaceDrawContext* sdc,
     // Must specify the strict constraint when the proxy is not functionally exact and the src
     // rect would access pixels outside the proxy's content area without the constraint.
     if (constraint != SkCanvas::kStrict_SrcRectConstraint && !proxy->isFunctionallyExact()) {
-        // Conservative estimate of how much a coord could be outset from src rect:
-        // 1/2 pixel for AA and 1/2 pixel for filtering. Linear filtering uses a 1/2 pixel kernel,
-        // and nearest filtering under high magnification can snap onto the texel just outside the
-        // subset due to limited sub-texel precision (e.g. Vulkan: subTexelPrecisionBits >= 4).
-        float buffer = 0.5f * (aaFlags != GrQuadAAFlags::kNone) + GrTextureEffect::kLinearInset;
+        // Conservative estimate of how much a coord could be outset from src rect when
+        // anti-aliasing is disabled: linear filtering uses a 1/2 pixel kernel, and nearest
+        // filtering under high magnification can snap onto the texel just outside the subset due
+        // to limited sub-texel precision (e.g. Vulkan: subTexelPrecisionBits >= 4). When AA is
+        // enabled, device-space outsetting can extrapolate local coordinates arbitrarily far
+        // under minification or skew, so always require the strict constraint.
         SkRect safeBounds = proxy->getBoundsRect();
-        safeBounds.inset(buffer, buffer);
-        if (!safeBounds.contains(srcRect)) {
+        safeBounds.inset(GrTextureEffect::kLinearInset, GrTextureEffect::kLinearInset);
+        if (aaFlags != GrQuadAAFlags::kNone || !safeBounds.contains(srcRect)) {
             constraint = SkCanvas::kStrict_SrcRectConstraint;
         }
     }

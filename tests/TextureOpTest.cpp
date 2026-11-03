@@ -404,6 +404,67 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureOpNearestSubsetOvershootTest,
             REPORTER_ASSERT(reporter, bm.getColor(0, 0) == SK_ColorBLUE);
         }
     }
+
+    // Test that coverage-AA minified draw cropped by an AA clip retains the strict subset
+    // constraint and does not extrapolate texture coordinates into the adjacent red region
+    // (covering both TextureOp with kSrcOver and the FillRectOp fallback with kPlus).
+    auto srcWideSurface = SkSurfaces::RenderTarget(
+            dContext,
+            skgpu::Budgeted::kYes,
+            SkImageInfo::Make(128, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    auto dstMinSurface = SkSurfaces::RenderTarget(
+            dContext,
+            skgpu::Budgeted::kYes,
+            SkImageInfo::Make(16, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    if (srcWideSurface && dstMinSurface) {
+        srcWideSurface->getCanvas()->clear(SK_ColorRED);
+        srcWideSurface->getCanvas()->drawRect(SkRect::MakeWH(64, 64), bluePaint);
+        sk_sp<SkImage> srcWideImage = srcWideSurface->makeImageSnapshot();
+
+        dstMinSurface->getCanvas()->clear(SK_ColorBLACK);
+
+        // 1. kSrcOver (TextureOp path)
+        dstMinSurface->getCanvas()->save();
+        dstMinSurface->getCanvas()->clipRect(SkRect::MakeLTRB(2.6f, 1.f, 4.3f, 31.f),
+                                             SkClipOp::kIntersect,
+                                             /*doAntiAlias=*/true);
+        SkPaint aaPaint;
+        aaPaint.setAntiAlias(true);
+        dstMinSurface->getCanvas()->drawImageRect(
+                srcWideImage,
+                SkRect::MakeWH(64.f, 64.f),
+                SkRect::MakeLTRB(2.58f, 1.f, 4.32f, 31.f),
+                SkSamplingOptions(SkFilterMode::kLinear),
+                &aaPaint,
+                SkCanvas::kStrict_SrcRectConstraint);
+        dstMinSurface->getCanvas()->restore();
+
+        // 2. kPlus (FillRectOp fallback path in TextureOp::Make)
+        dstMinSurface->getCanvas()->save();
+        dstMinSurface->getCanvas()->clipRect(SkRect::MakeLTRB(6.6f, 1.f, 8.3f, 31.f),
+                                             SkClipOp::kIntersect,
+                                             /*doAntiAlias=*/true);
+        SkPaint plusAAPaint;
+        plusAAPaint.setAntiAlias(true);
+        plusAAPaint.setBlendMode(SkBlendMode::kPlus);
+        dstMinSurface->getCanvas()->drawImageRect(
+                srcWideImage,
+                SkRect::MakeWH(64.f, 64.f),
+                SkRect::MakeLTRB(6.58f, 1.f, 8.32f, 31.f),
+                SkSamplingOptions(SkFilterMode::kLinear),
+                &plusAAPaint,
+                SkCanvas::kStrict_SrcRectConstraint);
+        dstMinSurface->getCanvas()->restore();
+
+        SkBitmap minBm;
+        minBm.allocPixels(SkImageInfo::Make(16, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+        REPORTER_ASSERT(reporter, dstMinSurface->readPixels(minBm, 0, 0));
+        for (int y = 0; y < 32; ++y) {
+            for (int x = 0; x < 16; ++x) {
+                REPORTER_ASSERT(reporter, SkColorGetR(minBm.getColor(x, y)) == 0);
+            }
+        }
+    }
 }
 
 

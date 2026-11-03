@@ -238,9 +238,13 @@ bool safe_to_ignore_subset_rect(GrAAType aaType, GrSamplerState::Filter filter,
         }
     }
 
-    // If the local quad is inset by at least 0.5 pixels into the subset rect's bounds, the
-    // sampler shouldn't overshoot, even when antialiasing and filtering is taken into account.
-    if (subsetRect.makeInset(GrTextureEffect::kLinearInset,
+    // If there is no anti-aliasing and the local quad is inset by at least 0.5 pixels into the
+    // subset rect's bounds, the sampler shouldn't overshoot when filtering is taken into account.
+    // When anti-aliasing is enabled, coverage AA outsets vertices by 0.5 device pixels and MSAA
+    // evaluates fragment varyings at pixel centers up to 0.5 device pixels outside the quad,
+    // which under minification or skew can extrapolate local coordinates well beyond 0.5 texels.
+    if (aaType == GrAAType::kNone &&
+        subsetRect.makeInset(GrTextureEffect::kLinearInset,
                              GrTextureEffect::kLinearInset)
                   .contains(localBounds)) {
         return true;
@@ -621,14 +625,20 @@ private:
 
             // Calculate metadata for the entry
             const SkRect* subsetForQuad = nullptr;
+            SkRect proxyBoundsRect;
             if (constraint == SkCanvas::kStrict_SrcRectConstraint) {
+                subsetForQuad = &set[q].fSrcRect;
+            } else if (!curProxy->isFunctionallyExact()) {
+                proxyBoundsRect = curProxy->getBoundsRect();
+                subsetForQuad = &proxyBoundsRect;
+            }
+            if (subsetForQuad) {
                 // Check (briefly) if the subset rect is actually needed for this set entry.
-                SkRect* subsetRect = &set[q].fSrcRect;
-                if (!subsetRect->contains(curProxy->backingStoreBoundsRect())) {
-                    if (!safe_to_ignore_subset_rect(aaForQuad, filterForQuad, quad, *subsetRect)) {
-                        netSubset = Subset::kYes;
-                        subsetForQuad = subsetRect;
-                    }
+                if (subsetForQuad->contains(curProxy->backingStoreBoundsRect()) ||
+                    safe_to_ignore_subset_rect(aaForQuad, filterForQuad, quad, *subsetForQuad)) {
+                    subsetForQuad = nullptr;
+                } else {
+                    netSubset = Subset::kYes;
                 }
             }
 
@@ -1210,6 +1220,12 @@ GrOp::Owner TextureOp::Make(GrRecordingContext* context,
                             GrAAType aaType,
                             DrawQuad* quad,
                             const SkRect* subset) {
+    SkRect proxyBoundsRect;
+    if (!subset && !proxyView.proxy()->isFunctionallyExact()) {
+        proxyBoundsRect = proxyView.proxy()->getBoundsRect();
+        subset = &proxyBoundsRect;
+    }
+
     // Apply optimizations that are valid whether or not using TextureOp or FillRectOp
     if (subset && subset->contains(proxyView.proxy()->backingStoreBoundsRect())) {
         // No need for a shader-based subset if hardware clamping achieves the same effect
@@ -1247,7 +1263,7 @@ GrOp::Owner TextureOp::Make(GrRecordingContext* context,
         const auto& caps = *context->priv().caps();
         if (subset) {
             SkRect localRect;
-            if (quad->fLocal.asRect(&localRect)) {
+            if (aaType == GrAAType::kNone && quad->fLocal.asRect(&localRect)) {
                 fp = GrTextureEffect::MakeSubset(std::move(proxyView), alphaType, SkMatrix::I(),
                                                  samplerState, *subset, localRect, caps);
             } else {

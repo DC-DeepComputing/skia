@@ -785,22 +785,54 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
     } else if (scope == BoundsScope::kCanDrawDirectly &&
                !(analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
         // When drawing the image directly, the geometry is limited to the image. If the texels
-        // are pixel aligned, then it is safe to skip shader-based tiling.
+        // are pixel aligned, if we can clamp to a 1px transparent boundary via a non-AA outset
+        // draw, or if there is 1px padding and no minification/skew (so a 0.5 device-pixel AA
+        // outset is <= 0.5 texels), then it is safe to skip shader-based tiling.
+        const bool canUseTransparentPadding = hasPixelPadding &&
+                                              this->canClampToTransparentBoundary(analysis) &&
+                                              fSamplingOptions == kDefaultSampling;
         const bool nnOrBilerp = fSamplingOptions == kDefaultSampling ||
                                 fSamplingOptions == kNearestNeighbor;
-        if (nnOrBilerp && (hasPixelPadding || isPixelAligned)) {
+        float scaleFactors[2];
+        const bool canUseAAWithPadding =
+                hasPixelPadding && nnOrBilerp &&
+                SkMatrix(netTransform).getMinMaxScales(scaleFactors) &&
+                scaleFactors[0] >= 1.f - kRoundEpsilon &&
+                fImage->width() * scaleFactors[0] >= 1.f &&
+                fImage->height() * scaleFactors[0] >= 1.f;
+        if ((nnOrBilerp && isPixelAligned) || canUseTransparentPadding || canUseAAWithPadding) {
             return analysis;
         }
     }
 
     // 3. Would image pixels outside of its subset be sampled if shader-clamping is skipped?
 
-    // Include the padding for sampling analysis and inset the dst by 1/2 px to represent where the
-    // sampling is evaluated at.
+    // Include the padding for sampling analysis.
     if (hasPixelPadding) {
         safeImageBounds.outset(1.f, 1.f);
     }
-    pixelCenterBounds.inset(kHalfPixel, kHalfPixel);
+    if (scope == BoundsScope::kCanDrawDirectly &&
+        !(analysis & BoundsAnalysis::kHasLayerFillingEffect)) {
+        // Direct draws that reach here will be rendered with anti-aliasing enabled. Coverage AA
+        // outsets quad edges (including edges cropped by an AA clip within dstBounds) by 0.5
+        // device pixels (or 1.0 device pixel for hairlines), extrapolating local coordinates by
+        // up to that distance divided by the minimum scale factor.
+        float scaleFactors[2];
+        if (SkMatrix(netTransform).getMinMaxScales(scaleFactors) &&
+            scaleFactors[0] > kRoundEpsilon) {
+            const float devAAOutset = (fImage->width() * scaleFactors[0] < 1.f ||
+                                       fImage->height() * scaleFactors[0] < 1.f)
+                                              ? 1.f
+                                              : kHalfPixel;
+            const float texelAAOutset = devAAOutset / scaleFactors[0];
+            safeImageBounds.inset(texelAAOutset, texelAAOutset);
+        } else {
+            safeImageBounds = SkRect::MakeEmpty();
+        }
+    } else {
+        // Inset the dst by 1/2 px to represent where shader sampling is evaluated at.
+        pixelCenterBounds.inset(kHalfPixel, kHalfPixel);
+    }
 
     // True if all corners of 'pixelCenterBounds' are on the inside of each edge of
     // 'safeImageBounds', ordered T,R,B,L.
@@ -1309,8 +1341,14 @@ void FilterResult::draw(const Context& ctx,
 #endif
             }
             netTransform.preTranslate(-1.f, -1.f);
+            // makePixelOutset() consumes the 1px transparent border, so if the draw is not
+            // pixel-aligned, clamp to the outset subset so filtering or clip-induced AA
+            // outsetting cannot sample beyond the 1px border.
+            SkCanvas::SrcRectConstraint constraint = pixelAligned
+                    ? SkCanvas::kFast_SrcRectConstraint
+                    : SkCanvas::kStrict_SrcRectConstraint;
             device->drawSpecial(fImage->makePixelOutset().get(), netTransform, sampling, paint,
-                                SkCanvas::kFast_SrcRectConstraint);
+                                constraint);
         } else {
             paint.setAntiAlias(true);
             SkCanvas::SrcRectConstraint constraint = SkCanvas::kFast_SrcRectConstraint;
