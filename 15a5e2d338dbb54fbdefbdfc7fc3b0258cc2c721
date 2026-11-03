@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36ac43b9_dd4ad4d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2026-11-03T20:37:36Z",
+      "side": 1,
+      "message": "RS LGTM based on @fmalita\u0027s review",
+      "revId": "15a5e2d338dbb54fbdefbdfc7fc3b0258cc2c721",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
