@@ -527,8 +527,8 @@ private:
     }
     void onPrePrepare(GrRecordingContext*, const GrSurfaceProxyView&, GrAppliedClip*, const
                       GrDstProxyView&, GrXferBarrierFlags, GrLoadOp) override {}
-    void onPrepare(GrOpFlushState*) override {}
-    void onExecute(GrOpFlushState*, const SkRect&) override {}
+    bool onPrepare1(GrOpFlushState*) override { return true; }
+    bool onExecute1(GrOpFlushState*, const SkRect&) override { return true; }
 };
 
 } // anonymous namespace
