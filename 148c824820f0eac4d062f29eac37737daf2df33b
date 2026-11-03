@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abc930ce_39411c8c",
+        "filename": "src/codec/SkSampler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-03T14:31:47Z",
+      "side": 1,
+      "message": "`kBGR_101010x_XR` (and `kBGRA_10101010_XR`) are accepted by `SkCodec::conversionSupported`/`SkJpegCodec` and still land here. A truncated PNG or JPEG decoded into `kBGR_101010x_XR` may reproduce the same assert, or leave unwritten rows in release. Could we handle them with the biased zero, or file a follow-up bug?\n\nSeparately: consider replacing `SkCodecPrintf` + `SkASSERT(false)` with `SkDEBUGFAILF(\"...%d\", info.colorType())`, followed by a bytewise zero fill, so release builds never leave rows uninitialized.\"",
+      "revId": "148c824820f0eac4d062f29eac37737daf2df33b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
