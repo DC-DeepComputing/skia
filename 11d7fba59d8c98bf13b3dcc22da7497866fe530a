@@ -16,6 +16,23 @@
       "message": "It should be now fixed, I uploaded a patch",
       "revId": "11d7fba59d8c98bf13b3dcc22da7497866fe530a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6088a82d_d9cbcc2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T00:32:38Z",
+      "side": 1,
+      "message": "Could you please rebase onto current `main`? Recent `skparagraph` changes caused a merge conflict in `ParagraphImpl.{h,cpp}`, `TextLine.cpp`, and `SkParagraphTest.cpp`, so Gerrit cannot rebase it automatically. Once rebased, we will re-vote and run the try jobs to land it.",
+      "revId": "11d7fba59d8c98bf13b3dcc22da7497866fe530a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
