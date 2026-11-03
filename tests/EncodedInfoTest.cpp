@@ -44,3 +44,44 @@ DEF_TEST(AlphaEncodedInfo, r) {
 
     REPORTER_ASSERT(r, ToolUtils::equal_pixels(bm.pixmap(), bm2.pixmap()));
 }
+
+DEF_TEST(IncompleteAlpha8Decode, r) {
+    SkBitmap srcBm;
+    srcBm.allocPixels(SkImageInfo::Make(64, 64, kAlpha_8_SkColorType, kPremul_SkAlphaType));
+    // Fill with 0x55 (distinct from zero and the 0xAA canary).
+    memset(srcBm.getPixels(), 0x55, srcBm.computeByteSize());
+
+    sk_sp<SkData> data = SkPngEncoder::Encode(srcBm.pixmap(), {});
+    REPORTER_ASSERT(r, data && data->size() > 0);
+
+    // Try several truncation lengths to test various points in the IDAT stream.
+    for (double frac : { 0.25, 0.40, 0.50, 0.75 }) {
+        size_t truncateLen = static_cast<size_t>(data->size() * frac);
+        sk_sp<SkData> truncated = SkData::MakeSubset(data.get(), 0, truncateLen);
+        auto codec = SkCodec::MakeFromData(truncated);
+        if (!codec) {
+            continue;
+        }
+
+        REPORTER_ASSERT(r, codec->getInfo().colorType() == kAlpha_8_SkColorType);
+
+        SkBitmap dstBm;
+        dstBm.allocPixels(codec->getInfo().makeColorSpace(nullptr));
+        // Fill destination with 0xAA canary to detect untouched memory.
+        memset(dstBm.getPixels(), 0xAA, dstBm.computeByteSize());
+
+        SkCodec::Result result = codec->getPixels(dstBm.pixmap());
+        if (result == SkCodec::kIncompleteInput || result == SkCodec::kErrorInInput) {
+            const uint8_t* pixels = static_cast<const uint8_t*>(dstBm.getPixels());
+            bool hasCanary = false;
+            for (size_t i = 0; i < dstBm.computeByteSize(); ++i) {
+                if (pixels[i] == 0xAA) {
+                    hasCanary = true;
+                    break;
+                }
+            }
+            REPORTER_ASSERT(r, !hasCanary);
+        }
+    }
+}
+

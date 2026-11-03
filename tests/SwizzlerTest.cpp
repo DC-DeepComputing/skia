@@ -32,9 +32,9 @@ static void check_fill(skiatest::Reporter* r,
     // still allocating the smallest possible size.
     const size_t totalBytes = imageInfo.computeByteSize(rowBytes) + offset;
 
-    // Create fake image data where every byte has a value of 0
+    // Create fake image data filled with a non-zero canary byte (0xAA).
     std::unique_ptr<uint8_t[]> storage(new uint8_t[totalBytes]);
-    memset(storage.get(), 0, totalBytes);
+    memset(storage.get(), 0xAA, totalBytes);
     // Adjust the pointer in order to test on different memory alignments
     uint8_t* imageData = storage.get() + offset;
     uint8_t* imageStart = imageData + rowBytes * startRow;
@@ -43,29 +43,32 @@ static void check_fill(skiatest::Reporter* r,
 
     // Ensure that the pixels are filled properly
     // The bots should catch any memory corruption
-    uint8_t* indexPtr = imageData + startRow * rowBytes;
-    uint8_t* grayPtr = indexPtr;
-    uint32_t* colorPtr = (uint32_t*) indexPtr;
-    uint16_t* color565Ptr = (uint16_t*) indexPtr;
+    uint8_t* rowPtr = imageData + startRow * rowBytes;
     for (uint32_t y = startRow; y <= endRow; y++) {
         for (int32_t x = 0; x < imageInfo.width(); x++) {
             switch (imageInfo.colorType()) {
                 case kN32_SkColorType:
-                    REPORTER_ASSERT(r, 0 == colorPtr[x]);
+                case kRGBA_1010102_SkColorType:
+                case kBGR_101010x_XR_SkColorType:
+                    REPORTER_ASSERT(r, 0 == ((uint32_t*) rowPtr)[x]);
                     break;
                 case kGray_8_SkColorType:
-                    REPORTER_ASSERT(r, 0 == grayPtr[x]);
+                case kAlpha_8_SkColorType:
+                    REPORTER_ASSERT(r, 0 == ((uint8_t*) rowPtr)[x]);
                     break;
                 case kRGB_565_SkColorType:
-                    REPORTER_ASSERT(r, 0 == color565Ptr[x]);
+                    REPORTER_ASSERT(r, 0 == ((uint16_t*) rowPtr)[x]);
+                    break;
+                case kRGBA_F16_SkColorType:
+                case kBGRA_10101010_XR_SkColorType:
+                    REPORTER_ASSERT(r, 0 == ((uint64_t*) rowPtr)[x]);
                     break;
                 default:
                     REPORTER_ASSERT(r, false);
                     break;
             }
         }
-        indexPtr += rowBytes;
-        colorPtr = (uint32_t*) indexPtr;
+        rowPtr += rowBytes;
     }
 }
 
@@ -88,17 +91,27 @@ DEF_TEST(SwizzlerFill, r) {
             // Create image info objects
             const SkImageInfo colorInfo = SkImageInfo::MakeN32(width, height, kUnknown_SkAlphaType);
             const SkImageInfo grayInfo = colorInfo.makeColorType(kGray_8_SkColorType);
+            const SkImageInfo alphaInfo = colorInfo.makeColorType(kAlpha_8_SkColorType);
             const SkImageInfo color565Info = colorInfo.makeColorType(kRGB_565_SkColorType);
+            const SkImageInfo rgba1010102Info = colorInfo.makeColorType(kRGBA_1010102_SkColorType);
+            const SkImageInfo f16Info = colorInfo.makeColorType(kRGBA_F16_SkColorType);
+            const SkImageInfo xr10101010Info = colorInfo.makeColorType(kBGRA_10101010_XR_SkColorType);
 
             for (uint32_t padding : paddings) {
 
                 // Calculate row bytes
                 const size_t colorRowBytes = SkColorTypeBytesPerPixel(kN32_SkColorType) * width
                         + padding;
-                const size_t indexRowBytes = width + padding;
-                const size_t grayRowBytes = indexRowBytes;
+                const size_t grayRowBytes = width + padding;
+                const size_t alphaRowBytes = width + padding;
                 const size_t color565RowBytes =
                         SkColorTypeBytesPerPixel(kRGB_565_SkColorType) * width + padding;
+                const size_t rgba1010102RowBytes =
+                        SkColorTypeBytesPerPixel(kRGBA_1010102_SkColorType) * width + padding;
+                const size_t f16RowBytes =
+                        SkColorTypeBytesPerPixel(kRGBA_F16_SkColorType) * width + padding;
+                const size_t xr10101010RowBytes =
+                        SkColorTypeBytesPerPixel(kBGRA_10101010_XR_SkColorType) * width + padding;
 
                 // If there is padding, we can invent an offset to change the memory alignment
                 for (uint32_t offset = 0; offset <= padding; offset += 4) {
@@ -110,7 +123,11 @@ DEF_TEST(SwizzlerFill, r) {
                             // Test fill with each color type
                             check_fill(r, colorInfo, startRow, endRow, colorRowBytes, offset);
                             check_fill(r, grayInfo, startRow, endRow, grayRowBytes, offset);
+                            check_fill(r, alphaInfo, startRow, endRow, alphaRowBytes, offset);
                             check_fill(r, color565Info, startRow, endRow, color565RowBytes, offset);
+                            check_fill(r, rgba1010102Info, startRow, endRow, rgba1010102RowBytes, offset);
+                            check_fill(r, f16Info, startRow, endRow, f16RowBytes, offset);
+                            check_fill(r, xr10101010Info, startRow, endRow, xr10101010RowBytes, offset);
                         }
                     }
                 }

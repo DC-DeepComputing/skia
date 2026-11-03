@@ -31,7 +31,10 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
     // Use the proper memset routine to fill the remaining bytes
     switch (info.colorType()) {
         case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType: {
+        case kBGRA_8888_SkColorType:
+        case kBGR_101010x_XR_SkColorType:
+        case kRGBA_1010102_SkColorType:
+        case kBGRA_1010102_SkColorType: {
             uint32_t* dstRow = (uint32_t*) dst;
             for (int row = 0; row < numRows; row++) {
                 SkOpts::memset32(dstRow, 0, width);
@@ -47,6 +50,7 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
             }
             break;
         }
+        case kAlpha_8_SkColorType:
         case kGray_8_SkColorType: {
             uint8_t* dstRow = (uint8_t*) dst;
             for (int row = 0; row < numRows; row++) {
@@ -55,7 +59,8 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
             }
             break;
         }
-        case kRGBA_F16_SkColorType: {
+        case kRGBA_F16_SkColorType:
+        case kBGRA_10101010_XR_SkColorType: {
             uint64_t* dstRow = (uint64_t*) dst;
             for (int row = 0; row < numRows; row++) {
                 SkOpts::memset64(dstRow, 0, width);
@@ -63,9 +68,20 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
             }
             break;
         }
-        default:
-            SkCodecPrintf("Error: Unsupported dst color type for fill().  Doing nothing.\n");
+        default: {
+            // Never leave undecoded rows untouched: callers (SkCodec::fillIncompleteImage)
+            // rely on this to scrub uninitialized destination memory on truncated input.
+            SkCodecPrintf("Error: Unsupported dst color type for fill().\n");
             SkASSERT(false);
+            const size_t bytesPerRow = (size_t) width * info.bytesPerPixel();
+            if (bytesPerRow > 0) {
+                uint8_t* dstRow = (uint8_t*) dst;
+                for (int row = 0; row < numRows; row++) {
+                    memset(dstRow, 0, bytesPerRow);
+                    dstRow = SkTAddOffset<uint8_t>(dstRow, rowBytes);
+                }
+            }
             break;
+        }
     }
 }
