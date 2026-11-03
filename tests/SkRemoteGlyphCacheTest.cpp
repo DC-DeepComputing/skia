@@ -1494,6 +1494,7 @@ DEF_TEST(SkRemoteGlyphCache_b513780208, reporter) {
     // This should fail to read the strike data because SkGlyph::addPathFromBuffer
     // now validates that path glyphs have an expected mask format.
     REPORTER_ASSERT(reporter, !client.readStrikeData(blob->data(), blob->size()));
+    REPORTER_ASSERT(reporter, cache.getCacheCountUsed() == 0);
 }
 
 DEF_TEST(SkRemoteGlyphCache_b576664769, reporter) {
