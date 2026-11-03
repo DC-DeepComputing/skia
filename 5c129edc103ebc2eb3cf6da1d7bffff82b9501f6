@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef60fe17_a2acc676",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-11-03T14:21:34Z",
+      "side": 1,
+      "message": "@borenet@google.com, PTAL when you get a chance - no functional changes, just rebased (and lost the +1s as a result).",
+      "revId": "5c129edc103ebc2eb3cf6da1d7bffff82b9501f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
