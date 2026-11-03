@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c9391d_76ed7046",
+        "filename": "src/pathops/SkOpAngle.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-03T15:40:06Z",
+      "side": 1,
+      "message": "Note: I have now prior knowledge about what benchmark are really import for the users. So I allowed exclusions on everything that showed meaningful regression.\n\nPlease don\u0027t hesitate to tell me when the patch is too conservative.",
+      "range": {
+        "startLine": 138,
+        "startChar": 7,
+        "endLine": 138,
+        "endChar": 29
+      },
+      "revId": "b2eaff3635577f49a72c11ffbd60a0815d895959",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
