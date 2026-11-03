@@ -398,6 +398,24 @@ SkScalerContext_DW::SkScalerContext_DW(DWriteFontTypeface& typefaceRef,
         fMeasuringMode = DWRITE_MEASURING_MODE_NATURAL;
     }
 
+    // DO NOT SUBMIT: experiment for flutter#194931. kNormal is the regular DirectWrite path;
+    // kSlight and kFull select the GDI-compatible rendering and measuring modes
+    if (SkMask::kBW_Format != fRec.fMaskFormat) {
+        if (fRec.getHinting() == SkFontHinting::kSlight) {
+            fTextSizeRender = gdiTextSize;
+            fRenderingMode = DWRITE_RENDERING_MODE_GDI_NATURAL;
+            fTextureType = DWRITE_TEXTURE_CLEARTYPE_3x1;
+            fTextSizeMeasure = gdiTextSize;
+            fMeasuringMode = DWRITE_MEASURING_MODE_GDI_NATURAL;
+        } else if (fRec.getHinting() == SkFontHinting::kFull) {
+            fTextSizeRender = gdiTextSize;
+            fRenderingMode = DWRITE_RENDERING_MODE_GDI_CLASSIC;
+            fTextureType = DWRITE_TEXTURE_CLEARTYPE_3x1;
+            fTextSizeMeasure = gdiTextSize;
+            fMeasuringMode = DWRITE_MEASURING_MODE_GDI_CLASSIC;
+        }
+    }
+
     // DirectWrite2 allows for grayscale hinting.
     fAntiAliasMode = DWRITE_TEXT_ANTIALIAS_MODE_CLEARTYPE;
     if (typeface->fFactory2 && typeface->fDWriteFontFace2 &&

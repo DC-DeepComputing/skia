@@ -248,6 +248,7 @@ gm_sources = [
   "$_gm/lcdblendmodes.cpp",
   "$_gm/lcdoverlap.cpp",
   "$_gm/lcdtext.cpp",
+  "$_gm/win_cjk_crispness.cpp",
   "$_gm/lighting.cpp",
   "$_gm/linepaths.cpp",
   "$_gm/localmatriximagefilter.cpp",

@@ -742,8 +742,9 @@ void DWriteFontTypeface::onFilterRec(SkScalerContextRec* rec) const {
     rec->fFlags &= ~flagsWeDontSupport;
 
     SkFontHinting h = rec->getHinting();
-    // DirectWrite2 allows for hinting to be turned off. Force everything else to normal.
-    if (h != SkFontHinting::kNone || !fFactory2 || !fDWriteFontFace2) {
+    // DO NOT SUBMIT: experiment for flutter#194931 keeps kSlight and kFull distinct so the
+    // scaler context can map them to GDI rendering modes
+    if (!fFactory2 || !fDWriteFontFace2) {
         h = SkFontHinting::kNormal;
     }
     rec->setHinting(h);
