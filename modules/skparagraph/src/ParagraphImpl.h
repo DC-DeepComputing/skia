@@ -106,6 +106,18 @@ public:
     ~ParagraphImpl() override;
 
     void layout(SkScalar width) override;
+    void layout(SkScalar width, SkScalar firstLineIndent) override;
+    SkScalar firstLineWidth(SkScalar width) const {
+        if (!SkIsFinite(width)) { return width; }
+        return static_cast<SkScalar>(std::min(static_cast<double>(SK_ScalarMax),
+                std::max(0.0, static_cast<double>(width) - fFirstLineIndent)));
+    }
+    SkScalar firstLineOffset(SkScalar width) const {
+        if (fParagraphStyle.getTextDirection() == TextDirection::kLtr) { return fFirstLineIndent; }
+        // A positive indent can carry the leading edge beyond the far edge,
+        // even though the available width is clamped to zero
+        return SkIsFinite(width) ? std::min(0.0f, width - fFirstLineIndent) : 0;
+    }
     void paint(SkCanvas* canvas, SkScalar x, SkScalar y) override;
     void paint(ParagraphPainter* canvas, SkScalar x, SkScalar y) override;
     std::vector<TextBox> getRectsForRange(unsigned start,
@@ -119,7 +131,7 @@ public:
 
     bool getApplyRoundingHack() const { return fParagraphStyle.getApplyRoundingHack(); }
 
-    size_t lineNumber() override { return fLines.size(); }
+    size_t lineNumber() override { return fLines.empty() && fText.isEmpty() && fFirstLineIndent != 0 ? 1 : fLines.size(); }
 
     TextLine& addLine(SkVector offset, SkVector advance,
                       TextRange textExcludingSpaces, TextRange text, TextRange textIncludingNewlines,
@@ -256,6 +268,7 @@ private:
     friend class OneLineShaper;
 
     void computeEmptyMetrics();
+    void computeMinIntrinsicWidthWithIndent();
 
     // Input
     skia_private::TArray<StyleBlock<SkScalar>> fLetterSpaceStyles;
@@ -300,6 +313,7 @@ private:
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
     TextIndex fTrailingSpaces;
+    SkScalar fFirstLineIndent = 0;
 };
 }  // namespace textlayout
 }  // namespace skia
