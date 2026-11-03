@@ -288,7 +288,7 @@ private:
         }
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
         const VertexSpec vertexSpec = this->vertexSpec();
@@ -304,7 +304,7 @@ private:
                                               &fVertexBuffer, &fBaseVertex);
         if (!vdata) {
             SkDebugf("Could not allocate vertices\n");
-            return;
+            return false;
         }
 
         if (fPrePreparedVertices) {
@@ -320,24 +320,28 @@ private:
                     target, vertexSpec.indexBufferOption());
             if (!fIndexBuffer) {
                 SkDebugf("Could not allocate indices\n");
-                return;
+                return false;
             }
         }
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fVertexBuffer) {
-            return;
+            return false;
         }
 
         const VertexSpec vertexSpec = this->vertexSpec();
 
         if (vertexSpec.needsIndexBuffer() && !fIndexBuffer) {
-            return;
+            return false;
         }
 
         if (!fProgramInfo) {
             this->createProgramInfo(flushState);
+            if (!fProgramInfo) {
+                return false;
+            }
         }
 
         const int totalNumVertices = fQuads.count() * vertexSpec.verticesPerQuad();
@@ -345,13 +349,13 @@ private:
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindBuffers(std::move(fIndexBuffer), nullptr, std::move(fVertexBuffer));
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        skgpu::ganesh::QuadPerEdgeAA::IssueDraw(flushState->caps(),
-                                                flushState->opsRenderPass(),
-                                                vertexSpec,
-                                                0,
-                                                fQuads.count(),
-                                                totalNumVertices,
-                                                fBaseVertex);
+        return skgpu::ganesh::QuadPerEdgeAA::IssueDraw(flushState->caps(),
+                                                       flushState->opsRenderPass(),
+                                                       vertexSpec,
+                                                       0,
+                                                       fQuads.count(),
+                                                       totalNumVertices,
+                                                       fBaseVertex);
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

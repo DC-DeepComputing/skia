@@ -159,8 +159,19 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
                             SkToBool(srcProxy->asTextureProxy()) &&
                             (srcColorType == GrColorType::kRGBA_8888 ||
                              srcColorType == GrColorType::kBGRA_8888) &&
-                            defaultRGBAFormat.isValid() &&
-                            dContext->priv().validPMUPMConversionExists();
+                            defaultRGBAFormat.isValid();
+    if (canvas2DFastPath) {
+        if (!dContext->priv().hasCheckedPMUPMConversion()) {
+            // validPMUPMConversionExists() may flush pending work on the context the first time it
+            // is called. Flush srcProxy first so any failure in pending work targeting srcProxy is
+            // observed rather than consumed inside the conversion test.
+            GrDirectContext::FlushResult result = dContext->priv().flushSurface(srcProxy.get());
+            if (!result.fSuccess) {
+                return false;
+            }
+        }
+        canvas2DFastPath = dContext->priv().validPMUPMConversionExists();
+    }
 
     // Since the validPMUPMConversionExists function actually submits work to the gpu to do its
     // tests, it is possible that during that call we have abandoned the context. Thus, we do
