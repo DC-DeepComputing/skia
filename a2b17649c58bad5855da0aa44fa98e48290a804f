@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb8212e2_9597827e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-03T15:32:04Z",
+      "side": 1,
+      "message": "I\u0027m still thinking about the Precompile side of this",
+      "revId": "a2b17649c58bad5855da0aa44fa98e48290a804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1727e1ed_94ff87a8",
+        "filename": "src/gpu/graphite/draw/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-03T15:32:04Z",
+      "side": 1,
+      "message": "just ?",
+      "range": {
+        "startLine": 260,
+        "startChar": 30,
+        "endLine": 260,
+        "endChar": 34
+      },
+      "revId": "a2b17649c58bad5855da0aa44fa98e48290a804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fab9aec3_1526eb0d",
+        "filename": "src/gpu/graphite/draw/DrawListBase.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-03T15:32:04Z",
+      "side": 1,
+      "message": "the ?",
+      "range": {
+        "startLine": 127,
+        "startChar": 16,
+        "endLine": 127,
+        "endChar": 20
+      },
+      "revId": "a2b17649c58bad5855da0aa44fa98e48290a804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
