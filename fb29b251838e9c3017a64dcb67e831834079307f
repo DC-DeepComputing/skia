@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "555d9eb6_1b2077a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-03T19:59:28Z",
+      "side": 1,
+      "message": "This does not need an equivalent fix in Graphite, which already avoids HW blending on a floating point target that has been loaded via \"discard\"",
+      "revId": "fb29b251838e9c3017a64dcb67e831834079307f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
