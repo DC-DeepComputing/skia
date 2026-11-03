@@ -73,7 +73,7 @@ private:
     }
     void onPrePrepare(GrRecordingContext*, const GrSurfaceProxyView&, GrAppliedClip*,
                       const GrDstProxyView&, GrXferBarrierFlags, GrLoadOp colorLoadOp) override {}
-    void onPrepare(GrOpFlushState* flushState) override {
+    bool onPrepare1(GrOpFlushState* flushState) override {
         constexpr static SkPMColor4f kCyan = {0,1,1,1};
         auto alloc = flushState->allocator();
         const SkMatrix& shaderMatrix = SkMatrix::I();
@@ -131,11 +131,12 @@ private:
                                                      tessShader,
                                                      pipeline,
                                                      &GrUserStencilSettings::kUnused);
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         flushState->bindPipeline(*fProgram, chainBounds);
-        fTessellator->draw(flushState);
+        return fTessellator->draw0(flushState);
     }
 
     const SkPath fPath;

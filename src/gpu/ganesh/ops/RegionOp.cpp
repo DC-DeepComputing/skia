@@ -137,11 +137,11 @@ private:
                                                             renderPassXferBarriers, colorLoadOp);
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         if (!fProgramInfo) {
             this->createProgramInfo(target);
             if (!fProgramInfo) {
-                return;
+                return false;
             }
         }
 
@@ -154,7 +154,7 @@ private:
         }
 
         if (!numRects || !safeMath) {
-            return;
+            return false;
         }
 
         QuadHelper helper(target, fProgramInfo->geomProc().vertexStride(), numRects);
@@ -162,7 +162,7 @@ private:
         VertexWriter vertices{helper.vertices()};
         if (!vertices) {
             SkDebugf("Could not allocate vertices\n");
-            return;
+            return false;
         }
 
         for (int i = 0; i < numRegions; i++) {
@@ -176,16 +176,17 @@ private:
         }
 
         fMesh = helper.mesh();
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo || !fMesh) {
-            return;
+            return false;
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        return flushState->drawMesh2(*fMesh);
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

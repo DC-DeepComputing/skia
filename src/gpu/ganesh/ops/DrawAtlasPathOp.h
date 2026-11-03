@@ -70,8 +70,8 @@ public:
 
     void onPrePrepare(GrRecordingContext*, const GrSurfaceProxyView& writeView, GrAppliedClip*,
                       const GrDstProxyView&, GrXferBarrierFlags, GrLoadOp colorLoadOp) override;
-    void onPrepare(GrOpFlushState*) override;
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onPrepare1(GrOpFlushState*) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 
 private:
     void prepareProgram(const GrCaps&, SkArenaAlloc*, const GrSurfaceProxyView& writeView,

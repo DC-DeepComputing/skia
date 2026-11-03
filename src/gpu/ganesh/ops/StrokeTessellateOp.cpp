@@ -227,7 +227,7 @@ void StrokeTessellateOp::onPrePrepare(GrRecordingContext* context,
     }
 }
 
-void StrokeTessellateOp::onPrepare(GrOpFlushState* flushState) {
+bool StrokeTessellateOp::onPrepare1(GrOpFlushState* flushState) {
     if (!fTessellator) {
         this->prePrepareTessellator({flushState->allocator(), flushState->writeView(),
                                     flushState->usesMSAASurface(), &flushState->dstProxyView(),
@@ -239,19 +239,25 @@ void StrokeTessellateOp::onPrepare(GrOpFlushState* flushState) {
                           fViewMatrix,
                           &fPathStrokeList,
                           fTotalCombinedVerbCnt);
+    return true;
 }
 
-void StrokeTessellateOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool StrokeTessellateOp::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (fStencilProgram) {
         flushState->bindPipelineAndScissorClip(*fStencilProgram, chainBounds);
         flushState->bindTextures(fStencilProgram->geomProc(), nullptr, fStencilProgram->pipeline());
-        fTessellator->draw(flushState);
+        if (!fTessellator->draw77(flushState)) {
+            return false;
+        }
     }
     if (fFillProgram) {
         flushState->bindPipelineAndScissorClip(*fFillProgram, chainBounds);
         flushState->bindTextures(fFillProgram->geomProc(), nullptr, fFillProgram->pipeline());
-        fTessellator->draw(flushState);
+        if (!fTessellator->draw77(flushState)) {
+            return false;
+        }
     }
+    return true;
 }
 
 }  // namespace skgpu::ganesh

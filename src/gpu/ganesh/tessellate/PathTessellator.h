@@ -70,7 +70,7 @@ public:
 
     // Issues fixed-count instanced draw calls over the patches. The caller is responsible for
     // binding its desired pipeline ahead of time.
-    virtual void draw(GrOpFlushState* flushState) const = 0;
+    [[nodiscard]] virtual bool draw0(GrOpFlushState* flushState) const = 0;
 
 protected:
     PathTessellator(bool infinitySupport, PatchAttribs attribs) : fAttribs(attribs) {
@@ -122,12 +122,12 @@ public:
                                    totalCombinedPathVerbCnt);
     }
 
-    void draw(GrOpFlushState*) const final;
+    [[nodiscard]] bool draw0(GrOpFlushState*) const final;
 
     // Draws a 4-point instance for each patch. This method is used for drawing convex hulls over
     // each cubic with GrFillCubicHullShader. The caller is responsible for binding its desired
     // pipeline ahead of time.
-    void drawHullInstances(GrOpFlushState*, sk_sp<const GrGpuBuffer> vertexBufferIfNeeded) const;
+    bool drawHullInstances(GrOpFlushState*, sk_sp<const GrGpuBuffer> vertexBufferIfNeeded) const;
 };
 
 // Prepares an array of "wedge" patches. A wedge is an independent, 5-point closed contour
@@ -152,7 +152,7 @@ public:
                  const PathDrawList& pathDrawList,
                  int totalCombinedPathVerbCnt) final;
 
-    void draw(GrOpFlushState*) const final;
+    [[nodiscard]] bool draw0(GrOpFlushState*) const final;
 };
 
 }  // namespace skgpu::ganesh

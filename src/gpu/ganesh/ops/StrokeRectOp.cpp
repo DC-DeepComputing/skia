@@ -244,9 +244,12 @@ private:
                                                  renderPassXferBarriers, colorLoadOp);
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         if (!fProgramInfo) {
             this->createProgramInfo(target);
+            if (!fProgramInfo) {
+                return false;
+            }
         }
 
         size_t kVertexStride = fProgramInfo->geomProc().vertexStride();
@@ -263,7 +266,7 @@ private:
 
         if (!verts) {
             SkDebugf("Could not allocate vertices\n");
-            return;
+            return false;
         }
 
         SkPoint* vertex = reinterpret_cast<SkPoint*>(verts);
@@ -281,16 +284,17 @@ private:
 
         fMesh = target->allocMesh();
         fMesh->set(std::move(vertexBuffer), vertexCount, firstVertex);
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fMesh) {
-            return;
+            return false;
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        return flushState->drawMesh2(*fMesh);
     }
 
 #if defined(GPU_TEST_UTILS)
@@ -568,8 +572,8 @@ private:
                              GrXferBarrierFlags renderPassXferBarriers,
                              GrLoadOp colorLoadOp) override;
 
-    void onPrepareDraws(GrMeshDrawTarget*) override;
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onPrepareDraws1(GrMeshDrawTarget*) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 
 #if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override {
@@ -660,12 +664,12 @@ void AAStrokeRectOp::onCreateProgramInfo(const GrCaps* caps,
                                              colorLoadOp);
 }
 
-void AAStrokeRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
+bool AAStrokeRectOp::onPrepareDraws1(GrMeshDrawTarget* target) {
 
     if (!fProgramInfo) {
         this->createProgramInfo(target);
         if (!fProgramInfo) {
-            return;
+            return false;
         }
     }
 
@@ -680,7 +684,7 @@ void AAStrokeRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
             GetIndexBuffer(target->resourceProvider(), this->miterStroke());
     if (!indexBuffer) {
         SkDebugf("Could not allocate indices\n");
-        return;
+        return false;
     }
     PatternHelper helper(target, GrPrimitiveType::kTriangles,
                          fProgramInfo->geomProc().vertexStride(), std::move(indexBuffer),
@@ -688,7 +692,7 @@ void AAStrokeRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
     VertexWriter vertices{ helper.vertices() };
     if (!vertices) {
         SkDebugf("Could not allocate vertices\n");
-        return;
+        return false;
     }
 
     for (int i = 0; i < instanceCount; i++) {
@@ -705,16 +709,17 @@ void AAStrokeRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
                                            target->usesMSAASurface());
     }
     fMesh = helper.mesh();
+    return true;
 }
 
-void AAStrokeRectOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool AAStrokeRectOp::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (!fProgramInfo || !fMesh) {
-        return;
+        return false;
     }
 
     flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
     flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-    flushState->drawMesh(*fMesh);
+    return flushState->drawMesh2(*fMesh);
 }
 
 sk_sp<const GrGpuBuffer> AAStrokeRectOp::GetIndexBuffer(GrResourceProvider* resourceProvider,

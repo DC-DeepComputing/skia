@@ -89,16 +89,19 @@ GrRenderTask::ExpectedOutcome GrDDLTask::onMakeClosed(GrRecordingContext*,
     return ExpectedOutcome::kTargetUnchanged;
 }
 
-void GrDDLTask::onPrepare(GrOpFlushState* flushState) {
+bool GrDDLTask::onPrepare2(GrOpFlushState* flushState) {
     for (auto& task : fDDL->priv().renderTasks()) {
-        task->prepare(flushState);
+        if (!task->prepare3(flushState)) {
+            return false;
+        }
     }
+    return true;
 }
 
-GrRenderTask::ExecutionResult GrDDLTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrDDLTask::onExecute2(GrOpFlushState* flushState) {
     ExecutionResult result;
     for (auto& task : fDDL->priv().renderTasks()) {
-        result.accum(task->execute(flushState));
+        result.accum(task->execute3(flushState));
     }
 
     return result;

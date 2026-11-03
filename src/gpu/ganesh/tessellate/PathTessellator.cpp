@@ -228,24 +228,30 @@ void PathCurveTessellator::prepareWithTriangles(
                                                    FixedCountCurves::WriteIndexBuffer);
 }
 
-void PathCurveTessellator::draw(GrOpFlushState* flushState) const {
+bool PathCurveTessellator::draw0(GrOpFlushState* flushState) const {
     if (!fFixedVertexBuffer || !fFixedIndexBuffer) {
-        return;
+        return false;
     }
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(fFixedIndexBuffer, chunk.fBuffer, fFixedVertexBuffer);
         // The max vertex count is the logical number of vertices that the GPU needs to emit, so
         // since we're using drawIndexedInstanced, it's provided as the "index count" parameter.
-        flushState->drawIndexedInstanced(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0);
+        if (!flushState->drawIndexedInstanced2(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0)) {
+            return false;
+        }
     }
+    return true;
 }
 
-void PathCurveTessellator::drawHullInstances(GrOpFlushState* flushState,
+bool PathCurveTessellator::drawHullInstances(GrOpFlushState* flushState,
                                              sk_sp<const GrGpuBuffer> vertexBufferIfNeeded) const {
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(nullptr, chunk.fBuffer, vertexBufferIfNeeded);
-        flushState->drawInstanced(chunk.fCount, chunk.fBase, 4, 0);
+        if (!flushState->drawInstanced2(chunk.fCount, chunk.fBase, 4, 0)) {
+            return false;
+        }
     }
+    return true;
 }
 
 
@@ -280,14 +286,18 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
                                                    FixedCountWedges::WriteIndexBuffer);
 }
 
-void PathWedgeTessellator::draw(GrOpFlushState* flushState) const {
+bool PathWedgeTessellator::draw0(GrOpFlushState* flushState) const {
     if (!fFixedVertexBuffer || !fFixedIndexBuffer) {
-        return;
+        return false;
     }
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(fFixedIndexBuffer, chunk.fBuffer, fFixedVertexBuffer);
-        flushState->drawIndexedInstanced(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0);
+        if (!flushState->drawIndexedInstanced2(fMaxVertexCount, 0, chunk.fCount, chunk.fBase, 0)) {
+            return false;
+        }
     }
+
+    return true;
 }
 
 }  // namespace skgpu::ganesh

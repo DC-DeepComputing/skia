@@ -48,7 +48,7 @@ public:
         }
         return false;
     }
-    ExecutionResult onExecute(GrOpFlushState*) override {
+    ExecutionResult onExecute2(GrOpFlushState*) override {
         return ExecutionResult::RanAndSucceeded();
     }
 

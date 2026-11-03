@@ -50,7 +50,7 @@ public:
 
     // Issues draw calls for the tessellated stroke. The caller is responsible for creating and
     // binding a pipeline that uses this class's shader() before calling draw().
-    void draw(GrOpFlushState*) const;
+    bool draw77(GrOpFlushState*) const;
 
 protected:
     const PatchAttribs fAttribs;

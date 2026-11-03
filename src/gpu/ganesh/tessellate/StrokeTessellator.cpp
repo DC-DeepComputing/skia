@@ -191,21 +191,24 @@ void StrokeTessellator::prepare(GrMeshDrawTarget* target,
     }
 }
 
-void StrokeTessellator::draw(GrOpFlushState* flushState) const {
+bool StrokeTessellator::draw77(GrOpFlushState* flushState) const {
     if (fVertexChunkArray.empty() || fVertexCount <= 0) {
-        return;
+        return false;
     }
     if (!flushState->caps().shaderCaps()->fVertexIDSupport &&
         !fVertexBufferIfNoIDSupport) {
-        return;
+        return false;
     }
     for (const auto& instanceChunk : fVertexChunkArray) {
         flushState->bindBuffers(nullptr, instanceChunk.fBuffer, fVertexBufferIfNoIDSupport);
-        flushState->drawInstanced(instanceChunk.fCount,
-                                  instanceChunk.fBase,
-                                  fVertexCount,
-                                  0);
+        if (!flushState->drawInstanced2(instanceChunk.fCount,
+                                        instanceChunk.fBase,
+                                        fVertexCount,
+                                        0)) {
+            return false;
+        }
     }
+    return true;
 }
 
 }  // namespace skgpu::ganesh
