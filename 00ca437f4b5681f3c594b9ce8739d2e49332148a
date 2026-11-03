@@ -16,6 +16,52 @@
       "message": "PTAL; this was reported as a bug, but it\u0027s a vulnerability imo.",
       "revId": "00ca437f4b5681f3c594b9ce8739d2e49332148a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d83d9d2_2a6c97e9",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-03T16:01:47Z",
+      "side": 1,
+      "message": "After Nathan\u0027s work to shift inverse fills that are offscreen to be a true flood fill, this is actually no longer true. I think we should instead further harden the atlas code to not allow empty dimensions at all. Then there shouldn\u0027t need to be any handling for zeroing out an empty page.",
+      "range": {
+        "startLine": 244,
+        "startChar": 5,
+        "endLine": 244,
+        "endChar": 84
+      },
+      "revId": "00ca437f4b5681f3c594b9ce8739d2e49332148a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7224f32_749810e4",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-03T16:01:47Z",
+      "side": 1,
+      "message": "Can you construct a scenario where this is true, but the `maskBounds.isEmptyNegativeOrNan()` above did not early-out?",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 53
+      },
+      "revId": "00ca437f4b5681f3c594b9ce8739d2e49332148a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
