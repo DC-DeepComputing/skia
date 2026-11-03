@@ -51,6 +51,24 @@
       "parentUuid": "7dbc1a44_fef5c8bb",
       "revId": "4b5f81e8c22d196e1483861a0079b622b0949aba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68525cc1_345f419e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T18:51:52Z",
+      "side": 1,
+      "message": "We changed the process: for SkParagraph-only changes we now run the google3 tests that depend on SkParagraph locally instead of Canary-G3. That run passed on PS5, so I am releasing the hold.",
+      "parentUuid": "457024ca_e606c949",
+      "revId": "4b5f81e8c22d196e1483861a0079b622b0949aba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
