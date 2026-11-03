@@ -248,8 +248,22 @@ void ParagraphImpl::paint(SkCanvas* canvas, SkScalar x, SkScalar y) {
 }
 
 void ParagraphImpl::paint(ParagraphPainter* painter, SkScalar x, SkScalar y) {
-    for (auto& line : fLines) {
-        line.paint(painter, x, y);
+    this->paintLines(painter, x, y, 0, fLines.size());
+}
+
+void ParagraphImpl::paintLines(SkCanvas* canvas, SkScalar x, SkScalar y,
+                              size_t firstLine, size_t lineCount) {
+    CanvasParagraphPainter painter(canvas);
+    this->paintLines(&painter, x, y, firstLine, lineCount);
+}
+
+void ParagraphImpl::paintLines(ParagraphPainter* painter, SkScalar x, SkScalar y,
+                              size_t firstLine, size_t lineCount) {
+    const size_t total = fLines.size();
+    const auto first = std::min(firstLine, total);
+    const auto end = first + std::min(lineCount, total - first);
+    for (auto line = first; line < end; ++line) {
+        fLines[line].paint(painter, x, y);
     }
 }
 

@@ -214,6 +214,11 @@ public:
     bool containsColorFontOrBitmap(SkTextBlob* textBlob) override;
     bool containsEmoji(SkTextBlob* textBlob) override;
 
+    void paintLines(SkCanvas* canvas, SkScalar x, SkScalar y,
+                    size_t firstLine, size_t lineCount) override;
+    void paintLines(ParagraphPainter* painter, SkScalar x, SkScalar y,
+                    size_t firstLine, size_t lineCount) override;
+
     int getLineNumberAt(TextIndex codeUnitIndex) const override;
     int getLineNumberAtUTF16Offset(size_t codeUnitIndex) override;
     bool getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) const override;
