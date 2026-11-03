@@ -21,7 +21,7 @@ void GrTransferFromRenderTask::gatherProxyIntervals(GrResourceAllocator* alloc) 
     alloc->incOps();
 }
 
-GrRenderTask::ExecutionResult GrTransferFromRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrTransferFromRenderTask::onExecute2(GrOpFlushState* flushState) {
     SkASSERT(!fWasExecuted); // These are one-time tasks
     SkDEBUGCODE(fWasExecuted = true;)
 

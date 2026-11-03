@@ -85,7 +85,7 @@ GrRenderTask::ExpectedOutcome GrCopyRenderTask::onMakeClosed(GrRecordingContext*
     return ExpectedOutcome::kTargetDirty;
 }
 
-GrRenderTask::ExecutionResult GrCopyRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrCopyRenderTask::onExecute2(GrOpFlushState* flushState) {
     if (!fSrc) {
         // Did nothing, just like we're supposed to.
         return ExecutionResult::RanAndSucceeded();

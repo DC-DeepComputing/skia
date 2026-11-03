@@ -46,7 +46,7 @@ GrThreadSafeCache* GrOpFlushState::threadSafeCache() const {
     return fGpu->getContext()->priv().threadSafeCache();
 }
 
-void GrOpFlushState::executeDrawsAndUploadsForMeshDrawOp(
+bool GrOpFlushState::executeDrawsAndUploadsForMeshDrawOp1(
         const GrOp* op, const SkRect& chainBounds, const GrPipeline* pipeline,
         const GrUserStencilSettings* userStencilSettings) {
     SkASSERT(this->opsRenderPass());
@@ -66,11 +66,12 @@ void GrOpFlushState::executeDrawsAndUploadsForMeshDrawOp(
         }
 
         // If not all of the uploads succeeded, do not attempt to execute the draw and relevant
-        // preparations. Continue on to the next draw operation.
+        // preparations and instead bubble the error up the stack.
         // fDeferredUploadFailed covers ASAP and inline upload failures: draws in such a flush
         // may sample texture regions that were never written, so they are skipped.
         if (drawUploadFailure || fDeferredUploadFailed) {
             fGpu->stats()->incNumFailedDraws();
+            return false;
         } else {
             GrProgramInfo programInfo(this->caps(),
                                       this->writeView(),
@@ -86,20 +87,24 @@ void GrOpFlushState::executeDrawsAndUploadsForMeshDrawOp(
             this->bindTextures(programInfo.geomProc(), fCurrDraw->fGeomProcProxies,
                             programInfo.pipeline());
             for (int i = 0; i < fCurrDraw->fMeshCnt; ++i) {
-                this->drawMesh(fCurrDraw->fMeshes[i]);
+                if (!this->drawMesh2(fCurrDraw->fMeshes[i])) {
+                    return false;
+                }
             }
         }
 
         fTokenTracker->issueFlushToken();
         ++fCurrDraw;
     }
+
+    return true;
 }
 
 bool GrOpFlushState::preExecuteDraws() {
     if (!fVertexPool.unmap() ||
         !fIndexPool.unmap() ||
         !fDrawIndirectPool.unmap()) {
-        this->abort();
+        this->abort1();
         return false;
     }
     for (auto& upload : fASAPUploads) {
@@ -114,7 +119,7 @@ bool GrOpFlushState::preExecuteDraws() {
     return true;
 }
 
-void GrOpFlushState::abort() {
+void GrOpFlushState::abort1() {
     fCurrDraw = fDraws.end();
     fCurrUpload = fInlineUploads.end();
     if (fTokenTracker) {
@@ -273,18 +278,18 @@ skgpu::ganesh::SmallPathAtlasMgr* GrOpFlushState::smallPathAtlasManager() const 
 }
 #endif
 
-void GrOpFlushState::drawMesh(const GrSimpleMesh& mesh) {
+bool GrOpFlushState::drawMesh2(const GrSimpleMesh& mesh) {
     SkASSERT(mesh.fIsInitialized);
     if (!mesh.fIndexBuffer) {
         this->bindBuffers(nullptr, nullptr, mesh.fVertexBuffer);
-        this->draw(mesh.fVertexCount, mesh.fBaseVertex);
+        return this->draw2(mesh.fVertexCount, mesh.fBaseVertex);
     } else {
         this->bindBuffers(mesh.fIndexBuffer, nullptr, mesh.fVertexBuffer, mesh.fPrimitiveRestart);
         if (0 == mesh.fPatternRepeatCount) {
-            this->drawIndexed(mesh.fIndexCount, mesh.fBaseIndex, mesh.fMinIndexValue,
+            return this->drawIndexed2(mesh.fIndexCount, mesh.fBaseIndex, mesh.fMinIndexValue,
                               mesh.fMaxIndexValue, mesh.fBaseVertex);
         } else {
-            this->drawIndexPattern(mesh.fIndexCount, mesh.fPatternRepeatCount,
+            return this->drawIndexPattern2(mesh.fIndexCount, mesh.fPatternRepeatCount,
                                    mesh.fMaxPatternRepetitionsInIndexBuffer, mesh.fVertexCount,
                                    mesh.fBaseVertex);
         }

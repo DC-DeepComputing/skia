@@ -283,7 +283,10 @@ GrRenderTask::ExecutionResult GrDrawingManager::executeRenderTasks(GrOpFlushStat
 
         SkASSERT(renderTask->deferredProxiesAreInstantiated());
 
-        renderTask->prepare(flushState);
+        if (!renderTask->prepare3(flushState)) {
+            flushState->reset();
+            return { /* fAnyTaskExecuted= */false, /* fAllTasksSuccessful= */false };
+        }
     }
 
     // Upload all data to the GPU
@@ -311,7 +314,7 @@ GrRenderTask::ExecutionResult GrDrawingManager::executeRenderTasks(GrOpFlushStat
             continue;
         }
 
-        result.accum(renderTask->execute(flushState));
+        result.accum(renderTask->execute3(flushState));
 
         if (++numRenderTasksExecuted >= kMaxRenderTasksBeforeFlush ||
             flushState->gpu()->getCurrentSubmitRenderPassCount() >= kMaxRenderPassesBeforeFlush) {
@@ -319,7 +322,7 @@ GrRenderTask::ExecutionResult GrDrawingManager::executeRenderTasks(GrOpFlushStat
             result.fAllTasksSuccessful &= success;
             numRenderTasksExecuted = 0;
             if (!success) {
-                flushState->abort();
+                flushState->abort1();
                 break;
             }
         }
