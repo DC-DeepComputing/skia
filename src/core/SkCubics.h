@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkCubics_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkCubics_DEFINED
 
 #include <cmath>
@@ -42,7 +44,7 @@ public:
      * where floating point error gets too big.
      */
     static int BinarySearchRootsValidT(double A, double B, double C, double D,
-                                       double solution[3]);
+                                       SkSpan<double, 3> solution);
 
     /**
      * Evaluates the cubic function with the 4 provided coefficients and the
@@ -52,7 +54,7 @@ public:
         return std::fma(t, std::fma(t, std::fma(t, A, B), C), D);
     }
 
-    static double EvalAt(double coefficients[4], double t) {
+    static double EvalAt(SkSpan<double, 4> coefficients, double t) {
         return EvalAt(coefficients[0], coefficients[1], coefficients[2], coefficients[3], t);
     }
 };

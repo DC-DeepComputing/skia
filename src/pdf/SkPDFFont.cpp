@@ -540,7 +540,7 @@ static void emit_subset_type0(const SkPDFFont& font, SkPDFDocument* doc) {
         SkPDFFont::GetUnicodeMap(typeface, doc);
     SkASSERT(SkToSizeT(typeface.countGlyphs()) == glyphToUnicode.size());
     std::unique_ptr<SkStreamAsset> toUnicode =
-            SkPDFMakeToUnicodeCmap(glyphToUnicode.data(),
+            SkPDFMakeToUnicodeCmap(glyphToUnicode,
                                    SkPDFFont::GetUnicodeMapEx(typeface, doc),
                                    &font.glyphUsage(),
                                    font.multiByteGlyphs(),
@@ -917,7 +917,7 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
     const SkTypeface& pathTypeface = pdfStrike.fPath.fStrikeSpec.typeface();
     const std::vector<SkUnichar>& glyphToUnicode = SkPDFFont::GetUnicodeMap(pathTypeface, doc);
     SkASSERT(glyphToUnicode.size() == SkToSizeT(pathTypeface.countGlyphs()));
-    auto toUnicodeCmap = SkPDFMakeToUnicodeCmap(glyphToUnicode.data(),
+    auto toUnicodeCmap = SkPDFMakeToUnicodeCmap(glyphToUnicode,
                                                 SkPDFFont::GetUnicodeMapEx(pathTypeface, doc),
                                                 &subset,
                                                 false,

@@ -7,7 +7,9 @@
 
 /* migrated from chrome/src/skia/ext/SkFontHost_fontconfig_direct.cpp */
 
+#include <array>
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
@@ -213,106 +215,106 @@ FontEquivClass GetFontEquivClass(const char* fontname)
         const char name[40];
     };
 
-    static const FontEquivMap kFontEquivMap[] = {
-        { SANS, "Arial" },
-        { SANS, "Arimo" },
-        { SANS, "Liberation Sans" },
+    static const auto kFontEquivMap = std::to_array<FontEquivMap>({
+        FontEquivMap{ SANS, "Arial" },
+        FontEquivMap{ SANS, "Arimo" },
+        FontEquivMap{ SANS, "Liberation Sans" },
 
-        { SERIF, "Times New Roman" },
-        { SERIF, "Tinos" },
-        { SERIF, "Liberation Serif" },
+        FontEquivMap{ SERIF, "Times New Roman" },
+        FontEquivMap{ SERIF, "Tinos" },
+        FontEquivMap{ SERIF, "Liberation Serif" },
 
-        { MONO, "Courier New" },
-        { MONO, "Cousine" },
-        { MONO, "Liberation Mono" },
+        FontEquivMap{ MONO, "Courier New" },
+        FontEquivMap{ MONO, "Cousine" },
+        FontEquivMap{ MONO, "Liberation Mono" },
 
-        { SYMBOL, "Symbol" },
-        { SYMBOL, "Symbol Neu" },
+        FontEquivMap{ SYMBOL, "Symbol" },
+        FontEquivMap{ SYMBOL, "Symbol Neu" },
 
         // ＭＳ Ｐゴシック
-        { PGOTHIC, "MS PGothic" },
-        { PGOTHIC, "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
+        FontEquivMap{ PGOTHIC, "MS PGothic" },
+        FontEquivMap{ PGOTHIC, "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
                    "\xe3\x82\xb4\xe3\x82\xb7\xe3\x83\x83\xe3\x82\xaf" },
-        { PGOTHIC, "Noto Sans CJK JP" },
-        { PGOTHIC, "IPAPGothic" },
-        { PGOTHIC, "MotoyaG04Gothic" },
+        FontEquivMap{ PGOTHIC, "Noto Sans CJK JP" },
+        FontEquivMap{ PGOTHIC, "IPAPGothic" },
+        FontEquivMap{ PGOTHIC, "MotoyaG04Gothic" },
 
         // ＭＳ ゴシック
-        { GOTHIC, "MS Gothic" },
-        { GOTHIC, "\xef\xbc\xad\xef\xbc\xb3 "
+        FontEquivMap{ GOTHIC, "MS Gothic" },
+        FontEquivMap{ GOTHIC, "\xef\xbc\xad\xef\xbc\xb3 "
                   "\xe3\x82\xb4\xe3\x82\xb7\xe3\x83\x83\xe3\x82\xaf" },
-        { GOTHIC, "Noto Sans Mono CJK JP" },
-        { GOTHIC, "IPAGothic" },
-        { GOTHIC, "MotoyaG04GothicMono" },
+        FontEquivMap{ GOTHIC, "Noto Sans Mono CJK JP" },
+        FontEquivMap{ GOTHIC, "IPAGothic" },
+        FontEquivMap{ GOTHIC, "MotoyaG04GothicMono" },
 
         // ＭＳ Ｐ明朝
-        { PMINCHO, "MS PMincho" },
-        { PMINCHO, "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
+        FontEquivMap{ PMINCHO, "MS PMincho" },
+        FontEquivMap{ PMINCHO, "\xef\xbc\xad\xef\xbc\xb3 \xef\xbc\xb0"
                    "\xe6\x98\x8e\xe6\x9c\x9d"},
-        { PMINCHO, "Noto Serif CJK JP" },
-        { PMINCHO, "IPAPMincho" },
-        { PMINCHO, "MotoyaG04Mincho" },
+        FontEquivMap{ PMINCHO, "Noto Serif CJK JP" },
+        FontEquivMap{ PMINCHO, "IPAPMincho" },
+        FontEquivMap{ PMINCHO, "MotoyaG04Mincho" },
 
         // ＭＳ 明朝
-        { MINCHO, "MS Mincho" },
-        { MINCHO, "\xef\xbc\xad\xef\xbc\xb3 \xe6\x98\x8e\xe6\x9c\x9d" },
-        { MINCHO, "Noto Serif CJK JP" },
-        { MINCHO, "IPAMincho" },
-        { MINCHO, "MotoyaG04MinchoMono" },
+        FontEquivMap{ MINCHO, "MS Mincho" },
+        FontEquivMap{ MINCHO, "\xef\xbc\xad\xef\xbc\xb3 \xe6\x98\x8e\xe6\x9c\x9d" },
+        FontEquivMap{ MINCHO, "Noto Serif CJK JP" },
+        FontEquivMap{ MINCHO, "IPAMincho" },
+        FontEquivMap{ MINCHO, "MotoyaG04MinchoMono" },
 
         // 宋体
-        { SIMSUN, "Simsun" },
-        { SIMSUN, "\xe5\xae\x8b\xe4\xbd\x93" },
-        { SIMSUN, "Noto Serif CJK SC" },
-        { SIMSUN, "MSung GB18030" },
-        { SIMSUN, "Song ASC" },
+        FontEquivMap{ SIMSUN, "Simsun" },
+        FontEquivMap{ SIMSUN, "\xe5\xae\x8b\xe4\xbd\x93" },
+        FontEquivMap{ SIMSUN, "Noto Serif CJK SC" },
+        FontEquivMap{ SIMSUN, "MSung GB18030" },
+        FontEquivMap{ SIMSUN, "Song ASC" },
 
         // 新宋体
-        { NSIMSUN, "NSimsun" },
-        { NSIMSUN, "\xe6\x96\xb0\xe5\xae\x8b\xe4\xbd\x93" },
-        { NSIMSUN, "Noto Serif CJK SC" },
-        { NSIMSUN, "MSung GB18030" },
-        { NSIMSUN, "N Song ASC" },
+        FontEquivMap{ NSIMSUN, "NSimsun" },
+        FontEquivMap{ NSIMSUN, "\xe6\x96\xb0\xe5\xae\x8b\xe4\xbd\x93" },
+        FontEquivMap{ NSIMSUN, "Noto Serif CJK SC" },
+        FontEquivMap{ NSIMSUN, "MSung GB18030" },
+        FontEquivMap{ NSIMSUN, "N Song ASC" },
 
         // 黑体
-        { SIMHEI, "Simhei" },
-        { SIMHEI, "\xe9\xbb\x91\xe4\xbd\x93" },
-        { SIMHEI, "Noto Sans CJK SC" },
-        { SIMHEI, "MYingHeiGB18030" },
-        { SIMHEI, "MYingHeiB5HK" },
+        FontEquivMap{ SIMHEI, "Simhei" },
+        FontEquivMap{ SIMHEI, "\xe9\xbb\x91\xe4\xbd\x93" },
+        FontEquivMap{ SIMHEI, "Noto Sans CJK SC" },
+        FontEquivMap{ SIMHEI, "MYingHeiGB18030" },
+        FontEquivMap{ SIMHEI, "MYingHeiB5HK" },
 
         // 新細明體
-        { PMINGLIU, "PMingLiU"},
-        { PMINGLIU, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94" },
-        { PMINGLIU, "Noto Serif CJK TC"},
-        { PMINGLIU, "MSung B5HK"},
+        FontEquivMap{ PMINGLIU, "PMingLiU"},
+        FontEquivMap{ PMINGLIU, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94" },
+        FontEquivMap{ PMINGLIU, "Noto Serif CJK TC"},
+        FontEquivMap{ PMINGLIU, "MSung B5HK"},
 
         // 細明體
-        { MINGLIU, "MingLiU"},
-        { MINGLIU, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94" },
-        { MINGLIU, "Noto Serif CJK TC"},
-        { MINGLIU, "MSung B5HK"},
+        FontEquivMap{ MINGLIU, "MingLiU"},
+        FontEquivMap{ MINGLIU, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94" },
+        FontEquivMap{ MINGLIU, "Noto Serif CJK TC"},
+        FontEquivMap{ MINGLIU, "MSung B5HK"},
 
         // 新細明體
-        { PMINGLIUHK, "PMingLiU_HKSCS"},
-        { PMINGLIUHK, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS" },
-        { PMINGLIUHK, "Noto Serif CJK TC"},
-        { PMINGLIUHK, "MSung B5HK"},
+        FontEquivMap{ PMINGLIUHK, "PMingLiU_HKSCS"},
+        FontEquivMap{ PMINGLIUHK, "\xe6\x96\xb0\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS" },
+        FontEquivMap{ PMINGLIUHK, "Noto Serif CJK TC"},
+        FontEquivMap{ PMINGLIUHK, "MSung B5HK"},
 
         // 細明體
-        { MINGLIUHK, "MingLiU_HKSCS"},
-        { MINGLIUHK, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS" },
-        { MINGLIUHK, "Noto Serif CJK TC"},
-        { MINGLIUHK, "MSung B5HK"},
+        FontEquivMap{ MINGLIUHK, "MingLiU_HKSCS"},
+        FontEquivMap{ MINGLIUHK, "\xe7\xb4\xb0\xe6\x98\x8e\xe9\xab\x94_HKSCS" },
+        FontEquivMap{ MINGLIUHK, "Noto Serif CJK TC"},
+        FontEquivMap{ MINGLIUHK, "MSung B5HK"},
 
         // Cambria
-        { CAMBRIA, "Cambria" },
-        { CAMBRIA, "Caladea" },
+        FontEquivMap{ CAMBRIA, "Cambria" },
+        FontEquivMap{ CAMBRIA, "Caladea" },
 
         // Calibri
-        { CALIBRI, "Calibri" },
-        { CALIBRI, "Carlito" },
-    };
+        FontEquivMap{ CALIBRI, "Calibri" },
+        FontEquivMap{ CALIBRI, "Carlito" },
+    });
 
     static const size_t kFontCount =
         sizeof(kFontEquivMap)/sizeof(kFontEquivMap[0]);
@@ -372,7 +374,7 @@ struct MapRanges {
     SkScalar new_val;
 };
 
-static SkScalar map_ranges(SkScalar val, MapRanges const ranges[], int rangesCount) {
+static SkScalar map_ranges(SkScalar val, SkSpan<const MapRanges> ranges, int rangesCount) {
     // -Inf to [0]
     if (val < ranges[0].old_val) {
         return ranges[0].new_val;

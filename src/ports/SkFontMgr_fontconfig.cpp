@@ -15,6 +15,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
@@ -216,7 +217,7 @@ struct MapRanges {
     SkScalar new_val;
 };
 
-static SkScalar map_ranges(SkScalar val, MapRanges const ranges[], int rangesCount) {
+static SkScalar map_ranges(SkScalar val, SkSpan<const MapRanges> ranges, int rangesCount) {
     // -Inf to [0]
     if (val < ranges[0].old_val) {
         return ranges[0].new_val;
@@ -982,10 +983,10 @@ protected:
         maps.push_back_n(fCoverage.fFonts.size(), std::array<FcChar32, FC_CHARSET_MAP_SIZE>{});
         bool found = false;
         for (const Coverage::CharSet& charSet : fCoverage.fCharSets) {
-            FcChar32 map[FC_CHARSET_MAP_SIZE];
+            std::array<FcChar32, FC_CHARSET_MAP_SIZE> map;
             // Gives the first page from 'next' on.
             FcChar32 next = page << 8;
-            if (FcCharSetNextPage(charSet.fCharSet, map, &next) == page << 8) {
+            if (FcCharSetNextPage(charSet.fCharSet, map.data(), &next) == page << 8) {
                 found = true;
                 for (int i = 0; i < FC_CHARSET_MAP_SIZE; ++i) {
                     maps[charSet.fFont][i] |= map[i];

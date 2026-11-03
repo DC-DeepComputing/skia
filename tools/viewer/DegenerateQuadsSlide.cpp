@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 
 #include <array>
@@ -165,7 +166,7 @@ static SkScalar get_edge_dist_coverage(SkSpan<const bool> edgeAA, SkSpan<const S
 }
 
 static bool inside_triangle(const SkPoint& point, const SkPoint& t0, const SkPoint& t1,
-                            const SkPoint& t2, SkScalar bary[3]) {
+                            const SkPoint& t2, SkSpan<SkScalar, 3> bary) {
     // Check sign of t0 to (t1,t2). If it is positive, that means the normals point into the
     // triangle otherwise the normals point outside the triangle so update edge distances as
     // necessary
@@ -202,8 +203,8 @@ static bool inside_triangle(const SkPoint& point, const SkPoint& t0, const SkPoi
     return true;
 }
 
-static SkScalar get_framed_coverage(const SkPoint outer[4], const SkScalar outerCoverages[4],
-                                    const SkPoint inner[4], const SkScalar innerCoverages[4],
+static SkScalar get_framed_coverage(const SkPoint outer[4], SkSpan<const SkScalar, 4> outerCoverages,
+                                    const SkPoint inner[4], SkSpan<const SkScalar, 4> innerCoverages,
                                     const SkRect& geomDomain, const SkPoint& point) {
     // Triangles are ordered clock wise. Indices >= 4 refer to inner[i - 4]. Otherwise its outer[i].
     static constexpr auto kFrameTris = std::to_array<int>({
@@ -426,8 +427,8 @@ private:
         return path.isConvex(); // todo: should we expose this as a helper (sans Path object)
     }
 
-    void getTessellatedPoints(SkPoint inset[4], SkScalar insetCoverage[4], SkPoint outset[4],
-                              SkScalar outsetCoverage[4], SkRect* domain) const {
+    void getTessellatedPoints(SkPoint inset[4], SkSpan<SkScalar, 4> insetCoverage, SkPoint outset[4],
+                              SkSpan<SkScalar, 4> outsetCoverage, SkRect* domain) const {
         // Fixed vertex spec for extracting the picture frame geometry
         static const VertexSpec kSpec =
             {GrQuad::Type::kGeneral, ColorType::kNone,

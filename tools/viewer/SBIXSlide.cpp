@@ -10,6 +10,7 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkTime.h"
@@ -409,7 +410,7 @@ private:
         }
 
         int numberOfFullMetrics = SkEndian_SwapBE16(hheaTable->numberOfHMetrics);
-        SkOTTableHorizontalMetrics::FullMetric* fullMetrics = hmtxTable->longHorMetric;
+        SkSpan<SkOTTableHorizontalMetrics::FullMetric>fullMetrics = hmtxTable->longHorMetric;
         SK_OT_SHORT lsb = SkEndian_SwapBE16(sk_float_saturate2int16(fPts[kGlyfLSB].location.x()*toEm));
         if (kGlyphID < numberOfFullMetrics) {
             if (setPts) {
@@ -419,7 +420,7 @@ private:
             }
         } else {
             SkOTTableHorizontalMetrics::ShortMetric* shortMetrics =
-                    SkTAfter<SkOTTableHorizontalMetrics::ShortMetric>(fullMetrics, numberOfFullMetrics);
+                    SkTAfter<SkOTTableHorizontalMetrics::ShortMetric>(fullMetrics.data(), numberOfFullMetrics);
             int shortMetricIndex = kGlyphID - numberOfFullMetrics;
             if (setPts) {
                 fPts[kGlyfLSB].location.fX = (int16_t)SkEndian_SwapBE16(shortMetrics[shortMetricIndex].lsb) / toEm;

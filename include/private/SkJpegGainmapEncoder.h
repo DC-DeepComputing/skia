@@ -6,6 +6,8 @@
  */
 
 #ifndef SkJpegGainmapEncoder_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkJpegGainmapEncoder_DEFINED
 
 #include "include/encode/SkJpegEncoder.h"
@@ -42,7 +44,7 @@ public:
     /**
      *  Write a Multi Picture Format containing the |imageCount| images specified by |images|.
      */
-    static bool MakeMPF(SkWStream* dst, const SkData** images, size_t imageCount);
+    static bool MakeMPF(SkWStream* dst, SkSpan<const SkData *>images, size_t imageCount);
 };
 
 #endif

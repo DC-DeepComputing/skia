@@ -19,6 +19,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
@@ -215,12 +216,12 @@ class ComposeColorFilterGM : public skiagm::GM {
         COLOR_COUNT = 3,
         MODE_COUNT = 4,
     };
-    const SkColor*      fColors;
-    const SkBlendMode*  fModes;
+    SkSpan<const SkColor>fColors;
+    SkSpan<const SkBlendMode>fModes;
     const char*         fName;
 
 public:
-    ComposeColorFilterGM(const SkColor colors[], const SkBlendMode modes[], const char* name)
+    ComposeColorFilterGM(SkSpan<const SkColor> colors, SkSpan<const SkBlendMode> modes, const char* name)
         : fColors(colors), fModes(modes), fName(name) {}
 
 private:
