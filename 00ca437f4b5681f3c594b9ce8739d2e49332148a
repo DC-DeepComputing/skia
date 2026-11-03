@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3330828e_37794ade",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-03T15:34:57Z",
+      "side": 1,
+      "message": "PTAL; this was reported as a bug, but it\u0027s a vulnerability imo.",
+      "revId": "00ca437f4b5681f3c594b9ce8739d2e49332148a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
