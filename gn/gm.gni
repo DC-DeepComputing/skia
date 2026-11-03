@@ -407,6 +407,7 @@ gm_sources = [
   "$_gm/vertices.cpp",
   "$_gm/verylargebitmap.cpp",
   "$_gm/widebuttcaps.cpp",
+  "$_gm/win_cjk_crispness.cpp",
   "$_gm/windowrectangles.cpp",
   "$_gm/workingspace.cpp",
   "$_gm/xfermodeimagefilter.cpp",
