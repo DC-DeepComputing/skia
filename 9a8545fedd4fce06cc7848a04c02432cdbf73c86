@@ -24,6 +24,31 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99246f2_4ec95778",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5289528
+      },
+      "writtenOn": "2026-11-03T17:13:36Z",
+      "side": 1,
+      "message": "Good point — PIEX extracts embedded JPEG previews and outer EXIF orientation across all supported RAW formats, not just DNG. Updated the commit description.",
+      "parentUuid": "f0626e11_67c16d53",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 8
+      },
+      "isAi": true,
+      "revId": "9a8545fedd4fce06cc7848a04c02432cdbf73c86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24252ee9_f94a45c1",
@@ -37,6 +62,25 @@
       "writtenOn": "2026-11-03T15:31:16Z",
       "side": 1,
       "message": "Nit: this is the default value, we could skip.",
+      "revId": "9a8545fedd4fce06cc7848a04c02432cdbf73c86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "015f5f44_0266f0ed",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5289528
+      },
+      "writtenOn": "2026-11-03T17:13:36Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "24252ee9_f94a45c1",
+      "isAi": true,
       "revId": "9a8545fedd4fce06cc7848a04c02432cdbf73c86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
