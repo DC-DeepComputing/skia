@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a3961a_3bb8fa23",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1435,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T17:53:49Z",
+      "side": 1,
+      "message": "Thank you, David! PS2 looks good to me, and squashing 1414456 works for me; I will abandon it once this lands.\n\nOne small thing: `rectWidthStyle` and `startBox` are still captured here, but this lambda no longer uses them (they are only used after it, at line 1615). Clang with `-Wunused-lambda-capture -Werror` rejects this, so the Flutter engine build fails. 1414456 PS3 drops them from the capture list:\n\n    [textRange0, rectHeightStyle, \u0026boxes, \u0026lastRun, this]\n\nThis is the only difference between PS2 and 1414456 PS3. Could you remove them as well?",
+      "revId": "4ff007cf54838964b919735e86a53f91840b160c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
