@@ -34929,7 +34929,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:1002:1638-23.2.1",
+        "gpu:1002:1638-25.2.8",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -58584,7 +58584,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:1002:1638-23.2.1",
+        "gpu:1002:1638-25.2.8",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -58682,7 +58682,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:1002:1638-23.2.1",
+        "gpu:1002:1638-25.2.8",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
