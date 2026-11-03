@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cbd09d3_858177d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-11-03T19:06:52Z",
+      "side": 1,
+      "message": "Commit message seems like it needs to be formatted.",
+      "range": {
+        "startLine": 11,
+        "startChar": 72,
+        "endLine": 12,
+        "endChar": 1
+      },
+      "revId": "6a73bcb4552aefe563871724654dfa09dc8f33a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "951ccd10_44927eda",
@@ -14,6 +37,23 @@
       "writtenOn": "2026-10-30T18:33:19Z",
       "side": 1,
       "message": "PTAL",
+      "revId": "6a73bcb4552aefe563871724654dfa09dc8f33a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "359e816f_1d15b1a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-11-03T19:06:52Z",
+      "side": 1,
+      "message": "LGTM, seems need to regenerate sksl test files for housekeeper bot.",
       "revId": "6a73bcb4552aefe563871724654dfa09dc8f33a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
