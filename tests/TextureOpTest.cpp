@@ -10,6 +10,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -31,9 +32,11 @@
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
+#include "src/gpu/ganesh/GrCanvas.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrOpsTypes.h"
 #include "src/gpu/ganesh/GrProcessorSet.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
@@ -402,6 +405,221 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureOpNearestSubsetOvershootTest,
                     SkCanvas::kFast_SrcRectConstraint);
             REPORTER_ASSERT(reporter, dstSurfaceApprox->readPixels(bm, dstW - 1, 0));
             REPORTER_ASSERT(reporter, bm.getColor(0, 0) == SK_ColorBLUE);
+        }
+    }
+}
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureOpCoverageAASubsetClampTest,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    GrDirectContext* dContext = ctxInfo.directContext();
+
+    auto checkNoRedPixels = [&](SkSurface* dstSurface, const char* label) {
+        SkBitmap bm;
+        bm.allocPixels(dstSurface->imageInfo());
+        REPORTER_ASSERT(reporter, dstSurface->readPixels(bm, 0, 0));
+        int badPixels = 0;
+        int firstX = -1, firstY = -1;
+        SkColor firstColor = 0;
+        for (int y = 0; y < bm.height(); ++y) {
+            for (int x = 0; x < bm.width(); ++x) {
+                SkColor c = bm.getColor(x, y);
+                if (SkColorGetR(c) != 0) {
+                    if (badPixels == 0) {
+                        firstX = x;
+                        firstY = y;
+                        firstColor = c;
+                    }
+                    ++badPixels;
+                }
+            }
+        }
+        REPORTER_ASSERT(reporter,
+                        badPixels == 0,
+                        "%s: %d pixels had red > 0 (first at (%d, %d) = 0x%08x)",
+                        label,
+                        badPixels,
+                        firstX,
+                        firstY,
+                        firstColor);
+    };
+
+    auto srcSurface = SkSurfaces::RenderTarget(
+            dContext,
+            skgpu::Budgeted::kYes,
+            SkImageInfo::Make(128, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    auto dstSurface = SkSurfaces::RenderTarget(
+            dContext,
+            skgpu::Budgeted::kYes,
+            SkImageInfo::Make(16, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    if (!srcSurface || !dstSurface) {
+        return;
+    }
+
+    SkPaint bluePaint;
+    bluePaint.setColor(SK_ColorBLUE);
+    bluePaint.setBlendMode(SkBlendMode::kSrc);
+    srcSurface->getCanvas()->clear(SK_ColorRED);
+    srcSurface->getCanvas()->drawRect(SkRect::MakeWH(64, 64), bluePaint);
+    sk_sp<SkImage> img = srcSurface->makeImageSnapshot();
+
+    SkPaint aaPaint;
+    aaPaint.setAntiAlias(true);
+
+    // 1. TextureOpImpl path: crop all four edges with an AA clip so the local quad is > 0.5 texels
+    // inside the [0, 0, 64, 64] subset, while ~35x minification in x causes the 0.5px coverage-AA
+    // fringe to extrapolate ~18 texels past the subset edge unless clamped.
+    {
+        SkCanvas* canvas = dstSurface->getCanvas();
+        canvas->clear(SK_ColorBLACK);
+        canvas->save();
+        canvas->clipRect(SkRect::MakeLTRB(2.6f, 2.f, 4.3f, 30.f),
+                         SkClipOp::kIntersect,
+                         /*doAntiAlias=*/true);
+        canvas->drawImageRect(img,
+                              SkRect::MakeWH(64, 64),
+                              SkRect::MakeLTRB(2.58f, 1.f, 4.32f, 31.f),
+                              SkSamplingOptions(SkFilterMode::kLinear),
+                              &aaPaint,
+                              SkCanvas::kStrict_SrcRectConstraint);
+        canvas->restore();
+        checkNoRedPixels(dstSurface.get(), "TextureOpImpl strict AA subset");
+    }
+
+    // 2. FillRectOp fallback in TextureOp::Make (non-kSrcOver blend mode): isolates both
+    // safe_to_ignore_subset_rect() and the aaType == kNone domain guard on GrTextureEffect.
+    {
+        dstSurface->getCanvas()->clear(SK_ColorBLACK);
+        auto* srcSDC = skgpu::ganesh::TopDeviceSurfaceDrawContext(srcSurface->getCanvas());
+        auto* dstSDC = skgpu::ganesh::TopDeviceSurfaceDrawContext(dstSurface->getCanvas());
+        const SkRect subset = SkRect::MakeWH(64, 64);
+        SkPoint srcQuad[4], dstQuad[4];
+        SkRect::MakeLTRB(2.f, 2.f, 62.f, 62.f).toQuad(srcQuad);
+        SkRect::MakeLTRB(2.58f, 1.f, 4.32f, 31.f).toQuad(dstQuad);
+        dstSDC->drawTextureQuad(nullptr,
+                                srcSDC->readSurfaceView(),
+                                GrColorType::kRGBA_8888,
+                                kPremul_SkAlphaType,
+                                GrSamplerState::Filter::kLinear,
+                                GrSamplerState::MipmapMode::kNone,
+                                SkBlendMode::kPlus,
+                                {1.f, 1.f, 1.f, 1.f},
+                                srcQuad,
+                                dstQuad,
+                                GrQuadAAFlags::kAll,
+                                &subset,
+                                SkMatrix::I(),
+                                nullptr);
+        checkNoRedPixels(dstSurface.get(), "TextureOp::Make FillRectOp fallback");
+    }
+
+    // 3. Device::drawEdgeAAImage() general FP path: non-AA paint with a color filter (forcing the
+    // FP path), cropped by an AA clip with nearest filtering and fractional src edges.
+    {
+        SkCanvas* canvas = dstSurface->getCanvas();
+        canvas->clear(SK_ColorBLACK);
+        canvas->save();
+        SkPaint cfPaint;
+        cfPaint.setColorFilter(SkColorFilters::LinearToSRGBGamma());
+        canvas->clipRect(SkRect::MakeLTRB(2.6f, 2.f, 4.3f, 30.f),
+                         SkClipOp::kIntersect,
+                         /*doAntiAlias=*/true);
+        canvas->drawImageRect(img,
+                              SkRect::MakeLTRB(0.6f, 0.6f, 63.4f, 63.4f),
+                              SkRect::MakeLTRB(2.58f, 1.f, 4.32f, 31.f),
+                              SkSamplingOptions(SkFilterMode::kNearest),
+                              &cfPaint,
+                              SkCanvas::kStrict_SrcRectConstraint);
+        canvas->restore();
+        checkNoRedPixels(dstSurface.get(), "drawEdgeAAImage general FP path");
+    }
+
+    // 4. Non-exact (SkBackingFit::kApprox) proxy paths with kFast_SrcRectConstraint, AA, and
+    // minification: poison a 128x64 scratch texture with red, then allocate a 65x64 kApprox
+    // surface (backed by 128x64) and clear its [0, 0, 65, 64] logical bounds to blue.
+    {
+        auto poisonSDC = skgpu::ganesh::SurfaceDrawContext::Make(
+                dContext,
+                GrColorType::kRGBA_8888,
+                nullptr,
+                SkBackingFit::kExact,
+                SkISize::Make(128, 64),
+                SkSurfaceProps(),
+                "PoisonSDC",
+                1,
+                skgpu::Mipmapped::kNo,
+                skgpu::Protected::kNo,
+                kTopLeft_GrSurfaceOrigin);
+        if (poisonSDC) {
+            poisonSDC->clear(SkPMColor4f{1.f, 0.f, 0.f, 1.f});
+            dContext->flushAndSubmit();
+            poisonSDC.reset();
+        }
+
+        auto approxSDC = skgpu::ganesh::SurfaceDrawContext::Make(
+                dContext,
+                GrColorType::kRGBA_8888,
+                nullptr,
+                SkBackingFit::kApprox,
+                SkISize::Make(65, 64),
+                SkSurfaceProps(),
+                "ApproxMinSDC",
+                1,
+                skgpu::Mipmapped::kNo,
+                skgpu::Protected::kNo,
+                kTopLeft_GrSurfaceOrigin);
+        if (approxSDC) {
+            REPORTER_ASSERT(reporter, !approxSDC->asSurfaceProxy()->isFunctionallyExact());
+            approxSDC->clear(SkPMColor4f{0.f, 0.f, 1.f, 1.f});
+
+            auto* dstSDC = skgpu::ganesh::TopDeviceSurfaceDrawContext(dstSurface->getCanvas());
+            // Use a srcRect inset by > 0.5 texels inside the 65x64 logical bounds so
+            // draw_texture() does not upgrade kFast to kStrict on srcRect.
+            const SkRect srcRect = SkRect::MakeLTRB(2.f, 2.f, 63.f, 62.f);
+            const SkRect dstRect = SkRect::MakeLTRB(2.58f, 1.f, 4.32f, 31.f);
+
+            // (a) SurfaceDrawContext::drawTexture with kFast (tests TextureOp::Make proxy-bounds
+            // subset and, on DMSAA configs, the DMSAA branch of SurfaceDrawContext::drawTexture).
+            dstSurface->getCanvas()->clear(SK_ColorBLACK);
+            dstSDC->drawTexture(nullptr,
+                                approxSDC->readSurfaceView(),
+                                kPremul_SkAlphaType,
+                                GrSamplerState::Filter::kLinear,
+                                GrSamplerState::MipmapMode::kNone,
+                                SkBlendMode::kSrcOver,
+                                {1.f, 1.f, 1.f, 1.f},
+                                srcRect,
+                                dstRect,
+                                GrQuadAAFlags::kAll,
+                                SkCanvas::kFast_SrcRectConstraint,
+                                SkMatrix::I(),
+                                nullptr);
+            checkNoRedPixels(dstSurface.get(), "drawTexture kApprox with kFast");
+
+            // (b) SurfaceDrawContext::drawTextureSet with kFast (tests TextureOpImpl batch
+            // constructor proxy-bounds subset).
+            dstSurface->getCanvas()->clear(SK_ColorBLACK);
+            GrTextureSetEntry entry{approxSDC->readSurfaceView(),
+                                    kPremul_SkAlphaType,
+                                    srcRect,
+                                    dstRect,
+                                    /*fDstClipQuad=*/nullptr,
+                                    /*fPreViewMatrix=*/nullptr,
+                                    {1.f, 1.f, 1.f, 1.f},
+                                    GrQuadAAFlags::kAll};
+            dstSDC->drawTextureSet(nullptr,
+                                   &entry,
+                                   /*cnt=*/1,
+                                   /*proxyRunCnt=*/1,
+                                   GrSamplerState::Filter::kLinear,
+                                   GrSamplerState::MipmapMode::kNone,
+                                   SkBlendMode::kSrcOver,
+                                   SkCanvas::kFast_SrcRectConstraint,
+                                   SkMatrix::I(),
+                                   nullptr,
+                                   /*setMayHavePersp=*/false);
+            checkNoRedPixels(dstSurface.get(), "drawTextureSet kApprox with kFast");
         }
     }
 }
