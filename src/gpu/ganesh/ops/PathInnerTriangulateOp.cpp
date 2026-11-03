@@ -164,6 +164,8 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> HullShader::makeProgramImpl(
             // Find the "turn direction" of each corner and net turn direction.
             "float vertexdir = 0;"
             "float netdir = 0;"
+            "float maxdir = 0;"
+            "float mindir = 0;"
             "float2 prev, next;"
             "float dir;"
             "float2 localcoord;"
@@ -176,18 +178,20 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> HullShader::makeProgramImpl(
                 v->codeAppendf(
                 "next = p%i - p%i;", (i + 1) % 4, i);
                 v->codeAppendf(
-                "dir = sign(cross_length_2d(prev, next));"
+                "dir = cross_length_2d(prev, next);"
                 "if (vertexidx == %i) {"
                     "vertexdir = dir;"
                     "localcoord = p%i;"
                     "nextcoord = p%i;"
                 "}"
-                "netdir += dir;", i, i, (i + 1) % 4);
+                "netdir += dir;"
+                "maxdir = max(maxdir, dir);"
+                "mindir = min(mindir, dir);", i, i, (i + 1) % 4);
             }
 
             v->codeAppend(
             // Remove the non-convex vertex, if any.
-            "if (vertexdir != sign(netdir)) {"
+            "if (vertexdir == (netdir > 0 ? mindir : maxdir) && vertexdir != 0) {"
                 "localcoord = nextcoord;"
             "}"
 
