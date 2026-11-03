@@ -20,6 +20,25 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "faef7a11_e3618853",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T18:52:09Z",
+      "side": 1,
+      "message": "Done: the legacy stream overload now delegates explicitly to the fully parameterized overload with InputState::kGrowing, and immutable data delegates with kComplete. The header documents that this governs incremental, scanline and raw decoding. One-shot getPixels preserves legacy best-effort behavior independently of finality; constructor-owned state remains unchanged across rewind.",
+      "parentUuid": "18e744b5_9c57d57c",
+      "isAi": true,
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "809c0688_1480354f",
         "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
         "patchSetId": 17
@@ -37,6 +56,31 @@
         "endLine": 327,
         "endChar": 60
       },
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "145cb842_8007886d",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T18:52:09Z",
+      "side": 1,
+      "message": "Yes, the original four-size restriction came from zune-jpeg. I have extended upstream PR498 to cover every reduced n/8 ratio using native-compatible integer IDCTs, including enlarged chroma transforms, rather than resizing full-size pixels. Chromium prerequisite CL8708834 backports that extension. Skia now advertises all eight sizes and matches every native selection threshold. All 96 additional whole-image RGB comparisons were byte-exact. The corresponding Blink CL8652942 is being updated to enumerate all eighth steps too, so a 128x128 image requested at 96x96 can select 96x96 rather than 64x64. Finite-memory-budget and auxiliary-image requests retain their existing native fallback. Both Skia wrappers continue to cap advertised dimensions at full size; native library upscaling is not exposed here.",
+      "parentUuid": "809c0688_1480354f",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 60
+      },
+      "isAi": true,
       "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -66,6 +110,31 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4e1d8c1_5140c06c",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T18:52:09Z",
+      "side": 1,
+      "message": "Fixed: every advertised reduced size now supports startScanlineDecode, getScanlines and skipScanlines. Reduced output uses buffered frame reconstruction, not bounded-stripe streaming, and the packed frame is charged against the decode memory budget. Full-size scanlines keep their existing streaming path. Added native-pixel comparisons for all eight sizes, padding preservation, mixed reads/skips, reset/rewind, exact budget-boundary checks, and growing-input resume coverage. Growing reduced scanlines suspend without publishing a provisional frame until reconstruction completes.",
+      "parentUuid": "928d759a_a3eae6d3",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 968,
+        "endChar": 5
+      },
+      "isAi": true,
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f1955f90_1f29715a",
         "filename": "experimental/rust_jpeg/ffi/FFI.rs",
         "patchSetId": 17
@@ -77,6 +146,25 @@
       "writtenOn": "2026-11-03T17:17:40Z",
       "side": 1,
       "message": "What are the side effects here for default-initialized decoders (`input_complete` \u003d\u003d false)?\n\nIt seems they are being switched to incremental mode, where EOF is recoverable and truncated (or partially downloaded) packed jpeg decoding can fail with kIncompleteInput instead of producing best-effort output?\n\nIs there a way to preserve the legacy best-effort behavior?",
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dfa9567_ff627ad9",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T18:52:09Z",
+      "side": 1,
+      "message": "You are right: enabling incremental mode unconditionally changed legacy one-shot EOF recovery. I removed that blanket switch and restored the full-frame non-incremental, non-strict best-effort policy, including for default-initialized stream decoders and generic SkCodec::MakeFromData dispatch. Scaled decoding now chooses incremental policy by operation, not just the input flag. New regressions use the incomplete progressive DC fixture: one-shot decoding reconstructs the native gray frame, while growing incremental decoding remains incomplete and leaves the unstable destination untouched until a real EOI arrives. A best-effort getPixels call does not promote later incremental sessions to complete input.",
+      "parentUuid": "f1955f90_1f29715a",
+      "isAi": true,
       "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
