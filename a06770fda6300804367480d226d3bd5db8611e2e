@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c39cd245_b88a4805",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T22:11:08Z",
+      "side": 1,
+      "message": "Thanks, the fast path in FontCollection::matchTypeface() looks good, and keeping the matchFamily() / matchStyle() fallback preserves custom SkFontMgr subclasses that only override onMatchFamily() (such as Flutter\u0027s TestFontManager).\n\nOne blocker before LGTM: the Mac14 NativeFonts_Fontations tryjob fails on PS2 when merged onto current main (https://ci.chromium.org/b/8666168462036767953):\n\n  modules/skparagraph/tests/SkParagraphTest.cpp:12189 [SkParagraph_FallbackCacheAcrossParagraphs]: otherFontMgr-\u003efFamilyStyleMatches \u003c\u003d 1\n\nThat test landed in 1d7f7b13b8 (\"Cache system fallback results across paragraphs\") after the parent of this CL. CountingFontMgr counts every onMatchFamilyStyle() call. With your change, the default family lookup in matchTypeface() also goes through matchFamilyStyle(), and on Mac the \"Apple Color Emoji\" lookup adds a second call (fFamilyStyleMatches \u003d\u003d 2). Linux passes only because it does not run the Mac \"Apple Color Emoji\" branch.\n\nI uploaded a companion WIP CL rebased onto main so you can see the isolated test fix:\nhttps://skia-review.googlesource.com/c/skia/+/1414542\n- Patchset 1 rebases PS2 onto main (reproducing the Mac failure).\n- Patchset 2 (https://skia-review.googlesource.com/c/skia/+/1414542/1..2) counts \"Apple Color Emoji\" lookups separately in CountingFontMgr::fEmojiFamilyMatches so the assertion checks the emoji fallback cache directly (Mac14 NativeFonts_Fontations and Linux FreeType ASAN pass: https://ci.chromium.org/b/8666119176682278673, https://ci.chromium.org/b/8666119176682278657).\n\nFeel free to rebase onto main and fold in the test update from Patchset 2 (or cherry-pick https://skia-review.googlesource.com/c/skia/+/1414542/2), whichever you prefer! Once this CL is updated, I will abandon the WIP CL.",
+      "revId": "a06770fda6300804367480d226d3bd5db8611e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
