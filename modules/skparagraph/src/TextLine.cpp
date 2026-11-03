@@ -638,6 +638,18 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
     SkScalar width = fAdvance.fX;
     RunIndex lastRun = EMPTY_RUN;
     std::unique_ptr<Run> ellipsisRun;
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+    if (fGhostClusterRange.start == fGhostClusterRange.end) {
+        ellipsisRun = this->shapeEllipsis(ellipsis, nullptr);
+        if (ellipsisRun->advance().fX <= maxWidth) {
+            fAdvance.fX = width;
+            fEllipsis = std::move(ellipsisRun);
+            fEllipsis->setOwner(fOwner);
+            fEllipsis->fClusterStart = fText.start;
+        }
+    }
+#endif
+
     for (auto clusterIndex = fGhostClusterRange.end; clusterIndex > fGhostClusterRange.start; --clusterIndex) {
         auto& cluster = fOwner->cluster(clusterIndex - 1);
         // Shape the ellipsis if the run has changed
@@ -773,8 +785,44 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
         SkString fEllipsis;
     };
 
-    const Run& run = cluster->run();
     TextStyle textStyle = owner->paragraphStyle().getTextStyle();
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+    bool leftToRight = true;
+    SkBidiIterator::Level bidiLevel = SkBidiIterator::kLTR;
+    SkScalar heightMultiplier = 0;
+    bool useHalfLeading = false;
+    SkScalar baselineShift = 0;
+
+    if (cluster) {
+        const Run& run = cluster->run();
+        leftToRight = run.leftToRight();
+        bidiLevel = run.bidiLevel();
+        heightMultiplier = run.heightMultiplier();
+        useHalfLeading = run.useHalfLeading();
+        baselineShift = run.baselineShift();
+        
+        for (auto i = blockRange.start; i < blockRange.end; ++i) {
+            auto& block = owner->block(i);
+            if (leftToRight && cluster->textRange().end <= block.fRange.end) {
+                textStyle = block.fStyle;
+                break;
+            } else if (!leftToRight && cluster->textRange().start <= block.fRange.end) {
+                textStyle = block.fStyle;
+                break;
+            }
+        }
+    } else {
+        if (blockRange.start < blockRange.end) {
+            textStyle = owner->block(blockRange.start).fStyle;
+        }
+        bidiLevel = owner->paragraphStyle().getTextDirection() == TextDirection::kRtl ? SkBidiIterator::kRTL : SkBidiIterator::kLTR;
+        leftToRight = (bidiLevel == SkBidiIterator::kLTR);
+        heightMultiplier = textStyle.getHeightOverride() ? textStyle.getHeight() : 0;
+        useHalfLeading = textStyle.getHalfLeading();
+        baselineShift = textStyle.getBaselineShift();
+    }
+#else
+    const Run& run = cluster->run();
     for (auto i = blockRange.start; i < blockRange.end; ++i) {
         auto& block = owner->block(i);
         if (run.leftToRight() && cluster->textRange().end <= block.fRange.end) {
@@ -785,15 +833,19 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
             break;
         }
     }
+#endif
 
     // Shape the affix in the surrounding run's direction, so neutral and weak
     // characters in it (like a "!" after Arabic letters, or the default "-" and
     // "…") take that direction instead of LTR. ShapeHandler only supports a
     // single run, so if the affix would split in that direction (like
     // "Read more…" in RTL text), shape it in the opposite direction instead.
+#ifndef SK_ELLIPSIZE_TRUNCATED_LINES
     SkBidiIterator::Level bidiLevel = run.bidiLevel();
+    bool leftToRight = run.leftToRight();
+#endif
     if (sk_sp<SkUnicode> unicode = owner->getUnicode()) {
-        const bool ltr = run.leftToRight();
+        const bool ltr = leftToRight;
         const auto runDir = ltr ? SkUnicode::TextDirection::kLTR : SkUnicode::TextDirection::kRTL;
         const auto otherDir = ltr ? SkUnicode::TextDirection::kRTL : SkUnicode::TextDirection::kLTR;
         if (!isSingleBidiRun(unicode.get(), ellipsis, runDir) &&
@@ -803,8 +855,12 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
     }
 
     auto shaped = [&](sk_sp<SkTypeface> typeface, sk_sp<SkFontMgr> fallback) -> std::unique_ptr<Run> {
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+        ShapeHandler handler(heightMultiplier, useHalfLeading, baselineShift, ellipsis);
+#else
         ShapeHandler handler(
                 run.heightMultiplier(), run.useHalfLeading(), run.baselineShift(), ellipsis);
+#endif
         SkFont font(std::move(typeface), textStyle.getFontSize());
         font.setEdging(textStyle.getFontEdging());
         font.setHinting(textStyle.getFontHinting());
@@ -847,7 +903,12 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
     };
 
     // Check the current font
-    auto ellipsisRun = shaped(run.fFont.refTypeface(), nullptr);
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+    sk_sp<SkTypeface> currentTypeface = cluster ? cluster->run().fFont.refTypeface() : nullptr;
+#else
+    sk_sp<SkTypeface> currentTypeface = run.fFont.refTypeface();
+#endif
+    auto ellipsisRun = shaped(std::move(currentTypeface), nullptr);
     if (ellipsisRun->isResolved()) {
         return ellipsisRun;
     }

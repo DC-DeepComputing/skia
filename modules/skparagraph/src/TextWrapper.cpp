@@ -435,11 +435,21 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         SkScalar widthWithSpaces;
         std::tie(startLine, pos, widthWithSpaces) = this->trimStartSpaces(end);
 
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+        if (needEllipsis) {
+            if (!fHardLineBreak) {
+                // This is what we need to do to preserve a space before the ellipsis
+                fEndLine.restoreBreak();
+                widthWithSpaces = fEndLine.widthWithGhostSpaces();
+            }
+        }
+#else
         if (needEllipsis && !fHardLineBreak) {
             // This is what we need to do to preserve a space before the ellipsis
             fEndLine.restoreBreak();
             widthWithSpaces = fEndLine.widthWithGhostSpaces();
         }
+#endif
 
         // If the line is empty with the hard line break, let's take the paragraph font (flutter???)
         if (fEndLine.metrics().isClean()) {
@@ -510,7 +520,11 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
                 SkVector::Make(0, fHeight),
                 SkVector::Make(fEndLine.width(), lineHeight),
                 fEndLine.metrics(),
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+                needEllipsis);
+#else
                 needEllipsis && !fHardLineBreak);
+#endif
 
         softLineMaxIntrinsicWidth += widthWithSpaces;
 

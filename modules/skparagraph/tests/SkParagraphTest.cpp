@@ -12755,3 +12755,30 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+UNIX_ONLY_TEST(SkParagraph_EllipsisOnEmptyLines, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+    const char* text = "\n\n";
+    ParagraphStyle paragraph_style;
+    paragraph_style.turnHintingOff();
+    paragraph_style.setMaxLines(1);
+    paragraph_style.setEllipsis(u"\u2026");
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    paragraph_style.setTextStyle(text_style);
+
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, SkUnicodes::ICU::Make());
+    builder.addText(text);
+    auto paragraph = builder.Build();
+    paragraph->layout(100);
+    
+    std::vector<LineMetrics> lines;
+    paragraph->getLineMetrics(lines);
+    REPORTER_ASSERT(reporter, lines.size() == 1);
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+    auto width = lines[0].fWidth;
+    REPORTER_ASSERT(reporter, width > 0);
+#endif
+}

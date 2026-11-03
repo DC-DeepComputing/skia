@@ -876,6 +876,14 @@ BlockRange ParagraphImpl::findAllBlocks(TextRange textRange) {
         ++last;
     }
 
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+    if (first == last && first != fTextStyles.end() && textRange.start == textRange.end) {
+        // For an empty line (e.g. just a \n), we still want the block at this position
+        // so that TextLine can use its style for the ellipsis.
+        last = first + 1;
+    }
+#endif
+
     if (first == last) {
         // It's possible if some text is not covered with any text style
         // Not in Flutter but in direct use of SkParagraph
