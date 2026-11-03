@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4e4870c_98d82fdf",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-03T15:15:59Z",
+      "side": 1,
+      "message": "nit; Comments should be wrapped to 100 characters",
+      "range": {
+        "startLine": 689,
+        "startChar": 0,
+        "endLine": 690,
+        "endChar": 55
+      },
+      "revId": "0be405a04de41a3106f06c31a9f11e1327377fd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
