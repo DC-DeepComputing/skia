@@ -1,0 +1,118 @@
+// Copyright 2026 Google LLC
+#ifndef CoreTextFontRegistry_DEFINED
+#define CoreTextFontRegistry_DEFINED
+
+#include "include/core/SkFont.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTypeface.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkMutex.h"
+#include "modules/skparagraph/include/FontArguments.h"
+#include "modules/skparagraph/include/ParagraphStyle.h"
+#include "src/core/SkLRUCache.h"
+
+#include <optional>
+#include <string_view>
+#include <vector>
+
+#include "src/utils/mac/SkUniqueCFRef.h"
+#include <CoreText/CoreText.h>
+
+namespace skia {
+namespace textlayout {
+
+class FontCollection;
+
+class CoreTextFontRegistry {
+public:
+    // Returns the process-wide registry; its caches are shared by every paragraph and guarded by
+    // fMutex, so any thread may use it
+    static CoreTextFontRegistry& Instance();
+
+    // In-process descriptor cache indexed by SkTypefaceID to eliminate fontd IPC during run
+    // attribution. typeface must be non-null
+    SkUniqueCFRef<CTFontDescriptorRef> getDescriptor(SkTypeface* typeface);
+
+    // Returns a CTFont at size, which must be positive. A system UI face or null typeface becomes
+    // .AppleSystemUIFont in style's weight and slant and the family's UI design, resolving optical
+    // size and symbolic traits; any other face comes from getDescriptor and ignores style. Falls
+    // back to the plain system UI font; null only if CoreText cannot create that either
+    SkUniqueCFRef<CTFontRef> createFont(SkTypeface* typeface, SkFontStyle style, CGFloat size);
+
+    // True for a null typeface or one whose non-empty family or PostScript name passes the name
+    // overload; such faces need descriptor synthesis to keep the system cascade lists across
+    // scripts
+    static bool isAppleSystemFont(const SkTypeface* typeface);
+
+    // True for names that start with .AppleSystemUIFont, .SF or .NewYork, for the Flutter
+    // aliases CupertinoSystemText and CupertinoSystemDisplay, and for an empty name
+    static bool isAppleSystemFont(std::string_view familyName);
+
+    // Never consults FontCollection's default manager: each family comes from the user registries,
+    // then CoreText by exact name; else default families, a user registry face, .AppleSystemUIFont
+    // stand in. Fallback disabled searches only user registries, so the result may be empty. The
+    // collection caches the result until its managers, families or fallback setting change
+    std::vector<sk_sp<SkTypeface>> findTypefaces(FontCollection& fontCollection,
+                                                 const std::vector<SkString>& familyNames,
+                                                 SkFontStyle fontStyle,
+                                                 const std::optional<FontArguments>& fontArgs);
+
+private:
+    CoreTextFontRegistry() = default;
+    ~CoreTextFontRegistry() = default;
+    CoreTextFontRegistry(const CoreTextFontRegistry&) = delete;
+    CoreTextFontRegistry& operator=(const CoreTextFontRegistry&) = delete;
+
+    // Builds an uncached descriptor for a non-null typeface: a system UI face gets a
+    // .AppleSystemUIFont descriptor with its weight, slant and design, any other face one parsed
+    // from its font data, or else one for its family name and style. Null if all of them fail
+    SkUniqueCFRef<CTFontDescriptorRef> createDescriptorInternal(SkTypeface* typeface);
+
+    // Returns the face for one family: fontCollection's user managers first (dynamic, asset,
+    // test), then matchSystemFamily, unless user managers exist without a default manager or font
+    // fallback is disabled. Null when nothing matches; fDefaultFontManager itself is never queried
+    sk_sp<SkTypeface> matchFamily(const FontCollection& fontCollection,
+                                  const SkString& familyName,
+                                  SkFontStyle fontStyle);
+
+    // Returns the face that stands in when no requested family matched: the first matching
+    // default family, then a user manager's default face, then .AppleSystemUIFont from
+    // matchSystemFamily when font fallback is enabled, cloned for fontArgs. Null if none succeeds
+    sk_sp<SkTypeface> standIn(FontCollection& fontCollection,
+                              SkFontStyle fontStyle,
+                              const std::optional<FontArguments>& fontArgs);
+
+    // Returns the installed family that matches familyName exactly in fontStyle, or null, and
+    // caches either answer in fSystemFamilyCache
+    sk_sp<SkTypeface> matchSystemFamily(const SkString& familyName, SkFontStyle fontStyle);
+
+    // Only data-backed faces land here; bounded because every web font or test face would
+    // otherwise pin its parsed descriptor for the process lifetime
+    static constexpr int kDescriptorCacheSize = 64;
+    SkMutex fMutex;
+    SkLRUCache<SkTypefaceID, SkUniqueCFRef<CTFontDescriptorRef>> fDescriptorCache
+            SK_GUARDED_BY(fMutex){kDescriptorCacheSize};
+
+    // Installed families do not depend on the FontCollection, so one process-wide cache serves
+    // every paragraph; a null entry records a family CoreText does not have
+    struct SystemFamilyKey {
+        SkString fFamilyName;
+        SkFontStyle fFontStyle;
+        bool operator==(const SystemFamilyKey& other) const {
+            return fFamilyName == other.fFamilyName && fFontStyle == other.fFontStyle;
+        }
+        struct Hash {
+            uint32_t operator()(const SystemFamilyKey& key) const {
+                return SkGoodHash()(key.fFamilyName) ^ SkGoodHash()(key.fFontStyle);
+            }
+        };
+    };
+    static constexpr int kSystemFamilyCacheSize = 64;
+    SkLRUCache<SystemFamilyKey, sk_sp<SkTypeface>, SystemFamilyKey::Hash> fSystemFamilyCache
+            SK_GUARDED_BY(fMutex){kSystemFamilyCacheSize};
+};
+
+}  // namespace textlayout
+}  // namespace skia
+
+#endif  // CoreTextFontRegistry_DEFINED
