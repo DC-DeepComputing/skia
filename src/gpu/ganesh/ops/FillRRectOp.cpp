@@ -157,9 +157,9 @@ public:
         }
     }
 
-    void onPrepareDraws(GrMeshDrawTarget*) override;
+    bool onPrepareDraws1(GrMeshDrawTarget*) override;
 
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 
 private:
     friend class ::GrSimpleMeshDrawOpHelper; // for access to ctor
@@ -637,9 +637,12 @@ static constexpr uint16_t kIndexData[] = {
 
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gIndexBufferKey);
 
-void FillRRectOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
+bool FillRRectOpImpl::onPrepareDraws1(GrMeshDrawTarget* target) {
     if (!fProgramInfo) {
         this->createProgramInfo(target);
+        if (!fProgramInfo) {
+            return false;
+        }
     }
 
     size_t instanceStride = fProgramInfo->geomProc().instanceStride();
@@ -700,6 +703,7 @@ void FillRRectOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
                                                                       sizeof(kVertexData),
                                                                       kVertexData,
                                                                       gVertexBufferKey);
+    return true;
 }
 
 class FillRRectOpImpl::Processor::Impl : public ProgramImpl {
@@ -922,16 +926,17 @@ void FillRRectOpImpl::onCreateProgramInfo(const GrCaps* caps,
                                              colorLoadOp);
 }
 
-void FillRRectOpImpl::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool FillRRectOpImpl::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (!fInstanceBuffer || !fIndexBuffer || !fVertexBuffer) {
-        return;  // Setup failed.
+        return false;  // Setup failed.
     }
 
     flushState->bindPipelineAndScissorClip(*fProgramInfo, this->bounds());
     flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
     flushState->bindBuffers(std::move(fIndexBuffer), std::move(fInstanceBuffer),
                             std::move(fVertexBuffer));
-    flushState->drawIndexedInstanced(std::size(kIndexData), 0, fInstanceCount, fBaseInstance, 0);
+    return flushState->drawIndexedInstanced2(std::size(kIndexData), 0,
+                                             fInstanceCount, fBaseInstance, 0);
 }
 
 // Will the given corner look good if we use HW derivatives?

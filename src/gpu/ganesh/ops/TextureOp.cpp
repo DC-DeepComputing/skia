@@ -911,7 +911,7 @@ private:
     }
 
     // onPrePrepareDraws may or may not have been called at this point
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
         SkDEBUGCODE(this->validate();)
@@ -931,7 +931,7 @@ private:
                                               &fDesc->fVertexBuffer, &fDesc->fBaseVertex);
         if (!vdata) {
             SkDebugf("Could not allocate vertices\n");
-            return;
+            return false;
         }
 
         if (fDesc->fVertexSpec.needsIndexBuffer()) {
@@ -939,7 +939,7 @@ private:
                     target, fDesc->fVertexSpec.indexBufferOption());
             if (!fDesc->fIndexBuffer) {
                 SkDebugf("Could not allocate indices\n");
-                return;
+                return false;
             }
         }
 
@@ -948,20 +948,23 @@ private:
         } else {
             FillInVertices(target->caps(), this, fDesc, (char*) vdata);
         }
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fDesc->fVertexBuffer) {
-            return;
+            return false;
         }
 
         if (fDesc->fVertexSpec.needsIndexBuffer() && !fDesc->fIndexBuffer) {
-            return;
+            return false;
         }
 
         if (!fDesc->fProgramInfo) {
             this->createProgramInfo(flushState);
-            SkASSERT(fDesc->fProgramInfo);
+            if (!fDesc->fProgramInfo) {
+                return false;
+            }
         }
 
         flushState->bindPipelineAndScissorClip(*fDesc->fProgramInfo, chainBounds);
@@ -977,13 +980,15 @@ private:
                 flushState->bindTextures(fDesc->fProgramInfo->geomProc(),
                                          *op.fViewCountPairs[p].fProxy,
                                          fDesc->fProgramInfo->pipeline());
-                skgpu::ganesh::QuadPerEdgeAA::IssueDraw(flushState->caps(),
+                if (!skgpu::ganesh::QuadPerEdgeAA::IssueDraw(flushState->caps(),
                                                         flushState->opsRenderPass(),
                                                         fDesc->fVertexSpec,
                                                         totQuadsSeen,
                                                         quadCnt,
                                                         fDesc->totalNumVertices(),
-                                                        fDesc->fBaseVertex);
+                                                        fDesc->fBaseVertex)) {
+                    return false;
+                }
                 totQuadsSeen += quadCnt;
                 SkDEBUGCODE(++numDraws;)
             }
@@ -991,6 +996,7 @@ private:
 
         SkASSERT(totQuadsSeen == fDesc->fNumTotalQuads);
         SkASSERT(numDraws == fDesc->fNumProxies);
+        return true;
     }
 
     void propagateCoverageAAThroughoutChain() {

@@ -39,7 +39,7 @@ GrBufferTransferRenderTask::GrBufferTransferRenderTask(sk_sp<GrGpuBuffer> src,
 
 GrBufferTransferRenderTask::~GrBufferTransferRenderTask() = default;
 
-GrRenderTask::ExecutionResult GrBufferTransferRenderTask::onExecute(GrOpFlushState* flushState) {
+GrRenderTask::ExecutionResult GrBufferTransferRenderTask::onExecute2(GrOpFlushState* flushState) {
     bool success = flushState->gpu()->transferFromBufferToBuffer(fSrc,
                                                                  fSrcOffset,
                                                                  fDst,

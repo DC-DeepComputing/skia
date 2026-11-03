@@ -349,10 +349,11 @@ private:
 
     void onDraw(int loops, SkCanvas*) final {
         for (int i = 0; i < loops; ++i) {
-            fTessellator->prepare(fTarget.get(),
+            bool result = fTessellator->prepare77(fTarget.get(),
                                   SkMatrix::Scale(fMatrixScale, fMatrixScale),
                                   fPathStrokes.data(),
                                   fTotalVerbCount);
+            SkASSERT(result);
             fTarget->resetAllocator();
         }
     }

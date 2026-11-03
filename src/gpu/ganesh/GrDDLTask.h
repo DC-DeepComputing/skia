@@ -59,9 +59,9 @@ private:
         SkASSERT(0);
     }
 
-    void onPrepare(GrOpFlushState*) override;
+    [[nodiscard]] bool onPrepare2(GrOpFlushState*) override;
 
-    ExecutionResult onExecute(GrOpFlushState*) override;
+    ExecutionResult onExecute2(GrOpFlushState*) override;
 
 #if defined(GPU_TEST_UTILS)
     void dump(const SkString& label,

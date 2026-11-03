@@ -42,7 +42,7 @@ private:
         return ExpectedOutcome::kTargetUnchanged;
     }
 
-    ExecutionResult onExecute(GrOpFlushState*) override;
+    ExecutionResult onExecute2(GrOpFlushState*) override;
 
     // addProxy() optimistically marks the proxy resolved/clean at recording time. If the flush
     // is dropped before this task executes (or a per-target operation fails) we must restore the
