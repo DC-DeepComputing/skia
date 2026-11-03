@@ -13,6 +13,7 @@
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -23,11 +24,14 @@
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
 #include "modules/skparagraph/include/TypefaceFontProvider.h"
+#include "modules/skparagraph/src/CoreTextFontRegistry.h"
 #include "modules/skparagraph/src/CoreTextIndexMap.h"
 #include "modules/skparagraph/src/ParagraphBuilderImpl.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/Run.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "src/core/SkAdvancedTypefaceMetrics.h"
+#include "src/core/SkScalerContext.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkUTF.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
@@ -42,6 +46,19 @@
 #include <vector>
 
 using namespace skia::textlayout;
+
+namespace {
+// The expectations name Apple system faces; the portable font manager (--nonativeFonts) has
+// none of them, so such tests skip instead of measuring substitutes
+bool has_font_families(std::initializer_list<const char*> families) {
+    for (const char* family : families) {
+        if (!ToolUtils::TestFontMgr()->matchFamilyStyle(family, SkFontStyle())) {
+            return false;
+        }
+    }
+    return true;
+}
+}  // namespace
 
 DEF_TEST(CoreTextPipeline_IndexMap_AsciiAndMultibyte, reporter) {
     CoreTextIndexMap emptyMap("", 0);
@@ -143,4 +160,242 @@ DEF_TEST(CoreTextPipeline_IndexMap_EmojiAndSurrogatePairs, reporter) {
         REPORTER_ASSERT(reporter, heapMap.toUtf16Index(i * 4) == static_cast<size_t>(i * 2));
         REPORTER_ASSERT(reporter, heapMap.toUtf8Index(i * 2) == static_cast<size_t>(i * 4));
     }
+}
+
+DEF_TEST(CoreTextPipeline_FontRegistry_DescriptorCacheAndFallback, reporter) {
+    // Apple system font detection and descriptor caching
+    CoreTextFontRegistry& registry = CoreTextFontRegistry::Instance();
+
+    REPORTER_ASSERT(
+            reporter,
+            CoreTextFontRegistry::isAppleSystemFont(static_cast<const SkTypeface*>(nullptr)));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFont"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFontRounded"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFontSerif"));
+    REPORTER_ASSERT(
+            reporter, CoreTextFontRegistry::isAppleSystemFont(".AppleSystemUIFontMonospaced"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont("CupertinoSystemText"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont("CupertinoSystemDisplay"));
+    REPORTER_ASSERT(reporter, CoreTextFontRegistry::isAppleSystemFont(".SF NS"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("SF Pro"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("system-ui"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("-apple-system"));
+    REPORTER_ASSERT(reporter, !CoreTextFontRegistry::isAppleSystemFont("CourierNewCustom"));
+
+    auto sysFont = registry.createFont(nullptr, SkFontStyle(), 18.0f);
+    REPORTER_ASSERT(reporter, sysFont != nullptr);
+    REPORTER_ASSERT(reporter, CTFontGetSize(sysFont.get()) == 18.0f);
+
+    auto tf = ToolUtils::DefaultPortableTypeface();
+    if (tf) {
+        auto desc1 = registry.getDescriptor(tf.get());
+        REPORTER_ASSERT(reporter, desc1 != nullptr);
+        auto desc2 = registry.getDescriptor(tf.get());
+        REPORTER_ASSERT(reporter, desc2 != nullptr);
+    }
+}
+
+// CupertinoSystemText and CupertinoSystemDisplay must resolve in matchSystemFamily so that a
+// non-empty fontFamilyFallback list does not skip them and land on the first fallback family
+DEF_TEST(CoreTextPipeline_AppleSystemFonts_CupertinoAliases, reporter) {
+    if (!has_font_families({"Helvetica"})) {
+        return;
+    }
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    fontCollection->enableFontFallback();
+
+    CoreTextFontRegistry& registry = CoreTextFontRegistry::Instance();
+    for (const char* alias : {"CupertinoSystemText", "CupertinoSystemDisplay"}) {
+        std::vector<SkString> families = {SkString(alias), SkString("Helvetica")};
+        auto faces = registry.findTypefaces(
+                *fontCollection, families, SkFontStyle::Normal(), std::nullopt);
+        REPORTER_ASSERT(reporter, faces.size() == 2, "alias=%s size=%zu", alias, faces.size());
+        if (faces.size() == 2) {
+            SkString firstPs;
+            faces[0]->getPostScriptName(&firstPs);
+            REPORTER_ASSERT(reporter,
+                            firstPs.startsWith(".AppleSystemUIFont") || firstPs.startsWith(".SF"),
+                            "alias=%s resolved to %s",
+                            alias,
+                            firstPs.c_str());
+            SkString secondPs;
+            faces[1]->getPostScriptName(&secondPs);
+            REPORTER_ASSERT(reporter, secondPs.equals("Helvetica"));
+        }
+    }
+}
+
+// .AppleSystemUIFont{Rounded,Serif,Monospaced} select their UI design variants across both
+// typeface matching and size-dependent CTFont instantiation (including bold weight traits)
+DEF_TEST(CoreTextPipeline_AppleSystemFonts_DesignSuffixes, reporter) {
+    if (!has_font_families({"Helvetica"})) {
+        return;
+    }
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    fontCollection->enableFontFallback();
+
+    CoreTextFontRegistry& registry = CoreTextFontRegistry::Instance();
+    const struct {
+        const char* fFamily;
+        const char* fExpectedRegularPs;
+        const char* fExpectedBoldPs;
+    } cases[] = {
+            {".AppleSystemUIFontRounded", "Rounded-Regular", "Rounded-Bold"},
+            {".AppleSystemUIFontSerif", "NewYork-Regular", "NewYork-Bold"},
+            {".AppleSystemUIFontMonospaced", "Monospaced-Regular", "Monospaced-Bold"},
+    };
+
+    for (const auto& c : cases) {
+        std::vector<SkString> families = {SkString(c.fFamily), SkString("Helvetica")};
+        auto regFaces = registry.findTypefaces(
+                *fontCollection, families, SkFontStyle::Normal(), std::nullopt);
+        auto boldFaces = registry.findTypefaces(
+                *fontCollection, families, SkFontStyle::Bold(), std::nullopt);
+        REPORTER_ASSERT(reporter, regFaces.size() == 2 && boldFaces.size() == 2);
+        if (regFaces.size() != 2 || boldFaces.size() != 2) {
+            continue;
+        }
+        SkString regPs;
+        regFaces[0]->getPostScriptName(&regPs);
+        REPORTER_ASSERT(reporter,
+                        regPs.contains(c.fExpectedRegularPs),
+                        "family=%s got=%s",
+                        c.fFamily,
+                        regPs.c_str());
+
+        SkUniqueCFRef<CTFontRef> ctBold =
+                registry.createFont(boldFaces[0].get(), SkFontStyle::Bold(), 24.0f);
+        REPORTER_ASSERT(reporter, ctBold != nullptr);
+        if (ctBold) {
+            SkUniqueCFRef<CFStringRef> cfPs(CTFontCopyPostScriptName(ctBold.get()));
+            char buf[256] = {};
+            if (cfPs) {
+                CFStringGetCString(cfPs.get(), buf, sizeof(buf), kCFStringEncodingUTF8);
+            }
+            REPORTER_ASSERT(reporter,
+                            strstr(buf, c.fExpectedBoldPs) != nullptr,
+                            "family=%s ctBold=%s",
+                            c.fFamily,
+                            buf);
+        }
+    }
+}
+
+// With no requested or default family found, a user face stands in before the system font, as
+// in FontCollection::getFontManagerOrder, whether font fallback is enabled or not
+DEF_TEST(CoreTextPipeline_MissingFamily_UserFaceStandsIn, reporter) {
+    sk_sp<SkTypeface> roboto = ToolUtils::CreateTypefaceFromResource("fonts/Roboto-Regular.ttf");
+    REPORTER_ASSERT(reporter, roboto);
+    auto provider = sk_make_sp<TypefaceFontProvider>();
+    provider->registerTypeface(roboto, SkString("FaceA"));
+    auto fc = sk_make_sp<FontCollection>();
+    fc->setDefaultFontManager(ToolUtils::TestFontMgr(), "NoSuchDefaultFamily");
+    fc->setDynamicFontManager(provider);
+    std::vector<SkString> families = {SkString("NoSuchFamily")};
+
+    for (bool fallback : {true, false}) {
+        if (fallback) {
+            fc->enableFontFallback();
+        } else {
+            fc->disableFontFallback();
+        }
+        auto expected = fc->findTypefaces(families, SkFontStyle());
+        auto actual = CoreTextFontRegistry::Instance().findTypefaces(
+                *fc, families, SkFontStyle(), std::nullopt);
+        REPORTER_ASSERT(reporter,
+                        expected.size() == 1 && expected[0]->uniqueID() == roboto->uniqueID());
+        REPORTER_ASSERT(reporter,
+                        actual.size() == 1 && actual[0]->uniqueID() == roboto->uniqueID(),
+                        "fallback %d",
+                        fallback);
+    }
+}
+
+namespace {
+class StubCloneTypeface final : public SkTypeface {
+public:
+    static sk_sp<SkTypeface> Make(const char* family, bool failClone) {
+        return sk_sp<SkTypeface>(new StubCloneTypeface(family, failClone));
+    }
+
+protected:
+    StubCloneTypeface(const char* family, bool failClone)
+            : SkTypeface(SkFontStyle(), false), fFamily(family), fFailClone(failClone) {}
+
+    sk_sp<SkTypeface> onMakeClone(const SkFontArguments&) const override {
+        return fFailClone ? nullptr : sk_ref_sp(this);
+    }
+    std::unique_ptr<SkStreamAsset> onOpenStream(int*) const override { return nullptr; }
+    std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects&,
+                                                           const SkDescriptor*) const override {
+        SK_ABORT("unreachable");
+    }
+    void onFilterRec(SkScalerContextRec*) const override {}
+    std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override {
+        return nullptr;
+    }
+    void onGetFontDescriptor(SkFontDescriptor*, bool*) const override {}
+    void onCharsToGlyphs(SkSpan<const SkUnichar>, SkSpan<SkGlyphID> glyphs) const override {
+        sk_bzero(glyphs.data(), glyphs.size_bytes());
+    }
+    int onCountGlyphs() const override { return 0; }
+    void getPostScriptGlyphNames(SkString*) const override {}
+    void getGlyphToUnicodeMap(SkSpan<SkUnichar>) const override {}
+    int onGetUPEM() const override { return 0; }
+    class EmptyLocalizedStrings final : public SkTypeface::LocalizedStrings {
+    public:
+        bool next(SkTypeface::LocalizedString*) override { return false; }
+    };
+    void onGetFamilyName(SkString* familyName) const override { *familyName = fFamily; }
+    bool onGetPostScriptName(SkString*) const override { return false; }
+    SkTypeface::LocalizedStrings* onCreateFamilyNameIterator() const override {
+        return new EmptyLocalizedStrings;
+    }
+    bool onGlyphMaskNeedsCurrentColor() const override { return false; }
+    int onGetVariationDesignPosition(
+            SkSpan<SkFontArguments::VariationPosition::Coordinate>) const override {
+        return 0;
+    }
+    int onGetVariationDesignParameters(SkSpan<SkFontParameters::Variation::Axis>) const override {
+        return 0;
+    }
+    int onGetTableTags(SkSpan<SkFontTableTag>) const override { return 0; }
+    size_t onGetTableData(SkFontTableTag, size_t, size_t, void*) const override { return 0; }
+
+private:
+    SkString fFamily;
+    bool fFailClone;
+};
+}  // namespace
+
+DEF_TEST(CoreTextPipeline_FontRegistry_NullCloneTypefaceSkipped, reporter) {
+    sk_sp<SkTypeface> valid = StubCloneTypeface::Make("ValidClone", false);
+    auto provider = sk_make_sp<TypefaceFontProvider>();
+    provider->registerTypeface(StubCloneTypeface::Make("NullClone", true), SkString("NullClone"));
+    provider->registerTypeface(valid, SkString("ValidClone"));
+
+    auto fc = sk_make_sp<FontCollection>();
+    fc->setDefaultFontManager(ToolUtils::TestFontMgr());
+    fc->setDynamicFontManager(provider);
+    fc->disableFontFallback();
+
+    SkFontArguments::VariationPosition::Coordinate coord = {
+            SkSetFourByteTag('w', 'g', 'h', 't'), 500.0f};
+    SkFontArguments skArgs;
+    skArgs.setVariationDesignPosition({&coord, 1});
+    FontArguments fontArgs(skArgs);
+    std::vector<SkString> families = {SkString("NullClone"), SkString("ValidClone")};
+
+    auto expected = fc->findTypefaces(families, SkFontStyle(), fontArgs);
+    auto actual = CoreTextFontRegistry::Instance().findTypefaces(
+            *fc, families, SkFontStyle(), fontArgs);
+    REPORTER_ASSERT(reporter, expected.size() == 1 && expected[0] != nullptr);
+    REPORTER_ASSERT(reporter,
+                    actual.size() == 1 && actual[0] != nullptr &&
+                            actual[0]->uniqueID() == valid->uniqueID(),
+                    "actual size=%zu front=%p",
+                    actual.size(),
+                    actual.empty() ? nullptr : actual[0].get());
 }
