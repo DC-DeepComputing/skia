@@ -37,6 +37,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b75dc77d_5fbf845b",
+        "filename": "experimental/rust_jpeg/decoder/SkJpegRustDecoder.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T19:37:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faef7a11_e3618853",
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "809c0688_1480354f",
@@ -81,6 +99,30 @@
         "endChar": 60
       },
       "isAi": true,
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b5dfaaa_8ea5c115",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T19:37:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "145cb842_8007886d",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 60
+      },
       "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -133,6 +175,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8e64086_f13138e2",
+        "filename": "experimental/rust_jpeg/decoder/impl/SkJpegRustCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T19:37:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4e1d8c1_5140c06c",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 968,
+        "endChar": 5
+      },
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1955f90_1f29715a",
@@ -165,6 +231,24 @@
       "message": "You are right: enabling incremental mode unconditionally changed legacy one-shot EOF recovery. I removed that blanket switch and restored the full-frame non-incremental, non-strict best-effort policy, including for default-initialized stream decoders and generic SkCodec::MakeFromData dispatch. Scaled decoding now chooses incremental policy by operation, not just the input flag. New regressions use the incomplete progressive DC fixture: one-shot decoding reconstructs the native gray frame, while growing incremental decoding remains incomplete and leaves the unstable destination untouched until a real EOI arrives. A best-effort getPixels call does not promote later incremental sessions to complete input.",
       "parentUuid": "f1955f90_1f29715a",
       "isAi": true,
+      "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f0d8de4_f34322f0",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 17
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-03T19:37:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dfa9567_ff627ad9",
       "revId": "4193aacbe3fde23e33ac3a79d8ece0741f58e997",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
