@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0626e11_67c16d53",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-03T15:31:16Z",
+      "side": 1,
+      "message": "Is this limited to DNG, or does it cover other RAW formats as well?  If the latter, please update the description.",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 8
+      },
+      "revId": "9a8545fedd4fce06cc7848a04c02432cdbf73c86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24252ee9_f94a45c1",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-03T15:31:16Z",
+      "side": 1,
+      "message": "Nit: this is the default value, we could skip.",
+      "revId": "9a8545fedd4fce06cc7848a04c02432cdbf73c86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
