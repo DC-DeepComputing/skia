@@ -1572,7 +1572,13 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
     auto& glyphData = subRun->glyphVector().accessBackendData<GlyphData>();
 
     auto [bounds, maskToDevice] =
-            subRun->vertexFiller().boundsAndDeviceMatrix(localToDevice, drawOrigin);
+            subRun->vertexFiller().boundsAndDeviceMatrix(
+                    localToDevice, drawOrigin,
+                    fRecorder->priv().caps()->supportBilerpFromGlyphAtlas());
+
+    if (bounds.isEmpty()) {
+        return;
+    }
 
     for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
         // For the remainder of the run, add any atlas uploads to the Recorder's TextAtlasManager
@@ -1694,7 +1700,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     ClipStack::ElementList clipElements;
     Clip clip = fClip.visitClipStackForDraw(localToDevice,
                                             &geometry,
-                                            style,
+                                            &style,
                                             &clipElements);
     if (clip.isClippedOut()) {
         // Clipped out, so don't record anything.
@@ -2556,6 +2562,10 @@ sk_sp<sktext::gpu::Slug> Device::convertGlyphRunListToSlug(const sktext::GlyphRu
 
 void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkPaint& paint) {
     auto slugImpl = static_cast<const sktext::gpu::SlugImpl*>(slug);
+    if (!slugImpl->canDraw(this->localToDevice(),
+                           fRecorder->priv().caps()->supportBilerpFromGlyphAtlas())) {
+        return;
+    }
     slugImpl->subRuns()->draw(canvas, slugImpl->origin(), paint, slugImpl, this->atlasDelegate());
 }
 
@@ -2570,34 +2580,42 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint,
     if (paint.isAntiAlias()) {
         rrectToBlur = rrect;
     } else {
-        // Snap the the rounded rectangle to pixel edges to match the behavior of
-        // Device::drawRRect() for non-AA blurs when the AnalyticBlurMask approach isn't supported.
-        rrectToBlur = SkRRect::MakeRectRadii(snap_rect_to_pixels(this->localToDeviceTransform(),
-                                                                 rrect.rect()).asSkRect(),
-                                             rrect.radii().data());
+        // Snaps the rrect to pixels the same way as the image filter fallback for blurs does,
+        // snapping based on the blur layer's transform. If we don't have rotation, we can snap
+        // with the translation applied, else we only apply the scale and snap.
+        // See skif::Mapping::decomposeCTM().
+        const SkMatrix& matrix = this->localToDevice();
+        Rect snappedRect = rrect.rect();
+        SkSize layerScale;
+        if (matrix.isScaleTranslate()) {
+            snappedRect = snap_rect_to_pixels(this->localToDeviceTransform(), snappedRect);
+        } else {
+            // Analytic blurring doesn't support the perspective case.
+            SkAssertResult(matrix.decomposeScale(&layerScale, nullptr));
+            snappedRect = snap_rect_to_pixels(
+                    Transform(SkM44::Scale(layerScale.width(), layerScale.height())), snappedRect);
+        }
+        rrectToBlur = SkRRect::MakeRectRadii(snappedRect.asSkRect(), rrect.radii().data());
     }
 
+#if defined(SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR)
     std::optional<AnalyticBlurMask> analyticBlur = AnalyticBlurMask::Make(
             this->recorder(), this->localToDeviceTransform(), deviceSigma, rrectToBlur);
     if (!analyticBlur) {
-#if !defined(SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR)
-        // Try using the analytic rrect blur specific mask.
-        std::optional<AnalyticRRectBlurMask> analyticRRectBlur = AnalyticRRectBlurMask::Make(
-                this->recorder(), this->localToDeviceTransform(), localSigma, rrectToBlur);
-        if (analyticRRectBlur) {
-            this->drawGeometry(this->localToDeviceTransform(),
-                               Geometry(*analyticRRectBlur),
-                               PaintParams(paint),
-                               SkStrokeRec(paint));
-            return true;
-        }
-#endif
-
         return false;
     }
+    Geometry geometry = Geometry(*analyticBlur);
+#else
+    std::optional<AnalyticRRectBlurMask> analyticRRectBlur = AnalyticRRectBlurMask::Make(
+            this->recorder(), this->localToDeviceTransform(), localSigma, rrectToBlur);
+    if (!analyticRRectBlur) {
+        return false;
+    }
+    Geometry geometry = Geometry(*analyticRRectBlur);
+#endif
 
     this->drawGeometry(this->localToDeviceTransform(),
-                       Geometry(*analyticBlur),
+                       std::move(geometry),
                        PaintParams(paint),
                        SkStrokeRec(paint));
     return true;
