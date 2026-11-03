@@ -248,11 +248,17 @@ DrawAtlas::ErrorCode DrawAtlas::addRect(Recorder* recorder,
     if (width == 0 || height == 0) {
         if (fNumActivePages == 0) {
             // Make sure we have a Page for the AtlasLocator to refer to
-            this->activateNewPage(recorder);
+            if (!this->activateNewPage(recorder)) {
+                return ErrorCode::kError;
+            }
         }
         atlasLocator->updateRect(SkIRect::MakeEmpty());
         // Use the MRU Plot from the first Page
-        atlasLocator->updatePlotLocator(fPages[0].fPlotList.head()->plotLocator());
+        Plot* plot = fPages[0].fPlotList.head();
+        atlasLocator->updatePlotLocator(plot->plotLocator());
+        if (!fProxies[0]->isInstantiated() && !plot->needsUpload()) {
+            plot->markZeroRectDirty();
+        }
         return ErrorCode::kSucceeded;
     }
 
@@ -800,7 +806,7 @@ std::pair<const void*, SkIRect> DrawAtlas::Plot::prepareForUpload() {
     // We should only be issuing uploads if we are dirty
     SkASSERT(!fDirtyRect.isEmpty());
     if (!fData) {
-        return {nullptr, {}};
+        fData = std::make_unique<std::byte[]>(this->bpp() * fPlotDimensions.area());
     }
     auto aligned = this->alignedDirtyRect();
 

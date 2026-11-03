@@ -10,10 +10,14 @@
 #include "include/core/SkImageInfo.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Recording.h"
 #include "src/gpu/MaskFormat.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawAtlas.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/draw/DrawContext.h"
+#include "src/gpu/graphite/task/Task.h"
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 
 #include "tests/CtsEnforcement.h"
@@ -395,4 +399,90 @@ DEF_GRAPHITE_TEST(DrawAtlasConfig_Basic, reporter, CtsEnforcement::kNever) {
                            { 256, 256 }, { 256, 256 });
     test_draw_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                            { 512, 512 }, { 256, 256 });
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DrawAtlasZeroAndUnrenderedUpload,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNever) {
+    auto recorder = context->makeRecorder();
+    const Caps* caps = recorder->priv().caps();
+    SkImageInfo dstII = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    TextureInfo texInfo = caps->getDefaultSampledTextureInfo(dstII.colorType(),
+                                                             skgpu::Mipmapped::kNo,
+                                                             skgpu::Protected::kNo,
+                                                             skgpu::Renderable::kYes);
+    sk_sp<TextureProxy> target = TextureProxy::Make(caps,
+                                                    recorder->priv().resourceProvider(),
+                                                    dstII.dimensions(),
+                                                    texInfo,
+                                                    skgpu::Budgeted::kYes,
+                                                    "DrawAtlasTestTarget");
+    REPORTER_ASSERT(reporter, target);
+    sk_sp<DrawContext> dc = DrawContext::Make(caps,
+                                              std::move(target),
+                                              dstII.dimensions(),
+                                              dstII.colorInfo(),
+                                              SkSurfaceProps(),
+                                              /*allowUnpremul=*/false);
+    REPORTER_ASSERT(reporter, dc);
+
+    DrawAtlas::GenerationCounter counter;
+    // 1) A 0x0 rect added to a fresh DrawAtlas should activate page 0 and mark a dirty upload so
+    //    that recordUploads + snap instantiates the page's TextureProxy.
+    {
+        std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(MaskFormat::kA8,
+                                                           kAtlasSize,
+                                                           kAtlasSize,
+                                                           kPlotSize,
+                                                           kPlotSize,
+                                                           &counter,
+                                                           DrawAtlas::AllowMultitexturing::kNo,
+                                                           DrawAtlas::UseStorageTextures::kNo,
+                                                           /*evictor=*/nullptr,
+                                                           /*label=*/"ZeroRectAtlasTest");
+        DrawAtlas::AtlasLocator locator;
+        REPORTER_ASSERT(
+                reporter,
+                atlas->addRect(recorder.get(), 0, 0, &locator) == DrawAtlas::ErrorCode::kSucceeded);
+        REPORTER_ASSERT(reporter, atlas->numActivePages() == 1);
+        REPORTER_ASSERT(reporter, !atlas->getProxies()[0]->isInstantiated());
+        REPORTER_ASSERT(reporter, atlas->recordUploads(dc.get(), recorder.get()));
+        dc->flush(recorder.get());
+        sk_sp<Task> drawTask = dc->snapDrawTask();
+        REPORTER_ASSERT(reporter, drawTask);
+        recorder->priv().add(std::move(drawTask));
+        std::unique_ptr<Recording> recording = recorder->snap();
+        REPORTER_ASSERT(reporter, recording);
+        REPORTER_ASSERT(reporter, atlas->getProxies()[0]->isInstantiated());
+    }
+
+    // 2) Calling addRect without prepForRender/copySubImage should still upload zero-initialized
+    //    plot data and instantiate the page's TextureProxy.
+    {
+        std::unique_ptr<DrawAtlas> atlas = DrawAtlas::Make(MaskFormat::kA8,
+                                                           kAtlasSize,
+                                                           kAtlasSize,
+                                                           kPlotSize,
+                                                           kPlotSize,
+                                                           &counter,
+                                                           DrawAtlas::AllowMultitexturing::kNo,
+                                                           DrawAtlas::UseStorageTextures::kNo,
+                                                           /*evictor=*/nullptr,
+                                                           /*label=*/"UnrenderedRectAtlasTest");
+        DrawAtlas::AtlasLocator locator;
+        REPORTER_ASSERT(
+                reporter,
+                atlas->addRect(recorder.get(), 8, 8, &locator) == DrawAtlas::ErrorCode::kSucceeded);
+        REPORTER_ASSERT(reporter, atlas->numActivePages() == 1);
+        REPORTER_ASSERT(reporter, !atlas->getProxies()[0]->isInstantiated());
+        REPORTER_ASSERT(reporter, atlas->recordUploads(dc.get(), recorder.get()));
+        dc->flush(recorder.get());
+        sk_sp<Task> drawTask = dc->snapDrawTask();
+        REPORTER_ASSERT(reporter, drawTask);
+        recorder->priv().add(std::move(drawTask));
+        std::unique_ptr<Recording> recording = recorder->snap();
+        REPORTER_ASSERT(reporter, recording);
+        REPORTER_ASSERT(reporter, atlas->getProxies()[0]->isInstantiated());
+    }
 }
