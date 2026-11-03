@@ -652,6 +652,7 @@ public:
     void incFlushesSinceLastUsed() { fFlushesSinceLastUse++; }
 
     bool needsUpload() { return !fDirtyRect.isEmpty(); }
+    void markZeroRectDirty() { fDirtyRect.join(SkIRect::MakeWH(1, 1)); }
     std::pair<const void*, SkIRect> prepareForUpload();
 
     // NEW

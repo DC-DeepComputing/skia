@@ -54,6 +54,10 @@ sk_sp<TextureProxy> RasterPathAtlas::onAddShape(const Shape& shape,
                                                 SkIRect maskBounds,
                                                 SkIPoint cacheMaskOrigin,
                                                 SkIPoint* outPos) {
+    if (maskBounds.isEmpty()) {
+        return nullptr;
+    }
+
     sk_sp<TextureProxy> proxy;
 
     if (!shape.isVolatilePath()) {

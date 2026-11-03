@@ -65,6 +65,9 @@ std::pair<const Renderer*, std::optional<CoverageMaskShape>> PathAtlas::addShape
     // translation that we use when deriving the atlas-space transform later. Since `maskBounds`
     // is roughly bounded by the output device size, the float -> int conversion is safe.
     SkIRect iMaskBounds = maskBounds.makeRoundOut().asSkIRect();
+    if (iMaskBounds.isEmpty()) {
+        return std::make_pair(nullptr, std::nullopt);
+    }
 
     CoverageMaskShape::MaskInfo maskInfo;
     // This size does *not* include any padding that the atlas may place around the mask. This size
