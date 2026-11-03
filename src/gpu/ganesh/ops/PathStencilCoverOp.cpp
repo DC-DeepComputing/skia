@@ -254,14 +254,14 @@ void PathStencilCoverOp::onPrePrepare(GrRecordingContext* context,
 
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gUnitQuadBufferKey);
 
-void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
+bool PathStencilCoverOp::onPrepare1(GrOpFlushState* flushState) {
     if (!fTessellator) {
         this->prePreparePrograms({flushState->allocator(), flushState->writeView(),
                                  flushState->usesMSAASurface(), &flushState->dstProxyView(),
                                  flushState->renderPassBarriers(), flushState->colorLoadOp(),
                                  &flushState->caps()}, flushState->detachAppliedClip());
         if (!fTessellator) {
-            return;
+            return false;
         }
     }
 
@@ -281,7 +281,7 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
         // dropping at 1/4 of int max vs. 1/3 of int max doesn't matter.
         if ((std::numeric_limits<int>::max() >> 2) < maxTrianglesInFans) SK_UNLIKELY {
             SKIA_LOG_W("Excessive triangle count, dropping draw: %d", maxTrianglesInFans);
-            return;
+            return false;
         }
         int fanTriangleCount = 0;
         if (VertexWriter triangleVertexWriter =
@@ -317,7 +317,7 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
                                                                  &fBBoxBaseInstance);
         if (!vertexWriter) SK_UNLIKELY {
             SKIA_LOG_W("Could not allocate vertices");
-            return;
+            return false;
         }
         SkDEBUGCODE(int pathCount = 0;)
         for (auto [pathMatrix, path, color] : *fPathDrawList) {
@@ -357,17 +357,18 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
         fBBoxVertexBufferIfNoIDSupport = flushState->resourceProvider()->findOrMakeStaticBuffer(
                 GrGpuBufferType::kVertex, sizeof(kUnitQuad), kUnitQuad, gUnitQuadBufferKey);
     }
+    return true;
 }
 
-void PathStencilCoverOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool PathStencilCoverOp::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (!fTessellator) {
-        return;
+        return false;
     }
 
     if (fCoverBBoxProgram &&
         fCoverBBoxProgram->geomProc().hasVertexAttributes() &&
         !fBBoxVertexBufferIfNoIDSupport) {
-        return;
+        return false;
     }
 
     // Stencil the inner fan, if any.
@@ -376,13 +377,17 @@ void PathStencilCoverOp::onExecute(GrOpFlushState* flushState, const SkRect& cha
         SkASSERT(fFanBuffer);
         flushState->bindPipelineAndScissorClip(*fStencilFanProgram, this->bounds());
         flushState->bindBuffers(nullptr, nullptr, fFanBuffer);
-        flushState->draw(fFanVertexCount, fFanBaseVertex);
+        if (!flushState->draw2(fFanVertexCount, fFanBaseVertex)) {
+            return false;
+        }
     }
 
     // Stencil the rest of the path.
     SkASSERT(fStencilPathProgram);
     flushState->bindPipelineAndScissorClip(*fStencilPathProgram, this->bounds());
-    fTessellator->draw(flushState);
+    if (!fTessellator->draw(flushState)) {
+        return false;
+    }
 
     // Fill in the bounding box (if not in stencil-only mode).
     if (fCoverBBoxProgram) {
@@ -390,8 +395,12 @@ void PathStencilCoverOp::onExecute(GrOpFlushState* flushState, const SkRect& cha
         flushState->bindTextures(fCoverBBoxProgram->geomProc(), nullptr,
                                  fCoverBBoxProgram->pipeline());
         flushState->bindBuffers(nullptr, fBBoxBuffer, fBBoxVertexBufferIfNoIDSupport);
-        flushState->drawInstanced(fPathCount, fBBoxBaseInstance, 4, 0);
+        if (!flushState->drawInstanced2(fPathCount, fBBoxBaseInstance, 4, 0)) {
+            return false;
+        }
     }
+
+    return true;
 }
 
 }  // namespace skgpu::ganesh
