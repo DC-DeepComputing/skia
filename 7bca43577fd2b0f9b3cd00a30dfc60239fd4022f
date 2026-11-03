@@ -16,6 +16,24 @@
       "message": "Thanks, David! The change looks good to me.\n\nI checked PS1 locally on top of PS1 of the parent change:\n- Without the TextLine.cpp hunk, SkParagraph_JustifiedLtrLineEndingInRtlRunBoxesMatchGlyphs fails with the numbers from the description (glyph of 14 at 94.43, box [101.844, 107.634)). With it, all SkParagraph tests pass.\n- I ran the same checkBoxesMatchGlyphs over widths 80..320 (step 3) on three LTR texts: the sentence from the test, the same sentence with double spaces between the Arabic words, and \"ab دار ورد زاد دور رواد ورد زاد cd ef دار ورد زاد gh\", where an RTL run sits between LTR runs. The sentence from the test now has no mismatches at any width (202 failed assertions before). No width got worse on the other two texts, and 26 and 30 widths got better. The mismatches left there were already on the parent and do not come from the trailing space; for example, the second space of a double space inside an RTL run gets an empty box.\n- In RTL paragraphs the results are the same as before at every width, as the description says.\n\nOne note for a possible follow-up, not for this CL: the mirror case still fails. This is an RTL paragraph whose line ends inside an LTR run, e.g. \"دار ورد hello world more english words زاد دور رواد and ok\" justified at width 110. There, the trailing space of the LTR run gets ghostShift although it sits in the middle of the line, so the boxes of the RTL run after it are 20-37 px off the painted glyphs. Taking the ghostShift branch only in LTR paragraphs fixes most widths. The boxes still keep the width of that space, though, so it needs more than a one-line change.\n\nI leave this comment unresolved on purpose: it blocks the submit until the Canary-G3 try job passes. Canary-G3 builds and tests the google3 clients of Skia with this change. Skia starts it for an external author only after a Googler votes Code-Review+1, so I vote first and hold the submit with this comment. I will resolve it when Canary-G3 is green, or report the failure here. Please do not resolve or override it before that.",
       "revId": "7bca43577fd2b0f9b3cd00a30dfc60239fd4022f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b0769cb_d4658ab3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T01:26:17Z",
+      "side": 1,
+      "message": "The try jobs on PS1 are green: the ASAN bot (Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload) and Canary-G3 both pass, so the google3 clients of Skia build and pass their tests with this change. The submit hold is released, and from my side the CL is ready to land once it has the second approval.",
+      "parentUuid": "068f541c_51cd2ab8",
+      "revId": "7bca43577fd2b0f9b3cd00a30dfc60239fd4022f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
