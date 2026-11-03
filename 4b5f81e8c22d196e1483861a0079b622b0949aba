@@ -33,6 +33,24 @@
       "message": "Canary-G3 could not start: Gerrit marks PS3 as not mergeable (https://ci.chromium.org/b/8666199611779977489, \"CL is not mergeable\"). Please rebase onto main.\n\nThe conflict comes from https://skia-review.googlesource.com/c/skia/+/1412380 (\"[skparagraph] Keep glyph offsets only if needed\"), which rewrote the same loop with run-\u003eglobalClusterIndex(i). The storage still has size() + 1 entries (Run::clusterIndexes() returns a span of size() + 1), so the fix carries over as:\n\n    clusterStorage.reset(context.size + 1);\n    for (size_t i \u003d 0; i \u003c\u003d context.size; ++i) {\n        clusterStorage[i] \u003d run-\u003eglobalClusterIndex(context.pos + i);\n    }\n\nIn SkParagraphTest.cpp both sides only append tests at the end of the file, so keep both. With this resolution on top of current main, all SkParagraph dm tests pass locally, and the new tests still fail without the fix.\n\nWhile you are rebasing, could you also update the commit message (see my comment above)? I will rerun Canary-G3 on the new patchset.",
       "revId": "4b5f81e8c22d196e1483861a0079b622b0949aba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3bf8ef_41883550",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T15:53:39Z",
+      "side": 1,
+      "message": "Done in PS4, thanks.",
+      "parentUuid": "7dbc1a44_fef5c8bb",
+      "revId": "4b5f81e8c22d196e1483861a0079b622b0949aba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

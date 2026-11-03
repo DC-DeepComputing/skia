@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7ef8f3_186d1619",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-03T15:53:39Z",
+      "side": 1,
+      "message": "Thanks, the new commit message reads well. PS5 has the same tree as PS4, which passes all SkParagraph dm tests locally on current main.\n\nCode-Review+1. The Canary-G3 hold from my PS3 comment still applies. I will resolve it when Canary-G3 passes on this patchset.",
+      "revId": "598b14025764f5550a9e90d82e0ff86e093f1dec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
