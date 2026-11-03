@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "584dd5d5_1f2d1e4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-11-03T21:01:56Z",
+      "side": 1,
+      "message": "Now properly omitting some gold config params when the task is run on postsubmit.\n\nThe CK task does the same thing: https://cs.opensource.google/skia/skia/+/d94148ae12c192189adaeb778aa90670e45e8c95:infra/bots/task_drivers/canvaskit_gold/canvaskit_gold.go;l\u003d216-220",
+      "revId": "113f4510683f747428a9f184c1b9c47e4c6fa827",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
