@@ -13,6 +13,7 @@ skia_filegroup(
         "Decorations.h",
         "FontArguments.cpp",
         "FontCollection.cpp",
+        "FontCollectionFaceCache.h",
         "Iterators.h",
         "OneLineShaper.cpp",
         "OneLineShaper.h",
@@ -41,8 +42,11 @@ skia_filegroup(
 skia_filegroup(
     name = "coretext_srcs",
     srcs = [
+        "CoreTextFontRegistry.cpp",
+        "CoreTextFontRegistry.h",
         "CoreTextIndexMap.cpp",
         "CoreTextIndexMap.h",
+        "FontCollection_coretext.cpp",
     ],
     visibility = ["//modules/skparagraph:__pkg__"],
 )
