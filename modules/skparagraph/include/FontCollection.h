@@ -57,6 +57,35 @@ private:
 
     sk_sp<SkTypeface> matchTypeface(const SkString& familyName, SkFontStyle fontStyle);
 
+    // CoreTextFontRegistry::findTypefaces is the only caller of findCoreTextTypefaces: system
+    // families resolve through CoreText, never through fDefaultFontManager
+    friend class CoreTextFontRegistry;
+
+    // Looks up an installed family by exact name in fontStyle; null when it is missing
+    using SystemFamilyLookup = sk_sp<SkTypeface> (*)(const SkString& familyName,
+                                                     SkFontStyle fontStyle);
+
+    // Resolves familyNames for CoreText paragraphs and caches the list in fFaceCache apart from
+    // findTypefaces entries. Each family comes from the user managers, then systemFamily; with
+    // no match coreTextStandIn supplies one face. fontArgs clones every face, dropping failures
+    std::vector<sk_sp<SkTypeface>> findCoreTextTypefaces(
+            const std::vector<SkString>& familyNames,
+            SkFontStyle fontStyle,
+            const std::optional<FontArguments>& fontArgs,
+            SystemFamilyLookup systemFamily);
+
+    // Returns the face for one family: the user managers first (dynamic, asset, test), then
+    // systemFamily, unless user managers exist without a default manager or font fallback is
+    // disabled. Null when nothing matches; fDefaultFontManager itself is never queried
+    sk_sp<SkTypeface> matchCoreTextFamily(const SkString& familyName,
+                                          SkFontStyle fontStyle,
+                                          SystemFamilyLookup systemFamily);
+
+    // Returns the face that stands in when no requested family matched: the first matching
+    // default family, then a user manager's default face, then .AppleSystemUIFont from
+    // systemFamily when font fallback is enabled. Null when none of them exists
+    sk_sp<SkTypeface> coreTextStandIn(SkFontStyle fontStyle, SystemFamilyLookup systemFamily);
+
     sk_sp<SkTypeface> cloneTypeface(const sk_sp<SkTypeface>& typeface, const FontArguments& args);
 
     struct FaceCache;

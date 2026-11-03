@@ -21,19 +21,27 @@ namespace textlayout {
 
 struct FontCollection::FaceCache {
     struct FamilyKey {
-        FamilyKey(const std::vector<SkString>& familyNames, SkFontStyle style, const std::optional<FontArguments>& args)
-                : fFamilyNames(familyNames), fFontStyle(style), fFontArguments(args) {}
+        FamilyKey(const std::vector<SkString>& familyNames,
+                  SkFontStyle style,
+                  const std::optional<FontArguments>& args,
+                  bool coreText)
+                : fFamilyNames(familyNames)
+                , fFontStyle(style)
+                , fFontArguments(args)
+                , fCoreText(coreText) {}
 
         FamilyKey() {}
 
         std::vector<SkString> fFamilyNames;
         SkFontStyle fFontStyle;
         std::optional<FontArguments> fFontArguments;
+        // HarfBuzz and CoreText paragraphs can share a collection but resolve the same families
+        // differently (CoreText never asks fDefaultFontManager), so neither may reuse the other's
+        bool fCoreText = false;
 
         bool operator==(const FamilyKey& other) const {
-            return fFamilyNames == other.fFamilyNames &&
-                   fFontStyle == other.fFontStyle &&
-                   fFontArguments == other.fFontArguments;
+            return fFamilyNames == other.fFamilyNames && fFontStyle == other.fFontStyle &&
+                   fFontArguments == other.fFontArguments && fCoreText == other.fCoreText;
         }
 
         struct Hasher {
@@ -42,13 +50,36 @@ struct FontCollection::FaceCache {
                 for (const SkString& family : key.fFamilyNames) {
                     hash ^= std::hash<std::string>()(family.c_str());
                 }
-                return hash ^
-                       std::hash<uint32_t>()(key.fFontStyle.weight()) ^
+                return hash ^ std::hash<uint32_t>()(key.fFontStyle.weight()) ^
                        std::hash<uint32_t>()(key.fFontStyle.slant()) ^
-                       std::hash<std::optional<FontArguments>>()(key.fFontArguments);
+                       std::hash<std::optional<FontArguments>>()(key.fFontArguments) ^
+                       std::hash<bool>()(key.fCoreText);
             }
         };
     };
+
+    // Returns a copy of the cached list for key, or nullopt. The lock is released before the
+    // caller resolves a miss, so font manager queries do not block cache hits and cloneTypeface
+    // can lock fVariationCache safely
+    std::optional<std::vector<sk_sp<SkTypeface>>> find(const FamilyKey& key) {
+        SkAutoMutexExclusive lock(fMutex);
+        if (auto* found = fTypefaces.find(key)) {
+            return *found;
+        }
+        return std::nullopt;
+    }
+
+    // Stores typefaces under key and returns them; reuses the cached vector if another thread
+    // populated key while unlocked
+    std::vector<sk_sp<SkTypeface>> insert(const FamilyKey& key,
+                                          std::vector<sk_sp<SkTypeface>> typefaces) {
+        SkAutoMutexExclusive lock(fMutex);
+        if (auto* found = fTypefaces.find(key)) {
+            return *found;
+        }
+        return *fTypefaces.set(key, std::move(typefaces));
+    }
+
     // Synchronize fTypefaces inside the pimpl struct to preserve FontCollection's ABI layout
     mutable SkMutex fMutex;
     skia_private::THashMap<FamilyKey, std::vector<sk_sp<SkTypeface>>, FamilyKey::Hasher> fTypefaces
@@ -241,15 +272,9 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
 
 std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<SkString>& familyNames, SkFontStyle fontStyle, const std::optional<FontArguments>& fontArgs) {
     // Look inside the font collections cache first
-    FaceCache::FamilyKey familyKey(familyNames, fontStyle, fontArgs);
-    {
-        // Release fFaceCache->fMutex before matchTypeface and cloneTypeface so font manager
-        // queries do not block cache hits and cloneTypeface can lock fVariationCache safely
-        SkAutoMutexExclusive lock(fFaceCache->fMutex);
-        auto found = fFaceCache->fTypefaces.find(familyKey);
-        if (found) {
-            return *found;
-        }
+    FaceCache::FamilyKey familyKey(familyNames, fontStyle, fontArgs, /*coreText=*/false);
+    if (auto cached = fFaceCache->find(familyKey)) {
+        return std::move(*cached);
     }
 
     std::vector<sk_sp<SkTypeface>> typefaces;
@@ -287,13 +312,96 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
         }
     }
 
-    // Reuse the cached vector if another thread populated familyKey while unlocked
-    SkAutoMutexExclusive lock(fFaceCache->fMutex);
-    if (auto* found = fFaceCache->fTypefaces.find(familyKey)) {
-        return *found;
+    return fFaceCache->insert(familyKey, std::move(typefaces));
+}
+
+std::vector<sk_sp<SkTypeface>> FontCollection::findCoreTextTypefaces(
+        const std::vector<SkString>& familyNames,
+        SkFontStyle fontStyle,
+        const std::optional<FontArguments>& fontArgs,
+        SystemFamilyLookup systemFamily) {
+    FaceCache::FamilyKey familyKey(familyNames, fontStyle, fontArgs, /*coreText=*/true);
+    if (auto cached = fFaceCache->find(familyKey)) {
+        return std::move(*cached);
     }
-    fFaceCache->fTypefaces.set(familyKey, typefaces);
-    return typefaces;
+
+    std::vector<sk_sp<SkTypeface>> typefaces;
+    for (const SkString& familyName : familyNames) {
+        if (sk_sp<SkTypeface> match =
+                    this->matchCoreTextFamily(familyName, fontStyle, systemFamily)) {
+            typefaces.push_back(std::move(match));
+        }
+    }
+    if (typefaces.empty()) {
+        if (sk_sp<SkTypeface> standIn = this->coreTextStandIn(fontStyle, systemFamily)) {
+            typefaces.push_back(std::move(standIn));
+        }
+    }
+    if (fontArgs) {
+        // SkTypeface::makeClone returns null when variation cloning fails; drop null entries
+        // as FontCollection::findTypefaces does so cascade and allowlists hold valid faces
+        std::erase_if(typefaces, [&](sk_sp<SkTypeface>& typeface) {
+            typeface = this->cloneTypeface(typeface, *fontArgs);
+            return !typeface;
+        });
+    }
+    return fFaceCache->insert(familyKey, std::move(typefaces));
+}
+
+sk_sp<SkTypeface> FontCollection::matchCoreTextFamily(const SkString& familyName,
+                                                      SkFontStyle fontStyle,
+                                                      SystemFamilyLookup systemFamily) {
+    // A face the client registered under a family name wins over an installed one of the same
+    // name, in the same dynamic -> asset -> test order as getFontManagerOrder
+    for (SkFontMgr* manager :
+         {fDynamicFontManager.get(), fAssetFontManager.get(), fTestFontManager.get()}) {
+        if (!manager) {
+            continue;
+        }
+        sk_sp<SkFontStyleSet> set(manager->matchFamily(familyName.c_str()));
+        if (!set || set->count() == 0) {
+            continue;
+        }
+        if (sk_sp<SkTypeface> match = set->matchStyle(fontStyle)) {
+            return match;
+        }
+    }
+    // When the client registered user font managers without a defaultFontManager (e.g. isolated
+    // asset-only tests), do not resolve system families ahead of later user families in the list
+    if (!fDefaultFontManager && (fDynamicFontManager || fAssetFontManager || fTestFontManager)) {
+        return nullptr;
+    }
+    // disableFontFallback drops the default manager from getFontManagerOrder, so FontCollection
+    // sees only user faces; installed families stay hidden here for the same reason
+    if (!fEnableFontFallback) {
+        return nullptr;
+    }
+    return systemFamily(familyName, fontStyle);
+}
+
+sk_sp<SkTypeface> FontCollection::coreTextStandIn(SkFontStyle fontStyle,
+                                                  SystemFamilyLookup systemFamily) {
+    for (const SkString& familyName : fDefaultFamilyNames) {
+        if (sk_sp<SkTypeface> match =
+                    this->matchCoreTextFamily(familyName, fontStyle, systemFamily)) {
+            return match;
+        }
+    }
+    // Same order as getFontManagerOrder: user registries give the stand-in first; the
+    // system one stands in last and only with fallback enabled
+    for (SkFontMgr* manager :
+         {fDynamicFontManager.get(), fAssetFontManager.get(), fTestFontManager.get()}) {
+        if (!manager) {
+            continue;
+        }
+        if (sk_sp<SkTypeface> match = manager->legacyMakeTypeface(nullptr, fontStyle)) {
+            return match;
+        }
+    }
+    if (!fEnableFontFallback) {
+        return nullptr;
+    }
+    return systemFamily(SkString(".AppleSystemUIFont"), fontStyle);
 }
 
 sk_sp<SkTypeface> FontCollection::matchTypeface(const SkString& familyName, SkFontStyle fontStyle) {
