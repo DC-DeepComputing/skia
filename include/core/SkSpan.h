@@ -30,6 +30,7 @@
 #ifdef SK_USE_LEGACY_SKSPAN
 
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
 
@@ -59,6 +60,13 @@ template <typename T, size_t Extent = SkDynamicExtent>
 class SkSpan;
 
 namespace sk_span_internal {
+
+// Out-of-line [[noreturn]] failure sink for release checks. SkASSERT_RELEASE expands to a
+// non-[[noreturn]] lambda closure per template instantiation, which inflates LLVM InlineCost
+// in hot callers and blocks LTO inlining and SROA
+[[noreturn]] SK_NEVER_INLINE inline void abort_check(const char* cond) {
+    SK_ABORT("check(%s)", cond);
+}
 
 template <typename From, typename To>
 inline constexpr bool kLegalDataConversion =
@@ -107,9 +115,9 @@ concept CompatibleContainer =
 template <typename T, size_t Extent>
 struct SpanStorage {
     constexpr SpanStorage(T* ptr, size_t size) : fPtr(ptr) {
+        SkASSERT(size == Extent);
         if (size != Extent) SK_UNLIKELY {
-            SkASSERT_RELEASE(size == Extent);
-            SkUNREACHABLE;
+            abort_check("size == Extent");
         }
     }
     constexpr size_t size() const { return Extent; }
@@ -170,9 +178,17 @@ public:
         requires std::is_integral_v<Integer>
     constexpr explicit(Extent != SkDynamicExtent) SkSpan(T* ptr, Integer size)
             : INHERITED{ptr, SkToSizeT(size)} {
-        SkASSERT_RELEASE(SkTFitsIn<size_t>(size));
-        SkASSERT_RELEASE(ptr || this->size() == 0);  // disallow nullptr + a nonzero size
-        SkASSERT_RELEASE(this->size() < (std::numeric_limits<size_t>::max() / sizeof(T)));
+        // Separate SkASSERTs pinpoint the failing invariant in debug builds; release builds
+        // share one [[noreturn]] sink so hot callers pay zero lambda-closure InlineCost
+        SkASSERT(SkTFitsIn<size_t>(size));
+        SkASSERT(ptr || this->size() == 0);  // disallow nullptr + a nonzero size
+        SkASSERT(this->size() < (std::numeric_limits<size_t>::max() / sizeof(T)));
+        if (!SkTFitsIn<size_t>(size) || !(ptr || this->size() == 0) ||
+            this->size() >= (std::numeric_limits<size_t>::max() / sizeof(T))) SK_UNLIKELY {
+            sk_span_internal::abort_check(
+                    "SkTFitsIn<size_t>(size) && (ptr || this->size() == 0) && "
+                    "this->size() < (std::numeric_limits<size_t>::max() / sizeof(T))");
+        }
     }
 
     template <typename U, size_t OtherExtent>
@@ -251,9 +267,9 @@ public:
         if constexpr (Extent == SkDynamicExtent) {
             const size_t safeOffset = sk_collection_check_length(Offset, this->size());
             if constexpr (Count != SkDynamicExtent) {
+                SkASSERT(Count <= this->size() - safeOffset);
                 if (Count > this->size() - safeOffset) SK_UNLIKELY {
-                    SkASSERT_RELEASE(Count <= this->size() - safeOffset);
-                    SkUNREACHABLE;
+                    sk_span_internal::abort_check("Count <= this->size() - safeOffset");
                 }
             }
             return SkSpan<T, kSubExtent>{
@@ -279,10 +295,10 @@ public:
 
         // Should read offset + count > size(), but that could overflow. We know that safeOffset
         // is <= size, therefore the subtraction will not overflow.
+        SkASSERT(count <= this->size() - safeOffset);
         if (count > this->size() - safeOffset) SK_UNLIKELY {
             // The count is too large.
-            SkASSERT_RELEASE(count <= this->size() - safeOffset);
-            SkUNREACHABLE;
+            sk_span_internal::abort_check("count <= this->size() - safeOffset");
         }
         return SkSpan<T>{this->fPtr + safeOffset, count};
     }

@@ -545,3 +545,24 @@ DEF_TEST(SkSpanificationHelpers, reporter) {
     REPORTER_ASSERT(reporter, s.size() == 2);
     REPORTER_ASSERT(reporter, s[0] == 30);
 }
+
+DEF_TEST(SkSpanBoundaryAndConstexpr, reporter) {
+    // Dynamic-extent (ptr, size) construction must remain usable in constant expressions
+    constexpr SkSpan<const int> kDyn(kConstexprArray, 4);
+    static_assert(kDyn.size() == 4 && *kDyn.data() == 10 && *(kDyn.data() + 3) == 40);
+    constexpr SkSpan<const int> kEmpty(static_cast<const int*>(nullptr), 0);
+    static_assert(kEmpty.empty() && kEmpty.data() == nullptr);
+
+    int zero = 0;
+    SkSpan<const int> nullDyn(nullptr, zero);
+    SkSpan<const int, 0> nullFixed(nullptr, zero);
+    REPORTER_ASSERT(reporter, nullDyn.empty() && nullDyn.data() == nullptr);
+    REPORTER_ASSERT(reporter, nullFixed.empty() && nullFixed.data() == nullptr);
+
+    int count = 4;
+    SkSpan<const int> fromSigned(kConstexprArray, count);
+    auto fixedTail = fromSigned.subspan<4, 0>();
+    auto runtimeTail = fromSigned.subspan(4, 0);
+    REPORTER_ASSERT(reporter, fixedTail.empty() && fixedTail.data() == kConstexprArray + 4);
+    REPORTER_ASSERT(reporter, runtimeTail.empty() && runtimeTail.data() == kConstexprArray + 4);
+}
