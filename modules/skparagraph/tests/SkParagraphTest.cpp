@@ -11960,6 +11960,55 @@ DEF_TEST(SkParagraph_BidiIsolateStyledBlockNoSpaceFont, reporter) {
 }
 
 namespace {
+// A font manager that only implements matchFamilyStyle (not matchFamily) to
+// verify that FontCollection resolves families through the style API.
+class StyleOnlyFontMgr : public TypefaceFontProvider {
+public:
+    explicit StyleOnlyFontMgr(sk_sp<SkTypeface> typeface) : fTypeface(std::move(typeface)) {}
+
+    int matchFamilyCalls() const { return fMatchFamilyCalls; }
+    int matchFamilyStyleCalls() const { return fMatchFamilyStyleCalls; }
+
+private:
+    sk_sp<SkFontStyleSet> onMatchFamily(const char[]) const override {
+        ++fMatchFamilyCalls;
+        return nullptr;
+    }
+
+    sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
+                                         const SkFontStyle&) const override {
+        ++fMatchFamilyStyleCalls;
+        return familyName && strcmp(familyName, "StyleOnly") == 0 ? fTypeface : nullptr;
+    }
+
+    sk_sp<SkTypeface> fTypeface;
+    mutable int fMatchFamilyCalls = 0;
+    mutable int fMatchFamilyStyleCalls = 0;
+};
+}  // namespace
+
+DEF_TEST(SkParagraph_FindTypefacesUsesMatchFamilyStyle, reporter) {
+    auto typeface =
+            ToolUtils::TestFontMgr()->makeFromStream(GetResourceAsStream("fonts/abc/abc.ttf"), {});
+    if (!typeface) {
+        return;
+    }
+
+    sk_sp<SkTypeface> expected = typeface;
+    auto manager = sk_make_sp<StyleOnlyFontMgr>(std::move(typeface));
+    auto collection = sk_make_sp<FontCollection>();
+    collection->setDefaultFontManager(manager);
+
+    auto faces = collection->findTypefaces({SkString("StyleOnly")}, SkFontStyle());
+    REPORTER_ASSERT(reporter, faces.size() == 1);
+    if (faces.size() == 1) {
+        REPORTER_ASSERT(reporter, faces[0] == expected);
+    }
+    REPORTER_ASSERT(reporter, manager->matchFamilyStyleCalls() == 1);
+    REPORTER_ASSERT(reporter, manager->matchFamilyCalls() == 0);
+}
+
+namespace {
 // Counts fallback requests and finds no fallback typeface
 class CountingFallbackFontMgr : public TypefaceFontProvider {
 public:
