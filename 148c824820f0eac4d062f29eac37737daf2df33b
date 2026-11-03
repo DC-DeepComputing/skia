@@ -16,6 +16,24 @@
       "message": "`kBGR_101010x_XR` (and `kBGRA_10101010_XR`) are accepted by `SkCodec::conversionSupported`/`SkJpegCodec` and still land here. A truncated PNG or JPEG decoded into `kBGR_101010x_XR` may reproduce the same assert, or leave unwritten rows in release. Could we handle them with the biased zero, or file a follow-up bug?\n\nSeparately: consider replacing `SkCodecPrintf` + `SkASSERT(false)` with `SkDEBUGFAILF(\"...%d\", info.colorType())`, followed by a bytewise zero fill, so release builds never leave rows uninitialized.\"",
       "revId": "148c824820f0eac4d062f29eac37737daf2df33b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7050a285_b1983cc1",
+        "filename": "src/codec/SkSampler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4772438
+      },
+      "writtenOn": "2026-11-03T19:06:59Z",
+      "side": 1,
+      "message": "\u003e Could we handle them with the biased zero, or file a follow-up bug?\n  \nYup, I wanted to follow up on XR in a separate CL since it needs a bit more handling beyond `SkSampler::Fill`.\n  \nFiled http://b/581427516 to follow up on both.\n  \n\u003e Separately: consider replacing `SkCodecPrintf` + `SkASSERT(false)` with `SkDEBUGFAILF(\"...%d\", info.colorType())`, followed by a bytewise zero fill, so release builds never leave rows uninitialized.\n  \nDone, thanks!",
+      "parentUuid": "abc930ce_39411c8c",
+      "revId": "148c824820f0eac4d062f29eac37737daf2df33b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
