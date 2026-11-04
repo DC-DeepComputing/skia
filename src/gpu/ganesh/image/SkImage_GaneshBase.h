@@ -10,16 +10,17 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/chromium/SkImageChromium.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "src/image/SkImage_Base.h"
 
-#include <memory>
-#include <tuple>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
+#include <tuple>
 
 class GrBackendFormat;
 class GrBackendTexture;
@@ -105,7 +106,7 @@ public:
     virtual std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
             skgpu::ganesh::SurfaceDrawContext*,
             SkSamplingOptions,
-            const SkTileMode[2],
+            SkSpan<const SkTileMode, 2>,
             const SkMatrix&,
             const SkRect*,
             const SkRect*) const = 0;

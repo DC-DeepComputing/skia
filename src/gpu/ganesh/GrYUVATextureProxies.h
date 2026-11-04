@@ -9,6 +9,7 @@
 #define GrYUVATextureProxies_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -27,7 +28,7 @@ public:
 
     /** Assumes all planes are sampled with a default "rgba" swizzle. */
     GrYUVATextureProxies(const SkYUVAInfo&,
-                         sk_sp<GrSurfaceProxy>[SkYUVAInfo::kMaxPlanes],
+                         SkSpan<sk_sp<GrSurfaceProxy>, SkYUVAInfo::kMaxPlanes>,
                          GrSurfaceOrigin textureOrigin);
 
     /**
@@ -37,8 +38,8 @@ public:
      * all have the same origin or the result will be an invalid GrYUVATextureProxies.
      */
     GrYUVATextureProxies(const SkYUVAInfo&,
-                         GrSurfaceProxyView[SkYUVAInfo::kMaxPlanes],
-                         GrColorType[SkYUVAInfo::kMaxPlanes]);
+                         SkSpan<GrSurfaceProxyView, SkYUVAInfo::kMaxPlanes>,
+                         SkSpan<const GrColorType, SkYUVAInfo::kMaxPlanes>);
 
     GrYUVATextureProxies(const GrYUVATextureProxies&) = default;
     GrYUVATextureProxies(GrYUVATextureProxies&&) = default;
