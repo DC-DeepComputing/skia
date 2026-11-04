@@ -22,6 +22,30 @@
       },
       "revId": "b2eaff3635577f49a72c11ffbd60a0815d895959",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "979ef9ec_b97acc03",
+        "filename": "src/pathops/SkOpAngle.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T17:18:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b9c9391d_76ed7046",
+      "range": {
+        "startLine": 138,
+        "startChar": 7,
+        "endLine": 138,
+        "endChar": 29
+      },
+      "revId": "b2eaff3635577f49a72c11ffbd60a0815d895959",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
