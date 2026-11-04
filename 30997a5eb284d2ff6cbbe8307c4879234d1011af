@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdc242e1_29bb86dd",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-04T21:25:14Z",
+      "side": 1,
+      "message": "super minor nit: I wonder if it makes sense to define this as a helper function in its own cpp (or a file more closely related) purely to keep this file as clean as possible since just adding this one function requires including lots of new headers. I\u0027m not really sure if this is worth it but just a passing thought in my head.",
+      "range": {
+        "startLine": 36,
+        "startChar": 5,
+        "endLine": 36,
+        "endChar": 27
+      },
+      "revId": "30997a5eb284d2ff6cbbe8307c4879234d1011af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
