@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2a8770e_0ed7b4b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-04T21:09:46Z",
+      "side": 1,
+      "message": "Isn\u0027t this case the most common in practice (no unresolved codepoints)?\n\nThe variation is quite significant and kind of hard to dismiss on object layout changes alone.  Is this benchmark super unstable and/or doing very little actual work?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 71
+      },
+      "revId": "5b7e61b9eb56103cc0b9e8fd9bd3c44d3bd2eee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
