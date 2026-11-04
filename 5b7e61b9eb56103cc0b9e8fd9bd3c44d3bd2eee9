@@ -46,6 +46,30 @@
       },
       "revId": "5b7e61b9eb56103cc0b9e8fd9bd3c44d3bd2eee9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "728141ed_3db8e4e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-04T21:19:34Z",
+      "side": 1,
+      "message": "On TextBigO/64 specifically: TextBigO runs markDirty(); layout(300); in a tight loop on 64 code units 0..63, so every iteration after the first is a ~4us cache hit that only copies the cached runs/clusters and breaks one short line. With 0 unresolved codepoints, fUnresolvedCodepoints is nullptr, so shared_ptr assignment does a single null check (no atomic refcount increment). Replacing std::unordered_set (56 bytes) with std::shared_ptr (16 bytes) shrinks ParagraphImpl by 40 bytes and shifts the cache-line alignment of fLines right after it.",
+      "parentUuid": "52fc328e_7716a3ac",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 71
+      },
+      "revId": "5b7e61b9eb56103cc0b9e8fd9bd3c44d3bd2eee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
