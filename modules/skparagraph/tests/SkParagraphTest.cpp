@@ -12943,3 +12943,142 @@ DEF_TEST(SkParagraph_LetterSpacingLigatures, reporter) {
         REPORTER_ASSERT(reporter, countGlyphs(paragraph.get()) == 3);
     }
 }
+
+// Verify standard ligatures in cursive vs non-cursive scripts under letter-spacing
+DEF_TEST(SkParagraph_AndroidVerify192891, reporter) {
+    auto robotoData = GetResourceAsData("fonts/Roboto-Regular.ttf");
+    auto notoData = GetResourceAsData("fonts/NotoNaskhArabic-Regular.ttf");
+    auto scheherazadeData = GetResourceAsData("fonts/ScheherazadeNew-Regular.ttf");
+    auto hafsData = GetResourceAsData("fonts/UthmanicHafs1_Ver09.otf");
+
+    REPORTER_ASSERT(reporter, robotoData != nullptr);
+    REPORTER_ASSERT(reporter, notoData != nullptr);
+    REPORTER_ASSERT(reporter, scheherazadeData != nullptr);
+    REPORTER_ASSERT(reporter, hafsData != nullptr);
+
+    auto testFontMgr = ToolUtils::TestFontMgr();
+    REPORTER_ASSERT(reporter, testFontMgr != nullptr);
+
+    auto robotoFace = testFontMgr->makeFromData(std::move(robotoData));
+    auto notoFace = testFontMgr->makeFromData(std::move(notoData));
+    auto scheherazadeFace = testFontMgr->makeFromData(std::move(scheherazadeData));
+    auto hafsFace = testFontMgr->makeFromData(std::move(hafsData));
+
+    REPORTER_ASSERT(reporter, robotoFace != nullptr);
+    REPORTER_ASSERT(reporter, notoFace != nullptr);
+    REPORTER_ASSERT(reporter, scheherazadeFace != nullptr);
+    REPORTER_ASSERT(reporter, hafsFace != nullptr);
+
+    auto provider = sk_make_sp<TypefaceFontProvider>();
+    provider->registerTypeface(robotoFace, SkString("TestRoboto"));
+    provider->registerTypeface(notoFace, SkString("TestNotoNaskh"));
+    provider->registerTypeface(scheherazadeFace, SkString("TestScheherazade"));
+    provider->registerTypeface(hafsFace, SkString("TestHafs"));
+
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setAssetFontManager(provider);
+    fontCollection->disableFontFallback();
+
+    auto countGlyphs = [&](Paragraph* paragraph) {
+        auto* impl = static_cast<ParagraphImpl*>(paragraph);
+        REPORTER_ASSERT(reporter, !impl->runs().empty());
+        size_t total = 0;
+        for (const auto& run : impl->runs()) {
+            total += run.size();
+        }
+        return total;
+    };
+
+    auto build = [&](sk_sp<FontCollection> fc,
+                     const char* family,
+                     const char* text,
+                     SkScalar letterSpacing,
+                     int ligaFeature) {
+        TextStyle style;
+        if (family) {
+            style.setFontFamilies({SkString(family)});
+        }
+        style.setFontSize(20);
+        style.setColor(SK_ColorBLACK);
+        style.setLetterSpacing(letterSpacing);
+        if (ligaFeature >= 0) {
+            style.addFontFeature(SkString("liga"), ligaFeature);
+        }
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(style);
+        ParagraphBuilderImpl builder(paragraphStyle, fc, get_unicode());
+        builder.pushStyle(style);
+        builder.addText(text);
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        return paragraph;
+    };
+
+    auto checkCursive = [&](const char* family, const char* text, size_t ligaOffCount) {
+        auto unspaced = build(fontCollection, family, text, 0.0f, -1);
+        auto ligaOff = build(fontCollection, family, text, 0.0f, 0);
+        auto spaced = build(fontCollection, family, text, 0.25f, -1);
+        auto spacedLigaOn = build(fontCollection, family, text, 0.25f, 1);
+        auto spacedLigaOff = build(fontCollection, family, text, 0.25f, 0);
+
+        REPORTER_ASSERT(reporter, countGlyphs(unspaced.get()) == 1, "%s unspaced", family);
+        REPORTER_ASSERT(reporter,
+                        countGlyphs(ligaOff.get()) == ligaOffCount,
+                        "%s ligaOff",
+                        family);
+        REPORTER_ASSERT(reporter, countGlyphs(spaced.get()) == 1, "%s spaced", family);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(spaced->getLongestLine(),
+                                            unspaced->getLongestLine(),
+                                            EPSILON100),
+                        "%s width",
+                        family);
+        REPORTER_ASSERT(reporter,
+                        countGlyphs(spacedLigaOn.get()) == 1,
+                        "%s spacedLigaOn",
+                        family);
+        REPORTER_ASSERT(reporter,
+                        countGlyphs(spacedLigaOff.get()) == ligaOffCount,
+                        "%s spacedLigaOff",
+                        family);
+    };
+
+    // Arabic lam-alef ligature in Scheherazade and Hafs
+    const char* lamAlef = "\xD9\x84\xD8\xA7";
+    checkCursive("TestScheherazade", lamAlef, 2);
+    checkCursive("TestHafs", lamAlef, 2);
+
+    // Arabic presentation form ligature in Noto Naskh Arabic
+    const char* arabic = "\xEF\xBB\x9F\xEF\xBB\xA0\xEF\xBB\xAA";
+    checkCursive("TestNotoNaskh", arabic, 3);
+
+    // Latin standard ligature breaks on positive letter spacing unless liga is explicitly enabled
+    {
+        auto unspaced = build(fontCollection, "TestRoboto", "fi", 0.0f, -1);
+        auto spaced = build(fontCollection, "TestRoboto", "fi", 0.25f, -1);
+        auto spacedLigaOn = build(fontCollection, "TestRoboto", "fi", 0.25f, 1);
+
+        REPORTER_ASSERT(reporter, countGlyphs(unspaced.get()) == 1);
+        REPORTER_ASSERT(reporter, countGlyphs(spaced.get()) == 2);
+        REPORTER_ASSERT(reporter, countGlyphs(spacedLigaOn.get()) == 1);
+    }
+
+    // Check system Arabic font via fallback if supported
+    {
+        auto systemCollection = sk_make_sp<FontCollection>();
+        systemCollection->setDefaultFontManager(testFontMgr);
+        systemCollection->enableFontFallback();
+
+        auto unspaced = build(systemCollection, nullptr, arabic, 0.0f, -1);
+        auto ligaOff = build(systemCollection, nullptr, arabic, 0.0f, 0);
+        size_t unspacedGlyphs = countGlyphs(unspaced.get());
+        size_t ligaOffGlyphs = countGlyphs(ligaOff.get());
+        if (unspacedGlyphs < ligaOffGlyphs) {
+            auto spaced = build(systemCollection, nullptr, arabic, 0.25f, -1);
+            auto spacedLigaOn = build(systemCollection, nullptr, arabic, 0.25f, 1);
+            REPORTER_ASSERT(reporter, countGlyphs(spaced.get()) == unspacedGlyphs);
+            REPORTER_ASSERT(reporter, countGlyphs(spacedLigaOn.get()) == unspacedGlyphs);
+        }
+    }
+}
