@@ -1275,6 +1275,13 @@ DEF_TEST(HdrMetadata_Agtm_Invalid, r) {
         REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
     }
     {
+        skiatest::ReporterContext ctx(r, "HdrReferenceWhite zero");
+        skhdr::AdaptiveGlobalToneMap agtm = { .fHdrReferenceWhite = 0.f };
+        REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
+        agtm.fHdrReferenceWhite = -0.f;
+        REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
+    }
+    {
         skiatest::ReporterContext ctx(r, "BaselineHdrHeadroom too low");
         skhdr::AdaptiveGlobalToneMap agtm = {
             .fHeadroomAdaptiveToneMap = {{
@@ -1290,6 +1297,26 @@ DEF_TEST(HdrMetadata_Agtm_Invalid, r) {
                 .fBaselineHdrHeadroom = 6.01f,
             }},
         };
+        REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
+    }
+    {
+        skiatest::ReporterContext ctx(r, "AlternateHdrHeadroom out of range");
+        skhdr::AdaptiveGlobalToneMap agtm = agtm_baseline_2;
+        agtm.fHeadroomAdaptiveToneMap->fAlternateImages = {
+            {
+                .fHdrHeadroom = 0.f,
+                .fColorGainFunction = {
+                    .fComponentMixing = {.fMax = 1.f},
+                    .fGainCurve = { .fControlPoints = { {0.f, 0.f, 0.f}, } }
+                }
+            }
+        };
+        REPORTER_ASSERT(r, skhdr::AgtmHelpers::Validate(agtm));
+
+        auto& alt = agtm.fHeadroomAdaptiveToneMap->fAlternateImages[0];
+        alt.fHdrHeadroom = -0.01f;
+        REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
+        alt.fHdrHeadroom = 6.01f;
         REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
     }
     {
@@ -1328,6 +1355,26 @@ DEF_TEST(HdrMetadata_Agtm_Invalid, r) {
         REPORTER_ASSERT(r, skhdr::AgtmHelpers::Validate(agtm));
         std::swap(agtm.fHeadroomAdaptiveToneMap->fAlternateImages[0],
                   agtm.fHeadroomAdaptiveToneMap->fAlternateImages[1]);
+        REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
+    }
+    {
+        skiatest::ReporterContext ctx(r, "Mix coefficient sum");
+        skhdr::AdaptiveGlobalToneMap agtm = agtm_baseline_2;
+        agtm.fHeadroomAdaptiveToneMap->fAlternateImages = {
+            {
+                .fHdrHeadroom = 0.f,
+                .fColorGainFunction = {
+                    .fComponentMixing = {.fMax = 1.f, .fComponent = 1.f},
+                    .fGainCurve = { .fControlPoints = { {0.f, 0.f, 0.f}, } }
+                }
+            }
+        };
+        // The coefficients are not required to sum to 1.
+        REPORTER_ASSERT(r, skhdr::AgtmHelpers::Validate(agtm));
+
+        // The coefficients are required to have a sum greater than 0.
+        auto& alt = agtm.fHeadroomAdaptiveToneMap->fAlternateImages[0];
+        alt.fColorGainFunction.fComponentMixing = {};
         REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
     }
     {
@@ -1373,6 +1420,43 @@ DEF_TEST(HdrMetadata_Agtm_Invalid, r) {
         auto& alt = agtm.fHeadroomAdaptiveToneMap->fAlternateImages[0];
         alt.fColorGainFunction.fGainCurve.fControlPoints[2].fY = -2.f;
         REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
+    }
+    {
+        skiatest::ReporterContext ctx(r, "Non-finite values");
+        skhdr::AdaptiveGlobalToneMap agtm = agtm_baseline_2;
+        agtm.fHeadroomAdaptiveToneMap->fAlternateImages = {
+            {
+                .fHdrHeadroom = 1.f,
+                .fColorGainFunction = {
+                    .fComponentMixing = {.fMax = 1.f},
+                    .fGainCurve = { .fControlPoints = { {1.f, -1.f, 0.f}, } }
+                }
+            }
+        };
+        REPORTER_ASSERT(r, skhdr::AgtmHelpers::Validate(agtm));
+
+        auto& hatm = agtm.fHeadroomAdaptiveToneMap.value();
+        auto& alt = hatm.fAlternateImages[0];
+        auto& cp = alt.fColorGainFunction.fGainCurve.fControlPoints[0];
+
+        // Setting any value to NaN or infinity must fail validation.
+        auto test = [&r, &agtm](const char* name, float* value) {
+            const float original = *value;
+            for (float bad : {SK_FloatNaN, SK_FloatInfinity, SK_FloatNegativeInfinity}) {
+                *value = bad;
+                REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm), "%s = %f", name, bad);
+            }
+            *value = original;
+            REPORTER_ASSERT(r, skhdr::AgtmHelpers::Validate(agtm), "%s", name);
+        };
+        test("fHdrReferenceWhite", &agtm.fHdrReferenceWhite);
+        test("fBaselineHdrHeadroom", &hatm.fBaselineHdrHeadroom);
+        test("fGainApplicationSpacePrimaries.fRX", &hatm.fGainApplicationSpacePrimaries.fRX);
+        test("fHdrHeadroom", &alt.fHdrHeadroom);
+        test("fComponentMixing.fMax", &alt.fColorGainFunction.fComponentMixing.fMax);
+        test("fX", &cp.fX);
+        test("fY", &cp.fY);
+        test("fM", &cp.fM);
     }
 }
 
