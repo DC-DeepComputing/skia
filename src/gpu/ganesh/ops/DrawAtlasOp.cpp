@@ -96,8 +96,8 @@ private:
                              GrXferBarrierFlags renderPassXferBarriers,
                              GrLoadOp colorLoadOp) override;
 
-    void onPrepareDraws(GrMeshDrawTarget*) override;
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onPrepareDraws1(GrMeshDrawTarget*) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 #if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override;
 #endif
@@ -261,9 +261,12 @@ void DrawAtlasOpImpl::onCreateProgramInfo(const GrCaps* caps,
                                              colorLoadOp);
 }
 
-void DrawAtlasOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
+bool DrawAtlasOpImpl::onPrepareDraws1(GrMeshDrawTarget* target) {
     if (!fProgramInfo) {
         this->createProgramInfo(target);
+        if (!fProgramInfo) {
+            return false;
+        }
     }
 
     int instanceCount = fGeoData.size();
@@ -274,7 +277,7 @@ void DrawAtlasOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
     void* verts = helper.vertices();
     if (!verts) {
         SkDebugf("Could not allocate vertices\n");
-        return;
+        return false;
     }
 
     uint8_t* vertPtr = reinterpret_cast<uint8_t*>(verts);
@@ -287,16 +290,20 @@ void DrawAtlasOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
     }
 
     fMesh = helper.mesh();
+    return true;
 }
 
-void DrawAtlasOpImpl::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
-    if (!fProgramInfo || !fMesh) {
-        return;
+bool DrawAtlasOpImpl::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
+    if (!fMesh) {
+        return true;
+    }
+    if (!fProgramInfo) {
+        return false;
     }
 
     flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
     flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-    flushState->drawMesh(*fMesh);
+    return flushState->drawMesh(*fMesh);
 }
 
 GrOp::CombineResult DrawAtlasOpImpl::onCombineIfPossible(GrOp* t,

@@ -68,8 +68,9 @@ public:
     void doLoop() override {
         for (const SkPath& path : fPaths) {
             bool isLinear;
-            GrTriangulator::PathToTriangles(path, kTigerTolerance, SkRect::MakeEmpty(), this,
-                                            &isLinear);
+            int vertexCount;
+            (void) GrTriangulator::PathToTriangles(path, kTigerTolerance, SkRect::MakeEmpty(), this,
+                                                   &isLinear, &vertexCount);
         }
     }
 };

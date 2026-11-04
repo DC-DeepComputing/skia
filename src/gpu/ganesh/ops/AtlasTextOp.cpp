@@ -458,7 +458,7 @@ GrProcessorSet::Analysis AtlasTextOp::finalize(const GrCaps& caps,
     return analysis;
 }
 
-void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
+bool AtlasTextOp::onPrepareDraws1(GrMeshDrawTarget* target) {
     auto resourceProvider = target->resourceProvider();
 
     // If we need local coordinates, compute an inverse view matrix. If this is solid color, the
@@ -467,7 +467,7 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
     // all geometries to have same draw matrix.
     SkMatrix localMatrix = SkMatrix::I();
     if (fUsesLocalCoords && !fHead->fDrawMatrix.invert(&localMatrix)) {
-        return;
+        return false;
     }
 
     GrAtlasManager* atlasManager = target->atlasManager();
@@ -478,7 +478,7 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
     const GrSurfaceProxyView* views = atlasManager->getViews(maskFormat, &numActiveViews);
     if (!views) {
         SkDebugf("Could not allocate backing texture for atlas\n");
-        return;
+        return false;
     }
     SkASSERT(views[0].proxy());
 
@@ -547,14 +547,14 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
                 &flushInfo.fVertexOffset);
 
         if (!vertices || !flushInfo.fVertexBuffer) {
-            SkDebugf("Could not allocate vertices\n");
+            SKIA_LOG_E("Could not allocate vertices");
             return false;
         }
         return true;
     };
 
     if (!resetVertexBuffer()) {
-        return;
+        return false;
     }
 
     for (const Geometry* geo = fHead; geo != nullptr; geo = geo->fNext) {
@@ -588,7 +588,7 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
 
             // There was a problem allocating the glyph in the atlas. Bail.
             if (!ok) {
-                return;
+                return false;
             }
 
             geo->fillVertexData(vertices + quadCursor * quadSize, subRunCursor, glyphsRegenerated);
@@ -608,22 +608,23 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
                 if (quadCursor == quadEnd && allGlyphsCursor < allGlyphsEnd) {
                     // If the vertex buffer is full and there are still glyphs to draw then
                     // get a new buffer.
-                    if(!resetVertexBuffer()) {
-                        return;
+                    if (!resetVertexBuffer()) {
+                        return false;
                     }
                 }
             }
         }
     }
+    return true;
 }
 
-void AtlasTextOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool AtlasTextOp::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     auto pipeline = GrSimpleMeshDrawOpHelper::CreatePipeline(flushState,
                                                              std::move(fProcessors),
                                                              GrPipeline::InputFlags::kNone);
 
-    flushState->executeDrawsAndUploadsForMeshDrawOp(this, chainBounds, pipeline,
-                                                    &GrUserStencilSettings::kUnused);
+    return flushState->executeDrawsAndUploadsForMeshDrawOp1(this, chainBounds, pipeline,
+                                                           &GrUserStencilSettings::kUnused);
 }
 
 void AtlasTextOp::createDrawForGeneratedGlyphs(GrMeshDrawTarget* target,

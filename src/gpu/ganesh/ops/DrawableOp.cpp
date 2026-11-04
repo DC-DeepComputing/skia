@@ -29,9 +29,9 @@ DrawableOp::DrawableOp(std::unique_ptr<SkDrawable::GpuDrawHandler> drawable,
     this->setBounds(bounds, HasAABloat::kNo, IsHairline::kNo);
 }
 
-void DrawableOp::onExecute(GrOpFlushState* state, const SkRect& chainBounds) {
+bool DrawableOp::onExecute1(GrOpFlushState* state, const SkRect& chainBounds) {
     SkASSERT(state->opsRenderPass());
-    state->opsRenderPass()->executeDrawable(std::move(fDrawable));
+    return state->opsRenderPass()->executeDrawable(std::move(fDrawable));
 }
 
 }  // namespace skgpu::ganesh
