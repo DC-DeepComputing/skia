@@ -31,13 +31,13 @@ public:
         SkString toHexString() const;
         SkString toLowercaseHexString() const;
         bool operator==(Digest const& other) const {
-            return 0 == memcmp(data, other.data, sizeof(data));
+            return data == other.data;
         }
         bool operator!=(Digest const& other) const {
             return !(*this == other);
         }
 
-        uint8_t data[16];
+        std::array<uint8_t, 16> data;
     };
 
     /** Computes and returns the digest. */
@@ -45,7 +45,7 @@ public:
 
 private:
     uint64_t byteCount;  // number of bytes, modulo 2^64
-    uint32_t state[4];   // state (ABCD)
+    std::array<uint32_t, 4> state;   // state (ABCD)
     std::array<uint8_t, 64> buffer;  // input buffer
 };
 
