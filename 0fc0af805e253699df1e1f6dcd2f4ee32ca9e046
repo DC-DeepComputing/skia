@@ -87,6 +87,30 @@
       },
       "revId": "0fc0af805e253699df1e1f6dcd2f4ee32ca9e046",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de9df4bf_57d6189b",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-04T20:51:52Z",
+      "side": 1,
+      "message": "Yes that is correct. Just want to make sure I wasn\u0027t missing something where I was repeating checks that are already covered in QuadContainsRectMask",
+      "parentUuid": "7bac916a_50f43bde",
+      "range": {
+        "startLine": 802,
+        "startChar": 14,
+        "endLine": 808,
+        "endChar": 24
+      },
+      "revId": "0fc0af805e253699df1e1f6dcd2f4ee32ca9e046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
