@@ -62,6 +62,8 @@ private:
     SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
     void createCaptureBreakpoint(SkSurface*) final;
     void deregisterCaptureCanvas(SkCanvas*) final {}
+
+    sk_sp<SkImage> makeBitmapImage(const SkBitmap& bm) { return SkImages::RasterFromBitmap(bm); }
 };
 
 inline Recorder* AsRecorder(SkRecorder* recorder) {

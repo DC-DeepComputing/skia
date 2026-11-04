@@ -12,6 +12,7 @@
 #include "include/core/SkSurface.h"
 #include "include/cpu/Recorder.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/capture/SkCaptureManager.h"
 
 class GrDirectContext;
