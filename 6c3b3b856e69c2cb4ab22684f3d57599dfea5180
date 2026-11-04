@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f1d0180_75a987bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-04T18:28:40Z",
+      "side": 1,
+      "message": "Works On My Machine ™️, but I would appreciate a look through to make sure the bots are getting it (I think they also just set up the toolchain through Bazel. We should probably have a bot testing latest Xcode, Sarah brought this linker bug up to me when she tried building with Xcode 27.",
+      "revId": "6c3b3b856e69c2cb4ab22684f3d57599dfea5180",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
