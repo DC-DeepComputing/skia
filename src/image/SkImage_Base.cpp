@@ -13,10 +13,12 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkMath.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/image/SkRescaleAndReadPixels.h"
 
@@ -115,4 +117,56 @@ sk_sp<SkImage> SkImage_Base::makeColorSpace(SkRecorder* recorder,
                                             sk_sp<SkColorSpace> target,
                                             RequiredProperties props) const {
     return this->makeColorTypeAndColorSpace(recorder, this->colorType(), std::move(target), props);
+}
+
+sk_sp<SkImage> SkImage_Base::MakeBitmapImage(SkRecorder* recorder, const SkBitmap& bitmap) {
+    if (!recorder) {
+        return nullptr;
+    }
+    return recorder->makeBitmapImage(bitmap);
+}
+
+bool SkImage_Base::ValidArgs(const SkImageInfo& info, size_t rowBytes, size_t* minSize) {
+    const int maxDimension = SK_MaxS32 >> 2;
+
+    // TODO(mtklein): eliminate anything here that setInfo() has already checked.
+    SkBitmap b;
+    if (!b.setInfo(info, rowBytes)) {
+        return false;
+    }
+
+    if (info.width() <= 0 || info.height() <= 0) {
+        return false;
+    }
+    if (info.width() > maxDimension || info.height() > maxDimension) {
+        return false;
+    }
+    if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
+        return false;
+    }
+    if ((unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType) {
+        return false;
+    }
+
+    if (kUnknown_SkColorType == info.colorType()) {
+        return false;
+    }
+    if (!info.validRowBytes(rowBytes)) {
+        return false;
+    }
+
+    size_t size = info.computeByteSize(rowBytes);
+    if (SkImageInfo::ByteSizeOverflowed(size)) {
+        return false;
+    }
+
+    if (minSize) {
+        *minSize = size;
+    }
+    return true;
+}
+
+void SkImage_Base::ReleaseData(void* addr, void* context) {
+    SkData* data = static_cast<SkData*>(context);
+    data->unref();
 }

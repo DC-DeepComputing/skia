@@ -11,6 +11,7 @@
 #include "include/core/SkRecorder.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/cpu/Recorder.h"
 
@@ -34,6 +35,10 @@ private:
     SkCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
     void createCaptureBreakpoint(SkSurface*) override { }
     void deregisterCaptureCanvas(SkCanvas*) override { }
+
+    sk_sp<SkImage> makeBitmapImage(const SkBitmap& bm) override {
+        return SkImages::TextureFromImage(this->directContext(), SkImages::RasterFromBitmap(bm));
+    }
 };
 
 inline SkGaneshRecorder* AsGaneshRecorder(SkRecorder* recorder) {

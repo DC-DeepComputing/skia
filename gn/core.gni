@@ -651,6 +651,7 @@ skia_core_sources = [
   "$_src/image/SkImageGeneratorPriv.h",
   "$_src/image/SkImage_Base.cpp",
   "$_src/image/SkImage_Base.h",
+  "$_src/image/SkImage_Factories.cpp",
   "$_src/image/SkImage_Lazy.cpp",
   "$_src/image/SkImage_Lazy.h",
   "$_src/image/SkImage_LazyFactories.cpp",
