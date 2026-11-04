@@ -286,6 +286,10 @@ private:
     void createCaptureBreakpoint(SkSurface*) override;
     void deregisterCaptureCanvas(SkCanvas*) override;
 
+    sk_sp<SkImage> makeBitmapImage(const SkBitmap& bm) {
+        return SkImages::TextureFromImage(recorder, subsetImg, props);
+    }
+
     sk_sp<SharedContext> fSharedContext;
     ResourceProvider* fResourceProvider; // May point to the Context's resource provider
     std::unique_ptr<ResourceProvider> fOwnedResourceProvider; // May be null

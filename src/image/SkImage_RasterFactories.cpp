@@ -12,6 +12,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkMath.h"
 #include "src/core/SkCompressedDataUtils.h"
@@ -167,6 +168,47 @@ sk_sp<SkImage> RasterFromPixmap(const SkPixmap& pmap, RasterReleaseProc proc, Re
     sk_sp<SkData> data(SkData::MakeWithProc(pmap.addr(), size, proc, ctx));
     return sk_make_sp<SkImage_Raster>(
             pmap.info(), std::move(data), pmap.rowBytes(), /*mips=*/nullptr, kNeedNewImageUniqueID);
+}
+
+sk_sp<SkImage> FromBitmap(SkRecorder* recorder, const SkBitmap& bitmap) {
+    if (!recorder || !bitmap.pixelRef()) {
+        return nullptr;
+    }
+
+    SkCopyPixelsMode cpm;
+    if (recorder->type() == SkRecorder::Type::kCPU) {
+        cpm = SkCopyPixelsMode::kIfMutable;
+    } else {
+        cpm = SkCopyPixelsMode::kNever;
+    }
+
+    return SkImage_Raster::MakeFromBitmap(bitmap, cpm);
+}
+
+sk_sp<SkImage> FromPixmap(SkRecorder* recorder,
+                          const SkPixmap& pmap,
+                          RasterReleaseProc proc,
+                          ReleaseContext ctx) {
+    if (!recorder) {
+        return nullptr;
+    }
+
+    if (recorder->type() == SkRecorder::Type::kCPU && !proc && !ctx) {
+        return RasterFromPixmapCopy(pmap);
+    }
+
+    return RasterFromPixmap(pmap, proc, ctx);
+}
+
+sk_sp<SkImage> FromData(SkRecorder* recorder,
+                        const SkImageInfo& info,
+                        sk_sp<SkData> data,
+                        size_t rowBytes) {
+    if (!recorder) {
+        return nullptr;
+    }
+
+    return RasterFromData(info, std::move(data), rowBytes);
 }
 
 }  // namespace SkImages

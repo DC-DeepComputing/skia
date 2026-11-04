@@ -13,6 +13,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
