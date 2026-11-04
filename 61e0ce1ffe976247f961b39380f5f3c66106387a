@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "161ff70f_e93d4649",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T16:11:02Z",
+      "side": 1,
+      "message": "Manual cherry pick applying the changes to ClipStack instead of Shape.",
+      "revId": "61e0ce1ffe976247f961b39380f5f3c66106387a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
