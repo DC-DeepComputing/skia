@@ -13,6 +13,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
@@ -881,14 +882,27 @@ sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
                                                              children);
 }
 
+sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(
+        sk_sp<const SkData> uniforms,
+        SkSpan<const sk_sp<SkColorFilter>> childColorFilters,
+        size_t childCount) const {
+    SkASSERT_RELEASE(childCount <= childColorFilters.size());
+    STArray<4, ChildPtr> children(childCount);
+    for (const sk_sp<SkColorFilter>& cf : childColorFilters.first(childCount)) {
+        children.emplace_back(cf);
+    }
+    return this->makeColorFilter(std::move(uniforms), SkSpan(children));
+}
+
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> uniforms,
                                                       sk_sp<SkColorFilter> childColorFilters[],
                                                       size_t childCount) const {
-    STArray<4, ChildPtr> children(childCount);
-    for (size_t i = 0; i < childCount; ++i) {
-        children.emplace_back(childColorFilters[i]);
-    }
-    return this->makeColorFilter(std::move(uniforms), SkSpan(children));
+    // SAFETY: The caller guarantees (see PRECONDITIONS in SkRuntimeEffect.h) that
+    // childColorFilters points to at least childCount elements.
+    return this->makeColorFilter(
+            std::move(uniforms),
+            SK_UNSAFE_BUFFERS(SkSpan<const sk_sp<SkColorFilter>>(childColorFilters, childCount)),
+            childCount);
 }
 
 sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> uniforms,
