@@ -33,6 +33,29 @@
       "message": "pretty big change, Going to need more eyes on this.",
       "revId": "c6f28e3c2b5237feb3032176d90290adca30bf44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6296f1c9_9f4246f7",
+        "filename": "whitespace.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-04T18:57:02Z",
+      "side": 1,
+      "message": "This is affecting performance.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 14
+      },
+      "revId": "c6f28e3c2b5237feb3032176d90290adca30bf44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
