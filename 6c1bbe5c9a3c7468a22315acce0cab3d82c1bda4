@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab8dfd85_de73c291",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T20:40:06Z",
+      "side": 1,
+      "message": "The chrome canary failure was a webgl flake and an infra flake.",
+      "revId": "6c1bbe5c9a3c7468a22315acce0cab3d82c1bda4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
