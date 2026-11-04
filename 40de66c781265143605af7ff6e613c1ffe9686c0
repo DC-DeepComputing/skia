@@ -16,6 +16,207 @@
       "message": "This is one of 3, I looked it over and tried to pare down from the first pass, keeping things high level in case we change implementation later (we can always add to it if we find value). If this looks good, I can start sending the other 4 out to other reviewers. Any structural/meta edits here that you want to keep in mind for the all the documentation, I can make sure get carried over before sending things out.",
       "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bdfc465_c06df08d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "Starting with the root README; haven\u0027t had the bandwidth to do a thorough read of the other files yet.\n\nOne meta comment to float by you: when I was writing academic papers for Latex (which kind of ends up looking like markdown in a way), it was very convenient to have a rule of one sentence per line. This helped diffs in version control. I don\u0027t know how well that works with some of the more advanced formatting that Markdown tables etc. require, but does that seem like something you\u0027d be interested in?",
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "346f1552_5e6cc68b",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "nit: The CPU backend uses this too. It\u0027s probably worth keeping SkSL as a separate concept from the GPU backends.",
+      "range": {
+        "startLine": 25,
+        "startChar": 117,
+        "endLine": 25,
+        "endChar": 135
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aafbbbd0_9d70a5e5",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "original GPU backend. It\u0027s not immediate-mode either, it just targeted older GPU APIs.",
+      "range": {
+        "startLine": 27,
+        "startChar": 62,
+        "endLine": 27,
+        "endChar": 88
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ba39c9_7d78f53b",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "I think that we should add a little more detail here. I think we should include directories that don\u0027t have a matching `src/Foo` directory already being discussed, and add a general comment that the src components outlined below expose their public API in a matching include/ directory.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 109
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf985d2_31d31fca",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "Missing `src/pathops`",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 18
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d4fbff6_6b2f9f51",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "Probably the core engine at this point.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 119
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92ffefbf_a485e921",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "I\u0027d include `src/opts`, `src/sfnt` in the ports/text section. I wouldn\u0027t include Rust in the header name, it just happens to be the directory for our rust implementations of the same ports/text things.\n\nI would make a distinct section for Skia\u0027s \"document\"-based rendering, which would have `src/pdf`, and additionally `src/svg` and `src/xps`.",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 47
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "705f1e7f_fda21001",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "_agents?",
+      "range": {
+        "startLine": 82,
+        "startChar": 14,
+        "endLine": 82,
+        "endChar": 20
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc2a2c22_e91d5e99",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T18:18:05Z",
+      "side": 1,
+      "message": "Skills and configuration for agent-based development and testing.",
+      "range": {
+        "startLine": 82,
+        "startChar": 25,
+        "endLine": 82,
+        "endChar": 98
+      },
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
