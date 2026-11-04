@@ -31,13 +31,13 @@ public:
         SkString toHexString() const;
         SkString toLowercaseHexString() const;
         bool operator==(Digest const& other) const {
-            return 0 == memcmp(data, other.data, sizeof(data));
+            return 0 == memcmp(data.data(), other.data.data(), sizeof(data));
         }
         bool operator!=(Digest const& other) const {
             return !(*this == other);
         }
 
-        uint8_t data[16];
+        std::array<uint8_t, 16> data;
     };
 
     /** Computes and returns the digest. */

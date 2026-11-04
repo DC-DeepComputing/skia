@@ -14,19 +14,20 @@
 //SK_CPU_FAST_UNALIGNED_ACCESS allows 32 bit <=> 8 bit conversions without copies if SK_CPU_LENDIAN.
 
 #include "src/core/SkMD5.h"
-#include "src/core/SkUtils.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkFeatures.h"
 #include "include/private/SkMalloc.h"
+#include "src/core/SkUtils.h"
 
 /** MD5 basic transformation. Transforms state based on block. */
-static void transform(uint32_t state[4], const uint8_t block[64]);
+static void transform(SkSpan<uint32_t, 4> state, const uint8_t block[64]);
 
 /** Encodes input into output (4 little endian 32 bit values). */
-static void encode(uint8_t output[16], const uint32_t input[4]);
+static void encode(SkSpan<uint8_t, 16> output, SkSpan<const uint32_t, 4> input);
 
 /** Encodes input into output (little endian 64 bit value). */
-static void encode(uint8_t output[8], uint64_t input);
+static void encode(SkSpan<uint8_t, 8> output, uint64_t input);
 
 /** Decodes input (4 little endian 32 bit values) into storage, if required. */
 static const uint32_t* decode(uint32_t storage[16], const uint8_t input[64]);
@@ -72,7 +73,7 @@ bool SkMD5::write(const void* buf, size_t inputLength) {
 SkMD5::Digest SkMD5::finish() {
     SkMD5::Digest digest;
     // Get the number of bits before padding.
-    uint8_t bits[8];
+    std::array<uint8_t, 8> bits;
     encode(bits, this->byteCount << 3);
 
     // Pad out to 56 mod 64.
@@ -87,7 +88,7 @@ SkMD5::Digest SkMD5::finish() {
     (void)this->write(PADDING, paddingLength);
 
     // Append length (length before padding, will cause final update).
-    (void)this->write(bits, 8);
+    (void)this->write(bits.data(), bits.size());
 
     // Write out digest.
     encode(digest.data, this->state);
@@ -99,7 +100,7 @@ SkMD5::Digest SkMD5::finish() {
     return digest;
 }
 
-static SkString to_hex_string(const uint8_t* data, const char* hexDigits) {
+static SkString to_hex_string(SkSpan<const uint8_t> data, const char* hexDigits) {
     SkString hexString(2 * sizeof(SkMD5::Digest::data));
     for (size_t i = 0; i < sizeof(SkMD5::Digest::data); ++i) {
         uint8_t byte = data[i];
@@ -146,7 +147,7 @@ static inline void operation(T operation, uint32_t& a, uint32_t b, uint32_t c, u
     a = b + rotate_left(a + operation(b, c, d) + x + t, s);
 }
 
-static void transform(uint32_t state[4], const uint8_t block[64]) {
+static void transform(SkSpan<uint32_t, 4> state, const uint8_t block[64]) {
     uint32_t a = state[0], b = state[1], c = state[2], d = state[3];
 
     uint32_t storage[16];
@@ -237,7 +238,7 @@ static void transform(uint32_t state[4], const uint8_t block[64]) {
 #endif
 }
 
-static void encode(uint8_t output[16], const uint32_t input[4]) {
+static void encode(SkSpan<uint8_t, 16> output, SkSpan<const uint32_t, 4> input) {
     for (size_t i = 0, j = 0; i < 4; i++, j += 4) {
         output[j  ] = (uint8_t) (input[i]        & 0xff);
         output[j+1] = (uint8_t)((input[i] >>  8) & 0xff);
@@ -246,7 +247,7 @@ static void encode(uint8_t output[16], const uint32_t input[4]) {
     }
 }
 
-static void encode(uint8_t output[8], uint64_t input) {
+static void encode(SkSpan<uint8_t, 8> output, uint64_t input) {
     output[0] = (uint8_t) (input        & 0xff);
     output[1] = (uint8_t)((input >>  8) & 0xff);
     output[2] = (uint8_t)((input >> 16) & 0xff);

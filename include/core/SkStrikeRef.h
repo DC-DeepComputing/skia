@@ -61,11 +61,26 @@ public:
         input glyphs and output advances.
 
         @param count              number of glyphs to measure
-        @param first_glyph        pointer to the first glyph ID, glyph is 32-bit, instead
-                                  of SkGlyphID, in preparation for large glyph ids.
+        @param first_glyph        glyph IDs (32-bit, in preparation for large glyph ids) starting
+                                  at the first glyph; must hold at least
+                                  (count-1)*glyph_stride_32+1 elements.
         @param glyph_stride_32    stride in 32-bit words between input glyph IDs
-        @param first_advance      pointer to the first output advance
+        @param first_advance      output advances starting at the first slot; must hold at least
+                                  (count-1)*advance_stride_32+1 elements.
         @param advance_stride_32  stride in 32-bit words between output advances
+    */
+    void getWidthsStrided(unsigned count,
+                          SkSpan<const uint32_t> first_glyph,
+                          unsigned glyph_stride_32,
+                          SkSpan<SkScalar> first_advance,
+                          unsigned advance_stride_32) const;
+
+    /** DEPRECATED: Prefer the SkSpan overload above, which bounds-checks every access.
+        This pointer overload is kept for existing clients and forwards to it.
+
+        PRECONDITIONS: If count > 0, first_glyph must point to at least
+        (count-1)*glyph_stride_32+1 readable elements and first_advance must point to at
+        least (count-1)*advance_stride_32+1 writable elements.
     */
     void getWidthsStrided(unsigned count,
                           const uint32_t* first_glyph,

@@ -11,6 +11,7 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkLumaColorFilter.h"
 #include "include/effects/SkOverdrawColorFilter.h"
@@ -167,7 +168,8 @@ sk_sp<SkColorFilter> SkLumaColorFilter::Make() {
     return lumaEffect->makeColorFilter(SkData::MakeEmpty());
 }
 
-sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(const SkColor colors[kNumColors]) {
+sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(
+        SkSpan<const SkColor, kNumColors> colors) {
     using namespace SkKnownRuntimeEffects;
 
     const SkRuntimeEffect* overdrawEffect = GetKnownRuntimeEffect(StableKey::kOverdraw);
@@ -178,4 +180,11 @@ sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(const SkColor color
         premul[i] = SkColor4f::FromColor(colors[i]).premul();
     }
     return overdrawEffect->makeColorFilter(std::move(data));
+}
+
+sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(const SkColor colors[kNumColors]) {
+    // SAFETY: The caller guarantees (see PRECONDITIONS in SkOverdrawColorFilter.h) that colors
+    // points to at least kNumColors elements.
+    return MakeWithSkColors(
+            SK_UNSAFE_BUFFERS(SkSpan<const SkColor, kNumColors>(colors, kNumColors)));
 }
