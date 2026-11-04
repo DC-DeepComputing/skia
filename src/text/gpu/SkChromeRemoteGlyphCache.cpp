@@ -740,6 +740,9 @@ bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memo
         strike->verifyPinnedStrike();
 
         if (!strike->mergeFromBuffer(buffer)) {
+            // Prevent Zombie Strike: if parsing fails, remove the empty strike
+            // from the global cache so it doesnt cause kGlyphMetrics DCHECKs
+            fStrikeCache->removeStrike(strike.get());
             postError(__LINE__);
             return false;
         }
