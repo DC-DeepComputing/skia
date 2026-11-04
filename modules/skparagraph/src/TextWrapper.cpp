@@ -502,15 +502,27 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         // In case of a force wrapping we don't have a break cluster and have to use the end cluster
         text.end = std::max(text.end, textExcludingSpaces.end);
 
+        bool addEllipsis = needEllipsis && !fHardLineBreak;
+        SkScalar lineWidthWithSpaces = widthWithSpaces;
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+        // needEllipsis is already false when no text follows the line; without a line limit a
+        // hard-broken line hides nothing
+        addEllipsis = needEllipsis && (!fHardLineBreak || !unlimitedLines);
+        if (addEllipsis && fHardLineBreak) {
+            // The ellipsis replaces the trailing spaces of a hard-broken line
+            lineWidthWithSpaces = fEndLine.width();
+        }
+#endif
+
         addLine(textExcludingSpaces,
                 text,
-                textIncludingNewlines, clusters, clustersWithGhosts, widthWithSpaces,
+                textIncludingNewlines, clusters, clustersWithGhosts, lineWidthWithSpaces,
                 fEndLine.startPos(),
                 fEndLine.endPos(),
                 SkVector::Make(0, fHeight),
                 SkVector::Make(fEndLine.width(), lineHeight),
                 fEndLine.metrics(),
-                needEllipsis && !fHardLineBreak);
+                addEllipsis);
 
         softLineMaxIntrinsicWidth += widthWithSpaces;
 
@@ -524,7 +536,8 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
             fEndLine.clean();
         }
         fEndLine.startFrom(startLine, pos);
-        parent->fMaxWidthWithTrailingSpaces = std::max(parent->fMaxWidthWithTrailingSpaces, widthWithSpaces);
+        parent->fMaxWidthWithTrailingSpaces =
+                std::max(parent->fMaxWidthWithTrailingSpaces, lineWidthWithSpaces);
 
         if (hasEllipsis && unlimitedLines) {
             // There is one case when we need an ellipsis on a separate line

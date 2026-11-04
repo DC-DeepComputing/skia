@@ -638,7 +638,38 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
     SkScalar width = fAdvance.fX;
     RunIndex lastRun = EMPTY_RUN;
     std::unique_ptr<Run> ellipsisRun;
-    for (auto clusterIndex = fGhostClusterRange.end; clusterIndex > fGhostClusterRange.start; --clusterIndex) {
+    ClusterIndex lastIndex = fGhostClusterRange.end;
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+    // fAdvance of a hard-broken line does not count the spaces and the line break after its
+    // visible text, so the ellipsis goes right after the visible text
+    bool hardBroken = fGhostClusterRange.width() > 0 &&
+                      fOwner->cluster(fGhostClusterRange.end - 1).isHardBreak();
+    if (hardBroken) {
+        lastIndex = fClusterRange.end;
+        // An empty line has only the line break: the ellipsis takes its style and is the only
+        // thing on the line
+        if (fClusterRange.width() == 0) {
+            auto& lineBreak = fOwner->cluster(fGhostClusterRange.end - 1);
+            // The blocks of an empty line come from its empty text and miss the block of its
+            // line break
+            fBlockRange = fOwner->findAllBlocks(lineBreak.textRange());
+            ellipsisRun = this->shapeEllipsis(ellipsis, &lineBreak);
+            if (ellipsisRun->advance().fX <= maxWidth) {
+                fAdvance.fX = 0;
+                fEllipsis = std::move(ellipsisRun);
+                fEllipsis->setOwner(fOwner);
+                fEllipsis->fClusterStart = lineBreak.textRange().start;
+                fGhostClusterRange.end = fClusterRange.end;
+                fText.end = fText.start;
+                fTextIncludingNewlines.end = fTextIncludingNewlines.start;
+                fTextExcludingSpaces.end = fTextExcludingSpaces.start;
+                fWidthWithSpaces = this->width();
+                return;
+            }
+        }
+    }
+#endif
+    for (auto clusterIndex = lastIndex; clusterIndex > fGhostClusterRange.start; --clusterIndex) {
         auto& cluster = fOwner->cluster(clusterIndex - 1);
         // Shape the ellipsis if the run has changed
         if (lastRun != cluster.runIndex()) {
@@ -673,6 +704,13 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
         fTextExcludingSpaces.end = cluster.textRange().end;
         break;
     }
+
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+    // The dropped trailing spaces must not count as the line's spaces (spacesWidth, kMax rects)
+    if (hardBroken && fEllipsis) {
+        fWidthWithSpaces = this->width();
+    }
+#endif
 
     if (!fEllipsis) {
         // Weird situation: ellipsis does not fit; no ellipsis then
@@ -1601,7 +1639,14 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                     // Like any other end of line, the position belongs to this line, not to
                     // the start of the next one
                     auto utf16Index = fOwner->getUTF16Index(this->fText.end);
-                    result = {SkToS32(utf16Index), utf16Index > 0 ? kUpstream : kDownstream};
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+                    // An empty line has no end of text of its own: like any empty line, its
+                    // position belongs to the start of the line
+                    bool upstream = utf16Index > 0 && fText.width() > 0;
+#else
+                    bool upstream = utf16Index > 0;
+#endif
+                    result = {SkToS32(utf16Index), upstream ? kUpstream : kDownstream};
                     return false;
                 }
                 return true;
