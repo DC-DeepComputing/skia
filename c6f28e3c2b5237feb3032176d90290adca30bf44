@@ -80,6 +80,30 @@
       },
       "revId": "c6f28e3c2b5237feb3032176d90290adca30bf44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f976f5a5_26e8a46c",
+        "filename": "whitespace.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5303896
+      },
+      "writtenOn": "2026-11-04T20:12:26Z",
+      "side": 1,
+      "message": "test",
+      "parentUuid": "ed056b34_8c8218e9",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 14
+      },
+      "revId": "c6f28e3c2b5237feb3032176d90290adca30bf44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
