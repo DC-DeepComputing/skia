@@ -1160,6 +1160,7 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(TextAdjustment textAdjustment
     size_t size = 0;
     const TextStyle* prevStyle = nullptr;
     SkScalar textOffsetInRun = 0;
+    TextRange mergedBlocksRange(EMPTY_INDEX, EMPTY_INDEX);
 
     const BlockIndex blockRangeSize = fBlockRange.end - fBlockRange.start;
     for (BlockIndex index = 0; index <= blockRangeSize; ++index) {
@@ -1189,12 +1190,15 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(TextAdjustment textAdjustment
                     size += intersect.width();
                     // RTL text intervals move backward
                     start = std::min(intersect.start, start);
+                    mergedBlocksRange.start = std::min(mergedBlocksRange.start, block->fRange.start);
+                    mergedBlocksRange.end = std::max(mergedBlocksRange.end, block->fRange.end);
                     continue;
                 } else if (start == EMPTY_INDEX ) {
                     // First time only
                     prevStyle = style;
                     size = intersect.width();
                     start = intersect.start;
+                    mergedBlocksRange = block->fRange;
                     continue;
                 }
             }
@@ -1207,6 +1211,24 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(TextAdjustment textAdjustment
         // We have the style and the text
         auto runStyleTextRange = TextRange(start, start + size);
         ClipContext clipContext = correctContext(runStyleTextRange, textOffsetInRun);
+
+        if (styleType == StyleType::kBackground && mergedBlocksRange.width() > 0) {
+            SkScalar minTop = clipContext.clip.fTop;
+            SkScalar maxBottom = clipContext.clip.fBottom;
+            for (auto& runIndex : fRunsInVisualOrder) {
+                auto& r = fOwner->run(runIndex);
+                auto intersection = intersected(r.textRange(), mergedBlocksRange);
+                if (intersection.width() > 0) {
+                    SkScalar top = this->sizes().runTop(&r, this->fAscentStyle);
+                    SkScalar bottom = top + r.calculateHeight(this->fAscentStyle, this->fDescentStyle);
+                    minTop = std::min(minTop, top);
+                    maxBottom = std::max(maxBottom, bottom);
+                }
+            }
+            clipContext.clip.fTop = minTop;
+            clipContext.clip.fBottom = maxBottom;
+        }
+
         textOffsetInRun += clipContext.clip.width();
         if (clipContext.clip.height() == 0) {
             continue;
