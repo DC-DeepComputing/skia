@@ -397,59 +397,148 @@ void OneLineShaper::sortOutGlyphs(std::function<void(GlyphRange)>&& sortOutUnres
     }
 }
 
+// Superset of the code points whose Script is one of Run::IsCursiveScript(), by Unicode block.
+// HarfBuzz resolves Common and Inherited runs from neighbors, so a block without any of these
+// code points never gets a cursive script run. A false positive only costs one script pass
+static bool mayHaveCursiveScript(SkSpan<const char> utf8) {
+    const char* ptr = utf8.data();
+    const char* end = ptr + utf8.size();
+    while (ptr < end) {
+        if (static_cast<uint8_t>(*ptr) < 0x80) {
+            ++ptr;
+            continue;
+        }
+        // NextUTF8 always advances ptr and moves it to end on malformed input
+        const SkUnichar u = SkUTF::NextUTF8(&ptr, end);
+        if (u < 0 ||
+            (u >= 0x0600 && u <= 0x08FF) ||    // Arabic, Syriac, NKo, Mandaic and extensions
+            (u >= 0x1800 && u <= 0x18AF) ||    // Mongolian
+            (u >= 0xA840 && u <= 0xA87F) ||    // Phags-pa
+            (u >= 0xFB50 && u <= 0xFDFF) ||    // Arabic Presentation Forms-A
+            (u >= 0xFE70 && u <= 0xFEFF) ||    // Arabic Presentation Forms-B
+            (u >= 0x10D00 && u <= 0x10D3F) ||  // Hanifi Rohingya
+            (u >= 0x10E60 && u <= 0x10EFF) ||  // Rumi Numerals, Arabic Extended-C
+            (u >= 0x11660 && u <= 0x1167F) ||  // Mongolian Supplement
+            (u >= 0x1EE00 && u <= 0x1EEFF)) {  // Arabic Mathematical Alphabetic Symbols
+            return true;
+        }
+    }
+    return false;
+}
+
 void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
                                              SkSpan<Block> styleSpan,
                                              const ShapeSingleFontVisitor& visitor) {
     Block combinedBlock;
     TArray<SkShaper::Feature> features;
+    size_t groupStart = 0;
 
-    auto addFeatures = [&features](const Block& block) {
-        // Disable ligatures if letter spacing is enabled. HarfBuzz lets the later of two features
-        // on the same range win, so this default goes first and an explicit liga overrides it
-        if (block.fStyle.getLetterSpacing() > 0) {
-            features.emplace_back(SkShaper::Feature{
-                SkSetFourByteTag('l', 'i', 'g', 'a'), 0, block.fRange.start, block.fRange.end
-            });
+    auto flushCombinedBlock = [&](size_t groupEnd) {
+        features.clear();
+
+        // Default liga=0 goes before explicit fontFeatures so author liga=1 overrides it
+        bool hasPositiveLetterSpacing = false;
+        for (size_t j = groupStart; j < groupEnd; ++j) {
+            if (styleSpan[j].fStyle.getLetterSpacing() > 0) {
+                hasPositiveLetterSpacing = true;
+                break;
+            }
         }
-        for (auto& ff : block.fStyle.getFontFeatures()) {
-            if (ff.fName.size() != 4) {
-                SkDEBUGF("Incorrect font feature: %s=%d\n", ff.fName.c_str(), ff.fValue);
+        auto combinedText = fParagraph->text(combinedBlock.fRange);
+        // Without cursive code points every script run is non-cursive, so the script pass and
+        // its iterator allocation would give the same result as one liga=0 per spaced block
+        if (hasPositiveLetterSpacing && !mayHaveCursiveScript(combinedText)) {
+            for (size_t j = groupStart; j < groupEnd; ++j) {
+                const Block& sub = styleSpan[j];
+                if (sub.fStyle.getLetterSpacing() > 0) {
+                    features.push_back({SkSetFourByteTag('l', 'i', 'g', 'a'), 0,
+                                        sub.fRange.start, sub.fRange.end});
+                }
+            }
+        } else if (hasPositiveLetterSpacing) {
+            // Run ScriptRunIterator across combinedBlock so Inherited combining marks in separate
+            // colored blocks resolve against surrounding letters rather than HB_SCRIPT_COMMON.
+            // Font fallback reshapes pieces on their own, so a Common piece inside cursive text
+            // may still get letter-spacing with liga on; liga rarely applies to such pieces
+            auto scriptIter =
+                    SkShapers::HB::ScriptRunIterator(combinedText.data(), combinedText.size());
+            size_t runStart = combinedBlock.fRange.start;
+            while (!scriptIter->atEnd()) {
+                scriptIter->consume();
+                const size_t runEnd = combinedBlock.fRange.start + scriptIter->endOfCurrentRun();
+                // Cursive scripts skip letter-spacing in ParagraphImpl, so keep their ligatures
+                if (!Run::IsCursiveScript(scriptIter->currentScript())) {
+                    for (size_t j = groupStart; j < groupEnd; ++j) {
+                        const Block& sub = styleSpan[j];
+                        if (sub.fStyle.getLetterSpacing() <= 0) {
+                            continue;
+                        }
+                        const size_t start = std::max(runStart, sub.fRange.start);
+                        const size_t end = std::min(runEnd, sub.fRange.end);
+                        if (start < end) {
+                            features.push_back(
+                                    {SkSetFourByteTag('l', 'i', 'g', 'a'), 0, start, end});
+                        }
+                    }
+                }
+                runStart = runEnd;
+            }
+        }
+
+        for (size_t j = groupStart; j < groupEnd; ++j) {
+            const Block& sub = styleSpan[j];
+            if (sub.fStyle.getFontFeatureNumber() == 0) {
                 continue;
             }
-            SkShaper::Feature feature = {
-                SkSetFourByteTag(ff.fName[0], ff.fName[1], ff.fName[2], ff.fName[3]),
-                SkToU32(ff.fValue),
-                block.fRange.start,
-                block.fRange.end
-            };
-            features.emplace_back(feature);
+            const size_t subStart = std::max(sub.fRange.start, textRange.start);
+            const size_t subEnd = std::min(sub.fRange.end, textRange.end);
+            if (subStart >= subEnd) {
+                continue;
+            }
+            for (const auto& ff : sub.fStyle.getFontFeatures()) {
+                if (ff.fName.size() != 4) {
+                    SkDEBUGF("Incorrect font feature: %s=%d\n", ff.fName.c_str(), ff.fValue);
+                    continue;
+                }
+                features.push_back({
+                        SkSetFourByteTag(ff.fName[0], ff.fName[1], ff.fName[2], ff.fName[3]),
+                        SkToU32(ff.fValue),
+                        subStart,
+                        subEnd,
+                });
+            }
         }
+
+        visitor(combinedBlock, features);
     };
 
-    for (auto& block : styleSpan) {
-        BlockRange blockRange(std::max(block.fRange.start, textRange.start), std::min(block.fRange.end, textRange.end));
+    for (size_t i = 0; i < styleSpan.size(); ++i) {
+        const Block& block = styleSpan[i];
+        BlockRange blockRange(std::max(block.fRange.start, textRange.start),
+                              std::min(block.fRange.end, textRange.end));
         if (blockRange.empty()) {
             continue;
         }
-        SkASSERT(combinedBlock.fRange.width() == 0 || combinedBlock.fRange.end == block.fRange.start);
+        SkASSERT(combinedBlock.fRange.width() == 0 ||
+                 combinedBlock.fRange.end == block.fRange.start);
 
         if (!combinedBlock.fRange.empty()) {
             if (block.fStyle.matchOneAttribute(StyleType::kFont, combinedBlock.fStyle)) {
                 combinedBlock.add(blockRange);
-                addFeatures(block);
                 continue;
             }
             // Resolve all characters in the block for this style
-            visitor(combinedBlock, features);
+            flushCombinedBlock(i);
         }
 
         combinedBlock.fRange = blockRange;
         combinedBlock.fStyle = block.fStyle;
-        features.clear();
-        addFeatures(block);
+        groupStart = i;
     }
 
-    visitor(combinedBlock, features);
+    if (!combinedBlock.fRange.empty()) {
+        flushCombinedBlock(styleSpan.size());
+    }
 #ifdef SK_DEBUG
     //printState();
 #endif

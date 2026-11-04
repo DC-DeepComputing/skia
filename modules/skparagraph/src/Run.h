@@ -135,6 +135,7 @@ public:
         return SkRect::MakeXYWH(fOffset.fX, fOffset.fY, fAdvance.fX, fAdvance.fY);
     }
 
+    static bool IsCursiveScript(SkFourByteTag script);
     bool isCursiveScript() const;
 
     void addSpacesAtTheEnd(SkScalar space, Cluster* cluster);
