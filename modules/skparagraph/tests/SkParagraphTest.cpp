@@ -12755,3 +12755,51 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+// Test for flutter#40936
+class BackgroundRecordingCanvas : public SkCanvas {
+public:
+    BackgroundRecordingCanvas(int width, int height) : SkCanvas(width, height) {}
+    std::vector<SkRect> fRects;
+protected:
+    void onDrawRect(const SkRect& rect, const SkPaint& paint) override {
+        fRects.push_back(rect);
+    }
+};
+
+DEF_TEST(SkParagraph_BackgroundMixedFontsHeight, reporter) {
+    sk_sp<TestFontCollection> fontCollection =
+            sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    ParagraphStyle paragraph_style;
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    text_style.setBackgroundColor(SkPaint(SkColors::kRed));
+    builder.pushStyle(text_style);
+
+    // Mix English (Roboto) and Chinese (fallback to some other font, usually Noto Sans CJK or similar)
+    builder.addText(u"a世");
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(1000);
+
+    BackgroundRecordingCanvas canvas(1000, 1000);
+    paragraph->paint(&canvas, 0, 0);
+
+    // There should be two characters in two different fonts, but in the same style block with background.
+    // The background rect for both should have the exact same top and bottom (minTop and maxBottom).
+    // The canvas will record drawRect calls.
+    if (canvas.fRects.size() >= 2) {
+        SkRect rect1 = canvas.fRects[0];
+        SkRect rect2 = canvas.fRects[1];
+        REPORTER_ASSERT(reporter, rect1.fTop == rect2.fTop);
+        REPORTER_ASSERT(reporter, rect1.fBottom == rect2.fBottom);
+    } else {
+        REPORTER_ASSERT(reporter, canvas.fRects.size() >= 2);
+    }
+}
