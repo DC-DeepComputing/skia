@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b69e9d1c_45c80ff5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-04T17:23:36Z",
+      "side": 1,
+      "message": "This is one of 3, I looked it over and tried to pare down from the first pass, keeping things high level in case we change implementation later (we can always add to it if we find value). If this looks good, I can start sending the other 4 out to other reviewers. Any structural/meta edits here that you want to keep in mind for the all the documentation, I can make sure get carried over before sending things out.",
+      "revId": "40de66c781265143605af7ff6e613c1ffe9686c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
