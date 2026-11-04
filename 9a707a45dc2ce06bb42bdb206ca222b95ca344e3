@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca29aca4_f82cca12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-04T01:43:09Z",
+      "side": 1,
+      "message": "Couple of thoughts:\n\n* [this gm](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/gm/asyncrescaleandread.cpp;drc\u003dfc46d066b5b61503e660c9a25a8689f094ee9b04;l\u003d399) iterates numerically through some yuv color spaces, and the values no longer match.  Also only covers a small subset (first 6 values if I\u0027m reading it correctly).  Do we want that expanded?\n\n* Chromium has a couple of exhaustive switches on `SkYUVColorSpace` that may require a `default` case before landing this.  I kicked off a canary to verify.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:media/base/video_util.cc;drc\u003d1056cfa6700e8344b1e55875c565b8ff326b739c;l\u003d985\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/modules/webcodecs/image_decoder_core.cc;drc\u003d663444b7e6cd034c57c95c0dc1e785bc91576aca;l\u003d144",
+      "revId": "9a707a45dc2ce06bb42bdb206ca222b95ca344e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
