@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fff22a1_751cdcbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T17:45:50Z",
+      "side": 1,
+      "message": "I\u0027d run the chrome canary on this one.",
+      "revId": "0fc0af805e253699df1e1f6dcd2f4ee32ca9e046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f57eeb5_9372345c",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T17:45:50Z",
+      "side": 1,
+      "message": "I would drop the MSAA math; I think it\u0027s sufficient to call out the possible outset extrapolation for MSAA, filtering, and anti-aliasing that makes minification hard to reason about, but it is covered by the QuadContainsRectMask check below.",
+      "range": {
+        "startLine": 802,
+        "startChar": 14,
+        "endLine": 808,
+        "endChar": 24
+      },
+      "revId": "0fc0af805e253699df1e1f6dcd2f4ee32ca9e046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
