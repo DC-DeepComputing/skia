@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de8cbd21_062f77d8",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2225,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-04T20:10:39Z",
+      "side": 1,
+      "message": "`const sk_sp\u003cSkColorSpace\u003e\u0026` to avoid ref churn and satisfy the tidy bot.",
+      "range": {
+        "startLine": 2225,
+        "startChar": 13,
+        "endLine": 2225,
+        "endChar": 32
+      },
+      "revId": "6ab1dbba75c23782d92c0505bbcdbb27c73db0bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
