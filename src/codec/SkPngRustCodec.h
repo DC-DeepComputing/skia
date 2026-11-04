@@ -170,10 +170,10 @@ private:
     void writeSubsetOrSampleToOutput(DecodingState& decodingState);
 
     // Populates `rowsDecoded` after a failed decode (`kIncompleteInput` or
-    // `kErrorInInput`) with the number of destination rows written so far,
+    // `kErrorInInput`) with the number of destination rows initialized so far,
     // matching `SkPngCodec` so callers only fill the remaining rows.
     void reportRowsDecoded(Result result,
-                           const DecodingState& decodingState,
+                           const std::optional<DecodingState>& decodingState,
                            int* rowsDecoded) const;
 
     // Helper for reading until the start of the next `fdAT` sequence.
