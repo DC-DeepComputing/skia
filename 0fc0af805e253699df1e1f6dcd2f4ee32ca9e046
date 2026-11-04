@@ -63,6 +63,30 @@
       },
       "revId": "0fc0af805e253699df1e1f6dcd2f4ee32ca9e046",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bac916a_50f43bde",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T20:50:07Z",
+      "side": 1,
+      "message": "Just removing the comment. IIUC, the math also applies for the case of anti-aliasing outsets when minifying, and that\u0027s still relevant.",
+      "parentUuid": "aa3bbbe9_e92d9339",
+      "range": {
+        "startLine": 802,
+        "startChar": 14,
+        "endLine": 808,
+        "endChar": 24
+      },
+      "revId": "0fc0af805e253699df1e1f6dcd2f4ee32ca9e046",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
