@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d410638_be3dc84d",
+        "filename": "src/gpu/SkBackingFit.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-04T20:08:45Z",
+      "side": 1,
+      "message": "Maybe just remove this ?",
+      "range": {
+        "startLine": 42,
+        "startChar": 3,
+        "endLine": 42,
+        "endChar": 20
+      },
+      "revId": "f3d59992af04b3213c8aa2404be5372027f33dc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
