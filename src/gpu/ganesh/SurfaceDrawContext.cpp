@@ -1991,7 +1991,7 @@ void SurfaceDrawContext::addDrawOp(const GrClip* clip,
 
     GrDstProxyView dstProxyView;
     if (analysis.requiresDstTexture()) {
-        if (!this->setupDstProxyView(drawOp->bounds(), drawNeedsMSAA, &dstProxyView)) {
+        if (!this->setupDstProxyView(bounds, drawNeedsMSAA, &dstProxyView)) {
             return;
         }
 #ifdef SK_DEBUG
@@ -2105,11 +2105,12 @@ bool SurfaceDrawContext::setupDstProxyView(const SkRect& opBounds,
 
     SkIRect copyRect = SkIRect::MakeSize(this->asSurfaceProxy()->backingStoreDimensions());
     if (!restrictions.fMustCopyWholeSrc) {
-        // If we don't need the whole source, restrict to the op's bounds. We add an extra pixel
+        // If we don't need the whole source, restrict to the op's bounds. We add one extra pixel
         // of padding to account for AA bloat and the unpredictable rounding of coords near pixel
-        // centers during rasterization.
+        // centers during rasterization, and another extra pixel (2 total) for a safety margin in
+        // the event that a GrOps' bounds are inaccurate.
         SkIRect conservativeDrawBounds = opBounds.roundOut();
-        conservativeDrawBounds.outset(1, 1);
+        conservativeDrawBounds.outset(2, 2);
         SkAssertResult(copyRect.intersect(conservativeDrawBounds));
     }
 

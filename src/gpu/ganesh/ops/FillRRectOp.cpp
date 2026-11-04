@@ -294,11 +294,17 @@ FillRRectOpImpl::FillRRectOpImpl(GrProcessorSet* processorSet,
                                              ProcessorFlags::kMSAAEnabled))
         , fHeadInstance(arena->make<Instance>(viewMatrix, rrect, localCoords, paintColor))
         , fTailInstance(&fHeadInstance->fNext) {
-    // FillRRectOp::Make fails if there is perspective.
-    SkASSERT(!viewMatrix.hasPerspective());
-    this->setBounds(viewMatrix.mapRect(rrect.getBounds()),
-                    GrOp::HasAABloat(!(processorFlags & ProcessorFlags::kFakeNonAA)),
-                    GrOp::IsHairline::kNo);
+    SkRect devBounds = viewMatrix.mapRect(rrect.getBounds());
+    if (!(processorFlags & ProcessorFlags::kFakeNonAA)) {
+        // FillRRectOp typically outsets by 1/2px for regular AA, but if it ends up being rendered
+        // with MSAA, the vertex shader bumps out by 1px instead. This isn't knowable until the end
+        // after we've calculated bounds. If the rrect is super thin, the vertex shader outsets to
+        // reach 2px in device space. All of these scenarios are covered by conservatively
+        // outsetting the bounds by 1px since the final dimensions will >= 2px.
+        devBounds.outset(1.f, 1.f);
+    }
+    // This already includes AA bloat manually if needed, so never report the flag up to GrOp.
+    this->setBounds(devBounds, GrOp::HasAABloat::kNo, GrOp::IsHairline::kNo);
 }
 
 GrDrawOp::ClipResult FillRRectOpImpl::clipToShape(skgpu::ganesh::SurfaceDrawContext* sdc,
