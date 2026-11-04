@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "857dbd49_26b57dd5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-04T17:25:46Z",
+      "side": 1,
+      "message": "Canary-Chromium failed on unrelated upstream targets outside the files modified in this CL.",
+      "revId": "a8e135b9b8681335c41af554605d87e077bcbc43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
