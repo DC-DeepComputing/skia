@@ -264,6 +264,14 @@ size_t SkStrikeCache::internalPurge(size_t minBytesNeeded, bool checkPinners) {
     return bytesFreed;
 }
 
+void SkStrikeCache::removeStrike(SkStrike* strike) {
+    SkAutoMutexExclusive ac(fLock);
+    // A purge may have dropped the strike already; removing it twice corrupts the LRU list
+    if (!strike->fRemoved) {
+        this->internalRemoveStrike(strike);
+    }
+}
+
 void SkStrikeCache::internalAttachToHead(sk_sp<SkStrike> strike) {
     SkASSERT(fStrikeLookup.find(strike->getDescriptor()) == nullptr);
     SkStrike* strikePtr = strike.get();

@@ -740,6 +740,9 @@ bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memo
         strike->verifyPinnedStrike();
 
         if (!strike->mergeFromBuffer(buffer)) {
+            // A strike left in the cache after a failed merge would later miss glyphs and fall
+            // back to SkScalerContextProxy, which DCHECKs on a kGlyphMetrics cache miss
+            fStrikeCache->removeStrike(strike.get());
             postError(__LINE__);
             return false;
         }
