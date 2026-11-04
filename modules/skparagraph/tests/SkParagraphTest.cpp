@@ -12852,8 +12852,8 @@ DEF_TEST(SkParagraph_LigatureWithUnresolvedMark, reporter) {
     }
 }
 
-// Positive letter-spacing turns standard ligatures off by default, and an explicit liga font
-// feature overrides that default
+// Cursive scripts skip letter-spacing so their standard ligatures stay intact, and an explicit
+// liga font feature overrides the default liga=0 added for positive letter-spacing
 DEF_TEST(SkParagraph_LetterSpacingLigatures, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
@@ -12869,12 +12869,12 @@ DEF_TEST(SkParagraph_LetterSpacingLigatures, reporter) {
         return total;
     };
 
-    auto buildSingle = [&](const char* family,
-                           const char* text,
-                           SkScalar letterSpacing,
-                           int ligaFeature = -1) {
+    auto build = [&](std::vector<SkString> families,
+                     const char* text,
+                     SkScalar letterSpacing,
+                     int ligaFeature) {
         TextStyle style;
-        style.setFontFamilies({SkString(family)});
+        style.setFontFamilies(std::move(families));
         style.setFontSize(20);
         style.setColor(SK_ColorBLACK);
         style.setLetterSpacing(letterSpacing);
@@ -12891,21 +12891,129 @@ DEF_TEST(SkParagraph_LetterSpacingLigatures, reporter) {
         paragraph->layout(TestCanvasWidth);
         return paragraph;
     };
+    auto buildSingle = [&](const char* family,
+                           const char* text,
+                           SkScalar letterSpacing,
+                           int ligaFeature = -1) {
+        return build({SkString(family)}, text, letterSpacing, ligaFeature);
+    };
+    auto buildMixed = [&](const char* text, SkScalar letterSpacing, int ligaFeature = -1) {
+        return build({SkString("Roboto"), SkString("Noto Naskh Arabic")},
+                     text,
+                     letterSpacing,
+                     ligaFeature);
+    };
 
     // U+FEDF U+FEE0 U+FEEA forms a 1-glyph standard 'liga' ligature in Noto Naskh Arabic
     const char* arabic = "\xEF\xBB\x9F\xEF\xBB\xA0\xEF\xBB\xAA";
-    REPORTER_ASSERT(reporter,
-                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 0.0f).get()) == 1);
-    REPORTER_ASSERT(reporter,
-                    countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 0.0f, 0).get()) == 3);
+    auto arabicUnspaced = buildSingle("Noto Naskh Arabic", arabic, 0.0f);
+    auto arabicLigaOff = buildSingle("Noto Naskh Arabic", arabic, 0.0f, 0);
+    REPORTER_ASSERT(reporter, countGlyphs(arabicUnspaced.get()) == 1);
+    REPORTER_ASSERT(reporter, countGlyphs(arabicLigaOff.get()) == 3);
+
+    auto arabicSpaced = buildSingle("Noto Naskh Arabic", arabic, 2.0f);
+    REPORTER_ASSERT(reporter, countGlyphs(arabicSpaced.get()) == 1);
+    REPORTER_ASSERT(
+            reporter,
+            SkScalarNearlyEqual(
+                    arabicSpaced->getLongestLine(), arabicUnspaced->getLongestLine(), EPSILON100));
     REPORTER_ASSERT(reporter,
                     countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 2.0f, 1).get()) == 1);
     REPORTER_ASSERT(reporter,
                     countGlyphs(buildSingle("Noto Naskh Arabic", arabic, 2.0f, 0).get()) == 3);
 
+    // A colored combining mark in its own style block does not break the Arabic ligature
+    {
+        TextStyle baseStyle;
+        baseStyle.setFontFamilies({SkString("Noto Naskh Arabic")});
+        baseStyle.setFontSize(20);
+        baseStyle.setColor(SK_ColorBLACK);
+        baseStyle.setLetterSpacing(2.0f);
+        TextStyle markStyle = baseStyle;
+        markStyle.setColor(SK_ColorRED);
+
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(baseStyle);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(baseStyle);
+        builder.addText("\xEF\xBB\x9F");
+        builder.pop();
+        builder.pushStyle(markStyle);
+        builder.addText("\xD9\x8E");
+        builder.pop();
+        builder.pushStyle(baseStyle);
+        builder.addText("\xEF\xBB\xA0\xEF\xBB\xAA");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        REPORTER_ASSERT(reporter, countGlyphs(paragraph.get()) == 2);
+    }
+
     REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 0.0f).get()) == 1);
     REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 2.0f).get()) == 2);
     REPORTER_ASSERT(reporter, countGlyphs(buildSingle("Roboto", "fi", 2.0f, 1).get()) == 1);
+
+    // Mixed non-cursive and cursive scripts in one style block disable liga only on non-cursive
+    {
+        auto paragraph = buildMixed("fi \xEF\xBB\x9F\xEF\xBB\xA0\xEF\xBB\xAA", 2.0f);
+        auto* impl = static_cast<ParagraphImpl*>(paragraph.get());
+        REPORTER_ASSERT(reporter, impl->runs().size() == 2);
+        if (impl->runs().size() == 2) {
+            REPORTER_ASSERT(reporter, impl->runs()[0].size() == 3);
+            REPORTER_ASSERT(reporter, impl->runs()[1].size() == 1);
+        }
+    }
+
+    // In one spaced block the Arabic word keeps its ligature and only the Latin "fi" breaks up
+    const char* arabicThenFi = "\xEF\xBB\x9F\xEF\xBB\xA0\xEF\xBB\xAA fi";
+    const size_t arabicThenFiUnspaced = countGlyphs(buildMixed(arabicThenFi, 0.0f).get());
+    REPORTER_ASSERT(reporter,
+                    countGlyphs(buildMixed(arabicThenFi, 2.0f).get()) == arabicThenFiUnspaced + 1);
+
+    // U+060C is Common, so it passes the cursive precheck but joins the Latin script run and
+    // letter-spacing still turns off the "fi" ligature next to it. U+00E9 takes the non-ASCII
+    // decode path of the precheck without a hit
+    {
+        auto checkLigaOff = [&](const char* family, const char* text) {
+            auto shape = [&](SkScalar letterSpacing, int ligaFeature) {
+                auto paragraph = family ? buildSingle(family, text, letterSpacing, ligaFeature)
+                                        : buildMixed(text, letterSpacing, ligaFeature);
+                return countGlyphs(paragraph.get());
+            };
+            const size_t ligaOff = shape(0.0f, 0);
+            REPORTER_ASSERT(reporter, shape(0.0f, -1) < ligaOff, "%s", text);
+            REPORTER_ASSERT(reporter, shape(2.0f, -1) == ligaOff, "%s", text);
+        };
+        checkLigaOff(nullptr, "fi\xD8\x8C");
+        checkLigaOff(nullptr, "\xD8\x8C" "fi");
+        checkLigaOff("Roboto", "fi\xC3\xA9");
+    }
+
+    // The same precheck hit sends this merged group to the script pass, where the unspaced
+    // sub-block of the Latin script run keeps its ligature
+    {
+        TextStyle spaced;
+        spaced.setFontFamilies({SkString("Roboto"), SkString("Noto Naskh Arabic")});
+        spaced.setFontSize(20);
+        spaced.setColor(SK_ColorBLACK);
+        spaced.setLetterSpacing(2.0f);
+        TextStyle unspaced = spaced;
+        unspaced.setLetterSpacing(0.0f);
+
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(spaced);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(spaced);
+        builder.addText("fi");
+        builder.pop();
+        builder.pushStyle(unspaced);
+        builder.addText("fi\xD8\x8C");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        const size_t allUnspaced = countGlyphs(buildMixed("fifi\xD8\x8C", 0.0f).get());
+        REPORTER_ASSERT(reporter, countGlyphs(paragraph.get()) == allUnspaced + 1);
+    }
 
     // Merged font-compatible blocks disable liga only on the sub-block with positive letter-spacing
     {
