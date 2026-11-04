@@ -22,6 +22,30 @@
       },
       "revId": "5b7e61b9eb56103cc0b9e8fd9bd3c44d3bd2eee9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52fc328e_7716a3ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-04T21:14:11Z",
+      "side": 1,
+      "message": "This problem was introduced recently and I am trying to fix it before Flutter can notice (it\u0027s not in their main yet). \nAlso, I only recently found out that Skia benchmarks didn\u0027t run for SkParagraph at all (also fixed today).",
+      "parentUuid": "f2a8770e_0ed7b4b6",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 71
+      },
+      "revId": "5b7e61b9eb56103cc0b9e8fd9bd3c44d3bd2eee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
