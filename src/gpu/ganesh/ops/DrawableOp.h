@@ -52,9 +52,9 @@ private:
                       GrXferBarrierFlags renderPassXferBarriers,
                       GrLoadOp colorLoadOp) override {}
 
-    void onPrepare(GrOpFlushState*) override {}
+    bool onPrepare1(GrOpFlushState*) override { return true; }
 
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 
     std::unique_ptr<SkDrawable::GpuDrawHandler> fDrawable;
 };
