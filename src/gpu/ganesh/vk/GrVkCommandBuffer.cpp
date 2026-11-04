@@ -672,20 +672,23 @@ bool GrVkPrimaryCommandBuffer::submitToQueue(
     }
 
     if (submitResult != VK_SUCCESS) {
-        // If we failed to submit because of a device lost, we still need to wait for the fence to
-        // signal before deleting. However, there is an ARM bug (b/359822580) where the driver early
-        // outs on the fence wait if in a device lost state and thus we can't wait on it. Instead,
-        // we just wait on the queue to finish. We're already in a state that's going to cause us to
-        // restart the whole device, so waiting on the queue shouldn't have any performance impact.
         if (submitResult == VK_ERROR_DEVICE_LOST) {
-            GR_VK_CALL(gpu->vkInterface(), QueueWaitIdle(queue));
+            // When a device lost occurs, waiting on the queue (QueueWaitIdle) can hang indefinitely
+            // on drivers (e.g. ARM Mali, b/547375776) if the GPU hardware has hung, causing an
+            // unrecoverable system freeze. Furthermore, deleting the fence immediately can trigger
+            // use-after-free crashes in driver event threads (b/359822580, b/351164374).
+            // Since the entire device context is lost and will be destroyed, abandon the fence
+            // without waiting and without calling DestroyFence.
+            fSubmitFence = VK_NULL_HANDLE;
         } else {
             SkASSERT(submitResult == VK_ERROR_OUT_OF_HOST_MEMORY ||
                      submitResult == VK_ERROR_OUT_OF_DEVICE_MEMORY);
+            if (fSubmitFence != VK_NULL_HANDLE) {
+                GR_VK_CALL(gpu->vkInterface(), DestroyFence(gpu->device(), fSubmitFence, nullptr));
+                fSubmitFence = VK_NULL_HANDLE;
+            }
         }
 
-        GR_VK_CALL(gpu->vkInterface(), DestroyFence(gpu->device(), fSubmitFence, nullptr));
-        fSubmitFence = VK_NULL_HANDLE;
         return false;
     }
     return true;

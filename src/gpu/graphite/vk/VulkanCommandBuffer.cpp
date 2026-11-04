@@ -612,21 +612,17 @@ bool VulkanCommandBuffer::submit(VkQueue queue, const SubmitInfo& submitInfo, bo
     fWaitSemaphores.clear();
     fSignalSemaphores.clear();
     if (submitResult != VK_SUCCESS) {
-        // If we failed to submit because of a device lost, we still need to wait for the fence to
-        // signal before deleting. However, there is an ARM bug (b/359822580) where the driver early
-        // outs on the fence wait if in a device lost state and thus we can't wait on it. Instead,
-        // we just wait on the queue to finish. We're already in a state that's going to cause us to
-        // restart the whole device, so waiting on the queue shouldn't have any performance impact.
         if (submitResult == VK_ERROR_DEVICE_LOST) {
-            VULKAN_CALL(fSharedContext->interface(), QueueWaitIdle(queue));
+            // Abandon the fence on device lost to avoid indefinite driver hangs (b/547375776)
+            // and driver UAF crashes (b/359822580).
+            fSubmitFence = VK_NULL_HANDLE;
         } else {
             SkASSERT(submitResult == VK_ERROR_OUT_OF_HOST_MEMORY ||
                      submitResult == VK_ERROR_OUT_OF_DEVICE_MEMORY);
-        }
-
-        if (fSubmitFence != VK_NULL_HANDLE) {
-            VULKAN_CALL(fSharedContext->interface(), DestroyFence(device, fSubmitFence, nullptr));
-            fSubmitFence = VK_NULL_HANDLE;
+            if (fSubmitFence != VK_NULL_HANDLE) {
+                VULKAN_CALL(fSharedContext->interface(), DestroyFence(device, fSubmitFence, nullptr));
+                fSubmitFence = VK_NULL_HANDLE;
+            }
         }
         return false;
     }
