@@ -110,6 +110,12 @@ struct SK_API SkContextOptions {
      * endCapture on the SkContext.
      */
     bool fEnableCapture = false;
+
+    /**
+     * Disables runtime CPU feature detection and SIMD function pointer initialization (SkOpts)
+     * during SkContext creation.
+     */
+    bool fDisableRuntimeOpts = false;
 };
 
 #endif  // SkContextOptions_DEFINED
