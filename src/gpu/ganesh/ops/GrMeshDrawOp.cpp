@@ -24,7 +24,7 @@ class GrGpuBuffer;
 
 GrMeshDrawOp::GrMeshDrawOp(uint32_t classID) : INHERITED(classID) {}
 
-void GrMeshDrawOp::onPrepare(GrOpFlushState* state) { this->onPrepareDraws(state); }
+bool GrMeshDrawOp::onPrepare1(GrOpFlushState* state) { return this->onPrepareDraws1(state); }
 
 void GrMeshDrawOp::createProgramInfo(GrMeshDrawTarget* target) {
     this->createProgramInfo(&target->caps(),

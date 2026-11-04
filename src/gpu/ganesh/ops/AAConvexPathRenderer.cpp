@@ -806,13 +806,13 @@ private:
                                                             renderPassXferBarriers, colorLoadOp);
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         int instanceCount = fPaths.size();
 
         if (!fProgramInfo) {
             this->createProgramInfo(target);
             if (!fProgramInfo) {
-                return;
+                return false;
             }
         }
 
@@ -861,8 +861,8 @@ private:
                                                           &firstVertex);
 
             if (!verts) SK_UNLIKELY {
-                SkDebugf("Could not allocate vertices\n");
-                return;
+                SKIA_LOG_E("Could not allocate vertices");
+                return false;
             }
 
             sk_sp<const GrBuffer> indexBuffer;
@@ -870,8 +870,8 @@ private:
 
             uint16_t *idxs = target->makeIndexSpace(indexCount, &indexBuffer, &firstIndex);
             if (!idxs) SK_UNLIKELY {
-                SkDebugf("Could not allocate indices\n");
-                return;
+                SKIA_LOG_E("Could not allocate indices");
+                return false;
             }
 
             STArray<kPreallocDrawCnt, Draw, true> draws;
@@ -890,20 +890,27 @@ private:
 
             fDraws.push_back({ meshes, draws.size() });
         }
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
-        if (!fProgramInfo || fDraws.empty()) {
-            return;
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (fDraws.empty()) {
+            return true;
+        }
+        if (!fProgramInfo) {
+            return false;
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
         for (int i = 0; i < fDraws.size(); ++i) {
             for (int j = 0; j < fDraws[i].fMeshCount; ++j) {
-                flushState->drawMesh(fDraws[i].fMeshes[j]);
+                if (!flushState->drawMesh(fDraws[i].fMeshes[j])) {
+                    return false;
+                }
             }
         }
+        return true;
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

@@ -432,7 +432,7 @@ void PathInnerTriangulateOp::onPrePrepare(GrRecordingContext* context,
 
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gHullVertexBufferKey);
 
-void PathInnerTriangulateOp::onPrepare(GrOpFlushState* flushState) {
+bool PathInnerTriangulateOp::onPrepare1(GrOpFlushState* flushState) {
     const GrCaps& caps = flushState->caps();
 
     if (!fFanTriangulator) {
@@ -441,22 +441,28 @@ void PathInnerTriangulateOp::onPrepare(GrOpFlushState* flushState) {
                                  flushState->renderPassBarriers(), flushState->colorLoadOp(),
                                  &caps}, flushState->detachAppliedClip());
         if (!fFanTriangulator) {
-            return;
+            // This is just a signal that the path is empty.
+            return true;
         }
     }
 
     if (fFanPolys) {
         GrEagerDynamicVertexAllocator alloc(flushState, &fFanBuffer, &fBaseFanVertex);
-        fFanVertexCount = fFanTriangulator->polysToTriangles(fFanPolys, &alloc, &fFanBreadcrumbs);
+        if (!fFanTriangulator->polysToTriangles(fFanPolys, &alloc, &fFanBreadcrumbs,
+                                                &fFanVertexCount)) {
+            return false;
+        }
     }
 
     if (fTessellator) {
         auto tessShader = &fStencilCurvesProgram->geomProc().cast<GrPathTessellationShader>();
-        fTessellator->prepareWithTriangles(flushState,
-                                           tessShader->viewMatrix(),
-                                           &fFanBreadcrumbs,
-                                           {SkMatrix::I(), fPath, SK_PMColor4fTRANSPARENT},
-                                           fPath.countVerbs());
+        if (!fTessellator->prepareWithTriangles(flushState,
+                                                tessShader->viewMatrix(),
+                                                &fFanBreadcrumbs,
+                                                {SkMatrix::I(), fPath, SK_PMColor4fTRANSPARENT},
+                                                fPath.countVerbs())) {
+            return false;
+        }
     }
 
     if (!caps.shaderCaps()->fVertexIDSupport) {
@@ -468,28 +474,32 @@ void PathInnerTriangulateOp::onPrepare(GrOpFlushState* flushState) {
                 GrGpuBufferType::kVertex, sizeof(kStripOrderIDs), kStripOrderIDs,
                 gHullVertexBufferKey);
     }
+    return true;
 }
 
-void PathInnerTriangulateOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool PathInnerTriangulateOp::onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (fCoverHullsProgram &&
         fCoverHullsProgram->geomProc().hasVertexAttributes() &&
         !fHullVertexBufferIfNoIDSupport) {
-        return;
+        return false;
     }
 
     if (fStencilCurvesProgram) {
         SkASSERT(fTessellator);
         flushState->bindPipelineAndScissorClip(*fStencilCurvesProgram, this->bounds());
-        fTessellator->draw(flushState);
+        if (!fTessellator->draw(flushState)) {
+            return false;
+        }
     }
 
-    // Allocation of the fan vertex buffer may have failed but we already pushed back fan programs.
     if (fFanBuffer) {
         for (const GrProgramInfo* fanProgram : fFanPrograms) {
             flushState->bindPipelineAndScissorClip(*fanProgram, this->bounds());
             flushState->bindTextures(fanProgram->geomProc(), nullptr, fanProgram->pipeline());
             flushState->bindBuffers(nullptr, nullptr, fFanBuffer);
-            flushState->draw(fFanVertexCount, fBaseFanVertex);
+            if (!flushState->draw2(fFanVertexCount, fBaseFanVertex)) {
+                return false;
+            }
         }
     }
 
@@ -497,8 +507,11 @@ void PathInnerTriangulateOp::onExecute(GrOpFlushState* flushState, const SkRect&
         SkASSERT(fTessellator);
         flushState->bindPipelineAndScissorClip(*fCoverHullsProgram, this->bounds());
         flushState->bindTextures(fCoverHullsProgram->geomProc(), nullptr, *fPipelineForFills);
-        fTessellator->drawHullInstances(flushState, fHullVertexBufferIfNoIDSupport);
+        if (!fTessellator->drawHullInstances(flushState, fHullVertexBufferIfNoIDSupport)) {
+            return false;
+        }
     }
+    return true;
 }
 
 }  // namespace skgpu::ganesh
