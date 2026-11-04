@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkGeometry.h"
 #include "src/core/SkQuadClipper.h"
+
+#include "include/core/SkSpan.h"
+#include "src/core/SkGeometry.h"
 
 #include <cstring>
 #include <utility>
@@ -51,7 +53,7 @@ static bool chopMonoQuadAtY(SkPoint pts[3], SkScalar y, SkScalar* t) {
  communicate that to setQuadratic, and then avoid having to flip it back
  here (only to have setQuadratic do the flip again)
  */
-bool SkQuadClipper::clipQuad(const SkPoint srcPts[3], SkPoint dst[3]) {
+bool SkQuadClipper::clipQuad(SkSpan<const SkPoint, 3> srcPts, SkPoint dst[3]) {
     bool reverse;
 
     // we need the data to be monotonically increasing in Y
@@ -61,7 +63,7 @@ bool SkQuadClipper::clipQuad(const SkPoint srcPts[3], SkPoint dst[3]) {
         dst[2] = srcPts[0];
         reverse = true;
     } else {
-        memcpy(dst, srcPts, 3 * sizeof(SkPoint));
+        memcpy(dst, srcPts.data(), 3 * sizeof(SkPoint));
         reverse = false;
     }
 

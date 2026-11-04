@@ -316,7 +316,7 @@ public:
         @param w   weight of added conic
         @return    reference to SkPathBuilder
     */
-    SkPathBuilder& conicTo(const SkPoint pts[2], SkScalar w) {
+    SkPathBuilder& conicTo(SkSpan<const SkPoint, 2> pts, SkScalar w) {
         return this->conicTo(pts[0], pts[1], w);
     }
 
@@ -366,7 +366,7 @@ public:
         @param pts  first and second control SkPoints of cubic, and end SkPoint.
         @return     reference to SkPathBuilder
     */
-    SkPathBuilder& cubicTo(const SkPoint pts[3]) {
+    SkPathBuilder& cubicTo(SkSpan<const SkPoint, 3> pts) {
         return this->cubicTo(pts[0], pts[1], pts[2]);
     }
 
