@@ -2015,15 +2015,18 @@
     }
   },
   {
-    "name": "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-StandaloneWasm"
-  },
-  {
     "name": "Test-Ubuntu24.04-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit",
     "cq_config": {
       "location_regexes": [
         "modules/canvaskit/.*"
       ]
     }
+  },
+  {
+    "name": "Test-Ubuntu24.04-EMCC-GCE-CPU-AVX2-wasm-Release-All-StandaloneWasm"
+  },
+  {
+    "name": "Test-Ubuntu24.04-EMCC-Golo-GPU-QuadroP400-wasm-Release-All-StandaloneWasm"
   },
   {
     "name": "Test-Ubuntu26.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Dawn_Vulkan"
