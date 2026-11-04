@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41fc65e2_cead26d4",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-04T21:04:50Z",
+      "side": 1,
+      "message": "Add to this comment that we will only make the global context once. So the first caller of this will end up deciding if we enableRuntimeOpts or not. The assumption is that if a client normally calls SkGraphics::Init() then that will be the first function to create the global SkContext. Otherwise we\u0027ll create a function without opts.",
+      "range": {
+        "startLine": 187,
+        "startChar": 79,
+        "endLine": 187,
+        "endChar": 80
+      },
+      "revId": "85687836665523351e93158b55341f6415bfbf5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
