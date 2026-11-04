@@ -68,6 +68,8 @@ public:
     void purgeAll() SK_EXCLUDES(fLock);  // does not change budget
     void purgePinned(size_t minBytesNeeded = 0) SK_EXCLUDES(fLock);
 
+    void removeStrike(SkStrike* strike) SK_EXCLUDES(fLock);
+
     int getCacheCountLimit() const SK_EXCLUDES(fLock);
     int setCacheCountLimit(int limit) SK_EXCLUDES(fLock);
     int getCacheCountUsed() const SK_EXCLUDES(fLock);
