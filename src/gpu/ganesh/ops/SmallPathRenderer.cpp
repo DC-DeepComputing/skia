@@ -200,12 +200,12 @@ private:
         // TODO [PI]: implement
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws(GrMeshDrawTarget* target) override {
         int instanceCount = fShapes.size();
 
         auto atlasMgr = target->smallPathAtlasManager();
         if (!atlasMgr) {
-            return;
+            return false;
         }
 
         static constexpr int kMaxTextures = GrDistanceFieldPathGeoProc::kMaxTextures;
@@ -228,7 +228,7 @@ private:
         SkMatrix invert;
         if (fHelper.usesLocalCoords()) {
             if (!ctm.invert(&invert)) {
-                return;
+                return false;
             }
         }
         if (fUsesDistanceField) {
@@ -258,7 +258,7 @@ private:
         // We need to make sure we don't overflow a 32 bit int when we request space in the
         // makeVertexSpace call below.
         if (instanceCount > SK_MaxS32 / GrResourceProvider::NumVertsPerNonAAQuad()) {
-            return;
+            return false;
         }
         VertexWriter vertices = target->makeVertexWriter(
             kVertexStride, GrResourceProvider::NumVertsPerNonAAQuad() * instanceCount,
@@ -266,8 +266,8 @@ private:
 
         flushInfo.fIndexBuffer = target->resourceProvider()->refNonAAQuadIndexBuffer();
         if (!vertices || !flushInfo.fIndexBuffer) SK_UNLIKELY {
-            SkDebugf("Could not allocate vertices\n");
-            return;
+            SKIA_LOG_E("Could not allocate vertices");
+            return false;
         }
 
         flushInfo.fInstancesToFlush = 0;
@@ -365,6 +365,7 @@ private:
         }
 
         this->flush(target, &flushInfo);
+        return true;
     }
 
     bool addToAtlasWithRetry(GrMeshDrawTarget* target,
@@ -632,10 +633,10 @@ private:
         }
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         auto pipeline = fHelper.createPipeline(flushState);
 
-        flushState->executeDrawsAndUploadsForMeshDrawOp(this, chainBounds, pipeline,
+        return flushState->executeDrawsAndUploadsForMeshDrawOp1(this, chainBounds, pipeline,
                                                         fHelper.stencilSettings());
     }
 

@@ -606,7 +606,7 @@ private:
                                                                    &GrUserStencilSettings::kUnused);
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws(GrMeshDrawTarget* target) override {
         int instanceCount = fGeoData.size();
 
         sk_sp<const GrBuffer> vertexBuffer;
@@ -614,16 +614,16 @@ private:
         CircleVertex* verts = (CircleVertex*)target->makeVertexSpace(
                 sizeof(CircleVertex), fVertCount, &vertexBuffer, &firstVertex);
         if (!verts) {
-            SkDebugf("Could not allocate vertices\n");
-            return;
+            SKIA_LOG_E("Could not allocate vertices");
+            return false;
         }
 
         sk_sp<const GrBuffer> indexBuffer;
         int firstIndex = 0;
         uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
         if (!indices) {
-            SkDebugf("Could not allocate indices\n");
-            return;
+            SKIA_LOG_E("Could not allocate indices");
+            return false;
         }
 
         int currStartVertex = 0;
@@ -659,21 +659,24 @@ private:
         fMesh->setIndexed(std::move(indexBuffer), fIndexCount, firstIndex, 0,
                           SkTo<uint16_t>(fVertCount - 1),
                           GrPrimitiveRestart::kNo, std::move(vertexBuffer), firstVertex);
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fMesh) {
+            return true;
+        }
         if (!fProgramInfo) {
             this->createProgramInfo(flushState);
-        }
-
-        if (!fProgramInfo || !fMesh) {
-            return;
+            if (!fProgramInfo) {
+                return false;
+            }
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), *fFalloffView.proxy(),
                                  fProgramInfo->pipeline());
-        flushState->drawMesh(*fMesh);
+        return flushState->drawMesh(*fMesh);
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

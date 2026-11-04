@@ -214,7 +214,7 @@ void DrawAtlasPathOp::onPrePrepare(GrRecordingContext* rContext,
 
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gUnitQuadBufferKey);
 
-void DrawAtlasPathOp::onPrepare(GrOpFlushState* flushState) {
+bool DrawAtlasPathOp::onPrepare(GrOpFlushState* flushState) {
     if (!fProgram) {
         this->prepareProgram(flushState->caps(), flushState->allocator(), flushState->writeView(),
                              flushState->usesMSAASurface(), flushState->detachAppliedClip(),
@@ -233,6 +233,8 @@ void DrawAtlasPathOp::onPrepare(GrOpFlushState* flushState) {
                            << i->fColor;
             fAtlasHelper.writeInstanceData(&instanceWriter, &i->fAtlasInstance);
         }
+    } else {
+        return false;
     }
 
     if (!flushState->caps().shaderCaps()->fVertexIDSupport) {
@@ -243,16 +245,17 @@ void DrawAtlasPathOp::onPrepare(GrOpFlushState* flushState) {
         fVertexBufferIfNoIDSupport = flushState->resourceProvider()->findOrMakeStaticBuffer(
                 GrGpuBufferType::kVertex, sizeof(kUnitQuad), kUnitQuad, gUnitQuadBufferKey);
     }
+    return true;
 }
 
-void DrawAtlasPathOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
+bool DrawAtlasPathOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (fProgram->geomProc().hasVertexAttributes() && !fVertexBufferIfNoIDSupport) {
-        return;
+        return false;
     }
     flushState->bindPipelineAndScissorClip(*fProgram, this->bounds());
     flushState->bindTextures(fProgram->geomProc(), *fAtlasHelper.proxy(), fProgram->pipeline());
     flushState->bindBuffers(nullptr, std::move(fInstanceBuffer), fVertexBufferIfNoIDSupport);
-    flushState->drawInstanced(fInstanceCount, fBaseInstance, 4, 0);
+    return flushState->drawInstanced2(fInstanceCount, fBaseInstance, 4, 0);
 }
 
 }  // namespace skgpu::ganesh
