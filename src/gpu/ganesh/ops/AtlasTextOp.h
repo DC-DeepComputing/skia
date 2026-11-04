@@ -216,8 +216,8 @@ private:
         // TODO [PI]: implement
     }
 
-    void onPrepareDraws(GrMeshDrawTarget*) override;
-    void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
+    bool onPrepareDraws1(GrMeshDrawTarget*) override;
+    bool onExecute1(GrOpFlushState*, const SkRect& chainBounds) override;
 
 #if defined(GPU_TEST_UTILS)
     SkString onDumpInfo() const override;

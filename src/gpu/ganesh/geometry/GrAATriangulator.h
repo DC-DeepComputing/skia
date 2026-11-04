@@ -26,8 +26,8 @@ struct SkRect;
 // Triangulates the given path in device space with a mesh of alpha ramps for antialiasing.
 class GrAATriangulator : private GrTriangulator {
 public:
-    static int PathToAATriangles(const SkPath& path, SkScalar tolerance, const SkRect& clipBounds,
-                                 GrEagerVertexAllocator* vertexAllocator) {
+    static bool PathToAATriangles(const SkPath& path, SkScalar tolerance, const SkRect& clipBounds,
+                                 GrEagerVertexAllocator* vertexAllocator, int* vertexCount) {
         SkArenaAlloc alloc(kArenaDefaultChunkSize);
         GrAATriangulator aaTriangulator(path, &alloc);
         aaTriangulator.fRoundVerticesToQuarterPixel = true;
@@ -35,9 +35,11 @@ public:
         bool isLinear;
         auto [ polys, success ] = aaTriangulator.pathToPolys(tolerance, clipBounds, &isLinear);
         if (!success) {
-            return 0;
+            *vertexCount = 0;
+            return false;
         }
-        return aaTriangulator.polysToAATriangles(polys, vertexAllocator);
+        *vertexCount = aaTriangulator.polysToAATriangles(polys, vertexAllocator);
+        return true;
     }
 
     // Structs used by GrAATriangulator internals.

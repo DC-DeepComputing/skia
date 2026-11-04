@@ -36,19 +36,21 @@ class GrTriangulator {
 public:
     constexpr static int kArenaDefaultChunkSize = 16 * 1024;
 
-    static int PathToTriangles(const SkPath& path, SkScalar tolerance, const SkRect& clipBounds,
-                               GrEagerVertexAllocator* vertexAllocator, bool* isLinear) {
+    static bool PathToTriangles(const SkPath& path, SkScalar tolerance, const SkRect& clipBounds,
+                                GrEagerVertexAllocator* vertexAllocator, bool* isLinear,
+                                int* vertexCount) {
+        *vertexCount = 0;
         if (!path.isFinite()) {
-            return 0;
+            return false;
         }
         SkArenaAlloc alloc(kArenaDefaultChunkSize);
         GrTriangulator triangulator(path, &alloc);
         auto [ polys, success ] = triangulator.pathToPolys(tolerance, clipBounds, isLinear);
         if (!success) {
-            return 0;
+            return false;
         }
-        int count = triangulator.polysToTriangles(polys, vertexAllocator);
-        return count;
+        *vertexCount = triangulator.polysToTriangles(polys, vertexAllocator);
+        return true;
     }
 
     // Enums used by GrTriangulator internals.

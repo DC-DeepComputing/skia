@@ -8,6 +8,7 @@
 #include "bench/Benchmark.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/mock/GrMockTypes.h"
+#include "include/private/SkAssert.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRectPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -349,10 +350,11 @@ private:
 
     void onDraw(int loops, SkCanvas*) final {
         for (int i = 0; i < loops; ++i) {
-            fTessellator->prepare(fTarget.get(),
-                                  SkMatrix::Scale(fMatrixScale, fMatrixScale),
-                                  fPathStrokes.data(),
-                                  fTotalVerbCount);
+            bool result = fTessellator->prepare(fTarget.get(),
+                                                SkMatrix::Scale(fMatrixScale, fMatrixScale),
+                                                fPathStrokes.data(),
+                                                fTotalVerbCount);
+            SkASSERT_RELEASE(result);
             fTarget->resetAllocator();
         }
     }

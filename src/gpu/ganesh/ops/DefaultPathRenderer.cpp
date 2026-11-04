@@ -528,7 +528,7 @@ private:
 
     }
 
-    void onPrepareDraws(GrMeshDrawTarget* target) override {
+    bool onPrepareDraws1(GrMeshDrawTarget* target) override {
         PathGeoBuilder pathGeoBuilder(this->primType(), target, &fMeshes);
 
         // fill buffers
@@ -536,22 +536,28 @@ private:
             const PathData& args = fPaths[i];
             pathGeoBuilder.addPath(args.fPath, args.fTolerance);
         }
+        return true;
     }
 
-    void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+    bool onExecute1(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (fMeshes.empty()) {
+            return true;
+        }
         if (!fProgramInfo) {
             this->createProgramInfo(flushState);
-        }
-
-        if (!fProgramInfo || fMeshes.empty()) {
-            return;
+            if (!fProgramInfo) {
+                return false;
+            }
         }
 
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
         for (int i = 0; i < fMeshes.size(); ++i) {
-            flushState->drawMesh(*fMeshes[i]);
+            if (!flushState->drawMesh2(*fMeshes[i])) {
+                return false;
+            }
         }
+        return true;
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

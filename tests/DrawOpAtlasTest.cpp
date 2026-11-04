@@ -243,7 +243,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAtlasTextOpPreparation,
     GrAtlasManagerTools::SetMaxPages(atlasManager, 0);
 
     flushState.setOpArgs(&opArgs);
-    op->prepare(&flushState);
+    REPORTER_ASSERT(reporter, !op->prepare1(&flushState));
     flushState.setOpArgs(nullptr);
 }
 
@@ -331,7 +331,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrOpFlushStateAbort,
                     uploadTarget.tokenTracker()->nextFlushToken());
 
     // abort() should catch up flush tokens
-    flushState.abort();
+    flushState.abort1();
     REPORTER_ASSERT(reporter,
                     uploadTarget.tokenTracker()->nextDrawToken() ==
                     uploadTarget.tokenTracker()->nextFlushToken());
@@ -392,7 +392,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrDrawOpAtlasUploadAfterFlushWithoutDraws
     REPORTER_ASSERT(reporter, uploadTarget.numASAPUploads() == 1);
 
     // End the flush without executing any draws.
-    flushState.abort();
+    flushState.abort1();
     flushState.reset();
 
     GrAtlasLocator second;
