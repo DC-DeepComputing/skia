@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed0750df_a87cf7a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-04T18:30:07Z",
+      "side": 1,
+      "message": "Thanks for the rebase. PS5 is the same change as PS4 on top of main after https://skia-review.googlesource.com/c/skia/+/1412381 landed (git range-diff shows no code change), so my LGTM stands.\n\nI re-ran the checks on PS5: the google3 SkParagraph clients (1139 tests) give the same results as on main, and the ASAN bot is green.",
+      "revId": "14cd81ee4a93df951611cec658e4b6fe25928abd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
