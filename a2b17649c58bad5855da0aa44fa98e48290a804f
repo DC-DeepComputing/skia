@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee3d9ef1_6a0f00ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T16:04:14Z",
+      "side": 1,
+      "message": "Since Precompile requires the full RenderPassDesc to be provided, it represents the outcome after applying the depth usage policy (added in follow-up CLs), so I think it mostly \"just works\".  The preferred serialized key system definitely just works.\n\nIn the future, if we pull back some of the explicitness of the RenderPassDesc, I think there are options that we can do to limit the precompile:\n1. For kAlways/kNever, we just generate the fixed depth/stencil settings required.\n2. For avoid internal-only, we sort of already track when we\u0027re in an image filter so that could activate the depth-less RP mode.  We\u0027d also then double up things for simple image draws that cover the other internal-use surfaces.\n3. For when-required, we\u0027d have to always double up the pipelines, but we may also limit when-required to cases where we have dynamic attachments or dynamic depth/stencil state, such that it wouldn\u0027t require duplicate pipelines.",
+      "parentUuid": "cb8212e2_9597827e",
+      "revId": "a2b17649c58bad5855da0aa44fa98e48290a804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1727e1ed_94ff87a8",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfa411b7_f0d32e97",
+        "filename": "src/gpu/graphite/draw/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T16:04:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1727e1ed_94ff87a8",
+      "range": {
+        "startLine": 260,
+        "startChar": 30,
+        "endLine": 260,
+        "endChar": 34
+      },
+      "revId": "a2b17649c58bad5855da0aa44fa98e48290a804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fab9aec3_1526eb0d",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-11-03T15:32:04Z",
       "side": 1,
       "message": "the ?",
+      "range": {
+        "startLine": 127,
+        "startChar": 16,
+        "endLine": 127,
+        "endChar": 20
+      },
+      "revId": "a2b17649c58bad5855da0aa44fa98e48290a804f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2226a81f_9d09db34",
+        "filename": "src/gpu/graphite/draw/DrawListBase.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-04T16:04:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fab9aec3_1526eb0d",
       "range": {
         "startLine": 127,
         "startChar": 16,
