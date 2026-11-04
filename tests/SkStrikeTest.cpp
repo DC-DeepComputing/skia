@@ -20,6 +20,8 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
+#include "include/core/SkStrikeRef.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -389,3 +391,128 @@ DEF_TEST(SkScalerContext_GetImageNonDeterministicBounds, reporter) {
     }
 }
 
+namespace {
+
+constexpr SkScalar kStrikeRefSentinel = -12345.0f;
+
+// Returns glyphs with (likely) differing advances, so mixed-up slots are detectable.
+std::array<SkGlyphID, 4> strike_ref_test_glyphs(const SkFont& font) {
+    return {font.unicharToGlyph('W'),
+            font.unicharToGlyph('i'),
+            font.unicharToGlyph('l'),
+            font.unicharToGlyph('.')};
+}
+
+}  // namespace
+
+// Regression test for a bug in an earlier spanified version of getWidthsStrided(): it advanced
+// its input/output spans with subspan(stride) after the last element, which trapped on buffers
+// sized exactly (count-1)*stride+1 whenever stride > 1.
+DEF_TEST(SkStrikeRef_GetWidthsStrided_TightBuffers, reporter) {
+    SkFont font = ToolUtils::DefaultPortableFont();
+    SkStrikeRef strike = font.makeStrikeRef();
+    if (!strike) {
+        ERRORF(reporter, "SkFont::makeStrikeRef() returned an empty SkStrikeRef");
+        return;
+    }
+
+    const std::array<SkGlyphID, 4> glyphs = strike_ref_test_glyphs(font);
+    std::array<SkScalar, 4> expected;
+    strike.getWidths(glyphs, expected);
+
+    constexpr unsigned kCount = 4;
+    constexpr unsigned kGlyphStride = 3;
+    constexpr unsigned kAdvanceStride = 2;
+    // Exactly (count-1)*stride+1 elements: no slack after the last element.
+    std::array<uint32_t, (kCount - 1) * kGlyphStride + 1> glyphBuf{};
+    std::array<SkScalar, (kCount - 1) * kAdvanceStride + 1> advanceBuf;
+    advanceBuf.fill(kStrikeRefSentinel);
+    for (unsigned i = 0; i < kCount; ++i) {
+        glyphBuf[i * kGlyphStride] = glyphs[i];
+    }
+
+    strike.getWidthsStrided(glyphBuf, kGlyphStride, advanceBuf, kAdvanceStride);
+
+    for (size_t i = 0; i < advanceBuf.size(); ++i) {
+        if (i % kAdvanceStride == 0) {
+            REPORTER_ASSERT(reporter,
+                            advanceBuf[i] == expected[i / kAdvanceStride],
+                            "slot %zu: got %f, expected %f",
+                            i,
+                            advanceBuf[i],
+                            expected[i / kAdvanceStride]);
+        } else {
+            // Slots between strides must not be written.
+            REPORTER_ASSERT(
+                    reporter, advanceBuf[i] == kStrikeRefSentinel, "gap slot %zu was written", i);
+        }
+    }
+}
+
+DEF_TEST(SkStrikeRef_GetWidthsStrided_ZeroStride, reporter) {
+    SkFont font = ToolUtils::DefaultPortableFont();
+    SkStrikeRef strike = font.makeStrikeRef();
+    if (!strike) {
+        ERRORF(reporter, "SkFont::makeStrikeRef() returned an empty SkStrikeRef");
+        return;
+    }
+
+    const std::array<SkGlyphID, 4> glyphs = strike_ref_test_glyphs(font);
+    std::array<SkScalar, 4> expected;
+    strike.getWidths(glyphs, expected);
+
+    // A stride of 0 reads the same glyph and writes the same slot every iteration, so
+    // single-element buffers are sufficient.
+    std::array<uint32_t, 1> glyphBuf = {glyphs[0]};
+    std::array<SkScalar, 1> advanceBuf = {kStrikeRefSentinel};
+    strike.getWidthsStrided(glyphBuf, 0, advanceBuf, 0);
+    REPORTER_ASSERT(reporter, advanceBuf[0] == expected[0]);
+}
+
+DEF_TEST(SkStrikeRef_GetWidthsStrided_ZeroCount, reporter) {
+    SkFont font = ToolUtils::DefaultPortableFont();
+    SkStrikeRef strike = font.makeStrikeRef();
+    if (!strike) {
+        ERRORF(reporter, "SkFont::makeStrikeRef() returned an empty SkStrikeRef");
+        return;
+    }
+
+    // count == 0 must not touch (or require any space in) either buffer.
+    strike.getWidthsStrided(SkSpan<const uint32_t>(), 4, SkSpan<SkScalar>(), 4);
+
+    std::array<SkScalar, 1> advanceBuf = {kStrikeRefSentinel};
+    strike.getWidthsStrided(SkSpan<const uint32_t>(), 4, advanceBuf, 4);
+    REPORTER_ASSERT(reporter, advanceBuf[0] == kStrikeRefSentinel);
+}
+
+// The deprecated pointer overload must forward to the SkSpan overload with the same results.
+DEF_TEST(SkStrikeRef_GetWidthsStrided_LegacyPointerOverload, reporter) {
+    SkFont font = ToolUtils::DefaultPortableFont();
+    SkStrikeRef strike = font.makeStrikeRef();
+    if (!strike) {
+        ERRORF(reporter, "SkFont::makeStrikeRef() returned an empty SkStrikeRef");
+        return;
+    }
+
+    const std::array<SkGlyphID, 4> glyphs = strike_ref_test_glyphs(font);
+    std::array<SkScalar, 4> expected;
+    strike.getWidths(glyphs, expected);
+
+    constexpr unsigned kCount = 4;
+    constexpr unsigned kGlyphStride = 2;
+    constexpr unsigned kAdvanceStride = 3;
+    std::array<uint32_t, (kCount - 1) * kGlyphStride + 1> glyphBuf{};
+    std::array<SkScalar, (kCount - 1) * kAdvanceStride + 1> advanceBuf;
+    advanceBuf.fill(kStrikeRefSentinel);
+    for (unsigned i = 0; i < kCount; ++i) {
+        glyphBuf[i * kGlyphStride] = glyphs[i];
+    }
+
+    // The buffers hold exactly (count-1)*stride+1 elements, as the pointer overload requires.
+    strike.getWidthsStrided(
+            kCount, glyphBuf.data(), kGlyphStride, advanceBuf.data(), kAdvanceStride);
+
+    for (unsigned i = 0; i < kCount; ++i) {
+        REPORTER_ASSERT(reporter, advanceBuf[i * kAdvanceStride] == expected[i]);
+    }
+}
