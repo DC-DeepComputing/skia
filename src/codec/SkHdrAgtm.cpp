@@ -783,11 +783,10 @@ bool Validate(const AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap& hatm) {
             SkCodecPrintf("Agtm validation failed: mix coefficients not in unit interval\n");
             return false;
         }
-        // The sum of all components shall equal 1. The coefficients are encoded in steps of
-        // 0.00001. Allow the sum to be at most one step away from 1.
+        // The sum of all components must be greater than 0.
         const float sum = mix.fRed + mix.fGreen + mix.fBlue + mix.fMax + mix.fMin + mix.fComponent;
-        if (!in_interval(sum, 0.99999f, 1.00001f)) {
-            SkCodecPrintf("Agtm validation failed: mix coefficients don't sum to 1\n");
+        if (sum <= 0.f) {
+            SkCodecPrintf("Agtm validation failed: mix coefficients sum to 0\n");
             return false;
         }
     }

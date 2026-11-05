@@ -1358,6 +1358,26 @@ DEF_TEST(HdrMetadata_Agtm_Invalid, r) {
         REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
     }
     {
+        skiatest::ReporterContext ctx(r, "Mix coefficient sum");
+        skhdr::AdaptiveGlobalToneMap agtm = agtm_baseline_2;
+        agtm.fHeadroomAdaptiveToneMap->fAlternateImages = {
+            {
+                .fHdrHeadroom = 0.f,
+                .fColorGainFunction = {
+                    .fComponentMixing = {.fMax = 1.f, .fComponent = 1.f},
+                    .fGainCurve = { .fControlPoints = { {0.f, 0.f, 0.f}, } }
+                }
+            }
+        };
+        // The coefficients are not required to sum to 1.
+        REPORTER_ASSERT(r, skhdr::AgtmHelpers::Validate(agtm));
+
+        // The coefficients are required to have a sum greater than 0.
+        auto& alt = agtm.fHeadroomAdaptiveToneMap->fAlternateImages[0];
+        alt.fColorGainFunction.fComponentMixing = {};
+        REPORTER_ASSERT(r, !skhdr::AgtmHelpers::Validate(agtm));
+    }
+    {
         skiatest::ReporterContext ctx(r, "Non-monotone X");
         skhdr::AdaptiveGlobalToneMap agtm = agtm_baseline_2;
         agtm.fHeadroomAdaptiveToneMap->fAlternateImages = {
