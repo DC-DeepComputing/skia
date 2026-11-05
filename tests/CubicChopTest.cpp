@@ -244,7 +244,7 @@ static void testCubicExtrema(skiatest::Reporter* reporter, const std::string& na
         // This implementation expects the coefficients to be (X, Y), (X, Y), (X, Y), (X, Y)
         // but it ignores the values at odd indices.
         const double inputs[8] = {A, 0, B, 0, C, 0, D, 0};
-        int extremaCount = SkDCubic::FindExtrema(&inputs[0], extrema);
+        int extremaCount = SkDCubic::FindExtrema(inputs, extrema);
         REPORTER_ASSERT(reporter, expectedExtrema.size() == size_t(extremaCount),
                         "Wrong number of extrema returned %zu != %d",
                         expectedExtrema.size(), extremaCount);
@@ -458,7 +458,7 @@ static void testBezierCurveHorizontalIntersectBinarySearch(skiatest::Reporter* r
         // the inflection points (up to 2) and the end points (0, 1) in to this array
         // as well.
         double extremaAndInflections[6] = {0, 0, 0, 0, 0};
-        int extrema = SkDCubic::FindExtrema(&inputCubic[0].fX, extremaAndInflections);
+        int extrema = SkDCubic::FindExtrema(SkSpan(&inputCubic[0].fX, 8), extremaAndInflections);
         int rootCount = inputCubic.searchRoots(extremaAndInflections, extrema, xToIntersect,
                                                SkDCubic::kXAxis, actualTValues);
         REPORTER_ASSERT(reporter, expectedTValues.size() == size_t(rootCount),

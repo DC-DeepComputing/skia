@@ -748,7 +748,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
                                                     GrRenderable renderable) {
                         SkASSERT(srcData && numLevels);
                         auto mbet = ManagedBackendTexture::MakeWithData(dContext,
-                                                                        srcData,
+                                                                        SkSpan(srcData, numLevels),
                                                                         numLevels,
                                                                         origin,
                                                                         renderable,

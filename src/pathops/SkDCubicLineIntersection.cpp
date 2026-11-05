@@ -6,6 +6,7 @@
  */
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkOnlyStackAllocatable.h"
@@ -139,7 +140,7 @@ public:
             c[n].fX = (fCubic[n].fY - fLine[0].fY) * adj - (fCubic[n].fX - fLine[0].fX) * opp;
         }
         double A, B, C, D;
-        SkDCubic::Coefficients(&c[0].fX, &A, &B, &C, &D);
+        SkDCubic::Coefficients(SkSpan(&c[0].fX, 8), &A, &B, &C, &D);
         int count = SkDCubic::RootsValidT(A, B, C, D, roots);
         for (int index = 0; index < count; ++index) {
             SkDPoint calcPt = c.ptAtT(roots[index]);
@@ -149,7 +150,7 @@ public:
                             + (fCubic[n].fX - fLine[0].fX) * adj;
                 }
                 double extremeTs[6];
-                int extrema = SkDCubic::FindExtrema(&c[0].fX, extremeTs);
+                int extrema = SkDCubic::FindExtrema(SkSpan(&c[0].fX, 8), extremeTs);
                 count = c.searchRoots(extremeTs, extrema, 0, SkDCubic::kXAxis, roots);
                 break;
             }
@@ -178,14 +179,14 @@ public:
 
     static int HorizontalIntersect(const SkDCubic& c, double axisIntercept, double roots[3]) {
         double A, B, C, D;
-        SkDCubic::Coefficients(&c[0].fY, &A, &B, &C, &D);
+        SkDCubic::Coefficients(SkSpan(&c[0].fY, 7), &A, &B, &C, &D);
         D -= axisIntercept;
         int count = SkDCubic::RootsValidT(A, B, C, D, roots);
         for (int index = 0; index < count; ++index) {
             SkDPoint calcPt = c.ptAtT(roots[index]);
             if (!approximately_equal(calcPt.fY, axisIntercept)) {
                 double extremeTs[6];
-                int extrema = SkDCubic::FindExtrema(&c[0].fY, extremeTs);
+                int extrema = SkDCubic::FindExtrema(SkSpan(&c[0].fY, 7), extremeTs);
                 count = c.searchRoots(extremeTs, extrema, axisIntercept, SkDCubic::kYAxis, roots);
                 break;
             }
@@ -241,14 +242,14 @@ public:
 
     static int VerticalIntersect(const SkDCubic& c, double axisIntercept, double roots[3]) {
         double A, B, C, D;
-        SkDCubic::Coefficients(&c[0].fX, &A, &B, &C, &D);
+        SkDCubic::Coefficients(SkSpan(&c[0].fX, 8), &A, &B, &C, &D);
         D -= axisIntercept;
         int count = SkDCubic::RootsValidT(A, B, C, D, roots);
         for (int index = 0; index < count; ++index) {
             SkDPoint calcPt = c.ptAtT(roots[index]);
             if (!approximately_equal(calcPt.fX, axisIntercept)) {
                 double extremeTs[6];
-                int extrema = SkDCubic::FindExtrema(&c[0].fX, extremeTs);
+                int extrema = SkDCubic::FindExtrema(SkSpan(&c[0].fX, 8), extremeTs);
                 count = c.searchRoots(extremeTs, extrema, axisIntercept, SkDCubic::kXAxis, roots);
                 break;
             }

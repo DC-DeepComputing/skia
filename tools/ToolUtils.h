@@ -129,7 +129,7 @@ int make_pixmaps(SkColorType,
                  SkAlphaType,
                  bool withMips,
                  const SkColor4f colors[6],
-                 SkPixmap pixmaps[6],
+                 SkSpan<SkPixmap, 6> pixmaps,
                  std::unique_ptr<char[]>* mem);
 
 // If the canvas doesn't make a surface (e.g. recording), make a raster surface

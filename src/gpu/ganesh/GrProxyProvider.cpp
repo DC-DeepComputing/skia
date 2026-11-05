@@ -444,7 +444,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const GrMippe
                                                                           desc.fBudgeted,
                                                                           skgpu::Mipmapped::kYes,
                                                                           GrProtected::kNo,
-                                                                          texels.get(),
+                                                                          SkSpan(texels.get(), mipLevelCount),
                                                                           desc.fLabel));
             },
             format,

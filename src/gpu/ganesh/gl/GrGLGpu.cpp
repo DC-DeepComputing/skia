@@ -14,6 +14,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextureCompressionType.h"
@@ -2082,7 +2083,7 @@ void GrGLGpu::flushWindowRectangles(const GrWindowRectsState& windowState,
     SkASSERT(windowState.numWindows() == numWindows);
 
     GrNativeRect glwindows[GrWindowRectangles::kMaxWindows];
-    const SkIRect* skwindows = windowState.windows().data();
+    SkSpan<const SkIRect>skwindows = windowState.windows().data();
     for (int i = 0; i < numWindows; ++i) {
         glwindows[i].setRelativeTo(origin, rt->height(), skwindows[i]);
     }

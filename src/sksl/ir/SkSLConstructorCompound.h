@@ -6,6 +6,8 @@
  */
 
 #ifndef SKSL_CONSTRUCTOR_COMPOUND
+#include "include/core/SkSpan.h"
+
 #define SKSL_CONSTRUCTOR_COMPOUND
 
 #include "src/sksl/SkSLDefines.h"
@@ -45,7 +47,7 @@ public:
     static std::unique_ptr<Expression> MakeFromConstants(const Context& context,
                                                          Position pos,
                                                          const Type& type,
-                                                         const double values[]);
+                                                         SkSpan<const double> values);
 
     std::unique_ptr<Expression> clone(Position pos) const override {
         return std::make_unique<ConstructorCompound>(pos, this->type(), this->arguments().clone());

@@ -6,13 +6,14 @@
  */
 #include "src/gpu/ganesh/GrProcessorAnalysis.h"
 
+#include "include/core/SkSpan.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
 
 GrColorFragmentProcessorAnalysis::GrColorFragmentProcessorAnalysis(
         const GrProcessorAnalysisColor& input,
-        std::unique_ptr<GrFragmentProcessor> const fps[],
+        SkSpan<const std::unique_ptr<GrFragmentProcessor>> fps,
         int count) {
     fCompatibleWithCoverageAsAlpha = true;
     fIsOpaque = input.isOpaque();

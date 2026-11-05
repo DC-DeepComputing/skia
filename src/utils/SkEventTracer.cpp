@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/utils/SkEventTracer.h"
 
 #include "include/private/SkMacros.h"
@@ -19,7 +20,7 @@ class SkDefaultEventTracer : public SkEventTracer {
                       const char* name,
                       uint64_t id,
                       int numArgs,
-                      const char** argNames,
+                      SkSpan<const char *>argNames,
                       const uint8_t* argTypes,
                       const uint64_t* argValues,
                       uint8_t flags) override { return 0; }

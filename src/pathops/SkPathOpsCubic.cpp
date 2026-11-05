@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkSpan.h"
 #include "src/pathops/SkPathOpsCubic.h"
 
 #include "include/private/SkFloatingPoint.h"
@@ -92,7 +93,7 @@ double SkDCubic::calcPrecision() const {
 }
 
 /* classic one t subdivision */
-static void interp_cubic_coords(const double* src, double* dst, double t) {
+static void interp_cubic_coords(SkSpan<const double> src, SkSpan<double> dst, double t) {
     double ab = SkDInterp(src[0], src[2], t);
     double bc = SkDInterp(src[2], src[4], t);
     double cd = SkDInterp(src[4], src[6], t);
@@ -126,13 +127,13 @@ SkDCubicPair SkDCubic::chopAt(double t) const {
         dst.pts[6] = fPts[3];
         return dst;
     }
-    interp_cubic_coords(&fPts[0].fX, &dst.pts[0].fX, t);
-    interp_cubic_coords(&fPts[0].fY, &dst.pts[0].fY, t);
+    interp_cubic_coords(SkSpan(&fPts[0].fX, 8), SkSpan(&dst.pts[0].fX, 14), t);
+    interp_cubic_coords(SkSpan(&fPts[0].fY, 7), SkSpan(&dst.pts[0].fY, 13), t);
     return dst;
 }
 
 // TODO(skbug.com/40045140) deduplicate this with SkBezierCubic::ConvertToPolynomial
-void SkDCubic::Coefficients(const double* src, double* A, double* B, double* C, double* D) {
+void SkDCubic::Coefficients(SkSpan<const double> src, double* A, double* B, double* C, double* D) {
     *A = src[6];  // d
     *B = src[4] * 3;  // 3*c
     *C = src[2] * 3;  // 3*b
@@ -243,7 +244,7 @@ bool SkDCubic::isLinear(int startIndex, int endIndex) const {
 // c(t)  = a(1-t)^3 + 3bt(1-t)^2 + 3c(1-t)t^2 + dt^3
 // c'(t) = -3a(1-t)^2 + 3b((1-t)^2 - 2t(1-t)) + 3c(2t(1-t) - t^2) + 3dt^2
 //       = 3(b-a)(1-t)^2 + 6(c-b)t(1-t) + 3(d-c)t^2
-static double derivative_at_t(const double* src, double t) {
+static double derivative_at_t(SkSpan<const double> src, double t) {
     double one_t = 1 - t;
     double a = src[0];
     double b = src[2];
@@ -311,8 +312,8 @@ int SkDCubic::ComplexBreak(const SkPoint pointsPtr[4], SkScalar* t) {
                         continue;
                     }
                     // don't call dxdyAtT since we want (0,0) results
-                    SkDVector dPt = { derivative_at_t(&cubic.fPts[0].fX, testT),
-                            derivative_at_t(&cubic.fPts[0].fY, testT) };
+                    SkDVector dPt = { derivative_at_t(SkSpan(&cubic.fPts[0].fX, 8), testT),
+                            derivative_at_t(SkSpan(&cubic.fPts[0].fY, 7), testT) };
                     double dPtLen = dPt.length();
                     if (dPtLen < precision) {
                         t[resultCount++] = testT;
@@ -506,7 +507,7 @@ int SkDCubic::RootsReal(double A, double B, double C, double D, double s[3]) {
 
 // OPTIMIZE? compute t^2, t(1-t), and (1-t)^2 and pass them to another version of derivative at t?
 SkDVector SkDCubic::dxdyAtT(double t) const {
-    SkDVector result = { derivative_at_t(&fPts[0].fX, t), derivative_at_t(&fPts[0].fY, t) };
+    SkDVector result = { derivative_at_t(SkSpan(&fPts[0].fX, 8), t), derivative_at_t(SkSpan(&fPts[0].fY, 7), t) };
     if (result.fX == 0 && result.fY == 0) {
         if (t == 0) {
             result = fPts[2] - fPts[0];
@@ -535,7 +536,7 @@ int SkDCubic::findInflections(double tValues[2]) const {
     return SkDQuad::RootsValidT(Bx * Cy - By * Cx, Ax * Cy - Ay * Cx, Ax * By - Ay * Bx, tValues);
 }
 
-static void formulate_F1DotF2(const double src[], double coeff[4]) {
+static void formulate_F1DotF2(SkSpan<const double> src, double coeff[4]) {
     double a = src[2] - src[0];
     double b = src[4] - 2 * src[2] + src[0];
     double c = src[6] + 3 * (src[2] - src[4]) - src[0];
@@ -551,7 +552,7 @@ static void formulate_F1DotF2(const double src[], double coeff[4]) {
     C = 3(b - a)
     Solve for t, keeping only those that fit between 0 < t < 1
 */
-int SkDCubic::FindExtrema(const double src[], double tValues[2]) {
+int SkDCubic::FindExtrema(SkSpan<const double> src, double tValues[2]) {
     // we divide A,B,C by 3 to simplify
     double a = src[0];
     double b = src[2];
@@ -579,8 +580,8 @@ int SkDCubic::FindExtrema(const double src[], double tValues[2]) {
 int SkDCubic::findMaxCurvature(double tValues[]) const {
     double coeffX[4], coeffY[4];
     int i;
-    formulate_F1DotF2(&fPts[0].fX, coeffX);
-    formulate_F1DotF2(&fPts[0].fY, coeffY);
+    formulate_F1DotF2(SkSpan(&fPts[0].fX, 8), coeffX);
+    formulate_F1DotF2(SkSpan(&fPts[0].fY, 7), coeffY);
     for (i = 0; i < 4; i++) {
         coeffX[i] = coeffX[i] + coeffY[i];
     }
@@ -652,7 +653,7 @@ Group the known values on one side:
  C       = (N*2 - M)/18
  */
 
-static double interp_cubic_coords(const double* src, double t) {
+static double interp_cubic_coords(SkSpan<const double> src, double t) {
     double ab = SkDInterp(src[0], src[2], t);
     double bc = SkDInterp(src[2], src[4], t);
     double cd = SkDInterp(src[4], src[6], t);
@@ -672,14 +673,14 @@ SkDCubic SkDCubic::subDivide(double t1, double t2) const {
         return dst;
     }
     SkDCubic dst;
-    double ax = dst[0].fX = interp_cubic_coords(&fPts[0].fX, t1);
-    double ay = dst[0].fY = interp_cubic_coords(&fPts[0].fY, t1);
-    double ex = interp_cubic_coords(&fPts[0].fX, (t1*2+t2)/3);
-    double ey = interp_cubic_coords(&fPts[0].fY, (t1*2+t2)/3);
-    double fx = interp_cubic_coords(&fPts[0].fX, (t1+t2*2)/3);
-    double fy = interp_cubic_coords(&fPts[0].fY, (t1+t2*2)/3);
-    double dx = dst[3].fX = interp_cubic_coords(&fPts[0].fX, t2);
-    double dy = dst[3].fY = interp_cubic_coords(&fPts[0].fY, t2);
+    double ax = dst[0].fX = interp_cubic_coords(SkSpan(&fPts[0].fX, 8), t1);
+    double ay = dst[0].fY = interp_cubic_coords(SkSpan(&fPts[0].fY, 7), t1);
+    double ex = interp_cubic_coords(SkSpan(&fPts[0].fX, 8), (t1*2+t2)/3);
+    double ey = interp_cubic_coords(SkSpan(&fPts[0].fY, 7), (t1*2+t2)/3);
+    double fx = interp_cubic_coords(SkSpan(&fPts[0].fX, 8), (t1+t2*2)/3);
+    double fy = interp_cubic_coords(SkSpan(&fPts[0].fY, 7), (t1+t2*2)/3);
+    double dx = dst[3].fX = interp_cubic_coords(SkSpan(&fPts[0].fX, 8), t2);
+    double dy = dst[3].fY = interp_cubic_coords(SkSpan(&fPts[0].fY, 7), t2);
     double mx = ex * 27 - ax * 8 - dx;
     double my = ey * 27 - ay * 8 - dy;
     double nx = fx * 27 - ax - dx * 8;
@@ -720,8 +721,8 @@ void SkDCubic::subDivide(const SkDPoint& a, const SkDPoint& d,
 }
 
 bool SkDCubic::toFloatPoints(SkPoint* pts) const {
-    const double* dCubic = &fPts[0].fX;
-    SkScalar* cubic = &pts[0].fX;
+    SkSpan<const double> dCubic = SkSpan(&fPts[0].fX, 8);
+    SkSpan<SkScalar> cubic(&pts[0].fX, kPointCount * 2);
     for (int index = 0; index < kPointCount * 2; ++index) {
         cubic[index] = SkDoubleToScalar(dCubic[index]);
         if (SkScalarAbs(cubic[index]) < FLT_EPSILON_ORDERABLE_ERR) {
@@ -734,7 +735,7 @@ bool SkDCubic::toFloatPoints(SkPoint* pts) const {
 double SkDCubic::top(const SkDCubic& dCurve, double startT, double endT, SkDPoint*topPt) const {
     double extremeTs[2];
     double topT = -1;
-    int roots = SkDCubic::FindExtrema(&fPts[0].fY, extremeTs);
+    int roots = SkDCubic::FindExtrema(SkSpan(&fPts[0].fY, 7), extremeTs);
     for (int index = 0; index < roots; ++index) {
         double t = startT + (endT - startT) * extremeTs[index];
         SkDPoint mid = dCurve.ptAtT(t);

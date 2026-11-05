@@ -6,6 +6,8 @@
  */
 
 #ifndef SkSurface_Ganesh_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkSurface_Ganesh_DEFINED
 
 #include "include/core/SkTypes.h"
@@ -77,7 +79,7 @@ public:
     bool onCopyOnWrite(ContentChangeMode) override;
     void onDiscard() override;
     bool onWait(int numSemaphores,
-                const GrBackendSemaphore* waitSemaphores,
+                SkSpan<const GrBackendSemaphore>waitSemaphores,
                 bool deleteSemaphoresAfterWait) override;
     bool onCharacterize(GrSurfaceCharacterization*) const override;
     bool onIsCompatible(const GrSurfaceCharacterization&) const override;

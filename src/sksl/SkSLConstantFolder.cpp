@@ -140,7 +140,7 @@ static std::unique_ptr<Expression> simplify_matrix_multiplication(const Context&
     int outColumns   = rightColumns,
         outRows      = leftRows;
 
-    double args[16];
+    std::array<double, 16> args;
     int argIndex = 0;
     for (int c = 0; c < outColumns; ++c) {
         for (int r = 0; r < outRows; ++r) {
@@ -246,7 +246,7 @@ static std::unique_ptr<Expression> simplify_componentwise(const Context& context
     double minimumValue = componentType.minimumValue();
     double maximumValue = componentType.maximumValue();
 
-    double args[16];
+    std::array<double, 16> args;
     int numSlots = type.slotCount();
     for (int i = 0; i < numSlots; i++) {
         double value = foldFn(*left.getConstantValue(i), *right.getConstantValue(i));
@@ -400,7 +400,7 @@ static std::unique_ptr<Expression> make_reciprocal_expression(const Context& con
         return nullptr;
     }
     // Verify that each slot contains a finite, non-zero literal, take its reciprocal.
-    double values[4];
+    std::array<double, 4> values;
     int nslots = right.type().slotCount();
     for (int index = 0; index < nslots; ++index) {
         std::optional<double> value = right.getConstantValue(index);

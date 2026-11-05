@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include <cstddef>
 #include <cstdint>
 #include <initializer_list>
@@ -394,7 +395,7 @@ DEF_TEST(Skottie_Shaper_breakiter, r) {
             this->reset();
             return true;
         }
-        bool setText(const char16_t[], int) override {
+        bool setText(SkSpan<const char16_t>, int) override {
             this->reset();
             return true;
         }

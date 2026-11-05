@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/ir/SkSLConstructorCompoundCast.h"
 
 #include "include/core/SkTypes.h"
@@ -54,7 +55,7 @@ static std::unique_ptr<Expression> cast_constant_composite(const Context& contex
     size_t numSlots = destType.slotCount();
     SkASSERT(numSlots == constCtor->type().slotCount());
 
-    double typecastArgs[16];
+    std::array<double, 16> typecastArgs;
     SkASSERT(numSlots <= std::size(typecastArgs));
     for (size_t index = 0; index < numSlots; ++index) {
         std::optional<double> slotVal = constCtor->getConstantValue(index);

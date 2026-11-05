@@ -6,6 +6,8 @@
  */
 
 #ifndef SkImageFilters_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkImageFilters_DEFINED
 
 #include "include/core/SkColor.h"
@@ -448,7 +450,7 @@ public:
      *  @param inputCount       How many entries are present in 'childShaderNames' and 'inputs'.
      */
     static sk_sp<SkImageFilter> RuntimeShader(const SkRuntimeEffectBuilder& builder,
-                                              std::string_view childShaderNames[],
+                                              SkSpan<std::string_view> childShaderNames,
                                               const sk_sp<SkImageFilter> inputs[],
                                               int inputCount) {
         return RuntimeShader(builder, /*maxSampleRadius=*/0.f, childShaderNames,
@@ -469,7 +471,7 @@ public:
      */
     static sk_sp<SkImageFilter> RuntimeShader(const SkRuntimeEffectBuilder& builder,
                                               SkScalar maxSampleRadius,
-                                              std::string_view childShaderNames[],
+                                              SkSpan<std::string_view> childShaderNames,
                                               const sk_sp<SkImageFilter> inputs[],
                                               int inputCount,
                                               bool restrictOutputToInputBounds = false);

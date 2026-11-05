@@ -112,7 +112,7 @@ public:
         return true;
     }
 
-    bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
+    bool computeCodeUnitFlags(SkSpan<char16_t> utf16, int utf16Units, bool replaceTabs,
                           skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         SkASSERT(false);
         return false;
@@ -277,7 +277,7 @@ public:
         fLineBreakIndex = 0;
         return true;
     }
-    bool setText(const char16_t utftext16[], int utf16Units) override {
+    bool setText(SkSpan<const char16_t> utftext16, int utf16Units) override {
         SkASSERT(false);
         return false;
     }

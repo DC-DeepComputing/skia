@@ -7,6 +7,7 @@
 
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "src/sksl/SkSLAnalysis.h"
@@ -159,7 +160,7 @@ std::unique_ptr<Expression> ConstructorCompound::Make(const Context& context,
 std::unique_ptr<Expression> ConstructorCompound::MakeFromConstants(const Context& context,
                                                                    Position pos,
                                                                    const Type& returnType,
-                                                                   const double value[]) {
+                                                                   SkSpan<const double> value) {
     int numSlots = returnType.slotCount();
     ExpressionArray array;
     array.reserve_exact(numSlots);
