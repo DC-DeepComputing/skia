@@ -227,7 +227,9 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageShaderPackedYUYVTileOriginTest, re
                                          CtsEnforcement::kNever) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     REPORTER_ASSERT(reporter, recorder);
-    if (!recorder || !supports_packed_yuyv(recorder.get())) {
+    if (context->priv().caps()->protectedSupport() ||
+        !recorder ||
+        !supports_packed_yuyv(recorder.get())) {
         return;
     }
 
