@@ -224,9 +224,19 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
         return;
     }
 
+    const uint32_t currentQueueIndex = this->currentQueueFamilyIndex();
+
+    auto isSpecialQueue = [&](uint32_t queueFamilyIndex) {
+        return ((queueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
+                 queueFamilyIndex == VK_QUEUE_FAMILY_FOREIGN_EXT) &&
+                queueFamilyIndex != imageMemoryBarrier->dstQueueFamilyIndex);
+    };
+
     VkPipelineStageFlags srcStageMask =
-            VkImageLayoutToPipelineSrcStageFlags(currentLayout,
-                                                 sharedContext->vulkanCaps());
+            isSpecialQueue(currentQueueIndex) ? VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT
+                                              : VkImageLayoutToPipelineSrcStageFlags(
+                                                        currentLayout, sharedContext->vulkanCaps());
+
     cmdBuffer->addImageMemoryBarrier(srcStageMask, dstStageMask, /*byRegion=*/false,
                                      &imageMemoryBarrier.value());
 
