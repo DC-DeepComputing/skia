@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b1ca4a9_33c1ba85",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-05T17:59:48Z",
+      "side": 1,
+      "message": "Necessary because of the `dropUniqueRefs` call on 511.",
+      "parentUuid": "b14e0afa_bf48c1bb",
+      "revId": "edb7fee385f1cffd09232d023e81153b19afc7d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ce393d2_8062da56",
@@ -48,6 +66,42 @@
       "writtenOn": "2026-11-04T20:23:14Z",
       "side": 1,
       "message": "I guess, if we do need this here, shouldn\u0027t it be up on line 529?",
+      "revId": "edb7fee385f1cffd09232d023e81153b19afc7d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "515e7d95_e61c3605",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-05T17:59:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ce393d2_8062da56",
+      "revId": "edb7fee385f1cffd09232d023e81153b19afc7d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc0e7d7_883b2a11",
+        "filename": "src/gpu/ganesh/GrResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-05T17:59:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ce393d2_8062da56",
       "revId": "edb7fee385f1cffd09232d023e81153b19afc7d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d35f975d_afb918ec",
+        "filename": "src/gpu/ganesh/GrThreadSafeCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-05T17:59:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99b82019_3cc2e21b",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 42
+      },
+      "revId": "edb7fee385f1cffd09232d023e81153b19afc7d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bd17e35_f68eef5d",
@@ -88,6 +166,30 @@
       "writtenOn": "2026-11-04T20:23:14Z",
       "side": 1,
       "message": "// If called from a thread other than the GrDirectContext\u0027s, this will forward the release on to the GrResourceCache.",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 86
+      },
+      "revId": "edb7fee385f1cffd09232d023e81153b19afc7d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd8b6451_647f593e",
+        "filename": "src/gpu/ganesh/GrThreadSafeCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-05T17:59:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bd17e35_f68eef5d",
       "range": {
         "startLine": 140,
         "startChar": 0,
