@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce3c9f8_a0290383",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-05T21:28:11Z",
+      "side": 1,
+      "message": "Is this the right behavior for (non-BiDi) RTL text also?  Looks like we\u0027re iterating in reverse logical order, which for RTL is visual order - thus we\u0027re starting from the left edge?",
+      "revId": "7af28b450d19bc0bfbe8761727e845b8d8c0504a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
