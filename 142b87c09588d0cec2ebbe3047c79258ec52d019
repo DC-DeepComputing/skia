@@ -70,6 +70,30 @@
       },
       "revId": "142b87c09588d0cec2ebbe3047c79258ec52d019",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67346275_b0345956",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-05T18:52:11Z",
+      "side": 1,
+      "message": "Thanks, that makes sense. I checked that a full context loss would hit everyone: RasterDecoderImpl::MarkContextLost goes to SharedContextState, which abandons the GrContext that all raster clients share. So that option is out.\n\nI\u0027d like to try a narrower idea on the Chromium side, if the GPU folks are fine with it:\n- When ServiceFontManager::Deserialize fails, DoRasterCHROMIUM could set error::kInvalidArguments on that decoder. As far as I can tell, this is a parse error for that one command buffer, and CommandBufferStub::CheckContextLost asks for a GPU process restart only on kLostContext. The renderer would then get a new ClientFontManager and SkStrikeServer and send full strikes again.\n- Deserialize could also undo its own handle locks on failure. Right now they seem to be never released, so those strikes stay pinned.\n\nI haven\u0027t built or tested this yet, and I\u0027m not sure it is the right fix, so I\u0027ll treat it as an experiment and ask the Chromium GPU owners. Either way, I\u0027ll drop the removeStrike change from this CL.",
+      "parentUuid": "0514bee7_f0c4e889",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 53
+      },
+      "revId": "142b87c09588d0cec2ebbe3047c79258ec52d019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
