@@ -16,6 +16,24 @@
       "message": "Is this the right behavior for (non-BiDi) RTL text also?  Looks like we\u0027re iterating in reverse logical order, which for RTL is visual order - thus we\u0027re starting from the left edge?",
       "revId": "7af28b450d19bc0bfbe8761727e845b8d8c0504a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d47a652_d29da8fb",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-05T23:19:45Z",
+      "side": 1,
+      "message": "Good catch, thanks. You are right: the overshoot is about the visually rightmost cluster, and for RTL text the reverse logical walk finds the leftmost one.\n\nGlyphs of RTL runs are laid out left to right too, and Run::addLetterSpacesEvenly() puts each cluster\u0027s spacing on its right. So in a pure RTL line the visually rightmost cluster is the logical start, the same cluster that sets the shift, and the line never overflowed. PS6 still capped the shift by the logical end (the left edge), so an RTL line that starts letter spaced and ends plain lost its shift (15 -\u003e 0 with letterSpacing 30). The reverse case, an RTL run at the end of an LTR line with spacing only at its logical end, still overflowed.\n\nPS7 walks fRunsInVisualOrder from the right, skips placeholders, and takes the last cluster of an LTR run or the first cluster of an RTL run. Pure RTL lines now keep exactly the shift they have on main. I added both cases to SkParagraph_LetterSpacingStaysInsideLineWidth; they fail on PS6 and pass on PS7, and the rest of SkParagraph is unchanged.",
+      "parentUuid": "cce3c9f8_a0290383",
+      "revId": "7af28b450d19bc0bfbe8761727e845b8d8c0504a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
