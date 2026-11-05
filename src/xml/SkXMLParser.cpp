@@ -94,13 +94,24 @@ struct ParsingContext {
 
     ParsingContext(SkXMLParser* parser)
         : fParser(parser)
-        , fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr)) { }
+        , fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr)) {
+        fParser->fParser = fXMLParser.get();
+    }
 
-    void flushText() {
+    ~ParsingContext() {
+        fParser->fParser = nullptr;
+    }
+
+    bool flushText() {
         if (!fBufferedText.empty()) {
-            fParser->text(fBufferedText.data(), SkTo<int>(fBufferedText.size()));
+            bool stop = fParser->text(fBufferedText.data(), SkTo<int>(fBufferedText.size()));
             fBufferedText.clear();
+            if (stop) {
+                XML_StopParser(fXMLParser, XML_FALSE);
+                return true;
+            }
         }
+        return false;
     }
 
     void appendText(const char* txt, size_t len) {
@@ -118,20 +129,36 @@ private:
 
 void XMLCALL start_element_handler(void *data, const char* tag, const char** attributes) {
     HANDLER_CONTEXT(data, ctx);
-    ctx->flushText();
+    if (ctx->flushText()) {
+        return;
+    }
 
-    ctx->fParser->startElement(tag);
+    if (ctx->fParser->startElement(tag)) {
+        XML_StopParser(ctx->fXMLParser, XML_FALSE);
+        return;
+    }
 
     for (size_t i = 0; attributes[i]; i += 2) {
-        ctx->fParser->addAttribute(attributes[i], attributes[i + 1]);
+        if (ctx->fParser->addAttribute(attributes[i], attributes[i + 1])) {
+            XML_StopParser(ctx->fXMLParser, XML_FALSE);
+            return;
+        }
+    }
+
+    if (ctx->fParser->attributesDone()) {
+        XML_StopParser(ctx->fXMLParser, XML_FALSE);
     }
 }
 
 void XMLCALL end_element_handler(void* data, const char* tag) {
     HANDLER_CONTEXT(data, ctx);
-    ctx->flushText();
+    if (ctx->flushText()) {
+        return;
+    }
 
-    ctx->fParser->endElement(tag);
+    if (ctx->fParser->endElement(tag)) {
+        XML_StopParser(ctx->fXMLParser, XML_FALSE);
+    }
 }
 
 void XMLCALL text_handler(void *data, const char* txt, int len) {
@@ -233,6 +260,18 @@ bool SkXMLParser::parse(const char doc[], size_t len)
     return this->parse(docStream);
 }
 
+int SkXMLParser::getCurrentLineNumber() const
+{
+    return fParser ? SkToInt(XML_GetCurrentLineNumber(static_cast<XML_Parser>(fParser.get())))
+                   : -1;
+}
+
+int SkXMLParser::getCurrentColumnNumber() const
+{
+    return fParser ? SkToInt(XML_GetCurrentColumnNumber(static_cast<XML_Parser>(fParser.get())))
+                   : -1;
+}
+
 void SkXMLParser::GetNativeErrorString(int error, SkString* str)
 {
 
@@ -246,6 +285,11 @@ bool SkXMLParser::startElement(const char elem[])
 bool SkXMLParser::addAttribute(const char name[], const char value[])
 {
     return this->onAddAttribute(name, value);
+}
+
+bool SkXMLParser::attributesDone()
+{
+    return this->onAttributesDone();
 }
 
 bool SkXMLParser::endElement(const char elem[])
@@ -262,5 +306,6 @@ bool SkXMLParser::text(const char text[], int len)
 
 bool SkXMLParser::onStartElement(const char elem[]) {return false; }
 bool SkXMLParser::onAddAttribute(const char name[], const char value[]) {return false; }
+bool SkXMLParser::onAttributesDone() { return false; }
 bool SkXMLParser::onEndElement(const char elem[]) { return false; }
 bool SkXMLParser::onText(const char text[], int len) {return false; }

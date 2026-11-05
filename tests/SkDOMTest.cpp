@@ -10,6 +10,7 @@
 #if defined(SK_XML)
 #include "include/core/SkStream.h"
 #include "src/xml/SkDOM.h"
+#include "src/xml/SkXMLParser.h"
 #include "tests/Test.h"
 
 static const SkDOM::Node* check_node(skiatest::Reporter* r, const SkDOM& dom,
@@ -81,6 +82,49 @@ DEF_TEST(SkDOM_test, r) {
         check_node(r, dom, dom.getNextSibling(elem3),
                    "elem4", SkDOM::kElement_Type);
     }
+}
+
+DEF_TEST(SkXMLParser_CallbacksAndPosition, r) {
+    class RecordingParser : public SkXMLParser {
+    public:
+        int fAttrsDoneCount = 0;
+        int fMaxLine = -1;
+        int fMaxCol = -1;
+        bool fStopOnSecondElem = false;
+        int fStartCount = 0;
+
+    protected:
+        bool onStartElement(const char elem[]) override {
+            ++fStartCount;
+            fMaxLine = std::max(fMaxLine, this->getCurrentLineNumber());
+            fMaxCol = std::max(fMaxCol, this->getCurrentColumnNumber());
+            return fStopOnSecondElem && fStartCount == 2;
+        }
+        bool onAttributesDone() override {
+            ++fAttrsDoneCount;
+            return false;
+        }
+    };
+
+    static const char kDoc[] =
+        "<root a='1' b='2'>\n"
+        "  <child c='3'/>\n"
+        "</root>";
+
+    RecordingParser parser;
+    REPORTER_ASSERT(r, parser.parse(kDoc, sizeof(kDoc) - 1));
+    REPORTER_ASSERT(r, parser.fStartCount == 2);
+    REPORTER_ASSERT(r, parser.fAttrsDoneCount == 2);
+    REPORTER_ASSERT(r, parser.fMaxLine >= 2);
+    REPORTER_ASSERT(r, parser.fMaxCol >= 1);
+    REPORTER_ASSERT(r, parser.getCurrentLineNumber() == -1);
+    REPORTER_ASSERT(r, parser.getCurrentColumnNumber() == -1);
+
+    RecordingParser stoppingParser;
+    stoppingParser.fStopOnSecondElem = true;
+    REPORTER_ASSERT(r, !stoppingParser.parse(kDoc, sizeof(kDoc) - 1));
+    REPORTER_ASSERT(r, stoppingParser.fStartCount == 2);
+    REPORTER_ASSERT(r, stoppingParser.fAttrsDoneCount == 1);
 }
 
 #endif // SK_XML

@@ -63,12 +63,16 @@ public:
     bool parse(SkStream& docStream);
     bool parse(const SkDOM&, const SkDOMNode*);
 
+    int getCurrentLineNumber() const;
+    int getCurrentColumnNumber() const;
+
     static void GetNativeErrorString(int nativeErrorCode, SkString* str);
 
 protected:
     // override in subclasses; return true to stop parsing
     virtual bool onStartElement(const char elem[]);
     virtual bool onAddAttribute(const char name[], const char value[]);
+    virtual bool onAttributesDone();
     virtual bool onEndElement(const char elem[]);
     virtual bool onText(const char text[], int len);
 
@@ -76,6 +80,7 @@ public:
     // public for ported implementation, not meant for clients to call
     bool startElement(const char elem[]);
     bool addAttribute(const char name[], const char value[]);
+    bool attributesDone();
     bool endElement(const char elem[]);
     bool text(const char text[], int len);
     raw_ptr<void> fParser;
