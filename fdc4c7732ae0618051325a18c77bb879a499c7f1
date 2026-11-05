@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "294876aa_0f63b6aa",
+        "filename": "modules/skparagraph/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-05T21:35:51Z",
+      "side": 1,
+      "message": "This is an unusual staging pattern.  Why not enable the fix by default, and add (pre-land) guards in clients for staging?\n\nE.g. how we currently handle `SK_IGNORE_SKPARAGRAPH_ELLIPSIS_FIX`.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 5
+      },
+      "revId": "fdc4c7732ae0618051325a18c77bb879a499c7f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
