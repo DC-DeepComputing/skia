@@ -261,6 +261,15 @@ private:
 
     void computeEmptyMetrics();
 
+    // True for one run, or for CoreText runs split only at hard breaks (same font, bidi level
+    // and script), which letterSpaceCoreTextRuns spaces as one run. No side effects
+    bool runsDifferOnlyByHardBreaks() const;
+    // Letter-spaces the CoreText runs that runsDifferOnlyByHardBreaks accepted, with no space
+    // inside a grapheme; moves glyph positions (RTL also rebases fOffset.fX), builds no clusters
+    void letterSpaceCoreTextRuns(SkScalar letterSpacing);
+    // True when cluster is the visually last cluster of its grapheme in run's direction
+    bool clusterEndsGrapheme(const Run& run, const Cluster& cluster) const;
+
     // kCoreText paragraphs resolve families without FontCollection's default manager, so strut
     // and empty-line metrics come from the faces the CoreText runs are shaped with
     std::vector<sk_sp<SkTypeface>> findTypefaces(const std::vector<SkString>& familyNames,
