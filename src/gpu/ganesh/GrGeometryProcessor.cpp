@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 
-#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkString.h"
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkSafe32.h"
@@ -51,14 +50,6 @@ void GrGeometryProcessor::getAttributeKey(skgpu::KeyBuilder* b) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-static inline GrSamplerState::Filter clamp_filter(GrTextureType type,
-                                                  GrSamplerState::Filter requestedFilter) {
-    if (GrTextureTypeHasRestrictedSampling(type)) {
-        return std::min(requestedFilter, GrSamplerState::Filter::kLinear);
-    }
-    return requestedFilter;
-}
-
 GrGeometryProcessor::TextureSampler::TextureSampler(GrSamplerState samplerState,
                                                     const GrBackendFormat& backendFormat,
                                                     const skgpu::Swizzle& swizzle) {
@@ -68,10 +59,7 @@ GrGeometryProcessor::TextureSampler::TextureSampler(GrSamplerState samplerState,
 void GrGeometryProcessor::TextureSampler::reset(GrSamplerState samplerState,
                                                 const GrBackendFormat& backendFormat,
                                                 const skgpu::Swizzle& swizzle) {
-    fSamplerState = GrSamplerState(samplerState.wrapModeX(),
-                                   samplerState.wrapModeY(),
-                                   clamp_filter(backendFormat.textureType(), samplerState.filter()),
-                                   samplerState.mipmapMode());
+    fSamplerState = samplerState;
     fBackendFormat = backendFormat;
     fSwizzle = swizzle;
     fIsInitialized = true;
