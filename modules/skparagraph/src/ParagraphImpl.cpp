@@ -404,6 +404,61 @@ SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
     return posX(end) - posX(start) + correction;
 }
 
+// Each hard-break segment gets its own CTLine; spacing those runs as one run keeps the cluster
+// widths HarfBuzz takes from spaced positions, which the per-cluster path rounds differently
+bool ParagraphImpl::runsDifferOnlyByHardBreaks() const {
+    // HarfBuzz paragraphs never split runs at hard breaks, so only a single run qualifies
+    if (!fCoreTextShaped) {
+        return fRuns.size() <= 1;
+    }
+    for (int i = 1; i < fRuns.size(); ++i) {
+        const Run& prev = fRuns[i - 1];
+        const Run& run = fRuns[i];
+        if (prev.isPlaceholder() || run.isPlaceholder() ||
+            prev.textRange().end != run.textRange().start ||
+            fText[prev.textRange().end - 1] != '\n' || !(prev.font() == run.font()) ||
+            prev.bidiLevel() != run.bidiLevel() || prev.script() != run.script()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void ParagraphImpl::letterSpaceCoreTextRuns(SkScalar letterSpacing) {
+    SkScalar shift = 0;
+    if (fRuns[0].leftToRight()) {
+        // Carry the accumulated spacing shift across hard-break runs in text order
+        for (auto& run : fRuns) {
+            shift = run.addLetterSpacesAfterGraphemes(letterSpacing, shift);
+        }
+        return;
+    }
+    // HarfBuzz shapes a single-run RTL paragraph from the last line to the first;
+    // rebase the visual pen and space segments in reverse order to match its floats
+    SkScalar penX = 0;
+    for (int i = fRuns.size() - 1; i >= 0; --i) {
+        Run& run = fRuns[i];
+        const SkScalar delta = penX - run.posX(0);
+        for (size_t k = 0; k <= run.size(); ++k) {
+            run.addX(k, delta);
+        }
+        run.fOffset.fX = penX;
+        penX = run.posX(run.size());
+        shift = run.addLetterSpacesAfterGraphemes(letterSpacing, shift);
+    }
+}
+
+// RTL clusters come in descending text order, so there a grapheme ends visually at the cluster
+// whose text starts at a grapheme start
+bool ParagraphImpl::clusterEndsGrapheme(const Run& run, const Cluster& cluster) const {
+    const TextRange range = cluster.textRange();
+    if (run.leftToRight()) {
+        return range.end == fText.size() ||
+               this->codeUnitHasProperty(range.end, SkUnicode::CodeUnitFlags::kGraphemeStart);
+    }
+    return this->codeUnitHasProperty(range.start, SkUnicode::CodeUnitFlags::kGraphemeStart);
+}
+
 // In some cases we apply spacing to glyphs first and then build the cluster table, in some we do
 // the opposite - just to optimize the most common case.
 void ParagraphImpl::applySpacingAndBuildClusterTable() {
@@ -428,43 +483,18 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
         return;
     }
 
-    // CoreText shapes each hard-break segment in its own CTLine, so text that HarfBuzz shapes
-    // as one run comes as one run per segment. Spacing these runs as one keeps the cluster widths
-    // HarfBuzz takes from spaced positions; the per-cluster path below rounds them differently
-    auto oneRunButForHardBreaks = [this]() {
-        for (int i = 1; i < fRuns.size(); ++i) {
-            const Run& prev = fRuns[i - 1];
-            const Run& run = fRuns[i];
-            if (!fCoreTextShaped || prev.isPlaceholder() || run.isPlaceholder() ||
-                prev.textRange().end != run.textRange().start ||
-                fText[prev.textRange().end - 1] != '\n' || !(prev.font() == run.font()) ||
-                prev.bidiLevel() != run.bidiLevel() || prev.script() != run.script()) {
-                return false;
-            }
-        }
-        return true;
-    };
-
     // Simple case: we have to letter space the entire paragraph (second most common case)
     // With one exception (there are whitespaces, and we have to space them as CSS spec requires)
     // which is treated as a common case down below
     if (letterSpacingStyles == 1 && !hasWordSpacing && fTextStyles.size() == 1 &&
         fTextStyles[0].fRange.width() == fText.size() && !fRuns.empty() &&
-        oneRunButForHardBreaks() &&
-        !(this->fHasWhitespacesInside && this->fParagraphStyle.getLetterSpacingByCSSSpec())
-        ) {
+        this->runsDifferOnlyByHardBreaks() &&
+        !(this->fHasWhitespacesInside && this->fParagraphStyle.getLetterSpacingByCSSSpec())) {
         auto& style = fTextStyles[0].fStyle;
         if (!fRuns[0].isCursiveScript()) {
             // Do not apply letter spacing for script languages (no exception here)
             if (fCoreTextShaped) {
-                // Runs carry the shift on as HarfBuzz's single run does, so LTR lines match
-                // KEEPER-DEBT: HarfBuzz's RTL run puts the last line first, so spaced RTL lines can
-                // differ in the last bit. Remove once HardBreak_LetterSpacedLinesExactlyAsHarfBuzz
-                // asserts RTL line widths instead of logging them
-                SkScalar shift = 0;
-                for (auto& run : fRuns) {
-                    shift = run.addLetterSpacesAfterGraphemes(style.getLetterSpacing(), shift);
-                }
+                this->letterSpaceCoreTextRuns(style.getLetterSpacing());
             } else {
                 fRuns[0].addLetterSpacesEvenly(style.getLetterSpacing());
             }
@@ -547,17 +577,7 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
                     // Indic matra) where HarfBuzz merges them; spacing only after the visually
                     // last cluster of the grapheme keeps the mark on its base. RTL runs visit
                     // clusters in descending text order, so that cluster starts the grapheme
-                    const TextRange range = cluster->textRange();
-                    const bool graphemeEndsHere =
-                            run.leftToRight()
-                                    ? range.end == fText.size() ||
-                                              this->codeUnitHasProperty(
-                                                      range.end,
-                                                      SkUnicode::CodeUnitFlags::kGraphemeStart)
-                                    : this->codeUnitHasProperty(
-                                              range.start,
-                                              SkUnicode::CodeUnitFlags::kGraphemeStart);
-                    if (graphemeEndsHere) {
+                    if (this->clusterEndsGrapheme(run, *cluster)) {
                         shift += run.addLetterSpaceAfterCluster(letterSpacing, cluster);
                     } else {
                         // TextLine shifts a line by its first cluster's half spacing, which

@@ -80,9 +80,9 @@ private:
     // unresolved glyphs and records their code points. False if CoreText fails
     bool shapeTextRegion(TextRange regionRange, SkScalar& advanceX);
 
-    // Resolves the CTRun at runIdx in ctx into a CoreTextRunState and appends its Run to
-    // fParagraph, advancing advanceX by the run's width
-    void shapeRegionRun(RegionShapeContext& ctx, int runIdx, SkScalar& advanceX);
+    // Resolves the CTRun at runIdx in ctx (coalescing a split trailing newline when present) into
+    // a CoreTextRunState and appends its Run to fParagraph, advancing advanceX by the run's width
+    void shapeRegionRun(RegionShapeContext& ctx, int& runIdx, SkScalar& advanceX);
 
     // Emplaces a Run from runState into fParagraph, populates its glyph buffers, records its font
     // switch, and advances advanceX by runState.fRunAdvanceX
