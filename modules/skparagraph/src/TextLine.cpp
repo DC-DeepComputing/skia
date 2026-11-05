@@ -222,6 +222,19 @@ TextLine::TextLine(ParagraphImpl* owner,
             break;
         }
     }
+    // Clusters keep their whole letter spacing after the glyph; the shift stays within the half
+    // spacing of the last text cluster, so the ink ends inside the line width as with uniform
+    // spacing. Trailing placeholders keep the shift (InlinePlaceholder tests pin it)
+    if (fShift > 0) {
+        for (auto index = fClusterRange.end; index > fClusterRange.start; --index) {
+            const Cluster& last = owner->cluster(index - 1);
+            if (last.run().isPlaceholder()) {
+                continue;
+            }
+            fShift = std::min(fShift, std::max(last.getHalfLetterSpacing(), 0.0f));
+            break;
+        }
+    }
 }
 
 void TextLine::paint(ParagraphPainter* painter, SkScalar x, SkScalar y) {
