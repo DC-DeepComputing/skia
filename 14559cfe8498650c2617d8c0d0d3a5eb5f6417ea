@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4632fd17_721990f0",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-05T12:35:13Z",
+      "side": 1,
+      "message": "The asserts were originally added in:\nhttps://skia-review.git.corp.google.com/c/skia/+/1374256",
+      "revId": "14559cfe8498650c2617d8c0d0d3a5eb5f6417ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
