@@ -16,6 +16,24 @@
       "message": "I ran this patchset against the google3 targets that depend on SkParagraph (1151 targets, A/B against G3 HEAD). One target differed: //geo/imagery/augmented_viewer/vector:labels_scuba_test (LabelsTest.RenderFlatDirectionalStreetLabel, 383 pixels different). This change does not cause it: the same test case fails with the same 383-pixel diff on G3 HEAD without the patch (7 of 12 runs), and TAP marks the target as highly flaky. There are no other google3 differences. The Flutter framework text corpus (20198 tests) has no regressions.\n\nOn the change itself: for fontconfig, StyleSet::matchStyle already ranks faces with FcFontSetMatch, so the new path should pick the same face as before and only skips building the full style set. LGTM from my side.",
       "revId": "7383fdcc0149c9c19df2043e8aea829c173d505f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3903a707_05aec7b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5258461
+      },
+      "writtenOn": "2026-11-05T01:39:52Z",
+      "side": 1,
+      "message": "Thanks for the thorough google3 A/B and Flutter corpus validation.\n\nAlexis / Ben — would either of you be able to take a quick look at PS3 and add Code-Review+2? Everything else is done; after the +2 the CQ can be triggered.",
+      "parentUuid": "3a57a415_48f302f4",
+      "revId": "7383fdcc0149c9c19df2043e8aea829c173d505f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
