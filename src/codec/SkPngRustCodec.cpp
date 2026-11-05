@@ -790,6 +790,9 @@ SkCodec::Result SkPngRustCodec::initializeDecodingDst(DecodingState& decodingSta
         }
     }
 
+    const bool independent = frame->getRequiredFrame() == kNoFrame;
+    const bool blendWithPrevFrame =
+            !independent && frame->getBlend() == SkCodecAnimation::Blend::kSrcOver;
     size_t preblendBufferSize = 0;
     if (fReader->interlaced()) {
         // Use fPreblendBuffer to decode whole image untransformed, then truncate/xform later.
@@ -800,10 +803,10 @@ SkCodec::Result SkPngRustCodec::initializeDecodingDst(DecodingState& decodingSta
             if (!safe.ok()) {
                 return kErrorInInput;
             }
-        } else if (frame->getBlend() == SkCodecAnimation::Blend::kSrcOver) {
+        } else if (blendWithPrevFrame) {
             preblendBufferSize = dstSpan.size();
         }
-    } else if (frame->getBlend() == SkCodecAnimation::Blend::kSrcOver) {
+    } else if (blendWithPrevFrame) {
         preblendBufferSize = dstRowSize;
     }
 
@@ -825,6 +828,14 @@ SkCodec::Result SkPngRustCodec::initializeDecodingDst(DecodingState& decodingSta
                 return result;
             }
         }
+    }
+
+    if (!this->isSampling() && !this->options().fSubset && independent &&
+        frame->frameRect() != this->bounds()) {
+        SkSampler::Fill(this->dstInfo(),
+                        uninit.fDstPtr,
+                        uninit.fDstRowStride,
+                        this->options().fZeroInitialized);
     }
 
     decodingState.fDst = DecodingDstInfo{
@@ -1197,14 +1208,28 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState) 
 }
 
 void SkPngRustCodec::reportRowsDecoded(Result result,
-                                       const DecodingState& decodingState,
+                                       const std::optional<DecodingState>& decodingState,
                                        int* rowsDecoded) const {
     // TODO(b/562804783): Consider setting `*rowsDecoded` unconditionally (including on `kSuccess`),
     // aligning with `SkBmpRustCodec`, `SkJpegRustCodec`, and `SkWuffsCodec`.
     if ((result != kIncompleteInput && result != kErrorInInput) || !rowsDecoded) {
         return;
     }
-    *rowsDecoded = decodingState.fRowsWrittenToOutput;
+    const SkFrame* frame = fFrameHolder.getFrame(this->options().fFrameIndex);
+    if (frame && frame->getRequiredFrame() != kNoFrame) {
+        *rowsDecoded = this->dstInfo().height();
+        return;
+    }
+    if (!decodingState.has_value() ||
+        !std::holds_alternative<DecodingDstInfo>(decodingState->fDst)) {
+        *rowsDecoded = 0;
+        return;
+    }
+    if (frame && frame->frameRect() != this->bounds()) {
+        *rowsDecoded = this->dstInfo().height();
+        return;
+    }
+    *rowsDecoded = decodingState->fRowsWrittenToOutput;
 }
 
 SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
@@ -1214,19 +1239,17 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
                                             int* rowsDecoded) {
     std::optional<DecodingState> decodingState;
     Result result = this->startDecoding(dstInfo, pixels, rowBytes, options, decodingState);
-    if (result != kSuccess) {
-        return result;
-    }
-
-    result = this->initializeDecodingDst(*decodingState);
     if (result == kSuccess) {
-        if (this->canReadRow()) {
-            result = this->incrementalDecode(*decodingState);
-        } else {
-            result = this->incrementalDecodeXForm(*decodingState);
+        result = this->initializeDecodingDst(*decodingState);
+        if (result == kSuccess) {
+            if (this->canReadRow()) {
+                result = this->incrementalDecode(*decodingState);
+            } else {
+                result = this->incrementalDecodeXForm(*decodingState);
+            }
         }
     }
-    this->reportRowsDecoded(result, *decodingState, rowsDecoded);
+    this->reportRowsDecoded(result, decodingState, rowsDecoded);
     return result;
 }
 
@@ -1253,7 +1276,7 @@ SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
             result = this->incrementalDecodeXForm(*fIncrementalDecodingState);
         }
     }
-    this->reportRowsDecoded(result, *fIncrementalDecodingState, rowsDecoded);
+    this->reportRowsDecoded(result, fIncrementalDecodingState, rowsDecoded);
     if (result != kIncompleteInput) {
         // After successfully reading the whole row (`kSuccess`), and after a
         // fatal error (only recoverable error is `kIncompleteInput`) our client
