@@ -790,6 +790,9 @@ SkCodec::Result SkPngRustCodec::initializeDecodingDst(DecodingState& decodingSta
         }
     }
 
+    const bool independent = frame->getRequiredFrame() == kNoFrame;
+    const bool blendWithPrevFrame =
+            !independent && frame->getBlend() == SkCodecAnimation::Blend::kSrcOver;
     size_t preblendBufferSize = 0;
     if (fReader->interlaced()) {
         // Use fPreblendBuffer to decode whole image untransformed, then truncate/xform later.
@@ -800,10 +803,10 @@ SkCodec::Result SkPngRustCodec::initializeDecodingDst(DecodingState& decodingSta
             if (!safe.ok()) {
                 return kErrorInInput;
             }
-        } else if (frame->getBlend() == SkCodecAnimation::Blend::kSrcOver) {
+        } else if (blendWithPrevFrame) {
             preblendBufferSize = dstSpan.size();
         }
-    } else if (frame->getBlend() == SkCodecAnimation::Blend::kSrcOver) {
+    } else if (blendWithPrevFrame) {
         preblendBufferSize = dstRowSize;
     }
 
@@ -825,6 +828,14 @@ SkCodec::Result SkPngRustCodec::initializeDecodingDst(DecodingState& decodingSta
                 return result;
             }
         }
+    }
+
+    if (!this->isSampling() && !this->options().fSubset && independent &&
+        frame->frameRect() != this->bounds()) {
+        SkSampler::Fill(this->dstInfo(),
+                        uninit.fDstPtr,
+                        uninit.fDstRowStride,
+                        this->options().fZeroInitialized);
     }
 
     decodingState.fDst = DecodingDstInfo{
