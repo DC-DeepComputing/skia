@@ -158,6 +158,8 @@ public:
 
 private:
     std::unique_ptr<Run> shapeEllipsis(const SkString& ellipsis, const Cluster* cluster);
+    // Sets fHasBackground, fHasDecorations and fHasShadows from the styles in fBlockRange
+    void updateStyleFlags();
     void justify(SkScalar maxWidth);
 
     void buildTextBlob(TextRange textRange, const TextStyle& style, const ClipContext& context);

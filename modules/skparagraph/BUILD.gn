@@ -16,6 +16,13 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
     skia_use_harfbuzz) {
   config("public_config") {
     defines = [ "SK_ENABLE_PARAGRAPH" ]
+
+    # Skia's own dev builds (dm and the other tools) test the ellipsis after a truncated hard
+    # line break; clients, official builds and CanvasKit (debug and release alike) keep the
+    # old behavior until they define it
+    if (skia_enable_tools && !is_wasm) {
+      defines += [ "SK_ELLIPSIZE_TRUNCATED_LINES" ]
+    }
     include_dirs = [
       "include",
       "utils",

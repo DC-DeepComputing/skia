@@ -502,6 +502,13 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         // In case of a force wrapping we don't have a break cluster and have to use the end cluster
         text.end = std::max(text.end, textExcludingSpaces.end);
 
+        bool addEllipsis = needEllipsis && !fHardLineBreak;
+#ifdef SK_ELLIPSIZE_TRUNCATED_LINES
+        // needEllipsis is already false when no text follows the line; without a line limit a
+        // hard-broken line hides nothing
+        addEllipsis = needEllipsis && (!fHardLineBreak || !unlimitedLines);
+#endif
+
         addLine(textExcludingSpaces,
                 text,
                 textIncludingNewlines, clusters, clustersWithGhosts, widthWithSpaces,
@@ -510,7 +517,7 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
                 SkVector::Make(0, fHeight),
                 SkVector::Make(fEndLine.width(), lineHeight),
                 fEndLine.metrics(),
-                needEllipsis && !fHardLineBreak);
+                addEllipsis);
 
         softLineMaxIntrinsicWidth += widthWithSpaces;
 
