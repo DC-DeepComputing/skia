@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d52bcad4_8522f321",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-05T15:32:38Z",
+      "side": 1,
+      "message": "What happens if `strike` was non-null because it was already found by `findStrike` (vs. the `createStrike` path). Is `mergeFromBuffer` a no-op that returns true in that case? Or will removing the strike in that case corrupt something that earlier returned true?\n\ni.e. should we only remove the strike if this was a newly created strike?",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 53
+      },
+      "revId": "142b87c09588d0cec2ebbe3047c79258ec52d019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
