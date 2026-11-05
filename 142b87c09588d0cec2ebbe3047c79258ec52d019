@@ -46,6 +46,30 @@
       },
       "revId": "142b87c09588d0cec2ebbe3047c79258ec52d019",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0514bee7_f0c4e889",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-05T16:23:37Z",
+      "side": 1,
+      "message": "I think this is a good incentive to keep pushing for font access in the GPU process ;) so the remote glyph cache can go away entirely. I am not familiar with the protocol for keeping this cache in sync, but it seems best if we can avoid triggering a full context loss (I think that would hurt all renderer processes if we have to restart the GPU process). However, if the client can detect this and reset it\u0027s client-side state and handles, that seems acceptable since only the one renderer process would be impacted.",
+      "parentUuid": "67d67215_4f890d3b",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 53
+      },
+      "revId": "142b87c09588d0cec2ebbe3047c79258ec52d019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
