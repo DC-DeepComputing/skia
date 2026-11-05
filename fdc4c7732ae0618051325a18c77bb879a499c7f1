@@ -22,6 +22,30 @@
       },
       "revId": "fdc4c7732ae0618051325a18c77bb879a499c7f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be133079_f56e38de",
+        "filename": "modules/skparagraph/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-05T22:28:48Z",
+      "side": 1,
+      "message": "Makes sense. I will invert this to #ifndef SK_IGNORE_ELLIPSIZE_TRUNCATED_LINES (on by default, no BUILD.gn changes) and pre-land SK_IGNORE_ELLIPSIZE_TRUNCATED_LINES in Flutter\u0027s flutter_defines.gni if needed before submitting this CL.",
+      "parentUuid": "294876aa_0f63b6aa",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 5
+      },
+      "revId": "fdc4c7732ae0618051325a18c77bb879a499c7f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
