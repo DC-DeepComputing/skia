@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "388cc441_fbdd7ca3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3621349
+      },
+      "writtenOn": "2026-11-05T02:43:04Z",
+      "side": 1,
+      "message": "The bug was approved for M150 LTS. PTAL.",
+      "revId": "60a6561caf1ff4eea61d79afc729a51a88fd7644",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
