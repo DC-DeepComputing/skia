@@ -12762,3 +12762,75 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     });
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
+
+// Letter spacing is part of the cluster widths that line breaking and intrinsic widths add up,
+// so a left aligned line must draw and report its glyphs inside that width, even when only the
+// start of the line is letter spaced
+DEF_TEST(SkParagraph_LetterSpacingStaysInsideLineWidth, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    fontCollection->disableFontFallback();
+
+    TextStyle plain;
+    plain.setFontFamilies({SkString("Roboto")});
+    plain.setFontSize(14);
+    plain.setColor(SK_ColorBLACK);
+    TextStyle spaced = plain;
+    spaced.setLetterSpacing(30);
+
+    auto build = [&](size_t maxLines, const char* spacedText, const char* plainText, int count) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(plain);
+        paragraphStyle.setMaxLines(maxLines);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        for (int i = 0; i < count; ++i) {
+            builder.pushStyle(spaced);
+            builder.addText(spacedText);
+            builder.pop();
+            builder.pushStyle(plain);
+            builder.addText(plainText);
+            builder.pop();
+        }
+        return builder.Build();
+    };
+
+    auto checkInside = [&](Paragraph* paragraph, SkScalar width) {
+        const SkScalar epsilon = 0.01f;
+        SkScalar drawnRight = 0;
+        paragraph->visit([&](int, const Paragraph::VisitorInfo* info) {
+            if (!info) {
+                return;
+            }
+            std::vector<SkScalar> advances(info->count);
+            info->font.getWidths({info->glyphs, (size_t)info->count}, advances);
+            for (int i = 0; i < info->count; ++i) {
+                drawnRight = std::max(drawnRight,
+                                      info->origin.fX + info->positions[i].fX + advances[i]);
+            }
+        });
+        REPORTER_ASSERT(reporter, drawnRight <= width + epsilon, "%f > %f", drawnRight, width);
+        auto boxes = paragraph->getRectsForRange(
+                0, 1000, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        REPORTER_ASSERT(reporter, !boxes.empty());
+        for (auto& box : boxes) {
+            REPORTER_ASSERT(reporter, box.rect.fLeft >= -epsilon, "%f", box.rect.fLeft);
+            REPORTER_ASSERT(reporter, box.rect.fRight <= width + epsilon,
+                            "%f > %f", box.rect.fRight, width);
+        }
+    };
+
+    // Lines end with plain text after letter spaced text; maxLines makes Flutter clip the text
+    // at the max intrinsic width
+    auto clipped = build(3, "-1 12345", "67890\n", 5);
+    clipped->layout(1000);
+    REPORTER_ASSERT(reporter, clipped->didExceedMaxLines());
+    checkInside(clipped.get(), clipped->getMaxIntrinsicWidth());
+    checkInside(clipped.get(), clipped->getLongestLine());
+
+    // A letter spaced start followed by a long plain word that wraps at the paragraph width
+    auto wrapped = build(std::numeric_limits<size_t>::max(), "12345",
+                         "678901234567890123456789012345678901234567890", 1);
+    wrapped->layout(300);
+    REPORTER_ASSERT(reporter, wrapped->lineNumber() > 1);
+    checkInside(wrapped.get(), 300);
+}
