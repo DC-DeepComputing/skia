@@ -88,9 +88,9 @@ private:
         DecodingDstInfo& dst() { return std::get<DecodingDstInfo>(fDst); }
 
         // Intermediate buffer that holds color-transformed pixels that are
-        // ready to be blended with the destination. Used only when this frame
-        // uses `SkCodecAnimation::Blend::kSrcOver`. For interlaced images this
-        // buffer holds the whole frame; otherwise it holds only a single row.
+        // ready to be blended with the destination. Used only when a dependent
+        // frame uses `SkCodecAnimation::Blend::kSrcOver`. For interlaced images
+        // this buffer holds the whole frame; otherwise it holds only a single row.
         //
         // This is also used in the case of subsets or sampling for interlaced
         // images. We use this buffer as a full sized encoded image, which we then
