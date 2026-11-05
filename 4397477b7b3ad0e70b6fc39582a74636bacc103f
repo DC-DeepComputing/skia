@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12987c1b_a1674d8c",
+        "filename": "src/core/SkOpts.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-05T15:40:44Z",
+      "side": 1,
+      "message": "Greg, do you know where this pattern came from historically? I feel like it\u0027s unnecessary and we should just be able to call `init()` directly (and it should return void).",
+      "range": {
+        "startLine": 84,
+        "startChar": 29,
+        "endLine": 84,
+        "endChar": 53
+      },
+      "revId": "4397477b7b3ad0e70b6fc39582a74636bacc103f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
