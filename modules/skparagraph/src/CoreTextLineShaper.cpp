@@ -16,14 +16,17 @@
 #include "modules/skparagraph/src/CoreTextAttrStringBuilder.h"
 #include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/Run.h"
+#include "src/core/SkNoDestructor.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkUTF.h"
 #include "src/utils/mac/SkCGBase.h"
 #include "src/utils/mac/SkUniqueCFRef.h"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <cstring>
+#include <optional>
 #include <string_view>
 #include <utility>
 
@@ -114,8 +117,12 @@ struct RegionShapeContext {
     const std::vector<SkUnicode::BidiRegion>& fBidiRegions;
     TextRange fRegionRange;
     bool fFallbackDisabled;
+    CFAttributedStringRef fAttrStr = nullptr;
     CoreTextAttrStringBuilder fBuilder;
     skia_private::STArray<16, RunItem> fSortedRuns;
+    // Declared before fTypefaceCache and fBlockState so a cached unstyled-gap CTFont outlives
+    // every raw CTFontRef key in both hash maps
+    SkUniqueCFRef<CTFontRef> fGapAttrFont;
     skia_private::THashMap<CTFontRef, sk_sp<SkTypeface>> fTypefaceCache;
     BlockStyleState fBlockState;
     // Run::commit keeps the glyph offsets only when one is not zero, as for SkShaper runs
@@ -123,6 +130,19 @@ struct RegionShapeContext {
 };
 
 namespace {
+
+// How shapeRegionRun repairs a CTRun around its region's only '\n'. Pinning needs the run itself
+// to be that '\n' and coalescing needs a '\n' CTRun after it, so one run gets at most one repair
+enum class NewlineFix { kNone, kPinnedStandalone, kCoalescedTrailing };
+
+struct NewlineRunFixup {
+    int fCtGlyphCount = 0;
+    NewlineFix fFix = NewlineFix::kNone;
+    CGGlyph fCoalescedGlyph = 0;
+    // First runState slot of ctRun's glyphs and the slot of a coalesced '\n' glyph
+    int fBase = 0;
+    int fNewlineSlot = 0;
+};
 
 struct AffixStyleState {
     TextStyle fStyle;
@@ -391,8 +411,21 @@ static void normalize_cluster_indices(SkSpan<uint32_t> clusters, bool ltr) {
 // the letterSpacing SkParagraph adds later stacks on the trak as native tracking does, except
 // in cursive scripts, which SkParagraph does not space
 static SkUniqueCFRef<CTLineRef> typeset_line(CFAttributedStringRef attrStr) {
+    // CTTypesetterCreateWithAttributedString disables GSUB/GPOS/morx/kerx above 10,240 UTF-16
+    // code units unless unbounded layout is explicitly enabled
+    static const SkNoDestructor<SkUniqueCFRef<CFDictionaryRef>> kUnboundedOptions([] {
+        std::array<const void*, 1> keys = {kCTTypesetterOptionAllowUnboundedLayout};
+        std::array<const void*, 1> values = {kCFBooleanTrue};
+        return SkUniqueCFRef<CFDictionaryRef>(CFDictionaryCreate(kCFAllocatorDefault,
+                                                                 keys.data(),
+                                                                 values.data(),
+                                                                 SkTo<CFIndex>(keys.size()),
+                                                                 &kCFTypeDictionaryKeyCallBacks,
+                                                                 &kCFTypeDictionaryValueCallBacks));
+    }());
     const CFRange range = CFRangeMake(0, CFAttributedStringGetLength(attrStr));
-    SkUniqueCFRef<CTTypesetterRef> typesetter(CTTypesetterCreateWithAttributedString(attrStr));
+    SkUniqueCFRef<CTTypesetterRef> typesetter(
+            CTTypesetterCreateWithAttributedStringAndOptions(attrStr, kUnboundedOptions->get()));
     if (!typesetter) {
         return nullptr;
     }
@@ -629,10 +662,14 @@ static void collect_sorted_ct_runs(
     const CFIndex runCount = CFArrayGetCount(runs);
     for (CFIndex i = 0; i < runCount; ++i) {
         CTRunRef ctRun = (CTRunRef)CFArrayGetValueAtIndex(runs, i);
+        // Drop empty runs upfront so the trailing-newline lookahead sees no empty CTRuns after '\n'
         if (CTRunGetGlyphCount(ctRun) == 0) {
             continue;
         }
         const CFRange cfRange = CTRunGetStringRange(ctRun);
+        if (cfRange.length == 0) {
+            continue;
+        }
         sortedRuns.push_back({ctRun, cfRange.location, cfRange.length});
     }
     // CTRuns arrive in visual order from CTLineGetGlyphRuns
@@ -710,23 +747,101 @@ static bool is_disallowed_run_font(CTFontRef ctFont,
     return !*allowed;
 }
 
-// Maps ctRun's UTF-16 string indices to run-relative UTF-8 byte offsets in runState.fClusters and
-// normalizes them to monotonic cluster order
+// Reads kCTFontAttributeName at utf16Loc from ctx.fAttrStr to preserve exact descriptor attributes
+// (such as liga=0 or variations) for SkTypeface equality, creating and caching the paragraph
+// default CTFont once in ctx.fGapAttrFont for unstyled gaps
+static CTFontRef attr_primary_ct_font(RegionShapeContext& ctx, CFIndex utf16Loc) {
+    if (CTFontRef font = (CTFontRef)CFAttributedStringGetAttribute(
+                ctx.fAttrStr, utf16Loc, kCTFontAttributeName, nullptr)) {
+        return font;
+    }
+    if (ctx.fBlockState.fBlock) {
+        return nullptr;
+    }
+    if (!ctx.fGapAttrFont) {
+        const TextStyle& style = *ctx.fBlockState.fStyle;
+        const CGFloat standInSize = style.getFontSize() > 0.0f ? style.getFontSize() : 14.0f;
+        ctx.fGapAttrFont = CoreTextFontRegistry::Instance().createFont(
+                ctx.fBlockState.fPrimary.get(), style.getFontStyle(), standInSize);
+    }
+    return ctx.fGapAttrFont.get();
+}
+
+// CoreText cascades U+000A to a fallback font when the primary face lacks a newline glyph.
+// Returns the block's primary CTFont to keep a standalone '\n' on as glyph 0, so empty-line
+// metrics and font equality match the primary face, or nullptr when no pin applies
+static CTFontRef try_pin_standalone_newline(RegionShapeContext& ctx,
+                                            TextRange runUtf8Range,
+                                            CFIndex utf16Loc) {
+    if (runUtf8Range.width() != 1 || ctx.fText[runUtf8Range.start] != '\n') {
+        return nullptr;
+    }
+    CTFontRef attrFont = attr_primary_ct_font(ctx, utf16Loc);
+    const UniChar nlChar = '\n';
+    CGGlyph nlGlyph = 0;
+    if (!attrFont || CTFontGetGlyphsForCharacters(attrFont, &nlChar, &nlGlyph, 1) ||
+        is_disallowed_run_font(attrFont, ctx.fFallbackDisabled, ctx.fBlockState)) {
+        return nullptr;
+    }
+    return attrFont;
+}
+
+// CoreText splits a trailing '\n' into a separate CTRun when the primary face lacks U+000A or on
+// RTL lines. When the CTRun after runIdx is that '\n', returns ctFont's glyph for it (0 when
+// unmapped) so the caller folds it into this run and line-end caret hit-testing and multi-line
+// spacing see one run per segment; std::nullopt otherwise
+static std::optional<CGGlyph> coalesce_trailing_newline(RegionShapeContext& ctx,
+                                                        int runIdx,
+                                                        CTFontRef ctFont,
+                                                        uint8_t bidiLevel,
+                                                        TextRange runUtf8Range) {
+    if (runIdx + 2 != ctx.fSortedRuns.size() || runUtf8Range.end + 1 != ctx.fRegionRange.end ||
+        ctx.fText[ctx.fRegionRange.end - 1] != '\n') {
+        return std::nullopt;
+    }
+    const RegionShapeContext::RunItem& item = ctx.fSortedRuns[runIdx];
+    const RegionShapeContext::RunItem& nlItem = ctx.fSortedRuns[runIdx + 1];
+    if (nlItem.fLocation != item.fLocation + item.fLength || nlItem.fLength != 1 ||
+        CTRunGetGlyphCount(nlItem.fRun) != 1 ||
+        find_style_block(ctx.fStyles, runUtf8Range.end) != ctx.fBlockState.fBlock ||
+        reconcile_bidi_level(find_bidi_level(ctx.fBidiRegions, runUtf8Range.end, 0), nlItem.fRun) !=
+                bidiLevel) {
+        return std::nullopt;
+    }
+    CTFontRef nlAttrFont = attr_primary_ct_font(ctx, nlItem.fLocation);
+    if (!nlAttrFont || !CFEqual(ctFont, nlAttrFont)) {
+        return std::nullopt;
+    }
+    const UniChar nlChar = '\n';
+    // CoreText writes glyph 0 for a character the font does not map
+    CGGlyph glyph = 0;
+    CTFontGetGlyphsForCharacters(ctFont, &nlChar, &glyph, 1);
+    return glyph;
+}
+
+// Maps ctRun's UTF-16 string indices to run-relative UTF-8 byte offsets in runState.fClusters,
+// normalizes them to monotonic cluster order, and writes a coalesced trailing newline's cluster at
+// visual slot 0 for RTL runs or at the end for LTR runs
 static void build_run_clusters(CTRunRef ctRun,
                                const CoreTextIndexMap& indexMap,
                                size_t regionStart,
+                               const NewlineRunFixup& fixup,
                                CoreTextRunState& runState) {
-    skia_private::AutoSTArray<64, CFIndex> indexBuffer(runState.fGlyphCount);
-    CTRunGetStringIndices(ctRun, CFRangeMake(0, runState.fGlyphCount), indexBuffer.data());
-    for (int k = 0; k < runState.fGlyphCount; ++k) {
+    const int ctGlyphCount = fixup.fCtGlyphCount;
+    skia_private::AutoSTArray<64, CFIndex> indexBuffer(ctGlyphCount);
+    CTRunGetStringIndices(ctRun, CFRangeMake(0, ctGlyphCount), indexBuffer.data());
+    for (int k = 0; k < ctGlyphCount; ++k) {
         const size_t globalU8 = regionStart + indexMap.toUtf8Index(indexBuffer[k]);
         const size_t clusterInRun = (globalU8 >= runState.fUtf8Range.start)
                                             ? (globalU8 - runState.fUtf8Range.start)
                                             : 0;
-        runState.fClusters[k] = SkToU32(clusterInRun);
+        runState.fClusters[fixup.fBase + k] = SkToU32(clusterInRun);
     }
-    normalize_cluster_indices({runState.fClusters.data(), SkToSizeT(runState.fGlyphCount)},
+    normalize_cluster_indices({runState.fClusters.data() + fixup.fBase, SkToSizeT(ctGlyphCount)},
                               runState.fIsLtr);
+    if (fixup.fFix == NewlineFix::kCoalescedTrailing) {
+        runState.fClusters[fixup.fNewlineSlot] = SkToU32(runState.fUtf8Range.width() - 1);
+    }
 }
 
 // Returns glyph k's paragraph-global UTF-8 text range from normalized run-relative clusters
@@ -793,32 +908,52 @@ static void measure_fallback_glyphs(SkSpan<const char> paragraphText,
 }
 
 // Extracts ctRun's glyphs, origins, and shaped advances (plus split kerning offsets when enabled)
-// into runState, applies the primary font's newline advance to U+000A clusters, and stores the
-// total advance in runState.fRunAdvanceX
+// into runState, populates any pinned or coalesced newline slot, applies the primary font's
+// newline advance to U+000A clusters, and stores the total advance in runState.fRunAdvanceX
 static void measure_shaped_glyphs(CTRunRef ctRun,
                                   CTFontRef ctFont,
                                   SkSpan<const char> paragraphText,
+                                  const NewlineRunFixup& fixup,
                                   CoreTextRunState& runState) {
-    const size_t n = SkToSizeT(runState.fGlyphCount);
-    extract_ctrun_glyphs(ctRun,
-                         ctFont,
-                         runState.fZeroSize,
-                         runState.fFont.isSubpixel(),
-                         {runState.fGlyphs.data(), n},
-                         {runState.fOrigins.data(), n},
-                         {runState.fAdvances.data(), n},
-                         runState.fSplitKerning ? SkSpan<SkScalar>{runState.fSplitOffsets.data(), n}
-                                                : SkSpan<SkScalar>{});
+    // ctRun holds the fallback font's glyph ID rather than the pinned primary face's, so emit
+    // .notdef (0) directly and assign its HarfBuzz advance in the newline loop below
+    if (fixup.fFix == NewlineFix::kPinnedStandalone) {
+        runState.fGlyphs[0] = 0;
+        runState.fOrigins[0] = CGPointZero;
+        runState.fAdvances[0] = 0.0f;
+        if (runState.fSplitKerning) {
+            runState.fSplitOffsets[0] = 0.0f;
+        }
+    } else {
+        const int base = fixup.fBase;
+        const size_t n = SkToSizeT(fixup.fCtGlyphCount);
+        extract_ctrun_glyphs(ctRun,
+                             ctFont,
+                             runState.fZeroSize,
+                             runState.fFont.isSubpixel(),
+                             {runState.fGlyphs.data() + base, n},
+                             {runState.fOrigins.data() + base, n},
+                             {runState.fAdvances.data() + base, n},
+                             runState.fSplitKerning
+                                     ? SkSpan<SkScalar>{runState.fSplitOffsets.data() + base, n}
+                                     : SkSpan<SkScalar>{});
+        if (fixup.fFix == NewlineFix::kCoalescedTrailing) {
+            const int nl = fixup.fNewlineSlot;
+            runState.fGlyphs[nl] = fixup.fCoalescedGlyph;
+            runState.fOrigins[nl] = CGPointZero;
+            runState.fAdvances[nl] = 0.0f;
+            if (runState.fSplitKerning) {
+                runState.fSplitOffsets[nl] = 0.0f;
+            }
+        }
+    }
+
     for (int k = 0; k < runState.fGlyphCount; ++k) {
         // CoreText gives '\n' no advance, HarfBuzz the advance of the primary font's cmap glyph
         // (.notdef when it has none); that advance moves all later lines, so their float positions
         // and widths differ unless '\n' gets one here too
         const TextRange gRange = glyph_text_range(runState, k);
         if (!runState.fZeroSize && gRange.width() == 1 && paragraphText[gRange.start] == '\n') {
-            // KEEPER-DEBT: this is the run font's U+000A glyph; with a primary font that lacks
-            // U+000A, CoreText puts '\n' in a fallback run, so this is not the primary .notdef
-            // HarfBuzz uses and its advance can differ. Remove when '\n' stays in the primary
-            // font's run
             const SkScalar newlineAdvance =
                     runState.fFont.getWidth(runState.fFont.unicharToGlyph('\n'));
             // Whole pixels for a non-subpixel font, as for every other glyph
@@ -1031,32 +1166,58 @@ bool CoreTextLineShaper::shapeTextRegion(TextRange regionRange) {
         return false;
     }
 
+    ctx.fAttrStr = attrStr.get();
     collect_sorted_ct_runs(line.get(), ctx.fSortedRuns);
-    for (int runIdx = 0; runIdx < ctx.fSortedRuns.size(); ++runIdx) {
-        this->shapeRegionRun(ctx, runIdx);
+    // shapeRegionRun consumes one or two CTRuns, so the loop always moves forward
+    for (int runIdx = 0; runIdx < ctx.fSortedRuns.size();) {
+        runIdx += this->shapeRegionRun(ctx, runIdx);
     }
 
     return true;
 }
 
-void CoreTextLineShaper::shapeRegionRun(RegionShapeContext& ctx, int runIdx) {
+int CoreTextLineShaper::shapeRegionRun(RegionShapeContext& ctx, int runIdx) {
     const RegionShapeContext::RunItem& item = ctx.fSortedRuns[runIdx];
     const TextRange relUtf8Range =
             ctx.fBuilder.indexMap().cfrangeToTextRange(CFRangeMake(item.fLocation, item.fLength));
-    const TextRange runUtf8Range(ctx.fRegionRange.start + relUtf8Range.start,
-                                 ctx.fRegionRange.start + relUtf8Range.end);
+    TextRange runUtf8Range(ctx.fRegionRange.start + relUtf8Range.start,
+                           ctx.fRegionRange.start + relUtf8Range.end);
     if (runUtf8Range.width() == 0) {
-        return;
+        return 1;
     }
 
     update_block_style_state(
             *fParagraph, find_style_block(ctx.fStyles, runUtf8Range.start), ctx.fBlockState);
 
     CTFontRef ctFont = ct_run_font(item.fRun);
-    const bool isFallback = is_disallowed_run_font(ctFont, ctx.fFallbackDisabled, ctx.fBlockState);
+    bool isFallback = is_disallowed_run_font(ctFont, ctx.fFallbackDisabled, ctx.fBlockState);
+    NewlineRunFixup fixup;
+    fixup.fCtGlyphCount = SkToInt(CTRunGetGlyphCount(item.fRun));
+    if (CTFontRef pinned = try_pin_standalone_newline(ctx, runUtf8Range, item.fLocation)) {
+        ctFont = pinned;
+        isFallback = false;
+        fixup.fFix = NewlineFix::kPinnedStandalone;
+    }
+
     const uint8_t bidiLevel = reconcile_bidi_level(
             find_bidi_level(ctx.fBidiRegions, runUtf8Range.start, 0), item.fRun);
     const bool isLtr = (bidiLevel % 2) == 0;
+    std::optional<CGGlyph> newlineGlyph;
+    if (!isFallback) {
+        newlineGlyph = coalesce_trailing_newline(ctx, runIdx, ctFont, bidiLevel, runUtf8Range);
+    }
+    if (newlineGlyph) {
+        // A pinned run is the region's only '\n', so no trailing '\n' CTRun follows it
+        SkASSERT(fixup.fFix == NewlineFix::kNone);
+        fixup.fFix = NewlineFix::kCoalescedTrailing;
+        fixup.fCoalescedGlyph = *newlineGlyph;
+        // RTL runs store glyphs in visual order, so a logical-end '\n' sits at visual slot 0
+        fixup.fBase = isLtr ? 0 : 1;
+        fixup.fNewlineSlot = isLtr ? fixup.fCtGlyphCount : 0;
+        runUtf8Range.end = ctx.fRegionRange.end;
+    }
+
+    const int glyphCount = fixup.fCtGlyphCount + (newlineGlyph ? 1 : 0);
     const bool zeroSize = ctx.fBlockState.fStyle->getFontSize() <= 0;
     SkFont runFont = make_run_font(ctFont,
                                    isFallback,
@@ -1070,7 +1231,7 @@ void CoreTextLineShaper::shapeRegionRun(RegionShapeContext& ctx, int runIdx) {
             !isFallback && !zeroSize && isLtr && runFont.isSubpixel() &&
             !memchr(ctx.fText.data() + runUtf8Range.start, '\t', runUtf8Range.width());
 
-    CoreTextRunState runState(SkToInt(CTRunGetGlyphCount(item.fRun)),
+    CoreTextRunState runState(glyphCount,
                               runUtf8Range,
                               {.ltr = isLtr,
                                .zeroSize = zeroSize,
@@ -1085,13 +1246,14 @@ void CoreTextLineShaper::shapeRegionRun(RegionShapeContext& ctx, int runIdx) {
     // Run::isCursiveScript agrees with the glyphs CoreText produced
     runState.fScript = ctx.fBuilder.scriptAt(relUtf8Range.start);
 
-    build_run_clusters(item.fRun, ctx.fBuilder.indexMap(), ctx.fRegionRange.start, runState);
+    build_run_clusters(item.fRun, ctx.fBuilder.indexMap(), ctx.fRegionRange.start, fixup, runState);
     if (isFallback) {
         measure_fallback_glyphs(ctx.fText, fParagraph->fUnicode.get(), runState);
     } else {
-        measure_shaped_glyphs(item.fRun, ctFont, ctx.fText, runState);
+        measure_shaped_glyphs(item.fRun, ctFont, ctx.fText, fixup, runState);
     }
     this->appendRegionRun(runState);
+    return newlineGlyph ? 2 : 1;
 }
 
 void CoreTextLineShaper::appendRegionRun(CoreTextRunState& runState) {
