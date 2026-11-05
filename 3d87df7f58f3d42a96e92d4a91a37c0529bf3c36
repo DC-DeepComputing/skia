@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a371a3_57872856",
+        "filename": "src/gpu/ganesh/GrGeometryProcessor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-05T18:25:43Z",
+      "side": 0,
+      "message": "I don\u0027t think we can skip checking this when reset the sampler state. I think we should check that in `reset` and either construct a new GrSamplerState (that shouldn\u0027t have anisotropic filtering) or do the copy assignment if it\u0027s not restricted.\n\nI also think that this old `clamp_filter` function is incorrectly implemented, since this restriction pertains to disabling mipmapping (and by extension anisotropic filtering). We used to have mipmapping part of the `Filter` enum, but now it\u0027s a separate mode.  That is what should be being reset as well if the type is restricted. That is trivial to fix with the change I suggested above.",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 42
+      },
+      "revId": "3d87df7f58f3d42a96e92d4a91a37c0529bf3c36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
