@@ -16,6 +16,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
@@ -122,7 +123,7 @@ void draw_child(skiatest::Reporter* reporter,
     SkCanvas* childCanvas = childSurface->getCanvas();
     childCanvas->clear(SK_ColorRED);
 
-    childSurface->wait(1, &semaphore);
+    childSurface->wait(1, SkSpanFromRef(semaphore));
 
     childCanvas->drawImage(childImage, CHILD_W/2, 0);
 

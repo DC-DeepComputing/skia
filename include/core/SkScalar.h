@@ -8,6 +8,7 @@
 #ifndef SkScalar_DEFINED
 #define SkScalar_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkFloatingPoint.h"
 
@@ -135,10 +136,10 @@ static inline SkScalar SkScalarInterp(SkScalar A, SkScalar B, SkScalar t) {
 /*
  *  Helper to compare an array of scalars.
  */
-static inline bool SkScalarsEqual(const SkScalar a[], const SkScalar b[], int n) {
+static inline bool SkScalarsEqual(SkSpan<const SkScalar> a, SkSpan<const SkScalar> b, int n) {
     SkASSERT(n >= 0);
     for (int i = 0; i < n; ++i) {
-        if (a[i] != b[i]) {
+        if (a[static_cast<size_t>(i)] != b[static_cast<size_t>(i)]) {
             return false;
         }
     }

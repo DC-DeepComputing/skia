@@ -13,6 +13,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/gpu/GpuTypes.h"
@@ -247,7 +248,7 @@ void SkSurface_Ganesh::onDiscard() { fDevice->discard(); }
 void SkSurface_Ganesh::resolveMSAA() { fDevice->resolveMSAA(); }
 
 bool SkSurface_Ganesh::onWait(int numSemaphores,
-                              const GrBackendSemaphore* waitSemaphores,
+                              SkSpan<const GrBackendSemaphore>waitSemaphores,
                               bool deleteSemaphoresAfterWait) {
     return fDevice->wait(numSemaphores, waitSemaphores, deleteSemaphoresAfterWait);
 }

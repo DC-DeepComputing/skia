@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <utility>
+#include "include/core/SkSpan.h"
 #include "src/core/SkDescriptor.h"
 
 #include "include/core/SkTypes.h"
@@ -81,11 +83,11 @@ bool SkDescriptor::operator==(const SkDescriptor& other) const {
     // NOTE: if we wrote a sentinel value at the end of each, we could
     //       remove the aa < stop test in the loop...
     const uint32_t* aa = (const uint32_t*)this;
-    const uint32_t* bb = (const uint32_t*)&other;
+    SkSpan<const uint32_t> bb(reinterpret_cast<const uint32_t*>(&other), fLength / sizeof(uint32_t));
     SkASSERT(SkIsAlign4(fLength));
     const uint32_t* stop = (const uint32_t*)((const char*)aa + fLength);
     do {
-        if (*aa++ != *bb++)
+        if (*aa++ != std::exchange(bb, bb.subspan(1u))[0])
             return false;
     } while (aa < stop);
     return true;

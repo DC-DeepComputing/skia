@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "src/core/SkEdgeClipper.h"
 
 #include "include/core/SkRect.h"
@@ -253,7 +254,7 @@ bool SkEdgeClipper::clipQuad(const SkPoint srcPts[3], const SkRect& clip) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static SkScalar mono_cubic_closestT(const SkScalar src[], SkScalar x) {
+static SkScalar mono_cubic_closestT(SkSpan<const SkScalar> src, SkScalar x) {
     SkScalar t = 0.5f;
     SkScalar lastT;
     SkScalar bestT  SK_INIT_TO_AVOID_WARNING;
@@ -282,7 +283,7 @@ static void chop_mono_cubic_at_y(SkPoint src[4], SkScalar y, SkPoint dst[7]) {
     if (SkChopMonoCubicAtY(src, y, dst)) {
         return;
     }
-    SkChopCubicAt(src, dst, mono_cubic_closestT(&src->fY, y));
+    SkChopCubicAt(src, dst, mono_cubic_closestT(SkSpan(&src->fY, 7), y));
 }
 
 // Modify pts[] in place so that it is clipped in Y to the clip rect
@@ -336,7 +337,7 @@ static void chop_mono_cubic_at_x(SkPoint src[4], SkScalar x, SkPoint dst[7]) {
     if (SkChopMonoCubicAtX(src, x, dst)) {
         return;
     }
-    SkChopCubicAt(src, dst, mono_cubic_closestT(&src->fX, x));
+    SkChopCubicAt(src, dst, mono_cubic_closestT(SkSpan(&src->fX, 8), x));
 }
 
 // srcPts[] must be monotonic in X and Y

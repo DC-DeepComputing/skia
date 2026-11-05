@@ -8,6 +8,7 @@
 #ifndef SkDebugfTracer_DEFINED
 #define SkDebugfTracer_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/utils/SkEventTracer.h"
 #include "tools/trace/EventTracingPriv.h"
@@ -24,7 +25,7 @@ public:
                                         const char* name,
                                         uint64_t id,
                                         int numArgs,
-                                        const char** argNames,
+                                        SkSpan<const char *>argNames,
                                         const uint8_t* argTypes,
                                         const uint64_t* argValues,
                                         uint8_t flags) override;

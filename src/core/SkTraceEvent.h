@@ -10,6 +10,7 @@
 #ifndef SkTraceEvent_DEFINED
 #define SkTraceEvent_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/utils/SkEventTracer.h"
 #include "src/core/SkTraceEventCommon.h" // IWYU pragma: export
 #include "src/core/SkUtils.h"
@@ -317,7 +318,7 @@ AddTraceEvent(
     unsigned char flags) {
   return TRACE_EVENT_API_ADD_TRACE_EVENT(
       phase, category_group_enabled, name, id,
-      kZeroNumArgs, nullptr, nullptr, nullptr, flags);
+      kZeroNumArgs, {}, nullptr, nullptr, flags);
 }
 
 template<class ARG1_TYPE>
@@ -336,7 +337,7 @@ AddTraceEvent(
   SetTraceValue(arg1_val, &arg_types[0], &arg_values[0]);
   return TRACE_EVENT_API_ADD_TRACE_EVENT(
       phase, category_group_enabled, name, id,
-      num_args, &arg1_name, arg_types, arg_values, flags);
+      num_args, SkSpanFromRef(arg1_name), arg_types, arg_values, flags);
 }
 
 template<class ARG1_TYPE, class ARG2_TYPE>

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "src/core/SkATrace.h"
 
 #include "include/utils/SkTraceEventPhase.h"
@@ -41,7 +42,7 @@ SkEventTracer::Handle SkATrace::addTraceEvent(char phase,
                                               const char* name,
                                               uint64_t id,
                                               int numArgs,
-                                              const char** argNames,
+                                              SkSpan<const char *>argNames,
                                               const uint8_t* argTypes,
                                               const uint64_t* argValues,
                                               uint8_t flags) {

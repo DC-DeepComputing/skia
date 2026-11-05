@@ -92,7 +92,7 @@ public:
         return false;
     }
 
-    bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
+    bool computeCodeUnitFlags(SkSpan<char16_t> utf16, int utf16Units, bool replaceTabs,
                           TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         results->clear();
         results->push_back_n(utf16Units + 1, CodeUnitFlags::kNoCodeUnitFlag);

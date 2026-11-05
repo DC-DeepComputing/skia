@@ -317,7 +317,7 @@ public:
         @return   true if members are equal
     */
     friend bool operator==(const SkRRect& a, const SkRRect& b) {
-        return a.fRect == b.fRect && SkScalarsEqual(&a.fRadii[0].fX, &b.fRadii[0].fX, 8);
+        return a.fRect == b.fRect && SkScalarsEqual(SkSpan(&a.fRadii[0].fX, 8), SkSpan(&b.fRadii[0].fX, 8), 8);
     }
 
     /** Returns true if bounds and radii in a are not equal to bounds and radii in b.
@@ -330,7 +330,7 @@ public:
         @return   true if members are not equal
     */
     friend bool operator!=(const SkRRect& a, const SkRRect& b) {
-        return a.fRect != b.fRect || !SkScalarsEqual(&a.fRadii[0].fX, &b.fRadii[0].fX, 8);
+        return a.fRect != b.fRect || !SkScalarsEqual(SkSpan(&a.fRadii[0].fX, 8), SkSpan(&b.fRadii[0].fX, 8), 8);
     }
 
     /** Copies SkRRect to dst, then insets dst bounds by dx and dy, and adjusts dst

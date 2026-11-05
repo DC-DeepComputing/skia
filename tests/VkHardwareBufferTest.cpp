@@ -975,7 +975,7 @@ bool VulkanTestHelper::importAndWaitOnSemaphore(skiatest::Reporter* reporter, in
     }
 
     GrBackendSemaphore beSemaphore = GrBackendSemaphores::MakeVk(semaphore);
-    if (!surface->wait(1, &beSemaphore)) {
+    if (!surface->wait(1, SkSpanFromRef(beSemaphore))) {
         ERRORF(reporter, "Failed to add wait semaphore to surface");
         fVkDestroySemaphore(fDevice, semaphore, nullptr);
         return false;

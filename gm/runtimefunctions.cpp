@@ -11,6 +11,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
 
@@ -53,7 +54,7 @@ class RuntimeFunctions : public skiagm::GM {
 
         SkV4 iResolution = { 255, 255, 0, 0 };
         auto shader = result.effect->makeShader(
-                SkData::MakeWithCopy(&iResolution, sizeof(iResolution)), nullptr, 0, &localM);
+                SkData::MakeWithCopy(&iResolution, sizeof(iResolution)), {}, 0, &localM);
         SkPaint p;
         p.setShader(std::move(shader));
         canvas->drawRect({0, 0, 256, 256}, p);

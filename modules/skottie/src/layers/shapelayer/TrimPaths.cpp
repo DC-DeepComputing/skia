@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/effects/SkTrimPathEffect.h"
@@ -86,7 +87,8 @@ std::vector<sk_sp<sksg::GeometryNode>> ShapeBuilder::AttachTrimGeometryEffect(
     enum class Mode {
         kParallel, // "m": 1 (Trim Multiple Shapes: Simultaneously)
         kSerial,   // "m": 2 (Trim Multiple Shapes: Individually)
-    } gModes[] = { Mode::kParallel, Mode::kSerial};
+    };
+    const auto gModes = std::to_array<Mode>({ Mode::kParallel, Mode::kSerial});
 
     const auto mode = gModes[std::min<size_t>(ParseDefault<size_t>(jtrim["m"], 1) - 1,
                                             std::size(gModes) - 1)];

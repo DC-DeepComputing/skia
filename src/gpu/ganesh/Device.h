@@ -106,7 +106,7 @@ public:
     }
 
     bool wait(int numSemaphores,
-              const GrBackendSemaphore* waitSemaphores,
+              SkSpan<const GrBackendSemaphore>waitSemaphores,
               bool deleteSemaphoresAfterWait);
 
     void discard();

@@ -280,13 +280,13 @@ public:
     // [i|h]vec4 and arrays thereof (just add overloads as needed)
     void write(const SkPMColor4f& c) { this->write<SkSLType::kFloat4>(c.vec()); }
     void write(const SkRect& r)      { this->write<SkSLType::kFloat4>(r.asScalars()); }
-    void write(const SkV4& v)        { this->write<SkSLType::kFloat4>(v.ptr()); }
+    void write(const SkV4& v)        { this->write<SkSLType::kFloat4>(v.ptr().data()); }
 
     void write(const SkIRect& r)     { this->write<SkSLType::kInt4>(&r); }
 
     void writeHalf(const SkPMColor4f& c) { this->write<SkSLType::kHalf4>(c.vec()); }
     void writeHalf(const SkRect& r)      { this->write<SkSLType::kHalf4>(r.asScalars()); }
-    void writeHalf(const SkV4& v)        { this->write<SkSLType::kHalf4>(v.ptr()); }
+    void writeHalf(const SkV4& v)        { this->write<SkSLType::kHalf4>(v.ptr().data()); }
 
     void writeArray(SkSpan<const float> f) {
         this->writeArray<SkSLType::kFloat>(f.data(), f.size());

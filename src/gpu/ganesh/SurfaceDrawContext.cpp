@@ -19,6 +19,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/gpu/ganesh/GrBackendSemaphore.h"
@@ -1511,7 +1512,7 @@ bool SurfaceDrawContext::mustRenderClip(uint32_t clipStackGenID,
 }
 
 bool SurfaceDrawContext::waitOnSemaphores(int numSemaphores,
-                                          const GrBackendSemaphore waitSemaphores[],
+                                          SkSpan<const GrBackendSemaphore> waitSemaphores,
                                           bool deleteSemaphoresAfterWait) {
     ASSERT_SINGLE_OWNER
     RETURN_FALSE_IF_ABANDONED

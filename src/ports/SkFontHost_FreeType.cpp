@@ -16,6 +16,7 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/ports/SkFontScanner_FreeType.h"
@@ -2300,7 +2301,7 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
                 CommonWeights{"ultraheavy", FS::kExtraBlack_Weight},
                 CommonWeights{"ultralight", FS::kExtraLight_Weight},
         });
-        int const index = SkStrLCSearch(&commonWeights[0].name, std::size(commonWeights),
+        int const index = SkStrLCSearch(SkSpan(&commonWeights[0].name, std::size(commonWeights)), std::size(commonWeights),
                                         psFontInfo.weight, sizeof(commonWeights[0]));
         if (index >= 0) {
             weight = commonWeights[index].weight;

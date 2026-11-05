@@ -42,7 +42,7 @@ class SkRuntimeImageFilter final : public SkImageFilter_Base {
 public:
     SkRuntimeImageFilter(const SkRuntimeShaderBuilder& builder,
                          float maxSampleRadius,
-                         std::string_view childShaderNames[],
+                         SkSpan<std::string_view> childShaderNames,
                          const sk_sp<SkImageFilter> inputs[],
                          int inputCount,
                          bool restrictOutputToInputBounds)
@@ -114,13 +114,13 @@ sk_sp<SkImageFilter> SkImageFilters::RuntimeShader(const SkRuntimeShaderBuilder&
         childShaderName = children.front().name;
     }
 
-    return SkImageFilters::RuntimeShader(builder, sampleRadius, &childShaderName, &input, 1,
+    return SkImageFilters::RuntimeShader(builder, sampleRadius, SkSpanFromRef(childShaderName), &input, 1,
                                          restrictOutputToInputBounds);
 }
 
 sk_sp<SkImageFilter> SkImageFilters::RuntimeShader(const SkRuntimeShaderBuilder& builder,
                                                    SkScalar maxSampleRadius,
-                                                   std::string_view childShaderNames[],
+                                                   SkSpan<std::string_view> childShaderNames,
                                                    const sk_sp<SkImageFilter> inputs[],
                                                    int inputCount,
                                                    bool restrictOutputToInputBounds) {
@@ -226,7 +226,7 @@ sk_sp<SkFlattenable> SkRuntimeImageFilter::CreateProc(SkReadBuffer& buffer) {
         return nullptr;
     }
 
-    return SkImageFilters::RuntimeShader(builder, maxSampleRadius, childShaderNames.data(),
+    return SkImageFilters::RuntimeShader(builder, maxSampleRadius, childShaderNames,
                                          common.inputs(), common.inputCount(),
                                          restrictOutputToInputBounds);
 }

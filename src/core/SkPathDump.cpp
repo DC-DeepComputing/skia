@@ -30,7 +30,7 @@ static void append_params(SkString* str, const char label[], SkSpan<const SkPoin
     str->append(label);
     str->append("(");
 
-    const SkScalar* values = &pts[0].fX;
+    SkSpan<const SkScalar> values(&pts[0].fX, pts.size() * 2);
     size_t count = pts.size() * 2;
 
     for (size_t i = 0; i < count; ++i) {

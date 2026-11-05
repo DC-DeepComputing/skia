@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkSpan.h"
 #include "src/pathops/SkPathOpsConic.h"
 
 #include "include/core/SkTypes.h"
@@ -19,7 +20,7 @@
 struct SkDLine;
 
 // cribbed from the float version in SkGeometry.cpp
-static void conic_deriv_coeff(const double src[],
+static void conic_deriv_coeff(SkSpan<const double> src,
                               SkScalar w,
                               double coeff[3]) {
     const double P20 = src[4] - src[0];
@@ -30,13 +31,13 @@ static void conic_deriv_coeff(const double src[],
     coeff[2] = wP10;
 }
 
-static double conic_eval_tan(const double coord[], SkScalar w, double t) {
+static double conic_eval_tan(SkSpan<const double> coord, SkScalar w, double t) {
     double coeff[3];
     conic_deriv_coeff(coord, w, coeff);
     return t * (t * coeff[0] + coeff[1]) + coeff[2];
 }
 
-int SkDConic::FindExtrema(const double src[], SkScalar w, double t[1]) {
+int SkDConic::FindExtrema(SkSpan<const double> src, SkScalar w, SkSpan<double, 1> t) {
     double coeff[3];
     conic_deriv_coeff(src, w, coeff);
 
@@ -56,8 +57,8 @@ int SkDConic::FindExtrema(const double src[], SkScalar w, double t[1]) {
 
 SkDVector SkDConic::dxdyAtT(double t) const {
     SkDVector result = {
-        conic_eval_tan(&fPts[0].fX, fWeight, t),
-        conic_eval_tan(&fPts[0].fY, fWeight, t)
+        conic_eval_tan(SkSpan(&fPts[0].fX, 6), fWeight, t),
+        conic_eval_tan(SkSpan(&fPts[0].fY, 5), fWeight, t)
     };
     if (result.fX == 0 && result.fY == 0) {
         if (zero_or_one(t)) {
@@ -70,8 +71,8 @@ SkDVector SkDConic::dxdyAtT(double t) const {
     return result;
 }
 
-static double conic_eval_numerator(const double src[], SkScalar w, double t) {
-    SkASSERT(src);
+static double conic_eval_numerator(SkSpan<const double> src, SkScalar w, double t) {
+    SkASSERT(!src.empty());
     SkASSERT(t >= 0 && t <= 1);
     double src2w = src[2] * w;
     double C = src[0];
@@ -101,8 +102,8 @@ SkDPoint SkDConic::ptAtT(double t) const {
     }
     double denominator = conic_eval_denominator(fWeight, t);
     SkDPoint result = {
-        sk_ieee_double_divide(conic_eval_numerator(&fPts[0].fX, fWeight, t), denominator),
-        sk_ieee_double_divide(conic_eval_numerator(&fPts[0].fY, fWeight, t), denominator)
+        sk_ieee_double_divide(conic_eval_numerator(SkSpan(&fPts[0].fX, 6), fWeight, t), denominator),
+        sk_ieee_double_divide(conic_eval_numerator(SkSpan(&fPts[0].fY, 5), fWeight, t), denominator)
     };
     return result;
 }
@@ -135,8 +136,8 @@ SkDConic SkDConic::subDivide(double t1, double t2) const {
         ay = fPts[0].fY;
         az = 1;
     } else if (t1 != 1) {
-        ax = conic_eval_numerator(&fPts[0].fX, fWeight, t1);
-        ay = conic_eval_numerator(&fPts[0].fY, fWeight, t1);
+        ax = conic_eval_numerator(SkSpan(&fPts[0].fX, 6), fWeight, t1);
+        ay = conic_eval_numerator(SkSpan(&fPts[0].fY, 5), fWeight, t1);
         az = conic_eval_denominator(fWeight, t1);
     } else {
         ax = fPts[2].fX;
@@ -144,8 +145,8 @@ SkDConic SkDConic::subDivide(double t1, double t2) const {
         az = 1;
     }
     double midT = (t1 + t2) / 2;
-    double dx = conic_eval_numerator(&fPts[0].fX, fWeight, midT);
-    double dy = conic_eval_numerator(&fPts[0].fY, fWeight, midT);
+    double dx = conic_eval_numerator(SkSpan(&fPts[0].fX, 6), fWeight, midT);
+    double dy = conic_eval_numerator(SkSpan(&fPts[0].fY, 5), fWeight, midT);
     double dz = conic_eval_denominator(fWeight, midT);
     double cx, cy, cz;
     if (t2 == 1) {
@@ -153,8 +154,8 @@ SkDConic SkDConic::subDivide(double t1, double t2) const {
         cy = fPts[2].fY;
         cz = 1;
     } else if (t2 != 0) {
-        cx = conic_eval_numerator(&fPts[0].fX, fWeight, t2);
-        cy = conic_eval_numerator(&fPts[0].fY, fWeight, t2);
+        cx = conic_eval_numerator(SkSpan(&fPts[0].fX, 6), fWeight, t2);
+        cy = conic_eval_numerator(SkSpan(&fPts[0].fY, 5), fWeight, t2);
         cz = conic_eval_denominator(fWeight, t2);
     } else {
         cx = fPts[0].fX;

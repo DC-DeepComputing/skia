@@ -49,9 +49,9 @@ static void testConvertToPolynomial(skiatest::Reporter* reporter, const std::str
     REPORTER_ASSERT(reporter, curveInputs.size() == 4,
                     "Invalid test case. Need 4 points (start, control, control, end)");
 
-    const double* input = &curveInputs[0].fX;
+    SkSpan<const double> input(&curveInputs[0].fX, 8);
     if (yValues) {
-        input = &curveInputs[0].fY;
+        input = SkSpan(&curveInputs[0].fY, 7);
     }
     double A, B, C, D;
     SkDCubic::Coefficients(input, &A, &B, &C, &D);

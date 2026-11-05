@@ -13,6 +13,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkEnumBitMask.h"
@@ -849,7 +850,7 @@ sk_sp<SkShader> SkRuntimeEffectPriv::MakeDeferredShader(
 }
 
 sk_sp<SkShader> SkRuntimeEffect::makeShader(sk_sp<const SkData> uniforms,
-                                            sk_sp<SkShader> childShaders[],
+                                            SkSpan<sk_sp<SkShader>> childShaders,
                                             size_t childCount,
                                             const SkMatrix* localMatrix) const {
     STArray<4, ChildPtr> children(childCount);

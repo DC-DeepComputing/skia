@@ -408,13 +408,13 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf8_Hostile, reporter) {
         // must still emit valid boundary sentinels
         SkString crlf("a\r\nb");
         auto graphemeIter = apple->makeBreakIterator(SkUnicode::BreakType::kGraphemes);
-        REPORTER_ASSERT(reporter, graphemeIter->setText(crlf.data(), crlf.size()));
+        REPORTER_ASSERT(reporter, graphemeIter->setText(crlf, crlf.size()));
         std::vector<SkBreakIterator::Position> expectedCrlf = {0, 1, 3, 4};
         REPORTER_ASSERT(reporter, collectBreaks(graphemeIter.get()) == expectedCrlf);
 
         TArray<SkUnicode::CodeUnitFlags, true> flags;
         REPORTER_ASSERT(reporter,
-                        apple->computeCodeUnitFlags(crlf.data(), crlf.size(), false, &flags));
+                        apple->computeCodeUnitFlags(crlf, crlf.size(), false, &flags));
         REPORTER_ASSERT(reporter, flags[1] & SkUnicode::CodeUnitFlags::kGraphemeStart);
         REPORTER_ASSERT(reporter, !(flags[2] & SkUnicode::CodeUnitFlags::kGraphemeStart));
         REPORTER_ASSERT(reporter, flags[3] & SkUnicode::CodeUnitFlags::kGraphemeStart);
@@ -428,7 +428,7 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf8_Hostile, reporter) {
         std::vector<SkBreakIterator::Position> expectedCrOnly = {0, 1};
         REPORTER_ASSERT(reporter, collectBreaks(lineIter.get()) == expectedCrOnly);
 
-        REPORTER_ASSERT(reporter, apple->computeCodeUnitFlags(crlf.data(), 0, false, &flags));
+        REPORTER_ASSERT(reporter, apple->computeCodeUnitFlags(SkSpan<char16_t>(crlf.data(), 0), 0, false, &flags));
         REPORTER_ASSERT(reporter, flags.size() == 1);
         REPORTER_ASSERT(reporter,
                         flags[0] == (SkUnicode::CodeUnitFlags::kSoftLineBreakBefore |
@@ -455,13 +455,13 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf16_Hostile, reporter) {
         std::u16string u16Text = u"Привет мир";
         auto wordIter = apple->makeBreakIterator("ru", SkUnicode::BreakType::kWords);
         REPORTER_ASSERT(reporter, wordIter);
-        REPORTER_ASSERT(reporter, wordIter->setText(u16Text.data(), u16Text.size()));
+        REPORTER_ASSERT(reporter, wordIter->setText(u16Text, u16Text.size()));
         std::vector<SkBreakIterator::Position> expectedWords = {0, 6, 7, 10};
         REPORTER_ASSERT(reporter, collectBreaks(wordIter.get()) == expectedWords);
 
         auto graphemeIter = apple->makeBreakIterator("ru", SkUnicode::BreakType::kGraphemes);
         REPORTER_ASSERT(reporter, graphemeIter);
-        REPORTER_ASSERT(reporter, graphemeIter->setText(u16Text.data(), u16Text.size()));
+        REPORTER_ASSERT(reporter, graphemeIter->setText(u16Text, u16Text.size()));
         std::vector<SkBreakIterator::Position> expectedGraphemes = {
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         };
@@ -472,7 +472,7 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf16_Hostile, reporter) {
         std::u16string u16Text = u"😀😃😄";
         auto graphemeIter = apple->makeBreakIterator(SkUnicode::BreakType::kGraphemes);
         REPORTER_ASSERT(reporter, graphemeIter);
-        REPORTER_ASSERT(reporter, graphemeIter->setText(u16Text.data(), u16Text.size()));
+        REPORTER_ASSERT(reporter, graphemeIter->setText(u16Text, u16Text.size()));
         std::vector<SkBreakIterator::Position> expectedGraphemes = {0, 2, 4, 6};
         REPORTER_ASSERT(reporter, collectBreaks(graphemeIter.get()) == expectedGraphemes);
     }
@@ -482,7 +482,7 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf16_Hostile, reporter) {
         std::u16string u16Text = u"Привет\nмир\u2029конец";
         auto lineIter = apple->makeBreakIterator(SkUnicode::BreakType::kLines);
         REPORTER_ASSERT(reporter, lineIter);
-        REPORTER_ASSERT(reporter, lineIter->setText(u16Text.data(), u16Text.size()));
+        REPORTER_ASSERT(reporter, lineIter->setText(u16Text, u16Text.size()));
         std::vector<SkBreakIterator::Position> breaks;
         std::vector<SkBreakIterator::Status> statuses;
         for (auto pos = lineIter->first(); !lineIter->isDone(); pos = lineIter->next()) {
@@ -501,27 +501,27 @@ DEF_TEST(SkUnicode_Apple_BreakIterator_Utf16_Hostile, reporter) {
         // UAX #29 GB3 coalesces CRLF into a single grapheme cluster in UTF-16
         std::u16string crlf = u"a\r\nb";
         auto graphemeIter = apple->makeBreakIterator(SkUnicode::BreakType::kGraphemes);
-        REPORTER_ASSERT(reporter, graphemeIter->setText(crlf.data(), crlf.size()));
+        REPORTER_ASSERT(reporter, graphemeIter->setText(crlf, crlf.size()));
         std::vector<SkBreakIterator::Position> expectedCrlf = {0, 1, 3, 4};
         REPORTER_ASSERT(reporter, collectBreaks(graphemeIter.get()) == expectedCrlf);
 
         TArray<SkUnicode::CodeUnitFlags, true> flags;
         REPORTER_ASSERT(reporter,
-                        apple->computeCodeUnitFlags(crlf.data(), crlf.size(), false, &flags));
+                        apple->computeCodeUnitFlags(crlf, crlf.size(), false, &flags));
         REPORTER_ASSERT(reporter, flags[1] & SkUnicode::CodeUnitFlags::kGraphemeStart);
         REPORTER_ASSERT(reporter, !(flags[2] & SkUnicode::CodeUnitFlags::kGraphemeStart));
         REPORTER_ASSERT(reporter, flags[3] & SkUnicode::CodeUnitFlags::kGraphemeStart);
 
         auto lineIter = apple->makeBreakIterator(SkUnicode::BreakType::kLines);
-        REPORTER_ASSERT(reporter, lineIter->setText(u"", 0));
+        REPORTER_ASSERT(reporter, lineIter->setText(SkSpan<const char16_t>(u"", 0), 0));
         std::vector<SkBreakIterator::Position> expectedEmpty = {0};
         REPORTER_ASSERT(reporter, collectBreaks(lineIter.get()) == expectedEmpty);
 
-        REPORTER_ASSERT(reporter, lineIter->setText(u"\r", 1));
+        REPORTER_ASSERT(reporter, lineIter->setText(SkSpan<const char16_t>(u"\r", 1), 1));
         std::vector<SkBreakIterator::Position> expectedCrOnly = {0, 1};
         REPORTER_ASSERT(reporter, collectBreaks(lineIter.get()) == expectedCrOnly);
 
-        REPORTER_ASSERT(reporter, apple->computeCodeUnitFlags(crlf.data(), 0, false, &flags));
+        REPORTER_ASSERT(reporter, apple->computeCodeUnitFlags(SkSpan<char16_t>(crlf.data(), 0), 0, false, &flags));
         REPORTER_ASSERT(reporter, flags.size() == 1);
         REPORTER_ASSERT(reporter,
                         flags[0] == (SkUnicode::CodeUnitFlags::kSoftLineBreakBefore |

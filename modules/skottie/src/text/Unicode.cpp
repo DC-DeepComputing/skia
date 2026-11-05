@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include <memory>
 #include <utility>
 
@@ -77,7 +78,7 @@ public:
                fB->setText(utftext8, utf8Units);
     }
 
-    bool setText(const char16_t utftext16[], int utf16Units) override {
+    bool setText(SkSpan<const char16_t> utftext16, int utf16Units) override {
         fDone = false;
         fCurrent = 0;
         return fA->setText(utftext16, utf16Units) &&
@@ -179,7 +180,7 @@ public:
             skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         return fUnicode->computeCodeUnitFlags(utf8, utf8Units, replaceTabs, results);
     }
-    bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
+    bool computeCodeUnitFlags(SkSpan<char16_t> utf16, int utf16Units, bool replaceTabs,
             skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         return fUnicode->computeCodeUnitFlags(utf16, utf16Units, replaceTabs, results);
     }

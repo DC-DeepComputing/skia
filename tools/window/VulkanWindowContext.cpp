@@ -535,7 +535,7 @@ sk_sp<SkSurface> VulkanWindowContext::getBackbufferSurface() {
     // Set up the SkSurface associated with the current backbuffer's image and return it.
     SkSurface* surface = fImages[fCurrentImageIndex].fSurface.get();
     GrBackendSemaphore beSemaphore = GrBackendSemaphores::MakeVk(fAcquireSemaphore);
-    surface->wait(/*numSemaphores=*/1, &beSemaphore);
+    surface->wait(/*numSemaphores=*/1, SkSpanFromRef(beSemaphore));
 
     return sk_ref_sp(surface);
 }

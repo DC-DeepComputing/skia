@@ -10,6 +10,7 @@
 #ifndef SkTSearch_DEFINED
 #define SkTSearch_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 
 #include <cstddef>
@@ -91,17 +92,17 @@ int SkTSearch(T* base[], int count, T* target, size_t elemSize) {
                      [](const T* t, const T* k) { return LESS(*t, *k); });
 }
 
-int SkStrSearch(const char*const* base, int count, const char target[],
+int SkStrSearch(SkSpan<const char *const>base, int count, const char target[],
                 size_t target_len, size_t elemSize);
-int SkStrSearch(const char*const* base, int count, const char target[],
+int SkStrSearch(SkSpan<const char *const>base, int count, const char target[],
                 size_t elemSize);
 
 /** Like SkStrSearch, but treats target as if it were all lower-case. Assumes that
     base points to a table of lower-case strings.
 */
-int SkStrLCSearch(const char*const* base, int count, const char target[],
+int SkStrLCSearch(SkSpan<const char *const>base, int count, const char target[],
                   size_t target_len, size_t elemSize);
-int SkStrLCSearch(const char*const* base, int count, const char target[],
+int SkStrLCSearch(SkSpan<const char *const>base, int count, const char target[],
                   size_t elemSize);
 
 /** Helper class to convert a string to lower-case, but only modifying the ascii

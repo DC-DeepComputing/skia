@@ -139,7 +139,7 @@ public:
         return true;
     }
 
-    bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
+    bool computeCodeUnitFlags(SkSpan<char16_t> utf16, int utf16Units, bool replaceTabs,
                           skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         SkASSERT(false);
         return true;
@@ -348,7 +348,7 @@ public:
     Status status() override { SkASSERT(false); return -1; }
     bool isDone() override { SkASSERT(false); return false; }
     bool setText(const char utftext8[], int utf8Units) override { SkASSERT(false); return false; }
-    bool setText(const char16_t utftext16[], int utf16Units) override { SkASSERT(false); return false; }
+    bool setText(SkSpan<const char16_t> utftext16, int utf16Units) override { SkASSERT(false); return false; }
 };
 
 class SkBidiIterator_icu4x : public SkBidiIterator {

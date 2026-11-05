@@ -6,6 +6,7 @@
  */
 #include "src/gpu/ganesh/GrProcessorSet.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkDebug.h"
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrPaint.h"
@@ -120,7 +121,7 @@ GrProcessorSet::Analysis GrProcessorSet::finalize(
     GrProcessorSet::Analysis analysis;
     analysis.fCompatibleWithCoverageAsAlpha = GrProcessorAnalysisCoverage::kLCD != coverageInput;
 
-    GrColorFragmentProcessorAnalysis colorAnalysis(colorInput, &fColorFragmentProcessor,
+    GrColorFragmentProcessorAnalysis colorAnalysis(colorInput, SkSpanFromRef(fColorFragmentProcessor),
                                                    this->hasColorFragmentProcessor() ? 1 : 0);
     bool hasCoverageFP = this->hasCoverageFragmentProcessor();
     bool coverageUsesLocalCoords = false;
