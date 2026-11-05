@@ -7,8 +7,14 @@
 #include "src/core/SkOpts.h"
 
 #include "include/private/SkFeatures.h"
+#include "include/private/SkOnce.h"
+#include "src/core/SkBitmapProcState.h"
+#include "src/core/SkBlitMask.h"
+#include "src/core/SkBlitRow.h"
 #include "src/core/SkCpu.h"
+#include "src/core/SkMemset.h"
 #include "src/core/SkOptsTargets.h"
+#include "src/core/SkSwizzlePriv.h"
 
 #define SK_OPTS_TARGET SK_OPTS_TARGET_DEFAULT
 #include "src/opts/SkOpts_SetTarget.h"
@@ -72,6 +78,15 @@ namespace SkOpts {
     }
 
     void Init() {
-        [[maybe_unused]] static bool gInitialized = init();
+        static SkOnce once;
+        once([] {
+            SkCpu::CacheRuntimeFeatures();
+            [[maybe_unused]] static bool gInitialized = init();
+            SkOpts::Init_BitmapProcState();
+            SkOpts::Init_BlitMask();
+            SkOpts::Init_BlitRow();
+            SkOpts::Init_Memset();
+            SkOpts::Init_Swizzler();
+        });
     }
 }  // namespace SkOpts
