@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b01e46b_bac6fb2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-05T15:49:51Z",
+      "side": 1,
+      "message": "PS5 is a rebase of PS4 onto main with no code change: the only difference is where the new test sits in SkParagraphTest.cpp. None of the skparagraph commits that landed in between (unresolved codepoints shared with ParagraphCache entries, Cluster height and grapheme range removal, glyph offsets kept only if needed, exact-size run arrays) touches ParagraphBuilderImpl, and the ParagraphImpl constructor still takes the same SkString.\n\nI re-ran the checks on PS5: the Flutter text/paragraph/editing tests (2409) and the google3 tests that depend on SkParagraph and SkUnicode (1151 targets) show no changes against the base.\n\nLGTM.",
+      "revId": "b50ec15d4c41951d12c835e70022c22f310dfd99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
