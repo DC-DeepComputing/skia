@@ -187,8 +187,8 @@ using SkSL::Compiler;
 using OverrideFlag = SkSL::Compiler::OverrideFlag;
 
 
-Application* Application::Create(int argc, char** argv, void* platformData) {
-    return new Viewer(argc, argv, platformData);
+Application* Application::Create(int argc, SkSpan<char*> argv, void* platformData) {
+    return new Viewer(argc, argv.data(), platformData);
 }
 
 static DEFINE_bool(enable_capture, false, "Enable capture");

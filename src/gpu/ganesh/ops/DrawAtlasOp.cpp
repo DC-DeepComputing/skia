@@ -11,6 +11,7 @@
 #include "include/core/SkRSXform.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -67,8 +68,8 @@ public:
     DEFINE_OP_CLASS_ID
 
     DrawAtlasOpImpl(GrProcessorSet*, const SkPMColor4f& color,
-                    const SkMatrix& viewMatrix, GrAAType, int spriteCount, const SkRSXform* xforms,
-                    const SkRect* rects, const SkColor* colors);
+                    const SkMatrix& viewMatrix, GrAAType, int spriteCount, SkSpan<const SkRSXform>xforms,
+                    SkSpan<const SkRect>rects, const SkColor* colors);
 
     const char* name() const override { return "DrawAtlasOp"; }
 
@@ -141,11 +142,11 @@ GrGeometryProcessor* make_gp(SkArenaAlloc* arena,
 
 DrawAtlasOpImpl::DrawAtlasOpImpl(GrProcessorSet* processorSet, const SkPMColor4f& color,
                                  const SkMatrix& viewMatrix, GrAAType aaType, int spriteCount,
-                                 const SkRSXform* xforms, const SkRect* rects,
+                                 SkSpan<const SkRSXform>xforms, SkSpan<const SkRect>rects,
                                  const SkColor* colors)
         : GrMeshDrawOp(ClassID()), fHelper(processorSet, aaType), fColor(color) {
-    SkASSERT(xforms);
-    SkASSERT(rects);
+    SkASSERT(!xforms.empty());
+    SkASSERT(!rects.empty());
     SkASSERT(spriteCount >= 0);
 
     fViewMatrix = viewMatrix;
@@ -368,8 +369,8 @@ GrOp::Owner Make(GrRecordingContext* context,
                  const SkColor* colors) {
     return GrSimpleMeshDrawOpHelper::FactoryHelper<DrawAtlasOpImpl>(context, std::move(paint),
                                                                     viewMatrix, aaType,
-                                                                    spriteCount, xforms,
-                                                                    rects, colors);
+                                                                    spriteCount, SkSpan(xforms, spriteCount),
+                                                                    SkSpan(rects, spriteCount), colors);
 }
 
 }  // namespace skgpu::ganesh::DrawAtlasOp

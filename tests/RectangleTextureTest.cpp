@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "tests/Test.h"
 
 #ifdef SK_GL
@@ -176,7 +177,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(RectangleTexture, reporter, ctxInfo, CtsEnforceme
             continue;
         }
 
-        if (!dContext->updateBackendTexture(rectangleTex, &pm, 1, origin, nullptr, nullptr)) {
+        if (!dContext->updateBackendTexture(rectangleTex, SkSpanFromRef(pm), 1, origin, nullptr, nullptr)) {
             continue;
         }
 

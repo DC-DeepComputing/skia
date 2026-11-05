@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
 
 #include "include/core/SkData.h"
@@ -1525,8 +1526,8 @@ ShapedRun ShaperHarfBuzz::shape(char const * const utf8,
         // Note that the advances remain ltr.
         hb_buffer_reverse(buffer);
     }
-    hb_glyph_info_t* info = hb_buffer_get_glyph_infos(buffer, nullptr);
-    hb_glyph_position_t* pos = hb_buffer_get_glyph_positions(buffer, nullptr);
+    SkSpan<hb_glyph_info_t> info(hb_buffer_get_glyph_infos(buffer, nullptr), len);
+    SkSpan<hb_glyph_position_t> pos(hb_buffer_get_glyph_positions(buffer, nullptr), len);
 
     run = ShapedRun(RunHandler::Range(utf8Start - utf8, utf8runLength),
                     font.currentFont(), bidi.currentLevel(),

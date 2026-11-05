@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
@@ -28,7 +29,7 @@ std::unique_ptr<Expression> Transform::RewriteIndexedSwizzle(const Context& cont
     const Swizzle& swizzle = indexExpr.base()->as<Swizzle>();
 
     // Convert the swizzle components to a literal array.
-    double vecArray[4];
+    std::array<double, 4> vecArray;
     for (int index = 0; index < swizzle.components().size(); ++index) {
         vecArray[index] = swizzle.components()[index];
     }

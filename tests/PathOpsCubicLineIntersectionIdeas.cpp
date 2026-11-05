@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkRandom.h"
@@ -172,7 +173,7 @@ DEF_TEST(PathOpsCubicLineRoots, reporter) {
         // skip answers with no intersections (although note the bug!) or two, or more
         // see if the line / cubic has a fun range of roots
         double A, B, C, D;
-        SkDCubic::Coefficients(&cubic[0].fY, &A, &B, &C, &D);
+        SkDCubic::Coefficients(SkSpan(&cubic[0].fY, 7), &A, &B, &C, &D);
         D -= pt.fY;
         double allRoots[3] = {0}, validRoots[3] = {0};
         int realRoots = SkDCubic::RootsReal(A, B, C, D, allRoots);
@@ -269,7 +270,7 @@ static double testOneFailure(const CubicLineFailures& failure) {
     cubic.debugSet(c.fPts);
     const SkDPoint& pt = failure.p;
     double A, B, C, D;
-    SkDCubic::Coefficients(&cubic[0].fY, &A, &B, &C, &D);
+    SkDCubic::Coefficients(SkSpan(&cubic[0].fY, 7), &A, &B, &C, &D);
     D -= pt.fY;
     double allRoots[3] = {0}, validRoots[3] = {0};
     int realRoots = SkDCubic::RootsReal(A, B, C, D, allRoots);

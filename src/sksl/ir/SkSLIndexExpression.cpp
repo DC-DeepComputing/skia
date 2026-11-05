@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/ir/SkSLIndexExpression.h"
 
 #include "include/core/SkTypes.h"
@@ -147,7 +148,7 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
                 const Type& vecType = baseType.columnType(context);
                 indexValue *= vecWidth;
 
-                double ctorArgs[4];
+                std::array<double, 4> ctorArgs;
                 bool allConstant = true;
                 for (int slot = 0; slot < vecWidth; ++slot) {
                     std::optional<double> slotVal = baseExpr->getConstantValue(indexValue + slot);

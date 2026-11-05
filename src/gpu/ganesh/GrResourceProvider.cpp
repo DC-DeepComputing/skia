@@ -12,6 +12,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrTypes.h"
@@ -66,7 +67,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                                    skgpu::Budgeted budgeted,
                                                    skgpu::Mipmapped mipmapped,
                                                    GrProtected isProtected,
-                                                   const GrMipLevel texels[],
+                                                   SkSpan<const GrMipLevel> texels,
                                                    std::string_view label) {
     ASSERT_SINGLE_OWNER
 
@@ -192,7 +193,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
         if (!tex) {
             return nullptr;
         }
-        return this->writePixels(std::move(tex), colorType, dimensions, &mipLevel, 1);
+        return this->writePixels(std::move(tex), colorType, dimensions, SkSpanFromRef(mipLevel), 1);
     } else {
         return this->createTexture(dimensions,
                                    format,
@@ -203,7 +204,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                    budgeted,
                                    skgpu::Mipmapped::kNo,
                                    isProtected,
-                                   &mipLevel,
+                                   SkSpanFromRef(mipLevel),
                                    label);
     }
 }
@@ -882,11 +883,11 @@ static bool prepare_level(const GrMipLevel& inLevel,
 GrColorType GrResourceProvider::prepareLevels(const GrBackendFormat& format,
                                               GrColorType colorType,
                                               SkISize baseSize,
-                                              const GrMipLevel texels[],
+                                              SkSpan<const GrMipLevel> texels,
                                               int mipLevelCount,
                                               TempLevels* tempLevels,
                                               TempLevelDatas* tempLevelDatas) const {
-    SkASSERT(mipLevelCount && texels && texels[0].fPixels);
+    SkASSERT(mipLevelCount && !texels.empty() && texels[0].fPixels);
 
     auto allowedColorType =
             this->caps()->supportedWritePixelsColorType(colorType, format, colorType).fColorType;
@@ -910,12 +911,12 @@ GrColorType GrResourceProvider::prepareLevels(const GrBackendFormat& format,
 sk_sp<GrTexture> GrResourceProvider::writePixels(sk_sp<GrTexture> texture,
                                                  GrColorType colorType,
                                                  SkISize baseSize,
-                                                 const GrMipLevel texels[],
+                                                 SkSpan<const GrMipLevel> texels,
                                                  int mipLevelCount) const {
     SkASSERT(!this->isAbandoned());
     SkASSERT(texture);
     SkASSERT(colorType != GrColorType::kUnknown);
-    SkASSERT(mipLevelCount && texels && texels[0].fPixels);
+    SkASSERT(mipLevelCount && !texels.empty() && texels[0].fPixels);
 
     AutoSTArray<14, GrMipLevel> tmpTexels;
     AutoSTArray<14, std::unique_ptr<char[]>> tmpDatas;

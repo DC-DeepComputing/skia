@@ -30,12 +30,12 @@ DEF_TEST(WindowRectangles, reporter) {
     GrWindowRectangles wr;
     for (int i = 0; i < GrWindowRectangles::kMaxWindows - 1; ++i) {
         REPORTER_ASSERT(reporter, wr.count() == i);
-        REPORTER_ASSERT(reporter, !memcmp(wr.data(), windowData.data(), i * sizeof(SkIRect)));
+        REPORTER_ASSERT(reporter, !memcmp(wr.data().data(), windowData.data(), i * sizeof(SkIRect)));
 
         GrWindowRectangles wr2(wr);
         REPORTER_ASSERT(reporter, wr2 == wr);
         REPORTER_ASSERT(reporter, wr2.count() == wr.count());
-        REPORTER_ASSERT(reporter, !memcmp(wr2.data(), wr.data(), i * sizeof(SkIRect)));
+        REPORTER_ASSERT(reporter, !memcmp(wr2.data().data(), wr.data().data(), i * sizeof(SkIRect)));
 
         wr.addWindow(windowData[i]);
     }
@@ -44,10 +44,10 @@ DEF_TEST(WindowRectangles, reporter) {
     {
         GrWindowRectangles A(wr), B(wr);
         REPORTER_ASSERT(reporter, B == A);
-        REPORTER_ASSERT(reporter, B.data() == A.data()); // Should use copy-on-write.
+        REPORTER_ASSERT(reporter, B.data().data() == A.data().data()); // Should use copy-on-write.
 
         A.addWindow(windowData[GrWindowRectangles::kMaxWindows - 1]);
-        REPORTER_ASSERT(reporter, B.data() != A.data());
+        REPORTER_ASSERT(reporter, B.data().data() != A.data().data());
         REPORTER_ASSERT(reporter, B != A);
 
         B.addWindow(SkRectPriv::MakeILarge());
@@ -65,12 +65,12 @@ DEF_TEST(WindowRectangles, reporter) {
     {
         GrWindowRectangles A(wr), B(wr);
         REPORTER_ASSERT(reporter, B == A);
-        REPORTER_ASSERT(reporter, B.data() == A.data()); // Should use copy-on-write.
+        REPORTER_ASSERT(reporter, B.data().data() == A.data().data()); // Should use copy-on-write.
 
         A.addWindow(windowData[GrWindowRectangles::kMaxWindows - 1]);
         B.addWindow(windowData[GrWindowRectangles::kMaxWindows - 1]);
         REPORTER_ASSERT(reporter, B == A);
-        REPORTER_ASSERT(reporter, B.data() != A.data());
+        REPORTER_ASSERT(reporter, B.data().data() != A.data().data());
 
         for (int i = 0; i < GrWindowRectangles::kMaxWindows; i++) {
             REPORTER_ASSERT(reporter, B.data()[i] ==   A.data()[i]);

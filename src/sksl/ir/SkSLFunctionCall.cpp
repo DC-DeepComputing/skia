@@ -189,7 +189,7 @@ static std::unique_ptr<Expression> optimize_comparison(const Context& context,
     SkASSERT(type.componentType().isScalar());
     SkASSERT(type.matches(right->type()));
 
-    double array[4];
+    std::array<double, 4> array;
 
     for (int index = 0; index < type.columns(); ++index) {
         std::optional<double> leftValue = left->getConstantValue(index);
@@ -225,7 +225,7 @@ static std::unique_ptr<Expression> evaluate_n_way_intrinsic(const Context& conte
     double minimumValue = returnType.componentType().minimumValue();
     double maximumValue = returnType.componentType().maximumValue();
     int slots = returnType.slotCount();
-    double array[16];
+    std::array<double, 16> array;
 
     int arg0Index = 0;
     int arg1Index = 0;
@@ -813,7 +813,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double packed = ((Pack(0) << 0)  & 0x0000FFFF) |
                                   ((Pack(1) << 16) & 0xFFFF0000);
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fUInt, &packed);
+                                                          *context.fTypes.fUInt, SkSpanFromRef(packed));
         }
         case k_packSnorm2x16_IntrinsicKind: {
             auto Pack = [&](int n) -> unsigned int {
@@ -823,7 +823,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double packed = ((Pack(0) << 0)  & 0x0000FFFF) |
                                   ((Pack(1) << 16) & 0xFFFF0000);
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fUInt, &packed);
+                                                          *context.fTypes.fUInt, SkSpanFromRef(packed));
         }
         case k_packHalf2x16_IntrinsicKind: {
             auto Pack = [&](int n) -> unsigned int {
@@ -832,7 +832,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             const double packed = ((Pack(0) << 0)  & 0x0000FFFF) |
                                   ((Pack(1) << 16) & 0xFFFF0000);
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
-                                                          *context.fTypes.fUInt, &packed);
+                                                          *context.fTypes.fUInt, SkSpanFromRef(packed));
         }
         case k_unpackUnorm2x16_IntrinsicKind: {
             SKSL_INT x = *arguments[0]->getConstantValue(0);
@@ -899,7 +899,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             return evaluate_pairwise_intrinsic(context, arguments, returnType,
                                                Intrinsics::evaluate_matrixCompMult);
         case k_transpose_IntrinsicKind: {
-            double mat[16];
+            std::array<double, 16> mat;
             int index = 0;
             for (int c = 0; c < returnType.columns(); ++c) {
                 for (int r = 0; r < returnType.rows(); ++r) {
@@ -910,7 +910,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
                                                           returnType, mat);
         }
         case k_outerProduct_IntrinsicKind: {
-            double mat[16];
+            std::array<double, 16> mat;
             int index = 0;
             for (int c = 0; c < returnType.columns(); ++c) {
                 for (int r = 0; r < returnType.rows(); ++r) {

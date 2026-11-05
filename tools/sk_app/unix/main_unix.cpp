@@ -6,6 +6,7 @@
 * found in the LICENSE file.
 */
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTHash.h"
 #include "tools/sk_app/Application.h"
@@ -14,11 +15,11 @@
 
 using namespace skia_private;
 
-int main(int argc, char**argv) {
+int main(int argc, char** argv) {
     XInitThreads();
     Display* display = XOpenDisplay(nullptr);
 
-    sk_app::Application* app = sk_app::Application::Create(argc, argv, (void*)display);
+    sk_app::Application* app = sk_app::Application::Create(argc, SkSpan(argv, argc), (void*)display);
 
     // Get the file descriptor for the X display
     const int x11_fd = ConnectionNumber(display);

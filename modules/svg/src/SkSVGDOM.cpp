@@ -309,7 +309,7 @@ bool set_string_attribute(const sk_sp<SkSVGNode>& node, const char* name, const 
         return true;
     }
 
-    const int attrIndex = SkStrSearch(&gAttributeParseInfo[0].fKey,
+    const int attrIndex = SkStrSearch(SkSpan(&gAttributeParseInfo[0].fKey, std::size(gAttributeParseInfo)),
                                       SkTo<int>(std::size(gAttributeParseInfo)),
                                       name, sizeof(gAttributeParseInfo[0]));
     if (attrIndex < 0) {
@@ -369,7 +369,7 @@ sk_sp<SkSVGNode> construct_svg_node(const SkDOM& dom, const ConstructionContext&
                                               : SkSVGSVG::Type::kRoot);
         }
 
-        const int tagIndex = SkStrSearch(&gTagFactories[0].fKey,
+        const int tagIndex = SkStrSearch(SkSpan(&gTagFactories[0].fKey, std::size(gTagFactories)),
                                          SkTo<int>(std::size(gTagFactories)),
                                          elem, sizeof(gTagFactories[0]));
         if (tagIndex < 0) {

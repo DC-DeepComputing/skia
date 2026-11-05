@@ -9,6 +9,7 @@
 #define SkPathOpsQuad_DEFINED
 
 #include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
@@ -79,7 +80,7 @@ struct SkDQuad {
     void align(int endIndex, SkDPoint* dstPt) const;
     SkDQuadPair chopAt(double t) const;
     SkDVector dxdyAtT(double t) const;
-    static int FindExtrema(const double src[], double tValue[1]);
+    static int FindExtrema(SkSpan<const double> src, double tValue[1]);
 
 #ifdef SK_DEBUG
     SkOpGlobalState* globalState() const { return fDebugGlobalState; }

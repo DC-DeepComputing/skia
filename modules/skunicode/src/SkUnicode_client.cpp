@@ -171,7 +171,7 @@ public:
         return true;
     }
 
-    bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
+    bool computeCodeUnitFlags(SkSpan<char16_t> utf16, int utf16Units, bool replaceTabs,
                           TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         results->clear();
         results->push_back_n(utf16Units + 1, CodeUnitFlags::kNoCodeUnitFlag);
@@ -260,10 +260,10 @@ public:
         fLastResult = 0;
         return true;
     }
-    bool setText(const char16_t utftext16[], int utf16Units) override {
-        SkASSERT(utftext16 >= fData->fText16.data() &&
+    bool setText(SkSpan<const char16_t> utftext16, int utf16Units) override {
+        SkASSERT(utftext16.data() >= fData->fText16.data() &&
                  utf16Units <= SkToS16(fData->fText16.size()));
-        fStart = utftext16 - fData->fText16.data();
+        fStart = utftext16.data() - fData->fText16.data();
         fEnd = fStart + utf16Units;
         fLastResult = 0;
         return true;

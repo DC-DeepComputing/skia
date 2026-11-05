@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/GrYUVATextureProxies.h"
 
 #include "include/core/SkColor.h"
@@ -46,7 +47,7 @@ GrYUVATextureProxies::GrYUVATextureProxies(const SkYUVAInfo& yuvaInfo,
         SkASSERT(!this->isValid());
         return;
     }
-    uint32_t textureChannelMasks[SkYUVAInfo::kMaxPlanes];
+    std::array<uint32_t, SkYUVAInfo::kMaxPlanes> textureChannelMasks;
     for (int i = 0; i < n; ++i) {
         if (!proxies[i]) {
             *this = {};
@@ -81,7 +82,7 @@ GrYUVATextureProxies::GrYUVATextureProxies(const SkYUVAInfo& yuvaInfo,
                                            GrSurfaceProxyView views[SkYUVAInfo::kMaxPlanes],
                                            GrColorType colorTypes[SkYUVAInfo::kMaxPlanes])
         : fYUVAInfo(yuvaInfo) {
-    uint32_t pixmapChannelMasks[SkYUVAInfo::kMaxPlanes];
+    std::array<uint32_t, SkYUVAInfo::kMaxPlanes> pixmapChannelMasks;
     int n = yuvaInfo.numPlanes();
     if (n == 0) {
         *this = {};

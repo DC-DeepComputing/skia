@@ -6,6 +6,8 @@
  */
 
 #ifndef GrProcessorAnalysis_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrProcessorAnalysis_DEFINED
 
 #include "include/private/SkTo.h"
@@ -99,7 +101,7 @@ public:
     GrColorFragmentProcessorAnalysis() = delete;
 
     GrColorFragmentProcessorAnalysis(const GrProcessorAnalysisColor& input,
-                                     std::unique_ptr<GrFragmentProcessor> const fps[],
+                                     SkSpan<const std::unique_ptr<GrFragmentProcessor>> fps,
                                      int count);
 
     bool isOpaque() const { return fIsOpaque; }

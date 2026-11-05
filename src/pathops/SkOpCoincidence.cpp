@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkSpan.h"
 #include "src/pathops/SkOpCoincidence.h"
 
 #include "include/core/SkPoint.h"
@@ -1394,17 +1395,17 @@ bool SkOpCoincidence::Ordered(const SkOpSegment* coinSeg, const SkOpSegment* opp
         return false;
     }
     int count = (SkPathOpsVerbToPoints(coinSeg->verb()) + 1) * 2;
-    const SkScalar* cPt = &coinSeg->pts()[0].fX;
-    const SkScalar* oPt = &oppSeg->pts()[0].fX;
+    SkSpan<const SkScalar> cPt(&coinSeg->pts()[0].fX, count);
+    SkSpan<const SkScalar> oPt(&oppSeg->pts()[0].fX, count);
     for (int index = 0; index < count; ++index) {
-        if (*cPt < *oPt) {
+        if ( cPt[0] <  oPt[0]) {
             return true;
         }
-        if (*cPt > *oPt) {
+        if ( cPt[0] >  oPt[0]) {
             return false;
         }
-        ++cPt;
-        ++oPt;
+         cPt = cPt.subspan(1u);
+         oPt = oPt.subspan(1u);
     }
     return true;
 }

@@ -28,6 +28,7 @@
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
@@ -185,7 +186,7 @@ int make_pixmaps(SkColorType ct,
                  SkAlphaType at,
                  bool withMips,
                  const SkColor4f colors[6],
-                 SkPixmap pixmaps[6],
+                 SkSpan<SkPixmap, 6> pixmaps,
                  std::unique_ptr<char[]>* mem) {
 
     int levelSize = 32;

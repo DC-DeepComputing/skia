@@ -126,9 +126,9 @@ class SkBreakIterator_icu : public SkBreakIterator {
         fLastResult = 0;
         return true;
     }
-    bool setText(const char16_t utftext16[], int utf16Units) override {
+    bool setText(SkSpan<const char16_t> utftext16, int utf16Units) override {
         UErrorCode status = U_ZERO_ERROR;
-        ICUUText text(sk_utext_openUChars(nullptr, reinterpret_cast<const UChar*>(&utftext16[0]),
+        ICUUText text(sk_utext_openUChars(nullptr, reinterpret_cast<const UChar*>(utftext16.data()),
                                           utf16Units, &status));
 
         if (U_FAILURE(status)) {
@@ -645,7 +645,7 @@ public:
         return true;
     }
 
-    bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
+    bool computeCodeUnitFlags(SkSpan<char16_t> utf16, int utf16Units, bool replaceTabs,
                           TArray<SkUnicode::CodeUnitFlags, true>* results) override {
         results->clear();
         results->push_back_n(utf16Units + 1, CodeUnitFlags::kNoCodeUnitFlag);
@@ -675,7 +675,7 @@ public:
                 }
            });
         // Get graphemes
-        this->forEachBreak((char16_t*)&utf16[0],
+        this->forEachBreak(utf16,
                            utf16Units,
                            SkUnicode::BreakType::kGraphemes,
                            [results](SkBreakIterator::Position pos, SkBreakIterator::Status) {
@@ -683,7 +683,7 @@ public:
                            });
         // Get line breaks
         this->forEachBreak(
-                (char16_t*)&utf16[0],
+                utf16,
                 utf16Units,
                 SkUnicode::BreakType::kLines,
                 [results](SkBreakIterator::Position pos, SkBreakIterator::Status status) {

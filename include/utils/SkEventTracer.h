@@ -16,6 +16,7 @@
 // If you're looking for the tracing macros to instrument Skia itself, those
 // live in src/core/SkTraceEvent.h
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 
 #include <cstdint>
@@ -67,7 +68,7 @@ public:
                       const char* name,
                       uint64_t id,
                       int32_t numArgs,
-                      const char** argNames,
+                      SkSpan<const char *>argNames,
                       const uint8_t* argTypes,
                       const uint64_t* argValues,
                       uint8_t flags) = 0;

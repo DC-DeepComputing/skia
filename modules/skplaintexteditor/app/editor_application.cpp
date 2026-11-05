@@ -7,6 +7,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "src/core/SkTime.h"
 
@@ -447,7 +448,7 @@ struct EditorApplication : public sk_app::Application {
 };
 }  // namespace
 
-sk_app::Application* sk_app::Application::Create(int argc, char** argv, void* dat) {
+sk_app::Application* sk_app::Application::Create(int argc, SkSpan<char *>argv, void* dat) {
     std::unique_ptr<sk_app::Window> win(sk_app::Windows::CreateNativeWindow(dat));
     if (!win) {
         SK_ABORT("CreateNativeWindow failed.");

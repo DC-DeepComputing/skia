@@ -1,3 +1,4 @@
+#include "include/core/SkSpan.h"
 /*
 * Copyright 2016 Google Inc.
 *
@@ -12,7 +13,7 @@ namespace sk_app {
 
 class Application {
 public:
-    static Application* Create(int argc, char** argv, void* platformData);
+    static Application* Create(int argc, SkSpan<char *>argv, void* platformData);
 
     virtual ~Application() {}
 

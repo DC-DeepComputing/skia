@@ -120,7 +120,7 @@ sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromPixmap(GrDirectConte
         }
     }
     return MakeWithData(dContext,
-                        levels.data(),
+                        SkSpan(levels),
                         static_cast<int>(levels.size()),
                         kTopLeft_GrSurfaceOrigin,
                         renderable,

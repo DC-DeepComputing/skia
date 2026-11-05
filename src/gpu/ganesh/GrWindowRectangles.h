@@ -5,7 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+
 #ifndef GrWindowRectangles_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrWindowRectangles_DEFINED
 
 #include "include/core/SkRect.h"
@@ -28,7 +32,7 @@ public:
 
     bool empty() const { return !fCount; }
     int count() const { return fCount; }
-    const SkIRect* data() const;
+    SkSpan<const SkIRect> data() const;
 
     void reset();
     GrWindowRectangles& operator=(const GrWindowRectangles&);
@@ -54,15 +58,15 @@ private:
 struct GrWindowRectangles::Rec : public GrNonAtomicRef<Rec> {
     Rec(const SkIRect* windows, int numWindows) {
         SkASSERT(numWindows <= kMaxWindows);
-        memcpy(fData, windows, sizeof(SkIRect) * numWindows);
+        memcpy(fData.data(), windows, sizeof(SkIRect) * numWindows);
     }
     Rec() = default;
 
-    SkIRect fData[kMaxWindows];
+    std::array<SkIRect, kMaxWindows> fData;
 };
 
-inline const SkIRect* GrWindowRectangles::data() const {
-    return fCount <= 1 ? &fLocalWindow : fRec->fData;
+inline SkSpan<const SkIRect> GrWindowRectangles::data() const {
+    return fCount <= 1 ? SkSpanFromRef(fLocalWindow) : fRec->fData;
 }
 
 inline void GrWindowRectangles::reset() {
@@ -87,12 +91,12 @@ inline GrWindowRectangles GrWindowRectangles::makeOffset(int dx, int dy) const {
     }
     GrWindowRectangles result;
     result.fCount = fCount;
-    SkIRect* windows;
+    SkSpan<SkIRect>windows;
     if (result.fCount > 1) {
         result.fRec = new Rec();
         windows = result.fRec->fData;
     } else {
-        windows = &result.fLocalWindow;
+        windows = SkSpanFromRef(result.fLocalWindow);
     }
     for (int i = 0; i < fCount; ++i) {
         windows[i] = this->data()[i].makeOffset(dx, dy);
@@ -110,7 +114,7 @@ inline SkIRect& GrWindowRectangles::addWindow() {
         fRec = new Rec(&fLocalWindow, 1);
     } else if (!fRec->unique()) { // Simple copy-on-write.
         fRec->unref();
-        fRec = new Rec(fRec->fData, fCount);
+        fRec = new Rec(fRec->fData.data(), fCount);
     }
     return fRec->fData[fCount++];
 }
@@ -122,7 +126,7 @@ inline bool GrWindowRectangles::operator==(const GrWindowRectangles& that) const
     if (fCount > 1 && fRec == that.fRec) {
         return true;
     }
-    return !fCount || !memcmp(this->data(), that.data(), sizeof(SkIRect) * fCount);
+    return !fCount || !memcmp(this->data().data(), that.data().data(), sizeof(SkIRect) * fCount);
 }
 
 #endif
