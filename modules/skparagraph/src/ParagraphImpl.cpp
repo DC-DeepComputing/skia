@@ -1320,15 +1320,21 @@ void ParagraphImpl::visit(const Visitor& visitor) {
             const Run* R = rec.fVisitor_Run;
             const uint32_t* clusterPtr = R->clusterIndexes().data();
 
-            if (R->fClusterStart > 0) {
-                int count = R->clusterIndexes().size();
-                clusterStorage.reset(count);
-                for (int i = 0; i < count; ++i) {
-                    clusterStorage[i] = R->globalClusterIndex(i);
+            if (!rec.fClusterIndexes.empty()) {
+                // Decomposed composite blobs carry per-component UTF-8 byte starts directly
+                clusterPtr = rec.fClusterIndexes.data();
+            } else {
+                // Multi-run paragraphs store run-local cluster indices relative to fClusterStart
+                if (R->fClusterStart > 0) {
+                    int count = R->clusterIndexes().size();
+                    clusterStorage.reset(count);
+                    for (int i = 0; i < count; ++i) {
+                        clusterStorage[i] = R->globalClusterIndex(i);
+                    }
+                    clusterPtr = &clusterStorage[0];
                 }
-                clusterPtr = &clusterStorage[0];
+                clusterPtr += rec.fVisitor_Pos;
             }
-            clusterPtr += rec.fVisitor_Pos;
 
             while (iter.experimentalNext(&run)) {
                 const Paragraph::VisitorInfo info = {

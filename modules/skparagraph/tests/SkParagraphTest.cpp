@@ -10748,6 +10748,738 @@ DEF_TEST(SkParagraph_DiacriticWithMultipleStyles, reporter) {
     checkTwoStyles("abc+grave", "a", "\xCC\x80", 2, 0, 1, 1, 1);
 }
 
+// Contract test for https://github.com/flutter/flutter/issues/141080: TrueType glyf composite
+// decomposition when style boundaries split a 1-glyph single-grapheme cluster
+DEF_TEST(SkParagraph_CompositeGlyphSplitColors, reporter) {
+    sk_sp<TestFontCollection> fontCollection =
+            sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    struct ColorStats {
+        int count = 0;
+        int minX = 100000;
+        int maxX = -1;
+        int minY = 100000;
+        int maxY = -1;
+        double sumX = 0;
+    };
+
+    auto scanColors = [](const SkBitmap& bm,
+                         ColorStats* red,
+                         ColorStats* green,
+                         ColorStats* blue) {
+        auto accum = [](ColorStats* s, int x, int y) {
+            if (!s) return;
+            ++s->count;
+            s->minX = std::min(s->minX, x);
+            s->maxX = std::max(s->maxX, x);
+            s->minY = std::min(s->minY, y);
+            s->maxY = std::max(s->maxY, y);
+            s->sumX += x;
+        };
+        for (int y = 0; y < bm.height(); ++y) {
+            for (int x = 0; x < bm.width(); ++x) {
+                SkColor c = bm.getColor(x, y);
+                U8CPU r = SkColorGetR(c);
+                U8CPU g = SkColorGetG(c);
+                U8CPU b = SkColorGetB(c);
+                if (r > 200 && g < 80 && b < 80) {
+                    accum(red, x, y);
+                } else if (g > 150 && r < 80 && b < 80) {
+                    accum(green, x, y);
+                } else if (b > 200 && r < 80 && g < 80) {
+                    accum(blue, x, y);
+                }
+            }
+        }
+    };
+
+    auto renderParagraph = [](Paragraph* p, int w, int h) {
+        SkBitmap bm;
+        bm.allocN32Pixels(w, h);
+        bm.eraseColor(SK_ColorWHITE);
+        SkCanvas canvas(bm);
+        p->paint(&canvas, 0, 0);
+        return bm;
+    };
+
+    TextStyle baseStyle;
+    baseStyle.setFontFamilies({SkString("Roboto")});
+    baseStyle.setFontSize(64);
+
+    // Subcase A: Precomposed 'A' + U+0301 -> 1 composite glyph in Roboto, painted in two colors
+    {
+        TextStyle red = baseStyle;
+        red.setColor(SK_ColorRED);
+        TextStyle blue = baseStyle;
+        blue.setColor(SK_ColorBLUE);
+
+        ParagraphStyle ps;
+        ParagraphBuilderImpl builder(ps, fontCollection, get_unicode());
+        builder.pushStyle(red);
+        builder.addText("A");
+        builder.pop();
+        builder.pushStyle(blue);
+        builder.addText("\xCC\x81");
+        builder.pop();
+
+        auto p = builder.Build();
+        p->layout(300);
+        auto* impl = static_cast<ParagraphImpl*>(p.get());
+        REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+        REPORTER_ASSERT(reporter, impl->runs()[0].size() == 1);
+
+        SkBitmap bm = renderParagraph(p.get(), 200, 120);
+        ColorStats rStats, bStats;
+        scanColors(bm, &rStats, nullptr, &bStats);
+        REPORTER_ASSERT(reporter, rStats.count > 0);
+        REPORTER_ASSERT(reporter, bStats.count > 0);
+        REPORTER_ASSERT(reporter, bStats.minY < rStats.minY);
+    }
+
+    // Subcase B: 'i' + U+0301 -> 'í' uses dotless 'ı' (U+0131) as its glyf base component
+    {
+        TextStyle red = baseStyle;
+        red.setColor(SK_ColorRED);
+        TextStyle blue = baseStyle;
+        blue.setColor(SK_ColorBLUE);
+
+        ParagraphStyle ps;
+        ParagraphBuilderImpl builder(ps, fontCollection, get_unicode());
+        builder.pushStyle(red);
+        builder.addText("i");
+        builder.pop();
+        builder.pushStyle(blue);
+        builder.addText("\xCC\x81");
+        builder.pop();
+
+        auto p = builder.Build();
+        p->layout(300);
+        auto* impl = static_cast<ParagraphImpl*>(p.get());
+        REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+        REPORTER_ASSERT(reporter, impl->runs()[0].size() == 1);
+
+        SkTypeface* tf = impl->runs()[0].font().getTypeface();
+        SkASSERT(tf != nullptr);
+        SkGlyphID dotlessI = tf->unicharToGlyph(0x0131);
+        REPORTER_ASSERT(reporter, dotlessI != 0);
+
+        SkBitmap bm = renderParagraph(p.get(), 200, 120);
+        ColorStats rStats, bStats;
+        scanColors(bm, &rStats, nullptr, &bStats);
+        REPORTER_ASSERT(reporter, rStats.count > 0);
+        REPORTER_ASSERT(reporter, bStats.count > 0);
+        REPORTER_ASSERT(reporter, bStats.minY < rStats.minY);
+
+        std::vector<SkGlyphID> visitedGlyphs;
+        std::vector<uint32_t> visitedStarts;
+        p->visit([&](int, const Paragraph::VisitorInfo* info) {
+            if (!info) return;
+            for (int i = 0; i < info->count; ++i) {
+                visitedGlyphs.push_back(info->glyphs[i]);
+                visitedStarts.push_back(info->utf8Starts[i]);
+            }
+        });
+        REPORTER_ASSERT(reporter, visitedGlyphs.size() == 2);
+        if (visitedGlyphs.size() == 2) {
+            REPORTER_ASSERT(reporter, visitedGlyphs[0] == dotlessI);
+            REPORTER_ASSERT(reporter, visitedGlyphs[1] != 0 && visitedGlyphs[1] != dotlessI);
+            REPORTER_ASSERT(reporter, visitedStarts[0] == 0);
+            REPORTER_ASSERT(reporter, visitedStarts[1] == 1);
+        }
+    }
+
+    // Subcase C: Middle green span [3, 6) splits both startCluster ("A\xCC\x81") and
+    // endCluster ("E\xCC\x81"), and Paragraph::visit reports non-overlapping utf8Starts
+    {
+        TextStyle red = baseStyle;
+        red.setColor(SK_ColorRED);
+        TextStyle green = baseStyle;
+        green.setColor(SkColorSetRGB(0, 200, 0));
+        TextStyle blue = baseStyle;
+        blue.setColor(SK_ColorBLUE);
+
+        ParagraphStyle ps;
+        ParagraphBuilderImpl builder(ps, fontCollection, get_unicode());
+        builder.pushStyle(red);
+        builder.addText("abA");
+        builder.pop();
+        builder.pushStyle(green);
+        builder.addText("\xCC\x81" "E");
+        builder.pop();
+        builder.pushStyle(blue);
+        builder.addText("\xCC\x81" "cd");
+        builder.pop();
+
+        auto p = builder.Build();
+        p->layout(500);
+        SkBitmap bm = renderParagraph(p.get(), 400, 120);
+        ColorStats rStats, gStats, bStats;
+        scanColors(bm, &rStats, &gStats, &bStats);
+        REPORTER_ASSERT(reporter, rStats.count > 0);
+        REPORTER_ASSERT(reporter, gStats.count > 0);
+        REPORTER_ASSERT(reporter, bStats.count > 0);
+
+        std::vector<uint32_t> visitedStarts;
+        std::vector<uint32_t> visitedEnds;
+        p->visit([&](int, const Paragraph::VisitorInfo* info) {
+            if (!info) return;
+            for (int i = 0; i < info->count; ++i) {
+                visitedStarts.push_back(info->utf8Starts[i]);
+            }
+            visitedEnds.push_back(info->utf8Starts[info->count]);
+        });
+        const uint32_t expectedStarts[] = {0, 1, 2, 3, 5, 6, 8, 9};
+        const uint32_t expectedEnds[] = {3, 6, 10};
+        constexpr size_t kStartsLen = std::size(expectedStarts);
+        constexpr size_t kEndsLen = std::size(expectedEnds);
+        REPORTER_ASSERT(reporter, visitedStarts.size() == kStartsLen);
+        if (visitedStarts.size() == kStartsLen) {
+            for (size_t i = 0; i < kStartsLen; ++i) {
+                REPORTER_ASSERT(reporter, visitedStarts[i] == expectedStarts[i]);
+            }
+        }
+        REPORTER_ASSERT(reporter, visitedEnds.size() == kEndsLen);
+        if (visitedEnds.size() == kEndsLen) {
+            for (size_t i = 0; i < kEndsLen; ++i) {
+                REPORTER_ASSERT(reporter, visitedEnds[i] == expectedEnds[i]);
+            }
+        }
+    }
+
+    // Subcase D: Synthetic oblique (skewX != 0 when only upright Roboto-Regular.ttf is registered)
+    // aligns the decomposed mark horizontally with unsplit oblique 'Á', and paints mark shadows
+    {
+        std::vector<sk_sp<SkTypeface>> faces =
+                fontCollection->findTypefaces({SkString("Roboto")}, SkFontStyle::Normal());
+        REPORTER_ASSERT(reporter, !faces.empty());
+        sk_sp<SkTypeface> uprightRoboto = faces.empty() ? nullptr : faces[0];
+        if (uprightRoboto) {
+            auto provider = sk_make_sp<TypefaceFontProvider>();
+            provider->registerTypeface(uprightRoboto, SkString("RobotoUprightOnly"));
+            auto singleFaceFC = sk_make_sp<FontCollection>();
+            singleFaceFC->setAssetFontManager(provider);
+            singleFaceFC->disableFontFallback();
+
+            TextStyle italicBlue;
+            italicBlue.setFontFamilies({SkString("RobotoUprightOnly")});
+            italicBlue.setFontSize(64);
+            italicBlue.setFontStyle(SkFontStyle::Italic());
+            italicBlue.setColor(SK_ColorBLUE);
+
+            ParagraphStyle ps;
+            ParagraphBuilderImpl refBuilder(ps, singleFaceFC, get_unicode());
+            refBuilder.pushStyle(italicBlue);
+            refBuilder.addText("A\xCC\x81");
+            refBuilder.pop();
+            auto refP = refBuilder.Build();
+            refP->layout(300);
+            SkBitmap refBm = renderParagraph(refP.get(), 240, 120);
+
+            TextStyle italicRed = italicBlue;
+            italicRed.setColor(SK_ColorRED);
+            TextStyle italicBlueShadow = italicBlue;
+            italicBlueShadow.addShadow(
+                    TextShadow(SkColorSetRGB(0, 200, 0), SkPoint::Make(35, 0), 0));
+
+            ParagraphBuilderImpl splitBuilder(ps, singleFaceFC, get_unicode());
+            splitBuilder.pushStyle(italicRed);
+            splitBuilder.addText("A");
+            splitBuilder.pop();
+            splitBuilder.pushStyle(italicBlueShadow);
+            splitBuilder.addText("\xCC\x81");
+            splitBuilder.pop();
+            auto splitP = splitBuilder.Build();
+            splitP->layout(300);
+            auto* splitImpl = static_cast<ParagraphImpl*>(splitP.get());
+            REPORTER_ASSERT(reporter, splitImpl->runs()[0].font().getSkewX() != 0);
+
+            SkBitmap splitBm = renderParagraph(splitP.get(), 240, 120);
+            ColorStats rStats, gStats, bStats;
+            scanColors(splitBm, &rStats, &gStats, &bStats);
+            REPORTER_ASSERT(reporter, rStats.count > 0 && bStats.count > 0 && gStats.count > 0);
+            if (bStats.count > 0 && gStats.count > 0 && rStats.count > 0) {
+                double splitAcuteMeanX = bStats.sumX / bStats.count;
+                double shadowMeanX = gStats.sumX / gStats.count;
+                REPORTER_ASSERT(reporter, shadowMeanX > splitAcuteMeanX + 25.0);
+
+                // Compare acute X centroid against the upper band (above base 'A') of unsplit 'Á'
+                double refSumX = 0;
+                int refCount = 0;
+                for (int y = 0; y < rStats.minY - 2; ++y) {
+                    for (int x = 0; x < refBm.width(); ++x) {
+                        SkColor c = refBm.getColor(x, y);
+                        if (SkColorGetB(c) > 200 && SkColorGetR(c) < 80) {
+                            refSumX += x;
+                            ++refCount;
+                        }
+                    }
+                }
+                REPORTER_ASSERT(reporter, refCount > 0);
+                if (refCount > 0) {
+                    double refAcuteMeanX = refSumX / refCount;
+                    REPORTER_ASSERT(reporter, std::abs(splitAcuteMeanX - refAcuteMeanX) < 1.0);
+                }
+            }
+        }
+    }
+
+    // Subcase E: clippingNeeded == true does not clip away decomposed marks overhanging the clip
+    // edge (both ligature split "\xCC\x81ff" and negative-dx 'Î' with excluded trailing spaces)
+    {
+        TextStyle red = baseStyle;
+        red.setColor(SK_ColorRED);
+        TextStyle green = baseStyle;
+        green.setColor(SkColorSetRGB(0, 200, 0));
+        TextStyle blue = baseStyle;
+        blue.setColor(SK_ColorBLUE);
+
+        ParagraphStyle ps;
+        ParagraphBuilderImpl ligBuilder(ps, fontCollection, get_unicode());
+        ligBuilder.pushStyle(red);
+        ligBuilder.addText("A");
+        ligBuilder.pop();
+        ligBuilder.pushStyle(green);
+        ligBuilder.addText("\xCC\x81" "ff");
+        ligBuilder.pop();
+        ligBuilder.pushStyle(blue);
+        ligBuilder.addText("i");
+        ligBuilder.pop();
+
+        auto ligP = ligBuilder.Build();
+        ligP->layout(300);
+        SkBitmap ligBm = renderParagraph(ligP.get(), 240, 120);
+        ColorStats rStats, gStats, bStats;
+        scanColors(ligBm, &rStats, &gStats, &bStats);
+        REPORTER_ASSERT(reporter, rStats.count > 0 && gStats.count > 0 && bStats.count > 0);
+        // The green acute over 'A' sits to the left of the green "ff" slice of the "ffi" ligature
+        REPORTER_ASSERT(reporter, gStats.minY < rStats.minY);
+        REPORTER_ASSERT(reporter, gStats.minX < rStats.maxX);
+
+        // In Roboto, 'Î' (U+00CE) has negative mark dx (-192 font units); trailing spaces force
+        // clippingNeeded == true when laid out narrower than widthWithSpaces
+        ParagraphBuilderImpl noSpaceBuilder(ps, fontCollection, get_unicode());
+        noSpaceBuilder.pushStyle(red);
+        noSpaceBuilder.addText("I");
+        noSpaceBuilder.pop();
+        noSpaceBuilder.pushStyle(blue);
+        noSpaceBuilder.addText("\xCC\x82");
+        noSpaceBuilder.pop();
+        auto noSpaceP = noSpaceBuilder.Build();
+        noSpaceP->layout(300);
+        SkBitmap noSpaceBm = renderParagraph(noSpaceP.get(), 200, 120);
+        ColorStats refBlue;
+        scanColors(noSpaceBm, nullptr, nullptr, &refBlue);
+
+        ParagraphBuilderImpl trailBuilder(ps, fontCollection, get_unicode());
+        trailBuilder.pushStyle(red);
+        trailBuilder.addText("I");
+        trailBuilder.pop();
+        trailBuilder.pushStyle(blue);
+        trailBuilder.addText("\xCC\x82     ");
+        trailBuilder.pop();
+        auto trailP = trailBuilder.Build();
+        trailP->layout(noSpaceP->getMaxIntrinsicWidth() + 4);
+        SkBitmap trailBm = renderParagraph(trailP.get(), 200, 120);
+        ColorStats trailBlue;
+        scanColors(trailBm, nullptr, nullptr, &trailBlue);
+        REPORTER_ASSERT(reporter, refBlue.count > 0);
+        REPORTER_ASSERT(reporter, trailBlue.count == refBlue.count);
+    }
+
+    // Subcase F: TextAlign::kJustify when the split composite is the final glyph of its run
+    // (context.pos == run->size()) keeps the mark aligned with the justified base glyph
+    {
+        TextStyle red40 = baseStyle;
+        red40.setFontSize(40);
+        red40.setColor(SK_ColorRED);
+        TextStyle blue40 = red40;
+        blue40.setColor(SK_ColorBLUE);
+        TextStyle tail42 = baseStyle;
+        tail42.setFontSize(42);
+        tail42.setColor(SK_ColorBLACK);
+
+        ParagraphStyle ps;
+        ps.setTextAlign(TextAlign::kJustify);
+
+        ParagraphBuilderImpl refBuilder(ps, fontCollection, get_unicode());
+        refBuilder.pushStyle(blue40);
+        refBuilder.addText("word I\xCC\x81");
+        refBuilder.pop();
+        refBuilder.pushStyle(tail42);
+        refBuilder.addText(" tail verylongwordwrappingtonextline");
+        refBuilder.pop();
+        auto refP = refBuilder.Build();
+        refP->layout(260);
+        SkBitmap refBm = renderParagraph(refP.get(), 300, 120);
+
+        ParagraphBuilderImpl splitBuilder(ps, fontCollection, get_unicode());
+        splitBuilder.pushStyle(red40);
+        splitBuilder.addText("word I");
+        splitBuilder.pop();
+        splitBuilder.pushStyle(blue40);
+        splitBuilder.addText("\xCC\x81");
+        splitBuilder.pop();
+        splitBuilder.pushStyle(tail42);
+        splitBuilder.addText(" tail verylongwordwrappingtonextline");
+        splitBuilder.pop();
+        auto splitP = splitBuilder.Build();
+        splitP->layout(260);
+        SkBitmap splitBm = renderParagraph(splitP.get(), 300, 120);
+
+        ColorStats rStats, bStats;
+        scanColors(splitBm, &rStats, nullptr, &bStats);
+        REPORTER_ASSERT(reporter, rStats.count > 0 && bStats.count > 0);
+        if (rStats.count > 0 && bStats.count > 0) {
+            double splitAcuteMeanX = bStats.sumX / bStats.count;
+            double refSumX = 0;
+            int refCount = 0;
+            for (int y = 0; y < rStats.minY - 1; ++y) {
+                for (int x = 0; x < refBm.width(); ++x) {
+                    SkColor c = refBm.getColor(x, y);
+                    if (SkColorGetB(c) > 200 && SkColorGetR(c) < 80) {
+                        refSumX += x;
+                        ++refCount;
+                    }
+                }
+            }
+            REPORTER_ASSERT(reporter, refCount > 0);
+            if (refCount > 0) {
+                double refAcuteMeanX = refSumX / refCount;
+                REPORTER_ASSERT(reporter, std::abs(splitAcuteMeanX - refAcuteMeanX) < 1.0);
+            }
+        }
+    }
+
+    // Subcase G: Default-ignorable guard — patch a minimal cmap Format 14 Default UVS entry
+    // (U+00C1 'Á', U+FE0E VS15) onto Roboto-Regular.ttf so HarfBuzz consumes both code points into
+    // 1 composite glyph; U+FE0E must be ignored rather than coloring the acute accent green
+    {
+        sk_sp<SkData> origTtf =
+                SkData::MakeFromFileName(GetResourcePath("fonts/Roboto-Regular.ttf").c_str());
+        REPORTER_ASSERT(reporter, origTtf != nullptr);
+        if (origTtf && origTtf->size() > 64) {
+            const uint8_t* src = origTtf->bytes();
+            auto rd16 = [](const uint8_t* p) {
+                return uint16_t((uint16_t(p[0]) << 8) | uint16_t(p[1]));
+            };
+            auto rd32 = [](const uint8_t* p) {
+                return (uint32_t(p[0]) << 24) | (uint32_t(p[1]) << 16) | (uint32_t(p[2]) << 8) |
+                       uint32_t(p[3]);
+            };
+            auto wr16 = [](uint8_t* p, uint16_t v) {
+                p[0] = uint8_t(v >> 8);
+                p[1] = uint8_t(v);
+            };
+            auto wr32 = [](uint8_t* p, uint32_t v) {
+                p[0] = uint8_t(v >> 24);
+                p[1] = uint8_t(v >> 16);
+                p[2] = uint8_t(v >> 8);
+                p[3] = uint8_t(v);
+            };
+
+            uint16_t numTables = rd16(src + 4);
+            size_t cmapDirOff = 0;
+            uint32_t oldCmapOff = 0;
+            uint32_t oldCmapLen = 0;
+            for (uint16_t i = 0; i < numTables; ++i) {
+                size_t rec = 12 + size_t(i) * 16;
+                if (memcmp(src + rec, "cmap", 4) == 0) {
+                    cmapDirOff = rec;
+                    oldCmapOff = rd32(src + rec + 8);
+                    oldCmapLen = rd32(src + rec + 12);
+                    break;
+                }
+            }
+            REPORTER_ASSERT(reporter, cmapDirOff != 0 && oldCmapLen > 28);
+            if (cmapDirOff != 0 && oldCmapOff + oldCmapLen <= origTtf->size()) {
+                const uint8_t* oldCmap = src + oldCmapOff;
+                uint16_t oldNumEnc = rd16(oldCmap + 2);
+                const uint8_t kFmt14[29] = {
+                        0x00, 0x0E,                          // format = 14
+                        0x00, 0x00, 0x00, 0x1D,              // length = 29
+                        0x00, 0x00, 0x00, 0x01,              // numVarSelectorRecords = 1
+                        0x00, 0xFE, 0x0E,                    // varSelector = U+FE0E
+                        0x00, 0x00, 0x00, 0x15,              // defaultUVSOffset = 21
+                        0x00, 0x00, 0x00, 0x00,              // nonDefaultUVSOffset = 0
+                        0x00, 0x00, 0x00, 0x01,              // numUnicodeValueRanges = 1
+                        0x00, 0x00, 0xC1, 0x00,              // U+00C1 ('Á'), additionalCount = 0
+                };
+                size_t alignedOrig = (origTtf->size() + 3) & ~size_t(3);
+                uint32_t newCmapLen = oldCmapLen + 8 + sizeof(kFmt14);
+                sk_sp<SkData> patched = SkData::MakeZeroInitialized(alignedOrig + newCmapLen);
+                uint8_t* dst = static_cast<uint8_t*>(patched->writable_data());
+                memcpy(dst, src, origTtf->size());
+
+                uint8_t* newCmap = dst + alignedOrig;
+                wr16(newCmap, 0);
+                wr16(newCmap + 2, oldNumEnc + 1);
+                size_t outEnc = 4;
+                bool inserted = false;
+                for (uint16_t i = 0; i < oldNumEnc; ++i) {
+                    const uint8_t* e = oldCmap + 4 + size_t(i) * 8;
+                    uint16_t pid = rd16(e);
+                    uint16_t eid = rd16(e + 2);
+                    uint32_t subOff = rd32(e + 4) + 8;
+                    if (!inserted && (pid > 0 || (pid == 0 && eid > 5))) {
+                        wr16(newCmap + outEnc, 0);
+                        wr16(newCmap + outEnc + 2, 5);
+                        wr32(newCmap + outEnc + 4, oldCmapLen + 8);
+                        outEnc += 8;
+                        inserted = true;
+                    }
+                    wr16(newCmap + outEnc, pid);
+                    wr16(newCmap + outEnc + 2, eid);
+                    wr32(newCmap + outEnc + 4, subOff);
+                    outEnc += 8;
+                }
+                if (!inserted) {
+                    wr16(newCmap + outEnc, 0);
+                    wr16(newCmap + outEnc + 2, 5);
+                    wr32(newCmap + outEnc + 4, oldCmapLen + 8);
+                }
+                size_t oldHdrLen = 4 + size_t(oldNumEnc) * 8;
+                memcpy(newCmap + oldHdrLen + 8, oldCmap + oldHdrLen, oldCmapLen - oldHdrLen);
+                memcpy(newCmap + oldCmapLen + 8, kFmt14, sizeof(kFmt14));
+                wr32(dst + cmapDirOff + 8, SkToU32(alignedOrig));
+                wr32(dst + cmapDirOff + 12, newCmapLen);
+
+                sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+                // PortableFontMgr returns null for byte-backed typefaces under --nonativeFonts
+                if (mgr->makeFromData(origTtf) != nullptr) {
+                    sk_sp<SkTypeface> uvsFace = mgr->makeFromData(patched);
+                    REPORTER_ASSERT(reporter, uvsFace != nullptr);
+                    if (uvsFace) {
+                        auto provider = sk_make_sp<TypefaceFontProvider>();
+                        provider->registerTypeface(uvsFace, SkString("RobotoUVS"));
+                        auto uvsFC = sk_make_sp<FontCollection>();
+                        uvsFC->setAssetFontManager(provider);
+                        uvsFC->disableFontFallback();
+
+                        TextStyle red;
+                        red.setFontFamilies({SkString("RobotoUVS")});
+                        red.setFontSize(64);
+                        red.setColor(SK_ColorRED);
+                        TextStyle green = red;
+                        green.setColor(SkColorSetRGB(0, 200, 0));
+
+                        ParagraphStyle ps;
+                        ParagraphBuilderImpl builder(ps, uvsFC, get_unicode());
+                        builder.pushStyle(red);
+                        builder.addText("\xC3\x81");
+                        builder.pop();
+                        builder.pushStyle(green);
+                        builder.addText("\xEF\xB8\x8E");
+                        builder.pop();
+
+                        auto p = builder.Build();
+                        p->layout(300);
+                        auto* impl = static_cast<ParagraphImpl*>(p.get());
+                        REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+                        if (!impl->runs().empty()) {
+                            REPORTER_ASSERT(reporter, impl->runs()[0].size() == 1);
+                        }
+
+                        SkBitmap bm = renderParagraph(p.get(), 200, 120);
+                        ColorStats rStats, gStats;
+                        scanColors(bm, &rStats, &gStats, nullptr);
+                        REPORTER_ASSERT(reporter, rStats.count > 0);
+                        REPORTER_ASSERT(reporter, gStats.count == 0);
+                    }
+                }
+            }
+        }
+    }
+
+    // Subcase H: Multi-mark component matching (NFD vs reversed mark order on U+1EC7 in
+    // Roboto-Medium.ttf) and nested 2-component composite base-fallback safety
+    {
+        // Roboto-Medium.ttf ships only in the --paragraph_fonts directory (extra_fonts on
+        // NativeFonts bots); a missing file with the flag set must fail, as SKIP_IF_FONTS_NOT_FOUND
+        SkString medDir = GetResourcePath(
+                FLAGS_paragraph_fonts.size() != 0 ? FLAGS_paragraph_fonts[0] : "extra_fonts");
+        SkString medPath = SkOSPath::Join(medDir.c_str(), "Roboto-Medium.ttf");
+        bool hasMedium = sk_exists(medPath.c_str());
+        if (!hasMedium && FLAGS_paragraph_fonts.size() != 0) {
+            ERRORF(reporter, "Subcase H: %s not found\n", medPath.c_str());
+        }
+        if (hasMedium) {
+            auto medFC = sk_make_sp<TestFontCollection>(medDir.c_str(), false, false);
+            REPORTER_ASSERT(reporter, medFC->addFontFromFile("Roboto-Medium.ttf", "RobotoMed"));
+
+            SkFontStyle medFontStyle(SkFontStyle::kMedium_Weight,
+                                     SkFontStyle::kNormal_Width,
+                                     SkFontStyle::kUpright_Slant);
+            TextStyle medRed;
+            medRed.setFontFamilies({SkString("RobotoMed")});
+            medRed.setFontStyle(medFontStyle);
+            medRed.setFontSize(64);
+            medRed.setColor(SK_ColorRED);
+            TextStyle medGreen = medRed;
+            medGreen.setColor(SkColorSetRGB(0, 200, 0));
+            TextStyle medBlue = medRed;
+            medBlue.setColor(SK_ColorBLUE);
+
+            auto checkMultiMarkOrder = [&](const char* mark1,
+                                           const TextStyle& style1,
+                                           const char* mark2,
+                                           const TextStyle& style2) {
+                ParagraphStyle ps;
+                ParagraphBuilderImpl builder(ps, medFC, get_unicode());
+                builder.pushStyle(medRed);
+                builder.addText("e");
+                builder.pop();
+                builder.pushStyle(style1);
+                builder.addText(mark1);
+                builder.pop();
+                builder.pushStyle(style2);
+                builder.addText(mark2);
+                builder.pop();
+
+                auto p = builder.Build();
+                p->layout(300);
+                auto* impl = static_cast<ParagraphImpl*>(p.get());
+                REPORTER_ASSERT(reporter, impl->runs().size() == 1);
+                if (!impl->runs().empty()) {
+                    REPORTER_ASSERT(reporter, impl->runs()[0].size() == 1);
+                }
+
+                SkBitmap bm = renderParagraph(p.get(), 200, 140);
+                ColorStats rStats, gStats, bStats;
+                scanColors(bm, &rStats, &gStats, &bStats);
+                REPORTER_ASSERT(reporter, rStats.count > 0);
+                REPORTER_ASSERT(reporter, gStats.count > 0);
+                REPORTER_ASSERT(reporter, bStats.count > 0);
+                // Blue circumflex (U+0302) sits above 'e'; green dot-below (U+0323) sits below 'e'
+                REPORTER_ASSERT(reporter, bStats.minY < rStats.minY);
+                REPORTER_ASSERT(reporter, gStats.maxY > rStats.maxY);
+            };
+            // Canonical NFD ("e" + U+0323 + U+0302) reverses the font's glyf component order
+            checkMultiMarkOrder("\xCC\xA3", medGreen, "\xCC\x82", medBlue);
+            checkMultiMarkOrder("\xCC\x82", medBlue, "\xCC\xA3", medGreen);
+
+            sk_sp<SkData> medTtf = SkData::MakeFromFileName(medPath.c_str());
+            sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+            std::vector<sk_sp<SkTypeface>> medFaces =
+                    medFC->findTypefaces({SkString("RobotoMed")}, medFontStyle);
+            if (medTtf && medTtf->size() > 64 && !medFaces.empty() &&
+                mgr->makeFromData(medTtf) != nullptr) {
+                SkTypeface* medFace = medFaces[0].get();
+                SkGlyphID targetGid = medFace->unicharToGlyph(0x1EC7);
+                SkGlyphID eaGid = medFace->unicharToGlyph(0x00EA);
+                SkGlyphID dotGid = medFace->unicharToGlyph(0x0323);
+                REPORTER_ASSERT(reporter, targetGid != 0 && eaGid != 0 && dotGid != 0);
+
+                const uint8_t* src = medTtf->bytes();
+                auto rd16 = [](const uint8_t* p) {
+                    return uint16_t((uint16_t(p[0]) << 8) | uint16_t(p[1]));
+                };
+                auto rd32 = [](const uint8_t* p) {
+                    return (uint32_t(p[0]) << 24) | (uint32_t(p[1]) << 16) |
+                           (uint32_t(p[2]) << 8) | uint32_t(p[3]);
+                };
+                auto wr16 = [](uint8_t* p, uint16_t v) {
+                    p[0] = uint8_t(v >> 8);
+                    p[1] = uint8_t(v);
+                };
+
+                uint16_t numTables = rd16(src + 4);
+                uint32_t headOff = 0, locaOff = 0, glyfOff = 0, glyfLen = 0;
+                for (uint16_t i = 0; i < numTables; ++i) {
+                    size_t rec = 12 + size_t(i) * 16;
+                    if (memcmp(src + rec, "head", 4) == 0) {
+                        headOff = rd32(src + rec + 8);
+                    } else if (memcmp(src + rec, "loca", 4) == 0) {
+                        locaOff = rd32(src + rec + 8);
+                    } else if (memcmp(src + rec, "glyf", 4) == 0) {
+                        glyfOff = rd32(src + rec + 8);
+                        glyfLen = rd32(src + rec + 12);
+                    }
+                }
+                if (headOff != 0 && locaOff != 0 && glyfOff != 0) {
+                    int16_t locaFmt = static_cast<int16_t>(rd16(src + headOff + 50));
+                    uint32_t o0 = (locaFmt == 0)
+                                          ? uint32_t(rd16(src + locaOff + size_t(targetGid) * 2)) *
+                                                    2
+                                          : rd32(src + locaOff + size_t(targetGid) * 4);
+                    uint32_t o1 =
+                            (locaFmt == 0)
+                                    ? uint32_t(rd16(src + locaOff + (size_t(targetGid) + 1) * 2)) *
+                                              2
+                                    : rd32(src + locaOff + (size_t(targetGid) + 1) * 4);
+                    if (o1 <= glyfLen && o1 - o0 >= 32) {
+                        // Read dot-below's original (dx, dy) from component 2 of U+1EC7
+                        uint16_t origDotDx = rd16(src + glyfOff + o0 + 26);
+                        uint16_t origDotDy = rd16(src + glyfOff + o0 + 28);
+
+                        sk_sp<SkData> patchedMed =
+                                SkData::MakeWithCopy(medTtf->bytes(), medTtf->size());
+                        uint8_t* g = static_cast<uint8_t*>(patchedMed->writable_data()) + glyfOff +
+                                     o0 + 10;
+                        memset(g, 0, o1 - o0 - 10);
+                        // Rewrite U+1EC7 as 2-component nested composite [gid('ê'), gid(dotbelow)]
+                        wr16(g + 0, 0x0226);
+                        wr16(g + 2, eaGid);
+                        wr16(g + 4, 0);
+                        wr16(g + 6, 0x0007);
+                        wr16(g + 8, dotGid);
+                        wr16(g + 10, origDotDx);
+                        wr16(g + 12, origDotDy);
+
+                        sk_sp<SkTypeface> nestedFace = mgr->makeFromData(patchedMed);
+                        REPORTER_ASSERT(reporter, nestedFace != nullptr);
+                        if (nestedFace) {
+                            auto provider = sk_make_sp<TypefaceFontProvider>();
+                            provider->registerTypeface(nestedFace, SkString("RobotoNested"));
+                            auto nestedFC = sk_make_sp<FontCollection>();
+                            nestedFC->setAssetFontManager(provider);
+                            nestedFC->disableFontFallback();
+
+                            TextStyle nRed = medRed;
+                            nRed.setFontFamilies({SkString("RobotoNested")});
+                            TextStyle nBlue = nRed;
+                            nBlue.setColor(SK_ColorBLUE);
+
+                            // Mismatched precomposed base 'ẹ' + U+0302 must not color dot-below
+                            ParagraphStyle ps;
+                            ParagraphBuilderImpl mismatchB(ps, nestedFC, get_unicode());
+                            mismatchB.pushStyle(nRed);
+                            mismatchB.addText("\xE1\xBA\xB9");
+                            mismatchB.pop();
+                            mismatchB.pushStyle(nBlue);
+                            mismatchB.addText("\xCC\x82");
+                            mismatchB.pop();
+                            auto mismatchP = mismatchB.Build();
+                            mismatchP->layout(300);
+                            SkBitmap mismatchBm = renderParagraph(mismatchP.get(), 200, 140);
+                            ColorStats mrStats, mbStats;
+                            scanColors(mismatchBm, &mrStats, nullptr, &mbStats);
+                            REPORTER_ASSERT(reporter, mrStats.count > 0);
+                            REPORTER_ASSERT(reporter, mbStats.count == 0);
+
+                            // Matching precomposed base 'ê' + U+0323 paints dot-below in blue
+                            ParagraphBuilderImpl matchB(ps, nestedFC, get_unicode());
+                            matchB.pushStyle(nRed);
+                            matchB.addText("\xC3\xAA");
+                            matchB.pop();
+                            matchB.pushStyle(nBlue);
+                            matchB.addText("\xCC\xA3");
+                            matchB.pop();
+                            auto matchP = matchB.Build();
+                            matchP->layout(300);
+                            SkBitmap matchBm = renderParagraph(matchP.get(), 200, 140);
+                            ColorStats okRed, okBlue;
+                            scanColors(matchBm, &okRed, nullptr, &okBlue);
+                            REPORTER_ASSERT(reporter, okRed.count > 0 && okBlue.count > 0);
+                            REPORTER_ASSERT(reporter, okBlue.maxY > okRed.maxY);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 DEF_TEST(SkParagraph_LigatureWithMultipleStyles, reporter) {
     sk_sp<TestFontCollection> fontCollection =
             sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), false);

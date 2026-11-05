@@ -206,6 +206,27 @@ private:
     LineMetricStyle fAscentStyle;
     LineMetricStyle fDescentStyle;
 
+    // Per-line cache of TrueType glyf composite sub-glyphs for 1-glyph clusters split by styles
+    struct DecomposedComponent {
+        SkGlyphID fGlyphId;
+        SkPoint fGlyphOffset;
+        TextIndex fTextStart;
+    };
+    struct DecomposedCluster {
+        ClusterIndex fClusterIndex = EMPTY_CLUSTER;
+        bool fValid = false;
+        skia_private::STArray<4, DecomposedComponent, true> fComponents;
+    };
+    int decomposeClusterComponents(const Run* run, const Cluster* cluster) const;
+    bool buildDecomposedBlob(const Run* run,
+                             TextRange textRange,
+                             const ClipContext& context,
+                             SkScalar correctedBaseline,
+                             SkTextBlobBuilder& builder,
+                             skia_private::TArray<uint32_t, true>* outClusterIndexes,
+                             SkRect* inoutLocalClip) const;
+    mutable skia_private::TArray<DecomposedCluster, false> fDecomposedClusters;
+
     struct TextBlobRecord {
         void paint(ParagraphPainter* painter, SkScalar x, SkScalar y);
 
@@ -219,6 +240,8 @@ private:
         // Extra fields only used for the (experimental) visitor
         const Run* fVisitor_Run;
         size_t     fVisitor_Pos;
+        // Populated only when buildDecomposedBlob replaces a 1-glyph composite cluster
+        skia_private::TArray<uint32_t, true> fClusterIndexes;
     };
     bool fTextBlobCachePopulated;
 public:
